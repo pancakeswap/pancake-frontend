@@ -115,7 +115,9 @@ const IfoPoolVaultCardDesktop: React.FC<IfoPoolVaultCardDesktopProps> = ({ accou
         </Message>
         <Box>
           <Flex mb="4px">
-            <Text fontSize="12px" color="secondary" bold mr="2px">{`${t('CAKE')}`}</Text>
+            <Text fontSize="12px" color="secondary" bold mr="2px">
+              CAKE
+            </Text>
             <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
               {t('Staked')}
             </Text>

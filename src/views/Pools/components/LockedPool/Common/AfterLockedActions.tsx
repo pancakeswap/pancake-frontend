@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Message, MessageText, Box, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { VaultPosition } from 'utils/cakePool'
@@ -47,4 +48,4 @@ const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
   )
 }
 
-export default AfterLockedActions
+export default memo(AfterLockedActions)

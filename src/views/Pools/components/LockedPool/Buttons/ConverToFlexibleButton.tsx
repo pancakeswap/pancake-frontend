@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 import { Button } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
@@ -23,7 +23,7 @@ const ConverToFlexibleButton = () => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
 
-  const handleUnlock = async () => {
+  const handleUnlock = useCallback(async () => {
     const callOptions = {
       gasLimit: vaultPoolConfig[VaultKey.CakeVault].gasLimit,
     }
@@ -42,7 +42,7 @@ const ConverToFlexibleButton = () => {
       )
       dispatch(fetchCakeVaultUserData({ account }))
     }
-  }
+  }, [t, toastSuccess, account, callWithGasPrice, dispatch, fetchWithCatchTxError, vaultPoolContract])
 
   return (
     <Button disabled={pendingTx} mb="8px" mx="4px" width="100%" onClick={() => handleUnlock()}>
