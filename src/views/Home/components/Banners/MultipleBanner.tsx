@@ -108,7 +108,7 @@ const MultipleBanner: React.FC = () => {
       swiperRef.autoplay.start()
     }
 
-    if (swiperRef && bannerList.length < 1) {
+    if (swiperRef && bannerList.length <= 1) {
       swiperRef.autoplay.stop()
     }
   }, [bannerList, swiperRef])
