@@ -47,6 +47,10 @@ export default {
     56: '0xA8FECf847e28aa1Df39E995a45b7FCfb91b676d4',
     97: '',
   },
+  tradingCompetitionMobox: {
+    56: '0x1C5161CdB145dE35a8961F82b065fd1F75C3BaDf',
+    97: '',
+  },
   easterNft: {
     56: '0x23c41D28A239dDCAABd1bb1deF8d057189510066',
     97: '0x24ec6962dbe874F6B67B5C50857565667fA0854F',
