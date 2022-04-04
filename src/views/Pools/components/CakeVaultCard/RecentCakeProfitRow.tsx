@@ -12,7 +12,7 @@ const RecentCakeProfitCountdownRow = ({ pool }: { pool: DeserializedPool }) => {
   const { account } = useWeb3React()
   const {
     pricePerFullShare,
-    userData: { cakeAtLastUserAction, userShares },
+    userData: { cakeAtLastUserAction, userShares, currentOverdueFee, currentPerformanceFee },
   } = useVaultPoolByKey(pool.vaultKey)
   const cakePriceBusd = usePriceCakeBusd()
   const { hasAutoEarnings, autoCakeToDisplay } = getCakeVaultEarnings(
@@ -21,6 +21,7 @@ const RecentCakeProfitCountdownRow = ({ pool }: { pool: DeserializedPool }) => {
     userShares,
     pricePerFullShare,
     cakePriceBusd.toNumber(),
+    currentPerformanceFee.plus(currentOverdueFee),
   )
 
   if (!(userShares.gt(0) && account)) {

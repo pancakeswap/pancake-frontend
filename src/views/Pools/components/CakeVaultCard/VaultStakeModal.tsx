@@ -35,7 +35,7 @@ import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { convertCakeToShares, convertSharesToCake } from '../../helpers'
+import { convertCakeToShares } from '../../helpers'
 import FeeSummary from './FeeSummary'
 
 interface VaultStakeModalProps {
@@ -76,7 +76,11 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   const vaultPoolContract = useVaultPoolContract()
   const { callWithGasPrice } = useCallWithGasPrice()
   const {
-    userData: { lastDepositedTime, userShares },
+    userData: {
+      lastDepositedTime,
+      userShares,
+      balance: { cakeAsBigNumber },
+    },
     pricePerFullShare,
   } = useVaultPoolByKey(pool.vaultKey)
   const { t } = useTranslation()
@@ -93,8 +97,6 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   const callOptions = {
     gasLimit: vaultPoolConfig[pool.vaultKey].gasLimit,
   }
-
-  const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
 
   const interestBreakdown = getInterestBreakdown({
     principalInUSD: !usdValueStaked.isNaN() ? usdValueStaked.toNumber() : 0,
@@ -130,6 +132,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   }
 
   const handleWithdrawal = async (convertedStakeAmount: BigNumber) => {
+    // TODO: withdraw with amount
     const shareStakeToWithdraw = convertCakeToShares(convertedStakeAmount, pricePerFullShare)
     // trigger withdrawAll function if the withdrawal will leave 0.000001 CAKE or less
     const triggerWithdrawAllThreshold = new BigNumber(1000000000000)

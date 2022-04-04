@@ -38,6 +38,8 @@ const getBoostFactor = (boostWeight: BigNumber, duration: number, durationFactor
 const getLockedApy = (flexibleApy: string, boostFactor: number) =>
   FixedNumber.from(flexibleApy).mulUnsafe(FixedNumber.from(1 + boostFactor))
 
+const cakePoolPID = 5 // TODO: change in production
+
 export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: number } = {}) {
   const { totalShares = BIG_ZERO, pricePerFullShare = BIG_ZERO } = useCakeVault()
   const totalSharesAsEtherBN = useMemo(() => FixedNumber.from(totalShares.toString()), [totalShares])
@@ -53,7 +55,7 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
       {
         address: masterChefAddress,
         name: 'poolInfo',
-        params: [0],
+        params: [cakePoolPID],
       },
       {
         address: masterChefAddress,

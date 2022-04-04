@@ -1,12 +1,20 @@
 import BigNumber from 'bignumber.js'
 import { SerializedLockedVaultUser } from 'state/types'
-import { getCakeVaultV2Contract } from 'utils/contractHelpers'
+import { getCakeVaultAddress } from 'utils/addressHelpers'
+import cakeVaultAbi from 'config/abi/cakeVaultV2.json'
+import { multicallv2 } from 'utils/multicall'
 
-const cakeVaultContract = getCakeVaultV2Contract()
+const cakeVaultAddress = getCakeVaultAddress()
 
-const fetchVaultUser = async (account: string, contract = cakeVaultContract): Promise<SerializedLockedVaultUser> => {
+const fetchVaultUser = async (account: string): Promise<SerializedLockedVaultUser> => {
   try {
-    const userContractResponse = await contract.userInfo(account)
+    const calls = ['userInfo', 'calculatePerformanceFee', 'calculateOverdueFee'].map((method) => ({
+      address: cakeVaultAddress,
+      name: method,
+      params: [account],
+    }))
+
+    const [userContractResponse, [currentPerformanceFee], [currentOverdueFee]] = await multicallv2(cakeVaultAbi, calls)
     return {
       isLoading: false,
       userShares: new BigNumber(userContractResponse.shares.toString()).toJSON(),
@@ -18,6 +26,8 @@ const fetchVaultUser = async (account: string, contract = cakeVaultContract): Pr
       lockEndTime: userContractResponse.lockEndTime.toString(),
       lockStartTime: userContractResponse.lockStartTime.toString(),
       lockedAmount: new BigNumber(userContractResponse.lockedAmount.toString()).toJSON(),
+      currentPerformanceFee: new BigNumber(currentPerformanceFee.toString()).toJSON(),
+      currentOverdueFee: new BigNumber(currentOverdueFee.toString()).toJSON(),
     }
   } catch (error) {
     return {
@@ -31,6 +41,8 @@ const fetchVaultUser = async (account: string, contract = cakeVaultContract): Pr
       lockStartTime: null,
       locked: null,
       lockedAmount: null,
+      currentPerformanceFee: null,
+      currentOverdueFee: null,
     }
   }
 }
