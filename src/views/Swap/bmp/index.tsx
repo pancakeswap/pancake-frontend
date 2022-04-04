@@ -236,14 +236,6 @@ function Swap() {
     setSwapState({ attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined })
     swapCallback()
       .then((hash) => {
-        tracker.send(
-          new HitBuilders.EventBuilder()
-            .setCategory('swap')
-            .setAction('transactionSubmitted')
-            .setLabel(JSON.stringify({ account, txHash: hash })) //  optional
-            .setValue(1)
-            .build(),
-        )
         setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: hash })
       })
       .catch((error) => {
