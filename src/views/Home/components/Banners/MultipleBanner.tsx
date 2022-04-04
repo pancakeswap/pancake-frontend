@@ -46,7 +46,7 @@ const BannerPlaceHolder = styled.div<{ walletConnected: boolean }>`
   margin-top: ${({ walletConnected }) => (walletConnected ? '220px' : '0px')};
   margin-bottom: ${({ walletConnected }) => (walletConnected ? '-220px' : '0px')};
   ${({ theme }) => theme.mediaQueries.sm} {
-    margin-top: ${({ walletConnected }) => (walletConnected ? '170px' : '-32px')};
+    margin-top: ${({ walletConnected }) => (walletConnected ? '190px' : '-32px')};
     margin-bottom: 30px;
   }
   ${({ theme }) => theme.mediaQueries.md} {
@@ -74,6 +74,12 @@ const StyledSwiper = styled(Swiper)`
     width: 108px;
     bottom: 12px;
     ${({ theme }) => theme.mediaQueries.sm} {
+      bottom: 35px;
+    }
+    ${({ theme }) => theme.mediaQueries.md} {
+      bottom: 45px;
+    }
+    ${({ theme }) => theme.mediaQueries.lg} {
       bottom: 35px;
     }
   }

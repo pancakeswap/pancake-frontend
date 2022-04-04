@@ -10,7 +10,13 @@ import * as S from './Styled'
 const RightWrapper = styled.div`
   position: absolute;
   right: 0;
-  bottom: 0px;
+  bottom: -7px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    bottom: 0px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    bottom: 9px;
+  }
   ${({ theme }) => theme.mediaQueries.lg} {
     bottom: -30px;
   }
