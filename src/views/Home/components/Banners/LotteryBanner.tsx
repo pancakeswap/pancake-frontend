@@ -102,12 +102,14 @@ const LotteryBanner = () => {
   const { isDesktop } = useMatchBreakpoints()
   const { data: currentLotteryId } = useSWR(['currentLotteryId'], fetchCurrentLotteryId, {
     refreshInterval: SLOW_INTERVAL,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
   })
 
   const { data, status: currentLotteryStatus } = useSWR(
     currentLotteryId ? ['currentLottery'] : null,
     async () => fetchLottery(currentLotteryId.toString()),
-    { refreshInterval: FAST_INTERVAL },
+    { refreshInterval: FAST_INTERVAL, revalidateOnFocus: false, revalidateOnReconnect: false },
   )
 
   return (
