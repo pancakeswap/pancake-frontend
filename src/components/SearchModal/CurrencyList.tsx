@@ -69,6 +69,7 @@ function CurrencyRow({
   style: CSSProperties
 }) {
   const { account } = useActiveWeb3React()
+  const { t } = useTranslation()
   const key = currencyKey(currency)
   const selectedTokenList = useCombinedActiveList()
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
@@ -88,7 +89,7 @@ function CurrencyRow({
       <Column>
         <Text bold>{currency.symbol}</Text>
         <Text color="textSubtle" small ellipsis maxWidth="200px">
-          {!isOnSelectedList && customAdded && 'Added by user •'} {currency.name}
+          {!isOnSelectedList && customAdded && `${t('Added by user')} •`} {currency.name}
         </Text>
       </Column>
       <RowFixed style={{ justifySelf: 'flex-end' }}>
