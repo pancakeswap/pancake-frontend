@@ -203,7 +203,7 @@ const MoboxCompetition = () => {
   return (
     <>
       <PageMeta />
-      <CompetitionPage>
+      <CompetitionPage id="pcs-competition-page">
         <BattleBannerSection background={DARKBG} hasCurvedDivider={false} index={1}>
           <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
             <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
