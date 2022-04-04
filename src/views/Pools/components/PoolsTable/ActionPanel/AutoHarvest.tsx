@@ -100,7 +100,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
           </>
         </Flex>
         <Flex flex="1.3" flexDirection="column" alignSelf="flex-start" alignItems="flex-start">
-          {hasEarnings && vaultPosition <= VaultPosition.Flexible && (
+          {hasEarnings && vaultPosition === VaultPosition.Flexible && (
             <UnstakingFeeCountdownRow vaultKey={vaultKey} isTableVariant />
           )}
           {/* IFO credit here */}
