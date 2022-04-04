@@ -39,6 +39,8 @@ import { useBurnActionHandlers, useDerivedBurnInfo, useBurnState } from '../../s
 import { Field } from '../../state/burn/actions'
 import { useGasPrice, useUserSlippageTolerance } from '../../state/user/hooks'
 import ErrorBoundary from 'components/ErrorBoundary'
+import { HitBuilders } from 'utils/ga'
+import { useTracker } from 'contexts/AnalyticsContext'
 
 const BorderCard = styled.div`
   border: solid 1px ${({ theme }) => theme.colors.cardBorder};
@@ -179,6 +181,7 @@ export default function RemoveLiquidity() {
   const onCurrencyAInput = useCallback((value: string): void => onUserInput(Field.CURRENCY_A, value), [onUserInput])
   const onCurrencyBInput = useCallback((value: string): void => onUserInput(Field.CURRENCY_B, value), [onUserInput])
 
+  const tracker = useTracker()
   // tx sending
   const addTransaction = useTransactionAdder()
   async function onRemove() {
@@ -309,6 +312,14 @@ export default function RemoveLiquidity() {
             } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencyB?.symbol}`,
           })
 
+          tracker.send(
+            new HitBuilders.EventBuilder()
+              .setCategory('liquidity')
+              .setAction('removeLiquidity')
+              .setLabel(JSON.stringify({ txHash: response.hash })) //  optional
+              .setValue(1)
+              .build(),
+          )
           setTxHash(response.hash)
         })
         .catch((err: Error) => {
