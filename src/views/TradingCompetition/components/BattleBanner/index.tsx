@@ -18,7 +18,8 @@ const ImageWrapper = styled.div`
   margin: 0 auto;
   ${({ theme }) => theme.mediaQueries.md} {
     position: absolute;
-    right: -20%;
+    width: auto;
+    right: 28%;
     bottom: -5%;
     z-index: -1;
   }
