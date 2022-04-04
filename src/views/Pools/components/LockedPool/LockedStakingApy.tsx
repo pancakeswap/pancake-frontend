@@ -7,7 +7,6 @@ import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { BalanceWithLoading } from 'components/Balance'
 import Divider from 'components/Divider'
-import { convertSharesToCake } from 'views/Pools/helpers'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BurningCountDown from './Common/BurningCountDown'
@@ -21,7 +20,6 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
   stakingTokenBalance,
   userData,
   account,
-  pricePerFullShare,
 }) => {
   const { t } = useTranslation()
   const position = useMemo(
@@ -35,9 +33,8 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
   )
 
   const currentLockedAmountAsBitNumber = useMemo(() => {
-    const { cakeAsBigNumber } = convertSharesToCake(userData?.userShares, pricePerFullShare)
-    return cakeAsBigNumber.minus(userData?.userBoostedShare)
-  }, [pricePerFullShare, userData?.userShares, userData?.userBoostedShare])
+    return userData?.balance?.cakeAsBigNumber.minus(userData?.userBoostedShare)
+  }, [userData?.balance?.cakeAsBigNumber, userData?.userBoostedShare])
 
   const currentLockedAmount = getBalanceNumber(currentLockedAmountAsBitNumber)
 
@@ -68,7 +65,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
           <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
             {t('CAKE locked')}
           </Text>
-          <BalanceWithLoading color="text" bold fontSize="16px" value={currentLockedAmount} decimals={2} />
+          <BalanceWithLoading color="text" bold fontSize="16px" value={currentLockedAmount} decimals={5} />
           <BalanceWithLoading
             value={usdValueStaked}
             fontSize="12px"
@@ -129,7 +126,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
           <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
             {t('Recent CAKE profit')}
           </Text>
-          <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={2} />
+          <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={5} />
         </Flex>
       )}
       {position === VaultPosition.LockedEnd && (

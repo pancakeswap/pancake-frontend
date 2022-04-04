@@ -31,6 +31,9 @@ const AddCakeButton: React.FC<AddButtonProps> = ({
       currentBalance={currentBalance}
       stakingToken={stakingToken}
     />,
+    true,
+    true,
+    'AddAmountModal',
   )
 
   return (

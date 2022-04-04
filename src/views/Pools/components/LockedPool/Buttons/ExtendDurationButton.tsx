@@ -20,6 +20,9 @@ const ExtendDurationButton: React.FC<ExtendDurationButtonPropsType> = ({
       currentLockedAmount={currentLockedAmount}
       currentDuration={currentDuration}
     />,
+    true,
+    true,
+    'ExtendDurationModal',
   )
 
   return (

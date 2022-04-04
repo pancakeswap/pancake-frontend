@@ -123,7 +123,9 @@ export interface LockedStakingApyPropsType {
     userShares: BigNumber
     lockedAmount: BigNumber
     userBoostedShare: BigNumber
+    balance: {
+      cakeAsBigNumber: BigNumber
+    }
   }
   account: string
-  pricePerFullShare: BigNumber
 }

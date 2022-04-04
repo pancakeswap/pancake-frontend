@@ -7,8 +7,6 @@ import ExtendButton from '../Buttons/ExtendDurationButton'
 import { AfterLockedActionsPropsType } from '../types'
 
 const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
-  lockEndTime,
-  lockStartTime,
   currentLockedAmount,
   stakingToken,
   position,

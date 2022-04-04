@@ -35,7 +35,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
   const vaultPool = useVaultPoolByKey(pool.vaultKey)
 
   const {
-    userData: { userShares, isLoading: isVaultUserDataLoading },
+    userData: { userShares, isLoading: isVaultUserDataLoading, balance },
     fees: { performanceFeeAsDecimal },
     pricePerFullShare,
   } = vaultPool
@@ -62,7 +62,6 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
           <LockedStakingApy
             account={account}
             userData={vaultPool?.userData}
-            pricePerFullShare={pricePerFullShare}
             stakingToken={pool?.stakingToken}
             stakingTokenBalance={pool?.userData?.stakingTokenBalance}
           />
