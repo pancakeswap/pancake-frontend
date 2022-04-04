@@ -15,7 +15,7 @@ export const isLockedEnd = ({ userShares, locked, lockEndTime }: VaultPositionPa
   lockEndTime &&
   lockEndTime !== '0' &&
   isLocked({ userShares, locked }) &&
-  parseInt(lockEndTime) * 1000 >= Date.now() &&
+  Date.now() >= parseInt(lockEndTime) * 1000 &&
   Date.now() <= addWeek(new Date(parseInt(lockEndTime) * 1000)).getTime()
 
 export const isAfterBurning = ({ userShares, locked, lockEndTime }: VaultPositionParams): boolean =>
