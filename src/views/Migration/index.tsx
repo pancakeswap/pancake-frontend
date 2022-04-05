@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react'
+import React, { memo, useState, useRef, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { useWeb3React } from '@web3-react/core'
 import { Heading, Text, Button, ArrowForwardIcon, Link } from '@pancakeswap/uikit'
@@ -42,19 +42,13 @@ const MigrationPage: React.FC = () => {
   useFetchPublicPoolsData()
   const { data: cakePool, userDataLoaded } = useFetchUserPools(account)
 
-  const usePoolsWithVault = () => {
-    const pools = useMemo(() => {
-      const ifoPoolVault = { ...cakePool, vaultKey: VaultKey.IfoPool }
-      const cakeAutoVault = { ...cakePool, vaultKey: VaultKey.CakeVaultV1 }
+  const v1Pools = useMemo(() => {
+    const ifoPoolVault = { ...cakePool, vaultKey: VaultKey.IfoPool }
+    const cakeAutoVault = { ...cakePool, vaultKey: VaultKey.CakeVaultV1 }
 
-      return [ifoPoolVault, cakeAutoVault, cakePool]
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [cakePool])
-
-    return pools
-  }
-
-  const v1Pools = usePoolsWithVault()
+    return [ifoPoolVault, cakeAutoVault, cakePool]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cakePool])
 
   const scrollToTop = (): void => {
     tableWrapperEl.current.scrollIntoView({
@@ -108,4 +102,4 @@ const MigrationPage: React.FC = () => {
   )
 }
 
-export default MigrationPage
+export default memo(MigrationPage)
