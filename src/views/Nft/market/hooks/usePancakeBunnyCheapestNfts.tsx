@@ -21,7 +21,7 @@ const fetchCheapestBunny = async (
   nftMetadata: ApiResponseCollectionTokens,
 ): Promise<NftToken> => {
   const nftMarketContract = getNftMarketContract()
-  const nftsMarket = await getNftsMarketData(whereClause, 1000, 'currentAskPrice', 'asc')
+  const nftsMarket = await getNftsMarketData(whereClause, 100, 'currentAskPrice', 'asc')
 
   if (!nftsMarket.length) return null
 
