@@ -10,10 +10,10 @@ import LockedBodyModal from '../Common/LockedModalBody'
 
 const LockedStakeModal: React.FC<GenericModalProps> = ({ onDismiss, currentBalance, stakingToken }) => {
   const { theme } = useTheme()
-  const [lockedAmount, setLockedAmount] = useState(0)
+  const [lockedAmount, setLockedAmount] = useState('0')
   const { t } = useTranslation()
 
-  const usdValueStaked = useBUSDCakeAmount(lockedAmount)
+  const usdValueStaked = useBUSDCakeAmount(parseFloat(lockedAmount))
 
   return (
     <Modal title={t('Lock CAKE')} onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
@@ -32,7 +32,7 @@ const LockedStakeModal: React.FC<GenericModalProps> = ({ onDismiss, currentBalan
         currentBalance={currentBalance}
         stakingToken={stakingToken}
         onDismiss={onDismiss}
-        lockedAmount={lockedAmount}
+        lockedAmount={parseFloat(lockedAmount)}
       />
     </Modal>
   )

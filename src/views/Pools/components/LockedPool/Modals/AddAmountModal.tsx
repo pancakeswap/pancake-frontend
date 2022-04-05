@@ -47,7 +47,7 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
   lockEndTime,
 }) => {
   const { theme } = useTheme()
-  const [lockedAmount, setLockedAmount] = useState(0)
+  const [lockedAmount, setLockedAmount] = useState('0')
   const [checkedState, setCheckedState] = useState(false)
 
   const lockedAmountAsBigNumber = getDecimalAmount(new BigNumber(lockedAmount))
@@ -110,7 +110,7 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
         currentBalance={currentBalance}
         stakingToken={stakingToken}
         onDismiss={onDismiss}
-        lockedAmount={lockedAmount}
+        lockedAmount={parseFloat(lockedAmount)}
         editAmountOnly={<RenewDuration checkedState={checkedState} setCheckedState={setCheckedState} />}
         prepConfirmArg={prepConfirmArg}
         customOverview={customOverview}

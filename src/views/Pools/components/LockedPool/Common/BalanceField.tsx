@@ -16,9 +16,9 @@ interface PropsType {
   stakingAddress: string
   stakingSymbol: string
   stakingDecimals: number
-  lockedAmount: number
+  lockedAmount: string
   stakingMax: BigNumber
-  setLockedAmount: Dispatch<SetStateAction<number>>
+  setLockedAmount: Dispatch<SetStateAction<string>>
   usedValueStaked: number | undefined
 }
 
@@ -36,15 +36,15 @@ const BalanceField: React.FC<PropsType> = ({
 
   const handleStakeInputChange = useCallback(
     (input: string) => {
-      const inputBigNumber = new BigNumber(input)
       if (input) {
-        const convertedInput = inputBigNumber.multipliedBy(BIG_TEN.pow(stakingDecimals))
+        const convertedInput = new BigNumber(input).multipliedBy(BIG_TEN.pow(stakingDecimals))
         const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
         setPercent(percentage > 100 ? 100 : percentage)
       } else {
         setPercent(0)
       }
-      setLockedAmount(inputBigNumber.toNumber())
+
+      setLockedAmount(input)
     },
     [stakingDecimals, stakingMax, setLockedAmount],
   )
@@ -54,11 +54,10 @@ const BalanceField: React.FC<PropsType> = ({
       if (sliderPercent > 0) {
         const percentageOfStakingMax = stakingMax.dividedBy(100).multipliedBy(sliderPercent)
         const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingDecimals, stakingDecimals)
-        const amountToStakeAsBigNumber = new BigNumber(amountToStake)
 
-        setLockedAmount(amountToStakeAsBigNumber.toNumber())
+        setLockedAmount(amountToStake)
       } else {
-        setLockedAmount(0)
+        setLockedAmount('')
       }
       setPercent(sliderPercent)
     },
