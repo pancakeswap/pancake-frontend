@@ -1,4 +1,5 @@
-import { Skeleton, Text } from '@pancakeswap/uikit'
+import { Skeleton, Text, Flex, Button, CalculateIcon, useModal } from '@pancakeswap/uikit'
+import styled from 'styled-components'
 import Balance from 'components/Balance'
 import { FlexGap } from 'components/Layout/Flex'
 import { useTranslation } from 'contexts/Localization'
@@ -6,7 +7,15 @@ import { useVaultApy } from 'hooks/useVaultApy'
 import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
+import { getVaultPosition, VaultPosition } from 'utils/cakePool'
+import { VaultRoiCalculatorModal } from '../../Vault/VaultRoiCalculatorModal'
 import BaseCell, { CellContent } from './BaseCell'
+
+const AprLabelContainer = styled(Flex)`
+  &:hover {
+    opacity: 0.5;
+  }
+`
 
 interface AprCellProps {
   pool: DeserializedPool
@@ -15,14 +24,22 @@ interface AprCellProps {
 const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
   const { t } = useTranslation()
 
-  const {
-    userData: { userShares },
-  } = useVaultPoolByKey(pool.vaultKey)
+  const { userData } = useVaultPoolByKey(pool.vaultKey)
 
   const maxLockDuration = useVaultMaxDuration()
-  const { flexibleApy, lockedApy } = useVaultApy({ duration: maxLockDuration?.toNumber() })
+  const vaultPosition = getVaultPosition(userData)
 
-  if (!userShares.gt(0)) {
+  const { flexibleApy, lockedApy } = useVaultApy({
+    duration:
+      vaultPosition > VaultPosition.Flexible
+        ? +userData.lockEndTime - +userData.lockStartTime
+        : maxLockDuration?.toNumber(),
+  })
+
+  const [onPresentFlexibleApyModal] = useModal(<VaultRoiCalculatorModal pool={pool} />)
+  const [onPresentLockedApyModal] = useModal(<VaultRoiCalculatorModal pool={pool} initialView={1} />)
+
+  if (vaultPosition === VaultPosition.None) {
     return (
       <>
         <BaseCell role="cell" flex={['1 0 50px', '4.5', '1 0 120px', null, '2 0 100px']}>
@@ -31,7 +48,28 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
               {t('Flexible APY')}
             </Text>
             {flexibleApy ? (
-              <Balance fontSize="16px" value={parseFloat(flexibleApy)} decimals={2} unit="%" fontWeight={[600, 400]} />
+              <AprLabelContainer alignItems="center" justifyContent="flex-start">
+                <Balance
+                  fontSize="16px"
+                  value={parseFloat(flexibleApy)}
+                  decimals={2}
+                  unit="%"
+                  fontWeight={[600, 400]}
+                />
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onPresentFlexibleApyModal()
+                  }}
+                  variant="text"
+                  width="20px"
+                  height="20px"
+                  padding="0px"
+                  marginLeft="4px"
+                >
+                  <CalculateIcon color="textSubtle" width="20px" />
+                </Button>
+              </AprLabelContainer>
             ) : (
               <Skeleton width="80px" height="16px" />
             )}
@@ -43,12 +81,33 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
               {t('Locked APY')}
             </Text>
             {lockedApy ? (
-              <FlexGap gap="4px" flexWrap="wrap">
-                <Text style={{ whiteSpace: 'nowrap' }} fontWeight={[500, 400]}>
-                  {t('Up to')}
-                </Text>
-                <Balance fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" fontWeight={[600, 400]} />
-              </FlexGap>
+              <AprLabelContainer alignItems="center" justifyContent="flex-start">
+                <FlexGap gap="4px" flexWrap="wrap">
+                  <Text style={{ whiteSpace: 'nowrap' }} fontWeight={[500, 400]}>
+                    {t('Up to')}
+                  </Text>
+                  <Balance
+                    fontSize="16px"
+                    value={parseFloat(lockedApy)}
+                    decimals={2}
+                    unit="%"
+                    fontWeight={[600, 400]}
+                  />
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onPresentLockedApyModal()
+                    }}
+                    variant="text"
+                    width="20px"
+                    height="20px"
+                    padding="0px"
+                    marginLeft="4px"
+                  >
+                    <CalculateIcon color="textSubtle" width="20px" />
+                  </Button>
+                </FlexGap>
+              </AprLabelContainer>
             ) : (
               <Skeleton width="80px" height="16px" />
             )}
@@ -65,7 +124,27 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
           {t('APY')}
         </Text>
         {flexibleApy ? (
-          <Balance fontSize="16px" value={parseFloat(flexibleApy)} decimals={2} unit="%" />
+          <AprLabelContainer alignItems="center" justifyContent="flex-start">
+            <Balance
+              fontSize="16px"
+              value={vaultPosition > VaultPosition.Flexible ? parseFloat(lockedApy) : parseFloat(flexibleApy)}
+              decimals={2}
+              unit="%"
+            />
+            <Button
+              onClick={(e) => {
+                e.stopPropagation()
+                return vaultPosition > VaultPosition.Flexible ? onPresentLockedApyModal() : onPresentFlexibleApyModal()
+              }}
+              variant="text"
+              width="20px"
+              height="20px"
+              padding="0px"
+              marginLeft="4px"
+            >
+              <CalculateIcon color="textSubtle" width="20px" />
+            </Button>
+          </AprLabelContainer>
         ) : (
           <Skeleton width="80px" height="16px" />
         )}

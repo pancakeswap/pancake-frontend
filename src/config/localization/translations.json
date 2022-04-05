@@ -185,7 +185,7 @@
   "Manual CAKE": "Manual CAKE",
   "Auto CAKE": "Auto CAKE",
   "Claim": "Claim",
-  "Any funds you stake in this pool will be automagically harvested and restaked (compounded) for you.": "Any funds you stake in this pool will be automagically harvested and restaked (compounded) for you.",
+  "Rewards are distributed and included into your staking balance automatically. There’s no need to manually compound your rewards.": "Rewards are distributed and included into your staking balance automatically. There’s no need to manually compound your rewards.",
   "Total staked": "Total staked",
   "Just stake some tokens to earn.": "Just stake some tokens to earn.",
   "High APR, low risk.": "High APR, low risk.",

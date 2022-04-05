@@ -75,16 +75,19 @@ const StyledActionPanel = styled.div<{ expanded: boolean }>`
   }
 `
 
-const ActionContainer = styled.div`
+const ActionContainer = styled.div<{ isAutoVault?: boolean; hasBalance?: boolean }>`
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
+  flex-grow: 1;
+  flex-basis: 0;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
-    align-items: center;
-    flex-grow: 1;
-    flex-basis: 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: ${({ isAutoVault }) => (isAutoVault ? 'row' : null)};
+    align-items: ${({ isAutoVault, hasBalance }) => (isAutoVault ? (hasBalance ? 'flex-start' : 'stretch') : 'center')};
   }
 `
 
@@ -201,7 +204,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
 
   const manualTooltipText = t('You must harvest and compound your earnings from this pool manually.')
   const autoTooltipText = t(
-    'Any funds you stake in this pool will be automagically harvested and restaked (compounded) for you.',
+    'Rewards are distributed and included into your staking balance automatically. There’s no need to manually compound your rewards.',
   )
 
   const {
@@ -355,7 +358,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
               ml={['12px', , , , , '32px']}
             />
           )}
-          <ActionContainer>
+          <ActionContainer isAutoVault={!!pool.vaultKey} hasBalance={poolStakingTokenBalance.gt(0)}>
             {pool.vaultKey ? (
               <AutoHarvest {...pool} userDataLoaded={userDataLoaded} />
             ) : (

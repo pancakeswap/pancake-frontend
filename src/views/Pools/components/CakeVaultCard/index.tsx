@@ -67,7 +67,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
           />
         ) : (
           <>
-            <StakingApy />
+            <StakingApy pool={pool} />
             <FlexGap mt="16px" gap="24px" flexDirection={accountHasSharesStaked ? 'column-reverse' : 'column'}>
               {/* TODO */}
               <Box>

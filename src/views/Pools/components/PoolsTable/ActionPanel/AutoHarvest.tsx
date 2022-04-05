@@ -6,7 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
-import { VaultPosition, getVaultPosition } from 'utils/cakePool'
+import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 
 import { ActionContainer, ActionTitles, ActionContent } from './styles'
 import UnstakingFeeCountdownRow from '../../CakeVaultCard/UnstakingFeeCountdownRow'
@@ -24,7 +24,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
   const { account } = useWeb3React()
 
   const {
-    userData: { cakeAtLastUserAction, userShares, locked, lockEndTime, currentOverdueFee, currentPerformanceFee },
+    userData: { cakeAtLastUserAction, userShares, currentOverdueFee, currentPerformanceFee, locked, lockEndTime },
     pricePerFullShare,
   } = useVaultPoolByKey(vaultKey)
   const { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
@@ -49,6 +49,8 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
   const earningTokenBalance = autoCakeToDisplay
   const earningTokenDollarBalance = autoUsdToDisplay
   const hasEarnings = hasAutoEarnings
+
+  const vaultPosition = getVaultPosition({ userShares, locked, lockEndTime })
 
   const actionTitle = (
     <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
@@ -79,7 +81,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
   }
 
   return (
-    <ActionContainer isAutoVault>
+    <ActionContainer>
       <ActionTitles>{actionTitle}</ActionTitles>
       <ActionContent>
         <Flex flex="1" flexDirection="column" alignSelf="flex-start">
@@ -110,7 +112,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
           </>
         </Flex>
         <Flex flex="1.3" flexDirection="column" alignSelf="flex-start" alignItems="flex-start">
-          {position === VaultPosition.Flexible && hasEarnings && (
+          {hasEarnings && vaultPosition === VaultPosition.Flexible && (
             <UnstakingFeeCountdownRow vaultKey={vaultKey} isTableVariant />
           )}
           {/* IFO credit here */}
