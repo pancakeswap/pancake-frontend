@@ -4,6 +4,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { DeserializedPool } from 'state/types'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useVaultPoolByKey } from 'state/pools/hooks'
+import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
 import Balance from 'components/Balance'
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import VaultStakeModal from '../VaultStakeModal'
@@ -21,6 +22,8 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBal
       balance: { cakeAsBigNumber, cakeAsNumberBalance },
     },
   } = useVaultPoolByKey(pool.vaultKey)
+  const maxLockDuration = useVaultMaxDuration()
+
   const { stakingToken } = pool
 
   const cakePriceBusd = usePriceCakeBusd()
@@ -63,7 +66,7 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBal
           </IconButton>
         </Flex>
       </Flex>
-      <ConvertToLock stakingToken={stakingToken} currentStakedAmount={cakeAsNumberBalance} />
+      {maxLockDuration.gt(0) && <ConvertToLock stakingToken={stakingToken} currentStakedAmount={cakeAsNumberBalance} />}
     </>
   )
 }
