@@ -33,13 +33,13 @@ import StakeModal from '../../PoolCard/Modals/StakeModal'
 import { ProfileRequirementWarning } from '../../ProfileRequirementWarning'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
 import { VaultStakeButtonGroup } from '../../Vault/VaultStakeButtonGroup'
-import BurningCountDown from '../../LockedPool/Common/BurningCountDown'
-import BurnedCake from '../../LockedPool/Common/BurnedCake'
-import AfterLockedActions from '../../LockedPool/Common/AfterLockedActions'
-import ExtendButton from '../../LockedPool/Buttons/ExtendDurationButton'
 import AddCakeButton from '../../LockedPool/Buttons/AddCakeButton'
-import LockedStakedModal from '../../LockedPool/Modals/LockedStakeModal'
+import ExtendButton from '../../LockedPool/Buttons/ExtendDurationButton'
 import convertLockTimeToSeconds from '../../LockedPool/utils/convertLockTimeToSeconds'
+import AfterLockedActions from '../../LockedPool/Common/AfterLockedActions'
+import BurnedCake from '../../LockedPool/Common/BurnedCake'
+import BurningCountDown from '../../LockedPool/Common/BurningCountDown'
+import LockedStakedModal from '../../LockedPool/Modals/LockedStakeModal'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -99,8 +99,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     userData: {
       userShares,
       lockEndTime,
-      lockStartTime,
       locked,
+      lockStartTime,
       balance: { cakeAsBigNumber, cakeAsNumberBalance },
     },
   } = useVaultPoolByKey(pool.vaultKey)
@@ -232,13 +232,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     const vaultPosition = getVaultPosition({ userShares, locked, lockEndTime })
     return (
       <>
-        <ActionContainer isAutoVault={!!vaultKey} flex={vaultPosition > 1 ? 1.5 : 1}>
-          <ActionContent
-            style={{
-              flexWrap: 'wrap',
-            }}
-            mt={0}
-          >
+        <ActionContainer isAutoVault={!vaultKey} flex={vaultPosition > 1 ? 1.5 : 1}>
+          <ActionContent mt={0}>
             <Flex flex="1" flexDirection="column" alignSelf="flex-start">
               <ActionTitles>
                 <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
@@ -254,7 +249,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                     lineHeight="1"
                     bold
                     fontSize="20px"
-                    decimals={2}
+                    decimals={5}
                     value={vaultKey ? cakeAsNumberBalance : stakedTokenBalance}
                   />
                   <Balance
@@ -269,19 +264,21 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                 </Box>
               </ActionContent>
               {vaultPosition === VaultPosition.Locked && (
-                <AddCakeButton
-                  lockEndTime={lockEndTime}
-                  lockStartTime={lockStartTime}
-                  currentLockedAmount={cakeAsBigNumber}
-                  stakingToken={stakingToken}
-                  currentBalance={stakingTokenBalance}
-                />
+                <Box mt="16px">
+                  <AddCakeButton
+                    lockEndTime={lockEndTime}
+                    lockStartTime={lockStartTime}
+                    currentLockedAmount={cakeAsBigNumber}
+                    stakingToken={stakingToken}
+                    currentBalance={stakingTokenBalance}
+                  />
+                </Box>
               )}
             </Flex>
             {vaultPosition >= VaultPosition.Locked && (
-              <Flex mb="8px" flex="1" flexDirection="column" alignSelf="flex-start" minWidth="80px">
+              <Flex flex="1" ml="21px" flexDirection="column" alignSelf="flex-start">
                 <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-                  {t('Unlocks In')}
+                  {t('Unlocks in')}
                 </Text>
                 <Text
                   lineHeight="1"
@@ -310,14 +307,16 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                   })}
                 </Text>
                 {vaultPosition === VaultPosition.Locked && (
-                  <ExtendButton
-                    lockEndTime={lockEndTime}
-                    lockStartTime={lockStartTime}
-                    stakingToken={stakingToken}
-                    currentLockedAmount={cakeAsNumberBalance}
-                  >
-                    {t('Extend')}
-                  </ExtendButton>
+                  <Box mt="16px">
+                    <ExtendButton
+                      lockEndTime={lockEndTime}
+                      lockStartTime={lockStartTime}
+                      stakingToken={stakingToken}
+                      currentLockedAmount={cakeAsNumberBalance}
+                    >
+                      {t('Extend')}
+                    </ExtendButton>
+                  </Box>
                 )}
               </Flex>
             )}
@@ -343,13 +342,12 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                 )}
               </IconButtonWrapper>
             )}
-
-            {[VaultPosition.AfterBurning, VaultPosition.LockedEnd].includes(vaultPosition) && (
-              <Flex flexDirection="column" alignSelf="flex-start">
+            {vaultPosition >= VaultPosition.LockedEnd && (
+              <Flex flex="1" flexDirection="column" alignSelf="flex-start">
                 <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
                   {vaultPosition === VaultPosition.AfterBurning ? t('After Burning') : t('After Burning In')}
                 </Text>
-                <Text lineHeight="1" mt="8px" bold fontSize="20px" color="failure">
+                <Text lineHeight="1" mt="8px" pt="16px" bold fontSize="20px" color="failure">
                   {vaultPosition === VaultPosition.AfterBurning ? (
                     <BurnedCake account={account} />
                   ) : (
