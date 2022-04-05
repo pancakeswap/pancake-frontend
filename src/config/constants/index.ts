@@ -108,6 +108,8 @@ export { default as ifosConfig } from './ifo'
 export const FAST_INTERVAL = 10000
 export const SLOW_INTERVAL = 60000
 
+export const NOT_ON_SALE_SELLER = '0x0000000000000000000000000000000000000000'
+
 // Gelato uses this address to define a native currency in all chains
 export const GELATO_NATIVE = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
 // Handler string is passed to Gelato to use PCS router
