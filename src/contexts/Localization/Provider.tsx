@@ -1,6 +1,6 @@
 import { createContext, useCallback, useEffect, useState } from 'react'
 import { Language } from '@pancakeswap/uikit'
-import fromPairs from 'lodash/fromPairs'
+import memoize from 'lodash/memoize'
 import { EN, languages } from 'config/localization/languages'
 import translations from 'config/localization/translations.json'
 import { ContextApi, ProviderState, TranslateFunction } from './types'
@@ -13,35 +13,13 @@ const initialState: ProviderState = {
 
 const includesVariableRegex = new RegExp(/%\S+?%/, 'gm')
 
-const translatedTextIncludesVariable = (translatedText: string): boolean => {
+const translatedTextIncludesVariable = memoize((translatedText: string): boolean => {
   return !!translatedText?.match(includesVariableRegex)
-}
-
-const getTranslationsWithIncludesVariable = (
-  translationList: Record<string, string>,
-): Record<string, { translatedText: string; includesVariable: boolean }> => {
-  if (!translationList) {
-    return null
-  }
-
-  return fromPairs(
-    Object.entries(translationList).map(([key, value]) => [
-      key,
-      {
-        translatedText: value,
-        // Check the existence of at least one combination of %%, separated by 1 or more non space characters
-        includesVariable: translatedTextIncludesVariable(value),
-      },
-    ]),
-  )
-}
+})
 
 // Export the translations directly
-export const languageMap = new Map<
-  Language['locale'],
-  Record<string, { translatedText: string; includesVariable: boolean }>
->()
-languageMap.set(EN.locale, getTranslationsWithIncludesVariable(translations))
+export const languageMap = new Map<Language['locale'], Record<string, string>>()
+languageMap.set(EN.locale, translations)
 
 export const LanguageContext = createContext<ContextApi>(undefined)
 
@@ -64,8 +42,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
         const enLocale = languageMap.get(EN.locale)
         const currentLocale = await fetchLocale(codeFromStorage)
         if (currentLocale) {
-          const currentLocaleWithIncludesVariables = getTranslationsWithIncludesVariable(currentLocale)
-          languageMap.set(codeFromStorage, { ...enLocale, ...currentLocaleWithIncludesVariables })
+          languageMap.set(codeFromStorage, { ...enLocale, ...currentLocale })
         }
       }
 
@@ -87,10 +64,9 @@ export const LanguageProvider: React.FC = ({ children }) => {
 
       const locale = await fetchLocale(language.locale)
       if (locale) {
-        const localeWithIncludesVariables = getTranslationsWithIncludesVariable(locale)
         const enLocale = languageMap.get(EN.locale)
         // Merge the EN locale to ensure that any locale fetched has all the keys
-        languageMap.set(language.locale, { ...enLocale, ...localeWithIncludesVariables })
+        languageMap.set(language.locale, { ...enLocale, ...locale })
       }
 
       localStorage.setItem(LS_KEY, language.locale)
@@ -113,10 +89,10 @@ export const LanguageProvider: React.FC = ({ children }) => {
   const translate: TranslateFunction = useCallback(
     (key, data) => {
       const translationSet = languageMap.get(currentLanguage.locale) ?? languageMap.get(EN.locale)
-      const { translatedText, includesVariable } = translationSet[key] || {
-        translatedText: key,
-        includesVariable: translatedTextIncludesVariable(key),
-      }
+      const translatedText = translationSet[key] || key
+
+      // Check the existence of at least one combination of %%, separated by 1 or more non space characters
+      const includesVariable = translatedTextIncludesVariable(translatedText)
 
       if (includesVariable && data) {
         let interpolatedText = translatedText
