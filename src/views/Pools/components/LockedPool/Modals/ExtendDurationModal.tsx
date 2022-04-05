@@ -4,6 +4,7 @@ import _noop from 'lodash/noop'
 import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { DEFAULT_MAX_DURATION } from 'hooks/useVaultApy'
+import { useTranslation } from 'contexts/Localization'
 
 import StaticAmount from '../Common/StaticAmount'
 import LockedBodyModal from '../Common/LockedModalBody'
@@ -12,6 +13,7 @@ import { ExtendDurationModal } from '../types'
 import RoiCalculatorModalProvider from './RoiCalculatorModalProvider'
 
 const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
+  modalTitle,
   stakingToken,
   onDismiss,
   currentLockedAmount,
@@ -19,6 +21,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   lockStartTime,
 }) => {
   const { theme } = useTheme()
+  const { t } = useTranslation()
 
   const usdValueStaked = useBUSDCakeAmount(currentLockedAmount)
 
@@ -57,7 +60,11 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
 
   return (
     <RoiCalculatorModalProvider lockedAmount={currentLockedAmount}>
-      <Modal title="Lock CAKE" onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
+      <Modal
+        title={modalTitle || t('Extend Lock')}
+        onDismiss={onDismiss}
+        headerBackground={theme.colors.gradients.cardHeader}
+      >
         <Box mb="16px">
           <StaticAmount
             stakingAddress={stakingToken.address}

@@ -52,6 +52,7 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
   const { theme } = useTheme()
   const [lockedAmount, setLockedAmount] = useState('0')
   const [checkedState, setCheckedState] = useState(false)
+  const { t } = useTranslation()
 
   const lockedAmountAsBigNumber = getDecimalAmount(new BigNumber(_toNumber(lockedAmount)))
   const totalLockedAmount: number = getBalanceNumber(currentLockedAmount.plus(lockedAmountAsBigNumber))
@@ -95,7 +96,7 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
     <RoiCalculatorModalProvider lockedAmount={lockedAmount}>
       <Modal
         style={{ maxWidth: '420px' }}
-        title="Lock CAKE"
+        title={t('Add CAKE')}
         onDismiss={onDismiss}
         headerBackground={theme.colors.gradients.cardHeader}
       >

@@ -5,6 +5,7 @@ import ExtendDurationModal from '../Modals/ExtendDurationModal'
 import { ExtendDurationButtonPropsType } from '../types'
 
 const ExtendDurationButton: React.FC<ExtendDurationButtonPropsType> = ({
+  modalTitle,
   stakingToken,
   currentLockedAmount,
   lockEndTime,
@@ -15,6 +16,7 @@ const ExtendDurationButton: React.FC<ExtendDurationButtonPropsType> = ({
 
   const [openExtendDurationModal] = useModal(
     <ExtendDurationModal
+      modalTitle={modalTitle}
       stakingToken={stakingToken}
       lockStartTime={lockStartTime}
       currentLockedAmount={currentLockedAmount}

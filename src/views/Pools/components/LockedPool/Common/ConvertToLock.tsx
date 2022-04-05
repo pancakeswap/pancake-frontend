@@ -13,6 +13,7 @@ const ConvertToLock = ({ stakingToken, currentStakedAmount }) => {
       action={
         <Flex mt="8px">
           <ExtendButton
+            modalTitle={t('Convert to Lock')}
             lockEndTime="0"
             lockStartTime="0"
             stakingToken={stakingToken}

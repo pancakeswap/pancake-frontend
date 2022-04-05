@@ -26,6 +26,7 @@ export interface ExtendDurationModal {
   stakingToken: Token
   currentLockedAmount: number
   onDismiss?: VoidFn
+  modalTitle?: string
   currentDuration: number
   lockStartTime: string
 }
@@ -83,6 +84,7 @@ export interface ExtendDurationButtonPropsType {
   lockEndTime: string
   lockStartTime: string
   children: React.ReactNode
+  modalTitle?: string
 }
 
 export interface AfterLockedActionsPropsType {

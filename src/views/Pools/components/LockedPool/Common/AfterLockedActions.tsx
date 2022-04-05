@@ -33,6 +33,7 @@ const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
         <Container mt="8px">
           <ConverToFlexibleButton />
           <ExtendButton
+            modalTitle={t('Renew')}
             lockEndTime="0"
             lockStartTime="0"
             stakingToken={stakingToken}
