@@ -9,6 +9,8 @@ import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { getBalanceNumber, getDecimalAmount, getBalanceAmount } from 'utils/formatBalance'
 
+import RoiCalculatorModalProvider from './RoiCalculatorModalProvider'
+
 import BalanceField from '../Common/BalanceField'
 import LockedBodyModal from '../Common/LockedModalBody'
 import Overview from '../Common/Overview'
@@ -90,33 +92,35 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
   )
 
   return (
-    <Modal
-      style={{ maxWidth: '420px' }}
-      title="Lock CAKE"
-      onDismiss={onDismiss}
-      headerBackground={theme.colors.gradients.cardHeader}
-    >
-      <Box mb="16px">
-        <BalanceField
-          stakingAddress={stakingToken.address}
-          stakingSymbol={stakingToken.symbol}
-          stakingDecimals={stakingToken.decimals}
-          lockedAmount={lockedAmount}
-          usedValueStaked={usdValueStaked}
-          stakingMax={currentBalance}
-          setLockedAmount={setLockedAmount}
-        />
-      </Box>
-      <LockedBodyModal
-        currentBalance={currentBalance}
-        stakingToken={stakingToken}
+    <RoiCalculatorModalProvider lockedAmount={lockedAmount}>
+      <Modal
+        style={{ maxWidth: '420px' }}
+        title="Lock CAKE"
         onDismiss={onDismiss}
-        lockedAmount={_toNumber(lockedAmount)}
-        editAmountOnly={<RenewDuration checkedState={checkedState} setCheckedState={setCheckedState} />}
-        prepConfirmArg={prepConfirmArg}
-        customOverview={customOverview}
-      />
-    </Modal>
+        headerBackground={theme.colors.gradients.cardHeader}
+      >
+        <Box mb="16px">
+          <BalanceField
+            stakingAddress={stakingToken.address}
+            stakingSymbol={stakingToken.symbol}
+            stakingDecimals={stakingToken.decimals}
+            lockedAmount={lockedAmount}
+            usedValueStaked={usdValueStaked}
+            stakingMax={currentBalance}
+            setLockedAmount={setLockedAmount}
+          />
+        </Box>
+        <LockedBodyModal
+          currentBalance={currentBalance}
+          stakingToken={stakingToken}
+          onDismiss={onDismiss}
+          lockedAmount={_toNumber(lockedAmount)}
+          editAmountOnly={<RenewDuration checkedState={checkedState} setCheckedState={setCheckedState} />}
+          prepConfirmArg={prepConfirmArg}
+          customOverview={customOverview}
+        />
+      </Modal>
+    </RoiCalculatorModalProvider>
   )
 }
 

@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import { IconButton, CalculateIcon } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { addSeconds } from 'date-fns'
 import { useVaultApy } from 'hooks/useVaultApy'
@@ -11,11 +10,11 @@ import DateRow from './DateRow'
 import formatRoi from '../../utils/formatRoi'
 import convertLockTimeToSeconds from '../../utils/convertLockTimeToSeconds'
 import { OverviewPropsType } from '../../types'
+import CalculatorButton from '../../Buttons/CalculatorButton'
 
 const Overview: React.FC<OverviewPropsType> = ({
   usdValueStaked,
   lockedAmount,
-  openCalculator,
   duration,
   isValidDuration,
   newDuration,
@@ -61,11 +60,7 @@ const Overview: React.FC<OverviewPropsType> = ({
         newValue={newFormattedRoi}
         unit="$"
         decimals={2}
-        suffix={
-          <IconButton variant="text" scale="sm" mr="-8px" onClick={openCalculator}>
-            <CalculateIcon color="textSubtle" width="18px" />
-          </IconButton>
-        }
+        suffix={<CalculatorButton />}
       />
     </LightGreyCard>
   )

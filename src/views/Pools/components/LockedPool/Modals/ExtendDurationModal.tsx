@@ -9,6 +9,7 @@ import StaticAmount from '../Common/StaticAmount'
 import LockedBodyModal from '../Common/LockedModalBody'
 import Overview from '../Common/Overview'
 import { ExtendDurationModal } from '../types'
+import RoiCalculatorModalProvider from './RoiCalculatorModalProvider'
 
 const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   stakingToken,
@@ -55,24 +56,26 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   )
 
   return (
-    <Modal title="Lock CAKE" onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
-      <Box mb="16px">
-        <StaticAmount
-          stakingAddress={stakingToken.address}
-          stakingSymbol={stakingToken.symbol}
+    <RoiCalculatorModalProvider lockedAmount={currentLockedAmount}>
+      <Modal title="Lock CAKE" onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
+        <Box mb="16px">
+          <StaticAmount
+            stakingAddress={stakingToken.address}
+            stakingSymbol={stakingToken.symbol}
+            lockedAmount={currentLockedAmount}
+            usdValueStaked={usdValueStaked}
+          />
+        </Box>
+        <LockedBodyModal
+          stakingToken={stakingToken}
+          onDismiss={onDismiss}
           lockedAmount={currentLockedAmount}
-          usdValueStaked={usdValueStaked}
+          validator={validator}
+          prepConfirmArg={prepConfirmArg}
+          customOverview={customOverview}
         />
-      </Box>
-      <LockedBodyModal
-        stakingToken={stakingToken}
-        onDismiss={onDismiss}
-        lockedAmount={currentLockedAmount}
-        validator={validator}
-        prepConfirmArg={prepConfirmArg}
-        customOverview={customOverview}
-      />
-    </Modal>
+      </Modal>
+    </RoiCalculatorModalProvider>
   )
 }
 

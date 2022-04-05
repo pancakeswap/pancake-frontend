@@ -8,6 +8,7 @@ import _toNumber from 'lodash/toNumber'
 import { GenericModalProps } from '../types'
 import BalanceField from '../Common/BalanceField'
 import LockedBodyModal from '../Common/LockedModalBody'
+import RoiCalculatorModalProvider from './RoiCalculatorModalProvider'
 
 const LockedStakeModal: React.FC<GenericModalProps> = ({ onDismiss, currentBalance, stakingToken }) => {
   const { theme } = useTheme()
@@ -17,25 +18,27 @@ const LockedStakeModal: React.FC<GenericModalProps> = ({ onDismiss, currentBalan
   const usdValueStaked = useBUSDCakeAmount(_toNumber(lockedAmount))
 
   return (
-    <Modal title={t('Lock CAKE')} onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
-      <Box mb="16px">
-        <BalanceField
-          stakingAddress={stakingToken.address}
-          stakingSymbol={stakingToken.symbol}
-          stakingDecimals={stakingToken.decimals}
-          lockedAmount={lockedAmount}
-          usedValueStaked={usdValueStaked}
-          stakingMax={currentBalance}
-          setLockedAmount={setLockedAmount}
+    <RoiCalculatorModalProvider lockedAmount={lockedAmount}>
+      <Modal title={t('Lock CAKE')} onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
+        <Box mb="16px">
+          <BalanceField
+            stakingAddress={stakingToken.address}
+            stakingSymbol={stakingToken.symbol}
+            stakingDecimals={stakingToken.decimals}
+            lockedAmount={lockedAmount}
+            usedValueStaked={usdValueStaked}
+            stakingMax={currentBalance}
+            setLockedAmount={setLockedAmount}
+          />
+        </Box>
+        <LockedBodyModal
+          currentBalance={currentBalance}
+          stakingToken={stakingToken}
+          onDismiss={onDismiss}
+          lockedAmount={_toNumber(lockedAmount)}
         />
-      </Box>
-      <LockedBodyModal
-        currentBalance={currentBalance}
-        stakingToken={stakingToken}
-        onDismiss={onDismiss}
-        lockedAmount={_toNumber(lockedAmount)}
-      />
-    </Modal>
+      </Modal>
+    </RoiCalculatorModalProvider>
   )
 }
 
