@@ -220,7 +220,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   if (isNotVaultAndHasStake || isVaultWithShares) {
     const vaultPosition = getVaultPosition({ userShares, locked, lockEndTime })
     return (
-      <ActionContainer isAutoVault={!!vaultKey} flex={vaultPosition > 1 ? 1.5 : 1}>
+      <ActionContainer isAutoVault={!vaultKey} flex={vaultPosition > 1 ? 1.5 : 1}>
         <ActionContent mt={0}>
           <Flex flex="1" flexDirection="column" alignSelf="flex-start">
             <ActionTitles>
@@ -232,7 +232,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
               </Text>
             </ActionTitles>
             <ActionContent>
-              <Box pt="16px">
+              <Box>
                 <Balance
                   lineHeight="1"
                   bold
@@ -251,16 +251,17 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                 />
               </Box>
             </ActionContent>
+            {/* TODO: add cake modal */}
+            {vaultPosition === VaultPosition.Locked && <Button mt="16px">{t('Add CAKE')}</Button>}
           </Flex>
           {vaultPosition >= VaultPosition.Locked && (
-            <Flex flex="1" flexDirection="column" alignSelf="flex-start">
+            <Flex flex="1" ml="21px" flexDirection="column" alignSelf="flex-start">
               <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-                {t('Locked Duration')}
+                {t('unlocks in')}
               </Text>
               <Text
                 lineHeight="1"
                 mt="8px"
-                pt="16px"
                 bold
                 fontSize="20px"
                 color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
@@ -281,6 +282,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                   }),
                 })}
               </Text>
+              {/* TODO: add extend modal */}
+              {vaultPosition === VaultPosition.Locked && <Button mt="16px">{t('Extend')}</Button>}
             </Flex>
           )}
           {(vaultPosition === VaultPosition.Flexible || !vaultKey) && (
@@ -305,8 +308,6 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
               )}
             </IconButtonWrapper>
           )}
-          {/* TODO: add adjust modal */}
-          {vaultPosition === VaultPosition.Locked && <Button>{t('Adjust')}</Button>}
           {vaultPosition >= VaultPosition.LockedEnd && (
             <Flex flex="1" flexDirection="column" alignSelf="flex-start">
               <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
