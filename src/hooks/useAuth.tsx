@@ -9,7 +9,7 @@ import {
   UserRejectedRequestError as UserRejectedRequestErrorWalletConnect,
   WalletConnectConnector,
 } from '@web3-react/walletconnect-connector'
-import { ConnectorNames, connectorLocalStorageKey } from '@pancakeswap/uikit'
+import { ConnectorNames, connectorLocalStorageKey, Text, Box, LinkExternal } from '@pancakeswap/uikit'
 import { connectorsByName } from 'utils/web3React'
 import { setupNetwork } from 'utils/wallet'
 import useToast from 'hooks/useToast'
@@ -41,7 +41,15 @@ const useAuth = () => {
           } else {
             window?.localStorage?.removeItem(connectorLocalStorageKey)
             if (error instanceof NoEthereumProviderError || error instanceof NoBscProviderError) {
-              toastError(t('Provider Error'), t('No provider was found'))
+              toastError(
+                t('Provider Error'),
+                <Box>
+                  <Text>{t('No provider was found')}</Text>
+                  <LinkExternal href="https://docs.pancakeswap.finance/get-started/connection-guide">
+                    {t('Need help ?')}
+                  </LinkExternal>
+                </Box>,
+              )
             } else if (
               error instanceof UserRejectedRequestErrorInjected ||
               error instanceof UserRejectedRequestErrorWalletConnect

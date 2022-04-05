@@ -33,6 +33,7 @@ import {
   getNftSaleAddress,
   getPancakeSquadAddress,
   getTradingCompetitionAddressV2,
+  getTradingCompetitionAddressMobox,
   getBunnySpecialXmasAddress,
 } from 'utils/addressHelpers'
 
@@ -56,6 +57,7 @@ import sousChefBnb from 'config/abi/sousChefBnb.json'
 import claimRefundAbi from 'config/abi/claimRefund.json'
 import tradingCompetitionAbi from 'config/abi/tradingCompetition.json'
 import tradingCompetitionV2Abi from 'config/abi/tradingCompetitionV2.json'
+import tradingCompetitionMoboxAbi from 'config/abi/tradingCompetitionMobox.json'
 import easterNftAbi from 'config/abi/easterNft.json'
 import cakeVaultAbi from 'config/abi/cakeVault.json'
 import ifoPoolAbi from 'config/abi/ifoPool.json'
@@ -174,6 +176,10 @@ export const getTradingCompetitionContract = (signer?: Signer | Provider) => {
 export const getTradingCompetitionContractV2 = (signer?: Signer | Provider) => {
   return getContract(tradingCompetitionV2Abi, getTradingCompetitionAddressV2(), signer) as TradingCompetitionV2
 }
+export const getTradingCompetitionContractMobox = (signer?: Signer | Provider) => {
+  return getContract(tradingCompetitionMoboxAbi, getTradingCompetitionAddressMobox(), signer) as TradingCompetitionV2
+}
+
 export const getEasterNftContract = (signer?: Signer | Provider) => {
   return getContract(easterNftAbi, getEasterNftAddress(), signer) as EasterNft
 }

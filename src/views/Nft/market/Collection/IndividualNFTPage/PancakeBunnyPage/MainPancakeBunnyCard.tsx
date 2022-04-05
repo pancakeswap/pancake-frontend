@@ -12,14 +12,16 @@ import { Container, CollectionLink } from '../shared/styles'
 
 interface MainPancakeBunnyCardProps {
   cheapestNft: NftToken
-  cheapestNftFromOtherSellers?: NftToken
-  nothingForSaleBunny?: NftToken
+  cheapestNftFromOtherSellers: NftToken
+  isCheapestNftFromOtherSellersFetched: boolean
+  nothingForSaleBunny: NftToken
   onSuccessSale: () => void
 }
 
 const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
   cheapestNft,
   cheapestNftFromOtherSellers,
+  isCheapestNftFromOtherSellersFetched,
   nothingForSaleBunny,
   onSuccessSale,
 }) => {
@@ -28,7 +30,7 @@ const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
 
   const nftToDisplay = cheapestNftFromOtherSellers || cheapestNft || nothingForSaleBunny
 
-  const onlyOwnNftsOnSale = !cheapestNftFromOtherSellers
+  const onlyOwnNftsOnSale = isCheapestNftFromOtherSellersFetched && !cheapestNftFromOtherSellers
   const hasListings = cheapestNftFromOtherSellers || cheapestNft
 
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nftToDisplay?.marketData?.currentAskPrice))
@@ -48,13 +50,7 @@ const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
       {t('Adjust Sale Price')}
     </Button>
   ) : (
-    <Button
-      disabled={onlyOwnNftsOnSale}
-      minWidth="168px"
-      width={['100%', null, 'max-content']}
-      mt="24px"
-      onClick={onPresentBuyModal}
-    >
+    <Button minWidth="168px" width={['100%', null, 'max-content']} mt="24px" onClick={onPresentBuyModal}>
       {t('Buy')}
     </Button>
   )

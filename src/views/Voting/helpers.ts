@@ -132,8 +132,8 @@ type ScoresListIndex = {
 }
 
 function calculateVotingPowerPools(scoresList: GetScoresResponse, voters: string[]) {
-  let poolsBalance = new BigNumber(0)
   return voters.reduce<{ [key: string]: BigNumber }>((acc, cur) => {
+    let poolsBalance = new BigNumber(0)
     for (let i = 0; i < scoresList.length; i++) {
       const currentPoolBalance = scoresList[i][cur] ? new BigNumber(scoresList[i][cur]) : new BigNumber(0)
       poolsBalance = poolsBalance.plus(currentPoolBalance)
@@ -186,13 +186,13 @@ function calculateVotingPower(scoresList: GetScoresResponse, voters: string[], s
 
     const cakePoolBalance = new BigNumber(userStakeInCakePools[address] || 0)
     // calculate cakeBnbLpBalance
-    const cakeBnbLpBalance = cakeBnbLpBalances[address]
+    const cakeBnbLpBalance = cakeBnbLpBalances[address] || 0
 
     const total = cakeBalance
       .plus(cakeVaultBalance)
       .plus(cakePoolBalance)
       .plus(IFOPoolBalance)
-      .plus(new BigNumber(cakeBnbLpBalance || 0).times(TEN_POW_18))
+      .plus(new BigNumber(cakeBnbLpBalance).times(TEN_POW_18))
 
     return {
       cakeBalance: cakeBalance.div(TEN_POW_18).toFixed(18),

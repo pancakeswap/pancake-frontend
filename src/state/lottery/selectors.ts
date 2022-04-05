@@ -9,11 +9,6 @@ const selectUserLotteryData = (state: State) => state.lottery.userLotteryData
 const selectLotteriesData = (state: State) => state.lottery.lotteriesData
 const selectMaxNumberTicketsPerBuyOrClaim = (state: State) => state.lottery.maxNumberTicketsPerBuyOrClaim
 
-export const makeLotteryGraphRoundByIdSelector = (lotteryId: string) =>
-  createSelector([selectUserLotteryData], (userLotteriesData) =>
-    userLotteriesData.rounds.find((userRound) => userRound.lotteryId === lotteryId),
-  )
-
 export const makeLotteryGraphDataByIdSelector = (lotteryId: string) =>
   createSelector([selectLotteriesData], (lotteriesData) => lotteriesData?.find((lottery) => lottery.id === lotteryId))
 

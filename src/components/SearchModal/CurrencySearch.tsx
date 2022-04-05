@@ -93,7 +93,7 @@ function CurrencySearch({
 
   const [audioPlay] = useAudioModeManager()
 
-  const showETH: boolean = useMemo(() => {
+  const showBNB: boolean = useMemo(() => {
     const s = debouncedQuery.toLowerCase().trim()
     return s === '' || s === 'b' || s === 'bn' || s === 'bnb'
   }, [debouncedQuery])
@@ -185,7 +185,7 @@ function CurrencySearch({
           <Box margin="24px -24px">
             <CurrencyList
               height={390}
-              showETH={showETH}
+              showBNB={showBNB}
               currencies={filteredSortedTokens}
               inactiveCurrencies={filteredInactiveTokens}
               breakIndex={

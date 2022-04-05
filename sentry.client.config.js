@@ -11,18 +11,20 @@ const isUserRejected = (err) => {
   return typeof err === 'object' && 'code' in err && err.code === 4001
 }
 
+const ENV = process.env.VERCEL_ENV || process.env.NODE_ENV
+
 Sentry.init({
   dsn: SENTRY_DSN,
   integrations: [
     new Sentry.Integrations.Breadcrumbs({
-      console: process.env.NODE_ENV === 'production',
+      console: ENV === 'production',
     }),
     new Sentry.Integrations.GlobalHandlers({
       onerror: false,
       onunhandledrejection: false,
     }),
   ],
-  environment: process.env.NODE_ENV,
+  environment: ENV === 'production' ? 'production' : 'development',
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 0,
   // ...

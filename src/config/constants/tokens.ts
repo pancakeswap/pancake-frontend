@@ -30,6 +30,7 @@ export const mainnetTokens = defineTokens({
     'PancakeSwap Token',
     'https://pancakeswap.finance/',
   ),
+  gmi: new Token(MAINNET, '0x93D8d25E3C9A847a5Da79F79ecaC89461FEcA846', 18, 'GMI', 'Gamifi', 'https://gamifi.gg/'),
   tlos: new Token(MAINNET, '0xb6C53431608E626AC81a9776ac3e999c5556717c', 18, 'TLOS', 'Telos', 'https://www.telos.net/'),
   beta: new Token(
     MAINNET,
@@ -2042,6 +2043,8 @@ export const mainnetTokens = defineTokens({
     'TemplarDAO',
     'https://templar.finance/',
   ),
+  pex: new Token(MAINNET, '0x6a0b66710567b6beb81A71F7e9466450a91a384b', 18, 'PEX', 'PearDAO', 'https://peardao.io/'),
+  yel: new Token(MAINNET, '0xD3b71117E6C1558c1553305b44988cd944e97300', 18, 'YEL', 'YEL', 'https://yel.finance/'),
 } as const)
 
 export const testnetTokens = defineTokens({

@@ -20,7 +20,9 @@ import Footer from 'components/Menu/Footer'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'contexts/Localization'
 import { EXCHANGE_DOCS_URLS } from 'config/constants'
-import SwapWarningTokens from 'config/constants/swapWarningTokens'
+import { maxAmountSpend } from 'utils/maxAmountSpend'
+import { computeTradePriceBreakdown, warningSeverity } from 'utils/prices'
+import shouldShowSwapWarning from 'utils/shouldShowSwapWarning'
 import useRefreshBlockNumberID from './hooks/useRefreshBlockNumber'
 import AddressInputPanel from './components/AddressInputPanel'
 import { GreyCard } from '../../components/Card'
@@ -56,8 +58,6 @@ import {
   useUserSingleHopOnly,
   useExchangeChartManager,
 } from '../../state/user/hooks'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import CircleLoader from '../../components/Loader/CircleLoader'
 import Page from '../Page'
 import SwapWarningModal from './components/SwapWarningModal'
@@ -293,14 +293,6 @@ export default function Swap() {
   // swap warning state
   const [swapWarningCurrency, setSwapWarningCurrency] = useState(null)
   const [onPresentSwapWarningModal] = useModal(<SwapWarningModal swapCurrency={swapWarningCurrency} />)
-
-  const shouldShowSwapWarning = (swapCurrency) => {
-    const isWarningToken = Object.entries(SwapWarningTokens).find((warningTokenConfig) => {
-      const warningTokenData = warningTokenConfig[1]
-      return swapCurrency.address === warningTokenData.address
-    })
-    return Boolean(isWarningToken)
-  }
 
   useEffect(() => {
     if (swapWarningCurrency) {
