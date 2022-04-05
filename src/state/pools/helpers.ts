@@ -8,6 +8,7 @@ import {
 } from 'state/types'
 import { deserializeToken } from 'state/user/hooks/helpers'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { convertSharesToCake } from 'views/Pools/helpers'
 
 type UserData =
   | DeserializedPool['userData']
@@ -82,6 +83,8 @@ export const transformLockedVault = (vault: SerializedCakeVault): DeserializedCa
       lockStartTime,
       locked,
       lockedAmount: lockedAmountAsString,
+      currentOverdueFee: currentOverdueFeeAsString,
+      currentPerformanceFee: currentPerformanceFeeAsString,
     },
   } = vault
 
@@ -93,8 +96,18 @@ export const transformLockedVault = (vault: SerializedCakeVault): DeserializedCa
   const cakeAtLastUserAction = new BigNumber(cakeAtLastUserActionAsString)
   const lockedAmount = new BigNumber(lockedAmountAsString)
   const userBoostedShare = new BigNumber(userBoostedShareAsString)
+  const currentOverdueFee = currentOverdueFeeAsString ? new BigNumber(currentOverdueFeeAsString) : BIG_ZERO
+  const currentPerformanceFee = currentPerformanceFeeAsString ? new BigNumber(currentPerformanceFeeAsString) : BIG_ZERO
 
   const performanceFeeAsDecimal = performanceFee && performanceFee / 100
+
+  const balance = convertSharesToCake(
+    userShares,
+    pricePerFullShare,
+    undefined,
+    undefined,
+    currentOverdueFee.plus(currentPerformanceFee),
+  )
 
   return {
     totalShares,
@@ -113,6 +126,9 @@ export const transformLockedVault = (vault: SerializedCakeVault): DeserializedCa
       locked,
       lockedAmount,
       userBoostedShare,
+      currentOverdueFee,
+      currentPerformanceFee,
+      balance,
     },
   }
 }

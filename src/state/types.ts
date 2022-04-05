@@ -167,6 +167,8 @@ export interface SerializedLockedVaultUser extends SerializedVaultUser {
   userBoostedShare: SerializedBigNumber
   locked: boolean
   lockedAmount: SerializedBigNumber
+  currentPerformanceFee: SerializedBigNumber
+  currentOverdueFee: SerializedBigNumber
 }
 
 export interface DeserializedVaultUser {
@@ -185,6 +187,13 @@ export interface DeserializedLockedVaultUser extends DeserializedVaultUser {
   userBoostedShare: BigNumber
   locked: boolean
   lockedAmount: BigNumber
+  balance: {
+    cakeAsNumberBalance: number
+    cakeAsBigNumber: BigNumber
+    cakeAsDisplayBalance: string
+  }
+  currentPerformanceFee: BigNumber
+  currentOverdueFee: BigNumber
 }
 
 export interface DeserializedIfoVaultUser extends DeserializedVaultUser {

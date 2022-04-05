@@ -25,7 +25,6 @@ import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import styled from 'styled-components'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { convertSharesToCake } from 'views/Pools/helpers'
 import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
 import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
 import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
@@ -90,11 +89,15 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   )
 
   const {
-    userData: { userShares, lockEndTime, locked, lockStartTime },
-    pricePerFullShare,
+    userData: {
+      userShares,
+      lockEndTime,
+      locked,
+      lockStartTime,
+      balance: { cakeAsBigNumber, cakeAsNumberBalance },
+    },
   } = useVaultPoolByKey(pool.vaultKey)
 
-  const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
   const hasSharesStaked = userShares && userShares.gt(0)
   const isVaultWithShares = vaultKey && hasSharesStaked
   const stakedAutoDollarValue = getBalanceNumber(cakeAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken.decimals)

@@ -8,7 +8,6 @@ import { DeserializedPool } from 'state/types'
 import styled from 'styled-components'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { convertSharesToCake } from 'views/Pools/helpers'
 import BaseCell, { CellContent } from './BaseCell'
 
 interface StakedCellProps {
@@ -25,12 +24,14 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }
 
   // vault
   const {
-    userData: { isLoading: vaultUserDataLoading, userShares },
-    pricePerFullShare,
+    userData: {
+      isLoading: vaultUserDataLoading,
+      userShares,
+      balance: { cakeAsBigNumber, cakeAsNumberBalance },
+    },
   } = useVaultPoolByKey(pool.vaultKey)
   const hasSharesStaked = userShares && userShares.gt(0)
   const isVaultWithShares = pool.vaultKey && hasSharesStaked
-  const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
 
   // pool
   const { stakingTokenPrice, stakingToken, userData } = pool

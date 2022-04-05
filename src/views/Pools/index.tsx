@@ -115,6 +115,7 @@ const sortPools = (account: string, sortOption: string, pools: DeserializedPool[
               vault.userData.userShares,
               vault.pricePerFullShare,
               vault.earningTokenPrice,
+              vault.userData.currentOverdueFee.plus(vault.userData.currentPerformanceFee),
             ).autoUsdToDisplay
           }
           return pool.userData.pendingReward.times(pool.earningTokenPrice).toNumber()

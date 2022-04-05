@@ -29,14 +29,14 @@ const AprRow: React.FunctionComponent<AprRowProps> = ({ pool }) => {
   const { t } = useTranslation()
 
   const {
-    userData: { userShares },
+    userData: {
+      balance: { cakeAsBigNumber },
+    },
     fees: { performanceFeeAsDecimal },
-    pricePerFullShare,
   } = useVaultPoolByKey(vaultKey)
 
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
-  const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
   const poolStakingTokenBalance = vaultKey
     ? cakeAsBigNumber.plus(stakingTokenBalance)
     : stakedBalance.plus(stakingTokenBalance)

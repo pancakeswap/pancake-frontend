@@ -23,7 +23,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
   const { account } = useWeb3React()
 
   const {
-    userData: { cakeAtLastUserAction, userShares, lockEndTime, locked },
+    userData: { cakeAtLastUserAction, userShares, currentOverdueFee, currentPerformanceFee, locked, lockEndTime },
     pricePerFullShare,
   } = useVaultPoolByKey(vaultKey)
   const { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
@@ -32,6 +32,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
     userShares,
     pricePerFullShare,
     earningTokenPrice,
+    currentPerformanceFee.plus(currentOverdueFee),
   )
 
   const earningTokenBalance = autoCakeToDisplay

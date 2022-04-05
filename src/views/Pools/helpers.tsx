@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { DeserializedPool } from 'state/types'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { getApy } from 'utils/compoundApyHelpers'
 import { getBalanceNumber, getFullDisplayBalance, getDecimalAmount } from 'utils/formatBalance'
 
@@ -9,9 +10,10 @@ export const convertSharesToCake = (
   cakePerFullShare: BigNumber,
   decimals = 18,
   decimalsToRound = 3,
+  fee?: BigNumber,
 ) => {
   const sharePriceNumber = getBalanceNumber(cakePerFullShare, decimals)
-  const amountInCake = new BigNumber(shares.multipliedBy(sharePriceNumber))
+  const amountInCake = new BigNumber(shares.multipliedBy(sharePriceNumber)).minus(fee || BIG_ZERO)
   const cakeAsNumberBalance = getBalanceNumber(amountInCake, decimals)
   const cakeAsBigNumber = getDecimalAmount(new BigNumber(cakeAsNumberBalance), decimals)
   const cakeAsDisplayBalance = getFullDisplayBalance(amountInCake, decimals, decimalsToRound)
@@ -55,11 +57,12 @@ export const getCakeVaultEarnings = (
   userShares: BigNumber,
   pricePerFullShare: BigNumber,
   earningTokenPrice: number,
+  fee?: BigNumber,
 ) => {
   const hasAutoEarnings =
     account && cakeAtLastUserAction && cakeAtLastUserAction.gt(0) && userShares && userShares.gt(0)
   const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
-  const autoCakeProfit = cakeAsBigNumber.minus(cakeAtLastUserAction)
+  const autoCakeProfit = cakeAsBigNumber.minus(fee || BIG_ZERO).minus(cakeAtLastUserAction)
   const autoCakeToDisplay = autoCakeProfit.gte(0) ? getBalanceNumber(autoCakeProfit, 18) : 0
 
   const autoUsdProfit = autoCakeProfit.times(earningTokenPrice)
