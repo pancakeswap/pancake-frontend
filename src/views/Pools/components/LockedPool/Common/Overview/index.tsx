@@ -21,6 +21,7 @@ const Overview: React.FC<OverviewPropsType> = ({
   newDuration,
   newLockedAmount,
   lockStartTime,
+  lockEndTime,
 }) => {
   const { getLockedApy } = useVaultApy()
   const { t } = useTranslation()
@@ -36,9 +37,13 @@ const Overview: React.FC<OverviewPropsType> = ({
     return newLockedApy && formatRoi({ usdValueStaked, lockedApy: newLockedApy })
   }, [newLockedApy, usdValueStaked])
 
+  const now = new Date()
+
   const unlockDate = newDuration
-    ? addSeconds(Number(lockStartTime) ? new Date(convertLockTimeToSeconds(lockStartTime)) : new Date(), newDuration)
-    : addSeconds(new Date(), duration)
+    ? addSeconds(Number(lockStartTime) ? new Date(convertLockTimeToSeconds(lockStartTime)) : now, newDuration)
+    : Number(lockEndTime)
+    ? convertLockTimeToSeconds(lockEndTime)
+    : addSeconds(now, duration)
 
   return (
     <LightGreyCard>

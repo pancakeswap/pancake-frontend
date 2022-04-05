@@ -30,6 +30,7 @@ const AddCakeButton: React.FC<AddButtonProps> = ({
       remainingDuration={remainingDuration}
       currentBalance={currentBalance}
       stakingToken={stakingToken}
+      lockEndTime={lockEndTime}
     />,
     true,
     true,

@@ -47,6 +47,7 @@ export interface OverviewPropsType {
   newDuration?: number
   newLockedAmount?: number
   lockStartTime?: string
+  lockEndTime?: string
 }
 
 export interface AddAmountModalProps {
@@ -56,6 +57,7 @@ export interface AddAmountModalProps {
   currentLockedAmount: BigNumber
   passedDuration: number
   remainingDuration: number
+  lockEndTime?: string
 }
 
 export interface ModalValidator {
