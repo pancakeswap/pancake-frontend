@@ -3,6 +3,7 @@ import { Modal, Box, MessageText, Message, Checkbox, Flex, Text } from '@pancake
 import _noop from 'lodash/noop'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
+import _toNumber from 'lodash/toNumber'
 
 import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
@@ -50,11 +51,11 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
   const [lockedAmount, setLockedAmount] = useState('0')
   const [checkedState, setCheckedState] = useState(false)
 
-  const lockedAmountAsBigNumber = getDecimalAmount(new BigNumber(lockedAmount))
+  const lockedAmountAsBigNumber = getDecimalAmount(new BigNumber(_toNumber(lockedAmount)))
   const totalLockedAmount: number = getBalanceNumber(currentLockedAmount.plus(lockedAmountAsBigNumber))
   const currentLockedAmountAsBalance = getBalanceAmount(currentLockedAmount)
 
-  const usdValueStaked = useBUSDCakeAmount(lockedAmount)
+  const usdValueStaked = useBUSDCakeAmount(_toNumber(lockedAmount))
   const usdValueNewStaked = useBUSDCakeAmount(totalLockedAmount)
 
   const prepConfirmArg = useCallback(
@@ -110,7 +111,7 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
         currentBalance={currentBalance}
         stakingToken={stakingToken}
         onDismiss={onDismiss}
-        lockedAmount={parseFloat(lockedAmount)}
+        lockedAmount={_toNumber(lockedAmount)}
         editAmountOnly={<RenewDuration checkedState={checkedState} setCheckedState={setCheckedState} />}
         prepConfirmArg={prepConfirmArg}
         customOverview={customOverview}

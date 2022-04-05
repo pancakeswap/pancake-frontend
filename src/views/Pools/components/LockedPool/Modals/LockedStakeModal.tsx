@@ -3,6 +3,7 @@ import { Modal, Box } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { useTranslation } from 'contexts/Localization'
+import _toNumber from 'lodash/toNumber'
 
 import { GenericModalProps } from '../types'
 import BalanceField from '../Common/BalanceField'
@@ -13,7 +14,7 @@ const LockedStakeModal: React.FC<GenericModalProps> = ({ onDismiss, currentBalan
   const [lockedAmount, setLockedAmount] = useState('0')
   const { t } = useTranslation()
 
-  const usdValueStaked = useBUSDCakeAmount(parseFloat(lockedAmount))
+  const usdValueStaked = useBUSDCakeAmount(_toNumber(lockedAmount))
 
   return (
     <Modal title={t('Lock CAKE')} onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
@@ -32,7 +33,7 @@ const LockedStakeModal: React.FC<GenericModalProps> = ({ onDismiss, currentBalan
         currentBalance={currentBalance}
         stakingToken={stakingToken}
         onDismiss={onDismiss}
-        lockedAmount={parseFloat(lockedAmount)}
+        lockedAmount={_toNumber(lockedAmount)}
       />
     </Modal>
   )

@@ -26,7 +26,7 @@ const ExtendDurationButton: React.FC<ExtendDurationButtonPropsType> = ({
   )
 
   return (
-    <Button mx="4px" onClick={openExtendDurationModal} width="100%">
+    <Button onClick={openExtendDurationModal} width="100%">
       {children}
     </Button>
   )

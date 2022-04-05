@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Flex } from '@pancakeswap/uikit'
+import { Flex, Box } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -39,21 +39,25 @@ const LockedActions: React.FC<LockedActionsPropsType> = ({
   if (position === VaultPosition.Locked) {
     return (
       <Flex>
-        <AddCakeButton
-          lockEndTime={lockEndTime}
-          lockStartTime={lockStartTime}
-          currentLockedAmount={lockedAmount}
-          stakingToken={stakingToken}
-          currentBalance={currentBalance}
-        />
-        <ExtendButton
-          lockEndTime={lockEndTime}
-          lockStartTime={lockStartTime}
-          stakingToken={stakingToken}
-          currentLockedAmount={lockedAmountAsNumber}
-        >
-          {t('Extend')}
-        </ExtendButton>
+        <Box width="100%" mr="4px">
+          <AddCakeButton
+            lockEndTime={lockEndTime}
+            lockStartTime={lockStartTime}
+            currentLockedAmount={lockedAmount}
+            stakingToken={stakingToken}
+            currentBalance={currentBalance}
+          />
+        </Box>
+        <Box width="100%" ml="4px">
+          <ExtendButton
+            lockEndTime={lockEndTime}
+            lockStartTime={lockStartTime}
+            stakingToken={stakingToken}
+            currentLockedAmount={lockedAmountAsNumber}
+          >
+            {t('Extend')}
+          </ExtendButton>
+        </Box>
       </Flex>
     )
   }
