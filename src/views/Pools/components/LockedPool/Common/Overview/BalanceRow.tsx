@@ -2,17 +2,18 @@ import { memo } from 'react'
 import { Text, Flex } from '@pancakeswap/uikit'
 import { BalanceWithLoading } from 'components/Balance'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
+import _toNumber from 'lodash/toNumber'
 import CrossText from './CrossText'
 
 interface DiffBalancePropsType {
-  value: number
-  newValue?: number
+  value: number | string
+  newValue?: number | string
   decimals: number
   unit?: string
 }
 
 const DiffBalance: React.FC<DiffBalancePropsType> = ({ value, newValue, decimals, unit }) => {
-  if (isUndefinedOrNull(newValue) || !value || value === newValue) {
+  if (isUndefinedOrNull(newValue) || !value || value === newValue || _toNumber(newValue) === 0) {
     return <BalanceWithLoading bold fontSize="16px" value={value} decimals={decimals} unit={unit} />
   }
 

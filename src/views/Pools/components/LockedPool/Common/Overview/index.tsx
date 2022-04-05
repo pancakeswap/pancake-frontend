@@ -42,7 +42,7 @@ const Overview: React.FC<OverviewPropsType> = ({
   const unlockDate = newDuration
     ? addSeconds(Number(lockStartTime) ? new Date(convertLockTimeToSeconds(lockStartTime)) : now, newDuration)
     : Number(lockEndTime)
-    ? convertLockTimeToSeconds(lockEndTime)
+    ? new Date(convertLockTimeToSeconds(lockEndTime))
     : addSeconds(now, duration)
 
   return (
@@ -57,8 +57,8 @@ const Overview: React.FC<OverviewPropsType> = ({
       <DateRow title={t('Unlock on')} value={isValidDuration && unlockDate} />
       <BalanceRow
         title={t('Expected ROI')}
-        value={Number(formattedRoi)}
-        newValue={Number(newFormattedRoi)}
+        value={formattedRoi}
+        newValue={newFormattedRoi}
         unit="$"
         decimals={2}
         suffix={
