@@ -1,7 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import { NftToken, ApiResponseCollectionTokens } from 'state/nftMarket/types'
 import useSWR from 'swr'
-import minBy from 'lodash/minBy'
 import {
   getNftsMarketData,
   getMetadataWithFallback,
@@ -34,27 +33,29 @@ const fetchCheapestBunny = async (
 
   if (!askInfo) return null
 
-  const lowestPriceUpdatedBunny = minBy(
-    askInfo
-      .map((tokenAskInfo, index) => {
-        if (!tokenAskInfo.seller || !tokenAskInfo.price) return null
-        const currentSeller = tokenAskInfo.seller
-        const isTradable = currentSeller.toLowerCase() !== NOT_ON_SALE_SELLER
-        if (!isTradable) return null
-        const currentAskPrice = parseFloat(formatBigNumber(tokenAskInfo.price))
+  const lowestPriceUpdatedBunny = askInfo
+    .map((tokenAskInfo, index) => {
+      if (!tokenAskInfo.seller || !tokenAskInfo.price) return null
+      const currentSeller = tokenAskInfo.seller
+      const isTradable = currentSeller.toLowerCase() !== NOT_ON_SALE_SELLER
+      if (!isTradable) return null
 
-        return {
-          tokenId: nftsMarketTokenIds[index],
-          currentSeller,
-          isTradable,
-          currentAskPrice,
-        }
-      })
-      .filter((tokenUpdatedPrice) => {
-        return tokenUpdatedPrice && Number.isFinite(tokenUpdatedPrice.currentAskPrice)
-      }),
-    'currentAskPrice',
-  )
+      return {
+        tokenId: nftsMarketTokenIds[index],
+        currentSeller,
+        currentAskPrice: tokenAskInfo.price,
+      }
+    })
+    .filter((tokenUpdatedPrice) => {
+      return tokenUpdatedPrice && tokenUpdatedPrice.currentAskPrice.gt(0)
+    })
+    .sort((askInfoA, askInfoB) => {
+      return askInfoA.currentAskPrice.gt(askInfoB.currentAskPrice)
+        ? 1
+        : askInfoA.currentAskPrice.eq(askInfoB.currentAskPrice)
+        ? 0
+        : -1
+    })[0]
 
   const cheapestBunnyOfAccount = nftsMarket
     .filter((marketData) => marketData.tokenId === lowestPriceUpdatedBunny?.tokenId)
@@ -62,7 +63,7 @@ const fetchCheapestBunny = async (
       const apiMetadata = getMetadataWithFallback(nftMetadata.data, marketData.otherId)
       const attributes = getPancakeBunniesAttributesField(marketData.otherId)
       const bunnyToken = combineApiAndSgResponseToNftToken(apiMetadata, marketData, attributes)
-      const updatedPrice = lowestPriceUpdatedBunny.currentAskPrice.toString()
+      const updatedPrice = formatBigNumber(lowestPriceUpdatedBunny.currentAskPrice)
       return {
         ...bunnyToken,
         marketData: { ...bunnyToken.marketData, ...lowestPriceUpdatedBunny, currentAskPrice: updatedPrice },
