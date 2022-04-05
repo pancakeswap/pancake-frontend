@@ -177,7 +177,7 @@ export const useEasterNftContract = () => {
 
 export const useVaultPoolContract = (): CakeVaultV2 => {
   const { library } = useActiveWeb3React()
-  return getCakeVaultV2Contract(library.getSigner())
+  return useMemo(() => getCakeVaultV2Contract(library.getSigner()), [library])
 }
 
 export const useCakeVaultContract = (withSignerIfPossible = true) => {
