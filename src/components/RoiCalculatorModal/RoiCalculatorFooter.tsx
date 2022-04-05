@@ -29,7 +29,8 @@ const BulletList = styled.ul`
 
 interface RoiCalculatorFooterProps {
   isFarm: boolean
-  apr: number
+  apr?: number
+  apy?: number
   displayApr: string
   autoCompoundFrequency: number
   multiplier: string
@@ -41,6 +42,7 @@ interface RoiCalculatorFooterProps {
 const RoiCalculatorFooter: React.FC<RoiCalculatorFooterProps> = ({
   isFarm,
   apr,
+  apy,
   displayApr,
   autoCompoundFrequency,
   multiplier,
@@ -70,7 +72,6 @@ const RoiCalculatorFooter: React.FC<RoiCalculatorFooterProps> = ({
   )
 
   const gridRowCount = isFarm ? 4 : 2
-  const apy = (getApy(apr, autoCompoundFrequency > 0 ? autoCompoundFrequency : 1, 365, performanceFee) * 100).toFixed(2)
 
   return (
     <Footer p="16px" flexDirection="column">
@@ -90,20 +91,33 @@ const RoiCalculatorFooter: React.FC<RoiCalculatorFooterProps> = ({
                 </Text>
               </>
             )}
-            <Text color="textSubtle" small>
-              {isFarm ? t('Base APR (CAKE yield only)') : t('APR')}
-            </Text>
+            {!apy ? (
+              <Text color="textSubtle" small>
+                {isFarm ? t('Base APR (CAKE yield only)') : t('APR')}
+              </Text>
+            ) : (
+              <Text color="textSubtle" small>
+                {t('APY')}
+              </Text>
+            )}
             <Text small textAlign="right">
-              {apr.toFixed(2)}%
+              {(apy || apr).toFixed(2)}%
             </Text>
-            <Text color="textSubtle" small>
-              {t('APY (%compoundTimes%x daily compound)', {
-                compoundTimes: autoCompoundFrequency > 0 ? autoCompoundFrequency : 1,
-              })}
-            </Text>
-            <Text small textAlign="right">
-              {apy}%
-            </Text>
+            {!apy && (
+              <Text color="textSubtle" small>
+                {t('APY (%compoundTimes%x daily compound)', {
+                  compoundTimes: autoCompoundFrequency > 0 ? autoCompoundFrequency : 1,
+                })}
+              </Text>
+            )}
+            {!apy && (
+              <Text small textAlign="right">
+                {(
+                  getApy(apr, autoCompoundFrequency > 0 ? autoCompoundFrequency : 1, 365, performanceFee) * 100
+                ).toFixed(2)}
+                %
+              </Text>
+            )}
             {isFarm && (
               <>
                 <Text color="textSubtle" small>
@@ -123,7 +137,7 @@ const RoiCalculatorFooter: React.FC<RoiCalculatorFooterProps> = ({
           </Grid>
           <BulletList>
             <li>
-              <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline">
+              <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline" lineHeight={1.1}>
                 {t('Calculated based on current rates.')}
               </Text>
             </li>
@@ -135,7 +149,7 @@ const RoiCalculatorFooter: React.FC<RoiCalculatorFooterProps> = ({
               </li>
             )}
             <li>
-              <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline">
+              <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline" lineHeight={1.1}>
                 {t(
                   'All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.',
                 )}

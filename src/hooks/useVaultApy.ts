@@ -32,13 +32,17 @@ const getFlexibleApy = (
     .divUnsafe(totalShares)
     .mulUnsafe(FixedNumber.from(100))
 
-const getBoostFactor = (boostWeight: BigNumber, duration: number, durationFactor: BigNumber) =>
-  boostWeight.mul(Math.max(duration, 0)).div(durationFactor).div(PRECISION_FACTOR)
+const getBoostFactor = (boostWeight: BigNumber, duration: number, durationFactor: BigNumber) => {
+  return FixedNumber.from(boostWeight)
+    .mulUnsafe(FixedNumber.from(Math.max(duration, 0)))
+    .divUnsafe(FixedNumber.from(durationFactor))
+    .divUnsafe(FixedNumber.from(PRECISION_FACTOR))
+}
 
-const getLockedApy = (flexibleApy: string, boostFactor: number) =>
-  FixedNumber.from(flexibleApy).mulUnsafe(FixedNumber.from(1 + boostFactor))
+const getLockedApy = (flexibleApy: string, boostFactor: FixedNumber) =>
+  FixedNumber.from(flexibleApy).mulUnsafe(boostFactor.addUnsafe(FixedNumber.from('1')))
 
-const cakePoolPID = 5 // TODO: change in production
+const cakePoolPID = 6 // TODO: change in production
 
 export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: number } = {}) {
   const { totalShares = BIG_ZERO, pricePerFullShare = BIG_ZERO } = useCakeVault()
@@ -93,12 +97,12 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
   const durationFactor: BigNumber = data?.[1][0] || DEFAULT_DURATION_FACTOR
 
   const boostFactor = useMemo(
-    () => getBoostFactor(boostWeight, Math.max(duration, 0), durationFactor),
+    () => getBoostFactor(boostWeight, duration, durationFactor),
     [boostWeight, duration, durationFactor],
   )
 
   const lockedApy = useMemo(() => {
-    return flexibleApy && getLockedApy(flexibleApy, boostFactor.toNumber()).toString()
+    return flexibleApy && getLockedApy(flexibleApy, boostFactor).toString()
   }, [boostFactor, flexibleApy])
 
   return {
@@ -107,7 +111,7 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
     getLockedApy: useCallback(
       (adjustDuration: number) =>
         flexibleApy &&
-        getLockedApy(flexibleApy, getBoostFactor(boostWeight, adjustDuration, durationFactor).toNumber()).toString(),
+        getLockedApy(flexibleApy, getBoostFactor(boostWeight, adjustDuration, durationFactor)).toString(),
       [boostWeight, durationFactor, flexibleApy],
     ),
   }
