@@ -3,6 +3,7 @@ import { LightGreyCard } from 'components/Card'
 import { addSeconds } from 'date-fns'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { useTranslation } from 'contexts/Localization'
+import _toNumber from 'lodash/toNumber'
 import formatSecondsToWeeks from '../../utils/formatSecondsToWeeks'
 import TextRow from './TextRow'
 import BalanceRow from './BalanceRow'
@@ -53,7 +54,11 @@ const Overview: React.FC<OverviewPropsType> = ({
         value={isValidDuration && formatSecondsToWeeks(duration)}
         newValue={isValidDuration && newDuration && formatSecondsToWeeks(newDuration)}
       />
-      <DateRow title={t('Unlock on')} value={isValidDuration && unlockDate} />
+      <DateRow
+        color={_toNumber(newDuration) ? 'textSubtle' : 'text'}
+        title={t('Unlock on')}
+        value={isValidDuration && unlockDate}
+      />
       <BalanceRow
         title={t('Expected ROI')}
         value={formattedRoi}

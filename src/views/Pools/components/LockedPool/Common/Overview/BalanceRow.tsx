@@ -23,7 +23,15 @@ const DiffBalance: React.FC<DiffBalancePropsType> = ({ value, newValue, decimals
         <BalanceWithLoading bold fontSize="16px" mr="4px" value={value} decimals={decimals} unit={unit} />
       </CrossText>
       {`->`}
-      <BalanceWithLoading bold fontSize="16px" ml="4px" value={newValue} decimals={decimals} unit={unit} />
+      <BalanceWithLoading
+        bold
+        color="textSubtle"
+        fontSize="16px"
+        ml="4px"
+        value={newValue}
+        decimals={decimals}
+        unit={unit}
+      />
     </>
   )
 }
