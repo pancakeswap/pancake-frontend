@@ -106,7 +106,7 @@ export const transformLockedVault = (vault: SerializedCakeVault): DeserializedCa
     pricePerFullShare,
     undefined,
     undefined,
-    currentOverdueFee.plus(currentPerformanceFee),
+    currentOverdueFee.plus(currentPerformanceFee).plus(userBoostedShare),
   )
 
   return {

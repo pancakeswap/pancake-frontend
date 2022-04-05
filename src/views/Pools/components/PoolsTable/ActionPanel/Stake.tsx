@@ -240,7 +240,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                   {stakingToken.symbol}{' '}
                 </Text>
                 <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-                  {vaultKey ? t('Staked') : t('Staked')}
+                  {locked ? t('Locked') : t('Staked')}
                 </Text>
               </ActionTitles>
               <ActionContent>

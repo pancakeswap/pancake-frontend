@@ -36,6 +36,7 @@ const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) =>
       userShares,
       currentOverdueFee,
       currentPerformanceFee,
+      userBoostedShare,
     },
     pricePerFullShare,
   } = useVaultPoolByKey(pool.vaultKey)
@@ -45,7 +46,7 @@ const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) =>
     userShares,
     pricePerFullShare,
     earningTokenPrice,
-    currentPerformanceFee.plus(currentOverdueFee),
+    currentPerformanceFee.plus(currentOverdueFee).plus(userBoostedShare),
   )
 
   const labelText = t('Recent CAKE profit')

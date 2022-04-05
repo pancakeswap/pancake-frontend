@@ -33,8 +33,8 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
   )
 
   const currentLockedAmountAsBitNumber = useMemo(() => {
-    return userData?.balance?.cakeAsBigNumber.minus(userData?.userBoostedShare)
-  }, [userData?.balance?.cakeAsBigNumber, userData?.userBoostedShare])
+    return userData?.balance?.cakeAsBigNumber
+  }, [userData?.balance?.cakeAsBigNumber])
 
   const currentLockedAmount = getBalanceNumber(currentLockedAmountAsBitNumber)
 
