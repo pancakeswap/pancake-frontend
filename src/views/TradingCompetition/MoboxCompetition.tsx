@@ -17,7 +17,14 @@ import {
   REGISTRATION,
 } from 'config/constants/trading-competition/phases'
 import PageSection from 'components/PageSection'
-import { DARKBG, MIDBLUEBG, MIDBLUEBG_DARK, LIGHTBLUEBG, LIGHTBLUEBG_DARK } from './pageSectionStyles'
+import {
+  DARKBG,
+  MIDBLUEBG,
+  MIDBLUEBG_DARK,
+  LIGHTBLUEBG,
+  LIGHTBLUEBG_DARK,
+  TRADINGCOMPETITIONBANNER,
+} from './pageSectionStyles'
 import {
   PrizesIcon,
   //  RanksIcon,
@@ -204,7 +211,7 @@ const MoboxCompetition = () => {
     <>
       <PageMeta />
       <CompetitionPage id="pcs-competition-page">
-        <BattleBannerSection background={DARKBG} hasCurvedDivider={false} index={1}>
+        <BattleBannerSection background={TRADINGCOMPETITIONBANNER} hasCurvedDivider={false} index={1}>
           <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
             <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
             <BattleBanner />

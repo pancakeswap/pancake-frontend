@@ -13,15 +13,54 @@ const TextStyles = (theme) => `
   }
 `
 
+const StarImage = styled.div`
+  display: none;
+  position: absolute;
+  z-index: -1;
+  bottom: 0;
+  background-size: 150%;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-image: url('/images/competition/banner-star.png');
+  opacity: 0.4;
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: block;
+    height: 70%;
+    width: 50%;
+    right: 0px;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    width: 40%;
+    height: 80%;
+    right: 25px;
+  }
+  @media screen and (min-width: 1440px) {
+    height: 100%;
+    right: 12%;
+  }
+  @media screen and (min-width: 1680px) {
+    right: 20%;
+  }
+`
+
 const ImageWrapper = styled.div`
   width: 75%;
   margin: 0 auto;
   ${({ theme }) => theme.mediaQueries.md} {
     position: absolute;
     width: auto;
-    right: 28%;
     bottom: -5%;
     z-index: -1;
+    right: 10px;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    right: 25px;
+  }
+  @media screen and (min-width: 1440px) {
+    right: 15%;
+  }
+  @media screen and (min-width: 1680px) {
+    right: 23%;
   }
 `
 
@@ -30,15 +69,25 @@ const StyledText = styled(Text)`
 `
 
 const StyledHeading1Text = styled(Heading1Text)`
-  ${({ theme }) => TextStyles(theme)}
+  width: 100%;
   white-space: normal;
+  ${({ theme }) => TextStyles(theme)}
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 780px;
+  }
 `
 
 const StyledHeading2Text = styled(Heading2Text)`
-  ${({ theme }) => TextStyles(theme)};
+  width: 100%;
   white-space: initial;
   -webkit-text-stroke-width: 1.2px;
   -webkit-text-stroke-color: #462091;
+  ${({ theme }) => TextStyles(theme)};
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 410px;
+  }
 `
 
 const StyledHeading = styled(Heading)`
@@ -54,6 +103,7 @@ const BattleBanner = () => {
 
   return (
     <Flex flexDirection="column">
+      <StarImage />
       <ImageWrapper>
         <Image src={AllBunniesImage} alt="all the bunnies" width={523} height={395} />
       </ImageWrapper>
