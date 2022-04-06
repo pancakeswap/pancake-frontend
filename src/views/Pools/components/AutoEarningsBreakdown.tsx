@@ -15,7 +15,14 @@ const AutoEarningsBreakdown: React.FC<AutoEarningsBreakdownProps> = ({ pool, acc
 
   const { earningTokenPrice } = pool
   const {
-    userData: { cakeAtLastUserAction, userShares, lastUserActionTime, currentOverdueFee, currentPerformanceFee },
+    userData: {
+      cakeAtLastUserAction,
+      userShares,
+      lastUserActionTime,
+      currentOverdueFee,
+      currentPerformanceFee,
+      userBoostedShare,
+    },
     pricePerFullShare,
   } = useVaultPoolByKey(pool.vaultKey)
   const { autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
@@ -24,7 +31,7 @@ const AutoEarningsBreakdown: React.FC<AutoEarningsBreakdownProps> = ({ pool, acc
     userShares,
     pricePerFullShare,
     earningTokenPrice,
-    currentPerformanceFee.plus(currentOverdueFee),
+    currentPerformanceFee.plus(currentOverdueFee).plus(userBoostedShare),
   )
 
   const lastActionInMs = lastUserActionTime ? parseInt(lastUserActionTime) * 1000 : 0

@@ -12,4 +12,5 @@ export type Variant = typeof variants[keyof typeof variants];
 export interface MessageProps extends SpaceProps {
   variant: Variant;
   icon?: React.ReactNode;
+  action?: React.ReactNode;
 }

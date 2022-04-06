@@ -109,7 +109,7 @@ const IfoPoolVaultCardMobile: React.FC<IfoPoolVaultCardMobileProps> = ({ account
           </StyledTokenContent>
           <StyledTokenContent flexDirection="column" flex={1}>
             <Text color="textSubtle" fontSize="12px">
-              {t('CAKE staked')}
+              {t('%asset% Staked', { asset: 'CAKE' })}
             </Text>
             <Balance small bold decimals={3} value={stakedBalance} />
           </StyledTokenContent>
@@ -136,7 +136,9 @@ const IfoPoolVaultCardMobile: React.FC<IfoPoolVaultCardMobileProps> = ({ account
             <ActionContainer>
               <Box>
                 <Flex mb="4px">
-                  <Text fontSize="12px" color="secondary" bold mr="2px">{`${t('CAKE')}`}</Text>
+                  <Text fontSize="12px" color="secondary" bold mr="2px">
+                    CAKE
+                  </Text>
                   <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
                     {t('Staked')}
                   </Text>

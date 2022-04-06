@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Text, Flex, Skeleton, Heading } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
@@ -23,7 +24,15 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
   const { account } = useWeb3React()
 
   const {
-    userData: { cakeAtLastUserAction, userShares, currentOverdueFee, currentPerformanceFee, locked, lockEndTime },
+    userData: {
+      cakeAtLastUserAction,
+      userShares,
+      currentOverdueFee,
+      currentPerformanceFee,
+      locked,
+      lockEndTime,
+      userBoostedShare,
+    },
     pricePerFullShare,
   } = useVaultPoolByKey(vaultKey)
   const { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
@@ -32,7 +41,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
     userShares,
     pricePerFullShare,
     earningTokenPrice,
-    currentPerformanceFee.plus(currentOverdueFee),
+    currentPerformanceFee.plus(currentOverdueFee).plus(userBoostedShare),
   )
 
   const earningTokenBalance = autoCakeToDisplay

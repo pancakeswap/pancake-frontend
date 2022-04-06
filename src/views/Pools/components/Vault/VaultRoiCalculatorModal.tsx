@@ -6,7 +6,7 @@ import { useVaultApy } from 'hooks/useVaultApy'
 import { useEffect, useState } from 'react'
 import { DeserializedPool } from 'state/types'
 import { getRoi } from 'utils/compoundApyHelpers'
-import LockDurationField from '../Common/LockDurationField'
+import LockDurationField from '../LockedPool/Common/LockDurationField'
 import { weeksToSeconds } from '../utils/formatSecondsToWeeks'
 
 export const VaultRoiCalculatorModal = ({

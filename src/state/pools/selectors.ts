@@ -39,6 +39,7 @@ export const poolsWithVaultSelector = createSelector(
       vaultKey: VaultKey.CakeVault,
       userData: { ...cakePool.userData, ...cakeVault.userData },
     }
+
     const cakeAutoVaultWithApr = {
       ...cakeAutoVault,
       apr: getAprData(cakeAutoVault, cakeVault.fees.performanceFeeAsDecimal).apr,

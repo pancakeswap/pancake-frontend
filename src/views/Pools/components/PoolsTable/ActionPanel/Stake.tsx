@@ -17,7 +17,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { PoolCategory } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
-import { differenceInWeeks } from 'date-fns'
+import { differenceInWeeks, formatDuration } from 'date-fns'
 
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
@@ -33,6 +33,13 @@ import StakeModal from '../../PoolCard/Modals/StakeModal'
 import { ProfileRequirementWarning } from '../../ProfileRequirementWarning'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
 import { VaultStakeButtonGroup } from '../../Vault/VaultStakeButtonGroup'
+import AddCakeButton from '../../LockedPool/Buttons/AddCakeButton'
+import ExtendButton from '../../LockedPool/Buttons/ExtendDurationButton'
+import convertLockTimeToSeconds from '../../LockedPool/utils/convertLockTimeToSeconds'
+import AfterLockedActions from '../../LockedPool/Common/AfterLockedActions'
+import BurnedCake from '../../LockedPool/Common/BurnedCake'
+import BurningCountDown from '../../LockedPool/Common/BurningCountDown'
+import LockedStakedModal from '../../LockedPool/Modals/LockedStakeModal'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -129,6 +136,10 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
 
   const [onPresentVaultUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
 
+  const [openPresentLockedStakeModal] = useModal(
+    <LockedStakedModal currentBalance={stakingTokenBalance} stakingToken={stakingToken} />,
+  )
+
   const { notMeetRequired, notMeetThreshold } = useProfileRequirement(profileRequirement)
 
   const onStake = () => {
@@ -220,107 +231,152 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   if (isNotVaultAndHasStake || isVaultWithShares) {
     const vaultPosition = getVaultPosition({ userShares, locked, lockEndTime })
     return (
-      <ActionContainer isAutoVault={!vaultKey} flex={vaultPosition > 1 ? 1.5 : 1}>
-        <ActionContent mt={0}>
-          <Flex flex="1" flexDirection="column" alignSelf="flex-start">
-            <ActionTitles>
-              <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
-                {stakingToken.symbol}{' '}
-              </Text>
-              <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-                {vaultKey ? t('Staked') : t('Staked')}
-              </Text>
-            </ActionTitles>
-            <ActionContent>
-              <Box>
-                <Balance
+      <>
+        <ActionContainer isAutoVault={!vaultKey} flex={vaultPosition > 1 ? 1.5 : 1}>
+          <ActionContent mt={0}>
+            <Flex flex="1" flexDirection="column" alignSelf="flex-start">
+              <ActionTitles>
+                <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
+                  {stakingToken.symbol}{' '}
+                </Text>
+                <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
+                  {locked ? t('Locked') : t('Staked')}
+                </Text>
+              </ActionTitles>
+              <ActionContent>
+                <Box>
+                  <Balance
+                    lineHeight="1"
+                    bold
+                    fontSize="20px"
+                    decimals={5}
+                    value={vaultKey ? cakeAsNumberBalance : stakedTokenBalance}
+                  />
+                  <Balance
+                    fontSize="12px"
+                    display="inline"
+                    color="textSubtle"
+                    decimals={2}
+                    value={vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance}
+                    unit=" USD"
+                    prefix="~"
+                  />
+                </Box>
+              </ActionContent>
+              {vaultPosition === VaultPosition.Locked && (
+                <Box mt="16px">
+                  <AddCakeButton
+                    lockEndTime={lockEndTime}
+                    lockStartTime={lockStartTime}
+                    currentLockedAmount={cakeAsBigNumber}
+                    stakingToken={stakingToken}
+                    currentBalance={stakingTokenBalance}
+                  />
+                </Box>
+              )}
+            </Flex>
+            {vaultPosition >= VaultPosition.Locked && (
+              <Flex flex="1" ml="21px" flexDirection="column" alignSelf="flex-start">
+                <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
+                  {t('Unlocks In')}
+                </Text>
+                <Text
                   lineHeight="1"
+                  mt="8px"
                   bold
                   fontSize="20px"
-                  decimals={5}
-                  value={vaultKey ? cakeAsNumberBalance : stakedTokenBalance}
-                />
-                <Balance
+                  color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
+                >
+                  {formatDuration({
+                    weeks: differenceInWeeks(new Date(convertLockTimeToSeconds(lockEndTime)), new Date(), {
+                      roundingMethod: 'round',
+                    }),
+                  })}
+                </Text>
+                <Text
                   fontSize="12px"
                   display="inline"
-                  color="textSubtle"
-                  decimals={2}
-                  value={vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance}
-                  unit=" USD"
-                  prefix="~"
-                />
-              </Box>
-            </ActionContent>
-            {/* TODO: add cake modal */}
-            {vaultPosition === VaultPosition.Locked && <Button mt="16px">{t('Add CAKE')}</Button>}
-          </Flex>
-          {vaultPosition >= VaultPosition.Locked && (
-            <Flex flex="1" ml="21px" flexDirection="column" alignSelf="flex-start">
-              <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-                {t('unlocks in')}
-              </Text>
-              <Text
-                lineHeight="1"
-                mt="8px"
-                bold
-                fontSize="20px"
-                color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
-              >
-                {differenceInWeeks(new Date(parseInt(lockEndTime) * 1000), new Date(parseInt(lockStartTime) * 1000))}{' '}
-                {t('weeks')}
-              </Text>
-              <Text
-                fontSize="12px"
-                display="inline"
-                color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
-              >
-                {t('Until %date%', {
-                  date: new Date(parseInt(lockEndTime) * 1000).toLocaleString(locale, {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                  }),
-                })}
-              </Text>
-              {/* TODO: add extend modal */}
-              {vaultPosition === VaultPosition.Locked && <Button mt="16px">{t('Extend')}</Button>}
-            </Flex>
-          )}
-          {(vaultPosition === VaultPosition.Flexible || !vaultKey) && (
-            <IconButtonWrapper>
-              <IconButton variant="secondary" onClick={onUnstake} mr="6px">
-                <MinusIcon color="primary" width="14px" />
-              </IconButton>
-              {reachStakingLimit ? (
-                <span ref={targetRef}>
-                  <IconButton variant="secondary" disabled>
-                    <AddIcon color="textDisabled" width="24px" height="24px" />
-                  </IconButton>
-                </span>
-              ) : (
-                <IconButton
-                  variant="secondary"
-                  onClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
-                  disabled={isFinished}
+                  color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
                 >
-                  <AddIcon color="primary" width="14px" />
+                  {t('Until %date%', {
+                    date: new Date(convertLockTimeToSeconds(lockEndTime)).toLocaleString(locale, {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    }),
+                  })}
+                </Text>
+                {vaultPosition === VaultPosition.Locked && (
+                  <Box mt="16px">
+                    <ExtendButton
+                      lockEndTime={lockEndTime}
+                      lockStartTime={lockStartTime}
+                      stakingToken={stakingToken}
+                      currentLockedAmount={cakeAsNumberBalance}
+                    >
+                      {t('Extend')}
+                    </ExtendButton>
+                  </Box>
+                )}
+              </Flex>
+            )}
+            {(vaultPosition === VaultPosition.Flexible || !vaultKey) && (
+              <IconButtonWrapper>
+                <IconButton variant="secondary" onClick={onUnstake} mr="6px">
+                  <MinusIcon color="primary" width="14px" />
                 </IconButton>
-              )}
-            </IconButtonWrapper>
-          )}
-          {vaultPosition >= VaultPosition.LockedEnd && (
-            <Flex flex="1" flexDirection="column" alignSelf="flex-start">
-              <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-                {vaultPosition === VaultPosition.AfterBurning ? t('After Burning') : t('After Burning In')}
-              </Text>
-              <Text lineHeight="1" mt="8px" pt="16px" bold fontSize="20px" color="failure">
-                {/* Count */}
-              </Text>
-            </Flex>
-          )}
-          {tooltipVisible && tooltip}
-        </ActionContent>
-      </ActionContainer>
+                {reachStakingLimit ? (
+                  <span ref={targetRef}>
+                    <IconButton variant="secondary" disabled>
+                      <AddIcon color="textDisabled" width="24px" height="24px" />
+                    </IconButton>
+                  </span>
+                ) : (
+                  <IconButton
+                    variant="secondary"
+                    onClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
+                    disabled={isFinished}
+                  >
+                    <AddIcon color="primary" width="14px" />
+                  </IconButton>
+                )}
+              </IconButtonWrapper>
+            )}
+            {vaultPosition >= VaultPosition.LockedEnd && (
+              <Flex flex="1" flexDirection="column" alignSelf="flex-start">
+                <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
+                  {vaultPosition === VaultPosition.AfterBurning ? t('After Burning') : t('After Burning In')}
+                </Text>
+                <Text lineHeight="1" mt="8px" pt="16px" bold fontSize="20px" color="failure">
+                  {vaultPosition === VaultPosition.AfterBurning ? (
+                    <BurnedCake account={account} />
+                  ) : (
+                    <BurningCountDown lockEndTime={lockEndTime} />
+                  )}
+                </Text>
+              </Flex>
+            )}
+            {tooltipVisible && tooltip}
+          </ActionContent>
+        </ActionContainer>
+        {[VaultPosition.AfterBurning, VaultPosition.LockedEnd].includes(vaultPosition) && (
+          <Box
+            width="100%"
+            mt={['0', '0', '24px', '24px', '24px']}
+            ml={['0', '0', '12px', '12px', '32px']}
+            mr={['0', '0', '12px', '12px', '0']}
+          >
+            <AfterLockedActions
+              isInline
+              position={vaultPosition}
+              currentLockedAmount={cakeAsNumberBalance}
+              stakingToken={stakingToken}
+              lockEndTime="0"
+              lockStartTime="0"
+            />
+          </Box>
+        )}
+      </>
     )
   }
 
@@ -338,9 +394,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
         {vaultKey ? (
           <VaultStakeButtonGroup
             onFlexibleClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
-            onLockedClick={() => {
-              //
-            }}
+            onLockedClick={openPresentLockedStakeModal}
           />
         ) : (
           <Button

@@ -1,7 +1,12 @@
-import { Text, TextProps } from '@pancakeswap/uikit'
+import { Text, TextProps, Skeleton } from '@pancakeswap/uikit'
 import { useEffect, useRef } from 'react'
 import CountUp from 'react-countup'
 import styled, { keyframes } from 'styled-components'
+import isUndefinedOrNull from 'utils/isUndefinedOrNull'
+import _toNumber from 'lodash/toNumber'
+import _isNaN from 'lodash/isNaN'
+import _replace from 'lodash/replace'
+import _toString from 'lodash/toString'
 
 interface BalanceProps extends TextProps {
   value: number
@@ -43,18 +48,36 @@ const Balance: React.FC<BalanceProps> = ({
   )
 }
 
-export default Balance
+export const BalanceWithLoading: React.FC<Omit<BalanceProps, 'value'> & { value: string | number }> = ({
+  value,
+  fontSize,
+  ...props
+}) => {
+  if (isUndefinedOrNull(value)) {
+    return <Skeleton />
+  }
+
+  const finalValue = _isNaN(value)
+    ? 0
+    : _isNaN(_toNumber(value))
+    ? _toNumber(_replace(_toString(value), /,/g, ''))
+    : _toNumber(value)
+
+  return <Balance {...props} value={finalValue} fontSize={fontSize} />
+}
 
 const appear = keyframes`
   from {
     opacity:0;
   }
-
+  
   to {
     opacity:1;
   }
-`
+  `
 
 export const AnimatedBalance = styled(Balance)`
   animation: ${appear} 0.65s ease-in-out forwards;
 `
+
+export default Balance

@@ -4,9 +4,11 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { DeserializedPool } from 'state/types'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useVaultPoolByKey } from 'state/pools/hooks'
+import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
 import Balance from 'components/Balance'
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import VaultStakeModal from '../VaultStakeModal'
+import ConvertToLock from '../../LockedPool/Common/ConvertToLock'
 
 interface HasStakeActionProps {
   pool: DeserializedPool
@@ -20,6 +22,8 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBal
       balance: { cakeAsBigNumber, cakeAsNumberBalance },
     },
   } = useVaultPoolByKey(pool.vaultKey)
+  const maxLockDuration = useVaultMaxDuration()
+
   const { stakingToken } = pool
 
   const cakePriceBusd = usePriceCakeBusd()
@@ -34,26 +38,36 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBal
   const [onPresentUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
 
   return (
-    <Flex justifyContent="space-between" alignItems="center">
-      <Flex flexDirection="column">
-        <Balance fontSize="20px" bold value={cakeAsNumberBalance} decimals={5} />
-        <Text as={Flex} fontSize="12px" color="textSubtle" flexWrap="wrap">
-          {cakePriceBusd.gt(0) ? (
-            <Balance value={stakedDollarValue} fontSize="12px" color="textSubtle" decimals={2} prefix="~" unit=" USD" />
-          ) : (
-            <Skeleton mt="1px" height={16} width={64} />
-          )}
-        </Text>
+    <>
+      <Flex mb="16px" justifyContent="space-between" alignItems="center">
+        <Flex flexDirection="column">
+          <Balance fontSize="20px" bold value={cakeAsNumberBalance} decimals={5} />
+          <Text as={Flex} fontSize="12px" color="textSubtle" flexWrap="wrap">
+            {cakePriceBusd.gt(0) ? (
+              <Balance
+                value={stakedDollarValue}
+                fontSize="12px"
+                color="textSubtle"
+                decimals={2}
+                prefix="~"
+                unit=" USD"
+              />
+            ) : (
+              <Skeleton mt="1px" height={16} width={64} />
+            )}
+          </Text>
+        </Flex>
+        <Flex>
+          <IconButton variant="secondary" onClick={onPresentUnstake} mr="6px">
+            <MinusIcon color="primary" width="24px" />
+          </IconButton>
+          <IconButton variant="secondary" onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>
+            <AddIcon color="primary" width="24px" height="24px" />
+          </IconButton>
+        </Flex>
       </Flex>
-      <Flex>
-        <IconButton variant="secondary" onClick={onPresentUnstake} mr="6px">
-          <MinusIcon color="primary" width="24px" />
-        </IconButton>
-        <IconButton variant="secondary" onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>
-          <AddIcon color="primary" width="24px" height="24px" />
-        </IconButton>
-      </Flex>
-    </Flex>
+      {maxLockDuration.gt(0) && <ConvertToLock stakingToken={stakingToken} currentStakedAmount={cakeAsNumberBalance} />}
+    </>
   )
 }
 
