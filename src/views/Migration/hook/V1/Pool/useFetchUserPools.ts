@@ -25,6 +25,7 @@ export const useFetchUserPools = (account) => {
       earningToken: serializedTokens.cake,
       contractAddress: {
         97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
+        // TODO: revert this
         // 56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
         56: '0xbF459134E123a0d36b770Af3Da7A615eEB31E626',
       },

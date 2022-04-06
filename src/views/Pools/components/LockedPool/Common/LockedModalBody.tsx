@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Button, AutoRenewIcon, Box } from '@pancakeswap/uikit'
+import { Button, AutoRenewIcon, Box, Flex } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
 import { useTranslation } from 'contexts/Localization'
 import { DEFAULT_MAX_DURATION } from 'hooks/useVaultApy'
@@ -62,15 +62,17 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
           usdValueStaked={usdValueStaked}
         />
       )}
-      <Button
-        isLoading={pendingTx}
-        endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
-        onClick={handleConfirmClick}
-        disabled={!(isValidAmount && isValidDuration)}
-        mt="24px"
-      >
-        {pendingTx ? t('Confirming') : t('Confirm')}
-      </Button>
+      <Flex mt="24px">
+        <Button
+          width="100%"
+          isLoading={pendingTx}
+          endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+          onClick={handleConfirmClick}
+          disabled={!(isValidAmount && isValidDuration)}
+        >
+          {pendingTx ? t('Confirming') : t('Confirm')}
+        </Button>
+      </Flex>
     </>
   )
 }
