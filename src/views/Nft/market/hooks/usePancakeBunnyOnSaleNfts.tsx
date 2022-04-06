@@ -10,6 +10,9 @@ import {
 import useSWRInfinite from 'swr/infinite'
 import { pancakeBunniesAddress } from '../constants'
 import { FetchStatus } from '../../../../config/constants/types'
+import { getNftMarketContract } from '../../../../utils/contractHelpers'
+import { NOT_ON_SALE_SELLER } from '../../../../config/constants'
+import { formatBigNumber } from '../../../../utils/formatBalance'
 
 const fetchMarketDataNfts = async (
   account: string,
@@ -18,7 +21,7 @@ const fetchMarketDataNfts = async (
   direction: 'asc' | 'desc',
   page: number,
   itemsPerPage: number,
-): Promise<NftToken[]> => {
+): Promise<{ newNfts: NftToken[]; isPageLast: boolean }> => {
   const whereClause = {
     collection: pancakeBunniesAddress.toLowerCase(),
     otherId: bunnyId,
@@ -38,7 +41,7 @@ const fetchMarketDataNfts = async (
     const attributes = getPancakeBunniesAttributesField(marketData.otherId)
     return combineApiAndSgResponseToNftToken(apiMetadata, marketData, attributes)
   })
-  return moreTokensWithRequestedBunnyId
+  return { newNfts: moreTokensWithRequestedBunnyId, isPageLast: moreTokensWithRequestedBunnyId.length < itemsPerPage }
 }
 
 export const usePancakeBunnyOnSaleNfts = (
@@ -71,11 +74,54 @@ export const usePancakeBunnyOnSaleNfts = (
       return [bunnyId, direction, pageIndex, 'pancakeBunnyOnSaleNfts']
     },
     async (id, sortDirection, page) => {
-      const newNfts: NftToken[] = await fetchMarketDataNfts(account, id, nftMetadata, sortDirection, page, itemsPerPage)
-      if (newNfts.length < itemsPerPage) {
-        isLastPage.current = true
-      }
-      return newNfts
+      const nftMarketContract = getNftMarketContract()
+      const { newNfts, isPageLast } = await fetchMarketDataNfts(
+        account,
+        id,
+        nftMetadata,
+        sortDirection,
+        page,
+        itemsPerPage,
+      )
+      isLastPage.current = isPageLast
+      const nftsMarketTokenIds = newNfts.map((marketData) => marketData.tokenId)
+      const response = await nftMarketContract.viewAsksByCollectionAndTokenIds(
+        pancakeBunniesAddress.toLowerCase(),
+        nftsMarketTokenIds,
+      )
+      const askInfo = response?.askInfo
+      if (!askInfo) return newNfts
+
+      return askInfo
+        .map((tokenAskInfo, index) => {
+          if (!tokenAskInfo.seller || !tokenAskInfo.price) return null
+          const currentSeller = tokenAskInfo.seller
+          const isTradable = currentSeller.toLowerCase() !== NOT_ON_SALE_SELLER
+          if (!isTradable) return null
+
+          return {
+            tokenId: nftsMarketTokenIds[index],
+            currentSeller,
+            currentAskPrice: tokenAskInfo.price,
+          }
+        })
+        .filter((tokenUpdatedPrice) => {
+          return tokenUpdatedPrice && tokenUpdatedPrice.currentAskPrice.gt(0)
+        })
+        .sort((askInfoA, askInfoB) => {
+          return askInfoA.currentAskPrice.gt(askInfoB.currentAskPrice)
+            ? 1 * (sortDirection === 'desc' ? -1 : 1)
+            : askInfoA.currentAskPrice.eq(askInfoB.currentAskPrice)
+            ? 0
+            : -1 * (sortDirection === 'desc' ? -1 : 1)
+        })
+        .map(({ tokenId, currentSeller, currentAskPrice }) => {
+          const nftData = newNfts.find((marketData) => marketData.tokenId === tokenId)
+          return {
+            ...nftData,
+            marketData: { ...nftData.marketData, currentSeller, currentAskPrice: formatBigNumber(currentAskPrice) },
+          }
+        })
     },
     {
       refreshInterval: 10000,

@@ -1,5 +1,6 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import chunk from 'lodash/chunk'
 import {
   Flex,
   Card,
@@ -44,6 +45,8 @@ interface ForSaleTableCardProps {
 }
 
 const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ bunnyId, nftMetadata, onSuccessSale }) => {
+  const { t } = useTranslation()
+  const { theme } = useTheme()
   const { isMobile } = useMatchBreakpoints()
   const itemsPerPage = isMobile ? ITEMS_PER_PAGE_MOBILE : ITEMS_PER_PAGE_DESKTOP
   const {
@@ -55,24 +58,46 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ bunnyId, nftMetadat
     setDirection,
     isLastPage,
     isValidating,
-  } = usePancakeBunnyOnSaleNfts(bunnyId, nftMetadata, itemsPerPage)
+  } = usePancakeBunnyOnSaleNfts(bunnyId, nftMetadata, itemsPerPage * 10)
 
-  const { t } = useTranslation()
-  const { theme } = useTheme()
+  const [internalPage, setInternalPage] = useState(1)
+
+  const switchPage = (pageNumber: number) => {
+    setInternalPage(pageNumber)
+  }
 
   const togglePriceSort = useCallback(() => {
     setDirection(priceSort === 'asc' ? 'desc' : 'asc')
+    setInternalPage(1)
   }, [setDirection, priceSort])
 
   const isLoading = nfts ? isValidating && nfts.length < page : true
-  const nftsOnCurrentPage = !isLoading ? (nfts.length < page ? nfts[nfts.length - 1] : nfts[page - 1]) : []
+  const totalNftsOnCurrentPage = !isLoading ? (nfts.length < page ? nfts[nfts.length - 1] : nfts[page - 1]) : []
+  const chunkedNftsOnCurrentPage = chunk(totalNftsOnCurrentPage, itemsPerPage) ?? []
+  const nftsOnCurrentPage = chunkedNftsOnCurrentPage[internalPage - 1] ?? []
+  const maxInternalPage = Math.max(1, nfts ? (nfts.length - 1) * itemsPerPage + chunkedNftsOnCurrentPage.length : 0)
+
+  useEffect(() => {
+    if (maxInternalPage === internalPage && !isLoading && !isLastPage) {
+      setPage(page + 1)
+    }
+  }, [internalPage, isLastPage, isLoading, maxInternalPage, page, setPage])
+
+  useEffect(() => {
+    setInternalPage(1)
+  }, [bunnyId])
 
   useEffect(() => {
     // This is a workaround for when on sale nft's size decreased, page still indicates a data where nft's had larger size
-    if (nfts && !isLoading && nfts.length < page) {
-      setPage(nfts.length)
+    if (nfts && !isLoading) {
+      if (nfts.length < page) {
+        setPage(nfts.length)
+        setInternalPage(maxInternalPage)
+      } else if (maxInternalPage < internalPage) {
+        setInternalPage(maxInternalPage)
+      }
     }
-  }, [nfts, page, setPage, isLoading])
+  }, [nfts, page, setPage, isLoading, maxInternalPage, internalPage])
 
   return (
     <StyledCard hasManyPages>
@@ -114,22 +139,18 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ bunnyId, nftMetadat
             <PageButtons>
               <Arrow
                 onClick={() => {
-                  if (page !== 1) {
-                    setPage(page - 1)
-                  }
+                  switchPage(internalPage === 1 ? internalPage : internalPage - 1)
                 }}
               >
-                <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
+                <ArrowBackIcon color={internalPage === 1 ? 'textDisabled' : 'primary'} />
               </Arrow>
-              <Text>{t('Page %page%', { page })}</Text>
+              <Text>{t('Page %page% of %maxPage%', { page: internalPage, maxPage: maxInternalPage })}</Text>
               <Arrow
                 onClick={() => {
-                  if (!isLastPage) {
-                    setPage(page + 1)
-                  }
+                  switchPage(internalPage === maxInternalPage ? internalPage : internalPage + 1)
                 }}
               >
-                <ArrowForwardIcon color={isLastPage ? 'textDisabled' : 'primary'} />
+                <ArrowForwardIcon color={internalPage === maxInternalPage ? 'textDisabled' : 'primary'} />
               </Arrow>
             </PageButtons>
           </Flex>
