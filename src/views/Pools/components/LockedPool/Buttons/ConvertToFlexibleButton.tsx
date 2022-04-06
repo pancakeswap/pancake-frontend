@@ -1,5 +1,5 @@
 import { memo, useCallback } from 'react'
-import { Button } from '@pancakeswap/uikit'
+import { Button, ButtonProps } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 import { useAppDispatch } from 'state'
@@ -13,7 +13,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { VaultKey } from 'state/types'
 
-const ConverToFlexibleButton = () => {
+const ConvertToFlexibleButton: React.FC<ButtonProps> = (props) => {
   const dispatch = useAppDispatch()
 
   const { account } = useWeb3React()
@@ -45,10 +45,10 @@ const ConverToFlexibleButton = () => {
   }, [t, toastSuccess, account, callWithGasPrice, dispatch, fetchWithCatchTxError, vaultPoolContract])
 
   return (
-    <Button disabled={pendingTx} mb="8px" mx="4px" width="100%" onClick={() => handleUnlock()}>
+    <Button width="100%" disabled={pendingTx} mx="4px" onClick={() => handleUnlock()} {...props}>
       {pendingTx ? t('Converting...') : t('Convert to Flexible')}
     </Button>
   )
 }
 
-export default memo(ConverToFlexibleButton)
+export default memo(ConvertToFlexibleButton)

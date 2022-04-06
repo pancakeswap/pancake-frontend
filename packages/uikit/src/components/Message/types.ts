@@ -13,4 +13,5 @@ export interface MessageProps extends SpaceProps {
   variant: Variant;
   icon?: React.ReactNode;
   action?: React.ReactNode;
+  actionInline?: boolean;
 }
