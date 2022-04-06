@@ -494,13 +494,10 @@ function Swap() {
                     <Button
                       variant={isValid && priceImpactSeverity > 2 ? 'danger' : 'primary'}
                       onClick={() => {
+                        tracker.send(new HitBuilders.EventBuilder().setCategory('swap').setAction('clickSwap').build())
                         if (isExpertMode) {
                           handleSwap()
                         } else {
-                          tracker.send(
-                            new HitBuilders.EventBuilder().setCategory('swap').setAction('clickSwap').build(),
-                          )
-
                           setSwapState({
                             tradeToConfirm: trade,
                             attemptingTxn: false,
@@ -527,6 +524,7 @@ function Swap() {
                   <Button
                     variant={isValid && priceImpactSeverity > 2 && !swapCallbackError ? 'danger' : 'primary'}
                     onClick={() => {
+                      tracker.send(new HitBuilders.EventBuilder().setCategory('swap').setAction('clickSwap').build())
                       if (isExpertMode) {
                         handleSwap()
                       } else {
