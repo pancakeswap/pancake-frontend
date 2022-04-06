@@ -26,6 +26,8 @@ import styled from 'styled-components'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
+import isUndefinedOrNull from 'utils/isUndefinedOrNull'
+
 import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
 import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
@@ -37,7 +39,6 @@ import AddCakeButton from '../../LockedPool/Buttons/AddCakeButton'
 import ExtendButton from '../../LockedPool/Buttons/ExtendDurationButton'
 import convertLockTimeToSeconds from '../../LockedPool/utils/convertLockTimeToSeconds'
 import AfterLockedActions from '../../LockedPool/Common/AfterLockedActions'
-import BurnedCake from '../../LockedPool/Common/BurnedCake'
 import BurningCountDown from '../../LockedPool/Common/BurningCountDown'
 import LockedStakedModal from '../../LockedPool/Modals/LockedStakeModal'
 
@@ -102,6 +103,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
       locked,
       lockStartTime,
       balance: { cakeAsBigNumber, cakeAsNumberBalance },
+      currentOverdueFee,
     },
   } = useVaultPoolByKey(pool.vaultKey)
 
@@ -349,7 +351,11 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                 </Text>
                 <Text lineHeight="1" mt="8px" pt="16px" bold fontSize="20px" color="failure">
                   {vaultPosition === VaultPosition.AfterBurning ? (
-                    <BurnedCake account={account} />
+                    isUndefinedOrNull(currentOverdueFee) ? (
+                      '-'
+                    ) : (
+                      t('%amount% burned', { amount: currentOverdueFee?.toNumber() })
+                    )
                   ) : (
                     <BurningCountDown lockEndTime={lockEndTime} />
                   )}
