@@ -47,7 +47,7 @@ export const MessageText: React.FC<TextProps> = ({ children, ...props }) => {
   );
 };
 
-const Message: React.FC<MessageProps> = ({ children, variant, icon, action, ...props }) => {
+const Message: React.FC<MessageProps> = ({ children, variant, icon, action, actionInline, ...props }) => {
   const Icon = Icons[variant];
   return (
     <MessageContext.Provider value={{ variant }}>
@@ -55,8 +55,9 @@ const Message: React.FC<MessageProps> = ({ children, variant, icon, action, ...p
         <Flex>
           <Box mr="12px">{icon ?? <Icon color={variants[variant].borderColor} width="24px" />}</Box>
           {children}
+          {actionInline && action}
         </Flex>
-        {action}
+        {!actionInline && action}
       </MessageContainer>
     </MessageContext.Provider>
   );

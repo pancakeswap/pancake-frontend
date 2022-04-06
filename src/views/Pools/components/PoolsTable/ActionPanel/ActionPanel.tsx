@@ -80,6 +80,7 @@ const ActionContainer = styled.div<{ isAutoVault?: boolean; hasBalance?: boolean
   flex-direction: column;
   flex-grow: 1;
   flex-basis: 0;
+  flex-wrap: wrap;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
