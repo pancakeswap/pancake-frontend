@@ -7,11 +7,12 @@ import {
   getPancakeBunniesAttributesField,
   combineApiAndSgResponseToNftToken,
 } from 'state/nftMarket/helpers'
-import { FAST_INTERVAL, NOT_ON_SALE_SELLER } from 'config/constants'
+import { FAST_INTERVAL } from 'config/constants'
 import { FetchStatus } from 'config/constants/types'
 import { getNftMarketContract } from 'utils/contractHelpers'
 import { formatBigNumber } from 'utils/formatBalance'
 import { pancakeBunniesAddress } from '../constants'
+import getTokensFromAskInfo from './getTokensFromAskInfo'
 
 type WhereClause = Record<string, string | number | boolean | string[]>
 
@@ -33,29 +34,13 @@ const fetchCheapestBunny = async (
 
   if (!askInfo) return null
 
-  const lowestPriceUpdatedBunny = askInfo
-    .map((tokenAskInfo, index) => {
-      if (!tokenAskInfo.seller || !tokenAskInfo.price) return null
-      const currentSeller = tokenAskInfo.seller
-      const isTradable = currentSeller.toLowerCase() !== NOT_ON_SALE_SELLER
-      if (!isTradable) return null
-
-      return {
-        tokenId: nftsMarketTokenIds[index],
-        currentSeller,
-        currentAskPrice: tokenAskInfo.price,
-      }
-    })
-    .filter((tokenUpdatedPrice) => {
-      return tokenUpdatedPrice && tokenUpdatedPrice.currentAskPrice.gt(0)
-    })
-    .sort((askInfoA, askInfoB) => {
-      return askInfoA.currentAskPrice.gt(askInfoB.currentAskPrice)
-        ? 1
-        : askInfoA.currentAskPrice.eq(askInfoB.currentAskPrice)
-        ? 0
-        : -1
-    })[0]
+  const lowestPriceUpdatedBunny = getTokensFromAskInfo(askInfo, nftsMarketTokenIds).sort((askInfoA, askInfoB) => {
+    return askInfoA.currentAskPrice.gt(askInfoB.currentAskPrice)
+      ? 1
+      : askInfoA.currentAskPrice.eq(askInfoB.currentAskPrice)
+      ? 0
+      : -1
+  })[0]
 
   const cheapestBunnyOfAccount = nftsMarket
     .filter((marketData) => marketData.tokenId === lowestPriceUpdatedBunny?.tokenId)

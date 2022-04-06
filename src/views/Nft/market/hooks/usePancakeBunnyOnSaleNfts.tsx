@@ -11,8 +11,8 @@ import useSWRInfinite from 'swr/infinite'
 import { pancakeBunniesAddress } from '../constants'
 import { FetchStatus } from '../../../../config/constants/types'
 import { getNftMarketContract } from '../../../../utils/contractHelpers'
-import { NOT_ON_SALE_SELLER } from '../../../../config/constants'
 import { formatBigNumber } from '../../../../utils/formatBalance'
+import getTokensFromAskInfo from './getTokensFromAskInfo'
 
 const fetchMarketDataNfts = async (
   account: string,
@@ -92,19 +92,7 @@ export const usePancakeBunnyOnSaleNfts = (
       const askInfo = response?.askInfo
       if (!askInfo) return newNfts
 
-      return askInfo
-        .map((tokenAskInfo, index) => {
-          if (!tokenAskInfo.seller || !tokenAskInfo.price) return null
-          const currentSeller = tokenAskInfo.seller
-          const isTradable = currentSeller.toLowerCase() !== NOT_ON_SALE_SELLER
-          if (!isTradable) return null
-
-          return {
-            tokenId: nftsMarketTokenIds[index],
-            currentSeller,
-            currentAskPrice: tokenAskInfo.price,
-          }
-        })
+      return getTokensFromAskInfo(askInfo, nftsMarketTokenIds)
         .filter((tokenUpdatedPrice) => {
           return tokenUpdatedPrice && tokenUpdatedPrice.currentAskPrice.gt(0)
         })
