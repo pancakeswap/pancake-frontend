@@ -15,6 +15,7 @@ import OwnerCard from './OwnerCard'
 import MoreFromThisCollection from '../shared/MoreFromThisCollection'
 import ActivityCard from './ActivityCard'
 import { useCompleteNft } from '../../../hooks/useCompleteNft'
+import ManageNFTsCard from '../shared/ManageNFTsCard'
 
 interface IndividualNFTPageProps {
   collectionAddress: string
@@ -60,7 +61,7 @@ const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress
       <MainNFTCard nft={nft} isOwnNft={isOwnNft} nftIsProfilePic={isProfilePic} onSuccess={refetch} />
       <TwoColumnsContainer flexDirection={['column', 'column', 'row']}>
         <Flex flexDirection="column" width="100%">
-          <ManageNFTsCard nft={nft} isOwnNft={isOwnNft} isLoading={isLoading} onSuccess={isOwnNft ? refetch : noop} />
+          <ManageNFTsCard collection={collection} tokenId={tokenId} onSuccess={isOwnNft ? refetch : noop} />
           <PropertiesCard properties={properties} rarity={attributesRarity} />
           <DetailsCard contractAddress={collectionAddress} ipfsJson={nft?.marketData?.metadataUrl} />
         </Flex>
