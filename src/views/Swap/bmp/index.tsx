@@ -480,10 +480,23 @@ function Swap() {
                       onClick={approveCallback}
                       disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
                       width="48%"
+                      style={{ padding: '0 8px' }}
                     >
                       {approval === ApprovalState.PENDING ? (
-                        <AutoRow gap="6px" justify="center">
-                          {t('Enabling')} <CircleLoader stroke="white" />
+                        <AutoRow gap="5px" justify="center" style={{ flexWrap: 'nowrap' }}>
+                          <Box
+                            style={{
+                              overflow: 'hidden',
+                              lineHeight: 1,
+                              textOverflow: 'ellipsis',
+                              margin: '0px!important',
+                            }}
+                          >
+                            {t('Enabling')}
+                          </Box>
+                          <Box style={{ margin: '0px!important', minWidth: 20 }}>
+                            <CircleLoader stroke="white" />
+                          </Box>
                         </AutoRow>
                       ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
                         t('Enabled')
@@ -508,7 +521,7 @@ function Swap() {
                         }
                       }}
                       width="48%"
-                      id="swap-button"
+                      id="swap-button-2"
                       disabled={
                         !isValid || approval !== ApprovalState.APPROVED || (priceImpactSeverity > 3 && !isExpertMode)
                       }
