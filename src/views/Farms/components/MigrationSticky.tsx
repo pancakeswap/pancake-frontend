@@ -65,24 +65,24 @@ const MigrationSticky: React.FC = () => {
   const refPrevOffset = useRef(typeof window === 'undefined' ? 0 : window.pageYOffset)
   const isSmallScreen = isXs || isSm || isMd
 
-  const scrollEffect = () => {
-    const currentScroll = window.pageYOffset
-    if (currentScroll <= 0) {
-      setStickyPosition(0)
-      return
-    }
-    if (currentScroll >= refPrevOffset.current) {
-      setStickyPosition(0)
-    } else {
-      const warningBannerHeight = document.querySelector('.warning-banner')
-      const topBannerHeight = isMobile ? TOP_BANNER_HEIGHT_MOBILE : TOP_BANNER_HEIGHT
-      const totalTopMenuHeight = warningBannerHeight ? MENU_HEIGHT + topBannerHeight : MENU_HEIGHT
-      setStickyPosition(totalTopMenuHeight)
-    }
-    refPrevOffset.current = currentScroll
-  }
-
   useEffect(() => {
+    const scrollEffect = () => {
+      const currentScroll = window.pageYOffset
+      if (currentScroll <= 0) {
+        setStickyPosition(0)
+        return
+      }
+      if (currentScroll >= refPrevOffset.current) {
+        setStickyPosition(0)
+      } else {
+        const warningBannerHeight = document.querySelector('.warning-banner')
+        const topBannerHeight = isMobile ? TOP_BANNER_HEIGHT_MOBILE : TOP_BANNER_HEIGHT
+        const totalTopMenuHeight = warningBannerHeight ? MENU_HEIGHT + topBannerHeight : MENU_HEIGHT
+        setStickyPosition(totalTopMenuHeight)
+      }
+      refPrevOffset.current = currentScroll
+    }
+
     window.addEventListener('scroll', scrollEffect)
     return () => window.removeEventListener('scroll', scrollEffect)
   }, [isMobile])
