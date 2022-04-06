@@ -8,19 +8,14 @@ import { useVaultApy } from 'hooks/useVaultApy'
 import { BalanceWithLoading } from 'components/Balance'
 import Divider from 'components/Divider'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
+import isUndefinedOrNull from 'utils/isUndefinedOrNull'
 import { getBalanceNumber } from 'utils/formatBalance'
 import BurningCountDown from './Common/BurningCountDown'
-import BurnedCake from './Common/BurnedCake'
 import LockedActions from './Common/LockedActions'
 import useUserDataInVaultPrensenter from './hooks/useUserDataInVaultPrensenter'
 import { LockedStakingApyPropsType } from './types'
 
-const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
-  stakingToken,
-  stakingTokenBalance,
-  userData,
-  account,
-}) => {
+const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, stakingTokenBalance, userData }) => {
   const { t } = useTranslation()
   const position = useMemo(
     () =>
@@ -145,7 +140,9 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({
             {t('After burning')}
           </Text>
           <Text color="textSubtle" bold>
-            <BurnedCake account={account} />
+            {isUndefinedOrNull(userData?.currentOverdueFee)
+              ? '-'
+              : t('%amount% burned', { amount: userData?.currentOverdueFee?.toNumber() })}
           </Text>
         </Flex>
       )}
