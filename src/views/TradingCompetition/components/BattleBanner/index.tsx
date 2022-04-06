@@ -15,7 +15,6 @@ const TextStyles = (theme) => `
 
 const StarImage = styled.div`
   display: none;
-  border: solid 2px red;
   position: absolute;
   z-index: -1;
   bottom: 0;
