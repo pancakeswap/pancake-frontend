@@ -21,6 +21,7 @@ export interface SerializedToken {
   symbol?: string
   name?: string
   projectLink?: string
+  logoURI?: string
 }
 
 export enum PoolIds {
