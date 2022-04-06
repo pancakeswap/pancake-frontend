@@ -1,6 +1,5 @@
 import { ArrowBackIcon, Box, Button, Flex, Heading } from '@pancakeswap/uikit'
 import { PageMeta } from 'components/Layout/Page'
-import useSWR from 'swr'
 import { getAllVotes, getProposal } from 'state/voting/helpers'
 import { useWeb3React } from '@web3-react/core'
 import useSWRImmutable from 'swr/immutable'
@@ -38,7 +37,7 @@ const Overview = () => {
     status: votesLoadingStatus,
     data: votes,
     mutate: refetch,
-  } = useSWR(proposalId && snapshot ? ['proposal', proposalId, 'votes'] : null, async () =>
+  } = useSWRImmutable(proposalId && snapshot ? ['proposal', proposalId, 'votes'] : null, async () =>
     getAllVotes(proposalId, Number(snapshot)),
   )
   const hasAccountVoted = account && votes && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
@@ -82,7 +81,7 @@ const Overview = () => {
           )}
           <Votes votes={votes} totalVotes={votes?.length ?? proposal.votes} votesLoadingStatus={votesLoadingStatus} />
         </Box>
-        <Box position="sticky" top="40px">
+        <Box position="sticky" top="60px">
           <Details proposal={proposal} />
           <Results choices={proposal.choices} votes={votes} votesLoadingStatus={votesLoadingStatus} />
         </Box>
