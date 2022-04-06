@@ -278,7 +278,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
             {vaultPosition >= VaultPosition.Locked && (
               <Flex flex="1" ml="21px" flexDirection="column" alignSelf="flex-start">
                 <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-                  {t('Unlocks in')}
+                  {t('Unlocks In')}
                 </Text>
                 <Text
                   lineHeight="1"

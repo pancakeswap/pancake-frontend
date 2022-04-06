@@ -1427,13 +1427,8 @@
   "Safemoon's announcement": "Safemoon's announcement",
   "Newest Collections": "Newest Collections",
   "Your average per hour": "Your average per hour",
-  "At this rate, you would earn": "At this rate, you would earn",
   "CAKE per hour: %amount%": "CAKE per hour: %amount%",
   "per hour: ~$%amount%": "per hour: ~$%amount%",
-  "per 1d: ~$%amount%": "per 1d: ~$%amount%",
-  "per 7d: ~$%amount%": "per 7d: ~$%amount%",
-  "per 30d: ~$%amount%": "per 30d: ~$%amount%",
-  "per 365d: ~$%amount%": "per 365d: ~$%amount%",
   "ITAM has been rebranded as ITAM CUBE.": "ITAM has been rebranded as ITAM CUBE.",
   "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.": "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.",
   "All transfers of the old ITAM token will be disabled after the swap.": "All transfers of the old ITAM token will be disabled after the swap.",
@@ -1652,5 +1647,6 @@
   "Adding more CAKE will renew your lock, setting it to remaining duration. Due to shorter lock period, benefits decrease. To keep similar benefits, extend your lock.": "Adding more CAKE will renew your lock, setting it to remaining duration. Due to shorter lock period, benefits decrease. To keep similar benefits, extend your lock.",
   "Lock CAKE": "Lock CAKE",
   "Locked End": "Locked End",
-  "Flexible staking offers flexibility for staking/unstaking whenever you want. Locked staking offers higher APY as well as other benefits.": "Flexible staking offers flexibility for staking/unstaking whenever you want. Locked staking offers higher APY as well as other benefits."
+  "Flexible staking offers flexibility for staking/unstaking whenever you want. Locked staking offers higher APY as well as other benefits.": "Flexible staking offers flexibility for staking/unstaking whenever you want. Locked staking offers higher APY as well as other benefits.",
+  "Extend Lock": "Extend Lock"
 }
