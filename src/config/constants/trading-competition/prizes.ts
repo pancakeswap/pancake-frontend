@@ -217,7 +217,7 @@ const mboxPrizes: Config = {
       tier: Tiers.SILVER,
       tokenPrizeInUsd: 9800,
       achievements: {
-        image: 'MBOX-top-500-gold.svg',
+        image: 'MBOX-top-10-gold.svg',
         points: 1250,
       },
       hasNft: true,
@@ -228,7 +228,7 @@ const mboxPrizes: Config = {
       tier: Tiers.BRONZE,
       tokenPrizeInUsd: 8400,
       achievements: {
-        image: 'MBOX-top-500-gold.svg',
+        image: 'MBOX-top-100-gold.svg',
         points: 1000,
       },
       hasNft: true,
@@ -276,7 +276,7 @@ const mboxPrizes: Config = {
       tier: Tiers.SILVER,
       tokenPrizeInUsd: 2800,
       achievements: {
-        image: 'MBOX-top-500-silver.svg',
+        image: 'MBOX-top-10-silver.svg',
         points: 1000,
       },
       hasNft: true,
@@ -287,7 +287,7 @@ const mboxPrizes: Config = {
       tier: Tiers.BRONZE,
       tokenPrizeInUsd: 2400,
       achievements: {
-        image: 'MBOX-top-500-silver.svg',
+        image: 'MBOX-top-100-silver.svg',
         points: 850,
       },
       hasNft: true,
@@ -333,7 +333,7 @@ const mboxPrizes: Config = {
       tier: Tiers.SILVER,
       tokenPrizeInUsd: 1400,
       achievements: {
-        image: 'MBOX-top-500-bronze.svg',
+        image: 'MBOX-top-10-bronze.svg',
         points: 850,
       },
       hasNft: true,
@@ -344,7 +344,7 @@ const mboxPrizes: Config = {
       tier: Tiers.BRONZE,
       tokenPrizeInUsd: 1200,
       achievements: {
-        image: 'MBOX-top-500-bronze.svg',
+        image: 'MBOX-top-100-bronze.svg',
         points: 500,
       },
       hasNft: true,
