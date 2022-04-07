@@ -28,7 +28,7 @@ const usePersistState = (initialValue: any, userOptions: UsePersistStateOptions)
   })
 
   useEffect(() => {
-    localStorage.setItem(localStorageKey, JSON.stringify(dehydrate(value)))
+    localStorage?.setItem(localStorageKey, JSON.stringify(dehydrate(value)))
   }, [value, localStorageKey, dehydrate])
 
   return [value, setValue]
