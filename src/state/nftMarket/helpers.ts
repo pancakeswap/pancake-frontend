@@ -987,8 +987,6 @@ export const getCompleteAccountNftData = async (
   collections: ApiCollections,
   profileNftWithCollectionAddress?: TokenIdWithCollectionAddress,
 ): Promise<NftToken[]> => {
-  if (!isAddress(account)) return []
-
   const walletNftIdsWithCollectionAddress = await fetchWalletTokenIdsForCollections(account, collections)
   if (profileNftWithCollectionAddress?.tokenId) {
     walletNftIdsWithCollectionAddress.unshift(profileNftWithCollectionAddress)
