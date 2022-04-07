@@ -17,7 +17,6 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { PoolCategory } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
-import { differenceInWeeks, formatDuration } from 'date-fns'
 import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
 
 import { useVaultPoolByKey } from 'state/pools/hooks'
@@ -28,6 +27,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
+import useUserDataInVaultPrensenter from 'views/Pools/components/LockedPool/hooks/useUserDataInVaultPrensenter'
 
 import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
 import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
@@ -38,7 +38,6 @@ import { ActionContainer, ActionContent, ActionTitles } from './styles'
 import { VaultStakeButtonGroup } from '../../Vault/VaultStakeButtonGroup'
 import AddCakeButton from '../../LockedPool/Buttons/AddCakeButton'
 import ExtendButton from '../../LockedPool/Buttons/ExtendDurationButton'
-import convertLockTimeToSeconds from '../../LockedPool/utils/convertLockTimeToSeconds'
 import AfterLockedActions from '../../LockedPool/Common/AfterLockedActions'
 import ConvertToLock from '../../LockedPool/Common/ConvertToLock'
 import BurningCountDown from '../../LockedPool/Common/BurningCountDown'
@@ -66,10 +65,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     vaultKey,
     profileRequirement,
   } = pool
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
   const { account } = useWeb3React()
 
   const stakingTokenContract = useERC20(stakingToken.address || '')
@@ -109,6 +105,11 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
       currentOverdueFee,
     },
   } = useVaultPoolByKey(pool.vaultKey)
+
+  const { lockEndDate, remainingWeeks } = useUserDataInVaultPrensenter({
+    lockStartTime: lockStartTime ?? '0',
+    lockEndTime: lockEndTime ?? '0',
+  })
 
   const hasSharesStaked = userShares && userShares.gt(0)
   const isVaultWithShares = vaultKey && hasSharesStaked
@@ -281,7 +282,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
               )}
             </Flex>
             {vaultPosition >= VaultPosition.Locked && (
-              <Flex flex="1" ml="21px" flexDirection="column" alignSelf="flex-start">
+              <Flex flex="1" ml="20px" flexDirection="column" alignSelf="flex-start">
                 <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
                   {t('Unlocks In')}
                 </Text>
@@ -292,24 +293,14 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                   fontSize="20px"
                   color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
                 >
-                  {formatDuration({
-                    weeks: differenceInWeeks(new Date(convertLockTimeToSeconds(lockEndTime)), new Date(), {
-                      roundingMethod: 'round',
-                    }),
-                  })}
+                  {vaultPosition >= VaultPosition.LockedEnd ? t('Unlocked') : remainingWeeks}
                 </Text>
                 <Text
                   fontSize="12px"
                   display="inline"
                   color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
                 >
-                  {t('Until %date%', {
-                    date: new Date(convertLockTimeToSeconds(lockEndTime)).toLocaleString(locale, {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric',
-                    }),
-                  })}
+                  {t('Until %date%', { date: lockEndDate })}
                 </Text>
                 {vaultPosition === VaultPosition.Locked && (
                   <Box mt="16px">
@@ -348,7 +339,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
               </IconButtonWrapper>
             )}
             {vaultPosition >= VaultPosition.LockedEnd && (
-              <Flex flex="1" flexDirection="column" alignSelf="flex-start">
+              <Flex flex="1" ml="20px" flexDirection="column" alignSelf="flex-start">
                 <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
                   {vaultPosition === VaultPosition.AfterBurning ? t('After Burning') : t('After Burning In')}
                 </Text>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'contexts/Localization'
 import format from 'date-fns/format'
 import differenceInWeeks from 'date-fns/differenceInWeeks'
 import formatDuration from 'date-fns/formatDuration'
@@ -19,15 +20,17 @@ interface UserDataInVaultPrensenter {
 type UserDataInVaultPrensenterFn = (args: UserData) => UserDataInVaultPrensenter
 
 const useUserDataInVaultPrensenter: UserDataInVaultPrensenterFn = ({ lockEndTime, lockStartTime }) => {
+  const { t } = useTranslation()
   const secondDuration = Number(lockEndTime) - Number(lockStartTime)
 
   const lockEndTimeSeconds = convertLockTimeToSeconds(lockEndTime)
 
   const remainingWeeks = differenceInWeeks(new Date(lockEndTimeSeconds), new Date(), { roundingMethod: 'round' })
+  const remainingWeeksText = remainingWeeks > 0 ? formatDuration({ weeks: remainingWeeks }) : `0 ${t('week')}`
 
   return {
     weekDuration: formatSecondsToWeeks(secondDuration),
-    remainingWeeks: formatDuration({ weeks: remainingWeeks }),
+    remainingWeeks: remainingWeeksText,
     lockEndDate: format(lockEndTimeSeconds, 'MMM do, yyyy HH:mm'),
     secondDuration,
   }
