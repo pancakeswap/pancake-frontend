@@ -157,7 +157,7 @@ const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bun
   )
 
   const useHasNoBunnies =
-    account && !isLoading && bunniesInWallet.length === 0 && bunniesForSale.length === 0 && profilePicBunny.length === 0
+    !isLoading && bunniesInWallet.length === 0 && bunniesForSale.length === 0 && profilePicBunny.length === 0
   const totalBunnies = bunniesInWallet.length + bunniesForSale.length + profilePicBunny.length
   const totalBunniesText = account && !useHasNoBunnies ? ` (${totalBunnies})` : ''
 
@@ -168,7 +168,7 @@ const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bun
           <ConnectWalletButton />
         </Flex>
       )}
-      {useHasNoBunnies && (
+      {account && useHasNoBunnies && (
         <Text px="16px" pb="16px" color="textSubtle">
           {t('You don’t have any of this item.')}
         </Text>
