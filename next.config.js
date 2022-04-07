@@ -14,6 +14,7 @@ const sentryWebpackPluginOptions =
         //   urlPrefix, include, ignore
         silent: false, // Logging when deploying to check if there is any problem
         validate: true,
+        release: process.env.VERCEL_GIT_COMMIT_SHA,
         // Set to env false will skip deploying release on Sentry except Production
         // https://github.com/getsentry/sentry-webpack-plugin/blob/master/src/index.js#L522
         deploy: {
