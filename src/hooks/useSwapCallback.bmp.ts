@@ -235,25 +235,22 @@ export function useSwapCallback(
               summary: withRecipient,
             })
 
-            // event track
-            if (recipient === account) {
-              const track = {
-                account,
-                txHash: response.hash,
-                from: `${inputAmount} ${inputSymbol}`,
-                to: `${outputAmount} ${outputSymbol}`,
-                value: tradeVolume.toFixed(3),
-              }
-
-              tracker.send(
-                new HitBuilders.EventBuilder()
-                  .setCategory('swap')
-                  .setAction('transactionSubmitted')
-                  .setLabel(JSON.stringify(track)) //  optional
-                  .setValue(Math.ceil(tradeVolume))
-                  .build(),
-              )
+            const track = {
+              account,
+              txHash: response.hash,
+              from: `${inputAmount} ${inputSymbol}`,
+              to: `${outputAmount} ${outputSymbol}`,
+              value: tradeVolume.toFixed(3),
             }
+
+            tracker.send(
+              new HitBuilders.EventBuilder()
+                .setCategory('swap')
+                .setAction('transactionSubmitted')
+                .setLabel(JSON.stringify(track)) //  optional
+                .setValue(Math.ceil(tradeVolume))
+                .build(),
+            )
             return response.hash
           })
           .catch((error: any) => {

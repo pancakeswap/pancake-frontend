@@ -2,21 +2,10 @@ import React, { Component } from 'react'
 import Provider from './Providers'
 import './style.scss'
 import { init, bindRequest } from '@binance/sentry-miniapp'
+import { getEnv } from 'utils/bmp/getEnv'
 
 declare const COMMIT_ID: string
 declare const env: any
-export function getEnv() {
-  if (process.env.API_HOST && !(process.env.API_HOST.includes('qa') || process.env.API_HOST.includes('dev'))) {
-    return 'prod'
-  }
-  if (process.env.API_HOST && process.env.API_HOST.includes('qa')) {
-    return 'qa'
-  }
-  if (process.env.API_HOST && process.env.API_HOST.includes('dev')) {
-    return 'dev'
-  }
-  return 'local'
-}
 
 init({
   dsn: 'https://c4641904bb124a01adcbf53b19b94f3d@o529943.ingest.sentry.io/6227528',
