@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { getEnv } from 'utils/bmp/getEnv'
 import { GoogleAnalytics } from '../utils/ga'
 
 const initTracker = {
@@ -22,6 +23,12 @@ const AnalyticsContext = React.createContext(initTracker)
 const useTracker = () => {
   const context = useContext(AnalyticsContext)
   const tracker = context.getTracker()
+  if (tracker && getEnv() !== 'prod') {
+    tracker.send = () => {
+      console.log('~ no prod tracker')
+      // noop
+    }
+  }
   return tracker
 }
 
