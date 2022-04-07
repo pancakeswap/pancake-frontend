@@ -21,7 +21,7 @@ export const vaultPoolConfig = {
     name: <Trans>Stake CAKE</Trans>,
     description: <Trans>Stake, Earn, IFO – All in one!</Trans>,
     autoCompoundFrequency: 5000,
-    gasLimit: 380000,
+    gasLimit: 500000,
     tokenImage: {
       primarySrc: `/images/tokens/${tokens.cake.address}.svg`,
       secondarySrc: '/images/tokens/autorenew.svg',

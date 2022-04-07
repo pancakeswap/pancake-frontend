@@ -42,7 +42,7 @@ const getBoostFactor = (boostWeight: BigNumber, duration: number, durationFactor
 const getLockedApy = (flexibleApy: string, boostFactor: FixedNumber) =>
   FixedNumber.from(flexibleApy).mulUnsafe(boostFactor.addUnsafe(FixedNumber.from('1')))
 
-const cakePoolPID = 6 // TODO: change in production
+const cakePoolPID = 7 // TODO: change in production
 
 export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: number } = {}) {
   const { totalShares = BIG_ZERO, pricePerFullShare = BIG_ZERO } = useCakeVault()

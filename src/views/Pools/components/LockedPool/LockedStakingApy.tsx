@@ -142,7 +142,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
           <Text color="textSubtle" bold>
             {isUndefinedOrNull(userData?.currentOverdueFee)
               ? '-'
-              : t('%amount% burned', { amount: userData?.currentOverdueFee?.toNumber() })}
+              : t('%amount% burned', { amount: getBalanceNumber(userData?.currentOverdueFee) })}
           </Text>
         </Flex>
       )}

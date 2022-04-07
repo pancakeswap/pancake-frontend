@@ -354,7 +354,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                     isUndefinedOrNull(currentOverdueFee) ? (
                       '-'
                     ) : (
-                      t('%amount% burned', { amount: currentOverdueFee?.toNumber() })
+                      t('%amount% burned', { amount: getBalanceNumber(currentOverdueFee) })
                     )
                   ) : (
                     <BurningCountDown lockEndTime={lockEndTime} />
