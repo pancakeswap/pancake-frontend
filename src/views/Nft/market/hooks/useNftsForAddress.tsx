@@ -4,7 +4,6 @@ import { useGetCollections } from 'state/nftMarket/hooks'
 import { NftLocation } from 'state/nftMarket/types'
 import { Profile } from 'state/types'
 import { getCompleteAccountNftData } from 'state/nftMarket/helpers'
-import { isAddress } from 'utils'
 import useSWR from 'swr'
 import { FetchStatus } from 'config/constants/types'
 import { laggyMiddleware } from 'hooks/useSWRContract'
@@ -28,7 +27,7 @@ const useNftsForAddress = (account: string, profile: Profile, isProfileFetching:
   }, [profileNftTokenId, profileNftCollectionAddress, hasProfileNft])
 
   const { status, data, mutate } = useSWR(
-    !isProfileFetching && !isEmpty(collections) && isAddress(account) ? [account, 'userNfts'] : null,
+    !isProfileFetching && !isEmpty(collections) ? [account, 'userNfts'] : null,
     async () => getCompleteAccountNftData(account, collections, profileNftWithCollectionAddress),
     { use: [laggyMiddleware] },
   )

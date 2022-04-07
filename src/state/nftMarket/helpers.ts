@@ -6,6 +6,7 @@ import erc721Abi from 'config/abi/erc721.json'
 import range from 'lodash/range'
 import uniq from 'lodash/uniq'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
+import { isAddress } from 'utils'
 import {
   ApiCollection,
   ApiCollections,
@@ -986,6 +987,8 @@ export const getCompleteAccountNftData = async (
   collections: ApiCollections,
   profileNftWithCollectionAddress?: TokenIdWithCollectionAddress,
 ): Promise<NftToken[]> => {
+  if (!isAddress(account)) return []
+
   const walletNftIdsWithCollectionAddress = await fetchWalletTokenIdsForCollections(account, collections)
   if (profileNftWithCollectionAddress?.tokenId) {
     walletNftIdsWithCollectionAddress.unshift(profileNftWithCollectionAddress)
