@@ -1,10 +1,8 @@
 import BigNumber from 'bignumber.js'
 
-const addWeek = (date: Date): Date => {
-  const newDate = new Date(date)
-  newDate.setDate(date.getDate() + 7)
-  return newDate
-}
+// const UNLOCK_FREE_DURATION = 604800
+// TODO: revert this
+const UNLOCK_FREE_DURATION = 600
 
 export const isStaked = ({ userShares }: { userShares?: BigNumber }): boolean => userShares && userShares.gt(0)
 
@@ -16,13 +14,13 @@ export const isLockedEnd = ({ userShares, locked, lockEndTime }: VaultPositionPa
   lockEndTime !== '0' &&
   isLocked({ userShares, locked }) &&
   Date.now() >= parseInt(lockEndTime) * 1000 &&
-  Date.now() <= addWeek(new Date(parseInt(lockEndTime) * 1000)).getTime()
+  Date.now() <= new Date(parseInt(lockEndTime) * 1000).getTime() + UNLOCK_FREE_DURATION * 1000
 
 export const isAfterBurning = ({ userShares, locked, lockEndTime }: VaultPositionParams): boolean =>
   lockEndTime &&
   lockEndTime !== '0' &&
   isLocked({ userShares, locked }) &&
-  Date.now() > addWeek(new Date(parseInt(lockEndTime) * 1000)).getTime()
+  Date.now() > new Date(parseInt(lockEndTime) * 1000).getTime() + UNLOCK_FREE_DURATION * 1000
 
 export enum VaultPosition {
   None,

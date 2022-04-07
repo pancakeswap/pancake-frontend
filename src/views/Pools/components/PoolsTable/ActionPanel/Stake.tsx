@@ -17,6 +17,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { PoolCategory } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
+import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
 
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
@@ -38,6 +39,7 @@ import { VaultStakeButtonGroup } from '../../Vault/VaultStakeButtonGroup'
 import AddCakeButton from '../../LockedPool/Buttons/AddCakeButton'
 import ExtendButton from '../../LockedPool/Buttons/ExtendDurationButton'
 import AfterLockedActions from '../../LockedPool/Common/AfterLockedActions'
+import ConvertToLock from '../../LockedPool/Common/ConvertToLock'
 import BurningCountDown from '../../LockedPool/Common/BurningCountDown'
 import LockedStakedModal from '../../LockedPool/Modals/LockedStakeModal'
 
@@ -74,6 +76,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   )
 
   const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus()
+  const maxLockDuration = useVaultMaxDuration()
   const { handleApprove: handleVaultApprove, pendingTx: pendingVaultTx } = useVaultApprove(setLastUpdated)
 
   const handleApprove = vaultKey ? handleVaultApprove : handlePoolApprove
@@ -345,7 +348,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                     isUndefinedOrNull(currentOverdueFee) ? (
                       '-'
                     ) : (
-                      t('%amount% burned', { amount: currentOverdueFee?.toNumber() })
+                      t('%amount% burned', { amount: getBalanceNumber(currentOverdueFee) })
                     )
                   ) : (
                     <BurningCountDown lockEndTime={lockEndTime} />
@@ -356,7 +359,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
             {tooltipVisible && tooltip}
           </ActionContent>
         </ActionContainer>
-        {[VaultPosition.AfterBurning, VaultPosition.LockedEnd].includes(vaultPosition) && (
+        {[VaultPosition.AfterBurning, VaultPosition.LockedEnd, VaultPosition.Locked].includes(vaultPosition) && (
           <Box
             width="100%"
             mt={['0', '0', '24px', '24px', '24px']}
@@ -371,6 +374,16 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
               lockEndTime="0"
               lockStartTime="0"
             />
+          </Box>
+        )}
+        {vaultPosition === VaultPosition.Flexible && maxLockDuration.gt(0) && (
+          <Box
+            width="100%"
+            mt={['0', '0', '24px', '24px', '24px']}
+            ml={['0', '0', '12px', '12px', '32px']}
+            mr={['0', '0', '12px', '12px', '0']}
+          >
+            <ConvertToLock stakingToken={stakingToken} currentStakedAmount={cakeAsNumberBalance} isInline />
           </Box>
         )}
       </>
