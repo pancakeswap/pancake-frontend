@@ -6,13 +6,12 @@ import {
   getMetadataWithFallback,
   getPancakeBunniesAttributesField,
   combineApiAndSgResponseToNftToken,
+  getNftsUpdatedMarketData,
 } from 'state/nftMarket/helpers'
 import useSWRInfinite from 'swr/infinite'
 import { pancakeBunniesAddress } from '../constants'
 import { FetchStatus } from '../../../../config/constants/types'
-import { getNftMarketContract } from '../../../../utils/contractHelpers'
 import { formatBigNumber } from '../../../../utils/formatBalance'
-import getTokensFromAskInfo from './getTokensFromAskInfo'
 
 const fetchMarketDataNfts = async (
   account: string,
@@ -74,7 +73,6 @@ export const usePancakeBunnyOnSaleNfts = (
       return [bunnyId, direction, pageIndex, 'pancakeBunnyOnSaleNfts']
     },
     async (id, sortDirection, page) => {
-      const nftMarketContract = getNftMarketContract()
       const { newNfts, isPageLast } = await fetchMarketDataNfts(
         account,
         id,
@@ -85,16 +83,12 @@ export const usePancakeBunnyOnSaleNfts = (
       )
       isLastPage.current = isPageLast
       const nftsMarketTokenIds = newNfts.map((marketData) => marketData.tokenId)
-      const response = await nftMarketContract.viewAsksByCollectionAndTokenIds(
-        pancakeBunniesAddress.toLowerCase(),
-        nftsMarketTokenIds,
-      )
-      const askInfo = response?.askInfo
-      if (!askInfo) return newNfts
+      const updatedMarketData = await getNftsUpdatedMarketData(pancakeBunniesAddress.toLowerCase(), nftsMarketTokenIds)
+      if (!updatedMarketData) return newNfts
 
-      return getTokensFromAskInfo(askInfo, nftsMarketTokenIds)
+      return updatedMarketData
         .filter((tokenUpdatedPrice) => {
-          return tokenUpdatedPrice && tokenUpdatedPrice.currentAskPrice.gt(0)
+          return tokenUpdatedPrice && tokenUpdatedPrice.currentAskPrice.gt(0) && tokenUpdatedPrice.isTradable
         })
         .sort((askInfoA, askInfoB) => {
           return askInfoA.currentAskPrice.gt(askInfoB.currentAskPrice)
