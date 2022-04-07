@@ -74,16 +74,11 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
           <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
             {t('Unlocks In')}
           </Text>
-          <Text
-            color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
-            textTransform="uppercase"
-            bold
-            fontSize="16px"
-          >
-            {remainingWeeks}
+          <Text color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'} bold fontSize="16px">
+            {position >= VaultPosition.LockedEnd ? t('Unlocked') : remainingWeeks}
           </Text>
           <Text color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'} fontSize="12px">
-            {t(`Until %date%`, { date: lockEndDate })}
+            {t('Until %date%', { date: lockEndDate })}
           </Text>
         </Box>
       </Flex>
