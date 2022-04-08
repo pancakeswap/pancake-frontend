@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useTracker } from 'contexts/AnalyticsContext'
+import { HitBuilders } from 'utils/ga'
 import { LiquidityProvider, useLiquidity, LiquidityPage } from './liquidityContext'
 import Pool from '../../Pool/index'
 import AddLiquidity from '../../AddLiquidity/bmp/index'
@@ -26,6 +28,11 @@ const LiquidityWrapper = () => {
 }
 
 const LiquidityHome = () => {
+  const tracker = useTracker()
+  useEffect(() => {
+    tracker.setScreenName('liquidity')
+    tracker.send(new HitBuilders.ScreenViewBuilder().build())
+  }, [])
   return (
     <BmpPage activeId={ActiveId.LIQUIDITY}>
       <LiquidityProvider>
