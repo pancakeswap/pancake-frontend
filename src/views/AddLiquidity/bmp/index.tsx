@@ -8,6 +8,8 @@ import { useTranslation } from 'contexts/Localization'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useDispatch } from 'react-redux'
+import { useTracker } from 'contexts/AnalyticsContext'
+import { HitBuilders } from 'utils/ga'
 import { useLiquidity, LiquidityPage } from 'views/bmp/liquidity/liquidityContext'
 // import { useRouter } from 'next/router'
 import { AppDispatch } from '../../../state'
@@ -136,6 +138,7 @@ function AddLiquidity() {
 
   const addTransaction = useTransactionAdder()
 
+  const tracker = useTracker()
   async function onAdd() {
     if (!chainId || !library || !account) return
     const routerContract = getRouterContract(chainId, library, account)
@@ -200,6 +203,14 @@ function AddLiquidity() {
             } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`,
           })
 
+          tracker.send(
+            new HitBuilders.EventBuilder()
+              .setCategory('liquidity')
+              .setAction('addLiquidity')
+              .setLabel(JSON.stringify({ txHash: response.hash })) //  optional
+              .setValue(1)
+              .build(),
+          )
           setTxHash(response.hash)
         }),
       )
