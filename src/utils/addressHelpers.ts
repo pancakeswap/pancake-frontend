@@ -41,6 +41,11 @@ export const getTradingCompetitionAddress = () => {
 export const getTradingCompetitionAddressV2 = () => {
   return getAddress(addresses.tradingCompetitionV2)
 }
+
+export const getTradingCompetitionAddressMobox = () => {
+  return getAddress(addresses.tradingCompetitionMobox)
+}
+
 export const getEasterNftAddress = () => {
   return getAddress(addresses.easterNft)
 }

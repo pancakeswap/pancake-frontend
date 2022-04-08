@@ -54,7 +54,11 @@ const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayC
   const [showMore, setShowMore] = useState(false);
   const theme = useTheme();
   const sortedConfig = getPreferredConfig(config);
-  const displayListConfig = showMore ? sortedConfig : sortedConfig.slice(0, displayCount);
+  // Filter out WalletConnect if user is inside TrustWallet built-in browser
+  const walletsToShow = window.ethereum?.isTrust
+    ? sortedConfig.filter((wallet) => wallet.title !== "WalletConnect")
+    : sortedConfig;
+  const displayListConfig = showMore ? walletsToShow : walletsToShow.slice(0, displayCount);
 
   return (
     <ModalContainer minWidth="320px">

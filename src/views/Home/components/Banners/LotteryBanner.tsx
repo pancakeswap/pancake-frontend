@@ -1,21 +1,21 @@
 import { ArrowForwardIcon, Button, Heading, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
 import { NextLinkFromReactRouter } from 'components/NextLink'
-import { LotteryStatus } from 'config/constants/types'
+import { FetchStatus, LotteryStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import Image from 'next/image'
 import { memo } from 'react'
-import useSWR from 'swr'
-import BigNumber from 'bignumber.js'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { LotteryResponse } from 'state/types'
 import styled from 'styled-components'
+import useSWR from 'swr'
 import { getBalanceNumber } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
 import Timer from 'views/Lottery/components/Countdown/Timer'
 import useGetNextLotteryEvent from 'views/Lottery/hooks/useGetNextLotteryEvent'
+import useNextEventCountdown from './hooks/useNextEventCountdown'
 import { lotteryImage, lotteryMobileImage } from './images'
 import * as S from './Styled'
-import useNextEventCountdown from './hooks/useNextEventCountdown'
 
 const RightWrapper = styled.div`
   position: absolute;
@@ -98,13 +98,13 @@ const LotteryCountDownTimer = () => {
 const LotteryBanner = () => {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
-  const { data } = useSWR<LotteryResponse>(['currentLottery'])
+  const { data, status } = useSWR<LotteryResponse>(['currentLottery'])
 
   return (
     <S.Wrapper>
       <S.Inner>
         <S.LeftWrapper>
-          {isLotteryLive(data.status) ? (
+          {status === FetchStatus.Fetched && isLotteryLive(data.status) ? (
             <>
               <StyledSubheading style={{ textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
                 <LotteryPrice />
@@ -122,7 +122,7 @@ const LotteryBanner = () => {
           <NextLinkFromReactRouter to="/lottery">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
-                {isLotteryLive(data.status) ? t('Play Now') : t('Check Now')}
+                {status === FetchStatus.Fetched && isLotteryLive(data.status) ? t('Play Now') : t('Check Now')}
               </Text>
               <ArrowForwardIcon color="invertedContrast" />
             </Button>

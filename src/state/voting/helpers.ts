@@ -1,10 +1,9 @@
 import { SNAPSHOT_API } from 'config/constants/endpoints'
 import request, { gql } from 'graphql-request'
-import keyBy from 'lodash/keyBy'
 import { Proposal, ProposalState, Vote, VoteWhere } from 'state/types'
 import { getAddress } from 'utils/addressHelpers'
 import { getActivePools } from 'utils/calls/pools'
-import { getVotingPowerList } from 'views/Voting/helpers'
+import { getVotingPowerByCakeStrategy } from 'views/Voting/helpers'
 import _chunk from 'lodash/chunk'
 import _flatten from 'lodash/flatten'
 
@@ -113,16 +112,18 @@ export const getAllVotes = async (proposalId: string, block?: number, votesPerCh
         const snapshotVotersChunk = _chunk(voteChunkVoters, NUMBER_OF_VOTERS_PER_SNAPSHOT_REQUEST)
 
         const votingPowers = await Promise.all(
-          snapshotVotersChunk.map((votersChunk) => getVotingPowerList(votersChunk, poolAddresses, block)),
+          snapshotVotersChunk.map((votersChunk) => getVotingPowerByCakeStrategy(votersChunk, poolAddresses, block)),
         )
 
-        const vpByVoter = keyBy(_flatten(votingPowers), 'voter')
+        const mergedVotingPowers = votingPowers.reduce((acc, curr) => {
+          return { ...acc, ...curr }
+        }, {})
 
         const voteChunkWithVP = voteChunk.map((vote) => {
           return {
             ...vote,
             metadata: {
-              votingPower: vpByVoter[vote.voter]?.total,
+              votingPower: mergedVotingPowers[vote.voter] || '0',
             },
           }
         })
