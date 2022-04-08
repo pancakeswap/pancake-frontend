@@ -38,8 +38,6 @@ import ConfirmAddModalBottom from './ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
 import PoolPriceBar from './PoolPriceBar'
 import Page from '../Page'
-import { useTracker } from 'contexts/AnalyticsContext'
-import { HitBuilders } from 'utils/ga'
 
 export default function AddLiquidity() {
   const router = useRouter()
@@ -128,7 +126,6 @@ export default function AddLiquidity() {
 
   const addTransaction = useTransactionAdder()
 
-  const tracker = useTracker()
   async function onAdd() {
     if (!chainId || !library || !account) return
     const routerContract = getRouterContract(chainId, library, account)
@@ -191,14 +188,6 @@ export default function AddLiquidity() {
               currencies[Field.CURRENCY_A]?.symbol
             } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`,
           })
-          tracker.send(
-            new HitBuilders.EventBuilder()
-              .setCategory('liquidity')
-              .setAction('addLiquidity')
-              .setLabel(JSON.stringify({ txHash: response.hash })) //  optional
-              .setValue(1)
-              .build(),
-          )
           setTxHash(response.hash)
         }),
       )
