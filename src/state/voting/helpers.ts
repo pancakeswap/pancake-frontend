@@ -1,8 +1,6 @@
 import { SNAPSHOT_API } from 'config/constants/endpoints'
 import request, { gql } from 'graphql-request'
 import { Proposal, ProposalState, Vote, VoteWhere } from 'state/types'
-import { getAddress } from 'utils/addressHelpers'
-import { getActivePools } from 'utils/calls/pools'
 import { getVotingPowerByCakeStrategy } from 'views/Voting/helpers'
 import _chunk from 'lodash/chunk'
 import _flatten from 'lodash/flatten'
@@ -96,8 +94,6 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
 const NUMBER_OF_VOTERS_PER_SNAPSHOT_REQUEST = 250
 
 export const getAllVotes = async (proposalId: string, block?: number, votesPerChunk = 1000): Promise<Vote[]> => {
-  const eligiblePools = await getActivePools(block)
-  const poolAddresses = eligiblePools.map(({ contractAddress }) => getAddress(contractAddress))
   return new Promise((resolve, reject) => {
     let votes: Vote[] = []
 
@@ -112,7 +108,7 @@ export const getAllVotes = async (proposalId: string, block?: number, votesPerCh
         const snapshotVotersChunk = _chunk(voteChunkVoters, NUMBER_OF_VOTERS_PER_SNAPSHOT_REQUEST)
 
         const votingPowers = await Promise.all(
-          snapshotVotersChunk.map((votersChunk) => getVotingPowerByCakeStrategy(votersChunk, poolAddresses, block)),
+          snapshotVotersChunk.map((votersChunk) => getVotingPowerByCakeStrategy(votersChunk, block)),
         )
 
         const mergedVotingPowers = votingPowers.reduce((acc, curr) => {
