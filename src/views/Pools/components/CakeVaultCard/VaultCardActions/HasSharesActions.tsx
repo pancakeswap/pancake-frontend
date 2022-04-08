@@ -66,7 +66,9 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBal
           </IconButton>
         </Flex>
       </Flex>
-      {maxLockDuration.gt(0) && <ConvertToLock stakingToken={stakingToken} currentStakedAmount={cakeAsNumberBalance} />}
+      {maxLockDuration?.gt(0) && (
+        <ConvertToLock stakingToken={stakingToken} currentStakedAmount={cakeAsNumberBalance} />
+      )}
     </>
   )
 }
