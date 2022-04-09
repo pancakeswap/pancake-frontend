@@ -202,7 +202,7 @@ const Chart = ({
   const {
     currentLanguage: { locale },
   } = useTranslation()
-  const { theme } = useTheme()
+  const { isDark, theme } = useTheme()
   const mutate = useChartHoverMutate()
 
   return (
@@ -270,7 +270,15 @@ const Chart = ({
           }}
           dot={(props) => {
             if (rounds[props.payload.roundId]) {
-              return <Dot {...props} r={4} fill={chartColor.stroke} fillOpacity={1} strokeWidth={0} />
+              return (
+                <Dot
+                  {...props}
+                  r={4}
+                  fill={isDark ? theme.colors.gold : theme.colors.secondary}
+                  fillOpacity={1}
+                  strokeWidth={0}
+                />
+              )
             }
             return null
           }}
