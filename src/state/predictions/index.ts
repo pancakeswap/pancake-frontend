@@ -478,8 +478,8 @@ export const predictionsSlice = createSlice({
       state.currentEpoch = currentEpoch
       state.intervalSeconds = intervalSeconds
       state.minBetAmount = minBetAmount
-      state.claimableStatuses = claimableStatuses
-      state.ledgers = ledgers
+      state.claimableStatuses = merge({}, state.claimableStatuses, claimableStatuses)
+      state.ledgers = merge({}, state.ledgers, ledgers)
       state.rounds = newRounds
     })
 
