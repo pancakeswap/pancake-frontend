@@ -8,6 +8,10 @@ const StyledTable = styled.div`
   > div:not(:last-child) {
     border-bottom: 2px solid ${({ theme }) => theme.colors.disabled};
   }
+
+  > div:last-child {
+    border-radius: 0px 0px 16px 16px;
+  }
 `
 
 const TableStyle: React.FC = ({ children }) => {
