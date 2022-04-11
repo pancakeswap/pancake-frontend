@@ -7,6 +7,7 @@ import FixedSubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
 import { ToastListener } from 'contexts/ToastsContext'
 import useEagerConnect from 'hooks/useEagerConnect'
 import { useInactiveListener } from 'hooks/useInactiveListener'
+import { useAccountChangeListener } from 'hooks/useAccountChangeListener'
 import useSentryUser from 'hooks/useSentryUser'
 import useUserAgent from 'hooks/useUserAgent'
 import type { AppProps } from 'next/app'
@@ -37,6 +38,7 @@ function GlobalHooks() {
   usePollCoreFarmData()
   useUserAgent()
   useInactiveListener()
+  useAccountChangeListener()
   useSentryUser()
   return null
 }
