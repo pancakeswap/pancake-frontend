@@ -1,12 +1,14 @@
-import styled from 'styled-components'
+import { Text, TokenPairImage as UITokenPairImage, useMatchBreakpoints } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { Text, useMatchBreakpoints, TokenPairImage as UITokenPairImage } from '@pancakeswap/uikit'
+import { TokenPairImage } from 'components/TokenImage'
+import { vaultPoolConfig } from 'config/constants/pools'
 import { useTranslation } from 'contexts/Localization'
+import { memo } from 'react'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
+import styled from 'styled-components'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { vaultPoolConfig } from 'config/constants/pools'
-import { TokenPairImage } from 'components/TokenImage'
+import { getVaultPosition, VaultPosition, VaultPositionParams } from 'utils/cakePool'
 import BaseCell, { CellContent } from './BaseCell'
 
 interface NameCellProps {
@@ -28,7 +30,7 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   const { isMobile } = useMatchBreakpoints()
   const { sousId, stakingToken, earningToken, userData, isFinished, vaultKey } = pool
   const {
-    userData: { userShares },
+    userData: { userShares, lockEndTime, locked },
   } = useVaultPoolByKey(pool.vaultKey)
   const hasVaultShares = userShares && userShares.gt(0)
 
@@ -57,10 +59,13 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
         <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} mr="8px" width={40} height={40} />
       )}
       <CellContent>
-        {showStakedTag && (
+        {showStakedTag && !vaultKey && (
           <Text fontSize="12px" bold color={isFinished ? 'failure' : 'secondary'} textTransform="uppercase">
             {t('Staked')}
           </Text>
+        )}
+        {showStakedTag && vaultKey && (
+          <StakedCakeStatus userShares={userShares} locked={locked} lockEndTime={lockEndTime} />
         )}
         <Text bold={!isMobile} small={isMobile}>
           {title}
@@ -76,3 +81,21 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
 }
 
 export default NameCell
+
+const stakedStatus = {
+  [VaultPosition.None]: { text: '', color: 'secondary' },
+  [VaultPosition.Locked]: { text: 'Locked', color: 'secondary' },
+  [VaultPosition.LockedEnd]: { text: 'Locked End', color: 'secondary' },
+  [VaultPosition.AfterBurning]: { text: 'After Burning', color: 'failure' },
+  [VaultPosition.Flexible]: { text: 'Flexible', color: 'success' },
+}
+
+export const StakedCakeStatus: React.FC<VaultPositionParams> = memo(({ userShares, locked, lockEndTime }) => {
+  const vaultPosition = getVaultPosition({ userShares, locked, lockEndTime })
+  const { t } = useTranslation()
+  return (
+    <Text fontSize="12px" bold color={stakedStatus[vaultPosition].color} textTransform="uppercase">
+      {t(stakedStatus[vaultPosition].text)}
+    </Text>
+  )
+})

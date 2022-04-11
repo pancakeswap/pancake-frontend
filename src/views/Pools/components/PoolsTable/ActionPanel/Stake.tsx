@@ -379,7 +379,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
             </Text>
           </Flex>
         )}
-        {[VaultPosition.AfterBurning, VaultPosition.LockedEnd, VaultPosition.Locked].includes(vaultPosition) && (
+        {[VaultPosition.AfterBurning, VaultPosition.LockedEnd].includes(vaultPosition) && (
           <Box
             width="100%"
             mt={['0', '0', '24px', '24px', '24px']}
