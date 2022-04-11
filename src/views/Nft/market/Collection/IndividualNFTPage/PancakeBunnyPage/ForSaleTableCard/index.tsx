@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useMemo } from 'react'
 import styled from 'styled-components'
 import chunk from 'lodash/chunk'
+import BigNumber from 'bignumber.js'
 import {
   Flex,
   Card,
@@ -56,25 +57,44 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ bunnyId, nftMetadat
     setPage,
     direction: priceSort,
     setDirection,
+    isFetchingNfts,
     isLastPage,
     isValidating,
   } = usePancakeBunnyOnSaleNfts(bunnyId, nftMetadata, itemsPerPage * 10)
 
   const [internalPage, setInternalPage] = useState(1)
 
-  const switchPage = (pageNumber: number) => {
+  const switchPage = useCallback((pageNumber: number) => {
     setInternalPage(pageNumber)
-  }
+  }, [])
 
   const togglePriceSort = useCallback(() => {
     setDirection(priceSort === 'asc' ? 'desc' : 'asc')
     setInternalPage(1)
   }, [setDirection, priceSort])
 
-  const totalNfts = nfts ? nfts.flat() : []
-  const chunkedNfts = chunk(totalNfts, itemsPerPage) ?? []
-  const nftsOnCurrentPage = chunkedNfts[internalPage - 1] ?? []
-  const maxInternalPage = Math.max(1, Math.ceil(totalNfts.length / itemsPerPage))
+  const totalNfts = useMemo(() => {
+    return nfts
+      ? nfts.flat().sort((nftA, nftB) => {
+          const priceA = new BigNumber(nftA.marketData.currentAskPrice)
+          const priceB = new BigNumber(nftB.marketData.currentAskPrice)
+          return priceA.gt(priceB)
+            ? 1 * (priceSort === 'desc' ? -1 : 1)
+            : priceA.eq(priceB)
+            ? 0
+            : -1 * (priceSort === 'desc' ? -1 : 1)
+        })
+      : []
+  }, [nfts, priceSort])
+  const chunkedNfts = useMemo(() => {
+    return chunk(totalNfts, itemsPerPage) ?? []
+  }, [totalNfts, itemsPerPage])
+  const nftsOnCurrentPage = useMemo(() => {
+    return chunkedNfts[internalPage - 1] ?? []
+  }, [chunkedNfts, internalPage])
+  const maxInternalPage = useMemo(() => {
+    return Math.max(1, Math.ceil(totalNfts.length / itemsPerPage))
+  }, [totalNfts, itemsPerPage])
 
   useEffect(() => {
     if (maxInternalPage === internalPage && !isValidating && !isLastPage) {
@@ -149,7 +169,7 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ bunnyId, nftMetadat
             </PageButtons>
           </Flex>
         </>
-      ) : !nfts ? (
+      ) : isFetchingNfts ? (
         <Flex justifyContent="center" alignItems="center" marginTop={30}>
           <Spinner size={42} />
         </Flex>
