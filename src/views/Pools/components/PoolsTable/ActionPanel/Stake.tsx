@@ -9,6 +9,7 @@ import {
   useModal,
   useTooltip,
   Box,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
@@ -24,7 +25,7 @@ import { DeserializedPool } from 'state/types'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import styled from 'styled-components'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
 import useUserDataInVaultPrensenter from 'views/Pools/components/LockedPool/hooks/useUserDataInVaultPrensenter'
@@ -67,6 +68,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   } = pool
   const { t } = useTranslation()
   const { account } = useWeb3React()
+  const { isMobile } = useMatchBreakpoints()
 
   const stakingTokenContract = useERC20(stakingToken.address || '')
   const { handleApprove: handlePoolApprove, pendingTx: pendingPoolTx } = useApprovePool(
@@ -338,17 +340,17 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                 )}
               </IconButtonWrapper>
             )}
-            {vaultPosition >= VaultPosition.LockedEnd && (
+            {!isMobile && vaultPosition >= VaultPosition.LockedEnd && (
               <Flex flex="1" ml="20px" flexDirection="column" alignSelf="flex-start">
                 <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
                   {vaultPosition === VaultPosition.AfterBurning ? t('After Burning') : t('After Burning In')}
                 </Text>
-                <Text lineHeight="1" mt="8px" pt="16px" bold fontSize="20px" color="failure">
+                <Text lineHeight="1" mt="8px" bold fontSize="20px" color="failure">
                   {vaultPosition === VaultPosition.AfterBurning ? (
                     isUndefinedOrNull(currentOverdueFee) ? (
                       '-'
                     ) : (
-                      t('%amount% burned', { amount: getBalanceNumber(currentOverdueFee) })
+                      t('%amount% Burned', { amount: getFullDisplayBalance(currentOverdueFee, 18, 5) })
                     )
                   ) : (
                     <BurningCountDown lockEndTime={lockEndTime} />
@@ -359,6 +361,24 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
             {tooltipVisible && tooltip}
           </ActionContent>
         </ActionContainer>
+        {isMobile && vaultPosition >= VaultPosition.LockedEnd && (
+          <Flex mb="24px" justifyContent="space-between">
+            <Text fontSize="14px" color="failure" as="span">
+              {vaultPosition === VaultPosition.AfterBurning ? t('After Burning') : t('After Burning In')}
+            </Text>
+            <Text fontSize="14px" bold color="failure">
+              {vaultPosition === VaultPosition.AfterBurning ? (
+                isUndefinedOrNull(currentOverdueFee) ? (
+                  '-'
+                ) : (
+                  t('%amount% Burned', { amount: getFullDisplayBalance(currentOverdueFee, 18, 5) })
+                )
+              ) : (
+                <BurningCountDown lockEndTime={lockEndTime} />
+              )}
+            </Text>
+          </Flex>
+        )}
         {[VaultPosition.AfterBurning, VaultPosition.LockedEnd, VaultPosition.Locked].includes(vaultPosition) && (
           <Box
             width="100%"

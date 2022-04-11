@@ -9,7 +9,7 @@ import { BalanceWithLoading } from 'components/Balance'
 import Divider from 'components/Divider'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import BurningCountDown from './Common/BurningCountDown'
 import LockedActions from './Common/LockedActions'
 import useUserDataInVaultPrensenter from './hooks/useUserDataInVaultPrensenter'
@@ -137,7 +137,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
           <Text color="textSubtle" bold>
             {isUndefinedOrNull(userData?.currentOverdueFee)
               ? '-'
-              : t('%amount% burned', { amount: getBalanceNumber(userData?.currentOverdueFee) })}
+              : t('%amount% Burned', { amount: getFullDisplayBalance(userData?.currentOverdueFee, 18, 5) })}
           </Text>
         </Flex>
       )}
