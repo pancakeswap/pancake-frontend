@@ -69,6 +69,7 @@ function CurrencyRow({
   style: CSSProperties
 }) {
   const { account } = useActiveWeb3React()
+  const { t } = useTranslation()
   const key = currencyKey(currency)
   const selectedTokenList = useCombinedActiveList()
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
@@ -88,7 +89,7 @@ function CurrencyRow({
       <Column>
         <Text bold>{currency.symbol}</Text>
         <Text color="textSubtle" small ellipsis maxWidth="200px">
-          {!isOnSelectedList && customAdded && 'Added by user •'} {currency.name}
+          {!isOnSelectedList && customAdded && `${t('Added by user')} •`} {currency.name}
         </Text>
       </Column>
       <RowFixed style={{ justifySelf: 'flex-end' }}>
@@ -106,7 +107,7 @@ export default function CurrencyList({
   onCurrencySelect,
   otherCurrency,
   fixedListRef,
-  showETH,
+  showBNB,
   showImportView,
   setImportToken,
   breakIndex,
@@ -118,20 +119,20 @@ export default function CurrencyList({
   onCurrencySelect: (currency: Currency) => void
   otherCurrency?: Currency | null
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
-  showETH: boolean
+  showBNB: boolean
   showImportView: () => void
   setImportToken: (token: Token) => void
   breakIndex: number | undefined
 }) {
   const itemData: (Currency | undefined)[] = useMemo(() => {
-    let formatted: (Currency | undefined)[] = showETH
+    let formatted: (Currency | undefined)[] = showBNB
       ? [Currency.ETHER, ...currencies, ...inactiveCurrencies]
       : [...currencies, ...inactiveCurrencies]
     if (breakIndex !== undefined) {
       formatted = [...formatted.slice(0, breakIndex), undefined, ...formatted.slice(breakIndex, formatted.length)]
     }
     return formatted
-  }, [breakIndex, currencies, inactiveCurrencies, showETH])
+  }, [breakIndex, currencies, inactiveCurrencies, showBNB])
 
   const { chainId } = useActiveWeb3React()
 

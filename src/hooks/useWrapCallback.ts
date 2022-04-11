@@ -5,7 +5,7 @@ import { useTranslation } from 'contexts/Localization'
 import tryParseAmount from 'utils/tryParseAmount'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { useCurrencyBalance } from '../state/wallet/hooks'
-import { useWETHContract } from './useContract'
+import { useWBNBContract } from './useContract'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
 
 export enum WrapType {
@@ -29,14 +29,14 @@ export default function useWrapCallback(
   const { t } = useTranslation()
   const { chainId, account } = useActiveWeb3React()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const wethContract = useWETHContract()
+  const wbnbContract = useWBNBContract()
   const balance = useCurrencyBalance(account ?? undefined, inputCurrency)
   // we can always parse the amount typed as the input currency, since wrapping is 1:1
   const inputAmount = useMemo(() => tryParseAmount(typedValue, inputCurrency), [inputCurrency, typedValue])
   const addTransaction = useTransactionAdder()
 
   return useMemo(() => {
-    if (!wethContract || !chainId || !inputCurrency || !outputCurrency) return NOT_APPLICABLE
+    if (!wbnbContract || !chainId || !inputCurrency || !outputCurrency) return NOT_APPLICABLE
 
     const sufficientBalance = inputAmount && balance && !balance.lessThan(inputAmount)
 
@@ -47,7 +47,7 @@ export default function useWrapCallback(
           sufficientBalance && inputAmount
             ? async () => {
                 try {
-                  const txReceipt = await callWithGasPrice(wethContract, 'deposit', undefined, {
+                  const txReceipt = await callWithGasPrice(wbnbContract, 'deposit', undefined, {
                     value: `0x${inputAmount.raw.toString(16)}`,
                   })
                   addTransaction(txReceipt, { summary: `Wrap ${inputAmount.toSignificant(6)} BNB to WBNB` })
@@ -66,7 +66,7 @@ export default function useWrapCallback(
           sufficientBalance && inputAmount
             ? async () => {
                 try {
-                  const txReceipt = await callWithGasPrice(wethContract, 'withdraw', [
+                  const txReceipt = await callWithGasPrice(wbnbContract, 'withdraw', [
                     `0x${inputAmount.raw.toString(16)}`,
                   ])
                   addTransaction(txReceipt, { summary: `Unwrap ${inputAmount.toSignificant(6)} WBNB to BNB` })
@@ -79,5 +79,5 @@ export default function useWrapCallback(
       }
     }
     return NOT_APPLICABLE
-  }, [wethContract, chainId, inputCurrency, outputCurrency, t, inputAmount, balance, addTransaction, callWithGasPrice])
+  }, [wbnbContract, chainId, inputCurrency, outputCurrency, t, inputAmount, balance, addTransaction, callWithGasPrice])
 }

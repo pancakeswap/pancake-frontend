@@ -323,7 +323,14 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
               variant="text"
               p="0"
               height="auto"
-              onClick={() => registerToken(tokenAddress, earningToken.symbol, earningToken.decimals)}
+              onClick={() =>
+                registerToken(
+                  tokenAddress,
+                  earningToken.symbol,
+                  earningToken.decimals,
+                  `https://tokens.pancakeswap.finance/images/${tokenAddress}.png`,
+                )
+              }
             >
               <Text color="primary">{t('Add to Metamask')}</Text>
               <MetamaskIcon ml="4px" />

@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
 import sum from 'lodash/sum'
@@ -35,20 +36,13 @@ const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress
     refetch,
   } = useCompleteNft(collectionAddress, tokenId)
 
-  if (!nft || !collection) {
-    // Normally we already show a 404 page here if no nft, just put this checking here for safety.
+  const properties = nft?.attributes
 
-    // For now this if is used to show loading spinner while we're getting the data
-    return <PageLoader />
-  }
-
-  const properties = nft.attributes
-
-  const getAttributesRarity = () => {
-    if (distributionData && !isFetchingDistribution) {
+  const attributesRarity = useMemo(() => {
+    if (distributionData && !isFetchingDistribution && properties) {
       return Object.keys(distributionData).reduce((rarityMap, traitType) => {
         const total = sum(Object.values(distributionData[traitType]))
-        const nftAttributeValue = nft.attributes.find((attribute) => attribute.traitType === traitType)?.value
+        const nftAttributeValue = properties.find((attribute) => attribute.traitType === traitType)?.value
         const count = distributionData[traitType][nftAttributeValue]
         const rarity = (count / total) * 100
         return {
@@ -58,6 +52,13 @@ const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress
       }, {})
     }
     return {}
+  }, [properties, isFetchingDistribution, distributionData])
+
+  if (!nft || !collection) {
+    // Normally we already show a 404 page here if no nft, just put this checking here for safety.
+
+    // For now this if is used to show loading spinner while we're getting the data
+    return <PageLoader />
   }
 
   return (
@@ -66,7 +67,7 @@ const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress
       <TwoColumnsContainer flexDirection={['column', 'column', 'row']}>
         <Flex flexDirection="column" width="100%">
           <ManageNFTsCard nft={nft} isOwnNft={isOwnNft} isLoading={isLoading} onSuccess={refetch} />
-          <PropertiesCard properties={properties} rarity={getAttributesRarity()} />
+          <PropertiesCard properties={properties} rarity={attributesRarity} />
           <DetailsCard contractAddress={collectionAddress} ipfsJson={nft?.marketData?.metadataUrl} />
         </Flex>
         <OwnerActivityContainer flexDirection="column" width="100%">
