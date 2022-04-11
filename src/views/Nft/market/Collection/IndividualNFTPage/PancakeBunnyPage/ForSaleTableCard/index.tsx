@@ -158,7 +158,7 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ bunnyId, nftMetadat
               >
                 <ArrowBackIcon color={internalPage === 1 ? 'textDisabled' : 'primary'} />
               </Arrow>
-              <Text>{t('Page %page% of %maxPage%', { page: internalPage, maxPage: maxInternalPage })}</Text>
+              <Text>{t('Page %page%', { page: internalPage })}</Text>
               <Arrow
                 onClick={() => {
                   switchPage(internalPage === maxInternalPage ? internalPage : internalPage + 1)
