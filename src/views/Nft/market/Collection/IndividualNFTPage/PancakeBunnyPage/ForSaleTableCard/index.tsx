@@ -71,17 +71,16 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ bunnyId, nftMetadat
     setInternalPage(1)
   }, [setDirection, priceSort])
 
-  const isLoading = nfts ? isValidating && nfts.length < page : true
-  const totalNftsOnCurrentPage = !isLoading ? (nfts.length < page ? nfts[nfts.length - 1] : nfts[page - 1]) : []
-  const chunkedNftsOnCurrentPage = chunk(totalNftsOnCurrentPage, itemsPerPage) ?? []
-  const nftsOnCurrentPage = chunkedNftsOnCurrentPage[internalPage - 1] ?? []
-  const maxInternalPage = Math.max(1, nfts ? (nfts.length - 1) * itemsPerPage + chunkedNftsOnCurrentPage.length : 0)
+  const totalNfts = nfts ? nfts.flat() : []
+  const chunkedNfts = chunk(totalNfts, itemsPerPage) ?? []
+  const nftsOnCurrentPage = chunkedNfts[internalPage - 1] ?? []
+  const maxInternalPage = Math.max(1, Math.ceil(totalNfts.length / itemsPerPage))
 
   useEffect(() => {
-    if (maxInternalPage === internalPage && !isLoading && !isLastPage) {
+    if (maxInternalPage === internalPage && !isValidating && !isLastPage) {
       setPage(page + 1)
     }
-  }, [internalPage, isLastPage, isLoading, maxInternalPage, page, setPage])
+  }, [internalPage, isLastPage, isValidating, maxInternalPage, page, setPage])
 
   useEffect(() => {
     setInternalPage(1)
@@ -89,15 +88,10 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ bunnyId, nftMetadat
 
   useEffect(() => {
     // This is a workaround for when on sale nft's size decreased, page still indicates a data where nft's had larger size
-    if (nfts && !isLoading) {
-      if (nfts.length < page) {
-        setPage(nfts.length)
-        setInternalPage(maxInternalPage)
-      } else if (maxInternalPage < internalPage) {
-        setInternalPage(maxInternalPage)
-      }
+    if (nfts && !isValidating && maxInternalPage < internalPage) {
+      setInternalPage(maxInternalPage)
     }
-  }, [nfts, page, setPage, isLoading, maxInternalPage, internalPage])
+  }, [nfts, page, setPage, isValidating, maxInternalPage, internalPage])
 
   return (
     <StyledCard hasManyPages>
@@ -155,7 +149,7 @@ const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ bunnyId, nftMetadat
             </PageButtons>
           </Flex>
         </>
-      ) : isLoading ? (
+      ) : !nfts ? (
         <Flex justifyContent="center" alignItems="center" marginTop={30}>
           <Spinner size={42} />
         </Flex>
