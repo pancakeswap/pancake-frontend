@@ -125,7 +125,6 @@ const Farms: React.FC = ({ children }) => {
   const [sortOption, setSortOption] = useState('hot')
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const chosenFarmsLength = useRef(0)
-  const showMigrationBanner = false
 
   const isArchived = pathname.includes('archived')
   const isInactive = pathname.includes('history')
@@ -352,7 +351,7 @@ const Farms: React.FC = ({ children }) => {
           </Button>
         </NextLinkFromReactRouter>
       </PageHeader>
-      {showMigrationBanner && <MigrationSticky />}
+      <MigrationSticky />
       <Page>
         <ControlContainer>
           <ViewControls>
