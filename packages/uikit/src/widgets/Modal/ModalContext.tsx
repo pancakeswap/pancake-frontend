@@ -1,4 +1,4 @@
-import { AnimatePresence, m, Variants, LazyMotion, domAnimation } from "framer-motion";
+import { AnimatePresence, Variants, LazyMotion, domAnimation } from "framer-motion";
 import React, { createContext, useState, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { Overlay } from "../../components/Overlay";

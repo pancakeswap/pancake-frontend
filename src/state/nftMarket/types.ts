@@ -17,10 +17,6 @@ export interface State {
     filters: Record<string, NftFilter> // string is the collection address
     activityFilters: Record<string, NftActivityFilter> // string is the collection address
     tryVideoNftMedia: boolean
-    loadingState: {
-      isUpdatingPancakeBunnies: boolean
-      latestPancakeBunniesUpdateAt: number
-    }
   }
 }
 

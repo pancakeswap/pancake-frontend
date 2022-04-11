@@ -8,10 +8,10 @@ import { CHAIN_ID } from 'config/constants/networks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
+import { TokenAddressMap } from 'state/types'
 import {
   combinedTokenMapFromActiveUrlsSelector,
   combinedTokenMapFromOfficialsUrlsSelector,
-  TokenAddressMap,
   useUnsupportedTokenList,
 } from '../state/lists/hooks'
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'

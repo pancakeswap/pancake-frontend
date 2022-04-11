@@ -7,7 +7,8 @@ import { FixedSizeList } from 'react-window'
 import { useAudioModeManager } from 'state/user/hooks'
 import useDebounce from 'hooks/useDebounce'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { TagInfo, useAllLists, useInactiveListUrls, WrappedTokenInfo } from 'state/lists/hooks'
+import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
+import { TagInfo, WrappedTokenInfo } from 'state/types'
 import { useAllTokens, useToken, useIsUserAddedToken } from '../../hooks/Tokens'
 import { isAddress } from '../../utils'
 import Column, { AutoColumn } from '../Layout/Column'
@@ -93,7 +94,7 @@ function CurrencySearch({
 
   const [audioPlay] = useAudioModeManager()
 
-  const showETH: boolean = useMemo(() => {
+  const showBNB: boolean = useMemo(() => {
     const s = debouncedQuery.toLowerCase().trim()
     return s === '' || s === 'b' || s === 'bn' || s === 'bnb'
   }, [debouncedQuery])
@@ -185,7 +186,7 @@ function CurrencySearch({
           <Box margin="24px -24px">
             <CurrencyList
               height={390}
-              showETH={showETH}
+              showBNB={showBNB}
               currencies={filteredSortedTokens}
               inactiveCurrencies={filteredInactiveTokens}
               breakIndex={

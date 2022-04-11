@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Flex, useTooltip } from '@pancakeswap/uikit'
-import { useLoadingState } from 'state/nftMarket/hooks'
 import { useTranslation } from 'contexts/Localization'
 import CountdownCircle from './CountdownCircle'
 
-const UpdateIndicator = () => {
+const UpdateIndicator: React.FC<{ isFetchingPancakeBunnies: boolean }> = ({ isFetchingPancakeBunnies }) => {
   const { t } = useTranslation()
   const [secondsRemaining, setSecondsRemaining] = useState(10)
-  const { isUpdatingPancakeBunnies: isFetchingMorePancakeBunnies } = useLoadingState()
   const { tooltip, tooltipVisible, targetRef } = useTooltip(t('Items in the table update every 10 seconds'), {
     placement: 'auto',
   })
@@ -23,14 +21,14 @@ const UpdateIndicator = () => {
   }, [])
 
   useEffect(() => {
-    if (!isFetchingMorePancakeBunnies) {
+    if (!isFetchingPancakeBunnies) {
       setSecondsRemaining(10)
     }
-  }, [isFetchingMorePancakeBunnies])
+  }, [isFetchingPancakeBunnies])
 
   return (
     <Flex justifyContent="center" ref={targetRef}>
-      <CountdownCircle secondsRemaining={secondsRemaining} isUpdating={isFetchingMorePancakeBunnies} />
+      <CountdownCircle secondsRemaining={secondsRemaining} isUpdating={isFetchingPancakeBunnies} />
       {tooltipVisible && tooltip}
     </Flex>
   )

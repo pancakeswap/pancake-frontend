@@ -168,7 +168,7 @@ const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bun
           <ConnectWalletButton />
         </Flex>
       )}
-      {useHasNoBunnies && (
+      {account && useHasNoBunnies && (
         <Text px="16px" pb="16px" color="textSubtle">
           {t('You don’t have any of this item.')}
         </Text>
