@@ -59,14 +59,14 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
         <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} mr="8px" width={40} height={40} />
       )}
       <CellContent>
-        {showStakedTag && !vaultKey && (
-          <Text fontSize="12px" bold color={isFinished ? 'failure' : 'secondary'} textTransform="uppercase">
-            {t('Staked')}
-          </Text>
-        )}
-        {showStakedTag && vaultKey && (
-          <StakedCakeStatus userShares={userShares} locked={locked} lockEndTime={lockEndTime} />
-        )}
+        {showStakedTag &&
+          (vaultKey ? (
+            <StakedCakeStatus userShares={userShares} locked={locked} lockEndTime={lockEndTime} />
+          ) : (
+            <Text fontSize="12px" bold color={isFinished ? 'failure' : 'secondary'} textTransform="uppercase">
+              {t('Staked')}
+            </Text>
+          ))}
         <Text bold={!isMobile} small={isMobile}>
           {title}
         </Text>
