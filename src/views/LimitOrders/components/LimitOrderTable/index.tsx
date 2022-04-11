@@ -6,8 +6,6 @@ import OrderTab from './OrderTab'
 import { ORDER_CATEGORY } from '../../types'
 
 import CompactLimitOrderTable from './CompactLimitOrderTable'
-import NoOrdersMessage from './NoOrdersMessage'
-import LoadingTable from './LoadingTable'
 import SpaciousLimitOrderTable from './SpaciousLimitOrderTable'
 import Navigation from './TableNavigation'
 
@@ -15,14 +13,8 @@ const OrderTable: React.FC<{ isCompact: boolean; orderCategory: ORDER_CATEGORY }
   ({ orderCategory, isCompact }) => {
     const orders = useGelatoLimitOrdersHistory(orderCategory)
 
-    if (!orders) return <LoadingTable />
-
-    if (!orders?.length) {
-      return <NoOrdersMessage orderCategory={orderCategory} />
-    }
-
     return (
-      <Navigation data={orders} resetFlag={orderCategory}>
+      <Navigation data={orders} orderCategory={orderCategory}>
         {({ paginatedData }) =>
           isCompact ? (
             <CompactLimitOrderTable orders={paginatedData} />

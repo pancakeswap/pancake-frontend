@@ -1,5 +1,5 @@
-import { ChainId, Token } from '@pancakeswap/sdk'
-import { Tags, TokenInfo, TokenList } from '@uniswap/token-lists'
+import { ChainId } from '@pancakeswap/sdk'
+import { TokenList } from '@uniswap/token-lists'
 import { useMemo } from 'react'
 import uniqBy from 'lodash/uniqBy'
 import groupBy from 'lodash/groupBy'
@@ -7,15 +7,11 @@ import fromPairs from 'lodash/fromPairs'
 import { useSelector } from 'react-redux'
 import { createSelector } from '@reduxjs/toolkit'
 import { DEFAULT_LIST_OF_LISTS, OFFICIAL_LISTS } from 'config/constants/lists'
-import { AppState } from '../index'
 import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-default.tokenlist.json'
 import { UNSUPPORTED_LIST_URLS } from '../../config/constants/lists'
 import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
-
-type TagDetails = Tags[keyof Tags]
-export interface TagInfo extends TagDetails {
-  id: string
-}
+import { AppState } from '../index'
+import { WrappedTokenInfo, TagInfo, TokenAddressMap, EMPTY_LIST } from '../types'
 
 // use ordering of default list of lists to assign priority
 function sortByListPriority(urlA: string, urlB: string) {
@@ -30,37 +26,6 @@ function sortByListPriority(urlA: string, urlB: string) {
 
 function enumKeys<O extends object, K extends keyof O = keyof O>(obj: O): K[] {
   return Object.keys(obj).filter((k) => Number.isNaN(+k)) as K[]
-}
-
-/**
- * Token instances created from token info.
- */
-export class WrappedTokenInfo extends Token {
-  public readonly tokenInfo: TokenInfo
-
-  public readonly tags: TagInfo[]
-
-  constructor(tokenInfo: TokenInfo, tags: TagInfo[]) {
-    super(tokenInfo.chainId, tokenInfo.address, tokenInfo.decimals, tokenInfo.symbol, tokenInfo.name)
-    this.tokenInfo = tokenInfo
-    this.tags = tags
-  }
-
-  public get logoURI(): string | undefined {
-    return this.tokenInfo.logoURI
-  }
-}
-
-export type TokenAddressMap = Readonly<{
-  [chainId in ChainId]: Readonly<{ [tokenAddress: string]: { token: WrappedTokenInfo; list: TokenList } }>
-}>
-
-/**
- * An empty result, useful as a default.
- */
-const EMPTY_LIST: TokenAddressMap = {
-  [ChainId.MAINNET]: {},
-  [ChainId.TESTNET]: {},
 }
 
 // -------------------------------------

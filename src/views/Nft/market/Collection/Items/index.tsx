@@ -37,7 +37,7 @@ const Items = () => {
               <Select options={sortByItems} onOptionChange={handleChange} />
             </Box>
           </Flex>
-          <PancakeBunniesCollectionNfts collection={collection} sortBy={sortBy} />
+          <PancakeBunniesCollectionNfts address={collection?.address} sortBy={sortBy} />
         </Container>
       ) : (
         <CollectionWrapper collection={collection} />

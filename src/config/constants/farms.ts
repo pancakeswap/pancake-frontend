@@ -90,6 +90,29 @@ const farms: SerializedFarmConfig[] = [
 //    * V3 by order of release (some may be out of PID order due to multiplier boost)
 //    */
 //   {
+//     pid: 522,
+//     v1pid: 522,
+//     lpSymbol: 'TINC-BNB LP',
+//     lpAddresses: {
+//       97: '',
+//       56: '0x0d5b9A0f4315a4bcE36D1Ea7d6B6d3123167aFAa',
+//     },
+//     token: serializedTokens.tinc,
+//     quoteToken: serializedTokens.wbnb,
+//   },
+//   {
+//     pid: 521,
+//     v1pid: 521,
+//     lpSymbol: 'YEL-BNB LP',
+//     lpAddresses: {
+//       97: '',
+//       56: '0x8290d3CA64f712de9FB7220353dAa55bf388F3A3',
+//     },
+//     token: serializedTokens.yel,
+//     quoteToken: serializedTokens.wbnb,
+//     isCommunity: true,
+//   },
+//   {
 //     pid: 517,
 //     v1pid: 517,
 //     lpSymbol: 'TEM-BUSD LP',
@@ -100,6 +123,51 @@ const farms: SerializedFarmConfig[] = [
 //     token: serializedTokens.tem,
 //     quoteToken: serializedTokens.busd,
 //     isCommunity: true,
+//   },
+//   {
+//     pid: 386,
+//     v1pid: 386,
+//     lpSymbol: 'HOTCROSS-BNB LP',
+//     lpAddresses: {
+//       97: '',
+//       56: '0xf23bad605e94de0e3b60c9718a43a94a5af43915',
+//     },
+//     token: serializedTokens.hotcross,
+//     quoteToken: serializedTokens.wbnb,
+//     isCommunity: true,
+//   },
+//   {
+//     pid: 520,
+//     v1pid: 520,
+//     lpSymbol: 'PEX-BNB LP',
+//     lpAddresses: {
+//       97: '',
+//       56: '0x5ca96E8bDe0Bc587DaC9e02422Fd205b1102DAa4',
+//     },
+//     token: serializedTokens.pex,
+//     quoteToken: serializedTokens.wbnb,
+//   },
+//   {
+//     pid: 519,
+//     v1pid: 519,
+//     lpSymbol: 'GMI-BNB LP',
+//     lpAddresses: {
+//       97: '',
+//       56: '0x58d4B61983Ca0aFE6E352e90719F403E24e016F4',
+//     },
+//     token: serializedTokens.gmi,
+//     quoteToken: serializedTokens.wbnb,
+//   },
+//   {
+//     pid: 518,
+//     v1pid: 518,
+//     lpSymbol: 'FROYO-CAKE LP',
+//     lpAddresses: {
+//       97: '',
+//       56: '0x1CCc3cC95c8148477Afd18a552f03835Be9D182a',
+//     },
+//     token: serializedTokens.froyo,
+//     quoteToken: serializedTokens.cake,
 //   },
 //   {
 //     pid: 512,

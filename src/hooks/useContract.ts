@@ -16,6 +16,7 @@ import {
   getClaimRefundContract,
   getTradingCompetitionContract,
   getTradingCompetitionContractV2,
+  getTradingCompetitionContractMobox,
   getEasterNftContract,
   getErc721Contract,
   getCakeVaultV2Contract,
@@ -170,6 +171,14 @@ export const useTradingCompetitionContractV2 = (withSignerIfPossible = true) => 
   )
 }
 
+export const useTradingCompetitionContractMobox = (withSignerIfPossible = true) => {
+  const { library, account } = useActiveWeb3React()
+  return useMemo(
+    () => getTradingCompetitionContractMobox(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [library, withSignerIfPossible, account],
+  )
+}
+
 export const useEasterNftContract = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getEasterNftContract(library.getSigner()), [library])
@@ -287,7 +296,7 @@ export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: b
   return useContract<Erc20>(tokenAddress, ERC20_ABI, withSignerIfPossible)
 }
 
-export function useWETHContract(withSignerIfPossible?: boolean): Contract | null {
+export function useWBNBContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
   return useContract<Weth>(chainId ? WETH[chainId].address : undefined, WETH_ABI, withSignerIfPossible)
 }

@@ -20,9 +20,6 @@
     "noFallthroughCasesInSwitch": true,
     "downlevelIteration": true,
     "incremental": true,
-    "sourceMap": true,
-    "inlineSources": true,
-    "sourceRoot": "/",
     "paths": {
       "@pancakeswap/uikit": ["../packages/uikit/src/index.ts"]
     }
