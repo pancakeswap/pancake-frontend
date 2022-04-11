@@ -48,7 +48,6 @@ const StyledActionPanel = styled.div<{ expanded: boolean }>`
   flex-direction: column;
   justify-content: center;
   padding: 24px 16px;
-  border-radius: 0 0 16px 16px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
