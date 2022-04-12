@@ -35,7 +35,12 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBal
   const [onPresentStake] = useModal(
     <VaultStakeModal stakingMax={stakingTokenBalance} performanceFee={performanceFee} pool={pool} />,
   )
-  const [onPresentUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
+  const [onPresentUnstake] = useModal(
+    <VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />,
+    true,
+    true,
+    'withdraw-vault',
+  )
 
   return (
     <>

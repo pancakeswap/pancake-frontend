@@ -1,8 +1,16 @@
 import BigNumber from 'bignumber.js'
+import { UNLOCK_FREE_DURATION } from 'config/constants/pools'
 import { addWeeks, addDays } from 'date-fns'
 import { VaultPosition, getVaultPosition } from './cakePool'
+import { getCakeVaultV2Contract } from './contractHelpers'
 
 describe('cakePool', () => {
+  it('UNLOCK_FREE_DURATION should be equal to SC', async () => {
+    const cakeVault = getCakeVaultV2Contract()
+    const res = await cakeVault.UNLOCK_FREE_DURATION()
+    expect(res.eq(UNLOCK_FREE_DURATION)).toBeTruthy()
+  })
+
   const NOW = new Date('2022-01-01').getTime()
 
   jest.useFakeTimers().setSystemTime(NOW)
