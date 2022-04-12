@@ -73,7 +73,7 @@ const MigrationSticky: React.FC<MigrationStickyProps> = ({ step, handleClick }) 
   const title: string = isStep1 ? t('Unstaking LP Tokens and CAKE') : t('Stake in the new contract.')
   const subTitle: string = isStep1
     ? t('All the earned CAKE will be harvested to your wallet upon unstake.')
-    : t('Each farm/pool has to be individually enable before staking.')
+    : t('Each farm and pool has to be individually enabled before staking.')
   const buttonText: string = isStep1 ? t('Go to Stake') : t('Skip')
 
   if (!account) {
