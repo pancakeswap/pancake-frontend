@@ -14,6 +14,7 @@ import {
 import { CLAIM, OVER } from 'config/constants/trading-competition/phases'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
+import { SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import UserPrizeGrid from './UserPrizeGrid'
 import ClaimModal from '../ClaimModal'
 import { YourScoreProps } from '../../types'
@@ -120,6 +121,24 @@ const ScoreCard: React.FC<YourScoreProps> = ({
           </StyledButton>
           <LaurelRightIcon />
         </StyledCardFooter>
+      )}
+      {hasRegistered && (
+        <Flex p="16px" justifyContent="flex-end">
+          <SubgraphHealthIndicator
+            subgraphName="pancakeswap/trading-competition-v3"
+            inline
+            obeyGlobalSetting={false}
+            customDescriptions={{
+              delayed: t(
+                'Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.',
+              ),
+              slow: t(
+                'Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.',
+              ),
+              healthy: t('No issues with the subgraph.'),
+            }}
+          />
+        </Flex>
       )}
     </StyledCard>
   )
