@@ -45,7 +45,7 @@ const ConvertToFlexibleButton: React.FC<ButtonProps> = (props) => {
   }, [t, toastSuccess, account, callWithGasPrice, dispatch, fetchWithCatchTxError, vaultPoolContract])
 
   return (
-    <Button width="100%" disabled={pendingTx} mx="4px" onClick={() => handleUnlock()} {...props}>
+    <Button width="100%" disabled={pendingTx} onClick={() => handleUnlock()} {...props}>
       {pendingTx ? t('Converting...') : t('Convert to Flexible')}
     </Button>
   )

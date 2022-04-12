@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { Message, MessageText, Box, Flex } from '@pancakeswap/uikit'
+import { Message, MessageText, Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { VaultPosition } from 'utils/cakePool'
 
@@ -14,7 +14,7 @@ const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
   isInline,
 }) => {
   const { t } = useTranslation()
-
+  const { isMobile } = useMatchBreakpoints()
   const msg = {
     [VaultPosition.None]: null,
     [VaultPosition.LockedEnd]:
@@ -22,16 +22,20 @@ const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
     [VaultPosition.AfterBurning]:
       'The lock period has ended. To avoid more rewards being burned, we recommend you unlock your position or adjust it to start a new lock.',
   }
-
-  const Container = isInline ? Flex : Box
+  const isTableView = isInline && !isMobile
+  const Container = isTableView ? Flex : Box
 
   return (
     <Message
       variant="warning"
       mb="16px"
       action={
-        <Container mt={!isInline && '8px'} ml="10px">
-          <ConvertToFlexibleButton mb={!isInline && '8px'} minWidth="200px" mr="14px" />
+        <Container mt={!isTableView && '8px'} ml="10px">
+          <ConvertToFlexibleButton
+            mb={!isTableView && '8px'}
+            minWidth={isTableView && '200px'}
+            mr={isTableView && '14px'}
+          />
           <ExtendButton
             modalTitle={t('Renew')}
             lockEndTime="0"
@@ -44,7 +48,7 @@ const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
           </ExtendButton>
         </Container>
       }
-      actionInline={isInline}
+      actionInline={isTableView}
     >
       <MessageText>{msg[position]}</MessageText>
     </Message>
