@@ -30,7 +30,7 @@ export const StakingApy = memo(({ pool }: { pool: DeserializedPool }) => {
     <LightGreyCard>
       <Flex alignItems="center" justifyContent="space-between">
         <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-          {t('Flexible staking')} APY:
+          {t('Flexible')} APY:
         </Text>
         {flexibleApy ? (
           <AprLabelContainer alignItems="center" justifyContent="flex-start">
@@ -55,7 +55,7 @@ export const StakingApy = memo(({ pool }: { pool: DeserializedPool }) => {
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
         <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-          {t('Locked staking')} APY:
+          {t('Locked')} APY:
         </Text>
         {lockedApy ? (
           <FlexGap gap="4px" flexWrap="wrap" justifyContent="flex-end">

@@ -14,7 +14,7 @@ export const VaultRoiCalculatorModal = ({
   initialView,
   ...rest
 }: { pool: DeserializedPool; initialView?: number } & Partial<RoiCalculatorModalProps>) => {
-  const { flexibleApy } = useVaultApy()
+  const { getLockedApy } = useVaultApy()
   const { t } = useTranslation()
 
   const [cakeVaultView, setCakeVaultView] = useState(initialView || 0)
@@ -24,7 +24,7 @@ export const VaultRoiCalculatorModal = ({
   return (
     <RoiCalculatorModal
       stakingTokenSymbol={pool.stakingToken.symbol}
-      apy={+flexibleApy}
+      apy={+getLockedApy(duration)}
       initialState={{
         controls: {
           compounding: false, // no compounding if apy is specify
