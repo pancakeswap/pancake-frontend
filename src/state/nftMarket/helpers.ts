@@ -10,7 +10,6 @@ import { getNftMarketContract } from 'utils/contractHelpers'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { formatBigNumber } from 'utils/formatBalance'
-import groupBy from 'lodash/groupBy'
 import { getNftMarketAddress } from 'utils/addressHelpers'
 import nftMarketAbi from 'config/abi/nftMarket.json'
 import {
@@ -1111,37 +1110,6 @@ const fetchWalletMarketData = async (
   return walletMarketDataResponses.flat()
 }
 
-const fetchMarketDataForSaleNfts = async (collections: ApiCollections, account: string): Promise<TokenMarketData[]> => {
-  try {
-    const onChainForSaleNfts = await getAccountNftsOnChainMarketData(collections, account)
-
-    const onChainForSaleNftsCombinedRequests = Object.entries(
-      groupBy(onChainForSaleNfts, (onChainTokenMarketData) => onChainTokenMarketData.collection.id),
-    ).map(async ([collectionAddress, onChainTokenMarketDatas]) => {
-      const tokenIds = onChainTokenMarketDatas.map((marketData) => marketData.tokenId)
-      const marketDataForSaleNfts = await getNftsMarketData({
-        tokenId_in: tokenIds,
-        collection: collectionAddress,
-      })
-      return onChainTokenMarketDatas.map((onChainTokenMarketData) => {
-        const marketDataForSaleNft = marketDataForSaleNfts.find(
-          (tokenMarketData) => tokenMarketData.tokenId === onChainTokenMarketData.tokenId,
-        )
-        return {
-          ...marketDataForSaleNft,
-          ...onChainTokenMarketData,
-        }
-      })
-    })
-
-    const onChainForSaleNftsCombined = (await Promise.all(onChainForSaleNftsCombinedRequests)).flat()
-    return onChainForSaleNftsCombined
-  } catch (error) {
-    console.error('Failed to fetch NFTs combined market data', error)
-    return []
-  }
-}
-
 /**
  * Get in-wallet, on-sale & profile pic NFT metadata, complete with market data for a given account
  * @param account
@@ -1183,10 +1151,10 @@ export const getCompleteAccountNftData = async (
     })
     .map((nft) => nft.tokenId)
 
-  const marketDataForSaleNfts = await fetchMarketDataForSaleNfts(collections, account)
-  const tokenIdsForSale = marketDataForSaleNfts.map((nft) => nft.tokenId)
+  const onChainForSaleNfts = await getAccountNftsOnChainMarketData(collections, account)
+  const tokenIdsForSale = onChainForSaleNfts.map((nft) => nft.tokenId)
 
-  const forSaleNftIds = marketDataForSaleNfts.map((nft) => {
+  const forSaleNftIds = onChainForSaleNfts.map((nft) => {
     return { collectionAddress: nft.collection.id, tokenId: nft.tokenId }
   })
 
@@ -1197,7 +1165,7 @@ export const getCompleteAccountNftData = async (
 
   const completeNftData = combineNftMarketAndMetadata(
     metadataForAllNfts,
-    marketDataForSaleNfts,
+    onChainForSaleNfts,
     walletNftsWithMarketData,
     walletTokenIds,
     tokenIdsForSale,
