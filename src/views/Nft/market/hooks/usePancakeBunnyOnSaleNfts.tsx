@@ -14,7 +14,6 @@ import { FetchStatus } from '../../../../config/constants/types'
 import { formatBigNumber } from '../../../../utils/formatBalance'
 
 const fetchMarketDataNfts = async (
-  account: string,
   bunnyId: string,
   nftMetadata: ApiResponseCollectionTokens,
   direction: 'asc' | 'desc',
@@ -25,7 +24,6 @@ const fetchMarketDataNfts = async (
     collection: pancakeBunniesAddress.toLowerCase(),
     otherId: bunnyId,
     isTradable: true,
-    ...(account ? { currentSeller_not: account.toLowerCase() } : {}),
   }
   const nftsMarket = await getNftsMarketData(
     whereClause,
@@ -48,7 +46,6 @@ export const usePancakeBunnyOnSaleNfts = (
   nftMetadata: ApiResponseCollectionTokens,
   itemsPerPage: number,
 ) => {
-  const { account } = useWeb3React()
   const isLastPage = useRef(false)
   const [direction, setDirection] = useState<'asc' | 'desc'>('asc' as const)
 
@@ -67,29 +64,16 @@ export const usePancakeBunnyOnSaleNfts = (
     (pageIndex, previousPageData) => {
       if (!nftMetadata) return null
       if (pageIndex !== 0 && previousPageData && !previousPageData.length) return null
-      if (account) {
-        return [bunnyId, direction, pageIndex, account, 'pancakeBunnyOnSaleNfts']
-      }
       return [bunnyId, direction, pageIndex, 'pancakeBunnyOnSaleNfts']
     },
     async (id, sortDirection, page) => {
-      const { newNfts, isPageLast } = await fetchMarketDataNfts(
-        account,
-        id,
-        nftMetadata,
-        sortDirection,
-        page,
-        itemsPerPage,
-      )
+      const { newNfts, isPageLast } = await fetchMarketDataNfts(id, nftMetadata, sortDirection, page, itemsPerPage)
       isLastPage.current = isPageLast
       const nftsMarketTokenIds = newNfts.map((marketData) => marketData.tokenId)
       const updatedMarketData = await getNftsUpdatedMarketData(pancakeBunniesAddress.toLowerCase(), nftsMarketTokenIds)
       if (!updatedMarketData) return newNfts
 
       return updatedMarketData
-        .filter((tokenUpdatedPrice) => {
-          return tokenUpdatedPrice && tokenUpdatedPrice.currentAskPrice.gt(0) && tokenUpdatedPrice.isTradable
-        })
         .sort((askInfoA, askInfoB) => {
           return askInfoA.currentAskPrice.gt(askInfoB.currentAskPrice)
             ? 1 * (sortDirection === 'desc' ? -1 : 1)
