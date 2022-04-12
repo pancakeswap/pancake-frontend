@@ -27,7 +27,7 @@ const Overview: React.FC<OverviewPropsType> = ({
   const { t } = useTranslation()
 
   const lockedApy = useMemo(() => getLockedApy(duration), [getLockedApy, duration])
-  const newLockedApy = useMemo(() => newDuration && getLockedApy(newDuration), [getLockedApy, newDuration])
+  const newLockedApy = useMemo(() => (newDuration && getLockedApy(newDuration)) || 0, [getLockedApy, newDuration])
 
   const formattedRoi = useMemo(() => {
     return formatRoi({ usdValueStaked, lockedApy })
@@ -48,7 +48,7 @@ const Overview: React.FC<OverviewPropsType> = ({
   return (
     <LightGreyCard>
       <BalanceRow title={t('Cake to be locked')} value={lockedAmount} newValue={newLockedAmount} decimals={2} />
-      <BalanceRow title="apy" unit="%" value={Number(lockedApy)} decimals={2} newValue={Number(newLockedApy)} />
+      <BalanceRow title="apy" unit="%" value={_toNumber(lockedApy)} decimals={2} newValue={_toNumber(newLockedApy)} />
       <TextRow
         title={t('duration')}
         value={isValidDuration && formatSecondsToWeeks(duration)}
