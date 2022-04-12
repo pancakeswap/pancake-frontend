@@ -26,6 +26,10 @@ ActionContainer.defaultProps = {
   flex: 1,
 }
 
+export const RowActionContainer = styled(ActionContainer)`
+  flex-direction: row;
+`
+
 export const ActionTitles = styled.div`
   font-weight: 600;
   font-size: 12px;

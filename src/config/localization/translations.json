@@ -1644,6 +1644,8 @@
   "Adding more CAKE will renew your lock, setting it to remaining duration. Due to shorter lock period, benefits decrease. To keep similar benefits, extend your lock.": "Adding more CAKE will renew your lock, setting it to remaining duration. Due to shorter lock period, benefits decrease. To keep similar benefits, extend your lock.",
   "Lock CAKE": "Lock CAKE",
   "Locked End": "Locked End",
+  "Yield boost": "Yield boost",
+  "Lock for %duration%": "Lock for %duration%",
   "Flexible staking offers flexibility for staking/unstaking whenever you want. Locked staking offers higher APY as well as other benefits.": "Flexible staking offers flexibility for staking/unstaking whenever you want. Locked staking offers higher APY as well as other benefits.",
   "Extend Lock": "Extend Lock",
   "Unlocked": "Unlocked",
