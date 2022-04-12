@@ -57,7 +57,10 @@ const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account, onSuccessSale 
       </Box>
       <Box>
         <Flex width="max-content" alignItems="center">
-          <ProfileCell accountAddress={nft.marketData.currentSeller} />
+          <ProfileCell
+            oldData={nft?.marketData?.previousSeller !== nft?.marketData?.currentSeller}
+            accountAddress={nft?.marketData?.previousSeller ?? nft?.marketData?.currentSeller}
+          />
         </Flex>
       </Box>
       <ButtonContainer>
