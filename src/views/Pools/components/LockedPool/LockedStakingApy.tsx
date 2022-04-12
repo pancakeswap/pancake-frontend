@@ -78,7 +78,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
             {position >= VaultPosition.LockedEnd ? t('Unlocked') : remainingWeeks}
           </Text>
           <Text color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'} fontSize="12px">
-            {t('Until %date%', { date: lockEndDate })}
+            {t('On %date%', { date: lockEndDate })}
           </Text>
         </Box>
       </Flex>

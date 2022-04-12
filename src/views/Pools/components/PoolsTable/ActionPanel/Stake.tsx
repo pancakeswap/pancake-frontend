@@ -302,7 +302,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                   display="inline"
                   color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
                 >
-                  {t('Until %date%', { date: lockEndDate })}
+                  {t('On %date%', { date: lockEndDate })}
                 </Text>
                 {vaultPosition === VaultPosition.Locked && (
                   <Box mt="16px">
