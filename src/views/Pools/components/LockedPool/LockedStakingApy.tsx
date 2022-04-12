@@ -94,21 +94,20 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
         />
       </Box>
       <Divider />
-      {![VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(position) ? (
+      {![VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(position) && (
         <Flex alignItems="center" justifyContent="space-between">
           <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
             {t('APY')}
           </Text>
           <BalanceWithLoading color="text" bold fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" />
         </Flex>
-      ) : (
-        <Flex alignItems="center" justifyContent="space-between">
-          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-            {t('Recent CAKE profit')}
-          </Text>
-          <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={5} />
-        </Flex>
       )}
+      <Flex alignItems="center" justifyContent="space-between">
+        <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+          {t('Recent CAKE profit')}
+        </Text>
+        <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={5} />
+      </Flex>
       <Flex alignItems="center" justifyContent="space-between">
         {tooltipVisible && tooltip}
         <TooltipText>
