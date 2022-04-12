@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core'
 import { useEffect, useState, useRef } from 'react'
 import { NftToken, ApiResponseCollectionTokens } from 'state/nftMarket/types'
 import {
@@ -9,9 +8,10 @@ import {
   getNftsUpdatedMarketData,
 } from 'state/nftMarket/helpers'
 import useSWRInfinite from 'swr/infinite'
+import { FetchStatus } from 'config/constants/types'
+import { formatBigNumber } from 'utils/formatBalance'
+import { NOT_ON_SALE_SELLER } from 'config/constants'
 import { pancakeBunniesAddress } from '../constants'
-import { FetchStatus } from '../../../../config/constants/types'
-import { formatBigNumber } from '../../../../utils/formatBalance'
 
 const fetchMarketDataNfts = async (
   bunnyId: string,
@@ -83,9 +83,15 @@ export const usePancakeBunnyOnSaleNfts = (
         })
         .map(({ tokenId, currentSeller, currentAskPrice }) => {
           const nftData = newNfts.find((marketData) => marketData.tokenId === tokenId)
+          const isTradable = currentSeller.toLowerCase() !== NOT_ON_SALE_SELLER
           return {
             ...nftData,
-            marketData: { ...nftData.marketData, currentSeller, currentAskPrice: formatBigNumber(currentAskPrice) },
+            marketData: {
+              ...nftData.marketData,
+              isTradable,
+              currentSeller: isTradable ? currentSeller : nftData.marketData.currentSeller,
+              currentAskPrice: isTradable ? formatBigNumber(currentAskPrice) : nftData.marketData.currentAskPrice,
+            },
           }
         })
     },
