@@ -18,7 +18,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { PrepConfirmArg } from '../types'
 
-const ONE_WEEK_DETAULT = 604800
+const ONE_WEEK_DEFAULT = 604800
 
 interface HookArgs {
   lockedAmount: number
@@ -47,7 +47,7 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
 
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const [duration, setDuration] = useState(ONE_WEEK_DETAULT)
+  const [duration, setDuration] = useState(ONE_WEEK_DEFAULT)
   const usdValueStaked = useBUSDCakeAmount(lockedAmount)
 
   const handleDeposit = useCallback(

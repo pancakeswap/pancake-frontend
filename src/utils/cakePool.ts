@@ -1,8 +1,5 @@
 import BigNumber from 'bignumber.js'
-
-// const UNLOCK_FREE_DURATION = 604800
-// TODO: revert this
-const UNLOCK_FREE_DURATION = 600
+import { UNLOCK_FREE_DURATION } from 'config/constants/pools'
 
 export const isStaked = ({ userShares }: { userShares?: BigNumber }): boolean => userShares && userShares.gt(0)
 
