@@ -1,6 +1,6 @@
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
-import { Flex, Box, Text, Skeleton } from '@pancakeswap/uikit'
+import { Flex, Box, Text, Skeleton, AccountFilledIcon } from '@pancakeswap/uikit'
 import TeamPodiumIcon from './TeamPodiumIcon'
 import { PodiumBase } from '../../../svgs'
 import { TeamLeaderboardProps } from '../../../types'
@@ -8,6 +8,7 @@ import { localiseTradingVolume } from '../../../helpers'
 
 interface PodiumProps {
   teamsSortedByVolume?: Array<TeamLeaderboardProps>
+  participants: string[]
 }
 
 const Wrapper = styled(Flex)`
@@ -86,11 +87,34 @@ const StyledVolumeText = styled(Text)`
   }
 `
 
-const Podium: React.FC<PodiumProps> = ({ teamsSortedByVolume }) => {
+const ParticipantBox = ({ participants, t }) => {
+  return (
+    <>
+      {participants ? (
+        <Flex justifyContent="center">
+          {/* not as height prop because Inner wins priority with auto */}
+          <AccountFilledIcon style={{ height: '24px', width: '24px' }} />
+          <StyledVolumeText bold>{participants}</StyledVolumeText>
+        </Flex>
+      ) : (
+        <Skeleton width="77px" height="24px" />
+      )}
+      <Text fontSize="12px" color="textSubtle">
+        {t('Participants')}
+      </Text>
+    </>
+  )
+}
+
+const Podium: React.FC<PodiumProps> = ({ teamsSortedByVolume, participants }) => {
   const { t } = useTranslation()
   const firstTeam = teamsSortedByVolume && teamsSortedByVolume[0]
   const secondTeam = teamsSortedByVolume && teamsSortedByVolume[1]
   const thirdTeam = teamsSortedByVolume && teamsSortedByVolume[2]
+
+  const firstTeamParticipants = participants[firstTeam.teamId - 1]
+  const secondTeamParticipants = participants[secondTeam.teamId - 1]
+  const thirdTeamParticipants = participants[thirdTeam.teamId - 1]
 
   return (
     <Wrapper>
@@ -114,9 +138,10 @@ const Podium: React.FC<PodiumProps> = ({ teamsSortedByVolume }) => {
             ) : (
               <Skeleton width="77px" height="24px" />
             )}
-            <Text fontSize="12px" color="textSubtle">
+            <Text mb="16px" fontSize="12px" color="textSubtle">
               {t('Volume')}
             </Text>
+            <ParticipantBox participants={secondTeamParticipants} t={t} />
           </StyledVolumeFlex>
           <StyledVolumeFlex>
             {firstTeam ? (
@@ -124,9 +149,10 @@ const Podium: React.FC<PodiumProps> = ({ teamsSortedByVolume }) => {
             ) : (
               <Skeleton width="77px" height="24px" />
             )}
-            <Text fontSize="12px" color="textSubtle">
+            <Text mb="16px" fontSize="12px" color="textSubtle">
               {t('Volume')}
             </Text>
+            <ParticipantBox participants={firstTeamParticipants} t={t} />
           </StyledVolumeFlex>
           <StyledVolumeFlex>
             {thirdTeam ? (
@@ -134,9 +160,10 @@ const Podium: React.FC<PodiumProps> = ({ teamsSortedByVolume }) => {
             ) : (
               <Skeleton width="77px" height="24px" />
             )}
-            <Text fontSize="12px" color="textSubtle">
+            <Text mb="16px" fontSize="12px" color="textSubtle">
               {t('Volume')}
             </Text>
+            <ParticipantBox participants={thirdTeamParticipants} t={t} />
           </StyledVolumeFlex>
         </Flex>
       </Inner>
