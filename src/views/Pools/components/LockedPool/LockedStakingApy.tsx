@@ -94,12 +94,21 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
         />
       </Box>
       <Divider />
-      <Flex alignItems="center" justifyContent="space-between">
-        <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-          {t('APY')}
-        </Text>
-        <BalanceWithLoading color="text" bold fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" />
-      </Flex>
+      {![VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(position) ? (
+        <Flex alignItems="center" justifyContent="space-between">
+          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+            {t('APY')}
+          </Text>
+          <BalanceWithLoading color="text" bold fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" />
+        </Flex>
+      ) : (
+        <Flex alignItems="center" justifyContent="space-between">
+          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+            {t('Recent CAKE profit')}
+          </Text>
+          <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={5} />
+        </Flex>
+      )}
       <Flex alignItems="center" justifyContent="space-between">
         {tooltipVisible && tooltip}
         <TooltipText>
@@ -111,20 +120,12 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
           {weekDuration}
         </Text>
       </Flex>
-      {![VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(position) && (
-        <Flex alignItems="center" justifyContent="space-between">
-          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-            {t('Recent CAKE profit')}
-          </Text>
-          <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={5} />
-        </Flex>
-      )}
       {position === VaultPosition.LockedEnd && (
         <Flex alignItems="center" justifyContent="space-between">
           <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
             {t('After Burning In')}
           </Text>
-          <Text color="textSubtle" bold>
+          <Text color="failure" bold>
             <BurningCountDown lockEndTime={userData?.lockEndTime} />
           </Text>
         </Flex>
@@ -134,7 +135,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
           <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
             {t('After burning')}
           </Text>
-          <Text color="textSubtle" bold>
+          <Text color="failure" bold>
             {isUndefinedOrNull(userData?.currentOverdueFee)
               ? '-'
               : t('%amount% Burned', { amount: getFullDisplayBalance(userData?.currentOverdueFee, 18, 5) })}
