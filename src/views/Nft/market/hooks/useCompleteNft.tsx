@@ -68,11 +68,16 @@ export const useCompleteNft = (collectionAddress: string, tokenId: string) => {
   const { data: marketData, mutate: refetchNftMarketData } = useSWR(
     collectionAddress && tokenId ? ['nft', 'marketData', collectionAddress, tokenId] : null,
     async () => {
-      const onChainMarketDatas = await getNftsOnChainMarketData(collectionAddress.toLowerCase(), [tokenId])
+      const [onChainMarketDatas, marketDatas] = await Promise.all([
+        getNftsOnChainMarketData(collectionAddress.toLowerCase(), [tokenId]),
+        getNftsMarketData({ collection: collectionAddress.toLowerCase(), tokenId }, 1),
+      ])
       const onChainMarketData = onChainMarketDatas[0]
-      const marketDatas = await getNftsMarketData({ collection: collectionAddress.toLowerCase(), tokenId }, 1)
 
-      if (!marketDatas[0] || !onChainMarketData) return null
+      if (!marketDatas[0] && !onChainMarketData) return null
+
+      if (!onChainMarketData) return marketDatas[0]
+
       return { ...marketDatas[0], ...onChainMarketData }
     },
   )

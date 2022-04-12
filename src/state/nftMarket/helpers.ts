@@ -1104,7 +1104,7 @@ const fetchWalletMarketData = async (
 
         return { ...nftMarketData, ...onChainMarketData }
       })
-      .filter((value) => value && Object.keys(value).length)
+      .filter(Boolean)
   })
 
   const walletMarketDataResponses = await Promise.all(walletMarketDataRequests)
@@ -1121,7 +1121,7 @@ const fetchMarketDataForSaleNfts = async (collections: ApiCollections, account: 
       const tokenIds = onChainTokenMarketDatas.map((marketData) => marketData.tokenId)
       const marketDataForSaleNfts = await getNftsMarketData({
         tokenId_in: tokenIds,
-        collection: collectionAddress.toLowerCase(),
+        collection: collectionAddress,
       })
       return onChainTokenMarketDatas.map((onChainTokenMarketData) => {
         const marketDataForSaleNft = marketDataForSaleNfts.find(
