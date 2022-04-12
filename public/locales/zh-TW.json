@@ -1066,7 +1066,6 @@
   "here.": "一個：",
   "Price Change": "價格變化",
   "Page %page% of %maxPage%": "第 %page% 頁，共 %maxPage% 頁",
-  "Page %page%": "Page %page%",
   "Name": "名稱",
   "Swaps": "交換",
   "Adds": "增加",
@@ -1609,5 +1608,6 @@
   "300 Mobox Avatars NFT + 300 PancakeSwap newly designed NFT to the top 100 traders in each of the three teams.": "300 Mobox Avatars NFT + 300 PancakeSwap newly designed NFT to the top 100 traders in each of the three teams.",
   "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.": "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.",
   "Added by user": "Added by user",
-  "Mystery Box": "Mystery Box"
+  "Mystery Box": "Mystery Box",
+  "Page %page%": "Page %page%"
 }
