@@ -4,12 +4,12 @@ import { addSeconds } from 'date-fns'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { useTranslation } from 'contexts/Localization'
 import _toNumber from 'lodash/toNumber'
+import { convertTimeToSeconds } from 'utils/timeHelper'
 import formatSecondsToWeeks from '../../utils/formatSecondsToWeeks'
 import TextRow from './TextRow'
 import BalanceRow from './BalanceRow'
 import DateRow from './DateRow'
 import formatRoi from '../../utils/formatRoi'
-import convertLockTimeToSeconds from '../../utils/convertLockTimeToSeconds'
 import { OverviewPropsType } from '../../types'
 import CalculatorButton from '../../Buttons/CalculatorButton'
 
@@ -40,9 +40,9 @@ const Overview: React.FC<OverviewPropsType> = ({
   const now = new Date()
 
   const unlockDate = newDuration
-    ? addSeconds(Number(lockStartTime) ? new Date(convertLockTimeToSeconds(lockStartTime)) : now, newDuration)
+    ? addSeconds(Number(lockStartTime) ? new Date(convertTimeToSeconds(lockStartTime)) : now, newDuration)
     : Number(lockEndTime)
-    ? new Date(convertLockTimeToSeconds(lockEndTime))
+    ? new Date(convertTimeToSeconds(lockEndTime))
     : addSeconds(now, duration)
 
   return (

@@ -2,8 +2,8 @@ import { useMemo, memo } from 'react'
 import { Button, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { differenceInSeconds } from 'date-fns'
+import { convertTimeToSeconds } from 'utils/timeHelper'
 import AddAmountModal from '../Modals/AddAmountModal'
-import convertLockTimeToSeconds from '../utils/convertLockTimeToSeconds'
 import { AddButtonProps } from '../types'
 
 const AddCakeButton: React.FC<AddButtonProps> = ({
@@ -15,11 +15,11 @@ const AddCakeButton: React.FC<AddButtonProps> = ({
 }) => {
   const { t } = useTranslation()
   const remainingDuration = useMemo(
-    () => differenceInSeconds(new Date(convertLockTimeToSeconds(lockEndTime)), new Date()),
+    () => differenceInSeconds(new Date(convertTimeToSeconds(lockEndTime)), new Date()),
     [lockEndTime],
   )
   const passedDuration = useMemo(
-    () => differenceInSeconds(new Date(), new Date(convertLockTimeToSeconds(lockStartTime))),
+    () => differenceInSeconds(new Date(), new Date(convertTimeToSeconds(lockStartTime))),
     [lockStartTime],
   )
 
