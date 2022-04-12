@@ -88,13 +88,13 @@ export interface UserRewardsProps {
 
 export interface UserTradingInformationProps {
   hasRegistered?: boolean
+  isUserActive?: boolean
   hasUserClaimed?: boolean
   userRewardGroup?: string
   userCakeRewards?: string
-  userLazioRewards?: string
-  userPortoRewards?: string
-  userSantosRewards?: string
+  userMoboxRewards?: string
   userPointReward?: string
+  canClaimMysteryBox?: boolean
   canClaimNFT?: boolean
 }
 

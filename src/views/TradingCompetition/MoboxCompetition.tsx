@@ -39,9 +39,10 @@ import BattleBanner from './components/BattleBanner'
 import BattleCta from './components/BattleCta'
 import PrizesInfo from './components/PrizesInfo'
 import Rules from './components/Rules'
-// import TeamRanks from './components/TeamRanks'
 import { UserTradingInformationProps } from './types'
 import { CompetitionPage, BannerFlex, BattleBannerSection, BottomBunnyWrapper } from './styles'
+import TeamRanks from './components/TeamRanks'
+import RanksIcon from './svgs/RanksIcon'
 
 const MoboxCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
@@ -55,28 +56,28 @@ const MoboxCompetition = () => {
   const [claimSuccessful, setClaimSuccessful] = useState(false)
   const [userTradingInformation, setUserTradingInformation] = useState<UserTradingInformationProps>({
     hasRegistered: false,
+    isUserActive: false,
     hasUserClaimed: false,
     userRewardGroup: '0',
     userCakeRewards: '0',
-    userLazioRewards: '0',
-    userPortoRewards: '0',
-    userSantosRewards: '0',
+    userMoboxRewards: '0',
     userPointReward: '0',
+    canClaimMysteryBox: false,
     canClaimNFT: false,
   })
-  // const [globalLeaderboardInformation, setGlobalLeaderboardInformation] = useState(null)
+  const [globalLeaderboardInformation, setGlobalLeaderboardInformation] = useState(null)
   const [userLeaderboardInformation, setUserLeaderboardInformation] = useState({
     global: 0,
     team: 0,
     volume: 0,
     next_rank: 0,
   })
-  //   // 1. Storm
-  //   const [team1LeaderboardInformation, setTeam1LeaderboardInformation] = useState({ teamId: 1, leaderboardData: null })
-  //   // 2. Flippers
-  //   const [team2LeaderboardInformation, setTeam2LeaderboardInformation] = useState({ teamId: 2, leaderboardData: null })
-  //   // 3. Cakers
-  //   const [team3LeaderboardInformation, setTeam3LeaderboardInformation] = useState({ teamId: 3, leaderboardData: null })
+  // 1. Storm
+  const [team1LeaderboardInformation, setTeam1LeaderboardInformation] = useState({ teamId: 1, leaderboardData: null })
+  // 2. Flippers
+  const [team2LeaderboardInformation, setTeam2LeaderboardInformation] = useState({ teamId: 2, leaderboardData: null })
+  // 3. Cakers
+  const [team3LeaderboardInformation, setTeam3LeaderboardInformation] = useState({ teamId: 3, leaderboardData: null })
 
   const isCompetitionLive = currentPhase.state === LIVE
   const hasCompetitionEnded =
@@ -84,22 +85,22 @@ const MoboxCompetition = () => {
 
   const {
     hasUserClaimed,
+    isUserActive,
     userCakeRewards,
-    userLazioRewards,
-    userPortoRewards,
-    userSantosRewards,
+    userMoboxRewards,
     userPointReward,
+    canClaimMysteryBox,
     canClaimNFT,
   } = userTradingInformation
 
   const userCanClaimPrizes =
     currentPhase.state === CLAIM &&
+    isUserActive &&
     !hasUserClaimed &&
     (userCakeRewards !== '0' ||
-      userLazioRewards !== '0' ||
-      userPortoRewards !== '0' ||
-      userSantosRewards !== '0' ||
+      userMoboxRewards !== '0' ||
       userPointReward !== '0' ||
+      canClaimMysteryBox ||
       canClaimNFT)
   const finishedAndPrizesClaimed = hasCompetitionEnded && account && hasUserClaimed
   const finishedAndNothingToClaim = hasCompetitionEnded && account && !userCanClaimPrizes
@@ -123,13 +124,13 @@ const MoboxCompetition = () => {
         const user = await tradingCompetitionContract.claimInformation(account)
         const userObject = {
           hasRegistered: user[0],
-          hasUserClaimed: user[1],
-          userRewardGroup: user[2].toString(),
-          userCakeRewards: user[3].toString(),
-          userLazioRewards: user[4].toString(),
-          userPortoRewards: user[5].toString(),
-          userSantosRewards: user[6].toString(),
-          userPointReward: user[7].toString(),
+          isUserActive: user[1],
+          hasUserClaimed: user[2],
+          userRewardGroup: user[3].toString(),
+          userCakeRewards: user[4].toString(),
+          userMoboxRewards: user[5].toString(),
+          userPointReward: user[6].toString(),
+          canClaimMysteryBox: user[7],
           canClaimNFT: user[8],
         }
         setUserTradingInformation(userObject)
@@ -144,13 +145,13 @@ const MoboxCompetition = () => {
     } else {
       setUserTradingInformation({
         hasRegistered: false,
+        isUserActive: false,
         hasUserClaimed: false,
         userRewardGroup: '0',
         userCakeRewards: '0',
-        userLazioRewards: '0',
-        userPortoRewards: '0',
-        userSantosRewards: '0',
+        userMoboxRewards: '0',
         userPointReward: '0',
+        canClaimMysteryBox: false,
         canClaimNFT: false,
       })
     }
@@ -160,7 +161,7 @@ const MoboxCompetition = () => {
     const fetchUserTradingStats = async () => {
       const res = await fetch(`${profileApiUrl}/api/users/${account}`)
       const data = await res.json()
-      setUserLeaderboardInformation(data.leaderboard_fantoken)
+      setUserLeaderboardInformation(data.leaderboard_mobox)
     }
     // If user has not registered, user trading information will not be displayed and should not be fetched
     if (account && userTradingInformation.hasRegistered) {
@@ -168,40 +169,42 @@ const MoboxCompetition = () => {
     }
   }, [account, userTradingInformation, profileApiUrl])
 
-  //   useEffect(() => {
-  //     const fetchGlobalLeaderboardStats = async () => {
-  //       const res = await fetch(`${profileApiUrl}/api/leaderboard/global`)
-  //       const data = await res.json()
-  //       setGlobalLeaderboardInformation(data)
-  //     }
+  useEffect(() => {
+    const fetchGlobalLeaderboardStats = async () => {
+      const res = await fetch(`${profileApiUrl}/api/leaderboard/3/global`)
+      const data = await res.json()
+      setGlobalLeaderboardInformation(data)
+    }
 
-  //     const fetchTeamsLeaderboardStats = async (teamId: number, callBack: (data: any) => void) => {
-  //       try {
-  //         const res = await fetch(`${profileApiUrl}/api/leaderboard/team/${teamId}`)
-  //         const data = await res.json()
-  //         callBack(data)
-  //       } catch (e) {
-  //         console.error(e)
-  //       }
-  //     }
+    const fetchTeamsLeaderboardStats = async (teamId: number, callBack: (data: any) => void) => {
+      try {
+        const res = await fetch(`${profileApiUrl}/api/leaderboard/3/team/${teamId}`)
+        const data = await res.json()
+        callBack(data)
+      } catch (e) {
+        console.error(e)
+      }
+    }
 
-  //     fetchTeamsLeaderboardStats(1, (data) =>
-  //       setTeam1LeaderboardInformation((prevState) => {
-  //         return { ...prevState, leaderboardData: data }
-  //       }),
-  //     )
-  //     fetchTeamsLeaderboardStats(2, (data) =>
-  //       setTeam2LeaderboardInformation((prevState) => {
-  //         return { ...prevState, leaderboardData: data }
-  //       }),
-  //     )
-  //     fetchTeamsLeaderboardStats(3, (data) =>
-  //       setTeam3LeaderboardInformation((prevState) => {
-  //         return { ...prevState, leaderboardData: data }
-  //       }),
-  //     )
-  //     fetchGlobalLeaderboardStats()
-  //   }, [profileApiUrl])
+    if (currentPhase.state !== REGISTRATION) {
+      fetchTeamsLeaderboardStats(1, (data) =>
+        setTeam1LeaderboardInformation((prevState) => {
+          return { ...prevState, leaderboardData: data }
+        }),
+      )
+      fetchTeamsLeaderboardStats(2, (data) =>
+        setTeam2LeaderboardInformation((prevState) => {
+          return { ...prevState, leaderboardData: data }
+        }),
+      )
+      fetchTeamsLeaderboardStats(3, (data) =>
+        setTeam3LeaderboardInformation((prevState) => {
+          return { ...prevState, leaderboardData: data }
+        }),
+      )
+      fetchGlobalLeaderboardStats()
+    }
+  }, [currentPhase, profileApiUrl])
 
   // Don't hide when loading. Hide if the account is connected && the user hasn't registered && the competition is live or finished
   const shouldHideCta =
@@ -264,27 +267,29 @@ const MoboxCompetition = () => {
             )}
           </Box>
         </PageSection>
-        {/* <PageSection
-          containerProps={{ style: { marginTop: '-30px' } }}
-          index={3}
-          concaveDivider
-          clipFill={{ light: theme.colors.background }}
-          dividerPosition="top"
-          dividerComponent={
-            <RibbonWithImage imageComponent={<RanksIcon width="175px" />} ribbonDirection="up">
-              {t('Team Ranks')}
-            </RibbonWithImage>
-          }
-        >
-          <Box my="64px">
-            <TeamRanks
-              team1LeaderboardInformation={team1LeaderboardInformation}
-              team2LeaderboardInformation={team2LeaderboardInformation}
-              team3LeaderboardInformation={team3LeaderboardInformation}
-              globalLeaderboardInformation={globalLeaderboardInformation}
-            />
-          </Box>
-        </PageSection> */}
+        {currentPhase.state !== REGISTRATION && (
+          <PageSection
+            containerProps={{ style: { marginTop: '-30px' } }}
+            index={3}
+            concaveDivider
+            clipFill={{ light: theme.colors.background }}
+            dividerPosition="top"
+            dividerComponent={
+              <RibbonWithImage imageComponent={<RanksIcon width="175px" />} ribbonDirection="up">
+                {t('Team Ranks')}
+              </RibbonWithImage>
+            }
+          >
+            <Box my="64px">
+              <TeamRanks
+                team1LeaderboardInformation={team1LeaderboardInformation}
+                team2LeaderboardInformation={team2LeaderboardInformation}
+                team3LeaderboardInformation={team3LeaderboardInformation}
+                globalLeaderboardInformation={globalLeaderboardInformation}
+              />
+            </Box>
+          </PageSection>
+        )}
         <PageSection
           containerProps={{ style: { marginTop: '-30px' } }}
           dividerComponent={
