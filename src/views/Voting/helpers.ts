@@ -3,7 +3,6 @@ import tokens from 'config/constants/tokens'
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
 import _chunk from 'lodash/chunk'
 import { ADMINS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
-import { getVotingPowerList, getVotingPowerListMapTotal } from './legacy/getVotingPowerList'
 import { getScores } from './getScores'
 import * as strategies from './strategies'
 
@@ -122,7 +121,18 @@ export const getVotingPower = async (account: string, poolAddresses: string[], b
     }
   }
 
-  return (await getVotingPowerList([account], poolAddresses, blockNumber))[0]
+  const [total] = await getScores(PANCAKE_SPACE, STRATEGIES, NETWORK, [account], blockNumber)
+
+  return {
+    poolsBalance: 0,
+    total: total[account] ? total[account] : 0,
+    cakeBalance: 0,
+    cakeVaultBalance: 0,
+    ifoPoolBalance: 0,
+    cakePoolBalance: 0,
+    cakeBnbLpBalance: 0,
+    voter: account,
+  }
 }
 
 export const calculateVoteResults = (votes: Vote[]): { [key: string]: Vote[] } => {
@@ -157,18 +167,8 @@ export const getTotalFromVotes = (votes: Vote[]) => {
 /**
  * Get voting power by a list of voters, only total
  */
-export async function getVotingPowerByCakeStrategy(voters: string[], poolAddresses: string[], blockNumber: number) {
-  if (blockNumber && blockNumber <= VOTING_POWER_BLOCK.v0) {
-    return getVotingPowerListMapTotal(voters, poolAddresses, blockNumber)
-  }
-
-  const strategyResponse = await getScores(
-    PANCAKE_SPACE,
-    [...STRATEGIES, strategies.creatPoolsBalanceStrategy(poolAddresses)],
-    NETWORK,
-    voters,
-    blockNumber,
-  )
+export async function getVotingPowerByCakeStrategy(voters: string[], blockNumber: number) {
+  const strategyResponse = await getScores(PANCAKE_SPACE, STRATEGIES, NETWORK, voters, blockNumber)
 
   const result = voters.reduce<Record<string, string>>((accum, voter) => {
     const defaultTotal = strategyResponse.reduce(
