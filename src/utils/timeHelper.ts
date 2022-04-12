@@ -7,7 +7,7 @@ export const convertTimeToSeconds = (time: string): number => {
 }
 
 // https://date-fns.org/v2.28.0/docs/formatDistanceToNowStrict
-export const convertTimeToDistance = (timestamp: string) => {
+export const distanceToNowStrict = (timestamp: string) => {
   const endTime = new Date(convertTimeToSeconds(timestamp))
   return new Date() > endTime ? `0 seconds` : formatDistanceToNowStrict(endTime)
 }

@@ -1,5 +1,5 @@
 import format from 'date-fns/format'
-import { convertTimeToSeconds, convertTimeToDistance } from 'utils/timeHelper'
+import { convertTimeToSeconds, distanceToNowStrict } from 'utils/timeHelper'
 
 interface UserData {
   lockEndTime: string
@@ -20,8 +20,8 @@ const useUserDataInVaultPrensenter: UserDataInVaultPrensenterFn = ({ lockEndTime
   const lockEndTimeSeconds = convertTimeToSeconds(lockEndTime)
 
   return {
-    weekDuration: convertTimeToDistance(secondDuration.toString()),
-    remainingWeeks: convertTimeToDistance(lockEndTime),
+    weekDuration: distanceToNowStrict(secondDuration.toString()),
+    remainingWeeks: distanceToNowStrict(lockEndTime),
     lockEndDate: format(lockEndTimeSeconds, 'MMM do, yyyy HH:mm'),
     secondDuration,
   }
