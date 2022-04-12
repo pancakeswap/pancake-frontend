@@ -131,7 +131,7 @@ export const socials = [
         href: "https://t.me/pancakeswapfr",
       },
       {
-        label: "Datch",
+        label: "Deutsch",
         href: "https://t.me/PancakeSwap_DE",
       },
       {

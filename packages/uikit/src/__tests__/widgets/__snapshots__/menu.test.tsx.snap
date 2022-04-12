@@ -2551,14 +2551,14 @@ exports[`renders correctly 1`] = `
                     Français
                   </a>
                   <a
-                    aria-label="Datch"
+                    aria-label="Deutsch"
                     class="c29 c61"
                     color="textSubtle"
                     href="https://t.me/PancakeSwap_DE"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
-                    Datch
+                    Deutsch
                   </a>
                   <a
                     aria-label="Filipino"
