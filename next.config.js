@@ -4,6 +4,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
 
+const COMMIT_SHA = process.env.VERCEL_GIT_COMMIT_SHA || process.env.VERCEL_GITHUB_COMMIT_SHA
+
 const sentryWebpackPluginOptions =
   process.env.VERCEL_ENV === 'production'
     ? {
@@ -14,7 +16,7 @@ const sentryWebpackPluginOptions =
         //   urlPrefix, include, ignore
         silent: false, // Logging when deploying to check if there is any problem
         validate: true,
-        release: process.env.VERCEL_GIT_COMMIT_SHA,
+        release: COMMIT_SHA,
         // Set to env false will skip deploying release on Sentry except Production
         // https://github.com/getsentry/sentry-webpack-plugin/blob/master/src/index.js#L522
         deploy: {
@@ -30,6 +32,14 @@ const sentryWebpackPluginOptions =
 
 /** @type {import('next').NextConfig} */
 const config = {
+  env: {
+    // Make the COMMIT_SHA available to the client so that Sentry events can be
+    // marked for the release they belong to. It may be undefined if running
+    // outside of Vercel
+    NEXT_PUBLIC_COMMIT_SHA: COMMIT_SHA,
+    NEXT_PUBLIC_SENTRY_RELEASE: COMMIT_SHA,
+    SENTRY_RELEASE: COMMIT_SHA,
+  },
   compiler: {
     styledComponents: true,
   },
