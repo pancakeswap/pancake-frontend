@@ -1,5 +1,5 @@
 import { Token } from '@pancakeswap/sdk'
-import { Flex, Message, MessageText } from '@pancakeswap/uikit'
+import { Flex, Message, MessageText, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { memo } from 'react'
 import ExtendButton from '../Buttons/ExtendDurationButton'
@@ -12,13 +12,15 @@ interface ConvertToLockProps {
 
 const ConvertToLock: React.FC<ConvertToLockProps> = ({ stakingToken, currentStakedAmount, isInline }) => {
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
+  const isTableView = isInline && !isMobile
 
   return (
     <Message
       variant="warning"
       mb="16px"
       action={
-        <Flex mt={!isInline && '8px'} flexGrow={1} ml={isInline && '80px'}>
+        <Flex mt={!isTableView && '8px'} flexGrow={1} ml={isTableView && '80px'}>
           <ExtendButton
             modalTitle={t('Convert to Lock')}
             lockEndTime="0"
@@ -30,7 +32,7 @@ const ConvertToLock: React.FC<ConvertToLockProps> = ({ stakingToken, currentStak
           </ExtendButton>
         </Flex>
       }
-      actionInline={isInline}
+      actionInline={isTableView}
     >
       <MessageText>{t('Lock staking offers higher APY while providing other benefits.')}</MessageText>
     </Message>
