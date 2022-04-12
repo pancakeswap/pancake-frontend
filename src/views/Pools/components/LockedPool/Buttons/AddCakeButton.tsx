@@ -1,10 +1,11 @@
-import { useMemo, memo } from 'react'
+import { useMemo, useCallback, memo } from 'react'
 import { Button, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { differenceInSeconds } from 'date-fns'
 import { convertTimeToSeconds } from 'utils/timeHelper'
 import AddAmountModal from '../Modals/AddAmountModal'
 import { AddButtonProps } from '../types'
+import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 
 const AddCakeButton: React.FC<AddButtonProps> = ({
   currentBalance,
@@ -37,8 +38,14 @@ const AddCakeButton: React.FC<AddButtonProps> = ({
     'AddAmountModal',
   )
 
+  const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
+
+  const handleClicked = useCallback(() => {
+    return currentBalance.gt(0) ? openAddAmountModal() : onPresentTokenRequired()
+  }, [currentBalance, openAddAmountModal, onPresentTokenRequired])
+
   return (
-    <Button disabled={!currentBalance.gt(0)} onClick={openAddAmountModal} width="100%">
+    <Button onClick={handleClicked} width="100%">
       {t('Add CAKE')}
     </Button>
   )
