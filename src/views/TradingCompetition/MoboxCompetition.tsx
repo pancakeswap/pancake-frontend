@@ -178,7 +178,7 @@ const MoboxCompetition = () => {
 
     const fetchTeamsLeaderboardStats = async (teamId: number, callBack: (data: any) => void) => {
       try {
-        const res = await fetch(`${profileApiUrl}/api/leaderboard/team/${teamId}`)
+        const res = await fetch(`${profileApiUrl}/api/leaderboard/3/team/${teamId}`)
         const data = await res.json()
         callBack(data)
       } catch (e) {
