@@ -671,6 +671,22 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
           tokenName: 'DeFiato',
           projectSite: 'https://defiato.com/',
         },
+        {
+          account: '0xA6D19C2A2EA13e9eF02d795155F6c335af764955',
+          farmName: 'HAPPY-BNB',
+          tokenAddress: '0xF5d8A096CcCb31b9D7bcE5afE812BE23e3D4690d',
+          quoteToken: tokens.wbnb,
+          tokenName: 'HappyFans',
+          projectSite: 'https://happyfans.club/',
+        },
+        {
+          account: '0x0888406F1091D18e941F3Fe74ee0286963FFAc48',
+          farmName: 'WZRD-BUSD',
+          tokenAddress: '0xFa40d8FC324bcdD6Bbae0e086De886c571C225d4',
+          quoteToken: tokens.busd,
+          tokenName: 'Wizardia',
+          projectSite: 'https://wizardia.io/',
+        },
       ].map((bidderConfig) => ({
         ...bidderConfig,
         lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken),
