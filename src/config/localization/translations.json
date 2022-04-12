@@ -1637,7 +1637,7 @@
   "Add CAKE to lock": "Add CAKE to lock",
   "CAKE locked": "CAKE locked",
   "Unlocks In": "Unlocks In",
-  "Initial Lock Duration": "Initial Lock Duration",
+  "Lock Duration": "Lock Duration",
   "After burning": "After burning",
   "Your yield will be boosted based on the total lock duration of your current fixed term staking position.": "Your yield will be boosted based on the total lock duration of your current fixed term staking position.",
   "Renew and extend your lock to keep similar benefits.": "Renew and extend your lock to keep similar benefits.",

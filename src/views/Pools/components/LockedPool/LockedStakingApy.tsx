@@ -104,7 +104,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
         {tooltipVisible && tooltip}
         <TooltipText>
           <Text ref={targetRef} color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-            {t('Initial Lock Duration')}
+            {t('Lock Duration')}
           </Text>
         </TooltipText>
         <Text color="text" bold fontSize="16px">
