@@ -171,7 +171,7 @@ const MoboxCompetition = () => {
 
   useEffect(() => {
     const fetchGlobalLeaderboardStats = async () => {
-      const res = await fetch(`${profileApiUrl}/api/leaderboard/global`)
+      const res = await fetch(`${profileApiUrl}/api/leaderboard/3/global`)
       const data = await res.json()
       setGlobalLeaderboardInformation(data)
     }
