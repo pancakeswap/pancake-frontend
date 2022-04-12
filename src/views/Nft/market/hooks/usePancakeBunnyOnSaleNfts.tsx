@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core'
 import { useEffect, useState, useRef } from 'react'
 import { NftToken, ApiResponseCollectionTokens } from 'state/nftMarket/types'
 import {
@@ -6,24 +5,25 @@ import {
   getMetadataWithFallback,
   getPancakeBunniesAttributesField,
   combineApiAndSgResponseToNftToken,
+  getNftsUpdatedMarketData,
 } from 'state/nftMarket/helpers'
 import useSWRInfinite from 'swr/infinite'
+import { FetchStatus } from 'config/constants/types'
+import { formatBigNumber } from 'utils/formatBalance'
+import { NOT_ON_SALE_SELLER } from 'config/constants'
 import { pancakeBunniesAddress } from '../constants'
-import { FetchStatus } from '../../../../config/constants/types'
 
 const fetchMarketDataNfts = async (
-  account: string,
   bunnyId: string,
   nftMetadata: ApiResponseCollectionTokens,
   direction: 'asc' | 'desc',
   page: number,
   itemsPerPage: number,
-): Promise<NftToken[]> => {
+): Promise<{ newNfts: NftToken[]; isPageLast: boolean }> => {
   const whereClause = {
     collection: pancakeBunniesAddress.toLowerCase(),
     otherId: bunnyId,
     isTradable: true,
-    ...(account ? { currentSeller_not: account.toLowerCase() } : {}),
   }
   const nftsMarket = await getNftsMarketData(
     whereClause,
@@ -38,7 +38,7 @@ const fetchMarketDataNfts = async (
     const attributes = getPancakeBunniesAttributesField(marketData.otherId)
     return combineApiAndSgResponseToNftToken(apiMetadata, marketData, attributes)
   })
-  return moreTokensWithRequestedBunnyId
+  return { newNfts: moreTokensWithRequestedBunnyId, isPageLast: moreTokensWithRequestedBunnyId.length < itemsPerPage }
 }
 
 export const usePancakeBunnyOnSaleNfts = (
@@ -46,7 +46,6 @@ export const usePancakeBunnyOnSaleNfts = (
   nftMetadata: ApiResponseCollectionTokens,
   itemsPerPage: number,
 ) => {
-  const { account } = useWeb3React()
   const isLastPage = useRef(false)
   const [direction, setDirection] = useState<'asc' | 'desc'>('asc' as const)
 
@@ -65,17 +64,36 @@ export const usePancakeBunnyOnSaleNfts = (
     (pageIndex, previousPageData) => {
       if (!nftMetadata) return null
       if (pageIndex !== 0 && previousPageData && !previousPageData.length) return null
-      if (account) {
-        return [bunnyId, direction, pageIndex, account, 'pancakeBunnyOnSaleNfts']
-      }
       return [bunnyId, direction, pageIndex, 'pancakeBunnyOnSaleNfts']
     },
     async (id, sortDirection, page) => {
-      const newNfts: NftToken[] = await fetchMarketDataNfts(account, id, nftMetadata, sortDirection, page, itemsPerPage)
-      if (newNfts.length < itemsPerPage) {
-        isLastPage.current = true
-      }
-      return newNfts
+      const { newNfts, isPageLast } = await fetchMarketDataNfts(id, nftMetadata, sortDirection, page, itemsPerPage)
+      isLastPage.current = isPageLast
+      const nftsMarketTokenIds = newNfts.map((marketData) => marketData.tokenId)
+      const updatedMarketData = await getNftsUpdatedMarketData(pancakeBunniesAddress.toLowerCase(), nftsMarketTokenIds)
+      if (!updatedMarketData) return newNfts
+
+      return updatedMarketData
+        .sort((askInfoA, askInfoB) => {
+          return askInfoA.currentAskPrice.gt(askInfoB.currentAskPrice)
+            ? 1 * (sortDirection === 'desc' ? -1 : 1)
+            : askInfoA.currentAskPrice.eq(askInfoB.currentAskPrice)
+            ? 0
+            : -1 * (sortDirection === 'desc' ? -1 : 1)
+        })
+        .map(({ tokenId, currentSeller, currentAskPrice }) => {
+          const nftData = newNfts.find((marketData) => marketData.tokenId === tokenId)
+          const isTradable = currentSeller.toLowerCase() !== NOT_ON_SALE_SELLER
+          return {
+            ...nftData,
+            marketData: {
+              ...nftData.marketData,
+              isTradable,
+              currentSeller: isTradable ? currentSeller.toLowerCase() : nftData.marketData.currentSeller,
+              currentAskPrice: isTradable ? formatBigNumber(currentAskPrice) : nftData.marketData.currentAskPrice,
+            },
+          }
+        })
     },
     {
       refreshInterval: 10000,

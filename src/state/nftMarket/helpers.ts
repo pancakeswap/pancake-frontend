@@ -5,6 +5,9 @@ import { multicallv2 } from 'utils/multicall'
 import erc721Abi from 'config/abi/erc721.json'
 import range from 'lodash/range'
 import uniq from 'lodash/uniq'
+import { BigNumber } from '@ethersproject/bignumber'
+import { getNftMarketContract } from 'utils/contractHelpers'
+import { NOT_ON_SALE_SELLER } from 'config/constants'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import {
   ApiCollection,
@@ -359,6 +362,33 @@ export const getMarketDataForTokenIds = async (
   } catch (error) {
     console.error(`Failed to fetch market data for NFTs stored tokens`, error)
     return []
+  }
+}
+
+export const getNftsUpdatedMarketData = async (
+  collectionAddress: string,
+  tokenIds: string[],
+): Promise<{ tokenId: string; currentSeller: string; currentAskPrice: BigNumber; isTradable: boolean }[]> => {
+  try {
+    const nftMarketContract = getNftMarketContract()
+    const response = await nftMarketContract.viewAsksByCollectionAndTokenIds(collectionAddress.toLowerCase(), tokenIds)
+    const askInfo = response?.askInfo
+
+    if (!askInfo) return null
+
+    return askInfo.map((tokenAskInfo, index) => {
+      const isTradable = tokenAskInfo.seller ? tokenAskInfo.seller.toLowerCase() !== NOT_ON_SALE_SELLER : false
+
+      return {
+        tokenId: tokenIds[index],
+        currentSeller: tokenAskInfo.seller,
+        isTradable,
+        currentAskPrice: tokenAskInfo.price,
+      }
+    })
+  } catch (error) {
+    console.error('Failed to fetch updated NFT market data', error)
+    return null
   }
 }
 

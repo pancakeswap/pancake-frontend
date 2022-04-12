@@ -62,11 +62,23 @@ const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account, onSuccessSale 
       </Box>
       <ButtonContainer>
         {ownNft ? (
-          <Button scale="sm" variant="danger" maxWidth="128px" onClick={onPresentAdjustPriceModal}>
+          <Button
+            disabled={!nft?.marketData?.isTradable}
+            scale="sm"
+            variant="danger"
+            maxWidth="128px"
+            onClick={onPresentAdjustPriceModal}
+          >
             {t('Edit')}
           </Button>
         ) : (
-          <Button scale="sm" variant="secondary" maxWidth="128px" onClick={onPresentBuyModal}>
+          <Button
+            disabled={!nft?.marketData?.isTradable}
+            scale="sm"
+            variant="secondary"
+            maxWidth="128px"
+            onClick={onPresentBuyModal}
+          >
             {t('Buy')}
           </Button>
         )}

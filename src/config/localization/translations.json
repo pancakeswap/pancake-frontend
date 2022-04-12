@@ -1066,7 +1066,6 @@
   "here.": "here.",
   "Price Change": "Price Change",
   "Page %page% of %maxPage%": "Page %page% of %maxPage%",
-  "Page %page%": "Page %page%",
   "Name": "Name",
   "Swaps": "Swaps",
   "Adds": "Adds",
@@ -1609,5 +1608,6 @@
   "300 Mobox Avatars NFT + 300 PancakeSwap newly designed NFT to the top 100 traders in each of the three teams.": "300 Mobox Avatars NFT + 300 PancakeSwap newly designed NFT to the top 100 traders in each of the three teams.",
   "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.": "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.",
   "Added by user": "Added by user",
-  "Mystery Box": "Mystery Box"
+  "Mystery Box": "Mystery Box",
+  "Page %page%": "Page %page%"
 }
