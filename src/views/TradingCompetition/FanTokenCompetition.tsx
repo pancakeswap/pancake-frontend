@@ -1,6 +1,3 @@
-import { useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
-
 const FanTokenCompetition = () => {
   // const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   // const { account } = useWeb3React()
