@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Box, Modal, Message as UIMessage, MessageText } from '@pancakeswap/uikit'
+import { Box, Modal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import { SnapshotCommand } from 'state/types'
@@ -77,8 +77,6 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
     }
   }
 
-  const snapshotIssueAboutPoolsBalance = !isLoading && poolsBalance > 0 && total === poolsBalance
-
   return (
     <Modal
       title={title[view]}
@@ -88,19 +86,9 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
       headerBackground={theme.colors.gradients.cardHeader}
     >
       <Box mb="24px" width="320px">
-        {snapshotIssueAboutPoolsBalance && (
-          <UIMessage variant="warning" mb="8px">
-            <MessageText>
-              {t(
-                'Due to an ongoing issue with Snapshot, if you only held $CAKE in other syrup pools, voting power will not be able to calculate correctly.',
-              )}
-            </MessageText>
-          </UIMessage>
-        )}
         {view === ConfirmVoteView.MAIN && (
           <MainView
             vote={vote}
-            disabled={snapshotIssueAboutPoolsBalance}
             isError={isError}
             isLoading={isLoading}
             isPending={isPending}
