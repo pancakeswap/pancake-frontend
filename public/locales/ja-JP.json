@@ -1066,7 +1066,6 @@
   "here.": "ここにプールを作成する。",
   "Price Change": "価格変更",
   "Page %page% of %maxPage%": "ページ %page%/%maxPage%",
-  "Page %page%": "Page %page%",
   "Name": "名前",
   "Swaps": "スワップ",
   "Adds": "追加",
@@ -1609,5 +1608,6 @@
   "300 Mobox Avatars NFT + 300 PancakeSwap newly designed NFT to the top 100 traders in each of the three teams.": "300 Mobox Avatars NFT + 300 PancakeSwap newly designed NFT to the top 100 traders in each of the three teams.",
   "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.": "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.",
   "Added by user": "Added by user",
-  "Mystery Box": "Mystery Box"
+  "Mystery Box": "Mystery Box",
+  "Page %page%": "Page %page%"
 }
