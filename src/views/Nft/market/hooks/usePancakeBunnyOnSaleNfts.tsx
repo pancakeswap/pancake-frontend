@@ -89,8 +89,7 @@ export const usePancakeBunnyOnSaleNfts = (
             marketData: {
               ...nftData.marketData,
               isTradable,
-              currentSeller: currentSeller.toLowerCase(),
-              previousSeller: nftData.marketData.currentSeller,
+              currentSeller: isTradable ? currentSeller.toLowerCase() : nftData.marketData.currentSeller,
               currentAskPrice: isTradable ? formatBigNumber(currentAskPrice) : nftData.marketData.currentAskPrice,
             },
           }

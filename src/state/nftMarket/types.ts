@@ -73,7 +73,6 @@ export interface TokenMarketData {
   totalTrades: string
   isTradable: boolean
   otherId: string
-  previousSeller?: string
   collection?: {
     id: string
   }

@@ -25,12 +25,7 @@ const StyledFlex = styled(Flex)`
   }
 `
 
-interface ProfileCellProps {
-  accountAddress: string
-  oldData?: boolean
-}
-
-const ProfileCell: React.FC<ProfileCellProps> = ({ accountAddress, oldData = false }) => {
+const ProfileCell: React.FC<{ accountAddress: string }> = ({ accountAddress }) => {
   const { profile, isFetching } = useProfileForAddress(accountAddress)
   const profileName = profile?.username || '-'
 
@@ -48,16 +43,8 @@ const ProfileCell: React.FC<ProfileCellProps> = ({ accountAddress, oldData = fal
       <StyledFlex>
         {sellerProfilePicComponent}
         <Box display="inline">
-          <Text style={{ textDecoration: oldData ? 'line-through' : 'none' }} lineHeight="1.25">
-            {truncateHash(accountAddress)}
-          </Text>
-          {isFetching ? (
-            <Skeleton />
-          ) : (
-            <Text style={{ textDecoration: oldData ? 'line-through' : 'none' }} lineHeight="1.25">
-              {profileName}
-            </Text>
-          )}
+          <Text lineHeight="1.25">{truncateHash(accountAddress)}</Text>
+          {isFetching ? <Skeleton /> : <Text lineHeight="1.25">{profileName}</Text>}
         </Box>
       </StyledFlex>
     </NextLinkFromReactRouter>
