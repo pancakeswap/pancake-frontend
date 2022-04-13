@@ -1436,6 +1436,7 @@
   "Delayed": "متأخر",
   "Fast": "سريع",
   "Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.": "يتعرض الرسم البياني الفرعي حاليًا لبعض التأخيرات بسبب مشكلات في BSC. قد يتراجع الأداء حتى استعادة الرسم البياني الفرعي.",
+  "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.": "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.",
   "No issues with the subgraph.": "لا يوجد مشكلات في الرسم البياني الفرعي.",
   "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "قم بتشغيل مؤشر صحة الرسم البياني الفرعي لسوق NFT في جميع الأوقات. الإعداد الافتراضي هو إظهار المؤشر فقط عند حدوث تأخير في الشبكة",
   "Subgraph Health Indicator": "مؤشر صحة الرسم البياني الفرعي",
@@ -1609,5 +1610,7 @@
   "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.": "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.",
   "Added by user": "Added by user",
   "Mystery Box": "Mystery Box",
-  "Page %page%": "Page %page%"
+  "Page %page%": "Page %page%",
+  "Participants": "Participants",
+  "Total Participants": "Total Participants"
 }
