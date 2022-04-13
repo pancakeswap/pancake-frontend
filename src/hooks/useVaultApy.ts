@@ -32,7 +32,7 @@ const getFlexibleApy = (
     .divUnsafe(totalShares)
     .mulUnsafe(FixedNumber.from(100))
 
-const getBoostFactor = (boostWeight: BigNumber, duration: number, durationFactor: BigNumber) => {
+const _getBoostFactor = (boostWeight: BigNumber, duration: number, durationFactor: BigNumber) => {
   return FixedNumber.from(boostWeight)
     .mulUnsafe(FixedNumber.from(Math.max(duration, 0)))
     .divUnsafe(FixedNumber.from(durationFactor))
@@ -98,7 +98,7 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
   const durationFactor: BigNumber = data?.[1][0] || DEFAULT_DURATION_FACTOR
 
   const boostFactor = useMemo(
-    () => getBoostFactor(boostWeight, duration, durationFactor),
+    () => _getBoostFactor(boostWeight, duration, durationFactor),
     [boostWeight, duration, durationFactor],
   )
 
@@ -106,14 +106,18 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
     return flexibleApy && getLockedApy(flexibleApy, boostFactor).toString()
   }, [boostFactor, flexibleApy])
 
+  const getBoostFactor = useCallback(
+    (adjustDuration: number) => _getBoostFactor(boostWeight, adjustDuration, durationFactor),
+    [boostWeight, durationFactor],
+  )
+
   return {
     flexibleApy,
     lockedApy,
     getLockedApy: useCallback(
-      (adjustDuration: number) =>
-        flexibleApy &&
-        getLockedApy(flexibleApy, getBoostFactor(boostWeight, adjustDuration, durationFactor)).toString(),
-      [boostWeight, durationFactor, flexibleApy],
+      (adjustDuration: number) => flexibleApy && getLockedApy(flexibleApy, getBoostFactor(adjustDuration)).toString(),
+      [flexibleApy, getBoostFactor],
     ),
+    boostFactor: boostFactor.addUnsafe(FixedNumber.from('1')),
   }
 }

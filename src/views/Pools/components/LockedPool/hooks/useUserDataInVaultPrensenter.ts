@@ -28,10 +28,18 @@ const useUserDataInVaultPrensenter: UserDataInVaultPrensenterFn = ({ lockEndTime
   const remainingWeeks = differenceInWeeks(new Date(lockEndTimeSeconds), new Date(), { roundingMethod: 'round' })
   const remainingWeeksText = remainingWeeks > 0 ? formatDuration({ weeks: remainingWeeks }) : `0 ${t('week')}`
 
+  let lockEndDate = ''
+
+  try {
+    lockEndDate = format(lockEndTimeSeconds, 'MMM do, yyyy HH:mm')
+  } catch (_) {
+    // ignore invalid format
+  }
+
   return {
     weekDuration: formatSecondsToWeeks(secondDuration),
     remainingWeeks: remainingWeeksText,
-    lockEndDate: format(lockEndTimeSeconds, 'MMM do, yyyy HH:mm'),
+    lockEndDate,
     secondDuration,
   }
 }
