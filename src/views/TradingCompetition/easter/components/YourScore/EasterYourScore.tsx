@@ -30,7 +30,7 @@ const EasterYourScore: React.FC<React.PropsWithChildren<YourScoreProps>> = ({
   onClaimSuccess,
 }) => {
   const { t } = useTranslation()
-  const showRibbon = !account || hasRegistered
+  const showRibbon = !account || isLoading || hasRegistered
 
   return (
     <Wrapper>

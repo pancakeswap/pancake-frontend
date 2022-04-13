@@ -7,6 +7,7 @@ import { useTradingCompetitionContractMobox } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { PageMeta } from 'components/Layout/Page'
 import { TC_MOBOX_SUBGRAPH } from 'config/constants/endpoints'
+import orderBy from 'lodash/orderBy'
 import {
   SmartContractPhases,
   CompetitionPhases,
@@ -18,10 +19,7 @@ import {
 } from 'config/constants/trading-competition/phases'
 import PageSection from 'components/PageSection'
 import { MIDBLUEBG, MIDBLUEBG_DARK, TRADINGCOMPETITIONBANNER } from './pageSectionStyles'
-import {
-  //  RanksIcon,
-  RulesIcon,
-} from './svgs'
+import { RulesIcon } from './svgs'
 import Countdown from './components/Countdown'
 import StormBunny from './pngs/mobox-storm-bunny.png'
 import RibbonWithImage from './components/RibbonWithImage'
@@ -46,22 +44,27 @@ const MoboxCompetition = () => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
-  const { profile, isLoading } = useProfile()
+  const { profile, isLoading: isProfileLoading } = useProfile()
   const { isDark, theme } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractMobox(false)
-  const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.OVER)
-  const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
-  const [userTradingInformation, setUserTradingInformation] = useState<UserTradingInformation>({
-    hasRegistered: false,
-    isUserActive: false,
-    hasUserClaimed: false,
-    userRewardGroup: '0',
-    userCakeRewards: '0',
-    userMoboxRewards: '0',
-    userPointReward: '0',
-    canClaimMysteryBox: false,
-    canClaimNFT: false,
+  const [currentPhase, setCurrentPhase] = useState(() => {
+    const now = Date.now()
+    const actualPhase = orderBy(
+      Object.values(CompetitionPhases).filter(
+        (competitionPhase) => competitionPhase.ends && now < competitionPhase.ends,
+      ),
+      'endsIn',
+      'asc',
+    )[0]
+
+    if (!actualPhase) {
+      return CompetitionPhases.FINISHED
+    }
+    return actualPhase
   })
+  const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
+  const [userTradingInformation, setUserTradingInformation] =
+    useState<UserTradingInformationProps>(initialUserTradingInformation)
   const [userLeaderboardInformation, setUserLeaderboardInformation] = useState({
     global: 0,
     team: 0,
@@ -114,6 +117,8 @@ const MoboxCompetition = () => {
       try {
         const user = await tradingCompetitionContract.claimInformation(account)
         const userObject = {
+          isLoading: false,
+          account,
           hasRegistered: user[0],
           isUserActive: user[1],
           hasUserClaimed: user[2],
@@ -132,24 +137,16 @@ const MoboxCompetition = () => {
         setUserTradingInformation(userObject)
       } catch (error) {
         console.error(error)
+        setUserTradingInformation({ ...initialUserTradingInformation, isLoading: false })
       }
     }
 
     fetchCompetitionInfoContract()
     if (account) {
+      setUserTradingInformation({ ...initialUserTradingInformation })
       fetchUserContract()
     } else {
-      setUserTradingInformation({
-        hasRegistered: false,
-        isUserActive: false,
-        hasUserClaimed: false,
-        userRewardGroup: '0',
-        userCakeRewards: '0',
-        userMoboxRewards: '0',
-        userPointReward: '0',
-        canClaimMysteryBox: false,
-        canClaimNFT: false,
-      })
+      setUserTradingInformation({ ...initialUserTradingInformation, isLoading: false })
     }
   }, [account, registrationSuccessful, claimSuccessful, tradingCompetitionContract])
 
@@ -165,9 +162,14 @@ const MoboxCompetition = () => {
     }
   }, [account, userTradingInformation, profileApiUrl])
 
+  const isLoading = isProfileLoading || userTradingInformation.isLoading
+
   // Don't hide when loading. Hide if the account is connected && the user hasn't registered && the competition is live or finished
   const shouldHideCta =
-    !isLoading && account && !userTradingInformation.hasRegistered && (isCompetitionLive || hasCompetitionEnded)
+    !isLoading &&
+    userTradingInformation.account &&
+    !userTradingInformation.hasRegistered &&
+    (isCompetitionLive || hasCompetitionEnded)
 
   return (
     <>
