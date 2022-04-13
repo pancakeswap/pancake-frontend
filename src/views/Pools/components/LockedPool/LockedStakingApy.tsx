@@ -110,7 +110,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
         <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-          {t('Initial Lock Duration')}
+          {t('Lock Duration')}
         </Text>
         <Text color="text" bold fontSize="16px">
           {weekDuration}
