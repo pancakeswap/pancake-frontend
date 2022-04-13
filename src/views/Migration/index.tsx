@@ -72,7 +72,7 @@ const MigrationPage: React.FC = () => {
           {t('Migration')}
         </Heading>
         <Heading scale="lg" color="text">
-          {t('Migrate your farms and pools staking to the new staking contract.')}
+          {t('Migrate your stakings to the new MasterChef contract.')}
         </Heading>
         <Link href="https://pancakeswap.finance/farms" external>
           <Button p="0" variant="text">

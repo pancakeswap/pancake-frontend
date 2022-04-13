@@ -1,15 +1,16 @@
-import { useMemo } from 'react'
-import { Text, Flex, Skeleton, Heading } from '@pancakeswap/uikit'
+import { Text, Flex, Skeleton, Heading, Box } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import { useTranslation } from 'contexts/Localization'
-import Balance from 'components/Balance'
+import { BalanceWithLoading } from 'components/Balance'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
+import { useVaultApy } from 'hooks/useVaultApy'
 
-import { ActionContainer, ActionTitles, ActionContent } from './styles'
+import { ActionContainer, ActionTitles, ActionContent, RowActionContainer } from './styles'
 import UnstakingFeeCountdownRow from '../../CakeVaultCard/UnstakingFeeCountdownRow'
+import useUserDataInVaultPrensenter from '../../LockedPool/hooks/useUserDataInVaultPrensenter'
 
 interface AutoHarvestActionProps extends DeserializedPool {
   userDataLoaded: boolean
@@ -31,6 +32,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
       currentPerformanceFee,
       locked,
       lockEndTime,
+      lockStartTime,
       userBoostedShare,
     },
     pricePerFullShare,
@@ -43,6 +45,13 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
     earningTokenPrice,
     currentPerformanceFee.plus(currentOverdueFee).plus(userBoostedShare),
   )
+
+  const { secondDuration, weekDuration } = useUserDataInVaultPrensenter({
+    lockStartTime,
+    lockEndTime,
+  })
+
+  const { boostFactor } = useVaultApy({ duration: secondDuration })
 
   const earningTokenBalance = autoCakeToDisplay
   const earningTokenDollarBalance = autoUsdToDisplay
@@ -79,44 +88,71 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
   }
 
   return (
-    <ActionContainer>
-      <ActionTitles>{actionTitle}</ActionTitles>
-      <ActionContent>
-        <Flex flex="1" flexDirection="column" alignSelf="flex-start">
-          <>
-            {hasEarnings ? (
-              <>
-                <Balance lineHeight="1" bold fontSize="20px" decimals={5} value={earningTokenBalance} />
-                {earningTokenPrice > 0 && (
-                  <Balance
-                    display="inline"
-                    fontSize="12px"
-                    color="textSubtle"
-                    decimals={2}
-                    prefix="~"
-                    value={earningTokenDollarBalance}
-                    unit=" USD"
-                  />
-                )}
-              </>
-            ) : (
-              <>
-                <Heading color="textDisabled">0</Heading>
-                <Text fontSize="12px" color="textDisabled">
-                  0 USD
-                </Text>
-              </>
+    <RowActionContainer justifyContent="space-between">
+      <Box>
+        <ActionTitles>{actionTitle}</ActionTitles>
+        <ActionContent>
+          <Flex flex="1" flexDirection="column" alignSelf="flex-start">
+            <>
+              {hasEarnings ? (
+                <>
+                  <BalanceWithLoading lineHeight="1" bold fontSize="20px" decimals={5} value={earningTokenBalance} />
+                  {earningTokenPrice > 0 && (
+                    <BalanceWithLoading
+                      display="inline"
+                      fontSize="12px"
+                      color="textSubtle"
+                      decimals={2}
+                      prefix="~"
+                      value={earningTokenDollarBalance}
+                      unit=" USD"
+                    />
+                  )}
+                </>
+              ) : (
+                <>
+                  <Heading color="textDisabled">0</Heading>
+                  <Text fontSize="12px" color="textDisabled">
+                    0 USD
+                  </Text>
+                </>
+              )}
+            </>
+          </Flex>
+          <Flex flex="1.3" flexDirection="column" alignSelf="flex-start" alignItems="flex-start">
+            {hasEarnings && vaultPosition === VaultPosition.Flexible && (
+              <UnstakingFeeCountdownRow vaultKey={vaultKey} isTableVariant />
             )}
-          </>
-        </Flex>
-        <Flex flex="1.3" flexDirection="column" alignSelf="flex-start" alignItems="flex-start">
-          {hasEarnings && vaultPosition === VaultPosition.Flexible && (
-            <UnstakingFeeCountdownRow vaultKey={vaultKey} isTableVariant />
-          )}
-          {/* IFO credit here */}
-        </Flex>
-      </ActionContent>
-    </ActionContainer>
+            {/* IFO credit here */}
+          </Flex>
+        </ActionContent>
+      </Box>
+      {locked && (
+        <Box minWidth="123px">
+          <ActionTitles>
+            <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
+              {t('Yield boost')}
+            </Text>
+          </ActionTitles>
+          <ActionContent>
+            <Flex flex="1" flexDirection="column" alignSelf="flex-start">
+              <BalanceWithLoading
+                color="text"
+                lineHeight="1"
+                bold
+                fontSize="20px"
+                value={boostFactor ? boostFactor?.toString() : '0'}
+                decimals={2}
+                unit="x"
+              />
+              <Text fontSize="12px" color="textSubtle">
+                {t('Lock for %duration%', { duration: weekDuration })}
+              </Text>
+            </Flex>
+          </ActionContent>
+        </Box>
+      )}
+    </RowActionContainer>
   )
 }
 

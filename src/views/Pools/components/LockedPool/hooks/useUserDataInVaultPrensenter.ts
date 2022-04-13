@@ -21,10 +21,18 @@ const useUserDataInVaultPrensenter: UserDataInVaultPrensenterFn = ({ lockEndTime
 
   const lockEndTimeSeconds = convertTimeToSeconds(lockEndTime)
 
+  let lockEndDate = ''
+
+  try {
+    lockEndDate = format(lockEndTimeSeconds, 'MMM do, yyyy HH:mm')
+  } catch (_) {
+    // ignore invalid format
+  }
+
   return {
     weekDuration: formatSecondsToWeeks(secondDuration),
     remainingTime: distanceToNowStrict(lockEndTime),
-    lockEndDate: format(lockEndTimeSeconds, 'MMM do, yyyy HH:mm'),
+    lockEndDate,
     secondDuration,
   }
 }

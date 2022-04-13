@@ -40,7 +40,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
     lockEndTime: userData?.lockEndTime,
   })
 
-  const { lockedApy } = useVaultApy({ duration: Number(secondDuration) })
+  const { lockedApy, boostFactor } = useVaultApy({ duration: secondDuration })
 
   const tooltipContent = t(
     'Your yield will be boosted based on the total lock duration of your current fixed term staking position.',
@@ -109,15 +109,28 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
         <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={5} />
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
-        {tooltipVisible && tooltip}
-        <TooltipText>
-          <Text ref={targetRef} color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-            {t('Lock Duration')}
-          </Text>
-        </TooltipText>
+        <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+          {t('Initial Lock Duration')}
+        </Text>
         <Text color="text" bold fontSize="16px">
           {weekDuration}
         </Text>
+      </Flex>
+      <Flex alignItems="center" justifyContent="space-between">
+        {tooltipVisible && tooltip}
+        <TooltipText>
+          <Text ref={targetRef} color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+            {t('Yield boost')}
+          </Text>
+        </TooltipText>
+        <BalanceWithLoading
+          color="text"
+          bold
+          fontSize="16px"
+          value={boostFactor ? boostFactor?.toString() : '0'}
+          decimals={2}
+          unit="x"
+        />
       </Flex>
       {position === VaultPosition.LockedEnd && (
         <Flex alignItems="center" justifyContent="space-between">
