@@ -12,7 +12,7 @@ If you want to contribute, please refer to the [contributing guidelines](./CONTR
 
 ## Quick Start
 
-install dependencies when **yarn**
+install dependencies using **yarn**
 
 ```sh
 yarn
