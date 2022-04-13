@@ -1436,6 +1436,7 @@
   "Delayed": "遅延",
   "Fast": "高速",
   "Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.": "BSCの問題により、現在サブグラフに遅延が発生しています。サブグラフが復旧するまで、パフォーマンスが低下する可能性があります。",
+  "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.": "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.",
   "No issues with the subgraph.": "サブグラフの問題はありません。",
   "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "NFTマーケットサブグラフの状態インジケーターを常にオンにします。デフォルトでは、ネットワークに遅延が発生している場合にのみ表示されます",
   "Subgraph Health Indicator": "サブグラフ状態インジケーター",
@@ -1609,5 +1610,7 @@
   "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.": "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.",
   "Added by user": "Added by user",
   "Mystery Box": "Mystery Box",
-  "Page %page%": "Page %page%"
+  "Page %page%": "Page %page%",
+  "Participants": "Participants",
+  "Total Participants": "Total Participants"
 }
