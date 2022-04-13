@@ -1436,6 +1436,7 @@
   "Delayed": "தாமதமானது",
   "Fast": "அதிவேகம்",
   "Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.": "BSC சிக்கல்கள் காரணமாக சப்கிராஃப் தற்போது தாமதத்தைச் சந்தித்து வருகிறது. சப்கிராஃப் மீட்டெடுக்கப்படும் வரை செயல்திறன் பாதிக்கப்படலாம்.",
+  "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.": "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.",
   "No issues with the subgraph.": "சப்கிராஃபில் எச்சிக்கலும் இல்லை.",
   "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "NFT மார்க்கெட் சப்கிராஃப் ஹெல்த் இண்டிகேட்டரை எல்லா நேரத்திலும் இயக்கவும். இயல்பு என்பது நெட்வொர்க் தாமதமாகும்போது மட்டும் இன்டிகேட்டரைக் காட்டுவதற்கானது",
   "Subgraph Health Indicator": "சப்கிராஃப் ஹெல்த் இன்டிகேட்டர்",
@@ -1609,5 +1610,7 @@
   "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.": "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.",
   "Added by user": "Added by user",
   "Mystery Box": "Mystery Box",
-  "Page %page%": "Page %page%"
+  "Page %page%": "Page %page%",
+  "Participants": "Participants",
+  "Total Participants": "Total Participants"
 }
