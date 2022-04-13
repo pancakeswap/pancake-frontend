@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Box, Text } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { addSeconds } from 'date-fns'
 import { useVaultApy } from 'hooks/useVaultApy'
@@ -46,28 +47,33 @@ const Overview: React.FC<OverviewPropsType> = ({
     : addSeconds(now, duration)
 
   return (
-    <LightGreyCard>
-      <BalanceRow title={t('Cake to be locked')} value={lockedAmount} newValue={newLockedAmount} decimals={2} />
-      <BalanceRow title="apy" unit="%" value={_toNumber(lockedApy)} decimals={2} newValue={_toNumber(newLockedApy)} />
-      <TextRow
-        title={t('duration')}
-        value={isValidDuration && formatSecondsToWeeks(duration)}
-        newValue={isValidDuration && newDuration && formatSecondsToWeeks(newDuration)}
-      />
-      <DateRow
-        color={_toNumber(newDuration) ? 'textSubtle' : 'text'}
-        title={t('Unlock on')}
-        value={isValidDuration && unlockDate}
-      />
-      <BalanceRow
-        title={t('Expected ROI')}
-        value={formattedRoi}
-        newValue={newFormattedRoi}
-        unit="$"
-        decimals={2}
-        suffix={<CalculatorButton />}
-      />
-    </LightGreyCard>
+    <Box>
+      <Text color="secondary" bold fontSize="12px" mb="4px" textTransform="uppercase">
+        {t('Lock Overview')}
+      </Text>
+      <LightGreyCard>
+        <BalanceRow title={t('Cake to be locked')} value={lockedAmount} newValue={newLockedAmount} decimals={2} />
+        <BalanceRow title="apy" unit="%" value={_toNumber(lockedApy)} decimals={2} newValue={_toNumber(newLockedApy)} />
+        <TextRow
+          title={t('duration')}
+          value={isValidDuration && formatSecondsToWeeks(duration)}
+          newValue={isValidDuration && newDuration && formatSecondsToWeeks(newDuration)}
+        />
+        <DateRow
+          color={_toNumber(newDuration) ? 'textSubtle' : 'text'}
+          title={t('Unlock on')}
+          value={isValidDuration && unlockDate}
+        />
+        <BalanceRow
+          title={t('Expected ROI')}
+          value={formattedRoi}
+          newValue={newFormattedRoi}
+          unit="$"
+          decimals={2}
+          suffix={<CalculatorButton />}
+        />
+      </LightGreyCard>
+    </Box>
   )
 }
 
