@@ -9,7 +9,7 @@ interface UserData {
 
 interface UserDataInVaultPrensenter {
   weekDuration: string
-  remainingWeeks: string
+  remainingTime: string
   lockEndDate: string
   secondDuration: number
 }
@@ -23,7 +23,7 @@ const useUserDataInVaultPrensenter: UserDataInVaultPrensenterFn = ({ lockEndTime
 
   return {
     weekDuration: formatSecondsToWeeks(secondDuration),
-    remainingWeeks: distanceToNowStrict(lockEndTime),
+    remainingTime: distanceToNowStrict(lockEndTime),
     lockEndDate: format(lockEndTimeSeconds, 'MMM do, yyyy HH:mm'),
     secondDuration,
   }

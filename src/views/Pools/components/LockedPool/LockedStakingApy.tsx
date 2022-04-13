@@ -35,7 +35,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
 
   const usdValueStaked = useBUSDCakeAmount(currentLockedAmount)
 
-  const { weekDuration, lockEndDate, secondDuration, remainingWeeks } = useUserDataInVaultPrensenter({
+  const { weekDuration, lockEndDate, secondDuration, remainingTime } = useUserDataInVaultPrensenter({
     lockStartTime: userData?.lockStartTime,
     lockEndTime: userData?.lockEndTime,
   })
@@ -75,7 +75,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
             {t('Unlocks In')}
           </Text>
           <Text color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'} bold fontSize="16px">
-            {position >= VaultPosition.LockedEnd ? t('Unlocked') : remainingWeeks}
+            {position >= VaultPosition.LockedEnd ? t('Unlocked') : remainingTime}
           </Text>
           <Text color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'} fontSize="12px">
             {t('On %date%', { date: lockEndDate })}
