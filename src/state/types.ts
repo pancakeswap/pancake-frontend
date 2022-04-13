@@ -516,6 +516,8 @@ export interface Proposal {
   author: string
   body: string
   choices: string[]
+  scores: number[]
+  scores_total: number
   end: number
   id: string
   snapshot: string
@@ -531,6 +533,7 @@ export interface Vote {
   voter: string
   created: number
   space: Space
+  vp: number
   proposal: {
     choices: Proposal['choices']
   }

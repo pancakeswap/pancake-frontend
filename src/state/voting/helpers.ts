@@ -1,7 +1,6 @@
 import { SNAPSHOT_API } from 'config/constants/endpoints'
 import request, { gql } from 'graphql-request'
 import { Proposal, ProposalState, Vote, VoteWhere } from 'state/types'
-import { getVotingPowerByCakeStrategy } from 'views/Voting/helpers'
 import _chunk from 'lodash/chunk'
 import _flatten from 'lodash/flatten'
 
@@ -54,6 +53,8 @@ export const getProposal = async (id: string): Promise<Proposal> => {
           state
           author
           votes
+          scores
+          scores_total
           space {
             id
             name
@@ -76,6 +77,7 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
           voter
           created
           choice
+          vp
           space {
             id
             name
@@ -91,8 +93,6 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
   return response.votes
 }
 
-const NUMBER_OF_VOTERS_PER_SNAPSHOT_REQUEST = 250
-
 export const getAllVotes = async (proposalId: string, block?: number, votesPerChunk = 1000): Promise<Vote[]> => {
   return new Promise((resolve, reject) => {
     let votes: Vote[] = []
@@ -101,25 +101,11 @@ export const getAllVotes = async (proposalId: string, block?: number, votesPerCh
       try {
         const voteChunk = await getVotes(votesPerChunk, newSkip, { proposal: proposalId })
 
-        const voteChunkVoters = voteChunk.map((vote) => {
-          return vote.voter
-        })
-
-        const snapshotVotersChunk = _chunk(voteChunkVoters, NUMBER_OF_VOTERS_PER_SNAPSHOT_REQUEST)
-
-        const votingPowers = await Promise.all(
-          snapshotVotersChunk.map((votersChunk) => getVotingPowerByCakeStrategy(votersChunk, block)),
-        )
-
-        const mergedVotingPowers = votingPowers.reduce((acc, curr) => {
-          return { ...acc, ...curr }
-        }, {})
-
         const voteChunkWithVP = voteChunk.map((vote) => {
           return {
             ...vote,
             metadata: {
-              votingPower: mergedVotingPowers[vote.voter] || '0',
+              votingPower: String(vote.vp) || '0',
             },
           }
         })

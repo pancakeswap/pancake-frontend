@@ -7,29 +7,22 @@ import {
   CardHeader,
   Heading,
   Progress,
-  Skeleton,
   Tag,
   CheckmarkCircleIcon,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@web3-react/core'
-import { Vote } from 'state/types'
+import { Proposal, Vote } from 'state/types'
 import { formatNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
-import { FetchStatus } from 'config/constants/types'
-import { calculateVoteResults, getTotalFromVotes } from '../helpers'
 import TextEllipsis from '../components/TextEllipsis'
 
 interface ResultsProps {
-  choices: string[]
   votes: Vote[]
-  votesLoadingStatus: FetchStatus
+  proposal: Proposal
+  accountVoted?: Vote
 }
 
-const Results: React.FC<ResultsProps> = ({ choices, votes, votesLoadingStatus }) => {
+const Results: React.FC<ResultsProps> = ({ proposal, votes, accountVoted }) => {
   const { t } = useTranslation()
-  const results = calculateVoteResults(votes)
-  const { account } = useWeb3React()
-  const totalVotes = getTotalFromVotes(votes)
 
   return (
     <Card>
@@ -39,55 +32,35 @@ const Results: React.FC<ResultsProps> = ({ choices, votes, votesLoadingStatus })
         </Heading>
       </CardHeader>
       <CardBody>
-        {votesLoadingStatus === FetchStatus.Fetched &&
-          choices.map((choice, index) => {
-            const choiceVotes = results[choice] || []
-            const totalChoiceVote = getTotalFromVotes(choiceVotes)
-            const progress = totalVotes === 0 ? 0 : (totalChoiceVote / totalVotes) * 100
-            const hasVoted = choiceVotes.some((vote) => {
-              return account && vote.voter.toLowerCase() === account.toLowerCase()
-            })
+        {proposal.choices.map((choice, index) => {
+          const totalChoiceVote = proposal.scores[index]
+          const progress = proposal.scores_total === 0 ? 0 : (totalChoiceVote / proposal.scores_total) * 100
+          const hasVoted = accountVoted && accountVoted.choice === index + 1
 
-            return (
-              <Box key={choice} mt={index > 0 ? '24px' : '0px'}>
-                <Flex alignItems="center" mb="8px">
-                  <TextEllipsis mb="4px" title={choice}>
-                    {choice}
-                  </TextEllipsis>
-                  {hasVoted && (
-                    <Tag variant="success" outline ml="8px">
-                      <CheckmarkCircleIcon mr="4px" /> {t('Voted')}
-                    </Tag>
-                  )}
-                </Flex>
-                <Box mb="4px">
-                  <Progress primaryStep={progress} scale="sm" />
-                </Box>
-                <Flex alignItems="center" justifyContent="space-between">
-                  <Text color="textSubtle">{t('%total% Votes', { total: formatNumber(totalChoiceVote, 0, 2) })}</Text>
-                  <Text>
-                    {progress.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%
-                  </Text>
-                </Flex>
+          return (
+            <Box key={choice} mt={index > 0 ? '24px' : '0px'}>
+              <Flex alignItems="center" mb="8px">
+                <TextEllipsis mb="4px" title={choice}>
+                  {choice}
+                </TextEllipsis>
+                {hasVoted && (
+                  <Tag variant="success" outline ml="8px">
+                    <CheckmarkCircleIcon mr="4px" /> {t('Voted')}
+                  </Tag>
+                )}
+              </Flex>
+              <Box mb="4px">
+                <Progress primaryStep={progress} scale="sm" />
               </Box>
-            )
-          })}
-
-        {votesLoadingStatus === FetchStatus.Fetching &&
-          choices.map((choice, index) => {
-            return (
-              <Box key={choice} mt={index > 0 ? '24px' : '0px'}>
-                <Flex alignItems="center" mb="8px">
-                  <TextEllipsis mb="4px" title={choice}>
-                    {choice}
-                  </TextEllipsis>
-                </Flex>
-                <Box mb="4px">
-                  <Skeleton height="36px" mb="4px" />
-                </Box>
-              </Box>
-            )
-          })}
+              <Flex alignItems="center" justifyContent="space-between">
+                <Text color="textSubtle">{t('%total% Votes', { total: formatNumber(totalChoiceVote, 0, 2) })}</Text>
+                <Text>
+                  {progress.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%
+                </Text>
+              </Flex>
+            </Box>
+          )
+        })}
       </CardBody>
     </Card>
   )
