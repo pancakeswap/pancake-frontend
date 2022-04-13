@@ -17,9 +17,14 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({ duration, set
   return (
     <>
       <Box mb="16px">
-        <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px" mb="8px">
-          {t('Add duration')}
-        </Text>
+        <Flex mb="8px">
+          <Text fontSize="12px" color="secondary" bold mr="2px" textTransform="uppercase">
+            {t('Add')}
+          </Text>
+          <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
+            {t('duration')}
+          </Text>
+        </Flex>
         <Flex flexWrap="wrap">
           {DURATIONS.map((week) => (
             <Button
