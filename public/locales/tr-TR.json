@@ -1436,6 +1436,7 @@
   "Delayed": "Gecikmeli",
   "Fast": "Hızlı",
   "Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.": "Alt grafikte şu anda BSC sorunları nedeniyle gecikmeler yaşanıyor. Alt grafik yenilenene kadar performans sorunları olabilir.",
+  "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.": "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.",
   "No issues with the subgraph.": "Alt grafikle ilgili sorun yok.",
   "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "NFT piyasası alt grafiği sağlık göstergesini sürekli açık tutun. Varsayılan ayarda, gösterge sadece ağda gecikme olduğunda gösterilir",
   "Subgraph Health Indicator": "Alt Grafik Sağlık Göstergesi",
@@ -1609,5 +1610,7 @@
   "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.": "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.",
   "Added by user": "Added by user",
   "Mystery Box": "Mystery Box",
-  "Page %page%": "Page %page%"
+  "Page %page%": "Page %page%",
+  "Participants": "Participants",
+  "Total Participants": "Total Participants"
 }
