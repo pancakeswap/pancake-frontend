@@ -1436,6 +1436,7 @@
   "Delayed": "已延遲",
   "Fast": "快速",
   "Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.": "由於 BSC 問題，子圖目前正在經歷延遲。在子圖恢復之前，效能可能會受到影響。",
+  "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.": "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.",
   "No issues with the subgraph.": "子圖沒有問題。",
   "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "始終開啟 NFT 市場子圖健康指標。預設為僅在網路延遲時才顯示該指標",
   "Subgraph Health Indicator": "子圖健康指標",
@@ -1609,5 +1610,7 @@
   "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.": "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.",
   "Added by user": "Added by user",
   "Mystery Box": "Mystery Box",
-  "Page %page%": "Page %page%"
+  "Page %page%": "Page %page%",
+  "Participants": "Participants",
+  "Total Participants": "Total Participants"
 }
