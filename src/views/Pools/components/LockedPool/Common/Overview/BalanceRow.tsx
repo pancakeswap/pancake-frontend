@@ -40,6 +40,7 @@ const DiffBalance: React.FC<DiffBalancePropsType> = ({ value, newValue, decimals
         value={newValue}
         decimals={decimals}
         unit={unit}
+        prefix={prefix}
       />
     </>
   )
