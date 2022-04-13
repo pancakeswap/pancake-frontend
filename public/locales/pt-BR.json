@@ -1436,6 +1436,7 @@
   "Delayed": "Com atraso",
   "Fast": "Rápido",
   "Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.": "O subgrafo está atualmente sofrendo atrasos devido a problemas de BSC. O desempenho pode ser afetado até que o subgrafo seja restaurado.",
+  "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.": "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.",
   "No issues with the subgraph.": "Nenhum problema com o subgrafo.",
   "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "Ligue o indicador de saúde do subgrafo do mercado de NFT o tempo todo. O padrão é que o indicador só seja mostrado quando a rede está com atraso",
   "Subgraph Health Indicator": "Indicador de saúde do subgrafo",
@@ -1609,5 +1610,7 @@
   "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.": "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.",
   "Added by user": "Added by user",
   "Mystery Box": "Mystery Box",
-  "Page %page%": "Page %page%"
+  "Page %page%": "Page %page%",
+  "Participants": "Participants",
+  "Total Participants": "Total Participants"
 }
