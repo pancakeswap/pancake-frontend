@@ -99,7 +99,7 @@ const MigrationSticky: React.FC = () => {
     <Container style={{ top: `${stickPosition}px` }}>
       <TextGroup>
         <TextTitle bold>{t('MasterChef v2 Migration')}</TextTitle>
-        <TextSubTitle>{t('You need to migrate in order to continue receving staking rewards.')}</TextSubTitle>
+        <TextSubTitle>{t('Migrate to continue earning staking rewards.')}</TextSubTitle>
       </TextGroup>
       <NextLinkFromReactRouter to="/migration">
         <Button minWidth={isMobile ? '131px' : '178px'}>{t('Proceed')}</Button>
