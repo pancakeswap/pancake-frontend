@@ -108,7 +108,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     },
   } = useVaultPoolByKey(pool.vaultKey)
 
-  const { lockEndDate, remainingWeeks } = useUserDataInVaultPrensenter({
+  const { lockEndDate, remainingTime } = useUserDataInVaultPrensenter({
     lockStartTime: lockStartTime ?? '0',
     lockEndTime: lockEndTime ?? '0',
   })
@@ -295,7 +295,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                   fontSize="20px"
                   color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
                 >
-                  {vaultPosition >= VaultPosition.LockedEnd ? t('Unlocked') : remainingWeeks}
+                  {vaultPosition >= VaultPosition.LockedEnd ? t('Unlocked') : remainingTime}
                 </Text>
                 <Text
                   fontSize="12px"

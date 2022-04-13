@@ -35,7 +35,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
 
   const usdValueStaked = useBUSDCakeAmount(currentLockedAmount)
 
-  const { weekDuration, lockEndDate, secondDuration, remainingWeeks } = useUserDataInVaultPrensenter({
+  const { weekDuration, lockEndDate, secondDuration, remainingTime } = useUserDataInVaultPrensenter({
     lockStartTime: userData?.lockStartTime,
     lockEndTime: userData?.lockEndTime,
   })
@@ -75,7 +75,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
             {t('Unlocks In')}
           </Text>
           <Text color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'} bold fontSize="16px">
-            {position >= VaultPosition.LockedEnd ? t('Unlocked') : remainingWeeks}
+            {position >= VaultPosition.LockedEnd ? t('Unlocked') : remainingTime}
           </Text>
           <Text color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'} fontSize="12px">
             {t('On %date%', { date: lockEndDate })}
@@ -94,11 +94,19 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
         />
       </Box>
       <Divider />
+      {![VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(position) && (
+        <Flex alignItems="center" justifyContent="space-between">
+          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+            {t('APY')}
+          </Text>
+          <BalanceWithLoading color="text" bold fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" />
+        </Flex>
+      )}
       <Flex alignItems="center" justifyContent="space-between">
         <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-          {t('APY')}
+          {t('Recent CAKE profit')}
         </Text>
-        <BalanceWithLoading color="text" bold fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" />
+        <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={5} />
       </Flex>
       <Flex alignItems="center" justifyContent="space-between">
         <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
@@ -124,20 +132,12 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
           unit="x"
         />
       </Flex>
-      {![VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(position) && (
-        <Flex alignItems="center" justifyContent="space-between">
-          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-            {t('Recent CAKE profit')}
-          </Text>
-          <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={5} />
-        </Flex>
-      )}
       {position === VaultPosition.LockedEnd && (
         <Flex alignItems="center" justifyContent="space-between">
           <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
             {t('After Burning In')}
           </Text>
-          <Text color="textSubtle" bold>
+          <Text color="failure" bold>
             <BurningCountDown lockEndTime={userData?.lockEndTime} />
           </Text>
         </Flex>
@@ -147,7 +147,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
           <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
             {t('After burning')}
           </Text>
-          <Text color="textSubtle" bold>
+          <Text color="failure" bold>
             {isUndefinedOrNull(userData?.currentOverdueFee)
               ? '-'
               : t('%amount% Burned', { amount: getFullDisplayBalance(userData?.currentOverdueFee, 18, 5) })}
