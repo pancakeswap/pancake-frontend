@@ -23,7 +23,7 @@ export const vaultPoolConfig = {
   },
   [VaultKey.CakeVault]: {
     name: <Trans>Stake CAKE</Trans>,
-    description: <Trans>Stake, Earn, IFO – All in one!</Trans>,
+    description: <Trans>Stake, Earn – And more!</Trans>,
     autoCompoundFrequency: 5000,
     gasLimit: 500000,
     tokenImage: {
