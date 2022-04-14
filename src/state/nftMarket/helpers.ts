@@ -1083,14 +1083,13 @@ const fetchWalletMarketData = async (
 ): Promise<TokenMarketData[]> => {
   const walletMarketDataRequests = walletNftsByCollection.map(async (walletNftByCollection) => {
     const tokenIdIn = walletNftByCollection.idWithCollectionAddress.map((walletNft) => walletNft.tokenId)
-    const nftsOnChainMarketData = await getNftsOnChainMarketData(
-      walletNftByCollection.collectionAddress.toLowerCase(),
-      tokenIdIn,
-    )
-    const nftsMarketData = await getNftsMarketData({
-      tokenId_in: tokenIdIn,
-      collection: walletNftByCollection.collectionAddress.toLowerCase(),
-    })
+    const [nftsOnChainMarketData, nftsMarketData] = await Promise.all([
+      getNftsOnChainMarketData(walletNftByCollection.collectionAddress.toLowerCase(), tokenIdIn),
+      getNftsMarketData({
+        tokenId_in: tokenIdIn,
+        collection: walletNftByCollection.collectionAddress.toLowerCase(),
+      }),
+    ])
 
     return tokenIdIn
       .map((tokenId) => {
