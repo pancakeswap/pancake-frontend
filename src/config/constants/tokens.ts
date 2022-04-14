@@ -2053,6 +2053,23 @@ export const mainnetTokens = defineTokens({
     'Tiny Coin',
     'https://tinyworlds.io/',
   ),
+  happy: new Token(
+    MAINNET,
+    '0xF5d8A096CcCb31b9D7bcE5afE812BE23e3D4690d',
+    18,
+    'Happy',
+    'HappyFans',
+    'https://happyfans.club/',
+  ),
+  wzrd: new Token(
+    MAINNET,
+    '0xFa40d8FC324bcdD6Bbae0e086De886c571C225d4',
+    18,
+    'WZRD',
+    'Wizardia Token',
+    'https://wizardia.io/',
+  ),
+  ceek: new Token(MAINNET, '0xe0F94Ac5462997D2BC57287Ac3a3aE4C31345D66', 18, 'CEEK', 'CEEK', 'https://www.ceek.com/'),
 } as const)
 
 export const testnetTokens = defineTokens({
