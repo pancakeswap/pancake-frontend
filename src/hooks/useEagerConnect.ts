@@ -3,6 +3,7 @@ import { connectorLocalStorageKey, ConnectorNames } from '@pancakeswap/uikit'
 import useAuth from 'hooks/useAuth'
 import { isMobile } from 'react-device-detect'
 import { injected } from 'utils/web3React'
+import { useWeb3React } from '@web3-react/core'
 
 const _binanceChainListener = async () =>
   new Promise<void>((resolve) =>
@@ -20,43 +21,50 @@ const _binanceChainListener = async () =>
 
 const useEagerConnect = () => {
   const { login } = useAuth()
+  const { active } = useWeb3React()
 
   useEffect(() => {
-    const connectorId =
-      typeof window?.localStorage?.getItem === 'function' &&
-      (window?.localStorage?.getItem(connectorLocalStorageKey) as ConnectorNames)
+    const tryLogin = (c: ConnectorNames) => {
+      setTimeout(() => login(c))
+    }
 
-    if (connectorId) {
-      const isConnectorBinanceChain = connectorId === ConnectorNames.BSC
-      const isBinanceChainDefined = Reflect.has(window, 'BinanceChain')
+    if (!active) {
+      const connectorId =
+        typeof window?.localStorage?.getItem === 'function' &&
+        (window?.localStorage?.getItem(connectorLocalStorageKey) as ConnectorNames)
 
-      // Currently BSC extension doesn't always inject in time.
-      // We must check to see if it exists, and if not, wait for it before proceeding.
-      if (isConnectorBinanceChain && !isBinanceChainDefined) {
-        _binanceChainListener().then(() => login(connectorId))
+      if (connectorId) {
+        const isConnectorBinanceChain = connectorId === ConnectorNames.BSC
+        const isBinanceChainDefined = Reflect.has(window, 'BinanceChain')
 
-        return
-      }
-      setTimeout(() => {
-        login(connectorId)
-      })
-    } else {
-      injected.isAuthorized().then((isAuthorized) => {
-        if (isAuthorized) {
-          setTimeout(() => {
-            login(ConnectorNames.Injected)
+        // Currently BSC extension doesn't always inject in time.
+        // We must check to see if it exists, and if not, wait for it before proceeding.
+        if (isConnectorBinanceChain && !isBinanceChainDefined) {
+          _binanceChainListener().then(() => login(connectorId))
+
+          return
+        }
+        if (connectorId === ConnectorNames.Injected) {
+          injected.isAuthorized().then(() => {
+            tryLogin(connectorId)
           })
         } else {
-          // eslint-disable-next-line no-lonely-if
-          if (isMobile && window.ethereum) {
-            setTimeout(() => {
-              login(ConnectorNames.Injected)
-            })
-          }
+          tryLogin(connectorId)
         }
-      })
+      } else {
+        injected.isAuthorized().then((isAuthorized) => {
+          if (isAuthorized) {
+            tryLogin(ConnectorNames.Injected)
+          } else {
+            // eslint-disable-next-line no-lonely-if
+            if (isMobile && window.ethereum) {
+              tryLogin(ConnectorNames.Injected)
+            }
+          }
+        })
+      }
     }
-  }, [login])
+  }, [login, active])
 }
 
 export default useEagerConnect
