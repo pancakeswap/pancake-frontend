@@ -37,25 +37,24 @@ const useEagerConnect = () => {
 
         return
       }
-      const isConnectorInjected = connectorId === ConnectorNames.Injected
-      if (isConnectorInjected) {
-        injected.isAuthorized().then((isAuthorized) => {
-          if (isAuthorized) {
+      setTimeout(() => {
+        login(connectorId)
+      })
+    } else {
+      injected.isAuthorized().then((isAuthorized) => {
+        if (isAuthorized) {
+          setTimeout(() => {
+            login(connectorId)
+          })
+        } else {
+          // eslint-disable-next-line no-lonely-if
+          if (isMobile && window.ethereum) {
             setTimeout(() => {
               login(connectorId)
             })
-          } else {
-            // eslint-disable-next-line no-lonely-if
-            if (isMobile && window.ethereum) {
-              setTimeout(() => {
-                login(connectorId)
-              })
-            }
           }
-        })
-      } else {
-        login(connectorId)
-      }
+        }
+      })
     }
   }, [login])
 }
