@@ -447,7 +447,8 @@ export const getAccountNftsOnChainMarketData = async (
     const askCallsResultsRaw = await multicallv2(nftMarketAbi, askCalls, { requireSuccess: false })
     const askCallsResults = askCallsResultsRaw
       .map((askCallsResultRaw, askCallIndex) => {
-        if (!askCallsResultRaw.tokenIds || !askCallsResultRaw.askInfo) return null
+        if (!askCallsResultRaw?.tokenIds || !askCallsResultRaw?.askInfo || !collectionList[askCallIndex]?.address)
+          return null
         return askCallsResultRaw.tokenIds
           .map((tokenId, tokenIdIndex) => {
             if (!tokenId || !askCallsResultRaw.askInfo[tokenIdIndex] || !askCallsResultRaw.askInfo[tokenIdIndex].price)
