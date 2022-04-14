@@ -104,33 +104,35 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
       )}
       <Flex alignItems="center" justifyContent="space-between">
         <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-          {t('Recent CAKE profit')}
-        </Text>
-        <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={5} />
-      </Flex>
-      <Flex alignItems="center" justifyContent="space-between">
-        <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
           {t('Lock Duration')}
         </Text>
         <Text color="text" bold fontSize="16px">
           {weekDuration}
         </Text>
       </Flex>
+      {![VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(position) && (
+        <Flex alignItems="center" justifyContent="space-between">
+          {tooltipVisible && tooltip}
+          <TooltipText>
+            <Text ref={targetRef} color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+              {t('Yield boost')}
+            </Text>
+          </TooltipText>
+          <BalanceWithLoading
+            color="text"
+            bold
+            fontSize="16px"
+            value={boostFactor ? boostFactor?.toString() : '0'}
+            decimals={2}
+            unit="x"
+          />
+        </Flex>
+      )}
       <Flex alignItems="center" justifyContent="space-between">
-        {tooltipVisible && tooltip}
-        <TooltipText>
-          <Text ref={targetRef} color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-            {t('Yield boost')}
-          </Text>
-        </TooltipText>
-        <BalanceWithLoading
-          color="text"
-          bold
-          fontSize="16px"
-          value={boostFactor ? boostFactor?.toString() : '0'}
-          decimals={2}
-          unit="x"
-        />
+        <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+          {t('Recent CAKE profit')}
+        </Text>
+        <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={5} />
       </Flex>
       {position === VaultPosition.LockedEnd && (
         <Flex alignItems="center" justifyContent="space-between">

@@ -1626,7 +1626,7 @@
   "%amount% Burned": "%amount% Burned",
   "Convert to Lock": "Convert to Lock",
   "Lock staking offers higher APY while providing other benefits.": "Lock staking offers higher APY while providing other benefits.",
-  "Add duration": "Add duration",
+  "Add": "Add",
   "Week": "Week",
   "Total lock duration exceeds 52 weeks": "Total lock duration exceeds 52 weeks",
   "Extend": "Extend",
@@ -1659,6 +1659,7 @@
   "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.": "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.",
   "Added by user": "Added by user",
   "Due to an ongoing issue with Snapshot, if you only held $CAKE in other syrup pools, voting power will not be able to calculate correctly.": "Due to an ongoing issue with Snapshot, if you only held $CAKE in other syrup pools, voting power will not be able to calculate correctly.",
+  "Lock": "Lock",
   "The lock period has ended. Convert to flexible staking or renew your position to start a new lock staking.": "The lock period has ended. Convert to flexible staking or renew your position to start a new lock staking.",
   "The lock period has ended. To avoid more rewards being burned, convert to flexible staking or renew your position to start a new lock staking.": "The lock period has ended. To avoid more rewards being burned, convert to flexible staking or renew your position to start a new lock staking."
 }

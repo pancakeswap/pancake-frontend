@@ -22,7 +22,7 @@ const DiffText: React.FC<DifftextPropsType> = ({ value, newValue }) => {
         {value}
       </CrossText>
       {`->`}
-      <Text bold color="textSubtle" ml="4px" fontSize="16px">
+      <Text bold color="failure" ml="4px" fontSize="16px">
         {newValue}
       </Text>
     </>
