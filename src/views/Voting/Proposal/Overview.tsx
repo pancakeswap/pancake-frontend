@@ -37,7 +37,7 @@ const Overview = () => {
     data: votes,
     mutate: refetch,
   } = useSWRImmutable(proposal ? ['proposal', proposal, 'votes'] : null, async () => getAllVotes(proposal))
-  const accountVoted = account && votes && votes.find((vote) => vote.voter.toLowerCase() === account.toLowerCase())
+  const hasAccountVoted = account && votes && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
 
   const isPageLoading = votesLoadingStatus === FetchStatus.Fetching || proposalLoadingStatus === FetchStatus.Fetching
 
@@ -73,7 +73,7 @@ const Overview = () => {
               <ReactMarkdown>{proposal.body}</ReactMarkdown>
             </Box>
           </Box>
-          {!isPageLoading && !accountVoted && proposal.state === ProposalState.ACTIVE && (
+          {!isPageLoading && !hasAccountVoted && proposal.state === ProposalState.ACTIVE && (
             <Vote proposal={proposal} onSuccess={refetch} mb="16px" />
           )}
           <Votes votes={votes} totalVotes={votes?.length ?? proposal.votes} votesLoadingStatus={votesLoadingStatus} />

@@ -54,8 +54,6 @@ export const getProposal = async (id: string): Promise<Proposal> => {
           state
           author
           votes
-          scores
-          scores_total
           space {
             id
             name
@@ -78,7 +76,6 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
           voter
           created
           choice
-          vp
           space {
             id
             name
