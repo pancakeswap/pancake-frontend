@@ -17,7 +17,7 @@ const StyledCell = styled(BaseCell)`
 
 const TokenWrapper = styled.div`
   padding-right: 8px;
-  width: 24px;
+  width: 32px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     width: 40px;
