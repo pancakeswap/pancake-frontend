@@ -46,7 +46,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'WZRD-BUSD LP',
     lpAddresses: {
       97: '',
-      56: '0x0888406F1091D18e941F3Fe74ee0286963FFAc48',
+      56: '0xee456d906a38e10680c9d157FFf143390e9681bA',
     },
     token: serializedTokens.wzrd,
     quoteToken: serializedTokens.busd,
@@ -57,7 +57,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'HAPPY-BNB',
     lpAddresses: {
       97: '',
-      56: '0xA6D19C2A2EA13e9eF02d795155F6c335af764955',
+      56: '0x008604A38cD589680F7B8f085DC2D5B4F81151dB',
     },
     token: serializedTokens.happy,
     quoteToken: serializedTokens.wbnb,
