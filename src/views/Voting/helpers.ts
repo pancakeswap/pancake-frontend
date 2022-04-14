@@ -123,6 +123,7 @@ export const getVotingPower = async (account: string, poolAddresses: string[], b
 
   const [total] = await getScores(PANCAKE_SPACE, STRATEGIES, NETWORK, [account], blockNumber)
 
+  // just show 0 in each category at old snapshot
   return {
     poolsBalance: 0,
     total: total[account] ? total[account] : 0,
