@@ -26,7 +26,7 @@ import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
 import BattleCta from './components/BattleCta'
 import Rules from './components/Rules'
-import { UserTradingInformation } from './types'
+import { UserTradingInformation, initialUserTradingInformation } from "./types"
 import { CompetitionPage, BannerFlex } from './styles'
 import RanksIcon from './svgs/RanksIcon'
 import MoboxYourScore from './mobox/components/YourScore/MoboxYourScore'
@@ -64,7 +64,7 @@ const MoboxCompetition = () => {
   })
   const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
   const [userTradingInformation, setUserTradingInformation] =
-    useState<UserTradingInformationProps>(initialUserTradingInformation)
+    useState<UserTradingInformation>(initialUserTradingInformation)
   const [userLeaderboardInformation, setUserLeaderboardInformation] = useState({
     global: 0,
     team: 0,
@@ -106,7 +106,6 @@ const MoboxCompetition = () => {
       canClaimNFT)
   const finishedAndPrizesClaimed = hasCompetitionEnded && account && hasUserClaimed
   const finishedAndNothingToClaim = hasCompetitionEnded && account && !userCanClaimPrizes
-
   useEffect(() => {
     const fetchCompetitionInfoContract = async () => {
       const competitionStatus = await tradingCompetitionContract.currentStatus()
@@ -152,15 +151,17 @@ const MoboxCompetition = () => {
 
   useEffect(() => {
     const fetchUserTradingStats = async () => {
-      const res = await fetch(`${profileApiUrl}/api/users/${account}`)
+      const res = await fetch(`${profileApiUrl}/api/users/${userTradingInformation.account}`)
       const data = await res.json()
       setUserLeaderboardInformation(data.leaderboard_mobox)
     }
     // If user has not registered, user trading information will not be displayed and should not be fetched
-    if (account && userTradingInformation.hasRegistered) {
+    if (userTradingInformation.account && userTradingInformation.hasRegistered) {
       fetchUserTradingStats()
+    } else {
+      setUserLeaderboardInformation({ ...initialUserLeaderboardInformation })
     }
-  }, [account, userTradingInformation, profileApiUrl])
+  }, [userTradingInformation, profileApiUrl])
 
   const isLoading = isProfileLoading || userTradingInformation.isLoading
 

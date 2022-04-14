@@ -88,6 +88,15 @@ export interface UserRewardsProps {
   }
 }
 
+export const initialUserLeaderboardInformation = {
+  global: 0,
+  team: 0,
+  volume: 0,
+  next_rank: 0,
+  moboxVolumeRank: '???',
+  moboxVolume: '???',
+}
+
 export const initialUserTradingInformation = {
   isLoading: true,
   hasRegistered: false,
