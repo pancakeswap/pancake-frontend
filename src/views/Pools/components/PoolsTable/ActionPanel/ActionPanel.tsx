@@ -11,6 +11,7 @@ import {
   Text,
   TimerIcon,
   useTooltip,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { BASE_BSC_SCAN_URL } from 'config'
 import { getBscScanLink } from 'utils'
@@ -34,6 +35,9 @@ import AutoHarvest from './AutoHarvest'
 import MaxStakeRow from '../../MaxStakeRow'
 import { PerformanceFee } from '../../Stat'
 import { VaultPositionTagWithLabel } from '../../Vault/VaultPositionTag'
+import YieldBoostRow from '../../LockedPool/Common/YieldBoostRow'
+import LockDurationRow from '../../LockedPool/Common/LockDurationRow'
+import useUserDataInVaultPrensenter from '../../LockedPool/hooks/useUserDataInVaultPrensenter'
 
 const expandAnimation = keyframes`
   from {
@@ -114,10 +118,6 @@ const InfoSection = styled(Box)`
   flex-shrink: 0;
   flex-basis: auto;
 
-  ${Text} {
-    font-size: 16px;
-  }
-
   padding: 8px 8px;
   ${({ theme }) => theme.mediaQueries.lg} {
     padding: 0;
@@ -142,6 +142,20 @@ const RequirementSection = styled(Box)`
   }
 `
 
+const YieldBoostDurationRow = ({ lockEndTime, lockStartTime }) => {
+  const { weekDuration, secondDuration } = useUserDataInVaultPrensenter({
+    lockEndTime,
+    lockStartTime,
+  })
+
+  return (
+    <>
+      <YieldBoostRow secondDuration={secondDuration} />
+      <LockDurationRow weekDuration={weekDuration} />
+    </>
+  )
+}
+
 const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded, expanded, breakpoints }) => {
   const {
     sousId,
@@ -164,6 +178,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   const currentBlock = useCurrentBlock()
   const { isXs, isSm, isMd } = breakpoints
   const showSubtitle = (isXs || isSm) && sousId === 0
+  const { isMobile } = useMatchBreakpoints()
 
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
     getPoolBlockInfo(pool, currentBlock)
@@ -175,7 +190,10 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   const {
     totalCakeInVault,
     userData: {
+      lockEndTime,
+      lockStartTime,
       balance: { cakeAsBigNumber },
+      locked,
     },
     fees: { performanceFeeAsDecimal },
   } = vaultPool
@@ -294,6 +312,11 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   return (
     <StyledActionPanel expanded={expanded}>
       <InfoSection>
+        {isMobile && locked && (
+          <Box mb="16px">
+            <YieldBoostDurationRow lockEndTime={lockEndTime} lockStartTime={lockStartTime} />
+          </Box>
+        )}
         {requirementRow}
         {maxStakeRow}
         {pool.vaultKey && (
