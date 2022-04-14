@@ -1,5 +1,6 @@
 import { SNAPSHOT_API } from 'config/constants/endpoints'
 import request, { gql } from 'graphql-request'
+import { getVotingPowerByCakeStrategy } from 'views/Voting/helpers'
 import { Proposal, ProposalState, Vote, VoteWhere } from 'state/types'
 import _chunk from 'lodash/chunk'
 import _flatten from 'lodash/flatten'
@@ -93,27 +94,18 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
   return response.votes
 }
 
-export const getAllVotes = async (proposalId: string, block?: number, votesPerChunk = 1000): Promise<Vote[]> => {
-  return new Promise((resolve, reject) => {
+export const getAllVotes = async (proposal: Proposal, votesPerChunk = 30000): Promise<Vote[]> => {
+  const voters = await new Promise<Vote[]>((resolve, reject) => {
     let votes: Vote[] = []
 
     const fetchVoteChunk = async (newSkip: number) => {
       try {
-        const voteChunk = await getVotes(votesPerChunk, newSkip, { proposal: proposalId })
-
-        const voteChunkWithVP = voteChunk.map((vote) => {
-          return {
-            ...vote,
-            metadata: {
-              votingPower: String(vote.vp) || '0',
-            },
-          }
-        })
+        const voteChunk = await getVotes(votesPerChunk, newSkip, { proposal: proposal.id })
 
         if (voteChunk.length === 0) {
           resolve(votes)
         } else {
-          votes = [...votes, ...voteChunkWithVP]
+          votes = [...votes, ...voteChunk]
           fetchVoteChunk(newSkip + votesPerChunk)
         }
       } catch (error) {
@@ -123,4 +115,16 @@ export const getAllVotes = async (proposalId: string, block?: number, votesPerCh
 
     fetchVoteChunk(0)
   })
+
+  const votingPowers = await getVotingPowerByCakeStrategy(
+    voters.map((v) => v.voter),
+    parseInt(proposal.snapshot),
+  )
+
+  return voters.map((v) => ({
+    ...v,
+    metadata: {
+      votingPower: votingPowers[v.voter] || '0',
+    },
+  }))
 }

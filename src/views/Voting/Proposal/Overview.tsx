@@ -31,15 +31,12 @@ const Overview = () => {
     data: proposal,
     error,
   } = useSWRImmutable(id ? ['proposal', id] : null, () => getProposal(id))
-  const { id: proposalId = id, snapshot = null } = proposal ?? {}
 
   const {
     status: votesLoadingStatus,
     data: votes,
     mutate: refetch,
-  } = useSWRImmutable(proposalId && snapshot ? ['proposal', proposalId, 'votes'] : null, async () =>
-    getAllVotes(proposalId, Number(snapshot)),
-  )
+  } = useSWRImmutable(proposal ? ['proposal', proposal, 'votes'] : null, async () => getAllVotes(proposal))
   const accountVoted = account && votes && votes.find((vote) => vote.voter.toLowerCase() === account.toLowerCase())
 
   const isPageLoading = votesLoadingStatus === FetchStatus.Fetching || proposalLoadingStatus === FetchStatus.Fetching
@@ -83,7 +80,7 @@ const Overview = () => {
         </Box>
         <Box position="sticky" top="60px">
           <Details proposal={proposal} />
-          <Results proposal={proposal} votes={votes} accountVoted={accountVoted} />
+          <Results choices={proposal.choices} votes={votes} votesLoadingStatus={votesLoadingStatus} />
         </Box>
       </Layout>
     </Container>
