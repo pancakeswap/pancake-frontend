@@ -1,8 +1,9 @@
 import { useMemo, useCallback, memo } from 'react'
-import { Button, useModal } from '@pancakeswap/uikit'
+import { Button, useModal, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { differenceInSeconds } from 'date-fns'
 import { convertTimeToSeconds } from 'utils/timeHelper'
+import { usePoolsWithVault } from 'state/pools/hooks'
 import AddAmountModal from '../Modals/AddAmountModal'
 import { AddButtonProps } from '../types'
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
@@ -14,6 +15,8 @@ const AddCakeButton: React.FC<AddButtonProps> = ({
   lockEndTime,
   lockStartTime,
 }) => {
+  const { userDataLoaded } = usePoolsWithVault()
+
   const { t } = useTranslation()
   const remainingDuration = useMemo(
     () => differenceInSeconds(new Date(convertTimeToSeconds(lockEndTime)), new Date()),
@@ -44,10 +47,12 @@ const AddCakeButton: React.FC<AddButtonProps> = ({
     return currentBalance.gt(0) ? openAddAmountModal() : onPresentTokenRequired()
   }, [currentBalance, openAddAmountModal, onPresentTokenRequired])
 
-  return (
+  return userDataLoaded ? (
     <Button onClick={handleClicked} width="100%">
       {t('Add CAKE')}
     </Button>
+  ) : (
+    <Skeleton height={48} />
   )
 }
 
