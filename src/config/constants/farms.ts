@@ -79,7 +79,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'CEEK-BNB',
     lpAddresses: {
       97: '',
-      56: '',
+      56: '0x046A9B3A9b743340eE2Bc4C6dDD35543E237C6c2',
     },
     token: serializedTokens.ceek,
     quoteToken: serializedTokens.wbnb,
