@@ -43,10 +43,14 @@ const WalletCard: React.FC<Props> = ({ login, walletConfig, onDismiss }) => {
     <WalletButton
       variant="tertiary"
       onClick={() => {
-        login(walletConfig.connectorId);
-        localStorage?.setItem(walletLocalStorageKey, walletConfig.title);
-        localStorage?.setItem(connectorLocalStorageKey, walletConfig.connectorId);
-        onDismiss();
+        if (!window.ethereum && title === "Metamask" && walletConfig.href) {
+          window.open(walletConfig.href, "_blank", "noopener noreferrer");
+        } else {
+          login(walletConfig.connectorId);
+          localStorage?.setItem(walletLocalStorageKey, walletConfig.title);
+          localStorage?.setItem(connectorLocalStorageKey, walletConfig.connectorId);
+          onDismiss();
+        }
       }}
       id={`wallet-connect-${title.toLocaleLowerCase()}`}
     >
