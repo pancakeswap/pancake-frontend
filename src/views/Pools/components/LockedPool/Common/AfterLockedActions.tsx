@@ -18,9 +18,9 @@ const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
   const msg = {
     [VaultPosition.None]: null,
     [VaultPosition.LockedEnd]:
-      'Lock period has ended. We recommend you unlock your position or adjust it to start a new lock.',
+      'The lock period has ended. Convert to flexible staking or renew your position to start a new lock staking.',
     [VaultPosition.AfterBurning]:
-      'The lock period has ended. To avoid more rewards being burned, we recommend you unlock your position or adjust it to start a new lock.',
+      'The lock period has ended. To avoid more rewards being burned, convert to flexible staking or renew your position to start a new lock staking.',
   }
   const isTableView = isInline && !isMobile
   const Container = isTableView ? Flex : Box
@@ -50,7 +50,7 @@ const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
       }
       actionInline={isTableView}
     >
-      <MessageText>{msg[position]}</MessageText>
+      <MessageText>{t(msg[position])}</MessageText>
     </Message>
   )
 }

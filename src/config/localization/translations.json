@@ -1586,7 +1586,7 @@
   "Preparing": "Preparing",
   "Perpetual": "Perpetual",
   "Stake CAKE": "Stake CAKE",
-  "Stake, Earn, IFO – All in one!": "Stake, Earn, IFO – All in one!",
+  "Stake, Earn – And more!": "Stake, Earn – And more!",
   "Flexible": "Flexible",
   "Locked": "Locked",
   "I acknowledge that:": "I acknowledge that:",
@@ -1659,5 +1659,7 @@
   "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.": "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.",
   "Added by user": "Added by user",
   "Due to an ongoing issue with Snapshot, if you only held $CAKE in other syrup pools, voting power will not be able to calculate correctly.": "Due to an ongoing issue with Snapshot, if you only held $CAKE in other syrup pools, voting power will not be able to calculate correctly.",
-  "Lock": "Lock"
+  "Lock": "Lock",
+  "The lock period has ended. Convert to flexible staking or renew your position to start a new lock staking.": "The lock period has ended. Convert to flexible staking or renew your position to start a new lock staking.",
+  "The lock period has ended. To avoid more rewards being burned, convert to flexible staking or renew your position to start a new lock staking.": "The lock period has ended. To avoid more rewards being burned, convert to flexible staking or renew your position to start a new lock staking."
 }
