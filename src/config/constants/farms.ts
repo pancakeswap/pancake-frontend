@@ -105,11 +105,11 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: serializedTokens.wbnb,
   },
   {
-    pid: 521,
-    lpSymbol: 'YEL-BNB LP',
+    pid: 517,
+    lpSymbol: 'TEM-BUSD LP',
     lpAddresses: {
       97: '',
-      56: '0x8290d3CA64f712de9FB7220353dAa55bf388F3A3',
+      56: '0x1eDe821DAADe714edADe648F525AdA0C5fE4Ee3A',
     },
     token: serializedTokens.tem,
     quoteToken: serializedTokens.busd,
@@ -133,48 +133,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.gmi,
     quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
-  },
-  {
-    pid: 520,
-    lpSymbol: 'PEX-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x5ca96E8bDe0Bc587DaC9e02422Fd205b1102DAa4',
-    },
-    token: serializedTokens.pex,
-    quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 519,
-    lpSymbol: 'GMI-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x58d4B61983Ca0aFE6E352e90719F403E24e016F4',
-    },
-    token: serializedTokens.gmi,
-    quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 518,
-    lpSymbol: 'FROYO-CAKE LP',
-    lpAddresses: {
-      97: '',
-      56: '0x1CCc3cC95c8148477Afd18a552f03835Be9D182a',
-    },
-    token: serializedTokens.froyo,
-    quoteToken: serializedTokens.cake,
-  },
-  {
-    pid: 512,
-    lpSymbol: 'FIGHT-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0xB9378A7D4F47aC8Cf78b4f18ED15A875aB0C89a1',
-    },
-    token: serializedTokens.fight,
-    quoteToken: serializedTokens.busd,
-    isCommunity: true,
   },
   {
     pid: 518,
