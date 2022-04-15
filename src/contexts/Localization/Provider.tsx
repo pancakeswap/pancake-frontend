@@ -69,7 +69,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
         languageMap.set(language.locale, { ...enLocale, ...locale })
       }
 
-      localStorage.setItem(LS_KEY, language.locale)
+      localStorage?.setItem(LS_KEY, language.locale)
 
       setState((prevState) => ({
         ...prevState,
@@ -77,7 +77,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
         currentLanguage: language,
       }))
     } else {
-      localStorage.setItem(LS_KEY, language.locale)
+      localStorage?.setItem(LS_KEY, language.locale)
       setState((prevState) => ({
         ...prevState,
         isFetching: false,

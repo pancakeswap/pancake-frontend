@@ -1,7 +1,9 @@
+import { useWeb3React } from '@web3-react/core'
 import { Flex, Text, Heading } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import Link from 'next/link'
+import { nftsBaseUrl } from 'views/Nft/market/constants'
 import HowToCard from './HowToCard'
 
 const StyledLink = styled(Link)`
@@ -11,6 +13,7 @@ const StyledLink = styled(Link)`
 
 const HowToJoin = () => {
   const { t } = useTranslation()
+  const { account } = useWeb3React()
 
   return (
     <Flex flexDirection="column" maxWidth="736px">
@@ -19,7 +22,12 @@ const HowToJoin = () => {
       </Heading>
       <HowToCard number={1} title={t('Get Ready')}>
         <Text fontSize="14px" color="textSubtle">
-          {t('Set up your')} <StyledLink href="/profile">{t('Pancake Profile')}</StyledLink>
+          {t('Set up your')}{' '}
+          {account ? (
+            <StyledLink href={`${nftsBaseUrl}/profile/${account.toLowerCase()}`}>{t('Pancake Profile')}</StyledLink>
+          ) : (
+            t('Pancake Profile')
+          )}
           {', '}
           {t('then register for the competition by clicking “I WANT TO BATTLE” button above.')}
         </Text>

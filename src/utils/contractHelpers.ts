@@ -110,6 +110,7 @@ import type {
   PancakeSquad,
   Erc721collection,
   PointCenterIfo,
+  TradingCompetitionMobox,
 } from 'config/abi/types'
 
 const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
@@ -177,7 +178,7 @@ export const getTradingCompetitionContractV2 = (signer?: Signer | Provider) => {
   return getContract(tradingCompetitionV2Abi, getTradingCompetitionAddressV2(), signer) as TradingCompetitionV2
 }
 export const getTradingCompetitionContractMobox = (signer?: Signer | Provider) => {
-  return getContract(tradingCompetitionMoboxAbi, getTradingCompetitionAddressMobox(), signer) as TradingCompetitionV2
+  return getContract(tradingCompetitionMoboxAbi, getTradingCompetitionAddressMobox(), signer) as TradingCompetitionMobox
 }
 
 export const getEasterNftContract = (signer?: Signer | Provider) => {

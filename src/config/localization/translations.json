@@ -1062,7 +1062,6 @@
   "here.": "here.",
   "Price Change": "Price Change",
   "Page %page% of %maxPage%": "Page %page% of %maxPage%",
-  "Page %page%": "Page %page%",
   "Name": "Name",
   "Swaps": "Swaps",
   "Adds": "Adds",
@@ -1433,6 +1432,7 @@
   "Delayed": "Delayed",
   "Fast": "Fast",
   "Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.": "Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.",
+  "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.": "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.",
   "No issues with the subgraph.": "No issues with the subgraph.",
   "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed",
   "Subgraph Health Indicator": "Subgraph Health Indicator",
@@ -1607,5 +1607,9 @@
   "300 Mobox Avatars NFT + 300 PancakeSwap newly designed NFT to the top 100 traders in each of the three teams.": "300 Mobox Avatars NFT + 300 PancakeSwap newly designed NFT to the top 100 traders in each of the three teams.",
   "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.": "500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.",
   "Added by user": "Added by user",
-  "Due to an ongoing issue with Snapshot, if you only held $CAKE in other syrup pools, voting power will not be able to calculate correctly.": "Due to an ongoing issue with Snapshot, if you only held $CAKE in other syrup pools, voting power will not be able to calculate correctly."
+  "Due to an ongoing issue with Snapshot, if you only held $CAKE in other syrup pools, voting power will not be able to calculate correctly.": "Due to an ongoing issue with Snapshot, if you only held $CAKE in other syrup pools, voting power will not be able to calculate correctly.",
+  "Mystery Box": "Mystery Box",
+  "Page %page%": "Page %page%",
+  "Participants": "Participants",
+  "Total Participants": "Total Participants"
 }
