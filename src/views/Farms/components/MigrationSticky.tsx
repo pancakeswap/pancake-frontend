@@ -93,7 +93,7 @@ const MigrationSticky: React.FC = () => {
 
     window.addEventListener('scroll', scrollEffect)
     return () => window.removeEventListener('scroll', scrollEffect)
-  }, [])
+  }, [isMobile])
 
   return (
     <Container style={{ top: `${stickPosition}px` }}>
