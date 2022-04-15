@@ -107,7 +107,7 @@ const MigrationSticky: React.FC = () => {
               {t('Follow Twitter for updates')}
             </Button>
           </StyledLink>
-          <StyledLink href="https://docs.pancakeswap.finance/get-started/connection-guide" external>
+          <StyledLink href="https://docs.pancakeswap.finance/code/migration/migrate-your-stakings" external>
             <Button width="100%">{t('Learn More')}</Button>
           </StyledLink>
         </Flex>
