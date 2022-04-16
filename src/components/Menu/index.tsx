@@ -49,7 +49,7 @@ const Menu = (props) => {
       footerLinks={footerLinks(t)}
       activeItem={activeMenuItem?.href}
       activeSubItem={activeSubMenuItem?.href}
-      buyCakeLabel={t('Buy CAKE')}
+      buyCakeLabel={t('Buy WANO')}
       {...props}
     />
   )

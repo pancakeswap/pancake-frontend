@@ -58,7 +58,7 @@ export const CreditCalcBlock = () => {
       <>
         <Text>
           {t(
-            'The start block of the current calculation period. Your average IFO CAKE Pool staking balance is calculated throughout this period.',
+            'The start block of the current calculation period. Your average IFO WANO Pool staking balance is calculated throughout this period.',
           )}
         </Text>
         <LinkExternal href="https://medium.com/pancakeswap/initial-farm-offering-ifo-3-0-ifo-staking-pool-622d8bd356f1">

@@ -2,7 +2,7 @@ import { formatUnits } from '@ethersproject/units'
 import pools from 'config/constants/pools'
 import { getSouschefContract, getSouschefV2Contract } from 'utils/contractHelpers'
 
-// Pool 0 is special (cake pool)
+// Pool 0 is special (WANO pool)
 // Pool 78 is a broken pool, not used, and break the tests
 const idsToRemove = [0, 78]
 // Test only against the last 10 pools, for performance concern

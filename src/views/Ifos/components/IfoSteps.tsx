@@ -111,12 +111,12 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
     <CardBody>
       {tooltipVisible && tooltip}
       <Heading as="h4" color="secondary" mb="16px">
-        {t('Stake CAKE in IFO pool')}
+        {t('Stake WANO in IFO pool')}
       </Heading>
       <Box>
         <Text color="textSubtle" small>
           {t(
-            'The maximum amount of CAKE user can commit to the Public Sale, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. Stake more CAKE to increase the maximum CAKE you can commit to the sale. Missed this IFO? You can keep staking in the IFO CAKE Pool to join the next IFO sale.',
+            'The maximum amount of WANO user can commit to the Public Sale, is equal to the average WANO balance in the IFO WANO pool prior to the IFO. Stake more WANO to increase the maximum WANO you can commit to the sale. Missed this IFO? You can keep staking in the IFO WANO Pool to join the next IFO sale.',
           )}
         </Text>
         <TooltipText as="span" fontWeight={700} ref={targetRef} color="textSubtle" small>
@@ -130,7 +130,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
               <LogoRoundIcon style={{ alignSelf: 'flex-start' }} width={32} height={32} />
               <Box ml="16px">
                 <Text bold fontSize="12px" textTransform="uppercase" color="secondary">
-                  {t('Your max CAKE entry')}
+                  {t('Your max WANO entry')}
                 </Text>
                 <Balance fontSize="20px" bold decimals={5} value={getBalanceNumber(credit)} />
                 <Text fontSize="12px" color="textSubtle">
@@ -150,7 +150,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
               </Box>
             </Flex>
             {isVaultApproved ? (
-              <Button onClick={onPresentStake}>{t('Stake')} CAKE</Button>
+              <Button onClick={onPresentStake}>{t('Stake')} WANO</Button>
             ) : (
               <Button disabled={pendingTx} onClick={handleApprove}>
                 {t('Enable pool')}
@@ -168,14 +168,14 @@ const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLiv
   return (
     <CardBody>
       <Heading as="h4" color="secondary" mb="16px">
-        {t('Commit CAKE')}
+        {t('Commit WANO')}
       </Heading>
       <Text color="textSubtle" small>
-        {t('When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.')} <br />
+        {t('When the IFO sales are live, you can “commit” your WANO to buy the tokens being sold.')} <br />
       </Text>
       {hasProfile && isLive && !isCommitted && (
         <Button as="a" href="#current-ifo" mt="16px">
-          {t('Commit CAKE')}
+          {t('Commit WANO')}
         </Button>
       )}
     </CardBody>
@@ -248,7 +248,7 @@ const IfoSteps: React.FC<TypeProps> = ({ isCommitted, hasClaimed, isLive, ifoCur
             </Heading>
             <Text color="textSubtle" small>
               {t(
-                'After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE tokens will be returned to your wallet.',
+                'After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent WANO tokens will be returned to your wallet.',
               )}
             </Text>
           </CardBody>

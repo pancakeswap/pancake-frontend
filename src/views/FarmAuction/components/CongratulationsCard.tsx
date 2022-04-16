@@ -42,7 +42,7 @@ const CongratulationsCard: React.FC<{ currentAuction: Auction; bidders: Bidder[]
 
         <Flex justifyContent="space-between" mb="8px">
           <Text color="textSubtle">{t('Your total bid')}</Text>
-          <Text>{getBalanceNumber(amount).toLocaleString()} CAKE</Text>
+          <Text>{getBalanceNumber(amount).toLocaleString()} WANO</Text>
         </Flex>
         <Flex justifyContent="space-between">
           <Text color="textSubtle">{t('Your position')}</Text>

@@ -28,5 +28,5 @@ Default.args = {
   setLang: noop,
   currentLang: "EN",
   cakePriceUsd: 0.023158668932877668,
-  buyCakeLabel: "Buy CAKE",
+  buyCakeLabel: "Buy WANO",
 };

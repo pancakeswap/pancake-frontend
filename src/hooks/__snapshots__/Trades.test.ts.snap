@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`] = `
+exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, WANO 1`] = `
 [MockFunction] {
   "calls": Array [
     Array [
@@ -15,12 +15,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
             "symbol": "WBNB",
           },
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
         ],
         Array [
@@ -33,264 +33,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
             "symbol": "WBNB",
           },
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
-          },
-        ],
-        Array [
-          Token {
-            "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Wrapped BNB",
-            "projectLink": "https://www.binance.com/",
-            "symbol": "WBNB",
-          },
-          Token {
-            "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Binance USD",
-            "projectLink": "https://www.paxos.com/busd/",
-            "symbol": "BUSD",
-          },
-        ],
-        Array [
-          Token {
-            "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Wrapped BNB",
-            "projectLink": "https://www.binance.com/",
-            "symbol": "WBNB",
-          },
-          Token {
-            "address": "0x55d398326f99059fF775485246999027B3197955",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Tether USD",
-            "projectLink": "https://tether.to/",
-            "symbol": "USDT",
-          },
-        ],
-        Array [
-          Token {
-            "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Wrapped BNB",
-            "projectLink": "https://www.binance.com/",
-            "symbol": "WBNB",
-          },
-          Token {
-            "address": "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Binance BTC",
-            "projectLink": "https://bitcoin.org/",
-            "symbol": "BTCB",
-          },
-        ],
-        Array [
-          Token {
-            "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Wrapped BNB",
-            "projectLink": "https://www.binance.com/",
-            "symbol": "WBNB",
-          },
-          Token {
-            "address": "0x23396cF899Ca06c4472205fC903bDB4de249D6fC",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Wrapped UST Token",
-            "projectLink": "https://mirror.finance/",
-            "symbol": "UST",
-          },
-        ],
-        Array [
-          Token {
-            "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Wrapped BNB",
-            "projectLink": "https://www.binance.com/",
-            "symbol": "WBNB",
-          },
-          Token {
-            "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Binance-Peg Ethereum Token",
-            "projectLink": "https://ethereum.org/en/",
-            "symbol": "ETH",
-          },
-        ],
-        Array [
-          Token {
-            "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Wrapped BNB",
-            "projectLink": "https://www.binance.com/",
-            "symbol": "WBNB",
-          },
-          Token {
-            "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Binance-Peg USD Coin",
-            "projectLink": "https://www.centre.io/usdc",
-            "symbol": "USDC",
-          },
-        ],
-        Array [
-          Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
-          },
-          Token {
-            "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Wrapped BNB",
-            "projectLink": "https://www.binance.com/",
-            "symbol": "WBNB",
-          },
-        ],
-        Array [
-          Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
-          },
-          Token {
-            "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Binance USD",
-            "projectLink": "https://www.paxos.com/busd/",
-            "symbol": "BUSD",
-          },
-        ],
-        Array [
-          Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
-          },
-          Token {
-            "address": "0x55d398326f99059fF775485246999027B3197955",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Tether USD",
-            "projectLink": "https://tether.to/",
-            "symbol": "USDT",
-          },
-        ],
-        Array [
-          Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
-          },
-          Token {
-            "address": "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Binance BTC",
-            "projectLink": "https://bitcoin.org/",
-            "symbol": "BTCB",
-          },
-        ],
-        Array [
-          Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
-          },
-          Token {
-            "address": "0x23396cF899Ca06c4472205fC903bDB4de249D6fC",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Wrapped UST Token",
-            "projectLink": "https://mirror.finance/",
-            "symbol": "UST",
-          },
-        ],
-        Array [
-          Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
-          },
-          Token {
-            "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Binance-Peg Ethereum Token",
-            "projectLink": "https://ethereum.org/en/",
-            "symbol": "ETH",
-          },
-        ],
-        Array [
-          Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
-          },
-          Token {
-            "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Binance-Peg USD Coin",
-            "projectLink": "https://www.centre.io/usdc",
-            "symbol": "USDC",
-          },
-        ],
-        Array [
-          Token {
-            "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "Wrapped BNB",
-            "projectLink": "https://www.binance.com/",
-            "symbol": "WBNB",
-          },
-          Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
-            "chainId": 56,
-            "decimals": 18,
-            "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
         ],
         Array [
@@ -403,12 +151,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
         ],
         Array [
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
           Token {
             "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
@@ -421,12 +169,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
         ],
         Array [
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
           Token {
             "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
@@ -439,12 +187,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
         ],
         Array [
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
           Token {
             "address": "0x55d398326f99059fF775485246999027B3197955",
@@ -457,12 +205,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
         ],
         Array [
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
           Token {
             "address": "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
@@ -475,12 +223,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
         ],
         Array [
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
           Token {
             "address": "0x23396cF899Ca06c4472205fC903bDB4de249D6fC",
@@ -493,12 +241,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
         ],
         Array [
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
           Token {
             "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
@@ -511,12 +259,264 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
         ],
         Array [
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
+          },
+          Token {
+            "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Binance-Peg USD Coin",
+            "projectLink": "https://www.centre.io/usdc",
+            "symbol": "USDC",
+          },
+        ],
+        Array [
+          Token {
+            "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Wrapped BNB",
+            "projectLink": "https://www.binance.com/",
+            "symbol": "WBNB",
+          },
+          Token {
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "PancakeSwap Token",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
+          },
+        ],
+        Array [
+          Token {
+            "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Wrapped BNB",
+            "projectLink": "https://www.binance.com/",
+            "symbol": "WBNB",
+          },
+          Token {
+            "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Binance USD",
+            "projectLink": "https://www.paxos.com/busd/",
+            "symbol": "BUSD",
+          },
+        ],
+        Array [
+          Token {
+            "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Wrapped BNB",
+            "projectLink": "https://www.binance.com/",
+            "symbol": "WBNB",
+          },
+          Token {
+            "address": "0x55d398326f99059fF775485246999027B3197955",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Tether USD",
+            "projectLink": "https://tether.to/",
+            "symbol": "USDT",
+          },
+        ],
+        Array [
+          Token {
+            "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Wrapped BNB",
+            "projectLink": "https://www.binance.com/",
+            "symbol": "WBNB",
+          },
+          Token {
+            "address": "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Binance BTC",
+            "projectLink": "https://bitcoin.org/",
+            "symbol": "BTCB",
+          },
+        ],
+        Array [
+          Token {
+            "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Wrapped BNB",
+            "projectLink": "https://www.binance.com/",
+            "symbol": "WBNB",
+          },
+          Token {
+            "address": "0x23396cF899Ca06c4472205fC903bDB4de249D6fC",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Wrapped UST Token",
+            "projectLink": "https://mirror.finance/",
+            "symbol": "UST",
+          },
+        ],
+        Array [
+          Token {
+            "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Wrapped BNB",
+            "projectLink": "https://www.binance.com/",
+            "symbol": "WBNB",
+          },
+          Token {
+            "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Binance-Peg Ethereum Token",
+            "projectLink": "https://ethereum.org/en/",
+            "symbol": "ETH",
+          },
+        ],
+        Array [
+          Token {
+            "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Wrapped BNB",
+            "projectLink": "https://www.binance.com/",
+            "symbol": "WBNB",
+          },
+          Token {
+            "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Binance-Peg USD Coin",
+            "projectLink": "https://www.centre.io/usdc",
+            "symbol": "USDC",
+          },
+        ],
+        Array [
+          Token {
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "PancakeSwap Token",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
+          },
+          Token {
+            "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Wrapped BNB",
+            "projectLink": "https://www.binance.com/",
+            "symbol": "WBNB",
+          },
+        ],
+        Array [
+          Token {
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "PancakeSwap Token",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
+          },
+          Token {
+            "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Binance USD",
+            "projectLink": "https://www.paxos.com/busd/",
+            "symbol": "BUSD",
+          },
+        ],
+        Array [
+          Token {
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "PancakeSwap Token",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
+          },
+          Token {
+            "address": "0x55d398326f99059fF775485246999027B3197955",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Tether USD",
+            "projectLink": "https://tether.to/",
+            "symbol": "USDT",
+          },
+        ],
+        Array [
+          Token {
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "PancakeSwap Token",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
+          },
+          Token {
+            "address": "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Binance BTC",
+            "projectLink": "https://bitcoin.org/",
+            "symbol": "BTCB",
+          },
+        ],
+        Array [
+          Token {
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "PancakeSwap Token",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
+          },
+          Token {
+            "address": "0x23396cF899Ca06c4472205fC903bDB4de249D6fC",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Wrapped UST Token",
+            "projectLink": "https://mirror.finance/",
+            "symbol": "UST",
+          },
+        ],
+        Array [
+          Token {
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "PancakeSwap Token",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
+          },
+          Token {
+            "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "Binance-Peg Ethereum Token",
+            "projectLink": "https://ethereum.org/en/",
+            "symbol": "ETH",
+          },
+        ],
+        Array [
+          Token {
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
+            "chainId": 56,
+            "decimals": 18,
+            "name": "PancakeSwap Token",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
           Token {
             "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
@@ -555,12 +555,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
             "symbol": "BUSD",
           },
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
         ],
         Array [
@@ -681,12 +681,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
             "symbol": "USDT",
           },
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
         ],
         Array [
@@ -807,12 +807,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
             "symbol": "BTCB",
           },
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
         ],
         Array [
@@ -933,12 +933,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
             "symbol": "UST",
           },
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
         ],
         Array [
@@ -1059,12 +1059,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
             "symbol": "ETH",
           },
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
         ],
         Array [
@@ -1185,12 +1185,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
             "symbol": "USDC",
           },
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
         ],
         Array [
@@ -1299,17 +1299,17 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
               "decimals": 18,
               "name": "Pancake LPs",
               "projectLink": undefined,
-              "symbol": "Cake-LP",
+              "symbol": "WANO-LP",
             },
             "tokenAmounts": Array [
               TokenAmount {
                 "currency": Token {
-                  "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+                  "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
                   "chainId": 56,
                   "decimals": 18,
                   "name": "PancakeSwap Token",
-                  "projectLink": "https://pancakeswap.finance/",
-                  "symbol": "CAKE",
+                  "projectLink": "https://KiwanoSwap.io/",
+                  "symbol": "WANO",
                 },
                 "denominator": JSBI [
                   660865024,
@@ -1319,12 +1319,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
                   1,
                 ],
                 "token": Token {
-                  "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+                  "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
                   "chainId": 56,
                   "decimals": 18,
                   "name": "PancakeSwap Token",
-                  "projectLink": "https://pancakeswap.finance/",
-                  "symbol": "CAKE",
+                  "projectLink": "https://KiwanoSwap.io/",
+                  "symbol": "WANO",
                 },
               },
               TokenAmount {
@@ -1364,17 +1364,17 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
               "decimals": 18,
               "name": "Pancake LPs",
               "projectLink": undefined,
-              "symbol": "Cake-LP",
+              "symbol": "WANO-LP",
             },
             "tokenAmounts": Array [
               TokenAmount {
                 "currency": Token {
-                  "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+                  "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
                   "chainId": 56,
                   "decimals": 18,
                   "name": "PancakeSwap Token",
-                  "projectLink": "https://pancakeswap.finance/",
-                  "symbol": "CAKE",
+                  "projectLink": "https://KiwanoSwap.io/",
+                  "symbol": "WANO",
                 },
                 "denominator": JSBI [
                   660865024,
@@ -1384,12 +1384,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
                   1,
                 ],
                 "token": Token {
-                  "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+                  "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
                   "chainId": 56,
                   "decimals": 18,
                   "name": "PancakeSwap Token",
-                  "projectLink": "https://pancakeswap.finance/",
-                  "symbol": "CAKE",
+                  "projectLink": "https://KiwanoSwap.io/",
+                  "symbol": "WANO",
                 },
               },
               TokenAmount {
@@ -1429,17 +1429,17 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
               "decimals": 18,
               "name": "Pancake LPs",
               "projectLink": undefined,
-              "symbol": "Cake-LP",
+              "symbol": "WANO-LP",
             },
             "tokenAmounts": Array [
               TokenAmount {
                 "currency": Token {
-                  "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+                  "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
                   "chainId": 56,
                   "decimals": 18,
                   "name": "PancakeSwap Token",
-                  "projectLink": "https://pancakeswap.finance/",
-                  "symbol": "CAKE",
+                  "projectLink": "https://KiwanoSwap.io/",
+                  "symbol": "WANO",
                 },
                 "denominator": JSBI [
                   660865024,
@@ -1449,12 +1449,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations wbnb, cake 1`
                   1,
                 ],
                 "token": Token {
-                  "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+                  "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
                   "chainId": 56,
                   "decimals": 18,
                   "name": "PancakeSwap Token",
-                  "projectLink": "https://pancakeswap.finance/",
-                  "symbol": "CAKE",
+                  "projectLink": "https://KiwanoSwap.io/",
+                  "symbol": "WANO",
                 },
               },
               TokenAmount {
@@ -1510,12 +1510,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
             "symbol": "WBNB",
           },
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
         ],
         Array [
@@ -1636,12 +1636,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
             "symbol": "WBNB",
           },
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
         ],
         Array [
@@ -1762,12 +1762,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
             "symbol": "WBNB",
           },
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
         ],
         Array [
@@ -1880,12 +1880,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
         ],
         Array [
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
           Token {
             "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
@@ -1898,12 +1898,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
         ],
         Array [
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
           Token {
             "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
@@ -1916,12 +1916,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
         ],
         Array [
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
           Token {
             "address": "0x55d398326f99059fF775485246999027B3197955",
@@ -1934,12 +1934,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
         ],
         Array [
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
           Token {
             "address": "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
@@ -1952,12 +1952,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
         ],
         Array [
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
           Token {
             "address": "0x23396cF899Ca06c4472205fC903bDB4de249D6fC",
@@ -1970,12 +1970,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
         ],
         Array [
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
           Token {
             "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
@@ -1988,12 +1988,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
         ],
         Array [
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
           Token {
             "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
@@ -2032,12 +2032,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
             "symbol": "BUSD",
           },
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
         ],
         Array [
@@ -2158,12 +2158,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
             "symbol": "USDT",
           },
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
         ],
         Array [
@@ -2284,12 +2284,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
             "symbol": "BTCB",
           },
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
         ],
         Array [
@@ -2410,12 +2410,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
             "symbol": "UST",
           },
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
         ],
         Array [
@@ -2536,12 +2536,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
             "symbol": "ETH",
           },
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
         ],
         Array [
@@ -2662,12 +2662,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
             "symbol": "USDC",
           },
           Token {
-            "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+            "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
             "chainId": 56,
             "decimals": 18,
             "name": "PancakeSwap Token",
-            "projectLink": "https://pancakeswap.finance/",
-            "symbol": "CAKE",
+            "projectLink": "https://KiwanoSwap.io/",
+            "symbol": "WANO",
           },
         ],
         Array [
@@ -2776,17 +2776,17 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
               "decimals": 18,
               "name": "Pancake LPs",
               "projectLink": undefined,
-              "symbol": "Cake-LP",
+              "symbol": "WANO-LP",
             },
             "tokenAmounts": Array [
               TokenAmount {
                 "currency": Token {
-                  "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+                  "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
                   "chainId": 56,
                   "decimals": 18,
                   "name": "PancakeSwap Token",
-                  "projectLink": "https://pancakeswap.finance/",
-                  "symbol": "CAKE",
+                  "projectLink": "https://KiwanoSwap.io/",
+                  "symbol": "WANO",
                 },
                 "denominator": JSBI [
                   660865024,
@@ -2796,12 +2796,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
                   1,
                 ],
                 "token": Token {
-                  "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+                  "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
                   "chainId": 56,
                   "decimals": 18,
                   "name": "PancakeSwap Token",
-                  "projectLink": "https://pancakeswap.finance/",
-                  "symbol": "CAKE",
+                  "projectLink": "https://KiwanoSwap.io/",
+                  "symbol": "WANO",
                 },
               },
               TokenAmount {
@@ -2841,17 +2841,17 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
               "decimals": 18,
               "name": "Pancake LPs",
               "projectLink": undefined,
-              "symbol": "Cake-LP",
+              "symbol": "WANO-LP",
             },
             "tokenAmounts": Array [
               TokenAmount {
                 "currency": Token {
-                  "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+                  "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
                   "chainId": 56,
                   "decimals": 18,
                   "name": "PancakeSwap Token",
-                  "projectLink": "https://pancakeswap.finance/",
-                  "symbol": "CAKE",
+                  "projectLink": "https://KiwanoSwap.io/",
+                  "symbol": "WANO",
                 },
                 "denominator": JSBI [
                   660865024,
@@ -2861,12 +2861,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
                   1,
                 ],
                 "token": Token {
-                  "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+                  "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
                   "chainId": 56,
                   "decimals": 18,
                   "name": "PancakeSwap Token",
-                  "projectLink": "https://pancakeswap.finance/",
-                  "symbol": "CAKE",
+                  "projectLink": "https://KiwanoSwap.io/",
+                  "symbol": "WANO",
                 },
               },
               TokenAmount {
@@ -2906,17 +2906,17 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
               "decimals": 18,
               "name": "Pancake LPs",
               "projectLink": undefined,
-              "symbol": "Cake-LP",
+              "symbol": "WANO-LP",
             },
             "tokenAmounts": Array [
               TokenAmount {
                 "currency": Token {
-                  "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+                  "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
                   "chainId": 56,
                   "decimals": 18,
                   "name": "PancakeSwap Token",
-                  "projectLink": "https://pancakeswap.finance/",
-                  "symbol": "CAKE",
+                  "projectLink": "https://KiwanoSwap.io/",
+                  "symbol": "WANO",
                 },
                 "denominator": JSBI [
                   660865024,
@@ -2926,12 +2926,12 @@ exports[`Trade #useAllCommonPairs should get all pair combinations, wbnb, wbnb 1
                   1,
                 ],
                 "token": Token {
-                  "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+                  "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
                   "chainId": 56,
                   "decimals": 18,
                   "name": "PancakeSwap Token",
-                  "projectLink": "https://pancakeswap.finance/",
-                  "symbol": "CAKE",
+                  "projectLink": "https://KiwanoSwap.io/",
+                  "symbol": "WANO",
                 },
               },
               TokenAmount {

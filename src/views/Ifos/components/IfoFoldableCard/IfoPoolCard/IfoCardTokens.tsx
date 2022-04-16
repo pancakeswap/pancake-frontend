@@ -67,7 +67,7 @@ const TokenSection: React.FC<TokenSectionProps> = ({ primaryToken, secondaryToke
 
 const CommitTokenSection: React.FC<TokenSectionProps & { commitToken: Token }> = ({ commitToken, ...props }) => {
   if (commitToken.equals(cakeBnbLpToken)) {
-    return <TokenSection primaryToken={tokens.cake} secondaryToken={tokens.wbnb} {...props} />
+    return <TokenSection primaryToken={tokens.WANO} secondaryToken={tokens.wbnb} {...props} />
   }
   return <TokenSection primaryToken={commitToken} {...props} />
 }
@@ -120,7 +120,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   const { t } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
-      'Sorry, you didn’t contribute enough CAKE to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your CAKE.',
+      'Sorry, you didn’t contribute enough WANO to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your WANO.',
     ),
     { placement: 'bottom' },
   )
@@ -194,7 +194,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
         <Message my="24px" p="8px" variant="danger">
           <Box>
             <MessageText display="inline">
-              {t('You don’t have any average CAKE balance available to commit in the IFO CAKE pool.')}
+              {t('You don’t have any average WANO balance available to commit in the IFO WANO pool.')}
             </MessageText>{' '}
             <MessageTextLink display="inline" fontWeight={700} href="/ifo#ifo-how-to" color="failure">
               {t('How does it work?')} »
@@ -267,7 +267,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           {ifov31Msg || (
             <>
               <Text textAlign="center" fontSize="14px">
-                {t('To participate in the next IFO, stake some CAKE in the IFO CAKE pool!')}
+                {t('To participate in the next IFO, stake some WANO in the IFO WANO pool!')}
               </Text>
               <MessageTextLink href="/ifo#ifo-how-to" textAlign="center">
                 {t('How does it work?')} »

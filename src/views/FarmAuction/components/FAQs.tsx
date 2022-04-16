@@ -63,7 +63,7 @@ const FAQs = () => {
                 <List>
                   <FaqLi>
                     {t(
-                      'Community Farm qualifiers will be asked to provide the address of the wallet which you’ll use for bidding CAKE in the auction.',
+                      'Community Farm qualifiers will be asked to provide the address of the wallet which you’ll use for bidding WANO in the auction.',
                     )}
                   </FaqLi>
                   <FaqLi>{t('Core Farm/Pool qualifiers will receive further directions separately.')}</FaqLi>
@@ -78,17 +78,17 @@ const FAQs = () => {
               </Text>
               <Text color="textSubtle">
                 {t(
-                  'You can then commit CAKE to bid during the auction, competing against other project for one of the available farms.',
+                  'You can then commit WANO to bid during the auction, competing against other project for one of the available farms.',
                 )}
               </Text>
             </FoldableText>
             <FoldableText title={t('Step 4: After the auction')} mt="24px">
               <Text color="textSubtle">
-                {t('If your bid was not successful, you can reclaim your CAKE on this page.')}
+                {t('If your bid was not successful, you can reclaim your WANO on this page.')}
               </Text>
               <Text color="textSubtle">
                 {t(
-                  'If your bid was successful, your farm will begin at the specified time. The CAKE you bid will not be returned to you and will be added to our weekly CAKE burn.',
+                  'If your bid was successful, your farm will begin at the specified time. The WANO you bid will not be returned to you and will be added to our weekly WANO burn.',
                 )}
               </Text>
               <Text color="textSubtle">
@@ -96,7 +96,7 @@ const FAQs = () => {
               </Text>
               <Text color="textSubtle">
                 {t(
-                  'If two or more projects bid the exact same CAKE amount and are contending for a spot in the winning bidders, their bids may be invalidated.',
+                  'If two or more projects bid the exact same WANO amount and are contending for a spot in the winning bidders, their bids may be invalidated.',
                 )}
               </Text>
             </FoldableText>

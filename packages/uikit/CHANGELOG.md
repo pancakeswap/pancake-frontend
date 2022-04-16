@@ -327,7 +327,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-* Link of cake price to swap page is broken ([#260](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/260)) ([3f8e089](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/3f8e0892a93975468b086758093e1a2ca5d6dd73))
+* Link of WANO price to swap page is broken ([#260](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/issues/260)) ([3f8e089](https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit/commit/3f8e0892a93975468b086758093e1a2ca5d6dd73))
 
 
 

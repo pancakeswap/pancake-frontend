@@ -2,7 +2,7 @@ import { JSBI, Price, Token } from '@pancakeswap/sdk'
 import getRatePercentageDifference from './getRatePercentageDifference'
 import { getRatePercentageMessage, PercentageDirection } from './getRatePercentageMessage'
 
-const CAKE = new Token(56, '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', 18, 'CAKE', 'PancakeSwap Token')
+const WANO = new Token(56, '0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13', 18, 'WANO', 'PancakeSwap Token')
 const BUSD = new Token(56, '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56', 18, 'BUSD', 'Binance USD')
 
 const EIGHTEEN_DECIMALS = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
@@ -12,11 +12,11 @@ const SEVEN = JSBI.multiply(JSBI.BigInt(7), EIGHTEEN_DECIMALS)
 const SEVEN_HUNDRED = JSBI.multiply(JSBI.BigInt(700), EIGHTEEN_DECIMALS)
 const ELEVEN = JSBI.multiply(JSBI.BigInt(11), EIGHTEEN_DECIMALS)
 
-const ONE_BUSD_PER_CAKE = new Price(CAKE, BUSD, EIGHTEEN_DECIMALS, ONE)
-const FIVE_BUSD_PER_CAKE = new Price(CAKE, BUSD, EIGHTEEN_DECIMALS, FIVE)
-const SEVEN_BUSD_PER_CAKE = new Price(CAKE, BUSD, EIGHTEEN_DECIMALS, SEVEN)
-const ELEVEN_BUSD_PER_CAKE = new Price(CAKE, BUSD, EIGHTEEN_DECIMALS, ELEVEN)
-const SEVEN_HUNDRED_BUSD_PER_CAKE = new Price(CAKE, BUSD, EIGHTEEN_DECIMALS, SEVEN_HUNDRED)
+const ONE_BUSD_PER_CAKE = new Price(WANO, BUSD, EIGHTEEN_DECIMALS, ONE)
+const FIVE_BUSD_PER_CAKE = new Price(WANO, BUSD, EIGHTEEN_DECIMALS, FIVE)
+const SEVEN_BUSD_PER_CAKE = new Price(WANO, BUSD, EIGHTEEN_DECIMALS, SEVEN)
+const ELEVEN_BUSD_PER_CAKE = new Price(WANO, BUSD, EIGHTEEN_DECIMALS, ELEVEN)
+const SEVEN_HUNDRED_BUSD_PER_CAKE = new Price(WANO, BUSD, EIGHTEEN_DECIMALS, SEVEN_HUNDRED)
 
 const mockT = (key: string, data?: { percentage?: string }) => {
   return key.includes('%percentage%') ? key.replace('%percentage%', data.percentage) : key

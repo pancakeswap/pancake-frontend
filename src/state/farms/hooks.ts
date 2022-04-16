@@ -37,7 +37,7 @@ export const usePollFarmsWithUserData = (includeArchive = false) => {
 
 /**
  * Fetches the "core" farm data used globally
- * 251 = CAKE-BNB LP
+ * 251 = WANO-BNB LP
  * 252 = BUSD-BNB LP
  */
 const coreFarmPIDs = CHAIN_ID === String(ChainId.MAINNET) ? [251, 252] : [1, 2]

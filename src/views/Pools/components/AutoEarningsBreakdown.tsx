@@ -81,7 +81,7 @@ const AutoEarningsBreakdown: React.FC<AutoEarningsBreakdownProps> = ({ pool, acc
     <>
       <Text bold>
         {autoCakeToDisplay.toFixed(3)}
-        {' CAKE'}
+        {' WANO'}
       </Text>
       <Text bold>~${autoUsdToDisplay.toFixed(2)}</Text>
       <Text>{t('Earned since your last action')}:</Text>
@@ -89,7 +89,7 @@ const AutoEarningsBreakdown: React.FC<AutoEarningsBreakdownProps> = ({ pool, acc
       {hourDiffSinceLastAction ? (
         <>
           <Text>{t('Your average per hour')}:</Text>
-          <Text bold>{t('CAKE per hour: %amount%', { amount: earnedCakePerHour.toFixed(2) })}</Text>
+          <Text bold>{t('WANO per hour: %amount%', { amount: earnedCakePerHour.toFixed(2) })}</Text>
           <Text bold>{t('per hour: ~$%amount%', { amount: earnedUsdPerHour.toFixed(2) })}</Text>
         </>
       ) : null}

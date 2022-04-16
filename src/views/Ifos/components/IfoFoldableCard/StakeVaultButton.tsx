@@ -25,7 +25,7 @@ const StakeVaultButton = (props) => {
 
   return (
     <Button {...props} onClick={onPresentStake}>
-      {t('Stake CAKE in IFO pool')}
+      {t('Stake WANO in IFO pool')}
     </Button>
   )
 }

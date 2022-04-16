@@ -48,7 +48,7 @@ const config = {
   },
   reactStrictMode: true,
   images: {
-    domains: ['static-nft.pancakeswap.com'],
+    domains: ['static-nft.KiwanoSwap.com'],
   },
   async rewrites() {
     return [

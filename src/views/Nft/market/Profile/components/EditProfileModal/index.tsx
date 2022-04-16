@@ -20,7 +20,7 @@ const viewTitle = (t: ContextApi['t'], currentView: Views) => {
     case Views.REMOVE:
       return t('Remove Profile Pic')
     case Views.APPROVE:
-      return t('Enable CAKE')
+      return t('Enable WANO')
     default:
       return ''
   }

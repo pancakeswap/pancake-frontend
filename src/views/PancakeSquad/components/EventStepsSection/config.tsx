@@ -50,17 +50,17 @@ const stepsConfigBuilder = ({ t, userInfos, eventInfos, userStatus, account, the
         hasProfileActivated,
         eventStatus: [SaleStatusEnum.Pending, SaleStatusEnum.Premint],
       }),
-      title: t('Hold CAKE'),
-      bodyText: [t('Each NFT costs CAKE to mint. Remember you also need BNB to cover transaction fees too!')],
+      title: t('Hold WANO'),
+      bodyText: [t('Each NFT costs WANO to mint. Remember you also need BNB to cover transaction fees too!')],
       buttons: (
         <>
           <Button
             as="a"
-            href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+            href="https://KiwanoSwap.io/swap?outputCurrency=0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13"
             target="_blank"
             width="100%"
           >
-            {t('Buy CAKE')}
+            {t('Buy WANO')}
           </Button>
         </>
       ),

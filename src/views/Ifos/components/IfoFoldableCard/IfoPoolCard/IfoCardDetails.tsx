@@ -40,32 +40,32 @@ const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
 }
 
 const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; poolId: PoolIds }) => {
-  const isCurrencyCake = ifo.currency === tokens.cake
+  const isCurrencyCake = ifo.currency === tokens.WANO
   const isV3 = ifo.version === 3 || ifo.version === 3.1
   const { t } = useTranslation()
 
   const basicTooltipContent =
     ifo.version === 3.1
       ? t(
-          'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
+          'For the private sale, each eligible participant will be able to commit any amount of WANO up to the maximum commit limit, which is published along with the IFO voting proposal.',
         )
       : t(
-          'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the IFO CAKE pool, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+          'For the basic sale, Max WANO entry is capped by minimum between your average WANO balance in the IFO WANO pool, or the pool’s hard cap. To increase the max entry, Stake more WANO into the IFO WANO pool',
         )
 
   const unlimitedToolipContent =
     ifo.version === 3.1
       ? t(
-          'For the public sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+          'For the public sale, Max WANO entry is capped by your average WANO balance in the IFO WANO pool. To increase the max entry, Stake more WANO into the IFO WANO pool',
         )
       : t(
-          'For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+          'For the unlimited sale, Max WANO entry is capped by your average WANO balance in the IFO WANO pool. To increase the max entry, Stake more WANO into the IFO WANO pool',
         )
 
   const tooltipContent = poolId === PoolIds.poolBasic ? basicTooltipContent : unlimitedToolipContent
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
-  const label = isCurrencyCake ? t('Max. CAKE entry') : t('Max. token entry')
+  const label = isCurrencyCake ? t('Max. WANO entry') : t('Max. token entry')
   const price = useBUSDPrice(ifo.currency)
 
   const dollarValueOfToken = multiplyPriceByAmount(price, maxToken, ifo.currency.decimals)
@@ -152,7 +152,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
         <>
           {tokenEntry}
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId].raiseAmount} />
-          {ifo[poolId].cakeToBurn !== '$0' && <FooterEntry label={t('CAKE to burn:')} value={ifo[poolId].cakeToBurn} />}
+          {ifo[poolId].cakeToBurn !== '$0' && <FooterEntry label={t('WANO to burn:')} value={ifo[poolId].cakeToBurn} />}
           <FooterEntry
             label={t('Price per %symbol%:', { symbol: ifo.token.symbol })}
             value={`$${ifo.tokenOfferingPrice}`}
@@ -188,7 +188,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
           {poolId === PoolIds.poolUnlimited && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId].raiseAmount} />
-          {ifo[poolId].cakeToBurn !== '$0' && <FooterEntry label={t('CAKE to burn:')} value={ifo[poolId].cakeToBurn} />}
+          {ifo[poolId].cakeToBurn !== '$0' && <FooterEntry label={t('WANO to burn:')} value={ifo[poolId].cakeToBurn} />}
           {ifo.version > 1 && (
             <FooterEntry
               label={t('Price per %symbol%:', { symbol: ifo.token.symbol })}

@@ -36,7 +36,7 @@ export interface Message {
   sig: string
 }
 
-const STRATEGIES = [{ name: 'cake', params: { symbol: 'CAKE', address: tokens.cake.address, decimals: 18 } }]
+const STRATEGIES = [{ name: 'WANO', params: { symbol: 'WANO', address: tokens.WANO.address, decimals: 18 } }]
 const NETWORK = '56'
 
 /**

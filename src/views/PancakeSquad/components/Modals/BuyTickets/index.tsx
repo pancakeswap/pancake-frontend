@@ -97,14 +97,14 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
               <Text font-size="14px" color="textSubtle">
                 {t('Cost per Ticket')}
               </Text>
-              <Text font-size="14px">{formatBigNumber(pricePerTicket, 0)} CAKE</Text>
+              <Text font-size="14px">{formatBigNumber(pricePerTicket, 0)} WANO</Text>
             </Flex>
             <Flex mb="8px" justifyContent="space-between">
               <Text font-size="14px" color="textSubtle">
-                {t('Your CAKE Balance')}
+                {t('Your WANO Balance')}
               </Text>
               <Text font-size="14px" color={isCakeBalanceInsufficient ? 'failure' : 'text'}>
-                {formatBigNumber(cakeBalance, 3)} CAKE
+                {formatBigNumber(cakeBalance, 3)} WANO
               </Text>
             </Flex>
             <Flex
@@ -125,7 +125,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
                 {t('Total Cost')}
               </Text>
               <Text font-size="14px" bold>
-                {formatBigNumber(totalCost, 0)} CAKE
+                {formatBigNumber(totalCost, 0)} WANO
               </Text>
             </Flex>
           </Box>

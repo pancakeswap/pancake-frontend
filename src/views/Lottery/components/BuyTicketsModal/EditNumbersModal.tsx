@@ -44,7 +44,7 @@ const EditNumbersModal: React.FC<{
       <ScrollableContainer>
         <Flex justifyContent="space-between" mb="16px">
           <Text color="textSubtle">{t('Total cost')}:</Text>
-          <Text>~{totalCost} CAKE</Text>
+          <Text>~{totalCost} WANO</Text>
         </Flex>
         <Text fontSize="12px" color="textSubtle" mb="16px">
           {t(

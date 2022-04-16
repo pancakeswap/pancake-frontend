@@ -41,7 +41,7 @@ const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) =>
     earningTokenPrice,
   )
 
-  const labelText = t('Recent CAKE profit')
+  const labelText = t('Recent WANO profit')
   const earningTokenBalance = autoCakeToDisplay
   const hasEarnings = hasAutoEarnings
   const earningTokenDollarBalance = autoUsdToDisplay

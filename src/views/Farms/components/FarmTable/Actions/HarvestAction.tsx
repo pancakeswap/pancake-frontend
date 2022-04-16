@@ -45,7 +45,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
     <ActionContainer>
       <ActionTitles>
         <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
-          CAKE
+          WANO
         </Text>
         <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
           {t('Earned')}
@@ -68,7 +68,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
               toastSuccess(
                 `${t('Harvested')}!`,
                 <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-                  {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+                  {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'WANO' })}
                 </ToastDescriptionWithTx>,
               )
               dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
