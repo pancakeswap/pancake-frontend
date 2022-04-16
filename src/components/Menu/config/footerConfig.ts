@@ -29,10 +29,6 @@ export const footerLinks: (t: ContextApi['t']) => FooterLinkType[] = (t) => [
       {
         label: '—',
       },
-      {
-        label: t('Online Store'),
-        href: 'https://pancakeswap.creator-spring.com/',
-      },
     ],
   },
   {
@@ -62,18 +58,6 @@ export const footerLinks: (t: ContextApi['t']) => FooterLinkType[] = (t) => [
       {
         label: t('Documentation'),
         href: 'https://docs.KiwanoSwap.io',
-      },
-      {
-        label: t('Bug Bounty'),
-        href: 'https://docs.KiwanoSwap.io/code/bug-bounty',
-      },
-      {
-        label: t('Audits'),
-        href: 'https://docs.KiwanoSwap.io/help/faq#is-pancakeswap-safe-has-pancakeswap-been-audited',
-      },
-      {
-        label: t('Careers'),
-        href: 'https://docs.KiwanoSwap.io/hiring/become-a-chef',
       },
     ],
   },
