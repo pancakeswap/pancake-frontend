@@ -92,15 +92,15 @@ export const socials = [
       },
       {
         label: "Bahasa Indonesia",
-        href: "https://t.me/PancakeSwapIndonesia",
+        href: "https://t.me/KiwanoSwapIndonesia",
       },
       {
         label: "中文",
-        href: "https://t.me/PancakeSwap_CN",
+        href: "https://t.me/KiwanoSwap_CN",
       },
       {
         label: "Tiếng Việt",
-        href: "https://t.me/PancakeSwapVN",
+        href: "https://t.me/KiwanoSwapVN",
       },
       {
         label: "Italiano",
@@ -116,7 +116,7 @@ export const socials = [
       },
       {
         label: "Português",
-        href: "https://t.me/PancakeSwapPortuguese",
+        href: "https://t.me/KiwanoSwapPortuguese",
       },
       {
         label: "Español",
@@ -132,7 +132,7 @@ export const socials = [
       },
       {
         label: "Deutsch",
-        href: "https://t.me/PancakeSwap_DE",
+        href: "https://t.me/KiwanoSwap_DE",
       },
       {
         label: "Filipino",
@@ -140,11 +140,11 @@ export const socials = [
       },
       {
         label: "ქართული ენა",
-        href: "https://t.me/PancakeSwapGeorgia",
+        href: "https://t.me/KiwanoSwapGeorgia",
       },
       {
         label: "Announcements",
-        href: "https://t.me/PancakeSwapAnn",
+        href: "https://t.me/KiwanoSwapAnn",
       },
     ],
   },

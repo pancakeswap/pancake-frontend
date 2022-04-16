@@ -256,7 +256,7 @@ const Hero = () => {
         <img src="/images/lottery/ticket-r.png" width="121px" height="72px" alt="" />
       </StarsDecorations>
       <Heading mb="8px" scale="md" color="#ffffff" id="lottery-hero-title">
-        {t('The PancakeSwap Lottery')}
+        {t('The KiwanoSwap Lottery')}
       </Heading>
       {getHeroHeading()}
       <TicketContainer

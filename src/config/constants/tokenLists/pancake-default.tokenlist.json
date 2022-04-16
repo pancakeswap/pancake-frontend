@@ -1,5 +1,5 @@
 {
-  "name": "PancakeSwap Default List",
+  "name": "KiwanoSwap Default List",
   "timestamp": "2022-01-26T11:45:09Z",
   "version": {
     "major": 4,
@@ -51,7 +51,7 @@
       "logoURI": "https://KiwanoSwap.io/images/tokens/0x55d398326f99059fF775485246999027B3197955.png"
     },
     {
-      "name": "PancakeSwap Token",
+      "name": "KiwanoSwap Token",
       "symbol": "WANO",
       "address": "0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13",
       "chainId": 56,
@@ -123,7 +123,7 @@
       "logoURI": "https://KiwanoSwap.io/images/tokens/0xA7f552078dcC247C2684336020c03648500C6d9F.png"
     },
     {
-      "name": "PancakeSwap Token",
+      "name": "KiwanoSwap Token",
       "symbol": "WANO",
       "address": "0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe",
       "chainId": 97,

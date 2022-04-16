@@ -48,7 +48,7 @@ const FAQs = () => {
             <FoldableText title={t('Step 1: Submit application')} mt="24px">
               <Box display="inline">
                 <Text display="inline" color="textSubtle">
-                  {t('Projects can submit an application to sponsor a yield farm and/or pool on PancakeSwap via the ')}
+                  {t('Projects can submit an application to sponsor a yield farm and/or pool on KiwanoSwap via the ')}
                 </Text>
                 <InlineLink href={FORM_ADDRESS} external>
                   {t('Application Form')}
@@ -58,7 +58,7 @@ const FAQs = () => {
             <FoldableText title={t('Step 2: Await whitelisting')} mt="24px">
               <Box color="textSubtle">
                 <Text color="textSubtle" mb="4px">
-                  {t('The PancakeSwap team will try to respond within a week.')}
+                  {t('The KiwanoSwap team will try to respond within a week.')}
                 </Text>
                 <List>
                   <FaqLi>

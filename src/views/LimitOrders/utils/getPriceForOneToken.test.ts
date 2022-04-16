@@ -1,7 +1,7 @@
 import { JSBI, Token, TokenAmount } from '@pancakeswap/sdk'
 import getPriceForOneToken from './getPriceForOneToken'
 
-const WANO = new Token(56, '0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13', 18, 'WANO', 'PancakeSwap Token')
+const WANO = new Token(56, '0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13', 18, 'WANO', 'KiwanoSwap Token')
 const BUSD = new Token(56, '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56', 18, 'BUSD', 'Binance USD')
 const DOGE = new Token(56, '0xbA2aE424d960c26247Dd6c32edC70B295c744C43', 8, 'DOGE', 'Binance-Peg Dogecoin')
 

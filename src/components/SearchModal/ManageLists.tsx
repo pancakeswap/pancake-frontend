@@ -186,7 +186,7 @@ function ManageLists({
         }
 
         if (l1 && l2) {
-          // Always make PancakeSwap list in top.
+          // Always make KiwanoSwap list in top.
           const keyword = 'pancakeswap'
           if (l1.name.toLowerCase().includes(keyword) || l2.name.toLowerCase().includes(keyword)) {
             return -1

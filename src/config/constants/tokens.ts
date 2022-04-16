@@ -27,7 +27,7 @@ export const mainnetTokens = defineTokens({
     '0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13',
     18,
     'WANO',
-    'PancakeSwap Token',
+    'KiwanoSwap Token',
     'https://KiwanoSwap.io/',
   ),
   gmi: new Token(MAINNET, '0x93D8d25E3C9A847a5Da79F79ecaC89461FEcA846', 18, 'GMI', 'Gamifi', 'https://gamifi.gg/'),
@@ -2086,7 +2086,7 @@ export const testnetTokens = defineTokens({
     '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
     18,
     'WANO',
-    'PancakeSwap Token',
+    'KiwanoSwap Token',
     'https://KiwanoSwap.io/',
   ),
   busd: new Token(

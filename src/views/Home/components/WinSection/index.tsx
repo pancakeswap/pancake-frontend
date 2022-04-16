@@ -108,7 +108,7 @@ const WinSection = () => {
           <ColoredWordHeading textAlign="center" text={t('Win millions in prizes')} />
           <Text color="textSubtle">{t('Provably fair, on-chain games.')}</Text>
           <Text mb="40px" color="textSubtle">
-            {t('Win big with PancakeSwap.')}
+            {t('Win big with KiwanoSwap.')}
           </Text>
           <Flex m="0 auto" flexDirection={['column', null, null, 'row']} maxWidth="600px">
             <Flex

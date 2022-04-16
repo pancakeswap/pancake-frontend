@@ -84,7 +84,7 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
         {t('Max per wallet: %maxPerWallet%', { maxPerWallet: DEFAULT_MAX_TICKETS })}
       </Text>
       <Text color={lightColors.invertedContrast} textAlign="center">
-        {t('PancakeSwap’s first official generative NFT collection.')}
+        {t('KiwanoSwap’s first official generative NFT collection.')}
       </Text>
       <Text color={lightColors.invertedContrast} mb={!displayEventBlock ? '80px' : '32px'} textAlign="center">
         {t('Join the squad.')}

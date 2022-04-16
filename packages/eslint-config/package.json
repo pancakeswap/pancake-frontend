@@ -1,7 +1,7 @@
 {
   "name": "@pancakeswap/eslint-config-pancake",
   "version": "1.2.0",
-  "description": "Eslint config for PancakeSwap",
+  "description": "Eslint config for KiwanoSwap",
   "main": "lib/index.js",
   "files": [
     "lib"
