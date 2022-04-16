@@ -149,24 +149,9 @@ export const socials = [
     ],
   },
   {
-    label: "Reddit",
-    icon: RedditIcon,
-    href: "https://reddit.com/r/pancakeswap",
-  },
-  {
-    label: "Instagram",
-    icon: InstagramIcon,
-    href: "https://instagram.com/pancakeswap_official",
-  },
-  {
     label: "Github",
     icon: GithubIcon,
     href: "https://github.com/pancakeswap/",
-  },
-  {
-    label: "Discord",
-    icon: DiscordIcon,
-    href: "https://discord.gg/pancakeswap",
   },
   {
     label: "Medium",
