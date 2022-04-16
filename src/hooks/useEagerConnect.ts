@@ -45,20 +45,18 @@ const useEagerConnect = () => {
           return
         }
         if (connectorId === ConnectorNames.Injected) {
-          injected.isAuthorized().then(() => {
-            tryLogin(connectorId)
-          })
+          injected.isAuthorized().then(() => tryLogin(connectorId))
         } else {
           tryLogin(connectorId)
         }
       } else {
         injected.isAuthorized().then((isAuthorized) => {
           if (isAuthorized) {
-            tryLogin(ConnectorNames.Injected)
+            login(ConnectorNames.Injected)
           } else {
             // eslint-disable-next-line no-lonely-if
             if (isMobile && window.ethereum) {
-              tryLogin(ConnectorNames.Injected)
+              login(ConnectorNames.Injected)
             }
           }
         })
