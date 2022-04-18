@@ -40,13 +40,13 @@ const expandAnimation = keyframes`
     max-height: 0px;
   }
   to {
-    max-height: 700px;
+    max-height: 1000px;
   }
 `
 
 const collapseAnimation = keyframes`
   from {
-    max-height: 700px;
+    max-height: 1000px;
   }
   to {
     max-height: 0px;

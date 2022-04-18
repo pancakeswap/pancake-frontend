@@ -17,14 +17,14 @@ const expandAnimation = keyframes`
   }
   to {
     opacity: 1;
-    max-height: 700px;
+    max-height: 1000px;
   }
 `
 
 const collapseAnimation = keyframes`
   from {
     opacity: 1;
-    max-height: 700px;
+    max-height: 1000px;
   }
   to {
     opacity: 0;
