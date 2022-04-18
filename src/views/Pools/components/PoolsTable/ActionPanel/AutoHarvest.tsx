@@ -54,10 +54,6 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
 
   const { boostFactor } = useVaultApy({ duration: secondDuration })
 
-  const earningTokenBalance = autoCakeToDisplay
-  const earningTokenDollarBalance = autoUsdToDisplay
-  const hasEarnings = hasAutoEarnings
-
   const vaultPosition = getVaultPosition({ userShares, locked, lockEndTime })
 
   const actionTitle = (
@@ -90,14 +86,14 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
 
   return (
     <RowActionContainer justifyContent="space-between">
-      <Box>
+      <Box width="100%">
         <ActionTitles>{actionTitle}</ActionTitles>
         <ActionContent>
           <Flex flex="1" flexDirection="column" alignSelf="flex-start">
             <>
-              {hasEarnings ? (
+              {hasAutoEarnings ? (
                 <>
-                  <BalanceWithLoading lineHeight="1" bold fontSize="20px" decimals={5} value={earningTokenBalance} />
+                  <BalanceWithLoading lineHeight="1" bold fontSize="20px" decimals={5} value={autoCakeToDisplay} />
                   {earningTokenPrice > 0 && (
                     <BalanceWithLoading
                       display="inline"
@@ -105,7 +101,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
                       color="textSubtle"
                       decimals={2}
                       prefix="~"
-                      value={earningTokenDollarBalance}
+                      value={autoUsdToDisplay}
                       unit=" USD"
                     />
                   )}
@@ -121,7 +117,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
             </>
           </Flex>
           <Flex flex="1.3" flexDirection="column" alignSelf="flex-start" alignItems="flex-start">
-            {hasEarnings && vaultPosition === VaultPosition.Flexible && (
+            {hasAutoEarnings && vaultPosition === VaultPosition.Flexible && (
               <UnstakingFeeCountdownRow vaultKey={vaultKey} isTableVariant />
             )}
             {/* IFO credit here */}
