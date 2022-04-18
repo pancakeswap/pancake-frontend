@@ -101,5 +101,6 @@ export const useVaultPools = () => {
 
 export const useVaultPoolByKey = (key: VaultKey) => {
   const vaultPoolByKey = useMemo(() => makeVaultPoolByKey(key), [key])
+
   return useSelector(vaultPoolByKey)
 }
