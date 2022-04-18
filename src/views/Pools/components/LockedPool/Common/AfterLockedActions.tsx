@@ -14,7 +14,7 @@ const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
   isInline,
 }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpoints()
   const msg = {
     [VaultPosition.None]: null,
     [VaultPosition.LockedEnd]:
@@ -22,19 +22,19 @@ const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
     [VaultPosition.AfterBurning]:
       'The lock period has ended. To avoid more rewards being burned, convert to flexible staking or renew your position to start a new lock staking.',
   }
-  const isTableView = isInline && !isMobile
-  const Container = isTableView ? Flex : Box
+  const isDesktopView = isInline && isDesktop
+  const Container = isDesktopView ? Flex : Box
 
   return (
     <Message
       variant="warning"
       mb="16px"
       action={
-        <Container mt={!isTableView && '8px'} ml="10px">
+        <Container mt={!isDesktopView && '8px'} ml="10px">
           <ConvertToFlexibleButton
-            mb={!isTableView && '8px'}
-            minWidth={isTableView && '200px'}
-            mr={isTableView && '14px'}
+            mb={!isDesktopView && '8px'}
+            minWidth={isDesktopView && '200px'}
+            mr={isDesktopView && '14px'}
           />
           <ExtendButton
             modalTitle={t('Renew')}
@@ -48,7 +48,7 @@ const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
           </ExtendButton>
         </Container>
       }
-      actionInline={isTableView}
+      actionInline={isDesktopView}
     >
       <MessageText>{t(msg[position])}</MessageText>
     </Message>

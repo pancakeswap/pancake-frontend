@@ -383,8 +383,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
           <Box
             width="100%"
             mt={['0', '0', '24px', '24px', '24px']}
-            ml={['0', '0', '12px', '12px', '32px']}
-            mr={['0', '0', '12px', '12px', '0']}
+            ml={['0', '0', '12px', '12px', '12px', '32px']}
+            mr={['0', '0', '12px', '12px', '12px', '0px']}
           >
             <AfterLockedActions
               isInline
