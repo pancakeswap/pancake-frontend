@@ -2,14 +2,14 @@ import styled from 'styled-components'
 import { Modal, Button, Flex, AutoRenewIcon, Heading, Text } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import { useTranslation } from 'contexts/Localization'
-import { useTradingCompetitionContractV2 } from 'hooks/useContract'
+import { useTradingCompetitionContractMobox } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCompetitionRewards, getRewardGroupAchievements } from '../../helpers'
 import { CompetitionProps } from '../../types'
-import NftBunnies from '../../pngs/fan-token-champions.png'
+import MboxAllBunnies from '../../pngs/mbox-all-bunnies.png'
 
 const ImageWrapper = styled(Flex)`
   justify-content: center;
@@ -21,25 +21,16 @@ const ImageWrapper = styled(Flex)`
 `
 
 const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, userTradingInformation }) => {
-  const tradingCompetitionContract = useTradingCompetitionContractV2()
+  const tradingCompetitionContract = useTradingCompetitionContractMobox()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
   const { t } = useTranslation()
 
-  const {
-    userRewardGroup,
+  const { userRewardGroup, userCakeRewards, userMoboxRewards, userPointReward, canClaimMysteryBox, canClaimNFT } =
+    userTradingInformation
+  const { cakeReward, moboxReward } = useCompetitionRewards({
     userCakeRewards,
-    userLazioRewards,
-    userPortoRewards,
-    userSantosRewards,
-    userPointReward,
-    canClaimNFT,
-  } = userTradingInformation
-  const { cakeReward, lazioReward, portoReward, santosReward } = useCompetitionRewards({
-    userCakeRewards,
-    userLazioRewards,
-    userPortoRewards,
-    userSantosRewards,
+    userMoboxRewards,
   })
   const achievement = getRewardGroupAchievements(userRewardGroup, userPointReward)
   const { callWithGasPrice } = useCallWithGasPrice()
@@ -73,22 +64,26 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
           {cakeReward.toFixed(2)} CAKE
         </Heading>
         <Heading mt="16px" scale="md" mb={canClaimNFT ? '16px' : '0px'}>
-          {lazioReward.toFixed(2)} LAZIO
-        </Heading>
-        <Heading mt="16px" scale="md" mb={canClaimNFT ? '16px' : '0px'}>
-          {portoReward.toFixed(2)} PORTO
-        </Heading>
-        <Heading mt="16px" scale="md" mb={canClaimNFT ? '16px' : '0px'}>
-          {santosReward.toFixed(2)} SANTOS
+          {moboxReward.toFixed(2)} MBOX
         </Heading>
         {/* NFT */}
         {canClaimNFT ? (
           <Flex alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>
-              <Image src={NftBunnies} width={128} height={128} />
+              <Image src={MboxAllBunnies} width={128} height={128} />
             </ImageWrapper>
             <Text mt="8px" fontSize="16px">
               {t('Collectible NFT')}
+            </Text>
+          </Flex>
+        ) : null}
+        {canClaimMysteryBox ? (
+          <Flex alignItems="center" flexDirection="column" width="100%">
+            <ImageWrapper>
+              <Image src={MboxAllBunnies} width={128} height={128} />
+            </ImageWrapper>
+            <Text mt="8px" fontSize="16px">
+              {t('Mystery Box')}
             </Text>
           </Flex>
         ) : null}

@@ -100,7 +100,6 @@ import type {
   TradingCompetition,
   TradingCompetitionV2,
   EasterNft,
-  CakeVault,
   Multicall,
   BunnySpecialCakeVault,
   BunnySpecialPrediction,
@@ -111,6 +110,7 @@ import type {
   Erc721collection,
   PointCenterIfo,
   CakeVaultV2,
+  TradingCompetitionMobox,
 } from 'config/abi/types'
 
 export const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
@@ -181,7 +181,7 @@ export const getTradingCompetitionContractV2 = (signer?: Signer | Provider) => {
   return getContract(tradingCompetitionV2Abi, getTradingCompetitionAddressV2(), signer) as TradingCompetitionV2
 }
 export const getTradingCompetitionContractMobox = (signer?: Signer | Provider) => {
-  return getContract(tradingCompetitionMoboxAbi, getTradingCompetitionAddressMobox(), signer) as TradingCompetitionV2
+  return getContract(tradingCompetitionMoboxAbi, getTradingCompetitionAddressMobox(), signer) as TradingCompetitionMobox
 }
 
 export const getEasterNftContract = (signer?: Signer | Provider) => {

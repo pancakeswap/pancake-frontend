@@ -7,9 +7,11 @@ import {
   getPancakeBunniesAttributesField,
   combineApiAndSgResponseToNftToken,
 } from 'state/nftMarket/helpers'
+import { FAST_INTERVAL } from 'config/constants'
+import { FetchStatus } from 'config/constants/types'
+import { formatBigNumber } from 'utils/formatBalance'
 import { pancakeBunniesAddress } from '../constants'
-import { FAST_INTERVAL } from '../../../../config/constants'
-import { FetchStatus } from '../../../../config/constants/types'
+import { getLowestUpdatedToken } from './useGetLowestPrice'
 
 type WhereClause = Record<string, string | number | boolean | string[]>
 
@@ -17,13 +19,25 @@ const fetchCheapestBunny = async (
   whereClause: WhereClause = {},
   nftMetadata: ApiResponseCollectionTokens,
 ): Promise<NftToken> => {
-  const nftsMarket = await getNftsMarketData(whereClause, 1, 'currentAskPrice', 'asc')
+  const nftsMarket = await getNftsMarketData(whereClause, 100, 'currentAskPrice', 'asc')
 
-  const cheapestBunnyOfAccount = nftsMarket.map((marketData) => {
-    const apiMetadata = getMetadataWithFallback(nftMetadata.data, marketData.otherId)
-    const attributes = getPancakeBunniesAttributesField(marketData.otherId)
-    return combineApiAndSgResponseToNftToken(apiMetadata, marketData, attributes)
-  })
+  if (!nftsMarket.length) return null
+
+  const nftsMarketTokenIds = nftsMarket.map((marketData) => marketData.tokenId)
+  const lowestPriceUpdatedBunny = await getLowestUpdatedToken(pancakeBunniesAddress.toLowerCase(), nftsMarketTokenIds)
+
+  const cheapestBunnyOfAccount = nftsMarket
+    .filter((marketData) => marketData.tokenId === lowestPriceUpdatedBunny?.tokenId)
+    .map((marketData) => {
+      const apiMetadata = getMetadataWithFallback(nftMetadata.data, marketData.otherId)
+      const attributes = getPancakeBunniesAttributesField(marketData.otherId)
+      const bunnyToken = combineApiAndSgResponseToNftToken(apiMetadata, marketData, attributes)
+      const updatedPrice = formatBigNumber(lowestPriceUpdatedBunny.currentAskPrice)
+      return {
+        ...bunnyToken,
+        marketData: { ...bunnyToken.marketData, ...lowestPriceUpdatedBunny, currentAskPrice: updatedPrice },
+      }
+    })
   return cheapestBunnyOfAccount.length > 0 ? cheapestBunnyOfAccount[0] : null
 }
 

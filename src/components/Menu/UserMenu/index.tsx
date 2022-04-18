@@ -22,7 +22,7 @@ import { useTranslation } from 'contexts/Localization'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { FetchStatus } from 'config/constants/types'
 import WalletModal, { WalletView, LOW_BNB_BALANCE } from './WalletModal'
-import ProfileUserMenuItem from './ProfileUserMenutItem'
+import ProfileUserMenuItem from './ProfileUserMenuItem'
 import WalletUserMenuItem from './WalletUserMenuItem'
 
 const UserMenu = () => {
