@@ -1,4 +1,4 @@
-import { Text, Flex, Skeleton, Heading, Box } from '@pancakeswap/uikit'
+import { Text, Flex, Skeleton, Heading, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import { useTranslation } from 'contexts/Localization'
@@ -23,6 +23,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
 }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
+  const { isMobile } = useMatchBreakpoints()
 
   const {
     userData: {
@@ -127,7 +128,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
           </Flex>
         </ActionContent>
       </Box>
-      {locked && (
+      {!isMobile && locked && (
         <Box minWidth="123px">
           <ActionTitles>
             <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">

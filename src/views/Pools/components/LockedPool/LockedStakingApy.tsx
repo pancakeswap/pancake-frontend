@@ -1,7 +1,7 @@
 import { useMemo, memo } from 'react'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 
-import { Flex, Text, Box, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { Flex, Text, Box } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
@@ -12,6 +12,8 @@ import isUndefinedOrNull from 'utils/isUndefinedOrNull'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import BurningCountDown from './Common/BurningCountDown'
 import LockedActions from './Common/LockedActions'
+import YieldBoostRow from './Common/YieldBoostRow'
+import LockDurationRow from './Common/LockDurationRow'
 import useUserDataInVaultPrensenter from './hooks/useUserDataInVaultPrensenter'
 import { LockedStakingApyPropsType } from './types'
 
@@ -40,13 +42,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
     lockEndTime: userData?.lockEndTime,
   })
 
-  const { lockedApy, boostFactor } = useVaultApy({ duration: secondDuration })
-
-  const tooltipContent = t(
-    'Your yield will be boosted based on the total lock duration of your current fixed term staking position.',
-  )
-
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
+  const { lockedApy } = useVaultApy({ duration: secondDuration })
 
   // earningTokenBalance includes overdue fee if any
   const earningTokenBalance = useMemo(() => {
@@ -102,31 +98,9 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
           <BalanceWithLoading color="text" bold fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" />
         </Flex>
       )}
-      <Flex alignItems="center" justifyContent="space-between">
-        <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-          {t('Lock Duration')}
-        </Text>
-        <Text color="text" bold fontSize="16px">
-          {weekDuration}
-        </Text>
-      </Flex>
+      <LockDurationRow weekDuration={weekDuration} />
       {![VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(position) && (
-        <Flex alignItems="center" justifyContent="space-between">
-          {tooltipVisible && tooltip}
-          <TooltipText>
-            <Text ref={targetRef} color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-              {t('Yield boost')}
-            </Text>
-          </TooltipText>
-          <BalanceWithLoading
-            color="text"
-            bold
-            fontSize="16px"
-            value={boostFactor ? boostFactor?.toString() : '0'}
-            decimals={2}
-            unit="x"
-          />
-        </Flex>
+        <YieldBoostRow secondDuration={secondDuration} />
       )}
       <Flex alignItems="center" justifyContent="space-between">
         <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
