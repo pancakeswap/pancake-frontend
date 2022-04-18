@@ -12,41 +12,26 @@ export const localiseTradingVolume = (value: number, decimals = 0) => {
 
 export const useCompetitionRewards = ({
   userCakeRewards,
-  userLazioRewards,
-  userPortoRewards,
-  userSantosRewards,
+  userMoboxRewards,
 }: {
   userCakeRewards: ReactText
-  userLazioRewards: ReactText
-  userPortoRewards: ReactText
-  userSantosRewards: ReactText
+  userMoboxRewards: ReactText
 }) => {
-  const lazioPriceBUSD = useBUSDPrice(tokens.lazio)
-  const portoPriceBUSD = useBUSDPrice(tokens.porto)
-  const santosPriceBUSD = useBUSDPrice(tokens.santos)
+  const moboxPriceBUSD = useBUSDPrice(tokens.mbox)
   const cakeAsBigNumber = new BigNumber(userCakeRewards as string)
-  const lazioAsBigNumber = new BigNumber(userLazioRewards as string)
-  const portoAsBigNumber = new BigNumber(userPortoRewards as string)
-  const santosAsBigNumber = new BigNumber(userSantosRewards as string)
+  const moboxAsBigNumber = new BigNumber(userMoboxRewards as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
-  const lazioBalance = getBalanceNumber(lazioAsBigNumber, 8)
-  const portoBalance = getBalanceNumber(portoAsBigNumber, 8)
-  const santosBalance = getBalanceNumber(santosAsBigNumber, 8)
+  const moboxBalance = getBalanceNumber(moboxAsBigNumber, 8)
   const cakePriceBusd = useCakeBusdPrice()
 
   const dollarValueOfTokensReward =
-    cakePriceBusd && lazioPriceBUSD && portoPriceBUSD && santosPriceBUSD
-      ? multiplyPriceByAmount(cakePriceBusd, cakeBalance) +
-        multiplyPriceByAmount(lazioPriceBUSD, lazioBalance, 8) +
-        multiplyPriceByAmount(portoPriceBUSD, portoBalance, 8) +
-        multiplyPriceByAmount(santosPriceBUSD, santosBalance, 8)
+    cakePriceBusd && moboxPriceBUSD
+      ? multiplyPriceByAmount(cakePriceBusd, cakeBalance) + multiplyPriceByAmount(moboxPriceBUSD, moboxBalance, 8)
       : null
 
   return {
     cakeReward: cakeBalance,
-    lazioReward: lazioBalance,
-    portoReward: portoBalance,
-    santosReward: santosBalance,
+    moboxReward: moboxBalance,
     dollarValueOfTokensReward,
   }
 }

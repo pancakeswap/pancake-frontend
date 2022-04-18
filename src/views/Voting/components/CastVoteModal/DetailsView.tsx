@@ -1,4 +1,4 @@
-import { Flex, LinkExternal, Text, Message, MessageText } from '@pancakeswap/uikit'
+import { Flex, LinkExternal, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
@@ -36,18 +36,8 @@ const DetailsView: React.FC<DetailsViewProps> = ({
 }) => {
   const { t } = useTranslation()
 
-  const snapshotIssueAboutPoolsBalance = poolsBalance > 0 && total === poolsBalance
   return (
     <ModalInner mb="0">
-      {snapshotIssueAboutPoolsBalance && (
-        <Message variant="warning" mb="8px">
-          <MessageText>
-            {t(
-              'Due to an ongoing issue with Snapshot, if you only held $CAKE in other syrup pools, voting power will not be able to calculate correctly.',
-            )}
-          </MessageText>
-        </Message>
-      )}
       <Text as="p" mb="24px" fontSize="14px" color="textSubtle">
         {t(
           'Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.',
