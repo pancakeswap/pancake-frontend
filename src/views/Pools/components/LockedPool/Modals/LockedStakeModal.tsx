@@ -4,6 +4,7 @@ import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { useTranslation } from 'contexts/Localization'
 import _toNumber from 'lodash/toNumber'
+import BigNumber from 'bignumber.js'
 
 import { GenericModalProps } from '../types'
 import BalanceField from '../Common/BalanceField'
@@ -35,7 +36,7 @@ const LockedStakeModal: React.FC<GenericModalProps> = ({ onDismiss, currentBalan
           currentBalance={currentBalance}
           stakingToken={stakingToken}
           onDismiss={onDismiss}
-          lockedAmount={_toNumber(lockedAmount)}
+          lockedAmount={new BigNumber(lockedAmount)}
         />
       </Modal>
     </RoiCalculatorModalProvider>

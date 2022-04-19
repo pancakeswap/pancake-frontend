@@ -53,12 +53,13 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
   const [lockedAmount, setLockedAmount] = useState('0')
   const [checkedState, setCheckedState] = useState(false)
   const { t } = useTranslation()
-
-  const lockedAmountAsBigNumber = getDecimalAmount(new BigNumber(_toNumber(lockedAmount)))
-  const totalLockedAmount: number = getBalanceNumber(currentLockedAmount.plus(lockedAmountAsBigNumber))
+  const lockedAmountAsBigNumber = new BigNumber(lockedAmount)
+  const totalLockedAmount: number = getBalanceNumber(
+    currentLockedAmount.plus(getDecimalAmount(lockedAmountAsBigNumber)),
+  )
   const currentLockedAmountAsBalance = getBalanceAmount(currentLockedAmount)
 
-  const usdValueStaked = useBUSDCakeAmount(_toNumber(lockedAmount))
+  const usdValueStaked = useBUSDCakeAmount(lockedAmountAsBigNumber.toNumber())
   const usdValueNewStaked = useBUSDCakeAmount(totalLockedAmount)
 
   const prepConfirmArg = useCallback(
@@ -115,7 +116,7 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
           currentBalance={currentBalance}
           stakingToken={stakingToken}
           onDismiss={onDismiss}
-          lockedAmount={_toNumber(lockedAmount)}
+          lockedAmount={lockedAmountAsBigNumber}
           editAmountOnly={<RenewDuration checkedState={checkedState} setCheckedState={setCheckedState} />}
           prepConfirmArg={prepConfirmArg}
           customOverview={customOverview}

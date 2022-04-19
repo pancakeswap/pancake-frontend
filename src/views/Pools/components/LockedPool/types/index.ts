@@ -72,7 +72,7 @@ export interface LockedModalBodyPropsType {
   onDismiss?: VoidFn
   stakingToken: Token
   currentBalance?: BigNumber
-  lockedAmount: number
+  lockedAmount: BigNumber
   editAmountOnly?: React.ReactElement
   prepConfirmArg?: PrepConfirmArg
   validator?: (arg: ValidatorArg) => ModalValidator

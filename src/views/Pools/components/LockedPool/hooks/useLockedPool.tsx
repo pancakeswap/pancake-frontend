@@ -21,7 +21,7 @@ import { PrepConfirmArg } from '../types'
 const ONE_WEEK_DEFAULT = 604800
 
 interface HookArgs {
-  lockedAmount: number
+  lockedAmount: BigNumber
   stakingToken: Token
   onDismiss: () => void
   prepConfirmArg: PrepConfirmArg
@@ -48,7 +48,7 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const [duration, setDuration] = useState(ONE_WEEK_DEFAULT)
-  const usdValueStaked = useBUSDCakeAmount(lockedAmount)
+  const usdValueStaked = useBUSDCakeAmount(lockedAmount.toNumber())
 
   const handleDeposit = useCallback(
     async (convertedStakeAmount: BigNumber, lockDuration: number) => {

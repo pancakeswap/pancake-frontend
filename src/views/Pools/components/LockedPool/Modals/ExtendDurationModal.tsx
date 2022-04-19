@@ -5,6 +5,7 @@ import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { DEFAULT_MAX_DURATION } from 'hooks/useVaultApy'
 import { useTranslation } from 'contexts/Localization'
+import BigNumber from 'bignumber.js'
 
 import StaticAmount from '../Common/StaticAmount'
 import LockedBodyModal from '../Common/LockedModalBody'
@@ -76,7 +77,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
         <LockedBodyModal
           stakingToken={stakingToken}
           onDismiss={onDismiss}
-          lockedAmount={currentLockedAmount}
+          lockedAmount={new BigNumber(currentLockedAmount)}
           validator={validator}
           prepConfirmArg={prepConfirmArg}
           customOverview={customOverview}

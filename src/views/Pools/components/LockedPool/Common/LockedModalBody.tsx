@@ -29,19 +29,17 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
     prepConfirmArg,
   })
 
-  const { isValidAmount, isValidDuration, isOverMax }: ModalValidator = useMemo(
-    () =>
-      typeof validator === 'function'
-        ? validator({
-            duration,
-          })
-        : {
-            isValidAmount: lockedAmount > 0 && getBalanceAmount(currentBalance).gte(lockedAmount),
-            isValidDuration: duration > 0 && duration <= DEFAULT_MAX_DURATION,
-            isOverMax: duration > DEFAULT_MAX_DURATION,
-          },
-    [validator, currentBalance, lockedAmount, duration],
-  )
+  const { isValidAmount, isValidDuration, isOverMax }: ModalValidator = useMemo(() => {
+    return typeof validator === 'function'
+      ? validator({
+          duration,
+        })
+      : {
+          isValidAmount: lockedAmount?.toNumber() > 0 && getBalanceAmount(currentBalance).gte(lockedAmount),
+          isValidDuration: duration > 0 && duration <= DEFAULT_MAX_DURATION,
+          isOverMax: duration > DEFAULT_MAX_DURATION,
+        }
+  }, [validator, currentBalance, lockedAmount, duration])
 
   return (
     <>
@@ -58,7 +56,7 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
           isValidDuration={isValidDuration}
           openCalculator={_noop}
           duration={duration}
-          lockedAmount={lockedAmount}
+          lockedAmount={lockedAmount?.toNumber()}
           usdValueStaked={usdValueStaked}
         />
       )}
