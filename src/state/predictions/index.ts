@@ -43,6 +43,7 @@ import {
   transformUserResponse,
   LEADERBOARD_RESULTS_PER_PAGE,
   getPredictionUser,
+  getHasRoundFailed,
 } from './helpers'
 import { resetUserState } from '../global/actions'
 
@@ -203,8 +204,9 @@ export const fetchHistory = createAsyncThunk<{ account: string; bets: Bet[] }, {
 
 export const fetchNodeHistory = createAsyncThunk<
   { bets: Bet[]; claimableStatuses: PredictionsState['claimableStatuses']; page?: number; totalHistory: number },
-  { account: string; page?: number }
->('predictions/fetchNodeHistory', async ({ account, page = 1 }) => {
+  { account: string; page?: number },
+  { state: State }
+>('predictions/fetchNodeHistory', async ({ account, page = 1 }, { getState }) => {
   const userRoundsLength = await fetchUsersRoundsLength(account)
   const emptyResult = { bets: [], claimableStatuses: {}, totalHistory: userRoundsLength.toNumber() }
   const maxPages = userRoundsLength.lte(ROUNDS_PER_PAGE) ? 1 : Math.ceil(userRoundsLength.toNumber() / ROUNDS_PER_PAGE)
@@ -235,8 +237,9 @@ export const fetchNodeHistory = createAsyncThunk<
   const epochs = Object.keys(userRounds).map((epochStr) => Number(epochStr))
   const roundData = await getRoundsData(epochs)
   const claimableStatuses = await getClaimStatuses(account, epochs)
+  const { bufferSeconds } = getState().predictions
 
-  // Turn the data from the node into an Bet object that comes from the graph
+  // Turn the data from the node into a Bet object that comes from the graph
   const bets: Bet[] = roundData.reduce((accum, round) => {
     const reduxRound = serializePredictionsRoundsResponse(round)
     const ledger = userRounds[reduxRound.epoch]
@@ -274,7 +277,7 @@ export const fetchNodeHistory = createAsyncThunk<
         round: {
           id: null,
           epoch: round.epoch.toNumber(),
-          failed: false,
+          failed: getHasRoundFailed(reduxRound.oracleCalled, reduxRound.closeTimestamp, bufferSeconds),
           startBlock: null,
           startAt: round.startTimestamp ? round.startTimestamp.toNumber() : null,
           startHash: null,
