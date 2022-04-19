@@ -77,7 +77,7 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
                   </Td>
                   <Td textAlign="right">
                     <NetWinnings
-                      amount={isCancelled ? bet.amount : isWinner ? bet.claimedNetBNB : bet.amount}
+                      amount={!isCancelled && isWinner ? bet.claimedNetBNB : bet.amount}
                       textPrefix={isCancelled ? '' : isWinner ? '+' : '-'}
                       textColor={isCancelled ? 'textSubtle' : isWinner ? 'success' : 'failure'}
                     />
