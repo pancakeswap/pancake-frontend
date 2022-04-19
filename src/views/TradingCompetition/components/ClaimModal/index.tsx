@@ -9,7 +9,9 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCompetitionRewards, getRewardGroupAchievements } from '../../helpers'
 import { CompetitionProps } from '../../types'
+import MboxBunnyNft from '../../pngs/mobox-bunny-nft.png'
 import MboxAllBunnies from '../../pngs/mbox-all-bunnies.png'
+import MysteryBox from '../../pngs/mystery-box.png'
 
 const ImageWrapper = styled(Flex)`
   justify-content: center;
@@ -49,7 +51,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
   return (
     <Modal title={t('Collect Winnings')} onDismiss={onDismiss}>
       <Flex width="100%" flexDirection="column" alignItems="center" justifyContent="center" maxWidth="360px">
-        <Text color="secondary" bold fontSize="16px">
+        <Text color="secondary" bold>
           {t('Congratulations! You won')}:
         </Text>
         <Flex mt="16px" alignItems="center">
@@ -70,20 +72,29 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         {canClaimNFT ? (
           <Flex alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>
-              <Image src={MboxAllBunnies} width={128} height={128} />
+              <Image src={MboxBunnyNft} width={128} height={128} />
             </ImageWrapper>
-            <Text mt="8px" fontSize="16px">
-              {t('Collectible NFT')}
-            </Text>
+            <Text mt="8px">{t('Collectible NFT')}</Text>
           </Flex>
         ) : null}
         {canClaimMysteryBox ? (
-          <Flex alignItems="center" flexDirection="column" width="100%">
+          <Flex mt="8px" alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>
-              <Image src={MboxAllBunnies} width={128} height={128} />
+              <Image src={MysteryBox} width={78} height={56} />
             </ImageWrapper>
-            <Text mt="8px" fontSize="16px">
-              {t('Mystery Box')}
+            <Text mt="8px">{t('Mystery Box')}</Text>
+          </Flex>
+        ) : null}
+        {canClaimNFT ? (
+          <Flex mt="8px" alignItems="center" flexDirection="column" width="100%">
+            <ImageWrapper>
+              <Image src={MboxAllBunnies} width={128} height={95} />
+            </ImageWrapper>
+            <Text mt="8px">{t('Mobox Avatar NFT')}</Text>
+            <Text color="textSubtle" mt="8px" fontSize="12px" textAlign="center">
+              {t(
+                'Your Mobox Avatars NFT prizes will be airdropped to your wallet address before 00:00 UTC 25th April.',
+              )}
             </Text>
           </Flex>
         ) : null}
