@@ -131,7 +131,12 @@ const MoboxCompetition = () => {
           userMoboxRewards: user[5].toString(),
           userPointReward: user[6].toString(),
           canClaimMysteryBox: user[7],
-          canClaimNFT: user[8],
+          // canClaimNFT: user[8],
+          // NOTE: Mobox Trading competition has a bug in claimInformation
+          // that returns wrong canClaimNFT.
+          // The bug is only in view function though, all other code is OK
+          // recalculating canClaimNFT here to get proper boolean
+          canClaimNFT: user[3].gt(1),
         }
         setUserTradingInformation(userObject)
       } catch (error) {
