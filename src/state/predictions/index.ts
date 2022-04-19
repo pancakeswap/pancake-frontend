@@ -397,7 +397,7 @@ export const predictionsSlice = createSlice({
     builder.addCase(filterLeaderboard.pending, (state) => {
       // Only mark as loading if we come from Fetched. This allows initialization.
       if (state.leaderboard.loadingState === FetchStatus.Fetched) {
-        state.leaderboard.loadingState = FetchStatus.Fetched
+        state.leaderboard.loadingState = FetchStatus.Fetching
       }
     })
     builder.addCase(filterLeaderboard.fulfilled, (state, action) => {
