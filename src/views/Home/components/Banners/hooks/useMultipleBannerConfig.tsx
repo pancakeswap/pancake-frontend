@@ -28,7 +28,7 @@ export const useMultipleBannerConfig = () => {
           banner: <IFOBanner />,
         },
         {
-          shouldRender: true,
+          shouldRender: false,
           banner: <CompetitionBanner />,
         },
         {
