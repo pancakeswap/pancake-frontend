@@ -149,23 +149,28 @@ export const getNftsFromCollectionApi = async (
     !isPBCollection ? `?page=${page}&size=${size}` : ``
   }`
 
-  const res = await fetch(requestPath)
-  if (res.ok) {
-    const data = await res.json()
-    const filteredAttributesDistribution = Object.entries(data.attributesDistribution).filter(([, value]) =>
-      Boolean(value),
-    )
-    const filteredData = Object.entries(data.data).filter(([, value]) => Boolean(value))
-    const filteredTotal = filteredData.length
-    return {
-      ...data,
-      total: filteredTotal,
-      attributesDistribution: fromPairs(filteredAttributesDistribution),
-      data: fromPairs(filteredData),
+  try {
+    const res = await fetch(requestPath)
+    if (res.ok) {
+      const data = await res.json()
+      const filteredAttributesDistribution = Object.entries(data.attributesDistribution).filter(([, value]) =>
+        Boolean(value),
+      )
+      const filteredData = Object.entries(data.data).filter(([, value]) => Boolean(value))
+      const filteredTotal = filteredData.length
+      return {
+        ...data,
+        total: filteredTotal,
+        attributesDistribution: fromPairs(filteredAttributesDistribution),
+        data: fromPairs(filteredData),
+      }
     }
+    console.error(`API: Failed to fetch NFT tokens for ${collectionAddress} collection`, res.statusText)
+    return null
+  } catch (error) {
+    console.error(`API: Failed to fetch NFT tokens for ${collectionAddress} collection`, error)
+    return null
   }
-  console.error(`API: Failed to fetch NFT tokens for ${collectionAddress} collection`, res.statusText)
-  return null
 }
 
 /**
