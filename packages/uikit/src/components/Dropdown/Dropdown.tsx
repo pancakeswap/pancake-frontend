@@ -18,7 +18,7 @@ const getBottom = ({ position }: PositionProps) => {
 
 const DropdownContent = styled.div<{ position: Position }>`
   width: max-content;
-  display: none;
+  display: flex;
   flex-direction: column;
   position: absolute;
   transform: translate(-50%, 0);
@@ -31,12 +31,18 @@ const DropdownContent = styled.div<{ position: Position }>`
   overflow-y: auto;
   z-index: ${({ theme }) => theme.zIndices.dropdown};
   border-radius: ${({ theme }) => theme.radii.small};
+  opacity: 0;
+  transition: 0.3s opacity ease-in-out;
+  will-change: opacity;
+  pointer-events: none;
 `;
 
 const Container = styled.div`
   position: relative;
   &:hover ${DropdownContent}, &:focus-within ${DropdownContent} {
     display: flex;
+    opacity: 1;
+    pointer-events: auto;
   }
 `;
 
@@ -47,9 +53,6 @@ const Dropdown: React.FC<DropdownProps> = ({ target, position = "bottom", childr
       <DropdownContent position={position}>{children}</DropdownContent>
     </Container>
   );
-};
-Dropdown.defaultProps = {
-  position: "bottom",
 };
 
 export default Dropdown;
