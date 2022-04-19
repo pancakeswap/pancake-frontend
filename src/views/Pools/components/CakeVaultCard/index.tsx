@@ -12,7 +12,7 @@ import CardFooter from '../PoolCard/CardFooter'
 import PoolCardHeader, { PoolCardHeaderTitle } from '../PoolCard/PoolCardHeader'
 import { StyledCard } from '../PoolCard/StyledCard'
 import { VaultPositionTagWithLabel } from '../Vault/VaultPositionTag'
-// import UnstakingFeeCountdownRow from '../UnstakingFeeCountdownRow'
+import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
 import RecentCakeProfitRow from './RecentCakeProfitRow'
 import { StakingApy } from './StakingApy'
 import VaultCardActions from './VaultCardActions'
@@ -67,12 +67,13 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
           <>
             <StakingApy pool={pool} />
             <FlexGap mt="16px" gap="24px" flexDirection={accountHasSharesStaked ? 'column-reverse' : 'column'}>
-              {/* TODO */}
               <Box>
+                {account && (
+                  <Box mb="8px">
+                    <UnstakingFeeCountdownRow vaultKey={pool.vaultKey} />
+                  </Box>
+                )}
                 <RecentCakeProfitRow pool={pool} />
-                {/* <Box mt="8px">
-              <UnstakingFeeCountdownRow vaultKey={pool.vaultKey} />
-            </Box> */}
               </Box>
               <Flex flexDirection="column">
                 {account ? (
