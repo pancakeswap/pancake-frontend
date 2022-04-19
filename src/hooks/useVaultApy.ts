@@ -118,7 +118,7 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
       (adjustDuration: number) => flexibleApy && getLockedApy(flexibleApy, getBoostFactor(adjustDuration)).toString(),
       [flexibleApy, getBoostFactor],
     ),
-    boostFactor: useCallback(() => boostFactor.addUnsafe(FixedNumber.from('1')), [boostFactor]),
+    boostFactor: useMemo(() => boostFactor.addUnsafe(FixedNumber.from('1')), [boostFactor]),
     getBoostFactor: useCallback(
       (adjustDuration: number) => getBoostFactor(adjustDuration).addUnsafe(FixedNumber.from('1')),
       [getBoostFactor],
