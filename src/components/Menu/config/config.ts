@@ -70,7 +70,6 @@ const config: (t: ContextApi['t'], languageCode?: string) => ConfigMenuItemsType
       {
         label: t('Trading Competition'),
         href: '/competition',
-        status: menuStatus.LIVE,
       },
       {
         label: t('Prediction (BETA)'),
