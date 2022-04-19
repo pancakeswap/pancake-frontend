@@ -1,10 +1,10 @@
 import { Flex, Text } from '@pancakeswap/uikit'
-import { ReactElement } from 'react-markdown'
+import { ReactNode } from 'react'
 
 interface TextIconProps {
   text: string
   bold?: boolean
-  icon: ReactElement
+  icon: ReactNode
 }
 
 const TextIcon: React.FC<TextIconProps> = ({ icon, text, bold = false }) => {

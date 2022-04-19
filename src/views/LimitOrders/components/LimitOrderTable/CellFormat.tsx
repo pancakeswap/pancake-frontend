@@ -1,9 +1,9 @@
 import { Box } from '@pancakeswap/uikit'
-import { ReactElement } from 'react-markdown'
+import { ReactNode } from 'react'
 
 interface CellFormatProps {
-  firstRow: ReactElement | number | string
-  secondRow: ReactElement
+  firstRow: ReactNode
+  secondRow: ReactNode
 }
 
 const CellFormat: React.FC<CellFormatProps> = ({ firstRow, secondRow }) => {

@@ -35,6 +35,7 @@ const config = {
   experimental: {
     scrollRestoration: true,
   },
+  swcMinify: true,
   reactStrictMode: true,
   images: {
     domains: ['static-nft.pancakeswap.com'],

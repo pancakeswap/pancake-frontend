@@ -1,4 +1,4 @@
-import ReactMarkdownLib, { ReactMarkdownOptions } from 'react-markdown'
+import ReactMarkdownLib, { Options as ReactMarkdownOptions } from 'react-markdown'
 import gfm from 'remark-gfm'
 import markdownComponents from './styles'
 
