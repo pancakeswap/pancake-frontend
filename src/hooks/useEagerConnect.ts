@@ -3,7 +3,6 @@ import { connectorLocalStorageKey, ConnectorNames } from '@pancakeswap/uikit'
 import useAuth from 'hooks/useAuth'
 import { isMobile } from 'react-device-detect'
 import { injected } from 'utils/web3React'
-import { useWeb3React } from '@web3-react/core'
 
 const _binanceChainListener = async () =>
   new Promise<void>((resolve) =>
