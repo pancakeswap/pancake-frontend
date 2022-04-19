@@ -57,11 +57,9 @@ export const BalanceWithLoading: React.FC<Omit<BalanceProps, 'value'> & { value:
     return <Skeleton />
   }
 
-  const finalValue = _isNaN(value)
-    ? 0
-    : _isNaN(_toNumber(value))
-    ? _toNumber(_replace(_toString(value), /,/g, ''))
-    : _toNumber(value)
+  const trimedValue = _replace(_toString(value), /,/g, '')
+
+  const finalValue = _isNaN(trimedValue) || _isNaN(_toNumber(trimedValue)) ? 0 : _toNumber(trimedValue)
 
   return <Balance {...props} value={finalValue} fontSize={fontSize} />
 }
