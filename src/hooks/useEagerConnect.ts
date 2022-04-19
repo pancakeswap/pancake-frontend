@@ -21,49 +21,46 @@ const _binanceChainListener = async () =>
 
 const useEagerConnect = () => {
   const { login } = useAuth()
-  const { active } = useWeb3React()
 
   useEffect(() => {
     const tryLogin = (c: ConnectorNames) => {
       setTimeout(() => login(c))
     }
 
-    if (!active) {
-      const connectorId =
-        typeof window?.localStorage?.getItem === 'function' &&
-        (window?.localStorage?.getItem(connectorLocalStorageKey) as ConnectorNames)
+    const connectorId =
+      typeof window?.localStorage?.getItem === 'function' &&
+      (window?.localStorage?.getItem(connectorLocalStorageKey) as ConnectorNames)
 
-      if (connectorId) {
-        const isConnectorBinanceChain = connectorId === ConnectorNames.BSC
-        const isBinanceChainDefined = Reflect.has(window, 'BinanceChain')
+    if (connectorId) {
+      const isConnectorBinanceChain = connectorId === ConnectorNames.BSC
+      const isBinanceChainDefined = Reflect.has(window, 'BinanceChain')
 
-        // Currently BSC extension doesn't always inject in time.
-        // We must check to see if it exists, and if not, wait for it before proceeding.
-        if (isConnectorBinanceChain && !isBinanceChainDefined) {
-          _binanceChainListener().then(() => login(connectorId))
+      // Currently BSC extension doesn't always inject in time.
+      // We must check to see if it exists, and if not, wait for it before proceeding.
+      if (isConnectorBinanceChain && !isBinanceChainDefined) {
+        _binanceChainListener().then(() => login(connectorId))
 
-          return
-        }
-        if (connectorId === ConnectorNames.Injected) {
-          // somehow injected login not working well on development mode
-          injected.isAuthorized().then(() => tryLogin(connectorId))
-        } else {
-          tryLogin(connectorId)
-        }
-      } else {
-        injected.isAuthorized().then((isAuthorized) => {
-          if (isAuthorized) {
-            tryLogin(ConnectorNames.Injected)
-          } else {
-            // eslint-disable-next-line no-lonely-if
-            if (isMobile && window.ethereum) {
-              tryLogin(ConnectorNames.Injected)
-            }
-          }
-        })
+        return
       }
+      if (connectorId === ConnectorNames.Injected) {
+        // somehow injected login not working well on development mode
+        injected.isAuthorized().then(() => tryLogin(connectorId))
+      } else {
+        tryLogin(connectorId)
+      }
+    } else {
+      injected.isAuthorized().then((isAuthorized) => {
+        if (isAuthorized) {
+          tryLogin(ConnectorNames.Injected)
+        } else {
+          // eslint-disable-next-line no-lonely-if
+          if (isMobile && window.ethereum) {
+            tryLogin(ConnectorNames.Injected)
+          }
+        }
+      })
     }
-  }, [login, active])
+  }, [login])
 }
 
 export default useEagerConnect
