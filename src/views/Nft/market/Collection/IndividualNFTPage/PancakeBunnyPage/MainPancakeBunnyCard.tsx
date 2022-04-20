@@ -67,7 +67,7 @@ const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
                 {nftToDisplay.name}
               </Text>
               <Text mt={['16px', '16px', '48px']}>{t(nftToDisplay.description)}</Text>
-              {(cheapestNft || cheapestNftFromOtherSellers) && (
+              {hasListings && (
                 <>
                   <Text color="textSubtle" mt={['16px', '16px', '48px']}>
                     {t('Lowest price')}
@@ -86,9 +86,9 @@ const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
                       <Skeleton width="64px" />
                     )}
                   </Flex>
+                  {actionButton}
                 </>
               )}
-              {hasListings && actionButton}
             </Box>
           </Flex>
           <Flex flex="2" justifyContent={['center', null, 'flex-end']} alignItems="center" maxWidth={440}>

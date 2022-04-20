@@ -34,6 +34,10 @@ export const useGetCollectionDistributionPB = () => {
       let apiResponse: ApiResponseCollectionTokens
       try {
         apiResponse = await getNftsFromCollectionApi(pancakeBunniesAddress)
+        if (!apiResponse) {
+          setState((prevState) => ({ ...prevState, isFetching: false }))
+          return
+        }
       } catch (error) {
         setState((prevState) => ({ ...prevState, isFetching: false }))
         return

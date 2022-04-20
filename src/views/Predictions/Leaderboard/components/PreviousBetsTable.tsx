@@ -64,6 +64,7 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
               </tr>
             ))
           : orderedBets.map((bet) => {
+              const isCancelled = bet.round.failed
               const isWinner = bet.position === bet.round.position
 
               return (
@@ -76,9 +77,9 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
                   </Td>
                   <Td textAlign="right">
                     <NetWinnings
-                      amount={isWinner ? bet.claimedNetBNB : bet.amount}
-                      textPrefix={isWinner ? '+' : '-'}
-                      textColor={isWinner ? 'success' : 'failure'}
+                      amount={!isCancelled && isWinner ? bet.claimedNetBNB : bet.amount}
+                      textPrefix={isCancelled ? '' : isWinner ? '+' : '-'}
+                      textColor={isCancelled ? 'textSubtle' : isWinner ? 'success' : 'failure'}
                     />
                   </Td>
                 </tr>

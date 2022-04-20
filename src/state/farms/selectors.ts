@@ -38,7 +38,7 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
   }
 }
 
-const selectCakeFarm = (state: State) => state.farms.data.find((f) => f.pid === 251)
+const selectCakeFarm = (state: State) => state.farms.data.find((f) => f.pid === 2)
 const selectFarmByKey = (key: string, value: string | number) => (state: State) =>
   state.farms.data.find((f) => f[key] === value)
 

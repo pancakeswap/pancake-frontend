@@ -3,9 +3,10 @@ import { Card, CardBody, Flex, PlayCircleOutlineIcon, Text, useTooltip } from '@
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, NodeLedger, BetPosition } from 'state/types'
 import { useGetBufferSeconds } from 'state/predictions/hooks'
+import { getHasRoundFailed } from 'state/predictions/helpers'
 import usePollOraclePrice from 'views/Predictions/hooks/usePollOraclePrice'
 import RoundProgress from 'components/RoundProgress'
-import { formatUsdv2, getHasRoundFailed, getPriceDifference } from '../../helpers'
+import { formatUsdv2, getPriceDifference } from '../../helpers'
 import PositionTag from '../PositionTag'
 import { RoundResultBox, LockPriceRow, PrizePoolRow } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
@@ -41,7 +42,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   const isBull = lockPrice && price.gt(lockPrice)
 
   const priceDifference = getPriceDifference(price, lockPrice)
-  const hasRoundFailed = getHasRoundFailed(round, bufferSeconds)
+  const hasRoundFailed = getHasRoundFailed(round.oracleCalled, round.closeTimestamp, bufferSeconds)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Last price from Chainlink Oracle'), {
     placement: 'bottom',

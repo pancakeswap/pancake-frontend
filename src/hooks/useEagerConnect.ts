@@ -22,6 +22,10 @@ const useEagerConnect = () => {
   const { login } = useAuth()
 
   useEffect(() => {
+    const tryLogin = (c: ConnectorNames) => {
+      setTimeout(() => login(c))
+    }
+
     const connectorId =
       typeof window?.localStorage?.getItem === 'function' &&
       (window?.localStorage?.getItem(connectorLocalStorageKey) as ConnectorNames)
@@ -37,25 +41,23 @@ const useEagerConnect = () => {
 
         return
       }
-      const isConnectorInjected = connectorId === ConnectorNames.Injected
-      if (isConnectorInjected) {
-        injected.isAuthorized().then((isAuthorized) => {
-          if (isAuthorized) {
-            setTimeout(() => {
-              login(connectorId)
-            })
-          } else {
-            // eslint-disable-next-line no-lonely-if
-            if (isMobile && window.ethereum) {
-              setTimeout(() => {
-                login(connectorId)
-              })
-            }
-          }
-        })
+      if (connectorId === ConnectorNames.Injected) {
+        // somehow injected login not working well on development mode
+        injected.isAuthorized().then(() => tryLogin(connectorId))
       } else {
-        login(connectorId)
+        tryLogin(connectorId)
       }
+    } else {
+      injected.isAuthorized().then((isAuthorized) => {
+        if (isAuthorized) {
+          tryLogin(ConnectorNames.Injected)
+        } else {
+          // eslint-disable-next-line no-lonely-if
+          if (isMobile && window.ethereum) {
+            tryLogin(ConnectorNames.Injected)
+          }
+        }
+      })
     }
   }, [login])
 }

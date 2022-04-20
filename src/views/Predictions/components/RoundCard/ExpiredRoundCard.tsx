@@ -3,8 +3,9 @@ import { Card, Box, BlockIcon, CardBody } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition, NodeLedger } from 'state/types'
 import { useGetBufferSeconds } from 'state/predictions/hooks'
+import { getHasRoundFailed } from 'state/predictions/helpers'
 import useTheme from 'hooks/useTheme'
-import { getHasRoundFailed, getRoundPosition } from '../../helpers'
+import { getRoundPosition } from '../../helpers'
 import { RoundResult } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
 import CardHeader, { getBorderBackground } from './CardHeader'
@@ -49,7 +50,7 @@ const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
   const { epoch, lockPrice, closePrice } = round
   const betPosition = getRoundPosition(lockPrice, closePrice)
   const bufferSeconds = useGetBufferSeconds()
-  const hasRoundFailed = getHasRoundFailed(round, bufferSeconds)
+  const hasRoundFailed = getHasRoundFailed(round.oracleCalled, round.closeTimestamp, bufferSeconds)
 
   if (hasRoundFailed) {
     return <CanceledRoundCard round={round} />
