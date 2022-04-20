@@ -1,12 +1,11 @@
-import { useState, useCallback, memo, Dispatch, SetStateAction } from 'react'
-
-import { Text, Flex, Image, BalanceInput, Slider, Button } from '@pancakeswap/uikit'
-import styled from 'styled-components'
-import { BIG_TEN } from 'utils/bigNumber'
-
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import { BalanceInput, Button, Flex, Image, Slider, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
+import { Dispatch, memo, SetStateAction, useCallback, useState } from 'react'
+import styled from 'styled-components'
+import { BIG_TEN } from 'utils/bigNumber'
+import { getFullDisplayBalance } from 'utils/formatBalance'
+import { useUserEnoughCakeValidator } from '../hooks/useUserEnoughCakeValidator'
 
 const StyledButton = styled(Button)`
   flex-grow: 1;
@@ -33,6 +32,7 @@ const BalanceField: React.FC<PropsType> = ({
 }) => {
   const { t } = useTranslation()
   const [percent, setPercent] = useState(0)
+  const { userNotEnoughCake, notEnoughErrorMessage } = useUserEnoughCakeValidator(lockedAmount)
 
   const handleStakeInputChange = useCallback(
     (input: string) => {
@@ -78,11 +78,21 @@ const BalanceField: React.FC<PropsType> = ({
         </Flex>
       </Flex>
       <BalanceInput
+        isWarning={userNotEnoughCake}
         value={lockedAmount}
         onUserInput={handleStakeInputChange}
         currencyValue={`~${usedValueStaked || 0} USD`}
         decimals={stakingDecimals}
       />
+      <Flex alignItems="center" justifyContent="flex-end" mt="4px" mb="12px">
+        <Flex justifyContent="flex-end" flexDirection="column">
+          {userNotEnoughCake && (
+            <Text fontSize="12px" color="failure">
+              {notEnoughErrorMessage}
+            </Text>
+          )}
+        </Flex>
+      </Flex>
       <Text mt="8px" textAlign="end" color="textSubtle" fontSize="12px" mb="8px">
         {t('Balance: %balance%', { balance: getFullDisplayBalance(stakingMax, stakingDecimals) })}
       </Text>
