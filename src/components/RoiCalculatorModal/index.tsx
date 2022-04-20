@@ -209,7 +209,12 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
               $1000
             </Button>
             <Button
-              disabled={!stakingTokenBalance.isFinite() || stakingTokenBalance.lte(0) || !account}
+              disabled={
+                !Number.isFinite(stakingTokenPrice) ||
+                !stakingTokenBalance.isFinite() ||
+                stakingTokenBalance.lte(0) ||
+                !account
+              }
               scale="xs"
               p="4px 16px"
               width="128px"
