@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js'
-import { BLOCKS_PER_YEAR } from 'config'
 import lpAprs from 'config/constants/lpAprs.json'
 import { getPoolApr, getFarmApr } from 'utils/apr'
 import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber'
