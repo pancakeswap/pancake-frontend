@@ -19,7 +19,6 @@ import Select, { OptionProps } from 'components/Select/Select'
 import { DeserializedPool, DeserializedPoolVault } from 'state/types'
 import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
-import { BIG_ZERO } from 'utils/bigNumber'
 import { useRouter } from 'next/router'
 import Loading from 'components/Loading'
 import MigrationSticky from 'views/Farms/components/MigrationSticky'
@@ -125,16 +124,6 @@ const sortPools = (account: string, sortOption: string, pools: DeserializedPool[
         'desc',
       )
     case 'totalStaked': {
-      const cakeInVaults = pools.reduce((total, pool) => {
-        if (pool.vaultKey) {
-          const vault = pool as DeserializedPoolVault
-          if (vault.totalCakeInVault) {
-            return vault.totalCakeInVault.plus(total)
-          }
-          return total
-        }
-        return total
-      }, BIG_ZERO)
       return orderBy(
         poolsToSort,
         (pool: DeserializedPool) => {
