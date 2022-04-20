@@ -17,7 +17,7 @@ import { DesktopV2ColumnSchema } from '../../types'
 
 const OldFarmStep1: React.FC = () => {
   const { account } = useWeb3React()
-  const { data: farmsLP, userDataLoaded } = useFarms()
+  const { data: farmsLP, userDataLoaded, regularCakePerBlock } = useFarms()
   const { data: farmsV1LP } = useFarmsV1()
   const cakePrice = usePriceCakeBusd()
 
@@ -56,13 +56,14 @@ const OldFarmStep1: React.FC = () => {
           cakePrice,
           totalLiquidity,
           farm.lpAddresses[ChainId.MAINNET],
+          regularCakePerBlock,
         )
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
       })
 
       return farmsToDisplayWithAPR
     },
-    [cakePrice],
+    [cakePrice, regularCakePerBlock],
   )
 
   const chosenFarmsMemoized = useMemo(() => {

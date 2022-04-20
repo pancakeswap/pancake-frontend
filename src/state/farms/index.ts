@@ -19,7 +19,7 @@ import {
   fetchFarmUserStakedBalances,
 } from './fetchFarmUser'
 import { SerializedFarmsState, SerializedFarm } from '../types'
-import { fetchMasterChefFarmPoolLength } from './fetchMasterChefData'
+import { fetchMasterChefFarmPoolLength, fetchMasterChefRegularCakePerBlock } from './fetchMasterChefData'
 import { resetUserState } from '../global/actions'
 
 const noAccountFarmConfig = farmsConfig.map((farm) => ({
@@ -43,7 +43,7 @@ export const nonArchivedFarms = farmsConfig.filter(({ pid }) => !isArchivedPid(p
 
 // Async thunks
 export const fetchFarmsPublicDataAsync = createAsyncThunk<
-  [SerializedFarm[], number],
+  [SerializedFarm[], number, number],
   number[],
   {
     state: AppState
@@ -52,6 +52,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
   'farms/fetchFarmsPublicDataAsync',
   async (pids) => {
     const poolLength = await fetchMasterChefFarmPoolLength()
+    const regularCakePerBlock = await fetchMasterChefRegularCakePerBlock()
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
     const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
 
@@ -65,7 +66,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
     const farmsWithoutHelperLps = farmsWithPrices.filter((farm: SerializedFarm) => {
       return farm.pid || farm.pid === 0
     })
-    return [farmsWithoutHelperLps, poolLength.toNumber()]
+    return [farmsWithoutHelperLps, poolLength.toNumber(), regularCakePerBlock.toNumber()]
   },
   {
     condition: (arg, { getState }) => {
@@ -164,12 +165,13 @@ export const farmsSlice = createSlice({
     })
     // Update farms with live data
     builder.addCase(fetchFarmsPublicDataAsync.fulfilled, (state, action) => {
-      const [farmPayload, poolLength] = action.payload
+      const [farmPayload, poolLength, regularCakePerBlock] = action.payload
       state.data = state.data.map((farm) => {
         const liveFarmData = farmPayload.find((farmData) => farmData.pid === farm.pid)
         return { ...farm, ...liveFarmData }
       })
       state.poolLength = poolLength
+      state.regularCakePerBlock = regularCakePerBlock
     })
 
     // Update farms with user data
