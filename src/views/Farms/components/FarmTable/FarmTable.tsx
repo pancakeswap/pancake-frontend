@@ -73,23 +73,25 @@ const FarmTable: React.FC<ITableProps> = (props) => {
 
   return (
     <Container id="farms-table">
-      <TableContainer>
-        <TableWrapper ref={tableWrapperEl}>
-          <StyledTable>
-            <TableBody>
-              {rows.map((row) => {
-                return <Row {...row.original} userDataReady={userDataReady} key={`table-row-${row.id}`} />
-              })}
-            </TableBody>
-          </StyledTable>
-        </TableWrapper>
-        <ScrollButtonContainer>
-          <Button variant="text" onClick={scrollToTop}>
-            {t('To Top')}
-            <ChevronUpIcon color="primary" />
-          </Button>
-        </ScrollButtonContainer>
-      </TableContainer>
+      {rows.length ? (
+        <TableContainer>
+          <TableWrapper ref={tableWrapperEl}>
+            <StyledTable>
+              <TableBody>
+                {rows.map((row) => {
+                  return <Row {...row.original} userDataReady={userDataReady} key={`table-row-${row.id}`} />
+                })}
+              </TableBody>
+            </StyledTable>
+          </TableWrapper>
+          <ScrollButtonContainer>
+            <Button variant="text" onClick={scrollToTop}>
+              {t('To Top')}
+              <ChevronUpIcon color="primary" />
+            </Button>
+          </ScrollButtonContainer>
+        </TableContainer>
+      ) : null}
     </Container>
   )
 }
