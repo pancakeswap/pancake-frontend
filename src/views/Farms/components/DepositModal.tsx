@@ -54,7 +54,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
   multiplier,
   displayApr,
   lpPrice,
-  lpLabel,
+  lpLabel = '',
   apr,
   addLiquidityUrl,
   cakePrice,
