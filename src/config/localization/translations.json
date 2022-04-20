@@ -1663,5 +1663,7 @@
   "Participants": "Participants",
   "Total Participants": "Total Participants",
   "Mobox Avatar NFT": "Mobox Avatar NFT",
-  "Your Mobox Avatars NFT prizes will be airdropped to your wallet address before 00:00 UTC 25th April.": "Your Mobox Avatars NFT prizes will be airdropped to your wallet address before 00:00 UTC 25th April."
+  "Your Mobox Avatars NFT prizes will be airdropped to your wallet address before 00:00 UTC 25th April.": "Your Mobox Avatars NFT prizes will be airdropped to your wallet address before 00:00 UTC 25th April.",
+  "The lock period has ended. Convert to flexible staking or renew your position to start a new lock staking.": "The lock period has ended. Convert to flexible staking or renew your position to start a new lock staking.",
+  "The lock period has ended. To avoid more rewards being burned, convert to flexible staking or renew your position to start a new lock staking.": "The lock period has ended. To avoid more rewards being burned, convert to flexible staking or renew your position to start a new lock staking."
 }
