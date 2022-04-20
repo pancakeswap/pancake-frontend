@@ -10,7 +10,6 @@ import {
   NftIcon,
   NftFillIcon,
   MoreIcon,
-  menuStatus,
 } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
@@ -70,7 +69,6 @@ const config: (t: ContextApi['t'], languageCode?: string) => ConfigMenuItemsType
       {
         label: t('Trading Competition'),
         href: '/competition',
-        status: menuStatus.LIVE,
       },
       {
         label: t('Prediction (BETA)'),

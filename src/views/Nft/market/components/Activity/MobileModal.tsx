@@ -45,7 +45,7 @@ const MobileModal: React.FC<MobileModalProps> = ({
               {nft?.collectionName}
             </Text>
             <Text bold textAlign="right">
-              {nft.name}
+              {nft?.name}
             </Text>
           </Flex>
         </Flex>

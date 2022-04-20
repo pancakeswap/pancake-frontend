@@ -312,6 +312,17 @@ const defaultPredictionUserOptions = {
   orderDir: 'desc',
 }
 
+export const getHasRoundFailed = (oracleCalled: boolean, closeTimestamp: number, buffer: number) => {
+  if (!oracleCalled) {
+    const closeTimestampMs = (closeTimestamp + buffer) * 1000
+    if (Number.isFinite(closeTimestampMs)) {
+      return Date.now() > closeTimestampMs
+    }
+  }
+
+  return false
+}
+
 export const getPredictionUsers = async (options: GetPredictionUsersOptions = {}): Promise<UserResponse[]> => {
   const { first, skip, where, orderBy, orderDir } = { ...defaultPredictionUserOptions, ...options }
   const response = await request(
