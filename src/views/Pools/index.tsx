@@ -22,6 +22,7 @@ import { ViewMode } from 'state/user/actions'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { useRouter } from 'next/router'
 import Loading from 'components/Loading'
+import MigrationSticky from 'views/Farms/components/MigrationSticky'
 import { useInitialBlock } from 'state/block/hooks'
 import { BSC_BLOCK_TIME } from 'config'
 import PoolCard from './components/PoolCard'
@@ -280,6 +281,7 @@ const Pools: React.FC = () => {
           </Flex>
         </Flex>
       </PageHeader>
+      <MigrationSticky />
       <Page>
         <PoolControls>
           <PoolTabButtons
