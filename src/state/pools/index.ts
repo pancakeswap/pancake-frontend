@@ -11,6 +11,10 @@ import {
 } from 'state/types'
 import { getPoolApr } from 'utils/apr'
 import { BIG_ZERO } from 'utils/bigNumber'
+import cakeAbi from 'config/abi/cake.json'
+import { getCakeVaultAddress } from 'utils/addressHelpers'
+import { multicallv2 } from 'utils/multicall'
+import tokens from 'config/constants/tokens'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { simpleRpcProvider } from 'utils/providers'
 import {
@@ -62,6 +66,33 @@ const initialState: PoolsState = {
   data: [...poolsConfig],
   userDataLoaded: false,
   cakeVault: initialPoolVaultState,
+}
+
+const cakeVaultAddress = getCakeVaultAddress()
+
+export const fetchCakePoolUserDataAsync = (account: string) => async (dispatch) => {
+  const allowanceCall = {
+    address: tokens.cake.address,
+    name: 'allowance',
+    params: [account, cakeVaultAddress],
+  }
+  const balanceOfCall = {
+    address: tokens.cake.address,
+    name: 'balanceOf',
+    params: [account],
+  }
+  const cakeContractCalls = [allowanceCall, balanceOfCall]
+  const [[allowance], [stakingTokenBalance]] = await multicallv2(cakeAbi, cakeContractCalls)
+
+  dispatch(
+    setPoolUserData({
+      sousId: 0,
+      data: {
+        allowance: new BigNumber(allowance.toString()).toJSON(),
+        stakingTokenBalance: new BigNumber(stakingTokenBalance.toString()).toJSON(),
+      },
+    }),
+  )
 }
 
 export const fetchPoolsPublicDataAsync = (currentBlockNumber: number) => async (dispatch, getState) => {
