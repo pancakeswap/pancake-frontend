@@ -195,6 +195,7 @@ export interface DeserializedFarmsState {
   loadArchivedFarmsData: boolean
   userDataLoaded: boolean
   poolLength?: number
+  regularCakePerBlock?: number
 }
 
 export interface SerializedVaultFees {
