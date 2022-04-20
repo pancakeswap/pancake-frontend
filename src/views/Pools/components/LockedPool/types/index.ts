@@ -12,6 +12,7 @@ export interface GenericModalProps {
   onDismiss?: VoidFn
   stakingToken: Token
   currentBalance: BigNumber
+  stakingTokenBalance: BigNumber
 }
 
 export interface ValidatorArg {
@@ -38,6 +39,7 @@ export interface AddButtonProps {
   currentLockedAmount: BigNumber
   lockEndTime: string
   lockStartTime: string
+  stakingTokenBalance: BigNumber
 }
 
 export interface OverviewPropsType {
@@ -60,6 +62,7 @@ export interface AddAmountModalProps {
   passedDuration: number
   remainingDuration: number
   lockEndTime?: string
+  stakingTokenBalance: BigNumber
 }
 
 export interface ModalValidator {

@@ -19,6 +19,7 @@ interface PropsType {
   stakingMax: BigNumber
   setLockedAmount: Dispatch<SetStateAction<string>>
   usedValueStaked: number | undefined
+  stakingTokenBalance: BigNumber
 }
 
 const BalanceField: React.FC<PropsType> = ({
@@ -29,10 +30,11 @@ const BalanceField: React.FC<PropsType> = ({
   stakingMax,
   setLockedAmount,
   usedValueStaked,
+  stakingTokenBalance,
 }) => {
   const { t } = useTranslation()
   const [percent, setPercent] = useState(0)
-  const { userNotEnoughCake, notEnoughErrorMessage } = useUserEnoughCakeValidator(lockedAmount)
+  const { userNotEnoughCake, notEnoughErrorMessage } = useUserEnoughCakeValidator(lockedAmount, stakingTokenBalance)
 
   const handleStakeInputChange = useCallback(
     (input: string) => {

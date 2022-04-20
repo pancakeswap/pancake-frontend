@@ -29,7 +29,11 @@ const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
     <VaultStakeModal stakingMax={stakingTokenBalance} pool={pool} performanceFee={performanceFee} />,
   )
   const [openPresentLockedStakeModal] = useModal(
-    <LockedStakeModal currentBalance={stakingTokenBalance} stakingToken={stakingToken} />,
+    <LockedStakeModal
+      currentBalance={stakingTokenBalance}
+      stakingToken={stakingToken}
+      stakingTokenBalance={stakingTokenBalance}
+    />,
   )
 
   const renderStakeAction = () => {
