@@ -96,12 +96,15 @@ export const LanguageProvider: React.FC = ({ children }) => {
 
       if (includesVariable && data) {
         let interpolatedText = translatedText
-        Object.keys(data).forEach((dataKey) => {
-          const templateKey = new RegExp(`%${dataKey}%`, 'g')
-          interpolatedText = interpolatedText.replace(templateKey, data[dataKey].toString())
-        })
-
-        return interpolatedText
+        try {
+          Object.keys(data).forEach((dataKey) => {
+            const templateKey = new RegExp(`%${dataKey}%`, 'g')
+            interpolatedText = interpolatedText.replace(templateKey, data[dataKey].toString())
+          })
+          return interpolatedText
+        } catch (err: any) {
+          throw new Error(`Translate interpolated error: ${interpolatedText}`, { cause: err })
+        }
       }
 
       return translatedText
