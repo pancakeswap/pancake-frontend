@@ -125,16 +125,6 @@ const sortPools = (account: string, sortOption: string, pools: DeserializedPool[
         'desc',
       )
     case 'totalStaked': {
-      const cakeInVaults = pools.reduce((total, pool) => {
-        if (pool.vaultKey) {
-          const vault = pool as DeserializedPoolVault
-          if (vault.totalCakeInVault) {
-            return vault.totalCakeInVault.plus(total)
-          }
-          return total
-        }
-        return total
-      }, BIG_ZERO)
       return orderBy(
         poolsToSort,
         (pool: DeserializedPool) => {
