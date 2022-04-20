@@ -11,11 +11,13 @@ import {
   Text,
   TimerIcon,
   useTooltip,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { BASE_BSC_SCAN_URL } from 'config'
 import { getBscScanLink } from 'utils'
 import { useCurrentBlock } from 'state/block/hooks'
-import { useVaultPoolByKey, useVaultPools } from 'state/pools/hooks'
+import { useVaultPoolByKey } from 'state/pools/hooks'
+import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import BigNumber from 'bignumber.js'
 import { DeserializedPool } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
@@ -25,26 +27,31 @@ import { getAddress, getVaultPoolAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { registerToken } from 'utils/wallet'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { convertSharesToCake, getPoolBlockInfo } from 'views/Pools/helpers'
-import { vaultPoolConfig } from 'config/constants/pools'
+import { getPoolBlockInfo } from 'views/Pools/helpers'
 import Harvest from './Harvest'
 import Stake from './Stake'
 import Apr from '../../Apr'
 import AutoHarvest from './AutoHarvest'
 import MaxStakeRow from '../../MaxStakeRow'
+import { PerformanceFee } from '../../Stat'
+import { VaultPositionTagWithLabel } from '../../Vault/VaultPositionTag'
+import YieldBoostRow from '../../LockedPool/Common/YieldBoostRow'
+import LockDurationRow from '../../LockedPool/Common/LockDurationRow'
+import useUserDataInVaultPrensenter from '../../LockedPool/hooks/useUserDataInVaultPrensenter'
+import CakeVaultApr from './CakeVaultApr'
 
 const expandAnimation = keyframes`
   from {
     max-height: 0px;
   }
   to {
-    max-height: 700px;
+    max-height: 1000px;
   }
 `
 
 const collapseAnimation = keyframes`
   from {
-    max-height: 700px;
+    max-height: 1000px;
   }
   to {
     max-height: 0px;
@@ -73,15 +80,19 @@ const StyledActionPanel = styled.div<{ expanded: boolean }>`
   }
 `
 
-const ActionContainer = styled.div`
+const ActionContainer = styled.div<{ isAutoVault?: boolean; hasBalance?: boolean }>`
   display: flex;
   flex-direction: column;
+  flex: 1;
+  flex-wrap: wrap;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
-    align-items: center;
-    flex-grow: 1;
-    flex-basis: 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: ${({ isAutoVault }) => (isAutoVault ? 'row' : null)};
+    align-items: ${({ isAutoVault, hasBalance }) => (isAutoVault ? (hasBalance ? 'flex-start' : 'stretch') : 'center')};
   }
 `
 
@@ -106,10 +117,14 @@ const InfoSection = styled(Box)`
   flex-grow: 0;
   flex-shrink: 0;
   flex-basis: auto;
+
   padding: 8px 8px;
   ${({ theme }) => theme.mediaQueries.lg} {
     padding: 0;
     flex-basis: 230px;
+    ${Text} {
+      font-size: 14px;
+    }
   }
 `
 
@@ -127,9 +142,22 @@ const RequirementSection = styled(Box)`
   }
 `
 
+const YieldBoostDurationRow = ({ lockEndTime, lockStartTime }) => {
+  const { weekDuration, secondDuration } = useUserDataInVaultPrensenter({
+    lockEndTime,
+    lockStartTime,
+  })
+
+  return (
+    <>
+      <YieldBoostRow secondDuration={secondDuration} />
+      <LockDurationRow weekDuration={weekDuration} />
+    </>
+  )
+}
+
 const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded, expanded, breakpoints }) => {
   const {
-    sousId,
     stakingToken,
     earningToken,
     totalStaked,
@@ -148,7 +176,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   const vaultContractAddress = getVaultPoolAddress(vaultKey)
   const currentBlock = useCurrentBlock()
   const { isXs, isSm, isMd } = breakpoints
-  const showSubtitle = (isXs || isSm) && sousId === 0
+  const { isMobile } = useMatchBreakpoints()
 
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
     getPoolBlockInfo(pool, currentBlock)
@@ -156,35 +184,32 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   const isMetaMaskInScope = !!window.ethereum?.isMetaMask
   const tokenAddress = earningToken.address || ''
 
+  const vaultPool = useVaultPoolByKey(vaultKey)
   const {
     totalCakeInVault,
-    userData: { userShares },
+    userData: {
+      lockEndTime,
+      lockStartTime,
+      balance: { cakeAsBigNumber },
+      locked,
+    },
     fees: { performanceFeeAsDecimal },
-    pricePerFullShare,
-  } = useVaultPoolByKey(vaultKey)
+  } = vaultPool
 
-  const vaultPools = useVaultPools()
-  const cakeInVaults = Object.values(vaultPools).reduce((total, vault) => {
-    return total.plus(vault.totalCakeInVault)
-  }, BIG_ZERO)
+  const vaultPosition = getVaultPosition(vaultPool.userData)
 
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
-  const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
+
   const poolStakingTokenBalance = vaultKey
     ? cakeAsBigNumber.plus(stakingTokenBalance)
     : stakedBalance.plus(stakingTokenBalance)
-
-  const isManualCakePool = sousId === 0
 
   const getTotalStakedBalance = () => {
     if (vaultKey) {
       return getBalanceNumber(totalCakeInVault, stakingToken.decimals)
     }
-    if (isManualCakePool) {
-      const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked).minus(cakeInVaults)
-      return getBalanceNumber(manualCakeTotalMinusAutoVault, stakingToken.decimals)
-    }
+
     return getBalanceNumber(totalStaked, stakingToken.decimals)
   }
 
@@ -198,7 +223,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
 
   const manualTooltipText = t('You must harvest and compound your earnings from this pool manually.')
   const autoTooltipText = t(
-    'Any funds you stake in this pool will be automagically harvested and restaked (compounded) for you.',
+    'Rewards are distributed and included into your staking balance automatically. There’s no need to manually compound your rewards.',
   )
 
   const {
@@ -258,15 +283,10 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
       <Skeleton width="56px" height="16px" />
     )
 
-  const aprRow = (
+  const aprRow = !vaultKey && (
     <Flex justifyContent="space-between" alignItems="center" mb="8px">
-      <Text>{vaultKey ? t('APY') : t('APR')}:</Text>
-      <Apr
-        pool={pool}
-        showIcon
-        stakedBalance={poolStakingTokenBalance}
-        performanceFee={vaultKey ? performanceFeeAsDecimal : 0}
-      />
+      <Text>{t('APR')}:</Text>
+      <Apr pool={pool} showIcon stakedBalance={poolStakingTokenBalance} performanceFee={0} />
     </Flex>
   )
 
@@ -292,8 +312,16 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   return (
     <StyledActionPanel expanded={expanded}>
       <InfoSection>
+        {isMobile && locked && (
+          <Box mb="16px">
+            <YieldBoostDurationRow lockEndTime={lockEndTime} lockStartTime={lockStartTime} />
+          </Box>
+        )}
         {requirementRow}
         {maxStakeRow}
+        {pool.vaultKey && (
+          <PerformanceFee userData={vaultPool?.userData} performanceFeeAsDecimal={performanceFeeAsDecimal} />
+        )}
         {(isXs || isSm) && aprRow}
         {(isXs || isSm || isMd) && totalStakedRow}
         {shouldShowBlockCountdown && blocksRow}
@@ -302,11 +330,13 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
             {t('See Token Info')}
           </LinkExternal>
         </Flex>
-        <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
-          <LinkExternal href={earningToken.projectLink} bold={false}>
-            {t('View Project Site')}
-          </LinkExternal>
-        </Flex>
+        {!pool.vaultKey && (
+          <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
+            <LinkExternal href={earningToken.projectLink} bold={false}>
+              {t('View Project Site')}
+            </LinkExternal>
+          </Flex>
+        )}
         {poolContractAddress && (
           <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
             <LinkExternal
@@ -344,19 +374,26 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
         </span>
       </InfoSection>
       <ActionContainer>
-        {showSubtitle && (
-          <Text mt="4px" mb="16px" color="textSubtle">
-            {vaultKey
-              ? vaultPoolConfig[vaultKey].description
-              : `${t('Earn')} CAKE ${t('Stake').toLocaleLowerCase()} CAKE`}
-          </Text>
+        {isMobile && vaultKey && vaultPosition === VaultPosition.None && (
+          <CakeVaultApr pool={pool} userData={vaultPool.userData} vaultPosition={vaultPosition} />
         )}
-        {pool.vaultKey ? (
-          <AutoHarvest {...pool} userDataLoaded={userDataLoaded} />
-        ) : (
-          <Harvest {...pool} userDataLoaded={userDataLoaded} />
-        )}
-        <Stake pool={pool} userDataLoaded={userDataLoaded} />
+        <Box width="100%">
+          {pool.vaultKey && (
+            <VaultPositionTagWithLabel
+              userData={vaultPool.userData}
+              width={['auto', , 'fit-content']}
+              ml={['12px', , , , , '32px']}
+            />
+          )}
+          <ActionContainer isAutoVault={!!pool.vaultKey} hasBalance={poolStakingTokenBalance.gt(0)}>
+            {pool.vaultKey ? (
+              <AutoHarvest {...pool} userDataLoaded={userDataLoaded} />
+            ) : (
+              <Harvest {...pool} userDataLoaded={userDataLoaded} />
+            )}
+            <Stake pool={pool} userDataLoaded={userDataLoaded} />
+          </ActionContainer>
+        </Box>
       </ActionContainer>
     </StyledActionPanel>
   )

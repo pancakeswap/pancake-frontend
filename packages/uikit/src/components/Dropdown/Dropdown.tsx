@@ -54,5 +54,9 @@ const Dropdown: React.FC<DropdownProps> = ({ target, position = "bottom", childr
     </Container>
   );
 };
+Dropdown.defaultProps = {
+  // eslint-disable-next-line react/default-props-match-prop-types
+  position: "bottom",
+};
 
 export default Dropdown;

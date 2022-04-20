@@ -13,7 +13,7 @@ const fetchFarms = async (farmsToFetch: SerializedFarmConfig[]): Promise<Seriali
     const [tokenBalanceLP, quoteTokenBalanceLP, lpTokenBalanceMC, lpTotalSupply, tokenDecimals, quoteTokenDecimals] =
       farmResult[index]
 
-    const [info, totalAllocPoint] = masterChefResult[index]
+    const [info, totalRegularAllocPoint] = masterChefResult[index]
 
     // Ratio in % of LP tokens that are staked in the MC, vs the total number in circulation
     const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
@@ -29,7 +29,7 @@ const fetchFarms = async (farmsToFetch: SerializedFarmConfig[]): Promise<Seriali
     const lpTotalInQuoteToken = quoteTokenAmountMc.times(new BigNumber(2))
 
     const allocPoint = info ? new BigNumber(info.allocPoint?._hex) : BIG_ZERO
-    const poolWeight = totalAllocPoint ? allocPoint.div(new BigNumber(totalAllocPoint)) : BIG_ZERO
+    const poolWeight = totalRegularAllocPoint ? allocPoint.div(new BigNumber(totalRegularAllocPoint)) : BIG_ZERO
 
     return {
       ...farm,

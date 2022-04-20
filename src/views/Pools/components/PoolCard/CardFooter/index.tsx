@@ -21,15 +21,21 @@ const ExpandableButtonWrapper = styled(Flex)`
     padding: 0;
   }
 `
+const ExpandedWrapper = styled(Flex)`
+  svg {
+    height: 14px;
+    width: 14px;
+  }
+`
 
-const Footer: React.FC<FooterProps> = ({ pool, account, defaultExpanded }) => {
+const Footer: React.FC<FooterProps> = ({ pool, account, defaultExpanded, children }) => {
   const { vaultKey } = pool
   const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(defaultExpanded || false)
 
   const manualTooltipText = t('You must harvest and compound your earnings from this pool manually.')
   const autoTooltipText = t(
-    'Any funds you stake in this pool will be automagically harvested and restaked (compounded) for you.',
+    'Rewards are distributed and included into your staking balance automatically. There’s no need to manually compound your rewards.',
   )
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(vaultKey ? autoTooltipText : manualTooltipText, {
@@ -50,7 +56,11 @@ const Footer: React.FC<FooterProps> = ({ pool, account, defaultExpanded }) => {
           {isExpanded ? t('Hide') : t('Details')}
         </ExpandableLabel>
       </ExpandableButtonWrapper>
-      {isExpanded && <ExpandedFooter pool={pool} account={account} />}
+      {isExpanded && (
+        <ExpandedWrapper flexDirection="column">
+          {children || <ExpandedFooter pool={pool} account={account} />}
+        </ExpandedWrapper>
+      )}
     </CardFooter>
   )
 }

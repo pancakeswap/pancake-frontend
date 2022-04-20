@@ -2,25 +2,16 @@ import BigNumber from 'bignumber.js'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import { multicallv2 } from 'utils/multicall'
 import ifoPoolAbi from 'config/abi/ifoPool.json'
-import { getIfoPoolAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 
-export const fetchPublicIfoPoolData = async () => {
+export const fetchPublicIfoPoolData = async (ifoPoolAddress: string) => {
   try {
-    const calls = [
-      'getPricePerFullShare',
-      'totalShares',
-      'calculateHarvestCakeRewards',
-      'calculateTotalPendingCakeRewards',
-      'startBlock',
-      'endBlock',
-    ].map((method) => ({
-      address: getIfoPoolAddress(),
+    const calls = ['getPricePerFullShare', 'totalShares', 'startBlock', 'endBlock'].map((method) => ({
+      address: ifoPoolAddress,
       name: method,
     }))
 
-    const [[sharePrice], [shares], [estimatedCakeBountyReward], [totalPendingCakeHarvest], [startBlock], [endBlock]] =
-      await multicallv2(ifoPoolAbi, calls)
+    const [[sharePrice], [shares], [startBlock], [endBlock]] = await multicallv2(ifoPoolAbi, calls)
 
     const totalSharesAsBigNumber = shares ? new BigNumber(shares.toString()) : BIG_ZERO
     const sharePriceAsBigNumber = sharePrice ? new BigNumber(sharePrice.toString()) : BIG_ZERO
@@ -29,8 +20,6 @@ export const fetchPublicIfoPoolData = async () => {
       totalShares: totalSharesAsBigNumber.toJSON(),
       pricePerFullShare: sharePriceAsBigNumber.toJSON(),
       totalCakeInVault: totalCakeInVaultEstimate.cakeAsBigNumber.toJSON(),
-      estimatedCakeBountyReward: new BigNumber(estimatedCakeBountyReward.toString()).toJSON(),
-      totalPendingCakeHarvest: new BigNumber(totalPendingCakeHarvest.toString()).toJSON(),
       creditStartBlock: startBlock.toNumber(),
       creditEndBlock: endBlock.toNumber(),
     }
@@ -39,31 +28,27 @@ export const fetchPublicIfoPoolData = async () => {
       totalShares: null,
       pricePerFullShare: null,
       totalCakeInVault: null,
-      estimatedCakeBountyReward: null,
-      totalPendingCakeHarvest: null,
     }
   }
 }
 
-export const fetchIfoPoolFeesData = async () => {
+export const fetchIfoPoolFeesData = async (ifoPoolAddress: string) => {
   try {
-    const calls = ['performanceFee', 'callFee', 'withdrawFee', 'withdrawFeePeriod'].map((method) => ({
-      address: getIfoPoolAddress(),
+    const calls = ['performanceFee', 'withdrawFee', 'withdrawFeePeriod'].map((method) => ({
+      address: ifoPoolAddress,
       name: method,
     }))
 
-    const [[performanceFee], [callFee], [withdrawalFee], [withdrawalFeePeriod]] = await multicallv2(ifoPoolAbi, calls)
+    const [[performanceFee], [withdrawalFee], [withdrawalFeePeriod]] = await multicallv2(ifoPoolAbi, calls)
 
     return {
       performanceFee: performanceFee.toNumber(),
-      callFee: callFee.toNumber(),
       withdrawalFee: withdrawalFee.toNumber(),
       withdrawalFeePeriod: withdrawalFeePeriod.toNumber(),
     }
   } catch (error) {
     return {
       performanceFee: null,
-      callFee: null,
       withdrawalFee: null,
       withdrawalFeePeriod: null,
     }

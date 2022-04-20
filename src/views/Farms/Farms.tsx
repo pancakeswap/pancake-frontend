@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useState, useMemo, useRef, createContext } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { Image, Heading, RowType, Toggle, Text, Button, ArrowForwardIcon, Flex } from '@pancakeswap/uikit'
+import { Image, Heading, RowType, Toggle, Text, Button, ArrowForwardIcon, Flex, Link } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import styled from 'styled-components'
@@ -14,7 +14,7 @@ import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getFarmApr } from 'utils/apr'
 import orderBy from 'lodash/orderBy'
-import isArchivedPid from 'utils/farmHelpers'
+import { isArchivedPid } from 'utils/farmHelpers'
 import { latinise } from 'utils/latinise'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
@@ -27,8 +27,8 @@ import ToggleView from 'components/ToggleView/ToggleView'
 import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
-import { DesktopColumnSchema, FarmWithStakedValue } from './components/types'
 import MigrationSticky from './components/MigrationSticky'
+import { DesktopColumnSchema, FarmWithStakedValue } from './components/types'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -102,6 +102,21 @@ const StyledImage = styled(Image)`
   margin-right: auto;
   margin-top: 58px;
 `
+
+const FinishedTextContainer = styled(Flex)`
+  padding-bottom: 32px;
+  flex-direction: column;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: row;
+  }
+`
+
+const FinishedTextLink = styled(Link)`
+  font-weight: 400;
+  white-space: nowrap;
+  text-decoration: underline;
+`
+
 const NUMBER_OF_FARMS_VISIBLE = 12
 
 export const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) => {
@@ -406,6 +421,21 @@ const Farms: React.FC = ({ children }) => {
             </LabelWrapper>
           </FilterContainer>
         </ControlContainer>
+        {isInactive && (
+          <FinishedTextContainer>
+            <Text fontSize="20px" color="failure" pr="4px">
+              {t("Don't see the farm you are staking?")}
+            </Text>
+            <FinishedTextLink
+              external
+              href="https://v1-farms.pancakeswap.finance/farms/history"
+              fontSize="20px"
+              color="failure"
+            >
+              {t('Check out v1 farms')}
+            </FinishedTextLink>
+          </FinishedTextContainer>
+        )}
         {renderContent()}
         {account && !userDataLoaded && stakedOnly && (
           <Flex justifyContent="center">

@@ -10,6 +10,7 @@ import {
   getIfoV1Contract,
   getIfoV2Contract,
   getMasterchefContract,
+  getMasterchefV1Contract,
   getPointCenterIfoContract,
   getSouschefContract,
   getClaimRefundContract,
@@ -18,8 +19,7 @@ import {
   getTradingCompetitionContractMobox,
   getEasterNftContract,
   getErc721Contract,
-  getCakeVaultContract,
-  getIfoPoolContract,
+  getCakeVaultV2Contract,
   getPredictionsContract,
   getChainlinkOracleContract,
   getLotteryV2Contract,
@@ -35,18 +35,16 @@ import {
   getBunnySpecialXmasContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
-import { VaultKey } from 'state/types'
 import {
-  CakeVault,
   EnsPublicResolver,
   EnsRegistrar,
   Erc20,
   Erc20Bytes32,
-  IfoPool,
   Multicall,
   Weth,
   Cake,
   Erc721collection,
+  CakeVaultV2,
 } from 'config/abi/types'
 
 // Imports below migrated from Exchange useContract.ts
@@ -127,9 +125,17 @@ export const useLotteryV2Contract = () => {
   return useMemo(() => getLotteryV2Contract(library.getSigner()), [library])
 }
 
-export const useMasterchef = () => {
+export const useMasterchef = (withSignerIfPossible = true) => {
+  const { library, account } = useActiveWeb3React()
+  return useMemo(
+    () => getMasterchefContract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [library, withSignerIfPossible, account],
+  )
+}
+
+export const useMasterchefV1 = () => {
   const { library } = useActiveWeb3React()
-  return useMemo(() => getMasterchefContract(library.getSigner()), [library])
+  return useMemo(() => getMasterchefV1Contract(library.getSigner()), [library])
 }
 
 export const useSousChef = (id) => {
@@ -178,23 +184,17 @@ export const useEasterNftContract = () => {
   return useMemo(() => getEasterNftContract(library.getSigner()), [library])
 }
 
-export const useVaultPoolContract = (vaultKey: VaultKey): CakeVault | IfoPool => {
+export const useVaultPoolContract = (): CakeVaultV2 => {
   const { library } = useActiveWeb3React()
-  return useMemo(() => {
-    return vaultKey === VaultKey.CakeVault
-      ? getCakeVaultContract(library.getSigner())
-      : getIfoPoolContract(library.getSigner())
-  }, [library, vaultKey])
+  return useMemo(() => getCakeVaultV2Contract(library.getSigner()), [library])
 }
 
-export const useCakeVaultContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getCakeVaultContract(library.getSigner()), [library])
-}
-
-export const useIfoPoolContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getIfoPoolContract(library.getSigner()), [library])
+export const useCakeVaultContract = (withSignerIfPossible = true) => {
+  const { library, account } = useActiveWeb3React()
+  return useMemo(
+    () => getCakeVaultV2Contract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [withSignerIfPossible, library, account],
+  )
 }
 
 export const usePredictionsContract = () => {

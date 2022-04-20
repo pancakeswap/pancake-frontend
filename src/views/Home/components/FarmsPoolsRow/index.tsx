@@ -55,10 +55,6 @@ const FarmsPoolsRow = () => {
       return vaultPoolConfig[pool.vaultKey].name
     }
 
-    if (pool.sousId === 0) {
-      return t('Manual CAKE')
-    }
-
     return t('Stake %stakingSymbol% - Earn %earningSymbol%', {
       earningSymbol: pool.earningToken.symbol,
       stakingSymbol: pool.stakingToken.symbol,

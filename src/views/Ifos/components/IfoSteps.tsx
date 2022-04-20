@@ -14,29 +14,16 @@ import {
   Flex,
   useTooltip,
   TooltipText,
-  LogoRoundIcon,
-  Skeleton,
-  useModal,
   Link,
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter as RouterLink } from 'components/NextLink'
 import { useWeb3React } from '@web3-react/core'
 
 import { useTranslation } from 'contexts/Localization'
-import useTokenBalance from 'hooks/useTokenBalance'
 import Container from 'components/Layout/Container'
 import { useProfile } from 'state/profile/hooks'
-import Balance from 'components/Balance'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { FlexGap } from 'components/Layout/Flex'
-import { getBalanceNumber } from 'utils/formatBalance'
-import VaultStakeModal from 'views/Pools/components/CakeVaultCard/VaultStakeModal'
-import { BIG_ZERO } from 'utils/bigNumber'
-import BigNumber from 'bignumber.js'
-import { useIfoPoolVault, useIfoPoolCredit, useIfoWithApr } from 'state/pools/hooks'
-import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
-import { useCheckVaultApprovalStatus, useVaultApprove } from 'views/Pools/hooks/useApprove'
 
 interface TypeProps {
   ifoCurrencyAddress: string
@@ -61,20 +48,8 @@ const InlineLink = styled(Link)`
   display: inline;
 `
 
-const SmallStakePoolCard = styled(Box)`
-  margin-top: 16px;
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background-color: ${({ theme }) => theme.colors.background};
-`
-
-const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
+const Step1 = () => {
   const { t } = useTranslation()
-  const ifoPoolVault = useIfoPoolVault()
-  const credit = useIfoPoolCredit()
-  const { pool } = useIfoWithApr()
-
-  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus(pool.vaultKey)
-  const { handleApprove, pendingTx } = useVaultApprove(pool.vaultKey, setLastUpdated)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
@@ -93,20 +68,6 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
     {},
   )
 
-  const creditDollarValue = useBUSDCakeAmount(getBalanceNumber(credit))
-
-  const stakingTokenBalance = pool?.userData?.stakingTokenBalance
-    ? new BigNumber(pool.userData.stakingTokenBalance)
-    : BIG_ZERO
-
-  const [onPresentStake] = useModal(
-    <VaultStakeModal
-      stakingMax={stakingTokenBalance}
-      performanceFee={ifoPoolVault.fees.performanceFeeAsDecimal}
-      pool={pool}
-    />,
-  )
-
   return (
     <CardBody>
       {tooltipVisible && tooltip}
@@ -123,47 +84,11 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
           {t('How does the IFO credit calculated?')}
         </TooltipText>
       </Box>
-      {hasProfile && (
-        <SmallStakePoolCard borderRadius="default" p="16px">
-          <FlexGap justifyContent="space-between" alignItems="center" flexWrap="wrap" gap="16px">
-            <Flex>
-              <LogoRoundIcon style={{ alignSelf: 'flex-start' }} width={32} height={32} />
-              <Box ml="16px">
-                <Text bold fontSize="12px" textTransform="uppercase" color="secondary">
-                  {t('Your max CAKE entry')}
-                </Text>
-                <Balance fontSize="20px" bold decimals={5} value={getBalanceNumber(credit)} />
-                <Text fontSize="12px" color="textSubtle">
-                  {creditDollarValue !== undefined ? (
-                    <Balance
-                      value={creditDollarValue}
-                      fontSize="12px"
-                      color="textSubtle"
-                      decimals={2}
-                      prefix="~"
-                      unit=" USD"
-                    />
-                  ) : (
-                    <Skeleton mt="1px" height={16} width={64} />
-                  )}
-                </Text>
-              </Box>
-            </Flex>
-            {isVaultApproved ? (
-              <Button onClick={onPresentStake}>{t('Stake')} CAKE</Button>
-            ) : (
-              <Button disabled={pendingTx} onClick={handleApprove}>
-                {t('Enable pool')}
-              </Button>
-            )}
-          </FlexGap>
-        </SmallStakePoolCard>
-      )}
     </CardBody>
   )
 }
 
-const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLive: boolean; isCommitted: boolean }) => {
+const Step2 = () => {
   const { t } = useTranslation()
   return (
     <CardBody>
@@ -173,21 +98,15 @@ const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLiv
       <Text color="textSubtle" small>
         {t('When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.')} <br />
       </Text>
-      {hasProfile && isLive && !isCommitted && (
-        <Button as="a" href="#current-ifo" mt="16px">
-          {t('Commit CAKE')}
-        </Button>
-      )}
     </CardBody>
   )
 }
 
-const IfoSteps: React.FC<TypeProps> = ({ isCommitted, hasClaimed, isLive, ifoCurrencyAddress }) => {
+const IfoSteps: React.FC<TypeProps> = () => {
   const { hasActiveProfile } = useProfile()
   const { account } = useWeb3React()
   const { t } = useTranslation()
-  const { balance } = useTokenBalance(ifoCurrencyAddress)
-  const stepsValidationStatus = [hasActiveProfile, balance.isGreaterThan(0), isCommitted, hasClaimed]
+  const stepsValidationStatus = [hasActiveProfile, false, false, false]
 
   const getStatusProp = (index: number): StepStatus => {
     const arePreviousValid = index === 0 ? true : every(stepsValidationStatus.slice(0, index), Boolean)
@@ -237,9 +156,9 @@ const IfoSteps: React.FC<TypeProps> = ({ isCommitted, hasClaimed, isLive, ifoCur
           </CardBody>
         )
       case 1:
-        return <Step1 hasProfile={hasActiveProfile} />
+        return <Step1 />
       case 2:
-        return <Step2 hasProfile={hasActiveProfile} isLive={isLive} isCommitted={isCommitted} />
+        return <Step2 />
       case 3:
         return (
           <CardBody>

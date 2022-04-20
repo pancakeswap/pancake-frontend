@@ -18,6 +18,7 @@ const Link: React.FC<LinkProps> = ({ external, ...props }) => {
   return <StyledLink as="a" bold {...internalProps} {...props} />;
 };
 
+/* eslint-disable react/default-props-match-prop-types */
 Link.defaultProps = {
   color: "primary",
 };

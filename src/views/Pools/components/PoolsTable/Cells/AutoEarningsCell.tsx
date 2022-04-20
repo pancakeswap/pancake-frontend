@@ -30,7 +30,14 @@ const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) =>
   const { earningTokenPrice } = pool
 
   const {
-    userData: { isLoading: userDataLoading, cakeAtLastUserAction, userShares },
+    userData: {
+      isLoading: userDataLoading,
+      cakeAtLastUserAction,
+      userShares,
+      currentOverdueFee,
+      currentPerformanceFee,
+      userBoostedShare,
+    },
     pricePerFullShare,
   } = useVaultPoolByKey(pool.vaultKey)
   const { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
@@ -39,6 +46,7 @@ const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) =>
     userShares,
     pricePerFullShare,
     earningTokenPrice,
+    currentPerformanceFee.plus(currentOverdueFee).plus(userBoostedShare),
   )
 
   const labelText = t('Recent CAKE profit')
@@ -49,6 +57,10 @@ const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) =>
   const { targetRef, tooltip, tooltipVisible } = useTooltip(<AutoEarningsBreakdown pool={pool} account={account} />, {
     placement: 'bottom',
   })
+
+  if (!userShares.gt(0)) {
+    return null
+  }
 
   return (
     <StyledCell role="cell">

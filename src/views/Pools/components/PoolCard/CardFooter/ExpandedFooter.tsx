@@ -1,44 +1,22 @@
-import { memo } from 'react'
-import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { useTranslation } from 'contexts/Localization'
-import {
-  Flex,
-  MetamaskIcon,
-  Text,
-  TooltipText,
-  LinkExternal,
-  TimerIcon,
-  Skeleton,
-  useTooltip,
-  Button,
-  Link,
-  HelpIcon,
-} from '@pancakeswap/uikit'
+import { Button, Flex, Link, LinkExternal, MetamaskIcon, Skeleton, Text, TimerIcon } from '@pancakeswap/uikit'
+import Balance from 'components/Balance'
 import { BASE_BSC_SCAN_URL } from 'config'
+import { useTranslation } from 'contexts/Localization'
+import { memo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
-import { useVaultPoolByKey, useVaultPools } from 'state/pools/hooks'
+import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
+import { getBscScanLink } from 'utils'
 import { getAddress, getVaultPoolAddress } from 'utils/addressHelpers'
 import { registerToken } from 'utils/wallet'
-import { getBscScanLink } from 'utils'
-import Balance from 'components/Balance'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
-import { BIG_ZERO } from 'utils/bigNumber'
 import MaxStakeRow from '../../MaxStakeRow'
+import { PerformanceFee, TotalLocked, TotalStaked } from '../../Stat'
 
 interface ExpandedFooterProps {
   pool: DeserializedPool
   account: string
 }
-
-const ExpandedWrapper = styled(Flex)`
-  svg {
-    height: 14px;
-    width: 14px;
-  }
-`
 
 const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
   const { t } = useTranslation()
@@ -53,7 +31,6 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     stakingLimit,
     stakingLimitEndBlock,
     contractAddress,
-    sousId,
     vaultKey,
     profileRequirement,
     isFinished,
@@ -61,49 +38,21 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
 
   const {
     totalCakeInVault,
-    fees: { performanceFee },
+    totalLockedAmount,
+    fees: { performanceFeeAsDecimal },
+    userData,
   } = useVaultPoolByKey(vaultKey)
-
-  const vaultPools = useVaultPools()
-  const cakeInVaults = Object.values(vaultPools).reduce((total, vault) => {
-    return total.plus(vault.totalCakeInVault)
-  }, BIG_ZERO)
 
   const tokenAddress = earningToken.address || ''
   const poolContractAddress = getAddress(contractAddress)
   const cakeVaultContractAddress = getVaultPoolAddress(vaultKey)
   const isMetaMaskInScope = !!window.ethereum?.isMetaMask
-  const isManualCakePool = sousId === 0
 
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
     getPoolBlockInfo(pool, currentBlock)
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t('Subtracted automatically from each yield harvest and burned.'),
-    { placement: 'bottom-start' },
-  )
-
-  const getTotalStakedBalance = () => {
-    if (vaultKey) {
-      return getBalanceNumber(totalCakeInVault, stakingToken.decimals)
-    }
-    if (isManualCakePool) {
-      const manualCakeTotalMinusAutoVault = new BigNumber(totalStaked).minus(cakeInVaults)
-      return getBalanceNumber(manualCakeTotalMinusAutoVault, stakingToken.decimals)
-    }
-    return getBalanceNumber(totalStaked, stakingToken.decimals)
-  }
-
-  const {
-    targetRef: totalStakedTargetRef,
-    tooltip: totalStakedTooltip,
-    tooltipVisible: totalStakedTooltipVisible,
-  } = useTooltip(t('Total amount of %symbol% staked in this pool', { symbol: stakingToken.symbol }), {
-    placement: 'bottom',
-  })
-
   return (
-    <ExpandedWrapper flexDirection="column">
+    <>
       {profileRequirement && (profileRequirement.required || profileRequirement.thresholdPoints.gt(0)) && (
         <Flex mb="8px" justifyContent="space-between">
           <Text small>{t('Requirement')}:</Text>
@@ -117,22 +66,8 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           </Text>
         </Flex>
       )}
-      <Flex mb="2px" justifyContent="space-between" alignItems="center">
-        <Text small>{t('Total staked')}:</Text>
-        <Flex alignItems="flex-start">
-          {totalStaked && totalStaked.gte(0) ? (
-            <>
-              <Balance small value={getTotalStakedBalance()} decimals={0} unit={` ${stakingToken.symbol}`} />
-              <span ref={totalStakedTargetRef}>
-                <HelpIcon color="textSubtle" width="20px" ml="6px" mt="4px" />
-              </span>
-            </>
-          ) : (
-            <Skeleton width="90px" height="21px" />
-          )}
-          {totalStakedTooltipVisible && totalStakedTooltip}
-        </Flex>
-      </Flex>
+      <TotalStaked totalStaked={vaultKey ? totalCakeInVault : totalStaked} stakingToken={stakingToken} />
+      {vaultKey && <TotalLocked totalLocked={totalLockedAmount} lockedToken={stakingToken} />}
       {!isFinished && stakingLimit && stakingLimit.gt(0) && (
         <MaxStakeRow
           small
@@ -161,23 +96,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           )}
         </Flex>
       )}
-      {vaultKey && (
-        <Flex mb="2px" justifyContent="space-between" alignItems="center">
-          {tooltipVisible && tooltip}
-          <TooltipText ref={targetRef} small>
-            {t('Performance Fee')}
-          </TooltipText>
-          <Flex alignItems="center">
-            {performanceFee ? (
-              <Text ml="4px" small>
-                {performanceFee / 100}%
-              </Text>
-            ) : (
-              <Skeleton width="90px" height="21px" />
-            )}
-          </Flex>
-        </Flex>
-      )}
+      {vaultKey && <PerformanceFee userData={userData} performanceFeeAsDecimal={performanceFeeAsDecimal} />}
       <Flex mb="2px" justifyContent="flex-end">
         <LinkExternal href={`/info/token/${earningToken.address}`} bold={false} small>
           {t('See Token Info')}
@@ -221,7 +140,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           </Button>
         </Flex>
       )}
-    </ExpandedWrapper>
+    </>
   )
 }
 

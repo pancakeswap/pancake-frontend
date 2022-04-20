@@ -6,12 +6,24 @@ import { SerializedPoolConfig, PoolCategory } from './types'
 
 const serializedTokens = serializeTokens()
 
+export const UNLOCK_FREE_DURATION = 604800
+
 export const vaultPoolConfig = {
-  [VaultKey.CakeVault]: {
+  [VaultKey.CakeVaultV1]: {
     name: <Trans>Auto CAKE</Trans>,
     description: <Trans>Automatic restaking</Trans>,
     autoCompoundFrequency: 5000,
     gasLimit: 380000,
+    tokenImage: {
+      primarySrc: `/images/tokens/${tokens.cake.address}.svg`,
+      secondarySrc: '/images/tokens/autorenew.svg',
+    },
+  },
+  [VaultKey.CakeVault]: {
+    name: <Trans>Stake CAKE</Trans>,
+    description: <Trans>Stake, Earn – And more!</Trans>,
+    autoCompoundFrequency: 5000,
+    gasLimit: 500000,
     tokenImage: {
       primarySrc: `/images/tokens/${tokens.cake.address}.svg`,
       secondarySrc: '/images/tokens/autorenew.svg',
@@ -35,8 +47,8 @@ const pools: SerializedPoolConfig[] = [
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.cake,
     contractAddress: {
-      97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
-      56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
+      97: '',
+      56: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,

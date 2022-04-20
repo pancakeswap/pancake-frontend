@@ -11,6 +11,9 @@ export const getAddress = (address: Address): string => {
 export const getMasterChefAddress = () => {
   return getAddress(addresses.masterChef)
 }
+export const getMasterChefV1Address = () => {
+  return getAddress(addresses.masterChefV1)
+}
 export const getMulticallAddress = () => {
   return getAddress(addresses.multiCall)
 }
@@ -59,9 +62,6 @@ export const getVaultPoolAddress = (vaultKey: VaultKey) => {
 
 export const getCakeVaultAddress = () => {
   return getAddress(addresses.cakeVault)
-}
-export const getIfoPoolAddress = () => {
-  return getAddress(addresses.ifoPool)
 }
 export const getPredictionsAddress = () => {
   return getAddress(addresses.predictions)

@@ -5,7 +5,6 @@ import { DeserializedPool, VaultKey } from 'state/types'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import NameCell from './Cells/NameCell'
 import EarningsCell from './Cells/EarningsCell'
-import IFOCreditCell from './Cells/IFOCreditCell'
 import AprCell from './Cells/AprCell'
 import TotalStakedCell from './Cells/TotalStakedCell'
 import EndsInCell from './Cells/EndsInCell'
@@ -45,15 +44,11 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
       <StyledRow role="row" onClick={toggleExpanded}>
         <NameCell pool={pool} />
         {pool.vaultKey ? (
-          ((isXLargerScreen && pool.vaultKey === VaultKey.IfoPool) || pool.vaultKey === VaultKey.CakeVault) && (
-            <AutoEarningsCell pool={pool} account={account} />
-          )
+          isXLargerScreen && pool.vaultKey === VaultKey.CakeVault && <AutoEarningsCell pool={pool} account={account} />
         ) : (
           <EarningsCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
         )}
-        {pool.vaultKey === VaultKey.IfoPool ? (
-          <IFOCreditCell account={account} />
-        ) : isXLargerScreen && isCakePool ? (
+        {isXLargerScreen && pool.vaultKey === VaultKey.CakeVault && isCakePool ? (
           <StakedCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
         ) : null}
         {isLargerScreen && !isCakePool && <TotalStakedCell pool={pool} />}

@@ -1,4 +1,4 @@
-import styled, { DefaultTheme } from "styled-components";
+import styled, { DefaultTheme, css } from "styled-components";
 import { space, layout, variant } from "styled-system";
 import { scaleVariants, styleVariants } from "./theme";
 import { BaseButtonProps } from "./types";
@@ -44,6 +44,7 @@ const getOpacity = ({ $isLoading = false }: TransientButtonProps) => {
 };
 
 const StyledButton = styled.button<BaseButtonProps>`
+  position: relative;
   align-items: center;
   border: 0;
   border-radius: 16px;
@@ -80,6 +81,28 @@ const StyledButton = styled.button<BaseButtonProps>`
   })}
   ${layout}
   ${space}
+  ${({ decorator, theme }) =>
+    decorator &&
+    css`
+      &::before {
+        content: "${decorator.text}";
+        position: absolute;
+        border-bottom: 20px solid ${decorator.backgroundColor ?? theme.colors.secondary};
+        border-left: 34px solid transparent;
+        border-right: 12px solid transparent;
+        height: 0;
+        top: -1px;
+        right: -12px;
+        width: 75px;
+        text-align: center;
+        padding-right: 30px;
+        line-height: 20px;
+        font-size: 12px;
+        font-weight: 400;
+        transform: rotate(31.17deg);
+        color: ${decorator.color ?? "white"};
+      }
+    `}
 `;
 
 export default StyledButton;

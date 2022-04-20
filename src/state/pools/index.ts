@@ -6,23 +6,13 @@ import {
   PoolsState,
   SerializedPool,
   SerializedVaultFees,
-  SerializedIfoVaultUser,
-  SerializedIfoCakeVault,
-  SerializedVaultUser,
   SerializedCakeVault,
+  SerializedLockedVaultUser,
 } from 'state/types'
-import cakeAbi from 'config/abi/cake.json'
-import tokens from 'config/constants/tokens'
-import masterChef from 'config/abi/masterchef.json'
-import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
 import { getPoolApr } from 'utils/apr'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { getCakeContract } from 'utils/contractHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { simpleRpcProvider } from 'utils/providers'
-import { multicallv2 } from 'utils/multicall'
-import { fetchIfoPoolFeesData, fetchPublicIfoPoolData } from './fetchIfoPoolPublic'
-import fetchIfoPoolUserData from './fetchIfoPoolUser'
 import {
   fetchPoolsBlockLimits,
   fetchPoolsProfileRequirement,
@@ -42,13 +32,11 @@ import { resetUserState } from '../global/actions'
 
 export const initialPoolVaultState = Object.freeze({
   totalShares: null,
+  totalLockedAmount: null,
   pricePerFullShare: null,
   totalCakeInVault: null,
-  estimatedCakeBountyReward: null,
-  totalPendingCakeHarvest: null,
   fees: {
     performanceFee: null,
-    callFee: null,
     withdrawalFee: null,
     withdrawalFeePeriod: null,
   },
@@ -59,6 +47,13 @@ export const initialPoolVaultState = Object.freeze({
     lastDepositedTime: null,
     lastUserActionTime: null,
     credit: null,
+    locked: null,
+    lockStartTime: null,
+    lockEndTime: null,
+    userBoostedShare: null,
+    lockedAmount: null,
+    currentOverdueFee: null,
+    currentPerformanceFee: null,
   },
   creditStartBlock: null,
 })
@@ -67,72 +62,6 @@ const initialState: PoolsState = {
   data: [...poolsConfig],
   userDataLoaded: false,
   cakeVault: initialPoolVaultState,
-  ifoPool: initialPoolVaultState,
-}
-
-// Thunks
-const cakePool = poolsConfig.find((pool) => pool.sousId === 0)
-const cakePoolAddress = getAddress(cakePool.contractAddress)
-const cakeContract = getCakeContract()
-export const fetchCakePoolPublicDataAsync = () => async (dispatch, getState) => {
-  const prices = getTokenPricesFromFarm(getState().farms.data)
-  const stakingTokenAddress = cakePool.stakingToken.address ? cakePool.stakingToken.address.toLowerCase() : null
-  const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
-  const earningTokenAddress = cakePool.earningToken.address ? cakePool.earningToken.address.toLowerCase() : null
-  const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
-  const totalStaking = await cakeContract.balanceOf(cakePoolAddress)
-  const apr = getPoolApr(
-    stakingTokenPrice,
-    earningTokenPrice,
-    getBalanceNumber(new BigNumber(totalStaking ? totalStaking.toString() : 0), cakePool.stakingToken.decimals),
-    parseFloat(cakePool.tokenPerBlock),
-  )
-
-  dispatch(
-    setPoolPublicData({
-      sousId: 0,
-      data: {
-        totalStaked: new BigNumber(totalStaking.toString()).toJSON(),
-        stakingTokenPrice,
-        earningTokenPrice,
-        apr,
-      },
-    }),
-  )
-}
-
-export const fetchCakePoolUserDataAsync = (account: string) => async (dispatch) => {
-  const allowanceCall = {
-    address: tokens.cake.address,
-    name: 'allowance',
-    params: [account, cakePoolAddress],
-  }
-  const balanceOfCall = {
-    address: tokens.cake.address,
-    name: 'balanceOf',
-    params: [account],
-  }
-  const cakeContractCalls = [allowanceCall, balanceOfCall]
-  const [[allowance], [stakingTokenBalance]] = await multicallv2(cakeAbi, cakeContractCalls)
-
-  const masterChefCalls = ['pendingCake', 'userInfo'].map((method) => ({
-    address: getMasterChefAddress(),
-    name: method,
-    params: ['0', account],
-  }))
-  const [[pendingReward], { amount: masterPoolAmount }] = await multicallv2(masterChef, masterChefCalls)
-
-  dispatch(
-    setPoolUserData({
-      sousId: 0,
-      data: {
-        allowance: new BigNumber(allowance.toString()).toJSON(),
-        stakingTokenBalance: new BigNumber(stakingTokenBalance.toString()).toJSON(),
-        pendingReward: new BigNumber(pendingReward.toString()).toJSON(),
-        stakedBalances: new BigNumber(masterPoolAmount.toString()).toJSON(),
-      },
-    }),
-  )
 }
 
 export const fetchPoolsPublicDataAsync = (currentBlockNumber: number) => async (dispatch, getState) => {
@@ -276,28 +205,10 @@ export const fetchCakeVaultFees = createAsyncThunk<SerializedVaultFees>('cakeVau
   return vaultFees
 })
 
-export const fetchCakeVaultUserData = createAsyncThunk<SerializedVaultUser, { account: string }>(
+export const fetchCakeVaultUserData = createAsyncThunk<SerializedLockedVaultUser, { account: string }>(
   'cakeVault/fetchUser',
   async ({ account }) => {
     const userData = await fetchVaultUser(account)
-    return userData
-  },
-)
-
-export const fetchIfoPoolPublicData = createAsyncThunk<SerializedIfoCakeVault>('ifoPool/fetchPublicData', async () => {
-  const publicVaultInfo = await fetchPublicIfoPoolData()
-  return publicVaultInfo
-})
-
-export const fetchIfoPoolFees = createAsyncThunk<SerializedVaultFees>('ifoPool/fetchFees', async () => {
-  const vaultFees = await fetchIfoPoolFeesData()
-  return vaultFees
-})
-
-export const fetchIfoPoolUserAndCredit = createAsyncThunk<SerializedIfoVaultUser, { account: string }>(
-  'ifoPool/fetchUser',
-  async ({ account }) => {
-    const userData = await fetchIfoPoolUserData(account)
     return userData
   },
 )
@@ -351,7 +262,6 @@ export const PoolsSlice = createSlice({
       })
       state.userDataLoaded = false
       state.cakeVault = { ...state.cakeVault, userData: initialPoolVaultState.userData }
-      state.ifoPool = { ...state.ifoPool, userData: initialPoolVaultState.userData }
     })
     // Vault public data that updates frequently
     builder.addCase(fetchCakeVaultPublicData.fulfilled, (state, action: PayloadAction<SerializedCakeVault>) => {
@@ -363,25 +273,10 @@ export const PoolsSlice = createSlice({
       state.cakeVault = { ...state.cakeVault, fees }
     })
     // Vault user data
-    builder.addCase(fetchCakeVaultUserData.fulfilled, (state, action: PayloadAction<SerializedVaultUser>) => {
+    builder.addCase(fetchCakeVaultUserData.fulfilled, (state, action: PayloadAction<SerializedLockedVaultUser>) => {
       const userData = action.payload
       userData.isLoading = false
       state.cakeVault = { ...state.cakeVault, userData }
-    })
-    // Vault public data that updates frequently
-    builder.addCase(fetchIfoPoolPublicData.fulfilled, (state, action) => {
-      state.ifoPool = { ...state.ifoPool, ...action.payload }
-    })
-    // Vault fees
-    builder.addCase(fetchIfoPoolFees.fulfilled, (state, action: PayloadAction<SerializedVaultFees>) => {
-      const fees = action.payload
-      state.ifoPool = { ...state.ifoPool, fees }
-    })
-    // Vault user data
-    builder.addCase(fetchIfoPoolUserAndCredit.fulfilled, (state, action) => {
-      const userData = action.payload
-      userData.isLoading = false
-      state.ifoPool = { ...state.ifoPool, userData }
     })
   },
 })

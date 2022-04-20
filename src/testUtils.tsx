@@ -7,6 +7,7 @@ import Provider from 'Providers'
 import { initializeStore, makeStore } from 'state'
 import { RouterContext } from 'next/dist/shared/lib/router-context'
 import { NextRouter } from 'next/router'
+import { SWRConfig } from 'swr'
 
 const mockRouter: NextRouter = {
   basePath: '',
@@ -45,10 +46,15 @@ export function renderWithProvider(
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions })
 }
 
-export const createWrapper =
+export const createReduxWrapper =
   (initState = undefined) =>
   ({ children }) =>
     <Provider store={makeStore(initState)}>{children}</Provider>
+
+export const createSWRWrapper =
+  (fallbackData = undefined) =>
+  ({ children }) =>
+    <SWRConfig value={{ fallback: fallbackData }}>{children}</SWRConfig>
 
 // re-export everything
 export * from '@testing-library/react'

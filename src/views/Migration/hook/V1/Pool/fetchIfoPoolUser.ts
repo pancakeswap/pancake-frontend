@@ -1,12 +1,11 @@
 import BigNumber from 'bignumber.js'
 import ifoPoolAbi from 'config/abi/ifoPool.json'
-import { getIfoPoolAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
 
-const fetchIfoPoolUser = async (account: string) => {
+const fetchIfoPoolUser = async (account: string, ifoPoolAddress: string) => {
   try {
     const calls = ['userInfo', 'getUserCredit'].map((method) => ({
-      address: getIfoPoolAddress(),
+      address: ifoPoolAddress,
       name: method,
       params: [account],
     }))
