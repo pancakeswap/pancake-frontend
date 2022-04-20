@@ -29,11 +29,11 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
     [userData],
   )
 
-  const currentLockedAmountAsBitNumber = useMemo(() => {
+  const currentLockedAmountAsBigNumber = useMemo(() => {
     return userData?.balance?.cakeAsBigNumber
   }, [userData?.balance?.cakeAsBigNumber])
 
-  const currentLockedAmount = getBalanceNumber(currentLockedAmountAsBitNumber)
+  const currentLockedAmount = getBalanceNumber(currentLockedAmountAsBigNumber)
 
   const usdValueStaked = useBUSDCakeAmount(currentLockedAmount)
 
@@ -46,8 +46,8 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
 
   // earningTokenBalance includes overdue fee if any
   const earningTokenBalance = useMemo(() => {
-    return getBalanceNumber(currentLockedAmountAsBitNumber.minus(userData?.cakeAtLastUserAction))
-  }, [currentLockedAmountAsBitNumber, userData?.cakeAtLastUserAction])
+    return getBalanceNumber(currentLockedAmountAsBigNumber.minus(userData?.cakeAtLastUserAction))
+  }, [currentLockedAmountAsBigNumber, userData?.cakeAtLastUserAction])
 
   return (
     <LightGreyCard>
@@ -86,7 +86,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
           lockStartTime={userData?.lockStartTime}
           stakingToken={stakingToken}
           stakingTokenBalance={stakingTokenBalance}
-          lockedAmount={currentLockedAmountAsBitNumber}
+          lockedAmount={currentLockedAmountAsBigNumber}
         />
       </Box>
       <Divider />

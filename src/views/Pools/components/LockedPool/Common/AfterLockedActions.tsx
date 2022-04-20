@@ -1,11 +1,29 @@
-import { memo } from 'react'
+import { memo, ReactNode } from 'react'
 import { Message, MessageText, Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import Trans from 'components/Trans'
 import { VaultPosition } from 'utils/cakePool'
 
 import ConvertToFlexibleButton from '../Buttons/ConvertToFlexibleButton'
 import ExtendButton from '../Buttons/ExtendDurationButton'
 import { AfterLockedActionsPropsType } from '../types'
+
+const msg: Record<VaultPosition, ReactNode> = {
+  [VaultPosition.None]: null,
+  [VaultPosition.Flexible]: null,
+  [VaultPosition.Locked]: null,
+  [VaultPosition.LockedEnd]: (
+    <Trans>
+      The lock period has ended. Convert to flexible staking or renew your position to start a new lock staking.
+    </Trans>
+  ),
+  [VaultPosition.AfterBurning]: (
+    <Trans>
+      The lock period has ended. To avoid more rewards being burned, convert to flexible staking or renew your position
+      to start a new lock staking.
+    </Trans>
+  ),
+}
 
 const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
   currentLockedAmount,
@@ -15,13 +33,6 @@ const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
 }) => {
   const { t } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
-  const msg = {
-    [VaultPosition.None]: null,
-    [VaultPosition.LockedEnd]:
-      'The lock period has ended. Convert to flexible staking or renew your position to start a new lock staking.',
-    [VaultPosition.AfterBurning]:
-      'The lock period has ended. To avoid more rewards being burned, convert to flexible staking or renew your position to start a new lock staking.',
-  }
   const isDesktopView = isInline && isDesktop
   const Container = isDesktopView ? Flex : Box
 
@@ -50,7 +61,7 @@ const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
       }
       actionInline={isDesktopView}
     >
-      <MessageText>{t(msg[position])}</MessageText>
+      <MessageText>{msg[position]}</MessageText>
     </Message>
   )
 }

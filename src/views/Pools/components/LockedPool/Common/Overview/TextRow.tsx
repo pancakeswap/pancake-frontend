@@ -2,12 +2,12 @@ import { Text, Flex } from '@pancakeswap/uikit'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
 import CrossText from './CrossText'
 
-interface DifftextPropsType {
+interface DiffTextPropsType {
   value: string
   newValue?: string
 }
 
-const DiffText: React.FC<DifftextPropsType> = ({ value, newValue }) => {
+const DiffText: React.FC<DiffTextPropsType> = ({ value, newValue }) => {
   if (isUndefinedOrNull(newValue) || isUndefinedOrNull(value) || value === newValue) {
     return (
       <Text bold fontSize="16px">
@@ -29,7 +29,7 @@ const DiffText: React.FC<DifftextPropsType> = ({ value, newValue }) => {
   )
 }
 
-interface TextRowPropsType extends DifftextPropsType {
+interface TextRowPropsType extends DiffTextPropsType {
   title: string
 }
 

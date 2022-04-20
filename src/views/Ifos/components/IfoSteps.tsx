@@ -102,7 +102,7 @@ const Step2 = () => {
   )
 }
 
-const IfoSteps: React.FC<TypeProps> = ({ isCommitted, hasClaimed, isLive, ifoCurrencyAddress }) => {
+const IfoSteps: React.FC<TypeProps> = () => {
   const { hasActiveProfile } = useProfile()
   const { account } = useWeb3React()
   const { t } = useTranslation()
