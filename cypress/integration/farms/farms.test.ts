@@ -7,6 +7,6 @@ describe('Farms Page', () => {
   it('loads finished farms', () => {
     cy.visit('/farms/history')
     cy.get('#staked-only-farms').click({ force: true })
-    cy.get('#farms-table').should('be.visible')
+    cy.get('#farms-table').should('exist')
   })
 })
