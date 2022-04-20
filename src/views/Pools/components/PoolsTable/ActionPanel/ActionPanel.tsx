@@ -177,7 +177,6 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   const vaultContractAddress = getVaultPoolAddress(vaultKey)
   const currentBlock = useCurrentBlock()
   const { isXs, isSm, isMd } = breakpoints
-  const showSubtitle = (isXs || isSm) && sousId === 0
   const { isMobile } = useMatchBreakpoints()
 
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
@@ -374,13 +373,6 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
         </span>
       </InfoSection>
       <ActionContainer>
-        {showSubtitle && (
-          <Text mt="4px" mb="16px" color="textSubtle">
-            {vaultKey
-              ? vaultPoolConfig[vaultKey].description
-              : `${t('Earn')} CAKE ${t('Stake').toLocaleLowerCase()} CAKE`}
-          </Text>
-        )}
         <Box width="100%">
           {pool.vaultKey && (
             <VaultPositionTagWithLabel

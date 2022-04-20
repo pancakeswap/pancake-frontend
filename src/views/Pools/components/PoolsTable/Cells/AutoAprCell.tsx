@@ -1,4 +1,4 @@
-import { Skeleton, Text, Flex, Button, CalculateIcon, useModal } from '@pancakeswap/uikit'
+import { Skeleton, Text, Flex, Button, CalculateIcon, useModal, useMatchBreakpoints } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import Balance from 'components/Balance'
 import { FlexGap } from 'components/Layout/Flex'
@@ -23,6 +23,7 @@ interface AprCellProps {
 
 const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
 
   const { userData } = useVaultPoolByKey(pool.vaultKey)
 
@@ -50,25 +51,27 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
             {flexibleApy ? (
               <AprLabelContainer alignItems="center" justifyContent="flex-start">
                 <Balance
-                  fontSize="16px"
+                  fontSize={['14px', '14px', '16px']}
                   value={parseFloat(flexibleApy)}
                   decimals={2}
                   unit="%"
                   fontWeight={[600, 400]}
                 />
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    onPresentFlexibleApyModal()
-                  }}
-                  variant="text"
-                  width="20px"
-                  height="20px"
-                  padding="0px"
-                  marginLeft="4px"
-                >
-                  <CalculateIcon color="textSubtle" width="20px" />
-                </Button>
+                {!isMobile && (
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onPresentFlexibleApyModal()
+                    }}
+                    variant="text"
+                    width="20px"
+                    height="20px"
+                    padding="0px"
+                    marginLeft="4px"
+                  >
+                    <CalculateIcon color="textSubtle" width="20px" />
+                  </Button>
+                )}
               </AprLabelContainer>
             ) : (
               <Skeleton width="80px" height="16px" />
@@ -83,29 +86,31 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
             {lockedApy ? (
               <AprLabelContainer alignItems="center" justifyContent="flex-start">
                 <FlexGap gap="4px" flexWrap="wrap">
-                  <Text style={{ whiteSpace: 'nowrap' }} fontWeight={[500, 400]}>
+                  <Text fontSize={['14px', '14px', '16px']} style={{ whiteSpace: 'nowrap' }} fontWeight={[500, 400]}>
                     {t('Up to')}
                   </Text>
                   <Balance
-                    fontSize="16px"
+                    fontSize={['14px', '14px', '16px']}
                     value={parseFloat(lockedApy)}
                     decimals={2}
                     unit="%"
                     fontWeight={[600, 400]}
                   />
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      onPresentLockedApyModal()
-                    }}
-                    variant="text"
-                    width="20px"
-                    height="20px"
-                    padding="0px"
-                    marginLeft="4px"
-                  >
-                    <CalculateIcon color="textSubtle" width="20px" />
-                  </Button>
+                  {!isMobile && (
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onPresentLockedApyModal()
+                      }}
+                      variant="text"
+                      width="20px"
+                      height="20px"
+                      padding="0px"
+                      marginLeft="4px"
+                    >
+                      <CalculateIcon color="textSubtle" width="20px" />
+                    </Button>
+                  )}
                 </FlexGap>
               </AprLabelContainer>
             ) : (
