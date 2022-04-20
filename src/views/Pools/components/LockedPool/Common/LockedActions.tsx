@@ -46,6 +46,7 @@ const LockedActions: React.FC<LockedActionsPropsType> = ({
             currentLockedAmount={lockedAmount}
             stakingToken={stakingToken}
             currentBalance={currentBalance}
+            stakingTokenBalance={stakingTokenBalance}
           />
         </Box>
         <Box width="100%" ml="4px">

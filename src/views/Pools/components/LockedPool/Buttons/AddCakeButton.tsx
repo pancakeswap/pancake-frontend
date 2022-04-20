@@ -14,6 +14,7 @@ const AddCakeButton: React.FC<AddButtonProps> = ({
   currentLockedAmount,
   lockEndTime,
   lockStartTime,
+  stakingTokenBalance,
 }) => {
   const { userDataLoaded } = usePoolsWithVault()
 
@@ -35,6 +36,7 @@ const AddCakeButton: React.FC<AddButtonProps> = ({
       currentBalance={currentBalance}
       stakingToken={stakingToken}
       lockEndTime={lockEndTime}
+      stakingTokenBalance={stakingTokenBalance}
     />,
     true,
     true,

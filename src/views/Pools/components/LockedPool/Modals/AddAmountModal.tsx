@@ -48,6 +48,7 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
   passedDuration,
   remainingDuration,
   lockEndTime,
+  stakingTokenBalance,
 }) => {
   const { theme } = useTheme()
   const [lockedAmount, setLockedAmount] = useState('0')
@@ -110,6 +111,7 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
             usedValueStaked={usdValueStaked}
             stakingMax={currentBalance}
             setLockedAmount={setLockedAmount}
+            stakingTokenBalance={stakingTokenBalance}
           />
         </Box>
         <LockedBodyModal

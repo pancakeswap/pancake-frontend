@@ -145,7 +145,11 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   const [onPresentVaultUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
 
   const [openPresentLockedStakeModal] = useModal(
-    <LockedStakedModal currentBalance={stakingTokenBalance} stakingToken={stakingToken} />,
+    <LockedStakedModal
+      currentBalance={stakingTokenBalance}
+      stakingToken={stakingToken}
+      stakingTokenBalance={stakingTokenBalance}
+    />,
   )
 
   const { notMeetRequired, notMeetThreshold } = useProfileRequirement(profileRequirement)
@@ -279,6 +283,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                     currentLockedAmount={cakeAsBigNumber}
                     stakingToken={stakingToken}
                     currentBalance={stakingTokenBalance}
+                    stakingTokenBalance={stakingTokenBalance}
                   />
                 </Box>
               )}

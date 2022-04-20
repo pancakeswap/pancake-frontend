@@ -11,7 +11,12 @@ import BalanceField from '../Common/BalanceField'
 import LockedBodyModal from '../Common/LockedModalBody'
 import RoiCalculatorModalProvider from './RoiCalculatorModalProvider'
 
-const LockedStakeModal: React.FC<GenericModalProps> = ({ onDismiss, currentBalance, stakingToken }) => {
+const LockedStakeModal: React.FC<GenericModalProps> = ({
+  onDismiss,
+  currentBalance,
+  stakingToken,
+  stakingTokenBalance,
+}) => {
   const { theme } = useTheme()
   const [lockedAmount, setLockedAmount] = useState('0')
   const { t } = useTranslation()
@@ -30,6 +35,7 @@ const LockedStakeModal: React.FC<GenericModalProps> = ({ onDismiss, currentBalan
             usedValueStaked={usdValueStaked}
             stakingMax={currentBalance}
             setLockedAmount={setLockedAmount}
+            stakingTokenBalance={stakingTokenBalance}
           />
         </Box>
         <LockedBodyModal
