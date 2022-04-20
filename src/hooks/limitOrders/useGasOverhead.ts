@@ -62,42 +62,9 @@ export default function useGasOverhead(
   }, [realInputAmount, outputAmount, inputAmount, gasCostInInputTokens, inputIsBNB, requiredGasAsCurrencyAmount])
 
   const realExecutionPriceAsString = useMemo(() => {
-    if (!inputAmount || (!gasCostInInputTokens && !inputIsBNB) || !realInputAmount || !outputAmount)
-      return 'never executes'
-    if (inputIsBNB && requiredGasAsCurrencyAmount.greaterThan(inputAmount.asFraction)) {
-      return 'never executes'
-    }
-    if (gasCostInInputTokens && gasCostInInputTokens.outputAmount.greaterThan(inputAmount.asFraction)) {
-      return 'never executes'
-    }
+    if (!realExecutionPrice) return 'never executes'
     return rateType === Rate.DIV ? realExecutionPrice.invert().toSignificant(6) : realExecutionPrice.toSignificant(6)
-    // return rateType === Rate.DIV
-    //   ? realInputAmount
-    //       .divide(outputAmount.asFraction)
-    //       ?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(outputAmount.currency.decimals)))
-    //       ?.toSignificant(6)
-    //   : outputAmount
-    //       ?.divide(realInputAmount.asFraction)
-    //       ?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputAmount.currency.decimals)))
-    //       ?.toSignificant(6)
-  }, [
-    rateType,
-    realInputAmount,
-    outputAmount,
-    inputAmount,
-    gasCostInInputTokens,
-    requiredGasAsCurrencyAmount,
-    inputIsBNB,
-    realExecutionPrice,
-  ])
-
-  // console.log('GAS OVERHEAD', {
-  //   requiredGasAsCurrencyAmount: requiredGasAsCurrencyAmount?.toSignificant(6),
-  //   gasCostInInputTokens: gasCostInInputTokens?.outputAmount?.toSignificant(6),
-  //   bufferedOutputAmount: bufferedOutputAmount?.toSignificant(6),
-  //   realInputAmount: realInputAmount?.toSignificant(6),
-  //     realExecutionPriceAsString,
-  //   })
+  }, [rateType, realExecutionPrice])
 
   return chainId
     ? { realExecutionPrice, gasPrice, realExecutionPriceAsString }
