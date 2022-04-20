@@ -1,13 +1,11 @@
 import { BalanceInput, Button, Flex, Image, Slider, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import tokens from 'config/constants/tokens'
-import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
-import useTokenBalance from 'hooks/useTokenBalance'
-import { Dispatch, memo, SetStateAction, useCallback, useEffect, useState } from 'react'
+import { Dispatch, memo, SetStateAction, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { BIG_TEN } from 'utils/bigNumber'
-import { getBalanceAmount, getFullDisplayBalance } from 'utils/formatBalance'
+import { getFullDisplayBalance } from 'utils/formatBalance'
+import { useUserEnoughCakeValidator } from '../hooks/useUserEnoughCakeValidator'
 
 const StyledButton = styled(Button)`
   flex-grow: 1;
@@ -34,13 +32,7 @@ const BalanceField: React.FC<PropsType> = ({
 }) => {
   const { t } = useTranslation()
   const [percent, setPercent] = useState(0)
-  const { balance: userCake, fetchStatus } = useTokenBalance(tokens.cake.address)
-  const [userNotEnoughCake, setUserNotEnoughCake] = useState(false)
-
-  const getErrorMessage = () => {
-    if (userNotEnoughCake) return t('Insufficient CAKE balance')
-    return ''
-  }
+  const { userNotEnoughCake, notEnoughErrorMessage } = useUserEnoughCakeValidator(lockedAmount)
 
   const handleStakeInputChange = useCallback(
     (input: string) => {
@@ -71,12 +63,6 @@ const BalanceField: React.FC<PropsType> = ({
     },
     [stakingMax, setLockedAmount, stakingDecimals],
   )
-  useEffect(() => {
-    if (fetchStatus === FetchStatus.Fetched) {
-      if (new BigNumber(lockedAmount).gt(getBalanceAmount(userCake, 18))) setUserNotEnoughCake(true)
-      else setUserNotEnoughCake(false)
-    }
-  }, [lockedAmount, userCake, setUserNotEnoughCake, fetchStatus])
 
   return (
     <>
@@ -102,7 +88,7 @@ const BalanceField: React.FC<PropsType> = ({
         <Flex justifyContent="flex-end" flexDirection="column">
           {userNotEnoughCake && (
             <Text fontSize="12px" color="failure">
-              {getErrorMessage()}
+              {notEnoughErrorMessage}
             </Text>
           )}
         </Flex>
