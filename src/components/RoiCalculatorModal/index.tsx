@@ -163,7 +163,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
           strategy(state, dispatch)
         ) : (
           <DefaultCompoundStrategy
-            apr={apy || apr}
+            apr={apy ?? apr}
             dispatch={dispatch}
             state={state}
             earningTokenPrice={earningTokenPrice}
