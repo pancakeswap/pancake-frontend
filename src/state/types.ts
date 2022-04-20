@@ -187,6 +187,7 @@ export interface SerializedFarmsState {
   userDataLoaded: boolean
   loadingKeys: Record<string, boolean>
   poolLength?: number
+  regularCakePerBlock?: number
 }
 
 export interface DeserializedFarmsState {
