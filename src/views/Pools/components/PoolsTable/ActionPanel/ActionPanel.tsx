@@ -17,6 +17,7 @@ import { BASE_BSC_SCAN_URL } from 'config'
 import { getBscScanLink } from 'utils'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useVaultPoolByKey } from 'state/pools/hooks'
+import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import BigNumber from 'bignumber.js'
 import { DeserializedPool } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
@@ -27,7 +28,6 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { registerToken } from 'utils/wallet'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
-import { vaultPoolConfig } from 'config/constants/pools'
 import Harvest from './Harvest'
 import Stake from './Stake'
 import Apr from '../../Apr'
@@ -38,6 +38,7 @@ import { VaultPositionTagWithLabel } from '../../Vault/VaultPositionTag'
 import YieldBoostRow from '../../LockedPool/Common/YieldBoostRow'
 import LockDurationRow from '../../LockedPool/Common/LockDurationRow'
 import useUserDataInVaultPrensenter from '../../LockedPool/hooks/useUserDataInVaultPrensenter'
+import CakeVaultApr from './CakeVaultApr'
 
 const expandAnimation = keyframes`
   from {
@@ -158,7 +159,6 @@ const YieldBoostDurationRow = ({ lockEndTime, lockStartTime }) => {
 
 const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded, expanded, breakpoints }) => {
   const {
-    sousId,
     stakingToken,
     earningToken,
     totalStaked,
@@ -196,6 +196,8 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
     },
     fees: { performanceFeeAsDecimal },
   } = vaultPool
+
+  const vaultPosition = getVaultPosition(vaultPool.userData)
 
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
@@ -373,6 +375,9 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
         </span>
       </InfoSection>
       <ActionContainer>
+        {isMobile && vaultKey && vaultPosition === VaultPosition.None && (
+          <CakeVaultApr pool={pool} userData={vaultPool.userData} vaultPosition={vaultPosition} />
+        )}
         <Box width="100%">
           {pool.vaultKey && (
             <VaultPositionTagWithLabel
