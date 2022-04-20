@@ -6,6 +6,7 @@ import { useVaultApy } from 'hooks/useVaultApy'
 import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
 import { useEffect, useState } from 'react'
 import { DeserializedPool } from 'state/types'
+import { useVaultPoolByKey } from 'state/pools/hooks'
 import { getRoi } from 'utils/compoundApyHelpers'
 import LockDurationField from '../LockedPool/Common/LockDurationField'
 import { weeksToSeconds } from '../utils/formatSecondsToWeeks'
@@ -16,6 +17,11 @@ export const VaultRoiCalculatorModal = ({
   ...rest
 }: { pool: DeserializedPool; initialView?: number } & Partial<RoiCalculatorModalProps>) => {
   const maxLockDuration = useVaultMaxDuration()
+  const {
+    userData: {
+      balance: { cakeAsBigNumber },
+    },
+  } = useVaultPoolByKey(pool.vaultKey)
 
   const { getLockedApy } = useVaultApy()
   const { t } = useTranslation()
@@ -42,7 +48,9 @@ export const VaultRoiCalculatorModal = ({
       linkLabel={t('Get %symbol%', { symbol: pool.stakingToken.symbol })}
       earningTokenPrice={pool.earningTokenPrice}
       stakingTokenPrice={pool.stakingTokenPrice}
-      stakingTokenBalance={pool.userData?.stakingTokenBalance}
+      stakingTokenBalance={
+        pool.userData?.stakingTokenBalance ? cakeAsBigNumber.plus(pool.userData?.stakingTokenBalance) : cakeAsBigNumber
+      }
       autoCompoundFrequency={1}
       strategy={
         cakeVaultView
