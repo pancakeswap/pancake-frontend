@@ -6,6 +6,7 @@ import { getMasterchefContract } from 'utils/contractHelpers'
 import { getAddress } from 'utils/addressHelpers'
 import { simpleRpcProvider } from 'utils/providers'
 import BigNumber from 'bignumber.js'
+import uniq from 'lodash/uniq'
 
 // Pool 0, Cake / Cake is a different kind of contract (master chef)
 // BNB pools use the native BNB token (wrapping ? unwrapping is done at the contract level)
@@ -30,14 +31,21 @@ export const fetchPoolsAllowance = async (account) => {
 
 export const fetchUserBalances = async (account) => {
   // Non BNB pools
-  const calls = nonBnbPools.map((pool) => ({
-    address: pool.stakingToken.address,
+  const tokens = uniq(nonBnbPools.map((pool) => pool.stakingToken.address))
+  const calls = tokens.map((token) => ({
+    address: token,
     name: 'balanceOf',
     params: [account],
   }))
   const tokenBalancesRaw = await multicall(erc20ABI, calls)
-  const tokenBalances = nonBnbPools.reduce(
-    (acc, pool, index) => ({ ...acc, [pool.sousId]: new BigNumber(tokenBalancesRaw[index]).toJSON() }),
+  const tokenBalances = tokens.reduce((acc, token, index) => ({ ...acc, [token]: tokenBalancesRaw[index] }), {})
+  const poolTokenBalances = nonBnbPools.reduce(
+    (acc, pool) => ({
+      ...acc,
+      ...(tokenBalances[pool.stakingToken.address] && {
+        [pool.sousId]: new BigNumber(tokenBalances[pool.stakingToken.address]).toJSON(),
+      }),
+    }),
     {},
   )
 
@@ -48,7 +56,7 @@ export const fetchUserBalances = async (account) => {
     {},
   )
 
-  return { ...tokenBalances, ...bnbBalances }
+  return { ...poolTokenBalances, ...bnbBalances }
 }
 
 export const fetchUserStakeBalances = async (account) => {
