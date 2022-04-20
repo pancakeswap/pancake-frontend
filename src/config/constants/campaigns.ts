@@ -346,6 +346,96 @@ const campaigns: Campaign[] = [
     title: 'Duet',
     badge: 'ifo-duet.svg',
   },
+  {
+    id: '512030001',
+    type: 'teambattle',
+    title: 'Mobox Champion: Gold',
+    badge: 'MBOX-champion-gold.svg',
+  },
+  {
+    id: '512030002',
+    type: 'teambattle',
+    title: 'Mobox Top 10: Gold',
+    badge: 'MBOX-top-10-gold.svg',
+  },
+  {
+    id: '512030003',
+    type: 'teambattle',
+    title: 'Mobox Top 100: Gold',
+    badge: 'MBOX-top-100-gold.svg',
+  },
+  {
+    id: '512030004',
+    type: 'teambattle',
+    title: 'Mobox Top 500: Gold',
+    badge: 'MBOX-top-500-gold.svg',
+  },
+  {
+    id: '512030005',
+    type: 'teambattle',
+    title: 'Mobox Participant: Gold',
+    badge: 'MBOX-participant-gold.svg',
+  },
+  {
+    id: '512030006',
+    type: 'teambattle',
+    title: 'Mobox Champion: Silver',
+    badge: 'MBOX-champion-silver.svg',
+  },
+  {
+    id: '512030007',
+    type: 'teambattle',
+    title: 'Mobox Top 10: Silver',
+    badge: 'MBOX-top-10-silver.svg',
+  },
+  {
+    id: '512030008',
+    type: 'teambattle',
+    title: 'Mobox Top 100: Silver',
+    badge: 'MBOX-top-100-silver.svg',
+  },
+  {
+    id: '512030009',
+    type: 'teambattle',
+    title: 'Mobox Top 500: Silver',
+    badge: 'MBOX-top-500-silver.svg',
+  },
+  {
+    id: '512030010',
+    type: 'teambattle',
+    title: 'Mobox Participant: Silver',
+    badge: 'MBOX-participant-silver.svg',
+  },
+  {
+    id: '512030011',
+    type: 'teambattle',
+    title: 'Mobox Champion: Bronze',
+    badge: 'MBOX-champion-bronze.svg',
+  },
+  {
+    id: '512030012',
+    type: 'teambattle',
+    title: 'Mobox Top 10: Bronze',
+    badge: 'MBOX-top-10-bronze.svg',
+  },
+  {
+    id: '512030013',
+    type: 'teambattle',
+    title: 'Mobox Top 100: Bronze',
+    badge: 'MBOX-top-100-bronze.svg',
+  },
+  {
+    id: '512030014',
+    type: 'teambattle',
+    title: 'Mobox Top 500: Bronze',
+    badge: 'MBOX-top-500-bronze.svg',
+  },
+  {
+    id: '512030015',
+    type: 'teambattle',
+    title: 'Mobox Participant: Bronze',
+    badge: 'MBOX-participant-bronze.svg',
+  },
 ]
 
 /**
