@@ -23,11 +23,12 @@ const DEFAULT_DURATION_FACTOR = BigNumber.from('31536000')
 const PRECISION_FACTOR = BigNumber.from('1000000000000')
 
 const getFlexibleApy = (
-  totalCakePoolEmissionPerYear: BigNumber,
+  totalCakePoolEmissionPerYear: FixedNumber,
   pricePerFullShare: FixedNumber,
   totalShares: FixedNumber,
 ) =>
-  FixedNumber.from(totalCakePoolEmissionPerYear.mul(WeiPerEther))
+  totalCakePoolEmissionPerYear
+    .mulUnsafe(FixedNumber.from(WeiPerEther))
     .divUnsafe(pricePerFullShare)
     .divUnsafe(totalShares)
     .mulUnsafe(FixedNumber.from(100))
@@ -69,8 +70,12 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
 
     const [[specialFarmsPerBlock], cakePoolInfo, [totalSpecialAllocPoint]] = await multicallv2(masterChefAbi, calls)
 
-    const cakePoolSharesInSpecialFarms = cakePoolInfo.allocPoint.div(totalSpecialAllocPoint)
-    return specialFarmsPerBlock.mul(BLOCKS_PER_YEAR).mul(cakePoolSharesInSpecialFarms)
+    const cakePoolSharesInSpecialFarms = FixedNumber.from(cakePoolInfo.allocPoint).divUnsafe(
+      FixedNumber.from(totalSpecialAllocPoint),
+    )
+    return FixedNumber.from(specialFarmsPerBlock)
+      .mulUnsafe(FixedNumber.from(BLOCKS_PER_YEAR))
+      .mulUnsafe(cakePoolSharesInSpecialFarms)
   })
 
   const calls = useMemo(

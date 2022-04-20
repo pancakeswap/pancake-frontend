@@ -61,25 +61,36 @@ const CakeVaultApr: React.FC<CakeVaultAprProps> = ({ pool, userData, vaultPositi
           <Text fontSize="16px" color="textSubtle" textAlign="left">
             {t('Locked APY')}
           </Text>
-          {lockedApy ? (
+          {lockedApy && maxLockDuration ? (
             <Flex alignItems="center" justifyContent="flex-start">
               <Text fontSize="16px" style={{ whiteSpace: 'nowrap' }} fontWeight="600">
-                {t('Up to')}
+                {maxLockDuration.gt(0) ? t('Up to') : '-'}
               </Text>
-              <Balance ml="7px" fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" fontWeight="600" />
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onPresentLockedApyModal()
-                }}
-                variant="text"
-                width="20px"
-                height="20px"
-                padding="0px"
-                marginLeft="4px"
-              >
-                <CalculateIcon color="textSubtle" width="20px" />
-              </Button>
+              {maxLockDuration.gt(0) && (
+                <>
+                  <Balance
+                    ml="7px"
+                    fontSize="16px"
+                    value={parseFloat(lockedApy)}
+                    decimals={2}
+                    unit="%"
+                    fontWeight="600"
+                  />
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onPresentLockedApyModal()
+                    }}
+                    variant="text"
+                    width="20px"
+                    height="20px"
+                    padding="0px"
+                    marginLeft="4px"
+                  >
+                    <CalculateIcon color="textSubtle" width="20px" />
+                  </Button>
+                </>
+              )}
             </Flex>
           ) : (
             <Skeleton width="80px" height="16px" />

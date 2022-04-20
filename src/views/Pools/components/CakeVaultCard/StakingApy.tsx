@@ -57,27 +57,29 @@ export const StakingApy = memo(({ pool }: { pool: DeserializedPool }) => {
         <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
           {t('Locked')} APY:
         </Text>
-        {lockedApy ? (
+        {lockedApy && maxLockDuration ? (
           <FlexGap gap="4px" flexWrap="wrap" justifyContent="flex-end">
             <Text style={{ whiteSpace: 'nowrap' }} bold>
-              {t('Up to')}
+              {maxLockDuration.gt(0) ? t('Up to') : '-'}
             </Text>
-            <AprLabelContainer alignItems="center">
-              <Balance fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" bold />
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onPresentLockedApyModal()
-                }}
-                variant="text"
-                width="20px"
-                height="20px"
-                padding="0px"
-                marginLeft="4px"
-              >
-                <CalculateIcon color="textSubtle" width="20px" />
-              </Button>
-            </AprLabelContainer>
+            {maxLockDuration.gt(0) && (
+              <AprLabelContainer alignItems="center">
+                <Balance fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" bold />
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onPresentLockedApyModal()
+                  }}
+                  variant="text"
+                  width="20px"
+                  height="20px"
+                  padding="0px"
+                  marginLeft="4px"
+                >
+                  <CalculateIcon color="textSubtle" width="20px" />
+                </Button>
+              </AprLabelContainer>
+            )}
           </FlexGap>
         ) : (
           <Skeleton width="80px" height="16px" />

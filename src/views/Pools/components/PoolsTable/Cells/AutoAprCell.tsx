@@ -83,33 +83,37 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
             <Text fontSize="12px" color="textSubtle" textAlign="left">
               {t('Locked APY')}
             </Text>
-            {lockedApy ? (
+            {lockedApy && maxLockDuration ? (
               <AprLabelContainer alignItems="center" justifyContent="flex-start">
                 <FlexGap gap="4px" flexWrap="wrap">
                   <Text fontSize={['14px', '14px', '16px']} style={{ whiteSpace: 'nowrap' }} fontWeight={[500, 400]}>
-                    {t('Up to')}
+                    {maxLockDuration.gt(0) ? t('Up to') : '-'}
                   </Text>
-                  <Balance
-                    fontSize={['14px', '14px', '16px']}
-                    value={parseFloat(lockedApy)}
-                    decimals={2}
-                    unit="%"
-                    fontWeight={[600, 400]}
-                  />
-                  {!isMobile && (
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onPresentLockedApyModal()
-                      }}
-                      variant="text"
-                      width="20px"
-                      height="20px"
-                      padding="0px"
-                      marginLeft="4px"
-                    >
-                      <CalculateIcon color="textSubtle" width="20px" />
-                    </Button>
+                  {maxLockDuration.gt(0) && (
+                    <>
+                      <Balance
+                        fontSize={['14px', '14px', '16px']}
+                        value={parseFloat(lockedApy)}
+                        decimals={2}
+                        unit="%"
+                        fontWeight={[600, 400]}
+                      />
+                      {!isMobile && (
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            onPresentLockedApyModal()
+                          }}
+                          variant="text"
+                          width="20px"
+                          height="20px"
+                          padding="0px"
+                          marginLeft="4px"
+                        >
+                          <CalculateIcon color="textSubtle" width="20px" />
+                        </Button>
+                      )}
+                    </>
                   )}
                 </FlexGap>
               </AprLabelContainer>

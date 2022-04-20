@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks'
-import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { FixedNumber } from '@ethersproject/bignumber'
 import { createSWRWrapper } from 'testUtils'
 import * as PoolHooks from 'state/pools/hooks'
 import BigNumber from 'bignumber.js'
@@ -13,7 +13,7 @@ describe('useVaultApy', () => {
       {
         totalShares: new BigNumber('125327628384770000000000000'),
         pricePerFullShare: new BigNumber('1736860000000000000'),
-        emission: EthersBigNumber.from('105000000000000000000000000'),
+        emission: FixedNumber.from('105000000000000000000000000'),
       },
       {
         flexibleApy: '48.2367083579916063',
