@@ -83,8 +83,7 @@ const StyledActionPanel = styled.div<{ expanded: boolean }>`
 const ActionContainer = styled.div<{ isAutoVault?: boolean; hasBalance?: boolean }>`
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  flex-basis: 0;
+  flex: 1;
   flex-wrap: wrap;
 
   ${({ theme }) => theme.mediaQueries.sm} {
