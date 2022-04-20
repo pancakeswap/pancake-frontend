@@ -76,7 +76,6 @@ export const useFetchUserPools = (account) => {
 
   useFastRefreshEffect(() => {
     fetchUserPoolsData()
-    console.log('aaaa')
   }, [fetchUserPoolsData])
 
   return {
