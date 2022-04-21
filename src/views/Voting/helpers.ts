@@ -85,24 +85,52 @@ export const sendSnapshotData = async (message: Message) => {
 
 export const VOTING_POWER_BLOCK = {
   v0: 16300686,
+  v1: 17137653,
 }
 
 /**
  *  Get voting power by single user for each category
  */
 export const getVotingPower = async (account: string, poolAddresses: string[], blockNumber?: number) => {
+  if (blockNumber && blockNumber >= VOTING_POWER_BLOCK.v1) {
+    const [cakeBalance, cakeBnbLpBalance, cakeVaultBalance, poolsBalance, total] = await getScores(
+      PANCAKE_SPACE,
+      [
+        strategies.cakeBalanceStrategy('v1'),
+        strategies.cakeBnbLpBalanceStrategy('v1'),
+        strategies.cakeVaultBalanceStrategy('v1'),
+        strategies.creatPoolsBalanceStrategy(poolAddresses, 'v1'),
+        strategies.createTotalStrategy(poolAddresses, 'v1'),
+      ],
+      NETWORK,
+      [account],
+      blockNumber,
+    )
+
+    return {
+      poolsBalance: poolsBalance[account] ? poolsBalance[account] : 0,
+      total: total[account] ? total[account] : 0,
+      cakeBalance: cakeBalance[account] ? cakeBalance[account] : 0,
+      cakeVaultBalance: cakeVaultBalance[account] ? cakeVaultBalance[account] : 0,
+      ifoPoolBalance: 0,
+      cakePoolBalance: 0,
+      cakeBnbLpBalance: cakeBnbLpBalance[account] ? cakeBnbLpBalance[account] : 0,
+      voter: account,
+    }
+  }
+
   if (blockNumber && blockNumber >= VOTING_POWER_BLOCK.v0) {
     const [cakeBalance, cakeBnbLpBalance, cakePoolBalance, cakeVaultBalance, ifoPoolBalance, poolsBalance, total] =
       await getScores(
         PANCAKE_SPACE,
         [
-          strategies.cakeBalanceStrategy,
-          strategies.cakeBnbLpBalanceStrategy,
+          strategies.cakeBalanceStrategy('v0'),
+          strategies.cakeBnbLpBalanceStrategy('v0'),
           strategies.cakePoolBalanceStrategy,
-          strategies.cakeVaultBalanceStrategy,
+          strategies.cakeVaultBalanceStrategy('v0'),
           strategies.ifoPoolBalanceStrategy,
-          strategies.creatPoolsBalanceStrategy(poolAddresses),
-          strategies.createTotalStrategy(poolAddresses),
+          strategies.creatPoolsBalanceStrategy(poolAddresses, 'v0'),
+          strategies.createTotalStrategy(poolAddresses, 'v0'),
         ],
         NETWORK,
         [account],
