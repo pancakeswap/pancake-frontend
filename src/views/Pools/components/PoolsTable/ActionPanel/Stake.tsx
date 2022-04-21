@@ -99,6 +99,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
 
   const {
     userData: {
+      isLoading: isVaultUserDataLoading,
       userShares,
       lockEndTime,
       locked,
@@ -118,6 +119,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   const stakedAutoDollarValue = getBalanceNumber(cakeAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken.decimals)
 
   const needsApproval = vaultKey ? !isVaultApproved : !allowance.gt(0) && !isBnbPool
+
+  const isLoading = vaultKey ? isVaultUserDataLoading : !userDataLoaded
 
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
 
@@ -192,7 +195,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     )
   }
 
-  if (!userDataLoaded) {
+  if (isLoading) {
     return (
       <ActionContainer>
         <ActionTitles>
