@@ -50,7 +50,7 @@ export const Text: React.FC = (args) => {
   return <h1 style={{ width: 200 }}>{loading ? <Skeleton {...args} /> : "H1"}</h1>;
 };
 
-export const TextWithV2: React.FC = (args) => {
+export const TextWithTransition: React.FC = (args) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
