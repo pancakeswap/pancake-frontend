@@ -1,22 +1,13 @@
-import { useState, useLayoutEffect } from 'react'
-import { useMatchBreakpoints } from '@pancakeswap/uikit'
+import { appearAnimation, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import styled, { keyframes } from 'styled-components'
+import { useLayoutEffect, useState } from 'react'
+import styled from 'styled-components'
 import SwiperCore, { Autoplay, EffectFade, Pagination } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/effect-fade'
 import 'swiper/css/pagination'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { useMultipleBannerConfig } from './hooks/useMultipleBannerConfig'
-
-const appearAnimation = keyframes`
-  from {
-    opacity: 0 ;
-  }
-  to {
-    opacity: 1;
-  }
-`
 
 const BannerPlaceHolder = styled.div<{ walletConnected: boolean }>`
   position: relative;
