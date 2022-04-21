@@ -9,6 +9,9 @@ import FlexLayout from 'components/Layout/Flex'
 import Page from 'components/Layout/Page'
 import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
+import partition from 'lodash/partition'
+import reverse from 'lodash/reverse'
+import concat from 'lodash/concat'
 import { DeserializedFarm } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -232,6 +235,10 @@ const Farms: React.FC = ({ children }) => {
           return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.liquidity), 'desc')
         case 'latest':
           return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.pid), 'desc')
+        case 'hot': {
+          const [mainFarms, rest] = partition(farms, (farm) => farm.pid === 2 || farm.pid === 3)
+          return concat(mainFarms, reverse(rest))
+        }
         default:
           return farms
       }
