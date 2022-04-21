@@ -16,7 +16,7 @@ describe('useVaultApy', () => {
         emission: FixedNumber.from('105000000000000000000000000'),
       },
       {
-        flexibleApy: '48.2367083579916063',
+        flexibleApy: '47.271974190831774174',
         lockedApy: '96.4734167159832126',
       },
     ],

@@ -1,5 +1,6 @@
 import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { WeiPerEther } from '@ethersproject/constants'
+import _toString from 'lodash/toString'
 import { BLOCKS_PER_YEAR } from 'config'
 import cakeVaultV2Abi from 'config/abi/cakeVaultV2.json'
 import masterChefAbi from 'config/abi/masterchef.json'
@@ -15,6 +16,7 @@ const masterChefAddress = getMasterChefAddress()
 const cakeVaultAddress = getCakeVaultAddress()
 
 // default
+const DEFAULT_PERFORMANCE_FEE_DECIMALS = 2
 export const DEFAULT_MAX_DURATION = 31536000
 const DEFAULT_BOOST_WEIGHT = BigNumber.from('1000000000000')
 const DEFAULT_DURATION_FACTOR = BigNumber.from('31536000')
@@ -46,7 +48,12 @@ const getLockedApy = (flexibleApy: string, boostFactor: FixedNumber) =>
 const cakePoolPID = 0
 
 export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: number } = {}) {
-  const { totalShares = BIG_ZERO, pricePerFullShare = BIG_ZERO } = useCakeVault()
+  const {
+    totalShares = BIG_ZERO,
+    pricePerFullShare = BIG_ZERO,
+    fees: { performanceFeeAsDecimal } = { performanceFeeAsDecimal: DEFAULT_PERFORMANCE_FEE_DECIMALS },
+  } = useCakeVault()
+
   const totalSharesAsEtherBN = useMemo(() => FixedNumber.from(totalShares.toString()), [totalShares])
   const pricePerFullShareAsEtherBN = useMemo(() => FixedNumber.from(pricePerFullShare.toString()), [pricePerFullShare])
 
@@ -116,8 +123,18 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
     [boostWeight, durationFactor],
   )
 
+  const flexibleApyNoFee = useMemo(() => {
+    if (flexibleApy && performanceFeeAsDecimal) {
+      const rewardPercentageNoFee = _toString(1 - performanceFeeAsDecimal / 100)
+
+      return FixedNumber.from(flexibleApy).mulUnsafe(FixedNumber.from(rewardPercentageNoFee)).toString()
+    }
+
+    return flexibleApy
+  }, [flexibleApy, performanceFeeAsDecimal])
+
   return {
-    flexibleApy,
+    flexibleApy: flexibleApyNoFee,
     lockedApy,
     getLockedApy: useCallback(
       (adjustDuration: number) => flexibleApy && getLockedApy(flexibleApy, getBoostFactor(adjustDuration)).toString(),
