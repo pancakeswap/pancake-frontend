@@ -18,6 +18,22 @@ const _binanceChainListener = async () =>
     }),
   )
 
+const safeGetLocalStorageItem = () => {
+  try {
+    return (
+      typeof window?.localStorage?.getItem === 'function' &&
+      (window?.localStorage?.getItem(connectorLocalStorageKey) as ConnectorNames)
+    )
+  } catch (err: any) {
+    // Ignore Local Storage Browser error
+    // - NS_ERROR_FILE_CORRUPTED
+    // - QuotaExceededError
+    console.error(`Local Storage error: ${err?.message}`)
+
+    return null
+  }
+}
+
 const useEagerConnect = () => {
   const { login } = useAuth()
 
@@ -26,9 +42,7 @@ const useEagerConnect = () => {
       setTimeout(() => login(c))
     }
 
-    const connectorId =
-      typeof window?.localStorage?.getItem === 'function' &&
-      (window?.localStorage?.getItem(connectorLocalStorageKey) as ConnectorNames)
+    const connectorId = safeGetLocalStorageItem()
 
     if (connectorId) {
       const isConnectorBinanceChain = connectorId === ConnectorNames.BSC

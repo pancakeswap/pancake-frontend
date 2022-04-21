@@ -132,7 +132,7 @@ export const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) =>
 const Farms: React.FC = ({ children }) => {
   const { pathname } = useRouter()
   const { t } = useTranslation()
-  const { data: farmsLP, userDataLoaded, poolLength } = useFarms()
+  const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
   const cakePrice = usePriceCakeBusd()
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useUserFarmsViewMode()
@@ -180,7 +180,13 @@ const Farms: React.FC = ({ children }) => {
         }
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
         const { cakeRewardsApr, lpRewardsApr } = isActive
-          ? getFarmApr(new BigNumber(farm.poolWeight), cakePrice, totalLiquidity, farm.lpAddresses[ChainId.MAINNET])
+          ? getFarmApr(
+              new BigNumber(farm.poolWeight),
+              cakePrice,
+              totalLiquidity,
+              farm.lpAddresses[ChainId.MAINNET],
+              regularCakePerBlock,
+            )
           : { cakeRewardsApr: 0, lpRewardsApr: 0 }
 
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
@@ -194,7 +200,7 @@ const Farms: React.FC = ({ children }) => {
       }
       return farmsToDisplayWithAPR
     },
-    [cakePrice, query, isActive],
+    [cakePrice, query, isActive, regularCakePerBlock],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {

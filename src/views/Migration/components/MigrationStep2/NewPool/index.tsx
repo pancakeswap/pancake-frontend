@@ -3,7 +3,12 @@ import { useWeb3React } from '@web3-react/core'
 import { useCakeVault, usePoolsWithVault } from 'state/pools/hooks'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { useAppDispatch } from 'state'
-import { fetchCakeVaultFees, fetchCakeVaultPublicData, fetchCakeVaultUserData } from 'state/pools'
+import {
+  fetchCakePoolUserDataAsync,
+  fetchCakeVaultFees,
+  fetchCakeVaultPublicData,
+  fetchCakeVaultUserData,
+} from 'state/pools'
 import PoolsTable from './PoolTable'
 
 const NewPool: React.FC = () => {
@@ -24,6 +29,7 @@ const NewPool: React.FC = () => {
     dispatch(fetchCakeVaultPublicData())
     if (account) {
       dispatch(fetchCakeVaultUserData({ account }))
+      dispatch(fetchCakePoolUserDataAsync(account))
     }
   }, [account, dispatch])
 

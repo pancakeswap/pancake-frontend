@@ -1,6 +1,8 @@
 import masterchefABI from 'config/abi/masterchef.json'
 import chunk from 'lodash/chunk'
 import { multicallv2 } from 'utils/multicall'
+import { getBalanceAmount } from 'utils/formatBalance'
+import { ethersToBigNumber } from 'utils/bigNumber'
 import { SerializedFarmConfig } from '../../config/constants/types'
 import { SerializedFarm } from '../types'
 import { getMasterChefAddress } from '../../utils/addressHelpers'
@@ -12,6 +14,11 @@ const masterChefContract = getMasterchefContract()
 export const fetchMasterChefFarmPoolLength = async () => {
   const poolLength = await masterChefContract.poolLength()
   return poolLength
+}
+
+export const fetchMasterChefRegularCakePerBlock = async () => {
+  const regularCakePerBlock = await masterChefContract.cakePerBlock(true)
+  return getBalanceAmount(ethersToBigNumber(regularCakePerBlock))
 }
 
 const masterChefFarmCalls = (farm: SerializedFarm) => {
