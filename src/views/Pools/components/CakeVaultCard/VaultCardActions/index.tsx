@@ -48,7 +48,6 @@ const CakeVaultCardActions: React.FC<{
         </Box>
         {isVaultApproved ? (
           <VaultStakeActions
-            isLoading={isLoading}
             pool={pool}
             stakingTokenBalance={stakingTokenBalance}
             accountHasSharesStaked={accountHasSharesStaked}
