@@ -44,7 +44,7 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }
     stakingToken.decimals,
   )
 
-  const labelText = `${pool.stakingToken.symbol} ${t(locked ? 'Locked' : 'Staked')}`
+  const labelText = `${pool.stakingToken.symbol} ${locked ? t('Locked') : t('Staked')}`
 
   const hasStaked = account && (stakedBalance.gt(0) || isVaultWithShares)
 
