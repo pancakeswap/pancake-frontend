@@ -93,12 +93,12 @@ export const VOTING_POWER_BLOCK = {
  */
 export const getVotingPower = async (account: string, poolAddresses: string[], blockNumber?: number) => {
   if (blockNumber && blockNumber >= VOTING_POWER_BLOCK.v1) {
-    const [cakeBalance, cakeBnbLpBalance, cakeVaultBalance, poolsBalance, total] = await getScores(
+    const [cakeBalance, cakeBnbLpBalance, cakePoolBalance, poolsBalance, total] = await getScores(
       PANCAKE_SPACE,
       [
         strategies.cakeBalanceStrategy('v1'),
         strategies.cakeBnbLpBalanceStrategy('v1'),
-        strategies.cakeVaultBalanceStrategy('v1'),
+        strategies.cakePoolBalanceStrategy('v1'),
         strategies.creatPoolsBalanceStrategy(poolAddresses, 'v1'),
         strategies.createTotalStrategy(poolAddresses, 'v1'),
       ],
@@ -111,9 +111,9 @@ export const getVotingPower = async (account: string, poolAddresses: string[], b
       poolsBalance: poolsBalance[account] ? poolsBalance[account] : 0,
       total: total[account] ? total[account] : 0,
       cakeBalance: cakeBalance[account] ? cakeBalance[account] : 0,
-      cakeVaultBalance: cakeVaultBalance[account] ? cakeVaultBalance[account] : 0,
+      cakeVaultBalance: 0,
       ifoPoolBalance: 0,
-      cakePoolBalance: 0,
+      cakePoolBalance: cakePoolBalance[account] ? cakePoolBalance[account] : 0,
       cakeBnbLpBalance: cakeBnbLpBalance[account] ? cakeBnbLpBalance[account] : 0,
       voter: account,
     }
@@ -126,8 +126,8 @@ export const getVotingPower = async (account: string, poolAddresses: string[], b
         [
           strategies.cakeBalanceStrategy('v0'),
           strategies.cakeBnbLpBalanceStrategy('v0'),
-          strategies.cakePoolBalanceStrategy,
-          strategies.cakeVaultBalanceStrategy('v0'),
+          strategies.cakePoolBalanceStrategy('v0'),
+          strategies.cakeVaultBalanceStrategy,
           strategies.ifoPoolBalanceStrategy,
           strategies.creatPoolsBalanceStrategy(poolAddresses, 'v0'),
           strategies.createTotalStrategy(poolAddresses, 'v0'),
