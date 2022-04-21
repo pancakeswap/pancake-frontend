@@ -1,12 +1,9 @@
-const votePowerAddress = {
-  v0: '0xc0FeBE244cE1ea66d27D23012B3D616432433F42',
-  v1: '0x67Dfbb197602FDB9A9D305cC7A43b95fB63a0A56',
-}
+const votePowerAddress = '0xc0FeBE244cE1ea66d27D23012B3D616432433F42'
 
-export const cakeBalanceStrategy = (version: 'v0' | 'v1') => ({
+export const cakeBalanceStrategy = {
   name: 'contract-call',
   params: {
-    address: votePowerAddress[version],
+    address: votePowerAddress,
     decimals: 18,
     methodABI: {
       inputs: [
@@ -28,12 +25,12 @@ export const cakeBalanceStrategy = (version: 'v0' | 'v1') => ({
       type: 'function',
     },
   },
-})
+}
 
-export const cakeVaultBalanceStrategy = (version: 'v0' | 'v1') => ({
+export const cakeVaultBalanceStrategy = {
   name: 'contract-call',
   params: {
-    address: votePowerAddress[version],
+    address: votePowerAddress,
     decimals: 18,
     methodABI: {
       inputs: [
@@ -55,7 +52,7 @@ export const cakeVaultBalanceStrategy = (version: 'v0' | 'v1') => ({
       type: 'function',
     },
   },
-})
+}
 
 export const ifoPoolBalanceStrategy = {
   name: 'contract-call',
@@ -111,10 +108,10 @@ export const cakePoolBalanceStrategy = {
   },
 }
 
-export const cakeBnbLpBalanceStrategy = (version: 'v0' | 'v1') => ({
+export const cakeBnbLpBalanceStrategy = {
   name: 'contract-call',
   params: {
-    address: votePowerAddress[version],
+    address: votePowerAddress,
     decimals: 18,
     methodABI: {
       inputs: [
@@ -136,13 +133,13 @@ export const cakeBnbLpBalanceStrategy = (version: 'v0' | 'v1') => ({
       type: 'function',
     },
   },
-})
+}
 
-export function creatPoolsBalanceStrategy(poolAddress, version: 'v0' | 'v1') {
+export function creatPoolsBalanceStrategy(poolAddress) {
   return {
     name: 'contract-call',
     params: {
-      address: votePowerAddress[version],
+      address: votePowerAddress,
       decimals: 18,
       args: ['%{address}', poolAddress],
       methodABI: {
@@ -173,11 +170,11 @@ export function creatPoolsBalanceStrategy(poolAddress, version: 'v0' | 'v1') {
   }
 }
 
-export function createTotalStrategy(poolAddress, version: 'v0' | 'v1') {
+export function createTotalStrategy(poolAddress) {
   return {
     name: 'contract-call',
     params: {
-      address: votePowerAddress[version],
+      address: votePowerAddress,
       decimals: 18,
       args: ['%{address}', poolAddress],
       methodABI: {
