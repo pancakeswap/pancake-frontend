@@ -7,7 +7,6 @@ import { initialPoolVaultState } from './index'
 const selectPoolsData = (state: State) => state.pools.data
 const selectPoolData = (sousId) => (state: State) => state.pools.data.find((p) => p.sousId === sousId)
 const selectUserDataLoaded = (state: State) => state.pools.userDataLoaded
-const selectCakeVault = (state: State) => state.pools.cakeVault
 const selectVault = (key: VaultKey) => (state: State) => key ? state.pools[key] : initialPoolVaultState
 
 export const makePoolWithUserDataLoadingSelector = (sousId) =>
@@ -25,24 +24,22 @@ export const poolsWithUserDataLoadingSelector = createSelector(
 export const makeVaultPoolByKey = (key) => createSelector([selectVault(key)], (vault) => transformLockedVault(vault))
 
 export const poolsWithVaultSelector = createSelector(
-  [selectPoolsData, selectUserDataLoaded, selectCakeVault],
-  (serializedPools, userDataLoaded, serializedCakeVault) => {
-    const pools = serializedPools.map(transformPool)
-    const cakeVault = transformLockedVault(serializedCakeVault)
-    const activePools = pools.filter((pool) => !pool.isFinished)
-    const cakePool = activePools.find((pool) => pool.sousId === 0)
+  [poolsWithUserDataLoadingSelector, makeVaultPoolByKey(VaultKey.CakeVault)],
+  (poolsWithUserDataLoading, deserializedCakeVault) => {
+    const { pools, userDataLoaded } = poolsWithUserDataLoading
+    const cakePool = pools.find((pool) => !pool.isFinished && pool.sousId === 0)
     const withoutCakePool = pools.filter((pool) => pool.sousId !== 0)
 
     const cakeAutoVault = {
       ...cakePool,
-      ...cakeVault,
+      ...deserializedCakeVault,
       vaultKey: VaultKey.CakeVault,
-      userData: { ...cakePool.userData, ...cakeVault.userData },
+      userData: { ...cakePool.userData, ...deserializedCakeVault.userData },
     }
 
     const cakeAutoVaultWithApr = {
       ...cakeAutoVault,
-      apr: getAprData(cakeAutoVault, cakeVault.fees.performanceFeeAsDecimal).apr,
+      apr: getAprData(cakeAutoVault, deserializedCakeVault.fees.performanceFeeAsDecimal).apr,
       rawApr: cakePool.apr,
     }
     return { pools: [cakeAutoVaultWithApr, ...withoutCakePool], userDataLoaded }
