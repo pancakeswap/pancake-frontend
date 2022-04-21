@@ -30,10 +30,10 @@ export const cakeBalanceStrategy = (version: 'v0' | 'v1') => ({
   },
 })
 
-export const cakeVaultBalanceStrategy = (version: 'v0' | 'v1') => ({
+export const cakeVaultBalanceStrategy = {
   name: 'contract-call',
   params: {
-    address: votePowerAddress[version],
+    address: votePowerAddress.v0,
     decimals: 18,
     methodABI: {
       inputs: [
@@ -55,7 +55,7 @@ export const cakeVaultBalanceStrategy = (version: 'v0' | 'v1') => ({
       type: 'function',
     },
   },
-})
+}
 
 export const ifoPoolBalanceStrategy = {
   name: 'contract-call',
@@ -84,10 +84,10 @@ export const ifoPoolBalanceStrategy = {
   },
 }
 
-export const cakePoolBalanceStrategy = {
+export const cakePoolBalanceStrategy = (version: 'v0' | 'v1') => ({
   name: 'contract-call',
   params: {
-    address: votePowerAddress.v0,
+    address: votePowerAddress[version],
     decimals: 18,
     methodABI: {
       inputs: [
@@ -109,7 +109,7 @@ export const cakePoolBalanceStrategy = {
       type: 'function',
     },
   },
-}
+})
 
 export const cakeBnbLpBalanceStrategy = (version: 'v0' | 'v1') => ({
   name: 'contract-call',
