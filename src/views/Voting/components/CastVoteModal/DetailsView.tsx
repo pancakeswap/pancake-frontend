@@ -16,22 +16,18 @@ const StyledLinkExternal = styled(LinkExternal)`
 interface DetailsViewProps {
   total: number
   cakeBalance: number
-  cakeVaultBalance: number
   cakePoolBalance: number
   poolsBalance: number
   cakeBnbLpBalance: number
-  ifoPoolBalance: number
   block: number
 }
 
 const DetailsView: React.FC<DetailsViewProps> = ({
   total,
   cakeBalance,
-  cakeVaultBalance,
   cakePoolBalance,
   poolsBalance,
   cakeBnbLpBalance,
-  ifoPoolBalance,
   block,
 }) => {
   const { t } = useTranslation()
@@ -66,21 +62,9 @@ const DetailsView: React.FC<DetailsViewProps> = ({
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" mb="4px">
         <Text color="textSubtle" fontSize="16px">
-          {t('Manual CAKE Pool')}
+          {t('CAKE Pool')}
         </Text>
         <Text textAlign="right">{formatNumber(cakePoolBalance, 0, 3)}</Text>
-      </Flex>
-      <Flex alignItems="center" justifyContent="space-between" mb="4px">
-        <Text color="textSubtle" fontSize="16px">
-          {t('Auto CAKE Pool')}
-        </Text>
-        <Text textAlign="right">{formatNumber(cakeVaultBalance, 0, 3)}</Text>
-      </Flex>
-      <Flex alignItems="center" justifyContent="space-between" mb="4px">
-        <Text color="textSubtle" fontSize="16px">
-          {t('IFO Pool')}
-        </Text>
-        <Text textAlign="right">{formatNumber(ifoPoolBalance, 0, 3)}</Text>
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" mb="4px">
         <Text color="textSubtle" fontSize="16px">
