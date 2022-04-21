@@ -16,6 +16,8 @@ import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import Trans from 'components/Trans'
+
 import RoiCalculatorFooter from './RoiCalculatorFooter'
 import RoiCard from './RoiCard'
 import useRoiCalculatorReducer, {
@@ -151,6 +153,8 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
   const conversionValue = editingCurrency === EditingCurrency.TOKEN ? principalAsUSD : principalAsToken
   const onUserInput = editingCurrency === EditingCurrency.TOKEN ? setPrincipalFromTokenValue : setPrincipalFromUSDValue
 
+  const DURATION = ['1D', '7D', '30D', '1Y', '5Y']
+
   return (
     <StyledModal
       title={t('ROI Calculator')}
@@ -236,11 +240,11 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
                 {t('Staked for')}
               </Text>
               <FullWidthButtonMenu activeIndex={stakingDuration} onItemClick={setStakingDuration} scale="sm">
-                <ButtonMenuItem variant="tertiary">{t('1D')}</ButtonMenuItem>
-                <ButtonMenuItem variant="tertiary">{t('7D')}</ButtonMenuItem>
-                <ButtonMenuItem variant="tertiary">{t('30D')}</ButtonMenuItem>
-                <ButtonMenuItem variant="tertiary">{t('1Y')}</ButtonMenuItem>
-                <ButtonMenuItem variant="tertiary">{t('5Y')}</ButtonMenuItem>
+                {DURATION.map((duration) => (
+                  <ButtonMenuItem key={duration} variant="tertiary">
+                    <Trans>{duration}</Trans>
+                  </ButtonMenuItem>
+                ))}
               </FullWidthButtonMenu>
             </>
           )}

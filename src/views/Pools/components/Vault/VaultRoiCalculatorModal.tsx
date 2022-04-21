@@ -4,10 +4,11 @@ import { CalculatorMode } from 'components/RoiCalculatorModal/useRoiCalculatorRe
 import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { DeserializedPool } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { getRoi } from 'utils/compoundApyHelpers'
+
 import LockDurationField from '../LockedPool/Common/LockDurationField'
 import { weeksToSeconds } from '../utils/formatSecondsToWeeks'
 
@@ -23,22 +24,30 @@ export const VaultRoiCalculatorModal = ({
     },
   } = useVaultPoolByKey(pool.vaultKey)
 
-  const { getLockedApy } = useVaultApy()
+  const { getLockedApy, flexibleApy } = useVaultApy()
   const { t } = useTranslation()
 
   const [cakeVaultView, setCakeVaultView] = useState(initialView || 0)
 
   const [duration, setDuration] = useState(weeksToSeconds(1))
 
-  const buttonMenu = [
-    <ButtonMenuItem>{t('Flexible')}</ButtonMenuItem>,
-    maxLockDuration && maxLockDuration.gt(0) && <ButtonMenuItem>{t('Locked')}</ButtonMenuItem>,
-  ].filter(Boolean)
+  const buttonMenuItems = useMemo(
+    () =>
+      [
+        <ButtonMenuItem key="Flexible">{t('Flexible')}</ButtonMenuItem>,
+        maxLockDuration?.gt(0) && <ButtonMenuItem key="Locked">{t('Locked')}</ButtonMenuItem>,
+      ].filter(Boolean),
+    [maxLockDuration, t],
+  )
+
+  const apy = useMemo(() => {
+    return cakeVaultView === 0 ? flexibleApy : getLockedApy(duration)
+  }, [cakeVaultView, getLockedApy, flexibleApy, duration])
 
   return (
     <RoiCalculatorModal
       stakingTokenSymbol={pool.stakingToken.symbol}
-      apy={+getLockedApy(duration)}
+      apy={+apy}
       initialState={{
         controls: {
           compounding: false, // no compounding if apy is specify
@@ -74,7 +83,7 @@ export const VaultRoiCalculatorModal = ({
           activeIndex={cakeVaultView}
           onItemClick={setCakeVaultView}
         >
-          {buttonMenu}
+          {buttonMenuItems}
         </ButtonMenu>
       }
       {...rest}
