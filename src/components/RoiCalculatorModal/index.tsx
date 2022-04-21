@@ -16,6 +16,8 @@ import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import Trans from 'components/Trans'
+
 import RoiCalculatorFooter from './RoiCalculatorFooter'
 import RoiCard from './RoiCard'
 import useRoiCalculatorReducer, {
@@ -240,7 +242,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
               <FullWidthButtonMenu activeIndex={stakingDuration} onItemClick={setStakingDuration} scale="sm">
                 {DURATION.map((duration) => (
                   <ButtonMenuItem key={duration} variant="tertiary">
-                    {t(duration)}
+                    <Trans>{duration}</Trans>
                   </ButtonMenuItem>
                 ))}
               </FullWidthButtonMenu>

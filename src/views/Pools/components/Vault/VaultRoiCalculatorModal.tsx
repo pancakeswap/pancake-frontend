@@ -8,6 +8,7 @@ import { useEffect, useState, useMemo } from 'react'
 import { DeserializedPool } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { getRoi } from 'utils/compoundApyHelpers'
+
 import LockDurationField from '../LockedPool/Common/LockDurationField'
 import { weeksToSeconds } from '../utils/formatSecondsToWeeks'
 
@@ -34,7 +35,7 @@ export const VaultRoiCalculatorModal = ({
     () =>
       [
         <ButtonMenuItem key="Flexible">{t('Flexible')}</ButtonMenuItem>,
-        maxLockDuration && maxLockDuration.gt(0) && <ButtonMenuItem key="Locked">{t('Locked')}</ButtonMenuItem>,
+        maxLockDuration?.gt(0) && <ButtonMenuItem key="Locked">{t('Locked')}</ButtonMenuItem>,
       ].filter(Boolean),
     [maxLockDuration, t],
   )
