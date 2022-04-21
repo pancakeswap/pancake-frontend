@@ -60,7 +60,7 @@ export const cakeVaultBalanceStrategy = (version: 'v0' | 'v1') => ({
 export const ifoPoolBalanceStrategy = {
   name: 'contract-call',
   params: {
-    address: votePowerAddress,
+    address: votePowerAddress.v0,
     decimals: 18,
     methodABI: {
       inputs: [
@@ -87,7 +87,7 @@ export const ifoPoolBalanceStrategy = {
 export const cakePoolBalanceStrategy = {
   name: 'contract-call',
   params: {
-    address: votePowerAddress,
+    address: votePowerAddress.v0,
     decimals: 18,
     methodABI: {
       inputs: [
