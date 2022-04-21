@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import {
   Modal,
@@ -16,7 +16,6 @@ import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import Trans from 'components/Trans'
 
 import RoiCalculatorFooter from './RoiCalculatorFooter'
 import RoiCard from './RoiCard'
@@ -153,7 +152,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
   const conversionValue = editingCurrency === EditingCurrency.TOKEN ? principalAsUSD : principalAsToken
   const onUserInput = editingCurrency === EditingCurrency.TOKEN ? setPrincipalFromTokenValue : setPrincipalFromUSDValue
 
-  const DURATION = ['1D', '7D', '30D', '1Y', '5Y']
+  const DURATION = useMemo(() => [t('1D'), t('7D'), t('30D'), t('1Y'), t('5Y')], [t])
 
   return (
     <StyledModal
@@ -242,7 +241,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
               <FullWidthButtonMenu activeIndex={stakingDuration} onItemClick={setStakingDuration} scale="sm">
                 {DURATION.map((duration) => (
                   <ButtonMenuItem key={duration} variant="tertiary">
-                    <Trans>{duration}</Trans>
+                    {duration}
                   </ButtonMenuItem>
                 ))}
               </FullWidthButtonMenu>
