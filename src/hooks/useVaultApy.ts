@@ -16,6 +16,7 @@ const masterChefAddress = getMasterChefAddress()
 const cakeVaultAddress = getCakeVaultAddress()
 
 // default
+const DEFAULT_PERFORMANCE_FEE_DECIMALS = 2
 export const DEFAULT_MAX_DURATION = 31536000
 const DEFAULT_BOOST_WEIGHT = BigNumber.from('1000000000000')
 const DEFAULT_DURATION_FACTOR = BigNumber.from('31536000')
@@ -50,7 +51,7 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
   const {
     totalShares = BIG_ZERO,
     pricePerFullShare = BIG_ZERO,
-    fees: { performanceFee },
+    fees: { performanceFeeAsDecimal } = { performanceFeeAsDecimal: DEFAULT_PERFORMANCE_FEE_DECIMALS },
   } = useCakeVault()
 
   const totalSharesAsEtherBN = useMemo(() => FixedNumber.from(totalShares.toString()), [totalShares])
@@ -123,14 +124,14 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
   )
 
   const flexibleApyNoFee = useMemo(() => {
-    if (flexibleApy && performanceFee) {
-      const rewardPercentageNoFee = _toString(1 - performanceFee * 0.0001)
+    if (flexibleApy && performanceFeeAsDecimal) {
+      const rewardPercentageNoFee = _toString(1 - performanceFeeAsDecimal / 100)
 
       return FixedNumber.from(flexibleApy).mulUnsafe(FixedNumber.from(rewardPercentageNoFee)).toString()
     }
 
     return flexibleApy
-  }, [flexibleApy, performanceFee])
+  }, [flexibleApy, performanceFeeAsDecimal])
 
   return {
     flexibleApy: flexibleApyNoFee,
