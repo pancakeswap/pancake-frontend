@@ -106,5 +106,7 @@ export interface YourScoreProps extends CompetitionProps {
     volume?: number
     // eslint-disable-next-line camelcase
     next_rank?: number
+    moboxVolumeRank?: string
+    moboxVolume?: string
   }
 }

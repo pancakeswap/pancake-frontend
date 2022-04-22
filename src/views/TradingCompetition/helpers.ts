@@ -21,7 +21,7 @@ export const useCompetitionRewards = ({
   const cakeAsBigNumber = new BigNumber(userCakeRewards as string)
   const moboxAsBigNumber = new BigNumber(userMoboxRewards as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
-  const moboxBalance = getBalanceNumber(moboxAsBigNumber, 8)
+  const moboxBalance = getBalanceNumber(moboxAsBigNumber)
   const cakePriceBusd = useCakeBusdPrice()
 
   const dollarValueOfTokensReward =

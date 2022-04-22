@@ -71,6 +71,8 @@ const MoboxCompetition = () => {
     team: 0,
     volume: 0,
     next_rank: 0,
+    moboxVolumeRank: '???',
+    moboxVolume: '???',
   })
   // 1. Storm
   const [team1LeaderboardInformation, setTeam1LeaderboardInformation] = useState({ teamId: 1, leaderboardData: null })

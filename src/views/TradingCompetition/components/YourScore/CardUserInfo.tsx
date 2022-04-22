@@ -153,7 +153,6 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
   const subHeadingText = getSubHeadingText()
   const nextTier = userLeaderboardInformation && getNextTier(team)
   const medal = userLeaderboardInformation && getMedal(team)
-
   return (
     <Flex flexDirection="column" alignItems="center" mt="16px">
       <Heading scale="lg" textAlign="center">
@@ -170,14 +169,14 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
             </Button>
           )}
           <RanksWrapper>
-            <Flex width="100%" flexDirection={['column', 'row']}>
+            <Flex width="100%" flexDirection={['column', null, null, 'row']} mr={['8px', null, null, 0]}>
               {volume > 0 && (
                 <UserRankBox
                   flex="1"
                   title={t('Rank in team').toUpperCase()}
                   footer={userLeaderboardInformation ? t('#%global% Overall', { global: global.toLocaleString() }) : ''}
-                  mr={[0, '8px']}
-                  mb={['8px', 0]}
+                  mr={[0, null, null, '8px']}
+                  mb={['8px', null, null, 0]}
                 >
                   {!userLeaderboardInformation ? (
                     <Skeleton height="26px" width="110px" />
@@ -196,7 +195,8 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
                 title={t('Your volume').toUpperCase()}
                 footer={t('Since start')}
                 // Add responsive mr if competition is LIVE
-                mr={currentPhase.state === LIVE ? [0, null, '8px'] : 0}
+                mr={currentPhase.state === LIVE ? [0, null, null, '8px'] : 0}
+                mb={['8px', null, null, 0]}
               >
                 {!userLeaderboardInformation ? (
                   <Skeleton height="26px" width="110px" />
@@ -204,6 +204,30 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
                   <Heading textAlign="center" scale="lg">
                     ${userLeaderboardInformation && localiseTradingVolume(volume)}
                   </Heading>
+                )}
+              </UserRankBox>
+              <UserRankBox
+                flex="2"
+                title={t('Your MBOX volume rank').toUpperCase()}
+                footer={t('Based on your MBOX/BNB and MBOX/BUSD trading')}
+                // Add responsive mr if competition is LIVE
+                mr={currentPhase.state === LIVE ? [0, null, null, '8px'] : 0}
+              >
+                {!userLeaderboardInformation ? (
+                  <Skeleton height="26px" width="110px" />
+                ) : (
+                  <>
+                    <Heading textAlign="center" scale="lg">
+                      #{userLeaderboardInformation.moboxVolumeRank}
+                    </Heading>
+                    <Text>
+                      $
+                      {(userLeaderboardInformation.moboxVolume as unknown as number).toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                        minimumFractionDigits: 0,
+                      })}
+                    </Text>
+                  </>
                 )}
               </UserRankBox>
             </Flex>
