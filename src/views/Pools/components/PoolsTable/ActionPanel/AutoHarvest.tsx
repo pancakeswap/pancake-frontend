@@ -94,7 +94,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
               {hasAutoEarnings ? (
                 <>
                   <BalanceWithLoading lineHeight="1" bold fontSize="20px" decimals={5} value={autoCakeToDisplay} />
-                  {earningTokenPrice > 0 && (
+                  {Number.isFinite(earningTokenPrice) && earningTokenPrice > 0 && (
                     <BalanceWithLoading
                       display="inline"
                       fontSize="12px"
