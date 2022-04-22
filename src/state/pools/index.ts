@@ -111,11 +111,11 @@ export const fetchPoolsPublicDataAsync = (currentBlockNumber: number) => async (
     const poolsWithDifferentFarmToken = await fetchFarms(priceHelperLpsConfig)
     const farmsData = getState().farms.data
     const bnbBusdFarm = farmsData.find((farm) => farm.token.symbol === 'BUSD' && farm.quoteToken.symbol === 'WBNB')
-    const farmsWithDifferentPoolsToken = bnbBusdFarm
+    const farmsWithPricesOfDifferentTokenPools = bnbBusdFarm
       ? getFarmsPrices([bnbBusdFarm, ...poolsWithDifferentFarmToken])
       : []
 
-    const prices = getTokenPricesFromFarm([...farmsData, ...farmsWithDifferentPoolsToken])
+    const prices = getTokenPricesFromFarm([...farmsData, ...farmsWithPricesOfDifferentTokenPools])
 
     const liveData = poolsConfig.map((pool) => {
       const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
