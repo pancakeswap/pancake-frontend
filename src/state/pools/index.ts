@@ -108,9 +108,26 @@ export const fetchPoolsPublicDataAsync = (currentBlockNumber: number) => async (
       currentBlock = await simpleRpcProvider.getBlockNumber()
     }
 
-    const poolsWithDifferentFarmToken = await fetchFarms(priceHelperLpsConfig)
+    const activePriceHelperLpsConfig = priceHelperLpsConfig.filter((priceHelperLpConfig) => {
+      return (
+        poolsConfig
+          .filter((pool) => pool.earningToken.address.toLowerCase() === priceHelperLpConfig.token.address.toLowerCase())
+          .filter((pool) => {
+            const poolBlockLimit = blockLimits.find((blockLimit) => blockLimit.sousId === pool.sousId)
+            if (poolBlockLimit) {
+              return poolBlockLimit.endBlock > currentBlock
+            }
+            return false
+          }).length > 0
+      )
+    })
+    const poolsWithDifferentFarmToken =
+      activePriceHelperLpsConfig.length > 0 ? await fetchFarms(priceHelperLpsConfig) : []
     const farmsData = getState().farms.data
-    const bnbBusdFarm = farmsData.find((farm) => farm.token.symbol === 'BUSD' && farm.quoteToken.symbol === 'WBNB')
+    const bnbBusdFarm =
+      activePriceHelperLpsConfig.length > 0
+        ? farmsData.find((farm) => farm.token.symbol === 'BUSD' && farm.quoteToken.symbol === 'WBNB')
+        : null
     const farmsWithPricesOfDifferentTokenPools = bnbBusdFarm
       ? getFarmsPrices([bnbBusdFarm, ...poolsWithDifferentFarmToken])
       : []
