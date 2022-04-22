@@ -63,10 +63,10 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
     const farmsWithPrices = getFarmsPrices(farms)
 
     // Filter out price helper LP config farms
-    const farmsWithoutHelperLps = farmsWithPrices.filter((farm: SerializedFarm) => {
-      return farm.pid || farm.pid === 0
-    })
-    return [farmsWithoutHelperLps, poolLength.toNumber(), regularCakePerBlock.toNumber()]
+    // const farmsWithoutHelperLps = farmsWithPrices.filter((farm: SerializedFarm) => {
+    //   return farm.pid || farm.pid === 0
+    // })
+    return [farmsWithPrices, poolLength.toNumber(), regularCakePerBlock.toNumber()]
   },
   {
     condition: (arg, { getState }) => {
@@ -170,6 +170,7 @@ export const farmsSlice = createSlice({
         const liveFarmData = farmPayload.find((farmData) => farmData.pid === farm.pid)
         return { ...farm, ...liveFarmData }
       })
+      state.data = [...state.data, ...farmPayload.filter(({ pid }) => pid === null)]
       state.poolLength = poolLength
       state.regularCakePerBlock = regularCakePerBlock
     })

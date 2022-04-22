@@ -19,6 +19,16 @@ const priceHelperLps: SerializedFarmConfig[] = [
     token: tokens.qsd,
     quoteToken: tokens.wbnb,
   },
+  {
+    pid: null,
+    lpSymbol: 'ANKR-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x3147f98b8f9c53acdf8f16332ead12b592a1a4ae',
+    },
+    token: tokens.ankr,
+    quoteToken: tokens.wbnb,
+  },
 ]
 
 export default priceHelperLps
