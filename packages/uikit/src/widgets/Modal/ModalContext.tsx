@@ -1,20 +1,16 @@
-import { AnimatePresence, Variants, m, LazyMotion, domAnimation } from "framer-motion";
-import React, { createContext, useState, useRef } from "react";
-import styled, { keyframes } from "styled-components";
+import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
+import React, { createContext, useRef, useState } from "react";
+import styled from "styled-components";
 import { Overlay } from "../../components/Overlay";
+import {
+  animationHandler,
+  animationMap,
+  animationVariants,
+  appearAnimation,
+  disappearAnimation,
+} from "../../util/animationToolkit";
 import { Handler } from "./types";
 
-const animationVariants: Variants = {
-  initial: { transform: "translateX(0px)" },
-  animate: { transform: "translateX(0px)" },
-  exit: { transform: "translateX(0px)" },
-};
-
-const animationMap = {
-  initial: "initial",
-  animate: "animate",
-  exit: "exit",
-};
 interface ModalsContext {
   isOpen: boolean;
   nodeId: string;
@@ -24,16 +20,6 @@ interface ModalsContext {
   onDismiss: Handler;
   setCloseOnOverlayClick: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
-const appearAnimation = keyframes`
-  from { opacity:0 }
-  to { opacity:1 }
-`;
-
-const disappearAnimation = keyframes`
-  from { opacity:1 }
-  to { opacity:0 }
-`;
 
 const ModalWrapper = styled(m.div)`
   display: flex;
@@ -108,17 +94,7 @@ const ModalProvider: React.FC = ({ children }) => {
           {isOpen && (
             <ModalWrapper
               ref={animationRef}
-              onAnimationStart={() => {
-                const element = animationRef.current;
-                if (!element) return;
-                if (element.classList.contains("appear")) {
-                  element.classList.remove("appear");
-                  element.classList.add("disappear");
-                } else {
-                  element.classList.remove("disappear");
-                  element.classList.add("appear");
-                }
-              }}
+              onAnimationStart={() => animationHandler(animationRef.current)}
               {...animationMap}
               variants={animationVariants}
               transition={{ duration: 0.3 }}

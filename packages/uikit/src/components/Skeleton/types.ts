@@ -17,3 +17,9 @@ export interface SkeletonProps extends SpaceProps, LayoutProps {
   animation?: Animation;
   variant?: Variant;
 }
+
+export interface SkeletonV2Props extends SpaceProps, LayoutProps {
+  animation?: Animation;
+  variant?: Variant;
+  isDataReady?: boolean;
+}

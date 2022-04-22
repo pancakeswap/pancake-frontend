@@ -48,3 +48,6 @@ export * from "./widgets/WalletModal";
 // Theme
 export { default as ResetCSS } from "./ResetCSS";
 export * from "./theme";
+
+// AnimationToolkit
+export * from "./util/animationToolkit";
