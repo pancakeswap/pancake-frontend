@@ -2070,6 +2070,15 @@ export const mainnetTokens = defineTokens({
     'https://wizardia.io/',
   ),
   ceek: new Token(MAINNET, '0xe0F94Ac5462997D2BC57287Ac3a3aE4C31345D66', 18, 'CEEK', 'CEEK', 'https://www.ceek.com/'),
+  abnbc: new Token(
+    MAINNET,
+    '0xE85aFCcDaFBE7F2B096f268e31ccE3da8dA2990A',
+    18,
+    'aBNBc',
+    'Ankr BNB Reward Bearing Certificate',
+    'https://www.ankr.com/',
+  ),
+  ankr: new Token(MAINNET, '0xf307910A4c7bbc79691fD374889b36d8531B08e3', 18, 'ANKR', 'Ankr', 'https://www.ankr.com/'),
 } as const)
 
 export const testnetTokens = defineTokens({
