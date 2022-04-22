@@ -8,6 +8,11 @@ import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import stringify from 'fast-json-stable-stringify'
 import farmsConfig from 'config/constants/farms'
 import { isArchivedPid } from 'utils/farmHelpers'
+import multicall from 'utils/multicall'
+import masterchefABI from 'config/abi/masterchef.json'
+import { getMasterChefAddress } from 'utils/addressHelpers'
+import { getBalanceAmount } from 'utils/formatBalance'
+import { ethersToBigNumber } from 'utils/bigNumber'
 import type { AppState } from 'state'
 import fetchFarms from './fetchFarms'
 import getFarmsPrices from './getFarmsPrices'
@@ -18,7 +23,7 @@ import {
   fetchFarmUserStakedBalances,
 } from './fetchFarmUser'
 import { SerializedFarmsState, SerializedFarm } from '../types'
-import { fetchMasterChefFarmPoolLength, fetchMasterChefRegularCakePerBlock } from './fetchMasterChefData'
+import { fetchMasterChefFarmPoolLength } from './fetchMasterChefData'
 import { resetUserState } from '../global/actions'
 
 const noAccountFarmConfig = farmsConfig.map((farm) => ({
@@ -50,8 +55,20 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
 >(
   'farms/fetchFarmsPublicDataAsync',
   async (pids) => {
-    const poolLength = await fetchMasterChefFarmPoolLength()
-    const regularCakePerBlock = await fetchMasterChefRegularCakePerBlock()
+    const masterChefAddress = getMasterChefAddress()
+    const calls = [
+      {
+        address: masterChefAddress,
+        name: 'poolLength',
+      },
+      {
+        address: masterChefAddress,
+        name: 'cakePerBlock',
+        params: [true],
+      },
+    ]
+    const [[poolLength], [cakePerBlockRaw]] = await multicall(masterchefABI, calls)
+    const regularCakePerBlock = getBalanceAmount(ethersToBigNumber(cakePerBlockRaw))
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
     const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
 
