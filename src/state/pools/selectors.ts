@@ -1,4 +1,3 @@
-import { getAprData } from 'views/Pools/helpers'
 import { createSelector } from '@reduxjs/toolkit'
 import { State, VaultKey } from '../types'
 import { transformPool, transformLockedVault } from './helpers'
@@ -39,8 +38,6 @@ export const poolsWithVaultSelector = createSelector(
 
     const cakeAutoVaultWithApr = {
       ...cakeAutoVault,
-      apr: getAprData(cakeAutoVault, deserializedCakeVault.fees.performanceFeeAsDecimal).apr,
-      rawApr: cakePool.apr,
     }
     return { pools: [cakeAutoVaultWithApr, ...withoutCakePool], userDataLoaded }
   },
