@@ -3,12 +3,14 @@ import styled from 'styled-components'
 import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
+import { FlexGap } from 'components/Layout/Flex'
 
 interface TopFarmPoolProps {
   title: ReactNode
   percentage: number
   index: number
   visible: boolean
+  isApy?: boolean
 }
 
 const StyledWrapper = styled(Flex)<{ index: number }>`
@@ -36,7 +38,7 @@ const AbsoluteWrapper = styled(Flex)<{ visible: boolean; index: number; topOffse
       : `padding-right: 16px;`}
 `
 
-const TopFarmPool: React.FC<TopFarmPoolProps> = ({ title, percentage, index, visible }) => {
+const TopFarmPool: React.FC<TopFarmPoolProps> = ({ title, percentage, index, visible, isApy }) => {
   const { t } = useTranslation()
 
   const topOffset = () => {
@@ -62,13 +64,16 @@ const TopFarmPool: React.FC<TopFarmPoolProps> = ({ title, percentage, index, vis
           <Skeleton width={80} height={12} mb="8px" />
         )}
         {percentage ? (
-          <Balance lineHeight="1.1" fontSize="16px" bold unit="%" value={percentage} />
+          <FlexGap gap="4px">
+            {isApy && t('Up to')}
+            <Balance lineHeight="1.1" fontSize="16px" bold unit="%" value={percentage} />
+          </FlexGap>
         ) : (
           <Skeleton width={60} height={16} />
         )}
         {percentage ? (
           <Text fontSize="16px" color="textSubtle">
-            {t('APR')}
+            {isApy ? t('APY') : t('APR')}
           </Text>
         ) : (
           <Skeleton width={30} height={16} mt="4px" />
