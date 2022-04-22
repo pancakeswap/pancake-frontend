@@ -17,6 +17,9 @@ import { multicallv2 } from 'utils/multicall'
 import tokens from 'config/constants/tokens'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { simpleRpcProvider } from 'utils/providers'
+import priceHelperLpsConfig from 'config/constants/priceHelperLps'
+import fetchFarms from '../farms/fetchFarms'
+import getFarmsPrices from '../farms/getFarmsPrices'
 import {
   fetchPoolsBlockLimits,
   fetchPoolsProfileRequirement,
@@ -105,7 +108,31 @@ export const fetchPoolsPublicDataAsync = (currentBlockNumber: number) => async (
       currentBlock = await simpleRpcProvider.getBlockNumber()
     }
 
-    const prices = getTokenPricesFromFarm(getState().farms.data)
+    const activePriceHelperLpsConfig = priceHelperLpsConfig.filter((priceHelperLpConfig) => {
+      return (
+        poolsConfig
+          .filter((pool) => pool.earningToken.address.toLowerCase() === priceHelperLpConfig.token.address.toLowerCase())
+          .filter((pool) => {
+            const poolBlockLimit = blockLimits.find((blockLimit) => blockLimit.sousId === pool.sousId)
+            if (poolBlockLimit) {
+              return poolBlockLimit.endBlock > currentBlock
+            }
+            return false
+          }).length > 0
+      )
+    })
+    const poolsWithDifferentFarmToken =
+      activePriceHelperLpsConfig.length > 0 ? await fetchFarms(priceHelperLpsConfig) : []
+    const farmsData = getState().farms.data
+    const bnbBusdFarm =
+      activePriceHelperLpsConfig.length > 0
+        ? farmsData.find((farm) => farm.token.symbol === 'BUSD' && farm.quoteToken.symbol === 'WBNB')
+        : null
+    const farmsWithPricesOfDifferentTokenPools = bnbBusdFarm
+      ? getFarmsPrices([bnbBusdFarm, ...poolsWithDifferentFarmToken])
+      : []
+
+    const prices = getTokenPricesFromFarm([...farmsData, ...farmsWithPricesOfDifferentTokenPools])
 
     const liveData = poolsConfig.map((pool) => {
       const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
