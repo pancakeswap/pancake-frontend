@@ -7,12 +7,12 @@ import { simpleRpcProvider } from 'utils/providers'
 import { getVotingPower } from '../helpers'
 
 interface State {
-  cakeBalance: number
-  cakeVaultBalance: number
-  cakePoolBalance: number
-  poolsBalance: number
-  cakeBnbLpBalance: number
-  ifoPoolBalance: number
+  cakeBalance?: number
+  cakeVaultBalance?: number
+  cakePoolBalance?: number
+  poolsBalance?: number
+  cakeBnbLpBalance?: number
+  ifoPoolBalance?: number
   total: number
 }
 
@@ -27,13 +27,13 @@ const useGetVotingPower = (block?: number, isActive = true): State & { isLoading
       const { cakeBalance, cakeBnbLpBalance, cakePoolBalance, total, poolsBalance, cakeVaultBalance, ifoPoolBalance } =
         await getVotingPower(account, poolAddresses, blockNumber)
       return {
-        cakeBalance: parseFloat(cakeBalance),
-        cakeBnbLpBalance: parseFloat(cakeBnbLpBalance),
-        cakePoolBalance: parseFloat(cakePoolBalance),
-        poolsBalance: parseFloat(poolsBalance),
-        cakeVaultBalance: parseFloat(cakeVaultBalance),
-        ifoPoolBalance: ifoPoolBalance ? parseFloat(ifoPoolBalance) : 0,
-        total: parseFloat(total),
+        cakeBalance,
+        cakeBnbLpBalance,
+        cakePoolBalance,
+        poolsBalance,
+        cakeVaultBalance,
+        ifoPoolBalance,
+        total,
       }
     },
   )

@@ -111,8 +111,6 @@ export const getVotingPower = async (account: string, poolAddresses: string[], b
       poolsBalance: poolsBalance[account] ? poolsBalance[account] : 0,
       total: total[account] ? total[account] : 0,
       cakeBalance: cakeBalance[account] ? cakeBalance[account] : 0,
-      cakeVaultBalance: 0,
-      ifoPoolBalance: 0,
       cakePoolBalance: cakePoolBalance[account] ? cakePoolBalance[account] : 0,
       cakeBnbLpBalance: cakeBnbLpBalance[account] ? cakeBnbLpBalance[account] : 0,
       voter: account,
@@ -151,15 +149,8 @@ export const getVotingPower = async (account: string, poolAddresses: string[], b
 
   const [total] = await getScores(PANCAKE_SPACE, STRATEGIES, NETWORK, [account], blockNumber)
 
-  // just show 0 in each category at old snapshot
   return {
-    poolsBalance: 0,
     total: total[account] ? total[account] : 0,
-    cakeBalance: 0,
-    cakeVaultBalance: 0,
-    ifoPoolBalance: 0,
-    cakePoolBalance: 0,
-    cakeBnbLpBalance: 0,
     voter: account,
   }
 }
