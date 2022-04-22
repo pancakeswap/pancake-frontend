@@ -9,7 +9,6 @@ import stringify from 'fast-json-stable-stringify'
 import farmsConfig from 'config/constants/farms'
 import { isArchivedPid } from 'utils/farmHelpers'
 import type { AppState } from 'state'
-import priceHelperLpsConfig from 'config/constants/priceHelperLps'
 import fetchFarms from './fetchFarms'
 import getFarmsPrices from './getFarmsPrices'
 import {
@@ -56,17 +55,10 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
     const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
 
-    // Add price helper farms
-    const farmsWithPriceHelpers = farmsCanFetch.concat(priceHelperLpsConfig)
-
-    const farms = await fetchFarms(farmsWithPriceHelpers)
+    const farms = await fetchFarms(farmsCanFetch)
     const farmsWithPrices = getFarmsPrices(farms)
 
-    // Filter out price helper LP config farms
-    const farmsWithoutHelperLps = farmsWithPrices.filter((farm: SerializedFarm) => {
-      return farm.pid || farm.pid === 0
-    })
-    return [farmsWithoutHelperLps, poolLength.toNumber(), regularCakePerBlock.toNumber()]
+    return [farmsWithPrices, poolLength.toNumber(), regularCakePerBlock.toNumber()]
   },
   {
     condition: (arg, { getState }) => {

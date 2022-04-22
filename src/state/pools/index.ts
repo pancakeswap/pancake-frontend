@@ -17,6 +17,9 @@ import { multicallv2 } from 'utils/multicall'
 import tokens from 'config/constants/tokens'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { simpleRpcProvider } from 'utils/providers'
+import priceHelperLpsConfig from 'config/constants/priceHelperLps'
+import fetchFarms from '../farms/fetchFarms'
+import getFarmsPrices from '../farms/getFarmsPrices'
 import {
   fetchPoolsBlockLimits,
   fetchPoolsProfileRequirement,
@@ -105,7 +108,14 @@ export const fetchPoolsPublicDataAsync = (currentBlockNumber: number) => async (
       currentBlock = await simpleRpcProvider.getBlockNumber()
     }
 
-    const prices = getTokenPricesFromFarm(getState().farms.data)
+    const poolsWithDifferentFarmToken = await fetchFarms(priceHelperLpsConfig)
+    const farmsData = getState().farms.data
+    const bnbBusdFarm = farmsData.find((farm) => farm.token.symbol === 'BUSD' && farm.quoteToken.symbol === 'WBNB')
+    const farmsWithDifferentPoolsToken = bnbBusdFarm
+      ? getFarmsPrices([bnbBusdFarm, ...poolsWithDifferentFarmToken])
+      : []
+
+    const prices = getTokenPricesFromFarm([...farmsData, ...farmsWithDifferentPoolsToken])
 
     const liveData = poolsConfig.map((pool) => {
       const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
