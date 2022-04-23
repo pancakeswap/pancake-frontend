@@ -31,7 +31,7 @@ function Blocklist({ children }: { children: ReactNode }) {
 }
 
 Sentry.init({
-  dsn: 'https://ed98e16b9d704c22bef92d24bdd5f3b7@o1092725.ingest.sentry.io/6111410',
+  dsn: 'https://36e3c418fc9a4cb19e381fa93d9a01b7@o1200385.ingest.sentry.io/6324340',
   integrations: [
     new Integrations.BrowserTracing(),
     new Sentry.Integrations.Breadcrumbs({
