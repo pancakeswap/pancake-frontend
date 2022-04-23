@@ -32,7 +32,8 @@ import {
 import RedirectOldRemoveLiquidityPathStructure from './views/RemoveLiquidity/redirects'
 import { RedirectPathToSwapOnly, RedirectToSwap } from './views/Swap/redirects'
 // import { useInactiveListener } from './hooks/useInactiveListener'
-// import useSentryUser from './hooks/useSentryUser'
+import useSentryUser from './hooks/useSentryUser'
+import MixpanelTracker from './components/MixpanelTracker'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
@@ -75,12 +76,13 @@ const App: React.FC = () => {
   // useScrollOnRouteChange()
   // useUserAgent()
   // useInactiveListener()
-  // useSentryUser()
+  useSentryUser()
 
   return (
     <Router history={history}>
       <ResetCSS />
       <GlobalStyle />
+      <MixpanelTracker/>
       {/* <GlobalCheckClaimStatus excludeLocations={[]} /> */}
       <Menu>
         <SuspenseWithChunkError fallback={<PageLoader />}>
