@@ -5,7 +5,7 @@ import {
   getCakeContract,
   getBunnyFactoryContract,
   getBunnySpecialContract,
-  getPancakeRabbitContract,
+  getPancakeBunniesContract,
   getProfileContract,
   getIfoV1Contract,
   getIfoV2Contract,
@@ -107,9 +107,9 @@ export const useBunnyFactory = () => {
   return useMemo(() => getBunnyFactoryContract(library.getSigner()), [library])
 }
 
-export const usePancakeRabbits = () => {
+export const usePancakeBunnies = () => {
   const { library } = useActiveWeb3React()
-  return useMemo(() => getPancakeRabbitContract(library.getSigner()), [library])
+  return useMemo(() => getPancakeBunniesContract(library.getSigner()), [library])
 }
 
 export const useProfileContract = (withSignerIfPossible = true) => {

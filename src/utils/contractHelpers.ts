@@ -10,7 +10,7 @@ import tokens from 'config/constants/tokens'
 import {
   getAddress,
   getPancakeProfileAddress,
-  getPancakeRabbitsAddress,
+  getPancakeBunniesAddress,
   getBunnyFactoryAddress,
   getBunnySpecialAddress,
   getLotteryV2Address,
@@ -39,7 +39,7 @@ import {
 
 // ABI
 import profileABI from 'config/abi/pancakeProfile.json'
-import pancakeRabbitsAbi from 'config/abi/pancakeRabbits.json'
+import pancakeBunniesAbi from 'config/abi/pancakeBunnies.json'
 import bunnyFactoryAbi from 'config/abi/bunnyFactory.json'
 import bunnySpecialAbi from 'config/abi/bunnySpecial.json'
 import bep20Abi from 'config/abi/erc20.json'
@@ -87,7 +87,7 @@ import type {
   Erc721,
   Cake,
   BunnyFactory,
-  PancakeRabbits,
+  PancakeBunnies,
   PancakeProfile,
   LotteryV2,
   Masterchef,
@@ -152,8 +152,8 @@ export const getCakeContract = (signer?: Signer | Provider) => {
 export const getProfileContract = (signer?: Signer | Provider) => {
   return getContract(profileABI, getPancakeProfileAddress(), signer) as PancakeProfile
 }
-export const getPancakeRabbitContract = (signer?: Signer | Provider) => {
-  return getContract(pancakeRabbitsAbi, getPancakeRabbitsAddress(), signer) as PancakeRabbits
+export const getPancakeBunniesContract = (signer?: Signer | Provider) => {
+  return getContract(pancakeBunniesAbi, getPancakeBunniesAddress(), signer) as PancakeBunnies
 }
 export const getBunnyFactoryContract = (signer?: Signer | Provider) => {
   return getContract(bunnyFactoryAbi, getBunnyFactoryAddress(), signer) as BunnyFactory
