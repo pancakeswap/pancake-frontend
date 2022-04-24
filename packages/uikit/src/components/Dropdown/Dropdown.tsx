@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import throttle from "lodash/throttle";
 import styled, { css } from "styled-components";
 import { DropdownProps, PositionProps, Position } from "./types";
+import { useMatchBreakpoints } from "../../hooks";
 
 const getLeft = ({ position }: PositionProps) => {
   if (position === "top-right") {
@@ -52,24 +53,28 @@ const Container = styled.div<{ scrolling: boolean }>`
 
 const Dropdown: React.FC<DropdownProps> = ({ target, position = "bottom", children }) => {
   const [scrolling, setScrolling] = useState(false);
+  const { isMobile } = useMatchBreakpoints();
 
   useEffect(() => {
-    let scrollEndTimer: number;
-    const handleScroll = () => {
-      if (scrollEndTimer) clearTimeout(scrollEndTimer);
-      setScrolling(true);
-      // @ts-ignore
-      scrollEndTimer = setTimeout(() => {
-        setScrolling(false);
-      }, 300);
-    };
+    if (isMobile) {
+      let scrollEndTimer: number;
+      const handleScroll = () => {
+        if (scrollEndTimer) clearTimeout(scrollEndTimer);
+        setScrolling(true);
+        // @ts-ignore
+        scrollEndTimer = setTimeout(() => {
+          setScrolling(false);
+        }, 300);
+      };
 
-    const throttledHandleScroll = throttle(handleScroll, 200);
-    document.addEventListener("scroll", throttledHandleScroll);
-    return () => {
-      document.removeEventListener("scroll", throttledHandleScroll);
-    };
-  }, []);
+      const throttledHandleScroll = throttle(handleScroll, 200);
+      document.addEventListener("scroll", throttledHandleScroll);
+      return () => {
+        document.removeEventListener("scroll", throttledHandleScroll);
+      };
+    }
+    return undefined;
+  }, [isMobile]);
 
   return (
     <Container scrolling={scrolling}>
