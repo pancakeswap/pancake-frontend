@@ -43,7 +43,9 @@ const _getBoostFactor = (boostWeight: BigNumber, duration: number, durationFacto
 }
 
 const getLockedApy = (flexibleApy: string, boostFactor: FixedNumber) =>
-  FixedNumber.from(flexibleApy).mulUnsafe(boostFactor.addUnsafe(FixedNumber.from('1')))
+  FixedNumber.from(flexibleApy).mulUnsafe(
+    boostFactor.divUnsafe(FixedNumber.from('100')).addUnsafe(FixedNumber.from('1')),
+  )
 
 const cakePoolPID = 0
 
