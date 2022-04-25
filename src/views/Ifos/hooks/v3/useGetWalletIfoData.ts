@@ -6,6 +6,8 @@ import { useERC20, useIfoV2Contract } from 'hooks/useContract'
 import { multicallv2 } from 'utils/multicall'
 import ifoV2Abi from 'config/abi/ifoV2.json'
 import ifoV3Abi from 'config/abi/ifoV3.json'
+import { fetchCakeVaultUserData } from 'state/pools'
+import { useAppDispatch } from 'state'
 import { BIG_ZERO } from 'utils/bigNumber'
 import useIfoAllowance from '../useIfoAllowance'
 import { WalletIfoState, WalletIfoData } from '../../types'
@@ -35,7 +37,8 @@ const initialState = {
  */
 const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   const [state, setState] = useState<WalletIfoState>(initialState)
-  const credit = new BigNumber(0)
+  const dispatch = useAppDispatch()
+  const credit = new BigNumber(0) // TODO: update
 
   const { address, currency, version } = ifo
 
@@ -79,6 +82,8 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
           }))
         : []
 
+    dispatch(fetchCakeVaultUserData({ account }))
+
     const abi = version === 3.1 ? ifoV3Abi : ifoV2Abi
 
     const [userInfo, amounts, isQualifiedNFT, isQualifiedPoints] = await multicallv2(abi, [...ifoCalls, ...ifov3Calls])
@@ -105,7 +110,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         hasClaimed: userInfo[1][1],
       },
     }))
-  }, [account, address, version])
+  }, [account, address, dispatch, version])
 
   const resetIfoData = useCallback(() => {
     setState({ ...initialState })
