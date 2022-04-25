@@ -577,7 +577,6 @@
   "See All": "檢查全部",
   "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.": "您的投票權取決於您在下方詳述的區塊中所持有的 CAKE 數量。在其他地方持有的 CAKE 無法提高您的投票權。",
   "Wallet": "錢包",
-  "Manual CAKE Pool": "手動 CAKE 資金池",
   "Auto CAKE Pool": "自動 CAKE 資金池",
   "CAKE BNB LP": "CAKE BNB LP",
   "Other Syrup Pools": "其他 Syrup 資金池",
@@ -1670,5 +1669,6 @@
   "Based on your MBOX/BNB and MBOX/BUSD trading": "Based on your MBOX/BNB and MBOX/BUSD trading",
   "Calculated based on current rates and subject to change based on pool conditions. It is an estimate provided for your convenience only, and by no means represents guaranteed returns.": "Calculated based on current rates and subject to change based on pool conditions. It is an estimate provided for your convenience only, and by no means represents guaranteed returns.",
   "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked, i.e. when the staking period ends.": "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked, i.e. when the staking period ends.",
-  "View Tutorial": "View Tutorial"
+  "View Tutorial": "View Tutorial",
+  "CAKE Pool": "CAKE Pool"
 }
