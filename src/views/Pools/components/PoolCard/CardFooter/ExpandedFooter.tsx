@@ -107,6 +107,17 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           {t('View Project Site')}
         </LinkExternal>
       </Flex>
+      {vaultKey && (
+        <Flex mb="2px" justifyContent="flex-end">
+          <LinkExternal
+            href="https://docs.pancakeswap.finance/products/syrup-pool/new-cake-pool/fixed-term-staking"
+            bold={false}
+            small
+          >
+            {t('View Tutorial')}
+          </LinkExternal>
+        </Flex>
+      )}
       {poolContractAddress && (
         <Flex mb="2px" justifyContent="flex-end">
           <LinkExternal

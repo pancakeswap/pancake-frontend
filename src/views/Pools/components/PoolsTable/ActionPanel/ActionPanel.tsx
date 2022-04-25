@@ -337,6 +337,16 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
             </LinkExternal>
           </Flex>
         )}
+        {pool.vaultKey && (
+          <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
+            <LinkExternal
+              href="https://docs.pancakeswap.finance/products/syrup-pool/new-cake-pool/fixed-term-staking"
+              bold={false}
+            >
+              {t('View Tutorial')}
+            </LinkExternal>
+          </Flex>
+        )}
         {poolContractAddress && (
           <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
             <LinkExternal
