@@ -14,16 +14,26 @@ import {
   Flex,
   useTooltip,
   TooltipText,
+  LogoRoundIcon,
+  Skeleton,
+  useModal,
   Link,
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter as RouterLink } from 'components/NextLink'
 import { useWeb3React } from '@web3-react/core'
 
 import { useTranslation } from 'contexts/Localization'
+import useTokenBalance from 'hooks/useTokenBalance'
 import Container from 'components/Layout/Container'
 import { useProfile } from 'state/profile/hooks'
+import Balance from 'components/Balance'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { FlexGap } from 'components/Layout/Flex'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { BIG_ZERO } from 'utils/bigNumber'
+import BigNumber from 'bignumber.js'
+import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 
 interface TypeProps {
   ifoCurrencyAddress: string
@@ -31,6 +41,12 @@ interface TypeProps {
   isCommitted: boolean
   isLive?: boolean
 }
+
+const SmallStakePoolCard = styled(Box)`
+  margin-top: 16px;
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  background-color: ${({ theme }) => theme.colors.background};
+`
 
 const Wrapper = styled(Container)`
   margin-left: -16px;
@@ -48,8 +64,10 @@ const InlineLink = styled(Link)`
   display: inline;
 `
 
-const Step1 = () => {
+const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
   const { t } = useTranslation()
+  const credit = new BigNumber(1000000000000000000) // TODO: update
+  const creditDollarValue = useBUSDCakeAmount(getBalanceNumber(credit))
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
@@ -84,11 +102,48 @@ const Step1 = () => {
           {t('How does the IFO credit calculated?')}
         </TooltipText>
       </Box>
+      {hasProfile && (
+        <SmallStakePoolCard borderRadius="default" p="16px">
+          <FlexGap justifyContent="space-between" alignItems="center" flexWrap="wrap" gap="16px">
+            <Flex>
+              <LogoRoundIcon style={{ alignSelf: 'flex-start' }} width={32} height={32} />
+              <Box ml="16px">
+                <Text bold fontSize="12px" textTransform="uppercase" color="secondary">
+                  {t('Your max CAKE entry')}
+                </Text>
+                <Balance fontSize="20px" bold decimals={5} value={getBalanceNumber(credit)} />
+                <Text fontSize="12px" color="textSubtle">
+                  {creditDollarValue !== undefined ? (
+                    <Balance
+                      value={creditDollarValue}
+                      fontSize="12px"
+                      color="textSubtle"
+                      decimals={2}
+                      prefix="~"
+                      unit=" USD"
+                    />
+                  ) : (
+                    <Skeleton mt="1px" height={16} width={64} />
+                  )}
+                </Text>
+              </Box>
+            </Flex>
+            {/* // TODO: update */}
+            {/* {isVaultApproved ? (
+              <Button onClick={onPresentStake}>{t('Stake')} CAKE</Button>
+            ) : (
+              <Button disabled={pendingTx} onClick={handleApprove}>
+                {t('Enable pool')}
+              </Button>
+            )} */}
+          </FlexGap>
+        </SmallStakePoolCard>
+      )}
     </CardBody>
   )
 }
 
-const Step2 = () => {
+const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLive: boolean; isCommitted: boolean }) => {
   const { t } = useTranslation()
   return (
     <CardBody>
@@ -98,15 +153,21 @@ const Step2 = () => {
       <Text color="textSubtle" small>
         {t('When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.')} <br />
       </Text>
+      {hasProfile && isLive && !isCommitted && (
+        <Button as="a" href="#current-ifo" mt="16px">
+          {t('Commit CAKE')}
+        </Button>
+      )}
     </CardBody>
   )
 }
 
-const IfoSteps: React.FC<TypeProps> = () => {
+const IfoSteps: React.FC<TypeProps> = ({ isCommitted, hasClaimed, isLive, ifoCurrencyAddress }) => {
   const { hasActiveProfile } = useProfile()
   const { account } = useWeb3React()
   const { t } = useTranslation()
-  const stepsValidationStatus = [hasActiveProfile, false, false, false]
+  const { balance } = useTokenBalance(ifoCurrencyAddress)
+  const stepsValidationStatus = [hasActiveProfile, balance.isGreaterThan(0), isCommitted, hasClaimed]
 
   const getStatusProp = (index: number): StepStatus => {
     const arePreviousValid = index === 0 ? true : every(stepsValidationStatus.slice(0, index), Boolean)
@@ -156,9 +217,9 @@ const IfoSteps: React.FC<TypeProps> = () => {
           </CardBody>
         )
       case 1:
-        return <Step1 />
+        return <Step1 hasProfile={hasActiveProfile} />
       case 2:
-        return <Step2 />
+        return <Step2 hasProfile={hasActiveProfile} isLive={isLive} isCommitted={isCommitted} />
       case 3:
         return (
           <CardBody>

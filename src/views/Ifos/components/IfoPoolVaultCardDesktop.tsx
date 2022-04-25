@@ -1,12 +1,21 @@
-import { Box, Card, CardBody, CardHeader, Flex, Text, Message, Button } from '@pancakeswap/uikit'
+import {
+  Box,
+  Card,
+  CardBody,
+  CardHeader,
+  Flex,
+  Text,
+  Message,
+  Button,
+  TokenPairImage as UITokenPairImage,
+} from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
-import tokens from 'config/constants/tokens'
-import { TokenPairImage } from 'components/TokenImage'
+import { vaultPoolConfig } from 'config/constants/pools'
 import { useRouter } from 'next/router'
-import { DeserializedPool } from 'state/types'
+import { DeserializedPool, VaultKey } from 'state/types'
 import { convertSharesToCake, getCakeVaultEarnings } from 'views/Pools/helpers'
 import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 
@@ -95,7 +104,7 @@ const IfoPoolVaultCardDesktop: React.FC<IfoPoolVaultCardDesktopProps> = ({ accou
               {t('Stake CAKE to participate in IFO')}
             </Text>
           </Box>
-          <TokenPairImage width={64} height={64} primaryToken={tokens.cake} secondaryToken={tokens.cake} />
+          <UITokenPairImage width={64} height={64} {...vaultPoolConfig[VaultKey.IfoPool].tokenImage} />
         </StyledTokenContent>
       </CardHeader>
       <StyledCardBody>

@@ -1,14 +1,24 @@
-import { Box, Card, CardBody, CardHeader, ExpandableButton, Flex, Text, Message, Button } from '@pancakeswap/uikit'
+import {
+  Box,
+  Card,
+  CardBody,
+  CardHeader,
+  ExpandableButton,
+  Flex,
+  Text,
+  Message,
+  Button,
+  TokenPairImage as UITokenPairImage,
+} from '@pancakeswap/uikit'
 import { ActionContainer } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import tokens from 'config/constants/tokens'
 import Balance from 'components/Balance'
-import { TokenPairImage } from 'components/TokenImage'
 import { useRouter } from 'next/router'
 import BigNumber from 'bignumber.js'
-import { DeserializedPool } from 'state/types'
+import { vaultPoolConfig } from 'config/constants/pools'
+import { DeserializedPool, VaultKey } from 'state/types'
 import { convertSharesToCake, getCakeVaultEarnings } from 'views/Pools/helpers'
 import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 
@@ -97,7 +107,7 @@ const IfoPoolVaultCardMobile: React.FC<IfoPoolVaultCardMobileProps> = ({ account
         <StyledEndedTag>{t('Ended')}</StyledEndedTag>
         <Flex justifyContent="space-between" alignItems="center">
           <StyledTokenContent alignItems="center" flex={1}>
-            <TokenPairImage width={24} height={24} primaryToken={tokens.cake} secondaryToken={tokens.cake} />
+            <UITokenPairImage width={24} height={24} {...vaultPoolConfig[VaultKey.IfoPool].tokenImage} />
             <Box ml="8px">
               <Text small bold>
                 {t('IFO CAKE')}
