@@ -1667,5 +1667,7 @@
   "The lock period has ended. Convert to flexible staking or renew your position to start a new lock staking.": "The lock period has ended. Convert to flexible staking or renew your position to start a new lock staking.",
   "The lock period has ended. To avoid more rewards being burned, convert to flexible staking or renew your position to start a new lock staking.": "The lock period has ended. To avoid more rewards being burned, convert to flexible staking or renew your position to start a new lock staking.",
   "Your MBOX volume rank": "Your MBOX volume rank",
-  "Based on your MBOX/BNB and MBOX/BUSD trading": "Based on your MBOX/BNB and MBOX/BUSD trading"
+  "Based on your MBOX/BNB and MBOX/BUSD trading": "Based on your MBOX/BNB and MBOX/BUSD trading",
+  "Calculated based on current rates and subject to change based on pool conditions. It is an estimate provided for your convenience only, and by no means represents guaranteed returns.": "Calculated based on current rates and subject to change based on pool conditions. It is an estimate provided for your convenience only, and by no means represents guaranteed returns.",
+  "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked, i.e. when the staking period ends.": "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked, i.e. when the staking period ends."
 }
