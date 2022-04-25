@@ -33,12 +33,12 @@ const Overview: React.FC<OverviewPropsType> = ({
   const newBoost = useMemo(() => (newDuration && getBoostFactor(newDuration)) || 0, [getBoostFactor, newDuration])
 
   const formattedRoi = useMemo(() => {
-    return formatRoi({ usdValueStaked, lockedApy })
-  }, [lockedApy, usdValueStaked])
+    return formatRoi({ usdValueStaked, lockedApy, duration })
+  }, [lockedApy, usdValueStaked, duration])
 
   const newFormattedRoi = useMemo(() => {
-    return newLockedApy && formatRoi({ usdValueStaked, lockedApy: newLockedApy })
-  }, [newLockedApy, usdValueStaked])
+    return newLockedApy && formatRoi({ usdValueStaked, lockedApy: newLockedApy, duration: newDuration })
+  }, [newLockedApy, usdValueStaked, newDuration])
 
   const now = new Date()
 
