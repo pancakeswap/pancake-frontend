@@ -1,24 +1,20 @@
 import { useMemo } from 'react'
-import { useWeb3React } from '@web3-react/core'
-import { VaultKey } from 'state/types'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useFetchUserPools } from 'views/Migration/hook/V1/Pool/useFetchUserPools'
-import IfoPoolVaultCardDesktop from './IfoPoolVaultCardDesktop'
+import CakeVaultCard from 'views/Pools/components/CakeVaultCard'
+import { usePoolsWithVault } from 'state/pools/hooks'
 import IfoPoolVaultCardMobile from './IfoPoolVaultCardMobile'
 
 const IfoPoolVaultCard = () => {
-  const { account } = useWeb3React()
   const { isMd, isXs, isSm } = useMatchBreakpoints()
   const isSmallerThanTablet = isMd || isXs || isSm
-
-  const { data } = useFetchUserPools(account)
-  const ifoPool = useMemo(() => ({ ...data, vaultKey: VaultKey.IfoPool }), [data])
+  const { pools } = usePoolsWithVault()
+  const cakePool = useMemo(() => pools.find((pool) => pool.userData && pool.sousId === 0), [pools])
 
   if (isSmallerThanTablet) {
-    return <IfoPoolVaultCardMobile account={account} pool={ifoPool} />
+    return <IfoPoolVaultCardMobile pool={cakePool} />
   }
 
-  return <IfoPoolVaultCardDesktop account={account} pool={ifoPool} />
+  return <CakeVaultCard pool={cakePool} showStakedOnly={false} />
 }
 
 export default IfoPoolVaultCard
