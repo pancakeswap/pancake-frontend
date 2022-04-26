@@ -39,10 +39,10 @@ const DropdownContent = styled.div<{ position: Position }>`
   pointer-events: none;
 `;
 
-const Container = styled.div<{ scrolling: boolean }>`
+const Container = styled.div<{ $scrolling: boolean }>`
   position: relative;
-  ${({ scrolling }) =>
-    !scrolling &&
+  ${({ $scrolling }) =>
+    !$scrolling &&
     css`
       &:hover ${DropdownContent}, &:focus-within ${DropdownContent} {
         opacity: 1;
@@ -80,7 +80,7 @@ const Dropdown: React.FC<DropdownProps> = ({ target, position = "bottom", childr
   }, [isMobile]);
 
   return (
-    <Container scrolling={scrolling}>
+    <Container $scrolling={scrolling}>
       {target}
       <DropdownContent position={position}>{children}</DropdownContent>
     </Container>
