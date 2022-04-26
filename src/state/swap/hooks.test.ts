@@ -91,19 +91,6 @@ describe('hooks', () => {
         recipient: '0x0fF2D1eFd7A57B7562b2bf27F3f37899dB27F4a5',
       })
     })
-    test('accepts any recipient', () => {
-      expect(queryParametersToSwapState(parse('outputCurrency=BNB&exactAmount=20.5&recipient=bob.argent.xyz'))).toEqual(
-        {
-          [Field.OUTPUT]: { currencyId: 'BNB' },
-          [Field.INPUT]: { currencyId: '' },
-          typedValue: '20.5',
-          independentField: Field.INPUT,
-          pairDataById: {},
-          derivedPairDataById: {},
-          recipient: 'bob.argent.xyz',
-        },
-      )
-    })
   })
 })
 
@@ -131,15 +118,7 @@ describe('#useDerivedSwapInfo', () => {
         } = useSwapState()
         const inputCurrency = useCurrency(inputCurrencyId)
         const outputCurrency = useCurrency(outputCurrencyId)
-        return useDerivedSwapInfo(
-          independentField,
-          typedValue,
-          inputCurrencyId,
-          inputCurrency,
-          outputCurrencyId,
-          outputCurrency,
-          recipient,
-        )
+        return useDerivedSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, recipient)
       },
       { wrapper: createReduxWrapper() },
     )
@@ -165,15 +144,7 @@ describe('#useDerivedSwapInfo', () => {
         } = useSwapState()
         const inputCurrency = useCurrency(inputCurrencyId)
         const outputCurrency = useCurrency(outputCurrencyId)
-        return useDerivedSwapInfo(
-          independentField,
-          typedValue,
-          inputCurrencyId,
-          inputCurrency,
-          outputCurrencyId,
-          outputCurrency,
-          recipient,
-        )
+        return useDerivedSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, recipient)
       },
       {
         wrapper: createReduxWrapper({
@@ -204,15 +175,7 @@ describe('#useDerivedSwapInfo', () => {
         } = useSwapState()
         const inputCurrency = useCurrency(inputCurrencyId)
         const outputCurrency = useCurrency(outputCurrencyId)
-        const swapInfo = useDerivedSwapInfo(
-          independentField,
-          typedValue,
-          inputCurrencyId,
-          inputCurrency,
-          outputCurrencyId,
-          outputCurrency,
-          recipient,
-        )
+        const swapInfo = useDerivedSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, recipient)
         return {
           swapInfo,
         }
