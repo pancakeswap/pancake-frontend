@@ -7,7 +7,6 @@ import type {
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import stringify from 'fast-json-stable-stringify'
 import farmsConfig from 'config/constants/farms'
-import { isArchivedPid } from 'utils/farmHelpers'
 import multicall from 'utils/multicall'
 import masterchefABI from 'config/abi/masterchef.json'
 import { getMasterChefAddress } from 'utils/addressHelpers'
@@ -42,8 +41,6 @@ const initialState: SerializedFarmsState = {
   userDataLoaded: false,
   loadingKeys: {},
 }
-
-export const nonArchivedFarms = farmsConfig.filter(({ pid }) => !isArchivedPid(pid))
 
 // Async thunks
 export const fetchFarmsPublicDataAsync = createAsyncThunk<
