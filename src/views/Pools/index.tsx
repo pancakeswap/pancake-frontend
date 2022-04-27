@@ -78,7 +78,7 @@ const ControlStretch = styled(Flex)`
 const FinishedTextContainer = styled(Flex)`
   padding-bottom: 32px;
   flex-direction: column;
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.md} {
     flex-direction: row;
   }
 `
