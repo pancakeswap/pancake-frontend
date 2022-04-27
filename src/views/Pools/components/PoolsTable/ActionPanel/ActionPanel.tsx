@@ -33,7 +33,7 @@ import Stake from './Stake'
 import Apr from '../../Apr'
 import AutoHarvest from './AutoHarvest'
 import MaxStakeRow from '../../MaxStakeRow'
-import { PerformanceFee } from '../../Stat'
+import { PerformanceFee, DurationAvg } from '../../Stat'
 import { VaultPositionTagWithLabel } from '../../Vault/VaultPositionTag'
 import YieldBoostRow from '../../LockedPool/Common/YieldBoostRow'
 import LockDurationRow from '../../LockedPool/Common/LockDurationRow'
@@ -187,6 +187,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   const vaultPool = useVaultPoolByKey(vaultKey)
   const {
     totalCakeInVault,
+    totalLockedAmount,
     userData: {
       lockEndTime,
       lockStartTime,
@@ -194,6 +195,8 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
       locked,
     },
     fees: { performanceFeeAsDecimal },
+    totalShares,
+    pricePerFullShare,
   } = vaultPool
 
   const vaultPosition = getVaultPosition(vaultPool.userData)
@@ -321,6 +324,16 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
         {maxStakeRow}
         {pool.vaultKey && (
           <PerformanceFee userData={vaultPool?.userData} performanceFeeAsDecimal={performanceFeeAsDecimal} />
+        )}
+        {vaultKey && (
+          <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
+            <DurationAvg
+              totalShares={totalShares}
+              pricePerFullShare={pricePerFullShare}
+              totalLockedAmount={totalLockedAmount}
+              totalStakedCakeAmount={totalCakeInVault}
+            />
+          </Flex>
         )}
         {(isXs || isSm) && aprRow}
         {(isXs || isSm || isMd) && totalStakedRow}

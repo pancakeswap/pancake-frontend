@@ -1670,5 +1670,7 @@
   "Calculated based on current rates and subject to change based on pool conditions. It is an estimate provided for your convenience only, and by no means represents guaranteed returns.": "Calculated based on current rates and subject to change based on pool conditions. It is an estimate provided for your convenience only, and by no means represents guaranteed returns.",
   "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked, i.e. when the staking period ends.": "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked, i.e. when the staking period ends.",
   "View Tutorial": "View Tutorial",
-  "CAKE Pool": "CAKE Pool"
+  "CAKE Pool": "CAKE Pool",
+  "Average lock duration": "Average lock duration",
+  "The average lock duration of all the locked staking positions of other users": "The average lock duration of all the locked staking positions of other users"
 }
