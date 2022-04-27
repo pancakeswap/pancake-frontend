@@ -712,7 +712,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
           projectSite: 'https://etermon.io/',
         },
         {
-          account: '0x3b8ea037356cfd867c2191fd11614fa97bab2772',
+          account: '0x3b8eA037356CfD867c2191FD11614FA97BAB2772',
           farmName: 'NBT-USDT',
           tokenAddress: '0x1D3437E570e93581Bd94b2fd8Fbf202d4a65654A',
           quoteToken: tokens.usdt,
