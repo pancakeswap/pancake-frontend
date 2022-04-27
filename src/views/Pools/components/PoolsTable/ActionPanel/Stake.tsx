@@ -10,6 +10,7 @@ import {
   useTooltip,
   Box,
   useMatchBreakpoints,
+  SkeletonV2,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
@@ -256,7 +257,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                 </Text>
               </ActionTitles>
               <ActionContent>
-                <Box>
+                <Box position="relative">
                   <Balance
                     lineHeight="1"
                     bold
@@ -264,7 +265,12 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                     decimals={5}
                     value={vaultKey ? cakeAsNumberBalance : stakedTokenBalance}
                   />
-                  {Number.isFinite(vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance) && (
+                  <SkeletonV2
+                    isDataReady={Number.isFinite(vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance)}
+                    width={120}
+                    wrapperProps={{ height: '20px' }}
+                    skeletonTop="2px"
+                  >
                     <Balance
                       fontSize="12px"
                       display="inline"
@@ -274,7 +280,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                       unit=" USD"
                       prefix="~"
                     />
-                  )}
+                  </SkeletonV2>
                 </Box>
               </ActionContent>
               {vaultPosition === VaultPosition.Locked && (

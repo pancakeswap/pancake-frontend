@@ -23,6 +23,6 @@ export interface SkeletonV2Props extends SpaceProps, LayoutProps {
   variant?: Variant;
   isDataReady?: boolean;
   wrapperProps?: SpaceProps & LayoutProps;
-  skeletonTop: string;
-  skeletonLeft: string;
+  skeletonTop?: string;
+  skeletonLeft?: string;
 }
