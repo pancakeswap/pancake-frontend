@@ -671,6 +671,16 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
           tokenName: 'DeFiato',
           projectSite: 'https://defiato.com/',
         },
+        // Happy used different bidding address in Auction #19, this will only used in Farm Auction #19.
+        {
+          account: '0xA6D19C2A2EA13e9eF02d795155F6c335af764955',
+          farmName: 'HAPPY-BNB',
+          tokenAddress: '0xF5d8A096CcCb31b9D7bcE5afE812BE23e3D4690d',
+          quoteToken: tokens.wbnb,
+          tokenName: 'HappyFans',
+          projectSite: 'https://happyfans.club/',
+        },
+        // The latest will use this to bid.
         {
           account: '0xA6D19C2A2EA13e9eF02d795155F6c335af764955',
           farmName: 'HAPPY-BNB',
