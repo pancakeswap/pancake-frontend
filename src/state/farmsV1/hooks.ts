@@ -8,7 +8,7 @@ import { useAppDispatch } from 'state'
 import { deserializeToken } from 'state/user/hooks/helpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
-import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, nonArchivedFarms } from '.'
+import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, SerializedFarm, State } from '../types'
 
 const deserializeFarmUserData = (farm: SerializedFarm): DeserializedFarmUserData => {
@@ -43,20 +43,19 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
   }
 }
 
-export const usePollFarmsV1WithUserData = (includeArchive = false) => {
+export const usePollFarmsV1WithUserData = () => {
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
 
   useSlowRefreshEffect(() => {
-    const farmsToFetch = includeArchive ? farmsConfig : nonArchivedFarms
-    const pids = farmsToFetch.filter((farmToFetch) => farmToFetch.v1pid).map((farmToFetch) => farmToFetch.v1pid)
+    const pids = farmsConfig.filter((farmToFetch) => farmToFetch.v1pid).map((farmToFetch) => farmToFetch.v1pid)
 
     dispatch(fetchFarmsPublicDataAsync(pids))
 
     if (account) {
       dispatch(fetchFarmUserDataAsync({ account, pids }))
     }
-  }, [includeArchive, dispatch, account])
+  }, [dispatch, account])
 }
 
 /**

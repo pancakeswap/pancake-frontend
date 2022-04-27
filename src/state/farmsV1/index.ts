@@ -7,7 +7,6 @@ import type {
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import stringify from 'fast-json-stable-stringify'
 import farmsConfig from 'config/constants/farms'
-import { isArchivedPidV1 } from 'utils/farmHelpers'
 import type { AppState } from 'state'
 import priceHelperLpsConfig from 'config/constants/priceHelperLps'
 import fetchFarms from './fetchFarms'
@@ -37,8 +36,6 @@ const initialState: SerializedFarmsState = {
   userDataLoaded: false,
   loadingKeys: {},
 }
-
-export const nonArchivedFarms = farmsConfig.filter(({ v1pid }) => !isArchivedPidV1(v1pid))
 
 // Async thunks
 export const fetchFarmsPublicDataAsync = createAsyncThunk<
