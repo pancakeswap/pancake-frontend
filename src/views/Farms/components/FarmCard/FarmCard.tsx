@@ -20,7 +20,7 @@ const StyledCard = styled(Card)`
   margin: 0 0 32px 0;
   ${({ theme }) => theme.mediaQueries.sm} {
     max-width: 31.5%;
-    margin: 0 8px 32px 0;
+    margin: 0 8px 32px 8px;
   }
 `
 
