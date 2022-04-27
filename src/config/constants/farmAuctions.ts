@@ -672,6 +672,14 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
           projectSite: 'https://defiato.com/',
         },
         {
+          account: '0xA6D19C2A2EA13e9eF02d795155F6c335af764955',
+          farmName: 'HAPPY-BNB',
+          tokenAddress: '0xF5d8A096CcCb31b9D7bcE5afE812BE23e3D4690d',
+          quoteToken: tokens.wbnb,
+          tokenName: 'HappyFans',
+          projectSite: 'https://happyfans.club/',
+        },
+        {
           account: '0x4eeD6e51544Ef967A24A86F318A6779ed85cF0e6',
           farmName: 'HAPPY-BNB',
           tokenAddress: '0xF5d8A096CcCb31b9D7bcE5afE812BE23e3D4690d',
