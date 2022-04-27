@@ -187,7 +187,6 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   const vaultPool = useVaultPoolByKey(vaultKey)
   const {
     totalCakeInVault,
-    totalLockedAmount,
     userData: {
       lockEndTime,
       lockStartTime,
@@ -195,8 +194,6 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
       locked,
     },
     fees: { performanceFeeAsDecimal },
-    totalShares,
-    pricePerFullShare,
   } = vaultPool
 
   const vaultPosition = getVaultPosition(vaultPool.userData)
@@ -327,12 +324,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
         )}
         {vaultKey && (
           <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
-            <DurationAvg
-              totalShares={totalShares}
-              pricePerFullShare={pricePerFullShare}
-              totalLockedAmount={totalLockedAmount}
-              totalStakedCakeAmount={totalCakeInVault}
-            />
+            <DurationAvg />
           </Flex>
         )}
         {(isXs || isSm) && aprRow}
