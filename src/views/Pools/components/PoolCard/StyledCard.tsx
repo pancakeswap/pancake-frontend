@@ -2,10 +2,10 @@ import styled from 'styled-components'
 import { Card } from '@pancakeswap/uikit'
 
 export const StyledCard = styled(Card)<{ isFinished?: boolean }>`
-  max-width: 352px;
-  margin: 0 8px 24px;
+  min-width: 280px;
+  max-width: 100%;
+  margin: 0 0 24px 0;
   width: 100%;
-  min-width: 300px;
   display: flex;
   flex-direction: column;
   align-self: baseline;
@@ -13,6 +13,7 @@ export const StyledCard = styled(Card)<{ isFinished?: boolean }>`
   color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled' : 'secondary']};
 
   ${({ theme }) => theme.mediaQueries.sm} {
+    max-width: 350px;
     margin: 0 12px 46px;
   }
 `
