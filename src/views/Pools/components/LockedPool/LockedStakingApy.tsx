@@ -1,7 +1,7 @@
 import { useMemo, memo } from 'react'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 
-import { Flex, Text, Box } from '@pancakeswap/uikit'
+import { Flex, Text, Box, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
@@ -49,6 +49,11 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
     return getBalanceNumber(currentLockedAmountAsBigNumber.minus(userData?.cakeAtLastUserAction))
   }, [currentLockedAmountAsBigNumber, userData?.cakeAtLastUserAction])
 
+  const tooltipContent = t(
+    'Calculated based on current rates and subject to change based on pool conditions. It is an estimate provided for your convenience only, and by no means represents guaranteed returns.',
+  )
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
+
   return (
     <LightGreyCard>
       <Flex justifyContent="space-between" mb="16px">
@@ -92,9 +97,12 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
       <Divider />
       {![VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(position) && (
         <Flex alignItems="center" justifyContent="space-between">
-          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-            {t('APY')}
-          </Text>
+          {tooltipVisible && tooltip}
+          <TooltipText>
+            <Text ref={targetRef} color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+              {t('APY')}
+            </Text>
+          </TooltipText>
           <BalanceWithLoading color="text" bold fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" />
         </Flex>
       )}

@@ -36,7 +36,7 @@ const MigrationPage: React.FC = () => {
   ]
 
   // v1 Farms
-  usePollFarmsV1WithUserData(false)
+  usePollFarmsV1WithUserData()
 
   // v1 Pools
   useFetchPublicPoolsData()

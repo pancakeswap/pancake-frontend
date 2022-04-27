@@ -29,23 +29,26 @@ const DropdownContent = styled.div<{ position: Position }>`
   background-color: ${({ theme }) => theme.nav.background};
   box-shadow: ${({ theme }) => theme.shadows.level1};
   padding: 16px;
-  max-height: 400px;
-  overflow-y: auto;
+  max-height: 0px;
+  overflow: hidden;
   z-index: ${({ theme }) => theme.zIndices.dropdown};
   border-radius: ${({ theme }) => theme.radii.small};
   opacity: 0;
-  transition: 0.3s opacity ease-in-out;
+  transition: max-height 0s 0.3s, opacity 0.3s ease-in-out;
   will-change: opacity;
   pointer-events: none;
 `;
 
-const Container = styled.div<{ scrolling: boolean }>`
+const Container = styled.div<{ $scrolling: boolean }>`
   position: relative;
-  ${({ scrolling }) =>
-    !scrolling &&
+  ${({ $scrolling }) =>
+    !$scrolling &&
     css`
       &:hover ${DropdownContent}, &:focus-within ${DropdownContent} {
         opacity: 1;
+        max-height: 400px;
+        overflow-y: auto;
+        transition: max-height 0s 0s, opacity 0.3s ease-in-out;
         pointer-events: auto;
       }
     `}
@@ -77,7 +80,7 @@ const Dropdown: React.FC<DropdownProps> = ({ target, position = "bottom", childr
   }, [isMobile]);
 
   return (
-    <Container scrolling={scrolling}>
+    <Container $scrolling={scrolling}>
       {target}
       <DropdownContent position={position}>{children}</DropdownContent>
     </Container>

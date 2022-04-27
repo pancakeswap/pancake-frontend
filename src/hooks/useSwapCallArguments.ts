@@ -4,7 +4,6 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../config/constants'
 import { getRouterContract } from '../utils'
-import useENS from './ENS/useENS'
 import useTransactionDeadline from './useTransactionDeadline'
 
 interface SwapCall {
@@ -21,12 +20,11 @@ interface SwapCall {
 export function useSwapCallArguments(
   trade: Trade | undefined, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
-  recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
+  recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
   const { account, chainId, library } = useActiveWeb3React()
 
-  const { address: recipientAddress } = useENS(recipientAddressOrName)
-  const recipient = recipientAddressOrName === null ? account : recipientAddress
+  const recipient = recipientAddress === null ? account : recipientAddress
   const deadline = useTransactionDeadline()
 
   return useMemo(() => {

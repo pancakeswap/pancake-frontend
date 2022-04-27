@@ -16,6 +16,12 @@ import ApyButton from './ApyButton'
 
 const StyledCard = styled(Card)`
   align-self: baseline;
+  max-width: 100%;
+  margin: 0 0 24px 0;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    max-width: 350px;
+    margin: 0 12px 46px;
+  }
 `
 
 const FarmCardInnerContainer = styled(Flex)`

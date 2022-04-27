@@ -105,8 +105,8 @@ function LockedRoiStrategy({ state, dispatch, earningTokenPrice, duration, staki
   useEffect(() => {
     if (mode === CalculatorMode.ROI_BASED_ON_PRINCIPAL) {
       const principalInUSDAsNumber = parseFloat(principalAsUSD)
-
-      const interest = (principalInUSDAsNumber / earningTokenPrice) * (+getLockedApy(duration) / 100)
+      const interest =
+        (principalInUSDAsNumber / earningTokenPrice) * (+getLockedApy(duration) / 100) * (duration / 31449600)
 
       const hasInterest = !Number.isNaN(interest)
       const roiTokens = hasInterest ? interest : 0
@@ -133,7 +133,7 @@ function LockedRoiStrategy({ state, dispatch, earningTokenPrice, duration, staki
 
   useEffect(() => {
     if (mode === CalculatorMode.PRINCIPAL_BASED_ON_ROI) {
-      const principalUSD = roiUSD / (+getLockedApy(duration) / 100)
+      const principalUSD = roiUSD / (+getLockedApy(duration) / 100) / (duration / 31449600)
       const roiPercentage = getRoi({
         amountEarned: roiUSD,
         amountInvested: principalUSD,

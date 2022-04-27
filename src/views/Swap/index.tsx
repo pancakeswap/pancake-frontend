@@ -145,15 +145,7 @@ export default function Swap() {
     parsedAmount,
     currencies,
     inputError: swapInputError,
-  } = useDerivedSwapInfo(
-    independentField,
-    typedValue,
-    inputCurrencyId,
-    inputCurrency,
-    outputCurrencyId,
-    outputCurrency,
-    recipient,
-  )
+  } = useDerivedSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, recipient)
 
   const {
     wrapType,

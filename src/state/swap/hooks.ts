@@ -2,7 +2,6 @@ import { Currency, CurrencyAmount, ETHER, Token, Trade } from '@pancakeswap/sdk'
 import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import useENS from 'hooks/ENS/useENS'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useRouter } from 'next/router'
@@ -136,9 +135,7 @@ export function useSingleTokenSwapInfo(
 export function useDerivedSwapInfo(
   independentField: Field,
   typedValue: string,
-  inputCurrencyId: string | undefined,
   inputCurrency: Currency | undefined,
-  outputCurrencyId: string | undefined,
   outputCurrency: Currency | undefined,
   recipient: string,
 ): {
@@ -151,8 +148,7 @@ export function useDerivedSwapInfo(
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
-  const recipientLookup = useENS(recipient ?? undefined)
-  const to: string | null = (recipient === null ? account : recipientLookup.address) ?? null
+  const to: string | null = (recipient === null ? account : isAddress(recipient) || null) ?? null
 
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
@@ -242,13 +238,11 @@ function parseIndependentFieldURLParameter(urlParam: any): Field {
   return typeof urlParam === 'string' && urlParam.toLowerCase() === 'output' ? Field.OUTPUT : Field.INPUT
 }
 
-const ENS_NAME_REGEX = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)?$/
 const ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
 function validatedRecipient(recipient: any): string | null {
   if (typeof recipient !== 'string') return null
   const address = isAddress(recipient)
   if (address) return address
-  if (ENS_NAME_REGEX.test(recipient)) return recipient
   if (ADDRESS_REGEX.test(recipient)) return recipient
   return null
 }
