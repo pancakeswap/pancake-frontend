@@ -85,6 +85,10 @@ export const DurationAvg: FC<{
 }> = ({ totalStakedCakeAmount, totalLockedAmount, pricePerFullShare, totalShares }) => {
   const { t } = useTranslation()
   const { boostWeight, durationFactor } = useLockPoolConfigVariables()
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t('The average lock duration of all the locked staking positions of other users'),
+    { placement: 'bottom-start' },
+  )
 
   const avgLockDurationsInWeeks = useMemo(() => {
     const flexibleCakeAmount = totalStakedCakeAmount.minus(totalLockedAmount)
@@ -102,7 +106,14 @@ export const DurationAvg: FC<{
   }, [totalStakedCakeAmount, durationFactor, totalLockedAmount, pricePerFullShare, totalShares, boostWeight])
 
   return (
-    <StatWrapper label={<Text small>{t('Average lock duration')}:</Text>}>
+    <StatWrapper
+      label={
+        <TooltipText ref={targetRef} small>
+          {t('Average lock duration')}:
+        </TooltipText>
+      }
+    >
+      {tooltipVisible && tooltip}
       <Text ml="4px" small>
         {avgLockDurationsInWeeks}
       </Text>
