@@ -27,7 +27,6 @@ import ToggleView from 'components/ToggleView/ToggleView'
 import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
-import MigrationSticky from './components/MigrationSticky'
 import { DesktopColumnSchema, FarmWithStakedValue } from './components/types'
 
 const ControlContainer = styled.div`
@@ -106,7 +105,7 @@ const StyledImage = styled(Image)`
 const FinishedTextContainer = styled(Flex)`
   padding-bottom: 32px;
   flex-direction: column;
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.md} {
     flex-direction: row;
   }
 `
@@ -372,7 +371,6 @@ const Farms: React.FC = ({ children }) => {
           </Button>
         </NextLinkFromReactRouter>
       </PageHeader>
-      <MigrationSticky />
       <Page>
         <ControlContainer>
           <ViewControls>
@@ -429,17 +427,25 @@ const Farms: React.FC = ({ children }) => {
         </ControlContainer>
         {isInactive && (
           <FinishedTextContainer>
-            <Text fontSize="20px" color="failure" pr="4px">
+            <Text fontSize={['16px', null, '20px']} color="failure" pr="4px">
               {t("Don't see the farm you are staking?")}
             </Text>
-            <FinishedTextLink
-              external
-              href="https://v1-farms.pancakeswap.finance/farms/history"
-              fontSize="20px"
-              color="failure"
-            >
-              {t('Check out v1 farms')}
-            </FinishedTextLink>
+            <Flex>
+              <FinishedTextLink href="/migration" fontSize={['16px', null, '20px']} color="failure">
+                {t('Go to migration page')}
+              </FinishedTextLink>
+              <Text fontSize={['16px', null, '20px']} color="failure" padding="0px 4px">
+                or
+              </Text>
+              <FinishedTextLink
+                external
+                color="failure"
+                fontSize={['16px', null, '20px']}
+                href="https://v1-farms.pancakeswap.finance/farms/history"
+              >
+                {t('check out v1 farms')}.
+              </FinishedTextLink>
+            </Flex>
           </FinishedTextContainer>
         )}
         {renderContent()}
