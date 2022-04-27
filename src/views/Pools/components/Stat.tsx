@@ -14,7 +14,7 @@ import formatSecondsToWeeks from './LockedPool/utils/formatSecondsToWeeks'
 
 const StatWrapper: FC<{ label: ReactNode }> = ({ children, label }) => {
   return (
-    <Flex mb="2px" justifyContent="space-between" alignItems="center">
+    <Flex mb="2px" justifyContent="space-between" alignItems="center" width="100%">
       {label}
       <Flex alignItems="center">{children}</Flex>
     </Flex>
