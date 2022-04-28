@@ -12,6 +12,7 @@ import {
   CalculateIcon,
   IconButton,
   Skeleton,
+  Box,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
@@ -36,6 +37,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { VaultRoiCalculatorModal } from '../Vault/VaultRoiCalculatorModal'
+import ConvertToLock from '../LockedPool/Common/ConvertToLock'
 import FeeSummary from './FeeSummary'
 
 // min deposit and withdraw amount
@@ -82,7 +84,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
     userData: {
       lastDepositedTime,
       userShares,
-      balance: { cakeAsBigNumber },
+      balance: { cakeAsBigNumber, cakeAsNumberBalance },
     },
   } = useVaultPoolByKey(pool.vaultKey)
   const { t } = useTranslation()
@@ -278,6 +280,11 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           )}
         </Flex>
       )}
+      {cakeAsNumberBalance ? (
+        <Box mt="8px" maxWidth="370px">
+          <ConvertToLock stakingToken={stakingToken} currentStakedAmount={cakeAsNumberBalance} />
+        </Box>
+      ) : null}
       <Button
         isLoading={pendingTx}
         endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}

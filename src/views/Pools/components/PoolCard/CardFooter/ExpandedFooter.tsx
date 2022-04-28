@@ -40,8 +40,6 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     totalCakeInVault,
     totalLockedAmount,
     fees: { performanceFeeAsDecimal },
-    pricePerFullShare,
-    totalShares,
     userData,
   } = useVaultPoolByKey(vaultKey)
 
@@ -70,14 +68,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
       )}
       <TotalStaked totalStaked={vaultKey ? totalCakeInVault : totalStaked} stakingToken={stakingToken} />
       {vaultKey && <TotalLocked totalLocked={totalLockedAmount} lockedToken={stakingToken} />}
-      {vaultKey && (
-        <DurationAvg
-          totalShares={totalShares}
-          pricePerFullShare={pricePerFullShare}
-          totalLockedAmount={totalLockedAmount}
-          totalStakedCakeAmount={totalCakeInVault}
-        />
-      )}
+      {vaultKey && <DurationAvg />}
       {!isFinished && stakingLimit && stakingLimit.gt(0) && (
         <MaxStakeRow
           small

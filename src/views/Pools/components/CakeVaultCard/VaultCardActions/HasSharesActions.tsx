@@ -1,4 +1,4 @@
-import { Flex, Text, IconButton, AddIcon, MinusIcon, useModal, Skeleton } from '@pancakeswap/uikit'
+import { Flex, Text, IconButton, AddIcon, MinusIcon, useModal, Skeleton, Box } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { DeserializedPool } from 'state/types'
@@ -72,7 +72,9 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBal
         </Flex>
       </Flex>
       {maxLockDuration?.gt(0) && (
-        <ConvertToLock stakingToken={stakingToken} currentStakedAmount={cakeAsNumberBalance} />
+        <Box mb="16px">
+          <ConvertToLock stakingToken={stakingToken} currentStakedAmount={cakeAsNumberBalance} />
+        </Box>
       )}
     </>
   )
