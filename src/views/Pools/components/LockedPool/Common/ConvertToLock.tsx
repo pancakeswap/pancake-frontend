@@ -39,7 +39,7 @@ const ConvertToLock: React.FC<ConvertToLockProps> = ({ stakingToken, currentStak
       actionInline={isTableView}
     >
       <MessageText>
-        {t('Lock staking users are earning an average of %amount%% APY.', {
+        {t('Lock staking users are earning an average of %amount%% APY. More benefits are coming soon.', {
           amount: lockedApy ? parseFloat(lockedApy).toFixed(2) : 0,
         })}
       </MessageText>

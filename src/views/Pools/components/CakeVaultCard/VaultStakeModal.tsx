@@ -280,11 +280,11 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           )}
         </Flex>
       )}
-      {cakeAsNumberBalance && (
+      {cakeAsNumberBalance ? (
         <Box mt="8px" maxWidth="370px">
           <ConvertToLock stakingToken={stakingToken} currentStakedAmount={cakeAsNumberBalance} />
         </Box>
-      )}
+      ) : null}
       <Button
         isLoading={pendingTx}
         endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
