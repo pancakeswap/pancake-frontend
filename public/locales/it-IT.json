@@ -1622,7 +1622,7 @@
   "CAKE to lock": "CAKE to lock",
   "%amount% Burned": "%amount% Burned",
   "Convert to Lock": "Convert to Lock",
-  "Lock staking offers higher APY while providing other benefits.": "Lock staking offers higher APY while providing other benefits.",
+  "Lock staking users are earning an average of %amount%% APY. More benefits are coming soon.": "Lock staking users are earning an average of %amount%% APY. More benefits are coming soon.",
   "Add": "Add",
   "Week": "Week",
   "Total lock duration exceeds 52 weeks": "Total lock duration exceeds 52 weeks",
