@@ -110,17 +110,6 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: serializedTokens.wbnb,
   },
   {
-    pid: 89,
-    v1pid: 519,
-    lpSymbol: 'GMI-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x58d4B61983Ca0aFE6E352e90719F403E24e016F4',
-    },
-    token: serializedTokens.gmi,
-    quoteToken: serializedTokens.wbnb,
-  },
-  {
     pid: 88,
     v1pid: 518,
     lpSymbol: 'FROYO-CAKE LP',
@@ -1054,6 +1043,17 @@ const farms: SerializedFarmConfig[] = [
       56: '0x28415ff2C35b65B9E5c7de82126b4015ab9d031F',
     },
     token: serializedTokens.ada,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
+    pid: 89,
+    v1pid: 519,
+    lpSymbol: 'GMI-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x58d4B61983Ca0aFE6E352e90719F403E24e016F4',
+    },
+    token: serializedTokens.gmi,
     quoteToken: serializedTokens.wbnb,
   },
 ].filter((f) => !!f.lpAddresses[CHAIN_ID])
