@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useLockPoolConfigVariables } from 'hooks/useVaultApy'
+import { BOOST_WEIGHT, DURATION_FACTOR } from 'config/constants/pools'
 import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
 import { useCakeVault } from 'state/pools/hooks'
@@ -10,8 +10,6 @@ import formatSecondsToWeeks from '../utils/formatSecondsToWeeks'
 export default function useAvgLockDuration() {
   const { totalLockedAmount, totalShares, totalCakeInVault, pricePerFullShare } = useCakeVault()
 
-  const { boostWeight, durationFactor } = useLockPoolConfigVariables()
-
   const avgLockDurationsInSeconds = useMemo(() => {
     const flexibleCakeAmount = totalCakeInVault.minus(totalLockedAmount)
     const flexibleCakeShares = flexibleCakeAmount.div(pricePerFullShare).times(BIG_TEN.pow(18))
@@ -21,10 +19,10 @@ export default function useAvgLockDuration() {
 
     return avgBoostRatio
       .minus(1)
-      .times(new BigNumber(durationFactor.toString()))
-      .div(new BigNumber(boostWeight.toString()).div(BIG_TEN.pow(12)))
+      .times(new BigNumber(DURATION_FACTOR.toString()))
+      .div(new BigNumber(BOOST_WEIGHT.toString()).div(BIG_TEN.pow(12)))
       .toFixed(0)
-  }, [totalCakeInVault, durationFactor, totalLockedAmount, pricePerFullShare, totalShares, boostWeight])
+  }, [totalCakeInVault, totalLockedAmount, pricePerFullShare, totalShares])
 
   const avgLockDurationsInWeeks = useMemo(
     () => formatSecondsToWeeks(avgLockDurationsInSeconds),

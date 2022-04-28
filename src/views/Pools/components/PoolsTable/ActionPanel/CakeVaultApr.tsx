@@ -3,8 +3,8 @@ import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
 import { DeserializedPool, DeserializedLockedVaultUser } from 'state/types'
 import { useVaultApy } from 'hooks/useVaultApy'
-import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
 import { VaultPosition } from 'utils/cakePool'
+import { MAX_LOCK_DURATION } from 'config/constants/pools'
 import { VaultRoiCalculatorModal } from '../../Vault/VaultRoiCalculatorModal'
 
 interface CakeVaultAprProps {
@@ -15,13 +15,10 @@ interface CakeVaultAprProps {
 
 const CakeVaultApr: React.FC<CakeVaultAprProps> = ({ pool, userData, vaultPosition }) => {
   const { t } = useTranslation()
-  const maxLockDuration = useVaultMaxDuration()
 
   const { flexibleApy, lockedApy } = useVaultApy({
     duration:
-      vaultPosition > VaultPosition.Flexible
-        ? +userData.lockEndTime - +userData.lockStartTime
-        : maxLockDuration?.toNumber(),
+      vaultPosition > VaultPosition.Flexible ? +userData.lockEndTime - +userData.lockStartTime : MAX_LOCK_DURATION,
   })
 
   const [onPresentFlexibleApyModal] = useModal(<VaultRoiCalculatorModal pool={pool} />)
@@ -61,36 +58,25 @@ const CakeVaultApr: React.FC<CakeVaultAprProps> = ({ pool, userData, vaultPositi
           <Text fontSize="16px" color="textSubtle" textAlign="left">
             {t('Locked APY')}
           </Text>
-          {lockedApy && maxLockDuration ? (
+          {lockedApy ? (
             <Flex alignItems="center" justifyContent="flex-start">
               <Text fontSize="16px" style={{ whiteSpace: 'nowrap' }} fontWeight="600">
-                {maxLockDuration.gt(0) ? t('Up to') : '-'}
+                {t('Up to')}
               </Text>
-              {maxLockDuration.gt(0) && (
-                <>
-                  <Balance
-                    ml="7px"
-                    fontSize="16px"
-                    value={parseFloat(lockedApy)}
-                    decimals={2}
-                    unit="%"
-                    fontWeight="600"
-                  />
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      onPresentLockedApyModal()
-                    }}
-                    variant="text"
-                    width="20px"
-                    height="20px"
-                    padding="0px"
-                    marginLeft="4px"
-                  >
-                    <CalculateIcon color="textSubtle" width="20px" />
-                  </Button>
-                </>
-              )}
+              <Balance ml="7px" fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" fontWeight="600" />
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onPresentLockedApyModal()
+                }}
+                variant="text"
+                width="20px"
+                height="20px"
+                padding="0px"
+                marginLeft="4px"
+              >
+                <CalculateIcon color="textSubtle" width="20px" />
+              </Button>
             </Flex>
           ) : (
             <Skeleton width="80px" height="16px" />

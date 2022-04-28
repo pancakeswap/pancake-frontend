@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { Button, AutoRenewIcon, Box, Flex } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
 import { useTranslation } from 'contexts/Localization'
-import { DEFAULT_MAX_DURATION } from 'hooks/useVaultApy'
+import { MAX_LOCK_DURATION } from 'config/constants/pools'
 import { getBalanceAmount } from 'utils/formatBalance'
 
 import { LockedModalBodyPropsType, ModalValidator } from '../types'
@@ -36,8 +36,8 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
         })
       : {
           isValidAmount: lockedAmount?.toNumber() > 0 && getBalanceAmount(currentBalance).gte(lockedAmount),
-          isValidDuration: duration > 0 && duration <= DEFAULT_MAX_DURATION,
-          isOverMax: duration > DEFAULT_MAX_DURATION,
+          isValidDuration: duration > 0 && duration <= MAX_LOCK_DURATION,
+          isOverMax: duration > MAX_LOCK_DURATION,
         }
   }, [validator, currentBalance, lockedAmount, duration])
 
