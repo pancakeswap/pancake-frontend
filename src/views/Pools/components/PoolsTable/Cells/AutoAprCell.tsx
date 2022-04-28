@@ -38,7 +38,12 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
   })
 
   const [onPresentFlexibleApyModal] = useModal(<VaultRoiCalculatorModal pool={pool} />)
-  const [onPresentLockedApyModal] = useModal(<VaultRoiCalculatorModal pool={pool} initialView={1} />)
+  const [onPresentLockedApyModal] = useModal(
+    <VaultRoiCalculatorModal pool={pool} initialView={1} />,
+    true,
+    true,
+    'LockedVaultRoiCalculatorModal',
+  )
 
   if (vaultPosition === VaultPosition.None) {
     return (

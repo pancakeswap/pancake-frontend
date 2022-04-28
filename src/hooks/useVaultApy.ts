@@ -47,6 +47,29 @@ const getLockedApy = (flexibleApy: string, boostFactor: FixedNumber) =>
 
 const cakePoolPID = 0
 
+export function useLockPoolConfigVariables() {
+  const calls = useMemo(
+    () =>
+      ['BOOST_WEIGHT', 'DURATION_FACTOR'].map((name) => ({
+        address: cakeVaultAddress,
+        name,
+      })),
+    [],
+  )
+
+  const { data } = useSWRMulticall(cakeVaultV2Abi, calls, {
+    use: [immutableMiddleware],
+  })
+
+  const boostWeight: BigNumber = data?.[0][0] || DEFAULT_BOOST_WEIGHT
+  const durationFactor: BigNumber = data?.[1][0] || DEFAULT_DURATION_FACTOR
+
+  return {
+    boostWeight,
+    durationFactor,
+  }
+}
+
 export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: number } = {}) {
   const {
     totalShares = BIG_ZERO,
@@ -85,17 +108,7 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
       .mulUnsafe(cakePoolSharesInSpecialFarms)
   })
 
-  const calls = useMemo(
-    () =>
-      ['BOOST_WEIGHT', 'DURATION_FACTOR'].map((name) => ({
-        address: cakeVaultAddress,
-        name,
-      })),
-    [],
-  )
-  const { data } = useSWRMulticall(cakeVaultV2Abi, calls, {
-    use: [immutableMiddleware],
-  })
+  const { boostWeight, durationFactor } = useLockPoolConfigVariables()
 
   const flexibleApy = useMemo(
     () =>
@@ -105,9 +118,6 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
       getFlexibleApy(totalCakePoolEmissionPerYear, pricePerFullShareAsEtherBN, totalSharesAsEtherBN).toString(),
     [pricePerFullShareAsEtherBN, totalCakePoolEmissionPerYear, totalSharesAsEtherBN],
   )
-
-  const boostWeight: BigNumber = data?.[0][0] || DEFAULT_BOOST_WEIGHT
-  const durationFactor: BigNumber = data?.[1][0] || DEFAULT_DURATION_FACTOR
 
   const boostFactor = useMemo(
     () => _getBoostFactor(boostWeight, duration, durationFactor),

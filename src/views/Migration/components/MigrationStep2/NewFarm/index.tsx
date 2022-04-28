@@ -10,7 +10,6 @@ import { DeserializedFarm } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { FarmWithStakedValue } from 'views/Farms/components/types'
 import { getDisplayApr } from 'views/Farms/Farms'
-import { isArchivedPid, isArchivedPidV1 } from 'utils/farmHelpers'
 import OldFarm from './FarmTable'
 import { RowProps } from './FarmRow'
 import { DesktopV2ColumnSchema } from '../../types'
@@ -21,12 +20,12 @@ const OldFarmStep1: React.FC = () => {
   const { data: farmsV1LP } = useFarmsV1()
   const cakePrice = usePriceCakeBusd()
 
-  usePollFarmsWithUserData(false)
+  usePollFarmsWithUserData()
 
   const userDataReady = !account || (!!account && userDataLoaded)
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X' && !isArchivedPid(farm.pid))
-  const activeFarmsV1 = farmsV1LP.filter((farm) => farm.pid !== 0 && !isArchivedPidV1(farm.pid))
+  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+  const activeFarmsV1 = farmsV1LP.filter((farm) => farm.pid !== 0)
 
   const v1StakedOrHasTokenBalance = activeFarmsV1.filter((farm) => {
     const hasStakedBalance = new BigNumber(farm.userData.stakedBalance).isGreaterThan(0)

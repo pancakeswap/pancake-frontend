@@ -3,6 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { batch, useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
+import farmsConfig from 'config/constants/farms'
 import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
@@ -12,7 +13,7 @@ import {
   fetchPoolsStakingLimitsAsync,
 } from '.'
 import { DeserializedPool, VaultKey } from '../types'
-import { fetchFarmsPublicDataAsync, nonArchivedFarms } from '../farms'
+import { fetchFarmsPublicDataAsync } from '../farms'
 import {
   poolsWithUserDataLoadingSelector,
   makePoolWithUserDataLoadingSelector,
@@ -26,7 +27,7 @@ export const useFetchPublicPoolsData = () => {
   useSlowRefreshEffect(
     (currentBlock) => {
       const fetchPoolsDataWithFarms = async () => {
-        const activeFarms = nonArchivedFarms.filter((farm) => farm.pid !== 0)
+        const activeFarms = farmsConfig.filter((farm) => farm.pid !== 0)
         await dispatch(fetchFarmsPublicDataAsync(activeFarms.map((farm) => farm.pid)))
         batch(() => {
           dispatch(fetchPoolsPublicDataAsync(currentBlock))

@@ -33,12 +33,12 @@ const Overview: React.FC<OverviewPropsType> = ({
   const newBoost = useMemo(() => (newDuration && getBoostFactor(newDuration)) || 0, [getBoostFactor, newDuration])
 
   const formattedRoi = useMemo(() => {
-    return formatRoi({ usdValueStaked, lockedApy })
-  }, [lockedApy, usdValueStaked])
+    return formatRoi({ usdValueStaked, lockedApy, duration })
+  }, [lockedApy, usdValueStaked, duration])
 
   const newFormattedRoi = useMemo(() => {
-    return newLockedApy && formatRoi({ usdValueStaked, lockedApy: newLockedApy })
-  }, [newLockedApy, usdValueStaked])
+    return newLockedApy && formatRoi({ usdValueStaked, lockedApy: newLockedApy, duration: newDuration })
+  }, [newLockedApy, usdValueStaked, newDuration])
 
   const now = new Date()
 
@@ -60,7 +60,16 @@ const Overview: React.FC<OverviewPropsType> = ({
       </Flex>
       <LightGreyCard>
         <BalanceRow title={t('Cake to be locked')} value={lockedAmount} newValue={newLockedAmount} decimals={2} />
-        <BalanceRow title="apy" unit="%" value={_toNumber(lockedApy)} decimals={2} newValue={_toNumber(newLockedApy)} />
+        <BalanceRow
+          title="apy"
+          unit="%"
+          value={_toNumber(lockedApy)}
+          decimals={2}
+          newValue={_toNumber(newLockedApy)}
+          tooltipContent={t(
+            'Calculated based on current rates and subject to change based on pool conditions. It is an estimate provided for your convenience only, and by no means represents guaranteed returns.',
+          )}
+        />
         <TextRow
           title={t('duration')}
           value={isValidDuration && formatSecondsToWeeks(duration)}
@@ -72,6 +81,9 @@ const Overview: React.FC<OverviewPropsType> = ({
           value={_toNumber(boostFactor)}
           decimals={2}
           newValue={_toNumber(newBoost)}
+          tooltipContent={t(
+            'Your yield will be boosted based on the total lock duration of your current fixed term staking position.',
+          )}
         />
         <DateRow
           color={_toNumber(newDuration) ? 'failure' : 'text'}
@@ -85,6 +97,9 @@ const Overview: React.FC<OverviewPropsType> = ({
           prefix="$"
           decimals={2}
           suffix={<CalculatorButton />}
+          tooltipContent={t(
+            'Calculated based on current rates and subject to change based on pool conditions. It is an estimate provided for your convenience only, and by no means represents guaranteed returns.',
+          )}
         />
       </LightGreyCard>
     </Box>

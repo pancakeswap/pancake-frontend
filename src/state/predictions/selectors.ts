@@ -64,19 +64,22 @@ export const getSortedRoundsCurrentEpochSelector = createSelector(
 
 export const getMinBetAmountSelector = createSelector([selectMinBetAmount], BigNumber.from)
 
-export const getCurrentRoundLockTimestampSelector = createSelector(
+export const getCurrentRoundCloseTimestampSelector = createSelector(
   [selectCurrentEpoch, getBigNumberRounds, selectIntervalSeconds],
   (currentEpoch, rounds, intervalSeconds) => {
-    const currentRound = rounds[currentEpoch]
+    if (!currentEpoch) {
+      return undefined
+    }
+
+    const currentRound = rounds[currentEpoch - 1]
 
     if (!currentRound) {
       return undefined
     }
 
-    if (!currentRound.lockTimestamp) {
-      return currentRound.startTimestamp + intervalSeconds
+    if (!currentRound.closeTimestamp) {
+      return currentRound.lockTimestamp + intervalSeconds
     }
-
-    return currentRound.lockTimestamp
+    return currentRound.closeTimestamp
   },
 )

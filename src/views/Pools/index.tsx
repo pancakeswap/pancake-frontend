@@ -21,7 +21,6 @@ import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
 import Loading from 'components/Loading'
-import MigrationSticky from 'views/Farms/components/MigrationSticky'
 import { useInitialBlock } from 'state/block/hooks'
 import { BSC_BLOCK_TIME } from 'config'
 import PoolCard from './components/PoolCard'
@@ -79,7 +78,7 @@ const ControlStretch = styled(Flex)`
 const FinishedTextContainer = styled(Flex)`
   padding-bottom: 32px;
   flex-direction: column;
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.md} {
     flex-direction: row;
   }
 `
@@ -271,7 +270,6 @@ const Pools: React.FC = () => {
           </Flex>
         </Flex>
       </PageHeader>
-      <MigrationSticky />
       <Page>
         <PoolControls>
           <PoolTabButtons
@@ -324,11 +322,11 @@ const Pools: React.FC = () => {
         </PoolControls>
         {showFinishedPools && (
           <FinishedTextContainer>
-            <Text fontSize="20px" color="failure" pr="4px">
+            <Text fontSize={['16px', null, '20px']} color="failure" pr="4px">
               {t('Looking for v1 CAKE syrup pools?')}
             </Text>
-            <FinishedTextLink href="/migration" fontSize="20px" color="failure">
-              {t('Go to migration page.')}
+            <FinishedTextLink href="/migration" fontSize={['16px', null, '20px']} color="failure">
+              {t('Go to migration page')}.
             </FinishedTextLink>
           </FinishedTextContainer>
         )}

@@ -10,7 +10,6 @@ import { INITIAL_ALLOWED_SLIPPAGE } from '../config/constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { calculateGasMargin, isAddress } from '../utils'
 import isZero from '../utils/isZero'
-import useENS from './ENS/useENS'
 import { useSwapCallArguments } from './useSwapCallArguments'
 
 export enum SwapCallbackState {
@@ -41,26 +40,25 @@ interface SwapCallEstimate {
 export function useSwapCallback(
   trade: Trade | undefined, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
-  recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
+  recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveWeb3React()
   const gasPrice = useGasPrice()
 
-  const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)
+  const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddress)
 
   const { t } = useTranslation()
 
   const addTransaction = useTransactionAdder()
 
-  const { address: recipientAddress } = useENS(recipientAddressOrName)
-  const recipient = recipientAddressOrName === null ? account : recipientAddress
+  const recipient = recipientAddress === null ? account : recipientAddress
 
   return useMemo(() => {
     if (!trade || !library || !account || !chainId) {
       return { state: SwapCallbackState.INVALID, callback: null, error: 'Missing dependencies' }
     }
     if (!recipient) {
-      if (recipientAddressOrName !== null) {
+      if (recipientAddress !== null) {
         return { state: SwapCallbackState.INVALID, callback: null, error: 'Invalid recipient' }
       }
       return { state: SwapCallbackState.LOADING, callback: null, error: null }
@@ -137,9 +135,7 @@ export function useSwapCallback(
               recipient === account
                 ? base
                 : `${base} to ${
-                    recipientAddressOrName && isAddress(recipientAddressOrName)
-                      ? truncateHash(recipientAddressOrName)
-                      : recipientAddressOrName
+                    recipientAddress && isAddress(recipientAddress) ? truncateHash(recipientAddress) : recipientAddress
                   }`
 
             addTransaction(response, {
@@ -161,7 +157,7 @@ export function useSwapCallback(
       },
       error: null,
     }
-  }, [trade, library, account, chainId, recipient, recipientAddressOrName, swapCalls, gasPrice, t, addTransaction])
+  }, [trade, library, account, chainId, recipient, recipientAddress, swapCalls, gasPrice, t, addTransaction])
 }
 
 /**

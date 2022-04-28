@@ -2,9 +2,8 @@ import { useEffect, useRef } from 'react'
 import { useCountUp } from 'react-countup'
 import styled from 'styled-components'
 import { BnbUsdtPairTokenIcon, Box, Flex, PocketWatchIcon, Text } from '@pancakeswap/uikit'
-import { ROUND_BUFFER } from 'state/predictions/config'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
-import { useGetCurrentRoundLockTimestamp } from 'state/predictions/hooks'
+import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { formatRoundTime } from '../helpers'
 import useCountdown from '../hooks/useCountdown'
@@ -128,12 +127,12 @@ interface TimerLabelProps {
 }
 
 export const TimerLabel: React.FC<TimerLabelProps> = ({ interval, unit }) => {
-  const currentRoundLockTimestamp = useGetCurrentRoundLockTimestamp()
-  const { secondsRemaining } = useCountdown(currentRoundLockTimestamp + ROUND_BUFFER)
+  const currentRoundCloseTimestamp = useGetCurrentRoundCloseTimestamp()
+  const { secondsRemaining } = useCountdown(currentRoundCloseTimestamp)
   const countdown = formatRoundTime(secondsRemaining)
   const { t } = useTranslation()
 
-  if (!currentRoundLockTimestamp) {
+  if (!currentRoundCloseTimestamp) {
     return null
   }
 

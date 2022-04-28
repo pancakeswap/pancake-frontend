@@ -56,8 +56,8 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
         <TokenPairImage {...vaultPoolConfig[pool.vaultKey].tokenImage} width={64} height={64} />
       </PoolCardHeader>
       <StyledCardBody isLoading={isLoading}>
-        <VaultPositionTagWithLabel userData={vaultPool.userData} />
-        {vaultPool?.userData?.locked ? (
+        {account && <VaultPositionTagWithLabel userData={vaultPool.userData} />}
+        {account && vaultPool?.userData?.locked ? (
           <LockedStakingApy
             userData={vaultPool?.userData}
             stakingToken={pool?.stakingToken}

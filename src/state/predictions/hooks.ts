@@ -10,8 +10,8 @@ import {
   makeGetBetByEpochSelector,
   makeGetIsClaimableSelector,
   getMinBetAmountSelector,
-  getCurrentRoundLockTimestampSelector,
   getSortedRoundsCurrentEpochSelector,
+  getCurrentRoundCloseTimestampSelector,
 } from './selectors'
 
 export const useGetRoundsByCloseOracleId = () => {
@@ -91,8 +91,8 @@ export const useGetHistory = () => {
 /**
  * The current round's lock timestamp will not be set immediately so we return an estimate until then
  */
-export const useGetCurrentRoundLockTimestamp = () => {
-  return useSelector(getCurrentRoundLockTimestampSelector)
+export const useGetCurrentRoundCloseTimestamp = () => {
+  return useSelector(getCurrentRoundCloseTimestampSelector)
 }
 
 // Leaderboard
