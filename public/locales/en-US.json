@@ -1772,5 +1772,6 @@
   "%baseSymbol% per %quoteSymbol%": "%baseSymbol% per %quoteSymbol%",
   "Confirm Mint": "Confirm Mint",
   "Deposit PE tokens to receive USDC": "Deposit PE tokens to receive USDC",
-  "Confirm Withdraw": "Confirm Withdraw"
+  "Confirm Withdraw": "Confirm Withdraw",
+  "Minting in the current version leaks parts of cents of Dollars. We recommend not minting until the new version of the contract is live.": "Minting in the current version leaks parts of cents of Dollars. We recommend not minting until the new version of the contract is live."
 }

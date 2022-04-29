@@ -361,6 +361,17 @@ export default function MintView({ history }: RouteComponentProps) {
                             : t('Mint'))}
                       </Button>
                     )}
+                    <Text
+                      style={{ textAlign: 'center', marginTop: '0.8rem' }}
+                      color="#B8ADD2"
+                      fontWeight={400}
+                      lineHeight={1.5}
+                      fontSize="14"
+                    >
+                      {t(
+                        'Minting in the current version leaks parts of cents of Dollars. We recommend not minting until the new version of the contract is live.',
+                      )}
+                    </Text>
                     {showApproveFlow && (
                       <Column style={{ marginTop: '1rem' }}>
                         <ProgressSteps steps={[approval === ApprovalState.APPROVED]} />

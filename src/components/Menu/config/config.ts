@@ -23,7 +23,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
   },
   {
     label: t('Vault'),
-    icon: 'Mint',
+    icon: 'Bank',
     href: '/mint',
     showItemsOnMobile: false,
     items: [

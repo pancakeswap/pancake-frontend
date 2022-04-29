@@ -1249,7 +1249,7 @@
   "Transactions": "Transacciones",
   "MATIC Balance Low": "Poco saldo MATIC",
   "MATIC Balance": "Saldo MATIC",
-  "CAKE Balance": "Saldo de CAKE",
+  "PERONIO Balance": "Saldo de PERONIO",
   "You need MATIC for transaction fees.": "Necesitas MATIC para pagar las comisiones de la transacción.",
   "Disconnect": "Desconectar",
   "Disconnect Wallet": "Desconectar el monedero",
@@ -1630,7 +1630,7 @@
   "Head to the NFT Market to buy!": "¡Ve al mercado para comprar NFT!",
   "documentation on our site": "documentación en nuestro sitio",
   "Max per wallet: %maxPerWallet%": "Máximo por monedero: %maxPerWallet%",
-  "Your CAKE Balance": "Tu saldo de CAKE",
+  "Your Peronio Balance": "Tu saldo de PERONIO",
   "Public Sale: Any wallet with an active Pancake Profile can purchase up to 10 Squad Tickets, while stocks last.": "Venta pública: todos los monederos que tengan un perfil de Pancake activo podrán comprar hasta 10 Billetes del escuadrón, hasta agotar existencias.",
   "Enabling...": "Habilitando...",
   "Gen 0 Pancake Bunnies": "Conejitos de Pancake Gen 0",
@@ -1774,5 +1774,6 @@
   "Deposit PE tokens to receive USDC": "Depositá PE para recibir USDC",
   "Confirm Withdraw": "Confirmar Retiro",
   "Add liquidity instead": "Agregar liquidez",
-  "Main Site": "Sitio principal"
+  "Main Site": "Sitio principal",
+  "Minting in the current version leaks parts of cents of Dollars. We recommend not minting until the new version of the contract is live.": "La emisión en la versión actual hace que se pierdan milésimas de centavos de dolar. Recomendamos no utilizarlo hasta se migre al nuevo contrato."
 }
