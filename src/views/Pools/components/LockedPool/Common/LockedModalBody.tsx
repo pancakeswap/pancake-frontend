@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Button, AutoRenewIcon, Box, Flex } from '@pancakeswap/uikit'
+import { Button, AutoRenewIcon, Box, Flex, MessageText, Message } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
 import { useTranslation } from 'contexts/Localization'
 import { MAX_LOCK_DURATION } from 'config/constants/pools'
@@ -58,8 +58,10 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
           duration={duration}
           lockedAmount={lockedAmount?.toNumber()}
           usdValueStaked={usdValueStaked}
+          showLockWarning
         />
       )}
+
       <Flex mt="24px">
         <Button
           width="100%"
