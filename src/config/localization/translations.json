@@ -1667,6 +1667,8 @@
   "Average lock duration": "Average lock duration",
   "The average lock duration of all the locked staking positions of other users": "The average lock duration of all the locked staking positions of other users",
   "Your max CAKE entry": "Your max CAKE entry",
+  "IFO Vesting Tokens": "IFO Vesting Tokens",
+  "You have tokens available for claiming now!": "You have tokens available for claiming now!",
   "You have no tokens available for claiming": "You have no tokens available for claiming",
   "Participate in our next IFO. and remember to lock your CAKE to increase your allocation!": "Participate in our next IFO. and remember to lock your CAKE to increase your allocation!"
 }

@@ -26,7 +26,7 @@ const IfoVesting: React.FC = () => {
               {t('IFO Vesting Tokens')}
             </Text>
             <Text color="textSubtle" fontSize="14px">
-              {t('You have tokens available for claiming now!')}
+              {t('You have no tokens available for claiming')}
             </Text>
           </Box>
           <Image
