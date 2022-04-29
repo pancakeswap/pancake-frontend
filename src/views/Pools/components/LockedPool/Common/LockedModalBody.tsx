@@ -58,8 +58,10 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
           duration={duration}
           lockedAmount={lockedAmount?.toNumber()}
           usdValueStaked={usdValueStaked}
+          showLockWarning
         />
       )}
+
       <Flex mt="24px">
         <Button
           width="100%"

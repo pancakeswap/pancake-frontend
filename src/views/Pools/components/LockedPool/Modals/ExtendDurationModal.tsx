@@ -54,6 +54,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
         newDuration={currentDuration + duration}
         lockedAmount={currentLockedAmount}
         usdValueStaked={usdValueStaked}
+        showLockWarning={!+lockStartTime}
       />
     ),
     [lockStartTime, currentDuration, currentLockedAmount, usdValueStaked],
