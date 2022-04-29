@@ -13,6 +13,7 @@ interface ActivityFilterProps {
 }
 
 const TriggerButton = styled(Button)<{ hasItem: boolean }>`
+  white-space: nowrap;
   ${({ hasItem }) =>
     hasItem &&
     `  
@@ -60,7 +61,7 @@ export const ActivityFilter: React.FC<ActivityFilterProps> = ({ eventType, colle
   }
 
   return (
-    <Flex alignItems="center" mr="4px" mb="4px" style={{ whiteSpace: 'nowrap' }}>
+    <Flex alignItems="center" mr="4px" mb="4px">
       <Box>
         <TriggerButton
           onClick={handleMenuClick}
