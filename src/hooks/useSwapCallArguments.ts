@@ -1,14 +1,20 @@
+import { MaxUint256 } from '@ethersproject/constants'
 import { Contract } from '@ethersproject/contracts'
-import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@pancakeswap/sdk'
+import { JSBI, Percent, Router, SwapParameters, Trade, TradeType, Token, TokenAmount } from '@pancakeswap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
+import { ApprovalState, useApproveCallbackFromTrade } from './useApproveCallback'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../config/constants'
 import { getRouterContract } from '../utils'
+import { useTokenContract } from './useContract'
 import useTransactionDeadline from './useTransactionDeadline'
+import useIsAmbireWC from './useIsAmbireWC'
 
 interface SwapCall {
   contract: Contract
   parameters: SwapParameters
+  skipGasEstimation?: boolean
+  extra?: any
 }
 
 /**
@@ -26,6 +32,13 @@ export function useSwapCallArguments(
 
   const recipient = recipientAddress === null ? account : recipientAddress
   const deadline = useTransactionDeadline()
+
+  const [approvalState] = useApproveCallbackFromTrade(trade, allowedSlippage)
+
+  const token = trade?.inputAmount.currency as Token
+  const tokenContract = useTokenContract(token?.address)
+
+  const isAmbireWC = useIsAmbireWC()
 
   return useMemo(() => {
     if (!trade || !recipient || !library || !account || !chainId || !deadline) return []
@@ -57,6 +70,32 @@ export function useSwapCallArguments(
       )
     }
 
-    return swapMethods.map((parameters) => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, deadline, library, recipient, trade])
+    return swapMethods.map((parameters) => {
+      const isToken = trade.inputAmount instanceof TokenAmount
+
+      if (isAmbireWC && isToken && approvalState === ApprovalState.NOT_APPROVED) {
+        const approveData = tokenContract?.interface?.encodeFunctionData('approve', [contract.address, MaxUint256])
+
+        const swapData = contract.interface.encodeFunctionData(parameters.methodName, parameters.args)
+
+        return {
+          parameters,
+          contract,
+          skipGasEstimation: true,
+          extra: [
+            {
+              to: tokenContract.address,
+              data: approveData,
+            },
+            {
+              to: contract.address,
+              data: swapData,
+            },
+          ],
+        }
+      }
+
+      return { parameters, contract }
+    })
+  }, [account, allowedSlippage, approvalState, chainId, deadline, isAmbireWC, library, recipient, tokenContract, trade])
 }

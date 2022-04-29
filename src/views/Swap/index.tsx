@@ -64,6 +64,7 @@ import SwapWarningModal from './components/SwapWarningModal'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
+import useIsAmbireWC from '../../hooks/useIsAmbireWC'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -233,6 +234,8 @@ export default function Swap() {
 
   const [singleHopOnly] = useUserSingleHopOnly()
 
+  const isAmbireWC = useIsAmbireWC()
+
   const handleSwap = useCallback(() => {
     if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
       return
@@ -264,6 +267,7 @@ export default function Swap() {
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
   const showApproveFlow =
+    !isAmbireWC &&
     !swapInputError &&
     (approval === ApprovalState.NOT_APPROVED ||
       approval === ApprovalState.PENDING ||
