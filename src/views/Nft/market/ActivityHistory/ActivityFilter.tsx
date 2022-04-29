@@ -60,7 +60,7 @@ export const ActivityFilter: React.FC<ActivityFilterProps> = ({ eventType, colle
   }
 
   return (
-    <Flex alignItems="center" mr="4px" mb="4px">
+    <Flex alignItems="center" mr="4px" mb="4px" style={{ whiteSpace: 'nowrap' }}>
       <Box>
         <TriggerButton
           onClick={handleMenuClick}
