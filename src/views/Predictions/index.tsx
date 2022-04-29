@@ -31,9 +31,9 @@ function Warnings() {
   const chartView = useChartView()
   const handleAcceptRiskSuccess = () => setHasAcceptedRisk(true)
 
-  const [onPresentRiskDisclaimer] = useModal(<RiskDisclaimer onSuccess={handleAcceptRiskSuccess} />, false)
-  const [onPresentChartDisclaimer] = useModal(<ChartDisclaimer />, false)
-  const [onPresentChainlinkChartDisclaimer] = useModal(<ChainlinkChartDisclaimer />, false)
+  const [onPresentRiskDisclaimer] = useModal(<RiskDisclaimer onSuccess={handleAcceptRiskSuccess} />)
+  const [onPresentChartDisclaimer] = useModal(<ChartDisclaimer />)
+  const [onPresentChainlinkChartDisclaimer] = useModal(<ChainlinkChartDisclaimer />)
 
   // TODO: memoize modal's handlers
   const onPresentRiskDisclaimerRef = useRef(onPresentRiskDisclaimer)
