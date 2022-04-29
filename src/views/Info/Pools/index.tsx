@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Text, Heading, Card } from '@pancakeswap/uikit'
+import { Text, Heading, Card } from '@kiwanoswap/uikit'
 import Page from 'components/Layout/Page'
 import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
 import { useAllPoolData, usePoolDatas } from 'state/info/hooks'

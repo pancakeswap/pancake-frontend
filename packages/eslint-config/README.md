@@ -1,4 +1,4 @@
-# eslint-config-pancake
+# eslint-config-kiwanoswap
 
 Pancake Eslint config with:
 
@@ -9,7 +9,7 @@ Pancake Eslint config with:
 ## Usage
 
 ```
-npx install-peerdeps --dev @pancakeswap/eslint-config-pancake
+npx install-peerdeps --dev @kiwanoswap/eslint-config-kiwanoswap
 ```
 
-Add `"extends": "@pancakeswap/eslint-config-pancake"` to your eslint config file.
+Add `"extends": "@kiwanoswap/eslint-config-kiwanoswap"` to your eslint config file.

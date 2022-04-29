@@ -10,7 +10,7 @@ import {
   UserMenuItem,
   UserMenuVariant,
   Box,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import Trans from 'components/Trans'
 import useAuth from 'hooks/useAuth'
 import { useRouter } from 'next/router'

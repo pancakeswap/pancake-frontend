@@ -1,4 +1,4 @@
-import { Heading, Text } from '@pancakeswap/uikit'
+import { Heading, Text } from '@kiwanoswap/uikit'
 import { NormalComponents, SpecialComponents } from 'react-markdown/src/ast-to-react'
 import styled from 'styled-components'
 

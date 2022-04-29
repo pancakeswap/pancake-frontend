@@ -14,7 +14,7 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
   Spinner,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { ApiResponseCollectionTokens } from 'state/nftMarket/types'

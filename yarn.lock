@@ -2949,7 +2949,7 @@
   dependencies:
     "@octokit/openapi-types" "^11.2.0"
 
-"@pancakeswap/eslint-config-pancake@file:C:\\Users\\Raymond Moluno\\Documents\\GitHub\\cake-interface\\packages\\eslint-config":
+"@kiwanoswap/eslint-config-kiwanoswap@file:C:\\Users\\Raymond Moluno\\Documents\\GitHub\\cake-interface\\packages\\eslint-config":
   "resolved" "file:packages/eslint-config"
   "version" "1.2.0"
   dependencies:
@@ -2962,9 +2962,9 @@
     "eslint-plugin-react" "^7.21.5"
     "eslint-plugin-react-hooks" "^4.0.0"
 
-"@pancakeswap/sdk@^2.4.5":
+"@kiwanoswap/sdk@^2.4.5":
   "integrity" "sha512-qfHOPGXitDQ5y1dmYloe6UQe/0Ki0enow4MLtr5W49Jl7ZXr8oB6XV7usYtT63R7vqLSKY83rd8Wyw18vxP7dA=="
-  "resolved" "https://registry.npmjs.org/@pancakeswap/sdk/-/sdk-2.4.5.tgz"
+  "resolved" "https://registry.npmjs.org/@kiwanoswap/sdk/-/sdk-2.4.5.tgz"
   "version" "2.4.5"
   dependencies:
     "big.js" "^5.2.2"
@@ -2974,7 +2974,7 @@
     "tiny-warning" "^1.0.3"
     "toformat" "^2.0.0"
 
-"@pancakeswap/uikit@file:C:\\Users\\Raymond Moluno\\Documents\\GitHub\\cake-interface\\packages\\uikit":
+"@kiwanoswap/uikit@file:C:\\Users\\Raymond Moluno\\Documents\\GitHub\\cake-interface\\packages\\uikit":
   "resolved" "file:packages/uikit"
   "version" "0.63.1"
   dependencies:

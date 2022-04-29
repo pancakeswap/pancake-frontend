@@ -9,7 +9,7 @@ import {
   // TradingViewIcon,
   LineGraphIcon,
   useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 // import { TradingViewLabel } from 'components/TradingView'
 import { useTranslation } from 'contexts/Localization'

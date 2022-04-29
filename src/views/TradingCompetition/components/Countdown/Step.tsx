@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { LogoIcon, CheckmarkCircleIcon, CircleOutlineIcon, Flex, Text } from '@pancakeswap/uikit'
+import { LogoIcon, CheckmarkCircleIcon, CircleOutlineIcon, Flex, Text } from '@kiwanoswap/uikit'
 import { CountdownProps } from '../../types'
 
 const sharedFlexStyles = `

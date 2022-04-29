@@ -1,4 +1,4 @@
-import { Svg, SvgProps } from '@pancakeswap/uikit'
+import { Svg, SvgProps } from '@kiwanoswap/uikit'
 
 const RibbonUpSide: React.FC<SvgProps> = (props) => {
   return (

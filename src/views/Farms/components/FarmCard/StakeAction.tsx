@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import { Button, Flex, IconButton, AddIcon, MinusIcon, useModal } from '@pancakeswap/uikit'
+import { Button, Flex, IconButton, AddIcon, MinusIcon, useModal } from '@kiwanoswap/uikit'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'

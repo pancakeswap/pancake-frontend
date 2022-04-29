@@ -1,4 +1,4 @@
-import { Flex, Grid, Text, Button, Input, BinanceIcon, ErrorIcon } from '@pancakeswap/uikit'
+import { Flex, Grid, Text, Button, Input, BinanceIcon, ErrorIcon } from '@kiwanoswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import { NftToken } from 'state/nftMarket/types'

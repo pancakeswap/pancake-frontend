@@ -1,4 +1,4 @@
-import { Text, Flex, useTooltip, TooltipText } from '@pancakeswap/uikit'
+import { Text, Flex, useTooltip, TooltipText } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { VaultKey } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'

@@ -1,4 +1,4 @@
-import { Text } from '@pancakeswap/uikit'
+import { Text } from '@kiwanoswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import Link from 'next/link'
 

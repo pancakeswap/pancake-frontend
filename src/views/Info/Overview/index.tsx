@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react'
 import styled from 'styled-components'
-import { Flex, Box, Text, Heading, Card, Skeleton } from '@pancakeswap/uikit'
+import { Flex, Box, Text, Heading, Card, Skeleton } from '@kiwanoswap/uikit'
 import { fromUnixTime } from 'date-fns'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/Layout/Page'

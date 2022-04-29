@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks'
 import { mainnetTokens } from 'config/constants/tokens'
 import { createWrapper } from 'testUtils'
-import { Pair, TokenAmount, CurrencyAmount, Trade } from '@pancakeswap/sdk'
+import { Pair, TokenAmount, CurrencyAmount, Trade } from '@kiwanoswap/sdk'
 import * as UsePairs from './usePairs'
 import * as Trades from './Trades'
 

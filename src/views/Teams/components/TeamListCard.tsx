@@ -1,6 +1,6 @@
 import styled, { DefaultTheme } from 'styled-components'
 import Link from 'next/link'
-import { Button, Card, CommunityIcon, Flex, Heading, PrizeIcon, Text } from '@pancakeswap/uikit'
+import { Button, Card, CommunityIcon, Flex, Heading, PrizeIcon, Text } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Team } from 'config/constants/types'
 

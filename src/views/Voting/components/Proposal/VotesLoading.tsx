@@ -1,4 +1,4 @@
-import { Box, Flex, Skeleton } from '@pancakeswap/uikit'
+import { Box, Flex, Skeleton } from '@kiwanoswap/uikit'
 import times from 'lodash/times'
 import styled from 'styled-components'
 

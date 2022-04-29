@@ -1,5 +1,5 @@
-import { Currency, Percent, Price } from '@pancakeswap/sdk'
-import { Text } from '@pancakeswap/uikit'
+import { Currency, Percent, Price } from '@kiwanoswap/sdk'
+import { Text } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { AutoColumn } from '../../components/Layout/Column'
 import { AutoRow } from '../../components/Layout/Row'

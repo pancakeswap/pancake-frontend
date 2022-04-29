@@ -1,4 +1,4 @@
-import { Flex, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { Flex, TooltipText, useTooltip } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { DeserializedPool } from 'state/types'
 import BigNumber from 'bignumber.js'

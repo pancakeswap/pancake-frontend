@@ -1,4 +1,4 @@
-import { Svg, SvgProps } from '@pancakeswap/uikit'
+import { Svg, SvgProps } from '@kiwanoswap/uikit'
 
 const ProfilePoints: React.FC<SvgProps> = (props) => (
   <Svg width="39" height="31" viewBox="0 0 39 31" fill="none" {...props}>

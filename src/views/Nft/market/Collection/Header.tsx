@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { Text } from '@pancakeswap/uikit'
+import { Text } from '@kiwanoswap/uikit'
 import { Collection } from 'state/nftMarket/types'
 import { formatNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'

@@ -1,4 +1,4 @@
-import { BlockIcon, CheckmarkCircleIcon, Flex, Image, Skeleton, Text } from '@pancakeswap/uikit'
+import { BlockIcon, CheckmarkCircleIcon, Flex, Image, Skeleton, Text } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 import styled from 'styled-components'

@@ -1,4 +1,4 @@
-import { Card, CardBody, Text, WaitIcon } from '@pancakeswap/uikit'
+import { Card, CardBody, Text, WaitIcon } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition } from 'state/types'
 import useTheme from 'hooks/useTheme'

@@ -1,6 +1,6 @@
 import { useMemo, useRef, useEffect } from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Box, Card } from '@pancakeswap/uikit'
+import { Text, Flex, Box, Card } from '@kiwanoswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useAllTokenData } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'

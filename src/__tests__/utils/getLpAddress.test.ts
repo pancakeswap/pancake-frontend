@@ -1,4 +1,4 @@
-import { Token, ChainId } from '@pancakeswap/sdk'
+import { Token, ChainId } from '@kiwanoswap/sdk'
 import getLpAddress from 'utils/getLpAddress'
 
 const CAKE_AS_STRING = '0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13'

@@ -1,4 +1,4 @@
-import { darkColors, Text } from '@pancakeswap/uikit'
+import { darkColors, Text } from '@kiwanoswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
 

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Card, CardHeader, Box, Heading, Text } from '@pancakeswap/uikit'
+import { Card, CardHeader, Box, Heading, Text } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import PrizesGrid from './PrizesGrid'
 

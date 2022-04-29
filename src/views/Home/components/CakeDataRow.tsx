@@ -1,4 +1,4 @@
-import { Flex, Heading, Skeleton, Text } from '@pancakeswap/uikit'
+import { Flex, Heading, Skeleton, Text } from '@kiwanoswap/uikit'
 import Balance from 'components/Balance'
 import cakeAbi from 'config/abi/WANO.json'
 import tokens from 'config/constants/tokens'

@@ -1,4 +1,4 @@
-import { TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { TooltipText, useTooltip } from '@kiwanoswap/uikit'
 import { DeserializedPool } from 'state/types'
 import Balance from 'components/Balance'
 import AutoEarningsBreakdown from '../AutoEarningsBreakdown'

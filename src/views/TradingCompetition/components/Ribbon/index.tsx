@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Flex, LaurelLeftIcon, LaurelRightIcon } from '@pancakeswap/uikit'
+import { Flex, LaurelLeftIcon, LaurelRightIcon } from '@kiwanoswap/uikit'
 import { RibbonProps } from '../../types'
 import {
   RibbonDownMidExpanding,

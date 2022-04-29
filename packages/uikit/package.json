@@ -1,5 +1,5 @@
 {
-  "name": "@pancakeswap/uikit",
+  "name": "@kiwanoswap/uikit",
   "version": "0.63.1",
   "description": "Set of UI components for pancake projects",
   "main": "dist/index.cjs.js",
@@ -9,7 +9,7 @@
     "dist"
   ],
   "sideEffects": false,
-  "repository": "https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit",
+  "repository": "https://github.com/Kiwanoproject/kiwanoswap-toolkit/tree/master/packages/kiwanoswap-uikit",
   "license": "MIT",
   "scripts": {
     "start": "yarn storybook",

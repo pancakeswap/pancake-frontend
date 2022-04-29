@@ -9,10 +9,10 @@ import {
   useMatchBreakpoints,
   useModal,
   Skeleton,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Activity, NftToken } from 'state/nftMarket/types'
-import { Price } from '@pancakeswap/sdk'
+import { Price } from '@kiwanoswap/sdk'
 import { getBscScanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ProfileCell from 'views/Nft/market/components/ProfileCell'

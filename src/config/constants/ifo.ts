@@ -1,4 +1,4 @@
-import { Token, ChainId } from '@pancakeswap/sdk'
+import { Token, ChainId } from '@kiwanoswap/sdk'
 import tokens from './tokens'
 import farms from './farms'
 import { Ifo } from './types'

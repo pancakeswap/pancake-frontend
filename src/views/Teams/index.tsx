@@ -1,4 +1,4 @@
-import { AutoRenewIcon, Flex, Heading } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Flex, Heading } from '@kiwanoswap/uikit'
 import orderBy from 'lodash/orderBy'
 import useSWR from 'swr'
 import Page from 'components/Layout/Page'

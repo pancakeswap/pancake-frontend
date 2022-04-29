@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Card, Text, Button, BunnyPlaceholderIcon, Box } from '@pancakeswap/uikit'
+import { Card, Text, Button, BunnyPlaceholderIcon, Box } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import ConnectWalletButton from 'components/ConnectWalletButton'

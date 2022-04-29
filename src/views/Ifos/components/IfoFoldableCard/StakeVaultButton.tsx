@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { Button, useModal } from '@pancakeswap/uikit'
+import { Button, useModal } from '@kiwanoswap/uikit'
 
 import { useTranslation } from 'contexts/Localization'
 import VaultStakeModal from 'views/Pools/components/CakeVaultCard/VaultStakeModal'

@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from '@pancakeswap/uikit'
+import { Button, ButtonProps } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { removeAllItemFilters } from 'state/nftMarket/reducer'

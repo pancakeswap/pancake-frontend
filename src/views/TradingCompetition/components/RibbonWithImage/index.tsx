@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Flex } from '@pancakeswap/uikit'
+import { Flex } from '@kiwanoswap/uikit'
 import { RibbonProps } from '../../types'
 import Ribbon from '../Ribbon'
 

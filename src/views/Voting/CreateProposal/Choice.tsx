@@ -1,5 +1,5 @@
 import { ChangeEvent, InputHTMLAttributes, useState } from 'react'
-import { Box, CloseIcon, IconButton, Input, InputProps } from '@pancakeswap/uikit'
+import { Box, CloseIcon, IconButton, Input, InputProps } from '@kiwanoswap/uikit'
 
 interface ChoiceProps extends InputProps, InputHTMLAttributes<HTMLInputElement> {
   onTextInput: (value: string) => void

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Card, Heading, Table, Th, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Card, Heading, Table, Th, useMatchBreakpoints } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import Container from 'components/Layout/Container'

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { CurrencyAmount, JSBI, Token, Trade } from '@pancakeswap/sdk'
+import { CurrencyAmount, JSBI, Token, Trade } from '@kiwanoswap/sdk'
 import {
   Button,
   Text,
@@ -13,7 +13,7 @@ import {
   useMatchBreakpoints,
   ArrowUpDownIcon,
   Skeleton,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import Footer from 'components/Menu/Footer'

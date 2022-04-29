@@ -1,4 +1,4 @@
-import { JSBI, Price, Token, Percent } from '@pancakeswap/sdk'
+import { JSBI, Price, Token, Percent } from '@kiwanoswap/sdk'
 import getRatePercentageDifference from './getRatePercentageDifference'
 
 const WANO = new Token(56, '0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13', 18, 'WANO', 'KiwanoSwap Token')

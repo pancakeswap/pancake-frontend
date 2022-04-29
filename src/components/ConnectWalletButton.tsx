@@ -1,4 +1,4 @@
-import { Button, useWalletModal, ButtonProps } from '@pancakeswap/uikit'
+import { Button, useWalletModal, ButtonProps } from '@kiwanoswap/uikit'
 import useAuth from 'hooks/useAuth'
 import { useTranslation } from 'contexts/Localization'
 import Trans from './Trans'

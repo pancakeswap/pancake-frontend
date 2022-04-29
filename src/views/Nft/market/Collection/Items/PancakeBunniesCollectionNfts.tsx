@@ -1,4 +1,4 @@
-import { Grid } from '@pancakeswap/uikit'
+import { Grid } from '@kiwanoswap/uikit'
 import orderBy from 'lodash/orderBy'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
 import useAllPancakeBunnyNfts from '../../hooks/useAllPancakeBunnyNfts'
