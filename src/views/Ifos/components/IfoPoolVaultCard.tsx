@@ -12,7 +12,7 @@ const IfoPoolVaultCard = () => {
   const cakePool = useMemo(() => pools.find((pool) => pool.userData && pool.sousId === 0), [pools])
 
   return (
-    <Flex flexDirection="column">
+    <Flex width="100%" maxWidth={400} alignItems="center" flexDirection="column">
       {isSmallerThanTablet ? (
         <IfoPoolVaultCardMobile pool={cakePool} />
       ) : (
