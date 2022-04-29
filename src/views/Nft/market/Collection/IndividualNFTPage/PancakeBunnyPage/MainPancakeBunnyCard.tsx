@@ -1,3 +1,4 @@
+import { useWeb3React } from '@web3-react/core'
 import { Flex, Box, Card, CardBody, Text, Button, BinanceIcon, Skeleton, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { formatNumber } from 'utils/formatBalance'
@@ -12,26 +13,24 @@ import { Container, CollectionLink } from '../shared/styles'
 
 interface MainPancakeBunnyCardProps {
   cheapestNft: NftToken
-  cheapestNftFromOtherSellers: NftToken
-  isCheapestNftFromOtherSellersFetched: boolean
   nothingForSaleBunny: NftToken
   onSuccessSale: () => void
 }
 
 const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
   cheapestNft,
-  cheapestNftFromOtherSellers,
-  isCheapestNftFromOtherSellersFetched,
   nothingForSaleBunny,
   onSuccessSale,
 }) => {
   const { t } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
+  const { account } = useWeb3React()
 
-  const nftToDisplay = cheapestNftFromOtherSellers || cheapestNft || nothingForSaleBunny
+  const nftToDisplay = cheapestNft || nothingForSaleBunny
 
-  const onlyOwnNftsOnSale = isCheapestNftFromOtherSellersFetched && !cheapestNftFromOtherSellers
-  const hasListings = cheapestNftFromOtherSellers || cheapestNft
+  const onlyOwnNftsOnSale = account
+    ? cheapestNft?.marketData?.currentSeller.toLowerCase() === account.toLowerCase()
+    : false
 
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nftToDisplay?.marketData?.currentAskPrice))
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nftToDisplay} />)
@@ -67,7 +66,7 @@ const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
                 {nftToDisplay.name}
               </Text>
               <Text mt={['16px', '16px', '48px']}>{t(nftToDisplay.description)}</Text>
-              {hasListings && (
+              {cheapestNft && (
                 <>
                   <Text color="textSubtle" mt={['16px', '16px', '48px']}>
                     {t('Lowest price')}
