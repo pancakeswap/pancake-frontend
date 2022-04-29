@@ -62,12 +62,12 @@ const pools: SerializedPoolConfig[] = [
     earningToken: serializedTokens.rpg,
     contractAddress: {
       97: '',
-      56: '',
+      56: '0xD1c395BCdC2d64ac6544A34A36185483B00530a1',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
     sortOrder: 999,
-    tokenPerBlock: '',
+    tokenPerBlock: '0.06794',
     version: 3,
   },
   {
