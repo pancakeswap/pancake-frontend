@@ -3,7 +3,7 @@ import { Modal, Box } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
 import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
-import { DEFAULT_MAX_DURATION } from 'hooks/useVaultApy'
+import { MAX_LOCK_DURATION } from 'config/constants/pools'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
 
@@ -31,12 +31,12 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
       const isValidAmount = currentLockedAmount && currentLockedAmount > 0
       const totalDuration = currentDuration + duration
 
-      const isValidDuration = duration > 0 && totalDuration > 0 && totalDuration <= DEFAULT_MAX_DURATION
+      const isValidDuration = duration > 0 && totalDuration > 0 && totalDuration <= MAX_LOCK_DURATION
 
       return {
         isValidAmount,
         isValidDuration,
-        isOverMax: totalDuration > DEFAULT_MAX_DURATION,
+        isOverMax: totalDuration > MAX_LOCK_DURATION,
       }
     },
     [currentLockedAmount, currentDuration],

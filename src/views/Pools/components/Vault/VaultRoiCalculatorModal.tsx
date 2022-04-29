@@ -3,7 +3,6 @@ import RoiCalculatorModal, { RoiCalculatorModalProps } from 'components/RoiCalcu
 import { CalculatorMode } from 'components/RoiCalculatorModal/useRoiCalculatorReducer'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
-import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
 import { useEffect, useState, useMemo } from 'react'
 import { DeserializedPool } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
@@ -17,7 +16,6 @@ export const VaultRoiCalculatorModal = ({
   initialView,
   ...rest
 }: { pool: DeserializedPool; initialView?: number } & Partial<RoiCalculatorModalProps>) => {
-  const maxLockDuration = useVaultMaxDuration()
   const {
     userData: {
       balance: { cakeAsBigNumber },
@@ -32,12 +30,11 @@ export const VaultRoiCalculatorModal = ({
   const [duration, setDuration] = useState(weeksToSeconds(1))
 
   const buttonMenuItems = useMemo(
-    () =>
-      [
-        <ButtonMenuItem key="Flexible">{t('Flexible')}</ButtonMenuItem>,
-        maxLockDuration?.gt(0) && <ButtonMenuItem key="Locked">{t('Locked')}</ButtonMenuItem>,
-      ].filter(Boolean),
-    [maxLockDuration, t],
+    () => [
+      <ButtonMenuItem key="Flexible">{t('Flexible')}</ButtonMenuItem>,
+      <ButtonMenuItem key="Locked">{t('Locked')}</ButtonMenuItem>,
+    ],
+    [t],
   )
 
   const apy = useMemo(() => {

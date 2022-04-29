@@ -5,7 +5,6 @@ import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { FC, ReactNode } from 'react'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
 import { DeserializedLockedVaultUser } from 'state/types'
 import { isLocked, isStaked } from 'utils/cakePool'
 import useAvgLockDuration from './LockedPool/hooks/useAvgLockDuration'
@@ -62,17 +61,11 @@ const TotalToken = ({ total, token }: { total: BigNumber; token: Token }) => {
 export const TotalLocked: FC<{ totalLocked: BigNumber; lockedToken: Token }> = ({ totalLocked, lockedToken }) => {
   const { t } = useTranslation()
 
-  const duration = useVaultMaxDuration()
-
-  if (duration && duration.gt(0)) {
-    return (
-      <StatWrapper label={<Text small>{t('Total locked')}:</Text>}>
-        <TotalToken total={totalLocked} token={lockedToken} />
-      </StatWrapper>
-    )
-  }
-
-  return null
+  return (
+    <StatWrapper label={<Text small>{t('Total locked')}:</Text>}>
+      <TotalToken total={totalLocked} token={lockedToken} />
+    </StatWrapper>
+  )
 }
 
 export const DurationAvg = () => {

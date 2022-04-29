@@ -17,7 +17,7 @@ describe('useVaultApy', () => {
       },
       {
         flexibleApy: '47.271974190831774174',
-        lockedApy: '96.4734167159832126',
+        lockedApy: '1012.9708755178237323',
       },
     ],
   ])('should get correct vault apy', (cases, want) => {
