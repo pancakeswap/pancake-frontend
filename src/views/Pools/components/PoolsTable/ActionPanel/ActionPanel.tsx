@@ -7,7 +7,7 @@ import {
   Link,
   LinkExternal,
   MetamaskIcon,
-  Skeleton,
+  SkeletonV2,
   Text,
   TimerIcon,
   useTooltip,
@@ -265,8 +265,8 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
       />
     ) : null
 
-  const blocksRow =
-    blocksRemaining || blocksUntilStart ? (
+  const blocksRow = (
+    <SkeletonV2 width="56px" height="16px" isDataReady={Boolean(blocksRemaining || blocksUntilStart)}>
       <Flex mb="8px" justifyContent="space-between">
         <Text>{hasPoolStarted ? t('Ends in') : t('Starts in')}:</Text>
         <Flex>
@@ -279,9 +279,8 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
           </Link>
         </Flex>
       </Flex>
-    ) : (
-      <Skeleton width="56px" height="16px" />
-    )
+    </SkeletonV2>
+  )
 
   const aprRow = !vaultKey && (
     <Flex justifyContent="space-between" alignItems="center" mb="8px">
@@ -294,16 +293,12 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
     <Flex justifyContent="space-between" alignItems="center" mb="8px">
       <Text maxWidth={['50px', '100%']}>{t('Total staked')}:</Text>
       <Flex alignItems="center">
-        {totalStaked && totalStaked.gte(0) ? (
-          <>
-            <Balance fontSize="16px" value={getTotalStakedBalance()} decimals={0} unit={` ${stakingToken.symbol}`} />
-            <span ref={totalStakedTargetRef}>
-              <HelpIcon color="textSubtle" width="20px" ml="4px" />
-            </span>
-          </>
-        ) : (
-          <Skeleton width="56px" height="16px" />
-        )}
+        <SkeletonV2 width="56px" height="16px" isDataReady={Boolean(totalStaked && totalStaked.gte(0))}>
+          <Balance fontSize="16px" value={getTotalStakedBalance()} decimals={0} unit={` ${stakingToken.symbol}`} />
+          <span ref={totalStakedTargetRef}>
+            <HelpIcon color="textSubtle" width="20px" ml="4px" />
+          </span>
+        </SkeletonV2>
         {totalStakedTooltipVisible && totalStakedTooltip}
       </Flex>
     </Flex>

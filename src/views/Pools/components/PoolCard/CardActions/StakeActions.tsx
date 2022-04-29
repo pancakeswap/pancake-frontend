@@ -1,4 +1,14 @@
-import { Flex, Text, Button, IconButton, AddIcon, MinusIcon, useModal, Skeleton, useTooltip } from '@pancakeswap/uikit'
+import {
+  Flex,
+  Text,
+  Button,
+  IconButton,
+  AddIcon,
+  MinusIcon,
+  useModal,
+  SkeletonV2,
+  useTooltip,
+} from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -109,7 +119,13 @@ const StakeAction: React.FC<StakeActionsProps> = ({
     )
   }
 
-  return <Flex flexDirection="column">{isLoading ? <Skeleton width="100%" height="52px" /> : renderStakeAction()}</Flex>
+  return (
+    <Flex flexDirection="column">
+      <SkeletonV2 width="100%" height="52px" isDataReady={!isLoading}>
+        {renderStakeAction()}
+      </SkeletonV2>
+    </Flex>
+  )
 }
 
 export default StakeAction

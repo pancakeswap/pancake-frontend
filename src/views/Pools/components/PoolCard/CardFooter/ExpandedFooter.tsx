@@ -1,4 +1,4 @@
-import { Button, Flex, Link, LinkExternal, MetamaskIcon, Skeleton, Text, TimerIcon } from '@pancakeswap/uikit'
+import { Button, Flex, Link, LinkExternal, MetamaskIcon, SkeletonV2, Text, TimerIcon } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { BASE_BSC_SCAN_URL } from 'config'
 import { useTranslation } from 'contexts/Localization'
@@ -82,7 +82,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
       {shouldShowBlockCountdown && (
         <Flex mb="2px" justifyContent="space-between" alignItems="center">
           <Text small>{hasPoolStarted ? t('Ends in') : t('Starts in')}:</Text>
-          {blocksRemaining || blocksUntilStart ? (
+          <SkeletonV2 width="54px" height="21px" isDataReady={Boolean(blocksRemaining || blocksUntilStart)}>
             <Flex alignItems="center">
               <Link external href={getBscScanLink(hasPoolStarted ? endBlock : startBlock, 'countdown')}>
                 <Balance small value={blocksToDisplay} decimals={0} color="primary" />
@@ -92,9 +92,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
                 <TimerIcon ml="4px" color="primary" />
               </Link>
             </Flex>
-          ) : (
-            <Skeleton width="54px" height="21px" />
-          )}
+          </SkeletonV2>
         </Flex>
       )}
       {vaultKey && <PerformanceFee userData={userData} performanceFeeAsDecimal={performanceFeeAsDecimal} />}

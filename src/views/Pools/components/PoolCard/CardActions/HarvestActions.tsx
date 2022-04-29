@@ -1,4 +1,4 @@
-import { Flex, Text, Button, Heading, useModal, Skeleton } from '@pancakeswap/uikit'
+import { Flex, Text, Button, Heading, useModal, SkeletonV2 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from 'contexts/Localization'
@@ -48,35 +48,31 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
   return (
     <Flex justifyContent="space-between" alignItems="center" mb="16px">
       <Flex flexDirection="column">
-        {isLoading ? (
-          <Skeleton width="80px" height="48px" />
-        ) : (
-          <>
-            {hasEarnings ? (
-              <>
-                <Balance bold fontSize="20px" decimals={5} value={earningTokenBalance} />
-                {earningTokenPrice > 0 && (
-                  <Balance
-                    display="inline"
-                    fontSize="12px"
-                    color="textSubtle"
-                    decimals={2}
-                    prefix="~"
-                    value={earningTokenDollarBalance}
-                    unit=" USD"
-                  />
-                )}
-              </>
-            ) : (
-              <>
-                <Heading color="textDisabled">0</Heading>
-                <Text fontSize="12px" color="textDisabled">
-                  0 USD
-                </Text>
-              </>
-            )}
-          </>
-        )}
+        <SkeletonV2 width="80px" height="48px" isDataReady={!isLoading}>
+          {hasEarnings ? (
+            <>
+              <Balance bold fontSize="20px" decimals={5} value={earningTokenBalance} />
+              {earningTokenPrice > 0 && (
+                <Balance
+                  display="inline"
+                  fontSize="12px"
+                  color="textSubtle"
+                  decimals={2}
+                  prefix="~"
+                  value={earningTokenDollarBalance}
+                  unit=" USD"
+                />
+              )}
+            </>
+          ) : (
+            <>
+              <Heading color="textDisabled">0</Heading>
+              <Text fontSize="12px" color="textDisabled">
+                0 USD
+              </Text>
+            </>
+          )}
+        </SkeletonV2>
       </Flex>
       <Button disabled={!hasEarnings} onClick={onPresentCollect}>
         {isCompoundPool ? t('Collect') : t('Harvest')}

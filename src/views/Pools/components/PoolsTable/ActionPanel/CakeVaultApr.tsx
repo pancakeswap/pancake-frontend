@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Skeleton, Text, CalculateIcon, useModal } from '@pancakeswap/uikit'
+import { Box, Button, Flex, SkeletonV2, Text, CalculateIcon, useModal } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
 import { DeserializedPool, DeserializedLockedVaultUser } from 'state/types'
@@ -31,7 +31,7 @@ const CakeVaultApr: React.FC<CakeVaultAprProps> = ({ pool, userData, vaultPositi
           <Text fontSize="16px" color="textSubtle" textAlign="left">
             {t('Flexible APY')}
           </Text>
-          {flexibleApy ? (
+          <SkeletonV2 width="80px" height="16px" isDataReady={Boolean(flexibleApy)}>
             <Flex alignItems="center" justifyContent="flex-start">
               <Balance fontSize="16px" value={parseFloat(flexibleApy)} decimals={2} unit="%" fontWeight="600" />
               <Button
@@ -48,9 +48,7 @@ const CakeVaultApr: React.FC<CakeVaultAprProps> = ({ pool, userData, vaultPositi
                 <CalculateIcon color="textSubtle" width="20px" />
               </Button>
             </Flex>
-          ) : (
-            <Skeleton width="80px" height="16px" />
-          )}
+          </SkeletonV2>
         </Flex>
       </Box>
       <Box mb="10px">
@@ -58,7 +56,7 @@ const CakeVaultApr: React.FC<CakeVaultAprProps> = ({ pool, userData, vaultPositi
           <Text fontSize="16px" color="textSubtle" textAlign="left">
             {t('Locked APY')}
           </Text>
-          {lockedApy ? (
+          <SkeletonV2 width="80px" height="16px" isDataReady={Boolean(lockedApy)}>
             <Flex alignItems="center" justifyContent="flex-start">
               <Text fontSize="16px" style={{ whiteSpace: 'nowrap' }} fontWeight="600">
                 {t('Up to')}
@@ -78,9 +76,7 @@ const CakeVaultApr: React.FC<CakeVaultAprProps> = ({ pool, userData, vaultPositi
                 <CalculateIcon color="textSubtle" width="20px" />
               </Button>
             </Flex>
-          ) : (
-            <Skeleton width="80px" height="16px" />
-          )}
+          </SkeletonV2>
         </Flex>
       </Box>
     </>

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Skeleton, Text, Flex, Box, useModal, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { SkeletonV2, Text, Flex, Box, useModal, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { DeserializedPool } from 'state/types'
 import BigNumber from 'bignumber.js'
 import { PoolCategory } from 'config/constants/types'
@@ -62,43 +62,39 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
-        {!userDataLoaded && account ? (
-          <Skeleton width="80px" height="16px" />
-        ) : (
-          <>
-            <Flex>
-              <Box mr="8px" height="32px" onClick={hasEarnings ? handleEarningsClick : undefined}>
-                <Balance
-                  mt="4px"
-                  bold={!isMobile}
-                  fontSize={isMobile ? '14px' : '16px'}
-                  color={hasEarnings ? 'primary' : 'textDisabled'}
-                  decimals={hasEarnings ? 5 : 1}
-                  value={hasEarnings ? earningTokenBalance : 0}
-                />
-                {hasEarnings ? (
-                  <>
-                    {earningTokenPrice > 0 && (
-                      <Balance
-                        display="inline"
-                        fontSize="12px"
-                        color="textSubtle"
-                        decimals={2}
-                        prefix="~"
-                        value={earningTokenDollarBalance}
-                        unit=" USD"
-                      />
-                    )}
-                  </>
-                ) : (
-                  <Text mt="4px" fontSize="12px" color="textDisabled">
-                    0 USD
-                  </Text>
-                )}
-              </Box>
-            </Flex>
-          </>
-        )}
+        <SkeletonV2 width="80px" height="16px" isDataReady={userDataLoaded || !account}>
+          <Flex>
+            <Box mr="8px" height="32px" onClick={hasEarnings ? handleEarningsClick : undefined}>
+              <Balance
+                mt="4px"
+                bold={!isMobile}
+                fontSize={isMobile ? '14px' : '16px'}
+                color={hasEarnings ? 'primary' : 'textDisabled'}
+                decimals={hasEarnings ? 5 : 1}
+                value={hasEarnings ? earningTokenBalance : 0}
+              />
+              {hasEarnings ? (
+                <>
+                  {earningTokenPrice > 0 && (
+                    <Balance
+                      display="inline"
+                      fontSize="12px"
+                      color="textSubtle"
+                      decimals={2}
+                      prefix="~"
+                      value={earningTokenDollarBalance}
+                      unit=" USD"
+                    />
+                  )}
+                </>
+              ) : (
+                <Text mt="4px" fontSize="12px" color="textDisabled">
+                  0 USD
+                </Text>
+              )}
+            </Box>
+          </Flex>
+        </SkeletonV2>
       </CellContent>
     </StyledCell>
   )

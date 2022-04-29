@@ -1,4 +1,4 @@
-import { Skeleton, Text, Flex, Button, CalculateIcon, useModal, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { SkeletonV2, Text, Flex, Button, CalculateIcon, useModal, useMatchBreakpoints } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import Balance from 'components/Balance'
 import { FlexGap } from 'components/Layout/Flex'
@@ -50,7 +50,7 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
             <Text fontSize="12px" color="textSubtle" textAlign="left">
               {t('Flexible APY')}
             </Text>
-            {flexibleApy ? (
+            <SkeletonV2 width="80px" height="16px" isDataReady={Boolean(flexibleApy)}>
               <AprLabelContainer alignItems="center" justifyContent="flex-start">
                 <Balance
                   fontSize={['14px', '14px', '16px']}
@@ -75,9 +75,7 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
                   </Button>
                 )}
               </AprLabelContainer>
-            ) : (
-              <Skeleton width="80px" height="16px" />
-            )}
+            </SkeletonV2>
           </CellContent>
         </BaseCell>
         <BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', null, '1 0 120px']}>
@@ -85,7 +83,7 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
             <Text fontSize="12px" color="textSubtle" textAlign="left">
               {t('Locked APY')}
             </Text>
-            {lockedApy ? (
+            <SkeletonV2 width="80px" height="16px" isDataReady={Boolean(lockedApy)}>
               <AprLabelContainer alignItems="center" justifyContent="flex-start">
                 <FlexGap gap="4px" flexWrap="wrap">
                   <Text fontSize={['14px', '14px', '16px']} style={{ whiteSpace: 'nowrap' }} fontWeight={[500, 400]}>
@@ -115,9 +113,7 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
                   )}
                 </FlexGap>
               </AprLabelContainer>
-            ) : (
-              <Skeleton width="80px" height="16px" />
-            )}
+            </SkeletonV2>
           </CellContent>
         </BaseCell>
       </>
@@ -130,7 +126,7 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {t('APY')}
         </Text>
-        {flexibleApy ? (
+        <SkeletonV2 width="80px" height="16px" isDataReady={Boolean(flexibleApy)}>
           <AprLabelContainer alignItems="center" justifyContent="flex-start">
             <Balance
               fontSize="16px"
@@ -152,9 +148,7 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
               <CalculateIcon color="textSubtle" width="20px" />
             </Button>
           </AprLabelContainer>
-        ) : (
-          <Skeleton width="80px" height="16px" />
-        )}
+        </SkeletonV2>
       </CellContent>
     </BaseCell>
   )

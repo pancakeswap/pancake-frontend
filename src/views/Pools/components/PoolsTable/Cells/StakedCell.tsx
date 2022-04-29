@@ -1,4 +1,4 @@
-import { Box, Flex, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, SkeletonV2, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
@@ -56,47 +56,43 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
-        {userDataLoading && account ? (
-          <Skeleton width="80px" height="16px" />
-        ) : (
-          <>
-            <Flex>
-              <Box mr="8px" height="32px">
+        <SkeletonV2 width="80px" height="16px" isDataReady={!(userDataLoading && account)}>
+          <Flex>
+            <Box mr="8px" height="32px">
+              <Balance
+                mt="4px"
+                bold={!isMobile}
+                fontSize={isMobile ? '14px' : '16px'}
+                color={hasStaked ? 'primary' : 'textDisabled'}
+                decimals={hasStaked ? 5 : 1}
+                value={
+                  hasStaked
+                    ? pool.vaultKey
+                      ? Number.isNaN(cakeAsNumberBalance)
+                        ? 0
+                        : cakeAsNumberBalance
+                      : stakedTokenBalance
+                    : 0
+                }
+              />
+              {hasStaked ? (
                 <Balance
-                  mt="4px"
-                  bold={!isMobile}
-                  fontSize={isMobile ? '14px' : '16px'}
-                  color={hasStaked ? 'primary' : 'textDisabled'}
-                  decimals={hasStaked ? 5 : 1}
-                  value={
-                    hasStaked
-                      ? pool.vaultKey
-                        ? Number.isNaN(cakeAsNumberBalance)
-                          ? 0
-                          : cakeAsNumberBalance
-                        : stakedTokenBalance
-                      : 0
-                  }
+                  display="inline"
+                  fontSize="12px"
+                  color="textSubtle"
+                  decimals={2}
+                  prefix="~"
+                  value={pool.vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance}
+                  unit=" USD"
                 />
-                {hasStaked ? (
-                  <Balance
-                    display="inline"
-                    fontSize="12px"
-                    color="textSubtle"
-                    decimals={2}
-                    prefix="~"
-                    value={pool.vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance}
-                    unit=" USD"
-                  />
-                ) : (
-                  <Text mt="4px" fontSize="12px" color="textDisabled">
-                    0 USD
-                  </Text>
-                )}
-              </Box>
-            </Flex>
-          </>
-        )}
+              ) : (
+                <Text mt="4px" fontSize="12px" color="textDisabled">
+                  0 USD
+                </Text>
+              )}
+            </Box>
+          </Flex>
+        </SkeletonV2>
       </CellContent>
     </StyledCell>
   )

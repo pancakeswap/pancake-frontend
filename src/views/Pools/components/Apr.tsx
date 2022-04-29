@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Text, Flex, useModal, CalculateIcon, Skeleton, FlexProps, Button } from '@pancakeswap/uikit'
+import { Text, Flex, useModal, CalculateIcon, SkeletonV2, FlexProps, Button } from '@pancakeswap/uikit'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { BalanceWithLoading } from 'components/Balance'
 import { DeserializedPool } from 'state/types'
@@ -68,31 +68,27 @@ const Apr: React.FC<AprProps> = ({ pool, showIcon, stakedBalance, performanceFee
 
   return (
     <AprLabelContainer alignItems="center" justifyContent="flex-start" {...props}>
-      {isValidate || isFinished ? (
-        <>
-          {hasPoolStarted || !shouldShowBlockCountdown ? (
-            <>
-              <BalanceWithLoading
-                onClick={openRoiModal}
-                fontSize="16px"
-                isDisabled={isFinished}
-                value={isFinished ? 0 : apr}
-                decimals={2}
-                unit="%"
-              />
-              {!isFinished && showIcon && (
-                <Button onClick={openRoiModal} variant="text" width="20px" height="20px" padding="0px" marginLeft="4px">
-                  <CalculateIcon color="textSubtle" width="20px" />
-                </Button>
-              )}
-            </>
-          ) : (
-            <Text>-</Text>
-          )}
-        </>
-      ) : (
-        <Skeleton width="80px" height="16px" />
-      )}
+      <SkeletonV2 width="80px" height="16px" isDataReady={isValidate || isFinished}>
+        {hasPoolStarted || !shouldShowBlockCountdown ? (
+          <>
+            <BalanceWithLoading
+              onClick={openRoiModal}
+              fontSize="16px"
+              isDisabled={isFinished}
+              value={isFinished ? 0 : apr}
+              decimals={2}
+              unit="%"
+            />
+            {!isFinished && showIcon && (
+              <Button onClick={openRoiModal} variant="text" width="20px" height="20px" padding="0px" marginLeft="4px">
+                <CalculateIcon color="textSubtle" width="20px" />
+              </Button>
+            )}
+          </>
+        ) : (
+          <Text>-</Text>
+        )}
+      </SkeletonV2>
     </AprLabelContainer>
   )
 }

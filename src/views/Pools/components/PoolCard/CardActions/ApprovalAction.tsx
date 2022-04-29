@@ -1,4 +1,4 @@
-import { Button, AutoRenewIcon, Skeleton } from '@pancakeswap/uikit'
+import { Button, AutoRenewIcon, SkeletonV2 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
 import { DeserializedPool } from 'state/types'
@@ -17,9 +17,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool, isLoading = false
 
   return (
     <>
-      {isLoading ? (
-        <Skeleton width="100%" height="52px" />
-      ) : (
+      <SkeletonV2 width="100%" height="52px" isDataReady={!isLoading}>
         <Button
           isLoading={pendingTx}
           endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
@@ -29,7 +27,7 @@ const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool, isLoading = false
         >
           {t('Enable')}
         </Button>
-      )}
+      </SkeletonV2>
     </>
   )
 }
