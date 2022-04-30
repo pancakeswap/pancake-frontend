@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { Box, Card, CardBody, CardHeader, Flex, Text, Image } from '@pancakeswap/uikit'
 import NotTokens from './NotTokens'
+import VestingPeriod from './VestingPeriod/index'
 import VestingEnded from './VestingEnded'
 
 const StyleVertingCard = styled(Card)`
@@ -42,6 +43,7 @@ const IfoVesting: React.FC = () => {
       </CardHeader>
       <CardBody>
         <NotTokens />
+        {/* <VestingPeriod /> */}
         {/* <VestingEnded /> */}
       </CardBody>
     </StyleVertingCard>
