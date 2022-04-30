@@ -10,6 +10,7 @@ interface HotCollectionCardProps {
   collectionName: string
   url?: string
   disabled?: boolean
+  children?: React.ReactNode
 }
 
 export const CollectionAvatar = styled(ProfileAvatar)`

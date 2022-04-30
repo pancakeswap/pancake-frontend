@@ -1,4 +1,5 @@
-import { AnimatePresence, Variants, LazyMotion, domAnimation } from "framer-motion";
+// @ts-ignore
+import { Variants, LazyMotion, domAnimation } from "framer-motion";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
@@ -209,11 +210,7 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
     </StyledTooltip>
   );
 
-  const AnimatedTooltip = (
-    <LazyMotion features={domAnimation}>
-      <AnimatePresence>{visible && tooltip}</AnimatePresence>
-    </LazyMotion>
-  );
+  const AnimatedTooltip = <LazyMotion features={domAnimation}>{visible && tooltip}</LazyMotion>;
 
   const portal = getPortalRoot();
   const tooltipInPortal = portal ? createPortal(AnimatedTooltip, portal) : null;

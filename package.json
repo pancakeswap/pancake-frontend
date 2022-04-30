@@ -8,7 +8,11 @@
   ],
   "scripts": {
     "dev": "turbo run dev --parallel",
-    "build": "turbo run build"
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "postinstall": "turbo run postinstall",
+    "lint": "turbo run lint",
+    "format:check:staged": "turbo run format:check:staged"
   },
   "browserslist": {
     "production": [

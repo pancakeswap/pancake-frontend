@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { Placement, Padding } from "@popperjs/core";
 
 export interface MenuOptions {
@@ -11,4 +11,5 @@ export interface BaseMenuProps {
   component: ReactNode;
   options?: MenuOptions;
   isOpen?: boolean;
+  children?: React.ReactNode | Function;
 }

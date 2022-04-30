@@ -1,4 +1,4 @@
-import { createContext, useEffect, useMemo, useReducer } from 'react'
+import React, { createContext, useEffect, useMemo, useReducer } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { getBunnyFactoryContract } from 'utils/contractHelpers'
 import { MINT_COST, REGISTER_COST, ALLOWANCE_MULTIPLIER } from '../config'
@@ -58,7 +58,7 @@ const reducer = (state: State, action: Actions): State => {
 
 export const ProfileCreationContext = createContext<ContextType>(null)
 
-const ProfileCreationProvider: React.FC = ({ children }) => {
+const ProfileCreationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { account } = useWeb3React()
 

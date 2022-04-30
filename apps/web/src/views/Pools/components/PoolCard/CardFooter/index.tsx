@@ -12,6 +12,7 @@ interface FooterProps {
   account: string
   totalCakeInVault?: BigNumber
   defaultExpanded?: boolean
+  children?: React.ReactNode
 }
 
 const ExpandableButtonWrapper = styled(Flex)`

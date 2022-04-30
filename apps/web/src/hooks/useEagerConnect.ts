@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { connectorLocalStorageKey, ConnectorNames } from '@pancakeswap/uikit'
 import useAuth from 'hooks/useAuth'
-import { isMobile } from 'react-device-detect'
 import { injected } from 'utils/web3React'
 
 const _binanceChainListener = async () =>
@@ -67,9 +66,6 @@ const useEagerConnect = () => {
           tryLogin(ConnectorNames.Injected)
         } else {
           // eslint-disable-next-line no-lonely-if
-          if (isMobile && window.ethereum) {
-            tryLogin(ConnectorNames.Injected)
-          }
         }
       })
     }

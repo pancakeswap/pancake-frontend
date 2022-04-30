@@ -27,7 +27,6 @@ import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
 import { DesktopColumnSchema, FarmWithStakedValue } from './components/types'
-import { ReactNode } from 'react-markdown'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -128,7 +127,7 @@ export const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) =>
   return null
 }
 
-const Farms: React.FC<{ children: ReactNode }> = ({ children }) => {
+const Farms: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { pathname } = useRouter()
   const { t } = useTranslation()
   const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()

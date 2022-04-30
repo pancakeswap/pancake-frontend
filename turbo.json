@@ -15,6 +15,9 @@
     },
     "dev": {
       "cache": false
-    }
+    },
+    "start": {},
+    "postinstall": {},
+    "format:check:staged": {}
   }
 }

@@ -1,4 +1,5 @@
-import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
+// @ts-ignore
+import { domAnimation, LazyMotion, m } from "framer-motion";
 import React, { createContext, useRef, useState } from "react";
 import styled from "styled-components";
 import { Overlay } from "../../components/Overlay";
@@ -90,23 +91,21 @@ const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       }}
     >
       <LazyMotion features={domAnimation}>
-        <AnimatePresence>
-          {isOpen && (
-            <ModalWrapper
-              ref={animationRef}
-              onAnimationStart={() => animationHandler(animationRef.current)}
-              {...animationMap}
-              variants={animationVariants}
-              transition={{ duration: 0.3 }}
-            >
-              <Overlay onClick={handleOverlayDismiss} />
-              {React.isValidElement(modalNode) &&
-                React.cloneElement(modalNode, {
-                  onDismiss: handleDismiss,
-                })}
-            </ModalWrapper>
-          )}
-        </AnimatePresence>
+        {isOpen && (
+          <ModalWrapper
+            ref={animationRef}
+            onAnimationStart={() => animationHandler(animationRef.current)}
+            {...animationMap}
+            variants={animationVariants}
+            transition={{ duration: 0.3 }}
+          >
+            <Overlay onClick={handleOverlayDismiss} />
+            {React.isValidElement(modalNode) &&
+              React.cloneElement(modalNode, {
+                onDismiss: handleDismiss,
+              })}
+          </ModalWrapper>
+        )}
       </LazyMotion>
       {children}
     </Context.Provider>

@@ -3,6 +3,7 @@ import { Card, CardBody, Heading } from '@pancakeswap/uikit'
 
 interface NotificationProps {
   title: string
+  children?: React.ReactNode
 }
 
 // const BunnyDecoration = styled.div`

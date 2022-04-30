@@ -9,7 +9,7 @@ import { DeserializedLockedVaultUser } from 'state/types'
 import { isLocked, isStaked } from 'utils/cakePool'
 import useAvgLockDuration from './LockedPool/hooks/useAvgLockDuration'
 
-const StatWrapper: FC<{ label: ReactNode }> = ({ children, label }) => {
+const StatWrapper: FC<{ label: ReactNode; children: ReactNode }> = ({ children, label }) => {
   return (
     <Flex mb="2px" justifyContent="space-between" alignItems="center" width="100%">
       {label}

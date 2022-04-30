@@ -87,6 +87,7 @@ interface RoundResultBoxProps {
   isNext?: boolean
   isLive?: boolean
   hasEntered?: boolean
+  children?: React.ReactNode
 }
 
 const getBackgroundColor = ({

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled, { useTheme } from "styled-components";
-import { isMobile } from "react-device-detect";
 import getExternalLinkProps from "../../util/getExternalLinkProps";
 import Grid from "../../components/Box/Grid";
 import Box from "../../components/Box/Box";
@@ -50,7 +49,7 @@ const getPreferredConfig = (walletConfig: Config[]) => {
     ...sortedConfig
       .filter((sortedWalletConfig) => sortedWalletConfig.title !== preferredWalletName)
       .filter((sortedWalletConfig) =>
-        typeof sortedWalletConfig.mobileOnly === "boolean" ? sortedWalletConfig.mobileOnly && isMobile : true
+        typeof sortedWalletConfig.mobileOnly === "boolean" ? sortedWalletConfig.mobileOnly : true
       ),
   ];
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { ThemedProps } from "./types";
 
@@ -8,7 +8,7 @@ const StepperWrapper = styled.div<ThemedProps>`
   width: fit-content;
 `;
 
-const Stepper: React.FC = ({ children }) => {
+const Stepper: React.FC<{ children: ReactNode }> = ({ children }) => {
   const numberOfSteps = React.Children.count(children);
   return (
     <StepperWrapper>

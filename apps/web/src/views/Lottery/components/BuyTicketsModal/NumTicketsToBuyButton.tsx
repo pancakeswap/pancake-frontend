@@ -4,6 +4,7 @@ import { Button } from '@pancakeswap/uikit'
 interface NumTicketsToBuyButtonProps {
   onClick: () => void
   disabled?: boolean
+  children?: React.ReactNode
 }
 
 const StyledButton = styled(Button)`
