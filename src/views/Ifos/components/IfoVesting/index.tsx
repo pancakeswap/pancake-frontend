@@ -1,7 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
+import Trans from 'components/Trans'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { DeserializedPool } from 'state/types'
 import { Box, Card, CardBody, CardHeader, Flex, Text, Image } from '@pancakeswap/uikit'
+import { VestingStatus } from './types'
 import NotTokens from './NotTokens'
 import VestingPeriod from './VestingPeriod/index'
 import VestingEnded from './VestingEnded'
@@ -16,8 +20,28 @@ const StyleVertingCard = styled(Card)`
   }
 `
 
-const IfoVesting: React.FC = () => {
+const IfoVestingStatus = {
+  [VestingStatus.NOT_VESTING_TOKENS]: {
+    text: <Trans>You have no tokens available for claiming</Trans>,
+    imgUrl: '/images/ifos/vesting/not-tokens.svg',
+  },
+  [VestingStatus.IN_VESTING_PERIOD]: {
+    text: <Trans>You have tokens available for claiming now!</Trans>,
+    imgUrl: '/images/ifos/vesting/in-vesting-period.svg',
+  },
+  [VestingStatus.VESTING_ENDED]: {
+    text: <Trans>You have tokens available for claiming now!</Trans>,
+    imgUrl: '/images/ifos/vesting/in-vesting-end.svg',
+  },
+}
+
+interface IfoVestingProps {
+  pool: DeserializedPool
+}
+
+const IfoVesting: React.FC<IfoVestingProps> = ({ pool }) => {
   const { t } = useTranslation()
+  const { account } = useActiveWeb3React()
 
   return (
     <StyleVertingCard isActive>
@@ -42,7 +66,7 @@ const IfoVesting: React.FC = () => {
         </Flex>
       </CardHeader>
       <CardBody>
-        <NotTokens />
+        <NotTokens pool={pool} account={account} />
         {/* <VestingPeriod /> */}
         {/* <VestingEnded /> */}
       </CardBody>
