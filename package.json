@@ -119,6 +119,7 @@
     "husky": "^7.0.0",
     "jest": "^27.4.5",
     "lerna": "^4.0.0",
+    "next-transpile-modules": "^9.0.0",
     "postcss-scss": "^4.0.3",
     "postcss-syntax": "^0.36.2",
     "prettier": "^2.3.0",
