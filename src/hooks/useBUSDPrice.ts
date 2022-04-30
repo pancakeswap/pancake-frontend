@@ -1,4 +1,4 @@
-import { Currency, currencyEquals, JSBI, Price } from '@pancakeswap/sdk'
+import { Currency, currencyEquals, JSBI, Price } from '@kiwanoswap/sdk'
 import tokens from 'config/constants/tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
@@ -66,7 +66,7 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
 }
 
 export const useCakeBusdPrice = (): Price | undefined => {
-  const cakeBusdPrice = useBUSDPrice(tokens.cake)
+  const cakeBusdPrice = useBUSDPrice(tokens.WANO)
   return cakeBusdPrice
 }
 

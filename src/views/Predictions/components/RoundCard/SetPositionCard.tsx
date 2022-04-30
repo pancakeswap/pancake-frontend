@@ -14,7 +14,7 @@ import {
   Slider,
   Box,
   AutoRenewIcon,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { Zero } from '@ethersproject/constants'
 import { parseUnits } from '@ethersproject/units'
@@ -39,7 +39,7 @@ interface SetPositionCardProps {
   onSuccess: (hash: string) => Promise<void>
 }
 
-const dust = parseUnits('0.01', 18)
+const dust = parseUnits('0.001', 18)
 const percentShortcuts = [10, 25, 50, 75]
 
 const getButtonProps = (value: BigNumber, bnbBalance: BigNumber, minBetAmountBalance: BigNumber) => {
@@ -80,7 +80,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const predictionsContract = usePredictionsContract()
 
   const maxBalance = useMemo(() => {
-    return bnbBalance.gt(dust) ? bnbBalance.sub(dust) : dust
+    return bnbBalance.gt(dust) ? bnbBalance.sub(dust) : Zero
   }, [bnbBalance])
   const balanceDisplay = formatBigNumber(bnbBalance)
 

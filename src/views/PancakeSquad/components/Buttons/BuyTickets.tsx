@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from 'react'
-import { Button, useModal } from '@pancakeswap/uikit'
+import { Button, useModal } from '@kiwanoswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BigNumber } from '@ethersproject/bignumber'
@@ -116,7 +116,7 @@ const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
       isLoading={isApproving}
       headerBackground={theme.colors.gradients.cardHeader}
       txHash={txHashEnablingResult}
-      loadingText={t('Please enable CAKE spending in your wallet')}
+      loadingText={t('Please enable WANO spending in your wallet')}
       loadingButtonLabel={t('Enabling...')}
       successButtonLabel={t('Close')}
       onConfirmClose={onConfirmClose}

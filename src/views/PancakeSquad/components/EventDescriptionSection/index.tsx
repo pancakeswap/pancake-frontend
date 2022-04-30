@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Link, Text } from '@pancakeswap/uikit'
+import { Box, Button, Flex, Link, Text } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LandingBodyWrapper } from 'views/PancakeSquad/styles'
 import eventDescriptionConfigBuilder from './config'

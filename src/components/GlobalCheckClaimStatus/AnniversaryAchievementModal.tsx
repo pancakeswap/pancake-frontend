@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { AutoRenewIcon, Box, Button, Flex, InjectedModalProps, Modal, Text } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Box, Button, Flex, InjectedModalProps, Modal, Text } from '@kiwanoswap/uikit'
 import styled from 'styled-components'
 import confetti from 'canvas-confetti'
 import { useTranslation } from 'contexts/Localization'
@@ -52,7 +52,7 @@ const AnniversaryAchievementModal: React.FC<InjectedModalProps> = ({ onDismiss }
           <AnniversaryImage src="/images/achievements/1-year.svg" />
         </Box>
         <Text textAlign="center" bold color="secondary" maxWidth="400px" fontSize="16px" mb="24px">
-          {t('You won points for joining PancakeSwap during the first year of our journey!')}
+          {t('You won points for joining KiwanoSwap during the first year of our journey!')}
         </Text>
         <Button
           disabled={isLoading}

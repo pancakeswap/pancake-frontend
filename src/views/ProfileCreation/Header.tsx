@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import styled from 'styled-components'
-import { Breadcrumbs, Heading, Text, Link, Button } from '@pancakeswap/uikit'
+import { Breadcrumbs, Heading, Text, Link, Button } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { TranslateFunction } from 'contexts/Localization/types'
@@ -33,7 +33,7 @@ const Header: React.FC = () => {
         {t('Show off your stats and collectibles with your unique profile')}
       </Heading>
       <Text color="textSubtle" mb="8px">
-        {t('Total cost: 1.5 CAKE')}
+        {t('Total cost: 1.5 WANO')}
       </Text>
       <Link href={`${nftsBaseUrl}/profile`}>
         <Button mb="24px" scale="sm" variant="secondary">

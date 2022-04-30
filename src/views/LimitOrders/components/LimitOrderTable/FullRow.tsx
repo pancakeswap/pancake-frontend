@@ -1,6 +1,6 @@
 import React from 'react'
 import { Order } from '@gelatonetwork/limit-orders-lib'
-import { Td, MoreHorizontalIcon, SyncAltIcon, useModal, IconButton } from '@pancakeswap/uikit'
+import { Td, MoreHorizontalIcon, SyncAltIcon, useModal, IconButton } from '@kiwanoswap/uikit'
 
 import useFormattedOrderData from 'views/LimitOrders/hooks/useFormattedOrderData'
 import CurrencyFormat from './CurrencyFormat'

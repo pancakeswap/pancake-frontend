@@ -11,7 +11,7 @@ import {
   SerializedVaultUser,
   SerializedCakeVault,
 } from 'state/types'
-import cakeAbi from 'config/abi/cake.json'
+import cakeAbi from 'config/abi/WANO.json'
 import tokens from 'config/constants/tokens'
 import masterChef from 'config/abi/masterchef.json'
 import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
@@ -103,12 +103,12 @@ export const fetchCakePoolPublicDataAsync = () => async (dispatch, getState) => 
 
 export const fetchCakePoolUserDataAsync = (account: string) => async (dispatch) => {
   const allowanceCall = {
-    address: tokens.cake.address,
+    address: tokens.WANO.address,
     name: 'allowance',
     params: [account, cakePoolAddress],
   }
   const balanceOfCall = {
-    address: tokens.cake.address,
+    address: tokens.WANO.address,
     name: 'balanceOf',
     params: [account],
   }

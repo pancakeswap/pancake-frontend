@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Text, Heading, Card, CardHeader, CardBody, Flex } from '@pancakeswap/uikit'
+import { Text, Heading, Card, CardHeader, CardBody, Flex } from '@kiwanoswap/uikit'
 import { Auction, Bidder } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -42,7 +42,7 @@ const CongratulationsCard: React.FC<{ currentAuction: Auction; bidders: Bidder[]
 
         <Flex justifyContent="space-between" mb="8px">
           <Text color="textSubtle">{t('Your total bid')}</Text>
-          <Text>{getBalanceNumber(amount).toLocaleString()} CAKE</Text>
+          <Text>{getBalanceNumber(amount).toLocaleString()} WANO</Text>
         </Flex>
         <Flex justifyContent="space-between">
           <Text color="textSubtle">{t('Your position')}</Text>

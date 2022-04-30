@@ -1,4 +1,4 @@
-import { IconButton, Text, Skeleton, Button, AutoRenewIcon, ChevronRightIcon, Message } from '@pancakeswap/uikit'
+import { IconButton, Text, Skeleton, Button, AutoRenewIcon, ChevronRightIcon, Message } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { formatNumber } from 'utils/formatBalance'
 import TextEllipsis from '../TextEllipsis'
@@ -64,7 +64,7 @@ const MainView: React.FC<MainViewProps> = ({
               <Message variant="danger" mb="12px">
                 <Text color="danger">
                   {t(
-                    'Hold some CAKE in your wallet or on PancakeSwap at the snapshot block to get voting power for future proposals.',
+                    'Hold some WANO in your wallet or on KiwanoSwap at the snapshot block to get voting power for future proposals.',
                   )}
                 </Text>
               </Message>

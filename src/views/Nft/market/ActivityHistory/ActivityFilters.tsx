@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Flex, Text } from '@pancakeswap/uikit'
+import { Flex, Text } from '@kiwanoswap/uikit'
 import isEmpty from 'lodash/isEmpty'
 import { useGetNftActivityFilters } from 'state/nftMarket/hooks'
 import { MarketEvent } from 'state/nftMarket/types'

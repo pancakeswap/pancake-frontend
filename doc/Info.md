@@ -1,6 +1,6 @@
 # Documentation: Info
 
-A brief overview how Info part of PancakeSwap website works.
+A brief overview how Info part of KiwanoSwap website works.
 
 ## Code structure
 

@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { Flex, Skeleton, Text } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import Balance from 'components/Balance'
@@ -49,7 +49,7 @@ const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
         {isLoading || cakeAmount.isNaN() ? (
           <Skeleton my="4px" mr="10px" height={20} width={110} />
         ) : (
-          <Balance fontSize="20px" bold unit=" CAKE" value={getBalanceNumber(cakeAmount)} decimals={0} />
+          <Balance fontSize="20px" bold unit=" WANO" value={getBalanceNumber(cakeAmount)} decimals={0} />
         )}
         {isLoading || cakeAmount.isNaN() ? (
           <>
@@ -68,7 +68,7 @@ const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
           <>
             {numberWinners !== '0' && (
               <Text fontSize="12px" color="textSubtle">
-                {getFullDisplayBalance(cakeAmount.div(parseInt(numberWinners, 10)), 18, 2)} CAKE {t('each')}
+                {getFullDisplayBalance(cakeAmount.div(parseInt(numberWinners, 10)), 18, 2)} WANO {t('each')}
               </Text>
             )}
             <Text fontSize="12px" color="textSubtle">

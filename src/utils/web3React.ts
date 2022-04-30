@@ -1,9 +1,9 @@
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { AbstractConnector } from '@web3-react/abstract-connector'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId } from '@kiwanoswap/sdk'
 import { BscConnector } from '@binance-chain/bsc-connector'
-import { ConnectorNames } from '@pancakeswap/uikit'
+import { ConnectorNames } from '@kiwanoswap/uikit'
 import { hexlify } from '@ethersproject/bytes'
 import { toUtf8Bytes } from '@ethersproject/strings'
 import { Web3Provider } from '@ethersproject/providers'
@@ -36,7 +36,7 @@ export const connectorsByName = {
     const { WalletLinkConnector } = await import('@web3-react/walletlink-connector')
     return new WalletLinkConnector({
       url: rpcUrl,
-      appName: 'PancakeSwap',
+      appName: 'KiwanoSwap',
       appLogoUrl: 'https://pancakeswap.com/logo.png',
       supportedChainIds: [ChainId.MAINNET, ChainId.TESTNET],
     })

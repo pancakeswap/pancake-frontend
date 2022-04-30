@@ -1,6 +1,6 @@
 import { useCurrentBlock } from 'state/block/hooks'
 import BigNumber from 'bignumber.js'
-import { Button, useModal } from '@pancakeswap/uikit'
+import { Button, useModal } from '@kiwanoswap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
@@ -33,7 +33,7 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
     toastSuccess(
       t('Success!'),
       <ToastDescriptionWithTx txHash={txHash}>
-        {t('You have contributed %amount% CAKE to this IFO!', {
+        {t('You have contributed %amount% WANO to this IFO!', {
           amount: getBalanceNumber(amount),
         })}
       </ToastDescriptionWithTx>,
@@ -71,7 +71,7 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
       width="100%"
       disabled={isDisabled}
     >
-      {isMaxCommitted && publicIfoData.status === 'live' ? t('Max. Committed') : t('Commit CAKE')}
+      {isMaxCommitted && publicIfoData.status === 'live' ? t('Max. Committed') : t('Commit WANO')}
     </Button>
   )
 }

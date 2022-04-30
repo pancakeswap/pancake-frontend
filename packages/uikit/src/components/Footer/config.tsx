@@ -8,7 +8,7 @@ export const footerLinks: FooterLinkType[] = [
     items: [
       {
         label: "Contact",
-        href: "https://docs.pancakeswap.finance/contact-us",
+        href: "https://docs.KiwanoSwap.io/contact-us",
       },
       {
         label: "Blog",
@@ -16,11 +16,11 @@ export const footerLinks: FooterLinkType[] = [
       },
       {
         label: "Community",
-        href: "https://docs.pancakeswap.finance/contact-us/telegram",
+        href: "https://docs.KiwanoSwap.io/contact-us/telegram",
       },
       {
-        label: "CAKE",
-        href: "https://docs.pancakeswap.finance/tokenomics/cake",
+        label: "WANO",
+        href: "https://docs.KiwanoSwap.io/tokenomics/WANO",
       },
       {
         label: "—",
@@ -37,15 +37,15 @@ export const footerLinks: FooterLinkType[] = [
     items: [
       {
         label: "Customer",
-        href: "Support https://docs.pancakeswap.finance/contact-us/customer-support",
+        href: "Support https://docs.KiwanoSwap.io/contact-us/customer-support",
       },
       {
         label: "Troubleshooting",
-        href: "https://docs.pancakeswap.finance/help/troubleshooting",
+        href: "https://docs.KiwanoSwap.io/help/troubleshooting",
       },
       {
         label: "Guides",
-        href: "https://docs.pancakeswap.finance/get-started",
+        href: "https://docs.KiwanoSwap.io/get-started",
       },
     ],
   },
@@ -58,19 +58,19 @@ export const footerLinks: FooterLinkType[] = [
       },
       {
         label: "Documentation",
-        href: "https://docs.pancakeswap.finance",
+        href: "https://docs.KiwanoSwap.io",
       },
       {
         label: "Bug Bounty",
-        href: "https://app.gitbook.com/@pancakeswap-1/s/pancakeswap/code/bug-bounty",
+        href: "https://app.gitbook.com/@kiwanoswap-1/s/pancakeswap/code/bug-bounty",
       },
       {
         label: "Audits",
-        href: "https://docs.pancakeswap.finance/help/faq#is-pancakeswap-safe-has-pancakeswap-been-audited",
+        href: "https://docs.KiwanoSwap.io/help/faq#is-pancakeswap-safe-has-pancakeswap-been-audited",
       },
       {
         label: "Careers",
-        href: "https://docs.pancakeswap.finance/hiring/become-a-chef",
+        href: "https://docs.KiwanoSwap.io/hiring/become-a-chef",
       },
     ],
   },
@@ -92,15 +92,15 @@ export const socials = [
       },
       {
         label: "Bahasa Indonesia",
-        href: "https://t.me/PancakeSwapIndonesia",
+        href: "https://t.me/KiwanoSwapIndonesia",
       },
       {
         label: "中文",
-        href: "https://t.me/PancakeSwap_CN",
+        href: "https://t.me/KiwanoSwap_CN",
       },
       {
         label: "Tiếng Việt",
-        href: "https://t.me/PancakeSwapVN",
+        href: "https://t.me/KiwanoSwapVN",
       },
       {
         label: "Italiano",
@@ -116,7 +116,7 @@ export const socials = [
       },
       {
         label: "Português",
-        href: "https://t.me/PancakeSwapPortuguese",
+        href: "https://t.me/KiwanoSwapPortuguese",
       },
       {
         label: "Español",
@@ -132,7 +132,7 @@ export const socials = [
       },
       {
         label: "Deutsch",
-        href: "https://t.me/PancakeSwap_DE",
+        href: "https://t.me/KiwanoSwap_DE",
       },
       {
         label: "Filipino",
@@ -140,33 +140,18 @@ export const socials = [
       },
       {
         label: "ქართული ენა",
-        href: "https://t.me/PancakeSwapGeorgia",
+        href: "https://t.me/KiwanoSwapGeorgia",
       },
       {
         label: "Announcements",
-        href: "https://t.me/PancakeSwapAnn",
+        href: "https://t.me/KiwanoSwapAnn",
       },
     ],
-  },
-  {
-    label: "Reddit",
-    icon: RedditIcon,
-    href: "https://reddit.com/r/pancakeswap",
-  },
-  {
-    label: "Instagram",
-    icon: InstagramIcon,
-    href: "https://instagram.com/pancakeswap_official",
   },
   {
     label: "Github",
     icon: GithubIcon,
     href: "https://github.com/pancakeswap/",
-  },
-  {
-    label: "Discord",
-    icon: DiscordIcon,
-    href: "https://discord.gg/pancakeswap",
   },
   {
     label: "Medium",

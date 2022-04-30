@@ -1,4 +1,4 @@
-import { BlockIcon, CheckmarkCircleIcon, Flex, Image, Skeleton, Text } from '@pancakeswap/uikit'
+import { BlockIcon, CheckmarkCircleIcon, Flex, Image, Skeleton, Text } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 import styled from 'styled-components'
@@ -37,7 +37,7 @@ const UserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationP
         <tr>
           <BoldTd>
             <Flex flexDirection="column">
-              <Text bold>{cakeReward.toFixed(4)} CAKE</Text>
+              <Text bold>{cakeReward.toFixed(4)} WANO</Text>
               <Text bold>{moboxReward.toFixed(4)} MBOX</Text>
               {dollarValueOfTokensReward !== null ? (
                 <Text fontSize="12px" color="textSubtle">

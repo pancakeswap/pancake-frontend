@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, ProposalIcon } from '@pancakeswap/uikit'
+import { Box, Button, Flex, Heading, ProposalIcon } from '@kiwanoswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
@@ -23,7 +23,7 @@ const Hero = () => {
               {t('Voting')}
             </Heading>
             <Heading as="h3" scale="lg" mb="16px">
-              {t('Have your say in the future of the PancakeSwap Ecosystem')}
+              {t('Have your say in the future of the KiwanoSwap Ecosystem')}
             </Heading>
             <Link href="/voting/proposal/create" passHref>
               <Button startIcon={<ProposalIcon color="currentColor" width="24px" />}>{t('Make a Proposal')}</Button>

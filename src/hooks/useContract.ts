@@ -45,13 +45,13 @@ import {
   IfoPool,
   Multicall,
   Weth,
-  Cake,
+  WANO,
   Erc721collection,
 } from 'config/abi/types'
 
 // Imports below migrated from Exchange useContract.ts
 import { Contract } from '@ethersproject/contracts'
-import { ChainId, WETH } from '@pancakeswap/sdk'
+import { ChainId, WETH } from '@kiwanoswap/sdk'
 import IPancakePairABI from '../config/abi/IPancakePair.json'
 import ENS_PUBLIC_RESOLVER_ABI from '../config/abi/ens-public-resolver.json'
 import ENS_ABI from '../config/abi/ens-registrar.json'
@@ -93,7 +93,7 @@ export const useERC721 = (address: string) => {
   return useMemo(() => getErc721Contract(address, library.getSigner()), [address, library])
 }
 
-export const useCake = (): { reader: Cake; signer: Cake } => {
+export const useCake = (): { reader: WANO; signer: WANO } => {
   const { account, library } = useActiveWeb3React()
   return useMemo(
     () => ({

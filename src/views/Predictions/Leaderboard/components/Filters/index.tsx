@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Box, Flex, Text } from '@pancakeswap/uikit'
+import { Box, Flex, Text } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { setLeaderboardFilter } from 'state/predictions'

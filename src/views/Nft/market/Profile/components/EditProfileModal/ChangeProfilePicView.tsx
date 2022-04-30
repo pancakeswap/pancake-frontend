@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Button, Box, InjectedModalProps, Text, Skeleton } from '@pancakeswap/uikit'
+import { Button, Box, InjectedModalProps, Text, Skeleton } from '@kiwanoswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
 import { useTranslation } from 'contexts/Localization'

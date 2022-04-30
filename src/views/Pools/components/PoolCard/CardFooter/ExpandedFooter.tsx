@@ -15,7 +15,7 @@ import {
   Button,
   Link,
   HelpIcon,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import { BASE_BSC_SCAN_URL } from 'config'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useVaultPoolByKey, useVaultPools } from 'state/pools/hooks'
@@ -210,7 +210,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
                 tokenAddress,
                 earningToken.symbol,
                 earningToken.decimals,
-                `https://tokens.pancakeswap.finance/images/${tokenAddress}.png`,
+                `https://tokens.KiwanoSwap.io/images/${tokenAddress}.png`,
               )
             }
           >

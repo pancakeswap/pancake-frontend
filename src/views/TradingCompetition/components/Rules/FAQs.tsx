@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Card, CardBody, CardHeader, Heading, Text, Flex } from '@pancakeswap/uikit'
+import { Card, CardBody, CardHeader, Heading, Text, Flex } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import FoldableText from 'components/FoldableSection/FoldableText'
 
@@ -35,7 +35,7 @@ const FAQ = () => {
           <FoldableText title={t('Eligible trading pairs')} mt="24px">
             <Text fontSize="14px" color="textSubtle">
               {t(
-                'Only trades on MBOX/BNB, MBOX/BUSD, CAKE/BNB and CAKE/BUSD pairs will be included in volume calculations.',
+                'Only trades on MBOX/BNB, MBOX/BUSD, WANO/BNB and WANO/BUSD pairs will be included in volume calculations.',
               )}
             </Text>
           </FoldableText>
@@ -57,13 +57,13 @@ const FAQ = () => {
             <Text fontSize="14px" color="textSubtle">
               -{' '}
               {t(
-                'Prizes to be distributed in CAKE and MBOX in a distribution of 1:1 and shared by all members of each respective tier.',
+                'Prizes to be distributed in WANO and MBOX in a distribution of 1:1 and shared by all members of each respective tier.',
               )}
             </Text>
             <Text fontSize="14px" color="textSubtle">
               -{' '}
               {t(
-                'The price of token prizes (CAKE and MBOX) in USD will be determined as per their BUSD pair price during the tally period.',
+                'The price of token prizes (WANO and MBOX) in USD will be determined as per their BUSD pair price during the tally period.',
               )}
             </Text>
             <Text fontSize="14px" color="textSubtle">
@@ -74,13 +74,13 @@ const FAQ = () => {
             <Text fontSize="14px" color="textSubtle">
               -{' '}
               {t(
-                'In the event of a disagreement concerning the final winning team or rank, PancakeSwap will have the final say.',
+                'In the event of a disagreement concerning the final winning team or rank, KiwanoSwap will have the final say.',
               )}
             </Text>
             <Text fontSize="14px" color="textSubtle">
               -{' '}
               {t(
-                'PancakeSwap can and will disqualify any team or specific members that are proven to have taken malicious action or attempt to “cheat” in any way.',
+                'KiwanoSwap can and will disqualify any team or specific members that are proven to have taken malicious action or attempt to “cheat” in any way.',
               )}
             </Text>
           </FoldableText>

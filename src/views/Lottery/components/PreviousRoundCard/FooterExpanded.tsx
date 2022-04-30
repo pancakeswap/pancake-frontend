@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Flex, Skeleton, Heading, Box, Text } from '@pancakeswap/uikit'
+import { Flex, Skeleton, Heading, Box, Text } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryRound, LotteryRoundGraphEntity } from 'state/types'
 import { usePriceCakeBusd } from 'state/farms/hooks'
@@ -74,7 +74,7 @@ const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lottery
           <Balance
             fontSize="14px"
             color="textSubtle"
-            unit=" CAKE"
+            unit=" WANO"
             value={getBalanceNumber(lotteryNodeData?.amountCollectedInCake)}
             decimals={0}
           />

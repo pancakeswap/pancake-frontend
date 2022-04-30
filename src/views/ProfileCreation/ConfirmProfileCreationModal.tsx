@@ -1,4 +1,4 @@
-import { Modal, Flex, Text } from '@pancakeswap/uikit'
+import { Modal, Flex, Text } from '@kiwanoswap/uikit'
 import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
 import { useTranslation } from 'contexts/Localization'
@@ -67,7 +67,7 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
       </Text>
       <Flex justifyContent="space-between" mb="16px">
         <Text>{t('Cost')}</Text>
-        <Text>{t('%num% CAKE', { num: formatUnits(REGISTER_COST) })}</Text>
+        <Text>{t('%num% WANO', { num: formatUnits(REGISTER_COST) })}</Text>
       </Flex>
       <ApproveConfirmButtons
         isApproveDisabled={isConfirmed || isConfirming || isApproved}

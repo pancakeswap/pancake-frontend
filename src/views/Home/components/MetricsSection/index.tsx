@@ -1,4 +1,4 @@
-import { Heading, Flex, Text, Skeleton, ChartIcon, CommunityIcon, SwapIcon } from '@pancakeswap/uikit'
+import { Heading, Flex, Text, Skeleton, ChartIcon, CommunityIcon, SwapIcon } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { formatLocalisedCompactNumber } from 'utils/formatBalance'
@@ -43,7 +43,7 @@ const Stats = () => {
         {t('Trusted with billions.')}
       </Heading>
       <Text textAlign="center" color="textSubtle">
-        {t('PancakeSwap has the most users of any decentralized platform, ever.')}
+        {t('KiwanoSwap has the most users of any decentralized platform, ever.')}
       </Text>
       <Flex flexWrap="wrap">
         <Text display="inline" textAlign="center" color="textSubtle" mb="20px">

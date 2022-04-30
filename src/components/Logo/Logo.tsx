@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { HelpIcon } from '@pancakeswap/uikit'
+import { HelpIcon } from '@kiwanoswap/uikit'
 
 export const BAD_SRCS: { [imageSrc: string]: true } = {}
 

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Modal, Button, Flex, AutoRenewIcon, Heading, Text } from '@pancakeswap/uikit'
+import { Modal, Button, Flex, AutoRenewIcon, Heading, Text } from '@kiwanoswap/uikit'
 import Image from 'next/image'
 import { useTranslation } from 'contexts/Localization'
 import { useTradingCompetitionContractMobox } from 'hooks/useContract'
@@ -61,7 +61,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         </Flex>
         {/* tokens */}
         <Heading mt="16px" scale="md" mb={canClaimNFT ? '16px' : '0px'}>
-          {cakeReward.toFixed(2)} CAKE
+          {cakeReward.toFixed(2)} WANO
         </Heading>
         <Heading mt="16px" scale="md" mb={canClaimNFT ? '16px' : '0px'}>
           {moboxReward.toFixed(2)} MBOX

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Box, Heading, Text, Button, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Heading, Text, Button, Flex, useMatchBreakpoints } from '@kiwanoswap/uikit'
 import Container from 'components/Layout/Container'
 import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'

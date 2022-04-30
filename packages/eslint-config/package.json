@@ -1,12 +1,12 @@
 {
-  "name": "@pancakeswap/eslint-config-pancake",
+  "name": "@kiwanoswap/eslint-config-kiwanoswap",
   "version": "1.2.0",
-  "description": "Eslint config for PancakeSwap",
+  "description": "Eslint config for KiwanoSwap",
   "main": "lib/index.js",
   "files": [
     "lib"
   ],
-  "repository": "https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/eslint-config-pancake",
+  "repository": "https://github.com/Kiwanoproject/kiwanoswap-toolkit/tree/master/packages/eslint-config-kiwanoswap",
   "license": "MIT",
   "author": "RabbitDoge",
   "private": false,

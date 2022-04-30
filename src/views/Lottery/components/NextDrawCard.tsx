@@ -13,7 +13,7 @@ import {
   Box,
   CardFooter,
   ExpandableLabel,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
@@ -104,7 +104,7 @@ const NextDrawCard = () => {
             fontSize="14px"
             color="textSubtle"
             textAlign={['center', null, null, 'left']}
-            unit=" CAKE"
+            unit=" WANO"
             value={getBalanceNumber(amountCollectedInCake)}
             decimals={0}
           />

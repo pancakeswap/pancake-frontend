@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Text, useMatchBreakpoints, TokenPairImage as UITokenPairImage } from '@pancakeswap/uikit'
+import { Text, useMatchBreakpoints, TokenPairImage as UITokenPairImage } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
@@ -49,8 +49,8 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
     title = vaultPoolConfig[vaultKey].name
     subtitle = vaultPoolConfig[vaultKey].description
   } else if (isManualCakePool) {
-    title = t('Manual CAKE')
-    subtitle = `${t('Earn')} CAKE ${t('Stake').toLocaleLowerCase()} CAKE`
+    title = t('Manual WANO')
+    subtitle = `${t('Earn')} WANO ${t('Stake').toLocaleLowerCase()} WANO`
   }
 
   return (

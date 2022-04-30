@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks'
 import { mainnetTokens } from 'config/constants/tokens'
 import { createWrapper } from 'testUtils'
-import { Pair, TokenAmount, CurrencyAmount, Trade } from '@pancakeswap/sdk'
+import { Pair, TokenAmount, CurrencyAmount, Trade } from '@kiwanoswap/sdk'
 import * as UsePairs from './usePairs'
 import * as Trades from './Trades'
 
@@ -14,11 +14,11 @@ describe('Trade', () => {
       mockUsePairs.mockReturnValue([
         [
           PairState.EXISTS,
-          new Pair(new TokenAmount(mainnetTokens.wbnb, '1'), new TokenAmount(mainnetTokens.cake, '1')),
+          new Pair(new TokenAmount(mainnetTokens.wbnb, '1'), new TokenAmount(mainnetTokens.WANO, '1')),
         ],
         [
           PairState.INVALID,
-          new Pair(new TokenAmount(mainnetTokens.busd, '1'), new TokenAmount(mainnetTokens.cake, '1')),
+          new Pair(new TokenAmount(mainnetTokens.busd, '1'), new TokenAmount(mainnetTokens.WANO, '1')),
         ],
         [
           PairState.LOADING,
@@ -28,49 +28,49 @@ describe('Trade', () => {
       ])
 
       const { result } = renderHook(() => {
-        const pairs = Trades.useAllCommonPairs(mainnetTokens.wbnb, mainnetTokens.cake)
+        const pairs = Trades.useAllCommonPairs(mainnetTokens.wbnb, mainnetTokens.WANO)
         return {
           pairs,
         }
       })
 
       expect(result.current.pairs).toStrictEqual([
-        new Pair(new TokenAmount(mainnetTokens.wbnb, '1'), new TokenAmount(mainnetTokens.cake, '1')),
+        new Pair(new TokenAmount(mainnetTokens.wbnb, '1'), new TokenAmount(mainnetTokens.WANO, '1')),
       ])
     })
     it('should filter out duplicated Pair', () => {
       mockUsePairs.mockReturnValue([
         [
           PairState.EXISTS,
-          new Pair(new TokenAmount(mainnetTokens.wbnb, '1'), new TokenAmount(mainnetTokens.cake, '1')),
+          new Pair(new TokenAmount(mainnetTokens.wbnb, '1'), new TokenAmount(mainnetTokens.WANO, '1')),
         ],
         [
           PairState.EXISTS,
-          new Pair(new TokenAmount(mainnetTokens.wbnb, '1'), new TokenAmount(mainnetTokens.cake, '1')),
+          new Pair(new TokenAmount(mainnetTokens.wbnb, '1'), new TokenAmount(mainnetTokens.WANO, '1')),
         ],
         [
           PairState.EXISTS,
-          new Pair(new TokenAmount(mainnetTokens.cake, '1'), new TokenAmount(mainnetTokens.wbnb, '1')),
+          new Pair(new TokenAmount(mainnetTokens.WANO, '1'), new TokenAmount(mainnetTokens.wbnb, '1')),
         ],
         [PairState.EXISTS, null],
       ])
 
       const { result } = renderHook(() => {
-        const pairs = Trades.useAllCommonPairs(mainnetTokens.wbnb, mainnetTokens.cake)
+        const pairs = Trades.useAllCommonPairs(mainnetTokens.wbnb, mainnetTokens.WANO)
         return {
           pairs,
         }
       })
 
       expect(result.current.pairs).toStrictEqual([
-        new Pair(new TokenAmount(mainnetTokens.wbnb, '1'), new TokenAmount(mainnetTokens.cake, '1')),
+        new Pair(new TokenAmount(mainnetTokens.wbnb, '1'), new TokenAmount(mainnetTokens.WANO, '1')),
       ])
     })
 
-    it('should get all pair combinations wbnb, cake', () => {
+    it('should get all pair combinations wbnb, WANO', () => {
       mockUsePairs.mockClear()
       renderHook(() => {
-        Trades.useAllCommonPairs(mainnetTokens.wbnb, mainnetTokens.cake)
+        Trades.useAllCommonPairs(mainnetTokens.wbnb, mainnetTokens.WANO)
       })
 
       expect(mockUsePairs).toMatchSnapshot()
@@ -92,9 +92,9 @@ describe('Trade', () => {
     const mockTradeExactOut = jest.spyOn(Trade, 'bestTradeExactOut')
 
     it('should call with maxHops 1 with singleHopOnly', () => {
-      const allowPairs = [new Pair(new TokenAmount(mainnetTokens.wbnb, '1'), new TokenAmount(mainnetTokens.cake, '1'))]
+      const allowPairs = [new Pair(new TokenAmount(mainnetTokens.wbnb, '1'), new TokenAmount(mainnetTokens.WANO, '1'))]
       const argA = CurrencyAmount.ether('1000000')
-      const argB = mainnetTokens.cake
+      const argB = mainnetTokens.WANO
       renderHook(
         () => {
           mockUseAllCommonPairs.mockReturnValue(allowPairs)
@@ -123,9 +123,9 @@ describe('Trade', () => {
     })
 
     it('should call with 3 times without singleHopOnly', () => {
-      const allowPairs = [new Pair(new TokenAmount(mainnetTokens.wbnb, '1'), new TokenAmount(mainnetTokens.cake, '1'))]
+      const allowPairs = [new Pair(new TokenAmount(mainnetTokens.wbnb, '1'), new TokenAmount(mainnetTokens.WANO, '1'))]
       const argA = CurrencyAmount.ether('1000000')
-      const argB = mainnetTokens.cake
+      const argB = mainnetTokens.WANO
       renderHook(
         () => {
           mockUseAllCommonPairs.mockReturnValue(allowPairs)

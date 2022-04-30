@@ -28,8 +28,8 @@ body:
       required: true
   - type: textarea
     attributes:
-      label: How does this feature benefit PancakeSwap users and CAKE holders?
-      description: Explain how this feature will be beneficial for the PancakeSwap community and ecosystem.
+      label: How does this feature benefit KiwanoSwap users and WANO holders?
+      description: Explain how this feature will be beneficial for the KiwanoSwap community and ecosystem.
     validations:
       required: true
   - type: textarea

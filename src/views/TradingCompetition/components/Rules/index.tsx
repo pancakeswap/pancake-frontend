@@ -1,4 +1,4 @@
-import { Flex, Text } from '@pancakeswap/uikit'
+import { Flex, Text } from '@kiwanoswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import RulesCard from './RulesCard'
@@ -29,7 +29,7 @@ const Rules = () => {
       <StyledCardWrapper>
         <RulesCard title={t('Trade to increase your rank')}>
           <Text textAlign="center" fontSize="14px" color="textSubtle">
-            {t('Eligible pairs: MBOX/BNB, MBOX/BUSD, CAKE/BNB and CAKE/BUSD')}
+            {t('Eligible pairs: MBOX/BNB, MBOX/BUSD, WANO/BNB and WANO/BUSD')}
           </Text>
         </RulesCard>
         <RulesCard title={t('Play as a team')}>

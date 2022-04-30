@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Card, Box, BlockIcon, CardBody } from '@pancakeswap/uikit'
+import { Card, Box, BlockIcon, CardBody } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition, NodeLedger } from 'state/types'
 import { useGetBufferSeconds } from 'state/predictions/hooks'

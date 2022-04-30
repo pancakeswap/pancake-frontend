@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
-import { Currency, CurrencyAmount, Pair, Percent, Token, TokenAmount } from '@pancakeswap/sdk'
-import { AddIcon, Button, InjectedModalProps, Text } from '@pancakeswap/uikit'
+import { Currency, CurrencyAmount, Pair, Percent, Token, TokenAmount } from '@kiwanoswap/sdk'
+import { AddIcon, Button, InjectedModalProps, Text } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import TransactionConfirmationModal, {
   ConfirmationModalContent,

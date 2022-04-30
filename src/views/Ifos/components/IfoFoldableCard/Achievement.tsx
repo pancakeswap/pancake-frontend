@@ -11,7 +11,7 @@ import {
   TwitterIcon,
   Link,
   TelegramIcon,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import tokens from 'config/constants/tokens'
 import { useTranslation } from 'contexts/Localization'
 import { PublicIfoData } from 'views/Ifos/types'
@@ -116,7 +116,7 @@ const IfoAchievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
             <Text color="textSubtle" fontSize="12px">
               {t('Commit ~%amount% %symbol% in total to earn!', {
                 amount: minLpForAchievement,
-                symbol: ifo.currency === tokens.cake ? 'CAKE' : 'LP',
+                symbol: ifo.currency === tokens.WANO ? 'WANO' : 'LP',
               })}
             </Text>
           ) : (

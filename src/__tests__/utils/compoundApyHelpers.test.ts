@@ -45,7 +45,7 @@ it.each([
     [32.272, 228.149, 1015.848, 22737.133, 3943794.378],
   ],
 ])(
-  'calculate cake earned with values %o',
+  'calculate WANO earned with values %o',
   ({ principalInUSD, apr, earningTokenPrice, compoundFrequency, performanceFee }, expected) => {
     expect(getInterestBreakdown({ principalInUSD, apr, earningTokenPrice, compoundFrequency, performanceFee })).toEqual(
       expected,

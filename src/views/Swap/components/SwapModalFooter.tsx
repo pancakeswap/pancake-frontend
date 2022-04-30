@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { Trade, TradeType } from '@pancakeswap/sdk'
-import { Button, Text, AutoRenewIcon } from '@pancakeswap/uikit'
+import { Trade, TradeType } from '@kiwanoswap/sdk'
+import { Button, Text, AutoRenewIcon } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Field } from 'state/swap/actions'
 import {
@@ -112,7 +112,7 @@ export default function SwapModalFooter({
                   <Text mb="12px">{t('For each trade a %amount% fee is paid', { amount: '0.25%' })}</Text>
                   <Text>- {t('%amount% to LP token holders', { amount: '0.17%' })}</Text>
                   <Text>- {t('%amount% to the Treasury', { amount: '0.03%' })}</Text>
-                  <Text>- {t('%amount% towards CAKE buyback and burn', { amount: '0.05%' })}</Text>
+                  <Text>- {t('%amount% towards WANO buyback and burn', { amount: '0.05%' })}</Text>
                 </>
               }
               ml="4px"

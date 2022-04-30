@@ -81,7 +81,7 @@ export const UnitDisplay: React.FC = () => {
           value={cakeValue}
           currencyValue={cakeToUSD(cakeValue)}
           placeholder="0.0"
-          unit="CAKE"
+          unit="WANO"
         />
       </Box>
       {/* Long token names with spaces */}
@@ -91,7 +91,7 @@ export const UnitDisplay: React.FC = () => {
           value={cakeValue}
           currencyValue="2854.66 BADGER-HOTCROSS LP"
           placeholder="0.0"
-          unit="CAKE-BNB LP"
+          unit="WANO-BNB LP"
         />
       </Box>
     </>
@@ -100,10 +100,10 @@ export const UnitDisplay: React.FC = () => {
 
 export const SiwtchUnits: React.FC = () => {
   const CAKE_PRICE = 69;
-  const [editingUnit, setEditingUnit] = useState<"CAKE" | "USD">("CAKE");
-  const conversionUnit = editingUnit === "CAKE" ? "USD" : "CAKE";
+  const [editingUnit, setEditingUnit] = useState<"WANO" | "USD">("WANO");
+  const conversionUnit = editingUnit === "WANO" ? "USD" : "WANO";
   const [values, setValues] = useState({
-    CAKE: "1006.086957",
+    WANO: "1006.086957",
     USD: `${1006.086957 * CAKE_PRICE}`,
   });
 
@@ -115,7 +115,7 @@ export const SiwtchUnits: React.FC = () => {
     : "0.00";
 
   const switchEditingUnits = () => {
-    const editingUnitAfterChange = editingUnit === "CAKE" ? "USD" : "CAKE";
+    const editingUnitAfterChange = editingUnit === "WANO" ? "USD" : "WANO";
     // This is needed to persist same value as shown for currencyValue after switching
     // otherwise user will see lots of decimals
     const valuesAfterChange = { ...values };
@@ -128,14 +128,14 @@ export const SiwtchUnits: React.FC = () => {
 
   const handleCakeChange = (input: string) => {
     const inputAsFloat = parseFloat(input);
-    if (editingUnit === "CAKE") {
+    if (editingUnit === "WANO") {
       setValues({
-        CAKE: input,
+        WANO: input,
         USD: Number.isNaN(inputAsFloat) ? "" : `${inputAsFloat * CAKE_PRICE}`,
       });
     } else {
       setValues({
-        CAKE: Number.isNaN(inputAsFloat) ? "" : `${inputAsFloat / CAKE_PRICE}`,
+        WANO: Number.isNaN(inputAsFloat) ? "" : `${inputAsFloat / CAKE_PRICE}`,
         USD: input,
       });
     }

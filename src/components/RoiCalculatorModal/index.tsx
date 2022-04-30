@@ -11,7 +11,7 @@ import {
   HelpIcon,
   ButtonMenuItem,
   useTooltip,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -79,7 +79,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
   stakingTokenPrice,
   multiplier,
   initialValue,
-  earningTokenSymbol = 'CAKE',
+  earningTokenSymbol = 'WANO',
   autoCompoundFrequency = 0,
   performanceFee = 0,
   isFarm = false,

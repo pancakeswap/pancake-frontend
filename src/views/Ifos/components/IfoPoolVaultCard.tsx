@@ -9,7 +9,7 @@ import {
   Text,
   useMatchBreakpoints,
   useTooltip,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import Balance from 'components/Balance'
 import { CompoundingPoolTag } from 'components/Tags'
 import { TokenPairImage } from 'components/TokenImage'
@@ -89,16 +89,16 @@ const IfoPoolVaultCardMobile: React.FC = () => {
       <CardHeader p="16px">
         <Flex justifyContent="space-between" alignItems="center">
           <StyledTokenContent alignItems="center" flex={1}>
-            <TokenPairImage width={24} height={24} primaryToken={tokens.cake} secondaryToken={tokens.cake} />
+            <TokenPairImage width={24} height={24} primaryToken={tokens.WANO} secondaryToken={tokens.WANO} />
             <Box ml="8px">
               <Text fontSize="12px" bold color="secondary" textTransform="uppercase">
                 {t('Staked')}
               </Text>
               <Text small bold>
-                IFO CAKE
+                IFO WANO
               </Text>
               <Text color="textSubtle" fontSize="12px">
-                {t('Stake')} CAKE
+                {t('Stake')} WANO
               </Text>
             </Box>
           </StyledTokenContent>

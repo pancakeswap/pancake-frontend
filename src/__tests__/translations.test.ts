@@ -18,9 +18,9 @@ const whitelist = [
   'Do you like chocolate with your syrup? Go long!',
   'Happy Niu Year! This bunny’s excited for the year of the bull (market!)',
   'Sunny is always cheerful when there are pancakes around. Smile!',
-  `Don't let that dopey smile deceive you... Churro's a master CAKE chef!`,
-  `Nommm... Oh hi, I'm just meditating on the meaning of CAKE.`,
-  `Three guesses what's put that twinkle in those eyes! (Hint: it's CAKE)`,
+  `Don't let that dopey smile deceive you... Churro's a master WANO chef!`,
+  `Nommm... Oh hi, I'm just meditating on the meaning of WANO.`,
+  `Three guesses what's put that twinkle in those eyes! (Hint: it's WANO)`,
   'These bunnies love nothing more than swapping pancakes. Especially on BSC.',
   `It's raining syrup on this bunny, but he doesn't seem to mind. Can you blame him?`,
   `These bunnies like their pancakes with blueberries. What's your favorite topping?`,
@@ -53,7 +53,7 @@ describe('Check translations available', () => {
   }
 
   throughDirectory('src/')
-  throughDirectory('node_modules/@pancakeswap/uikit', true)
+  throughDirectory('node_modules/@kiwanoswap/uikit', true)
 
   let match
 

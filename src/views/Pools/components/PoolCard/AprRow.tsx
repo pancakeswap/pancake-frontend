@@ -1,4 +1,4 @@
-import { Flex, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { Flex, TooltipText, useTooltip } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { DeserializedPool } from 'state/types'
 import BigNumber from 'bignumber.js'
@@ -16,7 +16,7 @@ const AprRow: React.FC<AprRowProps> = ({ pool, stakedBalance, performanceFee = 0
   const { vaultKey } = pool
 
   const tooltipContent = vaultKey
-    ? t('APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.')
+    ? t('APY includes compounding, APR doesn’t. This pool’s WANO is compounded automatically, so we show APY.')
     : t('This pool’s rewards aren’t compounded automatically, so we show APR')
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })

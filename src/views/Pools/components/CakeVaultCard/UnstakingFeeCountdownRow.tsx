@@ -1,4 +1,4 @@
-import { Flex, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { Flex, Text, TooltipText, useTooltip } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
@@ -29,7 +29,7 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({ isT
       </Text>
       <Text>
         {t(
-          'Only applies within %num% days of staking. Unstaking after %num% days will not include a fee. Timer resets every time you stake new CAKE in the pool.',
+          'Only applies within %num% days of staking. Unstaking after %num% days will not include a fee. Timer resets every time you stake new WANO in the pool.',
           {
             num: withdrawalDayPeriod,
           },

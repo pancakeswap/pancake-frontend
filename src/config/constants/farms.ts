@@ -10,22 +10,22 @@ const farms: SerializedFarmConfig[] = [
    */
   {
     pid: 0,
-    lpSymbol: 'CAKE',
+    lpSymbol: 'WANO',
     lpAddresses: {
       97: '0x9C21123D94b93361a29B2C2EFB3d5CD8B17e0A9e',
-      56: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+      56: '0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13',
     },
     token: serializedTokens.syrup,
     quoteToken: serializedTokens.wbnb,
   },
   {
     pid: 251,
-    lpSymbol: 'CAKE-BNB LP',
+    lpSymbol: 'WANO-BNB LP',
     lpAddresses: {
       97: '0x3ed8936cAFDF85cfDBa29Fbe5940A5b0524824F4',
       56: '0x0eD7e52944161450477ee417DE9Cd3a859b14fD0',
     },
-    token: serializedTokens.cake,
+    token: serializedTokens.WANO,
     quoteToken: serializedTokens.wbnb,
   },
   {
@@ -136,13 +136,13 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 518,
-    lpSymbol: 'FROYO-CAKE LP',
+    lpSymbol: 'FROYO-WANO LP',
     lpAddresses: {
       97: '',
       56: '0x1CCc3cC95c8148477Afd18a552f03835Be9D182a',
     },
     token: serializedTokens.froyo,
-    quoteToken: serializedTokens.cake,
+    quoteToken: serializedTokens.WANO,
   },
   {
     pid: 512,
@@ -167,13 +167,13 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 515,
-    lpSymbol: 'DUET-CAKE LP',
+    lpSymbol: 'DUET-WANO LP',
     lpAddresses: {
       97: '',
       56: '0xbDF0aA1D1985Caa357A6aC6661D838DA8691c569',
     },
     token: serializedTokens.duet,
-    quoteToken: serializedTokens.cake,
+    quoteToken: serializedTokens.WANO,
   },
   {
     pid: 514,
@@ -1195,12 +1195,12 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 422,
-    lpSymbol: 'CAKE-USDT LP',
+    lpSymbol: 'WANO-USDT LP',
     lpAddresses: {
       97: '',
       56: '0xA39Af17CE4a8eb807E076805Da1e2B8EA7D0755b',
     },
-    token: serializedTokens.cake,
+    token: serializedTokens.WANO,
     quoteToken: serializedTokens.usdt,
   },
   {
@@ -1565,12 +1565,12 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 389,
-    lpSymbol: 'CAKE-BUSD LP',
+    lpSymbol: 'WANO-BUSD LP',
     lpAddresses: {
       97: '',
       56: '0x804678fa97d91B974ec2af3c843270886528a9E6',
     },
-    token: serializedTokens.cake,
+    token: serializedTokens.WANO,
     quoteToken: serializedTokens.busd,
   },
   {
@@ -2788,12 +2788,12 @@ const farms: SerializedFarmConfig[] = [
    */
   {
     pid: 139,
-    lpSymbol: 'CAKE-BNB LP',
+    lpSymbol: 'WANO-BNB LP',
     lpAddresses: {
       97: '',
       56: '0xFB7E9FE9D13561AdA7131Fa746942a14F7dd4Cf6',
     },
-    token: serializedTokens.cake,
+    token: serializedTokens.WANO,
     quoteToken: serializedTokens.wbnb,
   },
   {
@@ -3911,12 +3911,12 @@ const farms: SerializedFarmConfig[] = [
    */
   {
     pid: 1,
-    lpSymbol: 'CAKE-BNB LP',
+    lpSymbol: 'WANO-BNB LP',
     lpAddresses: {
       97: '0x3ed8936cAFDF85cfDBa29Fbe5940A5b0524824F4',
       56: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
     },
-    token: serializedTokens.cake,
+    token: serializedTokens.WANO,
     quoteToken: serializedTokens.wbnb,
   },
   {
@@ -5141,46 +5141,46 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 34,
-    lpSymbol: 'STAX-CAKE LP',
+    lpSymbol: 'STAX-WANO LP',
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
       56: '0x7cd05f8b960ba071fdf69c750c0e5a57c8366500',
     },
     token: serializedTokens.stax,
-    quoteToken: serializedTokens.cake,
+    quoteToken: serializedTokens.WANO,
     isCommunity: true,
   },
   {
     pid: 35,
-    lpSymbol: 'NAR-CAKE LP',
+    lpSymbol: 'NAR-WANO LP',
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
       56: '0x745c4fd226e169d6da959283275a8e0ecdd7f312',
     },
     token: serializedTokens.nar,
-    quoteToken: serializedTokens.cake,
+    quoteToken: serializedTokens.WANO,
     isCommunity: true,
   },
   {
     pid: 36,
-    lpSymbol: 'NYA-CAKE LP',
+    lpSymbol: 'NYA-WANO LP',
     lpAddresses: {
       97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
       56: '0x2730bf486d658838464a4ef077880998d944252d',
     },
     token: serializedTokens.nya,
-    quoteToken: serializedTokens.cake,
+    quoteToken: serializedTokens.WANO,
     isCommunity: true,
   },
   {
     pid: 38,
-    lpSymbol: 'bROOBEE-CAKE LP',
+    lpSymbol: 'bROOBEE-WANO LP',
     lpAddresses: {
       97: '',
       56: '0x970858016C963b780E06f7DCfdEf8e809919BcE8',
     },
     token: serializedTokens.broobee,
-    quoteToken: serializedTokens.cake,
+    quoteToken: serializedTokens.WANO,
     isCommunity: true,
   },
   {

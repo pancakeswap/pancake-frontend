@@ -1,4 +1,4 @@
-import { Box, Card, Text } from '@pancakeswap/uikit'
+import { Box, Card, Text } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import PreviousBetsTable from '../PreviousBetsTable'
 

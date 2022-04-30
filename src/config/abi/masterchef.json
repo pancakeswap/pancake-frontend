@@ -162,7 +162,7 @@
   },
   {
     "inputs": [],
-    "name": "cake",
+    "name": "WANO",
     "outputs": [
       {
         "internalType": "contract CakeToken",

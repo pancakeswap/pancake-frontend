@@ -1,4 +1,4 @@
-import { Box, Flex, HelpIcon, Skeleton, Text, useMatchBreakpoints, useTooltip } from '@pancakeswap/uikit'
+import { Box, Flex, HelpIcon, Skeleton, Text, useMatchBreakpoints, useTooltip } from '@kiwanoswap/uikit'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
@@ -46,7 +46,7 @@ const IFOCreditCell: React.FC<IFOCreditCellProps> = ({ account }) => {
     <>
       <Text>
         {t(
-          'Your entry limit in the next IFO Public Sale is determined by your IFO credit. This is calculated by the average CAKE balance of the principal amount in the IFO pool during the last credit calculation period.',
+          'Your entry limit in the next IFO Public Sale is determined by your IFO credit. This is calculated by the average WANO balance of the principal amount in the IFO pool during the last credit calculation period.',
         )}
       </Text>
       <Text>

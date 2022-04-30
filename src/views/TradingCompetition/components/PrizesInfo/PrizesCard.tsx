@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Card, CardHeader, Box, Heading, Text } from '@pancakeswap/uikit'
+import { Card, CardHeader, Box, Heading, Text } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import PrizesGrid from './PrizesGrid'
 
@@ -27,10 +27,10 @@ const PrizesCard = () => {
       <Box p="24px">
         <Text color="textSubtle" fontSize="14px">
           {t(
-            'Prizes to be distributed in CAKE and MBOX in a distribution of 1:1 and shared by all members of each respective tier.',
+            'Prizes to be distributed in WANO and MBOX in a distribution of 1:1 and shared by all members of each respective tier.',
           )}{' '}
           {t(
-            'The price of token prizes (CAKE and MBOX) in USD will be determined as per their BUSD pair price during the tally period.',
+            'The price of token prizes (WANO and MBOX) in USD will be determined as per their BUSD pair price during the tally period.',
           )}
         </Text>
       </Box>

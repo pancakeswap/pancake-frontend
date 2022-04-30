@@ -1,4 +1,4 @@
-import { Card, Heading, Text } from '@pancakeswap/uikit'
+import { Card, Heading, Text } from '@kiwanoswap/uikit'
 import Page from 'components/Layout/Page'
 import { useTranslation } from 'contexts/Localization'
 import { useMemo } from 'react'

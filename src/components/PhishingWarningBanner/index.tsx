@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Text, Flex, Box, CloseIcon, IconButton, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, Flex, Box, CloseIcon, IconButton, useMatchBreakpoints } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { usePhishingBannerManager } from 'state/user/hooks'
 
@@ -43,8 +43,8 @@ const PhishingWarningBanner: React.FC = () => {
   const { t } = useTranslation()
   const [, hideBanner] = usePhishingBannerManager()
   const { isMobile, isMd } = useMatchBreakpoints()
-  const warningText = t("please make sure you're visiting https://pancakeswap.finance - check the URL carefully.")
-  const warningTextAsParts = warningText.split(/(https:\/\/pancakeswap.finance)/g)
+  const warningText = t("please make sure you're visiting https://KiwanoSwap.io - check the URL carefully.")
+  const warningTextAsParts = warningText.split(/(https:\/\/KiwanoSwap.io)/g)
   const warningTextComponent = (
     <>
       <Text as="span" color="warning" small bold textTransform="uppercase">
@@ -56,8 +56,8 @@ const PhishingWarningBanner: React.FC = () => {
           key={i}
           small
           as="span"
-          bold={text === 'https://pancakeswap.finance'}
-          color={text === 'https://pancakeswap.finance' ? '#FFFFFF' : '#BDC2C4'}
+          bold={text === 'https://KiwanoSwap.io'}
+          color={text === 'https://KiwanoSwap.io' ? '#FFFFFF' : '#BDC2C4'}
         >
           {text}
         </Text>

@@ -17,7 +17,7 @@ import {
   Link,
   Message,
   MessageText,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import { PoolIds, Ifo } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
@@ -87,7 +87,7 @@ const ContributeModal: React.FC<Props> = ({
   const raisingTokenContractApprover = useERC20(currency.address)
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
-  const label = currency === tokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
+  const label = currency === tokens.WANO ? t('Max. WANO entry') : t('Max. token entry')
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
@@ -144,11 +144,11 @@ const ContributeModal: React.FC<Props> = ({
   }, [maximumTokenEntry, userCurrencyBalance])
 
   const basicTooltipContent = t(
-    'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
+    'For the private sale, each eligible participant will be able to commit any amount of WANO up to the maximum commit limit, which is published along with the IFO voting proposal.',
   )
 
   const unlimitedToolipContent = t(
-    'For the public sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+    'For the public sale, Max WANO entry is capped by your average WANO balance in the IFO WANO pool. To increase the max entry, Stake more WANO into the IFO WANO pool',
   )
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -176,8 +176,8 @@ const ContributeModal: React.FC<Props> = ({
             <Flex flexGrow={1} justifyContent="flex-end">
               <Image
                 src={
-                  ifo.currency.symbol === 'CAKE'
-                    ? '/images/cake.svg'
+                  ifo.currency.symbol === 'WANO'
+                    ? '/images/WANO.svg'
                     : `/images/farms/${currency.symbol.split(' ')[0].toLocaleLowerCase()}.svg`
                 }
                 width={24}
@@ -209,7 +209,7 @@ const ContributeModal: React.FC<Props> = ({
             >
               {valueWithTokenDecimals.isGreaterThan(userCurrencyBalance)
                 ? t('Insufficient Balance')
-                : t('Exceeded max CAKE entry')}
+                : t('Exceeded max WANO entry')}
             </Text>
           )}
           <Text color="textSubtle" textAlign="right" fontSize="12px" mb="16px">
@@ -232,12 +232,12 @@ const ContributeModal: React.FC<Props> = ({
           </Flex>
           <Text color="textSubtle" fontSize="12px" mb="24px">
             {t(
-              'If you don’t commit enough CAKE, you may not receive any IFO tokens at all and will only receive a full refund of your CAKE.',
+              'If you don’t commit enough WANO, you may not receive any IFO tokens at all and will only receive a full refund of your WANO.',
             )}
             <Link
               fontSize="12px"
               display="inline"
-              href="https://docs.pancakeswap.finance/products/ifo-initial-farm-offering"
+              href="https://docs.KiwanoSwap.io/products/ifo-initial-farm-offering"
               external
             >
               {t('Read more')}

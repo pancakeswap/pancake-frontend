@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Box, Flex, lightColors, Spinner, Text, Timeline } from '@pancakeswap/uikit'
+import { Box, Flex, lightColors, Spinner, Text, Timeline } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import useTheme from 'hooks/useTheme'
@@ -76,7 +76,7 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
         {`${t('Public Sale:')} 08:00 UTC, Oct. 7`}
       </Text>
       <Text color={lightColors.warning} textAlign="center" bold>
-        {t('Mint Cost: %minCost% CAKE each', {
+        {t('Mint Cost: %minCost% WANO each', {
           minCost: DEFAULT_CAKE_COST,
         })}
       </Text>
@@ -84,7 +84,7 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
         {t('Max per wallet: %maxPerWallet%', { maxPerWallet: DEFAULT_MAX_TICKETS })}
       </Text>
       <Text color={lightColors.invertedContrast} textAlign="center">
-        {t('PancakeSwap’s first official generative NFT collection.')}
+        {t('KiwanoSwap’s first official generative NFT collection.')}
       </Text>
       <Text color={lightColors.invertedContrast} mb={!displayEventBlock ? '80px' : '32px'} textAlign="center">
         {t('Join the squad.')}

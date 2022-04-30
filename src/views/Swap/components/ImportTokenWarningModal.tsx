@@ -1,5 +1,5 @@
-import { Token } from '@pancakeswap/sdk'
-import { Modal, InjectedModalProps } from '@pancakeswap/uikit'
+import { Token } from '@kiwanoswap/sdk'
+import { Modal, InjectedModalProps } from '@kiwanoswap/uikit'
 import ImportToken from 'components/SearchModal/ImportToken'
 import { useTranslation } from 'contexts/Localization'
 

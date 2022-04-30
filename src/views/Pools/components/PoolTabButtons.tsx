@@ -3,7 +3,7 @@ import ToggleView from 'components/ToggleView/ToggleView'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
-import { ButtonMenu, ButtonMenuItem, Toggle, Text, NotificationDot } from '@pancakeswap/uikit'
+import { ButtonMenu, ButtonMenuItem, Toggle, Text, NotificationDot } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 const ToggleWrapper = styled.div`

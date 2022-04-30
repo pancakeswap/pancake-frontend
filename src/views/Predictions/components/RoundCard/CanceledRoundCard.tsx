@@ -1,4 +1,4 @@
-import { Card, CardBody, Text, Flex, BlockIcon, LinkExternal } from '@pancakeswap/uikit'
+import { Card, CardBody, Text, Flex, BlockIcon, LinkExternal } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NodeRound, BetPosition } from 'state/types'
 import useTheme from 'hooks/useTheme'
@@ -38,7 +38,7 @@ const CanceledRoundCard: React.FC<CanceledRoundCardProps> = ({ round }) => {
               {t('Round Cancelled')}
             </Text>
             {isRefundable && <ReclaimPositionButton epoch={epoch} onSuccess={handleSuccess} width="100%" my="8px" />}
-            <LinkExternal href="https://docs.pancakeswap.finance/products/prediction" external>
+            <LinkExternal href="https://docs.KiwanoSwap.io/products/prediction" external>
               {t('Learn More')}
             </LinkExternal>
           </Flex>

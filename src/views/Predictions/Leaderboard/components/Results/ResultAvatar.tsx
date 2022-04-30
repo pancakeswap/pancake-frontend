@@ -1,4 +1,4 @@
-import { Box, Flex, FlexProps, Link, ProfileAvatar, SubMenu, SubMenuItem, useModal, Text } from '@pancakeswap/uikit'
+import { Box, Flex, FlexProps, Link, ProfileAvatar, SubMenu, SubMenuItem, useModal, Text } from '@kiwanoswap/uikit'
 import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
 import { PredictionUser } from 'state/types'

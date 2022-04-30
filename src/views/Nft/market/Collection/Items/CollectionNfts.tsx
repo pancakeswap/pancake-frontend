@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { BunnyPlaceholderIcon, AutoRenewIcon, Button, Flex, Grid, Text } from '@pancakeswap/uikit'
+import { BunnyPlaceholderIcon, AutoRenewIcon, Button, Flex, Grid, Text } from '@kiwanoswap/uikit'
 import { Collection } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import GridPlaceholder from '../../components/GridPlaceholder'

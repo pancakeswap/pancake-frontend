@@ -1,4 +1,4 @@
-import { Box } from '@pancakeswap/uikit'
+import { Box } from '@kiwanoswap/uikit'
 import { PredictionUser } from 'state/types'
 import MobileRow from './MobileRow'
 

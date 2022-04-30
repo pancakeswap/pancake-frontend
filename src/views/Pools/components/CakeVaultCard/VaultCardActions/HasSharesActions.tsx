@@ -1,4 +1,4 @@
-import { Flex, Text, IconButton, AddIcon, MinusIcon, useModal, Skeleton, Box } from '@pancakeswap/uikit'
+import { Flex, Text, IconButton, AddIcon, MinusIcon, useModal, Skeleton, Box } from '@kiwanoswap/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { DeserializedPool, VaultKey } from 'state/types'

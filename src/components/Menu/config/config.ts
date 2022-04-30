@@ -11,7 +11,7 @@ import {
   NftFillIcon,
   MoreIcon,
   menuStatus,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { perpLangMap } from 'utils/getPerpetualLanguageCode'
@@ -38,11 +38,6 @@ const config: (t: ContextApi['t'], languageCode?: string) => ConfigMenuItemsType
         label: t('Liquidity'),
         href: '/liquidity',
       },
-      {
-        label: t('Perpetual'),
-        href: `https://perp.pancakeswap.finance/${perpLangMap(languageCode)}/futures/BTCUSDT`,
-        type: DropdownMenuItemType.EXTERNAL_LINK,
-      },
     ],
   },
   {
@@ -52,53 +47,8 @@ const config: (t: ContextApi['t'], languageCode?: string) => ConfigMenuItemsType
     fillIcon: EarnFillIcon,
     items: [
       {
-        label: t('Farms'),
-        href: '/farms',
-      },
-      {
         label: t('Pools'),
         href: '/pools',
-      },
-    ],
-  },
-  {
-    label: t('Win'),
-    href: '/prediction',
-    icon: TrophyIcon,
-    fillIcon: TrophyFillIcon,
-    items: [
-      {
-        label: t('Trading Competition'),
-        href: '/competition',
-        status: menuStatus.LIVE,
-      },
-      {
-        label: t('Prediction (BETA)'),
-        href: '/prediction',
-      },
-      {
-        label: t('Lottery'),
-        href: '/lottery',
-      },
-    ],
-  },
-  {
-    label: t('NFT'),
-    href: `${nftsBaseUrl}`,
-    icon: NftIcon,
-    fillIcon: NftFillIcon,
-    items: [
-      {
-        label: t('Overview'),
-        href: `${nftsBaseUrl}`,
-      },
-      {
-        label: t('Collections'),
-        href: `${nftsBaseUrl}/collections`,
-      },
-      {
-        label: t('Activity'),
-        href: `${nftsBaseUrl}/activity`,
       },
     ],
   },
@@ -113,19 +63,7 @@ const config: (t: ContextApi['t'], languageCode?: string) => ConfigMenuItemsType
         href: '/info',
       },
       {
-        label: t('IFO'),
-        href: '/ifo',
-      },
-      {
-        label: t('Voting'),
-        href: '/voting',
-      },
-      {
         type: DropdownMenuItemType.DIVIDER,
-      },
-      {
-        label: t('Leaderboard'),
-        href: '/teams',
       },
       {
         type: DropdownMenuItemType.DIVIDER,
@@ -137,7 +75,7 @@ const config: (t: ContextApi['t'], languageCode?: string) => ConfigMenuItemsType
       },
       {
         label: t('Docs'),
-        href: 'https://docs.pancakeswap.finance',
+        href: 'https://docs.KiwanoSwap.io',
         type: DropdownMenuItemType.EXTERNAL_LINK,
       },
     ],

@@ -1,5 +1,5 @@
 import { useTheme } from 'styled-components'
-import { Svg, SvgProps } from '@pancakeswap/uikit'
+import { Svg, SvgProps } from '@kiwanoswap/uikit'
 
 interface MultiplierProps extends SvgProps {
   isActive: boolean

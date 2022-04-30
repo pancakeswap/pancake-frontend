@@ -1,6 +1,6 @@
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
-import { Flex, Heading, PocketWatchIcon, Text, Skeleton } from '@pancakeswap/uikit'
+import { Flex, Heading, PocketWatchIcon, Text, Skeleton } from '@kiwanoswap/uikit'
 import getTimePeriods from 'utils/getTimePeriods'
 import { PublicIfoData } from 'views/Ifos/types'
 

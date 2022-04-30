@@ -7,12 +7,12 @@ const config = [
       <Trans>
         In the new IFO 3.1 format. There is a brand new Private Sale. To participate, participants will have to meet
         certain requirements presented on the IFO card. Each eligible participant will be able to commit any amount of
-        CAKE up to the maximum commit limit, which is published along with the IFO voting proposal. The Private Sale has
+        WANO up to the maximum commit limit, which is published along with the IFO voting proposal. The Private Sale has
         no participation fee.
       </Trans>,
       <Trans>
-        In the Public Sale, everyone with an active PancakeSwap profile can commit. However the maximum amount of CAKE
-        user can commit, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. And there’s a fee
+        In the Public Sale, everyone with an active KiwanoSwap profile can commit. However the maximum amount of WANO
+        user can commit, is equal to the average WANO balance in the IFO WANO pool prior to the IFO. And there’s a fee
         for participation: see below.
       </Trans>,
     ],
@@ -25,7 +25,7 @@ const config = [
         We recommend you to check if you are eligible to participate in the Private Sale first. In the Public Sale, if
         the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.
       </Trans>,
-      <Trans>Just remember you need an active PancakeSwap Profile in order to participate.</Trans>,
+      <Trans>Just remember you need an active KiwanoSwap Profile in order to participate.</Trans>,
     ],
   },
   {
@@ -41,12 +41,12 @@ const config = [
   },
   {
     title: <Trans>Where does the participation fee go?</Trans>,
-    description: [<Trans>The CAKE from the participation fee will be burnt as part of the weekly token burn.</Trans>],
+    description: [<Trans>The WANO from the participation fee will be burnt as part of the weekly token burn.</Trans>],
   },
   {
     title: <Trans>How can I get an achievement for participating in the IFO?</Trans>,
     description: [
-      <Trans>You need to contribute a minimum of about 10 USD worth of CAKE to either sale.</Trans>,
+      <Trans>You need to contribute a minimum of about 10 USD worth of WANO to either sale.</Trans>,
       <Trans>
         You can contribute to one or both, it doesn’t matter: only your overall contribution is counted for the
         achievement.

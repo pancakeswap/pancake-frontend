@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Card, Text, Button, BunnyPlaceholderIcon, Box } from '@pancakeswap/uikit'
+import { Card, Text, Button, BunnyPlaceholderIcon, Box } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -67,7 +67,7 @@ export default function ComingSoonSection() {
               <>
                 <BunnyKnownPlaceholder width={80} mb="16px" />
                 <Text textAlign="center" fontWeight={600}>
-                  {t('To participate in the next IFO, stake some CAKE in the IFO CAKE pool!')}
+                  {t('To participate in the next IFO, stake some WANO in the IFO WANO pool!')}
                 </Text>
                 <MessageTextLink href="/ifo#ifo-how-to" color="primary" display="inline">
                   {t('How does it work?')} »

@@ -10,7 +10,7 @@ import {
   Text,
   useTooltip,
   WaitIcon,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { useAppDispatch } from 'state'
@@ -50,7 +50,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
       </Text>
       <Text>
         {t(
-          'The Locked Price & Closed Price are exactly the same (within 8 decimals), so neither side wins. All funds entered into UP and DOWN positions will go to the weekly CAKE burn.',
+          'The Locked Price & Closed Price are exactly the same (within 8 decimals), so neither side wins. All funds entered into UP and DOWN positions will go to the weekly WANO burn.',
         )}
       </Text>
     </>,

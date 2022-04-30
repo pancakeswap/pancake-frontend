@@ -1,4 +1,4 @@
-import { Card, CardBody, Flex, Heading, ProfileAvatar } from '@pancakeswap/uikit'
+import { Card, CardBody, Flex, Heading, ProfileAvatar } from '@kiwanoswap/uikit'
 
 import Image from 'next/image'
 import { NextLinkFromReactRouter } from 'components/NextLink'

@@ -12,7 +12,7 @@ import {
   useTooltip,
   Message,
   MessageText,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useCakeVaultContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
@@ -80,7 +80,7 @@ const BountyModal: React.FC<BountyModalProps> = ({
       toastSuccess(
         t('Bounty collected!'),
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('CAKE bounty has been sent to your wallet.')}
+          {t('WANO bounty has been sent to your wallet.')}
         </ToastDescriptionWithTx>,
       )
     }
@@ -95,7 +95,7 @@ const BountyModal: React.FC<BountyModalProps> = ({
       <Flex alignItems="flex-start" justifyContent="space-between">
         <Text>{t('You’ll claim')}</Text>
         <Flex flexDirection="column">
-          <Balance bold value={cakeBountyToDisplay} decimals={7} unit=" CAKE" />
+          <Balance bold value={cakeBountyToDisplay} decimals={7} unit=" WANO" />
           <Text fontSize="12px" color="textSubtle">
             <Balance
               fontSize="12px"
@@ -113,7 +113,7 @@ const BountyModal: React.FC<BountyModalProps> = ({
         <Text fontSize="14px" color="textSubtle">
           {t('Pool total pending yield')}
         </Text>
-        <Balance color="textSubtle" value={totalYieldToDisplay} unit=" CAKE" />
+        <Balance color="textSubtle" value={totalYieldToDisplay} unit=" WANO" />
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" mb="24px">
         <Text fontSize="14px" color="textSubtle">

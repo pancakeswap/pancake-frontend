@@ -15,7 +15,7 @@ import {
   Message,
   MessageText,
   Box,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
@@ -148,7 +148,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
 
   const handleWithdrawal = async (convertedStakeAmount: BigNumber) => {
     const shareStakeToWithdraw = convertCakeToShares(convertedStakeAmount, pricePerFullShare)
-    // trigger withdrawAll function if the withdrawal will leave 0.000001 CAKE or less
+    // trigger withdrawAll function if the withdrawal will leave 0.000001 WANO or less
     const triggerWithdrawAllThreshold = new BigNumber(1000000000000)
     const sharesRemaining = userShares.minus(shareStakeToWithdraw.sharesAsBigNumber)
     const isWithdrawingAll = sharesRemaining.lte(triggerWithdrawAllThreshold)

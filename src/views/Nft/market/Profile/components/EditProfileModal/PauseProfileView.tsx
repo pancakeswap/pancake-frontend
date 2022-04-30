@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useGetProfileCosts from 'views/Nft/market/Profile/hooks/useGetProfileCosts'
 import { useProfile } from 'state/profile/hooks'
@@ -58,7 +58,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss, onSucces
         )}
       </Text>
       <Text as="p" color="textSubtle" mb="24px">
-        {t('Cost to reactivate in the future: %cost% CAKE', { cost: formatBigNumber(numberCakeToReactivate) })}
+        {t('Cost to reactivate in the future: %cost% WANO', { cost: formatBigNumber(numberCakeToReactivate) })}
       </Text>
       <label htmlFor="acknowledgement" style={{ cursor: 'pointer', display: 'block', marginBottom: '24px' }}>
         <Flex alignItems="center">

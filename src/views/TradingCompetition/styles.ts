@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Flex, Box } from '@pancakeswap/uikit'
+import { Flex, Box } from '@kiwanoswap/uikit'
 import PageSection from 'components/PageSection'
 
 export const CompetitionPage = styled.div`

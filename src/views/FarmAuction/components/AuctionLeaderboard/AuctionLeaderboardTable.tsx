@@ -14,7 +14,7 @@ import {
   SubMenuItem,
   EllipsisIcon,
   LinkExternal,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import { getBscScanLink } from 'utils'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
@@ -146,7 +146,7 @@ const AuctionLeaderboardTable: React.FC<{ bidders: Bidder[]; noBidsText: string 
           pr={[null, null, '24px']}
           py="16px"
         >
-          {t('CAKE bid')}
+          {t('WANO bid')}
         </Text>
         <Box />
         {/* Rows */}

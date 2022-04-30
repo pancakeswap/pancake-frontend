@@ -1,7 +1,7 @@
 import { memo, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import Split, { SplitInstance } from 'split-grid'
-import { Button, ChartIcon, Flex } from '@pancakeswap/uikit'
+import { Button, ChartIcon, Flex } from '@kiwanoswap/uikit'
 import debounce from 'lodash/debounce'
 import delay from 'lodash/delay'
 import { useAppDispatch } from 'state'

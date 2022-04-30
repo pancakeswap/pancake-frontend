@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Link from 'next/link'
-import { Flex, HelpIcon, Button, PrizeIcon } from '@pancakeswap/uikit'
+import { Flex, HelpIcon, Button, PrizeIcon } from '@kiwanoswap/uikit'
 import FlexRow from './FlexRow'
 import { PricePairLabel, TimerLabel } from './Label'
 import PrevNextNav from './PrevNextNav'
@@ -74,7 +74,7 @@ const Menu = () => {
             <Button
               variant="subtle"
               as="a"
-              href="https://docs.pancakeswap.finance/products/prediction"
+              href="https://docs.KiwanoSwap.io/products/prediction"
               target="_blank"
               rel="noreferrer noopener"
               width="48px"

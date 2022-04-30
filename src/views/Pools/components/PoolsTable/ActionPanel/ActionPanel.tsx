@@ -11,7 +11,7 @@ import {
   Text,
   TimerIcon,
   useTooltip,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import { BASE_BSC_SCAN_URL } from 'config'
 import { getBscScanLink } from 'utils'
 import { useCurrentBlock } from 'state/block/hooks'
@@ -328,7 +328,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
                   tokenAddress,
                   earningToken.symbol,
                   earningToken.decimals,
-                  `https://tokens.pancakeswap.finance/images/${tokenAddress}.png`,
+                  `https://tokens.KiwanoSwap.io/images/${tokenAddress}.png`,
                 )
               }
             >
@@ -348,7 +348,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
           <Text mt="4px" mb="16px" color="textSubtle">
             {vaultKey
               ? vaultPoolConfig[vaultKey].description
-              : `${t('Earn')} CAKE ${t('Stake').toLocaleLowerCase()} CAKE`}
+              : `${t('Earn')} WANO ${t('Stake').toLocaleLowerCase()} WANO`}
           </Text>
         )}
         {pool.vaultKey ? (

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Flex, IconButton, useModal, CalculateIcon } from '@pancakeswap/uikit'
+import { Flex, IconButton, useModal, CalculateIcon } from '@kiwanoswap/uikit'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { useTranslation } from 'contexts/Localization'
 import { useFarmUser, useLpTokenPrice } from 'state/farms/hooks'

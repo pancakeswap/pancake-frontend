@@ -35,7 +35,7 @@ const useGetProfileCosts = () => {
         })
         setIsLoading(false)
       } catch (error) {
-        toastError(t('Error'), t('Could not retrieve CAKE costs for profile'))
+        toastError(t('Error'), t('Could not retrieve WANO costs for profile'))
       }
     }
 

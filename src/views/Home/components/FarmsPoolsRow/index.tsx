@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import styled from 'styled-components'
-import { Flex, Box, SwapVertIcon, IconButton } from '@pancakeswap/uikit'
+import { Flex, Box, SwapVertIcon, IconButton } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { DeserializedPool } from 'state/types'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
@@ -56,7 +56,7 @@ const FarmsPoolsRow = () => {
     }
 
     if (pool.sousId === 0) {
-      return t('Manual CAKE')
+      return t('Manual WANO')
     }
 
     return t('Stake %stakingSymbol% - Earn %earningSymbol%', {

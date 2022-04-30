@@ -1,4 +1,4 @@
-import { Percent } from '@pancakeswap/sdk'
+import { Percent } from '@kiwanoswap/sdk'
 import { warningSeverity } from 'utils/prices'
 import { ONE_BIPS } from '../../../config/constants'
 import { ErrorText } from './styleds'

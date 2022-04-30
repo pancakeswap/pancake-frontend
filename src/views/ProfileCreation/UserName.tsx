@@ -14,7 +14,7 @@ import {
   useModal,
   Skeleton,
   Checkbox,
-} from '@pancakeswap/uikit'
+} from '@kiwanoswap/uikit'
 import { parseISO, formatDistance } from 'date-fns'
 import { useWeb3React } from '@web3-react/core'
 import { formatUnits } from '@ethersproject/units'
@@ -270,7 +270,7 @@ const UserName: React.FC = () => {
       </Button>
       {!hasMinimumCakeRequired && (
         <Text color="failure" mt="16px">
-          {t('A minimum of %num% CAKE is required', { num: formatUnits(REGISTER_COST) })}
+          {t('A minimum of %num% WANO is required', { num: formatUnits(REGISTER_COST) })}
         </Text>
       )}
     </>

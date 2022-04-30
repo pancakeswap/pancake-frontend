@@ -1814,7 +1814,7 @@ exports[`renders correctly 1`] = `
           >
             <a
               class="c27"
-              href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+              href="https://KiwanoSwap.io/swap?outputCurrency=0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13"
               target="_blank"
             >
               <svg
@@ -2169,7 +2169,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
-                    href="https://docs.pancakeswap.finance/contact-us"
+                    href="https://docs.KiwanoSwap.io/contact-us"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -2195,7 +2195,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
-                    href="https://docs.pancakeswap.finance/contact-us/telegram"
+                    href="https://docs.KiwanoSwap.io/contact-us/telegram"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -2208,11 +2208,11 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
-                    href="https://docs.pancakeswap.finance/tokenomics/cake"
+                    href="https://docs.KiwanoSwap.io/tokenomics/WANO"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
-                    CAKE
+                    WANO
                   </a>
                 </li>
                 <li
@@ -2252,7 +2252,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
-                    href="Support https://docs.pancakeswap.finance/contact-us/customer-support"
+                    href="Support https://docs.KiwanoSwap.io/contact-us/customer-support"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -2265,7 +2265,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
-                    href="https://docs.pancakeswap.finance/help/troubleshooting"
+                    href="https://docs.KiwanoSwap.io/help/troubleshooting"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -2278,7 +2278,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
-                    href="https://docs.pancakeswap.finance/get-started"
+                    href="https://docs.KiwanoSwap.io/get-started"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -2313,7 +2313,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
-                    href="https://docs.pancakeswap.finance"
+                    href="https://docs.KiwanoSwap.io"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -2326,7 +2326,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
-                    href="https://app.gitbook.com/@pancakeswap-1/s/pancakeswap/code/bug-bounty"
+                    href="https://app.gitbook.com/@kiwanoswap-1/s/pancakeswap/code/bug-bounty"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -2339,7 +2339,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
-                    href="https://docs.pancakeswap.finance/help/faq#is-pancakeswap-safe-has-pancakeswap-been-audited"
+                    href="https://docs.KiwanoSwap.io/help/faq#is-pancakeswap-safe-has-pancakeswap-been-audited"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -2352,7 +2352,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
-                    href="https://docs.pancakeswap.finance/hiring/become-a-chef"
+                    href="https://docs.KiwanoSwap.io/hiring/become-a-chef"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -2454,7 +2454,7 @@ exports[`renders correctly 1`] = `
                     aria-label="Bahasa Indonesia"
                     class="c29 c61"
                     color="textSubtle"
-                    href="https://t.me/PancakeSwapIndonesia"
+                    href="https://t.me/KiwanoSwapIndonesia"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -2464,7 +2464,7 @@ exports[`renders correctly 1`] = `
                     aria-label="中文"
                     class="c29 c61"
                     color="textSubtle"
-                    href="https://t.me/PancakeSwap_CN"
+                    href="https://t.me/KiwanoSwap_CN"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -2474,7 +2474,7 @@ exports[`renders correctly 1`] = `
                     aria-label="Tiếng Việt"
                     class="c29 c61"
                     color="textSubtle"
-                    href="https://t.me/PancakeSwapVN"
+                    href="https://t.me/KiwanoSwapVN"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -2514,7 +2514,7 @@ exports[`renders correctly 1`] = `
                     aria-label="Português"
                     class="c29 c61"
                     color="textSubtle"
-                    href="https://t.me/PancakeSwapPortuguese"
+                    href="https://t.me/KiwanoSwapPortuguese"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -2554,7 +2554,7 @@ exports[`renders correctly 1`] = `
                     aria-label="Deutsch"
                     class="c29 c61"
                     color="textSubtle"
-                    href="https://t.me/PancakeSwap_DE"
+                    href="https://t.me/KiwanoSwap_DE"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -2574,7 +2574,7 @@ exports[`renders correctly 1`] = `
                     aria-label="ქართული ენა"
                     class="c29 c61"
                     color="textSubtle"
-                    href="https://t.me/PancakeSwapGeorgia"
+                    href="https://t.me/KiwanoSwapGeorgia"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -2584,7 +2584,7 @@ exports[`renders correctly 1`] = `
                     aria-label="Announcements"
                     class="c29 c61"
                     color="textSubtle"
-                    href="https://t.me/PancakeSwapAnn"
+                    href="https://t.me/KiwanoSwapAnn"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -2989,7 +2989,7 @@ exports[`renders correctly 1`] = `
                 >
                   <a
                     class="c27"
-                    href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+                    href="https://KiwanoSwap.io/swap?outputCurrency=0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13"
                     target="_blank"
                   >
                     <svg
@@ -3052,11 +3052,11 @@ exports[`renders correctly 1`] = `
                 </div>
                 <a
                   class="c92"
-                  href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+                  href="https://KiwanoSwap.io/swap?outputCurrency=0x4eEC1Dc3a43d8F53A36d4A416fC30b1B6C287d13"
                   scale="sm"
                   target="_blank"
                 >
-                  Buy CAKE
+                  Buy WANO
                   <svg
                     class="c93"
                     color="#FFFFFF"

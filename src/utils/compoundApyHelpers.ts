@@ -4,7 +4,7 @@ const DAYS_TO_CALCULATE_AGAINST = [1, 7, 30, 365, 1825]
 /**
  *
  * @param principalInUSD - amount user wants to invest in USD
- * @param apr - farm or pool apr as percentage. If its farm APR its only cake rewards APR without LP rewards APR
+ * @param apr - farm or pool apr as percentage. If its farm APR its only WANO rewards APR without LP rewards APR
  * @param earningTokenPrice - price of reward token
  * @param compoundFrequency - how many compounds per 1 day, e.g. 1 = one per day, 0.142857142 - once per week
  * @param performanceFee - performance fee as percentage

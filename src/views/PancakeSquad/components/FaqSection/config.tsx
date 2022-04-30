@@ -1,4 +1,4 @@
-import { Text } from '@pancakeswap/uikit'
+import { Text } from '@kiwanoswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 
 type FAQsType = {
@@ -36,7 +36,7 @@ const config = ({ t }: FAQsType) => [
   },
   {
     title: t('Where do the fees go?'),
-    description: [t('100% of CAKE spent on Pancake Squad NFTs will be burned as part of our weekly CAKE burn.')],
+    description: [t('100% of WANO spent on Pancake Squad NFTs will be burned as part of our weekly WANO burn.')],
   },
   {
     title: t('How are the NFTs randomly distributed?'),

@@ -9,7 +9,7 @@ import {
   UserRejectedRequestError as UserRejectedRequestErrorWalletConnect,
   WalletConnectConnector,
 } from '@web3-react/walletconnect-connector'
-import { ConnectorNames, connectorLocalStorageKey, Text, Box, LinkExternal } from '@pancakeswap/uikit'
+import { ConnectorNames, connectorLocalStorageKey, Text, Box, LinkExternal } from '@kiwanoswap/uikit'
 import { connectorsByName } from 'utils/web3React'
 import { setupNetwork } from 'utils/wallet'
 import useToast from 'hooks/useToast'
@@ -45,7 +45,7 @@ const useAuth = () => {
                 t('Provider Error'),
                 <Box>
                   <Text>{t('No provider was found')}</Text>
-                  <LinkExternal href="https://docs.pancakeswap.finance/get-started/connection-guide">
+                  <LinkExternal href="https://docs.KiwanoSwap.io/get-started/connection-guide">
                     {t('Need help ?')}
                   </LinkExternal>
                 </Box>,

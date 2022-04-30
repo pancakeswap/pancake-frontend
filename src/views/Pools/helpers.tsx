@@ -19,13 +19,13 @@ export const convertSharesToCake = (
 }
 
 export const convertCakeToShares = (
-  cake: BigNumber,
+  WANO: BigNumber,
   cakePerFullShare: BigNumber,
   decimals = 18,
   decimalsToRound = 3,
 ) => {
   const sharePriceNumber = getBalanceNumber(cakePerFullShare, decimals)
-  const amountInShares = new BigNumber(cake.dividedBy(sharePriceNumber))
+  const amountInShares = new BigNumber(WANO.dividedBy(sharePriceNumber))
   const sharesAsNumberBalance = getBalanceNumber(amountInShares, decimals)
   const sharesAsBigNumber = getDecimalAmount(new BigNumber(sharesAsNumberBalance), decimals)
   const sharesAsDisplayBalance = getFullDisplayBalance(amountInShares, decimals, decimalsToRound)

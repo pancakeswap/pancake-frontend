@@ -1,4 +1,4 @@
-import { Text, Flex, TooltipText, useTooltip, Skeleton, Heading } from '@pancakeswap/uikit'
+import { Text, Flex, TooltipText, useTooltip, Skeleton, Heading } from '@kiwanoswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import { useTranslation } from 'contexts/Localization'
@@ -45,7 +45,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
 
   const actionTitle = (
     <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
-      {t('Recent CAKE profit')}
+      {t('Recent WANO profit')}
     </Text>
   )
 

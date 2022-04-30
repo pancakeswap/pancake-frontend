@@ -1,4 +1,4 @@
-import { Button, Flex, Box, Modal, Text, ChevronRightIcon, InjectedModalProps, Tag, Spinner } from '@pancakeswap/uikit'
+import { Button, Flex, Box, Modal, Text, ChevronRightIcon, InjectedModalProps, Tag, Spinner } from '@kiwanoswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { memo, useCallback, useState } from 'react'

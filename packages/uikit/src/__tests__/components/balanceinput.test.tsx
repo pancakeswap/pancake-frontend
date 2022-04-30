@@ -157,7 +157,7 @@ it("renders correctly", () => {
 
 it("renders correctly with unit prop", () => {
   const { asFragment } = renderWithTheme(
-    <BalanceInput value="14" currencyValue="15 USD" unit="CAKE" onUserInput={handleChange} />
+    <BalanceInput value="14" currencyValue="15 USD" unit="WANO" onUserInput={handleChange} />
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
@@ -311,7 +311,7 @@ it("renders correctly with unit prop", () => {
                 class="c5 c6"
                 color="text"
               >
-                CAKE
+                WANO
               </div>
             </div>
             <div
@@ -333,7 +333,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
     <BalanceInput
       value="14"
       currencyValue="15 USD"
-      unit="CAKE"
+      unit="WANO"
       switchEditingUnits={jest.fn()}
       onUserInput={handleChange}
     />
@@ -570,7 +570,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
                 class="c5 c6"
                 color="text"
               >
-                CAKE
+                WANO
               </div>
             </div>
             <div
