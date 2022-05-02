@@ -68,6 +68,7 @@ const ModalProvider: React.FC = ({ children }) => {
     setModalNode(undefined);
     setIsOpen(false);
     setNodeId("");
+    setCloseOnOverlayClick(true);
   };
 
   const handleOverlayDismiss = () => {
