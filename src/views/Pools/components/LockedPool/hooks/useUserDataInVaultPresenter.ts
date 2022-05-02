@@ -41,7 +41,7 @@ const useUserDataInVaultPresenter: UserDataInVaultPresenterFn = ({ lockEndTime, 
 
   return {
     weekDuration: formatSecondsToWeeks(secondDuration),
-    remainingTime: distanceToNowStrict(lockEndTime),
+    remainingTime: distanceToNowStrict(lockEndTimeSeconds),
     lockEndDate,
     secondDuration,
   }
