@@ -14,7 +14,7 @@ import BurningCountDown from './Common/BurningCountDown'
 import LockedActions from './Common/LockedActions'
 import YieldBoostRow from './Common/YieldBoostRow'
 import LockDurationRow from './Common/LockDurationRow'
-import useUserDataInVaultPrensenter from './hooks/useUserDataInVaultPrensenter'
+import useUserDataInVaultPresenter from './hooks/useUserDataInVaultPresenter'
 import { LockedStakingApyPropsType } from './types'
 
 const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, stakingTokenBalance, userData }) => {
@@ -37,7 +37,7 @@ const LockedStakingApy: React.FC<LockedStakingApyPropsType> = ({ stakingToken, s
 
   const usdValueStaked = useBUSDCakeAmount(currentLockedAmount)
 
-  const { weekDuration, lockEndDate, secondDuration, remainingTime } = useUserDataInVaultPrensenter({
+  const { weekDuration, lockEndDate, secondDuration, remainingTime } = useUserDataInVaultPresenter({
     lockStartTime: userData?.lockStartTime,
     lockEndTime: userData?.lockEndTime,
   })

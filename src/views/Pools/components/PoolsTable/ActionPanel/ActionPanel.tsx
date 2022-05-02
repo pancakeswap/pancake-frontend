@@ -13,7 +13,7 @@ import AutoHarvest from './AutoHarvest'
 import { VaultPositionTagWithLabel } from '../../Vault/VaultPositionTag'
 import YieldBoostRow from '../../LockedPool/Common/YieldBoostRow'
 import LockDurationRow from '../../LockedPool/Common/LockDurationRow'
-import useUserDataInVaultPrensenter from '../../LockedPool/hooks/useUserDataInVaultPrensenter'
+import useUserDataInVaultPresenter from '../../LockedPool/hooks/useUserDataInVaultPresenter'
 import CakeVaultApr from './CakeVaultApr'
 import PoolStatsInfo from '../../PoolStatsInfo'
 
@@ -106,7 +106,7 @@ const InfoSection = styled(Box)`
 `
 
 const YieldBoostDurationRow = ({ lockEndTime, lockStartTime }) => {
-  const { weekDuration, secondDuration } = useUserDataInVaultPrensenter({
+  const { weekDuration, secondDuration } = useUserDataInVaultPresenter({
     lockEndTime,
     lockStartTime,
   })

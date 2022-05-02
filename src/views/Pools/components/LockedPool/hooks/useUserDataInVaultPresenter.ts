@@ -1,4 +1,4 @@
-import format from 'date-fns/format'
+import { useTranslation } from 'contexts/Localization'
 import { convertTimeToSeconds, distanceToNowStrict } from 'utils/timeHelper'
 import formatSecondsToWeeks from '../utils/formatSecondsToWeeks'
 
@@ -7,16 +7,19 @@ interface UserData {
   lockStartTime: string
 }
 
-interface UserDataInVaultPrensenter {
+interface UserDataInVaultPresenter {
   weekDuration: string
   remainingTime: string
   lockEndDate: string
   secondDuration: number
 }
 
-type UserDataInVaultPrensenterFn = (args: UserData) => UserDataInVaultPrensenter
+type UserDataInVaultPresenterFn = (args: UserData) => UserDataInVaultPresenter
 
-const useUserDataInVaultPrensenter: UserDataInVaultPrensenterFn = ({ lockEndTime, lockStartTime }) => {
+const useUserDataInVaultPresenter: UserDataInVaultPresenterFn = ({ lockEndTime, lockStartTime }) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
   const secondDuration = Number(lockEndTime) - Number(lockStartTime)
 
   const lockEndTimeSeconds = convertTimeToSeconds(lockEndTime)
@@ -24,7 +27,14 @@ const useUserDataInVaultPrensenter: UserDataInVaultPrensenterFn = ({ lockEndTime
   let lockEndDate = ''
 
   try {
-    lockEndDate = format(lockEndTimeSeconds, 'MMM do, yyyy HH:mm')
+    lockEndDate = new Date(lockEndTimeSeconds).toLocaleString(locale, {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    })
   } catch (_) {
     // ignore invalid format
   }
@@ -37,4 +47,4 @@ const useUserDataInVaultPrensenter: UserDataInVaultPrensenterFn = ({ lockEndTime
   }
 }
 
-export default useUserDataInVaultPrensenter
+export default useUserDataInVaultPresenter
