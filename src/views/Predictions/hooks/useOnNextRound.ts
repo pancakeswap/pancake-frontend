@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import usePreviousValue from 'hooks/usePreviousValue'
-import { useAppDispatch } from 'state'
+import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useGetSortedRoundsCurrentEpoch } from 'state/predictions/hooks'
 import useSwiper from './useSwiper'
 
@@ -10,7 +10,7 @@ import useSwiper from './useSwiper'
  */
 const useOnNextRound = () => {
   const { account } = useWeb3React()
-  const dispatch = useAppDispatch()
+  const dispatch = useLocalDispatch()
   const { swiper } = useSwiper()
   const { currentEpoch, rounds } = useGetSortedRoundsCurrentEpoch()
   const roundsEpochsString = JSON.stringify(Object.keys(rounds))

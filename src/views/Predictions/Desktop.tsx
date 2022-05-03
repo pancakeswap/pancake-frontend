@@ -4,7 +4,7 @@ import Split, { SplitInstance } from 'split-grid'
 import { Button, ChartIcon, Flex } from '@pancakeswap/uikit'
 import debounce from 'lodash/debounce'
 import delay from 'lodash/delay'
-import { useAppDispatch } from 'state'
+import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import {
   useChartView,
   useGetPredictionsStatus,
@@ -109,7 +109,7 @@ const Desktop: React.FC = () => {
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isChartPaneOpen = useIsChartPaneOpen()
   const chartView = useChartView()
-  const dispatch = useAppDispatch()
+  const dispatch = useLocalDispatch()
   const { t } = useTranslation()
   const status = useGetPredictionsStatus()
 

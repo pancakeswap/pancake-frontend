@@ -11,7 +11,7 @@ import {
 } from '@pancakeswap/uikit'
 import { getNow } from 'utils/getNow'
 import { useTranslation } from 'contexts/Localization'
-import { useAppDispatch } from 'state'
+import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { BetPosition, NodeLedger, NodeRound } from 'state/types'
 import { fetchLedgerData } from 'state/predictions'
 import { ROUND_BUFFER } from 'state/predictions/config'
@@ -55,7 +55,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   const { theme } = useTheme()
   const { toastSuccess } = useToast()
   const { account } = useWeb3React()
-  const dispatch = useAppDispatch()
+  const dispatch = useLocalDispatch()
   const { lockTimestamp } = round ?? { lockTimestamp: null }
   const { isSettingPosition, position } = state
   const [isBufferPhase, setIsBufferPhase] = useState(false)
