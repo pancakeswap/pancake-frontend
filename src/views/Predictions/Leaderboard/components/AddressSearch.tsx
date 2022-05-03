@@ -1,12 +1,12 @@
 import { useCallback } from 'react'
 import { useModal } from '@pancakeswap/uikit'
-import { useAppDispatch } from 'state'
+import useLocalDispatch from 'hooks/LocalRedux/useDispatch'
 import { fetchAddressResult, setSelectedAddress } from 'state/predictions'
 import AddressInputSelect from 'components/AddressInputSelect'
 import WalletStatsModal from './WalletStatsModal'
 
 const AddressSearch = () => {
-  const dispatch = useAppDispatch()
+  const dispatch = useLocalDispatch()
 
   const handleBeforeDismiss = () => {
     dispatch(setSelectedAddress(null))

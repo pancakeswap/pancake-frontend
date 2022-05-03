@@ -6,7 +6,7 @@ import { CSSTransition } from 'react-transition-group'
 import { useTranslation } from 'contexts/Localization'
 import { getBetHistory } from 'state/predictions/helpers'
 import { useGetPredictionsStatus, useIsHistoryPaneOpen } from 'state/predictions/hooks'
-import { useAppDispatch } from 'state'
+import useLocalDispatch from 'hooks/LocalRedux/useDispatch'
 import { setHistoryPaneState } from 'state/predictions'
 
 /**
@@ -126,7 +126,7 @@ const CollectWinningsPopup = () => {
   const { account } = useWeb3React()
   const predictionStatus = useGetPredictionsStatus()
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
-  const dispatch = useAppDispatch()
+  const dispatch = useLocalDispatch()
 
   const handleOpenHistory = () => {
     dispatch(setHistoryPaneState(true))

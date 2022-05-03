@@ -1,7 +1,7 @@
 import { useWeb3React } from '@web3-react/core'
 import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon, LinkExternal, useTooltip, InfoIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useAppDispatch } from 'state'
+import useLocalDispatch from 'hooks/LocalRedux/useDispatch'
 import { useTranslation } from 'contexts/Localization'
 import { REWARD_RATE } from 'state/predictions/config'
 import { Bet, BetPosition } from 'state/types'
@@ -35,7 +35,7 @@ const Divider = styled.hr`
 
 const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   const { t } = useTranslation()
-  const dispatch = useAppDispatch()
+  const dispatch = useLocalDispatch()
   const { account } = useWeb3React()
   const { isRefundable } = useIsRefundable(bet.round.epoch)
   const canClaim = useGetIsClaimable(bet.round.epoch)

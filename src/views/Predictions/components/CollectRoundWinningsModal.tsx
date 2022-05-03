@@ -17,7 +17,7 @@ import {
   Skeleton,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useAppDispatch } from 'state'
+import useLocalDispatch from 'hooks/LocalRedux/useDispatch'
 import { REWARD_RATE } from 'state/predictions/config'
 import { fetchNodeHistory, markAsCollected } from 'state/predictions'
 import { Bet } from 'state/types'
@@ -84,7 +84,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({ o
   const { callWithGasPrice } = useCallWithGasPrice()
   const predictionsContract = usePredictionsContract()
   const bnbBusdPrice = useBNBBusdPrice()
-  const dispatch = useAppDispatch()
+  const dispatch = useLocalDispatch()
   const isLoadingHistory = useGetIsFetchingHistory()
   const history = useGetHistory()
 

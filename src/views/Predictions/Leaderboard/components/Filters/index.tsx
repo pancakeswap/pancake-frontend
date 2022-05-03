@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { useAppDispatch } from 'state'
+import useLocalDispatch from 'hooks/LocalRedux/useDispatch'
 import { setLeaderboardFilter } from 'state/predictions'
 import Select, { OptionProps } from 'components/Select/Select'
 import Container from 'components/Layout/Container'
@@ -30,7 +30,7 @@ const FilterWrapper = styled(Box)`
 
 const Filters = () => {
   const { t } = useTranslation()
-  const dispatch = useAppDispatch()
+  const dispatch = useLocalDispatch()
   const orderByOptions = [
     { label: t('Net Winnings'), value: 'netBNB' },
     { label: t('Total BNB'), value: 'totalBNB' },
