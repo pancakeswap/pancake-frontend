@@ -106,10 +106,12 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
     const poolLength = await fetchMasterChefFarmPoolLength()
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
     const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
-    const userFarmAllowances = await fetchFarmUserAllowances(account, farmsCanFetch)
-    const userFarmTokenBalances = await fetchFarmUserTokenBalances(account, farmsCanFetch)
-    const userStakedBalances = await fetchFarmUserStakedBalances(account, farmsCanFetch)
-    const userFarmEarnings = await fetchFarmUserEarnings(account, farmsCanFetch)
+    const [userFarmAllowances, userFarmTokenBalances, userStakedBalances, userFarmEarnings] = await Promise.all([
+      fetchFarmUserAllowances(account, farmsCanFetch),
+      fetchFarmUserTokenBalances(account, farmsCanFetch),
+      fetchFarmUserStakedBalances(account, farmsCanFetch),
+      fetchFarmUserEarnings(account, farmsCanFetch),
+    ])
 
     return userFarmAllowances.map((farmAllowance, index) => {
       return {
