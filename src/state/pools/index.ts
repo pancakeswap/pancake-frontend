@@ -206,10 +206,12 @@ export const fetchPoolsUserDataAsync =
   (account: string): AppThunk =>
   async (dispatch) => {
     try {
-      const allowances = await fetchPoolsAllowance(account)
-      const stakingTokenBalances = await fetchUserBalances(account)
-      const stakedBalances = await fetchUserStakeBalances(account)
-      const pendingRewards = await fetchUserPendingRewards(account)
+      const [allowances, stakingTokenBalances, stakedBalances, pendingRewards] = await Promise.all([
+        fetchPoolsAllowance(account),
+        fetchUserBalances(account),
+        fetchUserStakeBalances(account),
+        fetchUserPendingRewards(account),
+      ])
 
       const userData = poolsConfig.map((pool) => ({
         sousId: pool.sousId,
