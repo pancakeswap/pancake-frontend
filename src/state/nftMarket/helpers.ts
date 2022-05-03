@@ -33,6 +33,7 @@ import {
   ApiTokenFilterResponse,
   ApiCollectionsResponse,
   MarketEvent,
+  UserActivity,
 } from './types'
 import { getBaseNftFields, getBaseTransactionFields, getCollectionBaseFields } from './queries'
 
@@ -617,9 +618,7 @@ export const getLeastMostPriceInCollection = async (
  * @param where a User_filter where condition
  * @returns a UserActivity object
  */
-export const getUserActivity = async (
-  address: string,
-): Promise<{ askOrderHistory: AskOrder[]; buyTradeHistory: Transaction[]; sellTradeHistory: Transaction[] }> => {
+export const getUserActivity = async (address: string): Promise<UserActivity> => {
   try {
     const res = await request(
       GRAPH_API_NFTMARKET,
