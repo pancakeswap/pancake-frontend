@@ -85,7 +85,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
     <ActionContainer>
       <ActionTitles>{actionTitle}</ActionTitles>
       <ActionContent>
-        <Flex flex="1" flexDirection="column" alignSelf="flex-start">
+        <Flex flex="1" flexDirection="column" alignSelf="flex-center">
           <>
             {hasEarnings ? (
               <>

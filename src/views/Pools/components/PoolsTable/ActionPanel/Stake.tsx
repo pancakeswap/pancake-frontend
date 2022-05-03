@@ -243,7 +243,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     const vaultPosition = getVaultPosition({ userShares, locked, lockEndTime })
     return (
       <>
-        <ActionContainer isAutoVault={!vaultKey} flex={vaultPosition > 1 ? 1.5 : 1}>
+        <ActionContainer flex={vaultPosition > 1 ? 1.5 : 1}>
           <ActionContent mt={0}>
             <Flex flex="1" flexDirection="column" alignSelf="flex-start">
               <ActionTitles>
@@ -309,6 +309,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                   {vaultPosition >= VaultPosition.LockedEnd ? t('Unlocked') : remainingTime}
                 </Text>
                 <Text
+                  height="20px"
                   fontSize="12px"
                   display="inline"
                   color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
