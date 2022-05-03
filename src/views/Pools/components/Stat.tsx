@@ -96,8 +96,22 @@ export const DurationAvg = () => {
 export const TotalStaked: FC<{ totalStaked: BigNumber; stakingToken: Token }> = ({ totalStaked, stakingToken }) => {
   const { t } = useTranslation()
 
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t('Total amount of %symbol% staked in this pool', { symbol: stakingToken.symbol }),
+    {
+      placement: 'bottom',
+    },
+  )
+
   return (
-    <StatWrapper label={<Text small>{t('Total staked')}:</Text>}>
+    <StatWrapper
+      label={
+        <TooltipText ref={targetRef} small>
+          {t('Total staked')}:
+        </TooltipText>
+      }
+    >
+      {tooltipVisible && tooltip}
       <TotalToken total={totalStaked} token={stakingToken} />
     </StatWrapper>
   )

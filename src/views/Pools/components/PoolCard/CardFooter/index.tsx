@@ -5,7 +5,7 @@ import { useTranslation } from 'contexts/Localization'
 import { Flex, CardFooter, ExpandableLabel, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import { DeserializedPool } from 'state/types'
 import { CompoundingPoolTag, ManualPoolTag } from 'components/Tags'
-import ExpandedFooter from './ExpandedFooter'
+import PoolStatsInfo from '../../PoolStatsInfo'
 
 interface FooterProps {
   pool: DeserializedPool
@@ -58,7 +58,7 @@ const Footer: React.FC<FooterProps> = ({ pool, account, defaultExpanded, childre
       </ExpandableButtonWrapper>
       {isExpanded && (
         <ExpandedWrapper flexDirection="column">
-          {children || <ExpandedFooter pool={pool} account={account} />}
+          {children || <PoolStatsInfo pool={pool} account={account} />}
         </ExpandedWrapper>
       )}
     </CardFooter>
