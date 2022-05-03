@@ -72,7 +72,7 @@
     "lint-staged": "^12.3.4",
     "local-storage": "^2.0.0",
     "lodash": "^4.17.21",
-    "next": "^12.1.5",
+    "next": "^12.1.6",
     "next-themes": "^0.1.1",
     "numeral": "^2.0.6",
     "react": "^17.0.1",
