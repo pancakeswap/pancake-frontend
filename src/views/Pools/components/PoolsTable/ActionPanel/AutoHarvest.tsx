@@ -10,7 +10,7 @@ import { useVaultApy } from 'hooks/useVaultApy'
 
 import { ActionContainer, ActionTitles, ActionContent, RowActionContainer } from './styles'
 import UnstakingFeeCountdownRow from '../../CakeVaultCard/UnstakingFeeCountdownRow'
-import useUserDataInVaultPrensenter from '../../LockedPool/hooks/useUserDataInVaultPrensenter'
+import useUserDataInVaultPresenter from '../../LockedPool/hooks/useUserDataInVaultPresenter'
 
 interface AutoHarvestActionProps extends DeserializedPool {
   userDataLoaded: boolean
@@ -47,7 +47,7 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
     currentPerformanceFee.plus(currentOverdueFee).plus(userBoostedShare),
   )
 
-  const { secondDuration, weekDuration } = useUserDataInVaultPrensenter({
+  const { secondDuration, weekDuration } = useUserDataInVaultPresenter({
     lockStartTime,
     lockEndTime,
   })

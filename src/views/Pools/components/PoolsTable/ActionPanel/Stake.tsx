@@ -28,7 +28,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
-import useUserDataInVaultPrensenter from 'views/Pools/components/LockedPool/hooks/useUserDataInVaultPrensenter'
+import useUserDataInVaultPresenter from 'views/Pools/components/LockedPool/hooks/useUserDataInVaultPresenter'
 
 import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
 import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
@@ -107,7 +107,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     },
   } = useVaultPoolByKey(pool.vaultKey)
 
-  const { lockEndDate, remainingTime } = useUserDataInVaultPrensenter({
+  const { lockEndDate, remainingTime } = useUserDataInVaultPresenter({
     lockStartTime: lockStartTime ?? '0',
     lockEndTime: lockEndTime ?? '0',
   })
