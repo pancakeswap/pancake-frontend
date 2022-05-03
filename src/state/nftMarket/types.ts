@@ -4,13 +4,6 @@ import { BigNumberish } from '@ethersproject/bignumber'
 // Collections -> Nfts -> Transactions
 // Users -> Nft tokens IDs
 
-export enum UserNftInitializationState {
-  UNINITIALIZED = 'UNINITIALIZED',
-  INITIALIZING = 'INITIALIZING',
-  INITIALIZED = 'INITIALIZED',
-  ERROR = 'ERROR',
-}
-
 export interface State {
   data: {
     nfts: Record<string, NftToken[]> // string is the collection address
@@ -290,5 +283,4 @@ export interface UserActivity {
   askOrderHistory: AskOrder[]
   buyTradeHistory: Transaction[]
   sellTradeHistory: Transaction[]
-  initializationState: UserNftInitializationState
 }
