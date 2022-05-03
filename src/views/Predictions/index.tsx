@@ -3,7 +3,6 @@ import { useWeb3React } from '@web3-react/core'
 import { PageMeta } from 'components/Layout/Page'
 import PageLoader from 'components/Loader/PageLoader'
 import { useEffect, useRef } from 'react'
-import { useAppDispatch } from 'state'
 import { useInitialBlock } from 'state/block/hooks'
 import { initializePredictions } from 'state/predictions'
 import { useChartView, useGetPredictionsStatus, useIsChartPaneOpen } from 'state/predictions/hooks'
@@ -13,6 +12,8 @@ import {
   useUserPredictionChainlinkChartDisclaimerShow,
   useUserPredictionChartDisclaimerShow,
 } from 'state/user/hooks'
+import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
+
 import ChartDisclaimer from './components/ChartDisclaimer'
 import ChainlinkChartDisclaimer from './components/ChainlinkChartDisclaimer'
 import CollectWinningsPopup from './components/CollectWinningsPopup'
@@ -68,7 +69,7 @@ const Predictions = () => {
   const { isDesktop } = useMatchBreakpoints()
   const { account } = useWeb3React()
   const status = useGetPredictionsStatus()
-  const dispatch = useAppDispatch()
+  const dispatch = useLocalDispatch()
   const initialBlock = useInitialBlock()
 
   useEffect(() => {

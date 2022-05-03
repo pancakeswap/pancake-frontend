@@ -1,7 +1,8 @@
 import { useEffect, useMemo } from 'react'
-import { useSelector } from 'react-redux'
 import { isAddress } from 'utils'
 import { useAppDispatch } from 'state'
+import useSelector from 'contexts/LocalRedux/useSelector'
+
 import { State } from '../types'
 import { fetchAddressResult } from '.'
 import {
