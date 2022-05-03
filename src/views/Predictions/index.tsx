@@ -3,11 +3,12 @@ import { useWeb3React } from '@web3-react/core'
 import { PageMeta } from 'components/Layout/Page'
 import PageLoader from 'components/Loader/PageLoader'
 import { useEffect, useRef } from 'react'
-import { useAppDispatch } from 'state'
 import { useInitialBlock } from 'state/block/hooks'
 import { initializePredictions } from 'state/predictions'
 import { useChartView, useGetPredictionsStatus, useIsChartPaneOpen } from 'state/predictions/hooks'
 import { PredictionsChartView, PredictionStatus } from 'state/types'
+import useLocalDispatch from 'hooks/LocalRedux/useDispatch'
+
 import {
   useUserPredictionAcceptedRisk,
   useUserPredictionChainlinkChartDisclaimerShow,
@@ -65,10 +66,10 @@ function Warnings() {
 }
 
 const Predictions = () => {
+  const dispatch = useLocalDispatch()
   const { isDesktop } = useMatchBreakpoints()
   const { account } = useWeb3React()
   const status = useGetPredictionsStatus()
-  const dispatch = useAppDispatch()
   const initialBlock = useInitialBlock()
 
   useEffect(() => {
@@ -76,7 +77,7 @@ const Predictions = () => {
       // Do not start initialization until the first block has been retrieved
       dispatch(initializePredictions(account))
     }
-  }, [initialBlock, dispatch, account])
+  }, [initialBlock, account, dispatch])
 
   usePollPredictions()
 

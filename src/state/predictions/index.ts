@@ -47,7 +47,7 @@ import {
 } from './helpers'
 import { resetUserState } from '../global/actions'
 
-const initialState: PredictionsState = {
+export const initialState: PredictionsState = {
   status: PredictionStatus.INITIAL,
   chartView: PredictionsChartView.Chainlink,
   isLoading: false,
