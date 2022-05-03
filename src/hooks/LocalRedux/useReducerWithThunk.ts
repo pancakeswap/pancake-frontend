@@ -1,6 +1,10 @@
+import { Action, Reducer } from '@reduxjs/toolkit'
 import { useReducer, useCallback } from 'react'
 
-export default function useReducerWithThunk(reducer, initState) {
+export default function useReducerWithThunk<StateType, ActionType>(
+  reducer: Reducer<StateType, Action<ActionType>>,
+  initState: StateType,
+) {
   const [state, dispatch] = useReducer(reducer, initState)
 
   const customDispatch = useCallback(
