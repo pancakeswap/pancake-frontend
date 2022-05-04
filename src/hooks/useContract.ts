@@ -290,16 +290,21 @@ function useContract<T extends Contract = Contract>(
     () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
     [withSignerIfPossible, library, account],
   )
+
+  const canReturnContract = useMemo(
+    () => !(!address || !ABI || withSignerIfPossible ? !library : false),
+    [address, ABI, library, withSignerIfPossible],
+  )
+
   return useMemo(() => {
-    if (!address || !ABI || !library) return null
+    if (!canReturnContract) return null
     try {
       return getContract(address, ABI, signer)
     } catch (error) {
       console.error('Failed to get contract', error)
       return null
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address, ABI, signer]) as T
+  }, [address, ABI, signer, canReturnContract]) as T
 }
 
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean) {
