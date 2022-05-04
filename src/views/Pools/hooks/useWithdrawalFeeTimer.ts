@@ -11,7 +11,7 @@ export const getHasWithdrawFee = (lastDepositedTime: number, withdrawalFeePeriod
 const useWithdrawalFeeTimer = (lastDepositedTime: number, userShares: BigNumber, withdrawalFeePeriod = 259200) => {
   const [secondsRemaining, setSecondsRemaining] = useState(null)
   const [hasUnstakingFee, setHasUnstakingFee] = useState(false)
-  const [currentSeconds, setCurrentSeconds] = useState(Math.floor(Date.now() / 1000))
+  const [currentSeconds, setCurrentSeconds] = useState(() => Math.floor(Date.now() / 1000))
 
   useEffect(() => {
     const feeEndTime = lastDepositedTime + withdrawalFeePeriod

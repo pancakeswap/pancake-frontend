@@ -27,7 +27,7 @@ export const VaultRoiCalculatorModal = ({
 
   const [cakeVaultView, setCakeVaultView] = useState(initialView || 0)
 
-  const [duration, setDuration] = useState(weeksToSeconds(1))
+  const [duration, setDuration] = useState(() => weeksToSeconds(1))
 
   const buttonMenuItems = useMemo(
     () => [
