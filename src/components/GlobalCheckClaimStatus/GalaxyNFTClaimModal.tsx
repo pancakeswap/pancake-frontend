@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { AutoRenewIcon, Box, Button, Flex, InjectedModalProps, Modal, Text } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Box, Button, Flex, InjectedModalProps, Modal, Text, TwitterIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import confetti from 'canvas-confetti'
 import { useTranslation } from 'contexts/Localization'
@@ -94,14 +94,26 @@ const GalaxyNFTClaimModal: React.FC<InjectedModalProps & { cid: number }> = ({ o
         </Text>
         <Text textAlign="center" maxWidth="400px" mb="12px">
           {t(
-            'If you staked in our fixed-term staking pool within the first 24 hours of the launch, you are eligible to claim a special edition “Project Galaxy x PancakeSwap” NFT.',
+            'If you staked in our fixed-term staking pool for 52 weeks within the first 24 hours of the launch, you are eligible to claim a special edition “Project Galaxy x PancakeSwap” NFT.',
           )}
         </Text>
-        <Text textAlign="center" maxWidth="400px" mb="24px">
+        <Text textAlign="center" maxWidth="400px" mb="12px">
           {t(
             'Hold this NFT in your wallet until the snapshot timing (10:00 UTC 11th May 2022) to participate in the $GAL airdrop with a total of 400,000 GAL tokens.',
           )}
         </Text>
+        <Button
+          variant="secondary"
+          mb="24px"
+          scale="sm"
+          as="a"
+          href="https://twitter.com/PancakeSwap/status/1521825079591845888"
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          <TwitterIcon color="primary" mr="4px" />
+          {t('Learn More')}
+        </Button>
         <Button
           disabled={isLoading}
           onClick={handleClick}
