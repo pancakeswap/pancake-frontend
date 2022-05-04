@@ -96,7 +96,7 @@ export default {
     97: '0x981aE96378e770DE44F89cD9175E708f9EDB70a9',
   },
   galaxyNftClaiming: {
-    56: '0x760B8237e457e6A2b5b196ae073EF0301b8316a2',
+    56: '0x2D18f2d27D50C9b4013DEBA3D54f60996bD8847E',
     97: '',
   },
   nftMarket: {
