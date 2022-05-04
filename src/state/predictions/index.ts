@@ -15,7 +15,6 @@ import {
   BetPosition,
   PredictionUser,
   LeaderboardFilter,
-  State,
   PredictionsChartView,
 } from 'state/types'
 import { FetchStatus } from 'config/constants/types'
@@ -205,7 +204,7 @@ export const fetchHistory = createAsyncThunk<{ account: string; bets: Bet[] }, {
 export const fetchNodeHistory = createAsyncThunk<
   { bets: Bet[]; claimableStatuses: PredictionsState['claimableStatuses']; page?: number; totalHistory: number },
   { account: string; page?: number },
-  { state: State }
+  { state: PredictionsState }
 >('predictions/fetchNodeHistory', async ({ account, page = 1 }, { getState }) => {
   const userRoundsLength = await fetchUsersRoundsLength(account)
   const emptyResult = { bets: [], claimableStatuses: {}, totalHistory: userRoundsLength.toNumber() }
@@ -237,7 +236,8 @@ export const fetchNodeHistory = createAsyncThunk<
   const epochs = Object.keys(userRounds).map((epochStr) => Number(epochStr))
   const roundData = await getRoundsData(epochs)
   const claimableStatuses = await getClaimStatuses(account, epochs)
-  const { bufferSeconds } = getState().predictions
+  // No need getState().predictions in local redux state
+  const { bufferSeconds } = getState()
 
   // Turn the data from the node into a Bet object that comes from the graph
   const bets: Bet[] = roundData.reduce((accum, round) => {
@@ -337,13 +337,13 @@ export const fetchAddressResult = createAsyncThunk<
 export const filterNextPageLeaderboard = createAsyncThunk<
   { results: PredictionUser[]; skip: number },
   number,
-  { state: State }
+  { state: PredictionsState }
 >('predictions/filterNextPageLeaderboard', async (skip, { getState }) => {
   const state = getState()
   const usersResponse = await getPredictionUsers({
     skip,
-    orderBy: state.predictions.leaderboard.filters.orderBy,
-    where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED, [`${state.predictions.leaderboard.filters.orderBy}_gt`]: 0 },
+    orderBy: state.leaderboard.filters.orderBy,
+    where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED, [`${state.leaderboard.filters.orderBy}_gt`]: 0 },
   })
 
   return { results: usersResponse.map(transformUserResponse), skip }

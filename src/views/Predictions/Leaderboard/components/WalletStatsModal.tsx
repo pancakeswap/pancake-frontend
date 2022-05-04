@@ -19,11 +19,7 @@ import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
-import {
-  useGetOrFetchLeaderboardAddressResult,
-  useGetLeaderboardLoadingState,
-  useGetSelectedAddress,
-} from 'state/predictions/hooks'
+
 import { useTranslation } from 'contexts/Localization'
 import { FetchStatus } from 'config/constants/types'
 import { NetWinnings } from './Results/styles'
@@ -33,6 +29,9 @@ import DesktopBetsTable from './Results/DesktopBetsTable'
 interface WalletStatsModalProps extends InjectedModalProps {
   account?: string
   onBeforeDismiss?: () => void
+  address: string
+  result: any
+  leaderboardLoadingState: FetchStatus
 }
 
 const ExternalLink = styled(LinkExternal)`
@@ -43,14 +42,16 @@ const ExternalLink = styled(LinkExternal)`
   }
 `
 
-const WalletStatsModal: React.FC<WalletStatsModalProps> = ({ account, onDismiss, onBeforeDismiss }) => {
+const WalletStatsModal: React.FC<WalletStatsModalProps> = ({
+  result,
+  address,
+  leaderboardLoadingState,
+  onDismiss,
+  onBeforeDismiss,
+}) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const selectedAddress = useGetSelectedAddress()
-  const address = account || selectedAddress
-  const result = useGetOrFetchLeaderboardAddressResult(address)
   const { profile } = useProfileForAddress(address)
-  const leaderboardLoadingState = useGetLeaderboardLoadingState()
   const isLoading = leaderboardLoadingState === FetchStatus.Fetching
   const { isDesktop } = useMatchBreakpoints()
 
