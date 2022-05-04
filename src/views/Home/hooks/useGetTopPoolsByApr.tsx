@@ -23,9 +23,11 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
 
       try {
         // It should all be blocking calls since data only fetched once
-        await dispatch(fetchCakeVaultFees())
-        await dispatch(fetchCakeVaultPublicData())
-        await dispatch(fetchPoolsPublicDataAsync(initialBlock))
+        await Promise.all([
+          dispatch(fetchCakeVaultFees()),
+          dispatch(fetchCakeVaultPublicData()),
+          dispatch(fetchPoolsPublicDataAsync(initialBlock)),
+        ])
         setFetchStatus(FetchStatus.Fetched)
       } catch (e) {
         console.error(e)
