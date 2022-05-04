@@ -1,4 +1,5 @@
 import { Button, Flex, Link, LinkExternal, MetamaskIcon, Skeleton, Text, TimerIcon } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { BASE_BSC_SCAN_URL } from 'config'
 import { useTranslation } from 'contexts/Localization'
@@ -8,10 +9,11 @@ import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import { getBscScanLink } from 'utils'
 import { getAddress, getVaultPoolAddress } from 'utils/addressHelpers'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { registerToken } from 'utils/wallet'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
 import MaxStakeRow from './MaxStakeRow'
-import { PerformanceFee, TotalLocked, DurationAvg, TotalStaked } from './Stat'
+import { AprInfo, DurationAvg, PerformanceFee, TotalLocked, TotalStaked } from './Stat'
 
 interface ExpandedFooterProps {
   pool: DeserializedPool
@@ -41,7 +43,10 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
     vaultKey,
     profileRequirement,
     isFinished,
+    userData: uD,
   } = pool
+
+  const stakedBalance = uD?.stakedBalance ? new BigNumber(uD.stakedBalance) : BIG_ZERO
 
   const {
     totalCakeInVault,
@@ -73,6 +78,7 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
           </Text>
         </Flex>
       )}
+      {!vaultKey && <AprInfo pool={pool} stakedBalance={stakedBalance} />}
       {showTotalStaked && (
         <TotalStaked totalStaked={vaultKey ? totalCakeInVault : totalStaked} stakingToken={stakingToken} />
       )}
