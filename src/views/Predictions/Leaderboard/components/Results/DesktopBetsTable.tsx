@@ -14,9 +14,7 @@ const DesktopBetsTable: React.FC<DesktopBetsTableProps> = ({ account }) => {
       <Text as="h5" color="secondary" fontWeight="bold" textTransform="uppercase" fontSize="12px" mb="16px">
         {t('Last %num% Bets', { num: 5 })}
       </Text>
-      <Card>
-        <PreviousBetsTable account={account} />
-      </Card>
+      <Card>{account && <PreviousBetsTable account={account} />}</Card>
     </Box>
   )
 }

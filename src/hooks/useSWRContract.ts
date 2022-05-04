@@ -48,10 +48,8 @@ export const fetchStatusMiddleware: Middleware = (useSWRNext) => {
 type MaybeContract<C extends Contract = Contract> = C | null | undefined
 type ContractMethodName<C extends Contract = Contract> = keyof C['callStatic'] & string
 
-type ContractMethodParams<
-  C extends Contract = Contract,
-  N extends ContractMethodName<C> = ContractMethodName<C>,
-> = Parameters<C['callStatic'][N]>
+type ContractMethodParams<C extends Contract = Contract, N extends ContractMethodName<C> = ContractMethodName<C>> =
+  Parameters<C['callStatic'][N]>
 
 type UseSWRContractArrayKey<C extends Contract = Contract, N extends ContractMethodName<C> = any> =
   | [MaybeContract<C>, N, ContractMethodParams<C, N>]

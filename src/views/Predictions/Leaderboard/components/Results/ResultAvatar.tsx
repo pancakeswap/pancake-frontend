@@ -38,6 +38,9 @@ const ResultAvatar: React.FC<ResultAvatarProps> = ({ user, ...props }) => {
 
   const [onPresentWalletStatsModal] = useModal(
     <WalletStatsModal result={result} address={address} leaderboardLoadingState={leaderboardLoadingState} />,
+    true,
+    false,
+    'ResultAvatarWalletStatsModal',
   )
 
   return (

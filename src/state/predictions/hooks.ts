@@ -4,7 +4,7 @@ import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import useSelector from 'contexts/LocalRedux/useSelector'
 import { FetchStatus } from 'config/constants/types'
 
-import { PredictionsState } from '../types'
+import { PredictionsState, PredictionUser } from '../types'
 import { fetchAddressResult } from '.'
 import {
   getRoundsByCloseOracleIdSelector,
@@ -122,7 +122,7 @@ export const useGetAddressResult = (account: string) => {
   return useSelector((state: PredictionsState) => state.leaderboard.addressResults[account])
 }
 
-export const useGetOrFetchLeaderboardAddressResult = (account: string) => {
+export const useGetOrFetchLeaderboardAddressResult = (account: string): PredictionUser => {
   const addressResult = useGetAddressResult(account)
   const dispatch = useLocalDispatch()
 
@@ -138,11 +138,11 @@ export const useGetOrFetchLeaderboardAddressResult = (account: string) => {
   return addressResult
 }
 
-export const useGetSelectedAddress = () => {
+export const useGetSelectedAddress = (): string => {
   return useSelector((state: PredictionsState) => state.leaderboard.selectedAddress)
 }
 
-export const useStatModalProps = (account) => {
+export const useStatModalProps = (account?: string) => {
   const selectedAddress = useGetSelectedAddress()
   const address = account || selectedAddress
   const result = useGetOrFetchLeaderboardAddressResult(address)

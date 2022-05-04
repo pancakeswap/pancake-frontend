@@ -22,6 +22,7 @@ import truncateHash from 'utils/truncateHash'
 
 import { useTranslation } from 'contexts/Localization'
 import { FetchStatus } from 'config/constants/types'
+import { PredictionUser } from 'state/types'
 import { NetWinnings } from './Results/styles'
 import MobileBetsTable from './MobileBetsTable'
 import DesktopBetsTable from './Results/DesktopBetsTable'
@@ -30,7 +31,7 @@ interface WalletStatsModalProps extends InjectedModalProps {
   account?: string
   onBeforeDismiss?: () => void
   address: string
-  result: any
+  result: PredictionUser
   leaderboardLoadingState: FetchStatus
 }
 

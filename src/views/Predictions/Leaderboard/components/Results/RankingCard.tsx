@@ -56,6 +56,9 @@ const RankingCard: React.FC<RankingCardProps> = ({ rank, user }) => {
 
   const [onPresentWalletStatsModal] = useModal(
     <WalletStatsModal result={result} address={address} leaderboardLoadingState={leaderboardLoadingState} />,
+    true,
+    false,
+    'RankingCardWalletStatsModal',
   )
 
   return (

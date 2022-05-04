@@ -3,16 +3,28 @@ import { useModal } from '@pancakeswap/uikit'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { fetchAddressResult, setSelectedAddress } from 'state/predictions'
 import AddressInputSelect from 'components/AddressInputSelect'
+import { useStatModalProps } from 'state/predictions/hooks'
 import WalletStatsModal from './WalletStatsModal'
 
 const AddressSearch = () => {
   const dispatch = useLocalDispatch()
+  const { result, address, leaderboardLoadingState } = useStatModalProps()
 
   const handleBeforeDismiss = () => {
     dispatch(setSelectedAddress(null))
   }
 
-  const [onPresentWalletStatsModal] = useModal(<WalletStatsModal onBeforeDismiss={handleBeforeDismiss} />)
+  const [onPresentWalletStatsModal] = useModal(
+    <WalletStatsModal
+      result={result}
+      address={address}
+      leaderboardLoadingState={leaderboardLoadingState}
+      onBeforeDismiss={handleBeforeDismiss}
+    />,
+    true,
+    true,
+    'AddressSearchWalletStatsModal',
+  )
   const handleValidAddress = useCallback(
     async (value: string) => {
       const response: any = await dispatch(fetchAddressResult(value))
