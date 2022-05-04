@@ -43,10 +43,10 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
     vaultKey,
     profileRequirement,
     isFinished,
-    userData: uD,
+    userData: poolUserData,
   } = pool
 
-  const stakedBalance = uD?.stakedBalance ? new BigNumber(uD.stakedBalance) : BIG_ZERO
+  const stakedBalance = poolUserData?.stakedBalance ? poolUserData.stakedBalance : BIG_ZERO
 
   const {
     totalCakeInVault,

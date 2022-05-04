@@ -22,7 +22,6 @@ interface AprProps extends FlexProps {
   showIcon: boolean
   performanceFee?: number
   fontSize?: string
-  iconSize?: string
 }
 
 const Apr: React.FC<AprProps> = ({
