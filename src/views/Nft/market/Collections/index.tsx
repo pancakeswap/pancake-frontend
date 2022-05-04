@@ -76,10 +76,14 @@ const Collectible = () => {
   >(shuffledCollections && shuffledCollections.length ? ['collectionsWithPrice'] : null, async () => {
     return Promise.all(
       shuffledCollections.map(async (collection) => {
+        const [lowestPrice, highestPrice] = await Promise.all([
+          getLeastMostPriceInCollection(collection.address, 'asc'),
+          getLeastMostPriceInCollection(collection.address, 'desc'),
+        ])
         return {
           ...collection,
-          lowestPrice: await getLeastMostPriceInCollection(collection.address, 'asc'),
-          highestPrice: await getLeastMostPriceInCollection(collection.address, 'desc'),
+          lowestPrice,
+          highestPrice,
         }
       }),
     )
