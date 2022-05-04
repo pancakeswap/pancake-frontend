@@ -5,9 +5,10 @@ import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { FC, ReactNode } from 'react'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { DeserializedLockedVaultUser } from 'state/types'
+import { DeserializedLockedVaultUser, DeserializedPool } from 'state/types'
 import { isLocked, isStaked } from 'utils/cakePool'
 import useAvgLockDuration from './LockedPool/hooks/useAvgLockDuration'
+import Apr from './Apr'
 
 const StatWrapper: FC<{ label: ReactNode }> = ({ children, label }) => {
   return (
@@ -114,5 +115,15 @@ export const TotalStaked: FC<{ totalStaked: BigNumber; stakingToken: Token }> = 
       {tooltipVisible && tooltip}
       <TotalToken total={totalStaked} token={stakingToken} />
     </StatWrapper>
+  )
+}
+
+export const AprInfo: FC<{ pool: DeserializedPool; stakedBalance: BigNumber }> = ({ pool, stakedBalance }) => {
+  const { t } = useTranslation()
+  return (
+    <Flex justifyContent="space-between" alignItems="center">
+      <Text small>{t('APR')}:</Text>
+      <Apr pool={pool} showIcon stakedBalance={stakedBalance} performanceFee={0} fontSize="14px" />
+    </Flex>
   )
 }
