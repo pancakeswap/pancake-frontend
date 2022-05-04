@@ -35,7 +35,7 @@ const GlobalCheckClaim: React.FC<GlobalCheckClaimStatusProps> = ({ excludeLocati
   const [cid, setCid] = useState(null)
   const [canClaimNFT, setCanClaimNFT] = useState(false)
   const [nftBalance, setNftBalance] = useState(999) // default high to avoid flashing modal
-  const galaxyNFTContract = useERC721('0x2aD5745b7aD37037339EDe18407bf9395DE2d97F')
+  const galaxyNFTContract = useERC721('0x2aD5745b7aD37037339EDe18407bf9395DE2d97F', false)
   const { account } = useWeb3React()
   const { pathname } = useRouter()
   const [onPresentModal] = useModal(<GalaxyNFTClaimModal cid={cid} />, false, true, 'galaxyNFTClaimModal')

@@ -75,9 +75,12 @@ export const useERC20 = (address: string, withSignerIfPossible = true) => {
 /**
  * @see https://docs.openzeppelin.com/contracts/3.x/api/token/erc721
  */
-export const useERC721 = (address: string) => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getErc721Contract(address, library.getSigner()), [address, library])
+export const useERC721 = (address: string, withSignerIfPossible = true) => {
+  const { library, account } = useActiveWeb3React()
+  return useMemo(
+    () => getErc721Contract(address, withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [address, library, withSignerIfPossible, account],
+  )
 }
 
 export const useCake = (): { reader: Cake; signer: Cake } => {
