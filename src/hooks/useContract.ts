@@ -50,8 +50,6 @@ import { getContract, getProviderOrSigner } from '../utils'
 
 import { IPancakePair } from '../config/abi/types/IPancakePair'
 
-const EMPTY_ARRAY = Object.freeze([])
-
 /**
  * Helper hooks to get specific contracts (by ABI)
  */
