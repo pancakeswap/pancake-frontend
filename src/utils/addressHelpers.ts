@@ -87,6 +87,9 @@ export const getFarmAuctionAddress = () => {
 export const getAnniversaryAchievement = () => {
   return getAddress(addresses.AnniversaryAchievement)
 }
+export const getGalaxyNFTClaimingAddress = () => {
+  return getAddress(addresses.galaxyNftClaiming)
+}
 export const getNftMarketAddress = () => {
   return getAddress(addresses.nftMarket)
 }

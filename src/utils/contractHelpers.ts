@@ -35,6 +35,7 @@ import {
   getTradingCompetitionAddressV2,
   getTradingCompetitionAddressMobox,
   getBunnySpecialXmasAddress,
+  getGalaxyNFTClaimingAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -70,6 +71,7 @@ import bunnySpecialLotteryAbi from 'config/abi/bunnySpecialLottery.json'
 import bunnySpecialXmasAbi from 'config/abi/bunnySpecialXmas.json'
 import farmAuctionAbi from 'config/abi/farmAuction.json'
 import anniversaryAchievementAbi from 'config/abi/anniversaryAchievement.json'
+import galaxyNFTClaimingAbi from 'config/abi/galaxyNFTClaiming.json'
 import nftMarketAbi from 'config/abi/nftMarket.json'
 import nftSaleAbi from 'config/abi/nftSale.json'
 import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
@@ -104,6 +106,7 @@ import type {
   BunnySpecialCakeVault,
   BunnySpecialPrediction,
   BunnySpecialLottery,
+  GalaxyNFTClaiming,
   NftMarket,
   NftSale,
   PancakeSquad,
@@ -219,6 +222,10 @@ export const getFarmAuctionContract = (signer?: Signer | Provider) => {
 export const getAnniversaryAchievementContract = (signer?: Signer | Provider) => {
   return getContract(anniversaryAchievementAbi, getAnniversaryAchievement(), signer) as AnniversaryAchievement
 }
+export const getGalaxyNTFClaimingContract = (signer?: Signer | Provider) => {
+  return getContract(galaxyNFTClaimingAbi, getGalaxyNFTClaimingAddress(), signer) as GalaxyNFTClaiming
+}
+
 export const getNftMarketContract = (signer?: Signer | Provider) => {
   return getContract(nftMarketAbi, getNftMarketAddress(), signer) as NftMarket
 }
