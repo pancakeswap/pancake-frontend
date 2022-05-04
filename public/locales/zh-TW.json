@@ -1116,7 +1116,6 @@
   "Invalid pair": "無效幣對",
   "V1 (old)": "V1 (舊)",
   "Transaction receipt": "交易收據",
-  "You won points for joining PancakeSwap during the first year of our journey!": "您在我們創立的第一年就加入 Pancakeswap，因此獲得了積分！",
   "NFT Collected": "已收集 NFT",
   "User profile picture": "使用者頭像",
   "User team banner": "使用者團隊旗幟",
@@ -1671,5 +1670,9 @@
   "CAKE Pool": "CAKE Pool",
   "Average lock duration": "Average lock duration",
   "The average lock duration of all the locked staking positions of other users": "The average lock duration of all the locked staking positions of other users",
-  "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked": "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked"
+  "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked": "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked",
+  "Failed to claim": "Failed to claim",
+  "Hello, early fixed-term staking pool CAKE lovers.": "Hello, early fixed-term staking pool CAKE lovers.",
+  "If you staked in our fixed-term staking pool within the first 24 hours of the launch, you are eligible to claim a special edition “Project Galaxy x PancakeSwap” NFT.": "If you staked in our fixed-term staking pool within the first 24 hours of the launch, you are eligible to claim a special edition “Project Galaxy x PancakeSwap” NFT.",
+  "Hold this NFT in your wallet until the snapshot timing (10:00 UTC 11th May 2022) to participate in the $GAL airdrop with a total of 400,000 GAL tokens.": "Hold this NFT in your wallet until the snapshot timing (10:00 UTC 11th May 2022) to participate in the $GAL airdrop with a total of 400,000 GAL tokens."
 }
