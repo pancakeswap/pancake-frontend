@@ -47,7 +47,7 @@ const GlobalCheckClaim: React.FC<GlobalCheckClaimStatusProps> = ({ excludeLocati
         const { campaign } = await request(
           GALAXY_NFT_CLAIMING_API,
           gql`
-            query checkEligabilityForGalaxyNFT($campaignId: ID!, $address: String!) {
+            query checkEligibilityForGalaxyNFT($campaignId: ID!, $address: String!) {
               campaign(id: $campaignId) {
                 numberID
                 creds {
