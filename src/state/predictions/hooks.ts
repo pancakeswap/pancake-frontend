@@ -142,6 +142,8 @@ export const useGetSelectedAddress = (): string => {
   return useSelector((state: PredictionsState) => state.leaderboard.selectedAddress)
 }
 
+// Because Modal Component is rendered outside the Prediction Page contexts
+// We have to pass local state as props instead of retrieving directly in component
 export const useStatModalProps = (account?: string) => {
   const selectedAddress = useGetSelectedAddress()
   const address = account || selectedAddress
@@ -152,5 +154,15 @@ export const useStatModalProps = (account?: string) => {
     address,
     result,
     leaderboardLoadingState,
+  }
+}
+
+export const useCollectWinningModalProps = () => {
+  const isLoadingHistory = useGetIsFetchingHistory()
+  const history = useGetHistory()
+
+  return {
+    isLoadingHistory,
+    history,
   }
 }

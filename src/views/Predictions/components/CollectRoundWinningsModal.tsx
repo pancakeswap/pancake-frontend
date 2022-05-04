@@ -16,8 +16,9 @@ import {
   ModalCloseButton,
   Skeleton,
 } from '@pancakeswap/uikit'
+import { AnyAction, AsyncThunkAction } from '@reduxjs/toolkit'
+
 import { useWeb3React } from '@web3-react/core'
-import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { REWARD_RATE } from 'state/predictions/config'
 import { fetchNodeHistory, markAsCollected } from 'state/predictions'
 import { Bet } from 'state/types'
@@ -28,13 +29,15 @@ import { usePredictionsContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useGetHistory, useGetIsFetchingHistory } from 'state/predictions/hooks'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { formatNumber } from 'utils/formatBalance'
 import { getPayout } from './History/helpers'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
   onSuccess?: () => Promise<void>
+  dispatch: (action: AnyAction | AsyncThunkAction<any, { account: string }, any>) => void
+  history: Bet[]
+  isLoadingHistory: boolean
 }
 
 const Modal = styled(ModalContainer)`
@@ -76,7 +79,13 @@ const calculateClaimableRounds = (history): ClaimableRounds => {
   )
 }
 
-const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({ onDismiss, onSuccess }) => {
+const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
+  onDismiss,
+  onSuccess,
+  history,
+  isLoadingHistory,
+  dispatch,
+}) => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
@@ -84,9 +93,6 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({ o
   const { callWithGasPrice } = useCallWithGasPrice()
   const predictionsContract = usePredictionsContract()
   const bnbBusdPrice = useBNBBusdPrice()
-  const dispatch = useLocalDispatch()
-  const isLoadingHistory = useGetIsFetchingHistory()
-  const history = useGetHistory()
 
   const { epochs, total } = calculateClaimableRounds(history)
   const totalBnb = multiplyPriceByAmount(bnbBusdPrice, total)
