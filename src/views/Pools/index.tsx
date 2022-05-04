@@ -251,7 +251,7 @@ const Pools: React.FC = () => {
     </CardLayout>
   )
 
-  const tableLayout = <PoolsTable pools={chosenPools} account={account} userDataLoaded={userDataLoaded} />
+  const tableLayout = <PoolsTable pools={chosenPools} account={account} />
 
   return (
     <>

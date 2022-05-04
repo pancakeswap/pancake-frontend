@@ -7,7 +7,6 @@ import PoolRow from './PoolRow'
 
 interface PoolsTableProps {
   pools: DeserializedPool[]
-  userDataLoaded: boolean
   account: string
 }
 
@@ -35,7 +34,7 @@ const ScrollButtonContainer = styled.div`
   padding-bottom: 5px;
 `
 
-const PoolsTable: React.FC<PoolsTableProps> = ({ pools, userDataLoaded, account }) => {
+const PoolsTable: React.FC<PoolsTableProps> = ({ pools, account }) => {
   const { t } = useTranslation()
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const scrollToTop = (): void => {
@@ -47,7 +46,7 @@ const PoolsTable: React.FC<PoolsTableProps> = ({ pools, userDataLoaded, account 
     <StyledTableBorder>
       <StyledTable id="pools-table" role="table" ref={tableWrapperEl}>
         {pools.map((pool) => (
-          <PoolRow key={pool.vaultKey ?? pool.sousId} pool={pool} account={account} userDataLoaded={userDataLoaded} />
+          <PoolRow key={pool.vaultKey ?? pool.sousId} pool={pool} account={account} />
         ))}
         <ScrollButtonContainer>
           <Button variant="text" onClick={scrollToTop}>

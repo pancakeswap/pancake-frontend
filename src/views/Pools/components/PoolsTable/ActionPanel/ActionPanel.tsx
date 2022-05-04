@@ -85,7 +85,6 @@ type MediaBreakpoints = {
 interface ActionPanelProps {
   account: string
   pool: DeserializedPool
-  userDataLoaded: boolean
   expanded: boolean
   breakpoints: MediaBreakpoints
 }
@@ -119,7 +118,7 @@ const YieldBoostDurationRow = ({ lockEndTime, lockStartTime }) => {
   )
 }
 
-const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded, expanded }) => {
+const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, expanded }) => {
   const { userData, vaultKey } = pool
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
@@ -186,12 +185,8 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
             />
           )}
           <ActionContainer isAutoVault={!!pool.vaultKey} hasBalance={poolStakingTokenBalance.gt(0)}>
-            {pool.vaultKey ? (
-              <AutoHarvest {...pool} userDataLoaded={userDataLoaded} />
-            ) : (
-              <Harvest {...pool} userDataLoaded={userDataLoaded} />
-            )}
-            <Stake pool={pool} userDataLoaded={userDataLoaded} />
+            {pool.vaultKey ? <AutoHarvest {...pool} /> : <Harvest {...pool} />}
+            <Stake pool={pool} />
           </ActionContainer>
         </Box>
       </ActionContainer>
