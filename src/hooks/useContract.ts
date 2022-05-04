@@ -50,6 +50,8 @@ import { getContract, getProviderOrSigner } from '../utils'
 
 import { IPancakePair } from '../config/abi/types/IPancakePair'
 
+const EMPTY_ARRAY = Object.freeze([])
+
 /**
  * Helper hooks to get specific contracts (by ABI)
  */
@@ -68,7 +70,8 @@ export const useERC20 = (address: string, withSignerIfPossible = true) => {
   const { library, account } = useActiveWeb3React()
   return useMemo(
     () => getBep20Contract(address, withSignerIfPossible ? getProviderOrSigner(library, account) : null),
-    [account, address, library, withSignerIfPossible],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [address, withSignerIfPossible, ...(withSignerIfPossible ? [account, library] : EMPTY_ARRAY)],
   )
 }
 
@@ -76,10 +79,11 @@ export const useERC20 = (address: string, withSignerIfPossible = true) => {
  * @see https://docs.openzeppelin.com/contracts/3.x/api/token/erc721
  */
 export const useERC721 = (address: string, withSignerIfPossible = true) => {
-  const { library, account } = useActiveWeb3React()
+  const { account, library } = useActiveWeb3React()
   return useMemo(
     () => getErc721Contract(address, withSignerIfPossible ? getProviderOrSigner(library, account) : null),
-    [address, library, withSignerIfPossible, account],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [address, withSignerIfPossible, ...(withSignerIfPossible ? [account, library] : EMPTY_ARRAY)],
   )
 }
 
@@ -108,7 +112,8 @@ export const useProfileContract = (withSignerIfPossible = true) => {
   const { library, account } = useActiveWeb3React()
   return useMemo(
     () => getProfileContract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
-    [withSignerIfPossible, account, library],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [withSignerIfPossible, ...(withSignerIfPossible ? [account, library] : EMPTY_ARRAY)],
   )
 }
 
@@ -121,7 +126,8 @@ export const useMasterchef = (withSignerIfPossible = true) => {
   const { library, account } = useActiveWeb3React()
   return useMemo(
     () => getMasterchefContract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
-    [library, withSignerIfPossible, account],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [withSignerIfPossible, ...(withSignerIfPossible ? [account, library] : EMPTY_ARRAY)],
   )
 }
 
@@ -159,7 +165,8 @@ export const useTradingCompetitionContractV2 = (withSignerIfPossible = true) => 
   const { library, account } = useActiveWeb3React()
   return useMemo(
     () => getTradingCompetitionContractV2(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
-    [library, withSignerIfPossible, account],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [withSignerIfPossible, ...(withSignerIfPossible ? [account, library] : EMPTY_ARRAY)],
   )
 }
 
@@ -167,7 +174,8 @@ export const useTradingCompetitionContractMobox = (withSignerIfPossible = true) 
   const { library, account } = useActiveWeb3React()
   return useMemo(
     () => getTradingCompetitionContractMobox(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
-    [library, withSignerIfPossible, account],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [withSignerIfPossible, ...(withSignerIfPossible ? [account, library] : EMPTY_ARRAY)],
   )
 }
 
@@ -185,7 +193,8 @@ export const useCakeVaultContract = (withSignerIfPossible = true) => {
   const { library, account } = useActiveWeb3React()
   return useMemo(
     () => getCakeVaultV2Contract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
-    [withSignerIfPossible, library, account],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [withSignerIfPossible, ...(withSignerIfPossible ? [account, library] : EMPTY_ARRAY)],
   )
 }
 
@@ -198,7 +207,8 @@ export const useChainlinkOracleContract = (withSignerIfPossible = true) => {
   const { library, account } = useActiveWeb3React()
   return useMemo(
     () => getChainlinkOracleContract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
-    [account, library, withSignerIfPossible],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [withSignerIfPossible, ...(withSignerIfPossible ? [account, library] : EMPTY_ARRAY)],
   )
 }
 
@@ -246,7 +256,8 @@ export const useFarmAuctionContract = (withSignerIfPossible = true) => {
   const { account, library } = useActiveWeb3React()
   return useMemo(
     () => getFarmAuctionContract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
-    [library, account, withSignerIfPossible],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [withSignerIfPossible, ...(withSignerIfPossible ? [account, library] : EMPTY_ARRAY)],
   )
 }
 
@@ -286,7 +297,8 @@ function useContract<T extends Contract = Contract>(
       console.error('Failed to get contract', error)
       return null
     }
-  }, [address, ABI, library, withSignerIfPossible, account]) as T
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address, ABI, withSignerIfPossible, ...(withSignerIfPossible ? [account, library] : EMPTY_ARRAY)]) as T
 }
 
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean) {
