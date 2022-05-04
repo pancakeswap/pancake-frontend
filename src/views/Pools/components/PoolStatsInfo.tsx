@@ -8,10 +8,11 @@ import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import { getBscScanLink } from 'utils'
 import { getAddress, getVaultPoolAddress } from 'utils/addressHelpers'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { registerToken } from 'utils/wallet'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
 import MaxStakeRow from './MaxStakeRow'
-import { PerformanceFee, TotalLocked, DurationAvg, TotalStaked } from './Stat'
+import { AprInfo, DurationAvg, PerformanceFee, TotalLocked, TotalStaked } from './Stat'
 
 interface ExpandedFooterProps {
   pool: DeserializedPool
@@ -41,7 +42,10 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
     vaultKey,
     profileRequirement,
     isFinished,
+    userData: poolUserData,
   } = pool
+
+  const stakedBalance = poolUserData?.stakedBalance ? poolUserData.stakedBalance : BIG_ZERO
 
   const {
     totalCakeInVault,
@@ -73,6 +77,7 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
           </Text>
         </Flex>
       )}
+      {!vaultKey && <AprInfo pool={pool} stakedBalance={stakedBalance} />}
       {showTotalStaked && (
         <TotalStaked totalStaked={vaultKey ? totalCakeInVault : totalStaked} stakingToken={stakingToken} />
       )}

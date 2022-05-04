@@ -18,3 +18,5 @@ export const GRAPH_API_NFTMARKET = process.env.NEXT_PUBLIC_GRAPH_API_NFT_MARKET
 export const GRAPH_HEALTH = 'https://api.thegraph.com/index-node/graphql'
 
 export const TC_MOBOX_SUBGRAPH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/trading-competition-v3'
+
+export const GALAXY_NFT_CLAIMING_API = 'https://graphigo.prd.galaxy.eco/query'
