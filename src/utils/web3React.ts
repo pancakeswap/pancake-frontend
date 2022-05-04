@@ -7,7 +7,14 @@ import { ConnectorNames } from '@pancakeswap/uikit'
 import { hexlify } from '@ethersproject/bytes'
 import { toUtf8Bytes } from '@ethersproject/strings'
 import { Web3Provider } from '@ethersproject/providers'
-import { CHAIN_ID } from 'config/constants/networks'
+import {
+  CHAIN_ID,
+  UAUTH_CLIENT_ID_UNSTOPPABLE,
+  UAUTH_REDIRECT_URI_UNSTOPPABLE,
+  UAUTH_POST_LOGOUT_REDIRECT_URI_UNSTOPPABLE,
+} from 'config/constants/networks'
+import { UAuthConnector } from '@uauth/web3-react'
+import UAuth from '@uauth/js'
 import getNodeUrl from './getRpcUrl'
 
 const POLLING_INTERVAL = 12000
@@ -41,6 +48,15 @@ export const connectorsByName = {
       supportedChainIds: [ChainId.MAINNET, ChainId.TESTNET],
     })
   },
+  [ConnectorNames.UAuthUnstoppable]: new UAuthConnector({
+    uauth: new UAuth({
+      clientID: UAUTH_CLIENT_ID_UNSTOPPABLE,
+      redirectUri: UAUTH_REDIRECT_URI_UNSTOPPABLE,
+      postLogoutRedirectUri: UAUTH_POST_LOGOUT_REDIRECT_URI_UNSTOPPABLE,
+      scope: 'openid wallet',
+    }),
+    connectors: { injected, walletconnect },
+  }),
 } as const
 
 export const getLibrary = (provider): Web3Provider => {
