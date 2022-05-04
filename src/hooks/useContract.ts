@@ -33,6 +33,7 @@ import {
   getPancakeSquadContract,
   getErc721CollectionContract,
   getBunnySpecialXmasContract,
+  getGalaxyNTFClaimingContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
 import { Erc20, Erc20Bytes32, Multicall, Weth, Cake, Erc721collection, CakeVaultV2 } from 'config/abi/types'
@@ -221,6 +222,11 @@ export const useBunnySpecialXmasContract = () => {
 export const useAnniversaryAchievementContract = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getAnniversaryAchievementContract(library.getSigner()), [library])
+}
+
+export const useGalaxyNFTClaimingContract = () => {
+  const { library } = useActiveWeb3React()
+  return useMemo(() => getGalaxyNTFClaimingContract(library.getSigner()), [library])
 }
 
 export const useNftSaleContract = () => {
