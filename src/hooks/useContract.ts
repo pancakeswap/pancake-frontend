@@ -196,9 +196,9 @@ export const useCakeVaultContract = (withSignerIfPossible = true) => {
   return useMemo(() => getCakeVaultV2Contract(signer), [signer])
 }
 
-export const usePredictionsContract = () => {
+export const usePredictionsContract = (address: string) => {
   const { library } = useActiveWeb3React()
-  return useMemo(() => getPredictionsContract(library.getSigner()), [library])
+  return useMemo(() => getPredictionsContract(library.getSigner(), address), [library, address])
 }
 
 export const useChainlinkOracleContract = (withSignerIfPossible = true) => {

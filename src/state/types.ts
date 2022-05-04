@@ -625,6 +625,11 @@ export interface UserRound {
   tickets?: LotteryTicket[]
 }
 
+export interface PredictionConfig {
+  address: string
+  api: string
+}
+
 // Global state
 
 export interface State {

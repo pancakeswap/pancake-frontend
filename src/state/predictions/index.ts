@@ -16,6 +16,7 @@ import {
   PredictionUser,
   LeaderboardFilter,
   PredictionsChartView,
+  PredictionConfig,
 } from 'state/types'
 import { FetchStatus } from 'config/constants/types'
 import {
@@ -85,18 +86,18 @@ type PredictionInitialization = Pick<
   PredictionsState,
   'status' | 'currentEpoch' | 'intervalSeconds' | 'minBetAmount' | 'rounds' | 'ledgers' | 'claimableStatuses'
 >
-export const initializePredictions = createAsyncThunk<PredictionInitialization, string>(
+export const initializePredictions = createAsyncThunk<PredictionInitialization, string, { extra: PredictionConfig }>(
   'predictions/initialize',
-  async (account = null) => {
+  async (account = null, { extra }) => {
     // Static values
-    const marketData = await getPredictionData()
+    const marketData = await getPredictionData(extra.address)
     const epochs =
       marketData.currentEpoch > PAST_ROUND_COUNT
         ? range(marketData.currentEpoch, marketData.currentEpoch - PAST_ROUND_COUNT)
         : [marketData.currentEpoch]
 
     // Round data
-    const roundsResponse = await getRoundsData(epochs)
+    const roundsResponse = await getRoundsData(epochs, extra.address)
     const initialRoundData: { [key: string]: ReduxNodeRound } = roundsResponse.reduce((accum, roundResponse) => {
       const reduxNodeRound = serializePredictionsRoundsResponse(roundResponse)
 
@@ -118,10 +119,10 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
     }
 
     // Bet data
-    const ledgerResponses = await getLedgerData(account, epochs)
+    const ledgerResponses = await getLedgerData(account, epochs, extra.address)
 
     // Claim statuses
-    const claimableStatuses = await getClaimStatuses(account, epochs)
+    const claimableStatuses = await getClaimStatuses(account, epochs, extra.address)
 
     return merge({}, initializedData, {
       ledgers: makeLedgerData(account, ledgerResponses, epochs),
@@ -130,13 +131,13 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
   },
 )
 
-export const fetchPredictionData = createAsyncThunk<PredictionInitialization, string>(
+export const fetchPredictionData = createAsyncThunk<PredictionInitialization, string, { extra: PredictionConfig }>(
   'predictions/fetchPredictionData',
-  async (account = null) => {
-    const { status, currentEpoch, intervalSeconds, minBetAmount } = await getPredictionData()
+  async (account = null, { extra }) => {
+    const { status, currentEpoch, intervalSeconds, minBetAmount } = await getPredictionData(extra.address)
     const liveCurrentAndRecent = [currentEpoch, currentEpoch - 1, currentEpoch - 2]
 
-    const roundsResponse = await getRoundsData(liveCurrentAndRecent)
+    const roundsResponse = await getRoundsData(liveCurrentAndRecent, extra.address)
     const roundData = roundsResponse.reduce((accum, round) => {
       if (!round) {
         return accum
@@ -168,10 +169,10 @@ export const fetchPredictionData = createAsyncThunk<PredictionInitialization, st
       currentEpoch > PAST_ROUND_COUNT ? range(currentEpoch, currentEpoch - PAST_ROUND_COUNT) : [currentEpoch]
 
     // Bet data
-    const ledgerResponses = await getLedgerData(account, epochs)
+    const ledgerResponses = await getLedgerData(account, epochs, extra.address)
 
     // Claim statuses
-    const claimableStatuses = await getClaimStatuses(account, epochs)
+    const claimableStatuses = await getClaimStatuses(account, epochs, extra.address)
 
     return merge({}, publicData, {
       ledgers: makeLedgerData(account, ledgerResponses, epochs),
@@ -180,13 +181,14 @@ export const fetchPredictionData = createAsyncThunk<PredictionInitialization, st
   },
 )
 
-export const fetchLedgerData = createAsyncThunk<LedgerData, { account: string; epochs: number[] }>(
-  'predictions/fetchLedgerData',
-  async ({ account, epochs }) => {
-    const ledgers = await getLedgerData(account, epochs)
-    return makeLedgerData(account, ledgers, epochs)
-  },
-)
+export const fetchLedgerData = createAsyncThunk<
+  LedgerData,
+  { account: string; epochs: number[] },
+  { extra: PredictionConfig }
+>('predictions/fetchLedgerData', async ({ account, epochs }, { extra }) => {
+  const ledgers = await getLedgerData(account, epochs, extra.address)
+  return makeLedgerData(account, ledgers, epochs)
+})
 
 export const fetchHistory = createAsyncThunk<{ account: string; bets: Bet[] }, { account: string; claimed?: boolean }>(
   'predictions/fetchHistory',
@@ -204,9 +206,9 @@ export const fetchHistory = createAsyncThunk<{ account: string; bets: Bet[] }, {
 export const fetchNodeHistory = createAsyncThunk<
   { bets: Bet[]; claimableStatuses: PredictionsState['claimableStatuses']; page?: number; totalHistory: number },
   { account: string; page?: number },
-  { state: PredictionsState }
->('predictions/fetchNodeHistory', async ({ account, page = 1 }, { getState }) => {
-  const userRoundsLength = await fetchUsersRoundsLength(account)
+  { state: PredictionsState; extra: PredictionConfig }
+>('predictions/fetchNodeHistory', async ({ account, page = 1 }, { getState, extra }) => {
+  const userRoundsLength = await fetchUsersRoundsLength(account, extra.address)
   const emptyResult = { bets: [], claimableStatuses: {}, totalHistory: userRoundsLength.toNumber() }
   const maxPages = userRoundsLength.lte(ROUNDS_PER_PAGE) ? 1 : Math.ceil(userRoundsLength.toNumber() / ROUNDS_PER_PAGE)
 
@@ -227,15 +229,15 @@ export const fetchNodeHistory = createAsyncThunk<
           .sub(ROUNDS_PER_PAGE * (page - 1)) // Previous page's cursor
           .toNumber()
       : ROUNDS_PER_PAGE
-  const userRounds = await fetchUserRounds(account, cursor.lt(0) ? 0 : cursor.toNumber(), size)
+  const userRounds = await fetchUserRounds(account, cursor.lt(0) ? 0 : cursor.toNumber(), size, extra.address)
 
   if (!userRounds) {
     return emptyResult
   }
 
   const epochs = Object.keys(userRounds).map((epochStr) => Number(epochStr))
-  const roundData = await getRoundsData(epochs)
-  const claimableStatuses = await getClaimStatuses(account, epochs)
+  const roundData = await getRoundsData(epochs, extra.address)
+  const claimableStatuses = await getClaimStatuses(account, epochs, extra.address)
   // No need getState().predictions in local redux state
   const { bufferSeconds } = getState()
 

@@ -21,7 +21,6 @@ import {
   getTradingCompetitionAddress,
   getEasterNftAddress,
   getCakeVaultAddress,
-  getPredictionsAddress,
   getChainlinkOracleAddress,
   getMulticallAddress,
   getBunnySpecialCakeVaultAddress,
@@ -194,8 +193,8 @@ export const getCakeVaultV2Contract = (signer?: Signer | Provider) => {
   return getContract(cakeVaultV2Abi, getCakeVaultAddress(), signer) as CakeVaultV2
 }
 
-export const getPredictionsContract = (signer?: Signer | Provider) => {
-  return getContract(predictionsAbi, getPredictionsAddress(), signer) as unknown as Predictions
+export const getPredictionsContract = (signer?: Signer | Provider, address?: string) => {
+  return getContract(predictionsAbi, address, signer) as Predictions
 }
 
 export const getChainlinkOracleContract = (signer?: Signer | Provider) => {

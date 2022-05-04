@@ -32,6 +32,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { formatNumber } from 'utils/formatBalance'
 import { getPayout } from './History/helpers'
+import { useConfig } from '../context/ConfigProvider'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
   onSuccess?: () => Promise<void>
@@ -91,7 +92,9 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPendingTx } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const predictionsContract = usePredictionsContract()
+  const { address: predictionsAddress } = useConfig()
+
+  const predictionsContract = usePredictionsContract(predictionsAddress)
   const bnbBusdPrice = useBNBBusdPrice()
 
   const { epochs, total } = calculateClaimableRounds(history)

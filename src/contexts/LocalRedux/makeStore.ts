@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-export default function makeStore(reducer, preloadedState = undefined) {
+export default function makeStore(reducer, preloadedState = undefined, extraArgument) {
   return configureStore({
     reducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
-        thunk: true,
+        thunk: {
+          extraArgument,
+        },
       }),
     preloadedState,
   })

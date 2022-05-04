@@ -17,7 +17,6 @@ import {
 import { multicallv2 } from 'utils/multicall'
 import { getPredictionsContract } from 'utils/contractHelpers'
 import predictionsAbi from 'config/abi/predictions.json'
-import { getPredictionsAddress } from 'utils/addressHelpers'
 import { Zero } from '@ethersproject/constants'
 import { PredictionsClaimableResponse, PredictionsLedgerResponse, PredictionsRoundsResponse } from 'utils/types'
 import {
@@ -284,8 +283,7 @@ export const getBet = async (betId: string): Promise<BetResponse> => {
   return response.bet
 }
 
-export const getLedgerData = async (account: string, epochs: number[]) => {
-  const address = getPredictionsAddress()
+export const getLedgerData = async (account: string, epochs: number[], address: string) => {
   const ledgerCalls = epochs.map((epoch) => ({
     address,
     name: 'ledger',
@@ -359,8 +357,8 @@ export const getPredictionUser = async (account: string): Promise<UserResponse> 
 export const getClaimStatuses = async (
   account: string,
   epochs: number[],
+  address: string,
 ): Promise<PredictionsState['claimableStatuses']> => {
-  const address = getPredictionsAddress()
   const claimableCalls = epochs.map((epoch) => ({
     address,
     name: 'claimable',
@@ -380,8 +378,7 @@ export const getClaimStatuses = async (
 }
 
 export type MarketData = Pick<PredictionsState, 'status' | 'currentEpoch' | 'intervalSeconds' | 'minBetAmount'>
-export const getPredictionData = async (): Promise<MarketData> => {
-  const address = getPredictionsAddress()
+export const getPredictionData = async (address: string): Promise<MarketData> => {
   const staticCalls = ['currentEpoch', 'intervalSeconds', 'minBetAmount', 'paused'].map((method) => ({
     address,
     name: method,
@@ -396,8 +393,7 @@ export const getPredictionData = async (): Promise<MarketData> => {
   }
 }
 
-export const getRoundsData = async (epochs: number[]): Promise<PredictionsRoundsResponse[]> => {
-  const address = getPredictionsAddress()
+export const getRoundsData = async (epochs: number[], address: string): Promise<PredictionsRoundsResponse[]> => {
   const calls = epochs.map((epoch) => ({
     address,
     name: 'rounds',
@@ -525,9 +521,9 @@ export const parseBigNumberObj = <T = Record<string, any>, K = Record<string, an
   }, {}) as K
 }
 
-export const fetchUsersRoundsLength = async (account: string) => {
+export const fetchUsersRoundsLength = async (account: string, address: string) => {
   try {
-    const contract = getPredictionsContract()
+    const contract = getPredictionsContract(null, address)
     const length = await contract.getUserRoundsLength(account)
     return length
   } catch {
@@ -542,8 +538,9 @@ export const fetchUserRounds = async (
   account: string,
   cursor = 0,
   size = ROUNDS_PER_PAGE,
+  address,
 ): Promise<{ [key: string]: ReduxNodeLedger }> => {
-  const contract = getPredictionsContract()
+  const contract = getPredictionsContract(null, address)
 
   try {
     const [rounds, ledgers] = await contract.getUserRounds(account, cursor, size)

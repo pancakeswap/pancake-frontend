@@ -28,6 +28,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { BetPosition } from 'state/types'
 import { formatBigNumber, formatFixedNumber } from 'utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import PositionTag from '../PositionTag'
 import FlexRow from '../FlexRow'
 
@@ -77,7 +78,8 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const { t } = useTranslation()
   const { fetchWithCatchTxError, loading: isTxPending } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const predictionsContract = usePredictionsContract()
+  const { address: predictionsAddress } = useConfig()
+  const predictionsContract = usePredictionsContract(predictionsAddress)
 
   const maxBalance = useMemo(() => {
     return bnbBalance.gt(dust) ? bnbBalance.sub(dust) : Zero
