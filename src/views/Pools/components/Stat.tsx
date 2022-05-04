@@ -123,7 +123,7 @@ export const AprInfo: FC<{ pool: DeserializedPool; stakedBalance: BigNumber }> =
   return (
     <Flex justifyContent="space-between" alignItems="center">
       <Text small>{t('APR')}:</Text>
-      <Apr pool={pool} showIcon stakedBalance={stakedBalance} performanceFee={0} />
+      <Apr pool={pool} showIcon stakedBalance={stakedBalance} performanceFee={0} fontSize="14px" />
     </Flex>
   )
 }
