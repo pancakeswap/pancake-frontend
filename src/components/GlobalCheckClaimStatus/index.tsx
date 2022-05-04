@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic'
 import request, { gql } from 'graphql-request'
 import { GALAXY_NFT_CAMPAIGN_ID } from 'config/constants'
 import { GALAXY_NFT_CLAIMING_API } from 'config/constants/endpoints'
+import { useERC721 } from 'hooks/useContract'
 
 const GalaxyNFTClaimModal = dynamic(() => import('./GalaxyNFTClaimModal'), { ssr: false })
 
@@ -33,13 +34,15 @@ const GlobalCheckClaim: React.FC<GlobalCheckClaimStatusProps> = ({ excludeLocati
   const hasDisplayedModal = useRef(false)
   const [cid, setCid] = useState(null)
   const [canClaimNFT, setCanClaimNFT] = useState(false)
+  const [nftBalance, setNftBalance] = useState(999) // default high to avoid fashing modal
+  const galaxyNFTContract = useERC721('0x4344cDD59780CC7B8A47Cd903424F91f41A3a366')
   const { account } = useWeb3React()
   const { pathname } = useRouter()
   const [onPresentModal] = useModal(<GalaxyNFTClaimModal cid={cid} />, false, true, 'galaxyNFTClaimModal')
 
   // Check claim status
   useEffect(() => {
-    const fetchClaimAnniversaryStatus = async () => {
+    const fetchClaimNftStatus = async () => {
       try {
         const { campaign } = await request(
           GALAXY_NFT_CLAIMING_API,
@@ -55,6 +58,8 @@ const GlobalCheckClaim: React.FC<GlobalCheckClaimStatusProps> = ({ excludeLocati
           `,
           { campaignId: GALAXY_NFT_CAMPAIGN_ID, address: account },
         )
+        const balance = await galaxyNFTContract.balanceOf(account)
+        setNftBalance(balance.toNumber())
         setCanClaimNFT(campaign.creds[0].eligible === 1)
         setCid(campaign.numberID)
       } catch (error) {
@@ -63,19 +68,19 @@ const GlobalCheckClaim: React.FC<GlobalCheckClaimStatusProps> = ({ excludeLocati
     }
 
     if (account) {
-      fetchClaimAnniversaryStatus()
+      fetchClaimNftStatus()
     }
-  }, [account])
+  }, [account, galaxyNFTContract])
 
   // Check if we need to display the modal
   useEffect(() => {
     const matchesSomeLocations = excludeLocations.some((location) => pathname.includes(location))
 
-    if (canClaimNFT && !matchesSomeLocations && !hasDisplayedModal.current) {
+    if (canClaimNFT && !matchesSomeLocations && !hasDisplayedModal.current && nftBalance === 0) {
       onPresentModal()
       hasDisplayedModal.current = true
     }
-  }, [pathname, excludeLocations, hasDisplayedModal, onPresentModal, canClaimNFT])
+  }, [pathname, excludeLocations, hasDisplayedModal, onPresentModal, canClaimNFT, nftBalance])
 
   // Reset the check flag when account changes
   useEffect(() => {
