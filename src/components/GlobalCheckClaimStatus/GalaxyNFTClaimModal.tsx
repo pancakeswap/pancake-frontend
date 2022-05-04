@@ -87,7 +87,7 @@ const GalaxyNFTClaimModal: React.FC<InjectedModalProps & { cid: number }> = ({ o
     <Modal title={t('Congratulations!')} onDismiss={onDismiss}>
       <Flex flexDirection="column" alignItems="center" justifyContent="center">
         <Box>
-          <NFTImage src="/images/nfts/galaxy.png" />
+          <NFTImage src="https://cdn.galaxy.eco/galaxy/assets/pancakeswap/1651655250130414893.png" />
         </Box>
         <Text textAlign="center" bold color="secondary" maxWidth="400px" fontSize="16px" mb="16px">
           {t('Hello, early fixed-term staking pool CAKE lovers.')}
