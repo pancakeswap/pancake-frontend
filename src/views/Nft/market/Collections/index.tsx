@@ -63,6 +63,13 @@ export const Arrow = styled.div`
   }
 `
 
+const getNewSortDirection = (oldSortField: string, newSortField: string, oldSortDirection: boolean) => {
+  if (oldSortField !== newSortField) {
+    return newSortField !== SORT_FIELD.lowestPrice
+  }
+  return !oldSortDirection
+}
+
 const Collectible = () => {
   const { t } = useTranslation()
   const { data: shuffledCollections } = useGetShuffledCollections()
@@ -111,7 +118,7 @@ const Collectible = () => {
     (newField: string) => {
       setPage(1)
       setSortField(newField)
-      setSortDirection(sortField !== newField ? true : !sortDirection)
+      setSortDirection(getNewSortDirection(sortField, newField, sortDirection))
     },
     [sortDirection, sortField],
   )
