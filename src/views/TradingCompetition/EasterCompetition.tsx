@@ -29,6 +29,7 @@ import PrizesInfo from './components/PrizesInfo'
 import TeamRanks from './components/TeamRanks'
 import EasterBattleBanner from './components/BattleBanner/EasterBattleBanner'
 import EasterPrizesInfo from './components/PrizesInfo/EasterPrizesInfo'
+import EasterTeamRanks from './components/TeamRanks/EasterTeamRanks'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -268,7 +269,7 @@ const EasterCompetition = () => {
         }
       >
         <Box my="64px">
-          <TeamRanks
+          <EasterTeamRanks
             team1LeaderboardInformation={team1LeaderboardInformation}
             team2LeaderboardInformation={team2LeaderboardInformation}
             team3LeaderboardInformation={team3LeaderboardInformation}
