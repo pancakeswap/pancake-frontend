@@ -531,7 +531,7 @@ export const parseBigNumberObj = <T = Record<string, any>, K = Record<string, an
 
 export const fetchUsersRoundsLength = async (account: string, address: string) => {
   try {
-    const contract = getPredictionsContract(null, address)
+    const contract = getPredictionsContract(address)
     const length = await contract.getUserRoundsLength(account)
     return length
   } catch {
@@ -548,7 +548,7 @@ export const fetchUserRounds = async (
   size = ROUNDS_PER_PAGE,
   address,
 ): Promise<{ [key: string]: ReduxNodeLedger }> => {
-  const contract = getPredictionsContract(null, address)
+  const contract = getPredictionsContract(address)
 
   try {
     const [rounds, ledgers] = await contract.getUserRounds(account, cursor, size)

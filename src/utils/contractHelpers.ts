@@ -193,12 +193,12 @@ export const getCakeVaultV2Contract = (signer?: Signer | Provider) => {
   return getContract(cakeVaultV2Abi, getCakeVaultAddress(), signer) as CakeVaultV2
 }
 
-export const getPredictionsContract = (signer?: Signer | Provider, address?: string) => {
+export const getPredictionsContract = (address: string, signer?: Signer | Provider) => {
   return getContract(predictionsAbi, address, signer) as Predictions
 }
 
-export const getChainlinkOracleContract = (signer?: Signer | Provider) => {
-  return getContract(chainlinkOracleAbi, getChainlinkOracleAddress(), signer) as ChainlinkOracle
+export const getChainlinkOracleContract = (address: string, signer?: Signer | Provider) => {
+  return getContract(chainlinkOracleAbi, address, signer) as ChainlinkOracle
 }
 export const getMulticallContract = () => {
   return getContract(MultiCallAbi, getMulticallAddress(), simpleRpcProvider) as Multicall

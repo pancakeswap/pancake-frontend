@@ -626,6 +626,7 @@ export interface UserRound {
 export interface PredictionConfig {
   address: string
   api: string
+  chainlinkOracleAddress: string
 }
 
 // Global state

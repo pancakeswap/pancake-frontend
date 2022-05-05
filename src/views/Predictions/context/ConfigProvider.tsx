@@ -8,6 +8,7 @@ import { PredictionConfig } from 'state/types'
 export const config: PredictionConfig = {
   address: getAddress(addresses.predictions),
   api: GRAPH_API_PREDICTION,
+  chainlinkOracleAddress: getAddress(addresses.chainlinkOracle),
 }
 
 export const ConfigContext = createContext<PredictionConfig>(config)

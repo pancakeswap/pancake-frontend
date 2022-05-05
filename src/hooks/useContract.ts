@@ -198,16 +198,16 @@ export const useCakeVaultContract = (withSignerIfPossible = true) => {
 
 export const usePredictionsContract = (address: string) => {
   const { library } = useActiveWeb3React()
-  return useMemo(() => getPredictionsContract(library.getSigner(), address), [library, address])
+  return useMemo(() => getPredictionsContract(address, library.getSigner()), [library, address])
 }
 
-export const useChainlinkOracleContract = (withSignerIfPossible = true) => {
+export const useChainlinkOracleContract = (address, withSignerIfPossible = true) => {
   const { library, account } = useActiveWeb3React()
   const signer = useMemo(
     () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
     [withSignerIfPossible, library, account],
   )
-  return useMemo(() => getChainlinkOracleContract(signer), [signer])
+  return useMemo(() => getChainlinkOracleContract(address, signer), [signer, address])
 }
 
 export const useSpecialBunnyCakeVaultContract = () => {

@@ -20,9 +20,11 @@ import { NodeRound } from 'state/types'
 import useSwiper from '../hooks/useSwiper'
 import usePollOraclePrice from '../hooks/usePollOraclePrice'
 import { CHART_DOT_CLICK_EVENT } from '../helpers'
+import { useConfig } from '../context/ConfigProvider'
 
 function useChainlinkLatestRound() {
-  const chainlinkOracleContract = useChainlinkOracleContract(false)
+  const { chainlinkOracleAddress } = useConfig()
+  const chainlinkOracleContract = useChainlinkOracleContract(chainlinkOracleAddress, false)
   // Can refactor to subscription later
   const lastRound = useSWRContract([chainlinkOracleContract, 'latestRound'], {
     dedupingInterval: 10 * 1000,
