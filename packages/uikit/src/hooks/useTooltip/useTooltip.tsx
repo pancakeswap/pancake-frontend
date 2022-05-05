@@ -173,7 +173,7 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
     };
   }, [trigger, targetElement, showTooltip, hideTooltip]);
 
-  // On small screens Popper.js tries to squeeze the tooltip to available space without overflowing beyound the edge
+  // On small screens Popper.js tries to squeeze the tooltip to available space without overflowing beyond the edge
   // of the screen. While it works fine when the element is in the middle of the screen it does not handle well the
   // cases when the target element is very close to the edge of the screen - no margin is applied between the tooltip
   // and the screen edge.
@@ -181,7 +181,7 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
   // that we support.
   // Note that in the farm page where there are tooltips very close to the edge of the screen this padding works perfectly
   // even on the iPhone 5 screen (320px wide), BUT in the storybook with the contrived example ScreenEdges example
-  // iPhone 5 behaves differently overflowing beyound the edge. All paddings are identical so I have no idea why it is,
+  // iPhone 5 behaves differently overflowing beyond the edge. All paddings are identical so I have no idea why it is,
   // and fixing that seems like a very bad use of time.
   const { styles, attributes } = usePopper(targetElement, tooltipElement, {
     placement,
