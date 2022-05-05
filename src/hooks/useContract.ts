@@ -292,7 +292,7 @@ function useContract<T extends Contract = Contract>(
   )
 
   const canReturnContract = useMemo(
-    () => (address && ABI && withSignerIfPossible ? library : true),
+    () => address && ABI && (withSignerIfPossible ? library : true),
     [address, ABI, library, withSignerIfPossible],
   )
 
