@@ -18,10 +18,11 @@ interface GlobalCheckClaimStatusProps {
 const enable = true
 
 const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = (props) => {
+  const { account } = useWeb3React()
   if (!enable) {
     return null
   }
-  return <GlobalCheckClaim {...props} />
+  return <GlobalCheckClaim key={account} {...props} />
 }
 
 /**
