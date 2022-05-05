@@ -85,9 +85,7 @@ export const useCompleteNft = (collectionAddress: string, tokenId: string) => {
   const { data: nftOwn, mutate: refetchNftOwn, status } = useNftOwn(collectionAddress, tokenId, marketData)
 
   const refetch = useCallback(async () => {
-    await mutate()
-    await refetchNftMarketData()
-    await refetchNftOwn()
+    await Promise.all([mutate(), refetchNftMarketData(), refetchNftOwn()])
   }, [mutate, refetchNftMarketData, refetchNftOwn])
 
   return {
