@@ -1,9 +1,14 @@
 import React from 'react'
+import SubMenu from './components/SubMenu'
 import MoDCompetition from './MoDCompetition'
 
 const TradingCompetitionPage: React.FC = () => {
-  // TODO: Add <SubMenu /> add historical pages
-  return <MoDCompetition />
+  return (
+    <>
+      <SubMenu />
+      <MoDCompetition />
+    </>
+  )
 }
 
 export default TradingCompetitionPage

@@ -19,19 +19,7 @@ export const BannerFlex = styled(Flex)`
   }
 `
 
-export const BattleBannerSection = styled(PageSection)`
-  margin-top: -82px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-top: -94px;
-  }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    margin-top: -114px;
-  }
-
-  @media screen and (min-width: 1920px) {
-    margin-top: -144px;
-  }
-`
+export const BattleBannerSection = styled(PageSection)``
 
 export const BottomBunnyWrapper = styled(Box)`
   position: relative;

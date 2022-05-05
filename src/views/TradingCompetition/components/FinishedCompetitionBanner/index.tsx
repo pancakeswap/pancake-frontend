@@ -6,7 +6,7 @@ const Wrapper = styled(Flex)<{ background: string }>`
   position: relative;
   border-radius: 32px;
   background: ${({ background }) => background};
-  width: 90%;
+  width: 65%;
   max-height: 192px;
   overflow: hidden;
   padding: 24px;

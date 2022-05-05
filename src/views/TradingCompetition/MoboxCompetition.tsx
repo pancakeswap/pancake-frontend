@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
@@ -43,6 +43,7 @@ import { UserTradingInformationProps } from './types'
 import { CompetitionPage, BannerFlex, BattleBannerSection, BottomBunnyWrapper } from './styles'
 import TeamRanks from './components/TeamRanks'
 import RanksIcon from './svgs/RanksIcon'
+import SubMenu from './components/SubMenu'
 
 const MoboxCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE

@@ -155,9 +155,13 @@ export const useClaimRefundContract = () => {
   return useMemo(() => getClaimRefundContract(library.getSigner()), [library])
 }
 
-export const useTradingCompetitionContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getTradingCompetitionContract(library.getSigner()), [library])
+export const useTradingCompetitionContract = (withSignerIfPossible = true) => {
+  const { library, account } = useActiveWeb3React()
+  const signer = useMemo(
+    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [withSignerIfPossible, library, account],
+  )
+  return useMemo(() => getTradingCompetitionContract(signer), [signer])
 }
 
 export const useTradingCompetitionContractV2 = (withSignerIfPossible = true) => {
