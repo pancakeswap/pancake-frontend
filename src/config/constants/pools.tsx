@@ -66,7 +66,7 @@ const pools: SerializedPoolConfig[] = [
     earningToken: serializedTokens.gal,
     contractAddress: {
       97: '',
-      56: '0xa5d57c5dca083a7051797920c78fb2b19564176b',
+      56: '0xa5D57C5dca083a7051797920c78fb2b19564176B',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
