@@ -2,12 +2,9 @@ import styled from 'styled-components'
 import { Flex, Box } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import orderBy from 'lodash/orderBy'
-import { useTranslation } from 'contexts/Localization'
 import { TeamRanksProps } from '../../types'
 import EasterCakerBunny from '../../pngs/easter-cakers.png'
 import TopTradersCard from './TopTradersCard'
-import Podium from './Podium'
-import useGetParticipants from './Podium/useGetParticipants'
 import EasterPodium from './Podium/EasterPodium'
 
 const Wrapper = styled(Flex)`
