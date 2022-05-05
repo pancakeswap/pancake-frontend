@@ -16,7 +16,7 @@ const ClearAllButton: React.FC<ClearAllButtonProps> = ({ collectionAddress, ...p
   }
 
   return (
-    <Button key="clear-all" variant="text" scale="sm" onClick={clearAll} {...props}>
+    <Button key="clear-all" variant="text" scale="sm" onClick={clearAll} style={{ whiteSpace: 'nowrap' }} {...props}>
       {t('Clear')}
     </Button>
   )

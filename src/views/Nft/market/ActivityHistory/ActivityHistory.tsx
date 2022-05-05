@@ -58,7 +58,7 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
   const [queryPage, setQueryPage] = useState(1)
   const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
   const bnbBusdPrice = useBNBBusdPrice()
-  const { isXs, isSm } = useMatchBreakpoints()
+  const { isXs, isSm, isMd } = useMatchBreakpoints()
 
   const nftActivityFiltersString = JSON.stringify(nftActivityFilters)
 
@@ -116,6 +116,7 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
           style={{ gap: '16px', padding: '0 16px' }}
           alignItems={[null, null, 'center']}
           flexDirection={['column', 'column', 'row']}
+          flexWrap={isMd ? 'wrap' : 'nowrap'}
         >
           <ActivityFilters address={collection?.address || ''} />
           <Button
@@ -124,6 +125,7 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
             onClick={() => {
               refresh()
             }}
+            width={isMd && '100%'}
           >
             {t('Refresh')}
           </Button>

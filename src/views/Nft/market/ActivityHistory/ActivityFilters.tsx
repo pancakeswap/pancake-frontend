@@ -1,12 +1,12 @@
-import styled from 'styled-components'
 import { Flex, Text } from '@pancakeswap/uikit'
+import { useTranslation } from 'contexts/Localization'
 import isEmpty from 'lodash/isEmpty'
 import { useGetNftActivityFilters } from 'state/nftMarket/hooks'
 import { MarketEvent } from 'state/nftMarket/types'
-import { useTranslation } from 'contexts/Localization'
-import ClearAllButton from './ClearAllButton'
-import { ActivityFilter } from './ActivityFilter'
+import styled from 'styled-components'
 import { ListCollectionFilter } from '../components/Filters/ListCollectionFilter'
+import { ActivityFilter } from './ActivityFilter'
+import ClearAllButton from './ClearAllButton'
 
 export const Container = styled(Flex)`
   gap: 16px;
@@ -36,7 +36,6 @@ interface FiltersProps {
 
 const ActivityFilters: React.FC<FiltersProps> = ({ address }) => {
   const { t } = useTranslation()
-
   const nftActivityFilters = useGetNftActivityFilters(address)
 
   return (
