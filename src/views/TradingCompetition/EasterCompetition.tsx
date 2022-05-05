@@ -6,6 +6,7 @@ import { Flex, Box } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTradingCompetitionContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
+import Image from 'next/image'
 import {
   SmartContractPhases,
   CompetitionPhases,
@@ -17,16 +18,17 @@ import {
 } from 'config/constants/trading-competition/phases'
 import PageSection from 'components/PageSection'
 import { DARKBG, MIDBLUEBG, MIDBLUEBG_DARK, LIGHTBLUEBG, LIGHTBLUEBG_DARK } from './pageSectionStyles'
-import { PrizesIcon, RanksIcon, RulesIcon } from './svgs'
+import { PrizesIcon, RanksIcon } from './svgs'
+import EasterStormBunny from './pngs/easter-storm.png'
 import Countdown from './components/Countdown'
 import YourScore from './components/YourScore'
 import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
 import BattleCta from './components/BattleCta'
 import PrizesInfo from './components/PrizesInfo'
-import Rules from './components/Rules'
 import TeamRanks from './components/TeamRanks'
 import EasterBattleBanner from './components/BattleBanner/EasterBattleBanner'
+import EasterPrizesInfo from './components/PrizesInfo/EasterPrizesInfo'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -47,6 +49,17 @@ const BannerFlex = styled(Flex)`
 
 export const BattleBannerSection = styled(PageSection)`
   padding-top: 0px;
+`
+
+const BottomBunnyWrapper = styled(Box)`
+  display: none;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: flex;
+    margin-left: 40px;
+    width: 147px;
+    height: 200px;
+  }
 `
 
 const EasterCompetition = () => {
@@ -280,25 +293,7 @@ const EasterCompetition = () => {
         index={4}
       >
         <Box my="64px">
-          <PrizesInfo />
-        </Box>
-      </PageSection>
-      <PageSection
-        containerProps={{ style: { marginTop: '-1px' } }}
-        index={5}
-        dividerPosition="top"
-        clipFill={{
-          light: 'linear-gradient(139.73deg, #ecf5ff 0%, #f2effe 100%)',
-          dark: 'linear-gradient(139.73deg, #383357 0%, #3d2b53 100%)',
-        }}
-        dividerComponent={
-          <RibbonWithImage imageComponent={<RulesIcon width="175px" />} ribbonDirection="up">
-            {t('Rules')}
-          </RibbonWithImage>
-        }
-      >
-        <Box mt="64px">
-          <Rules />
+          <EasterPrizesInfo />
         </Box>
       </PageSection>
       <PageSection
@@ -328,6 +323,9 @@ const EasterCompetition = () => {
             </Flex>
           )}
         </Flex>
+        <BottomBunnyWrapper>
+          <Image src={EasterStormBunny} width={147} height={200} />
+        </BottomBunnyWrapper>
       </PageSection>
     </CompetitionPage>
   )

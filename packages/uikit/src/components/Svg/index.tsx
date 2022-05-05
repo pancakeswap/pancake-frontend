@@ -40,6 +40,7 @@ export { default as CoinbaseWalletIcon } from "./Icons/CoinbaseWallet";
 export { default as CommunityFilledIcon } from "./Icons/CommunityFilled";
 export { default as CommunityIcon } from "./Icons/Community";
 export { default as CopyIcon } from "./Icons/Copy";
+export { default as CrownIcon } from "./Icons/Crown";
 export { default as CurrencyIcon } from "./Icons/Currency";
 export { default as DiscordIcon } from "./Icons/Discord";
 export { default as EarnFilledIcon } from "./Icons/EarnFilled";
