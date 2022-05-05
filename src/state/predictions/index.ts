@@ -190,18 +190,24 @@ export const fetchLedgerData = createAsyncThunk<
   return makeLedgerData(account, ledgers, epochs)
 })
 
-export const fetchHistory = createAsyncThunk<{ account: string; bets: Bet[] }, { account: string; claimed?: boolean }>(
-  'predictions/fetchHistory',
-  async ({ account, claimed }) => {
-    const response = await getBetHistory({
+export const fetchHistory = createAsyncThunk<
+  { account: string; bets: Bet[] },
+  { account: string; claimed?: boolean },
+  { extra: PredictionConfig }
+>('predictions/fetchHistory', async ({ account, claimed }, { extra }) => {
+  const response = await getBetHistory(
+    {
       user: account.toLowerCase(),
       claimed,
-    })
-    const bets = response.map(transformBetResponse)
+    },
+    undefined,
+    undefined,
+    extra.api,
+  )
+  const bets = response.map(transformBetResponse)
 
-    return { account, bets }
-  },
-)
+  return { account, bets }
+})
 
 export const fetchNodeHistory = createAsyncThunk<
   { bets: Bet[]; claimableStatuses: PredictionsState['claimableStatuses']; page?: number; totalHistory: number },
@@ -309,25 +315,29 @@ export const fetchNodeHistory = createAsyncThunk<
 })
 
 // Leaderboard
-export const filterLeaderboard = createAsyncThunk<{ results: PredictionUser[] }, { filters: LeaderboardFilter }>(
-  'predictions/filterLeaderboard',
-  async ({ filters }) => {
-    const usersResponse = await getPredictionUsers({
+export const filterLeaderboard = createAsyncThunk<
+  { results: PredictionUser[] },
+  { filters: LeaderboardFilter },
+  { extra: PredictionConfig }
+>('predictions/filterLeaderboard', async ({ filters }, { extra }) => {
+  const usersResponse = await getPredictionUsers(
+    {
       skip: 0,
       orderBy: filters.orderBy,
       where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED, [`${filters.orderBy}_gt`]: 0 },
-    })
+    },
+    extra.api,
+  )
 
-    return { results: usersResponse.map(transformUserResponse) }
-  },
-)
+  return { results: usersResponse.map(transformUserResponse) }
+})
 
 export const fetchAddressResult = createAsyncThunk<
   { account: string; data: PredictionUser },
   string,
-  { rejectValue: string }
->('predictions/fetchAddressResult', async (account, { rejectWithValue }) => {
-  const userResponse = await getPredictionUser(account)
+  { rejectValue: string; extra: PredictionConfig }
+>('predictions/fetchAddressResult', async (account, { rejectWithValue, extra }) => {
+  const userResponse = await getPredictionUser(account, extra.api)
 
   if (!userResponse) {
     return rejectWithValue(account)
@@ -339,14 +349,17 @@ export const fetchAddressResult = createAsyncThunk<
 export const filterNextPageLeaderboard = createAsyncThunk<
   { results: PredictionUser[]; skip: number },
   number,
-  { state: PredictionsState }
->('predictions/filterNextPageLeaderboard', async (skip, { getState }) => {
+  { state: PredictionsState; extra: PredictionConfig }
+>('predictions/filterNextPageLeaderboard', async (skip, { getState, extra }) => {
   const state = getState()
-  const usersResponse = await getPredictionUsers({
-    skip,
-    orderBy: state.leaderboard.filters.orderBy,
-    where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED, [`${state.leaderboard.filters.orderBy}_gt`]: 0 },
-  })
+  const usersResponse = await getPredictionUsers(
+    {
+      skip,
+      orderBy: state.leaderboard.filters.orderBy,
+      where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED, [`${state.leaderboard.filters.orderBy}_gt`]: 0 },
+    },
+    extra.api,
+  )
 
   return { results: usersResponse.map(transformUserResponse), skip }
 })

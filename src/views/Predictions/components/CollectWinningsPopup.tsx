@@ -8,6 +8,7 @@ import { getBetHistory } from 'state/predictions/helpers'
 import { useGetPredictionsStatus, useIsHistoryPaneOpen } from 'state/predictions/hooks'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { setHistoryPaneState } from 'state/predictions'
+import { useConfig } from '../context/ConfigProvider'
 
 /**
  * @see https://github.com/animate-css/animate.css/tree/main/source
@@ -127,6 +128,7 @@ const CollectWinningsPopup = () => {
   const predictionStatus = useGetPredictionsStatus()
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const dispatch = useLocalDispatch()
+  const { api } = useConfig()
 
   const handleOpenHistory = () => {
     dispatch(setHistoryPaneState(true))
@@ -142,7 +144,7 @@ const CollectWinningsPopup = () => {
     let isCancelled = false
     if (account) {
       timer.current = setInterval(async () => {
-        const bets = await getBetHistory({ user: account.toLowerCase(), claimed: false })
+        const bets = await getBetHistory({ user: account.toLowerCase(), claimed: false }, undefined, undefined, api)
 
         if (!isCancelled) {
           // Filter out bets that were not winners

@@ -239,9 +239,14 @@ export const getTotalWon = async (): Promise<number> => {
 
 type WhereClause = Record<string, string | number | boolean | string[]>
 
-export const getBetHistory = async (where: WhereClause = {}, first = 1000, skip = 0): Promise<BetResponse[]> => {
+export const getBetHistory = async (
+  where: WhereClause = {},
+  first = 1000,
+  skip = 0,
+  api: string,
+): Promise<BetResponse[]> => {
   const response = await request(
-    GRAPH_API_PREDICTION,
+    api,
     gql`
       query getBetHistory($first: Int!, $skip: Int!, $where: Bet_filter) {
         bets(first: $first, skip: $skip, where: $where, order: createdAt, orderDirection: desc) {
@@ -321,10 +326,13 @@ export const getHasRoundFailed = (oracleCalled: boolean, closeTimestamp: number,
   return false
 }
 
-export const getPredictionUsers = async (options: GetPredictionUsersOptions = {}): Promise<UserResponse[]> => {
+export const getPredictionUsers = async (
+  options: GetPredictionUsersOptions = {},
+  api: string,
+): Promise<UserResponse[]> => {
   const { first, skip, where, orderBy, orderDir } = { ...defaultPredictionUserOptions, ...options }
   const response = await request(
-    GRAPH_API_PREDICTION,
+    api,
     gql`
       query getUsers($first: Int!, $skip: Int!, $where: User_filter, $orderBy: User_orderBy, $orderDir: OrderDirection) {
         users(first: $first, skip: $skip, where: $where, orderBy: $orderBy, orderDirection: $orderDir) {
@@ -337,9 +345,9 @@ export const getPredictionUsers = async (options: GetPredictionUsersOptions = {}
   return response.users
 }
 
-export const getPredictionUser = async (account: string): Promise<UserResponse> => {
+export const getPredictionUser = async (account: string, api: string): Promise<UserResponse> => {
   const response = await request(
-    GRAPH_API_PREDICTION,
+    api,
     gql`
       query getUser($id: ID!) {
         user(id: $id) {

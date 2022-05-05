@@ -5,6 +5,7 @@ import { Skeleton, Table, Td, Th } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { getBetHistory, transformBetResponse } from 'state/predictions/helpers'
 import { Bet } from 'state/types'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import PositionLabel from './PositionLabel'
 import { NetWinnings } from './Results/styles'
 
@@ -17,6 +18,7 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
   const [isFetching, setIsFetching] = useState(false)
   const [bets, setBets] = useState<Bet[]>([])
   const { t } = useTranslation()
+  const { api } = useConfig()
   const orderedBets = orderBy(bets, ['round.epoch'], ['desc'])
 
   useEffect(() => {
@@ -28,6 +30,8 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
             user: account.toLowerCase(),
           },
           numberOfBets,
+          undefined,
+          api,
         )
 
         setBets(response.map(transformBetResponse))
