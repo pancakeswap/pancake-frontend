@@ -20,9 +20,12 @@ import { SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import ClaimModal from '../../../components/ClaimModal'
 import { YourScoreProps } from '../../../types'
 import MoboxUserPrizeGrid from './MoboxUserPrizeGrid'
-import MoboxShareImageModal from '../MoboxShareImageModal'
+import FlippersShare from '../../pngs/mobox-flippers-share.png'
+import StormShare from '../../pngs/mobox-storm-share.png'
+import CakersShare from '../../pngs/mobox-cakers-share.png'
 import CardUserInfo from '../../../components/YourScore/CardUserInfo'
 import UserRankBox from '../../../components/YourScore/UserRankBox'
+import ShareImageModal from '../../../components/ShareImageModal'
 
 const StyledCard = styled(Card)`
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -101,7 +104,13 @@ const MoboxScoreCard: React.FC<YourScoreProps> = ({
           <>
             <CardUserInfo
               shareModal={
-                <MoboxShareImageModal profile={profile} userLeaderboardInformation={userLeaderboardInformation} />
+                <ShareImageModal
+                  flippersShareImage={FlippersShare}
+                  cakersShareImage={CakersShare}
+                  stormShareImage={StormShare}
+                  profile={profile}
+                  userLeaderboardInformation={userLeaderboardInformation}
+                />
               }
               extraUserRankBox={
                 <UserRankBox

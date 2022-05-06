@@ -18,7 +18,10 @@ import ClaimModal from '../../../components/ClaimModal'
 import { YourScoreProps } from '../../../types'
 import EasterUserPrizeGrid from './EasterUserPrizeGrid'
 import CardUserInfo from '../../../components/YourScore/CardUserInfo'
-import EasterShareImageModal from '../EasterShareImageModal'
+import FlippersShare from '../../pngs/easter-flippers-share.png'
+import StormShare from '../../pngs/easter-storm-share.png'
+import CakersShare from '../../pngs/easter-cakers-share.png'
+import ShareImageModal from '../../../components/ShareImageModal'
 
 const StyledCard = styled(Card)`
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -96,7 +99,13 @@ const EasterScoreCard: React.FC<YourScoreProps> = ({
           <>
             <CardUserInfo
               shareModal={
-                <EasterShareImageModal profile={profile} userLeaderboardInformation={userLeaderboardInformation} />
+                <ShareImageModal
+                  flippersShareImage={FlippersShare}
+                  cakersShareImage={CakersShare}
+                  stormShareImage={StormShare}
+                  profile={profile}
+                  userLeaderboardInformation={userLeaderboardInformation}
+                />
               }
               hasRegistered={hasRegistered}
               account={account}

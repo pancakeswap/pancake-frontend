@@ -17,8 +17,11 @@ import { useTranslation } from 'contexts/Localization'
 import ClaimModal from '../../../components/ClaimModal'
 import { YourScoreProps } from '../../../types'
 import FanTokenUserPrizeGrid from './FanTokenUserPrizeGrid'
-import FanTokenShareImageModal from '../FanTokenShareImageModal'
 import CardUserInfo from '../../../components/YourScore/CardUserInfo'
+import FlippersShare from '../../pngs/fan-token-flippers-share.png'
+import StormShare from '../../pngs/fan-token-storm-share.png'
+import CakersShare from '../../pngs/fan-token-cakers-share.png'
+import ShareImageModal from '../../../components/ShareImageModal'
 
 const StyledCard = styled(Card)`
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -97,7 +100,13 @@ const FanTokenScoreCard: React.FC<YourScoreProps> = ({
           <>
             <CardUserInfo
               shareModal={
-                <FanTokenShareImageModal profile={profile} userLeaderboardInformation={userLeaderboardInformation} />
+                <ShareImageModal
+                  flippersShareImage={FlippersShare}
+                  cakersShareImage={CakersShare}
+                  stormShareImage={StormShare}
+                  profile={profile}
+                  userLeaderboardInformation={userLeaderboardInformation}
+                />
               }
               hasRegistered={hasRegistered}
               account={account}

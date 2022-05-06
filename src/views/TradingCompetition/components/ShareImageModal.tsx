@@ -1,10 +1,8 @@
 import { useRef, useState, useEffect } from 'react'
 import { Modal, Flex, Button, Text, Skeleton, Box } from '@pancakeswap/uikit'
+import { StaticImageData } from 'next/dist/client/image'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import FlippersShare from '../../pngs/easter-flippers-share.png'
-import StormShare from '../../pngs/easter-storm-share.png'
-import CakersShare from '../../pngs/easter-cakers-share.png'
 import ProfileMask from '../../pngs/share-profile-mask.png'
 import MedalGold from '../../pngs/medals/medal-gold.png'
 import MedalSilver from '../../pngs/medals/medal-silver.png'
@@ -12,8 +10,8 @@ import MedalBronze from '../../pngs/medals/medal-bronze.png'
 import MedalPurple from '../../pngs/medals/medal-purple.png'
 import MedalTeal from '../../pngs/medals/medal-teal.png'
 
-import { localiseTradingVolume } from '../../helpers'
-import { YourScoreProps } from '../../types'
+import { localiseTradingVolume } from '../helpers'
+import { YourScoreProps } from '../types'
 
 const StyledCanvas = styled.canvas`
   width: 100%;
@@ -33,7 +31,20 @@ const MobileText = styled(Text)`
   }
 `
 
-const EasterShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLeaderboardInformation }) => {
+interface ShareImageModalProps extends YourScoreProps {
+  flippersShareImage: StaticImageData
+  stormShareImage: StaticImageData
+  cakersShareImage: StaticImageData
+}
+
+const ShareImageModal: React.FC<ShareImageModalProps> = ({
+  onDismiss,
+  profile,
+  userLeaderboardInformation,
+  flippersShareImage,
+  stormShareImage,
+  cakersShareImage,
+}) => {
   const { t } = useTranslation()
   const { global, team, volume } = userLeaderboardInformation
   const [bgImage, setBgImage] = useState(null)
@@ -62,7 +73,7 @@ const EasterShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, u
 
   useEffect(() => {
     if (profile) {
-      const bgImages = [StormShare.src, FlippersShare.src, CakersShare.src]
+      const bgImages = [stormShareImage.src, flippersShareImage.src, cakersShareImage.src]
       const bgImagEl = new Image()
       bgImagEl.src = bgImages[profile.teamId - 1]
       bgImagEl.onload = () => setBgImage(bgImagEl)
@@ -80,7 +91,7 @@ const EasterShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, u
       medalImageEl.src = getMedal(team).src
       medalImageEl.onload = () => setMedalImage(medalImageEl)
     }
-  }, [profile, team])
+  }, [profile, team, stormShareImage, flippersShareImage, cakersShareImage])
 
   useEffect(() => {
     const canvasEl = canvas.current
@@ -145,4 +156,4 @@ const EasterShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, u
   )
 }
 
-export default EasterShareImageModal
+export default ShareImageModal
