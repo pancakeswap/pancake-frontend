@@ -5,7 +5,6 @@ import BigNumber from 'bignumber.js'
 import useBUSDPrice, { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 import tokens from 'config/constants/tokens'
 import { multiplyPriceByAmount } from 'utils/prices'
-import { usePriceCakeBusd } from '../../state/farms/hooks'
 
 export const localiseTradingVolume = (value: number, decimals = 0) => {
   return value.toLocaleString('en-US', { maximumFractionDigits: decimals })
@@ -14,10 +13,10 @@ export const localiseTradingVolume = (value: number, decimals = 0) => {
 export const useCompetitionCakeRewards = (userCakeReward: ReactText) => {
   const cakeAsBigNumber = new BigNumber(userCakeReward as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
-  const cakePriceBusd = usePriceCakeBusd()
+  const cakePriceBusd = useCakeBusdPrice()
   return {
     cakeReward: cakeBalance,
-    dollarValueOfCakeReward: cakePriceBusd.gt(0) ? cakeBalance * cakePriceBusd.toNumber() : null,
+    dollarValueOfCakeReward: multiplyPriceByAmount(cakePriceBusd, cakeBalance),
   }
 }
 
@@ -96,8 +95,7 @@ export const getEasterRewardGroupAchievements = (userRewardGroup: string, teamRa
   const userGroup = easterPrizes[teamRank].filter((prizeGroup) => {
     return prizeGroup.group === userRewardGroup
   })[0]
-  const userAchievements = userGroup && userGroup.achievements
-  return userAchievements
+  return userGroup && userGroup.achievements
 }
 
 // given we have userPointReward and userRewardGroup, we can find the specific reward because no Rank has same two values.

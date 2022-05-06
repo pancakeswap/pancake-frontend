@@ -10,7 +10,7 @@ const StyledCard = styled(Card)`
   }
 `
 
-const PrizesCard = () => {
+const FanTokenPrizesCard = () => {
   const { t } = useTranslation()
 
   return (
@@ -38,4 +38,4 @@ const PrizesCard = () => {
   )
 }
 
-export default PrizesCard
+export default FanTokenPrizesCard

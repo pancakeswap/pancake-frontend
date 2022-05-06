@@ -33,7 +33,7 @@ const MobileText = styled(Text)`
   }
 `
 
-const FanTokenShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLeaderboardInformation }) => {
+const EasterShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile, userLeaderboardInformation }) => {
   const { t } = useTranslation()
   const { global, team, volume } = userLeaderboardInformation
   const [bgImage, setBgImage] = useState(null)
@@ -145,4 +145,4 @@ const FanTokenShareImageModal: React.FC<YourScoreProps> = ({ onDismiss, profile,
   )
 }
 
-export default FanTokenShareImageModal
+export default EasterShareImageModal

@@ -94,7 +94,7 @@ const StyledHeading = styled(Heading)`
   ${({ theme }) => TextStyles(theme)}
 `
 
-const BattleBanner = () => {
+const MoboxBattleBanner = () => {
   const {
     t,
     currentLanguage: { locale },
@@ -125,4 +125,4 @@ const BattleBanner = () => {
   )
 }
 
-export default BattleBanner
+export default MoboxBattleBanner
