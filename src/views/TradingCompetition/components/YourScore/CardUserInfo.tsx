@@ -1,4 +1,4 @@
-import { ReactText } from 'react'
+import { ReactText, ReactNode } from 'react'
 import {
   Text,
   Heading,
@@ -16,11 +16,10 @@ import {
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { LIVE } from 'config/constants/trading-competition/phases'
-import { YourScoreProps } from '../../../types'
-import UserRankBox from '../../../components/YourScore/UserRankBox'
-import NextRankBox from '../../../components/YourScore/NextRankBox'
-import { localiseTradingVolume } from '../../../helpers'
-import EasterShareImageModal from '../EasterShareImageModal'
+import { YourScoreProps } from '../../types'
+import UserRankBox from './UserRankBox'
+import NextRankBox from './NextRankBox'
+import { localiseTradingVolume } from '../../helpers'
 
 const TeamRankTextWrapper = styled(Flex)`
   align-items: center;
@@ -40,7 +39,12 @@ const RanksWrapper = styled(Flex)`
   }
 `
 
-const EasterCardUserInfo: React.FC<YourScoreProps> = ({
+interface CardUserInfoProps extends YourScoreProps {
+  shareModal: ReactNode
+}
+
+const CardUserInfo: React.FC<CardUserInfoProps> = ({
+  shareModal,
   hasRegistered,
   account,
   profile,
@@ -48,10 +52,7 @@ const EasterCardUserInfo: React.FC<YourScoreProps> = ({
   currentPhase,
 }) => {
   const { t } = useTranslation()
-  const [onPresentShareModal] = useModal(
-    <EasterShareImageModal profile={profile} userLeaderboardInformation={userLeaderboardInformation} />,
-    false,
-  )
+  const [onPresentShareModal] = useModal(shareModal, false)
   const { global, team, volume, next_rank: nextRank } = userLeaderboardInformation
   const shouldShowUserRanks = account && hasRegistered
 
@@ -238,4 +239,4 @@ const EasterCardUserInfo: React.FC<YourScoreProps> = ({
   )
 }
 
-export default EasterCardUserInfo
+export default CardUserInfo

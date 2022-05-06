@@ -16,8 +16,9 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
 import ClaimModal from '../../../components/ClaimModal'
 import { YourScoreProps } from '../../../types'
-import EasterCardUserInfo from './EasterCardUserInfo'
 import EasterUserPrizeGrid from './EasterUserPrizeGrid'
+import CardUserInfo from '../../../components/YourScore/CardUserInfo'
+import EasterShareImageModal from '../EasterShareImageModal'
 
 const StyledCard = styled(Card)`
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -93,7 +94,10 @@ const EasterScoreCard: React.FC<YourScoreProps> = ({
           </Flex>
         ) : (
           <>
-            <EasterCardUserInfo
+            <CardUserInfo
+              shareModal={
+                <EasterShareImageModal profile={profile} userLeaderboardInformation={userLeaderboardInformation} />
+              }
               hasRegistered={hasRegistered}
               account={account}
               profile={profile}

@@ -17,8 +17,9 @@ import { useTranslation } from 'contexts/Localization'
 import { SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import ClaimModal from '../../../components/ClaimModal'
 import { YourScoreProps } from '../../../types'
-import MoboxCardUserInfo from './MoboxCardUserInfo'
 import MoboxUserPrizeGrid from './MoboxUserPrizeGrid'
+import MoboxShareImageModal from '../MoboxShareImageModal'
+import CardUserInfo from '../../../components/YourScore/CardUserInfo'
 
 const StyledCard = styled(Card)`
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -95,7 +96,10 @@ const MoboxScoreCard: React.FC<YourScoreProps> = ({
           </Flex>
         ) : (
           <>
-            <MoboxCardUserInfo
+            <CardUserInfo
+              shareModal={
+                <MoboxShareImageModal profile={profile} userLeaderboardInformation={userLeaderboardInformation} />
+              }
               hasRegistered={hasRegistered}
               account={account}
               profile={profile}

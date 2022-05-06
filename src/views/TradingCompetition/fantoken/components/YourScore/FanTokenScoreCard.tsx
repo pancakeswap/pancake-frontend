@@ -16,8 +16,9 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
 import ClaimModal from '../../../components/ClaimModal'
 import { YourScoreProps } from '../../../types'
-import FanTokenCardUserInfo from './FanTokenCardUserInfo'
 import FanTokenUserPrizeGrid from './FanTokenUserPrizeGrid'
+import FanTokenShareImageModal from '../FanTokenShareImageModal'
+import CardUserInfo from '../../../components/YourScore/CardUserInfo'
 
 const StyledCard = styled(Card)`
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -94,7 +95,10 @@ const FanTokenScoreCard: React.FC<YourScoreProps> = ({
           </Flex>
         ) : (
           <>
-            <FanTokenCardUserInfo
+            <CardUserInfo
+              shareModal={
+                <FanTokenShareImageModal profile={profile} userLeaderboardInformation={userLeaderboardInformation} />
+              }
               hasRegistered={hasRegistered}
               account={account}
               profile={profile}

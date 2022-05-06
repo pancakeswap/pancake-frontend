@@ -27,7 +27,7 @@ import BattleCta from './components/BattleCta'
 import EasterBattleBanner from './easter/components/BattleBanner/EasterBattleBanner'
 import EasterPrizesInfo from './easter/components/PrizesInfo/EasterPrizesInfo'
 import EasterTeamRanks from './components/TeamRanks/EasterTeamRanks'
-import EasterCardYourScore from './easter/components/YourScore/EasterCardYourScore'
+import EasterYourScore from './easter/components/YourScore/EasterYourScore'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -238,7 +238,7 @@ const EasterCompetition = () => {
           {currentPhase.state === REGISTRATION ? (
             <HowToJoin />
           ) : (
-            <EasterCardYourScore
+            <EasterYourScore
               currentPhase={currentPhase}
               hasRegistered={userTradingInformation.hasRegistered}
               userTradingInformation={userTradingInformation}

@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   max-width: 768px;
 `
 
-const EasterCardYourScore: React.FC<YourScoreProps> = ({
+const EasterYourScore: React.FC<YourScoreProps> = ({
   hasRegistered = false,
   account,
   userTradingInformation,
@@ -56,4 +56,4 @@ const EasterCardYourScore: React.FC<YourScoreProps> = ({
   )
 }
 
-export default EasterCardYourScore
+export default EasterYourScore
