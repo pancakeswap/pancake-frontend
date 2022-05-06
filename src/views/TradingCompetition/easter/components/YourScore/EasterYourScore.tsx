@@ -3,7 +3,11 @@ import { useTranslation } from 'contexts/Localization'
 import ScoreHeader from '../../../components/YourScore/ScoreHeader'
 import RibbonWithImage from '../../../components/RibbonWithImage'
 import { YourScoreProps } from '../../../types'
-import EasterScoreCard from './EasterScoreCard'
+import FlippersShare from '../../../pngs/easter-flippers-share.png'
+import StormShare from '../../../pngs/easter-storm-share.png'
+import CakersShare from '../../../pngs/easter-cakers-share.png'
+import ScoreCard from '../../../components/YourScore/ScoreCard'
+import EasterUserPrizeGrid from './EasterUserPrizeGrid'
 
 const Wrapper = styled.div`
   position: relative;
@@ -39,7 +43,11 @@ const EasterYourScore: React.FC<YourScoreProps> = ({
           {t('Your Score')}
         </RibbonWithImage>
       )}
-      <EasterScoreCard
+      <ScoreCard
+        userPrizeGrid={<EasterUserPrizeGrid userTradingInformation={userTradingInformation} />}
+        flippersShareImage={FlippersShare}
+        cakersShareImage={CakersShare}
+        stormShareImage={StormShare}
         hasRegistered={hasRegistered}
         account={account}
         userTradingInformation={userTradingInformation}

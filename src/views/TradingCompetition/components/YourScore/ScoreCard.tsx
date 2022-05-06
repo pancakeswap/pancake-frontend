@@ -1,4 +1,6 @@
+import { ReactNode } from 'react'
 import styled from 'styled-components'
+import { StaticImageData } from 'next/dist/client/image'
 import {
   Card,
   CardBody,
@@ -14,14 +16,11 @@ import {
 import { CLAIM, OVER } from 'config/constants/trading-competition/phases'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
-import ClaimModal from '../../../components/ClaimModal'
-import { YourScoreProps } from '../../../types'
-import FanTokenUserPrizeGrid from './FanTokenUserPrizeGrid'
-import CardUserInfo from '../../../components/YourScore/CardUserInfo'
-import FlippersShare from '../../pngs/fan-token-flippers-share.png'
-import StormShare from '../../pngs/fan-token-storm-share.png'
-import CakersShare from '../../pngs/fan-token-cakers-share.png'
-import ShareImageModal from '../../../components/ShareImageModal'
+import ClaimModal from '../ClaimModal'
+import CardUserInfo from './CardUserInfo'
+import ShareImageModal from '../ShareImageModal'
+import { YourScoreProps } from '../../types'
+import { SubgraphHealthIndicator } from '../../../../components/SubgraphHealthIndicator'
 
 const StyledCard = styled(Card)`
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -51,7 +50,20 @@ const StyledButton = styled(Button)`
   }
 `
 
-const FanTokenScoreCard: React.FC<YourScoreProps> = ({
+interface ScoreCardProps extends YourScoreProps {
+  userPrizeGrid: ReactNode
+  flippersShareImage: StaticImageData
+  stormShareImage: StaticImageData
+  cakersShareImage: StaticImageData
+  extraUserRankBox?: ReactNode
+}
+
+const ScoreCard: React.FC<ScoreCardProps> = ({
+  userPrizeGrid,
+  extraUserRankBox,
+  flippersShareImage,
+  stormShareImage,
+  cakersShareImage,
   hasRegistered,
   account,
   userTradingInformation,
@@ -101,22 +113,21 @@ const FanTokenScoreCard: React.FC<YourScoreProps> = ({
             <CardUserInfo
               shareModal={
                 <ShareImageModal
-                  flippersShareImage={FlippersShare}
-                  cakersShareImage={CakersShare}
-                  stormShareImage={StormShare}
+                  flippersShareImage={flippersShareImage}
+                  cakersShareImage={cakersShareImage}
+                  stormShareImage={stormShareImage}
                   profile={profile}
                   userLeaderboardInformation={userLeaderboardInformation}
                 />
               }
+              extraUserRankBox={extraUserRankBox}
               hasRegistered={hasRegistered}
               account={account}
               profile={profile}
               userLeaderboardInformation={userLeaderboardInformation}
               currentPhase={currentPhase}
             />
-            {hasRegistered && (currentPhase.state === CLAIM || currentPhase.state === OVER) && (
-              <FanTokenUserPrizeGrid userTradingInformation={userTradingInformation} />
-            )}
+            {hasRegistered && (currentPhase.state === CLAIM || currentPhase.state === OVER) && userPrizeGrid}
             {!account && (
               <Flex mt="24px" justifyContent="center">
                 <ConnectWalletButton />
@@ -134,8 +145,26 @@ const FanTokenScoreCard: React.FC<YourScoreProps> = ({
           <LaurelRightIcon />
         </StyledCardFooter>
       )}
+      {hasRegistered && (
+        <Flex p="16px" justifyContent="flex-end">
+          <SubgraphHealthIndicator
+            subgraphName="pancakeswap/trading-competition-v3"
+            inline
+            obeyGlobalSetting={false}
+            customDescriptions={{
+              delayed: t(
+                'Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.',
+              ),
+              slow: t(
+                'Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.',
+              ),
+              healthy: t('No issues with the subgraph.'),
+            }}
+          />
+        </Flex>
+      )}
     </StyledCard>
   )
 }
 
-export default FanTokenScoreCard
+export default ScoreCard
