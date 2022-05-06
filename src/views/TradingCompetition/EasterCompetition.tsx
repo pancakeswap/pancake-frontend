@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
 import { Flex, Box } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useTradingCompetitionContract } from 'hooks/useContract'
+import { useTradingCompetitionContractEaster } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import Image from 'next/image'
 import {
@@ -21,13 +21,13 @@ import { DARKBG, MIDBLUEBG, MIDBLUEBG_DARK, LIGHTBLUEBG, LIGHTBLUEBG_DARK } from
 import { PrizesIcon, RanksIcon } from './svgs'
 import EasterStormBunny from './pngs/easter-storm.png'
 import Countdown from './components/Countdown'
-import YourScore from './components/YourScore'
 import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
 import BattleCta from './components/BattleCta'
-import EasterBattleBanner from './components/BattleBanner/EasterBattleBanner'
-import EasterPrizesInfo from './components/PrizesInfo/EasterPrizesInfo'
+import EasterBattleBanner from './easter/components/BattleBanner/EasterBattleBanner'
+import EasterPrizesInfo from './easter/components/PrizesInfo/EasterPrizesInfo'
 import EasterTeamRanks from './components/TeamRanks/EasterTeamRanks'
+import EasterCardYourScore from './easter/components/YourScore/EasterCardYourScore'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -67,7 +67,7 @@ const EasterCompetition = () => {
   const { t } = useTranslation()
   const { profile, isLoading } = useProfile()
   const { isDark, theme } = useTheme()
-  const tradingCompetitionContract = useTradingCompetitionContract(false)
+  const tradingCompetitionContract = useTradingCompetitionContractEaster(false)
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.OVER)
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
   const [claimSuccessful, setClaimSuccessful] = useState(false)
@@ -238,7 +238,7 @@ const EasterCompetition = () => {
           {currentPhase.state === REGISTRATION ? (
             <HowToJoin />
           ) : (
-            <YourScore
+            <EasterCardYourScore
               currentPhase={currentPhase}
               hasRegistered={userTradingInformation.hasRegistered}
               userTradingInformation={userTradingInformation}

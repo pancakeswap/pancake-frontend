@@ -15,7 +15,7 @@ const SubMenu: React.FC = () => {
   }, [t])
 
   const activeSubItem = useMemo(() => {
-    return subMenuItems.find((subMenuItem) => subMenuItem.href === pathname).href
+    return subMenuItems.find((subMenuItem) => subMenuItem.href === pathname)?.href
   }, [subMenuItems, pathname])
 
   return <SubMenuItems items={subMenuItems} activeItem={activeSubItem} />

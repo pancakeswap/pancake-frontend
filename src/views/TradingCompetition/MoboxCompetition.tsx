@@ -31,18 +31,18 @@ import {
   RulesIcon,
 } from './svgs'
 import Countdown from './components/Countdown'
-import YourScore from './components/YourScore'
 import StormBunny from './pngs/mbox-storm-bunny.png'
 import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
-import BattleBanner from './components/BattleBanner'
 import BattleCta from './components/BattleCta'
-import PrizesInfo from './components/PrizesInfo'
 import Rules from './components/Rules'
 import { UserTradingInformationProps } from './types'
 import { CompetitionPage, BannerFlex, BattleBannerSection, BottomBunnyWrapper } from './styles'
-import TeamRanks from './components/TeamRanks'
 import RanksIcon from './svgs/RanksIcon'
+import MoboxTeamRanks from './components/TeamRanks/MoboxTeamRanks'
+import MoboxYourScore from './mobox/components/YourScore/MoboxYourScore'
+import MoboxBattleBanner from './mobox/components/BattleBanner/MoboxBattleBanner'
+import MoboxPrizesInfo from './mobox/components/PrizesInfo/MoboxPrizesInfo'
 
 const MoboxCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
@@ -224,7 +224,7 @@ const MoboxCompetition = () => {
         <BattleBannerSection background={TRADINGCOMPETITIONBANNER} hasCurvedDivider={false} index={1}>
           <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
             <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
-            <BattleBanner />
+            <MoboxBattleBanner />
           </BannerFlex>
         </BattleBannerSection>
         <PageSection
@@ -258,7 +258,7 @@ const MoboxCompetition = () => {
             {currentPhase.state === REGISTRATION ? (
               <HowToJoin />
             ) : (
-              <YourScore
+              <MoboxYourScore
                 currentPhase={currentPhase}
                 hasRegistered={userTradingInformation.hasRegistered}
                 userTradingInformation={userTradingInformation}
@@ -288,7 +288,7 @@ const MoboxCompetition = () => {
             }
           >
             <Box my="64px">
-              <TeamRanks
+              <MoboxTeamRanks
                 team1LeaderboardInformation={team1LeaderboardInformation}
                 team2LeaderboardInformation={team2LeaderboardInformation}
                 team3LeaderboardInformation={team3LeaderboardInformation}
@@ -314,7 +314,7 @@ const MoboxCompetition = () => {
           index={4}
         >
           <Box my="64px">
-            <PrizesInfo />
+            <MoboxPrizesInfo />
           </Box>
         </PageSection>
         <PageSection

@@ -3,7 +3,7 @@ import { Flex, Box } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import orderBy from 'lodash/orderBy'
 import { TeamRanksProps } from '../../types'
-import EasterCakerBunny from '../../pngs/easter-cakers.png'
+import FanTokenCakerBunny from '../../pngs/fan-token-cakers.png'
 import TopTradersCard from './TopTradersCard'
 import Podium from './Podium'
 
@@ -46,7 +46,7 @@ const StyledTopTradersWrapper = styled(Flex)`
   }
 `
 
-const EasterTeamRanks: React.FC<TeamRanksProps> = ({
+const FanTokenTeamRanks: React.FC<TeamRanksProps> = ({
   team1LeaderboardInformation,
   team2LeaderboardInformation,
   team3LeaderboardInformation,
@@ -78,7 +78,7 @@ const EasterTeamRanks: React.FC<TeamRanksProps> = ({
           }
         />
         <BunnyImageWrapper mt="24px">
-          <Image src={EasterCakerBunny} width={200} height={205} />
+          <Image src={FanTokenCakerBunny} width={200} height={205} />
         </BunnyImageWrapper>
       </StyledPodiumWrapper>
       <StyledTopTradersWrapper>
@@ -94,4 +94,4 @@ const EasterTeamRanks: React.FC<TeamRanksProps> = ({
   )
 }
 
-export default EasterTeamRanks
+export default FanTokenTeamRanks

@@ -12,6 +12,7 @@ import { CompetitionProps } from '../../types'
 import MboxBunnyNft from '../../pngs/mobox-bunny-nft.png'
 import MboxAllBunnies from '../../pngs/mbox-all-bunnies.png'
 import MysteryBox from '../../pngs/mystery-box.png'
+import { mboxPrizes } from '../../../../config/constants/trading-competition/prizes'
 
 const ImageWrapper = styled(Flex)`
   justify-content: center;
@@ -34,7 +35,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
     userCakeRewards,
     userMoboxRewards,
   })
-  const achievement = getRewardGroupAchievements(userRewardGroup, userPointReward)
+  const achievement = getRewardGroupAchievements(mboxPrizes, userRewardGroup, userPointReward)
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleClaimClick = async () => {
