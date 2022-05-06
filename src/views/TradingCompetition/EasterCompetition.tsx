@@ -26,8 +26,9 @@ import HowToJoin from './components/HowToJoin'
 import BattleCta from './components/BattleCta'
 import EasterBattleBanner from './easter/components/BattleBanner/EasterBattleBanner'
 import EasterPrizesInfo from './easter/components/PrizesInfo/EasterPrizesInfo'
-import EasterTeamRanks from './components/TeamRanks/EasterTeamRanks'
+import TeamRanks from './components/TeamRanks/TeamRanks'
 import EasterYourScore from './easter/components/YourScore/EasterYourScore'
+import EasterCakerBunny from './pngs/easter-cakers.png'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -267,11 +268,12 @@ const EasterCompetition = () => {
         }
       >
         <Box my="64px">
-          <EasterTeamRanks
+          <TeamRanks
             team1LeaderboardInformation={team1LeaderboardInformation}
             team2LeaderboardInformation={team2LeaderboardInformation}
             team3LeaderboardInformation={team3LeaderboardInformation}
             globalLeaderboardInformation={globalLeaderboardInformation}
+            image={EasterCakerBunny}
           />
         </Box>
       </PageSection>

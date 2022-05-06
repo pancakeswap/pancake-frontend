@@ -27,8 +27,9 @@ import BattleCta from './components/BattleCta'
 import { CompetitionPage, BannerFlex, BattleBannerSection, BottomBunnyWrapper } from './styles'
 import FanTokenBattleBanner from './fantoken/components/BattleBanner/FanTokenBattleBanner'
 import FanTokenYourScore from './fantoken/components/YourScore/FanTokenYourScore'
-import FanTokenTeamRanks from './components/TeamRanks/FanTokenTeamRanks'
 import FanTokenPrizesInfo from './fantoken/components/PrizesInfo/FanTokenPrizesInfo'
+import FanTokenCakerBunny from './pngs/fan-token-cakers.png'
+import TeamRanks from './components/TeamRanks/TeamRanks'
 
 const FanTokenCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
@@ -264,11 +265,12 @@ const FanTokenCompetition = () => {
           }
         >
           <Box my="64px">
-            <FanTokenTeamRanks
+            <TeamRanks
               team1LeaderboardInformation={team1LeaderboardInformation}
               team2LeaderboardInformation={team2LeaderboardInformation}
               team3LeaderboardInformation={team3LeaderboardInformation}
               globalLeaderboardInformation={globalLeaderboardInformation}
+              image={FanTokenCakerBunny}
             />
           </Box>
         </PageSection>

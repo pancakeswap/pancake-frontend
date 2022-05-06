@@ -1,13 +1,10 @@
 import styled from 'styled-components'
-import { Flex, Box, Text, Skeleton, AccountFilledIcon } from '@pancakeswap/uikit'
+import { Flex, Box } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import orderBy from 'lodash/orderBy'
-import { useTranslation } from 'contexts/Localization'
 import { TeamRanksProps } from '../../types'
-import MoboxCakerBunny from '../../pngs/mobox-cakers.png'
 import TopTradersCard from './TopTradersCard'
-import useGetParticipants from './Podium/useGetParticipants'
-import MoboxPodium from './Podium/MoboxPodium'
+import Podium from './Podium'
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -20,6 +17,7 @@ const Wrapper = styled(Flex)`
 const StyledPodiumWrapper = styled(Flex)`
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 40px;
 
   ${({ theme }) => theme.mediaQueries.md} {
@@ -47,35 +45,13 @@ const StyledTopTradersWrapper = styled(Flex)`
   }
 `
 
-const TotalParticipantsWrapper = styled(Box)`
-  position: relative;
-  width: 100%;
-  ${BunnyImageWrapper} {
-    position: absolute;
-    top: 50%;
-    right: 0;
-  }
-`
-
-const TotalParticipantsCloud = styled(Flex)`
-  background: ${({ theme }) => theme.colors.gradients.cardHeader};
-  padding: 24px;
-  border-radius: ${({ theme }) => theme.radii.card};
-  width: 100%;
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 75%;
-  }
-`
-
-const MoboxTeamRanks: React.FC<TeamRanksProps> = ({
+const TeamRanks: React.FC<TeamRanksProps> = ({
   team1LeaderboardInformation,
   team2LeaderboardInformation,
   team3LeaderboardInformation,
   globalLeaderboardInformation,
+  image,
 }) => {
-  const { t } = useTranslation()
-  const participants = useGetParticipants()
-
   const isTeamLeaderboardDataComplete = Boolean(
     team1LeaderboardInformation.leaderboardData &&
       team2LeaderboardInformation.leaderboardData &&
@@ -88,34 +64,22 @@ const MoboxTeamRanks: React.FC<TeamRanksProps> = ({
     return orderBy(arrayOfTeams, (team) => team.leaderboardData.volume, 'desc')
   }
 
-  const teamsSortedByVolume =
-    isTeamLeaderboardDataComplete &&
-    getTeamsSortedByVolume([team1LeaderboardInformation, team2LeaderboardInformation, team3LeaderboardInformation])
-
   return (
     <Wrapper>
       <StyledPodiumWrapper>
-        <MoboxPodium teamsSortedByVolume={teamsSortedByVolume} participants={participants} />
-        <TotalParticipantsWrapper>
-          <TotalParticipantsCloud flexDirection="column" mt="24px" justifySelf="flex-start">
-            <Text color="secondary" fontSize="24px" bold>
-              {t('Total Participants')}
-            </Text>
-            <Flex>
-              <AccountFilledIcon height="24px" />
-              {participants[3] ? (
-                <Text fontSize="24px" bold>
-                  {participants[3]}
-                </Text>
-              ) : (
-                <Skeleton height="24px" width="120px" />
-              )}
-            </Flex>
-          </TotalParticipantsCloud>
-          <BunnyImageWrapper mt="24px">
-            <Image src={MoboxCakerBunny} width={200} height={205} />
-          </BunnyImageWrapper>
-        </TotalParticipantsWrapper>
+        <Podium
+          teamsSortedByVolume={
+            isTeamLeaderboardDataComplete &&
+            getTeamsSortedByVolume([
+              team1LeaderboardInformation,
+              team2LeaderboardInformation,
+              team3LeaderboardInformation,
+            ])
+          }
+        />
+        <BunnyImageWrapper mt="24px">
+          <Image src={image} width={200} height={205} />
+        </BunnyImageWrapper>
       </StyledPodiumWrapper>
       <StyledTopTradersWrapper>
         <TopTradersCard
@@ -130,4 +94,4 @@ const MoboxTeamRanks: React.FC<TeamRanksProps> = ({
   )
 }
 
-export default MoboxTeamRanks
+export default TeamRanks
