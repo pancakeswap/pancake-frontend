@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Flex, Text, Heading } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import { useTranslation } from 'contexts/Localization'
-import FlipperBunny from '../../../pngs/flippers.png'
+import FanTokenFlipperBunny from '../../../pngs/fan-token-flippers.png'
 
 const StyledFlex = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.md} {
@@ -34,7 +34,7 @@ const FanTokenPrizesText = () => {
         )}
       </Text>
       <ImageWrapper>
-        <Image src={FlipperBunny} alt="Flipper bunny" width={499} height={400} />
+        <Image src={FanTokenFlipperBunny} alt="Flipper bunny" width={499} height={400} />
       </ImageWrapper>
     </StyledFlex>
   )
