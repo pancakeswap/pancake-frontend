@@ -194,6 +194,22 @@ const CardUserInfo: React.FC<CardUserInfoProps> = ({
                   )}
                 </UserRankBox>
               )}
+              <UserRankBox
+                flex="1"
+                title={t('Your volume').toUpperCase()}
+                footer={t('Since start')}
+                // Add responsive mr if competition is LIVE
+                mr={currentPhase.state === LIVE ? [0, null, null, '8px'] : 0}
+                mb={['8px', null, null, 0]}
+              >
+                {!userLeaderboardInformation ? (
+                  <Skeleton height="26px" width="110px" />
+                ) : (
+                  <Heading textAlign="center" scale="lg">
+                    ${userLeaderboardInformation && localiseTradingVolume(volume)}
+                  </Heading>
+                )}
+              </UserRankBox>
               {extraUserRankBox || null}
             </Flex>
             {/* Show next ranks if competition is LIVE */}
