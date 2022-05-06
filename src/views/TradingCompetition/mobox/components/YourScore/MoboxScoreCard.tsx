@@ -10,8 +10,9 @@ import {
   LaurelRightIcon,
   CheckmarkCircleIcon,
   useModal,
+  Heading,
 } from '@pancakeswap/uikit'
-import { CLAIM, OVER } from 'config/constants/trading-competition/phases'
+import { CLAIM, OVER, LIVE } from 'config/constants/trading-competition/phases'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
 import { SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
@@ -20,6 +21,8 @@ import { YourScoreProps } from '../../../types'
 import MoboxUserPrizeGrid from './MoboxUserPrizeGrid'
 import MoboxShareImageModal from '../MoboxShareImageModal'
 import CardUserInfo from '../../../components/YourScore/CardUserInfo'
+import UserRankBox from '../../../components/YourScore/UserRankBox'
+import { localiseTradingVolume } from '../../../helpers'
 
 const StyledCard = styled(Card)`
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -99,6 +102,23 @@ const MoboxScoreCard: React.FC<YourScoreProps> = ({
             <CardUserInfo
               shareModal={
                 <MoboxShareImageModal profile={profile} userLeaderboardInformation={userLeaderboardInformation} />
+              }
+              extraUserRankBox={
+                <UserRankBox
+                  flex="1"
+                  title={t('Your volume').toUpperCase()}
+                  footer={t('Since start')}
+                  // Add responsive mr if competition is LIVE
+                  mr={currentPhase.state === LIVE ? [0, null, '8px'] : 0}
+                >
+                  {!userLeaderboardInformation ? (
+                    <Skeleton height="26px" width="110px" />
+                  ) : (
+                    <Heading textAlign="center" scale="lg">
+                      ${userLeaderboardInformation && localiseTradingVolume(userLeaderboardInformation.volume)}
+                    </Heading>
+                  )}
+                </UserRankBox>
               }
               hasRegistered={hasRegistered}
               account={account}
