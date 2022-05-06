@@ -30,7 +30,7 @@ import transactions from './transactions/reducer'
 import user from './user/reducer'
 import limitOrders from './limitOrders/reducer'
 
-const PERSISTED_KEYS: string[] = ['transactions', 'lists']
+const PERSISTED_KEYS: string[] = ['user', 'transactions']
 
 const migrations = {
   0: (state) => {
@@ -41,6 +41,11 @@ const migrations = {
         ...state?.user,
         userPredictionChainlinkChartDisclaimerShow: true,
       },
+    }
+  },
+  1: (state) => {
+    return {
+      ...state,
     }
   },
 }
@@ -54,10 +59,11 @@ const persistConfig = {
   migrate: createMigrate(migrations, { debug: false }),
 }
 
-const UserConfig = {
-  key: 'user',
+const ListsConfig = {
+  key: 'lists',
   storage,
-  version: 0,
+  version: 1,
+  migrate: createMigrate(migrations, { debug: false }),
 }
 
 const persistedReducer = persistReducer(
@@ -74,13 +80,13 @@ const persistedReducer = persistReducer(
     limitOrders,
 
     // Exchange
-    user: persistReducer(UserConfig, user),
+    user,
     transactions,
     swap,
     mint,
     burn,
     multicall,
-    lists,
+    lists: persistReducer(ListsConfig, lists),
   }),
 )
 
