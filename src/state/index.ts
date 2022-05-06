@@ -30,7 +30,7 @@ import transactions from './transactions/reducer'
 import user from './user/reducer'
 import limitOrders from './limitOrders/reducer'
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
+const PERSISTED_KEYS: string[] = ['transactions', 'lists']
 
 const migrations = {
   0: (state) => {
@@ -50,8 +50,14 @@ const persistConfig = {
   whitelist: PERSISTED_KEYS,
   blacklist: ['profile'],
   storage,
-  version: 0,
+  version: 1,
   migrate: createMigrate(migrations, { debug: false }),
+}
+
+const UserConfig = {
+  key: 'user',
+  storage,
+  version: 0,
 }
 
 const persistedReducer = persistReducer(
@@ -68,7 +74,7 @@ const persistedReducer = persistReducer(
     limitOrders,
 
     // Exchange
-    user,
+    user: persistReducer(UserConfig, user),
     transactions,
     swap,
     mint,
