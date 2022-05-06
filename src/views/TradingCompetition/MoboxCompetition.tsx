@@ -31,7 +31,7 @@ import {
   RulesIcon,
 } from './svgs'
 import Countdown from './components/Countdown'
-import StormBunny from './pngs/mbox-storm-bunny.png'
+import StormBunny from './pngs/mobox-storm-bunny.png'
 import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
 import BattleCta from './components/BattleCta'

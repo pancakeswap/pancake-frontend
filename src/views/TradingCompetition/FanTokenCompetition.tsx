@@ -20,7 +20,7 @@ import PageSection from 'components/PageSection'
 import { DARKBG, MIDBLUEBG, MIDBLUEBG_DARK, LIGHTBLUEBG, LIGHTBLUEBG_DARK } from './pageSectionStyles'
 import { PrizesIcon, RanksIcon } from './svgs'
 import Countdown from './components/Countdown'
-import StormBunny from './pngs/storm.png'
+import FanTokenStormBunny from './pngs/fan-token-storm.png'
 import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
 import BattleCta from './components/BattleCta'
@@ -319,7 +319,7 @@ const FanTokenCompetition = () => {
               </Flex>
             )}
             <BottomBunnyWrapper>
-              <Image src={StormBunny} width={147} height={200} />
+              <Image src={FanTokenStormBunny} width={147} height={200} />
             </BottomBunnyWrapper>
           </Flex>
         </PageSection>

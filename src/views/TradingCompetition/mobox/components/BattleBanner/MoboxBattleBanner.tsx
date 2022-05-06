@@ -3,8 +3,8 @@ import Image from 'next/image'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
-import AllBunniesImage from '../../pngs/mbox-all-bunnies.png'
-import { Heading1Text, Heading2Text } from '../CompetitionHeadingText'
+import MoboxAllBunniesImage from '../../../pngs/mobox-all-bunnies.png'
+import { Heading1Text, Heading2Text } from '../../../components/CompetitionHeadingText'
 
 const TextStyles = (theme) => `
   text-align: center;

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Flex, Text, Heading, NftIcon, BunnyPlaceholderIcon } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import { useTranslation } from 'contexts/Localization'
-import FlipperBunny from '../../pngs/mbox_flipper.png'
+import MoboxFlipperBunny from '../../../pngs/mobox-flipper.png'
 
 const StyledFlex = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.md} {
@@ -49,7 +49,7 @@ const MoboxPrizesText = () => {
         <Text mt="8px">{t('500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.')}</Text>
       </Flex>
       <ImageWrapper>
-        <Image src={FlipperBunny} alt="Flipper bunny" width={220} height={254} />
+        <Image src={MoboxFlipperBunny} alt="Flipper bunny" width={220} height={254} />
       </ImageWrapper>
     </StyledFlex>
   )
