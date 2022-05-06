@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import {
+  Text,
   Card,
   CardBody,
   CardFooter,
@@ -22,7 +23,6 @@ import MoboxUserPrizeGrid from './MoboxUserPrizeGrid'
 import MoboxShareImageModal from '../MoboxShareImageModal'
 import CardUserInfo from '../../../components/YourScore/CardUserInfo'
 import UserRankBox from '../../../components/YourScore/UserRankBox'
-import { localiseTradingVolume } from '../../../helpers'
 
 const StyledCard = styled(Card)`
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -105,18 +105,27 @@ const MoboxScoreCard: React.FC<YourScoreProps> = ({
               }
               extraUserRankBox={
                 <UserRankBox
-                  flex="1"
-                  title={t('Your volume').toUpperCase()}
-                  footer={t('Since start')}
+                  flex="2"
+                  title={t('Your MBOX volume rank').toUpperCase()}
+                  footer={t('Based on your MBOX/BNB and MBOX/BUSD trading')}
                   // Add responsive mr if competition is LIVE
-                  mr={currentPhase.state === LIVE ? [0, null, '8px'] : 0}
+                  mr={currentPhase.state === LIVE ? [0, null, null, '8px'] : 0}
                 >
                   {!userLeaderboardInformation ? (
                     <Skeleton height="26px" width="110px" />
                   ) : (
-                    <Heading textAlign="center" scale="lg">
-                      ${userLeaderboardInformation && localiseTradingVolume(userLeaderboardInformation.volume)}
-                    </Heading>
+                    <>
+                      <Heading textAlign="center" scale="lg">
+                        #{userLeaderboardInformation.moboxVolumeRank}
+                      </Heading>
+                      <Text>
+                        $
+                        {(userLeaderboardInformation.moboxVolume as unknown as number).toLocaleString(undefined, {
+                          maximumFractionDigits: 2,
+                          minimumFractionDigits: 0,
+                        })}
+                      </Text>
+                    </>
                   )}
                 </UserRankBox>
               }
