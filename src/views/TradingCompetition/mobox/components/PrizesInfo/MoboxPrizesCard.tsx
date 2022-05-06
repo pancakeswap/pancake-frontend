@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 import { Card, CardHeader, Box, Heading, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import MoboxPrizesGrid from './PrizesGrid/MoboxPrizesGrid'
+import PrizesGrid from '../../../components/PrizesInfo/PrizesGrid/PrizesGrid'
+import { mboxPrizes } from '../../../../../config/constants/trading-competition/prizes'
 
 const StyledCard = styled(Card)`
   ${({ theme }) => theme.mediaQueries.md} {
@@ -23,7 +24,7 @@ const MoboxPrizesCard = () => {
           {t('Higher trading volume = higher rank!')}
         </Text>
       </CardHeader>
-      <MoboxPrizesGrid />
+      <PrizesGrid prizesConfig={mboxPrizes} />
       <Box p="24px">
         <Text color="textSubtle" fontSize="14px">
           {t(

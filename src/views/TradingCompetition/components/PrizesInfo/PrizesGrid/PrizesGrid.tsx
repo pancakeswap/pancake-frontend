@@ -14,10 +14,10 @@ import {
 } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import Trans from 'components/Trans'
-import { Tiers, fanTokenPrizes } from 'config/constants/trading-competition/prizes'
+import { Tiers, PrizesConfig } from 'config/constants/trading-competition/prizes'
 import { useTranslation } from 'contexts/Localization'
 import { useState } from 'react'
-import { BoldTd, StyledPrizeTable, Td } from '../../../../components/StyledPrizeTable'
+import { BoldTd, Td, StyledPrizeTable } from '../../StyledPrizeTable'
 
 const COLOR_GOLD = '#FFBF33'
 const COLOR_SILVER = '#C1C1C1'
@@ -70,17 +70,21 @@ const tierStyleMap = {
   },
 }
 
-const FanTokenPrizesGrid = () => {
+interface PrizesGridProps {
+  prizesConfig: PrizesConfig
+}
+
+const PrizesGrid: React.FC<PrizesGridProps> = ({ prizesConfig }) => {
   const [tab, setTab] = useState(0)
   const { t } = useTranslation()
-  const rows = fanTokenPrizes[tab + 1]
+  const rows = prizesConfig[tab + 1]
 
   const handleItemClick = (index: number) => setTab(index)
 
   return (
     <Box pt="24px">
       <TabMenu activeIndex={tab} onItemClick={handleItemClick}>
-        {Object.keys(fanTokenPrizes).map((team) => {
+        {Object.keys(prizesConfig).map((team) => {
           return <Tab key={team}>{t('#%team% Team', { team })}</Tab>
         })}
       </TabMenu>
@@ -136,4 +140,4 @@ const FanTokenPrizesGrid = () => {
   )
 }
 
-export default FanTokenPrizesGrid
+export default PrizesGrid
