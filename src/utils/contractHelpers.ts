@@ -21,7 +21,6 @@ import {
   getTradingCompetitionAddress,
   getEasterNftAddress,
   getCakeVaultAddress,
-  getChainlinkOracleAddress,
   getMulticallAddress,
   getBunnySpecialCakeVaultAddress,
   getBunnySpecialPredictionAddress,

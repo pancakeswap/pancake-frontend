@@ -163,7 +163,7 @@ const CollectWinningsPopup = () => {
       clearInterval(timer.current)
       isCancelled = true
     }
-  }, [account, timer, predictionStatus, setIsOpen, isHistoryPaneOpen])
+  }, [account, timer, predictionStatus, setIsOpen, isHistoryPaneOpen, api])
 
   // Any time the history pane is open make sure the popup closes
   useEffect(() => {

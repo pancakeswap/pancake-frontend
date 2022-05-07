@@ -41,7 +41,7 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
     }
 
     fetchBetHistory()
-  }, [account, numberOfBets, setIsFetching, setBets])
+  }, [account, numberOfBets, setIsFetching, setBets, api])
 
   return (
     <Table>
