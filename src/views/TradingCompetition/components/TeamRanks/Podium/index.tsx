@@ -3,12 +3,8 @@ import styled from 'styled-components'
 import { Flex, Box, Text, Skeleton } from '@pancakeswap/uikit'
 import TeamPodiumIcon from './TeamPodiumIcon'
 import { PodiumBase } from '../../../svgs'
-import { TeamLeaderboardProps } from '../../../types'
 import { localiseTradingVolume } from '../../../helpers'
-
-interface PodiumProps {
-  teamsSortedByVolume?: Array<TeamLeaderboardProps>
-}
+import { PodiumProps } from './styles'
 
 const Wrapper = styled(Flex)`
   width: 260px;

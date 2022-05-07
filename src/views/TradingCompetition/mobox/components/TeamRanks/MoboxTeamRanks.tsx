@@ -7,7 +7,7 @@ import { TeamRanksProps } from '../../../types'
 import MoboxCakerBunny from '../../../pngs/mobox-cakers.png'
 import TopTradersCard from '../../../components/TeamRanks/TopTradersCard'
 import useGetParticipants from '../../../components/TeamRanks/Podium/useGetParticipants'
-import MoboxPodium from '../../../components/TeamRanks/Podium/MoboxPodium'
+import MoboxPodium from './Podium/MoboxPodium'
 
 const Wrapper = styled(Flex)`
   flex-direction: column;

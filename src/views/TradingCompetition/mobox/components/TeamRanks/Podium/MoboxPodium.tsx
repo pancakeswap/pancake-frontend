@@ -1,91 +1,22 @@
 import { useTranslation } from 'contexts/Localization'
-import styled from 'styled-components'
-import { Flex, Box, Text, Skeleton, AccountFilledIcon } from '@pancakeswap/uikit'
-import TeamPodiumIcon from './TeamPodiumIcon'
-import { PodiumBase } from '../../../svgs'
-import { TeamLeaderboardProps } from '../../../types'
-import { localiseTradingVolume } from '../../../helpers'
+import { Flex, Text, Skeleton, AccountFilledIcon } from '@pancakeswap/uikit'
+import TeamPodiumIcon from '../../../../components/TeamRanks/Podium/TeamPodiumIcon'
+import { PodiumBase } from '../../../../svgs'
+import { localiseTradingVolume } from '../../../../helpers'
+import {
+  StyledVolumeText,
+  PodiumProps,
+  RightBox,
+  MiddleBox,
+  LeftBox,
+  Wrapper,
+  Inner,
+  StyledVolumeFlex,
+} from '../../../../components/TeamRanks/Podium/styles'
 
-interface MoboxPodiumProps {
-  teamsSortedByVolume?: Array<TeamLeaderboardProps>
+interface MoboxPodiumProps extends PodiumProps {
   participants: string[]
 }
-
-const Wrapper = styled(Flex)`
-  width: 260px;
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    width: 320px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 387px;
-  }
-`
-
-const Inner = styled(Flex)`
-  width: 100%;
-  flex-direction: column;
-
-  svg {
-    height: auto;
-    width: 100%;
-  }
-`
-
-const LeftBox = styled(Box)`
-  position: absolute;
-  bottom: -24px;
-  left: 6px;
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    bottom: -26px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    bottom: -32px;
-  }
-`
-
-const MiddleBox = styled(Box)`
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translate(-50%, 0);
-`
-
-const RightBox = styled(Box)`
-  position: absolute;
-  bottom: -34px;
-  right: 6px;
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    bottom: -40px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    bottom: -52px;
-  }
-`
-
-const StyledVolumeFlex = styled(Flex)`
-  flex-direction: column;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-`
-
-const StyledVolumeText = styled(Text)`
-  font-size: 12px;
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    font-size: 14px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 16px;
-  }
-`
 
 const ParticipantBox = ({ participants, t }) => {
   return (
