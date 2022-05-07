@@ -1,10 +1,12 @@
-import { BlockIcon, CheckmarkCircleIcon, Flex, Image, Skeleton, Text } from '@pancakeswap/uikit'
+import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 import styled from 'styled-components'
 import { getRewardGroupAchievements, useFanTokenCompetitionRewards } from '../../../helpers'
 import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTable'
 import { fanTokenPrizes } from '../../../../../config/constants/trading-competition/prizes'
+import UserPrizeGridDollar from '../../../components/YourScore/UserPrizeGridDollar'
+import AchievementPoints from '../../../components/YourScore/AchievementPoints'
 
 const StyledThead = styled.thead`
   border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
@@ -48,22 +50,11 @@ const FanTokenUserPrizeGrid: React.FC<{ userTradingInformation? }> = ({ userTrad
               <Text bold>{lazioReward.toFixed(4)} LAZIO</Text>
               <Text bold>{portoReward.toFixed(4)} PORTO</Text>
               <Text bold>{santosReward.toFixed(4)} SANTOS</Text>
-              {dollarValueOfTokensReward !== null ? (
-                <Text fontSize="12px" color="textSubtle">
-                  ~{dollarValueOfTokensReward.toFixed(2)} USD
-                </Text>
-              ) : (
-                <Skeleton height={24} width={80} />
-              )}
+              <UserPrizeGridDollar dollarValueOfTokensReward={dollarValueOfTokensReward} />
             </Flex>
           </BoldTd>
           <Td>
-            <Flex alignItems="center" flexWrap="wrap" justifyContent="center" width="100%">
-              <Image src={`/images/achievements/${achievement.image}`} width={25} height={25} />
-              <Text fontSize="12px" color="textSubtle" textTransform="lowercase">
-                + {userPointReward} {t('Points')}
-              </Text>
-            </Flex>
+            <AchievementPoints achievement={achievement} userPointReward={userPointReward} />
           </Td>
           <Td>{canClaimNFT ? <CheckmarkCircleIcon color="success" /> : <BlockIcon color="textDisabled" />}</Td>
         </tr>

@@ -1,4 +1,4 @@
-import { BlockIcon, CheckmarkCircleIcon, Flex, Image, Skeleton, Text } from '@pancakeswap/uikit'
+import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 import styled from 'styled-components'
@@ -6,6 +6,8 @@ import { getRewardGroupAchievements, useCompetitionRewards } from '../../../help
 import { UserTradingInformationProps } from '../../../types'
 import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTable'
 import { mboxPrizes } from '../../../../../config/constants/trading-competition/prizes'
+import UserPrizeGridDollar from '../../../components/YourScore/UserPrizeGridDollar'
+import AchievementPoints from '../../../components/YourScore/AchievementPoints'
 
 const StyledThead = styled.thead`
   border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
@@ -40,22 +42,11 @@ const MoboxUserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInforma
             <Flex flexDirection="column">
               <Text bold>{cakeReward.toFixed(4)} CAKE</Text>
               <Text bold>{moboxReward.toFixed(4)} MBOX</Text>
-              {dollarValueOfTokensReward !== null ? (
-                <Text fontSize="12px" color="textSubtle">
-                  ~{dollarValueOfTokensReward.toFixed(2)} USD
-                </Text>
-              ) : (
-                <Skeleton height={24} width={80} />
-              )}
+              <UserPrizeGridDollar dollarValueOfTokensReward={dollarValueOfTokensReward} />
             </Flex>
           </BoldTd>
           <Td>
-            <Flex alignItems="center" flexWrap="wrap" justifyContent="center" width="100%">
-              <Image src={`/images/achievements/${achievement.image}`} width={25} height={25} />
-              <Text fontSize="12px" color="textSubtle" textTransform="lowercase">
-                + {userPointReward} {t('Points')}
-              </Text>
-            </Flex>
+            <AchievementPoints achievement={achievement} userPointReward={userPointReward} />
           </Td>
           <Td>{canClaimNFT ? <CheckmarkCircleIcon color="success" /> : <BlockIcon color="textDisabled" />}</Td>
           <Td>{canClaimMysteryBox ? <CheckmarkCircleIcon color="success" /> : <BlockIcon color="textDisabled" />}</Td>
