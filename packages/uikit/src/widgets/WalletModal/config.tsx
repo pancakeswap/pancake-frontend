@@ -8,6 +8,7 @@ import SafePal from "../../components/Svg/Icons/SafePal";
 import Coin98 from "../../components/Svg/Icons/Coin98";
 import Blocto from "../../components/Svg/Icons/Blocto";
 import CoinbaseWallet from "../../components/Svg/Icons/CoinbaseWallet";
+import Bitkeep from "../../components/Svg/Icons/Bitkeep";
 
 import { Config, ConnectorNames } from "./types";
 
@@ -43,6 +44,12 @@ const connectors: Config[] = [
     icon: WalletConnect,
     connectorId: ConnectorNames.WalletConnect,
     priority: 5,
+  },
+  {
+    title: "Bitkeep Wallet",
+    icon: Bitkeep,
+    connectorId: ConnectorNames.Injected,
+    priority: 999,
   },
   {
     title: "MathWallet",
