@@ -34,6 +34,7 @@ import {
   getPancakeSquadAddress,
   getTradingCompetitionAddressV2,
   getTradingCompetitionAddressMobox,
+  getTradingCompetitionAddressMoD,
   getBunnySpecialXmasAddress,
   getGalaxyNFTClaimingAddress,
 } from 'utils/addressHelpers'
@@ -60,6 +61,7 @@ import claimRefundAbi from 'config/abi/claimRefund.json'
 import tradingCompetitionAbi from 'config/abi/tradingCompetition.json'
 import tradingCompetitionV2Abi from 'config/abi/tradingCompetitionV2.json'
 import tradingCompetitionMoboxAbi from 'config/abi/tradingCompetitionMobox.json'
+import tradingCompetitionMoDAbi from 'config/abi/tradingCompetitionMoD.json'
 import easterNftAbi from 'config/abi/easterNft.json'
 import cakeVaultV2Abi from 'config/abi/cakeVaultV2.json'
 import predictionsAbi from 'config/abi/predictions.json'
@@ -114,6 +116,7 @@ import type {
   PointCenterIfo,
   CakeVaultV2,
   TradingCompetitionMobox,
+  TradingCompetitionMoD,
 } from 'config/abi/types'
 
 export const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
@@ -185,6 +188,10 @@ export const getTradingCompetitionContractV2 = (signer?: Signer | Provider) => {
 }
 export const getTradingCompetitionContractMobox = (signer?: Signer | Provider) => {
   return getContract(tradingCompetitionMoboxAbi, getTradingCompetitionAddressMobox(), signer) as TradingCompetitionMobox
+}
+
+export const getTradingCompetitionContractMoD = (signer?: Signer | Provider) => {
+  return getContract(tradingCompetitionMoDAbi, getTradingCompetitionAddressMoD(), signer) as TradingCompetitionMoD
 }
 
 export const getEasterNftContract = (signer?: Signer | Provider) => {

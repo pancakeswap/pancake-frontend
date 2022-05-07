@@ -105,17 +105,17 @@ const BattleBanner = () => {
     <Flex flexDirection="column">
       <StarImage />
       <ImageWrapper>
-        <Image src={AllBunniesImage} alt="all the bunnies" width={523} height={395} />
+        {/* <Image src={AllBunniesImage} alt="all the bunnies" width={523} height={395} /> */}
       </ImageWrapper>
       <StyledText mb="16px" color="textSubtle" bold>
-        {new Date(2022, 3).toLocaleString(locale, {
+        {new Date(2022, 4).toLocaleString(locale, {
           month: 'short',
         })}{' '}
-        13-19, 2022
+        17-23, 2022
       </StyledText>
-      <StyledHeading1Text>{t('Mobox Trading Competition')}</StyledHeading1Text>
+      <StyledHeading1Text>{t('Mines of Dalarnia')}</StyledHeading1Text>
       <StyledHeading2Text background={theme.colors.gradients.gold} $fill>
-        {t('$80,000 in Prizes with Tokens and NFTs!')}
+        {t('$120,000 in Prizes with Tokens and NFTs!')}
       </StyledHeading2Text>
       <StyledHeading scale="md" color={theme.isDark ? 'textSubtle' : 'inputSecondary'} mt="16px">
         {t('Compete with other teams for the highest trading volume!')}
