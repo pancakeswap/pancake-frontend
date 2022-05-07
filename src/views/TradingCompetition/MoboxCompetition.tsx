@@ -43,6 +43,7 @@ import MoboxTeamRanks from './mobox/components/TeamRanks/MoboxTeamRanks'
 import MoboxYourScore from './mobox/components/YourScore/MoboxYourScore'
 import MoboxBattleBanner from './mobox/components/BattleBanner/MoboxBattleBanner'
 import MoboxPrizesInfo from './mobox/components/PrizesInfo/MoboxPrizesInfo'
+import { useTeamInformation } from './useTeamInformation'
 
 const MoboxCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
@@ -65,7 +66,6 @@ const MoboxCompetition = () => {
     canClaimMysteryBox: false,
     canClaimNFT: false,
   })
-  const [globalLeaderboardInformation, setGlobalLeaderboardInformation] = useState(null)
   const [userLeaderboardInformation, setUserLeaderboardInformation] = useState({
     global: 0,
     team: 0,
@@ -74,12 +74,13 @@ const MoboxCompetition = () => {
     moboxVolumeRank: '???',
     moboxVolume: '???',
   })
-  // 1. Storm
-  const [team1LeaderboardInformation, setTeam1LeaderboardInformation] = useState({ teamId: 1, leaderboardData: null })
-  // 2. Flippers
-  const [team2LeaderboardInformation, setTeam2LeaderboardInformation] = useState({ teamId: 2, leaderboardData: null })
-  // 3. Cakers
-  const [team3LeaderboardInformation, setTeam3LeaderboardInformation] = useState({ teamId: 3, leaderboardData: null })
+
+  const {
+    globalLeaderboardInformation,
+    team1LeaderboardInformation,
+    team2LeaderboardInformation,
+    team3LeaderboardInformation,
+  } = useTeamInformation(3)
 
   const isCompetitionLive = currentPhase.state === LIVE
   const hasCompetitionEnded =
@@ -175,43 +176,6 @@ const MoboxCompetition = () => {
       fetchUserTradingStats()
     }
   }, [account, userTradingInformation, profileApiUrl])
-
-  useEffect(() => {
-    const fetchGlobalLeaderboardStats = async () => {
-      const res = await fetch(`${profileApiUrl}/api/leaderboard/3/global`)
-      const data = await res.json()
-      setGlobalLeaderboardInformation(data)
-    }
-
-    const fetchTeamsLeaderboardStats = async (teamId: number, callBack: (data: any) => void) => {
-      try {
-        const res = await fetch(`${profileApiUrl}/api/leaderboard/3/team/${teamId}`)
-        const data = await res.json()
-        callBack(data)
-      } catch (e) {
-        console.error(e)
-      }
-    }
-
-    if (currentPhase.state !== REGISTRATION) {
-      fetchTeamsLeaderboardStats(1, (data) =>
-        setTeam1LeaderboardInformation((prevState) => {
-          return { ...prevState, leaderboardData: data }
-        }),
-      )
-      fetchTeamsLeaderboardStats(2, (data) =>
-        setTeam2LeaderboardInformation((prevState) => {
-          return { ...prevState, leaderboardData: data }
-        }),
-      )
-      fetchTeamsLeaderboardStats(3, (data) =>
-        setTeam3LeaderboardInformation((prevState) => {
-          return { ...prevState, leaderboardData: data }
-        }),
-      )
-      fetchGlobalLeaderboardStats()
-    }
-  }, [currentPhase, profileApiUrl])
 
   // Don't hide when loading. Hide if the account is connected && the user hasn't registered && the competition is live or finished
   const shouldHideCta =

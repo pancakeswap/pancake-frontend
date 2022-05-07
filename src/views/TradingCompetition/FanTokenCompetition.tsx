@@ -30,6 +30,7 @@ import FanTokenYourScore from './fantoken/components/YourScore/FanTokenYourScore
 import FanTokenPrizesInfo from './fantoken/components/PrizesInfo/FanTokenPrizesInfo'
 import FanTokenCakerBunny from './pngs/fan-token-cakers.png'
 import TeamRanks from './components/TeamRanks/TeamRanks'
+import { useTeamInformation } from './useTeamInformation'
 
 const FanTokenCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
@@ -52,19 +53,19 @@ const FanTokenCompetition = () => {
     userPointReward: '0',
     canClaimNFT: false,
   })
-  const [globalLeaderboardInformation, setGlobalLeaderboardInformation] = useState(null)
   const [userLeaderboardInformation, setUserLeaderboardInformation] = useState({
     global: 0,
     team: 0,
     volume: 0,
     next_rank: 0,
   })
-  // 1. Storm
-  const [team1LeaderboardInformation, setTeam1LeaderboardInformation] = useState({ teamId: 1, leaderboardData: null })
-  // 2. Flippers
-  const [team2LeaderboardInformation, setTeam2LeaderboardInformation] = useState({ teamId: 2, leaderboardData: null })
-  // 3. Cakers
-  const [team3LeaderboardInformation, setTeam3LeaderboardInformation] = useState({ teamId: 3, leaderboardData: null })
+
+  const {
+    globalLeaderboardInformation,
+    team1LeaderboardInformation,
+    team2LeaderboardInformation,
+    team3LeaderboardInformation,
+  } = useTeamInformation(2)
 
   const isCompetitionLive = currentPhase.state === LIVE
   const hasCompetitionEnded =
@@ -155,41 +156,6 @@ const FanTokenCompetition = () => {
       fetchUserTradingStats()
     }
   }, [account, userTradingInformation, profileApiUrl])
-
-  useEffect(() => {
-    const fetchGlobalLeaderboardStats = async () => {
-      const res = await fetch(`${profileApiUrl}/api/leaderboard/2/global`)
-      const data = await res.json()
-      setGlobalLeaderboardInformation(data)
-    }
-
-    const fetchTeamsLeaderboardStats = async (teamId: number, callBack: (data: any) => void) => {
-      try {
-        const res = await fetch(`${profileApiUrl}/api/leaderboard/2/team/${teamId}`)
-        const data = await res.json()
-        callBack(data)
-      } catch (e) {
-        console.error(e)
-      }
-    }
-
-    fetchTeamsLeaderboardStats(1, (data) =>
-      setTeam1LeaderboardInformation((prevState) => {
-        return { ...prevState, leaderboardData: data }
-      }),
-    )
-    fetchTeamsLeaderboardStats(2, (data) =>
-      setTeam2LeaderboardInformation((prevState) => {
-        return { ...prevState, leaderboardData: data }
-      }),
-    )
-    fetchTeamsLeaderboardStats(3, (data) =>
-      setTeam3LeaderboardInformation((prevState) => {
-        return { ...prevState, leaderboardData: data }
-      }),
-    )
-    fetchGlobalLeaderboardStats()
-  }, [profileApiUrl])
 
   // Don't hide when loading. Hide if the account is connected && the user hasn't registered && the competition is live or finished
   const shouldHideCta =
