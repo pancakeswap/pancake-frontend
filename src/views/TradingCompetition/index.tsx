@@ -1,9 +1,9 @@
 import React from 'react'
-import MoboxCompetition from './MoboxCompetition'
+import MoDCompetition from './MoDCompetition'
 
 const TradingCompetitionPage: React.FC = () => {
   // TODO: Add <SubMenu /> add historical pages
-  return <MoboxCompetition />
+  return <MoDCompetition />
 }
 
 export default TradingCompetitionPage

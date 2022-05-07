@@ -49,6 +49,10 @@ export const getTradingCompetitionAddressMobox = () => {
   return getAddress(addresses.tradingCompetitionMobox)
 }
 
+export const getTradingCompetitionAddressMoD = () => {
+  return getAddress(addresses.tradingCompetitionMoD)
+}
+
 export const getEasterNftAddress = () => {
   return getAddress(addresses.easterNft)
 }
