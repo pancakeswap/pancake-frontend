@@ -6,6 +6,8 @@ import { Box, Flex, Text, ChevronRightIcon, useModal } from '@pancakeswap/uikit'
 import Loading from 'components/Loading'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useCollectWinningModalProps } from 'state/predictions/hooks'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
+
 import CollectRoundWinningsModal from '../CollectRoundWinningsModal'
 import { getAllV1History } from './helpers'
 import NothingToClaimModal from './NothingToClaimModal'
@@ -25,9 +27,16 @@ const ClaimCheck = () => {
   const { account } = useWeb3React()
   const { history, isLoadingHistory } = useCollectWinningModalProps()
   const dispatch = useLocalDispatch()
+  const { address: predictionsAddress, token } = useConfig()
 
   const [onPresentCollectWinningsModal] = useModal(
-    <CollectRoundWinningsModal dispatch={dispatch} history={history} isLoadingHistory={isLoadingHistory} />,
+    <CollectRoundWinningsModal
+      predictionsAddress={predictionsAddress}
+      token={token}
+      dispatch={dispatch}
+      history={history}
+      isLoadingHistory={isLoadingHistory}
+    />,
     false,
   )
 

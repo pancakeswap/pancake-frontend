@@ -627,6 +627,7 @@ export interface PredictionConfig {
   address: string
   api: string
   chainlinkOracleAddress: string
+  token: Token
 }
 
 // Global state

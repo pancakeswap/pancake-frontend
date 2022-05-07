@@ -17,13 +17,14 @@ import {
   Skeleton,
 } from '@pancakeswap/uikit'
 import { AnyAction, AsyncThunkAction } from '@reduxjs/toolkit'
+import { Token } from '@pancakeswap/sdk'
 
 import { useWeb3React } from '@web3-react/core'
 import { REWARD_RATE } from 'state/predictions/config'
 import { fetchNodeHistory, markAsCollected } from 'state/predictions'
 import { Bet } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
-import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
+import useBUSDPrice from 'hooks/useBUSDPrice'
 import useToast from 'hooks/useToast'
 import { usePredictionsContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -32,13 +33,14 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { formatNumber } from 'utils/formatBalance'
 import { getPayout } from './History/helpers'
-import { useConfig } from '../context/ConfigProvider'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
   onSuccess?: () => Promise<void>
   dispatch: (action: AnyAction | AsyncThunkAction<any, { account: string }, any>) => void
   history: Bet[]
   isLoadingHistory: boolean
+  predictionsAddress: string
+  token: Token
 }
 
 const Modal = styled(ModalContainer)`
@@ -86,16 +88,16 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   history,
   isLoadingHistory,
   dispatch,
+  predictionsAddress,
+  token,
 }) => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPendingTx } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const { address: predictionsAddress } = useConfig()
-
   const predictionsContract = usePredictionsContract(predictionsAddress)
-  const bnbBusdPrice = useBNBBusdPrice()
+  const bnbBusdPrice = useBUSDPrice(token)
 
   const { epochs, total } = calculateClaimableRounds(history)
   const totalBnb = multiplyPriceByAmount(bnbBusdPrice, total)
