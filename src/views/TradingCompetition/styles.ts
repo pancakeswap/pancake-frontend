@@ -20,7 +20,9 @@ export const BannerFlex = styled(Flex)`
 `
 
 export const BattleBannerSection = styled(PageSection)`
-  padding-top: 0px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding-top: 0px;
+  }
 `
 
 export const BottomBunnyWrapper = styled(Box)`
