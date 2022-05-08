@@ -19,7 +19,9 @@ export const BannerFlex = styled(Flex)`
   }
 `
 
-export const BattleBannerSection = styled(PageSection)``
+export const BattleBannerSection = styled(PageSection)`
+  padding-top: 0px;
+`
 
 export const BottomBunnyWrapper = styled(Box)`
   position: relative;

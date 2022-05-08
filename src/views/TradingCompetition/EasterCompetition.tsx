@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
 import { Flex, Box } from '@pancakeswap/uikit'
@@ -30,6 +29,7 @@ import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
 import Footer from './Footer'
 import TeamRanksSection from './components/TeamRanksSection'
 import PrizesInfoSection from './components/PrizesInfoSection'
+import { BattleBannerSection } from './styles'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -48,14 +48,9 @@ const BannerFlex = styled(Flex)`
   }
 `
 
-export const BattleBannerSection = styled(PageSection)`
-  padding-top: 0px;
-`
-
 const EasterCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
-  const { t } = useTranslation()
   const { profile, isLoading } = useProfile()
   const { isDark } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractEaster(false)

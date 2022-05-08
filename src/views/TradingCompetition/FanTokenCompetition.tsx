@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
 import { Box } from '@pancakeswap/uikit'
@@ -35,7 +34,6 @@ import PrizesInfoSection from './components/PrizesInfoSection'
 const FanTokenCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
-  const { t } = useTranslation()
   const { profile, isLoading } = useProfile()
   const { isDark } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractFanToken(false)
