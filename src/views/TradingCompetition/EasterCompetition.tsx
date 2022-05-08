@@ -16,11 +16,9 @@ import {
   REGISTRATION,
 } from 'config/constants/trading-competition/phases'
 import PageSection from 'components/PageSection'
-import { DARKBG, MIDBLUEBG, MIDBLUEBG_DARK, LIGHTBLUEBG, LIGHTBLUEBG_DARK } from './pageSectionStyles'
-import { PrizesIcon } from './svgs'
+import { DARKBG, MIDBLUEBG, MIDBLUEBG_DARK } from './pageSectionStyles'
 import EasterStormBunny from './pngs/easter-storm.png'
 import Countdown from './components/Countdown'
-import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
 import BattleCta from './components/BattleCta'
 import EasterBattleBanner from './easter/components/BattleBanner/EasterBattleBanner'
@@ -31,6 +29,7 @@ import { useTeamInformation } from './useTeamInformation'
 import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
 import Footer from './Footer'
 import TeamRanksSection from './components/TeamRanksSection'
+import PrizesInfoSection from './components/PrizesInfoSection'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -209,26 +208,7 @@ const EasterCompetition = () => {
         team3LeaderboardInformation={team3LeaderboardInformation}
         globalLeaderboardInformation={globalLeaderboardInformation}
       />
-      <PageSection
-        containerProps={{ style: { marginTop: '-30px' } }}
-        dividerComponent={
-          <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
-            {t('Prizes')}
-          </RibbonWithImage>
-        }
-        concaveDivider
-        clipFill={{
-          light: 'linear-gradient(139.73deg, #e5fcfe 0%, #ecf6ff 100%)',
-          dark: 'linear-gradient(139.73deg, #303d5b 0%, #363457 100%)',
-        }}
-        dividerPosition="top"
-        background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
-        index={4}
-      >
-        <Box my="64px">
-          <EasterPrizesInfo />
-        </Box>
-      </PageSection>
+      <PrizesInfoSection prizesInfoComponent={<EasterPrizesInfo />} />
       <Footer
         shouldHideCta={shouldHideCta}
         image={EasterStormBunny}
