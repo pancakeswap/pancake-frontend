@@ -1,8 +1,6 @@
-import styled from 'styled-components'
-import { Flex, Text, Heading, NftIcon, BunnyPlaceholderIcon } from '@pancakeswap/uikit'
-import Image from 'next/image'
+import { Flex, Heading, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import FlipperBunny from '../../pngs/mbox_flipper.png'
+import styled from 'styled-components'
 
 const StyledFlex = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.md} {
@@ -34,9 +32,11 @@ const PrizesText = () => {
         )}
       </Text>
       <Text mt="8px">
-        {t('In addition to token prizes there are NFT rewards (estimated worth of ~$40,000 at the time of writing):')}
+        {t(
+          'In addition to token prizes there are NFT rewards:300 PancakeSwap newly designed NFT to the top 100 traders in each of the three teams.100 Mines of Dalarnia NFTs to the top 100 traders ranked by the $DAR trading volume.',
+        )}
       </Text>
-      <Flex>
+      {/* <Flex>
         <NftIcon width="32px" mr="16px" color="textSubtle" />
         <Text mt="8px">
           {t(
@@ -50,7 +50,7 @@ const PrizesText = () => {
       </Flex>
       <ImageWrapper>
         <Image src={FlipperBunny} alt="Flipper bunny" width={220} height={254} />
-      </ImageWrapper>
+      </ImageWrapper> */}
     </StyledFlex>
   )
 }
