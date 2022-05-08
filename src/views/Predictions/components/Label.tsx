@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import { useCountUp } from 'react-countup'
 import styled from 'styled-components'
-import { BnbUsdtPairTokenIcon, Box, Flex, PocketWatchIcon, Text } from '@pancakeswap/uikit'
+import { BnbUsdtPairTokenIcon, LogoRoundIcon, Box, Flex, PocketWatchIcon, Text } from '@pancakeswap/uikit'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
 import { useTranslation } from 'contexts/Localization'
@@ -9,6 +9,11 @@ import { formatRoundTime } from '../helpers'
 import useCountdown from '../hooks/useCountdown'
 import usePollOraclePrice from '../hooks/usePollOraclePrice'
 import { useConfig } from '../context/ConfigProvider'
+
+const TOKEN_LOGOS = {
+  BNB: <BnbUsdtPairTokenIcon />,
+  CAKE: <LogoRoundIcon />,
+}
 
 const Token = styled(Box)`
   margin-top: -24px;
@@ -100,6 +105,10 @@ export const PricePairLabel: React.FC = () => {
     decimals: 3,
   })
 
+  const logo = useMemo(() => {
+    return TOKEN_LOGOS[token.symbol]
+  }, [token.symbol])
+
   const { countUp, update } = countUpState || {}
 
   const updateRef = useRef(update)
@@ -110,9 +119,7 @@ export const PricePairLabel: React.FC = () => {
 
   return (
     <Box pl="24px" position="relative" display="inline-block">
-      <Token left={0}>
-        <BnbUsdtPairTokenIcon />
-      </Token>
+      <Token left={0}>{logo}</Token>
       <Label dir="left">
         <Title bold textTransform="uppercase">
           {`${token.symbol}USD`}

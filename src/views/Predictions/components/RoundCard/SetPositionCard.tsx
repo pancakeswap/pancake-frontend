@@ -9,6 +9,7 @@ import {
   IconButton,
   Button,
   BinanceIcon,
+  LogoIcon,
   Text,
   BalanceInput,
   Slider,
@@ -31,6 +32,11 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import PositionTag from '../PositionTag'
 import FlexRow from '../FlexRow'
+
+const LOGOS = {
+  BNB: BinanceIcon,
+  CAKE: LogoIcon,
+}
 
 interface SetPositionCardProps {
   position: BetPosition
@@ -155,6 +161,10 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     }
   }, [value, maxBalance, minBetAmount, setErrorMessage, t, token.symbol])
 
+  const Logo = useMemo(() => {
+    return LOGOS[token.symbol]
+  }, [token.symbol])
+
   return (
     <Card>
       <CardHeader p="16px">
@@ -176,7 +186,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
             {t('Commit')}:
           </Text>
           <Flex alignItems="center">
-            <BinanceIcon mr="4px  " />
+            <Logo mr="4px" />
             <Text bold textTransform="uppercase">
               {token.symbol}
             </Text>
