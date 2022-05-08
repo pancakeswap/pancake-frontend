@@ -30,6 +30,7 @@ import TeamRanks from './components/TeamRanks/TeamRanks'
 import EasterYourScore from './easter/components/YourScore/EasterYourScore'
 import EasterCakerBunny from './pngs/easter-cakers.png'
 import { useTeamInformation } from './useTeamInformation'
+import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -71,8 +72,7 @@ const EasterCompetition = () => {
   const { isDark, theme } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractEaster(false)
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.OVER)
-  const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
-  const [claimSuccessful, setClaimSuccessful] = useState(false)
+  const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
   const [userTradingInformation, setUserTradingInformation] = useState({
     hasRegistered: false,
     hasUserClaimed: false,
@@ -107,14 +107,6 @@ const EasterCompetition = () => {
     (userCakeRewards !== '0' || userPointReward !== '0' || canClaimNFT)
   const finishedAndPrizesClaimed = hasCompetitionEnded && account && hasUserClaimed
   const finishedAndNothingToClaim = hasCompetitionEnded && account && !userCanClaimPrizes
-
-  const onRegisterSuccess = () => {
-    setRegistrationSuccessful(true)
-  }
-
-  const onClaimSuccess = () => {
-    setClaimSuccessful(true)
-  }
 
   useEffect(() => {
     const fetchCompetitionInfoContract = async () => {

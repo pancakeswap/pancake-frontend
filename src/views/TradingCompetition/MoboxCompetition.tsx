@@ -44,6 +44,7 @@ import MoboxYourScore from './mobox/components/YourScore/MoboxYourScore'
 import MoboxBattleBanner from './mobox/components/BattleBanner/MoboxBattleBanner'
 import MoboxPrizesInfo from './mobox/components/PrizesInfo/MoboxPrizesInfo'
 import { useTeamInformation } from './useTeamInformation'
+import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
 
 const MoboxCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
@@ -53,8 +54,7 @@ const MoboxCompetition = () => {
   const { isDark, theme } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractMobox(false)
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.REGISTRATION)
-  const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
-  const [claimSuccessful, setClaimSuccessful] = useState(false)
+  const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
   const [userTradingInformation, setUserTradingInformation] = useState<UserTradingInformationProps>({
     hasRegistered: false,
     isUserActive: false,
@@ -107,14 +107,6 @@ const MoboxCompetition = () => {
       canClaimNFT)
   const finishedAndPrizesClaimed = hasCompetitionEnded && account && hasUserClaimed
   const finishedAndNothingToClaim = hasCompetitionEnded && account && !userCanClaimPrizes
-
-  const onRegisterSuccess = () => {
-    setRegistrationSuccessful(true)
-  }
-
-  const onClaimSuccess = () => {
-    setClaimSuccessful(true)
-  }
 
   useEffect(() => {
     const fetchCompetitionInfoContract = async () => {

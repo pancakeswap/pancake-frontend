@@ -31,6 +31,7 @@ import FanTokenPrizesInfo from './fantoken/components/PrizesInfo/FanTokenPrizesI
 import FanTokenCakerBunny from './pngs/fan-token-cakers.png'
 import TeamRanks from './components/TeamRanks/TeamRanks'
 import { useTeamInformation } from './useTeamInformation'
+import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
 
 const FanTokenCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
@@ -40,8 +41,7 @@ const FanTokenCompetition = () => {
   const { isDark, theme } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractFanToken(false)
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.OVER)
-  const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
-  const [claimSuccessful, setClaimSuccessful] = useState(false)
+  const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
   const [userTradingInformation, setUserTradingInformation] = useState({
     hasRegistered: false,
     hasUserClaimed: false,
@@ -92,14 +92,6 @@ const FanTokenCompetition = () => {
       canClaimNFT)
   const finishedAndPrizesClaimed = hasCompetitionEnded && account && hasUserClaimed
   const finishedAndNothingToClaim = hasCompetitionEnded && account && !userCanClaimPrizes
-
-  const onRegisterSuccess = () => {
-    setRegistrationSuccessful(true)
-  }
-
-  const onClaimSuccess = () => {
-    setClaimSuccessful(true)
-  }
 
   useEffect(() => {
     const fetchCompetitionInfoContract = async () => {
