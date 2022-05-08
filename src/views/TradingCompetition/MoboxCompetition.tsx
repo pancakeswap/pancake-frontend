@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
-import { Flex, Box } from '@pancakeswap/uikit'
-import Image from 'next/image'
+import { Box } from '@pancakeswap/uikit'
 import { useTradingCompetitionContractMobox } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { PageMeta } from 'components/Layout/Page'
@@ -17,14 +16,7 @@ import {
   REGISTRATION,
 } from 'config/constants/trading-competition/phases'
 import PageSection from 'components/PageSection'
-import {
-  DARKBG,
-  MIDBLUEBG,
-  MIDBLUEBG_DARK,
-  LIGHTBLUEBG,
-  LIGHTBLUEBG_DARK,
-  TRADINGCOMPETITIONBANNER,
-} from './pageSectionStyles'
+import { MIDBLUEBG, MIDBLUEBG_DARK, LIGHTBLUEBG, LIGHTBLUEBG_DARK, TRADINGCOMPETITIONBANNER } from './pageSectionStyles'
 import {
   PrizesIcon,
   //  RanksIcon,
@@ -37,7 +29,7 @@ import HowToJoin from './components/HowToJoin'
 import BattleCta from './components/BattleCta'
 import Rules from './components/Rules'
 import { UserTradingInformationProps } from './types'
-import { CompetitionPage, BannerFlex, BattleBannerSection, BottomBunnyWrapper } from './styles'
+import { CompetitionPage, BannerFlex, BattleBannerSection } from './styles'
 import RanksIcon from './svgs/RanksIcon'
 import MoboxTeamRanks from './mobox/components/TeamRanks/MoboxTeamRanks'
 import MoboxYourScore from './mobox/components/YourScore/MoboxYourScore'
@@ -45,6 +37,7 @@ import MoboxBattleBanner from './mobox/components/BattleBanner/MoboxBattleBanner
 import MoboxPrizesInfo from './mobox/components/PrizesInfo/MoboxPrizesInfo'
 import { useTeamInformation } from './useTeamInformation'
 import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
+import Footer from './Footer'
 
 const MoboxCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
@@ -291,37 +284,22 @@ const MoboxCompetition = () => {
             <Rules />
           </Box>
         </PageSection>
-        <PageSection
-          index={6}
-          dividerPosition="top"
-          dividerFill={{ light: '#191326' }}
-          clipFill={{ light: theme.colors.background }}
-          background={DARKBG}
-        >
-          <Flex alignItems="center">
-            <BottomBunnyWrapper>
-              <Image src={StormBunny} width={254} height={227} />
-            </BottomBunnyWrapper>
-            {shouldHideCta ? null : (
-              <Flex height="fit-content">
-                <BattleCta
-                  userTradingInformation={userTradingInformation}
-                  currentPhase={currentPhase}
-                  account={account}
-                  isCompetitionLive={isCompetitionLive}
-                  hasCompetitionEnded={hasCompetitionEnded}
-                  userCanClaimPrizes={userCanClaimPrizes}
-                  finishedAndPrizesClaimed={finishedAndPrizesClaimed}
-                  finishedAndNothingToClaim={finishedAndNothingToClaim}
-                  profile={profile}
-                  isLoading={isLoading}
-                  onRegisterSuccess={onRegisterSuccess}
-                  onClaimSuccess={onClaimSuccess}
-                />
-              </Flex>
-            )}
-          </Flex>
-        </PageSection>
+        <Footer
+          shouldHideCta={shouldHideCta}
+          image={StormBunny}
+          userTradingInformation={userTradingInformation}
+          currentPhase={currentPhase}
+          account={account}
+          isCompetitionLive={isCompetitionLive}
+          hasCompetitionEnded={hasCompetitionEnded}
+          userCanClaimPrizes={userCanClaimPrizes}
+          finishedAndPrizesClaimed={finishedAndPrizesClaimed}
+          finishedAndNothingToClaim={finishedAndNothingToClaim}
+          profile={profile}
+          isLoading={isLoading}
+          onRegisterSuccess={onRegisterSuccess}
+          onClaimSuccess={onClaimSuccess}
+        />
       </CompetitionPage>
     </>
   )

@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
-import { Flex, Box } from '@pancakeswap/uikit'
-import Image from 'next/image'
+import { Box } from '@pancakeswap/uikit'
 import { useTradingCompetitionContractFanToken } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { PageMeta } from 'components/Layout/Page'
@@ -24,7 +23,7 @@ import FanTokenStormBunny from './pngs/fan-token-storm.png'
 import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
 import BattleCta from './components/BattleCta'
-import { CompetitionPage, BannerFlex, BattleBannerSection, BottomBunnyWrapper } from './styles'
+import { CompetitionPage, BannerFlex, BattleBannerSection } from './styles'
 import FanTokenBattleBanner from './fantoken/components/BattleBanner/FanTokenBattleBanner'
 import FanTokenYourScore from './fantoken/components/YourScore/FanTokenYourScore'
 import FanTokenPrizesInfo from './fantoken/components/PrizesInfo/FanTokenPrizesInfo'
@@ -32,6 +31,7 @@ import FanTokenCakerBunny from './pngs/fan-token-cakers.png'
 import TeamRanks from './components/TeamRanks/TeamRanks'
 import { useTeamInformation } from './useTeamInformation'
 import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
+import Footer from './Footer'
 
 const FanTokenCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
@@ -252,37 +252,22 @@ const FanTokenCompetition = () => {
             <FanTokenPrizesInfo />
           </Box>
         </PageSection>
-        <PageSection
-          index={6}
-          dividerPosition="top"
-          dividerFill={{ light: '#191326' }}
-          clipFill={{ light: theme.colors.background }}
-          background={DARKBG}
-        >
-          <Flex alignItems="center">
-            {shouldHideCta ? null : (
-              <Flex height="fit-content">
-                <BattleCta
-                  userTradingInformation={userTradingInformation}
-                  currentPhase={currentPhase}
-                  account={account}
-                  isCompetitionLive={isCompetitionLive}
-                  hasCompetitionEnded={hasCompetitionEnded}
-                  userCanClaimPrizes={userCanClaimPrizes}
-                  finishedAndPrizesClaimed={finishedAndPrizesClaimed}
-                  finishedAndNothingToClaim={finishedAndNothingToClaim}
-                  profile={profile}
-                  isLoading={isLoading}
-                  onRegisterSuccess={onRegisterSuccess}
-                  onClaimSuccess={onClaimSuccess}
-                />
-              </Flex>
-            )}
-            <BottomBunnyWrapper>
-              <Image src={FanTokenStormBunny} width={147} height={200} />
-            </BottomBunnyWrapper>
-          </Flex>
-        </PageSection>
+        <Footer
+          shouldHideCta={shouldHideCta}
+          image={FanTokenStormBunny}
+          userTradingInformation={userTradingInformation}
+          currentPhase={currentPhase}
+          account={account}
+          isCompetitionLive={isCompetitionLive}
+          hasCompetitionEnded={hasCompetitionEnded}
+          userCanClaimPrizes={userCanClaimPrizes}
+          finishedAndPrizesClaimed={finishedAndPrizesClaimed}
+          finishedAndNothingToClaim={finishedAndNothingToClaim}
+          profile={profile}
+          isLoading={isLoading}
+          onRegisterSuccess={onRegisterSuccess}
+          onClaimSuccess={onClaimSuccess}
+        />
       </CompetitionPage>
     </>
   )

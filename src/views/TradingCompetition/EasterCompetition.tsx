@@ -6,7 +6,6 @@ import { Flex, Box } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTradingCompetitionContractEaster } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
-import Image from 'next/image'
 import {
   SmartContractPhases,
   CompetitionPhases,
@@ -31,6 +30,7 @@ import EasterYourScore from './easter/components/YourScore/EasterYourScore'
 import EasterCakerBunny from './pngs/easter-cakers.png'
 import { useTeamInformation } from './useTeamInformation'
 import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
+import Footer from './Footer'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -51,17 +51,6 @@ const BannerFlex = styled(Flex)`
 
 export const BattleBannerSection = styled(PageSection)`
   padding-top: 0px;
-`
-
-const BottomBunnyWrapper = styled(Box)`
-  display: none;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    display: flex;
-    margin-left: 40px;
-    width: 147px;
-    height: 200px;
-  }
 `
 
 const EasterCompetition = () => {
@@ -255,37 +244,22 @@ const EasterCompetition = () => {
           <EasterPrizesInfo />
         </Box>
       </PageSection>
-      <PageSection
-        index={6}
-        dividerPosition="top"
-        dividerFill={{ light: '#191326' }}
-        clipFill={{ light: theme.colors.background }}
-        background={DARKBG}
-      >
-        <Flex alignItems="center">
-          {shouldHideCta ? null : (
-            <Flex height="fit-content">
-              <BattleCta
-                userTradingInformation={userTradingInformation}
-                currentPhase={currentPhase}
-                account={account}
-                isCompetitionLive={isCompetitionLive}
-                hasCompetitionEnded={hasCompetitionEnded}
-                userCanClaimPrizes={userCanClaimPrizes}
-                finishedAndPrizesClaimed={finishedAndPrizesClaimed}
-                finishedAndNothingToClaim={finishedAndNothingToClaim}
-                profile={profile}
-                isLoading={isLoading}
-                onRegisterSuccess={onRegisterSuccess}
-                onClaimSuccess={onClaimSuccess}
-              />
-            </Flex>
-          )}
-        </Flex>
-        <BottomBunnyWrapper>
-          <Image src={EasterStormBunny} width={147} height={200} />
-        </BottomBunnyWrapper>
-      </PageSection>
+      <Footer
+        shouldHideCta={shouldHideCta}
+        image={EasterStormBunny}
+        userTradingInformation={userTradingInformation}
+        currentPhase={currentPhase}
+        account={account}
+        isCompetitionLive={isCompetitionLive}
+        hasCompetitionEnded={hasCompetitionEnded}
+        userCanClaimPrizes={userCanClaimPrizes}
+        finishedAndPrizesClaimed={finishedAndPrizesClaimed}
+        finishedAndNothingToClaim={finishedAndNothingToClaim}
+        profile={profile}
+        isLoading={isLoading}
+        onRegisterSuccess={onRegisterSuccess}
+        onClaimSuccess={onClaimSuccess}
+      />
     </CompetitionPage>
   )
 }
