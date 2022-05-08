@@ -17,7 +17,7 @@ import {
 } from 'config/constants/trading-competition/phases'
 import PageSection from 'components/PageSection'
 import { DARKBG, MIDBLUEBG, MIDBLUEBG_DARK, LIGHTBLUEBG, LIGHTBLUEBG_DARK } from './pageSectionStyles'
-import { PrizesIcon, RanksIcon } from './svgs'
+import { PrizesIcon } from './svgs'
 import Countdown from './components/Countdown'
 import FanTokenStormBunny from './pngs/fan-token-storm.png'
 import RibbonWithImage from './components/RibbonWithImage'
@@ -28,17 +28,17 @@ import FanTokenBattleBanner from './fantoken/components/BattleBanner/FanTokenBat
 import FanTokenYourScore from './fantoken/components/YourScore/FanTokenYourScore'
 import FanTokenPrizesInfo from './fantoken/components/PrizesInfo/FanTokenPrizesInfo'
 import FanTokenCakerBunny from './pngs/fan-token-cakers.png'
-import TeamRanks from './components/TeamRanks/TeamRanks'
 import { useTeamInformation } from './useTeamInformation'
 import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
 import Footer from './Footer'
+import TeamRanksSection from './components/TeamRanksSection'
 
 const FanTokenCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { profile, isLoading } = useProfile()
-  const { isDark, theme } = useTheme()
+  const { isDark } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractFanToken(false)
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.OVER)
   const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
@@ -210,28 +210,13 @@ const FanTokenCompetition = () => {
             )}
           </Box>
         </PageSection>
-        <PageSection
-          containerProps={{ style: { marginTop: '-30px' } }}
-          index={3}
-          concaveDivider
-          clipFill={{ light: theme.colors.background }}
-          dividerPosition="top"
-          dividerComponent={
-            <RibbonWithImage imageComponent={<RanksIcon width="175px" />} ribbonDirection="up">
-              {t('Team Ranks')}
-            </RibbonWithImage>
-          }
-        >
-          <Box my="64px">
-            <TeamRanks
-              team1LeaderboardInformation={team1LeaderboardInformation}
-              team2LeaderboardInformation={team2LeaderboardInformation}
-              team3LeaderboardInformation={team3LeaderboardInformation}
-              globalLeaderboardInformation={globalLeaderboardInformation}
-              image={FanTokenCakerBunny}
-            />
-          </Box>
-        </PageSection>
+        <TeamRanksSection
+          image={FanTokenCakerBunny}
+          team1LeaderboardInformation={team1LeaderboardInformation}
+          team2LeaderboardInformation={team2LeaderboardInformation}
+          team3LeaderboardInformation={team3LeaderboardInformation}
+          globalLeaderboardInformation={globalLeaderboardInformation}
+        />
         <PageSection
           containerProps={{ style: { marginTop: '-30px' } }}
           dividerComponent={

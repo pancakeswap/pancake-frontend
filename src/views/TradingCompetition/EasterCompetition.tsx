@@ -17,7 +17,7 @@ import {
 } from 'config/constants/trading-competition/phases'
 import PageSection from 'components/PageSection'
 import { DARKBG, MIDBLUEBG, MIDBLUEBG_DARK, LIGHTBLUEBG, LIGHTBLUEBG_DARK } from './pageSectionStyles'
-import { PrizesIcon, RanksIcon } from './svgs'
+import { PrizesIcon } from './svgs'
 import EasterStormBunny from './pngs/easter-storm.png'
 import Countdown from './components/Countdown'
 import RibbonWithImage from './components/RibbonWithImage'
@@ -25,12 +25,12 @@ import HowToJoin from './components/HowToJoin'
 import BattleCta from './components/BattleCta'
 import EasterBattleBanner from './easter/components/BattleBanner/EasterBattleBanner'
 import EasterPrizesInfo from './easter/components/PrizesInfo/EasterPrizesInfo'
-import TeamRanks from './components/TeamRanks/TeamRanks'
 import EasterYourScore from './easter/components/YourScore/EasterYourScore'
 import EasterCakerBunny from './pngs/easter-cakers.png'
 import { useTeamInformation } from './useTeamInformation'
 import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
 import Footer from './Footer'
+import TeamRanksSection from './components/TeamRanksSection'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -58,7 +58,7 @@ const EasterCompetition = () => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { profile, isLoading } = useProfile()
-  const { isDark, theme } = useTheme()
+  const { isDark } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractEaster(false)
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.OVER)
   const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
@@ -202,28 +202,13 @@ const EasterCompetition = () => {
           )}
         </Box>
       </PageSection>
-      <PageSection
-        containerProps={{ style: { marginTop: '-30px' } }}
-        index={3}
-        concaveDivider
-        clipFill={{ light: theme.colors.background }}
-        dividerPosition="top"
-        dividerComponent={
-          <RibbonWithImage imageComponent={<RanksIcon width="175px" />} ribbonDirection="up">
-            {t('Team Ranks')}
-          </RibbonWithImage>
-        }
-      >
-        <Box my="64px">
-          <TeamRanks
-            team1LeaderboardInformation={team1LeaderboardInformation}
-            team2LeaderboardInformation={team2LeaderboardInformation}
-            team3LeaderboardInformation={team3LeaderboardInformation}
-            globalLeaderboardInformation={globalLeaderboardInformation}
-            image={EasterCakerBunny}
-          />
-        </Box>
-      </PageSection>
+      <TeamRanksSection
+        image={EasterCakerBunny}
+        team1LeaderboardInformation={team1LeaderboardInformation}
+        team2LeaderboardInformation={team2LeaderboardInformation}
+        team3LeaderboardInformation={team3LeaderboardInformation}
+        globalLeaderboardInformation={globalLeaderboardInformation}
+      />
       <PageSection
         containerProps={{ style: { marginTop: '-30px' } }}
         dividerComponent={
