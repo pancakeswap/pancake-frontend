@@ -41,11 +41,12 @@ export const NetWinnings: React.FC<NetWinningsProps> = ({ amount, textPrefix = '
 
 export const NetWinningsRow: React.FC<{ amount: number }> = ({ amount }) => {
   const { t } = useTranslation()
+  const { token } = useConfig()
 
   return (
     <Row mb="4px">
       <Text fontSize="12px" color="textSubtle">
-        {t('Net Winnings (BNB)')}
+        {t('Net Winnings (%symbol%)', { symbol: token.symbol })}
       </Text>
       <NetWinnings amount={amount} textPrefix={amount > 0 ? '+' : ''} textColor={amount > 0 ? 'success' : 'failure'} />
     </Row>

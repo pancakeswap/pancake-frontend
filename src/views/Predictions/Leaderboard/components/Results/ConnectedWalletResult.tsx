@@ -6,6 +6,7 @@ import Container from 'components/Layout/Container'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { fetchAddressResult } from 'state/predictions'
 import { useGetOrFetchLeaderboardAddressResult } from 'state/predictions/hooks'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import DesktopRow from './DesktopRow'
 import MobileRow from './MobileRow'
 
@@ -15,6 +16,7 @@ const ConnectedWalletResult = () => {
   const dispatch = useLocalDispatch()
   const accountResult = useGetOrFetchLeaderboardAddressResult(account)
   const { isDesktop } = useMatchBreakpoints()
+  const { token } = useConfig()
 
   useEffect(() => {
     if (account) {
@@ -38,7 +40,7 @@ const ConnectedWalletResult = () => {
               <tr>
                 <Th width="60px">&nbsp;</Th>
                 <Th textAlign="left">&nbsp;</Th>
-                <Th textAlign="right">{t('Net Winnings (BNB)')}</Th>
+                <Th textAlign="right">{t('Net Winnings (%symbol%)', { symbol: token.symbol })}</Th>
                 <Th textAlign="center">{t('Win Rate')}</Th>
                 <Th>{t('Rounds Won')}</Th>
                 <Th>{t('Rounds Played')}</Th>

@@ -127,12 +127,13 @@ const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
     t,
     currentLanguage: { locale },
   } = useTranslation()
+  const { token } = useConfig()
 
   return (
     <PairPriceDisplay
       width="100%"
       value={hoverData ? hoverData.answer : formatBigNumberToFixed(answerAsBigNumber, 3, 8)}
-      inputSymbol="BNB"
+      inputSymbol={token.symbol}
       outputSymbol="USD"
       format={false}
       flexWrap="wrap"

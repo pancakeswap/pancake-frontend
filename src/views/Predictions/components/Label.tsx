@@ -8,6 +8,7 @@ import { useTranslation } from 'contexts/Localization'
 import { formatRoundTime } from '../helpers'
 import useCountdown from '../hooks/useCountdown'
 import usePollOraclePrice from '../hooks/usePollOraclePrice'
+import { useConfig } from '../context/ConfigProvider'
 
 const Token = styled(Box)`
   margin-top: -24px;
@@ -90,6 +91,7 @@ const Label = styled(Flex)<{ dir: 'left' | 'right' }>`
 
 export const PricePairLabel: React.FC = () => {
   const { price } = usePollOraclePrice()
+  const { token } = useConfig()
   const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
   const countUpState = useCountUp({
     start: 0,
@@ -113,7 +115,7 @@ export const PricePairLabel: React.FC = () => {
       </Token>
       <Label dir="left">
         <Title bold textTransform="uppercase">
-          BNBUSD
+          {`${token.symbol}USD`}
         </Title>
         <Price fontSize="12px">{`$${countUp}`}</Price>
       </Label>

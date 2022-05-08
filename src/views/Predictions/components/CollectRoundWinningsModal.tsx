@@ -153,7 +153,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
         <Flex alignItems="start" justifyContent="space-between" mb="8px">
           <Text>{t('Collecting')}</Text>
           <Box style={{ textAlign: 'right' }}>
-            <Text>{`${formatNumber(total, 0, 4)} BNB`}</Text>
+            <Text>{`${formatNumber(total, 0, 4)} ${token.symbol}`}</Text>
             <Text fontSize="12px" color="textSubtle">
               {`~$${totalBnb.toFixed(2)}`}
             </Text>

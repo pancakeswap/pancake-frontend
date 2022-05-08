@@ -1,6 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { CheckmarkCircleIcon, CheckmarkCircleFillIcon, Tag, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { formatBnbv2 } from '../../helpers'
 
 interface EnteredTagProps {
@@ -10,8 +11,10 @@ interface EnteredTagProps {
 
 const EnteredTag: React.FC<EnteredTagProps> = ({ amount, hasClaimed = false }) => {
   const { t } = useTranslation()
+  const { token } = useConfig()
+
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
-    <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnbv2(amount)} BNB`}</div>,
+    <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnbv2(amount)} ${token.symbol}`}</div>,
     { placement: 'bottom' },
   )
 

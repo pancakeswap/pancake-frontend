@@ -78,7 +78,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const { t } = useTranslation()
   const { fetchWithCatchTxError, loading: isTxPending } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const { address: predictionsAddress } = useConfig()
+  const { address: predictionsAddress, token } = useConfig()
   const predictionsContract = usePredictionsContract(predictionsAddress)
 
   const maxBalance = useMemo(() => {
@@ -145,15 +145,15 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     const hasSufficientBalance = inputAmount.gt(0) && inputAmount.lte(maxBalance)
 
     if (!hasSufficientBalance) {
-      setErrorMessage(t('Insufficient BNB balance'))
+      setErrorMessage(t('Insufficient %symbol% balance', { symbol: token.symbol }))
     } else if (inputAmount.gt(0) && inputAmount.lt(minBetAmount)) {
       setErrorMessage(
-        t('A minimum amount of %num% %token% is required', { num: formatBigNumber(minBetAmount), token: 'BNB' }),
+        t('A minimum amount of %num% %token% is required', { num: formatBigNumber(minBetAmount), token: token.symbol }),
       )
     } else {
       setErrorMessage(null)
     }
-  }, [value, maxBalance, minBetAmount, setErrorMessage, t])
+  }, [value, maxBalance, minBetAmount, setErrorMessage, t, token.symbol])
 
   return (
     <Card>
@@ -178,7 +178,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
           <Flex alignItems="center">
             <BinanceIcon mr="4px  " />
             <Text bold textTransform="uppercase">
-              BNB
+              {token.symbol}
             </Text>
           </Flex>
         </Flex>

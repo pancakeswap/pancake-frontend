@@ -5,6 +5,7 @@ import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { setLeaderboardFilter } from 'state/predictions'
 import Select, { OptionProps } from 'components/Select/Select'
 import Container from 'components/Layout/Container'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import AddressSearch from '../AddressSearch'
 
 const SearchWrapper = styled(Box)`
@@ -31,9 +32,11 @@ const FilterWrapper = styled(Box)`
 const Filters = () => {
   const { t } = useTranslation()
   const dispatch = useLocalDispatch()
+  const { token } = useConfig()
+
   const orderByOptions = [
     { label: t('Net Winnings'), value: 'netBNB' },
-    { label: t('Total BNB'), value: 'totalBNB' },
+    { label: t('Total %symbol%', { symbol: token.symbol }), value: 'totalBNB' },
     { label: t('Rounds Played'), value: 'totalBets' },
     { label: t('Win Rate'), value: 'winRate' },
   ]

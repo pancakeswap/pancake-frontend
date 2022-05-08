@@ -21,6 +21,7 @@ import TradingView from './components/TradingView'
 import { ErrorNotification, PauseNotification } from './components/Notification'
 import History from './History'
 import Positions from './Positions'
+import { useConfig } from './context/ConfigProvider'
 
 const ChainlinkChart = dynamic(() => import('./components/ChainlinkChart'), { ssr: false })
 
@@ -112,6 +113,7 @@ const Desktop: React.FC = () => {
   const dispatch = useLocalDispatch()
   const { t } = useTranslation()
   const status = useGetPredictionsStatus()
+  const { token } = useConfig()
 
   const openChartPane = () => {
     splitWrapperRef.current.style.transition = 'grid-template-rows 150ms'
@@ -214,7 +216,7 @@ const Desktop: React.FC = () => {
             {isChartPaneOpen && (
               <ChartByLabel
                 justifyContent="flex-end"
-                symbol="BNB/USD"
+                symbol={`${token.symbol}/USD`}
                 by={chartView}
                 linkProps={{
                   onMouseDown: (e) => {

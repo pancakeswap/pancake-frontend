@@ -18,7 +18,7 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
   const [isFetching, setIsFetching] = useState(false)
   const [bets, setBets] = useState<Bet[]>([])
   const { t } = useTranslation()
-  const { api } = useConfig()
+  const { api, token } = useConfig()
   const orderedBets = orderBy(bets, ['round.epoch'], ['desc'])
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
         <tr>
           <Th>{t('Round')}</Th>
           <Th>{t('Direction')}</Th>
-          <Th textAlign="right">{t('Winnings (BNB)')}</Th>
+          <Th textAlign="right">{t('Winnings (%symbol%)', { symbol: token.symbol })}</Th>
         </tr>
       </thead>
       <tbody>
