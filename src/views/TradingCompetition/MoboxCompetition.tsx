@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
-import { Box } from '@pancakeswap/uikit'
+import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTradingCompetitionContractMobox } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { PageMeta } from 'components/Layout/Page'
@@ -28,7 +28,7 @@ import HowToJoin from './components/HowToJoin'
 import BattleCta from './components/BattleCta'
 import Rules from './components/Rules'
 import { UserTradingInformationProps } from './types'
-import { CompetitionPage, BannerFlex, BattleBannerSection } from './styles'
+import { CompetitionPage, BannerFlex } from './styles'
 import RanksIcon from './svgs/RanksIcon'
 import MoboxTeamRanks from './mobox/components/TeamRanks/MoboxTeamRanks'
 import MoboxYourScore from './mobox/components/YourScore/MoboxYourScore'
@@ -43,6 +43,7 @@ const MoboxCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
   const { profile, isLoading } = useProfile()
   const { isDark, theme } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractMobox(false)
@@ -170,12 +171,18 @@ const MoboxCompetition = () => {
     <>
       <PageMeta />
       <CompetitionPage id="pcs-competition-page">
-        <BattleBannerSection background={TRADINGCOMPETITIONBANNER} hasCurvedDivider={false} index={1}>
+        <PageSection
+          style={{ paddingTop: '0px' }}
+          innerProps={{ style: { paddingTop: isMobile ? '30px' : '28px' } }}
+          background={TRADINGCOMPETITIONBANNER}
+          hasCurvedDivider={false}
+          index={1}
+        >
           <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
             <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
             <MoboxBattleBanner />
           </BannerFlex>
-        </BattleBannerSection>
+        </PageSection>
         <PageSection
           containerProps={{ style: { marginTop: '-30px' } }}
           background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}

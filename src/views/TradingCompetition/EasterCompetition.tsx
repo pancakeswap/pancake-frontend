@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
-import { Flex, Box } from '@pancakeswap/uikit'
+import { Flex, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTradingCompetitionContractEaster } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
@@ -29,7 +29,6 @@ import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
 import Footer from './Footer'
 import TeamRanksSection from './components/TeamRanksSection'
 import PrizesInfoSection from './components/PrizesInfoSection'
-import { BattleBannerSection } from './styles'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -51,6 +50,7 @@ const BannerFlex = styled(Flex)`
 const EasterCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
+  const { isMobile } = useMatchBreakpoints()
   const { profile, isLoading } = useProfile()
   const { isDark } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractEaster(false)
@@ -143,12 +143,18 @@ const EasterCompetition = () => {
 
   return (
     <CompetitionPage>
-      <BattleBannerSection background={DARKBG} hasCurvedDivider={false} index={1}>
+      <PageSection
+        style={{ paddingTop: '0px' }}
+        innerProps={{ style: { paddingTop: isMobile ? '30px' : '28px' } }}
+        background={DARKBG}
+        hasCurvedDivider={false}
+        index={1}
+      >
         <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
           <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
           <EasterBattleBanner />
         </BannerFlex>
-      </BattleBannerSection>
+      </PageSection>
       <PageSection
         containerProps={{ style: { marginTop: '-30px' } }}
         background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}

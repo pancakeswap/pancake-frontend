@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
-import { Box } from '@pancakeswap/uikit'
+import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTradingCompetitionContractFanToken } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { PageMeta } from 'components/Layout/Page'
@@ -20,7 +20,7 @@ import Countdown from './components/Countdown'
 import FanTokenStormBunny from './pngs/fan-token-storm.png'
 import HowToJoin from './components/HowToJoin'
 import BattleCta from './components/BattleCta'
-import { CompetitionPage, BannerFlex, BattleBannerSection } from './styles'
+import { CompetitionPage, BannerFlex } from './styles'
 import FanTokenBattleBanner from './fantoken/components/BattleBanner/FanTokenBattleBanner'
 import FanTokenYourScore from './fantoken/components/YourScore/FanTokenYourScore'
 import FanTokenPrizesInfo from './fantoken/components/PrizesInfo/FanTokenPrizesInfo'
@@ -34,6 +34,7 @@ import PrizesInfoSection from './components/PrizesInfoSection'
 const FanTokenCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
+  const { isMobile } = useMatchBreakpoints()
   const { profile, isLoading } = useProfile()
   const { isDark } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractFanToken(false)
@@ -154,12 +155,18 @@ const FanTokenCompetition = () => {
     <>
       <PageMeta />
       <CompetitionPage>
-        <BattleBannerSection background={DARKBG} hasCurvedDivider={false} index={1}>
+        <PageSection
+          style={{ paddingTop: '0px' }}
+          innerProps={{ style: { paddingTop: isMobile ? '30px' : '28px' } }}
+          background={DARKBG}
+          hasCurvedDivider={false}
+          index={1}
+        >
           <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
             <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
             <FanTokenBattleBanner />
           </BannerFlex>
-        </BattleBannerSection>
+        </PageSection>
         <PageSection
           containerProps={{ style: { marginTop: '-30px' } }}
           background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}

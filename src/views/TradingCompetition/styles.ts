@@ -19,12 +19,6 @@ export const BannerFlex = styled(Flex)`
   }
 `
 
-export const BattleBannerSection = styled(PageSection)`
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding-top: 0px;
-  }
-`
-
 export const BottomBunnyWrapper = styled(Box)`
   position: relative;
   z-index: 3;
