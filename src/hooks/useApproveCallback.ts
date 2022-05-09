@@ -106,6 +106,7 @@ export function useApproveCallback(
         addTransaction(response, {
           summary: `Approve ${amountToApprove.currency.symbol}`,
           approval: { tokenAddress: token.address, spender },
+          type: 'approve',
         })
       })
       .catch((error: any) => {
