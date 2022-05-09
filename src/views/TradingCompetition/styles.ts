@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import { Flex, Box } from '@pancakeswap/uikit'
-import PageSection from 'components/PageSection'
 
 export const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
