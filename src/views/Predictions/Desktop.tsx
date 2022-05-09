@@ -222,7 +222,7 @@ const Desktop: React.FC = () => {
                   onMouseDown: (e) => {
                     window.open(
                       chartView === PredictionsChartView.TradingView
-                        ? `https://www.tradingview.com/chart/?symbol=BINANCE%3ABNBUSD`
+                        ? `https://www.tradingview.com/chart/?symbol=BINANCE%3A${token.symbol}USD`
                         : 'https://chain.link/data-feeds',
                       '_blank',
                       'noopener noreferrer',
@@ -233,7 +233,7 @@ const Desktop: React.FC = () => {
                 }}
                 link={
                   chartView === PredictionsChartView.TradingView
-                    ? `https://www.tradingview.com/chart/?symbol=BINANCE%3ABNBUSD`
+                    ? `https://www.tradingview.com/chart/?symbol=BINANCE%3A${token.symbol}USD`
                     : 'https://chain.link/data-feeds'
                 }
               />
