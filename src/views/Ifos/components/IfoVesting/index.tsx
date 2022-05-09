@@ -14,6 +14,7 @@ const StyleVertingCard = styled(Card)`
   width: 100%;
   max-width: 400px;
   margin: 24px 0 0 0;
+  align-self: baseline;
   ${({ theme }) => theme.mediaQueries.md} {
     max-width: 350px;
     margin: -22px 12px 0 12px;
