@@ -1,7 +1,7 @@
 import {
-  // BlockIcon,
+  BlockIcon,
   Box,
-  // CheckmarkCircleIcon,
+  CheckmarkCircleIcon,
   Flex,
   MedalBronzeIcon,
   MedalGoldIcon,
@@ -90,10 +90,9 @@ const PrizesGrid = () => {
             <tr>
               <th>{t('Rank in team')}</th>
               <th>{t('Tier')}</th>
-              {/* <th>{t('Token Prizes (Split)')}</th> */}
-              <th>{t('DAR')}</th>
-              <th>{t('CAKE')}</th>
-              {/* <th>{t('NFT')}</th> */}
+              <th>{t('Token Prizes (Split)')}</th>
+              <th>{t('Achivements')}</th>
+              <th>{t('NFT')}</th>
             </tr>
           </thead>
           <tbody>
@@ -109,35 +108,24 @@ const PrizesGrid = () => {
                       {label.text}
                     </Text>
                   </Td>
-                  {/* <BoldTd>
+                  <BoldTd>
                     {`$${row.tokenPrizeInUsd.toLocaleString(undefined, {
                       minimumFractionDigits: 0,
                       maximumFractionDigits: 0,
                     })}`}
-                  </BoldTd> */}
+                  </BoldTd>
                   <Td>
                     <Flex alignItems="center" flexWrap="wrap" justifyContent="flex-start" width="100%">
-                      <Image src={`/images/achievements/${row.achievements[0].image}`} width={38} height={38} />
+                      <Image src={`/images/achievements/${row.achievements.image}`} width={38} height={38} />
                       <Text ml="8px" fontSize="12px" color="textSubtle">
-                        {`+${row.achievements[0].points.toLocaleString(undefined, {
+                        {`+${row.achievements.points.toLocaleString(undefined, {
                           minimumFractionDigits: 0,
                           maximumFractionDigits: 0,
                         })}`}
                       </Text>
                     </Flex>
                   </Td>
-                  <Td>
-                    <Flex alignItems="center" flexWrap="wrap" justifyContent="flex-start" width="100%">
-                      <Image src={`/images/achievements/${row.achievements[1].image}`} width={38} height={38} />
-                      <Text ml="8px" fontSize="12px" color="textSubtle">
-                        {`+${row.achievements[1].points.toLocaleString(undefined, {
-                          minimumFractionDigits: 0,
-                          maximumFractionDigits: 0,
-                        })}`}
-                      </Text>
-                    </Flex>
-                  </Td>
-                  {/* <Td>{row.hasNft ? <CheckmarkCircleIcon color="success" /> : <BlockIcon color="textDisabled" />}</Td> */}
+                  <Td>{row.hasNft ? <CheckmarkCircleIcon color="success" /> : <BlockIcon color="textDisabled" />}</Td>
                 </tr>
               )
             })}
