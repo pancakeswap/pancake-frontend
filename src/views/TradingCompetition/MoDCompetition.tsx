@@ -32,7 +32,7 @@ import {
 } from './svgs'
 import Countdown from './components/Countdown'
 import YourScore from './components/YourScore'
-import StormBunny from './pngs/mbox-storm-bunny.png'
+import StormBunny from './pngs/MoD-storm-bunny.png'
 import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
 import BattleBanner from './components/BattleBanner'
@@ -342,12 +342,12 @@ const MoDCompetition = () => {
           clipFill={{ light: theme.colors.background }}
           background={DARKBG}
         >
-          <Flex alignItems="center">
+          <Flex alignItems="center" position="relative">
             <BottomBunnyWrapper>
-              <Image src={StormBunny} width={254} height={227} />
+              <Image src={StormBunny} width={182} height={213} />
             </BottomBunnyWrapper>
             {shouldHideCta ? null : (
-              <Flex height="fit-content">
+              <Flex height="fit-content" position="relative" zIndex="2">
                 <BattleCta
                   userTradingInformation={userTradingInformation}
                   currentPhase={currentPhase}
