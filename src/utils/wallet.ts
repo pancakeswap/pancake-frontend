@@ -8,12 +8,24 @@ import { nodes } from './getRpcUrl'
 
 const NETWORK_CONFIG = {
   [ChainId.MAINNET]: {
-    name: 'BNB Smart Chain Mainnet',
-    scanURL: BASE_BSC_SCAN_URLS[ChainId.MAINNET],
+    chainName: 'BNB Smart Chain Mainnet',
+    blockExplorerUrls: [BASE_BSC_SCAN_URLS[ChainId.MAINNET]],
+    nativeCurrency: {
+      name: 'BNB',
+      symbol: 'bnb',
+      decimals: 18,
+    },
+    rpcUrls: nodes,
   },
   [ChainId.TESTNET]: {
-    name: 'BNB Smart Chain Testnet',
-    scanURL: BASE_BSC_SCAN_URLS[ChainId.TESTNET],
+    chainName: 'BNB Smart Chain Testnet',
+    blockExplorerUrls: [BASE_BSC_SCAN_URLS[ChainId.TESTNET]],
+    nativeCurrency: {
+      name: 'BNB',
+      symbol: 'bnb',
+      decimals: 18,
+    },
+    rpcUrls: nodes,
   },
 }
 
@@ -21,9 +33,11 @@ const NETWORK_CONFIG = {
  * Prompt the user to add BSC as a network on Metamask, or switch to BSC if the wallet is on a different network
  * @returns {boolean} true if the setup succeeded, false otherwise
  */
-export const setupNetwork = async (externalProvider?: ExternalProvider) => {
+export const setupNetwork = async (
+  externalProvider?: ExternalProvider,
+  chainId = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID, 10) as keyof typeof NETWORK_CONFIG,
+) => {
   const provider = externalProvider || window.ethereum
-  const chainId = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID, 10) as keyof typeof NETWORK_CONFIG
   if (!NETWORK_CONFIG[chainId]) {
     console.error('Invalid chain id')
     return false
@@ -43,14 +57,7 @@ export const setupNetwork = async (externalProvider?: ExternalProvider) => {
             params: [
               {
                 chainId: `0x${chainId.toString(16)}`,
-                chainName: NETWORK_CONFIG[chainId].name,
-                nativeCurrency: {
-                  name: 'BNB',
-                  symbol: 'bnb',
-                  decimals: 18,
-                },
-                rpcUrls: nodes,
-                blockExplorerUrls: [`${NETWORK_CONFIG[chainId].scanURL}/`],
+                ...NETWORK_CONFIG[chainId],
               },
             ],
           })

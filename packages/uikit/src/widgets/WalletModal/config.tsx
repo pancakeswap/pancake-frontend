@@ -36,7 +36,6 @@ const connectors: Config[] = [
     icon: TrustWallet,
     connectorId: ConnectorNames.Injected,
     priority: 4,
-    mobileOnly: true,
   },
   {
     title: "WalletConnect",
@@ -61,7 +60,6 @@ const connectors: Config[] = [
     icon: SafePal,
     connectorId: ConnectorNames.Injected,
     priority: 999,
-    mobileOnly: true,
   },
   {
     title: "Coin98",

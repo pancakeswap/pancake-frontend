@@ -17,6 +17,8 @@ import { useStore, persistor } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { NextPage } from 'next'
+import { createNetworkGuard } from 'components/NetworkGuard'
+import { CHAIN_ID } from 'config/constants/networks'
 import { Blocklist, Updaters } from '..'
 import ErrorBoundary from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
@@ -97,6 +99,7 @@ function MyApp(props: AppProps) {
 
 type NextPageWithLayout = NextPage & {
   Layout?: React.FC
+  NetworkGuard?: React.FC
 }
 
 type AppPropsWithLayout = AppProps & {
@@ -105,15 +108,20 @@ type AppPropsWithLayout = AppProps & {
 
 const ProductionErrorBoundary = process.env.NODE_ENV === 'production' ? ErrorBoundary : Fragment
 
+const DefaultNetworkGuard = createNetworkGuard(CHAIN_ID)
+
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   // Use the layout defined at the page level, if available
   const Layout = Component.Layout || Fragment
+  const NetworkGuard = Component.NetworkGuard || DefaultNetworkGuard
   return (
     <ProductionErrorBoundary>
       <Menu>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <NetworkGuard>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </NetworkGuard>
       </Menu>
       <EasterEgg iterations={2} />
       <ToastListener />

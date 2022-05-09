@@ -11,7 +11,6 @@ import {
 } from '@web3-react/walletconnect-connector'
 import { ConnectorNames, connectorLocalStorageKey, Text, Box, LinkExternal } from '@pancakeswap/uikit'
 import { connectorsByName } from 'utils/web3React'
-import { setupNetwork } from 'utils/wallet'
 import useToast from 'hooks/useToast'
 import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
@@ -20,7 +19,7 @@ import { clearUserStates } from '../utils/clearUserStates'
 const useAuth = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { chainId, activate, deactivate, setError } = useWeb3React()
+  const { chainId, activate, deactivate } = useWeb3React()
   const { toastError } = useToast()
 
   const login = useCallback(
@@ -32,12 +31,8 @@ const useAuth = () => {
       if (typeof connector !== 'function' && connector) {
         activate(connector, async (error: Error) => {
           if (error instanceof UnsupportedChainIdError) {
-            setError(error)
-            const provider = await connector.getProvider()
-            const hasSetup = await setupNetwork(provider)
-            if (hasSetup) {
-              activate(connector)
-            }
+            // let network guard handle the error
+            console.info(error)
           } else {
             window?.localStorage?.removeItem(connectorLocalStorageKey)
             if (error instanceof NoEthereumProviderError || error instanceof NoBscProviderError) {
@@ -69,7 +64,7 @@ const useAuth = () => {
         toastError(t('Unable to find connector'), t('The connector config is wrong'))
       }
     },
-    [t, activate, toastError, setError],
+    [t, activate, toastError],
   )
 
   const logout = useCallback(() => {
