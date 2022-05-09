@@ -3,11 +3,12 @@ import Image from 'next/image'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
-import AllBunniesImage from '../../pngs/mod-all-bunnies.png'
+import AllBunniesImage from '../../pngs/MoD-all-bunnies.png'
 import { Heading1Text, Heading2Text } from '../CompetitionHeadingText'
 import { MoDLogo } from '../../svgs'
 import meshImg from '../../pngs/mod-mesh.png'
 import textBgLightImg from '../../pngs/mod-text-light.png'
+import bgShineImg from '../../pngs/MoD-bg-shine.png'
 
 const TextStyles = (theme) => `
   text-align: center;
@@ -33,6 +34,16 @@ const TextBgLight = styled.div`
   height: 184px;
   background-image: url('${textBgLightImg.src}');
   z-index: -1;
+`
+const BgShine = styled.div`
+  position: absolute;
+  bottom: 50px;
+  left: 10%;
+  width: 1257px;
+  height: 205px;
+  background-image: url('${bgShineImg.src}');
+  background-size: cover;
+  z-index: 0;
 `
 
 const StarImage = styled.div`
@@ -74,7 +85,7 @@ const ImageWrapper = styled.div`
     position: absolute;
     width: auto;
     bottom: -5%;
-    z-index: -1;
+    z-index: 1;
     right: 10px;
   }
   ${({ theme }) => theme.mediaQueries.xl} {
@@ -150,6 +161,7 @@ const BattleBanner = () => {
   return (
     <Flex flexDirection="column">
       <Mesh />
+      <BgShine />
       <StarImage />
       <ImageWrapper>
         <Image src={AllBunniesImage} alt="all the bunnies" width={523} height={395} />
