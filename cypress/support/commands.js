@@ -20,7 +20,7 @@ const TEST_PRIVATE_KEY = '0x60aec29d4b415dfeff21e7f7d07ff2aca0e26f129fe52fc4e86f
 // address of the above key
 export const TEST_ADDRESS_NEVER_USE = new Wallet(TEST_PRIVATE_KEY).address
 
-export const TEST_ADDRESS_NEVER_USE_SHORTENED = `0x...${TEST_ADDRESS_NEVER_USE.substr(-4, 4)}`
+export const TEST_ADDRESS_NEVER_USE_SHORTENED = `0x...${TEST_ADDRESS_NEVER_USE.substring(-4, 4)}`
 
 class CustomizedBridge extends Eip1193Bridge {
   async sendAsync(...args) {
