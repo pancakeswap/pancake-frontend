@@ -57,7 +57,7 @@ const CompetitionBanner = () => {
           <NextLinkFromReactRouter to="/competition">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
-                {t('Trade Now')}
+                {t('Register Now')}
               </Text>
               <ArrowForwardIcon color="invertedContrast" />
             </Button>
