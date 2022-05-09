@@ -56,7 +56,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         </Text>
         <Flex mt="16px" alignItems="center">
           {/* achievements */}
-          <Image src={`/images/achievements/${achievement[0].image}`} width={25} height={25} />
+          <Image src={`/images/achievements/${achievement.image}`} width={25} height={25} />
           <Text ml={['4px', '8px']}>
             +{userPointReward} {t('Points')}
           </Text>
