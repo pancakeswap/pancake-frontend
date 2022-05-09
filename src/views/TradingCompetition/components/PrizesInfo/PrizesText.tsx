@@ -33,11 +33,9 @@ const PrizesText = () => {
           'The final winning team will be the team with the highest total volume score at the end of the competition period.',
         )}
       </Text>
-      <Text mt="8px">
-        {t(
-          'In addition to token prizes there are NFT rewards:300 PancakeSwap newly designed NFT to the top 100 traders in each of the three teams.100 Mines of Dalarnia NFTs to the top 100 traders ranked by the $DAR trading volume.',
-        )}
-      </Text>
+      <Text mt="10px">{t('In addition to token prizes there are NFT rewards:')}</Text>
+      <Text>A. {t('300 newly-designed PancakeSwap NFTs to the Top 100 Traders in each team.')}</Text>
+      <Text>B. {t('100 Mines of Dalarnia NFTs to the Top 100 Traders ranked by the $DAR Trading Volume.')}</Text>
       {/* <Flex>
         <NftIcon width="32px" mr="16px" color="textSubtle" />
         <Text mt="8px">
