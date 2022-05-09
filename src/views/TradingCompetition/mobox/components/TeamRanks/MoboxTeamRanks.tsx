@@ -7,7 +7,7 @@ import { TeamRanksProps } from '../../../types'
 import MoboxCakerBunny from '../../../pngs/mobox-cakers.png'
 import TopTradersCard from '../../../components/TeamRanks/TopTradersCard'
 import useGetParticipants from '../../../components/TeamRanks/Podium/useGetParticipants'
-import MoboxPodium from './Podium/MoboxPodium'
+import PodiumWithParticipants from '../../../components/TeamRanks/Podium/PodiumWithParticipants'
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -95,7 +95,7 @@ const MoboxTeamRanks: React.FC<TeamRanksProps> = ({
   return (
     <Wrapper>
       <StyledPodiumWrapper>
-        <MoboxPodium teamsSortedByVolume={teamsSortedByVolume} participants={participants} />
+        <PodiumWithParticipants teamsSortedByVolume={teamsSortedByVolume} participants={participants} />
         <TotalParticipantsWrapper>
           <TotalParticipantsCloud flexDirection="column" mt="24px" justifySelf="flex-start">
             <Text color="secondary" fontSize="24px" bold>

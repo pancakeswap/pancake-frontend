@@ -7,7 +7,7 @@ import MoDCakerBunny from '../../../pngs/MoD-caker.png'
 import useGetParticipants from '../../../components/TeamRanks/Podium/useGetParticipants'
 import { TeamRanksProps } from '../../../types'
 import TopTradersCard from '../../../components/TeamRanks/TopTradersCard'
-import ModPodium from './Podium/ModPodium'
+import PodiumWithParticipants from '../../../components/TeamRanks/Podium/PodiumWithParticipants'
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -91,7 +91,7 @@ const ModTeamRanks: React.FC<TeamRanksProps> = ({
   return (
     <Wrapper>
       <StyledPodiumWrapper>
-        <ModPodium teamsSortedByVolume={teamsSortedByVolume} participants={participants} />
+        <PodiumWithParticipants teamsSortedByVolume={teamsSortedByVolume} participants={participants} />
         <TotalParticipantsWrapper>
           <TotalParticipantsCloud flexDirection="column" mt="24px" justifySelf="flex-start">
             <Text color="secondary" fontSize="24px" bold>

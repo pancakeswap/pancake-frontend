@@ -1,18 +1,9 @@
 import { useTranslation } from 'contexts/Localization'
 import { Flex, Text, Skeleton, AccountFilledIcon } from '@pancakeswap/uikit'
-import TeamPodiumIcon from '../../../../components/TeamRanks/Podium/TeamPodiumIcon'
-import { PodiumBase } from '../../../../svgs'
-import { localiseTradingVolume } from '../../../../helpers'
-import {
-  StyledVolumeText,
-  PodiumProps,
-  RightBox,
-  MiddleBox,
-  LeftBox,
-  Wrapper,
-  Inner,
-  StyledVolumeFlex,
-} from '../../../../components/TeamRanks/Podium/styles'
+import { StyledVolumeText, PodiumProps, RightBox, MiddleBox, LeftBox, Wrapper, Inner, StyledVolumeFlex } from './styles'
+import TeamPodiumIcon from './TeamPodiumIcon'
+import { PodiumBase } from '../../../svgs'
+import { localiseTradingVolume } from '../../../helpers'
 
 interface MoboxPodiumProps extends PodiumProps {
   participants: string[]
@@ -37,7 +28,7 @@ const ParticipantBox = ({ participants, t }) => {
   )
 }
 
-const MoboxPodium: React.FC<MoboxPodiumProps> = ({ teamsSortedByVolume, participants }) => {
+const PodiumWithParticipants: React.FC<MoboxPodiumProps> = ({ teamsSortedByVolume, participants }) => {
   const { t } = useTranslation()
   const firstTeam = teamsSortedByVolume && teamsSortedByVolume[0]
   const secondTeam = teamsSortedByVolume && teamsSortedByVolume[1]
@@ -102,4 +93,4 @@ const MoboxPodium: React.FC<MoboxPodiumProps> = ({ teamsSortedByVolume, particip
   )
 }
 
-export default MoboxPodium
+export default PodiumWithParticipants
