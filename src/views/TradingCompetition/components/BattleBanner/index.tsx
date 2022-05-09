@@ -3,14 +3,47 @@ import Image from 'next/image'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
-import AllBunniesImage from '../../pngs/mbox-all-bunnies.png'
+import AllBunniesImage from '../../pngs/MoD-hero-bunnies.png'
 import { Heading1Text, Heading2Text } from '../CompetitionHeadingText'
+import { MoDLogo } from '../../svgs'
+import meshImg from '../../pngs/mod-mesh.png'
+import textBgLightImg from '../../pngs/mod-text-light.png'
+import bgShineImg from '../../pngs/MoD-bg-shine.png'
 
 const TextStyles = (theme) => `
   text-align: center;
   ${theme.mediaQueries.md} {
     text-align: left;
   }
+`
+
+const Mesh = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 242px;
+  background-image: url('${meshImg.src}');
+  z-index: -1;
+`
+const TextBgLight = styled.div`
+  position: absolute;
+  top: -25px;
+  left: -150px;
+  width: 599px;
+  height: 184px;
+  background-image: url('${textBgLightImg.src}');
+  z-index: -1;
+`
+const BgShine = styled.div`
+  position: absolute;
+  bottom: 50px;
+  left: 10%;
+  width: 1257px;
+  height: 205px;
+  background-image: url('${bgShineImg.src}');
+  background-size: cover;
+  z-index: 0;
 `
 
 const StarImage = styled.div`
@@ -44,13 +77,15 @@ const StarImage = styled.div`
 `
 
 const ImageWrapper = styled.div`
+  position: relative;
+  z-index: 2;
   width: 75%;
   margin: 0 auto;
   ${({ theme }) => theme.mediaQueries.md} {
     position: absolute;
     width: auto;
     bottom: -5%;
-    z-index: -1;
+    z-index: 1;
     right: 10px;
   }
   ${({ theme }) => theme.mediaQueries.xl} {
@@ -68,8 +103,9 @@ const StyledText = styled(Text)`
   ${({ theme }) => TextStyles(theme)}
 `
 
-const StyledHeading1Text = styled(Heading1Text)`
+const StyledHeading1Wrapper = styled(Heading1Text)`
   width: 100%;
+  position: relative;
   white-space: normal;
   ${({ theme }) => TextStyles(theme)}
 
@@ -77,12 +113,32 @@ const StyledHeading1Text = styled(Heading1Text)`
     width: 780px;
   }
 `
+const StyledHeading1Text = styled.div`
+  position: relative;
+  top: -10px;
+  font-family: 'Kanit';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 46px;
+  line-height: 110%;
+  /* identical to box height, or 51px */
+
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-feature-settings: 'liga' off;
+  color: #ffffff;
+  text-shadow: 0px 5px 0px #13101d;
+`
 
 const StyledHeading2Text = styled(Heading2Text)`
   width: 100%;
   white-space: initial;
-  -webkit-text-stroke-width: 1.2px;
-  -webkit-text-stroke-color: #462091;
+  /* -webkit-text-stroke-width: 1.2px;
+  -webkit-text-stroke-color: #462091; */
+  text-shadow: 0px 0px 10px rgba(0, 255, 209, 0.22), 0px 0px 8px rgba(0, 56, 255, 0.25),
+    0px 0px 18px rgba(0, 255, 71, 0.52);
   ${({ theme }) => TextStyles(theme)};
 
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -92,6 +148,7 @@ const StyledHeading2Text = styled(Heading2Text)`
 
 const StyledHeading = styled(Heading)`
   ${({ theme }) => TextStyles(theme)}
+  text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.25), 0px 0px 18px rgba(161, 101, 194, 0.88), 0px 0px 49px rgba(161, 0, 255, 0.55);
 `
 
 const BattleBanner = () => {
@@ -103,21 +160,36 @@ const BattleBanner = () => {
 
   return (
     <Flex flexDirection="column">
+      <Mesh />
+      <BgShine />
       <StarImage />
       <ImageWrapper>
         <Image src={AllBunniesImage} alt="all the bunnies" width={523} height={395} />
       </ImageWrapper>
-      <StyledText mb="16px" color="textSubtle" bold>
-        {new Date(2022, 3).toLocaleString(locale, {
+      <StyledText
+        mb="16px"
+        color="#FFD585"
+        bold
+        style={{
+          textShadow:
+            '0px 0px 10px rgba(255, 175, 0, 0.22), 0px 0px 8px rgba(255, 61, 0, 0.25), 0px 0px 18px rgba(255, 135, 0, 0.55)',
+        }}
+      >
+        {new Date(2022, 4).toLocaleString(locale, {
           month: 'short',
         })}{' '}
-        13-19, 2022
+        17-24, 2022
       </StyledText>
-      <StyledHeading1Text>{t('Mobox Trading Competition')}</StyledHeading1Text>
-      <StyledHeading2Text background={theme.colors.gradients.gold} $fill>
-        {t('$80,000 in Prizes with Tokens and NFTs!')}
+
+      <StyledHeading1Wrapper>
+        <MoDLogo />
+        <StyledHeading1Text>{t('Trading Competition')}</StyledHeading1Text>
+        <TextBgLight />
+      </StyledHeading1Wrapper>
+      <StyledHeading2Text background="#BDF9DA" $fill>
+        {t('$120,000 in Prizes with Tokens and NFTs!')}
       </StyledHeading2Text>
-      <StyledHeading scale="md" color={theme.isDark ? 'textSubtle' : 'inputSecondary'} mt="16px">
+      <StyledHeading scale="md" color={theme.isDark ? 'card' : 'inputSecondary'} mt="16px">
         {t('Compete with other teams for the highest trading volume!')}
       </StyledHeading>
       <Flex height="100px" />

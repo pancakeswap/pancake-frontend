@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Modal, Button, Flex, AutoRenewIcon, Heading, Text } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import { useTranslation } from 'contexts/Localization'
-import { useTradingCompetitionContractMobox } from 'hooks/useContract'
+import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -23,7 +23,7 @@ const ImageWrapper = styled(Flex)`
 `
 
 const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, userTradingInformation }) => {
-  const tradingCompetitionContract = useTradingCompetitionContractMobox()
+  const tradingCompetitionContract = useTradingCompetitionContractMoD()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
   const { t } = useTranslation()
