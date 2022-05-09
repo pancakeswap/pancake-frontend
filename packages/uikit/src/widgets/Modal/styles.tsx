@@ -22,6 +22,7 @@ export const ModalTitle = styled(Flex)`
 export const ModalBody = styled(Flex)`
   flex-direction: column;
   max-height: 90vh;
+  max-height: calc(var(--vh, 1vh) * 90);
   overflow-y: auto;
 `;
 
@@ -49,6 +50,7 @@ export const ModalContainer = styled(Box)<{ minWidth: string }>`
   border-radius: 32px;
   width: 100%;
   max-height: 100vh;
+  max-height: calc(var(--vh, 1vh) * 100);
   z-index: ${({ theme }) => theme.zIndices.modal};
 
   ${({ theme }) => theme.mediaQueries.xs} {
