@@ -34,7 +34,6 @@ import AdvancedSwapDetailsDropdown from './components/AdvancedSwapDetailsDropdow
 import confirmPriceImpactWithoutFee from './components/confirmPriceImpactWithoutFee'
 import { ArrowWrapper, SwapCallbackError, Wrapper } from './components/styleds'
 import TradePrice from './components/TradePrice'
-import ImportTokenWarningModal from './components/ImportTokenWarningModal'
 import ProgressSteps from './components/ProgressSteps'
 import { AppBody } from '../../components/App'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
@@ -64,6 +63,7 @@ import SwapWarningModal from './components/SwapWarningModal'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
+import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
 
 const Label = styled(Text)`
   font-size: 12px;
