@@ -45,7 +45,12 @@ const CompetitionBanner = () => {
       <S.Inner>
         <S.LeftWrapper>
           <Flex>
-            <Image src={modWhiteLogo} alt="" width={isMobile ? '68px' : '112px'} height={isMobile ? '18px' : '33px'} />
+            <Image
+              src={modWhiteLogo}
+              alt="ModLogo"
+              width={isMobile ? '68px' : '112px'}
+              height={isMobile ? '18px' : '33px'}
+            />
             <TradingCompetition>{t('Trading Competition')}</TradingCompetition>
           </Flex>
           <Header width={['150px', '150px', 'auto']}>{t('$120,000 in Prizes!')}</Header>
