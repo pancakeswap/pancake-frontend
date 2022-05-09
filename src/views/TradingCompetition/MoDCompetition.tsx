@@ -40,11 +40,12 @@ import { UserTradingInformationProps } from './types'
 import { CompetitionPage, BannerFlex, BottomBunnyWrapper } from './styles'
 import RanksIcon from './svgs/RanksIcon'
 import ModBattleBanner from './mod/components/BattleBanner/ModBattleBanner'
-import ModTeamRanks from './mod/components/TeamRanks/ModTeamRanks'
 import ModPrizesInfo from './mod/components/PrizesInfo/ModPrizesInfo'
 import ModYourScore from './mod/components/YourScore/ModYourScore'
 import { useTeamInformation } from './useTeamInformation'
 import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
+import TeamRanksWithParticipants from './components/TeamRanks/TeamRanksWithParticipants'
+import MoDCakerBunny from './pngs/MoD-caker.png'
 
 const MoDCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
@@ -252,7 +253,8 @@ const MoDCompetition = () => {
             }
           >
             <Box my="64px">
-              <ModTeamRanks
+              <TeamRanksWithParticipants
+                image={MoDCakerBunny}
                 team1LeaderboardInformation={team1LeaderboardInformation}
                 team2LeaderboardInformation={team2LeaderboardInformation}
                 team3LeaderboardInformation={team3LeaderboardInformation}

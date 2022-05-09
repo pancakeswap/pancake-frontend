@@ -1,13 +1,13 @@
 import styled from 'styled-components'
+import { StaticImageData } from 'next/dist/client/image'
 import { Flex, Box, Text, Skeleton, AccountFilledIcon } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import orderBy from 'lodash/orderBy'
 import { useTranslation } from 'contexts/Localization'
-import MoDCakerBunny from '../../../pngs/MoD-caker.png'
-import useGetParticipants from '../../../components/TeamRanks/Podium/useGetParticipants'
-import { TeamRanksProps } from '../../../types'
-import TopTradersCard from '../../../components/TeamRanks/TopTradersCard'
-import PodiumWithParticipants from '../../../components/TeamRanks/Podium/PodiumWithParticipants'
+import { TeamRanksProps } from '../../types'
+import useGetParticipants from './Podium/useGetParticipants'
+import TopTradersCard from './TopTradersCard'
+import PodiumWithParticipants from './Podium/PodiumWithParticipants'
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -63,7 +63,12 @@ const TotalParticipantsCloud = styled(Flex)`
   }
 `
 
-const ModTeamRanks: React.FC<TeamRanksProps> = ({
+interface TeamRanksWithParticipantsProps extends TeamRanksProps {
+  image: StaticImageData
+}
+
+const TeamRanksWithParticipants: React.FC<TeamRanksWithParticipantsProps> = ({
+  image,
   team1LeaderboardInformation,
   team2LeaderboardInformation,
   team3LeaderboardInformation,
@@ -109,7 +114,7 @@ const ModTeamRanks: React.FC<TeamRanksProps> = ({
             </Flex>
           </TotalParticipantsCloud>
           <BunnyImageWrapper mt="24px">
-            <Image src={MoDCakerBunny} width={292} height={234} />
+            <Image src={image} width={292} height={234} />
           </BunnyImageWrapper>
         </TotalParticipantsWrapper>
       </StyledPodiumWrapper>
@@ -126,4 +131,4 @@ const ModTeamRanks: React.FC<TeamRanksProps> = ({
   )
 }
 
-export default ModTeamRanks
+export default TeamRanksWithParticipants

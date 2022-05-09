@@ -30,7 +30,6 @@ import Rules from './components/Rules'
 import { UserTradingInformationProps } from './types'
 import { CompetitionPage, BannerFlex } from './styles'
 import RanksIcon from './svgs/RanksIcon'
-import MoboxTeamRanks from './mobox/components/TeamRanks/MoboxTeamRanks'
 import MoboxYourScore from './mobox/components/YourScore/MoboxYourScore'
 import MoboxBattleBanner from './mobox/components/BattleBanner/MoboxBattleBanner'
 import MoboxPrizesInfo from './mobox/components/PrizesInfo/MoboxPrizesInfo'
@@ -38,6 +37,8 @@ import { useTeamInformation } from './useTeamInformation'
 import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
 import Footer from './Footer'
 import PrizesInfoSection from './components/PrizesInfoSection'
+import TeamRanksWithParticipants from './components/TeamRanks/TeamRanksWithParticipants'
+import MoboxCakerBunny from './pngs/mobox-cakers.png'
 
 const MoboxCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
@@ -244,7 +245,8 @@ const MoboxCompetition = () => {
             }
           >
             <Box my="64px">
-              <MoboxTeamRanks
+              <TeamRanksWithParticipants
+                image={MoboxCakerBunny}
                 team1LeaderboardInformation={team1LeaderboardInformation}
                 team2LeaderboardInformation={team2LeaderboardInformation}
                 team3LeaderboardInformation={team3LeaderboardInformation}
