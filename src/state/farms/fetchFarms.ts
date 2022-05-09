@@ -1,6 +1,6 @@
 import { SerializedFarmConfig } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
-import { BIG_TEN, BIG_ZERO } from '../../utils/bigNumber'
+import { BIG_TEN, BIG_ZERO, BIG_TWO } from '../../utils/bigNumber'
 import { fetchPublicFarmsData } from './fetchPublicFarmData'
 import { fetchMasterChefData } from './fetchMasterChefData'
 import { SerializedFarm } from '../types'
@@ -28,7 +28,7 @@ const fetchFarms = async (farmsToFetch: SerializedFarmConfig[]): Promise<Seriali
     const quoteTokenAmountMc = quoteTokenAmountTotal.times(lpTokenRatio)
 
     // Total staked in LP, in quote token value
-    const lpTotalInQuoteToken = quoteTokenAmountMc.times(new BigNumber(2))
+    const lpTotalInQuoteToken = quoteTokenAmountMc.times(BIG_TWO)
 
     const allocPoint = info ? new BigNumber(info.allocPoint?._hex) : BIG_ZERO
     const poolWeight = totalRegularAllocPoint ? allocPoint.div(new BigNumber(totalRegularAllocPoint)) : BIG_ZERO
