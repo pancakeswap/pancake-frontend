@@ -1,6 +1,8 @@
 import { Flex, Heading, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import Image from 'next/image'
 import styled from 'styled-components'
+import FlipperBunny from '../../pngs/MoD-flipper.png'
 
 const StyledFlex = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.md} {
@@ -9,7 +11,7 @@ const StyledFlex = styled(Flex)`
 `
 
 const ImageWrapper = styled.div`
-  width: 200px;
+  width: 270px;
   margin: 40px auto 0;
   display: none;
   ${({ theme }) => theme.mediaQueries.md} {
@@ -47,10 +49,10 @@ const PrizesText = () => {
       <Flex>
         <BunnyPlaceholderIcon width="32px" mr="16px" />
         <Text mt="8px">{t('500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.')}</Text>
-      </Flex>
+      </Flex> */}
       <ImageWrapper>
-        <Image src={FlipperBunny} alt="Flipper bunny" width={220} height={254} />
-      </ImageWrapper> */}
+        <Image src={FlipperBunny} alt="Flipper bunny" width={270} height={293} />
+      </ImageWrapper>
     </StyledFlex>
   )
 }

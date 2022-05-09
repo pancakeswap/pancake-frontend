@@ -4,7 +4,7 @@ import Image from 'next/image'
 import orderBy from 'lodash/orderBy'
 import { useTranslation } from 'contexts/Localization'
 import { TeamRanksProps } from '../../types'
-import CakerBunny from '../../pngs/cakers.png'
+import MoDCakerBunny from '../../pngs/MoD-caker.png'
 import TopTradersCard from './TopTradersCard'
 import Podium from './Podium'
 import useGetParticipants from './Podium/useGetParticipants'
@@ -34,8 +34,8 @@ const BunnyImageWrapper = styled(Box)`
 
   ${({ theme }) => theme.mediaQueries.md} {
     display: flex;
-    width: 200px;
-    height: 205px;
+    width: 292px;
+    height: 234px;
   }
 `
 
@@ -113,7 +113,7 @@ const TeamRanks: React.FC<TeamRanksProps> = ({
             </Flex>
           </TotalParticipantsCloud>
           <BunnyImageWrapper mt="24px">
-            <Image src={CakerBunny} width={200} height={205} />
+            <Image src={MoDCakerBunny} width={292} height={234} />
           </BunnyImageWrapper>
         </TotalParticipantsWrapper>
       </StyledPodiumWrapper>
