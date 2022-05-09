@@ -178,7 +178,7 @@ const BattleBanner = () => {
         {new Date(2022, 4).toLocaleString(locale, {
           month: 'short',
         })}{' '}
-        17-23, 2022
+        17-24, 2022
       </StyledText>
 
       <StyledHeading1Wrapper>
