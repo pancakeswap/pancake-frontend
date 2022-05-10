@@ -69,12 +69,18 @@ const FarmMobileCell = styled.td`
   padding-top: 24px;
 `
 
+const TypeCell = styled.td`
+  padding-top: 24px;
+  padding-left: 8px;
+`
+
 const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
   const { details, userDataReady } = props
   const hasStakedAmount = !!useFarmUser(details.pid).stakedBalance.toNumber()
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
   const shouldRenderChild = useDelayedUnmount(actionPanelExpanded, 300)
   const { t } = useTranslation()
+  const { isXs } = useMatchBreakpoints()
 
   const toggleActionPanel = () => {
     setActionPanelExpanded(!actionPanelExpanded)
@@ -106,9 +112,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
                   <td key={key}>
                     <CellInner style={{ width: '100px' }}>
                       <CellLayout>
-                        <Flex flexDirection="column" style={{ gap: '2px' }}>
-                          {props[key] === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />}
-                        </Flex>
+                        {props[key] === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />}
                       </CellLayout>
                     </CellInner>
                   </td>
@@ -155,9 +159,21 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
           <tr>
             <FarmMobileCell>
               <CellLayout>
-                <Farm {...props.farm} />
+                <Flex flexDirection="column" alignItems="flex-start" style={{ gap: '4px' }}>
+                  <Farm {...props.farm} />
+                  {isXs ? (
+                    props.type === 'community' ? (
+                      <FarmAuctionTag marginLeft="16px" scale="sm" />
+                    ) : (
+                      <CoreTag marginLeft="16px" scale="sm" />
+                    )
+                  ) : null}
+                </Flex>
               </CellLayout>
             </FarmMobileCell>
+            {!isXs && (
+              <TypeCell>{props.type === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />}</TypeCell>
+            )}
           </tr>
           <tr>
             <EarnedMobileCell>
