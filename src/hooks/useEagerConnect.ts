@@ -34,12 +34,12 @@ const safeGetLocalStorageItem = () => {
   }
 }
 
-const useEagerConnect = () => {
+const useEagerConnect = (chainId: string | number) => {
   const { login } = useAuth()
 
   useEffect(() => {
     const tryLogin = (c: ConnectorNames) => {
-      setTimeout(() => login(c))
+      setTimeout(() => login(c, chainId))
     }
 
     const connectorId = safeGetLocalStorageItem()
@@ -69,7 +69,7 @@ const useEagerConnect = () => {
         }
       })
     }
-  }, [login])
+  }, [login, chainId])
 }
 
 export default useEagerConnect
