@@ -35,7 +35,7 @@ import {
   getTradingCompetitionAddressV2,
   getTradingCompetitionAddressMobox,
   getBunnySpecialXmasAddress,
-  getIfoCreditAddress,
+  getICakeddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -75,7 +75,7 @@ import nftMarketAbi from 'config/abi/nftMarket.json'
 import nftSaleAbi from 'config/abi/nftSale.json'
 import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
-import ifoCreditAbi from 'config/abi/ifoCredit.json'
+import iCakeAbi from 'config/abi/iCake.json'
 
 // Types
 import type {
@@ -113,7 +113,7 @@ import type {
   PointCenterIfo,
   CakeVaultV2,
   TradingCompetitionMobox,
-  IfoCredit,
+  ICake,
 } from 'config/abi/types'
 
 export const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
@@ -235,5 +235,5 @@ export const getErc721CollectionContract = (signer?: Signer | Provider, address?
   return getContract(erc721CollectionAbi, address, signer) as Erc721collection
 }
 export const getIfoCreditAddressContract = (signer?: Signer | Provider) => {
-  return getContract(ifoCreditAbi, getIfoCreditAddress(), signer) as IfoCredit
+  return getContract(iCakeAbi, getICakeddress(), signer) as ICake
 }
