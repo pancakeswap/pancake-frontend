@@ -67,7 +67,7 @@ const BaseMenu: React.FC<BaseMenuProps & { children?: React.ReactNode }> = ({
 
   const menu = (
     <div ref={setMenuElement} style={styles.popper} {...attributes.popper}>
-      {typeof children === "function" ? children({ toggle, open, close }) : children}
+      {React.isValidElement(children) ? React.cloneElement(children, { toggle, open, close }) : children}
     </div>
   );
 

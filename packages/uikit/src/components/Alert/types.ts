@@ -1,4 +1,4 @@
-import { MouseEvent, ReactNode } from "react";
+import { MouseEvent } from "react";
 
 export type AlertTheme = {
   background: string;
@@ -16,6 +16,6 @@ export type Variants = typeof variants[keyof typeof variants];
 export interface AlertProps {
   variant?: Variants;
   title: string;
-  children?: ReactNode;
+  children?: React.ReactNode | React.ReactNode[];
   onClick?: (evt: MouseEvent<HTMLButtonElement>) => void;
 }

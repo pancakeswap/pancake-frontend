@@ -3,23 +3,23 @@ describe('Swap', () => {
     cy.visit('/swap')
   })
   it('can enter an amount into input', () => {
-    cy.get('#swap-currency-input .token-amount-input').type('0.001', { delay: 200 }).should('have.value', '0.001')
+    cy.get('#swap-currency-input .token-amount-input').type('0.001', { delay: 500 }).should('have.value', '.001')
   })
 
   it('zero swap amount', () => {
-    cy.get('#swap-currency-input .token-amount-input').type('0.0', { delay: 200 }).should('have.value', '0.0')
+    cy.get('#swap-currency-input .token-amount-input').type('0.0', { delay: 500 }).should('have.value', '.0')
   })
 
   it('invalid swap amount', () => {
-    cy.get('#swap-currency-input .token-amount-input').type('\\', { delay: 200 }).should('have.value', '')
+    cy.get('#swap-currency-input .token-amount-input').type('\\', { delay: 500 }).should('have.value', '')
   })
 
   it('can enter an amount into output', () => {
-    cy.get('#swap-currency-output .token-amount-input').type('0.001', { delay: 200 }).should('have.value', '0.001')
+    cy.get('#swap-currency-output .token-amount-input').type('0.001', { delay: 500 }).should('have.value', '.001')
   })
 
   it('zero output amount', () => {
-    cy.get('#swap-currency-output .token-amount-input').type('0.0', { delay: 200 }).should('have.value', '0.0')
+    cy.get('#swap-currency-output .token-amount-input').type('0.0', { delay: 500 }).should('have.value', '.0')
   })
 
   // This test requires account with some amount of BNB on it
