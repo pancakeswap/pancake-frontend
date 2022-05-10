@@ -8,6 +8,7 @@ import ifoV2Abi from 'config/abi/ifoV2.json'
 import ifoV3Abi from 'config/abi/ifoV3.json'
 import { fetchCakeVaultUserData } from 'state/pools'
 import { useAppDispatch } from 'state'
+import { useIfoCredit } from 'state/pools/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import useIfoAllowance from '../useIfoAllowance'
 import { WalletIfoState, WalletIfoData } from '../../types'
@@ -38,7 +39,7 @@ const initialState = {
 const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   const [state, setState] = useState<WalletIfoState>(initialState)
   const dispatch = useAppDispatch()
-  const credit = new BigNumber(0) // TODO: update
+  const credit = useIfoCredit()
 
   const { address, currency, version } = ifo
 

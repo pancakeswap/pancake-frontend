@@ -14,10 +14,12 @@ import {
 import Balance from 'components/Balance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { FlexGap } from 'components/Layout/Flex'
-import { useVaultPoolByKey } from 'state/pools/hooks'
+import { useVaultPoolByKey, useIfoCredit } from 'state/pools/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { DeserializedPool, VaultKey } from 'state/types'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { StakingApy } from 'views/Pools/components/CakeVaultCard/StakingApy'
 import { VaultPositionTagWithLabel } from 'views/Pools/components/Vault/VaultPositionTag'
 import LockedStakingApy from 'views/Pools/components/LockedPool/LockedStakingApy'
@@ -52,7 +54,10 @@ interface IfoPoolVaultCardMobileProps {
 const IfoPoolVaultCardMobile: React.FC<IfoPoolVaultCardMobileProps> = ({ pool }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
+  const credit = useIfoCredit()
   const [isExpanded, setIsExpanded] = useState(false)
+  const cakeAsNumberBalance = getBalanceNumber(credit)
+  const stakedDollarValue = useBUSDCakeAmount(cakeAsNumberBalance)
 
   const vaultPool = useVaultPoolByKey(pool.vaultKey)
 
@@ -72,7 +77,7 @@ const IfoPoolVaultCardMobile: React.FC<IfoPoolVaultCardMobileProps> = ({ pool })
             <UITokenPairImage width={24} height={24} {...vaultPoolConfig[VaultKey.CakeVault].tokenImage} />
             <Box ml="8px" width="50px">
               <Text small bold>
-                {vaultPoolConfig[VaultKey.CakeVault].name}
+                {t('IFO CAKE')}
               </Text>
               <Text color="textSubtle" fontSize="12px">
                 {t('Stake')} CAKE
@@ -83,7 +88,15 @@ const IfoPoolVaultCardMobile: React.FC<IfoPoolVaultCardMobileProps> = ({ pool })
             <Text color="textSubtle" fontSize="12px">
               {t('IFO Credit')}
             </Text>
-            <Balance small bold decimals={3} value={1} />
+            <Balance small bold decimals={3} value={cakeAsNumberBalance} />
+            <Balance
+              value={stakedDollarValue || 0}
+              fontSize="12px"
+              color="textSubtle"
+              decimals={2}
+              prefix="~"
+              unit=" USD"
+            />
           </StyledTokenContent>
           <ExpandableButton expanded={isExpanded} onClick={() => setIsExpanded((prev) => !prev)} />
         </Flex>

@@ -31,9 +31,8 @@ import { nftsBaseUrl } from 'views/Nft/market/constants'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { FlexGap } from 'components/Layout/Flex'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { BIG_ZERO } from 'utils/bigNumber'
-import BigNumber from 'bignumber.js'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
+import { useIfoCredit } from 'state/pools/hooks'
 
 interface TypeProps {
   ifoCurrencyAddress: string
@@ -66,7 +65,7 @@ const InlineLink = styled(Link)`
 
 const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
   const { t } = useTranslation()
-  const credit = new BigNumber(1000000000000000000) // TODO: update
+  const credit = useIfoCredit()
   const creditDollarValue = useBUSDCakeAmount(getBalanceNumber(credit))
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(

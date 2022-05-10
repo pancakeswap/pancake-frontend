@@ -21,8 +21,8 @@ import { cakeBnbLpToken } from 'config/constants/ifo'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { useIfoCredit } from 'state/pools/hooks'
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
-import BigNumber from 'bignumber.js'
 import { EnableStatus } from '../types'
 import PercentageOfTotal from './PercentageOfTotal'
 import { SkeletonCardTokens } from './Skeletons'
@@ -131,7 +131,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   const { currency, token } = ifo
   const { hasClaimed } = userPoolCharacteristics
   const distributionRatio = ifo[poolId].distributionRatio * 100
-  const credit = new BigNumber(1233) // TODO: update
+  const credit = useIfoCredit()
 
   const renderTokenSection = () => {
     if (isLoading) {
