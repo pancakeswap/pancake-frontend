@@ -47,6 +47,7 @@ const MoboxYourScore: React.FC<YourScoreProps> = ({
         </RibbonWithImage>
       )}
       <ScoreCard
+        subgraphName="pancakeswap/trading-competition-v3"
         userPrizeGrid={<MoboxUserPrizeGrid userTradingInformation={userTradingInformation} />}
         extraUserRankBox={
           <UserRankBox

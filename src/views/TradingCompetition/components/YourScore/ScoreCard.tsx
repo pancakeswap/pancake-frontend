@@ -56,6 +56,7 @@ interface ScoreCardProps extends YourScoreProps {
   stormShareImage: StaticImageData
   cakersShareImage: StaticImageData
   extraUserRankBox?: ReactNode
+  subgraphName?: string
 }
 
 const ScoreCard: React.FC<ScoreCardProps> = ({
@@ -75,6 +76,7 @@ const ScoreCard: React.FC<ScoreCardProps> = ({
   finishedAndPrizesClaimed,
   finishedAndNothingToClaim,
   onClaimSuccess,
+  subgraphName,
 }) => {
   const { t } = useTranslation()
   const [onPresentClaimModal] = useModal(
@@ -145,10 +147,10 @@ const ScoreCard: React.FC<ScoreCardProps> = ({
           <LaurelRightIcon />
         </StyledCardFooter>
       )}
-      {hasRegistered && (
+      {subgraphName && hasRegistered && (
         <Flex p="16px" justifyContent="flex-end">
           <SubgraphHealthIndicator
-            subgraphName="pancakeswap/trading-competition-v3"
+            subgraphName={subgraphName}
             inline
             obeyGlobalSetting={false}
             customDescriptions={{

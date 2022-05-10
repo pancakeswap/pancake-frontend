@@ -259,6 +259,7 @@ const MoDCompetition = () => {
                 team2LeaderboardInformation={team2LeaderboardInformation}
                 team3LeaderboardInformation={team3LeaderboardInformation}
                 globalLeaderboardInformation={globalLeaderboardInformation}
+                subgraphName="pancakeswap/trading-competition-v4"
               />
             </Box>
           </PageSection>

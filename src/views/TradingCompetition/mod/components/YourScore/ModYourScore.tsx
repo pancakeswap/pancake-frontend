@@ -47,6 +47,7 @@ const ModYourScore: React.FC<YourScoreProps> = ({
         </RibbonWithImage>
       )}
       <ScoreCard
+        subgraphName="pancakeswap/trading-competition-v4"
         userPrizeGrid={<ModUserPrizeGrid userTradingInformation={userTradingInformation} />}
         extraUserRankBox={
           <UserRankBox

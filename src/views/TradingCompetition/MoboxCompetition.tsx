@@ -251,6 +251,7 @@ const MoboxCompetition = () => {
                 team2LeaderboardInformation={team2LeaderboardInformation}
                 team3LeaderboardInformation={team3LeaderboardInformation}
                 globalLeaderboardInformation={globalLeaderboardInformation}
+                subgraphName="pancakeswap/trading-competition-v3"
               />
             </Box>
           </PageSection>

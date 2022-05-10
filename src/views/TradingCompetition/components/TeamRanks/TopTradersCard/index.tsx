@@ -16,12 +16,13 @@ import { useTranslation } from 'contexts/Localization'
 import { TeamRanksProps } from '../../../types'
 import TopTradersGrid from './TopTradersGrid'
 
-const TopTradersCard: React.FC<TeamRanksProps> = ({
+const TopTradersCard: React.FC<TeamRanksProps & { subgraphName?: string }> = ({
   team1LeaderboardInformation,
   team2LeaderboardInformation,
   team3LeaderboardInformation,
   globalLeaderboardInformation,
   isGlobalLeaderboardDataComplete,
+  subgraphName,
 }) => {
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState(0)
@@ -74,20 +75,22 @@ const TopTradersCard: React.FC<TeamRanksProps> = ({
                 {t('Since start of the competition')}
               </Text>
             </Flex>
-            <SubgraphHealthIndicator
-              subgraphName="pancakeswap/trading-competition-v3"
-              inline
-              obeyGlobalSetting={false}
-              customDescriptions={{
-                delayed: t(
-                  'Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.',
-                ),
-                slow: t(
-                  'Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.',
-                ),
-                healthy: t('No issues with the subgraph.'),
-              }}
-            />
+            {subgraphName && (
+              <SubgraphHealthIndicator
+                subgraphName={subgraphName}
+                inline
+                obeyGlobalSetting={false}
+                customDescriptions={{
+                  delayed: t(
+                    'Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.',
+                  ),
+                  slow: t(
+                    'Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.',
+                  ),
+                  healthy: t('No issues with the subgraph.'),
+                }}
+              />
+            )}
           </Flex>
         </CardHeader>
         <Box mt="16px">
