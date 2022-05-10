@@ -32,6 +32,7 @@ import StakeVaultButton from '../StakeVaultButton'
 interface TokenSectionProps extends FlexProps {
   primaryToken?: Token
   secondaryToken?: Token
+  children?: React.ReactNode
 }
 
 const TokenSection: React.FC<TokenSectionProps> = ({ primaryToken, secondaryToken, children, ...props }) => {

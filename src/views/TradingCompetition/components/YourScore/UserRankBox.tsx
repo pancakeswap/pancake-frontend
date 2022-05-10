@@ -4,6 +4,7 @@ import { Flex, Text, FlexProps } from '@pancakeswap/uikit'
 interface UserRankProps extends FlexProps {
   title?: string
   footer?: string
+  children?: React.ReactNode
 }
 
 const Wrapper = styled(Flex)`

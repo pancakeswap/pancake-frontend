@@ -8,6 +8,7 @@ interface NextRankProps extends FlexProps {
   hideArrow?: boolean
   nextMedal?: ReactElement
   currentMedal?: ReactElement
+  children?: React.ReactNode
 }
 
 const Wrapper = styled(Flex)`

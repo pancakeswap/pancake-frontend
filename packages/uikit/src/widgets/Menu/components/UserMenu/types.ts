@@ -14,6 +14,7 @@ export interface UserMenuProps extends FlexProps {
   text?: string;
   avatarSrc?: string;
   variant?: Variant;
+  children?: React.ReactNode;
 }
 
 export interface UserMenuItemProps {

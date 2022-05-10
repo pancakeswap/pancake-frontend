@@ -19,4 +19,5 @@ export interface StepProps {
   statusFirstPart: Status;
   statusSecondPart?: Status;
   numberOfSteps?: number;
+  children?: React.ReactNode;
 }

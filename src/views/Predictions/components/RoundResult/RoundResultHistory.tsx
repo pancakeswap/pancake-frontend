@@ -7,6 +7,7 @@ import { LockPriceHistoryRow, PrizePoolHistoryRow, RoundResultBox } from './styl
 
 interface RoundResultProps extends BoxProps {
   round: Round
+  children?: React.ReactNode
 }
 
 const RoundResult: React.FC<RoundResultProps> = ({ round, children, ...props }) => {

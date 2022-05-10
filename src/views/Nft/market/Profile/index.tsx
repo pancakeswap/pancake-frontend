@@ -24,7 +24,7 @@ const TabMenuWrapper = styled(Box)`
   }
 `
 
-const NftProfile: FC = ({ children }) => {
+const NftProfile: FC<{ children?: React.ReactNode }> = ({ children }) => {
   const accountAddress = useRouter().query.accountAddress as string
   const { t } = useTranslation()
 
@@ -98,7 +98,7 @@ const NftProfile: FC = ({ children }) => {
   )
 }
 
-export const NftProfileLayout: FC = ({ children }) => {
+export const NftProfileLayout: FC<{ children?: React.ReactNode }> = ({ children }) => {
   return <NftProfile>{children}</NftProfile>
 }
 

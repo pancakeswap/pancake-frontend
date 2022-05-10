@@ -9,4 +9,5 @@ export interface FallingBunniesProps {
   count?: number;
   iterations?: number;
   duration?: number;
+  children?: React.ReactNode;
 }

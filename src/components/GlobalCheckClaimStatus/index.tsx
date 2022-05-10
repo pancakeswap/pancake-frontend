@@ -12,6 +12,7 @@ const GalaxyNFTClaimModal = dynamic(() => import('./GalaxyNFTClaimModal'), { ssr
 
 interface GlobalCheckClaimStatusProps {
   excludeLocations: string[]
+  children?: React.ReactNode
 }
 
 // change it to true if we have events to check claim status

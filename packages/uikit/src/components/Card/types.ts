@@ -31,4 +31,5 @@ export interface CardProps extends SpaceProps, HTMLAttributes<HTMLDivElement> {
   ribbon?: React.ReactNode;
   borderBackground?: string;
   background?: string;
+  children?: React.ReactNode;
 }

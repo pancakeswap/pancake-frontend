@@ -19,4 +19,5 @@ export interface ProgressProps {
   secondaryStep?: number;
   showProgressBunny?: boolean;
   useDark?: boolean;
+  children?: React.ReactNode;
 }

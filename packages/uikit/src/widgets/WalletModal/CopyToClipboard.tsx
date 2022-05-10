@@ -5,6 +5,7 @@ import { CopyIcon } from "../../components/Svg";
 
 interface Props {
   toCopy: string;
+  children?: React.ReactNode;
 }
 
 const StyleButton = styled(Text).attrs({ role: "button" })`

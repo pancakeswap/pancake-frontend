@@ -140,7 +140,7 @@ store = initializeStore()
  */
 export type AppDispatch = typeof store.dispatch
 export type AppState = ReturnType<typeof store.getState>
-export const useAppDispatch = () => useDispatch()
+export const useAppDispatch = () => useDispatch<AppDispatch>()
 
 export default store
 

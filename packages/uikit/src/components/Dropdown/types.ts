@@ -6,4 +6,5 @@ export interface PositionProps {
 
 export interface DropdownProps extends PositionProps {
   target: React.ReactElement;
+  children?: React.ReactNode;
 }

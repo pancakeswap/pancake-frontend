@@ -36,6 +36,7 @@ const Page: React.FC<
     hideFooterOnDesktop?: boolean
     noMinHeight?: boolean
     helpUrl?: string
+    children?: React.ReactNode
   }
 > = ({
   children,

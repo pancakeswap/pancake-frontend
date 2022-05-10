@@ -7,6 +7,7 @@ import { Colors } from "../../theme";
 export interface SvgProps extends SVGAttributes<HTMLOrSVGElement>, SpaceProps {
   theme?: DefaultTheme;
   spin?: boolean;
+  children?: React.ReactNode;
 }
 
 export type IconComponentType = {

@@ -17,7 +17,7 @@ export const SecondaryLabel = styled(BaseLabel)`
   text-transform: uppercase;
 `
 
-export const FormError: React.FC = ({ children }) => (
+export const FormError: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
   <Text color="failure" mb="4px">
     {children}
   </Text>

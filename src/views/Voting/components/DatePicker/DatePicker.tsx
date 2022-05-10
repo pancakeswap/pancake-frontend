@@ -5,6 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 export interface DatePickerProps extends ReactDatePickerProps {
   inputProps?: InputProps
+  children?: React.ReactNode
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({ inputProps = {}, ...props }) => {

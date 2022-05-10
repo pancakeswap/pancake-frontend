@@ -1,6 +1,7 @@
 import { Heading, Text } from '@pancakeswap/uikit'
-import { NormalComponents, SpecialComponents } from 'react-markdown/src/ast-to-react'
 import styled from 'styled-components'
+import { NormalComponents } from 'react-markdown/lib/complex-types'
+import { SpecialComponents } from 'react-markdown/lib/ast-to-react'
 
 const Table = styled.table`
   margin-bottom: 32px;
@@ -45,7 +46,7 @@ const Title = (props) => {
   return <Heading as="h4" scale="lg" my="16px" {...props} />
 }
 
-const markdownComponents: Partial<NormalComponents & SpecialComponents> = {
+const markdownComponents: Partial<NormalComponents & SpecialComponents & { pre; a }> = {
   h1: Title,
   h2: Title,
   h3: Title,

@@ -8,6 +8,7 @@ interface SelectionCardProps {
   onChange: (val: any) => void
   image: string
   disabled?: boolean
+  children?: React.ReactNode
 }
 
 const Label = styled.label<{ isDisabled: boolean }>`

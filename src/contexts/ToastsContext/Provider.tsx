@@ -5,7 +5,7 @@ import { ToastContextApi } from './types'
 
 export const ToastsContext = createContext<ToastContextApi>(undefined)
 
-export const ToastsProvider: React.FC = ({ children }) => {
+export const ToastsProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const [toasts, setToasts] = useState<ToastContextApi['toasts']>([])
 
   const toast = useCallback(

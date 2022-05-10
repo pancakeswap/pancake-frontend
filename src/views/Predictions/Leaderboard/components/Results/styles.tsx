@@ -5,7 +5,7 @@ import useBUSDPrice from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 
-export const Row: React.FC<FlexProps> = ({ children, ...props }) => {
+export const Row: React.FC<FlexProps & { children?: React.ReactNode }> = ({ children, ...props }) => {
   return (
     <Flex alignItems="center" justifyContent="space-between" {...props}>
       {children}

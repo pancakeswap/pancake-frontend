@@ -13,6 +13,7 @@ import {
 interface CollapsibleCardProps extends CardProps {
   initialOpenState?: boolean
   title: string
+  children?: React.ReactNode
 }
 
 const CollapsibleCard: React.FC<CollapsibleCardProps> = ({ initialOpenState = true, title, children, ...props }) => {

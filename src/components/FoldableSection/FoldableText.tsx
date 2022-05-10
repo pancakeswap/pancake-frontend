@@ -5,6 +5,7 @@ import { useTranslation } from 'contexts/Localization'
 
 interface FoldableTextProps extends Omit<FlexProps, 'title'> {
   title?: ReactNode
+  children?: React.ReactNode
 }
 
 const Wrapper = styled(Flex)`

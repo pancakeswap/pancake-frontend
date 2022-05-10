@@ -10,7 +10,7 @@ import { isLocked, isStaked } from 'utils/cakePool'
 import useAvgLockDuration from './LockedPool/hooks/useAvgLockDuration'
 import Apr from './Apr'
 
-const StatWrapper: FC<{ label: ReactNode }> = ({ children, label }) => {
+const StatWrapper: FC<{ label: ReactNode; children?: React.ReactNode }> = ({ children, label }) => {
   return (
     <Flex mb="2px" justifyContent="space-between" alignItems="center" width="100%">
       {label}

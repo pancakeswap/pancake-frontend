@@ -47,6 +47,7 @@ export interface RoiCalculatorModalProps {
   initialValue?: string
   strategy?: any
   header?: React.ReactNode
+  children?: React.ReactNode
 }
 
 const StyledModal = styled(Modal)`

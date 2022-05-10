@@ -25,4 +25,5 @@ export interface SkeletonV2Props extends SpaceProps, LayoutProps {
   wrapperProps?: SpaceProps & LayoutProps;
   skeletonTop?: string;
   skeletonLeft?: string;
+  children?: React.ReactNode;
 }

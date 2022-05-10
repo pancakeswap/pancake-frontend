@@ -21,7 +21,7 @@ import {
   fetchFarmUserTokenBalances,
   fetchFarmUserStakedBalances,
 } from './fetchFarmUser'
-import { SerializedFarmsState, SerializedFarm } from '../types'
+import { SerializedFarmsState, SerializedFarm, AppThunk } from '../types'
 import { fetchMasterChefFarmPoolLength } from './fetchMasterChefData'
 import { resetUserState } from '../global/actions'
 import fetchFarmsWithAuctions from './fetchFarmsWithAuctions'

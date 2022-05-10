@@ -15,7 +15,7 @@ const StyledThemeProvider = (props) => {
   return <ThemeProvider theme={resolvedTheme === 'dark' ? dark : light} {...props} />
 }
 
-const Providers: React.FC<{ store: Store }> = ({ children, store }) => {
+const Providers: React.FC<{ store: Store; children?: React.ReactNode }> = ({ children, store }) => {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <Provider store={store}>

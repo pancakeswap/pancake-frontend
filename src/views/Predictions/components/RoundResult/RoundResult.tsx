@@ -7,6 +7,7 @@ import { LockPriceRow, PrizePoolRow, RoundPrice, RoundResultBox } from './styles
 interface RoundResultProps extends BoxProps {
   round: NodeRound
   hasFailed?: boolean
+  children?: React.ReactNode
 }
 
 const RoundResult: React.FC<RoundResultProps> = ({ round, hasFailed = false, children, ...props }) => {

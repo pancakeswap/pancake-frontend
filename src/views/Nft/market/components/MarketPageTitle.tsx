@@ -4,6 +4,7 @@ import { Box, Grid, GridProps, Heading } from '@pancakeswap/uikit'
 interface MarketPageTitleProps extends GridProps {
   title: string
   description?: ReactNode
+  children?: React.ReactNode
 }
 
 const MarketPageTitle: React.FC<MarketPageTitleProps> = ({ title, description, children, ...props }) => (

@@ -7,6 +7,7 @@ interface BannerHeaderProps extends FlexProps {
   bannerImage: string
   bannerAlt?: string
   avatar?: ReactNode
+  children?: React.ReactNode
 }
 
 const BannerHeader: React.FC<BannerHeaderProps> = ({ bannerImage, bannerAlt, avatar, children, ...props }) => {

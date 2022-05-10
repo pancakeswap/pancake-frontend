@@ -7,6 +7,7 @@ import truncateHash from 'utils/truncateHash'
 interface DescriptionWithTxProps {
   description?: string
   txHash?: string
+  children?: React.ReactNode
 }
 
 const DescriptionWithTx: React.FC<DescriptionWithTxProps> = ({ txHash, children }) => {

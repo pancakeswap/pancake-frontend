@@ -11,6 +11,7 @@ const Wrapper = styled(CardHeader)<{ isFinished?: boolean; background?: string }
 const PoolCardHeader: React.FC<{
   isFinished?: boolean
   isStaking?: boolean
+  children?: React.ReactNode
 }> = ({ isFinished = false, isStaking = false, children }) => {
   const background = isStaking ? 'bubblegum' : 'cardHeader'
 

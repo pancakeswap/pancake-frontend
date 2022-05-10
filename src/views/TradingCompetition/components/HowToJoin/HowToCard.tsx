@@ -4,6 +4,7 @@ import { Heading, Card, CardBody } from '@pancakeswap/uikit'
 interface HowToCardProps {
   number?: number
   title?: string
+  children?: React.ReactNode
 }
 
 const Inner = styled.div`
