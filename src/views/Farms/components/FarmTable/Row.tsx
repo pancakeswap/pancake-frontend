@@ -1,10 +1,11 @@
 import { useEffect, useState, createElement } from 'react'
 import styled from 'styled-components'
-import { useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useMatchBreakpoints, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useFarmUser } from 'state/farms/hooks'
 
+import { FarmAuctionTag, CoreTag } from 'components/Tags'
 import Apr, { AprProps } from './Apr'
 import Farm, { FarmProps } from './Farm'
 import Earned, { EarnedProps } from './Earned'
@@ -22,6 +23,7 @@ export interface RowProps {
   multiplier: MultiplierProps
   liquidity: LiquidityProps
   details: FarmWithStakedValue
+  type: 'core' | 'community'
 }
 
 interface RowPropsWithLoading extends RowProps {
@@ -99,6 +101,18 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
             }
 
             switch (key) {
+              case 'type':
+                return (
+                  <td key={key}>
+                    <CellInner style={{ width: '100px' }}>
+                      <CellLayout>
+                        <Flex flexDirection="column" style={{ gap: '2px' }}>
+                          {props[key] === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />}
+                        </Flex>
+                      </CellLayout>
+                    </CellInner>
+                  </td>
+                )
               case 'details':
                 return (
                   <td key={key}>
@@ -174,7 +188,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
       {handleRenderRow()}
       {shouldRenderChild && (
         <tr>
-          <td colSpan={6}>
+          <td colSpan={7}>
             <ActionPanel {...props} expanded={actionPanelExpanded} />
           </td>
         </tr>

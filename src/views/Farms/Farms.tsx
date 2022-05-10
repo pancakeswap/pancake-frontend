@@ -308,6 +308,7 @@ const Farms: React.FC = ({ children }) => {
       multiplier: {
         multiplier: farm.multiplier,
       },
+      type: farm.isCommunity ? 'community' : 'core',
       details: farm,
     }
 
