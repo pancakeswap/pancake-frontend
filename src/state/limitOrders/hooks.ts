@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ParsedUrlQuery } from 'querystring'
 import { Currency, CurrencyAmount, TokenAmount, Trade, Token, Price, ETHER } from '@pancakeswap/sdk'
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from 'config/constants'
 import { useRouter } from 'next/router'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
@@ -12,7 +13,6 @@ import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
 import { isAddress } from 'utils'
 import tryParseAmount from 'utils/tryParseAmount'
 import { useCurrencyBalances } from '../wallet/hooks'
-import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from './constants'
 import { replaceLimitOrdersState, selectCurrency, setRateType, switchCurrencies, typeInput } from './actions'
 import { Field, Rate, OrderState } from './types'
 import { AppState, AppDispatch } from '..'
@@ -474,7 +474,7 @@ function parseCurrencyFromURLParameter(urlParam: any): string {
 }
 
 // TODO: combine with swap's version but use generic type. Same for helpers above
-// Note: swap has recepient and other things. Mergins these 2 would probably be much easier if we get rid of recepient
+// Note: swap has recipient and other things. Merging these 2 would probably be much easier if we get rid of recipient
 // Also the whole thing doesn't make sense, in swap inputValue is not initialized but typedValue is. WTF
 const queryParametersToSwapState = (parsedQs: ParsedUrlQuery): OrderState => {
   let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency) || DEFAULT_INPUT_CURRENCY

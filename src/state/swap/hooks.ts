@@ -1,6 +1,7 @@
 import { Currency, CurrencyAmount, ETHER, Token, Trade } from '@pancakeswap/sdk'
 import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from 'config/constants'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
@@ -34,7 +35,6 @@ import {
 } from './normalizers'
 import { PairDataTimeWindowEnum } from './types'
 import { derivedPairByDataIdSelector, pairByDataIdSelector } from './selectors'
-import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from './constants'
 import fetchDerivedPriceData from './fetch/fetchDerivedPriceData'
 import { pairHasEnoughLiquidity } from './fetch/utils'
 
