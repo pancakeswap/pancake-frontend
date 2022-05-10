@@ -9,7 +9,7 @@ export class CustomUnsupportedChainIdError extends UnsupportedChainIdError {
 
 export function createNetworkGuard(chainId: string | number) {
   return ({ children }) => {
-    const { chainId: currentChainId, library, setError, connector, activate, deactivate, error } = useWeb3React()
+    const { chainId: currentChainId, library, setError, connector, activate, deactivate } = useWeb3React()
 
     useEffect(() => {
       if (currentChainId && currentChainId !== +chainId) {
