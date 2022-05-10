@@ -22,8 +22,6 @@ export function createNetworkGuard(chainId: string | number) {
     useEffect(() => {
       if (connector) {
         activate(connector)
-      } else {
-        deactivate()
       }
     }, [activate, connector, deactivate])
 
