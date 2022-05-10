@@ -11,6 +11,7 @@ import {
   fetchCakeVaultUserData,
   fetchCakeVaultFees,
   fetchPoolsStakingLimitsAsync,
+  fetchIfoUserCreditDataAsync,
 } from '.'
 import { DeserializedPool, VaultKey } from '../types'
 import { fetchFarmsPublicDataAsync } from '../farms'
@@ -19,6 +20,7 @@ import {
   makePoolWithUserDataLoadingSelector,
   makeVaultPoolByKey,
   poolsWithVaultSelector,
+  ifoCreditSelector,
 } from './selectors'
 
 export const useFetchPublicPoolsData = () => {
@@ -75,6 +77,7 @@ export const usePoolsPageFetch = () => {
       if (account) {
         dispatch(fetchPoolsUserDataAsync(account))
         dispatch(fetchCakeVaultUserData({ account }))
+        dispatch(fetchIfoUserCreditDataAsync(account))
       }
     })
   }, [account, dispatch])
@@ -104,4 +107,8 @@ export const useVaultPoolByKey = (key: VaultKey) => {
   const vaultPoolByKey = useMemo(() => makeVaultPoolByKey(key), [key])
 
   return useSelector(vaultPoolByKey)
+}
+
+export const useIfoCredit = () => {
+  return useSelector(ifoCreditSelector)
 }

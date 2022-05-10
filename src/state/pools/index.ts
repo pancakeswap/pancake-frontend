@@ -36,6 +36,7 @@ import { fetchPublicVaultData, fetchVaultFees } from './fetchVaultPublic'
 import fetchVaultUser from './fetchVaultUser'
 import { getTokenPricesFromFarm } from './helpers'
 import { resetUserState } from '../global/actions'
+import fetchIfoUserCredit from './fetchIfoUserCredit'
 
 export const initialPoolVaultState = Object.freeze({
   totalShares: null,
@@ -65,10 +66,15 @@ export const initialPoolVaultState = Object.freeze({
   creditStartBlock: null,
 })
 
+export const initialIfoState = Object.freeze({
+  credit: null,
+})
+
 const initialState: PoolsState = {
   data: [...poolsConfig],
   userDataLoaded: false,
   cakeVault: initialPoolVaultState,
+  ifo: initialIfoState,
 }
 
 const cakeVaultAddress = getCakeVaultAddress()
@@ -271,6 +277,17 @@ export const fetchCakeVaultUserData = createAsyncThunk<SerializedLockedVaultUser
   },
 )
 
+export const fetchIfoUserCreditDataAsync =
+  (account: string): AppThunk =>
+  async (dispatch) => {
+    try {
+      const credit = await fetchIfoUserCredit(account)
+      dispatch(setIfoUserCreditData(credit))
+    } catch (error) {
+      console.error('[Ifo Credit Action] Error fetching Ifo user credit data', error)
+    }
+  }
+
 export const PoolsSlice = createSlice({
   name: 'Pools',
   initialState,
@@ -311,6 +328,10 @@ export const PoolsSlice = createSlice({
         state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
       }
     },
+    setIfoUserCreditData: (state, action) => {
+      const credit = action.payload
+      state.ifo = { ...state.ifo, credit }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(resetUserState, (state) => {
@@ -340,7 +361,13 @@ export const PoolsSlice = createSlice({
 })
 
 // Actions
-export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData, setPoolPublicData, setPoolUserData } =
-  PoolsSlice.actions
+export const {
+  setPoolsPublicData,
+  setPoolsUserData,
+  updatePoolsUserData,
+  setPoolPublicData,
+  setPoolUserData,
+  setIfoUserCreditData,
+} = PoolsSlice.actions
 
 export default PoolsSlice.reducer
