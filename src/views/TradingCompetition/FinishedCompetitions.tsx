@@ -15,7 +15,7 @@ const FinishedCompetitions: React.FC = () => {
         <FinishedCompetitionBanner
           title={t('Mobox Competition')}
           imgSrc={MoboxAllBunnies}
-          background="linear-gradient(#7645d9 0%, #452a7a 100%)"
+          background="radial-gradient(329.58% 50% at 50% 50%, #3B2864 0%, #191326 100%)"
           to="/competition/finished/mobox"
         />
         <FinishedCompetitionBanner
