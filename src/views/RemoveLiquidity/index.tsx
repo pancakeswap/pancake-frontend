@@ -322,6 +322,7 @@ export default function RemoveLiquidity() {
             summary: `Remove ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
               currencyA?.symbol
             } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencyB?.symbol}`,
+            type: 'remove-liquidity',
           })
         })
         .catch((err) => {
