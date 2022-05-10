@@ -13,6 +13,7 @@ import {
   Table,
   Th,
   Card,
+  Skeleton,
 } from '@pancakeswap/uikit'
 import useSWRImmutable from 'swr/immutable'
 import orderBy from 'lodash/orderBy'
@@ -21,6 +22,7 @@ import { NextLinkFromReactRouter } from 'components/NextLink'
 import { ViewMode } from 'state/user/actions'
 import { Collection } from 'state/nftMarket/types'
 import styled from 'styled-components'
+import { laggyMiddleware } from 'hooks/useSWRContract'
 import { FetchStatus } from 'config/constants/types'
 import { useGetShuffledCollections } from 'state/nftMarket/hooks'
 import Select, { OptionProps } from 'components/Select/Select'
@@ -61,6 +63,13 @@ export const Arrow = styled.div`
   }
 `
 
+const getNewSortDirection = (oldSortField: string, newSortField: string, oldSortDirection: boolean) => {
+  if (oldSortField !== newSortField) {
+    return newSortField !== SORT_FIELD.lowestPrice
+  }
+  return !oldSortDirection
+}
+
 const Collectible = () => {
   const { t } = useTranslation()
   const { data: shuffledCollections } = useGetShuffledCollections()
@@ -72,18 +81,30 @@ const Collectible = () => {
   const [sortDirection, setSortDirection] = useState<boolean>(false)
 
   const { data: collections = [], status } = useSWRImmutable<
-    (Collection & { lowestPrice: number; highestPrice: number })[]
-  >(shuffledCollections && shuffledCollections.length ? ['collectionsWithPrice'] : null, async () => {
-    return Promise.all(
-      shuffledCollections.map(async (collection) => {
-        return {
-          ...collection,
-          lowestPrice: await getLeastMostPriceInCollection(collection.address, 'asc'),
-          highestPrice: await getLeastMostPriceInCollection(collection.address, 'desc'),
-        }
-      }),
-    )
-  })
+    (Collection & Partial<{ lowestPrice: number; highestPrice: number }>)[]
+  >(
+    shuffledCollections && shuffledCollections.length ? ['collectionsWithPrice', viewMode, sortField] : null,
+    async () => {
+      if (viewMode === ViewMode.CARD && sortField !== SORT_FIELD.lowestPrice && sortField !== SORT_FIELD.highestPrice)
+        return shuffledCollections
+      return Promise.all(
+        shuffledCollections.map(async (collection) => {
+          const [lowestPrice, highestPrice] = await Promise.all([
+            getLeastMostPriceInCollection(collection.address, 'asc'),
+            getLeastMostPriceInCollection(collection.address, 'desc'),
+          ])
+          return {
+            ...collection,
+            lowestPrice,
+            highestPrice,
+          }
+        }),
+      )
+    },
+    {
+      use: [laggyMiddleware],
+    },
+  )
 
   const arrow = useCallback(
     (field: string) => {
@@ -97,7 +118,7 @@ const Collectible = () => {
     (newField: string) => {
       setPage(1)
       setSortField(newField)
-      setSortDirection(sortField !== newField ? true : !sortDirection)
+      setSortDirection(getNewSortDirection(sortField, newField, sortDirection))
     },
     [sortDirection, sortField],
   )
@@ -270,8 +291,20 @@ const Collectible = () => {
                                 <BnbUsdtPairTokenIcon ml="8px" />
                               </Flex>
                             </Td>
-                            <Td>{collection.lowestPrice.toLocaleString(undefined, { maximumFractionDigits: 5 })}</Td>
-                            <Td>{collection.highestPrice.toLocaleString(undefined, { maximumFractionDigits: 5 })}</Td>
+                            <Td>
+                              {collection.lowestPrice ? (
+                                collection.lowestPrice.toLocaleString(undefined, { maximumFractionDigits: 5 })
+                              ) : (
+                                <Skeleton width={36} height={20} />
+                              )}
+                            </Td>
+                            <Td>
+                              {collection.highestPrice ? (
+                                collection.highestPrice.toLocaleString(undefined, { maximumFractionDigits: 5 })
+                              ) : (
+                                <Skeleton width={36} height={20} />
+                              )}
+                            </Td>
                             <Td>{collection.numberTokensListed}</Td>
                             <Td>{collection?.totalSupply}</Td>
                           </tr>
