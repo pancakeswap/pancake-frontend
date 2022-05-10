@@ -3,6 +3,7 @@ import { Flex, Box, Text, BunnyPlaceholderIcon, Button } from '@pancakeswap/uiki
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
 import Divider from 'components/Divider'
+import ReleasedTokenInfo from './ReleasedTokenInfo'
 import IfoVestingFooter from './IfoVestingFooter'
 
 const IfoVestingCard: React.FC = () => {
@@ -24,6 +25,7 @@ const IfoVestingCard: React.FC = () => {
             </Box>
           </Flex>
         </LightGreyCard>
+        <ReleasedTokenInfo />
         <Divider />
         <LightGreyCard mt="24px" mb="8px">
           <Flex>
