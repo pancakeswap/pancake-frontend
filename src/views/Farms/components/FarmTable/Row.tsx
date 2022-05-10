@@ -69,18 +69,12 @@ const FarmMobileCell = styled.td`
   padding-top: 24px;
 `
 
-const TypeCell = styled.td`
-  padding-top: 24px;
-  padding-left: 8px;
-`
-
 const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
   const { details, userDataReady } = props
   const hasStakedAmount = !!useFarmUser(details.pid).stakedBalance.toNumber()
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
   const shouldRenderChild = useDelayedUnmount(actionPanelExpanded, 300)
   const { t } = useTranslation()
-  const { isXs } = useMatchBreakpoints()
 
   const toggleActionPanel = () => {
     setActionPanelExpanded(!actionPanelExpanded)
@@ -154,48 +148,45 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
     }
 
     return (
-      <StyledTr onClick={toggleActionPanel}>
-        <td>
-          <tr>
-            <FarmMobileCell>
+      <>
+        <tr style={{ cursor: 'pointer' }} onClick={toggleActionPanel}>
+          <FarmMobileCell colSpan={3}>
+            <Flex justifyContent="space-between" alignItems="center">
               <CellLayout>
-                <Flex flexDirection="column" alignItems="flex-start" style={{ gap: '4px' }}>
-                  <Farm {...props.farm} />
-                  {isXs ? (
-                    props.type === 'community' ? (
-                      <FarmAuctionTag marginLeft="16px" scale="sm" />
-                    ) : (
-                      <CoreTag marginLeft="16px" scale="sm" />
-                    )
-                  ) : null}
-                </Flex>
+                <Farm {...props.farm} />
               </CellLayout>
-            </FarmMobileCell>
-            {!isXs && (
-              <TypeCell>{props.type === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />}</TypeCell>
-            )}
-          </tr>
-          <tr>
+              {props.type === 'community' ? (
+                <FarmAuctionTag marginRight="16px" scale="sm" />
+              ) : (
+                <CoreTag marginRight="16px" scale="sm" />
+              )}
+            </Flex>
+          </FarmMobileCell>
+        </tr>
+        <StyledTr onClick={toggleActionPanel}>
+          <td width="33%">
             <EarnedMobileCell>
               <CellLayout label={t('Earned')}>
                 <Earned {...props.earned} userDataReady={userDataReady} />
               </CellLayout>
             </EarnedMobileCell>
+          </td>
+          <td width="33%">
             <AprMobileCell>
               <CellLayout label={t('APR')}>
                 <Apr {...props.apr} hideButton />
               </CellLayout>
             </AprMobileCell>
-          </tr>
-        </td>
-        <td>
-          <CellInner>
-            <CellLayout>
-              <Details actionPanelToggled={actionPanelExpanded} />
-            </CellLayout>
-          </CellInner>
-        </td>
-      </StyledTr>
+          </td>
+          <td width="33%">
+            <CellInner style={{ paddingLeft: '36px' }}>
+              <CellLayout>
+                <Details actionPanelToggled={actionPanelExpanded} />
+              </CellLayout>
+            </CellInner>
+          </td>
+        </StyledTr>
+      </>
     )
   }
 
