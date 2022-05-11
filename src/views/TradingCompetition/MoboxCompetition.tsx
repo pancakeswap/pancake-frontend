@@ -26,7 +26,7 @@ import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
 import BattleCta from './components/BattleCta'
 import Rules from './components/Rules'
-import { UserTradingInformation, initialUserTradingInformation } from "./types"
+import { UserTradingInformation, initialUserTradingInformation, initialUserLeaderboardInformation } from './types'
 import { CompetitionPage, BannerFlex } from './styles'
 import RanksIcon from './svgs/RanksIcon'
 import MoboxYourScore from './mobox/components/YourScore/MoboxYourScore'
@@ -65,14 +65,7 @@ const MoboxCompetition = () => {
   const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
   const [userTradingInformation, setUserTradingInformation] =
     useState<UserTradingInformation>(initialUserTradingInformation)
-  const [userLeaderboardInformation, setUserLeaderboardInformation] = useState({
-    global: 0,
-    team: 0,
-    volume: 0,
-    next_rank: 0,
-    moboxVolumeRank: '???',
-    moboxVolume: '???',
-  })
+  const [userLeaderboardInformation, setUserLeaderboardInformation] = useState(initialUserLeaderboardInformation)
 
   const {
     globalLeaderboardInformation,

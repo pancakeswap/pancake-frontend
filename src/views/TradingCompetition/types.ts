@@ -95,6 +95,8 @@ export const initialUserLeaderboardInformation = {
   next_rank: 0,
   moboxVolumeRank: '???',
   moboxVolume: '???',
+  darVolumeRank: '???',
+  darVolume: '???',
 }
 
 export const initialUserTradingInformation = {
@@ -105,6 +107,7 @@ export const initialUserTradingInformation = {
   userRewardGroup: '0',
   userCakeRewards: '0',
   userMoboxRewards: '0',
+  userDarRewards: '0',
   userPointReward: '0',
   canClaimMysteryBox: false,
   canClaimNFT: false,
