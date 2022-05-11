@@ -11,6 +11,7 @@ import { EnableStatus, CardConfigReturn } from '../types'
 import IfoCardTokens from './IfoCardTokens'
 import IfoCardActions from './IfoCardActions'
 import IfoCardDetails from './IfoCardDetails'
+import IfoVestingCard from './IfoVestingCard'
 
 const StyledCard = styled(Card)`
   width: 100%;
@@ -130,7 +131,8 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
           </Flex>
         </CardHeader>
         <CardBody p="12px">
-          <IfoCardTokens
+          <IfoVestingCard />
+          {/* <IfoCardTokens
             criterias={criterias}
             isEligible={isEligible}
             poolId={poolId}
@@ -160,7 +162,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
             ifo={ifo}
             publicIfoData={publicIfoData}
             walletIfoData={walletIfoData}
-          />
+          /> */}
         </CardBody>
       </StyledCard>
     </>

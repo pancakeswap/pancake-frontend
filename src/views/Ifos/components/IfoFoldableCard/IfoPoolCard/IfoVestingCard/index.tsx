@@ -3,6 +3,7 @@ import { Flex, Box, Text, BunnyPlaceholderIcon, Button } from '@pancakeswap/uiki
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
 import Divider from 'components/Divider'
+import ProgressStepper from './ProgressStepper'
 import ReleasedTokenInfo from './ReleasedTokenInfo'
 import IfoVestingFooter from './IfoVestingFooter'
 
@@ -12,6 +13,10 @@ const IfoVestingCard: React.FC = () => {
   return (
     <Flex flexDirection="column">
       <Box>
+        <ProgressStepper
+          steps={[{ text: 'Sales ended' }, { text: 'Cliff' }, { text: 'Vesting end' }]}
+          activeStepIndex={1}
+        />
         <LightGreyCard mt="35px" mb="24px">
           <Flex>
             <BunnyPlaceholderIcon mr="16px" width={32} height={32} style={{ alignSelf: 'flex-start' }} />
