@@ -101,7 +101,7 @@ const IFOBanner = () => {
         </S.LeftWrapper>
         <RightWrapper>
           <IFOIconImage
-            src={`/images/tokens/${activeIfoWithBlocks.token.address}.svg`}
+            src={`/images/tokens/${activeIfoWithBlocks.token.address}.png`}
             onError={(event) => {
               // @ts-ignore
               // eslint-disable-next-line no-param-reassign
