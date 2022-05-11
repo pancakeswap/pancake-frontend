@@ -5,7 +5,7 @@ import { getFarmAuctionContract } from '../../utils/contractHelpers'
 import { AuctionsResponse } from '../../utils/types'
 import { processAuctionData, sortAuctionBidders } from '../../views/FarmAuction/helpers'
 
-const fetchCurrentFarmsWithAuctions = async (
+const fetchFarmsWithAuctions = async (
   currentBlock: number,
 ): Promise<{ winnerFarms: string[]; auctionHostingEndDate: string }> => {
   const now = Date.now()
@@ -14,7 +14,7 @@ const fetchCurrentFarmsWithAuctions = async (
   const auctionData: AuctionsResponse = await farmAuctionContract.auctions(currentAuctionId)
   const currentAuction = await processAuctionData(currentAuctionId.toNumber(), auctionData, currentBlock)
   if (currentAuction.status === AuctionStatus.Closed) {
-    if (differenceInDays(now, currentAuction.endDate) >= FARM_AUCTION_HOSTING_IN_DAYS) {
+    if (differenceInDays(now, currentAuction.endDate) > FARM_AUCTION_HOSTING_IN_DAYS) {
       return { winnerFarms: [], auctionHostingEndDate: null }
     }
     const [auctionBidders] = await farmAuctionContract.viewBidsPerAuction(currentAuctionId, 0, 500)
@@ -34,4 +34,4 @@ const fetchCurrentFarmsWithAuctions = async (
   return { winnerFarms: [], auctionHostingEndDate: null }
 }
 
-export default fetchCurrentFarmsWithAuctions
+export default fetchFarmsWithAuctions

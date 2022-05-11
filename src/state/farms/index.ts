@@ -24,7 +24,7 @@ import {
 import { SerializedFarmsState, SerializedFarm } from '../types'
 import { fetchMasterChefFarmPoolLength } from './fetchMasterChefData'
 import { resetUserState } from '../global/actions'
-import fetchCurrentFarmsWithAuctions from './fetchCurrentFarmsWithAuctions'
+import fetchFarmsWithAuctions from './fetchFarmsWithAuctions'
 import getFarmsAuctionData from './getFarmsAuctionData'
 
 const noAccountFarmConfig = farmsConfig.map((farm) => ({
@@ -92,7 +92,7 @@ export const fetchFarmsAuctionDataAsync = createAsyncThunk<
   { winnerFarms: string[]; auctionHostingEndDate: string },
   number
 >('farms/fetchFarmsAuctionDataAsync', async (currentBlock) => {
-  return fetchCurrentFarmsWithAuctions(currentBlock)
+  return fetchFarmsWithAuctions(currentBlock)
 })
 
 interface FarmUserDataResponse {
