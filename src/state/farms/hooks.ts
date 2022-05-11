@@ -1,9 +1,10 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
-import { farmsConfig } from 'config/constants'
+import { farmsConfig, SLOW_INTERVAL } from 'config/constants'
 import { CHAIN_ID } from 'config/constants/networks'
-import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
+import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
+import useSWRImmutable from 'swr/immutable'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
@@ -18,23 +19,31 @@ import {
   makeLpTokenPriceFromLpSymbolSelector,
   makeFarmFromPidSelector,
 } from './selectors'
+import { useInitialBlock } from '../block/hooks'
 
 export const usePollFarmsWithUserData = () => {
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
+  const initialBlock = useInitialBlock()
 
-  useSlowRefreshEffect(
-    (currentBlock) => {
+  const { data: auctionData } = useSWRImmutable(initialBlock ? ['farmsAuctionData'] : null, async () => {
+    return dispatch(fetchFarmsAuctionDataAsync(initialBlock))
+  })
+
+  useSWRImmutable(
+    auctionData ? ['farmsWithUserData', account] : null,
+    () => {
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
 
       dispatch(fetchFarmsPublicDataAsync(pids))
-      dispatch(fetchFarmsAuctionDataAsync(currentBlock))
 
       if (account) {
         dispatch(fetchFarmUserDataAsync({ account, pids }))
       }
     },
-    [dispatch, account],
+    {
+      refreshInterval: SLOW_INTERVAL,
+    },
   )
 }
 
