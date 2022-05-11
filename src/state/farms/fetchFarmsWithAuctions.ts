@@ -3,16 +3,15 @@ import farmAuctionAbi from 'config/abi/farmAuction.json'
 import { getFarmAuctionContract } from 'utils/contractHelpers'
 import { multicallv2 } from 'utils/multicall'
 import { ethersToBigNumber } from 'utils/bigNumber'
+import { simpleRpcProvider } from 'utils/providers'
 import { BSC_BLOCK_TIME } from 'config'
 import { add } from 'date-fns'
 import { sortAuctionBidders } from '../../views/FarmAuction/helpers'
 
 const fetchFarmsWithAuctions = async (
-  currentBlock: number,
+  currentBlockNumber: number,
 ): Promise<{ winnerFarms: string[]; auctionHostingEndDate: string }> => {
-  if (!currentBlock) {
-    return { winnerFarms: [], auctionHostingEndDate: null }
-  }
+  const currentBlock = currentBlockNumber || (await simpleRpcProvider.getBlockNumber())
   const now = Date.now()
   const farmAuctionContract = getFarmAuctionContract()
   const currentAuctionId = await farmAuctionContract.currentAuctionId()
