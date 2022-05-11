@@ -1,6 +1,7 @@
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Text, Flex, LinkExternal, Skeleton } from '@pancakeswap/uikit'
+import { add } from 'date-fns'
 
 export interface ExpandableSectionProps {
   bscScanAddress?: string
@@ -9,6 +10,8 @@ export interface ExpandableSectionProps {
   totalValueFormatted?: string
   lpLabel?: string
   addLiquidityUrl?: string
+  isCommunity?: boolean
+  auctionEndDate?: string
 }
 
 const Wrapper = styled.div`
@@ -26,11 +29,31 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   totalValueFormatted,
   lpLabel,
   addLiquidityUrl,
+  isCommunity,
+  auctionEndDate,
 }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
 
   return (
     <Wrapper>
+      {isCommunity && (
+        <Flex justifyContent="space-between">
+          <Text>{t('Auction Hosting Ends')}:</Text>
+          <Text>
+            {'~ '}
+            {add(new Date(auctionEndDate), {
+              days: 7,
+            }).toLocaleString(locale, {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            })}
+          </Text>
+        </Flex>
+      )}
       <Flex justifyContent="space-between">
         <Text>{t('Total Liquidity')}:</Text>
         {totalValueFormatted ? <Text>{totalValueFormatted}</Text> : <Skeleton width={75} height={25} />}
