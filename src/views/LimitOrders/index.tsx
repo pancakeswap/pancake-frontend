@@ -72,6 +72,9 @@ const LimitOrders = () => {
 
   const [onPresentImportTokenWarningModal] = useModal(
     <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => router.push('/limit-orders')} />,
+    false,
+    false,
+    'limitOrderTokenWarningModal',
   )
 
   useEffect(() => {
