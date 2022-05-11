@@ -24,6 +24,8 @@ import {
 import { SerializedFarmsState, SerializedFarm } from '../types'
 import { fetchMasterChefFarmPoolLength } from './fetchMasterChefData'
 import { resetUserState } from '../global/actions'
+import fetchCurrentFarmsWithAuctions from './fetchCurrentFarmsWithAuctions'
+import getFarmsAuctionData from './getFarmsAuctionData'
 
 const noAccountFarmConfig = farmsConfig.map((farm) => ({
   ...farm,
@@ -83,6 +85,13 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
       }
       return true
     },
+  },
+)
+
+export const fetchFarmsAuctionDataAsync = createAsyncThunk<{ winnerFarms: string[]; auctionEndDate: string }, number>(
+  'farms/fetchFarmsAuctionDataAsync',
+  async (currentBlock) => {
+    return fetchCurrentFarmsWithAuctions(currentBlock)
   },
 )
 
@@ -180,6 +189,12 @@ export const farmsSlice = createSlice({
       })
       state.poolLength = poolLength
       state.regularCakePerBlock = regularCakePerBlock
+    })
+
+    builder.addCase(fetchFarmsAuctionDataAsync.fulfilled, (state, action) => {
+      const { winnerFarms, auctionEndDate } = action.payload
+      const farmsWithAuction = getFarmsAuctionData(state.data, winnerFarms, auctionEndDate)
+      state.data = farmsWithAuction
     })
 
     // Update farms with user data

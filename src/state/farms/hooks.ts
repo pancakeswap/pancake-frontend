@@ -7,7 +7,7 @@ import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffe
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
+import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchFarmsAuctionDataAsync } from '.'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, State } from '../types'
 import {
   farmSelector,
@@ -23,15 +23,19 @@ export const usePollFarmsWithUserData = () => {
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
 
-  useSlowRefreshEffect(() => {
-    const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
+  useSlowRefreshEffect(
+    (currentBlock) => {
+      const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
 
-    dispatch(fetchFarmsPublicDataAsync(pids))
+      dispatch(fetchFarmsPublicDataAsync(pids))
+      dispatch(fetchFarmsAuctionDataAsync(currentBlock || null))
 
-    if (account) {
-      dispatch(fetchFarmUserDataAsync({ account, pids }))
-    }
-  }, [dispatch, account])
+      if (account) {
+        dispatch(fetchFarmUserDataAsync({ account, pids }))
+      }
+    },
+    [dispatch, account],
+  )
 }
 
 /**
