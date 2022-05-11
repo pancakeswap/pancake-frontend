@@ -152,9 +152,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
         <tr style={{ cursor: 'pointer' }} onClick={toggleActionPanel}>
           <FarmMobileCell colSpan={3}>
             <Flex justifyContent="space-between" alignItems="center">
-              <CellLayout>
-                <Farm {...props.farm} />
-              </CellLayout>
+              <Farm {...props.farm} />
               {props.type === 'community' ? (
                 <FarmAuctionTag marginRight="16px" scale="sm" />
               ) : (
@@ -179,10 +177,8 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
             </AprMobileCell>
           </td>
           <td width="33%">
-            <CellInner style={{ paddingLeft: '36px' }}>
-              <CellLayout>
-                <Details actionPanelToggled={actionPanelExpanded} />
-              </CellLayout>
+            <CellInner style={{ justifyContent: 'flex-end' }}>
+              <Details actionPanelToggled={actionPanelExpanded} />
             </CellInner>
           </td>
         </StyledTr>
