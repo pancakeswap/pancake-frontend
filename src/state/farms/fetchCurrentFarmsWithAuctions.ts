@@ -1,4 +1,5 @@
 import { AuctionStatus } from 'config/constants/types'
+import { FARM_AUCTION_HOSTING_IN_DAYS } from 'config/constants'
 import { differenceInDays } from 'date-fns'
 import { getFarmAuctionContract } from '../../utils/contractHelpers'
 import { AuctionsResponse } from '../../utils/types'
@@ -13,7 +14,7 @@ const fetchCurrentFarmsWithAuctions = async (
   const auctionData: AuctionsResponse = await farmAuctionContract.auctions(currentAuctionId)
   const currentAuction = await processAuctionData(currentAuctionId.toNumber(), auctionData, currentBlock)
   if (currentAuction.status === AuctionStatus.Closed) {
-    if (differenceInDays(now, currentAuction.endDate) >= 7) {
+    if (differenceInDays(now, currentAuction.endDate) >= FARM_AUCTION_HOSTING_IN_DAYS) {
       return { winnerFarms: [], auctionEndDate: currentAuction.endDate.toJSON() }
     }
     const [auctionBidders] = await farmAuctionContract.viewBidsPerAuction(currentAuctionId, 0, 500)

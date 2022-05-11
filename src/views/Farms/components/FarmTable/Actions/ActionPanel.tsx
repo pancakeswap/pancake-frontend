@@ -1,5 +1,6 @@
 import styled, { keyframes, css } from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
+import { FARM_AUCTION_HOSTING_IN_DAYS } from 'config/constants'
 import { LinkExternal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { add } from 'date-fns'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
@@ -138,7 +139,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
               <Text>{t('Auction Hosting Ends')}</Text>
               <Text paddingLeft="4px">
                 {add(new Date(farm.auctionEndDate), {
-                  days: 7,
+                  days: FARM_AUCTION_HOSTING_IN_DAYS,
                 }).toLocaleString(locale, {
                   month: 'short',
                   day: 'numeric',

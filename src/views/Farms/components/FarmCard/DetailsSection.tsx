@@ -1,4 +1,5 @@
 import { useTranslation } from 'contexts/Localization'
+import { FARM_AUCTION_HOSTING_IN_DAYS } from 'config/constants'
 import styled from 'styled-components'
 import { Text, Flex, LinkExternal, Skeleton } from '@pancakeswap/uikit'
 import { add } from 'date-fns'
@@ -45,7 +46,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
           <Text>
             {'~ '}
             {add(new Date(auctionEndDate), {
-              days: 7,
+              days: FARM_AUCTION_HOSTING_IN_DAYS,
             }).toLocaleString(locale, {
               month: 'short',
               day: 'numeric',
