@@ -1,9 +1,10 @@
 import React from 'react'
-import { Flex, Box, Text, BunnyPlaceholderIcon, Button } from '@pancakeswap/uikit'
-import { LightGreyCard } from 'components/Card'
+import { Flex, Box, Text, Button } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Divider from 'components/Divider'
 import ProgressStepper from './ProgressStepper'
+import TotalPurchased from './TotalPurchased'
+import TotalAvailableClaim from './TotalAvailableClaim'
 import ReleasedTokenInfo from './ReleasedTokenInfo'
 import IfoVestingFooter from './IfoVestingFooter'
 
@@ -17,37 +18,10 @@ const IfoVestingCard: React.FC = () => {
           steps={[{ text: 'Sales ended' }, { text: 'Cliff' }, { text: 'Vesting end' }]}
           activeStepIndex={1}
         />
-        <LightGreyCard mt="35px" mb="24px">
-          <Flex>
-            <BunnyPlaceholderIcon mr="16px" width={32} height={32} style={{ alignSelf: 'flex-start' }} />
-            <Box>
-              <Text color="secondary" bold fontSize="12px">
-                Total XYZ purchased
-              </Text>
-              <Text bold fontSize="20px">
-                ~234.5612
-              </Text>
-            </Box>
-          </Flex>
-        </LightGreyCard>
+        <TotalPurchased />
         <ReleasedTokenInfo />
         <Divider />
-        <LightGreyCard mt="24px" mb="8px">
-          <Flex>
-            <BunnyPlaceholderIcon mr="16px" width={32} height={32} style={{ alignSelf: 'flex-start' }} />
-            <Box>
-              <Text bold color="secondary" fontSize="12px">
-                xyz available to claim
-              </Text>
-              <Text as="span" bold fontSize="20px">
-                52.1234
-              </Text>
-              <Text as="span" bold color="textSubtle" fontSize="20px">
-                /234.5612
-              </Text>
-            </Box>
-          </Flex>
-        </LightGreyCard>
+        <TotalAvailableClaim />
         <Text mb="24px" color="textSubtle" fontSize="14px">
           You’ve already claimed 48.5733 XYZ
         </Text>
