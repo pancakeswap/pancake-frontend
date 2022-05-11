@@ -106,7 +106,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens['8pay'],
     quoteToken: serializedTokens.busd,
-    isCommunity: true,
   },
   {
     pid: 93,
@@ -118,7 +117,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.happy,
     quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
   },
   {
     pid: 95,
