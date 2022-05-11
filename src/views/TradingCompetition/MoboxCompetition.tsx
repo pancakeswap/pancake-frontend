@@ -48,7 +48,7 @@ const MoboxCompetition = () => {
   const { profile, isLoading } = useProfile()
   const { isDark, theme } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractMobox(false)
-  const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.REGISTRATION)
+  const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.OVER)
   const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
   const [userTradingInformation, setUserTradingInformation] = useState<UserTradingInformationProps>({
     hasRegistered: false,
