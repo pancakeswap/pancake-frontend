@@ -1,35 +1,56 @@
-import { AuctionStatus } from 'config/constants/types'
 import { FARM_AUCTION_HOSTING_IN_DAYS } from 'config/constants'
+import farmAuctionAbi from 'config/abi/farmAuction.json'
+import { getFarmAuctionContract } from 'utils/contractHelpers'
+import { multicallv2 } from 'utils/multicall'
+import { ethersToBigNumber } from 'utils/bigNumber'
+import { BSC_BLOCK_TIME } from 'config'
 import { add } from 'date-fns'
-import { getFarmAuctionContract } from '../../utils/contractHelpers'
-import { AuctionsResponse } from '../../utils/types'
-import { processAuctionData, sortAuctionBidders } from '../../views/FarmAuction/helpers'
+import { sortAuctionBidders } from '../../views/FarmAuction/helpers'
 
 const fetchFarmsWithAuctions = async (
   currentBlock: number,
 ): Promise<{ winnerFarms: string[]; auctionHostingEndDate: string }> => {
+  if (!currentBlock) {
+    return { winnerFarms: [], auctionHostingEndDate: null }
+  }
   const now = Date.now()
   const farmAuctionContract = getFarmAuctionContract()
   const currentAuctionId = await farmAuctionContract.currentAuctionId()
-  const auctionData: AuctionsResponse = await farmAuctionContract.auctions(currentAuctionId)
-  const currentAuction = await processAuctionData(currentAuctionId.toNumber(), auctionData, currentBlock)
-  if (currentAuction.status === AuctionStatus.Closed) {
+  const [auctionData, [auctionBidders]] = await multicallv2(
+    farmAuctionAbi,
+    [
+      {
+        address: farmAuctionContract.address,
+        name: 'auctions',
+        params: [currentAuctionId],
+      },
+      {
+        address: farmAuctionContract.address,
+        name: 'viewBidsPerAuction',
+        params: [currentAuctionId, 0, 500],
+      },
+    ],
+    { requireSuccess: false },
+  )
+  const blocksUntilBlock = auctionData.endBlock.toNumber() - currentBlock
+  if (blocksUntilBlock < 0) {
+    const secondsUntilStart = blocksUntilBlock * BSC_BLOCK_TIME
+    const currentAuctionEndDate = add(new Date(), { seconds: secondsUntilStart })
     if (
-      Math.abs(now - add(currentAuction.endDate, { days: FARM_AUCTION_HOSTING_IN_DAYS }).getTime()) /
+      Math.abs(now - add(currentAuctionEndDate, { days: FARM_AUCTION_HOSTING_IN_DAYS }).getTime()) /
         (24 * 3600 * 1000) >
       FARM_AUCTION_HOSTING_IN_DAYS
     ) {
       return { winnerFarms: [], auctionHostingEndDate: null }
     }
-    const [auctionBidders] = await farmAuctionContract.viewBidsPerAuction(currentAuctionId, 0, 500)
     const sortedBidders = sortAuctionBidders(auctionBidders)
-    const { leaderboardThreshold } = currentAuction
+    const { leaderboardThreshold } = auctionData
     const winnerFarms = sortedBidders
-      .filter((bidder) => leaderboardThreshold.lte(bidder.amount))
+      .filter((bidder) => bidder.amount.gt(ethersToBigNumber(leaderboardThreshold)))
       .map((bidder) => bidder.lpAddress)
     return {
       winnerFarms,
-      auctionHostingEndDate: add(currentAuction.endDate, {
+      auctionHostingEndDate: add(currentAuctionEndDate, {
         days: FARM_AUCTION_HOSTING_IN_DAYS,
       }).toJSON(),
     }
