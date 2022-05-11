@@ -88,12 +88,12 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
   },
 )
 
-export const fetchFarmsAuctionDataAsync = createAsyncThunk<{ winnerFarms: string[]; auctionEndDate: string }, number>(
-  'farms/fetchFarmsAuctionDataAsync',
-  async (currentBlock) => {
-    return fetchCurrentFarmsWithAuctions(currentBlock)
-  },
-)
+export const fetchFarmsAuctionDataAsync = createAsyncThunk<
+  { winnerFarms: string[]; auctionHostingEndDate: string },
+  number
+>('farms/fetchFarmsAuctionDataAsync', async (currentBlock) => {
+  return fetchCurrentFarmsWithAuctions(currentBlock)
+})
 
 interface FarmUserDataResponse {
   pid: number
@@ -192,8 +192,8 @@ export const farmsSlice = createSlice({
     })
 
     builder.addCase(fetchFarmsAuctionDataAsync.fulfilled, (state, action) => {
-      const { winnerFarms, auctionEndDate } = action.payload
-      const farmsWithAuction = getFarmsAuctionData(state.data, winnerFarms, auctionEndDate)
+      const { winnerFarms, auctionHostingEndDate } = action.payload
+      const farmsWithAuction = getFarmsAuctionData(state.data, winnerFarms, auctionHostingEndDate)
       state.data = farmsWithAuction
     })
 

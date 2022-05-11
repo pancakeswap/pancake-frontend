@@ -1,8 +1,6 @@
 import { useTranslation } from 'contexts/Localization'
-import { FARM_AUCTION_HOSTING_IN_DAYS } from 'config/constants'
 import styled from 'styled-components'
 import { Text, Flex, LinkExternal, Skeleton } from '@pancakeswap/uikit'
-import { add } from 'date-fns'
 
 export interface ExpandableSectionProps {
   bscScanAddress?: string
@@ -12,7 +10,7 @@ export interface ExpandableSectionProps {
   lpLabel?: string
   addLiquidityUrl?: string
   isCommunity?: boolean
-  auctionEndDate?: string
+  auctionHostingEndDate?: string
 }
 
 const Wrapper = styled.div`
@@ -31,7 +29,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   lpLabel,
   addLiquidityUrl,
   isCommunity,
-  auctionEndDate,
+  auctionHostingEndDate,
 }) => {
   const {
     t,
@@ -44,10 +42,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
         <Flex justifyContent="space-between">
           <Text>{t('Auction Hosting Ends')}:</Text>
           <Text>
-            {'~ '}
-            {add(new Date(auctionEndDate), {
-              days: FARM_AUCTION_HOSTING_IN_DAYS,
-            }).toLocaleString(locale, {
+            {new Date(auctionHostingEndDate).toLocaleString(locale, {
               month: 'short',
               day: 'numeric',
               year: 'numeric',

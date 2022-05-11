@@ -22,7 +22,7 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
     dual,
     multiplier,
     isCommunity,
-    auctionEndDate,
+    auctionHostingEndDate,
     quoteTokenPriceBusd,
     tokenPriceBusd,
   } = farm
@@ -34,7 +34,7 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
     dual,
     multiplier,
     isCommunity,
-    auctionEndDate,
+    auctionHostingEndDate,
     quoteTokenPriceBusd,
     tokenPriceBusd,
     token: deserializeToken(farm.token),
