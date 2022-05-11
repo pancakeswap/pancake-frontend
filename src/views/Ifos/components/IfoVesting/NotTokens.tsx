@@ -1,12 +1,10 @@
 import React from 'react'
-import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { DeserializedPool } from 'state/types'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { Flex, Text, BunnyPlaceholderIcon, Button, useModal } from '@pancakeswap/uikit'
+import { Flex, Text, BunnyPlaceholderIcon } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import LockedStakeModal from 'views/Pools/components/LockedPool/Modals/LockedStakeModal'
 import { MessageTextLink } from '../IfoCardStyles'
+import LockCakeButton from './LockCakeButton'
 
 interface NotTokensProps {
   pool: DeserializedPool
@@ -15,16 +13,6 @@ interface NotTokensProps {
 
 const NotTokens: React.FC<NotTokensProps> = ({ account, pool }) => {
   const { t } = useTranslation()
-  const { stakingToken, userData } = pool
-  const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
-
-  const [openPresentLockedStakeModal] = useModal(
-    <LockedStakeModal
-      currentBalance={stakingTokenBalance}
-      stakingToken={stakingToken}
-      stakingTokenBalance={stakingTokenBalance}
-    />,
-  )
 
   return (
     <Flex flexDirection="column">
@@ -40,7 +28,7 @@ const NotTokens: React.FC<NotTokensProps> = ({ account, pool }) => {
           {t('How does it work?')} »
         </MessageTextLink>
       </Flex>
-      {account ? <Button onClick={openPresentLockedStakeModal}>{t('Lock CAKE')}</Button> : <ConnectWalletButton />}
+      {account ? <LockCakeButton pool={pool} /> : <ConnectWalletButton />}
     </Flex>
   )
 }
