@@ -23,7 +23,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useGetMinBetAmount } from 'state/predictions/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { usePredictionsContract } from 'hooks/useContract'
-import { useGetBnbBalance } from 'hooks/useTokenBalance'
+import { useGetBnbBalance, useGetCakeBalance } from 'hooks/useTokenBalance'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { BetPosition } from 'state/types'
@@ -73,19 +73,28 @@ const getValueAsEthersBn = (value: string) => {
   return Number.isNaN(valueAsFloat) ? Zero : parseUnits(value)
 }
 
+const TOKEN_BALANCE_CONFIG = {
+  BNB: useGetBnbBalance,
+  CAKE: useGetCakeBalance,
+}
+
 const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosition, epoch, onBack, onSuccess }) => {
   const [value, setValue] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [percent, setPercent] = useState(0)
 
   const { account } = useWeb3React()
-  const { balance: bnbBalance } = useGetBnbBalance()
   const minBetAmount = useGetMinBetAmount()
   const { t } = useTranslation()
   const { fetchWithCatchTxError, loading: isTxPending } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { address: predictionsAddress, token } = useConfig()
-  const predictionsContract = usePredictionsContract(predictionsAddress)
+  const predictionsContract = usePredictionsContract(predictionsAddress, token.symbol)
+  const useTokebBlance = useMemo(() => {
+    return TOKEN_BALANCE_CONFIG[token.symbol]
+  }, [token.symbol])
+
+  const { balance: bnbBalance } = useTokebBlance()
 
   const maxBalance = useMemo(() => {
     return bnbBalance.gt(dust) ? bnbBalance.sub(dust) : Zero
@@ -136,9 +145,18 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
 
   const handleEnterPosition = async () => {
     const betMethod = position === BetPosition.BULL ? 'betBull' : 'betBear'
+    const callOptions =
+      token.symbol === 'CAKE'
+        ? {
+            gasLimit: 300000,
+            value: 0,
+          }
+        : { value: valueAsBn.toString() }
+
+    const args = token.symbol === 'CAKE' ? [epoch, valueAsBn.toString()] : [epoch]
 
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(predictionsContract, betMethod, [epoch], { value: valueAsBn.toString() })
+      return callWithGasPrice(predictionsContract, betMethod, args, callOptions)
     })
     if (receipt?.status) {
       onSuccess(receipt.transactionHash)
