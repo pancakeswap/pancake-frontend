@@ -28,7 +28,7 @@ export const usePollFarmsWithUserData = () => {
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
 
       dispatch(fetchFarmsPublicDataAsync(pids))
-      dispatch(fetchFarmsAuctionDataAsync(currentBlock || null))
+      dispatch(fetchFarmsAuctionDataAsync(currentBlock))
 
       if (account) {
         dispatch(fetchFarmUserDataAsync({ account, pids }))

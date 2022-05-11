@@ -5,7 +5,7 @@ import { AuctionsResponse } from '../../utils/types'
 import { processAuctionData, sortAuctionBidders } from '../../views/FarmAuction/helpers'
 
 const fetchCurrentFarmsWithAuctions = async (
-  currentBlock?: number,
+  currentBlock: number,
 ): Promise<{ winnerFarms: string[]; auctionEndDate: string }> => {
   const now = Date.now()
   const farmAuctionContract = getFarmAuctionContract()
