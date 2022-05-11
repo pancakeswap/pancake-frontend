@@ -34,7 +34,6 @@ interface WalletStatsModalProps extends InjectedModalProps {
   address: string
   result: PredictionUser
   leaderboardLoadingState: FetchStatus
-  tokenSymbol: string
   token: Token
   api: string
 }
