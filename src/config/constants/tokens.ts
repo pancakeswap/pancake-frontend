@@ -2087,6 +2087,7 @@ export const mainnetTokens = defineTokens({
     'Project Galaxy',
     'https://galaxy.eco/',
   ),
+  xcn: new Token(MAINNET, '0x7324c7C0d95CEBC73eEa7E85CbAac0dBdf88a05b', 18, 'XCN', 'Chain', 'https://chain.com/'),
 } as const)
 
 export const testnetTokens = defineTokens({
