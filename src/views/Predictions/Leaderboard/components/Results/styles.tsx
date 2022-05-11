@@ -1,3 +1,4 @@
+import { Token } from '@pancakeswap/sdk'
 import { Flex, FlexProps, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useBUSDPrice from 'hooks/useBUSDPrice'
@@ -18,8 +19,18 @@ interface NetWinningsProps extends FlexProps {
   textColor?: string
 }
 
-export const NetWinnings: React.FC<NetWinningsProps> = ({ amount, textPrefix = '', textColor = 'text', ...props }) => {
+export const NetWinnings: React.FC<NetWinningsProps> = (props) => {
   const { token } = useConfig()
+  return <NetWinningsView token={token} {...props} />
+}
+
+export const NetWinningsView: React.FC<NetWinningsProps & { token: Token }> = ({
+  token,
+  amount,
+  textPrefix = '',
+  textColor = 'text',
+  ...props
+}) => {
   const bnbBusdPrice = useBUSDPrice(token)
   const value = multiplyPriceByAmount(bnbBusdPrice, Math.abs(amount))
 

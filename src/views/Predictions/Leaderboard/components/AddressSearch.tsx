@@ -4,11 +4,13 @@ import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { fetchAddressResult, setSelectedAddress } from 'state/predictions'
 import AddressInputSelect from 'components/AddressInputSelect'
 import { useStatModalProps } from 'state/predictions/hooks'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import WalletStatsModal from './WalletStatsModal'
 
 const AddressSearch = () => {
   const dispatch = useLocalDispatch()
   const { result, address, leaderboardLoadingState } = useStatModalProps()
+  const { token, api } = useConfig()
 
   const handleBeforeDismiss = () => {
     dispatch(setSelectedAddress(null))
@@ -16,6 +18,8 @@ const AddressSearch = () => {
 
   const [onPresentWalletStatsModal] = useModal(
     <WalletStatsModal
+      token={token}
+      api={api}
       result={result}
       address={address}
       leaderboardLoadingState={leaderboardLoadingState}

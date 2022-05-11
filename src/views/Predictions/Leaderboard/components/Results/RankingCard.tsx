@@ -20,6 +20,7 @@ import { getBscScanLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
 import { useTranslation } from 'contexts/Localization'
 import { useStatModalProps } from 'state/predictions/hooks'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import WalletStatsModal from '../WalletStatsModal'
 import { NetWinningsRow, Row } from './styles'
 
@@ -53,9 +54,16 @@ const RankingCard: React.FC<RankingCardProps> = ({ rank, user }) => {
   const rankColor = getRankingColor(rank)
   const { profile } = useProfileForAddress(user.id)
   const { result, address, leaderboardLoadingState } = useStatModalProps(user.id)
+  const { token, api } = useConfig()
 
   const [onPresentWalletStatsModal] = useModal(
-    <WalletStatsModal result={result} address={address} leaderboardLoadingState={leaderboardLoadingState} />,
+    <WalletStatsModal
+      api={api}
+      token={token}
+      result={result}
+      address={address}
+      leaderboardLoadingState={leaderboardLoadingState}
+    />,
     true,
     false,
     'RankingCardWalletStatsModal',

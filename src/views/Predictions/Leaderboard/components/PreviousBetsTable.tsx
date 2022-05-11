@@ -2,23 +2,24 @@ import { useEffect, useState } from 'react'
 import times from 'lodash/times'
 import orderBy from 'lodash/orderBy'
 import { Skeleton, Table, Td, Th } from '@pancakeswap/uikit'
+import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from 'contexts/Localization'
 import { getBetHistory, transformBetResponse } from 'state/predictions/helpers'
 import { Bet } from 'state/types'
-import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import PositionLabel from './PositionLabel'
-import { NetWinnings } from './Results/styles'
+import { NetWinningsView } from './Results/styles'
 
 interface PreviousBetsTableProps {
   numberOfBets?: number
   account: string
+  token: Token
+  api: string
 }
 
-const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5, account }) => {
+const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5, account, token, api }) => {
   const [isFetching, setIsFetching] = useState(false)
   const [bets, setBets] = useState<Bet[]>([])
   const { t } = useTranslation()
-  const { api, token } = useConfig()
   const orderedBets = orderBy(bets, ['round.epoch'], ['desc'])
 
   useEffect(() => {
@@ -80,7 +81,8 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
                     <PositionLabel position={bet.position} />
                   </Td>
                   <Td textAlign="right">
-                    <NetWinnings
+                    <NetWinningsView
+                      token={token}
                       amount={!isCancelled && isWinner ? bet.claimedNetBNB : bet.amount}
                       textPrefix={isCancelled ? '' : isWinner ? '+' : '-'}
                       textColor={isCancelled ? 'textSubtle' : isWinner ? 'success' : 'failure'}

@@ -6,6 +6,7 @@ import { useProfileForAddress } from 'state/profile/hooks'
 import truncateHash from 'utils/truncateHash'
 import { useTranslation } from 'contexts/Localization'
 import { useStatModalProps } from 'state/predictions/hooks'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import WalletStatsModal from '../WalletStatsModal'
 
 interface ResultAvatarProps extends FlexProps {
@@ -35,9 +36,16 @@ const ResultAvatar: React.FC<ResultAvatarProps> = ({ user, ...props }) => {
   const { t } = useTranslation()
   const { profile } = useProfileForAddress(user.id)
   const { result, address, leaderboardLoadingState } = useStatModalProps(user.id)
+  const { token, api } = useConfig()
 
   const [onPresentWalletStatsModal] = useModal(
-    <WalletStatsModal result={result} address={address} leaderboardLoadingState={leaderboardLoadingState} />,
+    <WalletStatsModal
+      api={api}
+      token={token}
+      result={result}
+      address={address}
+      leaderboardLoadingState={leaderboardLoadingState}
+    />,
     true,
     false,
     'ResultAvatarWalletStatsModal',

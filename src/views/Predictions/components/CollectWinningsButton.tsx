@@ -24,6 +24,7 @@ const CollectWinningsButton: React.FC<CollectWinningsButtonProps> = ({ hasClaime
       token={token}
     />,
     false,
+    true,
   )
 
   return (

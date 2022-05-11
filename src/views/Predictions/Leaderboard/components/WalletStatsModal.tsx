@@ -19,11 +19,12 @@ import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
+import { Token } from '@pancakeswap/sdk'
 
 import { useTranslation } from 'contexts/Localization'
 import { FetchStatus } from 'config/constants/types'
 import { PredictionUser } from 'state/types'
-import { NetWinnings } from './Results/styles'
+import { NetWinningsView } from './Results/styles'
 import MobileBetsTable from './MobileBetsTable'
 import DesktopBetsTable from './Results/DesktopBetsTable'
 
@@ -33,6 +34,9 @@ interface WalletStatsModalProps extends InjectedModalProps {
   address: string
   result: PredictionUser
   leaderboardLoadingState: FetchStatus
+  tokenSymbol: string
+  token: Token
+  api: string
 }
 
 const ExternalLink = styled(LinkExternal)`
@@ -49,6 +53,8 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({
   leaderboardLoadingState,
   onDismiss,
   onBeforeDismiss,
+  token,
+  api,
 }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
@@ -104,7 +110,8 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({
               {isLoading ? (
                 <Skeleton />
               ) : (
-                <NetWinnings
+                <NetWinningsView
+                  token={token}
                   amount={result?.netBNB}
                   textPrefix={result?.netBNB > 0 ? '+' : ''}
                   textColor={result?.netBNB > 0 ? 'success' : 'failure'}
@@ -138,7 +145,11 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({
               {isLoading ? <Skeleton /> : <Text fontWeight="bold">{result?.totalBets?.toLocaleString()}</Text>}
             </Box>
           </Grid>
-          {isDesktop ? <DesktopBetsTable account={address} /> : <MobileBetsTable account={address} />}
+          {isDesktop ? (
+            <DesktopBetsTable token={token} api={api} account={address} />
+          ) : (
+            <MobileBetsTable token={token} api={api} account={address} />
+          )}
         </Box>
       )}
     </ModalContainer>
