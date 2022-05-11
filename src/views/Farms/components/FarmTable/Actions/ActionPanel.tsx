@@ -4,7 +4,6 @@ import { LinkExternal, Text } from '@pancakeswap/uikit'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { getAddress } from 'utils/addressHelpers'
 import { getBscScanLink } from 'utils'
-import { FarmAuctionTag, CoreTag, DualTag } from 'components/Tags'
 import { FarmWithStakedValue } from '../../types'
 
 import HarvestAction from './HarvestAction'
