@@ -13,7 +13,6 @@ import CollectModal from '../../PoolCard/Modals/CollectModal'
 interface EarningsCellProps {
   pool: DeserializedPool
   account: string
-  userDataLoaded: boolean
 }
 
 const StyledCell = styled(BaseCell)`
@@ -23,7 +22,7 @@ const StyledCell = styled(BaseCell)`
   }
 `
 
-const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoaded }) => {
+const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const { sousId, earningToken, poolCategory, userData, earningTokenPrice } = pool
@@ -62,7 +61,7 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
-        {!userDataLoaded && account ? (
+        {!pool.userDataLoaded && account ? (
           <Skeleton width="80px" height="16px" />
         ) : (
           <>

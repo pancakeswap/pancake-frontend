@@ -73,6 +73,29 @@ const initialState: PoolsState = {
 
 const cakeVaultAddress = getCakeVaultAddress()
 
+export const fetchCakePoolPublicDataAsync = () => async (dispatch, getState) => {
+  const farmsData = getState().farms.data
+  const prices = getTokenPricesFromFarm(farmsData)
+
+  const cakePool = poolsConfig.filter((p) => p.sousId === 0)[0]
+
+  const stakingTokenAddress = cakePool.stakingToken.address ? cakePool.stakingToken.address.toLowerCase() : null
+  const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
+
+  const earningTokenAddress = cakePool.earningToken.address ? cakePool.earningToken.address.toLowerCase() : null
+  const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
+
+  dispatch(
+    setPoolPublicData({
+      sousId: 0,
+      data: {
+        stakingTokenPrice,
+        earningTokenPrice,
+      },
+    }),
+  )
+}
+
 export const fetchCakePoolUserDataAsync = (account: string) => async (dispatch) => {
   const allowanceCall = {
     address: tokens.cake.address,
@@ -289,8 +312,12 @@ export const PoolsSlice = createSlice({
     },
     setPoolUserData: (state, action) => {
       const { sousId } = action.payload
-      const poolIndex = state.data.findIndex((pool) => pool.sousId === sousId)
-      state.data[poolIndex].userData = action.payload.data
+      state.data = state.data.map((pool) => {
+        if (pool.sousId === sousId) {
+          return { ...pool, userDataLoaded: true, userData: action.payload.data }
+        }
+        return pool
+      })
     },
     setPoolsPublicData: (state, action) => {
       const livePoolsData: SerializedPool[] = action.payload
@@ -303,7 +330,7 @@ export const PoolsSlice = createSlice({
       const userData = action.payload
       state.data = state.data.map((pool) => {
         const userPoolData = userData.find((entry) => entry.sousId === pool.sousId)
-        return { ...pool, userData: userPoolData }
+        return { ...pool, userDataLoaded: true, userData: userPoolData }
       })
       state.userDataLoaded = true
     },

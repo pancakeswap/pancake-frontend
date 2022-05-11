@@ -142,6 +142,7 @@ export interface DeserializedPool extends DeserializedPoolConfig, CorePoolProps 
     required: boolean
     thresholdPoints: BigNumber
   }
+  userDataLoaded?: boolean
   userData?: {
     allowance: BigNumber
     stakingTokenBalance: BigNumber

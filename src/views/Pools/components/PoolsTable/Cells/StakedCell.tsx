@@ -13,12 +13,11 @@ import BaseCell, { CellContent } from './BaseCell'
 interface StakedCellProps {
   pool: DeserializedPool
   account: string
-  userDataLoaded: boolean
 }
 
 const StyledCell = styled(BaseCell)``
 
-const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }) => {
+const StakedCell: React.FC<StakedCellProps> = ({ pool, account }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
@@ -48,7 +47,7 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }
 
   const hasStaked = account && (stakedBalance.gt(0) || isVaultWithShares)
 
-  const userDataLoading = pool.vaultKey ? vaultUserDataLoading : !userDataLoaded
+  const userDataLoading = pool.vaultKey ? vaultUserDataLoading : !pool.userDataLoaded
 
   return (
     <StyledCell role="cell" flex={pool.vaultKey && !hasStaked ? '1 0 120px' : '2 0 100px'}>
