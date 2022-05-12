@@ -80,6 +80,10 @@ const config: (t: ContextApi['t'], languageCode?: string) => ConfigMenuItemsType
         href: '/prediction',
       },
       {
+        label: t('CAKE Prediction'),
+        href: '/cake-prediction',
+      },
+      {
         label: t('Lottery'),
         href: '/lottery',
       },
