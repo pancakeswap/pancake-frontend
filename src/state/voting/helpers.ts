@@ -117,17 +117,17 @@ export const getAllVotes = async (proposal: Proposal, votesPerChunk = 30000): Pr
 
   const voterChunk = _chunk(
     voters.map((v) => v.voter),
-    600,
+    300,
   )
 
   let votingPowers = {}
 
-  for (const chunk of voterChunk) {
-    const votingPowerChunk = await getVotingPowerByCakeStrategy(chunk, parseInt(proposal.snapshot))
+  const vps = await Promise.all(voterChunk.map((v) => getVotingPowerByCakeStrategy(v, parseInt(proposal.snapshot))))
 
+  for (const vp of vps) {
     votingPowers = {
       ...votingPowers,
-      ...votingPowerChunk,
+      ...vp,
     }
   }
 
