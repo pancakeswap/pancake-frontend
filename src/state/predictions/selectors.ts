@@ -1,15 +1,15 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import orderBy from 'lodash/orderBy'
 import { createSelector } from '@reduxjs/toolkit'
-import { State, ReduxNodeRound, NodeRound, ReduxNodeLedger, NodeLedger } from '../types'
+import { PredictionsState, ReduxNodeRound, NodeRound, ReduxNodeLedger, NodeLedger } from '../types'
 import { parseBigNumberObj } from './helpers'
 
-const selectCurrentEpoch = (state: State) => state.predictions.currentEpoch
-const selectRounds = (state: State) => state.predictions.rounds
-const selectLedgers = (state: State) => state.predictions.ledgers
-const selectClaimableStatuses = (state: State) => state.predictions.claimableStatuses
-const selectMinBetAmount = (state: State) => state.predictions.minBetAmount
-const selectIntervalSeconds = (state: State) => state.predictions.intervalSeconds
+const selectCurrentEpoch = (state: PredictionsState) => state.currentEpoch
+const selectRounds = (state: PredictionsState) => state.rounds
+const selectLedgers = (state: PredictionsState) => state.ledgers
+const selectClaimableStatuses = (state: PredictionsState) => state.claimableStatuses
+const selectMinBetAmount = (state: PredictionsState) => state.minBetAmount
+const selectIntervalSeconds = (state: PredictionsState) => state.intervalSeconds
 
 export const makeGetBetByEpochSelector = (account: string, epoch: number) =>
   createSelector([selectLedgers], (bets) => {

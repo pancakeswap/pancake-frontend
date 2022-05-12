@@ -67,9 +67,7 @@ export const getVaultPoolAddress = (vaultKey: VaultKey) => {
 export const getCakeVaultAddress = () => {
   return getAddress(addresses.cakeVault)
 }
-export const getPredictionsAddress = () => {
-  return getAddress(addresses.predictions)
-}
+
 export const getChainlinkOracleAddress = () => {
   return getAddress(addresses.chainlinkOracle)
 }

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
 import { useChartView } from 'state/predictions/hooks'
 import { setChartView } from 'state/predictions'
-import { useAppDispatch } from 'state'
+import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import dynamic from 'next/dynamic'
 import { PredictionsChartView } from 'state/types'
 import { TabToggleGroup, TabToggle } from 'components/TabToggle'
@@ -24,7 +24,7 @@ const ChartWrapper = styled.div`
 
 const MobileChart = () => {
   const chartView = useChartView()
-  const dispatch = useAppDispatch()
+  const dispatch = useLocalDispatch()
   const { t } = useTranslation()
 
   return (

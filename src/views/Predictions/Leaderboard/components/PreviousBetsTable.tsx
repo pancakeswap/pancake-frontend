@@ -2,18 +2,21 @@ import { useEffect, useState } from 'react'
 import times from 'lodash/times'
 import orderBy from 'lodash/orderBy'
 import { Skeleton, Table, Td, Th } from '@pancakeswap/uikit'
+import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from 'contexts/Localization'
 import { getBetHistory, transformBetResponse } from 'state/predictions/helpers'
 import { Bet } from 'state/types'
 import PositionLabel from './PositionLabel'
-import { NetWinnings } from './Results/styles'
+import { NetWinningsView } from './Results/styles'
 
 interface PreviousBetsTableProps {
   numberOfBets?: number
   account: string
+  token: Token
+  api: string
 }
 
-const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5, account }) => {
+const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5, account, token, api }) => {
   const [isFetching, setIsFetching] = useState(false)
   const [bets, setBets] = useState<Bet[]>([])
   const { t } = useTranslation()
@@ -28,6 +31,8 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
             user: account.toLowerCase(),
           },
           numberOfBets,
+          undefined,
+          api,
         )
 
         setBets(response.map(transformBetResponse))
@@ -37,7 +42,7 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
     }
 
     fetchBetHistory()
-  }, [account, numberOfBets, setIsFetching, setBets])
+  }, [account, numberOfBets, setIsFetching, setBets, api])
 
   return (
     <Table>
@@ -45,7 +50,7 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
         <tr>
           <Th>{t('Round')}</Th>
           <Th>{t('Direction')}</Th>
-          <Th textAlign="right">{t('Winnings (BNB)')}</Th>
+          <Th textAlign="right">{t('Winnings (%symbol%)', { symbol: token.symbol })}</Th>
         </tr>
       </thead>
       <tbody>
@@ -76,7 +81,8 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
                     <PositionLabel position={bet.position} />
                   </Td>
                   <Td textAlign="right">
-                    <NetWinnings
+                    <NetWinningsView
+                      token={token}
                       amount={!isCancelled && isWinner ? bet.claimedNetBNB : bet.amount}
                       textPrefix={isCancelled ? '' : isWinner ? '+' : '-'}
                       textColor={isCancelled ? 'textSubtle' : isWinner ? 'success' : 'failure'}
