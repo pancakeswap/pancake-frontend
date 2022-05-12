@@ -62,7 +62,7 @@ const useEagerConnect = () => {
         tryLogin(connectorId)
       }
     } else {
-      // Dapp browse will try login event is not authorized.
+      // Dapp browse will try login even is not authorized.
       injected.isAuthorized().then(() => {
         if (isMobile && window.ethereum) {
           tryLogin(ConnectorNames.Injected)
