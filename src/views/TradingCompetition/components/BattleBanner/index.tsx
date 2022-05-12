@@ -23,8 +23,13 @@ const Mesh = styled.div`
   left: 0;
   right: 0;
   height: 242px;
-  background-image: url('${meshImg.src}');
   z-index: -1;
+  background-image: url('${meshImg.src}');
+  @media only screen and (min-width: 1920px) {
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: 100%;
+  }
 `
 const TextBgLight = styled.div`
   position: absolute;
