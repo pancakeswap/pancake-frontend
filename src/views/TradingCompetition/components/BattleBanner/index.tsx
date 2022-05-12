@@ -129,7 +129,7 @@ const BattleBanner = () => {
   const { theme } = useTheme()
 
   return (
-    <Flex flexDirection="column">
+    <Flex flexDirection="column" overflow="hidden">
       <Mesh />
       <BgShine />
       <ImageWrapper>
