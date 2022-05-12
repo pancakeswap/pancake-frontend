@@ -117,7 +117,7 @@ export const getAllVotes = async (proposal: Proposal, votesPerChunk = 30000): Pr
 
   const voterChunk = _chunk(
     voters.map((v) => v.voter),
-    300,
+    600,
   )
 
   let votingPowers = {}
