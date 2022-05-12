@@ -76,11 +76,11 @@ const config: (t: ContextApi['t'], languageCode?: string) => ConfigMenuItemsType
         hideSubNav: true,
       },
       {
-        label: t('Prediction (BETA)'),
+        label: t('BNB Prediction (BETA)'),
         href: '/prediction',
       },
       {
-        label: t('CAKE Prediction'),
+        label: t('CAKE Prediction (BETA)'),
         href: '/cake-prediction',
       },
       {

@@ -30,6 +30,12 @@ const View = styled.div<{ isVisible: boolean }>`
   visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
 `
 
+const PowerLinkStyle = styled.div`
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+`
+
 const getView = (isHistoryPaneOpen: boolean, isChartPaneOpen: boolean): PageView => {
   if (isHistoryPaneOpen) {
     return PageView.HISTORY
@@ -56,6 +62,9 @@ const Mobile: React.FC = () => {
             {status === PredictionStatus.ERROR && <ErrorNotification />}
             {status === PredictionStatus.PAUSED && <PauseNotification />}
             {status === PredictionStatus.LIVE && <Positions view={view} />}
+            <PowerLinkStyle>
+              <img src="/images/powered-by-chainlink.png" alt="Powered by ChainLink" width="170px" height="48px" />
+            </PowerLinkStyle>
           </Flex>
         </View>
         <View isVisible={view === PageView.CHART}>
