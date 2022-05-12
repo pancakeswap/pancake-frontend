@@ -14,7 +14,8 @@ export const fetchActivityNftMetadata = async (activities: Activity[]): Promise<
       .map((activity): TokenIdWithCollectionAddress => {
         return { tokenId: activity.nft.tokenId, collectionAddress: activity.nft.collection.id }
       }),
-    'tokenId',
+    (tokenWithCollectionAddress) =>
+      `${tokenWithCollectionAddress.tokenId}#${tokenWithCollectionAddress.collectionAddress}`,
   )
 
   const [bunniesMetadata, nfts] = await Promise.all([
