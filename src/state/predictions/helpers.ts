@@ -1,5 +1,5 @@
 import { request, gql } from 'graphql-request'
-import { GRAPH_API_PREDICTION } from 'config/constants/endpoints'
+import { GRAPH_API_PREDICTION, GRAPH_API_PREDICTION_CAKE } from 'config/constants/endpoints'
 import { BigNumber } from '@ethersproject/bignumber'
 import {
   Bet,
@@ -23,7 +23,7 @@ import { transformBetResponseCAKE, transformUserResponseCAKE } from './cakeTrans
 import { transformBetResponseBNB, transformUserResponseBNB } from './bnbTransformers'
 import { BetResponse, UserResponse } from './responseType'
 import { BetResponseBNB, TotalWonMarketResponseBNB } from './bnbQueries'
-import { BetResponseCAKE } from './cakeQueries'
+import { BetResponseCAKE, TotalWonMarketResponseCAKE } from './cakeQueries'
 
 export enum Result {
   WIN = 'win',
@@ -72,23 +72,31 @@ export const getFilteredBets = (bets: Bet[], filter: HistoryFilter) => {
   }
 }
 
+const getTotalWonMarket = (market, tokenSymbol) => {
+  const total = market[`total${tokenSymbol}`] ? parseFloat(market[`total${tokenSymbol}`]) : 0
+  const totalTreasury = market[`total${tokenSymbol}Treasury`] ? parseFloat(market[`total${tokenSymbol}Treasury`]) : 0
+
+  return Math.max(total - totalTreasury, 0)
+}
+
 export const getTotalWon = async (): Promise<number> => {
-  const { market } = (await request(
-    GRAPH_API_PREDICTION,
-    gql`
-      query getTotalWonData {
-        market(id: 1) {
-          totalBNB
-          totalBNBTreasury
+  const [{ market: BNBMarket }] = await Promise.all([
+    request(
+      GRAPH_API_PREDICTION,
+      gql`
+        query getTotalWonData {
+          market(id: 1) {
+            totalBNB
+            totalBNBTreasury
+          }
         }
-      }
-    `,
-  )) as { market: TotalWonMarketResponseBNB }
+      `,
+    ),
+  ])
 
-  const totalBNB = market.totalBNB ? parseFloat(market.totalBNB) : 0
-  const totalBNBTreasury = market.totalBNBTreasury ? parseFloat(market.totalBNBTreasury) : 0
+  const totalWonBNB = getTotalWonMarket(BNBMarket, 'BNB')
 
-  return Math.max(totalBNB - totalBNBTreasury, 0)
+  return totalWonBNB
 }
 
 type WhereClause = Record<string, string | number | boolean | string[]>
