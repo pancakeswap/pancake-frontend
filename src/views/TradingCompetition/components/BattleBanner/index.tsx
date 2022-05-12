@@ -46,36 +46,6 @@ const BgShine = styled.div`
   z-index: 0;
 `
 
-const StarImage = styled.div`
-  display: none;
-  position: absolute;
-  z-index: -1;
-  bottom: 0;
-  background-size: 150%;
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-image: url('/images/competition/banner-star.png');
-  opacity: 0.4;
-  ${({ theme }) => theme.mediaQueries.md} {
-    display: block;
-    height: 70%;
-    width: 50%;
-    right: 0px;
-  }
-  ${({ theme }) => theme.mediaQueries.xl} {
-    width: 40%;
-    height: 80%;
-    right: 25px;
-  }
-  @media screen and (min-width: 1440px) {
-    height: 100%;
-    right: 12%;
-  }
-  @media screen and (min-width: 1680px) {
-    right: 20%;
-  }
-`
-
 const ImageWrapper = styled.div`
   position: relative;
   z-index: 2;
@@ -162,7 +132,6 @@ const BattleBanner = () => {
     <Flex flexDirection="column">
       <Mesh />
       <BgShine />
-      <StarImage />
       <ImageWrapper>
         <Image src={AllBunniesImage} alt="all the bunnies" width={523} height={395} />
       </ImageWrapper>
