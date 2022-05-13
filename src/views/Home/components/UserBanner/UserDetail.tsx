@@ -1,4 +1,4 @@
-import { NoProfileAvatarIcon, Flex, Heading, Skeleton, Text, Box } from '@pancakeswap/uikit'
+import { NoProfileAvatarIcon, Flex, Heading, Skeleton, Text, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { useProfile } from 'state/profile/hooks'
@@ -39,6 +39,7 @@ const UserDetail = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const truncatedAddress = truncateHash(account)
+  const { isMobile, isTablet, isDesktop } = useMatchBreakpoints()
 
   const getDesktopHeading = () => {
     if (profile) {
@@ -66,20 +67,22 @@ const UserDetail = () => {
 
   return (
     <>
-      <Desktop>
-        <Box mr="24px">
-          <Sticker>{profile ? <ProfileAvatarWithTeam profile={profile} /> : <StyledNoProfileAvatarIcon />}</Sticker>
-        </Box>
-        <Flex flexDirection="column">
-          {getDesktopHeading()}
-          {isLoading || !account ? (
-            <Skeleton width={160} height={16} my="4px" />
-          ) : (
-            <Text fontSize="16px"> {t('Connected with %address%', { address: truncatedAddress })}</Text>
-          )}
-        </Flex>
-      </Desktop>
-      <Mobile>{getMobileHeading()}</Mobile>
+      {(isTablet || isDesktop) && (
+        <Desktop>
+          <Box mr="24px">
+            <Sticker>{profile ? <ProfileAvatarWithTeam profile={profile} /> : <StyledNoProfileAvatarIcon />}</Sticker>
+          </Box>
+          <Flex flexDirection="column">
+            {getDesktopHeading()}
+            {isLoading || !account ? (
+              <Skeleton width={160} height={16} my="4px" />
+            ) : (
+              <Text fontSize="16px"> {t('Connected with %address%', { address: truncatedAddress })}</Text>
+            )}
+          </Flex>
+        </Desktop>
+      )}
+      {isMobile && <Mobile>{getMobileHeading()}</Mobile>}
     </>
   )
 }
