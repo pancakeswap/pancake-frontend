@@ -55,6 +55,19 @@ const config = {
       },
     ]
   },
+  async headers() {
+    return [
+      {
+        source: '/images/home/:all*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, immutable, max-age=31536000',
+          },
+        ],
+      },
+    ]
+  },
   async redirects() {
     return [
       {
