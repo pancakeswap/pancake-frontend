@@ -58,7 +58,7 @@ export const VaultPositionTagWithLabel: FC<{ userData: DeserializedLockedVaultUs
 
   if (position) {
     return (
-      <FlexGap alignItems="center" justifyContent="space-between" mb="8px" gap="12px" {...props}>
+      <FlexGap alignItems="center" justifyContent="space-between" marginX="8px" mb="8px" gap="12px" {...props}>
         <Text fontSize="12px" color="secondary" textTransform="uppercase" bold>
           {t('My Position')}
         </Text>

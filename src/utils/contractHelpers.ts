@@ -21,8 +21,6 @@ import {
   getTradingCompetitionAddress,
   getEasterNftAddress,
   getCakeVaultAddress,
-  getPredictionsAddress,
-  getChainlinkOracleAddress,
   getMulticallAddress,
   getBunnySpecialCakeVaultAddress,
   getBunnySpecialPredictionAddress,
@@ -34,8 +32,10 @@ import {
   getPancakeSquadAddress,
   getTradingCompetitionAddressV2,
   getTradingCompetitionAddressMobox,
+  getTradingCompetitionAddressMoD,
   getBunnySpecialXmasAddress,
   getICakeddress,
+  getGalaxyNFTClaimingAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -60,6 +60,7 @@ import claimRefundAbi from 'config/abi/claimRefund.json'
 import tradingCompetitionAbi from 'config/abi/tradingCompetition.json'
 import tradingCompetitionV2Abi from 'config/abi/tradingCompetitionV2.json'
 import tradingCompetitionMoboxAbi from 'config/abi/tradingCompetitionMobox.json'
+import tradingCompetitionMoDAbi from 'config/abi/tradingCompetitionMoD.json'
 import easterNftAbi from 'config/abi/easterNft.json'
 import cakeVaultV2Abi from 'config/abi/cakeVaultV2.json'
 import predictionsAbi from 'config/abi/predictions.json'
@@ -71,6 +72,7 @@ import bunnySpecialLotteryAbi from 'config/abi/bunnySpecialLottery.json'
 import bunnySpecialXmasAbi from 'config/abi/bunnySpecialXmas.json'
 import farmAuctionAbi from 'config/abi/farmAuction.json'
 import anniversaryAchievementAbi from 'config/abi/anniversaryAchievement.json'
+import galaxyNFTClaimingAbi from 'config/abi/galaxyNFTClaiming.json'
 import nftMarketAbi from 'config/abi/nftMarket.json'
 import nftSaleAbi from 'config/abi/nftSale.json'
 import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
@@ -106,6 +108,7 @@ import type {
   BunnySpecialCakeVault,
   BunnySpecialPrediction,
   BunnySpecialLottery,
+  GalaxyNFTClaiming,
   NftMarket,
   NftSale,
   PancakeSquad,
@@ -114,6 +117,7 @@ import type {
   CakeVaultV2,
   TradingCompetitionMobox,
   ICake,
+  TradingCompetitionMoD,
 } from 'config/abi/types'
 
 export const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
@@ -187,6 +191,10 @@ export const getTradingCompetitionContractMobox = (signer?: Signer | Provider) =
   return getContract(tradingCompetitionMoboxAbi, getTradingCompetitionAddressMobox(), signer) as TradingCompetitionMobox
 }
 
+export const getTradingCompetitionContractMoD = (signer?: Signer | Provider) => {
+  return getContract(tradingCompetitionMoDAbi, getTradingCompetitionAddressMoD(), signer) as TradingCompetitionMoD
+}
+
 export const getEasterNftContract = (signer?: Signer | Provider) => {
   return getContract(easterNftAbi, getEasterNftAddress(), signer) as EasterNft
 }
@@ -194,12 +202,12 @@ export const getCakeVaultV2Contract = (signer?: Signer | Provider) => {
   return getContract(cakeVaultV2Abi, getCakeVaultAddress(), signer) as CakeVaultV2
 }
 
-export const getPredictionsContract = (signer?: Signer | Provider) => {
-  return getContract(predictionsAbi, getPredictionsAddress(), signer) as unknown as Predictions
+export const getPredictionsContract = (address: string, signer?: Signer | Provider) => {
+  return getContract(predictionsAbi, address, signer) as Predictions
 }
 
-export const getChainlinkOracleContract = (signer?: Signer | Provider) => {
-  return getContract(chainlinkOracleAbi, getChainlinkOracleAddress(), signer) as ChainlinkOracle
+export const getChainlinkOracleContract = (address: string, signer?: Signer | Provider) => {
+  return getContract(chainlinkOracleAbi, address, signer) as ChainlinkOracle
 }
 export const getMulticallContract = () => {
   return getContract(MultiCallAbi, getMulticallAddress(), simpleRpcProvider) as Multicall
@@ -222,6 +230,10 @@ export const getFarmAuctionContract = (signer?: Signer | Provider) => {
 export const getAnniversaryAchievementContract = (signer?: Signer | Provider) => {
   return getContract(anniversaryAchievementAbi, getAnniversaryAchievement(), signer) as AnniversaryAchievement
 }
+export const getGalaxyNTFClaimingContract = (signer?: Signer | Provider) => {
+  return getContract(galaxyNFTClaimingAbi, getGalaxyNFTClaimingAddress(), signer) as GalaxyNFTClaiming
+}
+
 export const getNftMarketContract = (signer?: Signer | Provider) => {
   return getContract(nftMarketAbi, getNftMarketAddress(), signer) as NftMarket
 }

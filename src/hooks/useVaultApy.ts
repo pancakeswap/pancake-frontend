@@ -2,26 +2,20 @@ import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { WeiPerEther } from '@ethersproject/constants'
 import _toString from 'lodash/toString'
 import { BLOCKS_PER_YEAR } from 'config'
-import cakeVaultV2Abi from 'config/abi/cakeVaultV2.json'
 import masterChefAbi from 'config/abi/masterchef.json'
 import { useCallback, useMemo } from 'react'
 import { useCakeVault } from 'state/pools/hooks'
 import useSWRImmutable from 'swr/immutable'
-import { getCakeVaultAddress, getMasterChefAddress } from 'utils/addressHelpers'
+import { getMasterChefAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { BOOST_WEIGHT, DURATION_FACTOR, MAX_LOCK_DURATION } from 'config/constants/pools'
 import { multicallv2 } from '../utils/multicall'
-import { immutableMiddleware, useSWRMulticall } from './useSWRContract'
 
 const masterChefAddress = getMasterChefAddress()
-const cakeVaultAddress = getCakeVaultAddress()
 
 // default
 const DEFAULT_PERFORMANCE_FEE_DECIMALS = 2
-export const DEFAULT_MAX_DURATION = 31536000
-const DEFAULT_BOOST_WEIGHT = BigNumber.from('1000000000000')
-const DEFAULT_DURATION_FACTOR = BigNumber.from('31536000')
 
-// constant, consider move it to config
 const PRECISION_FACTOR = BigNumber.from('1000000000000')
 
 const getFlexibleApy = (
@@ -47,30 +41,7 @@ const getLockedApy = (flexibleApy: string, boostFactor: FixedNumber) =>
 
 const cakePoolPID = 0
 
-export function useLockPoolConfigVariables() {
-  const calls = useMemo(
-    () =>
-      ['BOOST_WEIGHT', 'DURATION_FACTOR'].map((name) => ({
-        address: cakeVaultAddress,
-        name,
-      })),
-    [],
-  )
-
-  const { data } = useSWRMulticall(cakeVaultV2Abi, calls, {
-    use: [immutableMiddleware],
-  })
-
-  const boostWeight: BigNumber = data?.[0][0] || DEFAULT_BOOST_WEIGHT
-  const durationFactor: BigNumber = data?.[1][0] || DEFAULT_DURATION_FACTOR
-
-  return {
-    boostWeight,
-    durationFactor,
-  }
-}
-
-export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: number } = {}) {
+export function useVaultApy({ duration = MAX_LOCK_DURATION }: { duration?: number } = {}) {
   const {
     totalShares = BIG_ZERO,
     pricePerFullShare = BIG_ZERO,
@@ -108,8 +79,6 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
       .mulUnsafe(cakePoolSharesInSpecialFarms)
   })
 
-  const { boostWeight, durationFactor } = useLockPoolConfigVariables()
-
   const flexibleApy = useMemo(
     () =>
       totalCakePoolEmissionPerYear &&
@@ -119,18 +88,15 @@ export function useVaultApy({ duration = DEFAULT_MAX_DURATION }: { duration?: nu
     [pricePerFullShareAsEtherBN, totalCakePoolEmissionPerYear, totalSharesAsEtherBN],
   )
 
-  const boostFactor = useMemo(
-    () => _getBoostFactor(boostWeight, duration, durationFactor),
-    [boostWeight, duration, durationFactor],
-  )
+  const boostFactor = useMemo(() => _getBoostFactor(BOOST_WEIGHT, duration, DURATION_FACTOR), [duration])
 
   const lockedApy = useMemo(() => {
     return flexibleApy && getLockedApy(flexibleApy, boostFactor).toString()
   }, [boostFactor, flexibleApy])
 
   const getBoostFactor = useCallback(
-    (adjustDuration: number) => _getBoostFactor(boostWeight, adjustDuration, durationFactor),
-    [boostWeight, durationFactor],
+    (adjustDuration: number) => _getBoostFactor(BOOST_WEIGHT, adjustDuration, DURATION_FACTOR),
+    [],
   )
 
   const flexibleApyNoFee = useMemo(() => {

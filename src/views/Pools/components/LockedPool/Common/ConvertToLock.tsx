@@ -2,7 +2,10 @@ import { Token } from '@pancakeswap/sdk'
 import { Flex, Message, MessageText, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { memo } from 'react'
+import { useVaultApy } from 'hooks/useVaultApy'
+
 import ExtendButton from '../Buttons/ExtendDurationButton'
+import useAvgLockDuration from '../hooks/useAvgLockDuration'
 
 interface ConvertToLockProps {
   stakingToken: Token
@@ -14,11 +17,12 @@ const ConvertToLock: React.FC<ConvertToLockProps> = ({ stakingToken, currentStak
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const isTableView = isInline && !isMobile
+  const { avgLockDurationsInSeconds } = useAvgLockDuration()
+  const { lockedApy } = useVaultApy({ duration: avgLockDurationsInSeconds })
 
   return (
     <Message
       variant="warning"
-      mb="16px"
       action={
         <Flex mt={!isTableView && '8px'} flexGrow={1} ml={isTableView && '80px'}>
           <ExtendButton
@@ -34,7 +38,11 @@ const ConvertToLock: React.FC<ConvertToLockProps> = ({ stakingToken, currentStak
       }
       actionInline={isTableView}
     >
-      <MessageText>{t('Lock staking offers higher APY while providing other benefits.')}</MessageText>
+      <MessageText>
+        {t('Lock staking users are earning an average of %amount%% APY. More benefits are coming soon.', {
+          amount: lockedApy ? parseFloat(lockedApy).toFixed(2) : 0,
+        })}
+      </MessageText>
     </Message>
   )
 }

@@ -2,7 +2,6 @@ import { Flex, Text, Skeleton, useModal, Button, CalculateIcon } from '@pancakes
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
-import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
 import Balance from 'components/Balance'
 import { memo } from 'react'
 import { FlexGap } from 'components/Layout/Flex'
@@ -19,8 +18,7 @@ const AprLabelContainer = styled(Flex)`
 export const StakingApy = memo(({ pool }: { pool: DeserializedPool }) => {
   const { t } = useTranslation()
 
-  const maxLockDuration = useVaultMaxDuration()
-  const { flexibleApy, lockedApy } = useVaultApy({ duration: maxLockDuration?.toNumber() })
+  const { flexibleApy, lockedApy } = useVaultApy()
 
   const [onPresentFlexibleApyModal] = useModal(<VaultRoiCalculatorModal pool={pool} />)
 
@@ -57,29 +55,27 @@ export const StakingApy = memo(({ pool }: { pool: DeserializedPool }) => {
         <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
           {t('Locked')} APY:
         </Text>
-        {lockedApy && maxLockDuration ? (
+        {lockedApy ? (
           <FlexGap gap="4px" flexWrap="wrap" justifyContent="flex-end">
             <Text style={{ whiteSpace: 'nowrap' }} bold>
-              {maxLockDuration.gt(0) ? t('Up to') : '-'}
+              {t('Up to')}
             </Text>
-            {maxLockDuration.gt(0) && (
-              <AprLabelContainer alignItems="center">
-                <Balance fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" bold />
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    onPresentLockedApyModal()
-                  }}
-                  variant="text"
-                  width="20px"
-                  height="20px"
-                  padding="0px"
-                  marginLeft="4px"
-                >
-                  <CalculateIcon color="textSubtle" width="20px" />
-                </Button>
-              </AprLabelContainer>
-            )}
+            <AprLabelContainer alignItems="center">
+              <Balance fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" bold />
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onPresentLockedApyModal()
+                }}
+                variant="text"
+                width="20px"
+                height="20px"
+                padding="0px"
+                marginLeft="4px"
+              >
+                <CalculateIcon color="textSubtle" width="20px" />
+              </Button>
+            </AprLabelContainer>
           </FlexGap>
         ) : (
           <Skeleton width="80px" height="16px" />

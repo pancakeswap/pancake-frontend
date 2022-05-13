@@ -52,6 +52,7 @@ export interface OverviewPropsType {
   newLockedAmount?: number
   lockStartTime?: string
   lockEndTime?: string
+  showLockWarning?: boolean
 }
 
 export interface AddAmountModalProps {

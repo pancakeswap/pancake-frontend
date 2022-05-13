@@ -34,12 +34,16 @@ export const BattleBannerSection = styled(PageSection)`
 `
 
 export const BottomBunnyWrapper = styled(Box)`
+  position: relative;
+  z-index: 3;
   display: none;
 
   ${({ theme }) => theme.mediaQueries.md} {
     display: flex;
-    margin-left: 40px;
-    width: 254px;
-    height: 227px;
+    position: relative;
+    right: -66px;
+    margin-left: -20px;
+    width: 182px;
+    height: 214px;
   }
 `

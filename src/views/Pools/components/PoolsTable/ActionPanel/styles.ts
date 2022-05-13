@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
 
-export const ActionContainer = styled(Flex)<{ isAutoVault?: boolean }>`
+export const ActionContainer = styled(Flex)`
   flex-direction: column;
   padding: 16px;
   border: 2px solid ${({ theme }) => theme.colors.input};
@@ -12,7 +12,6 @@ export const ActionContainer = styled(Flex)<{ isAutoVault?: boolean }>`
     margin-left: 12px;
     margin-right: 12px;
     margin-bottom: 0;
-    height: ${({ isAutoVault }) => (isAutoVault ? '130px' : 'auto')};
   }
 }
 

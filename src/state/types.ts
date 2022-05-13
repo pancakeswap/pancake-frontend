@@ -142,6 +142,7 @@ export interface DeserializedPool extends DeserializedPoolConfig, CorePoolProps 
     required: boolean
     thresholdPoints: BigNumber
   }
+  userDataLoaded?: boolean
   userData?: {
     allowance: BigNumber
     stakingTokenBalance: BigNumber
@@ -623,6 +624,13 @@ export interface UserRound {
   endTime: string
   totalTickets: string
   tickets?: LotteryTicket[]
+}
+
+export interface PredictionConfig {
+  address: string
+  api: string
+  chainlinkOracleAddress: string
+  token: Token
 }
 
 // Global state

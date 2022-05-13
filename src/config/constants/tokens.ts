@@ -2079,6 +2079,15 @@ export const mainnetTokens = defineTokens({
     'https://www.ankr.com/',
   ),
   ankr: new Token(MAINNET, '0xf307910A4c7bbc79691fD374889b36d8531B08e3', 18, 'ANKR', 'Ankr', 'https://www.ankr.com/'),
+  gal: new Token(
+    MAINNET,
+    '0xe4Cc45Bb5DBDA06dB6183E8bf016569f40497Aa5',
+    18,
+    'GAL',
+    'Project Galaxy',
+    'https://galaxy.eco/',
+  ),
+  xcn: new Token(MAINNET, '0x7324c7C0d95CEBC73eEa7E85CbAac0dBdf88a05b', 18, 'XCN', 'Chain', 'https://chain.com/'),
 } as const)
 
 export const testnetTokens = defineTokens({

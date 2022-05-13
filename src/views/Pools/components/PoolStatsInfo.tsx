@@ -8,17 +8,25 @@ import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import { getBscScanLink } from 'utils'
 import { getAddress, getVaultPoolAddress } from 'utils/addressHelpers'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { registerToken } from 'utils/wallet'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
-import MaxStakeRow from '../../MaxStakeRow'
-import { PerformanceFee, TotalLocked, DurationAvg, TotalStaked } from '../../Stat'
+import MaxStakeRow from './MaxStakeRow'
+import { AprInfo, DurationAvg, PerformanceFee, TotalLocked, TotalStaked } from './Stat'
 
 interface ExpandedFooterProps {
   pool: DeserializedPool
   account: string
+  showTotalStaked?: boolean
+  alignLinksToRight?: boolean
 }
 
-const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
+const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
+  pool,
+  account,
+  showTotalStaked = true,
+  alignLinksToRight = true,
+}) => {
   const { t } = useTranslation()
   const currentBlock = useCurrentBlock()
 
@@ -34,14 +42,15 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
     vaultKey,
     profileRequirement,
     isFinished,
+    userData: poolUserData,
   } = pool
+
+  const stakedBalance = poolUserData?.stakedBalance ? poolUserData.stakedBalance : BIG_ZERO
 
   const {
     totalCakeInVault,
     totalLockedAmount,
     fees: { performanceFeeAsDecimal },
-    pricePerFullShare,
-    totalShares,
     userData,
   } = useVaultPoolByKey(vaultKey)
 
@@ -68,16 +77,12 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
           </Text>
         </Flex>
       )}
-      <TotalStaked totalStaked={vaultKey ? totalCakeInVault : totalStaked} stakingToken={stakingToken} />
-      {vaultKey && <TotalLocked totalLocked={totalLockedAmount} lockedToken={stakingToken} />}
-      {vaultKey && (
-        <DurationAvg
-          totalShares={totalShares}
-          pricePerFullShare={pricePerFullShare}
-          totalLockedAmount={totalLockedAmount}
-          totalStakedCakeAmount={totalCakeInVault}
-        />
+      {!vaultKey && <AprInfo pool={pool} stakedBalance={stakedBalance} />}
+      {showTotalStaked && (
+        <TotalStaked totalStaked={vaultKey ? totalCakeInVault : totalStaked} stakingToken={stakingToken} />
       )}
+      {vaultKey && <TotalLocked totalLocked={totalLockedAmount} lockedToken={stakingToken} />}
+      {vaultKey && <DurationAvg />}
       {!isFinished && stakingLimit && stakingLimit.gt(0) && (
         <MaxStakeRow
           small
@@ -107,25 +112,27 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
         </Flex>
       )}
       {vaultKey && <PerformanceFee userData={userData} performanceFeeAsDecimal={performanceFeeAsDecimal} />}
-      <Flex mb="2px" justifyContent="flex-end">
+      <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
         <LinkExternal href={`/info/token/${earningToken.address}`} bold={false} small>
           {t('See Token Info')}
         </LinkExternal>
       </Flex>
-      <Flex mb="2px" justifyContent="flex-end">
-        <LinkExternal href={earningToken.projectLink} bold={false} small>
-          {t('View Project Site')}
-        </LinkExternal>
-      </Flex>
+      {!vaultKey && (
+        <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+          <LinkExternal href={earningToken.projectLink} bold={false} small>
+            {t('View Project Site')}
+          </LinkExternal>
+        </Flex>
+      )}
       {vaultKey && (
-        <Flex mb="2px" justifyContent="flex-end">
+        <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
           <LinkExternal href="https://docs.pancakeswap.finance/products/syrup-pool/new-cake-pool" bold={false} small>
             {t('View Tutorial')}
           </LinkExternal>
         </Flex>
       )}
       {poolContractAddress && (
-        <Flex mb="2px" justifyContent="flex-end">
+        <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
           <LinkExternal
             href={`${BASE_BSC_SCAN_URL}/address/${vaultKey ? cakeVaultContractAddress : poolContractAddress}`}
             bold={false}
@@ -136,7 +143,7 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
         </Flex>
       )}
       {account && isMetaMaskInScope && tokenAddress && (
-        <Flex justifyContent="flex-end">
+        <Flex justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
           <Button
             variant="text"
             p="0"
@@ -161,4 +168,4 @@ const ExpandedFooter: React.FC<ExpandedFooterProps> = ({ pool, account }) => {
   )
 }
 
-export default memo(ExpandedFooter)
+export default memo(PoolStatsInfo)

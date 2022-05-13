@@ -18,7 +18,7 @@ type MediaQueries = {
 
 /**
  * Can't use the media queries from "base.mediaQueries" because of how matchMedia works
- * In order for the listener to trigger we need have have the media query with a range, e.g.
+ * In order for the listener to trigger we need have the media query with a range, e.g.
  * (min-width: 370px) and (max-width: 576px)
  * @see https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList
  */

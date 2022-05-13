@@ -55,6 +55,10 @@ export default {
     56: '0x1C5161CdB145dE35a8961F82b065fd1F75C3BaDf',
     97: '',
   },
+  tradingCompetitionMoD: {
+    56: '0x9F9b4728Cff3eb28aA8dC21482D3b542e4c6d039',
+    97: '',
+  },
   easterNft: {
     56: '0x23c41D28A239dDCAABd1bb1deF8d057189510066',
     97: '0x24ec6962dbe874F6B67B5C50857565667fA0854F',
@@ -94,6 +98,10 @@ export default {
   AnniversaryAchievement: {
     56: '0x787980da5491118C3cB33B21aB50c8c379D2C552',
     97: '0x981aE96378e770DE44F89cD9175E708f9EDB70a9',
+  },
+  galaxyNftClaiming: {
+    56: '0x2D18f2d27D50C9b4013DEBA3D54f60996bD8847E',
+    97: '',
   },
   nftMarket: {
     56: '0x17539cCa21C7933Df5c980172d22659B8C345C5A',

@@ -19,7 +19,6 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { PoolCategory } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
-import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
 
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
@@ -29,7 +28,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
-import useUserDataInVaultPrensenter from 'views/Pools/components/LockedPool/hooks/useUserDataInVaultPrensenter'
+import useUserDataInVaultPresenter from 'views/Pools/components/LockedPool/hooks/useUserDataInVaultPresenter'
 
 import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
 import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
@@ -51,10 +50,9 @@ const IconButtonWrapper = styled.div`
 
 interface StackedActionProps {
   pool: DeserializedPool
-  userDataLoaded: boolean
 }
 
-const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoaded }) => {
+const Staked: React.FunctionComponent<StackedActionProps> = ({ pool }) => {
   const {
     sousId,
     stakingToken,
@@ -66,6 +64,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     stakingTokenPrice,
     vaultKey,
     profileRequirement,
+    userDataLoaded,
   } = pool
   const { t } = useTranslation()
   const { account } = useWeb3React()
@@ -79,7 +78,6 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
   )
 
   const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus()
-  const maxLockDuration = useVaultMaxDuration()
   const { handleApprove: handleVaultApprove, pendingTx: pendingVaultTx } = useVaultApprove(setLastUpdated)
 
   const handleApprove = vaultKey ? handleVaultApprove : handlePoolApprove
@@ -109,7 +107,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     },
   } = useVaultPoolByKey(pool.vaultKey)
 
-  const { lockEndDate, remainingTime } = useUserDataInVaultPrensenter({
+  const { lockEndDate, remainingTime } = useUserDataInVaultPresenter({
     lockStartTime: lockStartTime ?? '0',
     lockEndTime: lockEndTime ?? '0',
   })
@@ -245,7 +243,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
     const vaultPosition = getVaultPosition({ userShares, locked, lockEndTime })
     return (
       <>
-        <ActionContainer isAutoVault={!vaultKey} flex={vaultPosition > 1 ? 1.5 : 1}>
+        <ActionContainer flex={vaultPosition > 1 ? 1.5 : 1}>
           <ActionContent mt={0}>
             <Flex flex="1" flexDirection="column" alignSelf="flex-start">
               <ActionTitles>
@@ -311,6 +309,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
                   {vaultPosition >= VaultPosition.LockedEnd ? t('Unlocked') : remainingTime}
                 </Text>
                 <Text
+                  height="20px"
                   fontSize="12px"
                   display="inline"
                   color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
@@ -409,7 +408,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
             />
           </Box>
         )}
-        {vaultPosition === VaultPosition.Flexible && maxLockDuration.gt(0) && (
+        {vaultPosition === VaultPosition.Flexible && (
           <Box
             width="100%"
             mt={['0', '0', '24px', '24px', '24px']}

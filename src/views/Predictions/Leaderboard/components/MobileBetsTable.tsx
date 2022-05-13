@@ -1,13 +1,16 @@
 import { useState } from 'react'
+import { Token } from '@pancakeswap/sdk'
 import { Flex, Text, ChevronUpIcon, ChevronDownIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import PreviousBetsTable from './PreviousBetsTable'
 
 interface MobileBetsTableProps {
   account: string
+  token: Token
+  api: string
 }
 
-const MobileBetsTable: React.FC<MobileBetsTableProps> = ({ account }) => {
+const MobileBetsTable: React.FC<MobileBetsTableProps> = ({ account, token, api }) => {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -30,7 +33,7 @@ const MobileBetsTable: React.FC<MobileBetsTableProps> = ({ account }) => {
         </Text>
         {isOpen ? <ChevronDownIcon /> : <ChevronUpIcon />}
       </Flex>
-      {isOpen && <PreviousBetsTable account={account} />}
+      {isOpen && <PreviousBetsTable account={account} token={token} api={api} />}
     </>
   )
 }

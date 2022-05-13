@@ -3,14 +3,12 @@ import Balance from 'components/Balance'
 import { Flex, Skeleton, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
-import { FC, ReactNode, useMemo } from 'react'
+import { FC, ReactNode } from 'react'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { useVaultMaxDuration } from 'hooks/useVaultMaxDuration'
-import { useLockPoolConfigVariables } from 'hooks/useVaultApy'
-import { DeserializedLockedVaultUser } from 'state/types'
+import { DeserializedLockedVaultUser, DeserializedPool } from 'state/types'
 import { isLocked, isStaked } from 'utils/cakePool'
-import { BIG_TEN } from 'utils/bigNumber'
-import formatSecondsToWeeks from './LockedPool/utils/formatSecondsToWeeks'
+import useAvgLockDuration from './LockedPool/hooks/useAvgLockDuration'
+import Apr from './Apr'
 
 const StatWrapper: FC<{ label: ReactNode }> = ({ children, label }) => {
   return (
@@ -64,46 +62,21 @@ const TotalToken = ({ total, token }: { total: BigNumber; token: Token }) => {
 export const TotalLocked: FC<{ totalLocked: BigNumber; lockedToken: Token }> = ({ totalLocked, lockedToken }) => {
   const { t } = useTranslation()
 
-  const duration = useVaultMaxDuration()
-
-  if (duration && duration.gt(0)) {
-    return (
-      <StatWrapper label={<Text small>{t('Total locked')}:</Text>}>
-        <TotalToken total={totalLocked} token={lockedToken} />
-      </StatWrapper>
-    )
-  }
-
-  return null
+  return (
+    <StatWrapper label={<Text small>{t('Total locked')}:</Text>}>
+      <TotalToken total={totalLocked} token={lockedToken} />
+    </StatWrapper>
+  )
 }
 
-export const DurationAvg: FC<{
-  totalStakedCakeAmount: BigNumber
-  totalLockedAmount: BigNumber
-  pricePerFullShare: BigNumber
-  totalShares: BigNumber
-}> = ({ totalStakedCakeAmount, totalLockedAmount, pricePerFullShare, totalShares }) => {
+export const DurationAvg = () => {
   const { t } = useTranslation()
-  const { boostWeight, durationFactor } = useLockPoolConfigVariables()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('The average lock duration of all the locked staking positions of other users'),
     { placement: 'bottom-start' },
   )
 
-  const avgLockDurationsInWeeks = useMemo(() => {
-    const flexibleCakeAmount = totalStakedCakeAmount.minus(totalLockedAmount)
-    const flexibleCakeShares = flexibleCakeAmount.div(pricePerFullShare).times(BIG_TEN.pow(18))
-    const lockedCakeBoostedShares = totalShares.minus(flexibleCakeShares)
-    const lockedCakeOriginalShares = totalLockedAmount.div(pricePerFullShare).times(BIG_TEN.pow(18))
-    const avgBoostRatio = lockedCakeBoostedShares.div(lockedCakeOriginalShares)
-
-    const avgLockDurationsInSeconds = avgBoostRatio
-      .minus(1)
-      .times(new BigNumber(durationFactor.toString()))
-      .div(new BigNumber(boostWeight.toString()).div(BIG_TEN.pow(12)))
-
-    return formatSecondsToWeeks(avgLockDurationsInSeconds.toFixed())
-  }, [totalStakedCakeAmount, durationFactor, totalLockedAmount, pricePerFullShare, totalShares, boostWeight])
+  const { avgLockDurationsInWeeks } = useAvgLockDuration()
 
   return (
     <StatWrapper
@@ -124,9 +97,33 @@ export const DurationAvg: FC<{
 export const TotalStaked: FC<{ totalStaked: BigNumber; stakingToken: Token }> = ({ totalStaked, stakingToken }) => {
   const { t } = useTranslation()
 
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t('Total amount of %symbol% staked in this pool', { symbol: stakingToken.symbol }),
+    {
+      placement: 'bottom',
+    },
+  )
+
   return (
-    <StatWrapper label={<Text small>{t('Total staked')}:</Text>}>
+    <StatWrapper
+      label={
+        <TooltipText ref={targetRef} small>
+          {t('Total staked')}:
+        </TooltipText>
+      }
+    >
+      {tooltipVisible && tooltip}
       <TotalToken total={totalStaked} token={stakingToken} />
     </StatWrapper>
+  )
+}
+
+export const AprInfo: FC<{ pool: DeserializedPool; stakedBalance: BigNumber }> = ({ pool, stakedBalance }) => {
+  const { t } = useTranslation()
+  return (
+    <Flex justifyContent="space-between" alignItems="center">
+      <Text small>{t('APR')}:</Text>
+      <Apr pool={pool} showIcon stakedBalance={stakedBalance} performanceFee={0} fontSize="14px" />
+    </Flex>
   )
 }

@@ -17,7 +17,6 @@ import StakedCell from './Cells/StakedCell'
 interface PoolRowProps {
   pool: DeserializedPool
   account: string
-  userDataLoaded: boolean
 }
 
 const StyledRow = styled.div`
@@ -26,7 +25,7 @@ const StyledRow = styled.div`
   cursor: pointer;
 `
 
-const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
+const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
   const { isXs, isSm, isMd, isLg, isXl, isXxl, isTablet, isDesktop } = useMatchBreakpoints()
   const isLargerScreen = isLg || isXl || isXxl
   const isXLargerScreen = isXl || isXxl
@@ -46,10 +45,10 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
         {pool.vaultKey ? (
           isXLargerScreen && pool.vaultKey === VaultKey.CakeVault && <AutoEarningsCell pool={pool} account={account} />
         ) : (
-          <EarningsCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
+          <EarningsCell pool={pool} account={account} />
         )}
         {isXLargerScreen && pool.vaultKey === VaultKey.CakeVault && isCakePool ? (
-          <StakedCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
+          <StakedCell pool={pool} account={account} />
         ) : null}
         {isLargerScreen && !isCakePool && <TotalStakedCell pool={pool} />}
         {pool.vaultKey ? <AutoAprCell pool={pool} /> : <AprCell pool={pool} />}
@@ -61,7 +60,6 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
         <ActionPanel
           account={account}
           pool={pool}
-          userDataLoaded={userDataLoaded}
           expanded={expanded}
           breakpoints={{ isXs, isSm, isMd, isLg, isXl, isXxl }}
         />

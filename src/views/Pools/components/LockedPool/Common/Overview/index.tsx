@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
-import { Box, Text, Flex } from '@pancakeswap/uikit'
+import { Box, Text, Flex, MessageText, Message } from '@pancakeswap/uikit'
+
 import { LightGreyCard } from 'components/Card'
 import { addSeconds } from 'date-fns'
 import { useVaultApy } from 'hooks/useVaultApy'
@@ -23,6 +24,7 @@ const Overview: React.FC<OverviewPropsType> = ({
   newLockedAmount,
   lockStartTime,
   lockEndTime,
+  showLockWarning,
 }) => {
   const { getLockedApy, getBoostFactor } = useVaultApy()
   const { t } = useTranslation()
@@ -49,60 +51,71 @@ const Overview: React.FC<OverviewPropsType> = ({
     : addSeconds(now, duration)
 
   return (
-    <Box>
-      <Flex mb="4px">
-        <Text fontSize="12px" color="secondary" bold mr="2px" textTransform="uppercase">
-          {t('Lock')}
-        </Text>
-        <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
-          {t('Overview')}
-        </Text>
-      </Flex>
-      <LightGreyCard>
-        <BalanceRow title={t('Cake to be locked')} value={lockedAmount} newValue={newLockedAmount} decimals={2} />
-        <BalanceRow
-          title="apy"
-          unit="%"
-          value={_toNumber(lockedApy)}
-          decimals={2}
-          newValue={_toNumber(newLockedApy)}
-          tooltipContent={t(
-            'Calculated based on current rates and subject to change based on pool conditions. It is an estimate provided for your convenience only, and by no means represents guaranteed returns.',
-          )}
-        />
-        <TextRow
-          title={t('duration')}
-          value={isValidDuration && formatSecondsToWeeks(duration)}
-          newValue={isValidDuration && newDuration && formatSecondsToWeeks(newDuration)}
-        />
-        <BalanceRow
-          title={t('Yield boost')}
-          unit="x"
-          value={_toNumber(boostFactor)}
-          decimals={2}
-          newValue={_toNumber(newBoost)}
-          tooltipContent={t(
-            'Your yield will be boosted based on the total lock duration of your current fixed term staking position.',
-          )}
-        />
-        <DateRow
-          color={_toNumber(newDuration) ? 'failure' : 'text'}
-          title={t('Unlock on')}
-          value={isValidDuration && unlockDate}
-        />
-        <BalanceRow
-          title={t('Expected ROI')}
-          value={formattedRoi}
-          newValue={newFormattedRoi}
-          prefix="$"
-          decimals={2}
-          suffix={<CalculatorButton />}
-          tooltipContent={t(
-            'Calculated based on current rates and subject to change based on pool conditions. It is an estimate provided for your convenience only, and by no means represents guaranteed returns.',
-          )}
-        />
-      </LightGreyCard>
-    </Box>
+    <>
+      <Box>
+        <Flex mb="4px">
+          <Text fontSize="12px" color="secondary" bold mr="2px" textTransform="uppercase">
+            {t('Lock')}
+          </Text>
+          <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
+            {t('Overview')}
+          </Text>
+        </Flex>
+        <LightGreyCard>
+          <BalanceRow title={t('Cake to be locked')} value={lockedAmount} newValue={newLockedAmount} decimals={2} />
+          <BalanceRow
+            title="apy"
+            unit="%"
+            value={_toNumber(lockedApy)}
+            decimals={2}
+            newValue={_toNumber(newLockedApy)}
+            tooltipContent={t(
+              'Calculated based on current rates and subject to change based on pool conditions. It is an estimate provided for your convenience only, and by no means represents guaranteed returns.',
+            )}
+          />
+          <TextRow
+            title={t('duration')}
+            value={isValidDuration && formatSecondsToWeeks(duration)}
+            newValue={isValidDuration && newDuration && formatSecondsToWeeks(newDuration)}
+          />
+          <BalanceRow
+            title={t('Yield boost')}
+            unit="x"
+            value={_toNumber(boostFactor)}
+            decimals={2}
+            newValue={_toNumber(newBoost)}
+            tooltipContent={t(
+              'Your yield will be boosted based on the total lock duration of your current fixed term staking position.',
+            )}
+          />
+          <DateRow
+            color={_toNumber(newDuration) ? 'failure' : 'text'}
+            title={t('Unlock on')}
+            value={isValidDuration && unlockDate}
+          />
+          <BalanceRow
+            title={t('Expected ROI')}
+            value={formattedRoi}
+            newValue={newFormattedRoi}
+            prefix="$"
+            decimals={2}
+            suffix={<CalculatorButton />}
+            tooltipContent={t(
+              'Calculated based on current rates and subject to change based on pool conditions. It is an estimate provided for your convenience only, and by no means represents guaranteed returns.',
+            )}
+          />
+        </LightGreyCard>
+      </Box>
+      {showLockWarning && (
+        <Box mt="16px" maxWidth="370px">
+          <Message variant="warning">
+            <MessageText>
+              {t('You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked')}
+            </MessageText>
+          </Message>
+        </Box>
+      )}
+    </>
   )
 }
 

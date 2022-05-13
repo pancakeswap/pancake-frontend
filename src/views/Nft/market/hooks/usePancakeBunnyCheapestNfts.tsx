@@ -42,36 +42,27 @@ const fetchCheapestBunny = async (
 }
 
 export const usePancakeBunnyCheapestNft = (bunnyId: string, nftMetadata: ApiResponseCollectionTokens) => {
-  const { data, status, mutate } = useSWR(
-    nftMetadata && bunnyId ? ['cheapestBunny', bunnyId] : null,
-    async () => {
-      const whereClause = { collection: pancakeBunniesAddress.toLowerCase(), otherId: bunnyId, isTradable: true }
-
-      return fetchCheapestBunny(whereClause, nftMetadata)
-    },
-    { refreshInterval: FAST_INTERVAL },
-  )
-
-  return {
-    data,
-    isFetched: [FetchStatus.Failed, FetchStatus.Fetched].includes(status),
-    refresh: mutate,
-  }
-}
-
-export const usePBCheapestOtherSellersNft = (bunnyId: string, nftMetadata: ApiResponseCollectionTokens) => {
   const { account } = useWeb3React()
   const { data, status, mutate } = useSWR(
-    account && nftMetadata && bunnyId ? ['cheapestOtherSellersBunny', bunnyId, account] : null,
+    nftMetadata && bunnyId ? ['cheapestBunny', bunnyId, account] : null,
     async () => {
-      const whereClause = {
+      const allCheapestBunnyClause = {
+        collection: pancakeBunniesAddress.toLowerCase(),
+        otherId: bunnyId,
+        isTradable: true,
+      }
+      if (!account) {
+        return fetchCheapestBunny(allCheapestBunnyClause, nftMetadata)
+      }
+
+      const cheapestBunnyOtherSellersClause = {
         collection: pancakeBunniesAddress.toLowerCase(),
         currentSeller_not: account.toLowerCase(),
         otherId: bunnyId,
         isTradable: true,
       }
-
-      return fetchCheapestBunny(whereClause, nftMetadata)
+      const cheapestBunnyOtherSellers = await fetchCheapestBunny(cheapestBunnyOtherSellersClause, nftMetadata)
+      return cheapestBunnyOtherSellers ?? fetchCheapestBunny(allCheapestBunnyClause, nftMetadata)
     },
     { refreshInterval: FAST_INTERVAL },
   )

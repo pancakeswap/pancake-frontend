@@ -15,7 +15,7 @@ describe('NFTs Page', () => {
     cy.visit('/nfts')
     cy.get('#open-settings-dialog-button').click()
     cy.get('#toggle-subgraph-health-button').click({ force: true })
-    cy.get(`[role="presentation"]`).click({ force: true })
+    cy.get(`[aria-label="Close the dialog"]`).click({ force: true })
     cy.getBySel('subgraph-health-indicator').should('be.visible')
   })
 

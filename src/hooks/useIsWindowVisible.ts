@@ -12,7 +12,7 @@ function isWindowVisible() {
  * Returns whether the window is currently visible to the user.
  */
 export default function useIsWindowVisible() {
-  const [isVisible, setIsVisible] = useState(isWindowVisible())
+  const [isVisible, setIsVisible] = useState(() => isWindowVisible())
 
   useEffect(() => {
     if (!('visibilityState' in document)) return undefined

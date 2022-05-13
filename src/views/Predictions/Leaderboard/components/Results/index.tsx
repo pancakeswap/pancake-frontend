@@ -1,5 +1,5 @@
 import { Box, Button, Grid, Flex, useMatchBreakpoints, AutoRenewIcon } from '@pancakeswap/uikit'
-import { useAppDispatch } from 'state'
+import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import {
   useGetLeaderboardHasMoreResults,
   useGetLeaderboardLoadingState,
@@ -23,7 +23,7 @@ const Results = () => {
   const isLoading = leaderboardLoadingState === FetchStatus.Fetching
   const currentSkip = useGetLeaderboardSkip()
   const hasMoreResults = useGetLeaderboardHasMoreResults()
-  const dispatch = useAppDispatch()
+  const dispatch = useLocalDispatch()
 
   const handleClick = () => {
     dispatch(filterNextPageLeaderboard(currentSkip + LEADERBOARD_RESULTS_PER_PAGE))

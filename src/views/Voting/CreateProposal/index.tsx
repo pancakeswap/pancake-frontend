@@ -47,7 +47,7 @@ const EasyMde = dynamic(() => import('components/EasyMde'), {
 })
 
 const CreateProposal = () => {
-  const [state, setState] = useState<FormState>({
+  const [state, setState] = useState<FormState>(() => ({
     name: '',
     body: '',
     choices: times(MINIMUM_CHOICES).map(makeChoice),
@@ -56,7 +56,7 @@ const CreateProposal = () => {
     endDate: null,
     endTime: null,
     snapshot: 0,
-  })
+  }))
   const [isLoading, setIsLoading] = useState(false)
   const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({})
   const { t } = useTranslation()

@@ -1,11 +1,11 @@
 /* eslint-disable no-var */
 /* eslint-disable vars-on-top */
 import { renderHook } from '@testing-library/react-hooks'
+import { DEFAULT_OUTPUT_CURRENCY } from 'config/constants'
 import { parse } from 'querystring'
 import { useCurrency } from 'hooks/Tokens'
 import { createReduxWrapper } from 'testUtils'
 import { Field } from './actions'
-import { DEFAULT_OUTPUT_CURRENCY } from './constants'
 import { queryParametersToSwapState, useDerivedSwapInfo, useSwapState } from './hooks'
 
 describe('hooks', () => {

@@ -1,12 +1,12 @@
 import { Button, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { useAppDispatch } from 'state'
+import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { setHistoryPaneState } from 'state/predictions'
 import Notification from './Notification'
 
 const ErrorNotification = () => {
   const { t } = useTranslation()
-  const dispatch = useAppDispatch()
+  const dispatch = useLocalDispatch()
 
   const handleOpenHistory = () => {
     dispatch(setHistoryPaneState(true))

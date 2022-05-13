@@ -31,6 +31,7 @@ export interface ListOrderState {
 }
 
 export const TriggerButton = styled(Button)<{ hasItem: boolean }>`
+  white-space: nowrap;
   ${({ hasItem }) =>
     hasItem &&
     `  

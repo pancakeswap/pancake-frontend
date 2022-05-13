@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 import { Button, Heading, Text, Flex, Checkbox, AutoRenewIcon } from '@pancakeswap/uikit'
-import { useTradingCompetitionContractMobox } from 'hooks/useContract'
+import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 import { useTranslation } from 'contexts/Localization'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useToast from 'hooks/useToast'
@@ -19,7 +19,7 @@ const StyledLabel = styled.label`
 
 const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss, onRegisterSuccess }) => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
-  const tradingCompetitionContract = useTradingCompetitionContractMobox()
+  const tradingCompetitionContract = useTradingCompetitionContractMoD()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
   const { t } = useTranslation()
