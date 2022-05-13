@@ -16,7 +16,6 @@ import {
   TooltipText,
   LogoRoundIcon,
   Skeleton,
-  useModal,
   Link,
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter as RouterLink } from 'components/NextLink'
@@ -127,14 +126,6 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
                 </Text>
               </Box>
             </Flex>
-            {/* // TODO: update */}
-            {/* {isVaultApproved ? (
-              <Button onClick={onPresentStake}>{t('Stake')} CAKE</Button>
-            ) : (
-              <Button disabled={pendingTx} onClick={handleApprove}>
-                {t('Enable pool')}
-              </Button>
-            )} */}
           </FlexGap>
         </SmallStakePoolCard>
       )}
