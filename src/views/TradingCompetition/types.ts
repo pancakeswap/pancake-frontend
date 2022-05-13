@@ -1,5 +1,6 @@
 import { ReactText } from 'react'
 import { Profile } from 'state/types'
+import { StaticImageData } from 'next/dist/client/image'
 
 export interface CompetitionProps extends UserRewardsProps {
   userTradingInformation?: UserTradingInformationProps
@@ -76,6 +77,7 @@ export interface TeamRanksProps {
   team3LeaderboardInformation?: TeamLeaderboardProps
   globalLeaderboardInformation?: LeaderboardData
   isGlobalLeaderboardDataComplete?: boolean
+  image?: StaticImageData
 }
 
 export interface UserRewardsProps {

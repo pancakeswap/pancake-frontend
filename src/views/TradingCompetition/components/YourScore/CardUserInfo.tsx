@@ -1,4 +1,4 @@
-import { ReactText } from 'react'
+import { ReactText, ReactNode } from 'react'
 import {
   Text,
   Heading,
@@ -19,7 +19,6 @@ import { LIVE } from 'config/constants/trading-competition/phases'
 import { YourScoreProps } from '../../types'
 import UserRankBox from './UserRankBox'
 import NextRankBox from './NextRankBox'
-import ShareImageModal from '../ShareImageModal'
 import { localiseTradingVolume } from '../../helpers'
 
 const TeamRankTextWrapper = styled(Flex)`
@@ -40,7 +39,14 @@ const RanksWrapper = styled(Flex)`
   }
 `
 
-const CardUserInfo: React.FC<YourScoreProps> = ({
+interface CardUserInfoProps extends YourScoreProps {
+  shareModal: ReactNode
+  extraUserRankBox?: ReactNode
+}
+
+const CardUserInfo: React.FC<CardUserInfoProps> = ({
+  shareModal,
+  extraUserRankBox,
   hasRegistered,
   account,
   profile,
@@ -48,10 +54,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
   currentPhase,
 }) => {
   const { t } = useTranslation()
-  const [onPresentShareModal] = useModal(
-    <ShareImageModal profile={profile} userLeaderboardInformation={userLeaderboardInformation} />,
-    false,
-  )
+  const [onPresentShareModal] = useModal(shareModal, false)
   const { global, team, volume, next_rank: nextRank } = userLeaderboardInformation
   const shouldShowUserRanks = account && hasRegistered
 
@@ -153,6 +156,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
   const subHeadingText = getSubHeadingText()
   const nextTier = userLeaderboardInformation && getNextTier(team)
   const medal = userLeaderboardInformation && getMedal(team)
+
   return (
     <Flex flexDirection="column" alignItems="center" mt="16px">
       <Heading scale="lg" textAlign="center">
@@ -206,30 +210,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
                   </Heading>
                 )}
               </UserRankBox>
-              <UserRankBox
-                flex="2"
-                title={t('Your MBOX volume rank').toUpperCase()}
-                footer={t('Based on your MBOX/BNB and MBOX/BUSD trading')}
-                // Add responsive mr if competition is LIVE
-                mr={currentPhase.state === LIVE ? [0, null, null, '8px'] : 0}
-              >
-                {!userLeaderboardInformation ? (
-                  <Skeleton height="26px" width="110px" />
-                ) : (
-                  <>
-                    <Heading textAlign="center" scale="lg">
-                      #{userLeaderboardInformation.moboxVolumeRank}
-                    </Heading>
-                    <Text>
-                      $
-                      {(userLeaderboardInformation.moboxVolume as unknown as number).toLocaleString(undefined, {
-                        maximumFractionDigits: 2,
-                        minimumFractionDigits: 0,
-                      })}
-                    </Text>
-                  </>
-                )}
-              </UserRankBox>
+              {extraUserRankBox || null}
             </Flex>
             {/* Show next ranks if competition is LIVE */}
             {currentPhase.state === LIVE &&
