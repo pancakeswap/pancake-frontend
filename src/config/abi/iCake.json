@@ -25,13 +25,6 @@
   },
   {
     "inputs": [],
-    "name": "MAX_CEILING_DURATION",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "MIN_CEILING_DURATION",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
@@ -61,7 +54,7 @@
   {
     "inputs": [{ "internalType": "address", "name": "_user", "type": "address" }],
     "name": "getUserCredit",
-    "outputs": [{ "internalType": "uint256", "name": "iCake", "type": "uint256" }],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },

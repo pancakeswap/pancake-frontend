@@ -2,7 +2,7 @@ import { SubMenuItems } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { PageMeta } from 'components/Layout/Page'
 import { useRouter } from 'next/router'
-import { usePoolsPageFetch } from 'state/pools/hooks'
+import { usePoolsPageFetch, useFetchIfo } from 'state/pools/hooks'
 import Hero from './components/Hero'
 import IfoProvider from './contexts/IfoContext'
 
@@ -11,6 +11,7 @@ export const IfoPageLayout = ({ children }) => {
   const router = useRouter()
   const isExact = router.route === '/ifo'
   usePoolsPageFetch()
+  useFetchIfo()
 
   return (
     <IfoProvider>

@@ -11,7 +11,8 @@ import {
   fetchCakeVaultUserData,
   fetchCakeVaultFees,
   fetchPoolsStakingLimitsAsync,
-  fetchIfoUserCreditDataAsync,
+  fetchUserIfoCreditDataAsync,
+  fetchIfoPublicDataAsync,
 } from '.'
 import { DeserializedPool, VaultKey } from '../types'
 import { fetchFarmsPublicDataAsync } from '../farms'
@@ -78,7 +79,6 @@ export const usePoolsPageFetch = () => {
       if (account) {
         dispatch(fetchPoolsUserDataAsync(account))
         dispatch(fetchCakeVaultUserData({ account }))
-        dispatch(fetchIfoUserCreditDataAsync(account))
       }
     })
   }, [account, dispatch])
@@ -88,6 +88,20 @@ export const usePoolsPageFetch = () => {
       dispatch(fetchCakeVaultFees())
     })
   }, [dispatch])
+}
+
+export const useFetchIfo = () => {
+  const { account } = useWeb3React()
+  const dispatch = useAppDispatch()
+
+  useFastRefreshEffect(() => {
+    batch(() => {
+      dispatch(fetchIfoPublicDataAsync())
+      if (account) {
+        dispatch(fetchUserIfoCreditDataAsync(account))
+      }
+    })
+  }, [dispatch, account])
 }
 
 export const useCakeVault = () => {

@@ -36,7 +36,7 @@ import { fetchPublicVaultData, fetchVaultFees } from './fetchVaultPublic'
 import fetchVaultUser from './fetchVaultUser'
 import { getTokenPricesFromFarm } from './helpers'
 import { resetUserState } from '../global/actions'
-import fetchIfoUserCredit from './fetchIfoUserCredit'
+import { fetchUserIfoCredit, fetchPublicIfoData } from './fetchUserIfo'
 
 export const initialPoolVaultState = Object.freeze({
   totalShares: null,
@@ -305,16 +305,23 @@ export const fetchCakeVaultUserData = createAsyncThunk<SerializedLockedVaultUser
   },
 )
 
-export const fetchIfoUserCreditDataAsync =
-  (account: string): AppThunk =>
-  async (dispatch) => {
-    try {
-      const iCakeUserData = await fetchIfoUserCredit(account)
-      dispatch(setIfoUserCreditData(iCakeUserData))
-    } catch (error) {
-      console.error('[Ifo Credit Action] Error fetching Ifo user credit data', error)
-    }
+export const fetchIfoPublicDataAsync = () => async (dispatch) => {
+  try {
+    const ceiling = await fetchPublicIfoData()
+    dispatch(setIfoPublicData(ceiling))
+  } catch (error) {
+    console.error('[Ifo Public Data] Error fetching Ifo public data', error)
   }
+}
+
+export const fetchUserIfoCreditDataAsync = (account: string) => async (dispatch) => {
+  try {
+    const credit = await fetchUserIfoCredit(account)
+    dispatch(setIfoUserCreditData(credit))
+  } catch (error) {
+    console.error('[Ifo Credit Action] Error fetching user Ifo credit data', error)
+  }
+}
 
 export const PoolsSlice = createSlice({
   name: 'Pools',
@@ -360,9 +367,14 @@ export const PoolsSlice = createSlice({
         state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
       }
     },
+    // Ifo
+    setIfoPublicData: (state, action) => {
+      const ceiling = action.payload
+      state.ifo = { ...state.ifo, ceiling }
+    },
     setIfoUserCreditData: (state, action) => {
-      const { credit, ceiling } = action.payload
-      state.ifo = { ...state.ifo, credit, ceiling }
+      const credit = action.payload
+      state.ifo = { ...state.ifo, credit }
     },
   },
   extraReducers: (builder) => {
@@ -399,6 +411,7 @@ export const {
   updatePoolsUserData,
   setPoolPublicData,
   setPoolUserData,
+  setIfoPublicData,
   setIfoUserCreditData,
 } = PoolsSlice.actions
 
