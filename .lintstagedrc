@@ -3,7 +3,7 @@
     "eslint",
     "prettier --write"
   ],
-  "**/*.{json}": [
+  "**/*.json": [
     "prettier --write"
   ]
 }
