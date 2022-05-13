@@ -23,8 +23,10 @@ const useAllPancakeBunnyNfts = (collectionAddress: string) => {
       if (!response) return
       const { data } = response
       const bunnyIds = Object.keys(data)
-      const lowestPrices = await getAllPancakeBunniesLowestPrice(bunnyIds)
-      const latestUpdates = await getAllPancakeBunniesRecentUpdatedAt(bunnyIds)
+      const [lowestPrices, latestUpdates] = await Promise.all([
+        getAllPancakeBunniesLowestPrice(bunnyIds),
+        getAllPancakeBunniesRecentUpdatedAt(bunnyIds),
+      ])
       const allBunnies: NftToken[] = bunnyIds.map((bunnyId) => {
         return {
           // tokenId here is just a dummy one to satisfy TS. TokenID does not play any role in gird display below
