@@ -1677,7 +1677,7 @@
   "Prizes to be distributed in CAKE and DAR in a distribution of 1:5 and shared by all members of each respective tier.": "Prizes to be distributed in CAKE and DAR in a distribution of 1:5 and shared by all members of each respective tier.",
   "The price of token prizes ($CAKE and $DAR) in USD will be determined as per their BUSD pair price during the tally period.": "The price of token prizes ($CAKE and $DAR) in USD will be determined as per their BUSD pair price during the tally period.",
   "Eligible pairs: DAR/BNB, CAKE/BNB, and CAKE/BUSD. Please note that the volume from limit orders will not be indexed.": "Eligible pairs: DAR/BNB, CAKE/BNB, and CAKE/BUSD. Please note that the volume from limit orders will not be indexed.",
-  "iCake": "iCake",
+  "iCAKE": "iCAKE",
   "Missed this IFO? You will enjoy the same amount of iCAKE for future IFOs if your locked-staking position is not unlocked.": "Missed this IFO? You will enjoy the same amount of iCAKE for future IFOs if your locked-staking position is not unlocked.",
   "The number of iCAKE equals the locked staking amount if the staking duration is longer than %weeks% weeks. If the staking duration is less than %weeks% weeks, it will linearly decrease based on the staking duration.": "The number of iCAKE equals the locked staking amount if the staking duration is longer than %weeks% weeks. If the staking duration is less than %weeks% weeks, it will linearly decrease based on the staking duration."
 }

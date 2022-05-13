@@ -84,7 +84,7 @@ const IfoPoolVaultCardMobile: React.FC<IfoPoolVaultCardMobileProps> = ({ pool })
           </StyledTokenContent>
           <StyledTokenContent flexDirection="column" flex={1}>
             <Text color="textSubtle" fontSize="12px">
-              {t('iCake')}
+              {t('iCAKE')}
             </Text>
             <Balance small bold decimals={3} value={cakeAsNumberBalance} />
           </StyledTokenContent>
@@ -100,6 +100,7 @@ const IfoPoolVaultCardMobile: React.FC<IfoPoolVaultCardMobileProps> = ({ pool })
                 userData={vaultPool?.userData}
                 stakingToken={pool?.stakingToken}
                 stakingTokenBalance={pool?.userData?.stakingTokenBalance}
+                showICake
               />
             ) : (
               <>

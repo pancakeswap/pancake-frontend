@@ -32,7 +32,7 @@ import { FlexGap } from 'components/Layout/Flex'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { useIfoCredit } from 'state/pools/hooks'
-import BigNumber from 'bignumber.js'
+import { getICakeWeekDisplay } from 'views/Pools/helpers'
 
 interface TypeProps {
   ifoCurrencyAddress: string
@@ -68,9 +68,8 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
   const credit = useIfoCredit()
   const creditDollarValue = useBUSDCakeAmount(getBalanceNumber(credit))
   // Todo: update
-  const ceiling = 15811200
-  const weeks = new BigNumber(ceiling).dividedBy(60).div(60).div(24).div(7)
-  const weeksDisplay = Math.round(weeks.toNumber())
+  const ceiling = '15811200'
+  const weeksDisplay = getICakeWeekDisplay(ceiling)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>

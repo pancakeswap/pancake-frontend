@@ -26,9 +26,16 @@ interface CakeVaultProps extends CardProps {
   pool: DeserializedPool
   showStakedOnly: boolean
   defaultFooterExpanded?: boolean
+  showICake?: boolean
 }
 
-const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, defaultFooterExpanded, ...props }) => {
+const CakeVaultCard: React.FC<CakeVaultProps> = ({
+  pool,
+  showStakedOnly,
+  defaultFooterExpanded,
+  showICake = false,
+  ...props
+}) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
 
@@ -62,6 +69,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
             userData={vaultPool?.userData}
             stakingToken={pool?.stakingToken}
             stakingTokenBalance={pool?.userData?.stakingTokenBalance}
+            showICake={showICake}
           />
         ) : (
           <>

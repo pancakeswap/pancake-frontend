@@ -79,3 +79,8 @@ export const getPoolBlockInfo = (pool: DeserializedPool, currentBlock: number) =
   const blocksToDisplay = hasPoolStarted ? blocksRemaining : blocksUntilStart
   return { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay }
 }
+
+export const getICakeWeekDisplay = (ceiling: string) => {
+  const weeks = new BigNumber(ceiling).dividedBy(60).div(60).div(24).div(7)
+  return Math.round(weeks.toNumber())
+}
