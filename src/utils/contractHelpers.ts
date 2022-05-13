@@ -34,7 +34,7 @@ import {
   getTradingCompetitionAddressMobox,
   getTradingCompetitionAddressMoD,
   getBunnySpecialXmasAddress,
-  getICakeddress,
+  getICakeAddress,
   getGalaxyNFTClaimingAddress,
 } from 'utils/addressHelpers'
 
@@ -247,5 +247,5 @@ export const getErc721CollectionContract = (signer?: Signer | Provider, address?
   return getContract(erc721CollectionAbi, address, signer) as Erc721collection
 }
 export const getIfoCreditAddressContract = (signer?: Signer | Provider) => {
-  return getContract(iCakeAbi, getICakeddress(), signer) as ICake
+  return getContract(iCakeAbi, getICakeAddress(), signer) as ICake
 }
