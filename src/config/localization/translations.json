@@ -1380,7 +1380,7 @@
   "Sign up for battle and you’re guaranteed a prize!": "Sign up for battle and you’re guaranteed a prize!",
   "Compete with other teams for the highest trading volume!": "Compete with other teams for the highest trading volume!",
   "Trading Competition": "Trading Competition",
-  "To participate in the next IFO, stake some CAKE in the IFO CAKE pool!": "To participate in the next IFO, stake some CAKE in the IFO CAKE pool!",
+  "To participate in the next IFO, lock some CAKE in the fixed-term staking CAKE pool!": "To participate in the next IFO, lock some CAKE in the fixed-term staking CAKE pool!",
   "Stake CAKE in IFO pool": "Stake CAKE in IFO pool",
   "How does the number of iCAKE calculated?": "How does the number of iCAKE calculated?",
   "Learn more on our Medium blog post": "Learn more on our Medium blog post",
@@ -1679,5 +1679,6 @@
   "Eligible pairs: DAR/BNB, CAKE/BNB, and CAKE/BUSD. Please note that the volume from limit orders will not be indexed.": "Eligible pairs: DAR/BNB, CAKE/BNB, and CAKE/BUSD. Please note that the volume from limit orders will not be indexed.",
   "iCAKE": "iCAKE",
   "Missed this IFO? You will enjoy the same amount of iCAKE for future IFOs if your locked-staking position is not unlocked.": "Missed this IFO? You will enjoy the same amount of iCAKE for future IFOs if your locked-staking position is not unlocked.",
-  "The number of iCAKE equals the locked staking amount if the staking duration is longer than %weeks% weeks. If the staking duration is less than %weeks% weeks, it will linearly decrease based on the staking duration.": "The number of iCAKE equals the locked staking amount if the staking duration is longer than %weeks% weeks. If the staking duration is less than %weeks% weeks, it will linearly decrease based on the staking duration."
+  "The number of iCAKE equals the locked staking amount if the staking duration is longer than %weeks% weeks. If the staking duration is less than %weeks% weeks, it will linearly decrease based on the staking duration.": "The number of iCAKE equals the locked staking amount if the staking duration is longer than %weeks% weeks. If the staking duration is less than %weeks% weeks, it will linearly decrease based on the staking duration.",
+  "Go to CAKE pool": "Go to CAKE pool"
 }

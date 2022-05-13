@@ -266,7 +266,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           {ifov31Msg || (
             <>
               <Text textAlign="center" fontSize="14px">
-                {t('To participate in the next IFO, stake some CAKE in the IFO CAKE pool!')}
+                {t('To participate in the next IFO, lock some CAKE in the fixed-term staking CAKE pool!')}
               </Text>
               <MessageTextLink href="/ifo#ifo-how-to" textAlign="center">
                 {t('How does it work?')} »
