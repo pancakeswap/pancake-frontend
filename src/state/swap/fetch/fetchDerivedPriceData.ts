@@ -97,8 +97,10 @@ const fetchDerivedPriceData = async (
       return null
     }
 
-    const token0DerivedBnb = await getTokenDerivedBnbPrices(token0Address, blocks)
-    const token1DerivedBnb = await getTokenDerivedBnbPrices(token1Address, blocks)
+    const [token0DerivedBnb, token1DerivedBnb] = await Promise.all([
+      getTokenDerivedBnbPrices(token0Address, blocks),
+      getTokenDerivedBnbPrices(token1Address, blocks),
+    ])
     return { token0DerivedBnb, token1DerivedBnb }
   } catch (error) {
     console.error('Failed to fetched derived price data for chart', error)
