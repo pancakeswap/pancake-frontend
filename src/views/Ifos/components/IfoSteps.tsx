@@ -103,7 +103,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
           )}
         </Text>
         <TooltipText as="span" fontWeight={700} ref={targetRef} color="textSubtle" small>
-          {t('How does the IFO credit calculated?')}
+          {t('How does the number of iCAKE calculated?')}
         </TooltipText>
         <Text mt="4px" color="textSubtle" small>
           {t(
