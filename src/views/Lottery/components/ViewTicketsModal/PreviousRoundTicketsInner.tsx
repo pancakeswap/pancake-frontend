@@ -104,8 +104,10 @@ const PreviousRoundTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) =
     }
 
     const fetchData = async () => {
-      const userTickets = await fetchUserTicketsForOneRound(account, roundId)
-      const lotteryData = await fetchLottery(roundId)
+      const [userTickets, lotteryData] = await Promise.all([
+        fetchUserTicketsForOneRound(account, roundId),
+        fetchLottery(roundId),
+      ])
       const processedLotteryData = processLotteryResponse(lotteryData)
       const winningTickets = await getWinningTickets({
         roundId,
