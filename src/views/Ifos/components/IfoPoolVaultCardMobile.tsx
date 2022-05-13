@@ -26,6 +26,7 @@ import UnstakingFeeCountdownRow from 'views/Pools/components/CakeVaultCard/Unsta
 import RecentCakeProfitRow from 'views/Pools/components/CakeVaultCard/RecentCakeProfitRow'
 import VaultCardActions from 'views/Pools/components/CakeVaultCard/VaultCardActions'
 import CardFooter from 'views/Pools/components/PoolCard/CardFooter'
+import { useConfig } from 'views/Ifos/contexts/IfoContext'
 
 const StyledCardMobile = styled(Card)`
   max-width: 400px;
@@ -54,7 +55,7 @@ const IfoPoolVaultCardMobile: React.FC<IfoPoolVaultCardMobileProps> = ({ pool })
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const credit = useIfoCredit()
-  const [isExpanded, setIsExpanded] = useState(false)
+  const { isExpanded, setIsExpanded } = useConfig()
   const cakeAsNumberBalance = getBalanceNumber(credit)
 
   const vaultPool = useVaultPoolByKey(pool.vaultKey)

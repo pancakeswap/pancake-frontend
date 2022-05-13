@@ -4,6 +4,7 @@ import { PageMeta } from 'components/Layout/Page'
 import { useRouter } from 'next/router'
 import { usePoolsPageFetch } from 'state/pools/hooks'
 import Hero from './components/Hero'
+import IfoProvider from './contexts/IfoContext'
 
 export const IfoPageLayout = ({ children }) => {
   const { t } = useTranslation()
@@ -12,7 +13,7 @@ export const IfoPageLayout = ({ children }) => {
   usePoolsPageFetch()
 
   return (
-    <>
+    <IfoProvider>
       <PageMeta />
       <SubMenuItems
         items={[
@@ -29,6 +30,6 @@ export const IfoPageLayout = ({ children }) => {
       />
       <Hero />
       {children}
-    </>
+    </IfoProvider>
   )
 }
