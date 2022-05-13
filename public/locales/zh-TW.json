@@ -1676,5 +1676,20 @@
   "Only trades on DAR/BNB, CAKE/BNB, and CAKE/BUSD pairs will be included in volume calculations. Please note that the volume from limit orders will not be included.": "Only trades on DAR/BNB, CAKE/BNB, and CAKE/BUSD pairs will be included in volume calculations. Please note that the volume from limit orders will not be included.",
   "Prizes to be distributed in CAKE and DAR in a distribution of 1:5 and shared by all members of each respective tier.": "Prizes to be distributed in CAKE and DAR in a distribution of 1:5 and shared by all members of each respective tier.",
   "The price of token prizes ($CAKE and $DAR) in USD will be determined as per their BUSD pair price during the tally period.": "The price of token prizes ($CAKE and $DAR) in USD will be determined as per their BUSD pair price during the tally period.",
-  "Eligible pairs: DAR/BNB, CAKE/BNB, and CAKE/BUSD. Please note that the volume from limit orders will not be indexed.": "Eligible pairs: DAR/BNB, CAKE/BNB, and CAKE/BUSD. Please note that the volume from limit orders will not be indexed."
+  "Eligible pairs: DAR/BNB, CAKE/BNB, and CAKE/BUSD. Please note that the volume from limit orders will not be indexed.": "Eligible pairs: DAR/BNB, CAKE/BNB, and CAKE/BUSD. Please note that the volume from limit orders will not be indexed.",
+  "April": "April",
+  "Easter Battle": "Easter Battle",
+  "$200,000 in Prizes!": "$200,000 in Prizes!",
+  "Compete with other teams to win CAKE, collectible NFTs, achievements & more!": "Compete with other teams to win CAKE, collectible NFTs, achievements & more!",
+  "Prizes to be distributed in CAKE and shared by all members of a tier. CAKE price in USD to be determined on the day of distribution. Details below.": "Prizes to be distributed in CAKE and shared by all members of a tier. CAKE price in USD to be determined on the day of distribution. Details below.",
+  "The final winning team will be the team with the highest total combined volume of their top 500 members at the end of the competition period.": "The final winning team will be the team with the highest total combined volume of their top 500 members at the end of the competition period.",
+  "CAKE Prizes (Split)": "CAKE Prizes (Split)",
+  "CAKE Prizes": "CAKE Prizes",
+  "Binance Fan Token Trading Competition": "Binance Fan Token Trading Competition",
+  "Prizes to be distributed in CAKE, LAZIO, PORTO and SANTOS in a distribution of 3:1:1:1 and shared by all members of each respective tier.": "Prizes to be distributed in CAKE, LAZIO, PORTO and SANTOS in a distribution of 3:1:1:1 and shared by all members of each respective tier.",
+  "The price of token prizes (CAKE, LAZIO, PORTO and SANTOS) in USD will be determined as per their BUSD pair price during the tally period.": "The price of token prizes (CAKE, LAZIO, PORTO and SANTOS) in USD will be determined as per their BUSD pair price during the tally period.",
+  "Mobox Competition": "Mobox Competition",
+  "Mobox Trading Competition": "Mobox Trading Competition",
+  "$80,000 in Prizes with Tokens and NFTs!": "$80,000 in Prizes with Tokens and NFTs!",
+  "In addition to token prizes there are NFT rewards (estimated worth of ~$40,000 at the time of writing):": "In addition to token prizes there are NFT rewards (estimated worth of ~$40,000 at the time of writing):"
 }
