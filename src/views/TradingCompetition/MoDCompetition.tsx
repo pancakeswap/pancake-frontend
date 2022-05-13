@@ -105,6 +105,7 @@ const MoDCompetition = () => {
         )
         const userObject: UserTradingInformation = {
           isLoading: false,
+          account,
           hasRegistered: user[0],
           isUserActive: user[1],
           hasUserClaimed: userClaimed,
@@ -136,7 +137,7 @@ const MoDCompetition = () => {
       setUserLeaderboardInformation(data.leaderboard_dar)
     }
     // If user has not registered, user trading information will not be displayed and should not be fetched
-    if (account && userTradingInformation.hasRegistered) {
+    if (userTradingInformation.account && userTradingInformation.hasRegistered) {
       fetchUserTradingStats()
     } else {
       setUserLeaderboardInformation({ ...initialUserLeaderboardInformation })
@@ -146,7 +147,10 @@ const MoDCompetition = () => {
   const isLoading = isProfileLoading || userTradingInformation.isLoading
   // Don't hide when loading. Hide if the account is connected && the user hasn't registered && the competition is live or finished
   const shouldHideCta =
-    !isLoading && account && !userTradingInformation.hasRegistered && (isCompetitionLive || hasCompetitionEnded)
+    !isLoading &&
+    userTradingInformation.account &&
+    !userTradingInformation.hasRegistered &&
+    (isCompetitionLive || hasCompetitionEnded)
 
   return (
     <>
