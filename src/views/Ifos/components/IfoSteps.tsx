@@ -32,6 +32,7 @@ import { FlexGap } from 'components/Layout/Flex'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { useIfoCredit } from 'state/pools/hooks'
+import BigNumber from 'bignumber.js'
 
 interface TypeProps {
   ifoCurrencyAddress: string
@@ -66,19 +67,26 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
   const { t } = useTranslation()
   const credit = useIfoCredit()
   const creditDollarValue = useBUSDCakeAmount(getBalanceNumber(credit))
+  // Todo: update
+  const ceiling = 15811200
+  const weeks = new BigNumber(ceiling).dividedBy(60).div(60).div(24).div(7)
+  const weeksDisplay = Math.round(weeks.toNumber())
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
-      <span>
+      <Text>
         {t(
-          'IFO credit is calculated by average block balance in the IFO pool in over the staking period announced with each IFO proposal.',
+          'The number of iCAKE equals the locked staking amount if the staking duration is longer than %weeks% weeks. If the staking duration is less than %weeks% weeks, it will linearly decrease based on the staking duration.',
+          {
+            weeks: weeksDisplay,
+          },
         )}
-      </span>{' '}
+      </Text>
       <InlineLink
         external
         href="https://medium.com/pancakeswap/initial-farm-offering-ifo-3-0-ifo-staking-pool-622d8bd356f1"
       >
-        {t('Please refer to our blog post for more details.')}
+        {t('Learn more on our Medium blog post')}
       </InlineLink>
     </Box>,
     {},
@@ -91,14 +99,19 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
         {t('Stake CAKE in IFO pool')}
       </Heading>
       <Box>
-        <Text color="textSubtle" small>
+        <Text mb="4px" color="textSubtle" small>
           {t(
-            'The maximum amount of CAKE user can commit to the Public Sale, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. Stake more CAKE to increase the maximum CAKE you can commit to the sale. Missed this IFO? You can keep staking in the IFO CAKE Pool to join the next IFO sale.',
+            'The maximum amount of CAKE you can commit to the Public Sale equals the number of your iCAKE. Lock more CAKE for longer durations to increase the maximum CAKE you can commit to the sale.',
           )}
         </Text>
         <TooltipText as="span" fontWeight={700} ref={targetRef} color="textSubtle" small>
           {t('How does the IFO credit calculated?')}
         </TooltipText>
+        <Text mt="4px" color="textSubtle" small>
+          {t(
+            'Missed this IFO? You will enjoy the same amount of iCAKE for future IFOs if your locked-staking position is not unlocked.',
+          )}
+        </Text>
       </Box>
       {hasProfile && (
         <SmallStakePoolCard borderRadius="default" p="16px">
