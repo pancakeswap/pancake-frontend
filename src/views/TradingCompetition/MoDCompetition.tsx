@@ -221,7 +221,7 @@ const MoDCompetition = () => {
     <>
       <PageMeta />
       <CompetitionPage id="pcs-competition-page">
-        <BattleBannerSection background={TRADINGCOMPETITIONBANNER} hasCurvedDivider={false} index={1}>
+        <BattleBannerSection overflow="hidden" background={TRADINGCOMPETITIONBANNER} hasCurvedDivider={false} index={1}>
           <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
             <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
             <BattleBanner />

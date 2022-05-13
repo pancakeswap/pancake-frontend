@@ -23,8 +23,13 @@ const Mesh = styled.div`
   left: 0;
   right: 0;
   height: 242px;
-  background-image: url('${meshImg.src}');
   z-index: -1;
+  background-image: url('${meshImg.src}');
+  @media only screen and (min-width: 1920px) {
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: 100%;
+  }
 `
 const TextBgLight = styled.div`
   position: absolute;
@@ -44,36 +49,6 @@ const BgShine = styled.div`
   background-image: url('${bgShineImg.src}');
   background-size: cover;
   z-index: 0;
-`
-
-const StarImage = styled.div`
-  display: none;
-  position: absolute;
-  z-index: -1;
-  bottom: 0;
-  background-size: 150%;
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-image: url('/images/competition/banner-star.png');
-  opacity: 0.4;
-  ${({ theme }) => theme.mediaQueries.md} {
-    display: block;
-    height: 70%;
-    width: 50%;
-    right: 0px;
-  }
-  ${({ theme }) => theme.mediaQueries.xl} {
-    width: 40%;
-    height: 80%;
-    right: 25px;
-  }
-  @media screen and (min-width: 1440px) {
-    height: 100%;
-    right: 12%;
-  }
-  @media screen and (min-width: 1680px) {
-    right: 20%;
-  }
 `
 
 const ImageWrapper = styled.div`
@@ -162,7 +137,6 @@ const BattleBanner = () => {
     <Flex flexDirection="column" overflow="hidden">
       <Mesh />
       <BgShine />
-      <StarImage />
       <ImageWrapper>
         <Image src={AllBunniesImage} alt="all the bunnies" width={523} height={395} />
       </ImageWrapper>
