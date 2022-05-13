@@ -58,7 +58,7 @@ const config = {
   async headers() {
     return [
       {
-        source: '/images/home/*',
+        source: '/images/home/:all*',
         headers: [
           {
             key: 'Cache-Control',
