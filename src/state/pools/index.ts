@@ -68,6 +68,7 @@ export const initialPoolVaultState = Object.freeze({
 
 export const initialIfoState = Object.freeze({
   credit: null,
+  ceiling: null,
 })
 
 const initialState: PoolsState = {
@@ -308,8 +309,8 @@ export const fetchIfoUserCreditDataAsync =
   (account: string): AppThunk =>
   async (dispatch) => {
     try {
-      const credit = await fetchIfoUserCredit(account)
-      dispatch(setIfoUserCreditData(credit))
+      const iCakeUserData = await fetchIfoUserCredit(account)
+      dispatch(setIfoUserCreditData(iCakeUserData))
     } catch (error) {
       console.error('[Ifo Credit Action] Error fetching Ifo user credit data', error)
     }
@@ -360,8 +361,8 @@ export const PoolsSlice = createSlice({
       }
     },
     setIfoUserCreditData: (state, action) => {
-      const credit = action.payload
-      state.ifo = { ...state.ifo, credit }
+      const { credit, ceiling } = action.payload
+      state.ifo = { ...state.ifo, credit, ceiling }
     },
   },
   extraReducers: (builder) => {

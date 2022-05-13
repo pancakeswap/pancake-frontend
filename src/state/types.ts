@@ -273,6 +273,7 @@ export interface SerializedCakeVault {
 // Ifo
 export interface IfoState {
   credit: BigNumber
+  ceiling: BigNumber
 }
 
 export interface PoolsState {

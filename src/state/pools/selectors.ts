@@ -9,6 +9,7 @@ const selectPoolsData = (state: State) => state.pools.data
 const selectPoolData = (sousId) => (state: State) => state.pools.data.find((p) => p.sousId === sousId)
 const selectUserDataLoaded = (state: State) => state.pools.userDataLoaded
 const selectVault = (key: VaultKey) => (state: State) => key ? state.pools[key] : initialPoolVaultState
+const selectIfo = (state: State) => state.pools.ifo
 const selectIfoUserCredit = (state: State) => state.pools.ifo.credit ?? BIG_ZERO
 
 export const makePoolWithUserDataLoadingSelector = (sousId) =>
@@ -48,4 +49,8 @@ export const poolsWithVaultSelector = createSelector(
 
 export const ifoCreditSelector = createSelector([selectIfoUserCredit], (ifoUserCredit) => {
   return new BigNumber(ifoUserCredit)
+})
+
+export const ifoCeilingSelector = createSelector([selectIfo], (ifoData) => {
+  return new BigNumber(ifoData.ceiling)
 })

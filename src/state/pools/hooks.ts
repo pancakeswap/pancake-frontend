@@ -21,6 +21,7 @@ import {
   makeVaultPoolByKey,
   poolsWithVaultSelector,
   ifoCreditSelector,
+  ifoCeilingSelector,
 } from './selectors'
 
 export const useFetchPublicPoolsData = () => {
@@ -111,4 +112,8 @@ export const useVaultPoolByKey = (key: VaultKey) => {
 
 export const useIfoCredit = () => {
   return useSelector(ifoCreditSelector)
+}
+
+export const useIfoCeiling = () => {
+  return useSelector(ifoCeilingSelector)
 }

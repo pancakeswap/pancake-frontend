@@ -3,7 +3,7 @@ import { getICakeddress } from 'utils/addressHelpers'
 import iCakeAbi from 'config/abi/iCake.json'
 import { multicallv2 } from 'utils/multicall'
 
-const fetchIfoUserCredit = async (account: string): Promise<string> => {
+const fetchIfoUserCredit = async (account: string) => {
   try {
     const calls = [
       {
@@ -11,12 +11,22 @@ const fetchIfoUserCredit = async (account: string): Promise<string> => {
         name: 'getUserCredit',
         params: [account],
       },
+      {
+        address: getICakeddress(),
+        name: 'ceiling',
+      },
     ]
 
-    const [creditResponse] = await multicallv2(iCakeAbi, calls)
-    return new BigNumber(creditResponse.toString()).toJSON()
+    const [creditResponse, ceilingResponse] = await multicallv2(iCakeAbi, calls)
+    return {
+      credit: new BigNumber(creditResponse.toString()).toJSON(),
+      ceiling: new BigNumber(ceilingResponse.toString()).toJSON(),
+    }
   } catch (error) {
-    return null
+    return {
+      credit: null,
+      ceiling: null,
+    }
   }
 }
 
