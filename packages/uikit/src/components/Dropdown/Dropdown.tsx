@@ -82,7 +82,9 @@ const Dropdown: React.FC<DropdownProps> = ({ target, position = "bottom", childr
   return (
     <Container $scrolling={scrolling}>
       {target}
-      <DropdownContent position={position}>{children}</DropdownContent>
+      <DropdownContent data-cy="dropdownList" position={position}>
+        {children}
+      </DropdownContent>
     </Container>
   );
 };
