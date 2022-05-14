@@ -95,7 +95,11 @@ const getDateForBlock = async (currentBlock: number, block: number) => {
 }
 
 // Get additional auction information based on the date received from smart contract
-export const processAuctionData = async (auctionId: number, auctionResponse: AuctionsResponse): Promise<Auction> => {
+export const processAuctionData = async (
+  auctionId: number,
+  auctionResponse: AuctionsResponse,
+  currentBlockNumber?: number,
+): Promise<Auction> => {
   const processedAuctionData = {
     ...auctionResponse,
     topLeaderboard: auctionResponse.leaderboard.toNumber(),
@@ -106,9 +110,11 @@ export const processAuctionData = async (auctionId: number, auctionResponse: Auc
   }
 
   // Get all required data and blocks
-  const currentBlock = await simpleRpcProvider.getBlockNumber()
-  const startDate = await getDateForBlock(currentBlock, processedAuctionData.startBlock)
-  const endDate = await getDateForBlock(currentBlock, processedAuctionData.endBlock)
+  const currentBlock = currentBlockNumber || (await simpleRpcProvider.getBlockNumber())
+  const [startDate, endDate] = await Promise.all([
+    getDateForBlock(currentBlock, processedAuctionData.startBlock),
+    getDateForBlock(currentBlock, processedAuctionData.endBlock),
+  ])
 
   const auctionStatus = getAuctionStatus(
     currentBlock,

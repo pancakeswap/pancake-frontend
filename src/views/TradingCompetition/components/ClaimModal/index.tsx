@@ -9,9 +9,10 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCompetitionRewards, getRewardGroupAchievements } from '../../helpers'
 import { CompetitionProps } from '../../types'
-import MboxBunnyNft from '../../pngs/mobox-bunny-nft.png'
-import MboxAllBunnies from '../../pngs/mbox-all-bunnies.png'
-import MysteryBox from '../../pngs/mystery-box.png'
+import MoboxBunnyNft from '../../pngs/mobox-bunny-nft.png'
+import MoboxAllBunnies from '../../pngs/mobox-all-bunnies.png'
+import MoboxMysteryBox from '../../pngs/mobox-mystery-box.png'
+import { mboxPrizes } from '../../../../config/constants/trading-competition/prizes'
 
 const ImageWrapper = styled(Flex)`
   justify-content: center;
@@ -34,7 +35,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
     userCakeRewards,
     userMoboxRewards,
   })
-  const achievement = getRewardGroupAchievements(userRewardGroup, userPointReward)
+  const achievement = getRewardGroupAchievements(mboxPrizes, userRewardGroup, userPointReward)
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleClaimClick = async () => {
@@ -72,7 +73,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         {canClaimNFT ? (
           <Flex alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>
-              <Image src={MboxBunnyNft} width={128} height={128} />
+              <Image src={MoboxBunnyNft} width={128} height={128} />
             </ImageWrapper>
             <Text mt="8px">{t('Collectible NFT')}</Text>
           </Flex>
@@ -80,7 +81,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         {canClaimMysteryBox ? (
           <Flex mt="8px" alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>
-              <Image src={MysteryBox} width={78} height={56} />
+              <Image src={MoboxMysteryBox} width={78} height={56} />
             </ImageWrapper>
             <Text mt="8px">{t('Mystery Box')}</Text>
           </Flex>
@@ -88,7 +89,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         {canClaimNFT ? (
           <Flex mt="8px" alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>
-              <Image src={MboxAllBunnies} width={128} height={95} />
+              <Image src={MoboxAllBunnies} width={128} height={95} />
             </ImageWrapper>
             <Text mt="8px">{t('Mobox Avatar NFT')}</Text>
             <Text color="textSubtle" mt="8px" fontSize="12px" textAlign="center">

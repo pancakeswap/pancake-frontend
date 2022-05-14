@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
-import PrizesText from './PrizesText'
-import PrizesCard from './PrizesCard'
+import ModPrizesCard from './ModPrizesCard'
+import ModPrizesText from './ModPrizesText'
 
 const Wrapper = styled(Flex)`
   flex-direction: column-reverse;
@@ -13,13 +13,13 @@ const Wrapper = styled(Flex)`
   }
 `
 
-const PrizesInfo = () => {
+const ModPrizesInfo = () => {
   return (
     <Wrapper flexDirection="column">
-      <PrizesCard />
-      <PrizesText />
+      <ModPrizesCard />
+      <ModPrizesText />
     </Wrapper>
   )
 }
 
-export default PrizesInfo
+export default ModPrizesInfo

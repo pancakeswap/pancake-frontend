@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
-import { Flex, Box } from '@pancakeswap/uikit'
-import Image from 'next/image'
+import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTradingCompetitionContractMobox } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { PageMeta } from 'components/Layout/Page'
@@ -17,43 +16,40 @@ import {
   REGISTRATION,
 } from 'config/constants/trading-competition/phases'
 import PageSection from 'components/PageSection'
+import { MIDBLUEBG, MIDBLUEBG_DARK, TRADINGCOMPETITIONBANNER } from './pageSectionStyles'
 import {
-  DARKBG,
-  MIDBLUEBG,
-  MIDBLUEBG_DARK,
-  LIGHTBLUEBG,
-  LIGHTBLUEBG_DARK,
-  TRADINGCOMPETITIONBANNER,
-} from './pageSectionStyles'
-import {
-  PrizesIcon,
   //  RanksIcon,
   RulesIcon,
 } from './svgs'
 import Countdown from './components/Countdown'
-import YourScore from './components/YourScore'
-import StormBunny from './pngs/mbox-storm-bunny.png'
+import StormBunny from './pngs/mobox-storm-bunny.png'
 import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
-import BattleBanner from './components/BattleBanner'
 import BattleCta from './components/BattleCta'
-import PrizesInfo from './components/PrizesInfo'
 import Rules from './components/Rules'
 import { UserTradingInformationProps } from './types'
-import { CompetitionPage, BannerFlex, BattleBannerSection, BottomBunnyWrapper } from './styles'
-import TeamRanks from './components/TeamRanks'
+import { CompetitionPage, BannerFlex } from './styles'
 import RanksIcon from './svgs/RanksIcon'
+import MoboxYourScore from './mobox/components/YourScore/MoboxYourScore'
+import MoboxBattleBanner from './mobox/components/BattleBanner/MoboxBattleBanner'
+import MoboxPrizesInfo from './mobox/components/PrizesInfo/MoboxPrizesInfo'
+import { useTeamInformation } from './useTeamInformation'
+import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
+import Footer from './Footer'
+import PrizesInfoSection from './components/PrizesInfoSection'
+import TeamRanksWithParticipants from './components/TeamRanks/TeamRanksWithParticipants'
+import MoboxCakerBunny from './pngs/mobox-cakers.png'
 
 const MoboxCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
   const { profile, isLoading } = useProfile()
   const { isDark, theme } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractMobox(false)
-  const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.REGISTRATION)
-  const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
-  const [claimSuccessful, setClaimSuccessful] = useState(false)
+  const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.OVER)
+  const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
   const [userTradingInformation, setUserTradingInformation] = useState<UserTradingInformationProps>({
     hasRegistered: false,
     isUserActive: false,
@@ -65,7 +61,6 @@ const MoboxCompetition = () => {
     canClaimMysteryBox: false,
     canClaimNFT: false,
   })
-  const [globalLeaderboardInformation, setGlobalLeaderboardInformation] = useState(null)
   const [userLeaderboardInformation, setUserLeaderboardInformation] = useState({
     global: 0,
     team: 0,
@@ -74,12 +69,13 @@ const MoboxCompetition = () => {
     moboxVolumeRank: '???',
     moboxVolume: '???',
   })
-  // 1. Storm
-  const [team1LeaderboardInformation, setTeam1LeaderboardInformation] = useState({ teamId: 1, leaderboardData: null })
-  // 2. Flippers
-  const [team2LeaderboardInformation, setTeam2LeaderboardInformation] = useState({ teamId: 2, leaderboardData: null })
-  // 3. Cakers
-  const [team3LeaderboardInformation, setTeam3LeaderboardInformation] = useState({ teamId: 3, leaderboardData: null })
+
+  const {
+    globalLeaderboardInformation,
+    team1LeaderboardInformation,
+    team2LeaderboardInformation,
+    team3LeaderboardInformation,
+  } = useTeamInformation(3)
 
   const isCompetitionLive = currentPhase.state === LIVE
   const hasCompetitionEnded =
@@ -106,14 +102,6 @@ const MoboxCompetition = () => {
       canClaimNFT)
   const finishedAndPrizesClaimed = hasCompetitionEnded && account && hasUserClaimed
   const finishedAndNothingToClaim = hasCompetitionEnded && account && !userCanClaimPrizes
-
-  const onRegisterSuccess = () => {
-    setRegistrationSuccessful(true)
-  }
-
-  const onClaimSuccess = () => {
-    setClaimSuccessful(true)
-  }
 
   useEffect(() => {
     const fetchCompetitionInfoContract = async () => {
@@ -176,43 +164,6 @@ const MoboxCompetition = () => {
     }
   }, [account, userTradingInformation, profileApiUrl])
 
-  useEffect(() => {
-    const fetchGlobalLeaderboardStats = async () => {
-      const res = await fetch(`${profileApiUrl}/api/leaderboard/3/global`)
-      const data = await res.json()
-      setGlobalLeaderboardInformation(data)
-    }
-
-    const fetchTeamsLeaderboardStats = async (teamId: number, callBack: (data: any) => void) => {
-      try {
-        const res = await fetch(`${profileApiUrl}/api/leaderboard/3/team/${teamId}`)
-        const data = await res.json()
-        callBack(data)
-      } catch (e) {
-        console.error(e)
-      }
-    }
-
-    if (currentPhase.state !== REGISTRATION) {
-      fetchTeamsLeaderboardStats(1, (data) =>
-        setTeam1LeaderboardInformation((prevState) => {
-          return { ...prevState, leaderboardData: data }
-        }),
-      )
-      fetchTeamsLeaderboardStats(2, (data) =>
-        setTeam2LeaderboardInformation((prevState) => {
-          return { ...prevState, leaderboardData: data }
-        }),
-      )
-      fetchTeamsLeaderboardStats(3, (data) =>
-        setTeam3LeaderboardInformation((prevState) => {
-          return { ...prevState, leaderboardData: data }
-        }),
-      )
-      fetchGlobalLeaderboardStats()
-    }
-  }, [currentPhase, profileApiUrl])
-
   // Don't hide when loading. Hide if the account is connected && the user hasn't registered && the competition is live or finished
   const shouldHideCta =
     !isLoading && account && !userTradingInformation.hasRegistered && (isCompetitionLive || hasCompetitionEnded)
@@ -221,12 +172,18 @@ const MoboxCompetition = () => {
     <>
       <PageMeta />
       <CompetitionPage id="pcs-competition-page">
-        <BattleBannerSection background={TRADINGCOMPETITIONBANNER} hasCurvedDivider={false} index={1}>
+        <PageSection
+          style={{ paddingTop: '0px' }}
+          innerProps={{ style: { paddingTop: isMobile ? '30px' : '28px' } }}
+          background={TRADINGCOMPETITIONBANNER}
+          hasCurvedDivider={false}
+          index={1}
+        >
           <BannerFlex mb={shouldHideCta ? '0px' : '48px'}>
             <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
-            <BattleBanner />
+            <MoboxBattleBanner />
           </BannerFlex>
-        </BattleBannerSection>
+        </PageSection>
         <PageSection
           containerProps={{ style: { marginTop: '-30px' } }}
           background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
@@ -258,7 +215,7 @@ const MoboxCompetition = () => {
             {currentPhase.state === REGISTRATION ? (
               <HowToJoin />
             ) : (
-              <YourScore
+              <MoboxYourScore
                 currentPhase={currentPhase}
                 hasRegistered={userTradingInformation.hasRegistered}
                 userTradingInformation={userTradingInformation}
@@ -288,35 +245,18 @@ const MoboxCompetition = () => {
             }
           >
             <Box my="64px">
-              <TeamRanks
+              <TeamRanksWithParticipants
+                image={MoboxCakerBunny}
                 team1LeaderboardInformation={team1LeaderboardInformation}
                 team2LeaderboardInformation={team2LeaderboardInformation}
                 team3LeaderboardInformation={team3LeaderboardInformation}
                 globalLeaderboardInformation={globalLeaderboardInformation}
+                subgraphName="pancakeswap/trading-competition-v3"
               />
             </Box>
           </PageSection>
         )}
-        <PageSection
-          containerProps={{ style: { marginTop: '-30px' } }}
-          dividerComponent={
-            <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
-              {t('Prizes')}
-            </RibbonWithImage>
-          }
-          concaveDivider
-          clipFill={{
-            light: 'linear-gradient(139.73deg, #e5fcfe 0%, #ecf6ff 100%)',
-            dark: 'linear-gradient(139.73deg, #303d5b 0%, #363457 100%)',
-          }}
-          dividerPosition="top"
-          background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
-          index={4}
-        >
-          <Box my="64px">
-            <PrizesInfo />
-          </Box>
-        </PageSection>
+        <PrizesInfoSection prizesInfoComponent={<MoboxPrizesInfo />} />
         <PageSection
           containerProps={{ style: { marginTop: '-1px' } }}
           index={5}
@@ -335,37 +275,22 @@ const MoboxCompetition = () => {
             <Rules />
           </Box>
         </PageSection>
-        <PageSection
-          index={6}
-          dividerPosition="top"
-          dividerFill={{ light: '#191326' }}
-          clipFill={{ light: theme.colors.background }}
-          background={DARKBG}
-        >
-          <Flex alignItems="center">
-            <BottomBunnyWrapper>
-              <Image src={StormBunny} width={254} height={227} />
-            </BottomBunnyWrapper>
-            {shouldHideCta ? null : (
-              <Flex height="fit-content">
-                <BattleCta
-                  userTradingInformation={userTradingInformation}
-                  currentPhase={currentPhase}
-                  account={account}
-                  isCompetitionLive={isCompetitionLive}
-                  hasCompetitionEnded={hasCompetitionEnded}
-                  userCanClaimPrizes={userCanClaimPrizes}
-                  finishedAndPrizesClaimed={finishedAndPrizesClaimed}
-                  finishedAndNothingToClaim={finishedAndNothingToClaim}
-                  profile={profile}
-                  isLoading={isLoading}
-                  onRegisterSuccess={onRegisterSuccess}
-                  onClaimSuccess={onClaimSuccess}
-                />
-              </Flex>
-            )}
-          </Flex>
-        </PageSection>
+        <Footer
+          shouldHideCta={shouldHideCta}
+          image={StormBunny}
+          userTradingInformation={userTradingInformation}
+          currentPhase={currentPhase}
+          account={account}
+          isCompetitionLive={isCompetitionLive}
+          hasCompetitionEnded={hasCompetitionEnded}
+          userCanClaimPrizes={userCanClaimPrizes}
+          finishedAndPrizesClaimed={finishedAndPrizesClaimed}
+          finishedAndNothingToClaim={finishedAndNothingToClaim}
+          profile={profile}
+          isLoading={isLoading}
+          onRegisterSuccess={onRegisterSuccess}
+          onClaimSuccess={onClaimSuccess}
+        />
       </CompetitionPage>
     </>
   )
