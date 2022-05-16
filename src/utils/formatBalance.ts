@@ -27,7 +27,8 @@ export const getFullDisplayBalance = (balance: BigNumber, decimals = 18, display
 }
 
 /**
- * Don't use this string value to convert back to number.
+ * Don't use the result to convert back to number.
+ * Languages have different decimal separators which results in inconsistency when converting back this result to number.
  */
 export const formatNumber = (number: number, minPrecision = 2, maxPrecision = 2) => {
   const options = {
