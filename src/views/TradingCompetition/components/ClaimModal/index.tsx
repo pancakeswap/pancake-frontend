@@ -28,8 +28,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
   const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
   const { t } = useTranslation()
 
-  const { userRewardGroup, userCakeRewards, userDarRewards, userPointReward, canClaimMysteryBox, canClaimNFT } =
-    userTradingInformation
+  const { userRewardGroup, userCakeRewards, userDarRewards, userPointReward, canClaimNFT } = userTradingInformation
   const { cakeReward, darReward } = useModCompetitionRewards({
     userCakeRewards,
     userDarRewards,
@@ -77,14 +76,6 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
             <Text mt="8px">{t('Collectible NFT')}</Text>
           </Flex>
         ) : null}
-        {/* {canClaimMysteryBox ? (
-          <Flex mt="8px" alignItems="center" flexDirection="column" width="100%">
-            <ImageWrapper>
-              <Image src={MoboxMysteryBox} width={78} height={56} />
-            </ImageWrapper>
-            <Text mt="8px">{t('Mystery Box')}</Text>
-          </Flex>
-        ) : null} */}
         {canClaimNFT ? (
           <Flex mt="8px" alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>
