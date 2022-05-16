@@ -15,6 +15,12 @@
     },
     "dev": {
       "cache": false
+    },
+    "format:check:staged": {
+      "cache": false
+    },
+    "typechain": {
+      "cache": false
     }
   }
 }
