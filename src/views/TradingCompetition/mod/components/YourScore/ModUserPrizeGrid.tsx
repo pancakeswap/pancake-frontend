@@ -3,7 +3,7 @@ import { useTranslation } from 'contexts/Localization'
 
 import styled from 'styled-components'
 import { getRewardGroupAchievements, useModCompetitionRewards } from '../../../helpers'
-import { UserMoDTradingInformationProps } from '../../../types'
+import { UserTradingInformation } from '../../../types'
 import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTable'
 import { modPrizes } from '../../../../../config/constants/trading-competition/prizes'
 import UserPrizeGridDollar from '../../../components/YourScore/UserPrizeGridDollar'
@@ -13,7 +13,7 @@ const StyledThead = styled.thead`
   border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
-const ModUserPrizeGrid: React.FC<{ userTradingInformation?: UserMoDTradingInformationProps }> = ({
+const ModUserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformation }> = ({
   userTradingInformation,
 }) => {
   const { t } = useTranslation()

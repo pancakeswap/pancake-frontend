@@ -36,7 +36,7 @@ import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
 import BattleCta from './components/BattleCta'
 import Rules from './components/Rules'
-import { UserMoDTradingInformationProps } from './types'
+import { UserTradingInformation } from './types'
 import { CompetitionPage, BannerFlex, BottomBunnyWrapper } from './styles'
 import RanksIcon from './svgs/RanksIcon'
 import ModBattleBanner from './mod/components/BattleBanner/ModBattleBanner'
@@ -57,7 +57,7 @@ const MoDCompetition = () => {
   const tradingCompetitionContract = useTradingCompetitionContractMoD(false)
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.REGISTRATION)
   const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
-  const [userTradingInformation, setUserTradingInformation] = useState<UserMoDTradingInformationProps>({
+  const [userTradingInformation, setUserTradingInformation] = useState<UserTradingInformation>({
     hasRegistered: false,
     isUserActive: false,
     hasUserClaimed: false,
@@ -107,7 +107,7 @@ const MoDCompetition = () => {
     const fetchUserContract = async () => {
       try {
         const user = await tradingCompetitionContract.claimInformation(account)
-        const userObject: UserMoDTradingInformationProps = {
+        const userObject: UserTradingInformation = {
           hasRegistered: user[0],
           isUserActive: user[1],
           hasUserClaimed: user[2],

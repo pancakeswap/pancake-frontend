@@ -2,8 +2,8 @@ import { ReactText } from 'react'
 import { Profile } from 'state/types'
 import { StaticImageData } from 'next/dist/client/image'
 
-export interface CompetitionProps<T> extends UserRewardsProps {
-  userTradingInformation?: T
+export interface CompetitionProps extends UserRewardsProps {
+  userTradingInformation?: UserTradingInformation
   currentPhase?: CompetitionPhaseProps
   account?: string
   profile?: Profile
@@ -87,23 +87,17 @@ export interface UserRewardsProps {
     pointsToClaim?: string
   }
 }
-export interface UserTradingInformationSharedProps {
+export interface UserTradingInformation {
   hasRegistered?: boolean
   isUserActive?: boolean
   hasUserClaimed?: boolean
   userRewardGroup?: string
   userCakeRewards?: string
   userPointReward?: string
-  canClaimNFT?: boolean
-}
-
-export interface UserMoboxTradingInformationProps extends UserTradingInformationSharedProps {
   userMoboxRewards?: string
-  canClaimMysteryBox?: boolean
-}
-
-export interface UserMoDTradingInformationProps extends UserTradingInformationSharedProps {
   userDarRewards?: string
+  canClaimMysteryBox?: boolean
+  canClaimNFT?: boolean
 }
 
 interface UserLeaderboardSharedInformation {
@@ -113,7 +107,7 @@ interface UserLeaderboardSharedInformation {
   // eslint-disable-next-line camelcase
   next_rank?: number
 }
-export interface YourScoreProps extends CompetitionProps<UserMoboxTradingInformationProps> {
+export interface YourScoreProps extends CompetitionProps {
   hasRegistered?: boolean
   userLeaderboardInformation?: UserLeaderboardSharedInformation & {
     moboxVolumeRank?: string
@@ -121,7 +115,7 @@ export interface YourScoreProps extends CompetitionProps<UserMoboxTradingInforma
   }
 }
 
-export interface MoDYourScoreProps extends CompetitionProps<UserMoDTradingInformationProps> {
+export interface MoDYourScoreProps extends CompetitionProps {
   hasRegistered?: boolean
   userLeaderboardInformation?: UserLeaderboardSharedInformation & {
     darVolumeRank?: string
