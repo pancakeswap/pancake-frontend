@@ -3,6 +3,7 @@ const { withSentryConfig } = require('@sentry/nextjs')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
+const withTM = require('next-transpile-modules')(['@pancakeswap/uikit'])
 
 const sentryWebpackPluginOptions =
   process.env.VERCEL_ENV === 'production'
@@ -114,4 +115,4 @@ const config = {
   },
 }
 
-module.exports = withBundleAnalyzer(withSentryConfig(config, sentryWebpackPluginOptions))
+module.exports = withBundleAnalyzer(withSentryConfig(withTM(config), sentryWebpackPluginOptions))
