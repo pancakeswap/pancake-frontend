@@ -26,6 +26,9 @@ export const getFullDisplayBalance = (balance: BigNumber, decimals = 18, display
   return getBalanceAmount(balance, decimals).toFixed(displayDecimals)
 }
 
+/**
+ * Don't use this string value to convert back to number.
+ */
 export const formatNumber = (number: number, minPrecision = 2, maxPrecision = 2) => {
   const options = {
     minimumFractionDigits: minPrecision,
