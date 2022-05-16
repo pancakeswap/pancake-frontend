@@ -370,7 +370,9 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
           )}
           {oneHundredPercentOfBalance >= 1 && (
             <NumTicketsToBuyButton onClick={() => handleNumberButtonClick(oneHundredPercentOfBalance)}>
-              MAX
+              <Text small color="currentColor" textTransform="uppercase">
+                {t('Max')}
+              </Text>
             </NumTicketsToBuyButton>
           )}
         </ShortcutButtonsWrapper>
