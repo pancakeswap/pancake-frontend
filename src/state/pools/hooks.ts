@@ -96,12 +96,21 @@ export const useFetchIfo = () => {
 
   useFastRefreshEffect(() => {
     batch(() => {
+      dispatch(fetchCakeVaultPublicData())
       dispatch(fetchIfoPublicDataAsync())
       if (account) {
+        dispatch(fetchPoolsUserDataAsync(account))
+        dispatch(fetchCakeVaultUserData({ account }))
         dispatch(fetchUserIfoCreditDataAsync(account))
       }
     })
   }, [dispatch, account])
+
+  useEffect(() => {
+    batch(() => {
+      dispatch(fetchCakeVaultFees())
+    })
+  }, [dispatch])
 }
 
 export const useCakeVault = () => {
