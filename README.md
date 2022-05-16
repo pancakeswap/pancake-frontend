@@ -26,3 +26,4 @@ So, you'll find out different ways to connect your blockchain wallets, but now s
 - **Demo video**: https://youtu.be/26wT_vkCYMM
 - **Contact**: `Emmanuel Kiametis - ekiametis.servicos@gmail.com`
 - **Discord ID**: `ekiametis91#3383`
+- **PR related**: https://github.com/pancakeswap/pancake-frontend/pull/3927
