@@ -2,8 +2,8 @@ import { ReactText } from 'react'
 import { Profile } from 'state/types'
 import { StaticImageData } from 'next/dist/client/image'
 
-export interface CompetitionProps extends UserRewardsProps {
-  userTradingInformation?: UserTradingInformationProps
+export interface CompetitionProps<T> extends UserRewardsProps {
+  userTradingInformation?: T
   currentPhase?: CompetitionPhaseProps
   account?: string
   profile?: Profile
@@ -87,28 +87,44 @@ export interface UserRewardsProps {
     pointsToClaim?: string
   }
 }
-
-export interface UserTradingInformationProps {
+export interface UserTradingInformationSharedProps {
   hasRegistered?: boolean
   isUserActive?: boolean
   hasUserClaimed?: boolean
   userRewardGroup?: string
   userCakeRewards?: string
-  userMoboxRewards?: string
   userPointReward?: string
-  canClaimMysteryBox?: boolean
   canClaimNFT?: boolean
 }
 
-export interface YourScoreProps extends CompetitionProps {
+export interface UserMoboxTradingInformationProps extends UserTradingInformationSharedProps {
+  userMoboxRewards?: string
+  canClaimMysteryBox?: boolean
+}
+
+export interface UserMoDTradingInformationProps extends UserTradingInformationSharedProps {
+  userDarRewards?: string
+}
+
+interface UserLeaderboardSharedInformation {
+  global?: ReactText
+  team?: ReactText
+  volume?: number
+  // eslint-disable-next-line camelcase
+  next_rank?: number
+}
+export interface YourScoreProps extends CompetitionProps<UserMoboxTradingInformationProps> {
   hasRegistered?: boolean
-  userLeaderboardInformation?: {
-    global?: ReactText
-    team?: ReactText
-    volume?: number
-    // eslint-disable-next-line camelcase
-    next_rank?: number
+  userLeaderboardInformation?: UserLeaderboardSharedInformation & {
     moboxVolumeRank?: string
     moboxVolume?: string
+  }
+}
+
+export interface MoDYourScoreProps extends CompetitionProps<UserMoDTradingInformationProps> {
+  hasRegistered?: boolean
+  userLeaderboardInformation?: UserLeaderboardSharedInformation & {
+    darVolumeRank?: string
+    darVolume?: string
   }
 }
