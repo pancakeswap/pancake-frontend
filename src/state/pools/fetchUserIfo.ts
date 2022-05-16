@@ -1,37 +1,23 @@
 import BigNumber from 'bignumber.js'
-import { getICakeAddress } from 'utils/addressHelpers'
-import iCakeAbi from 'config/abi/iCake.json'
-import { multicallv2 } from 'utils/multicall'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { getIfoCreditAddressContract } from 'utils/contractHelpers'
 
 export const fetchPublicIfoData = async () => {
   try {
-    const calls = [
-      {
-        address: getICakeAddress(),
-        name: 'ceiling',
-      },
-    ]
-
-    const [ceilingResponse] = await multicallv2(iCakeAbi, calls)
-    return new BigNumber(ceilingResponse.toString()).toJSON()
+    const ifoCreditAddressContract = getIfoCreditAddressContract()
+    const ceiling = await ifoCreditAddressContract.ceiling()
+    return new BigNumber(ceiling.toString()).toJSON()
   } catch (error) {
-    return null
+    return BIG_ZERO.toJSON()
   }
 }
 
 export const fetchUserIfoCredit = async (account: string) => {
   try {
-    const calls = [
-      {
-        address: getICakeAddress(),
-        name: 'getUserCredit',
-        params: [account],
-      },
-    ]
-
-    const [creditResponse] = await multicallv2(iCakeAbi, calls)
-    return new BigNumber(creditResponse.toString()).toJSON()
+    const ifoCreditAddressContract = getIfoCreditAddressContract()
+    const credit = await ifoCreditAddressContract.getUserCredit(account)
+    return new BigNumber(credit.toString()).toJSON()
   } catch (error) {
-    return null
+    return BIG_ZERO.toJSON()
   }
 }
