@@ -98,12 +98,13 @@ export const useModCompetitionRewards = ({
   const cakeAsBigNumber = new BigNumber(userCakeRewards as string)
   const darAsBigNumber = new BigNumber(userDarRewards as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
-  const darBalance = getBalanceNumber(darAsBigNumber)
+  const darBalance = getBalanceNumber(darAsBigNumber, tokens.dar.decimals)
   const cakePriceBusd = useCakeBusdPrice()
 
   const dollarValueOfTokensReward =
     cakePriceBusd && darPriceBUSD
-      ? multiplyPriceByAmount(cakePriceBusd, cakeBalance) + multiplyPriceByAmount(darPriceBUSD, darBalance, 8)
+      ? multiplyPriceByAmount(cakePriceBusd, cakeBalance) +
+        multiplyPriceByAmount(darPriceBUSD, darBalance, tokens.dar.decimals)
       : null
 
   return {
