@@ -7,9 +7,10 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "turbo run dev --parallel",
-    "format:check:staged": "turbo run format:check:staged --parallel",
-    "postinstall": "turbo run typechain"
+    "dev": "turbo run dev --filter=web",
+    "build": "turbo run build --filter=web",
+    "format:check:staged": "turbo run format:check:staged --filter=web",
+    "postinstall": "turbo run typechain --filter=web"
   },
   "browserslist": {
     "production": [
