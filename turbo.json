@@ -21,6 +21,9 @@
     },
     "typechain": {
       "cache": false
+    },
+    "updateLPsAPR": {
+      "cache": false
     }
   }
 }

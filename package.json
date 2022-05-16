@@ -10,7 +10,8 @@
     "dev": "turbo run dev --filter=web",
     "build": "turbo run build --filter=web",
     "format:check:staged": "turbo run format:check:staged --filter=web",
-    "postinstall": "turbo run typechain --filter=web"
+    "postinstall": "turbo run typechain --filter=web",
+    "updateLPsAPR": "turbo run updateLPsAPR --filter=web"
   },
   "browserslist": {
     "production": [
