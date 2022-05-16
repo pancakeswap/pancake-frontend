@@ -56,7 +56,7 @@ const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; 
   const unlimitedToolipContent =
     ifo.version === 3.1
       ? t(
-          'For the public sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+          'For the public sale, Max CAKE entry is capped by the number of iCAKE. Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale.',
         )
       : t(
           'For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',

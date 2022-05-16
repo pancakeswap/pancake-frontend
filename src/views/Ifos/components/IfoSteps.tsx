@@ -94,7 +94,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
     <CardBody>
       {tooltipVisible && tooltip}
       <Heading as="h4" color="secondary" mb="16px">
-        {t('Stake CAKE in IFO pool')}
+        {t('Lock CAKE in the CAKE pool')}
       </Heading>
       <Box>
         <Text mb="4px" color="textSubtle" small>

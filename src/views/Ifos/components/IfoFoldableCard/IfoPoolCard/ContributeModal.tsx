@@ -148,7 +148,7 @@ const ContributeModal: React.FC<Props> = ({
   )
 
   const unlimitedToolipContent = t(
-    'For the public sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+    'For the public sale, Max CAKE entry is capped by the number of iCAKE. Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale.',
   )
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
