@@ -14,14 +14,16 @@ export const fetchPublicVaultData = async (cakeVaultAddress = cakeVaultV2) => {
       name: method,
     }))
 
-    const [[sharePrice], [shares], totalLockedAmount] = await multicallv2(cakeVaultAbi, calls, {
-      requireSuccess: false,
-    })
+    const [[[sharePrice], [shares], totalLockedAmount], totalCakeInVault] = await Promise.all([
+      multicallv2(cakeVaultAbi, calls, {
+        requireSuccess: false,
+      }),
+      cakeContract.balanceOf(cakeVaultV2),
+    ])
 
     const totalSharesAsBigNumber = shares ? new BigNumber(shares.toString()) : BIG_ZERO
     const totalLockedAmountAsBigNumber = totalLockedAmount ? new BigNumber(totalLockedAmount[0].toString()) : BIG_ZERO
     const sharePriceAsBigNumber = sharePrice ? new BigNumber(sharePrice.toString()) : BIG_ZERO
-    const totalCakeInVault = await cakeContract.balanceOf(cakeVaultV2)
     return {
       totalShares: totalSharesAsBigNumber.toJSON(),
       totalLockedAmount: totalLockedAmountAsBigNumber.toJSON(),

@@ -71,6 +71,7 @@ interface FarmConfigBaseProps {
   lpAddresses: Address
   multiplier?: string
   isCommunity?: boolean
+  auctionHostingEndDate?: string
   dual?: {
     rewardPerBlock: number
     earnLabel: string

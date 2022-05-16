@@ -1,8 +1,8 @@
-import { Flex, Heading, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
-import Image from 'next/image'
 import styled from 'styled-components'
-import FlipperBunny from '../../pngs/MoD-flipper.png'
+import { Flex, Text, Heading, NftIcon, BunnyPlaceholderIcon } from '@pancakeswap/uikit'
+import Image from 'next/image'
+import { useTranslation } from 'contexts/Localization'
+import MoboxFlipperBunny from '../../../pngs/mobox-flipper.png'
 
 const StyledFlex = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.md} {
@@ -11,7 +11,7 @@ const StyledFlex = styled(Flex)`
 `
 
 const ImageWrapper = styled.div`
-  width: 270px;
+  width: 200px;
   margin: 40px auto 0;
   display: none;
   ${({ theme }) => theme.mediaQueries.md} {
@@ -19,7 +19,7 @@ const ImageWrapper = styled.div`
   }
 `
 
-const PrizesText = () => {
+const MoboxPrizesText = () => {
   const { t } = useTranslation()
 
   return (
@@ -33,10 +33,10 @@ const PrizesText = () => {
           'The final winning team will be the team with the highest total volume score at the end of the competition period.',
         )}
       </Text>
-      <Text mt="10px">{t('In addition to token prizes there are NFT rewards:')}</Text>
-      <Text>A. {t('300 newly-designed PancakeSwap NFTs to the Top 100 Traders in each team.')}</Text>
-      <Text>B. {t('100 Mines of Dalarnia NFTs to the Top 100 Traders ranked by the $DAR Trading Volume.')}</Text>
-      {/* <Flex>
+      <Text mt="8px">
+        {t('In addition to token prizes there are NFT rewards (estimated worth of ~$40,000 at the time of writing):')}
+      </Text>
+      <Flex>
         <NftIcon width="32px" mr="16px" color="textSubtle" />
         <Text mt="8px">
           {t(
@@ -47,12 +47,12 @@ const PrizesText = () => {
       <Flex>
         <BunnyPlaceholderIcon width="32px" mr="16px" />
         <Text mt="8px">{t('500 Mobox mystery boxes to the top 500 traders ranked by the MBOX trading volume.')}</Text>
-      </Flex> */}
+      </Flex>
       <ImageWrapper>
-        <Image src={FlipperBunny} alt="Flipper bunny" width={270} height={293} />
+        <Image src={MoboxFlipperBunny} alt="Flipper bunny" width={220} height={254} />
       </ImageWrapper>
     </StyledFlex>
   )
 }
 
-export default PrizesText
+export default MoboxPrizesText

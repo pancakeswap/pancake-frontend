@@ -3,12 +3,12 @@ import Image from 'next/image'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
-import AllBunniesImage from '../../pngs/MoD-hero-bunnies.png'
-import { Heading1Text, Heading2Text } from '../CompetitionHeadingText'
-import { MoDLogo } from '../../svgs'
-import meshImg from '../../pngs/mod-mesh.png'
-import textBgLightImg from '../../pngs/mod-text-light.png'
-import bgShineImg from '../../pngs/MoD-bg-shine.png'
+import AllBunniesImage from '../../../pngs/MoD-hero-bunnies.png'
+import meshImg from '../../../pngs/mod-mesh.png'
+import textBgLightImg from '../../../pngs/mod-text-light.png'
+import bgShineImg from '../../../pngs/MoD-bg-shine.png'
+import { Heading1Text, Heading2Text } from '../../../components/CompetitionHeadingText'
+import { MoDLogo } from '../../../svgs'
 
 const TextStyles = (theme) => `
   text-align: center;
@@ -126,7 +126,7 @@ const StyledHeading = styled(Heading)`
   text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.25), 0px 0px 18px rgba(161, 101, 194, 0.88), 0px 0px 49px rgba(161, 0, 255, 0.55);
 `
 
-const BattleBanner = () => {
+const ModBattleBanner = () => {
   const {
     t,
     currentLanguage: { locale },
@@ -171,4 +171,4 @@ const BattleBanner = () => {
   )
 }
 
-export default BattleBanner
+export default ModBattleBanner

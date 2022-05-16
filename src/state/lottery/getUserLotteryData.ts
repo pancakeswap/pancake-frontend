@@ -128,8 +128,10 @@ const getUserLotteryData = async (account: string, currentLotteryId: string): Pr
   const roundDataAndUserTickets = await fetchUserTicketsForMultipleRounds(idsForTicketsNodeCall, account)
   const userRoundsNodeData = roundDataAndUserTickets.filter((round) => round.userTickets.length > 0)
   const idsForLotteriesNodeCall = userRoundsNodeData.map((round) => round.roundId)
-  const lotteriesNodeData = await fetchMultipleLotteries(idsForLotteriesNodeCall)
-  const graphResponse = await getGraphLotteryUser(account)
+  const [lotteriesNodeData, graphResponse] = await Promise.all([
+    fetchMultipleLotteries(idsForLotteriesNodeCall),
+    getGraphLotteryUser(account),
+  ])
   const mergedRoundData = applyNodeDataToUserGraphResponse(userRoundsNodeData, graphResponse.rounds, lotteriesNodeData)
   const graphResponseWithNodeRounds = { ...graphResponse, rounds: mergedRoundData }
   return graphResponseWithNodeRounds
