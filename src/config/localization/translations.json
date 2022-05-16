@@ -1466,7 +1466,6 @@
   "Please note that this is the old BTT token, which has been swapped to the new BTT tokens in the following ratio:": "Please note that this is the old BTT token, which has been swapped to the new BTT tokens in the following ratio:",
   "This pool was misconfigured. Please unstake your tokens from it, emergencyWithdraw method will be used. Your tokens will be returned to your wallet, however rewards will not be harvested.": "This pool was misconfigured. Please unstake your tokens from it, emergencyWithdraw method will be used. Your tokens will be returned to your wallet, however rewards will not be harvested.",
   "For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.",
-  "For the public sale, Max CAKE entry is capped by the number of iCAKE. Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale.": "For the public sale, Max CAKE entry is capped by the number of iCAKE. Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale.",
   "Meet any one of the following requirements to be eligible.": "Meet any one of the following requirements to be eligible.",
   "You are eligible to participate in this Private Sale!": "You are eligible to participate in this Private Sale!",
   "Meet any one of the requirements to join:": "Meet any one of the requirements to join:",
@@ -1696,5 +1695,8 @@
   "Mobox Trading Competition": "Mobox Trading Competition",
   "$80,000 in Prizes with Tokens and NFTs!": "$80,000 in Prizes with Tokens and NFTs!",
   "In addition to token prizes there are NFT rewards (estimated worth of ~$40,000 at the time of writing):": "In addition to token prizes there are NFT rewards (estimated worth of ~$40,000 at the time of writing):",
-  "Auction Hosting Ends": "Auction Hosting Ends"
+  "Auction Hosting Ends": "Auction Hosting Ends",
+  "For the public sale, Max CAKE entry is capped by": "For the public sale, Max CAKE entry is capped by",
+  "the number of iCAKE.": "the number of iCAKE.",
+  "Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale.": "Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale."
 }

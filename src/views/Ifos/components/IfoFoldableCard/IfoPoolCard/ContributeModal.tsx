@@ -147,8 +147,16 @@ const ContributeModal: React.FC<Props> = ({
     'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
   )
 
-  const unlimitedToolipContent = t(
-    'For the public sale, Max CAKE entry is capped by the number of iCAKE. Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale.',
+  const unlimitedToolipContent = (
+    <Box>
+      <Text display="inline">{t('For the public sale, Max CAKE entry is capped by')} </Text>
+      <Text bold display="inline">
+        {t('the number of iCAKE.')}{' '}
+      </Text>
+      <Text display="inline">
+        {t('Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale.')}
+      </Text>
+    </Box>
   )
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
