@@ -14,5 +14,10 @@ yarn-debug.log*
 yarn-error.log*
 debug.log*
 
+
 # turbo
 .turbo
+
+build/**
+dist/**
+.next/**
