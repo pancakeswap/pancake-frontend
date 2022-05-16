@@ -19,7 +19,10 @@ export interface EarnedProps {
 }
 
 const Earned: React.FC<EarnedProps> = ({ earnings }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
   const labelText = t('%asset% Earned', { asset: 'CAKE' })
 
@@ -31,7 +34,7 @@ const Earned: React.FC<EarnedProps> = ({ earnings }) => {
         </Text>
         <Flex mt="4px">
           <Text fontSize={isMobile ? '14px' : '16px'} color={earnings > 0 ? 'text' : 'textDisabled'}>
-            {earnings.toLocaleString()}
+            {earnings.toLocaleString(locale)}
           </Text>
         </Flex>
       </CellContent>

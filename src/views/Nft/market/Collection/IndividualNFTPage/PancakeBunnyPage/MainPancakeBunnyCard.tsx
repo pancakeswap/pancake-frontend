@@ -22,7 +22,10 @@ const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
   nothingForSaleBunny,
   onSuccessSale,
 }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
   const { account } = useWeb3React()
 
@@ -74,10 +77,10 @@ const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
                   <Flex alignItems="center" mt="8px">
                     <BinanceIcon width={18} height={18} mr="4px" />
                     <Text fontSize="24px" bold mr="4px">
-                      {formatNumber(parseFloat(nftToDisplay?.marketData?.currentAskPrice), 0, 5)}
+                      {formatNumber(parseFloat(nftToDisplay?.marketData?.currentAskPrice), 0, 5, locale)}
                     </Text>
                     {bnbBusdPrice ? (
-                      <Text color="textSubtle">{`(~${priceInUsd.toLocaleString(undefined, {
+                      <Text color="textSubtle">{`(~${priceInUsd.toLocaleString(locale, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })} USD)`}</Text>

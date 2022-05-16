@@ -10,7 +10,10 @@ import useProfileCreation from './contexts/hook'
 
 const Team: React.FC = () => {
   const { teamId: currentTeamId, actions } = useProfileCreation()
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { data: teams } = useSWR('teams', async () => getTeams())
   const teamValues = useMemo(() => (teams ? shuffle(Object.values(teams)) : []), [teams])
   const handleTeamSelection = (value: string) => actions.setTeamId(parseInt(value, 10))
@@ -51,7 +54,7 @@ const Team: React.FC = () => {
                   <Text bold>{team.name}</Text>
                   <Flex>
                     <CommunityIcon mr="8px" />
-                    <Text>{team.users.toLocaleString()}</Text>
+                    <Text>{team.users.toLocaleString(locale)}</Text>
                   </Flex>
                 </SelectionCard>
               )

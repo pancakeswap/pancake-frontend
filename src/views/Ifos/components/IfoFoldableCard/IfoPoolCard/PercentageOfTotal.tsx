@@ -8,9 +8,12 @@ interface PercentageOfTotalProps extends TextProps {
 }
 
 const PercentageOfTotal: React.FC<PercentageOfTotalProps> = ({ userAmount, totalAmount, ...props }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const percentOfUserContribution = totalAmount.isGreaterThan(0) ? userAmount.div(totalAmount).times(100).toNumber() : 0
-  const percentOfUserDisplay = percentOfUserContribution.toLocaleString(undefined, { maximumFractionDigits: 5 })
+  const percentOfUserDisplay = percentOfUserContribution.toLocaleString(locale, { maximumFractionDigits: 5 })
 
   return (
     <Text fontSize="14px" color="textSubtle" {...props}>

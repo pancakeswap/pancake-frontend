@@ -1,7 +1,11 @@
 import { Flex, BinanceIcon, Text, Skeleton } from '@pancakeswap/uikit'
 import { multiplyPriceByAmount } from 'utils/prices'
+import { useTranslation } from 'contexts/Localization'
 
 const ActivityPrice = ({ bnbBusdPrice, price }) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, price)
 
   return (
@@ -11,7 +15,7 @@ const ActivityPrice = ({ bnbBusdPrice, price }) => {
           <Flex justifySelf="flex-start" alignItems="center">
             <BinanceIcon width="12px" height="12px" mr="4px" />
             <Text maxWidth="80px" bold>
-              {price.toLocaleString(undefined, {
+              {price.toLocaleString(locale, {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 5,
               })}
@@ -19,7 +23,7 @@ const ActivityPrice = ({ bnbBusdPrice, price }) => {
           </Flex>
           {priceInUsd ? (
             <Text fontSize="12px" color="textSubtle">
-              {`(~$${priceInUsd.toLocaleString(undefined, {
+              {`(~$${priceInUsd.toLocaleString(locale, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })})`}

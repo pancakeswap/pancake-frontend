@@ -19,7 +19,10 @@ interface PreviousBetsTableProps {
 const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5, account, token, api }) => {
   const [isFetching, setIsFetching] = useState(false)
   const [bets, setBets] = useState<Bet[]>([])
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const orderedBets = orderBy(bets, ['round.epoch'], ['desc'])
 
   useEffect(() => {
@@ -75,7 +78,7 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
               return (
                 <tr key={bet.id}>
                   <Td textAlign="center" fontWeight="bold">
-                    {bet.round.epoch.toLocaleString()}
+                    {bet.round.epoch.toLocaleString(locale)}
                   </Td>
                   <Td textAlign="center">
                     <PositionLabel position={bet.position} />

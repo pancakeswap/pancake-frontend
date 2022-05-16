@@ -71,7 +71,10 @@ const getNewSortDirection = (oldSortField: string, newSortField: string, oldSort
 }
 
 const Collectible = () => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { data: shuffledCollections } = useGetShuffledCollections()
   const { isMobile } = useMatchBreakpointsContext()
   const [sortField, setSortField] = useState(null)
@@ -270,7 +273,7 @@ const Collectible = () => {
                     {sortedCollections
                       .map((collection) => {
                         const volume = collection.totalVolumeBNB
-                          ? parseFloat(collection.totalVolumeBNB).toLocaleString(undefined, {
+                          ? parseFloat(collection.totalVolumeBNB).toLocaleString(locale, {
                               minimumFractionDigits: 3,
                               maximumFractionDigits: 3,
                             })
@@ -293,14 +296,14 @@ const Collectible = () => {
                             </Td>
                             <Td>
                               {collection.lowestPrice ? (
-                                collection.lowestPrice.toLocaleString(undefined, { maximumFractionDigits: 5 })
+                                collection.lowestPrice.toLocaleString(locale, { maximumFractionDigits: 5 })
                               ) : (
                                 <Skeleton width={36} height={20} />
                               )}
                             </Td>
                             <Td>
                               {collection.highestPrice ? (
-                                collection.highestPrice.toLocaleString(undefined, { maximumFractionDigits: 5 })
+                                collection.highestPrice.toLocaleString(locale, { maximumFractionDigits: 5 })
                               ) : (
                                 <Skeleton width={36} height={20} />
                               )}

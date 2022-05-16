@@ -33,7 +33,10 @@ const parseVotePower = (incomingVote: Vote) => {
 
 const Votes: React.FC<VotesProps> = ({ votes, votesLoadingStatus, totalVotes }) => {
   const [showAll, setShowAll] = useState(false)
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { account } = useWeb3React()
   const orderedVotes = orderBy(votes, [parseVotePower, 'created'], ['desc', 'desc'])
   const displayVotes = showAll ? orderedVotes : orderedVotes.slice(0, VOTES_PER_VIEW)
@@ -48,7 +51,7 @@ const Votes: React.FC<VotesProps> = ({ votes, votesLoadingStatus, totalVotes }) 
       <CardHeader>
         <Flex alignItems="center" justifyContent="space-between">
           <Heading as="h3" scale="md">
-            {t('Votes (%count%)', { count: totalVotes ? totalVotes.toLocaleString() : '-' })}
+            {t('Votes (%count%)', { count: totalVotes ? totalVotes.toLocaleString(locale) : '-' })}
           </Heading>
           {!isFetched && <AutoRenewIcon spin width="22px" />}
         </Flex>

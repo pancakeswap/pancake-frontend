@@ -22,7 +22,10 @@ const LongTextContainer = styled(Text)`
 `
 
 const DetailsCard: React.FC<DetailsCardProps> = ({ contractAddress, ipfsJson, count, rarity }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const ipfsLink = ipfsJson ? uriToHttp(ipfsJson)[0] : null
   const content = (
@@ -50,7 +53,7 @@ const DetailsCard: React.FC<DetailsCardProps> = ({ contractAddress, ipfsJson, co
           <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
             {t('Supply Count')}
           </Text>
-          <LongTextContainer bold>{formatNumber(count, 0, 0)}</LongTextContainer>
+          <LongTextContainer bold>{formatNumber(count, 0, 0, locale)}</LongTextContainer>
         </Flex>
       )}
       {rarity && (
@@ -58,7 +61,7 @@ const DetailsCard: React.FC<DetailsCardProps> = ({ contractAddress, ipfsJson, co
           <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
             {t('Rarity')}
           </Text>
-          <LongTextContainer bold>{`${formatNumber(rarity, 0, 2)}%`}</LongTextContainer>
+          <LongTextContainer bold>{`${formatNumber(rarity, 0, 2, locale)}%`}</LongTextContainer>
         </Flex>
       )}
     </Box>

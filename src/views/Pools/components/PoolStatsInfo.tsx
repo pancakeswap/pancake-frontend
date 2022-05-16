@@ -27,7 +27,10 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
   showTotalStaked = true,
   alignLinksToRight = true,
 }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const currentBlock = useCurrentBlock()
 
   const {
@@ -71,7 +74,7 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
             {profileRequirement.required && t('Pancake Profile')}{' '}
             {profileRequirement.thresholdPoints.gt(0) && (
               <Text small>
-                {profileRequirement.thresholdPoints.toNumber().toLocaleString()} {t('Profile Points')}
+                {profileRequirement.thresholdPoints.toNumber().toLocaleString(locale)} {t('Profile Points')}
               </Text>
             )}
           </Text>

@@ -27,17 +27,23 @@ interface BNBAmountLabelProps extends FlexProps {
   amount: number
 }
 
-export const BNBAmountLabel: React.FC<BNBAmountLabelProps> = ({ amount, ...props }) => (
-  <Flex alignItems="center" {...props}>
-    <BinanceIcon width="16px" mx="4px" />
-    <Text fontWeight="600">
-      {amount.toLocaleString(undefined, {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 5,
-      })}
-    </Text>
-  </Flex>
-)
+export const BNBAmountLabel: React.FC<BNBAmountLabelProps> = ({ amount, ...props }) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
+
+  return (
+    <Flex alignItems="center" {...props}>
+      <BinanceIcon width="16px" mx="4px" />
+      <Text fontWeight="600">
+        {amount.toLocaleString(locale, {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 5,
+        })}
+      </Text>
+    </Flex>
+  )
+}
 
 interface CostLabelProps extends FlexProps {
   cost: number
@@ -45,12 +51,15 @@ interface CostLabelProps extends FlexProps {
 }
 
 export const CostLabel: React.FC<CostLabelProps> = ({ cost, bnbBusdPrice, ...props }) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, cost)
 
   return (
     <Flex alignItems="center" {...props}>
       {priceInUsd > 0 && (
-        <Text fontSize="12px" color="textSubtle">{`($${priceInUsd.toLocaleString(undefined, {
+        <Text fontSize="12px" color="textSubtle">{`($${priceInUsd.toLocaleString(locale, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         })})`}</Text>

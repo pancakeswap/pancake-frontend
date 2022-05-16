@@ -45,7 +45,10 @@ const CollectModal: React.FC<CollectModalProps> = ({
   isCompoundPool = false,
   onDismiss,
 }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { theme } = useTheme()
   const { toastSuccess } = useToast()
   const { account } = useWeb3React()
@@ -123,7 +126,7 @@ const CollectModal: React.FC<CollectModalProps> = ({
             {formattedBalance} {earningToken.symbol}
           </Heading>
           {earningsDollarValue > 0 && (
-            <Text fontSize="12px" color="textSubtle">{`~${formatNumber(earningsDollarValue)} USD`}</Text>
+            <Text fontSize="12px" color="textSubtle">{`~${formatNumber(earningsDollarValue, 2, 2, locale)} USD`}</Text>
           )}
         </Flex>
       </Flex>

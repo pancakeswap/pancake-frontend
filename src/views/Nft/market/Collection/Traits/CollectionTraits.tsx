@@ -18,7 +18,10 @@ interface CollectionTraitsProps {
 const CollectionTraits: React.FC<CollectionTraitsProps> = ({ collectionAddress }) => {
   const { data, isFetching } = useGetCollectionDistribution(collectionAddress)
   const [raritySort, setRaritySort] = useState<Record<string, SortType>>({})
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
 
   if (isFetching) {
     return (
@@ -112,8 +115,8 @@ const CollectionTraits: React.FC<CollectionTraitsProps> = ({ collectionAddress }
                       return (
                         <tr key={value}>
                           <Td>{capitalize(value)}</Td>
-                          <Td textAlign="center">{formatNumber(count, 0, 0)}</Td>
-                          <Td textAlign="center">{`${formatNumber(rarity, 0, 2)}%`}</Td>
+                          <Td textAlign="center">{formatNumber(count, 0, 0, locale)}</Td>
+                          <Td textAlign="center">{`${formatNumber(rarity, 0, 2, locale)}%`}</Td>
                         </tr>
                       )
                     })}

@@ -87,7 +87,10 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
       balance: { cakeAsBigNumber, cakeAsNumberBalance },
     },
   } = useVaultPoolByKey(pool.vaultKey)
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { theme } = useTheme()
   const { toastSuccess } = useToast()
   const [stakeAmount, setStakeAmount] = useState('')
@@ -96,7 +99,8 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   const { hasUnstakingFee } = useWithdrawalFeeTimer(parseInt(lastDepositedTime, 10), userShares)
   const cakePriceBusd = usePriceCakeBusd()
   const usdValueStaked = new BigNumber(stakeAmount).times(cakePriceBusd)
-  const formattedUsdValueStaked = cakePriceBusd.gt(0) && stakeAmount ? formatNumber(usdValueStaked.toNumber()) : ''
+  const formattedUsdValueStaked =
+    cakePriceBusd.gt(0) && stakeAmount ? formatNumber(usdValueStaked.toNumber(), 2, 2, locale) : ''
 
   const { flexibleApy } = useVaultApy()
 
@@ -113,7 +117,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   })
 
   const annualRoi = interestBreakdown[3] * pool.earningTokenPrice
-  const formattedAnnualRoi = formatNumber(annualRoi, annualRoi > 10000 ? 0 : 2, annualRoi > 10000 ? 0 : 2)
+  const formattedAnnualRoi = formatNumber(annualRoi, annualRoi > 10000 ? 0 : 2, annualRoi > 10000 ? 0 : 2, locale)
 
   const getTokenLink = stakingToken.address ? `/swap?outputCurrency=${stakingToken.address}` : '/swap'
   const convertedStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)

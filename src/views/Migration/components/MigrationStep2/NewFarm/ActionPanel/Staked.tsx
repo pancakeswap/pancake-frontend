@@ -21,12 +21,15 @@ interface StakedProps {
 }
 
 const Staked: React.FC<StakedProps> = ({ earned, farm }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { earnings } = earned
   const earningsBigNumber = new BigNumber(earnings)
   const cakePrice = usePriceCakeBusd()
   let earningsBusd = 0
-  let displayBalance = earnings.toLocaleString()
+  let displayBalance = earnings.toLocaleString(locale)
 
   // If user didn't connect wallet default balance will be 0
   if (!earningsBigNumber.isZero()) {

@@ -35,7 +35,10 @@ const ProfileHeader: React.FC<HeaderProps> = ({
   isProfileLoading,
   onSuccess,
 }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { account } = useWeb3React()
   const [onEditProfileModal] = useModal(
     <EditProfileModal
@@ -49,11 +52,11 @@ const ProfileHeader: React.FC<HeaderProps> = ({
   )
 
   const isConnectedAccount = account?.toLowerCase() === accountPath?.toLowerCase()
-  const numNftCollected = !isNftLoading ? (nftCollected ? formatNumber(nftCollected, 0, 0) : '-') : null
-  const numPoints = !isProfileLoading ? (profile?.points ? formatNumber(profile.points, 0, 0) : '-') : null
+  const numNftCollected = !isNftLoading ? (nftCollected ? formatNumber(nftCollected, 0, 0, locale) : '-') : null
+  const numPoints = !isProfileLoading ? (profile?.points ? formatNumber(profile.points, 0, 0, locale) : '-') : null
   const numAchievements = !isAchievementsLoading
     ? achievements?.length
-      ? formatNumber(achievements.length, 0, 0)
+      ? formatNumber(achievements.length, 0, 0, locale)
       : '-'
     : null
 

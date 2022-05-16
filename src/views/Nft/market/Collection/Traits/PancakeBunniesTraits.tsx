@@ -40,7 +40,10 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
   const [raritySort, setRaritySort] = useState<SortType>('asc')
   const collection = useGetCollection(collectionAddress)
   const totalBunnyCount = Number(collection?.totalSupply)
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { data: distributionData, isFetching: isFetchingDistribution } = useGetCollectionDistributionPB()
   const { push } = useRouter()
 
@@ -95,8 +98,8 @@ const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionA
                       <Td>
                         <NftName thumbnailSrc={token.image.thumbnail} name={token.name} />
                       </Td>
-                      <Td textAlign="center">{formatNumber(count, 0, 0)}</Td>
-                      <Td textAlign="center">{`${formatNumber(percentage, 0, 2)}%`}</Td>
+                      <Td textAlign="center">{formatNumber(count, 0, 0, locale)}</Td>
+                      <Td textAlign="center">{`${formatNumber(percentage, 0, 2, locale)}%`}</Td>
                       <Td textAlign="right" width="100px">
                         <LowestPriceCell bunnyId={token.tokenId} />
                       </Td>

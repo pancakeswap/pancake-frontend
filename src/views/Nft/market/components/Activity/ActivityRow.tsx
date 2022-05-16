@@ -10,6 +10,7 @@ import {
   Skeleton,
   useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
+import { useTranslation } from 'contexts/Localization'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Activity, NftToken } from 'state/nftMarket/types'
 import { Price } from '@pancakeswap/sdk'
@@ -37,11 +38,14 @@ const ActivityRow: React.FC<ActivityRowProps> = ({
   isUserActivity = false,
   isNftActivity = false,
 }) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const { isXs, isSm } = useMatchBreakpointsContext()
   const priceAsFloat = parseFloat(activity.price)
   const timestampAsMs = parseFloat(activity.timestamp) * 1000
-  const localeTimestamp = new Date(timestampAsMs).toLocaleString(undefined, {
+  const localeTimestamp = new Date(timestampAsMs).toLocaleString(locale, {
     year: 'numeric',
     month: 'numeric',
     day: 'numeric',

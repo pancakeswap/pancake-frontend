@@ -9,7 +9,10 @@ export function ProfileRequirementWarning({
 }: {
   profileRequirement: DeserializedPool['profileRequirement']
 }) {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { notMeetRequired, notMeetThreshold } = useProfileRequirement(profileRequirement)
   return (
     <Message variant="warning">
@@ -18,13 +21,13 @@ export function ProfileRequirementWarning({
           {notMeetRequired &&
             notMeetThreshold &&
             t('This pool requires active Pancake Profile and %amount% profile points.', {
-              amount: profileRequirement.thresholdPoints.toNumber().toLocaleString(),
+              amount: profileRequirement.thresholdPoints.toNumber().toLocaleString(locale),
             })}
           {notMeetRequired && !notMeetThreshold && t('This pool requires active Pancake Profile')}
           {!notMeetRequired &&
             notMeetThreshold &&
             t('This pool requires %amount% profile points.', {
-              amount: profileRequirement.thresholdPoints.toNumber().toLocaleString(),
+              amount: profileRequirement.thresholdPoints.toNumber().toLocaleString(locale),
             })}
         </MessageText>
         {(notMeetRequired || notMeetThreshold) && (

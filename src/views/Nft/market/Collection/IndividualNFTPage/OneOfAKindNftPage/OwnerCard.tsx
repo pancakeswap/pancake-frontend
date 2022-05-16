@@ -36,7 +36,10 @@ interface OwnerCardProps {
 }
 
 const OwnerCard: React.FC<OwnerCardProps> = ({ nft, isOwnNft, nftIsProfilePic, onSuccess }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { theme } = useTheme()
   const bnbBusdPrice = useBNBBusdPrice()
 
@@ -80,11 +83,11 @@ const OwnerCard: React.FC<OwnerCardProps> = ({ nft, isOwnNft, nftIsProfilePic, o
                 <>
                   <Flex justifySelf="flex-start" alignItems="center" width="max-content">
                     <BinanceIcon width="24px" height="24px" mr="8px" />
-                    <Text bold>{formatNumber(parseFloat(nft?.marketData?.currentAskPrice), 0, 5)}</Text>
+                    <Text bold>{formatNumber(parseFloat(nft?.marketData?.currentAskPrice), 0, 5, locale)}</Text>
                   </Flex>
                   {bnbBusdPrice ? (
                     <Text fontSize="12px" color="textSubtle">
-                      {`(~${formatNumber(priceInUsd, 2, 2)} USD)`}
+                      {`(~${formatNumber(priceInUsd, 2, 2, locale)} USD)`}
                     </Text>
                   ) : (
                     <Skeleton width="86px" height="12px" mt="4px" />

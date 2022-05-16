@@ -13,7 +13,10 @@ const RoundResult: React.FC<RoundResultProps> = ({ round, children, ...props }) 
   const { lockPrice, closePrice, totalAmount } = round
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const isPositionUp = betPosition === BetPosition.BULL
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const priceDifference = closePrice - lockPrice
 
   return (
@@ -28,9 +31,9 @@ const RoundResult: React.FC<RoundResultProps> = ({ round, children, ...props }) 
       ) : (
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           <Text color={isPositionUp ? 'success' : 'failure'} bold fontSize="24px">
-            {formatUsd(closePrice)}
+            {formatUsd(closePrice, locale)}
           </Text>
-          <PositionTag betPosition={betPosition}>{formatUsd(priceDifference)}</PositionTag>
+          <PositionTag betPosition={betPosition}>{formatUsd(priceDifference, locale)}</PositionTag>
         </Flex>
       )}
       {lockPrice && <LockPriceHistoryRow lockPrice={lockPrice} />}

@@ -8,7 +8,10 @@ interface LowestPriceStatBoxItemProps extends Omit<StatBoxItemProps, 'title' | '
 }
 
 const LowestPriceStatBoxItem: React.FC<LowestPriceStatBoxItemProps> = ({ collectionAddress, ...props }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { data: lowestCollectionPrice = null } = useSWR(
     collectionAddress ? [collectionAddress, 'lowestPrice'] : null,
     () => getLeastMostPriceInCollection(collectionAddress),
@@ -17,7 +20,7 @@ const LowestPriceStatBoxItem: React.FC<LowestPriceStatBoxItemProps> = ({ collect
   const formattedLowestPrice =
     lowestCollectionPrice !== null
       ? lowestCollectionPrice
-        ? lowestCollectionPrice.toLocaleString(undefined, {
+        ? lowestCollectionPrice.toLocaleString(locale, {
             minimumFractionDigits: 3,
             maximumFractionDigits: 3,
           })

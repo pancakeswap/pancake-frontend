@@ -54,7 +54,10 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
   refreshBidders,
 }) => {
   const { account } = useWeb3React()
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { theme } = useTheme()
   const { callWithGasPrice } = useCallWithGasPrice()
 
@@ -139,7 +142,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
       <ExistingInfo>
         <Flex justifyContent="space-between">
           <Text>{t('Your existing bid')}</Text>
-          <Text>{t('%num% CAKE', { num: getBalanceNumber(amount).toLocaleString() })}</Text>
+          <Text>{t('%num% CAKE', { num: getBalanceNumber(amount).toLocaleString(locale) })}</Text>
         </Flex>
         <Flex justifyContent="space-between">
           <Text>{t('Your position')}</Text>
@@ -166,7 +169,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
           onUserInput={handleInputChange}
           currencyValue={
             cakePriceBusd.gt(0) &&
-            `~${bid ? cakePriceBusd.times(new BigNumber(bid)).toNumber().toLocaleString() : '0.00'} USD`
+            `~${bid ? cakePriceBusd.times(new BigNumber(bid)).toNumber().toLocaleString(locale) : '0.00'} USD`
           }
         />
         <Flex justifyContent="flex-end" mt="8px">
@@ -174,7 +177,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
             {t('Balance')}:
           </Text>
           <Text fontSize="12px" color="textSubtle">
-            {formatNumber(userCakeBalance.toNumber(), 3, 3)}
+            {formatNumber(userCakeBalance.toNumber(), 3, 3, locale)}
           </Text>
         </Flex>
         {errorText && (

@@ -32,7 +32,10 @@ interface AuctionDetailsProps {
 }
 
 const AuctionDetails: React.FC<AuctionDetailsProps> = ({ auction, connectedBidder, refreshBidders }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
 
   const [onPresentPlaceBid] = useModal(
     <PlaceBidModal
@@ -74,7 +77,7 @@ const AuctionDetails: React.FC<AuctionDetailsProps> = ({ auction, connectedBidde
             <Text small color="textSubtle">
               {t('Your existing bid')}
             </Text>
-            <Text small>{getBalanceNumber(amount).toLocaleString()} CAKE</Text>
+            <Text small>{getBalanceNumber(amount).toLocaleString(locale)} CAKE</Text>
           </Flex>
           <Flex justifyContent="space-between" width="100%" pt="8px">
             <Text small color="textSubtle">

@@ -26,7 +26,10 @@ interface ResultsProps {
 }
 
 const Results: React.FC<ResultsProps> = ({ choices, votes, votesLoadingStatus }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const results = calculateVoteResults(votes)
   const { account } = useWeb3React()
   const totalVotes = getTotalFromVotes(votes)
@@ -64,9 +67,11 @@ const Results: React.FC<ResultsProps> = ({ choices, votes, votesLoadingStatus })
                   <Progress primaryStep={progress} scale="sm" />
                 </Box>
                 <Flex alignItems="center" justifyContent="space-between">
-                  <Text color="textSubtle">{t('%total% Votes', { total: formatNumber(totalChoiceVote, 0, 2) })}</Text>
+                  <Text color="textSubtle">
+                    {t('%total% Votes', { total: formatNumber(totalChoiceVote, 0, 2, locale) })}
+                  </Text>
                   <Text>
-                    {progress.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%
+                    {progress.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%
                   </Text>
                 </Flex>
               </Box>

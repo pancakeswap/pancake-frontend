@@ -42,7 +42,10 @@ const YourResult = styled(Box)`
 const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
   const [isOpen, setIsOpen] = useState(false)
   const { amount, round } = bet
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
       <Text bold mb="4px">
@@ -141,7 +144,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
               </Flex>
             </>
           ) : (
-            `${resultTextPrefix}${formatBnb(payout)}`
+            `${resultTextPrefix}${formatBnb(payout, locale)}`
           )}
         </Text>
       </>
@@ -163,7 +166,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
               {t('Round')}
             </Text>
             <Text bold lineHeight={1}>
-              {round.epoch.toLocaleString()}
+              {round.epoch.toLocaleString(locale)}
             </Text>
           </Text>
         </Box>

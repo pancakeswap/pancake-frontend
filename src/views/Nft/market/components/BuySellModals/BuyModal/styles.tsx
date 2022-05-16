@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Modal, Grid, Flex, Text, BinanceIcon, Skeleton } from '@pancakeswap/uikit'
+import { useTranslation } from 'contexts/Localization'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { BuyingStage } from './types'
@@ -39,6 +40,9 @@ interface BnbAmountCellProps {
 }
 
 export const BnbAmountCell: React.FC<BnbAmountCellProps> = ({ bnbAmount, isLoading, isInsufficient }) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
   if (isLoading) {
     return (
@@ -53,13 +57,13 @@ export const BnbAmountCell: React.FC<BnbAmountCellProps> = ({ bnbAmount, isLoadi
     <Flex justifySelf="flex-end" flexDirection="column">
       <Flex justifyContent="flex-end">
         <BinanceIcon height={16} width={16} mr="4px" />
-        <Text bold color={isInsufficient ? 'failure' : 'text'}>{`${bnbAmount.toLocaleString(undefined, {
+        <Text bold color={isInsufficient ? 'failure' : 'text'}>{`${bnbAmount.toLocaleString(locale, {
           minimumFractionDigits: 3,
           maximumFractionDigits: 5,
         })}`}</Text>
       </Flex>
       <Text small color="textSubtle" textAlign="right">
-        {`($${usdAmount.toLocaleString(undefined, {
+        {`($${usdAmount.toLocaleString(locale, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         })})`}

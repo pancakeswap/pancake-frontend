@@ -35,7 +35,10 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
   setPrice,
   continueToNextStage,
 }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const inputRef = useRef<HTMLInputElement>()
   const adjustedPriceIsTheSame = variant === 'adjust' && parseFloat(currentPrice) === parseFloat(price)
   const priceIsValid = !price || Number.isNaN(parseFloat(price)) || parseFloat(price) <= 0
@@ -120,7 +123,7 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
         <Flex alignItems="center" height="21px" justifyContent="flex-end">
           {!Number.isNaN(priceInUsd) && (
             <Text fontSize="12px" color="textSubtle">
-              {`$${priceInUsd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+              {`$${priceInUsd.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
             </Text>
           )}
         </Flex>

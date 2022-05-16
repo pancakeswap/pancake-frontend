@@ -85,7 +85,10 @@ const ContributeModal: React.FC<Props> = ({
   const { callWithGasPrice } = useCallWithGasPrice()
   const raisingTokenContractReader = useERC20(currency.address, false)
   const raisingTokenContractApprover = useERC20(currency.address)
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
   const label = currency === tokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
 
@@ -167,7 +170,7 @@ const ContributeModal: React.FC<Props> = ({
           <Flex justifyContent="space-between" mb="16px">
             {tooltipVisible && tooltip}
             <TooltipText ref={targetRef}>{label}:</TooltipText>
-            <Text>{`${formatNumber(getBalanceAmount(maximumTokenEntry, currency.decimals).toNumber(), 3, 3)} ${
+            <Text>{`${formatNumber(getBalanceAmount(maximumTokenEntry, currency.decimals).toNumber(), 3, 3, locale)} ${
               ifo.currency.symbol
             }`}</Text>
           </Flex>

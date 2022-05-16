@@ -55,7 +55,10 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({
   token,
   api,
 }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { theme } = useTheme()
   const { profile } = useProfileForAddress(address)
   const isLoading = leaderboardLoadingState === FetchStatus.Fetching
@@ -125,7 +128,7 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({
               {isLoading ? (
                 <Skeleton />
               ) : (
-                <Text fontWeight="bold">{`${result?.winRate?.toLocaleString(undefined, {
+                <Text fontWeight="bold">{`${result?.winRate?.toLocaleString(locale, {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 2,
                 })}%`}</Text>
@@ -135,13 +138,17 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({
               <Text as="h6" fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight="bold" mb="8px">
                 {t('Rounds Won')}
               </Text>
-              {isLoading ? <Skeleton /> : <Text fontWeight="bold">{result?.totalBetsClaimed?.toLocaleString()}</Text>}
+              {isLoading ? (
+                <Skeleton />
+              ) : (
+                <Text fontWeight="bold">{result?.totalBetsClaimed?.toLocaleString(locale)}</Text>
+              )}
             </Box>
             <Box>
               <Text as="h6" fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight="bold" mb="8px">
                 {t('Rounds Played')}
               </Text>
-              {isLoading ? <Skeleton /> : <Text fontWeight="bold">{result?.totalBets?.toLocaleString()}</Text>}
+              {isLoading ? <Skeleton /> : <Text fontWeight="bold">{result?.totalBets?.toLocaleString(locale)}</Text>}
             </Box>
           </Grid>
           {isDesktop ? (

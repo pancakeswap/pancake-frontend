@@ -23,7 +23,10 @@ const SellStage: React.FC<SellStageProps> = ({
   continueToTransferStage,
   onSuccessEditProfile,
 }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { hasProfile } = useProfile()
   const itemPageUrlId =
     nftToSell.collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase()
@@ -49,7 +52,7 @@ const SellStage: React.FC<SellStageProps> = ({
               <Flex alignItems="center" justifyContent="flex-end">
                 <BinanceIcon width={16} height={16} mr="4px" />
                 <Text small>
-                  {lowestPrice.toLocaleString(undefined, {
+                  {lowestPrice.toLocaleString(locale, {
                     minimumFractionDigits: 3,
                     maximumFractionDigits: 3,
                   })}

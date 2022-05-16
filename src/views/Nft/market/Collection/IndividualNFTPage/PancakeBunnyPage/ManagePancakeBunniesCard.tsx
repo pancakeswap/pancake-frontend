@@ -53,7 +53,10 @@ interface CollectibleRowProps {
 }
 
 const CollectibleRow: React.FC<CollectibleRowProps> = ({ nft, lowestPrice, onSuccessSale }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const modalVariant = nft.location === NftLocation.WALLET ? 'sell' : 'edit'
   const [onPresentProfileNftModal] = useModal(<ProfileNftModal nft={nft} />)
   const [onPresentModal] = useModal(<SellModal variant={modalVariant} nftToSell={nft} onSuccessSale={onSuccessSale} />)
@@ -78,7 +81,7 @@ const CollectibleRow: React.FC<CollectibleRowProps> = ({ nft, lowestPrice, onSuc
             </Text>
             <Flex justifySelf="flex-end" width="max-content">
               <BinanceIcon width="16px" height="16px" mr="4px" />
-              <Text small>{formatNumber(parseFloat(lowestPrice), 0, 5)}</Text>
+              <Text small>{formatNumber(parseFloat(lowestPrice), 0, 5, locale)}</Text>
             </Flex>
           </>
         )}

@@ -89,7 +89,10 @@ const StyledTeamCard = styled(Card)`
 `
 
 const TeamCard: React.FC<TeamCardProps> = ({ rank, team }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const avatar = <Avatar src={`/images/teams/${team.images.md}`} alt="team avatar" />
 
   return (
@@ -121,7 +124,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ rank, team }) => {
                 {/* alignSelf for Safari fix */}
                 <CommunityIcon width="24px" mr="8px" style={{ alignSelf: 'center' }} />
                 <Text fontSize="24px" bold>
-                  {team.users.toLocaleString()}
+                  {team.users.toLocaleString(locale)}
                 </Text>
               </Flex>
             </Flex>

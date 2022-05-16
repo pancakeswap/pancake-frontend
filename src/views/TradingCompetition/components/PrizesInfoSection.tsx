@@ -1,9 +1,9 @@
 import { ReactNode } from 'react'
 import { Box } from '@pancakeswap/uikit'
+import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import PageSection from 'components/PageSection'
 import RibbonWithImage from './RibbonWithImage'
-import { useTranslation } from '../../../contexts/Localization'
 import { LIGHTBLUEBG_DARK, LIGHTBLUEBG } from '../pageSectionStyles'
 import PrizesIcon from '../svgs/PrizesIcon'
 

@@ -62,7 +62,10 @@ const DepositModal: React.FC<DepositModalProps> = ({
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
   const [showRoiCalculator, setShowRoiCalculator] = useState(false)
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(max)
   }, [max])
@@ -80,7 +83,12 @@ const DepositModal: React.FC<DepositModalProps> = ({
 
   const annualRoi = cakePrice.times(interestBreakdown[3])
   const annualRoiAsNumber = annualRoi.toNumber()
-  const formattedAnnualRoi = formatNumber(annualRoiAsNumber, annualRoi.gt(10000) ? 0 : 2, annualRoi.gt(10000) ? 0 : 2)
+  const formattedAnnualRoi = formatNumber(
+    annualRoiAsNumber,
+    annualRoi.gt(10000) ? 0 : 2,
+    annualRoi.gt(10000) ? 0 : 2,
+    locale,
+  )
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {

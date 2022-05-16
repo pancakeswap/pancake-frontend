@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { useTranslation } from 'contexts/Localization'
 import { Modal, Box, Flex, Text, BinanceIcon, Input } from '@pancakeswap/uikit'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
@@ -42,6 +43,9 @@ interface BnbAmountCellProps {
 }
 
 export const BnbAmountCell: React.FC<BnbAmountCellProps> = ({ bnbAmount }) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
   if (!bnbAmount || bnbAmount === 0) {
     return (
@@ -57,12 +61,12 @@ export const BnbAmountCell: React.FC<BnbAmountCellProps> = ({ bnbAmount }) => {
   return (
     <Flex alignItems="center" justifyContent="flex-end">
       <BinanceIcon width={16} height={16} mr="4px" />
-      <Text bold mr="4px">{`${bnbAmount.toLocaleString(undefined, {
+      <Text bold mr="4px">{`${bnbAmount.toLocaleString(locale, {
         minimumFractionDigits: 3,
         maximumFractionDigits: 3,
       })}`}</Text>
       <Text small color="textSubtle" textAlign="right">
-        {`($${usdAmount.toLocaleString(undefined, {
+        {`($${usdAmount.toLocaleString(locale, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         })})`}
@@ -78,6 +82,9 @@ interface FeeAmountCellProps {
 }
 
 export const FeeAmountCell: React.FC<FeeAmountCellProps> = ({ bnbAmount, creatorFee, tradingFee }) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
   if (!bnbAmount || bnbAmount === 0) {
     return (
       <Flex alignItems="center" justifyContent="flex-end">
@@ -95,7 +102,7 @@ export const FeeAmountCell: React.FC<FeeAmountCellProps> = ({ bnbAmount, creator
   return (
     <Flex alignItems="center" justifyContent="flex-end">
       <BinanceIcon width={16} height={16} mr="4px" />
-      <Text bold mr="4px">{`${feeAmount.toLocaleString(undefined, {
+      <Text bold mr="4px">{`${feeAmount.toLocaleString(locale, {
         minimumFractionDigits: 3,
         maximumFractionDigits: 6,
       })}`}</Text>

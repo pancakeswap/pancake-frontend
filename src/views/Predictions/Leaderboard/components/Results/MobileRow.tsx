@@ -20,7 +20,10 @@ const StyledMobileRow = styled(Box)`
 `
 
 const MobileRow: React.FC<MobileRowProps> = ({ rank, user }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
 
   return (
     <StyledMobileRow p="16px">
@@ -33,7 +36,7 @@ const MobileRow: React.FC<MobileRowProps> = ({ rank, user }) => {
           {t('Win Rate')}
         </Text>
         <Text fontWeight="bold">
-          {`${user.winRate.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}%`}
+          {`${user.winRate.toLocaleString(locale, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}%`}
         </Text>
       </Row>
       <NetWinningsRow amount={user.netBNB} />
@@ -41,7 +44,9 @@ const MobileRow: React.FC<MobileRowProps> = ({ rank, user }) => {
         <Text fontSize="12px" color="textSubtle">
           {t('Rounds Won')}
         </Text>
-        <Text fontWeight="bold">{`${user.totalBetsClaimed.toLocaleString()}/${user.totalBets.toLocaleString()}`}</Text>
+        <Text fontWeight="bold">{`${user.totalBetsClaimed.toLocaleString(locale)}/${user.totalBets.toLocaleString(
+          locale,
+        )}`}</Text>
       </Row>
     </StyledMobileRow>
   )

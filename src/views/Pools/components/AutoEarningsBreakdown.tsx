@@ -11,7 +11,10 @@ interface AutoEarningsBreakdownProps {
 }
 
 const AutoEarningsBreakdown: React.FC<AutoEarningsBreakdownProps> = ({ pool, account }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
 
   const { earningTokenPrice } = pool
   const {
@@ -47,7 +50,7 @@ const AutoEarningsBreakdown: React.FC<AutoEarningsBreakdownProps> = ({ pool, acc
       </Text>
       <Text bold>~${autoUsdToDisplay.toFixed(2)}</Text>
       <Text>{t('Earned since your last action')}:</Text>
-      <Text>{new Date(lastActionInMs).toLocaleString()}</Text>
+      <Text>{new Date(lastActionInMs).toLocaleString(locale)}</Text>
       {hourDiffSinceLastAction ? (
         <>
           <Text>{t('Your average per hour')}:</Text>

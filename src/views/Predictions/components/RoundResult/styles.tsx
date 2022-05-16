@@ -49,8 +49,11 @@ interface PayoutRowProps extends FlexProps {
 }
 
 export const PayoutRow: React.FC<PayoutRowProps> = ({ positionLabel, multiplier, amount, ...props }) => {
-  const { t } = useTranslation()
-  const formattedMultiplier = `${multiplier.toLocaleString(undefined, { maximumFractionDigits: 2 })}x`
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
+  const formattedMultiplier = `${multiplier.toLocaleString(locale, { maximumFractionDigits: 2 })}x`
   const { token } = useConfig()
 
   return (
@@ -63,7 +66,7 @@ export const PayoutRow: React.FC<PayoutRowProps> = ({ positionLabel, multiplier,
           {t('%multiplier% Payout', { multiplier: formattedMultiplier })}
         </Text>
         <Text mx="4px">|</Text>
-        <Text fontSize="12px" lineHeight="18px">{`${formatBnb(amount)} ${token.symbol}`}</Text>
+        <Text fontSize="12px" lineHeight="18px">{`${formatBnb(amount, locale)} ${token.symbol}`}</Text>
       </Flex>
     </Row>
   )
@@ -189,22 +192,25 @@ interface PrizePoolHistoryRowProps extends FlexProps {
   totalAmount: number
 }
 
-const getPrizePoolAmountHistory = (totalAmount: PrizePoolHistoryRowProps['totalAmount']) => {
+const getPrizePoolAmountHistory = (totalAmount: PrizePoolHistoryRowProps['totalAmount'], locales: string) => {
   if (!totalAmount) {
     return '0'
   }
 
-  return formatBnb(totalAmount)
+  return formatBnb(totalAmount, locales)
 }
 
 export const PrizePoolHistoryRow: React.FC<PrizePoolHistoryRowProps> = ({ totalAmount, ...props }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { token } = useConfig()
 
   return (
     <Row {...props}>
       <Text bold>{t('Prize Pool')}:</Text>
-      <Text bold>{`${getPrizePoolAmountHistory(totalAmount)} ${token.symbol}`}</Text>
+      <Text bold>{`${getPrizePoolAmountHistory(totalAmount, locale)} ${token.symbol}`}</Text>
     </Row>
   )
 }
@@ -214,12 +220,15 @@ interface LockPriceHistoryRowProps extends FlexProps {
 }
 
 export const LockPriceHistoryRow: React.FC<LockPriceHistoryRowProps> = ({ lockPrice, ...props }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
 
   return (
     <Row {...props}>
       <Text fontSize="14px">{t('Locked Price')}:</Text>
-      <Text fontSize="14px">{formatUsd(lockPrice)}</Text>
+      <Text fontSize="14px">{formatUsd(lockPrice, locale)}</Text>
     </Row>
   )
 }

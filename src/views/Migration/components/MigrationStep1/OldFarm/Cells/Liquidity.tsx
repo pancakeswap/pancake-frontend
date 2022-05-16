@@ -31,11 +31,12 @@ export interface LiquidityProps {
 }
 
 const Liquidity: React.FC<LiquidityProps> = ({ liquidity }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const displayLiquidity =
-    liquidity && liquidity.gt(0)
-      ? `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-      : `$0`
+    liquidity && liquidity.gt(0) ? `$${Number(liquidity).toLocaleString(locale, { maximumFractionDigits: 0 })}` : `$0`
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Total value of the funds in this farm’s liquidity pool'),
     { placement: 'top-end', tooltipOffset: [20, 10] },

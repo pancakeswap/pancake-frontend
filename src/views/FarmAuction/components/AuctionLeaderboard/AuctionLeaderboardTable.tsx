@@ -45,7 +45,10 @@ interface LeaderboardRowProps {
 }
 
 const LeaderboardRow: React.FC<LeaderboardRowProps> = ({ bidder, cakePriceBusd, isMobile }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { isTopPosition, position, samePositionAsAbove, farmName, tokenName, amount, projectSite, lpAddress, account } =
     bidder
   return (
@@ -73,7 +76,7 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({ bidder, cakePriceBusd, 
       <GridCell isTopPosition={isTopPosition}>
         <Flex flexDirection="column" width="100%" justifyContent="flex-end" pr={[null, null, '24px']}>
           <Text bold textTransform="uppercase" width="100%" textAlign="right">
-            {getBalanceNumber(amount).toLocaleString()}
+            {getBalanceNumber(amount).toLocaleString(locale)}
           </Text>
           {cakePriceBusd.gt(0) ? (
             <Text fontSize="12px" color="textSubtle" textAlign="right">

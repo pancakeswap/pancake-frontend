@@ -23,7 +23,10 @@ const StyledCell = styled(BaseCell)`
 `
 
 const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
   const { sousId, earningToken, poolCategory, userData, earningTokenPrice } = pool
   const isManualCakePool = sousId === 0
@@ -33,7 +36,7 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account }) => {
   const earningTokenDollarBalance = getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningToken.decimals)
   const hasEarnings = account && earnings.gt(0)
   const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
-  const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
+  const formattedBalance = formatNumber(earningTokenBalance, 3, 3, locale)
   const isBnbPool = poolCategory === PoolCategory.BINANCE
 
   const labelText = t('%asset% Earned', { asset: earningToken.symbol })

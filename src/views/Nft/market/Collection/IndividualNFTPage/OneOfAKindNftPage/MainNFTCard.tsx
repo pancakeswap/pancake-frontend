@@ -20,7 +20,10 @@ interface MainNFTCardProps {
 }
 
 const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePic, onSuccess }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
 
   const currentAskPriceAsNumber = nft?.marketData?.currentAskPrice ? parseFloat(nft.marketData?.currentAskPrice) : 0
@@ -77,10 +80,10 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePi
                 <Flex alignItems="center" mt="8px">
                   <BinanceIcon width={18} height={18} mr="4px" />
                   <Text fontSize="24px" bold mr="4px">
-                    {formatNumber(currentAskPriceAsNumber, 0, 5)}
+                    {formatNumber(currentAskPriceAsNumber, 0, 5, locale)}
                   </Text>
                   {bnbBusdPrice ? (
-                    <Text color="textSubtle">{`(~${priceInUsd.toLocaleString(undefined, {
+                    <Text color="textSubtle">{`(~${priceInUsd.toLocaleString(locale, {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })} USD)`}</Text>

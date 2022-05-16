@@ -32,6 +32,9 @@ interface RowProps {
 }
 
 const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account, onSuccessSale }) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nft?.marketData?.currentAskPrice))
 
   const ownNft = account ? nft.marketData.currentSeller === account.toLowerCase() : false
@@ -45,11 +48,11 @@ const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account, onSuccessSale 
       <Box pl="24px">
         <Flex justifySelf="flex-start" alignItems="center" width="max-content">
           <BinanceIcon width="24px" height="24px" mr="8px" />
-          <Text bold>{formatNumber(parseFloat(nft?.marketData?.currentAskPrice), 0, 5)}</Text>
+          <Text bold>{formatNumber(parseFloat(nft?.marketData?.currentAskPrice), 0, 5, locale)}</Text>
         </Flex>
         {bnbBusdPrice ? (
           <Text fontSize="12px" color="textSubtle">
-            {`(~${formatNumber(priceInUsd, 2, 2)} USD)`}
+            {`(~${formatNumber(priceInUsd, 2, 2, locale)} USD)`}
           </Text>
         ) : (
           <Skeleton width="86px" height="12px" mt="4px" />

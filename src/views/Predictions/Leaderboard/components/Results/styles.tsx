@@ -32,6 +32,9 @@ export const NetWinningsView: React.FC<NetWinningsProps & { token: Token }> = ({
   ...props
 }) => {
   const bnbBusdPrice = useBUSDPrice(token)
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
   const value = multiplyPriceByAmount(bnbBusdPrice, Math.abs(amount))
 
   if (!amount) {
@@ -41,10 +44,10 @@ export const NetWinningsView: React.FC<NetWinningsProps & { token: Token }> = ({
   return (
     <Flex flexDirection="column" alignItems="flex-end" {...props}>
       <Text fontWeight="bold" color={textColor}>
-        {`${textPrefix}${amount.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 6 })}`}
+        {`${textPrefix}${amount.toLocaleString(locale, { minimumFractionDigits: 0, maximumFractionDigits: 6 })}`}
       </Text>
       <Text fontSize="12px" color="textSubtle" lineHeight={1}>
-        {`~$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+        {`~$${value.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
       </Text>
     </Flex>
   )

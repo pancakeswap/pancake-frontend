@@ -31,7 +31,10 @@ const MainView: React.FC<MainViewProps> = ({
   onDismiss,
   disabled,
 }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   return (
     <>
       <ModalInner>
@@ -54,7 +57,7 @@ const MainView: React.FC<MainViewProps> = ({
           <>
             <VotingBox onClick={onViewDetails} style={{ cursor: 'pointer' }}>
               <Text bold fontSize="20px" color={total === 0 ? 'failure' : 'text'}>
-                {formatNumber(total, 0, 3)}
+                {formatNumber(total, 0, 3, locale)}
               </Text>
               <IconButton scale="sm" variant="text">
                 <ChevronRightIcon width="24px" />

@@ -66,7 +66,10 @@ const LotteryPrice: React.FC = () => {
   const cakePriceBusd = usePriceCakeBusd()
   const prizeInBusd = new BigNumber(data.amountCollectedInCake).times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
 
   if (isLotteryLive(data.status)) {
     return (
@@ -75,7 +78,7 @@ const LotteryPrice: React.FC = () => {
           <Skeleton height={20} width={90} display="inline-block" />
         ) : (
           t('Win $%prize% in Lottery', {
-            prize: prizeTotal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
+            prize: prizeTotal.toLocaleString(locale, { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
           })
         )}
       </>

@@ -53,7 +53,10 @@ const CardUserInfo: React.FC<CardUserInfoProps> = ({
   userLeaderboardInformation,
   currentPhase,
 }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const [onPresentShareModal] = useModal(shareModal, false)
   const { global, team, volume, next_rank: nextRank } = userLeaderboardInformation
   const shouldShowUserRanks = account && hasRegistered
@@ -178,7 +181,9 @@ const CardUserInfo: React.FC<CardUserInfoProps> = ({
                 <UserRankBox
                   flex="1"
                   title={t('Rank in team').toUpperCase()}
-                  footer={userLeaderboardInformation ? t('#%global% Overall', { global: global.toLocaleString() }) : ''}
+                  footer={
+                    userLeaderboardInformation ? t('#%global% Overall', { global: global.toLocaleString(locale) }) : ''
+                  }
                   mr={[0, null, null, '8px']}
                   mb={['8px', null, null, 0]}
                 >

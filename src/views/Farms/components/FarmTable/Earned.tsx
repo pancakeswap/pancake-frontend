@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Skeleton } from '@pancakeswap/uikit'
+import { useTranslation } from 'contexts/Localization'
 
 export interface EarnedProps {
   earnings: number
@@ -17,8 +18,11 @@ const Amount = styled.span<{ earned: number }>`
 `
 
 const Earned: React.FunctionComponent<EarnedPropsWithLoading> = ({ earnings, userDataReady }) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
   if (userDataReady) {
-    return <Amount earned={earnings}>{earnings.toLocaleString()}</Amount>
+    return <Amount earned={earnings}>{earnings.toLocaleString(locale)}</Amount>
   }
   return (
     <Amount earned={0}>

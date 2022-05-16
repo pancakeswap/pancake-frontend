@@ -28,7 +28,10 @@ const MobileModal: React.FC<MobileModalProps> = ({
   isUserActivity = false,
 }) => {
   const { chainId } = useActiveWeb3React()
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { theme } = useTheme()
   const priceAsFloat = parseFloat(activity.price)
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, priceAsFloat)
@@ -59,7 +62,7 @@ const MobileModal: React.FC<MobileModalProps> = ({
                   {priceAsFloat}
                 </Text>
                 <Text color="textSubtle">
-                  {`(~$${priceInUsd.toLocaleString(undefined, {
+                  {`(~$${priceInUsd.toLocaleString(locale, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })})`}

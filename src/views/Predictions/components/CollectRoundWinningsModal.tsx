@@ -92,7 +92,10 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   token,
 }) => {
   const { account } = useWeb3React()
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPendingTx } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
@@ -153,7 +156,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
         <Flex alignItems="start" justifyContent="space-between" mb="8px">
           <Text>{t('Collecting')}</Text>
           <Box style={{ textAlign: 'right' }}>
-            <Text>{`${formatNumber(total, 0, 4)} ${token.symbol}`}</Text>
+            <Text>{`${formatNumber(total, 0, 4, locale)} ${token.symbol}`}</Text>
             <Text fontSize="12px" color="textSubtle">
               {`~$${totalBnb.toFixed(2)}`}
             </Text>

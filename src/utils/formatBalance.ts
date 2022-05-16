@@ -31,12 +31,12 @@ export const getFullDisplayBalance = (balance: BigNumber, decimals = 18, display
  * It uses undefined locale which uses host language as a result.
  * Languages have different decimal separators which results in inconsistency when converting back this result to number.
  */
-export const formatNumber = (number: number, minPrecision = 2, maxPrecision = 2) => {
+export const formatNumber = (number: number, minPrecision = 2, maxPrecision = 2, locales: string = undefined) => {
   const options = {
     minimumFractionDigits: minPrecision,
     maximumFractionDigits: maxPrecision,
   }
-  return number.toLocaleString(undefined, options)
+  return number.toLocaleString(locales, options)
 }
 
 /**

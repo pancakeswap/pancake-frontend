@@ -50,7 +50,10 @@ const getRankingColor = (rank: number) => {
 }
 
 const RankingCard: React.FC<RankingCardProps> = ({ rank, user }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const rankColor = getRankingColor(rank)
   const { profile } = useProfileForAddress(user.id)
   const { result, address, leaderboardLoadingState } = useStatModalProps(user.id)
@@ -101,7 +104,7 @@ const RankingCard: React.FC<RankingCardProps> = ({ rank, user }) => {
             {t('Win Rate')}
           </Text>
           <Text fontWeight="bold">
-            {`${user.winRate.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}%`}
+            {`${user.winRate.toLocaleString(locale, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}%`}
           </Text>
         </Row>
         <NetWinningsRow amount={user.netBNB} />
@@ -109,7 +112,9 @@ const RankingCard: React.FC<RankingCardProps> = ({ rank, user }) => {
           <Text fontSize="12px" color="textSubtle">
             {t('Rounds Won')}
           </Text>
-          <Text fontWeight="bold">{`${user.totalBetsClaimed.toLocaleString()}/${user.totalBets.toLocaleString()}`}</Text>
+          <Text fontWeight="bold">{`${user.totalBetsClaimed.toLocaleString(locale)}/${user.totalBets.toLocaleString(
+            locale,
+          )}`}</Text>
         </Row>
       </CardBody>
     </Card>

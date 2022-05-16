@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { useTranslation } from 'contexts/Localization'
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import { Currency, CurrencyAmount, Price, Token, TokenAmount } from '@pancakeswap/sdk'
 import { useCurrency } from 'hooks/Tokens'
@@ -28,11 +29,11 @@ export interface FormattedOrderData {
   }
 }
 
-const formatForDisplay = (amount: CurrencyAmount | Price) => {
+const formatForDisplay = (amount: CurrencyAmount | Price, locales: string = undefined) => {
   if (!amount) {
     return undefined
   }
-  return parseFloat(amount.toSignificant(18)).toLocaleString(undefined, {
+  return parseFloat(amount.toSignificant(18)).toLocaleString(locales, {
     minimumFractionDigits: 0,
     maximumFractionDigits: 8,
   })
@@ -41,6 +42,9 @@ const formatForDisplay = (amount: CurrencyAmount | Price) => {
 // Transforms Gelato Order type into types ready to be displayed in UI
 const useFormattedOrderData = (order: Order): FormattedOrderData => {
   const { chainId } = useActiveWeb3React()
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
   const gelatoLibrary = useGelatoLimitOrdersLib()
   const inputToken = useCurrency(order.inputToken)
   const outputToken = useCurrency(order.outputToken)
@@ -83,10 +87,10 @@ const useFormattedOrderData = (order: Order): FormattedOrderData => {
   return {
     inputToken,
     outputToken,
-    inputAmount: formatForDisplay(inputAmount),
-    outputAmount: formatForDisplay(outputAmount),
-    executionPrice: formatForDisplay(executionPrice),
-    invertedExecutionPrice: formatForDisplay(executionPrice?.invert()),
+    inputAmount: formatForDisplay(inputAmount, locale),
+    outputAmount: formatForDisplay(outputAmount, locale),
+    executionPrice: formatForDisplay(executionPrice, locale),
+    invertedExecutionPrice: formatForDisplay(executionPrice?.invert(), locale),
     isOpen: order.status === LimitOrderStatus.OPEN,
     isCancelled: order.status === LimitOrderStatus.CANCELLED,
     isExecuted: order.status === LimitOrderStatus.EXECUTED,

@@ -34,7 +34,10 @@ const DetailsView: React.FC<DetailsViewProps> = ({
   ifoPoolBalance,
   block,
 }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
 
   return (
     <ModalInner mb="0">
@@ -63,7 +66,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
           <Text color="textSubtle" fontSize="16px">
             {t('Wallet')}
           </Text>
-          <Text textAlign="right">{formatNumber(cakeBalance, 0, 3)}</Text>
+          <Text textAlign="right">{formatNumber(cakeBalance, 0, 3, locale)}</Text>
         </Flex>
       )}
       {Number.isFinite(cakePoolBalance) && (
@@ -71,7 +74,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
           <Text color="textSubtle" fontSize="16px">
             {t('CAKE Pool')}
           </Text>
-          <Text textAlign="right">{formatNumber(cakePoolBalance, 0, 3)}</Text>
+          <Text textAlign="right">{formatNumber(cakePoolBalance, 0, 3, locale)}</Text>
         </Flex>
       )}
       {Number.isFinite(cakeVaultBalance) && (
@@ -79,7 +82,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
           <Text color="textSubtle" fontSize="16px">
             {t('Auto CAKE Pool')}
           </Text>
-          <Text textAlign="right">{formatNumber(cakeVaultBalance, 0, 3)}</Text>
+          <Text textAlign="right">{formatNumber(cakeVaultBalance, 0, 3, locale)}</Text>
         </Flex>
       )}
       {Number.isFinite(ifoPoolBalance) && (
@@ -87,7 +90,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
           <Text color="textSubtle" fontSize="16px">
             {t('IFO Pool')}
           </Text>
-          <Text textAlign="right">{formatNumber(ifoPoolBalance, 0, 3)}</Text>
+          <Text textAlign="right">{formatNumber(ifoPoolBalance, 0, 3, locale)}</Text>
         </Flex>
       )}
       {Number.isFinite(poolsBalance) && (
@@ -95,7 +98,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
           <Text color="textSubtle" fontSize="16px">
             {t('Other Syrup Pools')}
           </Text>
-          <Text textAlign="right">{formatNumber(poolsBalance, 0, 3)}</Text>
+          <Text textAlign="right">{formatNumber(poolsBalance, 0, 3, locale)}</Text>
         </Flex>
       )}
       {Number.isFinite(cakeBnbLpBalance) && (
@@ -103,7 +106,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
           <Text color="textSubtle" fontSize="16px">
             {t('CAKE BNB LP')}
           </Text>
-          <Text textAlign="right">{formatNumber(cakeBnbLpBalance, 0, 3)}</Text>
+          <Text textAlign="right">{formatNumber(cakeBnbLpBalance, 0, 3, locale)}</Text>
         </Flex>
       )}
     </ModalInner>

@@ -36,7 +36,10 @@ import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
 const LimitOrders = () => {
   // Helpers
   const { account } = useActiveWeb3React()
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const router = useRouter()
   const { isMobile, isTablet } = useMatchBreakpointsContext()
   const { theme } = useTheme()
@@ -263,7 +266,7 @@ const LimitOrders = () => {
       currentMarketRateInverted={currentMarketRate?.invert().toSignificant(4)}
       limitPrice={price?.toSignificant(6)}
       limitPriceInverted={price?.invert().toSignificant(6)}
-      percentageRateDifference={parseFloat(percentageRateDifference?.toSignificant(3)).toLocaleString(undefined, {
+      percentageRateDifference={parseFloat(percentageRateDifference?.toSignificant(3)).toLocaleString(locale, {
         minimumFractionDigits: 0,
         maximumFractionDigits: 3,
       })}

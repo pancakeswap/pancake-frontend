@@ -23,9 +23,12 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
   earningTokenPrice,
   isLoading = false,
 }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals)
-  const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
+  const formattedBalance = formatNumber(earningTokenBalance, 3, 3, locale)
 
   const earningTokenDollarBalance = getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningToken.decimals)
 

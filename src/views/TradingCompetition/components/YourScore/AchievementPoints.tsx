@@ -1,5 +1,5 @@
 import { Text, Flex, Image } from '@pancakeswap/uikit'
-import { useTranslation } from '../../../../contexts/Localization'
+import { useTranslation } from 'contexts/Localization'
 
 interface AchievementPointsProps {
   achievement: {

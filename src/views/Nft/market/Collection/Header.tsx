@@ -22,10 +22,13 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
   const router = useRouter()
   const collectionAddress = router.query.collectionAddress as string
   const { totalSupply, numberTokensListed, totalVolumeBNB, banner, avatar } = collection
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
 
   const volume = totalVolumeBNB
-    ? parseFloat(totalVolumeBNB).toLocaleString(undefined, {
+    ? parseFloat(totalVolumeBNB).toLocaleString(locale, {
         minimumFractionDigits: 3,
         maximumFractionDigits: 3,
       })
@@ -56,10 +59,10 @@ const Header: React.FC<HeaderProps> = ({ collection }) => {
           description={collection.description ? <Text color="textSubtle">{t(collection.description)}</Text> : null}
         >
           <StatBox>
-            <StatBoxItem title={t('Items')} stat={formatNumber(Number(totalSupply), 0, 0)} />
+            <StatBoxItem title={t('Items')} stat={formatNumber(Number(totalSupply), 0, 0, locale)} />
             <StatBoxItem
               title={t('Items listed')}
-              stat={numberTokensListed ? formatNumber(Number(numberTokensListed), 0, 0) : '0'}
+              stat={numberTokensListed ? formatNumber(Number(numberTokensListed), 0, 0, locale) : '0'}
             />
             <LowestPriceStatBoxItem collectionAddress={collection.address} />
             <StatBoxItem title={t('Vol. (%symbol%)', { symbol: 'BNB' })} stat={volume} />

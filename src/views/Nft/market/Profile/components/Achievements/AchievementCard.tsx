@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Flex, PrizeIcon, Text } from '@pancakeswap/uikit'
+import { useTranslation } from 'contexts/Localization'
 import { Achievement } from 'state/types'
 import AchievementAvatar from './AchievementAvatar'
 import AchievementTitle from './AchievementTitle'
@@ -18,6 +19,10 @@ const Details = styled(Flex)`
 `
 
 const AchievementCard: React.FC<AchievementCardProps> = ({ achievement }) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
+
   return (
     <Flex>
       <AchievementAvatar badge={achievement.badge} />
@@ -27,7 +32,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({ achievement }) => {
       </Details>
       <Flex alignItems="center">
         <PrizeIcon width="18px" color="textSubtle" mr="4px" />
-        <Text color="textSubtle">{achievement.points.toLocaleString()}</Text>
+        <Text color="textSubtle">{achievement.points.toLocaleString(locale)}</Text>
       </Flex>
     </Flex>
   )
