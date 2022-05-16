@@ -1,30 +1,24 @@
-import { useMemo, useEffect, useState } from 'react'
-import {
-  SmartContractPhases,
-  CompetitionPhases,
-  LIVE,
-  FINISHED,
-  CLAIM,
-  OVER,
-} from 'config/constants/trading-competition/phases'
+import useSWRImmutable from 'swr/immutable'
+import { SLOW_INTERVAL } from 'config/constants'
+import { useMemo } from 'react'
+import { SmartContractPhases, LIVE, FINISHED, CLAIM, OVER } from 'config/constants/trading-competition/phases'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 
 export const useCompetitionStatus = () => {
   const tradingCompetitionContract = useTradingCompetitionContractMoD(false)
-  const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.REGISTRATION)
 
-  useEffect(() => {
-    const fetchCompetitionInfoContract = async () => {
+  const { data: state } = useSWRImmutable(
+    'competitionStatus',
+    async () => {
       const competitionStatus = await tradingCompetitionContract.currentStatus()
-      setCurrentPhase(SmartContractPhases[competitionStatus])
-    }
-
-    fetchCompetitionInfoContract()
-  }, [tradingCompetitionContract])
+      return SmartContractPhases[competitionStatus].state
+    },
+    {
+      refreshInterval: SLOW_INTERVAL,
+    },
+  )
 
   return useMemo(() => {
-    const { state } = currentPhase
-
     const hasCompetitionEnded = state === FINISHED || state === CLAIM || state === OVER
     if (hasCompetitionEnded) {
       return null
@@ -35,5 +29,5 @@ export const useCompetitionStatus = () => {
     }
 
     return 'soon'
-  }, [currentPhase])
+  }, [state])
 }
