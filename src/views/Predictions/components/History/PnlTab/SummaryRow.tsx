@@ -36,6 +36,7 @@ const SummaryRow: React.FC<SummaryRowProps> = ({ type, summary, bnbBusdPrice }) 
   const displayAmount = type === 'won' ? summary[type].payout : amount
   const amountInUsd = multiplyPriceByAmount(bnbBusdPrice, displayAmount)
   const { token } = useConfig()
+  const roundsInPercentsDisplay = !Number.isNaN(parseFloat(roundsInPercents)) ? `${roundsInPercents}%` : '0%'
 
   return (
     <>
@@ -48,7 +49,7 @@ const SummaryRow: React.FC<SummaryRowProps> = ({ type, summary, bnbBusdPrice }) 
             {rounds} {t('Rounds').toLocaleLowerCase()}
           </Text>
           <Text fontSize="12px" color="textSubtle">
-            {type === 'entered' ? t('Total').toLocaleLowerCase() : `${roundsInPercents}%`}
+            {type === 'entered' ? t('Total').toLocaleLowerCase() : roundsInPercentsDisplay}
           </Text>
         </Flex>
         <Flex flex="3" flexDirection="column">
