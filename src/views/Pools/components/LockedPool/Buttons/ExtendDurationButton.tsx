@@ -35,7 +35,7 @@ const ExtendDurationButton: React.FC<ExtendDurationButtonPropsType & ButtonProps
     <Button
       disabled={
         Number.isFinite(currentDurationLeftInSeconds) &&
-        MAX_LOCK_DURATION - currentDurationLeftInSeconds > ONE_WEEK_DEFAULT
+        MAX_LOCK_DURATION - currentDurationLeftInSeconds < ONE_WEEK_DEFAULT
       }
       onClick={openExtendDurationModal}
       width="100%"
