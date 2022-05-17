@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { PageMeta } from 'components/Layout/Page'
+import { TC_MOD_SUBGRAPH } from 'config/constants/endpoints'
 import {
   SmartContractPhases,
   CompetitionPhases,
@@ -240,6 +241,7 @@ const MoDCompetition = () => {
                 team2LeaderboardInformation={team2LeaderboardInformation}
                 team3LeaderboardInformation={team3LeaderboardInformation}
                 globalLeaderboardInformation={globalLeaderboardInformation}
+                participantSubgraphAddress={TC_MOD_SUBGRAPH}
                 subgraphName="pancakeswap/trading-competition-v4"
               />
             </Box>

@@ -6,6 +6,7 @@ import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTradingCompetitionContractMobox } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { PageMeta } from 'components/Layout/Page'
+import { TC_MOBOX_SUBGRAPH } from 'config/constants/endpoints'
 import {
   SmartContractPhases,
   CompetitionPhases,
@@ -251,6 +252,7 @@ const MoboxCompetition = () => {
                 team2LeaderboardInformation={team2LeaderboardInformation}
                 team3LeaderboardInformation={team3LeaderboardInformation}
                 globalLeaderboardInformation={globalLeaderboardInformation}
+                participantSubgraphAddress={TC_MOBOX_SUBGRAPH}
                 subgraphName="pancakeswap/trading-competition-v3"
               />
             </Box>
