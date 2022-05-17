@@ -67,8 +67,6 @@ const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayC
     : sortedConfig;
   const displayListConfig = showMore ? walletsToShow : walletsToShow.slice(0, displayCount);
 
-  console.log(sortedConfig, "sortedConfig");
-
   return (
     <ModalContainer minWidth="320px">
       <ModalHeader background={getThemeValue("colors.gradients.bubblegum")(theme)}>
