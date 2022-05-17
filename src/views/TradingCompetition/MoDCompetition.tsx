@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { PageMeta } from 'components/Layout/Page'
+import { TC_MOD_SUBGRAPH } from 'config/constants/endpoints'
 import {
   SmartContractPhases,
   CompetitionPhases,
@@ -46,7 +47,6 @@ import { useTeamInformation } from './useTeamInformation'
 import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
 import TeamRanksWithParticipants from './components/TeamRanks/TeamRanksWithParticipants'
 import MoDCakerBunny from './pngs/MoD-caker.png'
-import { TC_MOD_SUBGRAPH, TC_MOBOX_SUBGRAPH } from '../../config/constants/endpoints'
 
 const MoDCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE

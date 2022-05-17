@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { TC_MOBOX_SUBGRAPH } from 'config/constants/endpoints'
 import request, { gql } from 'graphql-request'
 
 const useGetParticipants = (subgraphAddress: string): string[] => {
@@ -40,7 +39,7 @@ const useGetParticipants = (subgraphAddress: string): string[] => {
     if (participants.length === 0) {
       getParticipants()
     }
-  }, [participants])
+  }, [subgraphAddress, participants])
   return participants
 }
 

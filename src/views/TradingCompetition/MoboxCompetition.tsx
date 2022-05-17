@@ -6,6 +6,7 @@ import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTradingCompetitionContractMobox } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { PageMeta } from 'components/Layout/Page'
+import { TC_MOBOX_SUBGRAPH } from 'config/constants/endpoints'
 import {
   SmartContractPhases,
   CompetitionPhases,
@@ -39,7 +40,6 @@ import Footer from './Footer'
 import PrizesInfoSection from './components/PrizesInfoSection'
 import TeamRanksWithParticipants from './components/TeamRanks/TeamRanksWithParticipants'
 import MoboxCakerBunny from './pngs/mobox-cakers.png'
-import { TC_MOD_SUBGRAPH, TC_MOBOX_SUBGRAPH } from '../../config/constants/endpoints'
 
 const MoboxCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
