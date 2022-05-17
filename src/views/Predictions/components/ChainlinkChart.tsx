@@ -39,19 +39,19 @@ function useChainlinkLatestRound() {
   return lastRound
 }
 
-const chainlinkAddress = getChainlinkOracleAddress()
 function useChainlinkRoundDataSet() {
   const lastRound = useChainlinkLatestRound()
+  const { chainlinkOracleAddress } = useConfig()
 
   const calls = useMemo(() => {
     return lastRound.data
       ? Array.from({ length: 50 }).map((_, i) => ({
-          address: chainlinkAddress,
+          address: chainlinkOracleAddress,
           name: 'getRoundData',
           params: [lastRound.data.sub(i)],
         }))
       : null
-  }, [lastRound.data])
+  }, [lastRound.data, chainlinkOracleAddress])
 
   const { data, error } = useSWRMulticall<Awaited<ReturnType<ChainlinkOracle['getRoundData']>>[]>(
     chainlinkOracleAbi,
