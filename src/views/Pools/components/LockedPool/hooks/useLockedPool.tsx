@@ -11,14 +11,12 @@ import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { fetchCakeVaultUserData } from 'state/pools'
 import { Token } from '@pancakeswap/sdk'
-import { vaultPoolConfig } from 'config/constants/pools'
+import { vaultPoolConfig, ONE_WEEK_DEFAULT } from 'config/constants/pools'
 import { VaultKey } from 'state/types'
 
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { PrepConfirmArg } from '../types'
-
-const ONE_WEEK_DEFAULT = 604800
 
 interface HookArgs {
   lockedAmount: BigNumber
