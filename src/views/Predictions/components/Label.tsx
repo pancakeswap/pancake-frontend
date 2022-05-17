@@ -5,6 +5,7 @@ import { BnbUsdtPairTokenIcon, LogoRoundIcon, Box, Flex, PocketWatchIcon, Text }
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
 import { useTranslation } from 'contexts/Localization'
+import { PredictionSupportedSymbol } from 'state/types'
 import { formatRoundTime } from '../helpers'
 import useCountdown from '../hooks/useCountdown'
 import usePollOraclePrice from '../hooks/usePollOraclePrice'
@@ -96,7 +97,7 @@ const Label = styled(Flex)<{ dir: 'left' | 'right' }>`
 
 export const PricePairLabel: React.FC = () => {
   const { price } = usePollOraclePrice()
-  const { token } = useConfig()
+  const { token, setConfig } = useConfig()
   const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
   const countUpState = useCountUp({
     start: 0,
@@ -118,7 +119,7 @@ export const PricePairLabel: React.FC = () => {
   }, [priceAsNumber, updateRef])
 
   return (
-    <Box pl="24px" position="relative" display="inline-block">
+    <Box onClick={() => setConfig(PredictionSupportedSymbol.CAKE)} pl="24px" position="relative" display="inline-block">
       <Token left={0}>{logo}</Token>
       <Label dir="left">
         <Title bold textTransform="uppercase">

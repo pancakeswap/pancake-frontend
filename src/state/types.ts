@@ -38,9 +38,11 @@ export class WrappedTokenInfo extends Token {
   }
 }
 
-export type TokenAddressMap = Readonly<{
-  [chainId in ChainId]: Readonly<{ [tokenAddress: string]: { token: WrappedTokenInfo; list: TokenList } }>
-}>
+export type TokenAddressMap = Readonly<
+  {
+    [chainId in ChainId]: Readonly<{ [tokenAddress: string]: { token: WrappedTokenInfo; list: TokenList } }>
+  }
+>
 
 type TagDetails = Tags[keyof Tags]
 export interface TagInfo extends TagDetails {
@@ -307,6 +309,11 @@ export enum PredictionStatus {
   LIVE = 'live',
   PAUSED = 'paused',
   ERROR = 'error',
+}
+
+export enum PredictionSupportedSymbol {
+  BNB = 'BNB',
+  CAKE = 'CAKE',
 }
 
 export enum PredictionsChartView {

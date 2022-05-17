@@ -76,12 +76,8 @@ const config: (t: ContextApi['t'], languageCode?: string) => ConfigMenuItemsType
         hideSubNav: true,
       },
       {
-        label: t('BNB Prediction'),
+        label: t('Prediction (BETA)'),
         href: '/prediction',
-      },
-      {
-        label: t('CAKE Prediction'),
-        href: '/cake-prediction',
       },
       {
         label: t('Lottery'),

@@ -5,7 +5,6 @@ import FlexRow from './FlexRow'
 import { PricePairLabel, TimerLabel } from './Label'
 import PrevNextNav from './PrevNextNav'
 import HistoryButton from './HistoryButton'
-import { useConfig } from '../context/ConfigProvider'
 
 const SetCol = styled.div`
   flex: none;
@@ -58,8 +57,6 @@ const ButtonWrapper = styled.div`
 `
 
 const Menu = () => {
-  const { token } = useConfig()
-
   return (
     <FlexRow alignItems="center" p="16px">
       <SetCol>
@@ -86,7 +83,7 @@ const Menu = () => {
             </Button>
           </HelpButtonWrapper>
           <LeaderboardButtonWrapper>
-            <Link href={`/${token.symbol === 'CAKE' ? 'cake-prediction' : 'prediction'}/leaderboard`} passHref>
+            <Link href="/prediction/leaderboard" passHref>
               <Button as="a" variant="subtle" width="48px">
                 <PrizeIcon color="white" />
               </Button>
