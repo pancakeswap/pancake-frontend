@@ -40,7 +40,7 @@ import Rules from './components/Rules'
 import { UserTradingInformation } from './types'
 import { CompetitionPage, BannerFlex, BottomBunnyWrapper } from './styles'
 import RanksIcon from './svgs/RanksIcon'
-import ModBattleBanner from './mod/components/BattleBanner/ModBattleBanner'
+import ModBattleBanner, { CoinDecoration } from './mod/components/BattleBanner/ModBattleBanner'
 import ModPrizesInfo from './mod/components/PrizesInfo/ModPrizesInfo'
 import ModYourScore from './mod/components/YourScore/ModYourScore'
 import { useTeamInformation } from './useTeamInformation'
@@ -196,6 +196,7 @@ const MoDCompetition = () => {
                 isLoading={isLoading}
                 onRegisterSuccess={onRegisterSuccess}
                 onClaimSuccess={onClaimSuccess}
+                coinDecoration={<CoinDecoration />}
               />
             )
           }
