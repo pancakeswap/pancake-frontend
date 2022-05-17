@@ -1,18 +1,29 @@
-import React from 'react'
+import { useCallback } from 'react'
 import { useTranslation } from 'contexts/Localization'
-import { DeserializedPool } from 'state/types'
-import { Flex, Text, BunnyPlaceholderIcon } from '@pancakeswap/uikit'
+import { Flex, Text, BunnyPlaceholderIcon, Button } from '@pancakeswap/uikit'
+import { useConfig } from 'views/Ifos/contexts/IfoContext'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { MessageTextLink } from '../IfoCardStyles'
-import LockCakeButton from './LockCakeButton'
 
 interface NotTokensProps {
-  pool: DeserializedPool
   account: string
 }
 
-const NotTokens: React.FC<NotTokensProps> = ({ account, pool }) => {
+const NotTokens: React.FC<NotTokensProps> = ({ account }) => {
   const { t } = useTranslation()
+  const { isExpanded, setIsExpanded } = useConfig()
+
+  const scrollToTop = useCallback(() => {
+    // Always expand for mobile
+    if (!isExpanded) {
+      setIsExpanded(true)
+    }
+
+    window.scrollTo({
+      top: 400,
+      behavior: 'auto',
+    })
+  }, [])
 
   return (
     <Flex flexDirection="column">
@@ -28,7 +39,7 @@ const NotTokens: React.FC<NotTokensProps> = ({ account, pool }) => {
           {t('How does it work?')} »
         </MessageTextLink>
       </Flex>
-      {account ? <LockCakeButton pool={pool} /> : <ConnectWalletButton />}
+      {account ? <Button onClick={scrollToTop}>{t('Lock CAKE')}</Button> : <ConnectWalletButton />}
     </Flex>
   )
 }

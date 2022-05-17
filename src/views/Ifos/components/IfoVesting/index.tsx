@@ -31,7 +31,7 @@ const IfoVestingStatus = {
     imgUrl: '/images/ifos/vesting/in-vesting-period.svg',
   },
   [VestingStatus.VESTING_ENDED]: {
-    text: <Trans>You have tokens available for claiming now!</Trans>,
+    text: <Trans>No vesting token to claim.</Trans>,
     imgUrl: '/images/ifos/vesting/in-vesting-end.svg',
   },
 }
@@ -67,7 +67,7 @@ const IfoVesting: React.FC<IfoVestingProps> = ({ pool }) => {
         </Flex>
       </CardHeader>
       <CardBody>
-        <NotTokens pool={pool} account={account} />
+        <NotTokens account={account} />
         {/* <VestingPeriod /> */}
         {/* <VestingEnded /> */}
       </CardBody>

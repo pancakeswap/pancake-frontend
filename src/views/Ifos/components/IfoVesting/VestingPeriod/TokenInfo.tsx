@@ -24,16 +24,17 @@ const TokenInfo: React.FC = () => {
       <Flex mb="8px">
         <ListLogo
           logoURI="https://pancakeswap.finance/images/tokens/0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c.png"
-          style={{ alignSelf: 'center' }}
+          style={{ marginTop: '8px' }}
         />
         <Flex flexDirection="column" ml="8px">
-          <Text bold>HOTCROSS</Text>
+          <Text bold lineHeight="120%">
+            Hotcross: Multichain Infra & Web3 Playground
+          </Text>
           <Flex>
             <BalanceWithLoading color="secondary" value={3} decimals={3} bold fontSize="12px" />
-            <Text fontSize="12px" margin="0 2px">
-              of
+            <Text color="textSubtle" textTransform="uppercase" fontSize="12px" margin="0 2px">
+              HOTCROSS
             </Text>
-            <BalanceWithLoading value={20.1233} decimals={3} fontSize="12px" />
           </Flex>
         </Flex>
         <ArrowIcon toggled={expanded} color="primary" ml="auto" />

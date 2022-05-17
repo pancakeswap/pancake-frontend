@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { keyframes, css } from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { Box, Flex, Text, Progress } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Progress, Button } from '@pancakeswap/uikit'
 
 const expandAnimation = keyframes`
   from {
@@ -36,6 +36,9 @@ const StyledExpand = styled(Box)<{ expanded: boolean }>`
           ${collapseAnimation} 300ms linear forwards
         `};
   overflow: hidden;
+  margin: 0 -24px;
+  padding: 24px;
+  background: ${({ theme }) => theme.colors.dropdown};
 `
 
 interface ExpandProps {
@@ -70,6 +73,7 @@ const Expand: React.FC<ExpandProps> = ({ expanded }) => {
           </Text>
         </Flex>
       </Flex>
+      <Button width="100%">Calim HotCross</Button>
     </StyledExpand>
   )
 }
