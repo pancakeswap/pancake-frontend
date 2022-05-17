@@ -21,6 +21,8 @@ import { CompetitionProps } from '../../types'
 
 const StyledCard = styled(Card)`
   display: inline-flex;
+  position: relative;
+  overflow: visible;
   background: linear-gradient(180deg, #7645d9 0%, #452a7a 100%);
 
   > div {
@@ -64,6 +66,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
   hasCompetitionEnded,
   onRegisterSuccess,
   onClaimSuccess,
+  coinDecoration = null,
 }) => {
   const router = useRouter()
   const { t } = useTranslation()
@@ -192,6 +195,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
           )}
         </Flex>
       </CardBody>
+      {coinDecoration}
     </StyledCard>
   )
 }

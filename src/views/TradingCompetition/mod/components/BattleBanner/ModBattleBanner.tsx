@@ -4,6 +4,9 @@ import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import AllBunniesImage from '../../../pngs/MoD-hero-bunnies.png'
+import Dar1 from '../../../pngs/MoD-banner-dar.png'
+import Dar2 from '../../../pngs/MoD-banner-dar2.png'
+import Dar3 from '../../../pngs/MoD-banner-dar3.png'
 import meshImg from '../../../pngs/mod-mesh.png'
 import textBgLightImg from '../../../pngs/mod-text-light.png'
 import bgShineImg from '../../../pngs/MoD-bg-shine.png'
@@ -74,6 +77,42 @@ const ImageWrapper = styled.div`
   }
 `
 
+const Dar1ImageWrapper = styled.div`
+  position: absolute;
+  z-index: 2;
+  left: 3%;
+  top: 0;
+  width: 100px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    left: 20%;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    left: 30%;
+  }
+`
+
+const Dar2ImageWrapper = styled.div`
+  position: absolute;
+  z-index: 2;
+  right: 1%;
+  top: 10%;
+  width: 79px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    right: 21%;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    right: 31%;
+  }
+`
+
+const Dar3ImageWrapper = styled.div`
+  position: absolute;
+  z-index: 2;
+  left: -18%;
+  bottom: 0%;
+  width: 85px;
+`
+
 const StyledText = styled(Text)`
   ${({ theme }) => TextStyles(theme)}
 `
@@ -134,41 +173,58 @@ const ModBattleBanner = () => {
   const { theme } = useTheme()
 
   return (
-    <Flex flexDirection="column" overflow="hidden">
-      <Mesh />
-      <BgShine />
-      <ImageWrapper>
-        <Image src={AllBunniesImage} alt="all the bunnies" width={523} height={395} />
-      </ImageWrapper>
-      <StyledText
-        mb="16px"
-        color="#FFD585"
-        bold
-        style={{
-          textShadow:
-            '0px 0px 10px rgba(255, 175, 0, 0.22), 0px 0px 8px rgba(255, 61, 0, 0.25), 0px 0px 18px rgba(255, 135, 0, 0.55)',
-        }}
-      >
-        {new Date(2022, 4).toLocaleString(locale, {
-          month: 'short',
-        })}{' '}
-        17-24, 2022
-      </StyledText>
+    <>
+      <Dar1ImageWrapper>
+        <Image src={Dar1} alt="dar coin1" width={230} height={162} />
+      </Dar1ImageWrapper>
+      <Dar2ImageWrapper>
+        <Image src={Dar2} alt="dar coin2" width={158} height={112} />
+      </Dar2ImageWrapper>
+      <Flex flexDirection="column" overflow="hidden">
+        <Mesh />
+        <BgShine />
 
-      <StyledHeading1Wrapper>
-        <MoDLogo />
-        <StyledHeading1Text>{t('Trading Competition')}</StyledHeading1Text>
-        <TextBgLight />
-      </StyledHeading1Wrapper>
-      <StyledHeading2Text background="#BDF9DA" $fill>
-        {t('$120,000 in Prizes with Tokens and NFTs!')}
-      </StyledHeading2Text>
-      <StyledHeading scale="md" color={theme.isDark ? 'card' : 'inputSecondary'} mt="16px">
-        {t('Compete with other teams for the highest trading volume!')}
-      </StyledHeading>
-      <Flex height="100px" />
-    </Flex>
+        <ImageWrapper>
+          <Image src={AllBunniesImage} alt="all the bunnies" width={523} height={395} />
+        </ImageWrapper>
+        <StyledText
+          mb="16px"
+          color="#FFD585"
+          bold
+          style={{
+            textShadow:
+              '0px 0px 10px rgba(255, 175, 0, 0.22), 0px 0px 8px rgba(255, 61, 0, 0.25), 0px 0px 18px rgba(255, 135, 0, 0.55)',
+          }}
+        >
+          {new Date(2022, 4).toLocaleString(locale, {
+            month: 'short',
+          })}{' '}
+          17-24, 2022
+        </StyledText>
+
+        <StyledHeading1Wrapper>
+          <MoDLogo />
+          <StyledHeading1Text>{t('Trading Competition')}</StyledHeading1Text>
+          <TextBgLight />
+        </StyledHeading1Wrapper>
+        <StyledHeading2Text background="#BDF9DA" $fill>
+          {t('$120,000 in Prizes with Tokens and NFTs!')}
+        </StyledHeading2Text>
+        <StyledHeading scale="md" color={theme.isDark ? 'card' : 'inputSecondary'} mt="16px">
+          {t('Compete with other teams for the highest trading volume!')}
+        </StyledHeading>
+        <Flex height="100px" />
+      </Flex>
+    </>
   )
 }
 
 export default ModBattleBanner
+
+export const CoinDecoration: React.FC = () => {
+  return (
+    <Dar3ImageWrapper>
+      <Image src={Dar3} alt="dar coin2" width={216} height={298} />
+    </Dar3ImageWrapper>
+  )
+}

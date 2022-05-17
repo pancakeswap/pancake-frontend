@@ -16,6 +16,7 @@ export interface CompetitionProps extends UserRewardsProps {
   onDismiss?: () => void
   onRegisterSuccess?: () => void
   onClaimSuccess?: () => void
+  coinDecoration?: React.ReactNode
 }
 
 export interface CompetitionStepProps {
