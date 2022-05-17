@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import ScoreHeader from '../../../components/YourScore/ScoreHeader'
 import RibbonWithImage from '../../../components/RibbonWithImage'
-import { YourScoreProps } from '../../../types'
+import { UserLeaderboardSharedInformation, CompetitionProps } from '../../../types'
 import FlippersShare from '../../../pngs/mobox-flippers-share.png'
 import StormShare from '../../../pngs/mobox-storm-share.png'
 import CakersShare from '../../../pngs/mobox-cakers-share.png'
@@ -19,7 +19,15 @@ const Wrapper = styled.div`
   max-width: 768px;
 `
 
-const ModYourScore: React.FC<YourScoreProps> = ({
+export interface MoDYourScoreProps extends CompetitionProps {
+  hasRegistered?: boolean
+  userLeaderboardInformation?: UserLeaderboardSharedInformation & {
+    darVolumeRank?: string
+    darVolume?: string
+  }
+}
+
+const ModYourScore: React.FC<MoDYourScoreProps> = ({
   hasRegistered = false,
   account,
   userTradingInformation,
@@ -62,11 +70,11 @@ const ModYourScore: React.FC<YourScoreProps> = ({
             ) : (
               <>
                 <Heading textAlign="center" scale="lg">
-                  #{userLeaderboardInformation.moboxVolumeRank}
+                  #{userLeaderboardInformation.darVolume}
                 </Heading>
                 <Text>
                   $
-                  {(userLeaderboardInformation.moboxVolume as unknown as number).toLocaleString(undefined, {
+                  {(userLeaderboardInformation.darVolumeRank as unknown as number).toLocaleString(undefined, {
                     maximumFractionDigits: 2,
                     minimumFractionDigits: 0,
                   })}

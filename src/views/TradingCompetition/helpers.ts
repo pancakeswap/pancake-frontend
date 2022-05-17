@@ -61,7 +61,7 @@ export const useFanTokenCompetitionRewards = ({
   }
 }
 
-export const useCompetitionRewards = ({
+export const useMoboxCompetitionRewards = ({
   userCakeRewards,
   userMoboxRewards,
 }: {
@@ -83,6 +83,33 @@ export const useCompetitionRewards = ({
   return {
     cakeReward: cakeBalance,
     moboxReward: moboxBalance,
+    dollarValueOfTokensReward,
+  }
+}
+
+export const useModCompetitionRewards = ({
+  userCakeRewards,
+  userDarRewards,
+}: {
+  userCakeRewards: ReactText
+  userDarRewards: ReactText
+}) => {
+  const darPriceBUSD = useBUSDPrice(tokens.dar)
+  const cakeAsBigNumber = new BigNumber(userCakeRewards as string)
+  const darAsBigNumber = new BigNumber(userDarRewards as string)
+  const cakeBalance = getBalanceNumber(cakeAsBigNumber)
+  const darBalance = getBalanceNumber(darAsBigNumber, tokens.dar.decimals)
+  const cakePriceBusd = useCakeBusdPrice()
+
+  const dollarValueOfTokensReward =
+    cakePriceBusd && darPriceBUSD
+      ? multiplyPriceByAmount(cakePriceBusd, cakeBalance) +
+        multiplyPriceByAmount(darPriceBUSD, darBalance, tokens.dar.decimals)
+      : null
+
+  return {
+    cakeReward: cakeBalance,
+    darReward: darBalance,
     dollarValueOfTokensReward,
   }
 }

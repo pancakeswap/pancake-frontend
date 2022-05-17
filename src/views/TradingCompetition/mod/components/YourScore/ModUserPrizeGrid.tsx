@@ -2,10 +2,10 @@ import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 import styled from 'styled-components'
-import { getRewardGroupAchievements, useCompetitionRewards } from '../../../helpers'
-import { UserTradingInformationProps } from '../../../types'
+import { getRewardGroupAchievements, useModCompetitionRewards } from '../../../helpers'
+import { UserTradingInformation } from '../../../types'
 import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTable'
-import { mboxPrizes } from '../../../../../config/constants/trading-competition/prizes'
+import { modPrizes } from '../../../../../config/constants/trading-competition/prizes'
 import UserPrizeGridDollar from '../../../components/YourScore/UserPrizeGridDollar'
 import AchievementPoints from '../../../components/YourScore/AchievementPoints'
 
@@ -13,18 +13,17 @@ const StyledThead = styled.thead`
   border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
-const ModUserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationProps }> = ({
+const ModUserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformation }> = ({
   userTradingInformation,
 }) => {
   const { t } = useTranslation()
-  const { userRewardGroup, userCakeRewards, userMoboxRewards, userPointReward, canClaimMysteryBox, canClaimNFT } =
-    userTradingInformation
-  const { cakeReward, moboxReward, dollarValueOfTokensReward } = useCompetitionRewards({
+  const { userRewardGroup, userCakeRewards, userDarRewards, userPointReward, canClaimNFT } = userTradingInformation
+  const { cakeReward, darReward, dollarValueOfTokensReward } = useModCompetitionRewards({
     userCakeRewards,
-    userMoboxRewards,
+    userDarRewards,
   })
 
-  const achievement = getRewardGroupAchievements(mboxPrizes, userRewardGroup, userPointReward)
+  const achievement = getRewardGroupAchievements(modPrizes, userRewardGroup, userPointReward)
 
   return (
     <StyledPrizeTable>
@@ -41,7 +40,7 @@ const ModUserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformati
           <BoldTd>
             <Flex flexDirection="column">
               <Text bold>{cakeReward.toFixed(4)} CAKE</Text>
-              <Text bold>{moboxReward.toFixed(4)} MBOX</Text>
+              <Text bold>{darReward.toFixed(4)} DAR</Text>
               <UserPrizeGridDollar dollarValueOfTokensReward={dollarValueOfTokensReward} />
             </Flex>
           </BoldTd>
@@ -49,7 +48,6 @@ const ModUserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformati
             <AchievementPoints achievement={achievement} userPointReward={userPointReward} />
           </Td>
           <Td>{canClaimNFT ? <CheckmarkCircleIcon color="success" /> : <BlockIcon color="textDisabled" />}</Td>
-          <Td>{canClaimMysteryBox ? <CheckmarkCircleIcon color="success" /> : <BlockIcon color="textDisabled" />}</Td>
         </tr>
       </tbody>
     </StyledPrizeTable>

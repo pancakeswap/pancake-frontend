@@ -27,7 +27,7 @@ import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
 import BattleCta from './components/BattleCta'
 import Rules from './components/Rules'
-import { UserTradingInformationProps } from './types'
+import { UserTradingInformation } from './types'
 import { CompetitionPage, BannerFlex } from './styles'
 import RanksIcon from './svgs/RanksIcon'
 import MoboxYourScore from './mobox/components/YourScore/MoboxYourScore'
@@ -50,7 +50,7 @@ const MoboxCompetition = () => {
   const tradingCompetitionContract = useTradingCompetitionContractMobox(false)
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.OVER)
   const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
-  const [userTradingInformation, setUserTradingInformation] = useState<UserTradingInformationProps>({
+  const [userTradingInformation, setUserTradingInformation] = useState<UserTradingInformation>({
     hasRegistered: false,
     isUserActive: false,
     hasUserClaimed: false,

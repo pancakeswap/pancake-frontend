@@ -36,7 +36,7 @@ import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
 import BattleCta from './components/BattleCta'
 import Rules from './components/Rules'
-import { UserTradingInformationProps } from './types'
+import { UserTradingInformation } from './types'
 import { CompetitionPage, BannerFlex, BottomBunnyWrapper } from './styles'
 import RanksIcon from './svgs/RanksIcon'
 import ModBattleBanner from './mod/components/BattleBanner/ModBattleBanner'
@@ -57,15 +57,14 @@ const MoDCompetition = () => {
   const tradingCompetitionContract = useTradingCompetitionContractMoD(false)
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.REGISTRATION)
   const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
-  const [userTradingInformation, setUserTradingInformation] = useState<UserTradingInformationProps>({
+  const [userTradingInformation, setUserTradingInformation] = useState<UserTradingInformation>({
     hasRegistered: false,
     isUserActive: false,
     hasUserClaimed: false,
     userRewardGroup: '0',
     userCakeRewards: '0',
-    userMoboxRewards: '0',
+    userDarRewards: '0',
     userPointReward: '0',
-    canClaimMysteryBox: false,
     canClaimNFT: false,
   })
   const [userLeaderboardInformation, setUserLeaderboardInformation] = useState({
@@ -73,8 +72,8 @@ const MoDCompetition = () => {
     team: 0,
     volume: 0,
     next_rank: 0,
-    moboxVolumeRank: '???',
-    moboxVolume: '???',
+    darVolumeRank: '???',
+    darVolume: '???',
   })
 
   const {
@@ -88,25 +87,14 @@ const MoDCompetition = () => {
   const hasCompetitionEnded =
     currentPhase.state === FINISHED || currentPhase.state === CLAIM || currentPhase.state === OVER
 
-  const {
-    hasUserClaimed,
-    isUserActive,
-    userCakeRewards,
-    userMoboxRewards,
-    userPointReward,
-    canClaimMysteryBox,
-    canClaimNFT,
-  } = userTradingInformation
+  const { hasUserClaimed, isUserActive, userCakeRewards, userDarRewards, userPointReward, canClaimNFT } =
+    userTradingInformation
 
   const userCanClaimPrizes =
     currentPhase.state === CLAIM &&
     isUserActive &&
     !hasUserClaimed &&
-    (userCakeRewards !== '0' ||
-      userMoboxRewards !== '0' ||
-      userPointReward !== '0' ||
-      canClaimMysteryBox ||
-      canClaimNFT)
+    (userCakeRewards !== '0' || userDarRewards !== '0' || userPointReward !== '0' || canClaimNFT)
   const finishedAndPrizesClaimed = hasCompetitionEnded && account && hasUserClaimed
   const finishedAndNothingToClaim = hasCompetitionEnded && account && !userCanClaimPrizes
 
@@ -119,21 +107,15 @@ const MoDCompetition = () => {
     const fetchUserContract = async () => {
       try {
         const user = await tradingCompetitionContract.claimInformation(account)
-        const userObject = {
+        const userObject: UserTradingInformation = {
           hasRegistered: user[0],
           isUserActive: user[1],
           hasUserClaimed: user[2],
           userRewardGroup: user[3].toString(),
           userCakeRewards: user[4].toString(),
-          userMoboxRewards: user[5].toString(),
+          userDarRewards: user[5].toString(),
           userPointReward: user[6].toString(),
-          canClaimMysteryBox: user[7],
-          // canClaimNFT: user[8],
-          // NOTE: Mobox Trading competition has a bug in claimInformation
-          // that returns wrong canClaimNFT.
-          // The bug is only in view function though, all other code is OK
-          // recalculating canClaimNFT here to get proper boolean
-          canClaimNFT: user[3].gt(1),
+          canClaimNFT: user[7],
         }
         setUserTradingInformation(userObject)
       } catch (error) {
@@ -151,9 +133,8 @@ const MoDCompetition = () => {
         hasUserClaimed: false,
         userRewardGroup: '0',
         userCakeRewards: '0',
-        userMoboxRewards: '0',
+        userDarRewards: '0',
         userPointReward: '0',
-        canClaimMysteryBox: false,
         canClaimNFT: false,
       })
     }
@@ -163,7 +144,7 @@ const MoDCompetition = () => {
     const fetchUserTradingStats = async () => {
       const res = await fetch(`${profileApiUrl}/api/users/${account}`)
       const data = await res.json()
-      setUserLeaderboardInformation(data.leaderboard_mobox)
+      setUserLeaderboardInformation(data.leaderboard_dar)
     }
     // If user has not registered, user trading information will not be displayed and should not be fetched
     if (account && userTradingInformation.hasRegistered) {
