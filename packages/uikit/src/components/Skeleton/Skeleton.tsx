@@ -96,12 +96,16 @@ export const SkeletonV2: React.FC<SkeletonV2Props> = ({
   wrapperProps,
   skeletonTop = "0",
   skeletonLeft = "0",
+  width,
+  height,
+  mr,
+  ml,
   ...props
 }) => {
   const animationRef = useRef<HTMLDivElement>(null);
   const skeletonRef = useRef<HTMLDivElement>(null);
   return (
-    <SkeletonWrapper {...wrapperProps}>
+    <SkeletonWrapper width={width} height={height} mr={mr} ml={ml} {...wrapperProps}>
       <LazyMotion features={domAnimation}>
         <AnimatePresence>
           {isDataReady && (
@@ -127,9 +131,9 @@ export const SkeletonV2: React.FC<SkeletonV2Props> = ({
               transition={{ duration: 0.3 }}
             >
               {animation === ANIMATION.WAVES ? (
-                <Waves variant={variant} {...props} />
+                <Waves variant={variant} {...props} width={width} height={height} />
               ) : (
-                <Pulse variant={variant} {...props} />
+                <Pulse variant={variant} {...props} width={width} height={height} />
               )}
             </AnimationWrapper>
           )}
