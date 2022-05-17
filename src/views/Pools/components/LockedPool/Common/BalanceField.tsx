@@ -37,25 +37,21 @@ const BalanceField: React.FC<PropsType> = ({
   const { userNotEnoughCake, notEnoughErrorMessage } = useUserEnoughCakeValidator(lockedAmount, stakingTokenBalance)
 
   useEffect(() => {
-    const lockedAmountBigNumber = new BigNumber(lockedAmount)
-    if (lockedAmountBigNumber.gt(0)) {
-      handleStakeInputChange(lockedAmount)
+    const amount = new BigNumber(lockedAmount)
+    if (amount.gt(0)) {
+      const convertedInput = amount.multipliedBy(BIG_TEN.pow(stakingDecimals))
+      const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
+      setPercent(percentage > 100 ? 100 : percentage)
+    } else {
+      setPercent(0)
     }
-  }, [])
+  }, [lockedAmount, stakingDecimals, stakingMax, setPercent])
 
   const handleStakeInputChange = useCallback(
     (input: string) => {
-      if (input) {
-        const convertedInput = new BigNumber(input).multipliedBy(BIG_TEN.pow(stakingDecimals))
-        const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
-        setPercent(percentage > 100 ? 100 : percentage)
-      } else {
-        setPercent(0)
-      }
-
       setLockedAmount(input)
     },
-    [stakingDecimals, stakingMax, setLockedAmount],
+    [setLockedAmount],
   )
 
   const handleChangePercent = useCallback(
