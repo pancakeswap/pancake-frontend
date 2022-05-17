@@ -100,7 +100,7 @@ export interface UserTradingInformation {
   canClaimNFT?: boolean
 }
 
-interface UserLeaderboardSharedInformation {
+export interface UserLeaderboardSharedInformation {
   global?: ReactText
   team?: ReactText
   volume?: number
@@ -112,13 +112,5 @@ export interface YourScoreProps extends CompetitionProps {
   userLeaderboardInformation?: UserLeaderboardSharedInformation & {
     moboxVolumeRank?: string
     moboxVolume?: string
-  }
-}
-
-export interface MoDYourScoreProps extends CompetitionProps {
-  hasRegistered?: boolean
-  userLeaderboardInformation?: UserLeaderboardSharedInformation & {
-    darVolumeRank?: string
-    darVolume?: string
   }
 }

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import ScoreHeader from '../../../components/YourScore/ScoreHeader'
 import RibbonWithImage from '../../../components/RibbonWithImage'
-import { MoDYourScoreProps } from '../../../types'
+import { UserLeaderboardSharedInformation, CompetitionProps } from '../../../types'
 import FlippersShare from '../../../pngs/mobox-flippers-share.png'
 import StormShare from '../../../pngs/mobox-storm-share.png'
 import CakersShare from '../../../pngs/mobox-cakers-share.png'
@@ -18,6 +18,14 @@ const Wrapper = styled.div`
   margin: 24px auto 0;
   max-width: 768px;
 `
+
+export interface MoDYourScoreProps extends CompetitionProps {
+  hasRegistered?: boolean
+  userLeaderboardInformation?: UserLeaderboardSharedInformation & {
+    darVolumeRank?: string
+    darVolume?: string
+  }
+}
 
 const ModYourScore: React.FC<MoDYourScoreProps> = ({
   hasRegistered = false,
