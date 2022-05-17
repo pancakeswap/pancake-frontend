@@ -1,7 +1,7 @@
 import { BalanceInput, Button, Flex, Image, Slider, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
-import { Dispatch, memo, SetStateAction, useCallback, useState } from 'react'
+import { Dispatch, useEffect, memo, SetStateAction, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { BIG_TEN } from 'utils/bigNumber'
 import { getFullDisplayBalance } from 'utils/formatBalance'
@@ -35,6 +35,13 @@ const BalanceField: React.FC<PropsType> = ({
   const { t } = useTranslation()
   const [percent, setPercent] = useState(0)
   const { userNotEnoughCake, notEnoughErrorMessage } = useUserEnoughCakeValidator(lockedAmount, stakingTokenBalance)
+
+  useEffect(() => {
+    const lockedAmountBigNumber = new BigNumber(lockedAmount)
+    if (lockedAmountBigNumber.gt(0)) {
+      handleStakeInputChange(lockedAmount)
+    }
+  }, [])
 
   const handleStakeInputChange = useCallback(
     (input: string) => {
