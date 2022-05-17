@@ -7,7 +7,6 @@
       "outputs": ["dist/**", ".next/**"]
     },
     "test": {
-      "outputs": ["coverage/**"],
       "dependsOn": []
     },
     "lint": {
@@ -23,6 +22,12 @@
       "cache": false
     },
     "updateLPsAPR": {
+      "cache": false
+    },
+    "integration-test": {
+      "cache": false
+    },
+    "format:check": {
       "cache": false
     }
   }

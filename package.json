@@ -11,7 +11,11 @@
     "build": "turbo run build --filter=web",
     "format:check:staged": "turbo run format:check:staged --filter=web",
     "postinstall": "turbo run typechain --filter=web",
-    "updateLPsAPR": "turbo run updateLPsAPR --filter=web"
+    "updateLPsAPR": "turbo run updateLPsAPR --filter=web",
+    "lint": "turbo run lint --filter=web",
+    "integration-test": "turbo run integration-test --filter=web",
+    "test": "turbo run test --filter=web",
+    "format:check": "turbo run format:check --filter=web"
   },
   "browserslist": {
     "production": [
