@@ -43,7 +43,7 @@ const WalletCard: React.FC<Props> = ({ login, walletConfig, onDismiss }) => {
     <WalletButton
       variant="tertiary"
       onClick={() => {
-        if (!window.ethereum && title === "Metamask" && walletConfig.href) {
+        if (!window.ethereum && walletConfig.href) {
           window.open(walletConfig.href, "_blank", "noopener noreferrer");
         } else {
           login(walletConfig.connectorId);
