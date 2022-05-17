@@ -60,8 +60,8 @@ const ModYourScore: React.FC<MoDYourScoreProps> = ({
         extraUserRankBox={
           <UserRankBox
             flex="2"
-            title={t('Your MBOX volume rank').toUpperCase()}
-            footer={t('Based on your MBOX/BNB and MBOX/BUSD trading')}
+            title={t('Your DAL volume rank').toUpperCase()}
+            footer={t('Based on your DAL/BNB and DAL/BUSD trading')}
             // Add responsive mr if competition is LIVE
             mr={currentPhase.state === LIVE ? [0, null, null, '8px'] : 0}
           >
