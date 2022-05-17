@@ -59,11 +59,29 @@ const config = {
   async headers() {
     return [
       {
-        source: '/images/home/:all*',
+        source: '/logo.png',
         headers: [
           {
             key: 'Cache-Control',
             value: 'public, immutable, max-age=31536000',
+          },
+        ],
+      },
+      {
+        source: '/images/:all*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, immutable, max-age=31536000',
+          },
+        ],
+      },
+      {
+        source: '/images/tokens/:all*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, immutable, max-age=604800',
           },
         ],
       },
