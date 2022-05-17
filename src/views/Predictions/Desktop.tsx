@@ -55,10 +55,12 @@ const ChartPane = styled.div`
   background: ${({ theme }) => theme.colors.background};
 `
 
-const HistoryPane = styled.div<{ isHistoryPaneOpen: boolean }>`
+const HistoryPane = styled.div<{ isHistoryPaneOpen: boolean; isChartPaneOpen: boolean }>`
   flex: none;
   overflow: hidden;
   transition: width 200ms ease-in-out;
+  background: ${({ theme }) => theme.card.background};
+  padding-bottom: ${({ isChartPaneOpen }) => (isChartPaneOpen ? 0 : '24px')};
   width: ${({ isHistoryPaneOpen }) => (isHistoryPaneOpen ? '384px' : 0)};
 `
 
@@ -243,7 +245,7 @@ const Desktop: React.FC = () => {
             {isChartPaneOpen && (chartView === PredictionsChartView.TradingView ? <TradingView /> : <ChainlinkChart />)}
           </ChartPane>
         </SplitWrapper>
-        <HistoryPane isHistoryPaneOpen={isHistoryPaneOpen}>
+        <HistoryPane isHistoryPaneOpen={isHistoryPaneOpen} isChartPaneOpen={isChartPaneOpen}>
           <History />
         </HistoryPane>
       </StyledDesktop>
