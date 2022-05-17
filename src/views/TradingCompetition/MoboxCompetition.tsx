@@ -39,6 +39,7 @@ import Footer from './Footer'
 import PrizesInfoSection from './components/PrizesInfoSection'
 import TeamRanksWithParticipants from './components/TeamRanks/TeamRanksWithParticipants'
 import MoboxCakerBunny from './pngs/mobox-cakers.png'
+import { TC_MOD_SUBGRAPH, TC_MOBOX_SUBGRAPH } from '../../config/constants/endpoints'
 
 const MoboxCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
@@ -251,6 +252,7 @@ const MoboxCompetition = () => {
                 team2LeaderboardInformation={team2LeaderboardInformation}
                 team3LeaderboardInformation={team3LeaderboardInformation}
                 globalLeaderboardInformation={globalLeaderboardInformation}
+                participantSubgraphAddress={TC_MOBOX_SUBGRAPH}
                 subgraphName="pancakeswap/trading-competition-v3"
               />
             </Box>

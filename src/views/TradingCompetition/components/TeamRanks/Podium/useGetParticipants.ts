@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react'
 import { TC_MOBOX_SUBGRAPH } from 'config/constants/endpoints'
 import request, { gql } from 'graphql-request'
 
-const useGetParticipants = (): string[] => {
+const useGetParticipants = (subgraphAddress: string): string[] => {
   const [participants, setParticipants] = useState<string[]>([])
   useEffect(() => {
     const getParticipants = async () => {
       try {
         const response = await request(
-          TC_MOBOX_SUBGRAPH,
+          subgraphAddress,
           gql`
             query getTradingCompetitionParticipants {
               storm: team(id: "1") {

@@ -46,6 +46,7 @@ import { useTeamInformation } from './useTeamInformation'
 import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
 import TeamRanksWithParticipants from './components/TeamRanks/TeamRanksWithParticipants'
 import MoDCakerBunny from './pngs/MoD-caker.png'
+import { TC_MOD_SUBGRAPH, TC_MOBOX_SUBGRAPH } from '../../config/constants/endpoints'
 
 const MoDCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
@@ -240,6 +241,7 @@ const MoDCompetition = () => {
                 team2LeaderboardInformation={team2LeaderboardInformation}
                 team3LeaderboardInformation={team3LeaderboardInformation}
                 globalLeaderboardInformation={globalLeaderboardInformation}
+                participantSubgraphAddress={TC_MOD_SUBGRAPH}
                 subgraphName="pancakeswap/trading-competition-v4"
               />
             </Box>
