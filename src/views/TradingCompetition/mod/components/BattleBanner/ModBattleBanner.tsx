@@ -59,7 +59,7 @@ const ImageWrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.md} {
     position: absolute;
     width: auto;
-    bottom: -5%;
+    bottom: -3%;
     z-index: 1;
     right: 10px;
   }
@@ -69,8 +69,8 @@ const ImageWrapper = styled.div`
   @media screen and (min-width: 1440px) {
     right: 15%;
   }
-  @media screen and (min-width: 1680px) {
-    right: 23%;
+  @media screen and (min-width: 1440px) {
+    right: 18%;
   }
 `
 
