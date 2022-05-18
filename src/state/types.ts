@@ -185,7 +185,7 @@ export interface Profile {
 export interface SerializedFarmsState {
   data: SerializedFarm[]
   loadArchivedFarmsData: boolean
-  farmAuctionLoaded: boolean
+  farmAuctionLoaded?: boolean
   userDataLoaded: boolean
   loadingKeys: Record<string, boolean>
   poolLength?: number
@@ -195,7 +195,7 @@ export interface SerializedFarmsState {
 export interface DeserializedFarmsState {
   data: DeserializedFarm[]
   loadArchivedFarmsData: boolean
-  farmAuctionLoaded: boolean
+  farmAuctionLoaded?: boolean
   userDataLoaded: boolean
   poolLength?: number
   regularCakePerBlock?: number
