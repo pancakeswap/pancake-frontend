@@ -20,7 +20,7 @@ export const useTeamInformation = (competitionId: number) => {
 
     const fetchTeamsLeaderboardStats = async (teamId: number, callBack: (data: any) => void) => {
       try {
-        const res = await fetch(`${profileApiUrl}/api/leaderboard/2/team/${teamId}`)
+        const res = await fetch(`${profileApiUrl}/api/leaderboard/${competitionId}/team/${teamId}`)
         const data = await res.json()
         callBack(data)
       } catch (e) {

@@ -4,6 +4,7 @@ import IFOBanner from '../IFOBanner'
 import LotteryBanner from '../LotteryBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 import useIsRenderLotteryBanner from './useIsRenderLotteryBanner'
+import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 
 /**
  * make your custom hook to control should render specific banner or not
@@ -20,6 +21,8 @@ import useIsRenderLotteryBanner from './useIsRenderLotteryBanner'
 export const useMultipleBannerConfig = () => {
   const isRenderIFOBanner = useIsRenderIfoBanner()
   const isRenderLotteryBanner = useIsRenderLotteryBanner()
+  const isRenderCompetitionBanner = useIsRenderCompetitionBanner()
+
   return useMemo(
     () =>
       [
@@ -28,7 +31,7 @@ export const useMultipleBannerConfig = () => {
           banner: <IFOBanner />,
         },
         {
-          shouldRender: true,
+          shouldRender: isRenderCompetitionBanner,
           banner: <CompetitionBanner />,
         },
         {
@@ -38,6 +41,6 @@ export const useMultipleBannerConfig = () => {
       ]
         .filter((d) => d.shouldRender)
         .map((d) => d.banner),
-    [isRenderIFOBanner, isRenderLotteryBanner],
+    [isRenderIFOBanner, isRenderLotteryBanner, isRenderCompetitionBanner],
   )
 }

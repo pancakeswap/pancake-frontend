@@ -1517,7 +1517,7 @@
   "Farm Auction Winner, add liquidity at your own risk.": "Farm Auction Winner, add liquidity at your own risk.",
   "Currently showing charts from Chainlink oracle": "Currently showing charts from Chainlink oracle",
   "The price you see come directly from the Chainlink BNB/USD oracle, which powers the Prediction game.": "The price you see come directly from the Chainlink BNB/USD oracle, which powers the Prediction game.",
-  "Oracle price refreshes every ~1 min.": "Oracle price refreshes every ~1 min.",
+  "Oracle price refreshes every ~20 seconds.": "Oracle price refreshes every ~20 seconds.",
   "When compared to TradingView chart. This chart refreshes slower and with fewer features.": "When compared to TradingView chart. This chart refreshes slower and with fewer features.",
   "Max. stake limit ends in": "Max. stake limit ends in",
   "Token address copied": "Token address copied",
@@ -1526,6 +1526,7 @@
   "Highest": "Highest",
   "Connect": "Connect",
   "Play Now": "Play Now",
+  "Litepaper": "Litepaper",
   "Win $%prize% in Lottery": "Win $%prize% in Lottery",
   "Approve was called unnecessarily": "Approve was called unnecessarily",
   "No token": "No token",
@@ -1692,5 +1693,7 @@
   "Mobox Trading Competition": "Mobox Trading Competition",
   "$80,000 in Prizes with Tokens and NFTs!": "$80,000 in Prizes with Tokens and NFTs!",
   "In addition to token prizes there are NFT rewards (estimated worth of ~$40,000 at the time of writing):": "In addition to token prizes there are NFT rewards (estimated worth of ~$40,000 at the time of writing):",
-  "Auction Hosting Ends": "Auction Hosting Ends"
+  "Auction Hosting Ends": "Auction Hosting Ends",
+  "Your DAR volume rank": "Your DAR volume rank",
+  "Based on your DAR/BNB trading": "Based on your DAR/BNB trading"
 }

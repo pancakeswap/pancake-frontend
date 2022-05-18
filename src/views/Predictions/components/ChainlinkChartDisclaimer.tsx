@@ -47,7 +47,7 @@ const ChartDisclaimer: FC<InjectedModalProps> = ({ onDismiss }) => {
           {t('The price you see come directly from the Chainlink BNB/USD oracle, which powers the Prediction game.')}
         </Text>
         <Ul>
-          <li>{t('Oracle price refreshes every ~1 min.')}</li>
+          <li>{t('Oracle price refreshes every ~20 seconds.')}</li>
           <li>{t('When compared to TradingView chart. This chart refreshes slower and with fewer features.')}</li>
         </Ul>
         <Box>

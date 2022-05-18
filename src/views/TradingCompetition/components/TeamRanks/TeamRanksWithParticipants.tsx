@@ -65,6 +65,7 @@ const TotalParticipantsCloud = styled(Flex)`
 
 interface TeamRanksWithParticipantsProps extends TeamRanksProps {
   image: StaticImageData
+  participantSubgraphAddress: string
   subgraphName: string
 }
 
@@ -74,10 +75,11 @@ const TeamRanksWithParticipants: React.FC<TeamRanksWithParticipantsProps> = ({
   team2LeaderboardInformation,
   team3LeaderboardInformation,
   globalLeaderboardInformation,
+  participantSubgraphAddress,
   subgraphName,
 }) => {
   const { t } = useTranslation()
-  const participants = useGetParticipants()
+  const participants = useGetParticipants(participantSubgraphAddress)
 
   const isTeamLeaderboardDataComplete = Boolean(
     team1LeaderboardInformation.leaderboardData &&

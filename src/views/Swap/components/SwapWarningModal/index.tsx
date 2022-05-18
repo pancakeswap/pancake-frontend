@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import styled from 'styled-components'
 import { ModalBody, ModalContainer, Message, ModalHeader, Box, Heading } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
@@ -26,31 +25,9 @@ interface SwapWarningModalProps {
   onDismiss?: () => void
 }
 
-// Modal is fired by a useEffect and doesn't respond to closeOnOverlayClick prop being set to false
-const usePreventModalOverlayClick = () => {
-  useEffect(() => {
-    const preventClickHandler = (e) => {
-      e.stopPropagation()
-      e.preventDefault()
-      return false
-    }
-
-    document.querySelectorAll('[role="presentation"]').forEach((el) => {
-      el.addEventListener('click', preventClickHandler, true)
-    })
-
-    return () => {
-      document.querySelectorAll('[role="presentation"]').forEach((el) => {
-        el.removeEventListener('click', preventClickHandler, true)
-      })
-    }
-  }, [])
-}
-
 const SwapWarningModal: React.FC<SwapWarningModalProps> = ({ swapCurrency, onDismiss }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  usePreventModalOverlayClick()
 
   const TOKEN_WARNINGS = {
     [SwapWarningTokensConfig.safemoon.address]: {
