@@ -20,16 +20,8 @@ import {
   REGISTRATION,
 } from 'config/constants/trading-competition/phases'
 import PageSection from 'components/PageSection'
+import { DARKBG, MIDBLUEBG, MIDBLUEBG_DARK, TRADINGCOMPETITIONBANNER } from './pageSectionStyles'
 import {
-  DARKBG,
-  MIDBLUEBG,
-  MIDBLUEBG_DARK,
-  LIGHTBLUEBG,
-  LIGHTBLUEBG_DARK,
-  TRADINGCOMPETITIONBANNER,
-} from './pageSectionStyles'
-import {
-  PrizesIcon,
   //  RanksIcon,
   RulesIcon,
 } from './svgs'
@@ -49,6 +41,7 @@ import { useTeamInformation } from './useTeamInformation'
 import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
 import TeamRanksWithParticipants from './components/TeamRanks/TeamRanksWithParticipants'
 import MoDCakerBunny from './pngs/MoD-caker.png'
+import PrizesInfoSection from './components/PrizesInfoSection'
 
 const MoDCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
@@ -265,26 +258,7 @@ const MoDCompetition = () => {
             </Box>
           </PageSection>
         )}
-        <PageSection
-          containerProps={{ style: { marginTop: '-30px' } }}
-          dividerComponent={
-            <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
-              {t('Prizes')}
-            </RibbonWithImage>
-          }
-          concaveDivider
-          clipFill={{
-            light: 'linear-gradient(139.73deg, #e5fcfe 0%, #ecf6ff 100%)',
-            dark: 'linear-gradient(139.73deg, #303d5b 0%, #363457 100%)',
-          }}
-          dividerPosition="top"
-          background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
-          index={4}
-        >
-          <Box my="64px">
-            <ModPrizesInfo />
-          </Box>
-        </PageSection>
+        <PrizesInfoSection prizesInfoComponent={<ModPrizesInfo />} />
         <PageSection
           containerProps={{ style: { marginTop: '-1px' } }}
           index={5}
