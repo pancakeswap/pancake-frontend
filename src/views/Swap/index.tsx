@@ -284,7 +284,7 @@ export default function Swap() {
 
   // swap warning state
   const [swapWarningCurrency, setSwapWarningCurrency] = useState(null)
-  const [onPresentSwapWarningModal] = useModal(<SwapWarningModal swapCurrency={swapWarningCurrency} />)
+  const [onPresentSwapWarningModal] = useModal(<SwapWarningModal swapCurrency={swapWarningCurrency} />, false)
 
   useEffect(() => {
     if (swapWarningCurrency) {
