@@ -1,6 +1,6 @@
 import useSWRImmutable from 'swr/immutable'
 import { useMemo } from 'react'
-import { SmartContractPhases, LIVE, FINISHED, CLAIM, OVER } from 'config/constants/trading-competition/phases'
+import { SmartContractPhases, LIVE, REGISTRATION } from 'config/constants/trading-competition/phases'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 
 export const useCompetitionStatus = () => {
@@ -12,15 +12,14 @@ export const useCompetitionStatus = () => {
   })
 
   return useMemo(() => {
-    const hasCompetitionEnded = state === FINISHED || state === CLAIM || state === OVER
-    if (hasCompetitionEnded) {
-      return null
+    if (state === REGISTRATION) {
+      return 'soon'
     }
 
     if (state === LIVE) {
       return 'live'
     }
 
-    return 'soon'
+    return null
   }, [state])
 }
