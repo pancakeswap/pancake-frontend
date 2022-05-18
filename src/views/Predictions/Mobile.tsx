@@ -9,6 +9,8 @@ import Positions from './Positions'
 import MobileChart from './MobileChart'
 import { ErrorNotification, PauseNotification } from './components/Notification'
 import { PageView } from './types'
+import Menu from './components/Menu'
+import LoadingSection from './components/LoadingSection'
 
 const StyledMobile = styled.div`
   display: flex;
@@ -59,9 +61,13 @@ const Mobile: React.FC = () => {
       <Box height="100%" overflow="hidden" position="relative">
         <View isVisible={view === PageView.POSITIONS}>
           <Flex alignItems="center" height="100%">
-            {status === PredictionStatus.ERROR && <ErrorNotification />}
-            {status === PredictionStatus.PAUSED && <PauseNotification />}
-            {status === PredictionStatus.LIVE && <Positions view={view} />}
+            <Box overflow="hidden">
+              <Menu />
+              {status === PredictionStatus.INITIAL && <LoadingSection />}
+              {status === PredictionStatus.ERROR && <ErrorNotification />}
+              {status === PredictionStatus.PAUSED && <PauseNotification />}
+              {status === PredictionStatus.LIVE && <Positions view={view} />}
+            </Box>
             <PowerLinkStyle>
               <img src="/images/powered-by-chainlink.png" alt="Powered by ChainLink" width="170px" height="48px" />
             </PowerLinkStyle>

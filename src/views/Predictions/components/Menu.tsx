@@ -58,7 +58,7 @@ const ButtonWrapper = styled.div`
 
 const Menu = () => {
   return (
-    <FlexRow alignItems="center" p="16px">
+    <FlexRow alignItems="center" p="16px" width="100%">
       <SetCol>
         <PricePairLabel />
       </SetCol>

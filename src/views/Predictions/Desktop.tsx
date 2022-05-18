@@ -1,7 +1,7 @@
 import { memo, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import Split, { SplitInstance } from 'split-grid'
-import { Button, ChartIcon, Flex, Link } from '@pancakeswap/uikit'
+import { Button, ChartIcon, Flex, Box } from '@pancakeswap/uikit'
 import debounce from 'lodash/debounce'
 import delay from 'lodash/delay'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
@@ -22,6 +22,8 @@ import { ErrorNotification, PauseNotification } from './components/Notification'
 import History from './History'
 import Positions from './Positions'
 import { useConfig } from './context/ConfigProvider'
+import LoadingSection from './components/LoadingSection'
+import Menu from './components/Menu'
 
 const ChainlinkChart = dynamic(() => import('./components/ChainlinkChart'), { ssr: false })
 
@@ -181,9 +183,13 @@ const Desktop: React.FC = () => {
       <StyledDesktop>
         <SplitWrapper ref={splitWrapperRef}>
           <PositionPane>
-            {status === PredictionStatus.ERROR && <ErrorNotification />}
-            {status === PredictionStatus.PAUSED && <PauseNotification />}
-            {status === PredictionStatus.LIVE && <Positions />}
+            <Box overflow="hidden">
+              <Menu />
+              {status === PredictionStatus.INITIAL && <LoadingSection />}
+              {status === PredictionStatus.ERROR && <ErrorNotification />}
+              {status === PredictionStatus.PAUSED && <PauseNotification />}
+              {status === PredictionStatus.LIVE && <Positions />}
+            </Box>
           </PositionPane>
 
           <Gutter

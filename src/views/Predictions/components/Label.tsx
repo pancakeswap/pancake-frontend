@@ -119,7 +119,16 @@ export const PricePairLabel: React.FC = () => {
   }, [priceAsNumber, updateRef])
 
   return (
-    <Box onClick={() => setConfig(PredictionSupportedSymbol.CAKE)} pl="24px" position="relative" display="inline-block">
+    <Box
+      onClick={() =>
+        setConfig((prev) =>
+          prev === PredictionSupportedSymbol.CAKE ? PredictionSupportedSymbol.BNB : PredictionSupportedSymbol.CAKE,
+        )
+      }
+      pl="24px"
+      position="relative"
+      display="inline-block"
+    >
       <Token left={0}>{logo}</Token>
       <Label dir="left">
         <Title bold textTransform="uppercase">
