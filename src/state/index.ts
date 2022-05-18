@@ -59,6 +59,7 @@ const ListsConfig = {
   storage: IndexedDBStorage('lists'),
   version: 0,
   serialize: false,
+  deserialize: false,
   migrate: createMigrate(migrations, { debug: false }),
 }
 
