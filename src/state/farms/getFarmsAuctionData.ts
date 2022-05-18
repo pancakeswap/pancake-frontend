@@ -3,9 +3,10 @@ import { CHAIN_ID } from '../../config/constants/networks'
 
 const getFarmsAuctionData = (farms: SerializedFarm[], winnerFarms: string[], auctionHostingEndDate: string) => {
   return farms.map((farm) => {
-    const isAuctionWinnerFarm = winnerFarms.find(
-      (winnerFarm) => winnerFarm.toLowerCase() === farm.lpAddresses[CHAIN_ID].toLowerCase(),
-    )
+    const isAuctionWinnerFarm =
+      winnerFarms.find((winnerFarm) => winnerFarm.toLowerCase() === farm.lpAddresses[CHAIN_ID].toLowerCase()) ??
+      farm.isCommunity
+
     return {
       ...farm,
       ...(isAuctionWinnerFarm && { isCommunity: true, auctionHostingEndDate }),

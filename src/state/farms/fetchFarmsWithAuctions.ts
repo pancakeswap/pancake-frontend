@@ -31,20 +31,21 @@ const fetchFarmsWithAuctions = async (
   const blocksSinceEnd = currentBlock - auctionData.endBlock.toNumber()
   if (blocksSinceEnd > 0) {
     const secondsSinceEnd = blocksSinceEnd * BSC_BLOCK_TIME
+    const currentAuctionEndDate = sub(new Date(), { seconds: secondsSinceEnd })
+    const auctionHostingEndDate = add(currentAuctionEndDate, {
+      seconds: FARM_AUCTION_HOSTING_IN_SECONDS,
+    }).toJSON()
     if (secondsSinceEnd > FARM_AUCTION_HOSTING_IN_SECONDS) {
-      return { winnerFarms: [], auctionHostingEndDate: null }
+      return { winnerFarms: [], auctionHostingEndDate }
     }
     const sortedBidders = sortAuctionBidders(auctionBidders)
     const leaderboardThreshold = ethersToBigNumber(auctionData.leaderboardThreshold)
     const winnerFarms = sortedBidders
       .filter((bidder) => bidder.amount.gt(leaderboardThreshold))
       .map((bidder) => bidder.lpAddress)
-    const currentAuctionEndDate = sub(new Date(), { seconds: secondsSinceEnd })
     return {
       winnerFarms,
-      auctionHostingEndDate: add(currentAuctionEndDate, {
-        seconds: FARM_AUCTION_HOSTING_IN_SECONDS,
-      }).toJSON(),
+      auctionHostingEndDate,
     }
   }
 
