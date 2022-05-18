@@ -4,7 +4,7 @@ import localForage from 'localforage'
  * Persist you redux state using IndexedDB
  * @param {string} dbName - IndexedDB database name
  */
-function storage(dbName) {
+function IndexedDBStorage(dbName) {
   const db = localForage.createInstance({
     name: dbName,
   })
@@ -16,4 +16,4 @@ function storage(dbName) {
   }
 }
 
-export default storage
+export default IndexedDBStorage
