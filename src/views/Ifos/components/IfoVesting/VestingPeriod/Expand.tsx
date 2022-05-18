@@ -48,6 +48,14 @@ interface ExpandProps {
 const Expand: React.FC<ExpandProps> = ({ expanded }) => {
   const { t } = useTranslation()
 
+  const handleViewIfo = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation()
+  }
+
+  const handleClaim = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation()
+  }
+
   return (
     <StyledExpand expanded={expanded}>
       <Progress primaryStep={10} secondaryStep={20} />
@@ -73,7 +81,12 @@ const Expand: React.FC<ExpandProps> = ({ expanded }) => {
           </Text>
         </Flex>
       </Flex>
-      <Button width="100%">Calim HotCross</Button>
+      <Flex>
+        <Button mr="8px" variant="secondary" onClick={handleViewIfo}>
+          {t('View IFO')}
+        </Button>
+        <Button onClick={handleClaim}>Calim HotCross</Button>
+      </Flex>
     </StyledExpand>
   )
 }

@@ -50,7 +50,7 @@ const IfoVesting: React.FC<IfoVestingProps> = ({ pool }) => {
         <Flex justifyContent="space-between" alignItems="center">
           <Box ml="8px">
             <Text fontSize="24px" color="secondary" bold>
-              {t('IFO Vesting Tokens')}
+              {t('Token Vesting')}
             </Text>
             <Text color="textSubtle" fontSize="14px">
               {t('You have no tokens available for claiming')}
@@ -67,7 +67,7 @@ const IfoVesting: React.FC<IfoVestingProps> = ({ pool }) => {
         </Flex>
       </CardHeader>
       <CardBody>
-        <NotTokens account={account} />
+        <NotTokens />
         {/* <VestingPeriod /> */}
         {/* <VestingEnded /> */}
       </CardBody>

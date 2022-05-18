@@ -1,29 +1,9 @@
-import { useCallback } from 'react'
 import { useTranslation } from 'contexts/Localization'
-import { Flex, Text, BunnyPlaceholderIcon, Button } from '@pancakeswap/uikit'
-import { useConfig } from 'views/Ifos/contexts/IfoContext'
-import ConnectWalletButton from 'components/ConnectWalletButton'
+import { Flex, Text, BunnyPlaceholderIcon } from '@pancakeswap/uikit'
 import { MessageTextLink } from '../IfoCardStyles'
 
-interface NotTokensProps {
-  account: string
-}
-
-const NotTokens: React.FC<NotTokensProps> = ({ account }) => {
+const NotTokens: React.FC = () => {
   const { t } = useTranslation()
-  const { isExpanded, setIsExpanded } = useConfig()
-
-  const scrollToTop = useCallback(() => {
-    // Always expand for mobile
-    if (!isExpanded) {
-      setIsExpanded(true)
-    }
-
-    window.scrollTo({
-      top: 400,
-      behavior: 'auto',
-    })
-  }, [])
 
   return (
     <Flex flexDirection="column">
@@ -39,7 +19,6 @@ const NotTokens: React.FC<NotTokensProps> = ({ account }) => {
           {t('How does it work?')} »
         </MessageTextLink>
       </Flex>
-      {account ? <Button onClick={scrollToTop}>{t('Lock CAKE')}</Button> : <ConnectWalletButton />}
     </Flex>
   )
 }
