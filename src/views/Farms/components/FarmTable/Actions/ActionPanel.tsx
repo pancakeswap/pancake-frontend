@@ -132,7 +132,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
     <Container expanded={expanded}>
       <InfoContainer>
         <ValueContainer>
-          {farm.isCommunity && (
+          {farm.isCommunity && farm.auctionHostingEndDate && (
             <ValueWrapper>
               <Text>{t('Auction Hosting Ends')}</Text>
               <Text paddingLeft="4px">
