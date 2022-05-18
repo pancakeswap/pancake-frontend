@@ -18,6 +18,20 @@ const _binanceChainListener = async () =>
     }),
   )
 
+const _ethereumListener = async () =>
+  new Promise<void>((resolve) =>
+    Object.defineProperty(window, 'ethereum', {
+      get() {
+        return this._eth
+      },
+      set(_eth) {
+        this._eth = _eth
+
+        resolve()
+      },
+    }),
+  )
+
 const safeGetLocalStorageItem = () => {
   try {
     return (
@@ -56,6 +70,14 @@ const useEagerConnect = () => {
         return
       }
       if (connectorId === ConnectorNames.Injected) {
+        const isEthereumDefined = Reflect.has(window, 'ethereum')
+
+        // handle opera lazy inject ethereum
+        if (!isEthereumDefined) {
+          _ethereumListener().then(() => tryLogin(connectorId))
+
+          return
+        }
         // somehow injected login not working well on development mode
         injected.isAuthorized().then(() => tryLogin(connectorId))
       } else {
