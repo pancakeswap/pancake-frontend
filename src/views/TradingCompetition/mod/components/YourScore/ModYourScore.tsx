@@ -70,11 +70,11 @@ const ModYourScore: React.FC<MoDYourScoreProps> = ({
             ) : (
               <>
                 <Heading textAlign="center" scale="lg">
-                  #{userLeaderboardInformation.darVolume}
+                  #{userLeaderboardInformation.darVolumeRank}
                 </Heading>
                 <Text>
                   $
-                  {(userLeaderboardInformation.darVolumeRank as unknown as number).toLocaleString(undefined, {
+                  {(userLeaderboardInformation.darVolume as unknown as number).toLocaleString(undefined, {
                     maximumFractionDigits: 2,
                     minimumFractionDigits: 0,
                   })}
