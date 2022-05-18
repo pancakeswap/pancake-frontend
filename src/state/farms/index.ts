@@ -40,6 +40,7 @@ const noAccountFarmConfig = farmsConfig.map((farm) => ({
 const initialState: SerializedFarmsState = {
   data: noAccountFarmConfig,
   loadArchivedFarmsData: false,
+  farmAuctionLoaded: false,
   userDataLoaded: false,
   loadingKeys: {},
 }
@@ -194,6 +195,7 @@ export const farmsSlice = createSlice({
     builder.addCase(fetchFarmsAuctionDataAsync.fulfilled, (state, action) => {
       const { winnerFarms, auctionHostingEndDate } = action.payload
       const farmsWithAuction = getFarmsAuctionData(state.data, winnerFarms, auctionHostingEndDate)
+      state.farmAuctionLoaded = true
       state.data = farmsWithAuction
     })
 

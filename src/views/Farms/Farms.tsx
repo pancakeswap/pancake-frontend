@@ -130,7 +130,7 @@ export const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) =>
 const Farms: React.FC = ({ children }) => {
   const { pathname } = useRouter()
   const { t } = useTranslation()
-  const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
+  const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock, farmAuctionLoaded } = useFarms()
   const cakePrice = usePriceCakeBusd()
   const [query, setQuery] = useState('')
   const [viewMode, setViewMode] = useUserFarmsViewMode()
@@ -342,7 +342,9 @@ const Farms: React.FC = ({ children }) => {
         sortable: column.sortable,
       }))
 
-      return <Table data={rowData} columns={columns} userDataReady={userDataReady} />
+      return (
+        <Table data={rowData} columns={columns} userDataReady={userDataReady} farmAuctionLoaded={farmAuctionLoaded} />
+      )
     }
 
     return <FlexLayout>{children}</FlexLayout>

@@ -9,6 +9,7 @@ export interface ITableProps {
   data: RowProps[]
   columns: ColumnType<RowProps>[]
   userDataReady: boolean
+  farmAuctionLoaded: boolean
   sortColumn?: string
 }
 
@@ -61,7 +62,7 @@ const ScrollButtonContainer = styled.div`
 const FarmTable: React.FC<ITableProps> = (props) => {
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
-  const { data, columns, userDataReady } = props
+  const { data, columns, userDataReady, farmAuctionLoaded } = props
 
   const { rows } = useTable(columns, data, { sortable: true, sortColumn: 'farm' })
 
@@ -78,7 +79,14 @@ const FarmTable: React.FC<ITableProps> = (props) => {
           <StyledTable>
             <TableBody>
               {rows.map((row) => {
-                return <Row {...row.original} userDataReady={userDataReady} key={`table-row-${row.id}`} />
+                return (
+                  <Row
+                    {...row.original}
+                    userDataReady={userDataReady}
+                    farmAuctionLoaded={farmAuctionLoaded}
+                    key={`table-row-${row.id}`}
+                  />
+                )
               })}
             </TableBody>
           </StyledTable>

@@ -28,6 +28,7 @@ export interface RowProps {
 
 interface RowPropsWithLoading extends RowProps {
   userDataReady: boolean
+  farmAuctionLoaded: boolean
 }
 
 const cells = {
@@ -70,7 +71,7 @@ const FarmMobileCell = styled.td`
 `
 
 const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
-  const { details, userDataReady } = props
+  const { details, userDataReady, farmAuctionLoaded } = props
   const hasStakedAmount = !!useFarmUser(details.pid).stakedBalance.toNumber()
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
   const shouldRenderChild = useDelayedUnmount(actionPanelExpanded, 300)
@@ -105,7 +106,8 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
                 return (
                   <td key={key}>
                     <CellInner style={{ width: '100px' }}>
-                      {props[key] === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />}
+                      {farmAuctionLoaded &&
+                        (props[key] === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />)}
                     </CellInner>
                   </td>
                 )
@@ -151,11 +153,12 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
           <FarmMobileCell colSpan={3}>
             <Flex justifyContent="space-between" alignItems="center">
               <Farm {...props.farm} />
-              {props.type === 'community' ? (
-                <FarmAuctionTag marginRight="16px" scale="sm" />
-              ) : (
-                <CoreTag marginRight="16px" scale="sm" />
-              )}
+              {farmAuctionLoaded &&
+                (props.type === 'community' ? (
+                  <FarmAuctionTag marginRight="16px" scale="sm" />
+                ) : (
+                  <CoreTag marginRight="16px" scale="sm" />
+                ))}
             </Flex>
           </FarmMobileCell>
         </tr>
