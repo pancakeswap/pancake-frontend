@@ -183,13 +183,14 @@ const Desktop: React.FC = () => {
       <StyledDesktop>
         <SplitWrapper ref={splitWrapperRef}>
           <PositionPane>
-            <Box overflow="hidden">
-              <Menu />
-              {status === PredictionStatus.INITIAL && <LoadingSection />}
-              {status === PredictionStatus.ERROR && <ErrorNotification />}
-              {status === PredictionStatus.PAUSED && <PauseNotification />}
-              {status === PredictionStatus.LIVE && <Positions />}
-            </Box>
+            {status === PredictionStatus.ERROR && <ErrorNotification />}
+            {status === PredictionStatus.PAUSED && <PauseNotification />}
+            {[PredictionStatus.INITIAL, PredictionStatus.LIVE].includes(status) && (
+              <Box>
+                <Menu />
+                {status === PredictionStatus.LIVE ? <Positions /> : <LoadingSection />}
+              </Box>
+            )}
           </PositionPane>
 
           <Gutter

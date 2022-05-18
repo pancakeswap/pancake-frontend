@@ -61,13 +61,14 @@ const Mobile: React.FC = () => {
       <Box height="100%" overflow="hidden" position="relative">
         <View isVisible={view === PageView.POSITIONS}>
           <Flex alignItems="center" height="100%">
-            <Box overflow="hidden">
-              <Menu />
-              {status === PredictionStatus.INITIAL && <LoadingSection />}
-              {status === PredictionStatus.ERROR && <ErrorNotification />}
-              {status === PredictionStatus.PAUSED && <PauseNotification />}
-              {status === PredictionStatus.LIVE && <Positions view={view} />}
-            </Box>
+            {status === PredictionStatus.ERROR && <ErrorNotification />}
+            {status === PredictionStatus.PAUSED && <PauseNotification />}
+            {[PredictionStatus.INITIAL, PredictionStatus.LIVE].includes(status) && (
+              <Box overflow="hidden" width="100%">
+                <Menu />
+                {status === PredictionStatus.LIVE ? <Positions view={view} /> : <LoadingSection />}
+              </Box>
+            )}
             <PowerLinkStyle>
               <img src="/images/powered-by-chainlink.png" alt="Powered by ChainLink" width="170px" height="48px" />
             </PowerLinkStyle>
