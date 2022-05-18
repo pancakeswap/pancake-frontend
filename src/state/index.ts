@@ -12,7 +12,7 @@ import {
   REHYDRATE,
   createMigrate,
 } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
+import storage from 'utils/localForage'
 import burn from './burn/reducer'
 import farmsReducer from './farms'
 import farmsReducerV1 from './farmsV1'
@@ -42,26 +42,21 @@ const migrations = {
       },
     }
   },
-  1: (state) => {
-    return {
-      ...state,
-    }
-  },
 }
 
 const persistConfig = {
   key: 'primary',
   whitelist: PERSISTED_KEYS,
   blacklist: ['profile'],
-  storage,
-  version: 1,
+  storage: storage('primary'),
+  version: 0,
   migrate: createMigrate(migrations, { debug: false }),
 }
 
 const ListsConfig = {
   key: 'lists',
-  storage,
-  version: 1,
+  storage: storage('lists'),
+  version: 0,
   migrate: createMigrate(migrations, { debug: false }),
 }
 
