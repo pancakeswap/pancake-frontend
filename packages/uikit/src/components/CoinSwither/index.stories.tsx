@@ -1,11 +1,13 @@
 import React from "react";
 import { SequencePlayer } from "./CoinSwitcher";
-import cakeLooperImages from "./assets/cakeloop";
-import bnbLooperImages from "./assets/bnbloop";
-import cakeImages from "./assets/cake3";
-import bnbImages from "./assets/bnb3";
-import cake2bnbImages from "./assets/cake2bnb";
-import bnb2cakeImages from "./assets/bnb2cake";
+import {
+  bnb2CakeImages,
+  cake2BnbImages,
+  cakeLoopImages,
+  bnbLoopImages,
+  bnbOnceImages,
+  cakeOnceImages,
+} from "./constant";
 
 export default {
   title: "Components/CoinSwitcher",
@@ -13,34 +15,34 @@ export default {
   argTypes: {},
 };
 
-export const CakeFlip: React.FC = () => {
+export const CakeOnce: React.FC = () => {
   return (
     <div>
-      <SequencePlayer images={cakeLooperImages} />
+      <SequencePlayer images={cakeOnceImages()} />
     </div>
   );
 };
 
-export const BnbFlip: React.FC = () => {
+export const BnbOnce: React.FC = () => {
   return (
     <div>
-      <SequencePlayer images={bnbLooperImages} />
+      <SequencePlayer images={bnbOnceImages()} />
     </div>
   );
 };
 
-export const CakeRotate: React.FC = () => {
+export const CakeLoop: React.FC = () => {
   return (
     <div>
-      <SequencePlayer images={cakeImages} msPerFrame={21} />
+      <SequencePlayer images={cakeLoopImages()} msPerFrame={21} />
     </div>
   );
 };
 
-export const bnbRotate: React.FC = () => {
+export const bnbLoop: React.FC = () => {
   return (
     <div>
-      <SequencePlayer images={bnbImages} msPerFrame={21} />
+      <SequencePlayer images={bnbLoopImages()} msPerFrame={21} />
     </div>
   );
 };
@@ -48,7 +50,7 @@ export const bnbRotate: React.FC = () => {
 export const Bnb2Cake: React.FC = () => {
   return (
     <div>
-      <SequencePlayer images={bnb2cakeImages} />
+      <SequencePlayer images={bnb2CakeImages()} />
     </div>
   );
 };
@@ -56,7 +58,7 @@ export const Bnb2Cake: React.FC = () => {
 export const Cake2Bnb: React.FC = () => {
   return (
     <div>
-      <SequencePlayer images={cake2bnbImages} />
+      <SequencePlayer images={cake2BnbImages()} />
     </div>
   );
 };
