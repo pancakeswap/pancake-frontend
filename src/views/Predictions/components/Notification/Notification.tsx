@@ -1,5 +1,9 @@
 import styled from 'styled-components'
-import { Card, CardBody, Heading } from '@pancakeswap/uikit'
+import { Card, CardBody, Heading, Button } from '@pancakeswap/uikit'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'contexts/Localization'
+import { PredictionSupportedSymbol } from 'state/types'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 
 interface NotificationProps {
   title: string
@@ -35,11 +39,41 @@ const BunnyDecoration = styled.div`
   z-index: 5;
 `
 
+const BackButtonStyle = styled(Button)`
+  position: absolute;
+  top: -62px;
+  width: 50%;
+`
+
+const BackButton = () => {
+  const { t } = useTranslation()
+
+  return (
+    <BackButtonStyle variant="primary" width="100%">
+      {t('Back')}
+    </BackButtonStyle>
+  )
+}
+
 const Notification: React.FC<NotificationProps> = ({ title, children }) => {
+  const router = useRouter()
+  const { token } = useConfig()
+
   return (
     <Wrapper>
       <CardWrapper>
-        <BunnyDecoration>
+        <BackButton />
+        <BunnyDecoration
+          onClick={() => {
+            if (token.symbol === PredictionSupportedSymbol.CAKE) {
+              router.query.token = PredictionSupportedSymbol.BNB
+            } else if (token.symbol === PredictionSupportedSymbol.BNB) {
+              router.query.token = PredictionSupportedSymbol.CAKE
+            }
+
+            router.push(router)
+          }}
+        >
           <img src="/images/decorations/hiccup-bunny.png" alt="bunny decoration" height="121px" width="130px" />
         </BunnyDecoration>
         <Card>
