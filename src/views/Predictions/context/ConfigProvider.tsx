@@ -1,10 +1,7 @@
 import { createContext, useContext } from 'react'
-import { PredictionConfig, PredictionSupportedSymbol } from 'state/types'
+import { PredictionConfig } from 'state/types'
 
-type ConfigCallback = (value: PredictionSupportedSymbol) => PredictionSupportedSymbol
-
-export const ConfigContext =
-  createContext<PredictionConfig & { setConfig: (value: PredictionSupportedSymbol | ConfigCallback) => void }>(null)
+export const ConfigContext = createContext<PredictionConfig>(null)
 
 export function useConfig() {
   return useContext(ConfigContext)

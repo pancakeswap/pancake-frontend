@@ -6,6 +6,7 @@ import { formatBigNumberToFixed } from 'utils/formatBalance'
 import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { PredictionSupportedSymbol } from 'state/types'
+import { useRouter } from 'next/router'
 import { formatRoundTime } from '../helpers'
 import useCountdown from '../hooks/useCountdown'
 import usePollOraclePrice from '../hooks/usePollOraclePrice'
@@ -97,7 +98,9 @@ const Label = styled(Flex)<{ dir: 'left' | 'right' }>`
 
 export const PricePairLabel: React.FC = () => {
   const { price } = usePollOraclePrice()
-  const { token, setConfig } = useConfig()
+  const { token } = useConfig()
+  const router = useRouter()
+
   const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
   const countUpState = useCountUp({
     start: 0,
@@ -120,11 +123,15 @@ export const PricePairLabel: React.FC = () => {
 
   return (
     <Box
-      onClick={() =>
-        setConfig((prev) =>
-          prev === PredictionSupportedSymbol.CAKE ? PredictionSupportedSymbol.BNB : PredictionSupportedSymbol.CAKE,
-        )
-      }
+      onClick={() => {
+        if (router.query.token === PredictionSupportedSymbol.CAKE) {
+          router.query.token = PredictionSupportedSymbol.BNB
+        } else {
+          router.query.token = PredictionSupportedSymbol.CAKE
+        }
+
+        router.push(router)
+      }}
       pl="24px"
       position="relative"
       display="inline-block"
