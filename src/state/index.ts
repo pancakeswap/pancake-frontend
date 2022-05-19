@@ -43,6 +43,11 @@ const migrations = {
       },
     }
   },
+  1: (state) => {
+    return {
+      ...state,
+    }
+  },
 }
 
 const persistConfig = {
@@ -50,17 +55,16 @@ const persistConfig = {
   whitelist: PERSISTED_KEYS,
   blacklist: ['profile'],
   storage,
-  version: 0,
+  version: 1,
   migrate: createMigrate(migrations, { debug: false }),
 }
 
 const ListsConfig = {
   key: 'lists',
-  storage: IndexedDBStorage('lists'),
-  version: 0,
+  version: 1,
   serialize: false,
   deserialize: false,
-  migrate: createMigrate(migrations, { debug: false }),
+  storage: IndexedDBStorage('lists'),
 }
 
 const persistedReducer = persistReducer(
