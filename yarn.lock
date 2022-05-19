@@ -12862,7 +12862,7 @@
   "resolved" "https://registry.npmjs.org/local-storage/-/local-storage-2.0.0.tgz"
   "version" "2.0.0"
 
-"localforage@^1.10.0", "localforage@^1.8.1":
+"localforage@^1.8.1":
   "integrity" "sha512-14/H1aX7hzBBmmh7sGPd+AOMkkIrHM3Z1PAyGgZigA1H1p5O5ANnMyWzvpAETtG68/dC4pC0ncy3+PPGzXZHPg=="
   "resolved" "https://registry.npmjs.org/localforage/-/localforage-1.10.0.tgz"
   "version" "1.10.0"
