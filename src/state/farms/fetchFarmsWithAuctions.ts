@@ -1,5 +1,6 @@
 import { FARM_AUCTION_HOSTING_IN_SECONDS } from 'config/constants'
 import chunk from 'lodash/chunk'
+import { isAddress } from 'utils'
 import farmAuctionAbi from 'config/abi/farmAuction.json'
 import { getFarmAuctionContract } from 'utils/contractHelpers'
 import { multicallv2 } from 'utils/multicall'
@@ -66,9 +67,11 @@ const fetchFarmsWithAuctions = async (
   const winnerFarmsResults: { [lpAddress: string]: { auctionHostingEndDate: string; hostingIsLive: boolean } } =
     auctionResults.reduce((acc, auctionResult) => {
       const winnerFarmsResult = auctionResult.winnerFarms.filter(Boolean).reduce((acc2, winnerFarm) => {
+        const winnerFarmAddress = isAddress(winnerFarm)
+        if (!winnerFarmAddress) return acc2
         return {
           ...acc2,
-          [winnerFarm]: {
+          [winnerFarmAddress]: {
             auctionHostingEndDate: auctionResult.auctionHostingEndDate,
             hostingIsLive: auctionResult.hostingIsLive,
           },
