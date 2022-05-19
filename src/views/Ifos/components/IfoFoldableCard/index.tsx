@@ -14,7 +14,8 @@ import { Ifo, PoolIds } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
+import { useRouter } from 'next/router'
 import { useCurrentBlock } from 'state/block/hooks'
 import styled from 'styled-components'
 import { requiresApproval } from 'utils/requiresApproval'
@@ -211,11 +212,21 @@ const IfoFoldableCard = ({
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const { asPath } = useRouter()
   const { isDesktop } = useMatchBreakpoints()
+  const [isExpanded, setIsExpanded] = useState(false)
+  const wrapperEl = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const hash = asPath.split('#')[1]
+    if (hash === ifo.id) {
+      setIsExpanded(true)
+      wrapperEl.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [asPath, ifo])
 
   return (
-    <Box position="relative">
+    <Box id={ifo.id} ref={wrapperEl} position="relative">
       {isExpanded && isDesktop && <NoHatBunny isLive={false} />}
       <Box as={StyledCard} borderRadius="32px">
         <Box position="relative">
