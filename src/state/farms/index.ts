@@ -89,7 +89,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
 )
 
 export const fetchFarmsAuctionDataAsync = createAsyncThunk<
-  { winnerFarms: string[]; auctionHostingEndDate: string },
+  { [lpAddress: string]: { auctionHostingEndDate: string; hostingIsLive: boolean } },
   number
 >('farms/fetchFarmsAuctionDataAsync', async (currentBlock) => {
   return fetchFarmsWithAuctions(currentBlock)
@@ -192,8 +192,7 @@ export const farmsSlice = createSlice({
     })
 
     builder.addCase(fetchFarmsAuctionDataAsync.fulfilled, (state, action) => {
-      const { winnerFarms, auctionHostingEndDate } = action.payload
-      const farmsWithAuction = getFarmsAuctionData(state.data, winnerFarms, auctionHostingEndDate)
+      const farmsWithAuction = getFarmsAuctionData(state.data, action.payload)
       state.data = farmsWithAuction
     })
 
