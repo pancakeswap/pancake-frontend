@@ -79,8 +79,8 @@ const getTotalWonMarket = (market, tokenSymbol) => {
   return Math.max(total - totalTreasury, 0)
 }
 
-export const getTotalWon = async (): Promise<number> => {
-  const [{ market: BNBMarket }] = await Promise.all([
+export const getTotalWon = async (): Promise<{ totalWonBNB: number; totalWonCAKE: number }> => {
+  const [{ market: BNBMarket, market: CAKEMarket }] = await Promise.all([
     request(
       GRAPH_API_PREDICTION,
       gql`
@@ -92,11 +92,23 @@ export const getTotalWon = async (): Promise<number> => {
         }
       `,
     ),
+    request(
+      GRAPH_API_PREDICTION_CAKE,
+      gql`
+        query getTotalWonData {
+          market(id: 1) {
+            totalCAKE
+            totalCAKETreasury
+          }
+        }
+      `,
+    ),
   ])
 
   const totalWonBNB = getTotalWonMarket(BNBMarket, 'BNB')
+  const totalWonCAKE = getTotalWonMarket(CAKEMarket, 'CAKE')
 
-  return totalWonBNB
+  return { totalWonBNB, totalWonCAKE }
 }
 
 type WhereClause = Record<string, string | number | boolean | string[]>
