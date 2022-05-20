@@ -5,14 +5,16 @@ import { SequencePlayer } from "./SequencePlayer";
 
 export const CoinSwitcherWrapper = styled.div`
   position: absolute;
-  top: -20px;
-  left: -10px;
+  top: -90px;
+  left: 20px;
   z-index: 31;
   width: 150px;
   height: 100px;
   overflow: hidden;
-  transform: scale(0.7) translateX(-30px);
+  transform: scale(0.9) translateX(-30px);
   ${({ theme }) => theme.mediaQueries.md} {
+    top: -20px;
+    left: -10px;
     transform: scale(0.9) translateX(-10px);
   }
 `;
@@ -42,7 +44,6 @@ export const CoinSwitcher: React.FC<{ isDefaultBnb: boolean; onTokenSwitch: () =
 
 const Inner: React.FC<{ isDefaultBnb: boolean; onTokenSwitch: () => void }> = memo(
   ({ isDefaultBnb, onTokenSwitch }) => {
-    // console.log({ isDefaultBnb }, "??????");
     const [isBnb, setIsBnb] = useState(() => isDefaultBnb);
 
     return (

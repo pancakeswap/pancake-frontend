@@ -1,21 +1,16 @@
-import { useEffect, useRef, useMemo, useState, useCallback } from 'react'
-import { useCountUp } from 'react-countup'
-import styled from 'styled-components'
-import { BnbUsdtPairTokenIcon, LogoRoundIcon, Box, Flex, PocketWatchIcon, Text, CoinSwitcher } from '@pancakeswap/uikit'
-import { formatBigNumberToFixed } from 'utils/formatBalance'
-import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
+import { Box, CoinSwitcher, Flex, PocketWatchIcon, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { PredictionSupportedSymbol } from 'state/types'
 import { useRouter } from 'next/router'
+import { useCallback, useEffect, useRef } from 'react'
+import { useCountUp } from 'react-countup'
+import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
+import { PredictionSupportedSymbol } from 'state/types'
+import styled from 'styled-components'
+import { formatBigNumberToFixed } from 'utils/formatBalance'
+import { useConfig } from '../context/ConfigProvider'
 import { formatRoundTime } from '../helpers'
 import useCountdown from '../hooks/useCountdown'
 import usePollOraclePrice from '../hooks/usePollOraclePrice'
-import { useConfig } from '../context/ConfigProvider'
-
-const TOKEN_LOGOS = {
-  BNB: <BnbUsdtPairTokenIcon />,
-  CAKE: <LogoRoundIcon />,
-}
 
 const Token = styled(Box)`
   margin-top: -24px;
@@ -133,11 +128,10 @@ export const PricePairLabel: React.FC = () => {
   }, [router])
   return (
     <>
-      <Box pl="40px" position="relative" display="inline-block">
+      <Box pl={['20px', '20px', '20px', '40px']} position="relative" display="inline-block">
         {router.query.token && (
           <CoinSwitcher isDefaultBnb={router.query.token !== 'CAKE'} onTokenSwitch={onTokenSwitch} />
         )}
-        {/* <Token left={0}>{logo}</Token> */}
         <Label dir="left">
           <Title bold textTransform="uppercase">
             {`${token.symbol}USD`}
