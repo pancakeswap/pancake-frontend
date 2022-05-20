@@ -1,7 +1,7 @@
-import { useEffect, useRef, useMemo } from 'react'
+import { useEffect, useRef, useMemo, useState, useCallback } from 'react'
 import { useCountUp } from 'react-countup'
 import styled from 'styled-components'
-import { BnbUsdtPairTokenIcon, LogoRoundIcon, Box, Flex, PocketWatchIcon, Text } from '@pancakeswap/uikit'
+import { BnbUsdtPairTokenIcon, LogoRoundIcon, Box, Flex, PocketWatchIcon, Text, CoinSwitcher } from '@pancakeswap/uikit'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
 import { useTranslation } from 'contexts/Localization'
@@ -80,6 +80,8 @@ const Interval = styled(Text)`
 `
 
 const Label = styled(Flex)<{ dir: 'left' | 'right' }>`
+  position: relative;
+  z-index: 1;
   background-color: ${({ theme }) => theme.card.background};
   box-shadow: ${({ theme }) => theme.shadows.level1};
   align-items: ${({ dir }) => (dir === 'right' ? 'flex-end' : 'flex-start')};
@@ -109,9 +111,9 @@ export const PricePairLabel: React.FC = () => {
     decimals: 3,
   })
 
-  const logo = useMemo(() => {
-    return TOKEN_LOGOS[token.symbol]
-  }, [token.symbol])
+  // const logo = useMemo(() => {
+  //   return TOKEN_LOGOS[token.symbol]
+  // }, [token.symbol])
 
   const { countUp, update } = countUpState || {}
 
@@ -120,30 +122,27 @@ export const PricePairLabel: React.FC = () => {
   useEffect(() => {
     updateRef.current(priceAsNumber)
   }, [priceAsNumber, updateRef])
-
+  const onTokenSwitch = useCallback(() => {
+    if (router.query.token === PredictionSupportedSymbol.CAKE) {
+      router.query.token = PredictionSupportedSymbol.BNB
+    } else {
+      router.query.token = PredictionSupportedSymbol.CAKE
+    }
+    router.push(router)
+  }, [])
   return (
-    <Box
-      onClick={() => {
-        if (router.query.token === PredictionSupportedSymbol.CAKE) {
-          router.query.token = PredictionSupportedSymbol.BNB
-        } else {
-          router.query.token = PredictionSupportedSymbol.CAKE
-        }
-
-        router.push(router)
-      }}
-      pl="24px"
-      position="relative"
-      display="inline-block"
-    >
-      <Token left={0}>{logo}</Token>
-      <Label dir="left">
-        <Title bold textTransform="uppercase">
-          {`${token.symbol}USD`}
-        </Title>
-        <Price fontSize="12px">{`$${countUp}`}</Price>
-      </Label>
-    </Box>
+    <>
+      <Box pl="40px" position="relative" display="inline-block">
+        <CoinSwitcher onTokenSwitch={onTokenSwitch} />
+        {/* <Token left={0}>{logo}</Token> */}
+        <Label dir="left">
+          <Title bold textTransform="uppercase">
+            {`${token.symbol}USD`}
+          </Title>
+          <Price fontSize="12px">{`$${countUp}`}</Price>
+        </Label>
+      </Box>
+    </>
   )
 }
 
