@@ -77,7 +77,7 @@ const config: (t: ContextApi['t'], languageCode?: string) => ConfigMenuItemsType
       },
       {
         label: t('Prediction (BETA)'),
-        href: '/prediction?token=BNB',
+        href: '/prediction',
       },
       {
         label: t('Lottery'),

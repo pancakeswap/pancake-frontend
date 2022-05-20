@@ -176,20 +176,26 @@ export const PricePairLabel: React.FC = () => {
   const onTokenSwitch = useCallback(() => {
     if (router.query.token === PredictionSupportedSymbol.CAKE) {
       router.query.token = PredictionSupportedSymbol.BNB
+    } else if (router.query.token === undefined && token.symbol === PredictionSupportedSymbol.CAKE) {
+      router.query.token = PredictionSupportedSymbol.BNB
+    } else if (router.query.token === undefined && token.symbol === PredictionSupportedSymbol.BNB) {
+      router.query.token = PredictionSupportedSymbol.CAKE
+    } else if (token.symbol === undefined && router.query.token === undefined) {
+      router.query.token = PredictionSupportedSymbol.BNB
     } else {
       router.query.token = PredictionSupportedSymbol.CAKE
     }
     router.push(router)
-  }, [router])
+  }, [router, token])
   return (
     <>
       <Box pl={['20px', '20px', '20px', '40px']} position="relative" display="inline-block">
-        {router.query.token && (
-          <>
-            <>{isMobile && <Tooltip>{t('Switch pairs here.')}</Tooltip>}</>
-            <CoinSwitcher isDefaultBnb={router.query.token !== 'CAKE'} onTokenSwitch={onTokenSwitch} />
-          </>
-        )}
+        {isMobile && <Tooltip>{t('Switch pairs here.')}</Tooltip>}
+        <CoinSwitcher
+          isDefaultBnb={router.query.token === 'BNB' || (router.query.token === undefined && token.symbol === 'BNB')}
+          onTokenSwitch={onTokenSwitch}
+        />
+
         <Label dir="left">
           <Title bold textTransform="uppercase">
             {`${token.symbol}USD`}
