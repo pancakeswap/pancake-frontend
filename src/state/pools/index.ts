@@ -123,15 +123,12 @@ export const fetchCakePoolUserDataAsync = (account: string) => async (dispatch) 
 
 export const fetchPoolsPublicDataAsync = (currentBlockNumber: number) => async (dispatch, getState) => {
   try {
-    const [blockLimits, totalStakings, profileRequirements] = await Promise.all([
+    const [blockLimits, totalStakings, profileRequirements, currentBlock] = await Promise.all([
       fetchPoolsBlockLimits(),
       fetchPoolsTotalStaking(),
       fetchPoolsProfileRequirement(),
+      currentBlockNumber ? Promise.resolve(currentBlockNumber) : simpleRpcProvider.getBlockNumber(),
     ])
-    let currentBlock = currentBlockNumber
-    if (!currentBlock) {
-      currentBlock = await simpleRpcProvider.getBlockNumber()
-    }
 
     const activePriceHelperLpsConfig = priceHelperLpsConfig.filter((priceHelperLpConfig) => {
       return (
