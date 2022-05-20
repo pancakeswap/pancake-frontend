@@ -19,6 +19,7 @@ import { links, userMenulinks } from "./config";
 import Menu from "./Menu";
 import { Language, NavProps } from "./types";
 import BottomDrawer from "../../components/BottomDrawer/BottomDrawer";
+import { SubMenuItemsType } from "../../components/SubMenuItems";
 
 export default {
   title: "Widgets/Menu",
@@ -194,8 +195,11 @@ export const NotConnected: React.FC = () => {
         setLang={noop}
         currentLang="EN"
         links={links}
-        subLinks={links[0].items}
+        subLinks={links[0].items as SubMenuItemsType[]}
         footerLinks={footerLinks}
+        activeItem="/swap"
+        activeSubItem="https://exchange.pancakeswap.finance"
+        buyCakeLabel="Buy CAKE"
       >
         <div>
           <h1>Page body</h1>
@@ -225,7 +229,10 @@ export const WithoutConnectButton: React.FC = () => {
         currentLang="EN"
         links={links}
         footerLinks={footerLinks}
-        subLinks={links[0].items}
+        subLinks={links[0].items as SubMenuItemsType[]}
+        activeItem="/swap"
+        activeSubItem="https://exchange.pancakeswap.finance"
+        buyCakeLabel="Buy CAKE"
       >
         <div>
           <h1>No connect button on top</h1>
@@ -247,8 +254,11 @@ export const WithSubmenuSelected: React.FC = () => {
         currentLang="EN"
         cakePriceUsd={0.23158668932877668}
         links={links}
-        subLinks={subLinks}
+        subLinks={links[0].items as SubMenuItemsType[]}
         footerLinks={footerLinks}
+        activeItem="/swap"
+        activeSubItem="https://exchange.pancakeswap.finance"
+        buyCakeLabel="Buy CAKE"
       >
         <div>
           <Heading as="h1" mb="8px">

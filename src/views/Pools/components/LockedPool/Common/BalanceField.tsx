@@ -1,7 +1,7 @@
 import { BalanceInput, Button, Flex, Image, Slider, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
-import { Dispatch, memo, SetStateAction, useCallback, useState } from 'react'
+import { Dispatch, useMemo, memo, SetStateAction, useCallback } from 'react'
 import styled from 'styled-components'
 import { BIG_TEN } from 'utils/bigNumber'
 import { getFullDisplayBalance } from 'utils/formatBalance'
@@ -33,22 +33,23 @@ const BalanceField: React.FC<PropsType> = ({
   stakingTokenBalance,
 }) => {
   const { t } = useTranslation()
-  const [percent, setPercent] = useState(0)
   const { userNotEnoughCake, notEnoughErrorMessage } = useUserEnoughCakeValidator(lockedAmount, stakingTokenBalance)
+
+  const percent = useMemo(() => {
+    const amount = new BigNumber(lockedAmount)
+    if (amount.gt(0)) {
+      const convertedInput = amount.multipliedBy(BIG_TEN.pow(stakingDecimals))
+      const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
+      return percentage > 100 ? 100 : percentage
+    }
+    return 0
+  }, [lockedAmount, stakingDecimals, stakingMax])
 
   const handleStakeInputChange = useCallback(
     (input: string) => {
-      if (input) {
-        const convertedInput = new BigNumber(input).multipliedBy(BIG_TEN.pow(stakingDecimals))
-        const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
-        setPercent(percentage > 100 ? 100 : percentage)
-      } else {
-        setPercent(0)
-      }
-
       setLockedAmount(input)
     },
-    [stakingDecimals, stakingMax, setLockedAmount],
+    [setLockedAmount],
   )
 
   const handleChangePercent = useCallback(
@@ -61,7 +62,6 @@ const BalanceField: React.FC<PropsType> = ({
       } else {
         setLockedAmount('')
       }
-      setPercent(sliderPercent)
     },
     [stakingMax, setLockedAmount, stakingDecimals],
   )

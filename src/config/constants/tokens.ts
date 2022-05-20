@@ -2088,6 +2088,14 @@ export const mainnetTokens = defineTokens({
     'https://galaxy.eco/',
   ),
   xcn: new Token(MAINNET, '0x7324c7C0d95CEBC73eEa7E85CbAac0dBdf88a05b', 18, 'XCN', 'Chain', 'https://chain.com/'),
+  metis: new Token(
+    MAINNET,
+    '0xe552Fb52a4F19e44ef5A967632DBc320B0820639',
+    18,
+    'Metis',
+    'Metis Token',
+    'https://www.metis.io/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({

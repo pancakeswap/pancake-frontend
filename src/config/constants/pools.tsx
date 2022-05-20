@@ -9,6 +9,7 @@ const serializedTokens = serializeTokens()
 
 export const MAX_LOCK_DURATION = 31536000
 export const UNLOCK_FREE_DURATION = 604800
+export const ONE_WEEK_DEFAULT = 604800
 export const BOOST_WEIGHT = BigNumber.from('20000000000000')
 export const DURATION_FACTOR = BigNumber.from('31536000')
 
@@ -59,6 +60,20 @@ const pools: SerializedPoolConfig[] = [
     tokenPerBlock: '10',
     sortOrder: 1,
     isFinished: false,
+  },
+  {
+    sousId: 280,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.metis,
+    contractAddress: {
+      97: '',
+      56: '0xC0A94bFF88EdCae7D5d79294C0e9954Ed75CBCb7',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    sortOrder: 999,
+    tokenPerBlock: '0.01331',
+    version: 3,
   },
   {
     sousId: 279,

@@ -2,8 +2,8 @@ import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 import styled from 'styled-components'
-import { getRewardGroupAchievements, useCompetitionRewards } from '../../../helpers'
-import { UserTradingInformationProps } from '../../../types'
+import { getRewardGroupAchievements, useMoboxCompetitionRewards } from '../../../helpers'
+import { UserTradingInformation } from '../../../types'
 import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTable'
 import { mboxPrizes } from '../../../../../config/constants/trading-competition/prizes'
 import UserPrizeGridDollar from '../../../components/YourScore/UserPrizeGridDollar'
@@ -13,13 +13,13 @@ const StyledThead = styled.thead`
   border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
-const MoboxUserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformationProps }> = ({
+const MoboxUserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformation }> = ({
   userTradingInformation,
 }) => {
   const { t } = useTranslation()
   const { userRewardGroup, userCakeRewards, userMoboxRewards, userPointReward, canClaimMysteryBox, canClaimNFT } =
     userTradingInformation
-  const { cakeReward, moboxReward, dollarValueOfTokensReward } = useCompetitionRewards({
+  const { cakeReward, moboxReward, dollarValueOfTokensReward } = useMoboxCompetitionRewards({
     userCakeRewards,
     userMoboxRewards,
   })

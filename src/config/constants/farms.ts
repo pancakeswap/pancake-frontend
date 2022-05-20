@@ -43,6 +43,16 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 100,
+    lpSymbol: 'METIS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x69AFe59e88614501c3fDEb7480f12DBA0A414032',
+    },
+    token: serializedTokens.metis,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 99,
     lpSymbol: 'XCN-BNB LP',
     lpAddresses: {
@@ -51,6 +61,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.xcn,
     quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
   },
   {
     pid: 38,
@@ -73,6 +84,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.wzrd,
     quoteToken: serializedTokens.busd,
+    isCommunity: true,
   },
   {
     pid: 98,
@@ -103,6 +115,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens['8pay'],
     quoteToken: serializedTokens.busd,
+    isCommunity: true,
   },
   {
     pid: 93,
@@ -114,6 +127,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.happy,
     quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
   },
   {
     pid: 95,

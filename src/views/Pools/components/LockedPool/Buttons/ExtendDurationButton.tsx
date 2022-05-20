@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 import { Button, useModal, ButtonProps } from '@pancakeswap/uikit'
+import { ONE_WEEK_DEFAULT, MAX_LOCK_DURATION } from 'config/constants/pools'
 
 import ExtendDurationModal from '../Modals/ExtendDurationModal'
 import { ExtendDurationButtonPropsType } from '../types'
-import { secondsToWeeks } from '../utils/formatSecondsToWeeks'
 
 const ExtendDurationButton: React.FC<ExtendDurationButtonPropsType & ButtonProps> = ({
   modalTitle,
@@ -14,8 +14,9 @@ const ExtendDurationButton: React.FC<ExtendDurationButtonPropsType & ButtonProps
   children,
   ...rest
 }) => {
+  const nowInSeconds = Date.now() / 1000
   const currentDuration = useMemo(() => Number(lockEndTime) - Number(lockStartTime), [lockEndTime, lockStartTime])
-  const currentDurationInWeeks = useMemo(() => secondsToWeeks(currentDuration), [currentDuration])
+  const currentDurationLeftInSeconds = useMemo(() => Number(lockEndTime) - nowInSeconds, [lockEndTime, nowInSeconds])
 
   const [openExtendDurationModal] = useModal(
     <ExtendDurationModal
@@ -32,7 +33,10 @@ const ExtendDurationButton: React.FC<ExtendDurationButtonPropsType & ButtonProps
 
   return (
     <Button
-      disabled={Number.isFinite(currentDurationInWeeks) && currentDurationInWeeks >= 52}
+      disabled={
+        Number.isFinite(currentDurationLeftInSeconds) &&
+        MAX_LOCK_DURATION - currentDurationLeftInSeconds < ONE_WEEK_DEFAULT
+      }
       onClick={openExtendDurationModal}
       width="100%"
       {...rest}

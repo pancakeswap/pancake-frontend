@@ -8,6 +8,7 @@ import SafePal from "../../components/Svg/Icons/SafePal";
 import Coin98 from "../../components/Svg/Icons/Coin98";
 import Blocto from "../../components/Svg/Icons/Blocto";
 import CoinbaseWallet from "../../components/Svg/Icons/CoinbaseWallet";
+import Opera from "../../components/Svg/Icons/Opera";
 
 import { Config, ConnectorNames } from "./types";
 
@@ -43,6 +44,15 @@ const connectors: Config[] = [
     icon: WalletConnect,
     connectorId: ConnectorNames.WalletConnect,
     priority: 5,
+  },
+  {
+    title: "Opera",
+    icon: Opera,
+    connectorId: ConnectorNames.Injected,
+    priority: () => {
+      return typeof window !== "undefined" && Boolean(window?.ethereum?.isOpera) ? 0 : 6;
+    },
+    href: "https://www.opera.com/crypto/next",
   },
   {
     title: "MathWallet",

@@ -465,7 +465,7 @@ export default function RemoveLiquidity() {
                     75%
                   </Button>
                   <Button variant="tertiary" scale="sm" onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}>
-                    Max
+                    {t('Max')}
                   </Button>
                 </Flex>
               </BorderCard>

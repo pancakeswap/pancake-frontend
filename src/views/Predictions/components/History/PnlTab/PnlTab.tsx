@@ -122,8 +122,12 @@ const PnlTab: React.FC<PnlTabProps> = ({ hasBetHistory, bets }) => {
 
   const netResultInUsd = multiplyPriceByAmount(bnbBusdPrice, netResultAmount)
   const avgBnbWonInUsd = multiplyPriceByAmount(bnbBusdPrice, avgBnbWonPerRound)
+  const avgBnbWonInUsdDisplay = !Number.isNaN(avgBnbWonInUsd) ? `~${avgBnbWonInUsd.toFixed(2)}` : '~$0.00'
   const betRoundInUsd = multiplyPriceByAmount(bnbBusdPrice, summary.won.bestRound.payout)
   const avgPositionEnteredInUsd = multiplyPriceByAmount(bnbBusdPrice, avgPositionEntered)
+  const avgPositionEnteredInUsdDisplay = !Number.isNaN(avgPositionEnteredInUsd)
+    ? `~${avgPositionEnteredInUsd.toFixed(2)}`
+    : '~$0.00'
 
   return hasBetHistory ? (
     <Box p="16px">
@@ -152,7 +156,7 @@ const PnlTab: React.FC<PnlTabProps> = ({ hasBetHistory, bets }) => {
           {`${avgBnbWonIsPositive ? '+' : ''}${formatBnb(avgBnbWonPerRound)} ${token.symbol}`}
         </Text>
         <Text small color="textSubtle">
-          {`~$${avgBnbWonInUsd.toFixed(2)}`}
+          {avgBnbWonInUsdDisplay}
         </Text>
 
         {hasBestRound && (
@@ -177,7 +181,7 @@ const PnlTab: React.FC<PnlTabProps> = ({ hasBetHistory, bets }) => {
         </Text>
         <Text bold>{`${formatBnb(avgPositionEntered)} ${token.symbol}`}</Text>
         <Text small color="textSubtle">
-          {`~$${avgPositionEnteredInUsd.toFixed(2)}`}
+          {avgPositionEnteredInUsdDisplay}
         </Text>
 
         <Divider />
