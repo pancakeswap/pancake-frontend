@@ -38,6 +38,7 @@ const ClaimCheck = () => {
       isLoadingHistory={isLoadingHistory}
     />,
     false,
+    true,
   )
 
   const [onPresentNothingToClaimModal] = useModal(<NothingToClaimModal />)

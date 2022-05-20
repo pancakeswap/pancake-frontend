@@ -44,7 +44,7 @@ const ChartDisclaimer: FC<InjectedModalProps> = ({ onDismiss }) => {
           {t('Currently showing charts from Chainlink oracle')}
         </Heading>
         <Text color="textSubtle" fontSize="14px" my="24px">
-          {t('The price you see come directly from the Chainlink BNB/USD oracle, which powers the Prediction game.')}
+          {t('The price you see come directly from the Chainlink oracle, which powers the Prediction game.')}
         </Text>
         <Ul>
           <li>{t('Oracle price refreshes every ~20 seconds.')}</li>

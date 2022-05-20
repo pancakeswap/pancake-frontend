@@ -174,6 +174,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
           width="100%"
           mb="8px"
           onClick={handleClick}
+          disabled={!epochs?.length}
           isLoading={isPendingTx || isLoadingHistory}
           endIcon={isPendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
         >
