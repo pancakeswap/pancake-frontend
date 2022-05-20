@@ -122,6 +122,7 @@ export const PricePairLabel: React.FC = () => {
   useEffect(() => {
     updateRef.current(priceAsNumber)
   }, [priceAsNumber, updateRef])
+
   const onTokenSwitch = useCallback(() => {
     if (router.query.token === PredictionSupportedSymbol.CAKE) {
       router.query.token = PredictionSupportedSymbol.BNB
@@ -129,11 +130,13 @@ export const PricePairLabel: React.FC = () => {
       router.query.token = PredictionSupportedSymbol.CAKE
     }
     router.push(router)
-  }, [])
+  }, [router])
   return (
     <>
       <Box pl="40px" position="relative" display="inline-block">
-        <CoinSwitcher onTokenSwitch={onTokenSwitch} />
+        {router.query.token && (
+          <CoinSwitcher isDefaultBnb={router.query.token !== 'CAKE'} onTokenSwitch={onTokenSwitch} />
+        )}
         {/* <Token left={0}>{logo}</Token> */}
         <Label dir="left">
           <Title bold textTransform="uppercase">

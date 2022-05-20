@@ -1,5 +1,4 @@
-import { useRouter } from "next/router";
-import { memo, useState } from "react";
+import { memo, useState, useCallback } from "react";
 import styled from "styled-components";
 import { bnb2CakeImages, cake2BnbImages } from "./constant";
 import { SequencePlayer } from "./SequencePlayer";
@@ -30,40 +29,47 @@ export const SequenceWrapper = styled.div`
   }
 `;
 
-export const CoinSwitcher: React.FC<{ onTokenSwitch: () => void }> = memo(({ onTokenSwitch }) => {
-  const router = useRouter();
-  const { token } = router.query;
-  const [isBnb] = useState(() => !(token === "CAKE"));
+export const CoinSwitcher: React.FC<{ isDefaultBnb: boolean; onTokenSwitch: () => void }> = memo(
+  ({ isDefaultBnb, onTokenSwitch }) => {
+    const [isBnb] = useState(() => isDefaultBnb);
+    const onSwitch = useCallback(() => {
+      onTokenSwitch();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    return <Inner isDefaultBnb={isBnb} onTokenSwitch={onSwitch} />;
+  }
+);
 
-  return <Inner bnb={isBnb} onTokenSwitch={onTokenSwitch} />;
-});
+const Inner: React.FC<{ isDefaultBnb: boolean; onTokenSwitch: () => void }> = memo(
+  ({ isDefaultBnb, onTokenSwitch }) => {
+    // console.log({ isDefaultBnb }, "??????");
+    const [isBnb, setIsBnb] = useState(() => isDefaultBnb);
 
-const Inner: React.FC<{ bnb: boolean; onTokenSwitch: () => void }> = memo(({ bnb, onTokenSwitch }) => {
-  const [isBnb, setIsBnb] = useState(() => bnb);
-  return (
-    <CoinSwitcherWrapper>
-      <SequenceWrapper className={!isBnb ? "hidden" : undefined}>
-        <SequencePlayer
-          images={bnb2CakeImages()}
-          onPlayStart={() => {
-            onTokenSwitch();
-          }}
-          onPlayFinish={() => {
-            setIsBnb(false);
-          }}
-        />
-      </SequenceWrapper>
-      <SequenceWrapper className={isBnb ? "hidden" : undefined}>
-        <SequencePlayer
-          images={cake2BnbImages()}
-          onPlayStart={() => {
-            onTokenSwitch();
-          }}
-          onPlayFinish={() => {
-            setIsBnb(true);
-          }}
-        />
-      </SequenceWrapper>
-    </CoinSwitcherWrapper>
-  );
-});
+    return (
+      <CoinSwitcherWrapper>
+        <SequenceWrapper className={!isBnb ? "hidden" : undefined}>
+          <SequencePlayer
+            images={bnb2CakeImages()}
+            onPlayStart={() => {
+              onTokenSwitch();
+            }}
+            onPlayFinish={() => {
+              setIsBnb(false);
+            }}
+          />
+        </SequenceWrapper>
+        <SequenceWrapper className={isBnb ? "hidden" : undefined}>
+          <SequencePlayer
+            images={cake2BnbImages()}
+            onPlayStart={() => {
+              onTokenSwitch();
+            }}
+            onPlayFinish={() => {
+              setIsBnb(true);
+            }}
+          />
+        </SequenceWrapper>
+      </CoinSwitcherWrapper>
+    );
+  }
+);
