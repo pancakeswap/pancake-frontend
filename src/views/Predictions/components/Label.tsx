@@ -1,11 +1,11 @@
-import { Box, CoinSwitcher, Flex, PocketWatchIcon, Text } from '@pancakeswap/uikit'
+import { Box, CoinSwitcher, Flex, PocketWatchIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef } from 'react'
 import { useCountUp } from 'react-countup'
 import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
 import { PredictionSupportedSymbol } from 'state/types'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import { useConfig } from '../context/ConfigProvider'
 import { formatRoundTime } from '../helpers'
@@ -74,6 +74,59 @@ const Interval = styled(Text)`
   }
 `
 
+const tooltipAnimation = keyframes`
+  0%{
+    opacity:0;
+  }
+  20%{
+    opacity:1;
+  }
+  30%{
+    transform: translateX(5px);
+  }
+  40%{
+    transform: translateX(0px);
+  }
+  50%{
+    transform: translateX(5px);
+  }
+  60%{
+    transform: translateX(5px);
+  }
+  80%{
+    opacity:1;
+  }
+  99%{
+    opacity:0;
+  }
+  100%{
+    display: none;
+  }
+`
+
+export const Tooltip = styled.div`
+  position: absolute;
+  top: -60px;
+  left: 120px;
+  border-radius: 16px;
+  padding: 16px;
+  background-color: #27262c;
+  color: white;
+  white-space: nowrap;
+  opacity: 0;
+  animation: ${tooltipAnimation} 3s forwards ease-in-out;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: -6px;
+    width: 12px;
+    height: 12px;
+    background-color: #27262c;
+    transform: rotate(45deg);
+  }
+`
+
 const Label = styled(Flex)<{ dir: 'left' | 'right' }>`
   position: relative;
   z-index: 1;
@@ -97,6 +150,8 @@ export const PricePairLabel: React.FC = () => {
   const { price } = usePollOraclePrice()
   const { token } = useConfig()
   const router = useRouter()
+  const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
 
   const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
   const countUpState = useCountUp({
@@ -130,7 +185,10 @@ export const PricePairLabel: React.FC = () => {
     <>
       <Box pl={['20px', '20px', '20px', '40px']} position="relative" display="inline-block">
         {router.query.token && (
-          <CoinSwitcher isDefaultBnb={router.query.token !== 'CAKE'} onTokenSwitch={onTokenSwitch} />
+          <>
+            <>{isMobile && <Tooltip>{t('Switch pairs here.')}</Tooltip>}</>
+            <CoinSwitcher isDefaultBnb={router.query.token !== 'CAKE'} onTokenSwitch={onTokenSwitch} />
+          </>
         )}
         <Label dir="left">
           <Title bold textTransform="uppercase">
