@@ -1,8 +1,9 @@
 import { ArrowForwardIcon, Button, Text, useMatchBreakpoints, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Image from 'next/image'
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import styled from 'styled-components'
+import { perpLangMap } from 'utils/getPerpetualLanguageCode'
 import { perpetualImage, perpetualMobileImage } from './images'
 import * as S from './Styled'
 
@@ -28,15 +29,20 @@ const Header = styled(S.StyledHeading)`
 `
 
 const PerpetualBanner = () => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { code },
+  } = useTranslation()
   const { isDesktop } = useMatchBreakpoints()
+  const perpetualUrl = useMemo(() => `https://perp.pancakeswap.finance/${perpLangMap(code)}/futures/BTCUSDT`, [code])
+
   return (
     <S.Wrapper>
       <S.Inner>
         <S.LeftWrapper>
           <S.StyledSubheading>{t('Perpetual Futures')}</S.StyledSubheading>
           <Header width={['160px', '160px', 'auto']}>{t('Up to 100× Leverage')}</Header>
-          <Link href="https://perp.pancakeswap.finance/en/futures/BTCUSDT" external>
+          <Link href={perpetualUrl} external>
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
                 {t('Trade Now')}
