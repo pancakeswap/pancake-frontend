@@ -36,8 +36,10 @@ const connectors: Config[] = [
     title: "Trust Wallet",
     icon: TrustWallet,
     connectorId: ConnectorNames.Injected,
-    priority: 4,
-    mobileOnly: true,
+    priority: () => {
+      return typeof window !== "undefined" && Boolean(window?.ethereum?.isTrust) ? 0 : 4;
+    },
+    href: "https://link.trustwallet.com/open_url?coin_id=714&url=http://pancakeswap.finance/",
   },
   {
     title: "WalletConnect",
@@ -71,7 +73,6 @@ const connectors: Config[] = [
     icon: SafePal,
     connectorId: ConnectorNames.Injected,
     priority: 999,
-    mobileOnly: true,
   },
   {
     title: "Coin98",
@@ -90,3 +91,5 @@ const connectors: Config[] = [
 export default connectors;
 export const connectorLocalStorageKey = "connectorIdv2";
 export const walletLocalStorageKey = "wallet";
+
+export const walletConnectConfig = connectors.find((c) => c.title === "WalletConnect");

@@ -1,10 +1,11 @@
 import React from "react";
+import { isDesktop } from "react-device-detect";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
 import Text from "../../components/Text/Text";
 import MoreHorizontal from "../../components/Svg/Icons/MoreHorizontal";
 import { ButtonProps } from "../../components/Button";
-import { connectorLocalStorageKey, walletLocalStorageKey } from "./config";
+import { connectorLocalStorageKey, walletConnectConfig, walletLocalStorageKey } from "./config";
 import { Login, Config } from "./types";
 
 interface Props {
@@ -43,6 +44,14 @@ const WalletCard: React.FC<Props> = ({ login, walletConfig, onDismiss }) => {
     <WalletButton
       variant="tertiary"
       onClick={() => {
+        // TW point to WC on desktop
+        if (!window.ethereum && title === "Trust Wallet" && isDesktop && walletConnectConfig) {
+          login(walletConnectConfig.connectorId);
+          localStorage?.setItem(walletLocalStorageKey, walletConnectConfig.title);
+          localStorage?.setItem(connectorLocalStorageKey, walletConnectConfig.connectorId);
+          onDismiss();
+          return;
+        }
         if (!window.ethereum && walletConfig.href) {
           window.open(walletConfig.href, "_blank", "noopener noreferrer");
         } else {

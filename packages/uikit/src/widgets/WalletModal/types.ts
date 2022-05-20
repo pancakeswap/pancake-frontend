@@ -16,6 +16,5 @@ export interface Config {
   icon: FC<SvgProps>;
   connectorId: ConnectorNames;
   priority: number | (() => number);
-  mobileOnly?: boolean;
   href?: string;
 }
