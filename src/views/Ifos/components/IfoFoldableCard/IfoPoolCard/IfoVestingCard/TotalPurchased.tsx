@@ -1,4 +1,3 @@
-import React from 'react'
 import { Flex, Box, Text, BunnyPlaceholderIcon } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'

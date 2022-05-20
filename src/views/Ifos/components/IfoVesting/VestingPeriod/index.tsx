@@ -1,4 +1,3 @@
-import React from 'react'
 import { Box } from '@pancakeswap/uikit'
 import TokenInfo from './TokenInfo'
 
