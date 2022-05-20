@@ -42,8 +42,8 @@ const RenewDuration = ({ setCheckedState, checkedState }) => {
     </>
   )
 }
-// add 30s buffer in order to make sure minium duration by pass on renew extension
-const MIN_DURATION_BUFFER = 30
+// add 60s buffer in order to make sure minium duration by pass on renew extension
+const MIN_DURATION_BUFFER = 60
 
 const AddAmountModal: React.FC<AddAmountModalProps> = ({
   onDismiss,
@@ -74,15 +74,15 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
     roundingMethod: 'ceil',
   })
 
+  // if you locked for 1 week, then add cake without renew the extension, it's possible that remainingDuration + passedDuration less than 1 week.
+  const atLeastOneWeekNewDuration = Math.max(ONE_WEEK_DEFAULT + MIN_DURATION_BUFFER, remainingDuration + passedDuration)
+
   const prepConfirmArg = useCallback(() => {
-    let extendDuration = passedDuration
-    if (remainingDuration + passedDuration <= ONE_WEEK_DEFAULT + MIN_DURATION_BUFFER) {
-      extendDuration += MIN_DURATION_BUFFER
-    }
+    const extendDuration = atLeastOneWeekNewDuration - remainingDuration
     return {
       finalDuration: checkedState ? extendDuration : 0,
     }
-  }, [checkedState, passedDuration, remainingDuration])
+  }, [atLeastOneWeekNewDuration, checkedState, remainingDuration])
 
   const customOverview = useCallback(
     () => (
@@ -90,7 +90,7 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
         isValidDuration
         openCalculator={_noop}
         duration={remainingDuration}
-        newDuration={checkedState ? passedDuration + remainingDuration : null}
+        newDuration={checkedState ? atLeastOneWeekNewDuration : null}
         lockedAmount={currentLockedAmountAsBalance.toNumber()}
         newLockedAmount={totalLockedAmount}
         usdValueStaked={usdValueNewStaked}
@@ -101,7 +101,7 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
       remainingDuration,
       checkedState,
       currentLockedAmountAsBalance,
-      passedDuration,
+      atLeastOneWeekNewDuration,
       totalLockedAmount,
       usdValueNewStaked,
       lockEndTime,
