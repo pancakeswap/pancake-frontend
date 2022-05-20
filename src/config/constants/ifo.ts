@@ -7,34 +7,6 @@ export const cakeBnbLpToken = new Token(ChainId.MAINNET, farms[1].lpAddresses[Ch
 
 const ifos: Ifo[] = [
   {
-    id: 'test',
-    address: '0xb3567c9405f91c7625485bb28c4e7e157d14ede0',
-    isActive: true,
-    name: 'TEST',
-    poolBasic: {
-      saleAmount: '2 BUSD',
-      raiseAmount: '$2',
-      cakeToBurn: '$0',
-      distributionRatio: 0.2,
-    },
-    poolUnlimited: {
-      saleAmount: '8 BUSD',
-      raiseAmount: '$8',
-      cakeToBurn: '$0',
-      distributionRatio: 0.8,
-    },
-    currency: tokens.cake,
-    token: tokens.busd,
-    releaseBlockNumber: null,
-    campaignId: '17762238',
-    articleUrl: 'https://pancakeswap.finance/voting/',
-    tokenOfferingPrice: 1,
-    version: 3.1,
-    telegramUrl: 'https://t.me/',
-    twitterUrl: 'https://twitter.com/',
-    description: 'A test IFO for IFO 3.2 with iCAKE',
-  },
-  {
     id: 'duet',
     address: '0xDF24BE326af4c1fb888f567f41D9a981A4752cf1',
     isActive: false,

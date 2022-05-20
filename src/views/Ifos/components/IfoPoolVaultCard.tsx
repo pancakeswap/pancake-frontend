@@ -3,7 +3,7 @@ import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import CakeVaultCard from 'views/Pools/components/CakeVaultCard'
 import { usePoolsWithVault } from 'state/pools/hooks'
 import IfoPoolVaultCardMobile from './IfoPoolVaultCardMobile'
-import IfoVesting from './IfoVesting/index'
+// import IfoVesting from './IfoVesting/index'
 
 const IfoPoolVaultCard = () => {
   const { isMd, isXs, isSm } = useMatchBreakpoints()
@@ -18,7 +18,7 @@ const IfoPoolVaultCard = () => {
       ) : (
         <CakeVaultCard pool={cakePool} showStakedOnly={false} showICake />
       )}
-      <IfoVesting pool={cakePool} />
+      {/* <IfoVesting pool={cakePool} /> */}
     </Flex>
   )
 }
