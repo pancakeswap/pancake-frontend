@@ -39,7 +39,7 @@ const connectors: Config[] = [
     priority: () => {
       return typeof window !== "undefined" && Boolean(window?.ethereum?.isTrust) ? 0 : 4;
     },
-    href: "https://link.trustwallet.com/open_url?coin_id=714&url=http://pancakeswap.finance/",
+    href: "https://link.trustwallet.com/open_url?coin_id=519&url=http://pancakeswap.finance/",
   },
   {
     title: "WalletConnect",
