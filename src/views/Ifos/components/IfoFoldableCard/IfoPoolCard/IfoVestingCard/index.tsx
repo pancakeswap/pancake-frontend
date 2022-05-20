@@ -1,5 +1,5 @@
 import { Flex, Box, Text, Button } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+// import { useTranslation } from 'contexts/Localization'
 import Divider from 'components/Divider'
 import ProgressStepper from './ProgressStepper'
 import TotalPurchased from './TotalPurchased'
@@ -8,7 +8,7 @@ import ReleasedTokenInfo from './ReleasedTokenInfo'
 import IfoVestingFooter from './IfoVestingFooter'
 
 const IfoVestingCard: React.FC = () => {
-  const { t } = useTranslation()
+  // const { t } = useTranslation()
 
   return (
     <Flex flexDirection="column">

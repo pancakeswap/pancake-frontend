@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Flex, Text, Skeleton } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+// import { useTranslation } from 'contexts/Localization'
 
 const StyledIfoVestingFooter = styled(Flex)`
   padding: 16px;
@@ -31,7 +31,7 @@ const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
 }
 
 const IfoVestingFooter: React.FC = () => {
-  const { t } = useTranslation()
+  // const { t } = useTranslation()
   return (
     <StyledIfoVestingFooter flexDirection="column">
       <FooterEntry label="Release rate" value="0.123 per second" />

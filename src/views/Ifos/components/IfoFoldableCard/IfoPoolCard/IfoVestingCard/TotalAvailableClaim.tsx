@@ -1,9 +1,9 @@
 import { Flex, Box, Text, BunnyPlaceholderIcon } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
-import { useTranslation } from 'contexts/Localization'
+// import { useTranslation } from 'contexts/Localization'
 
 const TotalAvailableClaim: React.FC = () => {
-  const { t } = useTranslation()
+  // const { t } = useTranslation()
 
   return (
     <LightGreyCard mt="24px" mb="8px">
