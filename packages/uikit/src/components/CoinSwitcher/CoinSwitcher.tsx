@@ -5,7 +5,7 @@ import { SequencePlayer } from "./SequencePlayer";
 
 export const CoinSwitcherWrapper = styled.div`
   position: absolute;
-  top: -90px;
+  top: -70px;
   left: 20px;
   z-index: 31;
   width: 150px;
