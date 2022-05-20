@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Text, Flex, Skeleton, Image } from '@pancakeswap/uikit'
 import { useFarmAuctionContract } from 'hooks/useContract'
+import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -20,6 +21,7 @@ const AuctionCakeBurn: React.FC = () => {
   const [burnedCakeAmount, setBurnedCakeAmount] = useState(0)
   const { t } = useTranslation()
   const farmAuctionContract = useFarmAuctionContract(false)
+  const { observerRef, isIntersecting } = useIntersectionObserver()
   const cakePriceBusd = usePriceCakeBusd()
 
   const burnedAmountAsUSD = cakePriceBusd.times(burnedCakeAmount)
@@ -34,13 +36,13 @@ const AuctionCakeBurn: React.FC = () => {
         console.error('Failed to fetch burned auction cake', error)
       }
     }
-    if (burnedCakeAmount === 0) {
+    if (isIntersecting && burnedCakeAmount === 0) {
       fetchBurnedCakeAmount()
     }
-  }, [burnedCakeAmount, farmAuctionContract])
+  }, [isIntersecting, burnedCakeAmount, farmAuctionContract])
   return (
     <Flex flexDirection={['column-reverse', null, 'row']}>
-      <Flex flexDirection="column" flex="2">
+      <Flex flexDirection="column" flex="2" ref={observerRef}>
         {burnedCakeAmount !== 0 ? (
           <Balance fontSize="64px" bold value={burnedCakeAmount} decimals={0} unit=" CAKE" />
         ) : (
