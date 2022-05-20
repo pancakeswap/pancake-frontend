@@ -45,7 +45,7 @@ const WalletCard: React.FC<Props> = ({ login, walletConfig, onDismiss }) => {
       variant="tertiary"
       onClick={() => {
         // TW point to WC on desktop
-        if (!window.ethereum && title === "Trust Wallet" && isDesktop && walletConnectConfig) {
+        if (title === "Trust Wallet" && walletConnectConfig && (!window.ethereum || isDesktop)) {
           login(walletConnectConfig.connectorId);
           localStorage?.setItem(walletLocalStorageKey, walletConnectConfig.title);
           localStorage?.setItem(connectorLocalStorageKey, walletConnectConfig.connectorId);
