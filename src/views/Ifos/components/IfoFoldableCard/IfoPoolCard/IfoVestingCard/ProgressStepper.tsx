@@ -1,5 +1,4 @@
 import { Fragment } from 'react'
-import _uniqueId from 'lodash/uniqueId'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -19,12 +18,13 @@ const ProgressStepper: React.FC<CountdownProps> = ({ steps, activeStepIndex }) =
   const { t } = useTranslation()
   return (
     <Flex>
-      {steps.map((step, index) => {
+      {steps.map((step, index: number) => {
         const isPastSpacer = index < activeStepIndex
         const stepText = t(step.text).toUpperCase()
 
         return (
-          <Fragment key={_uniqueId('Ifo-Vesting-Step-')}>
+          // eslint-disable-next-line react/no-array-index-key
+          <Fragment key={index}>
             <Step index={index} stepText={stepText} activeStepIndex={activeStepIndex} />
             {index + 1 < steps.length && <Spacer isPastSpacer={isPastSpacer} />}
           </Fragment>
