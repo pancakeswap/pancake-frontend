@@ -36,10 +36,8 @@ const connectors: Config[] = [
     title: "Trust Wallet",
     icon: TrustWallet,
     connectorId: ConnectorNames.Injected,
-    priority: () => {
-      return typeof window !== "undefined" && Boolean(window?.ethereum?.isTrust) ? 0 : 4;
-    },
-    href: "https://link.trustwallet.com/open_url?coin_id=519&url=http://pancakeswap.finance/",
+    priority: 4,
+    href: "https://link.trustwallet.com/open_url?coin_id=2000714&url=http://pancakeswap.finance/",
   },
   {
     title: "WalletConnect",
