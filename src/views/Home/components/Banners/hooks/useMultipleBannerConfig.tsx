@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import shuffle from 'lodash/shuffle'
 import CompetitionBanner from '../CompetitionBanner'
 import IFOBanner from '../IFOBanner'
 import LotteryBanner from '../LotteryBanner'
@@ -25,22 +26,24 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(
     () =>
-      [
-        {
-          shouldRender: isRenderIFOBanner,
-          banner: <IFOBanner />,
-        },
-        {
-          shouldRender: isRenderCompetitionBanner,
-          banner: <CompetitionBanner />,
-        },
-        {
-          shouldRender: isRenderLotteryBanner,
-          banner: <LotteryBanner />,
-        },
-      ]
-        .filter((d) => d.shouldRender)
-        .map((d) => d.banner),
+      shuffle(
+        [
+          {
+            shouldRender: isRenderIFOBanner,
+            banner: <IFOBanner />,
+          },
+          {
+            shouldRender: isRenderCompetitionBanner,
+            banner: <CompetitionBanner />,
+          },
+          {
+            shouldRender: isRenderLotteryBanner,
+            banner: <LotteryBanner />,
+          },
+        ]
+          .filter((d) => d.shouldRender)
+          .map((d) => d.banner),
+      ),
     [isRenderIFOBanner, isRenderLotteryBanner, isRenderCompetitionBanner],
   )
 }
