@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { useEffect } from 'react'
 import PageSection from 'components/PageSection'
 import { useWeb3React } from '@web3-react/core'
 import useTheme from 'hooks/useTheme'

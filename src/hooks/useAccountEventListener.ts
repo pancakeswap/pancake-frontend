@@ -9,16 +9,20 @@ export const useAccountEventListener = () => {
 
   useEffect(() => {
     if (account && connector) {
-      const handleEvent = (isDeactive = false) => {
-        clearUserStates(dispatch, chainId, isDeactive)
+      const handleUpdateEvent = () => {
+        clearUserStates(dispatch, chainId)
       }
 
-      connector.addListener('Web3ReactDeactivate', () => handleEvent(true))
-      connector.addListener('Web3ReactUpdate', () => handleEvent())
+      const handleDeactiveEvent = () => {
+        clearUserStates(dispatch, chainId, true)
+      }
+
+      connector.addListener('Web3ReactDeactivate', handleDeactiveEvent)
+      connector.addListener('Web3ReactUpdate', handleUpdateEvent)
 
       return () => {
-        connector.removeListener('Web3ReactDeactivate', () => handleEvent(true))
-        connector.removeListener('Web3ReactUpdate', () => handleEvent())
+        connector.removeListener('Web3ReactDeactivate', handleDeactiveEvent)
+        connector.removeListener('Web3ReactUpdate', handleUpdateEvent)
       }
     }
     return undefined
