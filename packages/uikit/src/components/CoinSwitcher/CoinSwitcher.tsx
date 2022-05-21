@@ -5,13 +5,18 @@ import { SequencePlayer } from "./SequencePlayer";
 
 export const CoinSwitcherWrapper = styled.div`
   position: absolute;
-  top: -70px;
-  left: 20px;
+  top: -25px;
+  left: -25px;
   z-index: 31;
   width: 150px;
   height: 100px;
   overflow: hidden;
-  transform: scale(0.9) translateX(-30px);
+  transform: scale(0.6) translateX(-40px);
+  @media screen and (min-width: 390px) {
+    top: -70px;
+    left: 20px;
+    transform: scale(0.9) translateX(-30px);
+  }
   ${({ theme }) => theme.mediaQueries.md} {
     top: -20px;
     left: -10px;

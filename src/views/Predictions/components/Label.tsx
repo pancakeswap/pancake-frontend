@@ -106,15 +106,20 @@ const tooltipAnimation = keyframes`
 
 export const Tooltip = styled.div`
   position: absolute;
-  top: -60px;
-  left: 120px;
+  top: -10px;
+  left: 55px;
   border-radius: 16px;
   padding: 16px;
   background-color: #27262c;
   color: white;
   white-space: nowrap;
   opacity: 0;
+  z-index: 100;
   animation: ${tooltipAnimation} 3s forwards ease-in-out;
+  @media screen and (min-width: 390px) {
+    top: -60px;
+    left: 120px;
+  }
   &::before {
     content: '';
     position: absolute;
