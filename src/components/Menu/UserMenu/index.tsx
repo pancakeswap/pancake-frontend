@@ -24,11 +24,13 @@ import { FetchStatus } from 'config/constants/types'
 import WalletModal, { WalletView, LOW_BNB_BALANCE } from './WalletModal'
 import ProfileUserMenuItem from './ProfileUserMenuItem'
 import WalletUserMenuItem from './WalletUserMenuItem'
+import { useAccount } from '../../../hooks/useAccount'
 
 const UserMenu = () => {
   const router = useRouter()
   const { t } = useTranslation()
   const { account, error } = useWeb3React()
+  const [address, setAddress] = useState<string>(account)
   const { logout } = useAuth()
   const { hasPendingTransactions, pendingNumber } = usePendingTransactions()
   const { balance, fetchStatus } = useGetBnbBalance()
@@ -42,6 +44,7 @@ const UserMenu = () => {
   const [userMenuText, setUserMenuText] = useState<string>('')
   const [userMenuVariable, setUserMenuVariable] = useState<UserMenuVariant>('default')
   const isWrongNetwork: boolean = error && error instanceof UnsupportedChainIdError
+  const { callAccount } = useAccount()
 
   useEffect(() => {
     if (hasPendingTransactions) {
@@ -52,6 +55,16 @@ const UserMenu = () => {
       setUserMenuVariable('default')
     }
   }, [hasPendingTransactions, pendingNumber, t])
+
+  useEffect(() => {
+    callAccount()
+      .then((result) => {
+        setAddress(result.account)
+      })
+      .catch(() => {
+        setAddress(account)
+      })
+  }, [callAccount, account])
 
   const onClickWalletMenu = (): void => {
     if (isWrongNetwork) {
@@ -93,9 +106,9 @@ const UserMenu = () => {
     )
   }
 
-  if (account) {
+  if (address) {
     return (
-      <UIKitUserMenu account={account} avatarSrc={avatarSrc} text={userMenuText} variant={userMenuVariable}>
+      <UIKitUserMenu account={address} avatarSrc={avatarSrc} text={userMenuText} variant={userMenuVariable}>
         <UserMenuItems />
       </UIKitUserMenu>
     )

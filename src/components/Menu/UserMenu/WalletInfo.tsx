@@ -5,9 +5,11 @@ import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import useAuth from 'hooks/useAuth'
 import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
+import { useEffect, useState } from 'react'
 
 import { getBscScanLink } from 'utils'
 import { formatBigNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { useAccount } from '../../../hooks/useAccount'
 import CopyAddress from './CopyAddress'
 
 interface WalletInfoProps {
@@ -16,8 +18,10 @@ interface WalletInfoProps {
 }
 
 const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) => {
-  const { t } = useTranslation()
   const { account } = useWeb3React()
+  const [address, setAddress] = useState<string>(account)
+  const { t } = useTranslation()
+  const { callAccount } = useAccount()
   const { balance, fetchStatus } = useGetBnbBalance()
   const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useTokenBalance(tokens.cake.address)
   const { logout } = useAuth()
@@ -27,12 +31,22 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) 
     logout()
   }
 
+  useEffect(() => {
+    callAccount()
+      .then((result) => {
+        setAddress(result.account)
+      })
+      .catch(() => {
+        setAddress(account)
+      })
+  }, [callAccount, account])
+
   return (
     <>
       <Text color="secondary" fontSize="12px" textTransform="uppercase" fontWeight="bold" mb="8px">
         {t('Your Address')}
       </Text>
-      <CopyAddress account={account} mb="24px" />
+      <CopyAddress account={address} mb="24px" />
       {hasLowBnbBalance && (
         <Message variant="warning" mb="24px">
           <Box>
