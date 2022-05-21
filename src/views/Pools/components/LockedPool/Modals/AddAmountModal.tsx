@@ -1,4 +1,6 @@
 import { useState, useCallback } from 'react'
+import { differenceInSeconds } from 'date-fns'
+import { convertTimeToSeconds } from 'utils/timeHelper'
 import { Modal, Box, MessageText, Message, Checkbox, Flex, Text } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
 import { useTranslation } from 'contexts/Localization'
@@ -8,6 +10,7 @@ import _toNumber from 'lodash/toNumber'
 import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { getBalanceNumber, getDecimalAmount, getBalanceAmount } from 'utils/formatBalance'
+import { ONE_WEEK_DEFAULT } from 'config/constants/pools'
 
 import RoiCalculatorModalProvider from './RoiCalculatorModalProvider'
 
@@ -39,14 +42,15 @@ const RenewDuration = ({ setCheckedState, checkedState }) => {
     </>
   )
 }
+// add 30s buffer in order to make sure minium duration by pass on renew extension
+const MIN_DURATION_BUFFER = 30
 
 const AddAmountModal: React.FC<AddAmountModalProps> = ({
   onDismiss,
   currentBalance,
   currentLockedAmount,
   stakingToken,
-  passedDuration,
-  remainingDuration,
+  lockStartTime,
   lockEndTime,
   stakingTokenBalance,
 }) => {
@@ -63,12 +67,22 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
   const usdValueStaked = useBUSDCakeAmount(lockedAmountAsBigNumber.toNumber())
   const usdValueNewStaked = useBUSDCakeAmount(totalLockedAmount)
 
-  const prepConfirmArg = useCallback(
-    () => ({
-      finalDuration: checkedState ? passedDuration : 0,
-    }),
-    [checkedState, passedDuration],
-  )
+  const remainingDuration = differenceInSeconds(new Date(convertTimeToSeconds(lockEndTime)), new Date(), {
+    roundingMethod: 'ceil',
+  })
+  const passedDuration = differenceInSeconds(new Date(), new Date(convertTimeToSeconds(lockStartTime)), {
+    roundingMethod: 'ceil',
+  })
+
+  const prepConfirmArg = useCallback(() => {
+    let extendDuration = passedDuration
+    if (remainingDuration + passedDuration <= ONE_WEEK_DEFAULT + MIN_DURATION_BUFFER) {
+      extendDuration += MIN_DURATION_BUFFER
+    }
+    return {
+      finalDuration: checkedState ? extendDuration : 0,
+    }
+  }, [checkedState, passedDuration, remainingDuration])
 
   const customOverview = useCallback(
     () => (

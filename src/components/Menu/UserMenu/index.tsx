@@ -17,11 +17,9 @@ import { useRouter } from 'next/router'
 import { useProfile } from 'state/profile/hooks'
 import { usePendingTransactions } from 'state/transactions/hooks'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useGetBnbBalance } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
-import { FetchStatus } from 'config/constants/types'
-import WalletModal, { WalletView, LOW_BNB_BALANCE } from './WalletModal'
+import WalletModal, { WalletView } from './WalletModal'
 import ProfileUserMenuItem from './ProfileUserMenuItem'
 import WalletUserMenuItem from './WalletUserMenuItem'
 
@@ -31,14 +29,12 @@ const UserMenu = () => {
   const { account, error } = useWeb3React()
   const { logout } = useAuth()
   const { hasPendingTransactions, pendingNumber } = usePendingTransactions()
-  const { balance, fetchStatus } = useGetBnbBalance()
   const { isInitialized, isLoading, profile } = useProfile()
   const [onPresentWalletModal] = useModal(<WalletModal initialView={WalletView.WALLET_INFO} />)
   const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
   const [onPresentWrongNetworkModal] = useModal(<WalletModal initialView={WalletView.WRONG_NETWORK} />)
   const hasProfile = isInitialized && !!profile
   const avatarSrc = profile?.nft?.image?.thumbnail
-  const hasLowBnbBalance = fetchStatus === FetchStatus.Fetched && balance.lte(LOW_BNB_BALANCE)
   const [userMenuText, setUserMenuText] = useState<string>('')
   const [userMenuVariable, setUserMenuVariable] = useState<UserMenuVariant>('default')
   const isWrongNetwork: boolean = error && error instanceof UnsupportedChainIdError
@@ -64,11 +60,7 @@ const UserMenu = () => {
   const UserMenuItems = () => {
     return (
       <>
-        <WalletUserMenuItem
-          hasLowBnbBalance={hasLowBnbBalance}
-          isWrongNetwork={isWrongNetwork}
-          onPresentWalletModal={onClickWalletMenu}
-        />
+        <WalletUserMenuItem isWrongNetwork={isWrongNetwork} onPresentWalletModal={onClickWalletMenu} />
         <UserMenuItem as="button" disabled={isWrongNetwork} onClick={onPresentTransactionModal}>
           {t('Recent Transactions')}
           {hasPendingTransactions && <RefreshIcon spin />}
@@ -96,7 +88,7 @@ const UserMenu = () => {
   if (account) {
     return (
       <UIKitUserMenu account={account} avatarSrc={avatarSrc} text={userMenuText} variant={userMenuVariable}>
-        <UserMenuItems />
+        {({ isOpen }) => (isOpen ? <UserMenuItems /> : null)}
       </UIKitUserMenu>
     )
   }
@@ -104,7 +96,7 @@ const UserMenu = () => {
   if (isWrongNetwork) {
     return (
       <UIKitUserMenu text={t('Network')} variant="danger">
-        <UserMenuItems />
+        {({ isOpen }) => (isOpen ? <UserMenuItems /> : null)}
       </UIKitUserMenu>
     )
   }

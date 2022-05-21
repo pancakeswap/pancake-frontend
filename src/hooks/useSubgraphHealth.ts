@@ -35,9 +35,10 @@ const useSubgraphHealth = (subgraphName: string) => {
     (currentBlockNumber) => {
       const getSubgraphHealth = async () => {
         try {
-          const { indexingStatusForCurrentVersion } = await request(
-            GRAPH_HEALTH,
-            gql`
+          const [{ indexingStatusForCurrentVersion }, currentBlock] = await Promise.all([
+            request(
+              GRAPH_HEALTH,
+              gql`
             query getNftMarketSubgraphHealth {
               indexingStatusForCurrentVersion(subgraphName: "${subgraphName}") {
                 synced
@@ -53,9 +54,10 @@ const useSubgraphHealth = (subgraphName: string) => {
               }
             }
           `,
-          )
+            ),
+            currentBlockNumber ? Promise.resolve(currentBlockNumber) : simpleRpcProvider.getBlockNumber(),
+          ])
 
-          const currentBlock = currentBlockNumber || (await simpleRpcProvider.getBlockNumber())
           const isHealthy = indexingStatusForCurrentVersion.health === 'healthy'
           const chainHeadBlock = parseInt(indexingStatusForCurrentVersion.chains[0].chainHeadBlock.number)
           const latestBlock = parseInt(indexingStatusForCurrentVersion.chains[0].latestBlock.number)
