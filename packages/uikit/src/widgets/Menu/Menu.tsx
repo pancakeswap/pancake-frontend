@@ -20,17 +20,25 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
-const StyledNav = styled.nav<{ showMenu: boolean }>`
+const StyledNav = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: ${({ showMenu }) => (showMenu ? `${MENU_HEIGHT}px` : 0)};
-  transition: height 0.2s;
-  overflow: ${({ showMenu }) => (showMenu ? "visible" : "hidden")};
+  height: ${MENU_HEIGHT}px;
   background-color: ${({ theme }) => theme.nav.background};
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
   transform: translate3d(0, 0, 0);
+  transition: transform 0.2s ease;
+  transform-origin: top;
+
+  &.disabled{
+    transform: scaleY(0);
+]  }
+
+  &.enabled{
+    transform: scaleY(1);
+  }
 
   padding-left: 16px;
   padding-right: 16px;
@@ -131,7 +139,7 @@ const Menu: React.FC<NavProps> = ({
       <Wrapper>
         <FixedContainer>
           {banner && <TopBannerContainer height={topBannerHeight}>{banner}</TopBannerContainer>}
-          <StyledNav showMenu={showMenu}>
+          <StyledNav className={showMenu ? "enabled" : "disabled"}>
             <Flex>
               <Logo isDark={isDark} href={homeLink?.href ?? "/"} />
               {!isMobile && <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} ml="24px" />}
