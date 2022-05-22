@@ -8,6 +8,7 @@ import {
   SerializedVaultFees,
   SerializedCakeVault,
   SerializedLockedVaultUser,
+  PublicIfoData,
 } from 'state/types'
 import { getPoolApr } from 'utils/apr'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -305,14 +306,10 @@ export const fetchCakeVaultUserData = createAsyncThunk<SerializedLockedVaultUser
   },
 )
 
-export const fetchIfoPublicDataAsync = () => async (dispatch) => {
-  try {
-    const ceiling = await fetchPublicIfoData()
-    dispatch(setIfoPublicData(ceiling))
-  } catch (error) {
-    console.error('[Ifo Public Data] Error fetching Ifo public data', error)
-  }
-}
+export const fetchIfoPublicDataAsync = createAsyncThunk<PublicIfoData>('ifoVault/fetchIfoPublicDataAsync', async () => {
+  const publicIfoData = await fetchPublicIfoData()
+  return publicIfoData
+})
 
 export const fetchUserIfoCreditDataAsync = (account: string) => async (dispatch) => {
   try {
@@ -367,11 +364,7 @@ export const PoolsSlice = createSlice({
         state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
       }
     },
-    // Ifo
-    setIfoPublicData: (state, action) => {
-      const ceiling = action.payload
-      state.ifo = { ...state.ifo, ceiling }
-    },
+    // IFO
     setIfoUserCreditData: (state, action) => {
       const credit = action.payload
       state.ifo = { ...state.ifo, credit }
@@ -401,6 +394,11 @@ export const PoolsSlice = createSlice({
       userData.isLoading = false
       state.cakeVault = { ...state.cakeVault, userData }
     })
+    // IFO
+    builder.addCase(fetchIfoPublicDataAsync.fulfilled, (state, action: PayloadAction<PublicIfoData>) => {
+      const { ceiling } = action.payload
+      state.ifo = { ...state.ifo, ceiling }
+    })
   },
 })
 
@@ -411,7 +409,6 @@ export const {
   updatePoolsUserData,
   setPoolPublicData,
   setPoolUserData,
-  setIfoPublicData,
   setIfoUserCreditData,
 } = PoolsSlice.actions
 

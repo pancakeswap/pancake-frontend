@@ -6,9 +6,13 @@ export const fetchPublicIfoData = async () => {
   try {
     const ifoCreditAddressContract = getIfoCreditAddressContract()
     const ceiling = await ifoCreditAddressContract.ceiling()
-    return new BigNumber(ceiling.toString()).toJSON()
+    return {
+      ceiling: new BigNumber(ceiling.toString()).toJSON(),
+    }
   } catch (error) {
-    return BIG_ZERO.toJSON()
+    return {
+      ceiling: BIG_ZERO.toJSON(),
+    }
   }
 }
 
