@@ -44,7 +44,7 @@ const farms: SerializedFarmConfig[] = [
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
     pid: 101,
-    lpSymbol: 'METIS-BUSD LP',
+    lpSymbol: 'MIX-BUSD LP',
     lpAddresses: {
       97: '',
       56: '0x7618fdAb208aE23690dadD3aa4a42a442313d24E',
