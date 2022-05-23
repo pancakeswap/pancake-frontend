@@ -38,32 +38,42 @@ export function useSearchInactiveTokenLists(search: string | undefined, minResul
   return useMemo(() => {
     if (!search || search.trim().length === 0) return []
     const filterToken = createFilterToken(search)
-    const result: WrappedTokenInfo[] = []
+    const exactMatches: WrappedTokenInfo[] = []
+    const rest: WrappedTokenInfo[] = []
     const addressSet: { [address: string]: true } = {}
     for (const url of inactiveUrls) {
       const list = lists[url].current
       // eslint-disable-next-line no-continue
       if (!list) continue
       for (const tokenInfo of list.tokens) {
-        const tags: TagInfo[] =
-          tokenInfo.tags
-            ?.map((tagId) => {
-              if (!list.tags?.[tagId]) return undefined
-              return { ...list.tags[tagId], id: tagId }
-            })
-            ?.filter((x): x is TagInfo => Boolean(x)) ?? []
-
-        if (tokenInfo.chainId === chainId && filterToken(tokenInfo)) {
+        if (
+          tokenInfo.chainId === chainId &&
+          !(tokenInfo.address in activeTokens) &&
+          !addressSet[tokenInfo.address] &&
+          filterToken(tokenInfo)
+        ) {
+          const tags: TagInfo[] =
+            tokenInfo.tags
+              ?.map((tagId) => {
+                if (!list.tags?.[tagId]) return undefined
+                return { ...list.tags[tagId], id: tagId }
+              })
+              ?.filter((x): x is TagInfo => Boolean(x)) ?? []
           const wrapped: WrappedTokenInfo = new WrappedTokenInfo(tokenInfo, tags)
-          if (!(wrapped.address in activeTokens) && !addressSet[wrapped.address]) {
-            addressSet[wrapped.address] = true
-            result.push(wrapped)
-            if (result.length >= minResults) return result
+          addressSet[wrapped.address] = true
+          const trimmedSearchQuery = search.toLowerCase().trim()
+          if (
+            tokenInfo.name?.toLowerCase() === trimmedSearchQuery ||
+            tokenInfo.symbol?.toLowerCase() === trimmedSearchQuery
+          ) {
+            exactMatches.push(wrapped)
+          } else {
+            rest.push(wrapped)
           }
         }
       }
     }
-    return result
+    return [...exactMatches, ...rest].slice(0, minResults)
   }, [activeTokens, chainId, inactiveUrls, lists, minResults, search])
 }
 
