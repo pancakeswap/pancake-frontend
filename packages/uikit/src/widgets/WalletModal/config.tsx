@@ -46,7 +46,7 @@ const connectors: Config[] = [
     priority: 5,
   },
   {
-    title: "Opera",
+    title: "Opera Wallet",
     icon: Opera,
     connectorId: ConnectorNames.Injected,
     priority: () => {
