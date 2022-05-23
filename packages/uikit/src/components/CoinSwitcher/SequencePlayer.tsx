@@ -87,5 +87,13 @@ export const SequencePlayer: React.FC<SequencePlayerProps> = ({
     };
   }, [images]);
 
-  return <canvas ref={canvasRef} onClick={() => coinLooper()} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      onClick={(e) => {
+        e.stopPropagation();
+        coinLooper();
+      }}
+    />
+  );
 };

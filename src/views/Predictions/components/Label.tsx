@@ -1,7 +1,7 @@
-import { Box, CoinSwitcher, Flex, PocketWatchIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, CoinSwitcher, Flex, PocketWatchIcon, Text, CloseIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useCountUp } from 'react-countup'
 import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
 import { PredictionSupportedSymbol } from 'state/types'
@@ -11,6 +11,8 @@ import { useConfig } from '../context/ConfigProvider'
 import { formatRoundTime } from '../helpers'
 import useCountdown from '../hooks/useCountdown'
 import usePollOraclePrice from '../hooks/usePollOraclePrice'
+
+const TOOLTIP_DISMISS_KEY = 'prediction-switcher-dismiss-tooltip'
 
 const Token = styled(Box)`
   margin-top: -24px;
@@ -93,20 +95,14 @@ const tooltipAnimation = keyframes`
   60%{
     transform: translateX(5px);
   }
-  80%{
-    opacity:1;
-  }
-  99%{
-    opacity:0;
-  }
   100%{
-    display: none;
+    opacity:1;
   }
 `
 
 export const Tooltip = styled.div`
   position: absolute;
-  top: -10px;
+  top: -5px;
   left: 55px;
   border-radius: 16px;
   padding: 16px;
@@ -120,10 +116,14 @@ export const Tooltip = styled.div`
     top: -60px;
     left: 120px;
   }
+  ${({ theme }) => theme.mediaQueries.md} {
+    top: -10px;
+    left: 90px;
+  }
   &::before {
     content: '';
     position: absolute;
-    top: 18px;
+    top: 22px;
     left: -6px;
     width: 12px;
     height: 12px;
@@ -156,7 +156,10 @@ export const PricePairLabel: React.FC = () => {
   const { token } = useConfig()
   const router = useRouter()
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const [dismissTooltip, setDismissTooltip] = useState(() => {
+    if (localStorage?.getItem(TOOLTIP_DISMISS_KEY)) return true
+    return false
+  })
 
   const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
   const countUpState = useCountUp({
@@ -165,10 +168,6 @@ export const PricePairLabel: React.FC = () => {
     duration: 1,
     decimals: 3,
   })
-
-  // const logo = useMemo(() => {
-  //   return TOKEN_LOGOS[token.symbol]
-  // }, [token.symbol])
 
   const { countUp, update } = countUpState || {}
 
@@ -195,12 +194,24 @@ export const PricePairLabel: React.FC = () => {
   return (
     <>
       <Box pl={['20px', '20px', '20px', '40px']} position="relative" display="inline-block">
-        {isMobile && <Tooltip>{t('Switch pairs here.')}</Tooltip>}
+        {!dismissTooltip && (
+          <Tooltip>
+            <Text mr="5px" display="inline-block" verticalAlign="super">
+              {t('Switch pairs here.')}
+            </Text>
+            <CloseIcon
+              cursor="pointer"
+              onClick={() => {
+                localStorage?.setItem(TOOLTIP_DISMISS_KEY, '1')
+                setDismissTooltip(true)
+              }}
+            />
+          </Tooltip>
+        )}
         <CoinSwitcher
           isDefaultBnb={router.query.token === 'BNB' || (router.query.token === undefined && token.symbol === 'BNB')}
           onTokenSwitch={onTokenSwitch}
         />
-
         <Label dir="left">
           <Title bold textTransform="uppercase">
             {`${token.symbol}USD`}

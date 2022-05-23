@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useState, useRef } from "react";
 import styled from "styled-components";
 import { bnb2CakeImages, cake2BnbImages } from "./constant";
 import { SequencePlayer } from "./SequencePlayer";
@@ -11,6 +11,7 @@ export const CoinSwitcherWrapper = styled.div`
   width: 150px;
   height: 100px;
   overflow: hidden;
+  cursor: pointer;
   transform: scale(0.6) translateX(-40px);
   @media screen and (min-width: 390px) {
     top: -70px;

@@ -62,7 +62,7 @@ const Mobile: React.FC = () => {
         <View isVisible={view === PageView.POSITIONS}>
           <Flex alignItems="center" height="100%">
             {status === PredictionStatus.ERROR && <ErrorNotification />}
-            {status === PredictionStatus.PAUSED && <PauseNotification />}
+            {/* {status === PredictionStatus.PAUSED && <PauseNotification />} */}
             {[PredictionStatus.INITIAL, PredictionStatus.LIVE].includes(status) && (
               <Box overflow="visible" width="100%">
                 <Menu />
