@@ -64,7 +64,7 @@ const pools: SerializedPoolConfig[] = [
   {
     sousId: 281,
     stakingToken: serializedTokens.cake,
-    earningToken: serializedTokens.mixmarvel,
+    earningToken: serializedTokens.MIX,
     contractAddress: {
       97: '',
       56: '0x0F96E19Bdc787e767BA1e8F1aDD0f62cbdad87C8',

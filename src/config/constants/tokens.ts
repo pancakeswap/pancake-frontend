@@ -2096,7 +2096,7 @@ export const mainnetTokens = defineTokens({
     'Metis Token',
     'https://www.metis.io/',
   ),
-  mixmarvel: new Token(
+  MIX: new Token(
     MAINNET,
     '0x398f7827DcCbeFe6990478876bBF3612D93baF05',
     18,
