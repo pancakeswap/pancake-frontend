@@ -184,8 +184,8 @@ const Desktop: React.FC = () => {
         <SplitWrapper ref={splitWrapperRef}>
           <PositionPane>
             {status === PredictionStatus.ERROR && <ErrorNotification />}
-            {/* {status === PredictionStatus.PAUSED && <PauseNotification />} */}
-            {[PredictionStatus.INITIAL, PredictionStatus.LIVE, PredictionStatus.PAUSED].includes(status) && (
+            {status === PredictionStatus.PAUSED && <PauseNotification />}
+            {[PredictionStatus.INITIAL, PredictionStatus.LIVE].includes(status) && (
               <Box>
                 <Menu />
                 {status === PredictionStatus.LIVE ? <Positions /> : <LoadingSection />}
