@@ -283,7 +283,7 @@
   "Blocks": "Blocs",
   "Add to Metamask": "Ajouter à Metamask",
   "Compounded": "Cumul",
-  "Cancelled": "Annulé",
+  "Cancelled": "Cancelled",
   "Harvested": "Récupéré",
   "Close Window": "Fermer la fenêtre",
   "Insufficient %symbol% balance": "Solde %symbol% insuffisant",
@@ -305,7 +305,7 @@
   "Syrup Pools": "Pools de sirop",
   "Best round: #%roundId%": "Meilleur tirage : %roundId%",
   "View Reclaimed & Won": "Afficher les récupérations et les gains",
-  "This round was automatically cancelled due to an error. If you entered a position, please reclaim your funds below.": "Ce tirage a été automatiquement annulé en raison d'une erreur. Si vous avez pris une position, veuillez récupérer vos fonds ci-dessous.",
+  "This round was automatically cancelled due to an error. If you entered a position, please reclaim your funds below.": "This round was automatically cancelled due to an error. If you entered a position, please reclaim your funds below.",
   "Round History": "Historique des tirages",
   "Your History": "Votre historique",
   "Filter": "Filtrer",
@@ -313,7 +313,7 @@
   "Live Now": "Actif",
   "Reclaim": "Récupérer",
   "This page can’t be displayed right now due to an error. Please check back soon.": "Cette page ne peut pas être affichée pour le moment en raison d'une erreur. Merci de revenir bientôt.",
-  "Round Cancelled": "Tirage annulé",
+  "Round Cancelled": "Round Cancelled",
   "Learn More": "En savoir plus",
   "Payout": "Paiement",
   "%position% position entered": "Position à la %position% engagée",
@@ -1695,5 +1695,7 @@
   "In addition to token prizes there are NFT rewards (estimated worth of ~$40,000 at the time of writing):": "In addition to token prizes there are NFT rewards (estimated worth of ~$40,000 at the time of writing):",
   "Auction Hosting Ends": "Auction Hosting Ends",
   "Your DAR volume rank": "Your DAR volume rank",
-  "Based on your DAR/BNB trading": "Based on your DAR/BNB trading"
+  "Based on your DAR/BNB trading": "Based on your DAR/BNB trading",
+  "Perpetual Futures": "Perpetual Futures",
+  "Up to 100× Leverage": "Up to 100× Leverage"
 }
