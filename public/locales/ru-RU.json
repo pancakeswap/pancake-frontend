@@ -373,7 +373,6 @@
   "Created %dateCreated% ago": "Создано %dateCreated% назад",
   "$120,000 in Prizes!": "$120,000 in Prizes!",
   "Now Live!": "Уже идет!",
-  "Calculating prizes": "Рассчитываем призы",
   "I want to Battle!": "Я хочу на битву!",
   "Trade Now": "Торговать",
   "Claim period over": "Период получения завершен",
@@ -1699,5 +1698,7 @@
   "Perpetual Futures": "Perpetual Futures",
   "Up to 100× Leverage": "Up to 100× Leverage",
   "Circulating Supply": "Circulating Supply",
-  "Max Supply": "Max Supply"
+  "Max Supply": "Max Supply",
+  "Prizes will be announced and available for claiming at ~": "Prizes will be announced and available for claiming at ~",
+  "Follow Update": "Follow Update"
 }
