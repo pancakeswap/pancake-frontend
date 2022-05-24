@@ -102,7 +102,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
     }
     // Competition finished. Rewards being calculated
     if (currentPhase.state === FINISHED) {
-      return `${t('Calculating prizes')}...`
+      return `${t('Calculating')}...`
     }
     // All competition finished states
     if (hasCompetitionEnded) {
@@ -194,9 +194,9 @@ const BattleCta: React.FC<CompetitionProps> = ({
           {/* Hide button if in the pre-claim, FINISHED phase */}
           {currentPhase.state === FINISHED && (
             <Box width="280px" p="20px 0px 0px">
-              <Text>
+              <Text color="light">
                 {t('Prizes will be announced and available for claiming at ~')}{' '}
-                {new Date(Date.UTC(2022, 5, 24, 8)).toLocaleString()}
+                {new Date(Date.UTC(2022, 5, 24, 8)).toLocaleString('en-US')}
               </Text>
               <Text textAlign="center" pt="20px">
                 <Button
