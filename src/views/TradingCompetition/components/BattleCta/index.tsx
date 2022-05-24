@@ -22,6 +22,14 @@ import ClaimModal from '../ClaimModal'
 import { Heading2Text } from '../CompetitionHeadingText'
 import { CompetitionProps } from '../../types'
 
+const options: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+}
+
 const StyledCard = styled(Card)`
   display: inline-flex;
   position: relative;
@@ -196,7 +204,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
             <Box width="280px" p="20px 0px 0px">
               <Text color="light">
                 {t('Prizes will be announced and available for claiming at ~')}{' '}
-                {new Date(Date.UTC(2022, 5, 24, 8)).toLocaleString('en-US')}
+                {new Date(Date.UTC(2022, 5, 24, 8)).toLocaleString('en-US', options)}
               </Text>
               <Text textAlign="center" pt="20px">
                 <Button
