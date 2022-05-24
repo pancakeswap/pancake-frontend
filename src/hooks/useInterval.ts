@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
+import useLastUpdated from './useLastUpdated'
 
 export default function useInterval(
   callback: () => void,
@@ -7,8 +8,17 @@ export default function useInterval(
   leading = true,
   initiateUpdate = true,
 ) {
+  const [runImmediate, setRunImmediate] = useState(leading)
+  const [runAfter, setRunAfter] = useState(delay)
   const savedCallback = useRef<() => void>(callback)
   const [isReadyForUpdate, setIsReadyForUpdate] = useState(false)
+  const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
+
+  // Use props indirectly to not render set up timeout effect twice if both props changed.
+  useEffect(() => {
+    setRunImmediate(leading)
+    setRunAfter(delay)
+  }, [leading, delay])
 
   const tick = useCallback(() => {
     setIsReadyForUpdate(true)
@@ -23,19 +33,23 @@ export default function useInterval(
     if (initiateUpdate && isReadyForUpdate) {
       savedCallback.current?.()
       setIsReadyForUpdate(false)
+      setRunImmediate(false)
+      refresh()
     }
-  }, [initiateUpdate, isReadyForUpdate])
+  }, [initiateUpdate, isReadyForUpdate, refresh])
 
-  // Set up the interval.
+  // Set up the timeout.
   useEffect(() => {
-    if (!isUndefinedOrNull(delay)) {
-      if (leading) tick()
-      const id = setInterval(tick, delay)
-      return () => {
-        setIsReadyForUpdate(false)
-        clearInterval(id)
+    if (!isUndefinedOrNull(runAfter)) {
+      if (runImmediate) tick()
+      else {
+        const id = setTimeout(tick, runAfter)
+        return () => {
+          setIsReadyForUpdate(false)
+          clearTimeout(id)
+        }
       }
     }
     return () => setIsReadyForUpdate(false)
-  }, [delay, leading, tick])
+  }, [runAfter, runImmediate, lastUpdated, tick])
 }
