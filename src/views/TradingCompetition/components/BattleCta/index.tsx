@@ -204,7 +204,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
             <Box width="280px" p="20px 0px 0px">
               <Text color="light">
                 {t('Prizes will be announced and available for claiming at ~')}{' '}
-                {new Date(Date.UTC(2022, 5, 24, 8)).toLocaleString('en-US', options)}
+                {new Date(Date.UTC(2022, 4, 26, 8)).toLocaleString('en-US', options)}
               </Text>
               <Text textAlign="center" pt="20px">
                 <Button
