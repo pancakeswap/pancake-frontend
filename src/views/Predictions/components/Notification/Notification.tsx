@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Card, CardBody, Heading, Button } from '@pancakeswap/uikit'
+import { Card, CardBody, Heading, ArrowBackIcon, IconButton } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'contexts/Localization'
 import { PredictionSupportedSymbol } from 'state/types'
@@ -8,14 +8,6 @@ import { useConfig } from 'views/Predictions/context/ConfigProvider'
 interface NotificationProps {
   title: string
 }
-
-// const BunnyDecoration = styled.div`
-//   position: absolute;
-//   top: -130px; // line up bunny at the top of the modal
-//   left: 0px;
-//   text-align: center;
-//   width: 100%;
-// `
 
 const Wrapper = styled.div`
   align-items: center;
@@ -37,12 +29,16 @@ const BunnyDecoration = styled.div`
   text-align: center;
   width: 100%;
   z-index: 5;
+  cursor: pointer;
 `
 
-const BackButtonStyle = styled(Button)`
+const BackButtonStyle = styled(IconButton)`
   position: absolute;
   top: -62px;
-  width: 50%;
+  width: 40%;
+  ${({ theme }) => theme.mediaQueries.md} {
+    top: -132px;
+  }
 `
 
 const BackButton = () => {
@@ -50,6 +46,7 @@ const BackButton = () => {
 
   return (
     <BackButtonStyle variant="primary" width="100%">
+      <ArrowBackIcon color="white" mr="8px" />
       {t('Back')}
     </BackButtonStyle>
   )
