@@ -373,7 +373,6 @@
   "Created %dateCreated% ago": "Erstellt vor %dateCreated%",
   "$120,000 in Prizes!": "$120,000 in Prizes!",
   "Now Live!": "Jetzt Live!",
-  "Calculating prizes": "Berechnen von Preisen",
   "I want to Battle!": "Ich will am Battle teilnehmen (I WANT TO BATTLE)!",
   "Trade Now": "Jetzt handeln",
   "Claim period over": "Anspruchsperiode vorbei",
@@ -1699,5 +1698,7 @@
   "Perpetual Futures": "Perpetual Futures",
   "Up to 100× Leverage": "Up to 100× Leverage",
   "Circulating Supply": "Circulating Supply",
-  "Max Supply": "Max Supply"
+  "Max Supply": "Max Supply",
+  "Prizes will be announced and available for claiming at ~": "Prizes will be announced and available for claiming at ~",
+  "Follow Update": "Follow Update"
 }
