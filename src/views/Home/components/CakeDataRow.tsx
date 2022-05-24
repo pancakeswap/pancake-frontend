@@ -14,7 +14,7 @@ import { SLOW_INTERVAL } from 'config/constants'
 import { BigNumber } from '@ethersproject/bignumber'
 import { getCakeVaultV2Contract } from 'utils/contractHelpers'
 
-const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean }>`
+const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean; noDesktopBorder?: boolean }>`
   flex-direction: column;
   ${({ noMobileBorder, theme }) =>
     noMobileBorder
@@ -27,6 +27,14 @@ const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean }>`
          padding: 0 8px;
          ${theme.mediaQueries.sm} {
            padding: 0 16px;
+         }
+       `}
+
+  ${({ noDesktopBorder, theme }) =>
+    noDesktopBorder &&
+    `${theme.mediaQueries.md} {
+           padding: 0;
+           border-left: none;
          }
        `}
 `
@@ -43,7 +51,7 @@ const Grid = styled.div`
 
   ${({ theme }) => theme.mediaQueries.md} {
     grid-gap: 32px;
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(3, auto);
   }
 `
 
@@ -113,6 +121,14 @@ const CakeDataRow = () => {
   return (
     <Grid>
       <Flex flexDirection="column">
+        <Text color="textSubtle">{t('Circulating Supply')}</Text>
+        {circulatingSupply ? (
+          <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={circulatingSupply} />
+        ) : (
+          <Skeleton height={24} width={126} my="4px" />
+        )}
+      </Flex>
+      <StyledColumn>
         <Text color="textSubtle">{t('Total supply')}</Text>
         {cakeSupply ? (
           <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={cakeSupply} />
@@ -122,19 +138,24 @@ const CakeDataRow = () => {
             <Skeleton height={24} width={126} my="4px" />
           </>
         )}
-      </Flex>
-      <StyledColumn>
-        <Text color="textSubtle">{t('Burned to date')}</Text>
-        {burnedBalance ? (
-          <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={burnedBalance} />
+      </StyledColumn>
+      <StyledColumn noMobileBorder>
+        <Text color="textSubtle">{t('Max Supply')}</Text>
+
+        <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={750000000} />
+      </StyledColumn>
+      <StyledColumn noDesktopBorder>
+        <Text color="textSubtle">{t('Market cap')}</Text>
+        {mcap?.gt(0) && mcapString ? (
+          <Heading scale="lg">{t('$%marketCap%', { marketCap: mcapString })}</Heading>
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
       </StyledColumn>
       <StyledColumn noMobileBorder>
-        <Text color="textSubtle">{t('Market cap')}</Text>
-        {mcap?.gt(0) && mcapString ? (
-          <Heading scale="lg">{t('$%marketCap%', { marketCap: mcapString })}</Heading>
+        <Text color="textSubtle">{t('Burned to date')}</Text>
+        {burnedBalance ? (
+          <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={burnedBalance} />
         ) : (
           <Skeleton height={24} width={126} my="4px" />
         )}
@@ -144,14 +165,6 @@ const CakeDataRow = () => {
 
         <Heading scale="lg">{t('%cakeEmissions%/block', { cakeEmissions: emissionsPerBlock })}</Heading>
       </StyledColumn>
-      <Flex flexDirection="column">
-        <Text color="textSubtle">{t('Circulating Supply')}</Text>
-        {circulatingSupply ? (
-          <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={circulatingSupply} />
-        ) : (
-          <Skeleton height={24} width={126} my="4px" />
-        )}
-      </Flex>
     </Grid>
   )
 }
