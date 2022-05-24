@@ -161,12 +161,12 @@ export const PricePairLabel: React.FC = () => {
     return false
   })
 
-  const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
+  const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 4, 8))
   const countUpState = useCountUp({
     start: 0,
     end: priceAsNumber,
     duration: 1,
-    decimals: 3,
+    decimals: 4,
   })
 
   const { countUp, update } = countUpState || {}

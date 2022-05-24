@@ -67,7 +67,7 @@ function useChainlinkRoundDataSet() {
         ?.filter((d) => !!d && d.answer.gt(0))
         .map(({ answer, roundId, startedAt }) => {
           return {
-            answer: formatBigNumberToFixed(answer, 3, 8),
+            answer: formatBigNumberToFixed(answer, 4, 8),
             roundId: roundId.toString(),
             startedAt: startedAt.toNumber(),
           }
@@ -132,7 +132,7 @@ const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
   return (
     <PairPriceDisplay
       width="100%"
-      value={hoverData ? hoverData.answer : formatBigNumberToFixed(answerAsBigNumber, 3, 8)}
+      value={hoverData ? hoverData.answer : formatBigNumberToFixed(answerAsBigNumber, 4, 8)}
       inputSymbol={token.symbol}
       outputSymbol="USD"
       format={false}

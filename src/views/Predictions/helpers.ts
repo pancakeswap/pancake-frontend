@@ -6,7 +6,7 @@ import { NegativeOne, One, Zero } from '@ethersproject/constants'
 
 const MIN_PRICE_USD_DISPLAYED = BigNumber.from(100000)
 const MIN_PRICE_BNB_DISPLAYED = BigNumber.from('1000000000000000')
-const DISPLAYED_DECIMALS = 3
+const DISPLAYED_DECIMALS = 4
 
 type formatPriceDifferenceProps = {
   price?: BigNumber
