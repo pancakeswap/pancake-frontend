@@ -373,7 +373,6 @@
   "Created %dateCreated% ago": "Dibuat %dateCreated% lalu",
   "$120,000 in Prizes!": "$120,000 in Prizes!",
   "Now Live!": "Kini Live!",
-  "Calculating prizes": "Menghitung hadiah",
   "I want to Battle!": "Saya ingin Battle!",
   "Trade Now": "Berdagang Sekarang",
   "Claim period over": "Periode klaim telah usai",
@@ -1699,5 +1698,7 @@
   "Perpetual Futures": "Perpetual Futures",
   "Up to 100× Leverage": "Up to 100× Leverage",
   "Circulating Supply": "Circulating Supply",
-  "Max Supply": "Max Supply"
+  "Max Supply": "Max Supply",
+  "Prizes will be announced and available for claiming at ~": "Prizes will be announced and available for claiming at ~",
+  "Follow Update": "Follow Update"
 }
