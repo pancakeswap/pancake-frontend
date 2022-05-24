@@ -373,7 +373,6 @@
   "Created %dateCreated% ago": "تم الإنشاء منذ %dateCreated%",
   "$120,000 in Prizes!": "$120,000 in Prizes!",
   "Now Live!": "جارية الآن!",
-  "Calculating prizes": "جارٍ حساب الجوائز...",
   "I want to Battle!": "أريد خوض المعركة!",
   "Trade Now": "تداول الآن",
   "Claim period over": "انتهت فترة المطالبة",
@@ -1699,5 +1698,7 @@
   "Perpetual Futures": "Perpetual Futures",
   "Up to 100× Leverage": "Up to 100× Leverage",
   "Circulating Supply": "Circulating Supply",
-  "Max Supply": "Max Supply"
+  "Max Supply": "Max Supply",
+  "Prizes will be announced and available for claiming at ~": "Prizes will be announced and available for claiming at ~",
+  "Follow Update": "Follow Update"
 }
