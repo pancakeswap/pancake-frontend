@@ -102,6 +102,8 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   const { epochs, total } = calculateClaimableRounds(history)
   const totalBnb = multiplyPriceByAmount(bnbBusdPrice, total)
 
+  const isLoading = isLoadingHistory || !epochs?.length
+
   useEffect(() => {
     // Fetch history if they have not opened the history pane yet
     if (history.length === 0) {
@@ -160,7 +162,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
           </Box>
         </Flex>
         <Flex alignItems="start" justifyContent="center" mb="24px">
-          {isLoadingHistory ? (
+          {isLoading ? (
             <Skeleton height="21" width="140px" />
           ) : (
             <Text color="textSubtle" fontSize="14px">
@@ -174,8 +176,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
           width="100%"
           mb="8px"
           onClick={handleClick}
-          disabled={!epochs?.length}
-          isLoading={isPendingTx || isLoadingHistory}
+          isLoading={isPendingTx || isLoading}
           endIcon={isPendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
         >
           {t('Confirm')}
