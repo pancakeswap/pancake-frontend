@@ -78,6 +78,7 @@ import nftSaleAbi from 'config/abi/nftSale.json'
 import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
 import iCakeAbi from 'config/abi/iCake.json'
+import ifoV3Abi from 'config/abi/ifoV3.json'
 
 // Types
 import type {
@@ -139,6 +140,9 @@ export const getIfoV1Contract = (address: string, signer?: Signer | Provider) =>
 }
 export const getIfoV2Contract = (address: string, signer?: Signer | Provider) => {
   return getContract(ifoV2Abi, address, signer) as IfoV2
+}
+export const getIfoV3Contract = (address: string, signer?: Signer | Provider) => {
+  return getContract(ifoV3Abi, address, signer)
 }
 export const getSouschefContract = (id: number, signer?: Signer | Provider) => {
   const config = poolsConfig.find((pool) => pool.sousId === id)

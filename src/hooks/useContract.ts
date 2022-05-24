@@ -9,6 +9,7 @@ import {
   getProfileContract,
   getIfoV1Contract,
   getIfoV2Contract,
+  getIfoV3Contract,
   getMasterchefContract,
   getMasterchefV1Contract,
   getPointCenterIfoContract,
@@ -63,6 +64,10 @@ export const useIfoV1Contract = (address: string) => {
 export const useIfoV2Contract = (address: string) => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getIfoV2Contract(address, library.getSigner()), [address, library])
+}
+
+export const useIfoV3Contract = (address: string) => {
+  return useMemo(() => getIfoV3Contract(address), [address])
 }
 
 export const useERC20 = (address: string, withSignerIfPossible = true) => {

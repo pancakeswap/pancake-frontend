@@ -18,6 +18,7 @@ export interface PoolCharacteristics {
   admissionProfile?: number
   needQualifiedNFT?: boolean
   needQualifiedPoints?: boolean
+  vestingInfomation?: VestingInfomation
 }
 
 // IFO data unrelated to the user returned by useGetPublicIfoData
@@ -33,10 +34,18 @@ export interface PublicIfoData {
   currencyPriceInUSD: BigNumber
   numberPoints: number
   thresholdPoints: EthersBigNumber
+  vestingStartTime: number
 
   fetchIfoData: (currentBlock: number) => void
   [PoolIds.poolBasic]?: PoolCharacteristics
   [PoolIds.poolUnlimited]: PoolCharacteristics
+}
+
+export interface VestingInfomation {
+  percentage: number
+  cliff: number
+  duration: number
+  slicePeriodSeconds: number
 }
 
 // User specific pool characteristics
@@ -62,6 +71,12 @@ export interface WalletIfoState {
      */
     creditLeft: BigNumber
   }
+  vestingSchedule: VestingSchedule
+}
+
+export interface VestingSchedule {
+  id: string
+  countByBeneficiary: BigNumber
 }
 
 // Returned by useGetWalletIfoData

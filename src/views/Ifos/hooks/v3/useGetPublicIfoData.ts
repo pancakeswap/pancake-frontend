@@ -26,6 +26,13 @@ const formatPool = (pool) => ({
   sumTaxesOverflow: pool ? new BigNumber(pool[5].toString()) : BIG_ZERO,
 })
 
+const formatVestingInfo = (pool) => ({
+  percentage: pool ? pool[0].toNumber() : 0,
+  cliff: pool ? pool[1].toNumber() : 0,
+  duration: pool ? pool[2].toNumber() : 0,
+  slicePeriodSeconds: pool ? pool[3].toNumber() : 0,
+})
+
 /**
  * Gets all public data of an IFO
  */
@@ -59,11 +66,18 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       taxRate: 0,
       totalAmountPool: BIG_ZERO,
       sumTaxesOverflow: BIG_ZERO,
+      vestingInfomation: {
+        percentage: 0,
+        cliff: 0,
+        duration: 0,
+        slicePeriodSeconds: 0,
+      },
     },
     thresholdPoints: undefined,
     startBlockNum: 0,
     endBlockNum: 0,
     numberPoints: 0,
+    vestingStartTime: 0,
   })
 
   const abi = version >= 3.1 ? ifoV3Abi : ifoV2Abi // ifoV2Abi use for version 3.0
@@ -80,6 +94,8 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         thresholdPoints,
         admissionProfile,
         pointThreshold,
+        vestingStartTime,
+        unlimitedVestingInformation,
       ] = await multicallv2(
         abi,
         [
@@ -122,6 +138,15 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
             address,
             name: 'pointThreshold',
           },
+          version === 3.2 && {
+            address,
+            name: 'vestingStartTime',
+          },
+          version === 3.2 && {
+            address,
+            name: 'viewPoolVestingInformation',
+            params: [1],
+          },
         ].filter(Boolean),
       )
 
@@ -153,7 +178,11 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
           pointThreshold: pointThreshold ? pointThreshold[0].toNumber() : 0,
           admissionProfile: admissionProfile ? admissionProfile[0] : undefined,
         },
-        poolUnlimited: { ...poolUnlimitedFormatted, taxRate: taxRateNum },
+        poolUnlimited: {
+          ...poolUnlimitedFormatted,
+          taxRate: taxRateNum,
+          vestingInfomation: formatVestingInfo(unlimitedVestingInformation),
+        },
         status,
         progress,
         blocksRemaining,
@@ -161,6 +190,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         endBlockNum,
         thresholdPoints: thresholdPoints && thresholdPoints[0],
         numberPoints: numberPoints ? numberPoints[0].toNumber() : 0,
+        vestingStartTime: vestingStartTime ? vestingStartTime[0].toNumber() : 0,
       }))
     },
     [releaseBlockNumber, address, version, abi],
