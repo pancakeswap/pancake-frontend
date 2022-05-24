@@ -1,21 +1,18 @@
-import { useEffect, useRef, useMemo } from 'react'
-import { useCountUp } from 'react-countup'
-import styled from 'styled-components'
-import { BnbUsdtPairTokenIcon, LogoRoundIcon, Box, Flex, PocketWatchIcon, Text } from '@pancakeswap/uikit'
-import { formatBigNumberToFixed } from 'utils/formatBalance'
-import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
+import { Box, CoinSwitcher, Flex, PocketWatchIcon, Text, CloseIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { PredictionSupportedSymbol } from 'state/types'
 import { useRouter } from 'next/router'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCountUp } from 'react-countup'
+import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
+import { PredictionSupportedSymbol } from 'state/types'
+import styled, { keyframes } from 'styled-components'
+import { formatBigNumberToFixed } from 'utils/formatBalance'
+import { useConfig } from '../context/ConfigProvider'
 import { formatRoundTime } from '../helpers'
 import useCountdown from '../hooks/useCountdown'
 import usePollOraclePrice from '../hooks/usePollOraclePrice'
-import { useConfig } from '../context/ConfigProvider'
 
-const TOKEN_LOGOS = {
-  BNB: <BnbUsdtPairTokenIcon />,
-  CAKE: <LogoRoundIcon />,
-}
+const TOOLTIP_DISMISS_KEY = 'prediction-switcher-dismiss-tooltip'
 
 const Token = styled(Box)`
   margin-top: -24px;
@@ -79,7 +76,65 @@ const Interval = styled(Text)`
   }
 `
 
+const tooltipAnimation = keyframes`
+  0%{
+    opacity:0;
+  }
+  20%{
+    opacity:1;
+  }
+  30%{
+    transform: translateX(5px);
+  }
+  40%{
+    transform: translateX(0px);
+  }
+  50%{
+    transform: translateX(5px);
+  }
+  60%{
+    transform: translateX(5px);
+  }
+  100%{
+    opacity:1;
+  }
+`
+
+export const Tooltip = styled.div`
+  position: absolute;
+  top: -5px;
+  left: 55px;
+  border-radius: 16px;
+  padding: 16px;
+  background-color: #27262c;
+  color: white;
+  white-space: nowrap;
+  opacity: 0;
+  z-index: 100;
+  animation: ${tooltipAnimation} 3s forwards ease-in-out;
+  @media screen and (min-width: 390px) {
+    top: -60px;
+    left: 120px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    top: -10px;
+    left: 90px;
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: -6px;
+    width: 12px;
+    height: 12px;
+    background-color: #27262c;
+    transform: rotate(45deg);
+  }
+`
+
 const Label = styled(Flex)<{ dir: 'left' | 'right' }>`
+  position: relative;
+  z-index: 1;
   background-color: ${({ theme }) => theme.card.background};
   box-shadow: ${({ theme }) => theme.shadows.level1};
   align-items: ${({ dir }) => (dir === 'right' ? 'flex-end' : 'flex-start')};
@@ -100,6 +155,11 @@ export const PricePairLabel: React.FC = () => {
   const { price } = usePollOraclePrice()
   const { token } = useConfig()
   const router = useRouter()
+  const { t } = useTranslation()
+  const [dismissTooltip, setDismissTooltip] = useState(() => {
+    if (localStorage?.getItem(TOOLTIP_DISMISS_KEY)) return true
+    return false
+  })
 
   const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
   const countUpState = useCountUp({
@@ -109,10 +169,6 @@ export const PricePairLabel: React.FC = () => {
     decimals: 3,
   })
 
-  const logo = useMemo(() => {
-    return TOKEN_LOGOS[token.symbol]
-  }, [token.symbol])
-
   const { countUp, update } = countUpState || {}
 
   const updateRef = useRef(update)
@@ -121,29 +177,49 @@ export const PricePairLabel: React.FC = () => {
     updateRef.current(priceAsNumber)
   }, [priceAsNumber, updateRef])
 
+  const onTokenSwitch = useCallback(() => {
+    if (router.query.token === PredictionSupportedSymbol.CAKE) {
+      router.query.token = PredictionSupportedSymbol.BNB
+    } else if (router.query.token === undefined && token.symbol === PredictionSupportedSymbol.CAKE) {
+      router.query.token = PredictionSupportedSymbol.BNB
+    } else if (router.query.token === undefined && token.symbol === PredictionSupportedSymbol.BNB) {
+      router.query.token = PredictionSupportedSymbol.CAKE
+    } else if (token.symbol === undefined && router.query.token === undefined) {
+      router.query.token = PredictionSupportedSymbol.BNB
+    } else {
+      router.query.token = PredictionSupportedSymbol.CAKE
+    }
+    router.push(router)
+  }, [router, token])
   return (
-    <Box
-      onClick={() => {
-        if (router.query.token === PredictionSupportedSymbol.CAKE) {
-          router.query.token = PredictionSupportedSymbol.BNB
-        } else {
-          router.query.token = PredictionSupportedSymbol.CAKE
-        }
-
-        router.push(router)
-      }}
-      pl="24px"
-      position="relative"
-      display="inline-block"
-    >
-      <Token left={0}>{logo}</Token>
-      <Label dir="left">
-        <Title bold textTransform="uppercase">
-          {`${token.symbol}USD`}
-        </Title>
-        <Price fontSize="12px">{`$${countUp}`}</Price>
-      </Label>
-    </Box>
+    <>
+      <Box pl={['20px', '20px', '20px', '40px']} position="relative" display="inline-block">
+        {!dismissTooltip && (
+          <Tooltip>
+            <Text mr="5px" display="inline-block" verticalAlign="super">
+              {t('Switch pairs here.')}
+            </Text>
+            <CloseIcon
+              cursor="pointer"
+              onClick={() => {
+                localStorage?.setItem(TOOLTIP_DISMISS_KEY, '1')
+                setDismissTooltip(true)
+              }}
+            />
+          </Tooltip>
+        )}
+        <CoinSwitcher
+          isDefaultBnb={router.query.token === 'BNB' || (router.query.token === undefined && token.symbol === 'BNB')}
+          onTokenSwitch={onTokenSwitch}
+        />
+        <Label dir="left">
+          <Title bold textTransform="uppercase">
+            {`${token.symbol}USD`}
+          </Title>
+          <Price fontSize="12px">{`$${countUp}`}</Price>
+        </Label>
+      </Box>
+    </>
   )
 }
 

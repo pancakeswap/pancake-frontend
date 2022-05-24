@@ -64,7 +64,7 @@ const Mobile: React.FC = () => {
             {status === PredictionStatus.ERROR && <ErrorNotification />}
             {status === PredictionStatus.PAUSED && <PauseNotification />}
             {[PredictionStatus.INITIAL, PredictionStatus.LIVE].includes(status) && (
-              <Box overflow="hidden" width="100%">
+              <Box overflow="visible" width="100%">
                 <Menu />
                 {status === PredictionStatus.LIVE ? <Positions view={view} /> : <LoadingSection />}
               </Box>
