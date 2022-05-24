@@ -226,22 +226,26 @@ export const fetchPoolsStakingLimitsAsync = () => async (dispatch, getState) => 
 export const fetchPoolsUserDataAsync = createAsyncThunk<
   { sousId: number; allowance: any; stakingTokenBalance: any; stakedBalance: any; pendingReward: any }[],
   string
->('pool/fetchPoolsUserData', async (account) => {
-  const [allowances, stakingTokenBalances, stakedBalances, pendingRewards] = await Promise.all([
-    fetchPoolsAllowance(account),
-    fetchUserBalances(account),
-    fetchUserStakeBalances(account),
-    fetchUserPendingRewards(account),
-  ])
+>('pool/fetchPoolsUserData', async (account, { rejectWithValue }) => {
+  try {
+    const [allowances, stakingTokenBalances, stakedBalances, pendingRewards] = await Promise.all([
+      fetchPoolsAllowance(account),
+      fetchUserBalances(account),
+      fetchUserStakeBalances(account),
+      fetchUserPendingRewards(account),
+    ])
 
-  const userData = poolsConfig.map((pool) => ({
-    sousId: pool.sousId,
-    allowance: allowances[pool.sousId],
-    stakingTokenBalance: stakingTokenBalances[pool.sousId],
-    stakedBalance: stakedBalances[pool.sousId],
-    pendingReward: pendingRewards[pool.sousId],
-  }))
-  return userData
+    const userData = poolsConfig.map((pool) => ({
+      sousId: pool.sousId,
+      allowance: allowances[pool.sousId],
+      stakingTokenBalance: stakingTokenBalances[pool.sousId],
+      stakedBalance: stakedBalances[pool.sousId],
+      pendingReward: pendingRewards[pool.sousId],
+    }))
+    return userData
+  } catch (e) {
+    return rejectWithValue(e)
+  }
 })
 
 export const updateUserAllowance = createAsyncThunk<
@@ -348,6 +352,9 @@ export const PoolsSlice = createSlice({
         state.userDataLoaded = true
       },
     )
+    builder.addCase(fetchPoolsUserDataAsync.rejected, (state, action) => {
+      console.error('[Pools Action] Error fetching pool user data', action.payload)
+    })
     // Vault public data that updates frequently
     builder.addCase(fetchCakeVaultPublicData.fulfilled, (state, action: PayloadAction<SerializedCakeVault>) => {
       state.cakeVault = { ...state.cakeVault, ...action.payload }
