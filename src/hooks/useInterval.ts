@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
 
 export default function useInterval(
@@ -9,6 +9,10 @@ export default function useInterval(
 ) {
   const savedCallback = useRef<() => void>(callback)
   const [isReadyForUpdate, setIsReadyForUpdate] = useState(false)
+
+  const tick = useCallback(() => {
+    setIsReadyForUpdate(true)
+  }, [])
 
   // Remember the latest callback.
   useEffect(() => {
@@ -24,10 +28,6 @@ export default function useInterval(
 
   // Set up the interval.
   useEffect(() => {
-    function tick() {
-      setIsReadyForUpdate(true)
-    }
-
     if (!isUndefinedOrNull(delay)) {
       if (leading) tick()
       const id = setInterval(tick, delay)
@@ -37,5 +37,5 @@ export default function useInterval(
       }
     }
     return () => setIsReadyForUpdate(false)
-  }, [delay, leading])
+  }, [delay, leading, tick])
 }
