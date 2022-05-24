@@ -35,7 +35,7 @@ export default function Updater(): null {
   }, [fetchList, isWindowVisible, lists])
 
   // fetch all lists every 10 minutes, but only after we initialize library and page has currency input
-  useInterval(fetchAllListsCallback, 1000 * 60 * 10, true, !!(library && includeListUpdater))
+  useInterval(fetchAllListsCallback, library ? 1000 * 60 * 10 : null, true, includeListUpdater)
 
   // whenever a list is not loaded and not loading, try again to load it
   useEffect(() => {
