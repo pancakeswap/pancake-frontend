@@ -11,6 +11,8 @@ import { formatBigNumber, formatLocalisedCompactNumber } from 'utils/formatBalan
 import { multicallv2 } from 'utils/multicall'
 import useSWR from 'swr'
 import { SLOW_INTERVAL } from 'config/constants'
+import { BigNumber } from '@ethersproject/bignumber'
+import { getCakeVaultV2Contract } from 'utils/contractHelpers'
 
 const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean }>`
   flex-direction: column;
@@ -47,14 +49,26 @@ const Grid = styled.div`
 
 const emissionsPerBlock = 14.25
 
+/**
+ * User (Planet Finance) built a contract on top of our original manual CAKE pool,
+ * but the contract was written in such a way that when we performed the migration from Masterchef v1 to v2, the tokens were stuck.
+ * These stuck tokens are forever gone (see their medium post) and can be considered out of circulation."
+ * https://planetfinanceio.medium.com/pancakeswap-works-with-planet-to-help-cake-holders-f0d253b435af
+ * https://twitter.com/PancakeSwap/status/1523913527626702849
+ * https://bscscan.com/tx/0xd5ffea4d9925d2f79249a4ce05efd4459ed179152ea5072a2df73cd4b9e88ba7
+ */
+const planetFinanceBurnedTokensWei = BigNumber.from('637407922445268000000000')
+const cakeVault = getCakeVaultV2Contract()
+
 const CakeDataRow = () => {
   const { t } = useTranslation()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
   const {
-    data: { cakeSupply, burnedBalance } = {
+    data: { cakeSupply, burnedBalance, circulatingSupply } = {
       cakeSupply: 0,
       burnedBalance: 0,
+      circulatingSupply: 0,
     },
   } = useSWR(
     loadData ? ['cakeDataRow'] : null,
@@ -68,11 +82,16 @@ const CakeDataRow = () => {
       const tokenDataResultRaw = await multicallv2(cakeAbi, [totalSupplyCall, burnedTokenCall], {
         requireSuccess: false,
       })
+      const totalLockedAmount = await cakeVault.totalLockedAmount()
       const [totalSupply, burned] = tokenDataResultRaw.flat()
 
+      const totalBurned = planetFinanceBurnedTokensWei.add(burned)
+      const circulating = totalSupply.sub(totalBurned.add(totalLockedAmount))
+
       return {
-        cakeSupply: totalSupply && burned ? +formatBigNumber(totalSupply.sub(burned)) : 0,
-        burnedBalance: burned ? +formatBigNumber(burned) : 0,
+        cakeSupply: totalSupply && burned ? +formatBigNumber(totalSupply.sub(totalBurned)) : 0,
+        burnedBalance: burned ? +formatBigNumber(totalBurned) : 0,
+        circulatingSupply: circulating ? +formatBigNumber(circulating) : 0,
       }
     },
     {
@@ -80,7 +99,7 @@ const CakeDataRow = () => {
     },
   )
   const cakePriceBusd = usePriceCakeBusd()
-  const mcap = cakePriceBusd.times(cakeSupply)
+  const mcap = cakePriceBusd.times(circulatingSupply)
   const mcapString = formatLocalisedCompactNumber(mcap.toNumber())
 
   useEffect(() => {
@@ -123,6 +142,14 @@ const CakeDataRow = () => {
 
         <Heading scale="lg">{t('%cakeEmissions%/block', { cakeEmissions: emissionsPerBlock })}</Heading>
       </StyledColumn>
+      <Flex flexDirection="column">
+        <Text color="textSubtle">{t('Circulating Supply')}</Text>
+        {circulatingSupply ? (
+          <Balance decimals={0} lineHeight="1.1" fontSize="24px" bold value={circulatingSupply} />
+        ) : (
+          <Skeleton height={24} width={126} my="4px" />
+        )}
+      </Flex>
     </Grid>
   )
 }
