@@ -373,7 +373,6 @@
   "Created %dateCreated% ago": "%dateCreated% 전에 생성함",
   "$120,000 in Prizes!": "$120,000 in Prizes!",
   "Now Live!": "지금 라이브!",
-  "Calculating prizes": "상금 계산 중",
   "I want to Battle!": "배틀을 원해요!",
   "Trade Now": "지금 거래",
   "Claim period over": "클레임 기간",
@@ -1699,5 +1698,7 @@
   "Perpetual Futures": "Perpetual Futures",
   "Up to 100× Leverage": "Up to 100× Leverage",
   "Circulating Supply": "Circulating Supply",
-  "Max Supply": "Max Supply"
+  "Max Supply": "Max Supply",
+  "Prizes will be announced and available for claiming at ~": "Prizes will be announced and available for claiming at ~",
+  "Follow Update": "Follow Update"
 }
