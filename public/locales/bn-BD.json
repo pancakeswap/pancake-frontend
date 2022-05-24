@@ -373,7 +373,6 @@
   "Created %dateCreated% ago": "%dateCreated% আগে তৈরি করা হয়েছে",
   "$120,000 in Prizes!": "$120,000 in Prizes!",
   "Now Live!": "এখন লাইভ!",
-  "Calculating prizes": "পুরস্কার গণনা করা হচ্ছে",
   "I want to Battle!": "আমি লড়াই করতে চাই!",
   "Trade Now": "এখনই ট্রেড করুন",
   "Claim period over": "দাবির সময় পেরিয়ে গেছে",
@@ -1699,5 +1698,7 @@
   "Perpetual Futures": "Perpetual Futures",
   "Up to 100× Leverage": "Up to 100× Leverage",
   "Circulating Supply": "Circulating Supply",
-  "Max Supply": "Max Supply"
+  "Max Supply": "Max Supply",
+  "Prizes will be announced and available for claiming at ~": "Prizes will be announced and available for claiming at ~",
+  "Follow Update": "Follow Update"
 }
