@@ -79,10 +79,12 @@ const CakeDataRow = () => {
         name: 'balanceOf',
         params: ['0x000000000000000000000000000000000000dEaD'],
       }
-      const tokenDataResultRaw = await multicallv2(cakeAbi, [totalSupplyCall, burnedTokenCall], {
-        requireSuccess: false,
-      })
-      const totalLockedAmount = await cakeVault.totalLockedAmount()
+      const [tokenDataResultRaw, totalLockedAmount] = await Promise.all([
+        multicallv2(cakeAbi, [totalSupplyCall, burnedTokenCall], {
+          requireSuccess: false,
+        }),
+        cakeVault.totalLockedAmount(),
+      ])
       const [totalSupply, burned] = tokenDataResultRaw.flat()
 
       const totalBurned = planetFinanceBurnedTokensWei.add(burned)
