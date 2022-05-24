@@ -373,7 +373,6 @@
   "Created %dateCreated% ago": "%dateCreated% पहले बनाया गया",
   "$120,000 in Prizes!": "$120,000 in Prizes!",
   "Now Live!": "अब लाइव है!",
-  "Calculating prizes": "पुरस्कारों की गणना की जा रही है",
   "I want to Battle!": "मैं बैटल करना चाहता हूं!",
   "Trade Now": "अभी ट्रेड करें",
   "Claim period over": "क्लेम करने की अवधि समाप्त हुई",
@@ -1699,5 +1698,7 @@
   "Perpetual Futures": "Perpetual Futures",
   "Up to 100× Leverage": "Up to 100× Leverage",
   "Circulating Supply": "Circulating Supply",
-  "Max Supply": "Max Supply"
+  "Max Supply": "Max Supply",
+  "Prizes will be announced and available for claiming at ~": "Prizes will be announced and available for claiming at ~",
+  "Follow Update": "Follow Update"
 }
