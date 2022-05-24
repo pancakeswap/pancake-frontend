@@ -373,7 +373,6 @@
   "Created %dateCreated% ago": "%dateCreated% க்கு முன் உருவாக்கப்பட்டது",
   "$120,000 in Prizes!": "$120,000 in Prizes!",
   "Now Live!": "இப்போது நேரலையில்!",
-  "Calculating prizes": "பரிசுகளைக் கணக்கிடுதல்",
   "I want to Battle!": "நான் போர் புரிய விரும்புகிறேன்!",
   "Trade Now": "இப்போது டிரேட்செய்",
   "Claim period over": "கிளைம் காலம் முடிந்தது",
@@ -1699,5 +1698,7 @@
   "Perpetual Futures": "Perpetual Futures",
   "Up to 100× Leverage": "Up to 100× Leverage",
   "Circulating Supply": "Circulating Supply",
-  "Max Supply": "Max Supply"
+  "Max Supply": "Max Supply",
+  "Prizes will be announced and available for claiming at ~": "Prizes will be announced and available for claiming at ~",
+  "Follow Update": "Follow Update"
 }
