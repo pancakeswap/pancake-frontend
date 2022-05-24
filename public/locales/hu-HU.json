@@ -373,7 +373,6 @@
   "Created %dateCreated% ago": "Létrehozva ekkor: %dateCreated%",
   "$120,000 in Prizes!": "$120,000 in Prizes!",
   "Now Live!": "Most élőben!",
-  "Calculating prizes": "Nyeremények kiszámítása",
   "I want to Battle!": "Csatázni akarok!",
   "Trade Now": "Kereskedés most",
   "Claim period over": "Igénylési időszak befejeződött",
@@ -1699,5 +1698,7 @@
   "Perpetual Futures": "Perpetual Futures",
   "Up to 100× Leverage": "Up to 100× Leverage",
   "Circulating Supply": "Circulating Supply",
-  "Max Supply": "Max Supply"
+  "Max Supply": "Max Supply",
+  "Prizes will be announced and available for claiming at ~": "Prizes will be announced and available for claiming at ~",
+  "Follow Update": "Follow Update"
 }
