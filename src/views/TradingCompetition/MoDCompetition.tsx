@@ -56,7 +56,7 @@ const MoDCompetition = () => {
   const { isMobile } = useMatchBreakpoints()
   const { isDark, theme } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractMoD(false)
-  const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.LIVE)
+  const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.FINISHED)
   const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
   const [userTradingInformation, setUserTradingInformation] = useState<UserTradingInformation>({
     hasRegistered: false,

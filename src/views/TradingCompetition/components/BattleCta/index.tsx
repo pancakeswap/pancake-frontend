@@ -202,7 +202,8 @@ const BattleCta: React.FC<CompetitionProps> = ({
           {/* Hide button if in the pre-claim, FINISHED phase */}
           {currentPhase.state === FINISHED && (
             <Box width="280px" p="20px 0px 0px">
-              <Text color="light">
+              {/* {inputSecondary can't fit this case} */}
+              <Text color="#D7CAEC">
                 {t('Prizes will be announced and available for claiming at ~')}{' '}
                 {new Date(Date.UTC(2022, 4, 26, 8)).toLocaleString('en-US', options)}
               </Text>
