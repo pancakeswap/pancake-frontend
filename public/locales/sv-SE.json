@@ -373,7 +373,6 @@
   "Created %dateCreated% ago": "Skapad för %dateCreated% sedan",
   "$120,000 in Prizes!": "$120,000 in Prizes!",
   "Now Live!": "Pågår nu!",
-  "Calculating prizes": "Beräknar priser",
   "I want to Battle!": "Jag vill strida!",
   "Trade Now": "Handla nu",
   "Claim period over": "Inlösningsperioden är slut",
@@ -1699,5 +1698,7 @@
   "Perpetual Futures": "Perpetual Futures",
   "Up to 100× Leverage": "Up to 100× Leverage",
   "Circulating Supply": "Circulating Supply",
-  "Max Supply": "Max Supply"
+  "Max Supply": "Max Supply",
+  "Prizes will be announced and available for claiming at ~": "Prizes will be announced and available for claiming at ~",
+  "Follow Update": "Follow Update"
 }
