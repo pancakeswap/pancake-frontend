@@ -41,11 +41,11 @@ const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
 
 const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; poolId: PoolIds }) => {
   const isCurrencyCake = ifo.currency === tokens.cake
-  const isV3 = ifo.version === 3 || ifo.version === 3.1
+  const isV3 = ifo.version >= 3
   const { t } = useTranslation()
 
   const basicTooltipContent =
-    ifo.version === 3.1
+    ifo.version >= 3.1
       ? t(
           'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
         )
@@ -54,7 +54,7 @@ const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; 
         )
 
   const unlimitedToolipContent =
-    ifo.version === 3.1 ? (
+    ifo.version >= 3.1 ? (
       <Box>
         <Text display="inline">{t('For the public sale, Max CAKE entry is capped by')} </Text>
         <Text bold display="inline">
@@ -123,7 +123,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
 
   /* Format start */
   const maxLpTokens =
-    (ifo.version === 3 || (ifo.version === 3.1 && poolId === PoolIds.poolUnlimited)) && ifo.isActive
+    (ifo.version === 3 || (ifo.version >= 3.1 && poolId === PoolIds.poolUnlimited)) && ifo.isActive
       ? version3MaxTokens
         ? getBalanceNumber(version3MaxTokens, ifo.currency.decimals)
         : 0
@@ -149,7 +149,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
     2,
   )}`
 
-  const maxToken = ifo.version === 3.1 && poolId === PoolIds.poolBasic && !isEligible ? 0 : maxLpTokens
+  const maxToken = ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isEligible ? 0 : maxLpTokens
 
   const tokenEntry = <MaxTokenEntry poolId={poolId} ifo={ifo} maxToken={maxToken} />
 

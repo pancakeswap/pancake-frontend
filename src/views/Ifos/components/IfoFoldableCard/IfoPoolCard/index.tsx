@@ -39,7 +39,7 @@ export const cardConfig = (
 ): CardConfigReturn => {
   switch (poolId) {
     case PoolIds.poolBasic:
-      if (meta?.version === 3.1) {
+      if (meta?.version >= 3.1) {
         const MSG_MAP = {
           needQualifiedNFT: t('Set PancakeSquad NFT as Pancake Profile avatar.'),
           needQualifiedPoints: t('Reach a certain Pancake Profile Points threshold.'),
@@ -75,7 +75,7 @@ export const cardConfig = (
       }
     case PoolIds.poolUnlimited:
       return {
-        title: meta?.version === 3.1 ? t('Public Sale') : t('Unlimited Sale'),
+        title: meta?.version >= 3.1 ? t('Public Sale') : t('Unlimited Sale'),
         variant: 'violet',
         tooltip: t('No limits on the amount you can commit. Additional fee applies when claiming.'),
       }
@@ -91,7 +91,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
   const { admissionProfile, pointThreshold } = publicIfoData[poolId]
 
   const { needQualifiedNFT, needQualifiedPoints } = useMemo(() => {
-    return ifo.version === 3.1 && poolId === PoolIds.poolBasic
+    return ifo.version >= 3.1 && poolId === PoolIds.poolBasic
       ? {
           needQualifiedNFT: Boolean(admissionProfile),
           needQualifiedPoints: pointThreshold ? pointThreshold > 0 : false,

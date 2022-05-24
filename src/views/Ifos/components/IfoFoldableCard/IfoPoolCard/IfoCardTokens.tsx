@@ -161,7 +161,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
     }
 
     const ifov31Msg =
-      ifo.version === 3.1 && poolId === PoolIds.poolBasic && criterias?.length > 0 ? (
+      ifo.version >= 3.1 && poolId === PoolIds.poolBasic && criterias?.length > 0 ? (
         <Box mt="16px">
           {!isEligible && (
             <Message mb="24px" p="8px" variant="warning" icon={<ErrorIcon color="warning" width="24px" />}>
@@ -186,7 +186,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
       ) : null
 
     if (
-      (ifo.version === 3 || (ifo.version === 3.1 && poolId === PoolIds.poolUnlimited)) &&
+      (ifo.version === 3 || (ifo.version >= 3.1 && poolId === PoolIds.poolUnlimited)) &&
       getBalanceNumber(credit) === 0
     ) {
       message = (

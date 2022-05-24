@@ -321,7 +321,7 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
     <>
       <StyledCardBody>
         <CardsWrapper
-          shouldReverse={ifo.version === 3.1}
+          shouldReverse={ifo.version >= 3.1}
           singleCard={!publicIfoData.poolBasic || !walletIfoData.poolBasic}
         >
           {publicIfoData.poolBasic && walletIfoData.poolBasic && (

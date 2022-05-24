@@ -4,7 +4,6 @@ import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useERC20, useIfoV2Contract } from 'hooks/useContract'
 import { multicallv2 } from 'utils/multicall'
-import ifoV2Abi from 'config/abi/ifoV2.json'
 import ifoV3Abi from 'config/abi/ifoV3.json'
 import { fetchCakeVaultUserData } from 'state/pools'
 import { useAppDispatch } from 'state'
@@ -75,7 +74,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     }))
 
     const ifov3Calls =
-      version === 3.1
+      version >= 3.1
         ? ['isQualifiedNFT', 'isQualifiedPoints'].map((name) => ({
             address,
             name,
@@ -85,9 +84,10 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
 
     dispatch(fetchCakeVaultUserData({ account }))
 
-    const abi = version === 3.1 ? ifoV3Abi : ifoV2Abi
-
-    const [userInfo, amounts, isQualifiedNFT, isQualifiedPoints] = await multicallv2(abi, [...ifoCalls, ...ifov3Calls])
+    const [userInfo, amounts, isQualifiedNFT, isQualifiedPoints] = await multicallv2(ifoV3Abi, [
+      ...ifoCalls,
+      ...ifov3Calls,
+    ])
 
     setState((prevState) => ({
       ...prevState,
