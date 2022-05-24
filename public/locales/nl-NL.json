@@ -373,7 +373,6 @@
   "Created %dateCreated% ago": "%dateCreated% geleden aangemaakt",
   "$120,000 in Prizes!": "$120,000 in Prizes!",
   "Now Live!": "Nu live!",
-  "Calculating prizes": "Prijzen berekenen",
   "I want to Battle!": "Ik wil vechten!",
   "Trade Now": "Nu handelen",
   "Claim period over": "Claimperiode verlopen",
@@ -1699,5 +1698,7 @@
   "Perpetual Futures": "Perpetual Futures",
   "Up to 100× Leverage": "Up to 100× Leverage",
   "Circulating Supply": "Circulating Supply",
-  "Max Supply": "Max Supply"
+  "Max Supply": "Max Supply",
+  "Prizes will be announced and available for claiming at ~": "Prizes will be announced and available for claiming at ~",
+  "Follow Update": "Follow Update"
 }
