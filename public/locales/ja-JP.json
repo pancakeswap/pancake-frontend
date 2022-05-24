@@ -373,7 +373,6 @@
   "Created %dateCreated% ago": "%dateCreated%前に作成されました",
   "$120,000 in Prizes!": "$120,000 in Prizes!",
   "Now Live!": "開催中！",
-  "Calculating prizes": "賞金を計算中",
   "I want to Battle!": "バトルに参加します！",
   "Trade Now": "今すぐトレード",
   "Claim period over": "請求期間終了",
@@ -1699,5 +1698,7 @@
   "Perpetual Futures": "Perpetual Futures",
   "Up to 100× Leverage": "Up to 100× Leverage",
   "Circulating Supply": "Circulating Supply",
-  "Max Supply": "Max Supply"
+  "Max Supply": "Max Supply",
+  "Prizes will be announced and available for claiming at ~": "Prizes will be announced and available for claiming at ~",
+  "Follow Update": "Follow Update"
 }
