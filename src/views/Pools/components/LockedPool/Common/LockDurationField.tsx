@@ -2,7 +2,7 @@ import { Text, Flex, Button, Input, Box } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import _toNumber from 'lodash/toNumber'
-import { secondsToWeeks, weeksToSeconds } from '../utils/formatSecondsToWeeks'
+import { secondsToWeeks, weeksToSeconds } from '../../utils/formatSecondsToWeeks'
 import { LockDurationFieldPropsType } from '../types'
 
 const DURATIONS = [1, 5, 10, 25, 52]

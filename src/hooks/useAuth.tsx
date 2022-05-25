@@ -74,7 +74,7 @@ const useAuth = () => {
 
   const logout = useCallback(() => {
     deactivate()
-    clearUserStates(dispatch, chainId)
+    clearUserStates(dispatch, chainId, true)
   }, [deactivate, dispatch, chainId])
 
   return { login, logout }
