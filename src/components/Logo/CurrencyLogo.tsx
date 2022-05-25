@@ -25,7 +25,9 @@ export default function CurrencyLogo({
 
   const srcs: string[] = useMemo(() => {
     if (currency === ETHER) return []
-
+    if (currency.symbol === 'ARS') {
+      return ['https://s2.coinmarketcap.com/static/cloud/img/fiat-flags/ARS.svg']
+    }
     if (currency instanceof Token) {
       if (currency instanceof WrappedTokenInfo) {
         return [...uriLocations, getTokenLogoURL(currency.address)]

@@ -1,17 +1,18 @@
-import { ChainId, Currency, currencyEquals, JSBI, Price } from 'peronio-sdk'
+import { ChainId, Currency, CurrencyAmount, currencyEquals, JSBI, Price } from 'peronio-sdk'
 import tokens, { mainnetTokens } from 'config/constants/tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
-import { multiplyPriceByAmount } from 'utils/prices'
+import { dividePriceByAmount, multiplyPriceByAmount } from 'utils/prices'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { PairState, usePairs } from './usePairs'
+import useARSPrice from './useARSPrice'
 
-const BUSD_MAINNET = mainnetTokens.busd
+const USDC_MAINNET = mainnetTokens.usdc
 const { wbnb: WMATIC } = tokens
 
 /**
- * Returns the price in BUSD of the input currency
- * @param currency currency to compute the BUSD price of
+ * Returns the price in USDC of the input currency
+ * @param currency currency to compute the USDC price of
  */
 export default function useBUSDPrice(currency?: Currency): Price | undefined {
   const { chainId } = useActiveWeb3React()
@@ -19,8 +20,8 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
       [chainId && wrapped && currencyEquals(WMATIC, wrapped) ? undefined : currency, chainId ? WMATIC : undefined],
-      [wrapped?.equals(BUSD_MAINNET) ? undefined : wrapped, chainId === ChainId.MAINNET ? BUSD_MAINNET : undefined],
-      [chainId ? WMATIC : undefined, chainId === ChainId.MAINNET ? BUSD_MAINNET : undefined],
+      [wrapped?.equals(USDC_MAINNET) ? undefined : wrapped, chainId === ChainId.MAINNET ? USDC_MAINNET : undefined],
+      [chainId ? WMATIC : undefined, chainId === ChainId.MAINNET ? USDC_MAINNET : undefined],
     ],
     [chainId, currency, wrapped],
   )
@@ -34,13 +35,13 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
     if (wrapped.equals(WMATIC)) {
       if (busdPair) {
         const price = busdPair.priceOf(WMATIC)
-        return new Price(currency, BUSD_MAINNET, price.denominator, price.numerator)
+        return new Price(currency, USDC_MAINNET, price.denominator, price.numerator)
       }
       return undefined
     }
     // handle busd
-    if (wrapped.equals(BUSD_MAINNET)) {
-      return new Price(BUSD_MAINNET, BUSD_MAINNET, '1', '1')
+    if (wrapped.equals(USDC_MAINNET)) {
+      return new Price(USDC_MAINNET, USDC_MAINNET, '1', '1')
     }
 
     const ethPairETHAmount = ethPair?.reserveOf(WMATIC)
@@ -52,17 +53,17 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
     if (
       busdPairState === PairState.EXISTS &&
       busdPair &&
-      busdPair.reserveOf(BUSD_MAINNET).greaterThan(ethPairETHBUSDValue)
+      busdPair.reserveOf(USDC_MAINNET).greaterThan(ethPairETHBUSDValue)
     ) {
       const price = busdPair.priceOf(wrapped)
-      return new Price(currency, BUSD_MAINNET, price.denominator, price.numerator)
+      return new Price(currency, USDC_MAINNET, price.denominator, price.numerator)
     }
     if (ethPairState === PairState.EXISTS && ethPair && busdEthPairState === PairState.EXISTS && busdEthPair) {
-      if (busdEthPair.reserveOf(BUSD_MAINNET).greaterThan('0') && ethPair.reserveOf(WMATIC).greaterThan('0')) {
-        const ethBusdPrice = busdEthPair.priceOf(BUSD_MAINNET)
+      if (busdEthPair.reserveOf(USDC_MAINNET).greaterThan('0') && ethPair.reserveOf(WMATIC).greaterThan('0')) {
+        const ethBusdPrice = busdEthPair.priceOf(USDC_MAINNET)
         const currencyEthPrice = ethPair.priceOf(WMATIC)
         const busdPrice = ethBusdPrice.multiply(currencyEthPrice).invert()
-        return new Price(currency, BUSD_MAINNET, busdPrice.denominator, busdPrice.numerator)
+        return new Price(currency, USDC_MAINNET, busdPrice.denominator, busdPrice.numerator)
       }
     }
 
@@ -73,6 +74,11 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
 export const useCakeBusdPrice = (): Price | undefined => {
   const cakeBusdPrice = useBUSDPrice(tokens.cake)
   return cakeBusdPrice
+}
+
+export const usePePriceUsd = (): Price | undefined => {
+  const peBusdPrice = useBUSDPrice(tokens.pe)
+  return peBusdPrice
 }
 
 export const useBUSDCurrencyAmount = (currency: Currency, amount: number): number | undefined => {
@@ -86,11 +92,25 @@ export const useBUSDCurrencyAmount = (currency: Currency, amount: number): numbe
 }
 
 export const useBUSDCakeAmount = (amount: number): number | undefined => {
-  const cakeBusdPrice = useCakeBusdPrice()
-  if (cakeBusdPrice) {
-    return multiplyPriceByAmount(cakeBusdPrice, amount)
+  const cakePrice = useCakeBusdPrice()
+  if (cakePrice) {
+    return multiplyPriceByAmount(cakePrice, amount, tokens.cake.decimals)
   }
   return undefined
+}
+
+export const useBUSDPeAmount = (amount: number): number | undefined => {
+  const peBusdPrice = usePePriceUsd()
+  if (peBusdPrice) {
+    return multiplyPriceByAmount(peBusdPrice, amount)
+  }
+  return undefined
+}
+
+export const usePePriceArs = () => {
+  const peBusdPrice = usePePriceUsd() /* PE/USDC Price -> PRICE */
+  const ARSPrice = useARSPrice() /* ARS Price -> INT */
+  return peBusdPrice && ARSPrice ? dividePriceByAmount(peBusdPrice, 1/ARSPrice) : undefined
 }
 
 export const useBNBBusdPrice = (): Price | undefined => {

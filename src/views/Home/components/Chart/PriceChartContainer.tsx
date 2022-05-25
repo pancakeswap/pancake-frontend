@@ -69,8 +69,7 @@ export default React.memo(PriceChartContainer, (prev, next) => {
   const nextToken0Address = getTokenAddress(next.inputCurrencyId)
   const prevToken1Address = getTokenAddress(prev.outputCurrencyId)
   const nextToken1Address = getTokenAddress(next.outputCurrencyId)
-  console.log('prev.inputCurrencyId', prev.inputCurrencyId)
-  console.log('prev.outputCurrencyId', prev.outputCurrencyId)
+
   return (
     prev.inputCurrencyId === next.inputCurrencyId &&
     prev.outputCurrencyId === next.outputCurrencyId &&

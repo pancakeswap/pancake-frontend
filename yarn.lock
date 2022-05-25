@@ -4054,6 +4054,11 @@
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.2.tgz#ee771e2ba4b3dc5b372935d549fd9617bf345b8c"
   integrity sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==
 
+"@types/mixpanel-browser@^2.38.0":
+  version "2.38.0"
+  resolved "https://registry.yarnpkg.com/@types/mixpanel-browser/-/mixpanel-browser-2.38.0.tgz#b3e28e1ba06c10a9f88510b88f1ac9d1b2adfc42"
+  integrity sha512-TR8rvsILnqXA7oiiGOxuMGXwvDeCoQDonXJB5UR+TYvEAFpiK8ReFj5LhZT+Xhm3NpI9aPoju30jB2ssorSUww==
+
 "@types/multicodec@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/multicodec/-/multicodec-1.0.0.tgz#9c9c2df84ea5006c65a048873600f71c4565a397"
@@ -16552,10 +16557,10 @@ peronio-sdk@^0.8.17:
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-peronio-uikit@^0.63.4:
-  version "0.63.4"
-  resolved "https://registry.yarnpkg.com/peronio-uikit/-/peronio-uikit-0.63.4.tgz#dc96c2df5ec77fe95f8201cc001dae775ae119e1"
-  integrity sha512-CBR/BLOfm98PU5KvE1zihykb+3ixZr0ONMlxTsRmO+MCbWqwYscvjmjqWELggXlX4Yvuzo4d17B8L3FCcVUsuw==
+peronio-uikit@^0.63.7:
+  version "0.63.7"
+  resolved "https://registry.yarnpkg.com/peronio-uikit/-/peronio-uikit-0.63.7.tgz#c8448ce6e28e6f75ccf8d740105693e0862daf9b"
+  integrity sha512-ugaPXX65RPUBxw3CcQKF3pHeT38ymYXD2ERBYfFGUEOcew7FUaytqZ2FtivKxZy2Z8dUq917jPf8dH13npHekg==
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/lodash" "^4.14.168"

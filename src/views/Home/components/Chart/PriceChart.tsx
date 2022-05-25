@@ -1,30 +1,13 @@
-import {
-  Button,
-  ExpandIcon,
-  Flex,
-  IconButton,
-  ShrinkIcon,
-  SyncAltIcon,
-  Text,
-  TradingViewIcon,
-  LineGraphIcon,
-  useMatchBreakpoints,
-} from 'peronio-uikit'
+import { Flex, Text, useMatchBreakpoints } from 'peronio-uikit'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { ChartViewMode } from 'state/user/actions'
 import { useExchangeChartViewManager } from 'state/user/hooks'
-import styled from 'styled-components'
+
+import { Token } from 'peronio-sdk'
 import BasicChart from './BasicChart'
 import { StyledPriceChart } from './styles'
-import TradingViewChart from './TradingViewChart'
-
-const ChartButton = styled(Button)`
-  background-color: ${({ $active, theme }) => $active && `${theme.colors.primary}0f`};
-  padding: 4px 8px;
-  border-radius: 6px;
-`
 
 const PriceChart = ({
   inputCurrency,
@@ -39,13 +22,12 @@ const PriceChart = ({
   currentSwapPrice,
 }) => {
   const { isDesktop } = useMatchBreakpoints()
-  const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
   const [chartView, setChartView] = useExchangeChartViewManager()
   const { t } = useTranslation()
-
+  console.log(inputCurrency)
   return (
     <StyledPriceChart
-      height={chartView === ChartViewMode.TRADING_VIEW ? '100%' : '70%'}
+      height="70%"
       overflow={chartView === ChartViewMode.TRADING_VIEW ? 'hidden' : 'unset'}
       $isDark={isDark}
       $isExpanded={isChartExpanded}
@@ -62,17 +44,7 @@ const PriceChart = ({
               {outputCurrency ? `${inputCurrency.symbol}/${outputCurrency.symbol}` : inputCurrency.symbol}
             </Text>
           )}
-          <IconButton variant="text" onClick={onSwitchTokens}>
-            <SyncAltIcon ml="6px" color="primary" />
-          </IconButton>
         </Flex>
-        {!isMobile && (
-          <Flex>
-            <IconButton variant="text" onClick={toggleExpanded}>
-              {isChartExpanded ? <ShrinkIcon color="text" /> : <ExpandIcon color="text" />}
-            </IconButton>
-          </Flex>
-        )}
       </Flex>
       <BasicChart
         token0Address={token0Address}

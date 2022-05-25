@@ -1,6 +1,6 @@
 {
   "name": "peronio-frontend",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "private": true,
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
@@ -36,6 +36,7 @@
     "@reduxjs/toolkit": "^1.5.0",
     "@sentry/react": "^6.15.0",
     "@sentry/tracing": "^6.15.0",
+    "@types/mixpanel-browser": "^2.38.0",
     "@types/multicodec": "^1.0.0",
     "@types/node": "^13.13.5",
     "@types/qs": "^6.9.6",
@@ -69,7 +70,7 @@
     "numeral": "^2.0.6",
     "peronio-core": "^0.9.1",
     "peronio-sdk": "^0.8.17",
-    "peronio-uikit": "^0.63.5",
+    "peronio-uikit": "^0.63.7",
     "qs": "^6.9.4",
     "react": "^17.0.1",
     "react-countup": "^4.3.3",
