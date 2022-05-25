@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
-import { Flex, Box, Text, BunnyPlaceholderIcon } from '@pancakeswap/uikit'
+import { Flex, Box, Text } from '@pancakeswap/uikit'
+import { TokenImage } from 'components/TokenImage'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
 import { Ifo } from 'config/constants/types'
@@ -23,7 +24,7 @@ const TotalAvailableClaim: React.FC<TotalAvailableClaimProps> = ({ ifo, amountAv
   return (
     <LightGreyCard mt="24px" mb="8px">
       <Flex>
-        <BunnyPlaceholderIcon mr="16px" width={32} height={32} style={{ alignSelf: 'flex-start' }} />
+        <TokenImage mr="16px" width={32} height={32} token={token} style={{ alignSelf: 'flex-start' }} />
         <Box>
           <Text bold color="secondary" fontSize="12px">
             {t('%symbol% available to claim', { symbol: token.symbol })}

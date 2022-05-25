@@ -53,6 +53,7 @@ export interface Ifo {
   twitterUrl?: string
   telegramUrl?: string
   version: number
+  vestingTitle?: string
   [PoolIds.poolBasic]?: IfoPoolInfo
   [PoolIds.poolUnlimited]: IfoPoolInfo
 }

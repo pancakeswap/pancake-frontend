@@ -1,5 +1,6 @@
-import { Flex, Box, Text, BunnyPlaceholderIcon } from '@pancakeswap/uikit'
+import { Flex, Box, Text } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
+import { TokenImage } from 'components/TokenImage'
 import BalanceWithLoading from 'components/Balance'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { WalletIfoData } from 'views/Ifos/types'
@@ -20,7 +21,7 @@ const TotalPurchased: React.FC<TotalPurchasedProps> = ({ ifo, poolId, walletIfoD
   return (
     <LightGreyCard mt="35px" mb="24px">
       <Flex>
-        <BunnyPlaceholderIcon mr="16px" width={32} height={32} style={{ alignSelf: 'flex-start' }} />
+        <TokenImage mr="16px" width={32} height={32} token={token} style={{ alignSelf: 'flex-start' }} />
         <Box>
           <Text color="secondary" bold fontSize="12px">
             {t('Total %symbol% purchased', { symbol: token.symbol })}

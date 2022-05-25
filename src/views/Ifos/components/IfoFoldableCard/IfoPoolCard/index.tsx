@@ -144,13 +144,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
         </CardHeader>
         <CardBody p="12px">
           {isVesting ? (
-            <IfoVestingCard
-              ifo={ifo}
-              poolId={poolId}
-              isLoading={isLoading}
-              publicIfoData={publicIfoData}
-              walletIfoData={walletIfoData}
-            />
+            <IfoVestingCard ifo={ifo} poolId={poolId} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
           ) : (
             <>
               <IfoCardTokens

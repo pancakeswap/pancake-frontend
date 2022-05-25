@@ -5,13 +5,15 @@ import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import BigNumber from 'bignumber.js'
 
 interface Props {
   poolId: PoolIds
+  amountAvailableToClaim: BigNumber
   walletIfoData: WalletIfoData
 }
 
-const ClaimButton: React.FC<Props> = ({ poolId, walletIfoData }) => {
+const ClaimButton: React.FC<Props> = ({ poolId, amountAvailableToClaim, walletIfoData }) => {
   const userPoolCharacteristics = walletIfoData[poolId]
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
@@ -38,10 +40,10 @@ const ClaimButton: React.FC<Props> = ({ poolId, walletIfoData }) => {
 
   return (
     <Button
-      onClick={handleClaim}
-      disabled={userPoolCharacteristics.isPendingTx}
       width="100%"
+      onClick={handleClaim}
       isLoading={userPoolCharacteristics.isPendingTx}
+      disabled={amountAvailableToClaim.lte(0) || userPoolCharacteristics.isPendingTx}
       endIcon={userPoolCharacteristics.isPendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
     >
       {t('Claim')}

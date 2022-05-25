@@ -17,19 +17,19 @@ import VestingClaimButton from '../VestingClaimButton'
 interface IfoVestingCardProps {
   poolId: PoolIds
   ifo: Ifo
-  isLoading: boolean
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
 }
 
-const IfoVestingCard: React.FC<IfoVestingCardProps> = ({ poolId, ifo, isLoading, publicIfoData, walletIfoData }) => {
+const IfoVestingCard: React.FC<IfoVestingCardProps> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
   const { t } = useTranslation()
   const { token } = ifo
-  const { userVestingSheduleCount, amountAvailableToClaim, amountAlreadyClaimed } = useIfoVesting({
-    poolId,
-    publicIfoData,
-    walletIfoData,
-  })
+  const { userVestingSheduleCount, amountReleased, amountInVesting, amountAvailableToClaim, amountAlreadyClaimed } =
+    useIfoVesting({
+      poolId,
+      publicIfoData,
+      walletIfoData,
+    })
 
   const amountClaimed = useMemo(() => {
     const amount = getBalanceNumber(amountAlreadyClaimed, token.decimals)
@@ -41,7 +41,7 @@ const IfoVestingCard: React.FC<IfoVestingCardProps> = ({ poolId, ifo, isLoading,
       <Box>
         <ProgressStepper publicIfoData={publicIfoData} />
         <TotalPurchased ifo={ifo} poolId={poolId} walletIfoData={walletIfoData} />
-        <ReleasedTokenInfo />
+        <ReleasedTokenInfo ifo={ifo} amountReleased={amountReleased} amountInVesting={amountInVesting} />
         <Divider />
         <TotalAvailableClaim ifo={ifo} amountAvailableToClaim={amountAvailableToClaim} />
         <Text mb="24px" color="textSubtle" fontSize="14px">
@@ -51,7 +51,11 @@ const IfoVestingCard: React.FC<IfoVestingCardProps> = ({ poolId, ifo, isLoading,
           {userVestingSheduleCount.eq(0) ? (
             <ClaimButton poolId={poolId} ifoVersion={ifo.version} walletIfoData={walletIfoData} />
           ) : (
-            <VestingClaimButton poolId={poolId} walletIfoData={walletIfoData} />
+            <VestingClaimButton
+              poolId={poolId}
+              amountAvailableToClaim={amountAvailableToClaim}
+              walletIfoData={walletIfoData}
+            />
           )}
         </Box>
       </Box>

@@ -1,6 +1,10 @@
+import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Flex, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import BigNumber from 'bignumber.js'
+import { Ifo } from 'config/constants/types'
+import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import ReleasedChart from './ReleasedChart'
 
 const Dot = styled.div<{ isActive?: boolean }>`
@@ -11,12 +15,34 @@ const Dot = styled.div<{ isActive?: boolean }>`
   background-color: ${({ theme, isActive }) => (isActive ? theme.colors.secondary : '#d7caec')};
 `
 
-const ReleasedTokenInfo: React.FC = () => {
+interface ReleasedTokenInfoProps {
+  ifo: Ifo
+  amountReleased: BigNumber
+  amountInVesting: BigNumber
+}
+
+const ReleasedTokenInfo: React.FC<ReleasedTokenInfoProps> = ({ ifo, amountReleased, amountInVesting }) => {
   const { t } = useTranslation()
+  const { token } = ifo
+
+  const amount = useMemo(() => {
+    const released = getBalanceNumber(amountReleased, token.decimals)
+    const inVesting = getBalanceNumber(amountInVesting, token.decimals)
+    const total = new BigNumber(released).plus(inVesting)
+    const releasedPercentage = new BigNumber(released).div(total).times(100).toFixed(2)
+    const inVestingPercentage = new BigNumber(inVesting).div(total).times(100).toFixed(2)
+
+    return {
+      released,
+      releasedPercentage,
+      inVesting,
+      inVestingPercentage,
+    }
+  }, [token, amountReleased, amountInVesting])
 
   return (
     <Flex mb="24px">
-      <ReleasedChart released={1} vested={3} />
+      <ReleasedChart percentage={Number(amount.releasedPercentage)} />
       <Flex flexDirection="column" alignSelf="center" width="100%" ml="20px">
         <Flex justifyContent="space-between" mb="7px">
           <Flex>
@@ -27,10 +53,10 @@ const ReleasedTokenInfo: React.FC = () => {
           </Flex>
           <Box ml="auto">
             <Text fontSize="14px" bold as="span">
-              100.6967{' '}
+              {`${formatNumber(amount.released, 4, 4)} `}
             </Text>
             <Text fontSize="14px" as="span">
-              (42.93%)
+              {`(${amount.releasedPercentage}%)`}
             </Text>
           </Box>
         </Flex>
@@ -43,10 +69,10 @@ const ReleasedTokenInfo: React.FC = () => {
           </Flex>
           <Box ml="auto">
             <Text fontSize="14px" bold as="span">
-              100.6967{' '}
+              {`${formatNumber(amount.inVesting, 4, 4)} `}
             </Text>
             <Text fontSize="14px" as="span">
-              (42.93%)
+              {`(${amount.inVestingPercentage}%)`}
             </Text>
           </Box>
         </Flex>
