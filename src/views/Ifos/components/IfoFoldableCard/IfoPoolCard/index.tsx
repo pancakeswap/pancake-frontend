@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { ContextApi } from 'contexts/Localization/types'
 import { Box, Card, CardBody, CardHeader, Flex, HelpIcon, Text, useTooltip } from '@pancakeswap/uikit'
@@ -11,6 +12,7 @@ import { EnableStatus, CardConfigReturn } from '../types'
 import IfoCardTokens from './IfoCardTokens'
 import IfoCardActions from './IfoCardActions'
 import IfoCardDetails from './IfoCardDetails'
+import IfoVestingCard from './IfoVestingCard'
 
 const StyledCard = styled(Card)`
   width: 100%;
@@ -87,6 +89,7 @@ export const cardConfig = (
 
 const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletIfoData, onApprove, enableStatus }) => {
   const { t } = useTranslation()
+  const { account } = useActiveWeb3React()
 
   const { admissionProfile, pointThreshold } = publicIfoData[poolId]
 
@@ -115,6 +118,16 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
     needQualifiedPoints,
   })
 
+  const isVesting = useMemo(() => {
+    return (
+      account &&
+      ifo.version === 3.2 &&
+      poolId === PoolIds.poolUnlimited &&
+      publicIfoData.status === 'finished' &&
+      publicIfoData.poolUnlimited.vestingInfomation.percentage > 0
+    )
+  }, [account, ifo, poolId, publicIfoData])
+
   return (
     <>
       {tooltipVisible && tooltip}
@@ -130,37 +143,48 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
           </Flex>
         </CardHeader>
         <CardBody p="12px">
-          <IfoCardTokens
-            criterias={criterias}
-            isEligible={isEligible}
-            poolId={poolId}
-            ifo={ifo}
-            publicIfoData={publicIfoData}
-            walletIfoData={walletIfoData}
-            hasProfile={hasActiveProfile}
-            isLoading={isLoading}
-            onApprove={onApprove}
-            enableStatus={enableStatus}
-          />
-          <Box mt="24px">
-            <IfoCardActions
-              isEligible={isEligible}
-              poolId={poolId}
+          {isVesting ? (
+            <IfoVestingCard
               ifo={ifo}
+              isLoading={isLoading}
               publicIfoData={publicIfoData}
               walletIfoData={walletIfoData}
-              hasProfile={hasActiveProfile}
-              isLoading={isLoading}
-              enableStatus={enableStatus}
             />
-          </Box>
-          <IfoCardDetails
-            isEligible={isEligible}
-            poolId={poolId}
-            ifo={ifo}
-            publicIfoData={publicIfoData}
-            walletIfoData={walletIfoData}
-          />
+          ) : (
+            <>
+              <IfoCardTokens
+                criterias={criterias}
+                isEligible={isEligible}
+                poolId={poolId}
+                ifo={ifo}
+                publicIfoData={publicIfoData}
+                walletIfoData={walletIfoData}
+                hasProfile={hasActiveProfile}
+                isLoading={isLoading}
+                onApprove={onApprove}
+                enableStatus={enableStatus}
+              />
+              <Box mt="24px">
+                <IfoCardActions
+                  isEligible={isEligible}
+                  poolId={poolId}
+                  ifo={ifo}
+                  publicIfoData={publicIfoData}
+                  walletIfoData={walletIfoData}
+                  hasProfile={hasActiveProfile}
+                  isLoading={isLoading}
+                  enableStatus={enableStatus}
+                />
+              </Box>
+              <IfoCardDetails
+                isEligible={isEligible}
+                poolId={poolId}
+                ifo={ifo}
+                publicIfoData={publicIfoData}
+                walletIfoData={walletIfoData}
+              />
+            </>
+          )}
         </CardBody>
       </StyledCard>
     </>

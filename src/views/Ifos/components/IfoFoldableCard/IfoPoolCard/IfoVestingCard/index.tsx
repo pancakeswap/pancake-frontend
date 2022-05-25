@@ -1,22 +1,28 @@
 import { Flex, Box, Text, Button } from '@pancakeswap/uikit'
 // import { useTranslation } from 'contexts/Localization'
 import Divider from 'components/Divider'
+import { Ifo } from 'config/constants/types'
+import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import ProgressStepper from './ProgressStepper'
 import TotalPurchased from './TotalPurchased'
 import TotalAvailableClaim from './TotalAvailableClaim'
 import ReleasedTokenInfo from './ReleasedTokenInfo'
 import IfoVestingFooter from './IfoVestingFooter'
 
-const IfoVestingCard: React.FC = () => {
+interface IfoVestingCardProps {
+  ifo: Ifo
+  isLoading: boolean
+  publicIfoData: PublicIfoData
+  walletIfoData: WalletIfoData
+}
+
+const IfoVestingCard: React.FC<IfoVestingCardProps> = ({ ifo, isLoading, publicIfoData, walletIfoData }) => {
   // const { t } = useTranslation()
 
   return (
     <Flex flexDirection="column">
       <Box>
-        <ProgressStepper
-          steps={[{ text: 'Sales ended' }, { text: 'Cliff' }, { text: 'Vesting end' }]}
-          activeStepIndex={1}
-        />
+        <ProgressStepper publicIfoData={publicIfoData} />
         <TotalPurchased />
         <ReleasedTokenInfo />
         <Divider />

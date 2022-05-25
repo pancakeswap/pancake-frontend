@@ -1704,5 +1704,9 @@
   "You have claimed all available token.": "You have claimed all available token.",
   "View IFO": "View IFO",
   "Your DAR volume rank": "Your DAR volume rank",
-  "Based on your DAR/BNB trading": "Based on your DAR/BNB trading"
+  "Based on your DAR/BNB trading": "Based on your DAR/BNB trading",
+  "Now": "Now",
+  "Sales ended": "Sales ended",
+  "Cliff": "Cliff",
+  "Vesting end": "Vesting end"
 }
