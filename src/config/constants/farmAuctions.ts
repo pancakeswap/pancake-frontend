@@ -737,6 +737,14 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
           tokenName: 'NanoByte',
           projectSite: 'https://www.nanobyte.finance/',
         },
+        {
+          account: '0xf2110Fb93F8Ed4528A5849C9fDEDC589349a07dc',
+          farmName: 'SB-USDT',
+          tokenAddress: '0xB7258450681f4aAd0ab24E336648d44A6696B30f',
+          quoteToken: tokens.usdt,
+          tokenName: 'DragonSB',
+          projectSite: 'https://dragonsb.finance/',
+        },
       ].map((bidderConfig) => ({
         ...bidderConfig,
         lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken),
