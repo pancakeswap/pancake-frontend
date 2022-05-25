@@ -15,7 +15,7 @@ interface TotalPurchasedProps {
 const TotalPurchased: React.FC<TotalPurchasedProps> = ({ ifo, poolId, walletIfoData }) => {
   const { t } = useTranslation()
   const { token } = ifo
-  const userPoolCharacteristics = walletIfoData[poolId]
+  const { offeringAmountInToken } = walletIfoData[poolId]
 
   return (
     <LightGreyCard mt="35px" mb="24px">
@@ -28,9 +28,9 @@ const TotalPurchased: React.FC<TotalPurchasedProps> = ({ ifo, poolId, walletIfoD
           <BalanceWithLoading
             bold
             prefix="~"
-            decimals={3}
+            decimals={4}
             fontSize="20px"
-            value={getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}
+            value={getBalanceNumber(offeringAmountInToken, token.decimals)}
           />
         </Box>
       </Flex>

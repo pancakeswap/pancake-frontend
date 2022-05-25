@@ -34,7 +34,7 @@ export interface PublicIfoData {
   currencyPriceInUSD: BigNumber
   numberPoints: number
   thresholdPoints: EthersBigNumber
-  vestingStartTime: number
+  vestingStartTime?: number
 
   fetchIfoData: (currentBlock: number) => void
   [PoolIds.poolBasic]?: PoolCharacteristics
@@ -56,6 +56,10 @@ export interface UserPoolCharacteristics {
   taxAmountInLP: BigNumber // @contract: userTaxAmountPool
   hasClaimed: boolean // @contract: claimedPool
   isPendingTx: boolean
+  vestingReleased?: BigNumber
+  vestingAmountTotal?: BigNumber
+  vestingId?: string
+  vestingcomputeReleasableAmount?: BigNumber
 }
 
 // Use only inside the useGetWalletIfoData hook
@@ -71,11 +75,10 @@ export interface WalletIfoState {
      */
     creditLeft: BigNumber
   }
-  vestingSchedule: VestingSchedule
+  vestingSchedule?: VestingSchedule
 }
 
 export interface VestingSchedule {
-  id: string
   countByBeneficiary: BigNumber
 }
 

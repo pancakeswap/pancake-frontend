@@ -67,7 +67,8 @@ export const useIfoV2Contract = (address: string) => {
 }
 
 export const useIfoV3Contract = (address: string) => {
-  return useMemo(() => getIfoV3Contract(address), [address])
+  const { library } = useActiveWeb3React()
+  return useMemo(() => getIfoV3Contract(address, library.getSigner()), [address, library])
 }
 
 export const useERC20 = (address: string, withSignerIfPossible = true) => {

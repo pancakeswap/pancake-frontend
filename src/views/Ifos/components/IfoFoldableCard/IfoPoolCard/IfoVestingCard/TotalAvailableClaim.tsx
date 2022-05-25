@@ -1,15 +1,24 @@
+import { useMemo } from 'react'
 import { Flex, Box, Text, BunnyPlaceholderIcon } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
 import { Ifo } from 'config/constants/types'
+import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
+import BigNumber from 'bignumber.js'
 
 interface TotalAvailableClaimProps {
   ifo: Ifo
+  amountAvailableToClaim: BigNumber
 }
 
-const TotalAvailableClaim: React.FC<TotalAvailableClaimProps> = ({ ifo }) => {
+const TotalAvailableClaim: React.FC<TotalAvailableClaimProps> = ({ ifo, amountAvailableToClaim }) => {
   const { t } = useTranslation()
   const { token } = ifo
+
+  const amountAvailable = useMemo(() => {
+    const amount = getBalanceNumber(amountAvailableToClaim, token.decimals)
+    return amount > 0 ? formatNumber(amount, 4, 4) : 0
+  }, [token, amountAvailableToClaim])
 
   return (
     <LightGreyCard mt="24px" mb="8px">
@@ -20,10 +29,7 @@ const TotalAvailableClaim: React.FC<TotalAvailableClaimProps> = ({ ifo }) => {
             {t('%symbol% available to claim', { symbol: token.symbol })}
           </Text>
           <Text as="span" bold fontSize="20px">
-            52.1234
-          </Text>
-          <Text as="span" bold color="textSubtle" fontSize="20px">
-            /234.5612
+            {amountAvailable}
           </Text>
         </Box>
       </Flex>

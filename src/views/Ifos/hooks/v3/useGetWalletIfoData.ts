@@ -3,6 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useERC20, useIfoV3Contract } from 'hooks/useContract'
+import { getIfoV3Contract } from 'utils/contractHelpers'
 import { multicallv2 } from 'utils/multicall'
 import ifoV3Abi from 'config/abi/ifoV3.json'
 import { fetchCakeVaultUserData } from 'state/pools'
@@ -29,11 +30,12 @@ const initialState = {
     taxAmountInLP: BIG_ZERO,
     hasClaimed: false,
     isPendingTx: false,
-    released: BIG_ZERO,
-    amountTotal: BIG_ZERO,
+    vestingReleased: BIG_ZERO,
+    vestingAmountTotal: BIG_ZERO,
+    vestingId: '0',
+    vestingcomputeReleasableAmount: BIG_ZERO,
   },
   vestingSchedule: {
-    id: '0',
     countByBeneficiary: BIG_ZERO,
   },
 }
@@ -50,6 +52,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
 
   const { account } = useWeb3React()
   const contract = useIfoV3Contract(address)
+  const readContract = getIfoV3Contract(address)
   const currencyContract = useERC20(currency.address, false)
   const allowance = useIfoAllowance(currencyContract, address)
 
@@ -79,7 +82,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       params: [account, [0, 1]],
     }))
 
-    const vestingId = version === 3.2 && (await contract.computeVestingScheduleIdForAddressAndIndex(account, 1))
+    const vestingId = version === 3.2 && (await readContract.computeVestingScheduleIdForAddressAndIndex(account, 0))
     const ifov3Calls =
       version >= 3.1
         ? [
@@ -103,13 +106,25 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
               name: 'getVestingSchedulesCountByBeneficiary',
               params: [account],
             },
+            version === 3.2 && {
+              address,
+              name: 'computeReleasableAmount',
+              params: [vestingId],
+            },
           ].filter(Boolean)
         : []
 
     dispatch(fetchCakeVaultUserData({ account }))
 
-    const [userInfo, amounts, isQualifiedNFT, isQualifiedPoints, vestingSchedule, countByBeneficiary] =
-      await multicallv2(ifoV3Abi, [...ifoCalls, ...ifov3Calls])
+    const [
+      userInfo,
+      amounts,
+      isQualifiedNFT,
+      isQualifiedPoints,
+      vestingSchedule,
+      countByBeneficiary,
+      computeReleasableAmount,
+    ] = await multicallv2(ifoV3Abi, [...ifoCalls, ...ifov3Calls], { requireSuccess: false })
 
     setState((prevState) => ({
       ...prevState,
@@ -131,15 +146,18 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         refundingAmountInLP: new BigNumber(amounts[0][1][1].toString()),
         taxAmountInLP: new BigNumber(amounts[0][1][2].toString()),
         hasClaimed: userInfo[1][1],
-        released: vestingSchedule ? new BigNumber(vestingSchedule[0].released.toString()) : BIG_ZERO,
-        amountTotal: vestingSchedule ? new BigNumber(vestingSchedule[0].amountTotal?.toString()) : BIG_ZERO,
+        vestingReleased: vestingSchedule ? new BigNumber(vestingSchedule[0].released.toString()) : BIG_ZERO,
+        vestingAmountTotal: vestingSchedule ? new BigNumber(vestingSchedule[0].amountTotal.toString()) : BIG_ZERO,
+        vestingId: vestingId ? vestingId.toString() : '0',
+        vestingcomputeReleasableAmount: computeReleasableAmount
+          ? new BigNumber(computeReleasableAmount.toString())
+          : BIG_ZERO,
       },
       vestingSchedule: {
-        id: vestingId ? vestingId.toString() : '0',
         countByBeneficiary: countByBeneficiary ? new BigNumber(countByBeneficiary.toString()) : BIG_ZERO,
       },
     }))
-  }, [account, address, dispatch, version, contract])
+  }, [account, address, dispatch, version, readContract])
 
   const resetIfoData = useCallback(() => {
     setState({ ...initialState })

@@ -33,13 +33,13 @@ const ProgressStepper: React.FC<ProgressStepperProps> = ({ publicIfoData }) => {
     const timeVestingEnd = vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + duration) * 1000
 
     let index = 0
-    if (vestingStartTime) {
-      if (currentTimeStamp <= timeSalesEnded) {
-        index = 0
-      } else if (currentTimeStamp >= timeCliff && timeVestingEnd <= currentTimeStamp) {
+    if (vestingStartTime > 0) {
+      if (currentTimeStamp >= timeVestingEnd) {
+        index = 2
+      } else if (timeVestingEnd >= currentTimeStamp && timeCliff <= currentTimeStamp) {
         index = 1
       } else {
-        index = 2
+        index = 0
       }
     }
 

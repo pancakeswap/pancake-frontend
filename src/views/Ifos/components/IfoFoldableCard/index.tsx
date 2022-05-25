@@ -263,9 +263,7 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
   const raisingTokenContract = useERC20(ifo.currency.address, false)
   // Continue to fetch 2 more minutes to get latest data
   const isRecentlyActive =
-    (publicIfoData.status !== 'finished' ||
-      (publicIfoData.status === 'finished' && secondsUntilEnd >= -120) ||
-      (publicIfoData.status === 'finished' && publicIfoData.poolUnlimited.vestingInfomation.percentage > 0)) &&
+    (publicIfoData.status !== 'finished' || (publicIfoData.status === 'finished' && secondsUntilEnd >= -120)) &&
     ifo.isActive
   const onApprove = useIfoApprove(ifo, contract.address)
   const { toastSuccess } = useToast()

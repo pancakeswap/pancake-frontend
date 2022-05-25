@@ -1,6 +1,12 @@
 import styled from 'styled-components'
+import { useMemo } from 'react'
 import { Flex, Text, Skeleton } from '@pancakeswap/uikit'
-// import { useTranslation } from 'contexts/Localization'
+import BigNumber from 'bignumber.js'
+import { format } from 'date-fns'
+import { useTranslation } from 'contexts/Localization'
+import { Ifo, PoolIds } from 'config/constants/types'
+import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
+import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 
 const StyledIfoVestingFooter = styled(Flex)`
   padding: 16px;
@@ -30,12 +36,38 @@ const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
   )
 }
 
-const IfoVestingFooter: React.FC = () => {
-  // const { t } = useTranslation()
+interface IfoVestingFooterProps {
+  ifo: Ifo
+  poolId: PoolIds
+  publicIfoData: PublicIfoData
+  walletIfoData: WalletIfoData
+}
+
+const IfoVestingFooter: React.FC<IfoVestingFooterProps> = ({ ifo, poolId, publicIfoData, walletIfoData }) => {
+  const { t } = useTranslation()
+  const { token } = ifo
+  const { vestingInfomation } = publicIfoData[poolId]
+  const { vestingAmountTotal } = walletIfoData[poolId]
+
+  const releaseRate = useMemo(() => {
+    const rate = new BigNumber(vestingAmountTotal).div(vestingInfomation.duration)
+    const rateToNumber = getBalanceNumber(rate, token.decimals)
+    return formatNumber(rateToNumber, 5, 5)
+  }, [vestingInfomation, vestingAmountTotal, token])
+
+  const releaseDate = useMemo(() => {
+    const currentTimeStamp = new Date().getTime()
+    const date =
+      publicIfoData.vestingStartTime === 0
+        ? currentTimeStamp
+        : (publicIfoData.vestingStartTime + vestingInfomation.duration) * 1000
+    return format(date, 'MM/dd/yyyy HH:mm')
+  }, [publicIfoData, vestingInfomation])
+
   return (
     <StyledIfoVestingFooter flexDirection="column">
-      <FooterEntry label="Release rate" value="0.123 per second" />
-      <FooterEntry label="fully released date" value="Apr 29 2022 13:54:12" />
+      <FooterEntry label={t('Release rate')} value={t('%releaseRate% per second', { releaseRate })} />
+      <FooterEntry label={t('Fully released date')} value={releaseDate} />
     </StyledIfoVestingFooter>
   )
 }

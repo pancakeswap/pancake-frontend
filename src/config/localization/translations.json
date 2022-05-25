@@ -1711,5 +1711,8 @@
   "Vesting end": "Vesting end",
   "Total %symbol% purchased": "Total %symbol% purchased",
   "%symbol% available to claim": "%symbol% available to claim",
-  "You’ve already claimed %amount% %symbol%": "You’ve already claimed %amount% %symbol%"
+  "You’ve already claimed %amount% %symbol%": "You’ve already claimed %amount% %symbol%",
+  "%releaseRate% per second": "%releaseRate% per second",
+  "Release rate": "Release rate",
+  "Fully released date": "Fully released date"
 }
