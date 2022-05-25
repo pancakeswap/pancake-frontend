@@ -1708,5 +1708,8 @@
   "Now": "Now",
   "Sales ended": "Sales ended",
   "Cliff": "Cliff",
-  "Vesting end": "Vesting end"
+  "Vesting end": "Vesting end",
+  "Total %symbol% purchased": "Total %symbol% purchased",
+  "%symbol% available to claim": "%symbol% available to claim",
+  "You’ve already claimed %amount% %symbol%": "You’ve already claimed %amount% %symbol%"
 }

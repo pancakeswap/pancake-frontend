@@ -146,6 +146,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
           {isVesting ? (
             <IfoVestingCard
               ifo={ifo}
+              poolId={poolId}
               isLoading={isLoading}
               publicIfoData={publicIfoData}
               walletIfoData={walletIfoData}
