@@ -1,8 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction, isAnyOf } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 import poolsConfig from 'config/constants/pools'
 import {
-  AppThunk,
   PoolsState,
   SerializedPool,
   SerializedVaultFees,
@@ -224,58 +223,62 @@ export const fetchPoolsStakingLimitsAsync = () => async (dispatch, getState) => 
   }
 }
 
-export const fetchPoolsUserDataAsync =
-  (account: string): AppThunk =>
-  async (dispatch) => {
-    try {
-      const [allowances, stakingTokenBalances, stakedBalances, pendingRewards] = await Promise.all([
-        fetchPoolsAllowance(account),
-        fetchUserBalances(account),
-        fetchUserStakeBalances(account),
-        fetchUserPendingRewards(account),
-      ])
+export const fetchPoolsUserDataAsync = createAsyncThunk<
+  { sousId: number; allowance: any; stakingTokenBalance: any; stakedBalance: any; pendingReward: any }[],
+  string
+>('pool/fetchPoolsUserData', async (account, { rejectWithValue }) => {
+  try {
+    const [allowances, stakingTokenBalances, stakedBalances, pendingRewards] = await Promise.all([
+      fetchPoolsAllowance(account),
+      fetchUserBalances(account),
+      fetchUserStakeBalances(account),
+      fetchUserPendingRewards(account),
+    ])
 
-      const userData = poolsConfig.map((pool) => ({
-        sousId: pool.sousId,
-        allowance: allowances[pool.sousId],
-        stakingTokenBalance: stakingTokenBalances[pool.sousId],
-        stakedBalance: stakedBalances[pool.sousId],
-        pendingReward: pendingRewards[pool.sousId],
-      }))
-
-      dispatch(setPoolsUserData(userData))
-    } catch (error) {
-      console.error('[Pools Action] Error fetching pool user data', error)
-    }
+    const userData = poolsConfig.map((pool) => ({
+      sousId: pool.sousId,
+      allowance: allowances[pool.sousId],
+      stakingTokenBalance: stakingTokenBalances[pool.sousId],
+      stakedBalance: stakedBalances[pool.sousId],
+      pendingReward: pendingRewards[pool.sousId],
+    }))
+    return userData
+  } catch (e) {
+    return rejectWithValue(e)
   }
+})
 
-export const updateUserAllowance =
-  (sousId: number, account: string): AppThunk =>
-  async (dispatch) => {
-    const allowances = await fetchPoolsAllowance(account)
-    dispatch(updatePoolsUserData({ sousId, field: 'allowance', value: allowances[sousId] }))
-  }
+export const updateUserAllowance = createAsyncThunk<
+  { sousId: number; field: string; value: any },
+  { sousId: number; account: string }
+>('pool/updateUserAllowance', async ({ sousId, account }) => {
+  const allowances = await fetchPoolsAllowance(account)
+  return { sousId, field: 'allowance', value: allowances[sousId] }
+})
 
-export const updateUserBalance =
-  (sousId: number, account: string): AppThunk =>
-  async (dispatch) => {
-    const tokenBalances = await fetchUserBalances(account)
-    dispatch(updatePoolsUserData({ sousId, field: 'stakingTokenBalance', value: tokenBalances[sousId] }))
-  }
+export const updateUserBalance = createAsyncThunk<
+  { sousId: number; field: string; value: any },
+  { sousId: number; account: string }
+>('pool/updateUserBalance', async ({ sousId, account }) => {
+  const tokenBalances = await fetchUserBalances(account)
+  return { sousId, field: 'stakingTokenBalance', value: tokenBalances[sousId] }
+})
 
-export const updateUserStakedBalance =
-  (sousId: number, account: string): AppThunk =>
-  async (dispatch) => {
-    const stakedBalances = await fetchUserStakeBalances(account)
-    dispatch(updatePoolsUserData({ sousId, field: 'stakedBalance', value: stakedBalances[sousId] }))
-  }
+export const updateUserStakedBalance = createAsyncThunk<
+  { sousId: number; field: string; value: any },
+  { sousId: number; account: string }
+>('pool/updateUserStakedBalance', async ({ sousId, account }) => {
+  const stakedBalances = await fetchUserStakeBalances(account)
+  return { sousId, field: 'stakedBalance', value: stakedBalances[sousId] }
+})
 
-export const updateUserPendingReward =
-  (sousId: number, account: string): AppThunk =>
-  async (dispatch) => {
-    const pendingRewards = await fetchUserPendingRewards(account)
-    dispatch(updatePoolsUserData({ sousId, field: 'pendingReward', value: pendingRewards[sousId] }))
-  }
+export const updateUserPendingReward = createAsyncThunk<
+  { sousId: number; field: string; value: any },
+  { sousId: number; account: string }
+>('pool/updateUserPendingReward', async ({ sousId, account }) => {
+  const pendingRewards = await fetchUserPendingRewards(account)
+  return { sousId, field: 'pendingReward', value: pendingRewards[sousId] }
+})
 
 export const fetchCakeVaultPublicData = createAsyncThunk<SerializedCakeVault>('cakeVault/fetchPublicData', async () => {
   const publicVaultInfo = await fetchPublicVaultData()
@@ -323,22 +326,6 @@ export const PoolsSlice = createSlice({
         return { ...pool, ...livePoolData }
       })
     },
-    setPoolsUserData: (state, action) => {
-      const userData = action.payload
-      state.data = state.data.map((pool) => {
-        const userPoolData = userData.find((entry) => entry.sousId === pool.sousId)
-        return { ...pool, userDataLoaded: true, userData: userPoolData }
-      })
-      state.userDataLoaded = true
-    },
-    updatePoolsUserData: (state, action) => {
-      const { field, value, sousId } = action.payload
-      const index = state.data.findIndex((p) => p.sousId === sousId)
-
-      if (index >= 0) {
-        state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
-      }
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(resetUserState, (state) => {
@@ -348,6 +335,25 @@ export const PoolsSlice = createSlice({
       })
       state.userDataLoaded = false
       state.cakeVault = { ...state.cakeVault, userData: initialPoolVaultState.userData }
+    })
+    builder.addCase(
+      fetchPoolsUserDataAsync.fulfilled,
+      (
+        state,
+        action: PayloadAction<
+          { sousId: number; allowance: any; stakingTokenBalance: any; stakedBalance: any; pendingReward: any }[]
+        >,
+      ) => {
+        const userData = action.payload
+        state.data = state.data.map((pool) => {
+          const userPoolData = userData.find((entry) => entry.sousId === pool.sousId)
+          return { ...pool, userDataLoaded: true, userData: userPoolData }
+        })
+        state.userDataLoaded = true
+      },
+    )
+    builder.addCase(fetchPoolsUserDataAsync.rejected, (state, action) => {
+      console.error('[Pools Action] Error fetching pool user data', action.payload)
     })
     // Vault public data that updates frequently
     builder.addCase(fetchCakeVaultPublicData.fulfilled, (state, action: PayloadAction<SerializedCakeVault>) => {
@@ -364,11 +370,26 @@ export const PoolsSlice = createSlice({
       userData.isLoading = false
       state.cakeVault = { ...state.cakeVault, userData }
     })
+    builder.addMatcher(
+      isAnyOf(
+        updateUserAllowance.fulfilled,
+        updateUserBalance.fulfilled,
+        updateUserStakedBalance.fulfilled,
+        updateUserPendingReward.fulfilled,
+      ),
+      (state, action: PayloadAction<{ sousId: number; field: string; value: any }>) => {
+        const { field, value, sousId } = action.payload
+        const index = state.data.findIndex((p) => p.sousId === sousId)
+
+        if (index >= 0) {
+          state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
+        }
+      },
+    )
   },
 })
 
 // Actions
-export const { setPoolsPublicData, setPoolsUserData, updatePoolsUserData, setPoolPublicData, setPoolUserData } =
-  PoolsSlice.actions
+export const { setPoolsPublicData, setPoolPublicData, setPoolUserData } = PoolsSlice.actions
 
 export default PoolsSlice.reducer
