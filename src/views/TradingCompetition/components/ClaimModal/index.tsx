@@ -10,8 +10,8 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { useModCompetitionRewards, getRewardGroupAchievements } from '../../helpers'
 import { CompetitionProps } from '../../types'
 import MoboxBunnyNft from '../../pngs/mobox-bunny-nft.png'
-import MoboxAllBunnies from '../../pngs/mobox-all-bunnies.png'
-import { mboxPrizes } from '../../../../config/constants/trading-competition/prizes'
+import MoDAllBunnies from '../../pngs/MoD-hero-bunnies.png'
+import { modPrizes } from '../../../../config/constants/trading-competition/prizes'
 
 const ImageWrapper = styled(Flex)`
   justify-content: center;
@@ -33,7 +33,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
     userCakeRewards,
     userDarRewards,
   })
-  const achievement = getRewardGroupAchievements(mboxPrizes, userRewardGroup, userPointReward)
+  const achievement = getRewardGroupAchievements(modPrizes, userRewardGroup, userPointReward)
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleClaimClick = async () => {
@@ -79,7 +79,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         {canClaimNFT ? (
           <Flex mt="8px" alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>
-              <Image src={MoboxAllBunnies} width={128} height={95} />
+              <Image src={MoDAllBunnies} width={128} height={95} />
             </ImageWrapper>
             <Text mt="8px">{t('Mobox Avatar NFT')}</Text>
             <Text color="textSubtle" mt="8px" fontSize="12px" textAlign="center">
