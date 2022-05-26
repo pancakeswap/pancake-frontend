@@ -83,6 +83,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.hotcross,
     quoteToken: serializedTokens.wbnb,
+    auctionHostingStartSeconds: 1653649200,
   },
   {
     pid: 94,
@@ -95,6 +96,7 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.wzrd,
     quoteToken: serializedTokens.busd,
     isCommunity: true,
+    auctionHostingStartSeconds: 1653649200,
   },
   {
     pid: 98,
@@ -126,6 +128,7 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens['8pay'],
     quoteToken: serializedTokens.busd,
     isCommunity: true,
+    auctionHostingStartSeconds: 1653649200,
   },
   {
     pid: 93,
