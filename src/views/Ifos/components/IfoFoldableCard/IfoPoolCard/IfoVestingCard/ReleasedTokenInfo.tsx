@@ -5,6 +5,7 @@ import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
 import { Ifo } from 'config/constants/types'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
+import isUndefinedOrNull from 'utils/isUndefinedOrNull'
 import ReleasedChart from './ReleasedChart'
 
 const Dot = styled.div<{ isActive?: boolean }>`
@@ -30,13 +31,17 @@ const ReleasedTokenInfo: React.FC<ReleasedTokenInfoProps> = ({ ifo, amountReleas
     const inVesting = getBalanceNumber(amountInVesting, token.decimals)
     const total = new BigNumber(released).plus(inVesting)
     const releasedPercentage = new BigNumber(released).div(total).times(100).toFixed(2)
+    const releasedPercentageDisplay = isUndefinedOrNull(releasedPercentage) ? releasedPercentage : '0'
     const inVestingPercentage = new BigNumber(inVesting).div(total).times(100).toFixed(2)
+    const inVestingPercentageDisplay = isUndefinedOrNull(inVestingPercentage) ? inVestingPercentage : '0'
 
     return {
       released,
       releasedPercentage,
+      releasedPercentageDisplay,
       inVesting,
       inVestingPercentage,
+      inVestingPercentageDisplay,
     }
   }, [token, amountReleased, amountInVesting])
 
@@ -56,7 +61,7 @@ const ReleasedTokenInfo: React.FC<ReleasedTokenInfoProps> = ({ ifo, amountReleas
               {`${formatNumber(amount.released, 4, 4)} `}
             </Text>
             <Text fontSize="14px" as="span">
-              {`(${amount.releasedPercentage}%)`}
+              {`(${amount.releasedPercentageDisplay}%)`}
             </Text>
           </Box>
         </Flex>
@@ -72,7 +77,7 @@ const ReleasedTokenInfo: React.FC<ReleasedTokenInfoProps> = ({ ifo, amountReleas
               {`${formatNumber(amount.inVesting, 4, 4)} `}
             </Text>
             <Text fontSize="14px" as="span">
-              {`(${amount.inVestingPercentage}%)`}
+              {`(${amount.inVestingPercentageDisplay}%)`}
             </Text>
           </Box>
         </Flex>
