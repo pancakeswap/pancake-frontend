@@ -71,7 +71,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         {canClaimNFT ? (
           <Flex alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>
-              <Image src={ModBunnyNft} width={128} height={128} />
+              <Image src={ModBunnyNft} width={128} height={98} />
             </ImageWrapper>
             <Text mt="8px">{t('Collectible NFT')}</Text>
           </Flex>
