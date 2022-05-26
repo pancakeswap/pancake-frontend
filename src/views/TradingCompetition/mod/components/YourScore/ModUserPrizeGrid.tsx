@@ -32,7 +32,7 @@ const ModUserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformati
           <th>{t('Token Prizes')}</th>
           <th>{t('Achievements')}</th>
           <th>{t('NFT')}</th>
-          <th>{t('Mystery Box')}</th>
+          <th>{t('Bunny Helmet')}</th>
         </tr>
       </StyledThead>
       <tbody>

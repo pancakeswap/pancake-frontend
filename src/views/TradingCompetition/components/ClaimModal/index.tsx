@@ -9,9 +9,9 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useModCompetitionRewards, getRewardGroupAchievements } from '../../helpers'
 import { CompetitionProps } from '../../types'
-import MoboxBunnyNft from '../../pngs/mobox-bunny-nft.png'
-import MoboxAllBunnies from '../../pngs/mobox-all-bunnies.png'
-import { mboxPrizes } from '../../../../config/constants/trading-competition/prizes'
+import ModBunnyNft from '../../pngs/MoD-nft-prize.png'
+import MoDAllBunnies from '../../pngs/MoD-hero-bunnies.png'
+import { modPrizes } from '../../../../config/constants/trading-competition/prizes'
 
 const ImageWrapper = styled(Flex)`
   justify-content: center;
@@ -33,7 +33,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
     userCakeRewards,
     userDarRewards,
   })
-  const achievement = getRewardGroupAchievements(mboxPrizes, userRewardGroup, userPointReward)
+  const achievement = getRewardGroupAchievements(modPrizes, userRewardGroup, userPointReward)
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleClaimClick = async () => {
@@ -71,7 +71,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         {canClaimNFT ? (
           <Flex alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>
-              <Image src={MoboxBunnyNft} width={128} height={128} />
+              <Image src={ModBunnyNft} width={128} height={98} />
             </ImageWrapper>
             <Text mt="8px">{t('Collectible NFT')}</Text>
           </Flex>
@@ -79,12 +79,12 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         {canClaimNFT ? (
           <Flex mt="8px" alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>
-              <Image src={MoboxAllBunnies} width={128} height={95} />
+              <Image src={MoDAllBunnies} width={128} height={95} />
             </ImageWrapper>
-            <Text mt="8px">{t('Mobox Avatar NFT')}</Text>
+            <Text mt="8px">{t('Bunny Helmet NFT')}</Text>
             <Text color="textSubtle" mt="8px" fontSize="12px" textAlign="center">
               {t(
-                'Your Mobox Avatars NFT prizes will be airdropped to your wallet address before 00:00 UTC 25th April.',
+                'Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.',
               )}
             </Text>
           </Flex>
