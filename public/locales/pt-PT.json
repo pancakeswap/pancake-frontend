@@ -1650,8 +1650,6 @@
   "Page %page%": "Página %page%",
   "Participants": "Participantes",
   "Total Participants": "Total de participantes",
-  "Mobox Avatar NFT": "Mobox Avatar NFT",
-  "Your Mobox Avatars NFT prizes will be airdropped to your wallet address before 00:00 UTC 25th April.": "Os seus prémios Mobox Avatars NFT serão enviados para o endereço da sua carteira antes das 00:00 UTC de 25 de abril.",
   "The lock period has ended. Convert to flexible staking or renew your position to start a new lock staking.": "O período de bloqueio terminou. Converta para stake flexível ou renove a sua posição para iniciar um novo stake de bloqueio.",
   "The lock period has ended. To avoid more rewards being burned, convert to flexible staking or renew your position to start a new lock staking.": "O período de bloqueio terminou. Para evitar que mais recompensas sejam queimadas, converta para stake flexível ou renove a sua posição para iniciar um novo stake de bloqueio.",
   "Your MBOX volume rank": "A sua classificação de volume MBOX",
@@ -1700,5 +1698,8 @@
   "Circulating Supply": "Fornecimento em circulação",
   "Max Supply": "Fornecimento máximo",
   "Prizes will be announced and available for claiming at ~": "Os prémios serão anunciados e estarão disponíveis para recolha em ~",
-  "Follow Update": "Seguir a atualização"
+  "Follow Update": "Seguir a atualização",
+  "Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.": "Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.",
+  "Bunny Helmet NFT": "Bunny Helmet NFT",
+  "Bunny Helmet": "Bunny Helmet"
 }
