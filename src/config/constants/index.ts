@@ -114,7 +114,7 @@ export const DEFAULT_INPUT_CURRENCY = 'BNB'
 // CAKE
 export const DEFAULT_OUTPUT_CURRENCY = '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82'
 
-export const FARM_AUCTION_HOSTING_IN_SECONDS = 691200 // 7 days from the auction ends + 1 day that farm to be on live
+export const FARM_AUCTION_HOSTING_IN_SECONDS = 604800
 
 // Gelato uses this address to define a native currency in all chains
 export const GELATO_NATIVE = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
