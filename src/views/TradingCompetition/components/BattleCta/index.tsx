@@ -203,9 +203,14 @@ const BattleCta: React.FC<CompetitionProps> = ({
           {currentPhase.state === FINISHED && (
             <Box width="280px" p="20px 0px 0px">
               {/* {inputSecondary can't fit this case} */}
-              <Text color="#D7CAEC">
+              {/* <Text color="#D7CAEC">
                 {t('Prizes will be announced and available for claiming at ~')}{' '}
                 {new Date(Date.UTC(2022, 4, 26, 8)).toLocaleString('en-US', options)}
+              </Text> */}
+              <Text color="#D7CAEC">
+                {t(
+                  'Currently facing technical issues while configuring prize claiming. Prizes will be available for claiming once the issue is resolved. Follow our social channels for latest updates.',
+                )}
               </Text>
               <Text textAlign="center" pt="20px">
                 <Button
