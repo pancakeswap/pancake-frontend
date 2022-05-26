@@ -31,9 +31,9 @@ const ReleasedTokenInfo: React.FC<ReleasedTokenInfoProps> = ({ ifo, amountReleas
     const inVesting = getBalanceNumber(amountInVesting, token.decimals)
     const total = new BigNumber(released).plus(inVesting)
     const releasedPercentage = new BigNumber(released).div(total).times(100).toFixed(2)
-    const releasedPercentageDisplay = isUndefinedOrNull(releasedPercentage) ? releasedPercentage : '0'
+    const releasedPercentageDisplay = isUndefinedOrNull(releasedPercentage) ? '0' : releasedPercentage
     const inVestingPercentage = new BigNumber(inVesting).div(total).times(100).toFixed(2)
-    const inVestingPercentageDisplay = isUndefinedOrNull(inVestingPercentage) ? inVestingPercentage : '0'
+    const inVestingPercentageDisplay = isUndefinedOrNull(inVestingPercentage) ? '0' : inVestingPercentage
 
     return {
       released,
