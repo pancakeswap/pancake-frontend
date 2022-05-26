@@ -39,6 +39,7 @@ const ClaimCheck = () => {
     />,
     false,
     true,
+    'CollectRoundWinningsModalV1',
   )
 
   const [onPresentNothingToClaimModal] = useModal(<NothingToClaimModal />)
