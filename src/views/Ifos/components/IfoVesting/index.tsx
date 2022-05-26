@@ -1,13 +1,15 @@
+import { useMemo, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-// import Trans from 'components/Trans'
-// import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { DeserializedPool } from 'state/types'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import Trans from 'components/Trans'
 import { Box, Card, CardBody, CardHeader, Flex, Text, Image } from '@pancakeswap/uikit'
-// import { VestingStatus } from './types'
+import { DeserializedPool } from 'state/types'
+import { VestingStatus } from './types'
 import NotTokens from './NotTokens'
-// import VestingPeriod from './VestingPeriod/index'
-// import VestingEnded from './VestingEnded'
+import TokenInfo from './VestingPeriod/TokenInfo'
+import VestingEnded from './VestingEnded'
+import useFetchVestingData from '../../hooks/vesting/useFetchVestingData'
 
 const StyleVertingCard = styled(Card)`
   width: 100%;
@@ -20,20 +22,28 @@ const StyleVertingCard = styled(Card)`
   }
 `
 
-// const IfoVestingStatus = {
-//   [VestingStatus.NOT_VESTING_TOKENS]: {
-//     text: <Trans>You have no tokens available for claiming</Trans>,
-//     imgUrl: '/images/ifos/vesting/not-tokens.svg',
-//   },
-//   [VestingStatus.IN_VESTING_PERIOD]: {
-//     text: <Trans>You have tokens available for claiming now!</Trans>,
-//     imgUrl: '/images/ifos/vesting/in-vesting-period.svg',
-//   },
-//   [VestingStatus.VESTING_ENDED]: {
-//     text: <Trans>No vesting token to claim.</Trans>,
-//     imgUrl: '/images/ifos/vesting/in-vesting-end.svg',
-//   },
-// }
+const VestingCardBody = styled(CardBody)`
+  overflow-y: auto;
+  max-height: 320px;
+`
+
+const IfoVestingStatus = {
+  [VestingStatus.NOT_TOKENS_CLAIM]: {
+    status: VestingStatus.NOT_TOKENS_CLAIM,
+    text: <Trans>You have no tokens available for claiming</Trans>,
+    imgUrl: '/images/ifos/vesting/not-tokens.svg',
+  },
+  [VestingStatus.HAS_CLAIM_TOKENS]: {
+    status: VestingStatus.HAS_CLAIM_TOKENS,
+    text: <Trans>You have tokens available for claiming now!</Trans>,
+    imgUrl: '/images/ifos/vesting/in-vesting-period.svg',
+  },
+  [VestingStatus.ENDED]: {
+    status: VestingStatus.ENDED,
+    text: <Trans>No vesting token to claim.</Trans>,
+    imgUrl: '/images/ifos/vesting/in-vesting-end.svg',
+  },
+}
 
 interface IfoVestingProps {
   pool: DeserializedPool
@@ -41,7 +51,23 @@ interface IfoVestingProps {
 
 const IfoVesting: React.FC<IfoVestingProps> = () => {
   const { t } = useTranslation()
-  // const { account } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
+  const [isFirstTime, setIsFirstTime] = useState(false)
+  const { data, userDataLoaded, fetchUserVestingData } = useFetchVestingData(account)
+
+  useEffect(() => {
+    setIsFirstTime(false)
+  }, [])
+
+  const cardStatus = useMemo(() => {
+    if (account && userDataLoaded && data.length > 0) {
+      return IfoVestingStatus[VestingStatus.HAS_CLAIM_TOKENS]
+    }
+    if (account && userDataLoaded && data.length === 0 && !isFirstTime) {
+      return IfoVestingStatus[VestingStatus.ENDED]
+    }
+    return IfoVestingStatus[VestingStatus.NOT_TOKENS_CLAIM]
+  }, [data, userDataLoaded, account, isFirstTime])
 
   return (
     <StyleVertingCard isActive>
@@ -52,7 +78,7 @@ const IfoVesting: React.FC<IfoVestingProps> = () => {
               {t('Token Vesting')}
             </Text>
             <Text color="textSubtle" fontSize="14px">
-              {t('You have no tokens available for claiming')}
+              {cardStatus.text}
             </Text>
           </Box>
           <Image
@@ -61,15 +87,15 @@ const IfoVesting: React.FC<IfoVestingProps> = () => {
             height={64}
             alt="ifo-vesting-status"
             style={{ minWidth: '64px' }}
-            src="/images/ifos/vesting/not-tokens.svg"
+            src={cardStatus.imgUrl}
           />
         </Flex>
       </CardHeader>
-      <CardBody>
-        <NotTokens />
-        {/* <VestingPeriod /> */}
-        {/* <VestingEnded /> */}
-      </CardBody>
+      <VestingCardBody>
+        {cardStatus.status === VestingStatus.NOT_TOKENS_CLAIM && <NotTokens />}
+        {cardStatus.status === VestingStatus.HAS_CLAIM_TOKENS && <TokenInfo />}
+        {cardStatus.status === VestingStatus.ENDED && <VestingEnded />}
+      </VestingCardBody>
     </StyleVertingCard>
   )
 }
