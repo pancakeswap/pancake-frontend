@@ -137,7 +137,7 @@ export default function PoolFinder() {
               hasPosition && pair ? (
                 <>
                   <MinimalPositionCard pair={pair} />
-                  <Button as={NextLinkFromReactRouter} to="/pool" variant="secondary" width="100%">
+                  <Button as={NextLinkFromReactRouter} to="/liquidity" variant="secondary" width="100%">
                     {t('Manage this pool')}
                   </Button>
                 </>
