@@ -380,7 +380,6 @@
   "Nothing to claim": "Nie ma czego odebrać",
   "Registered!": "Zarejestrowano!",
   "Congratulations! You won": "Gratulacje! Wygrywasz",
-  "Collectible NFT": "Obiekt kolekcjonerski NFT",
   "All prizes will be sent directly to your wallet and user account.": "Wszystkie nagrody zostaną wysłane bezpośrednio do Twojego portfela i na Twoje konto użytkownika.",
   "How Can I Join?": "Jak mogę dołączyć?",
   "Set up your": "Skonfiguruj swój",
@@ -1702,5 +1701,6 @@
   "Follow Update": "Śledź aktualizację",
   "Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.": "Twój NFT Mines of Dalarnia — Hełm króliczka zostanie zrzucony do Twojego portfela 2 czerwca przed godziną 00:00 UTC.",
   "Bunny Helmet NFT": "NFT Hełm króliczka",
-  "Bunny Helmet": "Hełm króliczka"
+  "Bunny Helmet": "Hełm króliczka",
+  "PancakeSwap NFT": "PancakeSwap NFT"
 }
