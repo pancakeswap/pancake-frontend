@@ -380,7 +380,6 @@
   "Nothing to claim": "Ingenting att lösa in",
   "Registered!": "Registrerad!",
   "Congratulations! You won": "Grattis! Du vann",
-  "Collectible NFT": "Samlarobjekt-NFT",
   "All prizes will be sent directly to your wallet and user account.": "Alla priser kommer att skickas direkt till din plånbok och användarkonto.",
   "How Can I Join?": "Hur kan jag gå med?",
   "Set up your": "Konfigurera din",
@@ -1702,5 +1701,6 @@
   "Follow Update": "Follow Update",
   "Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.": "Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.",
   "Bunny Helmet NFT": "Bunny Helmet NFT",
-  "Bunny Helmet": "Bunny Helmet"
+  "Bunny Helmet": "Bunny Helmet",
+  "PancakeSwap NFT": "PancakeSwap NFT"
 }
