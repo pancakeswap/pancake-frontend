@@ -106,12 +106,15 @@ export const Tooltip = styled.div`
   left: 55px;
   border-radius: 16px;
   padding: 16px;
-  background-color: #27262c;
-  color: white;
+  background: ${({ theme }) => theme.tooltip.background};
+  box-shadow: ${({ theme }) => theme.tooltip.boxShadow};
   white-space: nowrap;
   opacity: 0;
   z-index: 100;
   animation: ${tooltipAnimation} 3s forwards ease-in-out;
+  ${Text},svg {
+    color: ${({ theme }) => theme.tooltip.text};
+  }
   @media screen and (min-width: 390px) {
     top: -60px;
     left: 120px;
@@ -127,7 +130,7 @@ export const Tooltip = styled.div`
     left: -6px;
     width: 12px;
     height: 12px;
-    background-color: #27262c;
+    background: ${({ theme }) => theme.tooltip.background};
     transform: rotate(45deg);
   }
 `
