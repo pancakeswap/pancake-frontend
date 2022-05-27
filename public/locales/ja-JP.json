@@ -380,7 +380,6 @@
   "Nothing to claim": "請求するものがありません",
   "Registered!": "登録しました！",
   "Congratulations! You won": "おめでとうございます！あなたの獲得額",
-  "Collectible NFT": "コレクティブルNFT",
   "All prizes will be sent directly to your wallet and user account.": "全ての賞金があなたのウォレットとユーザーアカウントに送金されます。",
   "How Can I Join?": "参加方法",
   "Set up your": "Pancakeプロフィールを",
@@ -1702,5 +1701,6 @@
   "Follow Update": "Follow Update",
   "Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.": "Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.",
   "Bunny Helmet NFT": "Bunny Helmet NFT",
-  "Bunny Helmet": "Bunny Helmet"
+  "Bunny Helmet": "Bunny Helmet",
+  "PancakeSwap NFT": "PancakeSwap NFT"
 }
