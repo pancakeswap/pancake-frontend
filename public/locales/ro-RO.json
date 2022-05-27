@@ -380,7 +380,6 @@
   "Nothing to claim": "Nimic de revendicat",
   "Registered!": "Înregistrat!",
   "Congratulations! You won": "Felicitări! Ai câștigat",
-  "Collectible NFT": "NFT colectibil",
   "All prizes will be sent directly to your wallet and user account.": "Toate premiile vor fi trimise în portofelul tău și în contul de utilizator.",
   "How Can I Join?": "Cum mă pot înscrie?",
   "Set up your": "Configurează",
@@ -1702,5 +1701,6 @@
   "Follow Update": "Follow Update",
   "Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.": "Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.",
   "Bunny Helmet NFT": "Bunny Helmet NFT",
-  "Bunny Helmet": "Bunny Helmet"
+  "Bunny Helmet": "Bunny Helmet",
+  "PancakeSwap NFT": "PancakeSwap NFT"
 }
