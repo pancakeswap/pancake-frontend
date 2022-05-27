@@ -8,6 +8,7 @@ import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTab
 import { modPrizes } from '../../../../../config/constants/trading-competition/prizes'
 import UserPrizeGridDollar from '../../../components/YourScore/UserPrizeGridDollar'
 import AchievementPoints from '../../../components/YourScore/AchievementPoints'
+import { useCanClaimSpecialNFT } from '../../../useCanClaimSpecialNFT'
 
 const StyledThead = styled.thead`
   border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
@@ -18,6 +19,7 @@ const ModUserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformati
 }) => {
   const { t } = useTranslation()
   const { userRewardGroup, userCakeRewards, userDarRewards, userPointReward, canClaimNFT } = userTradingInformation
+  const canClaimSpecialNFT = useCanClaimSpecialNFT()
   const { cakeReward, darReward, dollarValueOfTokensReward } = useModCompetitionRewards({
     userCakeRewards,
     userDarRewards,
@@ -48,6 +50,7 @@ const ModUserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformati
             <AchievementPoints achievement={achievement} userPointReward={userPointReward} />
           </Td>
           <Td>{canClaimNFT ? <CheckmarkCircleIcon color="success" /> : <BlockIcon color="textDisabled" />}</Td>
+          <Td>{canClaimSpecialNFT ? <CheckmarkCircleIcon color="success" /> : <BlockIcon color="textDisabled" />}</Td>
         </tr>
       </tbody>
     </StyledPrizeTable>
