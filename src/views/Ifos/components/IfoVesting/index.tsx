@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -52,12 +52,8 @@ interface IfoVestingProps {
 const IfoVesting: React.FC<IfoVestingProps> = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
-  const [isFirstTime, setIsFirstTime] = useState(false)
+  const [isFirstTime, setIsFirstTime] = useState(true)
   const { data, userDataLoaded, fetchUserVestingData } = useFetchVestingData(account)
-
-  useEffect(() => {
-    setIsFirstTime(true)
-  }, [])
 
   const cardStatus = useMemo(() => {
     if (account && userDataLoaded && data.length > 0) {
@@ -68,6 +64,11 @@ const IfoVesting: React.FC<IfoVestingProps> = () => {
     }
     return IfoVestingStatus[VestingStatus.NOT_TOKENS_CLAIM]
   }, [data, userDataLoaded, account, isFirstTime])
+
+  const handleFetchUserVesting = useCallback(() => {
+    setIsFirstTime(false)
+    fetchUserVestingData()
+  }, [fetchUserVestingData])
 
   return (
     <StyleVertingCard isActive>
@@ -95,7 +96,7 @@ const IfoVesting: React.FC<IfoVestingProps> = () => {
         {cardStatus.status === VestingStatus.NOT_TOKENS_CLAIM && <NotTokens />}
         {cardStatus.status === VestingStatus.HAS_TOKENS_CLAIM &&
           data.map((ifo, index) => (
-            <TokenInfo key={ifo.ifo.id} index={index} data={ifo} fetchUserVestingData={fetchUserVestingData} />
+            <TokenInfo key={ifo.ifo.id} index={index} data={ifo} fetchUserVestingData={handleFetchUserVesting} />
           ))}
         {cardStatus.status === VestingStatus.ENDED && <VestingEnded />}
       </VestingCardBody>
