@@ -380,7 +380,6 @@
   "Nothing to claim": "கிளைம் செய்ய எதுவுமில்லை",
   "Registered!": "பதிவுசெய்யப்பட்டது!",
   "Congratulations! You won": "வாழ்த்துக்கள்! நீங்கள் வென்றுவிட்டீர்கள்",
-  "Collectible NFT": "கலெக்டிபிள் NFT",
   "All prizes will be sent directly to your wallet and user account.": "அனைத்து பரிசுகளும் நேரடியாக உங்கள் வாலெட் மற்றும் பயனர் கணக்கிற்கு அனுப்பப்படும்.",
   "How Can I Join?": "நான் எப்படி சேர்வது?",
   "Set up your": "அமைத்திடுக",
@@ -1702,5 +1701,6 @@
   "Follow Update": "புதுப்பிப்பை பின்தொடரவும்",
   "Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.": "உங்கள் மைன்ஸ் ஆஃப் டலார்னியா - பன்னி ஹெல்மெட் NFT, ஜூன் 2 ஆம் தேதி 00:00 UTC க்கு முன் உங்கள் வாலெட்டில் ஏர்ட்ராப் செய்யப்படும்.",
   "Bunny Helmet NFT": "பன்னி ஹெல்மெட் NFT",
-  "Bunny Helmet": "பன்னி ஹெல்மெட்"
+  "Bunny Helmet": "பன்னி ஹெல்மெட்",
+  "PancakeSwap NFT": "PancakeSwap NFT"
 }
