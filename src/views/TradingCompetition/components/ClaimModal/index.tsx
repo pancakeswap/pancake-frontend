@@ -1,17 +1,19 @@
-import styled from 'styled-components'
-import { Modal, Button, Flex, AutoRenewIcon, Heading, Text } from '@pancakeswap/uikit'
-import Image from 'next/image'
+import { AutoRenewIcon, Button, Flex, Heading, Modal, Text } from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from 'contexts/Localization'
-import { useTradingCompetitionContractMoD } from 'hooks/useContract'
-import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { useModCompetitionRewards, getRewardGroupAchievements } from '../../helpers'
-import { CompetitionProps } from '../../types'
-import ModBunnyNft from '../../pngs/MoD-nft-prize.png'
-import MoDAllBunnies from '../../pngs/MoD-hero-bunnies.png'
+import { useTradingCompetitionContractMoD } from 'hooks/useContract'
+import useToast from 'hooks/useToast'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import styled from 'styled-components'
 import { modPrizes } from '../../../../config/constants/trading-competition/prizes'
+import { getRewardGroupAchievements, useModCompetitionRewards } from '../../helpers'
+import MoDAllBunnies from '../../pngs/MoD-hero-bunnies.png'
+import ModBunnyNft from '../../pngs/MoD-nft-prize.png'
+import { CompetitionProps } from '../../types'
 
 const ImageWrapper = styled(Flex)`
   justify-content: center;
@@ -22,8 +24,27 @@ const ImageWrapper = styled(Flex)`
   }
 `
 
+const useCanClaimSpecialNFT = () => {
+  const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
+  const { account } = useWeb3React()
+  const [canClaimSpecialNFT, setCanClaimSpecialNFT] = useState(false)
+  useEffect(() => {
+    const fetchUserTradingStats = async () => {
+      const res = await fetch(`${profileApiUrl}/api/users/${account}`)
+      const data = await res.json()
+      if (parseInt(data?.leaderboard_dar?.darVolumeRank ?? '101') <= 100) setCanClaimSpecialNFT(true)
+    }
+    // If user has not registered, user trading information will not be displayed and should not be fetched
+    if (account) {
+      fetchUserTradingStats()
+    }
+  }, [account, profileApiUrl])
+  return canClaimSpecialNFT
+}
+
 const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, userTradingInformation }) => {
   const tradingCompetitionContract = useTradingCompetitionContractMoD()
+  const canClaimSpecialNFT = useCanClaimSpecialNFT()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
   const { t } = useTranslation()
@@ -68,7 +89,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
           {darReward.toFixed(4)} DAR
         </Heading>
         {/* NFT */}
-        {canClaimNFT ? (
+        {canClaimSpecialNFT ? (
           <Flex alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>
               <Image src={ModBunnyNft} width={128} height={168} />
