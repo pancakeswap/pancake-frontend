@@ -380,7 +380,6 @@
   "Nothing to claim": "Nada a ser reivindicado",
   "Registered!": "Registrado!",
   "Congratulations! You won": "Parabéns! Você venceu",
-  "Collectible NFT": "NFT colecionável",
   "All prizes will be sent directly to your wallet and user account.": "Todos os prêmios serão enviados diretamente para a sua carteira e conta de usuário.",
   "How Can I Join?": "Como posso participar?",
   "Set up your": "Configure seu",
@@ -1702,5 +1701,6 @@
   "Follow Update": "Acompanhar atualização",
   "Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.": "Seu NFT Minas de Dalarnia - Capacete de Coelho será lançado em sua carteira antes das 00:00 UTC de 2 de junho.",
   "Bunny Helmet NFT": "NFT Capacete de Coelho",
-  "Bunny Helmet": "Capacete de Coelho"
+  "Bunny Helmet": "Capacete de Coelho",
+  "PancakeSwap NFT": "PancakeSwap NFT"
 }
