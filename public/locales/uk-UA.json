@@ -380,7 +380,6 @@
   "Nothing to claim": "Немає нічого, що можна було б отримати",
   "Registered!": "Зареєстровано!",
   "Congratulations! You won": "Вітаємо! Ви виграли",
-  "Collectible NFT": "Колекційний невзаємозамінний токен",
   "All prizes will be sent directly to your wallet and user account.": "Усі призи буде надіслано прямо у ваш гаманець і ваш обліковий запис.",
   "How Can I Join?": "Чи можу я приєднатися?",
   "Set up your": "Налаштуйте свій",
@@ -1702,5 +1701,6 @@
   "Follow Update": "Follow Update",
   "Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.": "Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.",
   "Bunny Helmet NFT": "Bunny Helmet NFT",
-  "Bunny Helmet": "Bunny Helmet"
+  "Bunny Helmet": "Bunny Helmet",
+  "PancakeSwap NFT": "PancakeSwap NFT"
 }
