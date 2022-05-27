@@ -380,7 +380,6 @@
   "Nothing to claim": "클레임할 항목 없음",
   "Registered!": "등록함!",
   "Congratulations! You won": "축하합니다! 승리했습니다.",
-  "Collectible NFT": "수집 가능 NFT",
   "All prizes will be sent directly to your wallet and user account.": "모든 상금은 지갑과 사용자 계정으로 직접 전송됩니다.",
   "How Can I Join?": "참여 방법은?",
   "Set up your": "사용자의",
@@ -1702,5 +1701,6 @@
   "Follow Update": "Follow Update",
   "Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.": "Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.",
   "Bunny Helmet NFT": "Bunny Helmet NFT",
-  "Bunny Helmet": "Bunny Helmet"
+  "Bunny Helmet": "Bunny Helmet",
+  "PancakeSwap NFT": "PancakeSwap NFT"
 }
