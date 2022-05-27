@@ -200,7 +200,7 @@ function CurrencySearch({
               currencies={filteredSortedTokens}
               inactiveCurrencies={filteredInactiveTokens}
               breakIndex={
-                Boolean(filteredInactiveTokens?.length) && filteredSortedTokens
+                Boolean(filteredInactiveTokens?.length) && Boolean(filteredSortedTokens?.length)
                   ? filteredSortedTokens.length
                   : undefined
               }
