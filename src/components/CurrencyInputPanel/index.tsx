@@ -1,6 +1,6 @@
 import { Currency, Pair, Token } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, Text, useModal, Flex, Box, MetamaskIcon } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { registerToken } from 'utils/wallet'
 import { isAddress } from 'utils'
 import { useTranslation } from 'contexts/Localization'
@@ -20,8 +20,18 @@ const InputRow = styled.div<{ selected: boolean }>`
   justify-content: flex-end;
   padding: ${({ selected }) => (selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.75rem 0.75rem 0.75rem 1rem')};
 `
-const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
+const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })<{ zapStyle?: ZapStyle }>`
   padding: 0 0.5rem;
+
+  ${({ zapStyle, theme }) =>
+    zapStyle &&
+    css`
+      padding: 8px;
+      background: ${theme.colors.background};
+      border: 1px solid ${theme.colors.cardBorder};
+      border-radius: ${zapStyle === 'zap' ? '0px' : '8px'} 8px 0px 0px;
+      height: auto;
+    `};
 `
 const LabelRow = styled.div`
   display: flex;
@@ -36,22 +46,36 @@ const InputPanel = styled.div`
   display: flex;
   flex-flow: column nowrap;
   position: relative;
-  border-radius: 20px;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   z-index: 1;
 `
-const Container = styled.div`
+const Container = styled.div<{ zapStyle?: ZapStyle; error?: boolean }>`
   border-radius: 16px;
   background-color: ${({ theme }) => theme.colors.input};
-  box-shadow: ${({ theme }) => theme.shadows.inset};
+  box-shadow: ${({ theme, error }) => theme.shadows[error ? 'warning' : 'inset']};
+  ${({ zapStyle }) =>
+    !!zapStyle &&
+    css`
+      border-radius: 0px 16px 16px 16px;
+    `};
 `
+
+const Overlay = styled.div`
+  position: absolute;
+  inset: 0;
+  opacity: 0.6;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
+`
+
+type ZapStyle = 'noZap' | 'zap'
+
 interface CurrencyInputPanelProps {
   value: string
   onUserInput: (value: string) => void
   onMax?: () => void
   showMaxButton: boolean
   label?: string
-  onCurrencySelect: (currency: Currency) => void
+  onCurrencySelect?: (currency: Currency) => void
   currency?: Currency | null
   disableCurrencySelect?: boolean
   hideBalance?: boolean
@@ -59,6 +83,10 @@ interface CurrencyInputPanelProps {
   otherCurrency?: Currency | null
   id: string
   showCommonBases?: boolean
+  zapStyle?: ZapStyle
+  beforeButton?: React.ReactNode
+  disabled?: boolean
+  error?: boolean
 }
 export default function CurrencyInputPanel({
   value,
@@ -70,10 +98,14 @@ export default function CurrencyInputPanel({
   currency,
   disableCurrencySelect = false,
   hideBalance = false,
+  zapStyle,
+  beforeButton,
   pair = null, // used for double token logo
   otherCurrency,
   id,
   showCommonBases,
+  disabled,
+  error,
 }: CurrencyInputPanelProps) {
   const { account, library } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
@@ -93,11 +125,14 @@ export default function CurrencyInputPanel({
       showCommonBases={showCommonBases}
     />,
   )
+
   return (
     <Box position="relative" id={id}>
-      <Flex mb="6px" alignItems="center" justifyContent="space-between">
+      <Flex alignItems="center" justifyContent="space-between">
         <Flex>
+          {beforeButton}
           <CurrencySelectButton
+            zapStyle={zapStyle}
             className="open-currency-select-button"
             selected={!!currency}
             onClick={() => {
@@ -130,7 +165,7 @@ export default function CurrencyInputPanel({
             </Flex>
           </CurrencySelectButton>
           {token && tokenAddress ? (
-            <Flex style={{ gap: '4px' }} alignItems="center">
+            <Flex style={{ gap: '4px' }} ml="4px" alignItems="center">
               <CopyButton
                 width="16px"
                 buttonColor="textSubtle"
@@ -166,9 +201,11 @@ export default function CurrencyInputPanel({
         )}
       </Flex>
       <InputPanel>
-        <Container as="label">
+        <Container as="label" zapStyle={zapStyle} error={error}>
           <LabelRow>
             <NumericalInput
+              error={error}
+              disabled={disabled}
               className="token-amount-input"
               value={value}
               onUserInput={(val) => {
@@ -177,13 +214,14 @@ export default function CurrencyInputPanel({
             />
           </LabelRow>
           <InputRow selected={disableCurrencySelect}>
-            {account && currency && showMaxButton && label !== 'To' && (
+            {account && currency && !disabled && showMaxButton && label !== 'To' && (
               <Button onClick={onMax} scale="xs" variant="secondary">
                 {t('Max').toLocaleUpperCase(locale)}
               </Button>
             )}
           </InputRow>
         </Container>
+        {disabled && <Overlay />}
       </InputPanel>
     </Box>
   )

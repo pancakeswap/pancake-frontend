@@ -35,6 +35,7 @@ import {
   getErc721CollectionContract,
   getBunnySpecialXmasContract,
   getGalaxyNTFClaimingContract,
+  getZapContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
 import { Erc20, Erc20Bytes32, Multicall, Weth, Cake, Erc721collection, CakeVaultV2 } from 'config/abi/types'
@@ -340,4 +341,13 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 
 export function useMulticallContract() {
   return useContract<Multicall>(getMulticallAddress(), multiCallAbi, false)
+}
+
+export function useZapContract(withSignerIfPossible = true) {
+  const { library, account } = useActiveWeb3React()
+  const signer = useMemo(
+    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [withSignerIfPossible, library, account],
+  )
+  return useMemo(() => getZapContract(signer), [signer])
 }

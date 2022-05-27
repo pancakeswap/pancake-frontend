@@ -10,7 +10,7 @@ interface Props {
   title: string
   subtitle: string
   helper?: string
-  backTo?: string
+  backTo?: string | (() => void)
   noConfig?: boolean
 }
 
@@ -27,18 +27,31 @@ const AppHeader: React.FC<Props> = ({ title, subtitle, helper, backTo, noConfig 
 
   return (
     <AppHeaderContainer>
-      <Flex alignItems="center" mr={noConfig ? 0 : '16px'}>
-        {backTo && (
-          <Link passHref href={backTo}>
-            <IconButton as="a">
+      <Flex alignItems="center" width="100%" style={{ gap: '16px' }}>
+        {backTo &&
+          (typeof backTo === 'string' ? (
+            <Link passHref href={backTo}>
+              <IconButton as="a" scale="sm">
+                <ArrowBackIcon width="32px" />
+              </IconButton>
+            </Link>
+          ) : (
+            <IconButton scale="sm" variant="text" onClick={backTo}>
               <ArrowBackIcon width="32px" />
             </IconButton>
-          </Link>
-        )}
-        <Flex flexDirection="column">
-          <Heading as="h2" mb="8px">
-            {title}
-          </Heading>
+          ))}
+        <Flex flexDirection="column" width="100%">
+          <Flex mb="8px" alignItems="center" justifyContent="space-between">
+            <Heading as="h2">{title}</Heading>
+            {!noConfig && (
+              <Flex alignItems="center">
+                <NotificationDot show={expertMode}>
+                  <GlobalSettings />
+                </NotificationDot>
+                <Transactions />
+              </Flex>
+            )}
+          </Flex>
           <Flex alignItems="center">
             {helper && <QuestionHelper text={helper} mr="4px" placement="top-start" />}
             <Text color="textSubtle" fontSize="14px">
@@ -47,14 +60,6 @@ const AppHeader: React.FC<Props> = ({ title, subtitle, helper, backTo, noConfig 
           </Flex>
         </Flex>
       </Flex>
-      {!noConfig && (
-        <Flex alignItems="center">
-          <NotificationDot show={expertMode}>
-            <GlobalSettings />
-          </NotificationDot>
-          <Transactions />
-        </Flex>
-      )}
     </AppHeaderContainer>
   )
 }

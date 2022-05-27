@@ -10,7 +10,7 @@ import { AutoColumn } from 'components/Layout/Column'
 import Row from 'components/Layout/Row'
 import { Field } from 'state/burn/actions'
 import { DoubleCurrencyLogo } from 'components/Logo'
-import ConfirmAddModalBottom from '../../AddLiquidity/ConfirmAddModalBottom'
+import ConfirmAddModalBottom from './ConfirmAddModalBottom'
 
 interface ConfirmAddLiquidityModalProps {
   title: string
