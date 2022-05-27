@@ -1714,5 +1714,9 @@
   "You’ve already claimed %amount% %symbol%": "You’ve already claimed %amount% %symbol%",
   "%releaseRate% per second": "%releaseRate% per second",
   "Release rate": "Release rate",
-  "Fully released date": "Fully released date"
+  "Fully released date": "Fully released date",
+  "Claim %symbol%": "Claim %symbol%",
+  "Received": "Received",
+  "Claimable": "Claimable",
+  "Remaining": "Remaining"
 }

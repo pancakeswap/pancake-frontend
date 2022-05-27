@@ -71,7 +71,7 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
       [PoolIds.poolUnlimited]: {
         ...userVestingData[PoolIds.poolUnlimited],
         vestingId: vestingId ? vestingId.toString() : '0',
-        offeringAmountInToken: new BigNumber(amounts[0][0].toString()),
+        offeringAmountInToken: new BigNumber(amounts[0][0][0].toString()),
         vestingReleased: vestingSchedule ? new BigNumber(vestingSchedule[0].released.toString()) : BIG_ZERO,
         vestingAmountTotal: vestingSchedule ? new BigNumber(vestingSchedule[0].amountTotal.toString()) : BIG_ZERO,
         vestingcomputeReleasableAmount: computeReleasableAmount

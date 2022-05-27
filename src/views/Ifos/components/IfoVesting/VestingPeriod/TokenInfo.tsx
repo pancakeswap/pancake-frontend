@@ -1,9 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import styled from 'styled-components'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { BalanceWithLoading } from 'components/Balance'
 import { Box, Flex, Text, ChevronDownIcon } from '@pancakeswap/uikit'
-import { ListLogo } from 'components/Logo'
+import { TokenImage } from 'components/TokenImage'
+import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
+import { PoolIds } from 'config/constants/types'
+import { getBalanceNumber } from 'utils/formatBalance'
 import Expand from './Expand'
 
 const ArrowIcon = styled(ChevronDownIcon)<{ toggled: boolean }>`
@@ -11,35 +14,51 @@ const ArrowIcon = styled(ChevronDownIcon)<{ toggled: boolean }>`
   height: 24px;
 `
 
-const TokenInfo: React.FC = () => {
+interface TokenInfoProps {
+  index: number
+  data: VestingData
+  fetchUserVestingData: () => void
+}
+
+const TokenInfo: React.FC<TokenInfoProps> = ({ index, data, fetchUserVestingData }) => {
+  const { vestingTitle, token } = data.ifo
+  const { vestingcomputeReleasableAmount } = data.userVestingData[PoolIds.poolUnlimited]
   const [expanded, setExpanded] = useState(false)
   const shouldRenderExpand = useDelayedUnmount(expanded, 300)
+
+  useEffect(() => {
+    if (index === 0) {
+      setExpanded(true)
+    }
+  }, [index])
 
   const toggleExpanded = () => {
     setExpanded((prev) => !prev)
   }
 
+  const amountAvailable = useMemo(
+    () => getBalanceNumber(vestingcomputeReleasableAmount, token.decimals),
+    [token, vestingcomputeReleasableAmount],
+  )
+
   return (
-    <Box mb="20px" style={{ cursor: 'pointer' }} onClick={toggleExpanded}>
-      <Flex mb="8px">
-        <ListLogo
-          logoURI="https://pancakeswap.finance/images/tokens/0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c.png"
-          style={{ marginTop: '8px' }}
-        />
+    <Box mb="20px">
+      <Flex mb="8px" style={{ cursor: 'pointer' }} onClick={toggleExpanded}>
+        <TokenImage width={32} height={32} token={token} />
         <Flex flexDirection="column" ml="8px">
           <Text bold lineHeight="120%">
-            Hotcross: Multichain Infra & Web3 Playground
+            {vestingTitle}
           </Text>
           <Flex>
-            <BalanceWithLoading color="secondary" value={3} decimals={3} bold fontSize="12px" />
+            <BalanceWithLoading color="secondary" value={amountAvailable} decimals={4} bold fontSize="12px" />
             <Text color="textSubtle" textTransform="uppercase" fontSize="12px" margin="0 2px">
-              HOTCROSS
+              {token.symbol}
             </Text>
           </Flex>
         </Flex>
         <ArrowIcon toggled={expanded} color="primary" ml="auto" />
       </Flex>
-      {shouldRenderExpand && <Expand expanded={expanded} />}
+      {shouldRenderExpand && <Expand expanded={expanded} data={data} fetchUserVestingData={fetchUserVestingData} />}
     </Box>
   )
 }

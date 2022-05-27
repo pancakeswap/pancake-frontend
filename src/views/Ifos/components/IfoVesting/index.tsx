@@ -33,8 +33,8 @@ const IfoVestingStatus = {
     text: <Trans>You have no tokens available for claiming</Trans>,
     imgUrl: '/images/ifos/vesting/not-tokens.svg',
   },
-  [VestingStatus.HAS_CLAIM_TOKENS]: {
-    status: VestingStatus.HAS_CLAIM_TOKENS,
+  [VestingStatus.HAS_TOKENS_CLAIM]: {
+    status: VestingStatus.HAS_TOKENS_CLAIM,
     text: <Trans>You have tokens available for claiming now!</Trans>,
     imgUrl: '/images/ifos/vesting/in-vesting-period.svg',
   },
@@ -56,12 +56,12 @@ const IfoVesting: React.FC<IfoVestingProps> = () => {
   const { data, userDataLoaded, fetchUserVestingData } = useFetchVestingData(account)
 
   useEffect(() => {
-    setIsFirstTime(false)
+    setIsFirstTime(true)
   }, [])
 
   const cardStatus = useMemo(() => {
     if (account && userDataLoaded && data.length > 0) {
-      return IfoVestingStatus[VestingStatus.HAS_CLAIM_TOKENS]
+      return IfoVestingStatus[VestingStatus.HAS_TOKENS_CLAIM]
     }
     if (account && userDataLoaded && data.length === 0 && !isFirstTime) {
       return IfoVestingStatus[VestingStatus.ENDED]
@@ -93,7 +93,10 @@ const IfoVesting: React.FC<IfoVestingProps> = () => {
       </CardHeader>
       <VestingCardBody>
         {cardStatus.status === VestingStatus.NOT_TOKENS_CLAIM && <NotTokens />}
-        {cardStatus.status === VestingStatus.HAS_CLAIM_TOKENS && <TokenInfo />}
+        {cardStatus.status === VestingStatus.HAS_TOKENS_CLAIM &&
+          data.map((ifo, index) => (
+            <TokenInfo key={ifo.ifo.id} index={index} data={ifo} fetchUserVestingData={fetchUserVestingData} />
+          ))}
         {cardStatus.status === VestingStatus.ENDED && <VestingEnded />}
       </VestingCardBody>
     </StyleVertingCard>

@@ -1,6 +1,13 @@
+import { useMemo } from 'react'
+import { useRouter } from 'next/router'
 import styled, { keyframes, css } from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { Box, Flex, Text, Progress, Button } from '@pancakeswap/uikit'
+import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
+import { PoolIds } from 'config/constants/types'
+import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import Claim from './Claim'
 
 const expandAnimation = keyframes`
   from {
@@ -41,42 +48,83 @@ const StyledExpand = styled(Box)<{ expanded: boolean }>`
 `
 
 interface ExpandProps {
+  data: VestingData
   expanded: boolean
+  fetchUserVestingData: () => void
 }
 
-const Expand: React.FC<ExpandProps> = ({ expanded }) => {
+const Expand: React.FC<ExpandProps> = ({ data, expanded, fetchUserVestingData }) => {
   const { t } = useTranslation()
+  const router = useRouter()
+  const { token } = data.ifo
+  const { vestingcomputeReleasableAmount, offeringAmountInToken, vestingInfomationPercentage, vestingReleased } =
+    data.userVestingData[PoolIds.poolUnlimited]
 
-  const handleViewIfo = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation()
-  }
+  const vestingPercentage = useMemo(() => {
+    return new BigNumber(vestingInfomationPercentage).times(0.01)
+  }, [vestingInfomationPercentage])
 
-  const handleClaim = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation()
+  const releasedAtSaleEnd = useMemo(() => {
+    return new BigNumber(offeringAmountInToken).times(new BigNumber(1).minus(vestingPercentage))
+  }, [offeringAmountInToken, vestingPercentage])
+
+  const amountReleased = useMemo(() => {
+    return new BigNumber(releasedAtSaleEnd).plus(vestingReleased).plus(vestingcomputeReleasableAmount)
+  }, [releasedAtSaleEnd, vestingReleased, vestingcomputeReleasableAmount])
+
+  const amountAlreadyClaimed = useMemo(() => {
+    const alreadyClaimed = new BigNumber(releasedAtSaleEnd).plus(vestingReleased)
+    const balance = getBalanceNumber(alreadyClaimed)
+    return balance > 0 ? formatNumber(balance, 4, 4) : '0'
+  }, [releasedAtSaleEnd, vestingReleased])
+
+  const amountAvailable = useMemo(() => {
+    const balance = getBalanceNumber(vestingcomputeReleasableAmount, token.decimals)
+    return balance > 0 ? formatNumber(balance, 4, 4) : '0'
+  }, [token, vestingcomputeReleasableAmount])
+
+  const amountInVesting = useMemo(() => {
+    const remaining = new BigNumber(offeringAmountInToken).minus(amountReleased)
+    const balance = getBalanceNumber(remaining, token.decimals)
+    return balance > 0 ? formatNumber(balance, 4, 4) : '0'
+  }, [token, offeringAmountInToken, amountReleased])
+
+  const percentage = useMemo(() => {
+    const total = new BigNumber(amountAlreadyClaimed).plus(amountAvailable).plus(amountInVesting)
+    const receivedPercentage = new BigNumber(amountAlreadyClaimed).div(total).times(100).toNumber()
+    const amountAvailablePrecentage = new BigNumber(amountAvailable).div(total).times(100).toNumber()
+    return {
+      receivedPercentage,
+      amountAvailablePrecentage: receivedPercentage + amountAvailablePrecentage,
+    }
+  }, [amountAlreadyClaimed, amountAvailable, amountInVesting])
+
+  const handleViewIfo = () => {
+    router.push(`/ifo/history#${token.symbol}`)
   }
 
   return (
     <StyledExpand expanded={expanded}>
-      <Progress primaryStep={10} secondaryStep={20} />
+      <Progress primaryStep={percentage.receivedPercentage} secondaryStep={percentage.amountAvailablePrecentage} />
       <Flex mt="8px" mb="20px">
         <Flex flexDirection="column" mr="8px">
-          <Text fontSize="14px">0.123</Text>
+          <Text fontSize="14px">{amountAlreadyClaimed}</Text>
           <Text fontSize="14px" color="textSubtle">
-            Received
+            {t('Received')}
           </Text>
         </Flex>
         <Flex flexDirection="column">
-          <Text fontSize="14px">0.123</Text>
+          <Text fontSize="14px">{amountAvailable}</Text>
           <Text fontSize="14px" color="textSubtle">
-            Claimable
+            {t('Claimable')}
           </Text>
         </Flex>
         <Flex flexDirection="column" ml="auto">
           <Text fontSize="14px" textAlign="right">
-            0.123
+            {amountInVesting}
           </Text>
           <Text fontSize="14px" color="textSubtle">
-            Remaining
+            {t('Remaining')}
           </Text>
         </Flex>
       </Flex>
@@ -84,7 +132,7 @@ const Expand: React.FC<ExpandProps> = ({ expanded }) => {
         <Button mr="8px" variant="secondary" onClick={handleViewIfo}>
           {t('View IFO')}
         </Button>
-        <Button onClick={handleClaim}>Calim HotCross</Button>
+        <Claim data={data} fetchUserVestingData={fetchUserVestingData} />
       </Flex>
     </StyledExpand>
   )

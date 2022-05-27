@@ -1,14 +1,12 @@
 import { useCallback, useState } from 'react'
-import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
+import { useSlowRefreshEffect } from 'hooks/useRefreshEffect'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { ifosConfig } from 'config/constants'
 import { fetchUserWalletIfoData, VestingData } from './fetchUserWalletIfoData'
 
-// Todo: Revert this
-// const allVestingIfo: Ifo[] = ifosConfig.filter((ifo) => ifo.version >= 3.2 && ifo.vestingTitle && !ifo.isActive)
-const allVestingIfo: Ifo[] = ifosConfig.filter((ifo) => ifo.version >= 3.2 && ifo.vestingTitle)
+const allVestingIfo: Ifo[] = ifosConfig.filter((ifo) => ifo.version >= 3.2 && ifo.vestingTitle && !ifo.isActive)
 
-interface VestingDataState {
+export interface VestingDataState {
   data: VestingData[]
   userDataLoaded: boolean
 }
@@ -22,24 +20,25 @@ const useFetchVestingData = (account: string) => {
   const [userVestingData, setUserVestingData] = useState<VestingDataState>(initialData)
 
   const fetchUserVestingData = useCallback(async () => {
-    const vestingIfo: VestingData[] = []
     if (account) {
-      // eslint-disable-next-line no-restricted-syntax
-      for await (const ifo of allVestingIfo) {
-        const data = await fetchUserWalletIfoData(ifo, account)
-        if (data.userVestingData[PoolIds.poolUnlimited].vestingcomputeReleasableAmount.gt(0)) {
-          vestingIfo.push(data)
-        }
-      }
+      const data = await Promise.all(
+        await allVestingIfo.map(async (ifo) => {
+          const response = await fetchUserWalletIfoData(ifo, account)
+          return response
+        }),
+      )
+      const vestingIfoData = data.filter((ifo) =>
+        ifo.userVestingData[PoolIds.poolUnlimited].vestingcomputeReleasableAmount.gt(0),
+      )
 
       setUserVestingData({
-        data: vestingIfo,
+        data: vestingIfoData,
         userDataLoaded: true,
       })
     }
   }, [account])
 
-  useFastRefreshEffect(() => {
+  useSlowRefreshEffect(() => {
     fetchUserVestingData()
   }, [fetchUserVestingData])
 
