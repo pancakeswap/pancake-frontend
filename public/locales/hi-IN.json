@@ -380,7 +380,6 @@
   "Nothing to claim": "क्लेम करने के लिए कुछ नहीं है",
   "Registered!": "रजिस्टर्ड!",
   "Congratulations! You won": "बधाई हो! आपने जीते हैं",
-  "Collectible NFT": "कलेक्ट करने योग्य NFT",
   "All prizes will be sent directly to your wallet and user account.": "सभी पुरस्कार सीधे आपके वॉलेट और यूज़र खाते में भेजे जाएंगे।",
   "How Can I Join?": "मैं कैसे जुड़ सकता हूं?",
   "Set up your": "अपना सेटअप करें",
@@ -1702,5 +1701,6 @@
   "Follow Update": "Follow Update",
   "Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.": "Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.",
   "Bunny Helmet NFT": "Bunny Helmet NFT",
-  "Bunny Helmet": "Bunny Helmet"
+  "Bunny Helmet": "Bunny Helmet",
+  "PancakeSwap NFT": "PancakeSwap NFT"
 }
