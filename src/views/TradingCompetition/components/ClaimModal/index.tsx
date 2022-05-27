@@ -71,9 +71,9 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
         {canClaimNFT ? (
           <Flex alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>
-              <Image src={ModBunnyNft} width={128} height={98} />
+              <Image src={ModBunnyNft} width={128} height={168} />
             </ImageWrapper>
-            <Text mt="8px">{t('Collectible NFT')}</Text>
+            <Text mt="8px">{t('Bunny Helmet NFT')}</Text>
           </Flex>
         ) : null}
         {canClaimNFT ? (
@@ -81,7 +81,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
             <ImageWrapper>
               <Image src={MoDAllBunnies} width={128} height={95} />
             </ImageWrapper>
-            <Text mt="8px">{t('Bunny Helmet NFT')}</Text>
+            <Text mt="8px">{t('PancakeSwap NFT')}</Text>
             <Text color="textSubtle" mt="8px" fontSize="12px" textAlign="center">
               {t(
                 'Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.',
