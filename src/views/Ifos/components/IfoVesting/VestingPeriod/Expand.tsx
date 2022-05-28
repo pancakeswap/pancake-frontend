@@ -60,9 +60,10 @@ const Expand: React.FC<ExpandProps> = ({ data, expanded, fetchUserVestingData })
   const { vestingcomputeReleasableAmount, offeringAmountInToken, vestingInfomationPercentage, vestingReleased } =
     data.userVestingData[PoolIds.poolUnlimited]
 
-  const vestingPercentage = useMemo(() => {
-    return new BigNumber(vestingInfomationPercentage).times(0.01)
-  }, [vestingInfomationPercentage])
+  const vestingPercentage = useMemo(
+    () => new BigNumber(vestingInfomationPercentage).times(0.01),
+    [vestingInfomationPercentage],
+  )
 
   const releasedAtSaleEnd = useMemo(() => {
     return new BigNumber(offeringAmountInToken).times(new BigNumber(1).minus(vestingPercentage))
@@ -72,32 +73,32 @@ const Expand: React.FC<ExpandProps> = ({ data, expanded, fetchUserVestingData })
     return new BigNumber(releasedAtSaleEnd).plus(vestingReleased).plus(vestingcomputeReleasableAmount)
   }, [releasedAtSaleEnd, vestingReleased, vestingcomputeReleasableAmount])
 
-  const amountAlreadyClaimed = useMemo(() => {
+  const received = useMemo(() => {
     const alreadyClaimed = new BigNumber(releasedAtSaleEnd).plus(vestingReleased)
     const balance = getBalanceNumber(alreadyClaimed)
     return balance > 0 ? formatNumber(balance, 4, 4) : '0'
   }, [releasedAtSaleEnd, vestingReleased])
 
-  const amountAvailable = useMemo(() => {
+  const claimable = useMemo(() => {
     const balance = getBalanceNumber(vestingcomputeReleasableAmount, token.decimals)
     return balance > 0 ? formatNumber(balance, 4, 4) : '0'
   }, [token, vestingcomputeReleasableAmount])
 
-  const amountInVesting = useMemo(() => {
-    const remaining = new BigNumber(offeringAmountInToken).minus(amountReleased)
-    const balance = getBalanceNumber(remaining, token.decimals)
+  const remaining = useMemo(() => {
+    const remain = new BigNumber(offeringAmountInToken).minus(amountReleased)
+    const balance = getBalanceNumber(remain, token.decimals)
     return balance > 0 ? formatNumber(balance, 4, 4) : '0'
   }, [token, offeringAmountInToken, amountReleased])
 
   const percentage = useMemo(() => {
-    const total = new BigNumber(amountAlreadyClaimed).plus(amountAvailable).plus(amountInVesting)
-    const receivedPercentage = new BigNumber(amountAlreadyClaimed).div(total).times(100).toNumber()
-    const amountAvailablePrecentage = new BigNumber(amountAvailable).div(total).times(100).toNumber()
+    const total = new BigNumber(received).plus(claimable).plus(remaining)
+    const receivedPercentage = new BigNumber(received).div(total).times(100).toNumber()
+    const amountAvailablePrecentage = new BigNumber(claimable).div(total).times(100).toNumber()
     return {
       receivedPercentage,
       amountAvailablePrecentage: receivedPercentage + amountAvailablePrecentage,
     }
-  }, [amountAlreadyClaimed, amountAvailable, amountInVesting])
+  }, [received, claimable, remaining])
 
   const handleViewIfo = () => {
     router.push(`/ifo/history#${token.symbol}`)
@@ -108,20 +109,20 @@ const Expand: React.FC<ExpandProps> = ({ data, expanded, fetchUserVestingData })
       <Progress primaryStep={percentage.receivedPercentage} secondaryStep={percentage.amountAvailablePrecentage} />
       <Flex mt="8px" mb="20px">
         <Flex flexDirection="column" mr="8px">
-          <Text fontSize="14px">{amountAlreadyClaimed}</Text>
+          <Text fontSize="14px">{received}</Text>
           <Text fontSize="14px" color="textSubtle">
             {t('Received')}
           </Text>
         </Flex>
         <Flex flexDirection="column">
-          <Text fontSize="14px">{amountAvailable}</Text>
+          <Text fontSize="14px">{claimable}</Text>
           <Text fontSize="14px" color="textSubtle">
             {t('Claimable')}
           </Text>
         </Flex>
         <Flex flexDirection="column" ml="auto">
           <Text fontSize="14px" textAlign="right">
-            {amountInVesting}
+            {remaining}
           </Text>
           <Text fontSize="14px" color="textSubtle">
             {t('Remaining')}

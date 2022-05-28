@@ -56,11 +56,9 @@ const IfoVesting: React.FC<IfoVestingProps> = () => {
   const { data, userDataLoaded, fetchUserVestingData } = useFetchVestingData(account)
 
   const cardStatus = useMemo(() => {
-    if (account && userDataLoaded && data.length > 0) {
-      return IfoVestingStatus[VestingStatus.HAS_TOKENS_CLAIM]
-    }
-    if (account && userDataLoaded && data.length === 0 && !isFirstTime) {
-      return IfoVestingStatus[VestingStatus.ENDED]
+    if (account && userDataLoaded) {
+      if (data.length > 0) return IfoVestingStatus[VestingStatus.HAS_TOKENS_CLAIM]
+      if (data.length === 0 && !isFirstTime) return IfoVestingStatus[VestingStatus.ENDED]
     }
     return IfoVestingStatus[VestingStatus.NOT_TOKENS_CLAIM]
   }, [data, userDataLoaded, account, isFirstTime])

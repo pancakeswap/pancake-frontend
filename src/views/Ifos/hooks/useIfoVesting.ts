@@ -13,13 +13,11 @@ const useIfoVesting = ({ poolId, publicIfoData, walletIfoData }: UseIfoVestingPr
   const publicPool = publicIfoData[poolId]
   const userPool = walletIfoData[poolId]
 
-  const userVestingSheduleCount = useMemo(() => {
-    return walletIfoData.vestingSchedule.countByBeneficiary
-  }, [walletIfoData])
-
-  const vestingPercentage = useMemo(() => {
-    return new BigNumber(publicPool.vestingInfomation.percentage).times(0.01)
-  }, [publicPool])
+  const userVestingSheduleCount = useMemo(() => walletIfoData.vestingSchedule.countByBeneficiary, [walletIfoData])
+  const vestingPercentage = useMemo(
+    () => new BigNumber(publicPool.vestingInfomation.percentage).times(0.01),
+    [publicPool],
+  )
 
   const releasedAtSaleEnd = useMemo(() => {
     return new BigNumber(userPool.offeringAmountInToken).times(new BigNumber(1).minus(vestingPercentage))
