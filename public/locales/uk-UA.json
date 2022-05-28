@@ -149,7 +149,7 @@
   "All estimated rates take into account this pool’s %fee%% performance fee": "Усі приблизні курси враховують комісію характеристик цього пулу в розмірі %fee%%",
   "Sorry, you didn’t contribute enough CAKE to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your CAKE.": "На жаль, кількості CAKE, яку ви внесли, не вистачає до мінімального граничного значення. Ви нічого не придбали під час цього продажу, але все одно можете повернути свої токени CAKE.",
   "Unstaking Fee": "Комісія за виведення зі стейкінгу",
-  "unstaking fee before": "unstaking fee before",
+  "unstaking fee before": "комісія за виведення зі стейкінгу до",
   "Unstaking fee: %fee%%": "Комісія за виведення зі стейкінгу: %fee%%",
   "Performance Fee": "Комісія за характеристики",
   "Compound: collect and restake CAKE into pool.": "Домішування: зберіть токени CAKE і внесіть їх у пул знову.",
