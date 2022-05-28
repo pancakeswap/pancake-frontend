@@ -34,7 +34,7 @@ const formatForDisplay = (amount: CurrencyAmount | Price) => {
   }
   return parseFloat(amount.toSignificant(18)).toLocaleString(undefined, {
     minimumFractionDigits: 0,
-    maximumFractionDigits: 8,
+    maximumFractionDigits: 10,
   })
 }
 
