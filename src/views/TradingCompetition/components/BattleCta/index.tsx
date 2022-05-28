@@ -22,14 +22,6 @@ import ClaimModal from '../ClaimModal'
 import { Heading2Text } from '../CompetitionHeadingText'
 import { CompetitionProps } from '../../types'
 
-const options: Intl.DateTimeFormatOptions = {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit',
-}
-
 const StyledCard = styled(Card)`
   display: inline-flex;
   position: relative;
