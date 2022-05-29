@@ -149,7 +149,7 @@
   "All estimated rates take into account this pool’s %fee%% performance fee": "सभी संभावित रेट में, इस पूल की %fee%% परफॉर्मेंस फीस भी शामिल होती है",
   "Sorry, you didn’t contribute enough CAKE to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your CAKE.": "माफ करें, मगर आपने जरूरी न्यूनतम सीमा पूरी करने के लिए पर्याप्त CAKE नहीं दिए हैं। आपने इस सेल में कुछ नहीं खरीदा, मगर आप अपने CAKE फिर से क्लेम कर सकते हैं।",
   "Unstaking Fee": "अनस्टेकिंग फीस",
-  "unstaking fee before": "unstaking fee before",
+  "unstaking fee before": "स्टेक से हटाने की फ़ीस, इससे पहले के लिए:",
   "Unstaking fee: %fee%%": "स्टेक से हटाने की फ़ीस: %fee%%",
   "Performance Fee": "परफ़ॉर्मेंस फ़ीस",
   "Compound: collect and restake CAKE into pool.": "कंपाउंड: CAKE कलेक्ट करें और उसे पूल में फिर से स्टेक पर लगाएं।",
