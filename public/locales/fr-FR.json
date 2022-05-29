@@ -1502,7 +1502,7 @@
   "Current Market Price": "Prix du marché actuel",
   "Limit Price": "Prix limite",
   "Error Tracking Id": "ID de suivi des erreurs",
-  "Your CAKE held at block": "Vos CAKE tenus au bloc",
+  "Your CAKE held at block": "Vos CAKE détenus au bloc",
   "The transaction could not be sent because the deadline has passed. Please check that your transaction deadline is not too low.": "La transaction n'a pas pu être envoyée, car la date limite est passée. Veuillez vérifier que la date limite de votre transaction n'est pas trop proche.",
   "This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.": "Cette transaction n'aboutira pas en raison du mouvement des prix ou des frais de transfert. Essayez d'augmenter votre tolérance de glissement.",
   "The input token cannot be transferred. There may be an issue with the input token.": "Le jeton d'entrée ne peut pas être transféré. Il peut y avoir un problème avec le jeton d'entrée.",
