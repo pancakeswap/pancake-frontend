@@ -56,7 +56,7 @@ export default {
     97: '',
   },
   tradingCompetitionMoD: {
-    56: '0x9F9b4728Cff3eb28aA8dC21482D3b542e4c6d039',
+    56: '0xbDd9a61c67ee16c10f5E37b1D0c907a9EC959f33',
     97: '',
   },
   easterNft: {
