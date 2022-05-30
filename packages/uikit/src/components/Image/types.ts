@@ -1,8 +1,8 @@
-import { HTMLAttributes, ImgHTMLAttributes, ReactElement } from "react";
+import { ImgHTMLAttributes, ReactElement } from "react";
 import { SpaceProps } from "styled-system";
 import { BoxProps } from "../Box";
 
-export interface WrapperProps extends SpaceProps, HTMLAttributes<HTMLDivElement> {
+export interface WrapperProps extends SpaceProps {
   width: number;
   height: number;
 }

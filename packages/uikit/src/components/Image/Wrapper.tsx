@@ -1,9 +1,16 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import styled from "styled-components";
 import { space } from "styled-system";
 import { WrapperProps } from "./types";
 
-const StyledWrapper = styled.div<{ $width: number; $height: number }>`
+const StyledWrapper = styled.div.attrs<WrapperProps, { $width: number; $height: number } & WrapperProps>(
+  ({ width, height }) => ({
+    $width: width,
+    $height: height,
+    width,
+    height,
+  })
+)`
   max-height: ${({ $height }) => $height}px;
   max-width: ${({ $width }) => $width}px;
   position: relative;
@@ -18,8 +25,6 @@ const StyledWrapper = styled.div<{ $width: number; $height: number }>`
   ${space}
 `;
 
-const Wrapper = forwardRef<HTMLDivElement, WrapperProps>(({ width, height, ...props }, ref) => {
-  return <StyledWrapper ref={ref} $width={width} $height={height} {...props} />;
-});
+const Wrapper = StyledWrapper;
 
 export default Wrapper;

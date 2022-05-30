@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PairState, usePair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
-import { LIQUIDLY_MINIMUM_AMOUNT } from 'config/constants'
+import { BIG_INT_ZERO, LIQUIDLY_MINIMUM_AMOUNT } from 'config/constants'
 
 import { computePriceImpact, warningSeverity } from 'utils/prices'
 import { useTranslation } from 'contexts/Localization'
@@ -28,8 +28,6 @@ import tryParseAmount from 'utils/tryParseAmount'
 import { AppDispatch, AppState } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
-
-const ZERO = JSBI.BigInt(0)
 
 export function useMintState(): AppState['mint'] {
   return useSelector<AppState, AppState['mint']>((state) => state.mint)
@@ -103,7 +101,7 @@ export function useDerivedMintInfo(
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
   const noLiquidity: boolean =
-    pairState === PairState.NOT_EXISTS || Boolean(totalSupply && JSBI.equal(totalSupply.raw, ZERO))
+    pairState === PairState.NOT_EXISTS || Boolean(totalSupply && JSBI.equal(totalSupply.raw, BIG_INT_ZERO))
 
   // balances
   const balances = useCurrencyBalances(account ?? undefined, [
@@ -275,10 +273,9 @@ export function useZapIn({
     }),
     [currencyA, currencyB],
   )
-
-  // amounts
   const independentAmount: CurrencyAmount | undefined = tryParseAmount(typedValue, currencies[independentField])
-  const dependentAmount: CurrencyAmount | undefined = useMemo(() => {
+
+  const toExactDepnedent50Amount = useCallback(() => {
     if (independentAmount) {
       // we wrap the currencies just to get the price in terms of the other token
       const wrappedIndependentAmount = wrappedCurrencyAmount(independentAmount, chainId)
@@ -302,18 +299,23 @@ export function useZapIn({
       return undefined
     }
     return undefined
-    // return tryParseAmount(otherTypedValue, currencies[dependentField])
   }, [
-    independentAmount,
-    otherTypedValue,
-    currencies,
-    dependentField,
     chainId,
+    currencies,
     currencyA,
     currencyB,
-    pair,
     currencyBalances,
+    dependentField,
+    independentAmount,
+    otherTypedValue,
+    pair,
   ])
+
+  // amounts
+  const dependentAmount: CurrencyAmount | undefined = useMemo(() => {
+    return toExactDepnedent50Amount()
+    // return tryParseAmount(otherTypedValue, currencies[dependentField])
+  }, [toExactDepnedent50Amount, independentAmount])
 
   const parsedAmounts: { [field in Field]: CurrencyAmount | undefined } = useMemo(
     () => ({
@@ -360,14 +362,13 @@ export function useZapIn({
       return undefined
     }
 
-    const wrappedIndependentAmount = wrappedCurrencyAmount(independentAmount, chainId)
     const [tokenA, tokenB] = [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
 
-    if (tokenA && tokenB && wrappedIndependentAmount && pair) {
+    if (tokenA && tokenB && independentAmount && pair) {
       return dependentAmount.equalTo(
         dependentField === Field.CURRENCY_B
-          ? pair.priceOf(tokenA).quote(wrappedIndependentAmount)
-          : pair.priceOf(tokenB).quote(wrappedIndependentAmount),
+          ? pair.priceOf(tokenA).quote(independentAmount)
+          : pair.priceOf(tokenB).quote(independentAmount),
       )
     }
     return undefined
@@ -651,5 +652,6 @@ export function useZapIn({
     convertToMaxZappable,
     rebalancing,
     noNeedZap,
+    toExactDepnedent50Amount,
   }
 }

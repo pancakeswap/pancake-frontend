@@ -541,6 +541,13 @@ export default function AddLiquidity() {
 
                 {preferZapInstead && !rebalancing && !(!zapTokenCheckedA && !zapTokenCheckedB) && (
                   <Message variant="warning">
+                    {zapIn.priceSeverity > 3 && (
+                      <MessageText>
+                        {t('Price Impact Too Hight. Reduce amount of %token% to maximum limit', {
+                          token: currencies[zapIn.swapTokenField]?.symbol,
+                        })}
+                      </MessageText>
+                    )}
                     <MessageText>
                       <b>{t('No %token% input.', { token: currencies[zapIn.swapTokenField]?.symbol })}</b>{' '}
                       {t('Some of your %token0% will be converted to %token1%.', {
