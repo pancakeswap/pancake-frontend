@@ -7,6 +7,7 @@ import {
   useSubgraphHealthIndicatorManager,
   useUserExpertModeAcknowledgementShow,
   useUserSingleHopOnly,
+  useZapModeManager,
 } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { useSwapActionHandlers } from 'state/swap/hooks'
@@ -30,6 +31,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   const [expertMode, toggleExpertMode] = useExpertModeManager()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
   const [audioPlay, toggleSetAudioMode] = useAudioModeManager()
+  const [zapMode, toggleZapMode] = useZapModeManager()
   const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
   const { onChangeRecipient } = useSwapActionHandlers()
 
@@ -124,6 +126,19 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
             scale="md"
             onChange={() => {
               setSubgraphHealth(!subgraphHealth)
+            }}
+          />
+        </Flex>
+        <Flex justifyContent="space-between" alignItems="center" mb="24px">
+          <Flex alignItems="center">
+            <Text>{t('Enable Zap')}</Text>
+            <QuestionHelper text={t('Enable Zap')} placement="top-start" ml="4px" />
+          </Flex>
+          <Toggle
+            checked={zapMode}
+            scale="md"
+            onChange={() => {
+              toggleZapMode(!zapMode)
             }}
           />
         </Flex>

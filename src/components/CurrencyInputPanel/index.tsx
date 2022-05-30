@@ -193,7 +193,12 @@ export default function CurrencyInputPanel({
           ) : null}
         </Flex>
         {account && (
-          <Text onClick={onMax} color="textSubtle" fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
+          <Text
+            onClick={!disabled && onMax}
+            color="textSubtle"
+            fontSize="14px"
+            style={{ display: 'inline', cursor: 'pointer' }}
+          >
             {!hideBalance && !!currency
               ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
               : ' -'}

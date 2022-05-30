@@ -33,10 +33,7 @@ export function useMintState(): AppState['mint'] {
   return useSelector<AppState, AppState['mint']>((state) => state.mint)
 }
 
-export function useMintActionHandlers(
-  noLiquidity: boolean | undefined,
-  zap?: boolean,
-): {
+export function useMintActionHandlers(noLiquidity: boolean | undefined): {
   onFieldAInput: (typedValue: string) => void
   onFieldBInput: (typedValue: string) => void
 } {
@@ -44,15 +41,15 @@ export function useMintActionHandlers(
 
   const onFieldAInput = useCallback(
     (typedValue: string) => {
-      dispatch(typeInput({ field: Field.CURRENCY_A, typedValue, noLiquidity: noLiquidity === true, zap: zap === true }))
+      dispatch(typeInput({ field: Field.CURRENCY_A, typedValue, noLiquidity: noLiquidity === true }))
     },
-    [dispatch, noLiquidity, zap],
+    [dispatch, noLiquidity],
   )
   const onFieldBInput = useCallback(
     (typedValue: string) => {
-      dispatch(typeInput({ field: Field.CURRENCY_B, typedValue, noLiquidity: noLiquidity === true, zap: zap === true }))
+      dispatch(typeInput({ field: Field.CURRENCY_B, typedValue, noLiquidity: noLiquidity === true }))
     },
-    [dispatch, noLiquidity, zap],
+    [dispatch, noLiquidity],
   )
 
   return {
@@ -194,10 +191,6 @@ export function useDerivedMintInfo(
     error = error ?? t('Invalid pair')
   }
 
-  if (!parsedAmounts[Field.CURRENCY_A] || !parsedAmounts[Field.CURRENCY_B]) {
-    addError = addError ?? t('Enter an amount')
-  }
-
   const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts
 
   if (
@@ -209,18 +202,18 @@ export function useDerivedMintInfo(
     error = error ?? t('No token balance')
   }
 
-  // if (!parsedAmounts[Field.CURRENCY_A] || !parsedAmounts[Field.CURRENCY_B]) {
-  //   addError = t('Enter an amount')
-  // }
+  if (!parsedAmounts[Field.CURRENCY_A] || !parsedAmounts[Field.CURRENCY_B]) {
+    addError = t('Enter an amount')
+  }
 
   // TODO
-  // if (currencyAAmount && currencyBalances?.[Field.CURRENCY_A]?.lessThan(currencyAAmount)) {
-  //   addError = t('Insufficient %symbol% balance', { symbol: currencies[Field.CURRENCY_A]?.symbol })
-  // }a
+  if (currencyAAmount && currencyBalances?.[Field.CURRENCY_A]?.lessThan(currencyAAmount)) {
+    addError = t('Insufficient %symbol% balance', { symbol: currencies[Field.CURRENCY_A]?.symbol })
+  }
 
-  // if (currencyBAmount && currencyBalances?.[Field.CURRENCY_B]?.lessThan(currencyBAmount)) {
-  //   addError = t('Insufficient %symbol% balance', { symbol: currencies[Field.CURRENCY_B]?.symbol })
-  // }
+  if (currencyBAmount && currencyBalances?.[Field.CURRENCY_B]?.lessThan(currencyBAmount)) {
+    addError = t('Insufficient %symbol% balance', { symbol: currencies[Field.CURRENCY_B]?.symbol })
+  }
 
   return {
     dependentField,
@@ -262,7 +255,7 @@ export function useZapIn({
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
 
-  const { independentField, typedValue, otherTypedValue } = useMintState()
+  const { independentField, typedValue } = useMintState()
 
   const dependentField = independentField === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A
 
@@ -275,9 +268,8 @@ export function useZapIn({
   )
   const independentAmount: CurrencyAmount | undefined = tryParseAmount(typedValue, currencies[independentField])
 
-  const toExactDepnedent50Amount = useCallback(() => {
+  const _dependentAmount = useMemo(() => {
     if (independentAmount) {
-      // we wrap the currencies just to get the price in terms of the other token
       const wrappedIndependentAmount = wrappedCurrencyAmount(independentAmount, chainId)
       const [tokenA, tokenB] = [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
       if (tokenA && tokenB && wrappedIndependentAmount && pair) {
@@ -286,36 +278,22 @@ export function useZapIn({
           dependentField === Field.CURRENCY_B
             ? pair.priceOf(tokenA).quote(wrappedIndependentAmount)
             : pair.priceOf(tokenB).quote(wrappedIndependentAmount)
-        const targetAmount =
-          dependentCurrency === ETHER ? CurrencyAmount.ether(dependentTokenAmount.raw) : dependentTokenAmount
-        if (currencyBalances[dependentField]) {
-          if (currencyBalances[dependentField].greaterThan(targetAmount)) {
-            return targetAmount
-          }
-          return currencyBalances[dependentField]
-        }
-        return tryParseAmount(otherTypedValue, currencies[dependentField])
+        return dependentCurrency === ETHER ? CurrencyAmount.ether(dependentTokenAmount.raw) : dependentTokenAmount
       }
       return undefined
     }
     return undefined
-  }, [
-    chainId,
-    currencies,
-    currencyA,
-    currencyB,
-    currencyBalances,
-    dependentField,
-    independentAmount,
-    otherTypedValue,
-    pair,
-  ])
+  }, [chainId, currencyA, currencyB, dependentField, independentAmount, pair])
+
+  const isDependentAmountGreaterThanBalance =
+    currencyBalances[dependentField] &&
+    _dependentAmount &&
+    _dependentAmount?.greaterThan(currencyBalances[dependentField])
 
   // amounts
   const dependentAmount: CurrencyAmount | undefined = useMemo(() => {
-    return toExactDepnedent50Amount()
-    // return tryParseAmount(otherTypedValue, currencies[dependentField])
-  }, [toExactDepnedent50Amount, independentAmount])
+    return isDependentAmountGreaterThanBalance ? currencyBalances[dependentField] : _dependentAmount
+  }, [isDependentAmountGreaterThanBalance, currencyBalances, dependentField, _dependentAmount])
 
   const parsedAmounts: { [field in Field]: CurrencyAmount | undefined } = useMemo(
     () => ({
@@ -362,6 +340,10 @@ export function useZapIn({
       return undefined
     }
 
+    if (!isDependentAmountGreaterThanBalance) {
+      return true
+    }
+
     const [tokenA, tokenB] = [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
 
     if (tokenA && tokenB && independentAmount && pair) {
@@ -372,7 +354,17 @@ export function useZapIn({
       )
     }
     return undefined
-  }, [chainId, currencyA, currencyB, dependentAmount, dependentField, independentAmount, pair, rebalancing])
+  }, [
+    chainId,
+    currencyA,
+    currencyB,
+    dependentAmount,
+    dependentField,
+    independentAmount,
+    isDependentAmountGreaterThanBalance,
+    pair,
+    rebalancing,
+  ])
 
   const singleZapEstimate = useSWRContract(
     canZap &&
@@ -458,25 +450,24 @@ export function useZapIn({
     return computePriceImpact(midPrice, tokenAmountIn, tokenAmountOut)
   }, [currencies, pair, swapOutTokenField, swapTokenField, swapTokens, zapInEstimated])
 
-  const priceSeverity = priceImpact ? warningSeverity(priceImpact) : 0
-
-  const [overLimitZapRatio, _overed] = useMemo(() => {
+  const overLimitZapRatio = useMemo(() => {
     if (!zapInEstimated) {
-      return [false]
+      return false
     }
 
-    // reserve / amountIn = ratio
-
-    const overResult = JSBI.subtract(
-      JSBI.divide(pair.reserveOf(swapTokens[swapTokenField]).raw, JSBI.BigInt(zapInEstimated.swapAmountIn.toString())),
+    return JSBI.lessThan(
+      JSBI.subtract(
+        JSBI.divide(
+          pair.reserveOf(swapTokens[swapTokenField]).raw,
+          JSBI.BigInt(zapInEstimated.swapAmountIn.toString()),
+        ),
+        MAX_ZAP_REVERSE_RATIO,
+      ),
       MAX_ZAP_REVERSE_RATIO,
     )
-
-    return [
-      JSBI.lessThan(overResult, MAX_ZAP_REVERSE_RATIO),
-      JSBI.divide(pair.reserveOf(swapTokens[swapTokenField]).raw, overResult),
-    ]
   }, [pair, swapTokens, zapInEstimated, swapTokenField])
+
+  const priceSeverity = overLimitZapRatio ? 4 : priceImpact ? warningSeverity(priceImpact) : 0
 
   const maxZapByRatio = useMemo(() => {
     return (
@@ -486,7 +477,7 @@ export function useZapIn({
     )
   }, [pair, swapTokenField, swapTokens])
 
-  const { onFieldAInput, onFieldBInput } = useMintActionHandlers(false, true)
+  const { onFieldAInput, onFieldBInput } = useMintActionHandlers(false)
 
   const convertToMaxZappable = useCallback(() => {
     if (maxZapByRatio) {
@@ -612,10 +603,6 @@ export function useZapIn({
     error = t('Zap Estimating error')
   }
 
-  if (overLimitZapRatio) {
-    error = t('Quantity higher than limit')
-  }
-
   if (swapTokenAmountTooLow || (rebalancing && swapOutAmountTooLow)) {
     error = t('Zap in amount too low')
   }
@@ -640,7 +627,6 @@ export function useZapIn({
   return {
     zapInEstimating: zapInEstimatedStatus !== FetchStatus.Fetched,
     zapInEstimatedError,
-    overLimitZapRatio,
     zapInEstimated,
     error,
     liquidityMinted,
@@ -652,6 +638,5 @@ export function useZapIn({
     convertToMaxZappable,
     rebalancing,
     noNeedZap,
-    toExactDepnedent50Amount,
   }
 }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { currencyEquals, ETHER, JSBI, TokenAmount, WETH } from '@pancakeswap/sdk'
@@ -34,7 +34,7 @@ import { Field, resetMintState } from '../../state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState, useZapIn } from '../../state/mint/hooks'
 
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import { useGasPrice, useIsExpertMode, useUserSlippageTolerance } from '../../state/user/hooks'
+import { useGasPrice, useIsExpertMode, useUserSlippageTolerance, useZapModeManager } from '../../state/user/hooks'
 import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '../../utils'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
@@ -55,6 +55,8 @@ const zapAddress = getZapAddress()
 
 export default function AddLiquidity() {
   const router = useRouter()
+
+  const [zapMode] = useZapModeManager()
   const [currencyIdA, currencyIdB] = router.query.currency || []
 
   const [steps, setSteps] = useState(Steps.Choose)
@@ -92,13 +94,7 @@ export default function AddLiquidity() {
     addError,
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
 
-  const canZap =
-    !noLiquidity ||
-    (pair &&
-      (JSBI.lessThan(pair.reserve0.raw, LIQUIDLY_MINIMUM_AMOUNT) ||
-        JSBI.lessThan(pair.reserve1.raw, LIQUIDLY_MINIMUM_AMOUNT)))
-
-  const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity, canZap)
+  const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
 
   // modal and loading
   const [{ attemptingTxn, liquidityErrorMessage, txHash }, setLiquidityState] = useState<{
@@ -130,6 +126,15 @@ export default function AddLiquidity() {
       }
     },
     {},
+  )
+
+  const canZap = useMemo(
+    () =>
+      !!zapMode &&
+      (!noLiquidity ||
+        (pair && JSBI.lessThan(pair.reserve0.raw, LIQUIDLY_MINIMUM_AMOUNT)) ||
+        (pair && JSBI.lessThan(pair.reserve1.raw, LIQUIDLY_MINIMUM_AMOUNT))),
+    [noLiquidity, pair, zapMode],
   )
 
   const { zapInEstimating, rebalancing, ...zapIn } = useZapIn({
@@ -411,12 +416,15 @@ export default function AddLiquidity() {
     'zapInModal',
   )
 
-  let isValid = !error || !addError
-  let errorText = error ?? addError
+  let isValid = !error
+  let errorText = error
 
   if (preferZapInstead) {
     isValid = !error && !zapIn.error
     errorText = error ?? zapIn.error
+  } else {
+    isValid = !error && !addError
+    errorText = error ?? addError
   }
 
   const buttonDisabled =
@@ -540,21 +548,25 @@ export default function AddLiquidity() {
                 />
 
                 {preferZapInstead && !rebalancing && !(!zapTokenCheckedA && !zapTokenCheckedB) && (
-                  <Message variant="warning">
-                    {zapIn.priceSeverity > 3 && (
+                  <Message variant={zapIn.priceSeverity > 3 ? 'danger' : 'warning'}>
+                    {zapIn.priceSeverity > 3 ? (
                       <MessageText>
-                        {t('Price Impact Too Hight. Reduce amount of %token% to maximum limit', {
-                          token: currencies[zapIn.swapTokenField]?.symbol,
+                        {t('Price Impact Too Hight.')}{' '}
+                        <strong>
+                          {t('Reduce amount of %token% to maximum limit', {
+                            token: currencies[zapIn.swapTokenField]?.symbol,
+                          })}
+                        </strong>
+                      </MessageText>
+                    ) : (
+                      <MessageText>
+                        <strong>{t('No %token% input.', { token: currencies[zapIn.swapTokenField]?.symbol })}</strong>{' '}
+                        {t('Some of your %token0% will be converted to %token1%.', {
+                          token0: currencies[zapIn.swapTokenField]?.symbol,
+                          token1: currencies[zapIn.swapOutTokenField]?.symbol,
                         })}
                       </MessageText>
                     )}
-                    <MessageText>
-                      <b>{t('No %token% input.', { token: currencies[zapIn.swapTokenField]?.symbol })}</b>{' '}
-                      {t('Some of your %token0% will be converted to %token1%.', {
-                        token0: currencies[zapIn.swapTokenField]?.symbol,
-                        token1: currencies[zapIn.swapOutTokenField]?.symbol,
-                      })}
-                    </MessageText>
                   </Message>
                 )}
 
@@ -569,7 +581,7 @@ export default function AddLiquidity() {
                 )}
 
                 {preferZapInstead &&
-                  (zapIn.priceSeverity > 3 || zapIn.zapInEstimatedError || zapIn.overLimitZapRatio) &&
+                  (zapIn.priceSeverity > 3 || zapIn.zapInEstimatedError) &&
                   maxAmounts[zapIn.swapTokenField] && (
                     <RowFixed style={{ margin: 'auto' }} onClick={() => zapIn.convertToMaxZappable()}>
                       <Button variant="secondary" scale="sm">

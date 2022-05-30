@@ -16,8 +16,8 @@ const initialState: MintState = {
 export default createReducer<MintState>(initialState, (builder) =>
   builder
     .addCase(resetMintState, () => initialState)
-    .addCase(typeInput, (state, { payload: { field, typedValue, noLiquidity, zap } }) => {
-      if (noLiquidity || zap) {
+    .addCase(typeInput, (state, { payload: { field, typedValue, noLiquidity } }) => {
+      if (noLiquidity) {
         // they're typing into the field they've last typed in
         if (field === state.independentField) {
           return {
