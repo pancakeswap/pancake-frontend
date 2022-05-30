@@ -25,6 +25,17 @@ const StyleVertingCard = styled(Card)`
 const VestingCardBody = styled(CardBody)`
   overflow-y: auto;
   max-height: 320px;
+  padding-bottom: 0;
+`
+
+const TokenInfoContainer = styled.div`
+  > div {
+    margin-bottom: 20px;
+  }
+
+  > :last-child {
+    margin-bottom: 0px;
+  }
 `
 
 const IfoVestingStatus = {
@@ -92,10 +103,13 @@ const IfoVesting: React.FC<IfoVestingProps> = () => {
       </CardHeader>
       <VestingCardBody>
         {cardStatus.status === VestingStatus.NOT_TOKENS_CLAIM && <NotTokens />}
-        {cardStatus.status === VestingStatus.HAS_TOKENS_CLAIM &&
-          data.map((ifo, index) => (
-            <TokenInfo key={ifo.ifo.id} index={index} data={ifo} fetchUserVestingData={handleFetchUserVesting} />
-          ))}
+        {cardStatus.status === VestingStatus.HAS_TOKENS_CLAIM && (
+          <TokenInfoContainer>
+            {data.map((ifo, index) => (
+              <TokenInfo key={ifo.ifo.id} index={index} data={ifo} fetchUserVestingData={handleFetchUserVesting} />
+            ))}
+          </TokenInfoContainer>
+        )}
         {cardStatus.status === VestingStatus.ENDED && <VestingEnded />}
       </VestingCardBody>
     </StyleVertingCard>
