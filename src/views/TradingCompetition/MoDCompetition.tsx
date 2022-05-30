@@ -8,6 +8,8 @@ import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { PageMeta } from 'components/Layout/Page'
 import { TC_MOD_SUBGRAPH } from 'config/constants/endpoints'
+import { multicallv2 } from 'utils/multicall'
+import tradingCompetitionMoDAbi from 'config/abi/tradingCompetitionMoD.json'
 import {
   SmartContractPhases,
   CompetitionPhases,
@@ -107,11 +109,26 @@ const MoDCompetition = () => {
 
     const fetchUserContract = async () => {
       try {
-        const user = await tradingCompetitionContract.claimInformation(account)
+        const [user, [userClaimed]] = await multicallv2(
+          tradingCompetitionMoDAbi,
+          [
+            {
+              address: tradingCompetitionContract.address,
+              name: 'claimInformation',
+              params: [account],
+            },
+            {
+              address: tradingCompetitionContract.address,
+              name: 'userTradingStats',
+              params: [account],
+            },
+          ],
+          { requireSuccess: false },
+        )
         const userObject: UserTradingInformation = {
           hasRegistered: user[0],
           isUserActive: user[1],
-          hasUserClaimed: user[2],
+          hasUserClaimed: userClaimed,
           userRewardGroup: user[3].toString(),
           userCakeRewards: user[4].toString(),
           userDarRewards: user[5].toString(),
