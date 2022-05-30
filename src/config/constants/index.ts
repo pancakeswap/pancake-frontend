@@ -72,7 +72,7 @@ export const DEFAULT_DEADLINE_FROM_NOW = 60 * 20
 
 export const BIG_INT_ZERO = JSBI.BigInt(0)
 
-export const LIQUIDLY_MINIMUM_AMOUNT = JSBI.BigInt(1000)
+export const LIQUIDITY_MINIMUM_AMOUNT = JSBI.BigInt(1000)
 
 // one basis point
 export const ONE_BIPS = new Percent(JSBI.BigInt(1), JSBI.BigInt(10000))

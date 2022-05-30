@@ -25,7 +25,7 @@ import { MinimalPositionCard } from '../../components/PositionCard'
 import { RowBetween, RowFixed } from '../../components/Layout/Row'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 
-import { LIQUIDLY_MINIMUM_AMOUNT, ROUTER_ADDRESS } from '../../config/constants'
+import { LIQUIDITY_MINIMUM_AMOUNT, ROUTER_ADDRESS } from '../../config/constants'
 import { PairState } from '../../hooks/usePairs'
 import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
@@ -132,8 +132,8 @@ export default function AddLiquidity() {
     () =>
       !!zapMode &&
       (!noLiquidity ||
-        (pair && JSBI.lessThan(pair.reserve0.raw, LIQUIDLY_MINIMUM_AMOUNT)) ||
-        (pair && JSBI.lessThan(pair.reserve1.raw, LIQUIDLY_MINIMUM_AMOUNT))),
+        (pair && JSBI.lessThan(pair.reserve0.raw, LIQUIDITY_MINIMUM_AMOUNT)) ||
+        (pair && JSBI.lessThan(pair.reserve1.raw, LIQUIDITY_MINIMUM_AMOUNT))),
     [noLiquidity, pair, zapMode],
   )
 

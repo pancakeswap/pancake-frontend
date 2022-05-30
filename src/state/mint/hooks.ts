@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PairState, usePair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
-import { BIG_INT_ZERO, LIQUIDLY_MINIMUM_AMOUNT } from 'config/constants'
+import { BIG_INT_ZERO, LIQUIDITY_MINIMUM_AMOUNT } from 'config/constants'
 
 import { computePriceImpact, warningSeverity } from 'utils/prices'
 import { useTranslation } from 'contexts/Localization'
@@ -580,13 +580,13 @@ export function useZapIn({
   const swapTokenAmountTooLow = useMemo(
     () =>
       wrappedParsedAmounts[swapTokenField] &&
-      JSBI.lessThan(wrappedParsedAmounts[swapTokenField].raw, LIQUIDLY_MINIMUM_AMOUNT),
+      JSBI.lessThan(wrappedParsedAmounts[swapTokenField].raw, LIQUIDITY_MINIMUM_AMOUNT),
     [swapTokenField, wrappedParsedAmounts],
   )
   const swapOutAmountTooLow = useMemo(
     () =>
       wrappedParsedAmounts[swapOutTokenField] &&
-      JSBI.lessThan(wrappedParsedAmounts[swapOutTokenField].raw, LIQUIDLY_MINIMUM_AMOUNT),
+      JSBI.lessThan(wrappedParsedAmounts[swapOutTokenField].raw, LIQUIDITY_MINIMUM_AMOUNT),
     [swapOutTokenField, wrappedParsedAmounts],
   )
 
