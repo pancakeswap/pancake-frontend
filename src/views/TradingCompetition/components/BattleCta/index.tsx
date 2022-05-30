@@ -9,6 +9,9 @@ import {
   CheckmarkCircleIcon,
   useWalletModal,
   useModal,
+  Text,
+  Box,
+  TwitterIcon,
 } from '@pancakeswap/uikit'
 import useAuth from 'hooks/useAuth'
 import { useTranslation } from 'contexts/Localization'
@@ -29,7 +32,7 @@ const StyledCard = styled(Card)`
     background: transparent;
   }
 
-  svg {
+  .text-decorator {
     margin-bottom: 6px;
     height: 32px;
     width: auto;
@@ -51,6 +54,7 @@ const StyledButton = styled(Button)`
 
 const StyledHeadingText = styled(Heading2Text)`
   white-space: normal;
+  padding: 0px 10px;
 `
 
 const BattleCta: React.FC<CompetitionProps> = ({
@@ -98,7 +102,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
     }
     // Competition finished. Rewards being calculated
     if (currentPhase.state === FINISHED) {
-      return `${t('Calculating prizes')}...`
+      return `${t('Calculating')}...`
     }
     // All competition finished states
     if (hasCompetitionEnded) {
@@ -182,15 +186,43 @@ const BattleCta: React.FC<CompetitionProps> = ({
     <StyledCard>
       <CardBody>
         <Flex flexDirection="column" justifyContent="center" alignItems="center">
-          <StyledHeadingText>{getHeadingText()}</StyledHeadingText>
+          <Flex alignItems="flex-end">
+            <LaurelLeftIcon className="text-decorator" />
+            <StyledHeadingText>{getHeadingText()}</StyledHeadingText>
+            <LaurelRightIcon className="text-decorator" />
+          </Flex>
           {/* Hide button if in the pre-claim, FINISHED phase */}
+          {currentPhase.state === FINISHED && (
+            <Box width="280px" p="20px 0px 0px">
+              {/* {inputSecondary can't fit this case} */}
+              {/* <Text color="#D7CAEC">
+                {t('Prizes will be announced and available for claiming at ~')}{' '}
+                {new Date(Date.UTC(2022, 4, 26, 8)).toLocaleString('en-US', options)}
+              </Text> */}
+              <Text color="#D7CAEC">
+                {t(
+                  'Currently facing technical issues while configuring prize claiming. Prizes will be available for claiming once the issue is resolved. Follow our social channels for latest updates.',
+                )}
+              </Text>
+              <Text textAlign="center" pt="20px">
+                <Button
+                  scale="sm"
+                  variant="secondary"
+                  onClick={() => {
+                    window.open('https://twitter.com/pancakeswap')
+                  }}
+                >
+                  <TwitterIcon color="textSubtle" fontSize="12px" mr="5px" />
+                  {t('Follow Update')}
+                </Button>
+              </Text>
+            </Box>
+          )}
           {currentPhase.state !== FINISHED && (
             <Flex alignItems="flex-end">
-              <LaurelLeftIcon />
               <StyledButton disabled={isButtonDisabled} onClick={() => handleCtaClick()}>
                 {getButtonText()}
               </StyledButton>
-              <LaurelRightIcon />
             </Flex>
           )}
         </Flex>

@@ -32,7 +32,7 @@ export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol)
           {t('You can now stake in the %symbol% pool!', { symbol: earningTokenSymbol })}
         </ToastDescriptionWithTx>,
       )
-      dispatch(updateUserAllowance(sousId, account))
+      dispatch(updateUserAllowance({ sousId, account }))
     }
   }, [
     account,

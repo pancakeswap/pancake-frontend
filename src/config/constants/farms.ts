@@ -43,6 +43,53 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 38,
+    v1pid: 386,
+    lpSymbol: 'HOTCROSS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xf23bad605e94de0e3b60c9718a43a94a5af43915',
+    },
+    token: serializedTokens.hotcross,
+    quoteToken: serializedTokens.wbnb,
+    auctionHostingStartSeconds: 1653649200,
+  },
+  {
+    pid: 94,
+    v1pid: 525,
+    lpSymbol: 'WZRD-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xee456d906a38e10680c9d157FFf143390e9681bA',
+    },
+    token: serializedTokens.wzrd,
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1653649200,
+  },
+  {
+    pid: 96,
+    lpSymbol: '8PAY-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x92c3E2cddDb0CE886bCA864151BD4d611A86E563',
+    },
+    token: serializedTokens['8pay'],
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1653649200,
+  },
+  {
+    pid: 101,
+    lpSymbol: 'MIX-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x7618fdAb208aE23690dadD3aa4a42a442313d24E',
+    },
+    token: serializedTokens.MIX,
+    quoteToken: serializedTokens.busd,
+  },
+  {
     pid: 100,
     lpSymbol: 'METIS-BNB LP',
     lpAddresses: {
@@ -64,29 +111,6 @@ const farms: SerializedFarmConfig[] = [
     isCommunity: true,
   },
   {
-    pid: 38,
-    v1pid: 386,
-    lpSymbol: 'HOTCROSS-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0xf23bad605e94de0e3b60c9718a43a94a5af43915',
-    },
-    token: serializedTokens.hotcross,
-    quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 94,
-    v1pid: 525,
-    lpSymbol: 'WZRD-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0xee456d906a38e10680c9d157FFf143390e9681bA',
-    },
-    token: serializedTokens.wzrd,
-    quoteToken: serializedTokens.busd,
-    isCommunity: true,
-  },
-  {
     pid: 98,
     lpSymbol: 'GAL-BNB LP',
     lpAddresses: {
@@ -105,17 +129,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.rpg,
     quoteToken: serializedTokens.busd,
-  },
-  {
-    pid: 96,
-    lpSymbol: '8PAY-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0x92c3E2cddDb0CE886bCA864151BD4d611A86E563',
-    },
-    token: serializedTokens['8pay'],
-    quoteToken: serializedTokens.busd,
-    isCommunity: true,
   },
   {
     pid: 93,

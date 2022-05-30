@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react'
 import { useInitialBlock } from 'state/block/hooks'
 import { initializePredictions } from 'state/predictions'
 import { useChartView, useGetPredictionsStatus, useIsChartPaneOpen } from 'state/predictions/hooks'
+import { useAccountLocalEventListener } from 'hooks/useAccountLocalEventListener'
 import { PredictionsChartView, PredictionStatus } from 'state/types'
 import {
   useUserPredictionAcceptedRisk,
@@ -71,6 +72,8 @@ const Predictions = () => {
   const status = useGetPredictionsStatus()
   const dispatch = useLocalDispatch()
   const initialBlock = useInitialBlock()
+
+  useAccountLocalEventListener()
 
   useEffect(() => {
     if (initialBlock > 0) {

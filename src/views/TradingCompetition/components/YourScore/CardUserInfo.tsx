@@ -15,7 +15,7 @@ import {
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { LIVE } from 'config/constants/trading-competition/phases'
+import { REGISTRATION, LIVE } from 'config/constants/trading-competition/phases'
 import { YourScoreProps } from '../../types'
 import UserRankBox from './UserRankBox'
 import NextRankBox from './NextRankBox'
@@ -199,7 +199,7 @@ const CardUserInfo: React.FC<CardUserInfoProps> = ({
                 title={t('Your volume').toUpperCase()}
                 footer={t('Since start')}
                 // Add responsive mr if competition is LIVE
-                mr={currentPhase.state === LIVE ? [0, null, null, '8px'] : 0}
+                mr={currentPhase.state !== REGISTRATION ? [0, null, null, '8px'] : 0}
                 mb={['8px', null, null, 0]}
               >
                 {!userLeaderboardInformation ? (
