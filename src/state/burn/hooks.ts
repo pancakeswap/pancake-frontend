@@ -5,6 +5,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { usePair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
+import { useSWRContract } from 'hooks/useSWRContract'
+import { useZapContract } from 'hooks/useContract'
 
 import { useTranslation } from 'contexts/Localization'
 import tryParseAmount from 'utils/tryParseAmount'
@@ -19,6 +21,8 @@ export function useBurnState(): AppState['burn'] {
 export function useDerivedBurnInfo(
   currencyA: Currency | undefined,
   currencyB: Currency | undefined,
+  removalCheckedA?: boolean,
+  removalCheckedB?: boolean,
 ): {
   pair?: Pair | null
   parsedAmounts: {
@@ -28,6 +32,8 @@ export function useDerivedBurnInfo(
     [Field.CURRENCY_B]?: CurrencyAmount
   }
   error?: string
+  tokenToReceive?: string
+  zapOutEstimate?: ReturnType<typeof useZapOutEstimate>
 } {
   const { account, chainId } = useActiveWeb3React()
 
@@ -60,6 +66,7 @@ export function useDerivedBurnInfo(
     JSBI.greaterThanOrEqual(totalSupply.raw, userLiquidity.raw)
       ? new TokenAmount(tokenA, pair.getLiquidityValue(tokenA, totalSupply, userLiquidity, false).raw)
       : undefined
+
   const liquidityValueB =
     pair &&
     totalSupply &&
@@ -97,6 +104,34 @@ export function useDerivedBurnInfo(
     }
   }
 
+  const liquidityToRemove =
+    userLiquidity && percentToRemove && percentToRemove.greaterThan('0')
+      ? new TokenAmount(userLiquidity.token, percentToRemove.multiply(userLiquidity.raw).quotient)
+      : undefined
+
+  const tokenToReceive =
+    removalCheckedA && removalCheckedB
+      ? undefined
+      : removalCheckedA
+      ? tokens[Field.CURRENCY_A]?.address
+      : tokens[Field.CURRENCY_B]?.address
+
+  const zapOutEstimate = useZapOutEstimate({
+    pair,
+    liquidityToRemove,
+    tokenToReceive,
+  })
+
+  const amountA =
+    tokenA && percentToRemove && percentToRemove.greaterThan('0') && liquidityValueA
+      ? new TokenAmount(tokenA, percentToRemove.multiply(liquidityValueA.raw).quotient)
+      : undefined
+
+  const amountB =
+    tokenB && percentToRemove && percentToRemove.greaterThan('0') && liquidityValueB
+      ? new TokenAmount(tokenB, percentToRemove.multiply(liquidityValueB.raw).quotient)
+      : undefined
+
   const parsedAmounts: {
     [Field.LIQUIDITY_PERCENT]: Percent
     [Field.LIQUIDITY]?: TokenAmount
@@ -104,18 +139,19 @@ export function useDerivedBurnInfo(
     [Field.CURRENCY_B]?: TokenAmount
   } = {
     [Field.LIQUIDITY_PERCENT]: percentToRemove,
-    [Field.LIQUIDITY]:
-      userLiquidity && percentToRemove && percentToRemove.greaterThan('0')
-        ? new TokenAmount(userLiquidity.token, percentToRemove.multiply(userLiquidity.raw).quotient)
-        : undefined,
+    [Field.LIQUIDITY]: liquidityToRemove,
     [Field.CURRENCY_A]:
-      tokenA && percentToRemove && percentToRemove.greaterThan('0') && liquidityValueA
-        ? new TokenAmount(tokenA, percentToRemove.multiply(liquidityValueA.raw).quotient)
-        : undefined,
+      amountA && removalCheckedA && !removalCheckedB
+        ? new TokenAmount(tokenA, percentToRemove.multiply(2).multiply(liquidityValueA.raw).quotient)
+        : !removalCheckedA
+        ? undefined
+        : amountA,
     [Field.CURRENCY_B]:
-      tokenB && percentToRemove && percentToRemove.greaterThan('0') && liquidityValueB
-        ? new TokenAmount(tokenB, percentToRemove.multiply(liquidityValueB.raw).quotient)
-        : undefined,
+      amountB && removalCheckedB && !removalCheckedA
+        ? new TokenAmount(tokenB, percentToRemove.multiply(2).multiply(liquidityValueB.raw).quotient)
+        : !removalCheckedB
+        ? undefined
+        : amountB,
   }
 
   let error: string | undefined
@@ -123,11 +159,15 @@ export function useDerivedBurnInfo(
     error = t('Connect Wallet')
   }
 
-  if (!parsedAmounts[Field.LIQUIDITY] || !parsedAmounts[Field.CURRENCY_A] || !parsedAmounts[Field.CURRENCY_B]) {
+  if (
+    !parsedAmounts[Field.LIQUIDITY] ||
+    (removalCheckedA && !parsedAmounts[Field.CURRENCY_A]) ||
+    (removalCheckedB && !parsedAmounts[Field.CURRENCY_B])
+  ) {
     error = error ?? t('Enter an amount')
   }
 
-  return { pair, parsedAmounts, error }
+  return { pair, parsedAmounts, error, tokenToReceive, zapOutEstimate }
 }
 
 export function useBurnActionHandlers(): {
@@ -144,5 +184,32 @@ export function useBurnActionHandlers(): {
 
   return {
     onUserInput,
+  }
+}
+
+function useZapOutEstimate({
+  pair,
+  liquidityToRemove,
+  tokenToReceive,
+}: {
+  pair?: Pair
+  liquidityToRemove?: TokenAmount
+  tokenToReceive?: string
+}) {
+  const zapContract = useZapContract()
+  const { data, status, error } = useSWRContract(
+    pair &&
+      tokenToReceive &&
+      liquidityToRemove && {
+        contract: zapContract,
+        methodName: 'estimateZapOutSwap',
+        params: [pair.liquidityToken.address, liquidityToRemove.raw.toString(), tokenToReceive],
+      },
+  )
+
+  return {
+    data,
+    status,
+    error,
   }
 }

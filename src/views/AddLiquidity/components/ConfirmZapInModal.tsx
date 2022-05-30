@@ -98,7 +98,7 @@ const CircleSvg = ({ percent = 1, ...props }: SvgProps & { percent?: number }) =
 
 const Subtitle: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <Text small textTransform="uppercase" bold color="secondary">
+    <Text fontSize="12px" textTransform="uppercase" bold color="secondary">
       {children}
     </Text>
   )
@@ -106,7 +106,7 @@ const Subtitle: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 const PairDistribution = ({ title, percent, currencyA, currencyB, currencyAValue, currencyBValue }) => {
   return (
-    <AutoColumn>
+    <AutoColumn gap="8px">
       <Subtitle>{title}</Subtitle>
       <Flex>
         {typeof percent !== 'undefined' && <CircleSvg percent={percent} mr="34px" />}
@@ -215,6 +215,8 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
             ),
             1,
           )
+        : swapInCurrencyAmount && !swapOutCurrencyAmount
+        ? 1
         : undefined,
     [swapInCurrencyAmount, swapOutCurrencyAmount],
   )

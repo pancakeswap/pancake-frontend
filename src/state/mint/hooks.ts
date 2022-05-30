@@ -243,7 +243,6 @@ export function useDerivedMintInfo(
 const MAX_ZAP_REVERSE_RATIO = JSBI.BigInt(50)
 
 export function useZapIn({
-  rebalancing,
   canZap,
   currencyA,
   currencyB,
@@ -253,7 +252,6 @@ export function useZapIn({
   zapTokenCheckedB,
   maxAmounts,
 }: {
-  rebalancing?: boolean
   canZap?: boolean
   currencyA?: Currency
   currencyB?: Currency
@@ -281,8 +279,41 @@ export function useZapIn({
   // amounts
   const independentAmount: CurrencyAmount | undefined = tryParseAmount(typedValue, currencies[independentField])
   const dependentAmount: CurrencyAmount | undefined = useMemo(() => {
-    return tryParseAmount(otherTypedValue, currencies[dependentField])
-  }, [dependentField, otherTypedValue, currencies])
+    if (independentAmount) {
+      // we wrap the currencies just to get the price in terms of the other token
+      const wrappedIndependentAmount = wrappedCurrencyAmount(independentAmount, chainId)
+      const [tokenA, tokenB] = [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
+      if (tokenA && tokenB && wrappedIndependentAmount && pair) {
+        const dependentCurrency = dependentField === Field.CURRENCY_B ? currencyB : currencyA
+        const dependentTokenAmount =
+          dependentField === Field.CURRENCY_B
+            ? pair.priceOf(tokenA).quote(wrappedIndependentAmount)
+            : pair.priceOf(tokenB).quote(wrappedIndependentAmount)
+        const targetAmount =
+          dependentCurrency === ETHER ? CurrencyAmount.ether(dependentTokenAmount.raw) : dependentTokenAmount
+        if (currencyBalances[dependentField]) {
+          if (currencyBalances[dependentField].greaterThan(targetAmount)) {
+            return targetAmount
+          }
+          return currencyBalances[dependentField]
+        }
+        return tryParseAmount(otherTypedValue, currencies[dependentField])
+      }
+      return undefined
+    }
+    return undefined
+    // return tryParseAmount(otherTypedValue, currencies[dependentField])
+  }, [
+    independentAmount,
+    otherTypedValue,
+    currencies,
+    dependentField,
+    chainId,
+    currencyA,
+    currencyB,
+    pair,
+    currencyBalances,
+  ])
 
   const parsedAmounts: { [field in Field]: CurrencyAmount | undefined } = useMemo(
     () => ({
@@ -310,14 +341,41 @@ export function useZapIn({
 
   const zapContract = useZapContract()
 
-  const singleTokenToZapField = !rebalancing && zapTokenCheckedB ? Field.CURRENCY_B : Field.CURRENCY_A
+  const rebalancing =
+    !!zapTokenCheckedA && !!zapTokenCheckedB && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]
+
+  const singleTokenToZapField =
+    !rebalancing && zapTokenCheckedB && !!parsedAmounts[Field.CURRENCY_B] ? Field.CURRENCY_B : Field.CURRENCY_A
+
   const singleTokenToZapAmount = useMemo(
     () => wrappedParsedAmounts[singleTokenToZapField],
     [singleTokenToZapField, wrappedParsedAmounts],
   )
 
+  const noNeedZap = useMemo(() => {
+    if (!rebalancing) {
+      return false
+    }
+    if (!independentAmount || !dependentAmount) {
+      return undefined
+    }
+
+    const wrappedIndependentAmount = wrappedCurrencyAmount(independentAmount, chainId)
+    const [tokenA, tokenB] = [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
+
+    if (tokenA && tokenB && wrappedIndependentAmount && pair) {
+      return dependentAmount.equalTo(
+        dependentField === Field.CURRENCY_B
+          ? pair.priceOf(tokenA).quote(wrappedIndependentAmount)
+          : pair.priceOf(tokenB).quote(wrappedIndependentAmount),
+      )
+    }
+    return undefined
+  }, [chainId, currencyA, currencyB, dependentAmount, dependentField, independentAmount, pair, rebalancing])
+
   const singleZapEstimate = useSWRContract(
     canZap &&
+      !noNeedZap &&
       zapContract &&
       singleTokenToZapAmount &&
       singleTokenToZapAmount?.token &&
@@ -335,6 +393,7 @@ export function useZapIn({
   const rebalancingZapEstimate = useSWRContract(
     canZap &&
       zapContract &&
+      !noNeedZap &&
       wrappedParsedAmounts &&
       wrappedParsedAmounts[Field.CURRENCY_A] &&
       wrappedParsedAmounts[Field.CURRENCY_B] &&
@@ -400,11 +459,29 @@ export function useZapIn({
 
   const priceSeverity = priceImpact ? warningSeverity(priceImpact) : 0
 
+  const [overLimitZapRatio, _overed] = useMemo(() => {
+    if (!zapInEstimated) {
+      return [false]
+    }
+
+    // reserve / amountIn = ratio
+
+    const overResult = JSBI.subtract(
+      JSBI.divide(pair.reserveOf(swapTokens[swapTokenField]).raw, JSBI.BigInt(zapInEstimated.swapAmountIn.toString())),
+      MAX_ZAP_REVERSE_RATIO,
+    )
+
+    return [
+      JSBI.lessThan(overResult, MAX_ZAP_REVERSE_RATIO),
+      JSBI.divide(pair.reserveOf(swapTokens[swapTokenField]).raw, overResult),
+    ]
+  }, [pair, swapTokens, zapInEstimated, swapTokenField])
+
   const maxZapByRatio = useMemo(() => {
     return (
       pair &&
       swapTokens[swapTokenField] &&
-      JSBI.divide(pair.reserveOf(swapTokens[swapTokenField]).raw, MAX_ZAP_REVERSE_RATIO)
+      JSBI.multiply(JSBI.divide(pair.reserveOf(swapTokens[swapTokenField]).raw, MAX_ZAP_REVERSE_RATIO), JSBI.BigInt(2))
     )
   }, [pair, swapTokenField, swapTokens])
 
@@ -433,22 +510,30 @@ export function useZapIn({
             ),
           )
         }
+      } else {
+        if (swapTokenField === Field.CURRENCY_A && maxAmounts[Field.CURRENCY_A]) {
+          onFieldAInput(
+            formatUnits(
+              JSBI.greaterThan(maxAmounts[Field.CURRENCY_A].raw, maxZapByRatio)
+                ? maxZapByRatio.toString()
+                : maxAmounts[Field.CURRENCY_A].raw.toString(),
+              maxAmounts[Field.CURRENCY_A]?.currency.decimals,
+            ),
+          )
+        }
+        if (swapTokenField === Field.CURRENCY_B && maxAmounts[Field.CURRENCY_B]) {
+          onFieldBInput(
+            formatUnits(
+              JSBI.greaterThan(maxAmounts[Field.CURRENCY_B].raw, maxZapByRatio)
+                ? maxZapByRatio.toString()
+                : maxAmounts[Field.CURRENCY_B].raw.toString(),
+              maxAmounts[Field.CURRENCY_B]?.currency.decimals,
+            ),
+          )
+        }
       }
     }
   }, [maxAmounts, maxZapByRatio, onFieldAInput, onFieldBInput, rebalancing, swapTokenField])
-
-  const overLimitZapRatio = useMemo(
-    () =>
-      zapInEstimated &&
-      JSBI.lessThan(
-        JSBI.divide(
-          pair.reserveOf(swapTokens[swapTokenField]).raw,
-          JSBI.BigInt(zapInEstimated.swapAmountIn.toString()),
-        ),
-        MAX_ZAP_REVERSE_RATIO,
-      ),
-    [pair, swapTokens, zapInEstimated, swapTokenField],
-  )
 
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
@@ -460,8 +545,7 @@ export function useZapIn({
       !swapTokens[swapOutTokenField] ||
       !zapInEstimated?.swapAmountIn ||
       !zapInEstimated?.swapAmountOut ||
-      !wrappedParsedAmounts[swapTokenField] ||
-      !wrappedParsedAmounts[swapOutTokenField]
+      !wrappedParsedAmounts[swapTokenField]
     ) {
       return undefined
     }
@@ -540,7 +624,7 @@ export function useZapIn({
     currencyBalances[swapTokenField]?.lessThan(wrappedParsedAmounts[swapTokenField])
   ) {
     error = t('Insufficient %token% balance', {
-      token: wrappedParsedAmounts[singleTokenToZapField]?.token.symbol ?? '',
+      token: wrappedParsedAmounts[swapTokenField]?.token.symbol ?? '',
     })
   }
 
@@ -565,5 +649,7 @@ export function useZapIn({
     swapOutTokenField,
     priceSeverity,
     convertToMaxZappable,
+    rebalancing,
+    noNeedZap,
   }
 }

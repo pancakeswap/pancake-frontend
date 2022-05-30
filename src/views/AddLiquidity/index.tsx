@@ -44,7 +44,7 @@ import Page from '../Page'
 import ConfirmAddLiquidityModal from './components/ConfirmAddLiquidityModal'
 import ConfirmZapInModal from './components/ConfirmZapInModal'
 import { ChoosePair } from './ChoosePair'
-import { ZapCheckbox } from './components/ZapCheckbox'
+import { ZapCheckbox } from '../../components/CurrencyInputPanel/ZapCheckbox'
 
 enum Steps {
   Choose,
@@ -121,10 +121,6 @@ export default function AddLiquidity() {
   const deadline = useTransactionDeadline() // custom from users settings
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
 
-  const showAddLiquidity = currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && steps === Steps.Add
-
-  const rebalancing = !!zapTokenCheckedA && !!zapTokenCheckedB
-
   // get the max amounts user can add
   const maxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
     (accumulator, field) => {
@@ -136,9 +132,8 @@ export default function AddLiquidity() {
     {},
   )
 
-  const { zapInEstimating, ...zapIn } = useZapIn({
+  const { zapInEstimating, rebalancing, ...zapIn } = useZapIn({
     pair,
-    rebalancing,
     canZap,
     currencyA,
     currencyB,
@@ -149,6 +144,8 @@ export default function AddLiquidity() {
   })
 
   const parsedAmounts = canZap ? zapIn.parsedAmounts : mintParsedAmounts
+
+  const preferZapInstead = canZap && !zapIn.noNeedZap
 
   const atMaxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
     (accumulator, field) => {
@@ -169,11 +166,11 @@ export default function AddLiquidity() {
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_A],
-    canZap ? zapAddress : ROUTER_ADDRESS[CHAIN_ID],
+    preferZapInstead ? zapAddress : ROUTER_ADDRESS[CHAIN_ID],
   )
   const [approvalB, approveBCallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_B],
-    canZap ? zapAddress : ROUTER_ADDRESS[CHAIN_ID],
+    preferZapInstead ? zapAddress : ROUTER_ADDRESS[CHAIN_ID],
   )
 
   const addTransaction = useTransactionAdder()
@@ -256,7 +253,7 @@ export default function AddLiquidity() {
       })
   }
 
-  const pendingText = canZap
+  const pendingText = preferZapInstead
     ? t('Zapping %amountA% %symbolA% and %amountB% %symbolB%', {
         amountA: parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) ?? '0',
         symbolA: currencies[Field.CURRENCY_A]?.symbol ?? '',
@@ -414,20 +411,28 @@ export default function AddLiquidity() {
     'zapInModal',
   )
 
-  const isValid = (!canZap && (!error || !addError)) || (canZap && !error && !zapIn.error)
+  let isValid = !error || !addError
+  let errorText = error ?? addError
 
-  const errorText = ((!canZap && error) ?? addError) || ((canZap && error) ?? zapIn.error)
+  if (preferZapInstead) {
+    isValid = !error && !zapIn.error
+    errorText = error ?? zapIn.error
+  }
 
   const buttonDisabled =
     !isValid ||
-    ((zapTokenCheckedA || !canZap) && approvalA !== ApprovalState.APPROVED) ||
-    ((zapTokenCheckedB || !canZap) && approvalB !== ApprovalState.APPROVED) ||
-    (zapIn.priceSeverity > 3 && canZap)
+    ((zapIn.parsedAmounts[Field.CURRENCY_A] || (!preferZapInstead && zapTokenCheckedA)) &&
+      approvalA !== ApprovalState.APPROVED) ||
+    ((zapIn.parsedAmounts[Field.CURRENCY_B] || (!preferZapInstead && zapTokenCheckedB)) &&
+      approvalB !== ApprovalState.APPROVED) ||
+    (zapIn.priceSeverity > 3 && preferZapInstead)
 
   const showFieldAApproval =
-    (zapTokenCheckedA || !canZap) && (approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING)
+    (zapTokenCheckedA || !preferZapInstead) &&
+    (approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING)
   const showFieldBApproval =
-    (zapTokenCheckedB || !canZap) && (approvalB === ApprovalState.NOT_APPROVED || approvalB === ApprovalState.PENDING)
+    (zapTokenCheckedB || !preferZapInstead) &&
+    (approvalB === ApprovalState.NOT_APPROVED || approvalB === ApprovalState.PENDING)
 
   const shouldShowApprovalGroup = (showFieldAApproval || showFieldBApproval) && isValid
 
@@ -436,6 +441,8 @@ export default function AddLiquidity() {
       ((currencyA && currencyEquals(currencyA, WETH[chainId])) ||
         (currencyB && currencyEquals(currencyB, WETH[chainId]))),
   )
+
+  const showAddLiquidity = !!currencies[Field.CURRENCY_A] && !!currencies[Field.CURRENCY_B] && steps === Steps.Add
 
   return (
     <Page>
@@ -480,7 +487,7 @@ export default function AddLiquidity() {
                 <CurrencyInputPanel
                   disableCurrencySelect
                   error={zapIn.priceSeverity > 3 && zapIn.swapTokenField === Field.CURRENCY_A}
-                  disabled={!zapTokenCheckedA}
+                  disabled={canZap && !zapTokenCheckedA}
                   beforeButton={
                     canZap && (
                       <ZapCheckbox
@@ -507,7 +514,7 @@ export default function AddLiquidity() {
                   <AddIcon width="16px" />
                 </ColumnCenter>
                 <CurrencyInputPanel
-                  disabled={!zapTokenCheckedB}
+                  disabled={canZap && !zapTokenCheckedB}
                   error={zapIn.priceSeverity > 3 && zapIn.swapTokenField === Field.CURRENCY_B}
                   beforeButton={
                     canZap && (
@@ -532,7 +539,7 @@ export default function AddLiquidity() {
                   id="add-liquidity-input-tokenb"
                 />
 
-                {canZap && !rebalancing && (
+                {preferZapInstead && !rebalancing && !(!zapTokenCheckedA && !zapTokenCheckedB) && (
                   <Message variant="warning">
                     <MessageText>
                       <b>{t('No %token% input.', { token: currencies[zapIn.swapTokenField]?.symbol })}</b>{' '}
@@ -544,7 +551,7 @@ export default function AddLiquidity() {
                   </Message>
                 )}
 
-                {canZap && rebalancing && zapIn.priceSeverity > 3 && (
+                {preferZapInstead && rebalancing && zapIn.priceSeverity > 3 && (
                   <Message variant="danger">
                     <MessageText>
                       {t('Price Impact Too Hight. Reduce amount of %token% to maximum limit', {
@@ -554,7 +561,7 @@ export default function AddLiquidity() {
                   </Message>
                 )}
 
-                {canZap &&
+                {preferZapInstead &&
                   (zapIn.priceSeverity > 3 || zapIn.zapInEstimatedError || zapIn.overLimitZapRatio) &&
                   maxAmounts[zapIn.swapTokenField] && (
                     <RowFixed style={{ margin: 'auto' }} onClick={() => zapIn.convertToMaxZappable()}>
@@ -575,7 +582,7 @@ export default function AddLiquidity() {
                       <LightCard padding="1rem" borderRadius="20px">
                         <PoolPriceBar
                           currencies={currencies}
-                          poolTokenPercentage={poolTokenPercentage}
+                          poolTokenPercentage={preferZapInstead ? zapIn.poolTokenPercentage : poolTokenPercentage}
                           noLiquidity={noLiquidity}
                           price={price}
                         />
@@ -623,10 +630,10 @@ export default function AddLiquidity() {
                       </RowBetween>
                     )}
                     <Button
-                      isLoading={canZap && zapInEstimating}
+                      isLoading={preferZapInstead && zapInEstimating}
                       variant={!isValid || zapIn.priceSeverity > 2 ? 'danger' : 'primary'}
                       onClick={() => {
-                        if (canZap) {
+                        if (preferZapInstead) {
                           setLiquidityState({
                             attemptingTxn: false,
                             liquidityErrorMessage: undefined,
@@ -648,7 +655,7 @@ export default function AddLiquidity() {
                       }}
                       disabled={buttonDisabled}
                     >
-                      {errorText ?? t('Supply')}
+                      {errorText || t('Supply')}
                     </Button>
                   </AutoColumn>
                 )}
