@@ -6,6 +6,8 @@ import { isAddress } from 'utils'
 import { useTranslation } from 'contexts/Localization'
 import { WrappedTokenInfo } from 'state/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useBUSDCurrencyAmount } from 'hooks/useBUSDPrice'
+import { formatNumber } from 'utils/formatBalance'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
@@ -87,6 +89,7 @@ interface CurrencyInputPanelProps {
   beforeButton?: React.ReactNode
   disabled?: boolean
   error?: boolean
+  showBUSD?: boolean
 }
 export default function CurrencyInputPanel({
   value,
@@ -106,6 +109,7 @@ export default function CurrencyInputPanel({
   showCommonBases,
   disabled,
   error,
+  showBUSD,
 }: CurrencyInputPanelProps) {
   const { account, library } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
@@ -116,6 +120,8 @@ export default function CurrencyInputPanel({
 
   const token = pair ? pair.liquidityToken : currency instanceof Token ? currency : null
   const tokenAddress = token ? isAddress(token.address) : null
+
+  const amountInDollar = useBUSDCurrencyAmount(showBUSD ? currency : undefined, +value)
 
   const [onPresentCurrencyModal] = useModal(
     <CurrencySearchModal
@@ -219,6 +225,11 @@ export default function CurrencyInputPanel({
             />
           </LabelRow>
           <InputRow selected={disableCurrencySelect}>
+            {!!currency && showBUSD && Number.isFinite(amountInDollar) && (
+              <Text fontSize="12px" color="textSubtle" mr="12px">
+                ~{formatNumber(amountInDollar)} USD
+              </Text>
+            )}
             {account && currency && !disabled && showMaxButton && label !== 'To' && (
               <Button onClick={onMax} scale="xs" variant="secondary">
                 {t('Max').toLocaleUpperCase(locale)}

@@ -3,8 +3,11 @@ import { ArrowDropDownIcon, Box, Button, Text, useModal, Flex } from '@pancakesw
 import CurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
+import { formatNumber } from 'utils/formatBalance'
 import { useCurrencyBalance } from 'state/wallet/hooks'
+import useBUSDPrice from 'hooks/useBUSDPrice'
 import { CurrencyLogo } from '../Logo'
+import { RowBetween } from '../Layout/Row'
 
 const DropDownHeader = styled.div`
   width: 100%;
@@ -69,6 +72,9 @@ export const CurrencySelect = ({
     />,
   )
 
+  const price = useBUSDPrice(selectedCurrency ?? undefined)
+  const quoted = selectedCurrencyBalance && price?.quote(selectedCurrencyBalance)
+
   return (
     <Box width="100%">
       <DropDownContainer p={0} onClick={onPresentCurrencyModal}>
@@ -93,12 +99,23 @@ export const CurrencySelect = ({
         </DropDownHeader>
         <ArrowDropDownIcon color="text" className="down-icon" />
       </DropDownContainer>
-      {account && (
-        <Text color="textSubtle" fontSize="14px">
-          {!hideBalance && !!selectedCurrency
-            ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
-            : null}
-        </Text>
+      {account && !!selectedCurrency && !hideBalance && (
+        <Box>
+          <RowBetween>
+            <Text color="textSubtle" fontSize="12px">
+              {t('Balance')}:
+            </Text>
+            <Text fontSize="12px">{selectedCurrencyBalance?.toSignificant(6) ?? t('Loading')}</Text>
+          </RowBetween>
+          <RowBetween>
+            <div />
+            {Number.isFinite(+quoted?.toExact()) && (
+              <Text fontSize="12px" color="textSubtle">
+                ~${formatNumber(+quoted.toExact())}
+              </Text>
+            )}
+          </RowBetween>
+        </Box>
       )}
     </Box>
   )
