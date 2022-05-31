@@ -126,7 +126,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ rank, team }) => {
               </Flex>
             </Flex>
           </Info>
-          <Link href={`/teams/${team?.id}`} passHref>
+          <Link href={`/teams/${team?.id}`} passHref prefetch={false}>
             <Button as="a" variant="secondary" scale="sm">
               {t('See More')}
             </Button>

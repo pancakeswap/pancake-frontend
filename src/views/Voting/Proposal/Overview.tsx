@@ -53,7 +53,7 @@ const Overview = () => {
     <Container py="40px">
       <PageMeta />
       <Box mb="40px">
-        <Link href="/voting" passHref>
+        <Link href="/voting" passHref prefetch={false}>
           <Button as="a" variant="text" startIcon={<ArrowBackIcon color="primary" width="24px" />} px="0">
             {t('Back to Vote Overview')}
           </Button>

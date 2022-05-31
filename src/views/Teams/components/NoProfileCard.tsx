@@ -19,7 +19,7 @@ const NoProfileCard = () => {
             </Heading>
             <Text>{t('You can do this at any time by clicking on your profile picture in the menu')}</Text>
           </div>
-          <Link href="/create-profile" passHref>
+          <Link href="/create-profile" passHref prefetch={false}>
             <Button as="a" id="teamsPageSetUpProfile" mt={['16px', null, 0]}>
               {t('Set up now')}
             </Button>

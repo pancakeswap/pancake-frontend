@@ -29,7 +29,7 @@ const AppHeader: React.FC<Props> = ({ title, subtitle, helper, backTo, noConfig 
     <AppHeaderContainer>
       <Flex alignItems="center" mr={noConfig ? 0 : '16px'}>
         {backTo && (
-          <Link passHref href={backTo}>
+          <Link passHref href={backTo} prefetch={false}>
             <IconButton as="a">
               <ArrowBackIcon width="32px" />
             </IconButton>

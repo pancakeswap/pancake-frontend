@@ -80,12 +80,12 @@ const FarmAuction = () => {
       <PageMeta />
       <StyledHeader>
         <Breadcrumbs>
-          <NextLink href="/" passHref>
+          <NextLink href="/" passHref prefetch={false}>
             <Link href="/" color="primary" style={{ fontWeight: 400 }}>
               {t('Home')}
             </Link>
           </NextLink>
-          <NextLink href="/farms" passHref>
+          <NextLink href="/farms" passHref prefetch={false}>
             <Link href="/farms" color="primary" style={{ fontWeight: 400 }}>
               {t('Farms')}
             </Link>

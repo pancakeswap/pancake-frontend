@@ -83,7 +83,7 @@ const Menu = () => {
             </Button>
           </HelpButtonWrapper>
           <LeaderboardButtonWrapper>
-            <Link href="/prediction/leaderboard" passHref>
+            <Link href="/prediction/leaderboard" passHref prefetch={false}>
               <Button as="a" variant="subtle" width="48px">
                 <PrizeIcon color="white" />
               </Button>

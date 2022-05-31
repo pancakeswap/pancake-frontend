@@ -361,7 +361,7 @@ const Farms: React.FC = ({ children }) => {
         <Heading scale="lg" color="text">
           {t('Stake LP tokens to earn.')}
         </Heading>
-        <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
+        <NextLinkFromReactRouter to="/farms/auction">
           <Button p="0" variant="text">
             <Text color="primary" bold fontSize="16px" mr="4px">
               {t('Community Auctions')}

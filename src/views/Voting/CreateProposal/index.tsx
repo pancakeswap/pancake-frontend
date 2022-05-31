@@ -168,8 +168,12 @@ const CreateProposal = () => {
       <PageMeta />
       <Box mb="48px">
         <Breadcrumbs>
-          <Link href="/">{t('Home')}</Link>
-          <Link href="/voting">{t('Voting')}</Link>
+          <Link href="/" prefetch={false}>
+            {t('Home')}
+          </Link>
+          <Link href="/voting" prefetch={false}>
+            {t('Voting')}
+          </Link>
           <Text>{t('Make a Proposal')}</Text>
         </Breadcrumbs>
       </Box>
