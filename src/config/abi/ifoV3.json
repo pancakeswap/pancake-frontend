@@ -261,13 +261,6 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "_index", "type": "uint256" }],
-    "name": "getVestingScheduleStartTimeByIndex",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "getVestingSchedulesCount",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -304,8 +297,15 @@
   },
   {
     "inputs": [],
-    "name": "ifoPool",
-    "outputs": [{ "internalType": "contract IFOPool", "name": "", "type": "address" }],
+    "name": "hehe",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "iCake",
+    "outputs": [{ "internalType": "contract ICake", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -318,7 +318,7 @@
       { "internalType": "uint256", "name": "_endBlock", "type": "uint256" },
       { "internalType": "uint256", "name": "_maxBufferBlocks", "type": "uint256" },
       { "internalType": "address", "name": "_adminAddress", "type": "address" },
-      { "internalType": "address", "name": "_ifoPoolAddress", "type": "address" },
+      { "internalType": "address", "name": "_iCakeAddress", "type": "address" },
       { "internalType": "uint256", "name": "_pointThreshold", "type": "uint256" },
       { "internalType": "address", "name": "_admissionProfile", "type": "address" }
     ],
@@ -437,13 +437,6 @@
   },
   { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
   { "inputs": [], "name": "revoke", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
-  {
-    "inputs": [{ "internalType": "uint256", "name": "_time", "type": "uint256" }],
-    "name": "setCurrentTime",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
   {
     "inputs": [
       { "internalType": "uint256", "name": "_offeringAmountPool", "type": "uint256" },
