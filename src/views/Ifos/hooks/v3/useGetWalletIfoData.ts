@@ -52,7 +52,6 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
 
   const { account } = useWeb3React()
   const contract = useIfoV3Contract(address)
-  const readContract = getIfoV3Contract(address)
   const currencyContract = useERC20(currency.address, false)
   const allowance = useIfoAllowance(currencyContract, address)
 
@@ -82,7 +81,8 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       params: [account, [0, 1]],
     }))
 
-    const vestingId = version === 3.2 && (await readContract.computeVestingScheduleIdForAddressAndIndex(account, 0))
+    const IfoV3Contract = getIfoV3Contract(address)
+    const vestingId = version === 3.2 && (await IfoV3Contract.computeVestingScheduleIdForAddressAndIndex(account, 0))
     const ifov3Calls =
       version >= 3.1
         ? [
@@ -157,7 +157,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         countByBeneficiary: countByBeneficiary ? new BigNumber(countByBeneficiary.toString()) : BIG_ZERO,
       },
     }))
-  }, [account, address, dispatch, version, readContract])
+  }, [account, address, dispatch, version])
 
   const resetIfoData = useCallback(() => {
     setState({ ...initialState })
