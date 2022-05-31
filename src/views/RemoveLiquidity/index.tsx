@@ -212,7 +212,7 @@ export default function RemoveLiquidity() {
   const onCurrencyAInput = useCallback((value: string): void => onUserInput(Field.CURRENCY_A, value), [onUserInput])
   const onCurrencyBInput = useCallback((value: string): void => onUserInput(Field.CURRENCY_B, value), [onUserInput])
 
-  const zapContract = useZapContract()
+  const zapContract = useZapContract(true)
 
   // tx sending
   const addTransaction = useTransactionAdder()

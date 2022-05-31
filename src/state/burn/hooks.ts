@@ -141,14 +141,26 @@ export function useDerivedBurnInfo(
     [Field.LIQUIDITY_PERCENT]: percentToRemove,
     [Field.LIQUIDITY]: liquidityToRemove,
     [Field.CURRENCY_A]:
-      amountA && removalCheckedA && !removalCheckedB
-        ? new TokenAmount(tokenA, percentToRemove.multiply(2).multiply(liquidityValueA.raw).quotient)
+      amountA && removalCheckedA && !removalCheckedB && zapOutEstimate.data
+        ? new TokenAmount(
+            tokenA,
+            JSBI.add(
+              percentToRemove.multiply(liquidityValueA.raw).quotient,
+              JSBI.BigInt(zapOutEstimate.data.swapAmountOut.toString()),
+            ),
+          )
         : !removalCheckedA
         ? undefined
         : amountA,
     [Field.CURRENCY_B]:
-      amountB && removalCheckedB && !removalCheckedA
-        ? new TokenAmount(tokenB, percentToRemove.multiply(2).multiply(liquidityValueB.raw).quotient)
+      amountB && removalCheckedB && !removalCheckedA && zapOutEstimate.data
+        ? new TokenAmount(
+            tokenB,
+            JSBI.add(
+              percentToRemove.multiply(liquidityValueB.raw).quotient,
+              JSBI.BigInt(zapOutEstimate.data.swapAmountOut.toString()),
+            ),
+          )
         : !removalCheckedB
         ? undefined
         : amountB,

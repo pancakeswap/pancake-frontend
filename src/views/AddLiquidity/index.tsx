@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { currencyEquals, ETHER, JSBI, TokenAmount, WETH } from '@pancakeswap/sdk'
+import { currencyEquals, ETHER, JSBI, TokenAmount, WETH, MINIMUM_LIQUIDITY } from '@pancakeswap/sdk'
 import { Button, Text, AddIcon, CardBody, Message, useModal, MessageText } from '@pancakeswap/uikit'
 import { logError } from 'utils/sentry'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
@@ -25,7 +25,7 @@ import { MinimalPositionCard } from '../../components/PositionCard'
 import { RowBetween, RowFixed } from '../../components/Layout/Row'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 
-import { LIQUIDITY_MINIMUM_AMOUNT, ROUTER_ADDRESS } from '../../config/constants'
+import { ROUTER_ADDRESS } from '../../config/constants'
 import { PairState } from '../../hooks/usePairs'
 import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
@@ -132,8 +132,8 @@ export default function AddLiquidity() {
     () =>
       !!zapMode &&
       (!noLiquidity ||
-        (pair && JSBI.lessThan(pair.reserve0.raw, LIQUIDITY_MINIMUM_AMOUNT)) ||
-        (pair && JSBI.lessThan(pair.reserve1.raw, LIQUIDITY_MINIMUM_AMOUNT))),
+        (pair && JSBI.lessThan(pair.reserve0.raw, MINIMUM_LIQUIDITY)) ||
+        (pair && JSBI.lessThan(pair.reserve1.raw, MINIMUM_LIQUIDITY))),
     [noLiquidity, pair, zapMode],
   )
 
@@ -164,7 +164,11 @@ export default function AddLiquidity() {
 
   // get formatted amounts
   const formattedAmounts = {
-    [independentField]: typedValue,
+    [independentField]:
+      (canZap && independentField === Field.CURRENCY_A && !zapTokenCheckedA) ||
+      (independentField === Field.CURRENCY_B && !zapTokenCheckedB)
+        ? ''
+        : typedValue,
     [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   }
 
@@ -452,6 +456,19 @@ export default function AddLiquidity() {
 
   const showAddLiquidity = !!currencies[Field.CURRENCY_A] && !!currencies[Field.CURRENCY_B] && steps === Steps.Add
 
+  const showSingleZapWarning = preferZapInstead && !rebalancing && !(!zapTokenCheckedA && !zapTokenCheckedB)
+  const showRebalancingZapWarning = preferZapInstead && rebalancing && zapIn.priceSeverity > 3
+  const showReduceZapTokenButton =
+    preferZapInstead && (zapIn.priceSeverity > 3 || zapIn.zapInEstimatedError) && maxAmounts[zapIn.swapTokenField]
+
+  const showRebalancingConvert =
+    !showSingleZapWarning &&
+    !showRebalancingZapWarning &&
+    !showReduceZapTokenButton &&
+    preferZapInstead &&
+    zapIn.isDependentAmountGreaterThanMaxAmount &&
+    rebalancing
+
   return (
     <Page>
       <AppBody>
@@ -547,7 +564,7 @@ export default function AddLiquidity() {
                   id="add-liquidity-input-tokenb"
                 />
 
-                {preferZapInstead && !rebalancing && !(!zapTokenCheckedA && !zapTokenCheckedB) && (
+                {showSingleZapWarning && (
                   <Message variant={zapIn.priceSeverity > 3 ? 'danger' : 'warning'}>
                     {zapIn.priceSeverity > 3 ? (
                       <MessageText>
@@ -560,7 +577,9 @@ export default function AddLiquidity() {
                       </MessageText>
                     ) : (
                       <MessageText>
-                        <strong>{t('No %token% input.', { token: currencies[zapIn.swapTokenField]?.symbol })}</strong>{' '}
+                        <strong>
+                          {t('No %token% input.', { token: currencies[zapIn.swapOutTokenField]?.symbol })}
+                        </strong>{' '}
                         {t('Some of your %token0% will be converted to %token1%.', {
                           token0: currencies[zapIn.swapTokenField]?.symbol,
                           token1: currencies[zapIn.swapOutTokenField]?.symbol,
@@ -570,7 +589,7 @@ export default function AddLiquidity() {
                   </Message>
                 )}
 
-                {preferZapInstead && rebalancing && zapIn.priceSeverity > 3 && (
+                {showRebalancingZapWarning && (
                   <Message variant="danger">
                     <MessageText>
                       {t('Price Impact Too Hight. Reduce amount of %token% to maximum limit', {
@@ -580,15 +599,54 @@ export default function AddLiquidity() {
                   </Message>
                 )}
 
-                {preferZapInstead &&
-                  (zapIn.priceSeverity > 3 || zapIn.zapInEstimatedError) &&
-                  maxAmounts[zapIn.swapTokenField] && (
-                    <RowFixed style={{ margin: 'auto' }} onClick={() => zapIn.convertToMaxZappable()}>
-                      <Button variant="secondary" scale="sm">
-                        {t('Reduce %token%', { token: currencies[zapIn.swapTokenField]?.symbol })}
-                      </Button>
-                    </RowFixed>
-                  )}
+                {showReduceZapTokenButton && (
+                  <RowFixed style={{ margin: 'auto' }} onClick={() => zapIn.convertToMaxZappable()}>
+                    <Button variant="secondary" scale="sm">
+                      {t('Reduce %token%', { token: currencies[zapIn.swapTokenField]?.symbol })}
+                    </Button>
+                  </RowFixed>
+                )}
+
+                {showRebalancingConvert && (
+                  <Message variant="warning">
+                    <AutoColumn>
+                      <MessageText>
+                        <strong>
+                          {t('Not enough %token%.', { token: currencies[zapIn.swapOutTokenField]?.symbol })}
+                        </strong>{' '}
+                        {zapIn.gasOverhead
+                          ? t(
+                              'Some of your %token0% will be converted to %token1% before adding liquidity, but this may cause higher gas fees.',
+                              {
+                                token0: currencies[zapIn.swapTokenField]?.symbol,
+                                token1: currencies[zapIn.swapOutTokenField]?.symbol,
+                              },
+                            )
+                          : t('Some of your %token0% will be converted to %token1%.', {
+                              token0: currencies[zapIn.swapTokenField]?.symbol,
+                              token1: currencies[zapIn.swapOutTokenField]?.symbol,
+                            })}
+                      </MessageText>
+                    </AutoColumn>
+                  </Message>
+                )}
+
+                {showRebalancingConvert && (
+                  <RowFixed
+                    style={{ margin: 'auto' }}
+                    onClick={() => {
+                      if (dependentField === Field.CURRENCY_A) {
+                        onFieldAInput(maxAmounts[dependentField]?.toExact() ?? '')
+                      } else {
+                        onFieldBInput(maxAmounts[dependentField]?.toExact() ?? '')
+                      }
+                    }}
+                  >
+                    <Button variant="secondary" scale="sm">
+                      {t('Don’t convert')}
+                    </Button>
+                  </RowFixed>
+                )}
 
                 {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
                   <>
