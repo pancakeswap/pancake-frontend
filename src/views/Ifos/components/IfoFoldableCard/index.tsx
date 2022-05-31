@@ -176,7 +176,7 @@ export const IfoCurrentCard = ({
           {shouldShowBunny && <NoHatBunny isLive={publicIfoData.status === 'live'} />}
         </Box>
       )}
-      <Box position="relative" width="100%" maxWidth={['400px', '400px', '400px', '100%']}>
+      <Box position="relative" width="100%" maxWidth={['400px', '400px', '400px', '400px', '400px', '100%']}>
         {!isMobile && shouldShowBunny && <NoHatBunny isCurrent isLive={publicIfoData.status === 'live'} />}
         <StyledCard $isCurrent>
           {!isMobile && (

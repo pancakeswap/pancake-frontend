@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { useSlowRefreshEffect } from 'hooks/useRefreshEffect'
+import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { ifosConfig } from 'config/constants'
 import { fetchUserWalletIfoData, VestingData } from './fetchUserWalletIfoData'
@@ -39,7 +39,7 @@ const useFetchVestingData = (account: string) => {
     }
   }, [account])
 
-  useSlowRefreshEffect(() => {
+  useFastRefreshEffect(() => {
     fetchUserVestingData()
   }, [fetchUserVestingData])
 

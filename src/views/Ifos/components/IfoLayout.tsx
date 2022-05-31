@@ -12,7 +12,7 @@ export const IfoLayoutWrapper = styled(IfoLayout)`
   grid-template-columns: 1fr;
   align-items: flex-start;
 
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.xl} {
     grid-template-columns: minmax(300px, 1fr) minmax(462px, 2fr);
   }
 
