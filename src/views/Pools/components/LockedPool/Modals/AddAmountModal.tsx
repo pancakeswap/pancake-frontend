@@ -11,6 +11,7 @@ import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { getBalanceNumber, getDecimalAmount, getBalanceAmount } from 'utils/formatBalance'
 import { ONE_WEEK_DEFAULT } from 'config/constants/pools'
+import { BIG_ZERO } from 'utils/bigNumber'
 
 import RoiCalculatorModalProvider from './RoiCalculatorModalProvider'
 
@@ -55,10 +56,12 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
   stakingTokenBalance,
 }) => {
   const { theme } = useTheme()
-  const [lockedAmount, setLockedAmount] = useState('0')
+  const [lockedAmount, setLockedAmount] = useState('')
   const [checkedState, setCheckedState] = useState(false)
   const { t } = useTranslation()
-  const lockedAmountAsBigNumber = new BigNumber(lockedAmount)
+  const lockedAmountAsBigNumber = !Number.isNaN(new BigNumber(lockedAmount).toNumber())
+    ? new BigNumber(lockedAmount)
+    : BIG_ZERO
   const totalLockedAmount: number = getBalanceNumber(
     currentLockedAmount.plus(getDecimalAmount(lockedAmountAsBigNumber)),
   )
