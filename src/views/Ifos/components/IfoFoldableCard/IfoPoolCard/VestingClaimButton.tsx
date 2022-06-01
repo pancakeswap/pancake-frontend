@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { AutoRenewIcon, Button } from '@pancakeswap/uikit'
 import { PoolIds } from 'config/constants/types'
 import { WalletIfoData } from 'views/Ifos/types'
@@ -19,9 +20,14 @@ const ClaimButton: React.FC<Props> = ({ poolId, amountAvailableToClaim, walletIf
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
 
-  const setPendingTx = (isPending: boolean) => walletIfoData.setPendingTx(isPending, poolId)
+  const setPendingTx = useCallback(
+    (isPending: boolean) => {
+      return walletIfoData.setPendingTx(isPending, poolId)
+    },
+    [poolId, walletIfoData],
+  )
 
-  const handleClaim = async () => {
+  const handleClaim = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
       setPendingTx(true)
       return walletIfoData.contract.release(userPoolCharacteristics.vestingId)
@@ -36,7 +42,7 @@ const ClaimButton: React.FC<Props> = ({ poolId, amountAvailableToClaim, walletIf
       )
     }
     setPendingTx(false)
-  }
+  }, [poolId, walletIfoData, userPoolCharacteristics, t, fetchWithCatchTxError, setPendingTx, toastSuccess])
 
   return (
     <Button

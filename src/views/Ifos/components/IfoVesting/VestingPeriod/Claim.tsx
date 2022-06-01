@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { AutoRenewIcon, Button } from '@pancakeswap/uikit'
 import { PoolIds } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
@@ -20,7 +21,7 @@ const ClaimButton: React.FC<Props> = ({ data, fetchUserVestingData }) => {
   const contract = useIfoV3Contract(address)
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 
-  const handleClaim = async () => {
+  const handleClaim = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
       return contract.release(vestingId)
     })
@@ -33,7 +34,7 @@ const ClaimButton: React.FC<Props> = ({ data, fetchUserVestingData }) => {
       )
       fetchUserVestingData()
     }
-  }
+  }, [contract, vestingId, t, fetchUserVestingData, fetchWithCatchTxError, toastSuccess])
 
   return (
     <Button
