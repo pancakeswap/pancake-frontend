@@ -80,7 +80,7 @@ export const CurrencySelect = ({
     <Box width="100%" {...props}>
       <DropDownContainer p={0} onClick={onPresentCurrencyModal}>
         <DropDownHeader>
-          <Text color={!selectedCurrency ? 'text' : undefined}>
+          <Text id="pair" color={!selectedCurrency ? 'text' : undefined}>
             {!selectedCurrency ? (
               <>{t('Select')}</>
             ) : (

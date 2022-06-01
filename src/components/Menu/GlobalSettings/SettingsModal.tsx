@@ -132,7 +132,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
         <Flex justifyContent="space-between" alignItems="center" mb="24px">
           <Flex alignItems="center">
             <Text>{t('Enable Simple ’Zap’ Liquidity Provision (Beta)')}</Text>
-            {/* <QuestionHelper text={t('Enable Zap')} placement="top-start" ml="4px" /> */}
+            {/* <QuestionHelper text={'Enable Zap'} placement="top-start" ml="4px" /> */}
           </Flex>
           <Toggle
             checked={zapMode}

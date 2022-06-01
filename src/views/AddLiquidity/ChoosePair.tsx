@@ -70,14 +70,14 @@ export function ChoosePair({
           </Text>
           <FlexGap gap="4px">
             <CurrencySelect
-              id="add-liquidity-input-tokena"
+              id="add-liquidity-select-tokena"
               selectedCurrency={currencyA}
               onCurrencySelect={handleCurrencyASelect}
               showCommonBases
             />
             <AddIcon color="textSubtle" />
             <CurrencySelect
-              id="add-liquidity-input-tokenb"
+              id="add-liquidity-select-tokenb"
               selectedCurrency={currencyB}
               onCurrencySelect={handleCurrencyBSelect}
               showCommonBases
@@ -86,7 +86,13 @@ export function ChoosePair({
         </Box>
       </CardBody>
       <CardFooter>
-        <Button width="100%" variant={!isValid ? 'danger' : 'primary'} onClick={onNext} disabled={!isValid}>
+        <Button
+          data-test="choose-pair-next"
+          width="100%"
+          variant={!isValid ? 'danger' : 'primary'}
+          onClick={onNext}
+          disabled={!isValid}
+        >
           {error ?? t('Add Liquidity')}
         </Button>
       </CardFooter>
