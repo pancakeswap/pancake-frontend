@@ -163,14 +163,27 @@ export default function AddLiquidity() {
   )
 
   // get formatted amounts
-  const formattedAmounts = {
-    [independentField]:
-      (canZap && independentField === Field.CURRENCY_A && !zapTokenCheckedA) ||
-      (independentField === Field.CURRENCY_B && !zapTokenCheckedB)
-        ? ''
-        : typedValue,
-    [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
-  }
+  const formattedAmounts = useMemo(
+    () => ({
+      [independentField]:
+        (canZap && independentField === Field.CURRENCY_A && !zapTokenCheckedA) ||
+        (independentField === Field.CURRENCY_B && !zapTokenCheckedB)
+          ? ''
+          : typedValue,
+      [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
+    }),
+    [
+      canZap,
+      dependentField,
+      independentField,
+      noLiquidity,
+      otherTypedValue,
+      parsedAmounts,
+      typedValue,
+      zapTokenCheckedA,
+      zapTokenCheckedB,
+    ],
+  )
 
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(
@@ -456,14 +469,14 @@ export default function AddLiquidity() {
 
   const showAddLiquidity = !!currencies[Field.CURRENCY_A] && !!currencies[Field.CURRENCY_B] && steps === Steps.Add
 
-  const showSingleZapWarning = preferZapInstead && !rebalancing && !(!zapTokenCheckedA && !zapTokenCheckedB)
-  const showRebalancingZapWarning = preferZapInstead && rebalancing && zapIn.priceSeverity > 3
+  const showZapWarning =
+    preferZapInstead &&
+    ((!rebalancing && !(!zapTokenCheckedA && !zapTokenCheckedB)) || (rebalancing && zapIn.priceSeverity > 3))
   const showReduceZapTokenButton =
     preferZapInstead && (zapIn.priceSeverity > 3 || zapIn.zapInEstimatedError) && maxAmounts[zapIn.swapTokenField]
 
   const showRebalancingConvert =
-    !showSingleZapWarning &&
-    !showRebalancingZapWarning &&
+    !showZapWarning &&
     !showReduceZapTokenButton &&
     preferZapInstead &&
     zapIn.isDependentAmountGreaterThanMaxAmount &&
@@ -566,7 +579,7 @@ export default function AddLiquidity() {
                   id="add-liquidity-input-tokenb"
                 />
 
-                {showSingleZapWarning && (
+                {showZapWarning && (
                   <Message variant={zapIn.priceSeverity > 3 ? 'danger' : 'warning'}>
                     {zapIn.priceSeverity > 3 ? (
                       <MessageText>
@@ -588,16 +601,6 @@ export default function AddLiquidity() {
                         })}
                       </MessageText>
                     )}
-                  </Message>
-                )}
-
-                {showRebalancingZapWarning && (
-                  <Message variant="danger">
-                    <MessageText>
-                      {t('Price Impact Too Hight. Reduce amount of %token% to maximum limit', {
-                        token: currencies[zapIn.swapTokenField]?.symbol,
-                      })}
-                    </MessageText>
                   </Message>
                 )}
 

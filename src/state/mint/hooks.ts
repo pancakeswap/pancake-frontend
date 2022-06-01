@@ -191,7 +191,7 @@ export function useDerivedMintInfo(
   }
 
   if (pairState === PairState.INVALID) {
-    error = error ?? t('Invalid pair')
+    error = error ?? t('Choose a valid pair')
   }
 
   const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts
@@ -209,7 +209,6 @@ export function useDerivedMintInfo(
     addError = t('Enter an amount')
   }
 
-  // TODO
   if (currencyAAmount && currencyBalances?.[Field.CURRENCY_A]?.lessThan(currencyAAmount)) {
     addError = t('Insufficient %symbol% balance', { symbol: currencies[Field.CURRENCY_A]?.symbol })
   }
@@ -554,27 +553,6 @@ export function useZapIn({
         } else {
           onFieldBInput(formatInput)
         }
-      }
-    } else {
-      if (swapTokenField === Field.CURRENCY_A && maxAmounts[Field.CURRENCY_A]) {
-        onFieldAInput(
-          formatUnits(
-            JSBI.greaterThan(maxAmounts[Field.CURRENCY_A].raw, maxZappableByRatio)
-              ? maxZappableByRatio.toString()
-              : maxAmounts[Field.CURRENCY_A].raw.toString(),
-            maxAmounts[Field.CURRENCY_A]?.currency.decimals,
-          ),
-        )
-      }
-      if (swapTokenField === Field.CURRENCY_B && maxAmounts[Field.CURRENCY_B]) {
-        onFieldBInput(
-          formatUnits(
-            JSBI.greaterThan(maxAmounts[Field.CURRENCY_B].raw, maxZappableByRatio)
-              ? maxZappableByRatio.toString()
-              : maxAmounts[Field.CURRENCY_B].raw.toString(),
-            maxAmounts[Field.CURRENCY_B]?.currency.decimals,
-          ),
-        )
       }
     }
   }, [maxAmounts, maxZappableByRatio, onFieldAInput, onFieldBInput, swapTokenField])

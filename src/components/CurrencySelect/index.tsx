@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { ArrowDropDownIcon, Box, Button, Text, useModal, Flex } from '@pancakeswap/uikit'
+import { ArrowDropDownIcon, Box, Button, Text, useModal, Flex, BoxProps } from '@pancakeswap/uikit'
 import CurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
@@ -46,7 +46,7 @@ const DropDownContainer = styled(Button)`
   }
 `
 
-interface CurrencySelectProps extends CurrencySearchModalProps {
+interface CurrencySelectProps extends CurrencySearchModalProps, BoxProps {
   hideBalance?: boolean
 }
 
@@ -56,6 +56,7 @@ export const CurrencySelect = ({
   otherSelectedCurrency,
   showCommonBases,
   hideBalance,
+  ...props
 }: CurrencySelectProps) => {
   const { account } = useActiveWeb3React()
 
@@ -76,7 +77,7 @@ export const CurrencySelect = ({
   const quoted = selectedCurrencyBalance && price?.quote(selectedCurrencyBalance)
 
   return (
-    <Box width="100%">
+    <Box width="100%" {...props}>
       <DropDownContainer p={0} onClick={onPresentCurrencyModal}>
         <DropDownHeader>
           <Text color={!selectedCurrency ? 'text' : undefined}>

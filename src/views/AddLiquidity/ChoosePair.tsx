@@ -66,18 +66,28 @@ export function ChoosePair({
       <CardBody>
         <Box>
           <Text textTransform="uppercase" color="secondary" bold small pb="24px">
-            {t('Choose a Token Pair')}
+            {t('Choose a valid pair')}
           </Text>
           <FlexGap gap="4px">
-            <CurrencySelect selectedCurrency={currencyA} onCurrencySelect={handleCurrencyASelect} showCommonBases />
+            <CurrencySelect
+              id="add-liquidity-input-tokena"
+              selectedCurrency={currencyA}
+              onCurrencySelect={handleCurrencyASelect}
+              showCommonBases
+            />
             <AddIcon color="textSubtle" />
-            <CurrencySelect selectedCurrency={currencyB} onCurrencySelect={handleCurrencyBSelect} showCommonBases />
+            <CurrencySelect
+              id="add-liquidity-input-tokenb"
+              selectedCurrency={currencyB}
+              onCurrencySelect={handleCurrencyBSelect}
+              showCommonBases
+            />
           </FlexGap>
         </Box>
       </CardBody>
       <CardFooter>
         <Button width="100%" variant={!isValid ? 'danger' : 'primary'} onClick={onNext} disabled={!isValid}>
-          {error ?? t('Add liquidity')}
+          {error ?? t('Add Liquidity')}
         </Button>
       </CardFooter>
     </>

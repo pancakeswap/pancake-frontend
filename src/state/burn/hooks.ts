@@ -209,7 +209,7 @@ function useZapOutEstimate({
   tokenToReceive?: string
 }) {
   const zapContract = useZapContract()
-  const { data, status, error } = useSWRContract(
+  return useSWRContract(
     pair &&
       tokenToReceive &&
       liquidityToRemove && {
@@ -218,10 +218,4 @@ function useZapOutEstimate({
         params: [pair.liquidityToken.address, liquidityToRemove.raw.toString(), tokenToReceive],
       },
   )
-
-  return {
-    data,
-    status,
-    error,
-  }
 }
