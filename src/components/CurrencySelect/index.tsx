@@ -60,7 +60,10 @@ export const CurrencySelect = ({
 }: CurrencySelectProps) => {
   const { account } = useActiveWeb3React()
 
-  const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, selectedCurrency ?? undefined)
+  const selectedCurrencyBalance = useCurrencyBalance(
+    account ?? undefined,
+    !hideBalance && selectedCurrency ? selectedCurrency : undefined,
+  )
 
   const { t } = useTranslation()
 
@@ -73,7 +76,7 @@ export const CurrencySelect = ({
     />,
   )
 
-  const price = useBUSDPrice(selectedCurrency ?? undefined)
+  const price = useBUSDPrice(selectedCurrencyBalance && selectedCurrency ? selectedCurrency : undefined)
   const quoted = selectedCurrencyBalance && price?.quote(selectedCurrencyBalance)
 
   return (

@@ -121,7 +121,10 @@ export default function CurrencyInputPanel({
   const token = pair ? pair.liquidityToken : currency instanceof Token ? currency : null
   const tokenAddress = token ? isAddress(token.address) : null
 
-  const amountInDollar = useBUSDCurrencyAmount(showBUSD ? currency : undefined, +value)
+  const amountInDollar = useBUSDCurrencyAmount(
+    showBUSD ? currency : undefined,
+    Number.isFinite(+value) ? +value : undefined,
+  )
 
   const [onPresentCurrencyModal] = useModal(
     <CurrencySearchModal

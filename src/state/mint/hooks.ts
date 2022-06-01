@@ -250,14 +250,15 @@ function guessMaxZappableAmount(pair: Pair, token0AmountIn: TokenAmount, token1A
   if (token0AmountIn && token1AmountIn) {
     const maxSwapAmount = getMaxZapSwapAmount(pair, token0AmountIn.token)
 
-    // TODO: add buffer
+    const [_, newPair] = pair.getInputAmount(new TokenAmount(token0AmountIn.token, maxSwapAmount))
+
     return (
       maxSwapAmount &&
       JSBI.add(
-        JSBI.multiply(maxSwapAmount, JSBI.BigInt(2)),
+        maxSwapAmount,
         JSBI.divide(
-          JSBI.multiply(token1AmountIn.raw, pair.reserveOf(token0AmountIn.token).raw),
-          pair.reserveOf(token1AmountIn.token).raw,
+          JSBI.multiply(token1AmountIn.raw, newPair.reserveOf(token0AmountIn.token).raw),
+          newPair.reserveOf(token1AmountIn.token).raw,
         ),
       )
     )
@@ -524,11 +525,11 @@ export function useZapIn({
     )
   }, [pair, swapTokens, zapInEstimated, swapTokenField])
 
-  const priceSeverity = overLimitZapRatio ? 4 : priceImpact ? warningSeverity(priceImpact) : 0
+  const priceSeverity = overLimitZapRatio || zapInEstimatedError ? 4 : priceImpact ? warningSeverity(priceImpact) : 0
 
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(false)
 
-  const maxZappableByRatio = useMemo(
+  const maxZappableAmount = useMemo(
     () =>
       guessMaxZappableAmount(
         pair,
@@ -539,11 +540,11 @@ export function useZapIn({
   )
 
   const convertToMaxZappable = useCallback(() => {
-    if (maxZappableByRatio) {
+    if (maxZappableAmount) {
       if (maxAmounts[swapTokenField]) {
         const formatInput = formatUnits(
-          JSBI.greaterThan(maxAmounts[swapTokenField].raw, maxZappableByRatio)
-            ? maxZappableByRatio.toString()
+          JSBI.greaterThan(maxAmounts[swapTokenField].raw, maxZappableAmount)
+            ? maxZappableAmount.toString()
             : maxAmounts[swapTokenField].raw.toString(),
           maxAmounts[swapTokenField]?.currency.decimals,
         )
@@ -555,7 +556,7 @@ export function useZapIn({
         }
       }
     }
-  }, [maxAmounts, maxZappableByRatio, onFieldAInput, onFieldBInput, swapTokenField])
+  }, [maxAmounts, maxZappableAmount, onFieldAInput, onFieldBInput, swapTokenField])
 
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
@@ -636,13 +637,13 @@ export function useZapIn({
   )
 
   useEffect(() => {
-    if (!triedAutoReduce && singleTokenToZapAmount && maxZappableByRatio) {
-      if (JSBI.greaterThan(singleTokenToZapAmount.raw, maxZappableByRatio)) {
+    if (!triedAutoReduce && singleTokenToZapAmount && maxZappableAmount) {
+      if (JSBI.greaterThan(singleTokenToZapAmount.raw, maxZappableAmount)) {
         convertToMaxZappable()
         setTriedAutoReduce(true)
       }
     }
-  }, [convertToMaxZappable, maxZappableByRatio, rebalancing, singleTokenToZapAmount, triedAutoReduce])
+  }, [convertToMaxZappable, maxZappableAmount, rebalancing, singleTokenToZapAmount, triedAutoReduce])
 
   let error: string | undefined
 
