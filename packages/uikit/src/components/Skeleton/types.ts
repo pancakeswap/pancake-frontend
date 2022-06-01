@@ -1,4 +1,4 @@
-import { LayoutProps, SpaceProps } from "styled-system";
+import { LayoutProps, SpaceProps, BorderRadiusProps } from "styled-system";
 
 export const animation = {
   WAVES: "waves",
@@ -13,12 +13,12 @@ export const variant = {
 export type Animation = typeof animation[keyof typeof animation];
 export type Variant = typeof variant[keyof typeof variant];
 
-export interface SkeletonProps extends SpaceProps, LayoutProps {
+export interface SkeletonProps extends SpaceProps, LayoutProps, BorderRadiusProps {
   animation?: Animation;
   variant?: Variant;
 }
 
-export interface SkeletonV2Props extends SpaceProps, LayoutProps {
+export interface SkeletonV2Props extends SpaceProps, LayoutProps, BorderRadiusProps {
   animation?: Animation;
   variant?: Variant;
   isDataReady?: boolean;
