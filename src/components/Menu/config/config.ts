@@ -69,11 +69,11 @@ const config: (t: ContextApi['t'], languageCode?: string) => ConfigMenuItemsType
     href: '/prediction',
     icon: TrophyIcon,
     fillIcon: TrophyFillIcon,
+    hideSubNav: true,
     items: [
       {
         label: t('Trading Competition'),
         href: '/competition',
-        hideSubNav: true,
       },
       {
         label: t('Prediction (BETA)'),
@@ -82,6 +82,10 @@ const config: (t: ContextApi['t'], languageCode?: string) => ConfigMenuItemsType
       {
         label: t('Lottery'),
         href: '/lottery',
+      },
+      {
+        label: t('Syrup Pot'),
+        href: '/pot',
       },
     ],
   },
