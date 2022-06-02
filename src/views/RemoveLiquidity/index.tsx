@@ -17,8 +17,10 @@ import {
   Flex,
   useModal,
   Checkbox,
+  AutoRenewIcon,
 } from '@pancakeswap/uikit'
 import { BigNumber } from '@ethersproject/bignumber'
+import { FetchStatus } from 'config/constants/types'
 import { callWithEstimateGas } from 'utils/calls'
 import { getLPSymbol } from 'utils/getLpSymbol'
 import { getZapAddress } from 'utils/addressHelpers'
@@ -514,6 +516,9 @@ export default function RemoveLiquidity() {
     'removeLiquidityModal',
   )
 
+  const isZapOutA = !removalCheckedB && removalCheckedA
+  const isZapOutB = !removalCheckedA && removalCheckedB
+
   return (
     <Page>
       <AppBody>
@@ -582,7 +587,7 @@ export default function RemoveLiquidity() {
                     <Flex alignItems="center">
                       <Flex mr="9px">
                         <Checkbox
-                          disabled={!removalCheckedB && removalCheckedA}
+                          disabled={isZapOutA}
                           scale="sm"
                           checked={removalCheckedA}
                           onChange={(e) => setRemovalCheckedA(e.target.checked)}
@@ -593,13 +598,21 @@ export default function RemoveLiquidity() {
                         {currencyA?.symbol}
                       </Text>
                     </Flex>
-                    <Text small>{formattedAmounts[Field.CURRENCY_A] || '-'}</Text>
+                    <Flex>
+                      {isZapOutA && zapOutEstimate.status !== FetchStatus.Fetched && <AutoRenewIcon spin />}
+                      <Text small bold style={{ opacity: zapOutEstimate.isValidating ? 0.8 : 1 }}>
+                        {formattedAmounts[Field.CURRENCY_A] || '0'}
+                      </Text>
+                      <Text small ml="4px">
+                        ({isZapOutA ? '100' : removalCheckedB && removalCheckedA ? '50' : '0'}%)
+                      </Text>
+                    </Flex>
                   </Flex>
                   <Flex justifyContent="space-between" as="label" alignItems="center">
                     <Flex alignItems="center">
                       <Flex mr="9px">
                         <Checkbox
-                          disabled={!removalCheckedA && removalCheckedB}
+                          disabled={isZapOutB}
                           scale="sm"
                           checked={removalCheckedB}
                           onChange={(e) => setRemovalCheckedB(e.target.checked)}
@@ -610,7 +623,15 @@ export default function RemoveLiquidity() {
                         {currencyB?.symbol}
                       </Text>
                     </Flex>
-                    <Text small>{formattedAmounts[Field.CURRENCY_B] || '-'}</Text>
+                    <Flex>
+                      {isZapOutB && zapOutEstimate.status !== FetchStatus.Fetched && <AutoRenewIcon spin />}
+                      <Text bold small style={{ opacity: zapOutEstimate.isValidating ? 0.8 : 1 }}>
+                        {formattedAmounts[Field.CURRENCY_B] || '0'}
+                      </Text>
+                      <Text small ml="4px">
+                        ({isZapOutB ? '100' : removalCheckedB && removalCheckedA ? '50' : '0'}%)
+                      </Text>
+                    </Flex>
                   </Flex>
                   {chainId && (oneCurrencyIsWBNB || oneCurrencyIsBNB) ? (
                     <RowBetween style={{ justifyContent: 'flex-end', fontSize: '14px' }}>
