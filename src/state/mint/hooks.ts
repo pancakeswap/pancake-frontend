@@ -250,17 +250,18 @@ function guessMaxZappableAmount(pair: Pair, token0AmountIn: TokenAmount, token1A
   if (token0AmountIn && token1AmountIn) {
     const maxSwapAmount = getMaxZapSwapAmount(pair, token0AmountIn.token)
 
+    if (!maxSwapAmount) {
+      return undefined
+    }
+
     const [_, newPair] = pair.getInputAmount(new TokenAmount(token0AmountIn.token, maxSwapAmount))
 
-    return (
-      maxSwapAmount &&
-      JSBI.add(
-        maxSwapAmount,
-        JSBI.divide(
-          JSBI.multiply(token1AmountIn.raw, newPair.reserveOf(token0AmountIn.token).raw),
-          newPair.reserveOf(token1AmountIn.token).raw,
-        ),
-      )
+    return JSBI.add(
+      maxSwapAmount,
+      JSBI.divide(
+        JSBI.multiply(token1AmountIn.raw, newPair.reserveOf(token0AmountIn.token).raw),
+        newPair.reserveOf(token1AmountIn.token).raw,
+      ),
     )
   }
 
