@@ -43,6 +43,17 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 40,
+    v1pid: 390,
+    lpSymbol: 'CHR-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x6045931e511ef7e53a4a817f971e0ca28c758809',
+    },
+    token: serializedTokens.chr,
+    quoteToken: serializedTokens.busd,
+  },
+  {
     pid: 38,
     v1pid: 386,
     lpSymbol: 'HOTCROSS-BNB LP',
@@ -722,17 +733,6 @@ const farms: SerializedFarmConfig[] = [
       56: '0x2e28b9b74d6d99d4697e913b82b41ef1cac51c6c',
     },
     token: serializedTokens.tusd,
-    quoteToken: serializedTokens.busd,
-  },
-  {
-    pid: 40,
-    v1pid: 390,
-    lpSymbol: 'CHR-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0x6045931e511ef7e53a4a817f971e0ca28c758809',
-    },
-    token: serializedTokens.chr,
     quoteToken: serializedTokens.busd,
   },
   {
