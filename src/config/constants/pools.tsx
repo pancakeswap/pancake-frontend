@@ -62,6 +62,19 @@ const pools: SerializedPoolConfig[] = [
     isFinished: false,
   },
   {
+    sousId: 155,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.chr,
+    contractAddress: {
+      97: '',
+      56: '0x593edbd14a5b7eec828336accca9c16cc12f04be',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    tokenPerBlock: '1.655',
+    sortOrder: 999,
+  },
+  {
     sousId: 281,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.MIX,
@@ -104,20 +117,6 @@ const pools: SerializedPoolConfig[] = [
     version: 3,
   },
   {
-    sousId: 278,
-    stakingToken: serializedTokens.cake,
-    earningToken: serializedTokens.rpg,
-    contractAddress: {
-      97: '',
-      56: '0xD1c395BCdC2d64ac6544A34A36185483B00530a1',
-    },
-    poolCategory: PoolCategory.CORE,
-    harvest: true,
-    sortOrder: 999,
-    tokenPerBlock: '0.06794',
-    version: 3,
-  },
-  {
     sousId: 277,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.ankr,
@@ -135,6 +134,20 @@ const pools: SerializedPoolConfig[] = [
 
 // known finished pools
 const finishedPools = [
+  {
+    sousId: 278,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.rpg,
+    contractAddress: {
+      97: '',
+      56: '0xD1c395BCdC2d64ac6544A34A36185483B00530a1',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    sortOrder: 999,
+    tokenPerBlock: '0.06794',
+    version: 3,
+  },
   {
     sousId: 276,
     stakingToken: serializedTokens.cake,
@@ -1693,19 +1706,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '1.6087',
-    sortOrder: 999,
-  },
-  {
-    sousId: 155,
-    stakingToken: serializedTokens.cake,
-    earningToken: serializedTokens.chr,
-    contractAddress: {
-      97: '',
-      56: '0x593edbd14a5b7eec828336accca9c16cc12f04be',
-    },
-    poolCategory: PoolCategory.CORE,
-    harvest: true,
-    tokenPerBlock: '1.655',
     sortOrder: 999,
   },
   {
