@@ -12,6 +12,7 @@ import {
   ProfileAvatar,
   Skeleton,
   Heading,
+  useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
 import { useProfileForAddress } from 'state/profile/hooks'
 import useTheme from 'hooks/useTheme'
@@ -23,7 +24,6 @@ import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from 'contexts/Localization'
 import { FetchStatus } from 'config/constants/types'
 import { PredictionUser } from 'state/types'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import { NetWinningsView } from './Results/styles'
 import MobileBetsTable from './MobileBetsTable'
 import DesktopBetsTable from './Results/DesktopBetsTable'
@@ -59,7 +59,7 @@ const WalletStatsModal: React.FC<WalletStatsModalProps> = ({
   const { theme } = useTheme()
   const { profile } = useProfileForAddress(address)
   const isLoading = leaderboardLoadingState === FetchStatus.Fetching
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpointsContext()
 
   const handleDismiss = () => {
     if (onBeforeDismiss) {

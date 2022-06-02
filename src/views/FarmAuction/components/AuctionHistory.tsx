@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import {
   Text,
   Flex,
@@ -12,6 +11,7 @@ import {
   IconButton,
   BunnyPlaceholderIcon,
   Spinner,
+  useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import AuctionLeaderboardTable from './AuctionLeaderboard/AuctionLeaderboardTable'
@@ -48,7 +48,7 @@ const AuctionHistory: React.FC<AuctionHistoryProps> = ({ mostRecentClosedAuction
     currentLanguage: { locale },
   } = useTranslation()
 
-  const { isXs, isSm, isMd, isLg, isXl, isXxl } = useMatchBreakpoints()
+  const { isXs, isSm, isMd, isLg, isXl, isXxl } = useMatchBreakpointsContext()
   const isLargerScreen = isLg || isXl || isXxl
   const isSmallerScreen = isXs || isSm || isMd
 

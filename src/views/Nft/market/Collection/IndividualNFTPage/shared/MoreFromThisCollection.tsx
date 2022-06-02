@@ -6,13 +6,20 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 // eslint-disable-next-line import/no-unresolved
 import 'swiper/css/bundle'
 import SwiperCore from 'swiper'
-import { ArrowBackIcon, ArrowForwardIcon, Box, IconButton, Text, Flex } from '@pancakeswap/uikit'
+import {
+  ArrowBackIcon,
+  ArrowForwardIcon,
+  Box,
+  IconButton,
+  Text,
+  Flex,
+  useMatchBreakpointsContext,
+} from '@pancakeswap/uikit'
 import { isAddress } from 'utils'
 import { useNftsFromCollection } from 'state/nftMarket/hooks'
 import { fetchNftsFromCollections } from 'state/nftMarket/reducer'
 import { useAppDispatch } from 'state'
 import Trans from 'components/Trans'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import { pancakeBunniesAddress } from '../../../constants'
 import { CollectibleLinkCard } from '../../../components/CollectibleCard'
 import useAllPancakeBunnyNfts from '../../../hooks/useAllPancakeBunnyNfts'
@@ -50,7 +57,7 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({
   const dispatch = useAppDispatch()
   const [swiperRef, setSwiperRef] = useState<SwiperCore>(null)
   const [activeIndex, setActiveIndex] = useState(1)
-  const { isMobile, isMd, isLg } = useMatchBreakpoints()
+  const { isMobile, isMd, isLg } = useMatchBreakpointsContext()
   const allPancakeBunnyNfts = useAllPancakeBunnyNfts(collectionAddress)
   const collectionNfts = useNftsFromCollection(collectionAddress)
 

@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react'
-import { Flex, Card, Text, Table, Th, ArrowBackIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
+import {
+  Flex,
+  Card,
+  Text,
+  Table,
+  Th,
+  ArrowBackIcon,
+  ArrowForwardIcon,
+  useMatchBreakpointsContext,
+} from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { Activity, NftToken } from 'state/nftMarket/types'
@@ -29,7 +37,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ nft }) => {
   const [sortedTokenActivities, setSortedTokenActivities] = useState<Activity[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const bnbBusdPrice = useBNBBusdPrice()
-  const { isXs, isSm } = useMatchBreakpoints()
+  const { isXs, isSm } = useMatchBreakpointsContext()
 
   useEffect(() => {
     const fetchTokenActivity = async () => {

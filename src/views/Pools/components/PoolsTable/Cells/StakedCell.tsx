@@ -1,8 +1,7 @@
-import { Box, Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { Box, Flex, Skeleton, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
@@ -20,7 +19,7 @@ const StyledCell = styled(BaseCell)``
 
 const StakedCell: React.FC<StakedCellProps> = ({ pool, account }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
 
   // vault
   const {

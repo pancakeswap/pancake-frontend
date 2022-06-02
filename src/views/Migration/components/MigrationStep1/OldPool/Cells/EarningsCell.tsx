@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Flex } from '@pancakeswap/uikit'
+import { Text, Flex, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { DeserializedPool } from 'state/types'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -8,7 +8,6 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 interface EarningsCellProps {
   pool: DeserializedPool
@@ -26,7 +25,7 @@ const StyledCell = styled(BaseCell)`
 
 const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
   const { earningToken, userData } = pool
 
   const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO

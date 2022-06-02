@@ -1,11 +1,10 @@
-import { NoProfileAvatarIcon, Flex, Heading, Skeleton, Text, Box } from '@pancakeswap/uikit'
+import { NoProfileAvatarIcon, Flex, Heading, Skeleton, Text, Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { useProfile } from 'state/profile/hooks'
 import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
 import { useTranslation } from 'contexts/Localization'
 import truncateHash from 'utils/truncateHash'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 const Desktop = styled(Flex)`
   align-items: center;
@@ -40,7 +39,7 @@ const UserDetail = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const truncatedAddress = truncateHash(account)
-  const { isMobile, isTablet, isDesktop } = useMatchBreakpoints()
+  const { isMobile, isTablet, isDesktop } = useMatchBreakpointsContext()
 
   const getDesktopHeading = () => {
     if (profile) {

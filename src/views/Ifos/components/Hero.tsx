@@ -1,9 +1,8 @@
 import styled from 'styled-components'
-import { Box, Heading, Text, Button, Flex } from '@pancakeswap/uikit'
+import { Box, Heading, Text, Button, Flex, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import Container from 'components/Layout/Container'
 import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 const StyledHero = styled(Box)`
   background-image: url('/images/ifos/assets/ifo-banner-${({ theme }) => (theme.isDark ? 'dark' : 'light')}.png');
@@ -48,7 +47,7 @@ const StyledSubTitle = styled(Text)`
 const Hero = () => {
   const router = useRouter()
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
 
   const handleClick = () => {
     const howToElem = document.getElementById('ifo-how-to')

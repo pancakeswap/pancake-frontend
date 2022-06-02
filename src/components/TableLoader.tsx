@@ -1,13 +1,12 @@
 import styled from 'styled-components'
-import { Flex, Skeleton, Td } from '@pancakeswap/uikit'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
+import { Flex, Skeleton, Td, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 
 const GridItem = styled(Flex)`
   align-items: center;
 `
 
 const LoadingRow: React.FC = () => {
-  const { isXs, isSm } = useMatchBreakpoints()
+  const { isXs, isSm } = useMatchBreakpointsContext()
 
   return (
     <tr>

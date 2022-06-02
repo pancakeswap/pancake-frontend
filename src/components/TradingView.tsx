@@ -1,5 +1,4 @@
-import { Box, FlexProps } from '@pancakeswap/uikit'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
+import { Box, FlexProps, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Script from 'next/script'
 import { useEffect, useRef } from 'react'
@@ -61,7 +60,7 @@ const TradingView = ({ id, symbol }: TradingViewProps) => {
   const { currentLanguage } = useTranslation()
   const theme = useTheme()
   const widgetRef = useRef<any>()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
 
   useEffect(() => {
     const opts: any = {

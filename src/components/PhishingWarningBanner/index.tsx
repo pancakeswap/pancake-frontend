@@ -1,8 +1,7 @@
 import styled from 'styled-components'
-import { Text, Flex, Box, CloseIcon, IconButton } from '@pancakeswap/uikit'
+import { Text, Flex, Box, CloseIcon, IconButton, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { usePhishingBannerManager } from 'state/user/hooks'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 const Container = styled(Flex)`
   overflow: hidden;
@@ -43,7 +42,7 @@ const SpeechBubble = styled.div`
 const PhishingWarningBanner: React.FC = () => {
   const { t } = useTranslation()
   const [, hideBanner] = usePhishingBannerManager()
-  const { isMobile, isMd } = useMatchBreakpoints()
+  const { isMobile, isMd } = useMatchBreakpointsContext()
   const warningText = t("please make sure you're visiting https://pancakeswap.finance - check the URL carefully.")
   const warningTextAsParts = warningText.split(/(https:\/\/pancakeswap.finance)/g)
   const warningTextComponent = (

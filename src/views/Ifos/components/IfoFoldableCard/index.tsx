@@ -1,5 +1,13 @@
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
-import { Box, Card, CardBody, CardFooter, CardHeader, ExpandableLabel, ExpandableButton } from '@pancakeswap/uikit'
+import {
+  Box,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  ExpandableLabel,
+  ExpandableButton,
+  useMatchBreakpointsContext,
+} from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Ifo, PoolIds } from 'config/constants/types'
@@ -120,7 +128,7 @@ const StyledNoHatBunny = styled.div<{ $isLive: boolean; $isCurrent?: boolean }>`
 `
 
 const NoHatBunny = ({ isLive, isCurrent }: { isLive?: boolean; isCurrent?: boolean }) => {
-  const { isXs, isSm, isMd } = useMatchBreakpoints()
+  const { isXs, isSm, isMd } = useMatchBreakpointsContext()
   const isSmallerThanTablet = isXs || isSm || isMd
   if (isSmallerThanTablet && isLive) return null
   return (
@@ -147,7 +155,7 @@ export const IfoCurrentCard = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
 
   const shouldShowBunny = publicIfoData.status === 'live' || publicIfoData.status === 'coming_soon'
 
@@ -204,7 +212,7 @@ const IfoFoldableCard = ({
   walletIfoData: WalletIfoData
 }) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpointsContext()
 
   return (
     <Box position="relative">

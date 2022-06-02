@@ -1,4 +1,4 @@
-import { ModalProvider, light, dark } from '@pancakeswap/uikit'
+import { ModalProvider, light, dark, MatchBreakpointsProvider } from '@pancakeswap/uikit'
 import { Web3ReactProvider } from '@web3-react/core'
 import { Provider } from 'react-redux'
 import { SWRConfig } from 'swr'
@@ -9,7 +9,6 @@ import { ToastsProvider } from 'contexts/ToastsContext'
 import { fetchStatusMiddleware } from 'hooks/useSWRContract'
 import { Store } from '@reduxjs/toolkit'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
-import { MatchBreakpointsProvider } from './contexts/MatchBreakpoints/Provider'
 
 const StyledThemeProvider = (props) => {
   const { resolvedTheme } = useNextTheme()
@@ -20,10 +19,10 @@ const Providers: React.FC<{ store: Store }> = ({ children, store }) => {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <Provider store={store}>
-        <ToastsProvider>
-          <NextThemeProvider>
-            <StyledThemeProvider>
-              <MatchBreakpointsProvider>
+        <MatchBreakpointsProvider>
+          <ToastsProvider>
+            <NextThemeProvider>
+              <StyledThemeProvider>
                 <LanguageProvider>
                   <SWRConfig
                     value={{
@@ -33,10 +32,10 @@ const Providers: React.FC<{ store: Store }> = ({ children, store }) => {
                     <ModalProvider>{children}</ModalProvider>
                   </SWRConfig>
                 </LanguageProvider>
-              </MatchBreakpointsProvider>
-            </StyledThemeProvider>
-          </NextThemeProvider>
-        </ToastsProvider>
+              </StyledThemeProvider>
+            </NextThemeProvider>
+          </ToastsProvider>
+        </MatchBreakpointsProvider>
       </Provider>
     </Web3ReactProvider>
   )

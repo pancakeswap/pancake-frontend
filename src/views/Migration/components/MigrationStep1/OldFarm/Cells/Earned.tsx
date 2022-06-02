@@ -1,9 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Text } from '@pancakeswap/uikit'
+import { Flex, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 const StyledCell = styled(BaseCell)`
   display: none;
@@ -21,7 +20,7 @@ export interface EarnedProps {
 
 const Earned: React.FC<EarnedProps> = ({ earnings }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
   const labelText = t('%asset% Earned', { asset: 'CAKE' })
 
   return (

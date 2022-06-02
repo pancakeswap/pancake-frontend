@@ -9,7 +9,7 @@ import Multiplier, { MultiplierProps } from 'views/Migration/components/Migratio
 import Liquidity, { LiquidityProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Liquidity'
 import ExpandActionCell from 'views/Migration/components/MigrationStep1/OldPool/Cells/ExpandActionCell'
 import { useFarmUser } from 'state/farms/hooks'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
+import { useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import AprCell from './Cells/AprCell'
 import StakeButtonCells from './Cells/StakeButtonCells'
 import StakeButton from './StakeButton'
@@ -55,7 +55,7 @@ const RightContainer = styled.div`
 `
 
 const FarmRow: React.FunctionComponent<RowProps> = ({ earned, farm, staked, apr, multiplier, liquidity }) => {
-  const { isMobile, isXl, isXxl } = useMatchBreakpoints()
+  const { isMobile, isXl, isXxl } = useMatchBreakpointsContext()
   const isLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)

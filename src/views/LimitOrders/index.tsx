@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { CurrencyAmount, Token, Trade } from '@pancakeswap/sdk'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
-import { Button, Box, Flex, useModal, BottomDrawer, Link } from '@pancakeswap/uikit'
+import { Button, Box, Flex, useModal, BottomDrawer, Link, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 
 import { useTranslation } from 'contexts/Localization'
 import { AutoColumn } from 'components/Layout/Column'
@@ -39,7 +38,7 @@ const LimitOrders = () => {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
   const router = useRouter()
-  const { isMobile, isTablet } = useMatchBreakpoints()
+  const { isMobile, isTablet } = useMatchBreakpointsContext()
   const { theme } = useTheme()
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartExpanded, setIsChartExpanded] = useState(false)

@@ -1,10 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Heading } from '@pancakeswap/uikit'
+import { Text, Flex, Heading, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
 import { ActionContainer, ActionTitles, ActionContent } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 const Container = styled(ActionContainer)`
   flex: 2;
@@ -23,7 +22,7 @@ const AutoEarning: React.FunctionComponent<AutoEarningProps> = ({
   earningTokenPrice,
 }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
 
   const actionTitle = (
     <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">

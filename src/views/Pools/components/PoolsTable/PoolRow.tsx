@@ -2,7 +2,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { DeserializedPool, VaultKey } from 'state/types'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
+import { useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import NameCell from './Cells/NameCell'
 import EarningsCell from './Cells/EarningsCell'
 import AprCell from './Cells/AprCell'
@@ -26,7 +26,7 @@ const StyledRow = styled.div`
 `
 
 const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
-  const { isXs, isSm, isMd, isLg, isXl, isXxl, isTablet, isDesktop } = useMatchBreakpoints()
+  const { isXs, isSm, isMd, isLg, isXl, isXxl, isTablet, isDesktop } = useMatchBreakpointsContext()
   const isLargerScreen = isLg || isXl || isXxl
   const isXLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)

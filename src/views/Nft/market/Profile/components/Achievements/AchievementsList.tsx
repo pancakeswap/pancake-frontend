@@ -1,8 +1,7 @@
 import styled from 'styled-components'
-import { Flex, Heading, Skeleton } from '@pancakeswap/uikit'
+import { Flex, Heading, Skeleton, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { Achievement } from 'state/types'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import AchievementCard from './AchievementCard'
 
 const Grid = styled.div`
@@ -20,7 +19,7 @@ const AchievementsList: React.FC<{ achievements: Achievement[]; isLoading: boole
   isLoading,
 }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
 
   if (isLoading) {
     if (isMobile) {

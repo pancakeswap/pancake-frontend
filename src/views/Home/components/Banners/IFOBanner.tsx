@@ -1,4 +1,4 @@
-import { ArrowForwardIcon, Button, Text } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Button, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
@@ -6,7 +6,6 @@ import Image from 'next/image'
 import { memo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import styled, { keyframes } from 'styled-components'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import { getStatus } from '../../../Ifos/hooks/helpers'
 import { IFOImage, IFOMobileImage } from './images'
 import * as S from './Styled'
@@ -82,7 +81,7 @@ const IFOBanner = () => {
   const status = isIfoAlive
     ? getStatus(currentBlock, activeIfoWithBlocks.startBlock, activeIfoWithBlocks.endBlock)
     : null
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
   return isIfoAlive && status ? (
     <S.Wrapper>
       <S.Inner>

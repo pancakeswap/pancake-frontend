@@ -15,6 +15,7 @@ import {
   LinkExternal,
   Spinner,
   Image,
+  useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { getBscScanLink } from 'utils'
@@ -38,7 +39,6 @@ import { useWatchlistTokens } from 'state/user/hooks'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
 import { useTranslation } from 'contexts/Localization'
 import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 const ContentLayout = styled.div`
   margin-top: 16px;
@@ -63,7 +63,7 @@ const StyledCMCLink = styled(UIKitLink)`
 const DEFAULT_TIME_WINDOW: Duration = { weeks: 1 }
 
 const TokenPage: React.FC<{ routeAddress: string }> = ({ routeAddress }) => {
-  const { isXs, isSm } = useMatchBreakpoints()
+  const { isXs, isSm } = useMatchBreakpointsContext()
   const { t } = useTranslation()
 
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)

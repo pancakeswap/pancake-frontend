@@ -13,6 +13,7 @@ import {
   Spinner,
   Text,
   useTooltip,
+  useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { NextLinkFromReactRouter } from 'components/NextLink'
@@ -28,7 +29,6 @@ import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable
 import Percent from 'views/Info/components/Percent'
 import SaveIcon from 'views/Info/components/SaveIcon'
 import { formatAmount } from 'utils/formatInfoNumbers'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 const ContentLayout = styled.div`
   display: grid;
@@ -62,7 +62,7 @@ const LockedTokensContainer = styled(Flex)`
 `
 
 const PoolPage: React.FC<{ address: string }> = ({ address: routeAddress }) => {
-  const { isXs, isSm } = useMatchBreakpoints()
+  const { isXs, isSm } = useMatchBreakpointsContext()
   const { t } = useTranslation()
   const [showWeeklyData, setShowWeeklyData] = useState(0)
   const { tooltip, tooltipVisible, targetRef } = useTooltip(

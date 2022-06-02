@@ -1,4 +1,4 @@
-import { ArrowForwardIcon, Button, Heading, Skeleton, Text } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Button, Heading, Skeleton, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { FetchStatus, LotteryStatus } from 'config/constants/types'
@@ -13,7 +13,6 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
 import Timer from 'views/Lottery/components/Countdown/Timer'
 import useGetNextLotteryEvent from 'views/Lottery/hooks/useGetNextLotteryEvent'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import useNextEventCountdown from './hooks/useNextEventCountdown'
 import { lotteryImage, lotteryMobileImage } from './images'
 import * as S from './Styled'
@@ -98,7 +97,7 @@ const LotteryCountDownTimer = () => {
 
 const LotteryBanner = () => {
   const { t } = useTranslation()
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpointsContext()
   const { data, status } = useSWR<LotteryResponse>(['currentLottery'])
 
   return (

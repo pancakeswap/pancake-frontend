@@ -1,7 +1,6 @@
 import styled from 'styled-components'
-import { ChevronDownIcon } from '@pancakeswap/uikit'
+import { ChevronDownIcon, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 interface DetailsProps {
   actionPanelToggled: boolean
@@ -26,7 +25,7 @@ const ArrowIcon = styled(ChevronDownIcon)<{ toggled: boolean }>`
 
 const Details: React.FC<DetailsProps> = ({ actionPanelToggled }) => {
   const { t } = useTranslation()
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpointsContext()
 
   return (
     <Container>
