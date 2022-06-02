@@ -9,7 +9,6 @@ import {
   useModal,
   useTooltip,
   Box,
-  useMatchBreakpoints,
   SkeletonV2,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
@@ -30,6 +29,7 @@ import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
 import useUserDataInVaultPresenter from 'views/Pools/components/LockedPool/hooks/useUserDataInVaultPresenter'
 
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
 import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'

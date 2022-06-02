@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { Modal, Box, Text, Flex, Input, OpenNewIcon, useMatchBreakpoints, Spinner } from '@pancakeswap/uikit'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
+import { Modal, Box, Text, Flex, Input, OpenNewIcon, Spinner } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { FarmAuctionBidderConfig } from 'config/constants/types'

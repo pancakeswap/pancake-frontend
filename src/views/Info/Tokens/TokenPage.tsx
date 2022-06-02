@@ -15,7 +15,6 @@ import {
   LinkExternal,
   Spinner,
   Image,
-  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { getBscScanLink } from 'utils'
@@ -39,6 +38,7 @@ import { useWatchlistTokens } from 'state/user/hooks'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
 import { useTranslation } from 'contexts/Localization'
 import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 const ContentLayout = styled.div`
   margin-top: 16px;

@@ -1,6 +1,7 @@
 import styled, { keyframes, css } from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { LinkExternal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
+import { LinkExternal, Text } from '@pancakeswap/uikit'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { getAddress } from 'utils/addressHelpers'
 import { getBscScanLink } from 'utils'

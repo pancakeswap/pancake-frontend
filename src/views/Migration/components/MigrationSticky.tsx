@@ -2,8 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
-import { Text, Button, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, Button } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import { ProgressStepsType } from './ProgressSteps'
 
 const Container = styled.div`

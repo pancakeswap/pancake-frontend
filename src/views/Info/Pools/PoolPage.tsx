@@ -12,7 +12,6 @@ import {
   LinkExternal,
   Spinner,
   Text,
-  useMatchBreakpoints,
   useTooltip,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
@@ -29,6 +28,7 @@ import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable
 import Percent from 'views/Info/components/Percent'
 import SaveIcon from 'views/Info/components/SaveIcon'
 import { formatAmount } from 'utils/formatInfoNumbers'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 const ContentLayout = styled.div`
   display: grid;

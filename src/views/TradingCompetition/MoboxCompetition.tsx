@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
-import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box } from '@pancakeswap/uikit'
 import { useTradingCompetitionContractMobox } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { PageMeta } from 'components/Layout/Page'
@@ -17,6 +17,7 @@ import {
   REGISTRATION,
 } from 'config/constants/trading-competition/phases'
 import PageSection from 'components/PageSection'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import { MIDBLUEBG, MIDBLUEBG_DARK, TRADINGCOMPETITIONBANNER } from './pageSectionStyles'
 import {
   //  RanksIcon,

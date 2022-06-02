@@ -1,10 +1,11 @@
 import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 const StyledCell = styled(BaseCell)`
   flex: 0;

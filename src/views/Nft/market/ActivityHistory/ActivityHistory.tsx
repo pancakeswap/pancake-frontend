@@ -1,17 +1,7 @@
 import { useEffect, useState } from 'react'
 import { isAddress } from 'utils'
 import { useAppDispatch } from 'state'
-import {
-  ArrowBackIcon,
-  ArrowForwardIcon,
-  Box,
-  Button,
-  Flex,
-  Table,
-  Text,
-  Th,
-  useMatchBreakpoints,
-} from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, Box, Button, Flex, Table, Text, Th } from '@pancakeswap/uikit'
 import { getCollectionActivity } from 'state/nftMarket/helpers'
 import Container from 'components/Layout/Container'
 import TableLoader from 'components/TableLoader'
@@ -21,6 +11,7 @@ import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import useTheme from 'hooks/useTheme'
 import useLastUpdated from 'hooks/useLastUpdated'
 import { useGetNftActivityFilters } from 'state/nftMarket/hooks'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import { Arrow, PageButtons } from '../components/PaginationButtons'
 import NoNftsImage from '../components/Activity/NoNftsImage'
 import ActivityFilters from './ActivityFilters'

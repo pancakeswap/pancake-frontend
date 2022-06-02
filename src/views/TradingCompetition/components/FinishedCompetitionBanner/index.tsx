@@ -1,9 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { StaticImageData } from 'next/dist/client/image'
-import { Flex, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex, Heading } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import Image from 'next/image'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 const Wrapper = styled(Flex)<{ background: string }>`
   position: relative;

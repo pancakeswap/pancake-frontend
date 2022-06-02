@@ -6,7 +6,6 @@ import {
   Grid,
   Heading,
   Text,
-  useMatchBreakpoints,
   Td,
   ProfileAvatar,
   BnbUsdtPairTokenIcon,
@@ -32,6 +31,7 @@ import PageHeader from 'components/PageHeader'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import PageLoader from 'components/Loader/PageLoader'
 import ToggleView from 'components/ToggleView/ToggleView'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import { CollectionCard } from '../components/CollectibleCard'
 import { BNBAmountLabel } from '../components/CollectibleCard/styles'
 

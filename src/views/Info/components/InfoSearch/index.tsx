@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
-import { Text, Input, Flex, Skeleton, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, Input, Flex, Skeleton } from '@pancakeswap/uikit'
 import useFetchSearchResults from 'state/info/queries/search'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -13,6 +13,7 @@ import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
 import { PoolData } from 'state/info/types'
 import { useRouter } from 'next/router'
 import orderBy from 'lodash/orderBy'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 const Container = styled.div`
   position: relative;

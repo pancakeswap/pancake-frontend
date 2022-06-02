@@ -1,4 +1,5 @@
-import { Heading, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Heading, Flex, Text } from '@pancakeswap/uikit'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 const StatCardContent: React.FC<{ headingText: string; bodyText: string; highlightColor: string }> = ({
   headingText,

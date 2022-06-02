@@ -10,7 +10,6 @@ import {
   ModalContainer,
   ModalHeader,
   ProfileAvatar,
-  useMatchBreakpoints,
   Skeleton,
   Heading,
 } from '@pancakeswap/uikit'
@@ -24,6 +23,7 @@ import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from 'contexts/Localization'
 import { FetchStatus } from 'config/constants/types'
 import { PredictionUser } from 'state/types'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import { NetWinningsView } from './Results/styles'
 import MobileBetsTable from './MobileBetsTable'
 import DesktopBetsTable from './Results/DesktopBetsTable'

@@ -2,10 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
-import { Flex, Heading, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex, Heading, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { ActionContainer, ActionContent, ActionTitles } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
 import { usePriceCakeBusd } from 'state/farmsV1/hooks'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import { EarnedProps } from '../Cells/Earned'
 
 const Container = styled(ActionContainer)`

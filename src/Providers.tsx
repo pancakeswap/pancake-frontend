@@ -9,6 +9,7 @@ import { ToastsProvider } from 'contexts/ToastsContext'
 import { fetchStatusMiddleware } from 'hooks/useSWRContract'
 import { Store } from '@reduxjs/toolkit'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
+import { MatchBreakpointsProvider } from './contexts/MatchBreakpoints/Provider'
 
 const StyledThemeProvider = (props) => {
   const { resolvedTheme } = useNextTheme()
@@ -22,15 +23,17 @@ const Providers: React.FC<{ store: Store }> = ({ children, store }) => {
         <ToastsProvider>
           <NextThemeProvider>
             <StyledThemeProvider>
-              <LanguageProvider>
-                <SWRConfig
-                  value={{
-                    use: [fetchStatusMiddleware],
-                  }}
-                >
-                  <ModalProvider>{children}</ModalProvider>
-                </SWRConfig>
-              </LanguageProvider>
+              <MatchBreakpointsProvider>
+                <LanguageProvider>
+                  <SWRConfig
+                    value={{
+                      use: [fetchStatusMiddleware],
+                    }}
+                  >
+                    <ModalProvider>{children}</ModalProvider>
+                  </SWRConfig>
+                </LanguageProvider>
+              </MatchBreakpointsProvider>
             </StyledThemeProvider>
           </NextThemeProvider>
         </ToastsProvider>

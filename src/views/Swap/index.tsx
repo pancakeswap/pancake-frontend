@@ -10,7 +10,6 @@ import {
   Flex,
   IconButton,
   BottomDrawer,
-  useMatchBreakpoints,
   ArrowUpDownIcon,
   Skeleton,
 } from '@pancakeswap/uikit'
@@ -23,6 +22,7 @@ import { EXCHANGE_DOCS_URLS } from 'config/constants'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from 'utils/prices'
 import shouldShowSwapWarning from 'utils/shouldShowSwapWarning'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import useRefreshBlockNumberID from './hooks/useRefreshBlockNumber'
 import AddressInputPanel from './components/AddressInputPanel'
 import { GreyCard } from '../../components/Card'

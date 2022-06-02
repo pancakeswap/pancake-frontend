@@ -10,7 +10,6 @@ import {
   Text,
   ArrowBackIcon,
   ArrowForwardIcon,
-  useMatchBreakpoints,
   ArrowUpIcon,
   ArrowDownIcon,
   Spinner,
@@ -18,6 +17,7 @@ import {
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { ApiResponseCollectionTokens } from 'state/nftMarket/types'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import ForSaleTableRows from './ForSaleTableRows'
 import { StyledSortButton, TableHeading } from '../../shared/styles'
 import UpdateIndicator from './UpdateIndicator'

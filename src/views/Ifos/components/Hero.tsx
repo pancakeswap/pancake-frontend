@@ -1,8 +1,9 @@
 import styled from 'styled-components'
-import { Box, Heading, Text, Button, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Heading, Text, Button, Flex } from '@pancakeswap/uikit'
 import Container from 'components/Layout/Container'
 import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 const StyledHero = styled(Box)`
   background-image: url('/images/ifos/assets/ifo-banner-${({ theme }) => (theme.isDark ? 'dark' : 'light')}.png');

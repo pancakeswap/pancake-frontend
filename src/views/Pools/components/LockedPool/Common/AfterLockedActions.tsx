@@ -1,9 +1,10 @@
 import { memo, ReactNode } from 'react'
-import { Message, MessageText, Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Message, MessageText, Box, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Trans from 'components/Trans'
 import { VaultPosition } from 'utils/cakePool'
 
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import ConvertToFlexibleButton from '../Buttons/ConvertToFlexibleButton'
 import ExtendButton from '../Buttons/ExtendDurationButton'
 import { AfterLockedActionsPropsType } from '../types'

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import {
   Text,
   Flex,
@@ -11,7 +12,6 @@ import {
   IconButton,
   BunnyPlaceholderIcon,
   Spinner,
-  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import AuctionLeaderboardTable from './AuctionLeaderboard/AuctionLeaderboardTable'

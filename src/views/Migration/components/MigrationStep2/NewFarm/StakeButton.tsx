@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
-import { Button, useMatchBreakpoints, useModal, IconButton, AddIcon, MinusIcon } from '@pancakeswap/uikit'
+import { Button, useModal, IconButton, AddIcon, MinusIcon } from '@pancakeswap/uikit'
 import { FarmWithStakedValue } from 'views/Farms/components/types'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useERC20 } from 'hooks/useContract'
@@ -19,6 +19,7 @@ import DepositModal from 'views/Farms/components/DepositModal'
 import WithdrawModal from 'views/Farms/components/WithdrawModal'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useAppDispatch } from 'state'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 const IconButtonWrapper = styled.div`
   display: flex;

@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { CurrencyAmount, Token, Trade } from '@pancakeswap/sdk'
-import { Button, Box, Flex, useModal, useMatchBreakpoints, BottomDrawer, Link } from '@pancakeswap/uikit'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
+import { Button, Box, Flex, useModal, BottomDrawer, Link } from '@pancakeswap/uikit'
 
 import { useTranslation } from 'contexts/Localization'
 import { AutoColumn } from 'components/Layout/Column'

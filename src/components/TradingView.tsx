@@ -1,4 +1,5 @@
-import { Box, FlexProps, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, FlexProps } from '@pancakeswap/uikit'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import { useTranslation } from 'contexts/Localization'
 import Script from 'next/script'
 import { useEffect, useRef } from 'react'

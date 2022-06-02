@@ -1,4 +1,5 @@
-import { appearAnimation, useMatchBreakpoints } from '@pancakeswap/uikit'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
+import { appearAnimation } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useLayoutEffect, useState } from 'react'
 import styled from 'styled-components'

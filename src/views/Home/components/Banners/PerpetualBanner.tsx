@@ -1,5 +1,6 @@
-import { ArrowForwardIcon, Button, Text, useMatchBreakpoints, Link } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Button, Text, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import Image from 'next/image'
 import { memo, useMemo } from 'react'
 import styled from 'styled-components'

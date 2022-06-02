@@ -1,4 +1,4 @@
-import { useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
+import { useModal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { PageMeta } from 'components/Layout/Page'
 import PageLoader from 'components/Loader/PageLoader'
@@ -15,6 +15,7 @@ import {
 } from 'state/user/hooks'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import ChartDisclaimer from './components/ChartDisclaimer'
 import ChainlinkChartDisclaimer from './components/ChainlinkChartDisclaimer'
 import CollectWinningsPopup from './components/CollectWinningsPopup'

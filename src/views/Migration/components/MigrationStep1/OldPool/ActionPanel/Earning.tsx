@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Flex, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, Flex, Heading } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -8,6 +8,7 @@ import Balance from 'components/Balance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { DeserializedPool } from 'state/types'
 import { ActionContainer, ActionTitles, ActionContent } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 
 const Container = styled(ActionContainer)`
   flex: 2;

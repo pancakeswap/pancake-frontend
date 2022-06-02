@@ -1,4 +1,4 @@
-import { Text, Flex, Skeleton, Heading, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, Flex, Skeleton, Heading, Box } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import { useTranslation } from 'contexts/Localization'
@@ -8,6 +8,7 @@ import { DeserializedPool } from 'state/types'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { useVaultApy } from 'hooks/useVaultApy'
 
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import { ActionContainer, ActionTitles, ActionContent, RowActionContainer } from './styles'
 import UnstakingFeeCountdownRow from '../../CakeVaultCard/UnstakingFeeCountdownRow'
 import useUserDataInVaultPresenter from '../../LockedPool/hooks/useUserDataInVaultPresenter'

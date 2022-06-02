@@ -1,4 +1,4 @@
-import { Skeleton, Text, Flex, Button, CalculateIcon, useModal, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Skeleton, Text, Flex, Button, CalculateIcon, useModal } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import Balance from 'components/Balance'
 import { FlexGap } from 'components/Layout/Flex'
@@ -8,6 +8,7 @@ import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 import { MAX_LOCK_DURATION } from 'config/constants/pools'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import { VaultRoiCalculatorModal } from '../../Vault/VaultRoiCalculatorModal'
 import BaseCell, { CellContent } from './BaseCell'
 

@@ -8,7 +8,6 @@ import {
   BunnyPlaceholderIcon,
   Skeleton,
   Button,
-  useMatchBreakpoints,
   useModal,
   SubMenu,
   SubMenuItem,
@@ -20,6 +19,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { Bidder } from 'config/constants/types'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import WhitelistedBiddersModal from '../WhitelistedBiddersModal'
 
 const LeaderboardContainer = styled.div`

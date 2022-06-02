@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Flex, useMatchBreakpoints, AutoRenewIcon } from '@pancakeswap/uikit'
+import { Box, Button, Grid, Flex, AutoRenewIcon } from '@pancakeswap/uikit'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import {
   useGetLeaderboardHasMoreResults,
@@ -11,6 +11,7 @@ import { LEADERBOARD_RESULTS_PER_PAGE } from 'state/predictions/helpers'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
 import { FetchStatus } from 'config/constants/types'
+import useMatchBreakpoints from 'contexts/MatchBreakpoints/useMatchBreakpoints'
 import DesktopResults from './DesktopResults'
 import MobileResults from './MobileResults'
 import RankingCard from './RankingCard'
