@@ -26,6 +26,7 @@ import { useZapContract } from 'hooks/useContract'
 import { useSWRContract } from 'hooks/useSWRContract'
 import { FetchStatus } from 'config/constants/types'
 import { BigNumber } from '@ethersproject/bignumber'
+import usePreviousValue from 'hooks/usePreviousValue'
 import { useTradeExactIn } from 'hooks/Trades'
 import tryParseAmount from 'utils/tryParseAmount'
 import { AppDispatch, AppState } from '../index'
@@ -301,6 +302,8 @@ export function useZapIn({
 }) {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
+  const [inputBlurOnce, setInputBlurOnce] = useState(false)
+  const previousBlur = usePreviousValue(inputBlurOnce)
   const [triedAutoReduce, setTriedAutoReduce] = useState(false)
   const { independentField, typedValue } = useMintState()
 
@@ -638,13 +641,34 @@ export function useZapIn({
   )
 
   useEffect(() => {
-    if (!triedAutoReduce && singleTokenToZapAmount && maxZappableAmount) {
-      if (JSBI.greaterThan(singleTokenToZapAmount.raw, maxZappableAmount)) {
+    if (
+      !triedAutoReduce &&
+      parsedAmounts[swapTokenField] &&
+      maxZappableAmount &&
+      !previousBlur &&
+      inputBlurOnce &&
+      !rebalancing
+    ) {
+      if (JSBI.greaterThan(parsedAmounts[swapTokenField].raw, maxZappableAmount)) {
         convertToMaxZappable()
         setTriedAutoReduce(true)
       }
     }
-  }, [convertToMaxZappable, maxZappableAmount, rebalancing, singleTokenToZapAmount, triedAutoReduce])
+  }, [
+    convertToMaxZappable,
+    inputBlurOnce,
+    maxZappableAmount,
+    parsedAmounts,
+    previousBlur,
+    rebalancing,
+    singleTokenToZapAmount,
+    swapTokenField,
+    triedAutoReduce,
+  ])
+
+  const onInputBlurOnce = useCallback(() => {
+    setInputBlurOnce(true)
+  }, [])
 
   let error: string | undefined
 
@@ -689,5 +713,6 @@ export function useZapIn({
     noNeedZap,
     gasOverhead,
     isDependentAmountGreaterThanMaxAmount,
+    onInputBlurOnce,
   }
 }

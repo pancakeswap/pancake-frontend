@@ -74,6 +74,7 @@ type ZapStyle = 'noZap' | 'zap'
 interface CurrencyInputPanelProps {
   value: string
   onUserInput: (value: string) => void
+  onInputBlur?: () => void
   onMax?: () => void
   showMaxButton: boolean
   label?: string
@@ -94,6 +95,7 @@ interface CurrencyInputPanelProps {
 export default function CurrencyInputPanel({
   value,
   onUserInput,
+  onInputBlur,
   onMax,
   showMaxButton,
   label,
@@ -222,6 +224,7 @@ export default function CurrencyInputPanel({
               disabled={disabled}
               className="token-amount-input"
               value={value}
+              onBlur={onInputBlur}
               onUserInput={(val) => {
                 onUserInput(val)
               }}
