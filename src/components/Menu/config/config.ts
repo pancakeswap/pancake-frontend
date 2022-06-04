@@ -69,7 +69,6 @@ const config: (t: ContextApi['t'], languageCode?: string) => ConfigMenuItemsType
     href: '/prediction',
     icon: TrophyIcon,
     fillIcon: TrophyFillIcon,
-    hideSubNav: true,
     items: [
       {
         label: t('Trading Competition'),

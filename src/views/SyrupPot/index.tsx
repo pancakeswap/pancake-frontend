@@ -1,11 +1,11 @@
-import Page from 'components/Layout/Page'
+import { PageMeta } from 'components/Layout/Page'
+import Banner from 'views/SyrupPot/components/Banner/index'
 
 const SyrupPot = () => {
   return (
     <>
-      <Page>
-        <h1>123</h1>
-      </Page>
+      <PageMeta />
+      <Banner />
     </>
   )
 }
