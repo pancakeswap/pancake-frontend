@@ -1,6 +1,6 @@
 import { getUnixTime } from 'date-fns'
 import { gql } from 'graphql-request'
-import { getBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
+import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
 import { PriceChartEntry } from 'state/info/types'
 import { INFO_CLIENT } from 'config/constants/endpoints'
