@@ -3,15 +3,22 @@ import { Flex, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import StakeToWinButton from 'views/SyrupPot/components/Banner/StakeToWinButton'
 import { BannerTimer } from 'views/SyrupPot/components/Timer'
+import { OutlineText, DarkTextStyle } from 'views/SyrupPot/components/TextStyle'
 
 const SyrupPotBanner = styled(Flex)`
   position: relative;
-  height: calc(100% - 130px);
+  padding: 64px 0 75px 0;
   background: linear-gradient(180deg, #ffd800 0%, #fdab32 100%);
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: 87px 0 148px 0;
+  }
 `
 
 const Decorations = styled.div`
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background: url(/images/syruppot/bg-star.svg);
@@ -22,26 +29,19 @@ const Decorations = styled.div`
 `
 
 const BannerBunny = styled.div`
-  width: 355px;
-  height: 531px;
+  width: 221px;
+  height: 348px;
+  margin: 63px auto auto auto;
   background: url(/images/syruppot/banner-bunny.png);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-`
 
-const OutlineText = styled(Text)<{ defaultType?: boolean }>`
-  padding: 0 2px;
-  color: ${({ theme, defaultType }) => (defaultType ? '#ffffff' : theme.colors.secondary)};
-  background: ${({ theme, defaultType }) => (defaultType ? theme.colors.secondary : '#ffffff')};
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-stroke: 4px transparent;
-  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2), 0px 4px 12px rgba(14, 14, 44, 0.1);
-`
-
-const TextStyle = styled(Text)<{ isBlack?: boolean }>`
-  color: ${({ isBlack }) => (isBlack ? '#280D5F' : '#ffffff')};
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 370px;
+    height: 549px;
+    margin-top: 0;
+  }
 `
 
 const Banner: React.FC = () => {
@@ -50,48 +50,57 @@ const Banner: React.FC = () => {
   return (
     <SyrupPotBanner>
       <Decorations />
-      <Flex margin="auto">
+      <Flex margin="auto" flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}>
         <BannerBunny />
-        <Flex ml="46px" flexDirection="column">
+        <Flex
+          ml={['0', '0', '0', '46px']}
+          flexDirection="column"
+          alignItems={['center', 'center', 'center', 'flex-start']}
+        >
           <Flex>
-            <OutlineText fontSize="24px" bold defaultType>
+            <OutlineText
+              fontSize={['20px', '20px', '20px', '20px', '24px']}
+              style={{ alignSelf: 'flex-end' }}
+              bold
+              defaultType
+            >
               The PancakeSwap
             </OutlineText>
-            <OutlineText fontSize="24px" bold ml="4px">
+            <OutlineText fontSize={['24px', '24px', '24px', '24px', '32px']} bold ml="4px">
               {t('Syrup Pot')}
             </OutlineText>
           </Flex>
-          <OutlineText fontSize="64px">$24,232,232</OutlineText>
-          <TextStyle isBlack m="-20px 0 0 0" fontSize="40px" bold>
+          <OutlineText fontSize={['40px', '64px']}>$24,232,232</OutlineText>
+          <DarkTextStyle m="-20px 0 0 0" fontSize={['32px', '40px']} bold>
             To be won !
-          </TextStyle>
+          </DarkTextStyle>
           <StakeToWinButton />
           <Box style={{ marginTop: '30px' }}>
-            <TextStyle bold as="span">
+            <Text color="white" bold as="span">
               Deposit CAKE for
-            </TextStyle>
-            <TextStyle isBlack ml="3px" bold as="span">
+            </Text>
+            <DarkTextStyle ml="3px" bold as="span">
               10 Weeks to earn
-            </TextStyle>
+            </DarkTextStyle>
           </Box>
           <Box>
-            <TextStyle bold as="span">
+            <Text color="white" bold as="span">
               to earn
-            </TextStyle>
-            <TextStyle isBlack m="0 3px" bold as="span">
+            </Text>
+            <DarkTextStyle m="0 3px" bold as="span">
               43.23%
-            </TextStyle>
-            <TextStyle bold as="span">
+            </DarkTextStyle>
+            <Text color="white" bold as="span">
               APY
-            </TextStyle>
+            </Text>
           </Box>
           <Box>
-            <TextStyle bold as="span">
+            <Text color="white" bold as="span">
               And a chance to
-            </TextStyle>
-            <TextStyle isBlack ml="3px" bold as="span">
+            </Text>
+            <DarkTextStyle ml="3px" bold as="span">
               win prize pot!
-            </TextStyle>
+            </DarkTextStyle>
           </Box>
           <BannerTimer />
         </Flex>

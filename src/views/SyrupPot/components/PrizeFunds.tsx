@@ -1,0 +1,161 @@
+import styled from 'styled-components'
+import { Box, Flex, Text, Heading } from '@pancakeswap/uikit'
+import { useTranslation } from 'contexts/Localization'
+import Divider from 'components/Divider'
+import Image from 'next/image'
+
+const PrizeFundsContainer = styled(Flex)`
+  width: 100%;
+  margin: auto;
+  padding: 0 48px 0 48px;
+  flex-direction: column;
+  align-items: center;
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    max-width: 1140px;
+  }
+`
+
+const BulletList = styled.ul`
+  list-style-type: none;
+  margin-left: 8px;
+  padding: 0;
+  li {
+    margin: 0;
+    padding: 0;
+  }
+  li::before {
+    content: '•';
+    margin-right: 4px;
+    color: ${({ theme }) => theme.colors.textSubtle};
+  }
+  li::marker {
+    font-size: 12px;
+  }
+`
+
+const StyledStepCard = styled(Box)`
+  display: flex;
+  align-self: center;
+  position: relative;
+  background: ${({ theme }) => theme.colors.cardBorder};
+  padding: 1px 1px 3px 1px;
+  border-radius: ${({ theme }) => theme.radii.card};
+`
+
+const StepCardInner = styled(Box)`
+  width: 100%;
+  padding: 24px;
+  background: ${({ theme }) => theme.card.background};
+  border-radius: ${({ theme }) => theme.radii.card};
+`
+
+const AllocationGrid = styled.div`
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  grid-auto-rows: max-content;
+  row-gap: 4px;
+`
+
+const AllocationColorCircle = styled.div<{ color: string }>`
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  background-color: ${({ color }) => color};
+`
+
+const AllocationMatch: React.FC<{ color: string; text: string }> = ({ color, text }) => {
+  return (
+    <Flex alignItems="center">
+      <AllocationColorCircle color={color} />
+      <Text color="textSubtle">{text}</Text>
+    </Flex>
+  )
+}
+
+const PoolAllocations = () => {
+  const { t } = useTranslation()
+  return (
+    <StyledStepCard width={['100%', '280px', '330px', '380px']}>
+      <StepCardInner height="auto">
+        <Flex mb="34px" justifyContent="center">
+          <Image width={103} height={103} src="/images/syruppot/chart.svg" />
+        </Flex>
+        <AllocationGrid>
+          <AllocationMatch color="#D750B2" text={t('Prize Pool')} />
+          <Text textAlign="right" bold mb="12px">
+            80%
+          </Text>
+          <AllocationMatch color="#A881FC" text={t('Rewards')} />
+          <Text textAlign="right" bold mb="12px">
+            20%
+          </Text>
+          <AllocationMatch color="#36E8F5" text={t('Fees')} />
+          <Text textAlign="right" bold>
+            2%
+          </Text>
+        </AllocationGrid>
+      </StepCardInner>
+    </StyledStepCard>
+  )
+}
+
+const PrizeFunds: React.FC = () => {
+  const { t } = useTranslation()
+
+  return (
+    <PrizeFundsContainer>
+      <Heading mb="43px" scale="xl" color="secondary">
+        {t('Split Breakdown')}
+      </Heading>
+      <Flex flexDirection={['column', 'column', 'column', 'column', 'row']}>
+        <Flex width={['100%', '100%', '100%', '498px']} flexDirection="column">
+          <Text color="textSubtle">{t('The funds for each Syrup Pot round are split in three ways:')}</Text>
+          <Heading my="16px" scale="md">
+            {t('Prize Pool (80%)')}
+          </Heading>
+          <BulletList>
+            <li>
+              <Text display="inline" color="textSubtle">
+                {t('80% of funds deposited in the Syrup pot goes to the prize pool')}
+              </Text>
+            </li>
+          </BulletList>
+          <Heading my="16px" scale="md">
+            {t('Rewards (20%)')}
+          </Heading>
+          <BulletList>
+            <li>
+              <Text display="inline" color="textSubtle">
+                {t('20% of funds deposited are distributed as rewards')}
+              </Text>
+            </li>
+          </BulletList>
+          <Heading my="16px" scale="md">
+            {t('Fees (2%)')}
+          </Heading>
+          <BulletList>
+            <li>
+              <Text display="inline" color="textSubtle">
+                {t('2% of funds deposited are charged as fees')}
+              </Text>
+            </li>
+          </BulletList>
+        </Flex>
+        <Flex
+          ml={['0px', '0px', '0px', '0px', '40px']}
+          mt={['40px', '40px', '40px', '40px', '0px']}
+          justifyContent="center"
+        >
+          <PoolAllocations />
+        </Flex>
+      </Flex>
+      <Box width="100%" m="40px 0">
+        <Divider />
+      </Box>
+    </PrizeFundsContainer>
+  )
+}
+
+export default PrizeFunds

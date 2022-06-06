@@ -5,6 +5,7 @@ import getTimePeriods from 'utils/getTimePeriods'
 
 const FlexGap = styled(Flex)<{ gap: string }>`
   gap: ${({ gap }) => gap};
+  width: fit-content;
 `
 
 const FlexContainer = styled(FlexGap)`
