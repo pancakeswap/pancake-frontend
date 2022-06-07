@@ -2,15 +2,17 @@ const cbList = {}
 const onCallbackIdList = {}
 
 setTimeout(() => {
-  window.bn.onMessage = ({ data: { id, payload } }) => {
-    console.log('~ onMessage: ', id, payload)
-    if(typeof payload === 'string') {
-      payload = JSON.parse(payload)
-      console.log('~ onMessage parse payload: ', payload)
-    }
-    console.log(cbList[id])
-    if (typeof cbList[id] === 'function') {
-      cbList[id](payload)
+  if (typeof window !== 'undefined') {
+    window.bn.onMessage = ({ data: { id, payload } }) => {
+      console.log('~ onMessage: ', id, payload)
+      if (typeof payload === 'string') {
+        payload = JSON.parse(payload)
+        console.log('~ onMessage parse payload: ', payload)
+      }
+      console.log(cbList[id])
+      if (typeof cbList[id] === 'function') {
+        cbList[id](payload)
+      }
     }
   }
 })
