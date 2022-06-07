@@ -110,11 +110,11 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const Layout = Component.Layout || Fragment
   return (
     <ProductionErrorBoundary>
-      <Menu>
+      {/* <Menu> */}
         <Layout>
           <Component {...pageProps} />
         </Layout>
-      </Menu>
+      {/* </Menu> */}
       <EasterEgg iterations={2} />
       <ToastListener />
       <FixedSubgraphHealthIndicator />
