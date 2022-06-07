@@ -1,45 +1,24 @@
-import React from 'react'
-import styled from 'styled-components'
-import Link from 'next/link'
+import React, { useMemo } from 'react'
 import { useRouter } from 'next/router'
-import { Flex } from '@pancakeswap/uikit'
-
-const Container = styled(Flex)<{ isOnFinishedPage: boolean }>`
-  gap: 8px;
-
-  a {
-    color: ${({ theme }) => theme.colors.textSubtle};
-  }
-  a:hover {
-    color: ${({ theme }) => theme.colors.text};
-  }
-
-  ${({ isOnFinishedPage, theme }) =>
-    isOnFinishedPage
-      ? `
-    a:last-child {
-      color: ${theme.colors.secondary};
-      font-weight: 600;
-      border-bottom: 2px solid ${theme.colors.primary};
-    }
-  `
-      : `
-      a:first-child {
-        color: ${theme.colors.secondary};
-        font-weight: 600;
-        border-bottom: 2px solid ${theme.colors.primary};
-      }`}
-`
+import { SubMenuItems } from '@pancakeswap/uikit'
+import { useTranslation } from '../../../../contexts/Localization'
 
 const SubMenu: React.FC = () => {
   const { pathname } = useRouter()
-  const isOnFinishedPage = pathname.includes('finished')
-  return (
-    <Container my="16px" width="100%" justifyContent="center" isOnFinishedPage={isOnFinishedPage}>
-      <Link href="/competition">Latest</Link>
-      <Link href="/competition/finished">Finished</Link>
-    </Container>
-  )
+  const { t } = useTranslation()
+
+  const subMenuItems = useMemo(() => {
+    return [
+      { label: t('Latest'), href: '/competition' },
+      { label: t('Finished'), href: '/competition/finished' },
+    ]
+  }, [t])
+
+  const activeSubItem = useMemo(() => {
+    return subMenuItems.find((subMenuItem) => subMenuItem.href === pathname)?.href
+  }, [subMenuItems, pathname])
+
+  return <SubMenuItems items={subMenuItems} activeItem={activeSubItem} />
 }
 
 export default SubMenu

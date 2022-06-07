@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled, { useTheme } from "styled-components";
-import { isMobile } from "react-device-detect";
 import getExternalLinkProps from "../../util/getExternalLinkProps";
 import Grid from "../../components/Box/Grid";
 import Box from "../../components/Box/Box";
@@ -24,6 +23,8 @@ const WalletWrapper = styled(Box)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `;
 
+const getPriority = (priority: Config["priority"]) => (typeof priority === "function" ? priority() : priority);
+
 /**
  * Checks local storage if we have saved the last wallet the user connected with
  * If we find something we put it at the top of the list
@@ -31,7 +32,7 @@ const WalletWrapper = styled(Box)`
  * @returns sorted config
  */
 const getPreferredConfig = (walletConfig: Config[]) => {
-  const sortedConfig = walletConfig.sort((a: Config, b: Config) => a.priority - b.priority);
+  const sortedConfig = walletConfig.sort((a: Config, b: Config) => getPriority(a.priority) - getPriority(b.priority));
 
   const preferredWalletName = localStorage?.getItem(walletLocalStorageKey);
 
@@ -47,11 +48,7 @@ const getPreferredConfig = (walletConfig: Config[]) => {
 
   return [
     preferredWallet,
-    ...sortedConfig
-      .filter((sortedWalletConfig) => sortedWalletConfig.title !== preferredWalletName)
-      .filter((sortedWalletConfig) =>
-        typeof sortedWalletConfig.mobileOnly === "boolean" ? sortedWalletConfig.mobileOnly && isMobile : true
-      ),
+    ...sortedConfig.filter((sortedWalletConfig) => sortedWalletConfig.title !== preferredWalletName),
   ];
 };
 

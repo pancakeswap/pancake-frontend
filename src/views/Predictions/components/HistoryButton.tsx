@@ -1,12 +1,12 @@
 import { useWeb3React } from '@web3-react/core'
 import { AutoRenewIcon, HistoryIcon, IconButton } from '@pancakeswap/uikit'
-import { useAppDispatch } from 'state'
+import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { setHistoryPaneState } from 'state/predictions'
 import { useGetIsFetchingHistory } from 'state/predictions/hooks'
 
 const HistoryButton = () => {
   const isFetchingHistory = useGetIsFetchingHistory()
-  const dispatch = useAppDispatch()
+  const dispatch = useLocalDispatch()
   const { account } = useWeb3React()
 
   const handleClick = () => {

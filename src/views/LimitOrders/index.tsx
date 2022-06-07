@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useMemo } from 'react'
+import { useRouter } from 'next/router'
 import { CurrencyAmount, Token, Trade } from '@pancakeswap/sdk'
 import { Button, Box, Flex, useModal, useMatchBreakpoints, BottomDrawer, Link } from '@pancakeswap/uikit'
 
@@ -29,11 +30,14 @@ import Page from '../Page'
 import LimitOrderTable from './components/LimitOrderTable'
 import { ConfirmLimitOrderModal } from './components/ConfirmLimitOrderModal'
 import getRatePercentageDifference from './utils/getRatePercentageDifference'
+import { useCurrency, useAllTokens } from '../../hooks/Tokens'
+import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
 
 const LimitOrders = () => {
   // Helpers
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
+  const router = useRouter()
   const { isMobile, isTablet } = useMatchBreakpoints()
   const { theme } = useTheme()
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
@@ -44,8 +48,41 @@ const LimitOrders = () => {
     setUserChartPreference(isChartDisplayed)
   }, [isChartDisplayed, setUserChartPreference])
 
-  // TODO: use returned loadedUrlParams for warnings
-  useDefaultsFromURLSearch()
+  const loadedUrlParams = useDefaultsFromURLSearch()
+  // token warning stuff
+  const [loadedInputCurrency, loadedOutputCurrency] = [
+    useCurrency(loadedUrlParams?.inputCurrencyId),
+    useCurrency(loadedUrlParams?.outputCurrencyId),
+  ]
+  const urlLoadedTokens: Token[] = useMemo(
+    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
+    [loadedInputCurrency, loadedOutputCurrency],
+  )
+
+  // dismiss warning if all imported tokens are in active lists
+  const defaultTokens = useAllTokens()
+  const importTokensNotInDefault = useMemo(() => {
+    return (
+      urlLoadedTokens &&
+      urlLoadedTokens.filter((token: Token) => {
+        return !(token.address in defaultTokens)
+      })
+    )
+  }, [defaultTokens, urlLoadedTokens])
+
+  const [onPresentImportTokenWarningModal] = useModal(
+    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => router.push('/limit-orders')} />,
+    false,
+    false,
+    'limitOrderTokenWarningModal',
+  )
+
+  useEffect(() => {
+    if (importTokensNotInDefault.length > 0) {
+      onPresentImportTokenWarningModal()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [importTokensNotInDefault.length])
 
   // TODO: fiat values
 

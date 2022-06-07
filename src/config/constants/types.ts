@@ -71,6 +71,8 @@ interface FarmConfigBaseProps {
   lpAddresses: Address
   multiplier?: string
   isCommunity?: boolean
+  auctionHostingStartSeconds?: number
+  auctionHostingEndDate?: string
   dual?: {
     rewardPerBlock: number
     earnLabel: string
@@ -183,7 +185,7 @@ export interface FarmAuctionBidderConfig {
   lpAddress?: string
 }
 
-// Note: this status is slightly different compared to 'status' comfing
+// Note: this status is slightly different compared to 'status' config
 // from Farm Auction smart contract
 export enum AuctionStatus {
   ToBeAnnounced, // No specific dates/blocks to display

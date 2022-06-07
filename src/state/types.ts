@@ -1,5 +1,3 @@
-import { ThunkAction } from 'redux-thunk'
-import { AnyAction } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
 import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import {
@@ -68,8 +66,6 @@ export const GAS_PRICE_GWEI = {
   instant: parseUnits(GAS_PRICE.instant, 'gwei').toString(),
   testnet: parseUnits(GAS_PRICE.testnet, 'gwei').toString(),
 }
-
-export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
 
 export type DeserializedPoolVault = DeserializedPool & DeserializedCakeVault
 
@@ -622,6 +618,13 @@ export interface UserRound {
   endTime: string
   totalTickets: string
   tickets?: LotteryTicket[]
+}
+
+export interface PredictionConfig {
+  address: string
+  api: string
+  chainlinkOracleAddress: string
+  token: Token
 }
 
 // Global state

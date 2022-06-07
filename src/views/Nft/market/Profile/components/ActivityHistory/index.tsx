@@ -115,7 +115,11 @@ const ActivityHistory = () => {
                 <TableLoader />
               ) : (
                 activitiesSlice.map((activity) => {
-                  const nftMeta = nftMetadata.find((metaNft) => metaNft.tokenId === activity.nft.tokenId)
+                  const nftMeta = nftMetadata.find(
+                    (metaNft) =>
+                      metaNft.tokenId === activity.nft.tokenId &&
+                      metaNft.collectionAddress.toLowerCase() === activity.nft?.collection.id.toLowerCase(),
+                  )
                   return (
                     <ActivityRow
                       key={`${activity.nft.tokenId}${activity.timestamp}`}

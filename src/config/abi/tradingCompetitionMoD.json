@@ -221,10 +221,11 @@
     "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "name": "userTradingStats",
     "outputs": [
-      { "internalType": "uint256", "name": "rewardGroup", "type": "uint256" },
-      { "internalType": "uint256", "name": "teamId", "type": "uint256" },
-      { "internalType": "bool", "name": "hasRegistered", "type": "bool" },
-      { "internalType": "bool", "name": "hasClaimed", "type": "bool" }
+      {
+        "internalType": "bool",
+        "name": "hasClaimed",
+        "type": "bool"
+      }
     ],
     "stateMutability": "view",
     "type": "function"

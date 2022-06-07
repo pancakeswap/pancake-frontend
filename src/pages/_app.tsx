@@ -69,11 +69,11 @@ function MyApp(props: AppProps) {
       <Providers store={store}>
         <Blocklist>
           <GlobalHooks />
-          <Updaters />
           <ResetCSS />
           <GlobalStyle />
           <GlobalCheckClaimStatus excludeLocations={[]} />
           <PersistGate loading={null} persistor={persistor}>
+            <Updaters />
             <App {...props} />
           </PersistGate>
         </Blocklist>

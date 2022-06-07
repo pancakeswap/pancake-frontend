@@ -1,7 +1,7 @@
 import { AnimatePresence, domAnimation, LazyMotion, m as Motion } from "framer-motion";
 import React, { useRef } from "react";
 import styled, { keyframes } from "styled-components";
-import { layout, space } from "styled-system";
+import { layout, space, borderRadius } from "styled-system";
 import { animation as ANIMATION, SkeletonProps, SkeletonV2Props, variant as VARIANT } from "./types";
 import {
   appearAnimation,
@@ -48,6 +48,7 @@ const SkeletonWrapper = styled.div<SkeletonProps>`
   position: relative;
   ${layout}
   ${space}
+  overflow: hidden;
 `;
 
 const Root = styled.div<SkeletonProps>`
@@ -55,9 +56,9 @@ const Root = styled.div<SkeletonProps>`
   display: block;
   background-color: ${({ theme }) => theme.colors.backgroundDisabled};
   border-radius: ${({ variant, theme }) => (variant === VARIANT.CIRCLE ? theme.radii.circle : theme.radii.small)};
-
   ${layout}
   ${space}
+  ${borderRadius}
 `;
 
 const Pulse = styled(Root)`
@@ -96,12 +97,16 @@ export const SkeletonV2: React.FC<SkeletonV2Props> = ({
   wrapperProps,
   skeletonTop = "0",
   skeletonLeft = "0",
+  width,
+  height,
+  mr,
+  ml,
   ...props
 }) => {
   const animationRef = useRef<HTMLDivElement>(null);
   const skeletonRef = useRef<HTMLDivElement>(null);
   return (
-    <SkeletonWrapper {...wrapperProps}>
+    <SkeletonWrapper width={width} height={height} mr={mr} ml={ml} {...wrapperProps}>
       <LazyMotion features={domAnimation}>
         <AnimatePresence>
           {isDataReady && (
@@ -127,9 +132,9 @@ export const SkeletonV2: React.FC<SkeletonV2Props> = ({
               transition={{ duration: 0.3 }}
             >
               {animation === ANIMATION.WAVES ? (
-                <Waves variant={variant} {...props} />
+                <Waves variant={variant} {...props} width={width} height={height} />
               ) : (
-                <Pulse variant={variant} {...props} />
+                <Pulse variant={variant} {...props} width={width} height={height} />
               )}
             </AnimationWrapper>
           )}

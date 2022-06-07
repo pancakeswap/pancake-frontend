@@ -1,13 +1,18 @@
 import { Currency, CurrencyAmount, ETHER, Token, Trade } from '@pancakeswap/sdk'
 import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from 'config/constants'
+import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY, SLOW_INTERVAL } from 'config/constants'
+import useSWRImmutable from 'swr/immutable'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'contexts/Localization'
 import { isAddress } from 'utils'
+import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
+import { getChangeForPeriod } from 'utils/getChangeForPeriod'
+import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { computeSlippageAdjustedAmounts } from 'utils/prices'
 import getLpAddress from 'utils/getLpAddress'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
@@ -37,6 +42,7 @@ import { PairDataTimeWindowEnum } from './types'
 import { derivedPairByDataIdSelector, pairByDataIdSelector } from './selectors'
 import fetchDerivedPriceData from './fetch/fetchDerivedPriceData'
 import { pairHasEnoughLiquidity } from './fetch/utils'
+import { parsePoolData, fetchPoolData, FormattedPoolFields } from '../info/queries/pools/poolData'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>((state) => state.swap)
@@ -441,4 +447,39 @@ export const useFetchPairPrices = ({
     pairPrices = normalizedDerivedPairDataWithCurrentSwapPrice
   }
   return { pairPrices, pairId }
+}
+
+export const useLPApr = (pair) => {
+  const { data: poolData } = useSWRImmutable(
+    pair ? ['LP7dApr', pair.liquidityToken.address] : null,
+    async () => {
+      const timestampsArray = getDeltaTimestamps()
+      const blocks = await getBlocksFromTimestamps(timestampsArray, 'desc', 1000)
+      const [block24h, block48h, block7d, block14d] = blocks ?? []
+      const { error, data } = await fetchPoolData(block24h.number, block48h.number, block7d.number, block14d.number, [
+        pair.liquidityToken.address.toLowerCase(),
+      ])
+      if (error) return null
+      const formattedPoolData = parsePoolData(data?.now)
+      const formattedPoolData24h = parsePoolData(data?.oneDayAgo)
+      const formattedPoolData48h = parsePoolData(data?.twoDaysAgo)
+      const formattedPoolData7d = parsePoolData(data?.oneWeekAgo)
+      const formattedPoolData14d = parsePoolData(data?.twoWeeksAgo)
+      const current: FormattedPoolFields | undefined = formattedPoolData[pair.liquidityToken.address.toLowerCase()]
+      const oneDay: FormattedPoolFields | undefined = formattedPoolData24h[pair.liquidityToken.address.toLowerCase()]
+      const twoDays: FormattedPoolFields | undefined = formattedPoolData48h[pair.liquidityToken.address.toLowerCase()]
+      const week: FormattedPoolFields | undefined = formattedPoolData7d[pair.liquidityToken.address.toLowerCase()]
+      const twoWeeks: FormattedPoolFields | undefined = formattedPoolData14d[pair.liquidityToken.address.toLowerCase()]
+      const [volumeUSD] = getChangeForPeriod(current?.volumeUSD, oneDay?.volumeUSD, twoDays?.volumeUSD)
+      const [volumeUSDWeek] = getChangeForPeriod(current?.volumeUSD, week?.volumeUSD, twoWeeks?.volumeUSD)
+      const liquidityUSD = current ? current.reserveUSD : 0
+      const { lpApr7d } = getLpFeesAndApr(volumeUSD, volumeUSDWeek, liquidityUSD)
+      return { lpApr7d }
+    },
+    {
+      refreshInterval: SLOW_INTERVAL,
+    },
+  )
+
+  return poolData
 }

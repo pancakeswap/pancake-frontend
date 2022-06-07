@@ -20,7 +20,6 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     mainnetTokens.busd,
     mainnetTokens.usdt,
     mainnetTokens.btcb,
-    mainnetTokens.ust,
     mainnetTokens.eth,
     mainnetTokens.usdc,
   ],
@@ -114,6 +113,8 @@ export const NOT_ON_SALE_SELLER = '0x0000000000000000000000000000000000000000'
 export const DEFAULT_INPUT_CURRENCY = 'BNB'
 // CAKE
 export const DEFAULT_OUTPUT_CURRENCY = '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82'
+
+export const FARM_AUCTION_HOSTING_IN_SECONDS = 604800
 
 // Gelato uses this address to define a native currency in all chains
 export const GELATO_NATIVE = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'

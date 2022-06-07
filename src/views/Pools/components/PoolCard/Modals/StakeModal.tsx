@@ -164,9 +164,9 @@ const StakeModal: React.FC<StakeModalProps> = ({
           </ToastDescriptionWithTx>,
         )
       }
-      dispatch(updateUserStakedBalance(sousId, account))
-      dispatch(updateUserPendingReward(sousId, account))
-      dispatch(updateUserBalance(sousId, account))
+      dispatch(updateUserStakedBalance({ sousId, account }))
+      dispatch(updateUserPendingReward({ sousId, account }))
+      dispatch(updateUserBalance({ sousId, account }))
       onDismiss?.()
     }
   }

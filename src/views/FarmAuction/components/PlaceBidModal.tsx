@@ -221,7 +221,9 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
             variant="tertiary"
             onClick={() => setPercentageValue(1)}
           >
-            MAX
+            <Text small color="currentColor" textTransform="uppercase">
+              {t('Max')}
+            </Text>
           </Button>
         </Flex>
         <Flex flexDirection="column">

@@ -20,8 +20,13 @@ const Svg = styled.svg<SvgProps>`
   align-self: center; // Safari fix
   fill: ${({ theme, color }) => getThemeValue(`colors.${color}`, color)(theme)};
   flex-shrink: 0;
-  ${({ spin }) => spin && spinStyle}
-  ${space}
+  ${({ spin }) => spin && spinStyle};
+  ${space};
+
+  // Safari fix
+  @supports (-webkit-text-size-adjust: none) and (not (-ms-accelerator: true)) and (not (-moz-appearance: none)) {
+    filter: none !important;
+  }
 `;
 
 Svg.defaultProps = {

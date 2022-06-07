@@ -27,7 +27,7 @@ const TOKEN_TRANSACTIONS = gql`
       amount1
       amountUSD
     }
-    mintsAs1: mints(first: 10, orderBy: timestamp, orderDirection: desc, where: { token0: $address }) {
+    mintsAs1: mints(first: 10, orderBy: timestamp, orderDirection: desc, where: { token1: $address }) {
       id
       timestamp
       pair {
