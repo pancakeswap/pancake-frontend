@@ -16,7 +16,7 @@ import Page from 'components/Layout/Page'
 import PageHeader from 'components/PageHeader'
 import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
-import { DeserializedPool, DeserializedPoolVault } from 'state/types'
+import { DeserializedPool, DeserializedPoolVault, VaultKey, DeserializedPoolLockedVault } from 'state/types'
 import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
@@ -104,8 +104,8 @@ const sortPools = (account: string, sortOption: string, pools: DeserializedPool[
             return 0
           }
 
-          if (pool.vaultKey) {
-            const vault = pool as DeserializedPoolVault
+          if (pool.vaultKey === VaultKey.CakeVault) {
+            const vault = pool as DeserializedPoolLockedVault
             if (!vault.userData || !vault.userData.userShares) {
               return 0
             }
@@ -116,6 +116,19 @@ const sortPools = (account: string, sortOption: string, pools: DeserializedPool[
               vault.pricePerFullShare,
               vault.earningTokenPrice,
               vault.userData.currentOverdueFee.plus(vault.userData.currentPerformanceFee),
+            ).autoUsdToDisplay
+          }
+          if (pool.vaultKey === VaultKey.CakeFlexibleSideVault) {
+            const vault = pool as DeserializedPoolVault
+            if (!vault.userData || !vault.userData.userShares) {
+              return 0
+            }
+            return getCakeVaultEarnings(
+              account,
+              vault.userData.cakeAtLastUserAction,
+              vault.userData.userShares,
+              vault.pricePerFullShare,
+              vault.earningTokenPrice,
             ).autoUsdToDisplay
           }
           return pool.userData.pendingReward.times(pool.earningTokenPrice).toNumber()

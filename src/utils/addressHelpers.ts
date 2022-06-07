@@ -68,6 +68,10 @@ export const getCakeVaultAddress = () => {
   return getAddress(addresses.cakeVault)
 }
 
+export const getCakeFlexibleSideVaultAddress = () => {
+  return getAddress(addresses.cakeFlexibleSideVault)
+}
+
 export const getChainlinkOracleAddress = () => {
   return getAddress(addresses.chainlinkOracle)
 }
