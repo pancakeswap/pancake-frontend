@@ -63,7 +63,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.hotcross,
     quoteToken: serializedTokens.wbnb,
-    auctionHostingStartSeconds: 1653649200,
   },
   {
     pid: 94,
@@ -75,8 +74,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.wzrd,
     quoteToken: serializedTokens.busd,
-    isCommunity: true,
-    auctionHostingStartSeconds: 1653649200,
   },
   {
     pid: 96,
@@ -87,8 +84,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens['8pay'],
     quoteToken: serializedTokens.busd,
-    isCommunity: true,
-    auctionHostingStartSeconds: 1653649200,
   },
   {
     pid: 101,
@@ -119,7 +114,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.xcn,
     quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
   },
   {
     pid: 98,
@@ -151,7 +145,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.happy,
     quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
   },
   {
     pid: 95,
