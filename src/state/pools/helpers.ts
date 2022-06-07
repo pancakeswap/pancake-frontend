@@ -5,6 +5,8 @@ import {
   SerializedPool,
   SerializedCakeVault,
   DeserializedCakeVault,
+  DeserializedLockedCakeVault,
+  SerializedLockedCakeVault,
 } from 'state/types'
 import { deserializeToken } from 'state/user/hooks/helpers'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -65,7 +67,47 @@ export const transformPool = (pool: SerializedPool): DeserializedPool => {
   }
 }
 
-export const transformLockedVault = (vault: SerializedCakeVault): DeserializedCakeVault => {
+export const transformFlexibleSideVault = (vault: SerializedCakeVault): DeserializedCakeVault => {
+  const {
+    totalShares: totalSharesAsString,
+    pricePerFullShare: pricePerFullShareAsString,
+    fees: { performanceFee, withdrawalFee, withdrawalFeePeriod },
+    userData: {
+      isLoading,
+      userShares: userSharesAsString,
+      cakeAtLastUserAction: cakeAtLastUserActionAsString,
+      lastDepositedTime,
+      lastUserActionTime,
+    },
+  } = vault
+
+  const totalShares = totalSharesAsString ? new BigNumber(totalSharesAsString) : BIG_ZERO
+  const pricePerFullShare = pricePerFullShareAsString ? new BigNumber(pricePerFullShareAsString) : BIG_ZERO
+  const { cakeAsBigNumber } = convertSharesToCake(totalShares, pricePerFullShare)
+  const userShares = new BigNumber(userSharesAsString)
+  const cakeAtLastUserAction = new BigNumber(cakeAtLastUserActionAsString)
+
+  const performanceFeeAsDecimal = performanceFee && performanceFee / 100
+
+  const balance = convertSharesToCake(userShares, pricePerFullShare, undefined, undefined)
+
+  return {
+    totalShares,
+    pricePerFullShare,
+    totalCakeInVault: cakeAsBigNumber,
+    fees: { performanceFee, withdrawalFee, withdrawalFeePeriod, performanceFeeAsDecimal },
+    userData: {
+      isLoading,
+      userShares,
+      cakeAtLastUserAction,
+      lastDepositedTime,
+      lastUserActionTime,
+      balance,
+    },
+  }
+}
+
+export const transformLockedVault = (vault: SerializedLockedCakeVault): DeserializedLockedCakeVault => {
   const {
     totalShares: totalSharesAsString,
     totalLockedAmount: totalLockedAmountAsString,

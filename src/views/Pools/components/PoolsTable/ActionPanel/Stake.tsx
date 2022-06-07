@@ -21,7 +21,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
 
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool } from 'state/types'
+import { DeserializedPool, VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import styled from 'styled-components'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -77,8 +77,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool }) => {
     earningToken.symbol,
   )
 
-  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus()
-  const { handleApprove: handleVaultApprove, pendingTx: pendingVaultTx } = useVaultApprove(setLastUpdated)
+  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus(vaultKey)
+  const { handleApprove: handleVaultApprove, pendingTx: pendingVaultTx } = useVaultApprove(vaultKey, setLastUpdated)
 
   const handleApprove = vaultKey ? handleVaultApprove : handlePoolApprove
   const pendingTx = vaultKey ? pendingVaultTx : pendingPoolTx
@@ -96,25 +96,21 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool }) => {
     stakingToken.decimals,
   )
 
-  const {
-    userData: {
-      userShares,
-      lockEndTime,
-      locked,
-      lockStartTime,
-      balance: { cakeAsBigNumber, cakeAsNumberBalance },
-      currentOverdueFee,
-    },
-  } = useVaultPoolByKey(pool.vaultKey)
+  const vaultData = useVaultPoolByKey(pool.vaultKey)
 
   const { lockEndDate, remainingTime } = useUserDataInVaultPresenter({
-    lockStartTime: lockStartTime ?? '0',
-    lockEndTime: lockEndTime ?? '0',
+    lockStartTime:
+      vaultKey === VaultKey.CakeVault ? (vaultData as DeserializedLockedCakeVault).userData?.lockStartTime ?? '0' : '0',
+    lockEndTime:
+      vaultKey === VaultKey.CakeVault ? (vaultData as DeserializedLockedCakeVault).userData?.lockEndTime ?? '0' : '0',
   })
 
-  const hasSharesStaked = userShares && userShares.gt(0)
+  const hasSharesStaked = vaultData.userData.userShares && vaultData.userData.userShares.gt(0)
   const isVaultWithShares = vaultKey && hasSharesStaked
-  const stakedAutoDollarValue = getBalanceNumber(cakeAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken.decimals)
+  const stakedAutoDollarValue = getBalanceNumber(
+    vaultData.userData.balance.cakeAsBigNumber.multipliedBy(stakingTokenPrice),
+    stakingToken.decimals,
+  )
 
   const needsApproval = vaultKey ? !isVaultApproved : !allowance.gt(0) && !isBnbPool
 
@@ -141,7 +137,9 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool }) => {
     />,
   )
 
-  const [onPresentVaultUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
+  const [onPresentVaultUnstake] = useModal(
+    <VaultStakeModal stakingMax={vaultData.userData.balance.cakeAsBigNumber} pool={pool} isRemovingStake />,
+  )
 
   const [openPresentLockedStakeModal] = useModal(
     <LockedStakedModal
@@ -239,7 +237,17 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool }) => {
   }
 
   // Wallet connected, user data loaded and approved
-  if (isNotVaultAndHasStake || isVaultWithShares) {
+  if (vaultKey === VaultKey.CakeVault && (isNotVaultAndHasStake || isVaultWithShares)) {
+    const {
+      userData: {
+        userShares,
+        lockEndTime,
+        locked,
+        lockStartTime,
+        balance: { cakeAsBigNumber, cakeAsNumberBalance },
+        currentOverdueFee,
+      },
+    } = vaultData as DeserializedLockedCakeVault
     const vaultPosition = getVaultPosition({ userShares, locked, lockEndTime })
     return (
       <>
@@ -261,7 +269,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool }) => {
                     bold
                     fontSize="20px"
                     decimals={5}
-                    value={vaultKey ? cakeAsNumberBalance : stakedTokenBalance}
+                    value={vaultKey ? vaultData.userData.balance.cakeAsNumberBalance : stakedTokenBalance}
                   />
                   <SkeletonV2
                     isDataReady={Number.isFinite(vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance)}
@@ -436,7 +444,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool }) => {
         {vaultKey ? (
           <VaultStakeButtonGroup
             onFlexibleClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
-            onLockedClick={openPresentLockedStakeModal}
+            onLockedClick={vaultKey === VaultKey.CakeVault ? openPresentLockedStakeModal : null}
           />
         ) : (
           <Button

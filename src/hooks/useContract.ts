@@ -35,10 +35,20 @@ import {
   getErc721CollectionContract,
   getBunnySpecialXmasContract,
   getGalaxyNTFClaimingContract,
+  getCakeFlexibleSideVaultV2Contract,
   getCakePredictionsContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
-import { Erc20, Erc20Bytes32, Multicall, Weth, Cake, Erc721collection, CakeVaultV2 } from 'config/abi/types'
+import {
+  Erc20,
+  Erc20Bytes32,
+  Multicall,
+  Weth,
+  Cake,
+  Erc721collection,
+  CakeVaultV2,
+  CakeFlexibleSideVaultV2,
+} from 'config/abi/types'
 
 // Imports below migrated from Exchange useContract.ts
 import { Contract } from '@ethersproject/contracts'
@@ -51,6 +61,7 @@ import multiCallAbi from '../config/abi/Multicall.json'
 import { getContract, getProviderOrSigner } from '../utils'
 
 import { IPancakePair } from '../config/abi/types/IPancakePair'
+import { VaultKey } from '../state/types'
 
 /**
  * Helper hooks to get specific contracts (by ABI)
@@ -197,9 +208,17 @@ export const useEasterNftContract = () => {
   return useMemo(() => getEasterNftContract(library.getSigner()), [library])
 }
 
-export const useVaultPoolContract = (): CakeVaultV2 => {
+export const useVaultPoolContract = (vaultKey: VaultKey): CakeVaultV2 | CakeFlexibleSideVaultV2 => {
   const { library } = useActiveWeb3React()
-  return useMemo(() => getCakeVaultV2Contract(library.getSigner()), [library])
+  return useMemo(() => {
+    if (vaultKey === VaultKey.CakeVault) {
+      return getCakeVaultV2Contract(library.getSigner())
+    }
+    if (vaultKey === VaultKey.CakeFlexibleSideVault) {
+      return getCakeFlexibleSideVaultV2Contract(library.getSigner())
+    }
+    return null
+  }, [library, vaultKey])
 }
 
 export const useCakeVaultContract = (withSignerIfPossible = true) => {
