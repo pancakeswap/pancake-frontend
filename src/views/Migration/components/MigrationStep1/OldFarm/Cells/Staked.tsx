@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
@@ -30,7 +30,7 @@ const Staked: React.FC<StakedProps> = ({ label, stakedBalance }) => {
 
   const labelText = t('%asset% Staked', { asset: label })
 
-  const displayBalance = useCallback(() => {
+  const displayBalance = useMemo(() => {
     return formatLpBalance(stakedBalance)
   }, [stakedBalance])
 

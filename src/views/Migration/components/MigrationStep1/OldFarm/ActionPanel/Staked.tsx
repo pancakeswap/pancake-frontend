@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { Heading, Text } from '@pancakeswap/uikit'
@@ -18,7 +18,7 @@ const Staked: React.FC<FarmProps> = ({ pid, lpSymbol }) => {
   const lpPrice = useLpTokenPrice(lpSymbol)
   const { stakedBalance } = useFarmUser(pid)
 
-  const displayBalance = useCallback(() => {
+  const displayBalance = useMemo(() => {
     return formatLpBalance(stakedBalance)
   }, [stakedBalance])
 
