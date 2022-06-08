@@ -111,7 +111,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool }) => {
       vaultKey === VaultKey.CakeVault ? (vaultData as DeserializedLockedCakeVault).userData?.lockEndTime ?? '0' : '0',
   })
 
-  const hasSharesStaked = userShares && userShares.gt(0)
+  const hasSharesStaked = userShares.gt(0)
   const isVaultWithShares = vaultKey && hasSharesStaked
   const stakedAutoDollarValue = getBalanceNumber(cakeAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken.decimals)
 

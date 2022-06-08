@@ -195,7 +195,7 @@ const Pools: React.FC = () => {
       finishedPools.filter((pool) => {
         if (pool.vaultKey) {
           const vault = pool as DeserializedPoolVault
-          return vault.userData.userShares?.gt(0)
+          return vault.userData.userShares.gt(0)
         }
         return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
       }),
@@ -205,7 +205,7 @@ const Pools: React.FC = () => {
     return openPoolsWithStartBlockFilter.filter((pool) => {
       if (pool.vaultKey) {
         const vault = pool as DeserializedPoolVault
-        return vault.userData.userShares?.gt(0)
+        return vault.userData.userShares.gt(0)
       }
       return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
     })

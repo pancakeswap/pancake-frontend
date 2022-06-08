@@ -30,7 +30,7 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool, account }) => {
       isLoading,
     },
   } = vaultData
-  const hasSharesStaked = userShares && userShares.gt(0)
+  const hasSharesStaked = userShares.gt(0)
   const isVaultWithShares = pool.vaultKey && hasSharesStaked
 
   // pool
