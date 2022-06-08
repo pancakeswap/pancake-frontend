@@ -6,6 +6,7 @@ import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
 import FixedSubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
 import { ToastListener } from 'contexts/ToastsContext'
 import useEagerConnect from 'hooks/useEagerConnect'
+import useEagerConnectMP from 'hooks/useEagerConnect.bmp'
 import { useAccountEventListener } from 'hooks/useAccountEventListener'
 import useSentryUser from 'hooks/useSentryUser'
 import useUserAgent from 'hooks/useUserAgent'
@@ -43,8 +44,18 @@ function GlobalHooks() {
   return null
 }
 
+function MPGlobalHooks() {
+  usePollBlockNumber()
+  useEagerConnectMP()
+  usePollCoreFarmData()
+  useUserAgent()
+  useAccountEventListener()
+  useSentryUser()
+  return null
+}
+
 function MyApp(props: AppProps) {
-  const { pageProps } = props
+  const { pageProps, Component } = props
   const store = useStore(pageProps.initialReduxState)
 
   return (
@@ -70,7 +81,7 @@ function MyApp(props: AppProps) {
       </Head>
       <Providers store={store}>
         <Blocklist>
-          <GlobalHooks />
+          {(Component as NextPageWithLayout).mp ? <MPGlobalHooks /> : <GlobalHooks />}
           <ResetCSS />
           <GlobalStyle />
           <GlobalCheckClaimStatus excludeLocations={[]} />
@@ -99,6 +110,7 @@ function MyApp(props: AppProps) {
 
 type NextPageWithLayout = NextPage & {
   Layout?: React.FC
+  mp?: boolean
 }
 
 type AppPropsWithLayout = AppProps & {
@@ -110,13 +122,15 @@ const ProductionErrorBoundary = process.env.NODE_ENV === 'production' ? ErrorBou
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   // Use the layout defined at the page level, if available
   const Layout = Component.Layout || Fragment
+  const ShowMenu = Component.mp ? Fragment : Menu
+
   return (
     <ProductionErrorBoundary>
-      <Menu>
+      <ShowMenu>
         <Layout>
           <Component {...pageProps} />
         </Layout>
-      </Menu>
+      </ShowMenu>
       <EasterEgg iterations={2} />
       <ToastListener />
       <FixedSubgraphHealthIndicator />
