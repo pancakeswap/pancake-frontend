@@ -365,6 +365,7 @@ export const PoolsSlice = createSlice({
       })
       state.userDataLoaded = false
       state.cakeVault = { ...state.cakeVault, userData: initialPoolVaultState.userData }
+      state.cakeFlexibleSideVault = { ...state.cakeFlexibleSideVault, userData: initialPoolVaultState.userData }
     })
     builder.addCase(
       fetchPoolsUserDataAsync.fulfilled,
