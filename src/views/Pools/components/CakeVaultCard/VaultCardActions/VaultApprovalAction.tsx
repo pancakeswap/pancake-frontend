@@ -1,7 +1,7 @@
 import { Button, AutoRenewIcon, Skeleton } from '@pancakeswap/uikit'
+import { VaultKey } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultApprove } from '../../../hooks/useApprove'
-import { VaultKey } from '../../../../../state/types'
 
 interface ApprovalActionProps {
   vaultKey: VaultKey
