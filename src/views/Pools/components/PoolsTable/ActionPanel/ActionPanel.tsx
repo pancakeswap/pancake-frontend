@@ -125,7 +125,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, expanded }) =>
 
   const vaultData = useVaultPoolByKey(vaultKey)
 
-  const vaultPosition = getVaultPosition(vaultData?.userData)
+  const vaultPosition = getVaultPosition(vaultData.userData)
 
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
@@ -168,7 +168,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, expanded }) =>
         </span>
       </InfoSection>
       <ActionContainer>
-        {isMobile && vaultKey && vaultPosition === VaultPosition.None && (
+        {isMobile && vaultKey === VaultKey.CakeVault && vaultPosition === VaultPosition.None && (
           <CakeVaultApr pool={pool} userData={vaultData.userData} vaultPosition={vaultPosition} />
         )}
         <Box width="100%">
