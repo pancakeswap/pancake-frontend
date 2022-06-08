@@ -124,6 +124,11 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, expanded }) =>
   const { isMobile } = useMatchBreakpointsContext()
 
   const vaultData = useVaultPoolByKey(vaultKey)
+  const {
+    userData: {
+      balance: { cakeAsBigNumber },
+    },
+  } = vaultData
 
   const vaultPosition = getVaultPosition(vaultData.userData)
 
@@ -131,7 +136,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, expanded }) =>
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
 
   const poolStakingTokenBalance = vaultKey
-    ? vaultData.userData.balance.cakeAsBigNumber.plus(stakingTokenBalance)
+    ? cakeAsBigNumber.plus(stakingTokenBalance)
     : stakedBalance.plus(stakingTokenBalance)
 
   const manualTooltipText = t('You must harvest and compound your earnings from this pool manually.')

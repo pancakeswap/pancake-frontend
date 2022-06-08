@@ -22,11 +22,15 @@ const AutoHarvestAction: React.FunctionComponent<DeserializedPool> = ({
   const { isMobile } = useMatchBreakpointsContext()
 
   const vaultData = useVaultPoolByKey(vaultKey)
+  const {
+    userData: { userShares, cakeAtLastUserAction },
+    pricePerFullShare,
+  } = vaultData
   const { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
     account,
-    vaultData.userData.cakeAtLastUserAction,
-    vaultData.userData.userShares,
-    vaultData.pricePerFullShare,
+    cakeAtLastUserAction,
+    userShares,
+    pricePerFullShare,
     earningTokenPrice,
     vaultKey === VaultKey.CakeVault
       ? (vaultData as DeserializedLockedCakeVault).userData.currentPerformanceFee

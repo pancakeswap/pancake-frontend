@@ -30,7 +30,10 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   const { isMobile } = useMatchBreakpointsContext()
   const { sousId, stakingToken, earningToken, userData, isFinished, vaultKey } = pool
   const vaultData = useVaultPoolByKey(pool.vaultKey)
-  const hasVaultShares = vaultData?.userData.userShares && vaultData.userData.userShares.gt(0)
+  const {
+    userData: { userShares },
+  } = vaultData
+  const hasVaultShares = userShares && userShares.gt(0)
 
   const stakingTokenSymbol = stakingToken.symbol
   const earningTokenSymbol = earningToken.symbol
@@ -60,7 +63,7 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
         {showStakedTag &&
           (vaultKey === VaultKey.CakeVault ? (
             <StakedCakeStatus
-              userShares={vaultData.userData.userShares}
+              userShares={userShares}
               locked={(vaultData as DeserializedLockedCakeVault).userData.locked}
               lockEndTime={(vaultData as DeserializedLockedCakeVault).userData.lockEndTime}
             />

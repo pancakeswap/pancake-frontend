@@ -23,15 +23,19 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool, account }) => {
 
   // vault
   const vaultData = useVaultPoolByKey(pool.vaultKey)
-  const hasSharesStaked = vaultData.userData.userShares && vaultData.userData.userShares.gt(0)
+  const {
+    userData: {
+      userShares,
+      balance: { cakeAsBigNumber, cakeAsNumberBalance },
+      isLoading,
+    },
+  } = vaultData
+  const hasSharesStaked = userShares && userShares.gt(0)
   const isVaultWithShares = pool.vaultKey && hasSharesStaked
 
   // pool
   const { stakingTokenPrice, stakingToken, userData } = pool
-  const stakedAutoDollarValue = getBalanceNumber(
-    vaultData.userData.balance.cakeAsBigNumber.multipliedBy(stakingTokenPrice),
-    stakingToken.decimals,
-  )
+  const stakedAutoDollarValue = getBalanceNumber(cakeAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken.decimals)
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
   const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken.decimals)
   const stakedTokenDollarBalance = getBalanceNumber(
@@ -47,7 +51,7 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool, account }) => {
 
   const hasStaked = account && (stakedBalance.gt(0) || isVaultWithShares)
 
-  const userDataLoading = pool.vaultKey ? vaultData.userData.isLoading : !pool.userDataLoaded
+  const userDataLoading = pool.vaultKey ? isLoading : !pool.userDataLoaded
 
   return (
     <StyledCell
@@ -79,9 +83,9 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool, account }) => {
                   value={
                     hasStaked
                       ? pool.vaultKey
-                        ? Number.isNaN(vaultData.userData.balance.cakeAsNumberBalance)
+                        ? Number.isNaN(cakeAsNumberBalance)
                           ? 0
-                          : vaultData.userData.balance.cakeAsNumberBalance
+                          : cakeAsNumberBalance
                         : stakedTokenBalance
                       : 0
                   }
