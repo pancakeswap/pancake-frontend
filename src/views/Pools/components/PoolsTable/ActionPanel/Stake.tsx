@@ -425,7 +425,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool }) => {
             />
           </Box>
         )}
-        {vaultPosition === VaultPosition.Flexible && (
+        {vaultKey === VaultKey.CakeVault && vaultPosition === VaultPosition.Flexible && (
           <Box
             width="100%"
             mt={['0', '0', '24px', '24px', '24px']}
