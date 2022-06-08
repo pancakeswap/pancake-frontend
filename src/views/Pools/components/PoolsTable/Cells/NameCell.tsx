@@ -33,7 +33,7 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   const {
     userData: { userShares },
   } = vaultData
-  const hasVaultShares = userShares && userShares.gt(0)
+  const hasVaultShares = userShares.gt(0)
 
   const stakingTokenSymbol = stakingToken.symbol
   const earningTokenSymbol = earningToken.symbol
