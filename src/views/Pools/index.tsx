@@ -104,31 +104,22 @@ const sortPools = (account: string, sortOption: string, pools: DeserializedPool[
             return 0
           }
 
-          if (pool.vaultKey === VaultKey.CakeVault) {
-            const vault = pool as DeserializedPoolLockedVault
-            if (!vault.userData || !vault.userData.userShares) {
+          if (pool.vaultKey) {
+            const { userData, pricePerFullShare } = pool as DeserializedPoolVault
+            if (!userData || !userData.userShares) {
               return 0
             }
             return getCakeVaultEarnings(
               account,
-              vault.userData.cakeAtLastUserAction,
-              vault.userData.userShares,
-              vault.pricePerFullShare,
-              vault.earningTokenPrice,
-              vault.userData.currentOverdueFee.plus(vault.userData.currentPerformanceFee),
-            ).autoUsdToDisplay
-          }
-          if (pool.vaultKey === VaultKey.CakeFlexibleSideVault) {
-            const vault = pool as DeserializedPoolVault
-            if (!vault.userData || !vault.userData.userShares) {
-              return 0
-            }
-            return getCakeVaultEarnings(
-              account,
-              vault.userData.cakeAtLastUserAction,
-              vault.userData.userShares,
-              vault.pricePerFullShare,
-              vault.earningTokenPrice,
+              userData.cakeAtLastUserAction,
+              userData.userShares,
+              pricePerFullShare,
+              pool.earningTokenPrice,
+              pool.vaultKey === VaultKey.CakeVault
+                ? (pool as DeserializedPoolLockedVault).userData.currentPerformanceFee.plus(
+                    (pool as DeserializedPoolLockedVault).userData.currentOverdueFee,
+                  )
+                : null,
             ).autoUsdToDisplay
           }
           return pool.userData.pendingReward.times(pool.earningTokenPrice).toNumber()
