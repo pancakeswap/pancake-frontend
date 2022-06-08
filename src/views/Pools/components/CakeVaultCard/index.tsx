@@ -61,7 +61,7 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({ pool, showStakedOnly, default
         )}
         {account &&
         pool.vaultKey === VaultKey.CakeVault &&
-        (vaultPool as DeserializedLockedCakeVault).userData?.locked ? (
+        (vaultPool as DeserializedLockedCakeVault).userData.locked ? (
           <LockedStakingApy
             userData={(vaultPool as DeserializedLockedCakeVault).userData}
             stakingToken={pool?.stakingToken}

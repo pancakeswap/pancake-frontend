@@ -97,6 +97,12 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool }) => {
   )
 
   const vaultData = useVaultPoolByKey(pool.vaultKey)
+  const {
+    userData: {
+      userShares,
+      balance: { cakeAsBigNumber, cakeAsNumberBalance },
+    },
+  } = vaultData
 
   const { lockEndDate, remainingTime } = useUserDataInVaultPresenter({
     lockStartTime:
@@ -105,12 +111,9 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool }) => {
       vaultKey === VaultKey.CakeVault ? (vaultData as DeserializedLockedCakeVault).userData?.lockEndTime ?? '0' : '0',
   })
 
-  const hasSharesStaked = vaultData.userData.userShares && vaultData.userData.userShares.gt(0)
+  const hasSharesStaked = userShares && userShares.gt(0)
   const isVaultWithShares = vaultKey && hasSharesStaked
-  const stakedAutoDollarValue = getBalanceNumber(
-    vaultData.userData.balance.cakeAsBigNumber.multipliedBy(stakingTokenPrice),
-    stakingToken.decimals,
-  )
+  const stakedAutoDollarValue = getBalanceNumber(cakeAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken.decimals)
 
   const needsApproval = vaultKey ? !isVaultApproved : !allowance.gt(0) && !isBnbPool
 
@@ -137,9 +140,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool }) => {
     />,
   )
 
-  const [onPresentVaultUnstake] = useModal(
-    <VaultStakeModal stakingMax={vaultData.userData.balance.cakeAsBigNumber} pool={pool} isRemovingStake />,
-  )
+  const [onPresentVaultUnstake] = useModal(<VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />)
 
   const [openPresentLockedStakeModal] = useModal(
     <LockedStakedModal
@@ -238,11 +239,6 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool }) => {
 
   // Wallet connected, user data loaded and approved
   if (isNotVaultAndHasStake || isVaultWithShares) {
-    const {
-      userData: {
-        balance: { cakeAsBigNumber, cakeAsNumberBalance },
-      },
-    } = vaultData
     const vaultPosition = getVaultPosition(vaultData.userData)
     return (
       <>

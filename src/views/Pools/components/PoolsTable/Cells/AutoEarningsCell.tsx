@@ -30,11 +30,15 @@ const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) =>
   const { earningTokenPrice, vaultKey } = pool
 
   const vaultData = useVaultPoolByKey(vaultKey)
+  const {
+    userData: { userShares, cakeAtLastUserAction, isLoading },
+    pricePerFullShare,
+  } = vaultData
   const { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
     account,
-    vaultData.userData.cakeAtLastUserAction,
-    vaultData.userData.userShares,
-    vaultData.pricePerFullShare,
+    cakeAtLastUserAction,
+    userShares,
+    pricePerFullShare,
     earningTokenPrice,
     vaultKey === VaultKey.CakeVault
       ? (vaultData as DeserializedPoolLockedVault).userData.currentPerformanceFee
@@ -52,7 +56,7 @@ const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) =>
     placement: 'bottom',
   })
 
-  if (!vaultData.userData.userShares.gt(0) && vaultKey === VaultKey.CakeVault) {
+  if (vaultKey === VaultKey.CakeVault && !userShares.gt(0)) {
     return null
   }
 
@@ -62,7 +66,7 @@ const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) =>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
-        {vaultData.userData.isLoading && account ? (
+        {isLoading && account ? (
           <Skeleton width="80px" height="16px" />
         ) : (
           <>
