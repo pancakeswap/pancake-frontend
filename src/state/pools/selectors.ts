@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit'
 import { State, VaultKey } from '../types'
-import { transformPool, transformLockedVault, transformFlexibleSideVault } from './helpers'
+import { transformPool, transformVault } from './helpers'
 import { initialPoolVaultState } from './index'
 import { getVaultPosition, VaultPosition } from '../../utils/cakePool'
 
@@ -21,13 +21,7 @@ export const poolsWithUserDataLoadingSelector = createSelector(
   },
 )
 
-export const makeVaultPoolByKey = (key) =>
-  createSelector([selectVault(key)], (vault) => {
-    if (key === VaultKey.CakeVault) {
-      return transformLockedVault(vault)
-    }
-    return transformFlexibleSideVault(vault)
-  })
+export const makeVaultPoolByKey = (key) => createSelector([selectVault(key)], (vault) => transformVault(key, vault))
 
 export const poolsWithVaultSelector = createSelector(
   [
