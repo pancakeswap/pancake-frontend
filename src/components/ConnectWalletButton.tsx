@@ -11,7 +11,7 @@ const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
   const { onPresentConnectModal } = useWalletModal(login, logout, t)
 
   const handleClick = () => {
-    if (__NEZHA_BRIDGE__) {
+    if (typeof __NEZHA_BRIDGE__ !== 'undefined') {
       handleActive()
     } else {
       onPresentConnectModal()
