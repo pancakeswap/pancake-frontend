@@ -1,16 +1,11 @@
-import Script from 'next/script'
+import { FarmsMpPageLayout } from 'views/Farms'
 import FarmsHistoryPage from 'pages/farms/history'
 
 const MPFarmsHistoryPage = () => {
-  return (
-    <>
-      <Script src="https://public.bnbstatic.com/static/js/mp-webview-sdk/webview-v1.0.0.min.js" id="mp-webview" />
-      <FarmsHistoryPage />
-    </>
-  )
+  return <FarmsHistoryPage />
 }
 
-MPFarmsHistoryPage.Layout = FarmsHistoryPage.Layout
+MPFarmsHistoryPage.Layout = FarmsMpPageLayout
 MPFarmsHistoryPage.mp = true
 
 export default MPFarmsHistoryPage
