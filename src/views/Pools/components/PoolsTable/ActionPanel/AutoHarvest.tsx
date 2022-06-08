@@ -44,7 +44,7 @@ const AutoHarvestAction: React.FunctionComponent<DeserializedPool> = ({
 
   const { boostFactor } = useVaultApy({ duration: secondDuration })
 
-  const vaultPosition = getVaultPosition(vaultData?.userData)
+  const vaultPosition = getVaultPosition(vaultData.userData)
 
   const actionTitle = (
     <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
