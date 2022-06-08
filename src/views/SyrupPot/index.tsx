@@ -3,6 +3,7 @@ import { PageMeta } from 'components/Layout/Page'
 import { Box } from '@pancakeswap/uikit'
 import Banner from 'views/SyrupPot/components/Banner/index'
 import Pot from 'views/SyrupPot/components/Pot/index'
+import FinishedRounds from './components/FinishedRounds'
 import ScrollToTopButton from './components/ScrollToTopButton'
 import HowToPlay from './components/HowToPlay'
 import PrizeFunds from './components/PrizeFunds'
@@ -14,6 +15,7 @@ const SyrupPot: React.FC = () => {
       <PageMeta />
       <Banner />
       <Pot />
+      <FinishedRounds />
       <HowToPlay />
       <PrizeFunds />
       <FAQ />

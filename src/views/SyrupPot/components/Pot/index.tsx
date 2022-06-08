@@ -20,7 +20,17 @@ const PotContainer = styled(Box)`
     left: 0;
     z-index: 1;
     clip-path: polygon(0 0%, 0% 100%, 100% 100%);
-    background: linear-gradient(90deg,rgba(168,129,252,1) 0%,rgb(160 121 244) 15%,rgb(145 104 226) 30%,rgb(136 95 216) 45%,rgb(139 98 219) 65%,rgb(148 108 230) 80%,rgba(168,129,252,1) 100%);
+    background: linear-gradient(
+      90deg,
+      rgba(168, 129, 252, 1) 0%,
+      rgb(160 121 244) 15%,
+      rgb(145 104 226) 30%,
+      rgb(136 95 216) 45%,
+      rgb(139 98 219) 65%,
+      rgb(148 108 230) 80%,
+      rgba(168, 129, 252, 1) 100%
+    );
+  }
 `
 
 const PotImage = styled.div`
