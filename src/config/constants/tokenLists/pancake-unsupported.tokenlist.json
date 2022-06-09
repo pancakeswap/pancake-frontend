@@ -9,5 +9,13 @@
   "tags": {},
   "logoURI": "ipfs://QmNa8mQkrNKp1WEEeGjFezDmDeodkWRevGFN8JCV7b4Xir",
   "keywords": ["pancake", "unsupported"],
-  "tokens": []
+  "tokens": [
+    {
+      "name": "Pokemoney Coin",
+      "symbol": "PMY",
+      "address": "0x32ff5b4C3B1744F0344D96fA2f87799Ed2805749",
+      "chainId": 56,
+      "decimals": 18
+    }
+  ]
 }
