@@ -71,7 +71,6 @@ export const transformVault = (vaultKey: VaultKey, vault: SerializedCakeVault): 
   const {
     totalShares: totalSharesAsString,
     pricePerFullShare: pricePerFullShareAsString,
-    totalCakeInVault: totalCakeInVaultAsString,
     fees: { performanceFee, withdrawalFee, withdrawalFeePeriod },
     userData: {
       isLoading,
@@ -84,13 +83,13 @@ export const transformVault = (vaultKey: VaultKey, vault: SerializedCakeVault): 
 
   const totalShares = totalSharesAsString ? new BigNumber(totalSharesAsString) : BIG_ZERO
   const pricePerFullShare = pricePerFullShareAsString ? new BigNumber(pricePerFullShareAsString) : BIG_ZERO
-  const totalCakeInVault = new BigNumber(totalCakeInVaultAsString)
   const userShares = new BigNumber(userSharesAsString)
   const cakeAtLastUserAction = new BigNumber(cakeAtLastUserActionAsString)
   let userDataExtra
   let publicDataExtra
   if (vaultKey === VaultKey.CakeVault) {
     const {
+      totalCakeInVault: totalCakeInVaultAsString,
       totalLockedAmount: totalLockedAmountAsString,
       userData: {
         userBoostedShare: userBoostedShareAsString,
@@ -103,6 +102,7 @@ export const transformVault = (vaultKey: VaultKey, vault: SerializedCakeVault): 
       },
     } = vault as SerializedLockedCakeVault
 
+    const totalCakeInVault = new BigNumber(totalCakeInVaultAsString)
     const totalLockedAmount = new BigNumber(totalLockedAmountAsString)
     const lockedAmount = new BigNumber(lockedAmountAsString)
     const userBoostedShare = new BigNumber(userBoostedShareAsString)
@@ -128,11 +128,12 @@ export const transformVault = (vaultKey: VaultKey, vault: SerializedCakeVault): 
       currentPerformanceFee,
       balance,
     }
-    publicDataExtra = { totalLockedAmount }
+    publicDataExtra = { totalLockedAmount, totalCakeInVault }
   } else {
-    const balance = convertSharesToCake(userShares, pricePerFullShare, undefined, undefined)
+    const balance = convertSharesToCake(userShares, pricePerFullShare)
+    const { cakeAsBigNumber } = convertSharesToCake(totalShares, pricePerFullShare)
     userDataExtra = { balance }
-    publicDataExtra = {}
+    publicDataExtra = { totalCakeInVault: cakeAsBigNumber }
   }
 
   const performanceFeeAsDecimal = performanceFee && performanceFee / 100
@@ -140,7 +141,6 @@ export const transformVault = (vaultKey: VaultKey, vault: SerializedCakeVault): 
   return {
     totalShares,
     pricePerFullShare,
-    totalCakeInVault,
     ...publicDataExtra,
     fees: { performanceFee, withdrawalFee, withdrawalFeePeriod, performanceFeeAsDecimal },
     userData: {
