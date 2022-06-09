@@ -1,4 +1,4 @@
-import { appearAnimation, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { appearAnimation, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useLayoutEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -91,7 +91,7 @@ const StyledSwiper = styled(Swiper)`
 const MultipleBanner: React.FC = () => {
   const bannerList = useMultipleBannerConfig()
   const { account } = useWeb3React()
-  const { isDesktop, isTablet } = useMatchBreakpoints()
+  const { isDesktop, isTablet } = useMatchBreakpointsContext()
   const [swiperRef, setSwiperRef] = useState<SwiperCore>(null)
 
   useLayoutEffect(() => {

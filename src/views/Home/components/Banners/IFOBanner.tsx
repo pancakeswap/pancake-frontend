@@ -1,4 +1,4 @@
-import { ArrowForwardIcon, Button, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Button, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
@@ -81,7 +81,7 @@ const IFOBanner = () => {
   const status = isIfoAlive
     ? getStatus(currentBlock, activeIfoWithBlocks.startBlock, activeIfoWithBlocks.endBlock)
     : null
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
   return isIfoAlive && status ? (
     <S.Wrapper>
       <S.Inner>

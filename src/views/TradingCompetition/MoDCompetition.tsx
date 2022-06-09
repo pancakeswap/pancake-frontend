@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
-import { Flex, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex, Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
@@ -48,7 +48,7 @@ const MoDCompetition = () => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { profile, isLoading } = useProfile()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
   const { isDark, theme } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractMoD(false)
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.CLAIM)

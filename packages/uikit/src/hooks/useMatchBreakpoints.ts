@@ -6,7 +6,7 @@ type State = {
   [key: string]: boolean;
 };
 
-type BreakpointChecks = {
+export type BreakpointChecks = {
   isMobile: boolean;
   isTablet: boolean;
   isDesktop: boolean;

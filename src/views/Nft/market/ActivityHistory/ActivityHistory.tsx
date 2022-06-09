@@ -10,7 +10,7 @@ import {
   Table,
   Text,
   Th,
-  useMatchBreakpoints,
+  useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
 import { getCollectionActivity } from 'state/nftMarket/helpers'
 import Container from 'components/Layout/Container'
@@ -58,7 +58,7 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
   const [queryPage, setQueryPage] = useState(1)
   const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
   const bnbBusdPrice = useBNBBusdPrice()
-  const { isXs, isSm, isMd } = useMatchBreakpoints()
+  const { isXs, isSm, isMd } = useMatchBreakpointsContext()
 
   const nftActivityFiltersString = JSON.stringify(nftActivityFilters)
 
