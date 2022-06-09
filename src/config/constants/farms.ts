@@ -43,6 +43,44 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 102,
+    lpSymbol: 'PEAK-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x41140a1650372Fb8cb2f71e335448ab8cfc1c4f3',
+    },
+    token: serializedTokens.peak,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1654772400,
+  },
+  {
+    pid: 93,
+    v1pid: 524,
+    lpSymbol: 'HAPPY-BNB',
+    lpAddresses: {
+      97: '',
+      56: '0x008604A38cD589680F7B8f085DC2D5B4F81151dB',
+    },
+    token: serializedTokens.happy,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1654772400,
+  },
+  {
+    pid: 94,
+    v1pid: 525,
+    lpSymbol: 'WZRD-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xee456d906a38e10680c9d157FFf143390e9681bA',
+    },
+    token: serializedTokens.wzrd,
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1654772400,
+  },
+  {
     pid: 40,
     v1pid: 390,
     lpSymbol: 'CHR-BUSD LP',
@@ -63,20 +101,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.hotcross,
     quoteToken: serializedTokens.wbnb,
-    auctionHostingStartSeconds: 1653649200,
-  },
-  {
-    pid: 94,
-    v1pid: 525,
-    lpSymbol: 'WZRD-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0xee456d906a38e10680c9d157FFf143390e9681bA',
-    },
-    token: serializedTokens.wzrd,
-    quoteToken: serializedTokens.busd,
-    isCommunity: true,
-    auctionHostingStartSeconds: 1653649200,
   },
   {
     pid: 96,
@@ -88,7 +112,6 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens['8pay'],
     quoteToken: serializedTokens.busd,
     isCommunity: true,
-    auctionHostingStartSeconds: 1653649200,
   },
   {
     pid: 101,
@@ -140,18 +163,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.rpg,
     quoteToken: serializedTokens.busd,
-  },
-  {
-    pid: 93,
-    v1pid: 524,
-    lpSymbol: 'HAPPY-BNB',
-    lpAddresses: {
-      97: '',
-      56: '0x008604A38cD589680F7B8f085DC2D5B4F81151dB',
-    },
-    token: serializedTokens.happy,
-    quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
   },
   {
     pid: 95,

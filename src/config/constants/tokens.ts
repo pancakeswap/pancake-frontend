@@ -2104,6 +2104,14 @@ export const mainnetTokens = defineTokens({
     'MixMarvel Token',
     'https://www.mixmarvel.com/',
   ),
+  peak: new Token(
+    MAINNET,
+    '0x630d98424eFe0Ea27fB1b3Ab7741907DFFEaAd78',
+    8,
+    'PEAK',
+    'PEAKDEFI',
+    'https://peakdefi.com/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
