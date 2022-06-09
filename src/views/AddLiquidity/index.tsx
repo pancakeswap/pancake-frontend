@@ -14,7 +14,7 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import { logError } from 'utils/sentry'
-import { useIsTransactionUnsupported } from 'hooks/Trades'
+import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import { useTranslation } from 'contexts/Localization'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -275,6 +275,7 @@ export default function AddLiquidity() {
   }, [onFieldAInput, txHash])
 
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
+  const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
   const [onPresentAddLiquidityModal] = useModal(
     <ConfirmAddLiquidityModal
@@ -387,7 +388,7 @@ export default function AddLiquidity() {
               </>
             )}
 
-            {addIsUnsupported ? (
+            {addIsUnsupported || addIsWarning ? (
               <Button disabled mb="4px">
                 {t('Unsupported Asset')}
               </Button>
@@ -456,7 +457,7 @@ export default function AddLiquidity() {
           </AutoColumn>
         </CardBody>
       </AppBody>
-      {!addIsUnsupported ? (
+      {!(addIsUnsupported || addIsWarning) ? (
         pair && !noLiquidity && pairState !== PairState.INVALID ? (
           <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
             <MinimalPositionCard showUnwrapped={oneCurrencyIsWBNB} pair={pair} />
