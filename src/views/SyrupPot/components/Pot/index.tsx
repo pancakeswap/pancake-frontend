@@ -1,9 +1,11 @@
 import styled from 'styled-components'
 import { useState, useCallback } from 'react'
-import { Flex, Box, Card, Text, CardFooter, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex, Box, Card, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { OutlineText } from 'views/SyrupPot/components/TextStyle'
 import PotTab from './PotTab'
+import Deposit from './Deposit/index'
+import Claim from './Claim/index'
 import { POT_CATEGORY } from '../../types'
 
 const PotContainer = styled(Box)`
@@ -69,10 +71,10 @@ const Pot: React.FC = () => {
           {t('Stake to get your tickets NOW')}
         </Text>
         <Flex justifyContent="space-between" flexDirection={['column', 'column', 'column', 'column', 'row']}>
-          <Flex mt="48px">
+          <Flex mt="48px" alignItems="flex-start">
             <Card style={{ width: isMobile ? '100%' : '436px' }}>
               <PotTab onItemClick={handleClick} activeIndex={activeTab} />
-              <CardFooter>1233</CardFooter>
+              {activeTab === POT_CATEGORY.Deposit ? <Deposit /> : <Claim />}
             </Card>
           </Flex>
           <PotImage />
