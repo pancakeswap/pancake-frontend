@@ -52,7 +52,6 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.peak,
     quoteToken: serializedTokens.wbnb,
     isCommunity: true,
-    auctionHostingStartSeconds: 1654772400,
   },
   {
     pid: 93,
@@ -65,7 +64,6 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.happy,
     quoteToken: serializedTokens.wbnb,
     isCommunity: true,
-    auctionHostingStartSeconds: 1654772400,
   },
   {
     pid: 94,
@@ -78,7 +76,6 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.wzrd,
     quoteToken: serializedTokens.busd,
     isCommunity: true,
-    auctionHostingStartSeconds: 1654772400,
   },
   {
     pid: 40,
