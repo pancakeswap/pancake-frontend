@@ -7,7 +7,7 @@ import { formatNumber } from 'utils/formatBalance'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import useBUSDPrice from 'hooks/useBUSDPrice'
 import { CurrencyLogo } from '../Logo'
-import { RowBetween } from '../Layout/Row'
+import { RowBetween, AutoRow } from '../Layout/Row'
 
 const DropDownHeader = styled.div`
   width: 100%;
@@ -105,12 +105,12 @@ export const CurrencySelect = ({
       </DropDownContainer>
       {account && !!selectedCurrency && !hideBalance && (
         <Box>
-          <RowBetween>
+          <AutoRow justify="space-between" gap="2px">
             <Text color="textSubtle" fontSize="12px">
               {t('Balance')}:
             </Text>
             <Text fontSize="12px">{selectedCurrencyBalance?.toSignificant(6) ?? t('Loading')}</Text>
-          </RowBetween>
+          </AutoRow>
           <RowBetween>
             <div />
             {Number.isFinite(+quoted?.toExact()) && (
