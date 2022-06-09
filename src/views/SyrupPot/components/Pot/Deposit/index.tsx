@@ -1,21 +1,20 @@
 import styled from 'styled-components'
-import { useState, useCallback } from 'react'
-import { Flex, Box, Card, Text, useMatchBreakpoints, TokenPairImage } from '@pancakeswap/uikit'
+import { Flex, Box, Button, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { PoolCardHeaderTitle } from 'views/Pools/components/PoolCard/PoolCardHeader'
 import { GreyCard } from 'components/Card'
-
-const CardHeader = styled(Flex)`
-  align-items: center;
-  justify-content: space-between;
-  padding: 24px 24px 16px 24px;
-  border-bottom: solid 2px ${({ theme }) => theme.colors.cardBorder};
-`
+import CardHeader from '../CardHeader'
+import YourDeposit from '../YourDeposit'
+import WinRate from '../WinRate'
 
 const Container = styled(Flex)`
   flex-direction: column;
   padding: 16px 24px;
-  border-bottom: solid 2px ${({ theme }) => theme.colors.cardBorder};
+  border-bottom: solid 1px ${({ theme }) => theme.colors.cardBorder};
+`
+
+const CardAction = styled(Flex)`
+  flex-direction: column;
+  padding: 26px 24px 36px 24px;
 `
 
 const Deposit: React.FC = () => {
@@ -23,18 +22,35 @@ const Deposit: React.FC = () => {
 
   return (
     <Box>
-      <CardHeader>
-        <PoolCardHeaderTitle title="Syrup Pot" subTitle="Stake CAKE, Earn CAKE, Win CAKE" />
-        <TokenPairImage
-          primarySrc="/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.svg"
-          secondarySrc="/images/tokens/pot-icon.svg"
-          width={64}
-          height={64}
-        />
-      </CardHeader>
+      <CardHeader
+        title="Syrup Pot"
+        subTitle="Stake CAKE, Earn CAKE, Win CAKE"
+        primarySrc="/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.svg"
+        secondarySrc="/images/tokens/pot-icon.svg"
+      />
       <Container>
-        <GreyCard>12313</GreyCard>
+        <GreyCard mb="18px">
+          <Flex justifyContent="space-between">
+            <YourDeposit />
+            <WinRate />
+          </Flex>
+        </GreyCard>
+        <Flex justifyContent="space-between">
+          <Text color="textSubtle">{t('APY')}</Text>
+          <Text bold>34.33%</Text>
+        </Flex>
+        <Flex justifyContent="space-between">
+          <Text color="textSubtle">{t('Next draw date')}</Text>
+          <Text bold>in 1d 23h 11s</Text>
+        </Flex>
+        <Flex justifyContent="space-between">
+          <Text color="textSubtle">{t('Total Value Locked')}</Text>
+          <Text bold>1,234,567.89 CAKE</Text>
+        </Flex>
       </Container>
+      <CardAction>
+        <Button>Enable</Button>
+      </CardAction>
     </Box>
   )
 }

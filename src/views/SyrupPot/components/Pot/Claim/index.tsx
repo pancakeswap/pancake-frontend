@@ -1,18 +1,36 @@
 import styled from 'styled-components'
-import { useState, useCallback } from 'react'
-import { Flex, Box, Card, Text, CardFooter, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { Flex, Box } from '@pancakeswap/uikit'
+import { GreyCard } from 'components/Card'
+import CardHeader from '../CardHeader'
+import YourDeposit from '../YourDeposit'
+import WinRate from '../WinRate'
+import CardFooter from './CardFooter'
 
-const PotClaimContainer = styled(Box)``
+const Container = styled(Flex)`
+  flex-direction: column;
+  padding: 16px 24px;
+`
 
-const PotClaim: React.FC = () => {
-  const { t } = useTranslation()
-
+const Claim: React.FC = () => {
   return (
-    <PotClaimContainer>
-      <h1>Claim</h1>
-    </PotClaimContainer>
+    <Box>
+      <CardHeader
+        title="Syrup Pot"
+        subTitle="Stake CAKE, Earn CAKE, Win CAKE"
+        primarySrc="/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.svg"
+        secondarySrc="/images/tokens/pot-icon.svg"
+      />
+      <Container>
+        <GreyCard>
+          <Flex justifyContent="space-between">
+            <YourDeposit />
+            <WinRate />
+          </Flex>
+        </GreyCard>
+      </Container>
+      <CardFooter />
+    </Box>
   )
 }
 
-export default PotClaim
+export default Claim
