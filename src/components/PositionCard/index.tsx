@@ -17,7 +17,7 @@ import {
 import styled from 'styled-components'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useWeb3React } from '@web3-react/core'
 import useTotalSupply from '../../hooks/useTotalSupply'
 
 import { useTokenBalance } from '../../state/wallet/hooks'
@@ -45,7 +45,7 @@ interface PositionCardProps extends CardProps {
 
 export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCardProps) {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
   const poolData = useLPApr(pair)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(`Based on last 7 days' performance. Does not account for impermanent loss`),
@@ -163,7 +163,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
 
 export default function FullPositionCard({ pair, ...props }: PositionCardProps) {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
   const poolData = useLPApr(pair)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(`Based on last 7 days' performance. Does not account for impermanent loss`),

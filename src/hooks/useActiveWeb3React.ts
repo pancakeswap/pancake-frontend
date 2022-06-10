@@ -1,28 +1,21 @@
-import { useEffect, useState, useRef } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import { useContext } from 'react'
 import { Web3Provider } from '@ethersproject/providers'
-import { simpleRpcProvider } from 'utils/providers'
 // eslint-disable-next-line import/no-unresolved
 import { Web3ReactContextInterface } from '@web3-react/core/dist/types'
-import { CHAIN_ID } from 'config/constants/networks'
+import { ActiveWeb3ReactContext } from 'contexts/ActiveWeb3React'
 
 /**
  * Provides a web3 provider with or without user's signer
  * Recreate web3 instance only if the provider change
  */
 const useActiveWeb3React = (): Web3ReactContextInterface<Web3Provider> => {
-  const { library, chainId, ...web3React } = useWeb3React()
-  const refEth = useRef(library)
-  const [provider, setProvider] = useState(library || simpleRpcProvider)
+  const activeWeb3ReactProvider = useContext(ActiveWeb3ReactContext)
 
-  useEffect(() => {
-    if (library !== refEth.current) {
-      setProvider(library || simpleRpcProvider)
-      refEth.current = library
-    }
-  }, [library])
+  if (activeWeb3ReactProvider === undefined) {
+    throw new Error('Active Web3ReactProvider context is undefined')
+  }
 
-  return { library: provider, chainId: chainId ?? parseInt(CHAIN_ID, 10), ...web3React }
+  return activeWeb3ReactProvider
 }
 
 export default useActiveWeb3React
