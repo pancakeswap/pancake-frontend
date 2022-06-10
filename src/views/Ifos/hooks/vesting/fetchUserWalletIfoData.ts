@@ -25,6 +25,14 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
   const { address } = ifo
   const readContract = getIfoV3Contract(address)
   let userVestingData = {
+    poolBasic: {
+      vestingId: '0',
+      offeringAmountInToken: BIG_ZERO,
+      vestingReleased: BIG_ZERO,
+      vestingAmountTotal: BIG_ZERO,
+      vestingcomputeReleasableAmount: BIG_ZERO,
+      vestingInfomationPercentage: 0,
+    },
     poolUnlimited: {
       vestingId: '0',
       offeringAmountInToken: BIG_ZERO,
@@ -36,22 +44,41 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
   }
 
   if (account) {
-    const vestingId = await readContract.computeVestingScheduleIdForAddressAndIndex(account, 0)
+    const [basicId, unlimitedId] = await Promise.all([
+      readContract.computeVestingScheduleIdForAddressAndPid(account, 0),
+      readContract.computeVestingScheduleIdForAddressAndPid(account, 1),
+    ])
+
     const ifov3Calls = [
       {
         address,
         name: 'viewUserOfferingAndRefundingAmountsForPools',
-        params: [account, [1]],
+        params: [account, [0, 1]],
       },
       {
         address,
         name: 'getVestingSchedule',
-        params: [vestingId],
+        params: [basicId],
+      },
+      {
+        address,
+        name: 'getVestingSchedule',
+        params: [unlimitedId],
       },
       {
         address,
         name: 'computeReleasableAmount',
-        params: [vestingId],
+        params: [basicId],
+      },
+      {
+        address,
+        name: 'computeReleasableAmount',
+        params: [unlimitedId],
+      },
+      {
+        address,
+        name: 'viewPoolVestingInformation',
+        params: [0],
       },
       {
         address,
@@ -60,22 +87,35 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
       },
     ]
 
-    const [amounts, vestingSchedule, computeReleasableAmount, unlimitedVestingInformation] = await multicallv2(
-      ifoV3Abi,
-      ifov3Calls,
-      { requireSuccess: false },
-    )
+    const [
+      amounts,
+      basicSchedule,
+      unlimitedSchedule,
+      basicReleasableAmount,
+      unlimitedReleasableAmount,
+      basicVestingInformation,
+      unlimitedVestingInformation,
+    ] = await multicallv2(ifoV3Abi, ifov3Calls, { requireSuccess: false })
 
     userVestingData = {
-      ...userVestingData,
+      [PoolIds.poolBasic]: {
+        ...userVestingData[PoolIds.poolBasic],
+        vestingId: basicId ? basicId.toString() : '0',
+        offeringAmountInToken: new BigNumber(amounts[0][0][0].toString()),
+        vestingReleased: basicSchedule ? new BigNumber(basicSchedule[0].released.toString()) : BIG_ZERO,
+        vestingAmountTotal: basicSchedule ? new BigNumber(basicSchedule[0].amountTotal.toString()) : BIG_ZERO,
+        vestingcomputeReleasableAmount: basicReleasableAmount
+          ? new BigNumber(basicReleasableAmount.toString())
+          : BIG_ZERO,
+        vestingInfomationPercentage: basicVestingInformation ? basicVestingInformation[0].toNumber() : 0,
+      },
       [PoolIds.poolUnlimited]: {
         ...userVestingData[PoolIds.poolUnlimited],
-        vestingId: vestingId ? vestingId.toString() : '0',
-        offeringAmountInToken: new BigNumber(amounts[0][0][0].toString()),
-        vestingReleased: vestingSchedule ? new BigNumber(vestingSchedule[0].released.toString()) : BIG_ZERO,
-        vestingAmountTotal: vestingSchedule ? new BigNumber(vestingSchedule[0].amountTotal.toString()) : BIG_ZERO,
-        vestingcomputeReleasableAmount: computeReleasableAmount
-          ? new BigNumber(computeReleasableAmount.toString())
+        vestingId: unlimitedId ? unlimitedId.toString() : '0',
+        vestingReleased: unlimitedSchedule ? new BigNumber(unlimitedSchedule[0].released.toString()) : BIG_ZERO,
+        vestingAmountTotal: unlimitedSchedule ? new BigNumber(unlimitedSchedule[0].amountTotal.toString()) : BIG_ZERO,
+        vestingcomputeReleasableAmount: unlimitedReleasableAmount
+          ? new BigNumber(unlimitedReleasableAmount.toString())
           : BIG_ZERO,
         vestingInfomationPercentage: unlimitedVestingInformation ? unlimitedVestingInformation[0].toNumber() : 0,
       },

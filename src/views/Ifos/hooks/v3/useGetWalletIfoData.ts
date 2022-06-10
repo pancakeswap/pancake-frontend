@@ -82,7 +82,13 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     }))
 
     const IfoV3Contract = getIfoV3Contract(address)
-    const vestingId = version === 3.2 && (await IfoV3Contract.computeVestingScheduleIdForAddressAndIndex(account, 0))
+    const [basicId, unlimitedId] =
+      version >= 3.2 &&
+      (await Promise.all([
+        IfoV3Contract.computeVestingScheduleIdForAddressAndPid(account, 0),
+        IfoV3Contract.computeVestingScheduleIdForAddressAndPid(account, 1),
+      ]))
+
     const ifov3Calls =
       version >= 3.1
         ? [
@@ -99,7 +105,12 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
             version === 3.2 && {
               address,
               name: 'getVestingSchedule',
-              params: [vestingId],
+              params: [basicId],
+            },
+            version === 3.2 && {
+              address,
+              name: 'getVestingSchedule',
+              params: [unlimitedId],
             },
             version === 3.2 && {
               address,
@@ -109,7 +120,12 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
             version === 3.2 && {
               address,
               name: 'computeReleasableAmount',
-              params: [vestingId],
+              params: [basicId],
+            },
+            version === 3.2 && {
+              address,
+              name: 'computeReleasableAmount',
+              params: [unlimitedId],
             },
           ].filter(Boolean)
         : []
@@ -121,9 +137,11 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       amounts,
       isQualifiedNFT,
       isQualifiedPoints,
-      vestingSchedule,
+      basicSchedule,
+      unlimitedSchedule,
       countByBeneficiary,
-      computeReleasableAmount,
+      basicReleasableAmount,
+      unlimitedReleasableAmount,
     ] = await multicallv2(ifoV3Abi, [...ifoCalls, ...ifov3Calls], { requireSuccess: false })
 
     setState((prevState) => ({
@@ -138,6 +156,12 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         hasClaimed: userInfo[1][0],
         isQualifiedNFT: isQualifiedNFT ? isQualifiedNFT[0] : false,
         isQualifiedPoints: isQualifiedPoints ? isQualifiedPoints[0] : false,
+        vestingReleased: basicSchedule ? new BigNumber(basicSchedule[0].released.toString()) : BIG_ZERO,
+        vestingAmountTotal: basicSchedule ? new BigNumber(basicSchedule[0].amountTotal.toString()) : BIG_ZERO,
+        vestingId: basicId ? basicId.toString() : '0',
+        vestingcomputeReleasableAmount: basicReleasableAmount
+          ? new BigNumber(basicReleasableAmount.toString())
+          : BIG_ZERO,
       },
       poolUnlimited: {
         ...prevState.poolUnlimited,
@@ -146,11 +170,11 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         refundingAmountInLP: new BigNumber(amounts[0][1][1].toString()),
         taxAmountInLP: new BigNumber(amounts[0][1][2].toString()),
         hasClaimed: userInfo[1][1],
-        vestingReleased: vestingSchedule ? new BigNumber(vestingSchedule[0].released.toString()) : BIG_ZERO,
-        vestingAmountTotal: vestingSchedule ? new BigNumber(vestingSchedule[0].amountTotal.toString()) : BIG_ZERO,
-        vestingId: vestingId ? vestingId.toString() : '0',
-        vestingcomputeReleasableAmount: computeReleasableAmount
-          ? new BigNumber(computeReleasableAmount.toString())
+        vestingReleased: unlimitedSchedule ? new BigNumber(unlimitedSchedule[0].released.toString()) : BIG_ZERO,
+        vestingAmountTotal: unlimitedSchedule ? new BigNumber(unlimitedSchedule[0].amountTotal.toString()) : BIG_ZERO,
+        vestingId: unlimitedId ? unlimitedId.toString() : '0',
+        vestingcomputeReleasableAmount: unlimitedReleasableAmount
+          ? new BigNumber(unlimitedReleasableAmount.toString())
           : BIG_ZERO,
       },
       vestingSchedule: {

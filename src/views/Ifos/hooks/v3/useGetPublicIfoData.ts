@@ -58,6 +58,12 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       sumTaxesOverflow: BIG_ZERO,
       pointThreshold: 0,
       admissionProfile: undefined,
+      vestingInfomation: {
+        percentage: 0,
+        cliff: 0,
+        duration: 0,
+        slicePeriodSeconds: 0,
+      },
     },
     poolUnlimited: {
       raisingAmountPool: BIG_ZERO,
@@ -95,6 +101,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         admissionProfile,
         pointThreshold,
         vestingStartTime,
+        basicVestingInformation,
         unlimitedVestingInformation,
       ] = await multicallv2(
         abi,
@@ -145,6 +152,11 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
           version === 3.2 && {
             address,
             name: 'viewPoolVestingInformation',
+            params: [0],
+          },
+          version === 3.2 && {
+            address,
+            name: 'viewPoolVestingInformation',
             params: [1],
           },
         ].filter(Boolean),
@@ -177,6 +189,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
           taxRate: 0,
           pointThreshold: pointThreshold ? pointThreshold[0].toNumber() : 0,
           admissionProfile: admissionProfile ? admissionProfile[0] : undefined,
+          vestingInfomation: formatVestingInfo(basicVestingInformation),
         },
         poolUnlimited: {
           ...poolUnlimitedFormatted,

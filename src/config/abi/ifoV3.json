@@ -185,6 +185,16 @@
   },
   {
     "inputs": [
+      { "internalType": "address", "name": "_holder", "type": "address" },
+      { "internalType": "uint256", "name": "_pid", "type": "uint256" }
+    ],
+    "name": "computeVestingScheduleIdForAddressAndPid",
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "uint256", "name": "_amount", "type": "uint256" },
       { "internalType": "uint8", "name": "_pid", "type": "uint8" }
     ],

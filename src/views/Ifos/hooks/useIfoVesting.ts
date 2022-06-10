@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
+import { BIG_ZERO } from 'utils/bigNumber'
 
 interface UseIfoVestingProps {
   poolId: PoolIds
@@ -14,6 +15,7 @@ const useIfoVesting = ({ poolId, publicIfoData, walletIfoData }: UseIfoVestingPr
   const userPool = walletIfoData[poolId]
 
   const userVestingSheduleCount = useMemo(() => walletIfoData.vestingSchedule.countByBeneficiary, [walletIfoData])
+
   const vestingPercentage = useMemo(
     () => new BigNumber(publicPool.vestingInfomation.percentage).times(0.01),
     [publicPool],
@@ -36,7 +38,7 @@ const useIfoVesting = ({ poolId, publicIfoData, walletIfoData }: UseIfoVestingPr
   }, [userVestingSheduleCount, userPool, releasedAtSaleEnd])
 
   const amountAlreadyClaimed = useMemo(() => {
-    const released = userVestingSheduleCount.gt(0) ? releasedAtSaleEnd : 0
+    const released = userVestingSheduleCount.gt(0) ? releasedAtSaleEnd : BIG_ZERO
     return new BigNumber(released).plus(userPool.vestingReleased)
   }, [userVestingSheduleCount, releasedAtSaleEnd, userPool])
 

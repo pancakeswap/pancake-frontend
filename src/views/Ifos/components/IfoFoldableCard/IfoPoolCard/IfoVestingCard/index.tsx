@@ -39,7 +39,7 @@ const IfoVestingCard: React.FC<IfoVestingCardProps> = ({ poolId, ifo, publicIfoD
   return (
     <Flex flexDirection="column">
       <Box>
-        <ProgressStepper publicIfoData={publicIfoData} />
+        <ProgressStepper poolId={poolId} publicIfoData={publicIfoData} />
         <TotalPurchased ifo={ifo} poolId={poolId} walletIfoData={walletIfoData} />
         <ReleasedTokenInfo ifo={ifo} amountReleased={amountReleased} amountInVesting={amountInVesting} />
         <Divider />

@@ -121,8 +121,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
   const isVesting = useMemo(() => {
     return (
       account &&
-      ifo.version === 3.2 &&
-      poolId === PoolIds.poolUnlimited &&
+      ifo.version >= 3.2 &&
       vestingInfomation.percentage > 0 &&
       publicIfoData.status === 'finished' &&
       walletIfoData[poolId].amountTokenCommittedInLP.gt(0)

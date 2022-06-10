@@ -1,6 +1,7 @@
 import { useEffect, Fragment, useState } from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
+import { PoolIds } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { PublicIfoData } from 'views/Ifos/types'
 import Step from './Step'
@@ -15,17 +16,18 @@ const Spacer = styled.div<{ isPastSpacer?: boolean }>`
 `
 
 interface ProgressStepperProps {
+  poolId: PoolIds
   publicIfoData: PublicIfoData
 }
 
-const ProgressStepper: React.FC<ProgressStepperProps> = ({ publicIfoData }) => {
+const ProgressStepper: React.FC<ProgressStepperProps> = ({ poolId, publicIfoData }) => {
   const { t } = useTranslation()
   const [steps, setSteps] = useState([])
   const [activeStepIndex, setActiveStepIndex] = useState(0)
 
   useEffect(() => {
-    const { vestingStartTime, poolUnlimited } = publicIfoData
-    const { cliff, duration } = poolUnlimited.vestingInfomation
+    const { vestingStartTime } = publicIfoData
+    const { cliff, duration } = publicIfoData[poolId]?.vestingInfomation
 
     const currentTimeStamp = new Date().getTime()
     const timeSalesEnded = vestingStartTime * 1000
@@ -49,7 +51,7 @@ const ProgressStepper: React.FC<ProgressStepperProps> = ({ publicIfoData }) => {
       { text: t('Cliff'), timeStamp: timeCliff },
       { text: t('Vesting end'), timeStamp: timeVestingEnd },
     ])
-  }, [t, publicIfoData])
+  }, [t, poolId, publicIfoData])
 
   return (
     <Flex>
