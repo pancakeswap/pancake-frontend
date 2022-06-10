@@ -1,5 +1,7 @@
 import { FC } from 'react'
 import Script from 'next/script'
+import { listenOnBnMessage } from 'utils/mpBridge'
+import { useActiveHandle, getAccount } from 'hooks/useEagerConnect.bmp'
 import Farms, { FarmsContext } from './Farms'
 
 export const FarmsPageLayout: FC = ({ children }) => {
@@ -7,9 +9,22 @@ export const FarmsPageLayout: FC = ({ children }) => {
 }
 
 export const FarmsMpPageLayout: FC = ({ children }) => {
+  const handleActive = useActiveHandle()
+
+  const handleLoad = async () => {
+    listenOnBnMessage()
+    const account = await getAccount()
+    if (account) {
+      handleActive(false)
+    }
+  }
   return (
     <>
-      <Script src="https://public.bnbstatic.com/static/js/mp-webview-sdk/webview-v1.0.0.min.js" id="mp-webview" />
+      <Script
+        onLoad={handleLoad}
+        src="https://public.bnbstatic.com/static/js/mp-webview-sdk/webview-v1.0.0.min.js"
+        id="mp-webview"
+      />
       <Farms>{children}</Farms>
     </>
   )

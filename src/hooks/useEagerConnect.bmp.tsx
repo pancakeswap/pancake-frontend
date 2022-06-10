@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
 
 /* eslint max-classes-per-file: off -- noop */
@@ -7,7 +7,7 @@ import { AbstractConnectorArguments, ConnectorUpdate } from '@web3-react/types'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import warning from 'tiny-warning'
 import { useTranslation } from 'contexts/Localization'
-import getWeb3Provider, { listenOnBnMessage } from '../utils/mpBridge'
+import getWeb3Provider from '../utils/mpBridge'
 import useToast from './useToast'
 
 const __DEV__ = process.env.NODE_ENV !== 'production'
@@ -151,7 +151,7 @@ class BnInjectedConnector extends AbstractConnector {
 }
 
 const injected = new BnInjectedConnector({ supportedChainIds: [56, 97] })
-const getAccount = () => injected.getAccount()
+export const getAccount = () => injected.getAccount()
 
 const useActive = () => {
   const { activate } = useWeb3React()
@@ -165,21 +165,7 @@ const useActive = () => {
   )
 }
 export const useEagerConnect = () => {
-  const handleActive = useActive()
-
-  useEffect(() => {
-    const main = async () => {
-      const address = await injected.getAccount()
-      if (address) {
-        handleActive()
-      }
-    }
-    main()
-  }, [])
-
-  useEffect(() => {
-    listenOnBnMessage()
-  }, [])
+  // noop
 }
 
 // const isOldVersion = () => {
@@ -225,10 +211,10 @@ export const useActiveHandle = () => {
       }
     })
   }
-  return async () => {
+  return async (showToast = true) => {
     await main()
     const address = await getAccount()
-    if (address) {
+    if (address && showToast) {
       toastSuccess(t('Success'), 'Wallet connected')
     }
   }
