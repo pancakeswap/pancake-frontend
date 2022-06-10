@@ -112,7 +112,7 @@ const MultipleBanner: React.FC = () => {
         spaceBetween={50}
         observer
         slidesPerView={1}
-        effect={'fade' as const}
+        effect="fade"
         fadeEffect={{ crossFade: true }}
         speed={500}
         autoplay={{ delay: 5000 }}
