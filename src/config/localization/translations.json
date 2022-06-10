@@ -1187,7 +1187,6 @@
   "Rarity": "Rarity",
   "Lowest": "Lowest",
   "You don’t have any of this item.": "You don’t have any of this item.",
-  "You don’t have this item.": "You don’t have this item.",
   "Manage/Sell": "Manage/Sell",
   "NFT Marketplace": "NFT Marketplace",
   "Delisted": "Delisted",
@@ -1700,5 +1699,6 @@
   "Bunny Helmet NFT": "Bunny Helmet NFT",
   "Bunny Helmet": "Bunny Helmet",
   "PancakeSwap NFT": "PancakeSwap NFT",
-  "Suspicious rugpull token": "Suspicious rugpull token"
+  "Suspicious rugpull token": "Suspicious rugpull token",
+  "Manage Yours in Collection": "Manage Yours in Collection"
 }
