@@ -17,24 +17,35 @@ const ClaimButton: React.FC<Props> = ({ data, fetchUserVestingData }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { address, token } = data.ifo
-  const { vestingId } = data.userVestingData[PoolIds.poolUnlimited]
   const contract = useIfoV3Contract(address)
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 
   const handleClaim = useCallback(async () => {
-    const receipt = await fetchWithCatchTxError(() => {
-      return contract.release(vestingId)
-    })
-    if (receipt?.status) {
-      toastSuccess(
-        t('Success!'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('You have successfully claimed available tokens.')}
-        </ToastDescriptionWithTx>,
-      )
-      fetchUserVestingData()
+    const pids = [PoolIds.poolUnlimited, PoolIds.poolBasic]
+      .map((pool) => {
+        const detail = data.userVestingData[pool]
+        if (detail.vestingcomputeReleasableAmount.gt(0)) {
+          return detail.vestingId
+        }
+        return ''
+      })
+      .filter(Boolean)
+
+    for (let i = 0; i < pids.length; i++) {
+      // eslint-disable-next-line no-await-in-loop
+      const receipt = await fetchWithCatchTxError(() => contract.release(pids[i]))
+
+      if (receipt?.status) {
+        toastSuccess(
+          t('Success!'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('You have successfully claimed available tokens.')}
+          </ToastDescriptionWithTx>,
+        )
+        fetchUserVestingData()
+      }
     }
-  }, [contract, vestingId, t, fetchUserVestingData, fetchWithCatchTxError, toastSuccess])
+  }, [data, contract, t, fetchUserVestingData, fetchWithCatchTxError, toastSuccess])
 
   return (
     <Button

@@ -17,6 +17,7 @@ export interface VestingCharacteristics {
 export interface VestingData {
   ifo: Ifo
   userVestingData: {
+    [PoolIds.poolBasic]: VestingCharacteristics
     [PoolIds.poolUnlimited]: VestingCharacteristics
   }
 }
@@ -112,6 +113,7 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
       [PoolIds.poolUnlimited]: {
         ...userVestingData[PoolIds.poolUnlimited],
         vestingId: unlimitedId ? unlimitedId.toString() : '0',
+        offeringAmountInToken: new BigNumber(amounts[0][1][0].toString()),
         vestingReleased: unlimitedSchedule ? new BigNumber(unlimitedSchedule[0].released.toString()) : BIG_ZERO,
         vestingAmountTotal: unlimitedSchedule ? new BigNumber(unlimitedSchedule[0].amountTotal.toString()) : BIG_ZERO,
         vestingcomputeReleasableAmount: unlimitedReleasableAmount
