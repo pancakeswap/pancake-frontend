@@ -70,7 +70,7 @@
     "numeral": "^2.0.6",
     "peronio-core": "^0.9.1",
     "peronio-sdk": "^0.8.17",
-    "peronio-uikit": "^0.63.7",
+    "peronio-uikit": "^0.64.0",
     "qs": "^6.9.4",
     "react": "^17.0.1",
     "react-countup": "^4.3.3",

@@ -119,6 +119,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
             />
           </Flex>
           <Toggle
+            disabled
             id="toggle-subgraph-health-button"
             checked={subgraphHealth}
             scale="md"

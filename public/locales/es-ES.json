@@ -1386,7 +1386,7 @@
   "The Locked Price & Closed Price are exactly the same (within 8 decimals), so neither side wins. All funds entered into UP and DOWN positions will go to the weekly CAKE burn.": "El Precio asegurado y el Precio de cierre son exactamente lo mismo (con 8 decimales), por lo que ninguna de las partes gana. Todos los fondos que iniciaron con posiciones al ALZA y a la BAJA irán a la quema semanal de CAKE.",
   "To Burn": "Para quemar",
   "Account": "Cuenta",
-  "PancakeSwap Info & Analytics": "Información y análisis de PancakeSwap",
+  "Peronio Info & Analytics": "Información y análisis de Peronio",
   "Top Tokens": "Mejores Tokens",
   "Top Pools": "Mejores Pools",
   "Your Watchlist": "Tu lista de seguimiento",

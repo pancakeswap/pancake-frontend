@@ -325,11 +325,8 @@ export default function WithdrawView({ history }: RouteComponentProps) {
                           }}
                           width="48%"
                           id="swap-button"
-                          disabled={
-                            !isValid ||
-                            approval !== ApprovalState.APPROVED ||
-                            (priceImpactSeverity > 3 && !isExpertMode)
-                          }
+                          disabled
+                          // !isValid || approval !== ApprovalState.APPROVED ||(priceImpactSeverity > 3 && !isExpertMode)
                         >
                           {t('Withdraw')}
                         </Button>
