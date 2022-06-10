@@ -107,38 +107,6 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
             }}
           />
         </Flex>
-        <Flex justifyContent="space-between" alignItems="center" mb="24px">
-          <Flex alignItems="center">
-            <Text>{t('Subgraph Health Indicator')}</Text>
-            <QuestionHelper
-              text={t(
-                'Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed',
-              )}
-              placement="top-start"
-              ml="4px"
-            />
-          </Flex>
-          <Toggle
-            disabled
-            id="toggle-subgraph-health-button"
-            checked={subgraphHealth}
-            scale="md"
-            onChange={() => {
-              setSubgraphHealh(!subgraphHealth)
-            }}
-          />
-        </Flex>
-        {/* <Flex justifyContent="space-between" alignItems="center">
-          <Flex alignItems="center">
-            <Text>{t('Flippy sounds')}</Text>
-            <QuestionHelper
-              text={t('Fun sounds to make a truly immersive pancake-flipping trading experience')}
-              placement="top-start"
-              ml="4px"
-            />
-          </Flex>
-          <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" />
-        </Flex> */}
       </ScrollableContainer>
     </Modal>
   )
