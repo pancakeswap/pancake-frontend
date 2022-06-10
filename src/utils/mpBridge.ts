@@ -3,22 +3,19 @@ const cbList = {}
 const onCallbackIdList = {}
 
 export const listenOnBnMessage = () => {
-  setTimeout(() => {
-    if (typeof window !== 'undefined') {
-      window.bn.onMessage = ({ data: { id, payload } }) => {
-        console.log('~ onMessage: ', id, payload)
-        if (typeof payload === 'string') {
-          // eslint-disable-next-line no-param-reassign
-          payload = JSON.parse(payload)
-          console.log('~ onMessage parse payload: ', payload)
-        }
-        console.log(cbList[id])
-        if (typeof cbList[id] === 'function') {
-          cbList[id](payload)
-        }
+  if (typeof window !== 'undefined') {
+    window.bn.onMessage = ({ data: { id, payload } }) => {
+      console.log('~ onMessage: ', id, payload)
+      let newPayload = payload
+      if (typeof payload === 'string') {
+        newPayload = JSON.parse(payload)
+        console.log('~ onMessage parse payload: ', payload)
+      }
+      if (typeof cbList[id] === 'function') {
+        cbList[id](newPayload)
       }
     }
-  })
+  }
 }
 function getWeb3Provider() {
   let id = 0
@@ -28,7 +25,6 @@ function getWeb3Provider() {
       window.bn.miniProgram.postMessage({ action: 'on', id: id++, payload: { event } })
     },
     request(params) {
-      console.log('~ bridge start request')
       return new Promise((resolve) => {
         const localId = id
         window.bn.miniProgram.postMessage({ action: 'request', payload: params, id: id++ })
