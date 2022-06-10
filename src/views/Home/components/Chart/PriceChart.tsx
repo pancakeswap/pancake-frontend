@@ -24,7 +24,6 @@ const PriceChart = ({
   const { isDesktop } = useMatchBreakpoints()
   const [chartView, setChartView] = useExchangeChartViewManager()
   const { t } = useTranslation()
-  console.log(inputCurrency)
   return (
     <StyledPriceChart
       height="70%"

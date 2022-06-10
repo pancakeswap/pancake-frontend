@@ -32,7 +32,7 @@ const BasicChart = ({
   isMobile,
   currentSwapPrice,
 }) => {
-  const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(0)
+  const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(2)
 
   const { pairPrices = [], pairId } = useFetchPairPrices({
     token0Address,

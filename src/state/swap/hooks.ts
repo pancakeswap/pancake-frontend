@@ -392,7 +392,9 @@ export const useFetchPairPrices = ({
         // low liquidity pool might mean that the price is incorrect
         // in that case try to get derived price
         const hasEnoughLiquidity = pairHasEnoughLiquidity(data, timeWindow)
-        const newPairData = normalizeChartData(data, timeWindow) || []
+        const newPairData = normalizeChartData(data, timeWindow,   token0Address,
+          token1Address,
+        ) || []
         if (newPairData.length > 0 && hasEnoughLiquidity) {
           dispatch(updatePairData({ pairData: newPairData, pairId, timeWindow }))
           setIsLoading(false)
