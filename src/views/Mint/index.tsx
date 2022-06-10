@@ -256,6 +256,7 @@ export default function MintView({ history }: RouteComponentProps) {
                       onCurrencySelect={null}
                       otherCurrency={currencies[Field.INPUT]}
                       id="swap-currency-output"
+                      disabled
                       disableCurrencySelect
                     />
 
@@ -351,8 +352,7 @@ export default function MintView({ history }: RouteComponentProps) {
                         }}
                         id="swap-button"
                         width="100%"
-                        disabled
-                        // !isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError
+                        disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
                       >
                         {swapInputError ||
                           (priceImpactSeverity > 3 && !isExpertMode
