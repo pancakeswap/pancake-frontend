@@ -108,8 +108,8 @@ const BasicChart = ({
         <Flex flexDirection="column" pt="12px">
           <TokenDisplay
             value={pairPrices?.length > 0 && valueToDisplay}
-            inputSymbol={inputCurrency?.symbol}
-            outputSymbol={outputCurrency?.symbol}
+            inputSymbol={outputCurrency?.symbol}
+            outputSymbol={inputCurrency?.symbol}
           >
             <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" mt="-8px" mb="8px" bold>
               {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
