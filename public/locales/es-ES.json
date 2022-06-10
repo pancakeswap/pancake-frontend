@@ -1761,6 +1761,8 @@
   "Provided by MAI/USDC in QiDao": "Provisto por MAI/USDC in QiDao",
   "Vault": "Bóveda",
   "Withdraw": "Retirar",
+  "Migrate": "Migrar",
+  "Migrate PE tokens to PE2 tokens": "Depositá Peronios V1 y obtene Peronios V2",
   "Deposit USDC to mint PE tokens": "Depositá USDC para emitir PE",
   "You'll get this amount of PE": "Vas a recibir esta cantidad de PE",
   "Mint Anyway": "Emitir igual",

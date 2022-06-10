@@ -1761,6 +1761,8 @@
   "Provided by MAI/USDC in QiDao": "Provided by MAI/USDC in QiDao",
   "Vault": "Vault",
   "Withdraw": "Withdraw",
+  "Migrate PE tokens to PE2 tokens": "Migrate PE tokens to PE2 tokens",
+  "Migrate": "Migrate",
   "Deposit USDC to mint PE tokens": "Deposit USDC to mint PE tokens",
   "You'll get this amount of PE": "You'll get this amount of PE",
   "Mint Anyway": "Mint Anyway",

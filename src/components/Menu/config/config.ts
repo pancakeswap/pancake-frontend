@@ -35,6 +35,10 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
         label: t('Withdraw'),
         href: '/withdraw',
       },
+      {
+        label: t('Migrate'),
+        href: '/migrate',
+      },
     ],
   },
   // {

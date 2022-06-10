@@ -24,6 +24,7 @@ import Pools from './views/Pools'
 import Swap from './views/Swap'
 import Mint from './views/Mint'
 import Withdraw from './views/Withdraw'
+import Migrate from './views/Migrate'
 import {
   RedirectDuplicateTokenIds,
   RedirectOldAddLiquidityPathStructure,
@@ -153,6 +154,7 @@ const App: React.FC = () => {
             <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
             <Route exact strict path="/mint" component={Mint} />
             <Route exact strict path="/withdraw" component={Withdraw} />
+            <Route exact strict path="/migrate" component={Migrate} />
             <Route exact strict path="/find" component={PoolFinder} />
             <Route exact strict path="/liquidity" component={Liquidity} />
             <Route exact strict path="/create" component={RedirectToAddLiquidity} />
