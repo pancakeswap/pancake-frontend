@@ -3,6 +3,7 @@ import { Box, Flex, Text, CardBody, CardRibbon, LinkExternal } from '@pancakeswa
 import { useTranslation } from 'contexts/Localization'
 import Divider from 'components/Divider'
 import { getBscScanLink } from 'utils'
+import Winner from './Winner'
 
 const StyledCardBody = styled(CardBody)`
   position: relative;
@@ -23,21 +24,48 @@ const StyledCardRibbon = styled(CardRibbon)`
   }
 `
 
+const WinnersContainer = styled(Flex)`
+  width: 100%;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin: 20px 0 0 0;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 316px;
+    flex-direction: row;
+    margin: 0 0 0 32px;
+  }
+`
+
 const PreviousRoundCardBody: React.FC = () => {
   const { t } = useTranslation()
 
   return (
     <StyledCardBody>
       <StyledCardRibbon text={t('Latest')} />
-      <Flex flexDirection="column" width="100%">
-        123
+      <Flex flexDirection={['column']} width="100%">
+        <Flex flexDirection={['column', 'column', 'row']}>
+          <Text style={{ alignSelf: 'center' }} fontSize="20px" bold>
+            {t('Winner')}
+          </Text>
+          <WinnersContainer>
+            <Winner />
+            <Winner />
+            <Winner />
+            <Winner />
+            <Winner />
+            <Winner />
+            <Winner />
+            <Winner />
+          </WinnersContainer>
+        </Flex>
         <Box width="100%">
           <Divider />
         </Box>
       </Flex>
       <Flex flexDirection="column" width="100%" mt="8px">
         <Text fontSize="20px" textAlign={['center', 'center', 'left']} lineHeight="110%" bold>
-          Prize Pot
+          {t('Prize Pot')}
         </Text>
         <Text
           bold

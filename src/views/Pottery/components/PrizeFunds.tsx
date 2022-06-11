@@ -85,7 +85,7 @@ const PoolAllocations = () => {
         <AllocationGrid>
           <AllocationMatch color="#D750B2" text={t('Prize Pool')} />
           <Text textAlign="right" bold mb="12px">
-            80%
+            73.6%
           </Text>
           <AllocationMatch color="#A881FC" text={t('Rewards')} />
           <Text textAlign="right" bold mb="12px">
@@ -93,7 +93,7 @@ const PoolAllocations = () => {
           </Text>
           <AllocationMatch color="#36E8F5" text={t('Fees')} />
           <Text textAlign="right" bold>
-            2%
+            6.4%
           </Text>
         </AllocationGrid>
       </StepCardInner>
