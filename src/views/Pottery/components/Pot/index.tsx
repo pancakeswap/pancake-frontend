@@ -2,13 +2,13 @@ import styled from 'styled-components'
 import { useState, useCallback } from 'react'
 import { Flex, Box, Card, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { OutlineText } from 'views/SyrupPot/components/TextStyle'
+import { OutlineText } from 'views/Pottery/components/TextStyle'
 import PotTab from './PotTab'
 import Deposit from './Deposit/index'
 import Claim from './Claim/index'
 import { POT_CATEGORY } from '../../types'
 
-const PotContainer = styled(Box)`
+const PotteryContainer = styled(Box)`
   position: relative;
   padding: 44px 16px 56px 16px;
   background: radial-gradient(51.67% 114.22% at 51.67% 49.78%, #6e42bc 0%, #a881fc 100%);
@@ -59,7 +59,7 @@ const Pot: React.FC = () => {
   const handleClick = useCallback((tabType: POT_CATEGORY) => setIndex(tabType), [])
 
   return (
-    <PotContainer id="stake-to-win">
+    <PotteryContainer id="stake-to-win">
       <Flex width={['100%', '100%', '436px', '436px', '939px']} m="auto" flexDirection="column">
         <Text color="white" fontSize="32px" textAlign="center" bold>
           {t('Current Prize Pot')}
@@ -80,7 +80,7 @@ const Pot: React.FC = () => {
           <PotImage />
         </Flex>
       </Flex>
-    </PotContainer>
+    </PotteryContainer>
   )
 }
 

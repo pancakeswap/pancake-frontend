@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import { Flex, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import StakeToWinButton from 'views/SyrupPot/components/Banner/StakeToWinButton'
-import { BannerTimer } from 'views/SyrupPot/components/Timer'
-import { OutlineText, DarkTextStyle } from 'views/SyrupPot/components/TextStyle'
+import StakeToWinButton from 'views/Pottery/components/Banner/StakeToWinButton'
+import { BannerTimer } from 'views/Pottery/components/Timer'
+import { OutlineText, DarkTextStyle } from 'views/Pottery/components/TextStyle'
 
-const SyrupPotBanner = styled(Flex)`
+const PotteryBanner = styled(Flex)`
   position: relative;
   padding: 64px 0 75px 0;
   background: linear-gradient(180deg, #ffd800 0%, #fdab32 100%);
@@ -48,7 +48,7 @@ const Banner: React.FC = () => {
   const { t } = useTranslation()
 
   return (
-    <SyrupPotBanner>
+    <PotteryBanner>
       <Decorations />
       <Flex margin="auto" flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}>
         <BannerBunny />
@@ -64,48 +64,48 @@ const Banner: React.FC = () => {
               bold
               defaultType
             >
-              The PancakeSwap
+              {t('The PancakeSwap')}
             </OutlineText>
             <OutlineText fontSize={['24px', '24px', '24px', '24px', '32px']} bold ml="4px">
-              {t('Syrup Pot')}
+              {t('Pottery')}
             </OutlineText>
           </Flex>
           <OutlineText fontSize={['40px', '64px']}>$24,232,232</OutlineText>
           <DarkTextStyle m="-20px 0 0 0" fontSize={['32px', '40px']} bold>
-            To be won !
+            {t('To be won !')}
           </DarkTextStyle>
           <StakeToWinButton />
           <Box style={{ marginTop: '30px' }}>
             <Text color="white" bold as="span">
-              Deposit CAKE for
+              {t('Deposit CAKE for')}
             </Text>
             <DarkTextStyle ml="3px" bold as="span">
-              10 Weeks to earn
+              {t('10 Weeks to earn')}
             </DarkTextStyle>
           </Box>
           <Box>
             <Text color="white" bold as="span">
-              to earn
+              {t('to earn')}
             </Text>
             <DarkTextStyle m="0 3px" bold as="span">
               43.23%
             </DarkTextStyle>
             <Text color="white" bold as="span">
-              APY
+              {t('APY')}
             </Text>
           </Box>
           <Box>
             <Text color="white" bold as="span">
-              And a chance to
+              {t('And a chance to')}
             </Text>
             <DarkTextStyle ml="3px" bold as="span">
-              win prize pot!
+              {t('win prize pot!')}
             </DarkTextStyle>
           </Box>
           <BannerTimer />
         </Flex>
       </Flex>
-    </SyrupPotBanner>
+    </PotteryBanner>
   )
 }
 

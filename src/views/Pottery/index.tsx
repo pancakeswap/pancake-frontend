@@ -1,15 +1,15 @@
 import { createPortal } from 'react-dom'
 import { PageMeta } from 'components/Layout/Page'
 import { Box } from '@pancakeswap/uikit'
-import Banner from 'views/SyrupPot/components/Banner/index'
-import Pot from 'views/SyrupPot/components/Pot/index'
+import Banner from 'views/Pottery/components/Banner/index'
+import Pot from 'views/Pottery/components/Pot/index'
 import FinishedRounds from './components/FinishedRounds'
 import ScrollToTopButton from './components/ScrollToTopButton'
 import HowToPlay from './components/HowToPlay'
 import PrizeFunds from './components/PrizeFunds'
 import FAQ from './components/FAQ'
 
-const SyrupPot: React.FC = () => {
+const Pottery: React.FC = () => {
   return (
     <Box position="relative">
       <PageMeta />
@@ -24,4 +24,4 @@ const SyrupPot: React.FC = () => {
   )
 }
 
-export default SyrupPot
+export default Pottery
