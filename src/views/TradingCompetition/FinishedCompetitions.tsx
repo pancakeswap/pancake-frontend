@@ -4,6 +4,11 @@ import { useTranslation } from 'contexts/Localization'
 import FanTokenAllBunnies from './pngs/fan-token-all-bunnies.png'
 import MoboxAllBunnies from './pngs/mobox-all-bunnies.png'
 import SubMenu from './components/SubMenu'
+import {
+  MoboxHistoricalBanner,
+  FanTokenHistoricalBanner,
+  EasterTradingHistoricalBanner,
+} from './components/HistoricalBanner'
 import FinishedCompetitionBanner from './components/FinishedCompetitionBanner'
 
 const FinishedCompetitions: React.FC = () => {
@@ -12,7 +17,7 @@ const FinishedCompetitions: React.FC = () => {
     <>
       <SubMenu />
       <Flex flexDirection="column" justifyContent="center" alignItems="center" px="3rem" mb="24px" mt="24px">
-        <FinishedCompetitionBanner
+        {/* <FinishedCompetitionBanner
           title={t('Mobox Competition')}
           imgSrc={MoboxAllBunnies}
           background="radial-gradient(329.58% 50% at 50% 50%, #3B2864 0%, #191326 100%)"
@@ -29,7 +34,10 @@ const FinishedCompetitions: React.FC = () => {
           imgSrc="/images/tc-easter-bunnies.png"
           background="radial-gradient(77.72% 89.66% at 79.76% 65.74%, #FEDC90 0%, #FFA514 74.5%)"
           to="/competition/finished/easter"
-        />
+        /> */}
+        <MoboxHistoricalBanner />
+        <FanTokenHistoricalBanner />
+        <EasterTradingHistoricalBanner />
       </Flex>
     </>
   )

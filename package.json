@@ -61,6 +61,7 @@
     "@web3-react/walletconnect-connector": "6.2.4",
     "@web3-react/walletlink-connector": "^6.2.13",
     "ajv": "^6.12.3",
+    "atropos": "^1.0.2",
     "bignumber.js": "^9.0.0",
     "canvas-confetti": "^1.5.1",
     "cids": "^1.0.0",
