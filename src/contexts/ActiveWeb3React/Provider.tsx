@@ -18,19 +18,10 @@ export const ActiveWeb3ReactContext = createContext<Web3ReactContextInterface<We
 
 export const ActiveWeb3ReactProvider: React.FC = ({ children }) => {
   const { library, chainId, ...web3React } = useWeb3React()
-  const refEth = useRef(library)
-  const [provider, setProvider] = useState(library || simpleRpcProvider)
-
-  useEffect(() => {
-    if (library !== refEth.current) {
-      setProvider(library || simpleRpcProvider)
-      refEth.current = library
-    }
-  }, [library])
 
   return (
     <ActiveWeb3ReactContext.Provider
-      value={{ library: provider, chainId: chainId ?? parseInt(CHAIN_ID, 10), ...web3React }}
+      value={{ library: library || simpleRpcProvider, chainId: chainId ?? parseInt(CHAIN_ID, 10), ...web3React }}
     >
       {children}
     </ActiveWeb3ReactContext.Provider>
