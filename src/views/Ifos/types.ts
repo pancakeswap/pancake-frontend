@@ -58,6 +58,7 @@ export interface UserPoolCharacteristics {
   isPendingTx: boolean
   vestingReleased?: BigNumber
   vestingAmountTotal?: BigNumber
+  isVestingInitialized?: boolean
   vestingId?: string
   vestingcomputeReleasableAmount?: BigNumber
 }
@@ -75,11 +76,6 @@ export interface WalletIfoState {
      */
     creditLeft: BigNumber
   }
-  vestingSchedule?: VestingSchedule
-}
-
-export interface VestingSchedule {
-  countByBeneficiary: BigNumber
 }
 
 // Returned by useGetWalletIfoData

@@ -24,12 +24,13 @@ interface IfoVestingCardProps {
 const IfoVestingCard: React.FC<IfoVestingCardProps> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
   const { t } = useTranslation()
   const { token } = ifo
-  const { userVestingSheduleCount, amountReleased, amountInVesting, amountAvailableToClaim, amountAlreadyClaimed } =
-    useIfoVesting({
-      poolId,
-      publicIfoData,
-      walletIfoData,
-    })
+  const userPool = walletIfoData[poolId]
+
+  const { amountReleased, amountInVesting, amountAvailableToClaim, amountAlreadyClaimed } = useIfoVesting({
+    poolId,
+    publicIfoData,
+    walletIfoData,
+  })
 
   const amountClaimed = useMemo(() => {
     const amount = getBalanceNumber(amountAlreadyClaimed, token.decimals)
@@ -48,7 +49,7 @@ const IfoVestingCard: React.FC<IfoVestingCardProps> = ({ poolId, ifo, publicIfoD
           {t('You’ve already claimed %amount% %symbol%', { symbol: token.symbol, amount: amountClaimed })}
         </Text>
         <Box mb="24px">
-          {userVestingSheduleCount.eq(0) ? (
+          {!userPool.isVestingInitialized ? (
             <ClaimButton poolId={poolId} ifoVersion={ifo.version} walletIfoData={walletIfoData} />
           ) : (
             <VestingClaimButton

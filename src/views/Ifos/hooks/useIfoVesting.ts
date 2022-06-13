@@ -14,8 +14,6 @@ const useIfoVesting = ({ poolId, publicIfoData, walletIfoData }: UseIfoVestingPr
   const publicPool = publicIfoData[poolId]
   const userPool = walletIfoData[poolId]
 
-  const userVestingSheduleCount = useMemo(() => walletIfoData.vestingSchedule.countByBeneficiary, [walletIfoData])
-
   const vestingPercentage = useMemo(
     () => new BigNumber(publicPool.vestingInfomation.percentage).times(0.01),
     [publicPool],
@@ -34,16 +32,15 @@ const useIfoVesting = ({ poolId, publicIfoData, walletIfoData }: UseIfoVestingPr
   }, [userPool, amountReleased])
 
   const amountAvailableToClaim = useMemo(() => {
-    return userVestingSheduleCount.gt(0) ? userPool.vestingcomputeReleasableAmount : releasedAtSaleEnd
-  }, [userVestingSheduleCount, userPool, releasedAtSaleEnd])
+    return userPool.isVestingInitialized ? userPool.vestingcomputeReleasableAmount : releasedAtSaleEnd
+  }, [userPool, releasedAtSaleEnd])
 
   const amountAlreadyClaimed = useMemo(() => {
-    const released = userVestingSheduleCount.gt(0) ? releasedAtSaleEnd : BIG_ZERO
+    const released = userPool.isVestingInitialized ? releasedAtSaleEnd : BIG_ZERO
     return new BigNumber(released).plus(userPool.vestingReleased)
-  }, [userVestingSheduleCount, releasedAtSaleEnd, userPool])
+  }, [releasedAtSaleEnd, userPool])
 
   return {
-    userVestingSheduleCount,
     vestingPercentage,
     releasedAtSaleEnd,
     amountReleased,

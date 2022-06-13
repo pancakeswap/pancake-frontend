@@ -1,5 +1,4 @@
 import { Ifo, PoolIds } from 'config/constants/types'
-import { getIfoV3Contract } from 'utils/contractHelpers'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { multicallv2 } from 'utils/multicall'
@@ -24,7 +23,6 @@ export interface VestingData {
 
 export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise<VestingData> => {
   const { address } = ifo
-  const readContract = getIfoV3Contract(address)
   let userVestingData = {
     poolBasic: {
       vestingId: '0',
@@ -45,10 +43,14 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
   }
 
   if (account) {
-    const [basicId, unlimitedId] = await Promise.all([
-      readContract.computeVestingScheduleIdForAddressAndPid(account, 0),
-      readContract.computeVestingScheduleIdForAddressAndPid(account, 1),
-    ])
+    const [[basicId], [unlimitedId]] = await multicallv2(
+      ifoV3Abi,
+      [
+        { address, name: 'computeVestingScheduleIdForAddressAndPid', params: [account, 0] },
+        { address, name: 'computeVestingScheduleIdForAddressAndPid', params: [account, 1] },
+      ],
+      { requireSuccess: false },
+    )
 
     const ifov3Calls = [
       {

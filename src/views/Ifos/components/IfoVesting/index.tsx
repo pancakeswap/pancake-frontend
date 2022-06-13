@@ -64,15 +64,15 @@ const IfoVesting: React.FC<IfoVestingProps> = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const [isFirstTime, setIsFirstTime] = useState(true)
-  const { data, userDataLoaded, fetchUserVestingData } = useFetchVestingData(account)
+  const { data, fetchUserVestingData } = useFetchVestingData()
 
   const cardStatus = useMemo(() => {
-    if (account && userDataLoaded) {
+    if (account) {
       if (data.length > 0) return IfoVestingStatus[VestingStatus.HAS_TOKENS_CLAIM]
       if (data.length === 0 && !isFirstTime) return IfoVestingStatus[VestingStatus.ENDED]
     }
     return IfoVestingStatus[VestingStatus.NOT_TOKENS_CLAIM]
-  }, [data, userDataLoaded, account, isFirstTime])
+  }, [data, account, isFirstTime])
 
   const handleFetchUserVesting = useCallback(() => {
     setIsFirstTime(false)

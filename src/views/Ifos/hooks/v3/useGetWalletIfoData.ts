@@ -3,7 +3,6 @@ import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useERC20, useIfoV3Contract } from 'hooks/useContract'
-import { getIfoV3Contract } from 'utils/contractHelpers'
 import { multicallv2 } from 'utils/multicall'
 import ifoV3Abi from 'config/abi/ifoV3.json'
 import { fetchCakeVaultUserData } from 'state/pools'
@@ -22,6 +21,11 @@ const initialState = {
     taxAmountInLP: BIG_ZERO,
     hasClaimed: false,
     isPendingTx: false,
+    vestingReleased: BIG_ZERO,
+    vestingAmountTotal: BIG_ZERO,
+    isVestingInitialized: false,
+    vestingId: '0',
+    vestingcomputeReleasableAmount: BIG_ZERO,
   },
   poolUnlimited: {
     amountTokenCommittedInLP: BIG_ZERO,
@@ -32,11 +36,9 @@ const initialState = {
     isPendingTx: false,
     vestingReleased: BIG_ZERO,
     vestingAmountTotal: BIG_ZERO,
+    isVestingInitialized: false,
     vestingId: '0',
     vestingcomputeReleasableAmount: BIG_ZERO,
-  },
-  vestingSchedule: {
-    countByBeneficiary: BIG_ZERO,
   },
 }
 
@@ -81,13 +83,16 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       params: [account, [0, 1]],
     }))
 
-    const IfoV3Contract = getIfoV3Contract(address)
-    const [basicId, unlimitedId] =
+    const [[basicId], [unlimitedId]] =
       version >= 3.2 &&
-      (await Promise.all([
-        IfoV3Contract.computeVestingScheduleIdForAddressAndPid(account, 0),
-        IfoV3Contract.computeVestingScheduleIdForAddressAndPid(account, 1),
-      ]))
+      (await multicallv2(
+        ifoV3Abi,
+        [
+          { address, name: 'computeVestingScheduleIdForAddressAndPid', params: [account, 0] },
+          { address, name: 'computeVestingScheduleIdForAddressAndPid', params: [account, 1] },
+        ],
+        { requireSuccess: false },
+      ))
 
     const ifov3Calls =
       version >= 3.1
@@ -114,11 +119,6 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
             },
             version === 3.2 && {
               address,
-              name: 'getVestingSchedulesCountByBeneficiary',
-              params: [account],
-            },
-            version === 3.2 && {
-              address,
               name: 'computeReleasableAmount',
               params: [basicId],
             },
@@ -139,7 +139,6 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       isQualifiedPoints,
       basicSchedule,
       unlimitedSchedule,
-      countByBeneficiary,
       basicReleasableAmount,
       unlimitedReleasableAmount,
     ] = await multicallv2(ifoV3Abi, [...ifoCalls, ...ifov3Calls], { requireSuccess: false })
@@ -158,6 +157,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         isQualifiedPoints: isQualifiedPoints ? isQualifiedPoints[0] : false,
         vestingReleased: basicSchedule ? new BigNumber(basicSchedule[0].released.toString()) : BIG_ZERO,
         vestingAmountTotal: basicSchedule ? new BigNumber(basicSchedule[0].amountTotal.toString()) : BIG_ZERO,
+        isVestingInitialized: basicSchedule ? basicSchedule[0].isVestingInitialized : false,
         vestingId: basicId ? basicId.toString() : '0',
         vestingcomputeReleasableAmount: basicReleasableAmount
           ? new BigNumber(basicReleasableAmount.toString())
@@ -172,13 +172,11 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         hasClaimed: userInfo[1][1],
         vestingReleased: unlimitedSchedule ? new BigNumber(unlimitedSchedule[0].released.toString()) : BIG_ZERO,
         vestingAmountTotal: unlimitedSchedule ? new BigNumber(unlimitedSchedule[0].amountTotal.toString()) : BIG_ZERO,
+        isVestingInitialized: unlimitedSchedule ? unlimitedSchedule[0].isVestingInitialized : false,
         vestingId: unlimitedId ? unlimitedId.toString() : '0',
         vestingcomputeReleasableAmount: unlimitedReleasableAmount
           ? new BigNumber(unlimitedReleasableAmount.toString())
           : BIG_ZERO,
-      },
-      vestingSchedule: {
-        countByBeneficiary: countByBeneficiary ? new BigNumber(countByBeneficiary.toString()) : BIG_ZERO,
       },
     }))
   }, [account, address, dispatch, version])
