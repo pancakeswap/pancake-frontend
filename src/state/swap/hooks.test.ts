@@ -1,7 +1,6 @@
 /* eslint-disable no-var */
 /* eslint-disable vars-on-top */
 import { renderHook } from '@testing-library/react-hooks'
-import { useWeb3React } from '@web3-react/core'
 import { DEFAULT_OUTPUT_CURRENCY } from 'config/constants'
 import { parse } from 'querystring'
 import { useCurrency } from 'hooks/Tokens'
@@ -106,17 +105,6 @@ jest.mock('../../hooks/useActiveWeb3React', () => {
   }
 })
 
-var mockUseWeb3React: jest.Mock
-
-jest.mock('@web3-react/core', () => {
-  mockUseWeb3React = jest.fn().mockReturnValue({})
-  const original = jest.requireActual('@web3-react/core') // Step 2.
-  return {
-    ...original,
-    useWeb3React: mockUseWeb3React,
-  }
-})
-
 describe('#useDerivedSwapInfo', () => {
   it('should show Login Error', async () => {
     const { result, rerender } = renderHook(
@@ -136,15 +124,15 @@ describe('#useDerivedSwapInfo', () => {
     )
     expect(result.current.inputError).toBe('Connect Wallet')
 
-    mockUseWeb3React.mockReturnValue({ account: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
+    mockUseActiveWeb3React.mockReturnValue({ account: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
     rerender()
 
     expect(result.current.inputError).toBe('Enter an amount')
-    mockUseWeb3React.mockClear()
+    mockUseActiveWeb3React.mockClear()
   })
 
   it('should show [Enter a recipient] Error', async () => {
-    mockUseWeb3React.mockReturnValue({ account: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
+    mockUseActiveWeb3React.mockReturnValue({ account: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
     const { result, rerender } = renderHook(
       () => {
         const {
@@ -172,7 +160,7 @@ describe('#useDerivedSwapInfo', () => {
     rerender()
 
     expect(result.current.inputError).toBe('Enter a recipient')
-    mockUseWeb3React.mockClear()
+    mockUseActiveWeb3React.mockClear()
   })
 
   it('should return undefined when no pair', async () => {

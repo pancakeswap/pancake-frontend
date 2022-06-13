@@ -6,7 +6,6 @@ import { ThemeProvider } from 'styled-components'
 import { getLibrary } from 'utils/web3React'
 import { LanguageProvider } from 'contexts/Localization'
 import { ToastsProvider } from 'contexts/ToastsContext'
-import { ActiveWeb3ReactProvider } from 'contexts/ActiveWeb3React'
 import { fetchStatusMiddleware } from 'hooks/useSWRContract'
 import { Store } from '@reduxjs/toolkit'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
@@ -20,25 +19,23 @@ const Providers: React.FC<{ store: Store }> = ({ children, store }) => {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <Provider store={store}>
-        <ActiveWeb3ReactProvider>
-          <MatchBreakpointsProvider>
-            <ToastsProvider>
-              <NextThemeProvider>
-                <StyledThemeProvider>
-                  <LanguageProvider>
-                    <SWRConfig
-                      value={{
-                        use: [fetchStatusMiddleware],
-                      }}
-                    >
-                      <ModalProvider>{children}</ModalProvider>
-                    </SWRConfig>
-                  </LanguageProvider>
-                </StyledThemeProvider>
-              </NextThemeProvider>
-            </ToastsProvider>
-          </MatchBreakpointsProvider>
-        </ActiveWeb3ReactProvider>
+        <MatchBreakpointsProvider>
+          <ToastsProvider>
+            <NextThemeProvider>
+              <StyledThemeProvider>
+                <LanguageProvider>
+                  <SWRConfig
+                    value={{
+                      use: [fetchStatusMiddleware],
+                    }}
+                  >
+                    <ModalProvider>{children}</ModalProvider>
+                  </SWRConfig>
+                </LanguageProvider>
+              </StyledThemeProvider>
+            </NextThemeProvider>
+          </ToastsProvider>
+        </MatchBreakpointsProvider>
       </Provider>
     </Web3ReactProvider>
   )
