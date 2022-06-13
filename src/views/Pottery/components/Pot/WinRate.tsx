@@ -1,12 +1,15 @@
-import { Flex, Box, Button, Text, Tag, CalculateIcon } from '@pancakeswap/uikit'
+import { Flex, Box, Button, useModal, Text, Tag, CalculateIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import WinRateModal from 'views/Pottery/components/WinRateModal'
 
 const WinRate: React.FC = () => {
   const { t } = useTranslation()
 
+  const [openWinRateModal] = useModal(<WinRateModal />)
+
   return (
     <Box>
-      <Flex alignItems="center" justifyContent="flex-end">
+      <Flex alignItems="center" justifyContent="flex-end" onClick={openWinRateModal}>
         <Tag variant="success">52.12%</Tag> {/* Tag less then 50% show variant failure */}
         <Button variant="text" width="20px" height="20px" padding="0px" marginLeft="4px">
           <CalculateIcon color="textSubtle" width="20px" />
