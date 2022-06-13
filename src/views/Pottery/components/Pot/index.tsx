@@ -6,6 +6,7 @@ import { OutlineText } from 'views/Pottery/components/TextStyle'
 import PotTab from './PotTab'
 import Deposit from './Deposit/index'
 import Claim from './Claim/index'
+import CardHeader from './CardHeader'
 import { POT_CATEGORY } from '../../types'
 
 const PotteryContainer = styled(Box)`
@@ -74,7 +75,15 @@ const Pot: React.FC = () => {
           <Flex mt="48px" alignItems="flex-start">
             <Card style={{ width: isMobile ? '100%' : '436px' }}>
               <PotTab onItemClick={handleClick} activeIndex={activeTab} />
-              {activeTab === POT_CATEGORY.Deposit ? <Deposit /> : <Claim />}
+              <Box>
+                <CardHeader
+                  title="Pottery"
+                  subTitle="Stake CAKE, Earn CAKE, Win CAKE"
+                  primarySrc="/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.svg"
+                  secondarySrc="/images/tokens/pot-icon.svg"
+                />
+                {activeTab === POT_CATEGORY.Deposit ? <Deposit /> : <Claim />}
+              </Box>
             </Card>
           </Flex>
           <PotImage />
