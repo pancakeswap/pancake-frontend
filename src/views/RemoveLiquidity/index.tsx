@@ -251,6 +251,9 @@ export default function RemoveLiquidity() {
       throw new Error('could not wrap')
     }
 
+    const totalTokenAmountOut =
+      removalCheckedA && !removalCheckedB ? parsedAmounts[Field.CURRENCY_A] : parsedAmounts[Field.CURRENCY_B]
+
     let methodName
     let args
     if (oneCurrencyIsBNB && tokenToReceive === WETH[chainId].address) {
@@ -259,6 +262,7 @@ export default function RemoveLiquidity() {
         pair.liquidityToken.address,
         parsedAmounts[Field.LIQUIDITY].raw.toString(),
         zapOutEstimate.data.swapAmountOut.mul(10000 - allowedSlippage).div(10000),
+        calculateSlippageAmount(totalTokenAmountOut, allowedSlippage)[0].toString(),
       ]
     } else {
       methodName = 'zapOutToken'
@@ -270,6 +274,7 @@ export default function RemoveLiquidity() {
           .mul(10000 - allowedSlippage)
           .div(10000)
           .toString(),
+        calculateSlippageAmount(totalTokenAmountOut, allowedSlippage)[0].toString(),
       ]
     }
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })

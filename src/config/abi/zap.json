@@ -240,7 +240,8 @@
     "inputs": [
       { "internalType": "address", "name": "_lpToken", "type": "address" },
       { "internalType": "uint256", "name": "_lpTokenAmount", "type": "uint256" },
-      { "internalType": "uint256", "name": "_tokenAmountOutMin", "type": "uint256" }
+      { "internalType": "uint256", "name": "_tokenAmountOutMin", "type": "uint256" },
+      { "internalType": "uint256", "name": "_totalTokenAmountOutMin", "type": "uint256" }
     ],
     "name": "zapOutBNB",
     "outputs": [],
@@ -252,7 +253,8 @@
       { "internalType": "address", "name": "_lpToken", "type": "address" },
       { "internalType": "address", "name": "_tokenToReceive", "type": "address" },
       { "internalType": "uint256", "name": "_lpTokenAmount", "type": "uint256" },
-      { "internalType": "uint256", "name": "_tokenAmountOutMin", "type": "uint256" }
+      { "internalType": "uint256", "name": "_tokenAmountOutMin", "type": "uint256" },
+      { "internalType": "uint256", "name": "_totalTokenAmountOutMin", "type": "uint256" }
     ],
     "name": "zapOutToken",
     "outputs": [],
