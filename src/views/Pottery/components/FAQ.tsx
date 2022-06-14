@@ -20,7 +20,7 @@ const HoneyImage = styled.div`
   height: 224.67px;
   margin: 40px auto auto auto;
   align-self: flex-start;
-  background: url(/images/syruppot/honey.png);
+  background: url(/images/pottery/honey.png);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

@@ -80,7 +80,7 @@ const PoolAllocations = () => {
     <StyledStepCard width={['100%', '280px', '330px', '380px']}>
       <StepCardInner height="auto">
         <Flex mb="34px" justifyContent="center">
-          <Image width={103} height={103} src="/images/syruppot/chart.svg" />
+          <Image width={103} height={103} src="/images/pottery/chart.svg" />
         </Flex>
         <AllocationGrid>
           <AllocationMatch color="#D750B2" text={t('Prize Pool')} />

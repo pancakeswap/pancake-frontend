@@ -40,7 +40,7 @@ const PotImage = styled.div`
   width: 260px;
   height: 228.77px;
   align-self: center;
-  background: url(/images/syruppot/honeypot.png);
+  background: url(/images/pottery/honeypot.png);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

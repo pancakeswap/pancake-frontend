@@ -4,9 +4,11 @@ import { useTranslation } from 'contexts/Localization'
 import StakeToWinButton from 'views/Pottery/components/Banner/StakeToWinButton'
 import { BannerTimer } from 'views/Pottery/components/Timer'
 import { OutlineText, DarkTextStyle } from 'views/Pottery/components/TextStyle'
+import TicketsDecorations from 'views/Pottery/components/Banner/TicketsDecorations'
 
 const PotteryBanner = styled(Flex)`
   position: relative;
+  overflow: hidden;
   padding: 64px 0 75px 0;
   background: linear-gradient(180deg, #ffd800 0%, #fdab32 100%);
 
@@ -21,7 +23,7 @@ const Decorations = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: url(/images/syruppot/bg-star.svg);
+  background: url(/images/pottery/bg-star.svg);
   background-repeat: no-repeat;
   background-position: center 0;
   background-size: cover;
@@ -32,10 +34,11 @@ const BannerBunny = styled.div`
   width: 221px;
   height: 348px;
   margin: 63px auto auto auto;
-  background: url(/images/syruppot/banner-bunny.png);
+  background: url(/images/pottery/banner-bunny.png);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  z-index: 1;
 
   ${({ theme }) => theme.mediaQueries.md} {
     width: 370px;
@@ -50,7 +53,12 @@ const Banner: React.FC = () => {
   return (
     <PotteryBanner>
       <Decorations />
-      <Flex margin="auto" flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}>
+      <TicketsDecorations />
+      <Flex
+        margin="auto"
+        style={{ zIndex: '1' }}
+        flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
+      >
         <BannerBunny />
         <Flex
           ml={['0', '0', '0', '46px']}
