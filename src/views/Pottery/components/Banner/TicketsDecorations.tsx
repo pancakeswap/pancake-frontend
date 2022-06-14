@@ -56,7 +56,7 @@ const Container = styled(Box)`
   }
   & :nth-child(2) {
     top: 6%;
-    left: -1%;
+    left: -3%;
     width: 75px;
     height: 59px;
     animation: ${floatingTicketTop} 3s ease-in-out infinite;
