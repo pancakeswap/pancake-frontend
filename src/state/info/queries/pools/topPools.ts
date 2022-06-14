@@ -2,7 +2,7 @@ import { TOKEN_BLACKLIST } from 'config/constants/info'
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
 import { infoClient } from 'utils/graphql'
-import { getDeltaTimestamps } from 'views/Info/utils/infoQueryHelpers'
+import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 
 interface TopPoolsResponse {
   pairDayDatas: {

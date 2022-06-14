@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
-import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AprProps } from 'views/Farms/components/FarmTable/Apr'
 import Farm, { FarmProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Farm'
 import Staked, { StakedProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Staked'
@@ -10,6 +9,7 @@ import Multiplier, { MultiplierProps } from 'views/Migration/components/Migratio
 import Liquidity, { LiquidityProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Liquidity'
 import ExpandActionCell from 'views/Migration/components/MigrationStep1/OldPool/Cells/ExpandActionCell'
 import { useFarmUser } from 'state/farms/hooks'
+import { useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import AprCell from './Cells/AprCell'
 import StakeButtonCells from './Cells/StakeButtonCells'
 import StakeButton from './StakeButton'
@@ -55,7 +55,7 @@ const RightContainer = styled.div`
 `
 
 const FarmRow: React.FunctionComponent<RowProps> = ({ earned, farm, staked, apr, multiplier, liquidity }) => {
-  const { isMobile, isXl, isXxl } = useMatchBreakpoints()
+  const { isMobile, isXl, isXxl } = useMatchBreakpointsContext()
   const isLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)

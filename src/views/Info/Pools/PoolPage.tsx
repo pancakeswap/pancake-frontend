@@ -12,8 +12,8 @@ import {
   LinkExternal,
   Spinner,
   Text,
-  useMatchBreakpoints,
   useTooltip,
+  useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { NextLinkFromReactRouter } from 'components/NextLink'
@@ -62,7 +62,7 @@ const LockedTokensContainer = styled(Flex)`
 `
 
 const PoolPage: React.FC<{ address: string }> = ({ address: routeAddress }) => {
-  const { isXs, isSm } = useMatchBreakpoints()
+  const { isXs, isSm } = useMatchBreakpointsContext()
   const { t } = useTranslation()
   const [showWeeklyData, setShowWeeklyData] = useState(0)
   const { tooltip, tooltipVisible, targetRef } = useTooltip(

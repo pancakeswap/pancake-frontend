@@ -436,6 +436,96 @@ const campaigns: Campaign[] = [
     title: 'Mobox Participant: Bronze',
     badge: 'MBOX-participant-bronze.svg',
   },
+  {
+    id: '512040001',
+    type: 'teambattle',
+    title: 'MoD Champion: Gold',
+    badge: 'MoD-champion-gold.svg',
+  },
+  {
+    id: '512040002',
+    type: 'teambattle',
+    title: 'MoD Top 10: Gold',
+    badge: 'MoD-top-10-gold.svg',
+  },
+  {
+    id: '512040003',
+    type: 'teambattle',
+    title: 'MoD Top 100: Gold',
+    badge: 'MoD-top-100-gold.svg',
+  },
+  {
+    id: '512040004',
+    type: 'teambattle',
+    title: 'MoD Top 500: Gold',
+    badge: 'MoD-top-500-gold.svg',
+  },
+  {
+    id: '512040005',
+    type: 'teambattle',
+    title: 'MoD Participant: Gold',
+    badge: 'MoD-participant-gold.svg',
+  },
+  {
+    id: '512040006',
+    type: 'teambattle',
+    title: 'MoD Champion: Silver',
+    badge: 'MoD-champion-silver.svg',
+  },
+  {
+    id: '512040007',
+    type: 'teambattle',
+    title: 'MoD Top 10: Silver',
+    badge: 'MoD-top-10-silver.svg',
+  },
+  {
+    id: '512040008',
+    type: 'teambattle',
+    title: 'MoD Top 100: Silver',
+    badge: 'MoD-top-100-silver.svg',
+  },
+  {
+    id: '512040009',
+    type: 'teambattle',
+    title: 'MoD Top 500: Silver',
+    badge: 'MoD-top-500-silver.svg',
+  },
+  {
+    id: '512040010',
+    type: 'teambattle',
+    title: 'MoD Participant: Silver',
+    badge: 'MoD-participant-silver.svg',
+  },
+  {
+    id: '512040011',
+    type: 'teambattle',
+    title: 'MoD Champion: Bronze',
+    badge: 'MoD-champion-bronze.svg',
+  },
+  {
+    id: '512040012',
+    type: 'teambattle',
+    title: 'MoD Top 10: Bronze',
+    badge: 'MoD-top-10-bronze.svg',
+  },
+  {
+    id: '512040013',
+    type: 'teambattle',
+    title: 'MoD Top 100: Bronze',
+    badge: 'MoD-top-100-bronze.svg',
+  },
+  {
+    id: '512040014',
+    type: 'teambattle',
+    title: 'MoD Top 500: Bronze',
+    badge: 'MoD-top-500-bronze.svg',
+  },
+  {
+    id: '512040015',
+    type: 'teambattle',
+    title: 'MoD Participant: Bronze',
+    badge: 'MoD-participant-bronze.svg',
+  },
 ]
 
 /**

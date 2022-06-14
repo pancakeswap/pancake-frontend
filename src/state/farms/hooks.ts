@@ -8,7 +8,7 @@ import useSWRImmutable from 'swr/immutable'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchFarmsAuctionDataAsync } from '.'
+import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, State } from '../types'
 import {
   farmSelector,
@@ -19,27 +19,27 @@ import {
   makeLpTokenPriceFromLpSymbolSelector,
   makeFarmFromPidSelector,
 } from './selectors'
-import { useInitialBlock } from '../block/hooks'
 
 export const usePollFarmsWithUserData = () => {
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
-  const initialBlock = useInitialBlock()
-
-  const { data: auctionData } = useSWRImmutable(initialBlock ? ['farmsAuctionData'] : null, async () => {
-    return dispatch(fetchFarmsAuctionDataAsync(initialBlock))
-  })
 
   useSWRImmutable(
-    auctionData ? ['farmsWithUserData', account] : null,
+    ['publicFarmData'],
     () => {
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
-
       dispatch(fetchFarmsPublicDataAsync(pids))
+    },
+    {
+      refreshInterval: SLOW_INTERVAL,
+    },
+  )
 
-      if (account) {
-        dispatch(fetchFarmUserDataAsync({ account, pids }))
-      }
+  useSWRImmutable(
+    account ? ['farmsWithUserData', account] : null,
+    () => {
+      const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
+      dispatch(fetchFarmUserDataAsync({ account, pids }))
     },
     {
       refreshInterval: SLOW_INTERVAL,

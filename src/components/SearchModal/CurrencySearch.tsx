@@ -30,7 +30,7 @@ interface CurrencySearchProps {
   setImportToken: (token: Token) => void
 }
 
-export function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
+function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
   const lists = useAllLists()
   const inactiveUrls = useInactiveListUrls()
   const { chainId } = useActiveWeb3React()
@@ -38,32 +38,42 @@ export function useSearchInactiveTokenLists(search: string | undefined, minResul
   return useMemo(() => {
     if (!search || search.trim().length === 0) return []
     const filterToken = createFilterToken(search)
-    const result: WrappedTokenInfo[] = []
+    const exactMatches: WrappedTokenInfo[] = []
+    const rest: WrappedTokenInfo[] = []
     const addressSet: { [address: string]: true } = {}
     for (const url of inactiveUrls) {
       const list = lists[url].current
       // eslint-disable-next-line no-continue
       if (!list) continue
       for (const tokenInfo of list.tokens) {
-        const tags: TagInfo[] =
-          tokenInfo.tags
-            ?.map((tagId) => {
-              if (!list.tags?.[tagId]) return undefined
-              return { ...list.tags[tagId], id: tagId }
-            })
-            ?.filter((x): x is TagInfo => Boolean(x)) ?? []
-
-        if (tokenInfo.chainId === chainId && filterToken(tokenInfo)) {
+        if (
+          tokenInfo.chainId === chainId &&
+          !(tokenInfo.address in activeTokens) &&
+          !addressSet[tokenInfo.address] &&
+          filterToken(tokenInfo)
+        ) {
+          const tags: TagInfo[] =
+            tokenInfo.tags
+              ?.map((tagId) => {
+                if (!list.tags?.[tagId]) return undefined
+                return { ...list.tags[tagId], id: tagId }
+              })
+              ?.filter((x): x is TagInfo => Boolean(x)) ?? []
           const wrapped: WrappedTokenInfo = new WrappedTokenInfo(tokenInfo, tags)
-          if (!(wrapped.address in activeTokens) && !addressSet[wrapped.address]) {
-            addressSet[wrapped.address] = true
-            result.push(wrapped)
-            if (result.length >= minResults) return result
+          addressSet[wrapped.address] = true
+          const trimmedSearchQuery = search.toLowerCase().trim()
+          if (
+            tokenInfo.name?.toLowerCase() === trimmedSearchQuery ||
+            tokenInfo.symbol?.toLowerCase() === trimmedSearchQuery
+          ) {
+            exactMatches.push(wrapped)
+          } else {
+            rest.push(wrapped)
           }
         }
       }
     }
-    return result
+    return [...exactMatches, ...rest].slice(0, minResults)
   }, [activeTokens, chainId, inactiveUrls, lists, minResults, search])
 }
 
@@ -158,58 +168,77 @@ function CurrencySearch({
   // if no results on main list, show option to expand into inactive
   const filteredInactiveTokens = useSearchInactiveTokenLists(debouncedQuery)
 
+  const hasFilteredInactiveTokens = Boolean(filteredInactiveTokens?.length)
+
+  const getCurrencyListRows = useCallback(() => {
+    if (searchToken && !searchTokenIsAdded && !hasFilteredInactiveTokens) {
+      return (
+        <Column style={{ padding: '20px 0', height: '100%' }}>
+          <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
+        </Column>
+      )
+    }
+
+    return Boolean(filteredSortedTokens?.length) || hasFilteredInactiveTokens ? (
+      <Box margin="24px -24px">
+        <CurrencyList
+          height={390}
+          showBNB={showBNB}
+          currencies={filteredSortedTokens}
+          inactiveCurrencies={filteredInactiveTokens}
+          breakIndex={
+            Boolean(filteredInactiveTokens?.length) && filteredSortedTokens ? filteredSortedTokens.length : undefined
+          }
+          onCurrencySelect={handleCurrencySelect}
+          otherCurrency={otherSelectedCurrency}
+          selectedCurrency={selectedCurrency}
+          fixedListRef={fixedList}
+          showImportView={showImportView}
+          setImportToken={setImportToken}
+        />
+      </Box>
+    ) : (
+      <Column style={{ padding: '20px', height: '100%' }}>
+        <Text color="textSubtle" textAlign="center" mb="20px">
+          {t('No results found.')}
+        </Text>
+      </Column>
+    )
+  }, [
+    filteredInactiveTokens,
+    filteredSortedTokens,
+    handleCurrencySelect,
+    hasFilteredInactiveTokens,
+    otherSelectedCurrency,
+    searchToken,
+    searchTokenIsAdded,
+    selectedCurrency,
+    setImportToken,
+    showBNB,
+    showImportView,
+    t,
+  ])
+
   return (
     <>
-      <div>
-        <AutoColumn gap="16px">
-          <Row>
-            <Input
-              id="token-search-input"
-              placeholder={t('Search name or paste address')}
-              scale="lg"
-              autoComplete="off"
-              value={searchQuery}
-              ref={inputRef as RefObject<HTMLInputElement>}
-              onChange={handleInput}
-              onKeyDown={handleEnter}
-            />
-          </Row>
-          {showCommonBases && (
-            <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
-          )}
-        </AutoColumn>
-        {searchToken && !searchTokenIsAdded ? (
-          <Column style={{ padding: '20px 0', height: '100%' }}>
-            <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
-          </Column>
-        ) : Boolean(filteredSortedTokens?.length) || Boolean(filteredInactiveTokens?.length) ? (
-          <Box margin="24px -24px">
-            <CurrencyList
-              height={390}
-              showBNB={showBNB}
-              currencies={filteredSortedTokens}
-              inactiveCurrencies={filteredInactiveTokens}
-              breakIndex={
-                Boolean(filteredInactiveTokens?.length) && filteredSortedTokens
-                  ? filteredSortedTokens.length
-                  : undefined
-              }
-              onCurrencySelect={handleCurrencySelect}
-              otherCurrency={otherSelectedCurrency}
-              selectedCurrency={selectedCurrency}
-              fixedListRef={fixedList}
-              showImportView={showImportView}
-              setImportToken={setImportToken}
-            />
-          </Box>
-        ) : (
-          <Column style={{ padding: '20px', height: '100%' }}>
-            <Text color="textSubtle" textAlign="center" mb="20px">
-              {t('No results found.')}
-            </Text>
-          </Column>
+      <AutoColumn gap="16px">
+        <Row>
+          <Input
+            id="token-search-input"
+            placeholder={t('Search name or paste address')}
+            scale="lg"
+            autoComplete="off"
+            value={searchQuery}
+            ref={inputRef as RefObject<HTMLInputElement>}
+            onChange={handleInput}
+            onKeyDown={handleEnter}
+          />
+        </Row>
+        {showCommonBases && (
+          <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
         )}
-      </div>
+      </AutoColumn>
+      {getCurrencyListRows()}
     </>
   )
 }

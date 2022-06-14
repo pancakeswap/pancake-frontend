@@ -11,6 +11,7 @@ import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { getBalanceNumber, getDecimalAmount, getBalanceAmount } from 'utils/formatBalance'
 import { ONE_WEEK_DEFAULT } from 'config/constants/pools'
+import { BIG_ZERO } from 'utils/bigNumber'
 
 import RoiCalculatorModalProvider from './RoiCalculatorModalProvider'
 
@@ -42,8 +43,8 @@ const RenewDuration = ({ setCheckedState, checkedState }) => {
     </>
   )
 }
-// add 30s buffer in order to make sure minium duration by pass on renew extension
-const MIN_DURATION_BUFFER = 30
+// add 60s buffer in order to make sure minium duration by pass on renew extension
+const MIN_DURATION_BUFFER = 60
 
 const AddAmountModal: React.FC<AddAmountModalProps> = ({
   onDismiss,
@@ -55,10 +56,12 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
   stakingTokenBalance,
 }) => {
   const { theme } = useTheme()
-  const [lockedAmount, setLockedAmount] = useState('0')
+  const [lockedAmount, setLockedAmount] = useState('')
   const [checkedState, setCheckedState] = useState(false)
   const { t } = useTranslation()
-  const lockedAmountAsBigNumber = new BigNumber(lockedAmount)
+  const lockedAmountAsBigNumber = !Number.isNaN(new BigNumber(lockedAmount).toNumber())
+    ? new BigNumber(lockedAmount)
+    : BIG_ZERO
   const totalLockedAmount: number = getBalanceNumber(
     currentLockedAmount.plus(getDecimalAmount(lockedAmountAsBigNumber)),
   )
@@ -74,15 +77,15 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
     roundingMethod: 'ceil',
   })
 
+  // if you locked for 1 week, then add cake without renew the extension, it's possible that remainingDuration + passedDuration less than 1 week.
+  const atLeastOneWeekNewDuration = Math.max(ONE_WEEK_DEFAULT + MIN_DURATION_BUFFER, remainingDuration + passedDuration)
+
   const prepConfirmArg = useCallback(() => {
-    let extendDuration = passedDuration
-    if (remainingDuration + passedDuration <= ONE_WEEK_DEFAULT + MIN_DURATION_BUFFER) {
-      extendDuration += MIN_DURATION_BUFFER
-    }
+    const extendDuration = atLeastOneWeekNewDuration - remainingDuration
     return {
       finalDuration: checkedState ? extendDuration : 0,
     }
-  }, [checkedState, passedDuration, remainingDuration])
+  }, [atLeastOneWeekNewDuration, checkedState, remainingDuration])
 
   const customOverview = useCallback(
     () => (
@@ -90,7 +93,7 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
         isValidDuration
         openCalculator={_noop}
         duration={remainingDuration}
-        newDuration={checkedState ? passedDuration + remainingDuration : null}
+        newDuration={checkedState ? atLeastOneWeekNewDuration : null}
         lockedAmount={currentLockedAmountAsBalance.toNumber()}
         newLockedAmount={totalLockedAmount}
         usdValueStaked={usdValueNewStaked}
@@ -101,7 +104,7 @@ const AddAmountModal: React.FC<AddAmountModalProps> = ({
       remainingDuration,
       checkedState,
       currentLockedAmountAsBalance,
-      passedDuration,
+      atLeastOneWeekNewDuration,
       totalLockedAmount,
       usdValueNewStaked,
       lockEndTime,

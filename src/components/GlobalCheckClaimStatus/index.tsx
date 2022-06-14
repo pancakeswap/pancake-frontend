@@ -64,7 +64,7 @@ const GlobalCheckClaim: React.FC<GlobalCheckClaimStatusProps> = ({ excludeLocati
         setCanClaimNFT(campaign.creds[0].eligible === 1)
         setCid(campaign.numberID)
       } catch (error) {
-        console.error('checkEligabilityForGalaxyNFT failed', error)
+        console.error('checkEligibilityForGalaxyNFT failed', error)
       }
     }
 
