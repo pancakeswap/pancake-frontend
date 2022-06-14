@@ -23,6 +23,7 @@ import { EXCHANGE_DOCS_URLS } from 'config/constants'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from 'utils/prices'
 import shouldShowSwapWarning from 'utils/shouldShowSwapWarning'
+import { useWeb3React } from '@web3-react/core'
 import useRefreshBlockNumberID from './hooks/useRefreshBlockNumber'
 import AddressInputPanel from './components/AddressInputPanel'
 import { GreyCard } from '../../components/Card'
@@ -38,7 +39,6 @@ import ProgressSteps from './components/ProgressSteps'
 import { AppBody } from '../../components/App'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 
-import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useCurrency, useAllTokens } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 import { useSwapCallback } from '../../hooks/useSwapCallback'
@@ -121,7 +121,7 @@ export default function Swap() {
       return !(token.address in defaultTokens)
     })
 
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
 
   // for expert mode
   const [isExpertMode] = useExpertModeManager()

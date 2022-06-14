@@ -1,4 +1,5 @@
 import { Currency, CurrencyAmount, ETHER, Token, Trade } from '@pancakeswap/sdk'
+import { useWeb3React } from '@web3-react/core'
 import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY, SLOW_INTERVAL } from 'config/constants'
@@ -151,7 +152,7 @@ export function useDerivedSwapInfo(
   v2Trade: Trade | undefined
   inputError?: string
 } {
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
   const { t } = useTranslation()
 
   const to: string | null = (recipient === null ? account : isAddress(recipient) || null) ?? null
