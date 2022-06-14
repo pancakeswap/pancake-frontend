@@ -1,22 +1,12 @@
-import { useRef, useEffect, useMemo, useCallback } from 'react'
+import { useRef, useEffect, useCallback, useState } from 'react'
 import styled from 'styled-components'
-import {
-  Modal,
-  Text,
-  Box,
-  Button,
-  Flex,
-  ButtonMenu,
-  Checkbox,
-  BalanceInput,
-  HelpIcon,
-  ButtonMenuItem,
-  ArrowDownIcon,
-  useTooltip,
-} from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
+import BigNumber from 'bignumber.js'
+import { Modal, Text, Box, Button, Flex, BalanceInput, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { CalculatorMode } from '../../types'
+import AnimatedArrow from './AnimatedArrow'
+import WinRateCard from './WinRateCard'
 import WinRateFooter from './WinRateFooter'
 
 const StyledModal = styled(Modal)`
@@ -42,6 +32,9 @@ export interface WinRateModalProps {
 
 const WinRateModal: React.FC<WinRateModalProps> = ({ onDismiss, onBack }) => {
   const { t } = useTranslation()
+  const [balance, setBalance] = useState('')
+  const [totalLockValue, setTotalLockValue] = useState('')
+  const [calculatorMode, setCalculatorMode] = useState(CalculatorMode.WIN_RATE_BASED_ON_PRINCIPAL)
   const balanceInputRef = useRef<HTMLInputElement | null>(null)
 
   // Auto-focus input on opening modal
@@ -51,19 +44,14 @@ const WinRateModal: React.FC<WinRateModalProps> = ({ onDismiss, onBack }) => {
     }
   }, [])
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t('“My Balance” here includes both LP Tokens in your wallet, and LP Tokens already staked in this farm.'),
-    { placement: 'top-end', tooltipOffset: [20, 10] },
-  )
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Fake Text'), {
+    placement: 'top-end',
+    tooltipOffset: [20, 10],
+  })
 
   const onBalanceFocus = () => {
-    // setCalculatorMode(CalculatorMode.ROI_BASED_ON_PRINCIPAL)
+    setCalculatorMode(CalculatorMode.WIN_RATE_BASED_ON_PRINCIPAL)
   }
-
-  const handleTypeOutput = useCallback((value: string) => {
-    console.log('value', value)
-    // handleInput(Field.OUTPUT, value)
-  }, [])
 
   return (
     <StyledModal
@@ -83,16 +71,16 @@ const WinRateModal: React.FC<WinRateModalProps> = ({ onDismiss, onBack }) => {
             </Text>
           </Box>
           <BalanceInput
-            inputProps={{
-              scale: 'sm',
-            }}
-            currencyValue="USD"
-            innerRef={balanceInputRef}
-            placeholder="0.00"
-            value=""
             unit="CAKE"
-            onUserInput={handleTypeOutput}
+            placeholder="0.00"
+            currencyValue="USD"
+            value={balance}
+            innerRef={balanceInputRef}
+            inputProps={{ scale: 'sm' }}
             onFocus={onBalanceFocus}
+            onUserInput={(value) => {
+              setBalance(value)
+            }}
           />
           <Flex justifyContent="space-between" mt="8px">
             <Button
@@ -147,17 +135,18 @@ const WinRateModal: React.FC<WinRateModalProps> = ({ onDismiss, onBack }) => {
             </Button>
           </Flex>
           <BalanceInput
-            inputProps={{
-              scale: 'sm',
-            }}
-            currencyValue="USD"
-            placeholder="0.00"
-            value=""
             unit="CAKE"
-            onUserInput={handleTypeOutput}
+            placeholder="0.00"
+            currencyValue="USD"
+            value={totalLockValue}
+            inputProps={{ scale: 'sm' }}
+            onUserInput={(value) => {
+              setTotalLockValue(value)
+            }}
           />
-          <ArrowDownIcon m="28px 0" width="24px" height="24px" color="textSubtle" />
         </Flex>
+        <AnimatedArrow mode={calculatorMode} />
+        <WinRateCard mode={calculatorMode} setCalculatorMode={setCalculatorMode} />
       </ScrollableContainer>
       <WinRateFooter />
     </StyledModal>
