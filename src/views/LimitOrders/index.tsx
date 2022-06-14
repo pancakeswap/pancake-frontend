@@ -9,7 +9,6 @@ import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { AppBody } from 'components/App'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Footer from 'components/Menu/Footer'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useGelatoLimitOrders from 'hooks/limitOrders/useGelatoLimitOrders'
 import useGasOverhead from 'hooks/limitOrders/useGasOverhead'
 import useTheme from 'hooks/useTheme'
@@ -20,6 +19,7 @@ import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { GELATO_NATIVE, LIMIT_ORDERS_DOCS_URL } from 'config/constants'
 import { useExchangeChartManager } from 'state/user/hooks'
 import PriceChartContainer from 'views/Swap/components/Chart/PriceChartContainer'
+import { useWeb3React } from '@web3-react/core'
 import ClaimWarning from './components/ClaimWarning'
 
 import { Wrapper, StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
@@ -35,7 +35,7 @@ import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
 
 const LimitOrders = () => {
   // Helpers
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
   const { t } = useTranslation()
   const router = useRouter()
   const { isMobile, isTablet } = useMatchBreakpointsContext()
