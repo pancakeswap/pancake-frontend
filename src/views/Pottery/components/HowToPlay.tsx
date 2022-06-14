@@ -50,18 +50,22 @@ const HowToPlay: React.FC = () => {
       label: t('Step %number%', { number: 1 }),
       title: t('Deposit CAKE'),
       subtitle: t(
-        'Deposite CAKE to get your ticket on a monthly subscription date. Amount of ticket depends on how many CAKE you deposit. Your CAKE deposit will be locked for 10 weeks',
+        'Deposit CAKE on the monthly subscription date -- first Monday of each Month. Your chance of winning depends on how many CAKE you deposit compared to the total pool. Your CAKE deposit will be locked for 10 weeks. There will be a monthly TVL cap in the beta product stage.',
       ),
     },
     {
       label: t('Step %number%', { number: 2 }),
       title: t('Wait for the Draw'),
-      subtitle: t('There will be one weekly draw. Check your chance of winning.'),
+      subtitle: t(
+        'A portion of the staking rewards from the CAKE deposited will fill the prize pot and there will be one weekly draw. There will be eight (8) winners each week. Check your chance of winning, add more CAKE on the monthly subscription date to increase your odds!',
+      ),
     },
     {
       label: t('Step %number%', { number: 3 }),
-      title: t('Deposit more CAKE'),
-      subtitle: t('Once the next subscription date comes, deposit more CAKE to increase your chance of winning!'),
+      title: t('Claim & Withdrawal'),
+      subtitle: t(
+        "You can claim any winnings that you may have once the weekly draw is completed. Your CAKE can be withdrawn after 10 weeks but they won't be providing any winning odds anymore.",
+      ),
     },
   ]
 
@@ -72,7 +76,7 @@ const HowToPlay: React.FC = () => {
       </Text>
       <Text textAlign="center">
         {t(
-          'Deposite CAKE to get your Syrup Pot tickets. More CAKE deposited, higher the chance of winning (and of course, higher the rewards)!',
+          'Deposite CAKE to get your Pottery tickets. More CAKE deposited, higher the chance of winning (and of course, higher the rewards)!',
         )}
       </Text>
       <Text mb="40px">{t('Simple!')}</Text>

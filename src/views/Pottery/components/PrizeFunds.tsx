@@ -111,14 +111,14 @@ const PrizeFunds: React.FC = () => {
       </Heading>
       <Flex flexDirection={['column', 'column', 'column', 'column', 'row']}>
         <Flex width={['100%', '100%', '100%', '498px']} flexDirection="column">
-          <Text color="textSubtle">{t('The funds for each Syrup Pot round are split in three ways:')}</Text>
+          <Text color="textSubtle">{t('The staking rewards of funds')}</Text>
           <Heading my="16px" scale="md">
             {t('Prize Pool (80%)')}
           </Heading>
           <BulletList>
             <li>
               <Text display="inline" color="textSubtle">
-                {t('80% of funds deposited in the Syrup pot goes to the prize pool')}
+                {t('80% of staking rewards from the funds deposited')}
               </Text>
             </li>
           </BulletList>
@@ -128,17 +128,17 @@ const PrizeFunds: React.FC = () => {
           <BulletList>
             <li>
               <Text display="inline" color="textSubtle">
-                {t('20% of funds deposited are distributed as rewards')}
+                {t('20% of the staking rewards from the funds deposited')}
               </Text>
             </li>
           </BulletList>
           <Heading my="16px" scale="md">
-            {t('Fees (2%)')}
+            {t('Fees (8%)')}
           </Heading>
           <BulletList>
             <li>
               <Text display="inline" color="textSubtle">
-                {t('2% of funds deposited are charged as fees')}
+                {t('8% of the prize pot distributed each week will be charged as fees')}
               </Text>
             </li>
           </BulletList>

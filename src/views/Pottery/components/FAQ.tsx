@@ -55,23 +55,25 @@ const FAQ = () => {
         <StyledCardbody>
           <FoldableText title={t('How is odds calculated?')} mt="24px">
             <Text fontSize="14px" color="textSubtle">
-              {t('no Text')}
-            </Text>
-          </FoldableText>
-          <FoldableText title={t('Is there any risk associated with depositing and playing Syrup Pot?')} mt="24px">
-            <Text fontSize="14px" color="textSubtle">
-              {t('You can choose one or both at the same time!')}
-            </Text>
-            <Text fontSize="14px" color="textSubtle">
               {t(
-                'We recommend using the Basic Sale first for most users, because the amount of tokens you can get for your LP Tokens should be a little higher than in the Unlimited Sale.',
+                "All CAKE deposits will be locked for the same duration, the odds of your address winning the prize pool is simply proportional to your CAKE deposit over the total CAKE deposit of the whole Pottery. Each week, eight (8) addresses are drawn randomly based on their odds. Simply put, if user A deposited 1 CAKE, user B deposited 2 CAKE, then user B's odds of winning is twice of user A's.",
               )}
             </Text>
           </FoldableText>
-          <FoldableText title={t('Where can I read the documentation about Syrup Pot?')} mt="24px">
+          <FoldableText title={t('Is there any risk associated with depositing and playing Pottery?')} mt="24px">
+            <Text fontSize="14px" color="textSubtle">
+              {t('Is there any risk associated with depositing and playing Pottery?')}
+            </Text>
             <Text fontSize="14px" color="textSubtle">
               {t(
-                'Response to open question goes here. Here is text answering the question which is open. Response to open question goes here. Here is text answering the question which is open. ',
+                "You will be locking your CAKE deposit for 10 weeks and you will not be able to withdraw early in any circumstances. Your principal (i.e. your deposit) will be returned to your 100% after 10 weeks. Only the staking rewards of your deposit will be used to fill and operate the Pottery. Simply put, you're only risking the staking rewards of your deposit.",
+              )}
+            </Text>
+          </FoldableText>
+          <FoldableText title={t('Where can I learn more about this new Pottery format?')} mt="24px">
+            <Text fontSize="14px" color="textSubtle">
+              {t(
+                "Please feel free to reach out to us on Telegram or Discord if you're still unsure about the format! Please also let us know if you have any feedback for us to improve this further.",
               )}
             </Text>
           </FoldableText>
