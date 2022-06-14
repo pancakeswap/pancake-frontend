@@ -117,6 +117,6 @@ export default {
   },
   zap: {
     56: '0x333113840787f9f75Bb57e73be536CBbA88bfe39',
-    97: '0x3eab3Efb2E9d164fc0de1FDCf7A32382b798DfD5',
+    97: '0x1b8B4267B18114179a4Dd7C25Dda1ae6AB44f323',
   },
 }

@@ -17,13 +17,11 @@ import {
   Flex,
   useModal,
   Checkbox,
-  AutoRenewIcon,
   Skeleton,
   TooltipText,
   useTooltip,
 } from '@pancakeswap/uikit'
 import { BigNumber } from '@ethersproject/bignumber'
-import { FetchStatus } from 'config/constants/types'
 import { callWithEstimateGas } from 'utils/calls'
 import { getLPSymbol } from 'utils/getLpSymbol'
 import { getZapAddress } from 'utils/addressHelpers'
@@ -87,7 +85,7 @@ export default function RemoveLiquidity() {
   const { independentField, typedValue } = useBurnState()
   const [removalCheckedA, setRemovalCheckedA] = useState(true)
   const [removalCheckedB, setRemovalCheckedB] = useState(true)
-  const { pair, parsedAmounts, error, tokenToReceive, zapOutEstimate } = useDerivedBurnInfo(
+  const { pair, parsedAmounts, error, tokenToReceive, estimateZapOutAmount } = useDerivedBurnInfo(
     currencyA ?? undefined,
     currencyB ?? undefined,
     removalCheckedA,
@@ -232,7 +230,7 @@ export default function RemoveLiquidity() {
   const addTransaction = useTransactionAdder()
 
   async function onZapOut() {
-    if (!chainId || !library || !account || !zapOutEstimate?.data) throw new Error('missing dependencies')
+    if (!chainId || !library || !account || !estimateZapOutAmount) throw new Error('missing dependencies')
     if (!zapContract) throw new Error('missing zap contract')
     if (!tokenToReceive) throw new Error('missing tokenToReceive')
 
@@ -256,12 +254,12 @@ export default function RemoveLiquidity() {
 
     let methodName
     let args
-    if (oneCurrencyIsBNB && tokenToReceive === WETH[chainId].address) {
+    if (oneCurrencyIsBNB && tokenToReceive.toLowerCase() === WETH[chainId].address.toLowerCase()) {
       methodName = 'zapOutBNB'
       args = [
         pair.liquidityToken.address,
         parsedAmounts[Field.LIQUIDITY].raw.toString(),
-        zapOutEstimate.data.swapAmountOut.mul(10000 - allowedSlippage).div(10000),
+        calculateSlippageAmount(estimateZapOutAmount, allowedSlippage)[0].toString(),
         calculateSlippageAmount(totalTokenAmountOut, allowedSlippage)[0].toString(),
       ]
     } else {
@@ -270,10 +268,7 @@ export default function RemoveLiquidity() {
         pair.liquidityToken.address,
         tokenToReceive,
         parsedAmounts[Field.LIQUIDITY].raw.toString(),
-        zapOutEstimate.data.swapAmountOut
-          .mul(10000 - allowedSlippage)
-          .div(10000)
-          .toString(),
+        calculateSlippageAmount(estimateZapOutAmount, allowedSlippage)[0].toString(),
         calculateSlippageAmount(totalTokenAmountOut, allowedSlippage)[0].toString(),
       ]
     }
@@ -616,8 +611,7 @@ export default function RemoveLiquidity() {
                       </Text>
                     </Flex>
                     <Flex>
-                      {isZapOutA && zapOutEstimate.status !== FetchStatus.Fetched && <AutoRenewIcon spin />}
-                      <Text small bold style={{ opacity: zapOutEstimate.isValidating ? 0.8 : 1 }}>
+                      <Text small bold>
                         {formattedAmounts[Field.CURRENCY_A] || '0'}
                       </Text>
                       <Text small ml="4px">
@@ -641,8 +635,7 @@ export default function RemoveLiquidity() {
                       </Text>
                     </Flex>
                     <Flex>
-                      {isZapOutB && zapOutEstimate.status !== FetchStatus.Fetched && <AutoRenewIcon spin />}
-                      <Text bold small style={{ opacity: zapOutEstimate.isValidating ? 0.8 : 1 }}>
+                      <Text bold small>
                         {formattedAmounts[Field.CURRENCY_B] || '0'}
                       </Text>
                       <Text small ml="4px">

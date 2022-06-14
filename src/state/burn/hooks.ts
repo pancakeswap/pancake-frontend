@@ -1,12 +1,10 @@
 import { Currency, CurrencyAmount, JSBI, Pair, Percent, TokenAmount } from '@pancakeswap/sdk'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { usePair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
-import { useSWRContract } from 'hooks/useSWRContract'
-import { useZapContract } from 'hooks/useContract'
 
 import { useTranslation } from 'contexts/Localization'
 import tryParseAmount from 'utils/tryParseAmount'
@@ -33,7 +31,7 @@ export function useDerivedBurnInfo(
   }
   error?: string
   tokenToReceive?: string
-  zapOutEstimate?: ReturnType<typeof useZapOutEstimate>
+  estimateZapOutAmount?: TokenAmount
 } {
   const { account, chainId } = useActiveWeb3React()
 
@@ -116,12 +114,6 @@ export function useDerivedBurnInfo(
       ? tokens[Field.CURRENCY_A]?.address
       : tokens[Field.CURRENCY_B]?.address
 
-  const zapOutEstimate = useZapOutEstimate({
-    pair,
-    liquidityToRemove,
-    tokenToReceive,
-  })
-
   const amountA =
     tokenA && percentToRemove && percentToRemove.greaterThan('0') && liquidityValueA
       ? new TokenAmount(tokenA, percentToRemove.multiply(liquidityValueA.raw).quotient)
@@ -132,6 +124,19 @@ export function useDerivedBurnInfo(
       ? new TokenAmount(tokenB, percentToRemove.multiply(liquidityValueB.raw).quotient)
       : undefined
 
+  const tokenAmountToZap = removalCheckedA && removalCheckedB ? undefined : removalCheckedA ? amountB : amountA
+
+  const estimateZapOutAmount = useMemo(() => {
+    if (pair && tokenAmountToZap) {
+      try {
+        return pair.getOutputAmount(tokenAmountToZap)[0]
+      } catch (error) {
+        return undefined
+      }
+    }
+    return undefined
+  }, [pair, tokenAmountToZap])
+
   const parsedAmounts: {
     [Field.LIQUIDITY_PERCENT]: Percent
     [Field.LIQUIDITY]?: TokenAmount
@@ -141,25 +146,19 @@ export function useDerivedBurnInfo(
     [Field.LIQUIDITY_PERCENT]: percentToRemove,
     [Field.LIQUIDITY]: liquidityToRemove,
     [Field.CURRENCY_A]:
-      amountA && removalCheckedA && !removalCheckedB && zapOutEstimate.data
+      amountA && removalCheckedA && !removalCheckedB && estimateZapOutAmount
         ? new TokenAmount(
             tokenA,
-            JSBI.add(
-              percentToRemove.multiply(liquidityValueA.raw).quotient,
-              JSBI.BigInt(zapOutEstimate.data.swapAmountOut.toString()),
-            ),
+            JSBI.add(percentToRemove.multiply(liquidityValueA.raw).quotient, estimateZapOutAmount.raw),
           )
         : !removalCheckedA
         ? undefined
         : amountA,
     [Field.CURRENCY_B]:
-      amountB && removalCheckedB && !removalCheckedA && zapOutEstimate.data
+      amountB && removalCheckedB && !removalCheckedA && estimateZapOutAmount
         ? new TokenAmount(
             tokenB,
-            JSBI.add(
-              percentToRemove.multiply(liquidityValueB.raw).quotient,
-              JSBI.BigInt(zapOutEstimate.data.swapAmountOut.toString()),
-            ),
+            JSBI.add(percentToRemove.multiply(liquidityValueB.raw).quotient, estimateZapOutAmount.raw),
           )
         : !removalCheckedB
         ? undefined
@@ -179,7 +178,7 @@ export function useDerivedBurnInfo(
     error = error ?? t('Enter an amount')
   }
 
-  return { pair, parsedAmounts, error, tokenToReceive, zapOutEstimate }
+  return { pair, parsedAmounts, error, tokenToReceive, estimateZapOutAmount }
 }
 
 export function useBurnActionHandlers(): {
@@ -197,25 +196,4 @@ export function useBurnActionHandlers(): {
   return {
     onUserInput,
   }
-}
-
-function useZapOutEstimate({
-  pair,
-  liquidityToRemove,
-  tokenToReceive,
-}: {
-  pair?: Pair
-  liquidityToRemove?: TokenAmount
-  tokenToReceive?: string
-}) {
-  const zapContract = useZapContract()
-  return useSWRContract(
-    pair &&
-      tokenToReceive &&
-      liquidityToRemove && {
-        contract: zapContract,
-        methodName: 'estimateZapOutSwap',
-        params: [pair.liquidityToken.address, liquidityToRemove.raw.toString(), tokenToReceive],
-      },
-  )
 }
