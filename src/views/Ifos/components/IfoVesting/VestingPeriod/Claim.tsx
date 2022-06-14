@@ -9,11 +9,12 @@ import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
 import { useIfoV3Contract } from 'hooks/useContract'
 
 interface Props {
+  poolId: PoolIds
   data: VestingData
   fetchUserVestingData: () => void
 }
 
-const ClaimButton: React.FC<Props> = ({ data, fetchUserVestingData }) => {
+const ClaimButton: React.FC<Props> = ({ poolId, data, fetchUserVestingData }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { address, token } = data.ifo
@@ -21,35 +22,24 @@ const ClaimButton: React.FC<Props> = ({ data, fetchUserVestingData }) => {
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 
   const handleClaim = useCallback(async () => {
-    const pids = [PoolIds.poolUnlimited, PoolIds.poolBasic]
-      .map((pool) => {
-        const detail = data.userVestingData[pool]
-        if (detail.vestingcomputeReleasableAmount.gt(0)) {
-          return detail.vestingId
-        }
-        return ''
-      })
-      .filter(Boolean)
+    const { vestingId } = data.userVestingData[poolId]
+    const receipt = await fetchWithCatchTxError(() => contract.release(vestingId))
 
-    for (let i = 0; i < pids.length; i++) {
-      // eslint-disable-next-line no-await-in-loop
-      const receipt = await fetchWithCatchTxError(() => contract.release(pids[i]))
-
-      if (receipt?.status) {
-        toastSuccess(
-          t('Success!'),
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('You have successfully claimed available tokens.')}
-          </ToastDescriptionWithTx>,
-        )
-        fetchUserVestingData()
-      }
+    if (receipt?.status) {
+      toastSuccess(
+        t('Success!'),
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('You have successfully claimed available tokens.')}
+        </ToastDescriptionWithTx>,
+      )
+      fetchUserVestingData()
     }
-  }, [data, contract, t, fetchUserVestingData, fetchWithCatchTxError, toastSuccess])
+  }, [data, poolId, contract, t, fetchUserVestingData, fetchWithCatchTxError, toastSuccess])
 
   return (
     <Button
-      width="57%"
+      mt="20px"
+      width="100%"
       onClick={handleClaim}
       isLoading={isPending}
       disabled={isPending}

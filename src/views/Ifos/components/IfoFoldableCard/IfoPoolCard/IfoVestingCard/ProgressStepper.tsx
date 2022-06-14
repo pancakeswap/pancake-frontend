@@ -48,7 +48,7 @@ const ProgressStepper: React.FC<ProgressStepperProps> = ({ poolId, publicIfoData
     setActiveStepIndex(index)
     setSteps([
       { text: t('Sales ended'), timeStamp: timeSalesEnded },
-      { text: t('Cliff'), timeStamp: timeCliff },
+      { text: cliff === 0 ? t('Vesting Start') : t('Cliff'), timeStamp: timeCliff },
       { text: t('Vesting end'), timeStamp: timeVestingEnd },
     ])
   }, [t, poolId, publicIfoData])

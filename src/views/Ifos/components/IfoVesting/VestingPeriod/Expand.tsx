@@ -1,11 +1,10 @@
 import { useRouter } from 'next/router'
 import styled, { keyframes, css } from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { Box, Flex, Button } from '@pancakeswap/uikit'
+import { Box, Text } from '@pancakeswap/uikit'
 import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
 import { PoolIds } from 'config/constants/types'
 import Info from './Info'
-import Claim from './Claim'
 
 const expandAnimation = keyframes`
   from {
@@ -14,14 +13,14 @@ const expandAnimation = keyframes`
   }
   to {
     opacity: 1;
-    max-height: 370px;
+    max-height: 484px;
   }
 `
 
 const collapseAnimation = keyframes`
   from {
     opacity: 1;
-    max-height: 370px;
+    max-height: 484px;
   }
   to {
     opacity: 0;
@@ -62,14 +61,11 @@ const Expand: React.FC<ExpandProps> = ({ data, expanded, fetchUserVestingData })
 
   return (
     <StyledExpand expanded={expanded}>
-      <Info poolId={PoolIds.poolUnlimited} data={data} />
-      <Info poolId={PoolIds.poolBasic} data={data} />
-      <Flex>
-        <Button mr="8px" variant="secondary" onClick={handleViewIfo}>
-          {t('View IFO')}
-        </Button>
-        <Claim data={data} fetchUserVestingData={fetchUserVestingData} />
-      </Flex>
+      <Info poolId={PoolIds.poolUnlimited} data={data} fetchUserVestingData={fetchUserVestingData} />
+      <Info poolId={PoolIds.poolBasic} data={data} fetchUserVestingData={fetchUserVestingData} />
+      <Text bold color="primary" textAlign="center" style={{ cursor: 'pointer' }} onClick={handleViewIfo}>
+        {t('View IFO')}
+      </Text>
     </StyledExpand>
   )
 }

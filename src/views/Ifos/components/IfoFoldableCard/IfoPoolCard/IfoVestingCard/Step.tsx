@@ -5,7 +5,7 @@ import { useTranslation } from 'contexts/Localization'
 import { LogoIcon, CheckmarkCircleIcon, CircleOutlineIcon, Flex, Text } from '@pancakeswap/uikit'
 
 const sharedFlexStyles = `
-  min-width: 78px;
+  min-width: 86px;
   flex-direction: column;
   align-items: center;
   justify-content: center;

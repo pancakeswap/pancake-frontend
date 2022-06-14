@@ -6,6 +6,7 @@ import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
 import { PoolIds } from 'config/constants/types'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
+import Claim from './Claim'
 
 const WhiteCard = styled.div`
   background: ${({ theme }) => theme.colors.backgroundAlt};
@@ -23,9 +24,10 @@ const StyleTag = styled(Tag)<{ isPrivate: boolean }>`
 interface InfoProps {
   poolId: PoolIds
   data: VestingData
+  fetchUserVestingData: () => void
 }
 
-const Info: React.FC<InfoProps> = ({ poolId, data }) => {
+const Info: React.FC<InfoProps> = ({ poolId, data, fetchUserVestingData }) => {
   const { t } = useTranslation()
   const { token } = data.ifo
   const { vestingcomputeReleasableAmount, offeringAmountInToken, vestingInfomationPercentage, vestingReleased } =
@@ -109,6 +111,7 @@ const Info: React.FC<InfoProps> = ({ poolId, data }) => {
             </Text>
           </Flex>
         </Flex>
+        <Claim poolId={poolId} data={data} fetchUserVestingData={fetchUserVestingData} />
       </WhiteCard>
     </>
   )
