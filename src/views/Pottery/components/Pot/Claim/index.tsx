@@ -5,6 +5,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import YourDeposit from '../YourDeposit'
 import WinRate from '../WinRate'
 import WalletNotConnected from './WalletNotConnected'
+import AvailableWitdraw from './AvailableWitdraw'
+import PrizeToBeClaimed from './PrizeToBeClaimed'
 import CardFooter from './CardFooter'
 
 const Container = styled(Flex)`
@@ -24,6 +26,8 @@ const Claim: React.FC = () => {
               <YourDeposit />
               <WinRate />
             </Flex>
+            <AvailableWitdraw />
+            <PrizeToBeClaimed />
           </GreyCard>
         </Container>
       ) : (

@@ -15,7 +15,7 @@ const YourDeposit: React.FC = () => {
           {t('Deposit')}
         </Text>
       </Box>
-      <Balance bold decimals={3} fontSize="24px" lineHeight="110%" value={1483.45} />
+      <Balance bold decimals={3} fontSize={['20px', '20px', '24px']} lineHeight="110%" value={1483.45} />
       <Balance prefix="~" decimals={2} value={400} fontSize="12px" color="textSubtle" />
     </Box>
   )
