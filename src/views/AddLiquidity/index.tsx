@@ -2,9 +2,20 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { currencyEquals, ETHER, JSBI, TokenAmount, WETH, MINIMUM_LIQUIDITY } from '@pancakeswap/sdk'
-import { Button, Text, AddIcon, CardBody, Message, useModal, MessageText } from '@pancakeswap/uikit'
+import {
+  Button,
+  Text,
+  AddIcon,
+  CardBody,
+  Message,
+  useModal,
+  Skeleton,
+  TooltipText,
+  useTooltip,
+  MessageText,
+} from '@pancakeswap/uikit'
 import { logError } from 'utils/sentry'
-import { useIsTransactionUnsupported } from 'hooks/Trades'
+import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import { useTranslation } from 'contexts/Localization'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -16,6 +27,7 @@ import { useRouter } from 'next/router'
 import { CHAIN_ID } from 'config/constants/networks'
 import { callWithEstimateGas } from 'utils/calls'
 import { ContractMethodName } from 'utils/types'
+import { useLPApr } from 'state/swap/hooks'
 import { AppDispatch } from '../../state'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
@@ -45,6 +57,7 @@ import ConfirmAddLiquidityModal from './components/ConfirmAddLiquidityModal'
 import ConfirmZapInModal from './components/ConfirmZapInModal'
 import { ChoosePair } from './ChoosePair'
 import { ZapCheckbox } from '../../components/CurrencyInputPanel/ZapCheckbox'
+import { formatAmount } from '../../utils/formatInfoNumbers'
 
 enum Steps {
   Choose,
@@ -93,6 +106,14 @@ export default function AddLiquidity() {
     error,
     addError,
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
+
+  const poolData = useLPApr(pair)
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t(`Based on last 7 days' performance. Does not account for impermanent loss`),
+    {
+      placement: 'bottom',
+    },
+  )
 
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
 
@@ -297,6 +318,7 @@ export default function AddLiquidity() {
   }, [onFieldAInput, txHash])
 
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
+  const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
   const [onPresentAddLiquidityModal] = useModal(
     <ConfirmAddLiquidityModal
@@ -675,7 +697,23 @@ export default function AddLiquidity() {
                   </>
                 )}
 
-                {addIsUnsupported ? (
+                {pair && (
+                  <RowBetween>
+                    <TooltipText ref={targetRef} bold fontSize="12px" color="secondary">
+                      {t('LP reward APR')}
+                    </TooltipText>
+                    {tooltipVisible && tooltip}
+                    {poolData ? (
+                      <Text bold color="primary">
+                        {formatAmount(poolData.lpApr7d)}%
+                      </Text>
+                    ) : (
+                      <Skeleton width={60} />
+                    )}
+                  </RowBetween>
+                )}
+
+                {addIsUnsupported || addIsWarning ? (
                   <Button disabled mb="4px">
                     {t('Unsupported Asset')}
                   </Button>
@@ -748,7 +786,7 @@ export default function AddLiquidity() {
           </>
         )}
       </AppBody>
-      {!addIsUnsupported ? (
+      {!(addIsUnsupported || addIsWarning) ? (
         pair && !noLiquidity && pairState !== PairState.INVALID ? (
           <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
             <MinimalPositionCard showUnwrapped={oneCurrencyIsWBNB} pair={pair} />

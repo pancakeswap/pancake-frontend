@@ -1186,7 +1186,6 @@
   "Rarity": "Rarity",
   "Lowest": "Lowest",
   "You don’t have any of this item.": "You don’t have any of this item.",
-  "You don’t have this item.": "You don’t have this item.",
   "Manage/Sell": "Manage/Sell",
   "NFT Marketplace": "NFT Marketplace",
   "Delisted": "Delisted",
@@ -1716,5 +1715,7 @@
   "Reduce %token%": "Reduce %token%",
   "Not enough %token%.": "Not enough %token%.",
   "Don’t convert": "Don’t convert",
-  "Some of your %token0% will be converted to %token1% before adding liquidity, but this may cause higher gas fees.": "Some of your %token0% will be converted to %token1% before adding liquidity, but this may cause higher gas fees."
+  "Some of your %token0% will be converted to %token1% before adding liquidity, but this may cause higher gas fees.": "Some of your %token0% will be converted to %token1% before adding liquidity, but this may cause higher gas fees.",
+  "Suspicious rugpull token": "Suspicious rugpull token",
+  "Manage Yours in Collection": "Manage Yours in Collection"
 }

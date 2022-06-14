@@ -13,6 +13,7 @@ import {
   combinedTokenMapFromActiveUrlsSelector,
   combinedTokenMapFromOfficialsUrlsSelector,
   useUnsupportedTokenList,
+  useWarningTokenList,
 } from '../state/lists/hooks'
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
 import useUserAddedTokens, { userAddedTokenSelector } from '../state/user/hooks/useUserAddedTokens'
@@ -80,6 +81,11 @@ export function useOfficialsAndUserAddedTokens(): { [address: string]: Token } {
 export function useUnsupportedTokens(): { [address: string]: Token } {
   const unsupportedTokensMap = useUnsupportedTokenList()
   return useMemo(() => mapWithoutUrls(unsupportedTokensMap), [unsupportedTokensMap])
+}
+
+export function useWarningTokens(): { [address: string]: Token } {
+  const warningTokensMap = useWarningTokenList()
+  return useMemo(() => mapWithoutUrls(warningTokensMap), [warningTokensMap])
 }
 
 export function useIsTokenActive(token: Token | undefined | null): boolean {

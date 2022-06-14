@@ -18,6 +18,9 @@ import {
   useModal,
   Checkbox,
   AutoRenewIcon,
+  Skeleton,
+  TooltipText,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import { BigNumber } from '@ethersproject/bignumber'
 import { FetchStatus } from 'config/constants/types'
@@ -27,6 +30,7 @@ import { getZapAddress } from 'utils/addressHelpers'
 import { ZapCheckbox } from 'components/CurrencyInputPanel/ZapCheckbox'
 import { useTranslation } from 'contexts/Localization'
 import { CHAIN_ID } from 'config/constants/networks'
+import { useLPApr } from 'state/swap/hooks'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { MinimalPositionCard } from '../../components/PositionCard'
@@ -57,6 +61,7 @@ import { useGasPrice, useUserSlippageTolerance } from '../../state/user/hooks'
 import Page from '../Page'
 import ConfirmLiquidityModal from '../Swap/components/ConfirmRemoveLiquidityModal'
 import { logError } from '../../utils/sentry'
+import { formatAmount } from '../../utils/formatInfoNumbers'
 
 const BorderCard = styled.div`
   border: solid 1px ${({ theme }) => theme.colors.cardBorder};
@@ -90,6 +95,13 @@ export default function RemoveLiquidity() {
   )
   const isZap = !removalCheckedA || !removalCheckedB
 
+  const poolData = useLPApr(pair)
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t(`Based on last 7 days' performance. Does not account for impermanent loss`),
+    {
+      placement: 'bottom',
+    },
+  )
   const { onUserInput: _onUserInput } = useBurnActionHandlers()
   const isValid = !error
 
@@ -751,6 +763,19 @@ export default function RemoveLiquidity() {
               </LightGreyCard>
             </AutoColumn>
           )}
+          <RowBetween mt="16px">
+            <TooltipText ref={targetRef} bold fontSize="12px" color="secondary">
+              {t('LP reward APR')}
+            </TooltipText>
+            {tooltipVisible && tooltip}
+            {poolData ? (
+              <Text bold color="primary">
+                {formatAmount(poolData.lpApr7d)}%
+              </Text>
+            ) : (
+              <Skeleton width={60} />
+            )}
+          </RowBetween>
           <Box position="relative" mt="16px">
             {!account ? (
               <ConnectWalletButton />

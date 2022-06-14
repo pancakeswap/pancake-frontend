@@ -9,7 +9,7 @@ interface TokenList {
   [symbol: string]: Token
 }
 
-const defineTokens = <T extends TokenList>(t: T) => t
+export const defineTokens = <T extends TokenList>(t: T) => t
 
 export const mainnetTokens = defineTokens({
   wbnb: new Token(
@@ -2103,6 +2103,14 @@ export const mainnetTokens = defineTokens({
     'MIX',
     'MixMarvel Token',
     'https://www.mixmarvel.com/',
+  ),
+  peak: new Token(
+    MAINNET,
+    '0x630d98424eFe0Ea27fB1b3Ab7741907DFFEaAd78',
+    8,
+    'PEAK',
+    'PEAKDEFI',
+    'https://peakdefi.com/',
   ),
 } as const)
 

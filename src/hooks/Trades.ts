@@ -15,7 +15,7 @@ import {
 import { PairState, usePairs } from './usePairs'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 
-import { useUnsupportedTokens } from './Tokens'
+import { useUnsupportedTokens, useWarningTokens } from './Tokens'
 
 export function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   const { chainId } = useActiveWeb3React()
@@ -161,6 +161,26 @@ export function useTradeExactOut(currencyIn?: Currency, currencyAmountOut?: Curr
 
 export function useIsTransactionUnsupported(currencyIn?: Currency, currencyOut?: Currency): boolean {
   const unsupportedTokens: { [address: string]: Token } = useUnsupportedTokens()
+  const { chainId } = useActiveWeb3React()
+
+  const tokenIn = wrappedCurrency(currencyIn, chainId)
+  const tokenOut = wrappedCurrency(currencyOut, chainId)
+
+  // if unsupported list loaded & either token on list, mark as unsupported
+  if (unsupportedTokens) {
+    if (tokenIn && Object.keys(unsupportedTokens).includes(tokenIn.address)) {
+      return true
+    }
+    if (tokenOut && Object.keys(unsupportedTokens).includes(tokenOut.address)) {
+      return true
+    }
+  }
+
+  return false
+}
+
+export function useIsTransactionWarning(currencyIn?: Currency, currencyOut?: Currency): boolean {
+  const unsupportedTokens: { [address: string]: Token } = useWarningTokens()
   const { chainId } = useActiveWeb3React()
 
   const tokenIn = wrappedCurrency(currencyIn, chainId)

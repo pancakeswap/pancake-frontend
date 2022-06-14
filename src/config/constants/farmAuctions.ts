@@ -745,6 +745,14 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
           tokenName: 'DragonSB',
           projectSite: 'https://dragonsb.finance/',
         },
+        {
+          account: '0x3846e7A1A5dEA3F43104ed89ff0E6FfD1Cc74b6E',
+          farmName: 'PEAK-BNB',
+          tokenAddress: '0x630d98424eFe0Ea27fB1b3Ab7741907DFFEaAd78',
+          quoteToken: tokens.wbnb,
+          tokenName: 'PEAKDEFI',
+          projectSite: 'https://peakdefi.com/',
+        },
       ].map((bidderConfig) => ({
         ...bidderConfig,
         lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken),

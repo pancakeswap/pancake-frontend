@@ -5,7 +5,7 @@ import { NftProfileLayout } from 'views/Nft/market/Profile'
 import SubMenu from 'views/Nft/market/Profile/components/SubMenu'
 import UnconnectedProfileNfts from 'views/Nft/market/Profile/components/UnconnectedProfileNfts'
 import UserNfts from 'views/Nft/market/Profile/components/UserNfts'
-import useNftsForAddress from 'views/Nft/market/hooks/useNftsForAddress'
+import { useNftsForAddress } from 'views/Nft/market/hooks/useNftsForAddress'
 
 const NftProfilePage = () => {
   const { account } = useWeb3React()

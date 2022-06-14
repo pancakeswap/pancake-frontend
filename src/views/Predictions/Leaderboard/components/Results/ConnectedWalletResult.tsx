@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Card, Heading, Table, Th, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Card, Heading, Table, Th, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import Container from 'components/Layout/Container'
@@ -15,7 +15,7 @@ const ConnectedWalletResult = () => {
   const { t } = useTranslation()
   const dispatch = useLocalDispatch()
   const accountResult = useGetOrFetchLeaderboardAddressResult(account)
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpointsContext()
   const { token } = useConfig()
 
   useEffect(() => {

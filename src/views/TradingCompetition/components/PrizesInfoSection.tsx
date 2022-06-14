@@ -5,7 +5,6 @@ import PageSection from 'components/PageSection'
 import RibbonWithImage from './RibbonWithImage'
 import { useTranslation } from '../../../contexts/Localization'
 import { LIGHTBLUEBG_DARK, LIGHTBLUEBG } from '../pageSectionStyles'
-import FanTokenPrizesInfo from '../fantoken/components/PrizesInfo/FanTokenPrizesInfo'
 import PrizesIcon from '../svgs/PrizesIcon'
 
 interface PrizesInfoSectionProps {
@@ -34,10 +33,7 @@ const PrizesInfoSection: React.FC<PrizesInfoSectionProps> = ({ prizesInfoCompone
         background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
         index={4}
       >
-        <Box my="64px">
-          {prizesInfoComponent}
-          <FanTokenPrizesInfo />
-        </Box>
+        <Box my="64px">{prizesInfoComponent}</Box>
       </PageSection>
     </>
   )
