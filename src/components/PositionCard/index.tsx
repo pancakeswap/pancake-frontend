@@ -10,7 +10,6 @@ import {
   Flex,
   CardProps,
   AddIcon,
-  Skeleton,
   TooltipText,
   useTooltip,
 } from '@pancakeswap/uikit'
@@ -104,13 +103,15 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
                 </RowFixed>
               </FixedHeightRow>
               <AutoColumn gap="4px">
-                <FixedHeightRow>
-                  <TooltipText ref={targetRef} color="textSubtle" small>
-                    {t('LP reward APR')}:
-                  </TooltipText>
-                  {tooltipVisible && tooltip}
-                  {poolData ? <Text>{formatAmount(poolData.lpApr7d)}%</Text> : <Skeleton width={60} />}
-                </FixedHeightRow>
+                {poolData && (
+                  <FixedHeightRow>
+                    <TooltipText ref={targetRef} color="textSubtle" small>
+                      {t('LP reward APR')}:
+                    </TooltipText>
+                    {tooltipVisible && tooltip}
+                    <Text>{formatAmount(poolData.lpApr7d)}%</Text>
+                  </FixedHeightRow>
+                )}
                 <FixedHeightRow>
                   <Text color="textSubtle" small>
                     {t('Share of Pool')}:
@@ -248,15 +249,17 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
             )}
           </FixedHeightRow>
 
-          <FixedHeightRow>
-            <RowFixed>
-              <TooltipText ref={targetRef} color="textSubtle">
-                {t('LP reward APR')}:
-              </TooltipText>
-              {tooltipVisible && tooltip}
-            </RowFixed>
-            {poolData ? <Text>{formatAmount(poolData.lpApr7d)}%</Text> : <Skeleton width={60} />}
-          </FixedHeightRow>
+          {poolData && (
+            <FixedHeightRow>
+              <RowFixed>
+                <TooltipText ref={targetRef} color="textSubtle">
+                  {t('LP reward APR')}:
+                </TooltipText>
+                {tooltipVisible && tooltip}
+              </RowFixed>
+              <Text>{formatAmount(poolData.lpApr7d)}%</Text>
+            </FixedHeightRow>
+          )}
 
           <FixedHeightRow>
             <Text color="textSubtle">{t('Share of Pool')}</Text>

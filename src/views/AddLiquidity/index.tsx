@@ -2,17 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '@pancakeswap/sdk'
-import {
-  Button,
-  Text,
-  AddIcon,
-  CardBody,
-  Message,
-  useModal,
-  Skeleton,
-  TooltipText,
-  useTooltip,
-} from '@pancakeswap/uikit'
+import { Button, Text, AddIcon, CardBody, Message, useModal, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { logError } from 'utils/sentry'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import { useTranslation } from 'contexts/Localization'
@@ -353,19 +343,15 @@ export default function AddLiquidity() {
               id="add-liquidity-input-tokenb"
               showCommonBases
             />
-            {pair && (
+            {pair && poolData && (
               <RowBetween>
                 <TooltipText ref={targetRef} bold fontSize="12px" color="secondary">
                   {t('LP reward APR')}
                 </TooltipText>
                 {tooltipVisible && tooltip}
-                {poolData ? (
-                  <Text bold color="primary">
-                    {formatAmount(poolData.lpApr7d)}%
-                  </Text>
-                ) : (
-                  <Skeleton width={60} />
-                )}
+                <Text bold color="primary">
+                  {formatAmount(poolData.lpApr7d)}%
+                </Text>
               </RowBetween>
             )}
             {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (

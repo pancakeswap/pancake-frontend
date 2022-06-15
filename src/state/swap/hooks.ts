@@ -475,7 +475,7 @@ export const useLPApr = (pair) => {
       const [volumeUSDWeek] = getChangeForPeriod(current?.volumeUSD, week?.volumeUSD, twoWeeks?.volumeUSD)
       const liquidityUSD = current ? current.reserveUSD : 0
       const { lpApr7d } = getLpFeesAndApr(volumeUSD, volumeUSDWeek, liquidityUSD)
-      return { lpApr7d }
+      return lpApr7d ? { lpApr7d } : null
     },
     {
       refreshInterval: SLOW_INTERVAL,

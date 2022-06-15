@@ -16,7 +16,6 @@ import {
   Box,
   Flex,
   useModal,
-  Skeleton,
   TooltipText,
   useTooltip,
 } from '@pancakeswap/uikit'
@@ -617,19 +616,17 @@ export default function RemoveLiquidity() {
               </LightGreyCard>
             </AutoColumn>
           )}
-          <RowBetween mt="16px">
-            <TooltipText ref={targetRef} bold fontSize="12px" color="secondary">
-              {t('LP reward APR')}
-            </TooltipText>
-            {tooltipVisible && tooltip}
-            {poolData ? (
+          {poolData && (
+            <RowBetween mt="16px">
+              <TooltipText ref={targetRef} bold fontSize="12px" color="secondary">
+                {t('LP reward APR')}
+              </TooltipText>
+              {tooltipVisible && tooltip}
               <Text bold color="primary">
                 {formatAmount(poolData.lpApr7d)}%
               </Text>
-            ) : (
-              <Skeleton width={60} />
-            )}
-          </RowBetween>
+            </RowBetween>
+          )}
           <Box position="relative" mt="16px">
             {!account ? (
               <ConnectWalletButton />
