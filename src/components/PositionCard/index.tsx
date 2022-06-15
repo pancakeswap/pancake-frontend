@@ -283,7 +283,7 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
               </Button>
               <Button
                 as={NextLinkFromReactRouter}
-                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
+                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}?step=1`}
                 variant="text"
                 startIcon={<AddIcon color="primary" />}
                 width="100%"

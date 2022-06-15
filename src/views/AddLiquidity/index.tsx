@@ -87,6 +87,12 @@ export default function AddLiquidity() {
     }
   }, [dispatch, currencyIdA, currencyIdB])
 
+  useEffect(() => {
+    if (router.query.step === '1') {
+      setSteps(Steps.Add)
+    }
+  }, [router.query])
+
   const expertMode = useIsExpertMode()
 
   // mint state
