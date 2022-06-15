@@ -1,8 +1,14 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Flex, Box, Button, Text, HelpIcon, useTooltip, LogoRoundIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import BigNumber from 'bignumber.js'
 import { Input as NumericalInput } from 'components/CurrencyInputPanel/NumericalInput'
+import tokens from 'config/constants/tokens'
+import useTokenBalance from 'hooks/useTokenBalance'
+import { getFullDisplayBalance } from 'utils/formatBalance'
+import { useUserEnoughCakeValidator } from 'views/Pools/components/LockedPool/hooks/useUserEnoughCakeValidator'
+
 import EnableButton from './EnableButton'
 import DepositButton from './DepositButton'
 
@@ -22,21 +28,24 @@ const Container = styled.div`
 `
 
 const DepositAction: React.FC = () => {
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
   const [value, setValue] = useState('')
+
+  const { balance: userCake } = useTokenBalance(tokens.cake.address)
+  const userCakeDisplayBalance = getFullDisplayBalance(userCake, 18, 3)
+  const { userNotEnoughCake, notEnoughErrorMessage } = useUserEnoughCakeValidator(value, userCake)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Fake Text'), {
     placement: 'bottom',
   })
 
-  const onMax = () => {
-    console.log('onclick max')
+  const onClickMax = () => {
+    setValue(userCake.div(1e18).toString())
   }
 
-  // if (true) {
+  const showMaxButton = useMemo(() => new BigNumber(value).multipliedBy(1e18).eq(userCake), [value, userCake])
+
+  // if (!userData.isApproved) {
   //   return <EnableButton />
   // }
 
@@ -53,7 +62,7 @@ const DepositAction: React.FC = () => {
       <InputPanel>
         <Container>
           <Text fontSize="14px" color="textSubtle" mb="12px" textAlign="right">
-            {t('Balance: %balance%', { balance: '0' })}
+            {t('Balance: %balance%', { balance: userCakeDisplayBalance })}
           </Text>
           <Flex mb="6.5px">
             <NumericalInput
@@ -63,11 +72,13 @@ const DepositAction: React.FC = () => {
               onUserInput={(val) => setValue(val)}
             />
             <Flex ml="8px">
-              <Button onClick={onMax} scale="xs" variant="secondary" style={{ alignSelf: 'center' }}>
-                {t('Max').toLocaleUpperCase(locale)}
-              </Button>
+              {!showMaxButton && (
+                <Button onClick={onClickMax} scale="xs" variant="secondary" style={{ alignSelf: 'center' }}>
+                  {t('Max').toUpperCase()}
+                </Button>
+              )}
               <LogoRoundIcon m="0 4px" width="24px" height="24px" />
-              <Text>{t('Cake')}</Text>
+              <Text textTransform="uppercase">{t('Cake')}</Text>
             </Flex>
           </Flex>
         </Container>
@@ -83,7 +94,13 @@ const DepositAction: React.FC = () => {
           </Flex>{' '}
         </Flex>
       </Flex>
-      <DepositButton />
+      {userNotEnoughCake ? (
+        <Button disabled mt="10px" width="100%">
+          {notEnoughErrorMessage}
+        </Button>
+      ) : (
+        <DepositButton />
+      )}
     </Box>
   )
 }
