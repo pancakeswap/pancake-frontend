@@ -420,6 +420,7 @@ export function useZapIn({
       zapContract &&
       singleTokenToZapAmount &&
       singleTokenToZapAmount?.token &&
+      pair &&
       !rebalancing && {
         contract: zapContract,
         methodName: 'estimateZapInSwap',
@@ -443,6 +444,7 @@ export function useZapIn({
       wrappedParsedAmounts &&
       wrappedParsedAmounts[Field.CURRENCY_A] &&
       wrappedParsedAmounts[Field.CURRENCY_B] &&
+      pair &&
       rebalancing && {
         contract: zapContract,
         methodName: 'estimateZapInRebalancingSwap',
