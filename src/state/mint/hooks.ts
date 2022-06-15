@@ -429,6 +429,11 @@ export function useZapIn({
           pair.liquidityToken.address,
         ],
       },
+    {
+      onError(err) {
+        console.error(err)
+      },
+    },
   )
 
   const rebalancingZapEstimate = useSWRContract(
@@ -449,6 +454,11 @@ export function useZapIn({
           pair.liquidityToken.address,
         ],
       },
+    {
+      onError(err) {
+        console.error(err)
+      },
+    },
   )
 
   const zapInEstimated = useMemo(

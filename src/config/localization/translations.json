@@ -1717,5 +1717,7 @@
   "Don’t convert": "Don’t convert",
   "Some of your %token0% will be converted to %token1% before adding liquidity, but this may cause higher gas fees.": "Some of your %token0% will be converted to %token1% before adding liquidity, but this may cause higher gas fees.",
   "Suspicious rugpull token": "Suspicious rugpull token",
-  "Manage Yours in Collection": "Manage Yours in Collection"
+  "Manage Yours in Collection": "Manage Yours in Collection",
+  "There is no %token1% input. Half of %token0% input is converted into %token1% to add liquidity.": "There is no %token1% input. Half of %token0% input is converted into %token1% to add liquidity.",
+  "There is not enough %token1% input to match 50/50. Some of %token0% will be converted to %token1%": "There is not enough %token1% input to match 50/50. Some of %token0% will be converted to %token1%"
 }

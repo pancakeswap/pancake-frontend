@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo } from 'react'
-import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Price, Token, TokenAmount } from '@pancakeswap/sdk'
+import React, { useCallback } from 'react'
+import { Currency, CurrencyAmount, Fraction, Percent, Token, TokenAmount } from '@pancakeswap/sdk'
 import { InjectedModalProps, Button } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import TransactionConfirmationModal, {
@@ -47,25 +47,6 @@ const ConfirmAddLiquidityModal: React.FC<InjectedModalProps & ConfirmAddLiquidit
 }) => {
   const { t } = useTranslation()
 
-  const inputPercent = useMemo(
-    () =>
-      parsedAmounts[Field.CURRENCY_A] && parsedAmounts[Field.CURRENCY_B]
-        ? Math.min(
-            Math.max(
-              +new Price(
-                parsedAmounts[Field.CURRENCY_A].currency,
-                parsedAmounts[Field.CURRENCY_B].currency,
-                JSBI.add(parsedAmounts[Field.CURRENCY_A].raw, parsedAmounts[Field.CURRENCY_B].raw),
-                parsedAmounts[Field.CURRENCY_A].raw,
-              ).toSignificant(2),
-              0.02,
-            ),
-            0.98,
-          )
-        : undefined,
-    [parsedAmounts],
-  )
-
   const modalHeader = useCallback(() => {
     return (
       <AddLiquidityModalHeader
@@ -78,7 +59,7 @@ const ConfirmAddLiquidityModal: React.FC<InjectedModalProps & ConfirmAddLiquidit
       >
         <PairDistribution
           title={t('Input')}
-          percent={inputPercent}
+          percent={0.5}
           currencyA={currencies[Field.CURRENCY_A]}
           currencyAValue={parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}
           currencyB={currencies[Field.CURRENCY_B]}
@@ -86,17 +67,7 @@ const ConfirmAddLiquidityModal: React.FC<InjectedModalProps & ConfirmAddLiquidit
         />
       </AddLiquidityModalHeader>
     )
-  }, [
-    allowedSlippage,
-    currencies,
-    inputPercent,
-    liquidityMinted,
-    noLiquidity,
-    parsedAmounts,
-    poolTokenPercentage,
-    price,
-    t,
-  ])
+  }, [allowedSlippage, currencies, liquidityMinted, noLiquidity, parsedAmounts, poolTokenPercentage, price, t])
 
   const modalBottom = useCallback(() => {
     return (

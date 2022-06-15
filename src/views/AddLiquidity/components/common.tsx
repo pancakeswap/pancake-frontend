@@ -61,12 +61,32 @@ const Subtitle: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   )
 }
 
-export const PairDistribution = ({ title, percent, currencyA, currencyB, currencyAValue, currencyBValue }) => {
+export const PairDistribution = ({
+  title,
+  percent,
+  currencyA,
+  currencyB,
+  currencyAValue,
+  currencyBValue,
+  tooltipTargetRef,
+}: {
+  title: React.ReactNode
+  percent?: number
+  currencyA?: Currency
+  currencyB?: Currency
+  currencyAValue?: string
+  currencyBValue?: string
+  tooltipTargetRef?: any
+}) => {
   return (
     <AutoColumn gap="8px">
       <Subtitle>{title}</Subtitle>
       <Flex>
-        {typeof percent !== 'undefined' && <CircleSvg percent={percent} mr="34px" />}
+        {typeof percent !== 'undefined' && (
+          <div ref={tooltipTargetRef}>
+            <CircleSvg percent={percent} mr="34px" />
+          </div>
+        )}
         <AutoColumn style={{ width: '100%' }}>
           {currencyA && (
             <RowBetween>

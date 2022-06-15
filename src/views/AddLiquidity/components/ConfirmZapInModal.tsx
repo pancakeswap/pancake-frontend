@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Currency, CurrencyAmount, Fraction, JSBI, Pair, Percent, Price, TokenAmount } from '@pancakeswap/sdk'
-import { InjectedModalProps, Text, ArrowDownIcon, Button } from '@pancakeswap/uikit'
+import { InjectedModalProps, Text, ArrowDownIcon, Button, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
@@ -67,6 +67,21 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
   const swapInCurrencyAmount = parsedAmounts[zapSwapTokenField]
   const swapOutCurrencyAmount = parsedAmounts[zapSwapOutTokenField]
 
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    swapInCurrencyAmount && !swapOutCurrencyAmount
+      ? t('There is no %token1% input. Half of %token0% input is converted into %token1% to add liquidity.', {
+          token0: currencies[zapSwapTokenField]?.symbol,
+          token1: currencies[zapSwapOutTokenField]?.symbol,
+        })
+      : t('There is not enough %token1% input to match 50/50. Some of %token0% will be converted to %token1%', {
+          token0: currencies[zapSwapTokenField]?.symbol,
+          token1: currencies[zapSwapOutTokenField]?.symbol,
+        }),
+    {
+      placement: 'left-start',
+    },
+  )
+
   const [token0Deposited, token1Deposited] =
     !!pair &&
     !!totalPoolTokens &&
@@ -98,22 +113,21 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
   const inputPercent = useMemo(
     () =>
       swapInCurrencyAmount && swapOutCurrencyAmount
-        ? Math.min(
-            Math.max(
-              +new Price(
+        ? +pair
+            .priceOf(wrappedCurrency(swapOutCurrencyAmount.currency, chainId))
+            .raw.divide(
+              new Price(
                 swapInCurrencyAmount.currency,
                 swapOutCurrencyAmount.currency,
                 JSBI.add(swapInCurrencyAmount.raw, swapOutCurrencyAmount.raw),
                 swapInCurrencyAmount.raw,
-              ).toSignificant(2),
-              0.02,
-            ),
-            1,
-          )
+              ),
+            )
+            .toSignificant(2)
         : swapInCurrencyAmount && !swapOutCurrencyAmount
         ? 1
         : undefined,
-    [swapInCurrencyAmount, swapOutCurrencyAmount],
+    [chainId, pair, swapInCurrencyAmount, swapOutCurrencyAmount],
   )
 
   const tokenDeposited = useMemo(
@@ -131,25 +145,6 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
       zapSwapOutTokenField,
       zapSwapTokenField,
     ],
-  )
-
-  const pooledPercent = useMemo(
-    () =>
-      token0Deposited && token1Deposited
-        ? Math.min(
-            Math.max(
-              +new Price(
-                token0Deposited.currency,
-                token1Deposited.currency,
-                JSBI.add(token0Deposited.raw, token1Deposited.raw),
-                token0Deposited.raw,
-              ).toSignificant(2),
-              0.02,
-            ),
-            0.98,
-          )
-        : undefined,
-    [token0Deposited, token1Deposited],
   )
 
   const modalHeader = useCallback(() => {
@@ -189,9 +184,11 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
           </AutoColumn>
         )}
         <AutoColumn gap="4px">
+          {tooltipVisible && tooltip}
           <PairDistribution
+            tooltipTargetRef={targetRef}
             title={t('Pooled')}
-            percent={pooledPercent}
+            percent={0.5}
             currencyA={currencies[zapSwapTokenField]}
             currencyAValue={tokenDeposited[zapSwapTokenField]?.toSignificant(6)}
             currencyB={currencies[zapSwapOutTokenField]}
@@ -201,10 +198,12 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
       </AddLiquidityModalHeader>
     )
   }, [
-    t,
+    allowedSlippage,
     currencies,
     liquidityMinted,
     poolTokenPercentage,
+    price,
+    t,
     inputPercent,
     swapInCurrencyAmount,
     zapSwapTokenField,
@@ -212,10 +211,10 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
     zapSwapOutTokenField,
     swapOutTokenAmount,
     swapInTokenAmount,
-    pooledPercent,
+    tooltip,
+    tooltipVisible,
+    targetRef,
     tokenDeposited,
-    price,
-    allowedSlippage,
   ])
 
   const modalBottom = useCallback(() => {
