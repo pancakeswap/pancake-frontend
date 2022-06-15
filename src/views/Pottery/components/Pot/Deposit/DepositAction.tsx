@@ -35,9 +35,14 @@ const DepositAction: React.FC = () => {
   const userCakeDisplayBalance = getFullDisplayBalance(userCake, 18, 3)
   const { userNotEnoughCake, notEnoughErrorMessage } = useUserEnoughCakeValidator(depositAmount, userCake)
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Fake Text'), {
-    placement: 'bottom',
-  })
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t(
+      'CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.',
+    ),
+    {
+      placement: 'bottom',
+    },
+  )
 
   const onClickMax = () => {
     setDepositAmount(userCake.dividedBy(BIG_TEN.pow(18)).toString())

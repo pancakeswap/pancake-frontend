@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useMemo } from 'react'
-import { Flex, Box, Text } from '@pancakeswap/uikit'
+import { Flex, Box, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { GreyCard } from 'components/Card'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -27,6 +27,10 @@ const Deposit: React.FC = () => {
   const { account } = useActiveWeb3React()
   const { getLockedApy } = useVaultApy()
 
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Pottery draws on each Friday at 12 PM UTC!'), {
+    placement: 'bottom-start',
+  })
+
   const apyDisplay = useMemo(() => {
     const apy = getLockedApy(weeksToSeconds(10))
     return `${Number(apy).toFixed(2)}%`
@@ -47,7 +51,10 @@ const Deposit: React.FC = () => {
         </Flex>
         <Flex justifyContent="space-between">
           <Text color="textSubtle">{t('Next draw date')}</Text>
-          <Text bold>in 1d 23h 11m</Text>
+          {tooltipVisible && tooltip}
+          <TooltipText ref={targetRef} bold>
+            in 1d 23h 11m
+          </TooltipText>
         </Flex>
         <Flex justifyContent="space-between">
           <Text color="textSubtle">{t('Total Value Locked')}</Text>
