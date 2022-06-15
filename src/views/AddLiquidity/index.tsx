@@ -9,7 +9,6 @@ import {
   CardBody,
   Message,
   useModal,
-  Skeleton,
   TooltipText,
   useTooltip,
   MessageText,
@@ -697,19 +696,15 @@ export default function AddLiquidity() {
                   </>
                 )}
 
-                {pair && (
+                {pair && poolData && (
                   <RowBetween>
                     <TooltipText ref={targetRef} bold fontSize="12px" color="secondary">
                       {t('LP reward APR')}
                     </TooltipText>
                     {tooltipVisible && tooltip}
-                    {poolData ? (
-                      <Text bold color="primary">
-                        {formatAmount(poolData.lpApr7d)}%
-                      </Text>
-                    ) : (
-                      <Skeleton width={60} />
-                    )}
+                    <Text bold color="primary">
+                      {formatAmount(poolData.lpApr7d)}%
+                    </Text>
                   </RowBetween>
                 )}
 
