@@ -34,7 +34,7 @@ const AnimatedArrow: React.FC<AnimatedArrowProps> = ({ mode }) => {
   const [key, setKey] = useState('roiArrow-0')
 
   // Trigger animation on state change
-  // TODO: Prottery, state change need trigger animation
+  // TODO: Pottery state change need trigger animation
   useEffect(() => {
     setKey((prevKey) => {
       const prevId = parseInt(prevKey.split('-')[1], 10)

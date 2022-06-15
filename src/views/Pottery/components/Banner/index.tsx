@@ -1,10 +1,14 @@
 import styled from 'styled-components'
+import { useMemo } from 'react'
 import { Flex, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import BigNumber from 'bignumber.js'
+import { usePriceCakeBusd } from 'state/farms/hooks'
 import StakeToWinButton from 'views/Pottery/components/Banner/StakeToWinButton'
 import { BannerTimer } from 'views/Pottery/components/Timer'
 import { OutlineText, DarkTextStyle } from 'views/Pottery/components/TextStyle'
 import TicketsDecorations from 'views/Pottery/components/Banner/TicketsDecorations'
+import { getBalanceNumber } from 'utils/formatBalance'
 
 const PotteryBanner = styled(Flex)`
   position: relative;
@@ -49,6 +53,15 @@ const BannerBunny = styled.div`
 
 const Banner: React.FC = () => {
   const { t } = useTranslation()
+  const cakePriceBusd = usePriceCakeBusd()
+
+  // TODO: Pottery
+  const prizeInBusd = new BigNumber(300000000000000000000000).times(cakePriceBusd)
+  const prizeTotal = getBalanceNumber(prizeInBusd)
+  const prizeDisplay = useMemo(
+    () => `$ ${prizeTotal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
+    [prizeTotal],
+  )
 
   return (
     <PotteryBanner>
@@ -78,7 +91,7 @@ const Banner: React.FC = () => {
               {t('Pottery')}
             </OutlineText>
           </Flex>
-          <OutlineText fontSize={['40px', '64px']}>$24,232,232</OutlineText>
+          <OutlineText fontSize={['40px', '64px']}>{prizeDisplay}</OutlineText>
           <DarkTextStyle m="-20px 0 0 0" fontSize={['32px', '40px']} bold>
             {t('To be won !')}
           </DarkTextStyle>

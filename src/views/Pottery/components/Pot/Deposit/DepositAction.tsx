@@ -8,7 +8,7 @@ import tokens from 'config/constants/tokens'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { useUserEnoughCakeValidator } from 'views/Pools/components/LockedPool/hooks/useUserEnoughCakeValidator'
-
+import { BIG_TEN } from 'utils/bigNumber'
 import EnableButton from './EnableButton'
 import DepositButton from './DepositButton'
 
@@ -29,21 +29,24 @@ const Container = styled.div`
 
 const DepositAction: React.FC = () => {
   const { t } = useTranslation()
-  const [value, setValue] = useState('')
+  const [depositAmount, setDepositAmount] = useState('')
 
   const { balance: userCake } = useTokenBalance(tokens.cake.address)
   const userCakeDisplayBalance = getFullDisplayBalance(userCake, 18, 3)
-  const { userNotEnoughCake, notEnoughErrorMessage } = useUserEnoughCakeValidator(value, userCake)
+  const { userNotEnoughCake, notEnoughErrorMessage } = useUserEnoughCakeValidator(depositAmount, userCake)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Fake Text'), {
     placement: 'bottom',
   })
 
   const onClickMax = () => {
-    setValue(userCake.div(1e18).toString())
+    setDepositAmount(userCake.dividedBy(BIG_TEN.pow(18)).toString())
   }
 
-  const showMaxButton = useMemo(() => new BigNumber(value).multipliedBy(1e18).eq(userCake), [value, userCake])
+  const showMaxButton = useMemo(
+    () => new BigNumber(depositAmount).multipliedBy(BIG_TEN.pow(18)).eq(userCake),
+    [depositAmount, userCake],
+  )
 
   // if (!userData.isApproved) {
   //   return <EnableButton />
@@ -68,8 +71,8 @@ const DepositAction: React.FC = () => {
             <NumericalInput
               style={{ textAlign: 'left' }}
               className="pottery-amount-input"
-              value={value}
-              onUserInput={(val) => setValue(val)}
+              value={depositAmount}
+              onUserInput={(val) => setDepositAmount(val)}
             />
             <Flex ml="8px">
               {!showMaxButton && (
@@ -99,7 +102,7 @@ const DepositAction: React.FC = () => {
           {notEnoughErrorMessage}
         </Button>
       ) : (
-        <DepositButton />
+        <DepositButton depositAmount={depositAmount} />
       )}
     </Box>
   )

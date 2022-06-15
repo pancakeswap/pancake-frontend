@@ -44,10 +44,13 @@ const WinRateModal: React.FC<WinRateModalProps> = ({ onDismiss, onBack }) => {
     }
   }, [])
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Fake Text'), {
-    placement: 'top-end',
-    tooltipOffset: [20, 10],
-  })
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t('“My Balance” here includes both CAKE in your wallet, and CAKE already staked in this pool.'),
+    {
+      placement: 'top-end',
+      tooltipOffset: [20, 10],
+    },
+  )
 
   const onBalanceFocus = () => {
     setCalculatorMode(CalculatorMode.WIN_RATE_BASED_ON_PRINCIPAL)

@@ -1,8 +1,11 @@
 import styled from 'styled-components'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { Flex, Box, Card, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { OutlineText } from 'views/Pottery/components/TextStyle'
+import BigNumber from 'bignumber.js'
+import { usePriceCakeBusd } from 'state/farms/hooks'
+import { getBalanceNumber } from 'utils/formatBalance'
 import PotTab from './PotTab'
 import Deposit from './Deposit/index'
 import Claim from './Claim/index'
@@ -55,9 +58,19 @@ const PotImage = styled.div`
 
 const Pot: React.FC = () => {
   const { t } = useTranslation()
+  const cakePriceBusd = usePriceCakeBusd()
   const { isMobile } = useMatchBreakpoints()
+
   const [activeTab, setIndex] = useState<POT_CATEGORY>(POT_CATEGORY.Deposit)
   const handleClick = useCallback((tabType: POT_CATEGORY) => setIndex(tabType), [])
+
+  // TODO: Pottery
+  const prizeInBusd = new BigNumber(300000000000000000000000).times(cakePriceBusd)
+  const prizeTotal = getBalanceNumber(prizeInBusd)
+  const prizeDisplay = useMemo(
+    () => `$ ${prizeTotal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
+    [prizeTotal],
+  )
 
   return (
     <PotteryContainer id="stake-to-win">
@@ -66,7 +79,7 @@ const Pot: React.FC = () => {
           {t('Current Prize Pot')}
         </Text>
         <OutlineText mt="-10px" fontSize="40px" bold textAlign="center">
-          $24,232,232
+          {prizeDisplay}
         </OutlineText>
         <Text color="white" mt="10px" fontSize="24px" textAlign="center" bold>
           {t('Stake to get your tickets NOW')}

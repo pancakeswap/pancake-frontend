@@ -26,7 +26,7 @@ const StyledWhiteText = styled(Text)`
 
 export const BannerTimer: React.FC = () => {
   const { t } = useTranslation()
-  // TODO: Update Pot Data
+  // TODO: Pottery
   const secondsUntilStart = 1655002229
   const timeUntil = getTimePeriods(secondsUntilStart)
   return (

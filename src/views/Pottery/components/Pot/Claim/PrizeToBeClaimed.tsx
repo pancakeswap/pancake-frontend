@@ -15,8 +15,8 @@ const PrizeToBeClaimed: React.FC = () => {
       </Text>
       <Flex>
         <Box>
-          <Balance fontSize="20px" value={5} decimals={2} bold />
-          <Balance fontSize="12px" color="textSubtle" value={200} decimals={2} unit="USD" />
+          <Balance fontSize="20px" lineHeight="110%" value={5} decimals={2} bold />
+          <Balance fontSize="12px" lineHeight="110%" color="textSubtle" value={200} decimals={2} unit="USD" />
         </Box>
         <Button width="162px" ml="auto">
           {t('Claim')}
