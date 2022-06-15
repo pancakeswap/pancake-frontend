@@ -1,6 +1,9 @@
+import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Flex, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { useVaultApy } from 'hooks/useVaultApy'
+import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
 
 const Container = styled(Flex)`
   flex-direction: column;
@@ -8,8 +11,18 @@ const Container = styled(Flex)`
   background: ${({ theme }) => theme.colors.gradients.cardHeader};
 `
 
-const CardFooter: React.FC = () => {
+interface CardFooterProps {
+  account: string
+}
+
+const CardFooter: React.FC<CardFooterProps> = ({ account }) => {
   const { t } = useTranslation()
+  const { getBoostFactor } = useVaultApy()
+
+  const boostFactor = useMemo(() => getBoostFactor(weeksToSeconds(10)), [getBoostFactor])
+  const boostFactorDisplay = useMemo(() => {
+    return `X${Number(boostFactor).toFixed(2)}`
+  }, [boostFactor])
 
   return (
     <Container>
@@ -22,7 +35,7 @@ const CardFooter: React.FC = () => {
             {t('avg multiplier')}
           </Text>
         </Box>
-        <Text bold>X12</Text>
+        <Text bold>{account ? boostFactorDisplay : '-'}</Text>
       </Flex>
       <Flex justifyContent="space-between">
         <Box>
@@ -34,12 +47,20 @@ const CardFooter: React.FC = () => {
           </Text>
         </Box>
         <Box>
-          <Text bold as="span">
-            1,234,567.89
-          </Text>
-          <Text ml="4px" color="textSubtle" textTransform="uppercase" as="span">
-            {t('CAKE')}
-          </Text>
+          {account ? (
+            <>
+              <Text bold as="span">
+                1,234,567.89
+              </Text>
+              <Text ml="4px" color="textSubtle" textTransform="uppercase" as="span">
+                {t('CAKE')}
+              </Text>
+            </>
+          ) : (
+            <Text bold as="span">
+              -
+            </Text>
+          )}
         </Box>
       </Flex>
       <Flex justifyContent="space-between">
@@ -52,12 +73,20 @@ const CardFooter: React.FC = () => {
           </Text>
         </Box>
         <Box>
-          <Text bold as="span">
-            23
-          </Text>
-          <Text ml="4px" color="textSubtle" textTransform="uppercase" as="span">
-            {t('Days')}
-          </Text>
+          {account ? (
+            <>
+              <Text bold as="span">
+                23
+              </Text>
+              <Text ml="4px" color="textSubtle" textTransform="uppercase" as="span">
+                {t('Days')}
+              </Text>
+            </>
+          ) : (
+            <Text bold as="span">
+              -
+            </Text>
+          )}
         </Box>
       </Flex>
       <Flex justifyContent="space-between">
@@ -69,7 +98,7 @@ const CardFooter: React.FC = () => {
             {t('winnings')}
           </Text>
         </Box>
-        <Text bold>12</Text>
+        <Text bold>{account ? '12' : '-'}</Text>
       </Flex>
     </Container>
   )

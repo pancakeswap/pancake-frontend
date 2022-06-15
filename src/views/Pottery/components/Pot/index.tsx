@@ -68,7 +68,7 @@ const Pot: React.FC = () => {
   const prizeInBusd = new BigNumber(300000000000000000000000).times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
   const prizeDisplay = useMemo(
-    () => `$ ${prizeTotal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
+    () => `$${prizeTotal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
     [prizeTotal],
   )
 

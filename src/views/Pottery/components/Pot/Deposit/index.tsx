@@ -1,9 +1,12 @@
 import styled from 'styled-components'
+import { useMemo } from 'react'
 import { Flex, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { GreyCard } from 'components/Card'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { useVaultApy } from 'hooks/useVaultApy'
+import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
 import YourDeposit from '../YourDeposit'
 import WinRate from '../WinRate'
 import DepositAction from './DepositAction'
@@ -22,6 +25,12 @@ const CardAction = styled(Flex)`
 const Deposit: React.FC = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
+  const { getLockedApy } = useVaultApy()
+
+  const apyDisplay = useMemo(() => {
+    const apy = getLockedApy(weeksToSeconds(10))
+    return `${Number(apy).toFixed(2)}%`
+  }, [getLockedApy])
 
   return (
     <Box>
@@ -34,7 +43,7 @@ const Deposit: React.FC = () => {
         </GreyCard>
         <Flex justifyContent="space-between">
           <Text color="textSubtle">{t('APY')}</Text>
-          <Text bold>34.33%</Text>
+          <Text bold>{apyDisplay}</Text>
         </Flex>
         <Flex justifyContent="space-between">
           <Text color="textSubtle">{t('Next draw date')}</Text>

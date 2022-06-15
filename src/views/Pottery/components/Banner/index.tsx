@@ -9,6 +9,8 @@ import { BannerTimer } from 'views/Pottery/components/Timer'
 import { OutlineText, DarkTextStyle } from 'views/Pottery/components/TextStyle'
 import TicketsDecorations from 'views/Pottery/components/Banner/TicketsDecorations'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { useVaultApy } from 'hooks/useVaultApy'
+import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
 
 const PotteryBanner = styled(Flex)`
   position: relative;
@@ -54,14 +56,20 @@ const BannerBunny = styled.div`
 const Banner: React.FC = () => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
+  const { getLockedApy } = useVaultApy()
 
   // TODO: Pottery
   const prizeInBusd = new BigNumber(300000000000000000000000).times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
   const prizeDisplay = useMemo(
-    () => `$ ${prizeTotal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
+    () => `$${prizeTotal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
     [prizeTotal],
   )
+
+  const apyDisplay = useMemo(() => {
+    const apy = getLockedApy(weeksToSeconds(10))
+    return `${Number(apy).toFixed(2)}%`
+  }, [getLockedApy])
 
   return (
     <PotteryBanner>
@@ -109,7 +117,7 @@ const Banner: React.FC = () => {
               {t('to earn')}
             </Text>
             <DarkTextStyle m="0 3px" bold as="span">
-              43.23%
+              {apyDisplay}
             </DarkTextStyle>
             <Text color="white" bold as="span">
               {t('APY')}

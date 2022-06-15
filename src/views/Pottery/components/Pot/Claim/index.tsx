@@ -33,7 +33,7 @@ const Claim: React.FC = () => {
       ) : (
         <WalletNotConnected />
       )}
-      <CardFooter />
+      <CardFooter account={account} />
     </Box>
   )
 }
