@@ -15,6 +15,20 @@ const StyledLink = styled(NextLinkFromReactRouter)`
   width: 100%;
 `
 
+const PredictionCardHeader: React.FC<{ preText: string; bnbWon: number }> = ({ preText, bnbWon }) => {
+  const bnbBusdPrice = useBNBBusdPrice()
+  const bnbWonInUsd = multiplyPriceByAmount(bnbBusdPrice, bnbWon)
+
+  const localisedBnbUsdString = formatLocalisedCompactNumber(bnbWonInUsd)
+
+  return (
+    <Heading color="#280D5F" my="8px" scale="xl" bold>
+      {preText}
+      {localisedBnbUsdString}
+    </Heading>
+  )
+}
+
 const PredictionCardContent = () => {
   const { t } = useTranslation()
   const { observerRef, isIntersecting } = useIntersectionObserver()
@@ -46,10 +60,7 @@ const PredictionCardContent = () => {
           {t('Prediction')}
         </Text>
         {bnbWonInUsd ? (
-          <Heading color="#280D5F" my="8px" scale="xl" bold>
-            {pretext}
-            {localisedBnbUsdString}
-          </Heading>
+          <PredictionCardHeader preText={pretext} bnbWon={bnbWonInUsd} />
         ) : (
           <>
             <Skeleton width={230} height={40} my="8px" />

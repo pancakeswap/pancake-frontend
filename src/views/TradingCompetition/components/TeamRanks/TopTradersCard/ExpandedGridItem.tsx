@@ -105,7 +105,7 @@ const GridItem: React.FC<{ traderData?: LeaderboardDataItem; teamImages: React.R
         <Text fontSize="16px" bold color="secondary">
           #{rank}
         </Text>
-        <SkeletonV2 width="24px" height="24px" ml={['16px', null, '16px']} isDataReady={!isFetching}>
+        <SkeletonV2 width="24px" height="24px" ml={['16px', null, '16px']} borderRadius="50%" isDataReady={!isFetching}>
           <Avatar src={profile?.nft?.image?.thumbnail} />
         </SkeletonV2>
       </Flex>

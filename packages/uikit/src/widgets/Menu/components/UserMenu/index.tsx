@@ -115,7 +115,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
         <ChevronDownIcon color="text" width="24px" />
       </StyledUserMenu>
       <Menu style={styles.popper} ref={setTooltipRef} {...attributes.popper} isOpen={isOpen}>
-        <Box onClick={() => setIsOpen(false)}>{children}</Box>
+        <Box onClick={() => setIsOpen(false)}>{children?.({ isOpen })}</Box>
       </Menu>
     </Flex>
   );

@@ -290,7 +290,7 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
   }, [inputValue, inputCurrency])
 
   // Get CurrencyAmount for the outputCurrency amount specified by user
-  const outpuAmount = useMemo(() => {
+  const outputAmount = useMemo(() => {
     return tryParseAmount(outputValue, outputCurrency ?? undefined)
   }, [outputValue, outputCurrency])
 
@@ -320,10 +320,10 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
     : undefined
 
   // If not price - cast input or output typing to CurrencyAmount
-  // if price - whatever amount of tokens recevied on the desired price
+  // if price - whatever amount of tokens received on the desired price
   const tradeAmount = isDesiredRateUpdate
     ? isOutputBasis
-      ? outpuAmount
+      ? outputAmount
       : tryParseAmount(desiredOutputAsString, outputCurrency)
     : tryParseAmount(typedValue, isExactIn ? inputCurrency : outputCurrency)
 
@@ -362,7 +362,7 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
     // If we're in output basis mode - no matter what keep output as specified by user
     let output: CurrencyAmount | TokenAmount
     if (isOutputBasis) {
-      output = outpuAmount
+      output = outputAmount
     } else if (independentField === Field.OUTPUT) {
       // If user touching input field -> whatever they type currently
       output = parsedTypedAmount
@@ -380,7 +380,7 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
     independentField,
     parsedTypedAmount,
     inputAmount,
-    outpuAmount,
+    outputAmount,
     trade,
     isDesiredRateUpdate,
     isOutputBasis,

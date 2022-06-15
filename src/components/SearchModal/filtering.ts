@@ -73,10 +73,9 @@ export function useSortedTokensByQuery(tokens: Token[] | undefined, searchQuery:
       return []
     }
 
-    const symbolMatch = searchQuery
-      .toLowerCase()
-      .split(/\s+/)
-      .filter((s) => s.length > 0)
+    const trimmedSearchQuery = searchQuery.toLowerCase().trim()
+
+    const symbolMatch = trimmedSearchQuery.split(/\s+/).filter((s) => s.length > 0)
 
     if (symbolMatch.length > 1) {
       return tokens
@@ -88,10 +87,11 @@ export function useSortedTokensByQuery(tokens: Token[] | undefined, searchQuery:
 
     // sort tokens by exact match -> substring on symbol match -> rest
     tokens.forEach((token) => {
-      if (token.symbol?.toLowerCase() === symbolMatch[0]) {
+      const tokenSymbol = token.symbol?.toLowerCase()
+      if (tokenSymbol === symbolMatch[0] || token.name?.toLowerCase() === trimmedSearchQuery) {
         return exactMatches.push(token)
       }
-      if (token.symbol?.toLowerCase().startsWith(searchQuery.toLowerCase().trim())) {
+      if (tokenSymbol.startsWith(trimmedSearchQuery)) {
         return symbolSubstrings.push(token)
       }
       return rest.push(token)

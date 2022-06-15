@@ -1,6 +1,7 @@
 import { SerializedFarmConfig } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
-import { BIG_TEN, BIG_ZERO, BIG_TWO } from '../../utils/bigNumber'
+import { getFullDecimalMultiplier } from 'utils/getFullDecimalMultiplier'
+import { BIG_ZERO, BIG_TWO } from '../../utils/bigNumber'
 import { fetchPublicFarmsData } from './fetchPublicFarmData'
 import { fetchMasterChefData } from './fetchMasterChefData'
 import { SerializedFarm } from '../types'
@@ -12,8 +13,14 @@ const fetchFarms = async (farmsToFetch: SerializedFarmConfig[]): Promise<Seriali
   ])
 
   return farmsToFetch.map((farm, index) => {
-    const [tokenBalanceLP, quoteTokenBalanceLP, lpTokenBalanceMC, lpTotalSupply, tokenDecimals, quoteTokenDecimals] =
-      farmResult[index]
+    const [
+      tokenBalanceLP,
+      quoteTokenBalanceLP,
+      lpTokenBalanceMC,
+      lpTotalSupply,
+      [tokenDecimals],
+      [quoteTokenDecimals],
+    ] = farmResult[index]
 
     const [info, totalRegularAllocPoint] = masterChefResult[index]
 
@@ -21,8 +28,8 @@ const fetchFarms = async (farmsToFetch: SerializedFarmConfig[]): Promise<Seriali
     const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
 
     // Raw amount of token in the LP, including those not staked
-    const tokenAmountTotal = new BigNumber(tokenBalanceLP).div(BIG_TEN.pow(tokenDecimals))
-    const quoteTokenAmountTotal = new BigNumber(quoteTokenBalanceLP).div(BIG_TEN.pow(quoteTokenDecimals))
+    const tokenAmountTotal = new BigNumber(tokenBalanceLP).div(getFullDecimalMultiplier(tokenDecimals))
+    const quoteTokenAmountTotal = new BigNumber(quoteTokenBalanceLP).div(getFullDecimalMultiplier(quoteTokenDecimals))
 
     // Amount of quoteToken in the LP that are staked in the MC
     const quoteTokenAmountMc = quoteTokenAmountTotal.times(lpTokenRatio)

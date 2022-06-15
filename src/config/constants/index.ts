@@ -20,7 +20,6 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     mainnetTokens.busd,
     mainnetTokens.usdt,
     mainnetTokens.btcb,
-    mainnetTokens.ust,
     mainnetTokens.eth,
     mainnetTokens.usdc,
   ],

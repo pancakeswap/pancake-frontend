@@ -60,8 +60,7 @@ export interface AddAmountModalProps {
   stakingToken: Token
   currentBalance: BigNumber
   currentLockedAmount: BigNumber
-  passedDuration: number
-  remainingDuration: number
+  lockStartTime?: string
   lockEndTime?: string
   stakingTokenBalance: BigNumber
 }

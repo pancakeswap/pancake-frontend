@@ -41,6 +41,9 @@ export * from "./components/CoinSwitcher";
 // Hooks
 export * from "./hooks";
 
+// Contexts
+export * from "./contexts";
+
 // Widgets
 export * from "./widgets/Modal";
 export * from "./widgets/Menu";

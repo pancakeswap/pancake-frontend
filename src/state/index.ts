@@ -13,6 +13,7 @@ import {
   createMigrate,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import IndexedDBStorage from 'utils/IndexedDBStorage'
 import burn from './burn/reducer'
 import farmsReducer from './farms'
 import farmsReducerV1 from './farmsV1'
@@ -60,9 +61,10 @@ const persistConfig = {
 
 const ListsConfig = {
   key: 'lists',
-  storage,
   version: 1,
-  migrate: createMigrate(migrations, { debug: false }),
+  serialize: false,
+  deserialize: false,
+  storage: IndexedDBStorage('lists'),
 }
 
 const persistedReducer = persistReducer(
@@ -138,7 +140,7 @@ store = initializeStore()
  */
 export type AppDispatch = typeof store.dispatch
 export type AppState = ReturnType<typeof store.getState>
-export const useAppDispatch = () => useDispatch()
+export const useAppDispatch = () => useDispatch<AppDispatch>()
 
 export default store
 

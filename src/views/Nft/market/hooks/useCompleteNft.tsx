@@ -12,12 +12,17 @@ const useNftOwn = (collectionAddress: string, tokenId: string, marketData?: Toke
   const { account } = useWeb3React()
   const { reader: collectionContract } = useErc721CollectionContract(collectionAddress)
   const { isInitialized: isProfileInitialized, profile } = useProfile()
+
+  const { data: tokenOwner } = useSWR(
+    collectionContract ? ['nft', 'ownerOf', collectionAddress, tokenId] : null,
+    async () => collectionContract.ownerOf(tokenId),
+  )
+
   return useSWR(
-    account && isProfileInitialized && collectionContract
+    account && isProfileInitialized && tokenOwner
       ? ['nft', 'own', collectionAddress, tokenId, marketData?.currentSeller]
       : null,
     async () => {
-      const tokenOwner = await collectionContract.ownerOf(tokenId)
       let isOwn = false
       let nftIsProfilePic = false
       let location: NftLocation

@@ -11,7 +11,7 @@ import orderBy from 'lodash/orderBy'
 import { ORDER_CATEGORY, LimitOrderStatus } from '../types'
 
 export const OPEN_ORDERS_SWR_KEY = ['gelato', 'openOrders']
-export const EXECEUTED_CANCELLED_ORDERS_SWR_KEY = ['gelato', 'cancelledExecutedOrders']
+export const EXECUTED_CANCELLED_ORDERS_SWR_KEY = ['gelato', 'cancelledExecutedOrders']
 
 function newOrdersFirst(a: Order, b: Order) {
   return Number(b.updatedAt) - Number(a.updatedAt)
@@ -113,7 +113,7 @@ const useHistoryOrders = (turnOn: boolean): Order[] => {
   const startFetch = turnOn && gelatoLimitOrders && account && chainId
 
   const { data } = useSWR(
-    startFetch ? EXECEUTED_CANCELLED_ORDERS_SWR_KEY : null,
+    startFetch ? EXECUTED_CANCELLED_ORDERS_SWR_KEY : null,
     async () => {
       try {
         const acc = account.toLowerCase()

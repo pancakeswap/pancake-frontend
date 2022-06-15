@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createElement } from "react";
+import { createElement, memo } from "react";
 import { Flex } from "../Box";
 import isTouchDevice from "../../util/isTouchDevice";
 import DropdownMenu from "../DropdownMenu/DropdownMenu";
@@ -26,4 +26,4 @@ const MenuItems: React.FC<MenuItemsProps> = ({ items = [], activeItem, activeSub
   );
 };
 
-export default MenuItems;
+export default memo(MenuItems);

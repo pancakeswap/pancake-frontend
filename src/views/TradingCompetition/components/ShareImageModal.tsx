@@ -3,7 +3,6 @@ import { Modal, Flex, Button, Text, Skeleton, Box } from '@pancakeswap/uikit'
 import { StaticImageData } from 'next/dist/client/image'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import ProfileMask from '../pngs/share-profile-mask.png'
 import MedalGold from '../pngs/medals/medal-gold.png'
 import MedalSilver from '../pngs/medals/medal-silver.png'
 import MedalBronze from '../pngs/medals/medal-bronze.png'
@@ -49,7 +48,7 @@ const ShareImageModal: React.FC<ShareImageModalProps> = ({
   const { global, team, volume } = userLeaderboardInformation
   const [bgImage, setBgImage] = useState(null)
   const [profileImage, setProfileImage] = useState(null)
-  const [profileOverlayImage, setProfileOverlayImage] = useState(null)
+  // const [profileOverlayImage, setProfileOverlayImage] = useState(null)
   const [medalImage, setMedalImage] = useState(null)
 
   const [imageFromCanvas, setImageFromCanvas] = useState(null)
@@ -83,9 +82,9 @@ const ShareImageModal: React.FC<ShareImageModalProps> = ({
       profileImageEl.crossOrigin = 'Anonymous'
       profileImageEl.onload = () => setProfileImage(profileImageEl)
 
-      const profileImageOverlayEl = new Image()
-      profileImageOverlayEl.src = ProfileMask.src
-      profileImageOverlayEl.onload = () => setProfileOverlayImage(profileImageOverlayEl)
+      // const profileImageOverlayEl = new Image()
+      // profileImageOverlayEl.src = ProfileMask.src
+      // profileImageOverlayEl.onload = () => setProfileOverlayImage(profileImageOverlayEl)
 
       const medalImageEl = new Image()
       medalImageEl.src = getMedal(team).src
@@ -95,7 +94,7 @@ const ShareImageModal: React.FC<ShareImageModalProps> = ({
 
   useEffect(() => {
     const canvasEl = canvas.current
-    if (profile && canvasEl && bgImage && profileImage && profileOverlayImage && medalImage) {
+    if (profile && canvasEl && bgImage && profileImage && medalImage) {
       const canvasWidth = canvasEl.width
       canvasEl.height = canvasWidth * 0.5625
       const canvasHeight = canvasEl.height
@@ -104,7 +103,7 @@ const ShareImageModal: React.FC<ShareImageModalProps> = ({
 
       ctx.drawImage(bgImage, 0, 0, canvasWidth, canvasHeight)
       ctx.drawImage(profileImage, canvasWidth * 0.0315, canvasHeight * 0.07, canvasWidth * 0.19, canvasWidth * 0.19)
-      ctx.drawImage(profileOverlayImage, 0, 0, canvasWidth * 0.235, canvasWidth * 0.235)
+      // ctx.drawImage(profileOverlayImage, 0, 0, canvasWidth * 0.235, canvasWidth * 0.235)
       ctx.drawImage(medalImage, canvasWidth * 0.15, canvasHeight * 0.32, canvasWidth * 0.06, canvasWidth * 0.06)
 
       ctx.font = 'bold 84px Kanit'
@@ -118,7 +117,7 @@ const ShareImageModal: React.FC<ShareImageModalProps> = ({
 
       setImageFromCanvas(canvasEl.toDataURL('image/png'))
     }
-  }, [bgImage, profileImage, team, global, volume, profile, profileOverlayImage, medalImage])
+  }, [bgImage, profileImage, team, global, volume, profile, medalImage])
 
   const downloadImage = () => {
     const link = document.createElement('a')

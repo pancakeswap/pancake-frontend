@@ -100,7 +100,7 @@ const GridItem: React.FC<{
         <Text bold>${localiseTradingVolume(volume)}</Text>
       </Flex>
       <Flex alignItems="center" justifyContent="flex-start">
-        <SkeletonV2 width="32px" height="32px" mr={['4px', null, '12px']} isDataReady={!isFetching}>
+        <SkeletonV2 width="32px" height="32px" mr={['4px', null, '12px']} borderRadius="50%" isDataReady={!isFetching}>
           <Avatar src={profile?.nft?.image?.thumbnail} />
         </SkeletonV2>
         <Text color="primary">{truncateHash(address)}</Text>
