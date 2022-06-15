@@ -9,6 +9,7 @@ const serializedTokens = serializeTokens()
 
 export const MAX_LOCK_DURATION = 31536000
 export const UNLOCK_FREE_DURATION = 604800
+export const ONE_WEEK_DEFAULT = 604800
 export const BOOST_WEIGHT = BigNumber.from('20000000000000')
 export const DURATION_FACTOR = BigNumber.from('31536000')
 
@@ -61,6 +62,48 @@ const pools: SerializedPoolConfig[] = [
     isFinished: false,
   },
   {
+    sousId: 283,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.xcn,
+    contractAddress: {
+      97: '',
+      56: '0xa79D37ce9DF9443eF4B6DEC2e38a8ecd35303adc',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    sortOrder: 999,
+    tokenPerBlock: '2.2505',
+    version: 3,
+  },
+  {
+    sousId: 282,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.chr,
+    contractAddress: {
+      97: '',
+      56: '0x2D17ec6cd0AF737B2adE40ea527d41ceEedc166f',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    sortOrder: 999,
+    tokenPerBlock: '1.58',
+    version: 3,
+  },
+  {
+    sousId: 281,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.MIX,
+    contractAddress: {
+      97: '',
+      56: '0x0F96E19Bdc787e767BA1e8F1aDD0f62cbdad87C8',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    sortOrder: 999,
+    tokenPerBlock: '63.136',
+    version: 3,
+  },
+  {
     sousId: 280,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.metis,
@@ -89,20 +132,6 @@ const pools: SerializedPoolConfig[] = [
     version: 3,
   },
   {
-    sousId: 278,
-    stakingToken: serializedTokens.cake,
-    earningToken: serializedTokens.rpg,
-    contractAddress: {
-      97: '',
-      56: '0xD1c395BCdC2d64ac6544A34A36185483B00530a1',
-    },
-    poolCategory: PoolCategory.CORE,
-    harvest: true,
-    sortOrder: 999,
-    tokenPerBlock: '0.06794',
-    version: 3,
-  },
-  {
     sousId: 277,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.ankr,
@@ -114,6 +143,24 @@ const pools: SerializedPoolConfig[] = [
     harvest: true,
     sortOrder: 999,
     tokenPerBlock: '4.6296',
+    version: 3,
+  },
+].filter((p) => !!p.contractAddress[CHAIN_ID])
+
+// known finished pools
+const finishedPools = [
+  {
+    sousId: 278,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.rpg,
+    contractAddress: {
+      97: '',
+      56: '0xD1c395BCdC2d64ac6544A34A36185483B00530a1',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    sortOrder: 999,
+    tokenPerBlock: '0.06794',
     version: 3,
   },
   {
@@ -3752,6 +3799,8 @@ const pools: SerializedPoolConfig[] = [
     sortOrder: 999,
     tokenPerBlock: '7.502',
   },
-].filter((p) => !!p.contractAddress[CHAIN_ID])
+]
+  .filter((p) => !!p.contractAddress[CHAIN_ID])
+  .map((p) => ({ ...p, isFinished: true }))
 
-export default pools
+export default [...pools, ...finishedPools]

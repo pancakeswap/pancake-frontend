@@ -14,15 +14,15 @@ import {
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
-import { NftLocation, NftToken } from 'state/nftMarket/types'
+import { NftLocation, NftToken, Collection } from 'state/nftMarket/types'
 import { formatNumber } from 'utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
-import ExpandableCard from '../shared/ExpandableCard'
-import SellModal from '../../../components/BuySellModals/SellModal'
+import { CollectibleRowContainer, SmallRoundedImage } from './styles'
 import ProfileNftModal from '../../../components/ProfileNftModal'
-import { SmallRoundedImage, CollectibleRowContainer } from '../shared/styles'
-import useNftsForAddress from '../../../hooks/useNftsForAddress'
+import SellModal from '../../../components/BuySellModals/SellModal'
+import { useCollectionsNftsForAddress } from '../../../hooks/useNftsForAddress'
+import ExpandableCard from './ExpandableCard'
 
 const ScrollableContainer = styled(Box)`
   overflow-y: auto;
@@ -134,32 +134,46 @@ const CollectiblesByLocation: React.FC<CollectiblesByLocationProps> = ({
   )
 }
 
-interface ManagePancakeBunniesCardProps {
-  bunnyId: string
+interface ManageNftsCardProps {
+  collection: Collection
+  tokenId?: string | number
   lowestPrice?: string
+  onSuccess?: () => void
 }
 
-const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bunnyId, lowestPrice }) => {
+const getNftFilter = (location: NftLocation) => {
+  return (nft: NftToken, collectionAddress: string, tokenId: string | number): boolean => {
+    return (
+      nft.collectionAddress.toLowerCase() === collectionAddress.toLowerCase() &&
+      (tokenId ? nft.attributes[0].value === tokenId : true) &&
+      nft.location === location
+    )
+  }
+}
+
+const ManageNFTsCard: React.FC<ManageNftsCardProps> = ({ collection, tokenId, lowestPrice, onSuccess }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
 
   const { isLoading: isProfileLoading, profile } = useProfile()
-  const { nfts: userNfts, isLoading, refresh } = useNftsForAddress(account, profile, isProfileLoading)
 
-  const bunniesInWallet = userNfts.filter(
-    (nft) => nft.attributes[0].value === bunnyId && nft.location === NftLocation.WALLET,
-  )
-  const bunniesForSale = userNfts.filter(
-    (nft) => nft.attributes[0].value === bunnyId && nft.location === NftLocation.FORSALE,
-  )
-  const profilePicBunny = userNfts.filter(
-    (nft) => nft.attributes[0].value === bunnyId && nft.location === NftLocation.PROFILE,
-  )
+  const {
+    nfts: userNfts,
+    isLoading,
+    refresh,
+  } = useCollectionsNftsForAddress(account, profile, isProfileLoading, { [collection.address]: collection })
 
-  const useHasNoBunnies =
-    !isLoading && bunniesInWallet.length === 0 && bunniesForSale.length === 0 && profilePicBunny.length === 0
-  const totalBunnies = bunniesInWallet.length + bunniesForSale.length + profilePicBunny.length
-  const totalBunniesText = account && !useHasNoBunnies ? ` (${totalBunnies})` : ''
+  const walletFilter = getNftFilter(NftLocation.WALLET)
+  const forSaleFilter = getNftFilter(NftLocation.FORSALE)
+  const profileFilter = getNftFilter(NftLocation.PROFILE)
+
+  const nftsInWallet = userNfts.filter((nft) => walletFilter(nft, collection.address, tokenId))
+  const nftsForSale = userNfts.filter((nft) => forSaleFilter(nft, collection.address, tokenId))
+  const profileNft = userNfts.filter((nft) => profileFilter(nft, collection.address, tokenId))
+
+  const userHasNoNfts = !isLoading && nftsInWallet.length === 0 && nftsForSale.length === 0 && profileNft.length === 0
+  const totalNfts = nftsInWallet.length + nftsForSale.length + profileNft.length
+  const totalNftsText = account && !userHasNoNfts ? ` (${totalNfts})` : ''
 
   const content = (
     <Box pt="16px">
@@ -168,7 +182,7 @@ const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bun
           <ConnectWalletButton />
         </Flex>
       )}
-      {account && useHasNoBunnies && (
+      {account && userHasNoNfts && (
         <Text px="16px" pb="16px" color="textSubtle">
           {t('You don’t have any of this item.')}
         </Text>
@@ -180,33 +194,42 @@ const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bun
           <Skeleton mb="8px" />
         </Box>
       )}
-      {bunniesForSale.length > 0 && (
+      {nftsForSale.length > 0 && (
         <CollectiblesByLocation
           location={NftLocation.FORSALE}
-          nfts={bunniesForSale}
+          nfts={nftsForSale}
           lowestPrice={lowestPrice}
-          onSuccessSale={refresh}
+          onSuccessSale={() => {
+            refresh()
+            onSuccess?.()
+          }}
         />
       )}
-      {bunniesInWallet.length > 0 && (
+      {nftsInWallet.length > 0 && (
         <>
-          {bunniesForSale.length > 0 && <Divider />}
+          {nftsForSale.length > 0 && <Divider />}
           <CollectiblesByLocation
             location={NftLocation.WALLET}
-            nfts={bunniesInWallet}
+            nfts={nftsInWallet}
             lowestPrice={lowestPrice}
-            onSuccessSale={refresh}
+            onSuccessSale={() => {
+              refresh()
+              onSuccess?.()
+            }}
           />
         </>
       )}
-      {profilePicBunny.length > 0 && (
+      {profileNft.length > 0 && (
         <>
-          {(bunniesForSale.length > 0 || bunniesInWallet.length > 0) && <Divider />}
+          {(nftsForSale.length > 0 || nftsInWallet.length > 0) && <Divider />}
           <CollectiblesByLocation
             location={NftLocation.PROFILE}
-            nfts={profilePicBunny}
+            nfts={profileNft}
             lowestPrice={lowestPrice}
-            onSuccessSale={refresh}
+            onSuccessSale={() => {
+              refresh()
+              onSuccess?.()
+            }}
           />
         </>
       )}
@@ -214,11 +237,11 @@ const ManagePancakeBunniesCard: React.FC<ManagePancakeBunniesCardProps> = ({ bun
   )
   return (
     <ExpandableCard
-      title={`${t('Manage Yours')}${totalBunniesText}`}
+      title={`${tokenId ? t('Manage Yours') : t('Manage Yours in Collection')}${totalNftsText}`}
       icon={<CogIcon width="24px" height="24px" />}
       content={content}
     />
   )
 }
 
-export default ManagePancakeBunniesCard
+export default ManageNFTsCard

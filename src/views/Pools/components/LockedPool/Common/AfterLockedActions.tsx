@@ -1,5 +1,5 @@
 import { memo, ReactNode } from 'react'
-import { Message, MessageText, Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Message, MessageText, Box, Flex, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Trans from 'components/Trans'
 import { VaultPosition } from 'utils/cakePool'
@@ -32,7 +32,7 @@ const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
   isInline,
 }) => {
   const { t } = useTranslation()
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpointsContext()
   const isDesktopView = isInline && isDesktop
   const Container = isDesktopView ? Flex : Box
 

@@ -1,6 +1,6 @@
 import styled, { keyframes, css } from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { LinkExternal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { LinkExternal, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { getAddress } from 'utils/addressHelpers'
 import { getBscScanLink } from 'utils'
@@ -111,7 +111,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
 }) => {
   const farm = details
 
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpointsContext()
 
   const {
     t,
@@ -132,7 +132,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
     <Container expanded={expanded}>
       <InfoContainer>
         <ValueContainer>
-          {farm.isCommunity && (
+          {farm.isCommunity && farm.auctionHostingEndDate && (
             <ValueWrapper>
               <Text>{t('Auction Hosting Ends')}</Text>
               <Text paddingLeft="4px">

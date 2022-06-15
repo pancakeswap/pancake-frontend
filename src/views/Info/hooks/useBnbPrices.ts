@@ -1,8 +1,8 @@
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
 import { infoClient } from 'utils/graphql'
+import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
-import { getDeltaTimestamps } from 'views/Info/utils/infoQueryHelpers'
 
 export interface BnbPrices {
   current: number

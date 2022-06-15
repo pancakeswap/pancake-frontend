@@ -1,5 +1,5 @@
 import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
-import React, { createContext, useRef, useState } from "react";
+import React, { createContext, useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import { Overlay } from "../../components/Overlay";
 import {
@@ -56,6 +56,16 @@ const ModalProvider: React.FC = ({ children }) => {
   const [nodeId, setNodeId] = useState("");
   const [closeOnOverlayClick, setCloseOnOverlayClick] = useState(true);
   const animationRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const setViewportHeight = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    };
+    setViewportHeight();
+    window.addEventListener("resize", setViewportHeight);
+    return () => window.removeEventListener("resize", setViewportHeight);
+  }, []);
 
   const handlePresent = (node: React.ReactNode, newNodeId: string, closeOverlayClick: boolean) => {
     setModalNode(node);

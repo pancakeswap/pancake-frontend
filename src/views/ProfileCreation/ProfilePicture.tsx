@@ -18,7 +18,7 @@ import NextStepButton from './NextStepButton'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 import multicall from '../../utils/multicall'
 import profileABI from '../../config/abi/pancakeProfile.json'
-import useNftsForAddress from '../Nft/market/hooks/useNftsForAddress'
+import { useNftsForAddress } from '../Nft/market/hooks/useNftsForAddress'
 
 const Link = styled(NextLinkFromReactRouter)`
   color: ${({ theme }) => theme.colors.primary};

@@ -38,7 +38,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
 
   return (
     <Wrapper>
-      {isCommunity && (
+      {isCommunity && auctionHostingEndDate && (
         <Flex justifyContent="space-between">
           <Text>{t('Auction Hosting Ends')}:</Text>
           <Text>

@@ -2,17 +2,17 @@ import BigNumber from 'bignumber.js'
 import { BigNumber as EthersBigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
 import { getLanguageCodeFromLS } from 'contexts/Localization/helpers'
-import { BIG_TEN } from './bigNumber'
+import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
 
 /**
  * Take a formatted amount, e.g. 15 BNB and convert it to full decimal value, e.g. 15000000000000000
  */
 export const getDecimalAmount = (amount: BigNumber, decimals = 18) => {
-  return new BigNumber(amount).times(BIG_TEN.pow(decimals))
+  return new BigNumber(amount).times(getFullDecimalMultiplier(decimals))
 }
 
 export const getBalanceAmount = (amount: BigNumber, decimals = 18) => {
-  return new BigNumber(amount).dividedBy(BIG_TEN.pow(decimals))
+  return new BigNumber(amount).dividedBy(getFullDecimalMultiplier(decimals))
 }
 
 /**
@@ -86,3 +86,11 @@ export const formatLocalisedCompactNumber = (number: number): string => {
 }
 
 export default formatLocalisedCompactNumber
+
+export const formatLpBalance = (balance: BigNumber) => {
+  const stakedBalanceBigNumber = getBalanceAmount(balance)
+  if (stakedBalanceBigNumber.gt(0) && stakedBalanceBigNumber.lt(0.00001)) {
+    return '< 0.00001'
+  }
+  return stakedBalanceBigNumber.toFixed(5, BigNumber.ROUND_DOWN)
+}

@@ -6,9 +6,9 @@ import {
   IconButton,
   Link,
   OpenNewIcon,
-  useMatchBreakpoints,
   useModal,
   Skeleton,
+  useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Activity, NftToken } from 'state/nftMarket/types'
@@ -38,7 +38,7 @@ const ActivityRow: React.FC<ActivityRowProps> = ({
   isNftActivity = false,
 }) => {
   const { chainId } = useActiveWeb3React()
-  const { isXs, isSm } = useMatchBreakpoints()
+  const { isXs, isSm } = useMatchBreakpointsContext()
   const priceAsFloat = parseFloat(activity.price)
   const timestampAsMs = parseFloat(activity.timestamp) * 1000
   const localeTimestamp = new Date(timestampAsMs).toLocaleString(undefined, {

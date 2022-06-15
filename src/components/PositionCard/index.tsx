@@ -10,11 +10,13 @@ import {
   Flex,
   CardProps,
   AddIcon,
+  TooltipText,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useWeb3React } from '@web3-react/core'
 import useTotalSupply from '../../hooks/useTotalSupply'
 
 import { useTokenBalance } from '../../state/wallet/hooks'
@@ -28,6 +30,8 @@ import { DoubleCurrencyLogo } from '../Logo'
 import { RowBetween, RowFixed } from '../Layout/Row'
 import { BIG_INT_ZERO } from '../../config/constants'
 import Dots from '../Loader/Dots'
+import { formatAmount } from '../../utils/formatInfoNumbers'
+import { useLPApr } from '../../state/swap/hooks'
 
 const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -39,9 +43,15 @@ interface PositionCardProps extends CardProps {
 }
 
 export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCardProps) {
-  const { account } = useActiveWeb3React()
-
   const { t } = useTranslation()
+  const { account } = useWeb3React()
+  const poolData = useLPApr(pair)
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t(`Based on last 7 days' performance. Does not account for impermanent loss`),
+    {
+      placement: 'bottom',
+    },
+  )
 
   const currency0 = showUnwrapped ? pair.token0 : unwrappedToken(pair.token0)
   const currency1 = showUnwrapped ? pair.token1 : unwrappedToken(pair.token1)
@@ -93,6 +103,15 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
                 </RowFixed>
               </FixedHeightRow>
               <AutoColumn gap="4px">
+                {poolData && (
+                  <FixedHeightRow>
+                    <TooltipText ref={targetRef} color="textSubtle" small>
+                      {t('LP reward APR')}:
+                    </TooltipText>
+                    {tooltipVisible && tooltip}
+                    <Text>{formatAmount(poolData.lpApr7d)}%</Text>
+                  </FixedHeightRow>
+                )}
                 <FixedHeightRow>
                   <Text color="textSubtle" small>
                     {t('Share of Pool')}:
@@ -144,9 +163,15 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
 }
 
 export default function FullPositionCard({ pair, ...props }: PositionCardProps) {
-  const { account } = useActiveWeb3React()
-
   const { t } = useTranslation()
+  const { account } = useWeb3React()
+  const poolData = useLPApr(pair)
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t(`Based on last 7 days' performance. Does not account for impermanent loss`),
+    {
+      placement: 'bottom',
+    },
+  )
 
   const currency0 = unwrappedToken(pair.token0)
   const currency1 = unwrappedToken(pair.token1)
@@ -223,6 +248,18 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
               '-'
             )}
           </FixedHeightRow>
+
+          {poolData && (
+            <FixedHeightRow>
+              <RowFixed>
+                <TooltipText ref={targetRef} color="textSubtle">
+                  {t('LP reward APR')}:
+                </TooltipText>
+                {tooltipVisible && tooltip}
+              </RowFixed>
+              <Text>{formatAmount(poolData.lpApr7d)}%</Text>
+            </FixedHeightRow>
+          )}
 
           <FixedHeightRow>
             <Text color="textSubtle">{t('Share of Pool')}</Text>
