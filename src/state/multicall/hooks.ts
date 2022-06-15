@@ -2,10 +2,10 @@ import { Interface, FunctionFragment } from '@ethersproject/abi'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { useEffect, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useSWRConfig } from 'swr'
-import { AppDispatch, AppState } from '../index'
+import { AppState, useAppDispatch } from '../index'
 import {
   addMulticallListeners,
   Call,
@@ -54,7 +54,7 @@ function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): C
   const callResults = useSelector<AppState, AppState['multicall']['callResults']>(
     (state) => state.multicall.callResults,
   )
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
 
   const serializedCallKeys: string = useMemo(
     () =>

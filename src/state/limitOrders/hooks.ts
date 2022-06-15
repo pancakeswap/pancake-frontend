@@ -15,7 +15,7 @@ import tryParseAmount from 'utils/tryParseAmount'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { replaceLimitOrdersState, selectCurrency, setRateType, switchCurrencies, typeInput } from './actions'
 import { Field, Rate, OrderState } from './types'
-import { AppState, AppDispatch } from '..'
+import { AppState, useAppDispatch } from '..'
 
 // Get desired input amount in output basis mode
 const getDesiredInput = (
@@ -508,7 +508,7 @@ export const useDefaultsFromURLSearch = ():
   | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
   | undefined => {
   const { chainId } = useActiveWeb3React()
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const { query } = useRouter()
   const [result, setResult] = useState<
     { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
