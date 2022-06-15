@@ -5,7 +5,7 @@ import Divider from 'components/Divider'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import useIfoVesting from 'views/Ifos/hooks/useIfoVesting'
-import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
+import { getFullDisplayBalance } from 'utils/formatBalance'
 import ProgressStepper from './ProgressStepper'
 import TotalPurchased from './TotalPurchased'
 import TotalAvailableClaim from './TotalAvailableClaim'
@@ -32,10 +32,10 @@ const IfoVestingCard: React.FC<IfoVestingCardProps> = ({ poolId, ifo, publicIfoD
     walletIfoData,
   })
 
-  const amountClaimed = useMemo(() => {
-    const amount = getBalanceNumber(amountAlreadyClaimed, token.decimals)
-    return amount > 0 ? formatNumber(amount, 4, 4) : 0
-  }, [token, amountAlreadyClaimed])
+  const amountClaimed = useMemo(
+    () => (amountAlreadyClaimed.gt(0) ? getFullDisplayBalance(amountAlreadyClaimed, token.decimals, 4) : '0'),
+    [token, amountAlreadyClaimed],
+  )
 
   return (
     <Flex flexDirection="column">

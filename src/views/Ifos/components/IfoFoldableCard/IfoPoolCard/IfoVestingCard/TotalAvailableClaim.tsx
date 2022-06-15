@@ -4,7 +4,7 @@ import { TokenImage } from 'components/TokenImage'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from 'contexts/Localization'
 import { Ifo } from 'config/constants/types'
-import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
+import { getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 
 interface TotalAvailableClaimProps {
@@ -16,10 +16,10 @@ const TotalAvailableClaim: React.FC<TotalAvailableClaimProps> = ({ ifo, amountAv
   const { t } = useTranslation()
   const { token } = ifo
 
-  const amountAvailable = useMemo(() => {
-    const amount = getBalanceNumber(amountAvailableToClaim, token.decimals)
-    return amount > 0 ? formatNumber(amount, 4, 4) : 0
-  }, [token, amountAvailableToClaim])
+  const amountAvailable = useMemo(
+    () => (amountAvailableToClaim.gt(0) ? getFullDisplayBalance(amountAvailableToClaim, token.decimals, 4) : '0'),
+    [token, amountAvailableToClaim],
+  )
 
   return (
     <LightGreyCard mt="24px" mb="8px">

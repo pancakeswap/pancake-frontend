@@ -6,7 +6,7 @@ import { format } from 'date-fns'
 import { useTranslation } from 'contexts/Localization'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
-import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
+import { getFullDisplayBalance } from 'utils/formatBalance'
 
 const StyledIfoVestingFooter = styled(Flex)`
   padding: 16px;
@@ -51,8 +51,7 @@ const IfoVestingFooter: React.FC<IfoVestingFooterProps> = ({ ifo, poolId, public
 
   const releaseRate = useMemo(() => {
     const rate = new BigNumber(vestingAmountTotal).div(vestingInfomation.duration)
-    const rateToNumber = getBalanceNumber(rate, token.decimals)
-    return formatNumber(rateToNumber, 5, 5)
+    return getFullDisplayBalance(rate, token.decimals, 5)
   }, [vestingInfomation, vestingAmountTotal, token])
 
   const releaseDate = useMemo(() => {

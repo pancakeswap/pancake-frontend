@@ -4,7 +4,7 @@ import { useTranslation } from 'contexts/Localization'
 import { Flex, Text, Progress, Tag } from '@pancakeswap/uikit'
 import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
 import { PoolIds } from 'config/constants/types'
-import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
+import { getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import Claim from './Claim'
 
@@ -50,19 +50,18 @@ const Info: React.FC<InfoProps> = ({ poolId, data, fetchUserVestingData }) => {
 
   const received = useMemo(() => {
     const alreadyClaimed = new BigNumber(releasedAtSaleEnd).plus(vestingReleased)
-    const balance = getBalanceNumber(alreadyClaimed)
-    return balance > 0 ? formatNumber(balance, 4, 4) : '0'
-  }, [releasedAtSaleEnd, vestingReleased])
+    return alreadyClaimed.gt(0) ? getFullDisplayBalance(alreadyClaimed, token.decimals, 4) : '0'
+  }, [token, releasedAtSaleEnd, vestingReleased])
 
   const claimable = useMemo(() => {
-    const balance = getBalanceNumber(vestingcomputeReleasableAmount, token.decimals)
-    return balance > 0 ? formatNumber(balance, 4, 4) : '0'
+    return vestingcomputeReleasableAmount.gt(0)
+      ? getFullDisplayBalance(vestingcomputeReleasableAmount, token.decimals, 4)
+      : '0'
   }, [token, vestingcomputeReleasableAmount])
 
   const remaining = useMemo(() => {
     const remain = new BigNumber(offeringAmountInToken).minus(amountReleased)
-    const balance = getBalanceNumber(remain, token.decimals)
-    return balance > 0 ? formatNumber(balance, 4, 4) : '0'
+    return remain.gt(0) ? getFullDisplayBalance(remain, token.decimals, 4) : '0'
   }, [token, offeringAmountInToken, amountReleased])
 
   const percentage = useMemo(() => {
