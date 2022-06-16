@@ -20,14 +20,12 @@ import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getZapContract } from 'utils/contractHelpers'
 import { getZapAddress } from 'utils/addressHelpers'
-import { useDispatch } from 'react-redux'
 import { getLPSymbol } from 'utils/getLpSymbol'
 import { useRouter } from 'next/router'
 import { CHAIN_ID } from 'config/constants/networks'
 import { callWithEstimateGas } from 'utils/calls'
 import { ContractMethodName } from 'utils/types'
 import { useLPApr } from 'state/swap/hooks'
-import { AppDispatch } from '../../state'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -58,6 +56,7 @@ import { ChoosePair } from './ChoosePair'
 import { ZapCheckbox } from '../../components/CurrencyInputPanel/ZapCheckbox'
 import { formatAmount } from '../../utils/formatInfoNumbers'
 import { useCurrencySelectRoute } from './useCurrencySelectRoute'
+import { useAppDispatch } from '../../state'
 
 enum Steps {
   Choose,
@@ -75,7 +74,7 @@ export default function AddLiquidity() {
   const [steps, setSteps] = useState(Steps.Choose)
 
   const { account, chainId, library } = useActiveWeb3React()
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const gasPrice = useGasPrice()
 

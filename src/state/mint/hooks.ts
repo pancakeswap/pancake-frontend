@@ -13,7 +13,7 @@ import {
   MINIMUM_LIQUIDITY,
 } from '@pancakeswap/sdk'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PairState, usePair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -29,7 +29,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import usePreviousValue from 'hooks/usePreviousValue'
 import { useTradeExactIn } from 'hooks/Trades'
 import tryParseAmount from 'utils/tryParseAmount'
-import { AppDispatch, AppState } from '../index'
+import { AppState, useAppDispatch } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
 
@@ -41,7 +41,7 @@ export function useMintActionHandlers(noLiquidity: boolean | undefined): {
   onFieldAInput: (typedValue: string) => void
   onFieldBInput: (typedValue: string) => void
 } {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
 
   const onFieldAInput = useCallback(
     (typedValue: string) => {
