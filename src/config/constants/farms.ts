@@ -13,7 +13,7 @@ const farms: SerializedFarmConfig[] = [
     v1pid: 0,
     lpSymbol: 'CAKE',
     lpAddresses: {
-      97: '',
+      97: '0x36e3E4fF6471559b19F66bD10985534d5e214D44',
       56: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
     },
     token: serializedTokens.syrup,
@@ -24,7 +24,7 @@ const farms: SerializedFarmConfig[] = [
     v1pid: 251,
     lpSymbol: 'CAKE-BNB LP',
     lpAddresses: {
-      97: '0x3ed8936cAFDF85cfDBa29Fbe5940A5b0524824F4',
+      97: '0x25293964dcaFd8a6cDf97AFF8b6559FD4A5Af864',
       56: '0x0eD7e52944161450477ee417DE9Cd3a859b14fD0',
     },
     token: serializedTokens.cake,
@@ -35,7 +35,7 @@ const farms: SerializedFarmConfig[] = [
     v1pid: 252,
     lpSymbol: 'BUSD-BNB LP',
     lpAddresses: {
-      97: '',
+      97: '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
       56: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
     },
     token: serializedTokens.busd,
@@ -740,7 +740,7 @@ const farms: SerializedFarmConfig[] = [
     v1pid: 389,
     lpSymbol: 'CAKE-BUSD LP',
     lpAddresses: {
-      97: '',
+      97: '0x25293964dcaFd8a6cDf97AFF8b6559FD4A5Af864',
       56: '0x804678fa97d91B974ec2af3c843270886528a9E6',
     },
     token: serializedTokens.cake,

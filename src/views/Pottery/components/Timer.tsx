@@ -2,6 +2,7 @@ import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Flex, Heading, Text } from '@pancakeswap/uikit'
 import getTimePeriods from 'utils/getTimePeriods'
+import { remainTimeToNextFriday } from '../helpers'
 
 const FlexGap = styled(Flex)<{ gap: string }>`
   gap: ${({ gap }) => gap};
@@ -26,27 +27,28 @@ const StyledWhiteText = styled(Text)`
 
 export const BannerTimer: React.FC = () => {
   const { t } = useTranslation()
-  // TODO: Pottery
-  const secondsUntilStart = 1655002229
-  const timeUntil = getTimePeriods(secondsUntilStart)
+
+  const secondsRemaining = remainTimeToNextFriday()
+  const { days, hours, minutes } = getTimePeriods(secondsRemaining)
+
   return (
     <>
       <FlexContainer mt="32px" gap="8px" alignItems="center">
         <FlexGap gap="4px" alignItems="baseline">
-          {timeUntil.days ? (
+          {days ? (
             <>
-              <StyledTimerText scale="xl">{timeUntil.days}</StyledTimerText>
+              <StyledTimerText scale="xl">{days}</StyledTimerText>
               <StyledTimerText>{t('d')}</StyledTimerText>
             </>
           ) : null}
-          {timeUntil.days || timeUntil.hours ? (
+          {days || hours ? (
             <>
-              <StyledTimerText scale="xl">{timeUntil.hours}</StyledTimerText>
+              <StyledTimerText scale="xl">{hours}</StyledTimerText>
               <StyledTimerText color="secondary">{t('h')}</StyledTimerText>
             </>
           ) : null}
           <>
-            <StyledTimerText scale="xl">{timeUntil.minutes}</StyledTimerText>
+            <StyledTimerText scale="xl">{minutes}</StyledTimerText>
             <StyledTimerText color="secondary">{t('m')}</StyledTimerText>
           </>
         </FlexGap>

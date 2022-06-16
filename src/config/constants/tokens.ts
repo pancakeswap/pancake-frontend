@@ -2109,7 +2109,7 @@ export const mainnetTokens = defineTokens({
 export const testnetTokens = defineTokens({
   wbnb: new Token(
     TESTNET,
-    '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
+    '0xa904ad61C8df26F368EB3d10069575Feb15b909d',
     18,
     'WBNB',
     'Wrapped BNB',
@@ -2117,7 +2117,7 @@ export const testnetTokens = defineTokens({
   ),
   cake: new Token(
     TESTNET,
-    '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
+    '0xFa60D973F7642B748046464e165A65B7323b0DEE',
     18,
     'CAKE',
     'PancakeSwap Token',
@@ -2125,7 +2125,7 @@ export const testnetTokens = defineTokens({
   ),
   busd: new Token(
     TESTNET,
-    '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee',
+    '0x8516Fc284AEEaa0374E66037BD2309349FF728eA',
     18,
     'BUSD',
     'Binance USD',

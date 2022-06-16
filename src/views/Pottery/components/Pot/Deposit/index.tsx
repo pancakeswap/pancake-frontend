@@ -7,6 +7,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { DeserializedPotteryUserData } from 'state/types'
 import { useVaultApy } from 'hooks/useVaultApy'
+import getTimePeriods from 'utils/getTimePeriods'
+import { remainTimeToNextFriday } from 'views/Pottery/helpers'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
 import YourDeposit from '../YourDeposit'
 import WinRate from '../WinRate'
@@ -41,6 +43,9 @@ const Deposit: React.FC<DepositProps> = ({ userData }) => {
     return `${Number(apy).toFixed(2)}%`
   }, [getLockedApy])
 
+  const secondsRemaining = remainTimeToNextFriday()
+  const { days, hours, minutes } = getTimePeriods(secondsRemaining)
+
   return (
     <Box>
       <Container>
@@ -57,8 +62,13 @@ const Deposit: React.FC<DepositProps> = ({ userData }) => {
         <Flex justifyContent="space-between">
           <Text color="textSubtle">{t('Next draw date')}</Text>
           {tooltipVisible && tooltip}
-          <TooltipText ref={targetRef} bold>
-            in 1d 23h 11m
+          <TooltipText ref={targetRef}>
+            <Text bold as="span">
+              {t('in')}
+            </Text>
+            <Text bold as="span" ml="1px">{`${days}${t('d')}`}</Text>
+            <Text bold as="span" ml="1px">{`${hours}${t('h')}`}</Text>
+            <Text bold as="span" ml="1px">{`${minutes}${t('m')}`}</Text>
           </TooltipText>
         </Flex>
         <Flex justifyContent="space-between">
