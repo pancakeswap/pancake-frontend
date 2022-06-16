@@ -57,6 +57,7 @@ import ConfirmZapInModal from './components/ConfirmZapInModal'
 import { ChoosePair } from './ChoosePair'
 import { ZapCheckbox } from '../../components/CurrencyInputPanel/ZapCheckbox'
 import { formatAmount } from '../../utils/formatInfoNumbers'
+import { useCurrencySelectRoute } from './useCurrencySelectRoute'
 
 enum Steps {
   Choose,
@@ -162,6 +163,8 @@ export default function AddLiquidity() {
         (pair && JSBI.lessThan(pair.reserve1.raw, MINIMUM_LIQUIDITY))),
     [noLiquidity, pair, zapMode],
   )
+
+  const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
 
   const { zapInEstimating, rebalancing, ...zapIn } = useZapIn({
     pair,
@@ -494,7 +497,8 @@ export default function AddLiquidity() {
         (currencyB && currencyEquals(currencyB, WETH[chainId]))),
   )
 
-  const showAddLiquidity = !!currencies[Field.CURRENCY_A] && !!currencies[Field.CURRENCY_B] && steps === Steps.Add
+  const showAddLiquidity =
+    (!!currencies[Field.CURRENCY_A] && !!currencies[Field.CURRENCY_B] && steps === Steps.Add) || !canZap
 
   const showZapWarning =
     preferZapInstead &&
@@ -524,7 +528,7 @@ export default function AddLiquidity() {
           <>
             <AppHeader
               title={
-                currencies[Field.CURRENCY_A].symbol && currencies[Field.CURRENCY_B].symbol
+                currencies[Field.CURRENCY_A]?.symbol && currencies[Field.CURRENCY_B]?.symbol
                   ? `${getLPSymbol(currencies[Field.CURRENCY_A].symbol, currencies[Field.CURRENCY_B].symbol)}`
                   : t('Add Liquidity')
               }
@@ -550,7 +554,7 @@ export default function AddLiquidity() {
                   </ColumnCenter>
                 )}
                 <CurrencyInputPanel
-                  disableCurrencySelect
+                  disableCurrencySelect={canZap}
                   showBUSD
                   onInputBlur={zapIn.onInputBlurOnce}
                   error={zapIn.priceSeverity > 3 && zapIn.swapTokenField === Field.CURRENCY_A}
@@ -566,6 +570,7 @@ export default function AddLiquidity() {
                       />
                     )
                   }
+                  onCurrencySelect={handleCurrencyASelect}
                   zapStyle={canZap ? 'zap' : 'noZap'}
                   value={formattedAmounts[Field.CURRENCY_A]}
                   onUserInput={onFieldAInput}
@@ -596,7 +601,8 @@ export default function AddLiquidity() {
                       />
                     )
                   }
-                  disableCurrencySelect
+                  onCurrencySelect={handleCurrencyBSelect}
+                  disableCurrencySelect={canZap}
                   zapStyle={canZap ? 'zap' : 'noZap'}
                   value={formattedAmounts[Field.CURRENCY_B]}
                   onUserInput={onFieldBInput}

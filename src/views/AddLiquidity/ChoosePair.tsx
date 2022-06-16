@@ -3,10 +3,8 @@ import { Box, Text, AddIcon, CardBody, Button, CardFooter } from '@pancakeswap/u
 import { CurrencySelect } from 'components/CurrencySelect'
 import { FlexGap } from 'components/Layout/Flex'
 import { useTranslation } from 'contexts/Localization'
-import { useRouter } from 'next/router'
-import { useCallback } from 'react'
-import currencyId from 'utils/currencyId'
 import { AppHeader } from '../../components/App'
+import { useCurrencySelectRoute } from './useCurrencySelectRoute'
 
 export function ChoosePair({
   currencyA,
@@ -21,37 +19,7 @@ export function ChoosePair({
 }) {
   const { t } = useTranslation()
   const isValid = !error
-  const router = useRouter()
-  const [currencyIdA, currencyIdB] = router.query.currency || []
-
-  const handleCurrencyASelect = useCallback(
-    (currencyA_: Currency) => {
-      const newCurrencyIdA = currencyId(currencyA_)
-      if (newCurrencyIdA === currencyIdB) {
-        router.replace(`/add/${currencyIdB}/${currencyIdA}`, undefined, { shallow: true })
-      } else if (currencyIdB) {
-        router.replace(`/add/${newCurrencyIdA}/${currencyIdB}`, undefined, { shallow: true })
-      } else {
-        router.replace(`/add/${newCurrencyIdA}`, undefined, { shallow: true })
-      }
-    },
-    [currencyIdB, router, currencyIdA],
-  )
-  const handleCurrencyBSelect = useCallback(
-    (currencyB_: Currency) => {
-      const newCurrencyIdB = currencyId(currencyB_)
-      if (currencyIdA === newCurrencyIdB) {
-        if (currencyIdB) {
-          router.replace(`/add/${currencyIdB}/${newCurrencyIdB}`, undefined, { shallow: true })
-        } else {
-          router.replace(`/add/${newCurrencyIdB}`, undefined, { shallow: true })
-        }
-      } else {
-        router.replace(`/add/${currencyIdA || 'BNB'}/${newCurrencyIdB}`, undefined, { shallow: true })
-      }
-    },
-    [currencyIdA, router, currencyIdB],
-  )
+  const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
 
   return (
     <>

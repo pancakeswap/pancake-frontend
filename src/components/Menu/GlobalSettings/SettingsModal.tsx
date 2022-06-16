@@ -131,8 +131,14 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
         </Flex>
         <Flex justifyContent="space-between" alignItems="center" mb="24px">
           <Flex alignItems="center">
-            <Text>{t('Enable Simple ’Zap’ Liquidity Provision (Beta)')}</Text>
-            {/* <QuestionHelper text={'Enable Zap'} placement="top-start" ml="4px" /> */}
+            <Text>{t('Zap (Beta)')}</Text>
+            <QuestionHelper
+              text={t(
+                'Zap enables simple liquidity provision. Add liquidity with one token and one click, without manual swapping or token balancing.',
+              )}
+              placement="top-start"
+              ml="4px"
+            />
           </Flex>
           <Toggle
             checked={zapMode}
