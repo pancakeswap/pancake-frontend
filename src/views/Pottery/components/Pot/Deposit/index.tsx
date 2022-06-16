@@ -5,6 +5,7 @@ import { useTranslation } from 'contexts/Localization'
 import { GreyCard } from 'components/Card'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { DeserializedPotteryUserData } from 'state/types'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
 import YourDeposit from '../YourDeposit'
@@ -22,7 +23,11 @@ const CardAction = styled(Flex)`
   padding: 26px 24px 36px 24px;
 `
 
-const Deposit: React.FC = () => {
+interface DepositProps {
+  userData: DeserializedPotteryUserData
+}
+
+const Deposit: React.FC<DepositProps> = ({ userData }) => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const { getLockedApy } = useVaultApy()
@@ -61,7 +66,7 @@ const Deposit: React.FC = () => {
           <Text bold>1,234,567.89 CAKE</Text>
         </Flex>
       </Container>
-      <CardAction>{account ? <DepositAction /> : <ConnectWalletButton />}</CardAction>
+      <CardAction>{account ? <DepositAction userData={userData} /> : <ConnectWalletButton />}</CardAction>
     </Box>
   )
 }

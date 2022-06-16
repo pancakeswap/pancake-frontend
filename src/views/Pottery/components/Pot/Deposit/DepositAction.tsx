@@ -3,6 +3,7 @@ import { useState, useMemo } from 'react'
 import { Flex, Box, Button, Text, HelpIcon, useTooltip, LogoRoundIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
+import { DeserializedPotteryUserData } from 'state/types'
 import { Input as NumericalInput } from 'components/CurrencyInputPanel/NumericalInput'
 import tokens from 'config/constants/tokens'
 import useTokenBalance from 'hooks/useTokenBalance'
@@ -27,7 +28,11 @@ const Container = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.inset};
 `
 
-const DepositAction: React.FC = () => {
+interface DepositActionProps {
+  userData: DeserializedPotteryUserData
+}
+
+const DepositAction: React.FC<DepositActionProps> = ({ userData }) => {
   const { t } = useTranslation()
   const [depositAmount, setDepositAmount] = useState('')
 
@@ -53,9 +58,9 @@ const DepositAction: React.FC = () => {
     [depositAmount, userCake],
   )
 
-  // if (!userData.isApproved) {
-  //   return <EnableButton />
-  // }
+  if (userData.allowance.eq(0)) {
+    return <EnableButton />
+  }
 
   return (
     <Box>

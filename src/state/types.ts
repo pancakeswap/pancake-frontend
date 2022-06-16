@@ -627,6 +627,26 @@ export interface PredictionConfig {
   token: Token
 }
 
+// Pottery
+export interface PotteryState {
+  currentPotteryId: string
+  currentRound: CurrentRound
+  userData: SerializedPotteryUserData
+  userDataLoaded: boolean
+}
+
+export interface CurrentRound {
+  isLoading: boolean
+}
+
+export interface SerializedPotteryUserData {
+  allowance: string
+}
+
+export interface DeserializedPotteryUserData {
+  allowance: BigNumber
+}
+
 // Global state
 
 export interface State {
@@ -636,4 +656,5 @@ export interface State {
   predictions: PredictionsState
   lottery: LotteryState
   nftMarket: NftMarketState
+  pottery: PotteryState
 }

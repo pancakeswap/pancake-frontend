@@ -6,6 +6,7 @@ import { OutlineText } from 'views/Pottery/components/TextStyle'
 import BigNumber from 'bignumber.js'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { DeserializedPotteryUserData } from 'state/types'
 import PotTab from './PotTab'
 import Deposit from './Deposit/index'
 import Claim from './Claim/index'
@@ -56,7 +57,11 @@ const PotImage = styled.div`
   }
 `
 
-const Pot: React.FC = () => {
+interface PotProps {
+  userData: DeserializedPotteryUserData
+}
+
+const Pot: React.FC<PotProps> = ({ userData }) => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
   const { isMobile } = useMatchBreakpoints()
@@ -95,7 +100,7 @@ const Pot: React.FC = () => {
                   primarySrc="/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.svg"
                   secondarySrc="/images/tokens/pot-icon.svg"
                 />
-                {activeTab === POT_CATEGORY.Deposit ? <Deposit /> : <Claim />}
+                {activeTab === POT_CATEGORY.Deposit ? <Deposit userData={userData} /> : <Claim />}
               </Box>
             </Card>
           </Flex>

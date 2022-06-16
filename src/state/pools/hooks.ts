@@ -105,17 +105,3 @@ export const useVaultPoolByKey = (key: VaultKey) => {
 
   return useSelector(vaultPoolByKey)
 }
-
-export const useCakeVaulFetch = () => {
-  const { account } = useWeb3React()
-  const dispatch = useAppDispatch()
-
-  useFastRefreshEffect(() => {
-    batch(() => {
-      dispatch(fetchCakeVaultPublicData())
-      if (account) {
-        dispatch(fetchCakeVaultUserData({ account }))
-      }
-    })
-  }, [account, dispatch])
-}
