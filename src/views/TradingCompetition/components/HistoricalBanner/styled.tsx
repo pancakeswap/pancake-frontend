@@ -62,6 +62,11 @@ export const StyledButton = styled(Button)<{ collapsed: boolean }>`
 export const ContentWrapper = styled.div`
   width: 735px;
   margin: -60px auto;
+  padding-bottom: 120px;
+  > div {
+    border-radius: 0px 0px 50px 50px;
+    overflow: hidden;
+  }
 `
 
 interface CollapseButtonProps extends ButtonProps {
