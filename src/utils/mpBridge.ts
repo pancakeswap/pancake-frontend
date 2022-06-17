@@ -81,29 +81,29 @@ export const useSystemInfo = () => {
   }, [])
   return info
 }
+const handleLinkClick = (e: MouseEvent) => {
+  const { href } = e.target
+  if (href) {
+    const url = new URL(href)
+    const [entry, ...params] = url.pathname.slice(1).split('/')
+    if (miniProgramPaths.has(entry)) {
+      if (entry === 'add') {
+        const [currency1, currency2] = params
+        _bridgeUtils.jump({ path: entry, query: { currency1, currency2 } })
+      }
+      console.log('~ hit path: ', url.pathname)
+      e.stopPropagation()
+      e.preventDefault()
+    }
+  }
+}
 export const useInterceptLink = () => {
   useEffect(() => {
     const miniProgramPaths = new Set(['farms', 'add', 'remove', 'find', 'pools', 'swap'])
-    document.body.addEventListener(
-      'click',
-      (e) => {
-        const { href } = e.target
-        if (href) {
-          const url = new URL(href)
-          const [entry, ...params] = url.pathname.slice(1).split('/')
-          if (miniProgramPaths.has(entry)) {
-            if (entry === 'add') {
-              const [currency1, currency2] = params
-              _bridgeUtils.jump({ path: entry, query: { currency1, currency2 } })
-            }
-            console.log('~ hit path: ', url.pathname)
-            e.stopPropagation()
-            e.preventDefault()
-          }
-        }
-      },
-      true,
-    )
+    document.body.addEventListener('click', handleLinkClick, true)
+    return () => {
+      document.body.removeEventListener('click', handleLinkClick, true)
+    }
   }, [])
 }
 
