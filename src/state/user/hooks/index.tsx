@@ -112,7 +112,7 @@ export function useExchangeChartViewManager() {
 }
 
 export function useZapModeManager() {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const zapEnabled = useSelector<AppState, AppState['user']['userZapDisabled']>((state) => !state.user.userZapDisabled)
 
   const setZapEnable = useCallback(
