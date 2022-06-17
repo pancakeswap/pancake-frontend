@@ -19,6 +19,16 @@ const priceHelperLps: SerializedFarmConfig[] = [
     token: tokens.ankr,
     quoteToken: tokens.wbnb,
   },
+  {
+    pid: null,
+    lpSymbol: 'ANTEX-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x4DcB7b3b0E8914DC0e6D366521604cD23E7991E1',
+    },
+    token: tokens.antex,
+    quoteToken: tokens.busd,
+  },
 ]
 
 export default priceHelperLps
