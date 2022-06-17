@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 /* eslint-disable no-console */
 const cbList = {}
 const onCallbackIdList = {}
@@ -17,8 +18,8 @@ export const listenOnBnMessage = () => {
     }
   }
 }
+let id = 0
 function getWeb3Provider() {
-  let id = 0
   return {
     on(event, cb) {
       onCallbackIdList[cb] = id
@@ -39,4 +40,39 @@ function getWeb3Provider() {
     },
   }
 }
+const bridgeUtils = {
+  jump(payload) {
+    return new Promise((resolve) => {
+      window.bn.miniProgram.postMessage({ action: 'jump', payload, id })
+      cbList[id] = resolve
+      id++
+    })
+  },
+}
+export const useInterceptLink = () => {
+  useEffect(() => {
+    const miniProgramPaths = new Set(['farms', 'add', 'remove', 'find', 'pools', 'swap'])
+    document.body.addEventListener(
+      'click',
+      (e) => {
+        const { href } = e.target
+        if (href) {
+          const url = new URL(href)
+          const [entry, ...params] = url.pathname.slice(1).split('/')
+          if (miniProgramPaths.has(entry)) {
+            if (entry === 'add') {
+              const [currency1, currency2] = params
+              bridgeUtils.jump({ path: entry, query: { currency1, currency2 } })
+            }
+            console.log('~ hit path: ', url.pathname)
+            e.stopPropagation()
+            e.preventDefault()
+          }
+        }
+      },
+      true,
+    )
+  }, [])
+}
+
 export default getWeb3Provider

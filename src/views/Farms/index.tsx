@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import Script from 'next/script'
-import { listenOnBnMessage } from 'utils/mpBridge'
+import { listenOnBnMessage, useInterceptLink } from 'utils/mpBridge'
 import { useActiveHandle, getAccount } from 'hooks/useEagerConnect.bmp'
 import Farms, { FarmsContext } from './Farms'
 
@@ -9,6 +9,7 @@ export const FarmsPageLayout: FC = ({ children }) => {
 }
 
 export const FarmsMpPageLayout: FC = ({ children }) => {
+  useInterceptLink()
   const handleActive = useActiveHandle()
 
   const handleLoad = async () => {
@@ -18,6 +19,7 @@ export const FarmsMpPageLayout: FC = ({ children }) => {
       handleActive(false)
     }
   }
+
   return (
     <>
       <Script
