@@ -40,6 +40,7 @@ function getWeb3Provider() {
     },
   }
 }
+
 const _bridgeUtils = {
   jump(payload) {
     return new Promise((resolve) => {
