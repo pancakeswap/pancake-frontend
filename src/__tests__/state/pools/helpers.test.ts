@@ -78,7 +78,6 @@ describe('transformPool', () => {
     expect(transformedPool).toHaveProperty('earningToken.symbol')
     expect(transformedPool).toHaveProperty('earningToken.projectLink')
     expect(transformedPool).toHaveProperty('poolCategory')
-    expect(transformedPool).toHaveProperty('harvest')
     expect(transformedPool).toHaveProperty('tokenPerBlock')
 
     expect(transformedPool).toHaveProperty('totalStaked')
