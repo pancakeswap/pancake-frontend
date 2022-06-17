@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import { useState, useMemo } from 'react'
-import { Flex, Box, Button, Text, HelpIcon, useTooltip, LogoRoundIcon } from '@pancakeswap/uikit'
+import { Flex, Box, Button, Text, HelpIcon, useTooltip, LogoRoundIcon, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
-import { DeserializedPotteryUserData } from 'state/types'
+import { usePotteryUserData } from 'state/pottery/hook'
 import { Input as NumericalInput } from 'components/CurrencyInputPanel/NumericalInput'
 import tokens from 'config/constants/tokens'
 import useTokenBalance from 'hooks/useTokenBalance'
@@ -28,12 +28,9 @@ const Container = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.inset};
 `
 
-interface DepositActionProps {
-  userData: DeserializedPotteryUserData
-}
-
-const DepositAction: React.FC<DepositActionProps> = ({ userData }) => {
+const DepositAction: React.FC = () => {
   const { t } = useTranslation()
+  const { userData, userDataLoaded } = usePotteryUserData()
   const [depositAmount, setDepositAmount] = useState('')
 
   const { balance: userCake } = useTokenBalance(tokens.cake.address)
@@ -58,61 +55,67 @@ const DepositAction: React.FC<DepositActionProps> = ({ userData }) => {
     [depositAmount, userCake],
   )
 
-  if (userData.allowance.eq(0)) {
-    return <EnableButton />
+  if (!userDataLoaded) {
+    return <Skeleton width="100%" height="48px" />
   }
 
   return (
     <Box>
-      <Box mb="4px">
-        <Text fontSize="12px" color="secondary" textTransform="uppercase" bold as="span">
-          {t('deposit')}
-        </Text>
-        <Text fontSize="12px" ml="4px" color="textSubtle" textTransform="uppercase" bold as="span">
-          {t('cake')}
-        </Text>
-      </Box>
-      <InputPanel>
-        <Container>
-          <Text fontSize="14px" color="textSubtle" mb="12px" textAlign="right">
-            {t('Balance: %balance%', { balance: userCakeDisplayBalance })}
-          </Text>
-          <Flex mb="6.5px">
-            <NumericalInput
-              style={{ textAlign: 'left' }}
-              className="pottery-amount-input"
-              value={depositAmount}
-              onUserInput={(val) => setDepositAmount(val)}
-            />
-            <Flex ml="8px">
-              {!showMaxButton && (
-                <Button onClick={onClickMax} scale="xs" variant="secondary" style={{ alignSelf: 'center' }}>
-                  {t('Max').toUpperCase()}
-                </Button>
-              )}
-              <LogoRoundIcon m="0 4px" width="24px" height="24px" />
-              <Text textTransform="uppercase">{t('Cake')}</Text>
+      {userData.allowance.isLessThanOrEqualTo(0) ? (
+        <EnableButton />
+      ) : (
+        <>
+          <Box mb="4px">
+            <Text fontSize="12px" color="secondary" textTransform="uppercase" bold as="span">
+              {t('deposit')}
+            </Text>
+            <Text fontSize="12px" ml="4px" color="textSubtle" textTransform="uppercase" bold as="span">
+              {t('cake')}
+            </Text>
+          </Box>
+          <InputPanel>
+            <Container>
+              <Text fontSize="14px" color="textSubtle" mb="12px" textAlign="right">
+                {t('Balance: %balance%', { balance: userCakeDisplayBalance })}
+              </Text>
+              <Flex mb="6.5px">
+                <NumericalInput
+                  style={{ textAlign: 'left' }}
+                  className="pottery-amount-input"
+                  value={depositAmount}
+                  onUserInput={(val) => setDepositAmount(val)}
+                />
+                <Flex ml="8px">
+                  {!showMaxButton && (
+                    <Button onClick={onClickMax} scale="xs" variant="secondary" style={{ alignSelf: 'center' }}>
+                      {t('Max').toUpperCase()}
+                    </Button>
+                  )}
+                  <LogoRoundIcon m="0 4px" width="24px" height="24px" />
+                  <Text textTransform="uppercase">{t('Cake')}</Text>
+                </Flex>
+              </Flex>
+            </Container>
+          </InputPanel>
+          <Flex>
+            <Flex ml="auto">
+              <Text fontSize="12px" color="textSubtle">
+                {t('Deposited CAKE will be locked for 10 weeks')}
+              </Text>
+              <Flex ref={targetRef}>
+                {tooltipVisible && tooltip}
+                <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+              </Flex>{' '}
             </Flex>
           </Flex>
-        </Container>
-      </InputPanel>
-      <Flex>
-        <Flex ml="auto">
-          <Text fontSize="12px" color="textSubtle">
-            {t('Deposited CAKE will be locked for 10 weeks')}
-          </Text>
-          <Flex ref={targetRef}>
-            {tooltipVisible && tooltip}
-            <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
-          </Flex>{' '}
-        </Flex>
-      </Flex>
-      {userNotEnoughCake ? (
-        <Button disabled mt="10px" width="100%">
-          {notEnoughErrorMessage}
-        </Button>
-      ) : (
-        <DepositButton depositAmount={depositAmount} />
+          {userNotEnoughCake ? (
+            <Button disabled mt="10px" width="100%">
+              {notEnoughErrorMessage}
+            </Button>
+          ) : (
+            <DepositButton depositAmount={depositAmount} />
+          )}
+        </>
       )}
     </Box>
   )

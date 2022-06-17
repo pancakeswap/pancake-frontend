@@ -115,4 +115,12 @@ export default {
     56: '0x0a8901b0E25DEb55A87524f0cC164E9644020EBA',
     97: '0xfC0c3F11fDA72Cb9A56F28Ec8D44C0ae4B3ABF86',
   },
+  potteryVault: {
+    56: '',
+    97: '0xbb714b16512B4FB953D2080cAF3923CF79832D09',
+  },
+  potteryDraw: {
+    56: '',
+    97: '0xDB9D365b50E62fce747A90515D2bd1254A16EbB9',
+  },
 }

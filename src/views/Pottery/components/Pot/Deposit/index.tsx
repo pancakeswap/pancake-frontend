@@ -5,7 +5,6 @@ import { useTranslation } from 'contexts/Localization'
 import { GreyCard } from 'components/Card'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { DeserializedPotteryUserData } from 'state/types'
 import { useVaultApy } from 'hooks/useVaultApy'
 import getTimePeriods from 'utils/getTimePeriods'
 import { remainTimeToNextFriday } from 'views/Pottery/helpers'
@@ -25,11 +24,7 @@ const CardAction = styled(Flex)`
   padding: 26px 24px 36px 24px;
 `
 
-interface DepositProps {
-  userData: DeserializedPotteryUserData
-}
-
-const Deposit: React.FC<DepositProps> = ({ userData }) => {
+const Deposit: React.FC = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const { getLockedApy } = useVaultApy()
@@ -66,9 +61,9 @@ const Deposit: React.FC<DepositProps> = ({ userData }) => {
             <Text bold as="span">
               {t('in')}
             </Text>
-            <Text bold as="span" ml="1px">{`${days}${t('d')}`}</Text>
-            <Text bold as="span" ml="1px">{`${hours}${t('h')}`}</Text>
-            <Text bold as="span" ml="1px">{`${minutes}${t('m')}`}</Text>
+            {days ? <Text bold as="span" ml="1px">{`${days}${t('d')}`}</Text> : null}
+            {hours ? <Text bold as="span" ml="1px">{`${hours}${t('h')}`}</Text> : null}
+            {minutes ? <Text bold as="span" ml="1px">{`${minutes}${t('m')}`}</Text> : null}
           </TooltipText>
         </Flex>
         <Flex justifyContent="space-between">
@@ -76,7 +71,7 @@ const Deposit: React.FC<DepositProps> = ({ userData }) => {
           <Text bold>1,234,567.89 CAKE</Text>
         </Flex>
       </Container>
-      <CardAction>{account ? <DepositAction userData={userData} /> : <ConnectWalletButton />}</CardAction>
+      <CardAction>{account ? <DepositAction /> : <ConnectWalletButton />}</CardAction>
     </Box>
   )
 }

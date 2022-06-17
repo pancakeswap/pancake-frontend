@@ -4,7 +4,7 @@ import { useAppDispatch } from 'state'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { fetchCakeVaultPublicData, fetchCakeVaultUserData } from 'state/pools'
 import { fetchPotteryUserDataAsync } from './index'
-import { potterySelector } from './selectors'
+import { potteryUserDataSelector } from './selectors'
 
 export const usePotteryFetch = () => {
   const { account } = useWeb3React()
@@ -21,6 +21,6 @@ export const usePotteryFetch = () => {
   }, [account, dispatch])
 }
 
-export const usePottery = () => {
-  return useSelector(potterySelector)
+export const usePotteryUserData = () => {
+  return useSelector(potteryUserDataSelector)
 }
