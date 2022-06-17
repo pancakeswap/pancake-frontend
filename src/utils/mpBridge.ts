@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 /* eslint-disable no-console */
 const cbList = {}
 const onCallbackIdList = {}
@@ -40,7 +40,8 @@ function getWeb3Provider() {
     },
   }
 }
-const bridgeUtils = {
+
+const _bridgeUtils = {
   jump(payload) {
     return new Promise((resolve) => {
       window.bn.miniProgram.postMessage({ action: 'jump', payload, id })
@@ -48,30 +49,62 @@ const bridgeUtils = {
       id++
     })
   },
+  getSystemInfo() {
+    return new Promise((resolve) => {
+      window.bn.miniProgram.postMessage({ action: 'getSystemInfo', id })
+      cbList[id] = resolve
+      id++
+    })
+  },
+}
+export const bridgeUtils = {
+  toWallet() {
+    return new Promise((resolve) => {
+      window.bn.miniProgram.postMessage({ action: 'toWallet', id })
+      cbList[id] = resolve
+      id++
+    })
+  },
+}
+
+// Need to call getSystemInfo only once
+let globalInfo
+export const useSystemInfo = () => {
+  const [info, setInfo] = useState(globalInfo)
+  useEffect(() => {
+    if (!globalInfo) {
+      _bridgeUtils.getSystemInfo().then((value) => {
+        console.log('~ useSystemInfo')
+        globalInfo = value
+        setInfo(value)
+      })
+    }
+  }, [])
+  return info
+}
+const handleLinkClick = (e: MouseEvent) => {
+  const { href } = e.target
+  if (href) {
+    const url = new URL(href)
+    const [entry, ...params] = url.pathname.slice(1).split('/')
+    if (miniProgramPaths.has(entry)) {
+      if (entry === 'add') {
+        const [currency1, currency2] = params
+        _bridgeUtils.jump({ path: entry, query: { currency1, currency2 } })
+      }
+      console.log('~ hit path: ', url.pathname)
+      e.stopPropagation()
+      e.preventDefault()
+    }
+  }
 }
 export const useInterceptLink = () => {
   useEffect(() => {
     const miniProgramPaths = new Set(['farms', 'add', 'remove', 'find', 'pools', 'swap'])
-    document.body.addEventListener(
-      'click',
-      (e) => {
-        const { href } = e.target
-        if (href) {
-          const url = new URL(href)
-          const [entry, ...params] = url.pathname.slice(1).split('/')
-          if (miniProgramPaths.has(entry)) {
-            if (entry === 'add') {
-              const [currency1, currency2] = params
-              bridgeUtils.jump({ path: entry, query: { currency1, currency2 } })
-            }
-            console.log('~ hit path: ', url.pathname)
-            e.stopPropagation()
-            e.preventDefault()
-          }
-        }
-      },
-      true,
-    )
+    document.body.addEventListener('click', handleLinkClick, true)
+    return () => {
+      document.body.removeEventListener('click', handleLinkClick, true)
+    }
   }, [])
 }
 
