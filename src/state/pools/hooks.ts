@@ -14,12 +14,7 @@ import {
 } from '.'
 import { DeserializedPool, VaultKey } from '../types'
 import { fetchFarmsPublicDataAsync } from '../farms'
-import {
-  poolsWithUserDataLoadingSelector,
-  makePoolWithUserDataLoadingSelector,
-  makeVaultPoolByKey,
-  poolsWithVaultSelector,
-} from './selectors'
+import { makePoolWithUserDataLoadingSelector, makeVaultPoolByKey, poolsWithVaultSelector } from './selectors'
 
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
@@ -39,20 +34,6 @@ export const useFetchPublicPoolsData = () => {
     },
     [dispatch],
   )
-}
-
-export const useFetchUserPools = (account) => {
-  const dispatch = useAppDispatch()
-
-  useFastRefreshEffect(() => {
-    if (account) {
-      dispatch(fetchPoolsUserDataAsync(account))
-    }
-  }, [account, dispatch])
-}
-
-export const usePools = (): { pools: DeserializedPool[]; userDataLoaded: boolean } => {
-  return useSelector(poolsWithUserDataLoadingSelector)
 }
 
 export const usePool = (sousId: number): { pool: DeserializedPool; userDataLoaded: boolean } => {
