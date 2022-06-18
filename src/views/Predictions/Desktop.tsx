@@ -141,6 +141,15 @@ const Desktop: React.FC = () => {
   const splitInstance = useRef<SplitInstance>()
 
   useEffect(() => {
+    const { height } = chartRef.current.getBoundingClientRect()
+
+    if (height > 0 && !isChartPaneOpen) {
+      dispatch(setChartPaneState(true))
+    }
+  }, [isChartPaneOpen, dispatch])
+
+  // unmount
+  useEffect(() => {
     return () => {
       dispatch(setChartPaneState(false))
     }
