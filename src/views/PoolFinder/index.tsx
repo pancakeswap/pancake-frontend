@@ -18,6 +18,7 @@ import { currencyId } from '../../utils/currencyId'
 import Dots from '../../components/Loader/Dots'
 import { AppHeader, AppBody } from '../../components/App'
 import Page from '../Page'
+import { BIG_INT_ZERO } from '../../config/constants'
 
 enum Fields {
   TOKEN0 = 0,
@@ -52,12 +53,12 @@ export default function PoolFinder() {
     Boolean(
       pairState === PairState.EXISTS &&
         pair &&
-        JSBI.equal(pair.reserve0.raw, JSBI.BigInt(0)) &&
-        JSBI.equal(pair.reserve1.raw, JSBI.BigInt(0)),
+        JSBI.equal(pair.reserve0.raw, BIG_INT_ZERO) &&
+        JSBI.equal(pair.reserve1.raw, BIG_INT_ZERO),
     )
 
   const position: TokenAmount | undefined = useTokenBalance(account ?? undefined, pair?.liquidityToken)
-  const hasPosition = Boolean(position && JSBI.greaterThan(position.raw, JSBI.BigInt(0)))
+  const hasPosition = Boolean(position && JSBI.greaterThan(position.raw, BIG_INT_ZERO))
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {

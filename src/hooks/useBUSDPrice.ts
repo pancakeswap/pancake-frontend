@@ -1,5 +1,6 @@
 import { Currency, currencyEquals, JSBI, Price } from '@pancakeswap/sdk'
 import tokens from 'config/constants/tokens'
+import { BIG_INT_ZERO } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { multiplyPriceByAmount } from 'utils/prices'
@@ -44,7 +45,7 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
 
     const bnbPairBNBAmount = bnbPair?.reserveOf(WBNB)
     const bnbPairBNBBUSDValue: JSBI =
-      bnbPairBNBAmount && busdBnbPair ? busdBnbPair.priceOf(WBNB).quote(bnbPairBNBAmount).raw : JSBI.BigInt(0)
+      bnbPairBNBAmount && busdBnbPair ? busdBnbPair.priceOf(WBNB).quote(bnbPairBNBAmount).raw : BIG_INT_ZERO
 
     // all other tokens
     // first try the busd pair

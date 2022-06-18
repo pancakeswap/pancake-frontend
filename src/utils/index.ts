@@ -10,7 +10,7 @@ import { IPancakeRouter02 } from 'config/abi/types/IPancakeRouter02'
 import { CHAIN_ID } from 'config/constants/networks'
 import { JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@pancakeswap/sdk'
 import { TokenAddressMap } from 'state/types'
-import { ROUTER_ADDRESS } from '../config/constants'
+import { ROUTER_ADDRESS, BIPS_BASE } from '../config/constants'
 import { BASE_BSC_SCAN_URLS } from '../config'
 import { simpleRpcProvider } from './providers'
 
@@ -60,7 +60,7 @@ export function calculateGasMargin(value: BigNumber): BigNumber {
 
 // converts a basis points value to a sdk percent
 export function basisPointsToPercent(num: number): Percent {
-  return new Percent(JSBI.BigInt(num), JSBI.BigInt(10000))
+  return new Percent(JSBI.BigInt(num), BIPS_BASE)
 }
 
 export function calculateSlippageAmount(value: CurrencyAmount, slippage: number): [JSBI, JSBI] {
@@ -68,8 +68,8 @@ export function calculateSlippageAmount(value: CurrencyAmount, slippage: number)
     throw Error(`Unexpected slippage value: ${slippage}`)
   }
   return [
-    JSBI.divide(JSBI.multiply(value.raw, JSBI.BigInt(10000 - slippage)), JSBI.BigInt(10000)),
-    JSBI.divide(JSBI.multiply(value.raw, JSBI.BigInt(10000 + slippage)), JSBI.BigInt(10000)),
+    JSBI.divide(JSBI.multiply(value.raw, JSBI.BigInt(10000 - slippage)), BIPS_BASE),
+    JSBI.divide(JSBI.multiply(value.raw, JSBI.BigInt(10000 + slippage)), BIPS_BASE),
   ]
 }
 
