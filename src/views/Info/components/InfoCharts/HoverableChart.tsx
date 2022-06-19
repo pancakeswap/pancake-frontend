@@ -1,5 +1,4 @@
 import { Box, Text, Skeleton } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
 import { fromUnixTime } from 'date-fns'
 import { useState, useMemo, memo, useEffect } from 'react'
 import { ChartEntry, ProtocolData } from 'state/info/types'
@@ -24,8 +23,6 @@ const HoverableChart = ({
   title,
   ChartComponent,
 }: HoverableChartProps) => {
-  const { t } = useTranslation()
-
   const [hover, setHover] = useState<number | undefined>()
   const [dateHover, setDateHover] = useState<string | undefined>()
 
