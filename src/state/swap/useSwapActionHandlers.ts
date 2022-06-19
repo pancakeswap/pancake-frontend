@@ -10,6 +10,11 @@ export function useSwapActionHandlers(): {
   onChangeRecipient: (recipient: string | null) => void
 } {
   const dispatch = useAppDispatch()
+
+  const onSwitchTokens = useCallback(() => {
+    dispatch(switchCurrencies())
+  }, [dispatch])
+
   const onCurrencySelection = useCallback(
     (field: Field, currency: Currency) => {
       dispatch(
@@ -21,10 +26,6 @@ export function useSwapActionHandlers(): {
     },
     [dispatch],
   )
-
-  const onSwitchTokens = useCallback(() => {
-    dispatch(switchCurrencies())
-  }, [dispatch])
 
   const onUserInput = useCallback(
     (field: Field, typedValue: string) => {
