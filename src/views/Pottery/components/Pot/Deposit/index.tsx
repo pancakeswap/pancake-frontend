@@ -6,7 +6,10 @@ import { GreyCard } from 'components/Card'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useVaultApy } from 'hooks/useVaultApy'
+import { usePotteryData } from 'state/pottery/hook'
 import getTimePeriods from 'utils/getTimePeriods'
+import { getBalanceNumber } from 'utils/formatBalance'
+import Balance from 'components/Balance'
 import { remainTimeToNextFriday } from 'views/Pottery/helpers'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
 import YourDeposit from '../YourDeposit'
@@ -28,6 +31,7 @@ const Deposit: React.FC = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const { getLockedApy } = useVaultApy()
+  const { publicData } = usePotteryData()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Pottery draws on each Friday at 12 PM UTC!'), {
     placement: 'bottom-start',
@@ -40,6 +44,8 @@ const Deposit: React.FC = () => {
 
   const secondsRemaining = remainTimeToNextFriday()
   const { days, hours, minutes } = getTimePeriods(secondsRemaining)
+
+  const totalValueLocked = getBalanceNumber(publicData.totalLockCake)
 
   return (
     <Box>
@@ -61,14 +67,14 @@ const Deposit: React.FC = () => {
             <Text bold as="span">
               {t('in')}
             </Text>
-            {days ? <Text bold as="span" ml="1px">{`${days}${t('d')}`}</Text> : null}
-            {hours ? <Text bold as="span" ml="1px">{`${hours}${t('h')}`}</Text> : null}
-            {minutes ? <Text bold as="span" ml="1px">{`${minutes}${t('m')}`}</Text> : null}
+            {days ? <Text bold as="span" ml="2px">{`${days}${t('d')}`}</Text> : null}
+            {hours ? <Text bold as="span" ml="2px">{`${hours}${t('h')}`}</Text> : null}
+            {minutes ? <Text bold as="span" ml="2px">{`${minutes}${t('m')}`}</Text> : null}
           </TooltipText>
         </Flex>
         <Flex justifyContent="space-between">
           <Text color="textSubtle">{t('Total Value Locked')}</Text>
-          <Text bold>1,234,567.89 CAKE</Text>
+          <Balance bold decimals={2} value={totalValueLocked} unit=" CAKE" />
         </Flex>
       </Container>
       <CardAction>{account ? <DepositAction /> : <ConnectWalletButton />}</CardAction>

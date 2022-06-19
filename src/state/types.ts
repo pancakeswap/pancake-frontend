@@ -629,22 +629,40 @@ export interface PredictionConfig {
 
 // Pottery
 export interface PotteryState {
-  currentPotteryId: string
-  currentRound: CurrentRound
+  publicData: SerializedPotteryPublicData
   userData: SerializedPotteryUserData
-  userDataLoaded: boolean
 }
 
-export interface CurrentRound {
-  isLoading: boolean
+export interface SerializedPotteryPublicData {
+  getStatus: PotteryDepositStatus
+  totalLockCake: string
+  totalSupply: string
+  lockStartTime: string
+}
+
+export interface DeserializedPublicData {
+  getStatus: PotteryDepositStatus
+  totalLockCake: BigNumber
+  totalSupply: BigNumber
+  lockStartTime: string
 }
 
 export interface SerializedPotteryUserData {
+  isLoading?: boolean
   allowance: string
+  stakingTokenBalance: string
 }
 
 export interface DeserializedPotteryUserData {
+  isLoading?: boolean
   allowance: BigNumber
+  stakingTokenBalance: BigNumber
+}
+
+export enum PotteryDepositStatus {
+  BEFORE_LOCK = 0,
+  LOCK = 1,
+  UNLOCK = 2,
 }
 
 // Global state

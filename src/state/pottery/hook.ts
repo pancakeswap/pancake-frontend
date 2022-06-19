@@ -3,8 +3,8 @@ import { batch, useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { fetchCakeVaultPublicData, fetchCakeVaultUserData } from 'state/pools'
-import { fetchPotteryUserDataAsync } from './index'
-import { potteryUserDataSelector } from './selectors'
+import { fetchPublicPotteryDataAsync, fetchPotteryUserDataAsync } from './index'
+import { potterDataSelector } from './selectors'
 
 export const usePotteryFetch = () => {
   const { account } = useWeb3React()
@@ -13,6 +13,7 @@ export const usePotteryFetch = () => {
   useFastRefreshEffect(() => {
     batch(() => {
       dispatch(fetchCakeVaultPublicData())
+      dispatch(fetchPublicPotteryDataAsync())
       if (account) {
         dispatch(fetchPotteryUserDataAsync(account))
         dispatch(fetchCakeVaultUserData({ account }))
@@ -21,6 +22,6 @@ export const usePotteryFetch = () => {
   }, [account, dispatch])
 }
 
-export const usePotteryUserData = () => {
-  return useSelector(potteryUserDataSelector)
+export const usePotteryData = () => {
+  return useSelector(potterDataSelector)
 }

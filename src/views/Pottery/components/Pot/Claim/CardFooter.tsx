@@ -4,6 +4,9 @@ import { Flex, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
+import { usePotteryData } from 'state/pottery/hook'
+import { getBalanceNumber } from 'utils/formatBalance'
+import Balance from 'components/Balance'
 
 const Container = styled(Flex)`
   flex-direction: column;
@@ -18,11 +21,12 @@ interface CardFooterProps {
 const CardFooter: React.FC<CardFooterProps> = ({ account }) => {
   const { t } = useTranslation()
   const { getBoostFactor } = useVaultApy()
+  const { publicData } = usePotteryData()
 
   const boostFactor = useMemo(() => getBoostFactor(weeksToSeconds(10)), [getBoostFactor])
-  const boostFactorDisplay = useMemo(() => {
-    return `X${Number(boostFactor).toFixed(2)}`
-  }, [boostFactor])
+  const boostFactorDisplay = useMemo(() => `X${Number(boostFactor).toFixed(2)}`, [boostFactor])
+
+  const totalValueLocked = getBalanceNumber(publicData.totalLockCake)
 
   return (
     <Container>
@@ -48,14 +52,12 @@ const CardFooter: React.FC<CardFooterProps> = ({ account }) => {
         </Box>
         <Box>
           {account ? (
-            <>
-              <Text bold as="span">
-                1,234,567.89
-              </Text>
+            <Flex>
+              <Balance bold decimals={2} value={totalValueLocked} />
               <Text ml="4px" color="textSubtle" textTransform="uppercase" as="span">
                 {t('CAKE')}
               </Text>
-            </>
+            </Flex>
           ) : (
             <Text bold as="span">
               -

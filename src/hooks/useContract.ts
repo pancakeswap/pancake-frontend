@@ -35,6 +35,8 @@ import {
   getErc721CollectionContract,
   getBunnySpecialXmasContract,
   getGalaxyNTFClaimingContract,
+  getPotteryVaultContract,
+  getPotteryDrawContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
 import { Erc20, Erc20Bytes32, Multicall, Weth, Cake, Erc721collection, CakeVaultV2 } from 'config/abi/types'
@@ -340,4 +342,14 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 
 export function useMulticallContract() {
   return useContract<Multicall>(getMulticallAddress(), multiCallAbi, false)
+}
+
+export const usePotterytValutContract = () => {
+  const { library } = useActiveWeb3React()
+  return useMemo(() => getPotteryVaultContract(library.getSigner()), [library])
+}
+
+export const usePotterytDrawContract = () => {
+  const { library } = useActiveWeb3React()
+  return useMemo(() => getPotteryDrawContract(library.getSigner()), [library])
 }

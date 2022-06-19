@@ -1,27 +1,43 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { PotteryState } from 'state/types'
+import { PotteryState, SerializedPotteryUserData, SerializedPotteryPublicData, PotteryDepositStatus } from 'state/types'
 import { resetUserState } from '../global/actions'
-import { fetchPotterysAllowance } from './fetchUserPottery'
+import { fetchPublicPotteryValue } from './fetchPottery'
+import { fetchPotterysAllowance, fetchVaultUserData } from './fetchUserPottery'
 
 const initialState: PotteryState = Object.freeze({
-  currentPotteryId: null,
-  currentRound: {
-    isLoading: false,
+  publicData: {
+    getStatus: PotteryDepositStatus.BEFORE_LOCK,
+    totalLockCake: null,
+    totalSupply: null,
+    lockStartTime: '0',
   },
   userData: {
+    isLoading: true,
     allowance: null,
+    stakingTokenBalance: null,
   },
-  userDataLoaded: false,
 })
 
-export const fetchPotteryUserDataAsync = createAsyncThunk<{ allowance: any }, string>(
+export const fetchPublicPotteryDataAsync = createAsyncThunk<SerializedPotteryPublicData>(
+  'pottery/fetchPublicPotteryData',
+  async () => {
+    const publicPotteryData = await fetchPublicPotteryValue()
+    return publicPotteryData
+  },
+)
+
+export const fetchPotteryUserDataAsync = createAsyncThunk<SerializedPotteryUserData, string>(
   'pottery/fetchPotteryUserData',
   async (account, { rejectWithValue }) => {
     try {
-      const [allowance] = await Promise.all([fetchPotterysAllowance(account)])
+      const [allowance, vaultUserData] = await Promise.all([
+        fetchPotterysAllowance(account),
+        fetchVaultUserData(account),
+      ])
 
       const userData = {
         allowance,
+        stakingTokenBalance: vaultUserData.stakingTokenBalance,
       }
 
       return userData
@@ -39,10 +55,18 @@ export const PotterySlice = createSlice({
     builder.addCase(resetUserState, (state) => {
       state.userData = { ...initialState.userData }
     })
-    builder.addCase(fetchPotteryUserDataAsync.fulfilled, (state, action: PayloadAction<{ allowance: any }>) => {
+    builder.addCase(
+      fetchPublicPotteryDataAsync.fulfilled,
+      (state, action: PayloadAction<SerializedPotteryPublicData>) => {
+        state.publicData = { ...action.payload }
+      },
+    )
+    builder.addCase(fetchPotteryUserDataAsync.fulfilled, (state, action: PayloadAction<SerializedPotteryUserData>) => {
       const userData = action.payload
-      state.userData = userData
-      state.userDataLoaded = true
+      state.userData = {
+        ...userData,
+        isLoading: false,
+      }
     })
   },
 })

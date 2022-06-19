@@ -1,9 +1,17 @@
-import { Box, Text } from '@pancakeswap/uikit'
+import { Box, Text, Skeleton } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import Balance from 'components/Balance'
+import { usePriceCakeBusd } from 'state/farms/hooks'
+import { usePotteryData } from 'state/pottery/hook'
+import { getBalanceAmount } from 'utils/formatBalance'
 
 const YourDeposit: React.FC = () => {
   const { t } = useTranslation()
+  const cakePriceBusd = usePriceCakeBusd()
+  const { userData } = usePotteryData()
+  const totalDepositBalance = getBalanceAmount(userData.stakingTokenBalance).toNumber()
+  const balanceInBusd = new BigNumber(userData.stakingTokenBalance).times(cakePriceBusd).toNumber()
 
   return (
     <Box>
@@ -15,8 +23,23 @@ const YourDeposit: React.FC = () => {
           {t('Deposit')}
         </Text>
       </Box>
-      <Balance bold decimals={3} fontSize={['20px', '20px', '24px']} lineHeight="110%" value={1483.45} />
-      <Balance prefix="~" decimals={2} value={400} fontSize="12px" color="textSubtle" />
+      {userData.isLoading ? (
+        <>
+          <Skeleton width="100px" height="35px" />
+          <Skeleton width="40px" height="18px" />
+        </>
+      ) : (
+        <>
+          <Balance
+            bold
+            decimals={3}
+            fontSize={['20px', '20px', '24px']}
+            lineHeight="110%"
+            value={totalDepositBalance}
+          />
+          <Balance prefix="~" decimals={2} value={balanceInBusd} fontSize="12px" color="textSubtle" />
+        </>
+      )}
     </Box>
   )
 }

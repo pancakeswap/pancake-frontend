@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import { useMemo } from 'react'
 import { Flex, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import BigNumber from 'bignumber.js'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import StakeToWinButton from 'views/Pottery/components/Banner/StakeToWinButton'
 import { BannerTimer } from 'views/Pottery/components/Timer'
@@ -11,6 +10,8 @@ import TicketsDecorations from 'views/Pottery/components/Banner/TicketsDecoratio
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
+import Balance from 'components/Balance'
+import { usePotteryData } from 'state/pottery/hook'
 
 const PotteryBanner = styled(Flex)`
   position: relative;
@@ -53,18 +54,24 @@ const BannerBunny = styled.div`
   }
 `
 
+const BalanceStyle = styled(Balance)`
+  padding: 0 2px;
+  color: ${({ theme }) => theme.colors.secondary};
+  background: #ffffff;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 8px transparent;
+  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2), 0px 4px 12px rgba(14, 14, 44, 0.1);
+`
+
 const Banner: React.FC = () => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
+  const { publicData } = usePotteryData()
   const { getLockedApy } = useVaultApy()
 
-  // TODO: Pottery
-  const prizeInBusd = new BigNumber(300000000000000000000000).times(cakePriceBusd)
+  const prizeInBusd = publicData.totalLockCake.times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
-  const prizeDisplay = useMemo(
-    () => `$${prizeTotal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
-    [prizeTotal],
-  )
 
   const apyDisplay = useMemo(() => {
     const apy = getLockedApy(weeksToSeconds(10))
@@ -99,8 +106,8 @@ const Banner: React.FC = () => {
               {t('Pottery')}
             </OutlineText>
           </Flex>
-          <OutlineText fontSize={['40px', '64px']}>{prizeDisplay}</OutlineText>
-          <DarkTextStyle m="-20px 0 0 0" fontSize={['32px', '40px']} bold>
+          <BalanceStyle bold prefix="$" value={prizeTotal || 0} decimals={0} fontSize={['40px', '64px']} />
+          <DarkTextStyle m="-16px 0 0 0" fontSize={['32px', '40px']} bold>
             {t('To be won !')}
           </DarkTextStyle>
           <StakeToWinButton />

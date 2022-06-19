@@ -1,16 +1,15 @@
 import { createSelector } from '@reduxjs/toolkit'
 import { State } from 'state/types'
-import { transformPotteryUserData } from './helpers'
+import { transformPotteryPublicData, transformPotteryUserData } from './helpers'
 
-// const selectCurrentPotteryId = (state: State) => state.pottery.currentPotteryId
+const selectPotteryPublicData = (state: State) => state.pottery.publicData
 const selectPotteryUserData = (state: State) => state.pottery.userData
-const selectUserDataLoaded = (state: State) => state.pottery.userDataLoaded
 
-export const potteryUserDataSelector = createSelector(
-  [selectUserDataLoaded, selectPotteryUserData],
-  (userDataLoaded, userData) => {
+export const potterDataSelector = createSelector(
+  [selectPotteryPublicData, selectPotteryUserData],
+  (publicData, userData) => {
     return {
-      userDataLoaded,
+      publicData: transformPotteryPublicData(publicData),
       userData: transformPotteryUserData(userData),
     }
   },
