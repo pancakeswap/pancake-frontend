@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PairState, usePair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
-import { BIG_INT_ZERO } from 'config/constants'
+import { BIG_INT_ZERO } from 'config/constants/exchange'
 
 import { useTranslation } from 'contexts/Localization'
 import { wrappedCurrency, wrappedCurrencyAmount } from 'utils/wrappedCurrency'

@@ -1,5 +1,5 @@
 import { CurrencyAmount, ETHER, JSBI } from '@pancakeswap/sdk'
-import { MIN_BNB, BIG_INT_ZERO } from '../config/constants'
+import { MIN_BNB, BIG_INT_ZERO } from 'config/constants/exchange'
 
 /**
  * Given some token amount, return the max that can be spent of it
