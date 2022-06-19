@@ -160,7 +160,7 @@ export const PricePairLabel: React.FC = () => {
   const router = useRouter()
   const { t } = useTranslation()
   const [dismissTooltip, setDismissTooltip] = useState(() => {
-    if (localStorage?.getItem(TOOLTIP_DISMISS_KEY)) return true
+    // if (localStorage?.getItem(TOOLTIP_DISMISS_KEY)) return true
     return false
   })
 
@@ -180,6 +180,11 @@ export const PricePairLabel: React.FC = () => {
     updateRef.current(priceAsNumber)
   }, [priceAsNumber, updateRef])
 
+  const onDismissTooltip = useCallback(() => {
+    localStorage?.setItem(TOOLTIP_DISMISS_KEY, '1')
+    setDismissTooltip(true)
+  }, [])
+
   const onTokenSwitch = useCallback(() => {
     if (router.query.token === PredictionSupportedSymbol.CAKE) {
       router.query.token = PredictionSupportedSymbol.BNB
@@ -192,8 +197,9 @@ export const PricePairLabel: React.FC = () => {
     } else {
       router.query.token = PredictionSupportedSymbol.CAKE
     }
+    if (!dismissTooltip) onDismissTooltip()
     router.push(router)
-  }, [router, token])
+  }, [router, token, dismissTooltip, onDismissTooltip])
   return (
     <>
       <Box pl={['20px', '20px', '20px', '40px']} position="relative" display="inline-block">
@@ -202,13 +208,7 @@ export const PricePairLabel: React.FC = () => {
             <Text mr="5px" display="inline-block" verticalAlign="super">
               {t('Switch pairs here.')}
             </Text>
-            <CloseIcon
-              cursor="pointer"
-              onClick={() => {
-                localStorage?.setItem(TOOLTIP_DISMISS_KEY, '1')
-                setDismissTooltip(true)
-              }}
-            />
+            <CloseIcon cursor="pointer" onClick={onDismissTooltip} />
           </Tooltip>
         )}
         <CoinSwitcher
