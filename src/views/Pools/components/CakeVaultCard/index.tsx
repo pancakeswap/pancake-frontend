@@ -5,7 +5,7 @@ import { FlexGap } from 'components/Layout/Flex'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool } from 'state/types'
+import { DeserializedPool, DeserializedCakeVault } from 'state/types'
 import styled from 'styled-components'
 
 import CardFooter from '../PoolCard/CardFooter'
@@ -29,39 +29,31 @@ interface CakeVaultProps extends CardProps {
   showICake?: boolean
 }
 
-const CakeVaultCard: React.FC<CakeVaultProps> = ({
+interface CakeVaultDetailProps {
+  isLoading?: boolean
+  account: string
+  pool: DeserializedPool
+  vaultPool: DeserializedCakeVault
+  accountHasSharesStaked: boolean
+  defaultFooterExpanded?: boolean
+  showICake?: boolean
+  performanceFeeAsDecimal: number
+}
+
+export const CakeVaultDetail: React.FC<CakeVaultDetailProps> = ({
+  isLoading = false,
+  account,
   pool,
-  showStakedOnly,
+  vaultPool,
+  accountHasSharesStaked,
+  showICake,
+  performanceFeeAsDecimal,
   defaultFooterExpanded,
-  showICake = false,
-  ...props
 }) => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
-
-  const vaultPool = useVaultPoolByKey(pool.vaultKey)
-
-  const {
-    userData: { userShares, isLoading: isVaultUserDataLoading },
-    fees: { performanceFeeAsDecimal },
-  } = vaultPool
-
-  const accountHasSharesStaked = userShares && userShares.gt(0)
-  const isLoading = !pool.userData || isVaultUserDataLoading
-
-  if (showStakedOnly && !accountHasSharesStaked) {
-    return null
-  }
 
   return (
-    <StyledCard isActive {...props}>
-      <PoolCardHeader isStaking={accountHasSharesStaked}>
-        <PoolCardHeaderTitle
-          title={vaultPoolConfig[pool.vaultKey].name}
-          subTitle={vaultPoolConfig[pool.vaultKey].description}
-        />
-        <TokenPairImage {...vaultPoolConfig[pool.vaultKey].tokenImage} width={64} height={64} />
-      </PoolCardHeader>
+    <>
       <StyledCardBody isLoading={isLoading}>
         {account && <VaultPositionTagWithLabel userData={vaultPool.userData} />}
         {account && vaultPool?.userData?.locked ? (
@@ -105,6 +97,52 @@ const CakeVaultCard: React.FC<CakeVaultProps> = ({
         )}
       </StyledCardBody>
       <CardFooter defaultExpanded={defaultFooterExpanded} pool={pool} account={account} />
+    </>
+  )
+}
+
+const CakeVaultCard: React.FC<CakeVaultProps> = ({
+  pool,
+  showStakedOnly,
+  defaultFooterExpanded,
+  showICake = false,
+  ...props
+}) => {
+  const { account } = useWeb3React()
+
+  const vaultPool = useVaultPoolByKey(pool.vaultKey)
+
+  const {
+    userData: { userShares, isLoading: isVaultUserDataLoading },
+    fees: { performanceFeeAsDecimal },
+  } = vaultPool
+
+  const accountHasSharesStaked = userShares && userShares.gt(0)
+  const isLoading = !pool.userData || isVaultUserDataLoading
+
+  if (showStakedOnly && !accountHasSharesStaked) {
+    return null
+  }
+
+  return (
+    <StyledCard isActive {...props}>
+      <PoolCardHeader isStaking={accountHasSharesStaked}>
+        <PoolCardHeaderTitle
+          title={vaultPoolConfig[pool.vaultKey].name}
+          subTitle={vaultPoolConfig[pool.vaultKey].description}
+        />
+        <TokenPairImage {...vaultPoolConfig[pool.vaultKey].tokenImage} width={64} height={64} />
+      </PoolCardHeader>
+      <CakeVaultDetail
+        isLoading={isLoading}
+        account={account}
+        pool={pool}
+        vaultPool={vaultPool}
+        accountHasSharesStaked={accountHasSharesStaked}
+        showICake={showICake}
+        performanceFeeAsDecimal={performanceFeeAsDecimal}
+        defaultFooterExpanded={defaultFooterExpanded}
+      />
     </StyledCard>
   )
 }

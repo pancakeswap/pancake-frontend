@@ -11,10 +11,3 @@ export interface CardConfigReturn {
   variant: 'blue' | 'violet'
   tooltip: string | ReactElement
 }
-
-export interface CountdownProps {
-  steps?: Array<{ text: string }>
-  activeStepIndex?: number
-  stepText?: string
-  index?: number
-}

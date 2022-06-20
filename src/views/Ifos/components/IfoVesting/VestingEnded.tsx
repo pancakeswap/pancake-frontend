@@ -5,7 +5,7 @@ const VestingEnded: React.FC = () => {
   const { t } = useTranslation()
 
   return (
-    <Text color="textSubtle" fontSize="14px">
+    <Text color="textSubtle" fontSize="14px" pb="24px">
       {t('You have claimed all available token.')}
     </Text>
   )

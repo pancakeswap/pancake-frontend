@@ -1,10 +1,11 @@
 import styled from 'styled-components'
+import { useMemo } from 'react'
 import { format } from 'date-fns'
+import { useTranslation } from 'contexts/Localization'
 import { LogoIcon, CheckmarkCircleIcon, CircleOutlineIcon, Flex, Text } from '@pancakeswap/uikit'
-import { CountdownProps } from '../../types'
 
 const sharedFlexStyles = `
-  min-width: 78px;
+  min-width: 86px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -31,31 +32,46 @@ const FutureWrapper = styled(Flex)`
 `
 
 const StyledText = styled(Text)`
-  margin-bottom: 4px;
+  margin: 4px 0;
   font-weight: 600;
   font-size: 12px;
   color: ${({ theme }) => theme.colors.secondary};
 `
 
 const StyledDateText = styled(Text)`
-  margin-bottom: 14px;
   font-size: 12px;
   line-height: 120%;
+  min-height: 29px;
   text-align: center;
   color: ${({ theme }) => theme.colors.textSubtle};
 `
 
-const Step: React.FC<CountdownProps> = ({ index, stepText, activeStepIndex }) => {
+interface CountdownProps {
+  index: number
+  stepText: string
+  timeStamp: number
+  activeStepIndex: number
+}
+
+const Step: React.FC<CountdownProps> = ({ index, stepText, timeStamp, activeStepIndex }) => {
+  const { t } = useTranslation()
   const isExpired = index < activeStepIndex
   const isActive = index === activeStepIndex
   const isFuture = index > activeStepIndex
 
+  const timeFormat = useMemo(() => {
+    if (timeStamp === 0) {
+      return t('Now')
+    }
+    return format(timeStamp, 'MM/dd/yyyy HH:mm')
+  }, [t, timeStamp])
+
   if (isExpired) {
     return (
       <ExpiredWrapper>
-        <StyledText>{stepText}</StyledText>
-        <StyledDateText>{format(1652250897000, 'MM/dd/yyyy HH:mm')}</StyledDateText>
         <CheckmarkCircleIcon />
+        <StyledText textTransform="uppercase">{stepText}</StyledText>
+        <StyledDateText>{timeFormat}</StyledDateText>
       </ExpiredWrapper>
     )
   }
@@ -63,9 +79,9 @@ const Step: React.FC<CountdownProps> = ({ index, stepText, activeStepIndex }) =>
   if (isActive) {
     return (
       <ActiveWrapper>
-        <StyledText>{stepText}</StyledText>
-        <StyledDateText>{format(1652250897000, 'MM/dd/yyyy HH:mm')}</StyledDateText>
         <LogoIcon />
+        <StyledText textTransform="uppercase">{stepText}</StyledText>
+        <StyledDateText>{timeFormat}</StyledDateText>
       </ActiveWrapper>
     )
   }
@@ -73,9 +89,9 @@ const Step: React.FC<CountdownProps> = ({ index, stepText, activeStepIndex }) =>
   if (isFuture) {
     return (
       <FutureWrapper>
-        <StyledText>{stepText}</StyledText>
-        <StyledDateText>{format(1652250897000, 'MM/dd/yyyy HH:mm')}</StyledDateText>
         <CircleOutlineIcon />
+        <StyledText textTransform="uppercase">{stepText}</StyledText>
+        <StyledDateText>{timeFormat}</StyledDateText>
       </FutureWrapper>
     )
   }

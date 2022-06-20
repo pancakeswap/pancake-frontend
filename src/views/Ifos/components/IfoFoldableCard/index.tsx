@@ -176,7 +176,7 @@ export const IfoCurrentCard = ({
           {shouldShowBunny && <NoHatBunny isLive={publicIfoData.status === 'live'} />}
         </Box>
       )}
-      <Box position="relative" width="100%" maxWidth={['400px', '400px', '400px', '100%']}>
+      <Box position="relative" width="100%" maxWidth={['400px', '400px', '400px', '400px', '400px', '100%']}>
         {!isMobile && shouldShowBunny && <NoHatBunny isCurrent isLive={publicIfoData.status === 'live'} />}
         <StyledCard $isCurrent>
           {!isMobile && (
@@ -261,9 +261,14 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const raisingTokenContract = useERC20(ifo.currency.address, false)
-  // Continue to fetch 2 more minutes to get latest data
+  // Continue to fetch 2 more minutes / is vesting need get latest data
   const isRecentlyActive =
-    (publicIfoData.status !== 'finished' || (publicIfoData.status === 'finished' && secondsUntilEnd >= -120)) &&
+    (publicIfoData.status !== 'finished' ||
+      (publicIfoData.status === 'finished' && secondsUntilEnd >= -120) ||
+      (publicIfoData.status === 'finished' &&
+        ifo.version >= 3.2 &&
+        (publicIfoData[PoolIds.poolBasic].vestingInfomation.percentage > 0 ||
+          publicIfoData[PoolIds.poolUnlimited].vestingInfomation.percentage > 0))) &&
     ifo.isActive
   const onApprove = useIfoApprove(ifo, contract.address)
   const { toastSuccess } = useToast()
@@ -321,7 +326,7 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
     <>
       <StyledCardBody>
         <CardsWrapper
-          shouldReverse={ifo.version === 3.1}
+          shouldReverse={ifo.version >= 3.1}
           singleCard={!publicIfoData.poolBasic || !walletIfoData.poolBasic}
         >
           {publicIfoData.poolBasic && walletIfoData.poolBasic && (

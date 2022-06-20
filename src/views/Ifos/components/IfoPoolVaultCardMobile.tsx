@@ -3,7 +3,6 @@ import { useWeb3React } from '@web3-react/core'
 import {
   Box,
   Card,
-  CardBody,
   CardHeader,
   ExpandableButton,
   Flex,
@@ -11,21 +10,13 @@ import {
   TokenPairImage as UITokenPairImage,
 } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
-import ConnectWalletButton from 'components/ConnectWalletButton'
-import { FlexGap } from 'components/Layout/Flex'
 import { useVaultPoolByKey, useIfoCredit } from 'state/pools/hooks'
 import { useTranslation } from 'contexts/Localization'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { DeserializedPool, VaultKey } from 'state/types'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { StakingApy } from 'views/Pools/components/CakeVaultCard/StakingApy'
-import { VaultPositionTagWithLabel } from 'views/Pools/components/Vault/VaultPositionTag'
-import LockedStakingApy from 'views/Pools/components/LockedPool/LockedStakingApy'
-import UnstakingFeeCountdownRow from 'views/Pools/components/CakeVaultCard/UnstakingFeeCountdownRow'
-import RecentCakeProfitRow from 'views/Pools/components/CakeVaultCard/RecentCakeProfitRow'
-import VaultCardActions from 'views/Pools/components/CakeVaultCard/VaultCardActions'
-import CardFooter from 'views/Pools/components/PoolCard/CardFooter'
 import { useConfig } from 'views/Ifos/contexts/IfoContext'
+import { CakeVaultDetail } from 'views/Pools/components/CakeVaultCard'
 
 const StyledCardMobile = styled(Card)`
   max-width: 400px;
@@ -37,13 +28,6 @@ const StyledTokenContent = styled(Flex)`
     line-height: 1.2;
     white-space: nowrap;
   }
-`
-
-const StyledCardBody = styled(CardBody)`
-  display: grid;
-  padding: 16px;
-  background-color: ${({ theme }) => theme.colors.dropdown};
-  gap: 16px;
 `
 
 interface IfoPoolVaultCardMobileProps {
@@ -92,51 +76,15 @@ const IfoPoolVaultCardMobile: React.FC<IfoPoolVaultCardMobileProps> = ({ pool })
         </Flex>
       </CardHeader>
       {isExpanded && (
-        <>
-          <StyledCardBody>
-            {account && <VaultPositionTagWithLabel userData={vaultPool.userData} />}
-            {account && vaultPool?.userData?.locked ? (
-              <LockedStakingApy
-                userData={vaultPool?.userData}
-                stakingToken={pool?.stakingToken}
-                stakingTokenBalance={pool?.userData?.stakingTokenBalance}
-                showICake
-              />
-            ) : (
-              <>
-                <StakingApy pool={pool} />
-                <FlexGap mt="16px" gap="24px" flexDirection={accountHasSharesStaked ? 'column-reverse' : 'column'}>
-                  <Box>
-                    {account && (
-                      <Box mb="8px">
-                        <UnstakingFeeCountdownRow vaultKey={pool.vaultKey} />
-                      </Box>
-                    )}
-                    <RecentCakeProfitRow pool={pool} />
-                  </Box>
-                  <Flex flexDirection="column">
-                    {account ? (
-                      <VaultCardActions
-                        pool={pool}
-                        accountHasSharesStaked={accountHasSharesStaked}
-                        isLoading={isLoading}
-                        performanceFee={performanceFeeAsDecimal}
-                      />
-                    ) : (
-                      <>
-                        <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
-                          {t('Start earning')}
-                        </Text>
-                        <ConnectWalletButton />
-                      </>
-                    )}
-                  </Flex>
-                </FlexGap>
-              </>
-            )}
-          </StyledCardBody>
-          <CardFooter defaultExpanded={false} pool={pool} account={account} />
-        </>
+        <CakeVaultDetail
+          showICake
+          isLoading={isLoading}
+          account={account}
+          pool={pool}
+          vaultPool={vaultPool}
+          accountHasSharesStaked={accountHasSharesStaked}
+          performanceFeeAsDecimal={performanceFeeAsDecimal}
+        />
       )}
     </StyledCardMobile>
   )

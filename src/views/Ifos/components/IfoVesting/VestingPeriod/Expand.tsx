@@ -1,6 +1,10 @@
+import { useRouter } from 'next/router'
 import styled, { keyframes, css } from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { Box, Flex, Text, Progress, Button } from '@pancakeswap/uikit'
+import { Box, Text } from '@pancakeswap/uikit'
+import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
+import { PoolIds } from 'config/constants/types'
+import Info from './Info'
 
 const expandAnimation = keyframes`
   from {
@@ -9,14 +13,14 @@ const expandAnimation = keyframes`
   }
   to {
     opacity: 1;
-    max-height: 200px;
+    max-height: 484px;
   }
 `
 
 const collapseAnimation = keyframes`
   from {
     opacity: 1;
-    max-height: 200px;
+    max-height: 484px;
   }
   to {
     opacity: 0;
@@ -41,51 +45,27 @@ const StyledExpand = styled(Box)<{ expanded: boolean }>`
 `
 
 interface ExpandProps {
+  data: VestingData
   expanded: boolean
+  fetchUserVestingData: () => void
 }
 
-const Expand: React.FC<ExpandProps> = ({ expanded }) => {
+const Expand: React.FC<ExpandProps> = ({ data, expanded, fetchUserVestingData }) => {
   const { t } = useTranslation()
+  const { token } = data.ifo
+  const router = useRouter()
 
-  const handleViewIfo = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation()
-  }
-
-  const handleClaim = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation()
+  const handleViewIfo = () => {
+    router.push(`/ifo/history#${token.symbol}`)
   }
 
   return (
     <StyledExpand expanded={expanded}>
-      <Progress primaryStep={10} secondaryStep={20} />
-      <Flex mt="8px" mb="20px">
-        <Flex flexDirection="column" mr="8px">
-          <Text fontSize="14px">0.123</Text>
-          <Text fontSize="14px" color="textSubtle">
-            Received
-          </Text>
-        </Flex>
-        <Flex flexDirection="column">
-          <Text fontSize="14px">0.123</Text>
-          <Text fontSize="14px" color="textSubtle">
-            Claimable
-          </Text>
-        </Flex>
-        <Flex flexDirection="column" ml="auto">
-          <Text fontSize="14px" textAlign="right">
-            0.123
-          </Text>
-          <Text fontSize="14px" color="textSubtle">
-            Remaining
-          </Text>
-        </Flex>
-      </Flex>
-      <Flex>
-        <Button mr="8px" variant="secondary" onClick={handleViewIfo}>
-          {t('View IFO')}
-        </Button>
-        <Button onClick={handleClaim}>Calim HotCross</Button>
-      </Flex>
+      <Info poolId={PoolIds.poolUnlimited} data={data} fetchUserVestingData={fetchUserVestingData} />
+      <Info poolId={PoolIds.poolBasic} data={data} fetchUserVestingData={fetchUserVestingData} />
+      <Text bold color="primary" textAlign="center" style={{ cursor: 'pointer' }} onClick={handleViewIfo}>
+        {t('View IFO')}
+      </Text>
     </StyledExpand>
   )
 }

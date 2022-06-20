@@ -1,23 +1,36 @@
-import { Flex, Box, Text, BunnyPlaceholderIcon } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
+import { Flex, Box, Text } from '@pancakeswap/uikit'
+import { TokenImage } from 'components/TokenImage'
 import { LightGreyCard } from 'components/Card'
-// import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from 'contexts/Localization'
+import { Ifo } from 'config/constants/types'
+import { getFullDisplayBalance } from 'utils/formatBalance'
+import BigNumber from 'bignumber.js'
 
-const TotalAvailableClaim: React.FC = () => {
-  // const { t } = useTranslation()
+interface TotalAvailableClaimProps {
+  ifo: Ifo
+  amountAvailableToClaim: BigNumber
+}
+
+const TotalAvailableClaim: React.FC<TotalAvailableClaimProps> = ({ ifo, amountAvailableToClaim }) => {
+  const { t } = useTranslation()
+  const { token } = ifo
+
+  const amountAvailable = useMemo(
+    () => (amountAvailableToClaim.gt(0) ? getFullDisplayBalance(amountAvailableToClaim, token.decimals, 4) : '0'),
+    [token, amountAvailableToClaim],
+  )
 
   return (
     <LightGreyCard mt="24px" mb="8px">
       <Flex>
-        <BunnyPlaceholderIcon mr="16px" width={32} height={32} style={{ alignSelf: 'flex-start' }} />
+        <TokenImage mr="16px" width={32} height={32} token={token} style={{ alignSelf: 'flex-start' }} />
         <Box>
           <Text bold color="secondary" fontSize="12px">
-            xyz available to claim
+            {t('%symbol% available to claim', { symbol: token.symbol })}
           </Text>
           <Text as="span" bold fontSize="20px">
-            52.1234
-          </Text>
-          <Text as="span" bold color="textSubtle" fontSize="20px">
-            /234.5612
+            {amountAvailable}
           </Text>
         </Box>
       </Flex>
