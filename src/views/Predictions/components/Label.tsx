@@ -121,21 +121,23 @@ export const Tooltip = styled.div`
   }
   ${({ theme }) => theme.mediaQueries.md} {
     top: -10px;
-    left: 90px;
+    left: 81px;
   }
+
   &::before {
     content: '';
     position: absolute;
-    top: 22px;
+    top: 21px;
     left: -6px;
-    width: 12px;
-    height: 12px;
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
     background: ${({ theme }) => theme.tooltip.background};
     transform: rotate(45deg);
   }
 `
 
-const Label = styled(Flex)<{ dir: 'left' | 'right' }>`
+const Label = styled(Flex)<{ dir: 'left' | 'right'; backgroundOpacity?: boolean }>`
   position: relative;
   z-index: 1;
   background-color: ${({ theme }) => theme.card.background};
@@ -147,10 +149,13 @@ const Label = styled(Flex)<{ dir: 'left' | 'right' }>`
   padding: ${({ dir }) => (dir === 'right' ? '0 28px 0 8px' : '0 8px 0 24px')};
 
   ${({ theme }) => theme.mediaQueries.lg} {
+    background-color: ${({ theme, backgroundOpacity }) => (backgroundOpacity ? 'transparent' : theme.card.background)};
     align-items: center;
     border-radius: ${({ theme }) => theme.radii.card};
     flex-direction: row;
     padding: ${({ dir }) => (dir === 'right' ? '8px 40px 8px 8px' : '8px 8px 8px 40px')};
+    transition: 0.3s background-color ease-in-out;
+    will-change: background-color;
   }
 `
 
@@ -215,7 +220,7 @@ export const PricePairLabel: React.FC = () => {
           isDefaultBnb={router.query.token === 'BNB' || (router.query.token === undefined && token.symbol === 'BNB')}
           onTokenSwitch={onTokenSwitch}
         />
-        <Label dir="left">
+        <Label dir="left" backgroundOpacity={!dismissTooltip}>
           <Title bold textTransform="uppercase">
             {`${token.symbol}USD`}
           </Title>
