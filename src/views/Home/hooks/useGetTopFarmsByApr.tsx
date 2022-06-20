@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
 import { useFarms, usePriceCakeBusd } from 'state/farms/hooks'
 import { useAppDispatch } from 'state'
@@ -16,23 +16,23 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
   const [topFarms, setTopFarms] = useState<FarmWithStakedValue[]>([null, null, null, null, null])
   const cakePriceBusd = usePriceCakeBusd()
 
-  useEffect(() => {
-    const fetchFarmData = async () => {
-      setFetchStatus(FetchStatus.Fetching)
-      const activeFarms = nonArchivedFarms.filter((farm) => farm.pid !== 0)
-      try {
-        await dispatch(fetchFarmsPublicDataAsync(activeFarms.map((farm) => farm.pid)))
-        setFetchStatus(FetchStatus.Fetched)
-      } catch (e) {
-        console.error(e)
-        setFetchStatus(FetchStatus.Failed)
-      }
+  const fetchFarmData = useCallback(async () => {
+    setFetchStatus(FetchStatus.Fetching)
+    const activeFarms = nonArchivedFarms.filter((farm) => farm.pid !== 0)
+    try {
+      await dispatch(fetchFarmsPublicDataAsync(activeFarms.map((farm) => farm.pid)))
+      setFetchStatus(FetchStatus.Fetched)
+    } catch (e) {
+      console.error(e)
+      setFetchStatus(FetchStatus.Failed)
     }
+  }, [dispatch])
 
+  useEffect(() => {
     if (isIntersecting && fetchStatus === FetchStatus.Idle) {
       fetchFarmData()
     }
-  }, [dispatch, setFetchStatus, fetchStatus, topFarms, isIntersecting])
+  }, [dispatch, setFetchStatus, fetchStatus, topFarms, isIntersecting, fetchFarmData])
 
   useEffect(() => {
     const getTopFarmsByApr = (farmsState: DeserializedFarm[]) => {
