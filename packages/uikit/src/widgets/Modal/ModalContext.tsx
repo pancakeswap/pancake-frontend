@@ -1,39 +1,24 @@
-import { AnimatePresence, m, Variants, LazyMotion, domAnimation } from "framer-motion";
-import React, { createContext, useState, useRef } from "react";
-import styled, { keyframes } from "styled-components";
+import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
+import React, { createContext, useRef, useState, useEffect } from "react";
+import styled from "styled-components";
 import { Overlay } from "../../components/Overlay";
+import {
+  animationHandler,
+  animationMap,
+  animationVariants,
+  appearAnimation,
+  disappearAnimation,
+} from "../../util/animationToolkit";
 import { Handler } from "./types";
 
-const animationVariants: Variants = {
-  initial: { transform: "translateX(0px)" },
-  animate: { transform: "translateX(0px)" },
-  exit: { transform: "translateX(0px)" },
-};
-
-const animationMap = {
-  initial: "initial",
-  animate: "animate",
-  exit: "exit",
-};
 interface ModalsContext {
   isOpen: boolean;
   nodeId: string;
   modalNode: React.ReactNode;
   setModalNode: React.Dispatch<React.SetStateAction<React.ReactNode>>;
-  onPresent: (node: React.ReactNode, newNodeId: string) => void;
+  onPresent: (node: React.ReactNode, newNodeId: string, closeOverlayClick: boolean) => void;
   onDismiss: Handler;
-  setCloseOnOverlayClick: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
-const appearAnimation = keyframes`
-  from { opacity:0 }
-  to { opacity:1 }
-`;
-
-const disappearAnimation = keyframes`
-  from { opacity:1 }
-  to { opacity:0 }
-`;
 
 const ModalWrapper = styled(m.div)`
   display: flex;
@@ -63,7 +48,6 @@ export const Context = createContext<ModalsContext>({
   setModalNode: () => null,
   onPresent: () => null,
   onDismiss: () => null,
-  setCloseOnOverlayClick: () => true,
 });
 
 const ModalProvider: React.FC = ({ children }) => {
@@ -73,16 +57,28 @@ const ModalProvider: React.FC = ({ children }) => {
   const [closeOnOverlayClick, setCloseOnOverlayClick] = useState(true);
   const animationRef = useRef<HTMLDivElement>(null);
 
-  const handlePresent = (node: React.ReactNode, newNodeId: string) => {
+  useEffect(() => {
+    const setViewportHeight = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    };
+    setViewportHeight();
+    window.addEventListener("resize", setViewportHeight);
+    return () => window.removeEventListener("resize", setViewportHeight);
+  }, []);
+
+  const handlePresent = (node: React.ReactNode, newNodeId: string, closeOverlayClick: boolean) => {
     setModalNode(node);
     setIsOpen(true);
     setNodeId(newNodeId);
+    setCloseOnOverlayClick(closeOverlayClick);
   };
 
   const handleDismiss = () => {
     setModalNode(undefined);
     setIsOpen(false);
     setNodeId("");
+    setCloseOnOverlayClick(true);
   };
 
   const handleOverlayDismiss = () => {
@@ -100,7 +96,6 @@ const ModalProvider: React.FC = ({ children }) => {
         setModalNode,
         onPresent: handlePresent,
         onDismiss: handleDismiss,
-        setCloseOnOverlayClick,
       }}
     >
       <LazyMotion features={domAnimation}>
@@ -108,17 +103,7 @@ const ModalProvider: React.FC = ({ children }) => {
           {isOpen && (
             <ModalWrapper
               ref={animationRef}
-              onAnimationStart={() => {
-                const element = animationRef.current;
-                if (!element) return;
-                if (element.classList.contains("appear")) {
-                  element.classList.remove("appear");
-                  element.classList.add("disappear");
-                } else {
-                  element.classList.remove("disappear");
-                  element.classList.add("appear");
-                }
-              }}
+              onAnimationStart={() => animationHandler(animationRef.current)}
               {...animationMap}
               variants={animationVariants}
               transition={{ duration: 0.3 }}

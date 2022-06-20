@@ -1,7 +1,15 @@
-import React from "react";
+import { AnimatePresence, domAnimation, LazyMotion, m as Motion } from "framer-motion";
+import React, { useRef } from "react";
 import styled, { keyframes } from "styled-components";
-import { space, layout } from "styled-system";
-import { SkeletonProps, animation as ANIMATION, variant as VARIANT } from "./types";
+import { layout, space, borderRadius } from "styled-system";
+import { animation as ANIMATION, SkeletonProps, SkeletonV2Props, variant as VARIANT } from "./types";
+import {
+  appearAnimation,
+  disappearAnimation,
+  animationVariants,
+  animationMap,
+  animationHandler,
+} from "../../util/animationToolkit";
 
 const waves = keyframes`
    from {
@@ -24,14 +32,33 @@ const pulse = keyframes`
   }
 `;
 
+const AnimationWrapper = styled(Motion.div)`
+  position: relative;
+  will-change: opacity;
+  opacity: 0;
+  &.appear {
+    animation: ${appearAnimation} 0.3s ease-in-out forwards;
+  }
+  &.disappear {
+    animation: ${disappearAnimation} 0.3s ease-in-out forwards;
+  }
+`;
+
+const SkeletonWrapper = styled.div<SkeletonProps>`
+  position: relative;
+  ${layout}
+  ${space}
+  overflow: hidden;
+`;
+
 const Root = styled.div<SkeletonProps>`
   min-height: 20px;
   display: block;
   background-color: ${({ theme }) => theme.colors.backgroundDisabled};
   border-radius: ${({ variant, theme }) => (variant === VARIANT.CIRCLE ? theme.radii.circle : theme.radii.small)};
-
   ${layout}
   ${space}
+  ${borderRadius}
 `;
 
 const Pulse = styled(Root)`
@@ -40,7 +67,6 @@ const Pulse = styled(Root)`
 `;
 
 const Waves = styled(Root)`
-  position: relative;
   overflow: hidden;
   transform: translate3d(0, 0, 0);
   &:before {
@@ -61,6 +87,61 @@ const Skeleton: React.FC<SkeletonProps> = ({ variant = VARIANT.RECT, animation =
   }
 
   return <Pulse variant={variant} {...props} />;
+};
+
+export const SkeletonV2: React.FC<SkeletonV2Props> = ({
+  variant = VARIANT.RECT,
+  animation = ANIMATION.PULSE,
+  isDataReady = false,
+  children,
+  wrapperProps,
+  skeletonTop = "0",
+  skeletonLeft = "0",
+  width,
+  height,
+  mr,
+  ml,
+  ...props
+}) => {
+  const animationRef = useRef<HTMLDivElement>(null);
+  const skeletonRef = useRef<HTMLDivElement>(null);
+  return (
+    <SkeletonWrapper width={width} height={height} mr={mr} ml={ml} {...wrapperProps}>
+      <LazyMotion features={domAnimation}>
+        <AnimatePresence>
+          {isDataReady && (
+            <AnimationWrapper
+              key="content"
+              ref={animationRef}
+              onAnimationStart={() => animationHandler(animationRef.current)}
+              {...animationMap}
+              variants={animationVariants}
+              transition={{ duration: 0.3 }}
+            >
+              {children}
+            </AnimationWrapper>
+          )}
+          {!isDataReady && (
+            <AnimationWrapper
+              key="skeleton"
+              style={{ position: "absolute", top: skeletonTop, left: skeletonLeft }}
+              ref={skeletonRef}
+              onAnimationStart={() => animationHandler(skeletonRef.current)}
+              {...animationMap}
+              variants={animationVariants}
+              transition={{ duration: 0.3 }}
+            >
+              {animation === ANIMATION.WAVES ? (
+                <Waves variant={variant} {...props} width={width} height={height} />
+              ) : (
+                <Pulse variant={variant} {...props} width={width} height={height} />
+              )}
+            </AnimationWrapper>
+          )}
+        </AnimatePresence>
+      </LazyMotion>
+    </SkeletonWrapper>
+  );
 };
 
 export default Skeleton;

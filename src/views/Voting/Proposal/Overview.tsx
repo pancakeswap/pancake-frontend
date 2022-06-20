@@ -1,6 +1,5 @@
 import { ArrowBackIcon, Box, Button, Flex, Heading } from '@pancakeswap/uikit'
 import { PageMeta } from 'components/Layout/Page'
-import useSWR from 'swr'
 import { getAllVotes, getProposal } from 'state/voting/helpers'
 import { useWeb3React } from '@web3-react/core'
 import useSWRImmutable from 'swr/immutable'
@@ -11,6 +10,7 @@ import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
 import ReactMarkdown from 'components/ReactMarkdown'
 import NotFound from 'views/NotFound'
+import PageLoader from 'components/Loader/PageLoader'
 import { FetchStatus } from 'config/constants/types'
 import { isCoreProposal } from '../helpers'
 import { ProposalStateTag, ProposalTypeTag } from '../components/Proposals/tags'
@@ -21,7 +21,8 @@ import Vote from './Vote'
 import Votes from './Votes'
 
 const Overview = () => {
-  const id = useRouter().query.id as string
+  const { query, isFallback } = useRouter()
+  const id = query.id as string
   const { t } = useTranslation()
   const { account } = useWeb3React()
 
@@ -30,21 +31,22 @@ const Overview = () => {
     data: proposal,
     error,
   } = useSWRImmutable(id ? ['proposal', id] : null, () => getProposal(id))
-  const { id: proposalId = null, snapshot = null } = proposal ?? {}
 
   const {
     status: votesLoadingStatus,
     data: votes,
     mutate: refetch,
-  } = useSWR(proposalId && snapshot ? ['proposal', proposalId, 'votes'] : null, async () =>
-    getAllVotes(proposalId, Number(snapshot)),
-  )
+  } = useSWRImmutable(proposal ? ['proposal', proposal, 'votes'] : null, async () => getAllVotes(proposal))
   const hasAccountVoted = account && votes && votes.some((vote) => vote.voter.toLowerCase() === account.toLowerCase())
 
   const isPageLoading = votesLoadingStatus === FetchStatus.Fetching || proposalLoadingStatus === FetchStatus.Fetching
 
   if (!proposal && error) {
     return <NotFound />
+  }
+
+  if (isFallback || !proposal) {
+    return <PageLoader />
   }
 
   return (
@@ -76,7 +78,7 @@ const Overview = () => {
           )}
           <Votes votes={votes} totalVotes={votes?.length ?? proposal.votes} votesLoadingStatus={votesLoadingStatus} />
         </Box>
-        <Box position="sticky" top="40px">
+        <Box position="sticky" top="60px">
           <Details proposal={proposal} />
           <Results choices={proposal.choices} votes={votes} votesLoadingStatus={votesLoadingStatus} />
         </Box>

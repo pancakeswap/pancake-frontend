@@ -26,26 +26,36 @@ const Dot = styled(Box)<{ $color: string }>`
   background: ${({ $color, theme }) => theme.colors[$color]};
 `
 
-const indicator = (t: TranslateFunction) =>
+interface CustomDescriptions {
+  delayed: string
+  slow: string
+  healthy: string
+}
+
+const indicator = (t: TranslateFunction, customDescriptions?: CustomDescriptions) =>
   ({
     delayed: {
       label: t('Delayed'),
       color: 'failure',
-      description: t(
-        'Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.',
-      ),
+      description:
+        customDescriptions?.delayed ??
+        t(
+          'Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.',
+        ),
     },
     slow: {
       label: t('Slight delay'),
       color: 'warning',
-      description: t(
-        'Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.',
-      ),
+      description:
+        customDescriptions?.slow ??
+        t(
+          'Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.',
+        ),
     },
     healthy: {
       label: t('Fast'),
       color: 'success',
-      description: t('No issues with the subgraph.'),
+      description: customDescriptions?.healthy ?? t('No issues with the subgraph.'),
     },
   } as const)
 
@@ -75,17 +85,19 @@ const FixedSubgraphHealthIndicator = () => {
   return isOnNftPages ? <SubgraphHealthIndicator subgraphName="pancakeswap/nft-market" /> : null
 }
 
-export const SubgraphHealthIndicator: React.FC<{ subgraphName: string; inline?: boolean }> = ({
-  subgraphName,
-  inline,
-}) => {
+export const SubgraphHealthIndicator: React.FC<{
+  subgraphName: string
+  inline?: boolean
+  customDescriptions?: CustomDescriptions
+  obeyGlobalSetting?: boolean
+}> = ({ subgraphName, inline, customDescriptions, obeyGlobalSetting }) => {
   const { t } = useTranslation()
   const { status, currentBlock, blockDifference, latestBlock } = useSubgraphHealth(subgraphName)
   const [alwaysShowIndicator] = useSubgraphHealthIndicatorManager()
   const forceIndicatorDisplay = status === SubgraphStatus.WARNING || status === SubgraphStatus.NOT_OK
-  const showIndicator = alwaysShowIndicator || forceIndicatorDisplay
+  const showIndicator = (obeyGlobalSetting && alwaysShowIndicator) || forceIndicatorDisplay
 
-  const indicatorProps = indicator(t)
+  const indicatorProps = indicator(t, customDescriptions)
 
   const secondRemainingBlockSync = blockDifference * BSC_BLOCK_TIME
 

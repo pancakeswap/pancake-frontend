@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import {
   Card,
@@ -9,14 +9,16 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
 } from '@pancakeswap/uikit'
+import { getNow } from 'utils/getNow'
 import { useTranslation } from 'contexts/Localization'
-import { useAppDispatch } from 'state'
+import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { BetPosition, NodeLedger, NodeRound } from 'state/types'
 import { fetchLedgerData } from 'state/predictions'
 import { ROUND_BUFFER } from 'state/predictions/config'
 import useToast from 'hooks/useToast'
 import useTheme from 'hooks/useTheme'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import CardFlip from '../CardFlip'
 import { formatBnbv2 } from '../../helpers'
 import { RoundResultBox, PrizePoolRow } from '../RoundResult'
@@ -54,14 +56,30 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   const { theme } = useTheme()
   const { toastSuccess } = useToast()
   const { account } = useWeb3React()
-  const dispatch = useAppDispatch()
+  const dispatch = useLocalDispatch()
+  const { token } = useConfig()
+  const { lockTimestamp } = round ?? { lockTimestamp: null }
   const { isSettingPosition, position } = state
-  const isBufferPhase = round.lockTimestamp * 1000 - Date.now() <= ROUND_BUFFER * 1000
+  const [isBufferPhase, setIsBufferPhase] = useState(false)
   const positionDisplay = position === BetPosition.BULL ? t('Up').toUpperCase() : t('Down').toUpperCase()
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
-    <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnbv2(betAmount)} BNB`}</div>,
+    <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnbv2(betAmount)} ${token.symbol}`}</div>,
     { placement: 'top' },
   )
+
+  useEffect(() => {
+    const secondsToLock = lockTimestamp ? lockTimestamp - getNow() : 0
+    if (secondsToLock > 0) {
+      const setIsBufferPhaseTimeout = setTimeout(() => {
+        setIsBufferPhase(true)
+      }, (secondsToLock - ROUND_BUFFER) * 1000)
+
+      return () => {
+        clearTimeout(setIsBufferPhaseTimeout)
+      }
+    }
+    return undefined
+  }, [lockTimestamp])
 
   const getHasEnteredPosition = () => {
     if (hasEnteredUp || hasEnteredDown) {

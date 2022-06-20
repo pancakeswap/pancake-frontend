@@ -3,7 +3,7 @@ import { SWRConfig, unstable_serialize } from 'swr'
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 import { getProposal } from 'state/voting/helpers'
 import { ProposalState } from 'state/types'
-import ProposalPageRouter from 'views/Voting/Proposal'
+import Overview from 'views/Voting/Proposal/Overview'
 
 const ProposalPage = ({ fallback = {} }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
@@ -12,7 +12,7 @@ const ProposalPage = ({ fallback = {} }: InferGetStaticPropsType<typeof getStati
         fallback,
       }}
     >
-      <ProposalPageRouter />
+      <Overview />
     </SWRConfig>
   )
 }

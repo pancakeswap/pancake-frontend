@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { HelpIcon } from '@pancakeswap/uikit'
 
-const BAD_SRCS: { [tokenAddress: string]: true } = {}
+export const BAD_SRCS: { [imageSrc: string]: true } = {}
 
 export interface LogoProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   srcs: string[]

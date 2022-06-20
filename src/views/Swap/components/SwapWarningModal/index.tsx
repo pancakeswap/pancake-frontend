@@ -1,9 +1,8 @@
-import { useEffect } from 'react'
 import styled from 'styled-components'
 import { ModalBody, ModalContainer, Message, ModalHeader, Box, Heading } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from 'contexts/Localization'
-import { WrappedTokenInfo } from 'state/lists/hooks'
+import { WrappedTokenInfo } from 'state/types'
 import SwapWarningTokensConfig from 'config/constants/swapWarningTokens'
 import SafemoonWarning from './SafemoonWarning'
 import ItamWarning from './ItamWarning'
@@ -11,6 +10,7 @@ import BondlyWarning from './BondlyWarning'
 import Acknowledgement from './Acknowledgement'
 import CcarWarning from './CcarWarning'
 import BTTWarning from './BTTWarning'
+import RugPullWarning from './RugPullWarning'
 
 const StyledModalContainer = styled(ModalContainer)`
   max-width: 440px;
@@ -26,31 +26,9 @@ interface SwapWarningModalProps {
   onDismiss?: () => void
 }
 
-// Modal is fired by a useEffect and doesn't respond to closeOnOverlayClick prop being set to false
-const usePreventModalOverlayClick = () => {
-  useEffect(() => {
-    const preventClickHandler = (e) => {
-      e.stopPropagation()
-      e.preventDefault()
-      return false
-    }
-
-    document.querySelectorAll('[role="presentation"]').forEach((el) => {
-      el.addEventListener('click', preventClickHandler, true)
-    })
-
-    return () => {
-      document.querySelectorAll('[role="presentation"]').forEach((el) => {
-        el.removeEventListener('click', preventClickHandler, true)
-      })
-    }
-  }, [])
-}
-
 const SwapWarningModal: React.FC<SwapWarningModalProps> = ({ swapCurrency, onDismiss }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  usePreventModalOverlayClick()
 
   const TOKEN_WARNINGS = {
     [SwapWarningTokensConfig.safemoon.address]: {
@@ -72,6 +50,10 @@ const SwapWarningModal: React.FC<SwapWarningModalProps> = ({ swapCurrency, onDis
     [SwapWarningTokensConfig.bttold.address]: {
       symbol: SwapWarningTokensConfig.bttold.symbol,
       component: <BTTWarning />,
+    },
+    [SwapWarningTokensConfig.pokemoney.address]: {
+      symbol: SwapWarningTokensConfig.pokemoney.symbol,
+      component: <RugPullWarning />,
     },
   }
 

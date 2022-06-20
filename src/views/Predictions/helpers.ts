@@ -1,5 +1,5 @@
 import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
-import { BetPosition, NodeRound } from 'state/types'
+import { BetPosition } from 'state/types'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
 import { NegativeOne, One, Zero } from '@ethersproject/constants'
@@ -50,17 +50,6 @@ export const formatRoundTime = (secondsBetweenBlocks: number) => {
   }
 
   return minutesSeconds
-}
-
-export const getHasRoundFailed = (round: NodeRound, buffer: number) => {
-  if (!round.oracleCalled) {
-    const closeTimestampMs = (round.closeTimestamp + buffer) * 1000
-    if (Number.isFinite(closeTimestampMs)) {
-      return Date.now() > closeTimestampMs
-    }
-  }
-
-  return false
 }
 
 export const getMultiplierV2 = (total: BigNumber, amount: BigNumber) => {

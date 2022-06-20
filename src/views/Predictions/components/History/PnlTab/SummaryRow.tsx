@@ -2,6 +2,7 @@ import { Price } from '@pancakeswap/sdk'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useTranslation } from 'contexts/Localization'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { formatBnb } from '../helpers'
 
 type SummaryType = 'won' | 'lost' | 'entered'
@@ -34,6 +35,8 @@ const SummaryRow: React.FC<SummaryRowProps> = ({ type, summary, bnbBusdPrice }) 
   const typeTranslationKey = type.charAt(0).toUpperCase() + type.slice(1)
   const displayAmount = type === 'won' ? summary[type].payout : amount
   const amountInUsd = multiplyPriceByAmount(bnbBusdPrice, displayAmount)
+  const { token } = useConfig()
+  const roundsInPercentsDisplay = !Number.isNaN(parseFloat(roundsInPercents)) ? `${roundsInPercents}%` : '0%'
 
   return (
     <>
@@ -46,12 +49,12 @@ const SummaryRow: React.FC<SummaryRowProps> = ({ type, summary, bnbBusdPrice }) 
             {rounds} {t('Rounds').toLocaleLowerCase()}
           </Text>
           <Text fontSize="12px" color="textSubtle">
-            {type === 'entered' ? t('Total').toLocaleLowerCase() : `${roundsInPercents}%`}
+            {type === 'entered' ? t('Total').toLocaleLowerCase() : roundsInPercentsDisplay}
           </Text>
         </Flex>
         <Flex flex="3" flexDirection="column">
           <Text bold fontSize="20px" color={color}>
-            {`${summaryTypeSigns[type]}${formatBnb(displayAmount)} BNB`}
+            {`${summaryTypeSigns[type]}${formatBnb(displayAmount)} ${token.symbol}`}
           </Text>
           <Text fontSize="12px" color="textSubtle">
             {`~$${amountInUsd.toFixed(2)}`}

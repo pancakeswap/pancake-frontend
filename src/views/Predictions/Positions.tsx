@@ -4,7 +4,7 @@ import SwiperCore, { Keyboard, Mousewheel, FreeMode } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css/bundle'
 import { Box } from '@pancakeswap/uikit'
-import { useGetCurrentEpoch, useGetSortedRounds } from 'state/predictions/hooks'
+import { useGetSortedRoundsCurrentEpoch } from 'state/predictions/hooks'
 import delay from 'lodash/delay'
 import RoundCard from './components/RoundCard'
 import Menu from './components/Menu'
@@ -29,11 +29,9 @@ const StyledSwiper = styled.div`
 
 const Positions: React.FC<{ view?: PageView }> = ({ view }) => {
   const { setSwiper, swiper } = useSwiper()
-  const rounds = useGetSortedRounds()
-  const currentEpoch = useGetCurrentEpoch()
+  const { currentEpoch, rounds } = useGetSortedRoundsCurrentEpoch()
   const previousEpoch = currentEpoch > 0 ? currentEpoch - 1 : currentEpoch
-  const previousRound = rounds.find((round) => round.epoch === previousEpoch)
-  const swiperIndex = rounds.indexOf(previousRound)
+  const swiperIndex = rounds.findIndex((round) => round.epoch === previousEpoch)
 
   useOnNextRound()
   useOnViewChange(swiperIndex, view)

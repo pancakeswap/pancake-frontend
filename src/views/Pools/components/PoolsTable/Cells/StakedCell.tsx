@@ -1,4 +1,4 @@
-import { Box, Flex, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, Skeleton, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
@@ -8,31 +8,30 @@ import { DeserializedPool } from 'state/types'
 import styled from 'styled-components'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { convertSharesToCake } from 'views/Pools/helpers'
 import BaseCell, { CellContent } from './BaseCell'
 
 interface StakedCellProps {
   pool: DeserializedPool
   account: string
-  userDataLoaded: boolean
 }
 
-const StyledCell = styled(BaseCell)`
-  flex: 2 0 100px;
-`
+const StyledCell = styled(BaseCell)``
 
-const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }) => {
+const StakedCell: React.FC<StakedCellProps> = ({ pool, account }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
 
   // vault
   const {
-    userData: { isLoading: vaultUserDataLoading, userShares },
-    pricePerFullShare,
+    userData: {
+      locked,
+      isLoading: vaultUserDataLoading,
+      userShares,
+      balance: { cakeAsBigNumber, cakeAsNumberBalance },
+    },
   } = useVaultPoolByKey(pool.vaultKey)
   const hasSharesStaked = userShares && userShares.gt(0)
   const isVaultWithShares = pool.vaultKey && hasSharesStaked
-  const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
 
   // pool
   const { stakingTokenPrice, stakingToken, userData } = pool
@@ -44,14 +43,14 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }
     stakingToken.decimals,
   )
 
-  const labelText = `${pool.stakingToken.symbol} ${t('Staked')}`
+  const labelText = `${pool.stakingToken.symbol} ${locked ? t('Locked') : t('Staked')}`
 
   const hasStaked = account && (stakedBalance.gt(0) || isVaultWithShares)
 
-  const userDataLoading = pool.vaultKey ? vaultUserDataLoading : !userDataLoaded
+  const userDataLoading = pool.vaultKey ? vaultUserDataLoading : !pool.userDataLoaded
 
   return (
-    <StyledCell role="cell">
+    <StyledCell role="cell" flex={pool.vaultKey && !hasStaked ? '1 0 120px' : '2 0 100px'}>
       <CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}

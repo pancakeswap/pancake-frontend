@@ -15,6 +15,7 @@ interface VoteRowProps {
 const VoteRow: React.FC<VoteRowProps> = ({ vote, isVoter }) => {
   const { t } = useTranslation()
   const hasVotingPower = !!vote.metadata?.votingPower
+
   const votingPower = hasVotingPower
     ? parseFloat(vote.metadata.votingPower).toLocaleString(undefined, {
         minimumFractionDigits: 0,

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Text, Flex, useModal, CalculateIcon, Skeleton, FlexProps, Button } from '@pancakeswap/uikit'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
-import Balance from 'components/Balance'
+import { BalanceWithLoading } from 'components/Balance'
 import { DeserializedPool } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
@@ -21,9 +21,17 @@ interface AprProps extends FlexProps {
   stakedBalance: BigNumber
   showIcon: boolean
   performanceFee?: number
+  fontSize?: string
 }
 
-const Apr: React.FC<AprProps> = ({ pool, showIcon, stakedBalance, performanceFee = 0, ...props }) => {
+const Apr: React.FC<AprProps> = ({
+  pool,
+  showIcon,
+  stakedBalance,
+  fontSize = '16px',
+  performanceFee = 0,
+  ...props
+}) => {
   const {
     stakingToken,
     earningToken,
@@ -72,9 +80,9 @@ const Apr: React.FC<AprProps> = ({ pool, showIcon, stakedBalance, performanceFee
         <>
           {hasPoolStarted || !shouldShowBlockCountdown ? (
             <>
-              <Balance
+              <BalanceWithLoading
                 onClick={openRoiModal}
-                fontSize="16px"
+                fontSize={fontSize}
                 isDisabled={isFinished}
                 value={isFinished ? 0 : apr}
                 decimals={2}

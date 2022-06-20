@@ -15,12 +15,12 @@ const StyledLinkExternal = styled(LinkExternal)`
 
 interface DetailsViewProps {
   total: number
-  cakeBalance: number
-  cakeVaultBalance: number
-  cakePoolBalance: number
-  poolsBalance: number
-  cakeBnbLpBalance: number
-  ifoPoolBalance: number
+  cakeBalance?: number
+  cakeVaultBalance?: number
+  cakePoolBalance?: number
+  poolsBalance?: number
+  cakeBnbLpBalance?: number
+  ifoPoolBalance?: number
   block: number
 }
 
@@ -58,42 +58,54 @@ const DetailsView: React.FC<DetailsViewProps> = ({
           {block}
         </StyledLinkExternal>
       </Text>
-      <Flex alignItems="center" justifyContent="space-between" mb="4px">
-        <Text color="textSubtle" fontSize="16px">
-          {t('Wallet')}
-        </Text>
-        <Text textAlign="right">{formatNumber(cakeBalance, 0, 3)}</Text>
-      </Flex>
-      <Flex alignItems="center" justifyContent="space-between" mb="4px">
-        <Text color="textSubtle" fontSize="16px">
-          {t('Manual CAKE Pool')}
-        </Text>
-        <Text textAlign="right">{formatNumber(cakePoolBalance, 0, 3)}</Text>
-      </Flex>
-      <Flex alignItems="center" justifyContent="space-between" mb="4px">
-        <Text color="textSubtle" fontSize="16px">
-          {t('Auto CAKE Pool')}
-        </Text>
-        <Text textAlign="right">{formatNumber(cakeVaultBalance, 0, 3)}</Text>
-      </Flex>
-      <Flex alignItems="center" justifyContent="space-between" mb="4px">
-        <Text color="textSubtle" fontSize="16px">
-          {t('IFO Pool')}
-        </Text>
-        <Text textAlign="right">{formatNumber(ifoPoolBalance, 0, 3)}</Text>
-      </Flex>
-      <Flex alignItems="center" justifyContent="space-between" mb="4px">
-        <Text color="textSubtle" fontSize="16px">
-          {t('Other Syrup Pools')}
-        </Text>
-        <Text textAlign="right">{formatNumber(poolsBalance, 0, 3)}</Text>
-      </Flex>
-      <Flex alignItems="center" justifyContent="space-between" mb="4px">
-        <Text color="textSubtle" fontSize="16px">
-          {t('CAKE BNB LP')}
-        </Text>
-        <Text textAlign="right">{formatNumber(cakeBnbLpBalance, 0, 3)}</Text>
-      </Flex>
+      {Number.isFinite(cakeBalance) && (
+        <Flex alignItems="center" justifyContent="space-between" mb="4px">
+          <Text color="textSubtle" fontSize="16px">
+            {t('Wallet')}
+          </Text>
+          <Text textAlign="right">{formatNumber(cakeBalance, 0, 3)}</Text>
+        </Flex>
+      )}
+      {Number.isFinite(cakePoolBalance) && (
+        <Flex alignItems="center" justifyContent="space-between" mb="4px">
+          <Text color="textSubtle" fontSize="16px">
+            {t('CAKE Pool')}
+          </Text>
+          <Text textAlign="right">{formatNumber(cakePoolBalance, 0, 3)}</Text>
+        </Flex>
+      )}
+      {Number.isFinite(cakeVaultBalance) && (
+        <Flex alignItems="center" justifyContent="space-between" mb="4px">
+          <Text color="textSubtle" fontSize="16px">
+            {t('Auto CAKE Pool')}
+          </Text>
+          <Text textAlign="right">{formatNumber(cakeVaultBalance, 0, 3)}</Text>
+        </Flex>
+      )}
+      {Number.isFinite(ifoPoolBalance) && (
+        <Flex alignItems="center" justifyContent="space-between" mb="4px">
+          <Text color="textSubtle" fontSize="16px">
+            {t('IFO Pool')}
+          </Text>
+          <Text textAlign="right">{formatNumber(ifoPoolBalance, 0, 3)}</Text>
+        </Flex>
+      )}
+      {Number.isFinite(poolsBalance) && (
+        <Flex alignItems="center" justifyContent="space-between" mb="4px">
+          <Text color="textSubtle" fontSize="16px">
+            {t('Other Syrup Pools')}
+          </Text>
+          <Text textAlign="right">{formatNumber(poolsBalance, 0, 3)}</Text>
+        </Flex>
+      )}
+      {Number.isFinite(cakeBnbLpBalance) && (
+        <Flex alignItems="center" justifyContent="space-between" mb="4px">
+          <Text color="textSubtle" fontSize="16px">
+            {t('CAKE BNB LP')}
+          </Text>
+          <Text textAlign="right">{formatNumber(cakeBnbLpBalance, 0, 3)}</Text>
+        </Flex>
+      )}
     </ModalInner>
   )
 }

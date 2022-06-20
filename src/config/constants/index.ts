@@ -20,7 +20,6 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     mainnetTokens.busd,
     mainnetTokens.usdt,
     mainnetTokens.btcb,
-    mainnetTokens.ust,
     mainnetTokens.eth,
     mainnetTokens.usdc,
   ],
@@ -108,6 +107,15 @@ export { default as ifosConfig } from './ifo'
 export const FAST_INTERVAL = 10000
 export const SLOW_INTERVAL = 60000
 
+export const NOT_ON_SALE_SELLER = '0x0000000000000000000000000000000000000000'
+
+// BNB
+export const DEFAULT_INPUT_CURRENCY = 'BNB'
+// CAKE
+export const DEFAULT_OUTPUT_CURRENCY = '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82'
+
+export const FARM_AUCTION_HOSTING_IN_SECONDS = 604800
+
 // Gelato uses this address to define a native currency in all chains
 export const GELATO_NATIVE = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
 // Handler string is passed to Gelato to use PCS router
@@ -116,3 +124,5 @@ export const GENERIC_GAS_LIMIT_ORDER_EXECUTION = BigNumber.from(500000)
 
 export const EXCHANGE_DOCS_URLS = 'https://docs.pancakeswap.finance/products/pancakeswap-exchange'
 export const LIMIT_ORDERS_DOCS_URL = 'https://docs.pancakeswap.finance/products/pancakeswap-exchange/limit-orders'
+
+export const GALAXY_NFT_CAMPAIGN_ID = 'GCpp2UUxqQ'

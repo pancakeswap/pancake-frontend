@@ -1,20 +1,15 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import orderBy from 'lodash/orderBy'
-import minBy from 'lodash/minBy'
 import { createSelector } from '@reduxjs/toolkit'
-import { State, ReduxNodeRound, NodeRound, ReduxNodeLedger, NodeLedger } from '../types'
+import { PredictionsState, ReduxNodeRound, NodeRound, ReduxNodeLedger, NodeLedger } from '../types'
 import { parseBigNumberObj } from './helpers'
 
-const selectCurrentEpoch = (state: State) => state.predictions.currentEpoch
-const selectRounds = (state: State) => state.predictions.rounds
-const selectRound = (epoch) => (state: State) => state.predictions.rounds[epoch]
-const selectLedgers = (state: State) => state.predictions.ledgers
-const selectClaimableStatuses = (state: State) => state.predictions.claimableStatuses
-const selectMinBetAmount = (state: State) => state.predictions.minBetAmount
-const selectIntervalSeconds = (state: State) => state.predictions.intervalSeconds
-
-export const makeGetRoundSelector = (epoch: number) =>
-  createSelector([selectRound(epoch)], (round) => parseBigNumberObj<ReduxNodeRound, NodeRound>(round))
+const selectCurrentEpoch = (state: PredictionsState) => state.currentEpoch
+const selectRounds = (state: PredictionsState) => state.rounds
+const selectLedgers = (state: PredictionsState) => state.ledgers
+const selectClaimableStatuses = (state: PredictionsState) => state.claimableStatuses
+const selectMinBetAmount = (state: PredictionsState) => state.minBetAmount
+const selectIntervalSeconds = (state: PredictionsState) => state.intervalSeconds
 
 export const makeGetBetByEpochSelector = (account: string, epoch: number) =>
   createSelector([selectLedgers], (bets) => {
@@ -57,33 +52,34 @@ export const getSortedRoundsSelector = createSelector([getBigNumberRounds], (rou
   return orderBy(Object.values(rounds), ['epoch'], ['asc'])
 })
 
-export const getCurrentRoundSelector = createSelector(
-  [selectCurrentEpoch, getBigNumberRounds],
-  (currentEpoch, rounds) => {
-    return rounds[currentEpoch]
+export const getSortedRoundsCurrentEpochSelector = createSelector(
+  [selectCurrentEpoch, getSortedRoundsSelector],
+  (currentEpoch, sortedRounds) => {
+    return {
+      currentEpoch,
+      rounds: sortedRounds,
+    }
   },
 )
 
 export const getMinBetAmountSelector = createSelector([selectMinBetAmount], BigNumber.from)
 
-export const getEarliestEpochSelector = createSelector([selectRounds], (rounds) => {
-  const earliestRound = minBy(Object.values(rounds), 'epoch')
-  return earliestRound?.epoch
-})
-
-export const getCurrentRoundLockTimestampSelector = createSelector(
+export const getCurrentRoundCloseTimestampSelector = createSelector(
   [selectCurrentEpoch, getBigNumberRounds, selectIntervalSeconds],
   (currentEpoch, rounds, intervalSeconds) => {
-    const currentRound = rounds[currentEpoch]
+    if (!currentEpoch) {
+      return undefined
+    }
+
+    const currentRound = rounds[currentEpoch - 1]
 
     if (!currentRound) {
       return undefined
     }
 
-    if (!currentRound.lockTimestamp) {
-      return currentRound.startTimestamp + intervalSeconds
+    if (!currentRound.closeTimestamp) {
+      return currentRound.lockTimestamp + intervalSeconds
     }
-
-    return currentRound.lockTimestamp
+    return currentRound.closeTimestamp
   },
 )

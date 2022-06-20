@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Skeleton from "./Skeleton";
+import Skeleton, { SkeletonV2 } from "./Skeleton";
 
 export default {
   title: "Components/Skeleton",
@@ -48,4 +48,20 @@ export const Text: React.FC = (args) => {
   }, []);
 
   return <h1 style={{ width: 200 }}>{loading ? <Skeleton {...args} /> : "H1"}</h1>;
+};
+
+export const TextWithTransition: React.FC = (args) => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+  return (
+    <SkeletonV2 {...args} isDataReady={!loading} width={200}>
+      <h1>H1</h1>
+    </SkeletonV2>
+  );
 };

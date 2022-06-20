@@ -10,7 +10,7 @@ import {
   Table,
   Text,
   Th,
-  useMatchBreakpoints,
+  useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
 import { getCollectionActivity } from 'state/nftMarket/helpers'
 import Container from 'components/Layout/Container'
@@ -58,7 +58,7 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
   const [queryPage, setQueryPage] = useState(1)
   const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
   const bnbBusdPrice = useBNBBusdPrice()
-  const { isXs, isSm } = useMatchBreakpoints()
+  const { isXs, isSm, isMd } = useMatchBreakpointsContext()
 
   const nftActivityFiltersString = JSON.stringify(nftActivityFilters)
 
@@ -116,6 +116,7 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
           style={{ gap: '16px', padding: '0 16px' }}
           alignItems={[null, null, 'center']}
           flexDirection={['column', 'column', 'row']}
+          flexWrap={isMd ? 'wrap' : 'nowrap'}
         >
           <ActivityFilters address={collection?.address || ''} />
           <Button
@@ -124,6 +125,7 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
             onClick={() => {
               refresh()
             }}
+            width={isMd && '100%'}
           >
             {t('Refresh')}
           </Button>
@@ -164,7 +166,11 @@ const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
                   <TableLoader />
                 ) : (
                   activitiesSlice.map((activity) => {
-                    const nftMeta = nftMetadata.find((metaNft) => metaNft.tokenId === activity.nft.tokenId)
+                    const nftMeta = nftMetadata.find(
+                      (metaNft) =>
+                        metaNft.tokenId === activity.nft.tokenId &&
+                        metaNft.collectionAddress.toLowerCase() === activity.nft?.collection.id.toLowerCase(),
+                    )
                     return (
                       <ActivityRow
                         key={`${activity.marketEvent}#${activity.nft.tokenId}#${activity.timestamp}#${activity.tx}`}

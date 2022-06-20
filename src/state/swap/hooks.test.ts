@@ -1,11 +1,11 @@
 /* eslint-disable no-var */
 /* eslint-disable vars-on-top */
 import { renderHook } from '@testing-library/react-hooks'
+import { DEFAULT_OUTPUT_CURRENCY } from 'config/constants'
 import { parse } from 'querystring'
 import { useCurrency } from 'hooks/Tokens'
-import { createWrapper } from 'testUtils'
+import { createReduxWrapper } from 'testUtils'
 import { Field } from './actions'
-import { DEFAULT_OUTPUT_CURRENCY } from './constants'
 import { queryParametersToSwapState, useDerivedSwapInfo, useSwapState } from './hooks'
 
 describe('hooks', () => {
@@ -91,19 +91,6 @@ describe('hooks', () => {
         recipient: '0x0fF2D1eFd7A57B7562b2bf27F3f37899dB27F4a5',
       })
     })
-    test('accepts any recipient', () => {
-      expect(queryParametersToSwapState(parse('outputCurrency=BNB&exactAmount=20.5&recipient=bob.argent.xyz'))).toEqual(
-        {
-          [Field.OUTPUT]: { currencyId: 'BNB' },
-          [Field.INPUT]: { currencyId: '' },
-          typedValue: '20.5',
-          independentField: Field.INPUT,
-          pairDataById: {},
-          derivedPairDataById: {},
-          recipient: 'bob.argent.xyz',
-        },
-      )
-    })
   })
 })
 
@@ -115,6 +102,17 @@ jest.mock('../../hooks/useActiveWeb3React', () => {
   return {
     __esModule: true,
     default: mockUseActiveWeb3React,
+  }
+})
+
+var mockUseWeb3React: jest.Mock
+
+jest.mock('@web3-react/core', () => {
+  mockUseWeb3React = jest.fn().mockReturnValue({})
+  const original = jest.requireActual('@web3-react/core') // Step 2.
+  return {
+    ...original,
+    useWeb3React: mockUseWeb3React,
   }
 })
 
@@ -131,29 +129,21 @@ describe('#useDerivedSwapInfo', () => {
         } = useSwapState()
         const inputCurrency = useCurrency(inputCurrencyId)
         const outputCurrency = useCurrency(outputCurrencyId)
-        return useDerivedSwapInfo(
-          independentField,
-          typedValue,
-          inputCurrencyId,
-          inputCurrency,
-          outputCurrencyId,
-          outputCurrency,
-          recipient,
-        )
+        return useDerivedSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, recipient)
       },
-      { wrapper: createWrapper() },
+      { wrapper: createReduxWrapper() },
     )
     expect(result.current.inputError).toBe('Connect Wallet')
 
-    mockUseActiveWeb3React.mockReturnValue({ account: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
+    mockUseWeb3React.mockReturnValue({ account: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
     rerender()
 
     expect(result.current.inputError).toBe('Enter an amount')
-    mockUseActiveWeb3React.mockClear()
+    mockUseWeb3React.mockClear()
   })
 
   it('should show [Enter a recipient] Error', async () => {
-    mockUseActiveWeb3React.mockReturnValue({ account: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
+    mockUseWeb3React.mockReturnValue({ account: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
     const { result, rerender } = renderHook(
       () => {
         const {
@@ -165,18 +155,10 @@ describe('#useDerivedSwapInfo', () => {
         } = useSwapState()
         const inputCurrency = useCurrency(inputCurrencyId)
         const outputCurrency = useCurrency(outputCurrencyId)
-        return useDerivedSwapInfo(
-          independentField,
-          typedValue,
-          inputCurrencyId,
-          inputCurrency,
-          outputCurrencyId,
-          outputCurrency,
-          recipient,
-        )
+        return useDerivedSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, recipient)
       },
       {
-        wrapper: createWrapper({
+        wrapper: createReduxWrapper({
           swap: {
             typedValue: '0.11',
             [Field.INPUT]: { currencyId: 'BNB' },
@@ -189,7 +171,7 @@ describe('#useDerivedSwapInfo', () => {
     rerender()
 
     expect(result.current.inputError).toBe('Enter a recipient')
-    mockUseActiveWeb3React.mockClear()
+    mockUseWeb3React.mockClear()
   })
 
   it('should return undefined when no pair', async () => {
@@ -204,21 +186,13 @@ describe('#useDerivedSwapInfo', () => {
         } = useSwapState()
         const inputCurrency = useCurrency(inputCurrencyId)
         const outputCurrency = useCurrency(outputCurrencyId)
-        const swapInfo = useDerivedSwapInfo(
-          independentField,
-          typedValue,
-          inputCurrencyId,
-          inputCurrency,
-          outputCurrencyId,
-          outputCurrency,
-          recipient,
-        )
+        const swapInfo = useDerivedSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, recipient)
         return {
           swapInfo,
         }
       },
       {
-        wrapper: createWrapper(),
+        wrapper: createReduxWrapper(),
       },
     )
 

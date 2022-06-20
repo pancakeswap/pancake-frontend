@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ParsedUrlQuery } from 'querystring'
 import { Currency, CurrencyAmount, TokenAmount, Trade, Token, Price, ETHER } from '@pancakeswap/sdk'
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from 'config/constants'
 import { useRouter } from 'next/router'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
@@ -12,10 +13,9 @@ import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
 import { isAddress } from 'utils'
 import tryParseAmount from 'utils/tryParseAmount'
 import { useCurrencyBalances } from '../wallet/hooks'
-import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from './constants'
 import { replaceLimitOrdersState, selectCurrency, setRateType, switchCurrencies, typeInput } from './actions'
 import { Field, Rate, OrderState } from './types'
-import { AppState, AppDispatch } from '..'
+import { AppState, useAppDispatch } from '..'
 
 // Get desired input amount in output basis mode
 const getDesiredInput = (
@@ -290,7 +290,7 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
   }, [inputValue, inputCurrency])
 
   // Get CurrencyAmount for the outputCurrency amount specified by user
-  const outpuAmount = useMemo(() => {
+  const outputAmount = useMemo(() => {
     return tryParseAmount(outputValue, outputCurrency ?? undefined)
   }, [outputValue, outputCurrency])
 
@@ -320,10 +320,10 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
     : undefined
 
   // If not price - cast input or output typing to CurrencyAmount
-  // if price - whatever amount of tokens recevied on the desired price
+  // if price - whatever amount of tokens received on the desired price
   const tradeAmount = isDesiredRateUpdate
     ? isOutputBasis
-      ? outpuAmount
+      ? outputAmount
       : tryParseAmount(desiredOutputAsString, outputCurrency)
     : tryParseAmount(typedValue, isExactIn ? inputCurrency : outputCurrency)
 
@@ -362,7 +362,7 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
     // If we're in output basis mode - no matter what keep output as specified by user
     let output: CurrencyAmount | TokenAmount
     if (isOutputBasis) {
-      output = outpuAmount
+      output = outputAmount
     } else if (independentField === Field.OUTPUT) {
       // If user touching input field -> whatever they type currently
       output = parsedTypedAmount
@@ -380,7 +380,7 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
     independentField,
     parsedTypedAmount,
     inputAmount,
-    outpuAmount,
+    outputAmount,
     trade,
     isDesiredRateUpdate,
     isOutputBasis,
@@ -474,7 +474,7 @@ function parseCurrencyFromURLParameter(urlParam: any): string {
 }
 
 // TODO: combine with swap's version but use generic type. Same for helpers above
-// Note: swap has recepient and other things. Mergins these 2 would probably be much easier if we get rid of recepient
+// Note: swap has recipient and other things. Merging these 2 would probably be much easier if we get rid of recipient
 // Also the whole thing doesn't make sense, in swap inputValue is not initialized but typedValue is. WTF
 const queryParametersToSwapState = (parsedQs: ParsedUrlQuery): OrderState => {
   let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency) || DEFAULT_INPUT_CURRENCY
@@ -508,7 +508,7 @@ export const useDefaultsFromURLSearch = ():
   | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
   | undefined => {
   const { chainId } = useActiveWeb3React()
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const { query } = useRouter()
   const [result, setResult] = useState<
     { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined

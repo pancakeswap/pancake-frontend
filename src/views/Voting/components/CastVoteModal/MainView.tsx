@@ -14,6 +14,7 @@ interface MainViewProps {
   isPending: boolean
   isError: boolean
   total: number
+  disabled?: boolean
   onConfirm: () => void
   onViewDetails: () => void
   onDismiss: CastVoteModalProps['onDismiss']
@@ -28,6 +29,7 @@ const MainView: React.FC<MainViewProps> = ({
   onConfirm,
   onViewDetails,
   onDismiss,
+  disabled,
 }) => {
   const { t } = useTranslation()
   return (
@@ -77,7 +79,7 @@ const MainView: React.FC<MainViewProps> = ({
       <Button
         isLoading={isPending}
         endIcon={isPending ? <AutoRenewIcon spin color="currentColor" /> : null}
-        disabled={isLoading || total === 0}
+        disabled={disabled || isLoading || total === 0}
         width="100%"
         mb="8px"
         onClick={onConfirm}

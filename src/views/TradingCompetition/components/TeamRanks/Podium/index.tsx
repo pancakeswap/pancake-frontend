@@ -3,12 +3,8 @@ import styled from 'styled-components'
 import { Flex, Box, Text, Skeleton } from '@pancakeswap/uikit'
 import TeamPodiumIcon from './TeamPodiumIcon'
 import { PodiumBase } from '../../../svgs'
-import { TeamLeaderboardProps } from '../../../types'
 import { localiseTradingVolume } from '../../../helpers'
-
-interface PodiumProps {
-  teamsSortedByVolume?: Array<TeamLeaderboardProps>
-}
+import { PodiumProps } from './styles'
 
 const Wrapper = styled(Flex)`
   width: 260px;
@@ -114,7 +110,7 @@ const Podium: React.FC<PodiumProps> = ({ teamsSortedByVolume }) => {
             ) : (
               <Skeleton width="77px" height="24px" />
             )}
-            <Text fontSize="12px" color="textSubtle">
+            <Text mb="16px" fontSize="12px" color="textSubtle">
               {t('Volume')}
             </Text>
           </StyledVolumeFlex>
@@ -124,7 +120,7 @@ const Podium: React.FC<PodiumProps> = ({ teamsSortedByVolume }) => {
             ) : (
               <Skeleton width="77px" height="24px" />
             )}
-            <Text fontSize="12px" color="textSubtle">
+            <Text mb="16px" fontSize="12px" color="textSubtle">
               {t('Volume')}
             </Text>
           </StyledVolumeFlex>
@@ -134,7 +130,7 @@ const Podium: React.FC<PodiumProps> = ({ teamsSortedByVolume }) => {
             ) : (
               <Skeleton width="77px" height="24px" />
             )}
-            <Text fontSize="12px" color="textSubtle">
+            <Text mb="16px" fontSize="12px" color="textSubtle">
               {t('Volume')}
             </Text>
           </StyledVolumeFlex>

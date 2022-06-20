@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Skeleton, Text, Flex, Box, useModal, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Skeleton, Text, Flex, Box, useModal, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { DeserializedPool } from 'state/types'
 import BigNumber from 'bignumber.js'
 import { PoolCategory } from 'config/constants/types'
@@ -13,7 +13,6 @@ import CollectModal from '../../PoolCard/Modals/CollectModal'
 interface EarningsCellProps {
   pool: DeserializedPool
   account: string
-  userDataLoaded: boolean
 }
 
 const StyledCell = styled(BaseCell)`
@@ -23,9 +22,9 @@ const StyledCell = styled(BaseCell)`
   }
 `
 
-const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoaded }) => {
+const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
   const { sousId, earningToken, poolCategory, userData, earningTokenPrice } = pool
   const isManualCakePool = sousId === 0
 
@@ -62,7 +61,7 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
-        {!userDataLoaded && account ? (
+        {!pool.userDataLoaded && account ? (
           <Skeleton width="80px" height="16px" />
         ) : (
           <>

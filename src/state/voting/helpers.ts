@@ -1,10 +1,9 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 import { SNAPSHOT_API } from 'config/constants/endpoints'
 import request, { gql } from 'graphql-request'
-import keyBy from 'lodash/keyBy'
+import { getVotingPowerByCakeStrategy } from 'views/Voting/helpers'
 import { Proposal, ProposalState, Vote, VoteWhere } from 'state/types'
-import { getAddress } from 'utils/addressHelpers'
-import { getActivePools } from 'utils/calls/pools'
-import { getVotingPowerList } from 'views/Voting/helpers'
 import _chunk from 'lodash/chunk'
 import _flatten from 'lodash/flatten'
 
@@ -94,43 +93,18 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
   return response.votes
 }
 
-const NUMBER_OF_VOTERS_PER_SNAPSHOT_REQUEST = 250
-
-export const getAllVotes = async (proposalId: string, block?: number, votesPerChunk = 1000): Promise<Vote[]> => {
-  const eligiblePools = await getActivePools(block)
-  const poolAddresses = eligiblePools.map(({ contractAddress }) => getAddress(contractAddress))
-  return new Promise((resolve, reject) => {
+export const getAllVotes = async (proposal: Proposal, votesPerChunk = 30000): Promise<Vote[]> => {
+  const voters = await new Promise<Vote[]>((resolve, reject) => {
     let votes: Vote[] = []
 
     const fetchVoteChunk = async (newSkip: number) => {
       try {
-        const voteChunk = await getVotes(votesPerChunk, newSkip, { proposal: proposalId })
-
-        const voteChunkVoters = voteChunk.map((vote) => {
-          return vote.voter
-        })
-
-        const snapshotVotersChunk = _chunk(voteChunkVoters, NUMBER_OF_VOTERS_PER_SNAPSHOT_REQUEST)
-
-        const votingPowers = await Promise.all(
-          snapshotVotersChunk.map((votersChunk) => getVotingPowerList(votersChunk, poolAddresses, block)),
-        )
-
-        const vpByVoter = keyBy(_flatten(votingPowers), 'voter')
-
-        const voteChunkWithVP = voteChunk.map((vote) => {
-          return {
-            ...vote,
-            metadata: {
-              votingPower: vpByVoter[vote.voter]?.total,
-            },
-          }
-        })
+        const voteChunk = await getVotes(votesPerChunk, newSkip, { proposal: proposal.id })
 
         if (voteChunk.length === 0) {
           resolve(votes)
         } else {
-          votes = [...votes, ...voteChunkWithVP]
+          votes = [...votes, ...voteChunk]
           fetchVoteChunk(newSkip + votesPerChunk)
         }
       } catch (error) {
@@ -140,4 +114,27 @@ export const getAllVotes = async (proposalId: string, block?: number, votesPerCh
 
     fetchVoteChunk(0)
   })
+
+  const voterChunk = _chunk(
+    voters.map((v) => v.voter),
+    600,
+  )
+
+  let votingPowers = {}
+
+  const vps = await Promise.all(voterChunk.map((v) => getVotingPowerByCakeStrategy(v, parseInt(proposal.snapshot))))
+
+  for (const vp of vps) {
+    votingPowers = {
+      ...votingPowers,
+      ...vp,
+    }
+  }
+
+  return voters.map((v) => ({
+    ...v,
+    metadata: {
+      votingPower: votingPowers[v.voter] || '0',
+    },
+  }))
 }

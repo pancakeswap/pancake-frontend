@@ -1,5 +1,5 @@
-import { Box, Button, Grid, Flex, useMatchBreakpoints, AutoRenewIcon } from '@pancakeswap/uikit'
-import { useAppDispatch } from 'state'
+import { Box, Button, Grid, Flex, AutoRenewIcon, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import {
   useGetLeaderboardHasMoreResults,
   useGetLeaderboardLoadingState,
@@ -16,14 +16,14 @@ import MobileResults from './MobileResults'
 import RankingCard from './RankingCard'
 
 const Results = () => {
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpointsContext()
   const { t } = useTranslation()
   const [first, second, third, ...rest] = useGetLeaderboardResults()
   const leaderboardLoadingState = useGetLeaderboardLoadingState()
   const isLoading = leaderboardLoadingState === FetchStatus.Fetching
   const currentSkip = useGetLeaderboardSkip()
   const hasMoreResults = useGetLeaderboardHasMoreResults()
-  const dispatch = useAppDispatch()
+  const dispatch = useLocalDispatch()
 
   const handleClick = () => {
     dispatch(filterNextPageLeaderboard(currentSkip + LEADERBOARD_RESULTS_PER_PAGE))

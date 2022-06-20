@@ -9,7 +9,7 @@ interface TokenList {
   [symbol: string]: Token
 }
 
-const defineTokens = <T extends TokenList>(t: T) => t
+export const defineTokens = <T extends TokenList>(t: T) => t
 
 export const mainnetTokens = defineTokens({
   wbnb: new Token(
@@ -30,6 +30,7 @@ export const mainnetTokens = defineTokens({
     'PancakeSwap Token',
     'https://pancakeswap.finance/',
   ),
+  gmi: new Token(MAINNET, '0x93D8d25E3C9A847a5Da79F79ecaC89461FEcA846', 18, 'GMI', 'Gamifi', 'https://gamifi.gg/'),
   tlos: new Token(MAINNET, '0xb6C53431608E626AC81a9776ac3e999c5556717c', 18, 'TLOS', 'Telos', 'https://www.telos.net/'),
   beta: new Token(
     MAINNET,
@@ -2041,6 +2042,75 @@ export const mainnetTokens = defineTokens({
     'TEM',
     'TemplarDAO',
     'https://templar.finance/',
+  ),
+  pex: new Token(MAINNET, '0x6a0b66710567b6beb81A71F7e9466450a91a384b', 18, 'PEX', 'PearDAO', 'https://peardao.io/'),
+  yel: new Token(MAINNET, '0xD3b71117E6C1558c1553305b44988cd944e97300', 18, 'YEL', 'YEL', 'https://yel.finance/'),
+  tinc: new Token(
+    MAINNET,
+    '0x05aD6E30A855BE07AfA57e08a4f30d00810a402e',
+    18,
+    'TINC',
+    'Tiny Coin',
+    'https://tinyworlds.io/',
+  ),
+  happy: new Token(
+    MAINNET,
+    '0xF5d8A096CcCb31b9D7bcE5afE812BE23e3D4690d',
+    18,
+    'Happy',
+    'HappyFans',
+    'https://happyfans.club/',
+  ),
+  wzrd: new Token(
+    MAINNET,
+    '0xFa40d8FC324bcdD6Bbae0e086De886c571C225d4',
+    18,
+    'WZRD',
+    'Wizardia Token',
+    'https://wizardia.io/',
+  ),
+  ceek: new Token(MAINNET, '0xe0F94Ac5462997D2BC57287Ac3a3aE4C31345D66', 18, 'CEEK', 'CEEK', 'https://www.ceek.com/'),
+  abnbc: new Token(
+    MAINNET,
+    '0xE85aFCcDaFBE7F2B096f268e31ccE3da8dA2990A',
+    18,
+    'aBNBc',
+    'Ankr BNB Reward Bearing Certificate',
+    'https://www.ankr.com/',
+  ),
+  ankr: new Token(MAINNET, '0xf307910A4c7bbc79691fD374889b36d8531B08e3', 18, 'ANKR', 'Ankr', 'https://www.ankr.com/'),
+  gal: new Token(
+    MAINNET,
+    '0xe4Cc45Bb5DBDA06dB6183E8bf016569f40497Aa5',
+    18,
+    'GAL',
+    'Project Galaxy',
+    'https://galaxy.eco/',
+  ),
+  xcn: new Token(MAINNET, '0x7324c7C0d95CEBC73eEa7E85CbAac0dBdf88a05b', 18, 'XCN', 'Chain', 'https://chain.com/'),
+  metis: new Token(
+    MAINNET,
+    '0xe552Fb52a4F19e44ef5A967632DBc320B0820639',
+    18,
+    'Metis',
+    'Metis Token',
+    'https://www.metis.io/',
+  ),
+  MIX: new Token(
+    MAINNET,
+    '0x398f7827DcCbeFe6990478876bBF3612D93baF05',
+    18,
+    'MIX',
+    'MixMarvel Token',
+    'https://www.mixmarvel.com/',
+  ),
+  peak: new Token(
+    MAINNET,
+    '0x630d98424eFe0Ea27fB1b3Ab7741907DFFEaAd78',
+    8,
+    'PEAK',
+    'PEAKDEFI',
+    'https://peakdefi.com/',
   ),
 } as const)
 

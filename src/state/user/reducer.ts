@@ -35,7 +35,7 @@ import {
   setSubgraphHealthIndicatorDisplayed,
   updateUserLimitOrderAcceptedWarning,
 } from './actions'
-import { GAS_PRICE_GWEI } from './hooks/helpers'
+import { GAS_PRICE_GWEI } from '../types'
 
 const currentTimestamp = () => new Date().getTime()
 

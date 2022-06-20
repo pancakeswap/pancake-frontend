@@ -8,7 +8,7 @@ import {
   Text,
   // TradingViewIcon,
   LineGraphIcon,
-  useMatchBreakpoints,
+  useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 // import { TradingViewLabel } from 'components/TradingView'
@@ -40,7 +40,7 @@ const PriceChart = ({
   token1Address,
   currentSwapPrice,
 }) => {
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpointsContext()
   const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
   const [chartView, setChartView] = useExchangeChartViewManager()
   // const [twChartSymbol, setTwChartSymbol] = useState('')

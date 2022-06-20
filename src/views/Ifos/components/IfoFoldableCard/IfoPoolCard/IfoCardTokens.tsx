@@ -22,7 +22,6 @@ import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
-import { useIfoPoolCredit } from 'state/pools/hooks'
 import { EnableStatus } from '../types'
 import PercentageOfTotal from './PercentageOfTotal'
 import { SkeletonCardTokens } from './Skeletons'
@@ -132,8 +131,6 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   const { hasClaimed } = userPoolCharacteristics
   const distributionRatio = ifo[poolId].distributionRatio * 100
 
-  const credit = useIfoPoolCredit()
-
   const renderTokenSection = () => {
     if (isLoading) {
       return <SkeletonCardTokens />
@@ -186,10 +183,9 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
         </Box>
       ) : null
 
-    if (
-      (ifo.version === 3 || (ifo.version === 3.1 && poolId === PoolIds.poolUnlimited)) &&
-      getBalanceNumber(credit) === 0
-    ) {
+    // TODO: Need checking in the future
+    // (ifo.version === 3 || (ifo.version === 3.1 && poolId === PoolIds.poolUnlimited)) && getBalanceNumber(credit) === 0)
+    if (ifo.version === 3 || (ifo.version === 3.1 && poolId === PoolIds.poolUnlimited)) {
       message = (
         <Message my="24px" p="8px" variant="danger">
           <Box>

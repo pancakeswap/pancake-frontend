@@ -9,6 +9,7 @@ import {
   IconButton,
   Button,
   BinanceIcon,
+  LogoIcon,
   Text,
   BalanceInput,
   Slider,
@@ -28,8 +29,14 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { BetPosition } from 'state/types'
 import { formatBigNumber, formatFixedNumber } from 'utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import PositionTag from '../PositionTag'
 import FlexRow from '../FlexRow'
+
+const LOGOS = {
+  BNB: BinanceIcon,
+  CAKE: LogoIcon,
+}
 
 interface SetPositionCardProps {
   position: BetPosition
@@ -39,7 +46,7 @@ interface SetPositionCardProps {
   onSuccess: (hash: string) => Promise<void>
 }
 
-const dust = parseUnits('0.01', 18)
+const dust = parseUnits('0.001', 18)
 const percentShortcuts = [10, 25, 50, 75]
 
 const getButtonProps = (value: BigNumber, bnbBalance: BigNumber, minBetAmountBalance: BigNumber) => {
@@ -77,10 +84,11 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const { t } = useTranslation()
   const { fetchWithCatchTxError, loading: isTxPending } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const predictionsContract = usePredictionsContract()
+  const { address: predictionsAddress, token } = useConfig()
+  const predictionsContract = usePredictionsContract(predictionsAddress)
 
   const maxBalance = useMemo(() => {
-    return bnbBalance.gt(dust) ? bnbBalance.sub(dust) : dust
+    return bnbBalance.gt(dust) ? bnbBalance.sub(dust) : Zero
   }, [bnbBalance])
   const balanceDisplay = formatBigNumber(bnbBalance)
 
@@ -143,15 +151,19 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     const hasSufficientBalance = inputAmount.gt(0) && inputAmount.lte(maxBalance)
 
     if (!hasSufficientBalance) {
-      setErrorMessage(t('Insufficient BNB balance'))
+      setErrorMessage(t('Insufficient %symbol% balance', { symbol: token.symbol }))
     } else if (inputAmount.gt(0) && inputAmount.lt(minBetAmount)) {
       setErrorMessage(
-        t('A minimum amount of %num% %token% is required', { num: formatBigNumber(minBetAmount), token: 'BNB' }),
+        t('A minimum amount of %num% %token% is required', { num: formatBigNumber(minBetAmount), token: token.symbol }),
       )
     } else {
       setErrorMessage(null)
     }
-  }, [value, maxBalance, minBetAmount, setErrorMessage, t])
+  }, [value, maxBalance, minBetAmount, setErrorMessage, t, token.symbol])
+
+  const Logo = useMemo(() => {
+    return LOGOS[token.symbol]
+  }, [token.symbol])
 
   return (
     <Card>
@@ -174,9 +186,9 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
             {t('Commit')}:
           </Text>
           <Flex alignItems="center">
-            <BinanceIcon mr="4px  " />
+            <Logo mr="4px" />
             <Text bold textTransform="uppercase">
-              BNB
+              {token.symbol}
             </Text>
           </Flex>
         </Flex>

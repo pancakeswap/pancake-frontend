@@ -21,6 +21,7 @@ export interface SerializedToken {
   symbol?: string
   name?: string
   projectLink?: string
+  logoURI?: string
 }
 
 export enum PoolIds {
@@ -65,10 +66,13 @@ export enum PoolCategory {
 
 interface FarmConfigBaseProps {
   pid: number
+  v1pid?: number
   lpSymbol: string
   lpAddresses: Address
   multiplier?: string
   isCommunity?: boolean
+  auctionHostingStartSeconds?: number
+  auctionHostingEndDate?: string
   dual?: {
     rewardPerBlock: number
     earnLabel: string
@@ -86,20 +90,14 @@ export interface DeserializedFarmConfig extends FarmConfigBaseProps {
   quoteToken: Token
 }
 
-export interface PoolDeployedBlockNumber {
-  [key: string]: number
-}
-
 interface PoolConfigBaseProps {
   sousId: number
   contractAddress: Address
   poolCategory: PoolCategory
   tokenPerBlock: string
-  sortOrder?: number
   harvest?: boolean
   isFinished?: boolean
   enableEmergencyWithdraw?: boolean
-  deployedBlockNumber?: number
   version?: number
 }
 
@@ -186,7 +184,7 @@ export interface FarmAuctionBidderConfig {
   lpAddress?: string
 }
 
-// Note: this status is slightly different compared to 'status' comfing
+// Note: this status is slightly different compared to 'status' config
 // from Farm Auction smart contract
 export enum AuctionStatus {
   ToBeAnnounced, // No specific dates/blocks to display

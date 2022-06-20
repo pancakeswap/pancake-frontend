@@ -6,7 +6,7 @@ import usePreviousValue from './usePreviousValue'
  * Can also be used to force an effect to re-run
  */
 const useLastUpdated = () => {
-  const [lastUpdated, setStateLastUpdated] = useState(Date.now())
+  const [lastUpdated, setStateLastUpdated] = useState(() => Date.now())
   const previousLastUpdated = usePreviousValue(lastUpdated)
 
   const setLastUpdated = useCallback(() => {

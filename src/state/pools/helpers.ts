@@ -4,12 +4,11 @@ import {
   DeserializedPool,
   SerializedPool,
   SerializedCakeVault,
-  SerializedIfoCakeVault,
-  DeserializedIfoCakeVault,
   DeserializedCakeVault,
 } from 'state/types'
 import { deserializeToken } from 'state/user/hooks/helpers'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { convertSharesToCake } from 'views/Pools/helpers'
 
 type UserData =
   | DeserializedPool['userData']
@@ -66,57 +65,71 @@ export const transformPool = (pool: SerializedPool): DeserializedPool => {
   }
 }
 
-export const transformVault = (vault: SerializedCakeVault): DeserializedCakeVault => {
+export const transformLockedVault = (vault: SerializedCakeVault): DeserializedCakeVault => {
   const {
     totalShares: totalSharesAsString,
+    totalLockedAmount: totalLockedAmountAsString,
     pricePerFullShare: pricePerFullShareAsString,
     totalCakeInVault: totalCakeInVaultAsString,
-    estimatedCakeBountyReward: estimatedCakeBountyRewardAsString,
-    totalPendingCakeHarvest: totalPendingCakeHarvestAsString,
-    fees: { performanceFee, callFee, withdrawalFee, withdrawalFeePeriod },
+    fees: { performanceFee, withdrawalFee, withdrawalFeePeriod },
     userData: {
       isLoading,
       userShares: userSharesAsString,
       cakeAtLastUserAction: cakeAtLastUserActionAsString,
       lastDepositedTime,
       lastUserActionTime,
+      userBoostedShare: userBoostedShareAsString,
+      lockEndTime,
+      lockStartTime,
+      locked,
+      lockedAmount: lockedAmountAsString,
+      currentOverdueFee: currentOverdueFeeAsString,
+      currentPerformanceFee: currentPerformanceFeeAsString,
     },
   } = vault
 
-  const estimatedCakeBountyReward = new BigNumber(estimatedCakeBountyRewardAsString)
-  const totalPendingCakeHarvest = new BigNumber(totalPendingCakeHarvestAsString)
-  const totalShares = new BigNumber(totalSharesAsString)
-  const pricePerFullShare = new BigNumber(pricePerFullShareAsString)
+  const totalShares = totalSharesAsString ? new BigNumber(totalSharesAsString) : BIG_ZERO
+  const totalLockedAmount = new BigNumber(totalLockedAmountAsString)
+  const pricePerFullShare = pricePerFullShareAsString ? new BigNumber(pricePerFullShareAsString) : BIG_ZERO
   const totalCakeInVault = new BigNumber(totalCakeInVaultAsString)
   const userShares = new BigNumber(userSharesAsString)
   const cakeAtLastUserAction = new BigNumber(cakeAtLastUserActionAsString)
+  const lockedAmount = new BigNumber(lockedAmountAsString)
+  const userBoostedShare = new BigNumber(userBoostedShareAsString)
+  const currentOverdueFee = currentOverdueFeeAsString ? new BigNumber(currentOverdueFeeAsString) : BIG_ZERO
+  const currentPerformanceFee = currentPerformanceFeeAsString ? new BigNumber(currentPerformanceFeeAsString) : BIG_ZERO
 
   const performanceFeeAsDecimal = performanceFee && performanceFee / 100
 
+  const balance = convertSharesToCake(
+    userShares,
+    pricePerFullShare,
+    undefined,
+    undefined,
+    currentOverdueFee.plus(currentPerformanceFee).plus(userBoostedShare),
+  )
+
   return {
     totalShares,
+    totalLockedAmount,
     pricePerFullShare,
     totalCakeInVault,
-    estimatedCakeBountyReward,
-    totalPendingCakeHarvest,
-    fees: { performanceFee, callFee, withdrawalFee, withdrawalFeePeriod, performanceFeeAsDecimal },
+    fees: { performanceFee, withdrawalFee, withdrawalFeePeriod, performanceFeeAsDecimal },
     userData: {
       isLoading,
       userShares,
       cakeAtLastUserAction,
       lastDepositedTime,
       lastUserActionTime,
+      lockEndTime,
+      lockStartTime,
+      locked,
+      lockedAmount,
+      userBoostedShare,
+      currentOverdueFee,
+      currentPerformanceFee,
+      balance,
     },
-  }
-}
-
-export const transformIfoVault = (vault: SerializedIfoCakeVault): DeserializedIfoCakeVault => {
-  const transformedVault = transformVault(vault)
-  return {
-    ...transformedVault,
-    userData: { ...transformedVault.userData, credit: vault.userData.credit },
-    creditStartBlock: vault.creditStartBlock,
-    creditEndBlock: vault.creditEndBlock,
   }
 }
 

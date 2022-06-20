@@ -1,4 +1,4 @@
-import { ReactText } from 'react'
+import { ReactText, ReactNode } from 'react'
 import {
   Text,
   Heading,
@@ -15,11 +15,10 @@ import {
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { LIVE } from 'config/constants/trading-competition/phases'
+import { REGISTRATION, LIVE } from 'config/constants/trading-competition/phases'
 import { YourScoreProps } from '../../types'
 import UserRankBox from './UserRankBox'
 import NextRankBox from './NextRankBox'
-import ShareImageModal from '../ShareImageModal'
 import { localiseTradingVolume } from '../../helpers'
 
 const TeamRankTextWrapper = styled(Flex)`
@@ -40,7 +39,14 @@ const RanksWrapper = styled(Flex)`
   }
 `
 
-const CardUserInfo: React.FC<YourScoreProps> = ({
+interface CardUserInfoProps extends YourScoreProps {
+  shareModal: ReactNode
+  extraUserRankBox?: ReactNode
+}
+
+const CardUserInfo: React.FC<CardUserInfoProps> = ({
+  shareModal,
+  extraUserRankBox,
   hasRegistered,
   account,
   profile,
@@ -48,10 +54,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
   currentPhase,
 }) => {
   const { t } = useTranslation()
-  const [onPresentShareModal] = useModal(
-    <ShareImageModal profile={profile} userLeaderboardInformation={userLeaderboardInformation} />,
-    false,
-  )
+  const [onPresentShareModal] = useModal(shareModal, false)
   const { global, team, volume, next_rank: nextRank } = userLeaderboardInformation
   const shouldShowUserRanks = account && hasRegistered
 
@@ -146,7 +149,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
     if (!hasRegistered) {
       return t('Sorry, you needed to register during the “entry” period!')
     }
-    return profile && profile.team ? `${profile.team.name}` : ''
+    return profile?.team ? `${profile.team.name}` : ''
   }
 
   const headingText = getHeadingText()
@@ -170,14 +173,14 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
             </Button>
           )}
           <RanksWrapper>
-            <Flex width="100%" flexDirection={['column', 'row']}>
+            <Flex width="100%" flexDirection={['column', null, null, 'row']} mr={['8px', null, null, 0]}>
               {volume > 0 && (
                 <UserRankBox
                   flex="1"
                   title={t('Rank in team').toUpperCase()}
                   footer={userLeaderboardInformation ? t('#%global% Overall', { global: global.toLocaleString() }) : ''}
-                  mr={[0, '8px']}
-                  mb={['8px', 0]}
+                  mr={[0, null, null, '8px']}
+                  mb={['8px', null, null, 0]}
                 >
                   {!userLeaderboardInformation ? (
                     <Skeleton height="26px" width="110px" />
@@ -196,7 +199,8 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
                 title={t('Your volume').toUpperCase()}
                 footer={t('Since start')}
                 // Add responsive mr if competition is LIVE
-                mr={currentPhase.state === LIVE ? [0, null, '8px'] : 0}
+                mr={currentPhase.state !== REGISTRATION ? [0, null, null, '8px'] : 0}
+                mb={['8px', null, null, 0]}
               >
                 {!userLeaderboardInformation ? (
                   <Skeleton height="26px" width="110px" />
@@ -206,6 +210,7 @@ const CardUserInfo: React.FC<YourScoreProps> = ({
                   </Heading>
                 )}
               </UserRankBox>
+              {extraUserRankBox || null}
             </Flex>
             {/* Show next ranks if competition is LIVE */}
             {currentPhase.state === LIVE &&

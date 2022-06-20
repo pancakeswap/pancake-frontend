@@ -1,6 +1,5 @@
 import { formatUnits } from '@ethersproject/units'
 import pools from 'config/constants/pools'
-import poolsDeployedBlockNumber from 'config/constants/poolsDeployedBlockNumber'
 import { getSouschefContract, getSouschefV2Contract } from 'utils/contractHelpers'
 
 // Pool 0 is special (cake pool)
@@ -52,13 +51,6 @@ describe('Config pools', () => {
       const rewardPerBlock = await contract.rewardPerBlock()
 
       expect(String(parseFloat(formatUnits(rewardPerBlock, pool.earningToken.decimals)))).toBe(pool.tokenPerBlock)
-    },
-  )
-
-  it.each(pools.map((p) => ({ deployedBlockNumber: p.deployedBlockNumber, address: p.contractAddress[56] })))(
-    'Pool %p has deployed block number',
-    (pool) => {
-      expect(pool.deployedBlockNumber || poolsDeployedBlockNumber[pool.address]).toBeTruthy()
     },
   )
 })

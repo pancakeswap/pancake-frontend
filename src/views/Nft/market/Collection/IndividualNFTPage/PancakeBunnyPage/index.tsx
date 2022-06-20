@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { Flex } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { useGetCollection } from 'state/nftMarket/hooks'
@@ -7,14 +7,14 @@ import { NftToken, ApiResponseCollectionTokens } from 'state/nftMarket/types'
 import PageLoader from 'components/Loader/PageLoader'
 import { useGetCollectionDistributionPB } from 'views/Nft/market/hooks/useGetCollectionDistribution'
 import MainPancakeBunnyCard from './MainPancakeBunnyCard'
-import ManagePancakeBunniesCard from './ManagePancakeBunniesCard'
 import PropertiesCard from '../shared/PropertiesCard'
 import DetailsCard from '../shared/DetailsCard'
 import MoreFromThisCollection from '../shared/MoreFromThisCollection'
 import ForSaleTableCard from './ForSaleTableCard'
 import { pancakeBunniesAddress } from '../../../constants'
 import { TwoColumnsContainer } from '../shared/styles'
-import { usePancakeBunnyCheapestNft, usePBCheapestOtherSellersNft } from '../../../hooks/usePancakeBunnyCheapestNfts'
+import { usePancakeBunnyCheapestNft } from '../../../hooks/usePancakeBunnyCheapestNfts'
+import ManageNftsCard from '../shared/ManageNFTsCard'
 
 interface IndividualPancakeBunnyPageProps {
   bunnyId: string
@@ -40,18 +40,8 @@ const IndividualPancakeBunnyPageBase: React.FC<IndividualPancakeBunnyPageProps> 
     isFetched: isFetchedCheapestBunny,
     refresh: refreshCheapestNft,
   } = usePancakeBunnyCheapestNft(bunnyId, nftMetadata)
-  const {
-    data: cheapestBunnyFromOtherSellers,
-    isFetched: isCheapestNftFromOtherSellersFetched,
-    refresh: refreshCheapestOtherSellersNft,
-  } = usePBCheapestOtherSellersNft(bunnyId, nftMetadata)
 
   const { data: distributionData, isFetching: isFetchingDistribution } = useGetCollectionDistributionPB()
-
-  const refresh = useCallback(() => {
-    refreshCheapestNft()
-    refreshCheapestOtherSellersNft()
-  }, [refreshCheapestNft, refreshCheapestOtherSellersNft])
 
   useEffect(() => {
     const fetchNftMetadata = async () => {
@@ -120,14 +110,16 @@ const IndividualPancakeBunnyPageBase: React.FC<IndividualPancakeBunnyPageProps> 
     <Page>
       <MainPancakeBunnyCard
         cheapestNft={cheapestBunny}
-        cheapestNftFromOtherSellers={cheapestBunnyFromOtherSellers}
-        isCheapestNftFromOtherSellersFetched={isCheapestNftFromOtherSellersFetched}
         nothingForSaleBunny={nothingForSaleBunny}
-        onSuccessSale={refresh}
+        onSuccessSale={refreshCheapestNft}
       />
       <TwoColumnsContainer flexDirection={['column', 'column', 'row']}>
         <Flex flexDirection="column" width="100%">
-          <ManagePancakeBunniesCard bunnyId={bunnyId} lowestPrice={cheapestBunny?.marketData?.currentAskPrice} />
+          <ManageNftsCard
+            collection={collection}
+            tokenId={bunnyId}
+            lowestPrice={cheapestBunny?.marketData?.currentAskPrice}
+          />
           <PropertiesCard properties={properties} rarity={propertyRarity} />
           <DetailsCard
             contractAddress={pancakeBunniesAddress}
@@ -136,7 +128,7 @@ const IndividualPancakeBunnyPageBase: React.FC<IndividualPancakeBunnyPageProps> 
             count={getBunnyIdCount()}
           />
         </Flex>
-        <ForSaleTableCard bunnyId={bunnyId} nftMetadata={nftMetadata} onSuccessSale={refresh} />
+        <ForSaleTableCard bunnyId={bunnyId} nftMetadata={nftMetadata} onSuccessSale={refreshCheapestNft} />
       </TwoColumnsContainer>
       <MoreFromThisCollection
         collectionAddress={pancakeBunniesAddress}

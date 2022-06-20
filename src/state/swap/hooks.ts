@@ -1,18 +1,24 @@
 import { Currency, CurrencyAmount, ETHER, Token, Trade } from '@pancakeswap/sdk'
+import { useWeb3React } from '@web3-react/core'
 import { ParsedUrlQuery } from 'querystring'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY, SLOW_INTERVAL } from 'config/constants'
+import useSWRImmutable from 'swr/immutable'
 import { useDispatch, useSelector } from 'react-redux'
-import useENS from 'hooks/ENS/useENS'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'contexts/Localization'
 import { isAddress } from 'utils'
+import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
+import { getChangeForPeriod } from 'utils/getChangeForPeriod'
+import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { computeSlippageAdjustedAmounts } from 'utils/prices'
 import getLpAddress from 'utils/getLpAddress'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
 import tryParseAmount from 'utils/tryParseAmount'
-import { AppDispatch, AppState } from '../index'
+import { AppState, useAppDispatch } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
 import {
   Field,
@@ -35,9 +41,9 @@ import {
 } from './normalizers'
 import { PairDataTimeWindowEnum } from './types'
 import { derivedPairByDataIdSelector, pairByDataIdSelector } from './selectors'
-import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from './constants'
 import fetchDerivedPriceData from './fetch/fetchDerivedPriceData'
 import { pairHasEnoughLiquidity } from './fetch/utils'
+import { parsePoolData, fetchPoolData, FormattedPoolFields } from '../info/queries/pools/poolData'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>((state) => state.swap)
@@ -49,7 +55,7 @@ export function useSwapActionHandlers(): {
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRecipient: (recipient: string | null) => void
 } {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const onCurrencySelection = useCallback(
     (field: Field, currency: Currency) => {
       dispatch(
@@ -136,9 +142,7 @@ export function useSingleTokenSwapInfo(
 export function useDerivedSwapInfo(
   independentField: Field,
   typedValue: string,
-  inputCurrencyId: string | undefined,
   inputCurrency: Currency | undefined,
-  outputCurrencyId: string | undefined,
   outputCurrency: Currency | undefined,
   recipient: string,
 ): {
@@ -148,11 +152,10 @@ export function useDerivedSwapInfo(
   v2Trade: Trade | undefined
   inputError?: string
 } {
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
   const { t } = useTranslation()
 
-  const recipientLookup = useENS(recipient ?? undefined)
-  const to: string | null = (recipient === null ? account : recipientLookup.address) ?? null
+  const to: string | null = (recipient === null ? account : isAddress(recipient) || null) ?? null
 
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
@@ -242,13 +245,11 @@ function parseIndependentFieldURLParameter(urlParam: any): Field {
   return typeof urlParam === 'string' && urlParam.toLowerCase() === 'output' ? Field.OUTPUT : Field.INPUT
 }
 
-const ENS_NAME_REGEX = /^[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)?$/
 const ADDRESS_REGEX = /^0x[a-fA-F0-9]{40}$/
 function validatedRecipient(recipient: any): string | null {
   if (typeof recipient !== 'string') return null
   const address = isAddress(recipient)
   if (address) return address
-  if (ENS_NAME_REGEX.test(recipient)) return recipient
   if (ADDRESS_REGEX.test(recipient)) return recipient
   return null
 }
@@ -286,7 +287,7 @@ export function useDefaultsFromURLSearch():
   | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
   | undefined {
   const { chainId } = useActiveWeb3React()
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const { query } = useRouter()
   const [result, setResult] = useState<
     { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
@@ -447,4 +448,39 @@ export const useFetchPairPrices = ({
     pairPrices = normalizedDerivedPairDataWithCurrentSwapPrice
   }
   return { pairPrices, pairId }
+}
+
+export const useLPApr = (pair) => {
+  const { data: poolData } = useSWRImmutable(
+    pair ? ['LP7dApr', pair.liquidityToken.address] : null,
+    async () => {
+      const timestampsArray = getDeltaTimestamps()
+      const blocks = await getBlocksFromTimestamps(timestampsArray, 'desc', 1000)
+      const [block24h, block48h, block7d, block14d] = blocks ?? []
+      const { error, data } = await fetchPoolData(block24h.number, block48h.number, block7d.number, block14d.number, [
+        pair.liquidityToken.address.toLowerCase(),
+      ])
+      if (error) return null
+      const formattedPoolData = parsePoolData(data?.now)
+      const formattedPoolData24h = parsePoolData(data?.oneDayAgo)
+      const formattedPoolData48h = parsePoolData(data?.twoDaysAgo)
+      const formattedPoolData7d = parsePoolData(data?.oneWeekAgo)
+      const formattedPoolData14d = parsePoolData(data?.twoWeeksAgo)
+      const current: FormattedPoolFields | undefined = formattedPoolData[pair.liquidityToken.address.toLowerCase()]
+      const oneDay: FormattedPoolFields | undefined = formattedPoolData24h[pair.liquidityToken.address.toLowerCase()]
+      const twoDays: FormattedPoolFields | undefined = formattedPoolData48h[pair.liquidityToken.address.toLowerCase()]
+      const week: FormattedPoolFields | undefined = formattedPoolData7d[pair.liquidityToken.address.toLowerCase()]
+      const twoWeeks: FormattedPoolFields | undefined = formattedPoolData14d[pair.liquidityToken.address.toLowerCase()]
+      const [volumeUSD] = getChangeForPeriod(current?.volumeUSD, oneDay?.volumeUSD, twoDays?.volumeUSD)
+      const [volumeUSDWeek] = getChangeForPeriod(current?.volumeUSD, week?.volumeUSD, twoWeeks?.volumeUSD)
+      const liquidityUSD = current ? current.reserveUSD : 0
+      const { lpApr7d } = getLpFeesAndApr(volumeUSD, volumeUSDWeek, liquidityUSD)
+      return lpApr7d ? { lpApr7d } : null
+    },
+    {
+      refreshInterval: SLOW_INTERVAL,
+    },
+  )
+
+  return poolData
 }

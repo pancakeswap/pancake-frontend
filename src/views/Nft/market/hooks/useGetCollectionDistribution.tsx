@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { getCollectionDistributionApi, getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { ApiCollectionDistribution, ApiResponseCollectionTokens, ApiSingleTokenData } from 'state/nftMarket/types'
-import { getPancakeRabbitsAddress } from 'utils/addressHelpers'
+import { getPancakeBunniesAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
-import pancakeRabbitsAbi from 'config/abi/pancakeRabbits.json'
+import pancakeBunniesAbi from 'config/abi/pancakeBunnies.json'
 import useSWRImmutable from 'swr/immutable'
 import { FetchStatus } from 'config/constants/types'
 import { pancakeBunniesAddress } from '../constants'
@@ -34,6 +34,10 @@ export const useGetCollectionDistributionPB = () => {
       let apiResponse: ApiResponseCollectionTokens
       try {
         apiResponse = await getNftsFromCollectionApi(pancakeBunniesAddress)
+        if (!apiResponse) {
+          setState((prevState) => ({ ...prevState, isFetching: false }))
+          return
+        }
       } catch (error) {
         setState((prevState) => ({ ...prevState, isFetching: false }))
         return
@@ -41,12 +45,12 @@ export const useGetCollectionDistributionPB = () => {
       // Use on chain data to get most updated totalSupply and bunnyCount data. Nft Api Data not updated frequently.
       const tokenIds = Object.keys(apiResponse.attributesDistribution)
       const bunnyCountCalls = tokenIds.map((tokenId) => ({
-        address: getPancakeRabbitsAddress(),
+        address: getPancakeBunniesAddress(),
         name: 'bunnyCount',
         params: [tokenId],
       }))
       try {
-        const response = await multicallv2(pancakeRabbitsAbi, bunnyCountCalls)
+        const response = await multicallv2(pancakeBunniesAbi, bunnyCountCalls)
         const tokenListResponse = response.reduce((obj, tokenCount, index) => {
           return {
             ...obj,

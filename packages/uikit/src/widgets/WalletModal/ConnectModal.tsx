@@ -23,6 +23,8 @@ const WalletWrapper = styled(Box)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `;
 
+const getPriority = (priority: Config["priority"]) => (typeof priority === "function" ? priority() : priority);
+
 /**
  * Checks local storage if we have saved the last wallet the user connected with
  * If we find something we put it at the top of the list
@@ -30,7 +32,7 @@ const WalletWrapper = styled(Box)`
  * @returns sorted config
  */
 const getPreferredConfig = (walletConfig: Config[]) => {
-  const sortedConfig = walletConfig.sort((a: Config, b: Config) => a.priority - b.priority);
+  const sortedConfig = walletConfig.sort((a: Config, b: Config) => getPriority(a.priority) - getPriority(b.priority));
 
   const preferredWalletName = localStorage?.getItem(walletLocalStorageKey);
 
@@ -54,7 +56,11 @@ const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayC
   const [showMore, setShowMore] = useState(false);
   const theme = useTheme();
   const sortedConfig = getPreferredConfig(config);
-  const displayListConfig = showMore ? sortedConfig : sortedConfig.slice(0, displayCount);
+  // Filter out WalletConnect if user is inside TrustWallet built-in browser
+  const walletsToShow = window.ethereum?.isTrust
+    ? sortedConfig.filter((wallet) => wallet.title !== "WalletConnect")
+    : sortedConfig;
+  const displayListConfig = showMore ? walletsToShow : walletsToShow.slice(0, displayCount);
 
   return (
     <ModalContainer minWidth="320px">

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Box, Flex, Text, Heading, useMatchBreakpoints, Link, Image } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Heading, Link, Image, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { BallWithNumber, MatchExampleA, MatchExampleB, PoolAllocationChart } from '../svgs'
@@ -91,7 +91,7 @@ const InlineLink = styled(Link)`
 `
 
 const ExampleBalls = () => {
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpointsContext()
   const ballSize = isDesktop ? '24px' : '32px'
   const fontSize = isDesktop ? '14px' : '16px'
   return (
@@ -113,7 +113,7 @@ const MatchExampleContainer = styled(Flex)`
 
 const MatchExampleCard = () => {
   const { isDark } = useTheme()
-  const { isXs } = useMatchBreakpoints()
+  const { isXs } = useMatchBreakpointsContext()
   const { t } = useTranslation()
   const exampleWidth = isXs ? '210px' : '258px'
   return (

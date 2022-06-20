@@ -3,6 +3,7 @@ const { withSentryConfig } = require('@sentry/nextjs')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
+const withTM = require('next-transpile-modules')(['@pancakeswap/uikit'])
 
 const sentryWebpackPluginOptions =
   process.env.VERCEL_ENV === 'production'
@@ -14,8 +15,7 @@ const sentryWebpackPluginOptions =
         //   urlPrefix, include, ignore
         silent: false, // Logging when deploying to check if there is any problem
         validate: true,
-        dryRun: !process.env.SENTRY_AUTH_TOKEN,
-        // Set to env false will skip deploying release on Sentry except Production
+        // Mark the release as Production
         // https://github.com/getsentry/sentry-webpack-plugin/blob/master/src/index.js#L522
         deploy: {
           env: process.env.VERCEL_ENV,
@@ -53,6 +53,37 @@ const config = {
       {
         source: '/info/pair/:address',
         destination: '/info/pools/:address',
+      },
+    ]
+  },
+  async headers() {
+    return [
+      {
+        source: '/logo.png',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, immutable, max-age=31536000',
+          },
+        ],
+      },
+      {
+        source: '/images/:all*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, immutable, max-age=31536000',
+          },
+        ],
+      },
+      {
+        source: '/images/tokens/:all*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, immutable, max-age=604800',
+          },
+        ],
       },
     ]
   },
@@ -102,4 +133,4 @@ const config = {
   },
 }
 
-module.exports = withBundleAnalyzer(withSentryConfig(config, sentryWebpackPluginOptions))
+module.exports = withBundleAnalyzer(withSentryConfig(withTM(config), sentryWebpackPluginOptions))

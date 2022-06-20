@@ -260,7 +260,7 @@ export const useCollectionNfts = (collectionAddress: string) => {
       }
       return newNfts
     },
-    { revalidateFirstPage: false },
+    { revalidateAll: true },
   )
 
   const uniqueNftList: NftToken[] = useMemo(() => (nfts ? uniqBy(nfts.flat(), 'tokenId') : []), [nfts])

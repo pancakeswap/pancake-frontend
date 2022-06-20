@@ -1,10 +1,9 @@
 import styled, { keyframes, css } from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { LinkExternal, Text } from '@pancakeswap/uikit'
+import { LinkExternal, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { getAddress } from 'utils/addressHelpers'
 import { getBscScanLink } from 'utils'
-import { FarmAuctionTag, CoreTag, DualTag } from 'components/Tags'
 import { FarmWithStakedValue } from '../../types'
 
 import HarvestAction from './HarvestAction'
@@ -50,7 +49,7 @@ const Container = styled.div<{ expanded }>`
           ${collapseAnimation} 300ms linear forwards
         `};
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.dropdown};
   display: flex;
   width: 100%;
   flex-direction: column-reverse;
@@ -77,27 +76,6 @@ const StakeContainer = styled.div`
   }
 `
 
-const TagsContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 25px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-top: 16px;
-  }
-
-  > div {
-    height: 24px;
-    padding: 0 6px;
-    font-size: 14px;
-    margin-right: 4px;
-
-    svg {
-      width: 14px;
-    }
-  }
-`
-
 const ActionContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -114,13 +92,7 @@ const InfoContainer = styled.div`
   min-width: 200px;
 `
 
-const ValueContainer = styled.div`
-  display: block;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: none;
-  }
-`
+const ValueContainer = styled.div``
 
 const ValueWrapper = styled.div`
   display: flex;
@@ -139,9 +111,14 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
 }) => {
   const farm = details
 
-  const { t } = useTranslation()
+  const { isDesktop } = useMatchBreakpointsContext()
+
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const isActive = farm.multiplier !== '0X'
-  const { quoteToken, token, dual } = farm
+  const { quoteToken, token } = farm
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: quoteToken.address,
@@ -154,6 +131,36 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
   return (
     <Container expanded={expanded}>
       <InfoContainer>
+        <ValueContainer>
+          {farm.isCommunity && farm.auctionHostingEndDate && (
+            <ValueWrapper>
+              <Text>{t('Auction Hosting Ends')}</Text>
+              <Text paddingLeft="4px">
+                {new Date(farm.auctionHostingEndDate).toLocaleString(locale, {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                })}
+              </Text>
+            </ValueWrapper>
+          )}
+          {!isDesktop && (
+            <>
+              <ValueWrapper>
+                <Text>{t('APR')}</Text>
+                <Apr {...apr} />
+              </ValueWrapper>
+              <ValueWrapper>
+                <Text>{t('Multiplier')}</Text>
+                <Multiplier {...multiplier} />
+              </ValueWrapper>
+              <ValueWrapper>
+                <Text>{t('Liquidity')}</Text>
+                <Liquidity {...liquidity} />
+              </ValueWrapper>
+            </>
+          )}
+        </ValueContainer>
         {isActive && (
           <StakeContainer>
             <StyledLinkExternal href={`/add/${liquidityUrlPathParts}`}>
@@ -163,25 +170,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
         )}
         <StyledLinkExternal href={bsc}>{t('View Contract')}</StyledLinkExternal>
         <StyledLinkExternal href={info}>{t('See Pair Info')}</StyledLinkExternal>
-        <TagsContainer>
-          {farm.isCommunity ? <FarmAuctionTag /> : <CoreTag />}
-          {dual ? <DualTag /> : null}
-        </TagsContainer>
       </InfoContainer>
-      <ValueContainer>
-        <ValueWrapper>
-          <Text>{t('APR')}</Text>
-          <Apr {...apr} />
-        </ValueWrapper>
-        <ValueWrapper>
-          <Text>{t('Multiplier')}</Text>
-          <Multiplier {...multiplier} />
-        </ValueWrapper>
-        <ValueWrapper>
-          <Text>{t('Liquidity')}</Text>
-          <Liquidity {...liquidity} />
-        </ValueWrapper>
-      </ValueContainer>
       <ActionContainer>
         <HarvestAction {...farm} userDataReady={userDataReady} />
         <StakedAction {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value} />

@@ -2,17 +2,17 @@ import BigNumber from 'bignumber.js'
 import { BigNumber as EthersBigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
 import { getLanguageCodeFromLS } from 'contexts/Localization/helpers'
-import { BIG_TEN } from './bigNumber'
+import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
 
 /**
  * Take a formatted amount, e.g. 15 BNB and convert it to full decimal value, e.g. 15000000000000000
  */
 export const getDecimalAmount = (amount: BigNumber, decimals = 18) => {
-  return new BigNumber(amount).times(BIG_TEN.pow(decimals))
+  return new BigNumber(amount).times(getFullDecimalMultiplier(decimals))
 }
 
 export const getBalanceAmount = (amount: BigNumber, decimals = 18) => {
-  return new BigNumber(amount).dividedBy(BIG_TEN.pow(decimals))
+  return new BigNumber(amount).dividedBy(getFullDecimalMultiplier(decimals))
 }
 
 /**
@@ -22,10 +22,15 @@ export const getBalanceNumber = (balance: BigNumber, decimals = 18) => {
   return getBalanceAmount(balance, decimals).toNumber()
 }
 
-export const getFullDisplayBalance = (balance: BigNumber, decimals = 18, displayDecimals?: number) => {
+export const getFullDisplayBalance = (balance: BigNumber, decimals = 18, displayDecimals?: number): string => {
   return getBalanceAmount(balance, decimals).toFixed(displayDecimals)
 }
 
+/**
+ * Don't use the result to convert back to number.
+ * It uses undefined locale which uses host language as a result.
+ * Languages have different decimal separators which results in inconsistency when converting back this result to number.
+ */
 export const formatNumber = (number: number, minPrecision = 2, maxPrecision = 2) => {
   const options = {
     minimumFractionDigits: minPrecision,
@@ -81,3 +86,11 @@ export const formatLocalisedCompactNumber = (number: number): string => {
 }
 
 export default formatLocalisedCompactNumber
+
+export const formatLpBalance = (balance: BigNumber) => {
+  const stakedBalanceBigNumber = getBalanceAmount(balance)
+  if (stakedBalanceBigNumber.gt(0) && stakedBalanceBigNumber.lt(0.00001)) {
+    return '< 0.00001'
+  }
+  return stakedBalanceBigNumber.toFixed(5, BigNumber.ROUND_DOWN)
+}

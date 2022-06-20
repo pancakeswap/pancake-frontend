@@ -201,7 +201,7 @@ export const EventPropagationAndMobile: React.FC = () => {
       }}
     >
       <Text>
-        Events do not propagate to other elements in the tree. This helps to not cause unwanted bahaviour like expanding
+        Events do not propagate to other elements in the tree. This helps to not cause unwanted behaviour like expanding
         the cards when clicking on the tooltip target.
       </Text>
 
@@ -219,7 +219,7 @@ export const EventPropagationAndMobile: React.FC = () => {
       </ExpandableCard>
       <Text>
         On touch screen devices hover interactions are also properly handled with `touchstart` and `touchend` events
-        (`mouseenter` and `mouseleave` cause unwated behaviour on some mobile browsers).
+        (`mouseenter` and `mouseleave` cause unwanted behaviour on some mobile browsers).
       </Text>
       <ExpandableCard onClick={() => setShowExpandedHover(!showExpandedHover)}>
         <ExpandableHeader>

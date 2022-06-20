@@ -1,4 +1,6 @@
+import { ReactNode } from 'react'
 import styled from 'styled-components'
+import { StaticImageData } from 'next/dist/client/image'
 import {
   Card,
   CardBody,
@@ -14,10 +16,11 @@ import {
 import { CLAIM, OVER } from 'config/constants/trading-competition/phases'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
-import UserPrizeGrid from './UserPrizeGrid'
 import ClaimModal from '../ClaimModal'
-import { YourScoreProps } from '../../types'
 import CardUserInfo from './CardUserInfo'
+import ShareImageModal from '../ShareImageModal'
+import { YourScoreProps } from '../../types'
+import { SubgraphHealthIndicator } from '../../../../components/SubgraphHealthIndicator'
 
 const StyledCard = styled(Card)`
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -47,7 +50,21 @@ const StyledButton = styled(Button)`
   }
 `
 
-const ScoreCard: React.FC<YourScoreProps> = ({
+interface ScoreCardProps extends YourScoreProps {
+  userPrizeGrid: ReactNode
+  flippersShareImage: StaticImageData
+  stormShareImage: StaticImageData
+  cakersShareImage: StaticImageData
+  extraUserRankBox?: ReactNode
+  subgraphName?: string
+}
+
+const ScoreCard: React.FC<ScoreCardProps> = ({
+  userPrizeGrid,
+  extraUserRankBox,
+  flippersShareImage,
+  stormShareImage,
+  cakersShareImage,
   hasRegistered,
   account,
   userTradingInformation,
@@ -59,6 +76,7 @@ const ScoreCard: React.FC<YourScoreProps> = ({
   finishedAndPrizesClaimed,
   finishedAndNothingToClaim,
   onClaimSuccess,
+  subgraphName,
 }) => {
   const { t } = useTranslation()
   const [onPresentClaimModal] = useModal(
@@ -95,15 +113,23 @@ const ScoreCard: React.FC<YourScoreProps> = ({
         ) : (
           <>
             <CardUserInfo
+              shareModal={
+                <ShareImageModal
+                  flippersShareImage={flippersShareImage}
+                  cakersShareImage={cakersShareImage}
+                  stormShareImage={stormShareImage}
+                  profile={profile}
+                  userLeaderboardInformation={userLeaderboardInformation}
+                />
+              }
+              extraUserRankBox={extraUserRankBox}
               hasRegistered={hasRegistered}
               account={account}
               profile={profile}
               userLeaderboardInformation={userLeaderboardInformation}
               currentPhase={currentPhase}
             />
-            {hasRegistered && (currentPhase.state === CLAIM || currentPhase.state === OVER) && (
-              <UserPrizeGrid userTradingInformation={userTradingInformation} />
-            )}
+            {hasRegistered && (currentPhase.state === CLAIM || currentPhase.state === OVER) && userPrizeGrid}
             {!account && (
               <Flex mt="24px" justifyContent="center">
                 <ConnectWalletButton />
@@ -120,6 +146,24 @@ const ScoreCard: React.FC<YourScoreProps> = ({
           </StyledButton>
           <LaurelRightIcon />
         </StyledCardFooter>
+      )}
+      {subgraphName && hasRegistered && (
+        <Flex p="16px" justifyContent="flex-end">
+          <SubgraphHealthIndicator
+            subgraphName={subgraphName}
+            inline
+            obeyGlobalSetting={false}
+            customDescriptions={{
+              delayed: t(
+                'Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.',
+              ),
+              slow: t(
+                'Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.',
+              ),
+              healthy: t('No issues with the subgraph.'),
+            }}
+          />
+        </Flex>
       )}
     </StyledCard>
   )

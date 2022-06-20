@@ -2,9 +2,10 @@ import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
 import { ProtocolData } from 'state/info/types'
 import { infoClient } from 'utils/graphql'
+import { getChangeForPeriod } from 'utils/getChangeForPeriod'
+import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
-import { getChangeForPeriod, getPercentChange } from 'views/Info/utils/infoDataHelpers'
-import { getDeltaTimestamps } from 'views/Info/utils/infoQueryHelpers'
+import { getPercentChange } from 'views/Info/utils/infoDataHelpers'
 
 interface PancakeFactory {
   totalTransactions: string
@@ -64,9 +65,11 @@ const useFetchProtocolData = (): ProtocolFetchState => {
 
   useEffect(() => {
     const fetch = async () => {
-      const { error, data } = await getOverviewData()
-      const { error: error24, data: data24 } = await getOverviewData(block24?.number ?? undefined)
-      const { error: error48, data: data48 } = await getOverviewData(block48?.number ?? undefined)
+      const [{ error, data }, { error: error24, data: data24 }, { error: error48, data: data48 }] = await Promise.all([
+        getOverviewData(),
+        getOverviewData(block24?.number ?? undefined),
+        getOverviewData(block48?.number ?? undefined),
+      ])
       const anyError = error || error24 || error48
       const overviewData = formatPancakeFactoryResponse(data?.pancakeFactories?.[0])
       const overviewData24 = formatPancakeFactoryResponse(data24?.pancakeFactories?.[0])

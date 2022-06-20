@@ -39,7 +39,9 @@ const Mint: React.FC = () => {
 
   useEffect(() => {
     const getStarterNfts = async () => {
-      const { data: allPbTokens } = await getNftsFromCollectionApi(pancakeBunniesAddress)
+      const response = await getNftsFromCollectionApi(pancakeBunniesAddress)
+      if (!response) return
+      const { data: allPbTokens } = response
       const nfts = STARTER_NFT_BUNNY_IDS.map((bunnyId) => {
         if (allPbTokens && allPbTokens[bunnyId]) {
           return { ...allPbTokens[bunnyId], bunnyId }

@@ -1,12 +1,25 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import { AnimatePresence, Variants, LazyMotion, domAnimation } from "framer-motion";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
-import { ThemeProvider, DefaultTheme } from "styled-components";
-import { light, dark } from "../../theme";
-import isTouchDevice from "../../util/isTouchDevice";
-import { StyledTooltip, Arrow } from "./StyledTooltip";
-import { TooltipOptions, TooltipRefs } from "./types";
+import { DefaultTheme, ThemeProvider } from "styled-components";
+import { dark, light } from "../../theme";
 import getPortalRoot from "../../util/getPortalRoot";
+import isTouchDevice from "../../util/isTouchDevice";
+import { Arrow, StyledTooltip } from "./StyledTooltip";
+import { TooltipOptions, TooltipRefs } from "./types";
+
+const animationVariants: Variants = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+};
+
+const animationMap = {
+  initial: "initial",
+  animate: "animate",
+  exit: "exit",
+};
 
 const invertTheme = (currentTheme: DefaultTheme) => {
   if (currentTheme.isDark) {
@@ -160,7 +173,7 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
     };
   }, [trigger, targetElement, showTooltip, hideTooltip]);
 
-  // On small screens Popper.js tries to squeeze the tooltip to available space without overflowing beyound the edge
+  // On small screens Popper.js tries to squeeze the tooltip to available space without overflowing beyond the edge
   // of the screen. While it works fine when the element is in the middle of the screen it does not handle well the
   // cases when the target element is very close to the edge of the screen - no margin is applied between the tooltip
   // and the screen edge.
@@ -168,7 +181,7 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
   // that we support.
   // Note that in the farm page where there are tooltips very close to the edge of the screen this padding works perfectly
   // even on the iPhone 5 screen (320px wide), BUT in the storybook with the contrived example ScreenEdges example
-  // iPhone 5 behaves differently overflowing beyound the edge. All paddings are identical so I have no idea why it is,
+  // iPhone 5 behaves differently overflowing beyond the edge. All paddings are identical so I have no idea why it is,
   // and fixing that seems like a very bad use of time.
   const { styles, attributes } = usePopper(targetElement, tooltipElement, {
     placement,
@@ -183,18 +196,31 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
   });
 
   const tooltip = (
-    <StyledTooltip ref={setTooltipElement} style={styles.popper} {...attributes.popper}>
+    <StyledTooltip
+      {...animationMap}
+      variants={animationVariants}
+      transition={{ duration: 0.3 }}
+      ref={setTooltipElement}
+      style={styles.popper}
+      {...attributes.popper}
+    >
       <ThemeProvider theme={invertTheme}>{content}</ThemeProvider>
       <Arrow ref={setArrowElement} style={styles.arrow} />
     </StyledTooltip>
   );
 
+  const AnimatedTooltip = (
+    <LazyMotion features={domAnimation}>
+      <AnimatePresence>{visible && tooltip}</AnimatePresence>
+    </LazyMotion>
+  );
+
   const portal = getPortalRoot();
-  const tooltipInPortal = portal ? createPortal(tooltip, portal) : null;
+  const tooltipInPortal = portal ? createPortal(AnimatedTooltip, portal) : null;
 
   return {
     targetRef: setTargetElement,
-    tooltip: tooltipInPortal ?? tooltip,
+    tooltip: tooltipInPortal ?? AnimatedTooltip,
     tooltipVisible: visible,
   };
 };
