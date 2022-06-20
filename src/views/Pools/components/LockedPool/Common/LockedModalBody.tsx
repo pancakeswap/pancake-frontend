@@ -5,6 +5,8 @@ import { useTranslation } from 'contexts/Localization'
 import { MAX_LOCK_DURATION } from 'config/constants/pools'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { useIfoCeiling } from 'state/pools/hooks'
+import isUndefinedOrNull from 'utils/isUndefinedOrNull'
+
 import { LockedModalBodyPropsType, ModalValidator } from '../types'
 
 import Overview from './Overview'
@@ -16,6 +18,7 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
   onDismiss,
   lockedAmount,
   currentBalance,
+  hasEnoughBalanceToExtend,
   editAmountOnly,
   prepConfirmArg,
   validator,
@@ -45,7 +48,14 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
   return (
     <>
       <Box mb="16px">
-        {editAmountOnly || <LockDurationField isOverMax={isOverMax} setDuration={setDuration} duration={duration} />}
+        {editAmountOnly || (
+          <LockDurationField
+            isOverMax={isOverMax}
+            setDuration={setDuration}
+            duration={duration}
+            hasEnoughBalanceToExtend={hasEnoughBalanceToExtend}
+          />
+        )}
       </Box>
       {customOverview ? (
         customOverview({
@@ -70,7 +80,13 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
           isLoading={pendingTx}
           endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
           onClick={handleConfirmClick}
-          disabled={!(isValidAmount && isValidDuration)}
+          disabled={
+            !(
+              isValidAmount &&
+              isValidDuration &&
+              (!isUndefinedOrNull(hasEnoughBalanceToExtend) ? hasEnoughBalanceToExtend : true)
+            )
+          }
         >
           {pendingTx ? t('Confirming') : t('Confirm')}
         </Button>

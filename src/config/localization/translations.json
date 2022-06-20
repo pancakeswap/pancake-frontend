@@ -1776,5 +1776,6 @@
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks.",
   "Select a Network": "Select a Network",
   "LP Rewards APR": "LP Rewards APR",
-  "Limit Orders": "Limit Orders"
+  "Limit Orders": "Limit Orders",
+  "0.0001 CAKE needed to extend lock": "0.0001 CAKE needed to extend lock"
 }

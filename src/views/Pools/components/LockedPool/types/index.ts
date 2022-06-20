@@ -30,6 +30,7 @@ export interface ExtendDurationModal {
   onDismiss?: VoidFn
   modalTitle?: string
   currentDuration: number
+  currentBalance?: BigNumber
   lockStartTime: string
   lockEndTime: string
 }
@@ -77,6 +78,7 @@ export interface LockedModalBodyPropsType {
   onDismiss?: VoidFn
   stakingToken: Token
   currentBalance?: BigNumber
+  hasEnoughBalanceToExtend?: boolean
   lockedAmount: BigNumber
   editAmountOnly?: React.ReactElement
   prepConfirmArg?: PrepConfirmArg
@@ -87,6 +89,7 @@ export interface LockedModalBodyPropsType {
 export interface ExtendDurationButtonPropsType {
   stakingToken: Token
   currentLockedAmount: number
+  currentBalance?: BigNumber
   lockEndTime: string
   lockStartTime: string
   children: React.ReactNode
@@ -120,6 +123,7 @@ export interface LockDurationFieldPropsType {
   duration: number
   setDuration: Dispatch<SetStateAction<number>>
   isOverMax: boolean
+  hasEnoughBalanceToExtend?: boolean
 }
 
 export interface LockedStakingApyPropsType {

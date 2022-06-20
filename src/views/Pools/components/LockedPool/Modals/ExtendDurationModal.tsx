@@ -7,11 +7,16 @@ import { MAX_LOCK_DURATION } from 'config/constants/pools'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
 import { useIfoCeiling } from 'state/pools/hooks'
+
+import { getBalanceAmount } from 'utils/formatBalance'
 import StaticAmount from '../Common/StaticAmount'
 import LockedBodyModal from '../Common/LockedModalBody'
 import Overview from '../Common/Overview'
 import { ExtendDurationModal } from '../types'
 import RoiCalculatorModalProvider from './RoiCalculatorModalProvider'
+
+// min deposit and withdraw amount
+const MIN_AMOUNT = new BigNumber(10000000000000)
 
 const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   modalTitle,
@@ -19,6 +24,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   onDismiss,
   currentLockedAmount,
   currentDuration,
+  currentBalance,
   lockStartTime,
   lockEndTime,
 }) => {
@@ -46,7 +52,13 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
     [currentLockedAmount, lockEndTime],
   )
 
-  const prepConfirmArg = useCallback(({ duration }) => ({ finalDuration: duration, finalLockedAmount: 0 }), [])
+  const prepConfirmArg = useCallback(
+    ({ duration }) => ({
+      finalDuration: duration,
+      finalLockedAmount: currentBalance ? getBalanceAmount(MIN_AMOUNT, stakingToken.decimals).toNumber() : 0,
+    }),
+    [stakingToken.decimals, currentBalance],
+  )
 
   const customOverview = useCallback(
     ({ isValidDuration, duration }) => (
@@ -82,6 +94,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
         </Box>
         <LockedBodyModal
           stakingToken={stakingToken}
+          hasEnoughBalanceToExtend={currentBalance?.gt(MIN_AMOUNT)}
           onDismiss={onDismiss}
           lockedAmount={new BigNumber(currentLockedAmount)}
           validator={validator}

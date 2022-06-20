@@ -2,6 +2,7 @@ import { Text, Flex, Button, Input, Box } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import _toNumber from 'lodash/toNumber'
+import isUndefinedOrNull from 'utils/isUndefinedOrNull'
 import { secondsToWeeks, weeksToSeconds } from '../../utils/formatSecondsToWeeks'
 import { LockDurationFieldPropsType } from '../types'
 
@@ -12,7 +13,12 @@ const StyledInput = styled(Input)`
   margin-right: 8px;
 `
 
-const LockDurationField: React.FC<LockDurationFieldPropsType> = ({ duration, setDuration, isOverMax }) => {
+const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
+  duration,
+  setDuration,
+  isOverMax,
+  hasEnoughBalanceToExtend,
+}) => {
   const { t } = useTranslation()
 
   return (
@@ -63,6 +69,11 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({ duration, set
       {isOverMax && (
         <Text fontSize="12px" textAlign="right" color="failure">
           {t('Total lock duration exceeds 52 weeks')}
+        </Text>
+      )}
+      {!isUndefinedOrNull(hasEnoughBalanceToExtend) && !hasEnoughBalanceToExtend && (
+        <Text fontSize="12px" textAlign="right" color="failure">
+          {t('0.0001 CAKE needed to extend lock')}
         </Text>
       )}
     </>
