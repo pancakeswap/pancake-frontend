@@ -31,6 +31,7 @@ export interface ExtendDurationModal {
   modalTitle?: string
   currentDuration: number
   lockStartTime: string
+  lockEndTime: string
 }
 
 export interface AddButtonProps {

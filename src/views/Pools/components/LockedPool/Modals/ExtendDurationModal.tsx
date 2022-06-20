@@ -20,6 +20,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   currentLockedAmount,
   currentDuration,
   lockStartTime,
+  lockEndTime,
 }) => {
   const { theme } = useTheme()
   const ceiling = useIfoCeiling()
@@ -30,7 +31,9 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   const validator = useCallback(
     ({ duration }) => {
       const isValidAmount = currentLockedAmount && currentLockedAmount > 0
-      const totalDuration = currentDuration + duration
+      const nowInSeconds = Date.now() / 1000
+      const currentDurationLeftInSeconds = Math.max(Number(lockEndTime) - nowInSeconds, 0)
+      const totalDuration = currentDurationLeftInSeconds + duration
 
       const isValidDuration = duration > 0 && totalDuration > 0 && totalDuration <= MAX_LOCK_DURATION
 
@@ -40,7 +43,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
         isOverMax: totalDuration > MAX_LOCK_DURATION,
       }
     },
-    [currentLockedAmount, currentDuration],
+    [currentLockedAmount, lockEndTime],
   )
 
   const prepConfirmArg = useCallback(({ duration }) => ({ finalDuration: duration, finalLockedAmount: 0 }), [])

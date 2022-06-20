@@ -23,6 +23,7 @@ const ExtendDurationButton: React.FC<ExtendDurationButtonPropsType & ButtonProps
       modalTitle={modalTitle}
       stakingToken={stakingToken}
       lockStartTime={lockStartTime}
+      lockEndTime={lockEndTime}
       currentLockedAmount={currentLockedAmount}
       currentDuration={currentDuration}
     />,
