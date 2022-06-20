@@ -9,6 +9,7 @@ import { ToastsProvider } from 'contexts/ToastsContext'
 import { fetchStatusMiddleware } from 'hooks/useSWRContract'
 import { Store } from '@reduxjs/toolkit'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
+import { useSystemInfo } from 'utils/mpBridge'
 
 const StyledThemeProvider = (props) => {
   const { resolvedTheme } = useNextTheme()
@@ -16,6 +17,8 @@ const StyledThemeProvider = (props) => {
 }
 
 const Providers: React.FC<{ store: Store }> = ({ children, store }) => {
+  const systemInfo = useSystemInfo()
+  const top = systemInfo?.statusBarHeight ? systemInfo.statusBarHeight + 44 : 0
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <Provider store={store}>
@@ -29,7 +32,7 @@ const Providers: React.FC<{ store: Store }> = ({ children, store }) => {
                       use: [fetchStatusMiddleware],
                     }}
                   >
-                    <ModalProvider>{children}</ModalProvider>
+                    <ModalProvider top={top}>{children}</ModalProvider>
                   </SWRConfig>
                 </LanguageProvider>
               </StyledThemeProvider>

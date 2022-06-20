@@ -1,6 +1,7 @@
 import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
 import React, { createContext, useRef, useState, useEffect } from "react";
 import styled from "styled-components";
+import { useSystemInfo } from "utils/mpBridge";
 import { Overlay } from "../../components/Overlay";
 import {
   animationHandler,
@@ -50,7 +51,7 @@ export const Context = createContext<ModalsContext>({
   onDismiss: () => null,
 });
 
-const ModalProvider: React.FC = ({ children }) => {
+const ModalProvider: React.FC = ({ children, top }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [modalNode, setModalNode] = useState<React.ReactNode>();
   const [nodeId, setNodeId] = useState("");
@@ -102,6 +103,7 @@ const ModalProvider: React.FC = ({ children }) => {
         <AnimatePresence>
           {isOpen && (
             <ModalWrapper
+              style={{ top: `${top}px` }}
               ref={animationRef}
               onAnimationStart={() => animationHandler(animationRef.current)}
               {...animationMap}
