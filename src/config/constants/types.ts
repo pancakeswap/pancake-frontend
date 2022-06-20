@@ -96,7 +96,6 @@ interface PoolConfigBaseProps {
   contractAddress: Address
   poolCategory: PoolCategory
   tokenPerBlock: string
-  sortOrder?: number
   harvest?: boolean
   isFinished?: boolean
   enableEmergencyWithdraw?: boolean
@@ -186,7 +185,7 @@ export interface FarmAuctionBidderConfig {
   lpAddress?: string
 }
 
-// Note: this status is slightly different compared to 'status' comfing
+// Note: this status is slightly different compared to 'status' config
 // from Farm Auction smart contract
 export enum AuctionStatus {
   ToBeAnnounced, // No specific dates/blocks to display

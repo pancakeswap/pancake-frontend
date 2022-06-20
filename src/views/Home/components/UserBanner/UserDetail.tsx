@@ -1,4 +1,4 @@
-import { NoProfileAvatarIcon, Flex, Heading, Skeleton, Text, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { NoProfileAvatarIcon, Flex, Heading, Skeleton, Text, Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { useProfile } from 'state/profile/hooks'
@@ -38,32 +38,7 @@ const UserDetail = () => {
   const { profile, isLoading } = useProfile()
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const truncatedAddress = truncateHash(account)
-  const { isMobile, isTablet, isDesktop } = useMatchBreakpoints()
-
-  const getDesktopHeading = () => {
-    if (profile) {
-      return <Heading scale="xl">{t('Hi, %userName%!', { userName: profile.username })}</Heading>
-    }
-    if (isLoading && !profile) {
-      return <Skeleton width={200} height={40} my="4px" />
-    }
-    return <></>
-  }
-
-  const getMobileHeading = () => {
-    if (profile) {
-      return (
-        <Heading mb="18px" textAlign="center">
-          {t('Hi, %userName%!', { userName: profile.username })}
-        </Heading>
-      )
-    }
-    if (isLoading && !profile) {
-      return <Skeleton width={120} height={20} mt="2px" mb="18px" />
-    }
-    return <></>
-  }
+  const { isMobile, isTablet, isDesktop } = useMatchBreakpointsContext()
 
   return (
     <>
@@ -73,16 +48,30 @@ const UserDetail = () => {
             <Sticker>{profile ? <ProfileAvatarWithTeam profile={profile} /> : <StyledNoProfileAvatarIcon />}</Sticker>
           </Box>
           <Flex flexDirection="column">
-            {getDesktopHeading()}
+            {profile ? (
+              <Heading scale="xl">{t('Hi, %userName%!', { userName: profile.username })}</Heading>
+            ) : isLoading ? (
+              <Skeleton width={200} height={40} my="4px" />
+            ) : null}
             {isLoading || !account ? (
               <Skeleton width={160} height={16} my="4px" />
             ) : (
-              <Text fontSize="16px"> {t('Connected with %address%', { address: truncatedAddress })}</Text>
+              <Text fontSize="16px"> {t('Connected with %address%', { address: truncateHash(account) })}</Text>
             )}
           </Flex>
         </Desktop>
       )}
-      {isMobile && <Mobile>{getMobileHeading()}</Mobile>}
+      {isMobile && (
+        <Mobile>
+          {profile ? (
+            <Heading mb="18px" textAlign="center">
+              {t('Hi, %userName%!', { userName: profile.username })}
+            </Heading>
+          ) : isLoading ? (
+            <Skeleton width={120} height={20} mt="2px" mb="18px" />
+          ) : null}
+        </Mobile>
+      )}
     </>
   )
 }

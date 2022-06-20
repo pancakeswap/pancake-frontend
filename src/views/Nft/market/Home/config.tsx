@@ -13,15 +13,6 @@ const config = (t: ContextApi['t']) => {
       ],
     },
     {
-      title: t('When can I trade other NFT Collections?'),
-      description: [
-        t(
-          'Soon! The current NFT Market is a basic version (phase 1), with early access to trading PancakeSwap NFTs only.',
-        ),
-        t('Other collections will be coming soon. We’ll make an announcement soon about the launch of the V2 Market.'),
-      ],
-    },
-    {
       title: t('How can I list my NFT collection on the Market?'),
       description: [
         t('In Phase 2 of the NFT Marketplace, collections must be whitelisted before they may be listed.'),

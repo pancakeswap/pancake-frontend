@@ -12,7 +12,7 @@ import { useTransactionAdder } from 'state/transactions/hooks'
 import { useSWRConfig } from 'swr'
 import {
   OPEN_ORDERS_SWR_KEY,
-  EXECEUTED_CANCELLED_ORDERS_SWR_KEY,
+  EXECUTED_CANCELLED_ORDERS_SWR_KEY,
 } from '../../views/LimitOrders/hooks/useGelatoLimitOrdersHistory'
 import useGelatoLimitOrdersLib from './useGelatoLimitOrdersLib'
 
@@ -105,7 +105,7 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
       })
 
       mutate(OPEN_ORDERS_SWR_KEY)
-      mutate(EXECEUTED_CANCELLED_ORDERS_SWR_KEY)
+      mutate(EXECUTED_CANCELLED_ORDERS_SWR_KEY)
 
       return tx
     },
@@ -169,7 +169,7 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
       })
 
       mutate(OPEN_ORDERS_SWR_KEY)
-      mutate(EXECEUTED_CANCELLED_ORDERS_SWR_KEY)
+      mutate(EXECUTED_CANCELLED_ORDERS_SWR_KEY)
 
       return tx
     },

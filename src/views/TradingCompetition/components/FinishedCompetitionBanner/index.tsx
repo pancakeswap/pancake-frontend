@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { StaticImageData } from 'next/dist/client/image'
-import { Flex, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex, Heading, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import Image from 'next/image'
 
@@ -74,7 +74,7 @@ interface FinishedCompetitionBannerProps {
 }
 
 const FinishedCompetitionBanner: React.FC<FinishedCompetitionBannerProps> = ({ title, imgSrc, background, to }) => {
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpointsContext()
 
   return (
     <Wrapper background={background}>

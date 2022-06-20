@@ -14,7 +14,7 @@ import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import SelectionCard from 'views/ProfileCreation/SelectionCard'
 import { useApprovalNfts } from 'state/nftMarket/hooks'
 import { NftLocation } from 'state/nftMarket/types'
-import useNftsForAddress from '../../../hooks/useNftsForAddress'
+import { useNftsForAddress } from '../../../hooks/useNftsForAddress'
 
 interface ChangeProfilePicPageProps extends InjectedModalProps {
   onSuccess?: () => void

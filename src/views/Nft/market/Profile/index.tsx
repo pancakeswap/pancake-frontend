@@ -9,8 +9,8 @@ import styled from 'styled-components'
 import MarketPageHeader from '../components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
 import NoNftsImage from '../components/Activity/NoNftsImage'
-import useNftsForAddress from '../hooks/useNftsForAddress'
 import TabMenu from './components/TabMenu'
+import { useNftsForAddress } from '../hooks/useNftsForAddress'
 
 const TabMenuWrapper = styled(Box)`
   position: absolute;

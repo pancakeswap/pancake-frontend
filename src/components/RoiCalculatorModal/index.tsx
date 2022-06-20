@@ -15,8 +15,8 @@ import {
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
+import { useWeb3React } from '@web3-react/core'
 import RoiCalculatorFooter from './RoiCalculatorFooter'
 import RoiCard from './RoiCard'
 import useRoiCalculatorReducer, {
@@ -99,7 +99,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
   children,
 }) => {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
   const balanceInputRef = useRef<HTMLInputElement | null>(null)
 
   const {

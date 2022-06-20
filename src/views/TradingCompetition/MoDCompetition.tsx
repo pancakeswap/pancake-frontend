@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
-import { Flex, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex, Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { PageMeta } from 'components/Layout/Page'
 import { TC_MOD_SUBGRAPH } from 'config/constants/endpoints'
+import { multicallv2 } from 'utils/multicall'
+import tradingCompetitionMoDAbi from 'config/abi/tradingCompetitionMoD.json'
 import {
   SmartContractPhases,
   CompetitionPhases,
@@ -18,16 +20,8 @@ import {
   REGISTRATION,
 } from 'config/constants/trading-competition/phases'
 import PageSection from 'components/PageSection'
+import { DARKBG, MIDBLUEBG, MIDBLUEBG_DARK, TRADINGCOMPETITIONBANNER } from './pageSectionStyles'
 import {
-  DARKBG,
-  MIDBLUEBG,
-  MIDBLUEBG_DARK,
-  LIGHTBLUEBG,
-  LIGHTBLUEBG_DARK,
-  TRADINGCOMPETITIONBANNER,
-} from './pageSectionStyles'
-import {
-  PrizesIcon,
   //  RanksIcon,
   RulesIcon,
 } from './svgs'
@@ -47,13 +41,14 @@ import { useTeamInformation } from './useTeamInformation'
 import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
 import TeamRanksWithParticipants from './components/TeamRanks/TeamRanksWithParticipants'
 import MoDCakerBunny from './pngs/MoD-caker.png'
+import PrizesInfoSection from './components/PrizesInfoSection'
 
 const MoDCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { profile, isLoading } = useProfile()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
   const { isDark, theme } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractMoD(false)
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.CLAIM)
@@ -107,11 +102,26 @@ const MoDCompetition = () => {
 
     const fetchUserContract = async () => {
       try {
-        const user = await tradingCompetitionContract.claimInformation(account)
+        const [user, [userClaimed]] = await multicallv2(
+          tradingCompetitionMoDAbi,
+          [
+            {
+              address: tradingCompetitionContract.address,
+              name: 'claimInformation',
+              params: [account],
+            },
+            {
+              address: tradingCompetitionContract.address,
+              name: 'userTradingStats',
+              params: [account],
+            },
+          ],
+          { requireSuccess: false },
+        )
         const userObject: UserTradingInformation = {
           hasRegistered: user[0],
           isUserActive: user[1],
-          hasUserClaimed: user[2],
+          hasUserClaimed: userClaimed,
           userRewardGroup: user[3].toString(),
           userCakeRewards: user[4].toString(),
           userDarRewards: user[5].toString(),
@@ -248,26 +258,7 @@ const MoDCompetition = () => {
             </Box>
           </PageSection>
         )}
-        <PageSection
-          containerProps={{ style: { marginTop: '-30px' } }}
-          dividerComponent={
-            <RibbonWithImage imageComponent={<PrizesIcon width="175px" />} ribbonDirection="up">
-              {t('Prizes')}
-            </RibbonWithImage>
-          }
-          concaveDivider
-          clipFill={{
-            light: 'linear-gradient(139.73deg, #e5fcfe 0%, #ecf6ff 100%)',
-            dark: 'linear-gradient(139.73deg, #303d5b 0%, #363457 100%)',
-          }}
-          dividerPosition="top"
-          background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
-          index={4}
-        >
-          <Box my="64px">
-            <ModPrizesInfo />
-          </Box>
-        </PageSection>
+        <PrizesInfoSection prizesInfoComponent={<ModPrizesInfo />} />
         <PageSection
           containerProps={{ style: { marginTop: '-1px' } }}
           index={5}
