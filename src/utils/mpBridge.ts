@@ -85,6 +85,7 @@ export const useSystemInfo = () => {
 
 const miniProgramPaths = new Set(['farms', 'add', 'remove', 'find', 'pools', 'swap'])
 const handleLinkClick = (e: MouseEvent) => {
+  // @ts-ignore
   const { href } = e.target
   if (href) {
     const url = new URL(href)
