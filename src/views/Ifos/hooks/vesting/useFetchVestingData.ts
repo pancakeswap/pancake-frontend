@@ -5,7 +5,7 @@ import { ifosConfig, FAST_INTERVAL } from 'config/constants'
 import { fetchUserWalletIfoData } from './fetchUserWalletIfoData'
 
 // Filter Ifo when isActive = true
-const allVestingIfo: Ifo[] = ifosConfig.filter((ifo) => ifo.version >= 3.2 && ifo.vestingTitle)
+const allVestingIfo: Ifo[] = ifosConfig.filter((ifo) => ifo.version >= 3.2 && ifo.vestingTitle && !ifo.isActive)
 
 const useFetchVestingData = () => {
   const { account } = useWeb3React()
