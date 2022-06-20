@@ -4,7 +4,7 @@ import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { getPotteryDrawContract } from 'utils/contractHelpers'
+import { usePotterytDrawContract } from 'hooks/useContract'
 import { useWeb3React } from '@web3-react/core'
 import { fetchPotteryUserDataAsync } from 'state/pottery'
 
@@ -13,10 +13,10 @@ export const useClaimPottery = () => {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
   const { toastSuccess } = useToast()
+  const contract = usePotterytDrawContract()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 
   const handleClaim = useCallback(async () => {
-    const contract = getPotteryDrawContract()
     const receipt = await fetchWithCatchTxError(() => contract.connect(account).claim())
 
     // TODO: Pottery ToastDescriptionWithTx text
@@ -27,7 +27,7 @@ export const useClaimPottery = () => {
       )
       dispatch(fetchPotteryUserDataAsync(account))
     }
-  }, [account, t, dispatch, fetchWithCatchTxError, toastSuccess])
+  }, [account, contract, t, dispatch, fetchWithCatchTxError, toastSuccess])
 
   return { isPending, handleClaim }
 }

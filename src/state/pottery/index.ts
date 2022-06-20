@@ -2,10 +2,12 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PotteryState, SerializedPotteryUserData, SerializedPotteryPublicData, PotteryDepositStatus } from 'state/types'
 import { resetUserState } from '../global/actions'
 import { fetchPublicPotteryValue } from './fetchPottery'
-import { fetchPotterysAllowance, fetchVaultUserData } from './fetchUserPottery'
+import { fetchPotterysAllowance, fetchVaultUserData, fetchDrawUserData } from './fetchUserPottery'
 
 const initialState: PotteryState = Object.freeze({
   publicData: {
+    lastDrawId: '0',
+    totalPrize: null,
     getStatus: PotteryDepositStatus.BEFORE_LOCK,
     totalLockCake: null,
     totalSupply: null,
@@ -15,6 +17,8 @@ const initialState: PotteryState = Object.freeze({
     isLoading: true,
     allowance: null,
     stakingTokenBalance: null,
+    rewards: null,
+    winCount: null,
   },
 })
 
@@ -30,14 +34,17 @@ export const fetchPotteryUserDataAsync = createAsyncThunk<SerializedPotteryUserD
   'pottery/fetchPotteryUserData',
   async (account, { rejectWithValue }) => {
     try {
-      const [allowance, vaultUserData] = await Promise.all([
+      const [allowance, vaultUserData, drawData] = await Promise.all([
         fetchPotterysAllowance(account),
         fetchVaultUserData(account),
+        fetchDrawUserData(account),
       ])
 
       const userData = {
         allowance,
         stakingTokenBalance: vaultUserData.stakingTokenBalance,
+        rewards: drawData.rewards,
+        winCount: drawData.winCount,
       }
 
       return userData

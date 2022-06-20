@@ -4,19 +4,24 @@ import potteryVaultAbi from 'config/abi/potteryVaultAbi.json'
 import { getPotteryVaultAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { PotteryDepositStatus } from 'state/types'
+import { getPotteryDrawContract } from 'utils/contractHelpers'
 
-const potteryContract = getPotteryVaultAddress()
+const potteryVaultAddress = getPotteryVaultAddress()
+const potteryDrawContract = getPotteryDrawContract()
 
 export const fetchPublicPotteryValue = async () => {
   try {
     const calls = ['getStatus', 'totalLockCake', 'totalSupply', 'lockStartTime'].map((method) => ({
-      address: potteryContract,
+      address: potteryVaultAddress,
       name: method,
     }))
 
     const [getStatus, [totalLockCake], [totalSupply], [lockStartTime]] = await multicallv2(potteryVaultAbi, calls)
+    const [lastDrawId, totalPrize] = await potteryDrawContract.getPot(potteryVaultAddress)
 
     return {
+      lastDrawId: new BigNumber(lastDrawId.toString()).toJSON(),
+      totalPrize: new BigNumber(totalPrize.toString()).toJSON(),
       getStatus: getStatus[0],
       totalLockCake: new BigNumber(totalLockCake.toString()).toJSON(),
       totalSupply: new BigNumber(totalSupply.toString()).toJSON(),
@@ -24,10 +29,12 @@ export const fetchPublicPotteryValue = async () => {
     }
   } catch {
     return {
+      lastDrawId: BIG_ZERO.toJSON(),
+      totalPrize: BIG_ZERO.toJSON(),
       getStatus: PotteryDepositStatus.BEFORE_LOCK,
       totalLockCake: BIG_ZERO.toJSON(),
       totalSupply: BIG_ZERO.toJSON(),
-      lockStartTime: 0,
+      lockStartTime: BIG_ZERO.toJSON(),
     }
   }
 }

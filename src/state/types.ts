@@ -634,6 +634,8 @@ export interface PotteryState {
 }
 
 export interface SerializedPotteryPublicData {
+  lastDrawId: string
+  totalPrize: string
   getStatus: PotteryDepositStatus
   totalLockCake: string
   totalSupply: string
@@ -641,6 +643,8 @@ export interface SerializedPotteryPublicData {
 }
 
 export interface DeserializedPublicData {
+  lastDrawId: string
+  totalPrize: BigNumber
   getStatus: PotteryDepositStatus
   totalLockCake: BigNumber
   totalSupply: BigNumber
@@ -651,12 +655,16 @@ export interface SerializedPotteryUserData {
   isLoading?: boolean
   allowance: string
   stakingTokenBalance: string
+  rewards: string
+  winCount: string
 }
 
 export interface DeserializedPotteryUserData {
   isLoading?: boolean
   allowance: BigNumber
   stakingTokenBalance: BigNumber
+  rewards: BigNumber
+  winCount: string
 }
 
 export enum PotteryDepositStatus {

@@ -1,9 +1,22 @@
 import { useTranslation } from 'contexts/Localization'
-import { Flex, Box, Text, Button } from '@pancakeswap/uikit'
+import { Flex, Box, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
+import { DeserializedPotteryUserData } from 'state/types'
+import { usePriceCakeBusd } from 'state/farms/hooks'
+import { getBalanceNumber } from 'utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import ClaimButton from './ClaimButton'
 
-const PrizeToBeClaimed: React.FC = () => {
+interface PrizeToBeClaimedProps {
+  userData: DeserializedPotteryUserData
+}
+
+const PrizeToBeClaimed: React.FC<PrizeToBeClaimedProps> = ({ userData }) => {
   const { t } = useTranslation()
+  const cakePriceBusd = usePriceCakeBusd()
+
+  const rewardToken = getBalanceNumber(userData.rewards)
+  const rewardInBusd = new BigNumber(rewardToken).times(cakePriceBusd).toNumber()
 
   return (
     <Box>
@@ -14,13 +27,11 @@ const PrizeToBeClaimed: React.FC = () => {
         {t('to be claimed')}
       </Text>
       <Flex>
-        <Box>
-          <Balance fontSize="20px" lineHeight="110%" value={5} decimals={2} bold />
-          <Balance fontSize="12px" lineHeight="110%" color="textSubtle" value={200} decimals={2} unit="USD" />
+        <Box style={{ alignSelf: 'center' }}>
+          <Balance fontSize="20px" lineHeight="110%" value={rewardToken} decimals={2} bold />
+          <Balance fontSize="12px" lineHeight="110%" color="textSubtle" value={rewardInBusd} decimals={2} unit=" USD" />
         </Box>
-        <Button width="162px" ml="auto">
-          {t('Claim')}
-        </Button>
+        <ClaimButton rewardToken={rewardToken} />
       </Flex>
     </Box>
   )

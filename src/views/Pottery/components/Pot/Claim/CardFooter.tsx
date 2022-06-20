@@ -1,11 +1,12 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Flex, Box, Text } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
-import { usePotteryData } from 'state/pottery/hook'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { DeserializedPublicData, DeserializedPotteryUserData } from 'state/types'
 import Balance from 'components/Balance'
 
 const Container = styled(Flex)`
@@ -16,17 +17,26 @@ const Container = styled(Flex)`
 
 interface CardFooterProps {
   account: string
+  publicData: DeserializedPublicData
+  userData: DeserializedPotteryUserData
 }
 
-const CardFooter: React.FC<CardFooterProps> = ({ account }) => {
+const CardFooter: React.FC<CardFooterProps> = ({ account, publicData, userData }) => {
   const { t } = useTranslation()
   const { getBoostFactor } = useVaultApy()
-  const { publicData } = usePotteryData()
 
   const boostFactor = useMemo(() => getBoostFactor(weeksToSeconds(10)), [getBoostFactor])
   const boostFactorDisplay = useMemo(() => `X${Number(boostFactor).toFixed(2)}`, [boostFactor])
 
   const totalValueLocked = getBalanceNumber(publicData.totalLockCake)
+
+  const daysRemaining = useMemo(() => {
+    const DAY_IN_SECONDS = 86400
+    const timerUntil = new BigNumber(publicData.lockStartTime).plus(weeksToSeconds(10)).toNumber()
+    const now = new Date().getTime() / 1000
+    const remaining = Math.ceil((timerUntil - now) / DAY_IN_SECONDS)
+    return remaining <= 0 ? 0 : remaining
+  }, [publicData])
 
   return (
     <Container>
@@ -78,7 +88,7 @@ const CardFooter: React.FC<CardFooterProps> = ({ account }) => {
           {account ? (
             <>
               <Text bold as="span">
-                23
+                {daysRemaining}
               </Text>
               <Text ml="4px" color="textSubtle" textTransform="uppercase" as="span">
                 {t('Days')}
@@ -100,7 +110,7 @@ const CardFooter: React.FC<CardFooterProps> = ({ account }) => {
             {t('winnings')}
           </Text>
         </Box>
-        <Text bold>{account ? '12' : '-'}</Text>
+        <Text bold>{account ? userData.winCount : '-'}</Text>
       </Flex>
     </Container>
   )

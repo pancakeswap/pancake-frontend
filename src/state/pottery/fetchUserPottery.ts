@@ -1,15 +1,12 @@
-import erc20ABI from 'config/abi/erc20.json'
-import potteryVaultAbi from 'config/abi/potteryVaultAbi.json'
-import potteryDrawAbi from 'config/abi/potteryDrawAbi.json'
-import multicallv2 from 'utils/multicall'
 import { getPotteryVaultAddress } from 'utils/addressHelpers'
 import BigNumber from 'bignumber.js'
 import tokens from 'config/constants/tokens'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { getBep20Contract, getPotteryVaultContract } from 'utils/contractHelpers'
+import { getBep20Contract, getPotteryVaultContract, getPotteryDrawContract } from 'utils/contractHelpers'
 
 const potteryVaultAddress = getPotteryVaultAddress()
 const potteryVaultContract = getPotteryVaultContract()
+const potteryDrawContract = getPotteryDrawContract()
 
 export const fetchPotterysAllowance = async (account) => {
   try {
@@ -30,6 +27,21 @@ export const fetchVaultUserData = async (account: string) => {
   } catch {
     return {
       stakingTokenBalance: BIG_ZERO.toJSON(),
+    }
+  }
+}
+
+export const fetchDrawUserData = async (account: string) => {
+  try {
+    const [reward, winCount] = await potteryDrawContract.userInfos(account)
+    return {
+      rewards: new BigNumber(reward.toString()).toJSON(),
+      winCount: new BigNumber(winCount.toString()).toJSON(),
+    }
+  } catch (error) {
+    return {
+      rewards: BIG_ZERO.toJSON(),
+      winCount: BIG_ZERO.toString(),
     }
   }
 }

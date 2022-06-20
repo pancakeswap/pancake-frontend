@@ -75,7 +75,7 @@ const Pot: React.FC = () => {
   const [activeTab, setIndex] = useState<POT_CATEGORY>(POT_CATEGORY.Deposit)
   const handleClick = useCallback((tabType: POT_CATEGORY) => setIndex(tabType), [])
 
-  const prizeInBusd = publicData.totalLockCake.times(cakePriceBusd)
+  const prizeInBusd = publicData.totalPrize.times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
 
   return (

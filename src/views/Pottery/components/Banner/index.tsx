@@ -70,7 +70,7 @@ const Banner: React.FC = () => {
   const { publicData } = usePotteryData()
   const { getLockedApy } = useVaultApy()
 
-  const prizeInBusd = publicData.totalLockCake.times(cakePriceBusd)
+  const prizeInBusd = publicData.totalPrize.times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
 
   const apyDisplay = useMemo(() => {

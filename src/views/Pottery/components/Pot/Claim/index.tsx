@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Flex, Box } from '@pancakeswap/uikit'
 import { GreyCard } from 'components/Card'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { usePotteryData } from 'state/pottery/hook'
 import YourDeposit from '../YourDeposit'
 import WinRate from '../WinRate'
 import WalletNotConnected from './WalletNotConnected'
@@ -16,6 +17,7 @@ const Container = styled(Flex)`
 
 const Claim: React.FC = () => {
   const { account } = useActiveWeb3React()
+  const { publicData, userData } = usePotteryData()
 
   return (
     <Box>
@@ -27,13 +29,13 @@ const Claim: React.FC = () => {
               <WinRate />
             </Flex>
             <AvailableWitdraw />
-            <PrizeToBeClaimed />
+            <PrizeToBeClaimed userData={userData} />
           </GreyCard>
         </Container>
       ) : (
         <WalletNotConnected />
       )}
-      <CardFooter account={account} />
+      <CardFooter account={account} publicData={publicData} userData={userData} />
     </Box>
   )
 }

@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components'
 import { Flex, Button, Link } from '@pancakeswap/uikit'
+import { useTranslation } from 'contexts/Localization'
 import { TicketCard } from '../../svgs'
 
 const mainTicketAnimation = keyframes`
@@ -44,6 +45,8 @@ const StyledButton = styled(Button)`
 `
 
 const StakeToWinButton: React.FC = () => {
+  const { t } = useTranslation()
+
   return (
     <TicketContainer
       position="relative"
@@ -54,7 +57,7 @@ const StakeToWinButton: React.FC = () => {
       justifyContent="center"
     >
       <ButtonWrapper href="#stake-to-win">
-        <StyledButton width="200px">Stake to WIN!</StyledButton>
+        <StyledButton width="200px">{t('Stake to WIN!')}</StyledButton>
       </ButtonWrapper>
       <TicketSvgWrapper>
         <TicketCard width="100%" />
