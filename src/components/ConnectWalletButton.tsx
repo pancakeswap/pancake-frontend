@@ -1,6 +1,8 @@
 import { Button, useWalletModal, ButtonProps } from '@pancakeswap/uikit'
 import useAuth from 'hooks/useAuth'
-import { useActiveHandle } from 'hooks/useEagerConnect.bmp'
+// @ts-ignore
+// eslint-disable-next-line import/extensions
+import { useActiveHandle } from 'hooks/useEagerConnect.bmp.ts'
 import { useTranslation } from 'contexts/Localization'
 import Trans from './Trans'
 
