@@ -82,6 +82,8 @@ export const useSystemInfo = () => {
   }, [])
   return info
 }
+
+const miniProgramPaths = new Set(['farms', 'add', 'remove', 'find', 'pools', 'swap'])
 const handleLinkClick = (e: MouseEvent) => {
   const { href } = e.target
   if (href) {
@@ -100,7 +102,6 @@ const handleLinkClick = (e: MouseEvent) => {
 }
 export const useInterceptLink = () => {
   useEffect(() => {
-    const miniProgramPaths = new Set(['farms', 'add', 'remove', 'find', 'pools', 'swap'])
     document.body.addEventListener('click', handleLinkClick, true)
     return () => {
       document.body.removeEventListener('click', handleLinkClick, true)
