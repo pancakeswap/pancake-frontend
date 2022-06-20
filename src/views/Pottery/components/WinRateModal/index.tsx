@@ -1,13 +1,15 @@
-import { useRef, useEffect, useCallback, useState } from 'react'
+import { useRef, useEffect } from 'react'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
-import { Modal, Text, Box, Button, Flex, BalanceInput, HelpIcon, useTooltip } from '@pancakeswap/uikit'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { CalculatorMode } from '../../types'
+import { useTranslation } from 'contexts/Localization'
+import { Modal, Text, Box, Flex, BalanceInput } from '@pancakeswap/uikit'
+import useWinRateCalculator from 'views/Pottery/hooks/useWinRateCalculator'
+import { usePriceCakeBusd } from 'state/farms/hooks'
+import { CalculatorMode, EditingCurrency } from '../../types'
+import ButtonMenu from './ButtonMenu'
+import WinRateTvl from './WinRateTVL'
 import AnimatedArrow from './AnimatedArrow'
 import WinRateCard from './WinRateCard'
-import WinRateFooter from './WinRateFooter'
 
 const StyledModal = styled(Modal)`
   width: 380px;
@@ -25,17 +27,33 @@ const ScrollableContainer = styled.div`
   }
 `
 
-export interface WinRateModalProps {
+interface WinRateModalProps {
   onDismiss?: () => void
   onBack?: () => void
+  stakingTokenBalance: BigNumber
+  totalSupply: BigNumber
 }
 
-const WinRateModal: React.FC<WinRateModalProps> = ({ onDismiss, onBack }) => {
+const WinRateModal: React.FC<WinRateModalProps> = ({ onDismiss, onBack, stakingTokenBalance, totalSupply }) => {
   const { t } = useTranslation()
-  const [balance, setBalance] = useState('')
-  const [totalLockValue, setTotalLockValue] = useState('')
-  const [calculatorMode, setCalculatorMode] = useState(CalculatorMode.WIN_RATE_BASED_ON_PRINCIPAL)
+  const cakePrice = usePriceCakeBusd()
   const balanceInputRef = useRef<HTMLInputElement | null>(null)
+
+  const {
+    state,
+    winRate,
+    totalLockValue,
+    totalLockValueAsUSD,
+    setMultiplyNumber,
+    setPrincipalFromTokenValue,
+    setPrincipalFromUSDValue,
+    toggleEditingCurrency,
+    setCalculatorMode,
+    setTargetWinRate,
+  } = useWinRateCalculator({ cakePrice, totalSupply })
+
+  const { principalAsUSD, principalAsToken } = state.data
+  const { editingCurrency } = state.controls
 
   // Auto-focus input on opening modal
   useEffect(() => {
@@ -44,19 +62,15 @@ const WinRateModal: React.FC<WinRateModalProps> = ({ onDismiss, onBack }) => {
     }
   }, [])
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t(
-      'Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.',
-    ),
-    {
-      placement: 'top-end',
-      tooltipOffset: [20, 10],
-    },
-  )
-
   const onBalanceFocus = () => {
     setCalculatorMode(CalculatorMode.WIN_RATE_BASED_ON_PRINCIPAL)
   }
+
+  const editingUnit = editingCurrency === EditingCurrency.TOKEN ? 'CAKE' : 'USD'
+  const editingValue = editingCurrency === EditingCurrency.TOKEN ? principalAsToken : principalAsUSD
+  const conversionUnit = editingCurrency === EditingCurrency.TOKEN ? 'USD' : 'CAKE'
+  const conversionValue = editingCurrency === EditingCurrency.TOKEN ? principalAsUSD : principalAsToken
+  const onUserInput = editingCurrency === EditingCurrency.TOKEN ? setPrincipalFromTokenValue : setPrincipalFromUSDValue
 
   return (
     <StyledModal
@@ -69,91 +83,43 @@ const WinRateModal: React.FC<WinRateModalProps> = ({ onDismiss, onBack }) => {
         <Flex flexDirection="column" mb="8px">
           <Box>
             <Text color="secondary" bold fontSize="12px" textTransform="uppercase" as="span">
-              {t('Cake')}
+              Cake
             </Text>
             <Text color="textSubtle" ml="4px" bold fontSize="12px" textTransform="uppercase" as="span">
               {t('Deposit')}
             </Text>
           </Box>
           <BalanceInput
-            unit="CAKE"
+            unit={editingUnit}
             placeholder="0.00"
-            currencyValue="USD"
-            value={balance}
+            currencyValue={`${conversionValue} ${conversionUnit}`}
+            value={editingValue}
             innerRef={balanceInputRef}
             inputProps={{ scale: 'sm' }}
+            onUserInput={onUserInput}
             onFocus={onBalanceFocus}
-            onUserInput={(value) => {
-              setBalance(value)
-            }}
+            switchEditingUnits={toggleEditingCurrency}
           />
-          <Flex justifyContent="space-between" mt="8px">
-            <Button
-              scale="xs"
-              p="4px 16px"
-              width="68px"
-              variant="tertiary"
-              // onClick={() => setPrincipalFromUSDValue('100')}
-            >
-              $100
-            </Button>
-            <Button
-              scale="xs"
-              p="4px 16px"
-              width="68px"
-              variant="tertiary"
-              // onClick={() => setPrincipalFromUSDValue('1000')}
-            >
-              $1000
-            </Button>
-            <Button
-              scale="xs"
-              p="4px 16px"
-              width="128px"
-              variant="tertiary"
-              // onClick={() =>
-              //   setPrincipalFromUSDValue(getBalanceNumber(stakingTokenBalance.times(stakingTokenPrice)).toString())
-              // }
-            >
-              {t('My Balance').toLocaleUpperCase()}
-            </Button>
-            <span ref={targetRef}>
-              <HelpIcon width="16px" height="16px" color="textSubtle" />
-            </span>
-            {tooltipVisible && tooltip}
-          </Flex>
-          <Text mt="24px" color="secondary" bold fontSize="12px" textTransform="uppercase">
-            {t('TVL')}
-          </Text>
-          <Flex flexWrap="wrap" mb="8px">
-            <Button variant="primary" mt="4px" mr={['2px', '2px', '4px', '4px']} scale="sm">
-              Current
-            </Button>
-            <Button variant="tertiary" mt="4px" mr={['2px', '2px', '4px', '4px']} scale="sm">
-              +25%
-            </Button>
-            <Button variant="tertiary" mt="4px" mr={['2px', '2px', '4px', '4px']} scale="sm">
-              +50%
-            </Button>
-            <Button variant="tertiary" mt="4px" mr={['2px', '2px', '4px', '4px']} scale="sm">
-              +100%
-            </Button>
-          </Flex>
-          <BalanceInput
-            unit="CAKE"
-            placeholder="0.00"
-            currencyValue="USD"
-            value={totalLockValue}
-            inputProps={{ scale: 'sm' }}
-            onUserInput={(value) => {
-              setTotalLockValue(value)
-            }}
+          <ButtonMenu
+            cakePrice={cakePrice}
+            stakingTokenBalance={stakingTokenBalance}
+            setPrincipalFromUSDValue={setPrincipalFromUSDValue}
+          />
+          <WinRateTvl
+            calculatorState={state}
+            totalLockValue={totalLockValue}
+            totalLockValueAsUSD={totalLockValueAsUSD}
+            setMultiplyNumber={setMultiplyNumber}
           />
         </Flex>
-        <AnimatedArrow mode={calculatorMode} />
-        <WinRateCard mode={calculatorMode} setCalculatorMode={setCalculatorMode} />
+        <AnimatedArrow calculatorState={state} />
+        <WinRateCard
+          winRate={winRate}
+          calculatorState={state}
+          setCalculatorMode={setCalculatorMode}
+          setTargetWinRate={setTargetWinRate}
+        />
       </ScrollableContainer>
-      <WinRateFooter />
     </StyledModal>
   )
 }

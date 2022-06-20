@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Flex, ArrowDownIcon, ArrowUpIcon } from '@pancakeswap/uikit'
 import styled, { keyframes } from 'styled-components'
+import { WinRateCalculatorReducerState } from 'views/Pottery/hooks/useWinRateCalculator'
 import { CalculatorMode } from '../../types'
 
 const rotate = keyframes`
@@ -27,20 +28,20 @@ const ArrowContainer = styled(Flex)`
 `
 
 interface AnimatedArrowProps {
-  mode: CalculatorMode
+  calculatorState: WinRateCalculatorReducerState
 }
 
-const AnimatedArrow: React.FC<AnimatedArrowProps> = ({ mode }) => {
+const AnimatedArrow: React.FC<AnimatedArrowProps> = ({ calculatorState }) => {
   const [key, setKey] = useState('roiArrow-0')
+  const { mode } = calculatorState.controls
 
   // Trigger animation on state change
-  // TODO: Pottery state change need trigger animation
   useEffect(() => {
     setKey((prevKey) => {
       const prevId = parseInt(prevKey.split('-')[1], 10)
       return `roiArrow-${prevId + 1}`
     })
-  }, [mode])
+  }, [calculatorState])
 
   return (
     <ArrowContainer justifyContent="center" my="24px" key={key}>

@@ -7,7 +7,10 @@ import { usePotteryData } from 'state/pottery/hook'
 const WinRate: React.FC = () => {
   const { t } = useTranslation()
   const { publicData, userData } = usePotteryData()
-  const [openWinRateModal] = useModal(<WinRateModal />)
+
+  const [openWinRateModal] = useModal(
+    <WinRateModal stakingTokenBalance={userData.stakingTokenBalance} totalSupply={publicData.totalSupply} />,
+  )
 
   const percentage = useMemo(() => {
     return userData.stakingTokenBalance.div(publicData.totalSupply).times(100).toNumber()

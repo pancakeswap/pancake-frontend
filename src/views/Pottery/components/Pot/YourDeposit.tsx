@@ -11,7 +11,7 @@ const YourDeposit: React.FC = () => {
   const cakePriceBusd = usePriceCakeBusd()
   const { userData } = usePotteryData()
   const totalDepositBalance = getBalanceAmount(userData.stakingTokenBalance).toNumber()
-  const balanceInBusd = new BigNumber(userData.stakingTokenBalance).times(cakePriceBusd).toNumber()
+  const balanceInBusd = new BigNumber(totalDepositBalance).times(cakePriceBusd).toNumber()
 
   return (
     <Box>
@@ -37,7 +37,7 @@ const YourDeposit: React.FC = () => {
             lineHeight="110%"
             value={totalDepositBalance}
           />
-          <Balance prefix="~" decimals={2} value={balanceInBusd} fontSize="12px" color="textSubtle" />
+          <Balance prefix="~" unit=" USD" decimals={2} value={balanceInBusd} fontSize="12px" color="textSubtle" />
         </>
       )}
     </Box>

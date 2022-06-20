@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { Box, Flex, Text, Input, CheckmarkIcon, PencilIcon, IconButton } from '@pancakeswap/uikit'
+import { WinRateCalculatorState } from 'views/Pottery/hooks/useWinRateCalculator'
 import { CalculatorMode } from '../../types'
 
 const WinRateWrapper = styled(Box)`
@@ -20,26 +21,29 @@ const WinRateCardInner = styled(Box)`
 const WinRateInputContainer = styled(Box)`
   position: relative;
   & > input {
-    padding-left: 28px;
+    padding-right: 28px;
     max-width: 70%;
   }
   &:before {
     position: absolute;
-    content: '$';
+    content: '%';
     color: ${({ theme }) => theme.colors.textSubtle};
-    left: 16px;
+    left: 140px;
     top: 8px;
   }
 `
 
 interface WinRateCardProps {
-  mode: CalculatorMode
+  winRate: number
+  calculatorState: WinRateCalculatorState
   setCalculatorMode: (mode: CalculatorMode) => void
+  setTargetWinRate: (percentage: string) => void
 }
 
-const WinRateCard: React.FC<WinRateCardProps> = ({ mode, setCalculatorMode }) => {
+const WinRateCard: React.FC<WinRateCardProps> = ({ winRate, calculatorState, setCalculatorMode, setTargetWinRate }) => {
   const { t } = useTranslation()
   const [expectedWinRate, setExpectedWinRate] = useState('')
+  const { mode } = calculatorState.controls
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   useEffect(() => {
@@ -54,12 +58,20 @@ const WinRateCard: React.FC<WinRateCardProps> = ({ mode, setCalculatorMode }) =>
 
   const onExitWinRateEditing = () => {
     setCalculatorMode(CalculatorMode.WIN_RATE_BASED_ON_PRINCIPAL)
+    setExpectedWinRate(
+      winRate.toLocaleString('en', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+    )
   }
 
   const handleExpectedWinRateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.currentTarget.validity.valid) {
       const winRateAsString = event.target.value.replace(/,/g, '.')
-      setExpectedWinRate(winRateAsString)
+      const percentage = Number(winRateAsString) >= 100 ? '100' : winRateAsString
+      setTargetWinRate(percentage)
+      setExpectedWinRate(percentage)
     }
   }
 
@@ -75,12 +87,12 @@ const WinRateCard: React.FC<WinRateCardProps> = ({ mode, setCalculatorMode }) =>
               <WinRateInputContainer>
                 <Input
                   ref={inputRef}
-                  type="text"
-                  inputMode="decimal"
-                  pattern="^[0-9]+[.,]?[0-9]*$"
                   scale="sm"
-                  value={expectedWinRate}
+                  type="text"
                   placeholder="0.0"
+                  inputMode="decimal"
+                  pattern="^[0-9]{0,3}(?:\.[0-9]{0,2})?$"
+                  value={expectedWinRate}
                   onChange={handleExpectedWinRateChange}
                 />
               </WinRateInputContainer>
@@ -91,7 +103,7 @@ const WinRateCard: React.FC<WinRateCardProps> = ({ mode, setCalculatorMode }) =>
           ) : (
             <>
               <Text maxWidth="82%" mr="8px" fontSize="24px" bold>
-                28.46%
+                {winRate.toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%
               </Text>
               <IconButton scale="sm" variant="text" onClick={onEnterEditing}>
                 <PencilIcon color="primary" />

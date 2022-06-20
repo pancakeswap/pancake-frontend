@@ -69,8 +69,8 @@ const DepositAction: React.FC = () => {
         <Text fontSize="12px" color="secondary" textTransform="uppercase" bold as="span">
           {t('deposit')}
         </Text>
-        <Text fontSize="12px" ml="4px" color="textSubtle" textTransform="uppercase" bold as="span">
-          {t('cake')}
+        <Text fontSize="12px" ml="4px" color="textSubtle" bold as="span">
+          CAKE
         </Text>
       </Box>
       <InputPanel>
@@ -92,7 +92,7 @@ const DepositAction: React.FC = () => {
                 </Button>
               )}
               <LogoRoundIcon m="0 4px" width="24px" height="24px" />
-              <Text textTransform="uppercase">{t('Cake')}</Text>
+              <Text>CAKE</Text>
             </Flex>
           </Flex>
         </Container>
