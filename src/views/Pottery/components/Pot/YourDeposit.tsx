@@ -1,6 +1,7 @@
 import { Box, Text, Skeleton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
+import { useWeb3React } from '@web3-react/core'
 import Balance from 'components/Balance'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { usePotteryData } from 'state/pottery/hook'
@@ -8,6 +9,7 @@ import { getBalanceAmount } from 'utils/formatBalance'
 
 const YourDeposit: React.FC = () => {
   const { t } = useTranslation()
+  const { account } = useWeb3React()
   const cakePriceBusd = usePriceCakeBusd()
   const { userData } = usePotteryData()
   const totalDepositBalance = getBalanceAmount(userData.previewDepositBalance).toNumber()
@@ -23,7 +25,7 @@ const YourDeposit: React.FC = () => {
           {t('Deposit')}
         </Text>
       </Box>
-      {userData.isLoading ? (
+      {account && userData.isLoading ? (
         <>
           <Skeleton width="100px" height="35px" />
           <Skeleton width="40px" height="18px" />
@@ -37,7 +39,7 @@ const YourDeposit: React.FC = () => {
             lineHeight="110%"
             value={totalDepositBalance}
           />
-          <Balance prefix="~" unit=" USD" decimals={2} value={balanceInBusd} fontSize="12px" color="textSubtle" />
+          <Balance prefix="~" unit=" USD" decimals={2} value={balanceInBusd || 0} fontSize="12px" color="textSubtle" />
         </>
       )}
     </Box>
