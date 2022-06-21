@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
-import { Card, Text, Skeleton, CardHeader, Flex } from '@pancakeswap/uikit'
+import { Card, Text, Skeleton, CardHeader, Flex, BunnyPlaceholderIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { useLottery } from 'state/lottery/hooks'
@@ -31,12 +31,12 @@ const AllHistoryCard = () => {
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  // const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch()
   // const {
   //   currentLotteryId,
   //   lotteriesData,
   //   currentRound: { status, isLoading },
-  // } = useLottery()
+  // } = usePotteryDraw()
   const [latestRoundId, setLatestRoundId] = useState(null)
   const [selectedRoundId, setSelectedRoundId] = useState('')
   const [selectedLotteryNodeData, setSelectedLotteryNodeData] = useState(null)
@@ -119,7 +119,14 @@ const AllHistoryCard = () => {
           ) : null}
         </Flex>
       </StyledCardHeader>
-      <PreviousRoundCardBody />
+      {selectedRoundId ? (
+        <PreviousRoundCardBody />
+      ) : (
+        <Flex m="24px auto" flexDirection="column" alignItems="center" width="240px">
+          <Text mb="8px">{t('Please specify Round')}</Text>
+          <BunnyPlaceholderIcon height="64px" width="64px" />
+        </Flex>
+      )}
     </StyledCard>
   )
 }
