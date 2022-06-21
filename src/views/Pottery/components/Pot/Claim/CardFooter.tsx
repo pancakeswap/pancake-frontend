@@ -6,6 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { distanceToNowStrict } from 'utils/timeHelper'
 import { DeserializedPublicData, DeserializedPotteryUserData } from 'state/types'
 import Balance from 'components/Balance'
 
@@ -31,11 +32,8 @@ const CardFooter: React.FC<CardFooterProps> = ({ account, publicData, userData }
   const totalValueLocked = getBalanceNumber(publicData.totalLockCake)
 
   const daysRemaining = useMemo(() => {
-    const DAY_IN_SECONDS = 86400
-    const timerUntil = new BigNumber(publicData.lockStartTime).plus(weeksToSeconds(10)).toNumber()
-    const now = new Date().getTime() / 1000
-    const remaining = Math.ceil((timerUntil - now) / DAY_IN_SECONDS)
-    return remaining <= 0 ? 0 : remaining
+    const timerUntil = new BigNumber(publicData.lockStartTime).plus(weeksToSeconds(10)).times(1000).toNumber()
+    return timerUntil
   }, [publicData])
 
   return (
@@ -87,12 +85,7 @@ const CardFooter: React.FC<CardFooterProps> = ({ account, publicData, userData }
         <Box>
           {account ? (
             <>
-              <Text bold as="span">
-                {daysRemaining}
-              </Text>
-              <Text ml="4px" color="textSubtle" textTransform="uppercase" as="span">
-                {t('Days')}
-              </Text>
+              <Text bold>{distanceToNowStrict(daysRemaining)}</Text>
             </>
           ) : (
             <Text bold as="span">
