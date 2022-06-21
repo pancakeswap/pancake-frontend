@@ -203,7 +203,8 @@ export const PricePairLabel: React.FC = () => {
       router.query.token = PredictionSupportedSymbol.CAKE
     }
     if (!dismissTooltip) onDismissTooltip()
-    router.push(router)
+
+    router.replace(router, undefined, { scroll: false })
   }, [router, token, dismissTooltip, onDismissTooltip])
   return (
     <>
