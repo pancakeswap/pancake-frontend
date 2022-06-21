@@ -53,7 +53,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   const prepConfirmArg = useCallback(
     ({ duration }) => ({
       finalDuration: duration,
-      finalLockedAmount: currentBalance?.gt(MIN_LOCK_AMOUNT)
+      finalLockedAmount: currentBalance?.gte(MIN_LOCK_AMOUNT)
         ? getBalanceAmount(MIN_LOCK_AMOUNT, stakingToken.decimals).toNumber()
         : 0,
     }),
@@ -77,7 +77,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
     [lockStartTime, currentDuration, currentLockedAmount, usdValueStaked, ceiling],
   )
 
-  const hasEnoughBalanceToExtend = useMemo(() => currentBalance?.gt(MIN_LOCK_AMOUNT), [currentBalance])
+  const hasEnoughBalanceToExtend = useMemo(() => currentBalance?.gte(MIN_LOCK_AMOUNT), [currentBalance])
 
   return (
     <RoiCalculatorModalProvider lockedAmount={currentLockedAmount}>
