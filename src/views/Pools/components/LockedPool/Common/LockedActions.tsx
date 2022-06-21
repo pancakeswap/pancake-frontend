@@ -55,6 +55,7 @@ const LockedActions: React.FC<LockedActionsPropsType> = ({
             lockStartTime={lockStartTime}
             stakingToken={stakingToken}
             currentBalance={currentBalance}
+            checkEnoughBalanceToExtend
             currentLockedAmount={lockedAmountAsNumber}
           >
             {t('Extend')}

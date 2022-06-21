@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import { Modal, Box } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
 import useTheme from 'hooks/useTheme'
@@ -23,6 +23,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   currentLockedAmount,
   currentDuration,
   currentBalance,
+  checkEnoughBalanceToExtend,
   lockStartTime,
   lockEndTime,
 }) => {
@@ -53,11 +54,11 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   const prepConfirmArg = useCallback(
     ({ duration }) => ({
       finalDuration: duration,
-      finalLockedAmount: currentBalance?.gte(MIN_LOCK_AMOUNT)
+      finalLockedAmount: checkEnoughBalanceToExtend
         ? getBalanceAmount(MIN_LOCK_AMOUNT, stakingToken.decimals).toNumber()
         : 0,
     }),
-    [stakingToken.decimals, currentBalance],
+    [stakingToken.decimals, checkEnoughBalanceToExtend],
   )
 
   const customOverview = useCallback(
@@ -77,8 +78,6 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
     [lockStartTime, currentDuration, currentLockedAmount, usdValueStaked, ceiling],
   )
 
-  const hasEnoughBalanceToExtend = useMemo(() => currentBalance?.gte(MIN_LOCK_AMOUNT), [currentBalance])
-
   return (
     <RoiCalculatorModalProvider lockedAmount={currentLockedAmount}>
       <Modal
@@ -96,7 +95,8 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
         </Box>
         <LockedBodyModal
           stakingToken={stakingToken}
-          hasEnoughBalanceToExtend={hasEnoughBalanceToExtend}
+          checkEnoughBalanceToExtend={checkEnoughBalanceToExtend}
+          currentBalance={currentBalance}
           onDismiss={onDismiss}
           lockedAmount={new BigNumber(currentLockedAmount)}
           validator={validator}

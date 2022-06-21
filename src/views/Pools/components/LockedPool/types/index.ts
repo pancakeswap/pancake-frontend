@@ -31,6 +31,7 @@ export interface ExtendDurationModal {
   modalTitle?: string
   currentDuration: number
   currentBalance?: BigNumber
+  checkEnoughBalanceToExtend?: boolean
   lockStartTime: string
   lockEndTime: string
 }
@@ -78,7 +79,7 @@ export interface LockedModalBodyPropsType {
   onDismiss?: VoidFn
   stakingToken: Token
   currentBalance?: BigNumber
-  hasEnoughBalanceToExtend?: boolean
+  checkEnoughBalanceToExtend?: boolean
   lockedAmount: BigNumber
   editAmountOnly?: React.ReactElement
   prepConfirmArg?: PrepConfirmArg
@@ -90,6 +91,7 @@ export interface ExtendDurationButtonPropsType {
   stakingToken: Token
   currentLockedAmount: number
   currentBalance?: BigNumber
+  checkEnoughBalanceToExtend?: boolean
   lockEndTime: string
   lockStartTime: string
   children: React.ReactNode

@@ -12,13 +12,14 @@ import { LockedModalBodyPropsType, ModalValidator } from '../types'
 import Overview from './Overview'
 import LockDurationField from './LockDurationField'
 import useLockedPool from '../hooks/useLockedPool'
+import { MIN_LOCK_AMOUNT } from '../../../helpers'
 
 const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
   stakingToken,
   onDismiss,
   lockedAmount,
   currentBalance,
-  hasEnoughBalanceToExtend,
+  checkEnoughBalanceToExtend,
   editAmountOnly,
   prepConfirmArg,
   validator,
@@ -44,6 +45,11 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
           isOverMax: duration > MAX_LOCK_DURATION,
         }
   }, [validator, currentBalance, lockedAmount, duration])
+
+  const hasEnoughBalanceToExtend = useMemo(
+    () => (checkEnoughBalanceToExtend ? (currentBalance ? currentBalance.gte(MIN_LOCK_AMOUNT) : false) : null),
+    [currentBalance, checkEnoughBalanceToExtend],
+  )
 
   return (
     <>
@@ -81,11 +87,7 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
           endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
           onClick={handleConfirmClick}
           disabled={
-            !(
-              isValidAmount &&
-              isValidDuration &&
-              (!isUndefinedOrNull(hasEnoughBalanceToExtend) ? hasEnoughBalanceToExtend : true)
-            )
+            !(isValidAmount && isValidDuration && (checkEnoughBalanceToExtend ? hasEnoughBalanceToExtend : true))
           }
         >
           {pendingTx ? t('Confirming') : t('Confirm')}
