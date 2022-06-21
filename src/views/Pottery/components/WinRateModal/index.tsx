@@ -7,7 +7,7 @@ import useWinRateCalculator from 'views/Pottery/hooks/useWinRateCalculator'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { CalculatorMode, EditingCurrency } from '../../types'
 import ButtonMenu from './ButtonMenu'
-import WinRateTvl from './WinRateTVL'
+import WinRateTvl from './WinRateTvl'
 import AnimatedArrow from './AnimatedArrow'
 import WinRateCard from './WinRateCard'
 
