@@ -14,9 +14,7 @@ import LockedBodyModal from '../Common/LockedModalBody'
 import Overview from '../Common/Overview'
 import { ExtendDurationModal } from '../types'
 import RoiCalculatorModalProvider from './RoiCalculatorModalProvider'
-
-// min deposit and withdraw amount
-const MIN_AMOUNT = new BigNumber(10000000000000)
+import { MIN_LOCK_AMOUNT } from '../../../helpers'
 
 const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   modalTitle,
@@ -55,8 +53,8 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   const prepConfirmArg = useCallback(
     ({ duration }) => ({
       finalDuration: duration,
-      finalLockedAmount: currentBalance?.gt(MIN_AMOUNT)
-        ? getBalanceAmount(MIN_AMOUNT, stakingToken.decimals).toNumber()
+      finalLockedAmount: currentBalance?.gt(MIN_LOCK_AMOUNT)
+        ? getBalanceAmount(MIN_LOCK_AMOUNT, stakingToken.decimals).toNumber()
         : 0,
     }),
     [stakingToken.decimals, currentBalance],
@@ -79,7 +77,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
     [lockStartTime, currentDuration, currentLockedAmount, usdValueStaked, ceiling],
   )
 
-  const hasEnoughBalanceToExtend = useMemo(() => currentBalance?.gt(MIN_AMOUNT), [currentBalance])
+  const hasEnoughBalanceToExtend = useMemo(() => currentBalance?.gt(MIN_LOCK_AMOUNT), [currentBalance])
 
   return (
     <RoiCalculatorModalProvider lockedAmount={currentLockedAmount}>
