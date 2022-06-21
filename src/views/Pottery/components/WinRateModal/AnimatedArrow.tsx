@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Flex, ArrowDownIcon, ArrowUpIcon } from '@pancakeswap/uikit'
 import styled, { keyframes } from 'styled-components'
-import { WinRateCalculatorReducerState } from 'views/Pottery/hooks/useWinRateCalculator'
+import { WinRateCalculatorState } from 'views/Pottery/hooks/useWinRateCalculator'
 import { CalculatorMode } from '../../types'
 
 const rotate = keyframes`
@@ -28,7 +28,7 @@ const ArrowContainer = styled(Flex)`
 `
 
 interface AnimatedArrowProps {
-  calculatorState: WinRateCalculatorReducerState
+  calculatorState: WinRateCalculatorState
 }
 
 const AnimatedArrow: React.FC<AnimatedArrowProps> = ({ calculatorState }) => {

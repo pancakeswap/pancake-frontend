@@ -67,7 +67,7 @@ const DepositAction: React.FC = () => {
     <Box>
       <Box mb="4px">
         <Text fontSize="12px" color="secondary" textTransform="uppercase" bold as="span">
-          {t('deposit')}
+          {t('Deposit')}
         </Text>
         <Text fontSize="12px" ml="4px" color="textSubtle" bold as="span">
           CAKE

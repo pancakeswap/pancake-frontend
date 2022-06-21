@@ -11,7 +11,7 @@ const AvailableWitdraw: React.FC = () => {
         {t('stake withdraw')}
       </Text>
       <Text fontSize="12px" color="textSubtle" bold as="span" ml="4px" textTransform="uppercase">
-        {t(' available')}
+        {t('available')}
       </Text>
       <Flex mb="11px">
         <Box>
