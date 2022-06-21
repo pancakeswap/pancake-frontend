@@ -22,7 +22,6 @@ const StyledPodiumWrapper = styled(Flex)`
 
   ${({ theme }) => theme.mediaQueries.md} {
     flex: 1;
-    margin-right: 40px;
     margin-bottom: 0;
   }
 `
@@ -66,7 +65,7 @@ const TeamRanks: React.FC<TeamRanksProps> = ({
 
   return (
     <Wrapper>
-      <StyledPodiumWrapper>
+      <StyledPodiumWrapper marginRight={0}>
         <Podium
           teamsSortedByVolume={
             isTeamLeaderboardDataComplete &&
@@ -80,8 +79,6 @@ const TeamRanks: React.FC<TeamRanksProps> = ({
         <BunnyImageWrapper mt="24px">
           <Image src={image} width={200} height={205} />
         </BunnyImageWrapper>
-      </StyledPodiumWrapper>
-      <StyledTopTradersWrapper>
         <TopTradersCard
           team1LeaderboardInformation={team1LeaderboardInformation}
           team2LeaderboardInformation={team2LeaderboardInformation}
@@ -89,7 +86,7 @@ const TeamRanks: React.FC<TeamRanksProps> = ({
           globalLeaderboardInformation={globalLeaderboardInformation}
           isGlobalLeaderboardDataComplete={isGlobalLeaderboardDataComplete}
         />
-      </StyledTopTradersWrapper>
+      </StyledPodiumWrapper>
     </Wrapper>
   )
 }

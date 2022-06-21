@@ -17,7 +17,7 @@ const EasterPrizesInfo = () => {
   return (
     <Wrapper flexDirection="column">
       <EasterPrizesCard />
-      <EasterPrizesText />
+      {/* <EasterPrizesText /> */}
     </Wrapper>
   )
 }

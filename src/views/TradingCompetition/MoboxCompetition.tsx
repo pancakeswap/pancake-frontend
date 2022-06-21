@@ -171,9 +171,9 @@ const MoboxCompetition = () => {
 
   return (
     <>
-      <PageMeta />
+      {/* <PageMeta /> */}
       <CompetitionPage id="pcs-competition-page">
-        <PageSection
+        {/* <PageSection
           style={{ paddingTop: '0px' }}
           innerProps={{ style: { paddingTop: isMobile ? '30px' : '28px' } }}
           background={TRADINGCOMPETITIONBANNER}
@@ -184,7 +184,7 @@ const MoboxCompetition = () => {
             <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
             <MoboxBattleBanner />
           </BannerFlex>
-        </PageSection>
+        </PageSection> */}
         <PageSection
           containerProps={{ style: { marginTop: '-30px' } }}
           background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
@@ -254,12 +254,13 @@ const MoboxCompetition = () => {
                 globalLeaderboardInformation={globalLeaderboardInformation}
                 participantSubgraphAddress={TC_MOBOX_SUBGRAPH}
                 subgraphName="pancakeswap/trading-competition-v3"
+                historicalMode
               />
             </Box>
           </PageSection>
         )}
         <PrizesInfoSection prizesInfoComponent={<MoboxPrizesInfo />} />
-        <PageSection
+        {/* <PageSection
           containerProps={{ style: { marginTop: '-1px' } }}
           index={5}
           dividerPosition="top"
@@ -276,7 +277,7 @@ const MoboxCompetition = () => {
           <Box mt="64px">
             <Rules />
           </Box>
-        </PageSection>
+        </PageSection> */}
         <Footer
           shouldHideCta={shouldHideCta}
           image={StormBunny}

@@ -155,7 +155,7 @@ const FanTokenCompetition = () => {
     <>
       <PageMeta />
       <CompetitionPage>
-        <PageSection
+        {/* <PageSection
           style={{ paddingTop: '0px' }}
           innerProps={{ style: { paddingTop: isMobile ? '30px' : '28px' } }}
           background={DARKBG}
@@ -166,7 +166,7 @@ const FanTokenCompetition = () => {
             <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
             <FanTokenBattleBanner />
           </BannerFlex>
-        </PageSection>
+        </PageSection> */}
         <PageSection
           containerProps={{ style: { marginTop: '-30px' } }}
           background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}

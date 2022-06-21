@@ -143,7 +143,7 @@ const EasterCompetition = () => {
 
   return (
     <CompetitionPage>
-      <PageSection
+      {/* <PageSection
         style={{ paddingTop: '0px' }}
         innerProps={{ style: { paddingTop: isMobile ? '30px' : '28px' } }}
         background={DARKBG}
@@ -154,7 +154,7 @@ const EasterCompetition = () => {
           <Countdown currentPhase={currentPhase} hasCompetitionEnded={hasCompetitionEnded} />
           <EasterBattleBanner />
         </BannerFlex>
-      </PageSection>
+      </PageSection> */}
       <PageSection
         containerProps={{ style: { marginTop: '-30px' } }}
         background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}

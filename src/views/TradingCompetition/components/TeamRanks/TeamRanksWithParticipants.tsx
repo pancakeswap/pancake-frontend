@@ -67,6 +67,7 @@ interface TeamRanksWithParticipantsProps extends TeamRanksProps {
   image: StaticImageData
   participantSubgraphAddress: string
   subgraphName: string
+  historicalMode?: boolean
 }
 
 const TeamRanksWithParticipants: React.FC<TeamRanksWithParticipantsProps> = ({
@@ -77,6 +78,7 @@ const TeamRanksWithParticipants: React.FC<TeamRanksWithParticipantsProps> = ({
   globalLeaderboardInformation,
   participantSubgraphAddress,
   subgraphName,
+  historicalMode,
 }) => {
   const { t } = useTranslation()
   const participants = useGetParticipants(participantSubgraphAddress)
@@ -121,17 +123,29 @@ const TeamRanksWithParticipants: React.FC<TeamRanksWithParticipantsProps> = ({
             <Image src={image} width={292} height={234} />
           </BunnyImageWrapper>
         </TotalParticipantsWrapper>
+        {historicalMode && (
+          <TopTradersCard
+            team1LeaderboardInformation={team1LeaderboardInformation}
+            team2LeaderboardInformation={team2LeaderboardInformation}
+            team3LeaderboardInformation={team3LeaderboardInformation}
+            globalLeaderboardInformation={globalLeaderboardInformation}
+            isGlobalLeaderboardDataComplete={isGlobalLeaderboardDataComplete}
+            subgraphName={subgraphName}
+          />
+        )}
       </StyledPodiumWrapper>
-      <StyledTopTradersWrapper>
-        <TopTradersCard
-          team1LeaderboardInformation={team1LeaderboardInformation}
-          team2LeaderboardInformation={team2LeaderboardInformation}
-          team3LeaderboardInformation={team3LeaderboardInformation}
-          globalLeaderboardInformation={globalLeaderboardInformation}
-          isGlobalLeaderboardDataComplete={isGlobalLeaderboardDataComplete}
-          subgraphName={subgraphName}
-        />
-      </StyledTopTradersWrapper>
+      {!historicalMode && (
+        <StyledTopTradersWrapper>
+          <TopTradersCard
+            team1LeaderboardInformation={team1LeaderboardInformation}
+            team2LeaderboardInformation={team2LeaderboardInformation}
+            team3LeaderboardInformation={team3LeaderboardInformation}
+            globalLeaderboardInformation={globalLeaderboardInformation}
+            isGlobalLeaderboardDataComplete={isGlobalLeaderboardDataComplete}
+            subgraphName={subgraphName}
+          />
+        </StyledTopTradersWrapper>
+      )}
     </Wrapper>
   )
 }

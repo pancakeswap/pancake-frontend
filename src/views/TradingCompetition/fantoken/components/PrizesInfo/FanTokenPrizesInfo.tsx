@@ -17,7 +17,7 @@ const FanTokenPrizesInfo = () => {
   return (
     <Wrapper flexDirection="column">
       <FanTokenPrizesCard />
-      <FanTokenPrizesText />
+      {/* <FanTokenPrizesText /> */}
     </Wrapper>
   )
 }

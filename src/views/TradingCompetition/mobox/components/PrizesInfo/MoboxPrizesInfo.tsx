@@ -17,7 +17,7 @@ const MoboxPrizesInfo = () => {
   return (
     <Wrapper flexDirection="column">
       <MoboxPrizesCard />
-      <MoboxPrizesText />
+      {/* <MoboxPrizesText /> */}
     </Wrapper>
   )
 }

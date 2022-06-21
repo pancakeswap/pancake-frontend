@@ -6,7 +6,6 @@ import { fanTokenPrizes } from '../../../../../config/constants/trading-competit
 
 const StyledCard = styled(Card)`
   ${({ theme }) => theme.mediaQueries.md} {
-    margin-right: 40px;
     flex: 1;
   }
 `
