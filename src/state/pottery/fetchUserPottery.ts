@@ -21,11 +21,14 @@ export const fetchPotterysAllowance = async (account) => {
 export const fetchVaultUserData = async (account: string) => {
   try {
     const balance = await potteryVaultContract.balanceOf(account)
+    const previewDeposit = await potteryVaultContract.previewDeposit(balance)
     return {
+      previewDepositBalance: new BigNumber(previewDeposit.toString()).toJSON(),
       stakingTokenBalance: new BigNumber(balance.toString()).toJSON(),
     }
   } catch {
     return {
+      previewDepositBalance: BIG_ZERO.toJSON(),
       stakingTokenBalance: BIG_ZERO.toJSON(),
     }
   }

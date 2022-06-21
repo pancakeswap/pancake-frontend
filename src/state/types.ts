@@ -654,6 +654,7 @@ export interface DeserializedPublicData {
 export interface SerializedPotteryUserData {
   isLoading?: boolean
   allowance: string
+  previewDepositBalance: string
   stakingTokenBalance: string
   rewards: string
   winCount: string
@@ -662,6 +663,7 @@ export interface SerializedPotteryUserData {
 export interface DeserializedPotteryUserData {
   isLoading?: boolean
   allowance: BigNumber
+  previewDepositBalance: BigNumber
   stakingTokenBalance: BigNumber
   rewards: BigNumber
   winCount: string

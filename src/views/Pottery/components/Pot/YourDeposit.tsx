@@ -10,7 +10,7 @@ const YourDeposit: React.FC = () => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
   const { userData } = usePotteryData()
-  const totalDepositBalance = getBalanceAmount(userData.stakingTokenBalance).toNumber()
+  const totalDepositBalance = getBalanceAmount(userData.previewDepositBalance).toNumber()
   const balanceInBusd = new BigNumber(totalDepositBalance).times(cakePriceBusd).toNumber()
 
   return (
