@@ -72,9 +72,8 @@ let globalInfo
 export const useSystemInfo = () => {
   const [info, setInfo] = useState(globalInfo)
   useEffect(() => {
-    if (!globalInfo) {
+    if (!globalInfo && typeof __NEZHA_BRIDGE__ !== 'undefined') {
       _bridgeUtils.getSystemInfo().then((value) => {
-        console.log('~ useSystemInfo')
         globalInfo = value
         setInfo(value)
       })
