@@ -119,8 +119,8 @@ import type {
   CakeVaultV2,
   TradingCompetitionMobox,
   TradingCompetitionMoD,
-  PotteryVault,
-  PotteryDraw,
+  PotteryVaultAbi,
+  PotteryDrawAbi,
 } from 'config/abi/types'
 
 export const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
@@ -259,8 +259,8 @@ export const getErc721CollectionContract = (signer?: Signer | Provider, address?
 }
 
 export const getPotteryVaultContract = (signer?: Signer | Provider) => {
-  return getContract(potteryVaultAbi, getPotteryVaultAddress(), signer) as PotteryVault
+  return getContract(potteryVaultAbi, getPotteryVaultAddress(), signer) as PotteryVaultAbi
 }
 export const getPotteryDrawContract = (signer?: Signer | Provider) => {
-  return getContract(potteryDrawAbi, getPotteryDrawAddress(), signer) as PotteryDraw
+  return getContract(potteryDrawAbi, getPotteryDrawAddress(), signer) as PotteryDrawAbi
 }
