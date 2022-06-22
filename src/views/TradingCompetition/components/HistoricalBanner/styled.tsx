@@ -18,9 +18,9 @@ export const BannerWrapper = styled(Atropos)`
 export const BannerInner = styled.div`
   position: relative;
   width: 735px;
-  margin-left: 75px;
+  margin: 0 auto;
   height: 162px;
-  margin-top: 25px;
+  margin-top: 24px;
 `
 
 export const BannerBg = styled.div<{ collapsed?: boolean }>`
@@ -60,15 +60,29 @@ export const StyledButton = styled(Button)<{ collapsed: boolean }>`
   }
 `
 export const ContentWrapper = styled.div`
-  width: 735px;
-  margin: 0px auto;
+  width: 324px;
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 479px;
+    margin: 0px auto;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 735px;
+  }
 `
 
 export const BannerFooter = styled.div`
-  width: 735px;
+  width: 324px;
   height: 95px;
   border-radius: 0px 0px 32px 32px;
+  box-shadow: ${({ theme }) => theme.card.boxShadow};
   background: ${({ theme }) => theme.card.background};
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 479px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 735px;
+  }
 `
 
 interface CollapseButtonProps extends ButtonProps {
