@@ -19,6 +19,9 @@ import {
 
 const Layer1Image = styled.img`
   position: absolute;
+  bottom: 0px;
+  right: 100px;
+  width: 70px;
 
   ${({ theme }) => theme.mediaQueries.md} {
     bottom: 0px;
@@ -33,6 +36,9 @@ const Layer1Image = styled.img`
 `
 const Layer2Image = styled.img`
   position: absolute;
+  top: 0px;
+  right: 45px;
+  width: 80px;
 
   ${({ theme }) => theme.mediaQueries.md} {
     top: 25px;
@@ -47,7 +53,9 @@ const Layer2Image = styled.img`
 `
 const Layer3Image = styled.img`
   position: absolute;
-
+  top: -8px;
+  left: 155px;
+  width: 68px;
   ${({ theme }) => theme.mediaQueries.md} {
     top: -15px;
     left: 235px;
@@ -61,6 +69,9 @@ const Layer3Image = styled.img`
 `
 const Layer4Image = styled.img`
   position: absolute;
+  top: 28px;
+  left: 16px;
+  width: 142px;
 
   ${({ theme }) => theme.mediaQueries.md} {
     top: 51px;
@@ -75,7 +86,9 @@ const Layer4Image = styled.img`
 `
 const Layer5Image = styled.img`
   position: absolute;
-
+  top: 5px;
+  left: 99px;
+  width: 75px;
   ${({ theme }) => theme.mediaQueries.md} {
     top: 0px;
     left: 130px;

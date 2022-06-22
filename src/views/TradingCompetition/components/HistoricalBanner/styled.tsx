@@ -46,26 +46,25 @@ export const BannerBg = styled.div<{ collapsed?: boolean }>`
   border-radius: ${({ collapsed }) => (collapsed ? '32px' : '32px 32px 0px 0px')};
   transition: 0.3s border-radius ease-in-out;
   will-change: border-radius;
-  ${({ theme }) => theme.mediaQueries.md} {
-    background: radial-gradient(104.13% 227.47% at -4.12% -5.83%, #4bdde7 0%, #5b47b9 82.22%)
-      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
-    height: 162px;
-  }
+  background: radial-gradient(104.13% 227.47% at -4.12% -5.83%, #4bdde7 0%, #5b47b9 82.22%);
 `
 
 export const FullLayerImage = styled.img`
   position: absolute;
-  height: 100%;
-  width: 100%;
   top: 0;
   left: 0;
+  height: 100%;
+  width: 100%;
 `
 export const StyledButton = styled(Button)<{ collapsed: boolean }>`
   position: absolute;
-  right: 32px;
-  top: 57px;
-  padding-left: 14px;
-  padding-right: 14px;
+  right: 16px;
+  top: 26px;
+  padding: 14px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    right: 32px;
+    top: 57px;
+  }
   svg {
     will-change: transform;
     transition: 0.3s transform ease-in-out;

@@ -20,7 +20,9 @@ import {
 
 const Layer1Image = styled.img`
   position: absolute;
-
+  width: 110px;
+  top: -10px;
+  left: 90px;
   ${({ theme }) => theme.mediaQueries.md} {
     bottom: 10px;
     left: 145px;
@@ -35,7 +37,9 @@ const Layer1Image = styled.img`
 
 const Layer2Image = styled.img`
   position: absolute;
-
+  width: 120px;
+  right: 10px;
+  top: -8px;
   ${({ theme }) => theme.mediaQueries.md} {
     bottom: 0;
     right: 5px;
@@ -49,6 +53,9 @@ const Layer2Image = styled.img`
 `
 const Layer3Image = styled.img`
   position: absolute;
+  top: 20px;
+  left: 170px;
+  width: 70px;
 
   ${({ theme }) => theme.mediaQueries.md} {
     top: 45px;
@@ -63,7 +70,9 @@ const Layer3Image = styled.img`
 `
 const Layer4Image = styled.img`
   position: absolute;
-
+  width: 110px;
+  top: 28px;
+  left: 16px;
   ${({ theme }) => theme.mediaQueries.md} {
     top: 51px;
     left: 32px;
