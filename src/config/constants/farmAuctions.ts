@@ -753,6 +753,14 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
           tokenName: 'PEAKDEFI',
           projectSite: 'https://peakdefi.com/',
         },
+        {
+          account: '0x6587515802FF7f9cD7442EAE8dfAE20f9d71306F',
+          farmName: 'SHELL-BUSD',
+          tokenAddress: '0x208cfEc94d2BA8B8537da7A9BB361c6baAD77272',
+          quoteToken: tokens.busd,
+          tokenName: 'SHELL',
+          projectSite: 'https://meta-apes.io/',
+        },
       ].map((bidderConfig) => ({
         ...bidderConfig,
         lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken),
