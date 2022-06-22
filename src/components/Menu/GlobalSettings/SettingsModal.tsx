@@ -9,8 +9,8 @@ import {
   useUserSingleHopOnly,
   useZapModeManager,
 } from 'state/user/hooks'
+import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useTranslation } from 'contexts/Localization'
-import { useSwapActionHandlers } from 'state/swap/hooks'
 import useTheme from 'hooks/useTheme'
 import QuestionHelper from '../../QuestionHelper'
 import TransactionSettings from './TransactionSettings'

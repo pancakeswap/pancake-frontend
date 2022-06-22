@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useWeb3React } from '@web3-react/core'
+import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import { CurrencyLogo } from '../../components/Logo'
@@ -52,12 +53,12 @@ export default function PoolFinder() {
     Boolean(
       pairState === PairState.EXISTS &&
         pair &&
-        JSBI.equal(pair.reserve0.raw, JSBI.BigInt(0)) &&
-        JSBI.equal(pair.reserve1.raw, JSBI.BigInt(0)),
+        JSBI.equal(pair.reserve0.raw, BIG_INT_ZERO) &&
+        JSBI.equal(pair.reserve1.raw, BIG_INT_ZERO),
     )
 
   const position: TokenAmount | undefined = useTokenBalance(account ?? undefined, pair?.liquidityToken)
-  const hasPosition = Boolean(position && JSBI.greaterThan(position.raw, JSBI.BigInt(0)))
+  const hasPosition = Boolean(position && JSBI.greaterThan(position.raw, BIG_INT_ZERO))
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
