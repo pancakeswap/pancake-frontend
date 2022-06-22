@@ -52,14 +52,7 @@ const PreviousRoundCardBody: React.FC = () => {
             {t('Winner')}
           </Text>
           <WinnersContainer>
-            <Winner />
-            <Winner />
-            <Winner />
-            <Winner />
-            <Winner />
-            <Winner />
-            <Winner />
-            <Winner />
+            <Winner address="" />
           </WinnersContainer>
         </Flex>
         <Box width="100%">
