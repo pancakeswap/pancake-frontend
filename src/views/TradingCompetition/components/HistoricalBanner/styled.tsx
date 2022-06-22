@@ -12,16 +12,28 @@ export const BannerWrapper = styled(Atropos)`
   box-sizing: border-box;
   overflow: visible;
   ${({ theme }) => theme.mediaQueries.md} {
+    width: calc(479px + 150px);
+    height: calc(167px + 50px);
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
     width: calc(735px + 150px);
     height: calc(167px + 50px);
   }
 `
 export const BannerInner = styled.div`
   position: relative;
-  width: 735px;
   margin: 0 auto;
-  height: 162px;
+  width: 320px;
+  height: 100px;
   margin-top: 24px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 479px;
+    height: 162px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 735px;
+    height: 162px;
+  }
 `
 
 export const BannerBg = styled.div<{ collapsed?: boolean }>`

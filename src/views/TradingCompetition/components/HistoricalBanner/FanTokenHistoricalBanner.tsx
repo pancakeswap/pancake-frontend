@@ -19,33 +19,73 @@ import {
 
 const Layer1Image = styled.img`
   position: absolute;
-  bottom: 0px;
-  right: 200px;
-  width: 120px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    bottom: 0px;
+    right: 140px;
+    width: 120px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    bottom: 0px;
+    right: 200px;
+    width: 120px;
+  }
 `
 const Layer2Image = styled.img`
   position: absolute;
-  top: 25px;
-  right: 100px;
-  width: 110px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    top: 25px;
+    right: 50px;
+    width: 110px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    top: 25px;
+    right: 100px;
+    width: 110px;
+  }
 `
 const Layer3Image = styled.img`
   position: absolute;
-  top: -15px;
-  left: 453px;
-  width: 120px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    top: -15px;
+    left: 235px;
+    width: 110px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    top: -15px;
+    left: 453px;
+    width: 120px;
+  }
 `
 const Layer4Image = styled.img`
   position: absolute;
-  top: 40px;
-  left: 50px;
-  width: 315px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    top: 51px;
+    left: 32px;
+    width: 236px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    top: 40px;
+    left: 50px;
+    width: 315px;
+  }
 `
 const Layer5Image = styled.img`
   position: absolute;
-  top: -10px;
-  left: 330px;
-  width: 130px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    top: 0px;
+    left: 130px;
+    width: 130px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    top: -10px;
+    left: 330px;
+    width: 130px;
+  }
 `
 
 export const FanTokenHistoricalBanner: React.FC = () => {
@@ -62,8 +102,9 @@ export const FanTokenHistoricalBanner: React.FC = () => {
 
           <Layer1Image src={layer1.src} alt="" data-atropos-offset="3" />
           <Layer2Image src={layer2.src} alt="" data-atropos-offset="6" />
-          <Layer4Image src={layer4.src} data-atropos-offset="9" />
+
           <Layer5Image src={layer5.src} data-atropos-offset="6" />
+          <Layer4Image src={layer4.src} data-atropos-offset="9" />
           <Layer3Image src={layer3.src} alt="" data-atropos-offset="9" />
           <CollapseButton
             collapsed={collapsed}

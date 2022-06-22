@@ -1,50 +1,84 @@
-import styled from 'styled-components'
-import { useState } from 'react'
 import 'atropos/css'
-import { Button } from '@pancakeswap/uikit'
+import { useState } from 'react'
+import styled from 'styled-components'
+import { useMatchBreakpoints } from '@pancakeswap/uikit'
+import EasterCompetition from '../../EasterCompetition'
 import layer1 from '../../pngs/easter-egg-banner-layer1.png'
 import layer2 from '../../pngs/easter-egg-banner-layer2.png'
 import layer3 from '../../pngs/easter-egg-banner-layer3.png'
 import layer4 from '../../pngs/easter-egg-banner-layer4.png'
+import layer4Tablet from '../../pngs/easter-egg-banner-layer4-tablet.png'
 import {
-  BannerWrapper,
-  BannerInner,
   BannerBg,
+  BannerFooter,
+  BannerInner,
+  BannerWrapper,
   CollapseButton,
   ContentWrapper,
-  BannerFooter,
   FooterButton,
 } from './styled'
-import EasterCompetition from '../../EasterCompetition'
 
 const Layer1Image = styled.img`
   position: absolute;
-  bottom: 0px;
-  left: 295px;
-  width: 200px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    bottom: 10px;
+    left: 145px;
+    width: 170px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    bottom: 0px;
+    left: 295px;
+    width: 200px;
+  }
 `
 
 const Layer2Image = styled.img`
   position: absolute;
-  bottom: 0;
-  right: 30px;
-  width: 196px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    bottom: 0;
+    right: 5px;
+    width: 196px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    bottom: 0;
+    right: 30px;
+    width: 196px;
+  }
 `
 const Layer3Image = styled.img`
   position: absolute;
-  top: 45px;
-  left: 440px;
-  width: 100px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    top: 45px;
+    left: 270px;
+    width: 90px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    top: 45px;
+    left: 440px;
+    width: 100px;
+  }
 `
 const Layer4Image = styled.img`
   position: absolute;
-  top: 40px;
-  left: 50px;
-  width: 219px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    top: 51px;
+    left: 32px;
+    width: 236px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    top: 40px;
+    left: 50px;
+    width: 219px;
+  }
 `
 
 export const EasterTradingHistoricalBanner: React.FC = () => {
   const [collapsed, setCollapsed] = useState(true)
+  const { isTablet } = useMatchBreakpoints()
   return (
     <>
       <BannerWrapper shadow={false} highlight={false}>
@@ -58,7 +92,7 @@ export const EasterTradingHistoricalBanner: React.FC = () => {
           <Layer3Image src={layer3.src} alt="" data-atropos-offset="0" />
           <Layer2Image src={layer2.src} alt="" data-atropos-offset="3" />
           <Layer1Image src={layer1.src} alt="" data-atropos-offset="6" />
-          <Layer4Image src={layer4.src} data-atropos-offset="9" />
+          <Layer4Image src={isTablet ? layer4Tablet.src : layer4.src} data-atropos-offset="9" />
           <CollapseButton
             collapsed={collapsed}
             data-atropos-offset="0"
