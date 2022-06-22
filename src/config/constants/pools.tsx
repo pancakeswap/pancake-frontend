@@ -125,19 +125,6 @@ const pools: SerializedPoolConfig[] = [
     tokenPerBlock: '0.09645',
     version: 3,
   },
-  {
-    sousId: 277,
-    stakingToken: serializedTokens.cake,
-    earningToken: serializedTokens.ankr,
-    contractAddress: {
-      97: '',
-      56: '0xc581345e1648CcE154978eA80bF8A584EC8aFDe0',
-    },
-    poolCategory: PoolCategory.CORE,
-    harvest: true,
-    tokenPerBlock: '4.6296',
-    version: 3,
-  },
 ].filter((p) => !!p.contractAddress[CHAIN_ID])
 
 // known finished pools
@@ -166,6 +153,19 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.06794',
+    version: 3,
+  },
+  {
+    sousId: 277,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.ankr,
+    contractAddress: {
+      97: '',
+      56: '0xc581345e1648CcE154978eA80bF8A584EC8aFDe0',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    tokenPerBlock: '4.6296',
     version: 3,
   },
   {
