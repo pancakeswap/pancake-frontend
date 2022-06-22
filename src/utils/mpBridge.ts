@@ -26,11 +26,16 @@ function getWeb3Provider() {
       window.bn.miniProgram.postMessage({ action: 'on', id: id++, payload: { event } })
     },
     request(params) {
-      return new Promise((resolve) => {
+      return new Promise((resolve, reject) => {
         const localId = id
         window.bn.miniProgram.postMessage({ action: 'request', payload: params, id: id++ })
-        cbList[localId] = resolve
-        console.log('~ cbList', cbList)
+        cbList[localId] = (payload) => {
+          if (payload.error) {
+            reject(payload.message)
+          } else {
+            resolve(payload)
+          }
+        }
       })
     },
     removeEventListener(event, cb) {
