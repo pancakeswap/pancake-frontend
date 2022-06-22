@@ -48,7 +48,7 @@ const Layer2Image = styled.img`
   ${({ theme }) => theme.mediaQueries.lg} {
     bottom: 0;
     right: 30px;
-    width: 196px;
+    width: 190px;
   }
 `
 const Layer3Image = styled.img`

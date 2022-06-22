@@ -104,7 +104,12 @@ const TeamRanksWithParticipants: React.FC<TeamRanksWithParticipantsProps> = ({
       <StyledPodiumWrapper>
         <PodiumWithParticipants teamsSortedByVolume={teamsSortedByVolume} participants={participants} />
         <TotalParticipantsWrapper>
-          <TotalParticipantsCloud flexDirection="column" mt="24px" justifySelf="flex-start">
+          <TotalParticipantsCloud
+            flexDirection="column"
+            mt="24px"
+            justifySelf="flex-start"
+            marginBottom={historicalMode && '20px'}
+          >
             <Text color="secondary" fontSize="24px" bold>
               {t('Total Participants')}
             </Text>
@@ -119,9 +124,11 @@ const TeamRanksWithParticipants: React.FC<TeamRanksWithParticipantsProps> = ({
               )}
             </Flex>
           </TotalParticipantsCloud>
-          <BunnyImageWrapper mt="24px">
-            <Image src={image} width={292} height={234} />
-          </BunnyImageWrapper>
+          {!historicalMode && (
+            <BunnyImageWrapper mt="24px">
+              <Image src={image} width={292} height={234} />
+            </BunnyImageWrapper>
+          )}
         </TotalParticipantsWrapper>
         {historicalMode && (
           <TopTradersCard

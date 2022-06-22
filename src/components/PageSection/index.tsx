@@ -32,7 +32,7 @@ const BackgroundColor = styled(Flex)<BackgroundColorProps>`
   padding: ${({ padding }) => padding};
 `
 
-const ChildrenWrapper = styled(Container)`
+export const ChildrenWrapper = styled(Container)`
   min-height: auto;
   padding-top: 16px;
   padding-bottom: 16px;

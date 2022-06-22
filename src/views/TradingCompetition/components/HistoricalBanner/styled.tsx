@@ -3,11 +3,12 @@ import 'atropos/css'
 import Atropos from 'atropos/react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
+import { ChildrenWrapper } from '../../../../components/PageSection'
 
 export const BannerWrapper = styled(Atropos)`
   position: relative;
   width: 100%;
-  height: 130px;
+  height: calc(100px + 50px);
   margin: 33px auto 0px;
   box-sizing: border-box;
   overflow: visible;
@@ -89,6 +90,13 @@ export const ContentWrapper = styled.div`
   }
   ${({ theme }) => theme.mediaQueries.lg} {
     width: 735px;
+  }
+  ${ChildrenWrapper} {
+    ${({ theme }) => theme.mediaQueries.xs},${({ theme }) => theme.mediaQueries.sm} {
+      box-sizing: border-box;
+      padding-left: 0;
+      padding-right: 0;
+    }
   }
 `
 

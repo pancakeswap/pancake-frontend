@@ -1,34 +1,30 @@
-import { useState, useEffect } from 'react'
+import { Box, Flex, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useProfile } from 'state/profile/hooks'
-import { Flex, Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import styled from 'styled-components'
-import { useTradingCompetitionContractEaster } from 'hooks/useContract'
-import useTheme from 'hooks/useTheme'
+import PageSection from 'components/PageSection'
 import {
-  SmartContractPhases,
-  CompetitionPhases,
-  LIVE,
-  FINISHED,
   CLAIM,
+  CompetitionPhases,
+  FINISHED,
+  LIVE,
   OVER,
   REGISTRATION,
+  SmartContractPhases,
 } from 'config/constants/trading-competition/phases'
-import PageSection from 'components/PageSection'
-import { LIGHTBLUEBG_DARK, LIGHTBLUEBG } from './pageSectionStyles'
-import EasterStormBunny from './pngs/easter-storm.png'
-import Countdown from './components/Countdown'
-import HowToJoin from './components/HowToJoin'
+import { useTradingCompetitionContractEaster } from 'hooks/useContract'
+import useTheme from 'hooks/useTheme'
+import { useEffect, useState } from 'react'
+import { useProfile } from 'state/profile/hooks'
+import styled from 'styled-components'
 import BattleCta from './components/BattleCta'
-import EasterBattleBanner from './easter/components/BattleBanner/EasterBattleBanner'
+import HowToJoin from './components/HowToJoin'
+import PrizesInfoSection from './components/PrizesInfoSection'
+import TeamRanksSection from './components/TeamRanksSection'
 import EasterPrizesInfo from './easter/components/PrizesInfo/EasterPrizesInfo'
 import EasterYourScore from './easter/components/YourScore/EasterYourScore'
+import { LIGHTBLUEBG, LIGHTBLUEBG_DARK } from './pageSectionStyles'
 import EasterCakerBunny from './pngs/easter-cakers.png'
-import { useTeamInformation } from './useTeamInformation'
 import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
-import Footer from './Footer'
-import TeamRanksSection from './components/TeamRanksSection'
-import PrizesInfoSection from './components/PrizesInfoSection'
+import { useTeamInformation } from './useTeamInformation'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
