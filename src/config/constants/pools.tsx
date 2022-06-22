@@ -58,8 +58,20 @@ const pools: SerializedPoolConfig[] = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '10',
-    sortOrder: 1,
     isFinished: false,
+  },
+  {
+    sousId: 284,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.antex,
+    contractAddress: {
+      97: '',
+      56: '0xdC37A2B2A6a62008beEe029E36153dF8055a8ADa',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    tokenPerBlock: '1937.62',
+    version: 3,
   },
   {
     sousId: 283,
@@ -71,7 +83,6 @@ const pools: SerializedPoolConfig[] = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '2.2505',
     version: 3,
   },
@@ -85,7 +96,6 @@ const pools: SerializedPoolConfig[] = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.58',
     version: 3,
   },
@@ -99,22 +109,7 @@ const pools: SerializedPoolConfig[] = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '63.136',
-    version: 3,
-  },
-  {
-    sousId: 280,
-    stakingToken: serializedTokens.cake,
-    earningToken: serializedTokens.metis,
-    contractAddress: {
-      97: '',
-      56: '0xC0A94bFF88EdCae7D5d79294C0e9954Ed75CBCb7',
-    },
-    poolCategory: PoolCategory.CORE,
-    harvest: true,
-    sortOrder: 999,
-    tokenPerBlock: '0.01331',
     version: 3,
   },
   {
@@ -127,8 +122,37 @@ const pools: SerializedPoolConfig[] = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.09645',
+    version: 3,
+  },
+].filter((p) => !!p.contractAddress[CHAIN_ID])
+
+// known finished pools
+const finishedPools = [
+  {
+    sousId: 280,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.metis,
+    contractAddress: {
+      97: '',
+      56: '0xC0A94bFF88EdCae7D5d79294C0e9954Ed75CBCb7',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    tokenPerBlock: '0.01331',
+    version: 3,
+  },
+  {
+    sousId: 278,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.rpg,
+    contractAddress: {
+      97: '',
+      56: '0xD1c395BCdC2d64ac6544A34A36185483B00530a1',
+    },
+    poolCategory: PoolCategory.CORE,
+    harvest: true,
+    tokenPerBlock: '0.06794',
     version: 3,
   },
   {
@@ -141,26 +165,7 @@ const pools: SerializedPoolConfig[] = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '4.6296',
-    version: 3,
-  },
-].filter((p) => !!p.contractAddress[CHAIN_ID])
-
-// known finished pools
-const finishedPools = [
-  {
-    sousId: 278,
-    stakingToken: serializedTokens.cake,
-    earningToken: serializedTokens.rpg,
-    contractAddress: {
-      97: '',
-      56: '0xD1c395BCdC2d64ac6544A34A36185483B00530a1',
-    },
-    poolCategory: PoolCategory.CORE,
-    harvest: true,
-    sortOrder: 999,
-    tokenPerBlock: '0.06794',
     version: 3,
   },
   {
@@ -173,7 +178,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.8078',
     version: 3,
   },
@@ -187,7 +191,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.4677',
     version: 3,
   },
@@ -201,7 +204,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.3865',
     version: 3,
   },
@@ -215,7 +217,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '17.939',
     version: 3,
   },
@@ -229,7 +230,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '3.404',
     version: 3,
   },
@@ -243,7 +243,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.157',
     version: 3,
   },
@@ -257,7 +256,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.4861',
     version: 3,
   },
@@ -271,7 +269,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '4.629',
     version: 3,
   },
@@ -285,7 +282,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '5.106',
     version: 3,
   },
@@ -299,7 +295,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.09756',
     version: 3,
   },
@@ -313,7 +308,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.162',
     version: 3,
   },
@@ -327,7 +321,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.608',
     version: 3,
   },
@@ -341,7 +334,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '157829',
   },
   {
@@ -354,7 +346,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '7.502',
   },
   {
@@ -367,7 +358,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.06481',
   },
   {
@@ -380,7 +370,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '204.2',
   },
   {
@@ -393,7 +382,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.585',
   },
   {
@@ -406,7 +394,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.19',
   },
   {
@@ -419,7 +406,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '2.893',
   },
   {
@@ -432,7 +418,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.6435',
   },
   {
@@ -445,7 +430,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '3.035',
   },
   {
@@ -458,7 +442,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.1493',
   },
   {
@@ -471,7 +454,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.1493',
   },
   {
@@ -484,7 +466,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.3281',
   },
   {
@@ -497,7 +478,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '7893',
   },
   {
@@ -510,7 +490,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.226',
   },
   {
@@ -523,7 +502,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.02679',
   },
   {
@@ -536,7 +514,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '4.62962963',
   },
   {
@@ -549,7 +526,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.03761',
   },
   {
@@ -562,7 +538,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.1262',
   },
   {
@@ -575,7 +550,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.7413',
   },
   {
@@ -588,7 +562,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1271',
   },
   {
@@ -601,7 +574,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.0578',
   },
   {
@@ -614,7 +586,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.07471',
   },
   {
@@ -627,7 +598,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.4516',
   },
   {
@@ -640,7 +610,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.0311',
   },
   {
@@ -653,7 +622,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.736',
   },
   {
@@ -666,7 +634,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.1897',
   },
   {
@@ -679,7 +646,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.0578',
   },
   {
@@ -692,7 +658,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.2516',
   },
   {
@@ -705,7 +670,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.5233',
   },
   {
@@ -718,7 +682,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '2.3379',
   },
   {
@@ -731,7 +694,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '2.3148',
   },
   {
@@ -744,7 +706,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.06944',
   },
   {
@@ -757,7 +718,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '2.0254',
   },
   {
@@ -770,7 +730,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.09838',
   },
   {
@@ -783,7 +742,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.2152',
   },
   {
@@ -796,7 +754,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.0694',
   },
   {
@@ -809,7 +766,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.40046',
   },
   {
@@ -822,7 +778,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.00706',
   },
   {
@@ -835,7 +790,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.01863',
   },
   {
@@ -848,7 +802,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.7361',
   },
   {
@@ -861,7 +814,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.002893',
   },
   {
@@ -874,7 +826,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '173727',
   },
   {
@@ -887,7 +838,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.0861',
   },
   {
@@ -900,7 +850,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.3616',
   },
   {
@@ -913,7 +862,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.1851',
   },
   {
@@ -926,7 +874,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.217',
   },
   {
@@ -939,7 +886,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.14',
   },
   {
@@ -952,7 +898,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.412',
   },
   {
@@ -965,7 +910,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.1736',
   },
   {
@@ -978,7 +922,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.28',
   },
   {
@@ -991,7 +934,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.101',
   },
   {
@@ -1004,7 +946,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.9837',
   },
   {
@@ -1017,7 +958,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.0868',
   },
   {
@@ -1030,7 +970,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.5787',
   },
   {
@@ -1043,7 +982,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.331',
   },
   {
@@ -1056,7 +994,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '263',
   },
   {
@@ -1069,7 +1006,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.00289',
   },
   {
@@ -1082,7 +1018,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1815.39',
   },
   {
@@ -1095,7 +1030,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.02835',
   },
   {
@@ -1108,7 +1042,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '12.86',
   },
   {
@@ -1121,7 +1054,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.7361',
   },
   {
@@ -1134,7 +1066,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.00744',
   },
   {
@@ -1147,7 +1078,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.00992',
   },
   {
@@ -1160,7 +1090,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.02696',
   },
   {
@@ -1173,7 +1102,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '9.6643',
   },
   {
@@ -1186,7 +1114,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.4286',
   },
   {
@@ -1199,7 +1126,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.08912',
   },
   {
@@ -1212,7 +1138,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '3.0092',
   },
   {
@@ -1225,7 +1150,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.06423',
   },
   {
@@ -1238,7 +1162,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.7233',
   },
   {
@@ -1251,7 +1174,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.67129',
   },
   {
@@ -1264,7 +1186,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.7523',
   },
   {
@@ -1277,7 +1198,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '69.9074',
   },
   {
@@ -1290,7 +1210,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.3877',
   },
   {
@@ -1303,7 +1222,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '3.993',
   },
   {
@@ -1316,7 +1234,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '7.9108',
   },
   {
@@ -1329,7 +1246,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '11.574',
   },
   {
@@ -1342,7 +1258,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.4467',
   },
   {
@@ -1355,7 +1270,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '3.8946',
   },
   {
@@ -1368,7 +1282,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.00135',
   },
   {
@@ -1381,7 +1294,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.3854',
   },
   {
@@ -1394,7 +1306,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.0003854',
   },
   {
@@ -1407,7 +1318,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '5.2083',
   },
   {
@@ -1420,7 +1330,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.1001',
   },
   {
@@ -1433,7 +1342,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.7361',
   },
   {
@@ -1446,7 +1354,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.3078',
   },
   {
@@ -1459,7 +1366,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.107638',
   },
   {
@@ -1472,7 +1378,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.398',
   },
   {
@@ -1485,7 +1390,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.4843',
   },
   {
@@ -1498,7 +1402,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.6741',
   },
   {
@@ -1511,7 +1414,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.1108',
   },
   {
@@ -1524,7 +1426,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.4803',
   },
   {
@@ -1537,7 +1438,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.7361',
   },
   {
@@ -1550,7 +1450,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.27777',
   },
   {
@@ -1563,7 +1462,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.6944',
   },
   {
@@ -1576,7 +1474,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '15.9143',
   },
   {
@@ -1589,7 +1486,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.01215',
   },
   {
@@ -1602,7 +1498,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.05613',
   },
   {
@@ -1615,7 +1510,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.5787',
   },
   {
@@ -1628,7 +1522,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '40.5092',
   },
   {
@@ -1641,7 +1534,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.0868',
   },
   {
@@ -1654,7 +1546,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.01736',
   },
   {
@@ -1667,8 +1558,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
-    isFinished: true,
     tokenPerBlock: '0.00868',
   },
   {
@@ -1681,7 +1570,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.19097',
   },
   {
@@ -1694,7 +1582,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.023148',
   },
   {
@@ -1708,7 +1595,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.2025',
-    sortOrder: 999,
   },
   {
     sousId: 156,
@@ -1721,7 +1607,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '1.6087',
-    sortOrder: 999,
   },
   {
     sousId: 155,
@@ -1734,7 +1619,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '1.655',
-    sortOrder: 999,
   },
   {
     sousId: 154,
@@ -1747,7 +1631,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.00015914',
-    sortOrder: 999,
   },
   {
     sousId: 153,
@@ -1760,7 +1643,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.31828',
-    sortOrder: 999,
     isFinished: false,
   },
   {
@@ -1774,7 +1656,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.03553',
-    sortOrder: 999,
     isFinished: false,
   },
   {
@@ -1787,7 +1668,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '3.4722',
     isFinished: false,
   },
@@ -1801,7 +1681,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.7361',
     isFinished: false,
   },
@@ -1815,7 +1694,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.24942',
     isFinished: false,
   },
@@ -1829,7 +1707,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '2.4074',
     isFinished: false,
   },
@@ -1843,7 +1720,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '2.8935',
     isFinished: false,
   },
@@ -1857,7 +1733,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.868',
     isFinished: false,
   },
@@ -1871,7 +1746,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.01261',
     isFinished: false,
   },
@@ -1885,7 +1759,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '57.87',
     isFinished: false,
   },
@@ -1899,7 +1772,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.1342',
     isFinished: false,
   },
@@ -1913,7 +1785,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.01388',
     isFinished: false,
   },
@@ -1927,7 +1798,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.01331',
     isFinished: false,
   },
@@ -1941,7 +1811,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.3472',
     isFinished: false,
   },
@@ -1955,7 +1824,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '2.8935',
     isFinished: false,
   },
@@ -1969,7 +1837,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.23148',
     isFinished: false,
   },
@@ -1983,7 +1850,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.15798',
     isFinished: false,
   },
@@ -1997,7 +1863,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.17361',
     isFinished: false,
   },
@@ -2011,7 +1876,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '462.96',
     isFinished: false,
   },
@@ -2025,7 +1889,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '4.0509',
     isFinished: false,
   },
@@ -2039,7 +1902,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '79.86',
     isFinished: false,
   },
@@ -2053,7 +1915,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.66145',
     isFinished: false,
   },
@@ -2067,7 +1928,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.09548',
     isFinished: false,
   },
@@ -2081,7 +1941,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.0298',
     isFinished: false,
   },
@@ -2095,7 +1954,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.4861',
     isFinished: true,
   },
@@ -2109,7 +1967,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '3.4722',
     isFinished: false,
   },
@@ -2123,7 +1980,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.0000031',
     isFinished: false,
   },
@@ -2137,7 +1993,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.003472',
     isFinished: false,
   },
@@ -2151,7 +2006,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.00265278',
     isFinished: false,
   },
@@ -2165,7 +2019,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.00000403',
     isFinished: false,
   },
@@ -2179,7 +2032,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.4629',
     isFinished: false,
   },
@@ -2193,7 +2045,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.3472',
     isFinished: false,
   },
@@ -2207,7 +2058,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.10918',
     isFinished: false,
   },
@@ -2221,7 +2071,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.1574',
     isFinished: false,
   },
@@ -2235,7 +2084,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.949',
     isFinished: false,
   },
@@ -2249,7 +2097,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.11284',
     isFinished: false,
   },
@@ -2263,7 +2110,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.009837',
     isFinished: true,
   },
@@ -2277,7 +2123,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.46296',
     isFinished: false,
   },
@@ -2291,7 +2136,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.22743',
     isFinished: false,
   },
@@ -2305,7 +2149,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.00000608',
     isFinished: false,
   },
@@ -2319,7 +2162,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.00000608',
     isFinished: true,
   },
@@ -2333,7 +2175,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.21527',
   },
   {
@@ -2346,7 +2187,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.3472',
     isFinished: true,
     enableEmergencyWithdraw: true,
@@ -2361,7 +2201,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '3.4722',
     isFinished: true,
     enableEmergencyWithdraw: true,
@@ -2376,7 +2215,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.10918',
     isFinished: true,
     enableEmergencyWithdraw: true,
@@ -2391,7 +2229,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.3721',
   },
   {
@@ -2404,7 +2241,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '15.3356',
   },
   {
@@ -2417,7 +2253,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '14.4675',
   },
   {
@@ -2430,7 +2265,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.6944',
   },
   {
@@ -2443,7 +2277,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.23495',
   },
   {
@@ -2456,7 +2289,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.1574',
     isFinished: true,
     enableEmergencyWithdraw: true,
@@ -2471,7 +2303,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '17.361',
   },
   {
@@ -2484,7 +2315,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.08796',
   },
   {
@@ -2497,7 +2327,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.07716',
   },
   {
@@ -2510,7 +2339,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.949',
     isFinished: true,
     enableEmergencyWithdraw: true,
@@ -2525,7 +2353,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '3.096',
   },
   {
@@ -2538,7 +2365,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.4629',
     isFinished: true,
     enableEmergencyWithdraw: true,
@@ -2553,7 +2379,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.1574',
   },
   {
@@ -2566,7 +2391,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.09953',
   },
   {
@@ -2579,7 +2403,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.489',
   },
   {
@@ -2592,7 +2415,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.11284',
     isFinished: true,
     enableEmergencyWithdraw: true,
@@ -2607,7 +2429,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.0072338',
   },
   {
@@ -2620,7 +2441,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.15046',
   },
   {
@@ -2633,7 +2453,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.00405',
   },
   {
@@ -2646,7 +2465,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.08912',
   },
   {
@@ -2659,7 +2477,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.0000031',
     isFinished: true,
     enableEmergencyWithdraw: true,
@@ -2674,7 +2491,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.6811',
   },
   {
@@ -2687,7 +2503,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '2.3148',
   },
   {
@@ -2700,7 +2515,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.003472',
     isFinished: true,
     enableEmergencyWithdraw: true,
@@ -2715,7 +2529,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '1.0995',
   },
   {
@@ -2728,7 +2541,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.00434',
   },
   {
@@ -2741,7 +2553,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.00265278',
     isFinished: true,
     enableEmergencyWithdraw: true,
@@ -2756,7 +2567,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.00000403',
     isFinished: true,
     enableEmergencyWithdraw: true,
@@ -2771,7 +2581,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.2893',
   },
   {
@@ -2785,7 +2594,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.01273',
-    sortOrder: 999,
     isFinished: false,
   },
   {
@@ -2799,7 +2607,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.01273',
-    sortOrder: 999,
     isFinished: true,
     enableEmergencyWithdraw: true,
   },
@@ -2814,7 +2621,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.4484',
-    sortOrder: 999,
     isFinished: false,
   },
   {
@@ -2828,7 +2634,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.4629',
-    sortOrder: 999,
     isFinished: false,
   },
   {
@@ -2842,7 +2647,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.00007234',
-    sortOrder: 999,
     isFinished: false,
   },
   {
@@ -2856,7 +2660,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.434027',
-    sortOrder: 999,
     isFinished: false,
   },
   {
@@ -2870,7 +2673,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '5.787',
-    sortOrder: 999,
     isFinished: false,
   },
   {
@@ -2884,7 +2686,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.00289',
-    sortOrder: 999,
     isFinished: false,
   },
   {
@@ -2898,7 +2699,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.14467',
-    sortOrder: 999,
     isFinished: false,
   },
   {
@@ -2912,7 +2712,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '2.8935',
-    sortOrder: 999,
     isFinished: false,
   },
   {
@@ -2926,7 +2725,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.5787',
-    sortOrder: 999,
     isFinished: false,
   },
   {
@@ -2940,7 +2738,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.0868',
-    sortOrder: 999,
     isFinished: false,
   },
   {
@@ -2954,7 +2751,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.00868',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -2968,7 +2764,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.4861',
-    sortOrder: 999,
     isFinished: true,
     enableEmergencyWithdraw: true,
   },
@@ -2983,7 +2778,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.0001157',
-    sortOrder: 999,
     isFinished: false,
   },
   {
@@ -2997,7 +2791,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.009837',
-    sortOrder: 999,
     isFinished: true,
     enableEmergencyWithdraw: true,
   },
@@ -3012,7 +2805,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.0549',
-    sortOrder: 999,
     isFinished: false,
   },
   {
@@ -3026,7 +2818,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.0462',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3040,7 +2831,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '3.616',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3054,7 +2844,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.3472',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3068,7 +2857,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.0413',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3082,7 +2870,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.00248',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3096,7 +2883,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '6.365',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3110,7 +2896,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.000395',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3124,7 +2909,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.0723',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3138,7 +2922,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.0367',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3152,7 +2935,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.0578',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3166,7 +2948,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.13',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3180,7 +2961,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.1157',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3194,7 +2974,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.1736',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3208,7 +2987,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.899',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3222,7 +3000,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.055',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3236,7 +3013,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.55',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3250,7 +3026,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.6',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3264,7 +3039,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.983',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3278,7 +3052,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.0983',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3292,7 +3065,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.231',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3306,7 +3078,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.0138',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3320,7 +3091,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.075',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3334,7 +3104,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.001215',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3348,7 +3117,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.1157',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3362,7 +3130,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.23',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3376,7 +3143,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.2546',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3390,7 +3156,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.81',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3404,7 +3169,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.011574',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3418,7 +3182,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.17361',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3432,7 +3195,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.05787',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3446,7 +3208,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.4166',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3460,7 +3221,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.01',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3474,7 +3234,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.01',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3488,7 +3247,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.01',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3502,7 +3260,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '115.74',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3516,7 +3273,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.01157',
-    sortOrder: 999,
     isFinished: false,
   },
   {
@@ -3530,7 +3286,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.248',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3544,7 +3299,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.02',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3558,7 +3312,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.02',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3572,7 +3325,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.104',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3586,7 +3338,6 @@ const finishedPools = [
     poolCategory: PoolCategory.BINANCE,
     harvest: true,
     tokenPerBlock: '0.5',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3600,7 +3351,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.0041',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3614,7 +3364,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '23.14',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3628,7 +3377,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '23.14',
-    sortOrder: 999,
     isFinished: true,
     enableEmergencyWithdraw: true,
   },
@@ -3643,7 +3391,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.02893',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3657,7 +3404,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '5',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3671,7 +3417,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.346',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3685,7 +3430,6 @@ const finishedPools = [
     poolCategory: PoolCategory.COMMUNITY,
     harvest: true,
     tokenPerBlock: '12.5',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3699,7 +3443,6 @@ const finishedPools = [
     poolCategory: PoolCategory.COMMUNITY,
     harvest: true,
     tokenPerBlock: '0.2',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3713,7 +3456,6 @@ const finishedPools = [
     poolCategory: PoolCategory.COMMUNITY,
     harvest: true,
     tokenPerBlock: '1',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3726,7 +3468,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.COMMUNITY,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '10',
     isFinished: true,
   },
@@ -3741,7 +3482,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.5',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3755,7 +3495,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '20',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3769,7 +3508,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     tokenPerBlock: '0.25',
-    sortOrder: 999,
     isFinished: true,
   },
   {
@@ -3782,7 +3520,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
-    sortOrder: 999,
     tokenPerBlock: '0.6093',
   },
   {
@@ -3796,7 +3533,6 @@ const finishedPools = [
     poolCategory: PoolCategory.CORE,
     harvest: true,
     enableEmergencyWithdraw: true,
-    sortOrder: 999,
     tokenPerBlock: '7.502',
   },
 ]
