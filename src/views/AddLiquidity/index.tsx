@@ -497,17 +497,21 @@ export default function AddLiquidity() {
         (currencyB && currencyEquals(currencyB, WETH[chainId]))),
   )
 
+  const noAnyInputAmount = !parsedAmounts[Field.CURRENCY_A] && !parsedAmounts[Field.CURRENCY_B]
+
   const showAddLiquidity =
     (!!currencies[Field.CURRENCY_A] && !!currencies[Field.CURRENCY_B] && steps === Steps.Add) || !canZap
 
   const showZapWarning =
     preferZapInstead &&
+    !noAnyInputAmount &&
     ((!rebalancing && !(!zapTokenCheckedA && !zapTokenCheckedB)) || (rebalancing && zapIn.priceSeverity > 3))
   const showReduceZapTokenButton =
     preferZapInstead && (zapIn.priceSeverity > 3 || zapIn.zapInEstimatedError) && maxAmounts[zapIn.swapTokenField]
 
   const showRebalancingConvert =
     !showZapWarning &&
+    !noAnyInputAmount &&
     !showReduceZapTokenButton &&
     preferZapInstead &&
     zapIn.isDependentAmountGreaterThanMaxAmount &&
