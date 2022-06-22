@@ -2,8 +2,9 @@ import { Contract } from '@ethersproject/contracts'
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@pancakeswap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
-import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../config/constants'
-import { getRouterContract } from '../utils'
+import { BIPS_BASE } from 'config/constants/exchange'
+import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
+import { getRouterContract } from 'utils/exchange'
 import useTransactionDeadline from './useTransactionDeadline'
 
 interface SwapCall {

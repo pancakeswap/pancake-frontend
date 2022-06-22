@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ParsedUrlQuery } from 'querystring'
 import { Currency, CurrencyAmount, TokenAmount, Trade, Token, Price, ETHER } from '@pancakeswap/sdk'
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from 'config/constants'
+import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY, BIG_INT_TEN } from 'config/constants/exchange'
 import { useRouter } from 'next/router'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
@@ -37,7 +37,7 @@ const getDesiredInput = (
   if (isInverted) {
     const invertedResultAsFraction = parsedOutAmount.asFraction
       .multiply(parsedExchangeRate.asFraction)
-      .multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputCurrency.decimals)))
+      .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals)))
     const invertedResultAsAmount =
       inputCurrency instanceof Token
         ? new TokenAmount(inputCurrency, invertedResultAsFraction.toFixed(0))
@@ -47,7 +47,7 @@ const getDesiredInput = (
   }
   const resultAsFraction = parsedOutAmount.asFraction
     .divide(parsedExchangeRate.asFraction)
-    .multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputCurrency.decimals)))
+    .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals)))
   const resultAsAmount =
     inputCurrency instanceof Token
       ? new TokenAmount(inputCurrency, resultAsFraction.quotient.toString())
@@ -75,7 +75,7 @@ const getDesiredOutput = (
 
   if (isInverted) {
     const invertedResultAsFraction = parsedInputAmount.asFraction
-      .multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(outputCurrency.decimals)))
+      .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(outputCurrency.decimals)))
       .divide(parsedExchangeRate.asFraction)
     const invertedResultAsAmount =
       outputCurrency instanceof Token
@@ -87,7 +87,7 @@ const getDesiredOutput = (
 
   const resultAsFraction = parsedInputAmount.asFraction
     .multiply(parsedExchangeRate.asFraction)
-    .multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(outputCurrency.decimals)))
+    .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(outputCurrency.decimals)))
   const resultAsAmount =
     outputCurrency instanceof Token
       ? new TokenAmount(outputCurrency, resultAsFraction.quotient.toString())
@@ -411,14 +411,12 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
   const rawAmounts = useMemo(
     () => ({
       input: inputCurrency
-        ? parsedAmounts.input
-            ?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(inputCurrency.decimals)))
-            .toFixed(0)
+        ? parsedAmounts.input?.multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals))).toFixed(0)
         : undefined,
 
       output: outputCurrency
         ? parsedAmounts.output
-            ?.multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(outputCurrency.decimals)))
+            ?.multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(outputCurrency.decimals)))
             .toFixed(0)
         : undefined,
     }),

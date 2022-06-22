@@ -11,7 +11,7 @@ import {
   CUSTOM_BASES,
   BETTER_TRADE_LESS_HOPS_THRESHOLD,
   ADDITIONAL_BASES,
-} from '../config/constants'
+} from 'config/constants/exchange'
 import { PairState, usePairs } from './usePairs'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 
