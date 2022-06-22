@@ -7,7 +7,15 @@ import layer2 from '../../pngs/fan-token-histortical-banner-layer2.png'
 import layer3 from '../../pngs/fan-token-histortical-banner-layer3.png'
 import layer4 from '../../pngs/fan-token-histortical-banner-layer4.png'
 import layer5 from '../../pngs/fan-token-histortical-banner-layer5.png'
-import { BannerBg, BannerFooter, BannerInner, BannerWrapper, CollapseButton, ContentWrapper } from './styled'
+import {
+  BannerBg,
+  BannerFooter,
+  BannerInner,
+  BannerWrapper,
+  CollapseButton,
+  ContentWrapper,
+  FooterButton,
+} from './styled'
 
 const Layer1Image = styled.img`
   position: absolute;
@@ -71,7 +79,13 @@ export const FanTokenHistoricalBanner: React.FC = () => {
           <ContentWrapper>
             <FanTokenCompetition />
           </ContentWrapper>
-          <BannerFooter />
+          <BannerFooter>
+            <FooterButton
+              onClick={() => {
+                setCollapsed(true)
+              }}
+            />
+          </BannerFooter>
         </>
       )}
     </>

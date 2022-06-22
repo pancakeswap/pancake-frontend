@@ -2,6 +2,7 @@ import { Button, ButtonProps, ChevronDownIcon } from '@pancakeswap/uikit'
 import 'atropos/css'
 import Atropos from 'atropos/react'
 import styled from 'styled-components'
+import { useTranslation } from 'contexts/Localization'
 
 export const BannerWrapper = styled(Atropos)`
   position: relative;
@@ -59,6 +60,15 @@ export const StyledButton = styled(Button)<{ collapsed: boolean }>`
     transform: rotateZ(${({ collapsed }) => (collapsed ? '0deg' : '-180deg')});
   }
 `
+
+export const StyledFooterButton = styled(Button)`
+  svg {
+    will-change: transform;
+    transition: 0.3s transform ease-in-out;
+    transform: rotateZ(${({ collapsed }) => (collapsed ? '0deg' : '-180deg')});
+  }
+`
+
 export const ContentWrapper = styled.div`
   width: 324px;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
@@ -75,6 +85,9 @@ export const BannerFooter = styled.div`
   width: 324px;
   height: 95px;
   border-radius: 0px 0px 32px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: ${({ theme }) => theme.card.boxShadow};
   background: ${({ theme }) => theme.card.background};
   ${({ theme }) => theme.mediaQueries.md} {
@@ -94,5 +107,15 @@ export const CollapseButton: React.FC<CollapseButtonProps> = (props) => {
     <StyledButton {...props}>
       <ChevronDownIcon />
     </StyledButton>
+  )
+}
+
+export const FooterButton: React.FC<ButtonProps> = (props) => {
+  const { t } = useTranslation()
+  return (
+    <StyledFooterButton {...props}>
+      {t('Hide')}
+      <ChevronDownIcon />
+    </StyledFooterButton>
   )
 }

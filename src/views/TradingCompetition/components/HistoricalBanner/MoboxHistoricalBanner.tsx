@@ -13,6 +13,7 @@ import {
   CollapseButton,
   ContentWrapper,
   BannerFooter,
+  FooterButton,
 } from './styled'
 import MoboxCompetition from '../../MoboxCompetition'
 
@@ -60,7 +61,13 @@ export const MoboxHistoricalBanner: React.FC = () => {
           <ContentWrapper>
             <MoboxCompetition />
           </ContentWrapper>
-          <BannerFooter />
+          <BannerFooter>
+            <FooterButton
+              onClick={() => {
+                setCollapsed(true)
+              }}
+            />
+          </BannerFooter>
         </>
       )}
     </>
