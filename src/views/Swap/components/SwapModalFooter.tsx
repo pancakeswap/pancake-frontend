@@ -4,11 +4,7 @@ import { Trade, TradeType, CurrencyAmount, Currency } from '@pancakeswap/sdk'
 import { Button, Text, AutoRenewIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Field } from 'state/swap/actions'
-import {
-  computeTradePriceBreakdown,
-  formatExecutionPrice,
-  warningSeverity,
-} from 'utils/exchange'
+import { computeTradePriceBreakdown, formatExecutionPrice, warningSeverity } from 'utils/exchange'
 import { AutoColumn } from 'components/Layout/Column'
 import QuestionHelper from 'components/QuestionHelper'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
