@@ -1,4 +1,4 @@
-import { Box, Flex, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Box } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import PageSection from 'components/PageSection'
 import {
@@ -31,23 +31,9 @@ const CompetitionPage = styled.div`
   background: #f6f6f6;
 `
 
-const BannerFlex = styled(Flex)`
-  flex-direction: column;
-  ${({ theme }) => theme.mediaQueries.xl} {
-    padding-top: 10px;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-  }
-
-  @media screen and (min-width: 1920px) {
-    padding-top: 32px;
-  }
-`
-
 const EasterCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
-  const { isMobile } = useMatchBreakpointsContext()
   const { profile, isLoading } = useProfile()
   const { isDark } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractEaster(false)

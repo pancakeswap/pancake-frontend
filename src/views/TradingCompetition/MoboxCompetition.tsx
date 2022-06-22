@@ -1,4 +1,4 @@
-import { Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Box } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import PageSection from 'components/PageSection'
 import { TC_MOBOX_SUBGRAPH } from 'config/constants/endpoints'
@@ -23,7 +23,7 @@ import RibbonWithImage from './components/RibbonWithImage'
 import TeamRanksWithParticipants from './components/TeamRanks/TeamRanksWithParticipants'
 import MoboxPrizesInfo from './mobox/components/PrizesInfo/MoboxPrizesInfo'
 import MoboxYourScore from './mobox/components/YourScore/MoboxYourScore'
-import { MIDBLUEBG, MIDBLUEBG_DARK, LIGHTBLUEBG_DARK, LIGHTBLUEBG } from './pageSectionStyles'
+import { LIGHTBLUEBG, LIGHTBLUEBG_DARK } from './pageSectionStyles'
 import MoboxCakerBunny from './pngs/mobox-cakers.png'
 import { CompetitionPage } from './styles'
 import RanksIcon from './svgs/RanksIcon'
@@ -35,7 +35,6 @@ const MoboxCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpointsContext()
   const { profile, isLoading } = useProfile()
   const { isDark, theme } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractMobox(false)

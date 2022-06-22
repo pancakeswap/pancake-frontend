@@ -1,4 +1,4 @@
-import { Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Box } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { PageMeta } from 'components/Layout/Page'
 import PageSection from 'components/PageSection'
@@ -21,7 +21,7 @@ import PrizesInfoSection from './components/PrizesInfoSection'
 import TeamRanksSection from './components/TeamRanksSection'
 import FanTokenPrizesInfo from './fantoken/components/PrizesInfo/FanTokenPrizesInfo'
 import FanTokenYourScore from './fantoken/components/YourScore/FanTokenYourScore'
-import { MIDBLUEBG, LIGHTBLUEBG_DARK, MIDBLUEBG_DARK, LIGHTBLUEBG } from './pageSectionStyles'
+import { LIGHTBLUEBG, LIGHTBLUEBG_DARK } from './pageSectionStyles'
 import FanTokenCakerBunny from './pngs/fan-token-cakers.png'
 import { CompetitionPage } from './styles'
 import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
@@ -30,7 +30,6 @@ import { useTeamInformation } from './useTeamInformation'
 const FanTokenCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
-  const { isMobile } = useMatchBreakpointsContext()
   const { profile, isLoading } = useProfile()
   const { isDark } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractFanToken(false)
