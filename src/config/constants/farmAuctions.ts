@@ -767,7 +767,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
           tokenAddress: '0x208cfEc94d2BA8B8537da7A9BB361c6baAD77272',
           quoteToken: tokens.busd,
           tokenName: 'SHELL',
-          projectSite: 'https://meta-apes.io/',
+          projectSite: 'https://metaapesgame.com/',
         },
       ].map((bidderConfig) => ({
         ...bidderConfig,
