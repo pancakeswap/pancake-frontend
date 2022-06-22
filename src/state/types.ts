@@ -640,6 +640,7 @@ export interface SerializedPotteryPublicData {
   totalLockCake: string
   totalSupply: string
   lockStartTime: string
+  totalLockedValue: string
 }
 
 export interface DeserializedPublicData {
@@ -649,6 +650,7 @@ export interface DeserializedPublicData {
   totalLockCake: BigNumber
   totalSupply: BigNumber
   lockStartTime: string
+  totalLockedValue: BigNumber
 }
 
 export interface SerializedPotteryUserData {

@@ -45,7 +45,7 @@ const Deposit: React.FC = () => {
   const secondsRemaining = remainTimeToNextFriday()
   const { days, hours, minutes } = getTimePeriods(secondsRemaining)
 
-  const totalValueLocked = getBalanceNumber(publicData.totalLockCake)
+  const totalValueLocked = getBalanceNumber(publicData.totalLockedValue)
 
   return (
     <Box>

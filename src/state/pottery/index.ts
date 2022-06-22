@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PotteryState, SerializedPotteryUserData, SerializedPotteryPublicData, PotteryDepositStatus } from 'state/types'
 import { resetUserState } from '../global/actions'
-import { fetchPublicPotteryValue } from './fetchPottery'
+import { fetchPublicPotteryValue, fetchTotalLockedValue } from './fetchPottery'
 import { fetchPotterysAllowance, fetchVaultUserData, fetchDrawUserData } from './fetchUserPottery'
 
 const initialState: PotteryState = Object.freeze({
@@ -12,6 +12,7 @@ const initialState: PotteryState = Object.freeze({
     totalLockCake: null,
     totalSupply: null,
     lockStartTime: '0',
+    totalLockedValue: null,
   },
   userData: {
     isLoading: true,
@@ -26,8 +27,9 @@ const initialState: PotteryState = Object.freeze({
 export const fetchPublicPotteryDataAsync = createAsyncThunk<SerializedPotteryPublicData>(
   'pottery/fetchPublicPotteryData',
   async () => {
-    const publicPotteryData = await fetchPublicPotteryValue()
-    return publicPotteryData
+    const [publicPotteryData, totalLocedValue] = await Promise.all([fetchPublicPotteryValue(), fetchTotalLockedValue()])
+
+    return { ...publicPotteryData, ...totalLocedValue }
   },
 )
 

@@ -44,7 +44,7 @@ const Winner: React.FC<WinnerProps> = ({ address }) => {
         </>
       ) : (
         <>
-          <Skeleton width="24px" height="24px" mt="8px" />
+          <Skeleton variant="circle" width="24px" height="24px" mt="8px" />
           <Box ml="4px">
             <Skeleton width="80px" height="20px" mb="4px" />
             <Skeleton width="80px" height="20px" />
