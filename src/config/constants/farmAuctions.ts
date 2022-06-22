@@ -24,6 +24,14 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
           tokenName: '8PAY',
           projectSite: 'https://8pay.network/',
         },
+        {
+          account: '0x6a2d41c87c3F28C2C0b466424DE8e08FC2E23eDc',
+          farmName: 'BBT-BNB',
+          tokenAddress: '0xD48474E7444727bF500a32D5AbE01943f3A59A64',
+          quoteToken: tokens.wbnb,
+          tokenName: 'BitBook',
+          projectSite: 'https://www.bitbook.network/',
+        },
         // Below farms was the latest.
         {
           account: '0x9Ed5a62535A5Dd2dB2d9bB21bAc42035Af47F630',
@@ -66,7 +74,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
           projectSite: 'https://www.feeder.finance/',
         },
         {
-          account: '0x6a2d41c87c3F28C2C0b466424DE8e08FC2E23eDc',
+          account: '0xfCcA771Dc22359E4D6e9e9daC743EAb38f51EECe',
           farmName: 'BBT-BNB',
           tokenAddress: '0xD48474E7444727bF500a32D5AbE01943f3A59A64',
           quoteToken: tokens.wbnb,
