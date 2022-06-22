@@ -1,6 +1,7 @@
 import { Contract } from '@ethersproject/contracts'
 import type { Signer } from '@ethersproject/abstract-signer'
 import type { Provider } from '@ethersproject/providers'
+import memoize from 'lodash/memoize'
 import { getAddress } from '@ethersproject/address'
 import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
@@ -12,13 +13,13 @@ import { BASE_BSC_SCAN_URLS } from '../config'
 import { simpleRpcProvider } from './providers'
 
 // returns the checksummed address if the address is valid, otherwise returns false
-export function isAddress(value: any): string | false {
+export const isAddress = memoize((value: any): string | false => {
   try {
     return getAddress(value)
   } catch {
     return false
   }
-}
+})
 
 export function getBscScanLink(
   data: string | number,
