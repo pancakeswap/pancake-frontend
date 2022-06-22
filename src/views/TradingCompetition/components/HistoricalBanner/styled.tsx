@@ -1,13 +1,13 @@
+import { Button, ButtonProps, ChevronDownIcon } from '@pancakeswap/uikit'
 import 'atropos/css'
 import Atropos from 'atropos/react'
 import styled from 'styled-components'
-import { Button, ChevronDownIcon, ButtonProps } from '@pancakeswap/uikit'
 
 export const BannerWrapper = styled(Atropos)`
   position: relative;
   width: 100%;
   height: 130px;
-  margin: 33px auto;
+  margin: 33px auto 0px;
   box-sizing: border-box;
   overflow: visible;
   ${({ theme }) => theme.mediaQueries.md} {
@@ -61,12 +61,14 @@ export const StyledButton = styled(Button)<{ collapsed: boolean }>`
 `
 export const ContentWrapper = styled.div`
   width: 735px;
-  margin: -60px auto;
-  padding-bottom: 120px;
-  > div {
-    border-radius: 0px 0px 50px 50px;
-    overflow: hidden;
-  }
+  margin: 0px auto;
+`
+
+export const BannerFooter = styled.div`
+  width: 735px;
+  height: 95px;
+  border-radius: 0px 0px 32px 32px;
+  background: ${({ theme }) => theme.card.background};
 `
 
 interface CollapseButtonProps extends ButtonProps {

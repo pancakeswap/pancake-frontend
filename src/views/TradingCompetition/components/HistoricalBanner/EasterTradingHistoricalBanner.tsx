@@ -5,7 +5,7 @@ import layer1 from '../../pngs/easter-egg-banner-layer1.png'
 import layer2 from '../../pngs/easter-egg-banner-layer2.png'
 import layer3 from '../../pngs/easter-egg-banner-layer3.png'
 import layer4 from '../../pngs/easter-egg-banner-layer4.png'
-import { BannerWrapper, BannerInner, BannerBg, CollapseButton, ContentWrapper } from './styled'
+import { BannerWrapper, BannerInner, BannerBg, CollapseButton, ContentWrapper, BannerFooter } from './styled'
 import EasterCompetition from '../../EasterCompetition'
 
 const Layer1Image = styled.img`
@@ -60,9 +60,12 @@ export const EasterTradingHistoricalBanner: React.FC = () => {
         </BannerInner>
       </BannerWrapper>
       {!collapsed && (
-        <ContentWrapper>
-          <EasterCompetition />
-        </ContentWrapper>
+        <>
+          <ContentWrapper>
+            <EasterCompetition />
+          </ContentWrapper>
+          <BannerFooter />
+        </>
       )}
     </>
   )

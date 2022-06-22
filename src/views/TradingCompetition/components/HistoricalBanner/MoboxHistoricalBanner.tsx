@@ -5,7 +5,15 @@ import layer1 from '../../pngs/mobox-histortical-banner-layer1.png'
 import layer2 from '../../pngs/mobox-histortical-banner-layer2.png'
 import layer3 from '../../pngs/mobox-histortical-banner-layer3.png'
 import layer4 from '../../pngs/mobox-histortical-banner-layer4.png'
-import { BannerWrapper, BannerInner, BannerBg, FullLayerImage, CollapseButton, ContentWrapper } from './styled'
+import {
+  BannerWrapper,
+  BannerInner,
+  BannerBg,
+  FullLayerImage,
+  CollapseButton,
+  ContentWrapper,
+  BannerFooter,
+} from './styled'
 import MoboxCompetition from '../../MoboxCompetition'
 
 const Layer2Image = styled.img`
@@ -48,9 +56,12 @@ export const MoboxHistoricalBanner: React.FC = () => {
         </BannerInner>
       </BannerWrapper>
       {!collapsed && (
-        <ContentWrapper>
-          <MoboxCompetition />
-        </ContentWrapper>
+        <>
+          <ContentWrapper>
+            <MoboxCompetition />
+          </ContentWrapper>
+          <BannerFooter />
+        </>
       )}
     </>
   )

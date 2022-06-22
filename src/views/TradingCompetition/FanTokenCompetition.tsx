@@ -1,35 +1,31 @@
-import { useState, useEffect } from 'react'
-import { useWeb3React } from '@web3-react/core'
-import { useProfile } from 'state/profile/hooks'
 import { Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import { useTradingCompetitionContractFanToken } from 'hooks/useContract'
-import useTheme from 'hooks/useTheme'
+import { useWeb3React } from '@web3-react/core'
 import { PageMeta } from 'components/Layout/Page'
+import PageSection from 'components/PageSection'
 import {
-  SmartContractPhases,
-  CompetitionPhases,
-  LIVE,
-  FINISHED,
   CLAIM,
+  CompetitionPhases,
+  FINISHED,
+  LIVE,
   OVER,
   REGISTRATION,
+  SmartContractPhases,
 } from 'config/constants/trading-competition/phases'
-import PageSection from 'components/PageSection'
-import { DARKBG, MIDBLUEBG, MIDBLUEBG_DARK } from './pageSectionStyles'
-import Countdown from './components/Countdown'
-import FanTokenStormBunny from './pngs/fan-token-storm.png'
-import HowToJoin from './components/HowToJoin'
+import { useTradingCompetitionContractFanToken } from 'hooks/useContract'
+import useTheme from 'hooks/useTheme'
+import { useEffect, useState } from 'react'
+import { useProfile } from 'state/profile/hooks'
 import BattleCta from './components/BattleCta'
-import { CompetitionPage, BannerFlex } from './styles'
-import FanTokenBattleBanner from './fantoken/components/BattleBanner/FanTokenBattleBanner'
-import FanTokenYourScore from './fantoken/components/YourScore/FanTokenYourScore'
-import FanTokenPrizesInfo from './fantoken/components/PrizesInfo/FanTokenPrizesInfo'
-import FanTokenCakerBunny from './pngs/fan-token-cakers.png'
-import { useTeamInformation } from './useTeamInformation'
-import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
-import Footer from './Footer'
-import TeamRanksSection from './components/TeamRanksSection'
+import HowToJoin from './components/HowToJoin'
 import PrizesInfoSection from './components/PrizesInfoSection'
+import TeamRanksSection from './components/TeamRanksSection'
+import FanTokenPrizesInfo from './fantoken/components/PrizesInfo/FanTokenPrizesInfo'
+import FanTokenYourScore from './fantoken/components/YourScore/FanTokenYourScore'
+import { MIDBLUEBG, LIGHTBLUEBG_DARK, MIDBLUEBG_DARK, LIGHTBLUEBG } from './pageSectionStyles'
+import FanTokenCakerBunny from './pngs/fan-token-cakers.png'
+import { CompetitionPage } from './styles'
+import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
+import { useTeamInformation } from './useTeamInformation'
 
 const FanTokenCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
@@ -169,10 +165,7 @@ const FanTokenCompetition = () => {
         </PageSection> */}
         <PageSection
           containerProps={{ style: { marginTop: '-30px' } }}
-          background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
-          concaveDivider
-          clipFill={{ light: '#CCD8F0', dark: '#434575' }}
-          dividerPosition="top"
+          background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
           index={2}
           dividerComponent={
             shouldHideCta ? null : (
@@ -222,7 +215,7 @@ const FanTokenCompetition = () => {
           globalLeaderboardInformation={globalLeaderboardInformation}
         />
         <PrizesInfoSection prizesInfoComponent={<FanTokenPrizesInfo />} />
-        <Footer
+        {/* <Footer
           shouldHideCta={shouldHideCta}
           image={FanTokenStormBunny}
           userTradingInformation={userTradingInformation}
@@ -237,7 +230,7 @@ const FanTokenCompetition = () => {
           isLoading={isLoading}
           onRegisterSuccess={onRegisterSuccess}
           onClaimSuccess={onClaimSuccess}
-        />
+        /> */}
       </CompetitionPage>
     </>
   )

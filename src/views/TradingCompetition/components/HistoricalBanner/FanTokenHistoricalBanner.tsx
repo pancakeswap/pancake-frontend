@@ -1,13 +1,13 @@
-import styled from 'styled-components'
-import { useState } from 'react'
 import 'atropos/css'
+import { useState } from 'react'
+import styled from 'styled-components'
+import FanTokenCompetition from '../../FanTokenCompetition'
 import layer1 from '../../pngs/fan-token-histortical-banner-layer1.png'
 import layer2 from '../../pngs/fan-token-histortical-banner-layer2.png'
 import layer3 from '../../pngs/fan-token-histortical-banner-layer3.png'
 import layer4 from '../../pngs/fan-token-histortical-banner-layer4.png'
 import layer5 from '../../pngs/fan-token-histortical-banner-layer5.png'
-import { BannerWrapper, BannerInner, BannerBg, FullLayerImage, CollapseButton, ContentWrapper } from './styled'
-import FanTokenCompetition from '../../FanTokenCompetition'
+import { BannerBg, BannerFooter, BannerInner, BannerWrapper, CollapseButton, ContentWrapper } from './styled'
 
 const Layer1Image = styled.img`
   position: absolute;
@@ -67,9 +67,12 @@ export const FanTokenHistoricalBanner: React.FC = () => {
         </BannerInner>
       </BannerWrapper>
       {!collapsed && (
-        <ContentWrapper>
-          <FanTokenCompetition />
-        </ContentWrapper>
+        <>
+          <ContentWrapper>
+            <FanTokenCompetition />
+          </ContentWrapper>
+          <BannerFooter />
+        </>
       )}
     </>
   )

@@ -15,7 +15,7 @@ import {
   REGISTRATION,
 } from 'config/constants/trading-competition/phases'
 import PageSection from 'components/PageSection'
-import { DARKBG, MIDBLUEBG, MIDBLUEBG_DARK } from './pageSectionStyles'
+import { LIGHTBLUEBG_DARK, LIGHTBLUEBG } from './pageSectionStyles'
 import EasterStormBunny from './pngs/easter-storm.png'
 import Countdown from './components/Countdown'
 import HowToJoin from './components/HowToJoin'
@@ -32,6 +32,7 @@ import PrizesInfoSection from './components/PrizesInfoSection'
 
 const CompetitionPage = styled.div`
   min-height: calc(100vh - 64px);
+  background: #f6f6f6;
 `
 
 const BannerFlex = styled(Flex)`
@@ -157,10 +158,7 @@ const EasterCompetition = () => {
       </PageSection> */}
       <PageSection
         containerProps={{ style: { marginTop: '-30px' } }}
-        background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
-        concaveDivider
-        clipFill={{ light: '#CCD8F0', dark: '#434575' }}
-        dividerPosition="top"
+        background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
         index={2}
         dividerComponent={
           shouldHideCta ? null : (
@@ -210,7 +208,7 @@ const EasterCompetition = () => {
         globalLeaderboardInformation={globalLeaderboardInformation}
       />
       <PrizesInfoSection prizesInfoComponent={<EasterPrizesInfo />} />
-      <Footer
+      {/* <Footer
         shouldHideCta={shouldHideCta}
         image={EasterStormBunny}
         userTradingInformation={userTradingInformation}
@@ -225,7 +223,7 @@ const EasterCompetition = () => {
         isLoading={isLoading}
         onRegisterSuccess={onRegisterSuccess}
         onClaimSuccess={onClaimSuccess}
-      />
+      /> */}
     </CompetitionPage>
   )
 }

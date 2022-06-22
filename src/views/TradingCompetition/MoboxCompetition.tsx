@@ -1,45 +1,35 @@
-import { useState, useEffect } from 'react'
-import { useTranslation } from 'contexts/Localization'
-import { useWeb3React } from '@web3-react/core'
-import { useProfile } from 'state/profile/hooks'
 import { Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import { useTradingCompetitionContractMobox } from 'hooks/useContract'
-import useTheme from 'hooks/useTheme'
-import { PageMeta } from 'components/Layout/Page'
+import { useWeb3React } from '@web3-react/core'
+import PageSection from 'components/PageSection'
 import { TC_MOBOX_SUBGRAPH } from 'config/constants/endpoints'
 import {
-  SmartContractPhases,
-  CompetitionPhases,
-  LIVE,
-  FINISHED,
   CLAIM,
+  CompetitionPhases,
+  FINISHED,
+  LIVE,
   OVER,
   REGISTRATION,
+  SmartContractPhases,
 } from 'config/constants/trading-competition/phases'
-import PageSection from 'components/PageSection'
-import { MIDBLUEBG, MIDBLUEBG_DARK, TRADINGCOMPETITIONBANNER } from './pageSectionStyles'
-import {
-  //  RanksIcon,
-  RulesIcon,
-} from './svgs'
-import Countdown from './components/Countdown'
-import StormBunny from './pngs/mobox-storm-bunny.png'
-import RibbonWithImage from './components/RibbonWithImage'
-import HowToJoin from './components/HowToJoin'
+import { useTranslation } from 'contexts/Localization'
+import { useTradingCompetitionContractMobox } from 'hooks/useContract'
+import useTheme from 'hooks/useTheme'
+import { useEffect, useState } from 'react'
+import { useProfile } from 'state/profile/hooks'
 import BattleCta from './components/BattleCta'
-import Rules from './components/Rules'
-import { UserTradingInformation } from './types'
-import { CompetitionPage, BannerFlex } from './styles'
-import RanksIcon from './svgs/RanksIcon'
-import MoboxYourScore from './mobox/components/YourScore/MoboxYourScore'
-import MoboxBattleBanner from './mobox/components/BattleBanner/MoboxBattleBanner'
-import MoboxPrizesInfo from './mobox/components/PrizesInfo/MoboxPrizesInfo'
-import { useTeamInformation } from './useTeamInformation'
-import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
-import Footer from './Footer'
+import HowToJoin from './components/HowToJoin'
 import PrizesInfoSection from './components/PrizesInfoSection'
+import RibbonWithImage from './components/RibbonWithImage'
 import TeamRanksWithParticipants from './components/TeamRanks/TeamRanksWithParticipants'
+import MoboxPrizesInfo from './mobox/components/PrizesInfo/MoboxPrizesInfo'
+import MoboxYourScore from './mobox/components/YourScore/MoboxYourScore'
+import { MIDBLUEBG, MIDBLUEBG_DARK, LIGHTBLUEBG_DARK, LIGHTBLUEBG } from './pageSectionStyles'
 import MoboxCakerBunny from './pngs/mobox-cakers.png'
+import { CompetitionPage } from './styles'
+import RanksIcon from './svgs/RanksIcon'
+import { UserTradingInformation } from './types'
+import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
+import { useTeamInformation } from './useTeamInformation'
 
 const MoboxCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
@@ -187,10 +177,8 @@ const MoboxCompetition = () => {
         </PageSection> */}
         <PageSection
           containerProps={{ style: { marginTop: '-30px' } }}
-          background={isDark ? MIDBLUEBG_DARK : MIDBLUEBG}
-          concaveDivider
+          background={isDark ? LIGHTBLUEBG_DARK : LIGHTBLUEBG}
           clipFill={{ light: '#CCD8F0', dark: '#434575' }}
-          dividerPosition="top"
           index={2}
           dividerComponent={
             shouldHideCta ? null : (
@@ -278,7 +266,7 @@ const MoboxCompetition = () => {
             <Rules />
           </Box>
         </PageSection> */}
-        <Footer
+        {/* <Footer
           shouldHideCta={shouldHideCta}
           image={StormBunny}
           userTradingInformation={userTradingInformation}
@@ -293,7 +281,7 @@ const MoboxCompetition = () => {
           isLoading={isLoading}
           onRegisterSuccess={onRegisterSuccess}
           onClaimSuccess={onClaimSuccess}
-        />
+        /> */}
       </CompetitionPage>
     </>
   )
