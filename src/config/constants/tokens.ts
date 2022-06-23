@@ -2115,7 +2115,7 @@ export const mainnetTokens = defineTokens({
   nbt: new Token(
     MAINNET,
     '0x1D3437E570e93581Bd94b2fd8Fbf202d4a65654A',
-    8,
+    18,
     'NBT',
     'NanoByte Token',
     'https://www.nanobyte.finance/',
