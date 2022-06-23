@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useState, useMemo } from 'react'
-import { Flex, Box, Button, Text, HelpIcon, useTooltip, LogoRoundIcon, Skeleton } from '@pancakeswap/uikit'
+import { Flex, Box, Button, Text, HelpIcon, useTooltip, LogoRoundIcon, Skeleton, InputProps } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
 import { usePotteryData } from 'state/pottery/hook'
@@ -21,11 +21,12 @@ const InputPanel = styled.div`
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   z-index: 1;
 `
-const Container = styled.div`
+
+const Container = styled.div<InputProps>`
   border-radius: 16px;
   padding: 8px 16px;
   background-color: ${({ theme }) => theme.colors.input};
-  box-shadow: ${({ theme }) => theme.shadows.inset};
+  box-shadow: ${({ theme, isWarning }) => (isWarning ? theme.shadows.warning : theme.shadows.inset)};
 `
 
 const DepositAction: React.FC = () => {
@@ -55,6 +56,8 @@ const DepositAction: React.FC = () => {
     [depositAmount, userCake],
   )
 
+  const isLessThanOneCake = useMemo(() => new BigNumber(depositAmount).lt(1), [depositAmount])
+
   if (userData.isLoading) {
     return <Skeleton width="100%" height="48px" />
   }
@@ -74,7 +77,7 @@ const DepositAction: React.FC = () => {
         </Text>
       </Box>
       <InputPanel>
-        <Container>
+        <Container isWarning={isLessThanOneCake}>
           <Text fontSize="14px" color="textSubtle" mb="12px" textAlign="right">
             {t('Balance: %balance%', { balance: userCakeDisplayBalance })}
           </Text>
@@ -96,6 +99,11 @@ const DepositAction: React.FC = () => {
             </Flex>
           </Flex>
         </Container>
+        {isLessThanOneCake && (
+          <Text color="failure" fontSize="14px" textAlign="right">
+            {t('Please deposit at least 1 CAKE to participate in the Pottery')}
+          </Text>
+        )}
       </InputPanel>
       <Flex>
         <Flex ml="auto">
