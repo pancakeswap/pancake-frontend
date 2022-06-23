@@ -11,10 +11,8 @@ export const mainnetTokens = defineTokens({
 export const testnetTokens = defineTokens({} as const)
 
 const tokens = () => {
-  const chainId = CHAIN_ID
-
   // If testnet - return list comprised of testnetTokens wherever they exist, and mainnetTokens where they don't
-  if (parseInt(chainId, 10) === ChainId.TESTNET) {
+  if (parseInt(CHAIN_ID, 10) === ChainId.TESTNET) {
     return Object.keys(mainnetTokens).reduce((accum, key) => {
       return { ...accum, [key]: testnetTokens[key] || mainnetTokens[key] }
     }, {} as typeof testnetTokens & typeof mainnetTokens)
