@@ -10,6 +10,7 @@ interface FarmTabButtonsProps {
 
 const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms }) => {
   const router = useRouter()
+  console.log('~ router: ', router)
   const { t } = useTranslation()
 
   let activeIndex
@@ -18,6 +19,9 @@ const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms
       activeIndex = 0
       break
     case '/farms/history':
+      activeIndex = 1
+      break
+    case '/_mp/farms/history':
       activeIndex = 1
       break
     case '/farms/archived':
