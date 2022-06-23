@@ -70,7 +70,7 @@ const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayC
         </ModalTitle>
         <ModalCloseButton onDismiss={onDismiss} />
       </ModalHeader>
-      <ModalBody width={["320px", null, "340px"]}>
+      <ModalBody minWidth={["320px", null, "340px"]}>
         <WalletWrapper py="24px" maxHeight="453px" overflowY="auto">
           <Grid gridTemplateColumns="1fr 1fr">
             {displayListConfig.map((wallet) => (
