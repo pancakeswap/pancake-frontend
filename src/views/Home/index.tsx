@@ -15,7 +15,6 @@ import Footer from './components/Footer'
 import CakeDataRow from './components/CakeDataRow'
 import { WedgeTopLeft, InnerWedgeWrapper, OuterWedgeWrapper, WedgeTopRight } from './components/WedgeSvgs'
 import UserBanner from './components/UserBanner'
-import MultipleBanner from './components/Banners/MultipleBanner'
 
 const StyledHeroSection = styled(PageSection)`
   padding-top: 16px;
@@ -67,15 +66,15 @@ const Home: React.FC = () => {
             <UserBanner />
           </UserBannerWrapper>
         )}
-        <MultipleBanner />
+        
         <Hero />
       </StyledHeroSection>
       <PageSection
         innerProps={{ style: { margin: '0', width: '100%' } }}
         background={
           theme.isDark
-            ? 'linear-gradient(180deg, #09070C 22%, #201335 100%)'
-            : 'linear-gradient(180deg, #FFFFFF 22%, #D7CAEC 100%)'
+          ? 'radial-gradient(103.12% 50% at 50% 50%, #21193A 0%, #191326 100%)'
+          : 'linear-gradient(139.73deg, #E6FDFF 0%, #F3EFFF 100%)'
         }
         index={2}
         hasCurvedDivider={false}
@@ -132,7 +131,7 @@ const Home: React.FC = () => {
       </PageSection>
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}
-        background="linear-gradient(180deg, #7645D9 0%, #5121B1 100%)"
+        background="linear-gradient(#e66465, #9198e5)"
         index={2}
         hasCurvedDivider={false}
       >
