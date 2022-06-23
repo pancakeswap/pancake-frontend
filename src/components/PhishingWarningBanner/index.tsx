@@ -8,11 +8,10 @@ const Container = styled(Flex)`
   height: 100%;
   padding: 12px;
   align-items: center;
-  background: linear-gradient(0deg, rgba(39, 38, 44, 0.4), rgba(39, 38, 44, 0.4)),
-    linear-gradient(180deg, #8051d6 0%, #492286 100%);
+  background: linear-gradient(217deg, rgba(255,0,0,.8), rgba(255,0,0,0) 70.71%), linear-gradient(127deg, rgba(0,255,0,.8), rgba(0,255,0,0) 70.71%), linear-gradient(336deg, rgba(0,0,255,.8), rgba(0,0,255,0) 70.71%);
   ${({ theme }) => theme.mediaQueries.md} {
     padding: 0px;
-    background: linear-gradient(180deg, #8051d6 0%, #492286 100%);
+    background: linear-gradient(217deg, rgba(255,0,0,.8), rgba(255,0,0,0) 70.71%), linear-gradient(127deg, rgba(0,255,0,.8), rgba(0,255,0,0) 70.71%), linear-gradient(336deg, rgba(0,0,255,.8), rgba(0,0,255,0) 70.71%);
   }
 `
 
@@ -77,9 +76,9 @@ const PhishingWarningBanner: React.FC = () => {
         <>
           <InnerContainer>
             <picture>
-              <source type="image/webp" srcSet="/images/decorations/phishing-warning-bunny.webp" />
-              <source type="image/png" srcSet="/images/decorations/phishing-warning-bunny.png" />
-              <img src="/images/decorations/phishing-warning-bunny.png" alt="phishing-warning" width="92px" />
+              <source type="image/webp" srcSet="/images/decorations/phishing-warning.webp" />
+              <source type="image/png" srcSet="/images/decorations/phishing-warning.png" />
+              <img src="/images/decorations/phishing-warning.png" alt="phishing-warning" width="92px" />
             </picture>
             <SpeechBubble>{warningTextComponent}</SpeechBubble>
           </InnerContainer>
