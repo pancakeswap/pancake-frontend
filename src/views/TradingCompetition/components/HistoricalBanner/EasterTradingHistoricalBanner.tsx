@@ -16,6 +16,7 @@ import {
   CollapseButton,
   ContentWrapper,
   FooterButton,
+  Wrapper,
 } from './styled'
 
 const Layer1Image = styled.img`
@@ -90,27 +91,29 @@ export const EasterTradingHistoricalBanner: React.FC = () => {
   const { isTablet } = useMatchBreakpoints()
   return (
     <>
-      <BannerWrapper shadow={false} highlight={false}>
-        <BannerInner>
-          <BannerBg
-            style={{ background: `radial-gradient(77.72% 89.66% at 79.76% 65.74%, #FEDC90 0%, #FFA514 74.5%)` }}
-            data-atropos-offset="0"
-            collapsed={collapsed}
-          />
+      <Wrapper>
+        <CollapseButton
+          collapsed={collapsed}
+          data-atropos-offset="0"
+          onClick={() => {
+            setCollapsed(!collapsed)
+          }}
+        />
+        <BannerWrapper shadow={false} highlight={false} style={{ pointerEvents: collapsed ? 'auto' : 'none' }}>
+          <BannerInner>
+            <BannerBg
+              style={{ background: `radial-gradient(77.72% 89.66% at 79.76% 65.74%, #FEDC90 0%, #FFA514 74.5%)` }}
+              data-atropos-offset="0"
+              collapsed={collapsed}
+            />
 
-          <Layer3Image src={layer3.src} alt="" data-atropos-offset="0" />
-          <Layer2Image src={layer2.src} alt="" data-atropos-offset="3" />
-          <Layer1Image src={layer1.src} alt="" data-atropos-offset="6" />
-          <Layer4Image src={isTablet ? layer4Tablet.src : layer4.src} data-atropos-offset="9" />
-          <CollapseButton
-            collapsed={collapsed}
-            data-atropos-offset="0"
-            onClick={() => {
-              setCollapsed(!collapsed)
-            }}
-          />
-        </BannerInner>
-      </BannerWrapper>
+            <Layer3Image src={layer3.src} alt="" data-atropos-offset="0" />
+            <Layer2Image src={layer2.src} alt="" data-atropos-offset="3" />
+            <Layer1Image src={layer1.src} alt="" data-atropos-offset="6" />
+            <Layer4Image src={isTablet ? layer4Tablet.src : layer4.src} data-atropos-offset="9" />
+          </BannerInner>
+        </BannerWrapper>
+      </Wrapper>
       {!collapsed && (
         <>
           <ContentWrapper>

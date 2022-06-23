@@ -5,6 +5,10 @@ import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { ChildrenWrapper } from '../../../../components/PageSection'
 
+export const Wrapper = styled.div`
+  position: relative;
+`
+
 export const BannerWrapper = styled(Atropos)`
   position: relative;
   width: 100%;
@@ -60,11 +64,12 @@ export const FullLayerImage = styled.img`
 export const StyledButton = styled(Button)<{ collapsed: boolean }>`
   position: absolute;
   right: 16px;
-  top: 26px;
+  top: 82px;
   padding: 14px;
+  z-index: 10;
   ${({ theme }) => theme.mediaQueries.md} {
-    right: 32px;
-    top: 57px;
+    right: 105px;
+    top: 117px;
   }
   svg {
     will-change: transform;

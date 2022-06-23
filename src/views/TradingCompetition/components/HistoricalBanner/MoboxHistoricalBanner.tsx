@@ -18,6 +18,7 @@ import {
   ContentWrapper,
   FooterButton,
   FullLayerImage,
+  Wrapper,
 } from './styled'
 
 const Layer2Image = styled.img`
@@ -75,26 +76,27 @@ export const MoboxHistoricalBanner: React.FC = () => {
 
   return (
     <>
-      <BannerWrapper shadow={false} highlight={false}>
-        <BannerInner>
-          <BannerBg data-atropos-offset="0" collapsed={collapsed} />
-          <FullLayerImage
-            src={isMobile ? layer1Mobile.src : isTablet ? layer1Tablet.src : layer1.src}
-            alt=""
-            data-atropos-offset="3"
-          />
-          <Layer3Image src={layer3.src} alt="" data-atropos-offset="3" />
-          <Layer2Image src={layer2.src} alt="" data-atropos-offset="6" />
-          <Layer4Image src={layer4.src} data-atropos-offset="9" />
-          <CollapseButton
-            collapsed={collapsed}
-            data-atropos-offset="0"
-            onClick={() => {
-              setCollapsed(!collapsed)
-            }}
-          />
-        </BannerInner>
-      </BannerWrapper>
+      <Wrapper>
+        <CollapseButton
+          collapsed={collapsed}
+          onClick={() => {
+            setCollapsed(!collapsed)
+          }}
+        />
+        <BannerWrapper shadow={false} highlight={false} style={{ pointerEvents: collapsed ? 'auto' : 'none' }}>
+          <BannerInner>
+            <BannerBg data-atropos-offset="0" collapsed={collapsed} />
+            <FullLayerImage
+              src={isMobile ? layer1Mobile.src : isTablet ? layer1Tablet.src : layer1.src}
+              alt=""
+              data-atropos-offset="3"
+            />
+            <Layer3Image src={layer3.src} alt="" data-atropos-offset="3" />
+            <Layer2Image src={layer2.src} alt="" data-atropos-offset="6" />
+            <Layer4Image src={layer4.src} data-atropos-offset="9" />
+          </BannerInner>
+        </BannerWrapper>
+      </Wrapper>
       {!collapsed && (
         <>
           <ContentWrapper>
