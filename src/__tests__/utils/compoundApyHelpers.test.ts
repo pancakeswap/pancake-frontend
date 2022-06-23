@@ -115,7 +115,7 @@ it.each`
       const principalBreakdown = getPrincipalForInterest(interest, apr, compoundFrequency, performanceFee)
       const principalForInvestment = principalBreakdown[index]
       const difference = Math.abs(principalForInvestment - principalInUSD)
-      const differenceAsPercentage = (difference * 1) / principalInUSD
+      const differenceAsPercentage = difference / principalInUSD
       expect(differenceAsPercentage).toBeLessThanOrEqual(DIFFERENCE_THRESHOLD_IN_PERCENTS)
     })
   },
