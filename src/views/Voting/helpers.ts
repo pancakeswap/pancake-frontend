@@ -1,7 +1,6 @@
 import { SNAPSHOT_HUB_API } from 'config/constants/endpoints'
 import tokens from 'config/constants/tokens'
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
-import _chunk from 'lodash/chunk'
 import { ADMINS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
 import { getScores } from './getScores'
 import * as strategies from './strategies'
