@@ -1,3 +1,4 @@
+import { NextRouter, useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 /* eslint-disable no-console */
 const cbList = {}
@@ -88,7 +89,7 @@ export const useSystemInfo = () => {
 }
 
 const miniProgramPaths = new Set(['farms', 'add', 'remove', 'find', 'pools', 'swap'])
-const handleLinkClick = (e: MouseEvent) => {
+const handleLinkClick = (e: MouseEvent, router: NextRouter) => {
   // @ts-ignore
   const { href } = e.target
   if (href) {
@@ -98,6 +99,9 @@ const handleLinkClick = (e: MouseEvent) => {
       if (entry === 'add') {
         const [currency1, currency2] = params
         _bridgeUtils.jump({ path: entry, query: { currency1, currency2 } })
+      } else if (entry === 'farms') {
+        const newPathname = `/_mp${url.pathname}`
+        router.push(newPathname)
       }
       console.log('~ hit path: ', url.pathname)
       e.stopPropagation()
@@ -106,10 +110,14 @@ const handleLinkClick = (e: MouseEvent) => {
   }
 }
 export const useInterceptLink = () => {
+  const router = useRouter()
   useEffect(() => {
-    document.body.addEventListener('click', handleLinkClick, true)
+    const handle = (e: MouseEvent) => {
+      handleLinkClick(e, router)
+    }
+    document.body.addEventListener('click', handle, true)
     return () => {
-      document.body.removeEventListener('click', handleLinkClick, true)
+      document.body.removeEventListener('click', handle, true)
     }
   }, [])
 }
