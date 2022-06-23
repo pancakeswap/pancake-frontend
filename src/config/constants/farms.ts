@@ -59,7 +59,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'NBT-USDT LP',
     lpAddresses: {
       97: '',
-      56: '0x41140a1650372Fb8cb2f71e335448ab8cfc1c4f3',
+      56: '0x401AbD5327542c25baD057614935BfD98186a8a1',
     },
     token: serializedTokens.nbt,
     quoteToken: serializedTokens.usdt,
