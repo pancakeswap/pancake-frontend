@@ -68,6 +68,7 @@ export const getProposal = async (id: string): Promise<Proposal> => {
   return response.proposal
 }
 
+const CHUNK_SIZE = 200
 export const getVotes = async (first: number, skip: number, where: VoteWhere): Promise<Vote[]> => {
   const response: { votes: Vote[] } = await request(
     SNAPSHOT_API,
@@ -117,7 +118,7 @@ export const getAllVotes = async (proposal: Proposal, votesPerChunk = 30000): Pr
 
   const voterChunk = _chunk(
     voters.map((v) => v.voter),
-    600,
+    CHUNK_SIZE,
   )
 
   let votingPowers = {}
