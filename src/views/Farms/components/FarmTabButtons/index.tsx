@@ -10,7 +10,6 @@ interface FarmTabButtonsProps {
 
 const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms }) => {
   const router = useRouter()
-  console.log('~ router: ', router)
   const { t } = useTranslation()
 
   let activeIndex
