@@ -93,10 +93,7 @@
     "swiper": "^8.2.3",
     "swr": "^1.3.0",
     "typescript": "^4.6.3"
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/metaegg/metaegg-sdk"
-},
+
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.0.10",
     "@stylelint/postcss-css-in-js": "^0.37.2",
