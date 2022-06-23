@@ -51,7 +51,6 @@
     "@ethersproject/units": "^5.5.0",
     "@gelatonetwork/limit-orders-lib": "^4.1.0",
     "@next/bundle-analyzer": "^12.0.7",
-    "metaegg-sdk": "github.com/metaegg/metaegg-sdk.git"
     "@reduxjs/toolkit": "^1.8.2",
     "@sentry/nextjs": "6.19.6",
     "@uniswap/token-lists": "^1.0.0-beta.19",
@@ -94,6 +93,10 @@
     "swr": "^1.3.0",
     "typescript": "^4.6.3"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/metaegg/metaegg-sdk"
+},
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.0.10",
     "@stylelint/postcss-css-in-js": "^0.37.2",
