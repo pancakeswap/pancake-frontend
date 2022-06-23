@@ -47,8 +47,7 @@ export function getBscScanLink(
 }
 
 export function getBscScanLinkForNft(collectionAddress: string, tokenId: string): string {
-  const chainId = CHAIN_ID
-  return `${BASE_BSC_SCAN_URLS[chainId]}/token/${collectionAddress}?a=${tokenId}`
+  return `${BASE_BSC_SCAN_URLS[CHAIN_ID]}/token/${collectionAddress}?a=${tokenId}`
 }
 
 // add 10%
