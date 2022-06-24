@@ -42,12 +42,12 @@ const PhishingWarningBanner: React.FC = () => {
   const { t } = useTranslation()
   const [, hideBanner] = usePhishingBannerManager()
   const { isMobile, isMd } = useMatchBreakpointsContext()
-  const warningText = t("please make sure you're visiting https://metaegg.finance - check the URL carefully.")
+  const warningText = t(" Please make sure you're visiting https://metaegg.finance - check the URL carefully.")
   const warningTextAsParts = warningText.split(/(https:\/\/metaegg.finance)/g)
   const warningTextComponent = (
     <>
       <Text as="span" color="warning" small bold textTransform="uppercase">
-        {t('Phishing warning: ')}
+        {t('   Phishing warning:   ')}
       </Text>
       {warningTextAsParts.map((text, i) => (
         <Text
