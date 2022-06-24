@@ -56,7 +56,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
     }
 
     fetchInitialLocales()
-  }, [setState, refresh])
+  }, [refresh])
 
   const setLanguage = useCallback(async (language: Language) => {
     if (!languageMap.has(language.locale)) {
