@@ -78,7 +78,7 @@ const PhishingWarningBanner: React.FC = () => {
             <picture>
               <source type="image/webp" srcSet="/images/decorations/phishing-warning.webp" />
               <source type="image/png" srcSet="/images/decorations/phishing-warning.png" />
-              <img src="/images/decorations/phishing-warning.png" alt="phishing-warning" width="92px" />
+              <img src="/images/decorations/phishing-warning.png" alt="phishing-warning" width="80px" />
             </picture>
             <SpeechBubble>{warningTextComponent}</SpeechBubble>
           </InnerContainer>
