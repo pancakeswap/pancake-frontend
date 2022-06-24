@@ -46,6 +46,6 @@ export const FARM_AUCTION_HOSTING_IN_SECONDS = 604800
 // Gelato uses this address to define a native currency in all chains
 export const GELATO_NATIVE = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
 
-export const EXCHANGE_DOCS_URLS = 'https://docs.pancakeswap.finance/products/pancakeswap-exchange'
+export const EXCHANGE_DOCS_URLS = 'https://docs.metaegg.io/exchange'
 
 export const GALAXY_NFT_CAMPAIGN_ID = 'GCpp2UUxqQ'
