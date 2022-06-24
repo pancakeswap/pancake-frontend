@@ -5,7 +5,7 @@ import { useTheme as useNextTheme } from 'next-themes'
 const useTheme = () => {
   const { resolvedTheme, setTheme } = useNextTheme()
   const theme = useContext(StyledThemeContext)
-  return { isLight: resolvedTheme === 'light', theme, setTheme }
+  return { isDark: resolvedTheme === 'dark', theme, setTheme }
 }
 
 export default useTheme
