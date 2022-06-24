@@ -11,7 +11,9 @@ export const useMenuItems = (): ConfigMenuItemsType[] => {
   } = useTranslation()
   const menuItemsStatus = useMenuItemsStatus()
 
-  const menuItems = config(t, languageCode)
+  const menuItems = useMemo(() => {
+    return config(t, languageCode)
+  }, [t, languageCode])
 
   return useMemo(() => {
     if (menuItemsStatus && Object.keys(menuItemsStatus).length) {
