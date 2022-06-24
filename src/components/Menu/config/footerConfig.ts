@@ -18,8 +18,12 @@ export const footerLinks: (t: ContextApi['t']) => FooterLinkType[] = (t) => [
         href: "https://docs.metaegg.io/wiki/metaegg/resources",
       },
       {
-        label: "CAKE",
+        label: "MEGG",
         href: "https://docs.metaegg.io/wiki/tokenomics/megg",
+      },
+        {
+        label: "FGG",
+        href: "https://docs.metaegg.io/wiki/tokenomics/fgg",
       },
       {
         label: "—",
