@@ -11,9 +11,9 @@ export const useMenuItems = (): ConfigMenuItemsType[] => {
   } = useTranslation()
   const menuItemsStatus = useMenuItemsStatus()
 
-  return useMemo(() => {
-    const menuItems = config(t, languageCode)
+  const menuItems = config(t, languageCode)
 
+  return useMemo(() => {
     if (menuItemsStatus && Object.keys(menuItemsStatus).length) {
       return menuItems.map((item) => {
         const innerItems = item.items.map((innerItem) => {
@@ -35,5 +35,5 @@ export const useMenuItems = (): ConfigMenuItemsType[] => {
       })
     }
     return menuItems
-  }, [t, languageCode, menuItemsStatus])
+  }, [menuItems, menuItemsStatus])
 }
