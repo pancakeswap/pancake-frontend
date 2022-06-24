@@ -22,6 +22,11 @@ const MenuItemsMock = [
     items: [ItemsMock[0]],
   },
   {
+    label: "Games",
+    href: "/",
+    items: [ItemsMock[0]],
+  },
+  {
     label: "...",
     href: "/",
     items: ItemsMock,
