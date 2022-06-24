@@ -4,7 +4,7 @@ import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { Heading, Flex, Image, Text, Link } from '@pancakeswap/uikit'
+import { Heading, Flex, Image, Text } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
@@ -75,19 +75,7 @@ const ControlStretch = styled(Flex)`
   }
 `
 
-const FinishedTextContainer = styled(Flex)`
-  padding-bottom: 32px;
-  flex-direction: column;
-  ${({ theme }) => theme.mediaQueries.md} {
-    flex-direction: row;
-  }
-`
 
-const FinishedTextLink = styled(Link)`
-  font-weight: 400;
-  white-space: nowrap;
-  text-decoration: underline;
-`
 
 const NUMBER_OF_POOLS_VISIBLE = 12
 
@@ -320,16 +308,7 @@ const Pools: React.FC = () => {
             </LabelWrapper>
           </FilterContainer>
         </PoolControls>
-        {showFinishedPools && (
-          <FinishedTextContainer>
-            <Text fontSize={['16px', null, '20px']} color="failure" pr="4px">
-              {t('Looking for v1 CAKE syrup pools?')}
-            </Text>
-            <FinishedTextLink href="/migration" fontSize={['16px', null, '20px']} color="failure">
-              {t('Go to migration page')}.
-            </FinishedTextLink>
-          </FinishedTextContainer>
-        )}
+       
         {account && !userDataLoaded && stakedOnly && (
           <Flex justifyContent="center" mb="4px">
             <Loading />
