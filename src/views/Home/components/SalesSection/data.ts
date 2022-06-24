@@ -11,7 +11,7 @@ export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
     external: false,
   },
   secondaryButton: {
-    to: 'https://docs.pancakeswap.finance/',
+    to: 'https://docs.metaegg.io/',
     text: t('Learn'),
     external: true,
   },
@@ -20,7 +20,7 @@ export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
     attributes: [
       { src: 'BNB', alt: t('BNB token') },
       { src: 'BTC', alt: t('BTC token') },
-      { src: 'CAKE', alt: t('CAKE token') },
+      { src: 'MEGG', alt: t('MEGG token') },
     ],
   },
 })
@@ -35,7 +35,7 @@ export const earnSectionData = (t: TranslateFunction): SalesSectionProps => ({
     external: false,
   },
   secondaryButton: {
-    to: 'https://docs.pancakeswap.finance/products/yield-farming',
+    to: 'https://docs.metaegg.io/yield-farming',
     text: t('Learn'),
     external: true,
   },
@@ -44,7 +44,7 @@ export const earnSectionData = (t: TranslateFunction): SalesSectionProps => ({
     attributes: [
       { src: 'pie', alt: t('Pie chart') },
       { src: 'stonks', alt: t('Stocks chart') },
-      { src: 'folder', alt: t('Folder with cake token') },
+      { src: 'folder', alt: t('Folder with megg token') },
     ],
   },
 })
@@ -56,23 +56,23 @@ export const cakeSectionData = (t: TranslateFunction): SalesSectionProps => ({
   ),
   reverse: false,
   primaryButton: {
-    to: '/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+    to: '/swap?outputCurrency=0x0EC5fB91dA5A2F5281Ee85f7168E88E1Fcd64273',
     text: t('Buy CAKE'),
     external: false,
   },
   secondaryButton: {
-    to: 'https://docs.pancakeswap.finance/tokenomics/cake',
+    to: 'https://docs.metaegg.io/megg',
     text: t('Learn'),
     external: true,
   },
 
   images: {
-    path: '/images/home/cake/',
+    path: '/images/home/megg/',
     attributes: [
-      { src: 'bottom-right', alt: t('Small 3d pancake') },
-      { src: 'top-right', alt: t('Small 3d pancake') },
-      { src: 'coin', alt: t('CAKE token') },
-      { src: 'top-left', alt: t('Small 3d pancake') },
+      { src: 'bottom-right', alt: t('Small 3d money') },
+      { src: 'top-right', alt: t('Small 3d money') },
+      { src: 'coin', alt: t('MEGG token') },
+      { src: 'top-left', alt: t('Small 3d money') },
     ],
   },
 })
