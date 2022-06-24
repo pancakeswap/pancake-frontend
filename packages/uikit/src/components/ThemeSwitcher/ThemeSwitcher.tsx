@@ -3,11 +3,11 @@ import { SunIcon, MoonIcon } from "../Svg";
 import { Toggle } from "../Toggle";
 
 export interface Props {
-  isLight: boolean;
-  toggleTheme: (isLight: boolean) => void;
+  isDark: boolean;
+  toggleTheme: (isDark: boolean) => void;
 }
 
-const ThemeSwitcher: React.FC<Props> = ({ isLight, toggleTheme }) => (
+const ThemeSwitcher: React.FC<Props> = ({ isDark, toggleTheme }) => (
   <Toggle
     checked={isLight}
     defaultColor="textDisabled"
@@ -19,4 +19,4 @@ const ThemeSwitcher: React.FC<Props> = ({ isLight, toggleTheme }) => (
   />
 );
 
-export default memo(ThemeSwitcher, (prev, next) => prev.isLight === next.isLight);
+export default memo(ThemeSwitcher, (prev, next) => prev.isDark === next.isDark);
