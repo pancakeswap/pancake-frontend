@@ -24,10 +24,10 @@ export const mainnetTokens = defineTokens({
   bnb: new Token(MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'BNB', 'BNB', 'https://www.binance.com/'),
   cake: new Token(
     MAINNET,
-    '0x0EC5fB91dA5A2F5281Ee85f7168E88E1Fcd64273',
+    '0x39Af062b155978f1D41B299601DeFac54E94Cbd8',
     18,
     'MEGG',
-    'Metaegg Token',
+    'Metaegg DeFi',
     'https://metaegg.finance/',
   ),
   gmi: new Token(MAINNET, '0x93D8d25E3C9A847a5Da79F79ecaC89461FEcA846', 18, 'GMI', 'Gamifi', 'https://gamifi.gg/'),
