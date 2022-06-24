@@ -22,10 +22,10 @@ const animationMap = {
 };
 
 const invertTheme = (currentTheme: DefaultTheme) => {
-  if (currentTheme.isDark) {
-    return light;
+  if (currentTheme.isLight) {
+    return dark;
   }
-  return dark;
+  return light;
 };
 
 const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipRefs => {
