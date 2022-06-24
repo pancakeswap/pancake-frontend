@@ -43,6 +43,42 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 38,
+    v1pid: 386,
+    lpSymbol: 'HOTCROSS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xf23bad605e94de0e3b60c9718a43a94a5af43915',
+    },
+    token: serializedTokens.hotcross,
+    quoteToken: serializedTokens.wbnb,
+    auctionHostingStartSeconds: 1656068400,
+  },
+  {
+    pid: 104,
+    lpSymbol: 'NBT-USDT LP',
+    lpAddresses: {
+      97: '',
+      56: '0x401AbD5327542c25baD057614935BfD98186a8a1',
+    },
+    token: serializedTokens.nbt,
+    quoteToken: serializedTokens.usdt,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1656068400,
+  },
+  {
+    pid: 103,
+    lpSymbol: 'BBT-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x3D5A3E3824da092851026fCda3D8a0B7438c4573',
+    },
+    token: serializedTokens.bbt,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1656068400,
+  },
+  {
     pid: 102,
     lpSymbol: 'PEAK-BNB LP',
     lpAddresses: {
@@ -52,7 +88,6 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.peak,
     quoteToken: serializedTokens.wbnb,
     isCommunity: true,
-    auctionHostingStartSeconds: 1654772400,
   },
   {
     pid: 93,
@@ -65,7 +100,6 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.happy,
     quoteToken: serializedTokens.wbnb,
     isCommunity: true,
-    auctionHostingStartSeconds: 1654772400,
   },
   {
     pid: 94,
@@ -78,7 +112,6 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.wzrd,
     quoteToken: serializedTokens.busd,
     isCommunity: true,
-    auctionHostingStartSeconds: 1654772400,
   },
   {
     pid: 40,
@@ -90,17 +123,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.chr,
     quoteToken: serializedTokens.busd,
-  },
-  {
-    pid: 38,
-    v1pid: 386,
-    lpSymbol: 'HOTCROSS-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0xf23bad605e94de0e3b60c9718a43a94a5af43915',
-    },
-    token: serializedTokens.hotcross,
-    quoteToken: serializedTokens.wbnb,
   },
   {
     pid: 96,
