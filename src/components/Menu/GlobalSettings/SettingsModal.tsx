@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { Text, PancakeToggle, Toggle, Flex, Modal, InjectedModalProps, ThemeSwitcher } from '@pancakeswap/uikit'
+import { Text, PancakeToggle, Toggle, Flex, Modal, InjectedModalProps, ThemeSwitcher, Box } from '@pancakeswap/uikit'
 import {
   useAudioModeManager,
   useExpertModeManager,
@@ -88,9 +88,16 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
           <Flex alignItems="center">
             <Text>{t('Zap (Beta)')}</Text>
             <QuestionHelper
-              text={t(
-                'Zap enables simple liquidity provision. Add liquidity with one token and one click, without manual swapping or token balancing.',
-              )}
+              text={
+                <Box>
+                  <Text>
+                    {t(
+                      'Zap enables simple liquidity provision. Add liquidity with one token and one click, without manual swapping or token balancing.',
+                    )}
+                  </Text>
+                  <Text>{t('If you experience any issue when adding liquidity, please disable Zap and retry.')}</Text>
+                </Box>
+              }
               placement="top-start"
               ml="4px"
             />
