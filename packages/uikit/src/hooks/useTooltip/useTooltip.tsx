@@ -23,7 +23,7 @@ const animationMap = {
 
 const invertTheme = (currentTheme: DefaultTheme) => {
   if (currentTheme.isDark) {
-    return light;
+    return dark;
   }
   return light;
 };
