@@ -57,14 +57,14 @@ function MyApp(props: AppProps) {
           content="Discover Metaegg DeFi, the P2E ecosystem on BNB Smart Chain (BSC) with the best farms, pools, lottery in P2E DeFi for MEGG."
         />
         <meta name="theme-color" content="#1FC7D4" />
-        <meta name="twitter:image" content="https://pancakeswap.finance/images/hero.png" />
+        <meta name="twitter:image" content="https://metaegg.io/hero.png" />
         <meta
           name="twitter:description"
           content="Discover Metaegg DeFi, the P2E ecosystem on BNB Smart Chain (BSC) with the best farms, pools, lottery in P2E DeFi, NFTs, and more, on a platform you can trust."
         />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="🥑 Metaegg DeFi - A next evolution DeFi exchange on BNB Smart Chain (BSC)" />
-        <title>PancakeSwap</title>
+        <title>🥑 Metaegg DeFi</title>
       </Head>
       <Providers store={store}>
         <Blocklist>
