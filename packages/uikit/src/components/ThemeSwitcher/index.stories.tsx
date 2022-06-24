@@ -19,5 +19,5 @@ const Template: React.FC<ThemeSwitcherProps> = ({ ...args }) => {
 export const Default = Template.bind({});
 Default.args = {
   toggleTheme: noop,
-  isLight: false,
+  isDark: false,
 };
