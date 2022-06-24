@@ -21,11 +21,7 @@ const MenuItemsMock = [
     href: "/",
     items: [ItemsMock[0]],
   },
-  {
-    label: "Games",
-    href: "/",
-    items: [ItemsMock[0]],
-  },
+ 
   {
     label: "...",
     href: "/",
