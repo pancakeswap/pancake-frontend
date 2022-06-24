@@ -1,9 +1,17 @@
+import styled from 'styled-components'
 import Trans from 'components/Trans'
 import { useTranslation } from 'contexts/Localization'
-import { Text, Button, Flex } from '@pancakeswap/uikit'
-import { LightGreyCard } from 'components/Card'
+import { Text, Button, Flex, Box } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { WinRateCalculatorState } from 'views/Pottery/hooks/useWinRateCalculator'
+
+const StyledBox = styled(Box)`
+  background-color: ${({ theme }) => theme.colors.input};
+  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+  border-radius: 16px;
+  box-shadow: ${({ theme }) => theme.shadows.inset};
+  padding: 8px 16px;
+`
 
 interface TvlType {
   title: string | JSX.Element
@@ -52,8 +60,8 @@ const WinRateTvl: React.FC<WinRateTvlProps> = ({
           </Button>
         ))}
       </Flex>
-      <LightGreyCard padding="8px 16px 8px 8px">
-        <Flex justifyContent="flex-end">
+      <StyledBox>
+        <Flex justifyContent="flex-end" mb="2px">
           <Balance textAlign="right" decimals={2} value={totalLockValue} />
           <Text ml="4px" color="textSubtle">
             CAKE
@@ -67,7 +75,7 @@ const WinRateTvl: React.FC<WinRateTvlProps> = ({
           value={totalLockValueAsUSD}
           unit=" USD"
         />
-      </LightGreyCard>
+      </StyledBox>
     </>
   )
 }
