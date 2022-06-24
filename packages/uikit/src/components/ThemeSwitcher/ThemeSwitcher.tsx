@@ -3,7 +3,7 @@ import { SunIcon, MoonIcon } from "../Svg";
 import { Toggle } from "../Toggle";
 
 export interface Props {
-  isDark: boolean;
+  isLight: boolean;
   toggleTheme: (isLight: boolean) => void;
 }
 
