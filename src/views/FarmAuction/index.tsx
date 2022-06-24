@@ -115,7 +115,7 @@ const FarmAuction = () => {
             </Link>
           </Left>
           <Right>
-            <img src="/images/decorations/auction-bunny.png" alt={t('auction bunny')} />
+            <img src="/images/decorations/auction-fly.png" alt={t('auction fly')} />
           </Right>
         </Flex>
       </StyledHeader>
