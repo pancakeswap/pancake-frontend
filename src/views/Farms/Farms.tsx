@@ -317,9 +317,7 @@ const Farms: React.FC = ({ children }) => {
 
   const renderContent = (): JSX.Element => {
     if (viewMode === ViewMode.TABLE && rowData.length) {
-      const columnSchema = DesktopColumnSchema
-
-      const columns = columnSchema.map((column) => ({
+      const columns = DesktopColumnSchema.map((column) => ({
         id: column.id,
         name: column.name,
         label: column.label,

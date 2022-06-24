@@ -100,7 +100,6 @@ interface PoolConfigBaseProps {
   contractAddress: Address
   poolCategory: PoolCategory
   tokenPerBlock: string
-  harvest?: boolean
   isFinished?: boolean
   enableEmergencyWithdraw?: boolean
   version?: number
