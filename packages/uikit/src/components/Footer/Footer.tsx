@@ -21,7 +21,7 @@ import { Colors } from "../..";
 
 const MenuItem: React.FC<FooterProps> = ({
   items,
-  isDark,
+  isLight,
   toggleTheme,
   currentLang,
   langs,
