@@ -2,78 +2,74 @@ import { FooterLinkType } from '@pancakeswap/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 
 export const footerLinks: (t: ContextApi['t']) => FooterLinkType[] = (t) => [
-  {
-    label: t('About'),
+   {
+    label: "About",
     items: [
       {
-        label: t('Contact'),
-        href: 'https://docs.pancakeswap.finance/contact-us',
+        label: "Contact",
+        href: "https://docs.metaegg.io/wiki/metaegg/resources",
+      },
+      {
+        label: "Blog",
+        href: "https://medium.com/@metaegg",
+      },
+      {
+        label: "Community",
+        href: "https://docs.metaegg.io/wiki/metaegg/resources",
+      },
+      {
+        label: "CAKE",
+        href: "https://docs.metaegg.io/wiki/tokenomics/megg",
+      },
+      {
+        label: "—",
+      },
+      {
+        label: "Online Store",
+        href: "https://market.metaegg.io/",
         isHighlighted: true,
       },
+    ],
+  },
+  {
+    label: "Help",
+    items: [
       {
-        label: t('Brand'),
-        href: 'https://docs.pancakeswap.finance/brand',
+        label: "Team",
+        href: "https://docs.metaegg.io/wiki/team",
       },
       {
-        label: t('Blog'),
-        href: 'https://medium.com/pancakeswap',
+        label: "GameFi",
+        href: "https://docs.metaegg.io/wiki/game-fi-elements",
       },
       {
-        label: t('Community'),
-        href: 'https://docs.pancakeswap.finance/contact-us/telegram',
-      },
-      {
-        label: t('Litepaper'),
-        href: 'https://v2litepaper.pancakeswap.finance/',
-      },
-      {
-        label: '—',
-      },
-      {
-        label: t('Online Store'),
-        href: 'https://pancakeswap.creator-spring.com/',
+        label: "Metaeverse",
+        href: "https://docs.metaegg.io/wiki/metaverse",
       },
     ],
   },
   {
-    label: t('Help'),
+    label: "Developers",
     items: [
       {
-        label: t('Customer Support'),
-        href: 'https://docs.pancakeswap.finance/contact-us/customer-support',
+        label: "Github",
+        href: "https://github.com/metaegg",
       },
       {
-        label: t('Troubleshooting'),
-        href: 'https://docs.pancakeswap.finance/help/troubleshooting',
+        label: "Documentation",
+        href: "https://docs.metaegg.io",
       },
       {
-        label: t('Guides'),
-        href: 'https://docs.pancakeswap.finance/get-started',
-      },
-    ],
-  },
-  {
-    label: t('Developers'),
-    items: [
-      {
-        label: 'Github',
-        href: 'https://github.com/pancakeswap',
+        label: "Bug Bounty",
+        href: "https://docs.metaegg.io/bug-bounty",
       },
       {
-        label: t('Documentation'),
-        href: 'https://docs.pancakeswap.finance',
+        label: "Audits",
+        href: "https://docs.metaegg.io/audited",
       },
       {
-        label: t('Bug Bounty'),
-        href: 'https://docs.pancakeswap.finance/code/bug-bounty',
-      },
-      {
-        label: t('Audits'),
-        href: 'https://docs.pancakeswap.finance/help/faq#is-pancakeswap-safe-has-pancakeswap-been-audited',
-      },
-      {
-        label: t('Careers'),
-        href: 'https://docs.pancakeswap.finance/hiring/become-a-chef',
+        label: "Careers",
+        href: "https://docs.metaegg.io/team",
       },
     ],
   },
