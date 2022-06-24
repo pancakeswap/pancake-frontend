@@ -40,7 +40,7 @@ const getPathList = (t: ContextApi['t']): PathList => {
       '/info/tokens': { title: t('Tokens'), description: 'View statistics for Metaegg exchanges.' },
       '/nfts/collections': { basePath: true, title: t('Collections') },
       '/nfts/activity': { title: t('Activity') },
-      '/nfts/profile': { basePath: true, title: t('Profile') },
+      '/nfts/profile': { basePath: true, title: t('Metaegg Profile') },
       '/pancake-squad': { basePath: true, title: t('Metaegg Squad') },
     },
     defaultTitleSuffix: t('🥑 Metaegg DeFi'),
