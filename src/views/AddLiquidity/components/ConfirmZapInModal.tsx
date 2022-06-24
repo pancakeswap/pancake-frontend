@@ -40,6 +40,8 @@ interface ConfirmZapInModalProps {
   }
 }
 
+const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max)
+
 const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> = ({
   title,
   onDismiss,
@@ -103,11 +105,12 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
 
   const swapOutTokenAmount = useMemo(
     () =>
+      zapInEstimated?.swapAmountOut &&
       new TokenAmount(
         wrappedCurrency(currencies[zapSwapOutTokenField], chainId),
         zapInEstimated.swapAmountOut.toString(),
       ),
-    [chainId, currencies, zapInEstimated.swapAmountOut, zapSwapOutTokenField],
+    [chainId, currencies, zapInEstimated?.swapAmountOut, zapSwapOutTokenField],
   )
 
   const inputPercent = useMemo(
@@ -158,7 +161,7 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
       >
         <PairDistribution
           title={t('Input')}
-          percent={inputPercent}
+          percent={inputPercent ? clamp(inputPercent, 0.02, 0.98) : undefined}
           currencyA={swapInCurrencyAmount ? currencies[zapSwapTokenField] : undefined}
           currencyAValue={swapInCurrencyAmount?.toSignificant(6)}
           currencyB={swapOutCurrencyAmount ? currencies[zapSwapOutTokenField] : undefined}

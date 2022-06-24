@@ -86,6 +86,25 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
         </Flex>
         <Flex justifyContent="space-between" alignItems="center" mb="24px">
           <Flex alignItems="center">
+            <Text>{t('Zap (Beta)')}</Text>
+            <QuestionHelper
+              text={t(
+                'Zap enables simple liquidity provision. Add liquidity with one token and one click, without manual swapping or token balancing.',
+              )}
+              placement="top-start"
+              ml="4px"
+            />
+          </Flex>
+          <Toggle
+            checked={zapMode}
+            scale="md"
+            onChange={() => {
+              toggleZapMode(!zapMode)
+            }}
+          />
+        </Flex>
+        <Flex justifyContent="space-between" alignItems="center" mb="24px">
+          <Flex alignItems="center">
             <Text>{t('Expert Mode')}</Text>
             <QuestionHelper
               text={t('Bypasses confirmation modals and allows high slippage trades. Use at your own risk.')}
@@ -126,25 +145,6 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
             scale="md"
             onChange={() => {
               setSubgraphHealth(!subgraphHealth)
-            }}
-          />
-        </Flex>
-        <Flex justifyContent="space-between" alignItems="center" mb="24px">
-          <Flex alignItems="center">
-            <Text>{t('Zap (Beta)')}</Text>
-            <QuestionHelper
-              text={t(
-                'Zap enables simple liquidity provision. Add liquidity with one token and one click, without manual swapping or token balancing.',
-              )}
-              placement="top-start"
-              ml="4px"
-            />
-          </Flex>
-          <Toggle
-            checked={zapMode}
-            scale="md"
-            onChange={() => {
-              toggleZapMode(!zapMode)
             }}
           />
         </Flex>
