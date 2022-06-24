@@ -34,7 +34,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   const { onChangeRecipient } = useSwapActionHandlers()
 
   const { t } = useTranslation()
-  const { theme, isLight, setTheme } = useTheme()
+  const { theme, isDark, setTheme } = useTheme()
 
   if (showConfirmExpertModal) {
     return (
