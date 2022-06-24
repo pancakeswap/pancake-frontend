@@ -33,7 +33,7 @@ const IfoContainer: React.FC<TypeProps> = ({ ifoSection, ifoSteps }) => {
       <Container>
         <IfoQuestions />
         <LinkExternal
-          href="https://docs.pancakeswap.finance/contact-us/business-partnerships#ifos-token-sales"
+          href="https://docs.metaegg.io/contact-us/"
           mx="auto"
           mt="16px"
         >
