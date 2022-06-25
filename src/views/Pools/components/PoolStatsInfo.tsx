@@ -56,7 +56,7 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
 
   const tokenAddress = earningToken.address || ''
   const poolContractAddress = getAddress(contractAddress)
-  const VaultContractAddress = getVaultPoolAddress(vaultKey)
+  const cakeVaultContractAddress = getVaultPoolAddress(vaultKey)
   const isMetaMaskInScope = !!window.ethereum?.isMetaMask
 
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
@@ -68,10 +68,10 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
         <Flex mb="8px" justifyContent="space-between">
           <Text small>{t('Requirement')}:</Text>
           <Text small textAlign="right">
-            {profileRequirement.required && t('Metaegg Profile')}{' '}
+            {profileRequirement.required && t(' Profile')}{' '}
             {profileRequirement.thresholdPoints.gt(0) && (
               <Text small>
-                {profileRequirement.thresholdPoints.toNumber().toLocaleString()} {t('Profile Points')}
+                {profileRequirement.thresholdPoints.toNumber().toLocaleString()} {t(' Points')}
               </Text>
             )}
           </Text>
@@ -126,7 +126,7 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
       )}
       {vaultKey && (
         <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-          <LinkExternal href="https://docs.metaegg.io/pool" bold={false} small>
+          <LinkExternal href="https://docs.metaegg.io" bold={false} small>
             {t('View Tutorial')}
           </LinkExternal>
         </Flex>
@@ -153,7 +153,7 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
                 tokenAddress,
                 earningToken.symbol,
                 earningToken.decimals,
-                `https://metaegg.io/tokens/${tokenAddress}.png`,
+                `/images/${tokenAddress}.png`,
               )
             }
           >
