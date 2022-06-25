@@ -17,10 +17,10 @@ export function ProfileRequirementWarning({
         <MessageText>
           {notMeetRequired &&
             notMeetThreshold &&
-            t('This pool requires active Pancake Profile and %amount% profile points.', {
+            t('This pool requires active Metaegg Profile and %amount% profile points.', {
               amount: profileRequirement.thresholdPoints.toNumber().toLocaleString(),
             })}
-          {notMeetRequired && !notMeetThreshold && t('This pool requires active Pancake Profile')}
+          {notMeetRequired && !notMeetThreshold && t('This pool requires active Metaegg Profile')}
           {!notMeetRequired &&
             notMeetThreshold &&
             t('This pool requires %amount% profile points.', {
