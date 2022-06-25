@@ -56,7 +56,7 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
 
   const tokenAddress = earningToken.address || ''
   const poolContractAddress = getAddress(contractAddress)
-  const cakeVaultContractAddress = getVaultPoolAddress(vaultKey)
+  const \VaultContractAddress = getVaultPoolAddress(vaultKey)
   const isMetaMaskInScope = !!window.ethereum?.isMetaMask
 
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
@@ -68,7 +68,7 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
         <Flex mb="8px" justifyContent="space-between">
           <Text small>{t('Requirement')}:</Text>
           <Text small textAlign="right">
-            {profileRequirement.required && t('Pancake Profile')}{' '}
+            {profileRequirement.required && t('Metaegg Profile')}{' '}
             {profileRequirement.thresholdPoints.gt(0) && (
               <Text small>
                 {profileRequirement.thresholdPoints.toNumber().toLocaleString()} {t('Profile Points')}
@@ -126,7 +126,7 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
       )}
       {vaultKey && (
         <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-          <LinkExternal href="https://docs.pancakeswap.finance/products/syrup-pool/new-cake-pool" bold={false} small>
+          <LinkExternal href="https://docs.metaegg.io/pool" bold={false} small>
             {t('View Tutorial')}
           </LinkExternal>
         </Flex>
@@ -153,7 +153,7 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
                 tokenAddress,
                 earningToken.symbol,
                 earningToken.decimals,
-                `https://tokens.pancakeswap.finance/images/${tokenAddress}.png`,
+                `https://metaegg.io/tokens/${tokenAddress}.png`,
               )
             }
           >
