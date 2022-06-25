@@ -56,7 +56,7 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
 
   const tokenAddress = earningToken.address || ''
   const poolContractAddress = getAddress(contractAddress)
-  const \VaultContractAddress = getVaultPoolAddress(vaultKey)
+  const VaultContractAddress = getVaultPoolAddress(vaultKey)
   const isMetaMaskInScope = !!window.ethereum?.isMetaMask
 
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
