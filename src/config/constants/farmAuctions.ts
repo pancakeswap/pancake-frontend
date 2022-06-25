@@ -9,11 +9,11 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
     ? [
         // Those farms changed their project wallet address.
         {
-          account: '0xA6D19C2A2EA13e9eF02d795155F6c335af764955', // Auction #19
+          account: '0x413C4178e492Db83676c5698F6DEcDd4d6762291', // Auction #19
           farmName: 'MEGG-BNB',
           tokenAddress: '0x39Af062b155978f1D41B299601DeFac54E94Cbd8',
           quoteToken: tokens.wbnb,
-          tokenName: 'HappyFans',
+          tokenName: 'Metaegg DeFi',
           projectSite: 'https://metaegg.io/',
         },
 
