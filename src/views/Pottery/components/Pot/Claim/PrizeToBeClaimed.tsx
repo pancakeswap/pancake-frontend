@@ -19,7 +19,7 @@ const PrizeToBeClaimed: React.FC<PrizeToBeClaimedProps> = ({ userData }) => {
   const rewardInBusd = new BigNumber(rewardToken).times(cakePriceBusd).toNumber()
 
   return (
-    <Box>
+    <Box mt="20px">
       <Text fontSize="12px" color="secondary" bold as="span" textTransform="uppercase">
         {t('prize')}
       </Text>

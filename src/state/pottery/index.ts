@@ -2,7 +2,12 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PotteryState, SerializedPotteryUserData, SerializedPotteryPublicData, PotteryDepositStatus } from 'state/types'
 import { resetUserState } from '../global/actions'
 import { fetchPublicPotteryValue, fetchTotalLockedValue } from './fetchPottery'
-import { fetchPotterysAllowance, fetchVaultUserData, fetchDrawUserData } from './fetchUserPottery'
+import {
+  fetchPotterysAllowance,
+  fetchVaultUserData,
+  fetchUserDrawData,
+  fetchWithdrawAbleData,
+} from './fetchUserPottery'
 
 const initialState: PotteryState = Object.freeze({
   publicData: {
@@ -17,10 +22,10 @@ const initialState: PotteryState = Object.freeze({
   userData: {
     isLoading: true,
     allowance: null,
-    previewDepositBalance: null,
     stakingTokenBalance: null,
     rewards: null,
     winCount: null,
+    withdrawAbleData: [],
   },
 })
 
@@ -37,18 +42,19 @@ export const fetchPotteryUserDataAsync = createAsyncThunk<SerializedPotteryUserD
   'pottery/fetchPotteryUserData',
   async (account, { rejectWithValue }) => {
     try {
-      const [allowance, vaultUserData, drawData] = await Promise.all([
+      const [allowance, vaultUserData, drawData, withdrawAbleData] = await Promise.all([
         fetchPotterysAllowance(account),
         fetchVaultUserData(account),
-        fetchDrawUserData(account),
+        fetchUserDrawData(account),
+        fetchWithdrawAbleData(account),
       ])
 
       const userData = {
         allowance,
-        previewDepositBalance: vaultUserData.previewDepositBalance,
         stakingTokenBalance: vaultUserData.stakingTokenBalance,
         rewards: drawData.rewards,
         winCount: drawData.winCount,
+        withdrawAbleData,
       }
 
       return userData

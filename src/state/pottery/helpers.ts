@@ -20,13 +20,12 @@ export const transformPotteryPublicData = (publicData: SerializedPotteryPublicDa
 }
 
 export const transformPotteryUserData = (userData: SerializedPotteryUserData): DeserializedPotteryUserData => {
-  const { rewards, allowance, stakingTokenBalance, previewDepositBalance } = userData
+  const { rewards, allowance, stakingTokenBalance } = userData
 
   return {
     ...userData,
     rewards: rewards ? new BigNumber(rewards) : BIG_ZERO,
     allowance: allowance ? new BigNumber(allowance) : BIG_ZERO,
-    previewDepositBalance: previewDepositBalance ? new BigNumber(previewDepositBalance) : BIG_ZERO,
     stakingTokenBalance: stakingTokenBalance ? new BigNumber(stakingTokenBalance) : BIG_ZERO,
   }
 }

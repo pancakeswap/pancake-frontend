@@ -1,12 +1,40 @@
+import { useMemo } from 'react'
 import { useTranslation } from 'contexts/Localization'
-import { Flex, Box, Text, Button } from '@pancakeswap/uikit'
+import { Flex, Box, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
+import { usePriceCakeBusd } from 'state/farms/hooks'
+import BigNumber from 'bignumber.js'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { PotteryWithdrawAbleData } from 'state/types'
+import WithdrawButton from 'views/Pottery/components/Pot/Claim/WithdrawButton'
+import { convertTimeToSeconds } from 'utils/timeHelper'
 
-const AvailableWitdraw: React.FC = () => {
-  const { t } = useTranslation()
+interface AvailableWitdrawProps {
+  withdrawData: PotteryWithdrawAbleData
+}
+
+const AvailableWitdraw: React.FC<AvailableWitdrawProps> = ({ withdrawData }) => {
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
+  const cakePriceBusd = usePriceCakeBusd()
+
+  const amountAsBn = new BigNumber(withdrawData.previewRedeem)
+  const amount = getBalanceNumber(amountAsBn)
+  const amountInBusd = new BigNumber(amount).times(cakePriceBusd).toNumber()
+
+  const lockDate = useMemo(() => {
+    const lockDateTimeSeconds = convertTimeToSeconds(withdrawData.depositDate)
+    return new Date(lockDateTimeSeconds).toLocaleString(locale, {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    })
+  }, [withdrawData, locale])
 
   return (
-    <Box m="20px 0">
+    <Box>
       <Text fontSize="12px" color="secondary" bold as="span" textTransform="uppercase">
         {t('stake withdraw')}
       </Text>
@@ -15,27 +43,13 @@ const AvailableWitdraw: React.FC = () => {
       </Text>
       <Flex mb="11px">
         <Box>
-          <Balance fontSize="20px" lineHeight="110%" value={5} decimals={2} bold />
-          <Balance fontSize="12px" lineHeight="110%" color="textSubtle" value={200} decimals={2} unit="USD" />
+          <Balance fontSize="20px" lineHeight="110%" value={amount} decimals={2} bold />
+          <Balance fontSize="12px" lineHeight="110%" color="textSubtle" value={amountInBusd} decimals={2} unit=" USD" />
           <Text fontSize="12px" lineHeight="110%" color="textSubtle">
-            Deposited Apr 04 2022
+            {t('Deposited %date%', { date: lockDate })}
           </Text>
         </Box>
-        <Button variant="secondary" width="162px" ml="auto">
-          {t('Withdraw')}
-        </Button>
-      </Flex>
-      <Flex mb="11px">
-        <Box>
-          <Balance fontSize="20px" lineHeight="110%" value={5} decimals={2} bold />
-          <Balance fontSize="12px" lineHeight="110%" color="textSubtle" value={200} decimals={2} unit="USD" />
-          <Text fontSize="12px" lineHeight="110%" color="textSubtle">
-            Deposited Apr 04 2022
-          </Text>
-        </Box>
-        <Button variant="secondary" width="162px" ml="auto">
-          {t('Withdraw')}
-        </Button>
+        <WithdrawButton amount={amountAsBn} redeemShare={withdrawData.shares} />
       </Flex>
     </Box>
   )

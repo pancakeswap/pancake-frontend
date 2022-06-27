@@ -8,7 +8,7 @@ import { usePotterytValutContract } from 'hooks/useContract'
 import { useWeb3React } from '@web3-react/core'
 import { fetchPotteryUserDataAsync } from 'state/pottery'
 
-export const useWithdrawPottery = (amount: string) => {
+export const useWithdrawPottery = (redeemShare: string) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
@@ -17,7 +17,6 @@ export const useWithdrawPottery = (amount: string) => {
   const contract = usePotterytValutContract()
 
   const handleWithdraw = useCallback(async () => {
-    const redeemShare = await contract.convertToAssets(amount)
     const receipt = await fetchWithCatchTxError(() => contract.redeem(redeemShare, account, account))
 
     // TODO: Pottery ToastDescriptionWithTx text
@@ -28,7 +27,7 @@ export const useWithdrawPottery = (amount: string) => {
       )
       dispatch(fetchPotteryUserDataAsync(account))
     }
-  }, [account, contract, amount, t, dispatch, fetchWithCatchTxError, toastSuccess])
+  }, [account, contract, redeemShare, t, dispatch, fetchWithCatchTxError, toastSuccess])
 
   return { isPending, handleWithdraw }
 }

@@ -24,11 +24,13 @@ const Claim: React.FC = () => {
       {account ? (
         <Container>
           <GreyCard>
-            <Flex justifyContent="space-between">
+            <Flex justifyContent="space-between" mb="20px">
               <YourDeposit />
               <WinRate />
             </Flex>
-            <AvailableWitdraw />
+            {userData.withdrawAbleData.map((data) => (
+              <AvailableWitdraw key={data.id} withdrawData={data} />
+            ))}
             <PrizeToBeClaimed userData={userData} />
           </GreyCard>
         </Container>

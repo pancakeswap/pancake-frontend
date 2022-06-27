@@ -28,7 +28,8 @@ export const fetchPublicPotteryValue = async () => {
       totalSupply: new BigNumber(totalSupply.toString()).toJSON(),
       lockStartTime: lockStartTime.toString(),
     }
-  } catch {
+  } catch (error) {
+    console.error('Failed to fetch public pottery value data', error)
     return {
       lastDrawId: BIG_ZERO.toJSON(),
       totalPrize: BIG_ZERO.toJSON(),
@@ -48,7 +49,8 @@ export const fetchTotalLockedValue = async () => {
     return {
       totalLockedValue: new BigNumber(totalLocked.toString()).toJSON(),
     }
-  } catch {
+  } catch (error) {
+    console.error('Failed to fetch total lock value', error)
     return {
       totalLockedValue: BIG_ZERO.toJSON(),
     }

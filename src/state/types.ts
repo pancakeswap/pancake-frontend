@@ -656,25 +656,32 @@ export interface DeserializedPublicData {
 export interface SerializedPotteryUserData {
   isLoading?: boolean
   allowance: string
-  previewDepositBalance: string
   stakingTokenBalance: string
   rewards: string
   winCount: string
+  withdrawAbleData: PotteryWithdrawAbleData[]
 }
 
 export interface DeserializedPotteryUserData {
   isLoading?: boolean
   allowance: BigNumber
-  previewDepositBalance: BigNumber
   stakingTokenBalance: BigNumber
   rewards: BigNumber
   winCount: string
+  withdrawAbleData: PotteryWithdrawAbleData[]
 }
 
 export enum PotteryDepositStatus {
   BEFORE_LOCK = 0,
   LOCK = 1,
   UNLOCK = 2,
+}
+
+export interface PotteryWithdrawAbleData {
+  id: string
+  shares: string
+  depositDate: string
+  previewRedeem: string
 }
 
 // Global state
