@@ -2,7 +2,7 @@ import { NextRouter, useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 /* eslint-disable no-console */
 const cbList = {}
-const onCallbackIdList = {}
+const onCallbackIdList = new Map<() => void, string>()
 
 export const listenOnBnMessage = () => {
   if (typeof window !== 'undefined') {
@@ -15,34 +15,45 @@ export const listenOnBnMessage = () => {
       }
       if (typeof cbList[id] === 'function') {
         cbList[id](newPayload)
+        delete cbList[id]
       }
     }
   }
 }
 let id = 0
+const prefix = Math.random() * 1000
+const postMessage = ({ action, payload, cb }: { action: string; payload?: any; cb?: (payload?: any) => void }) => {
+  const finalId = `${prefix}-${id}`
+  window.bn.miniProgram.postMessage({ action, id: finalId, payload })
+  cbList[finalId] = cb
+  id++
+  return finalId
+}
 function getWeb3Provider() {
   return {
-    on(event, cb) {
-      onCallbackIdList[cb] = id
-      window.bn.miniProgram.postMessage({ action: 'on', id: id++, payload: { event } })
+    on(event: string, cb: () => void) {
+      const finalId = postMessage({ action: 'on', payload: { event } })
+      onCallbackIdList.set(cb, finalId)
     },
     request(params) {
       return new Promise((resolve, reject) => {
-        const localId = id
-        window.bn.miniProgram.postMessage({ action: 'request', payload: params, id: id++ })
-        cbList[localId] = (payload) => {
-          if (payload.error) {
-            reject(payload.message)
-          } else {
-            resolve(payload)
-          }
-        }
+        postMessage({
+          action: 'request',
+          payload: params,
+          cb: (payload) => {
+            if (payload.error) {
+              reject(payload.message)
+            } else {
+              resolve(payload)
+            }
+          },
+        })
       })
     },
-    removeEventListener(event, cb) {
-      const localId = onCallbackIdList[cb]
+    removeEventListener(event: string, cb: () => void) {
+      const localId = onCallbackIdList.get(cb)
       delete cbList[localId]
-      delete onCallbackIdList[cb]
+      onCallbackIdList.delete(cb)
     },
   }
 }
@@ -50,25 +61,19 @@ function getWeb3Provider() {
 const _bridgeUtils = {
   jump(payload) {
     return new Promise((resolve) => {
-      window.bn.miniProgram.postMessage({ action: 'jump', payload, id })
-      cbList[id] = resolve
-      id++
+      postMessage({ action: 'jump', payload, cb: resolve })
     })
   },
   getSystemInfo() {
     return new Promise((resolve) => {
-      window.bn.miniProgram.postMessage({ action: 'getSystemInfo', id })
-      cbList[id] = resolve
-      id++
+      postMessage({ action: 'getSystemInfo', cb: resolve })
     })
   },
 }
 export const bridgeUtils = {
   toWallet() {
     return new Promise((resolve) => {
-      window.bn.miniProgram.postMessage({ action: 'toWallet', id })
-      cbList[id] = resolve
-      id++
+      postMessage({ action: 'toWallet', cb: resolve })
     })
   },
 }
