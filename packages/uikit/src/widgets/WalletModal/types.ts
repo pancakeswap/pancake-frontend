@@ -5,6 +5,7 @@ export enum ConnectorNames {
   Injected = "injected",
   WalletConnect = "walletconnect",
   BSC = "bsc",
+  InfinityWallet = "infinitywallet",
   Blocto = "blocto",
   WalletLink = "walletlink",
 }

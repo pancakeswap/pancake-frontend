@@ -9,6 +9,7 @@ import Coin98 from "../../components/Svg/Icons/Coin98";
 import Blocto from "../../components/Svg/Icons/Blocto";
 import CoinbaseWallet from "../../components/Svg/Icons/CoinbaseWallet";
 import Opera from "../../components/Svg/Icons/Opera";
+import InfinityWallet from "../../components/Svg/Icons/InfinityWallet";
 
 import { Config, ConnectorNames } from "./types";
 
@@ -44,6 +45,14 @@ const connectors: Config[] = [
     icon: WalletConnect,
     connectorId: ConnectorNames.WalletConnect,
     priority: 5,
+  },
+  {
+    title: "Infinity Wallet",
+    icon: InfinityWallet,
+    connectorId: ConnectorNames.InfinityWallet,
+    priority: () => {
+      return typeof window !== "undefined" && Boolean(window?.ethereum?.isInfinityWallet) ? 0 : 5;
+    },
   },
   {
     title: "Opera Wallet",

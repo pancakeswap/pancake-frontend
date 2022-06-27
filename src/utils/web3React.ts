@@ -22,12 +22,20 @@ const walletconnect = new WalletConnectConnector({
   pollingInterval: POLLING_INTERVAL,
 })
 
-const bscConnector = new BscConnector({ supportedChainIds: [chainId] })
+const bscConnector = new InjectedConnector({ supportedChainIds: [chainId] })
 
 export const connectorsByName = {
   [ConnectorNames.Injected]: injected,
   [ConnectorNames.WalletConnect]: walletconnect,
   [ConnectorNames.BSC]: bscConnector,
+  [ConnectorNames.InfinityWallet]: async () => {
+    const { InfinityWalletConnector, openInfinityWallet } = await import('@infinitywallet/infinity-connector')
+    if (!window.ethereum?.isInfinityWallet) {
+      openInfinityWallet(window.location.href, chainId)
+      return walletconnect
+    }
+    return new InfinityWalletConnector({ supportedChainIds: [chainId] })
+  },
   [ConnectorNames.Blocto]: async () => {
     const { BloctoConnector } = await import('@blocto/blocto-connector')
     return new BloctoConnector({ chainId, rpc: rpcUrl })

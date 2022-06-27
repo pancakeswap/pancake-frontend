@@ -1,6 +1,7 @@
 interface Window {
   ethereum?: {
     isMetaMask?: true
+    isInfinityWallet?: true
     isOpera?: true
     isCoinbaseWallet?: true
     isTrust?: true
