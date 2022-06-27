@@ -22,8 +22,8 @@ import { ROUNDS_PER_PAGE } from './config'
 import { transformBetResponseCAKE, transformUserResponseCAKE } from './cakeTransformers'
 import { transformBetResponseBNB, transformUserResponseBNB } from './bnbTransformers'
 import { BetResponse, UserResponse } from './responseType'
-import { BetResponseBNB, TotalWonMarketResponseBNB } from './bnbQueries'
-import { BetResponseCAKE, TotalWonMarketResponseCAKE } from './cakeQueries'
+import { BetResponseBNB } from './bnbQueries'
+import { BetResponseCAKE } from './cakeQueries'
 
 export enum Result {
   WIN = 'win',

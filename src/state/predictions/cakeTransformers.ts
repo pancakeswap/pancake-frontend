@@ -1,7 +1,7 @@
 import { Bet, BetPosition, Round, PredictionUser } from 'state/types'
 import numberOrNull from 'utils/numberOrNull'
 
-import { BetResponseCAKE, RoundResponseCAKE, UserResponseCAKE } from './cakeQueries'
+import { RoundResponseCAKE } from './cakeQueries'
 
 const getRoundPosition = (positionResponse: string) => {
   if (positionResponse === 'Bull') {

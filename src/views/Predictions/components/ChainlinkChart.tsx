@@ -7,7 +7,6 @@ import { laggyMiddleware, useSWRContract, useSWRMulticall } from 'hooks/useSWRCo
 import useSWRImmutable from 'swr/immutable'
 import { useSWRConfig } from 'swr'
 import { useChainlinkOracleContract } from 'hooks/useContract'
-import { getChainlinkOracleAddress } from 'utils/addressHelpers'
 import { ChainlinkOracle } from 'config/abi/types'
 import chainlinkOracleAbi from 'config/abi/chainlinkOracle.json'
 import { FlexGap } from 'components/Layout/Flex'

@@ -1,6 +1,6 @@
 import { Bet, BetPosition, Round, PredictionUser } from 'state/types'
 import numberOrNull from 'utils/numberOrNull'
-import { BetResponseBNB, RoundResponseBNB, UserResponseBNB } from './bnbQueries'
+import { RoundResponseBNB } from './bnbQueries'
 
 const getRoundPosition = (positionResponse: string) => {
   if (positionResponse === 'Bull') {
