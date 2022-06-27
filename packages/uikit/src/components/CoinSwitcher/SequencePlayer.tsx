@@ -34,6 +34,9 @@ export const SequencePlayer: React.FC<SequencePlayerProps> = ({
         ctx.drawImage(imagePreload.current[coinImagePlayProgress.current], 0, 0);
         coinImagePlayProgress.current++;
         if (coinImagePlayProgress.current >= images.length) {
+          // set the frame back to default frame 0
+          ctx.clearRect(0, 0, width, height);
+          ctx.drawImage(imagePreload.current[0], 0, 0);
           coinImagePlayProgress.current = 0;
           stopCoinLooper();
           isPlaying.current = false;
