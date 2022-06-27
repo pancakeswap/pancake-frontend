@@ -1,6 +1,7 @@
-import { memo, useCallback, useState, useRef } from "react";
+import { memo, useCallback, useState } from "react";
 import styled from "styled-components";
-import { bnb2CakeImages, cake2BnbImages } from "./constant";
+import { bnb2CakeImages } from "./assets/bnb2cake";
+import { cake2BnbImages } from "./assets/cake2bnb";
 import { SequencePlayer } from "./SequencePlayer";
 
 export const CoinSwitcherWrapper = styled.div`
@@ -51,12 +52,11 @@ export const CoinSwitcher: React.FC<{ isDefaultBnb: boolean; onTokenSwitch: () =
 const Inner: React.FC<{ isDefaultBnb: boolean; onTokenSwitch: () => void }> = memo(
   ({ isDefaultBnb, onTokenSwitch }) => {
     const [isBnb, setIsBnb] = useState(() => isDefaultBnb);
-
     return (
       <CoinSwitcherWrapper>
         <SequenceWrapper className={!isBnb ? "hidden" : undefined}>
           <SequencePlayer
-            images={bnb2CakeImages()}
+            images={bnb2CakeImages}
             onPlayStart={() => {
               onTokenSwitch();
             }}
@@ -67,7 +67,7 @@ const Inner: React.FC<{ isDefaultBnb: boolean; onTokenSwitch: () => void }> = me
         </SequenceWrapper>
         <SequenceWrapper className={isBnb ? "hidden" : undefined}>
           <SequencePlayer
-            images={cake2BnbImages()}
+            images={cake2BnbImages}
             onPlayStart={() => {
               onTokenSwitch();
             }}
