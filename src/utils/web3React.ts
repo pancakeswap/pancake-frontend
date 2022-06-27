@@ -22,7 +22,7 @@ const walletconnect = new WalletConnectConnector({
   pollingInterval: POLLING_INTERVAL,
 })
 
-const bscConnector = new InjectedConnector({ supportedChainIds: [chainId] })
+const bscConnector = new BscConnector({ supportedChainIds: [chainId] })
 
 export const connectorsByName = {
   [ConnectorNames.Injected]: injected,
