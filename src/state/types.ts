@@ -305,6 +305,11 @@ export enum PredictionStatus {
   ERROR = 'error',
 }
 
+export enum PredictionSupportedSymbol {
+  BNB = 'BNB',
+  CAKE = 'CAKE',
+}
+
 export enum PredictionsChartView {
   TradingView = 'TradingView',
   Chainlink = 'Chainlink Oracle',

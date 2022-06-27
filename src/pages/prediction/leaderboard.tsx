@@ -1,4 +1,4 @@
-import BnbConfigProvider from '../../views/Predictions/context/BnbConfigProvider'
+import PredictionConfigProviders from '../../views/Predictions/context/PredictionConfigProviders'
 
 import PredictionsLeaderboard from '../../views/Predictions/Leaderboard'
 
@@ -6,4 +6,4 @@ export default function Leaderboard() {
   return <PredictionsLeaderboard />
 }
 
-Leaderboard.Layout = BnbConfigProvider
+Leaderboard.Layout = PredictionConfigProviders

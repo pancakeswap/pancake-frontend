@@ -1,7 +1,7 @@
 import { memo, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import Split, { SplitInstance } from 'split-grid'
-import { Button, ChartIcon, Flex } from '@pancakeswap/uikit'
+import { Button, ChartIcon, Flex, Box } from '@pancakeswap/uikit'
 import debounce from 'lodash/debounce'
 import delay from 'lodash/delay'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
@@ -22,6 +22,8 @@ import { ErrorNotification, PauseNotification } from './components/Notification'
 import History from './History'
 import Positions from './Positions'
 import { useConfig } from './context/ConfigProvider'
+import LoadingSection from './components/LoadingSection'
+import Menu from './components/Menu'
 
 const ChainlinkChart = dynamic(() => import('./components/ChainlinkChart'), { ssr: false })
 
@@ -105,6 +107,12 @@ const Gutter = styled.div<{ isChartPaneOpen?: boolean }>`
   }
 `
 
+const PowerLinkStyle = styled.div`
+  position: absolute;
+  right: 16px;
+  top: -40px;
+`
+
 const Desktop: React.FC = () => {
   const splitWrapperRef = useRef<HTMLDivElement>()
   const chartRef = useRef<HTMLDivElement>()
@@ -132,6 +140,15 @@ const Desktop: React.FC = () => {
 
   const splitInstance = useRef<SplitInstance>()
 
+  useEffect(() => {
+    const { height } = chartRef.current.getBoundingClientRect()
+
+    if (height > 0 && !isChartPaneOpen) {
+      dispatch(setChartPaneState(true))
+    }
+  }, [isChartPaneOpen, dispatch])
+
+  // unmount
   useEffect(() => {
     return () => {
       dispatch(setChartPaneState(false))
@@ -177,7 +194,12 @@ const Desktop: React.FC = () => {
           <PositionPane>
             {status === PredictionStatus.ERROR && <ErrorNotification />}
             {status === PredictionStatus.PAUSED && <PauseNotification />}
-            {status === PredictionStatus.LIVE && <Positions />}
+            {[PredictionStatus.INITIAL, PredictionStatus.LIVE].includes(status) && (
+              <Box>
+                <Menu />
+                {status === PredictionStatus.LIVE ? <Positions /> : <LoadingSection />}
+              </Box>
+            )}
           </PositionPane>
 
           <Gutter
@@ -187,6 +209,9 @@ const Desktop: React.FC = () => {
               openChartPane()
             }}
           >
+            <PowerLinkStyle>
+              <img src="/images/powered-by-chainlink.png" alt="Powered by ChainLink" width="170px" height="48px" />
+            </PowerLinkStyle>
             <ExpandButtonGroup>
               <TabToggle
                 height="42px"

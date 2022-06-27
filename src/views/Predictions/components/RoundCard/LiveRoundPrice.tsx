@@ -11,14 +11,14 @@ interface LiveRoundPriceProps {
 const LiveRoundPrice: React.FC<LiveRoundPriceProps> = ({ isBull }) => {
   const { price } = usePollOraclePrice()
 
-  const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
+  const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 4, 8))
   const priceColor = isBull ? 'success' : 'failure'
 
   const { countUp, update } = useCountUp({
     start: 0,
     end: priceAsNumber,
     duration: 1,
-    decimals: 3,
+    decimals: 4,
   })
 
   const updateRef = useRef(update)
