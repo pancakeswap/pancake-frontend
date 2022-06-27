@@ -1,8 +1,12 @@
+import { useMemo } from 'react'
 import styled from 'styled-components'
-import { Box, Flex, Text, CardBody, CardRibbon, LinkExternal } from '@pancakeswap/uikit'
+import { Box, Flex, Text, CardBody, CardRibbon, LinkExternal, Skeleton } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
+import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
+import { PotteryRoundInfo } from 'state/types'
 import Divider from 'components/Divider'
 import { getBscScanLink } from 'utils'
 import Winner from './Winner'
@@ -39,20 +43,38 @@ const WinnersContainer = styled(Flex)`
   }
 `
 
-const PreviousRoundCardBody: React.FC = () => {
+interface PreviousRoundCardBodyProps {
+  latestRoundId: string
+  finishedRoundInfo: PotteryRoundInfo
+}
+
+const PreviousRoundCardBody: React.FC<PreviousRoundCardBodyProps> = ({ latestRoundId, finishedRoundInfo }) => {
   const { t } = useTranslation()
+  const { isFetched, roundId, prizePot, totalPlayers, txid, winners } = finishedRoundInfo
   const cakePriceBusd = usePriceCakeBusd()
+
+  const prizeAsBn = new BigNumber(prizePot)
+  const prize = getBalanceNumber(prizeAsBn)
+  const prizeInBusd = new BigNumber(prize).times(cakePriceBusd).toNumber()
+
+  const isLatest = useMemo(() => new BigNumber(latestRoundId).minus(1).eq(roundId), [latestRoundId, roundId])
+
+  if (!isFetched) {
+    return <Skeleton margin="24px" maxWidth="100%" height="96px" />
+  }
 
   return (
     <StyledCardBody>
-      <StyledCardRibbon text={t('Latest')} />
+      {isLatest && <StyledCardRibbon text={t('Latest')} />}
       <Flex flexDirection={['column']} width="100%">
         <Flex flexDirection={['column', 'column', 'row']}>
           <Text style={{ alignSelf: 'center' }} fontSize="20px" bold>
             {t('Winner')}
           </Text>
           <WinnersContainer>
-            <Winner address="" />
+            {winners.map((address) => (
+              <Winner key={address} address={address} />
+            ))}
           </WinnersContainer>
         </Flex>
         <Box width="100%">
@@ -71,7 +93,7 @@ const PreviousRoundCardBody: React.FC = () => {
           fontSize={['32px', '32px', '40px']}
           textAlign={['center', 'center', 'left']}
           decimals={0}
-          value={2668232}
+          value={prize}
         />
         <Balance
           unit=" CAKE"
@@ -80,14 +102,14 @@ const PreviousRoundCardBody: React.FC = () => {
           color="textSubtle"
           textAlign={['center', 'center', 'left']}
           decimals={0}
-          value={212232}
+          value={prizeInBusd}
         />
         <Flex flexDirection={['column', 'column', 'row']} justifyContent="space-between">
           <Flex alignSelf={['center', 'center', 'flex-end']}>
             <Text fontSize="14px">{t('Total players this round:')}</Text>
-            <Balance bold ml="4px" fontSize="14px" decimals={0} value={2890} />
+            <Balance bold ml="4px" fontSize="14px" decimals={0} value={Number(totalPlayers)} />
           </Flex>
-          <LinkExternal m={['auto', 'auto', '0px']} href={getBscScanLink('todo.userAddress', 'address')}>
+          <LinkExternal m={['auto', 'auto', '0px']} href={getBscScanLink(txid, 'transaction')}>
             {t('View on BscScan')}
           </LinkExternal>
         </Flex>

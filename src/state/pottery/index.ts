@@ -1,6 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { PotteryState, SerializedPotteryUserData, SerializedPotteryPublicData, PotteryDepositStatus } from 'state/types'
+import {
+  PotteryState,
+  SerializedPotteryUserData,
+  SerializedPotteryPublicData,
+  PotteryDepositStatus,
+  PotteryRoundInfo,
+} from 'state/types'
 import { resetUserState } from '../global/actions'
+import { fetchPotteryFinisedRound } from './fetchPotteryRound'
 import { fetchPublicPotteryValue, fetchTotalLockedValue } from './fetchPottery'
 import {
   fetchPotterysAllowance,
@@ -11,12 +18,12 @@ import {
 
 const initialState: PotteryState = Object.freeze({
   publicData: {
-    lastDrawId: '0',
+    lastDrawId: '',
     totalPrize: null,
     getStatus: PotteryDepositStatus.BEFORE_LOCK,
     totalLockCake: null,
     totalSupply: null,
-    lockStartTime: '0',
+    lockStartTime: '',
     totalLockedValue: null,
   },
   userData: {
@@ -26,6 +33,15 @@ const initialState: PotteryState = Object.freeze({
     rewards: null,
     winCount: null,
     withdrawAbleData: [],
+  },
+  finishedRoundInfo: {
+    isFetched: false,
+    roundId: null,
+    drawDate: '',
+    prizePot: '',
+    totalPlayers: '',
+    txid: '',
+    winners: [],
   },
 })
 
@@ -64,10 +80,26 @@ export const fetchPotteryUserDataAsync = createAsyncThunk<SerializedPotteryUserD
   },
 )
 
+export const fetchPotteryRoundData = createAsyncThunk<PotteryRoundInfo, string>(
+  'pottery/fetchPotteryRound',
+  async (roundId) => {
+    const response = await fetchPotteryFinisedRound(roundId)
+    return response
+  },
+)
+
 export const PotterySlice = createSlice({
   name: 'Pottery',
   initialState,
-  reducers: {},
+  reducers: {
+    setFinishedRoundInfoFetched: (state, action) => {
+      const isFetched = action.payload
+      state.finishedRoundInfo = {
+        ...state.finishedRoundInfo,
+        isFetched,
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(resetUserState, (state) => {
       state.userData = { ...initialState.userData }
@@ -85,7 +117,13 @@ export const PotterySlice = createSlice({
         isLoading: false,
       }
     })
+    builder.addCase(fetchPotteryRoundData.fulfilled, (state, action: PayloadAction<PotteryRoundInfo>) => {
+      state.finishedRoundInfo = { ...action.payload }
+    })
   },
 })
+
+// Actions
+export const { setFinishedRoundInfoFetched } = PotterySlice.actions
 
 export default PotterySlice.reducer

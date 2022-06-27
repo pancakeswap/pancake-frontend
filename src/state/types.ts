@@ -631,6 +631,7 @@ export interface PredictionConfig {
 export interface PotteryState {
   publicData: SerializedPotteryPublicData
   userData: SerializedPotteryUserData
+  finishedRoundInfo: PotteryRoundInfo
 }
 
 export interface SerializedPotteryPublicData {
@@ -669,6 +670,16 @@ export interface DeserializedPotteryUserData {
   rewards: BigNumber
   winCount: string
   withdrawAbleData: PotteryWithdrawAbleData[]
+}
+
+export interface PotteryRoundInfo {
+  isFetched: boolean
+  roundId: string
+  drawDate: string
+  prizePot: string
+  totalPlayers: string
+  txid: string
+  winners: Array<string>
 }
 
 export enum PotteryDepositStatus {

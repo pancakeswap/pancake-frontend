@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import { Card, Text, Skeleton, CardHeader, Flex, BunnyPlaceholderIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
-import { useLottery } from 'state/lottery/hooks'
-import { fetchLottery } from 'state/lottery/helpers'
-import { LotteryStatus } from 'config/constants/types'
+import { setFinishedRoundInfoFetched, fetchPotteryRoundData } from 'state/pottery/index'
+import { usePotteryData } from 'state/pottery/hook'
 import RoundSwitcher from 'views/Lottery/components/AllHistoryCard/RoundSwitcher'
+import { getDrawnDate } from 'views/Lottery/helpers'
 import PreviousRoundCardBody from './PreviousRoundCardBody'
 
 const StyledCard = styled(Card)`
@@ -32,46 +32,34 @@ const AllHistoryCard = () => {
     currentLanguage: { locale },
   } = useTranslation()
   const dispatch = useAppDispatch()
-  // const {
-  //   currentLotteryId,
-  //   lotteriesData,
-  //   currentRound: { status, isLoading },
-  // } = usePotteryDraw()
+  const { publicData, finishedRoundInfo } = usePotteryData()
+  const currentPotteryId = publicData.lastDrawId
+
   const [latestRoundId, setLatestRoundId] = useState(null)
   const [selectedRoundId, setSelectedRoundId] = useState('')
-  const [selectedLotteryNodeData, setSelectedLotteryNodeData] = useState(null)
   const timer = useRef(null)
 
-  // const numRoundsFetched = lotteriesData?.length
+  useEffect(() => {
+    if (currentPotteryId) {
+      const currentPotteryIdAsInt = currentPotteryId ? parseInt(currentPotteryId) : null
+      const mostRecentFinishedRoundId = currentPotteryIdAsInt > 0 ? currentPotteryIdAsInt - 1 : ''
+      setLatestRoundId(mostRecentFinishedRoundId)
+      setSelectedRoundId(mostRecentFinishedRoundId.toString())
+    }
+  }, [currentPotteryId])
 
-  // useEffect(() => {
-  //   if (currentLotteryId) {
-  //     const currentLotteryIdAsInt = currentLotteryId ? parseInt(currentLotteryId) : null
-  //     const mostRecentFinishedRoundId =
-  //       status === LotteryStatus.CLAIMABLE ? currentLotteryIdAsInt : currentLotteryIdAsInt - 1
-  //     setLatestRoundId(mostRecentFinishedRoundId)
-  //     setSelectedRoundId(mostRecentFinishedRoundId.toString())
-  //   }
-  // }, [currentLotteryId, status])
+  useEffect(() => {
+    setFinishedRoundInfoFetched(true)
 
-  // useEffect(() => {
-  //   setSelectedLotteryNodeData(null)
+    timer.current = setInterval(() => {
+      if (selectedRoundId) {
+        dispatch(fetchPotteryRoundData(selectedRoundId))
+      }
+      clearInterval(timer.current)
+    }, 1000)
 
-  //   const fetchLotteryData = async () => {
-  //     const lotteryData = await fetchLottery(selectedRoundId)
-  //     const processedLotteryData = processLotteryResponse(lotteryData)
-  //     setSelectedLotteryNodeData(processedLotteryData)
-  //   }
-
-  //   timer.current = setInterval(() => {
-  //     if (selectedRoundId) {
-  //       fetchLotteryData()
-  //     }
-  //     clearInterval(timer.current)
-  //   }, 1000)
-
-  //   return () => clearInterval(timer.current)
-  // }, [selectedRoundId, currentLotteryId, numRoundsFetched, dispatch])
+    return () => clearInterval(timer.current)
+  }, [selectedRoundId, currentPotteryId, dispatch])
 
   const handleInputChange = (event) => {
     const {
@@ -111,16 +99,18 @@ const AllHistoryCard = () => {
         />
         <Flex alignSelf="center">
           {selectedRoundId ? (
-            selectedLotteryNodeData?.endTime ? (
-              <Text fontSize="14px">{t('Drawn')} 14, 2020, 2:00 UTC</Text>
+            finishedRoundInfo.drawDate ? (
+              <Text fontSize="14px">
+                {t('Drawn')} {getDrawnDate(locale, finishedRoundInfo.drawDate)}
+              </Text>
             ) : (
               <Skeleton width="185px" height="21px" />
             )
           ) : null}
         </Flex>
       </StyledCardHeader>
-      {selectedRoundId ? (
-        <PreviousRoundCardBody />
+      {selectedRoundId && finishedRoundInfo.drawDate ? (
+        <PreviousRoundCardBody latestRoundId={latestRoundId} finishedRoundInfo={finishedRoundInfo} />
       ) : (
         <Flex m="24px auto" flexDirection="column" alignItems="center" width="240px">
           <Text mb="8px">{t('Please specify Round')}</Text>
