@@ -778,15 +778,17 @@ export default function RemoveLiquidity() {
             ) : (
               <RowBetween>
                 <Button
-                  variant={approval === ApprovalState.APPROVED || signatureData !== null ? 'success' : 'primary'}
+                  variant={
+                    approval === ApprovalState.APPROVED || (!isZap && signatureData !== null) ? 'success' : 'primary'
+                  }
                   onClick={isZap ? approveCallback : onAttemptToApprove}
-                  disabled={approval !== ApprovalState.NOT_APPROVED || signatureData !== null}
+                  disabled={approval !== ApprovalState.NOT_APPROVED || (!isZap && signatureData !== null)}
                   width="100%"
                   mr="0.5rem"
                 >
                   {approval === ApprovalState.PENDING ? (
                     <Dots>{t('Enabling')}</Dots>
-                  ) : approval === ApprovalState.APPROVED || signatureData !== null ? (
+                  ) : approval === ApprovalState.APPROVED || (!isZap && signatureData !== null) ? (
                     t('Enabled')
                   ) : (
                     t('Enable')
@@ -807,7 +809,11 @@ export default function RemoveLiquidity() {
                     onPresentRemoveLiquidity()
                   }}
                   width="100%"
-                  disabled={!isValid || (signatureData === null && approval !== ApprovalState.APPROVED)}
+                  disabled={
+                    !isValid ||
+                    (!isZap && signatureData === null && approval !== ApprovalState.APPROVED) ||
+                    (isZap && approval !== ApprovalState.APPROVED)
+                  }
                 >
                   {error || t('Remove')}
                 </Button>
