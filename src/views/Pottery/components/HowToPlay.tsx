@@ -76,7 +76,7 @@ const HowToPlay: React.FC = () => {
       </Text>
       <Text textAlign="center">
         {t(
-          'Deposite CAKE to get your Pottery tickets. More CAKE deposited, higher the chance of winning (and of course, higher the rewards)!',
+          'Deposit CAKE to get your Pottery tickets. More CAKE deposited, higher the chance of winning (and of course, higher the rewards)!',
         )}
       </Text>
       <Text mb="40px">{t('Simple!')}</Text>
