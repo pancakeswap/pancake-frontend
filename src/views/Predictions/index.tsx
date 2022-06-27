@@ -1,13 +1,12 @@
 import { useModal, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { PageMeta } from 'components/Layout/Page'
-import PageLoader from 'components/Loader/PageLoader'
 import { useEffect, useRef } from 'react'
 import { useInitialBlock } from 'state/block/hooks'
 import { initializePredictions } from 'state/predictions'
-import { useChartView, useGetPredictionsStatus, useIsChartPaneOpen } from 'state/predictions/hooks'
+import { useChartView, useIsChartPaneOpen } from 'state/predictions/hooks'
+import { PredictionsChartView } from 'state/types'
 import { useAccountLocalEventListener } from 'hooks/useAccountLocalEventListener'
-import { PredictionsChartView, PredictionStatus } from 'state/types'
 import {
   useUserPredictionAcceptedRisk,
   useUserPredictionChainlinkChartDisclaimerShow,
@@ -69,7 +68,6 @@ function Warnings() {
 const Predictions = () => {
   const { isDesktop } = useMatchBreakpointsContext()
   const { account } = useWeb3React()
-  const status = useGetPredictionsStatus()
   const dispatch = useLocalDispatch()
   const initialBlock = useInitialBlock()
 
@@ -83,10 +81,6 @@ const Predictions = () => {
   }, [initialBlock, dispatch, account])
 
   usePollPredictions()
-
-  if (status === PredictionStatus.INITIAL) {
-    return <PageLoader />
-  }
 
   return (
     <>

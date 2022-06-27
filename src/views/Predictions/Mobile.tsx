@@ -9,6 +9,8 @@ import Positions from './Positions'
 import MobileChart from './MobileChart'
 import { ErrorNotification, PauseNotification } from './components/Notification'
 import { PageView } from './types'
+import Menu from './components/Menu'
+import LoadingSection from './components/LoadingSection'
 
 const StyledMobile = styled.div`
   display: flex;
@@ -28,6 +30,12 @@ const View = styled.div<{ isVisible: boolean }>`
   top: 0;
   width: 100%;
   visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
+`
+
+const PowerLinkStyle = styled.div`
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
 `
 
 const getView = (isHistoryPaneOpen: boolean, isChartPaneOpen: boolean): PageView => {
@@ -55,7 +63,15 @@ const Mobile: React.FC = () => {
           <Flex alignItems="center" height="100%">
             {status === PredictionStatus.ERROR && <ErrorNotification />}
             {status === PredictionStatus.PAUSED && <PauseNotification />}
-            {status === PredictionStatus.LIVE && <Positions view={view} />}
+            {[PredictionStatus.INITIAL, PredictionStatus.LIVE].includes(status) && (
+              <Box overflow="visible" width="100%">
+                <Menu />
+                {status === PredictionStatus.LIVE ? <Positions view={view} /> : <LoadingSection />}
+              </Box>
+            )}
+            <PowerLinkStyle>
+              <img src="/images/powered-by-chainlink.png" alt="Powered by ChainLink" width="170px" height="48px" />
+            </PowerLinkStyle>
           </Flex>
         </View>
         <View isVisible={view === PageView.CHART}>
