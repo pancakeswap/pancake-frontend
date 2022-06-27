@@ -24,12 +24,15 @@ export const fetchPotterysAllowance = async (account) => {
 export const fetchVaultUserData = async (account: string) => {
   try {
     const balance = await potteryVaultContract.balanceOf(account)
+    const previewDeposit = await potteryVaultContract.previewRedeem(balance)
     return {
+      previewDepositBalance: new BigNumber(previewDeposit.toString()).toJSON(),
       stakingTokenBalance: new BigNumber(balance.toString()).toJSON(),
     }
   } catch (error) {
     console.error('Failed to fetch pottery vault user data', error)
     return {
+      previewDepositBalance: BIG_ZERO.toJSON(),
       stakingTokenBalance: BIG_ZERO.toJSON(),
     }
   }

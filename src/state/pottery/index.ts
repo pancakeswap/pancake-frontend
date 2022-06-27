@@ -29,6 +29,7 @@ const initialState: PotteryState = Object.freeze({
   userData: {
     isLoading: true,
     allowance: null,
+    previewDepositBalance: null,
     stakingTokenBalance: null,
     rewards: null,
     winCount: null,
@@ -67,6 +68,7 @@ export const fetchPotteryUserDataAsync = createAsyncThunk<SerializedPotteryUserD
 
       const userData = {
         allowance,
+        previewDepositBalance: vaultUserData.previewDepositBalance,
         stakingTokenBalance: vaultUserData.stakingTokenBalance,
         rewards: drawData.rewards,
         winCount: drawData.winCount,
