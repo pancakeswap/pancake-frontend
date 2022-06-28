@@ -95,7 +95,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
       const translatedText = translationSet[key] || key
 
       // Check the existence of at least one combination of %%, separated by 1 or more non space characters
-      const includesVariable = translatedTextIncludesVariable(translatedText)
+      const includesVariable = translatedTextIncludesVariable(key)
 
       if (includesVariable && data) {
         let interpolatedText = translatedText
