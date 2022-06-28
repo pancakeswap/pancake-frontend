@@ -22,11 +22,12 @@ export const useDepositPottery = (amount: string) => {
     const amountDeposit = new BigNumber(amount).multipliedBy(BIG_TEN.pow(18)).toString()
     const receipt = await fetchWithCatchTxError(() => contract.deposit(amountDeposit, account))
 
-    // TODO: Pottery ToastDescriptionWithTx text
     if (receipt?.status) {
       toastSuccess(
         t('Success!'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>{t('Fake Text')}</ToastDescriptionWithTx>,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your funds have been staked in the pool')}
+        </ToastDescriptionWithTx>,
       )
       dispatch(fetchPotteryUserDataAsync(account))
     }

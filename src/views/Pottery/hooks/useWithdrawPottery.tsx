@@ -19,11 +19,12 @@ export const useWithdrawPottery = (redeemShare: string) => {
   const handleWithdraw = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => contract.redeem(redeemShare, account, account))
 
-    // TODO: Pottery ToastDescriptionWithTx text
     if (receipt?.status) {
       toastSuccess(
         t('Success!'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>{t('Fake Text')}</ToastDescriptionWithTx>,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your earnings have also been harvested to your wallet')}
+        </ToastDescriptionWithTx>,
       )
       dispatch(fetchPotteryUserDataAsync(account))
     }

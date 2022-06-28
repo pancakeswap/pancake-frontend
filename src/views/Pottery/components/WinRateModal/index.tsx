@@ -5,11 +5,14 @@ import { useTranslation } from 'contexts/Localization'
 import { Modal, Text, Box, Flex, BalanceInput } from '@pancakeswap/uikit'
 import useWinRateCalculator from 'views/Pottery/hooks/useWinRateCalculator'
 import { usePriceCakeBusd } from 'state/farms/hooks'
+import { useVaultApy } from 'hooks/useVaultApy'
+import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
 import { CalculatorMode, EditingCurrency } from '../../types'
 import ButtonMenu from './ButtonMenu'
 import WinRateTvl from './WinRateTvl'
 import AnimatedArrow from './AnimatedArrow'
 import WinRateCard from './WinRateCard'
+import WinRateFooter from './WinRateFooter'
 
 const StyledModal = styled(Modal)`
   width: 380px;
@@ -37,7 +40,9 @@ interface WinRateModalProps {
 const WinRateModal: React.FC<WinRateModalProps> = ({ onDismiss, onBack, stakingTokenBalance, totalSupply }) => {
   const { t } = useTranslation()
   const cakePrice = usePriceCakeBusd()
+  const { getLockedApy } = useVaultApy()
   const balanceInputRef = useRef<HTMLInputElement | null>(null)
+  const apy = getLockedApy(weeksToSeconds(10))
 
   const {
     state,
@@ -120,6 +125,7 @@ const WinRateModal: React.FC<WinRateModalProps> = ({ onDismiss, onBack, stakingT
           setTargetWinRate={setTargetWinRate}
         />
       </ScrollableContainer>
+      <WinRateFooter apy={Number(apy)} />
     </StyledModal>
   )
 }

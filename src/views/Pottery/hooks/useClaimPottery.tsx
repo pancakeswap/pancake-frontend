@@ -19,11 +19,12 @@ export const useClaimPottery = () => {
   const handleClaim = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => contract.connect(account).claimReward())
 
-    // TODO: Pottery ToastDescriptionWithTx text
     if (receipt?.status) {
       toastSuccess(
         t('Success!'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>{t('Fake Text')}</ToastDescriptionWithTx>,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('You have successfully claimed your rewards.')}
+        </ToastDescriptionWithTx>,
       )
       dispatch(fetchPotteryUserDataAsync(account))
     }
