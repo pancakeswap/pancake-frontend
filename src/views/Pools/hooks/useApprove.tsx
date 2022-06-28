@@ -59,7 +59,7 @@ export const useVaultApprove = (vaultKey: VaultKey, setLastUpdated: () => void) 
 
   return useCakeApprove(
     setLastUpdated,
-    vaultPoolContract.address,
+    vaultPoolContract?.address,
     t('You can now stake in the %symbol% vault!', { symbol: 'CAKE' }),
   )
 }
@@ -67,5 +67,5 @@ export const useVaultApprove = (vaultKey: VaultKey, setLastUpdated: () => void) 
 export const useCheckVaultApprovalStatus = (vaultKey: VaultKey) => {
   const vaultPoolContract = useVaultPoolContract(vaultKey)
 
-  return useCakeApprovalStatus(vaultPoolContract.address)
+  return useCakeApprovalStatus(vaultPoolContract?.address)
 }
