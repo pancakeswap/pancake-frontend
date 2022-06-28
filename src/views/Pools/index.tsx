@@ -16,7 +16,7 @@ import Page from 'components/Layout/Page'
 import PageHeader from 'components/PageHeader'
 import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
-import { DeserializedPool, DeserializedPoolVault } from 'state/types'
+import { DeserializedPool, DeserializedPoolVault, VaultKey, DeserializedPoolLockedVault } from 'state/types'
 import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
@@ -105,17 +105,21 @@ const sortPools = (account: string, sortOption: string, pools: DeserializedPool[
           }
 
           if (pool.vaultKey) {
-            const vault = pool as DeserializedPoolVault
-            if (!vault.userData || !vault.userData.userShares) {
+            const { userData, pricePerFullShare } = pool as DeserializedPoolVault
+            if (!userData || !userData.userShares) {
               return 0
             }
             return getCakeVaultEarnings(
               account,
-              vault.userData.cakeAtLastUserAction,
-              vault.userData.userShares,
-              vault.pricePerFullShare,
-              vault.earningTokenPrice,
-              vault.userData.currentOverdueFee.plus(vault.userData.currentPerformanceFee),
+              userData.cakeAtLastUserAction,
+              userData.userShares,
+              pricePerFullShare,
+              pool.earningTokenPrice,
+              pool.vaultKey === VaultKey.CakeVault
+                ? (pool as DeserializedPoolLockedVault).userData.currentPerformanceFee.plus(
+                    (pool as DeserializedPoolLockedVault).userData.currentOverdueFee,
+                  )
+                : null,
             ).autoUsdToDisplay
           }
           return pool.userData.pendingReward.times(pool.earningTokenPrice).toNumber()
@@ -182,7 +186,7 @@ const Pools: React.FC = () => {
       finishedPools.filter((pool) => {
         if (pool.vaultKey) {
           const vault = pool as DeserializedPoolVault
-          return vault.userData.userShares && vault.userData.userShares.gt(0)
+          return vault.userData.userShares.gt(0)
         }
         return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
       }),
@@ -192,7 +196,7 @@ const Pools: React.FC = () => {
     return openPoolsWithStartBlockFilter.filter((pool) => {
       if (pool.vaultKey) {
         const vault = pool as DeserializedPoolVault
-        return vault.userData.userShares && vault.userData.userShares.gt(0)
+        return vault.userData.userShares.gt(0)
       }
       return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
     })

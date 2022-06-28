@@ -1,5 +1,10 @@
 import BigNumber from 'bignumber.js'
-import { Token } from '@pancakeswap/sdk'
+import { Token, ChainId } from '@pancakeswap/sdk'
+
+// a list of tokens by chain
+export type ChainTokenList = {
+  readonly [chainId in ChainId]: Token[]
+}
 
 export type TranslatableText =
   | string
@@ -96,7 +101,6 @@ interface PoolConfigBaseProps {
   contractAddress: Address
   poolCategory: PoolCategory
   tokenPerBlock: string
-  harvest?: boolean
   isFinished?: boolean
   enableEmergencyWithdraw?: boolean
   version?: number

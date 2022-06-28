@@ -20,6 +20,7 @@ import useTotalSupply from 'hooks/useTotalSupply'
 import useBUSDPrice from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useWeb3React } from '@web3-react/core'
+import { BIG_INT_ZERO } from 'config/constants/exchange'
 
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { currencyId } from '../../utils/currencyId'
@@ -30,7 +31,6 @@ import { AutoColumn } from '../Layout/Column'
 import CurrencyLogo from '../Logo/CurrencyLogo'
 import { DoubleCurrencyLogo } from '../Logo'
 import { RowBetween, RowFixed } from '../Layout/Row'
-import { BIG_INT_ZERO } from '../../config/constants'
 import Dots from '../Loader/Dots'
 import { formatAmount } from '../../utils/formatInfoNumbers'
 import { useLPApr } from '../../state/swap/hooks'
@@ -104,7 +104,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
 
   return (
     <>
-      {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, JSBI.BigInt(0)) ? (
+      {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, BIG_INT_ZERO) ? (
         <Card>
           <CardBody>
             <AutoColumn gap="16px">

@@ -30,7 +30,7 @@ import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/for
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { fetchCakeVaultUserData } from 'state/pools'
-import { DeserializedPool } from 'state/types'
+import { DeserializedPool, VaultKey } from 'state/types'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { vaultPoolConfig } from 'config/constants/pools'
@@ -78,7 +78,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
   const { stakingToken, earningTokenPrice, vaultKey } = pool
   const { account } = useWeb3React()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const vaultPoolContract = useVaultPoolContract()
+  const vaultPoolContract = useVaultPoolContract(pool.vaultKey)
   const { callWithGasPrice } = useCallWithGasPrice()
   const {
     userData: {
@@ -168,7 +168,8 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
     const receipt = await fetchWithCatchTxError(() => {
       // .toString() being called to fix a BigNumber error in prod
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
-      const methodArgs = [convertedStakeAmount.toString(), lockDuration.toString()]
+      const extraArgs = pool.vaultKey === VaultKey.CakeVault ? [lockDuration.toString()] : []
+      const methodArgs = [convertedStakeAmount.toString(), ...extraArgs]
       return callWithGasPrice(vaultPoolContract, 'deposit', methodArgs, callOptions)
     })
 
@@ -280,7 +281,7 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
           )}
         </Flex>
       )}
-      {cakeAsNumberBalance ? (
+      {pool.vaultKey === VaultKey.CakeVault && cakeAsNumberBalance ? (
         <Box mt="8px" maxWidth="370px">
           <ConvertToLock stakingToken={stakingToken} currentStakedAmount={cakeAsNumberBalance} />
         </Box>

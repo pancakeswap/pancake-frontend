@@ -9,7 +9,7 @@ import {
   computeTradePriceBreakdown,
   formatExecutionPrice,
   warningSeverity,
-} from 'utils/prices'
+} from 'utils/exchange'
 import { AutoColumn } from 'components/Layout/Column'
 import QuestionHelper from 'components/QuestionHelper'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'

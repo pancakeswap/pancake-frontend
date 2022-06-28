@@ -60,8 +60,7 @@ export const getCakeVaultEarnings = (
   earningTokenPrice: number,
   fee?: BigNumber,
 ) => {
-  const hasAutoEarnings =
-    account && cakeAtLastUserAction && cakeAtLastUserAction.gt(0) && userShares && userShares.gt(0)
+  const hasAutoEarnings = account && cakeAtLastUserAction?.gt(0) && userShares?.gt(0)
   const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
   const autoCakeProfit = cakeAsBigNumber.minus(fee || BIG_ZERO).minus(cakeAtLastUserAction)
   const autoCakeToDisplay = autoCakeProfit.gte(0) ? getBalanceNumber(autoCakeProfit, 18) : 0

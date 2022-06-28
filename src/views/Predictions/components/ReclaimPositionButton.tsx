@@ -17,7 +17,8 @@ interface ReclaimPositionButtonProps extends ButtonProps {
 const ReclaimPositionButton: React.FC<ReclaimPositionButtonProps> = ({ epoch, onSuccess, children, ...props }) => {
   const { t } = useTranslation()
   const { address: predictionsAddress } = useConfig()
-  const predictionsContract = usePredictionsContract(predictionsAddress)
+  const { token } = useConfig()
+  const predictionsContract = usePredictionsContract(predictionsAddress, token.symbol)
   const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPendingTx } = useCatchTxError()

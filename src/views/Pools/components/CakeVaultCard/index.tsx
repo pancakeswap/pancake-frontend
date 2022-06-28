@@ -5,7 +5,7 @@ import { FlexGap } from 'components/Layout/Flex'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool, DeserializedCakeVault } from 'state/types'
+import { DeserializedPool, VaultKey, DeserializedLockedCakeVault, DeserializedCakeVault } from 'state/types'
 import styled from 'styled-components'
 
 import CardFooter from '../PoolCard/CardFooter'
@@ -55,10 +55,14 @@ export const CakeVaultDetail: React.FC<CakeVaultDetailProps> = ({
   return (
     <>
       <StyledCardBody isLoading={isLoading}>
-        {account && <VaultPositionTagWithLabel userData={vaultPool.userData} />}
-        {account && vaultPool?.userData?.locked ? (
+        {account && pool.vaultKey === VaultKey.CakeVault && (
+          <VaultPositionTagWithLabel userData={(vaultPool as DeserializedLockedCakeVault).userData} />
+        )}
+        {account &&
+        pool.vaultKey === VaultKey.CakeVault &&
+        (vaultPool as DeserializedLockedCakeVault).userData.locked ? (
           <LockedStakingApy
-            userData={vaultPool?.userData}
+            userData={(vaultPool as DeserializedLockedCakeVault).userData}
             stakingToken={pool?.stakingToken}
             stakingTokenBalance={pool?.userData?.stakingTokenBalance}
             showICake={showICake}

@@ -36,6 +36,7 @@ import {
   getBunnySpecialXmasAddress,
   getICakeAddress,
   getGalaxyNFTClaimingAddress,
+  getCakeFlexibleSideVaultAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -63,6 +64,7 @@ import tradingCompetitionMoboxAbi from 'config/abi/tradingCompetitionMobox.json'
 import tradingCompetitionMoDAbi from 'config/abi/tradingCompetitionMoD.json'
 import easterNftAbi from 'config/abi/easterNft.json'
 import cakeVaultV2Abi from 'config/abi/cakeVaultV2.json'
+import cakeFlexibleSideVaultV2Abi from 'config/abi/cakeFlexibleSideVaultV2.json'
 import predictionsAbi from 'config/abi/predictions.json'
 import chainlinkOracleAbi from 'config/abi/chainlinkOracle.json'
 import MultiCallAbi from 'config/abi/Multicall.json'
@@ -79,6 +81,7 @@ import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
 import iCakeAbi from 'config/abi/iCake.json'
 import ifoV3Abi from 'config/abi/ifoV3.json'
+import cakePredictionsAbi from 'config/abi/cakePredictions.json'
 
 // Types
 import type {
@@ -116,6 +119,7 @@ import type {
   Erc721collection,
   PointCenterIfo,
   CakeVaultV2,
+  CakeFlexibleSideVaultV2,
   TradingCompetitionMobox,
   ICake,
   TradingCompetitionMoD,
@@ -214,8 +218,16 @@ export const getCakeVaultV2Contract = (signer?: Signer | Provider) => {
   return getContract(cakeVaultV2Abi, getCakeVaultAddress(), signer) as CakeVaultV2
 }
 
+export const getCakeFlexibleSideVaultV2Contract = (signer?: Signer | Provider) => {
+  return getContract(cakeFlexibleSideVaultV2Abi, getCakeFlexibleSideVaultAddress(), signer) as CakeFlexibleSideVaultV2
+}
+
 export const getPredictionsContract = (address: string, signer?: Signer | Provider) => {
   return getContract(predictionsAbi, address, signer) as Predictions
+}
+
+export const getCakePredictionsContract = (address: string, signer?: Signer | Provider) => {
+  return getContract(cakePredictionsAbi, address, signer) as Predictions
 }
 
 export const getChainlinkOracleContract = (address: string, signer?: Signer | Provider) => {

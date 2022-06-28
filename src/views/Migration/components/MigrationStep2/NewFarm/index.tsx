@@ -116,8 +116,7 @@ const OldFarmStep1: React.FC = () => {
   })
 
   const renderContent = (): JSX.Element => {
-    const columnSchema = DesktopV2ColumnSchema
-    const columns = columnSchema.map((column) => ({
+    const columns = DesktopV2ColumnSchema.map((column) => ({
       id: column.id,
       name: column.name,
       label: column.label,

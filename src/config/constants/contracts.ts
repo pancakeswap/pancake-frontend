@@ -67,12 +67,24 @@ export default {
     56: '0x45c54210128a065de780C4B0Df3d16664f7f859e',
     97: '',
   },
+  cakeFlexibleSideVault: {
+    56: '0x615e896A8C2CA8470A2e9dc2E9552998f8658Ea0',
+    97: '',
+  },
   predictions: {
     56: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',
     97: '',
   },
+  predictionsCAKE: {
+    56: '0x0E3A8078EDD2021dadcdE733C6b4a86E51EE8f07',
+    97: '',
+  },
   chainlinkOracle: {
     56: '0xD276fCF34D54A926773c399eBAa772C12ec394aC',
+    97: '',
+  },
+  chainlinkOracleCAKE: {
+    56: '0xB6064eD41d4f67e353768aA239cA86f4F73665a1',
     97: '',
   },
   bunnySpecialCakeVault: {

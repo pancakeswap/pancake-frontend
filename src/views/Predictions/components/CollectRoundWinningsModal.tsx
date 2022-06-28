@@ -96,11 +96,13 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPendingTx } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const predictionsContract = usePredictionsContract(predictionsAddress)
+  const predictionsContract = usePredictionsContract(predictionsAddress, token.symbol)
   const bnbBusdPrice = useBUSDPrice(token)
 
   const { epochs, total } = calculateClaimableRounds(history)
   const totalBnb = multiplyPriceByAmount(bnbBusdPrice, total)
+
+  const isLoading = isLoadingHistory || !epochs?.length
 
   useEffect(() => {
     // Fetch history if they have not opened the history pane yet
@@ -160,7 +162,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
           </Box>
         </Flex>
         <Flex alignItems="start" justifyContent="center" mb="24px">
-          {isLoadingHistory ? (
+          {isLoading ? (
             <Skeleton height="21" width="140px" />
           ) : (
             <Text color="textSubtle" fontSize="14px">
@@ -174,7 +176,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
           width="100%"
           mb="8px"
           onClick={handleClick}
-          isLoading={isPendingTx || isLoadingHistory}
+          isLoading={isPendingTx || isLoading}
           endIcon={isPendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
         >
           {t('Confirm')}

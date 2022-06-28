@@ -6,7 +6,7 @@ import { useTradeExactIn } from 'hooks/Trades'
 import tryParseAmount from 'utils/tryParseAmount'
 import { Rate } from 'state/limitOrders/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { GENERIC_GAS_LIMIT_ORDER_EXECUTION } from 'config/constants'
+import { GENERIC_GAS_LIMIT_ORDER_EXECUTION, BIG_INT_TEN } from 'config/constants/exchange'
 import getGasPrice from 'utils/getGasPrice'
 import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
 
@@ -36,7 +36,7 @@ export default function useGasOverhead(
     const margin = gasCostInInputTokens.outputAmount.asFraction.multiply(2000).divide(10000)
     const adjustedGas = gasCostInInputTokens.outputAmount.asFraction.add(margin)
     const adjustedGasInWei = adjustedGas.multiply(
-      JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(gasCostInInputTokens.outputAmount.currency.decimals)),
+      JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(gasCostInInputTokens.outputAmount.currency.decimals)),
     )
     if (gasCostInInputTokens.outputAmount.currency instanceof Token) {
       return new TokenAmount(gasCostInInputTokens.outputAmount.currency, adjustedGasInWei.toFixed(0))
