@@ -80,10 +80,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
           },
         )}
       </Text>
-      <InlineLink
-        external
-        href="https://medium.com/pancakeswap/initial-farm-offering-ifo-3-0-ifo-staking-pool-622d8bd356f1"
-      >
+      <InlineLink external href="https://bit.ly/3yr3jIb">
         {t('Learn more on our Medium blog post')}
       </InlineLink>
     </Box>,
