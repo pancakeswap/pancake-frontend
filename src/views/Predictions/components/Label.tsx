@@ -191,20 +191,30 @@ export const PricePairLabel: React.FC = () => {
   }, [priceAsNumber, updateRef])
 
   const onTokenSwitch = useCallback(() => {
+    let tokenQuery: PredictionSupportedSymbol
     if (router.query.token === PredictionSupportedSymbol.CAKE) {
-      router.query.token = PredictionSupportedSymbol.BNB
+      tokenQuery = PredictionSupportedSymbol.BNB
     } else if (router.query.token === undefined && token.symbol === PredictionSupportedSymbol.CAKE) {
-      router.query.token = PredictionSupportedSymbol.BNB
+      tokenQuery = PredictionSupportedSymbol.BNB
     } else if (router.query.token === undefined && token.symbol === PredictionSupportedSymbol.BNB) {
-      router.query.token = PredictionSupportedSymbol.CAKE
+      tokenQuery = PredictionSupportedSymbol.CAKE
     } else if (token.symbol === undefined && router.query.token === undefined) {
-      router.query.token = PredictionSupportedSymbol.BNB
+      tokenQuery = PredictionSupportedSymbol.BNB
     } else {
-      router.query.token = PredictionSupportedSymbol.CAKE
+      tokenQuery = PredictionSupportedSymbol.CAKE
     }
     if (!dismissTooltip) onDismissTooltip()
 
-    router.replace(router, undefined, { scroll: false })
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: {
+          token: tokenQuery,
+        },
+      },
+      undefined,
+      { scroll: false },
+    )
   }, [router, token, dismissTooltip, onDismissTooltip])
   return (
     <>
