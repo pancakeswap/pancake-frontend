@@ -6,7 +6,7 @@ import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { MAX_LOCK_DURATION } from 'config/constants/pools'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
-
+import { useIfoCeiling } from 'state/pools/hooks'
 import StaticAmount from '../Common/StaticAmount'
 import LockedBodyModal from '../Common/LockedModalBody'
 import Overview from '../Common/Overview'
@@ -22,6 +22,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   lockStartTime,
 }) => {
   const { theme } = useTheme()
+  const ceiling = useIfoCeiling()
   const { t } = useTranslation()
 
   const usdValueStaked = useBUSDCakeAmount(currentLockedAmount)
@@ -55,9 +56,10 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
         lockedAmount={currentLockedAmount}
         usdValueStaked={usdValueStaked}
         showLockWarning={!+lockStartTime}
+        ceiling={ceiling}
       />
     ),
-    [lockStartTime, currentDuration, currentLockedAmount, usdValueStaked],
+    [lockStartTime, currentDuration, currentLockedAmount, usdValueStaked, ceiling],
   )
 
   return (

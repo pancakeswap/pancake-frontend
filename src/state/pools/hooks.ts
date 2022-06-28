@@ -65,6 +65,7 @@ export const usePoolsPageFetch = () => {
     batch(() => {
       dispatch(fetchCakeVaultPublicData())
       dispatch(fetchCakeFlexibleSideVaultPublicData())
+      dispatch(fetchIfoPublicDataAsync())
       if (account) {
         dispatch(fetchPoolsUserDataAsync(account))
         dispatch(fetchCakeVaultUserData({ account }))
