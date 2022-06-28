@@ -48,12 +48,11 @@ export const SequencePlayer: React.FC<SequencePlayerProps> = ({
 
   const coinLooper = useCallback(() => {
     if (isPlaying.current) return;
-    if (onPlayStart) onPlayStart();
     coinInterval = setInterval(() => {
       isPlaying.current = true;
       requestAnimationFrame(coinDrawer);
     }, msPerFrame);
-  }, [coinDrawer, msPerFrame, onPlayStart]);
+  }, [coinDrawer, msPerFrame]);
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -95,6 +94,7 @@ export const SequencePlayer: React.FC<SequencePlayerProps> = ({
       ref={canvasRef}
       onClick={(e) => {
         e.stopPropagation();
+        if (onPlayStart) onPlayStart();
         coinLooper();
       }}
     />

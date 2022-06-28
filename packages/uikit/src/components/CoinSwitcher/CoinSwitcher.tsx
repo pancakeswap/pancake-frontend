@@ -40,13 +40,12 @@ export const SequenceWrapper = styled.div`
 export const CoinSwitcher: React.FC<{ isDefaultBnb: boolean; onTokenSwitch: () => void }> = memo(
   ({ isDefaultBnb, onTokenSwitch }) => {
     const [isBnb] = useState(() => isDefaultBnb);
-    const onSwitch = useCallback(() => {
-      onTokenSwitch();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    return <Inner isDefaultBnb={isBnb} onTokenSwitch={onSwitch} />;
+    return <Inner isDefaultBnb={isBnb} onTokenSwitch={onTokenSwitch} />;
   }
 );
+
+const BNB_CAKE_IMAGES = bnb2CakeImages();
+const CAKE_BNB_IMAGES = cake2BnbImages();
 
 const Inner: React.FC<{ isDefaultBnb: boolean; onTokenSwitch: () => void }> = memo(
   ({ isDefaultBnb, onTokenSwitch }) => {
@@ -55,10 +54,8 @@ const Inner: React.FC<{ isDefaultBnb: boolean; onTokenSwitch: () => void }> = me
       <CoinSwitcherWrapper>
         <SequenceWrapper className={!isBnb ? "hidden" : undefined}>
           <SequencePlayer
-            images={bnb2CakeImages()}
-            onPlayStart={() => {
-              onTokenSwitch();
-            }}
+            images={BNB_CAKE_IMAGES}
+            onPlayStart={onTokenSwitch}
             onPlayFinish={() => {
               setIsBnb(false);
             }}
@@ -66,10 +63,8 @@ const Inner: React.FC<{ isDefaultBnb: boolean; onTokenSwitch: () => void }> = me
         </SequenceWrapper>
         <SequenceWrapper className={isBnb ? "hidden" : undefined}>
           <SequencePlayer
-            images={cake2BnbImages()}
-            onPlayStart={() => {
-              onTokenSwitch();
-            }}
+            images={CAKE_BNB_IMAGES}
+            onPlayStart={onTokenSwitch}
             onPlayFinish={() => {
               setIsBnb(true);
             }}
