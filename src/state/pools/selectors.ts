@@ -1,8 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit'
 import { State, VaultKey } from '../types'
-import { transformPool, transformVault } from './helpers'
+import { transformPool, transformLockedVault } from './helpers'
 import { initialPoolVaultState } from './index'
-import { getVaultPosition, VaultPosition } from '../../utils/cakePool'
 
 const selectPoolsData = (state: State) => state.pools.data
 const selectPoolData = (sousId) => (state: State) => state.pools.data.find((p) => p.sousId === sousId)
@@ -21,41 +20,25 @@ export const poolsWithUserDataLoadingSelector = createSelector(
   },
 )
 
-export const makeVaultPoolByKey = (key) => createSelector([selectVault(key)], (vault) => transformVault(key, vault))
+export const makeVaultPoolByKey = (key) => createSelector([selectVault(key)], (vault) => transformLockedVault(vault))
 
 export const poolsWithVaultSelector = createSelector(
-  [
-    poolsWithUserDataLoadingSelector,
-    makeVaultPoolByKey(VaultKey.CakeVault),
-    makeVaultPoolByKey(VaultKey.CakeFlexibleSideVault),
-  ],
-  (poolsWithUserDataLoading, deserializedLockedCakeVault, deserializedFlexibleSideCakeVault) => {
+  [poolsWithUserDataLoadingSelector, makeVaultPoolByKey(VaultKey.CakeVault)],
+  (poolsWithUserDataLoading, deserializedCakeVault) => {
     const { pools, userDataLoaded } = poolsWithUserDataLoading
     const cakePool = pools.find((pool) => !pool.isFinished && pool.sousId === 0)
     const withoutCakePool = pools.filter((pool) => pool.sousId !== 0)
 
     const cakeAutoVault = {
       ...cakePool,
-      ...deserializedLockedCakeVault,
+      ...deserializedCakeVault,
       vaultKey: VaultKey.CakeVault,
-      userData: { ...cakePool.userData, ...deserializedLockedCakeVault.userData },
+      userData: { ...cakePool.userData, ...deserializedCakeVault.userData },
     }
 
-    const lockedVaultPosition = getVaultPosition(deserializedLockedCakeVault.userData)
-    const hasFlexibleSideSharesStaked = deserializedFlexibleSideCakeVault.userData.userShares.gt(0)
-
-    const cakeAutoFlexibleSideVault =
-      lockedVaultPosition > VaultPosition.Flexible || hasFlexibleSideSharesStaked
-        ? [
-            {
-              ...cakePool,
-              ...deserializedFlexibleSideCakeVault,
-              vaultKey: VaultKey.CakeFlexibleSideVault,
-              userData: { ...cakePool.userData, ...deserializedFlexibleSideCakeVault.userData },
-            },
-          ]
-        : []
-
-    return { pools: [cakeAutoVault, ...cakeAutoFlexibleSideVault, ...withoutCakePool], userDataLoaded }
+    const cakeAutoVaultWithApr = {
+      ...cakeAutoVault,
+    }
+    return { pools: [cakeAutoVaultWithApr, ...withoutCakePool], userDataLoaded }
   },
 )

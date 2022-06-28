@@ -9,11 +9,7 @@ import {
   fetchCakeVaultPublicData,
   fetchCakeVaultUserData,
   fetchCakePoolPublicDataAsync,
-  fetchCakeFlexibleSideVaultPublicData,
-  fetchCakeFlexibleSideVaultUserData,
-  fetchCakeFlexibleSideVaultFees,
 } from 'state/pools'
-import { batch } from 'react-redux'
 import PoolsTable from './PoolTable'
 
 const NewPool: React.FC = () => {
@@ -32,20 +28,15 @@ const NewPool: React.FC = () => {
 
   useFastRefreshEffect(() => {
     dispatch(fetchCakeVaultPublicData())
-    dispatch(fetchCakeFlexibleSideVaultPublicData())
     dispatch(fetchCakePoolPublicDataAsync())
     if (account) {
       dispatch(fetchCakeVaultUserData({ account }))
-      dispatch(fetchCakeFlexibleSideVaultUserData({ account }))
       dispatch(fetchCakePoolUserDataAsync(account))
     }
   }, [account, dispatch])
 
   useEffect(() => {
-    batch(() => {
-      dispatch(fetchCakeVaultFees())
-      dispatch(fetchCakeFlexibleSideVaultFees())
-    })
+    dispatch(fetchCakeVaultFees())
   }, [dispatch])
 
   return <PoolsTable pools={stakedOnlyOpenPools} account={account} userDataReady={userDataReady} />

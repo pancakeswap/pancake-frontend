@@ -4,7 +4,7 @@ import { CalculatorMode } from 'components/RoiCalculatorModal/useRoiCalculatorRe
 import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { useEffect, useState, useMemo } from 'react'
-import { DeserializedPool, VaultKey } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { getRoi } from 'utils/compoundApyHelpers'
 
@@ -72,20 +72,16 @@ export const VaultRoiCalculatorModal = ({
           : null
       }
       header={
-        pool.vaultKey === VaultKey.CakeVault ? (
-          <ButtonMenu
-            mb="24px"
-            fullWidth
-            scale="sm"
-            variant="subtle"
-            activeIndex={cakeVaultView}
-            onItemClick={setCakeVaultView}
-          >
-            {buttonMenuItems}
-          </ButtonMenu>
-        ) : (
-          <></>
-        )
+        <ButtonMenu
+          mb="24px"
+          fullWidth
+          scale="sm"
+          variant="subtle"
+          activeIndex={cakeVaultView}
+          onItemClick={setCakeVaultView}
+        >
+          {buttonMenuItems}
+        </ButtonMenu>
       }
       {...rest}
     >

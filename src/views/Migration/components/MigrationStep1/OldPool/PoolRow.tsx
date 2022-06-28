@@ -81,7 +81,7 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
     )
     earningTokenBalance = autoCakeToDisplay
   }
-  const hasEarnings = account && cakeAtLastUserAction?.gt(0) && userShares?.gt(0)
+  const hasEarnings = account && cakeAtLastUserAction && cakeAtLastUserAction.gt(0) && userShares && userShares.gt(0)
 
   const toggleExpanded = () => {
     if (!isLargerScreen) {

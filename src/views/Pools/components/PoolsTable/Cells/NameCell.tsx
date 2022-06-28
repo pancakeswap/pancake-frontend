@@ -5,7 +5,7 @@ import { vaultPoolConfig } from 'config/constants/pools'
 import { useTranslation } from 'contexts/Localization'
 import { memo } from 'react'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool, VaultKey, DeserializedLockedCakeVault } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import styled from 'styled-components'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getVaultPosition, VaultPosition, VaultPositionParams } from 'utils/cakePool'
@@ -29,11 +29,10 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
   const { sousId, stakingToken, earningToken, userData, isFinished, vaultKey } = pool
-  const vaultData = useVaultPoolByKey(pool.vaultKey)
   const {
-    userData: { userShares },
-  } = vaultData
-  const hasVaultShares = userShares.gt(0)
+    userData: { userShares, lockEndTime, locked },
+  } = useVaultPoolByKey(pool.vaultKey)
+  const hasVaultShares = userShares && userShares.gt(0)
 
   const stakingTokenSymbol = stakingToken.symbol
   const earningTokenSymbol = earningToken.symbol
@@ -61,12 +60,8 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
       )}
       <CellContent>
         {showStakedTag &&
-          (vaultKey === VaultKey.CakeVault ? (
-            <StakedCakeStatus
-              userShares={userShares}
-              locked={(vaultData as DeserializedLockedCakeVault).userData.locked}
-              lockEndTime={(vaultData as DeserializedLockedCakeVault).userData.lockEndTime}
-            />
+          (vaultKey ? (
+            <StakedCakeStatus userShares={userShares} locked={locked} lockEndTime={lockEndTime} />
           ) : (
             <Text fontSize="12px" bold color={isFinished ? 'failure' : 'secondary'} textTransform="uppercase">
               {t('Staked')}
