@@ -507,7 +507,7 @@ export default function RemoveLiquidity() {
 
   const [onPresentRemoveLiquidity] = useModal(
     <ConfirmLiquidityModal
-      title={t('Receive')}
+      title={t('You will receive')}
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txHash || ''}
@@ -592,7 +592,7 @@ export default function RemoveLiquidity() {
               </ColumnCenter>
               <AutoColumn gap="10px">
                 <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
-                  {t('You will receive')}
+                  {t('Receive')}
                 </Text>
                 <LightGreyCard>
                   <Flex justifyContent="space-between" mb="8px" as="label" alignItems="center">
