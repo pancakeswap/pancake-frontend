@@ -141,7 +141,7 @@ const ScoreCard: React.FC<ScoreCardProps> = ({
       {hasRegistered && currentPhase.state === CLAIM && (
         <StyledCardFooter>
           <LaurelLeftIcon />
-          <StyledButton disabled={isClaimButtonDisabled} mx="18px" onClick={() => onPresentClaimModal()}>
+          <StyledButton disabled={isClaimButtonDisabled} mx="18px" onClick={onPresentClaimModal}>
             {getClaimButtonText()}
           </StyledButton>
           <LaurelRightIcon />

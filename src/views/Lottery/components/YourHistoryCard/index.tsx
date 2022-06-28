@@ -82,7 +82,7 @@ const YourHistoryCard: React.FC<YourHistoryCardProps> = ({ handleShowMoreClick, 
     if (shouldShowRoundDetail) {
       return (
         <Flex alignItems="center">
-          <ArrowBackIcon cursor="pointer" onClick={() => clearState()} mr="20px" />
+          <ArrowBackIcon cursor="pointer" onClick={clearState} mr="20px" />
           <Flex flexDirection="column" alignItems="flex-start" justifyContent="center">
             <Heading scale="md" mb="4px">
               {t('Round')} {selectedLotteryId || ''}

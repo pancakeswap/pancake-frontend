@@ -31,13 +31,7 @@ const SwitchIconButton: React.FC<SwitchIconButtonProps> = ({ handleSwitchTokens,
   return (
     <AutoColumn justify="space-between">
       <AutoRow justify="center" style={{ padding: '0 1rem' }}>
-        <StyledButton
-          variant="light"
-          scale="sm"
-          onClick={() => {
-            handleSwitchTokens()
-          }}
-        >
+        <StyledButton variant="light" scale="sm" onClick={handleSwitchTokens}>
           <ArrowDownIcon className="icon-down" color={color} />
           <ArrowUpDownIcon className="icon-up-down" color={color} />
         </StyledButton>

@@ -220,7 +220,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
           )}
           {currentPhase.state !== FINISHED && (
             <Flex alignItems="flex-end">
-              <StyledButton disabled={isButtonDisabled} onClick={() => handleCtaClick()}>
+              <StyledButton disabled={isButtonDisabled} onClick={handleCtaClick}>
                 {getButtonText()}
               </StyledButton>
             </Flex>

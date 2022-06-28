@@ -28,7 +28,7 @@ export default function ErrorBoundary({ children }) {
                   </Flex>
                 </Flex>
               )}
-              <Button onClick={() => window.location.reload()}>{t('Click here to reset!')}</Button>
+              <Button onClick={window.location.reload}>{t('Click here to reset!')}</Button>
             </Flex>
           </Page>
         )

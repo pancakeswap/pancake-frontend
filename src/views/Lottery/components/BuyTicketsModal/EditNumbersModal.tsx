@@ -69,9 +69,7 @@ const EditNumbersModal: React.FC<{
           id="lotteryBuyEdited"
           disabled={!allComplete || isConfirming}
           endIcon={isConfirming ? <AutoRenewIcon spin color="currentColor" /> : undefined}
-          onClick={() => {
-            onConfirm()
-          }}
+          onClick={onConfirm}
         >
           {isConfirming ? t('Confirming') : t('Confirm and buy')}
         </Button>
