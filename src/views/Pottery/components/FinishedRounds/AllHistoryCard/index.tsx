@@ -99,7 +99,7 @@ const AllHistoryCard = () => {
         />
         <Flex alignSelf="center">
           {selectedRoundId ? (
-            finishedRoundInfo.drawDate ? (
+            !finishedRoundInfo.isFetched ? (
               <Text fontSize="14px">
                 {t('Drawn')} {getDrawnDate(locale, finishedRoundInfo.drawDate)}
               </Text>
