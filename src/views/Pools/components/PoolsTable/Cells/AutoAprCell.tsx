@@ -5,7 +5,7 @@ import { FlexGap } from 'components/Layout/Flex'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool, DeserializedLockedVaultUser, VaultKey } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { MAX_LOCK_DURATION } from 'config/constants/pools'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { VaultRoiCalculatorModal } from '../../Vault/VaultRoiCalculatorModal'
@@ -31,10 +31,7 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
 
   const { flexibleApy, lockedApy } = useVaultApy({
     duration:
-      vaultPosition > VaultPosition.Flexible
-        ? +(userData as DeserializedLockedVaultUser).lockEndTime -
-          +(userData as DeserializedLockedVaultUser).lockStartTime
-        : MAX_LOCK_DURATION,
+      vaultPosition > VaultPosition.Flexible ? +userData.lockEndTime - +userData.lockStartTime : MAX_LOCK_DURATION,
   })
 
   const [onPresentFlexibleApyModal] = useModal(<VaultRoiCalculatorModal pool={pool} />)
@@ -45,7 +42,7 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
     'LockedVaultRoiCalculatorModal',
   )
 
-  if (pool.vaultKey === VaultKey.CakeVault && vaultPosition === VaultPosition.None) {
+  if (vaultPosition === VaultPosition.None) {
     return (
       <>
         <BaseCell role="cell" flex={['1 0 50px', '4.5', '1 0 120px', null, '2 0 100px']}>

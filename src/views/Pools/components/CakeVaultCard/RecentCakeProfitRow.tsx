@@ -3,29 +3,28 @@ import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool, VaultKey, DeserializedLockedVaultUser } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import RecentCakeProfitBalance from './RecentCakeProfitBalance'
 
 const RecentCakeProfitCountdownRow = ({ pool }: { pool: DeserializedPool }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { pricePerFullShare, userData } = useVaultPoolByKey(pool.vaultKey)
+  const {
+    pricePerFullShare,
+    userData: { cakeAtLastUserAction, userShares, currentOverdueFee, currentPerformanceFee },
+  } = useVaultPoolByKey(pool.vaultKey)
   const cakePriceBusd = usePriceCakeBusd()
   const { hasAutoEarnings, autoCakeToDisplay } = getCakeVaultEarnings(
     account,
-    userData.cakeAtLastUserAction,
-    userData.userShares,
+    cakeAtLastUserAction,
+    userShares,
     pricePerFullShare,
     cakePriceBusd.toNumber(),
-    pool.vaultKey === VaultKey.CakeVault
-      ? (userData as DeserializedLockedVaultUser).currentPerformanceFee.plus(
-          (userData as DeserializedLockedVaultUser).currentOverdueFee,
-        )
-      : null,
+    currentPerformanceFee.plus(currentOverdueFee),
   )
 
-  if (!(userData.userShares.gt(0) && account)) {
+  if (!(userShares.gt(0) && account)) {
     return null
   }
 

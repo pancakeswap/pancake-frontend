@@ -4,7 +4,6 @@ import { Contract } from '@ethersproject/contracts'
 import { MaxUint256 } from '@ethersproject/constants'
 import { useAppDispatch } from 'state'
 import { updateUserAllowance } from 'state/actions'
-import { VaultKey } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 import { useSousChef, useVaultPoolContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
@@ -53,8 +52,8 @@ export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol)
 }
 
 // Approve CAKE auto pool
-export const useVaultApprove = (vaultKey: VaultKey, setLastUpdated: () => void) => {
-  const vaultPoolContract = useVaultPoolContract(vaultKey)
+export const useVaultApprove = (setLastUpdated: () => void) => {
+  const vaultPoolContract = useVaultPoolContract()
   const { t } = useTranslation()
 
   return useCakeApprove(
@@ -64,8 +63,8 @@ export const useVaultApprove = (vaultKey: VaultKey, setLastUpdated: () => void) 
   )
 }
 
-export const useCheckVaultApprovalStatus = (vaultKey: VaultKey) => {
-  const vaultPoolContract = useVaultPoolContract(vaultKey)
+export const useCheckVaultApprovalStatus = () => {
+  const vaultPoolContract = useVaultPoolContract()
 
   return useCakeApprovalStatus(vaultPoolContract.address)
 }

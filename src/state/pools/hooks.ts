@@ -11,9 +11,6 @@ import {
   fetchCakeVaultUserData,
   fetchCakeVaultFees,
   fetchPoolsStakingLimitsAsync,
-  fetchCakeFlexibleSideVaultPublicData,
-  fetchCakeFlexibleSideVaultUserData,
-  fetchCakeFlexibleSideVaultFees,
 } from '.'
 import { DeserializedPool, VaultKey } from '../types'
 import { fetchFarmsPublicDataAsync } from '../farms'
@@ -56,11 +53,9 @@ export const usePoolsPageFetch = () => {
   useFastRefreshEffect(() => {
     batch(() => {
       dispatch(fetchCakeVaultPublicData())
-      dispatch(fetchCakeFlexibleSideVaultPublicData())
       if (account) {
         dispatch(fetchPoolsUserDataAsync(account))
         dispatch(fetchCakeVaultUserData({ account }))
-        dispatch(fetchCakeFlexibleSideVaultUserData({ account }))
       }
     })
   }, [account, dispatch])
@@ -68,13 +63,22 @@ export const usePoolsPageFetch = () => {
   useEffect(() => {
     batch(() => {
       dispatch(fetchCakeVaultFees())
-      dispatch(fetchCakeFlexibleSideVaultFees())
     })
   }, [dispatch])
 }
 
 export const useCakeVault = () => {
   return useVaultPoolByKey(VaultKey.CakeVault)
+}
+
+export const useVaultPools = () => {
+  const cakeVault = useVaultPoolByKey(VaultKey.CakeVault)
+  const vaults = useMemo(() => {
+    return {
+      [VaultKey.CakeVault]: cakeVault,
+    }
+  }, [cakeVault])
+  return vaults
 }
 
 export const useVaultPoolByKey = (key: VaultKey) => {
