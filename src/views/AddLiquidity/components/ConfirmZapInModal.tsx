@@ -116,17 +116,21 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
   const inputPercent = useMemo(
     () =>
       swapInCurrencyAmount && swapOutCurrencyAmount
-        ? +pair
-            .priceOf(wrappedCurrency(swapOutCurrencyAmount.currency, chainId))
-            .raw.divide(
-              new Price(
-                swapInCurrencyAmount.currency,
-                swapOutCurrencyAmount.currency,
-                JSBI.add(swapInCurrencyAmount.raw, swapOutCurrencyAmount.raw),
-                swapInCurrencyAmount.raw,
-              ),
-            )
-            .toSignificant(2)
+        ? clamp(
+            +pair
+              .priceOf(wrappedCurrency(swapOutCurrencyAmount.currency, chainId))
+              .raw.divide(
+                new Price(
+                  swapInCurrencyAmount.currency,
+                  swapOutCurrencyAmount.currency,
+                  JSBI.add(swapInCurrencyAmount.raw, swapOutCurrencyAmount.raw),
+                  swapInCurrencyAmount.raw,
+                ),
+              )
+              .toSignificant(2),
+            0.02,
+            0.98,
+          )
         : swapInCurrencyAmount && !swapOutCurrencyAmount
         ? 1
         : undefined,
@@ -161,7 +165,7 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
       >
         <PairDistribution
           title={t('Input')}
-          percent={inputPercent ? clamp(inputPercent, 0.02, 0.98) : undefined}
+          percent={inputPercent}
           currencyA={swapInCurrencyAmount ? currencies[zapSwapTokenField] : undefined}
           currencyAValue={swapInCurrencyAmount?.toSignificant(6)}
           currencyB={swapOutCurrencyAmount ? currencies[zapSwapOutTokenField] : undefined}
