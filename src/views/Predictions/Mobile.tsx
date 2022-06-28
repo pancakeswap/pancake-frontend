@@ -33,9 +33,9 @@ const View = styled.div<{ isVisible: boolean }>`
 `
 
 const PowerLinkStyle = styled.div`
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 16px;
 `
 
 const getView = (isHistoryPaneOpen: boolean, isChartPaneOpen: boolean): PageView => {
@@ -60,7 +60,7 @@ const Mobile: React.FC = () => {
     <StyledMobile>
       <Box height="100%" overflow="hidden" position="relative">
         <View isVisible={view === PageView.POSITIONS}>
-          <Flex alignItems="center" height="100%">
+          <Flex alignItems="center" flexDirection="column">
             {status === PredictionStatus.ERROR && <ErrorNotification />}
             {status === PredictionStatus.PAUSED && <PauseNotification />}
             {[PredictionStatus.INITIAL, PredictionStatus.LIVE].includes(status) && (
@@ -69,10 +69,14 @@ const Mobile: React.FC = () => {
                 {status === PredictionStatus.LIVE ? <Positions view={view} /> : <LoadingSection />}
               </Box>
             )}
-            <PowerLinkStyle>
-              <img src="/images/powered-by-chainlink.png" alt="Powered by ChainLink" width="170px" height="48px" />
-            </PowerLinkStyle>
           </Flex>
+          <PowerLinkStyle>
+            <img
+              src="/images/powered-by-chainlink.png"
+              alt="Powered by ChainLink"
+              style={{ width: '170px', maxHeight: '100%' }}
+            />
+          </PowerLinkStyle>
         </View>
         <View isVisible={view === PageView.CHART}>
           <MobileChart />
