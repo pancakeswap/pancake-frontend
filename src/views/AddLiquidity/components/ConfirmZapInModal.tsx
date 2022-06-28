@@ -80,7 +80,7 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
           token1: currencies[zapSwapOutTokenField]?.symbol,
         }),
     {
-      placement: 'left-start',
+      placement: 'auto-start',
     },
   )
 
@@ -128,8 +128,8 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
                 ),
               )
               .toSignificant(2),
-            0.02,
-            0.98,
+            0.05,
+            0.95,
           )
         : swapInCurrencyAmount && !swapOutCurrencyAmount
         ? 1
