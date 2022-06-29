@@ -89,9 +89,6 @@ const getAprsForFarmGroup = async (addresses: string[]): Promise<AprMap> => {
       const farmFromInfo = farmsAtLatestBlock.find(
         (oldFarm) => oldFarm.id.toLowerCase() === farm.smartContract.address.address.toLowerCase(),
       )
-      if (farmFromInfo?.id === '0x05faf555522fa3f93959f86b41a3808666093210'.toLowerCase()) {
-        console.log(farmFromInfo)
-      }
       // In case farm is too new to estimate LP APR (i.e. not returned in farmsOneWeekAgo query) - return 0
       let lpApr = new BigNumber(0)
       if (farm) {
