@@ -10,7 +10,7 @@ export const ZapErrorMessages: React.FC<{ isSingleToken: boolean }> = memo(({ is
         {isSingleToken
           ? t('Zap does NOT support tokens with fees on transfers. If you experience any issues, disable Zap here.')
           : t(
-              'Zap does NOT support tokens with fees on transfers. Please choose "Don\'t convert" and retry. If you experience any further issues, disable Zap here.',
+              `Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, disable Zap here.`,
             )}
       </MessageText>
     </Message>
