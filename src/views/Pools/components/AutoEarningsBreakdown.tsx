@@ -22,9 +22,9 @@ const AutoEarningsBreakdown: React.FC<AutoEarningsBreakdownProps> = ({ pool, acc
     pricePerFullShare,
     earningTokenPrice,
     pool.vaultKey === VaultKey.CakeVault
-      ? (userData as DeserializedLockedVaultUser).currentPerformanceFee.plus(
-          (userData as DeserializedLockedVaultUser).currentOverdueFee,
-        )
+      ? (userData as DeserializedLockedVaultUser).currentPerformanceFee
+          .plus((userData as DeserializedLockedVaultUser).currentOverdueFee)
+          .plus((userData as DeserializedLockedVaultUser).userBoostedShare)
       : null,
   )
 
