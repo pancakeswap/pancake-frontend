@@ -83,16 +83,21 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       params: [account, [0, 1]],
     }))
 
-    const [[basicId], [unlimitedId]] =
-      version >= 3.2 &&
-      (await multicallv2(
+    let basicId = null
+    let unlimitedId = null
+    if (version >= 3.2) {
+      const [[basicIdData], [unlimitedIdData]] = await multicallv2(
         ifoV3Abi,
         [
           { address, name: 'computeVestingScheduleIdForAddressAndPid', params: [account, 0] },
           { address, name: 'computeVestingScheduleIdForAddressAndPid', params: [account, 1] },
         ],
         { requireSuccess: false },
-      ))
+      )
+
+      basicId = basicIdData
+      unlimitedId = unlimitedIdData
+    }
 
     const ifov3Calls =
       version >= 3.1
