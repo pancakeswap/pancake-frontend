@@ -58,6 +58,7 @@ import { ZapCheckbox } from '../../components/CurrencyInputPanel/ZapCheckbox'
 import { formatAmount } from '../../utils/formatInfoNumbers'
 import { useCurrencySelectRoute } from './useCurrencySelectRoute'
 import { useAppDispatch } from '../../state'
+import { ZapErrorMessages } from './components/ZapErrorMessage'
 
 enum Steps {
   Choose,
@@ -769,7 +770,7 @@ export default function AddLiquidity() {
                         if (preferZapInstead) {
                           setLiquidityState({
                             attemptingTxn: false,
-                            liquidityErrorMessage: undefined,
+                            liquidityErrorMessage: 'zap error',
                             txHash: undefined,
                           })
                           onPresentZapInModal()
@@ -780,7 +781,7 @@ export default function AddLiquidity() {
                         } else {
                           setLiquidityState({
                             attemptingTxn: false,
-                            liquidityErrorMessage: undefined,
+                            liquidityErrorMessage: 'zap error',
                             txHash: undefined,
                           })
                           onPresentAddLiquidityModal()
@@ -793,6 +794,9 @@ export default function AddLiquidity() {
                   </AutoColumn>
                 )}
               </AutoColumn>
+              {errorText && preferZapInstead && canZap && (
+                <ZapErrorMessages isSingleToken={!(zapTokenCheckedA && zapTokenCheckedB)} />
+              )}
             </CardBody>
           </>
         )}

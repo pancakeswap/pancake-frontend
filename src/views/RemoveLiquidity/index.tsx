@@ -60,6 +60,7 @@ import Page from '../Page'
 import ConfirmLiquidityModal from '../Swap/components/ConfirmRemoveLiquidityModal'
 import { logError } from '../../utils/sentry'
 import { formatAmount } from '../../utils/formatInfoNumbers'
+import { ZapErrorMessages } from '../AddLiquidity/components/ZapErrorMessage'
 
 const BorderCard = styled.div`
   border: solid 1px ${({ theme }) => theme.colors.cardBorder};
@@ -820,6 +821,7 @@ export default function RemoveLiquidity() {
               </RowBetween>
             )}
           </Box>
+          {error && isZap && <ZapErrorMessages isSingleToken={!(tokenA && tokenB)} />}
         </CardBody>
       </AppBody>
 
