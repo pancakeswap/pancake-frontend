@@ -75,7 +75,7 @@ const Banner: React.FC = () => {
 
   const apyDisplay = useMemo(() => {
     const apy = getLockedApy(weeksToSeconds(10))
-    return `${Number(apy).toFixed(2)}%`
+    return !Number.isNaN(apy) ? `${Number(apy).toFixed(2)}%` : '0%'
   }, [getLockedApy])
 
   return (
