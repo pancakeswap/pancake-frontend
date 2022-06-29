@@ -24,7 +24,9 @@ export const ZapPairTokensError = memo(() => {
     <Message variant="warning" mb="16px">
       <MessageText>
         {t(
-          `Fee on transfer" tokens should not be used with Limit Orders (use at your own risk)Zap does NOT support tokens with fees on transfers. Please choose "Don't convert" and retry. If you experience any further issues, disable Zap here.`,
+          // to pass the translation key test
+          // eslint-disable-next-line no-useless-escape
+          `Zap does NOT support tokens with fees on transfers. Please choose \"Don't convert\" and retry. If you experience any further issues, disable Zap here.`,
         )}
       </MessageText>
     </Message>
