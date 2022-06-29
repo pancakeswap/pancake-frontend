@@ -1,20 +1,32 @@
 import Trans from 'components/Trans'
+import styled from 'styled-components'
+import { Link } from '@pancakeswap/uikit'
+
+const InlineLink = styled(Link)`
+  display: inline;
+`
 
 const config = [
   {
     title: <Trans>What’s the difference between a Public Sale and Private Sale?</Trans>,
     description: [
       <Trans>
-        In the new IFO 3.1 format. There is a brand new Private Sale. To participate, participants will have to meet
+        In the current IFO format. There is a brand new Private Sale. To participate, participants will have to meet
         certain requirements presented on the IFO card. Each eligible participant will be able to commit any amount of
         CAKE up to the maximum commit limit, which is published along with the IFO voting proposal. The Private Sale has
         no participation fee.
       </Trans>,
       <Trans>
         In the Public Sale, everyone with an active PancakeSwap profile can commit. However the maximum amount of CAKE
-        user can commit, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. And there’s a fee
-        for participation: see below.
+        users can commit, is equal to the number of iCAKE they have.
       </Trans>,
+      <>
+        <Trans>Learn more about iCAKE</Trans>
+        <InlineLink ml="4px" external href="https://docs.pancakeswap.finance/products/ifo-initial-farm-offering/icake">
+          <Trans>here</Trans>
+        </InlineLink>
+      </>,
+      <Trans>And there’s a fee for participation: see below.</Trans>,
     ],
   },
   {
@@ -32,10 +44,13 @@ const config = [
     title: <Trans>How much is the participation fee?</Trans>,
     description: [
       <Trans>There’s only a participation fee for the Public Sale: there’s no fee for the Private Sale.</Trans>,
-      <Trans>The fee will start at 0.5%.</Trans>,
       <Trans>
-        The 1% participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion
-        of the IFO.
+        The participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of
+        the IFO.
+      </Trans>,
+      <Trans>
+        Note: Fees may vary between different IFOs. To learn more about the participation fees, please refer to the
+        details in the IFO proposal (vote) for the specifics of the IFO you want to take part in.
       </Trans>,
     ],
   },

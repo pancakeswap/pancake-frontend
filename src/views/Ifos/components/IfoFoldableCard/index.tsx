@@ -14,7 +14,8 @@ import { Ifo, PoolIds } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
+import { useRouter } from 'next/router'
 import { useCurrentBlock } from 'state/block/hooks'
 import styled from 'styled-components'
 import { requiresApproval } from 'utils/requiresApproval'
@@ -175,7 +176,7 @@ export const IfoCurrentCard = ({
           {shouldShowBunny && <NoHatBunny isLive={publicIfoData.status === 'live'} />}
         </Box>
       )}
-      <Box position="relative" width="100%" maxWidth={['400px', '400px', '400px', '100%']}>
+      <Box position="relative" width="100%" maxWidth={['400px', '400px', '400px', '400px', '400px', '100%']}>
         {!isMobile && shouldShowBunny && <NoHatBunny isCurrent isLive={publicIfoData.status === 'live'} />}
         <StyledCard $isCurrent>
           {!isMobile && (
@@ -211,11 +212,21 @@ const IfoFoldableCard = ({
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const { asPath } = useRouter()
   const { isDesktop } = useMatchBreakpointsContext()
+  const [isExpanded, setIsExpanded] = useState(false)
+  const wrapperEl = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const hash = asPath.split('#')[1]
+    if (hash === ifo.id) {
+      setIsExpanded(true)
+      wrapperEl.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [asPath, ifo])
 
   return (
-    <Box position="relative">
+    <Box id={ifo.id} ref={wrapperEl} position="relative">
       {isExpanded && isDesktop && <NoHatBunny isLive={false} />}
       <Box as={StyledCard} borderRadius="32px">
         <Box position="relative">
@@ -250,9 +261,14 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const raisingTokenContract = useERC20(ifo.currency.address, false)
-  // Continue to fetch 2 more minutes to get latest data
+  // Continue to fetch 2 more minutes / is vesting need get latest data
   const isRecentlyActive =
-    (publicIfoData.status !== 'finished' || (publicIfoData.status === 'finished' && secondsUntilEnd >= -120)) &&
+    (publicIfoData.status !== 'finished' ||
+      (publicIfoData.status === 'finished' && secondsUntilEnd >= -120) ||
+      (publicIfoData.status === 'finished' &&
+        ifo.version >= 3.2 &&
+        (publicIfoData[PoolIds.poolBasic].vestingInfomation.percentage > 0 ||
+          publicIfoData[PoolIds.poolUnlimited].vestingInfomation.percentage > 0))) &&
     ifo.isActive
   const onApprove = useIfoApprove(ifo, contract.address)
   const { toastSuccess } = useToast()
@@ -310,7 +326,7 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
     <>
       <StyledCardBody>
         <CardsWrapper
-          shouldReverse={ifo.version === 3.1}
+          shouldReverse={ifo.version >= 3.1}
           singleCard={!publicIfoData.poolBasic || !walletIfoData.poolBasic}
         >
           {publicIfoData.poolBasic && walletIfoData.poolBasic && (

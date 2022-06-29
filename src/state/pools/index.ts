@@ -7,6 +7,7 @@ import {
   SerializedVaultFees,
   SerializedCakeVault,
   SerializedLockedVaultUser,
+  PublicIfoData,
   SerializedVaultUser,
   SerializedLockedCakeVault,
 } from 'state/types'
@@ -36,6 +37,7 @@ import {
 import { fetchPublicVaultData, fetchVaultFees, fetchPublicFlexibleSideVaultData } from './fetchVaultPublic'
 import { getTokenPricesFromFarm } from './helpers'
 import { resetUserState } from '../global/actions'
+import { fetchUserIfoCredit, fetchPublicIfoData } from './fetchUserIfo'
 import { fetchVaultUser, fetchFlexibleSideVaultUser } from './fetchVaultUser'
 
 export const initialPoolVaultState = Object.freeze({
@@ -66,10 +68,16 @@ export const initialPoolVaultState = Object.freeze({
   creditStartBlock: null,
 })
 
+export const initialIfoState = Object.freeze({
+  credit: null,
+  ceiling: null,
+})
+
 const initialState: PoolsState = {
   data: [...poolsConfig],
   userDataLoaded: false,
   cakeVault: initialPoolVaultState,
+  ifo: initialIfoState,
   cakeFlexibleSideVault: initialPoolVaultState,
 }
 
@@ -320,6 +328,19 @@ export const fetchCakeVaultUserData = createAsyncThunk<SerializedLockedVaultUser
   },
 )
 
+export const fetchIfoPublicDataAsync = createAsyncThunk<PublicIfoData>('ifoVault/fetchIfoPublicDataAsync', async () => {
+  const publicIfoData = await fetchPublicIfoData()
+  return publicIfoData
+})
+
+export const fetchUserIfoCreditDataAsync = (account: string) => async (dispatch) => {
+  try {
+    const credit = await fetchUserIfoCredit(account)
+    dispatch(setIfoUserCreditData(credit))
+  } catch (error) {
+    console.error('[Ifo Credit Action] Error fetching user Ifo credit data', error)
+  }
+}
 export const fetchCakeFlexibleSideVaultUserData = createAsyncThunk<SerializedVaultUser, { account: string }>(
   'cakeFlexibleSideVault/fetchUser',
   async ({ account }) => {
@@ -355,6 +376,11 @@ export const PoolsSlice = createSlice({
         const livePoolData = livePoolsData.find((entry) => entry.sousId === pool.sousId)
         return { ...pool, ...livePoolData }
       })
+    },
+    // IFO
+    setIfoUserCreditData: (state, action) => {
+      const credit = action.payload
+      state.ifo = { ...state.ifo, credit }
     },
   },
   extraReducers: (builder) => {
@@ -410,6 +436,11 @@ export const PoolsSlice = createSlice({
       const userData = action.payload
       state.cakeVault = { ...state.cakeVault, userData }
     })
+    // IFO
+    builder.addCase(fetchIfoPublicDataAsync.fulfilled, (state, action: PayloadAction<PublicIfoData>) => {
+      const { ceiling } = action.payload
+      state.ifo = { ...state.ifo, ceiling }
+    })
     builder.addCase(
       fetchCakeFlexibleSideVaultUserData.fulfilled,
       (state, action: PayloadAction<SerializedVaultUser>) => {
@@ -437,6 +468,6 @@ export const PoolsSlice = createSlice({
 })
 
 // Actions
-export const { setPoolsPublicData, setPoolPublicData, setPoolUserData } = PoolsSlice.actions
+export const { setPoolsPublicData, setPoolPublicData, setPoolUserData, setIfoUserCreditData } = PoolsSlice.actions
 
 export default PoolsSlice.reducer

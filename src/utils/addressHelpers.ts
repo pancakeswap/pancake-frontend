@@ -105,3 +105,6 @@ export const getNftSaleAddress = () => {
 export const getPancakeSquadAddress = () => {
   return getAddress(addresses.pancakeSquad)
 }
+export const getICakeAddress = () => {
+  return getAddress(addresses.iCake)
+}

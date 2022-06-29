@@ -250,10 +250,6 @@ export interface DeserializedLockedVaultUser extends DeserializedVaultUser {
   currentOverdueFee: BigNumber
 }
 
-export interface DeserializedIfoVaultUser extends DeserializedVaultUser {
-  credit: string
-}
-
 export interface DeserializedCakeVault {
   totalShares?: BigNumber
   totalLockedAmount?: BigNumber
@@ -281,8 +277,18 @@ export interface SerializedCakeVault {
   userData?: SerializedVaultUser
 }
 
+// Ifo
+export interface IfoState extends PublicIfoData {
+  credit: string
+}
+
+export interface PublicIfoData {
+  ceiling: string
+}
+
 export interface PoolsState {
   data: SerializedPool[]
+  ifo: IfoState
   cakeVault: SerializedLockedCakeVault
   cakeFlexibleSideVault: SerializedCakeVault
   userDataLoaded: boolean
