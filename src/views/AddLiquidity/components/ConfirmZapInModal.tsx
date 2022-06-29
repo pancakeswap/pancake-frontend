@@ -15,6 +15,7 @@ import useTotalSupply from 'hooks/useTotalSupply'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PairDistribution, AddLiquidityModalHeader } from './common'
+import { ZapErrorMessages } from './ZapErrorMessage'
 
 interface ConfirmZapInModalProps {
   title: string
@@ -31,6 +32,7 @@ interface ConfirmZapInModalProps {
   poolTokenPercentage: Percent
   liquidityMinted: TokenAmount
   pair: Pair
+  rebalancing?: boolean
   zapSwapTokenField: Field
   zapSwapOutTokenField: Field
   zapInEstimated: {
@@ -61,6 +63,7 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
   liquidityMinted,
   pair,
   zapInEstimated,
+  rebalancing,
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
@@ -235,11 +238,14 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
   const confirmationContent = useCallback(
     () =>
       liquidityErrorMessage ? (
-        <TransactionErrorContent onDismiss={onDismiss} message={liquidityErrorMessage} />
+        <>
+          <ZapErrorMessages isSingleToken={!rebalancing} />
+          <TransactionErrorContent onDismiss={onDismiss} message={liquidityErrorMessage} />
+        </>
       ) : (
         <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
       ),
-    [onDismiss, modalBottom, modalHeader, liquidityErrorMessage],
+    [liquidityErrorMessage, rebalancing, onDismiss, modalHeader, modalBottom],
   )
 
   return (

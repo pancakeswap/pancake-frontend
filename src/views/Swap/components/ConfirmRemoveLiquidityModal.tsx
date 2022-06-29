@@ -11,6 +11,7 @@ import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { Field } from 'state/burn/actions'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { ApprovalState } from 'hooks/useApproveCallback'
+import { ZapErrorMessages } from '../../AddLiquidity/components/ZapErrorMessage'
 
 interface ConfirmRemoveLiquidityModalProps {
   title: string
@@ -34,6 +35,7 @@ interface ConfirmRemoveLiquidityModalProps {
   tokenB: Token
   currencyA: Currency | null | undefined
   currencyB: Currency | null | undefined
+  isZap?: boolean
 }
 
 const ConfirmRemoveLiquidityModal: React.FC<InjectedModalProps & ConfirmRemoveLiquidityModalProps> = ({
@@ -54,6 +56,7 @@ const ConfirmRemoveLiquidityModal: React.FC<InjectedModalProps & ConfirmRemoveLi
   tokenB,
   currencyA,
   currencyB,
+  isZap,
 }) => {
   const { t } = useTranslation()
 
@@ -140,11 +143,14 @@ const ConfirmRemoveLiquidityModal: React.FC<InjectedModalProps & ConfirmRemoveLi
   const confirmationContent = useCallback(
     () =>
       liquidityErrorMessage ? (
-        <TransactionErrorContent onDismiss={onDismiss} message={liquidityErrorMessage} />
+        <>
+          {isZap && <ZapErrorMessages isSingleToken />}
+          <TransactionErrorContent onDismiss={onDismiss} message={liquidityErrorMessage} />
+        </>
       ) : (
         <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
       ),
-    [onDismiss, modalBottom, modalHeader, liquidityErrorMessage],
+    [liquidityErrorMessage, isZap, onDismiss, modalHeader, modalBottom],
   )
 
   return (
