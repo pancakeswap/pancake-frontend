@@ -5,15 +5,15 @@ const config = [
     title: <Trans>What’s the difference between a Public Sale and Private Sale?</Trans>,
     description: [
       <Trans>
-        In the new IFO 3.1 format. There is a brand new Private Sale. To participate, participants will have to meet
+        In the current IFO format. There is a brand new Private Sale. To participate, participants will have to meet
         certain requirements presented on the IFO card. Each eligible participant will be able to commit any amount of
         CAKE up to the maximum commit limit, which is published along with the IFO voting proposal. The Private Sale has
         no participation fee.
       </Trans>,
       <Trans>
         In the Public Sale, everyone with an active PancakeSwap profile can commit. However the maximum amount of CAKE
-        user can commit, is equal to the average CAKE balance in the IFO CAKE pool prior to the IFO. And there’s a fee
-        for participation: see below.
+        user can commit, is equal to the average CAKE balance in the iCAKE prior to the IFO. And there’s a fee for
+        participation: see below.
       </Trans>,
     ],
   },
