@@ -78,6 +78,7 @@ import nftSaleAbi from 'config/abi/nftSale.json'
 import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
 import zapAbi from 'config/abi/zap.json'
+import cakePredictionsAbi from 'config/abi/cakePredictions.json'
 
 // Types
 import type {
@@ -212,6 +213,10 @@ export const getCakeVaultV2Contract = (signer?: Signer | Provider) => {
 
 export const getPredictionsContract = (address: string, signer?: Signer | Provider) => {
   return getContract(predictionsAbi, address, signer) as Predictions
+}
+
+export const getCakePredictionsContract = (address: string, signer?: Signer | Provider) => {
+  return getContract(cakePredictionsAbi, address, signer) as Predictions
 }
 
 export const getChainlinkOracleContract = (address: string, signer?: Signer | Provider) => {

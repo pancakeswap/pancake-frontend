@@ -36,6 +36,7 @@ import {
   getBunnySpecialXmasContract,
   getGalaxyNTFClaimingContract,
   getZapContract,
+  getCakePredictionsContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
 import { Erc20, Erc20Bytes32, Multicall, Weth, Cake, Erc721collection, CakeVaultV2 } from 'config/abi/types'
@@ -211,9 +212,13 @@ export const useCakeVaultContract = (withSignerIfPossible = true) => {
   return useMemo(() => getCakeVaultV2Contract(signer), [signer])
 }
 
-export const usePredictionsContract = (address: string) => {
+export const usePredictionsContract = (address: string, tokenSymbol: string) => {
   const { library } = useActiveWeb3React()
-  return useMemo(() => getPredictionsContract(address, library.getSigner()), [library, address])
+  return useMemo(() => {
+    const getPredContract = tokenSymbol === 'CAKE' ? getCakePredictionsContract : getPredictionsContract
+
+    return getPredContract(address, library.getSigner())
+  }, [library, address, tokenSymbol])
 }
 
 export const useChainlinkOracleContract = (address, withSignerIfPossible = true) => {

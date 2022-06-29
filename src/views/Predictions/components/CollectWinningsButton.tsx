@@ -25,6 +25,7 @@ const CollectWinningsButton: React.FC<CollectWinningsButtonProps> = ({ hasClaime
     />,
     false,
     true,
+    'CollectRoundWinningsModal',
   )
 
   return (

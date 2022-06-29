@@ -1,17 +1,13 @@
 import styled from 'styled-components'
-import { Card, CardBody, Heading } from '@pancakeswap/uikit'
+import { Card, CardBody, Heading, ArrowBackIcon, IconButton } from '@pancakeswap/uikit'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'contexts/Localization'
+import { PredictionSupportedSymbol } from 'state/types'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 
 interface NotificationProps {
   title: string
 }
-
-// const BunnyDecoration = styled.div`
-//   position: absolute;
-//   top: -130px; // line up bunny at the top of the modal
-//   left: 0px;
-//   text-align: center;
-//   width: 100%;
-// `
 
 const Wrapper = styled.div`
   align-items: center;
@@ -33,13 +29,48 @@ const BunnyDecoration = styled.div`
   text-align: center;
   width: 100%;
   z-index: 5;
+  cursor: pointer;
 `
 
+const BackButtonStyle = styled(IconButton)`
+  position: absolute;
+  top: -62px;
+  width: 40%;
+  ${({ theme }) => theme.mediaQueries.md} {
+    top: -132px;
+  }
+`
+
+const BackButton = () => {
+  const { t } = useTranslation()
+
+  return (
+    <BackButtonStyle variant="primary" width="100%">
+      <ArrowBackIcon color="white" mr="8px" />
+      {t('Back')}
+    </BackButtonStyle>
+  )
+}
+
 const Notification: React.FC<NotificationProps> = ({ title, children }) => {
+  const router = useRouter()
+  const { token } = useConfig()
+
   return (
     <Wrapper>
       <CardWrapper>
-        <BunnyDecoration>
+        <BackButton />
+        <BunnyDecoration
+          onClick={() => {
+            if (token.symbol === PredictionSupportedSymbol.CAKE) {
+              router.query.token = PredictionSupportedSymbol.BNB
+            } else if (token.symbol === PredictionSupportedSymbol.BNB) {
+              router.query.token = PredictionSupportedSymbol.CAKE
+            }
+
+            router.push(router)
+          }}
+        >
           <img src="/images/decorations/hiccup-bunny.png" alt="bunny decoration" height="121px" width="130px" />
         </BunnyDecoration>
         <Card>

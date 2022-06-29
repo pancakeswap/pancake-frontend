@@ -38,6 +38,8 @@ const ClaimCheck = () => {
       isLoadingHistory={isLoadingHistory}
     />,
     false,
+    true,
+    'CollectRoundWinningsModalV1',
   )
 
   const [onPresentNothingToClaimModal] = useModal(<NothingToClaimModal />)

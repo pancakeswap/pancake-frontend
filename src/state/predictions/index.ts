@@ -71,7 +71,7 @@ export const initialState: PredictionsState = {
     loadingState: FetchStatus.Idle,
     filters: {
       address: null,
-      orderBy: 'netBNB',
+      orderBy: 'totalBets',
       timePeriod: 'all',
     },
     skip: 0,
@@ -203,8 +203,12 @@ export const fetchHistory = createAsyncThunk<
     undefined,
     undefined,
     extra.api,
+    extra.token.symbol,
   )
-  const bets = response.map(transformBetResponse)
+
+  const transformer = transformBetResponse(extra.token.symbol)
+
+  const bets = response.map(transformer)
 
   return { account, bets }
 })
@@ -327,9 +331,12 @@ export const filterLeaderboard = createAsyncThunk<
       where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED, [`${filters.orderBy}_gt`]: 0 },
     },
     extra.api,
+    extra.token.symbol,
   )
 
-  return { results: usersResponse.map(transformUserResponse) }
+  const transformer = transformUserResponse(extra.token.symbol)
+
+  return { results: usersResponse.map(transformer) }
 })
 
 export const fetchAddressResult = createAsyncThunk<
@@ -337,13 +344,13 @@ export const fetchAddressResult = createAsyncThunk<
   string,
   { rejectValue: string; extra: PredictionConfig }
 >('predictions/fetchAddressResult', async (account, { rejectWithValue, extra }) => {
-  const userResponse = await getPredictionUser(account, extra.api)
+  const userResponse = await getPredictionUser(account, extra.api, extra.token.symbol)
 
   if (!userResponse) {
     return rejectWithValue(account)
   }
 
-  return { account, data: transformUserResponse(userResponse) }
+  return { account, data: transformUserResponse(extra.token.symbol)(userResponse) }
 })
 
 export const filterNextPageLeaderboard = createAsyncThunk<
@@ -359,9 +366,12 @@ export const filterNextPageLeaderboard = createAsyncThunk<
       where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED, [`${state.leaderboard.filters.orderBy}_gt`]: 0 },
     },
     extra.api,
+    extra.token.symbol,
   )
 
-  return { results: usersResponse.map(transformUserResponse), skip }
+  const transformer = transformUserResponse(extra.token.symbol)
+
+  return { results: usersResponse.map(transformer), skip }
 })
 
 export const predictionsSlice = createSlice({
