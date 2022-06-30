@@ -13,11 +13,6 @@ export const CoinSwitcherWrapper = styled.div`
   overflow: hidden;
   cursor: pointer;
   transform: scale(0.6) translateX(-40px);
-  @media screen and (min-width: 390px) {
-    top: -70px;
-    left: 20px;
-    transform: scale(0.9) translateX(-30px);
-  }
   ${({ theme }) => theme.mediaQueries.md} {
     top: -20px;
     left: -10px;
