@@ -84,6 +84,6 @@ export const getPoolBlockInfo = memoize(
 )
 
 export const getICakeWeekDisplay = (ceiling: BigNumber) => {
-  const weeks = new BigNumber(ceiling).dividedBy(60).div(60).div(24).div(7)
+  const weeks = new BigNumber(ceiling).div(60).div(60).div(24).div(7)
   return Math.round(weeks.toNumber())
 }

@@ -6,6 +6,8 @@ import { useTranslation } from 'contexts/Localization'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import useBUSDPrice from 'hooks/useBUSDPrice'
+import { useIfoCeiling } from 'state/pools/hooks'
+import { getICakeWeekDisplay } from 'views/Pools/helpers'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { SkeletonCardDetails } from './Skeletons'
 
@@ -105,6 +107,8 @@ const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; 
 
 const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo, publicIfoData, walletIfoData }) => {
   const { t } = useTranslation()
+  const ceiling = useIfoCeiling()
+  const weeksDisplay = getICakeWeekDisplay(ceiling)
   const { status, currencyPriceInUSD } = publicIfoData
   const poolCharacteristic = publicIfoData[poolId]
   const walletCharacteristic = walletIfoData[poolId]
@@ -186,6 +190,15 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
             />
           )}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
+          {ifo.version >= 3.2 && poolCharacteristic.vestingInfomation.percentage > 0 && (
+            <>
+              <FooterEntry
+                label={t('Vested percentage:')}
+                value={`${poolCharacteristic.vestingInfomation.percentage}%`}
+              />
+              <FooterEntry label={t('Vesting schedule:')} value={`${weeksDisplay} weeks`} />
+            </>
+          )}
         </>
       )
     }
@@ -208,6 +221,15 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
               label={t('Price per %symbol% with fee:', { symbol: ifo.token.symbol })}
               value={pricePerTokenWithFee}
             />
+          )}
+          {ifo.version >= 3.2 && poolCharacteristic.vestingInfomation.percentage > 0 && (
+            <>
+              <FooterEntry
+                label={t('Vested percentage:')}
+                value={`${poolCharacteristic.vestingInfomation.percentage}%`}
+              />
+              <FooterEntry label={t('Vesting schedule:')} value={`${weeksDisplay} weeks`} />
+            </>
           )}
         </>
       )
