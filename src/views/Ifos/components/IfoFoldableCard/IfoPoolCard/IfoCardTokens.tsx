@@ -252,7 +252,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
             <Label>{t('%symbol% to receive', { symbol: token.symbol })}</Label>
             <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
           </TokenSection>
-          {ifov31Msg}
+          {message}
         </>
       )
     }
