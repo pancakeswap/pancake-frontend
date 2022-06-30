@@ -1742,8 +1742,8 @@
   "There is not enough %token1% input to match 50/50. Some of %token0% will be converted to %token1%": "There is not enough %token1% input to match 50/50. Some of %token0% will be converted to %token1%",
   "If you experience any issue when adding liquidity, please disable Zap and retry.": "If you experience any issue when adding liquidity, please disable Zap and retry.",
   "Receive": "Receive",
-  "Zap does NOT support tokens with fees on transfers. If you experience any issues, disable Zap here.": "Zap does NOT support tokens with fees on transfers. If you experience any issues, disable Zap here.",
-  "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, disable Zap here.": "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, disable Zap here.",
+  "Zap does NOT support tokens with fees on transfers. If you experience any issues, disable Zap": "Zap does NOT support tokens with fees on transfers. If you experience any issues, disable Zap",
+  "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, disable Zap": "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, disable Zap",
   "Vesting Schedule": "Vesting Schedule",
   "Vesting Start": "Vesting Start",
   "Suspicious rugpull token": "Suspicious rugpull token",
@@ -1755,5 +1755,6 @@
   "In the Public Sale, everyone with an active PancakeSwap profile can commit. However the maximum amount of CAKE users can commit, is equal to the number of iCAKE they have.": "In the Public Sale, everyone with an active PancakeSwap profile can commit. However the maximum amount of CAKE users can commit, is equal to the number of iCAKE they have.",
   "And there’s a fee for participation: see below.": "And there’s a fee for participation: see below.",
   "The participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of the IFO.": "The participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of the IFO.",
-  "Note: Fees may vary between different IFOs. To learn more about the participation fees, please refer to the details in the IFO proposal (vote) for the specifics of the IFO you want to take part in.": "Note: Fees may vary between different IFOs. To learn more about the participation fees, please refer to the details in the IFO proposal (vote) for the specifics of the IFO you want to take part in."
+  "Note: Fees may vary between different IFOs. To learn more about the participation fees, please refer to the details in the IFO proposal (vote) for the specifics of the IFO you want to take part in.": "Note: Fees may vary between different IFOs. To learn more about the participation fees, please refer to the details in the IFO proposal (vote) for the specifics of the IFO you want to take part in.",
+  "Currently using Zap for liquidity provisions.": "Currently using Zap for liquidity provisions."
 }
