@@ -34,16 +34,6 @@ const PERSISTED_KEYS: string[] = ['user', 'transactions']
 
 const migrations = {
   0: (state) => {
-    // migration add userPredictionChainlinkChartDisclaimerShow
-    return {
-      ...state,
-      user: {
-        ...state?.user,
-        userPredictionChainlinkChartDisclaimerShow: true,
-      },
-    }
-  },
-  1: (state) => {
     return {
       ...state,
     }
@@ -55,13 +45,13 @@ const persistConfig = {
   whitelist: PERSISTED_KEYS,
   blacklist: ['profile'],
   storage,
-  version: 1,
+  version: 0,
   migrate: createMigrate(migrations, { debug: false }),
 }
 
 const ListsConfig = {
   key: 'lists',
-  version: 1,
+  version: 0,
   serialize: false,
   deserialize: false,
   storage: IndexedDBStorage('lists'),
