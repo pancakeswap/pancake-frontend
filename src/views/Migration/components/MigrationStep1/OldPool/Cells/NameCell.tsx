@@ -29,7 +29,7 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   const { sousId, stakingToken, earningToken, userData, isFinished, vaultKey } = pool
   const { vaultPoolData } = useVaultPoolByKeyV1(pool.vaultKey)
   const { userShares } = vaultPoolData.userData
-  const hasVaultShares = userShares && userShares.gt(0)
+  const hasVaultShares = userShares?.gt(0)
 
   const stakingTokenSymbol = stakingToken.symbol
   const earningTokenSymbol = earningToken.symbol

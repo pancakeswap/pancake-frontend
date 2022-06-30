@@ -46,7 +46,7 @@ const TotalStakedCell: React.FC<TotalStakedCellProps> = ({ pool, totalCakeInVaul
           {t('Total staked')}
         </Text>
         <Flex height="20px" alignItems="center">
-          {totalStakedBalance ? (
+          {totalCakeInVault && totalCakeInVault.gte(0) ? (
             <Balance fontSize="16px" value={totalStakedBalance} decimals={0} unit={` ${stakingToken.symbol}`} />
           ) : (
             <Skeleton width="80px" height="16px" />

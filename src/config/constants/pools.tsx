@@ -34,6 +34,16 @@ export const vaultPoolConfig = {
       secondarySrc: '/images/tokens/autorenew.svg',
     },
   },
+  [VaultKey.CakeFlexibleSideVault]: {
+    name: <Trans>Flexible CAKE</Trans>,
+    description: <Trans>Flexible staking on the side.</Trans>,
+    autoCompoundFrequency: 5000,
+    gasLimit: 500000,
+    tokenImage: {
+      primarySrc: `/images/tokens/${tokens.cake.address}.svg`,
+      secondarySrc: '/images/tokens/autorenew.svg',
+    },
+  },
   [VaultKey.IfoPool]: {
     name: 'IFO CAKE',
     description: <Trans>Stake CAKE to participate in IFOs</Trans>,

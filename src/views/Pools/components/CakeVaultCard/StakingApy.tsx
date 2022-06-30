@@ -5,7 +5,7 @@ import { useVaultApy } from 'hooks/useVaultApy'
 import Balance from 'components/Balance'
 import { memo } from 'react'
 import { FlexGap } from 'components/Layout/Flex'
-import { DeserializedPool } from 'state/types'
+import { DeserializedPool, VaultKey } from 'state/types'
 import styled from 'styled-components'
 import { VaultRoiCalculatorModal } from '../Vault/VaultRoiCalculatorModal'
 
@@ -51,36 +51,38 @@ export const StakingApy = memo(({ pool }: { pool: DeserializedPool }) => {
           <Skeleton width="80px" height="16px" />
         )}
       </Flex>
-      <Flex alignItems="center" justifyContent="space-between">
-        <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-          {t('Locked')} APY:
-        </Text>
-        {lockedApy ? (
-          <FlexGap gap="4px" flexWrap="wrap" justifyContent="flex-end">
-            <Text style={{ whiteSpace: 'nowrap' }} bold>
-              {t('Up to')}
-            </Text>
-            <AprLabelContainer alignItems="center">
-              <Balance fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" bold />
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onPresentLockedApyModal()
-                }}
-                variant="text"
-                width="20px"
-                height="20px"
-                padding="0px"
-                marginLeft="4px"
-              >
-                <CalculateIcon color="textSubtle" width="20px" />
-              </Button>
-            </AprLabelContainer>
-          </FlexGap>
-        ) : (
-          <Skeleton width="80px" height="16px" />
-        )}
-      </Flex>
+      {pool.vaultKey === VaultKey.CakeVault && (
+        <Flex alignItems="center" justifyContent="space-between">
+          <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+            {t('Locked')} APY:
+          </Text>
+          {lockedApy ? (
+            <FlexGap gap="4px" flexWrap="wrap" justifyContent="flex-end">
+              <Text style={{ whiteSpace: 'nowrap' }} bold>
+                {t('Up to')}
+              </Text>
+              <AprLabelContainer alignItems="center">
+                <Balance fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" bold />
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onPresentLockedApyModal()
+                  }}
+                  variant="text"
+                  width="20px"
+                  height="20px"
+                  padding="0px"
+                  marginLeft="4px"
+                >
+                  <CalculateIcon color="textSubtle" width="20px" />
+                </Button>
+              </AprLabelContainer>
+            </FlexGap>
+          ) : (
+            <Skeleton width="80px" height="16px" />
+          )}
+        </Flex>
+      )}
     </LightGreyCard>
   )
 })

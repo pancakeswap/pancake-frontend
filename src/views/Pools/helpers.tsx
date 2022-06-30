@@ -60,8 +60,7 @@ export const getCakeVaultEarnings = (
   earningTokenPrice: number,
   fee?: BigNumber,
 ) => {
-  const hasAutoEarnings =
-    account && cakeAtLastUserAction && cakeAtLastUserAction.gt(0) && userShares && userShares.gt(0)
+  const hasAutoEarnings = account && cakeAtLastUserAction?.gt(0) && userShares?.gt(0)
   const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
   const autoCakeProfit = cakeAsBigNumber.minus(fee || BIG_ZERO).minus(cakeAtLastUserAction)
   const autoCakeToDisplay = autoCakeProfit.gte(0) ? getBalanceNumber(autoCakeProfit, 18) : 0
@@ -83,3 +82,8 @@ export const getPoolBlockInfo = memoize(
   },
   (pool, currentBlock) => `${pool.startBlock}#${pool.endBlock}#${pool.isFinished}#${currentBlock}`,
 )
+
+export const getICakeWeekDisplay = (ceiling: BigNumber) => {
+  const weeks = new BigNumber(ceiling).dividedBy(60).div(60).div(24).div(7)
+  return Math.round(weeks.toNumber())
+}

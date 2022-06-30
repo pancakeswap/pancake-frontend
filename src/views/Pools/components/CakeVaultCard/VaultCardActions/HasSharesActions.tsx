@@ -1,7 +1,7 @@
 import { Flex, Text, IconButton, AddIcon, MinusIcon, useModal, Skeleton, Box } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { DeserializedPool } from 'state/types'
+import { DeserializedPool, VaultKey } from 'state/types'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import Balance from 'components/Balance'
@@ -69,9 +69,11 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBal
           </IconButton>
         </Flex>
       </Flex>
-      <Box mb="16px">
-        <ConvertToLock stakingToken={stakingToken} currentStakedAmount={cakeAsNumberBalance} />
-      </Box>
+      {pool.vaultKey === VaultKey.CakeVault && (
+        <Box mb="16px">
+          <ConvertToLock stakingToken={stakingToken} currentStakedAmount={cakeAsNumberBalance} />
+        </Box>
+      )}
     </>
   )
 }

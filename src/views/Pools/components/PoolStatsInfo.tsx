@@ -5,7 +5,7 @@ import { useTranslation } from 'contexts/Localization'
 import { memo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool } from 'state/types'
+import { DeserializedPool, VaultKey } from 'state/types'
 import { getBscScanLink } from 'utils'
 import { getAddress, getVaultPoolAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -81,8 +81,8 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
       {showTotalStaked && (
         <TotalStaked totalStaked={vaultKey ? totalCakeInVault : totalStaked} stakingToken={stakingToken} />
       )}
-      {vaultKey && <TotalLocked totalLocked={totalLockedAmount} lockedToken={stakingToken} />}
-      {vaultKey && <DurationAvg />}
+      {vaultKey === VaultKey.CakeVault && <TotalLocked totalLocked={totalLockedAmount} lockedToken={stakingToken} />}
+      {vaultKey === VaultKey.CakeVault && <DurationAvg />}
       {!isFinished && stakingLimit && stakingLimit.gt(0) && (
         <MaxStakeRow
           small

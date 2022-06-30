@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import useGetPublicIfoV2Data from 'views/Ifos/hooks/v2/useGetPublicIfoData'
+import useGetPublicIfoV3Data from 'views/Ifos/hooks/v3/useGetPublicIfoData'
 import useGetWalletIfoV3Data from 'views/Ifos/hooks/v3/useGetWalletIfoData'
 
 import { Ifo } from 'config/constants/types'
@@ -13,7 +13,7 @@ interface TypeProps {
 }
 
 const CurrentIfo: React.FC<TypeProps> = ({ activeIfo }) => {
-  const publicIfoData = useGetPublicIfoV2Data(activeIfo)
+  const publicIfoData = useGetPublicIfoV3Data(activeIfo)
   const walletIfoData = useGetWalletIfoV3Data(activeIfo)
 
   const { poolBasic, poolUnlimited } = walletIfoData

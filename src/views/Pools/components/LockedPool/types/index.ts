@@ -53,6 +53,7 @@ export interface OverviewPropsType {
   lockStartTime?: string
   lockEndTime?: string
   showLockWarning?: boolean
+  ceiling?: BigNumber
 }
 
 export interface AddAmountModalProps {

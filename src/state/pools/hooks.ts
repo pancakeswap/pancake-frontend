@@ -11,10 +11,21 @@ import {
   fetchCakeVaultUserData,
   fetchCakeVaultFees,
   fetchPoolsStakingLimitsAsync,
+  fetchUserIfoCreditDataAsync,
+  fetchIfoPublicDataAsync,
+  fetchCakeFlexibleSideVaultPublicData,
+  fetchCakeFlexibleSideVaultUserData,
+  fetchCakeFlexibleSideVaultFees,
 } from '.'
 import { DeserializedPool, VaultKey } from '../types'
 import { fetchFarmsPublicDataAsync } from '../farms'
-import { makePoolWithUserDataLoadingSelector, makeVaultPoolByKey, poolsWithVaultSelector } from './selectors'
+import {
+  makePoolWithUserDataLoadingSelector,
+  makeVaultPoolByKey,
+  poolsWithVaultSelector,
+  ifoCreditSelector,
+  ifoCeilingSelector,
+} from './selectors'
 
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
@@ -53,17 +64,40 @@ export const usePoolsPageFetch = () => {
   useFastRefreshEffect(() => {
     batch(() => {
       dispatch(fetchCakeVaultPublicData())
+      dispatch(fetchCakeFlexibleSideVaultPublicData())
+      dispatch(fetchIfoPublicDataAsync())
       if (account) {
         dispatch(fetchPoolsUserDataAsync(account))
         dispatch(fetchCakeVaultUserData({ account }))
+        dispatch(fetchCakeFlexibleSideVaultUserData({ account }))
       }
     })
   }, [account, dispatch])
 
   useEffect(() => {
+    dispatch(fetchCakeVaultFees())
+    dispatch(fetchCakeFlexibleSideVaultFees())
+  }, [dispatch])
+}
+
+export const useFetchIfo = () => {
+  const { account } = useWeb3React()
+  const dispatch = useAppDispatch()
+
+  useFastRefreshEffect(() => {
     batch(() => {
-      dispatch(fetchCakeVaultFees())
+      dispatch(fetchCakeVaultPublicData())
+      dispatch(fetchIfoPublicDataAsync())
+      if (account) {
+        dispatch(fetchPoolsUserDataAsync(account))
+        dispatch(fetchCakeVaultUserData({ account }))
+        dispatch(fetchUserIfoCreditDataAsync(account))
+      }
     })
+  }, [dispatch, account])
+
+  useEffect(() => {
+    dispatch(fetchCakeVaultFees())
   }, [dispatch])
 }
 
@@ -71,18 +105,16 @@ export const useCakeVault = () => {
   return useVaultPoolByKey(VaultKey.CakeVault)
 }
 
-export const useVaultPools = () => {
-  const cakeVault = useVaultPoolByKey(VaultKey.CakeVault)
-  const vaults = useMemo(() => {
-    return {
-      [VaultKey.CakeVault]: cakeVault,
-    }
-  }, [cakeVault])
-  return vaults
-}
-
 export const useVaultPoolByKey = (key: VaultKey) => {
   const vaultPoolByKey = useMemo(() => makeVaultPoolByKey(key), [key])
 
   return useSelector(vaultPoolByKey)
+}
+
+export const useIfoCredit = () => {
+  return useSelector(ifoCreditSelector)
+}
+
+export const useIfoCeiling = () => {
+  return useSelector(ifoCeilingSelector)
 }

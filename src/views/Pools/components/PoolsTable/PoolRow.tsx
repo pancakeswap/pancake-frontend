@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { DeserializedPool, VaultKey } from 'state/types'
+import { DeserializedPool } from 'state/types'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import NameCell from './Cells/NameCell'
@@ -43,13 +43,11 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
       <StyledRow role="row" onClick={toggleExpanded}>
         <NameCell pool={pool} />
         {pool.vaultKey ? (
-          isXLargerScreen && pool.vaultKey === VaultKey.CakeVault && <AutoEarningsCell pool={pool} account={account} />
+          isXLargerScreen && <AutoEarningsCell pool={pool} account={account} />
         ) : (
           <EarningsCell pool={pool} account={account} />
         )}
-        {isXLargerScreen && pool.vaultKey === VaultKey.CakeVault && isCakePool ? (
-          <StakedCell pool={pool} account={account} />
-        ) : null}
+        {isXLargerScreen && pool.vaultKey && isCakePool ? <StakedCell pool={pool} account={account} /> : null}
         {isLargerScreen && !isCakePool && <TotalStakedCell pool={pool} />}
         {pool.vaultKey ? <AutoAprCell pool={pool} /> : <AprCell pool={pool} />}
         {isLargerScreen && isCakePool && <TotalStakedCell pool={pool} />}

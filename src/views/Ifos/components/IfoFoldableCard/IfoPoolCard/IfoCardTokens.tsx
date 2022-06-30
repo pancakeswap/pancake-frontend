@@ -21,6 +21,7 @@ import { cakeBnbLpToken } from 'config/constants/ifo'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { useIfoCredit } from 'state/pools/hooks'
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
 import { EnableStatus } from '../types'
 import PercentageOfTotal from './PercentageOfTotal'
@@ -130,6 +131,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   const { currency, token } = ifo
   const { hasClaimed } = userPoolCharacteristics
   const distributionRatio = ifo[poolId].distributionRatio * 100
+  const credit = useIfoCredit()
 
   const renderTokenSection = () => {
     if (isLoading) {
@@ -159,7 +161,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
     }
 
     const ifov31Msg =
-      ifo.version === 3.1 && poolId === PoolIds.poolBasic && criterias?.length > 0 ? (
+      ifo.version >= 3.1 && poolId === PoolIds.poolBasic && criterias?.length > 0 ? (
         <Box mt="16px">
           {!isEligible && (
             <Message mb="24px" p="8px" variant="warning" icon={<ErrorIcon color="warning" width="24px" />}>
@@ -183,15 +185,14 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
         </Box>
       ) : null
 
-    // TODO: Need checking in the future
-    // (ifo.version === 3 || (ifo.version === 3.1 && poolId === PoolIds.poolUnlimited)) && getBalanceNumber(credit) === 0)
-    if (ifo.version === 3 || (ifo.version === 3.1 && poolId === PoolIds.poolUnlimited)) {
+    if (
+      (ifo.version === 3 || (ifo.version >= 3.1 && poolId === PoolIds.poolUnlimited)) &&
+      getBalanceNumber(credit) === 0
+    ) {
       message = (
         <Message my="24px" p="8px" variant="danger">
           <Box>
-            <MessageText display="inline">
-              {t('You don’t have any average CAKE balance available to commit in the IFO CAKE pool.')}
-            </MessageText>{' '}
+            <MessageText display="inline">{t('You don’t have any iCAKE available for IFO public sale.')}</MessageText>{' '}
             <MessageTextLink display="inline" fontWeight={700} href="/ifo#ifo-how-to" color="failure">
               {t('How does it work?')} »
             </MessageTextLink>
@@ -263,7 +264,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           {ifov31Msg || (
             <>
               <Text textAlign="center" fontSize="14px">
-                {t('To participate in the next IFO, stake some CAKE in the IFO CAKE pool!')}
+                {t('To participate in the next IFO, lock some CAKE in the fixed-term staking CAKE pool!')}
               </Text>
               <MessageTextLink href="/ifo#ifo-how-to" textAlign="center">
                 {t('How does it work?')} »

@@ -125,7 +125,7 @@ const ContributeModal: React.FC<Props> = ({
 
   // in v3 max token entry is based on ifo credit and hard cap limit per user minus amount already committed
   const maximumTokenEntry = useMemo(() => {
-    if (!creditLeft || (ifo.version === 3.1 && poolId === PoolIds.poolBasic)) {
+    if (!creditLeft || (ifo.version >= 3.1 && poolId === PoolIds.poolBasic)) {
       return limitPerUserInLP.minus(amountTokenCommittedInLP)
     }
     if (limitPerUserInLP.isGreaterThan(0)) {
@@ -147,8 +147,16 @@ const ContributeModal: React.FC<Props> = ({
     'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
   )
 
-  const unlimitedToolipContent = t(
-    'For the public sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+  const unlimitedToolipContent = (
+    <Box>
+      <Text display="inline">{t('For the public sale, Max CAKE entry is capped by')} </Text>
+      <Text bold display="inline">
+        {t('the number of iCAKE.')}{' '}
+      </Text>
+      <Text display="inline">
+        {t('Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale.')}
+      </Text>
+    </Box>
   )
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
