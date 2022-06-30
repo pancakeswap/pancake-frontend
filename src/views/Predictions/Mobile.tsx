@@ -49,7 +49,7 @@ const Mobile: React.FC = () => {
 
   return (
     <StyledMobile>
-      <Box height="100%" overflowX="hidden" overflowY="auto">
+      <Box height="100%">
         {view === PageView.POSITIONS && (
           <Flex justifyContent="center" alignItems="center" flexDirection="column" minHeight="100%">
             {status === PredictionStatus.ERROR && <ErrorNotification />}
