@@ -115,10 +115,6 @@ export const Tooltip = styled.div`
   ${Text},svg {
     color: ${({ theme }) => theme.tooltip.text};
   }
-  @media screen and (min-width: 390px) {
-    top: -60px;
-    left: 120px;
-  }
   ${({ theme }) => theme.mediaQueries.md} {
     top: -10px;
     left: 81px;
