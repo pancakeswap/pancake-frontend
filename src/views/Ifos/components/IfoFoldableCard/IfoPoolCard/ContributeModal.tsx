@@ -252,7 +252,7 @@ const ContributeModal: React.FC<Props> = ({
           {vestingInfomation.percentage > 0 && <SmallAmountNotice url={articleUrl} />}
           <Text color="textSubtle" fontSize="12px" mb="24px">
             {t(
-              'If you don’t commit enough CAKE, you may not receive any IFO tokens at all and will only receive a full refund of your CAKE.',
+              'If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.',
             )}
             <Link
               fontSize="12px"

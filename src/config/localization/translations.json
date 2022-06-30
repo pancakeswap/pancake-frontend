@@ -253,7 +253,6 @@
   "Success!": "Success!",
   "You have successfully claimed available tokens.": "You have successfully claimed available tokens.",
   "Commit": "Commit",
-  "If you don’t commit enough CAKE, you may not receive any IFO tokens at all and will only receive a full refund of your CAKE.": "If you don’t commit enough CAKE, you may not receive any IFO tokens at all and will only receive a full refund of your CAKE.",
   "Funds to raise:": "Funds to raise:",
   "Price per %symbol%:": "Price per %symbol%:",
   "Price per %symbol% with fee:": "Price per %symbol% with fee:",
@@ -1732,5 +1731,6 @@
   "The participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of the IFO.": "The participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of the IFO.",
   "Note: Fees may vary between different IFOs. To learn more about the participation fees, please refer to the details in the IFO proposal (vote) for the specifics of the IFO you want to take part in.": "Note: Fees may vary between different IFOs. To learn more about the participation fees, please refer to the details in the IFO proposal (vote) for the specifics of the IFO you want to take part in.",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "This IFO has token vesting. Purchased tokens are released over a period of time.",
-  "Learn more in the vote proposal": "Learn more in the vote proposal"
+  "Learn more in the vote proposal": "Learn more in the vote proposal",
+  "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all."
 }
