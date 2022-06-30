@@ -14,7 +14,7 @@ const VestingAvailableToClaim: React.FC<VestingAvailableToClaimProps> = ({ amoun
   const { t } = useTranslation()
 
   const num = useMemo(() => {
-    const vestingaPercentage = new BigNumber(100).minus(percentage)
+    const vestingaPercentage = new BigNumber(100).minus(percentage).div(100)
     const total = new BigNumber(amountToReceive).times(vestingaPercentage)
     return getFullDisplayBalance(total, decimals, 2)
   }, [amountToReceive, percentage, decimals])

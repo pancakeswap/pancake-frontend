@@ -1733,5 +1733,7 @@
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "This IFO has token vesting. Purchased tokens are released over a period of time.",
   "Learn more in the vote proposal": "Learn more in the vote proposal",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.",
-  "~%num% available to claim at sales end": "~%num% available to claim at sales end"
+  "~%num% available to claim at sales end": "~%num% available to claim at sales end",
+  "Vested percentage:": "Vested percentage:",
+  "Vesting schedule:": "Vesting schedule:"
 }

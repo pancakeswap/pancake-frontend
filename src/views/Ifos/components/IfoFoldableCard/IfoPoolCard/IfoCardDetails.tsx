@@ -6,8 +6,6 @@ import { useTranslation } from 'contexts/Localization'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import useBUSDPrice from 'hooks/useBUSDPrice'
-import { useIfoCeiling } from 'state/pools/hooks'
-import { getICakeWeekDisplay } from 'views/Pools/helpers'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { SkeletonCardDetails } from './Skeletons'
 
@@ -107,8 +105,6 @@ const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; 
 
 const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo, publicIfoData, walletIfoData }) => {
   const { t } = useTranslation()
-  const ceiling = useIfoCeiling()
-  const weeksDisplay = getICakeWeekDisplay(ceiling)
   const { status, currencyPriceInUSD } = publicIfoData
   const poolCharacteristic = publicIfoData[poolId]
   const walletCharacteristic = walletIfoData[poolId]
@@ -157,6 +153,10 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
 
   const tokenEntry = <MaxTokenEntry poolId={poolId} ifo={ifo} maxToken={maxToken} />
 
+  const oneWeek = 604800
+  const weeksInSeconds = ifo.version >= 3.2 ? poolCharacteristic.vestingInfomation.duration : 0
+  const vestingWeeks = Math.ceil(weeksInSeconds / oneWeek)
+
   /* Format end */
   const renderBasedOnIfoStatus = () => {
     if (status === 'coming_soon') {
@@ -196,12 +196,13 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
                 label={t('Vested percentage:')}
                 value={`${poolCharacteristic.vestingInfomation.percentage}%`}
               />
-              <FooterEntry label={t('Vesting schedule:')} value={`${weeksDisplay} weeks`} />
+              <FooterEntry label={t('Vesting schedule:')} value={`${vestingWeeks} weeks`} />
             </>
           )}
         </>
       )
     }
+
     if (status === 'finished') {
       return (
         <>
@@ -221,15 +222,6 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
               label={t('Price per %symbol% with fee:', { symbol: ifo.token.symbol })}
               value={pricePerTokenWithFee}
             />
-          )}
-          {ifo.version >= 3.2 && poolCharacteristic.vestingInfomation.percentage > 0 && (
-            <>
-              <FooterEntry
-                label={t('Vested percentage:')}
-                value={`${poolCharacteristic.vestingInfomation.percentage}%`}
-              />
-              <FooterEntry label={t('Vesting schedule:')} value={`${weeksDisplay} weeks`} />
-            </>
           )}
         </>
       )
