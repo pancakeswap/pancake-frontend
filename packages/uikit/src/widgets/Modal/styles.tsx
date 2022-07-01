@@ -61,7 +61,7 @@ export const ModalContainer = styled(Box)`
     position: absolute;
     bottom: 0;
     border-radius: 32px 32px 0px 0px;
-    animation: ${mountAnimation} 350ms ease forwards;
+    animation: ${mountAnimation} 0.3s ease-in-out forwards;
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
