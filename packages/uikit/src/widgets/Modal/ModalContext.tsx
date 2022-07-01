@@ -11,7 +11,7 @@ import {
 } from "../../util/animationToolkit";
 import { Handler } from "./types";
 import { ModalContainer } from "./styles";
-import { unmountAnimation } from "../../components/BottomDrawer/styles";
+import { unmountAnimation, mountAnimation } from "../../components/BottomDrawer/styles";
 
 interface ModalsContext {
   isOpen: boolean;
@@ -38,6 +38,12 @@ const ModalWrapper = styled(m.div)`
   opacity: 0;
   &.appear {
     animation: ${appearAnimation} 0.3s ease-in-out forwards;
+    ${ModalContainer} {
+      animation: ${mountAnimation} 0.3s ease-in-out forwards;
+      ${({ theme }) => theme.mediaQueries.md} {
+        animation: none;
+      }
+    }
   }
   &.disappear {
     animation: ${disappearAnimation} 0.3s ease-in-out forwards;

@@ -60,7 +60,6 @@ export const ModalContainer = styled(MotionBox)<{ minWidth: string }>`
     min-width: ${({ minWidth }) => minWidth};
     bottom: 0;
     border-radius: 32px 32px 0px 0px;
-    animation: ${mountAnimation} 0.3s ease-in-out forwards;
     max-width: none !important;
     max-height: 80vh;
   }
@@ -70,7 +69,6 @@ export const ModalContainer = styled(MotionBox)<{ minWidth: string }>`
     position: auto;
     bottom: auto;
     border-radius: 32px;
-    animation: none;
     max-width: 100%;
     max-height: 100vh;
   }
