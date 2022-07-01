@@ -24,7 +24,7 @@ const Modal: React.FC<ModalProps> = ({
     // @ts-ignore
     <ModalContainer
       drag={isMobile ? "y" : false}
-      dragConstraints={{ top: 0, bottom: 100 }}
+      dragConstraints={{ top: 0, bottom: 0 }}
       minWidth={minWidth}
       onDragStart={() => {
         if (wrapperRef.current) wrapperRef.current.style.animation = "none";
