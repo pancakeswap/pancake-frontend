@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import styled, { keyframes, css } from "styled-components";
 
-const mountAnimation = keyframes`
+export const mountAnimation = keyframes`
     0% {
       transform: translateY(100%);
     }
@@ -10,7 +10,7 @@ const mountAnimation = keyframes`
     }
   `;
 
-const unmountAnimation = keyframes`
+export const unmountAnimation = keyframes`
     0% {
       transform: translateY(0%);
     }

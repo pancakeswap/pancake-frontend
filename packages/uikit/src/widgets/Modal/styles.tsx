@@ -1,10 +1,11 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Flex from "../../components/Box/Flex";
 import { Box } from "../../components/Box";
 import { ArrowBackIcon, CloseIcon } from "../../components/Svg";
 import { IconButton } from "../../components/Button";
 import { ModalProps } from "./types";
+import { mountAnimation } from "../../components/BottomDrawer/styles";
 
 export const ModalHeader = styled.div<{ background?: string }>`
   align-items: center;
@@ -54,7 +55,20 @@ export const ModalContainer = styled(Box)`
   z-index: ${({ theme }) => theme.zIndices.modal};
 
   ${({ theme }) => theme.mediaQueries.xs} {
-    width: auto;
+    width: 100%;
+    min-width: ${({ minWidth }) => minWidth};
     max-width: 100%;
+    position: absolute;
+    bottom: 0;
+    border-radius: 32px 32px 0px 0px;
+    animation: ${mountAnimation} 350ms ease forwards;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: auto;
+    position: auto;
+    bottom: auto;
+    border-radius: 32px;
+    animation: none;
   }
 `;
