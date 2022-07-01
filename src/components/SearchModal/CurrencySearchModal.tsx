@@ -97,7 +97,6 @@ export default function CurrencySearchModal({
       }}
       // @ts-ignore
       onDragEnd={(e, info) => {
-        if (wrapperRef.current) wrapperRef.current.style.animation = ''
         if (info.offset.y > 3 && onDismiss) onDismiss()
       }}
       ref={wrapperRef}
