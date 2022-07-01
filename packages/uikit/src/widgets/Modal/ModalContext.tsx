@@ -41,7 +41,6 @@ const ModalWrapper = styled(m.div)`
   }
   &.disappear {
     animation: ${disappearAnimation} 0.3s ease-in-out forwards;
-
     ${ModalContainer} {
       animation: ${unmountAnimation} 0.3s ease-in-out forwards;
       ${({ theme }) => theme.mediaQueries.md} {
