@@ -7,7 +7,7 @@ import Image from 'next/image'
 const PrizeFundsContainer = styled(Flex)`
   width: 100%;
   margin: auto;
-  padding: 0 48px 0 48px;
+  padding: 0 24px;
   flex-direction: column;
   align-items: center;
 

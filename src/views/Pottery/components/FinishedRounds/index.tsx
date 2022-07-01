@@ -17,7 +17,7 @@ const FinishedRoundsBg = styled(Flex)<{ isDark: boolean }>`
 const FinishedRoundsContainer = styled(Flex)`
   flex-direction: column;
   margin: auto;
-  padding: 40px 32px;
+  padding: 40px 24px;
   width: 100%;
 `
 

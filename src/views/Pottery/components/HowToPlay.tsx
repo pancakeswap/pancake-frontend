@@ -6,7 +6,7 @@ import Divider from 'components/Divider'
 const HowToPlayContainer = styled(Flex)`
   width: 100%;
   margin: auto;
-  padding: 48px 48px 0 48px;
+  padding: 48px 24px 0 24px;
   flex-direction: column;
   align-items: center;
 
