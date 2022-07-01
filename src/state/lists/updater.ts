@@ -28,14 +28,14 @@ export default function Updater(): null {
 
   const fetchList = useFetchListCallback()
   const fetchAllListsCallback = useCallback(() => {
-    if (!isWindowVisible) return
+    if (!isWindowVisible || !includeListUpdater) return
     Object.keys(lists).forEach((url) =>
       fetchList(url).catch((error) => console.debug('interval list fetching error', error)),
     )
-  }, [fetchList, isWindowVisible, lists])
+  }, [includeListUpdater, fetchList, isWindowVisible, lists])
 
   // fetch all lists every 10 minutes, but only after we initialize library and page has currency input
-  useInterval(fetchAllListsCallback, library ? 1000 * 60 * 10 : null, true, includeListUpdater)
+  useInterval(fetchAllListsCallback, library ? 1000 * 60 * 10 : null)
 
   // whenever a list is not loaded and not loading, try again to load it
   useEffect(() => {
