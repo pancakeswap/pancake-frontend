@@ -18,6 +18,7 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
   const theme = useTheme();
   return (
+    // @ts-ignore
     <ModalContainer minWidth={minWidth} {...props}>
       <ModalHeader background={getThemeValue(`colors.${headerBackground}`, headerBackground)(theme)}>
         <ModalTitle>
