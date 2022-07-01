@@ -75,8 +75,10 @@ export const usePoolsPageFetch = () => {
   }, [account, dispatch])
 
   useEffect(() => {
-    dispatch(fetchCakeVaultFees())
-    dispatch(fetchCakeFlexibleSideVaultFees())
+    batch(() => {
+      dispatch(fetchCakeVaultFees())
+      dispatch(fetchCakeFlexibleSideVaultFees())
+    })
   }, [dispatch])
 }
 
