@@ -61,7 +61,7 @@ export const ModalContainer = styled(MotionBox)<{ minWidth: string }>`
     bottom: 0;
     border-radius: 32px 32px 0px 0px;
     max-width: none !important;
-    max-height: 80vh;
+    max-height: 90vh;
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
