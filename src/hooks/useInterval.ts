@@ -2,7 +2,12 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
 import useLastUpdated from './useLastUpdated'
 
-export default function useInterval(callback: () => void, delay: undefined | null | number, leading = true) {
+export default function useInterval(
+  callback: () => void,
+  delay: undefined | null | number,
+  leading = true,
+  initiateUpdate = true,
+) {
   const [runImmediate, setRunImmediate] = useState(leading)
   const [runAfter, setRunAfter] = useState(delay)
   const savedCallback = useRef<() => void>(callback)
@@ -25,13 +30,13 @@ export default function useInterval(callback: () => void, delay: undefined | nul
   }, [callback])
 
   useEffect(() => {
-    if (isReadyForUpdate) {
+    if (initiateUpdate && isReadyForUpdate) {
       savedCallback.current?.()
       setIsReadyForUpdate(false)
       setRunImmediate(false)
       refresh()
     }
-  }, [isReadyForUpdate, refresh])
+  }, [initiateUpdate, isReadyForUpdate, refresh])
 
   // Set up the timeout.
   useEffect(() => {
