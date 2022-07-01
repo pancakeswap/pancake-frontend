@@ -1,11 +1,11 @@
-import { Text, TokenPairImage as UITokenPairImage, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, TokenPairImage as UITokenPairImage, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { TokenPairImage } from 'components/TokenImage'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useTranslation } from 'contexts/Localization'
 import { memo } from 'react'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool } from 'state/types'
+import { DeserializedPool, VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import styled from 'styled-components'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getVaultPosition, VaultPosition, VaultPositionParams } from 'utils/cakePool'
@@ -27,12 +27,13 @@ const StyledCell = styled(BaseCell)`
 
 const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
   const { sousId, stakingToken, earningToken, userData, isFinished, vaultKey } = pool
+  const vaultData = useVaultPoolByKey(pool.vaultKey)
   const {
-    userData: { userShares, lockEndTime, locked },
-  } = useVaultPoolByKey(pool.vaultKey)
-  const hasVaultShares = userShares && userShares.gt(0)
+    userData: { userShares },
+  } = vaultData
+  const hasVaultShares = userShares.gt(0)
 
   const stakingTokenSymbol = stakingToken.symbol
   const earningTokenSymbol = earningToken.symbol
@@ -60,8 +61,12 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
       )}
       <CellContent>
         {showStakedTag &&
-          (vaultKey ? (
-            <StakedCakeStatus userShares={userShares} locked={locked} lockEndTime={lockEndTime} />
+          (vaultKey === VaultKey.CakeVault ? (
+            <StakedCakeStatus
+              userShares={userShares}
+              locked={(vaultData as DeserializedLockedCakeVault).userData.locked}
+              lockEndTime={(vaultData as DeserializedLockedCakeVault).userData.lockEndTime}
+            />
           ) : (
             <Text fontSize="12px" bold color={isFinished ? 'failure' : 'secondary'} textTransform="uppercase">
               {t('Staked')}

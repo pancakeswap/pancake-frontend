@@ -8,8 +8,9 @@ import { useSelector } from 'react-redux'
 import { createSelector } from '@reduxjs/toolkit'
 import { DEFAULT_LIST_OF_LISTS, OFFICIAL_LISTS } from 'config/constants/lists'
 import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-default.tokenlist.json'
-import { UNSUPPORTED_LIST_URLS } from '../../config/constants/lists'
+import { UNSUPPORTED_LIST_URLS, WARNING_LIST_URLS } from '../../config/constants/lists'
 import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
+import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
 import { AppState } from '../index'
 import { WrappedTokenInfo, TagInfo, TokenAddressMap, EMPTY_LIST } from '../types'
 
@@ -91,6 +92,15 @@ export const combinedTokenMapFromUnsupportedUrlsSelector = createSelector([selec
   const localUnsupportedListMap = listToTokenMap(UNSUPPORTED_TOKEN_LIST)
   // get any loaded unsupported tokens
   const loadedUnsupportedListMap = combineTokenMaps(lists, UNSUPPORTED_LIST_URLS)
+
+  return combineMaps(localUnsupportedListMap, loadedUnsupportedListMap)
+})
+
+export const combinedTokenMapFromWarningUrlsSelector = createSelector([selectorByUrls], (lists) => {
+  // get hard coded unsupported tokens
+  const localUnsupportedListMap = listToTokenMap(WARNING_TOKEN_LIST)
+  // get any loaded unsupported tokens
+  const loadedUnsupportedListMap = combineTokenMaps(lists, WARNING_LIST_URLS)
 
   return combineMaps(localUnsupportedListMap, loadedUnsupportedListMap)
 })
@@ -183,6 +193,11 @@ export function useCombinedInactiveList(): TokenAddressMap {
 // list of tokens not supported on interface, used to show warnings and prevent swaps and adds
 export function useUnsupportedTokenList(): TokenAddressMap {
   return useSelector(combinedTokenMapFromUnsupportedUrlsSelector)
+}
+
+// list of warning tokens on interface, used to show warnings and prevent adds
+export function useWarningTokenList(): TokenAddressMap {
+  return useSelector(combinedTokenMapFromWarningUrlsSelector)
 }
 
 export function useIsListActive(url: string): boolean {

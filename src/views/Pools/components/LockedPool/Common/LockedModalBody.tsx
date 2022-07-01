@@ -4,7 +4,7 @@ import _noop from 'lodash/noop'
 import { useTranslation } from 'contexts/Localization'
 import { MAX_LOCK_DURATION } from 'config/constants/pools'
 import { getBalanceAmount } from 'utils/formatBalance'
-
+import { useIfoCeiling } from 'state/pools/hooks'
 import { LockedModalBodyPropsType, ModalValidator } from '../types'
 
 import Overview from './Overview'
@@ -22,6 +22,7 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
   customOverview,
 }) => {
   const { t } = useTranslation()
+  const ceiling = useIfoCeiling()
   const { usdValueStaked, duration, setDuration, pendingTx, handleConfirmClick } = useLockedPool({
     stakingToken,
     onDismiss,
@@ -59,6 +60,7 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
           lockedAmount={lockedAmount?.toNumber()}
           usdValueStaked={usdValueStaked}
           showLockWarning
+          ceiling={ceiling}
         />
       )}
 

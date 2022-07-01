@@ -6,10 +6,24 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
 import useToast from 'hooks/useToast'
 import { Currency, currencyEquals, ETHER, Percent, WETH } from '@pancakeswap/sdk'
-import { Button, Text, AddIcon, ArrowDownIcon, CardBody, Slider, Box, Flex, useModal } from '@pancakeswap/uikit'
+import {
+  Button,
+  Text,
+  AddIcon,
+  ArrowDownIcon,
+  CardBody,
+  Slider,
+  Box,
+  Flex,
+  useModal,
+  TooltipText,
+  useTooltip,
+} from '@pancakeswap/uikit'
 import { BigNumber } from '@ethersproject/bignumber'
 import { useTranslation } from 'contexts/Localization'
 import { CHAIN_ID } from 'config/constants/networks'
+import { useLPApr } from 'state/swap/hooks'
+import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { MinimalPositionCard } from '../../components/PositionCard'
@@ -19,7 +33,6 @@ import ConnectWalletButton from '../../components/ConnectWalletButton'
 import { LightGreyCard } from '../../components/Card'
 
 import { CurrencyLogo } from '../../components/Logo'
-import { ROUTER_ADDRESS } from '../../config/constants'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useCurrency } from '../../hooks/Tokens'
 import { usePairContract } from '../../hooks/useContract'
@@ -27,7 +40,8 @@ import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import StyledInternalLink from '../../components/Links'
-import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '../../utils'
+import { calculateGasMargin } from '../../utils'
+import { getRouterContract, calculateSlippageAmount } from '../../utils/exchange'
 import { currencyId } from '../../utils/currencyId'
 import useDebouncedChangeHandler from '../../hooks/useDebouncedChangeHandler'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
@@ -40,6 +54,7 @@ import { useGasPrice, useUserSlippageTolerance } from '../../state/user/hooks'
 import Page from '../Page'
 import ConfirmLiquidityModal from '../Swap/components/ConfirmRemoveLiquidityModal'
 import { logError } from '../../utils/sentry'
+import { formatAmount } from '../../utils/formatInfoNumbers'
 
 const BorderCard = styled.div`
   border: solid 1px ${({ theme }) => theme.colors.cardBorder};
@@ -64,6 +79,13 @@ export default function RemoveLiquidity() {
   // burn state
   const { independentField, typedValue } = useBurnState()
   const { pair, parsedAmounts, error } = useDerivedBurnInfo(currencyA ?? undefined, currencyB ?? undefined)
+  const poolData = useLPApr(pair)
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t(`Based on last 7 days' performance. Does not account for impermanent loss`),
+    {
+      placement: 'bottom',
+    },
+  )
   const { onUserInput: _onUserInput } = useBurnActionHandlers()
   const isValid = !error
 
@@ -594,6 +616,17 @@ export default function RemoveLiquidity() {
                 </Flex>
               </LightGreyCard>
             </AutoColumn>
+          )}
+          {poolData && (
+            <RowBetween mt="16px">
+              <TooltipText ref={targetRef} bold fontSize="12px" color="secondary">
+                {t('LP reward APR')}
+              </TooltipText>
+              {tooltipVisible && tooltip}
+              <Text bold color="primary">
+                {formatAmount(poolData.lpApr7d)}%
+              </Text>
+            </RowBetween>
           )}
           <Box position="relative" mt="16px">
             {!account ? (

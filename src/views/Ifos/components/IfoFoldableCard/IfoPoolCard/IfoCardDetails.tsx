@@ -41,26 +41,34 @@ const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
 
 const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; poolId: PoolIds }) => {
   const isCurrencyCake = ifo.currency === tokens.cake
-  const isV3 = ifo.version === 3 || ifo.version === 3.1
+  const isV3 = ifo.version >= 3
   const { t } = useTranslation()
 
   const basicTooltipContent =
-    ifo.version === 3.1
+    ifo.version >= 3.1
       ? t(
           'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
         )
       : t(
-          'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the IFO CAKE pool, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+          'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the iCAKE, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the iCAKE',
         )
 
   const unlimitedToolipContent =
-    ifo.version === 3.1
-      ? t(
-          'For the public sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
-        )
-      : t(
-          'For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
-        )
+    ifo.version >= 3.1 ? (
+      <Box>
+        <Text display="inline">{t('For the public sale, Max CAKE entry is capped by')} </Text>
+        <Text bold display="inline">
+          {t('the number of iCAKE.')}{' '}
+        </Text>
+        <Text display="inline">
+          {t('Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale.')}
+        </Text>
+      </Box>
+    ) : (
+      t(
+        'For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the iCake. To increase the max entry, Stake more CAKE into the iCake',
+      )
+    )
 
   const tooltipContent = poolId === PoolIds.poolBasic ? basicTooltipContent : unlimitedToolipContent
 
@@ -115,7 +123,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
 
   /* Format start */
   const maxLpTokens =
-    (ifo.version === 3 || (ifo.version === 3.1 && poolId === PoolIds.poolUnlimited)) && ifo.isActive
+    (ifo.version === 3 || (ifo.version >= 3.1 && poolId === PoolIds.poolUnlimited)) && ifo.isActive
       ? version3MaxTokens
         ? getBalanceNumber(version3MaxTokens, ifo.currency.decimals)
         : 0
@@ -141,7 +149,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
     2,
   )}`
 
-  const maxToken = ifo.version === 3.1 && poolId === PoolIds.poolBasic && !isEligible ? 0 : maxLpTokens
+  const maxToken = ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isEligible ? 0 : maxLpTokens
 
   const tokenEntry = <MaxTokenEntry poolId={poolId} ifo={ifo} maxToken={maxToken} />
 

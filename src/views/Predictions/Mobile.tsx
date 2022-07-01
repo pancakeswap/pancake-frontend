@@ -9,6 +9,8 @@ import Positions from './Positions'
 import MobileChart from './MobileChart'
 import { ErrorNotification, PauseNotification } from './components/Notification'
 import { PageView } from './types'
+import Menu from './components/Menu'
+import LoadingSection from './components/LoadingSection'
 
 const StyledMobile = styled.div`
   display: flex;
@@ -21,13 +23,10 @@ const StyledMobile = styled.div`
   }
 `
 
-const View = styled.div<{ isVisible: boolean }>`
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
+const PowerLinkStyle = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 16px;
 `
 
 const getView = (isHistoryPaneOpen: boolean, isChartPaneOpen: boolean): PageView => {
@@ -50,20 +49,28 @@ const Mobile: React.FC = () => {
 
   return (
     <StyledMobile>
-      <Box height="100%" overflow="hidden" position="relative">
-        <View isVisible={view === PageView.POSITIONS}>
-          <Flex alignItems="center" height="100%">
+      <Box height="100%">
+        {view === PageView.POSITIONS && (
+          <Flex justifyContent="center" alignItems="center" flexDirection="column" minHeight="100%">
             {status === PredictionStatus.ERROR && <ErrorNotification />}
             {status === PredictionStatus.PAUSED && <PauseNotification />}
-            {status === PredictionStatus.LIVE && <Positions view={view} />}
+            {[PredictionStatus.INITIAL, PredictionStatus.LIVE].includes(status) && (
+              <Box width="100%">
+                <Menu />
+                {status === PredictionStatus.LIVE ? <Positions view={view} /> : <LoadingSection />}
+                <PowerLinkStyle>
+                  <img
+                    src="/images/powered-by-chainlink.png"
+                    alt="Powered by ChainLink"
+                    style={{ width: '170px', maxHeight: '100%' }}
+                  />
+                </PowerLinkStyle>
+              </Box>
+            )}
           </Flex>
-        </View>
-        <View isVisible={view === PageView.CHART}>
-          <MobileChart />
-        </View>
-        <View isVisible={view === PageView.HISTORY}>
-          <History />
-        </View>
+        )}
+        {view === PageView.CHART && <MobileChart />}
+        {view === PageView.HISTORY && <History />}
       </Box>
       <MobileMenu />
     </StyledMobile>

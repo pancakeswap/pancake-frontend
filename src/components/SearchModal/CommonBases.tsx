@@ -3,7 +3,7 @@ import { Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 
-import { SUGGESTED_BASES } from '../../config/constants'
+import { SUGGESTED_BASES } from 'config/constants/exchange'
 import { AutoColumn } from '../Layout/Column'
 import QuestionHelper from '../QuestionHelper'
 import { AutoRow } from '../Layout/Row'

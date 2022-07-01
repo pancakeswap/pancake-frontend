@@ -1,16 +1,18 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Contract } from '@ethersproject/contracts'
 import { MaxUint256 } from '@ethersproject/constants'
 import { useAppDispatch } from 'state'
 import { updateUserAllowance } from 'state/actions'
+import { VaultKey } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
-import { useCake, useSousChef, useVaultPoolContract } from 'hooks/useContract'
+import { useSousChef, useVaultPoolContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useSWRContract, UseSWRContractKey } from 'hooks/useSWRContract'
+import useCakeApprovalStatus from 'hooks/useCakeApprovalStatus'
+import useCakeApprove from 'hooks/useCakeApprove'
 
 export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol) => {
   const { toastSuccess } = useToast()
@@ -51,50 +53,19 @@ export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol)
 }
 
 // Approve CAKE auto pool
-export const useVaultApprove = (setLastUpdated: () => void) => {
+export const useVaultApprove = (vaultKey: VaultKey, setLastUpdated: () => void) => {
+  const vaultPoolContract = useVaultPoolContract(vaultKey)
   const { t } = useTranslation()
-  const { toastSuccess } = useToast()
-  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const vaultPoolContract = useVaultPoolContract()
-  const { callWithGasPrice } = useCallWithGasPrice()
-  const { signer: cakeContract } = useCake()
 
-  const handleApprove = async () => {
-    const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(cakeContract, 'approve', [vaultPoolContract.address, MaxUint256])
-    })
-    if (receipt?.status) {
-      toastSuccess(
-        t('Contract Enabled'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('You can now stake in the %symbol% vault!', { symbol: 'CAKE' })}
-        </ToastDescriptionWithTx>,
-      )
-      setLastUpdated()
-    }
-  }
-
-  return { handleApprove, pendingTx }
+  return useCakeApprove(
+    setLastUpdated,
+    vaultPoolContract?.address,
+    t('You can now stake in the %symbol% vault!', { symbol: 'CAKE' }),
+  )
 }
 
-export const useCheckVaultApprovalStatus = () => {
-  const { account } = useWeb3React()
-  const { reader: cakeContract } = useCake()
-  const vaultPoolContract = useVaultPoolContract()
+export const useCheckVaultApprovalStatus = (vaultKey: VaultKey) => {
+  const vaultPoolContract = useVaultPoolContract(vaultKey)
 
-  const key = useMemo<UseSWRContractKey>(
-    () =>
-      account
-        ? {
-            contract: cakeContract,
-            methodName: 'allowance',
-            params: [account, vaultPoolContract.address],
-          }
-        : null,
-    [account, cakeContract, vaultPoolContract.address],
-  )
-
-  const { data, mutate } = useSWRContract(key)
-
-  return { isVaultApproved: data ? data.gt(0) : false, setLastUpdated: mutate }
+  return useCakeApprovalStatus(vaultPoolContract?.address)
 }

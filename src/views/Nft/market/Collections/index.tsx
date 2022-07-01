@@ -6,7 +6,6 @@ import {
   Grid,
   Heading,
   Text,
-  useMatchBreakpoints,
   Td,
   ProfileAvatar,
   BnbUsdtPairTokenIcon,
@@ -14,6 +13,7 @@ import {
   Th,
   Card,
   Skeleton,
+  useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
 import useSWRImmutable from 'swr/immutable'
 import orderBy from 'lodash/orderBy'
@@ -73,7 +73,7 @@ const getNewSortDirection = (oldSortField: string, newSortField: string, oldSort
 const Collectible = () => {
   const { t } = useTranslation()
   const { data: shuffledCollections } = useGetShuffledCollections()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
   const [sortField, setSortField] = useState(null)
   const [page, setPage] = useState(1)
   const [maxPage, setMaxPage] = useState(1)
@@ -178,11 +178,7 @@ const Collectible = () => {
               pl={['4px', null, '0']}
               mb="8px"
             >
-              <ToggleView
-                idPrefix="clickCollection"
-                viewMode={viewMode}
-                onToggle={(mode: ViewMode) => setViewMode(mode)}
-              />
+              <ToggleView idPrefix="clickCollection" viewMode={viewMode} onToggle={setViewMode} />
               <Flex width="max-content" style={{ gap: '4px' }} flexDirection="column">
                 <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600}>
                   {t('Sort By')}

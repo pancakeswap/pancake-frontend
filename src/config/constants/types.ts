@@ -1,5 +1,10 @@
 import BigNumber from 'bignumber.js'
-import { Token } from '@pancakeswap/sdk'
+import { Token, ChainId } from '@pancakeswap/sdk'
+
+// a list of tokens by chain
+export type ChainTokenList = {
+  readonly [chainId in ChainId]: Token[]
+}
 
 export type TranslatableText =
   | string
@@ -53,6 +58,7 @@ export interface Ifo {
   twitterUrl?: string
   telegramUrl?: string
   version: number
+  vestingTitle?: string
   [PoolIds.poolBasic]?: IfoPoolInfo
   [PoolIds.poolUnlimited]: IfoPoolInfo
 }
@@ -95,8 +101,6 @@ interface PoolConfigBaseProps {
   contractAddress: Address
   poolCategory: PoolCategory
   tokenPerBlock: string
-  sortOrder?: number
-  harvest?: boolean
   isFinished?: boolean
   enableEmergencyWithdraw?: boolean
   version?: number

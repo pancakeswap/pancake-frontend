@@ -9,10 +9,11 @@ import {
   computeTradePriceBreakdown,
   formatExecutionPrice,
   warningSeverity,
-} from 'utils/prices'
+} from 'utils/exchange'
 import { AutoColumn } from 'components/Layout/Column'
 import QuestionHelper from 'components/QuestionHelper'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
+import { TOTAL_FEE, LP_HOLDERS_FEE, TREASURY_FEE, BUYBACK_FEE } from 'config/constants/info'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from './styleds'
 
@@ -45,6 +46,11 @@ export default function SwapModalFooter({
   )
   const { priceImpactWithoutFee, realizedLPFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const severity = warningSeverity(priceImpactWithoutFee)
+
+  const totalFeePercent = `${(TOTAL_FEE * 100).toFixed(2)}%`
+  const lpHoldersFeePercent = `${(LP_HOLDERS_FEE * 100).toFixed(2)}%`
+  const treasuryFeePercent = `${(TREASURY_FEE * 100).toFixed(4)}%`
+  const buyBackFeePercent = `${(BUYBACK_FEE * 100).toFixed(4)}%`
 
   return (
     <>
@@ -109,10 +115,10 @@ export default function SwapModalFooter({
             <QuestionHelper
               text={
                 <>
-                  <Text mb="12px">{t('For each trade a %amount% fee is paid', { amount: '0.25%' })}</Text>
-                  <Text>- {t('%amount% to LP token holders', { amount: '0.17%' })}</Text>
-                  <Text>- {t('%amount% to the Treasury', { amount: '0.03%' })}</Text>
-                  <Text>- {t('%amount% towards CAKE buyback and burn', { amount: '0.05%' })}</Text>
+                  <Text mb="12px">{t('For each trade a %amount% fee is paid', { amount: totalFeePercent })}</Text>
+                  <Text>- {t('%amount% to LP token holders', { amount: lpHoldersFeePercent })}</Text>
+                  <Text>- {t('%amount% to the Treasury', { amount: treasuryFeePercent })}</Text>
+                  <Text>- {t('%amount% towards CAKE buyback and burn', { amount: buyBackFeePercent })}</Text>
                 </>
               }
               ml="4px"

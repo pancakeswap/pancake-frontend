@@ -4,6 +4,8 @@ import { Button, ChevronDownIcon, Text, AddIcon, useModal } from '@pancakeswap/u
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { NextLinkFromReactRouter } from 'components/NextLink'
+import { useWeb3React } from '@web3-react/core'
+import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import { CurrencyLogo } from '../../components/Logo'
@@ -11,7 +13,6 @@ import { MinimalPositionCard } from '../../components/PositionCard'
 import Row from '../../components/Layout/Row'
 import CurrencySearchModal from '../../components/SearchModal/CurrencySearchModal'
 import { PairState, usePair } from '../../hooks/usePairs'
-import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { usePairAdder } from '../../state/user/hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { currencyId } from '../../utils/currencyId'
@@ -32,7 +33,7 @@ const StyledButton = styled(Button)`
 `
 
 export default function PoolFinder() {
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
   const { t } = useTranslation()
 
   const [activeField, setActiveField] = useState<number>(Fields.TOKEN1)
@@ -52,12 +53,12 @@ export default function PoolFinder() {
     Boolean(
       pairState === PairState.EXISTS &&
         pair &&
-        JSBI.equal(pair.reserve0.raw, JSBI.BigInt(0)) &&
-        JSBI.equal(pair.reserve1.raw, JSBI.BigInt(0)),
+        JSBI.equal(pair.reserve0.raw, BIG_INT_ZERO) &&
+        JSBI.equal(pair.reserve1.raw, BIG_INT_ZERO),
     )
 
   const position: TokenAmount | undefined = useTokenBalance(account ?? undefined, pair?.liquidityToken)
-  const hasPosition = Boolean(position && JSBI.greaterThan(position.raw, JSBI.BigInt(0)))
+  const hasPosition = Boolean(position && JSBI.greaterThan(position.raw, BIG_INT_ZERO))
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {

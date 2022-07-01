@@ -1,27 +1,25 @@
 import { Contract } from '@ethersproject/contracts'
 import type { Signer } from '@ethersproject/abstract-signer'
 import type { Provider } from '@ethersproject/providers'
+import memoize from 'lodash/memoize'
 import { getAddress } from '@ethersproject/address'
 import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
-import IPancakeRouter02ABI from 'config/abi/IPancakeRouter02.json'
-import { IPancakeRouter02 } from 'config/abi/types/IPancakeRouter02'
 import { CHAIN_ID } from 'config/constants/networks'
-import { JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@pancakeswap/sdk'
+import { Token, Currency, ETHER } from '@pancakeswap/sdk'
 import { TokenAddressMap } from 'state/types'
-import { ROUTER_ADDRESS } from '../config/constants'
 import { BASE_BSC_SCAN_URLS } from '../config'
 import { simpleRpcProvider } from './providers'
 
 // returns the checksummed address if the address is valid, otherwise returns false
-export function isAddress(value: any): string | false {
+export const isAddress = memoize((value: any): string | false => {
   try {
     return getAddress(value)
   } catch {
     return false
   }
-}
+})
 
 export function getBscScanLink(
   data: string | number,
@@ -49,28 +47,12 @@ export function getBscScanLink(
 }
 
 export function getBscScanLinkForNft(collectionAddress: string, tokenId: string): string {
-  const chainId = CHAIN_ID
-  return `${BASE_BSC_SCAN_URLS[chainId]}/token/${collectionAddress}?a=${tokenId}`
+  return `${BASE_BSC_SCAN_URLS[CHAIN_ID]}/token/${collectionAddress}?a=${tokenId}`
 }
 
 // add 10%
 export function calculateGasMargin(value: BigNumber): BigNumber {
   return value.mul(BigNumber.from(10000).add(BigNumber.from(1000))).div(BigNumber.from(10000))
-}
-
-// converts a basis points value to a sdk percent
-export function basisPointsToPercent(num: number): Percent {
-  return new Percent(JSBI.BigInt(num), JSBI.BigInt(10000))
-}
-
-export function calculateSlippageAmount(value: CurrencyAmount, slippage: number): [JSBI, JSBI] {
-  if (slippage < 0 || slippage > 10000) {
-    throw Error(`Unexpected slippage value: ${slippage}`)
-  }
-  return [
-    JSBI.divide(JSBI.multiply(value.raw, JSBI.BigInt(10000 - slippage)), JSBI.BigInt(10000)),
-    JSBI.divide(JSBI.multiply(value.raw, JSBI.BigInt(10000 + slippage)), JSBI.BigInt(10000)),
-  ]
 }
 
 // account is not optional
@@ -90,15 +72,6 @@ export function getContract(address: string, ABI: any, signer?: Signer | Provide
   }
 
   return new Contract(address, ABI, signer ?? simpleRpcProvider)
-}
-
-// account is optional
-export function getRouterContract(_: number, library: Web3Provider, account?: string) {
-  return getContract(
-    ROUTER_ADDRESS[CHAIN_ID],
-    IPancakeRouter02ABI,
-    getProviderOrSigner(library, account),
-  ) as IPancakeRouter02
 }
 
 export function escapeRegExp(string: string): string {

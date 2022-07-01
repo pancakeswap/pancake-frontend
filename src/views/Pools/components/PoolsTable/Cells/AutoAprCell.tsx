@@ -1,11 +1,11 @@
-import { Skeleton, Text, Flex, Button, CalculateIcon, useModal, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Skeleton, Text, Flex, Button, CalculateIcon, useModal, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import Balance from 'components/Balance'
 import { FlexGap } from 'components/Layout/Flex'
 import { useTranslation } from 'contexts/Localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool } from 'state/types'
+import { DeserializedPool, DeserializedLockedVaultUser, VaultKey } from 'state/types'
 import { MAX_LOCK_DURATION } from 'config/constants/pools'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { VaultRoiCalculatorModal } from '../../Vault/VaultRoiCalculatorModal'
@@ -23,7 +23,7 @@ interface AprCellProps {
 
 const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
 
   const { userData } = useVaultPoolByKey(pool.vaultKey)
 
@@ -31,7 +31,10 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
 
   const { flexibleApy, lockedApy } = useVaultApy({
     duration:
-      vaultPosition > VaultPosition.Flexible ? +userData.lockEndTime - +userData.lockStartTime : MAX_LOCK_DURATION,
+      vaultPosition > VaultPosition.Flexible
+        ? +(userData as DeserializedLockedVaultUser).lockEndTime -
+          +(userData as DeserializedLockedVaultUser).lockStartTime
+        : MAX_LOCK_DURATION,
   })
 
   const [onPresentFlexibleApyModal] = useModal(<VaultRoiCalculatorModal pool={pool} />)
@@ -39,10 +42,10 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
     <VaultRoiCalculatorModal pool={pool} initialView={1} />,
     true,
     true,
-    'LockedVaultRoiCalculatorModal',
+    pool.vaultKey === VaultKey.CakeVault ? 'LockedVaultRoiCalculatorModal' : 'FlexibleSideVaultRoiCalculatorModal',
   )
 
-  if (vaultPosition === VaultPosition.None) {
+  if (pool.vaultKey === VaultKey.CakeVault && vaultPosition === VaultPosition.None) {
     return (
       <>
         <BaseCell role="cell" flex={['1 0 50px', '4.5', '1 0 120px', null, '2 0 100px']}>

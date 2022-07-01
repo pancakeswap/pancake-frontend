@@ -317,9 +317,7 @@ const Farms: React.FC = ({ children }) => {
 
   const renderContent = (): JSX.Element => {
     if (viewMode === ViewMode.TABLE && rowData.length) {
-      const columnSchema = DesktopColumnSchema
-
-      const columns = columnSchema.map((column) => ({
+      const columns = DesktopColumnSchema.map((column) => ({
         id: column.id,
         name: column.name,
         label: column.label,
@@ -373,7 +371,7 @@ const Farms: React.FC = ({ children }) => {
       <Page>
         <ControlContainer>
           <ViewControls>
-            <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
+            <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
             <ToggleWrapper>
               <Toggle
                 id="staked-only-farms"

@@ -2,16 +2,16 @@ import { useCallback, useEffect, useState } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '@pancakeswap/sdk'
-import { Button, Text, AddIcon, CardBody, Message, useModal } from '@pancakeswap/uikit'
+import { Button, Text, AddIcon, CardBody, Message, useModal, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { logError } from 'utils/sentry'
-import { useIsTransactionUnsupported } from 'hooks/Trades'
+import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import { useTranslation } from 'contexts/Localization'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
 import { CHAIN_ID } from 'config/constants/networks'
-import { AppDispatch } from '../../state'
+import { useLPApr } from 'state/swap/hooks'
+import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -20,7 +20,6 @@ import { MinimalPositionCard } from '../../components/PositionCard'
 import { RowBetween } from '../../components/Layout/Row'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 
-import { ROUTER_ADDRESS } from '../../config/constants'
 import { PairState } from '../../hooks/usePairs'
 import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
@@ -30,7 +29,8 @@ import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../s
 
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { useGasPrice, useIsExpertMode, useUserSlippageTolerance } from '../../state/user/hooks'
-import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '../../utils'
+import { calculateGasMargin } from '../../utils'
+import { getRouterContract, calculateSlippageAmount } from '../../utils/exchange'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import Dots from '../../components/Loader/Dots'
@@ -38,13 +38,15 @@ import { currencyId } from '../../utils/currencyId'
 import PoolPriceBar from './PoolPriceBar'
 import Page from '../Page'
 import ConfirmAddLiquidityModal from '../Swap/components/ConfirmAddLiquidityModal'
+import { formatAmount } from '../../utils/formatInfoNumbers'
+import { useAppDispatch } from '../../state'
 
 export default function AddLiquidity() {
   const router = useRouter()
   const [currencyIdA, currencyIdB] = router.query.currency || []
 
   const { account, chainId, library } = useActiveWeb3React()
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const gasPrice = useGasPrice()
 
@@ -80,6 +82,14 @@ export default function AddLiquidity() {
     poolTokenPercentage,
     error,
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
+
+  const poolData = useLPApr(pair)
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t(`Based on last 7 days' performance. Does not account for impermanent loss`),
+    {
+      placement: 'bottom',
+    },
+  )
 
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
 
@@ -255,6 +265,7 @@ export default function AddLiquidity() {
   }, [onFieldAInput, txHash])
 
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
+  const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
   const [onPresentAddLiquidityModal] = useModal(
     <ConfirmAddLiquidityModal
@@ -332,6 +343,17 @@ export default function AddLiquidity() {
               id="add-liquidity-input-tokenb"
               showCommonBases
             />
+            {pair && poolData && (
+              <RowBetween>
+                <TooltipText ref={targetRef} bold fontSize="12px" color="secondary">
+                  {t('LP reward APR')}
+                </TooltipText>
+                {tooltipVisible && tooltip}
+                <Text bold color="primary">
+                  {formatAmount(poolData.lpApr7d)}%
+                </Text>
+              </RowBetween>
+            )}
             {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
               <>
                 <LightCard padding="0px" borderRadius="20px">
@@ -352,7 +374,7 @@ export default function AddLiquidity() {
               </>
             )}
 
-            {addIsUnsupported ? (
+            {addIsUnsupported || addIsWarning ? (
               <Button disabled mb="4px">
                 {t('Unsupported Asset')}
               </Button>
@@ -421,7 +443,7 @@ export default function AddLiquidity() {
           </AutoColumn>
         </CardBody>
       </AppBody>
-      {!addIsUnsupported ? (
+      {!(addIsUnsupported || addIsWarning) ? (
         pair && !noLiquidity && pairState !== PairState.INVALID ? (
           <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
             <MinimalPositionCard showUnwrapped={oneCurrencyIsWBNB} pair={pair} />

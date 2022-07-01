@@ -1,10 +1,10 @@
-import { Box, Flex, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, Skeleton, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
 
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool } from 'state/types'
+import { DeserializedPool, VaultKey, DeserializedPoolLockedVault } from 'state/types'
 import styled from 'styled-components'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -19,18 +19,18 @@ const StyledCell = styled(BaseCell)``
 
 const StakedCell: React.FC<StakedCellProps> = ({ pool, account }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
 
   // vault
+  const vaultData = useVaultPoolByKey(pool.vaultKey)
   const {
     userData: {
-      locked,
-      isLoading: vaultUserDataLoading,
       userShares,
       balance: { cakeAsBigNumber, cakeAsNumberBalance },
+      isLoading,
     },
-  } = useVaultPoolByKey(pool.vaultKey)
-  const hasSharesStaked = userShares && userShares.gt(0)
+  } = vaultData
+  const hasSharesStaked = userShares.gt(0)
   const isVaultWithShares = pool.vaultKey && hasSharesStaked
 
   // pool
@@ -43,14 +43,27 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool, account }) => {
     stakingToken.decimals,
   )
 
-  const labelText = `${pool.stakingToken.symbol} ${locked ? t('Locked') : t('Staked')}`
+  const labelText = `${pool.stakingToken.symbol} ${
+    pool.vaultKey === VaultKey.CakeVault && (vaultData as DeserializedPoolLockedVault).userData.locked
+      ? t('Locked')
+      : t('Staked')
+  }`
 
   const hasStaked = account && (stakedBalance.gt(0) || isVaultWithShares)
 
-  const userDataLoading = pool.vaultKey ? vaultUserDataLoading : !pool.userDataLoaded
+  const userDataLoading = pool.vaultKey ? isLoading : !pool.userDataLoaded
 
   return (
-    <StyledCell role="cell" flex={pool.vaultKey && !hasStaked ? '1 0 120px' : '2 0 100px'}>
+    <StyledCell
+      role="cell"
+      flex={
+        pool.vaultKey === VaultKey.CakeFlexibleSideVault
+          ? '1 0 162px'
+          : pool.vaultKey === VaultKey.CakeVault && !hasStaked
+          ? '1 0 120px'
+          : '2 0 100px'
+      }
+    >
       <CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}

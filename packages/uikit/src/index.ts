@@ -36,9 +36,13 @@ export * from "./components/Tag";
 export * from "./components/Text";
 export * from "./components/Timeline";
 export * from "./components/Toggle";
+export * from "./components/CoinSwitcher";
 
 // Hooks
 export * from "./hooks";
+
+// Contexts
+export * from "./contexts";
 
 // Widgets
 export * from "./widgets/Modal";

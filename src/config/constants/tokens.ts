@@ -9,7 +9,7 @@ interface TokenList {
   [symbol: string]: Token
 }
 
-const defineTokens = <T extends TokenList>(t: T) => t
+export const defineTokens = <T extends TokenList>(t: T) => t
 
 export const mainnetTokens = defineTokens({
   wbnb: new Token(
@@ -2104,6 +2104,22 @@ export const mainnetTokens = defineTokens({
     'MixMarvel Token',
     'https://www.mixmarvel.com/',
   ),
+  peak: new Token(
+    MAINNET,
+    '0x630d98424eFe0Ea27fB1b3Ab7741907DFFEaAd78',
+    8,
+    'PEAK',
+    'PEAKDEFI',
+    'https://peakdefi.com/',
+  ),
+  nbt: new Token(
+    MAINNET,
+    '0x1D3437E570e93581Bd94b2fd8Fbf202d4a65654A',
+    18,
+    'NBT',
+    'NanoByte Token',
+    'https://www.nanobyte.finance/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
@@ -2150,10 +2166,8 @@ export const testnetTokens = defineTokens({
 } as const)
 
 const tokens = () => {
-  const chainId = CHAIN_ID
-
   // If testnet - return list comprised of testnetTokens wherever they exist, and mainnetTokens where they don't
-  if (parseInt(chainId, 10) === ChainId.TESTNET) {
+  if (parseInt(CHAIN_ID, 10) === ChainId.TESTNET) {
     return Object.keys(mainnetTokens).reduce((accum, key) => {
       return { ...accum, [key]: testnetTokens[key] || mainnetTokens[key] }
     }, {} as typeof testnetTokens & typeof mainnetTokens)
