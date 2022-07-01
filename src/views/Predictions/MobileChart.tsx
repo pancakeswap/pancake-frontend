@@ -22,13 +22,21 @@ const ChartWrapper = styled.div`
   background-color: ${({ theme }) => theme.card.background};
 `
 
+const MobileChartWrapper = styled(Flex)`
+  flex-direction: column;
+  height: 100%;
+  @media only screen and (max-width: 575px) and (max-height: 739px) {
+    height: 100vh;
+  }
+`
+
 const MobileChart = () => {
   const chartView = useChartView()
   const dispatch = useLocalDispatch()
   const { t } = useTranslation()
 
   return (
-    <Flex flexDirection="column" height="100%">
+    <MobileChartWrapper>
       <MenuWrapper>
         <Menu />
       </MenuWrapper>
@@ -53,7 +61,7 @@ const MobileChart = () => {
           <ChainlinkChart pt="8px" background="background" isMobile />
         )}
       </ChartWrapper>
-    </Flex>
+    </MobileChartWrapper>
   )
 }
 
