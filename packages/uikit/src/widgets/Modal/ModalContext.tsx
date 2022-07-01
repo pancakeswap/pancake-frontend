@@ -10,6 +10,8 @@ import {
   disappearAnimation,
 } from "../../util/animationToolkit";
 import { Handler } from "./types";
+import { ModalContainer } from "./styles";
+import { unmountAnimation } from "../../components/BottomDrawer/styles";
 
 interface ModalsContext {
   isOpen: boolean;
@@ -21,6 +23,7 @@ interface ModalsContext {
 }
 
 const ModalWrapper = styled(m.div)`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -38,6 +41,13 @@ const ModalWrapper = styled(m.div)`
   }
   &.disappear {
     animation: ${disappearAnimation} 0.3s ease-in-out forwards;
+
+    ${ModalContainer} {
+      animation: ${unmountAnimation} 0.3s ease forwards;
+      ${({ theme }) => theme.mediaQueries.md} {
+        animation: none;
+      }
+    }
   }
 `;
 
