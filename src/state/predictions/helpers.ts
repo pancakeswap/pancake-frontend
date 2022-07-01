@@ -1,5 +1,5 @@
 import { request, gql } from 'graphql-request'
-import { GRAPH_API_PREDICTION, GRAPH_API_PREDICTION_CAKE } from 'config/constants/endpoints'
+import { GRAPH_API_PREDICTION_BNB, GRAPH_API_PREDICTION_CAKE } from 'config/constants/endpoints'
 import { BigNumber } from '@ethersproject/bignumber'
 import {
   Bet,
@@ -82,7 +82,7 @@ const getTotalWonMarket = (market, tokenSymbol) => {
 export const getTotalWon = async (): Promise<{ totalWonBNB: number; totalWonCAKE: number }> => {
   const [{ market: BNBMarket, market: CAKEMarket }] = await Promise.all([
     request(
-      GRAPH_API_PREDICTION,
+      GRAPH_API_PREDICTION_BNB,
       gql`
         query getTotalWonData {
           market(id: 1) {
