@@ -30,7 +30,6 @@ const Modal: React.FC<ModalProps> = ({
         if (wrapperRef.current) wrapperRef.current.style.animation = "none";
       }}
       onDragEnd={(e, info) => {
-        if (wrapperRef.current) wrapperRef.current.style.animation = "";
         if (info.offset.y > 3 && onDismiss) onDismiss();
       }}
       ref={wrapperRef}
