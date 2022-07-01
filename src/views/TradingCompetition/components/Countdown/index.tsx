@@ -28,6 +28,10 @@ const Wrapper = styled(Flex)`
     flex-direction: column;
     margin: -38px 0 0 36px;
   }
+
+  @media screen and (min-width: 1920px) {
+    margin-top: -66px;
+  }
 `
 
 const PocketWatchWrapper = styled(Flex)`
