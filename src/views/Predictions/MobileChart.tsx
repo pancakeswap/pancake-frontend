@@ -40,20 +40,22 @@ const MobileChart = () => {
       <MenuWrapper>
         <Menu />
       </MenuWrapper>
-      <TabToggleGroup>
-        <TabToggle
-          isActive={chartView === PredictionsChartView.TradingView}
-          onClick={() => dispatch(setChartView(PredictionsChartView.TradingView))}
-        >
-          TradingView {t('Chart')}
-        </TabToggle>
-        <TabToggle
-          isActive={chartView === PredictionsChartView.Chainlink}
-          onClick={() => dispatch(setChartView(PredictionsChartView.Chainlink))}
-        >
-          Chainlink {t('Chart')}
-        </TabToggle>
-      </TabToggleGroup>
+      <div style={{ height: 'min-content' }}>
+        <TabToggleGroup>
+          <TabToggle
+            isActive={chartView === PredictionsChartView.TradingView}
+            onClick={() => dispatch(setChartView(PredictionsChartView.TradingView))}
+          >
+            TradingView {t('Chart')}
+          </TabToggle>
+          <TabToggle
+            isActive={chartView === PredictionsChartView.Chainlink}
+            onClick={() => dispatch(setChartView(PredictionsChartView.Chainlink))}
+          >
+            Chainlink {t('Chart')}
+          </TabToggle>
+        </TabToggleGroup>
+      </div>
       <ChartWrapper>
         {chartView === PredictionsChartView.TradingView ? (
           <TradingView />
