@@ -72,9 +72,6 @@ export const getCakeFlexibleSideVaultAddress = () => {
   return getAddress(addresses.cakeFlexibleSideVault)
 }
 
-export const getChainlinkOracleAddress = () => {
-  return getAddress(addresses.chainlinkOracle)
-}
 export const getBunnySpecialCakeVaultAddress = () => {
   return getAddress(addresses.bunnySpecialCakeVault)
 }
