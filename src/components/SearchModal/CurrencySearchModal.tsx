@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useRef } from 'react'
 import { Currency, Token } from '@pancakeswap/sdk'
 import {
   ModalContainer,
@@ -10,6 +10,7 @@ import {
   InjectedModalProps,
   Heading,
   Button,
+  useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import usePrevious from 'hooks/usePreviousValue'
@@ -88,9 +89,24 @@ export default function CurrencySearchModal({
     },
     [CurrencyModalView.importList]: { title: t('Import List'), onBack: () => setModalView(CurrencyModalView.search) },
   }
+  const { isMobile } = useMatchBreakpointsContext()
+  const wrapperRef = useRef<HTMLDivElement>(null)
 
   return (
-    <StyledModalContainer minWidth="320px">
+    <StyledModalContainer
+      drag={isMobile ? 'y' : false}
+      dragConstraints={{ top: 0, bottom: 100 }}
+      dragElastic={{ top: 0 }}
+      onDragStart={() => {
+        if (wrapperRef.current) wrapperRef.current.style.animation = 'none'
+      }}
+      onDragEnd={(e, info) => {
+        if (wrapperRef.current) wrapperRef.current.style.animation = ''
+        if (info.offset.y > 3 && onDismiss) onDismiss()
+      }}
+      ref={wrapperRef}
+      minWidth="320px"
+    >
       <ModalHeader>
         <ModalTitle>
           {config[modalView].onBack && <ModalBackButton onBack={config[modalView].onBack} />}

@@ -24,8 +24,7 @@ const Modal: React.FC<ModalProps> = ({
     // @ts-ignore
     <ModalContainer
       drag={isMobile ? "y" : false}
-      dragConstraints={{ top: 0, bottom: 50 }}
-      minWidth={minWidth}
+      dragConstraints={{ top: 0, bottom: 100 }}
       dragElastic={{ top: 0 }}
       onDragStart={() => {
         if (wrapperRef.current) wrapperRef.current.style.animation = "none";
@@ -35,6 +34,7 @@ const Modal: React.FC<ModalProps> = ({
         if (info.offset.y > 3 && onDismiss) onDismiss();
       }}
       ref={wrapperRef}
+      minWidth={minWidth}
       {...props}
     >
       <ModalHeader background={getThemeValue(`colors.${headerBackground}`, headerBackground)(theme)}>
