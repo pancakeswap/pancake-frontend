@@ -24,14 +24,15 @@ const Modal: React.FC<ModalProps> = ({
     // @ts-ignore
     <ModalContainer
       drag={isMobile ? "y" : false}
-      dragConstraints={{ top: 0, bottom: 0 }}
+      dragConstraints={{ top: 0, bottom: 50 }}
       minWidth={minWidth}
+      dragElastic={{ top: 0 }}
       onDragStart={() => {
         if (wrapperRef.current) wrapperRef.current.style.animation = "none";
       }}
       onDragEnd={(e, info) => {
         if (wrapperRef.current) wrapperRef.current.style.animation = "";
-        if (info.offset.y > 20 && onDismiss) onDismiss();
+        if (info.offset.y > 3 && onDismiss) onDismiss();
       }}
       ref={wrapperRef}
       {...props}
