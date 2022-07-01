@@ -89,7 +89,7 @@ function Item({ type, isOk, isSingle, pointThreshold, admissionProfile }) {
   const Icon = isOk ? config[type]?.OkIcon : config[type]?.NotOkIcon
   const msg = isOk ? config[type]?.okMsg : config[type]?.notOkMsg
 
-  const { tooltipVisible, targetRef, tooltip } = useTooltip(msg, { placement: 'bottom', trigger: 'hover' })
+  const { tooltipVisible, targetRef, tooltip } = useTooltip(msg, { placement: 'bottom' })
 
   return (
     <Flex
