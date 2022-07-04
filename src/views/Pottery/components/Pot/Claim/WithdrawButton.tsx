@@ -4,11 +4,11 @@ import { useWithdrawPottery } from 'views/Pottery/hooks/useWithdrawPottery'
 import BigNumber from 'bignumber.js'
 
 interface WithdrawButtonProps {
-  amount: BigNumber
+  cakeNumber: BigNumber
   redeemShare: string
 }
 
-const WithdrawButton: React.FC<WithdrawButtonProps> = ({ amount, redeemShare }) => {
+const WithdrawButton: React.FC<WithdrawButtonProps> = ({ cakeNumber, redeemShare }) => {
   const { t } = useTranslation()
   const { isPending, handleWithdraw } = useWithdrawPottery(redeemShare)
 
@@ -17,7 +17,7 @@ const WithdrawButton: React.FC<WithdrawButtonProps> = ({ amount, redeemShare }) 
       width="162px"
       ml="auto"
       variant="secondary"
-      disabled={isPending || amount.lte(0) || amount.isNaN()}
+      disabled={isPending || cakeNumber.lte(0) || cakeNumber.isNaN()}
       endIcon={isPending ? <AutoRenewIcon spin color="currentColor" /> : null}
       onClick={handleWithdraw}
     >

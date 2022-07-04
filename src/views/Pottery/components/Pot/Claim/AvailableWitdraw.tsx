@@ -5,33 +5,44 @@ import Balance from 'components/Balance'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { PotteryWithdrawAbleData } from 'state/types'
+import { DeserializedPublicData, PotteryWithdrawAbleData, PotteryDepositStatus } from 'state/types'
 import WithdrawButton from 'views/Pottery/components/Pot/Claim/WithdrawButton'
 import { convertTimeToSeconds } from 'utils/timeHelper'
 
 interface AvailableWitdrawProps {
+  publicData: DeserializedPublicData
   withdrawData: PotteryWithdrawAbleData
 }
 
-const AvailableWitdraw: React.FC<AvailableWitdrawProps> = ({ withdrawData }) => {
+const AvailableWitdraw: React.FC<AvailableWitdrawProps> = ({ publicData, withdrawData }) => {
   const {
     t,
     currentLanguage: { locale },
   } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
+  const { totalSupply, totalLockCake, getStatus } = publicData
+  const { previewRedeem, depositDate, shares } = withdrawData
 
-  const amountAsBn = new BigNumber(withdrawData.previewRedeem)
+  const cakeNumber = useMemo(() => new BigNumber(previewRedeem), [previewRedeem])
+
+  const amountAsBn = useMemo(() => {
+    if (getStatus === PotteryDepositStatus.LOCK) {
+      return new BigNumber(shares).div(totalSupply).times(totalLockCake)
+    }
+    return cakeNumber
+  }, [shares, cakeNumber, getStatus, totalSupply, totalLockCake])
+
   const amount = getBalanceNumber(amountAsBn)
   const amountInBusd = new BigNumber(amount).times(cakePriceBusd).toNumber()
 
   const lockDate = useMemo(() => {
-    const lockDateTimeSeconds = convertTimeToSeconds(withdrawData.depositDate)
+    const lockDateTimeSeconds = convertTimeToSeconds(depositDate)
     return new Date(lockDateTimeSeconds).toLocaleString(locale, {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
     })
-  }, [withdrawData, locale])
+  }, [depositDate, locale])
 
   return (
     <Box>
@@ -49,7 +60,7 @@ const AvailableWitdraw: React.FC<AvailableWitdrawProps> = ({ withdrawData }) => 
             {t('Deposited %date%', { date: lockDate })}
           </Text>
         </Box>
-        <WithdrawButton amount={amountAsBn} redeemShare={withdrawData.shares} />
+        <WithdrawButton cakeNumber={cakeNumber} redeemShare={shares} />
       </Flex>
     </Box>
   )

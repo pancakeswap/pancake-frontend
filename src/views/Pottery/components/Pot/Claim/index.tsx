@@ -29,7 +29,7 @@ const Claim: React.FC = () => {
               <WinRate />
             </Flex>
             {userData.withdrawAbleData.map((data) => (
-              <AvailableWitdraw key={data.id} withdrawData={data} />
+              <AvailableWitdraw key={data.id} publicData={publicData} withdrawData={data} />
             ))}
             <PrizeToBeClaimed userData={userData} />
           </GreyCard>
