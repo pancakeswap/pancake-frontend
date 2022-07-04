@@ -7,7 +7,7 @@ import {
   PotteryRoundInfo,
 } from 'state/types'
 import { resetUserState } from '../global/actions'
-import { fetchPotteryFinisedRound } from './fetchPotteryRound'
+import { fetchPotteryFinishedRound } from './fetchPotteryRound'
 import { fetchPublicPotteryValue, fetchTotalLockedValue } from './fetchPottery'
 import {
   fetchPotterysAllowance,
@@ -85,7 +85,7 @@ export const fetchPotteryUserDataAsync = createAsyncThunk<SerializedPotteryUserD
 export const fetchPotteryRoundData = createAsyncThunk<PotteryRoundInfo, string>(
   'pottery/fetchPotteryRound',
   async (roundId) => {
-    const response = await fetchPotteryFinisedRound(roundId)
+    const response = await fetchPotteryFinishedRound(roundId)
     return response
   },
 )

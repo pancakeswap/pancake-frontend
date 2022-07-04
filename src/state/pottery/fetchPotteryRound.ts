@@ -1,7 +1,7 @@
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
 
-export const fetchPotteryFinisedRound = async (potteryRoundId: string) => {
+export const fetchPotteryFinishedRound = async (potteryRoundId: string) => {
   try {
     const response = await request(
       GRAPH_API_POTTERY,
