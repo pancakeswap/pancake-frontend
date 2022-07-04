@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.9.2",
-    "@types/styled-system": "^5.1.10",
+    "@types/styled-system": "^5.1.15",
     "framer-motion": "4.1.17",
     "lodash": "^4.17.20",
     "react-popper": "^2.2.5",

@@ -36,6 +36,7 @@ import {
   getErc721CollectionContract,
   getBunnySpecialXmasContract,
   getGalaxyNTFClaimingContract,
+  getZapContract,
   getCakeFlexibleSideVaultV2Contract,
   getCakePredictionsContract,
 } from 'utils/contractHelpers'
@@ -370,4 +371,13 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 
 export function useMulticallContract() {
   return useContract<Multicall>(getMulticallAddress(), multiCallAbi, false)
+}
+
+export function useZapContract(withSignerIfPossible = true) {
+  const { library, account } = useActiveWeb3React()
+  const signer = useMemo(
+    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [withSignerIfPossible, library, account],
+  )
+  return useMemo(() => getZapContract(signer), [signer])
 }

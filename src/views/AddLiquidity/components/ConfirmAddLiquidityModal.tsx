@@ -1,16 +1,13 @@
 import React, { useCallback } from 'react'
 import { Currency, CurrencyAmount, Fraction, Percent, Token, TokenAmount } from '@pancakeswap/sdk'
-import { Flex, InjectedModalProps, Text } from '@pancakeswap/uikit'
+import { InjectedModalProps, Button } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
   TransactionErrorContent,
 } from 'components/TransactionConfirmationModal'
-import { AutoColumn } from 'components/Layout/Column'
-import Row from 'components/Layout/Row'
 import { Field } from 'state/burn/actions'
-import { DoubleCurrencyLogo } from 'components/Logo'
-import ConfirmAddModalBottom from '../../AddLiquidity/ConfirmAddModalBottom'
+import { AddLiquidityModalHeader, PairDistribution } from './common'
 
 interface ConfirmAddLiquidityModalProps {
   title: string
@@ -51,55 +48,34 @@ const ConfirmAddLiquidityModal: React.FC<InjectedModalProps & ConfirmAddLiquidit
   const { t } = useTranslation()
 
   const modalHeader = useCallback(() => {
-    return noLiquidity ? (
-      <Flex alignItems="center">
-        <Text fontSize="48px" marginRight="10px">
-          {`${currencies[Field.CURRENCY_A]?.symbol}/${currencies[Field.CURRENCY_B]?.symbol}`}
-        </Text>
-        <DoubleCurrencyLogo
-          currency0={currencies[Field.CURRENCY_A]}
-          currency1={currencies[Field.CURRENCY_B]}
-          size={30}
+    return (
+      <AddLiquidityModalHeader
+        allowedSlippage={allowedSlippage}
+        currencies={currencies}
+        liquidityMinted={liquidityMinted}
+        poolTokenPercentage={poolTokenPercentage}
+        price={price}
+        noLiquidity={noLiquidity}
+      >
+        <PairDistribution
+          title={t('Input')}
+          percent={0.5}
+          currencyA={currencies[Field.CURRENCY_A]}
+          currencyAValue={parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}
+          currencyB={currencies[Field.CURRENCY_B]}
+          currencyBValue={parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)}
         />
-      </Flex>
-    ) : (
-      <AutoColumn>
-        <Flex alignItems="center">
-          <Text fontSize="48px" marginRight="10px">
-            {liquidityMinted?.toSignificant(6)}
-          </Text>
-          <DoubleCurrencyLogo
-            currency0={currencies[Field.CURRENCY_A]}
-            currency1={currencies[Field.CURRENCY_B]}
-            size={30}
-          />
-        </Flex>
-        <Row>
-          <Text fontSize="24px">
-            {`${currencies[Field.CURRENCY_A]?.symbol}/${currencies[Field.CURRENCY_B]?.symbol} Pool Tokens`}
-          </Text>
-        </Row>
-        <Text small textAlign="left" my="24px">
-          {t('Output is estimated. If the price changes by more than %slippage%% your transaction will revert.', {
-            slippage: allowedSlippage / 100,
-          })}
-        </Text>
-      </AutoColumn>
+      </AddLiquidityModalHeader>
     )
-  }, [currencies, liquidityMinted, allowedSlippage, noLiquidity, t])
+  }, [allowedSlippage, currencies, liquidityMinted, noLiquidity, parsedAmounts, poolTokenPercentage, price, t])
 
   const modalBottom = useCallback(() => {
     return (
-      <ConfirmAddModalBottom
-        price={price}
-        currencies={currencies}
-        parsedAmounts={parsedAmounts}
-        noLiquidity={noLiquidity}
-        onAdd={onAdd}
-        poolTokenPercentage={poolTokenPercentage}
-      />
+      <Button width="100%" onClick={onAdd} mt="20px">
+        {noLiquidity ? t('Create Pool & Supply') : t('Confirm Supply')}
+      </Button>
     )
-  }, [currencies, noLiquidity, onAdd, parsedAmounts, poolTokenPercentage, price])
+  }, [noLiquidity, onAdd, t])
 
   const confirmationContent = useCallback(
     () =>
@@ -113,6 +89,8 @@ const ConfirmAddLiquidityModal: React.FC<InjectedModalProps & ConfirmAddLiquidit
 
   return (
     <TransactionConfirmationModal
+      // @ts-ignore
+      minWidth={['100%', '420px']}
       title={title}
       onDismiss={onDismiss}
       customOnDismiss={customOnDismiss}

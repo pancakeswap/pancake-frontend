@@ -36,6 +36,7 @@ import {
   getBunnySpecialXmasAddress,
   getICakeAddress,
   getGalaxyNFTClaimingAddress,
+  getZapAddress,
   getCakeFlexibleSideVaultAddress,
 } from 'utils/addressHelpers'
 
@@ -79,6 +80,7 @@ import nftMarketAbi from 'config/abi/nftMarket.json'
 import nftSaleAbi from 'config/abi/nftSale.json'
 import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
+import zapAbi from 'config/abi/zap.json'
 import iCakeAbi from 'config/abi/iCake.json'
 import ifoV3Abi from 'config/abi/ifoV3.json'
 import cakePredictionsAbi from 'config/abi/cakePredictions.json'
@@ -123,6 +125,7 @@ import type {
   TradingCompetitionMobox,
   ICake,
   TradingCompetitionMoD,
+  Zap,
 } from 'config/abi/types'
 
 export const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
@@ -270,6 +273,11 @@ export const getPancakeSquadContract = (signer?: Signer | Provider) => {
 export const getErc721CollectionContract = (signer?: Signer | Provider, address?: string) => {
   return getContract(erc721CollectionAbi, address, signer) as Erc721collection
 }
+
+export const getZapContract = (signer?: Signer | Provider) => {
+  return getContract(zapAbi, getZapAddress(), signer) as Zap
+}
+
 export const getIfoCreditAddressContract = (signer?: Signer | Provider) => {
   return getContract(iCakeAbi, getICakeAddress(), signer) as ICake
 }
