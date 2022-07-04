@@ -769,6 +769,14 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
           tokenName: 'SHELL',
           projectSite: 'https://metaapesgame.com/',
         },
+        {
+          account: '0x1170852F4C69d458f6ef7375EF7fa7c74AdD3F04',
+          farmName: 'MHUNT-BNB',
+          tokenAddress: '0x2C717059b366714d267039aF8F59125CAdce6D8c',
+          quoteToken: tokens.wbnb,
+          tokenName: 'MHUNT',
+          projectSite: 'https://metashooter.gg/',
+        },
       ].map((bidderConfig) => ({
         ...bidderConfig,
         lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken),
