@@ -70,6 +70,18 @@ export const livePools: SerializedPoolConfig[] = [
     isFinished: false,
   },
   {
+    sousId: 285,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.sdao,
+    contractAddress: {
+      97: '',
+      56: '',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '0.405',
+    version: 3,
+  },
+  {
     sousId: 284,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.antex,

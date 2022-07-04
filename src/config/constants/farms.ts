@@ -43,6 +43,16 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 105,
+    lpSymbol: 'SDAO-BNB LP',
+    lpAddresses: {
+      56: '',
+      97: '',
+    },
+    token: serializedTokens.sdao,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 38,
     v1pid: 386,
     lpSymbol: 'HOTCROSS-BNB LP',
@@ -52,7 +62,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.hotcross,
     quoteToken: serializedTokens.wbnb,
-    auctionHostingStartSeconds: 1656068400,
   },
   {
     pid: 104,
@@ -64,7 +73,6 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.nbt,
     quoteToken: serializedTokens.usdt,
     isCommunity: true,
-    auctionHostingStartSeconds: 1656068400,
   },
   {
     pid: 103,
@@ -76,7 +84,6 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.bbt,
     quoteToken: serializedTokens.wbnb,
     isCommunity: true,
-    auctionHostingStartSeconds: 1656068400,
   },
   {
     pid: 102,
