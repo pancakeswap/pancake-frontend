@@ -158,9 +158,11 @@ export default function AddLiquidity() {
   const canZap = useMemo(
     () =>
       !!zapMode &&
-      (!noLiquidity ||
+      !noLiquidity &&
+      !(
         (pair && JSBI.lessThan(pair.reserve0.raw, MINIMUM_LIQUIDITY)) ||
-        (pair && JSBI.lessThan(pair.reserve1.raw, MINIMUM_LIQUIDITY))),
+        (pair && JSBI.lessThan(pair.reserve1.raw, MINIMUM_LIQUIDITY))
+      ),
     [noLiquidity, pair, zapMode],
   )
 

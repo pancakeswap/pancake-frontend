@@ -320,6 +320,9 @@ export function useZapIn({
   const independentAmount: CurrencyAmount | undefined = tryParseAmount(typedValue, currencies[independentField])
 
   const _dependentAmount = useMemo(() => {
+    if (!canZap) {
+      return undefined
+    }
     if (independentAmount) {
       const wrappedIndependentAmount = wrappedCurrencyAmount(independentAmount, chainId)
       const [tokenA, tokenB] = [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
@@ -334,7 +337,7 @@ export function useZapIn({
       return undefined
     }
     return undefined
-  }, [chainId, currencyA, currencyB, dependentField, independentAmount, pair])
+  }, [canZap, chainId, currencyA, currencyB, dependentField, independentAmount, pair])
 
   const isDependentAmountGreaterThanMaxAmount =
     maxAmounts[dependentField] && _dependentAmount && _dependentAmount?.greaterThan(maxAmounts[dependentField])
