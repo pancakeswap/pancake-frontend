@@ -29,26 +29,24 @@ import {
   ifoCeilingSelector,
 } from './selectors'
 
+const lPoolAddresses = livePools.filter(({ sousId }) => sousId !== 0).map(({ earningToken }) => earningToken.address)
+
+// Only fetch farms for live pools
+const activeFarms = farmsConfig
+  .filter(
+    ({ token, pid, quoteToken }) =>
+      pid !== 0 &&
+      ((token.symbol === 'BUSD' && quoteToken.symbol === 'WBNB') ||
+        lPoolAddresses.find((poolAddress) => poolAddress === token.address)),
+  )
+  .map((farm) => farm.pid)
+
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
 
   useSlowRefreshEffect(
     (currentBlock) => {
       const fetchPoolsDataWithFarms = async () => {
-        const lPoolAddresses = livePools
-          .filter(({ sousId }) => sousId !== 0)
-          .map(({ earningToken }) => earningToken.address)
-
-        // Only fetch farms for live pools
-        const activeFarms = farmsConfig
-          .filter(
-            ({ token, pid, quoteToken }) =>
-              pid !== 0 &&
-              ((token.symbol === 'BUSD' && quoteToken.symbol === 'WBNB') ||
-                lPoolAddresses.find((poolAddress) => poolAddress === token.address)),
-          )
-          .map((farm) => farm.pid)
-
         await dispatch(fetchFarmsPublicDataAsync(activeFarms))
 
         batch(() => {
