@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Card, Text, Skeleton, CardHeader, Flex, BunnyPlaceholderIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -6,6 +6,7 @@ import { useAppDispatch } from 'state'
 import { setFinishedRoundInfoFetched, fetchPotteryRoundData } from 'state/pottery/index'
 import { usePotteryData } from 'state/pottery/hook'
 import RoundSwitcher from 'views/Lottery/components/AllHistoryCard/RoundSwitcher'
+import useDebounce from 'hooks/useDebounce'
 import { getDrawnDate } from 'views/Lottery/helpers'
 import PreviousRoundCardBody from './PreviousRoundCardBody'
 
@@ -37,7 +38,7 @@ const AllHistoryCard = () => {
 
   const [latestRoundId, setLatestRoundId] = useState(null)
   const [selectedRoundId, setSelectedRoundId] = useState('')
-  const timer = useRef(null)
+  const debouncedSelectedRoundId = useDebounce(selectedRoundId, 1000)
 
   useEffect(() => {
     if (currentPotteryId) {
@@ -49,17 +50,11 @@ const AllHistoryCard = () => {
   }, [currentPotteryId])
 
   useEffect(() => {
-    setFinishedRoundInfoFetched(true)
-
-    timer.current = setInterval(() => {
-      if (selectedRoundId) {
-        dispatch(fetchPotteryRoundData(selectedRoundId))
-      }
-      clearInterval(timer.current)
-    }, 1000)
-
-    return () => clearInterval(timer.current)
-  }, [selectedRoundId, currentPotteryId, dispatch])
+    if (debouncedSelectedRoundId && selectedRoundId) {
+      setFinishedRoundInfoFetched(true)
+      dispatch(fetchPotteryRoundData(selectedRoundId))
+    }
+  }, [debouncedSelectedRoundId, selectedRoundId, dispatch])
 
   const handleInputChange = (event) => {
     const {
