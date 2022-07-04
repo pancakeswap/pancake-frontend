@@ -75,11 +75,12 @@ interface LockPriceRowProps extends FlexProps {
 
 export const LockPriceRow: React.FC<LockPriceRowProps> = ({ lockPrice, ...props }) => {
   const { t } = useTranslation()
+  const { minPriceUsdDisplayed } = useConfig()
 
   return (
     <Row {...props}>
       <Text fontSize="14px">{t('Locked Price')}:</Text>
-      <Text fontSize="14px">{formatUsdv2(lockPrice)}</Text>
+      <Text fontSize="14px">{formatUsdv2(lockPrice, minPriceUsdDisplayed)}</Text>
     </Row>
   )
 }
@@ -151,6 +152,7 @@ interface RoundPriceProps {
 }
 
 export const RoundPrice: React.FC<RoundPriceProps> = ({ lockPrice, closePrice }) => {
+  const { minPriceUsdDisplayed } = useConfig()
   const betPosition = getRoundPosition(lockPrice, closePrice)
   const priceDifference = getPriceDifference(closePrice, lockPrice)
 
@@ -170,12 +172,12 @@ export const RoundPrice: React.FC<RoundPriceProps> = ({ lockPrice, closePrice })
     <Flex alignItems="center" justifyContent="space-between" mb="16px">
       {closePrice ? (
         <Text color={getTextColor()} bold fontSize="24px">
-          {formatUsdv2(closePrice)}
+          {formatUsdv2(closePrice, minPriceUsdDisplayed)}
         </Text>
       ) : (
         <Skeleton height="34px" my="1px" />
       )}
-      <PositionTag betPosition={betPosition}>{formatUsdv2(priceDifference)}</PositionTag>
+      <PositionTag betPosition={betPosition}>{formatUsdv2(priceDifference, minPriceUsdDisplayed)}</PositionTag>
     </Flex>
   )
 }
