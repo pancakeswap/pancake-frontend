@@ -44,13 +44,13 @@ const farms: SerializedFarmConfig[] = [
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
     pid: 105,
-    lpSymbol: 'SDAO-BNB LP',
+    lpSymbol: 'SDAO-BUSD LP',
     lpAddresses: {
-      56: '',
+      56: '0x3d12E4381901a6b94438758B90881cB03F10b01E',
       97: '',
     },
     token: serializedTokens.sdao,
-    quoteToken: serializedTokens.wbnb,
+    quoteToken: serializedTokens.busd,
   },
   {
     pid: 38,

@@ -74,8 +74,8 @@ export const livePools: SerializedPoolConfig[] = [
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.sdao,
     contractAddress: {
+      56: '0x168eF2e470bfeAEB32BE52FB218A41483904851c',
       97: '',
-      56: '',
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.405',
@@ -106,18 +106,6 @@ export const livePools: SerializedPoolConfig[] = [
     version: 3,
   },
   {
-    sousId: 282,
-    stakingToken: serializedTokens.cake,
-    earningToken: serializedTokens.chr,
-    contractAddress: {
-      97: '',
-      56: '0x2D17ec6cd0AF737B2adE40ea527d41ceEedc166f',
-    },
-    poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '1.58',
-    version: 3,
-  },
-  {
     sousId: 281,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.MIX,
@@ -145,6 +133,18 @@ export const livePools: SerializedPoolConfig[] = [
 
 // known finished pools
 const finishedPools = [
+  {
+    sousId: 282,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.chr,
+    contractAddress: {
+      97: '',
+      56: '0x2D17ec6cd0AF737B2adE40ea527d41ceEedc166f',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '1.58',
+    version: 3,
+  },
   {
     sousId: 280,
     stakingToken: serializedTokens.cake,
