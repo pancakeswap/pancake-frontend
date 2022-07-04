@@ -17,6 +17,14 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
           projectSite: 'https://happyfans.club/',
         },
         {
+          account: '0x4eeD6e51544Ef967A24A86F318A6779ed85cF0e6', // Auction #23
+          farmName: 'HAPPY-BNB',
+          tokenAddress: '0xF5d8A096CcCb31b9D7bcE5afE812BE23e3D4690d',
+          quoteToken: tokens.wbnb,
+          tokenName: 'HappyFans',
+          projectSite: 'https://happyfans.club/',
+        },
+        {
           account: '0xB8614FABf4bbA416b9dB620e12272AD63b14387E', // Auction #20
           farmName: '8PAY-BUSD',
           tokenAddress: '0xfeea0bdd3d07eb6fe305938878c0cadbfa169042',
@@ -25,7 +33,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
           projectSite: 'https://8pay.network/',
         },
         {
-          account: '0x6a2d41c87c3F28C2C0b466424DE8e08FC2E23eDc',
+          account: '0x6a2d41c87c3F28C2C0b466424DE8e08FC2E23eDc', // Auction #23
           farmName: 'BBT-BNB',
           tokenAddress: '0xD48474E7444727bF500a32D5AbE01943f3A59A64',
           quoteToken: tokens.wbnb,
@@ -698,7 +706,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
           projectSite: 'https://defiato.com/',
         },
         {
-          account: '0x4eeD6e51544Ef967A24A86F318A6779ed85cF0e6',
+          account: '0x7a837dE1Aa84E60273864025eaffecE8D9e51FFe',
           farmName: 'HAPPY-BNB',
           tokenAddress: '0xF5d8A096CcCb31b9D7bcE5afE812BE23e3D4690d',
           quoteToken: tokens.wbnb,
