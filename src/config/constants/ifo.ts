@@ -7,6 +7,36 @@ export const cakeBnbLpToken = new Token(ChainId.MAINNET, farms[1].lpAddresses[Ch
 
 const ifos: Ifo[] = [
   {
+    id: 'trivia',
+    address: '0x4543e0356ef1F6C8C0E241d617B2271Dbf375262',
+    isActive: true,
+    name: 'TRIVIA',
+    poolBasic: {
+      saleAmount: '0 TRIVIA',
+      raiseAmount: '$0',
+      cakeToBurn: '$0',
+      distributionRatio: 0.2,
+    },
+    poolUnlimited: {
+      saleAmount: '0 TRIVIA',
+      raiseAmount: '$0',
+      cakeToBurn: '$0',
+      distributionRatio: 0.8,
+    },
+    currency: tokens.cake,
+    token: tokens.trivia,
+    releaseBlockNumber: null,
+    campaignId: '0',
+    articleUrl:
+      'https://pancakeswap.finance/voting/proposal/bafkreihrc2d55vrowbn2oajzs77ffv73g4hzch2e7wulnuccmbwl5u4hvq',
+    tokenOfferingPrice: 1,
+    version: 3.2,
+    telegramUrl: 'https://t.me/TriviansGlobal',
+    twitterUrl: 'https://twitter.com/PlayTrivians',
+    description: '',
+    vestingTitle: '',
+  },
+  {
     id: 'duet',
     address: '0xDF24BE326af4c1fb888f567f41D9a981A4752cf1',
     isActive: false,
