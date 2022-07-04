@@ -25,7 +25,7 @@ const ProgressStepper: React.FC<CountdownProps> = ({ steps, activeStepIndex }) =
     <Flex>
       {steps.map((step, index) => {
         const isPastSpacer = index < activeStepIndex
-        const stepText = t(step.text).toUpperCase()
+        const stepText = t(step.text)
 
         return (
           <Fragment key={_uniqueId('ProgressStep-')}>
