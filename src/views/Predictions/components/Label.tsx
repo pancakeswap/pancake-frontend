@@ -2,6 +2,7 @@ import { Box, CoinSwitcher, Flex, PocketWatchIcon, Text, CloseIcon } from '@panc
 import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
+import { PREDICTION_TOOLTIP_DISMISS_KEY } from 'config/constants'
 import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
 import { PredictionSupportedSymbol } from 'state/types'
 import styled, { keyframes } from 'styled-components'
@@ -9,8 +10,6 @@ import { useConfig } from '../context/ConfigProvider'
 import { formatRoundTime } from '../helpers'
 import useCountdown from '../hooks/useCountdown'
 import LabelPrice from './LabelPrice'
-
-const TOOLTIP_DISMISS_KEY = 'prediction-switcher-dismiss-tooltip'
 
 const Token = styled(Box)`
   margin-top: -24px;
@@ -148,12 +147,12 @@ export const PricePairLabel: React.FC = () => {
   const router = useRouter()
   const { t } = useTranslation()
   const [dismissTooltip, setDismissTooltip] = useState(() => {
-    if (localStorage?.getItem(TOOLTIP_DISMISS_KEY)) return true
+    if (localStorage?.getItem(PREDICTION_TOOLTIP_DISMISS_KEY)) return true
     return false
   })
 
   const onDismissTooltip = useCallback(() => {
-    localStorage?.setItem(TOOLTIP_DISMISS_KEY, '1')
+    localStorage?.setItem(PREDICTION_TOOLTIP_DISMISS_KEY, '1')
     setDismissTooltip(true)
   }, [])
 
