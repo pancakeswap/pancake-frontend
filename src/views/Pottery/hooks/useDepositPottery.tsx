@@ -6,7 +6,7 @@ import { BIG_TEN } from 'utils/bigNumber'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { usePotterytValutContract } from 'hooks/useContract'
+import { usePotterytVaultContract } from 'hooks/useContract'
 import { useWeb3React } from '@web3-react/core'
 import { fetchPotteryUserDataAsync } from 'state/pottery'
 
@@ -16,7 +16,7 @@ export const useDepositPottery = (amount: string) => {
   const dispatch = useAppDispatch()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
-  const contract = usePotterytValutContract()
+  const contract = usePotterytVaultContract()
 
   const handleDeposit = useCallback(async () => {
     const amountDeposit = new BigNumber(amount).multipliedBy(BIG_TEN.pow(18)).toString()
