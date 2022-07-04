@@ -158,9 +158,11 @@ export default function AddLiquidity() {
   const canZap = useMemo(
     () =>
       !!zapMode &&
-      (!noLiquidity ||
+      !noLiquidity &&
+      !(
         (pair && JSBI.lessThan(pair.reserve0.raw, MINIMUM_LIQUIDITY)) ||
-        (pair && JSBI.lessThan(pair.reserve1.raw, MINIMUM_LIQUIDITY))),
+        (pair && JSBI.lessThan(pair.reserve1.raw, MINIMUM_LIQUIDITY))
+      ),
     [noLiquidity, pair, zapMode],
   )
 
@@ -181,22 +183,13 @@ export default function AddLiquidity() {
 
   const preferZapInstead = canZap && !zapIn.noNeedZap
 
-  const atMaxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-    (accumulator, field) => {
-      return {
-        ...accumulator,
-        [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0'),
-      }
-    },
-    {},
-  )
-
   // get formatted amounts
   const formattedAmounts = useMemo(
     () => ({
       [independentField]:
-        (canZap && independentField === Field.CURRENCY_A && !zapTokenCheckedA) ||
-        (independentField === Field.CURRENCY_B && !zapTokenCheckedB)
+        canZap &&
+        ((independentField === Field.CURRENCY_A && !zapTokenCheckedA) ||
+          (independentField === Field.CURRENCY_B && !zapTokenCheckedB))
           ? ''
           : typedValue,
       [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
@@ -212,6 +205,16 @@ export default function AddLiquidity() {
       zapTokenCheckedA,
       zapTokenCheckedB,
     ],
+  )
+
+  const atMaxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+    (accumulator, field) => {
+      return {
+        ...accumulator,
+        [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0'),
+      }
+    },
+    {},
   )
 
   // check whether the user has approved the router on the tokens

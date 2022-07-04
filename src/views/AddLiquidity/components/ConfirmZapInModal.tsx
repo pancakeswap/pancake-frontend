@@ -142,14 +142,24 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
 
   const tokenDeposited = useMemo(
     () => ({
-      [zapSwapTokenField]: pair.token0.equals(swapInTokenAmount.token) ? token0Deposited : token1Deposited,
-      [zapSwapOutTokenField]: pair.token1.equals(swapOutTokenAmount.token) ? token1Deposited : token0Deposited,
+      [zapSwapTokenField]:
+        swapInTokenAmount?.token && pair?.token0
+          ? pair.token0.equals(swapInTokenAmount.token)
+            ? token0Deposited
+            : token1Deposited
+          : undefined,
+      [zapSwapOutTokenField]:
+        swapOutTokenAmount?.token && pair?.token1
+          ? pair.token1.equals(swapOutTokenAmount.token)
+            ? token1Deposited
+            : token0Deposited
+          : undefined,
     }),
     [
       pair.token0,
       pair.token1,
-      swapInTokenAmount.token,
-      swapOutTokenAmount.token,
+      swapInTokenAmount?.token,
+      swapOutTokenAmount?.token,
       token0Deposited,
       token1Deposited,
       zapSwapOutTokenField,
@@ -200,9 +210,9 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
             title={t('Pooled')}
             percent={0.5}
             currencyA={currencies[zapSwapTokenField]}
-            currencyAValue={tokenDeposited[zapSwapTokenField]?.toSignificant(6)}
+            currencyAValue={tokenDeposited?.[zapSwapTokenField]?.toSignificant(6)}
             currencyB={currencies[zapSwapOutTokenField]}
-            currencyBValue={tokenDeposited[zapSwapOutTokenField]?.toSignificant(6)}
+            currencyBValue={tokenDeposited?.[zapSwapOutTokenField]?.toSignificant(6)}
           />
         </AutoColumn>
       </AddLiquidityModalHeader>
