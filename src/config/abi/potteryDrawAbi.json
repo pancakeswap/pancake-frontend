@@ -7,7 +7,7 @@
         "type": "address"
       },
       {
-        "internalType": "contract CakePool",
+        "internalType": "contract ICakePool",
         "name": "_cakePool",
         "type": "address"
       }
@@ -28,6 +28,12 @@
         "indexed": false,
         "internalType": "uint256",
         "name": "prize",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "fee",
         "type": "uint256"
       },
       {
@@ -115,15 +121,22 @@
         "internalType": "address",
         "name": "admin",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "treasury",
-        "type": "address"
       }
     ],
     "name": "CreatePottery",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "admin",
+        "type": "address"
+      }
+    ],
+    "name": "Init",
     "type": "event"
   },
   {
@@ -143,6 +156,25 @@
       }
     ],
     "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "admin",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "fee",
+        "type": "uint16"
+      }
+    ],
+    "name": "SetClaimFee",
     "type": "event"
   },
   {
@@ -176,11 +208,11 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "rng",
+        "name": "treasury",
         "type": "address"
       }
     ],
-    "name": "SetRNG",
+    "name": "SetTreasury",
     "type": "event"
   },
   {
@@ -247,6 +279,19 @@
   },
   {
     "inputs": [],
+    "name": "claimFee",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "claimReward",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -268,14 +313,22 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_vault",
+        "type": "address"
+      }
+    ],
+    "name": "forceRequestDraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "_totalPrize",
         "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_treasury",
-        "type": "address"
       },
       {
         "internalType": "uint256",
@@ -311,7 +364,7 @@
             "type": "uint256"
           },
           {
-            "internalType": "contract PancakeSwapPotteryVault",
+            "internalType": "contract IPancakeSwapPotteryVault",
             "name": "vault",
             "type": "address"
           },
@@ -349,9 +402,9 @@
     "name": "getNumOfDraw",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint8",
         "name": "",
-        "type": "uint256"
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -362,9 +415,9 @@
     "name": "getNumOfWinner",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint8",
         "name": "",
-        "type": "uint256"
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
@@ -430,6 +483,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getTreasury",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -464,6 +530,11 @@
         "internalType": "address",
         "name": "_keeper",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_treasury",
+        "type": "address"
       }
     ],
     "name": "init",
@@ -494,6 +565,38 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_drawId",
+        "type": "uint256"
+      }
+    ],
+    "name": "rngFulfillRandomWords",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_fee",
+        "type": "uint16"
+      }
+    ],
+    "name": "setClaimFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "_keeper",
         "type": "address"
@@ -508,11 +611,11 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_rng",
+        "name": "_treasury",
         "type": "address"
       }
     ],
-    "name": "setRNG",
+    "name": "setTreasury",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

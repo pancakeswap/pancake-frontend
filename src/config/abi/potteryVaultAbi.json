@@ -7,18 +7,18 @@
         "type": "address"
       },
       {
-        "internalType": "contract CakePool",
+        "internalType": "contract ICakePool",
         "name": "_cakePool",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IPancakeSwapPotteryDraw",
+        "name": "_potteryDraw",
         "type": "address"
       },
       {
         "internalType": "address",
         "name": "_admin",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_treasury",
         "type": "address"
       },
       {
@@ -158,25 +158,6 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "address",
-        "name": "admin",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "treasury",
-        "type": "address"
-      }
-    ],
-    "name": "SetTreasury",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": true,
         "internalType": "address",
         "name": "from",
@@ -275,6 +256,19 @@
   {
     "inputs": [],
     "name": "LOCK_PERIOD",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MIN_LOCK_AMOUNT",
     "outputs": [
       {
         "internalType": "uint256",
@@ -505,6 +499,25 @@
   {
     "inputs": [],
     "name": "getLockTime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
+    ],
+    "name": "getNumberOfTickets",
     "outputs": [
       {
         "internalType": "uint256",
@@ -850,19 +863,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_treasury",
-        "type": "address"
-      }
-    ],
-    "name": "setTreasury",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "symbol",
     "outputs": [
@@ -978,19 +978,6 @@
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "treasury",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
