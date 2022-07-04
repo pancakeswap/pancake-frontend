@@ -18,14 +18,12 @@ const Wrapper = styled.div`
 `
 
 const CardWrapper = styled.div`
-  position: relative;
   width: 320px;
 `
 
 const BunnyDecoration = styled.div`
-  position: absolute;
-  top: -130px;
-  left: 0px;
+  position: relative;
+  top: 12px;
   text-align: center;
   width: 100%;
   z-index: 5;
@@ -33,12 +31,9 @@ const BunnyDecoration = styled.div`
 `
 
 const BackButtonStyle = styled(IconButton)`
-  position: absolute;
-  top: -62px;
+  position: relative;
+  top: 120px;
   width: 40%;
-  ${({ theme }) => theme.mediaQueries.md} {
-    top: -132px;
-  }
 `
 
 const BackButton = () => {
