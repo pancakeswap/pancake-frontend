@@ -11,6 +11,7 @@ import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { Field } from 'state/burn/actions'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { ApprovalState } from 'hooks/useApproveCallback'
+import { ZapErrorMessages } from '../../AddLiquidity/components/ZapErrorMessage'
 
 interface ConfirmRemoveLiquidityModalProps {
   title: string
@@ -34,6 +35,7 @@ interface ConfirmRemoveLiquidityModalProps {
   tokenB: Token
   currencyA: Currency | null | undefined
   currencyB: Currency | null | undefined
+  isZap?: boolean
 }
 
 const ConfirmRemoveLiquidityModal: React.FC<InjectedModalProps & ConfirmRemoveLiquidityModalProps> = ({
@@ -54,33 +56,40 @@ const ConfirmRemoveLiquidityModal: React.FC<InjectedModalProps & ConfirmRemoveLi
   tokenB,
   currencyA,
   currencyB,
+  isZap,
 }) => {
   const { t } = useTranslation()
 
   const modalHeader = useCallback(() => {
     return (
       <AutoColumn gap="md">
-        <RowBetween align="flex-end">
-          <Text fontSize="24px">{parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}</Text>
-          <RowFixed gap="4px">
-            <CurrencyLogo currency={currencyA} size="24px" />
-            <Text fontSize="24px" ml="10px">
-              {currencyA?.symbol}
-            </Text>
+        {parsedAmounts[Field.CURRENCY_A] && (
+          <RowBetween align="flex-end">
+            <Text fontSize="24px">{parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}</Text>
+            <RowFixed gap="4px">
+              <CurrencyLogo currency={currencyA} size="24px" />
+              <Text fontSize="24px" ml="10px">
+                {currencyA?.symbol}
+              </Text>
+            </RowFixed>
+          </RowBetween>
+        )}
+        {parsedAmounts[Field.CURRENCY_A] && parsedAmounts[Field.CURRENCY_B] && (
+          <RowFixed>
+            <AddIcon width="16px" />
           </RowFixed>
-        </RowBetween>
-        <RowFixed>
-          <AddIcon width="16px" />
-        </RowFixed>
-        <RowBetween align="flex-end">
-          <Text fontSize="24px">{parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)}</Text>
-          <RowFixed gap="4px">
-            <CurrencyLogo currency={currencyB} size="24px" />
-            <Text fontSize="24px" ml="10px">
-              {currencyB?.symbol}
-            </Text>
-          </RowFixed>
-        </RowBetween>
+        )}
+        {parsedAmounts[Field.CURRENCY_B] && (
+          <RowBetween align="flex-end">
+            <Text fontSize="24px">{parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)}</Text>
+            <RowFixed gap="4px">
+              <CurrencyLogo currency={currencyB} size="24px" />
+              <Text fontSize="24px" ml="10px">
+                {currencyB?.symbol}
+              </Text>
+            </RowFixed>
+          </RowBetween>
+        )}
 
         <Text small textAlign="left" pt="12px">
           {t('Output is estimated. If the price changes by more than %slippage%% your transaction will revert.', {
@@ -134,11 +143,14 @@ const ConfirmRemoveLiquidityModal: React.FC<InjectedModalProps & ConfirmRemoveLi
   const confirmationContent = useCallback(
     () =>
       liquidityErrorMessage ? (
-        <TransactionErrorContent onDismiss={onDismiss} message={liquidityErrorMessage} />
+        <>
+          {isZap && <ZapErrorMessages isSingleToken />}
+          <TransactionErrorContent onDismiss={onDismiss} message={liquidityErrorMessage} />
+        </>
       ) : (
         <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
       ),
-    [onDismiss, modalBottom, modalHeader, liquidityErrorMessage],
+    [liquidityErrorMessage, isZap, onDismiss, modalHeader, modalBottom],
   )
 
   return (

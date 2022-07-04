@@ -217,7 +217,7 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
   )
 
   return (
-    <Card style={{ borderRadius: '12px' }} {...props}>
+    <Card {...props}>
       <Flex justifyContent="space-between" role="button" onClick={() => setShowMore(!showMore)} p="16px">
         <Flex flexDirection="column">
           <Flex alignItems="center" mb="4px">
@@ -307,7 +307,7 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
               </Button>
               <Button
                 as={NextLinkFromReactRouter}
-                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
+                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}?step=1`}
                 variant="text"
                 startIcon={<AddIcon color="primary" />}
                 width="100%"

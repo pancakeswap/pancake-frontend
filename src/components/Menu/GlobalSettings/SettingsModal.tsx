@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { Text, PancakeToggle, Toggle, Flex, Modal, InjectedModalProps, ThemeSwitcher } from '@pancakeswap/uikit'
+import { Text, PancakeToggle, Toggle, Flex, Modal, InjectedModalProps, ThemeSwitcher, Box } from '@pancakeswap/uikit'
 import {
   useAudioModeManager,
   useExpertModeManager,
   useSubgraphHealthIndicatorManager,
   useUserExpertModeAcknowledgementShow,
   useUserSingleHopOnly,
+  useZapModeManager,
 } from 'state/user/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useTranslation } from 'contexts/Localization'
@@ -30,6 +31,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   const [expertMode, toggleExpertMode] = useExpertModeManager()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
   const [audioPlay, toggleSetAudioMode] = useAudioModeManager()
+  const [zapMode, toggleZapMode] = useZapModeManager()
   const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
   const { onChangeRecipient } = useSwapActionHandlers()
 
@@ -81,6 +83,32 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
             {t('Swaps & Liquidity')}
           </Text>
           <TransactionSettings />
+        </Flex>
+        <Flex justifyContent="space-between" alignItems="center" mb="24px">
+          <Flex alignItems="center">
+            <Text>{t('Zap (Beta)')}</Text>
+            <QuestionHelper
+              text={
+                <Box>
+                  <Text>
+                    {t(
+                      'Zap enables simple liquidity provision. Add liquidity with one token and one click, without manual swapping or token balancing.',
+                    )}
+                  </Text>
+                  <Text>{t('If you experience any issue when adding liquidity, please disable Zap and retry.')}</Text>
+                </Box>
+              }
+              placement="top-start"
+              ml="4px"
+            />
+          </Flex>
+          <Toggle
+            checked={zapMode}
+            scale="md"
+            onChange={() => {
+              toggleZapMode(!zapMode)
+            }}
+          />
         </Flex>
         <Flex justifyContent="space-between" alignItems="center" mb="24px">
           <Flex alignItems="center">

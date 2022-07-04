@@ -1,16 +1,14 @@
 import { Box, CoinSwitcher, Flex, PocketWatchIcon, Text, CloseIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { useCountUp } from 'react-countup'
+import { useCallback, useState } from 'react'
 import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
 import { PredictionSupportedSymbol } from 'state/types'
 import styled, { keyframes } from 'styled-components'
-import { formatBigNumberToFixed } from 'utils/formatBalance'
 import { useConfig } from '../context/ConfigProvider'
 import { formatRoundTime } from '../helpers'
 import useCountdown from '../hooks/useCountdown'
-import usePollOraclePrice from '../hooks/usePollOraclePrice'
+import LabelPrice from './LabelPrice'
 
 const TOOLTIP_DISMISS_KEY = 'prediction-switcher-dismiss-tooltip'
 
@@ -56,16 +54,6 @@ const ClosingTitle = styled(Text)`
   ${({ theme }) => theme.mediaQueries.lg} {
     font-size: 20px;
     line-height: 22px;
-  }
-`
-
-const Price = styled(Text)`
-  height: 18px;
-  justify-self: start;
-  width: 70px;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    text-align: center;
   }
 `
 
@@ -115,10 +103,6 @@ export const Tooltip = styled.div`
   ${Text},svg {
     color: ${({ theme }) => theme.tooltip.text};
   }
-  @media screen and (min-width: 390px) {
-    top: -60px;
-    left: 120px;
-  }
   ${({ theme }) => theme.mediaQueries.md} {
     top: -10px;
     left: 81px;
@@ -160,7 +144,6 @@ const Label = styled(Flex)<{ dir: 'left' | 'right'; backgroundOpacity?: boolean 
 `
 
 export const PricePairLabel: React.FC = () => {
-  const { price } = usePollOraclePrice()
   const { token } = useConfig()
   const router = useRouter()
   const { t } = useTranslation()
@@ -169,26 +152,10 @@ export const PricePairLabel: React.FC = () => {
     return false
   })
 
-  const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 4, 8))
-  const countUpState = useCountUp({
-    start: 0,
-    end: priceAsNumber,
-    duration: 1,
-    decimals: 4,
-  })
-
-  const { countUp, update } = countUpState || {}
-
-  const updateRef = useRef(update)
-
   const onDismissTooltip = useCallback(() => {
     localStorage?.setItem(TOOLTIP_DISMISS_KEY, '1')
     setDismissTooltip(true)
   }, [])
-
-  useEffect(() => {
-    updateRef.current(priceAsNumber)
-  }, [priceAsNumber, updateRef])
 
   const onTokenSwitch = useCallback(() => {
     if (router.query.token === PredictionSupportedSymbol.CAKE) {
@@ -225,7 +192,7 @@ export const PricePairLabel: React.FC = () => {
           <Title bold textTransform="uppercase">
             {`${token.symbol}USD`}
           </Title>
-          <Price fontSize="12px">{`$${countUp}`}</Price>
+          <LabelPrice />
         </Label>
       </Box>
     </>

@@ -1,4 +1,4 @@
-export const perpetualLangs = { 'zh-cn': 'zh-CN', en: 'en', ko: 'ko' }
+export const perpetualLangs = { 'zh-cn': 'zh-CN', en: 'en', ko: 'ko', ja: 'ja', 'es-ES': 'es' }
 export const perpLangMap = (languageCode: string) => {
   if (!languageCode) {
     return 'en'

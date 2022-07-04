@@ -72,9 +72,6 @@ export const getCakeFlexibleSideVaultAddress = () => {
   return getAddress(addresses.cakeFlexibleSideVault)
 }
 
-export const getChainlinkOracleAddress = () => {
-  return getAddress(addresses.chainlinkOracle)
-}
 export const getBunnySpecialCakeVaultAddress = () => {
   return getAddress(addresses.bunnySpecialCakeVault)
 }
@@ -104,6 +101,10 @@ export const getNftSaleAddress = () => {
 }
 export const getPancakeSquadAddress = () => {
   return getAddress(addresses.pancakeSquad)
+}
+
+export const getZapAddress = () => {
+  return getAddress(addresses.zap)
 }
 export const getICakeAddress = () => {
   return getAddress(addresses.iCake)

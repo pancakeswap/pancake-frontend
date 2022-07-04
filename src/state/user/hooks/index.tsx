@@ -40,6 +40,7 @@ import {
   setChartViewMode,
   setSubgraphHealthIndicatorDisplayed,
   updateUserLimitOrderAcceptedWarning,
+  setZapDisabled,
 } from '../actions'
 import { deserializeToken, serializeToken } from './helpers'
 import { GAS_PRICE_GWEI } from '../../types'
@@ -108,6 +109,20 @@ export function useExchangeChartViewManager() {
   )
 
   return [chartViewMode, setUserChartViewPreference] as const
+}
+
+export function useZapModeManager() {
+  const dispatch = useAppDispatch()
+  const zapEnabled = useSelector<AppState, AppState['user']['userZapDisabled']>((state) => !state.user.userZapDisabled)
+
+  const setZapEnable = useCallback(
+    (enable: boolean) => {
+      dispatch(setZapDisabled(!enable))
+    },
+    [dispatch],
+  )
+
+  return [zapEnabled, setZapEnable] as const
 }
 
 export function useSubgraphHealthIndicatorManager() {

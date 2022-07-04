@@ -16,10 +16,15 @@ import {
   Box,
   Flex,
   useModal,
+  Checkbox,
   TooltipText,
   useTooltip,
 } from '@pancakeswap/uikit'
 import { BigNumber } from '@ethersproject/bignumber'
+import { callWithEstimateGas } from 'utils/calls'
+import { getLPSymbol } from 'utils/getLpSymbol'
+import { getZapAddress } from 'utils/addressHelpers'
+import { ZapCheckbox } from 'components/CurrencyInputPanel/ZapCheckbox'
 import { useTranslation } from 'contexts/Localization'
 import { CHAIN_ID } from 'config/constants/networks'
 import { useLPApr } from 'state/swap/hooks'
@@ -35,7 +40,7 @@ import { LightGreyCard } from '../../components/Card'
 import { CurrencyLogo } from '../../components/Logo'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useCurrency } from '../../hooks/Tokens'
-import { usePairContract } from '../../hooks/useContract'
+import { usePairContract, useZapContract } from '../../hooks/useContract'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 
 import { useTransactionAdder } from '../../state/transactions/hooks'
@@ -78,7 +83,16 @@ export default function RemoveLiquidity() {
 
   // burn state
   const { independentField, typedValue } = useBurnState()
-  const { pair, parsedAmounts, error } = useDerivedBurnInfo(currencyA ?? undefined, currencyB ?? undefined)
+  const [removalCheckedA, setRemovalCheckedA] = useState(true)
+  const [removalCheckedB, setRemovalCheckedB] = useState(true)
+  const { pair, parsedAmounts, error, tokenToReceive, estimateZapOutAmount } = useDerivedBurnInfo(
+    currencyA ?? undefined,
+    currencyB ?? undefined,
+    removalCheckedA,
+    removalCheckedB,
+  )
+  const isZap = !removalCheckedA || !removalCheckedB
+
   const poolData = useLPApr(pair)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(`Based on last 7 days' performance. Does not account for impermanent loss`),
@@ -126,7 +140,10 @@ export default function RemoveLiquidity() {
 
   // allowance handling
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
-  const [approval, approveCallback] = useApproveCallback(parsedAmounts[Field.LIQUIDITY], ROUTER_ADDRESS[CHAIN_ID])
+  const [approval, approveCallback] = useApproveCallback(
+    parsedAmounts[Field.LIQUIDITY],
+    isZap ? getZapAddress() : ROUTER_ADDRESS[CHAIN_ID],
+  )
 
   async function onAttemptToApprove() {
     if (!pairContract || !pair || !library || !deadline) throw new Error('missing dependencies')
@@ -207,8 +224,80 @@ export default function RemoveLiquidity() {
   const onCurrencyAInput = useCallback((value: string): void => onUserInput(Field.CURRENCY_A, value), [onUserInput])
   const onCurrencyBInput = useCallback((value: string): void => onUserInput(Field.CURRENCY_B, value), [onUserInput])
 
+  const zapContract = useZapContract(true)
+
   // tx sending
   const addTransaction = useTransactionAdder()
+
+  async function onZapOut() {
+    if (!chainId || !library || !account || !estimateZapOutAmount) throw new Error('missing dependencies')
+    if (!zapContract) throw new Error('missing zap contract')
+    if (!tokenToReceive) throw new Error('missing tokenToReceive')
+
+    if (!currencyA || !currencyB) {
+      toastError(t('Error'), t('Missing tokens'))
+      throw new Error('missing tokens')
+    }
+    const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
+    if (!liquidityAmount) {
+      toastError(t('Error'), t('Missing liquidity amount'))
+      throw new Error('missing liquidity amount')
+    }
+
+    if (!tokenA || !tokenB) {
+      toastError(t('Error'), t('Could not wrap'))
+      throw new Error('could not wrap')
+    }
+
+    const totalTokenAmountOut =
+      removalCheckedA && !removalCheckedB ? parsedAmounts[Field.CURRENCY_A] : parsedAmounts[Field.CURRENCY_B]
+
+    let methodName
+    let args
+    if (oneCurrencyIsBNB && tokenToReceive.toLowerCase() === WETH[chainId].address.toLowerCase()) {
+      methodName = 'zapOutBNB'
+      args = [
+        pair.liquidityToken.address,
+        parsedAmounts[Field.LIQUIDITY].raw.toString(),
+        calculateSlippageAmount(estimateZapOutAmount, allowedSlippage)[0].toString(),
+        calculateSlippageAmount(totalTokenAmountOut, allowedSlippage)[0].toString(),
+      ]
+    } else {
+      methodName = 'zapOutToken'
+      args = [
+        pair.liquidityToken.address,
+        tokenToReceive,
+        parsedAmounts[Field.LIQUIDITY].raw.toString(),
+        calculateSlippageAmount(estimateZapOutAmount, allowedSlippage)[0].toString(),
+        calculateSlippageAmount(totalTokenAmountOut, allowedSlippage)[0].toString(),
+      ]
+    }
+    setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
+    callWithEstimateGas(zapContract, methodName, args, {
+      gasPrice,
+    })
+      .then((response) => {
+        setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
+        addTransaction(response, {
+          summary: `Remove ${parsedAmounts[Field.LIQUIDITY].toSignificant(3)} ${getLPSymbol(
+            pair.token0.symbol,
+            pair.token1.symbol,
+          )}`,
+          type: 'remove-liquidity',
+        })
+      })
+      .catch((err) => {
+        if (err && err.code !== 4001) {
+          console.error(`Remove Liquidity failed`, err, args)
+        }
+        setLiquidityState({
+          attemptingTxn: false,
+          liquidityErrorMessage: err && err?.code !== 4001 ? `Remove Liquidity failed: ${err.message}` : undefined,
+          txHash: undefined,
+        })
+      })
+  }
+
   async function onRemove() {
     if (!chainId || !library || !account || !deadline) throw new Error('missing dependencies')
     const { [Field.CURRENCY_A]: currencyAmountA, [Field.CURRENCY_B]: currencyAmountB } = parsedAmounts
@@ -423,7 +512,8 @@ export default function RemoveLiquidity() {
       attemptingTxn={attemptingTxn}
       hash={txHash || ''}
       allowedSlippage={allowedSlippage}
-      onRemove={onRemove}
+      onRemove={isZap ? onZapOut : onRemove}
+      isZap={isZap}
       pendingText={pendingText}
       approval={approval}
       signatureData={signatureData}
@@ -438,6 +528,9 @@ export default function RemoveLiquidity() {
     true,
     'removeLiquidityModal',
   )
+
+  const isZapOutA = !removalCheckedB && removalCheckedA
+  const isZapOutB = !removalCheckedA && removalCheckedB
 
   return (
     <Page>
@@ -500,26 +593,56 @@ export default function RemoveLiquidity() {
               </ColumnCenter>
               <AutoColumn gap="10px">
                 <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
-                  {t('You will receive')}
+                  {t('Receive')}
                 </Text>
                 <LightGreyCard>
-                  <Flex justifyContent="space-between" mb="8px">
-                    <Flex>
+                  <Flex justifyContent="space-between" mb="8px" as="label" alignItems="center">
+                    <Flex alignItems="center">
+                      <Flex mr="9px">
+                        <Checkbox
+                          disabled={isZapOutA}
+                          scale="sm"
+                          checked={removalCheckedA}
+                          onChange={(e) => setRemovalCheckedA(e.target.checked)}
+                        />
+                      </Flex>
                       <CurrencyLogo currency={currencyA} />
                       <Text small color="textSubtle" id="remove-liquidity-tokena-symbol" ml="4px">
                         {currencyA?.symbol}
                       </Text>
                     </Flex>
-                    <Text small>{formattedAmounts[Field.CURRENCY_A] || '-'}</Text>
-                  </Flex>
-                  <Flex justifyContent="space-between">
                     <Flex>
+                      <Text small bold>
+                        {formattedAmounts[Field.CURRENCY_A] || '0'}
+                      </Text>
+                      <Text small ml="4px">
+                        ({isZapOutA ? '100' : removalCheckedB && removalCheckedA ? '50' : '0'}%)
+                      </Text>
+                    </Flex>
+                  </Flex>
+                  <Flex justifyContent="space-between" as="label" alignItems="center">
+                    <Flex alignItems="center">
+                      <Flex mr="9px">
+                        <Checkbox
+                          disabled={isZapOutB}
+                          scale="sm"
+                          checked={removalCheckedB}
+                          onChange={(e) => setRemovalCheckedB(e.target.checked)}
+                        />
+                      </Flex>
                       <CurrencyLogo currency={currencyB} />
                       <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
                         {currencyB?.symbol}
                       </Text>
                     </Flex>
-                    <Text small>{formattedAmounts[Field.CURRENCY_B] || '-'}</Text>
+                    <Flex>
+                      <Text bold small>
+                        {formattedAmounts[Field.CURRENCY_B] || '0'}
+                      </Text>
+                      <Text small ml="4px">
+                        ({isZapOutB ? '100' : removalCheckedB && removalCheckedA ? '50' : '0'}%)
+                      </Text>
+                    </Flex>
                   </Flex>
                   {chainId && (oneCurrencyIsWBNB || oneCurrencyIsBNB) ? (
                     <RowBetween style={{ justifyContent: 'flex-end', fontSize: '14px' }}>
@@ -566,7 +689,18 @@ export default function RemoveLiquidity() {
                 <ArrowDownIcon width="24px" my="16px" />
               </ColumnCenter>
               <CurrencyInputPanel
+                beforeButton={
+                  <ZapCheckbox
+                    disabled={!removalCheckedB && removalCheckedA}
+                    checked={removalCheckedA}
+                    onChange={(e) => {
+                      setRemovalCheckedA(e.target.checked)
+                    }}
+                  />
+                }
+                zapStyle="zap"
                 hideBalance
+                disabled={isZap && !removalCheckedA}
                 value={formattedAmounts[Field.CURRENCY_A]}
                 onUserInput={onCurrencyAInput}
                 onMax={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
@@ -580,7 +714,18 @@ export default function RemoveLiquidity() {
                 <AddIcon width="24px" my="16px" />
               </ColumnCenter>
               <CurrencyInputPanel
+                beforeButton={
+                  <ZapCheckbox
+                    disabled={!removalCheckedA && removalCheckedB}
+                    checked={removalCheckedB}
+                    onChange={(e) => {
+                      setRemovalCheckedB(e.target.checked)
+                    }}
+                  />
+                }
+                zapStyle="zap"
                 hideBalance
+                disabled={isZap && !removalCheckedB}
                 value={formattedAmounts[Field.CURRENCY_B]}
                 onUserInput={onCurrencyBInput}
                 onMax={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
@@ -634,15 +779,17 @@ export default function RemoveLiquidity() {
             ) : (
               <RowBetween>
                 <Button
-                  variant={approval === ApprovalState.APPROVED || signatureData !== null ? 'success' : 'primary'}
-                  onClick={onAttemptToApprove}
-                  disabled={approval !== ApprovalState.NOT_APPROVED || signatureData !== null}
+                  variant={
+                    approval === ApprovalState.APPROVED || (!isZap && signatureData !== null) ? 'success' : 'primary'
+                  }
+                  onClick={isZap ? approveCallback : onAttemptToApprove}
+                  disabled={approval !== ApprovalState.NOT_APPROVED || (!isZap && signatureData !== null)}
                   width="100%"
                   mr="0.5rem"
                 >
                   {approval === ApprovalState.PENDING ? (
                     <Dots>{t('Enabling')}</Dots>
-                  ) : approval === ApprovalState.APPROVED || signatureData !== null ? (
+                  ) : approval === ApprovalState.APPROVED || (!isZap && signatureData !== null) ? (
                     t('Enabled')
                   ) : (
                     t('Enable')
@@ -663,7 +810,11 @@ export default function RemoveLiquidity() {
                     onPresentRemoveLiquidity()
                   }}
                   width="100%"
-                  disabled={!isValid || (signatureData === null && approval !== ApprovalState.APPROVED)}
+                  disabled={
+                    !isValid ||
+                    (!isZap && signatureData === null && approval !== ApprovalState.APPROVED) ||
+                    (isZap && approval !== ApprovalState.APPROVED)
+                  }
                 >
                   {error || t('Remove')}
                 </Button>

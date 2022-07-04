@@ -71,7 +71,7 @@ export default {
     56: '0x615e896A8C2CA8470A2e9dc2E9552998f8658Ea0',
     97: '',
   },
-  predictions: {
+  predictionsBNB: {
     56: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',
     97: '',
   },
@@ -79,7 +79,7 @@ export default {
     56: '0x0E3A8078EDD2021dadcdE733C6b4a86E51EE8f07',
     97: '',
   },
-  chainlinkOracle: {
+  chainlinkOracleBNB: {
     56: '0xD276fCF34D54A926773c399eBAa772C12ec394aC',
     97: '',
   },
@@ -126,6 +126,10 @@ export default {
   pancakeSquad: {
     56: '0x0a8901b0E25DEb55A87524f0cC164E9644020EBA',
     97: '0xfC0c3F11fDA72Cb9A56F28Ec8D44C0ae4B3ABF86',
+  },
+  zap: {
+    56: '0xD4c4a7C55c9f7B3c48bafb6E8643Ba79F42418dF',
+    97: '0xD85835207054F25620109bdc745EC1D1f84F04e1',
   },
   iCake: {
     56: '0x3C458828D1622F5f4d526eb0d24Da8C4Eb8F07b1',

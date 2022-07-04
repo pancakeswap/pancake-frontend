@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, memo } from 'react'
+import React, { useEffect, useRef, memo, useMemo } from 'react'
 import { useCountUp } from 'react-countup'
 import { Skeleton, TooltipText } from '@pancakeswap/uikit'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
@@ -10,8 +10,8 @@ interface LiveRoundPriceProps {
 
 const LiveRoundPrice: React.FC<LiveRoundPriceProps> = ({ isBull }) => {
   const { price } = usePollOraclePrice()
+  const priceAsNumber = useMemo(() => parseFloat(formatBigNumberToFixed(price, 4, 8)), [price])
 
-  const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 4, 8))
   const priceColor = isBull ? 'success' : 'failure'
 
   const { countUp, update } = useCountUp({
