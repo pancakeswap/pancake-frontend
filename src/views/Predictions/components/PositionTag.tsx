@@ -63,7 +63,7 @@ const PositionTag: React.FC<PositionTagProps> = ({ betPosition, children, ...pro
         )}
       </Text>
     </>,
-    { placement: 'right' },
+    { placement: 'top' },
   )
 
   if (betPosition === BetPosition.HOUSE) {
