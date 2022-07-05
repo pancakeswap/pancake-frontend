@@ -102,7 +102,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
           </Text>
           <Flex alignItems="center" justifyContent="space-between" mb="16px" height="36px">
             <div ref={targetRef}>
-              <LiveRoundPrice isBull={isBull} />
+              <LiveRoundPrice isBull={isBull} price={price} />
             </div>
             <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
               {formatUsdv2(priceDifference, minPriceUsdDisplayed)}

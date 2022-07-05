@@ -1,9 +1,9 @@
-import { useEffect, useRef, useMemo } from 'react'
+import React, { useEffect, useRef, useMemo, memo } from 'react'
 import { useCountUp } from 'react-countup'
 import { Text } from '@pancakeswap/uikit'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import styled from 'styled-components'
-import usePollOraclePrice from '../hooks/usePollOraclePrice'
+import { BigNumber } from '@ethersproject/bignumber'
 
 const Price = styled(Text)`
   height: 18px;
@@ -15,8 +15,11 @@ const Price = styled(Text)`
   }
 `
 
-const LabelPrice = () => {
-  const { price } = usePollOraclePrice()
+interface LabelPriceProps {
+  price: BigNumber
+}
+
+const LabelPrice: React.FC<LabelPriceProps> = ({ price }) => {
   const priceAsNumber = useMemo(() => parseFloat(formatBigNumberToFixed(price, 4, 8)), [price])
 
   const { countUp, update } = useCountUp({
@@ -35,4 +38,4 @@ const LabelPrice = () => {
   return <Price fontSize="12px">{`$${countUp}`}</Price>
 }
 
-export default LabelPrice
+export default memo(LabelPrice)

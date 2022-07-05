@@ -10,6 +10,7 @@ import { useConfig } from '../context/ConfigProvider'
 import { formatRoundTime } from '../helpers'
 import useCountdown from '../hooks/useCountdown'
 import LabelPrice from './LabelPrice'
+import usePollOraclePrice from '../hooks/usePollOraclePrice'
 
 const Token = styled(Box)`
   margin-top: -24px;
@@ -146,6 +147,7 @@ export const PricePairLabel: React.FC = () => {
   const { token } = useConfig()
   const router = useRouter()
   const { t } = useTranslation()
+  const { price } = usePollOraclePrice()
   const [dismissTooltip, setDismissTooltip] = useState(() => {
     if (localStorage?.getItem(PREDICTION_TOOLTIP_DISMISS_KEY)) return true
     return false
@@ -191,7 +193,7 @@ export const PricePairLabel: React.FC = () => {
           <Title bold textTransform="uppercase">
             {`${token.symbol}USD`}
           </Title>
-          <LabelPrice />
+          <LabelPrice price={price} />
         </Label>
       </Box>
     </>
