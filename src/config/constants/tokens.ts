@@ -2120,6 +2120,14 @@ export const mainnetTokens = defineTokens({
     'NanoByte Token',
     'https://www.nanobyte.finance/',
   ),
+  trivia: new Token(
+    MAINNET,
+    '0xb465f3cb6Aba6eE375E12918387DE1eaC2301B05',
+    3,
+    'TRIVIA',
+    'Trivian Token',
+    'https://trivians.io/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({

@@ -7,6 +7,37 @@ export const cakeBnbLpToken = new Token(ChainId.MAINNET, farms[1].lpAddresses[Ch
 
 const ifos: Ifo[] = [
   {
+    id: 'trivia',
+    address: '0x23C520d8227524E2cDD00360358864fF3fFC36b4',
+    isActive: true,
+    name: 'TRIVIA',
+    poolBasic: {
+      saleAmount: '10,000,000 TRIVIA',
+      raiseAmount: '$350,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.2,
+    },
+    poolUnlimited: {
+      saleAmount: '40,000,000 TRIVIA',
+      raiseAmount: '$1,400,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.8,
+    },
+    currency: tokens.cake,
+    token: tokens.trivia,
+    releaseBlockNumber: 19273145,
+    campaignId: '511200000',
+    articleUrl:
+      'https://pancakeswap.finance/voting/proposal/bafkreihrc2d55vrowbn2oajzs77ffv73g4hzch2e7wulnuccmbwl5u4hvq',
+    tokenOfferingPrice: 0.035,
+    version: 3.2,
+    telegramUrl: 'https://t.me/TriviansGlobal',
+    twitterUrl: 'https://twitter.com/PlayTrivians',
+    description:
+      'Trivian is a trivia gaming platform with different game modes such as multiplayer mode, single player mode, 1v1 games, instant play, scheduled tournaments, and live shows … all while earning TRIVIA tokens!',
+    vestingTitle: 'Earn $TRIVIA For Each Question You Answer Correctly',
+  },
+  {
     id: 'duet',
     address: '0xDF24BE326af4c1fb888f567f41D9a981A4752cf1',
     isActive: false,
