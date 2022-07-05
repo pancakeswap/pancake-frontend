@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { menuStatus } from '@pancakeswap/uikit'
+import { useTheme } from 'styled-components'
 import { useTranslation } from '../../../contexts/Localization'
 import { useMenuItemsStatus } from './useMenuItemsStatus'
 import config, { ConfigMenuItemsType } from '../config/config'
@@ -9,11 +10,12 @@ export const useMenuItems = (): ConfigMenuItemsType[] => {
     t,
     currentLanguage: { code: languageCode },
   } = useTranslation()
+  const { isDark } = useTheme()
   const menuItemsStatus = useMenuItemsStatus()
 
   const menuItems = useMemo(() => {
-    return config(t, languageCode)
-  }, [t, languageCode])
+    return config(t, isDark, languageCode)
+  }, [t, isDark, languageCode])
 
   return useMemo(() => {
     if (menuItemsStatus && Object.keys(menuItemsStatus).length) {

@@ -2,8 +2,9 @@ import { ArrowForwardIcon, Button, Text, Link, useMatchBreakpointsContext } from
 import { useTranslation } from 'contexts/Localization'
 import Image from 'next/image'
 import { memo, useMemo } from 'react'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { perpLangMap } from 'utils/getPerpetualLanguageCode'
+import { perpTheme } from 'utils/getPerpetualTheme'
 import { perpetualImage, perpetualMobileImage } from './images'
 import * as S from './Styled'
 
@@ -34,7 +35,12 @@ const PerpetualBanner = () => {
     currentLanguage: { code },
   } = useTranslation()
   const { isDesktop } = useMatchBreakpointsContext()
-  const perpetualUrl = useMemo(() => `https://perp.pancakeswap.finance/${perpLangMap(code)}/futures/BTCUSDT`, [code])
+  const { isDark } = useTheme()
+
+  const perpetualUrl = useMemo(
+    () => `https://perp.pancakeswap.finance/${perpLangMap(code)}/futures/BTCUSDT?theme=${perpTheme(isDark)}`,
+    [code, isDark],
+  )
 
   return (
     <S.Wrapper>
