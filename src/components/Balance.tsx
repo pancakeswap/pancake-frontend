@@ -1,5 +1,5 @@
 import { Text, TextProps, Skeleton } from '@pancakeswap/uikit'
-import { useEffect, useRef, useMemo } from 'react'
+import { useMemo } from 'react'
 import CountUp from 'react-countup'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
 import _toNumber from 'lodash/toNumber'
@@ -26,24 +26,27 @@ const Balance: React.FC<BalanceProps> = ({
   onClick,
   ...props
 }) => {
-  const previousValue = useRef(0)
-
-  useEffect(() => {
-    previousValue.current = value
-  }, [value])
+  const prefixProp = useMemo(() => (prefix ? { prefix } : {}), [prefix])
+  const suffixProp = useMemo(() => (unit ? { suffix: unit } : {}), [unit])
 
   return (
-    <Text color={isDisabled ? 'textDisabled' : color} onClick={onClick} {...props}>
-      <CountUp
-        start={previousValue.current}
-        end={value}
-        prefix={prefix}
-        suffix={unit}
-        decimals={decimals}
-        duration={1}
-        separator=","
-      />
-    </Text>
+    <CountUp
+      start={0}
+      preserveValue
+      delay={0}
+      end={value}
+      {...prefixProp}
+      {...suffixProp}
+      decimals={decimals}
+      duration={1}
+      separator=","
+    >
+      {({ countUpRef }) => (
+        <Text color={isDisabled ? 'textDisabled' : color} onClick={onClick} {...props}>
+          <span ref={countUpRef} />
+        </Text>
+      )}
+    </CountUp>
   )
 }
 
