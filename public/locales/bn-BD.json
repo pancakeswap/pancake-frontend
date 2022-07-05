@@ -253,7 +253,6 @@
   "Success!": "সাফল্য!",
   "You have successfully claimed available tokens.": "You have successfully claimed available tokens.",
   "Commit": "সমর্পণ করুন",
-  "If you don’t commit enough CAKE, you may not receive any IFO tokens at all and will only receive a full refund of your CAKE.": "পর্যাপ্ত CAKE সমর্পণ না করলে আপনি কোনো IFO টোকেন পাবেন না এবং কেবলমাত্র আপনার CAKE এর পুরো অর্থ ফেরত পাবেন। ",
   "Funds to raise:": "যে পরিমাণ অর্থ তুলতে হবে:",
   "Price per %symbol%:": "%symbol% প্রতি দাম:",
   "Price per %symbol% with fee:": "ফিসহ প্রতি %symbol% এর মূল্য: ",
@@ -1403,7 +1402,6 @@
   "Subgraph Health Indicator": "সাবগ্রাফ স্বাস্থ্য সূচক",
   "Delay": "বিলম্ব",
   "Add liquidity instead": "পরিবর্তে লিকুইডিটি যোগ করুন",
-  "If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.": "আপনার সমর্পিত পরিমাণ খুব কম হলে আপনি অর্থবহ পরিমাণ IFO টোকেন নাও পেতে পারেন।",
   "SAFEMOON has been migrated to": "SAFEMOON স্থানান্তরিত হয়েছে",
   "a new contract address.": "একটি নতুন চুক্তির ঠিকানা।",
   "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "পুরানো ঠিকানায় ট্রেড করার ফলে আপনার অ্যাসেট পুরোপুরি হারিয়ে যেতে পারে। আরও তথ্যের জন্য অনুগ্রহ করে দেখুন",
@@ -1756,5 +1754,11 @@
   "And there’s a fee for participation: see below.": "And there’s a fee for participation: see below.",
   "The participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of the IFO.": "The participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of the IFO.",
   "Note: Fees may vary between different IFOs. To learn more about the participation fees, please refer to the details in the IFO proposal (vote) for the specifics of the IFO you want to take part in.": "Note: Fees may vary between different IFOs. To learn more about the participation fees, please refer to the details in the IFO proposal (vote) for the specifics of the IFO you want to take part in.",
+  "This IFO has token vesting. Purchased tokens are released over a period of time.": "This IFO has token vesting. Purchased tokens are released over a period of time.",
+  "Learn more in the vote proposal": "Learn more in the vote proposal",
+  "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.",
+  "~%num% available to claim at sales end": "~%num% available to claim at sales end",
+  "Vested percentage:": "Vested percentage:",
+  "Vesting schedule:": "Vesting schedule:",
   "Currently using Zap for liquidity provisions.": "Currently using Zap for liquidity provisions."
 }
