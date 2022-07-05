@@ -7,7 +7,7 @@ import {
   PositionProps,
   SpaceProps,
   GridProps as _GridProps,
-  BackgroundColorProps,
+  ColorProps,
 } from "styled-system";
 
 export interface BoxProps
@@ -16,8 +16,8 @@ export interface BoxProps
     LayoutProps,
     PositionProps,
     SpaceProps,
-    BackgroundColorProps,
-    HTMLAttributes<HTMLDivElement> {}
+    Omit<ColorProps, "color">,
+    HTMLAttributes<HTMLElement> {}
 
 export interface FlexProps extends BoxProps, FlexboxProps {}
 

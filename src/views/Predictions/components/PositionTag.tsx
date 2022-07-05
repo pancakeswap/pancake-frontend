@@ -14,16 +14,14 @@ import { BetPosition } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 
 interface TagProps extends FlexProps {
-  bgColor?: string
   startIcon?: ReactNode
 }
 
-const StyledTag = styled(Flex)<{ bgColor: TagProps['bgColor'] }>`
-  background-color: ${({ bgColor, theme }) => theme.colors[bgColor]};
+const StyledTag = styled(Flex)`
   display: inline-flex;
 `
 
-export const Tag: React.FC<TagProps> = ({ bgColor = 'success', startIcon, children, onClick, ...props }) => {
+export const Tag: React.FC<TagProps> = ({ bg = 'success', startIcon, children, onClick, ...props }) => {
   const icon = startIcon || <ArrowUpIcon color="white" />
 
   return (
@@ -31,7 +29,7 @@ export const Tag: React.FC<TagProps> = ({ bgColor = 'success', startIcon, childr
       alignItems="center"
       justifyContent="center"
       borderRadius="4px"
-      bgColor={bgColor}
+      bg={bg}
       py="4px"
       px="8px"
       onClick={onClick}
@@ -83,7 +81,7 @@ const PositionTag: React.FC<PositionTagProps> = ({ betPosition, children, ...pro
   }
 
   return (
-    <Tag bgColor={isUpPosition ? 'success' : 'failure'} startIcon={icon} {...props}>
+    <Tag bg={isUpPosition ? 'success' : 'failure'} startIcon={icon} {...props}>
       {children}
     </Tag>
   )
