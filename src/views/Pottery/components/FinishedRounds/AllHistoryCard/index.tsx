@@ -43,7 +43,8 @@ const AllHistoryCard = () => {
   useEffect(() => {
     if (currentPotteryId) {
       const currentPotteryIdAsInt = currentPotteryId ? parseInt(currentPotteryId) : null
-      const mostRecentFinishedRoundId = currentPotteryIdAsInt > 0 ? currentPotteryIdAsInt - 1 : ''
+      const mostRecentFinishedRoundId =
+        currentPotteryIdAsInt > 0 ? currentPotteryIdAsInt - 1 : currentPotteryIdAsInt === 0 ? 1 : ''
       setLatestRoundId(mostRecentFinishedRoundId)
       setSelectedRoundId(mostRecentFinishedRoundId.toString())
     }
@@ -51,8 +52,9 @@ const AllHistoryCard = () => {
 
   useEffect(() => {
     if (debouncedSelectedRoundId && selectedRoundId) {
-      setFinishedRoundInfoFetched(true)
-      dispatch(fetchPotteryRoundData(selectedRoundId))
+      const roundId = parseInt(selectedRoundId) - 1
+      setFinishedRoundInfoFetched(false)
+      dispatch(fetchPotteryRoundData(roundId))
     }
   }, [debouncedSelectedRoundId, selectedRoundId, dispatch])
 
@@ -94,7 +96,7 @@ const AllHistoryCard = () => {
         />
         <Flex alignSelf="center">
           {selectedRoundId ? (
-            !finishedRoundInfo.isFetched ? (
+            finishedRoundInfo.isFetched && finishedRoundInfo.drawDate ? (
               <Text fontSize="14px">
                 {t('Drawn')} {getDrawnDate(locale, finishedRoundInfo.drawDate)}
               </Text>

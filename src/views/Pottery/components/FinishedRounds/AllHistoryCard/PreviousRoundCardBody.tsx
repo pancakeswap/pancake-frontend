@@ -72,9 +72,7 @@ const PreviousRoundCardBody: React.FC<PreviousRoundCardBodyProps> = ({ latestRou
             {t('Winner')}
           </Text>
           <WinnersContainer>
-            {winners.map((address) => (
-              <Winner key={address} address={address} />
-            ))}
+            {winners && winners.map((address) => <Winner key={address} address={address} />)}
           </WinnersContainer>
         </Flex>
         <Box width="100%">

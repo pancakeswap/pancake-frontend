@@ -82,7 +82,7 @@ export const fetchPotteryUserDataAsync = createAsyncThunk<SerializedPotteryUserD
   },
 )
 
-export const fetchPotteryRoundData = createAsyncThunk<PotteryRoundInfo, string>(
+export const fetchPotteryRoundData = createAsyncThunk<PotteryRoundInfo, number>(
   'pottery/fetchPotteryRound',
   async (roundId) => {
     const response = await fetchPotteryFinishedRound(roundId)
