@@ -347,7 +347,7 @@ const campaigns: Campaign[] = [
     badge: 'ifo-duet.svg',
   },
   {
-    id: '0',
+    id: '511200000',
     type: 'ifo',
     title: 'Trivia',
     badge: 'ifo-trivia.svg',
