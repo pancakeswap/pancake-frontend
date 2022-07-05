@@ -1,12 +1,17 @@
 import { Bet, BetPosition } from 'state/types'
 import { formatNumber } from 'utils/formatBalance'
 
-export const formatUsd = (usd: number) => {
-  return `$${formatNumber(usd || 0, 3, 3)}`
+export const formatUsd = (usd: number, displayedDecimals: number) => {
+  return `$${formatNumber(usd || 0, displayedDecimals, displayedDecimals)}`
 }
 
-export const formatBnb = (bnb: number) => {
-  return bnb ? bnb.toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 }) : '0'
+export const formatBnb = (bnb: number, displayedDecimals: number) => {
+  return bnb
+    ? bnb.toLocaleString(undefined, {
+        minimumFractionDigits: displayedDecimals,
+        maximumFractionDigits: displayedDecimals,
+      })
+    : '0'
 }
 
 export const getMultiplier = (total: number, amount: number) => {

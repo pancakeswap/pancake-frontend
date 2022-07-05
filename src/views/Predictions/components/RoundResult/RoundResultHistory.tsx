@@ -4,12 +4,14 @@ import { useTranslation } from '@pancakeswap/localization'
 import { formatUsd } from '../History/helpers'
 import PositionTag from '../PositionTag'
 import { LockPriceHistoryRow, PrizePoolHistoryRow, RoundResultBox } from './styles'
+import { useConfig } from '../../context/ConfigProvider'
 
 interface RoundResultProps extends BoxProps {
   round: Round
 }
 
 const RoundResult: React.FC<React.PropsWithChildren<RoundResultProps>> = ({ round, children, ...props }) => {
+  const { displayedDecimals } = useConfig()
   const { lockPrice, closePrice, totalAmount } = round
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const isPositionUp = betPosition === BetPosition.BULL
@@ -28,9 +30,9 @@ const RoundResult: React.FC<React.PropsWithChildren<RoundResultProps>> = ({ roun
       ) : (
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           <Text color={isPositionUp ? 'success' : 'failure'} bold fontSize="24px">
-            {formatUsd(closePrice)}
+            {formatUsd(closePrice, displayedDecimals)}
           </Text>
-          <PositionTag betPosition={betPosition}>{formatUsd(priceDifference)}</PositionTag>
+          <PositionTag betPosition={betPosition}>{formatUsd(priceDifference, displayedDecimals)}</PositionTag>
         </Flex>
       )}
       {lockPrice && <LockPriceHistoryRow lockPrice={lockPrice} />}

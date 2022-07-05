@@ -11,10 +11,10 @@ interface EnteredTagProps {
 
 const EnteredTag: React.FC<React.PropsWithChildren<EnteredTagProps>> = ({ amount, hasClaimed = false }) => {
   const { t } = useTranslation()
-  const { token } = useConfig()
+  const { token, displayedDecimals } = useConfig()
 
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
-    <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnbv2(amount)} ${token.symbol}`}</div>,
+    <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnbv2(amount, displayedDecimals)} ${token.symbol}`}</div>,
     { placement: 'bottom' },
   )
 
