@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { MaxUint256 } from '@ethersproject/constants'
@@ -16,7 +17,6 @@ import {
   Box,
   Link,
   Message,
-  MessageText,
 } from '@pancakeswap/uikit'
 import { PoolIds, Ifo } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
@@ -32,6 +32,13 @@ import { useERC20 } from 'hooks/useContract'
 import tokens from 'config/constants/tokens'
 import { requiresApproval } from 'utils/requiresApproval'
 
+const MessageTextLink = styled(Link)`
+  display: inline;
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 14px;
+  white-space: nowrap;
+`
 interface Props {
   poolId: PoolIds
   ifo: Ifo
@@ -48,15 +55,20 @@ const multiplierValues = [0.1, 0.25, 0.5, 0.75, 1]
 // Default value for transaction setting, tweak based on BSC network congestion.
 const gasPrice = parseUnits('10', 'gwei').toString()
 
-const SmallAmountNotice: React.FC = () => {
+const SmallAmountNotice: React.FC<{ url: string }> = ({ url }) => {
   const { t } = useTranslation()
 
   return (
     <Box maxWidth="350px">
       <Message variant="warning" mb="16px">
-        <MessageText>
-          {t('If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.')}
-        </MessageText>
+        <Box>
+          <Text fontSize="14px" color="#D67E0A">
+            {t('This IFO has token vesting. Purchased tokens are released over a period of time.')}
+          </Text>
+          <MessageTextLink external href={url} color="#D67E0A" display="inline">
+            {t('Learn more in the vote proposal')}
+          </MessageTextLink>
+        </Box>
       </Message>
     </Box>
   )
@@ -75,9 +87,9 @@ const ContributeModal: React.FC<Props> = ({
   const publicPoolCharacteristics = publicIfoData[poolId]
   const userPoolCharacteristics = walletIfoData[poolId]
 
-  const { currency } = ifo
+  const { currency, articleUrl } = ifo
   const { toastSuccess } = useToast()
-  const { limitPerUserInLP } = publicPoolCharacteristics
+  const { limitPerUserInLP, vestingInfomation } = publicPoolCharacteristics
   const { amountTokenCommittedInLP } = userPoolCharacteristics
   const { contract } = walletIfoData
   const [value, setValue] = useState('')
@@ -170,7 +182,6 @@ const ContributeModal: React.FC<Props> = ({
   return (
     <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
       <ModalBody maxWidth="360px">
-        {poolId === PoolIds.poolUnlimited && <SmallAmountNotice />}
         <Box p="2px">
           <Flex justifyContent="space-between" mb="16px">
             {tooltipVisible && tooltip}
@@ -238,9 +249,10 @@ const ContributeModal: React.FC<Props> = ({
               </Button>
             ))}
           </Flex>
+          {vestingInfomation.percentage > 0 && <SmallAmountNotice url={articleUrl} />}
           <Text color="textSubtle" fontSize="12px" mb="24px">
             {t(
-              'If you don’t commit enough CAKE, you may not receive any IFO tokens at all and will only receive a full refund of your CAKE.',
+              'If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.',
             )}
             <Link
               fontSize="12px"
