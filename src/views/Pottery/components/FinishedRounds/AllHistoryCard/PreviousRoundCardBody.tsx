@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Box, Flex, Text, CardBody, CardRibbon, LinkExternal, Skeleton } from '@pancakeswap/uikit'
@@ -72,7 +73,7 @@ const PreviousRoundCardBody: React.FC<PreviousRoundCardBodyProps> = ({ latestRou
             {t('Winner')}
           </Text>
           <WinnersContainer>
-            {winners && winners.map((address) => <Winner key={address} address={address} />)}
+            {winners && winners.map((address, index) => <Winner key={`${address}-${index}`} address={address} />)}
           </WinnersContainer>
         </Flex>
         <Box width="100%">

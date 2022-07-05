@@ -43,8 +43,7 @@ const AllHistoryCard = () => {
   useEffect(() => {
     if (currentPotteryId) {
       const currentPotteryIdAsInt = currentPotteryId ? parseInt(currentPotteryId) : null
-      const mostRecentFinishedRoundId =
-        currentPotteryIdAsInt > 0 ? currentPotteryIdAsInt - 1 : currentPotteryIdAsInt === 0 ? 1 : ''
+      const mostRecentFinishedRoundId = currentPotteryIdAsInt > 0 ? currentPotteryIdAsInt : ''
       setLatestRoundId(mostRecentFinishedRoundId)
       setSelectedRoundId(mostRecentFinishedRoundId.toString())
     }
@@ -95,18 +94,19 @@ const AllHistoryCard = () => {
           handleArrowButtonPress={handleArrowButtonPress}
         />
         <Flex alignSelf="center">
-          {selectedRoundId ? (
-            finishedRoundInfo.isFetched && finishedRoundInfo.drawDate ? (
-              <Text fontSize="14px">
-                {t('Drawn')} {getDrawnDate(locale, finishedRoundInfo.drawDate)}
-              </Text>
+          {selectedRoundId &&
+            (finishedRoundInfo.isFetched ? (
+              finishedRoundInfo.drawDate && (
+                <Text fontSize="14px">
+                  {t('Drawn')} {getDrawnDate(locale, finishedRoundInfo.drawDate)}
+                </Text>
+              )
             ) : (
               <Skeleton width="185px" height="21px" />
-            )
-          ) : null}
+            ))}
         </Flex>
       </StyledCardHeader>
-      {selectedRoundId && finishedRoundInfo.drawDate ? (
+      {selectedRoundId ? (
         <PreviousRoundCardBody latestRoundId={latestRoundId} finishedRoundInfo={finishedRoundInfo} />
       ) : (
         <Flex m="24px auto" flexDirection="column" alignItems="center" width="240px">
