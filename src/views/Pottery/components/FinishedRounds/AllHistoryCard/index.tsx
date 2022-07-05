@@ -21,10 +21,15 @@ const StyledCard = styled(Card)`
 
 const StyledCardHeader = styled(CardHeader)`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   z-index: 2;
   background: none;
   border-bottom: 1px ${({ theme }) => theme.colors.cardBorder} solid;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
+  }
 `
 
 const AllHistoryCard = () => {
@@ -93,7 +98,7 @@ const AllHistoryCard = () => {
           handleInputChange={handleInputChange}
           handleArrowButtonPress={handleArrowButtonPress}
         />
-        <Flex alignSelf="center">
+        <Flex mt={['8px', '8px', '8px', '0px']} alignSelf={['flex-start', 'flex-start', 'flex-start', 'center']}>
           {selectedRoundId &&
             (finishedRoundInfo.isFetched ? (
               finishedRoundInfo.drawDate && (
