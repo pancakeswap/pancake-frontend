@@ -5,6 +5,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { getBep20Contract, getPotteryVaultContract, getPotteryDrawContract } from 'utils/contractHelpers'
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
+import { PotteryDepositStatus } from 'state/types'
 
 const potteryVaultAddress = getPotteryVaultAddress()
 const potteryVaultContract = getPotteryVaultContract()
@@ -64,6 +65,9 @@ export const fetchWithdrawAbleData = async (account: string) => {
             id
             shares
             depositDate
+            vault {
+              status
+            }
           }
         }
       `,
@@ -71,13 +75,14 @@ export const fetchWithdrawAbleData = async (account: string) => {
     )
 
     const withdrawAbleData = await Promise.all(
-      response.withdrawals.map(async ({ id, shares, depositDate }) => {
+      response.withdrawals.map(async ({ id, shares, depositDate, vault }) => {
         const previewRedeem = await potteryVaultContract.previewRedeem(shares)
         return {
           id,
           shares,
           depositDate,
           previewRedeem: new BigNumber(previewRedeem.toString()).toJSON(),
+          status: PotteryDepositStatus[vault.status],
         }
       }),
     )

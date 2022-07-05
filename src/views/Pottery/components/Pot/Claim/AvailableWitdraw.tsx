@@ -20,17 +20,17 @@ const AvailableWitdraw: React.FC<AvailableWitdrawProps> = ({ publicData, withdra
     currentLanguage: { locale },
   } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
-  const { totalSupply, totalLockCake, getStatus } = publicData
-  const { previewRedeem, depositDate, shares } = withdrawData
+  const { totalSupply, totalLockCake } = publicData
+  const { previewRedeem, depositDate, shares, status } = withdrawData
 
   const cakeNumber = useMemo(() => new BigNumber(previewRedeem), [previewRedeem])
 
   const amountAsBn = useMemo(() => {
-    if (getStatus === PotteryDepositStatus.LOCK) {
+    if (status === PotteryDepositStatus.LOCK) {
       return new BigNumber(shares).div(totalSupply).times(totalLockCake)
     }
     return cakeNumber
-  }, [shares, cakeNumber, getStatus, totalSupply, totalLockCake])
+  }, [shares, cakeNumber, status, totalSupply, totalLockCake])
 
   const amount = getBalanceNumber(amountAsBn)
   const amountInBusd = new BigNumber(amount).times(cakePriceBusd).toNumber()

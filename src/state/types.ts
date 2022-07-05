@@ -718,6 +718,7 @@ export interface PotteryWithdrawAbleData {
   shares: string
   depositDate: string
   previewRedeem: string
+  status: PotteryDepositStatus
 }
 
 // Global state
