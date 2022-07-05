@@ -155,8 +155,8 @@ const OrderContent: React.FC<OrderContentProps> = ({
             {formattedAmounts.input}
           </Text>
           <Flex alignItems="center">
-            <Text color="text" mr="8px">
-              {currencies.input?.symbol?.toUpperCase()}
+            <Text textTransform="uppercase" color="text" mr="8px">
+              {currencies.input?.symbol}
             </Text>
             <CurrencyLogo currency={currencies.input} />
           </Flex>
@@ -169,8 +169,8 @@ const OrderContent: React.FC<OrderContentProps> = ({
             {formattedAmounts.output}
           </Text>
           <Flex alignItems="center">
-            <Text color="text" mr="8px">
-              {currencies.output?.symbol?.toUpperCase()}
+            <Text textTransform="uppercase" color="text" mr="8px">
+              {currencies.output?.symbol}
             </Text>
             <CurrencyLogo currency={currencies.output} />
           </Flex>
