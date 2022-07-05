@@ -253,7 +253,6 @@
   "Success!": "成功！",
   "You have successfully claimed available tokens.": "You have successfully claimed available tokens.",
   "Commit": "提交",
-  "If you don’t commit enough CAKE, you may not receive any IFO tokens at all and will only receive a full refund of your CAKE.": "如果您没有提交足够的 CAKE，那么您可能根本不会收到任何 IFO 代币，而只会收到 CAKE 的全额退还。",
   "Funds to raise:": "要筹集的资金：",
   "Price per %symbol%:": "每个 %symbol% 的价格：",
   "Price per %symbol% with fee:": "每个 %symbol% 的价格和费用：",
@@ -1403,7 +1402,6 @@
   "Subgraph Health Indicator": "子图健康指标",
   "Delay": "延迟",
   "Add liquidity instead": "改为增加流动性",
-  "If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.": "如果您提交的金额太小，可能无法收到有意义数量的 IFO 代币。",
   "SAFEMOON has been migrated to": "SAFEMOON 已迁移至",
   "a new contract address.": "新的合约地址。",
   "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "使用旧地址进行交易可能会导致您损失全部资产。要了解更多信息，请参阅",
@@ -1756,5 +1754,11 @@
   "And there’s a fee for participation: see below.": "And there’s a fee for participation: see below.",
   "The participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of the IFO.": "The participation fee decreases in cliffs, based on the percentage of overflow from the “Public Sale” portion of the IFO.",
   "Note: Fees may vary between different IFOs. To learn more about the participation fees, please refer to the details in the IFO proposal (vote) for the specifics of the IFO you want to take part in.": "Note: Fees may vary between different IFOs. To learn more about the participation fees, please refer to the details in the IFO proposal (vote) for the specifics of the IFO you want to take part in.",
+  "This IFO has token vesting. Purchased tokens are released over a period of time.": "This IFO has token vesting. Purchased tokens are released over a period of time.",
+  "Learn more in the vote proposal": "Learn more in the vote proposal",
+  "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.",
+  "~%num% available to claim at sales end": "~%num% available to claim at sales end",
+  "Vested percentage:": "Vested percentage:",
+  "Vesting schedule:": "Vesting schedule:",
   "Currently using Zap for liquidity provisions.": "Currently using Zap for liquidity provisions."
 }
