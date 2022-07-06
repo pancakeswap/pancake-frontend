@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import styled from 'styled-components'
-import { DeserializedPool } from 'state/types'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { usePool } from 'state/pools/hooks'
+
 import NameCell from './Cells/NameCell'
 import EarningsCell from './Cells/EarningsCell'
 import AprCell from './Cells/AprCell'
@@ -15,7 +16,7 @@ import AutoAprCell from './Cells/AutoAprCell'
 import StakedCell from './Cells/StakedCell'
 
 interface PoolRowProps {
-  pool: DeserializedPool
+  sousId: number
   account: string
 }
 
@@ -25,18 +26,19 @@ const StyledRow = styled.div`
   cursor: pointer;
 `
 
-const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
+const PoolRow: React.FC<PoolRowProps> = ({ sousId, account }) => {
   const { isXs, isSm, isMd, isLg, isXl, isXxl, isTablet, isDesktop } = useMatchBreakpointsContext()
   const isLargerScreen = isLg || isXl || isXxl
   const isXLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)
+  const { pool } = usePool(sousId)
 
   const toggleExpanded = () => {
     setExpanded((prev) => !prev)
   }
 
-  const isCakePool = pool.sousId === 0
+  const isCakePool = sousId === 0
 
   return (
     <>
@@ -66,4 +68,4 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
   )
 }
 
-export default PoolRow
+export default memo(PoolRow)
