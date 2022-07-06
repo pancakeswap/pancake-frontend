@@ -1,5 +1,5 @@
 import { Text, TextProps, Skeleton } from '@pancakeswap/uikit'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import CountUp from 'react-countup'
 import styled, { keyframes } from 'styled-components'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
@@ -53,14 +53,17 @@ export const BalanceWithLoading: React.FC<Omit<BalanceProps, 'value'> & { value:
   fontSize,
   ...props
 }) => {
-  if (isUndefinedOrNull(value)) {
+  const isValueUndefinedOrNull = useMemo(() => isUndefinedOrNull(value), [value])
+  const finalValue = useMemo(() => {
+    if (isValueUndefinedOrNull) return null
+    const trimmedValue = _replace(_toString(value), /,/g, '')
+
+    return _isNaN(trimmedValue) || _isNaN(_toNumber(trimmedValue)) ? 0 : _toNumber(trimmedValue)
+  }, [value, isValueUndefinedOrNull])
+
+  if (isValueUndefinedOrNull) {
     return <Skeleton />
   }
-
-  const trimmedValue = _replace(_toString(value), /,/g, '')
-
-  const finalValue = _isNaN(trimmedValue) || _isNaN(_toNumber(trimmedValue)) ? 0 : _toNumber(trimmedValue)
-
   return <Balance {...props} value={finalValue} fontSize={fontSize} />
 }
 
