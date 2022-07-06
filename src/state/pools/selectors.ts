@@ -64,6 +64,9 @@ export const poolsWithVaultSelector = createSelector(
   },
 )
 
+export const makeVaultPoolWithKeySelector = (vaultKey) =>
+  createSelector(poolsWithVaultSelector, ({ pools }) => pools.find((p) => p.vaultKey === vaultKey))
+
 export const ifoCreditSelector = createSelector([selectIfoUserCredit], (ifoUserCredit) => {
   return new BigNumber(ifoUserCredit)
 })
