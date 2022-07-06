@@ -95,7 +95,7 @@ const OnSaleInfo = ({ token, saleAmount, distributionRatio }) => {
   return (
     <TokenSection primaryToken={token}>
       <Flex flexDirection="column">
-        <Label>{t('On sale').toUpperCase()}</Label>
+        <Label textTransform="uppercase">{t('On sale')}</Label>
         <Value>{saleAmount}</Value>
         <Text fontSize="14px" color="textSubtle">
           {t('%ratio%% of total sale', { ratio: distributionRatio })}

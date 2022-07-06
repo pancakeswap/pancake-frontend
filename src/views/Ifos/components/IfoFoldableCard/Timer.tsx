@@ -99,7 +99,7 @@ const LiveTimer: React.FC<Props> = ({ publicIfoData }) => {
         <>
           <PocketWatchIcon width="42px" mr="8px" />
           <FlexGap gap="8px" alignItems="center">
-            <LiveNowHeading as="h3">{`${t('Live Now').toUpperCase()}!`}</LiveNowHeading>
+            <LiveNowHeading textTransform="uppercase" as="h3">{`${t('Live Now')}!`}</LiveNowHeading>
             <EndInHeading as="h3" scale="lg" color="white">
               {t('Ends in')}
             </EndInHeading>
