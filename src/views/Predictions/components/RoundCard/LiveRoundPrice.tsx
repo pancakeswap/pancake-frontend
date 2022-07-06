@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, memo, useMemo } from 'react'
+import { BigNumber } from '@ethersproject/bignumber'
 import { useCountUp } from 'react-countup'
 import { Skeleton, TooltipText } from '@pancakeswap/uikit'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
-import usePollOraclePrice from '../../hooks/usePollOraclePrice'
 
 interface LiveRoundPriceProps {
   isBull: boolean
+  price: BigNumber
 }
 
-const LiveRoundPrice: React.FC<LiveRoundPriceProps> = ({ isBull }) => {
-  const { price } = usePollOraclePrice()
+const LiveRoundPrice: React.FC<LiveRoundPriceProps> = ({ isBull, price }) => {
   const priceAsNumber = useMemo(() => parseFloat(formatBigNumberToFixed(price, 4, 8)), [price])
 
   const priceColor = isBull ? 'success' : 'failure'
