@@ -26,6 +26,9 @@ jobs:
         run: yarn updateLPsAPR
         env:
           NEXT_PUBLIC_SF_HEADER: ${{ secrets.SF_HEADER }}
+          NEXT_PUBLIC_BIT_QUERY_ENDPOINT: "https://graphql.bitquery.io"
+          BIT_QUERY_HEADER: ${{ secrets.BIT_QUERY_HEADER }}
+          FARM_API: ${{ secrets.FARM_API }}
           NEXT_PUBLIC_CHAIN_ID: '56'
 
       - name: Format
