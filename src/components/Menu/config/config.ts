@@ -83,7 +83,7 @@ const config: (t: ContextApi['t'], languageCode?: string) => ConfigMenuItemsType
         href: '/lottery',
       },
       {
-        label: t('Pottery'),
+        label: t('Pottery (BETA)'),
         href: '/pottery',
       },
     ],
