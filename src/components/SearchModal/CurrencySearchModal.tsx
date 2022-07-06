@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef } from 'react'
+import { useCallback, useState } from 'react'
 import { Currency, Token } from '@pancakeswap/sdk'
 import {
   ModalContainer,
@@ -10,7 +10,6 @@ import {
   InjectedModalProps,
   Heading,
   Button,
-  useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import usePrevious from 'hooks/usePreviousValue'
@@ -26,6 +25,11 @@ const Footer = styled.div`
   width: 100%;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   text-align: center;
+`
+
+const StyledModalContainer = styled(ModalContainer)`
+  max-width: 420px;
+  width: 100%;
 `
 
 const StyledModalBody = styled(ModalBody)`
@@ -84,26 +88,9 @@ export default function CurrencySearchModal({
     },
     [CurrencyModalView.importList]: { title: t('Import List'), onBack: () => setModalView(CurrencyModalView.search) },
   }
-  const { isMobile } = useMatchBreakpointsContext()
-  const wrapperRef = useRef<HTMLDivElement>(null)
 
   return (
-    <ModalContainer
-      drag={isMobile ? 'y' : false}
-      dragConstraints={{ top: 0, bottom: 600 }}
-      dragElastic={{ top: 0 }}
-      onDragStart={() => {
-        if (wrapperRef.current) wrapperRef.current.style.animation = 'none'
-      }}
-      // @ts-ignore
-      onDragEnd={(e, info) => {
-        if (info.offset.y > 3 && onDismiss) onDismiss()
-      }}
-      ref={wrapperRef}
-      maxWidth="420px"
-      width="100%"
-      minWidth="320px"
-    >
+    <StyledModalContainer minWidth="320px">
       <ModalHeader>
         <ModalTitle>
           {config[modalView].onBack && <ModalBackButton onBack={config[modalView].onBack} />}
@@ -148,6 +135,6 @@ export default function CurrencySearchModal({
           </Footer>
         )}
       </StyledModalBody>
-    </ModalContainer>
+    </StyledModalContainer>
   )
 }
