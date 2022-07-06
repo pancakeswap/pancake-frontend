@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import Flex from "../../components/Box/Flex";
-import { Box } from "../../components/Box";
+import { MotionBox } from "../../components/Box";
 import { ArrowBackIcon, CloseIcon } from "../../components/Svg";
 import { IconButton } from "../../components/Button";
 import { ModalProps } from "./types";
+import { mountAnimation } from "../../components/BottomDrawer/styles";
 
 export const ModalHeader = styled.div<{ background?: string }>`
   align-items: center;
@@ -42,7 +43,7 @@ export const ModalBackButton: React.FC<{ onBack: ModalProps["onBack"] }> = ({ on
   );
 };
 
-export const ModalContainer = styled(Box)<{ minWidth: string }>`
+export const ModalContainer = styled(MotionBox)<{ minWidth: string }>`
   overflow: hidden;
   background: ${({ theme }) => theme.modal.background};
   box-shadow: 0px 20px 36px -8px rgba(14, 14, 44, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.05);
@@ -54,8 +55,21 @@ export const ModalContainer = styled(Box)<{ minWidth: string }>`
   z-index: ${({ theme }) => theme.zIndices.modal};
 
   ${({ theme }) => theme.mediaQueries.xs} {
-    width: auto;
+    width: 100%;
+    position: absolute;
     min-width: ${({ minWidth }) => minWidth};
+    bottom: 0;
+    border-radius: 32px 32px 0px 0px;
+    max-width: none !important;
+    max-height: 90vh;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: auto;
+    position: auto;
+    bottom: auto;
+    border-radius: 32px;
     max-width: 100%;
+    max-height: 100vh;
   }
 `;

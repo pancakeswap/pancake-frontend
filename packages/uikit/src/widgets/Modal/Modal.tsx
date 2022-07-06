@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useTheme } from "styled-components";
 import Heading from "../../components/Heading/Heading";
 import getThemeValue from "../../util/getThemeValue";
 import { ModalBody, ModalHeader, ModalTitle, ModalContainer, ModalCloseButton, ModalBackButton } from "./styles";
 import { ModalProps } from "./types";
+import { useMatchBreakpointsContext } from "../../contexts";
 
 const Modal: React.FC<ModalProps> = ({
   title,
@@ -17,8 +18,24 @@ const Modal: React.FC<ModalProps> = ({
   ...props
 }) => {
   const theme = useTheme();
+  const { isMobile } = useMatchBreakpointsContext();
+  const wrapperRef = useRef<HTMLDivElement>(null);
   return (
-    <ModalContainer minWidth={minWidth} {...props}>
+    // @ts-ignore
+    <ModalContainer
+      drag={isMobile ? "y" : false}
+      dragConstraints={{ top: 0, bottom: 600 }}
+      dragElastic={{ top: 0 }}
+      onDragStart={() => {
+        if (wrapperRef.current) wrapperRef.current.style.animation = "none";
+      }}
+      onDragEnd={(e, info) => {
+        if (info.offset.y > 3 && onDismiss) onDismiss();
+      }}
+      ref={wrapperRef}
+      minWidth={minWidth}
+      {...props}
+    >
       <ModalHeader background={getThemeValue(`colors.${headerBackground}`, headerBackground)(theme)}>
         <ModalTitle>
           {onBack && <ModalBackButton onBack={onBack} />}
