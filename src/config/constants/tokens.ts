@@ -2128,6 +2128,14 @@ export const mainnetTokens = defineTokens({
     'Trivian Token',
     'https://trivians.io/',
   ),
+  mhunt: new Token(
+    MAINNET,
+    '0x2C717059b366714d267039aF8F59125CAdce6D8c',
+    18,
+    'MHUNT',
+    'MetaShooter',
+    'https://metashooter.gg/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
