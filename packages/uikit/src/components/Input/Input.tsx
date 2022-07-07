@@ -58,7 +58,16 @@ const Input = styled.input<InputProps>`
   }
 
   &:focus:not(:disabled) {
-    box-shadow: ${({ theme }) => theme.shadows.focus};
+    box-shadow: ${({ theme, isWarning, isSuccess }) => {
+      if (isWarning) {
+        return theme.shadows.warning;
+      }
+
+      if (isSuccess) {
+        return theme.shadows.success;
+      }
+      return theme.shadows.focus;
+    }};
   }
 `;
 

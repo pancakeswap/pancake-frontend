@@ -16,6 +16,7 @@ enum DeadlineError {
 }
 
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
+const THREE_DAYS_IN_SECONDS = 60 * 60 * 24 * 3
 
 const SlippageTabs = () => {
   const [userSlippageTolerance, setUserSlippageTolerance] = useUserSlippageTolerance()
@@ -67,8 +68,10 @@ const SlippageTabs = () => {
 
     try {
       const valueAsInt: number = Number.parseInt(value) * 60
-      if (!Number.isNaN(valueAsInt) && valueAsInt > 0) {
+      if (!Number.isNaN(valueAsInt) && valueAsInt > 60 && valueAsInt < THREE_DAYS_IN_SECONDS) {
         setTtl(valueAsInt)
+      } else {
+        deadlineError = DeadlineError.InvalidInput
       }
     } catch (error) {
       console.error(error)
@@ -175,7 +178,7 @@ const SlippageTabs = () => {
               scale="sm"
               inputMode="numeric"
               pattern="^[0-9]+$"
-              color={deadlineError ? 'red' : undefined}
+              isWarning={!!deadlineError}
               onBlur={() => {
                 parseCustomDeadline((ttl / 60).toString())
               }}
