@@ -30,7 +30,7 @@ const Wrapper = styled(Flex)`
   }
 
   @media screen and (min-width: 1920px) {
-    margin-top: -66px;
+    margin-top: -60px;
   }
 `
 
