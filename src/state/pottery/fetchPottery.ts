@@ -1,16 +1,41 @@
 import BigNumber from 'bignumber.js'
 import multicallv2 from 'utils/multicall'
 import potteryVaultAbi from 'config/abi/potteryVaultAbi.json'
-import { getPotteryVaultAddress } from 'utils/addressHelpers'
+import { getPotteryDrawAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { PotteryDepositStatus } from 'state/types'
 import tokens from 'config/constants/tokens'
 import { getPotteryDrawContract, getBep20Contract } from 'utils/contractHelpers'
+import { request, gql } from 'graphql-request'
+import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
 
-const potteryVaultAddress = getPotteryVaultAddress()
+const potteryDrawAddress = getPotteryDrawAddress()
 const potteryDrawContract = getPotteryDrawContract()
 
-export const fetchPublicPotteryValue = async () => {
+export const fetchLastVaultAddress = async () => {
+  try {
+    const response = await request(
+      GRAPH_API_POTTERY,
+      gql`
+        query getUserPotterWithdrawAbleData($contract: ID!) {
+          pottery(id: $contract) {
+            id
+            lastVaultAddress
+          }
+        }
+      `,
+      { contract: potteryDrawAddress },
+    )
+
+    const { lastVaultAddress } = response.pottery
+    return lastVaultAddress
+  } catch (error) {
+    console.error('Failed to fetch last vault address', error)
+    return ''
+  }
+}
+
+export const fetchPublicPotteryValue = async (potteryVaultAddress: string) => {
   try {
     const calls = ['getStatus', 'totalLockCake', 'totalSupply', 'lockStartTime'].map((method) => ({
       address: potteryVaultAddress,
@@ -41,7 +66,7 @@ export const fetchPublicPotteryValue = async () => {
   }
 }
 
-export const fetchTotalLockedValue = async () => {
+export const fetchTotalLockedValue = async (potteryVaultAddress: string) => {
   try {
     const contract = getBep20Contract(tokens.cake.address)
     const totalLocked = await contract.balanceOf(potteryVaultAddress)

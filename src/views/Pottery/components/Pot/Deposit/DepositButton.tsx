@@ -9,12 +9,18 @@ import { PotteryDepositStatus } from 'state/types'
 interface DepositButtonProps {
   status: PotteryDepositStatus
   depositAmount: string
+  potteryVaultAddress: string
   setDepositAmount: (value: string) => void
 }
 
-const DepositButton: React.FC<DepositButtonProps> = ({ status, depositAmount, setDepositAmount }) => {
+const DepositButton: React.FC<DepositButtonProps> = ({
+  status,
+  depositAmount,
+  potteryVaultAddress,
+  setDepositAmount,
+}) => {
   const { t } = useTranslation()
-  const { isPending, handleDeposit } = useDepositPottery(depositAmount)
+  const { isPending, handleDeposit } = useDepositPottery(depositAmount, potteryVaultAddress)
   const depositAmountAsBN = new BigNumber(depositAmount).multipliedBy(BIG_TEN.pow(18))
 
   const onClickDeposit = useCallback(async () => {

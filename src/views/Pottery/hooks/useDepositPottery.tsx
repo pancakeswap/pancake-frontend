@@ -10,13 +10,13 @@ import { usePotterytVaultContract } from 'hooks/useContract'
 import { useWeb3React } from '@web3-react/core'
 import { fetchPotteryUserDataAsync } from 'state/pottery'
 
-export const useDepositPottery = (amount: string) => {
+export const useDepositPottery = (amount: string, potteryVaultAddress: string) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
-  const contract = usePotterytVaultContract()
+  const contract = usePotterytVaultContract(potteryVaultAddress)
 
   const handleDeposit = useCallback(async () => {
     const amountDeposit = new BigNumber(amount).multipliedBy(BIG_TEN.pow(18)).toString()

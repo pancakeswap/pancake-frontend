@@ -2,9 +2,13 @@ import { Button, AutoRenewIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useApprovePottery } from 'views/Pottery/hooks/useApprovePottery'
 
-const EnableButton: React.FC = () => {
+interface Props {
+  potteryVaultAddress: string
+}
+
+const EnableButton: React.FC<Props> = ({ potteryVaultAddress }) => {
   const { t } = useTranslation()
-  const { isPending, onApprove } = useApprovePottery()
+  const { isPending, onApprove } = useApprovePottery(potteryVaultAddress)
 
   return (
     <Button

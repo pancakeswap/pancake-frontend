@@ -3,7 +3,7 @@ import { useState, useMemo } from 'react'
 import { Flex, Box, Button, Text, HelpIcon, useTooltip, LogoRoundIcon, Skeleton, InputProps } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
-import { usePotteryData } from 'state/pottery/hook'
+import { usePotteryData, useLatesVaultAddress } from 'state/pottery/hook'
 import { Input as NumericalInput } from 'components/CurrencyInputPanel/NumericalInput'
 import tokens from 'config/constants/tokens'
 import useTokenBalance from 'hooks/useTokenBalance'
@@ -32,6 +32,7 @@ const Container = styled.div<InputProps>`
 const DepositAction: React.FC = () => {
   const { t } = useTranslation()
   const { publicData, userData } = usePotteryData()
+  const lastVaultAddress = useLatesVaultAddress()
   const [depositAmount, setDepositAmount] = useState('')
 
   const { balance: userCake } = useTokenBalance(tokens.cake.address)
@@ -63,7 +64,7 @@ const DepositAction: React.FC = () => {
   }
 
   if (userData.allowance.isLessThanOrEqualTo(0)) {
-    return <EnableButton />
+    return <EnableButton potteryVaultAddress={lastVaultAddress} />
   }
 
   return (
@@ -124,6 +125,7 @@ const DepositAction: React.FC = () => {
         <DepositButton
           status={publicData.getStatus}
           depositAmount={depositAmount}
+          potteryVaultAddress={lastVaultAddress}
           setDepositAmount={setDepositAmount}
         />
       )}

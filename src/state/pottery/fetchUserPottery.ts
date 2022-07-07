@@ -1,4 +1,3 @@
-import { getPotteryVaultAddress } from 'utils/addressHelpers'
 import BigNumber from 'bignumber.js'
 import tokens from 'config/constants/tokens'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -6,12 +5,11 @@ import { getBep20Contract, getPotteryVaultContract, getPotteryDrawContract } fro
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
 import { PotteryDepositStatus } from 'state/types'
+import { multicallv2 } from 'utils/multicall'
 
-const potteryVaultAddress = getPotteryVaultAddress()
-const potteryVaultContract = getPotteryVaultContract()
 const potteryDrawContract = getPotteryDrawContract()
 
-export const fetchPotterysAllowance = async (account) => {
+export const fetchPotterysAllowance = async (account: string, potteryVaultAddress: string) => {
   try {
     const contract = getBep20Contract(tokens.cake.address)
     const allowances = await contract.allowance(account, potteryVaultAddress)
@@ -22,8 +20,9 @@ export const fetchPotterysAllowance = async (account) => {
   }
 }
 
-export const fetchVaultUserData = async (account: string) => {
+export const fetchVaultUserData = async (account: string, potteryVaultAddress: string) => {
   try {
+    const potteryVaultContract = getPotteryVaultContract(potteryVaultAddress)
     const balance = await potteryVaultContract.balanceOf(account)
     const previewDeposit = await potteryVaultContract.previewRedeem(balance)
     return {
@@ -55,8 +54,9 @@ export const fetchUserDrawData = async (account: string) => {
   }
 }
 
-export const fetchWithdrawAbleData = async (account: string) => {
+export const fetchWithdrawAbleData = async (account: string, potteryVaultAddress: string) => {
   try {
+    const potteryVaultContract = getPotteryVaultContract(potteryVaultAddress)
     const response = await request(
       GRAPH_API_POTTERY,
       gql`
@@ -66,6 +66,7 @@ export const fetchWithdrawAbleData = async (account: string) => {
             shares
             depositDate
             vault {
+              id
               status
             }
           }
@@ -83,6 +84,7 @@ export const fetchWithdrawAbleData = async (account: string) => {
           depositDate,
           previewRedeem: new BigNumber(previewRedeem.toString()).toJSON(),
           status: PotteryDepositStatus[vault.status],
+          potteryVaultAddress: vault.id,
         }
       }),
     )

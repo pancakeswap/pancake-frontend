@@ -374,9 +374,9 @@ export function useMulticallContract() {
   return useContract<Multicall>(getMulticallAddress(), multiCallAbi, false)
 }
 
-export const usePotterytVaultContract = () => {
+export const usePotterytVaultContract = (address) => {
   const { library } = useActiveWeb3React()
-  return useMemo(() => getPotteryVaultContract(library.getSigner()), [library])
+  return useMemo(() => getPotteryVaultContract(address, library.getSigner()), [address, library])
 }
 
 export const usePotterytDrawContract = () => {

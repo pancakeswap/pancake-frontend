@@ -1,3 +1,6 @@
+import BigNumber from 'bignumber.js'
+import { PotteryDepositStatus } from 'state/types'
+
 export const remainTimeToNextFriday = (): number => {
   // Get current date and time
   const today = new Date()
@@ -14,4 +17,26 @@ export const remainTimeToNextFriday = (): number => {
   // Round up remaining
   const secondsRemaining = Math.ceil((fridayNoon.getTime() - today.getTime()) / 1000)
   return secondsRemaining
+}
+
+interface CalculateCakeAmount {
+  status: PotteryDepositStatus
+  previewRedeem: string
+  shares: string
+  totalSupply: BigNumber
+  totalLockCake: BigNumber
+}
+
+export const calculateCakeAmount = ({
+  status,
+  previewRedeem,
+  shares,
+  totalSupply,
+  totalLockCake,
+}: CalculateCakeAmount): BigNumber => {
+  if (status === PotteryDepositStatus.LOCK) {
+    return new BigNumber(shares).div(totalSupply).times(totalLockCake)
+  }
+
+  return new BigNumber(previewRedeem)
 }

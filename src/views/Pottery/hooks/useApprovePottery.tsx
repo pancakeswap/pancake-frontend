@@ -5,10 +5,9 @@ import { useTranslation } from 'contexts/Localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { MaxUint256 } from '@ethersproject/constants'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { getPotteryVaultAddress } from 'utils/addressHelpers'
 import { useCake } from 'hooks/useContract'
 
-export const useApprovePottery = () => {
+export const useApprovePottery = (potteryVaultAddress: string) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
@@ -16,9 +15,8 @@ export const useApprovePottery = () => {
   const { signer: cakeContract } = useCake()
 
   const onApprove = useCallback(async () => {
-    const potteryContract = getPotteryVaultAddress()
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(cakeContract, 'approve', [potteryContract, MaxUint256])
+      return callWithGasPrice(cakeContract, 'approve', [potteryVaultAddress, MaxUint256])
     })
 
     if (receipt?.status) {
@@ -29,7 +27,7 @@ export const useApprovePottery = () => {
         </ToastDescriptionWithTx>,
       )
     }
-  }, [cakeContract, t, callWithGasPrice, fetchWithCatchTxError, toastSuccess])
+  }, [potteryVaultAddress, cakeContract, t, callWithGasPrice, fetchWithCatchTxError, toastSuccess])
 
   return { isPending, onApprove }
 }

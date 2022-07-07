@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AppState } from 'state'
 import {
   PotteryState,
   SerializedPotteryUserData,
@@ -8,7 +9,7 @@ import {
 } from 'state/types'
 import { resetUserState } from '../global/actions'
 import { fetchPotteryFinishedRound } from './fetchPotteryRound'
-import { fetchPublicPotteryValue, fetchTotalLockedValue } from './fetchPottery'
+import { fetchLastVaultAddress, fetchPublicPotteryValue, fetchTotalLockedValue } from './fetchPottery'
 import {
   fetchPotterysAllowance,
   fetchVaultUserData,
@@ -17,6 +18,7 @@ import {
 } from './fetchUserPottery'
 
 const initialState: PotteryState = Object.freeze({
+  lastVaultAddress: '',
   publicData: {
     lastDrawId: '',
     totalPrize: null,
@@ -46,24 +48,37 @@ const initialState: PotteryState = Object.freeze({
   },
 })
 
+export const fetchLastVaultAddressAsync = createAsyncThunk<string>('pottery/fetchLastVaultAddress', async () => {
+  const lastVaultAddress = await fetchLastVaultAddress()
+  return lastVaultAddress
+})
+
 export const fetchPublicPotteryDataAsync = createAsyncThunk<SerializedPotteryPublicData>(
   'pottery/fetchPublicPotteryData',
-  async () => {
-    const [publicPotteryData, totalLocedValue] = await Promise.all([fetchPublicPotteryValue(), fetchTotalLockedValue()])
+  async (arg, { getState }) => {
+    const state = getState()
+    const potteryVaultAddress = (state as AppState).pottery.lastVaultAddress
 
+    const [publicPotteryData, totalLocedValue] = await Promise.all([
+      fetchPublicPotteryValue(potteryVaultAddress),
+      fetchTotalLockedValue(potteryVaultAddress),
+    ])
     return { ...publicPotteryData, ...totalLocedValue }
   },
 )
 
 export const fetchPotteryUserDataAsync = createAsyncThunk<SerializedPotteryUserData, string>(
   'pottery/fetchPotteryUserData',
-  async (account, { rejectWithValue }) => {
+  async (account, { rejectWithValue, getState }) => {
     try {
+      const state = getState()
+      const potteryVaultAddress = (state as AppState).pottery.lastVaultAddress
+
       const [allowance, vaultUserData, drawData, withdrawAbleData] = await Promise.all([
-        fetchPotterysAllowance(account),
-        fetchVaultUserData(account),
+        fetchPotterysAllowance(account, potteryVaultAddress),
+        fetchVaultUserData(account, potteryVaultAddress),
         fetchUserDrawData(account),
-        fetchWithdrawAbleData(account),
+        fetchWithdrawAbleData(account, potteryVaultAddress),
       ])
 
       const userData = {
@@ -105,6 +120,9 @@ export const PotterySlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(resetUserState, (state) => {
       state.userData = { ...initialState.userData }
+    })
+    builder.addCase(fetchLastVaultAddressAsync.fulfilled, (state, action: PayloadAction<string>) => {
+      state.lastVaultAddress = action.payload
     })
     builder.addCase(
       fetchPublicPotteryDataAsync.fulfilled,

@@ -8,13 +8,13 @@ import { usePotterytVaultContract } from 'hooks/useContract'
 import { useWeb3React } from '@web3-react/core'
 import { fetchPotteryUserDataAsync } from 'state/pottery'
 
-export const useWithdrawPottery = (redeemShare: string) => {
+export const useWithdrawPottery = (redeemShare: string, vaultAddress: string) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
-  const contract = usePotterytVaultContract()
+  const contract = usePotterytVaultContract(vaultAddress)
 
   const handleWithdraw = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => contract.redeem(redeemShare, account, account))

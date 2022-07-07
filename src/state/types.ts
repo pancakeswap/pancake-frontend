@@ -652,6 +652,7 @@ export interface PredictionConfig {
 
 // Pottery
 export interface PotteryState {
+  lastVaultAddress: string
   publicData: SerializedPotteryPublicData
   userData: SerializedPotteryUserData
   finishedRoundInfo: PotteryRoundInfo
@@ -719,6 +720,7 @@ export interface PotteryWithdrawAbleData {
   depositDate: string
   previewRedeem: string
   status: PotteryDepositStatus
+  potteryVaultAddress: string
 }
 
 // Global state

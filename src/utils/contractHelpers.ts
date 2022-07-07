@@ -36,7 +36,6 @@ import {
   getBunnySpecialXmasAddress,
   getICakeAddress,
   getGalaxyNFTClaimingAddress,
-  getPotteryVaultAddress,
   getPotteryDrawAddress,
   getCakeFlexibleSideVaultAddress,
 } from 'utils/addressHelpers'
@@ -277,8 +276,8 @@ export const getErc721CollectionContract = (signer?: Signer | Provider, address?
   return getContract(erc721CollectionAbi, address, signer) as Erc721collection
 }
 
-export const getPotteryVaultContract = (signer?: Signer | Provider) => {
-  return getContract(potteryVaultAbi, getPotteryVaultAddress(), signer) as PotteryVaultAbi
+export const getPotteryVaultContract = (address: string, signer?: Signer | Provider) => {
+  return getContract(potteryVaultAbi, address, signer) as PotteryVaultAbi
 }
 export const getPotteryDrawContract = (signer?: Signer | Provider) => {
   return getContract(potteryDrawAbi, getPotteryDrawAddress(), signer) as PotteryDrawAbi
