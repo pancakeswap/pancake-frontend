@@ -6,8 +6,8 @@ export const fetchPotteryFinishedRound = async (potteryRoundId: number) => {
     const response = await request(
       GRAPH_API_POTTERY,
       gql`
-        query getUserPotterWithdrawAbleData($roundId: Int!) {
-          potteryVaults(first: 1, where: { roundId: $roundId }) {
+        query getPotteryVaultRounds($roundId: Int!) {
+          potteryVaultRounds(first: 1, where: { roundId: $roundId }) {
             id
             roundId
             drawDate
@@ -21,7 +21,7 @@ export const fetchPotteryFinishedRound = async (potteryRoundId: number) => {
       { roundId: potteryRoundId },
     )
 
-    const { roundId, drawDate, prizePot, totalPlayers, txid, winners } = response.potteryVaults[0]
+    const { roundId, drawDate, prizePot, totalPlayers, txid, winners } = response.potteryVaultRounds[0]
     return {
       isFetched: true,
       roundId,
