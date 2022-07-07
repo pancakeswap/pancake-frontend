@@ -8,9 +8,9 @@ it("renders correctly", () => {
     <DocumentFragment>
       .c0 {
       color: #280D5F;
-      font-size: 16px;
       font-weight: 600;
       line-height: 1.5;
+      font-size: 16px;
     }
 
     .c1 {
@@ -28,6 +28,7 @@ it("renders correctly", () => {
     <h2
         class="c0 c1"
         color="text"
+        font-size="16px"
       >
         Title
       </h2>
