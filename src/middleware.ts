@@ -13,15 +13,14 @@ export async function middleware(req: NextRequest) {
   const { country, region } = geo
 
   const shouldBlock: boolean = BLOCK_COUNTRIES[country] || BLOCK_REGIONS[`${country}-${region}`]
-  console.log(country, region, shouldBlock, res.url)
 
   if (shouldBlock) {
-    return new Response('Unavailable for legal reasons', { status: 451 })
+    return NextResponse.json({ reason: 'Unavailable for legal reasons' }, { status: 451 })
   }
 
   return res
 }
 
 export const config = {
-  matcher: '/:path((?!_mp).*)',
+  matcher: '/:path((?!_mp|_next).*)',
 }
