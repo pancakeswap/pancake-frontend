@@ -5,27 +5,31 @@ import Balance from 'components/Balance'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { DeserializedPublicData, PotteryWithdrawAbleData } from 'state/types'
+import { PotteryWithdrawAbleData } from 'state/types'
 import WithdrawButton from 'views/Pottery/components/Pot/Claim/WithdrawButton'
 import { convertTimeToSeconds } from 'utils/timeHelper'
 import { calculateCakeAmount } from 'views/Pottery/helpers'
 
 interface AvailableWitdrawProps {
-  publicData: DeserializedPublicData
   withdrawData: PotteryWithdrawAbleData
 }
 
-const AvailableWitdraw: React.FC<AvailableWitdrawProps> = ({ publicData, withdrawData }) => {
+const AvailableWitdraw: React.FC<AvailableWitdrawProps> = ({ withdrawData }) => {
   const {
     t,
     currentLanguage: { locale },
   } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
-  const { totalSupply, totalLockCake } = publicData
-  const { previewRedeem, depositDate, shares, status, potteryVaultAddress } = withdrawData
+  const { previewRedeem, depositDate, shares, status, potteryVaultAddress, totalSupply, totalLockCake } = withdrawData
 
   const cakeNumber = useMemo(() => new BigNumber(previewRedeem), [previewRedeem])
-  const amountAsBn = calculateCakeAmount({ status, previewRedeem, shares, totalSupply, totalLockCake })
+  const amountAsBn = calculateCakeAmount({
+    status,
+    previewRedeem,
+    shares,
+    totalSupply: new BigNumber(totalSupply),
+    totalLockCake: new BigNumber(totalLockCake),
+  })
 
   const amount = getBalanceNumber(amountAsBn)
   const amountInBusd = new BigNumber(amount).times(cakePriceBusd).toNumber()
