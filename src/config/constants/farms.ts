@@ -43,6 +43,43 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 38,
+    v1pid: 386,
+    lpSymbol: 'HOTCROSS-BNB LP',
+    lpAddresses: {
+      56: '0xf23bad605e94de0e3b60c9718a43a94a5af43915',
+      97: '',
+    },
+    token: serializedTokens.hotcross,
+    quoteToken: serializedTokens.wbnb,
+    auctionHostingStartSeconds: 1657184400,
+  },
+  {
+    pid: 94,
+    v1pid: 525,
+    lpSymbol: 'WZRD-BUSD LP',
+    lpAddresses: {
+      56: '0xee456d906a38e10680c9d157FFf143390e9681bA',
+      97: '',
+    },
+    token: serializedTokens.wzrd,
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1657184400,
+  },
+  {
+    pid: 106,
+    lpSymbol: 'MHUNT-BNB LP',
+    lpAddresses: {
+      56: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
+      97: '',
+    },
+    token: serializedTokens.mhunt,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1657184400,
+  },
+  {
     pid: 105,
     lpSymbol: 'SDAO-BUSD LP',
     lpAddresses: {
@@ -51,17 +88,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.sdao,
     quoteToken: serializedTokens.busd,
-  },
-  {
-    pid: 38,
-    v1pid: 386,
-    lpSymbol: 'HOTCROSS-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0xf23bad605e94de0e3b60c9718a43a94a5af43915',
-    },
-    token: serializedTokens.hotcross,
-    quoteToken: serializedTokens.wbnb,
   },
   {
     pid: 104,
@@ -106,18 +132,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.happy,
     quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
-  },
-  {
-    pid: 94,
-    v1pid: 525,
-    lpSymbol: 'WZRD-BUSD LP',
-    lpAddresses: {
-      97: '',
-      56: '0xee456d906a38e10680c9d157FFf143390e9681bA',
-    },
-    token: serializedTokens.wzrd,
-    quoteToken: serializedTokens.busd,
     isCommunity: true,
   },
   {
