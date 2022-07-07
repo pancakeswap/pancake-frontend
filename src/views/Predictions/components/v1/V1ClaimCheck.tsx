@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
@@ -29,10 +29,11 @@ const ClaimCheck = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const dispatch = useLocalDispatch()
+  const predictionsV1Address = useMemo(() => getPredictionsV1Address(), [])
 
   const [onPresentCollectWinningsModal] = useModal(
     <CollectRoundWinningsModal
-      predictionsAddress={getPredictionsV1Address()}
+      predictionsAddress={predictionsV1Address}
       token={tokens.bnb}
       dispatch={dispatch}
       history={history}
