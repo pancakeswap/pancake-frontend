@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import styled, { DefaultTheme } from 'styled-components'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Box, Flex, FlexProps, Skeleton, Text } from '@pancakeswap/uikit'
@@ -156,7 +157,7 @@ export const RoundPrice: React.FC<RoundPriceProps> = ({ lockPrice, closePrice })
   const betPosition = getRoundPosition(lockPrice, closePrice)
   const priceDifference = getPriceDifference(closePrice, lockPrice)
 
-  const getTextColor = () => {
+  const textColor = useMemo(() => {
     switch (betPosition) {
       case BetPosition.BULL:
         return 'success'
@@ -166,12 +167,12 @@ export const RoundPrice: React.FC<RoundPriceProps> = ({ lockPrice, closePrice })
       default:
         return 'textDisabled'
     }
-  }
+  }, [betPosition])
 
   return (
     <Flex alignItems="center" justifyContent="space-between" mb="16px">
       {closePrice ? (
-        <Text color={getTextColor()} bold fontSize="24px">
+        <Text color={textColor} bold fontSize="24px">
           {formatUsdv2(closePrice, minPriceUsdDisplayed)}
         </Text>
       ) : (
