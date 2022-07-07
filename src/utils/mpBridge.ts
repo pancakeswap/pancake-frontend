@@ -104,7 +104,7 @@ const handleLinkClick = (e: MouseEvent, router: NextRouter) => {
       if (entry === 'add') {
         const [currency1, currency2] = params
         _bridgeUtils.jump({ path: entry, query: { currency1, currency2 } })
-      } else if (entry === 'farms') {
+      } else if (entry === 'farms' || entry === 'pools') {
         const newPathname = `/_mp${url.pathname}`
         router.push(newPathname)
       }

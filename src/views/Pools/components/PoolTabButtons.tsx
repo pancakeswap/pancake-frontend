@@ -57,7 +57,7 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, vi
 
   const { t } = useTranslation()
 
-  const isExact = router.asPath === '/pools'
+  const isExact = router.asPath === '/pools' || router.asPath === '/_mp/pools'
 
   const viewModeToggle = (
     <ToggleView idPrefix="clickPool" viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
