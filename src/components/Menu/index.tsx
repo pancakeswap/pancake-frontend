@@ -7,6 +7,8 @@ import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 // import { usePhishingBannerManager } from 'state/user/hooks'
 import { usePePriceArs } from 'hooks/useBUSDPrice'
+import AddToken from 'utils/addToken'
+import logo from 'assets/pe.png'
 import config from './config/config'
 import UserMenu from './UserMenu'
 import GlobalSettings from './GlobalSettings'
@@ -40,6 +42,14 @@ const Menu = (props) => {
       activeItem={activeMenuItem?.href}
       activeSubItem={activeSubMenuItem?.href}
       buyCakeLabel={t('Buy CAKE')}
+      onClick={() =>
+        AddToken({
+          address: '0xc2768beF7a6BB57F0FfA169a9ED4017c09696FF1',
+          symbol: 'PE',
+          decimals: 6,
+          image: logo,
+        })
+      }
       {...props}
     />
   )
