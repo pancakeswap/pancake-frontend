@@ -27,14 +27,6 @@
       "logoURI": "https://raw.githubusercontent.com/peronio-ar/branding/main/logo/256.png"
     },
     {
-      "name": "Tether USD",
-      "symbol": "USDT",
-      "address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
-      "chainId": 137,
-      "decimals": 6,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xc2132d05d31c914a87c6611c10748aeb04b58e8f.png"
-    },
-    {
       "name": "USD Coin",
       "symbol": "USDC",
       "address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
@@ -57,14 +49,6 @@
       "chainId": 80001,
       "decimals": 6,
       "logoURI": "https://raw.githubusercontent.com/peronio-ar/branding/main/logo/256.png"
-    },
-    {
-      "name": "Tether USD",
-      "symbol": "USDT",
-      "address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
-      "chainId": 80001,
-      "decimals": 6,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xc2132d05d31c914a87c6611c10748aeb04b58e8f.png"
     },
     {
       "name": "USD Coin",
