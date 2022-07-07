@@ -175,7 +175,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
                   {t('Enter DOWN')}
                 </Button>
               </>
-            ) : (
+            ) : enteredPosition ? (
               <>
                 <div ref={targetRef}>
                   <Button disabled startIcon={getPositionEnteredIcon()} width="100%" mb="8px">
@@ -184,6 +184,15 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
                 </div>
                 <PrizePoolRow totalAmount={round.totalAmount} />
                 {tooltipVisible && tooltip}
+              </>
+            ) : (
+              <>
+                <div>
+                  <Button disabled width="100%" mb="8px">
+                    {t('No position entered')}
+                  </Button>
+                </div>
+                <PrizePoolRow totalAmount={round.totalAmount} />
               </>
             )}
           </RoundResultBox>
