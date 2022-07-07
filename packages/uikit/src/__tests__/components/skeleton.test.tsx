@@ -72,7 +72,6 @@ it("renders correctly waves animation", () => {
     }
 
     .c1 {
-      position: relative;
       overflow: hidden;
       -webkit-transform: translate3d(0,0,0);
       -ms-transform: translate3d(0,0,0);
