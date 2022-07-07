@@ -89,7 +89,7 @@ const ContributeModal: React.FC<Props> = ({
 
   const { currency, articleUrl } = ifo
   const { toastSuccess } = useToast()
-  const { limitPerUserInLP, vestingInfomation } = publicPoolCharacteristics
+  const { limitPerUserInLP, vestingInformation } = publicPoolCharacteristics
   const { amountTokenCommittedInLP } = userPoolCharacteristics
   const { contract } = walletIfoData
   const [value, setValue] = useState('')
@@ -249,7 +249,7 @@ const ContributeModal: React.FC<Props> = ({
               </Button>
             ))}
           </Flex>
-          {vestingInfomation.percentage > 0 && <SmallAmountNotice url={articleUrl} />}
+          {vestingInformation.percentage > 0 && <SmallAmountNotice url={articleUrl} />}
           <Text color="textSubtle" fontSize="12px" mb="24px">
             {t(
               'If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.',

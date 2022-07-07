@@ -25,7 +25,7 @@ const initialState = {
     vestingAmountTotal: BIG_ZERO,
     isVestingInitialized: false,
     vestingId: '0',
-    vestingcomputeReleasableAmount: BIG_ZERO,
+    vestingComputeReleasableAmount: BIG_ZERO,
   },
   poolUnlimited: {
     amountTokenCommittedInLP: BIG_ZERO,
@@ -38,7 +38,7 @@ const initialState = {
     vestingAmountTotal: BIG_ZERO,
     isVestingInitialized: false,
     vestingId: '0',
-    vestingcomputeReleasableAmount: BIG_ZERO,
+    vestingComputeReleasableAmount: BIG_ZERO,
   },
 }
 
@@ -164,7 +164,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         vestingAmountTotal: basicSchedule ? new BigNumber(basicSchedule[0].amountTotal.toString()) : BIG_ZERO,
         isVestingInitialized: basicSchedule ? basicSchedule[0].isVestingInitialized : false,
         vestingId: basicId ? basicId.toString() : '0',
-        vestingcomputeReleasableAmount: basicReleasableAmount
+        vestingComputeReleasableAmount: basicReleasableAmount
           ? new BigNumber(basicReleasableAmount.toString())
           : BIG_ZERO,
       },
@@ -179,7 +179,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
         vestingAmountTotal: unlimitedSchedule ? new BigNumber(unlimitedSchedule[0].amountTotal.toString()) : BIG_ZERO,
         isVestingInitialized: unlimitedSchedule ? unlimitedSchedule[0].isVestingInitialized : false,
         vestingId: unlimitedId ? unlimitedId.toString() : '0',
-        vestingcomputeReleasableAmount: unlimitedReleasableAmount
+        vestingComputeReleasableAmount: unlimitedReleasableAmount
           ? new BigNumber(unlimitedReleasableAmount.toString())
           : BIG_ZERO,
       },
