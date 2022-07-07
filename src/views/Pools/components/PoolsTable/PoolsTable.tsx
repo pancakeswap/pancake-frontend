@@ -37,11 +37,14 @@ const ScrollButtonContainer = styled.div`
 const PoolsTable: React.FC<PoolsTableProps> = ({ pools, account }) => {
   const { t } = useTranslation()
   const tableWrapperEl = useRef<HTMLDivElement>(null)
+
   const scrollToTop = (): void => {
-    tableWrapperEl.current.scrollIntoView({
+    window.scrollTo({
+      top: tableWrapperEl.current.offsetTop,
       behavior: 'smooth',
     })
   }
+
   return (
     <StyledTableBorder>
       <StyledTable id="pools-table" role="table" ref={tableWrapperEl}>

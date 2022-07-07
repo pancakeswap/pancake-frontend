@@ -39,6 +39,13 @@ it("renders correctly", () => {
       transform: translate3d(0,0,0);
     }
 
+    @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+      .c1 {
+        -webkit-filter: none !important;
+        filter: none !important;
+      }
+    }
+
     <div
         class="c0"
       >
