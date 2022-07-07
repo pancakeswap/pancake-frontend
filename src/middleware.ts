@@ -1,3 +1,4 @@
+// eslint-disable-next-line @next/next/no-server-import-in-page
 import { NextRequest, NextResponse } from 'next/server'
 
 // Sanctioned Countries: Belarus, Cuba, Democratic Republic of Congo, Iran, Iraq, North Korea, Sudan, Syria, Zimbabwe.
@@ -18,4 +19,8 @@ export async function middleware(req: NextRequest) {
   }
 
   return res
+}
+
+export const config = {
+  matcher: '/:path((?!_mp).*)',
 }
