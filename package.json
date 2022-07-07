@@ -74,7 +74,7 @@
     "local-storage": "^2.0.0",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
-    "next": "^12.1.6",
+    "next": "^12.2.0",
     "next-themes": "^0.2.0",
     "numeral": "^2.0.6",
     "react": "^17.0.1",
