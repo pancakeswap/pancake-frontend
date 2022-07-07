@@ -18,7 +18,7 @@ export interface PoolCharacteristics {
   admissionProfile?: number
   needQualifiedNFT?: boolean
   needQualifiedPoints?: boolean
-  vestingInfomation?: VestingInfomation
+  vestingInformation?: VestingInformation
 }
 
 // IFO data unrelated to the user returned by useGetPublicIfoData
@@ -41,7 +41,7 @@ export interface PublicIfoData {
   [PoolIds.poolUnlimited]: PoolCharacteristics
 }
 
-export interface VestingInfomation {
+export interface VestingInformation {
   percentage: number
   cliff: number
   duration: number
@@ -60,7 +60,7 @@ export interface UserPoolCharacteristics {
   vestingAmountTotal?: BigNumber
   isVestingInitialized?: boolean
   vestingId?: string
-  vestingcomputeReleasableAmount?: BigNumber
+  vestingComputeReleasableAmount?: BigNumber
 }
 
 // Use only inside the useGetWalletIfoData hook

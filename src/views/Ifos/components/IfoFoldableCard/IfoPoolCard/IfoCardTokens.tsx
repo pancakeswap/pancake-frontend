@@ -252,10 +252,10 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           <TokenSection primaryToken={ifo.token}>
             <Label>{t('%symbol% to receive', { symbol: token.symbol })}</Label>
             <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
-            {version >= 3.2 && publicPoolCharacteristics.vestingInfomation.percentage > 0 && (
+            {version >= 3.2 && publicPoolCharacteristics.vestingInformation.percentage > 0 && (
               <VestingAvailableToClaim
                 amountToReceive={userPoolCharacteristics.offeringAmountInToken}
-                percentage={publicPoolCharacteristics.vestingInfomation.percentage}
+                percentage={publicPoolCharacteristics.vestingInformation.percentage}
                 decimals={token.decimals}
               />
             )}

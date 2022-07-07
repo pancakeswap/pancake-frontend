@@ -22,7 +22,7 @@ interface TokenInfoProps {
 
 const TokenInfo: React.FC<TokenInfoProps> = ({ index, data, fetchUserVestingData }) => {
   const { vestingTitle, token } = data.ifo
-  const { vestingcomputeReleasableAmount } = data.userVestingData[PoolIds.poolUnlimited]
+  const { vestingComputeReleasableAmount } = data.userVestingData[PoolIds.poolUnlimited]
   const [expanded, setExpanded] = useState(false)
   const shouldRenderExpand = useDelayedUnmount(expanded, 300)
 
@@ -37,8 +37,8 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ index, data, fetchUserVestingData
   }
 
   const amountAvailable = useMemo(
-    () => getBalanceNumber(vestingcomputeReleasableAmount, token.decimals),
-    [token, vestingcomputeReleasableAmount],
+    () => getBalanceNumber(vestingComputeReleasableAmount, token.decimals),
+    [token, vestingComputeReleasableAmount],
   )
 
   return (

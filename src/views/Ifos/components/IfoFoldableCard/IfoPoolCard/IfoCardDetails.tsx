@@ -154,7 +154,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
   const tokenEntry = <MaxTokenEntry poolId={poolId} ifo={ifo} maxToken={maxToken} />
 
   const oneWeek = 604800
-  const weeksInSeconds = ifo.version >= 3.2 ? poolCharacteristic.vestingInfomation.duration : 0
+  const weeksInSeconds = ifo.version >= 3.2 ? poolCharacteristic.vestingInformation.duration : 0
   const vestingWeeks = Math.ceil(weeksInSeconds / oneWeek)
 
   /* Format end */
@@ -190,11 +190,11 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
             />
           )}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
-          {ifo.version >= 3.2 && poolCharacteristic.vestingInfomation.percentage > 0 && (
+          {ifo.version >= 3.2 && poolCharacteristic.vestingInformation.percentage > 0 && (
             <>
               <FooterEntry
                 label={t('Vested percentage:')}
-                value={`${poolCharacteristic.vestingInfomation.percentage}%`}
+                value={`${poolCharacteristic.vestingInformation.percentage}%`}
               />
               <FooterEntry label={t('Vesting schedule:')} value={`${vestingWeeks} weeks`} />
             </>

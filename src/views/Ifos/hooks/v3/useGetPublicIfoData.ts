@@ -57,7 +57,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       sumTaxesOverflow: BIG_ZERO,
       pointThreshold: 0,
       admissionProfile: undefined,
-      vestingInfomation: {
+      vestingInformation: {
         percentage: 0,
         cliff: 0,
         duration: 0,
@@ -71,7 +71,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       taxRate: 0,
       totalAmountPool: BIG_ZERO,
       sumTaxesOverflow: BIG_ZERO,
-      vestingInfomation: {
+      vestingInformation: {
         percentage: 0,
         cliff: 0,
         duration: 0,
@@ -188,12 +188,12 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
           taxRate: 0,
           pointThreshold: pointThreshold ? pointThreshold[0].toNumber() : 0,
           admissionProfile: admissionProfile ? admissionProfile[0] : undefined,
-          vestingInfomation: formatVestingInfo(basicVestingInformation),
+          vestingInformation: formatVestingInfo(basicVestingInformation),
         },
         poolUnlimited: {
           ...poolUnlimitedFormatted,
           taxRate: taxRateNum,
-          vestingInfomation: formatVestingInfo(unlimitedVestingInformation),
+          vestingInformation: formatVestingInfo(unlimitedVestingInformation),
         },
         status,
         progress,

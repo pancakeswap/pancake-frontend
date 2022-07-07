@@ -264,8 +264,8 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
       (publicIfoData.status === 'finished' && secondsUntilEnd >= -120) ||
       (publicIfoData.status === 'finished' &&
         ifo.version >= 3.2 &&
-        (publicIfoData[PoolIds.poolBasic].vestingInfomation.percentage > 0 ||
-          publicIfoData[PoolIds.poolUnlimited].vestingInfomation.percentage > 0))) &&
+        (publicIfoData[PoolIds.poolBasic].vestingInformation.percentage > 0 ||
+          publicIfoData[PoolIds.poolUnlimited].vestingInformation.percentage > 0))) &&
     ifo.isActive
   const onApprove = useIfoApprove(ifo, contract.address)
   const { toastSuccess } = useToast()

@@ -46,22 +46,22 @@ interface IfoVestingFooterProps {
 const IfoVestingFooter: React.FC<IfoVestingFooterProps> = ({ ifo, poolId, publicIfoData, walletIfoData }) => {
   const { t } = useTranslation()
   const { token } = ifo
-  const { vestingInfomation } = publicIfoData[poolId]
+  const { vestingInformation } = publicIfoData[poolId]
   const { vestingAmountTotal } = walletIfoData[poolId]
 
   const releaseRate = useMemo(() => {
-    const rate = new BigNumber(vestingAmountTotal).div(vestingInfomation.duration)
+    const rate = new BigNumber(vestingAmountTotal).div(vestingInformation.duration)
     return getFullDisplayBalance(rate, token.decimals, 5)
-  }, [vestingInfomation, vestingAmountTotal, token])
+  }, [vestingInformation, vestingAmountTotal, token])
 
   const releaseDate = useMemo(() => {
     const currentTimeStamp = new Date().getTime()
     const date =
       publicIfoData.vestingStartTime === 0
         ? currentTimeStamp
-        : (publicIfoData.vestingStartTime + vestingInfomation.duration) * 1000
+        : (publicIfoData.vestingStartTime + vestingInformation.duration) * 1000
     return format(date, 'MM/dd/yyyy HH:mm')
-  }, [publicIfoData, vestingInfomation])
+  }, [publicIfoData, vestingInformation])
 
   return (
     <StyledIfoVestingFooter flexDirection="column">
