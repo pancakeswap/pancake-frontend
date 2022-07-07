@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import {
   Card,
@@ -61,7 +61,14 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
   const { lockTimestamp } = round ?? { lockTimestamp: null }
   const { isSettingPosition, position } = state
   const [isBufferPhase, setIsBufferPhase] = useState(false)
-  const positionDisplay = position === BetPosition.BULL ? t('Up').toUpperCase() : t('Down').toUpperCase()
+  const positionDisplay = useMemo(
+    () => (position === BetPosition.BULL ? t('Up').toUpperCase() : t('Down').toUpperCase()),
+    [t, position],
+  )
+  const enteredPosition = useMemo(
+    () => (hasEnteredUp ? t('Up').toUpperCase() : hasEnteredDown ? t('Down').toUpperCase() : null),
+    [t, hasEnteredUp, hasEnteredDown],
+  )
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
     <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnbv2(betAmount)} ${token.symbol}`}</div>,
     { placement: 'top' },
@@ -172,7 +179,7 @@ const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
               <>
                 <div ref={targetRef}>
                   <Button disabled startIcon={getPositionEnteredIcon()} width="100%" mb="8px">
-                    {t('%position% Entered', { position: positionDisplay })}
+                    {t('%position% Entered', { position: enteredPosition })}
                   </Button>
                 </div>
                 <PrizePoolRow totalAmount={round.totalAmount} />
