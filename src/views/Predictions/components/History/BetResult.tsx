@@ -129,7 +129,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
         </Flex>
       </Flex>
       <StyledBetResult>
-        {result === Result.WIN && !canClaim && (
+        {result === Result.WIN && canClaim && (
           <CollectWinningsButton hasClaimed={!canClaim} width="100%" mb="16px" onSuccess={handleSuccess}>
             {bet.claimed ? t('Already Collected') : t('Collect Winnings')}
           </CollectWinningsButton>
