@@ -43,6 +43,16 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 107,
+    lpSymbol: 'TRIVIA-BNB LP',
+    lpAddresses: {
+      56: '0xEF642c40EebBc964881dD7Bd1A0b50e90441E73A',
+      97: '',
+    },
+    token: serializedTokens.trivia,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 38,
     v1pid: 386,
     lpSymbol: 'HOTCROSS-BNB LP',
