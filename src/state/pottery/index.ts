@@ -78,7 +78,7 @@ export const fetchPotteryUserDataAsync = createAsyncThunk<SerializedPotteryUserD
         fetchPotterysAllowance(account, potteryVaultAddress),
         fetchVaultUserData(account, potteryVaultAddress),
         fetchUserDrawData(account),
-        fetchWithdrawAbleData(account, potteryVaultAddress),
+        fetchWithdrawAbleData(account),
       ])
 
       const userData = {

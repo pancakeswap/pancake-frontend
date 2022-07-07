@@ -721,6 +721,8 @@ export interface PotteryWithdrawAbleData {
   previewRedeem: string
   status: PotteryDepositStatus
   potteryVaultAddress: string
+  totalSupply: string
+  totalLockCake: string
 }
 
 // Global state

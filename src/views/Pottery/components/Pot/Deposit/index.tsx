@@ -6,11 +6,13 @@ import { GreyCard } from 'components/Card'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useVaultApy } from 'hooks/useVaultApy'
-import { usePotteryData } from 'state/pottery/hook'
+import { usePotteryData, useLatesVaultAddress } from 'state/pottery/hook'
 import getTimePeriods from 'utils/getTimePeriods'
 import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
-import { remainTimeToNextFriday } from 'views/Pottery/helpers'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { PotteryDepositStatus } from 'state/types'
+import { remainTimeToNextFriday, calculateCakeAmount } from 'views/Pottery/helpers'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
 import YourDeposit from '../YourDeposit'
 import WinRate from '../WinRate'
@@ -31,7 +33,9 @@ const Deposit: React.FC = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const { getLockedApy } = useVaultApy()
-  const { publicData } = usePotteryData()
+  const { publicData, userData } = usePotteryData()
+  const lastVaultAddress = useLatesVaultAddress()
+  const { totalSupply, totalLockCake, getStatus, totalLockedValue } = publicData
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Pottery draws on each Friday at 12 PM UTC!'), {
     placement: 'bottom-start',
@@ -45,14 +49,30 @@ const Deposit: React.FC = () => {
   const secondsRemaining = remainTimeToNextFriday()
   const { days, hours, minutes } = getTimePeriods(secondsRemaining)
 
-  const totalValueLocked = getBalanceNumber(publicData.totalLockedValue)
+  const totalValueLocked = useMemo(() => {
+    if (getStatus === PotteryDepositStatus.LOCK) {
+      return getBalanceNumber(totalLockCake)
+    }
+    return getBalanceNumber(totalLockedValue)
+  }, [getStatus, totalLockCake, totalLockedValue])
+
+  const currentDeposit = userData.withdrawAbleData.find(
+    (data) => data.potteryVaultAddress.toLocaleLowerCase() === lastVaultAddress.toLocaleLowerCase(),
+  )
+  const depositBalance = useMemo(() => {
+    if (currentDeposit) {
+      const { previewRedeem, shares, status } = currentDeposit
+      return calculateCakeAmount({ status, previewRedeem, shares, totalSupply, totalLockCake })
+    }
+    return BIG_ZERO
+  }, [currentDeposit, totalSupply, totalLockCake])
 
   return (
     <Box>
       <Container>
         <GreyCard mb="18px">
           <Flex justifyContent="space-between">
-            <YourDeposit />
+            <YourDeposit depositBalance={depositBalance} />
             <WinRate />
           </Flex>
         </GreyCard>

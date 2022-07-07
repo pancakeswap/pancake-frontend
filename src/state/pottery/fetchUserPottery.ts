@@ -6,6 +6,7 @@ import { request, gql } from 'graphql-request'
 import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
 import { PotteryDepositStatus } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
+import potteryVaultAbi from 'config/abi/potteryVaultAbi.json'
 
 const potteryDrawContract = getPotteryDrawContract()
 
@@ -54,9 +55,8 @@ export const fetchUserDrawData = async (account: string) => {
   }
 }
 
-export const fetchWithdrawAbleData = async (account: string, potteryVaultAddress: string) => {
+export const fetchWithdrawAbleData = async (account: string) => {
   try {
-    const potteryVaultContract = getPotteryVaultContract(potteryVaultAddress)
     const response = await request(
       GRAPH_API_POTTERY,
       gql`
@@ -77,7 +77,23 @@ export const fetchWithdrawAbleData = async (account: string, potteryVaultAddress
 
     const withdrawAbleData = await Promise.all(
       response.withdrawals.map(async ({ id, shares, depositDate, vault }) => {
-        const previewRedeem = await potteryVaultContract.previewRedeem(shares)
+        const calls = [
+          {
+            address: vault.id,
+            name: 'previewRedeem',
+            params: [shares],
+          },
+          {
+            address: vault.id,
+            name: 'totalSupply',
+          },
+          {
+            address: vault.id,
+            name: 'totalLockCake',
+          },
+        ]
+        const [[previewRedeem], [totalSupply], [totalLockCake]] = await multicallv2(potteryVaultAbi, calls)
+
         return {
           id,
           shares,
@@ -85,6 +101,8 @@ export const fetchWithdrawAbleData = async (account: string, potteryVaultAddress
           previewRedeem: new BigNumber(previewRedeem.toString()).toJSON(),
           status: PotteryDepositStatus[vault.status],
           potteryVaultAddress: vault.id,
+          totalSupply: new BigNumber(totalSupply.toString()).toJSON(),
+          totalLockCake: new BigNumber(totalLockCake.toString()).toJSON(),
         }
       }),
     )

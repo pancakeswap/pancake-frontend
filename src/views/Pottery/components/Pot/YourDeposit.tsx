@@ -7,12 +7,16 @@ import { usePriceCakeBusd } from 'state/farms/hooks'
 import { usePotteryData } from 'state/pottery/hook'
 import { getBalanceAmount } from 'utils/formatBalance'
 
-const YourDeposit: React.FC = () => {
+interface YourDepositProps {
+  depositBalance?: any
+}
+
+const YourDeposit: React.FC<YourDepositProps> = ({ depositBalance }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const cakePriceBusd = usePriceCakeBusd()
   const { userData } = usePotteryData()
-  const totalDepositBalance = getBalanceAmount(userData.previewDepositBalance).toNumber()
+  const totalDepositBalance = getBalanceAmount(depositBalance).toNumber()
   const balanceInBusd = new BigNumber(totalDepositBalance).times(cakePriceBusd).toNumber()
 
   return (
