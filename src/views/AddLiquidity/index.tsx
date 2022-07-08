@@ -27,6 +27,7 @@ import { callWithEstimateGas } from 'utils/calls'
 import { ContractMethodName } from 'utils/types'
 import { useLPApr } from 'state/swap/hooks'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
+import { serializeTokens } from 'config/constants/tokens'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -68,10 +69,10 @@ const zapAddress = getZapAddress()
 
 export default function AddLiquidity() {
   const router = useRouter()
+  const tokens = serializeTokens()
 
   const [zapMode] = useZapModeManager()
-  const [currencyIdA, currencyIdB] = router.query.currency || []
-
+  const [currencyIdA, currencyIdB] = router.query.currency || [tokens.bnb.symbol, tokens.cake.address]
   const [steps, setSteps] = useState(Steps.Choose)
 
   const { account, chainId, library } = useActiveWeb3React()
