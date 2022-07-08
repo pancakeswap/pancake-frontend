@@ -12,22 +12,24 @@ export const fetchPotteryFinishedRound = async (potteryRoundId: number) => {
             roundId
             drawDate
             prizePot
-            totalPlayers
             txid
             winners
+            vault {
+              totalPlayers
+            }
           }
         }
       `,
       { roundId: potteryRoundId },
     )
 
-    const { roundId, drawDate, prizePot, totalPlayers, txid, winners } = response.potteryVaultRounds[0]
+    const { roundId, drawDate, prizePot, vault, txid, winners } = response.potteryVaultRounds[0]
     return {
       isFetched: true,
       roundId,
       drawDate,
       prizePot,
-      totalPlayers,
+      totalPlayers: vault.totalPlayers,
       txid,
       winners,
     }
