@@ -22,9 +22,14 @@ export const ModalTitle = styled(Flex)`
 
 export const ModalBody = styled(Flex)`
   flex-direction: column;
-  max-height: 90vh;
-  max-height: calc(var(--vh, 1vh) * 90);
   overflow-y: auto;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    max-height: calc(90vh - 73px);
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: flex;
+    max-height: 90vh;
+  }
 `;
 
 export const ModalCloseButton: React.FC<{ onDismiss: ModalProps["onDismiss"] }> = ({ onDismiss }) => {
