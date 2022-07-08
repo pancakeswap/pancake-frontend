@@ -6,6 +6,7 @@ import { formatNumber } from 'utils/formatBalance'
 import truncateHash from 'utils/truncateHash'
 import { Achievement, Profile } from 'state/types'
 import { useWeb3React } from '@web3-react/core'
+import { useMemo } from 'react'
 import EditProfileAvatar from './EditProfileAvatar'
 import BannerHeader from '../../components/BannerHeader'
 import StatBox, { StatBoxItem } from '../../components/StatBox'
@@ -58,25 +59,26 @@ const ProfileHeader: React.FC<HeaderProps> = ({
     : null
 
   const avatarImage = profile?.nft?.image?.thumbnail || '/images/nfts/no-profile-md.png'
+  const profileTeamId = profile?.teamId
+  const profileUsername = profile?.username
+  const hasProfile = !!profile
 
-  const getBannerImage = () => {
+  const bannerImage = useMemo(() => {
     const imagePath = '/images/teams'
-    if (profile) {
-      switch (profile.teamId) {
-        case 1:
-          return `${imagePath}/storm-banner.png`
-        case 2:
-          return `${imagePath}/flippers-banner.png`
-        case 3:
-          return `${imagePath}/cakers-banner.png`
-        default:
-          break
-      }
+    switch (profileTeamId) {
+      case 1:
+        return `${imagePath}/storm-banner.png`
+      case 2:
+        return `${imagePath}/flippers-banner.png`
+      case 3:
+        return `${imagePath}/cakers-banner.png`
+      default:
+        break
     }
     return `${imagePath}/no-team-banner.png`
-  }
+  }, [profileTeamId])
 
-  const getAvatar = () => {
+  const avatar = useMemo(() => {
     const getIconButtons = () => {
       return (
         // TODO: Share functionality once user profiles routed by ID
@@ -102,7 +104,7 @@ const ProfileHeader: React.FC<HeaderProps> = ({
     const getImage = () => {
       return (
         <>
-          {profile && accountPath && isConnectedAccount ? (
+          {hasProfile && accountPath && isConnectedAccount ? (
             <EditProfileAvatar
               src={avatarImage}
               alt={t('User profile picture')}
@@ -124,11 +126,11 @@ const ProfileHeader: React.FC<HeaderProps> = ({
         {getIconButtons()}
       </>
     )
-  }
+  }, [accountPath, avatarImage, isConnectedAccount, onSuccess, hasProfile, t])
 
-  const getTitle = () => {
-    if (profile?.username) {
-      return `@${profile.username}`
+  const title = useMemo(() => {
+    if (profileUsername) {
+      return `@${profileUsername}`
     }
 
     if (accountPath) {
@@ -136,9 +138,9 @@ const ProfileHeader: React.FC<HeaderProps> = ({
     }
 
     return null
-  }
+  }, [profileUsername, accountPath])
 
-  const renderDescription = () => {
+  const description = useMemo(() => {
     const getActivateButton = () => {
       if (!profile) {
         return (
@@ -164,12 +166,12 @@ const ProfileHeader: React.FC<HeaderProps> = ({
         {accountPath && isConnectedAccount && (!profile || !profile?.nft) && getActivateButton()}
       </Flex>
     )
-  }
+  }, [accountPath, isConnectedAccount, onEditProfileModal, profile, t])
 
   return (
     <>
-      <BannerHeader bannerImage={getBannerImage()} bannerAlt={t('User team banner')} avatar={getAvatar()} />
-      <MarketPageTitle pb="48px" title={getTitle()} description={renderDescription()}>
+      <BannerHeader bannerImage={bannerImage} bannerAlt={t('User team banner')} avatar={avatar} />
+      <MarketPageTitle pb="48px" title={title} description={description}>
         <StatBox>
           <StatBoxItem title={t('NFT Collected')} stat={numNftCollected} />
           <StatBoxItem title={t('Points')} stat={numPoints} />
