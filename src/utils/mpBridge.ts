@@ -69,6 +69,11 @@ const _bridgeUtils = {
       postMessage({ action: 'getSystemInfo', cb: resolve })
     })
   },
+  toExternal(payload) {
+    return new Promise((resolve) => {
+      postMessage({ action: 'toExternal', payload, cb: resolve })
+    })
+  },
 }
 export const bridgeUtils = {
   toWallet() {
@@ -93,25 +98,24 @@ export const useSystemInfo = () => {
   return info
 }
 
-const miniProgramPaths = new Set(['farms', 'add', 'remove', 'find', 'pools', 'swap'])
+const mpWebviewPath = new Set(['/farms', '/farms/history', '/pools', '/pools/history'])
 const handleLinkClick = (e: MouseEvent, router: NextRouter) => {
   // @ts-ignore
-  const { href } = e.target
+  const href = e.target?.closest('a')?.href || ''
   if (href) {
     const url = new URL(href)
     const [entry, ...params] = url.pathname.slice(1).split('/')
-    if (miniProgramPaths.has(entry)) {
-      if (entry === 'add') {
-        const [currency1, currency2] = params
-        _bridgeUtils.jump({ path: entry, query: { currency1, currency2 } })
-      } else if (entry === 'farms' || entry === 'pools') {
-        const newPathname = `/_mp${url.pathname}`
-        router.push(newPathname)
-      }
-      console.log('~ hit path: ', url.pathname)
-      e.stopPropagation()
-      e.preventDefault()
+    if (entry === 'add') {
+      const [currency1, currency2] = params
+      _bridgeUtils.jump({ path: entry, query: { currency1, currency2 } })
+    } else if (mpWebviewPath.has(url.pathname)) {
+      const newPathname = `/_mp${url.pathname}`
+      router.push(newPathname)
+    } else {
+      _bridgeUtils.toExternal({ url: url.href })
     }
+    e.stopPropagation()
+    e.preventDefault()
   }
 }
 export const useInterceptLink = () => {
