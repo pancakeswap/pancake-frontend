@@ -70,6 +70,18 @@ export const livePools: SerializedPoolConfig[] = [
     isFinished: false,
   },
   {
+    sousId: 287,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.ole,
+    contractAddress: {
+      56: '0xda6F750be1331963E5772BEe757062f6bddcEA4C',
+      97: '',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '2.2569',
+    version: 3,
+  },
+  {
     sousId: 286,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.trivia,
@@ -1546,7 +1558,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.31828',
-    isFinished: false,
   },
   {
     sousId: 152,
@@ -1558,7 +1569,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.03553',
-    isFinished: false,
   },
   {
     sousId: 151,
@@ -1570,7 +1580,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '3.4722',
-    isFinished: false,
   },
   {
     sousId: 150,
@@ -1582,7 +1591,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '1.7361',
-    isFinished: false,
   },
   {
     sousId: 149,
@@ -1594,7 +1602,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.24942',
-    isFinished: false,
   },
   {
     sousId: 148,
@@ -1606,7 +1613,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '2.4074',
-    isFinished: false,
   },
   {
     sousId: 147,
@@ -1618,7 +1624,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '2.8935',
-    isFinished: false,
   },
   {
     sousId: 146,
@@ -1630,7 +1635,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.868',
-    isFinished: false,
   },
   {
     sousId: 145,
@@ -1642,7 +1646,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.01261',
-    isFinished: false,
   },
   {
     sousId: 144,
@@ -1654,7 +1657,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '57.87',
-    isFinished: false,
   },
   {
     sousId: 143,
@@ -1666,7 +1668,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.1342',
-    isFinished: false,
   },
   {
     sousId: 142,
@@ -1678,7 +1679,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.01388',
-    isFinished: false,
   },
   {
     sousId: 141,
@@ -1690,7 +1690,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.01331',
-    isFinished: false,
   },
   {
     sousId: 140,
@@ -1702,7 +1701,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.3472',
-    isFinished: false,
   },
   {
     sousId: 139,
@@ -1714,7 +1712,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '2.8935',
-    isFinished: false,
   },
   {
     sousId: 138,
@@ -1726,7 +1723,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.23148',
-    isFinished: false,
   },
   {
     sousId: 137,
@@ -1738,7 +1734,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.15798',
-    isFinished: false,
   },
   {
     sousId: 136,
@@ -1750,7 +1745,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.17361',
-    isFinished: false,
   },
   {
     sousId: 135,
@@ -1762,7 +1756,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '462.96',
-    isFinished: false,
   },
   {
     sousId: 134,
@@ -1774,7 +1767,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '4.0509',
-    isFinished: false,
   },
   {
     sousId: 133,
@@ -1786,7 +1778,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '79.86',
-    isFinished: false,
   },
   {
     sousId: 132,
@@ -1798,7 +1789,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.66145',
-    isFinished: false,
   },
   {
     sousId: 131,
@@ -1810,7 +1800,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.09548',
-    isFinished: false,
   },
   {
     sousId: 130,
@@ -1822,7 +1811,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.0298',
-    isFinished: false,
   },
   {
     sousId: 129,
@@ -1846,7 +1834,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '3.4722',
-    isFinished: false,
   },
   {
     sousId: 127,
@@ -1858,7 +1845,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.0000031',
-    isFinished: false,
   },
   {
     sousId: 126,
@@ -1870,7 +1856,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.003472',
-    isFinished: false,
   },
   {
     sousId: 125,
@@ -1882,7 +1867,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.00265278',
-    isFinished: false,
   },
   {
     sousId: 124,
@@ -1894,7 +1878,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.00000403',
-    isFinished: false,
   },
   {
     sousId: 123,
@@ -1906,7 +1889,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.4629',
-    isFinished: false,
   },
   {
     sousId: 122,
@@ -1918,7 +1900,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.3472',
-    isFinished: false,
   },
   {
     sousId: 121,
@@ -1930,7 +1911,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.10918',
-    isFinished: false,
   },
   {
     sousId: 120,
@@ -1942,7 +1922,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '1.1574',
-    isFinished: false,
   },
   {
     sousId: 119,
@@ -1954,7 +1933,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.949',
-    isFinished: false,
   },
   {
     sousId: 118,
@@ -1966,7 +1944,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.11284',
-    isFinished: false,
   },
   {
     sousId: 117,
@@ -1990,7 +1967,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.46296',
-    isFinished: false,
   },
   {
     sousId: 115,
@@ -2002,7 +1978,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.22743',
-    isFinished: false,
   },
   {
     sousId: 114,
@@ -2014,7 +1989,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.00000608',
-    isFinished: false,
   },
   {
     sousId: 113,
@@ -2423,7 +2397,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.01273',
-    isFinished: false,
   },
   {
     sousId: 78,
@@ -2448,7 +2421,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.4484',
-    isFinished: false,
   },
   {
     sousId: 76,
@@ -2460,7 +2432,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.4629',
-    isFinished: false,
   },
   {
     sousId: 75,
@@ -2472,7 +2443,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.00007234',
-    isFinished: false,
   },
   {
     sousId: 74,
@@ -2484,7 +2454,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.434027',
-    isFinished: false,
   },
   {
     sousId: 73,
@@ -2496,7 +2465,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '5.787',
-    isFinished: false,
   },
   {
     sousId: 72,
@@ -2508,7 +2476,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.00289',
-    isFinished: false,
   },
   {
     sousId: 71,
@@ -2520,7 +2487,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.14467',
-    isFinished: false,
   },
   {
     sousId: 70,
@@ -2532,7 +2498,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '2.8935',
-    isFinished: false,
   },
   {
     sousId: 69,
@@ -2544,7 +2509,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.5787',
-    isFinished: false,
   },
   {
     sousId: 68,
@@ -2556,7 +2520,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.0868',
-    isFinished: false,
   },
   {
     sousId: 67,
@@ -2593,7 +2556,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.0001157',
-    isFinished: false,
   },
   {
     sousId: 64,
@@ -2618,7 +2580,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.0549',
-    isFinished: false,
   },
   {
     sousId: 62,
@@ -3050,7 +3011,6 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.01157',
-    isFinished: false,
   },
   {
     sousId: 26,

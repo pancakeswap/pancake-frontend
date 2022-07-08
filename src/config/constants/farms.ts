@@ -43,6 +43,16 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 108,
+    lpSymbol: 'OLE-BUSD LP',
+    lpAddresses: {
+      56: '0xe9F369298565B60a0DC19A6fA93cEE934Fd1A58c',
+      97: '',
+    },
+    token: serializedTokens.ole,
+    quoteToken: serializedTokens.busd,
+  },
+  {
     pid: 107,
     lpSymbol: 'TRIVIA-BNB LP',
     lpAddresses: {
