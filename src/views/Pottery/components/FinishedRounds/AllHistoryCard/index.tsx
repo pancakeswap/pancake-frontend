@@ -55,9 +55,10 @@ const AllHistoryCard = () => {
   }, [currentPotteryId])
 
   useEffect(() => {
-    if (debouncedSelectedRoundId && selectedRoundId) {
+    dispatch(setFinishedRoundInfoFetched(false))
+
+    if (debouncedSelectedRoundId && debouncedSelectedRoundId === selectedRoundId) {
       const roundId = parseInt(selectedRoundId) - 1
-      setFinishedRoundInfoFetched(false)
       dispatch(fetchPotteryRoundData(roundId))
     }
   }, [debouncedSelectedRoundId, selectedRoundId, dispatch])
