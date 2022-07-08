@@ -2136,6 +2136,14 @@ export const mainnetTokens = defineTokens({
     'MetaShooter',
     'https://metashooter.gg/',
   ),
+  ole: new Token(
+    MAINNET,
+    '0xa865197A84E780957422237B5D152772654341F3',
+    18,
+    'OLE',
+    'OpenLeverage',
+    'https://openleverage.finance/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
