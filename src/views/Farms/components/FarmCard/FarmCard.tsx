@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Card, Flex, Text, Skeleton } from '@pancakeswap/uikit'
@@ -65,6 +65,10 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
   const lpAddress = getAddress(farm.lpAddresses)
   const isPromotedFarm = farm.token.symbol === 'CAKE'
 
+  const toggleExpandableSection = useCallback(() => {
+    setShowExpandableSection((prev) => !prev)
+  }, [])
+
   return (
     <StyledCard isActive={isPromotedFarm}>
       <FarmCardInnerContainer>
@@ -111,10 +115,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
       </FarmCardInnerContainer>
 
       <ExpandingWrapper>
-        <ExpandableSectionButton
-          onClick={() => setShowExpandableSection(!showExpandableSection)}
-          expanded={showExpandableSection}
-        />
+        <ExpandableSectionButton onClick={toggleExpandableSection} expanded={showExpandableSection} />
         {showExpandableSection && (
           <DetailsSection
             removed={removed}

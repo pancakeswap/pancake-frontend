@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import {
@@ -72,11 +72,11 @@ const YourHistoryCard: React.FC<YourHistoryCardProps> = ({ handleShowMoreClick, 
     setSelectedLotteryNodeData(processedLotteryData)
   }
 
-  const clearState = () => {
+  const clearState = useCallback(() => {
     setShouldShowRoundDetail(false)
     setSelectedLotteryNodeData(null)
     setSelectedLotteryId(null)
-  }
+  }, [])
 
   const getHeader = () => {
     if (shouldShowRoundDetail) {
