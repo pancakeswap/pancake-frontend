@@ -157,7 +157,9 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
         <Flex alignItems="start" justifyContent="space-between">
           <Text bold>{isWinner ? t('Your winnings') : t('Your Result')}:</Text>
           <Box style={{ textAlign: 'right' }}>
-            <Text bold color={resultColor}>{`${isWinner ? '+' : '-'}${formatBnb(payout, displayedDecimals)} ${token.symbol}`}</Text>
+            <Text bold color={resultColor}>{`${isWinner ? '+' : '-'}${formatBnb(payout, displayedDecimals)} ${
+              token.symbol
+            }`}</Text>
             <Text fontSize="12px" color="textSubtle">
               {`~$${totalPayout.toFixed(2)}`}
             </Text>
