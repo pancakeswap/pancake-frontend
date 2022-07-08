@@ -27,6 +27,7 @@ import {
   poolsWithVaultSelector,
   ifoCreditSelector,
   ifoCeilingSelector,
+  makeVaultPoolWithKeySelector,
 } from './selectors'
 
 const lPoolAddresses = livePools.filter(({ sousId }) => sousId !== 0).map(({ earningToken }) => earningToken.address)
@@ -68,6 +69,12 @@ export const usePool = (sousId: number): { pool: DeserializedPool; userDataLoade
 
 export const usePoolsWithVault = () => {
   return useSelector(poolsWithVaultSelector)
+}
+
+export const useDeserializedPoolByVaultKey = (vaultKey) => {
+  const vaultPoolWithKeySelector = useMemo(() => makeVaultPoolWithKeySelector(vaultKey), [vaultKey])
+
+  return useSelector(vaultPoolWithKeySelector)
 }
 
 export const usePoolsPageFetch = () => {
