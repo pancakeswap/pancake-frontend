@@ -46,7 +46,7 @@ const farms: SerializedFarmConfig[] = [
     pid: 108,
     lpSymbol: 'OLE-BUSD LP',
     lpAddresses: {
-      56: '',
+      56: '0xe9F369298565B60a0DC19A6fA93cEE934Fd1A58c',
       97: '',
     },
     token: serializedTokens.ole,
