@@ -176,7 +176,7 @@ export const PricePairLabel: React.FC = () => {
   }, [router, token, dismissTooltip, onDismissTooltip])
   return (
     <>
-      <Box pl={['20px', '20px', '20px', '40px']} position="relative" display="inline-block">
+      <Box pl={['20px', '20px', '20px', '20px', '40px']} position="relative" display="inline-block">
         {!dismissTooltip && (
           <Tooltip>
             <Text mr="5px" display="inline-block" verticalAlign="super">
