@@ -103,26 +103,23 @@ const StyledNoHatBunny = styled.div<{ $isLive: boolean; $isCurrent?: boolean }>`
   left: -24px;
   z-index: 1;
   top: 33px;
+  display: none;
 
   > img {
     width: 78px;
   }
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    top: ${({ $isLive }) => ($isLive ? '46px' : '33px')};
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.xl} {
+    display: block;
     left: auto;
-    top: ${({ $isLive }) => ($isLive ? '61px' : '48px')};
+    top: ${({ $isLive }) => ($isLive ? '63px' : '48px')};
     right: ${({ $isCurrent }) => ($isCurrent ? '17px' : '90px')};
 
     > img {
       width: 123px;
     }
   }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    right: ${({ $isCurrent }) => ($isCurrent ? '67px' : '90px')};
-  }
+
   ${({ theme }) => theme.mediaQueries.xxl} {
     right: 90px;
   }
@@ -267,8 +264,8 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
       (publicIfoData.status === 'finished' && secondsUntilEnd >= -120) ||
       (publicIfoData.status === 'finished' &&
         ifo.version >= 3.2 &&
-        (publicIfoData[PoolIds.poolBasic].vestingInfomation.percentage > 0 ||
-          publicIfoData[PoolIds.poolUnlimited].vestingInfomation.percentage > 0))) &&
+        (publicIfoData[PoolIds.poolBasic].vestingInformation.percentage > 0 ||
+          publicIfoData[PoolIds.poolUnlimited].vestingInformation.percentage > 0))) &&
     ifo.isActive
   const onApprove = useIfoApprove(ifo, contract.address)
   const { toastSuccess } = useToast()

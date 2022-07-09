@@ -42,7 +42,7 @@ const StyledModalBody = styled(ModalBody)`
   }
 `
 
-interface CurrencySearchModalProps extends InjectedModalProps {
+export interface CurrencySearchModalProps extends InjectedModalProps {
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null

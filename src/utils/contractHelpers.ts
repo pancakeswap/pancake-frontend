@@ -37,6 +37,7 @@ import {
   getICakeAddress,
   getGalaxyNFTClaimingAddress,
   getPotteryDrawAddress,
+  getZapAddress,
   getCakeFlexibleSideVaultAddress,
 } from 'utils/addressHelpers'
 
@@ -82,6 +83,7 @@ import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
 import potteryVaultAbi from 'config/abi/potteryVaultAbi.json'
 import potteryDrawAbi from 'config/abi/potteryDrawAbi.json'
+import zapAbi from 'config/abi/zap.json'
 import iCakeAbi from 'config/abi/iCake.json'
 import ifoV3Abi from 'config/abi/ifoV3.json'
 import cakePredictionsAbi from 'config/abi/cakePredictions.json'
@@ -128,6 +130,7 @@ import type {
   TradingCompetitionMoD,
   PotteryVaultAbi,
   PotteryDrawAbi,
+  Zap,
 } from 'config/abi/types'
 
 export const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
@@ -279,8 +282,13 @@ export const getErc721CollectionContract = (signer?: Signer | Provider, address?
 export const getPotteryVaultContract = (address: string, signer?: Signer | Provider) => {
   return getContract(potteryVaultAbi, address, signer) as PotteryVaultAbi
 }
+
 export const getPotteryDrawContract = (signer?: Signer | Provider) => {
   return getContract(potteryDrawAbi, getPotteryDrawAddress(), signer) as PotteryDrawAbi
+}
+
+export const getZapContract = (signer?: Signer | Provider) => {
+  return getContract(zapAbi, getZapAddress(), signer) as Zap
 }
 
 export const getIfoCreditAddressContract = (signer?: Signer | Provider) => {

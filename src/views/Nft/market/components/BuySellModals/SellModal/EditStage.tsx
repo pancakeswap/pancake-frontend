@@ -3,6 +3,7 @@ import { useTranslation } from 'contexts/Localization'
 import { nftsBaseUrl, pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { NftToken } from 'state/nftMarket/types'
 import { getBscScanLinkForNft } from 'utils'
+import DELIST_COLLECTIONS from 'config/constants/nftsCollections/delist'
 import { Divider, HorizontalDivider, RoundedImage } from '../shared/styles'
 
 interface EditStageProps {
@@ -19,6 +20,8 @@ const EditStage: React.FC<EditStageProps> = ({
   continueToAdjustPriceStage,
   continueToRemoveFromMarketStage,
 }) => {
+  const isDelist = Boolean(DELIST_COLLECTIONS[nftToSell?.collectionAddress])
+
   const { t } = useTranslation()
   const itemPageUrlId =
     nftToSell.collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase()
@@ -84,7 +87,7 @@ const EditStage: React.FC<EditStageProps> = ({
       </Flex>
       <Divider />
       <Flex flexDirection="column" px="16px" pb="16px">
-        <Button mb="8px" onClick={continueToAdjustPriceStage}>
+        <Button disabled={isDelist} mb="8px" onClick={continueToAdjustPriceStage}>
           {t('Adjust Sale Price')}
         </Button>
         <Button variant="danger" onClick={continueToRemoveFromMarketStage}>

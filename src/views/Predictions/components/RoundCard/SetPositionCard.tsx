@@ -61,7 +61,7 @@ const getButtonProps = (value: BigNumber, bnbBalance: BigNumber, minBetAmountBal
   }
 
   if (!hasSufficientBalance()) {
-    return { key: 'Insufficient BNB balance', disabled: true }
+    return { key: 'Insufficient %symbol% balance', disabled: true }
   }
 
   if (value.eq(0)) {
@@ -291,7 +291,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
                 isLoading={isTxPending}
                 endIcon={isTxPending ? <AutoRenewIcon color="currentColor" spin /> : null}
               >
-                {t(key)}
+                {t(key, { symbol: token.symbol })}
               </Button>
             ) : (
               <Button

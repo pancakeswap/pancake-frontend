@@ -43,6 +43,7 @@ it("renders correctly", () => {
     }
 
     .c1 {
+      position: relative;
       -webkit-align-items: center;
       -webkit-box-align: center;
       -ms-flex-align: center;

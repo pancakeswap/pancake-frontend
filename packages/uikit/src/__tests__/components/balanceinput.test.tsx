@@ -32,7 +32,6 @@ it("renders correctly", () => {
 
     .c5 {
       color: #7A6EAA;
-      font-size: 12px;
       font-weight: 400;
       line-height: 1.5;
       font-size: 12px;
@@ -185,14 +184,13 @@ it("renders correctly with unit prop", () => {
 
     .c5 {
       color: #280D5F;
-      font-size: 16px;
       font-weight: 400;
       line-height: 1.5;
+      font-size: 16px;
     }
 
     .c7 {
       color: #7A6EAA;
-      font-size: 12px;
       font-weight: 400;
       line-height: 1.5;
       font-size: 12px;
@@ -310,6 +308,7 @@ it("renders correctly with unit prop", () => {
               <div
                 class="c5 c6"
                 color="text"
+                font-size="16px"
               >
                 CAKE
               </div>
@@ -378,14 +377,13 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
 
     .c5 {
       color: #280D5F;
-      font-size: 16px;
       font-weight: 400;
       line-height: 1.5;
+      font-size: 16px;
     }
 
     .c7 {
       color: #7A6EAA;
-      font-size: 12px;
       font-weight: 400;
       line-height: 1.5;
       font-size: 12px;
@@ -435,6 +433,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
     }
 
     .c9 {
+      position: relative;
       -webkit-align-items: center;
       -webkit-box-align: center;
       -ms-flex-align: center;
@@ -545,6 +544,13 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       box-shadow: none;
     }
 
+    @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+      .c12 {
+        -webkit-filter: none !important;
+        filter: none !important;
+      }
+    }
+
     <div
         class="c0"
       >
@@ -569,6 +575,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
               <div
                 class="c5 c6"
                 color="text"
+                font-size="16px"
               >
                 CAKE
               </div>

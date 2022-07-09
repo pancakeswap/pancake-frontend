@@ -2120,6 +2120,30 @@ export const mainnetTokens = defineTokens({
     'NanoByte Token',
     'https://www.nanobyte.finance/',
   ),
+  trivia: new Token(
+    MAINNET,
+    '0xb465f3cb6Aba6eE375E12918387DE1eaC2301B05',
+    3,
+    'TRIVIA',
+    'Trivian Token',
+    'https://trivians.io/',
+  ),
+  mhunt: new Token(
+    MAINNET,
+    '0x2C717059b366714d267039aF8F59125CAdce6D8c',
+    18,
+    'MHUNT',
+    'MetaShooter',
+    'https://metashooter.gg/',
+  ),
+  ole: new Token(
+    MAINNET,
+    '0xa865197A84E780957422237B5D152772654341F3',
+    18,
+    'OLE',
+    'OpenLeverage',
+    'https://openleverage.finance/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({

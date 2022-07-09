@@ -91,7 +91,7 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
 
-  const { admissionProfile, pointThreshold, vestingInfomation } = publicIfoData[poolId]
+  const { admissionProfile, pointThreshold, vestingInformation } = publicIfoData[poolId]
 
   const { needQualifiedNFT, needQualifiedPoints } = useMemo(() => {
     return ifo.version >= 3.1 && poolId === PoolIds.poolBasic
@@ -122,11 +122,11 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
     return (
       account &&
       ifo.version >= 3.2 &&
-      vestingInfomation.percentage > 0 &&
+      vestingInformation.percentage > 0 &&
       publicIfoData.status === 'finished' &&
       walletIfoData[poolId].amountTokenCommittedInLP.gt(0)
     )
-  }, [account, ifo, poolId, publicIfoData, vestingInfomation, walletIfoData])
+  }, [account, ifo, poolId, publicIfoData, vestingInformation, walletIfoData])
 
   return (
     <>

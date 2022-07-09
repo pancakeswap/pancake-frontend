@@ -1,7 +1,6 @@
 import { Text, TextProps, Skeleton } from '@pancakeswap/uikit'
-import { useEffect, useRef } from 'react'
+import { useMemo } from 'react'
 import CountUp from 'react-countup'
-import styled, { keyframes } from 'styled-components'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
 import _toNumber from 'lodash/toNumber'
 import _isNaN from 'lodash/isNaN'
@@ -27,24 +26,27 @@ const Balance: React.FC<BalanceProps> = ({
   onClick,
   ...props
 }) => {
-  const previousValue = useRef(0)
-
-  useEffect(() => {
-    previousValue.current = value
-  }, [value])
+  const prefixProp = useMemo(() => (prefix ? { prefix } : {}), [prefix])
+  const suffixProp = useMemo(() => (unit ? { suffix: unit } : {}), [unit])
 
   return (
-    <Text color={isDisabled ? 'textDisabled' : color} onClick={onClick} {...props}>
-      <CountUp
-        start={previousValue.current}
-        end={value}
-        prefix={prefix}
-        suffix={unit}
-        decimals={decimals}
-        duration={1}
-        separator=","
-      />
-    </Text>
+    <CountUp
+      start={0}
+      preserveValue
+      delay={0}
+      end={value}
+      {...prefixProp}
+      {...suffixProp}
+      decimals={decimals}
+      duration={1}
+      separator=","
+    >
+      {({ countUpRef }) => (
+        <Text color={isDisabled ? 'textDisabled' : color} onClick={onClick} {...props}>
+          <span ref={countUpRef} />
+        </Text>
+      )}
+    </CountUp>
   )
 }
 
@@ -53,29 +55,18 @@ export const BalanceWithLoading: React.FC<Omit<BalanceProps, 'value'> & { value:
   fontSize,
   ...props
 }) => {
-  if (isUndefinedOrNull(value)) {
+  const isValueUndefinedOrNull = useMemo(() => isUndefinedOrNull(value), [value])
+  const finalValue = useMemo(() => {
+    if (isValueUndefinedOrNull) return null
+    const trimmedValue = _replace(_toString(value), /,/g, '')
+
+    return _isNaN(trimmedValue) || _isNaN(_toNumber(trimmedValue)) ? 0 : _toNumber(trimmedValue)
+  }, [value, isValueUndefinedOrNull])
+
+  if (isValueUndefinedOrNull) {
     return <Skeleton />
   }
-
-  const trimmedValue = _replace(_toString(value), /,/g, '')
-
-  const finalValue = _isNaN(trimmedValue) || _isNaN(_toNumber(trimmedValue)) ? 0 : _toNumber(trimmedValue)
-
   return <Balance {...props} value={finalValue} fontSize={fontSize} />
 }
-
-const appear = keyframes`
-  from {
-    opacity:0;
-  }
-  
-  to {
-    opacity:1;
-  }
-  `
-
-export const AnimatedBalance = styled(Balance)`
-  animation: ${appear} 0.65s ease-in-out forwards;
-`
 
 export default Balance

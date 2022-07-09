@@ -4,6 +4,8 @@ import { batch, useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
 import farmsConfig from 'config/constants/farms'
+import { livePools } from 'config/constants/pools'
+
 import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
@@ -25,7 +27,20 @@ import {
   poolsWithVaultSelector,
   ifoCreditSelector,
   ifoCeilingSelector,
+  makeVaultPoolWithKeySelector,
 } from './selectors'
+
+const lPoolAddresses = livePools.filter(({ sousId }) => sousId !== 0).map(({ earningToken }) => earningToken.address)
+
+// Only fetch farms for live pools
+const activeFarms = farmsConfig
+  .filter(
+    ({ token, pid, quoteToken }) =>
+      pid !== 0 &&
+      ((token.symbol === 'BUSD' && quoteToken.symbol === 'WBNB') ||
+        lPoolAddresses.find((poolAddress) => poolAddress === token.address)),
+  )
+  .map((farm) => farm.pid)
 
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
@@ -33,8 +48,8 @@ export const useFetchPublicPoolsData = () => {
   useSlowRefreshEffect(
     (currentBlock) => {
       const fetchPoolsDataWithFarms = async () => {
-        const activeFarms = farmsConfig.filter((farm) => farm.pid !== 0)
-        await dispatch(fetchFarmsPublicDataAsync(activeFarms.map((farm) => farm.pid)))
+        await dispatch(fetchFarmsPublicDataAsync(activeFarms))
+
         batch(() => {
           dispatch(fetchPoolsPublicDataAsync(currentBlock))
           dispatch(fetchPoolsStakingLimitsAsync())
@@ -56,6 +71,12 @@ export const usePoolsWithVault = () => {
   return useSelector(poolsWithVaultSelector)
 }
 
+export const useDeserializedPoolByVaultKey = (vaultKey) => {
+  const vaultPoolWithKeySelector = useMemo(() => makeVaultPoolWithKeySelector(vaultKey), [vaultKey])
+
+  return useSelector(vaultPoolWithKeySelector)
+}
+
 export const usePoolsPageFetch = () => {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
@@ -75,8 +96,10 @@ export const usePoolsPageFetch = () => {
   }, [account, dispatch])
 
   useEffect(() => {
-    dispatch(fetchCakeVaultFees())
-    dispatch(fetchCakeFlexibleSideVaultFees())
+    batch(() => {
+      dispatch(fetchCakeVaultFees())
+      dispatch(fetchCakeFlexibleSideVaultFees())
+    })
   }, [dispatch])
 }
 

@@ -38,6 +38,7 @@ import {
   getGalaxyNTFClaimingContract,
   getPotteryVaultContract,
   getPotteryDrawContract,
+  getZapContract,
   getCakeFlexibleSideVaultV2Contract,
   getCakePredictionsContract,
 } from 'utils/contractHelpers'
@@ -382,4 +383,13 @@ export const usePotterytVaultContract = (address) => {
 export const usePotterytDrawContract = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getPotteryDrawContract(library.getSigner()), [library])
+}
+
+export function useZapContract(withSignerIfPossible = true) {
+  const { library, account } = useActiveWeb3React()
+  const signer = useMemo(
+    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [withSignerIfPossible, library, account],
+  )
+  return useMemo(() => getZapContract(signer), [signer])
 }

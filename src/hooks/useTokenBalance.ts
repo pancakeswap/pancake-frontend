@@ -1,13 +1,13 @@
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import tokens from 'config/constants/tokens'
-import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
+import { FAST_INTERVAL } from 'config/constants'
 import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { Zero } from '@ethersproject/constants'
 import useSWR from 'swr'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { simpleRpcProvider } from 'utils/providers'
-import { useCake, useTokenContract } from './useContract'
+import { useTokenContract } from './useContract'
 import { useSWRContract } from './useSWRContract'
 
 const useTokenBalance = (tokenAddress: string) => {
@@ -32,24 +32,6 @@ const useTokenBalance = (tokenAddress: string) => {
     fetchStatus: status,
     balance: data ? new BigNumber(data.toString()) : BIG_ZERO,
   }
-}
-
-export const useTotalSupply = () => {
-  const { reader: cakeContract } = useCake()
-  const { data } = useSWRContract([cakeContract, 'totalSupply'], {
-    refreshInterval: SLOW_INTERVAL,
-  })
-
-  return data ? new BigNumber(data.toString()) : null
-}
-
-export const useBurnedBalance = (tokenAddress: string) => {
-  const contract = useTokenContract(tokenAddress, false)
-  const { data } = useSWRContract([contract, 'balanceOf', ['0x000000000000000000000000000000000000dEaD']], {
-    refreshInterval: SLOW_INTERVAL,
-  })
-
-  return data ? new BigNumber(data.toString()) : BIG_ZERO
 }
 
 export const useGetBnbBalance = () => {

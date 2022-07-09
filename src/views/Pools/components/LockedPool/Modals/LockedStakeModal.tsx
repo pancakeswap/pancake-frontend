@@ -17,7 +17,7 @@ const LockedStakeModal: React.FC<GenericModalProps> = ({
   stakingTokenBalance,
 }) => {
   const { theme } = useTheme()
-  const [lockedAmount, setLockedAmount] = useState('0')
+  const [lockedAmount, setLockedAmount] = useState('')
   const { t } = useTranslation()
 
   const usdValueStaked = useBUSDCakeAmount(_toNumber(lockedAmount))

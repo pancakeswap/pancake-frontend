@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon, LinkExternal, useTooltip, InfoIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
@@ -55,7 +56,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
   const totalPayout = multiplyPriceByAmount(bnbBusdPrice, payout)
   const returned = payout + bet.amount
 
-  const getHeaderColor = () => {
+  const headerColor = useMemo(() => {
     switch (result) {
       case Result.WIN:
         return 'warning'
@@ -68,9 +69,9 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
       default:
         return 'text'
     }
-  }
+  }, [result])
 
-  const getHeaderText = () => {
+  const headerText = useMemo(() => {
     switch (result) {
       case Result.WIN:
         return t('Win')
@@ -83,21 +84,21 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
       default:
         return ''
     }
-  }
+  }, [t, result])
 
-  const getHeaderIcon = () => {
+  const headerIcon = useMemo(() => {
     switch (result) {
       case Result.WIN:
-        return <PrizeIcon color={getHeaderColor()} />
+        return <PrizeIcon color={headerColor} />
       case Result.LOSE:
       case Result.CANCELED:
-        return <BlockIcon color={getHeaderColor()} />
+        return <BlockIcon color={headerColor} />
       default:
         return null
     }
-  }
+  }, [result, headerColor])
 
-  const getResultColor = () => {
+  const resultColor = useMemo(() => {
     switch (result) {
       case Result.WIN:
         return 'success'
@@ -108,7 +109,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
       default:
         return 'text'
     }
-  }
+  }, [result])
 
   const handleSuccess = async () => {
     // We have to mark the bet as claimed immediately because it does not update fast enough
@@ -121,10 +122,10 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <Heading>{t('Your History')}</Heading>
         <Flex alignItems="center">
-          <Heading as="h3" color={getHeaderColor()} textTransform="uppercase" bold mr="4px">
-            {getHeaderText()}
+          <Heading as="h3" color={headerColor} textTransform="uppercase" bold mr="4px">
+            {headerText}
           </Heading>
-          {getHeaderIcon()}
+          {headerIcon}
         </Flex>
       </Flex>
       <StyledBetResult>
@@ -156,7 +157,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
         <Flex alignItems="start" justifyContent="space-between">
           <Text bold>{isWinner ? t('Your winnings') : t('Your Result')}:</Text>
           <Box style={{ textAlign: 'right' }}>
-            <Text bold color={getResultColor()}>{`${isWinner ? '+' : '-'}${formatBnb(payout)} ${token.symbol}`}</Text>
+            <Text bold color={resultColor}>{`${isWinner ? '+' : '-'}${formatBnb(payout)} ${token.symbol}`}</Text>
             <Text fontSize="12px" color="textSubtle">
               {`~$${totalPayout.toFixed(2)}`}
             </Text>

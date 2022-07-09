@@ -31,14 +31,16 @@ const NewPool: React.FC = () => {
   const dispatch = useAppDispatch()
 
   useFastRefreshEffect(() => {
-    dispatch(fetchCakeVaultPublicData())
-    dispatch(fetchCakeFlexibleSideVaultPublicData())
-    dispatch(fetchCakePoolPublicDataAsync())
-    if (account) {
-      dispatch(fetchCakeVaultUserData({ account }))
-      dispatch(fetchCakeFlexibleSideVaultUserData({ account }))
-      dispatch(fetchCakePoolUserDataAsync(account))
-    }
+    batch(() => {
+      dispatch(fetchCakeVaultPublicData())
+      dispatch(fetchCakeFlexibleSideVaultPublicData())
+      dispatch(fetchCakePoolPublicDataAsync())
+      if (account) {
+        dispatch(fetchCakeVaultUserData({ account }))
+        dispatch(fetchCakeFlexibleSideVaultUserData({ account }))
+        dispatch(fetchCakePoolUserDataAsync(account))
+      }
+    })
   }, [account, dispatch])
 
   useEffect(() => {

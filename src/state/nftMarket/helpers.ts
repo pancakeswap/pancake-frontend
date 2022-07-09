@@ -8,6 +8,7 @@ import groupBy from 'lodash/groupBy'
 import { BigNumber } from '@ethersproject/bignumber'
 import { getNftMarketContract } from 'utils/contractHelpers'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
+import DELIST_COLLECTIONS from 'config/constants/nftsCollections/delist'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { formatBigNumber } from 'utils/formatBalance'
 import { getNftMarketAddress } from 'utils/addressHelpers'
@@ -1139,9 +1140,12 @@ export const getCompleteAccountNftData = async (
   collections: ApiCollections,
   profileNftWithCollectionAddress?: TokenIdWithCollectionAddress,
 ): Promise<NftToken[]> => {
+  // Add delist collections to allow user reclaim their NFTs
+  const collectionsWithDelist = { ...collections, ...DELIST_COLLECTIONS }
+
   const [walletNftIdsWithCollectionAddress, onChainForSaleNfts] = await Promise.all([
-    fetchWalletTokenIdsForCollections(account, collections),
-    getAccountNftsOnChainMarketData(collections, account),
+    fetchWalletTokenIdsForCollections(account, collectionsWithDelist),
+    getAccountNftsOnChainMarketData(collectionsWithDelist, account),
   ])
 
   if (profileNftWithCollectionAddress?.tokenId) {

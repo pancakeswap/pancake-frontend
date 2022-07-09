@@ -30,14 +30,14 @@ interface InfoProps {
 const Info: React.FC<InfoProps> = ({ poolId, data, fetchUserVestingData }) => {
   const { t } = useTranslation()
   const { token } = data.ifo
-  const { vestingcomputeReleasableAmount, offeringAmountInToken, vestingInfomationPercentage, vestingReleased } =
+  const { vestingComputeReleasableAmount, offeringAmountInToken, vestingInformationPercentage, vestingReleased } =
     data.userVestingData[poolId]
 
   const labelText = poolId === PoolIds.poolUnlimited ? t('Public Sale') : t('Private Sale')
 
   const vestingPercentage = useMemo(
-    () => new BigNumber(vestingInfomationPercentage).times(0.01),
-    [vestingInfomationPercentage],
+    () => new BigNumber(vestingInformationPercentage).times(0.01),
+    [vestingInformationPercentage],
   )
 
   const releasedAtSaleEnd = useMemo(() => {
@@ -45,8 +45,8 @@ const Info: React.FC<InfoProps> = ({ poolId, data, fetchUserVestingData }) => {
   }, [offeringAmountInToken, vestingPercentage])
 
   const amountReleased = useMemo(() => {
-    return new BigNumber(releasedAtSaleEnd).plus(vestingReleased).plus(vestingcomputeReleasableAmount)
-  }, [releasedAtSaleEnd, vestingReleased, vestingcomputeReleasableAmount])
+    return new BigNumber(releasedAtSaleEnd).plus(vestingReleased).plus(vestingComputeReleasableAmount)
+  }, [releasedAtSaleEnd, vestingReleased, vestingComputeReleasableAmount])
 
   const received = useMemo(() => {
     const alreadyClaimed = new BigNumber(releasedAtSaleEnd).plus(vestingReleased)
@@ -54,10 +54,10 @@ const Info: React.FC<InfoProps> = ({ poolId, data, fetchUserVestingData }) => {
   }, [token, releasedAtSaleEnd, vestingReleased])
 
   const claimable = useMemo(() => {
-    return vestingcomputeReleasableAmount.gt(0)
-      ? getFullDisplayBalance(vestingcomputeReleasableAmount, token.decimals, 4)
+    return vestingComputeReleasableAmount.gt(0)
+      ? getFullDisplayBalance(vestingComputeReleasableAmount, token.decimals, 4)
       : '0'
-  }, [token, vestingcomputeReleasableAmount])
+  }, [token, vestingComputeReleasableAmount])
 
   const remaining = useMemo(() => {
     const remain = new BigNumber(offeringAmountInToken).minus(amountReleased)

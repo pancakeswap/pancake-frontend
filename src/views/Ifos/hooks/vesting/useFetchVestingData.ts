@@ -22,8 +22,8 @@ const useFetchVestingData = () => {
 
       return allData.filter(
         (ifo) =>
-          ifo.userVestingData[PoolIds.poolUnlimited].vestingcomputeReleasableAmount.gt(0) ||
-          ifo.userVestingData[PoolIds.poolBasic].vestingcomputeReleasableAmount.gt(0),
+          ifo.userVestingData[PoolIds.poolUnlimited].vestingComputeReleasableAmount.gt(0) ||
+          ifo.userVestingData[PoolIds.poolBasic].vestingComputeReleasableAmount.gt(0),
       )
     },
     {

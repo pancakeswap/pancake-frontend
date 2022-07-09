@@ -27,7 +27,7 @@ const ProgressStepper: React.FC<ProgressStepperProps> = ({ poolId, publicIfoData
 
   useEffect(() => {
     const { vestingStartTime } = publicIfoData
-    const { cliff, duration } = publicIfoData[poolId]?.vestingInfomation
+    const { cliff, duration } = publicIfoData[poolId]?.vestingInformation
 
     const currentTimeStamp = new Date().getTime()
     const timeSalesEnded = vestingStartTime * 1000

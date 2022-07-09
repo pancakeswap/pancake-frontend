@@ -14,12 +14,10 @@ import { BetPosition } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 
 interface TagProps extends FlexProps {
-  bg?: string
   startIcon?: ReactNode
 }
 
-const StyledTag = styled(Flex)<{ bg: TagProps['bg'] }>`
-  background-color: ${({ bg, theme }) => theme.colors[bg]};
+const StyledTag = styled(Flex)`
   display: inline-flex;
 `
 
@@ -65,7 +63,7 @@ const PositionTag: React.FC<PositionTagProps> = ({ betPosition, children, ...pro
         )}
       </Text>
     </>,
-    { placement: 'right' },
+    { placement: 'top' },
   )
 
   if (betPosition === BetPosition.HOUSE) {

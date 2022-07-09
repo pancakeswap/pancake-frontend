@@ -29,6 +29,7 @@ import { SkeletonCardTokens } from './Skeletons'
 import IFORequirements from './IFORequirements'
 import { MessageTextLink } from '../../IfoCardStyles'
 import StakeVaultButton from '../StakeVaultButton'
+import VestingAvailableToClaim from './VestingAvailableToClaim'
 
 interface TokenSectionProps extends FlexProps {
   primaryToken?: Token
@@ -94,7 +95,7 @@ const OnSaleInfo = ({ token, saleAmount, distributionRatio }) => {
   return (
     <TokenSection primaryToken={token}>
       <Flex flexDirection="column">
-        <Label>{t('On sale').toUpperCase()}</Label>
+        <Label textTransform="uppercase">{t('On sale')}</Label>
         <Value>{saleAmount}</Value>
         <Text fontSize="14px" color="textSubtle">
           {t('%ratio%% of total sale', { ratio: distributionRatio })}
@@ -128,7 +129,7 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
   const publicPoolCharacteristics = publicIfoData[poolId]
   const userPoolCharacteristics = walletIfoData[poolId]
 
-  const { currency, token } = ifo
+  const { currency, token, version } = ifo
   const { hasClaimed } = userPoolCharacteristics
   const distributionRatio = ifo[poolId].distributionRatio * 100
   const credit = useIfoCredit()
@@ -251,11 +252,19 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           <TokenSection primaryToken={ifo.token}>
             <Label>{t('%symbol% to receive', { symbol: token.symbol })}</Label>
             <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
+            {version >= 3.2 && publicPoolCharacteristics.vestingInformation.percentage > 0 && (
+              <VestingAvailableToClaim
+                amountToReceive={userPoolCharacteristics.offeringAmountInToken}
+                percentage={publicPoolCharacteristics.vestingInformation.percentage}
+                decimals={token.decimals}
+              />
+            )}
           </TokenSection>
-          {ifov31Msg}
+          {message}
         </>
       )
     }
+
     if (publicIfoData.status === 'finished') {
       return userPoolCharacteristics.amountTokenCommittedInLP.isEqualTo(0) ? (
         <Flex flexDirection="column" alignItems="center">

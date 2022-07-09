@@ -1,20 +1,9 @@
-import { Box, Flex, SkeletonV2, Text } from '@pancakeswap/uikit'
+import { Box, Flex, SkeletonV2, Text, ProfileAvatar } from '@pancakeswap/uikit'
 import { useProfileForAddress } from 'state/profile/hooks'
 import styled from 'styled-components'
 import truncateHash from 'utils/truncateHash'
 import { localiseTradingVolume } from '../../../helpers'
 import { LeaderboardDataItem } from '../../../types'
-
-const Avatar = styled.img`
-  margin-right: 4px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-right: 12px;
-  }
-`
 
 const Wrapper = styled.div`
   position: relative;
@@ -106,7 +95,7 @@ const GridItem: React.FC<{ traderData?: LeaderboardDataItem; teamImages: React.R
           #{rank}
         </Text>
         <SkeletonV2 width="24px" height="24px" ml={['16px', null, '16px']} borderRadius="50%" isDataReady={!isFetching}>
-          <Avatar src={profile?.nft?.image?.thumbnail} />
+          <ProfileAvatar src={profile?.nft?.image?.thumbnail} width={32} height={32} mr={['4px', null, '12px']} />
         </SkeletonV2>
       </Flex>
       <VolumeAddressWrapper>

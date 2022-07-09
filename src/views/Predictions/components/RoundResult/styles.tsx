@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import styled, { DefaultTheme } from 'styled-components'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Box, Flex, FlexProps, Skeleton, Text } from '@pancakeswap/uikit'
@@ -75,11 +76,12 @@ interface LockPriceRowProps extends FlexProps {
 
 export const LockPriceRow: React.FC<LockPriceRowProps> = ({ lockPrice, ...props }) => {
   const { t } = useTranslation()
+  const { minPriceUsdDisplayed } = useConfig()
 
   return (
     <Row {...props}>
       <Text fontSize="14px">{t('Locked Price')}:</Text>
-      <Text fontSize="14px">{formatUsdv2(lockPrice)}</Text>
+      <Text fontSize="14px">{formatUsdv2(lockPrice, minPriceUsdDisplayed)}</Text>
     </Row>
   )
 }
@@ -151,10 +153,11 @@ interface RoundPriceProps {
 }
 
 export const RoundPrice: React.FC<RoundPriceProps> = ({ lockPrice, closePrice }) => {
+  const { minPriceUsdDisplayed } = useConfig()
   const betPosition = getRoundPosition(lockPrice, closePrice)
   const priceDifference = getPriceDifference(closePrice, lockPrice)
 
-  const getTextColor = () => {
+  const textColor = useMemo(() => {
     switch (betPosition) {
       case BetPosition.BULL:
         return 'success'
@@ -164,18 +167,18 @@ export const RoundPrice: React.FC<RoundPriceProps> = ({ lockPrice, closePrice })
       default:
         return 'textDisabled'
     }
-  }
+  }, [betPosition])
 
   return (
     <Flex alignItems="center" justifyContent="space-between" mb="16px">
       {closePrice ? (
-        <Text color={getTextColor()} bold fontSize="24px">
-          {formatUsdv2(closePrice)}
+        <Text color={textColor} bold fontSize="24px">
+          {formatUsdv2(closePrice, minPriceUsdDisplayed)}
         </Text>
       ) : (
         <Skeleton height="34px" my="1px" />
       )}
-      <PositionTag betPosition={betPosition}>{formatUsdv2(priceDifference)}</PositionTag>
+      <PositionTag betPosition={betPosition}>{formatUsdv2(priceDifference, minPriceUsdDisplayed)}</PositionTag>
     </Flex>
   )
 }
