@@ -6,6 +6,8 @@ import { ModalBody, ModalHeader, ModalTitle, ModalContainer, ModalCloseButton, M
 import { ModalProps } from "./types";
 import { useMatchBreakpointsContext } from "../../contexts";
 
+export const MODAL_SWIPE_TO_CLOSE_PX = 3;
+
 const Modal: React.FC<ModalProps> = ({
   title,
   onDismiss,
@@ -30,7 +32,7 @@ const Modal: React.FC<ModalProps> = ({
         if (wrapperRef.current) wrapperRef.current.style.animation = "none";
       }}
       onDragEnd={(e, info) => {
-        if (info.offset.y > 3 && onDismiss) onDismiss();
+        if (info.offset.y > MODAL_SWIPE_TO_CLOSE_PX && onDismiss) onDismiss();
       }}
       ref={wrapperRef}
       minWidth={minWidth}

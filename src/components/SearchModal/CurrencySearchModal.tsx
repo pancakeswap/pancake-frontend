@@ -11,6 +11,7 @@ import {
   Heading,
   Button,
   useMatchBreakpointsContext,
+  MODAL_SWIPE_TO_CLOSE_PX,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import usePrevious from 'hooks/usePreviousValue'
@@ -97,7 +98,7 @@ export default function CurrencySearchModal({
       }}
       // @ts-ignore
       onDragEnd={(e, info) => {
-        if (info.offset.y > 3 && onDismiss) onDismiss()
+        if (info.offset.y > MODAL_SWIPE_TO_CLOSE_PX && onDismiss) onDismiss()
       }}
       ref={wrapperRef}
       maxWidth="420px"
