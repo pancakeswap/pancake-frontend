@@ -122,7 +122,13 @@ type AppPropsWithLayout = AppProps & {
 
 const ProductionErrorBoundary = process.env.NODE_ENV === 'production' ? ErrorBoundary : Fragment
 
-const App = ({ Component, pageProps }: AppPropsWithLayout) => {
+const App = ({ Component, pageProps, ...appProps }: AppPropsWithLayout) => {
+  const noNeedLayout = [`/451`].includes(appProps.router.pathname)
+
+  if (noNeedLayout) {
+    return <Component {...pageProps} />
+  }
+
   // Use the layout defined at the page level, if available
   const Layout = Component.Layout || Fragment
   const ShowMenu = Component.mp ? Fragment : Menu

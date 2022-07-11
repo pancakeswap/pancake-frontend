@@ -1495,7 +1495,7 @@
   "This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.": "Hindi magtatagumpay ang transaksyong ito dahil sa paggalaw ng presyo o bayarin sa paglipat. Subukang pataasin ang iyong slippage tolerance.",
   "The input token cannot be transferred. There may be an issue with the input token.": "Hindi mailipat ang input token. Posibleng may isyu sa input token.",
   "The output token cannot be transferred. There may be an issue with the output token.": "Hindi mailipat ang output token. Posibleng may isyu sa output token.",
-  "An error occurred when trying to execute this swap. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.": "Nagkaroon ng error habang sinusubukang ipatupad ang pag-swap na ito. Posibleng kailanganin mong pataasin ang iyong slippage tolerance. Kung hindi ito gagana, posibleng may hindi compatible sa token na tine-trade mo.",
+  "An error occurred when trying to execute this operation. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.": "An error occurred when trying to execute this operation. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.",
   "Unknown error%reason%. Try increasing your slippage tolerance.": "Hindi alam na error%reason%. Subukang pataasin ang iyong slippage tolerance.",
   "Unexpected issue with estimating the gas. Please try again.": "May hindi inaasahang isyu sa pagtatantya ng gas. Pakisubukan ulit.",
   "Swap failed: %message%": "Hindi nakapag-swap: %message%",
@@ -1761,5 +1761,7 @@
   "Vested percentage:": "Vested percentage:",
   "Vesting schedule:": "Vesting schedule:",
   "Currently using Zap for liquidity provisions.": "Currently using Zap for liquidity provisions.",
-  "No position entered": "No position entered"
+  "No position entered": "No position entered",
+  "Add liquidity failed: %message%": "Add liquidity failed: %message%",
+  "Remove liquidity failed: %message%": "Remove liquidity failed: %message%"
 }

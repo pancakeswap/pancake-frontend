@@ -36,7 +36,7 @@ import {
   MarketEvent,
   UserActivity,
 } from './types'
-import { getBaseNftFields, getBaseTransactionFields, getCollectionBaseFields } from './queries'
+import { baseNftFields, collectionBaseFields, baseTransactionFields } from './queries'
 
 /**
  * API HELPERS
@@ -237,7 +237,7 @@ export const getCollectionSg = async (collectionAddress: string): Promise<Collec
       gql`
         query getCollectionData($collectionAddress: String!) {
           collection(id: $collectionAddress) {
-            ${getCollectionBaseFields()}
+            ${collectionBaseFields}
           }
         }
       `,
@@ -261,7 +261,7 @@ export const getCollectionsSg = async (): Promise<CollectionMarketDataBaseFields
       gql`
         {
           collections {
-            ${getCollectionBaseFields()}
+            ${collectionBaseFields}
           }
         }
       `,
@@ -296,7 +296,7 @@ export const getNftsFromCollectionSg = async (
           collection(id: $collectionAddress) {
             id
             nfts(orderBy:${isPBCollection ? 'updatedAt' : 'tokenId'}, skip: $skip, first: $first) {
-             ${getBaseNftFields()}
+             ${baseNftFields}
             }
           }
         }
@@ -331,7 +331,7 @@ export const getNftsByBunnyIdSg = async (
       gql`
         query getNftsByBunnyIdSg($collectionAddress: String!, $where: NFT_filter, $orderDirection: String!) {
           nfts(first: 30, where: $where, orderBy: currentAskPrice, orderDirection: $orderDirection) {
-            ${getBaseNftFields()}
+            ${baseNftFields}
           }
         }
       `,
@@ -369,7 +369,7 @@ export const getMarketDataForTokenIds = async (
           collection(id: $collectionAddress) {
             id
             nfts(first: 1000, where: $where) {
-              ${getBaseNftFields()}
+              ${baseNftFields}
             }
           }
         }
@@ -507,9 +507,9 @@ export const getNftsMarketData = async (
       gql`
         query getNftsMarketData($first: Int, $skip: Int!, $where: NFT_filter, $orderBy: NFT_orderBy, $orderDirection: OrderDirection) {
           nfts(where: $where, first: $first, orderBy: $orderBy, orderDirection: $orderDirection, skip: $skip) {
-            ${getBaseNftFields()}
+            ${baseNftFields}
             transactionHistory {
-              ${getBaseTransactionFields()}
+              ${baseTransactionFields}
             }
           }
         }
@@ -627,15 +627,15 @@ export const getUserActivity = async (address: string): Promise<UserActivity> =>
         query getUserActivity($address: String!) {
           user(id: $address) {
             buyTradeHistory(first: 250, orderBy: timestamp, orderDirection: desc) {
-              ${getBaseTransactionFields()}
+              ${baseTransactionFields}
               nft {
-                ${getBaseNftFields()}
+                ${baseNftFields}
               }
             }
             sellTradeHistory(first: 250, orderBy: timestamp, orderDirection: desc) {
-              ${getBaseTransactionFields()}
+              ${baseTransactionFields}
               nft {
-                ${getBaseNftFields()}
+                ${baseNftFields}
               }
             }
             askOrderHistory(first: 500, orderBy: timestamp, orderDirection: desc) {
@@ -645,7 +645,7 @@ export const getUserActivity = async (address: string): Promise<UserActivity> =>
               orderType
               askPrice
               nft {
-                ${getBaseNftFields()}
+                ${baseNftFields}
               }
             }
           }
@@ -729,7 +729,7 @@ export const getCollectionActivity = async (
                 id
               }
               nft {
-                ${getBaseNftFields()}
+                ${baseNftFields}
               }
           }`
     : ``
@@ -738,9 +738,9 @@ export const getCollectionActivity = async (
     ? `transactions(first: ${transactionQueryItem}, orderBy: timestamp, orderDirection: desc, where:{
             ${collectionFilterGql}
           }) {
-            ${getBaseTransactionFields()}
+            ${baseTransactionFields}
               nft {
-                ${getBaseNftFields()}
+                ${baseNftFields}
               }
           }`
     : ``
@@ -777,9 +777,9 @@ export const getTokenActivity = async (
         query getCollectionActivity($tokenId: BigInt!, $address: ID!) {
           nfts(where:{tokenId: $tokenId, collection: $address}) {
             transactionHistory(orderBy: timestamp, orderDirection: desc) {
-              ${getBaseTransactionFields()}
+              ${baseTransactionFields}
                 nft {
-                  ${getBaseNftFields()}
+                  ${baseNftFields}
                 }
             }
             askHistory(orderBy: timestamp, orderDirection: desc) {
@@ -792,7 +792,7 @@ export const getTokenActivity = async (
                   id
                 }
                 nft {
-                  ${getBaseNftFields()}
+                  ${baseNftFields}
                 }
             }
           }
@@ -826,7 +826,7 @@ export const getLatestListedNfts = async (first: number): Promise<TokenMarketDat
       gql`
         query getLatestNftMarketData($first: Int) {
           nfts(where: { isTradable: true }, orderBy: updatedAt , orderDirection: desc, first: $first) {
-            ${getBaseNftFields()}
+            ${baseNftFields}
             collection {
               id
             }

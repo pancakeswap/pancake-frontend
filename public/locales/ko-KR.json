@@ -1495,7 +1495,7 @@
   "This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.": "이 트랜잭션은 가격 변동이나 송금 수수료로 인해 성공하지 못합니다. 하락 허용치를 높여보세요.",
   "The input token cannot be transferred. There may be an issue with the input token.": "입력 토큰을 전송할 수 없습니다. 입력 토큰에 문제가 있을 수 있습니다.",
   "The output token cannot be transferred. There may be an issue with the output token.": "출력 토큰을 전송할 수 없습니다. 출력 토큰에 문제가 있을 수 있습니다.",
-  "An error occurred when trying to execute this swap. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.": "이 스왑을 실행하는 동안 오류가 발생했습니다. 하락 허용치를 높여야 할 수도 있습니다. 그래도 작동하지 않으면 거래하는 토큰과 호환되지 않을 수 있습니다.",
+  "An error occurred when trying to execute this operation. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.": "An error occurred when trying to execute this operation. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.",
   "Unknown error%reason%. Try increasing your slippage tolerance.": "알 수 없는 오류 %reason%. 하락 허용치를 높여보세요.",
   "Unexpected issue with estimating the gas. Please try again.": "가스 추정에 예상치 못한 문제가 있습니다. 다시 시도해주세요.",
   "Swap failed: %message%": "스왑 실패: %message%",
@@ -1761,5 +1761,7 @@
   "Vested percentage:": "Vested percentage:",
   "Vesting schedule:": "Vesting schedule:",
   "Currently using Zap for liquidity provisions.": "Currently using Zap for liquidity provisions.",
-  "No position entered": "No position entered"
+  "No position entered": "No position entered",
+  "Add liquidity failed: %message%": "Add liquidity failed: %message%",
+  "Remove liquidity failed: %message%": "Remove liquidity failed: %message%"
 }

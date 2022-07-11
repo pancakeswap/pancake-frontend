@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { isAddress } from 'utils'
 import { useAchievementsForAddress, useProfileForAddress } from 'state/profile/hooks'
@@ -47,6 +47,11 @@ const NftProfile: FC = ({ children }) => {
     refresh: refreshUserNfts,
   } = useNftsForAddress(accountAddress, profile, isProfileValidating)
 
+  const onSuccess = useCallback(async () => {
+    await refreshProfile()
+    refreshUserNfts()
+  }, [refreshProfile, refreshUserNfts])
+
   if (invalidAddress) {
     return (
       <>
@@ -84,10 +89,7 @@ const NftProfile: FC = ({ children }) => {
           isProfileLoading={isProfileFetching}
           isNftLoading={isNftLoading}
           isAchievementsLoading={isAchievementsFetching}
-          onSuccess={async () => {
-            await refreshProfile()
-            refreshUserNfts()
-          }}
+          onSuccess={onSuccess}
         />
         <TabMenuWrapper>
           <TabMenu />
