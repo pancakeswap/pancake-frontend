@@ -182,7 +182,7 @@ function CurrencySearch({
     return Boolean(filteredSortedTokens?.length) || hasFilteredInactiveTokens ? (
       <Box margin="24px -24px">
         <CurrencyList
-          height={350}
+          height={showCommonBases ? 250 : 350}
           showBNB={showBNB}
           currencies={filteredSortedTokens}
           inactiveCurrencies={filteredInactiveTokens}
