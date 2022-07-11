@@ -1,4 +1,4 @@
-export const getBaseNftFields = () => `
+export const baseNftFields = `
   tokenId
   metadataUrl
   currentAskPrice
@@ -14,7 +14,7 @@ export const getBaseNftFields = () => `
   }
 `
 
-export const getBaseTransactionFields = () => `
+export const baseTransactionFields = `
   id
   block
   timestamp
@@ -29,7 +29,7 @@ export const getBaseTransactionFields = () => `
   }
 `
 
-export const getCollectionBaseFields = () => `
+export const collectionBaseFields = `
   id
   name
   symbol

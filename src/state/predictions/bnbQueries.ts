@@ -28,7 +28,7 @@ export interface TotalWonMarketResponseBNB {
 /**
  * Base fields are the all the top-level fields available in the api. Used in multiple queries
  */
-export const getRoundBaseFields = () => `
+export const roundBaseFields = `
   id
   epoch
   position
@@ -54,7 +54,7 @@ export const getRoundBaseFields = () => `
   bearAmount
 `
 
-export const getBetBaseFields = () => `
+export const betBaseFields = `
  id
  hash  
  amount
@@ -69,7 +69,7 @@ export const getBetBaseFields = () => `
  updatedAt
 `
 
-export const getUserBaseFields = () => `
+export const userBaseFields = `
   id
   createdAt
   updatedAt
