@@ -397,40 +397,37 @@ export const useFetchPairPrices = ({
   return { pairPrices, pairId }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const useLPApr = (pair) => {
-  // const { data: poolData } = useSWRImmutable(
-  //   pair ? ['LP7dApr', pair.liquidityToken.address] : null,
-  //   async () => {
-  //     const timestampsArray = getDeltaTimestamps()
-  //     const blocks = await getBlocksFromTimestamps(timestampsArray, 'desc', 1000)
-  //     const [block24h, block48h, block7d, block14d] = blocks ?? []
-  //     const { error, data } = await fetchPoolData(block24h.number, block48h.number, block7d.number, block14d.number, [
-  //       pair.liquidityToken.address.toLowerCase(),
-  //     ])
-  //     if (error) return null
-  //     const formattedPoolData = parsePoolData(data?.now)
-  //     const formattedPoolData24h = parsePoolData(data?.oneDayAgo)
-  //     const formattedPoolData48h = parsePoolData(data?.twoDaysAgo)
-  //     const formattedPoolData7d = parsePoolData(data?.oneWeekAgo)
-  //     const formattedPoolData14d = parsePoolData(data?.twoWeeksAgo)
-  //     const current: FormattedPoolFields | undefined = formattedPoolData[pair.liquidityToken.address.toLowerCase()]
-  //     const oneDay: FormattedPoolFields | undefined = formattedPoolData24h[pair.liquidityToken.address.toLowerCase()]
-  //     const twoDays: FormattedPoolFields | undefined = formattedPoolData48h[pair.liquidityToken.address.toLowerCase()]
-  //     const week: FormattedPoolFields | undefined = formattedPoolData7d[pair.liquidityToken.address.toLowerCase()]
-  //     const twoWeeks: FormattedPoolFields | undefined = formattedPoolData14d[pair.liquidityToken.address.toLowerCase()]
-  //     const [volumeUSD] = getChangeForPeriod(current?.volumeUSD, oneDay?.volumeUSD, twoDays?.volumeUSD)
-  //     const [volumeUSDWeek] = getChangeForPeriod(current?.volumeUSD, week?.volumeUSD, twoWeeks?.volumeUSD)
-  //     const liquidityUSD = current ? current.reserveUSD : 0
-  //     const { lpApr7d } = getLpFeesAndApr(volumeUSD, volumeUSDWeek, liquidityUSD)
-  //     return lpApr7d ? { lpApr7d } : null
-  //   },
-  //   {
-  //     refreshInterval: SLOW_INTERVAL,
-  //   },
-  // )
+  const { data: poolData } = useSWRImmutable(
+    pair ? ['LP7dApr', pair.liquidityToken.address] : null,
+    async () => {
+      const timestampsArray = getDeltaTimestamps()
+      const blocks = await getBlocksFromTimestamps(timestampsArray, 'desc', 1000)
+      const [block24h, block48h, block7d, block14d] = blocks ?? []
+      const { error, data } = await fetchPoolData(block24h.number, block48h.number, block7d.number, block14d.number, [
+        pair.liquidityToken.address.toLowerCase(),
+      ])
+      if (error) return null
+      const formattedPoolData = parsePoolData(data?.now)
+      const formattedPoolData24h = parsePoolData(data?.oneDayAgo)
+      const formattedPoolData48h = parsePoolData(data?.twoDaysAgo)
+      const formattedPoolData7d = parsePoolData(data?.oneWeekAgo)
+      const formattedPoolData14d = parsePoolData(data?.twoWeeksAgo)
+      const current: FormattedPoolFields | undefined = formattedPoolData[pair.liquidityToken.address.toLowerCase()]
+      const oneDay: FormattedPoolFields | undefined = formattedPoolData24h[pair.liquidityToken.address.toLowerCase()]
+      const twoDays: FormattedPoolFields | undefined = formattedPoolData48h[pair.liquidityToken.address.toLowerCase()]
+      const week: FormattedPoolFields | undefined = formattedPoolData7d[pair.liquidityToken.address.toLowerCase()]
+      const twoWeeks: FormattedPoolFields | undefined = formattedPoolData14d[pair.liquidityToken.address.toLowerCase()]
+      const [volumeUSD] = getChangeForPeriod(current?.volumeUSD, oneDay?.volumeUSD, twoDays?.volumeUSD)
+      const [volumeUSDWeek] = getChangeForPeriod(current?.volumeUSD, week?.volumeUSD, twoWeeks?.volumeUSD)
+      const liquidityUSD = current ? current.reserveUSD : 0
+      const { lpApr7d } = getLpFeesAndApr(volumeUSD, volumeUSDWeek, liquidityUSD)
+      return lpApr7d ? { lpApr7d } : null
+    },
+    {
+      refreshInterval: SLOW_INTERVAL,
+    },
+  )
 
-  // return poolData
-
-  return null
+  return poolData
 }
