@@ -254,6 +254,11 @@ const LimitOrders = () => {
     wrappedCurrencies.output?.address,
   ])
 
+  const handleTokenSwitch = useCallback(() => {
+    setApprovalSubmitted(false)
+    handleSwitchTokens()
+  }, [handleSwitchTokens])
+
   const { realExecutionPriceAsString } = useGasOverhead(parsedAmounts.input, parsedAmounts.output, rateType)
 
   const [showConfirmModal] = useModal(
@@ -350,10 +355,7 @@ const LimitOrders = () => {
                     />
 
                     <SwitchTokensButton
-                      handleSwitchTokens={() => {
-                        setApprovalSubmitted(false)
-                        handleSwitchTokens()
-                      }}
+                      handleSwitchTokens={handleTokenSwitch}
                       color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
                     />
                     <CurrencyInputPanel

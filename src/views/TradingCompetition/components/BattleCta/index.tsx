@@ -17,6 +17,7 @@ import useAuth from 'hooks/useAuth'
 import { useTranslation } from 'contexts/Localization'
 import { FINISHED, OVER } from 'config/constants/trading-competition/phases'
 import { useRouter } from 'next/router'
+import { useCallback } from 'react'
 import RegisterModal from '../RegisterModal'
 import ClaimModal from '../ClaimModal'
 import { Heading2Text } from '../CompetitionHeadingText'
@@ -161,7 +162,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
     return 'Whoopsie'
   }
 
-  const handleCtaClick = () => {
+  const handleCtaClick = useCallback(() => {
     // All conditions when button isn't disabled
 
     // No wallet connected
@@ -180,7 +181,16 @@ const BattleCta: React.FC<CompetitionProps> = ({
     if (hasRegistered && hasCompetitionEnded) {
       onPresentClaimModal()
     }
-  }
+  }, [
+    account,
+    hasCompetitionEnded,
+    hasRegistered,
+    isCompetitionLive,
+    onPresentClaimModal,
+    onPresentConnectModal,
+    onPresentRegisterModal,
+    router,
+  ])
 
   return (
     <StyledCard>
@@ -220,7 +230,7 @@ const BattleCta: React.FC<CompetitionProps> = ({
           )}
           {currentPhase.state !== FINISHED && (
             <Flex alignItems="flex-end">
-              <StyledButton disabled={isButtonDisabled} onClick={() => handleCtaClick()}>
+              <StyledButton disabled={isButtonDisabled} onClick={handleCtaClick}>
                 {getButtonText()}
               </StyledButton>
             </Flex>

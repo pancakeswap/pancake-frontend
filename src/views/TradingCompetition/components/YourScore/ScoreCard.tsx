@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, useCallback } from 'react'
 import styled from 'styled-components'
 import { StaticImageData } from 'next/dist/client/image'
 import {
@@ -83,6 +83,7 @@ const ScoreCard: React.FC<ScoreCardProps> = ({
     <ClaimModal userTradingInformation={userTradingInformation} onClaimSuccess={onClaimSuccess} />,
     false,
   )
+  const handleOnClick = useCallback(() => onPresentClaimModal?.(), [onPresentClaimModal])
 
   const isClaimButtonDisabled = Boolean(isLoading || finishedAndPrizesClaimed || finishedAndNothingToClaim)
   const { hasUserClaimed } = userTradingInformation
@@ -141,7 +142,7 @@ const ScoreCard: React.FC<ScoreCardProps> = ({
       {hasRegistered && currentPhase.state === CLAIM && (
         <StyledCardFooter>
           <LaurelLeftIcon />
-          <StyledButton disabled={isClaimButtonDisabled} mx="18px" onClick={() => onPresentClaimModal()}>
+          <StyledButton disabled={isClaimButtonDisabled} mx="18px" onClick={handleOnClick}>
             {getClaimButtonText()}
           </StyledButton>
           <LaurelRightIcon />
