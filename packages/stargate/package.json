@@ -1,0 +1,9 @@
+{
+  "name": "@pancakeswap/stargate",
+  "version": "0.0.1",
+  "main": "src/index.ts",
+  "sideEffects": false,
+  "dependencies": {
+    "@material-ui/core": "^4.12.4"
+  }
+}

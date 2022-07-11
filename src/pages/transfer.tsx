@@ -2,6 +2,8 @@ import useTheme from 'hooks/useTheme'
 import Script from 'next/script'
 import { useEffect } from 'react'
 import Page from 'views/Page'
+import { STARGATE_CDN_URL, StargateWidget } from '@pancakeswap/stargate'
+import { Box } from '@pancakeswap/uikit'
 
 function Test() {
   const { isDark } = useTheme()
@@ -10,21 +12,16 @@ function Test() {
       // setTimeout(() => {
       //   window.root.transfer.selectToChain(10002)
       // }, 600)
+      console.info('stargate widget mount')
     })
   }, [])
 
   return (
     <Page hideFooterOnDesktop>
-      <Script src="https://unpkg.com/@layerzerolabs/stargate-ui@latest/element.js" />
-      <div style={{ width: 420 }}>
-        {/* @ts-ignore */}
-        <stargate-widget
-          partnerId="105"
-          feeCollector="0xc13b65f7c53Cd6db2EA205a4b574b4a0858720A6"
-          theme={isDark ? 'dark' : 'light'}
-          tenthBps={0.4}
-        />
-      </div>
+      <Script src={STARGATE_CDN_URL} />
+      <Box width={['100%', , '420px']}>
+        <StargateWidget theme={isDark ? 'dark' : 'light'} />
+      </Box>
     </Page>
   )
 }
