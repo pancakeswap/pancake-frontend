@@ -1495,7 +1495,7 @@
   "This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.": "Diese Transaktion wird nicht erfolgreich sein, entweder aufgrund von Kursbewegungen oder aufgrund von Gebühren bei der Übertragung. Versuchen Sie, Ihre Toleranz für Kursabweichungen zu erhöhen.",
   "The input token cannot be transferred. There may be an issue with the input token.": "Das Eingabe-Token kann nicht übertragen werden. Möglicherweise gibt es ein Problem mit dem Eingabe-Token.",
   "The output token cannot be transferred. There may be an issue with the output token.": "Das Ausgabe-Token kann nicht übertragen werden. Möglicherweise gibt es ein Problem mit dem Ausgabe-Token.",
-  "An error occurred when trying to execute this swap. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.": "Beim Versuch, diesen Swap auszuführen, ist ein Fehler aufgetreten. Möglicherweise müssen Sie Ihre Slippage-Toleranz erhöhen. Wenn das nicht funktioniert, liegt möglicherweise eine Inkompatibilität mit dem Token vor, mit dem Sie handeln.",
+  "An error occurred when trying to execute this operation. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.": "An error occurred when trying to execute this operation. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.",
   "Unknown error%reason%. Try increasing your slippage tolerance.": "Unbekannter Fehler%reason%. Versuchen Sie, Ihre Abweichungstoleranz zu erhöhen.",
   "Unexpected issue with estimating the gas. Please try again.": "Unerwartetes Problem bei der Schätzung des Gases. Bitte versuchen Sie es erneut.",
   "Swap failed: %message%": "Swap fehlgeschlagen: %message%",
@@ -1761,5 +1761,7 @@
   "Vested percentage:": "Vested percentage:",
   "Vesting schedule:": "Vesting schedule:",
   "Currently using Zap for liquidity provisions.": "Currently using Zap for liquidity provisions.",
-  "No position entered": "No position entered"
+  "No position entered": "No position entered",
+  "Add liquidity failed: %message%": "Add liquidity failed: %message%",
+  "Remove liquidity failed: %message%": "Remove liquidity failed: %message%"
 }
