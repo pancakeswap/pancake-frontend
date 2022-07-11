@@ -1,6 +1,6 @@
 import { NextRouter, useRouter } from 'next/router'
 import { useTranslation } from 'contexts/Localization'
-import { languages } from 'config/localization/languages'
+import { languageList } from 'config/localization/languages'
 import { useEffect, useState } from 'react'
 /* eslint-disable no-console */
 const cbList = {}
@@ -130,8 +130,13 @@ export const useInterceptLink = () => {
     return () => {
       document.body.removeEventListener('click', handle, true)
     }
-  }, [])
+  }, [router])
 }
+const code2Lang = languageList.reduce((prev, next) => {
+  // eslint-disable-next-line no-param-reassign
+  prev[next.code.toLowerCase()] = next
+  return prev
+}, {})
 
 export const useInjectI18n = () => {
   const [injected, setInjected] = useState(false)
@@ -141,8 +146,10 @@ export const useInjectI18n = () => {
     const main = async () => {
       if (systemInfo) {
         const { language } = systemInfo
-        const currLanguage = languages[language]
-        await setLanguage(currLanguage)
+        const currLanguage = code2Lang[language.toLowerCase()]
+        if (currLanguage) {
+          await setLanguage(currLanguage)
+        }
         setInjected(true)
       }
     }
