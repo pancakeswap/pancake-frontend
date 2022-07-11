@@ -169,7 +169,6 @@ function CurrencySearch({
   const filteredInactiveTokens = useSearchInactiveTokenLists(debouncedQuery)
 
   const hasFilteredInactiveTokens = Boolean(filteredInactiveTokens?.length)
-  const { isXs } = useMatchBreakpointsContext()
 
   const getCurrencyListRows = useCallback(() => {
     if (searchToken && !searchTokenIsAdded && !hasFilteredInactiveTokens) {
