@@ -28,6 +28,11 @@ const Footer = styled.div`
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   text-align: center;
 `
+const StyledModalContainer = styled(ModalContainer)`
+  width: 100%;
+  min-width: 320px;
+  max-width: 420px !important;
+`
 
 const StyledModalBody = styled(ModalBody)`
   padding: 24px;
@@ -89,7 +94,7 @@ export default function CurrencySearchModal({
   const wrapperRef = useRef<HTMLDivElement>(null)
 
   return (
-    <ModalContainer
+    <StyledModalContainer
       drag={isMobile ? 'y' : false}
       dragConstraints={{ top: 0, bottom: 600 }}
       dragElastic={{ top: 0 }}
@@ -101,9 +106,6 @@ export default function CurrencySearchModal({
         if (info.offset.y > MODAL_SWIPE_TO_CLOSE_PX && onDismiss) onDismiss()
       }}
       ref={wrapperRef}
-      maxWidth="420px"
-      width="100%"
-      minWidth="320px"
     >
       <ModalHeader>
         <ModalTitle>
@@ -149,6 +151,6 @@ export default function CurrencySearchModal({
           </Footer>
         )}
       </StyledModalBody>
-    </ModalContainer>
+    </StyledModalContainer>
   )
 }
