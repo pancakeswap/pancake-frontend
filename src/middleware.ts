@@ -15,7 +15,7 @@ export async function middleware(req: NextRequest) {
   const shouldBlock: boolean = BLOCK_COUNTRIES[country] || BLOCK_REGIONS[`${country}-${region}`]
 
   if (shouldBlock) {
-    return NextResponse.json({ reason: 'Unavailable for legal reasons' }, { status: 451 })
+    return NextResponse.redirect(new URL('/451', req.url))
   }
 
   return res
