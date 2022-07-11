@@ -35,5 +35,6 @@ export const config = {
     '/find',
     '/limit-orders',
     '/lottery',
+    '/nfts',
   ],
 }
