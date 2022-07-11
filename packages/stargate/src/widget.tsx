@@ -2,7 +2,10 @@ import { Box } from "@pancakeswap/uikit";
 import { useMemo } from "react";
 import { darkTheme, lightTheme } from "./theme";
 
-export const STARGATE_CDN_URL = "https://unpkg.com/@layerzerolabs/stargate-ui@0.0.25-testnet.2/element.js";
+export const STARGATE_JS = {
+  src: "https://unpkg.com/@layerzerolabs/stargate-ui@0.0.25-testnet.2/element.js",
+  integrity: "sha384-P8eA6tuHF6+DHrAits/XEhKz8f3rReYaqFReB48PXoJGmH6GyKbp7HzSyH8VHCD5",
+};
 
 const stringDarkTheme = JSON.stringify(darkTheme);
 const stringLightTheme = JSON.stringify(lightTheme);

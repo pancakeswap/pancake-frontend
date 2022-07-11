@@ -2,7 +2,7 @@ import useTheme from 'hooks/useTheme'
 import Script from 'next/script'
 import { useEffect } from 'react'
 import Page from 'views/Page'
-import { STARGATE_CDN_URL, StargateWidget } from '@pancakeswap/stargate'
+import { STARGATE_JS, StargateWidget } from '@pancakeswap/stargate'
 import { Box } from '@pancakeswap/uikit'
 
 function Test() {
@@ -18,7 +18,7 @@ function Test() {
 
   return (
     <Page hideFooter>
-      <Script src={STARGATE_CDN_URL} />
+      <Script crossOrigin="anonymous" {...STARGATE_JS} />
       <Box width={['100%', , '420px']}>
         <StargateWidget theme={isDark ? 'dark' : 'light'} />
       </Box>
