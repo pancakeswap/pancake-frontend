@@ -5,5 +5,8 @@
   "sideEffects": false,
   "dependencies": {
     "@material-ui/core": "^4.12.4"
+  },
+  "peerDependencies": {
+    "styled-jsx": "^5.0.0"
   }
 }

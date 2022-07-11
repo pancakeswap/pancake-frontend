@@ -1,29 +1,41 @@
-import { Box } from "@pancakeswap/uikit";
+import { PancakeTheme } from "@pancakeswap/uikit";
+import type {} from "styled-jsx";
 import { useMemo } from "react";
 import { darkTheme, lightTheme } from "./theme";
 
 export const STARGATE_JS = {
-  src: "https://unpkg.com/@layerzerolabs/stargate-ui@0.0.25-testnet.2/element.js",
-  integrity: "sha384-P8eA6tuHF6+DHrAits/XEhKz8f3rReYaqFReB48PXoJGmH6GyKbp7HzSyH8VHCD5",
+  src: "https://unpkg.com/@layerzerolabs/stargate-ui@0.0.25-testnet.3/element.js",
+  integrity: "sha384-K8N0WDxN1yeS55ZRa8OaJADDBITp4qyMoG0r1hKKTTZ++GgTFnUweuM0qLWreE25",
 };
 
 const stringDarkTheme = JSON.stringify(darkTheme);
 const stringLightTheme = JSON.stringify(lightTheme);
 
-export const StargateWidget = ({ theme }: { theme: "dark" | "light" }) => {
+export const StargateWidget = ({ theme }: { theme: PancakeTheme }) => {
   const widgetTheme = useMemo(() => {
-    return theme === "dark" ? stringDarkTheme : stringLightTheme;
+    return theme.isDark ? stringDarkTheme : stringLightTheme;
   }, [theme]);
 
   return (
     <>
-      <Box
-        borderTopLeftRadius={32}
-        borderTopRightRadius={32}
-        bg="backgroundAlt"
-        height="12px"
-        display={["block", null, "none"]}
-      />
+      <style jsx global>{`
+        .MuiScopedCssBaseline-root {
+          background-color: transparent;
+        }
+        .StgHeader {
+          border-bottom: 1px solid ${theme.colors.cardBorder};
+        }
+        .MuiScopedCssBaseline-root .StgMaxButton {
+          border-color: ${theme.colors.primary}!important;
+          background-color: transparent;
+        }
+        .MuiFormLabel-root.Mui-focused {
+          color: ${theme.colors.text};
+        }
+        .StgAdvancedSettingsPopup {
+          top: 0 !important;
+        }
+      `}</style>
       {/* @ts-ignore */}
       <stargate-widget
         partnerId="105"

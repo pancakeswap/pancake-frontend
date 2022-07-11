@@ -6,7 +6,7 @@ import { STARGATE_JS, StargateWidget } from '@pancakeswap/stargate'
 import { Box } from '@pancakeswap/uikit'
 
 function Test() {
-  const { isDark } = useTheme()
+  const { theme } = useTheme()
   useEffect(() => {
     customElements.whenDefined('stargate-widget').then(() => {
       // setTimeout(() => {
@@ -18,9 +18,9 @@ function Test() {
 
   return (
     <Page hideFooter>
-      <Script crossOrigin="anonymous" {...STARGATE_JS} />
+      <Script crossOrigin="anonymous" src={STARGATE_JS.src} integrity={STARGATE_JS.integrity} />
       <Box width={['100%', , '420px']}>
-        <StargateWidget theme={isDark ? 'dark' : 'light'} />
+        <StargateWidget theme={theme} />
       </Box>
     </Page>
   )
