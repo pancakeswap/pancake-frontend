@@ -24,7 +24,7 @@ const ScrollableContainer = styled(Flex)`
     height: 90vh;
   }
   ${({ theme }) => theme.mediaQueries.md} {
-    max-height: 400px;
+    max-height: none;
     height: auto;
   }
 `
