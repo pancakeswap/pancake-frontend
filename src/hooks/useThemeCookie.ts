@@ -13,7 +13,7 @@ const useThemeCookie = () => {
     if (!getThemeCookie && getThemeCookie !== themeValue) {
       Cookie.set(COOKIE_THEME_KEY, themeValue, { domain: THEME_DOMAIN })
     }
-  }, [theme, themeValue])
+  }, [themeValue])
 }
 
 export default useThemeCookie
