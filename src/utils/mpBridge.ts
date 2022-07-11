@@ -1,4 +1,6 @@
 import { NextRouter, useRouter } from 'next/router'
+import { useTranslation } from 'contexts/Localization'
+import { languages } from 'config/localization/languages'
 import { useEffect, useState } from 'react'
 /* eslint-disable no-console */
 const cbList = {}
@@ -131,4 +133,21 @@ export const useInterceptLink = () => {
   }, [])
 }
 
+export const useInjectI18n = () => {
+  const [injected, setInjected] = useState(false)
+  const systemInfo = useSystemInfo()
+  const { setLanguage } = useTranslation()
+  useEffect(() => {
+    const main = async () => {
+      if (systemInfo) {
+        const { language } = systemInfo
+        const currLanguage = languages[language]
+        await setLanguage(currLanguage)
+        setInjected(true)
+      }
+    }
+    main()
+  }, [systemInfo])
+  return { injected }
+}
 export default getWeb3Provider
