@@ -1563,7 +1563,7 @@
   "Error occurred, please try again later": "Произошла ошибка, попробуйте позже",
   "Hold some CAKE in your wallet or on PancakeSwap at the snapshot block to get voting power for future proposals.": "Чтобы получить право голоса для будущих предложений, храните CAKE в кошельке или на PancakeSwap в блоке снимков.",
   "Preparing": "Подготовка",
-  "Perpetual": "Бессрочная",
+  "Perpetual": "Бессрочные",
   "Stake CAKE": "Вложить CAKE",
   "Stake, Earn – And more!": "Вкладывайте, зарабатывайте — и это еще не всё!",
   "Flexible": "Гибкий",
@@ -1760,5 +1760,6 @@
   "~%num% available to claim at sales end": "~%num% available to claim at sales end",
   "Vested percentage:": "Vested percentage:",
   "Vesting schedule:": "Vesting schedule:",
-  "Currently using Zap for liquidity provisions.": "Currently using Zap for liquidity provisions."
+  "Currently using Zap for liquidity provisions.": "Currently using Zap for liquidity provisions.",
+  "No position entered": "No position entered"
 }
