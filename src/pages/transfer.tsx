@@ -17,7 +17,7 @@ function Test() {
   }, [])
 
   return (
-    <Page hideFooterOnDesktop>
+    <Page hideFooter>
       <Script src={STARGATE_CDN_URL} />
       <Box width={['100%', , '420px']}>
         <StargateWidget theme={isDark ? 'dark' : 'light'} />

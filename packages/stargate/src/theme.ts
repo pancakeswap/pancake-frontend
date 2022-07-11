@@ -18,12 +18,6 @@ function pointsToRem(size: number) {
   return `${size / 1000}rem`;
 }
 
-function adaptColor(type: string, color: string, coefficient: number) {
-  return (typeof type === "string" && type === "light") || (typeof type === "boolean" && type)
-    ? darken(color, coefficient)
-    : lighten(color, coefficient);
-}
-
 // theme definition
 
 const FontFamily = {
@@ -42,26 +36,26 @@ const FontWeight = {
   BLACK: 900,
 };
 
-const palette = createPalette({
+const darkPalette = createPalette({
   type: "dark",
   primary: {
     light: "#BFBFBF",
-    main: "#EFEFEF",
+    main: darkColors.primary,
     dark: "#EFEFEF",
-    contrastText: "#000000",
+    contrastText: darkColors.invertedContrast,
   },
   info: {
-    main: "#50A0BE",
-    light: "#323232",
+    main: darkColors.primary,
+    light: darkColors.invertedContrast,
   },
   success: {
-    main: "#50BEAF",
+    main: darkColors.success,
   },
   error: {
-    main: "#F3566B",
+    main: darkColors.failure,
   },
   warning: {
-    main: "#BEA850",
+    main: darkColors.warning,
   },
   // @ts-ignore
   borders: {
@@ -69,19 +63,18 @@ const palette = createPalette({
     default: "#9A9A9A",
   },
   text: {
-    primary: "#ffffff",
-    secondary: "#999999",
-    disabled: "#9A9A9A",
+    primary: darkColors.text,
+    secondary: darkColors.textSubtle,
+    disabled: darkColors.textDisabled,
   },
-  divider: "#323232",
+  divider: darkColors.cardBorder,
   background: {
-    // backgorund change
     paper: darkColors.backgroundAlt,
-    default: "#000000",
+    default: darkColors.primary,
   },
   action: {
-    disabled: "#666666",
-    disabledBackground: "#1A1A1A",
+    disabled: darkColors.textDisabled,
+    disabledBackground: darkColors.disabled,
   },
 });
 
@@ -95,7 +88,7 @@ const breakpoints = createBreakpoints({
   },
 });
 
-const typography = createTypography(palette, {
+const typography = createTypography(darkPalette, {
   fontFamily: FontFamily.KANIT,
   h1: {
     lineHeight: pxToRem(46),
@@ -161,7 +154,7 @@ const typography = createTypography(palette, {
 });
 
 export const darkTheme: Theme = {
-  palette,
+  palette: darkPalette,
   typography,
   breakpoints,
   props: {
@@ -202,7 +195,7 @@ export const darkTheme: Theme = {
     },
     MuiTable: {
       root: {
-        backgroundColor: palette.background.paper,
+        backgroundColor: darkPalette.background.paper,
       },
     },
     MuiSwitch: {
@@ -240,7 +233,7 @@ export const darkTheme: Theme = {
         fontSize: pxToRem(16),
         lineHeight: pxToRem(18.75),
         "&.MuiTableCell-head": {
-          color: `${palette.text.secondary} !important`,
+          color: `${darkPalette.text.secondary} !important`,
           fontSize: pxToRem(16),
           fontWeight: 400,
           lineHeight: pxToRem(18.75),
@@ -250,16 +243,16 @@ export const darkTheme: Theme = {
     },
     MuiTableRow: {
       root: {
-        borderBottom: `${pxToRem(1.016)} solid ${palette.divider}`,
+        borderBottom: `${pxToRem(1.016)} solid ${darkPalette.divider}`,
         cursor: "pointer",
         transition: "background-color 0.2s ease-in-out",
         "&:hover": {
-          backgroundColor: palette.divider,
+          backgroundColor: darkPalette.divider,
         },
       },
       head: {
         "&:hover": {
-          backgroundColor: palette.background.paper,
+          backgroundColor: darkPalette.background.paper,
         },
       },
     },
@@ -272,7 +265,7 @@ export const darkTheme: Theme = {
     },
     MuiButton: {
       root: {
-        borderRadius: 12,
+        borderRadius: 16,
         fontFamily: FontFamily.KANIT,
         fontWeight: FontWeight.MEDIUM,
         letterSpacing: "0.04em",
@@ -284,7 +277,7 @@ export const darkTheme: Theme = {
         letterSpacing: 0,
       },
       sizeLarge: {
-        borderRadius: 12,
+        borderRadius: 16,
         fontSize: pxToRem(16),
         letterSpacing: 0,
         fontWeight: 500,
@@ -302,6 +295,7 @@ export const darkTheme: Theme = {
         },
       },
       containedPrimary: {
+        color: "#FFF",
         "& [class^=MuiButton-label]": {
           position: "relative",
           width: "initial",
@@ -313,18 +307,19 @@ export const darkTheme: Theme = {
             right: 0,
             height: "1.5px",
             width: "100%",
-            backgroundColor: palette.background.default,
+            backgroundColor: "transparent",
             transform: "scaleX(0)",
             transition: "transform 150ms ease-out",
             transformOrigin: "left",
           },
         },
         "&:hover": {
-          backgroundColor: palette.primary.light,
+          backgroundColor: darkPalette.primary.main,
+          opacity: 0.65,
           boxShadow: "none",
-          "& [class^=MuiButton-label]::after": {
-            transform: "scaleX(1)",
-          },
+          // "& [class^=MuiButton-label]::after": {
+          //   transform: "scaleX(1)",
+          // },
         },
       },
       containedSizeSmall: {
@@ -334,8 +329,8 @@ export const darkTheme: Theme = {
         padding: `20px 24px`,
       },
       outlined: {
-        backgroundColor: palette.background.default,
-        color: palette.primary.main,
+        backgroundColor: darkPalette.background.default,
+        color: darkPalette.primary.main,
         padding: `11px 15px 9px 15px`,
         fontSize: pxToRem(14),
         letterSpacing: pointsToRem(89),
@@ -350,18 +345,18 @@ export const darkTheme: Theme = {
         },
       },
       outlinedPrimary: {
-        border: `1px solid ${palette.primary.main}`,
+        border: `1px solid ${darkPalette.primary.main}`,
         "&:hover": {
-          border: `1px solid ${palette.primary.main}`,
+          border: `1px solid ${darkPalette.primary.main}`,
           "& [class^=MuiButton-label]::after": {
             transform: "scaleX(1)",
           },
         },
         "&$disabled": {
-          border: `1px solid ${palette.action.disabled}`,
+          border: `1px solid ${darkPalette.action.disabled}`,
         },
         "&$outlinedSizeSmall": {
-          border: `1px solid ${palette.primary.main}`,
+          border: `1px solid ${darkPalette.primary.main}`,
         },
         "& [class^=MuiButton-label]": {
           position: "relative",
@@ -374,7 +369,7 @@ export const darkTheme: Theme = {
             right: 0,
             height: "1.5px",
             width: "100%",
-            backgroundColor: palette.text.primary,
+            backgroundColor: darkPalette.text.primary,
             transform: "scaleX(0)",
             transition: "transform 150ms ease-out",
             transformOrigin: "left",
@@ -391,7 +386,7 @@ export const darkTheme: Theme = {
     MuiInputBase: {
       formControl: {
         backgroundColor: darkColors.input,
-        borderColor: palette.divider,
+        borderColor: darkPalette.divider,
         "&:hover": {
           backgroundColor: darkColors.inputSecondary,
         },
@@ -425,10 +420,10 @@ export const darkTheme: Theme = {
         },
         "&$error $notchedOutline": {
           borderWidth: 1,
-          borderColor: palette.error.main,
+          borderColor: darkPalette.error.main,
         },
         "&$disabled": {
-          backgroundColor: palette.action.disabledBackground,
+          backgroundColor: darkPalette.action.disabledBackground,
           color: "#666666",
           "& $notchedOutline": {
             borderWidth: 0,
@@ -479,7 +474,7 @@ export const darkTheme: Theme = {
           letterSpacing: 0.25,
         },
         "&$disabled": {
-          color: palette.action.disabled,
+          color: darkPalette.action.disabled,
         },
       },
       shrink: {},
@@ -493,13 +488,13 @@ export const darkTheme: Theme = {
     },
     MuiFormLabel: {
       root: {
-        color: palette.text.secondary,
+        color: darkPalette.text.secondary,
       },
     },
     MuiChip: {
       root: {
-        backgroundColor: palette.action.disabledBackground,
-        color: palette.action.disabled,
+        backgroundColor: darkPalette.action.disabledBackground,
+        color: darkPalette.action.disabled,
         cursor: "pointer",
         width: 85,
         height: 28,
@@ -508,12 +503,12 @@ export const darkTheme: Theme = {
     MuiTooltip: {
       tooltip: {
         borderRadius: 4,
-        color: palette.primary.contrastText,
-        backgroundColor: palette.primary.light,
+        color: darkPalette.primary.contrastText,
+        backgroundColor: darkPalette.primary.light,
         maxWidth: 140,
       },
       arrow: {
-        color: palette.primary.light,
+        color: darkPalette.primary.light,
       },
     },
     MuiAccordionSummary: {
@@ -563,7 +558,7 @@ export const darkTheme: Theme = {
       root: {
         color: "#757575",
         "&$selected": {
-          color: palette.text.primary,
+          color: darkPalette.text.primary,
         },
       },
       label: {
@@ -579,7 +574,7 @@ export const darkTheme: Theme = {
         },
       },
       icon: {
-        color: palette.action.disabled,
+        color: darkPalette.action.disabled,
         right: 16,
       },
       iconOutlined: {
@@ -592,7 +587,7 @@ export const darkTheme: Theme = {
         width: "100%",
       },
       barColorPrimary: {
-        backgroundColor: palette.success.main,
+        backgroundColor: darkPalette.success.main,
       },
     },
     // @ts-ignore
@@ -602,20 +597,20 @@ export const darkTheme: Theme = {
         padding: "8px 16px",
       },
       message: {
-        color: palette.text.primary,
+        color: darkPalette.text.primary,
         ...typography.caption,
       },
       standardInfo: {
-        backgroundColor: alpha(palette.info.main, 0.6),
+        backgroundColor: alpha(darkPalette.info.main, 0.6),
       },
       standardSuccess: {
-        backgroundColor: alpha(palette.success.main, 0.6),
+        backgroundColor: alpha(darkPalette.success.main, 0.6),
       },
       standardWarning: {
-        backgroundColor: alpha(palette.warning.main, 0.6),
+        backgroundColor: alpha(darkPalette.warning.main, 0.6),
       },
       standardError: {
-        backgroundColor: alpha(palette.error.main, 0.6),
+        backgroundColor: alpha(darkPalette.error.main, 0.6),
       },
     },
     MuiAvatar: {
