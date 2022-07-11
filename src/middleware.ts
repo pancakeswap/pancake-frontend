@@ -22,5 +22,18 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: '/:path((?!_mp|_next).*)',
+  matcher: [
+    '/',
+    '/swap',
+    '/pool',
+    '/pools',
+    '/farms',
+    '/add',
+    '/ifo',
+    '/remove',
+    '/prediction',
+    '/find',
+    '/limit-orders',
+    '/lottery',
+  ],
 }
