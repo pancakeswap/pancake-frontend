@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import { KeyboardEvent, RefObject, useCallback, useMemo, useRef, useState, useEffect } from 'react'
 import { Currency, ETHER, Token } from '@pancakeswap/sdk'
-import { Text, Input, Box } from '@pancakeswap/uikit'
+import { Text, Input, Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { FixedSizeList } from 'react-window'
 import { useAudioModeManager } from 'state/user/hooks'
@@ -169,6 +169,7 @@ function CurrencySearch({
   const filteredInactiveTokens = useSearchInactiveTokenLists(debouncedQuery)
 
   const hasFilteredInactiveTokens = Boolean(filteredInactiveTokens?.length)
+  const { isXs } = useMatchBreakpointsContext()
 
   const getCurrencyListRows = useCallback(() => {
     if (searchToken && !searchTokenIsAdded && !hasFilteredInactiveTokens) {
@@ -182,7 +183,7 @@ function CurrencySearch({
     return Boolean(filteredSortedTokens?.length) || hasFilteredInactiveTokens ? (
       <Box margin="24px -24px">
         <CurrencyList
-          height={390}
+          height={350}
           showBNB={showBNB}
           currencies={filteredSortedTokens}
           inactiveCurrencies={filteredInactiveTokens}

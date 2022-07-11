@@ -5,7 +5,8 @@ import { MotionBox } from "../../components/Box";
 import { ArrowBackIcon, CloseIcon } from "../../components/Svg";
 import { IconButton } from "../../components/Button";
 import { ModalProps } from "./types";
-import { mountAnimation } from "../../components/BottomDrawer/styles";
+
+export const mobileFooterHeight = 73;
 
 export const ModalHeader = styled.div<{ background?: string }>`
   align-items: center;
@@ -24,7 +25,7 @@ export const ModalBody = styled(Flex)`
   flex-direction: column;
   overflow-y: auto;
   ${({ theme }) => theme.mediaQueries.xs} {
-    max-height: calc(90vh - 73px);
+    max-height: calc(90vh - ${mobileFooterHeight}px);
   }
   ${({ theme }) => theme.mediaQueries.md} {
     display: flex;
