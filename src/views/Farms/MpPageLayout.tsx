@@ -18,7 +18,7 @@ const FarmsMpPageLayout: FC = ({ children }) => {
       }
     }
     handleLoad()
-  }, [])
+  }, [handleActive])
 
   return (
     <>
