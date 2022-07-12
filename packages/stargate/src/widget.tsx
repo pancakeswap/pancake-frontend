@@ -20,20 +20,17 @@ export const StargateWidget = ({ theme }: { theme: PancakeTheme }) => {
     <>
       <style jsx global>{`
         .MuiScopedCssBaseline-root {
-          background-color: transparent;
+          background-color: transparent !important;
         }
         .StgHeader {
-          border-bottom: 1px solid ${theme.colors.cardBorder};
+          border-bottom: 1px solid ${theme.colors.cardBorder} !important;
         }
         .MuiScopedCssBaseline-root .StgMaxButton {
           border-color: ${theme.colors.primary}!important;
           background-color: transparent;
         }
         .MuiFormLabel-root.Mui-focused {
-          color: ${theme.colors.text};
-        }
-        .StgAdvancedSettingsPopup {
-          top: 0 !important;
+          color: ${theme.colors.text} !important;
         }
       `}</style>
       {/* @ts-ignore */}
