@@ -1,12 +1,14 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { Box, Flex, Text, ChevronRightIcon, useModal } from '@pancakeswap/uikit'
 import Loading from 'components/Loading'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
-import { useCollectWinningModalProps } from 'state/predictions/hooks'
-import { useConfig } from 'views/Predictions/context/ConfigProvider'
+import tokens from 'config/constants/tokens'
+import { Bet } from 'state/types'
+import { transformBetResponse } from 'state/predictions/helpers'
+import { getPredictionsV1Address } from 'utils/addressHelpers'
 
 import CollectRoundWinningsModal from '../CollectRoundWinningsModal'
 import { getAllV1History } from './helpers'
@@ -23,19 +25,20 @@ const StyledClaimCheck = styled(Flex)`
 
 const ClaimCheck = () => {
   const [isFetching, setIsFetching] = useState(false)
+  const [history, setHistory] = useState<Bet[]>([])
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { history, isLoadingHistory } = useCollectWinningModalProps()
   const dispatch = useLocalDispatch()
-  const { address: predictionsAddress, token } = useConfig()
+  const predictionsV1Address = useMemo(() => getPredictionsV1Address(), [])
 
   const [onPresentCollectWinningsModal] = useModal(
     <CollectRoundWinningsModal
-      predictionsAddress={predictionsAddress}
-      token={token}
+      predictionsAddress={predictionsV1Address}
+      token={tokens.bnb}
       dispatch={dispatch}
       history={history}
-      isLoadingHistory={isLoadingHistory}
+      isLoadingHistory={isFetching}
+      isV1Claim
     />,
     false,
     true,
@@ -55,6 +58,8 @@ const ClaimCheck = () => {
       })
 
       if (unclaimedBets.length > 0) {
+        const transformer = transformBetResponse(tokens.bnb)
+        setHistory(unclaimedBets.map(transformer))
         onPresentCollectWinningsModal()
       } else {
         onPresentNothingToClaimModal()

@@ -29,6 +29,9 @@ export const getPancakeBunniesAddress = () => {
 export const getBunnyFactoryAddress = () => {
   return getAddress(addresses.bunnyFactory)
 }
+export const getPredictionsV1Address = () => {
+  return getAddress(addresses.predictionsV1)
+}
 export const getClaimRefundAddress = () => {
   return getAddress(addresses.claimRefund)
 }

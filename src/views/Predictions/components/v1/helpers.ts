@@ -16,6 +16,8 @@ export const getV1History = async (skip = 0, where = {}): Promise<Record<string,
           claimedHash
           round {
             epoch
+            bullAmount
+            bearAmount
             position
             failed
             totalAmount
