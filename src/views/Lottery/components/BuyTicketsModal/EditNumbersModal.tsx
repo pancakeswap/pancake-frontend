@@ -7,12 +7,13 @@ import TicketInput from './TicketInput'
 import { UpdateTicketAction, Ticket } from './useTicketsReducer'
 
 const StyledModal = styled(Modal)`
-  min-width: 280px;
-  max-width: 320px;
   max-height: 552px;
-
   & div:nth-child(2) {
     padding: 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 280px;
   }
 `
 
