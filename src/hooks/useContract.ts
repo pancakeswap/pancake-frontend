@@ -39,8 +39,9 @@ import {
   getZapContract,
   getCakeFlexibleSideVaultV2Contract,
   getCakePredictionsContract,
+  getPredictionsV1Contract,
 } from 'utils/contractHelpers'
-import { getMulticallAddress } from 'utils/addressHelpers'
+import { getMulticallAddress, getPredictionsV1Address } from 'utils/addressHelpers'
 import {
   Erc20,
   Erc20Bytes32,
@@ -240,6 +241,9 @@ export const useCakeVaultContract = (withSignerIfPossible = true) => {
 export const usePredictionsContract = (address: string, tokenSymbol: string) => {
   const { library } = useActiveWeb3React()
   return useMemo(() => {
+    if (address === getPredictionsV1Address()) {
+      return getPredictionsV1Contract(library.getSigner())
+    }
     const getPredContract = tokenSymbol === 'CAKE' ? getCakePredictionsContract : getPredictionsContract
 
     return getPredContract(address, library.getSigner())
