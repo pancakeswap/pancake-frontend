@@ -79,6 +79,7 @@ function MyApp(props: AppProps) {
         <meta name="twitter:title" content="🥞 PancakeSwap - A next evolution DeFi exchange on BNB Smart Chain (BSC)" />
         <title>PancakeSwap</title>
         {(Component as NextPageWithLayout).mp && (
+          // eslint-disable-next-line @next/next/no-sync-scripts
           <script src="https://public.bnbstatic.com/static/js/mp-webview-sdk/webview-v1.0.0.min.js" id="mp-webview" />
         )}
       </Head>

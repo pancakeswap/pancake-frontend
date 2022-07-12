@@ -154,7 +154,7 @@ export const useInjectI18n = () => {
       }
     }
     main()
-  }, [systemInfo])
+  }, [systemInfo, setLanguage])
   return { injected }
 }
 export default getWeb3Provider
