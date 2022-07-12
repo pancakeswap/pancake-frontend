@@ -144,7 +144,7 @@ const ConfirmRemoveLiquidityModal: React.FC<InjectedModalProps & ConfirmRemoveLi
     () =>
       liquidityErrorMessage ? (
         <>
-          {isZap && <ZapErrorMessages isSingleToken />}
+          {isZap && <ZapErrorMessages onModalDismiss={onDismiss} isSingleToken />}
           <TransactionErrorContent onDismiss={onDismiss} message={liquidityErrorMessage} />
         </>
       ) : (

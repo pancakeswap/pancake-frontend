@@ -249,7 +249,7 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
     () =>
       liquidityErrorMessage ? (
         <>
-          <ZapErrorMessages isSingleToken={!rebalancing} />
+          <ZapErrorMessages onModalDismiss={onDismiss} isSingleToken={!rebalancing} />
           <TransactionErrorContent onDismiss={onDismiss} message={liquidityErrorMessage} />
         </>
       ) : (
