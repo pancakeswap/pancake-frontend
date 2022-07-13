@@ -17,6 +17,7 @@ import { logError } from 'utils/sentry'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import { useTranslation } from 'contexts/Localization'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
+import useToast from 'hooks/useToast'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getZapContract } from 'utils/contractHelpers'
 import { getZapAddress } from 'utils/addressHelpers'
@@ -71,8 +72,9 @@ const zapAddress = getZapAddress()
 export default function AddLiquidity() {
   const router = useRouter()
   const tokens = serializeTokens()
+  const { toastInfo } = useToast()
 
-  const [zapMode] = useZapModeManager()
+  const [zapMode, toggleZapMode] = useZapModeManager()
   const [currencyIdA, currencyIdB] = router.query.currency || [tokens.bnb.symbol, tokens.cake.address]
   const [steps, setSteps] = useState(Steps.Choose)
 
@@ -472,6 +474,13 @@ export default function AddLiquidity() {
     'zapInModal',
   )
 
+  const handleEnableZap = () => {
+    if (!zapMode) {
+      toggleZapMode(!zapMode)
+      toastInfo(t('Info'), t('Zap has been enabled temporarily.'))
+    }
+  }
+
   let isValid = !error
   let errorText = error
 
@@ -515,6 +524,7 @@ export default function AddLiquidity() {
     preferZapInstead &&
     !noAnyInputAmount &&
     ((!rebalancing && !(!zapTokenCheckedA && !zapTokenCheckedB)) || (rebalancing && zapIn.priceSeverity > 3))
+
   const showReduceZapTokenButton =
     preferZapInstead && (zapIn.priceSeverity > 3 || zapIn.zapInEstimatedError) && maxAmounts[zapIn.swapTokenField]
 
@@ -525,6 +535,9 @@ export default function AddLiquidity() {
     preferZapInstead &&
     zapIn.isDependentAmountGreaterThanMaxAmount &&
     rebalancing
+
+  const showZapIsAvailable =
+    !zapMode && !showZapWarning && !noAnyInputAmount && (!zapTokenCheckedA || !zapTokenCheckedB)
 
   return (
     <Page>
@@ -658,6 +671,18 @@ export default function AddLiquidity() {
                       {t('Reduce %token%', { token: currencies[zapIn.swapTokenField]?.symbol })}
                     </Button>
                   </RowFixed>
+                )}
+
+                {showZapIsAvailable && (
+                  <Message variant="warning">
+                    <MessageText>
+                      {t('Zap allows you to add liquidity with only 1 single token. Click')}
+                      <Button p="0 4px" scale="sm" variant="text" height="auto" onClick={handleEnableZap}>
+                        {t('here')}
+                      </Button>
+                      {t('to try.')}
+                    </MessageText>
+                  </Message>
                 )}
 
                 {showRebalancingConvert && (
