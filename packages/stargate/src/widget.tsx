@@ -1,4 +1,4 @@
-import { PancakeTheme } from "@pancakeswap/uikit";
+import { Box, PancakeTheme } from "@pancakeswap/uikit";
 import type {} from "styled-jsx";
 import { useMemo } from "react";
 import { darkTheme, lightTheme, FontFamily } from "./theme";
@@ -20,7 +20,7 @@ export const StargateWidget = ({ theme }: { theme: PancakeTheme }) => {
   }, [theme]);
 
   return (
-    <>
+    <Box bg="backgroundAlt" pt={["12px", null, 0]} borderRadius="24px" overflow="hidden">
       <style jsx global>{`
         .MuiScopedCssBaseline-root {
           background-color: transparent !important;
@@ -46,6 +46,6 @@ export const StargateWidget = ({ theme }: { theme: PancakeTheme }) => {
         theme={widgetTheme}
         tenthBps={0.4}
       />
-    </>
+    </Box>
   );
 };
