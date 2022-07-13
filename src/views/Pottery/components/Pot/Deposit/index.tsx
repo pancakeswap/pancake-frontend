@@ -6,7 +6,7 @@ import { GreyCard } from 'components/Card'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useVaultApy } from 'hooks/useVaultApy'
-import { usePotteryData, useLatesVaultAddress } from 'state/pottery/hook'
+import { usePotteryData, useLatestVaultAddress } from 'state/pottery/hook'
 import getTimePeriods from 'utils/getTimePeriods'
 import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
@@ -34,7 +34,7 @@ const Deposit: React.FC = () => {
   const { account } = useActiveWeb3React()
   const { getLockedApy } = useVaultApy()
   const { publicData, userData } = usePotteryData()
-  const lastVaultAddress = useLatesVaultAddress()
+  const lastVaultAddress = useLatestVaultAddress()
   const { totalSupply, totalLockCake, getStatus, totalLockedValue } = publicData
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Pottery draws on each Friday at 12 PM UTC!'), {

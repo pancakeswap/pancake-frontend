@@ -10,7 +10,7 @@ import { State } from '../types'
 export const usePotteryFetch = () => {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
-  const potteryVaultAddress = useLatesVaultAddress()
+  const potteryVaultAddress = useLatestVaultAddress()
 
   useFastRefreshEffect(() => {
     dispatch(fetchLastVaultAddressAsync())
@@ -32,6 +32,6 @@ export const usePotteryData = () => {
   return useSelector(potterDataSelector)
 }
 
-export const useLatesVaultAddress = () => {
+export const useLatestVaultAddress = () => {
   return useSelector((state: State) => state.pottery.lastVaultAddress)
 }
