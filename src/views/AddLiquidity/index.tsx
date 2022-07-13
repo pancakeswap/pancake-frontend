@@ -537,7 +537,15 @@ export default function AddLiquidity() {
     rebalancing
 
   const showZapIsAvailable =
-    !zapMode && !showZapWarning && !noAnyInputAmount && (!zapTokenCheckedA || !zapTokenCheckedB)
+    !zapMode &&
+    !showZapWarning &&
+    !noAnyInputAmount &&
+    (!zapTokenCheckedA || !zapTokenCheckedB) &&
+    !noLiquidity &&
+    !(
+      (pair && JSBI.lessThan(pair.reserve0.raw, MINIMUM_LIQUIDITY)) ||
+      (pair && JSBI.lessThan(pair.reserve1.raw, MINIMUM_LIQUIDITY))
+    )
 
   return (
     <Page>
