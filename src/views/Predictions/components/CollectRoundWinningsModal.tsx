@@ -41,6 +41,7 @@ interface CollectRoundWinningsModalProps extends InjectedModalProps {
   isLoadingHistory: boolean
   predictionsAddress: string
   token: Token
+  isV1Claim?: boolean
 }
 
 const Modal = styled(ModalContainer)`
@@ -90,6 +91,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   dispatch,
   predictionsAddress,
   token,
+  isV1Claim,
 }) => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
@@ -106,24 +108,26 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
 
   useEffect(() => {
     // Fetch history if they have not opened the history pane yet
-    if (history.length === 0) {
+    if (history.length === 0 && !isV1Claim) {
       dispatch(fetchNodeHistory({ account }))
     }
-  }, [account, history, dispatch])
+  }, [account, history, dispatch, isV1Claim])
 
   const handleClick = async () => {
     const receipt = await fetchWithCatchTxError(() => {
       return callWithGasPrice(predictionsContract, 'claim', [epochs])
     })
     if (receipt?.status) {
-      // Immediately mark rounds as claimed
-      dispatch(
-        markAsCollected(
-          epochs.reduce((accum, epoch) => {
-            return { ...accum, [epoch]: true }
-          }, {}),
-        ),
-      )
+      if (!isV1Claim) {
+        // Immediately mark rounds as claimed
+        dispatch(
+          markAsCollected(
+            epochs.reduce((accum, epoch) => {
+              return { ...accum, [epoch]: true }
+            }, {}),
+          ),
+        )
+      }
 
       if (onSuccess) {
         await onSuccess()

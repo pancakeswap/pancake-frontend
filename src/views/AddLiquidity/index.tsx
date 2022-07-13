@@ -25,6 +25,7 @@ import { useRouter } from 'next/router'
 import { CHAIN_ID } from 'config/constants/networks'
 import { callWithEstimateGas } from 'utils/calls'
 import { ContractMethodName } from 'utils/types'
+import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useLPApr } from 'state/swap/hooks'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { serializeTokens } from 'config/constants/tokens'
@@ -302,7 +303,10 @@ export default function AddLiquidity() {
         }
         setLiquidityState({
           attemptingTxn: false,
-          liquidityErrorMessage: err && err.code !== 4001 ? `Add Liquidity failed: ${err.message}` : undefined,
+          liquidityErrorMessage:
+            err && err.code !== 4001
+              ? t('Add liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err, t) })
+              : undefined,
           txHash: undefined,
         })
       })
@@ -716,6 +720,15 @@ export default function AddLiquidity() {
                     </LightCard>
                   </>
                 )}
+
+                <RowBetween>
+                  <Text bold fontSize="12px" color="secondary">
+                    {t('Slippage Tolerance')}
+                  </Text>
+                  <Text bold color="primary">
+                    {allowedSlippage / 100}%
+                  </Text>
+                </RowBetween>
 
                 {pair && poolData && (
                   <RowBetween>

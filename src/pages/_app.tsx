@@ -6,6 +6,7 @@ import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
 import FixedSubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
 import { ToastListener } from 'contexts/ToastsContext'
 import useEagerConnect from 'hooks/useEagerConnect'
+import useEagerConnectMP from 'hooks/useEagerConnect.bmp'
 import { useAccountEventListener } from 'hooks/useAccountEventListener'
 import useSentryUser from 'hooks/useSentryUser'
 import useUserAgent from 'hooks/useUserAgent'
@@ -43,8 +44,18 @@ function GlobalHooks() {
   return null
 }
 
+function MPGlobalHooks() {
+  usePollBlockNumber()
+  useEagerConnectMP()
+  usePollCoreFarmData()
+  useUserAgent()
+  useAccountEventListener()
+  useSentryUser()
+  return null
+}
+
 function MyApp(props: AppProps) {
-  const { pageProps } = props
+  const { pageProps, Component } = props
   const store = useStore(pageProps.initialReduxState)
 
   return (
@@ -67,10 +78,14 @@ function MyApp(props: AppProps) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="🥞 PancakeSwap - A next evolution DeFi exchange on BNB Smart Chain (BSC)" />
         <title>PancakeSwap</title>
+        {(Component as NextPageWithLayout).mp && (
+          // eslint-disable-next-line @next/next/no-sync-scripts
+          <script src="https://public.bnbstatic.com/static/js/mp-webview-sdk/webview-v1.0.0.min.js" id="mp-webview" />
+        )}
       </Head>
       <Providers store={store}>
         <Blocklist>
-          <GlobalHooks />
+          {(Component as NextPageWithLayout).mp ? <MPGlobalHooks /> : <GlobalHooks />}
           <ResetCSS />
           <GlobalStyle />
           <GlobalCheckClaimStatus excludeLocations={[]} />
@@ -99,6 +114,7 @@ function MyApp(props: AppProps) {
 
 type NextPageWithLayout = NextPage & {
   Layout?: React.FC
+  mp?: boolean
 }
 
 type AppPropsWithLayout = AppProps & {
@@ -107,16 +123,24 @@ type AppPropsWithLayout = AppProps & {
 
 const ProductionErrorBoundary = process.env.NODE_ENV === 'production' ? ErrorBoundary : Fragment
 
-const App = ({ Component, pageProps }: AppPropsWithLayout) => {
+const App = ({ Component, pageProps, ...appProps }: AppPropsWithLayout) => {
+  const noNeedLayout = [`/451`].includes(appProps.router.pathname)
+
+  if (noNeedLayout) {
+    return <Component {...pageProps} />
+  }
+
   // Use the layout defined at the page level, if available
   const Layout = Component.Layout || Fragment
+  const ShowMenu = Component.mp ? Fragment : Menu
+
   return (
     <ProductionErrorBoundary>
-      <Menu>
+      <ShowMenu>
         <Layout>
           <Component {...pageProps} />
         </Layout>
-      </Menu>
+      </ShowMenu>
       <EasterEgg iterations={2} />
       <ToastListener />
       <FixedSubgraphHealthIndicator />

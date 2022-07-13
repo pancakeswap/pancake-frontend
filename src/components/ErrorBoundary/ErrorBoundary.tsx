@@ -3,9 +3,11 @@ import Page from 'components/Layout/Page'
 import { useTranslation } from 'contexts/Localization'
 import { Button, Text, LogoIcon, Flex, IconButton, CopyIcon } from '@pancakeswap/uikit'
 import { copyText } from 'utils/copyText'
+import { useCallback } from 'react'
 
 export default function ErrorBoundary({ children }) {
   const { t } = useTranslation()
+  const handleOnClick = useCallback(() => window.location.reload(), [])
   return (
     <Sentry.ErrorBoundary
       beforeCapture={(scope) => {
@@ -28,7 +30,7 @@ export default function ErrorBoundary({ children }) {
                   </Flex>
                 </Flex>
               )}
-              <Button onClick={() => window.location.reload()}>{t('Click here to reset!')}</Button>
+              <Button onClick={handleOnClick}>{t('Click here to reset!')}</Button>
             </Flex>
           </Page>
         )

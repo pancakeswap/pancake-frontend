@@ -39,6 +39,7 @@ import {
   getPotteryDrawAddress,
   getZapAddress,
   getCakeFlexibleSideVaultAddress,
+  getPredictionsV1Address,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -68,6 +69,7 @@ import easterNftAbi from 'config/abi/easterNft.json'
 import cakeVaultV2Abi from 'config/abi/cakeVaultV2.json'
 import cakeFlexibleSideVaultV2Abi from 'config/abi/cakeFlexibleSideVaultV2.json'
 import predictionsAbi from 'config/abi/predictions.json'
+import predictionsV1Abi from 'config/abi/predictionsV1.json'
 import chainlinkOracleAbi from 'config/abi/chainlinkOracle.json'
 import MultiCallAbi from 'config/abi/Multicall.json'
 import bunnySpecialCakeVaultAbi from 'config/abi/bunnySpecialCakeVault.json'
@@ -131,6 +133,7 @@ import type {
   PotteryVaultAbi,
   PotteryDrawAbi,
   Zap,
+  PredictionsV1,
 } from 'config/abi/types'
 
 export const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
@@ -232,6 +235,10 @@ export const getCakeFlexibleSideVaultV2Contract = (signer?: Signer | Provider) =
 
 export const getPredictionsContract = (address: string, signer?: Signer | Provider) => {
   return getContract(predictionsAbi, address, signer) as Predictions
+}
+
+export const getPredictionsV1Contract = (signer?: Signer | Provider) => {
+  return getContract(predictionsV1Abi, getPredictionsV1Address(), signer) as PredictionsV1
 }
 
 export const getCakePredictionsContract = (address: string, signer?: Signer | Provider) => {

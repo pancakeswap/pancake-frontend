@@ -22,10 +22,12 @@ import tokens from 'config/constants/tokens'
 import { requiresApproval } from 'utils/requiresApproval'
 
 const StyledModal = styled(Modal)`
-  min-width: 280px;
-  max-width: 320px;
   & > div:nth-child(2) {
     padding: 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 280px;
   }
 `
 

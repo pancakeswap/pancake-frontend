@@ -19,9 +19,13 @@ import GasSettings from './GasSettings'
 
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
-  max-height: 400px;
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.xs} {
     max-height: none;
+    height: 90vh;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    max-height: none;
+    height: auto;
   }
 `
 

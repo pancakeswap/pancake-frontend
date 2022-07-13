@@ -39,8 +39,9 @@ import EditNumbersModal from './EditNumbersModal'
 import { useTicketsReducer } from './useTicketsReducer'
 
 const StyledModal = styled(Modal)`
-  min-width: 280px;
-  max-width: 320px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 280px;
+  }
 `
 
 const ShortcutButtonsWrapper = styled(Flex)<{ isVisible: boolean }>`

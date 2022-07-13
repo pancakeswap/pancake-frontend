@@ -29,6 +29,7 @@ import { useTranslation } from 'contexts/Localization'
 import { CHAIN_ID } from 'config/constants/networks'
 import { useLPApr } from 'state/swap/hooks'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
+import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { MinimalPositionCard } from '../../components/PositionCard'
@@ -443,7 +444,10 @@ export default function RemoveLiquidity() {
           }
           setLiquidityState({
             attemptingTxn: false,
-            liquidityErrorMessage: err && err?.code !== 4001 ? `Remove Liquidity failed: ${err.message}` : undefined,
+            liquidityErrorMessage:
+              err && err?.code !== 4001
+                ? t('Remove liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err, t) })
+                : undefined,
             txHash: undefined,
           })
         })
@@ -762,6 +766,14 @@ export default function RemoveLiquidity() {
               </LightGreyCard>
             </AutoColumn>
           )}
+          <RowBetween mt="16px">
+            <Text bold color="secondary" fontSize="12px">
+              {t('Slippage Tolerance')}
+            </Text>
+            <Text bold color="primary">
+              {allowedSlippage / 100}%
+            </Text>
+          </RowBetween>
           {poolData && (
             <RowBetween mt="16px">
               <TooltipText ref={targetRef} bold fontSize="12px" color="secondary">

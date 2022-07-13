@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import styled from 'styled-components'
 import { Modal, Text, Flex, Button, ArrowBackIcon, AutoRenewIcon } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
@@ -6,12 +7,13 @@ import TicketInput from './TicketInput'
 import { UpdateTicketAction, Ticket } from './useTicketsReducer'
 
 const StyledModal = styled(Modal)`
-  min-width: 280px;
-  max-width: 320px;
   max-height: 552px;
-
   & div:nth-child(2) {
     padding: 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 280px;
   }
 `
 
@@ -34,6 +36,7 @@ const EditNumbersModal: React.FC<{
 }> = ({ totalCost, updateTicket, randomize, tickets, allComplete, onConfirm, isConfirming, onDismiss }) => {
   const { theme } = useTheme()
   const { t } = useTranslation()
+  const handleOnConfirm = useCallback(() => onConfirm(), [onConfirm])
   return (
     <StyledModal
       title={t('Edit numbers')}
@@ -69,9 +72,7 @@ const EditNumbersModal: React.FC<{
           id="lotteryBuyEdited"
           disabled={!allComplete || isConfirming}
           endIcon={isConfirming ? <AutoRenewIcon spin color="currentColor" /> : undefined}
-          onClick={() => {
-            onConfirm()
-          }}
+          onClick={handleOnConfirm}
         >
           {isConfirming ? t('Confirming') : t('Confirm and buy')}
         </Button>
