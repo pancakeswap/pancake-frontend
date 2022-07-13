@@ -21,6 +21,31 @@
       {
         "indexed": true,
         "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "totalPrize",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "admin",
+        "type": "address"
+      }
+    ],
+    "name": "CancelPottery",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "winner",
         "type": "address"
       },
@@ -114,6 +139,12 @@
         "indexed": false,
         "internalType": "uint256",
         "name": "drawTime",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "maxTotalDeposit",
         "type": "uint256"
       },
       {
@@ -278,6 +309,19 @@
     "type": "event"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_vault",
+        "type": "address"
+      }
+    ],
+    "name": "cancelPottery",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "claimFee",
     "outputs": [
@@ -338,6 +382,11 @@
       {
         "internalType": "uint256",
         "name": "_drawTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_maxTotalDeposit",
         "type": "uint256"
       }
     ],

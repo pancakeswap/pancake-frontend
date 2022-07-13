@@ -30,6 +30,11 @@
         "internalType": "uint256",
         "name": "_lockTime",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_maxTotalDeposit",
+        "type": "uint256"
       }
     ],
     "stateMutability": "nonpayable",
@@ -133,6 +138,25 @@
       }
     ],
     "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "admin",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "burnPercentage",
+        "type": "uint16"
+      }
+    ],
+    "name": "SetBurnPercentage",
     "type": "event"
   },
   {
@@ -354,6 +378,19 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "burnPercentage",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
       }
     ],
     "stateMutability": "view",
@@ -614,7 +651,7 @@
         "type": "uint256"
       }
     ],
-    "stateMutability": "pure",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -845,6 +882,19 @@
   {
     "inputs": [],
     "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_burnPercentage",
+        "type": "uint16"
+      }
+    ],
+    "name": "setBurnPercentage",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
