@@ -1,11 +1,14 @@
 import { PancakeTheme } from "@pancakeswap/uikit";
 import type {} from "styled-jsx";
 import { useMemo } from "react";
-import { darkTheme, lightTheme } from "./theme";
+import { darkTheme, lightTheme, FontFamily } from "./theme";
+
+const VERSION = "0.0.25-testnet.4";
+const SHA384 = "wP5924Cpex1EJ0eFd1AdJy9+4Nbcb7YDnUxEKu1Z5XhiddrNB6LbfW7ON160oGG+";
 
 export const STARGATE_JS = {
-  src: "https://unpkg.com/@layerzerolabs/stargate-ui@0.0.25-testnet.3/element.js",
-  integrity: "sha384-K8N0WDxN1yeS55ZRa8OaJADDBITp4qyMoG0r1hKKTTZ++GgTFnUweuM0qLWreE25",
+  src: `https://unpkg.com/@layerzerolabs/stargate-ui@${VERSION}/element.js`,
+  integrity: `sha384-${SHA384}`,
 };
 
 const stringDarkTheme = JSON.stringify(darkTheme);
@@ -24,6 +27,9 @@ export const StargateWidget = ({ theme }: { theme: PancakeTheme }) => {
         }
         .StgHeader {
           border-bottom: 1px solid ${theme.colors.cardBorder} !important;
+        }
+        .StgHeader .MuiTypography-subtitle1 {
+          font-family: ${FontFamily.KANIT};
         }
         .MuiScopedCssBaseline-root .StgMaxButton {
           border-color: ${theme.colors.primary}!important;

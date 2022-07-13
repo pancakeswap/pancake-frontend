@@ -20,7 +20,7 @@ function pointsToRem(size: number) {
 
 // theme definition
 
-const FontFamily = {
+export const FontFamily = {
   KANIT: "'Kanit', sans-serif",
 };
 
