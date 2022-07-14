@@ -21,6 +21,7 @@ export function useDerivedBurnInfo(
   currencyB: Currency | undefined,
   removalCheckedA?: boolean,
   removalCheckedB?: boolean,
+  zapMode?: boolean,
 ): {
   pair?: Pair | null
   parsedAmounts: {
@@ -145,24 +146,26 @@ export function useDerivedBurnInfo(
   } = {
     [Field.LIQUIDITY_PERCENT]: percentToRemove,
     [Field.LIQUIDITY]: liquidityToRemove,
-    [Field.CURRENCY_A]:
-      amountA && removalCheckedA && !removalCheckedB && estimateZapOutAmount
-        ? new TokenAmount(
-            tokenA,
-            JSBI.add(percentToRemove.multiply(liquidityValueA.raw).quotient, estimateZapOutAmount.raw),
-          )
-        : !removalCheckedA
-        ? undefined
-        : amountA,
-    [Field.CURRENCY_B]:
-      amountB && removalCheckedB && !removalCheckedA && estimateZapOutAmount
-        ? new TokenAmount(
-            tokenB,
-            JSBI.add(percentToRemove.multiply(liquidityValueB.raw).quotient, estimateZapOutAmount.raw),
-          )
-        : !removalCheckedB
-        ? undefined
-        : amountB,
+    [Field.CURRENCY_A]: !zapMode
+      ? amountA
+      : amountA && removalCheckedA && !removalCheckedB && estimateZapOutAmount
+      ? new TokenAmount(
+          tokenA,
+          JSBI.add(percentToRemove.multiply(liquidityValueA.raw).quotient, estimateZapOutAmount.raw),
+        )
+      : !removalCheckedA
+      ? undefined
+      : amountA,
+    [Field.CURRENCY_B]: !zapMode
+      ? amountB
+      : amountB && removalCheckedB && !removalCheckedA && estimateZapOutAmount
+      ? new TokenAmount(
+          tokenB,
+          JSBI.add(percentToRemove.multiply(liquidityValueB.raw).quotient, estimateZapOutAmount.raw),
+        )
+      : !removalCheckedB
+      ? undefined
+      : amountB,
   }
 
   let error: string | undefined
