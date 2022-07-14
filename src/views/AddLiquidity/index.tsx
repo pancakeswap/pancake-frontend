@@ -73,6 +73,7 @@ export default function AddLiquidity() {
   const tokens = serializeTokens()
 
   const [zapMode] = useZapModeManager()
+  const [temporarilyZapMode, setTemporarilyZapMode] = useState(zapMode)
   const [currencyIdA, currencyIdB] = router.query.currency || [tokens.bnb.symbol, tokens.cake.address]
   const [steps, setSteps] = useState(Steps.Choose)
 
@@ -159,13 +160,13 @@ export default function AddLiquidity() {
 
   const canZap = useMemo(
     () =>
-      !!zapMode &&
+      !!temporarilyZapMode &&
       !noLiquidity &&
       !(
         (pair && JSBI.lessThan(pair.reserve0.raw, MINIMUM_LIQUIDITY)) ||
         (pair && JSBI.lessThan(pair.reserve1.raw, MINIMUM_LIQUIDITY))
       ),
-    [noLiquidity, pair, zapMode],
+    [noLiquidity, pair, temporarilyZapMode],
   )
 
   const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
@@ -466,6 +467,8 @@ export default function AddLiquidity() {
       zapSwapOutTokenField={zapIn.swapOutTokenField}
       zapInEstimated={zapIn.zapInEstimated}
       rebalancing={rebalancing}
+      zapMode={temporarilyZapMode}
+      toggleZapMode={setTemporarilyZapMode}
     />,
     true,
     true,

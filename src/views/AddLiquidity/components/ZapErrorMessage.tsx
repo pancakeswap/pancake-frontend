@@ -1,14 +1,19 @@
 import { memo } from 'react'
 import { Message, MessageText, Button, Box, Flex } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { useZapModeManager } from 'state/user/hooks'
 import useToast from 'hooks/useToast'
 
-export const ZapErrorMessages: React.FC<{ isSingleToken: boolean; onModalDismiss: () => void }> = memo(
-  ({ isSingleToken, onModalDismiss }) => {
+interface ZapErrorMessagesProps {
+  isSingleToken: boolean
+  zapMode?: boolean
+  toggleZapMode?: (zapMode: boolean) => void // TODO: Remove Liquidity also need toggleZapMode
+  onModalDismiss: () => void
+}
+
+export const ZapErrorMessages: React.FC<ZapErrorMessagesProps> = memo(
+  ({ isSingleToken, zapMode, toggleZapMode, onModalDismiss }) => {
     const { t } = useTranslation()
     const { toastInfo } = useToast()
-    const [zapMode, toggleZapMode] = useZapModeManager()
 
     const handleCloseButton = () => {
       onModalDismiss()
