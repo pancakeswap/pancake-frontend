@@ -1,7 +1,7 @@
 import Script from 'next/script'
 import * as React from 'react'
 import styled, { useTheme } from 'styled-components'
-import { Flex, Box } from '@pancakeswap/uikit'
+import { Flex } from '@pancakeswap/uikit'
 import { STARGATE_JS } from '../components/stargate/config'
 import { StargateWidget } from '../components/stargate'
 
@@ -32,6 +32,7 @@ function Transfer() {
     customElements.whenDefined('stargate-widget').then(() => {
       setTimeout(() => {
         window.root.transfer.selectToChain(10002)
+        window.root.transfer.selectFromChain(10001)
       }, 600)
       console.info('stargate widget mount')
     })
