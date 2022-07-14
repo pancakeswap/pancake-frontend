@@ -17,7 +17,6 @@ import { logError } from 'utils/sentry'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import { useTranslation } from 'contexts/Localization'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
-import useToast from 'hooks/useToast'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getZapContract } from 'utils/contractHelpers'
 import { getZapAddress } from 'utils/addressHelpers'
@@ -72,7 +71,6 @@ const zapAddress = getZapAddress()
 export default function AddLiquidity() {
   const router = useRouter()
   const tokens = serializeTokens()
-  const { toastInfo } = useToast()
 
   const [zapMode, toggleZapMode] = useZapModeManager()
   const [currencyIdA, currencyIdB] = router.query.currency || [tokens.bnb.symbol, tokens.cake.address]
@@ -477,7 +475,6 @@ export default function AddLiquidity() {
   const handleEnableZap = () => {
     if (!zapMode) {
       toggleZapMode(!zapMode)
-      toastInfo(t('Info'), t('Zap has been enabled temporarily.'))
     }
   }
 
