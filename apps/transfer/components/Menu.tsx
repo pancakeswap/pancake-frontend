@@ -84,19 +84,24 @@ const UserMenuItems = () => {
 
   return (
     <>
-      <Box px="16px">
+      <Box px="16px" py="8px">
         <Text>Select a Network</Text>
       </Box>
       <UserMenuDivider />
       {chains.map((chain) => (
-        <UserMenuItem key={chain.id} as="button" onClick={() => switchNetwork?.(chain.id)}>
+        <Flex
+          as={UserMenuItem}
+          key={chain.id}
+          style={{ justifyContent: 'flex-start' }}
+          onClick={() => switchNetwork?.(chain.id)}
+        >
           <Image width={24} height={24} src={`/transfer/chains/${chain.id}.png`} unoptimized />
-          {chain.name}
-        </UserMenuItem>
+          <Text pl="12px">{chain.name}</Text>
+        </Flex>
       ))}
       <UserMenuDivider />
       <UserMenuItem as="button" onClick={logout}>
-        <Flex alignItems="center" justifyContent="space-between" width="100%">
+        <Flex color="text" alignItems="center" justifyContent="space-between" width="100%">
           {t('Disconnect')}
           <LogoutIcon />
         </Flex>
