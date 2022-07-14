@@ -1,11 +1,11 @@
 import { useEffect, useState, createElement } from 'react'
 import styled from 'styled-components'
-import { Flex, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Box, Flex, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useFarmUser } from 'state/farms/hooks'
 
-import { FarmAuctionTag, CoreTag } from 'components/Tags'
+import { FarmAuctionTag, CoreTag, BoostedTag } from 'components/Tags'
 import Apr, { AprProps } from './Apr'
 import Farm, { FarmProps } from './Farm'
 import Earned, { EarnedProps } from './Earned'
@@ -15,6 +15,7 @@ import Liquidity, { LiquidityProps } from './Liquidity'
 import ActionPanel from './Actions/ActionPanel'
 import CellLayout from './CellLayout'
 import { DesktopColumnSchema, MobileColumnSchema, FarmWithStakedValue } from '../types'
+import BoostedApr from '../YieldBooster/components/BoostedApr'
 
 export interface RowProps {
   apr: AprProps
@@ -104,8 +105,9 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
               case 'type':
                 return (
                   <td key={key}>
-                    <CellInner style={{ width: '100px' }}>
+                    <CellInner style={{ width: '140px' }}>
                       {props[key] === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />}
+                      {props?.details?.boosted ? <BoostedTag scale="sm" ml="16px" /> : null}
                     </CellInner>
                   </td>
                 )
@@ -125,6 +127,13 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
                     <CellInner>
                       <CellLayout label={t('APR')}>
                         <Apr {...props.apr} hideButton={isSmallerScreen} />
+                        {props?.details?.boosted ? (
+                          <BoostedApr
+                            apr={props?.apr?.value}
+                            farmPid={props.farm?.pid}
+                            proxyPid={props.farm?.proxyPid}
+                          />
+                        ) : null}
                       </CellLayout>
                     </CellInner>
                   </td>
@@ -154,7 +163,12 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
               {props.type === 'community' ? (
                 <FarmAuctionTag marginRight="16px" scale="sm" />
               ) : (
-                <CoreTag marginRight="16px" scale="sm" />
+                <Box style={{ marginRight: '16px' }}>
+                  <CoreTag scale="sm" />
+                  {props?.details?.boosted ? (
+                    <BoostedTag style={{ verticalAlign: 'bottom' }} scale="sm" ml="4px" />
+                  ) : null}
+                </Box>
               )}
             </Flex>
           </FarmMobileCell>
@@ -171,6 +185,9 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
             <AprMobileCell>
               <CellLayout label={t('APR')}>
                 <Apr {...props.apr} hideButton />
+                {props?.details?.boosted ? (
+                  <BoostedApr apr={props?.apr?.value} farmPid={props.farm?.pid} proxyPid={props.farm?.proxyPid} />
+                ) : null}
               </CellLayout>
             </AprMobileCell>
           </td>

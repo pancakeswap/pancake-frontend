@@ -40,6 +40,7 @@ import {
   getCakeFlexibleSideVaultV2Contract,
   getCakePredictionsContract,
   getPredictionsV1Contract,
+  getFarmBoosterContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress, getPredictionsV1Address } from 'utils/addressHelpers'
 import {
@@ -139,6 +140,17 @@ export const useProfileContract = (withSignerIfPossible = true) => {
 export const useLotteryV2Contract = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getLotteryV2Contract(library.getSigner()), [library])
+}
+
+export const useFarmBooster = (withSignerIfPossible = true) => {
+  const { library, account } = useActiveWeb3React()
+
+  const signer = useMemo(
+    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [withSignerIfPossible, library, account],
+  )
+
+  return useMemo(() => getFarmBoosterContract(signer), [signer])
 }
 
 export const useMasterchef = (withSignerIfPossible = true) => {

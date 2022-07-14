@@ -111,6 +111,14 @@ export default {
     56: '0xb92Ab7c1edcb273AbA24b0656cEb3681654805D2',
     97: '0x3F9602593b4f7C67ab045DB51BbDEa94E40fA9Fe',
   },
+  farmBooster: {
+    56: '0x9396817286dcEA1885AC79b19d779D687dd101Cb',
+    97: '',
+  },
+  boosterProxyFactory: {
+    56: '0xdbCd3e76600125918037590446F710Ada01754b7',
+    97: '',
+  },
   AnniversaryAchievement: {
     56: '0x787980da5491118C3cB33B21aB50c8c379D2C552',
     97: '0x981aE96378e770DE44F89cD9175E708f9EDB70a9',

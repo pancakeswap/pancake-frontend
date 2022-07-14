@@ -11,6 +11,8 @@ import StakedAction from './StakedAction'
 import Apr, { AprProps } from '../Apr'
 import Multiplier, { MultiplierProps } from '../Multiplier'
 import Liquidity, { LiquidityProps } from '../Liquidity'
+import BoostedAction from '../../YieldBooster/components/BoostedAction'
+import { ActionTitles, ActionContainer as ActionContainerSection, ActionContent } from './styles'
 
 export interface ActionPanelProps {
   apr: AprProps
@@ -26,13 +28,13 @@ const expandAnimation = keyframes`
     max-height: 0px;
   }
   to {
-    max-height: 500px;
+    max-height: 700px;
   }
 `
 
 const collapseAnimation = keyframes`
   from {
-    max-height: 500px;
+    max-height: 700px;
   }
   to {
     max-height: 0px;
@@ -85,6 +87,7 @@ const ActionContainer = styled.div`
     align-items: center;
     flex-grow: 1;
     flex-basis: 0;
+    flex-wrap: wrap;
   }
 `
 
@@ -173,6 +176,25 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
       </InfoContainer>
       <ActionContainer>
         <HarvestAction {...farm} userDataReady={userDataReady} />
+        {farm?.boosted && (
+          <ActionContainerSection>
+            <BoostedAction
+              title={(status) => (
+                <ActionTitles>
+                  <Text mr="8px" bold textTransform="uppercase" color="textSubtle" fontSize="12px">
+                    {t('Yield Booster')}
+                  </Text>
+                  <Text bold textTransform="uppercase" color="secondary" fontSize="12px">
+                    {status}
+                  </Text>
+                </ActionTitles>
+              )}
+              desc={(actionBtn) => <ActionContent>{actionBtn}</ActionContent>}
+              farmPid={farm?.pid}
+              proxyPid={farm?.proxyPid}
+            />
+          </ActionContainerSection>
+        )}
         <StakedAction {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value} />
       </ActionContainer>
     </Container>

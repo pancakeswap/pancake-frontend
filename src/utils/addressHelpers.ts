@@ -20,6 +20,12 @@ export const getMulticallAddress = () => {
 export const getLotteryV2Address = () => {
   return getAddress(addresses.lotteryV2)
 }
+export const getFarmBoosterAddress = () => {
+  return getAddress(addresses.farmBooster)
+}
+export const getBoosterProxyFactoryAddress = () => {
+  return getAddress(addresses.boosterProxyFactory)
+}
 export const getPancakeProfileAddress = () => {
   return getAddress(addresses.pancakeProfile)
 }

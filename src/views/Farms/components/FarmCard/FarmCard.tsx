@@ -13,6 +13,7 @@ import CardHeading from './CardHeading'
 import { FarmWithStakedValue } from '../types'
 import CardActionsContainer from './CardActionsContainer'
 import ApyButton from './ApyButton'
+import BoostedApr from '../YieldBooster/components/BoostedApr'
 
 const StyledCard = styled(Card)`
   align-self: baseline;
@@ -78,23 +79,29 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
           isCommunityFarm={farm.isCommunity}
           token={farm.token}
           quoteToken={farm.quoteToken}
+          boosted={farm.boosted}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
             <Text>{t('APR')}:</Text>
             <Text bold style={{ display: 'flex', alignItems: 'center' }}>
               {farm.apr ? (
-                <ApyButton
-                  variant="text-and-button"
-                  pid={farm.pid}
-                  lpSymbol={farm.lpSymbol}
-                  multiplier={farm.multiplier}
-                  lpLabel={lpLabel}
-                  addLiquidityUrl={addLiquidityUrl}
-                  cakePrice={cakePrice}
-                  apr={farm.apr}
-                  displayApr={displayApr}
-                />
+                <>
+                  {farm.boosted ? (
+                    <BoostedApr mr="4px" apr={farm.apr} farmPid={farm.pid} proxyPid={farm.proxyPid} />
+                  ) : null}
+                  <ApyButton
+                    variant="text-and-button"
+                    pid={farm.pid}
+                    lpSymbol={farm.lpSymbol}
+                    multiplier={farm.multiplier}
+                    lpLabel={lpLabel}
+                    addLiquidityUrl={addLiquidityUrl}
+                    cakePrice={cakePrice}
+                    apr={farm.apr}
+                    displayApr={displayApr}
+                  />
+                </>
               ) : (
                 <Skeleton height={24} width={80} />
               )}

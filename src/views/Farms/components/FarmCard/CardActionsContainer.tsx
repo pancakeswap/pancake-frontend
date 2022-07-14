@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from '@pancakeswap/uikit'
+import { Button, Flex, Heading, Text } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from 'contexts/Localization'
@@ -14,9 +14,17 @@ import { FarmWithStakedValue } from '../types'
 import useApproveFarm from '../../hooks/useApproveFarm'
 import HarvestAction from './HarvestAction'
 import StakeAction from './StakeAction'
+import BoostedAction from '../YieldBooster/components/BoostedAction'
 
 const Action = styled.div`
   padding-top: 16px;
+`
+
+const ActionContainer = styled.div`
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `
 
 interface FarmCardActionsProps {
@@ -72,6 +80,23 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
         </Text>
       </Flex>
       <HarvestAction earnings={earnings} pid={pid} />
+      {farm.boosted && (
+        <BoostedAction
+          title={(status) => (
+            <Flex>
+              <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px" pr="4px">
+                {t('Yield Booster')}
+              </Text>
+              <Text bold textTransform="uppercase" color="secondary" fontSize="12px">
+                {status}
+              </Text>
+            </Flex>
+          )}
+          desc={(actionBtn) => <ActionContainer>{actionBtn}</ActionContainer>}
+          farmPid={farm.pid}
+          proxyPid={farm.proxyPid}
+        />
+      )}
       <Flex>
         <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
           {farm.lpSymbol}

@@ -8,6 +8,7 @@ import { getDisplayApr } from '../getDisplayApr'
 
 import Row, { RowProps } from './Row'
 import { DesktopColumnSchema, FarmWithStakedValue } from '../types'
+import ProxyFarmContainer from '../YieldBooster/components/ProxyFarmContainer'
 
 export interface ITableProps {
   farms: FarmWithStakedValue[]
@@ -100,7 +101,7 @@ const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) =
     })
   }, [])
 
-  const rowData = farms.map((farm) => {
+  const generateRow = (farm) => {
     const { token, quoteToken } = farm
     const tokenAddress = token.address
     const quoteTokenAddress = quoteToken.address
@@ -121,6 +122,7 @@ const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) =
       farm: {
         label: lpLabel,
         pid: farm.pid,
+        proxyPid: farm.proxyPid,
         token: farm.token,
         quoteToken: farm.quoteToken,
       },
@@ -139,9 +141,11 @@ const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) =
     }
 
     return row
-  })
+  }
 
-  const sortedRows = rowData.map((row) => {
+  const rowData = farms.map(generateRow)
+
+  const generateSortedRow = (row) => {
     // @ts-ignore
     const newRow: RowProps = {}
     columns.forEach((column) => {
@@ -151,7 +155,9 @@ const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) =
       newRow[column.name] = row[column.name]
     })
     return newRow
-  })
+  }
+
+  const sortedRows = rowData.map(generateSortedRow)
 
   return (
     <Container id="farms-table">
@@ -160,7 +166,19 @@ const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) =
           <StyledTable>
             <TableBody>
               {sortedRows.map((row) => {
-                return <Row {...row} userDataReady={userDataReady} key={`table-row-${row.farm.pid}`} />
+                return row?.details?.boosted ? (
+                  <ProxyFarmContainer {...row.details}>
+                    {(finalFarm) => (
+                      <Row
+                        {...generateSortedRow(generateRow(finalFarm))}
+                        userDataReady={userDataReady}
+                        key={`table-row-${row.farm.pid}`}
+                      />
+                    )}
+                  </ProxyFarmContainer>
+                ) : (
+                  <Row {...row} userDataReady={userDataReady} key={`table-row-${row.farm.pid}`} />
+                )
               })}
             </TableBody>
           </StyledTable>

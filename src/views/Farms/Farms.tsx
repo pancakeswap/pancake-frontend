@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import FlexLayout from 'components/Layout/Flex'
 import Page from 'components/Layout/Page'
 import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'
+import { useFetchCakeVaultUserData } from 'state/pools/hooks'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { DeserializedFarm } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
@@ -130,6 +131,8 @@ const Farms: React.FC = ({ children }) => {
   const isArchived = pathname.includes('archived')
   const isInactive = pathname.includes('history')
   const isActive = !isInactive && !isArchived
+
+  useFetchCakeVaultUserData()
 
   usePollFarmsWithUserData()
 

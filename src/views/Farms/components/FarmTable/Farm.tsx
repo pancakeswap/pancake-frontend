@@ -9,6 +9,7 @@ import { TokenPairImage } from 'components/TokenImage'
 export interface FarmProps {
   label: string
   pid: number
+  proxyPid?: number
   token: Token
   quoteToken: Token
 }

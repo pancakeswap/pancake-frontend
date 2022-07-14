@@ -39,6 +39,8 @@ import {
   getZapAddress,
   getCakeFlexibleSideVaultAddress,
   getPredictionsV1Address,
+  getFarmBoosterAddress,
+  getBoosterProxyFactoryAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -86,6 +88,8 @@ import zapAbi from 'config/abi/zap.json'
 import iCakeAbi from 'config/abi/iCake.json'
 import ifoV3Abi from 'config/abi/ifoV3.json'
 import cakePredictionsAbi from 'config/abi/cakePredictions.json'
+import farmBoosterAbi from 'config/abi/farmBooster.json'
+import boosterProxyFactoryAbi from 'config/abi/boosterProxyFactory.json'
 
 // Types
 import type {
@@ -102,6 +106,8 @@ import type {
   PancakeBunnies,
   PancakeProfile,
   LotteryV2,
+  FarmBooster,
+  BoosterProxyFactory,
   Masterchef,
   MasterchefV1,
   SousChef,
@@ -184,6 +190,12 @@ export const getBunnySpecialContract = (signer?: Signer | Provider) => {
 }
 export const getLotteryV2Contract = (signer?: Signer | Provider) => {
   return getContract(lotteryV2Abi, getLotteryV2Address(), signer) as LotteryV2
+}
+export const getFarmBoosterContract = (signer?: Signer | Provider) => {
+  return getContract(farmBoosterAbi, getFarmBoosterAddress(), signer) as FarmBooster
+}
+export const getBoosterProxyFactoryContract = (signer?: Signer | Provider) => {
+  return getContract(boosterProxyFactoryAbi, getBoosterProxyFactoryAddress(), signer) as BoosterProxyFactory
 }
 export const getMasterchefContract = (signer?: Signer | Provider) => {
   return getContract(masterChef, getMasterChefAddress(), signer) as Masterchef

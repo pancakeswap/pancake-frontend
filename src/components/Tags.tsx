@@ -3,6 +3,7 @@ import {
   BlockIcon,
   CommunityIcon,
   RefreshIcon,
+  RocketIcon,
   Tag,
   TagProps,
   Text,
@@ -20,6 +21,15 @@ const CoreTag: React.FC<TagProps> = (props) => {
   return (
     <Tag variant="secondary" outline startIcon={<VerifiedIcon width="18px" color="secondary" mr="4px" />} {...props}>
       {t('Core')}
+    </Tag>
+  )
+}
+
+const BoostedTag: React.FC<TagProps> = (props) => {
+  const { t } = useTranslation()
+  return (
+    <Tag variant="success" outline startIcon={<RocketIcon width="18px" color="success" mr="4px" />} {...props}>
+      {t('Boosted')}
     </Tag>
   )
 }
@@ -117,4 +127,5 @@ export {
   SoonTag,
   ClosedTag,
   CommunityTag,
+  BoostedTag,
 }

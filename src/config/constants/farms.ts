@@ -22,6 +22,7 @@ const farms: SerializedFarmConfig[] = [
   {
     pid: 2,
     v1pid: 251,
+    proxyPid: 3,
     lpSymbol: 'CAKE-BNB LP',
     lpAddresses: {
       97: '0x3ed8936cAFDF85cfDBa29Fbe5940A5b0524824F4',
@@ -29,6 +30,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.cake,
     quoteToken: serializedTokens.wbnb,
+    boosted: true,
   },
   {
     pid: 3,
