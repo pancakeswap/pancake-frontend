@@ -1,28 +1,28 @@
-import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
-import { alpha } from "@material-ui/core/styles/colorManipulator";
-import createTypography from "@material-ui/core/styles/createTypography";
-import createPalette from "@material-ui/core/styles/createPalette";
-import type { Theme } from "@material-ui/core/styles";
-import { darkColors, lightColors } from "@pancakeswap/uikit";
+import createBreakpoints from '@material-ui/core/styles/createBreakpoints'
+import { alpha } from '@material-ui/core/styles/colorManipulator'
+import createTypography from '@material-ui/core/styles/createTypography'
+import createPalette from '@material-ui/core/styles/createPalette'
+import type { Theme } from '@material-ui/core/styles'
+import { darkColors, lightColors } from '@pancakeswap/uikit'
 
 // utils
-const fontSize = 14;
-const htmlFontSize = 16;
-const coef = fontSize / 14;
+const fontSize = 14
+const htmlFontSize = 16
+const coef = fontSize / 14
 
 function pxToRem(size: number) {
-  return `${(size / htmlFontSize) * coef}rem`;
+  return `${(size / htmlFontSize) * coef}rem`
 }
 
 function pointsToRem(size: number) {
-  return `${size / 1000}rem`;
+  return `${size / 1000}rem`
 }
 
 // theme definition
 
 export const FontFamily = {
   KANIT: "'Kanit', sans-serif",
-};
+}
 
 const FontWeight = {
   THIN: 100,
@@ -34,14 +34,14 @@ const FontWeight = {
   BOLD: 700,
   EXTRA_BOLD: 800,
   BLACK: 900,
-};
+}
 
 const darkPalette = createPalette({
-  type: "dark",
+  type: 'dark',
   primary: {
-    light: "#BFBFBF",
+    light: '#BFBFBF',
     main: darkColors.primary,
-    dark: "#EFEFEF",
+    dark: '#EFEFEF',
     contrastText: darkColors.invertedContrast,
   },
   info: {
@@ -59,8 +59,8 @@ const darkPalette = createPalette({
   },
   // @ts-ignore
   borders: {
-    disabled: "#494747",
-    default: "#9A9A9A",
+    disabled: '#494747',
+    default: '#9A9A9A',
   },
   text: {
     primary: darkColors.text,
@@ -76,14 +76,14 @@ const darkPalette = createPalette({
     disabled: darkColors.textDisabled,
     disabledBackground: darkColors.disabled,
   },
-});
+})
 
 const lightPalette = createPalette({
-  type: "dark",
+  type: 'dark',
   primary: {
-    light: "#BFBFBF",
+    light: '#BFBFBF',
     main: lightColors.primary,
-    dark: "#EFEFEF",
+    dark: '#EFEFEF',
     contrastText: lightColors.invertedContrast,
   },
   info: {
@@ -101,8 +101,8 @@ const lightPalette = createPalette({
   },
   // @ts-ignore
   borders: {
-    disabled: "#494747",
-    default: "#9A9A9A",
+    disabled: '#494747',
+    default: '#9A9A9A',
   },
   text: {
     primary: lightColors.text,
@@ -118,7 +118,7 @@ const lightPalette = createPalette({
     disabled: lightColors.textDisabled,
     disabledBackground: lightColors.disabled,
   },
-});
+})
 
 const breakpoints = createBreakpoints({
   values: {
@@ -128,32 +128,32 @@ const breakpoints = createBreakpoints({
     lg: 1280,
     xl: 1920,
   },
-});
+})
 
 const typography = createTypography(darkPalette, {
   fontFamily: FontFamily.KANIT,
   h1: {
     lineHeight: pxToRem(46),
-    letterSpacing: "-3%",
+    letterSpacing: '-3%',
     fontSize: pxToRem(46),
     fontWeight: FontWeight.MEDIUM,
   },
   h2: {
     lineHeight: pxToRem(36),
     fontSize: pxToRem(36),
-    letterSpacing: "-2%",
+    letterSpacing: '-2%',
     fontWeight: FontWeight.MEDIUM,
   },
   h3: {
     lineHeight: pxToRem(25),
     fontSize: pxToRem(24),
-    letterSpacing: "-2%",
+    letterSpacing: '-2%',
     fontWeight: FontWeight.MEDIUM,
   },
   h4: {
     lineHeight: pxToRem(24),
     fontSize: pxToRem(20),
-    letterSpacing: "0%",
+    letterSpacing: '0%',
     fontWeight: FontWeight.MEDIUM,
   },
   h5: {
@@ -193,7 +193,7 @@ const typography = createTypography(darkPalette, {
     lineHeight: pxToRem(16),
     letterSpacing: pxToRem(1.5),
   },
-});
+})
 
 export const darkTheme: Theme = {
   palette: darkPalette,
@@ -221,18 +221,18 @@ export const darkTheme: Theme = {
     },
     MuiSlider: {
       root: {
-        color: "#50BEAF",
+        color: '#50BEAF',
       },
       rail: {
-        color: "#D9D9D9",
+        color: '#D9D9D9',
       },
       mark: {
-        color: "#D9D9D9",
+        color: '#D9D9D9',
       },
     },
     MuiTypography: {
       button: {
-        textTransform: "none",
+        textTransform: 'none',
       },
     },
     MuiTable: {
@@ -242,29 +242,29 @@ export const darkTheme: Theme = {
     },
     MuiSwitch: {
       root: {
-        "&.MuiSwitch-colorSecondary.Mui-checked + .MuiSwitch-track": {
-          backgroundColor: "#323232",
+        '&.MuiSwitch-colorSecondary.Mui-checked + .MuiSwitch-track': {
+          backgroundColor: '#323232',
         },
       },
       switchBase: {
-        background: "none",
-        "&:hover, .checked:hover": {
-          background: "none",
+        background: 'none',
+        '&:hover, .checked:hover': {
+          background: 'none',
         },
       },
       colorSecondary: {
-        "&.Mui-checked + .MuiSwitch-track": {
+        '&.Mui-checked + .MuiSwitch-track': {
           opacity: 1,
-          backgroundColor: "#FFFFFF",
+          backgroundColor: '#FFFFFF',
         },
-        "&.MuiSwitch-colorSecondary.Mui-checked": {
-          "&:hover": {
-            background: "none",
+        '&.MuiSwitch-colorSecondary.Mui-checked': {
+          '&:hover': {
+            background: 'none',
           },
         },
       },
       thumb: {
-        backgroundColor: "#999999",
+        backgroundColor: '#999999',
       },
     },
     MuiTableCell: {
@@ -274,7 +274,7 @@ export const darkTheme: Theme = {
         fontWeight: 400,
         fontSize: pxToRem(16),
         lineHeight: pxToRem(18.75),
-        "&.MuiTableCell-head": {
+        '&.MuiTableCell-head': {
           color: `${darkPalette.text.secondary} !important`,
           fontSize: pxToRem(16),
           fontWeight: 400,
@@ -286,22 +286,22 @@ export const darkTheme: Theme = {
     MuiTableRow: {
       root: {
         borderBottom: `${pxToRem(1.016)} solid ${darkPalette.divider}`,
-        cursor: "pointer",
-        transition: "background-color 0.2s ease-in-out",
-        "&:hover": {
+        cursor: 'pointer',
+        transition: 'background-color 0.2s ease-in-out',
+        '&:hover': {
           backgroundColor: darkPalette.divider,
         },
       },
       head: {
-        "&:hover": {
+        '&:hover': {
           backgroundColor: darkPalette.background.paper,
         },
       },
     },
     MuiIconButton: {
       root: {
-        "&:hover": {
-          backgroundColor: "transparent !important",
+        '&:hover': {
+          backgroundColor: 'transparent !important',
         },
       },
     },
@@ -310,8 +310,8 @@ export const darkTheme: Theme = {
         borderRadius: 16,
         fontFamily: FontFamily.KANIT,
         fontWeight: FontWeight.MEDIUM,
-        letterSpacing: "0.04em",
-        textTransform: "none",
+        letterSpacing: '0.04em',
+        textTransform: 'none',
       },
       sizeSmall: {
         borderRadius: 8,
@@ -327,38 +327,38 @@ export const darkTheme: Theme = {
       contained: {
         padding: `13px 16px 11px 16px`,
         fontSize: pxToRem(14),
-        boxShadow: "none",
-        "&$disabled, &$disabled:hover": {
+        boxShadow: 'none',
+        '&$disabled, &$disabled:hover': {
           color: darkColors.textDisabled,
           backgroundColor: darkColors.backgroundDisabled,
         },
-        "&:hover": {
-          boxShadow: "none",
+        '&:hover': {
+          boxShadow: 'none',
         },
       },
       containedPrimary: {
-        color: "#FFF",
-        "& [class^=MuiButton-label]": {
-          position: "relative",
-          width: "initial",
-          "&::after": {
+        color: '#FFF',
+        '& [class^=MuiButton-label]': {
+          position: 'relative',
+          width: 'initial',
+          '&::after': {
             content: '""',
-            position: "absolute",
+            position: 'absolute',
             bottom: 0,
             left: 0,
             right: 0,
-            height: "1.5px",
-            width: "100%",
-            backgroundColor: "transparent",
-            transform: "scaleX(0)",
-            transition: "transform 150ms ease-out",
-            transformOrigin: "left",
+            height: '1.5px',
+            width: '100%',
+            backgroundColor: 'transparent',
+            transform: 'scaleX(0)',
+            transition: 'transform 150ms ease-out',
+            transformOrigin: 'left',
           },
         },
-        "&:hover": {
+        '&:hover': {
           backgroundColor: darkPalette.primary.main,
           opacity: 0.65,
-          boxShadow: "none",
+          boxShadow: 'none',
         },
       },
       containedSizeSmall: {
@@ -368,50 +368,50 @@ export const darkTheme: Theme = {
         padding: `20px 24px`,
       },
       outlined: {
-        backgroundColor: "transparent",
+        backgroundColor: 'transparent',
         color: darkPalette.primary.main,
         padding: `11px 15px 9px 15px`,
         fontSize: pxToRem(14),
         letterSpacing: pointsToRem(89),
-        boxShadow: "none",
-        "&$disabled, &$disabled:hover": {
-          color: "#666666",
-          borderColor: "#404040!important",
+        boxShadow: 'none',
+        '&$disabled, &$disabled:hover': {
+          color: '#666666',
+          borderColor: '#404040!important',
         },
-        "&:hover": {
-          boxShadow: "none",
-          backgroundColor: "transparent",
+        '&:hover': {
+          boxShadow: 'none',
+          backgroundColor: 'transparent',
         },
       },
       outlinedPrimary: {
         border: `1px solid ${darkPalette.primary.main}`,
-        "&:hover": {
+        '&:hover': {
           border: `1px solid ${darkPalette.primary.main}`,
-          "& [class^=MuiButton-label]::after": {
-            transform: "scaleX(1)",
+          '& [class^=MuiButton-label]::after': {
+            transform: 'scaleX(1)',
           },
         },
-        "&$disabled": {
+        '&$disabled': {
           border: `1px solid ${darkPalette.action.disabled}`,
         },
-        "&$outlinedSizeSmall": {
+        '&$outlinedSizeSmall': {
           border: `1px solid ${darkPalette.primary.main}`,
         },
-        "& [class^=MuiButton-label]": {
-          position: "relative",
-          width: "initial",
-          "&::after": {
+        '& [class^=MuiButton-label]': {
+          position: 'relative',
+          width: 'initial',
+          '&::after': {
             content: '""',
-            position: "absolute",
+            position: 'absolute',
             bottom: 0,
             left: 0,
             right: 0,
-            height: "1.5px",
-            width: "100%",
-            backgroundColor: "transparent",
-            transform: "scaleX(0)",
-            transition: "transform 150ms ease-out",
-            transformOrigin: "left",
+            height: '1.5px',
+            width: '100%',
+            backgroundColor: 'transparent',
+            transform: 'scaleX(0)',
+            transition: 'transform 150ms ease-out',
+            transformOrigin: 'left',
           },
         },
       },
@@ -426,19 +426,19 @@ export const darkTheme: Theme = {
       formControl: {
         backgroundColor: darkColors.input,
         borderColor: darkPalette.divider,
-        "&:hover": {
+        '&:hover': {
           backgroundColor: darkColors.input,
         },
-        "label + &": {
+        'label + &': {
           marginTop: 24,
         },
-        "label.MuiFormLabel-filled + &:not($focused):not($error)": {
+        'label.MuiFormLabel-filled + &:not($focused):not($error)': {
           backgroundColor: darkColors.input,
         },
       },
       root: {
-        "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
-          display: "none",
+        '& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+          display: 'none',
         },
       },
     },
@@ -448,34 +448,34 @@ export const darkTheme: Theme = {
         height: 56,
         backgroundColor: darkColors.input,
         color: darkColors.text,
-        transition: "background-color 150ms cubic-bezier(0.4, 0, 0.2, 1)",
+        transition: 'background-color 150ms cubic-bezier(0.4, 0, 0.2, 1)',
         borderColor: darkColors.input,
-        "&$focused:not($error) $notchedOutline": {
+        '&$focused:not($error) $notchedOutline': {
           borderWidth: 1,
           borderColor: darkColors.input,
         },
-        "&$notchedOutline": {
+        '&$notchedOutline': {
           borderColor: darkColors.input,
         },
-        "&$error $notchedOutline": {
+        '&$error $notchedOutline': {
           borderWidth: 1,
           borderColor: darkPalette.error.main,
         },
-        "&$disabled": {
+        '&$disabled': {
           backgroundColor: darkPalette.action.disabledBackground,
-          color: "#666666",
-          "& $notchedOutline": {
+          color: '#666666',
+          '& $notchedOutline': {
             borderWidth: 0,
           },
         },
-        "&$focused": {
+        '&$focused': {
           backgroundColor: darkColors.input,
           borderColor: darkColors.input,
         },
-        "&:hover $notchedOutline": {
+        '&:hover $notchedOutline': {
           borderColor: darkColors.input,
         },
-        "label.MuiFormLabel-filled + &:not($focused):not($error) $notchedOutline": {
+        'label.MuiFormLabel-filled + &:not($focused):not($error) $notchedOutline': {
           borderColor: darkColors.input,
         },
       },
@@ -487,32 +487,32 @@ export const darkTheme: Theme = {
         padding: `${(56 - 24) / 2}px 16px`,
       },
       notchedOutline: {
-        transition: "border-color 150ms cubic-bezier(0.4, 0, 0.2, 1)",
-        borderColor: "#333333",
-        borderTopColor: "#333333",
-        borderBottomColor: "#333333",
-        borderLeftColor: "#333333",
-        borderRightColor: "#333333",
+        transition: 'border-color 150ms cubic-bezier(0.4, 0, 0.2, 1)',
+        borderColor: '#333333',
+        borderTopColor: '#333333',
+        borderBottomColor: '#333333',
+        borderLeftColor: '#333333',
+        borderRightColor: '#333333',
         top: 0,
-        "& > legend": {
-          display: "none",
+        '& > legend': {
+          display: 'none',
         },
       },
     },
     MuiInputAdornment: {
       root: {
-        color: "#757575",
+        color: '#757575',
       },
     },
     MuiInputLabel: {
       outlined: {
-        "&$shrink": {
-          transform: "translateY(3px) scale(0.9)",
+        '&$shrink': {
+          transform: 'translateY(3px) scale(0.9)',
           fontSize: pxToRem(14),
           lineHeight: pxToRem(20),
           letterSpacing: 0.25,
         },
-        "&$disabled": {
+        '&$disabled': {
           color: darkPalette.action.disabled,
         },
       },
@@ -534,7 +534,7 @@ export const darkTheme: Theme = {
       root: {
         backgroundColor: darkPalette.action.disabledBackground,
         color: darkPalette.action.disabled,
-        cursor: "pointer",
+        cursor: 'pointer',
         width: 85,
         height: 28,
       },
@@ -553,36 +553,36 @@ export const darkTheme: Theme = {
     MuiAccordionSummary: {
       root: {
         margin: 0,
-        [breakpoints.up("md")]: {
-          padding: "0 24px",
+        [breakpoints.up('md')]: {
+          padding: '0 24px',
         },
-        "&$expanded": {
+        '&$expanded': {
           minHeight: 56,
         },
       },
       content: {
-        margin: "12px 0",
+        margin: '12px 0',
 
-        "&$expanded": {
-          margin: "12px 0",
+        '&$expanded': {
+          margin: '12px 0',
         },
-        [breakpoints.up("md")]: {
-          margin: "16px 0",
+        [breakpoints.up('md')]: {
+          margin: '16px 0',
 
-          "&$expanded": {
-            margin: "16px 0",
+          '&$expanded': {
+            margin: '16px 0',
           },
         },
       },
     },
     MuiBackdrop: {
       root: {
-        backgroundColor: alpha("#000", 0.8),
+        backgroundColor: alpha('#000', 0.8),
       },
     },
     MuiDialog: {
       paper: {
-        boxShadow: "none",
+        boxShadow: 'none',
       },
       container: {
         paddingBottom: 16,
@@ -595,20 +595,20 @@ export const darkTheme: Theme = {
     },
     MuiBottomNavigationAction: {
       root: {
-        color: "#757575",
-        "&$selected": {
+        color: '#757575',
+        '&$selected': {
           color: darkPalette.text.primary,
         },
       },
       label: {
-        "& > span": {
-          textTransform: "none",
+        '& > span': {
+          textTransform: 'none',
         },
       },
     },
     MuiSelect: {
       root: {
-        "&$disabled + input + $icon": {
+        '&$disabled + input + $icon': {
           opacity: 0.5,
         },
       },
@@ -623,7 +623,7 @@ export const darkTheme: Theme = {
     MuiLinearProgress: {
       root: {
         height: 2,
-        width: "100%",
+        width: '100%',
       },
       barColorPrimary: {
         backgroundColor: darkPalette.success.main,
@@ -633,7 +633,7 @@ export const darkTheme: Theme = {
     MuiAlert: {
       root: {
         borderRadius: 8,
-        padding: "8px 16px",
+        padding: '8px 16px',
       },
       message: {
         color: darkPalette.text.primary,
@@ -659,7 +659,7 @@ export const darkTheme: Theme = {
       },
     },
   },
-};
+}
 
 export const lightTheme: Theme = {
   palette: lightPalette,
@@ -687,18 +687,18 @@ export const lightTheme: Theme = {
     },
     MuiSlider: {
       root: {
-        color: "#50BEAF",
+        color: '#50BEAF',
       },
       rail: {
-        color: "#D9D9D9",
+        color: '#D9D9D9',
       },
       mark: {
-        color: "#D9D9D9",
+        color: '#D9D9D9',
       },
     },
     MuiTypography: {
       button: {
-        textTransform: "none",
+        textTransform: 'none',
       },
     },
     MuiTable: {
@@ -708,29 +708,29 @@ export const lightTheme: Theme = {
     },
     MuiSwitch: {
       root: {
-        "&.MuiSwitch-colorSecondary.Mui-checked + .MuiSwitch-track": {
-          backgroundColor: "#323232",
+        '&.MuiSwitch-colorSecondary.Mui-checked + .MuiSwitch-track': {
+          backgroundColor: '#323232',
         },
       },
       switchBase: {
-        background: "none",
-        "&:hover, .checked:hover": {
-          background: "none",
+        background: 'none',
+        '&:hover, .checked:hover': {
+          background: 'none',
         },
       },
       colorSecondary: {
-        "&.Mui-checked + .MuiSwitch-track": {
+        '&.Mui-checked + .MuiSwitch-track': {
           opacity: 1,
-          backgroundColor: "#FFFFFF",
+          backgroundColor: '#FFFFFF',
         },
-        "&.MuiSwitch-colorSecondary.Mui-checked": {
-          "&:hover": {
-            background: "none",
+        '&.MuiSwitch-colorSecondary.Mui-checked': {
+          '&:hover': {
+            background: 'none',
           },
         },
       },
       thumb: {
-        backgroundColor: "#999999",
+        backgroundColor: '#999999',
       },
     },
     MuiTableCell: {
@@ -740,7 +740,7 @@ export const lightTheme: Theme = {
         fontWeight: 400,
         fontSize: pxToRem(16),
         lineHeight: pxToRem(18.75),
-        "&.MuiTableCell-head": {
+        '&.MuiTableCell-head': {
           color: `${lightPalette.text.secondary} !important`,
           fontSize: pxToRem(16),
           fontWeight: 400,
@@ -752,22 +752,22 @@ export const lightTheme: Theme = {
     MuiTableRow: {
       root: {
         borderBottom: `${pxToRem(1.016)} solid ${lightPalette.divider}`,
-        cursor: "pointer",
-        transition: "background-color 0.2s ease-in-out",
-        "&:hover": {
+        cursor: 'pointer',
+        transition: 'background-color 0.2s ease-in-out',
+        '&:hover': {
           backgroundColor: lightPalette.divider,
         },
       },
       head: {
-        "&:hover": {
+        '&:hover': {
           backgroundColor: lightPalette.background.paper,
         },
       },
     },
     MuiIconButton: {
       root: {
-        "&:hover": {
-          backgroundColor: "transparent !important",
+        '&:hover': {
+          backgroundColor: 'transparent !important',
         },
       },
     },
@@ -776,8 +776,8 @@ export const lightTheme: Theme = {
         borderRadius: 16,
         fontFamily: FontFamily.KANIT,
         fontWeight: FontWeight.MEDIUM,
-        letterSpacing: "0.04em",
-        textTransform: "none",
+        letterSpacing: '0.04em',
+        textTransform: 'none',
       },
       sizeSmall: {
         borderRadius: 8,
@@ -793,38 +793,38 @@ export const lightTheme: Theme = {
       contained: {
         padding: `13px 16px 11px 16px`,
         fontSize: pxToRem(14),
-        boxShadow: "none",
-        "&$disabled, &$disabled:hover": {
+        boxShadow: 'none',
+        '&$disabled, &$disabled:hover': {
           color: lightColors.textDisabled,
           backgroundColor: lightColors.backgroundDisabled,
         },
-        "&:hover": {
-          boxShadow: "none",
+        '&:hover': {
+          boxShadow: 'none',
         },
       },
       containedPrimary: {
-        color: "#FFF",
-        "& [class^=MuiButton-label]": {
-          position: "relative",
-          width: "initial",
-          "&::after": {
+        color: '#FFF',
+        '& [class^=MuiButton-label]': {
+          position: 'relative',
+          width: 'initial',
+          '&::after': {
             content: '""',
-            position: "absolute",
+            position: 'absolute',
             bottom: 0,
             left: 0,
             right: 0,
-            height: "1.5px",
-            width: "100%",
-            backgroundColor: "transparent",
-            transform: "scaleX(0)",
-            transition: "transform 150ms ease-out",
-            transformOrigin: "left",
+            height: '1.5px',
+            width: '100%',
+            backgroundColor: 'transparent',
+            transform: 'scaleX(0)',
+            transition: 'transform 150ms ease-out',
+            transformOrigin: 'left',
           },
         },
-        "&:hover": {
+        '&:hover': {
           backgroundColor: lightPalette.primary.main,
           opacity: 0.65,
-          boxShadow: "none",
+          boxShadow: 'none',
         },
       },
       containedSizeSmall: {
@@ -834,51 +834,51 @@ export const lightTheme: Theme = {
         padding: `20px 24px`,
       },
       outlined: {
-        backgroundColor: "transparent!important",
+        backgroundColor: 'transparent!important',
         color: lightPalette.primary.main,
         padding: `11px 15px 9px 15px`,
         fontSize: pxToRem(14),
         letterSpacing: pointsToRem(89),
         borderColor: `${lightPalette.primary.main}!important`,
-        boxShadow: "none",
-        "&$disabled, &$disabled:hover": {
-          color: "#666666",
-          borderColor: "#404040!important",
+        boxShadow: 'none',
+        '&$disabled, &$disabled:hover': {
+          color: '#666666',
+          borderColor: '#404040!important',
         },
-        "&:hover": {
-          boxShadow: "none",
-          backgroundColor: "transparent",
+        '&:hover': {
+          boxShadow: 'none',
+          backgroundColor: 'transparent',
         },
       },
       outlinedPrimary: {
         border: `1px solid ${lightPalette.primary.main}`,
-        "&:hover": {
+        '&:hover': {
           border: `1px solid ${lightPalette.primary.main}`,
-          "& [class^=MuiButton-label]::after": {
-            transform: "scaleX(1)",
+          '& [class^=MuiButton-label]::after': {
+            transform: 'scaleX(1)',
           },
         },
-        "&$disabled": {
+        '&$disabled': {
           border: `1px solid ${lightPalette.action.disabled}`,
         },
-        "&$outlinedSizeSmall": {
+        '&$outlinedSizeSmall': {
           border: `1px solid ${lightPalette.primary.main}`,
         },
-        "& [class^=MuiButton-label]": {
-          position: "relative",
-          width: "initial",
-          "&::after": {
+        '& [class^=MuiButton-label]': {
+          position: 'relative',
+          width: 'initial',
+          '&::after': {
             content: '""',
-            position: "absolute",
+            position: 'absolute',
             bottom: 0,
             left: 0,
             right: 0,
-            height: "1.5px",
-            width: "100%",
-            backgroundColor: "transparent",
-            transform: "scaleX(0)",
-            transition: "transform 150ms ease-out",
-            transformOrigin: "left",
+            height: '1.5px',
+            width: '100%',
+            backgroundColor: 'transparent',
+            transform: 'scaleX(0)',
+            transition: 'transform 150ms ease-out',
+            transformOrigin: 'left',
           },
         },
       },
@@ -893,19 +893,19 @@ export const lightTheme: Theme = {
       formControl: {
         backgroundColor: lightColors.input,
         borderColor: lightPalette.divider,
-        "&:hover": {
+        '&:hover': {
           backgroundColor: lightColors.input,
         },
-        "label + &": {
+        'label + &': {
           marginTop: 24,
         },
-        "label.MuiFormLabel-filled + &:not($focused):not($error)": {
+        'label.MuiFormLabel-filled + &:not($focused):not($error)': {
           backgroundColor: lightColors.input,
         },
       },
       root: {
-        "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
-          display: "none",
+        '& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+          display: 'none',
         },
       },
     },
@@ -915,34 +915,34 @@ export const lightTheme: Theme = {
         height: 56,
         backgroundColor: lightColors.input,
         color: lightColors.text,
-        transition: "background-color 150ms cubic-bezier(0.4, 0, 0.2, 1)",
+        transition: 'background-color 150ms cubic-bezier(0.4, 0, 0.2, 1)',
         borderColor: lightColors.input,
-        "&$focused:not($error) $notchedOutline": {
+        '&$focused:not($error) $notchedOutline': {
           borderWidth: 1,
           borderColor: lightColors.input,
         },
-        "&$notchedOutline": {
+        '&$notchedOutline': {
           borderColor: lightColors.input,
         },
-        "&$error $notchedOutline": {
+        '&$error $notchedOutline': {
           borderWidth: 1,
           borderColor: lightPalette.error.main,
         },
-        "&$disabled": {
+        '&$disabled': {
           backgroundColor: lightPalette.action.disabledBackground,
-          color: "#666666",
-          "& $notchedOutline": {
+          color: '#666666',
+          '& $notchedOutline': {
             borderWidth: 0,
           },
         },
-        "&$focused": {
+        '&$focused': {
           backgroundColor: lightColors.input,
           borderColor: lightColors.input,
         },
-        "&:hover $notchedOutline": {
+        '&:hover $notchedOutline': {
           borderColor: lightColors.input,
         },
-        "label.MuiFormLabel-filled + &:not($focused):not($error) $notchedOutline": {
+        'label.MuiFormLabel-filled + &:not($focused):not($error) $notchedOutline': {
           borderColor: lightColors.input,
         },
       },
@@ -954,27 +954,27 @@ export const lightTheme: Theme = {
         padding: `${(56 - 24) / 2}px 16px`,
       },
       notchedOutline: {
-        display: "none",
+        display: 'none',
         top: 0,
-        "& > legend": {
-          display: "none",
+        '& > legend': {
+          display: 'none',
         },
       },
     },
     MuiInputAdornment: {
       root: {
-        color: "#757575",
+        color: '#757575',
       },
     },
     MuiInputLabel: {
       outlined: {
-        "&$shrink": {
-          transform: "translateY(3px) scale(0.9)",
+        '&$shrink': {
+          transform: 'translateY(3px) scale(0.9)',
           fontSize: pxToRem(14),
           lineHeight: pxToRem(20),
           letterSpacing: 0.25,
         },
-        "&$disabled": {
+        '&$disabled': {
           color: lightPalette.action.disabled,
         },
       },
@@ -996,7 +996,7 @@ export const lightTheme: Theme = {
       root: {
         backgroundColor: lightPalette.action.disabledBackground,
         color: lightPalette.action.disabled,
-        cursor: "pointer",
+        cursor: 'pointer',
         width: 85,
         height: 28,
       },
@@ -1015,36 +1015,36 @@ export const lightTheme: Theme = {
     MuiAccordionSummary: {
       root: {
         margin: 0,
-        [breakpoints.up("md")]: {
-          padding: "0 24px",
+        [breakpoints.up('md')]: {
+          padding: '0 24px',
         },
-        "&$expanded": {
+        '&$expanded': {
           minHeight: 56,
         },
       },
       content: {
-        margin: "12px 0",
+        margin: '12px 0',
 
-        "&$expanded": {
-          margin: "12px 0",
+        '&$expanded': {
+          margin: '12px 0',
         },
-        [breakpoints.up("md")]: {
-          margin: "16px 0",
+        [breakpoints.up('md')]: {
+          margin: '16px 0',
 
-          "&$expanded": {
-            margin: "16px 0",
+          '&$expanded': {
+            margin: '16px 0',
           },
         },
       },
     },
     MuiBackdrop: {
       root: {
-        backgroundColor: alpha("#000", 0.8),
+        backgroundColor: alpha('#000', 0.8),
       },
     },
     MuiDialog: {
       paper: {
-        boxShadow: "none",
+        boxShadow: 'none',
       },
       container: {
         paddingBottom: 16,
@@ -1057,20 +1057,20 @@ export const lightTheme: Theme = {
     },
     MuiBottomNavigationAction: {
       root: {
-        color: "#757575",
-        "&$selected": {
+        color: '#757575',
+        '&$selected': {
           color: lightPalette.text.primary,
         },
       },
       label: {
-        "& > span": {
-          textTransform: "none",
+        '& > span': {
+          textTransform: 'none',
         },
       },
     },
     MuiSelect: {
       root: {
-        "&$disabled + input + $icon": {
+        '&$disabled + input + $icon': {
           opacity: 0.5,
         },
       },
@@ -1085,7 +1085,7 @@ export const lightTheme: Theme = {
     MuiLinearProgress: {
       root: {
         height: 2,
-        width: "100%",
+        width: '100%',
       },
       barColorPrimary: {
         backgroundColor: lightPalette.success.main,
@@ -1095,7 +1095,7 @@ export const lightTheme: Theme = {
     MuiAlert: {
       root: {
         borderRadius: 8,
-        padding: "8px 16px",
+        padding: '8px 16px',
       },
       message: {
         color: lightPalette.text.primary,
@@ -1121,4 +1121,4 @@ export const lightTheme: Theme = {
       },
     },
   },
-};
+}

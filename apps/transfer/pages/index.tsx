@@ -1,13 +1,22 @@
-import useTheme from 'hooks/useTheme'
 import Script from 'next/script'
-import { useEffect } from 'react'
-import Page from 'views/Page'
-import { STARGATE_JS, StargateWidget } from '@pancakeswap/stargate'
+import * as React from 'react'
+import styled, { useTheme } from 'styled-components'
 import { Box } from '@pancakeswap/uikit'
+import { STARGATE_JS, StargateWidget } from '../components/stargate'
 
-function Test() {
-  const { theme } = useTheme()
-  useEffect(() => {
+const Page = styled.div``
+
+declare global {
+  interface Window {
+    // Stargate custom element api
+    root?: any
+  }
+}
+
+function Transfer() {
+  const theme = useTheme()
+
+  React.useEffect(() => {
     customElements.whenDefined('stargate-widget').then(() => {
       // setTimeout(() => {
       //   window.root.transfer.selectToChain(10002)
@@ -17,13 +26,13 @@ function Test() {
   }, [])
 
   return (
-    <Page hideFooter>
+    <Page>
       <Script crossOrigin="anonymous" src={STARGATE_JS.src} integrity={STARGATE_JS.integrity} />
-      <Box width={['100%', , '420px']}>
+      <Box width={['100%', null, '420px']}>
         <StargateWidget theme={theme} />
       </Box>
     </Page>
   )
 }
 
-export default Test
+export default Transfer
