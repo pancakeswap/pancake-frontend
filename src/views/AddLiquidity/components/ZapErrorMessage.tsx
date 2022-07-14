@@ -15,7 +15,7 @@ export const ZapErrorMessages: React.FC<{ isSingleToken: boolean; onModalDismiss
 
       if (zapMode) {
         toggleZapMode(!zapMode)
-        toastInfo(t('Info'), t('Zap has been disabled temporarily.'))
+        toastInfo(t('Info'), t('Temporarily disabled Zap'))
       }
     }
 

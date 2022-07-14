@@ -1765,6 +1765,6 @@
   "Add liquidity failed: %message%": "Add liquidity failed: %message%",
   "Remove liquidity failed: %message%": "Remove liquidity failed: %message%",
   "to disable Zap temporarily.": "to disable Zap temporarily.",
-  "Zap has been disabled temporarily.": "Zap has been disabled temporarily.",
+  "Temporarily disabled Zap": "Temporarily disabled Zap",
   "Unavailable for legal reasons": "Unavailable for legal reasons"
 }
