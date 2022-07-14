@@ -3,8 +3,18 @@ import transpileModules from 'next-transpile-modules'
 const withTH = transpileModules(['@pancakeswap/uikit'])
 
 /** @type {import('next').NextConfig} */
-const config = {
+const nextConfig = {
   basePath: '/transfer',
+  reactStrictMode: true,
+  swcMinify: true,
+  compiler: {
+    styledComponents: true,
+  },
+  experimental: {
+    images: {
+      allowFutureImage: true,
+    },
+  },
 }
 
-export default withTH(config)
+export default withTH(nextConfig)

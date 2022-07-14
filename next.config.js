@@ -55,6 +55,14 @@ const config = {
         source: '/info/pair/:address',
         destination: '/info/pools/:address',
       },
+      {
+        source: '/transfer',
+        destination: `${process.env.SITE_TRANSFER}/transfer`,
+      },
+      {
+        source: '/transfer/:path*',
+        destination: `${process.env.SITE_TRANSFER}/transfer/:path*`,
+      },
     ]
   },
   async headers() {
