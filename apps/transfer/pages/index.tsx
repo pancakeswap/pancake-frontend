@@ -1,5 +1,5 @@
 import Script from 'next/script'
-import * as React from 'react'
+import { useEffect } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
 import { STARGATE_JS } from '../components/stargate/config'
@@ -28,7 +28,7 @@ declare global {
 function Transfer() {
   const theme = useTheme()
 
-  React.useEffect(() => {
+  useEffect(() => {
     customElements.whenDefined('stargate-widget').then(() => {
       setTimeout(() => {
         window.root.transfer.selectToChain(10002)

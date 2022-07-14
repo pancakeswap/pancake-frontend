@@ -1,5 +1,5 @@
 import { PancakeTheme, ResetCSS, dark, light, ModalProvider } from '@pancakeswap/uikit'
-import * as React from 'react'
+import { useEffect, useState } from 'react'
 import { AppProps } from 'next/app'
 import Script from 'next/script'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
@@ -45,8 +45,8 @@ const GlobalStyle = createGlobalStyle`
 `
 
 function useIsMounted() {
-  const [isMounted, setIsMounted] = React.useState(false)
-  React.useEffect(() => {
+  const [isMounted, setIsMounted] = useState(false)
+  useEffect(() => {
     setIsMounted(true)
   })
 

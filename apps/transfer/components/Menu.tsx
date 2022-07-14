@@ -89,15 +89,10 @@ const UserMenuItems = () => {
       </Box>
       <UserMenuDivider />
       {chains.map((chain) => (
-        <Flex
-          as={UserMenuItem}
-          key={chain.id}
-          style={{ justifyContent: 'flex-start' }}
-          onClick={() => switchNetwork?.(chain.id)}
-        >
-          <Image width={24} height={24} src={`/transfer/chains/${chain.id}.png`} unoptimized />
+        <UserMenuItem key={chain.id} style={{ justifyContent: 'flex-start' }} onClick={() => switchNetwork?.(chain.id)}>
+          <Image width={24} height={24} src={`/chains/${chain.id}.png`} unoptimized />
           <Text pl="12px">{chain.name}</Text>
-        </Flex>
+        </UserMenuItem>
       ))}
       <UserMenuDivider />
       <UserMenuItem as="button" onClick={logout}>
@@ -132,7 +127,7 @@ function User() {
 
   if (isConnected) {
     return (
-      <UserMenu account={address} avatarSrc={chain ? `/transfer/chains/${chain.id}.png` : undefined}>
+      <UserMenu account={address} avatarSrc={chain ? `/chains/${chain.id}.png` : undefined}>
         {() => <UserMenuItems />}
       </UserMenu>
     )
