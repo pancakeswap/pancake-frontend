@@ -18,14 +18,16 @@ import { useCallback } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { useAccount, useConnect, useDisconnect, useNetwork, useSwitchNetwork } from 'wagmi'
 
-const SUPPORTED_CONNECTORS = walletConnectors.filter((c) => c.connectorId !== ConnectorNames.BSC)
+const SUPPORTED_CONNECTORS = walletConnectors.filter(
+  (c) => c.connectorId !== ConnectorNames.BSC && c.connectorId !== ConnectorNames.Blocto,
+)
 
 function useAuth() {
   const { connect, connectors } = useConnect()
   const { disconnect } = useDisconnect()
 
   const login = (connectorId: ConnectorNames) => {
-    const findConnector = connectors.find((c) => c.id === connectorId)
+    const findConnector = connectors.find((c) => c.id.toLowerCase() === connectorId.toLowerCase())
     connect({ connector: findConnector })
   }
 
