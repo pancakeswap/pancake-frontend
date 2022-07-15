@@ -1,5 +1,11 @@
 {
   "extends": "tsconfig/nextjs.json",
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "../../packages/uikit/*"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@pancakeswap/uikit": ["../../packages/uikit/src/index.ts"]
+    }
+  },
   "exclude": ["node_modules"]
 }
