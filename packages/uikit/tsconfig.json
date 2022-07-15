@@ -4,13 +4,5 @@
   },
   "extends": "tsconfig/react-library.json",
   "include": ["."],
-  "exclude": [
-    "dist",
-    "build",
-    "node_modules",
-    "src/**/*.stories.tsx",
-    "src/__tests__/**/*",
-    "src/testHelpers.tsx",
-    "src/setupTests.js"
-  ]
+  "exclude": ["dist", "build", "node_modules", "src/**/*.stories.tsx", "src/__tests__/**/*", "src/testHelpers.tsx"]
 }

@@ -140,9 +140,8 @@ it("renders correctly", () => {
       -webkit-flex-direction: column;
       -ms-flex-direction: column;
       flex-direction: column;
-      max-height: 90vh;
-      max-height: calc(var(--vh,1vh) * 90);
       overflow-y: auto;
+      max-height: calc(90vh - 73px);
     }
 
     .c1 {
@@ -150,11 +149,15 @@ it("renders correctly", () => {
       background: #FFFFFF;
       box-shadow: 0px 20px 36px -8px rgba(14,14,44,0.1),0px 1px 1px rgba(0,0,0,0.05);
       border: 1px solid #E7E3EB;
-      border-radius: 32px;
+      border-radius: 32px 32px 0px 0px;
       width: 100%;
-      max-height: 100vh;
+      max-height: 90vh;
       max-height: calc(var(--vh,1vh) * 100);
       z-index: 100;
+      position: absolute;
+      min-width: 320px;
+      bottom: 0;
+      max-width: none !important;
     }
 
     @media screen and (min-width:968px) {
@@ -170,11 +173,30 @@ it("renders correctly", () => {
       }
     }
 
-    @media screen and (min-width:370px) {
+    @media screen and (min-width:852px) {
+      .c2 {
+        background: transparent;
+      }
+    }
+
+    @media screen and (min-width:852px) {
+      .c11 {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        max-height: 90vh;
+      }
+    }
+
+    @media screen and (min-width:852px) {
       .c1 {
         width: auto;
-        min-width: 320px;
+        position: auto;
+        bottom: auto;
+        border-radius: 32px;
         max-width: 100%;
+        max-height: 100vh;
       }
     }
 
