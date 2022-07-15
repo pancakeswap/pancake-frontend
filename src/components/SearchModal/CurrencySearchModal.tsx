@@ -98,6 +98,7 @@ export default function CurrencySearchModal({
       drag={isMobile ? 'y' : false}
       dragConstraints={{ top: 0, bottom: 600 }}
       dragElastic={{ top: 0 }}
+      dragSnapToOrigin
       onDragStart={() => {
         if (wrapperRef.current) wrapperRef.current.style.animation = 'none'
       }}
