@@ -3,7 +3,7 @@ import { Box } from "../Box";
 import { DropdownMenuItemType } from "../DropdownMenu/types";
 import MenuItem from "../MenuItem/MenuItem";
 import { OpenNewIcon } from "../Svg";
-import StyledSubMenuItems from "./styles";
+import StyledSubMenuItems, { StyledSubMenuItemWrapper } from "./styles";
 import { SubMenuItemsProps } from "./types";
 
 const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isMobileOnly = false, ...props }) => {
@@ -26,7 +26,7 @@ const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isM
 
         return (
           label && (
-            <Box key={label} mr="20px">
+            <StyledSubMenuItemWrapper key={label} mr="20px">
               <MenuItem href={href} isActive={href === activeItem} variant="subMenu" {...itemProps} {...linkProps}>
                 {Icon && <Icon color={href === activeItem ? "secondary" : "textSubtle"} mr="4px" />}
                 {label}
@@ -36,7 +36,7 @@ const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isM
                   </Box>
                 )}
               </MenuItem>
-            </Box>
+            </StyledSubMenuItemWrapper>
           )
         );
       })}

@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import SubMenuItems from "./SubMenuItems";
 import SubMenuItemsMock from "./mock";
 import { SubMenuItemsProps } from "./types";
+import { Box } from "../Box";
 
 export default {
   title: "Components/Menu/SubMenuItems",
@@ -12,9 +13,11 @@ export default {
 
 const Template: React.FC<SubMenuItemsProps> = (args) => {
   return (
-    <BrowserRouter>
-      <SubMenuItems {...args} />
-    </BrowserRouter>
+    <Box maxWidth="100vw">
+      <BrowserRouter>
+        <SubMenuItems {...args} />
+      </BrowserRouter>
+    </Box>
   );
 };
 
