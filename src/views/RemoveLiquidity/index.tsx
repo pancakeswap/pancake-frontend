@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useEffect, useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { splitSignature } from '@ethersproject/bytes'
 import { Contract } from '@ethersproject/contracts'
@@ -83,6 +83,12 @@ export default function RemoveLiquidity() {
 
   const { t } = useTranslation()
   const gasPrice = useGasPrice()
+
+  useEffect(() => {
+    if (zapMode !== temporarilyZapMode) {
+      setTemporarilyZapMode(zapMode)
+    }
+  }, [zapMode, temporarilyZapMode, setTemporarilyZapMode])
 
   // burn state
   const { independentField, typedValue } = useBurnState()

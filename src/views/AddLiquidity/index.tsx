@@ -86,6 +86,12 @@ export default function AddLiquidity() {
   const currencyB = useCurrency(currencyIdB)
 
   useEffect(() => {
+    if (zapMode !== temporarilyZapMode) {
+      setTemporarilyZapMode(zapMode)
+    }
+  }, [zapMode, temporarilyZapMode, setTemporarilyZapMode])
+
+  useEffect(() => {
     if (!currencyIdA && !currencyIdB) {
       dispatch(resetMintState())
     }
