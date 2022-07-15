@@ -64,7 +64,11 @@ const BalanceStyle = styled(Balance)`
   text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2), 0px 4px 12px rgba(14, 14, 44, 0.1);
 `
 
-const Banner: React.FC = () => {
+interface BannerProps {
+  handleScroll: () => void
+}
+
+const Banner: React.FC<BannerProps> = ({ handleScroll }) => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
   const { publicData } = usePotteryData()
@@ -110,7 +114,7 @@ const Banner: React.FC = () => {
           <DarkTextStyle m="-16px 0 0 0" fontSize={['32px', '40px']} bold>
             {t('To be won !')}
           </DarkTextStyle>
-          <StakeToWinButton />
+          <StakeToWinButton handleScroll={handleScroll} />
           <Box style={{ marginTop: '30px' }}>
             <Text color="white" bold as="span">
               {t('Deposit CAKE for')}

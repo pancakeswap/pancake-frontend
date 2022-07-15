@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { PageMeta } from 'components/Layout/Page'
 import { Box } from '@pancakeswap/uikit'
@@ -13,12 +14,22 @@ import FAQ from './components/FAQ'
 
 const Pottery: React.FC = () => {
   usePotteryFetch()
+  const potWrapperEl = useRef<HTMLDivElement>(null)
+
+  const handleScroll = () => {
+    window.scrollTo({
+      top: potWrapperEl.current.offsetTop,
+      behavior: 'smooth',
+    })
+  }
 
   return (
     <Box position="relative">
       <PageMeta />
-      <Banner />
-      <Pot />
+      <Banner handleScroll={handleScroll} />
+      <Box ref={potWrapperEl}>
+        <Pot />
+      </Box>
       <FinishedRounds />
       <HowToPlay />
       <PrizeFunds />

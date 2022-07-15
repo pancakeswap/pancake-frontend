@@ -44,7 +44,11 @@ const StyledButton = styled(Button)`
   }
 `
 
-const StakeToWinButton: React.FC = () => {
+interface StakeToWinButtonProps {
+  handleScroll: () => void
+}
+
+const StakeToWinButton: React.FC<StakeToWinButtonProps> = ({ handleScroll }) => {
   const { t } = useTranslation()
 
   return (
@@ -56,8 +60,10 @@ const StakeToWinButton: React.FC = () => {
       alignItems="center"
       justifyContent="center"
     >
-      <ButtonWrapper href="#stake-to-win">
-        <StyledButton width="200px">{t('Stake to WIN!')}</StyledButton>
+      <ButtonWrapper>
+        <StyledButton width="200px" onClick={handleScroll}>
+          {t('Stake to WIN!')}
+        </StyledButton>
       </ButtonWrapper>
       <TicketSvgWrapper>
         <TicketCard width="100%" />
