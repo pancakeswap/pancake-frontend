@@ -11,7 +11,7 @@ import {
   Heading,
   Button,
   useMatchBreakpointsContext,
-  MODAL_SWIPE_TO_CLOSE_PX,
+  MODAL_SWIPE_TO_CLOSE_VELOCITY,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import usePrevious from 'hooks/usePreviousValue'
@@ -98,12 +98,13 @@ export default function CurrencySearchModal({
       drag={isMobile ? 'y' : false}
       dragConstraints={{ top: 0, bottom: 600 }}
       dragElastic={{ top: 0 }}
+      dragSnapToOrigin
       onDragStart={() => {
         if (wrapperRef.current) wrapperRef.current.style.animation = 'none'
       }}
       // @ts-ignore
       onDragEnd={(e, info) => {
-        if (info.offset.y > MODAL_SWIPE_TO_CLOSE_PX && onDismiss) onDismiss()
+        if (info.velocity.y > MODAL_SWIPE_TO_CLOSE_VELOCITY && onDismiss) onDismiss()
       }}
       ref={wrapperRef}
     >
