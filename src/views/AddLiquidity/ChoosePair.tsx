@@ -1,8 +1,10 @@
 import { Currency } from '@pancakeswap/sdk'
 import { Box, Text, AddIcon, CardBody, Button, CardFooter } from '@pancakeswap/uikit'
 import { CurrencySelect } from 'components/CurrencySelect'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { FlexGap } from 'components/Layout/Flex'
 import { useTranslation } from 'contexts/Localization'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { AppHeader } from '../../components/App'
 import { useCurrencySelectRoute } from './useCurrencySelectRoute'
 
@@ -18,6 +20,7 @@ export function ChoosePair({
   onNext?: () => void
 }) {
   const { t } = useTranslation()
+  const { account } = useActiveWeb3React()
   const isValid = !error
   const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
 
@@ -54,15 +57,19 @@ export function ChoosePair({
         </Box>
       </CardBody>
       <CardFooter>
-        <Button
-          data-test="choose-pair-next"
-          width="100%"
-          variant={!isValid ? 'danger' : 'primary'}
-          onClick={onNext}
-          disabled={!isValid}
-        >
-          {error ?? t('Add Liquidity')}
-        </Button>
+        {!account ? (
+          <ConnectWalletButton width="100%" />
+        ) : (
+          <Button
+            data-test="choose-pair-next"
+            width="100%"
+            variant={!isValid ? 'danger' : 'primary'}
+            onClick={onNext}
+            disabled={!isValid}
+          >
+            {error ?? t('Add Liquidity')}
+          </Button>
+        )}
       </CardFooter>
     </>
   )

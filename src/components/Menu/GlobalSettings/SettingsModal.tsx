@@ -99,7 +99,9 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
                       'Zap enables simple liquidity provision. Add liquidity with one token and one click, without manual swapping or token balancing.',
                     )}
                   </Text>
-                  <Text>{t('If you experience any issue when adding liquidity, please disable Zap and retry.')}</Text>
+                  <Text>
+                    {t('If you experience any issue when adding or removing liquidity, please disable Zap and retry.')}
+                  </Text>
                 </Box>
               }
               placement="top-start"
