@@ -29,9 +29,6 @@ export const ModalBody = styled(Flex)`
   flex-direction: column;
   overflow-y: auto;
   max-height: calc(90vh - ${mobileFooterHeight}px);
-  @media screen and (min-width: 320px) {
-    max-height: calc(90vh - ${mobileFooterHeight}px);
-  }
   ${({ theme }) => theme.mediaQueries.md} {
     display: flex;
     max-height: 90vh;
