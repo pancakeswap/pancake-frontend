@@ -1738,7 +1738,7 @@
   "Some of your %token0% will be converted to %token1% before adding liquidity, but this may cause higher gas fees.": "Alguns de seus %token0% serão convertidos para %token1% antes de adicionar liquidez, mas isto pode causar taxas de gás maiores.",
   "There is no %token1% input. Half of %token0% input is converted into %token1% to add liquidity.": "Não há entrada de %token1%. metade da entrada de %token0% é convertida em %token1% para adicionar liquidez.",
   "There is not enough %token1% input to match 50/50. Some of %token0% will be converted to %token1%": "Não há entrada de %token1% suficiente para corresponder 50/50. Alguns dos %token0% serão convertidos em %token1%",
-  "If you experience any issue when adding liquidity, please disable Zap and retry.": "Se você experimentar qualquer problema ao adicionar liquidez, desative o Zap e tente novamente.",
+  "If you experience any issue when adding or removing liquidity, please disable Zap and retry.": "If you experience any issue when adding or removing liquidity, please disable Zap and retry.",
   "Receive": "Receber",
   "Zap does NOT support tokens with fees on transfers. If you experience any issues, disable Zap": "Zap NÃO dá suporte a tokens com taxas em transferências. Se você enfrentar algum problema, desative o Zap",
   "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, disable Zap": "Zap NÃO dá suporte a tokens com taxas em transferências. escolha \"Não converter\" e tente novamente. Se você enfrentar mais problemas, desative o Zap",
