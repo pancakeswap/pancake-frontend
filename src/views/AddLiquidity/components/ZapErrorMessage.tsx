@@ -5,8 +5,8 @@ import useToast from 'hooks/useToast'
 
 interface ZapErrorMessagesProps {
   isSingleToken: boolean
-  zapMode?: boolean
-  toggleZapMode?: (zapMode: boolean) => void // TODO: Remove Liquidity also need toggleZapMode
+  zapMode: boolean
+  toggleZapMode: (zapMode: boolean) => void
   onModalDismiss: () => void
 }
 
