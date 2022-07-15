@@ -2,6 +2,7 @@ import useSWR from 'swr'
 import { useWeb3React } from '@web3-react/core'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { ifosConfig, FAST_INTERVAL } from 'config/constants'
+import BigNumber from 'bignumber.js'
 import { fetchUserWalletIfoData } from './fetchUserWalletIfoData'
 
 // Filter Ifo when isActive = true
@@ -21,9 +22,26 @@ const useFetchVestingData = () => {
       )
 
       return allData.filter(
-        (ifo) =>
-          ifo.userVestingData[PoolIds.poolUnlimited].vestingComputeReleasableAmount.gt(0) ||
-          ifo.userVestingData[PoolIds.poolBasic].vestingComputeReleasableAmount.gt(0),
+        // eslint-disable-next-line array-callback-return, consistent-return
+        (ifo) => {
+          const { userVestingData } = ifo
+          const currentTimeStamp = new Date().getTime()
+          const vestingStartTime = new BigNumber(userVestingData.vestingStartTime)
+          if (
+            userVestingData[PoolIds.poolUnlimited].vestingComputeReleasableAmount.gt(0) ||
+            userVestingData[PoolIds.poolBasic].vestingComputeReleasableAmount.gt(0) ||
+            vestingStartTime
+              .plus(userVestingData[PoolIds.poolUnlimited].vestingInformationDuration)
+              .times(1000)
+              .gte(currentTimeStamp) ||
+            vestingStartTime
+              .plus(userVestingData[PoolIds.poolBasic].vestingInformationDuration)
+              .times(1000)
+              .gte(currentTimeStamp)
+          ) {
+            return ifo
+          }
+        },
       )
     },
     {

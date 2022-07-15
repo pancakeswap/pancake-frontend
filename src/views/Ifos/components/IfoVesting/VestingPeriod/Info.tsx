@@ -74,7 +74,7 @@ const Info: React.FC<InfoProps> = ({ poolId, data, fetchUserVestingData }) => {
     }
   }, [received, claimable, remaining])
 
-  if (claimable === '0') {
+  if (claimable === '0' && remaining === '0') {
     return null
   }
 
@@ -110,7 +110,7 @@ const Info: React.FC<InfoProps> = ({ poolId, data, fetchUserVestingData }) => {
             </Text>
           </Flex>
         </Flex>
-        <Claim poolId={poolId} data={data} fetchUserVestingData={fetchUserVestingData} />
+        <Claim poolId={poolId} data={data} claimableAmount={claimable} fetchUserVestingData={fetchUserVestingData} />
       </WhiteCard>
     </>
   )
