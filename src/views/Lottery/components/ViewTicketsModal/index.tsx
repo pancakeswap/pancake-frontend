@@ -8,8 +8,9 @@ import PreviousRoundTicketsInner from './PreviousRoundTicketsInner'
 import CurrentRoundTicketsInner from './CurrentRoundTicketsInner'
 
 const StyledModal = styled(Modal)`
-  min-width: 280px;
-  max-width: 320px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 280px;
+  }
 `
 
 interface ViewTicketsModalProps {

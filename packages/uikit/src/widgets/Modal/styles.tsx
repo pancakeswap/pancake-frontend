@@ -28,7 +28,7 @@ export const ModalTitle = styled(Flex)`
 export const ModalBody = styled(Flex)`
   flex-direction: column;
   overflow-y: auto;
-  ${({ theme }) => theme.mediaQueries.xs} {
+  @media screen and (min-width: 320px) {
     max-height: calc(90vh - ${mobileFooterHeight}px);
   }
   ${({ theme }) => theme.mediaQueries.md} {
@@ -58,21 +58,15 @@ export const ModalContainer = styled(MotionBox)<{ minWidth: string }>`
   background: ${({ theme }) => theme.modal.background};
   box-shadow: 0px 20px 36px -8px rgba(14, 14, 44, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.05);
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  border-radius: 32px;
+  border-radius: 32px 32px 0px 0px;
   width: 100%;
-  max-height: 100vh;
+  max-height: 90vh;
   max-height: calc(var(--vh, 1vh) * 100);
   z-index: ${({ theme }) => theme.zIndices.modal};
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    width: 100%;
-    position: absolute;
-    min-width: ${({ minWidth }) => minWidth};
-    bottom: 0;
-    border-radius: 32px 32px 0px 0px;
-    max-width: none !important;
-    max-height: 90vh;
-  }
+  position: absolute;
+  min-width: ${({ minWidth }) => minWidth};
+  bottom: 0;
+  max-width: none !important;
 
   ${({ theme }) => theme.mediaQueries.md} {
     width: auto;

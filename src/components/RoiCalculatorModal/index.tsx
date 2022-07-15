@@ -50,9 +50,12 @@ export interface RoiCalculatorModalProps {
 }
 
 const StyledModal = styled(Modal)`
-  width: 380px;
   & > :nth-child(2) {
     padding: 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 380px;
   }
 `
 

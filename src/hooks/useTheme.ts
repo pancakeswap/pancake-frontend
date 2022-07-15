@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import Cookie from 'js.cookie'
+import Cookie from 'js-cookie'
 import { ThemeContext as StyledThemeContext } from 'styled-components'
 import { useTheme as useNextTheme } from 'next-themes'
 

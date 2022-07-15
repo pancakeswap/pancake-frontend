@@ -53,6 +53,10 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string) => Co
         )}`,
         type: DropdownMenuItemType.EXTERNAL_LINK,
       },
+      // {
+      //   label: t('Transfer'),
+      //   href: '/transfer',
+      // },
     ],
   },
   {

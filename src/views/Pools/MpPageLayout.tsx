@@ -17,7 +17,7 @@ const PoolsMpPageLayout: FC = ({ children }) => {
       }
     }
     handleLoad()
-  }, [])
+  }, [handleActive])
 
   return (
     <>

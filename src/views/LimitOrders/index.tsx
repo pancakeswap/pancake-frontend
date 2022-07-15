@@ -312,7 +312,7 @@ const LimitOrders = () => {
         mt={isChartExpanded ? '24px' : null}
       >
         {!isMobile && (
-          <Flex width={isChartExpanded ? '100%' : '50%'} flexDirection="column">
+          <Flex width={isChartExpanded ? '100%' : '50%'} maxWidth="928px" flexDirection="column">
             <PriceChartContainer
               inputCurrencyId={currencyIds.input}
               inputCurrency={currencies.input}
