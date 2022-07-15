@@ -17,6 +17,7 @@ interface Props {
   onDismiss?: () => void;
   displayCount?: number;
   t: (key: string) => string;
+  connectors?: Config[];
 }
 
 const WalletWrapper = styled(Box)`
@@ -52,10 +53,10 @@ const getPreferredConfig = (walletConfig: Config[]) => {
   ];
 };
 
-const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayCount = 3, t }) => {
+const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayCount = 3, t, connectors }) => {
   const [showMore, setShowMore] = useState(false);
   const theme = useTheme();
-  const sortedConfig = getPreferredConfig(config);
+  const sortedConfig = getPreferredConfig(connectors || config);
   // Filter out WalletConnect if user is inside TrustWallet built-in browser
   const walletsToShow = window.ethereum?.isTrust
     ? sortedConfig.filter((wallet) => wallet.title !== "WalletConnect")
