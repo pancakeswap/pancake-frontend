@@ -6,7 +6,7 @@ import { ModalBody, ModalHeader, ModalTitle, ModalContainer, ModalCloseButton, M
 import { ModalProps } from "./types";
 import { useMatchBreakpointsContext } from "../../contexts";
 
-export const MODAL_SWIPE_TO_CLOSE_VELOCITY = 500;
+export const MODAL_SWIPE_TO_CLOSE_VELOCITY = 300;
 
 const Modal: React.FC<ModalProps> = ({
   title,
