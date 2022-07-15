@@ -11,7 +11,7 @@ import {
   Heading,
   Button,
   useMatchBreakpointsContext,
-  MODAL_SWIPE_TO_CLOSE_PX,
+  MODAL_SWIPE_TO_CLOSE_VELOCITY,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import usePrevious from 'hooks/usePreviousValue'
@@ -103,7 +103,7 @@ export default function CurrencySearchModal({
       }}
       // @ts-ignore
       onDragEnd={(e, info) => {
-        if (info.offset.y > MODAL_SWIPE_TO_CLOSE_PX && onDismiss) onDismiss()
+        if (info.velocity.y > MODAL_SWIPE_TO_CLOSE_VELOCITY && onDismiss) onDismiss()
       }}
       ref={wrapperRef}
     >
