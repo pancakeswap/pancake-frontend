@@ -1,12 +1,12 @@
-import { createClient, configureChains, Chain } from 'wagmi'
+import { createClient, configureChains } from 'wagmi'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
-import { CHAINS_TESTNET } from './chains'
+import { CHAINS_STARGATE_TESTNET } from './chains'
 
 export const { provider, chains } = configureChains(
-  [...CHAINS_TESTNET],
+  [...CHAINS_STARGATE_TESTNET],
   [
     jsonRpcProvider({
       rpc: (chain) => {
