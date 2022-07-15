@@ -21,7 +21,7 @@ const Page = styled.div`
 declare global {
   interface Window {
     // Stargate custom element api
-    root?: any
+    stargate?: any
   }
 }
 
@@ -31,8 +31,10 @@ function Transfer() {
   useEffect(() => {
     customElements.whenDefined('stargate-widget').then(() => {
       setTimeout(() => {
-        window.root.transfer.selectToChain(10002)
-        window.root.transfer.selectFromChain(10001)
+        if (window.stargate) {
+          window.stargate.setDstChainId(10002)
+          window.stargate.setConfig({ dstChainIdList: [10002] })
+        }
       }, 600)
       console.info('stargate widget mount')
     })
