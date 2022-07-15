@@ -137,7 +137,8 @@ function User() {
 
   return (
     <Button scale="sm" onClick={onPresentConnectModal}>
-      Connect Wallet
+      <Box display={['none', null, null, 'block']}>Connect Wallet</Box>
+      <Box display={['block', null, null, 'none']}>Connect</Box>
     </Button>
   )
 }
