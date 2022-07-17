@@ -716,7 +716,7 @@
   "Auction duration": "مدة المزاد",
   "Output is estimated. If the price changes by more than %slippage%% your transaction will revert.": "يتم تقدير الإخراج. وفي حالة تغيير السعر بنسبة تزيد على %slippage%%، فسيتم رد معاملتك.",
   "Supplying %amountA% %symbolA% and %amountB% %symbolB%": "توريد %amountA% %symbolA% و%amountB% %symbolB%",
-  "Zapping %amountA% %symbolA% and %amountB% %symbolB%": "توفير بسيط للسيولة بمقدار %amountA% %symbolA% و%amountB% %symbolB%",
+  "Zapping %amountA% %symbolA% and %amountB% %symbolB%": "توفير سيولة بمقدار %amountA% %symbolA% و%amountB% %symbolB%",
   "Removing %amountA% %symbolA% and %amountB% %symbolB%": "إزالة %amountA% %symbolA% و%amountB% %symbolB%",
   "Swapping %amountA% %symbolA% for %amountB% %symbolB%": "مبادلة %amountA% %symbolA% لـ %amountB% %symbolB%",
   "Add Liquidity": "إضافة سيولة",
