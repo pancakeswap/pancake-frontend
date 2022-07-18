@@ -10,7 +10,7 @@ function RiskDisclaimer() {
 
   const [onPresentRiskDisclaimer, onDismiss] = useModal(
     <DisclaimerModal
-      id="disclaimer-limit-order"
+      id="predictions-risk-disclaimer"
       header={t('This Product is in beta.')}
       subtitle={t('Once you enter a position, you cannot cancel or adjust it.')}
       checks={[
