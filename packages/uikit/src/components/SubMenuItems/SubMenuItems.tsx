@@ -10,12 +10,14 @@ import StyledSubMenuItems, {
   SubMenuItemWrapper,
 } from "./styles";
 import { SubMenuItemsProps } from "./types";
-import useMatchBreakpointsContext from "../../contexts/MatchBreakpoints/useMatchBreakpointsContext";
+import useMatchBreakpoints from "../../hooks/useMatchBreakpoints";
+// import useMatchBreakpointsContext from "../../contexts/MatchBreakpoints/useMatchBreakpointsContext";
 
 const SUBMENU_CHEVRON_CLICK_MOVE_PX = 100;
+const SUBMENU_SCROLL_DEVIATION = 3;
 
 const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isMobileOnly = false, ...props }) => {
-  const { isMobile } = useMatchBreakpointsContext();
+  const { isMobile } = useMatchBreakpoints();
   const scrollLayerRef = useRef<HTMLDivElement>(null);
   const chevronLeftRef = useRef<HTMLDivElement>(null);
   const chevronRightRef = useRef<HTMLDivElement>(null);
@@ -24,7 +26,7 @@ const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isM
     const scrollLayer = scrollLayerRef.current;
     if (scrollLayer.scrollLeft === 0) chevronLeftRef.current.classList.add("hide");
     else chevronLeftRef.current.classList.remove("hide");
-    if (scrollLayer.scrollLeft + scrollLayer.offsetWidth < scrollLayer.scrollWidth)
+    if (scrollLayer.scrollLeft + scrollLayer.offsetWidth < scrollLayer.scrollWidth - SUBMENU_SCROLL_DEVIATION)
       chevronRightRef.current.classList.remove("hide");
     else chevronRightRef.current.classList.add("hide");
   }, []);
