@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { useMemo } from 'react'
+import BigNumber from 'bignumber.js'
 import { Flex, Box, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { GreyCard } from 'components/Card'
@@ -59,13 +60,20 @@ const Deposit: React.FC = () => {
   const currentDeposit = userData.withdrawAbleData.find(
     (data) => data.potteryVaultAddress.toLocaleLowerCase() === lastVaultAddress.toLocaleLowerCase(),
   )
+
   const depositBalance = useMemo(() => {
+    // Because subgraph will delay, if currency vault status is before lock don't use currentDeposit value.
+    if (getStatus !== PotteryDepositStatus.LOCK) {
+      return new BigNumber(userData.previewDepositBalance)
+    }
+
     if (currentDeposit) {
       const { previewRedeem, shares, status } = currentDeposit
       return calculateCakeAmount({ status, previewRedeem, shares, totalSupply, totalLockCake })
     }
+
     return BIG_ZERO
-  }, [currentDeposit, totalSupply, totalLockCake])
+  }, [userData, getStatus, currentDeposit, totalSupply, totalLockCake])
 
   return (
     <Box>
