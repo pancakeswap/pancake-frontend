@@ -100,7 +100,7 @@ const DisclaimerModal: React.FC<RiskDisclaimerProps> = ({ id, onSuccess, onDismi
           ))}
         </Box>
         <Button
-          id={`${id}-disclaimer-continue`}
+          id={`${id}-continue`}
           width="100%"
           onClick={handleConfirm}
           disabled={checkState.some((check) => !check.value)}
