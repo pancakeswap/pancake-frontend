@@ -48,7 +48,7 @@ const AllHistoryCard = () => {
   useEffect(() => {
     if (currentPotteryId) {
       const currentPotteryIdAsInt = currentPotteryId ? parseInt(currentPotteryId) : null
-      const mostRecentFinishedRoundId = currentPotteryIdAsInt > 0 ? currentPotteryIdAsInt - 1 : ''
+      const mostRecentFinishedRoundId = currentPotteryIdAsInt > 0 ? currentPotteryIdAsInt : ''
       setLatestRoundId(mostRecentFinishedRoundId)
       setSelectedRoundId(mostRecentFinishedRoundId.toString())
     }
