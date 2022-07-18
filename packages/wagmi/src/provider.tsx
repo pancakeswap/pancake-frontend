@@ -1,9 +1,12 @@
 import { Web3Provider } from '@ethersproject/providers'
-import React, { createContext, useContext } from 'react'
+import { createContext, useContext } from 'react'
 import useSWRImmutable from 'swr/immutable'
 import { useAccount, WagmiConfig, WagmiConfigProps } from 'wagmi'
+import { Provider, WebSocketProvider } from '@wagmi/core'
 
-export const WagmiProvider: React.FC<WagmiConfigProps> = (props) => {
+export function WagmiProvider<TProvider extends Provider, TWebSocketProvider extends WebSocketProvider>(
+  props: React.PropsWithChildren<WagmiConfigProps<TProvider, TWebSocketProvider>>,
+) {
   return (
     <WagmiConfig client={props.client}>
       <Web3LibraryProvider>{props.children}</Web3LibraryProvider>
