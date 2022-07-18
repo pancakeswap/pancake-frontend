@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useState, useMemo, useRef, createContext } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { Image, Heading, RowType, Toggle, Text, Button, ArrowForwardIcon, Flex, Link } from '@pancakeswap/uikit'
+import { Image, Heading, Toggle, Text, Button, ArrowForwardIcon, Flex, Link } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import styled from 'styled-components'
@@ -11,7 +11,6 @@ import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farm
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { DeserializedFarm } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
-import { getBalanceNumber } from 'utils/formatBalance'
 import { getFarmApr } from 'utils/apr'
 import orderBy from 'lodash/orderBy'
 import { latinise } from 'utils/latinise'
@@ -25,8 +24,7 @@ import Loading from 'components/Loading'
 import ToggleView from 'components/ToggleView/ToggleView'
 import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
-import { RowProps } from './components/FarmTable/Row'
-import { DesktopColumnSchema, FarmWithStakedValue } from './components/types'
+import { FarmWithStakedValue } from './components/types'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -116,16 +114,6 @@ const FinishedTextLink = styled(Link)`
 `
 
 const NUMBER_OF_FARMS_VISIBLE = 12
-
-export const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) => {
-  if (cakeRewardsApr && lpRewardsApr) {
-    return (cakeRewardsApr + lpRewardsApr).toLocaleString('en-US', { maximumFractionDigits: 2 })
-  }
-  if (cakeRewardsApr) {
-    return cakeRewardsApr.toLocaleString('en-US', { maximumFractionDigits: 2 })
-  }
-  return null
-}
 
 const Farms: React.FC = ({ children }) => {
   const { pathname } = useRouter()
@@ -274,78 +262,6 @@ const Farms: React.FC = ({ children }) => {
     }
   }, [isIntersecting])
 
-  const rowData = chosenFarmsMemoized.map((farm) => {
-    const { token, quoteToken } = farm
-    const tokenAddress = token.address
-    const quoteTokenAddress = quoteToken.address
-    const lpLabel = farm.lpSymbol && farm.lpSymbol.split(' ')[0].toUpperCase().replace('PANCAKE', '')
-
-    const row: RowProps = {
-      apr: {
-        value: getDisplayApr(farm.apr, farm.lpRewardsApr),
-        pid: farm.pid,
-        multiplier: farm.multiplier,
-        lpLabel,
-        lpSymbol: farm.lpSymbol,
-        tokenAddress,
-        quoteTokenAddress,
-        cakePrice,
-        originalValue: farm.apr,
-      },
-      farm: {
-        label: lpLabel,
-        pid: farm.pid,
-        token: farm.token,
-        quoteToken: farm.quoteToken,
-      },
-      earned: {
-        earnings: getBalanceNumber(new BigNumber(farm.userData.earnings)),
-        pid: farm.pid,
-      },
-      liquidity: {
-        liquidity: farm.liquidity,
-      },
-      multiplier: {
-        multiplier: farm.multiplier,
-      },
-      type: farm.isCommunity ? 'community' : 'core',
-      details: farm,
-    }
-
-    return row
-  })
-
-  const renderContent = (): JSX.Element => {
-    if (viewMode === ViewMode.TABLE && rowData.length) {
-      const columns = DesktopColumnSchema.map((column) => ({
-        id: column.id,
-        name: column.name,
-        label: column.label,
-        sort: (a: RowType<RowProps>, b: RowType<RowProps>) => {
-          switch (column.name) {
-            case 'farm':
-              return b.id - a.id
-            case 'apr':
-              if (a.original.apr.value && b.original.apr.value) {
-                return Number(a.original.apr.value) - Number(b.original.apr.value)
-              }
-
-              return 0
-            case 'earned':
-              return a.original.earned.earnings - b.original.earned.earnings
-            default:
-              return 1
-          }
-        },
-        sortable: column.sortable,
-      }))
-
-      return <Table data={rowData} columns={columns} userDataReady={userDataReady} />
-    }
-
-    return <FlexLayout>{children}</FlexLayout>
-  }
-
   const handleSortOptionChange = (option: OptionProps): void => {
     setSortOption(option.value)
   }
@@ -445,7 +361,11 @@ const Farms: React.FC = ({ children }) => {
             </Flex>
           </FinishedTextContainer>
         )}
-        {renderContent()}
+        {viewMode === ViewMode.TABLE ? (
+          <Table farms={chosenFarmsMemoized} cakePrice={cakePrice} userDataReady={userDataReady} />
+        ) : (
+          <FlexLayout>{children}</FlexLayout>
+        )}
         {account && !userDataLoaded && stakedOnly && (
           <Flex justifyContent="center">
             <Loading />

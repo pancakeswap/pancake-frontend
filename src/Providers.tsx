@@ -10,7 +10,7 @@ import { fetchStatusMiddleware } from 'hooks/useSWRContract'
 import { Store } from '@reduxjs/toolkit'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
 
-const StyledThemeProvider = (props) => {
+const StyledThemeProvider: React.FC<{ children: React.ReactNode }> = (props) => {
   const { resolvedTheme } = useNextTheme()
   return <ThemeProvider theme={resolvedTheme === 'dark' ? dark : light} {...props} />
 }
