@@ -7,11 +7,7 @@ import { initializePredictions } from 'state/predictions'
 import { useChartView, useIsChartPaneOpen } from 'state/predictions/hooks'
 import { PredictionsChartView } from 'state/types'
 import { useAccountLocalEventListener } from 'hooks/useAccountLocalEventListener'
-import {
-  useUserPredictionAcceptedRisk,
-  useUserPredictionChainlinkChartDisclaimerShow,
-  useUserPredictionChartDisclaimerShow,
-} from 'state/user/hooks'
+import { useUserPredictionChainlinkChartDisclaimerShow, useUserPredictionChartDisclaimerShow } from 'state/user/hooks'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 
 import ChartDisclaimer from './components/ChartDisclaimer'
@@ -25,28 +21,17 @@ import usePollPredictions from './hooks/usePollPredictions'
 import Mobile from './Mobile'
 
 function Warnings() {
-  const [hasAcceptedRisk, setHasAcceptedRisk] = useUserPredictionAcceptedRisk()
   const [showDisclaimer] = useUserPredictionChartDisclaimerShow()
   const [showChainlinkDisclaimer] = useUserPredictionChainlinkChartDisclaimerShow()
   const isChartPaneOpen = useIsChartPaneOpen()
   const chartView = useChartView()
-  const handleAcceptRiskSuccess = () => setHasAcceptedRisk(true)
 
-  const [onPresentRiskDisclaimer] = useModal(<RiskDisclaimer onSuccess={handleAcceptRiskSuccess} />, false)
   const [onPresentChartDisclaimer] = useModal(<ChartDisclaimer />, false)
   const [onPresentChainlinkChartDisclaimer] = useModal(<ChainlinkChartDisclaimer />, false)
 
   // TODO: memoize modal's handlers
-  const onPresentRiskDisclaimerRef = useRef(onPresentRiskDisclaimer)
   const onPresentChartDisclaimerRef = useRef(onPresentChartDisclaimer)
   const onPresentChainlinkChartDisclaimerRef = useRef(onPresentChainlinkChartDisclaimer)
-
-  // Disclaimer
-  useEffect(() => {
-    if (!hasAcceptedRisk) {
-      onPresentRiskDisclaimerRef.current()
-    }
-  }, [hasAcceptedRisk, onPresentRiskDisclaimerRef])
 
   // Chart Disclaimer
   useEffect(() => {
@@ -86,6 +71,7 @@ const Predictions = () => {
     <>
       <PageMeta />
       <Warnings />
+      <RiskDisclaimer />
       <SwiperProvider>
         <Container>
           {isDesktop ? <Desktop /> : <Mobile />}
