@@ -81,3 +81,29 @@ export const fetchTotalLockedValue = async (potteryVaultAddress: string) => {
     }
   }
 }
+
+export const fetchLatestRoundId = async () => {
+  try {
+    const response = await request(
+      GRAPH_API_POTTERY,
+      gql`
+        query getUserPotterWithdrawAbleData($roundId: BigInt) {
+          potteryVaultRounds(first: 1, orderDirection: desc, orderBy: roundId) {
+            roundId
+          }
+        }
+      `,
+      { roundId: 0 },
+    )
+
+    const { roundId: id } = response.potteryVaultRounds[0]
+    return {
+      latestRoundId: id || '',
+    }
+  } catch (error) {
+    console.error('Failed to fetch last roundId ', error)
+    return {
+      latestRoundId: '',
+    }
+  }
+}

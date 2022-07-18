@@ -39,7 +39,7 @@ const AllHistoryCard = () => {
   } = useTranslation()
   const dispatch = useAppDispatch()
   const { publicData, finishedRoundInfo } = usePotteryData()
-  const currentPotteryId = publicData.lastDrawId
+  const currentPotteryId = publicData.latestRoundId
 
   const [latestRoundId, setLatestRoundId] = useState(null)
   const [selectedRoundId, setSelectedRoundId] = useState('')
@@ -48,7 +48,7 @@ const AllHistoryCard = () => {
   useEffect(() => {
     if (currentPotteryId) {
       const currentPotteryIdAsInt = currentPotteryId ? parseInt(currentPotteryId) : null
-      const mostRecentFinishedRoundId = currentPotteryIdAsInt > 0 ? currentPotteryIdAsInt : ''
+      const mostRecentFinishedRoundId = currentPotteryIdAsInt >= 0 ? currentPotteryIdAsInt + 1 : ''
       setLatestRoundId(mostRecentFinishedRoundId)
       setSelectedRoundId(mostRecentFinishedRoundId.toString())
     }

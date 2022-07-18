@@ -667,6 +667,7 @@ export interface SerializedPotteryPublicData {
   totalSupply: string
   lockStartTime: string
   totalLockedValue: string
+  latestRoundId: string
 }
 
 export interface DeserializedPublicData {
@@ -677,6 +678,7 @@ export interface DeserializedPublicData {
   totalSupply: BigNumber
   lockStartTime: string
   totalLockedValue: BigNumber
+  latestRoundId: string
 }
 
 export interface SerializedPotteryUserData {
