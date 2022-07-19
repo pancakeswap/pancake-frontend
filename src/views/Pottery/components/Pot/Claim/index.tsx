@@ -6,6 +6,7 @@ import { usePotteryData } from 'state/pottery/hook'
 import { calculateCakeAmount } from 'views/Pottery/helpers'
 import BigNumber from 'bignumber.js'
 import { BIG_ONE } from 'utils/bigNumber'
+import { SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import YourDeposit from '../YourDeposit'
 import WalletNotConnected from './WalletNotConnected'
 import AvailableWithdraw from './AvailableWithdraw'
@@ -39,6 +40,7 @@ const Claim: React.FC = () => {
       {account ? (
         <Container>
           <GreyCard>
+            <SubgraphHealthIndicator inline subgraphName="chef-huan/pottery" />
             <Flex justifyContent="space-between" mb="20px">
               <YourDeposit depositBalance={allDeposit} />
             </Flex>

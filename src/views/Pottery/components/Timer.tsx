@@ -21,8 +21,12 @@ const StyledTimerText = styled(Heading)`
 
 const StyledWhiteText = styled(Text)`
   color: white;
-  margin-bottom: 3px;
+  margin-bottom: 0px;
   align-self: flex-end;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin-bottom: 3px;
+  }
 `
 
 export const BannerTimer: React.FC = () => {

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Card, CardBody, CardHeader, Heading, Text, Flex } from '@pancakeswap/uikit'
+import { Card, CardBody, CardHeader, Heading, Text, Flex, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import FoldableText from 'components/FoldableSection/FoldableText'
 
@@ -40,6 +40,11 @@ const StyledCardbody = styled(CardBody)`
   }
 `
 
+const InlineLink = styled(Link)`
+  display: inline-block;
+  margin: 0 4px;
+`
+
 const FAQ = () => {
   const { t } = useTranslation()
 
@@ -71,9 +76,17 @@ const FAQ = () => {
             </Text>
           </FoldableText>
           <FoldableText title={t('Where can I learn more about this new Pottery format?')} mt="24px">
-            <Text fontSize="14px" color="textSubtle">
+            <Text>
+              {t('Please feel free to reach out to us on')}
+              <InlineLink fontSize="14px" external href="https://t.me/pancakeswap">
+                {t('Telegram')}
+              </InlineLink>
+              {t('or')}
+              <InlineLink fontSize="14px" external href="https://discord.gg/pancakeswap">
+                {t('Discord')}
+              </InlineLink>
               {t(
-                "Please feel free to reach out to us on Telegram or Discord if you're still unsure about the format! Please also let us know if you have any feedback for us to improve this further.",
+                "if you're still unsure about the format! Please also let us know if you have any feedback for us to improve this further.",
               )}
             </Text>
           </FoldableText>

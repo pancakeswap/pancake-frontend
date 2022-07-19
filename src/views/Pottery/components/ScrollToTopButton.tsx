@@ -15,7 +15,7 @@ const ScrollToTopButton = () => {
   const scrollToTop = useCallback(() => {
     window.scrollTo({
       top: 0,
-      behavior: 'auto',
+      behavior: 'smooth',
     })
   }, [])
 

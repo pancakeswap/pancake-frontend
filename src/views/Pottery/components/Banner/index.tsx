@@ -99,6 +99,7 @@ const Banner: React.FC<BannerProps> = ({ handleScroll }) => {
         >
           <Flex>
             <OutlineText
+              mb="4px"
               fontSize={['20px', '20px', '20px', '20px', '24px']}
               style={{ alignSelf: 'flex-end' }}
               bold
