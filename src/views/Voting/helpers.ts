@@ -90,7 +90,22 @@ export const VOTING_POWER_BLOCK = {
 /**
  *  Get voting power by single user for each category
  */
-export const getVotingPower = async (account: string, poolAddresses: string[], blockNumber?: number) => {
+interface GetVotingPowerType {
+  total: number
+  voter: string
+  poolsBalance?: number
+  cakeBalance?: number
+  cakePoolBalance?: number
+  cakeBnbLpBalance?: number
+  cakeVaultBalance?: number
+  ifoPoolBalance?: number
+}
+
+export const getVotingPower = async (
+  account: string,
+  poolAddresses: string[],
+  blockNumber?: number,
+): Promise<GetVotingPowerType> => {
   if (blockNumber && (blockNumber >= VOTING_POWER_BLOCK.v0 || blockNumber >= VOTING_POWER_BLOCK.v1)) {
     const version = blockNumber >= VOTING_POWER_BLOCK.v1 ? 'v1' : 'v0'
 
