@@ -138,7 +138,7 @@ export const cakeBnbLpBalanceStrategy = (version: 'v0' | 'v1') => ({
   },
 })
 
-export function creatPoolsBalanceStrategy(poolAddress, version: 'v0' | 'v1') {
+export function createPoolsBalanceStrategy(poolAddress, version: 'v0' | 'v1') {
   return {
     name: 'contract-call',
     params: {
