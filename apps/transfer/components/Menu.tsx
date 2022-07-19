@@ -11,11 +11,18 @@ import {
   LogoutIcon,
   Text,
   Box,
+  IconButton,
+  CogIcon,
+  useModal,
+  ThemeSwitcher,
+  Modal,
+  InjectedModalProps,
 } from '@pancakeswap/uikit'
 import Image from 'next/future/image'
 import NextLink from 'next/link'
 import { useCallback } from 'react'
 import styled, { useTheme } from 'styled-components'
+import { useTheme as useNextTheme } from 'next-themes'
 import { useAccount, useConnect, useDisconnect, useNetwork, useSwitchNetwork } from 'wagmi'
 
 const SUPPORTED_CONNECTORS = walletConnectors.filter(
@@ -73,7 +80,10 @@ export function Menu() {
           <StyledMenuItem href="https://pancakeswap.finance/swap">Swap</StyledMenuItem>
         </Flex>
       </Flex>
-      <User />
+      <Flex alignItems="center">
+        <Setting />
+        <User />
+      </Flex>
     </Flex>
   )
 }
@@ -104,6 +114,31 @@ const UserMenuItems = () => {
         </Flex>
       </UserMenuItem>
     </>
+  )
+}
+
+function Setting() {
+  const [presentModal] = useModal(<SettingModal />)
+  return (
+    <IconButton variant="text" onClick={presentModal}>
+      <CogIcon />
+    </IconButton>
+  )
+}
+
+function SettingModal({ onDismiss }: InjectedModalProps) {
+  const { resolvedTheme, setTheme } = useNextTheme()
+  const isDark = resolvedTheme === 'dark'
+
+  return (
+    <Modal title="Settings" headerBackground="gradients.cardHeader" onDismiss={onDismiss} style={{ maxWidth: '420px' }}>
+      <Flex pb="24px" flexDirection="column">
+        <Flex justifyContent="space-between">
+          <Text mb="24px">Dark mode</Text>
+          <ThemeSwitcher isDark={isDark} toggleTheme={() => setTheme(isDark ? 'light' : 'dark')} />
+        </Flex>
+      </Flex>
+    </Modal>
   )
 }
 
