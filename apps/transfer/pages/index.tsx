@@ -10,6 +10,7 @@ const Page = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
+  min-height: calc(100% - 56px);
   align-items: center;
   flex-direction: column;
   background: ${({ theme }) => theme.colors.gradients.bubblegum};
@@ -75,7 +76,7 @@ function Transfer() {
 function PoweredBy() {
   const { isDark } = useTheme()
   return (
-    <Flex mt="10px" alignItems="center" justifyContent="center">
+    <Flex py="10px" alignItems="center" justifyContent="center">
       <Text small color="textSubtle" mr="8px">
         Powered By
       </Text>
