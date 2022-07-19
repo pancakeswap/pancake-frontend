@@ -72,7 +72,7 @@ export default function AddLiquidity() {
   const { account, chainId, library } = useActiveWeb3React()
 
   const [zapMode] = useZapModeManager()
-  const [currencyIdA, currencyIdB] = router.query.currency || [WWNATIVE[chainId]?.address, CAKE[chainId]?.address]
+  const [currencyIdA, currencyIdB] = router.query.currency || [WNATIVE[chainId]?.address, CAKE[chainId]?.address]
   const [steps, setSteps] = useState(Steps.Choose)
 
   const dispatch = useAppDispatch()
