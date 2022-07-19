@@ -23,7 +23,6 @@ const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isM
   const chevronLeftRef = useRef<HTMLDivElement>(null);
   const chevronRightRef = useRef<HTMLDivElement>(null);
   const layerController = useCallback(() => {
-    console.log("check");
     if (!scrollLayerRef.current || !chevronLeftRef.current || !chevronRightRef.current) return;
     const scrollLayer = scrollLayerRef.current;
     if (scrollLayer.scrollLeft === 0) chevronLeftRef.current.classList.add("hide");
@@ -51,10 +50,10 @@ const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isM
       {isMobile && (
         <RightMaskLayer
           ref={chevronRightRef}
-          onClick={debounce(() => {
+          onClick={() => {
             if (!scrollLayerRef.current) return;
             scrollLayerRef.current.scrollLeft += SUBMENU_CHEVRON_CLICK_MOVE_PX;
-          }, 100)}
+          }}
         >
           <ChevronRightIcon />
         </RightMaskLayer>
