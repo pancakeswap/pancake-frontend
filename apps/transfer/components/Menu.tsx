@@ -11,12 +11,7 @@ import {
   LogoutIcon,
   Text,
   Box,
-  IconButton,
-  CogIcon,
-  useModal,
   ThemeSwitcher,
-  Modal,
-  InjectedModalProps,
 } from '@pancakeswap/uikit'
 import Image from 'next/future/image'
 import NextLink from 'next/link'
@@ -67,6 +62,7 @@ const StyledMenuItem = styled.a<any>`
 
 export function Menu() {
   const theme = useTheme()
+  const { setTheme } = useNextTheme()
 
   return (
     <Flex height="56px" bg="backgroundAlt" px="16px" alignItems="center" justifyContent="space-between" zIndex={1}>
@@ -81,7 +77,9 @@ export function Menu() {
         </Flex>
       </Flex>
       <Flex alignItems="center">
-        <Setting />
+        <Box mr="16px">
+          <ThemeSwitcher isDark={theme.isDark} toggleTheme={() => setTheme(theme.isDark ? 'light' : 'dark')} />
+        </Box>
         <User />
       </Flex>
     </Flex>
@@ -114,31 +112,6 @@ const UserMenuItems = () => {
         </Flex>
       </UserMenuItem>
     </>
-  )
-}
-
-function Setting() {
-  const [presentModal] = useModal(<SettingModal />)
-  return (
-    <IconButton variant="text" onClick={presentModal}>
-      <CogIcon />
-    </IconButton>
-  )
-}
-
-function SettingModal({ onDismiss }: InjectedModalProps) {
-  const { resolvedTheme, setTheme } = useNextTheme()
-  const isDark = resolvedTheme === 'dark'
-
-  return (
-    <Modal title="Settings" headerBackground="gradients.cardHeader" onDismiss={onDismiss} style={{ maxWidth: '420px' }}>
-      <Flex pb="24px" flexDirection="column">
-        <Flex justifyContent="space-between">
-          <Text mb="24px">Dark mode</Text>
-          <ThemeSwitcher isDark={isDark} toggleTheme={() => setTheme(isDark ? 'light' : 'dark')} />
-        </Flex>
-      </Flex>
-    </Modal>
   )
 }
 
