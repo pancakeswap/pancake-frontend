@@ -4,9 +4,10 @@ import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { SerializedPool } from 'state/types'
 import { transformPool } from 'state/pools/helpers'
 import { getCakeContract } from 'utils/contractHelpers'
-import { CHAIN_ID } from 'config/constants/networks'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PoolCategory } from 'config/constants/types'
-import { serializeTokens } from 'config/constants/tokens'
+import { mainnetTokens } from 'config/constants/tokens'
+import { serializeTokens } from 'utils/serializeTokens'
 import { fetchUserStakeBalances, fetchUserPendingRewards } from './fetchPoolsUser'
 
 export interface PoolsState {
@@ -14,7 +15,7 @@ export interface PoolsState {
   userDataLoaded: boolean
 }
 
-const serializedTokens = serializeTokens()
+const serializedTokens = serializeTokens(mainnetTokens)
 const cakeContract = getCakeContract()
 
 const initialData = {
@@ -35,6 +36,7 @@ const initialData = {
 }
 
 export const useFetchUserPools = (account) => {
+  const { chainId } = useActiveWeb3React()
   const [userPoolsData, setPoolsUserData] = useState<PoolsState>(initialData)
 
   const fetchUserPoolsData = useCallback(() => {
@@ -44,7 +46,7 @@ export const useFetchUserPools = (account) => {
           const [stakedBalances, pendingRewards, totalStaking] = await Promise.all([
             fetchUserStakeBalances(account),
             fetchUserPendingRewards(account),
-            cakeContract.balanceOf(initialData.data.contractAddress[CHAIN_ID]),
+            cakeContract.balanceOf(initialData.data.contractAddress[chainId]),
           ])
 
           const userData = {
@@ -70,7 +72,7 @@ export const useFetchUserPools = (account) => {
 
       fetchPoolsUserDataAsync()
     }
-  }, [account])
+  }, [account, chainId])
 
   useFastRefreshEffect(() => {
     fetchUserPoolsData()

@@ -1,7 +1,6 @@
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Trade, TokenAmount, CurrencyAmount, ETHER } from '@pancakeswap/sdk'
-import { CHAIN_ID } from 'config/constants/networks'
 import { useCallback, useMemo } from 'react'
 import { logError } from 'utils/sentry'
 import { useWeb3React } from '@web3-react/core'
@@ -123,13 +122,13 @@ export function useApproveCallback(
 }
 
 // wraps useApproveCallback in the context of a swap
-export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0) {
+export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0, chainId?: number) {
   const amountToApprove = useMemo(
     () => (trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage)[Field.INPUT] : undefined),
     [trade, allowedSlippage],
   )
 
-  return useApproveCallback(amountToApprove, ROUTER_ADDRESS[CHAIN_ID])
+  return useApproveCallback(amountToApprove, ROUTER_ADDRESS[chainId])
 }
 
 // Wraps useApproveCallback in the context of a Gelato Limit Orders

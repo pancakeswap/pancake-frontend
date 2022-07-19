@@ -49,5 +49,3 @@ export const PREDICTION_TOOLTIP_DISMISS_KEY = 'prediction-switcher-dismiss-toolt
 export const GELATO_NATIVE = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
 
 export const EXCHANGE_DOCS_URLS = 'https://docs.pancakeswap.finance/products/pancakeswap-exchange'
-
-export const GALAXY_NFT_CAMPAIGN_ID = 'GCpp2UUxqQ'

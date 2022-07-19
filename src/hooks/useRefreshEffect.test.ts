@@ -27,7 +27,7 @@ test('should refresh when deps changes', () => {
 test('should refresh when block changes', async () => {
   const callback = jest.fn()
   const { result, rerender } = renderHook(() => {
-    const { mutate, data } = useSWR([FAST_INTERVAL, 'blockNumber'])
+    const { mutate, data } = useSWR([FAST_INTERVAL, 'blockNumber', 56])
     useFastRefreshEffect(callback, [callback])
     return { mutate, data }
   })
@@ -48,7 +48,7 @@ test('should refresh when block changes', async () => {
 test('should get latest block number when block changes', async () => {
   const { result, rerender } = renderHook(() => {
     const [callbackResult, setCallbackResult] = useState<number>()
-    const { mutate, data } = useSWR([SLOW_INTERVAL, 'blockNumber'])
+    const { mutate, data } = useSWR([SLOW_INTERVAL, 'blockNumber', 56])
     useSlowRefreshEffect((b) => {
       setCallbackResult(b)
     }, [])

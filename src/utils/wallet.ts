@@ -4,16 +4,18 @@ import { ExternalProvider } from '@ethersproject/providers'
 import { ChainId } from '@pancakeswap/sdk'
 import { BAD_SRCS } from 'components/Logo/Logo'
 import { BASE_BSC_SCAN_URLS } from 'config'
-import { nodes } from './getRpcUrl'
+import { BSC_RPC_URLS, BSC_TESTNET_RPC_URLS } from '../config/constants/rpc'
 
 const NETWORK_CONFIG = {
   [ChainId.MAINNET]: {
     name: 'BNB Smart Chain Mainnet',
     scanURL: BASE_BSC_SCAN_URLS[ChainId.MAINNET],
+    rpcUrls: BSC_RPC_URLS,
   },
   [ChainId.TESTNET]: {
     name: 'BNB Smart Chain Testnet',
     scanURL: BASE_BSC_SCAN_URLS[ChainId.TESTNET],
+    rpcUrls: BSC_TESTNET_RPC_URLS,
   },
 }
 
@@ -21,9 +23,8 @@ const NETWORK_CONFIG = {
  * Prompt the user to add BSC as a network on Metamask, or switch to BSC if the wallet is on a different network
  * @returns {boolean} true if the setup succeeded, false otherwise
  */
-export const setupNetwork = async (externalProvider?: ExternalProvider) => {
+export const setupNetwork = async (chainId?: number, externalProvider?: ExternalProvider) => {
   const provider = externalProvider || window.ethereum
-  const chainId = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID, 10) as keyof typeof NETWORK_CONFIG
   if (!NETWORK_CONFIG[chainId]) {
     console.error('Invalid chain id')
     return false
@@ -49,7 +50,7 @@ export const setupNetwork = async (externalProvider?: ExternalProvider) => {
                   symbol: 'bnb',
                   decimals: 18,
                 },
-                rpcUrls: nodes,
+                rpcUrls: NETWORK_CONFIG[chainId].rpcUrls,
                 blockExplorerUrls: [`${NETWORK_CONFIG[chainId].scanURL}/`],
               },
             ],

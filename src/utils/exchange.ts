@@ -1,7 +1,6 @@
 import { Web3Provider } from '@ethersproject/providers'
 import IPancakeRouter02ABI from 'config/abi/IPancakeRouter02.json'
 import { IPancakeRouter02 } from 'config/abi/types/IPancakeRouter02'
-import { CHAIN_ID } from 'config/constants/networks'
 import { JSBI, Percent, CurrencyAmount, Trade, Fraction, TokenAmount } from '@pancakeswap/sdk'
 import {
   ROUTER_ADDRESS,
@@ -32,9 +31,9 @@ export function calculateSlippageAmount(value: CurrencyAmount, slippage: number)
 }
 
 // account is optional
-export function getRouterContract(_: number, library: Web3Provider, account?: string) {
+export function getRouterContract(chainId: number, library: Web3Provider, account?: string) {
   return getContract(
-    ROUTER_ADDRESS[CHAIN_ID],
+    ROUTER_ADDRESS[chainId],
     IPancakeRouter02ABI,
     getProviderOrSigner(library, account),
   ) as IPancakeRouter02

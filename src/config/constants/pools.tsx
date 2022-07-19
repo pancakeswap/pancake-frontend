@@ -1,11 +1,11 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import Trans from 'components/Trans'
 import { VaultKey } from 'state/types'
-import { CHAIN_ID } from './networks'
-import tokens, { serializeTokens } from './tokens'
+import { serializeTokens } from 'utils/serializeTokens'
+import { mainnetTokens } from './tokens'
 import { SerializedPoolConfig, PoolCategory } from './types'
 
-const serializedTokens = serializeTokens()
+const serializedTokens = serializeTokens(mainnetTokens)
 
 export const MAX_LOCK_DURATION = 31536000
 export const UNLOCK_FREE_DURATION = 604800
@@ -20,7 +20,7 @@ export const vaultPoolConfig = {
     autoCompoundFrequency: 5000,
     gasLimit: 380000,
     tokenImage: {
-      primarySrc: `/images/tokens/${tokens.cake.address}.svg`,
+      primarySrc: `/images/tokens/${mainnetTokens.cake.address}.svg`,
       secondarySrc: '/images/tokens/autorenew.svg',
     },
   },
@@ -30,7 +30,7 @@ export const vaultPoolConfig = {
     autoCompoundFrequency: 5000,
     gasLimit: 500000,
     tokenImage: {
-      primarySrc: `/images/tokens/${tokens.cake.address}.svg`,
+      primarySrc: `/images/tokens/${mainnetTokens.cake.address}.svg`,
       secondarySrc: '/images/tokens/autorenew.svg',
     },
   },
@@ -40,7 +40,7 @@ export const vaultPoolConfig = {
     autoCompoundFrequency: 5000,
     gasLimit: 500000,
     tokenImage: {
-      primarySrc: `/images/tokens/${tokens.cake.address}.svg`,
+      primarySrc: `/images/tokens/${mainnetTokens.cake.address}.svg`,
       secondarySrc: '/images/tokens/autorenew.svg',
     },
   },
@@ -50,7 +50,7 @@ export const vaultPoolConfig = {
     autoCompoundFrequency: 1,
     gasLimit: 500000,
     tokenImage: {
-      primarySrc: `/images/tokens/${tokens.cake.address}.svg`,
+      primarySrc: `/images/tokens/${mainnetTokens.cake.address}.svg`,
       secondarySrc: `/images/tokens/ifo-pool-icon.svg`,
     },
   },
@@ -141,7 +141,7 @@ export const livePools: SerializedPoolConfig[] = [
     tokenPerBlock: '63.136',
     version: 3,
   },
-].filter((p) => !!p.contractAddress[CHAIN_ID])
+]
 
 // known finished pools
 const finishedPools = [
@@ -3253,8 +3253,6 @@ const finishedPools = [
     enableEmergencyWithdraw: true,
     tokenPerBlock: '7.502',
   },
-]
-  .filter((p) => !!p.contractAddress[CHAIN_ID])
-  .map((p) => ({ ...p, isFinished: true }))
+].map((p) => ({ ...p, isFinished: true }))
 
 export default [...livePools, ...finishedPools]

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { request, gql } from 'graphql-request'
-import { simpleRpcProvider } from 'utils/providers'
+import { bscRpcProvider } from 'utils/providers'
 import { GRAPH_HEALTH } from 'config/constants/endpoints'
 import { useSlowRefreshEffect } from './useRefreshEffect'
 
@@ -55,7 +55,7 @@ const useSubgraphHealth = (subgraphName: string) => {
             }
           `,
             ),
-            currentBlockNumber ? Promise.resolve(currentBlockNumber) : simpleRpcProvider.getBlockNumber(),
+            currentBlockNumber ? Promise.resolve(currentBlockNumber) : bscRpcProvider.getBlockNumber(),
           ])
 
           const isHealthy = indexingStatusForCurrentVersion.health === 'healthy'

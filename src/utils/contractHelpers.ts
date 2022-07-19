@@ -1,10 +1,10 @@
 import type { Signer } from '@ethersproject/abstract-signer'
 import type { Provider } from '@ethersproject/providers'
 import { Contract } from '@ethersproject/contracts'
-import { simpleRpcProvider } from 'utils/providers'
+import { bscRpcProvider } from 'utils/providers'
 import poolsConfig from 'config/constants/pools'
 import { PoolCategory } from 'config/constants/types'
-import tokens from 'config/constants/tokens'
+import { CAKE } from 'config/constants/tokens'
 
 // Addresses
 import {
@@ -35,7 +35,6 @@ import {
   getTradingCompetitionAddressMoD,
   getBunnySpecialXmasAddress,
   getICakeAddress,
-  getGalaxyNFTClaimingAddress,
   getZapAddress,
   getCakeFlexibleSideVaultAddress,
   getPredictionsV1Address,
@@ -77,7 +76,6 @@ import bunnySpecialLotteryAbi from 'config/abi/bunnySpecialLottery.json'
 import bunnySpecialXmasAbi from 'config/abi/bunnySpecialXmas.json'
 import farmAuctionAbi from 'config/abi/farmAuction.json'
 import anniversaryAchievementAbi from 'config/abi/anniversaryAchievement.json'
-import galaxyNFTClaimingAbi from 'config/abi/galaxyNFTClaiming.json'
 import nftMarketAbi from 'config/abi/nftMarket.json'
 import nftSaleAbi from 'config/abi/nftSale.json'
 import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
@@ -116,7 +114,6 @@ import type {
   BunnySpecialCakeVault,
   BunnySpecialPrediction,
   BunnySpecialLottery,
-  GalaxyNFTClaiming,
   NftMarket,
   NftSale,
   PancakeSquad,
@@ -132,7 +129,7 @@ import type {
 } from 'config/abi/types'
 
 export const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
-  const signerOrProvider = signer ?? simpleRpcProvider
+  const signerOrProvider = signer ?? bscRpcProvider
   return new Contract(address, abi, signerOrProvider)
 }
 
@@ -157,18 +154,18 @@ export const getIfoV3Contract = (address: string, signer?: Signer | Provider) =>
 export const getSouschefContract = (id: number, signer?: Signer | Provider) => {
   const config = poolsConfig.find((pool) => pool.sousId === id)
   const abi = config.poolCategory === PoolCategory.BINANCE ? sousChefBnb : sousChef
-  return getContract(abi, getAddress(config.contractAddress), signer) as SousChef
+  return getContract(abi, getAddress(config.contractAddress, 56), signer) as SousChef
 }
 export const getSouschefV2Contract = (id: number, signer?: Signer | Provider) => {
   const config = poolsConfig.find((pool) => pool.sousId === id)
-  return getContract(sousChefV2, getAddress(config.contractAddress), signer) as SousChefV2
+  return getContract(sousChefV2, getAddress(config.contractAddress, 56), signer) as SousChefV2
 }
 
 export const getPointCenterIfoContract = (signer?: Signer | Provider) => {
   return getContract(pointCenterIfo, getPointCenterIfoAddress(), signer) as PointCenterIfo
 }
-export const getCakeContract = (signer?: Signer | Provider) => {
-  return getContract(cakeAbi, tokens.cake.address, signer) as Cake
+export const getCakeContract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract(cakeAbi, chainId ? CAKE[chainId].address : CAKE[56].address, signer) as Cake
 }
 export const getProfileContract = (signer?: Signer | Provider) => {
   return getContract(profileABI, getPancakeProfileAddress(), signer) as PancakeProfile
@@ -244,7 +241,7 @@ export const getChainlinkOracleContract = (address: string, signer?: Signer | Pr
   return getContract(chainlinkOracleAbi, address, signer) as ChainlinkOracle
 }
 export const getMulticallContract = () => {
-  return getContract(MultiCallAbi, getMulticallAddress(), simpleRpcProvider) as Multicall
+  return getContract(MultiCallAbi, getMulticallAddress(), bscRpcProvider) as Multicall
 }
 export const getBunnySpecialCakeVaultContract = (signer?: Signer | Provider) => {
   return getContract(bunnySpecialCakeVaultAbi, getBunnySpecialCakeVaultAddress(), signer) as BunnySpecialCakeVault
@@ -263,9 +260,6 @@ export const getFarmAuctionContract = (signer?: Signer | Provider) => {
 }
 export const getAnniversaryAchievementContract = (signer?: Signer | Provider) => {
   return getContract(anniversaryAchievementAbi, getAnniversaryAchievement(), signer) as AnniversaryAchievement
-}
-export const getGalaxyNTFClaimingContract = (signer?: Signer | Provider) => {
-  return getContract(galaxyNFTClaimingAbi, getGalaxyNFTClaimingAddress(), signer) as GalaxyNFTClaiming
 }
 
 export const getNftMarketContract = (signer?: Signer | Provider) => {

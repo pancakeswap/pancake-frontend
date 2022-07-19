@@ -6,8 +6,7 @@ import { useTranslation, TranslateFunction } from 'contexts/Localization'
 import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ethersToBigNumber } from 'utils/bigNumber'
-import tokens from 'config/constants/tokens'
-import { CHAIN_ID } from 'config/constants/networks'
+import { mainnetTokens } from 'config/constants/tokens'
 import { ChainId } from '@pancakeswap/sdk'
 import { parseUnits, formatEther } from '@ethersproject/units'
 import { useERC20, useNftMarketContract } from 'hooks/useContract'
@@ -37,8 +36,7 @@ interface BuyModalProps extends InjectedModalProps {
 }
 
 // NFT WBNB in testnet contract is different
-const wbnbAddress =
-  CHAIN_ID === String(ChainId.MAINNET) ? tokens.wbnb.address : '0x094616f0bdfb0b526bd735bf66eca0ad254ca81f'
+const TESTNET_WBNB_NFT_ADDRESS = '0x094616f0bdfb0b526bd735bf66eca0ad254ca81f'
 
 const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
   const [stage, setStage] = useState(BuyingStage.REVIEW)
@@ -49,7 +47,8 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
   const { t } = useTranslation()
   const { callWithGasPrice } = useCallWithGasPrice()
 
-  const { account } = useWeb3React()
+  const { account, chainId } = useWeb3React()
+  const wbnbAddress = chainId === ChainId.TESTNET ? TESTNET_WBNB_NFT_ADDRESS : mainnetTokens.wbnb.address
   const wbnbContractReader = useERC20(wbnbAddress, false)
   const wbnbContractApprover = useERC20(wbnbAddress)
   const nftMarketContract = useNftMarketContract()

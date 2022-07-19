@@ -26,7 +26,6 @@ import { getLPSymbol } from 'utils/getLpSymbol'
 import { getZapAddress } from 'utils/addressHelpers'
 import { ZapCheckbox } from 'components/CurrencyInputPanel/ZapCheckbox'
 import { useTranslation } from 'contexts/Localization'
-import { CHAIN_ID } from 'config/constants/networks'
 import { useLPApr } from 'state/swap/hooks'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
@@ -145,7 +144,7 @@ export default function RemoveLiquidity() {
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
   const [approval, approveCallback] = useApproveCallback(
     parsedAmounts[Field.LIQUIDITY],
-    isZap ? getZapAddress() : ROUTER_ADDRESS[CHAIN_ID],
+    isZap ? getZapAddress() : ROUTER_ADDRESS[chainId],
   )
 
   async function onAttemptToApprove() {
@@ -180,7 +179,7 @@ export default function RemoveLiquidity() {
     ]
     const message = {
       owner: account,
-      spender: ROUTER_ADDRESS[CHAIN_ID],
+      spender: ROUTER_ADDRESS[chainId],
       value: liquidityAmount.raw.toString(),
       nonce: nonce.toHexString(),
       deadline: deadline.toNumber(),

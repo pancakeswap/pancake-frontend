@@ -3,7 +3,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { easterPrizes, PrizesConfig } from 'config/constants/trading-competition/prizes'
 import BigNumber from 'bignumber.js'
 import useBUSDPrice, { useCakeBusdPrice } from 'hooks/useBUSDPrice'
-import tokens from 'config/constants/tokens'
+import { mainnetTokens } from 'config/constants/tokens'
 import { multiplyPriceByAmount } from 'utils/prices'
 
 export const localiseTradingVolume = (value: number, decimals = 0) => {
@@ -31,9 +31,9 @@ export const useFanTokenCompetitionRewards = ({
   userPortoRewards: ReactText
   userSantosRewards: ReactText
 }) => {
-  const lazioPriceBUSD = useBUSDPrice(tokens.lazio)
-  const portoPriceBUSD = useBUSDPrice(tokens.porto)
-  const santosPriceBUSD = useBUSDPrice(tokens.santos)
+  const lazioPriceBUSD = useBUSDPrice(mainnetTokens.lazio)
+  const portoPriceBUSD = useBUSDPrice(mainnetTokens.porto)
+  const santosPriceBUSD = useBUSDPrice(mainnetTokens.santos)
   const cakeAsBigNumber = new BigNumber(userCakeRewards as string)
   const lazioAsBigNumber = new BigNumber(userLazioRewards as string)
   const portoAsBigNumber = new BigNumber(userPortoRewards as string)
@@ -68,7 +68,7 @@ export const useMoboxCompetitionRewards = ({
   userCakeRewards: ReactText
   userMoboxRewards: ReactText
 }) => {
-  const moboxPriceBUSD = useBUSDPrice(tokens.mbox)
+  const moboxPriceBUSD = useBUSDPrice(mainnetTokens.mbox)
   const cakeAsBigNumber = new BigNumber(userCakeRewards as string)
   const moboxAsBigNumber = new BigNumber(userMoboxRewards as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
@@ -94,17 +94,17 @@ export const useModCompetitionRewards = ({
   userCakeRewards: ReactText
   userDarRewards: ReactText
 }) => {
-  const darPriceBUSD = useBUSDPrice(tokens.dar)
+  const darPriceBUSD = useBUSDPrice(mainnetTokens.dar)
   const cakeAsBigNumber = new BigNumber(userCakeRewards as string)
   const darAsBigNumber = new BigNumber(userDarRewards as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
-  const darBalance = getBalanceNumber(darAsBigNumber, tokens.dar.decimals)
+  const darBalance = getBalanceNumber(darAsBigNumber, mainnetTokens.dar.decimals)
   const cakePriceBusd = useCakeBusdPrice()
 
   const dollarValueOfTokensReward =
     cakePriceBusd && darPriceBUSD
       ? multiplyPriceByAmount(cakePriceBusd, cakeBalance) +
-        multiplyPriceByAmount(darPriceBUSD, darBalance, tokens.dar.decimals)
+        multiplyPriceByAmount(darPriceBUSD, darBalance, mainnetTokens.dar.decimals)
       : null
 
   return {

@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import { useState, useCallback } from 'react'
 import { BSC_BLOCK_TIME } from 'config'
 import ifoV2Abi from 'config/abi/ifoV2.json'
-import tokens from 'config/constants/tokens'
+import { mainnetTokens } from 'config/constants/tokens'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { FixedNumber } from '@ethersproject/bignumber'
 
@@ -32,7 +32,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const { address, releaseBlockNumber } = ifo
   const cakePriceUsd = usePriceCakeBusd()
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
-  const currencyPriceInUSD = ifo.currency === tokens.cake ? cakePriceUsd : lpTokenPriceInUsd
+  const currencyPriceInUSD = ifo.currency === mainnetTokens.cake ? cakePriceUsd : lpTokenPriceInUsd
 
   const [state, setState] = useState({
     isInitialized: false,

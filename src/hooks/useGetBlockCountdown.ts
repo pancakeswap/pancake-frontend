@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { BSC_BLOCK_TIME } from 'config'
-import { simpleRpcProvider } from 'utils/providers'
+import { bscRpcProvider } from 'utils/providers'
 
 /**
  * Returns a countdown in seconds of a given block
@@ -11,7 +11,7 @@ const useBlockCountdown = (blockNumber: number) => {
 
   useEffect(() => {
     const startCountdown = async () => {
-      const currentBlock = await simpleRpcProvider.getBlockNumber()
+      const currentBlock = await bscRpcProvider.getBlockNumber()
 
       if (blockNumber > currentBlock) {
         setSecondsRemaining((blockNumber - currentBlock) * BSC_BLOCK_TIME)

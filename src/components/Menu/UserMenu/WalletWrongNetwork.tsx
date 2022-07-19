@@ -21,7 +21,7 @@ const WalletWrongNetwork: React.FC<WalletWrongNetworkProps> = ({ onDismiss }) =>
   const { connector, library } = useWeb3React()
 
   const handleSwitchNetwork = async (): Promise<void> => {
-    await setupNetwork(library)
+    await setupNetwork(56, library)
     onDismiss?.()
   }
 

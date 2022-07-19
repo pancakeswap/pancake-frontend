@@ -7,18 +7,15 @@ describe('getAddress', () => {
   }
 
   it(`get address for mainnet (chainId 56)`, () => {
-    process.env.NEXT_PUBLIC_CHAIN_ID = '56'
     const expected = address[56]
-    expect(getAddress(address)).toEqual(expected)
+    expect(getAddress(address, 56)).toEqual(expected)
   })
   it(`get address for testnet (chainId 97)`, () => {
-    process.env.NEXT_PUBLIC_CHAIN_ID = '97'
     const expected = address[97]
-    expect(getAddress(address)).toEqual(expected)
+    expect(getAddress(address, 97)).toEqual(expected)
   })
   it(`get address for any other network (chainId 31337)`, () => {
-    process.env.NEXT_PUBLIC_CHAIN_ID = '31337'
     const expected = address[56]
-    expect(getAddress(address)).toEqual(expected)
+    expect(getAddress(address, 31337)).toEqual(expected)
   })
 })

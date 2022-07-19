@@ -1,6 +1,6 @@
 import { Box, Button, Flex, InjectedModalProps, LinkExternal, Message, Skeleton, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import tokens from 'config/constants/tokens'
+import { CAKE } from 'config/constants/tokens'
 import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import useAuth from 'hooks/useAuth'
@@ -17,9 +17,9 @@ interface WalletInfoProps {
 
 const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { account, chainId } = useWeb3React()
   const { balance, fetchStatus } = useGetBnbBalance()
-  const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useTokenBalance(tokens.cake.address)
+  const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useTokenBalance(CAKE[chainId]?.address)
   const { logout } = useAuth()
 
   const handleLogout = () => {

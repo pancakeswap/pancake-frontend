@@ -98,7 +98,9 @@ describe('hooks', () => {
 var mockUseActiveWeb3React: jest.Mock
 
 jest.mock('../../hooks/useActiveWeb3React', () => {
-  mockUseActiveWeb3React = jest.fn().mockReturnValue({})
+  mockUseActiveWeb3React = jest.fn().mockReturnValue({
+    chainId: 56,
+  })
   return {
     __esModule: true,
     default: mockUseActiveWeb3React,

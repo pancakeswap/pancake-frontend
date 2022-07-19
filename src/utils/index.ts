@@ -6,11 +6,9 @@ import { getAddress } from '@ethersproject/address'
 import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
-import { CHAIN_ID } from 'config/constants/networks'
 import { Token, Currency, ETHER } from '@pancakeswap/sdk'
 import { TokenAddressMap } from 'state/types'
 import { BASE_BSC_SCAN_URLS } from '../config'
-import { simpleRpcProvider } from './providers'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export const isAddress = memoize((value: any): string | false => {
@@ -26,7 +24,7 @@ export function getBscScanLink(
   type: 'transaction' | 'token' | 'address' | 'block' | 'countdown',
   chainIdOverride?: number,
 ): string {
-  const chainId = chainIdOverride || CHAIN_ID
+  const chainId = chainIdOverride || 56
   switch (type) {
     case 'transaction': {
       return `${BASE_BSC_SCAN_URLS[chainId]}/tx/${data}`
@@ -47,7 +45,7 @@ export function getBscScanLink(
 }
 
 export function getBscScanLinkForNft(collectionAddress: string, tokenId: string): string {
-  return `${BASE_BSC_SCAN_URLS[CHAIN_ID]}/token/${collectionAddress}?a=${tokenId}`
+  return `${BASE_BSC_SCAN_URLS[56]}/token/${collectionAddress}?a=${tokenId}`
 }
 
 // add 10%
@@ -71,7 +69,7 @@ export function getContract(address: string, ABI: any, signer?: Signer | Provide
     throw Error(`Invalid 'address' parameter '${address}'.`)
   }
 
-  return new Contract(address, ABI, signer ?? simpleRpcProvider)
+  return new Contract(address, ABI, signer)
 }
 
 export function escapeRegExp(string: string): string {

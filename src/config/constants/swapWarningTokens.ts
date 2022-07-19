@@ -1,9 +1,9 @@
 import { Token } from '@pancakeswap/sdk'
-import tokens from 'config/constants/tokens'
-import warningTokens from 'config/constants/warningTokens'
+import { mainnetTokens } from 'config/constants/tokens'
+import { mainnetWarningTokens } from 'config/constants/warningTokens'
 
-const { bondly, safemoon, itam, ccar, bttold } = tokens
-const { pokemoney, free } = warningTokens
+const { bondly, itam, ccar, bttold } = mainnetTokens
+const { pokemoney, free, safemoon } = mainnetWarningTokens
 
 interface WarningTokenList {
   [key: string]: Token

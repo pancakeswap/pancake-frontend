@@ -1,15 +1,9 @@
-import { useEffect, useState } from 'react'
-import { AutoRenewIcon, Box, Button, Flex, InjectedModalProps, Modal, Text, TwitterIcon } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { Box, Button, Flex, InjectedModalProps, Modal, Text, TwitterIcon } from '@pancakeswap/uikit'
 import confetti from 'canvas-confetti'
 import { useTranslation } from 'contexts/Localization'
 import delay from 'lodash/delay'
-import { useGalaxyNFTClaimingContract } from 'hooks/useContract'
-import request, { gql } from 'graphql-request'
-import { GALAXY_NFT_CAMPAIGN_ID } from 'config/constants'
-import useToast from 'hooks/useToast'
-import { GALAXY_NFT_CLAIMING_API } from 'config/constants/endpoints'
-import { useWeb3React } from '@web3-react/core'
+import { useEffect } from 'react'
+import styled from 'styled-components'
 
 const NFTImage = styled.img`
   border-radius: 12px;
@@ -31,53 +25,8 @@ const showConfetti = () => {
   })
 }
 
-const GalaxyNFTClaimModal: React.FC<InjectedModalProps & { cid: number }> = ({ onDismiss, cid }) => {
+const GalaxyNFTClaimModal: React.FC<InjectedModalProps & { cid: number }> = ({ onDismiss }) => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
-  const [isLoading, setIsLoading] = useState(false)
-  const galaxyNFTClaimingContract = useGalaxyNFTClaimingContract()
-  const { toastSuccess, toastError } = useToast()
-
-  const handleClick = async () => {
-    setIsLoading(true)
-    try {
-      const { prepareParticipate } = await request(
-        GALAXY_NFT_CLAIMING_API,
-        gql`
-          mutation claim($campaignID: ID!, $address: String!) {
-            prepareParticipate(input: { signature: "", campaignID: $campaignID, address: $address }) {
-              allow
-              disallowReason
-              signature
-              spaceStation
-              mintFuncInfo {
-                verifyIDs
-                nftCoreAddress
-              }
-            }
-          }
-        `,
-        { campaignID: GALAXY_NFT_CAMPAIGN_ID, address: account },
-      )
-      const { allow, disallowReason, mintFuncInfo, signature } = prepareParticipate
-      if (!allow) {
-        console.error('Claim failed, disallow reason = ', disallowReason)
-        toastError(t('Failed to claim'), disallowReason)
-      } else {
-        await galaxyNFTClaimingContract.claim(
-          cid,
-          mintFuncInfo.nftCoreAddress,
-          mintFuncInfo.verifyIDs[0],
-          cid,
-          account,
-          signature,
-        )
-        toastSuccess(t('Success!'))
-      }
-    } finally {
-      onDismiss?.()
-    }
-  }
 
   useEffect(() => {
     delay(showConfetti, 100)
@@ -113,13 +62,6 @@ const GalaxyNFTClaimModal: React.FC<InjectedModalProps & { cid: number }> = ({ o
         >
           <TwitterIcon color="primary" mr="4px" />
           {t('Learn More')}
-        </Button>
-        <Button
-          disabled={isLoading}
-          onClick={handleClick}
-          endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
-        >
-          {isLoading ? t('Claiming...') : t('Claim now')}
         </Button>
       </Flex>
     </Modal>

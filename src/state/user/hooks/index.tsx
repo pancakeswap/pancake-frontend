@@ -4,7 +4,6 @@ import flatMap from 'lodash/flatMap'
 import farms from 'config/constants/farms'
 import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { CHAIN_ID } from 'config/constants/networks'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
@@ -402,9 +401,9 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
 }
 
 export function useGasPrice(): string {
-  const chainId = CHAIN_ID
+  const { chainId } = useActiveWeb3React()
   const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
-  return chainId === ChainId.MAINNET.toString() ? userGas : GAS_PRICE_GWEI.testnet
+  return chainId === ChainId.MAINNET ? userGas : GAS_PRICE_GWEI.testnet
 }
 
 export function useGasPriceManager(): [string, (userGasPrice: string) => void] {

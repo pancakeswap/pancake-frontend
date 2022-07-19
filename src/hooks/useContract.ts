@@ -35,13 +35,11 @@ import {
   getPancakeSquadContract,
   getErc721CollectionContract,
   getBunnySpecialXmasContract,
-  getGalaxyNTFClaimingContract,
-  getZapContract,
   getCakeFlexibleSideVaultV2Contract,
   getCakePredictionsContract,
   getPredictionsV1Contract,
 } from 'utils/contractHelpers'
-import { getMulticallAddress, getPredictionsV1Address } from 'utils/addressHelpers'
+import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
 import {
   Erc20,
   Erc20Bytes32,
@@ -51,10 +49,13 @@ import {
   Erc721collection,
   CakeVaultV2,
   CakeFlexibleSideVaultV2,
+  Zap,
 } from 'config/abi/types'
+import zapAbi from 'config/abi/zap.json'
 
 // Imports below migrated from Exchange useContract.ts
 import { Contract } from '@ethersproject/contracts'
+import { bscRpcProvider } from 'utils/providers'
 import { WETH } from '@pancakeswap/sdk'
 import IPancakePairABI from '../config/abi/IPancakePair.json'
 import { ERC20_BYTES32_ABI } from '../config/abi/erc20'
@@ -284,11 +285,6 @@ export const useAnniversaryAchievementContract = () => {
   return useMemo(() => getAnniversaryAchievementContract(library.getSigner()), [library])
 }
 
-export const useGalaxyNFTClaimingContract = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getGalaxyNTFClaimingContract(library.getSigner()), [library])
-}
-
 export const useNftSaleContract = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getNftSaleContract(library.getSigner()), [library])
@@ -334,10 +330,10 @@ function useContract<T extends Contract = Contract>(
   ABI: any,
   withSignerIfPossible = true,
 ): T | null {
-  const { library, account } = useActiveWeb3React()
+  const { library, account, chainId } = useActiveWeb3React()
   const signer = useMemo(
-    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
-    [withSignerIfPossible, library, account],
+    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : chainId === 56 ? bscRpcProvider : library),
+    [withSignerIfPossible, library, account, chainId],
   )
 
   const canReturnContract = useMemo(
@@ -374,14 +370,10 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 }
 
 export function useMulticallContract() {
-  return useContract<Multicall>(getMulticallAddress(), multiCallAbi, false)
+  const { chainId } = useActiveWeb3React()
+  return useContract<Multicall>(getMulticallAddress(chainId), multiCallAbi, false)
 }
 
 export function useZapContract(withSignerIfPossible = true) {
-  const { library, account } = useActiveWeb3React()
-  const signer = useMemo(
-    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
-    [withSignerIfPossible, library, account],
-  )
-  return useMemo(() => getZapContract(signer), [signer])
+  return useContract<Zap>(getZapAddress(), zapAbi, withSignerIfPossible)
 }

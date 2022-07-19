@@ -1,12 +1,10 @@
-import { Currency, currencyEquals, JSBI, Price } from '@pancakeswap/sdk'
-import tokens from 'config/constants/tokens'
+import { Currency, currencyEquals, JSBI, Price, WETH } from '@pancakeswap/sdk'
+import { CAKE, BUSD } from 'config/constants/tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { PairState, usePairs } from './usePairs'
-
-const { wbnb: WBNB, busd } = tokens
 
 /**
  * Returns the price in BUSD of the input currency
@@ -15,13 +13,16 @@ const { wbnb: WBNB, busd } = tokens
 export default function useBUSDPrice(currency?: Currency): Price | undefined {
   const { chainId } = useActiveWeb3React()
   const wrapped = wrappedCurrency(currency, chainId)
+  const WBNB = WETH[chainId]
+  const busd = BUSD[chainId]
+
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
       [chainId && wrapped && currencyEquals(WBNB, wrapped) ? undefined : currency, chainId ? WBNB : undefined],
       [wrapped?.equals(busd) ? undefined : wrapped, busd],
       [chainId ? WBNB : undefined, busd],
     ],
-    [chainId, currency, wrapped],
+    [WBNB, busd, chainId, currency, wrapped],
   )
   const [[bnbPairState, bnbPair], [busdPairState, busdPair], [busdBnbPairState, busdBnbPair]] = usePairs(tokenPairs)
 
@@ -62,11 +63,24 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
     }
 
     return undefined
-  }, [chainId, currency, bnbPair, bnbPairState, busdBnbPair, busdBnbPairState, busdPair, busdPairState, wrapped])
+  }, [
+    currency,
+    wrapped,
+    chainId,
+    WBNB,
+    busd,
+    bnbPair,
+    busdBnbPair,
+    busdPairState,
+    busdPair,
+    bnbPairState,
+    busdBnbPairState,
+  ])
 }
 
 export const useCakeBusdPrice = (): Price | undefined => {
-  const cakeBusdPrice = useBUSDPrice(tokens.cake)
+  const { chainId } = useActiveWeb3React()
+  const cakeBusdPrice = useBUSDPrice(CAKE[chainId])
   return cakeBusdPrice
 }
 
@@ -90,6 +104,7 @@ export const useBUSDCakeAmount = (amount: number): number | undefined => {
 }
 
 export const useBNBBusdPrice = (): Price | undefined => {
-  const bnbBusdPrice = useBUSDPrice(tokens.wbnb)
+  const { chainId } = useActiveWeb3React()
+  const bnbBusdPrice = useBUSDPrice(WETH[chainId])
   return bnbBusdPrice
 }

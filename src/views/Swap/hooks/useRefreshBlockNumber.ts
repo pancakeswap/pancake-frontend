@@ -1,3 +1,4 @@
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useState, useCallback, useEffect } from 'react'
 import { useSWRConfig } from 'swr'
 
@@ -11,17 +12,18 @@ export const useRefreshBlockNumber = () => {
   }, [isLoading])
 
   const { mutate } = useSWRConfig()
+  const { chainId } = useActiveWeb3React()
 
   useEffect(() => {
     if (!isLoading) return
 
-    mutate('blockNumber')
+    mutate(`blockNumber-${chainId}`)
 
     // setTimeout is used to demonstrate the loading
     // because the real loading state occurs on multicall state
     // we don't know when the fetch is finished.
     setTimeout(() => setFetch(false), 500)
-  }, [mutate, isLoading])
+  }, [mutate, isLoading, chainId])
 
   return { refreshBlockNumber, isLoading }
 }

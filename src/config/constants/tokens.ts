@@ -1,7 +1,4 @@
 import { ChainId, Token } from '@pancakeswap/sdk'
-import { serializeToken } from 'state/user/hooks/helpers'
-import { CHAIN_ID } from './networks'
-import { SerializedToken } from './types'
 
 const { MAINNET, TESTNET } = ChainId
 
@@ -11,25 +8,75 @@ interface TokenList {
 
 export const defineTokens = <T extends TokenList>(t: T) => t
 
+const WBNB_MAINNET = new Token(
+  MAINNET,
+  '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+  18,
+  'WBNB',
+  'Wrapped BNB',
+  'https://www.binance.com/',
+)
+
+const WBNB_TESTNET = new Token(
+  TESTNET,
+  '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
+  18,
+  'WBNB',
+  'Wrapped BNB',
+  'https://www.binance.com/',
+)
+
+const CAKE_MAINNET = new Token(
+  MAINNET,
+  '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+  18,
+  'CAKE',
+  'PancakeSwap Token',
+  'https://pancakeswap.finance/',
+)
+
+const CAKE_TESTNET = new Token(
+  TESTNET,
+  '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
+  18,
+  'CAKE',
+  'PancakeSwap Token',
+  'https://pancakeswap.finance/',
+)
+
+export const CAKE = {
+  56: CAKE_MAINNET,
+  97: CAKE_TESTNET,
+}
+
+const BUSD_MAINNET = new Token(
+  MAINNET,
+  '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
+  18,
+  'BUSD',
+  'Binance USD',
+  'https://www.paxos.com/busd/',
+)
+
+const BUSD_TESTNET = new Token(
+  TESTNET,
+  '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee',
+  18,
+  'BUSD',
+  'Binance USD',
+  'https://www.paxos.com/busd/',
+)
+
+export const BUSD = {
+  56: BUSD_MAINNET,
+  97: BUSD_TESTNET,
+}
+
 export const mainnetTokens = defineTokens({
-  wbnb: new Token(
-    MAINNET,
-    '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
-    18,
-    'WBNB',
-    'Wrapped BNB',
-    'https://www.binance.com/',
-  ),
+  wbnb: WBNB_MAINNET,
   // bnb here points to the wbnb contract. Wherever the currency BNB is required, conditional checks for the symbol 'BNB' can be used
-  bnb: new Token(MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'BNB', 'BNB', 'https://www.binance.com/'),
-  cake: new Token(
-    MAINNET,
-    '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
-    18,
-    'CAKE',
-    'PancakeSwap Token',
-    'https://pancakeswap.finance/',
-  ),
+  bnb: WBNB_MAINNET,
+  cake: CAKE_MAINNET,
   gmi: new Token(MAINNET, '0x93D8d25E3C9A847a5Da79F79ecaC89461FEcA846', 18, 'GMI', 'Gamifi', 'https://gamifi.gg/'),
   tlos: new Token(MAINNET, '0xb6C53431608E626AC81a9776ac3e999c5556717c', 18, 'TLOS', 'Telos', 'https://www.telos.net/'),
   beta: new Token(
@@ -67,14 +114,7 @@ export const mainnetTokens = defineTokens({
     'BSC Defi blue chips token',
     'https://powerpool.finance/',
   ),
-  busd: new Token(
-    MAINNET,
-    '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
-    18,
-    'BUSD',
-    'Binance USD',
-    'https://www.paxos.com/busd/',
-  ),
+  busd: BUSD_MAINNET,
   dai: new Token(
     MAINNET,
     '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3',
@@ -1580,14 +1620,6 @@ export const mainnetTokens = defineTokens({
     'Decentral Games Token',
     'https://decentral.games/',
   ),
-  safemoon: new Token(
-    MAINNET,
-    '0x8076C74C5e3F5852037F31Ff0093Eeb8c8ADd8D3',
-    9,
-    'SAFEMOON',
-    'Safemoon Token',
-    'https://safemoon.net/',
-  ),
   axs: new Token(
     MAINNET,
     '0x715D400F88C167884bbCc41C5FeA407ed4D2f8A0',
@@ -2147,30 +2179,9 @@ export const mainnetTokens = defineTokens({
 } as const)
 
 export const testnetTokens = defineTokens({
-  wbnb: new Token(
-    TESTNET,
-    '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
-    18,
-    'WBNB',
-    'Wrapped BNB',
-    'https://www.binance.com/',
-  ),
-  cake: new Token(
-    TESTNET,
-    '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
-    18,
-    'CAKE',
-    'PancakeSwap Token',
-    'https://pancakeswap.finance/',
-  ),
-  busd: new Token(
-    TESTNET,
-    '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee',
-    18,
-    'BUSD',
-    'Binance USD',
-    'https://www.paxos.com/busd/',
-  ),
+  wbnb: WBNB_TESTNET,
+  cake: CAKE_TESTNET,
+  busd: BUSD_TESTNET,
   syrup: new Token(
     TESTNET,
     '0xfE1e507CeB712BDe086f3579d2c03248b2dB77f9',
@@ -2188,28 +2199,3 @@ export const testnetTokens = defineTokens({
     'https://www.bakeryswap.org/',
   ),
 } as const)
-
-const tokens = () => {
-  // If testnet - return list comprised of testnetTokens wherever they exist, and mainnetTokens where they don't
-  if (parseInt(CHAIN_ID, 10) === ChainId.TESTNET) {
-    return Object.keys(mainnetTokens).reduce((accum, key) => {
-      return { ...accum, [key]: testnetTokens[key] || mainnetTokens[key] }
-    }, {} as typeof testnetTokens & typeof mainnetTokens)
-  }
-
-  return mainnetTokens
-}
-
-const unserializedTokens = tokens()
-
-type SerializedTokenList = Record<keyof typeof unserializedTokens, SerializedToken>
-
-export const serializeTokens = () => {
-  const serializedTokens = Object.keys(unserializedTokens).reduce((accum, key) => {
-    return { ...accum, [key]: serializeToken(unserializedTokens[key]) }
-  }, {} as SerializedTokenList)
-
-  return serializedTokens
-}
-
-export default unserializedTokens
