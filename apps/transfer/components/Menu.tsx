@@ -11,11 +11,13 @@ import {
   LogoutIcon,
   Text,
   Box,
+  ThemeSwitcher,
 } from '@pancakeswap/uikit'
 import Image from 'next/future/image'
 import NextLink from 'next/link'
 import { useCallback } from 'react'
 import styled, { useTheme } from 'styled-components'
+import { useTheme as useNextTheme } from 'next-themes'
 import { useAccount, useConnect, useDisconnect, useNetwork, useSwitchNetwork } from 'wagmi'
 
 const SUPPORTED_CONNECTORS = walletConnectors.filter(
@@ -60,6 +62,7 @@ const StyledMenuItem = styled.a<any>`
 
 export function Menu() {
   const theme = useTheme()
+  const { setTheme } = useNextTheme()
 
   return (
     <Flex height="56px" bg="backgroundAlt" px="16px" alignItems="center" justifyContent="space-between" zIndex={1}>
@@ -73,7 +76,12 @@ export function Menu() {
           <StyledMenuItem href="https://pancakeswap.finance/swap">Swap</StyledMenuItem>
         </Flex>
       </Flex>
-      <User />
+      <Flex alignItems="center">
+        <Box mr="16px">
+          <ThemeSwitcher isDark={theme.isDark} toggleTheme={() => setTheme(theme.isDark ? 'light' : 'dark')} />
+        </Box>
+        <User />
+      </Flex>
     </Flex>
   )
 }
