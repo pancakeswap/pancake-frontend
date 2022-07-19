@@ -10,7 +10,7 @@ import {
 } from 'wagmi/chains'
 import { Chain } from 'wagmi'
 
-const avalandche: Chain = {
+export const avalandche: Chain = {
   id: 43114,
   name: 'Avalanche C-Chain',
   network: 'avalanche',
@@ -26,7 +26,7 @@ const avalandche: Chain = {
   },
 }
 
-const avalandcheFuji: Chain = {
+export const avalandcheFuji: Chain = {
   id: 43113,
   name: 'Avalanche Fuji',
   network: 'avalanche-fuji',
@@ -43,7 +43,7 @@ const avalandcheFuji: Chain = {
   testnet: true,
 }
 
-const fantomOpera: Chain = {
+export const fantomOpera: Chain = {
   id: 250,
   name: 'Fantom Opera',
   network: 'fantom',
@@ -59,7 +59,7 @@ const fantomOpera: Chain = {
   },
 }
 
-const fantomTestnet: Chain = {
+export const fantomTestnet: Chain = {
   id: 4002,
   name: 'Fantom Testnet',
   network: 'fantom-testnet',
@@ -78,7 +78,7 @@ const fantomTestnet: Chain = {
 
 const bscExplorer = { name: 'BscScan', url: 'https://bscscan.com' }
 
-const bsc: Chain = {
+export const bsc: Chain = {
   id: 56,
   name: 'BNB Smart Chain Mainnet',
   network: 'bsc',
@@ -101,7 +101,7 @@ const bsc: Chain = {
   },
 }
 
-const bscTest: Chain = {
+export const bscTest: Chain = {
   id: 97,
   name: 'BNB Smart Chain Testnet',
   network: 'bsc-testnet',
