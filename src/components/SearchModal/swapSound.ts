@@ -1,6 +1,6 @@
 let swapSound: HTMLAudioElement
 
-const swapSoundURL = 'https://pancake.mypinata.cloud/ipfs/Qmc5kLWfQpQHu96iwre9DWSjtedXqVUgmCvehdcVPWZtc7'
+const swapSoundURL = 'https://cdn.pancakeswap.com/swap.mp3'
 
 export const getSwapSound = () => {
   if (!swapSound) {
