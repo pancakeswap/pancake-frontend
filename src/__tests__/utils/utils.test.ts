@@ -9,10 +9,10 @@ describe('getActiveMenuItem', () => {
     const pathname = '/swap'
 
     // When
-    const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT) })
+    const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT, false, undefined) })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT)[0])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[0])
   })
 
   it('should return an active item if pathname found in subitems', () => {
@@ -20,10 +20,10 @@ describe('getActiveMenuItem', () => {
     const pathname = '/pools'
 
     // When
-    const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT) })
+    const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT, false, undefined) })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT)[1])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[1])
   })
 
   it('should not return an item that only includes pathname but not starts with', () => {
@@ -31,10 +31,10 @@ describe('getActiveMenuItem', () => {
     const pathname = '/info/pools'
 
     // When
-    const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT) })
+    const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT, false, undefined) })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT)[4])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[4])
   })
 
   it('should return undefined if item is not found', () => {
@@ -42,7 +42,7 @@ describe('getActiveMenuItem', () => {
     const pathname = '/corgi'
 
     // When
-    const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT) })
+    const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT, false, undefined) })
 
     // Then
     expect(result).toEqual(undefined)
@@ -55,7 +55,7 @@ describe('getActiveSubMenuItem', () => {
     const pathname = '/'
 
     // When
-    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT)[1] })
+    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[1] })
 
     // Then
     expect(result).toEqual(undefined)
@@ -66,10 +66,10 @@ describe('getActiveSubMenuItem', () => {
     const pathname = '/pools'
 
     // When
-    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT)[1] })
+    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[1] })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT)[1].items[1])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[1].items[1])
   })
 
   it('should return the item with the longest href when multiple items are found', () => {
@@ -77,10 +77,10 @@ describe('getActiveSubMenuItem', () => {
     const pathname = '/nfts/collections/0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07'
 
     // When
-    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT)[3] })
+    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[3] })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT)[3].items[1])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[3].items[1])
   })
 
   it('should return undefined if item is not found', () => {
@@ -88,7 +88,7 @@ describe('getActiveSubMenuItem', () => {
     const pathname = '/corgi'
 
     // When
-    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT)[1] })
+    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[1] })
 
     // Then
     expect(result).toEqual(undefined)
@@ -99,9 +99,11 @@ describe('getActiveSubMenuItem', () => {
     const pathname = '/nfts/collections/0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07'
 
     // When
-    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT)[3] })
+    const result = getActiveSubMenuItem({ pathname, menuItem: menuConfig(mockT, false, undefined)[3] })
 
     // Then
-    expect(result).toEqual(menuConfig(mockT)[3].items[1])
+    expect(result).toEqual(menuConfig(mockT, false, undefined)[3].items[1])
   })
+
+  it.todo('should return items with supportChainId')
 })
