@@ -52,6 +52,7 @@ const initialState: PotteryState = Object.freeze({
     totalPlayers: '',
     txid: '',
     winners: [],
+    lockDate: '',
   },
 })
 
