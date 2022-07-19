@@ -10,11 +10,11 @@ import WithdrawButton from 'views/Pottery/components/Pot/Claim/WithdrawButton'
 import { convertTimeToSeconds } from 'utils/timeHelper'
 import { calculateCakeAmount } from 'views/Pottery/helpers'
 
-interface AvailableWitdrawProps {
+interface AvailableWithdrawProps {
   withdrawData: PotteryWithdrawAbleData
 }
 
-const AvailableWitdraw: React.FC<AvailableWitdrawProps> = ({ withdrawData }) => {
+const AvailableWithdraw: React.FC<AvailableWithdrawProps> = ({ withdrawData }) => {
   const {
     t,
     currentLanguage: { locale },
@@ -65,4 +65,4 @@ const AvailableWitdraw: React.FC<AvailableWitdrawProps> = ({ withdrawData }) => 
   )
 }
 
-export default AvailableWitdraw
+export default AvailableWithdraw

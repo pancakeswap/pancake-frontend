@@ -8,7 +8,7 @@ import BigNumber from 'bignumber.js'
 import { BIG_ONE } from 'utils/bigNumber'
 import YourDeposit from '../YourDeposit'
 import WalletNotConnected from './WalletNotConnected'
-import AvailableWitdraw from './AvailableWitdraw'
+import AvailableWithdraw from './AvailableWithdraw'
 import PrizeToBeClaimed from './PrizeToBeClaimed'
 import CardFooter from './CardFooter'
 
@@ -43,7 +43,7 @@ const Claim: React.FC = () => {
               <YourDeposit depositBalance={allDeposit} />
             </Flex>
             {userData.withdrawAbleData.map((data) => (
-              <AvailableWitdraw key={data.id} withdrawData={data} />
+              <AvailableWithdraw key={data.id} withdrawData={data} />
             ))}
             <PrizeToBeClaimed userData={userData} />
           </GreyCard>
