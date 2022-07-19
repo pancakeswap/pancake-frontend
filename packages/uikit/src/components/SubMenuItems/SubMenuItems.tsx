@@ -1,5 +1,5 @@
 import debounce from "lodash/debounce";
-import React, { useCallback, useLayoutEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import useMatchBreakpoints from "../../hooks/useMatchBreakpoints";
 import { Box } from "../Box";
 import { DropdownMenuItemType } from "../DropdownMenu/types";
@@ -31,7 +31,7 @@ const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isM
       chevronRightRef.current.classList.remove("hide");
     else chevronRightRef.current.classList.add("hide");
   }, []);
-  useLayoutEffect(() => {
+  useEffect(() => {
     layerController();
   }, [layerController]);
   return (
@@ -77,7 +77,14 @@ const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isM
           return (
             label && (
               <StyledSubMenuItemWrapper key={label} mr="20px">
-                <MenuItem href={href} isActive={href === activeItem} variant="subMenu" {...itemProps} {...linkProps}>
+                <MenuItem
+                  href={href}
+                  scrollLayerRef={scrollLayerRef}
+                  isActive={href === activeItem}
+                  variant="subMenu"
+                  {...itemProps}
+                  {...linkProps}
+                >
                   {Icon && <Icon color={href === activeItem ? "secondary" : "textSubtle"} mr="4px" />}
                   {label}
                   {isExternalLink && (
