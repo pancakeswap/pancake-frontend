@@ -17,7 +17,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
-import { mainnetTokens } from 'config/constants/tokens'
+import { bscTokens } from 'config/constants/tokens'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { useAppDispatch } from 'state'
@@ -85,7 +85,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
   const lotteryContract = useLotteryV2Contract()
   const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
   const { toastSuccess } = useToast()
-  const { balance: userCake, fetchStatus } = useTokenBalance(mainnetTokens.cake.address)
+  const { balance: userCake, fetchStatus } = useTokenBalance(bscTokens.cake.address)
   // balance from useTokenBalance causes rerenders in effects as a new BigNumber is instantiated on each render, hence memoising it using the stringified value below.
   const stringifiedUserCake = userCake.toJSON()
   const memoisedUserCake = useMemo(() => new BigNumber(stringifiedUserCake), [stringifiedUserCake])

@@ -403,7 +403,7 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
 export function useGasPrice(): string {
   const { chainId } = useActiveWeb3React()
   const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
-  return chainId === ChainId.MAINNET ? userGas : GAS_PRICE_GWEI.testnet
+  return chainId === ChainId.BSC ? userGas : GAS_PRICE_GWEI.testnet
 }
 
 export function useGasPriceManager(): [string, (userGasPrice: string) => void] {

@@ -16,7 +16,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import cakeAbi from 'config/abi/cake.json'
 import { getCakeVaultAddress, getCakeFlexibleSideVaultAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
-import { mainnetTokens } from 'config/constants/tokens'
+import { bscTokens } from 'config/constants/tokens'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { bscRpcProvider } from 'utils/providers'
 import priceHelperLpsConfig from 'config/constants/priceHelperLps'
@@ -108,12 +108,12 @@ export const fetchCakePoolPublicDataAsync = () => async (dispatch, getState) => 
 
 export const fetchCakePoolUserDataAsync = (account: string) => async (dispatch) => {
   const allowanceCall = {
-    address: mainnetTokens.cake.address,
+    address: bscTokens.cake.address,
     name: 'allowance',
     params: [account, cakeVaultAddress],
   }
   const balanceOfCall = {
-    address: mainnetTokens.cake.address,
+    address: bscTokens.cake.address,
     name: 'balanceOf',
     params: [account],
   }

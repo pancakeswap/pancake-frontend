@@ -47,7 +47,7 @@ const config: (
         {
           label: t('Limit'),
           href: '/limit-orders',
-          supportChainIds: [ChainId.MAINNET],
+          supportChainIds: [ChainId.BSC],
         },
         {
           label: t('Liquidity'),
@@ -71,7 +71,7 @@ const config: (
       href: '/farms',
       icon: EarnIcon,
       fillIcon: EarnFillIcon,
-      supportChainIds: [ChainId.MAINNET],
+      supportChainIds: [ChainId.BSC],
       items: [
         {
           label: t('Farms'),
@@ -88,7 +88,7 @@ const config: (
       href: '/prediction',
       icon: TrophyIcon,
       fillIcon: TrophyFillIcon,
-      supportChainIds: [ChainId.MAINNET],
+      supportChainIds: [ChainId.BSC],
       items: [
         {
           label: t('Trading Competition'),
@@ -110,7 +110,7 @@ const config: (
       href: `${nftsBaseUrl}`,
       icon: NftIcon,
       fillIcon: NftFillIcon,
-      supportChainIds: [ChainId.MAINNET],
+      supportChainIds: [ChainId.BSC],
       items: [
         {
           label: t('Overview'),
@@ -131,7 +131,7 @@ const config: (
       href: '/info',
       icon: MoreIcon,
       hideSubNav: true,
-      supportChainIds: [ChainId.MAINNET],
+      supportChainIds: [ChainId.BSC],
       items: [
         {
           label: t('Info'),

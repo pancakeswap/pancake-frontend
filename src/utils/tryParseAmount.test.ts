@@ -1,4 +1,4 @@
-import { testnetTokens } from 'config/constants/tokens'
+import { bscTestnetTokens } from 'config/constants/tokens'
 import tryParseAmount from './tryParseAmount'
 
 describe('utils/tryParseAmount', () => {
@@ -10,6 +10,6 @@ describe('utils/tryParseAmount', () => {
   })
 
   it('should pared value', () => {
-    expect(tryParseAmount('100', testnetTokens.cake)).toBeTruthy()
+    expect(tryParseAmount('100', bscTestnetTokens.cake)).toBeTruthy()
   })
 })

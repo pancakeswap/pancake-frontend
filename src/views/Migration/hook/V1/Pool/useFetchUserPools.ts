@@ -6,7 +6,7 @@ import { transformPool } from 'state/pools/helpers'
 import { getCakeContract } from 'utils/contractHelpers'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PoolCategory } from 'config/constants/types'
-import { mainnetTokens } from 'config/constants/tokens'
+import { bscTokens } from 'config/constants/tokens'
 import { serializeTokens } from 'utils/serializeTokens'
 import { fetchUserStakeBalances, fetchUserPendingRewards } from './fetchPoolsUser'
 
@@ -15,7 +15,7 @@ export interface PoolsState {
   userDataLoaded: boolean
 }
 
-const serializedTokens = serializeTokens(mainnetTokens)
+const serializedTokens = serializeTokens(bscTokens)
 const cakeContract = getCakeContract()
 
 const initialData = {

@@ -6,7 +6,7 @@ import { useTranslation, TranslateFunction } from 'contexts/Localization'
 import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ethersToBigNumber } from 'utils/bigNumber'
-import { mainnetTokens } from 'config/constants/tokens'
+import { bscTokens } from 'config/constants/tokens'
 import { ChainId } from '@pancakeswap/sdk'
 import { parseUnits, formatEther } from '@ethersproject/units'
 import { useERC20, useNftMarketContract } from 'hooks/useContract'
@@ -48,7 +48,7 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const { account, chainId } = useWeb3React()
-  const wbnbAddress = chainId === ChainId.TESTNET ? TESTNET_WBNB_NFT_ADDRESS : mainnetTokens.wbnb.address
+  const wbnbAddress = chainId === ChainId.BSC_TESTNET ? TESTNET_WBNB_NFT_ADDRESS : bscTokens.wbnb.address
   const wbnbContractReader = useERC20(wbnbAddress, false)
   const wbnbContractApprover = useERC20(wbnbAddress)
   const nftMarketContract = useNftMarketContract()

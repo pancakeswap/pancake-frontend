@@ -7,22 +7,22 @@ import { calculateSlippageAmount, basisPointsToPercent } from 'utils/exchange'
 describe('utils', () => {
   describe('#getBscScanLink', () => {
     it('correct for tx', () => {
-      expect(getBscScanLink('abc', 'transaction', ChainId.MAINNET)).toEqual('https://bscscan.com/tx/abc')
+      expect(getBscScanLink('abc', 'transaction', ChainId.BSC)).toEqual('https://bscscan.com/tx/abc')
     })
     it('correct for token', () => {
-      expect(getBscScanLink('abc', 'token', ChainId.MAINNET)).toEqual('https://bscscan.com/token/abc')
+      expect(getBscScanLink('abc', 'token', ChainId.BSC)).toEqual('https://bscscan.com/token/abc')
     })
     it('correct for address', () => {
-      expect(getBscScanLink('abc', 'address', ChainId.MAINNET)).toEqual('https://bscscan.com/address/abc')
+      expect(getBscScanLink('abc', 'address', ChainId.BSC)).toEqual('https://bscscan.com/address/abc')
     })
     it('enum', () => {
-      expect(getBscScanLink('abc', 'address', ChainId.TESTNET)).toEqual('https://testnet.bscscan.com/address/abc')
+      expect(getBscScanLink('abc', 'address', ChainId.BSC_TESTNET)).toEqual('https://testnet.bscscan.com/address/abc')
     })
   })
 
   describe('#calculateSlippageAmount', () => {
     it('bounds are correct', () => {
-      const tokenAmount = new TokenAmount(new Token(ChainId.MAINNET, AddressZero, 0), '100')
+      const tokenAmount = new TokenAmount(new Token(ChainId.BSC, AddressZero, 0), '100')
       expect(() => calculateSlippageAmount(tokenAmount, -1)).toThrow()
       expect(calculateSlippageAmount(tokenAmount, 0).map((bound) => bound.toString())).toEqual(['100', '100'])
       expect(calculateSlippageAmount(tokenAmount, 100).map((bound) => bound.toString())).toEqual(['99', '101'])

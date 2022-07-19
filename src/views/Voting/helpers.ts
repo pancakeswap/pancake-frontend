@@ -1,5 +1,5 @@
 import { SNAPSHOT_HUB_API } from 'config/constants/endpoints'
-import { mainnetTokens } from 'config/constants/tokens'
+import { bscTokens } from 'config/constants/tokens'
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
 import { ADMINS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
 import { getScores } from './getScores'
@@ -36,7 +36,7 @@ export interface Message {
 }
 
 const STRATEGIES = [
-  { name: 'cake', params: { symbol: 'CAKE', address: mainnetTokens.cake.address, decimals: 18, max: 300 } },
+  { name: 'cake', params: { symbol: 'CAKE', address: bscTokens.cake.address, decimals: 18, max: 300 } },
 ]
 const NETWORK = '56'
 

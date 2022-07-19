@@ -10,7 +10,7 @@ import { Web3Provider } from '@ethersproject/providers'
 
 const POLLING_INTERVAL = 12000
 
-const SUPPORTED_CHAIN_ID = [ChainId.MAINNET, ChainId.TESTNET]
+const SUPPORTED_CHAIN_ID = [ChainId.BSC, ChainId.BSC_TESTNET]
 
 export const injected = new InjectedConnector({ supportedChainIds: SUPPORTED_CHAIN_ID })
 
@@ -27,7 +27,7 @@ export const connectorsByName = {
   [ConnectorNames.BSC]: bscConnector,
   [ConnectorNames.Blocto]: async () => {
     const { BloctoConnector } = await import('@blocto/blocto-connector')
-    return new BloctoConnector({ chainId: ChainId.MAINNET, rpc: 'https://bsc.nodereal.io' })
+    return new BloctoConnector({ chainId: ChainId.BSC, rpc: 'https://bsc.nodereal.io' })
   },
   [ConnectorNames.WalletLink]: async () => {
     const { WalletLinkConnector } = await import('@web3-react/walletlink-connector')

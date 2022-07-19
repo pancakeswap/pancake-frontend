@@ -18,7 +18,7 @@ import { ConnectedBidder, FetchStatus } from 'config/constants/types'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { mainnetTokens } from 'config/constants/tokens'
+import { bscTokens } from 'config/constants/tokens'
 import { requiresApproval } from 'utils/requiresApproval'
 
 const StyledModal = styled(Modal)`
@@ -66,7 +66,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
   const [userNotEnoughCake, setUserNotEnoughCake] = useState(false)
   const [errorText, setErrorText] = useState(null)
 
-  const { balance: userCake, fetchStatus } = useTokenBalance(mainnetTokens.cake.address)
+  const { balance: userCake, fetchStatus } = useTokenBalance(bscTokens.cake.address)
   const userCakeBalance = getBalanceAmount(userCake)
 
   const cakePriceBusd = usePriceCakeBusd()

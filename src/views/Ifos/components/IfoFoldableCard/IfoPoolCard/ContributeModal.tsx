@@ -29,7 +29,7 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useToast from 'hooks/useToast'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useERC20 } from 'hooks/useContract'
-import { mainnetTokens } from 'config/constants/tokens'
+import { bscTokens } from 'config/constants/tokens'
 import { requiresApproval } from 'utils/requiresApproval'
 
 const MessageTextLink = styled(Link)`
@@ -99,7 +99,7 @@ const ContributeModal: React.FC<Props> = ({
   const raisingTokenContractApprover = useERC20(currency.address)
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
-  const label = currency === mainnetTokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
+  const label = currency === bscTokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({

@@ -4,7 +4,7 @@ import {
   TokenImage as UIKitTokenImage,
   ImageProps,
 } from '@pancakeswap/uikit'
-import { mainnetTokens } from 'config/constants/tokens'
+import { bscTokens } from 'config/constants/tokens'
 import { Token, ETHER } from '@pancakeswap/sdk'
 
 interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc' | 'secondarySrc'> {
@@ -13,7 +13,7 @@ interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc
 }
 
 const getImageUrlFromToken = (token: Token) => {
-  const address = token === ETHER ? mainnetTokens.bnb.address : token.address
+  const address = token === ETHER ? bscTokens.bnb.address : token.address
   if (token.chainId !== 56) {
     return `/images/${token.chainId}/tokens/${address}.png`
   }
