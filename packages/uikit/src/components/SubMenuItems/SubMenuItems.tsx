@@ -1,16 +1,17 @@
-import React, { useLayoutEffect, useRef, useCallback } from "react";
+import debounce from "lodash/debounce";
+import React, { useCallback, useLayoutEffect, useRef } from "react";
+import useMatchBreakpoints from "../../hooks/useMatchBreakpoints";
 import { Box } from "../Box";
 import { DropdownMenuItemType } from "../DropdownMenu/types";
 import MenuItem from "../MenuItem/MenuItem";
-import { OpenNewIcon, ChevronRightIcon, ChevronLeftIcon } from "../Svg";
+import { ChevronLeftIcon, ChevronRightIcon, OpenNewIcon } from "../Svg";
 import StyledSubMenuItems, {
-  StyledSubMenuItemWrapper,
   LeftMaskLayer,
   RightMaskLayer,
+  StyledSubMenuItemWrapper,
   SubMenuItemWrapper,
 } from "./styles";
 import { SubMenuItemsProps } from "./types";
-import useMatchBreakpoints from "../../hooks/useMatchBreakpoints";
 // import useMatchBreakpointsContext from "../../contexts/MatchBreakpoints/useMatchBreakpointsContext";
 
 const SUBMENU_CHEVRON_CLICK_MOVE_PX = 100;
@@ -22,6 +23,7 @@ const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isM
   const chevronLeftRef = useRef<HTMLDivElement>(null);
   const chevronRightRef = useRef<HTMLDivElement>(null);
   const layerController = useCallback(() => {
+    console.log("check");
     if (!scrollLayerRef.current || !chevronLeftRef.current || !chevronRightRef.current) return;
     const scrollLayer = scrollLayerRef.current;
     if (scrollLayer.scrollLeft === 0) chevronLeftRef.current.classList.add("hide");
@@ -49,10 +51,10 @@ const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isM
       {isMobile && (
         <RightMaskLayer
           ref={chevronRightRef}
-          onClick={() => {
+          onClick={debounce(() => {
             if (!scrollLayerRef.current) return;
             scrollLayerRef.current.scrollLeft += SUBMENU_CHEVRON_CLICK_MOVE_PX;
-          }}
+          }, 100)}
         >
           <ChevronRightIcon />
         </RightMaskLayer>
@@ -60,7 +62,7 @@ const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isM
       <StyledSubMenuItems
         justifyContent={[isMobileOnly ? "flex-end" : "start", null, "center"]}
         pl={["12px", null, "0px"]}
-        onScroll={layerController}
+        onScroll={debounce(layerController, 100)}
         ref={scrollLayerRef}
       >
         {items.map(({ label, href, icon, itemProps, type }) => {
