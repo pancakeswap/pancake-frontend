@@ -70,9 +70,11 @@ export function Menu() {
         <Logo isDark={theme.isDark} href="https://pancakeswap.finance" />
 
         <Flex pl={['25px', null, '50px']}>
-          <NextLink href="/" passHref>
-            <StyledMenuItem $isActive>Transfer</StyledMenuItem>
-          </NextLink>
+          <Box display={['none', null, 'flex']}>
+            <NextLink href="/" passHref>
+              <StyledMenuItem $isActive>Transfer</StyledMenuItem>
+            </NextLink>
+          </Box>
           <StyledMenuItem href="https://pancakeswap.finance/swap">Swap</StyledMenuItem>
         </Flex>
       </Flex>
