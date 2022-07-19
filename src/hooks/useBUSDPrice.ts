@@ -1,4 +1,4 @@
-import { Currency, currencyEquals, JSBI, Price, WETH } from '@pancakeswap/sdk'
+import { Currency, currencyEquals, JSBI, Price, WNATIVE } from '@pancakeswap/sdk'
 import { CAKE, BUSD } from 'config/constants/tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
@@ -13,7 +13,7 @@ import { PairState, usePairs } from './usePairs'
 export default function useBUSDPrice(currency?: Currency): Price | undefined {
   const { chainId } = useActiveWeb3React()
   const wrapped = wrappedCurrency(currency, chainId)
-  const WBNB = WETH[chainId]
+  const WBNB = WNATIVE[chainId]
   const busd = BUSD[chainId]
 
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
@@ -105,6 +105,6 @@ export const useBUSDCakeAmount = (amount: number): number | undefined => {
 
 export const useBNBBusdPrice = (): Price | undefined => {
   const { chainId } = useActiveWeb3React()
-  const bnbBusdPrice = useBUSDPrice(WETH[chainId])
+  const bnbBusdPrice = useBUSDPrice(WNATIVE[chainId])
   return bnbBusdPrice
 }

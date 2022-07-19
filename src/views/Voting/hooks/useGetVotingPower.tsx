@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { FetchStatus } from 'config/constants/types'
 import useSWRImmutable from 'swr/immutable'
@@ -23,7 +24,7 @@ const useGetVotingPower = (block?: number, isActive = true): State & { isLoading
     async () => {
       const blockNumber = block || (await bscRpcProvider.getBlockNumber())
       const eligiblePools = await getActivePools(blockNumber)
-      const poolAddresses = eligiblePools.map(({ contractAddress }) => getAddress(contractAddress, 56))
+      const poolAddresses = eligiblePools.map(({ contractAddress }) => getAddress(contractAddress, ChainId.BSC))
       const { cakeBalance, cakeBnbLpBalance, cakePoolBalance, total, poolsBalance, cakeVaultBalance, ifoPoolBalance } =
         await getVotingPower(account, poolAddresses, blockNumber)
       return {

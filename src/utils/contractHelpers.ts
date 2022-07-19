@@ -127,6 +127,7 @@ import type {
   Zap,
   PredictionsV1,
 } from 'config/abi/types'
+import { ChainId } from '@pancakeswap/sdk'
 
 export const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
   const signerOrProvider = signer ?? bscRpcProvider
@@ -154,18 +155,18 @@ export const getIfoV3Contract = (address: string, signer?: Signer | Provider) =>
 export const getSouschefContract = (id: number, signer?: Signer | Provider) => {
   const config = poolsConfig.find((pool) => pool.sousId === id)
   const abi = config.poolCategory === PoolCategory.BINANCE ? sousChefBnb : sousChef
-  return getContract(abi, getAddress(config.contractAddress, 56), signer) as SousChef
+  return getContract(abi, getAddress(config.contractAddress), signer) as SousChef
 }
 export const getSouschefV2Contract = (id: number, signer?: Signer | Provider) => {
   const config = poolsConfig.find((pool) => pool.sousId === id)
-  return getContract(sousChefV2, getAddress(config.contractAddress, 56), signer) as SousChefV2
+  return getContract(sousChefV2, getAddress(config.contractAddress), signer) as SousChefV2
 }
 
 export const getPointCenterIfoContract = (signer?: Signer | Provider) => {
   return getContract(pointCenterIfo, getPointCenterIfoAddress(), signer) as PointCenterIfo
 }
 export const getCakeContract = (signer?: Signer | Provider, chainId?: number) => {
-  return getContract(cakeAbi, chainId ? CAKE[chainId].address : CAKE[56].address, signer) as Cake
+  return getContract(cakeAbi, chainId ? CAKE[chainId].address : CAKE[ChainId.BSC].address, signer) as Cake
 }
 export const getProfileContract = (signer?: Signer | Provider) => {
   return getContract(profileABI, getPancakeProfileAddress(), signer) as PancakeProfile

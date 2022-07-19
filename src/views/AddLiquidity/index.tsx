@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { currencyEquals, ETHER, JSBI, TokenAmount, WETH, MINIMUM_LIQUIDITY } from '@pancakeswap/sdk'
+import { currencyEquals, ETHER, JSBI, TokenAmount, WNATIVE, MINIMUM_LIQUIDITY } from '@pancakeswap/sdk'
 import {
   Button,
   Text,
@@ -72,7 +72,7 @@ export default function AddLiquidity() {
   const { account, chainId, library } = useActiveWeb3React()
 
   const [zapMode] = useZapModeManager()
-  const [currencyIdA, currencyIdB] = router.query.currency || [WETH[chainId]?.address, CAKE[chainId]?.address]
+  const [currencyIdA, currencyIdB] = router.query.currency || [WWNATIVE[chainId]?.address, CAKE[chainId]?.address]
   const [steps, setSteps] = useState(Steps.Choose)
 
   const dispatch = useAppDispatch()
@@ -500,8 +500,8 @@ export default function AddLiquidity() {
 
   const oneCurrencyIsWBNB = Boolean(
     chainId &&
-      ((currencyA && currencyEquals(currencyA, WETH[chainId])) ||
-        (currencyB && currencyEquals(currencyB, WETH[chainId]))),
+      ((currencyA && currencyEquals(currencyA, WNATIVE[chainId])) ||
+        (currencyB && currencyEquals(currencyB, WNATIVE[chainId]))),
   )
 
   const noAnyInputAmount = !parsedAmounts[Field.CURRENCY_A] && !parsedAmounts[Field.CURRENCY_B]

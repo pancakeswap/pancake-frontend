@@ -6,7 +6,7 @@ import { getAddress } from '@ethersproject/address'
 import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
-import { Token, Currency, ETHER } from '@pancakeswap/sdk'
+import { Token, Currency, ETHER, ChainId } from '@pancakeswap/sdk'
 import { TokenAddressMap } from 'state/types'
 import { BASE_BSC_SCAN_URLS } from '../config'
 
@@ -24,7 +24,7 @@ export function getBscScanLink(
   type: 'transaction' | 'token' | 'address' | 'block' | 'countdown',
   chainIdOverride?: number,
 ): string {
-  const chainId = chainIdOverride || 56
+  const chainId = chainIdOverride || ChainId.BSC
   switch (type) {
     case 'transaction': {
       return `${BASE_BSC_SCAN_URLS[chainId]}/tx/${data}`
@@ -45,7 +45,7 @@ export function getBscScanLink(
 }
 
 export function getBscScanLinkForNft(collectionAddress: string, tokenId: string): string {
-  return `${BASE_BSC_SCAN_URLS[56]}/token/${collectionAddress}?a=${tokenId}`
+  return `${BASE_BSC_SCAN_URLS[ChainId.BSC]}/token/${collectionAddress}?a=${tokenId}`
 }
 
 // add 10%

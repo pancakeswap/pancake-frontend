@@ -5,7 +5,7 @@ import {
   ImageProps,
 } from '@pancakeswap/uikit'
 import { bscTokens } from 'config/constants/tokens'
-import { Token, ETHER } from '@pancakeswap/sdk'
+import { Token, ETHER, ChainId } from '@pancakeswap/sdk'
 
 interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc' | 'secondarySrc'> {
   primaryToken: Token
@@ -14,7 +14,7 @@ interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc
 
 const getImageUrlFromToken = (token: Token) => {
   const address = token === ETHER ? bscTokens.bnb.address : token.address
-  if (token.chainId !== 56) {
+  if (token.chainId !== ChainId.BSC) {
     return `/images/${token.chainId}/tokens/${address}.png`
   }
   return `/images/tokens/${address}.png`

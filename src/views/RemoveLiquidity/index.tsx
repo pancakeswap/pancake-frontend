@@ -5,7 +5,7 @@ import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
 import useToast from 'hooks/useToast'
-import { Currency, currencyEquals, ETHER, Percent, WETH } from '@pancakeswap/sdk'
+import { Currency, currencyEquals, ETHER, Percent, WNATIVE } from '@pancakeswap/sdk'
 import {
   Button,
   Text,
@@ -256,7 +256,7 @@ export default function RemoveLiquidity() {
 
     let methodName
     let args
-    if (oneCurrencyIsBNB && tokenToReceive.toLowerCase() === WETH[chainId].address.toLowerCase()) {
+    if (oneCurrencyIsBNB && tokenToReceive.toLowerCase() === WNATIVE[chainId].address.toLowerCase()) {
       methodName = 'zapOutBNB'
       args = [
         pair.liquidityToken.address,
@@ -472,8 +472,8 @@ export default function RemoveLiquidity() {
   const oneCurrencyIsBNB = currencyA === ETHER || currencyB === ETHER
   const oneCurrencyIsWBNB = Boolean(
     chainId &&
-      ((currencyA && currencyEquals(WETH[chainId], currencyA)) ||
-        (currencyB && currencyEquals(WETH[chainId], currencyB))),
+      ((currencyA && currencyEquals(WNATIVE[chainId], currencyA)) ||
+        (currencyB && currencyEquals(WNATIVE[chainId], currencyB))),
   )
 
   const handleSelectCurrencyA = useCallback(
@@ -657,8 +657,8 @@ export default function RemoveLiquidity() {
                     <RowBetween style={{ justifyContent: 'flex-end', fontSize: '14px' }}>
                       {oneCurrencyIsBNB ? (
                         <StyledInternalLink
-                          href={`/remove/${currencyA === ETHER ? WETH[chainId].address : currencyIdA}/${
-                            currencyB === ETHER ? WETH[chainId].address : currencyIdB
+                          href={`/remove/${currencyA === ETHER ? WNATIVE[chainId].address : currencyIdA}/${
+                            currencyB === ETHER ? WNATIVE[chainId].address : currencyIdB
                           }`}
                         >
                           {t('Receive WBNB')}
@@ -666,8 +666,8 @@ export default function RemoveLiquidity() {
                       ) : oneCurrencyIsWBNB ? (
                         <StyledInternalLink
                           href={`/remove/${
-                            currencyA && currencyEquals(currencyA, WETH[chainId]) ? 'BNB' : currencyIdA
-                          }/${currencyB && currencyEquals(currencyB, WETH[chainId]) ? 'BNB' : currencyIdB}`}
+                            currencyA && currencyEquals(currencyA, WNATIVE[chainId]) ? 'BNB' : currencyIdA
+                          }/${currencyB && currencyEquals(currencyB, WNATIVE[chainId]) ? 'BNB' : currencyIdB}`}
                         >
                           {t('Receive BNB')}
                         </StyledInternalLink>
