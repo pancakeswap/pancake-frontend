@@ -16,6 +16,7 @@ export const fetchPotteryFinishedRound = async (potteryRoundId: number) => {
             winners
             vault {
               totalPlayers
+              lockDate
             }
           }
         }
@@ -32,6 +33,7 @@ export const fetchPotteryFinishedRound = async (potteryRoundId: number) => {
       totalPlayers: vault.totalPlayers,
       txid,
       winners,
+      lockDate: vault.lockDate,
     }
   } catch (error) {
     console.error('Failed to fetch pottery finished round data', error)
@@ -43,6 +45,7 @@ export const fetchPotteryFinishedRound = async (potteryRoundId: number) => {
       totalPlayers: '',
       txid: '',
       winners: [],
+      lockDate: '',
     }
   }
 }

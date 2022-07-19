@@ -36,7 +36,7 @@ const Deposit: React.FC = () => {
   const { getLockedApy } = useVaultApy()
   const { publicData, userData } = usePotteryData()
   const lastVaultAddress = useLatestVaultAddress()
-  const { totalSupply, totalLockCake, getStatus, totalLockedValue } = publicData
+  const { totalSupply, totalLockCake, getStatus, totalLockedValue, maxTotalDeposit } = publicData
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Pottery draws on each Friday at 12 PM UTC!'), {
     placement: 'bottom-start',
@@ -104,8 +104,14 @@ const Deposit: React.FC = () => {
           <Text color="textSubtle">{t('Total Value Locked')}</Text>
           <Balance bold decimals={2} value={totalValueLocked} unit=" CAKE" />
         </Flex>
+        <Flex justifyContent="space-between">
+          <Text color="textSubtle">{t('Max. deposit cap')}</Text>
+          <Balance bold decimals={2} value={getBalanceNumber(maxTotalDeposit)} unit=" CAKE" />
+        </Flex>
       </Container>
-      <CardAction>{account ? <DepositAction /> : <ConnectWalletButton />}</CardAction>
+      <CardAction>
+        {account ? <DepositAction totalValueLockedValue={totalValueLocked} /> : <ConnectWalletButton />}
+      </CardAction>
     </Box>
   )
 }

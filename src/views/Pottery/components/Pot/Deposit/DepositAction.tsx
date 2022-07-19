@@ -7,7 +7,8 @@ import { usePotteryData, useLatestVaultAddress } from 'state/pottery/hook'
 import { Input as NumericalInput } from 'components/CurrencyInputPanel/NumericalInput'
 import tokens from 'config/constants/tokens'
 import useTokenBalance from 'hooks/useTokenBalance'
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import { getFullDisplayBalance, getBalanceNumber } from 'utils/formatBalance'
+import { PotteryDepositStatus } from 'state/types'
 import { useUserEnoughCakeValidator } from 'views/Pools/components/LockedPool/hooks/useUserEnoughCakeValidator'
 import { BIG_TEN } from 'utils/bigNumber'
 import EnableButton from './EnableButton'
@@ -29,11 +30,18 @@ const Container = styled.div<InputProps>`
   box-shadow: ${({ theme, isWarning }) => (isWarning ? theme.shadows.warning : theme.shadows.inset)};
 `
 
-const DepositAction: React.FC = () => {
+interface DepositActionProps {
+  totalValueLockedValue: number
+}
+
+const DepositAction: React.FC<DepositActionProps> = ({ totalValueLockedValue }) => {
   const { t } = useTranslation()
   const { publicData, userData } = usePotteryData()
   const lastVaultAddress = useLatestVaultAddress()
   const [depositAmount, setDepositAmount] = useState('')
+
+  const maxTotalDepositToNumber = getBalanceNumber(publicData.maxTotalDeposit)
+  const remainingCakeCanStake = new BigNumber(maxTotalDepositToNumber).minus(totalValueLockedValue).toString()
 
   const { balance: userCake } = useTokenBalance(tokens.cake.address)
   const userCakeDisplayBalance = getFullDisplayBalance(userCake, 18, 3)
@@ -49,7 +57,13 @@ const DepositAction: React.FC = () => {
   )
 
   const onClickMax = () => {
-    setDepositAmount(userCake.dividedBy(BIG_TEN.pow(18)).toString())
+    const userCakeBalance = userCake.dividedBy(BIG_TEN.pow(18)).toString()
+
+    if (new BigNumber(userCakeBalance).gte(remainingCakeCanStake)) {
+      setDepositAmount(remainingCakeCanStake)
+    } else {
+      setDepositAmount(userCakeBalance)
+    }
   }
 
   const showMaxButton = useMemo(
@@ -59,12 +73,34 @@ const DepositAction: React.FC = () => {
 
   const isLessThanOneCake = useMemo(() => new BigNumber(depositAmount).lt(1), [depositAmount])
 
+  const isReachMaxAmount = useMemo(() => {
+    return (
+      new BigNumber(totalValueLockedValue).eq(maxTotalDepositToNumber) || new BigNumber(remainingCakeCanStake).lt(1)
+    )
+  }, [maxTotalDepositToNumber, totalValueLockedValue, remainingCakeCanStake])
+
   if (userData.isLoading) {
     return <Skeleton width="100%" height="48px" />
   }
 
   if (userData.allowance.isLessThanOrEqualTo(0)) {
     return <EnableButton potteryVaultAddress={lastVaultAddress} />
+  }
+
+  if (publicData.getStatus !== PotteryDepositStatus.BEFORE_LOCK) {
+    return (
+      <Button disabled mt="10px" width="100%">
+        {t('Deposit closed until next Pottery')}
+      </Button>
+    )
+  }
+
+  if (isReachMaxAmount) {
+    return (
+      <Button disabled mt="10px" width="100%">
+        {t('Max. deposit cap reached')}
+      </Button>
+    )
   }
 
   return (

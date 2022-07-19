@@ -668,6 +668,7 @@ export interface SerializedPotteryPublicData {
   lockStartTime: string
   totalLockedValue: string
   latestRoundId: string
+  maxTotalDeposit: string
 }
 
 export interface DeserializedPublicData {
@@ -679,6 +680,7 @@ export interface DeserializedPublicData {
   lockStartTime: string
   totalLockedValue: BigNumber
   latestRoundId: string
+  maxTotalDeposit: BigNumber
 }
 
 export interface SerializedPotteryUserData {
@@ -709,6 +711,7 @@ export interface PotteryRoundInfo {
   totalPlayers: string
   txid: string
   winners: Array<string>
+  lockDate: string
 }
 
 export enum PotteryDepositStatus {

@@ -8,7 +8,7 @@ import {
 } from 'state/types'
 
 export const transformPotteryPublicData = (publicData: SerializedPotteryPublicData): DeserializedPublicData => {
-  const { totalPrize, totalLockCake, totalSupply, totalLockedValue } = publicData
+  const { totalPrize, totalLockCake, totalSupply, totalLockedValue, maxTotalDeposit } = publicData
 
   return {
     ...publicData,
@@ -16,6 +16,7 @@ export const transformPotteryPublicData = (publicData: SerializedPotteryPublicDa
     totalLockCake: totalLockCake ? new BigNumber(totalLockCake) : BIG_ZERO,
     totalSupply: totalSupply ? new BigNumber(totalSupply) : BIG_ZERO,
     totalLockedValue: totalLockedValue ? new BigNumber(totalLockedValue) : BIG_ZERO,
+    maxTotalDeposit: maxTotalDeposit ? new BigNumber(maxTotalDeposit) : BIG_ZERO,
   }
 }
 

@@ -9,6 +9,7 @@ import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { PotteryRoundInfo } from 'state/types'
 import Divider from 'components/Divider'
+import { getDrawnDate } from 'views/Lottery/helpers'
 import { getBscScanLink } from 'utils'
 import Winner from './Winner'
 
@@ -50,8 +51,11 @@ interface PreviousRoundCardBodyProps {
 }
 
 const PreviousRoundCardBody: React.FC<PreviousRoundCardBodyProps> = ({ latestRoundId, finishedRoundInfo }) => {
-  const { t } = useTranslation()
-  const { isFetched, roundId, prizePot, totalPlayers, txid, winners } = finishedRoundInfo
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
+  const { isFetched, roundId, prizePot, totalPlayers, txid, winners, lockDate } = finishedRoundInfo
   const cakePriceBusd = usePriceCakeBusd()
 
   const prizeAsBn = new BigNumber(prizePot)
@@ -104,11 +108,22 @@ const PreviousRoundCardBody: React.FC<PreviousRoundCardBodyProps> = ({ latestRou
           value={prizeInBusd}
         />
         <Flex flexDirection={['column', 'column', 'row']} justifyContent="space-between">
-          <Flex alignSelf={['center', 'center', 'flex-end']}>
-            <Text fontSize="14px">{t('Total players this round:')}</Text>
-            <Balance bold ml="4px" fontSize="14px" decimals={0} value={Number(totalPlayers)} />
+          <Flex flexDirection="column">
+            <Flex alignSelf={['center', 'center', 'flex-start']}>
+              <Text fontSize="14px">{t('Total players this round:')}</Text>
+              <Balance bold ml="4px" fontSize="14px" decimals={0} value={Number(totalPlayers)} />
+            </Flex>
+            <Flex flexDirection={['column', 'column', 'row']} alignSelf={['center', 'center', 'flex-start']}>
+              <Text fontSize="14px">{t('Pottery deposited on:')}</Text>
+              <Text bold ml="4px" fontSize="14px">
+                {getDrawnDate(locale, finishedRoundInfo.lockDate)}
+              </Text>
+            </Flex>
           </Flex>
-          <LinkExternal m={['auto', 'auto', '0px']} href={getBscScanLink(txid, 'transaction')}>
+          <LinkExternal
+            m={['10px auto auto auto', '10px auto auto auto', 'auto 0 0 auto']}
+            href={getBscScanLink(txid, 'transaction')}
+          >
             {t('View on BscScan')}
           </LinkExternal>
         </Flex>
