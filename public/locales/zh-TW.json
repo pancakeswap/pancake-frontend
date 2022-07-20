@@ -201,7 +201,7 @@
   "You’ll need an active PancakeSwap Profile to take part in an IFO!": "您需要有效的 Pancakeswap 個人檔案才能參與 IFO！",
   "Profile Active!": "個人檔案有效！",
   "Commit CAKE": "提交 CAKE",
-  "When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.": "在 IFO 銷售的過程中，您可以「提交」您的 CAKE 以購買正在出售的代幣。",
+  "Please note that CAKE in the fixed-term staking positions will remain locked and can not be used for committing to IFO sales. You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.": "Please note that CAKE in the fixed-term staking positions will remain locked and can not be used for committing to IFO sales. You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.",
   "Claim your tokens and achievement": "領取您的代幣和成就",
   "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE tokens will be returned to your wallet.": "在 IFO 銷售完成後，您可以領取您購買的任何 IFO 代幣，任何未花費的 CAKE 代幣都將退回您的錢包。",
   "This round’s closing transaction has been submitted to the blockchain, and is awaiting confirmation.": "本回合的最後一筆交易已經提交至區塊鏈，正在等待確認。",
@@ -1764,5 +1764,7 @@
   "No position entered": "未輸入部位",
   "Add liquidity failed: %message%": "新增流動性失敗：%message%",
   "Remove liquidity failed: %message%": "移除流動性失敗：%message%",
-  "Unavailable for legal reasons": "因為法律原因而無法使用"
+  "Unavailable for legal reasons": "因為法律原因而無法使用",
+  "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks."
 }
