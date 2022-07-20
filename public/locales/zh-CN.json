@@ -201,7 +201,7 @@
   "You’ll need an active PancakeSwap Profile to take part in an IFO!": "您需要有效的 Pancakeswap 个人资料才能参与 IFO！",
   "Profile Active!": "个人资料有效！",
   "Commit CAKE": "提交 CAKE",
-  "When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.": "在 IFO 销售过程中，您可以“提交”您的 CAKE 以购买正在出售的代币。",
+  "Please note that CAKE in the fixed-term staking positions will remain locked and can not be used for committing to IFO sales. You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.": "Please note that CAKE in the fixed-term staking positions will remain locked and can not be used for committing to IFO sales. You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.",
   "Claim your tokens and achievement": "领取您的代币和成就",
   "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE tokens will be returned to your wallet.": "在 IFO 销售完成后，您可以领取您购买的任何 IFO 代币，任何未花费的 CAKE 代币都将退回您的钱包。",
   "This round’s closing transaction has been submitted to the blockchain, and is awaiting confirmation.": "此回合的平仓交易已提交给区块链，正在等待确认。",
@@ -1764,5 +1764,7 @@
   "No position entered": "未输入头寸",
   "Add liquidity failed: %message%": "添加流动性失败：%message%",
   "Remove liquidity failed: %message%": "移除流动性失败：%message%",
-  "Unavailable for legal reasons": "因为法律原因不可用"
+  "Unavailable for legal reasons": "因为法律原因不可用",
+  "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks."
 }
