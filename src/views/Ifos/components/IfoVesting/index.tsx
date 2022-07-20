@@ -11,7 +11,7 @@ import TokenInfo from './VestingPeriod/TokenInfo'
 import VestingEnded from './VestingEnded'
 import useFetchVestingData from '../../hooks/vesting/useFetchVestingData'
 
-const StyleVertingCard = styled(Card)`
+const StyleVestingCard = styled(Card)`
   width: 100%;
   max-width: 400px;
   margin: 24px 0 0 0;
@@ -80,7 +80,7 @@ const IfoVesting: React.FC<IfoVestingProps> = () => {
   }, [fetchUserVestingData])
 
   return (
-    <StyleVertingCard isActive>
+    <StyleVestingCard isActive>
       <CardHeader p="16px">
         <Flex justifyContent="space-between" alignItems="center">
           <Box ml="8px">
@@ -112,7 +112,7 @@ const IfoVesting: React.FC<IfoVestingProps> = () => {
         )}
         {cardStatus.status === VestingStatus.ENDED && <VestingEnded />}
       </VestingCardBody>
-    </StyleVertingCard>
+    </StyleVestingCard>
   )
 }
 
