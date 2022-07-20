@@ -785,6 +785,22 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] =
           tokenName: 'MHUNT',
           projectSite: 'https://metashooter.gg/',
         },
+        {
+          account: '0x6a2d41c87c3F28C2C0b466424DE8e08FC2E23eDc',
+          farmName: 'AOG-CAKE',
+          tokenAddress: '0x40C8225329Bd3e28A043B029E0D07a5344d2C27C',
+          quoteToken: tokens.cake,
+          tokenName: 'AOG',
+          projectSite: 'https://ageofgods.net/',
+        },
+        {
+          account: '0xe01935Ef7BEF076eE0257C4D5601940490a8d266',
+          farmName: 'XCAD-BUSD',
+          tokenAddress: '0x431e0cD023a32532BF3969CddFc002c00E98429d',
+          quoteToken: tokens.busd,
+          tokenName: 'XCAD',
+          projectSite: 'https://xcadnetwork.com/',
+        },
       ].map((bidderConfig) => ({
         ...bidderConfig,
         lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken),
