@@ -201,7 +201,7 @@
   "You’ll need an active PancakeSwap Profile to take part in an IFO!": "IFOல் பங்கேற்க pancakeswap சுயவிவரத்தைச் செயற்படுத்த வேண்டியிருக்கும்!",
   "Profile Active!": "சுயவிவரம் செயலிலுள்ளது!",
   "Commit CAKE": "CAKE கமிட் செய்க",
-  "When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.": "IFO விற்பனை நேரலையில் இருக்கும்போது, விற்கப்படுகின்ற டோக்கன்களை வாங்குவதற்கு நீங்கள் உங்களது CAKEகுகளை “கமிட்” செய்யலாம்.",
+  "Please note that CAKE in the fixed-term staking positions will remain locked and can not be used for committing to IFO sales. You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.": "Please note that CAKE in the fixed-term staking positions will remain locked and can not be used for committing to IFO sales. You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.",
   "Claim your tokens and achievement": "உங்கள் டோக்கன்களையும் சாதனையையும் கிளைம் செய்க",
   "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE tokens will be returned to your wallet.": "IFO விற்பனை முடிந்த பிறகு, நீங்கள் வாங்கிய IFO டோக்கன்கள் எவற்றையும் கிளைம் செய்யலாம் மற்றும் செலவிடாத CAKE டோக்கன்கள் எவையும் உங்கள் வாலெட்டிற்கு ரிட்டர்ன் செய்யப்படும்.",
   "This round’s closing transaction has been submitted to the blockchain, and is awaiting confirmation.": "இச்சுற்றின் நிறைவுப் பரிவர்த்தனை, பிளாக்செயினுக்குச் சமர்ப்பிக்கப்பட்டுள்ளது மற்றும் உறுதிப்படுத்தலுக்குக் காத்திருக்கிறது.",
@@ -1764,5 +1764,7 @@
   "No position entered": "எந்த நிலையும் உள்ளிடப்படவில்லை",
   "Add liquidity failed: %message%": "லிக்விடிட்டியைச் சேர்ப்பது தோல்வியுற்றது: %message%",
   "Remove liquidity failed: %message%": "லிக்விடிட்டியை அகற்றுவது தோல்வியுற்றது: %message%",
-  "Unavailable for legal reasons": "சட்டரீதியான காரணங்களுக்காகக் கிடைக்கவில்லை"
+  "Unavailable for legal reasons": "சட்டரீதியான காரணங்களுக்காகக் கிடைக்கவில்லை",
+  "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks."
 }
