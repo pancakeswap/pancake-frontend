@@ -82,7 +82,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
           <Text textAlign="right">{formatNumber(cakeVaultBalance, 0, 3)}</Text>
         </Flex>
       )}
-      {Number.isFinite(ifoPoolBalance) && (
+      {Number.isFinite(ifoPoolBalance) && Number(ifoPoolBalance) > 0 && (
         <Flex alignItems="center" justifyContent="space-between" mb="4px">
           <Text color="textSubtle" fontSize="16px">
             {t('IFO Pool')}

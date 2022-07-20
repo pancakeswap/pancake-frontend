@@ -1,6 +1,7 @@
 import { SNAPSHOT_HUB_API } from 'config/constants/endpoints'
 import tokens from 'config/constants/tokens'
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
+import { getCakeVaultAddress } from 'utils/addressHelpers'
 import { ADMINS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
 import { getScores } from './getScores'
 import * as strategies from './strategies'
@@ -99,6 +100,7 @@ interface GetVotingPowerType {
   cakeBnbLpBalance?: number
   cakeVaultBalance?: number
   ifoPoolBalance?: number
+  lockedCakeBalance?: number
 }
 
 export const getVotingPower = async (
@@ -109,32 +111,33 @@ export const getVotingPower = async (
   if (blockNumber && (blockNumber >= VOTING_POWER_BLOCK.v0 || blockNumber >= VOTING_POWER_BLOCK.v1)) {
     const version = blockNumber >= VOTING_POWER_BLOCK.v1 ? 'v1' : 'v0'
 
-    const [cakeBalance, cakeBnbLpBalance, cakePoolBalance, , cakeVaultBalance, poolsBalance, total, ifoPoolBalance] =
-      await getScores(
-        PANCAKE_SPACE,
-        [
-          strategies.cakeBalanceStrategy(version),
-          strategies.cakeBnbLpBalanceStrategy(version),
-          strategies.cakePoolBalanceStrategy(version),
-          strategies.cakeVaultBalanceStrategy(version),
-          strategies.createPoolsBalanceStrategy(poolAddresses, version),
-          strategies.createTotalStrategy(poolAddresses, version),
-          strategies.ifoPoolBalanceStrategy,
-        ],
-        NETWORK,
-        [account],
-        blockNumber,
-      )
-
-    const versionZero =
-      version === 'v0'
-        ? {
-            ifoPoolBalance: ifoPoolBalance[account] ? ifoPoolBalance[account] : 0,
-          }
-        : {}
+    const [
+      cakeBalance,
+      cakeBnbLpBalance,
+      cakePoolBalance,
+      cakeVaultBalance,
+      poolsBalance,
+      total,
+      lockedCakeBalance,
+      ifoPoolBalance,
+    ] = await getScores(
+      PANCAKE_SPACE,
+      [
+        strategies.cakeBalanceStrategy(version),
+        strategies.cakeBnbLpBalanceStrategy(version),
+        strategies.cakePoolBalanceStrategy(version),
+        strategies.cakeVaultBalanceStrategy(version),
+        strategies.createPoolsBalanceStrategy(poolAddresses, version),
+        strategies.createTotalStrategy(poolAddresses, version),
+        strategies.lockedCakeBalance(getCakeVaultAddress()),
+        strategies.ifoPoolBalanceStrategy,
+      ],
+      NETWORK,
+      [account],
+      blockNumber,
+    )
 
     return {
-      ...versionZero,
       voter: account,
       total: total[account] ? total[account] : 0,
       poolsBalance: poolsBalance[account] ? poolsBalance[account] : 0,
@@ -142,6 +145,8 @@ export const getVotingPower = async (
       cakePoolBalance: cakePoolBalance[account] ? cakePoolBalance[account] : 0,
       cakeBnbLpBalance: cakeBnbLpBalance[account] ? cakeBnbLpBalance[account] : 0,
       cakeVaultBalance: cakeVaultBalance[account] ? cakeVaultBalance[account] : 0,
+      lockedCakeBalance: lockedCakeBalance[account] ? lockedCakeBalance[account] : 0,
+      ifoPoolBalance: ifoPoolBalance[account] ? ifoPoolBalance[account] : 0,
     }
   }
 
