@@ -4,6 +4,7 @@ import { Text, Flex, Box, Skeleton, TooltipText, useTooltip } from '@pancakeswap
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import { Ifo, PoolIds } from 'config/constants/types'
+import BigNumber from 'bignumber.js'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import useBUSDPrice from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
@@ -20,14 +21,26 @@ export interface IfoCardDetailsProps {
 export interface FooterEntryProps {
   label: ReactNode
   value: ReactNode
+  tooltipContent?: string
 }
 
-const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
+const FooterEntry: React.FC<FooterEntryProps> = ({ label, value, tooltipContent }) => {
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
+
   return (
     <Flex justifyContent="space-between" alignItems="center">
-      <Text small color="textSubtle">
-        {label}
-      </Text>
+      {tooltipVisible && tooltip}
+      {tooltipContent ? (
+        <TooltipText ref={targetRef}>
+          <Text small color="textSubtle">
+            {label}
+          </Text>
+        </TooltipText>
+      ) : (
+        <Text small color="textSubtle">
+          {label}
+        </Text>
+      )}
       {value ? (
         <Text small textAlign="right">
           {value}
@@ -195,8 +208,23 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
               <FooterEntry
                 label={t('Vested percentage:')}
                 value={`${poolCharacteristic.vestingInformation.percentage}%`}
+                tooltipContent={t(
+                  '%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.',
+                  {
+                    percentageVested: poolCharacteristic.vestingInformation.percentage,
+                    percentageTgeRelease: new BigNumber(100)
+                      .minus(poolCharacteristic.vestingInformation.percentage)
+                      .toString(),
+                  },
+                )}
               />
-              <FooterEntry label={t('Vesting schedule:')} value={`${vestingWeeks} weeks`} />
+              <FooterEntry
+                label={t('Vesting schedule:')}
+                value={`${vestingWeeks} weeks`}
+                tooltipContent={t('The vested tokens will be released linearly over a period of %weeks% weeks.', {
+                  weeks: vestingWeeks,
+                })}
+              />
             </>
           )}
         </>

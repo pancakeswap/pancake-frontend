@@ -5,8 +5,7 @@ import { ifosConfig, FAST_INTERVAL } from 'config/constants'
 import BigNumber from 'bignumber.js'
 import { fetchUserWalletIfoData } from './fetchUserWalletIfoData'
 
-// Filter Ifo when isActive = true
-const allVestingIfo: Ifo[] = ifosConfig.filter((ifo) => ifo.version >= 3.2 && ifo.vestingTitle && !ifo.isActive)
+const allVestingIfo: Ifo[] = ifosConfig.filter((ifo) => ifo.version >= 3.2 && ifo.vestingTitle)
 
 const useFetchVestingData = () => {
   const { account } = useWeb3React()
@@ -27,17 +26,22 @@ const useFetchVestingData = () => {
           const { userVestingData } = ifo
           const currentTimeStamp = new Date().getTime()
           const vestingStartTime = new BigNumber(userVestingData.vestingStartTime)
+          const isPoolUnlimitedLive = vestingStartTime
+            .plus(userVestingData[PoolIds.poolUnlimited].vestingInformationDuration)
+            .times(1000)
+            .gte(currentTimeStamp)
+          const isPoolBasicLive = vestingStartTime
+            .plus(userVestingData[PoolIds.poolBasic].vestingInformationDuration)
+            .times(1000)
+            .gte(currentTimeStamp)
+
           if (
-            userVestingData[PoolIds.poolUnlimited].vestingComputeReleasableAmount.gt(0) ||
-            userVestingData[PoolIds.poolBasic].vestingComputeReleasableAmount.gt(0) ||
-            vestingStartTime
-              .plus(userVestingData[PoolIds.poolUnlimited].vestingInformationDuration)
-              .times(1000)
-              .gte(currentTimeStamp) ||
-            vestingStartTime
-              .plus(userVestingData[PoolIds.poolBasic].vestingInformationDuration)
-              .times(1000)
-              .gte(currentTimeStamp)
+            (userVestingData[PoolIds.poolBasic].offeringAmountInToken.gt(0) ||
+              userVestingData[PoolIds.poolUnlimited].offeringAmountInToken.gt(0)) &&
+            (userVestingData[PoolIds.poolBasic].vestingComputeReleasableAmount.gt(0) ||
+              userVestingData[PoolIds.poolUnlimited].vestingComputeReleasableAmount.gt(0) ||
+              isPoolBasicLive ||
+              isPoolUnlimitedLive)
           ) {
             return ifo
           }
