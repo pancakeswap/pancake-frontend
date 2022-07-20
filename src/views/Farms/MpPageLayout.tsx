@@ -1,12 +1,15 @@
 import { FC, useEffect } from 'react'
-import { listenOnBnMessage, useInterceptLink, useInjectI18n } from 'utils/mpBridge'
+import { listenOnBnMessage, useInterceptLink, useInjectI18n, useSystemInfo } from 'utils/mpBridge'
 import { useActiveHandle, getAccount } from 'hooks/useEagerConnect.bmp'
 import Navbar from 'components/Navbar.bmp'
+import { useTheme } from 'next-themes'
 import Farms from './Farms'
 
 listenOnBnMessage()
 const FarmsMpPageLayout: FC = ({ children }) => {
   useInterceptLink()
+  const systemInfo = useSystemInfo()
+  const { setTheme } = useTheme()
   const { injected } = useInjectI18n()
   const handleActive = useActiveHandle()
 
@@ -19,6 +22,12 @@ const FarmsMpPageLayout: FC = ({ children }) => {
     }
     handleLoad()
   }, [])
+
+  useEffect(() => {
+    if (systemInfo) {
+      setTheme(systemInfo.theme)
+    }
+  }, [systemInfo])
 
   return (
     <>
