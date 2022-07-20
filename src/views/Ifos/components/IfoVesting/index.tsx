@@ -1,4 +1,4 @@
-import { useMemo, useState, useCallback } from 'react'
+import { useMemo, useState, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -65,6 +65,14 @@ const IfoVesting: React.FC<IfoVestingProps> = () => {
   const { account } = useActiveWeb3React()
   const [isFirstTime, setIsFirstTime] = useState(true)
   const { data, fetchUserVestingData } = useFetchVestingData()
+
+  useEffect(() => {
+    // When switch account need init
+    if (account) {
+      setIsFirstTime(true)
+      fetchUserVestingData()
+    }
+  }, [account, fetchUserVestingData, setIsFirstTime])
 
   const cardStatus = useMemo(() => {
     if (account) {

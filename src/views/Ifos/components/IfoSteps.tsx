@@ -149,7 +149,10 @@ const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLiv
         {t('Commit CAKE')}
       </Heading>
       <Text color="textSubtle" small>
-        {t('When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.')} <br />
+        {t(
+          'Please note that CAKE in the fixed-term staking positions will remain locked and can not be used for committing to IFO sales. You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.',
+        )}{' '}
+        <br />
       </Text>
       {hasProfile && isLive && !isCommitted && (
         <Button as="a" href="#current-ifo" mt="16px">
