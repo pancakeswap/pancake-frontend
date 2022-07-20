@@ -69,7 +69,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
       {Number.isFinite(cakePoolBalance) && (
         <Flex alignItems="center" justifyContent="space-between" mb="4px">
           <Text color="textSubtle" fontSize="16px">
-            {t('CAKE Pool')}
+            {t('Fixed cake staking')}
           </Text>
           <Text textAlign="right">{formatNumber(cakePoolBalance, 0, 3)}</Text>
         </Flex>
@@ -77,7 +77,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
       {Number.isFinite(cakeVaultBalance) && (
         <Flex alignItems="center" justifyContent="space-between" mb="4px">
           <Text color="textSubtle" fontSize="16px">
-            {t('Auto CAKE Pool')}
+            {t('Flexible cake staking')}
           </Text>
           <Text textAlign="right">{formatNumber(cakeVaultBalance, 0, 3)}</Text>
         </Flex>

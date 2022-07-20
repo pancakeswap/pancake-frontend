@@ -109,16 +109,16 @@ export const getVotingPower = async (
   if (blockNumber && (blockNumber >= VOTING_POWER_BLOCK.v0 || blockNumber >= VOTING_POWER_BLOCK.v1)) {
     const version = blockNumber >= VOTING_POWER_BLOCK.v1 ? 'v1' : 'v0'
 
-    const [cakeBalance, cakeBnbLpBalance, cakePoolBalance, poolsBalance, total, cakeVaultBalance, ifoPoolBalance] =
+    const [cakeBalance, cakeBnbLpBalance, cakePoolBalance, , cakeVaultBalance, poolsBalance, total, ifoPoolBalance] =
       await getScores(
         PANCAKE_SPACE,
         [
           strategies.cakeBalanceStrategy(version),
           strategies.cakeBnbLpBalanceStrategy(version),
           strategies.cakePoolBalanceStrategy(version),
+          strategies.cakeVaultBalanceStrategy(version),
           strategies.createPoolsBalanceStrategy(poolAddresses, version),
           strategies.createTotalStrategy(poolAddresses, version),
-          strategies.cakeVaultBalanceStrategy,
           strategies.ifoPoolBalanceStrategy,
         ],
         NETWORK,
@@ -129,7 +129,6 @@ export const getVotingPower = async (
     const versionZero =
       version === 'v0'
         ? {
-            cakeVaultBalance: cakeVaultBalance[account] ? cakeVaultBalance[account] : 0,
             ifoPoolBalance: ifoPoolBalance[account] ? ifoPoolBalance[account] : 0,
           }
         : {}
@@ -142,6 +141,7 @@ export const getVotingPower = async (
       cakeBalance: cakeBalance[account] ? cakeBalance[account] : 0,
       cakePoolBalance: cakePoolBalance[account] ? cakePoolBalance[account] : 0,
       cakeBnbLpBalance: cakeBnbLpBalance[account] ? cakeBnbLpBalance[account] : 0,
+      cakeVaultBalance: cakeVaultBalance[account] ? cakeVaultBalance[account] : 0,
     }
   }
 

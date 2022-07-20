@@ -570,7 +570,6 @@
   "See All": "See All",
   "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.": "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.",
   "Wallet": "Wallet",
-  "Auto CAKE Pool": "Auto CAKE Pool",
   "CAKE BNB LP": "CAKE BNB LP",
   "Other Syrup Pools": "Other Syrup Pools",
   "Voting Power": "Voting Power",
@@ -1639,7 +1638,6 @@
   "Calculated based on current rates and subject to change based on pool conditions. It is an estimate provided for your convenience only, and by no means represents guaranteed returns.": "Calculated based on current rates and subject to change based on pool conditions. It is an estimate provided for your convenience only, and by no means represents guaranteed returns.",
   "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked, i.e. when the staking period ends.": "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked, i.e. when the staking period ends.",
   "View Tutorial": "View Tutorial",
-  "CAKE Pool": "CAKE Pool",
   "Average lock duration": "Average lock duration",
   "The average lock duration of all the locked staking positions of other users": "The average lock duration of all the locked staking positions of other users",
   "Your max CAKE entry": "Your max CAKE entry",
@@ -1764,5 +1762,7 @@
   "No position entered": "No position entered",
   "Add liquidity failed: %message%": "Add liquidity failed: %message%",
   "Remove liquidity failed: %message%": "Remove liquidity failed: %message%",
-  "Unavailable for legal reasons": "Unavailable for legal reasons"
+  "Unavailable for legal reasons": "Unavailable for legal reasons",
+  "Fixed cake staking": "Fixed cake staking",
+  "Flexible cake staking": "Flexible cake staking"
 }

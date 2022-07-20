@@ -30,10 +30,10 @@ export const cakeBalanceStrategy = (version: 'v0' | 'v1') => ({
   },
 })
 
-export const cakeVaultBalanceStrategy = {
+export const cakeVaultBalanceStrategy = (version: 'v0' | 'v1') => ({
   name: 'contract-call',
   params: {
-    address: votePowerAddress.v0,
+    address: votePowerAddress[version],
     decimals: 18,
     methodABI: {
       inputs: [
@@ -55,7 +55,7 @@ export const cakeVaultBalanceStrategy = {
       type: 'function',
     },
   },
-}
+})
 
 export const ifoPoolBalanceStrategy = {
   name: 'contract-call',
