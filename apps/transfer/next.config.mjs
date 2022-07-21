@@ -1,6 +1,6 @@
 import transpileModules from 'next-transpile-modules'
 
-const withTH = transpileModules(['@pancakeswap/uikit'])
+const withTH = transpileModules(['@pancakeswap/uikit', "@pancakeswap/wagmi"])
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

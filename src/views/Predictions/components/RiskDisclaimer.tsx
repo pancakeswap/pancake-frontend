@@ -1,107 +1,48 @@
-import { useState } from 'react'
-import {
-  ModalContainer,
-  ModalBody,
-  Text,
-  Button,
-  Flex,
-  InjectedModalProps,
-  Checkbox,
-  ModalHeader,
-  ModalTitle,
-  Heading,
-  Box,
-} from '@pancakeswap/uikit'
+import { useEffect, memo } from 'react'
+import { useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import styled from 'styled-components'
+import DisclaimerModal from 'components/DisclaimerModal'
+import { useUserPredictionAcceptedRisk } from 'state/user/hooks'
 
-interface RiskDisclaimerProps extends InjectedModalProps {
-  onSuccess: () => void
-}
-
-const GradientModalHeader = styled(ModalHeader)`
-  background: ${({ theme }) => theme.colors.gradients.bubblegum};
-  padding-bottom: 24px;
-  padding-top: 24px;
-`
-
-const RiskDisclaimer: React.FC<RiskDisclaimerProps> = ({ onSuccess, onDismiss }) => {
-  const [acknowledgeRisk, setAcknowledgeRisk] = useState(false)
-  const [acknowledgeBeta, setAcknowledgeBeta] = useState(false)
+function RiskDisclaimer() {
+  const [hasAcceptedRisk, setHasAcceptedRisk] = useUserPredictionAcceptedRisk()
   const { t } = useTranslation()
 
-  const handleSetAcknowledgeRisk = () => {
-    setAcknowledgeRisk(!acknowledgeRisk)
-  }
-
-  const handleSetAcknowledgeBeta = () => {
-    setAcknowledgeBeta(!acknowledgeBeta)
-  }
-
-  const handleConfirm = () => {
-    onSuccess()
-    onDismiss()
-  }
-
-  return (
-    <ModalContainer title={t('Welcome!')} minWidth="320px" id="predictions-risk-disclaimer">
-      <GradientModalHeader>
-        <ModalTitle>
-          <Heading scale="lg">{t('Welcome!')}</Heading>
-        </ModalTitle>
-      </GradientModalHeader>
-      <ModalBody p="24px" maxWidth="400px">
-        <Box maxHeight="300px" overflowY="auto">
-          <Heading as="h3" mb="24px">
-            {t('This Product is in beta.')}
-          </Heading>
-
-          <Text as="p" color="textSubtle" mb="24px">
-            {t('Once you enter a position, you cannot cancel or adjust it.')}
-          </Text>
-
-          <label
-            htmlFor="responsibility-checkbox"
-            style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}
-          >
-            <Flex alignItems="center">
-              <div style={{ flex: 'none' }}>
-                <Checkbox
-                  id="responsibility-checkbox"
-                  scale="sm"
-                  checked={acknowledgeRisk}
-                  onChange={handleSetAcknowledgeRisk}
-                />
-              </div>
-              <Text ml="8px">
-                {t(
-                  'I understand that I am using this product at my own risk. Any losses incurred due to my actions are my own responsibility.',
-                )}
-              </Text>
-            </Flex>
-          </label>
-          <label htmlFor="beta-checkbox" style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}>
-            <Flex alignItems="center">
-              <div style={{ flex: 'none' }}>
-                <Checkbox id="beta-checkbox" scale="sm" checked={acknowledgeBeta} onChange={handleSetAcknowledgeBeta} />
-              </div>
-              <Text ml="8px">
-                {t('I understand that this product is still in beta. I am participating at my own risk')}
-              </Text>
-            </Flex>
-          </label>
-        </Box>
-        <Button
-          id="prediction-disclaimer-continue"
-          width="100%"
-          onClick={handleConfirm}
-          disabled={!acknowledgeRisk || !acknowledgeBeta}
-        >
-          {t('Continue')}
-        </Button>
-      </ModalBody>
-    </ModalContainer>
+  const [onPresentRiskDisclaimer, onDismiss] = useModal(
+    <DisclaimerModal
+      id="predictions-risk-disclaimer"
+      header={t('This Product is in beta.')}
+      subtitle={t('Once you enter a position, you cannot cancel or adjust it.')}
+      checks={[
+        {
+          key: 'responsibility-checkbox',
+          content: t(
+            'I understand that I am using this product at my own risk. Any losses incurred due to my actions are my own responsibility.',
+          ),
+        },
+        {
+          key: 'beta-checkbox',
+          content: t('I understand that this product is still in beta. I am participating at my own risk'),
+        },
+      ]}
+      onSuccess={() => setHasAcceptedRisk(true)}
+    />,
+    false,
+    false,
   )
+
+  useEffect(() => {
+    if (!hasAcceptedRisk) {
+      onPresentRiskDisclaimer()
+    }
+
+    return () => {
+      onDismiss()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasAcceptedRisk])
+
+  return null
 }
 
-export default RiskDisclaimer
+export default memo(RiskDisclaimer)

@@ -11,10 +11,11 @@ import { useIfoV3Contract } from 'hooks/useContract'
 interface Props {
   poolId: PoolIds
   data: VestingData
+  claimableAmount: string
   fetchUserVestingData: () => void
 }
 
-const ClaimButton: React.FC<Props> = ({ poolId, data, fetchUserVestingData }) => {
+const ClaimButton: React.FC<Props> = ({ poolId, data, claimableAmount, fetchUserVestingData }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { address, token } = data.ifo
@@ -42,7 +43,7 @@ const ClaimButton: React.FC<Props> = ({ poolId, data, fetchUserVestingData }) =>
       width="100%"
       onClick={handleClaim}
       isLoading={isPending}
-      disabled={isPending}
+      disabled={isPending || claimableAmount === '0'}
       endIcon={isPending ? <AutoRenewIcon spin color="currentColor" /> : null}
     >
       {t('Claim %symbol%', { symbol: token.symbol })}

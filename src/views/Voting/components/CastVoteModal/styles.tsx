@@ -22,5 +22,5 @@ export const VotingBoxCardInner = styled(Box)<{ hasBoosted?: boolean }>`
 `
 
 export const ModalInner: React.FC<BoxProps> = (props) => {
-  return <Box mb="24px" maxWidth="320px" {...props} />
+  return <Box mb="24px" maxWidth={['100%', '100%', '100%', '320px']} {...props} />
 }

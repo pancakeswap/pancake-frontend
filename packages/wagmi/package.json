@@ -1,0 +1,9 @@
+{
+  "name": "@pancakeswap/wagmi",
+  "version": "1.0.0",
+  "description": "wagmi adaptor for pancakeswap",
+  "main": "src/index.ts",
+  "devDependencies": {
+    "tsconfig": "*"
+  }
+}
