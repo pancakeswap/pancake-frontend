@@ -21,6 +21,7 @@ const VoteDetailsModal: React.FC<VoteDetailsModalProps> = ({ block, onDismiss })
     poolsBalance,
     cakeBnbLpBalance,
     ifoPoolBalance,
+    lockedCakeBalance,
   } = useGetVotingPower(block, modalIsOpen)
   const { theme } = useTheme()
 
@@ -46,6 +47,7 @@ const VoteDetailsModal: React.FC<VoteDetailsModalProps> = ({ block, onDismiss })
               poolsBalance={poolsBalance}
               ifoPoolBalance={ifoPoolBalance}
               cakeBnbLpBalance={cakeBnbLpBalance}
+              lockedCakeBalance={lockedCakeBalance}
               block={block}
             />
             <Button variant="secondary" onClick={onDismiss} width="100%" mt="16px">

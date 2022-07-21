@@ -1764,5 +1764,9 @@
   "Remove liquidity failed: %message%": "Remove liquidity failed: %message%",
   "Unavailable for legal reasons": "Unavailable for legal reasons",
   "Fixed cake staking": "Fixed cake staking",
-  "Flexible cake staking": "Flexible cake staking"
+  "Flexible cake staking": "Flexible cake staking",
+  "Voting power is calculated using the staking amount and remaining staking durations of the fixed-term CAKE staking position.": "Voting power is calculated using the staking amount and remaining staking durations of the fixed-term CAKE staking position.",
+  "Your CAKE locked:": "Your CAKE locked:",
+  "Go to Pools": "Go to Pools",
+  "Boosted by vCAKE": "Boosted by vCAKE"
 }

@@ -1,4 +1,6 @@
 import { SNAPSHOT_HUB_API } from 'config/constants/endpoints'
+import BigNumber from 'bignumber.js'
+import { BIG_TEN } from 'utils/bigNumber'
 import tokens from 'config/constants/tokens'
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
@@ -145,7 +147,9 @@ export const getVotingPower = async (
       cakePoolBalance: cakePoolBalance[account] ? cakePoolBalance[account] : 0,
       cakeBnbLpBalance: cakeBnbLpBalance[account] ? cakeBnbLpBalance[account] : 0,
       cakeVaultBalance: cakeVaultBalance[account] ? cakeVaultBalance[account] : 0,
-      lockedCakeBalance: lockedCakeBalance[account] ? lockedCakeBalance[account] : 0,
+      lockedCakeBalance: lockedCakeBalance[account]
+        ? new BigNumber(lockedCakeBalance[account]).div(BIG_TEN.pow(18)).toNumber()
+        : 0,
       ifoPoolBalance: ifoPoolBalance[account] ? ifoPoolBalance[account] : 0,
     }
   }
