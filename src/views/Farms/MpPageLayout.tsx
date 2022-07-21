@@ -21,12 +21,14 @@ const FarmsMpPageLayout: FC = ({ children }) => {
       }
     }
     handleLoad()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     if (systemInfo) {
       setTheme(systemInfo.theme)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [systemInfo])
 
   return (

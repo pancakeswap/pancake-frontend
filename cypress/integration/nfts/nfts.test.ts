@@ -11,7 +11,7 @@ describe('NFTs Page', () => {
     cy.getBySel('newest-nft-card').should('have.length.at.least', 10)
   })
 
-  it('shows subgraph health indicator', () => {
+  it.skip('shows subgraph health indicator', () => {
     cy.visit('/nfts')
     cy.get('#open-settings-dialog-button').click()
     cy.get('#toggle-subgraph-health-button').click({ force: true })
