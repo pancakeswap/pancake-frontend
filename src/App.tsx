@@ -58,7 +58,6 @@ const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'))
 const Info = lazy(() => import('./views/Info'))
 // const NftMarket = lazy(() => import('./views/Nft/market'))
 // const ProfileCreation = lazy(() => import('./views/ProfileCreation'))
-// const PancakeSquad = lazy(() => import('./views/PancakeSquad'))
 
 // This config is required for number formatting
 BigNumber.config({
@@ -136,10 +135,6 @@ const App: React.FC = () => {
             {/* NFT */}
             {/* <Route path="/nfts">
               <NftMarket />
-            </Route>
-
-            <Route path="/pancake-squad">
-              <PancakeSquad />
             </Route> */}
 
             {/* Info pages */}
