@@ -1,11 +1,14 @@
 import { FC, useEffect } from 'react'
-import { listenOnBnMessage, useInterceptLink, useInjectI18n } from 'utils/mpBridge'
+import { useSystemInfo, listenOnBnMessage, useInterceptLink, useInjectI18n } from 'utils/mpBridge'
 import { useActiveHandle, getAccount } from 'hooks/useEagerConnect.bmp'
 import Navbar from 'components/Navbar.bmp'
+import { useTheme } from 'next-themes'
 
 listenOnBnMessage()
 const PoolsMpPageLayout: FC = ({ children }) => {
   useInterceptLink()
+  const systemInfo = useSystemInfo()
+  const { setTheme } = useTheme()
   const { injected } = useInjectI18n()
   const handleActive = useActiveHandle()
 
@@ -18,6 +21,12 @@ const PoolsMpPageLayout: FC = ({ children }) => {
     }
     handleLoad()
   }, [])
+
+  useEffect(() => {
+    if (systemInfo) {
+      setTheme(systemInfo.theme)
+    }
+  }, [systemInfo])
 
   return (
     <>
