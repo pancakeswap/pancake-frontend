@@ -1765,11 +1765,12 @@
   "Unavailable for legal reasons": "Unavailable for legal reasons",
   "Fixed cake staking": "Fixed cake staking",
   "Flexible cake staking": "Flexible cake staking",
-  "Voting power is calculated using the staking amount and remaining staking durations of the fixed-term CAKE staking position.": "Voting power is calculated using the staking amount and remaining staking durations of the fixed-term CAKE staking position.",
+  "Voting power is calculated using the staking amount and remaining staking duration of the fixed-term CAKE staking position at the block.": "Voting power is calculated using the staking amount and remaining staking duration of the fixed-term CAKE staking position at the block.",
   "Your CAKE locked:": "Your CAKE locked:",
   "Go to Pools": "Go to Pools",
   "Boosted by vCAKE": "Boosted by vCAKE",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks.",
-  "Boosting Expired": "Boosting Expired"
+  "Boosting Expired": "Boosting Expired",
+  "Your vCAKE boosting was expired at the snapshot block. Renew your fixed-term staking position to activate the boost for future voting proposals.": "Your vCAKE boosting was expired at the snapshot block. Renew your fixed-term staking position to activate the boost for future voting proposals."
 }
