@@ -1726,7 +1726,7 @@
   "Insufficient %token% balance": "Solde %token% insuffisant",
   "Your pool share": "Votre part dans le pool",
   "Input": "Montant",
-  "to": "à",
+  "to": "pour",
   "Pooled": "Dans le pool",
   "Price Impact Too Hight.": "Impact sur le prix trop élevé.",
   "Reduce amount of %token% to maximum limit": "Réduisez le montant de %token% à la limite maximale",
