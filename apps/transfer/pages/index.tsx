@@ -80,16 +80,18 @@ function PoweredBy() {
       <Text small color="textSubtle" mr="8px">
         Powered By
       </Text>
-      <Image
-        width={78}
-        height={20}
-        src="/stargate.png"
-        alt="Powered By Stargate"
-        unoptimized
-        style={{
-          filter: isDark ? 'invert(1)' : 'unset',
-        }}
-      />
+      <a href="https://stargate.finance" target="_blank" rel="noreferrer noopener">
+        <Image
+          width={78}
+          height={20}
+          src="/stargate.png"
+          alt="Powered By Stargate"
+          unoptimized
+          style={{
+            filter: isDark ? 'invert(1)' : 'unset',
+          }}
+        />
+      </a>
     </Flex>
   )
 }
