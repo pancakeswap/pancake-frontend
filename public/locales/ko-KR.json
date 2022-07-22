@@ -1726,7 +1726,7 @@
   "Insufficient %token% balance": "%token% 잔액 부족",
   "Your pool share": "내 풀 점유율",
   "Input": "입력",
-  "to": "결과",
+  "to": "-",
   "Pooled": "풀",
   "Price Impact Too Hight.": "가격 영향이 너무 높음.",
   "Reduce amount of %token% to maximum limit": "%token% 금액을 최대 한도로 감소",
