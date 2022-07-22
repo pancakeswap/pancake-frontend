@@ -141,7 +141,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
       {Number.isFinite(cakeVaultBalance) && (
         <Flex alignItems="center" justifyContent="space-between" mb="4px">
           <Text color="textSubtle" fontSize="16px">
-            {t('Flexible cake staking')}
+            {t('Flexible CAKE Staking')}
           </Text>
           <Text textAlign="right">{formatNumber(cakeVaultBalance, 0, 3)}</Text>
         </Flex>
@@ -152,7 +152,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
             <Flex alignItems="center" justifyContent="space-between" mb="4px">
               <Flex>
                 <Text color="textSubtle" fontSize="16px">
-                  {t('Fixed cake staking')}
+                  {t('Fixed Term CAKE Staking')}
                 </Text>
                 {tooltipVisible && tooltip}
                 <Flex ref={targetRef}>
@@ -168,7 +168,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
               <FixedTermCardInner expired={isBoostingExpired}>
                 <Flex>
                   <Text color="textSubtle" fontSize="16px" mr="auto">
-                    {t('Fixed cake staking')}
+                    {t('Fixed Term CAKE Staking')}
                   </Text>
                   {tooltipVisible && tooltip}
                   <Flex ref={targetRef}>
