@@ -10,7 +10,7 @@ import { Web3Provider } from '@ethersproject/providers'
 
 const POLLING_INTERVAL = 12000
 
-const SUPPORTED_CHAIN_ID = [ChainId.BSC, ChainId.BSC_TESTNET]
+const SUPPORTED_CHAIN_ID = [ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM, ChainId.RINKEBY]
 
 export const injected = new InjectedConnector({ supportedChainIds: SUPPORTED_CHAIN_ID })
 

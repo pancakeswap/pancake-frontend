@@ -20,7 +20,7 @@ import { isAddress } from '../utils'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
 
 const mapWithoutUrls = (tokenMap: TokenAddressMap, chainId: number) =>
-  Object.keys(tokenMap[chainId]).reduce<{ [address: string]: Token }>((newMap, address) => {
+  Object.keys(tokenMap[chainId] || {}).reduce<{ [address: string]: Token }>((newMap, address) => {
     newMap[address] = tokenMap[chainId][address].token
     return newMap
   }, {})

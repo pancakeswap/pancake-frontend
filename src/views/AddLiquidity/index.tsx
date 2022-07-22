@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { currencyEquals, ETHER, JSBI, TokenAmount, WNATIVE, MINIMUM_LIQUIDITY } from '@pancakeswap/sdk'
+import { currencyEquals, ETHER, JSBI, TokenAmount, WNATIVE, MINIMUM_LIQUIDITY, ChainId } from '@pancakeswap/sdk'
 import {
   Button,
   Text,
@@ -66,6 +66,7 @@ enum Steps {
 }
 
 const zapAddress = getZapAddress()
+const zapSupportedChain = [ChainId.BSC, ChainId.BSC_TESTNET]
 
 export default function AddLiquidity() {
   const router = useRouter()
@@ -159,11 +160,12 @@ export default function AddLiquidity() {
     () =>
       !!zapMode &&
       !noLiquidity &&
+      zapSupportedChain.includes(chainId) &&
       !(
         (pair && JSBI.lessThan(pair.reserve0.raw, MINIMUM_LIQUIDITY)) ||
         (pair && JSBI.lessThan(pair.reserve1.raw, MINIMUM_LIQUIDITY))
       ),
-    [noLiquidity, pair, zapMode],
+    [chainId, noLiquidity, pair, zapMode],
   )
 
   const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
@@ -498,7 +500,7 @@ export default function AddLiquidity() {
 
   const shouldShowApprovalGroup = (showFieldAApproval || showFieldBApproval) && isValid
 
-  const oneCurrencyIsWBNB = Boolean(
+  const oneCurrencyIsWNATIVE = Boolean(
     chainId &&
       ((currencyA && currencyEquals(currencyA, WNATIVE[chainId])) ||
         (currencyB && currencyEquals(currencyB, WNATIVE[chainId]))),
@@ -816,7 +818,7 @@ export default function AddLiquidity() {
       {!(addIsUnsupported || addIsWarning) ? (
         pair && !noLiquidity && pairState !== PairState.INVALID ? (
           <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
-            <MinimalPositionCard showUnwrapped={oneCurrencyIsWBNB} pair={pair} />
+            <MinimalPositionCard showUnwrapped={oneCurrencyIsWNATIVE} pair={pair} />
           </AutoColumn>
         ) : null
       ) : (

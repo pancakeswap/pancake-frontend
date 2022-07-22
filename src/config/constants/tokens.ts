@@ -36,9 +36,15 @@ const USDC_TESTNET = new Token(
   'https://www.centre.io/usdc',
 )
 
+const USDC_ETH = new Token(ChainId.ETHEREUM, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD//C')
+
+const USDC_RINKEBY = new Token(ChainId.RINKEBY, '0x4DBCdF9B62e891a7cec5A2568C3F4FAF9E8Abe2b', 6, 'tUSDC', 'test USD//C')
+
 export const USDC = {
   [ChainId.BSC]: USDC_BSC,
   [ChainId.BSC_TESTNET]: USDC_TESTNET,
+  [ChainId.ETHEREUM]: USDC_ETH,
+  [ChainId.RINKEBY]: USDC_RINKEBY,
 }
 
 export const CAKE = {
@@ -64,7 +70,27 @@ const BUSD_TESTNET = new Token(
   'https://www.paxos.com/busd/',
 )
 
+const BUSD_ETH = new Token(
+  ChainId.ETHEREUM,
+  '0x4Fabb145d64652a948d72533023f6E7A623C7C53',
+  18,
+  'BUSD',
+  'Binance USD',
+  'https://www.paxos.com/busd/',
+)
+
+const BUSD_RINKEBY = new Token(
+  ChainId.ETHEREUM,
+  '0x4e2442A6f7AeCE64Ca33d31756B5390860BF973E',
+  18,
+  'BUSD',
+  'Binance USD',
+  'https://www.paxos.com/busd/',
+)
+
 export const BUSD: Record<ChainId, Token> = {
+  [ChainId.ETHEREUM]: BUSD_ETH,
+  [ChainId.RINKEBY]: BUSD_RINKEBY,
   [ChainId.BSC]: BUSD_MAINNET,
   [ChainId.BSC_TESTNET]: BUSD_TESTNET,
 }
