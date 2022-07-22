@@ -95,7 +95,7 @@ const DetailsView: React.FC<DetailsViewProps> = ({
                 )}
           </Text>
           <Text bold m="10px 0">
-            {`${t('Your CAKE locked:')} ${formatNumber(lockedCakeBalance, 0, 2)}`}
+            {`${t('CAKE locked:')} ${formatNumber(lockedCakeBalance, 0, 2)}`}
           </Text>
           <StyleLink href="/pools">{t('Go to Pools')}</StyleLink>
         </Box>

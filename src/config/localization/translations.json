@@ -1766,7 +1766,7 @@
   "Fixed cake staking": "Fixed cake staking",
   "Flexible cake staking": "Flexible cake staking",
   "Voting power is calculated using the staking amount and remaining staking duration of the fixed-term CAKE staking position at the block.": "Voting power is calculated using the staking amount and remaining staking duration of the fixed-term CAKE staking position at the block.",
-  "Your CAKE locked:": "Your CAKE locked:",
+  "CAKE locked:": "CAKE locked:",
   "Go to Pools": "Go to Pools",
   "Boosted by vCAKE": "Boosted by vCAKE",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
