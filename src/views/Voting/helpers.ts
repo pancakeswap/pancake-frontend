@@ -103,6 +103,7 @@ interface GetVotingPowerType {
   cakeVaultBalance?: number
   ifoPoolBalance?: number
   lockedCakeBalance?: number
+  lockedEndTime?: number
 }
 
 export const getVotingPower = async (
@@ -121,6 +122,7 @@ export const getVotingPower = async (
       poolsBalance,
       total,
       lockedCakeBalance,
+      lockedEndTime,
       ifoPoolBalance,
     ] = await getScores(
       PANCAKE_SPACE,
@@ -132,6 +134,7 @@ export const getVotingPower = async (
         strategies.createPoolsBalanceStrategy(poolAddresses, version),
         strategies.createTotalStrategy(poolAddresses, version),
         strategies.lockedCakeBalance(getCakeVaultAddress()),
+        strategies.lockedEndTime(getCakeVaultAddress()),
         strategies.ifoPoolBalanceStrategy,
       ],
       NETWORK,
@@ -139,7 +142,15 @@ export const getVotingPower = async (
       blockNumber,
     )
 
+    const versionOne =
+      version === 'v0'
+        ? {
+            ifoPoolBalance: ifoPoolBalance[account] ? ifoPoolBalance[account] : 0,
+          }
+        : {}
+
     return {
+      ...versionOne,
       voter: account,
       total: total[account] ? total[account] : 0,
       poolsBalance: poolsBalance[account] ? poolsBalance[account] : 0,
@@ -150,7 +161,7 @@ export const getVotingPower = async (
       lockedCakeBalance: lockedCakeBalance[account]
         ? new BigNumber(lockedCakeBalance[account]).div(BIG_TEN.pow(18)).toNumber()
         : 0,
-      ifoPoolBalance: ifoPoolBalance[account] ? ifoPoolBalance[account] : 0,
+      lockedEndTime: lockedEndTime[account] ? lockedEndTime[account] : 0,
     }
   }
 

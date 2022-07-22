@@ -15,6 +15,7 @@ interface State {
   ifoPoolBalance?: number
   total: number
   lockedCakeBalance?: number
+  lockedEndTime?: number
 }
 
 const useGetVotingPower = (block?: number, isActive = true): State & { isLoading: boolean; isError: boolean } => {
@@ -34,6 +35,7 @@ const useGetVotingPower = (block?: number, isActive = true): State & { isLoading
         cakeVaultBalance,
         ifoPoolBalance,
         lockedCakeBalance,
+        lockedEndTime,
       } = await getVotingPower(account, poolAddresses, blockNumber)
       return {
         cakeBalance,
@@ -44,6 +46,7 @@ const useGetVotingPower = (block?: number, isActive = true): State & { isLoading
         ifoPoolBalance,
         total,
         lockedCakeBalance,
+        lockedEndTime,
       }
     },
   )

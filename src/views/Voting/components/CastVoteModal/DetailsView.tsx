@@ -1,8 +1,11 @@
+import { useMemo } from 'react'
+import BigNumber from 'bignumber.js'
 import { Flex, LinkExternal, Text, Box, HelpIcon, useTooltip, RocketIcon, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
 import { formatNumber } from 'utils/formatBalance'
+import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import { ModalInner, VotingBoxBorder, VotingBoxCardInner } from './styles'
 
 const StyledLinkExternal = styled(LinkExternal)`
@@ -13,18 +16,33 @@ const StyledLinkExternal = styled(LinkExternal)`
   }
 `
 
-const FixedTermWrapper = styled(Box)`
+const FixedTermWrapper = styled(Box)<{ expired?: boolean }>`
   width: 100%;
   margin: 16px 0;
   padding: 1px 1px 3px 1px;
-  background: linear-gradient(180deg, #53dee9, #7645d9);
+  background: ${({ theme, expired }) => (expired ? theme.colors.warning : 'linear-gradient(180deg, #53dee9, #7645d9)')};
   border-radius: ${({ theme }) => theme.radii.default};
 `
 
-const FixedTermCardInner = styled(Box)`
+const FixedTermCardInner = styled(Box)<{ expired?: boolean }>`
+  position: relative;
+  z-index: 1;
   padding: 8px 12px;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
   border-radius: ${({ theme }) => theme.radii.default};
-  background: ${({ theme }) => theme.colors.gradients.bubblegum};
+
+  &:before {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    border-radius: ${({ theme }) => theme.radii.default};
+    background: ${({ theme, expired }) => (expired ? 'rgba(255, 178, 55, 0.098)' : theme.colors.gradients.bubblegum)};
+  }
 `
 
 const StyleLink = styled(Link)`
@@ -40,6 +58,7 @@ interface DetailsViewProps {
   cakeBnbLpBalance?: number
   ifoPoolBalance?: number
   lockedCakeBalance?: number
+  lockedEndTime?: number
   block: number
 }
 
@@ -52,9 +71,15 @@ const DetailsView: React.FC<DetailsViewProps> = ({
   cakeBnbLpBalance,
   ifoPoolBalance,
   lockedCakeBalance,
+  lockedEndTime,
   block,
 }) => {
   const { t } = useTranslation()
+  const blockTimestamp = useCurrentBlockTimestamp()
+
+  const isBoostingExpired = useMemo(() => {
+    return lockedEndTime !== 0 && new BigNumber(blockTimestamp?.toString()).gte(lockedEndTime)
+  }, [blockTimestamp, lockedEndTime])
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
@@ -115,18 +140,24 @@ const DetailsView: React.FC<DetailsViewProps> = ({
       )}
       {Number.isFinite(cakePoolBalance) && (
         <>
-          {Number(lockedCakeBalance) === 0 ? (
+          {lockedCakeBalance === 0 ? (
             <Flex alignItems="center" justifyContent="space-between" mb="4px">
-              <Text color="textSubtle" fontSize="16px">
-                {t('Fixed cake staking')}
-              </Text>
+              <Flex>
+                <Text color="textSubtle" fontSize="16px">
+                  {t('Fixed cake staking')}
+                </Text>
+                {tooltipVisible && tooltip}
+                <Flex ref={targetRef}>
+                  <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+                </Flex>
+              </Flex>
               <Text color="failure" textAlign="right">
                 {formatNumber(cakePoolBalance, 0, 3)}
               </Text>
             </Flex>
           ) : (
-            <FixedTermWrapper>
-              <FixedTermCardInner>
+            <FixedTermWrapper expired={isBoostingExpired}>
+              <FixedTermCardInner expired={isBoostingExpired}>
                 <Flex>
                   <Text color="textSubtle" fontSize="16px" mr="auto">
                     {t('Fixed cake staking')}
@@ -137,13 +168,13 @@ const DetailsView: React.FC<DetailsViewProps> = ({
                   </Flex>
                 </Flex>
                 <Flex mt="10px" flexDirection="column" alignItems="flex-end">
-                  <Text bold color="secondary" fontSize="16px">
+                  <Text bold color={isBoostingExpired ? 'warning' : 'secondary'} fontSize="16px">
                     {formatNumber(cakePoolBalance, 0, 3)}
                   </Text>
                   <Flex>
-                    <RocketIcon color="secondary" width="15px" height="15px" />
-                    <Text ml="4px" color="secondary" fontSize="12px">
-                      {t('Boosted by vCAKE')}
+                    <RocketIcon color={isBoostingExpired ? 'warning' : 'secondary'} width="15px" height="15px" />
+                    <Text ml="4px" color={isBoostingExpired ? 'warning' : 'secondary'} fontSize="12px">
+                      {isBoostingExpired ? t('Boosting Expired') : t('Boosted by vCAKE')}
                     </Text>
                   </Flex>
                 </Flex>

@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+import BigNumber from 'bignumber.js'
 import {
   IconButton,
   Text,
@@ -11,6 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { formatNumber } from 'utils/formatBalance'
+import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import TextEllipsis from '../TextEllipsis'
 import { VotingBoxBorder, VotingBoxCardInner, ModalInner } from './styles'
 import { CastVoteModalProps } from './types'
@@ -26,6 +29,7 @@ interface MainViewProps {
   total: number
   disabled?: boolean
   lockedCakeBalance: number
+  lockedEndTime: number
   onConfirm: () => void
   onViewDetails: () => void
   onDismiss: CastVoteModalProps['onDismiss']
@@ -42,9 +46,18 @@ const MainView: React.FC<MainViewProps> = ({
   onDismiss,
   disabled,
   lockedCakeBalance,
+  lockedEndTime,
 }) => {
   const { t } = useTranslation()
-  const hasBoosted = Number(lockedCakeBalance) > 0
+  const blockTimestamp = useCurrentBlockTimestamp()
+
+  const hasLockedCake = lockedCakeBalance > 0
+
+  const isBoostingExpired = useMemo(() => {
+    return lockedEndTime !== 0 && new BigNumber(blockTimestamp?.toString()).gte(lockedEndTime)
+  }, [blockTimestamp, lockedEndTime])
+
+  const hasBoosted = hasLockedCake && !isBoostingExpired
 
   return (
     <>
@@ -72,11 +85,11 @@ const MainView: React.FC<MainViewProps> = ({
                   <Text bold fontSize="20px" color={total === 0 ? 'failure' : 'text'}>
                     {formatNumber(total, 0, 3)}
                   </Text>
-                  {hasBoosted && (
+                  {hasLockedCake && (
                     <Flex>
-                      <RocketIcon color="secondary" width="15px" height="15px" />
-                      <Text ml="4px" bold color="secondary" fontSize="14px">
-                        {t('Boosted by vCAKE')}
+                      <RocketIcon color={isBoostingExpired ? 'warning' : 'secondary'} width="15px" height="15px" />
+                      <Text ml="4px" bold color={isBoostingExpired ? 'warning' : 'secondary'} fontSize="14px">
+                        {isBoostingExpired ? t('Boosting Expired') : t('Boosted by vCAKE')}
                       </Text>
                     </Flex>
                   )}
