@@ -24,6 +24,7 @@ const FarmsPage = () => {
                 cakePrice={cakePrice}
                 account={account}
                 removed={false}
+                originalLiquidity={farm?.liquidity}
               />
             )}
           </ProxyFarmContainer>
