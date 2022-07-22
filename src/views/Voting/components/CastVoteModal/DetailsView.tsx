@@ -82,21 +82,25 @@ const DetailsView: React.FC<DetailsViewProps> = ({
   }, [blockTimestamp, lockedEndTime])
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    <Box>
-      <Text>
-        {isBoostingExpired
-          ? t(
-              'Your vCAKE boosting was expired at the snapshot block. Renew your fixed-term staking position to activate the boost for future voting proposals.',
-            )
-          : t(
-              'Voting power is calculated using the staking amount and remaining staking duration of the fixed-term CAKE staking position at the block.',
-            )}
-      </Text>
-      <Text bold m="10px 0">
-        {`${t('Your CAKE locked:')} ${formatNumber(lockedCakeBalance, 0, 2)}`}
-      </Text>
-      <StyleLink href="/pools">{t('Go to Pools')}</StyleLink>
-    </Box>,
+    <>
+      {Number.isFinite(lockedCakeBalance) && (
+        <Box>
+          <Text>
+            {isBoostingExpired
+              ? t(
+                  'Your vCAKE boosting was expired at the snapshot block. Renew your fixed-term staking position to activate the boost for future voting proposals.',
+                )
+              : t(
+                  'Voting power is calculated using the staking amount and remaining staking duration of the fixed-term CAKE staking position at the block.',
+                )}
+          </Text>
+          <Text bold m="10px 0">
+            {`${t('Your CAKE locked:')} ${formatNumber(lockedCakeBalance, 0, 2)}`}
+          </Text>
+          <StyleLink href="/pools">{t('Go to Pools')}</StyleLink>
+        </Box>
+      )}
+    </>,
     {
       placement: 'bottom',
     },
