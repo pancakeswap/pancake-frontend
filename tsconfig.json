@@ -5,7 +5,8 @@
     "strictNullChecks": false,
     "noImplicitAny": false,
     "noFallthroughCasesInSwitch": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "target": "es5"
   },
   "exclude": ["node_modules", "cypress", "/apps/*"],
   "include": ["next-env.d.ts", "./src/**/*.ts", "./src/**/*.tsx"]

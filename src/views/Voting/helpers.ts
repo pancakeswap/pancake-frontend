@@ -112,6 +112,7 @@ export const getVotingPower = async (
   blockNumber?: number,
 ): Promise<GetVotingPowerType> => {
   if (blockNumber && (blockNumber >= VOTING_POWER_BLOCK.v0 || blockNumber >= VOTING_POWER_BLOCK.v1)) {
+    const cakeVaultAddress = getCakeVaultAddress()
     const version = blockNumber >= VOTING_POWER_BLOCK.v1 ? 'v1' : 'v0'
 
     const [
@@ -133,8 +134,8 @@ export const getVotingPower = async (
         strategies.cakeVaultBalanceStrategy(version),
         strategies.createPoolsBalanceStrategy(poolAddresses, version),
         strategies.createTotalStrategy(poolAddresses, version),
-        strategies.lockedCakeBalance(getCakeVaultAddress()),
-        strategies.lockedEndTime(getCakeVaultAddress()),
+        strategies.lockedCake(cakeVaultAddress, 'lockedAmount'),
+        strategies.lockedCake(cakeVaultAddress, 'lockEndTime'),
         strategies.ifoPoolBalanceStrategy,
       ],
       NETWORK,

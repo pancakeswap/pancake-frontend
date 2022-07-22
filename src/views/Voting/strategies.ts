@@ -208,84 +208,13 @@ export function createTotalStrategy(poolAddress, version: 'v0' | 'v1') {
   }
 }
 
-export function lockedCakeBalance(cakeVaultAddress) {
+export function lockedCake(cakeVaultAddress, outputName: 'lockedAmount' | 'lockEndTime') {
   return {
     name: 'contract-call',
     params: {
       address: cakeVaultAddress,
       decimals: 0,
-      output: 'lockedAmount',
-      args: ['%{address}'],
-      methodABI: {
-        inputs: [
-          {
-            internalType: 'address',
-            name: '',
-            type: 'address',
-          },
-        ],
-        name: 'userInfo',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: 'shares',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'lastDepositedTime',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'cakeAtLastUserAction',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'lastUserActionTime',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'lockStartTime',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'lockEndTime',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'userBoostedShare',
-            type: 'uint256',
-          },
-          {
-            internalType: 'bool',
-            name: 'locked',
-            type: 'bool',
-          },
-          {
-            internalType: 'uint256',
-            name: 'lockedAmount',
-            type: 'uint256',
-          },
-        ],
-        stateMutability: 'view',
-        type: 'function',
-      },
-    },
-  }
-}
-
-export function lockedEndTime(cakeVaultAddress) {
-  return {
-    name: 'contract-call',
-    params: {
-      address: cakeVaultAddress,
-      decimals: 0,
-      output: 'lockEndTime',
+      output: outputName,
       args: ['%{address}'],
       methodABI: {
         inputs: [
