@@ -2144,6 +2144,22 @@ export const mainnetTokens = defineTokens({
     'OpenLeverage',
     'https://openleverage.finance/',
   ),
+  xcad: new Token(
+    MAINNET,
+    '0x431e0cD023a32532BF3969CddFc002c00E98429d',
+    18,
+    'XCAD',
+    'Chainport.io-Peg XCAD Token',
+    'https://xcadnetwork.com/',
+  ),
+  shell: new Token(
+    MAINNET,
+    '0x208cfEc94d2BA8B8537da7A9BB361c6baAD77272',
+    18,
+    'SHELL',
+    'Meta Apes Shell',
+    'https://metaapesgame.com/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
