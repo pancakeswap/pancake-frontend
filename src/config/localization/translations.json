@@ -568,7 +568,7 @@
   "%total% Votes": "%total% Votes",
   "Cast Vote": "Cast Vote",
   "See All": "See All",
-  "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.": "Your voting power is determined by the amount of CAKE you held at the block detailed below. CAKE held in other places does not contribute to your voting power.",
+  "Your voting power is determined by the amount of CAKE you held and the remaining duration on the fixed-term staking position (if you have one) at the block detailed below. CAKE held in other places does not contribute to your voting power.": "Your voting power is determined by the amount of CAKE you held and the remaining duration on the fixed-term staking position (if you have one) at the block detailed below. CAKE held in other places does not contribute to your voting power.",
   "Wallet": "Wallet",
   "CAKE BNB LP": "CAKE BNB LP",
   "Other Syrup Pools": "Other Syrup Pools",
