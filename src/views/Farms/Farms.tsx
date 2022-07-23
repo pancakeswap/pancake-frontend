@@ -141,6 +141,7 @@ const Farms: React.FC = ({ children }) => {
   const userDataReady = !account || (!!account && userDataLoaded)
 
   const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
+  const [boostedOnly, setBoostedOnly] = useState(false)
 
   const activeFarms = farmsLP.filter(
     (farm) => farm.pid !== 0 && farm.multiplier !== '0X' && (!poolLength || poolLength > farm.pid),
@@ -235,6 +236,10 @@ const Farms: React.FC = ({ children }) => {
       chosenFarms = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms)
     }
 
+    if (boostedOnly) {
+      chosenFarms = chosenFarms.filter((f) => f.boosted)
+    }
+
     return sortFarms(chosenFarms).slice(0, numberOfFarmsVisible)
   }, [
     sortOption,
@@ -250,6 +255,7 @@ const Farms: React.FC = ({ children }) => {
     stakedOnly,
     stakedOnlyFarms,
     numberOfFarmsVisible,
+    boostedOnly,
   ])
 
   chosenFarmsLength.current = chosenFarmsMemoized.length
@@ -299,6 +305,15 @@ const Farms: React.FC = ({ children }) => {
                 scale="sm"
               />
               <Text> {t('Staked only')}</Text>
+            </ToggleWrapper>
+            <ToggleWrapper>
+              <Toggle
+                id="staked-only-farms"
+                checked={boostedOnly}
+                onChange={() => setBoostedOnly((prev) => !prev)}
+                scale="sm"
+              />
+              <Text> {t('Booster Available')}</Text>
             </ToggleWrapper>
             <FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
           </ViewControls>
