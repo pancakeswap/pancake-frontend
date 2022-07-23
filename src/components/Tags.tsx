@@ -25,15 +25,6 @@ const CoreTag: React.FC<TagProps> = (props) => {
   )
 }
 
-const BoostedTag: React.FC<TagProps> = (props) => {
-  const { t } = useTranslation()
-  return (
-    <Tag variant="success" outline startIcon={<RocketIcon width="18px" color="success" mr="4px" />} {...props}>
-      {t('Boosted')}
-    </Tag>
-  )
-}
-
 const FarmAuctionTagToolTipContent = memo(() => {
   const { t } = useTranslation()
   return <Text color="text">{t('Farm Auction Winner, add liquidity at your own risk.')}</Text>
@@ -127,5 +118,4 @@ export {
   SoonTag,
   ClosedTag,
   CommunityTag,
-  BoostedTag,
 }

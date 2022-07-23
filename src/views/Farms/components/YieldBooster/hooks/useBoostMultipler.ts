@@ -62,6 +62,7 @@ async function getUserMultipler({ farmBoosterContract, account, proxyPid }) {
   return PRECISION_FACTOR.addUnsafe(FixedNumber.from(multipler))
     .subUnsafe(FixedNumber.from(BOOST_PRECISION))
     .divUnsafe(PRECISION_FACTOR)
+    .toString()
 }
 
 export default function useBoostMultipler({ proxyPid, boosterState }) {

@@ -5,9 +5,10 @@ import { useTranslation } from 'contexts/Localization'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useFarmUser } from 'state/farms/hooks'
 
-import { FarmAuctionTag, CoreTag, BoostedTag } from 'components/Tags'
+import { FarmAuctionTag, CoreTag } from 'components/Tags'
 import Apr, { AprProps } from './Apr'
 import Farm, { FarmProps } from './Farm'
+
 import Earned, { EarnedProps } from './Earned'
 import Details from './Details'
 import Multiplier, { MultiplierProps } from './Multiplier'
@@ -16,6 +17,7 @@ import ActionPanel from './Actions/ActionPanel'
 import CellLayout from './CellLayout'
 import { DesktopColumnSchema, MobileColumnSchema, FarmWithStakedValue } from '../types'
 import BoostedApr from '../YieldBooster/components/BoostedApr'
+import BoostedTag from '../YieldBooster/components/BoostedTag'
 
 export interface RowProps {
   apr: AprProps
