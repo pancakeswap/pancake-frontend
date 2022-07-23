@@ -25,6 +25,7 @@ import ToggleView from 'components/ToggleView/ToggleView'
 import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
 import { FarmWithStakedValue } from './components/types'
+import { BCakeBoosterCard } from './components/BCakeBoosterCard'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -283,6 +284,7 @@ const Farms: React.FC = ({ children }) => {
             <ArrowForwardIcon color="primary" />
           </Button>
         </NextLinkFromReactRouter>
+        <BCakeBoosterCard />
       </PageHeader>
       <Page>
         <ControlContainer>

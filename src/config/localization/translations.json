@@ -1766,5 +1766,11 @@
   "Remove liquidity failed: %message%": "Remove liquidity failed: %message%",
   "Unavailable for legal reasons": "Unavailable for legal reasons",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
-  "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks."
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks.",
+  "Yield Booster": "Yield Booster",
+  "Connect wallet to view booster": "Connect wallet to view booster",
+  "An active fixed-term CAKE staking position is required for activating farm yield boosters.": "An active fixed-term CAKE staking position is required for activating farm yield boosters.",
+  "Available Yield Booster": "Available Yield Booster",
+  "You will be able to activate the yield booster on an additional %num% farm(s).": "You will be able to activate the yield booster on an additional %num% farm(s).",
+  "To activate yield boosters on additional farms, unset yield boosters on some currently boosted farms.": "To activate yield boosters on additional farms, unset yield boosters on some currently boosted farms."
 }
