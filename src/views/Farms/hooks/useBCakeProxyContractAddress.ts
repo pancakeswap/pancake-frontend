@@ -8,6 +8,7 @@ export const useBCakeProxyContractAddress = (account?: string) => {
   const { data, status } = useSWR(['proxyAddress', account], async () =>
     bCakeFarmBoosterContract.proxyContract(account),
   )
+
   return {
     proxyAddress: data,
     isLoading: status !== FetchStatus.Fetched,

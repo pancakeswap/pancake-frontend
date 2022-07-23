@@ -23,6 +23,7 @@ import WithdrawModal from '../../WithdrawModal'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
 import { FarmWithStakedValue } from '../../types'
 import StakedLP from '../../StakedLP'
+import { BCakeMigrateModal } from '../../BCakeMigrateModal'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -99,6 +100,22 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
     }
   }
 
+  const handleUnstakeWithCallback = async (amount: string, callback: () => void) => {
+    const receipt = await fetchWithCatchTxError(() => {
+      return onUnstake(amount)
+    })
+    if (receipt?.status) {
+      toastSuccess(
+        `${t('Unstaked')}!`,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your earnings have also been harvested to your wallet')}
+        </ToastDescriptionWithTx>,
+      )
+      callback()
+      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+    }
+  }
+
   const [onPresentDeposit] = useModal(
     <DepositModal
       max={tokenBalance}
@@ -114,12 +131,22 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
       cakePrice={cakePrice}
     />,
   )
+
   const [onPresentWithdraw] = useModal(
     <WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} />,
   )
   const lpContract = useERC20(lpAddress)
   const dispatch = useAppDispatch()
   const { onApprove } = useApproveFarm(lpContract)
+
+  const [onPresentMigrate] = useModal(
+    <BCakeMigrateModal
+      pid={pid}
+      stakedBalance={stakedBalance}
+      lpContract={lpContract}
+      onUnStack={handleUnstakeWithCallback}
+    />,
+  )
 
   const handleApprove = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
@@ -169,6 +196,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
               quoteTokenAmountTotal={quoteTokenAmountTotal}
             />
             <IconButtonWrapper>
+              <Button onClick={onPresentMigrate}>Migrate</Button>
               <IconButton variant="secondary" onClick={onPresentWithdraw} mr="6px">
                 <MinusIcon color="primary" width="14px" />
               </IconButton>

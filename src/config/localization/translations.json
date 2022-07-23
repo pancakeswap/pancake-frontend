@@ -1775,5 +1775,7 @@
   "To activate yield boosters on additional farms, unset yield boosters on some currently boosted farms.": "To activate yield boosters on additional farms, unset yield boosters on some currently boosted farms.",
   "Locked staking is ended": "Locked staking is ended",
   "No CAKE locked": "No CAKE locked",
-  "A one-time setup is required for enabling farm yield boosters.": "A one-time setup is required for enabling farm yield boosters."
+  "A one-time setup is required for enabling farm yield boosters.": "A one-time setup is required for enabling farm yield boosters.",
+  "Migrate your stakings": "Migrate your stakings",
+  "You will need to migrate your stakings before activating yield booster for a farm": "You will need to migrate your stakings before activating yield booster for a farm"
 }

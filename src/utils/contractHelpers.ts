@@ -90,7 +90,7 @@ import ifoV3Abi from 'config/abi/ifoV3.json'
 import cakePredictionsAbi from 'config/abi/cakePredictions.json'
 import bCakeFarmBoosterAbi from 'config/abi/bCakeFarmBooster.json'
 import bCakeFarmBoosterProxyFactoryAbi from 'config/abi/bCakeFarmBoosterProxyFactory.json'
-
+import bCakeProxyAbi from 'config/abi/bCakeProxy.json'
 // Types
 import type {
   ChainlinkOracle,
@@ -135,6 +135,7 @@ import type {
   PredictionsV1,
   BCakeFarmBooster,
   BCakeFarmBoosterProxyFactory,
+  BCakeProxy,
 } from 'config/abi/types'
 
 export const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
@@ -305,4 +306,8 @@ export const getBCakeFarmBoosterProxyFactoryContract = (signer?: Signer | Provid
     getBCakeFarmBoosterProxyFactoryAddress(),
     signer,
   ) as BCakeFarmBoosterProxyFactory
+}
+
+export const getBCakeProxyContract = (proxyContractAddress: string, signer?: Signer | Provider) => {
+  return getContract(bCakeProxyAbi, proxyContractAddress, signer) as BCakeProxy
 }

@@ -42,6 +42,7 @@ import {
   getPredictionsV1Contract,
   getBCakeFarmBoosterContract,
   getBCakeFarmBoosterProxyFactoryContract,
+  getBCakeProxyContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress, getPredictionsV1Address } from 'utils/addressHelpers'
 import {
@@ -404,4 +405,13 @@ export function useBCakeFarmBoosterProxyFactoryContract(withSignerIfPossible = t
     [withSignerIfPossible, library, account],
   )
   return useMemo(() => getBCakeFarmBoosterProxyFactoryContract(signer), [signer])
+}
+
+export function useBCakeProxyContract(proxyContractAddress: string, withSignerIfPossible = true) {
+  const { library, account } = useActiveWeb3React()
+  const signer = useMemo(
+    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [withSignerIfPossible, library, account],
+  )
+  return useMemo(() => getBCakeProxyContract(proxyContractAddress, signer), [signer, proxyContractAddress])
 }
