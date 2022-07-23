@@ -3,6 +3,7 @@ import { useTranslation } from 'contexts/Localization'
 import { memo } from 'react'
 
 interface BoostedTag extends TagProps {
+  // Add Object to bypass typescript warning
   style: object
 }
 

@@ -170,12 +170,11 @@ const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) =
             <TableBody>
               {sortedRows.map((row) => {
                 return row?.details?.boosted ? (
-                  <ProxyFarmContainer {...row.details}>
+                  <ProxyFarmContainer key={`table-row-${row.farm.pid}`} farm={row.details}>
                     {(finalFarm) => (
                       <Row
                         {...generateSortedRow(generateRow({ farm: finalFarm, originalFarm: row.details }))}
                         userDataReady={userDataReady}
-                        key={`table-row-${row.farm.pid}`}
                       />
                     )}
                   </ProxyFarmContainer>

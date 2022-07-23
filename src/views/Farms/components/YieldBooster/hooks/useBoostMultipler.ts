@@ -4,11 +4,12 @@ import farmBoosterAbi from 'config/abi/farmBooster.json'
 import { FixedNumber } from '@ethersproject/bignumber'
 import { multicallv2 } from 'utils/multicall'
 import useSWR from 'swr'
+import _toNumber from 'lodash/toNumber'
 import { YieldBoosterState } from './useYieldBoosterState'
 
 const PRECISION_FACTOR = FixedNumber.from('1000000000000')
 
-async function getPublicMultipler({ farmBoosterContract }) {
+async function getPublicMultipler({ farmBoosterContract }): Promise<number> {
   const calls = [
     {
       address: farmBoosterContract.address,
@@ -37,10 +38,10 @@ async function getPublicMultipler({ farmBoosterContract }) {
 
   const boostPercent = PRECISION_FACTOR.addUnsafe(MAX_BOOST_PRECISION).divUnsafe(PRECISION_FACTOR)
 
-  return boostPercent.toString()
+  return _toNumber(boostPercent.toString())
 }
 
-async function getUserMultipler({ farmBoosterContract, account, proxyPid }) {
+async function getUserMultipler({ farmBoosterContract, account, proxyPid }): Promise<number> {
   const calls = [
     {
       address: farmBoosterContract.address,
@@ -59,13 +60,15 @@ async function getUserMultipler({ farmBoosterContract, account, proxyPid }) {
 
   const [[multipler], [BOOST_PRECISION]] = data
 
-  return PRECISION_FACTOR.addUnsafe(FixedNumber.from(multipler))
-    .subUnsafe(FixedNumber.from(BOOST_PRECISION))
-    .divUnsafe(PRECISION_FACTOR)
-    .toString()
+  return _toNumber(
+    PRECISION_FACTOR.addUnsafe(FixedNumber.from(multipler))
+      .subUnsafe(FixedNumber.from(BOOST_PRECISION))
+      .divUnsafe(PRECISION_FACTOR)
+      .toString(),
+  )
 }
 
-export default function useBoostMultipler({ proxyPid, boosterState }) {
+export default function useBoostMultipler({ proxyPid, boosterState }): number {
   const farmBoosterContract = useFarmBooster()
 
   const { account } = useActiveWeb3React()

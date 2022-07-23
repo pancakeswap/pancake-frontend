@@ -128,7 +128,7 @@ export const makeLpTokenPriceFromLpSymbolSelector = (lpSymbol: string) =>
 export const farmSelector = createSelector(
   (state: State) => state.farms,
   (farms) => {
-    // filter proxy farms
+    // filter out proxy farms
     const deserializedFarmsData = farms.data.filter((farm) => farm.pid !== farm.proxyPid).map(deserializeFarm)
     const { loadArchivedFarmsData, userDataLoaded, poolLength, regularCakePerBlock } = farms
     return {

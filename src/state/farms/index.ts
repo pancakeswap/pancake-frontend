@@ -6,13 +6,14 @@ import type {
 } from '@reduxjs/toolkit/dist/matchers'
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import stringify from 'fast-json-stable-stringify'
-import farmsConfig from 'config/constants/farms'
+import farmsConfig, { proxyFarms } from 'config/constants/farms'
 import multicall from 'utils/multicall'
 import masterchefABI from 'config/abi/masterchef.json'
 import { getMasterChefAddress } from 'utils/addressHelpers'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { ethersToBigNumber } from 'utils/bigNumber'
 import type { AppState } from 'state'
+import { SerializedFarmConfig } from 'config/constants/types'
 import fetchFarms from './fetchFarms'
 import getFarmsPrices from './getFarmsPrices'
 import {
@@ -42,15 +43,14 @@ const initialState: SerializedFarmsState = {
   loadingKeys: {},
 }
 
-function addProxyFarms(originalFarmsCanFetch) {
+function addProxyFarms(originalFarmsCanFetch: SerializedFarmConfig[]): SerializedFarmConfig[] {
   const proxyFarmsPids = originalFarmsCanFetch
     .filter((f) => f.proxyPid)
     .map((f) => ({
       ...f,
       pid: f.proxyPid,
-      lpAddresses: {
-        56: '0x62B1b65ebE7Fd13e1f56fAb955c2DbAeE1f5aD09',
-      },
+      // proxyPid map with current farm
+      lpAddresses: proxyFarms[f.proxyPid],
     }))
 
   return [...originalFarmsCanFetch, ...proxyFarmsPids]

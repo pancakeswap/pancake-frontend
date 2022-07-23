@@ -20,7 +20,7 @@ interface BoostedActionPropsType {
 const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPid, proxyPid, title, desc }) => {
   const { t } = useTranslation()
   const boosterState = useYieldBoosterState({ farmPid, proxyPid })
-  const handlers = useBoosterFarmHandlers(farmPid)
+  const { isConfirming, ...handlers } = useBoosterFarmHandlers(farmPid)
   const boostMultipler = useBoostMultipler({ proxyPid, boosterState })
 
   const renderBtn = useCallback(() => {
@@ -59,6 +59,7 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
       case YieldBoosterState.DEACTIVE:
         return (
           <ActionButton
+            disabled={isConfirming}
             onClick={handlers.activate}
             title={`${boostMultipler}x`}
             description={t('Yield booster available')}
@@ -68,7 +69,12 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
         )
       case YieldBoosterState.ACTIVE:
         return (
-          <ActionButton onClick={handlers.deactivate} title={`${boostMultipler}x`} description={t('Active')}>
+          <ActionButton
+            disabled={isConfirming}
+            onClick={handlers.deactivate}
+            title={`${boostMultipler}x`}
+            description={t('Active')}
+          >
             {t('Unset')}
           </ActionButton>
         )

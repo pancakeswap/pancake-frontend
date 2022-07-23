@@ -1,7 +1,14 @@
+import { ReactElement } from 'react'
 import { useFarmFromPid } from 'state/farms/hooks'
+import { DeserializedFarm } from 'state/types'
 import useYieldBoosterState, { YieldBoosterState } from '../hooks/useYieldBoosterState'
 
-const ProxyFarmContainer = ({ children, ...farm }) => {
+interface ProxyFarmContainerPropsType {
+  children: (finalFarm: DeserializedFarm) => ReactElement
+  farm: DeserializedFarm
+}
+
+const ProxyFarmContainer: React.FC<ProxyFarmContainerPropsType> = ({ children, farm }) => {
   const boosterState = useYieldBoosterState({
     farmPid: farm.pid,
     proxyPid: farm.proxyPid,

@@ -42,7 +42,7 @@ function useHasReachedMaxPool() {
     return 0
   }
 
-  // TODO: add type
+  // TODO: reuse in Modal PR
   const [[MAX_BOOST_POOL], [, pools]] = data
 
   const maxBoosPool = MAX_BOOST_POOL?.toNumber() || 0

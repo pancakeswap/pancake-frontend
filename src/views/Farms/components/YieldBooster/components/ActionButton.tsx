@@ -1,4 +1,4 @@
-import { Button, Heading, Text } from '@pancakeswap/uikit'
+import { Button, Heading, Text, ButtonProps } from '@pancakeswap/uikit'
 import _isEmpty from 'lodash/isEmpty'
 import styled from 'styled-components'
 
@@ -6,7 +6,12 @@ const Container = styled.div`
   margin-right: 4px;
 `
 
-const ActionButton = ({ title, description, ...props }) => {
+interface ActionButtonPropsType extends ButtonProps {
+  title: string
+  description: string
+}
+
+const ActionButton: React.FC<ActionButtonPropsType> = ({ title, description, ...props }) => {
   return (
     <>
       <Container>

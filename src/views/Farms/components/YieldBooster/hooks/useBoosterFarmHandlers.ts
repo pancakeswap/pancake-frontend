@@ -10,37 +10,19 @@ const useBoosterFarmHandlers = (farmPid: number) => {
   const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
 
-  const activate = useCallback(async () => {
-    const response = await fetchWithCatchTxError(() => {
+  const activate = useCallback(() => {
+    fetchWithCatchTxError(() => {
       return callWithGasPrice(farmBoosterContract, 'activate', [farmPid])
     })
-
-    if (response?.status) {
-      // toastSuccess(
-      //   t('You have activated the farm!'),
-      //   <ToastDescriptionWithTx txHash={response.transactionHash} />,
-      // )
-    }
-
-    return null
   }, [farmPid, farmBoosterContract, callWithGasPrice, fetchWithCatchTxError])
 
-  const deactivate = useCallback(async () => {
-    const response = await fetchWithCatchTxError(() => {
+  const deactivate = useCallback(() => {
+    fetchWithCatchTxError(() => {
       return callWithGasPrice(farmBoosterContract, 'deactivate', [farmPid])
     })
-
-    if (response?.status) {
-      // toastSuccess(
-      //   t('You have deactivated the farm!'),
-      //   <ToastDescriptionWithTx txHash={response.transactionHash} />,
-      // )
-    }
-
-    return null
   }, [farmPid, farmBoosterContract, callWithGasPrice, fetchWithCatchTxError])
 
-  return { activate, deactivate }
+  return { activate, deactivate, isConfirming }
 }
 
 export default useBoosterFarmHandlers

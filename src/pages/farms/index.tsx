@@ -15,7 +15,7 @@ const FarmsPage = () => {
     <>
       {chosenFarmsMemoized.map((farm) =>
         farm.boosted ? (
-          <ProxyFarmContainer {...farm}>
+          <ProxyFarmContainer farm={farm}>
             {(finalFarm) => (
               <FarmCard
                 key={finalFarm.pid}
