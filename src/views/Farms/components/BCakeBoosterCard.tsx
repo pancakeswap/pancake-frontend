@@ -1,5 +1,7 @@
-import { Button, Card, CardBody, CardFooter, Text, Box, Flex } from '@pancakeswap/uikit'
+import { Box, Button, Card, CardBody, CardFooter, Flex, Text, AutoRenewIcon } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
 import { useBCakeFarmBoosterProxyFactoryContract } from 'hooks/useContract'
@@ -57,7 +59,8 @@ const CardContent: React.FC = () => {
   const { maxBoostCounts, remainingCounts } = useUserBoosterStatus(account)
   const { locked, lockedEnd } = useUserLockedCakeStatus()
   useUserLockedCakeStatus()
-
+  const [isCreateProxyLoading, setIsCreateProxyLoading] = useState(false)
+  const { push } = useRouter()
   if (!account)
     return (
       <Box>
@@ -72,14 +75,16 @@ const CardContent: React.FC = () => {
     )
   if (!locked)
     return (
-      <Box>
+      <Box width="100%">
         <Text color="textSubtle" fontSize={12} bold mt="-12px">
           {t('No CAKE locked')}
         </Text>
         <Text color="textSubtle" fontSize={12} mb="16px">
           {t('An active fixed-term CAKE staking position is required for activating farm yield boosters.')}
         </Text>
-        <Button>Go to Pool</Button>
+        <Button onClick={() => push('/pools')} width="100%">
+          {t('Go to Pool')}
+        </Button>
       </Box>
     )
   if (lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd) * 1000))
@@ -91,7 +96,9 @@ const CardContent: React.FC = () => {
         <Text color="textSubtle" fontSize={12} mb="16px">
           {t('An active fixed-term CAKE staking position is required for activating farm yield boosters.')}
         </Text>
-        <Button>Go to Pool</Button>
+        <Button onClick={() => push('/pools')} width="100%">
+          {t('Go to Pool')}
+        </Button>
       </Box>
     )
   if (!proxyCreated) {
@@ -103,7 +110,23 @@ const CardContent: React.FC = () => {
         <Text color="textSubtle" fontSize={12} mb="16px">
           {t('A one-time setup is required for enabling farm yield boosters.')}
         </Text>
-        <Button onClick={() => farmBoosterProxyFactoryContract.createFarmBoosterProxy()}>{t('Enable')}</Button>
+        <Button
+          onClick={async () => {
+            try {
+              setIsCreateProxyLoading(true)
+              await farmBoosterProxyFactoryContract.createFarmBoosterProxy()
+            } catch (error) {
+              console.error(error)
+            } finally {
+              setIsCreateProxyLoading(false)
+            }
+          }}
+          isLoading={isCreateProxyLoading}
+          width="100%"
+          endIcon={isCreateProxyLoading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
+        >
+          {isCreateProxyLoading ? t('Confirming...') : t('Enable')}
+        </Button>
       </Box>
     )
   }
