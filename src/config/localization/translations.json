@@ -1772,5 +1772,8 @@
   "An active fixed-term CAKE staking position is required for activating farm yield boosters.": "An active fixed-term CAKE staking position is required for activating farm yield boosters.",
   "Available Yield Booster": "Available Yield Booster",
   "You will be able to activate the yield booster on an additional %num% farm(s).": "You will be able to activate the yield booster on an additional %num% farm(s).",
-  "To activate yield boosters on additional farms, unset yield boosters on some currently boosted farms.": "To activate yield boosters on additional farms, unset yield boosters on some currently boosted farms."
+  "To activate yield boosters on additional farms, unset yield boosters on some currently boosted farms.": "To activate yield boosters on additional farms, unset yield boosters on some currently boosted farms.",
+  "Locked staking is ended": "Locked staking is ended",
+  "No CAKE locked": "No CAKE locked",
+  "A one-time setup is required for enabling farm yield boosters.": "A one-time setup is required for enabling farm yield boosters."
 }

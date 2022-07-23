@@ -6,6 +6,7 @@ import { useBCakeFarmBoosterProxyFactoryContract } from 'hooks/useContract'
 import styled from 'styled-components'
 import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
 import { useUserBoosterStatus } from '../hooks/useUserBoosterStatus'
+import { useUserLockedCakeStatus } from '../hooks/useUserLockedCakeStatus'
 
 export const CardWrapper = styled.div`
   position: absolute;
@@ -54,6 +55,8 @@ const CardContent: React.FC = () => {
   const farmBoosterProxyFactoryContract = useBCakeFarmBoosterProxyFactoryContract()
   const { proxyCreated } = useBCakeProxyContractAddress(account)
   const { maxBoostCounts, remainingCounts } = useUserBoosterStatus(account)
+  const { locked, lockedEnd } = useUserLockedCakeStatus()
+  useUserLockedCakeStatus()
 
   if (!account)
     return (
@@ -67,14 +70,38 @@ const CardContent: React.FC = () => {
         <ConnectWalletButton />
       </Box>
     )
-  if (account && !proxyCreated) {
+  if (!locked)
+    return (
+      <Box>
+        <Text color="textSubtle" fontSize={12} bold mt="-12px">
+          {t('No CAKE locked')}
+        </Text>
+        <Text color="textSubtle" fontSize={12} mb="16px">
+          {t('An active fixed-term CAKE staking position is required for activating farm yield boosters.')}
+        </Text>
+        <Button>Go to Pool</Button>
+      </Box>
+    )
+  if (lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd) * 1000))
+    return (
+      <Box>
+        <Text color="textSubtle" fontSize={12} bold mt="-12px">
+          {t('Locked staking is ended')}
+        </Text>
+        <Text color="textSubtle" fontSize={12} mb="16px">
+          {t('An active fixed-term CAKE staking position is required for activating farm yield boosters.')}
+        </Text>
+        <Button>Go to Pool</Button>
+      </Box>
+    )
+  if (!proxyCreated) {
     return (
       <Box>
         <Text color="textSubtle" fontSize={12} bold mt="-12px">
           {t('Available Yield Booster')}
         </Text>
         <Text color="textSubtle" fontSize={12} mb="16px">
-          {t('An active fixed-term CAKE staking position is required for activating farm yield boosters.')}
+          {t('A one-time setup is required for enabling farm yield boosters.')}
         </Text>
         <Button onClick={() => farmBoosterProxyFactoryContract.createFarmBoosterProxy()}>{t('Enable')}</Button>
       </Box>
