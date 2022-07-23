@@ -1,7 +1,7 @@
 export default {
   masterChef: {
     97: '',
-    56: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
+    56: '0x97Dcad25C802F126F00D11308b532e5Ff4a7fEF6',
   },
   masterChefV1: {
     97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
@@ -137,6 +137,14 @@ export default {
   },
   iCake: {
     56: '0x3C458828D1622F5f4d526eb0d24Da8C4Eb8F07b1',
+    97: '',
+  },
+  bCakeFarmBooster: {
+    56: '0x9396817286dcEA1885AC79b19d779D687dd101Cb',
+    97: '',
+  },
+  bCakeFarmBoosterProxyFactory: {
+    56: '0xdbCd3e76600125918037590446F710Ada01754b7',
     97: '',
   },
 }
