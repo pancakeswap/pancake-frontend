@@ -168,7 +168,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'HAPPY-BNB',
     lpAddresses: {
       97: '',
-      56: '0x008604A38cD589680F7B8f085DC2D5B4F81151dB',
+      56: '0xEB5071f3CE5d783048Bd7AAe33657bcf8BdFd413',
     },
     token: serializedTokens.happy,
     quoteToken: serializedTokens.wbnb,
@@ -263,7 +263,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'CEEK-BNB',
     lpAddresses: {
       97: '',
-      56: '0x046A9B3A9b743340eE2Bc4C6dDD35543E237C6c2',
+      56: '0xF461bc2aD8D16f6B985052C532b38Adb74eD4643',
     },
     token: serializedTokens.ceek,
     quoteToken: serializedTokens.wbnb,
@@ -274,7 +274,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'TINC-BNB LP',
     lpAddresses: {
       97: '',
-      56: '0x0d5b9A0f4315a4bcE36D1Ea7d6B6d3123167aFAa',
+      56: '0x62B1b65ebE7Fd13e1f56fAb955c2DbAeE1f5aD09',
     },
     token: serializedTokens.tinc,
     quoteToken: serializedTokens.wbnb,
