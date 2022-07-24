@@ -1,7 +1,7 @@
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useIsUserLockedPool } from 'state/pools/hooks'
 import { useFarmUser } from 'state/farms/hooks'
-import { useFarmBooster } from 'hooks/useContract'
+import { useBCakeFarmBoosterContract } from 'hooks/useContract'
 import { useSWRMulticall } from 'hooks/useSWRContract'
 import farmBoosterAbi from 'config/abi/farmBooster.json'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
@@ -19,7 +19,7 @@ export enum YieldBoosterState {
 
 // use swr to refetch the it
 function useHasReachedMaxPool() {
-  const farmBoosterContract = useFarmBooster()
+  const farmBoosterContract = useBCakeFarmBoosterContract()
   const { account } = useActiveWeb3React()
 
   const calls = [
@@ -52,7 +52,7 @@ function useHasReachedMaxPool() {
 }
 
 function useIsPoolActive(proxyPid) {
-  const farmBoosterContract = useFarmBooster()
+  const farmBoosterContract = useBCakeFarmBoosterContract()
   const { account } = useActiveWeb3React()
 
   const { data } = useSWRMulticall(

@@ -13,7 +13,7 @@ export const StargateWidget = ({ theme }: { theme: PancakeTheme }) => {
   }, [theme])
 
   return (
-    <Box>
+    <Box width="100%">
       <style jsx global>{`
         .MuiScopedCssBaseline-root {
           background-color: transparent !important;

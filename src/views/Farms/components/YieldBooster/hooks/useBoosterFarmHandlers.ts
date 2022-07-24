@@ -1,12 +1,12 @@
 import { useCallback } from 'react'
 
 import _isEmpty from 'lodash/isEmpty'
-import { useFarmBooster } from 'hooks/useContract'
+import { useBCakeFarmBoosterContract } from 'hooks/useContract'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 
 const useBoosterFarmHandlers = (farmPid: number) => {
-  const farmBoosterContract = useFarmBooster()
+  const farmBoosterContract = useBCakeFarmBoosterContract()
   const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
 

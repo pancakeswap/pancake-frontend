@@ -1,5 +1,5 @@
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useFarmBooster } from 'hooks/useContract'
+import { useBCakeFarmBoosterContract } from 'hooks/useContract'
 import farmBoosterAbi from 'config/abi/farmBooster.json'
 import { FixedNumber } from '@ethersproject/bignumber'
 import { multicallv2 } from 'utils/multicall'
@@ -69,7 +69,7 @@ async function getUserMultipler({ farmBoosterContract, account, proxyPid }): Pro
 }
 
 export default function useBoostMultipler({ proxyPid, boosterState }): number {
-  const farmBoosterContract = useFarmBooster()
+  const farmBoosterContract = useBCakeFarmBoosterContract()
 
   const { account } = useActiveWeb3React()
 

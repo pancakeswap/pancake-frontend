@@ -215,7 +215,7 @@
   "You’ll need an active PancakeSwap Profile to take part in an IFO!": "You’ll need an active PancakeSwap Profile to take part in an IFO!",
   "Profile Active!": "Profile Active!",
   "Commit CAKE": "Commit CAKE",
-  "When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.": "When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.",
+  "Please note that CAKE in the fixed-term staking positions will remain locked and can not be used for committing to IFO sales. You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.": "Please note that CAKE in the fixed-term staking positions will remain locked and can not be used for committing to IFO sales. You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.",
   "Claim your tokens and achievement": "Claim your tokens and achievement",
   "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE tokens will be returned to your wallet.": "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE tokens will be returned to your wallet.",
   "This round’s closing transaction has been submitted to the blockchain, and is awaiting confirmation.": "This round’s closing transaction has been submitted to the blockchain, and is awaiting confirmation.",
@@ -1778,5 +1778,18 @@
   "No position entered": "No position entered",
   "Add liquidity failed: %message%": "Add liquidity failed: %message%",
   "Remove liquidity failed: %message%": "Remove liquidity failed: %message%",
-  "Unavailable for legal reasons": "Unavailable for legal reasons"
+  "Unavailable for legal reasons": "Unavailable for legal reasons",
+  "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks.",
+  "Yield Booster": "Yield Booster",
+  "Connect wallet to view booster": "Connect wallet to view booster",
+  "An active fixed-term CAKE staking position is required for activating farm yield boosters.": "An active fixed-term CAKE staking position is required for activating farm yield boosters.",
+  "Available Yield Booster": "Available Yield Booster",
+  "You will be able to activate the yield booster on an additional %num% farm(s).": "You will be able to activate the yield booster on an additional %num% farm(s).",
+  "To activate yield boosters on additional farms, unset yield boosters on some currently boosted farms.": "To activate yield boosters on additional farms, unset yield boosters on some currently boosted farms.",
+  "Locked staking is ended": "Locked staking is ended",
+  "No CAKE locked": "No CAKE locked",
+  "A one-time setup is required for enabling farm yield boosters.": "A one-time setup is required for enabling farm yield boosters.",
+  "Migrate your stakings": "Migrate your stakings",
+  "You will need to migrate your stakings before activating yield booster for a farm": "You will need to migrate your stakings before activating yield booster for a farm"
 }

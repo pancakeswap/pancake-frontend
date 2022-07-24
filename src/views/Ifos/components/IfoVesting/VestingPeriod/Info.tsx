@@ -67,14 +67,14 @@ const Info: React.FC<InfoProps> = ({ poolId, data, fetchUserVestingData }) => {
   const percentage = useMemo(() => {
     const total = new BigNumber(received).plus(claimable).plus(remaining)
     const receivedPercentage = new BigNumber(received).div(total).times(100).toNumber()
-    const amountAvailablePrecentage = new BigNumber(claimable).div(total).times(100).toNumber()
+    const amountAvailablePercentage = new BigNumber(claimable).div(total).times(100).toNumber()
     return {
       receivedPercentage,
-      amountAvailablePrecentage: receivedPercentage + amountAvailablePrecentage,
+      amountAvailablePercentage: receivedPercentage + amountAvailablePercentage,
     }
   }, [received, claimable, remaining])
 
-  if (claimable === '0') {
+  if (claimable === '0' && remaining === '0') {
     return null
   }
 
@@ -87,7 +87,7 @@ const Info: React.FC<InfoProps> = ({ poolId, data, fetchUserVestingData }) => {
         <StyleTag isPrivate={poolId === PoolIds.poolBasic}>{labelText}</StyleTag>
       </Flex>
       <WhiteCard>
-        <Progress primaryStep={percentage.receivedPercentage} secondaryStep={percentage.amountAvailablePrecentage} />
+        <Progress primaryStep={percentage.receivedPercentage} secondaryStep={percentage.amountAvailablePercentage} />
         <Flex>
           <Flex flexDirection="column" mr="8px">
             <Text fontSize="14px">{received}</Text>
@@ -110,7 +110,7 @@ const Info: React.FC<InfoProps> = ({ poolId, data, fetchUserVestingData }) => {
             </Text>
           </Flex>
         </Flex>
-        <Claim poolId={poolId} data={data} fetchUserVestingData={fetchUserVestingData} />
+        <Claim poolId={poolId} data={data} claimableAmount={claimable} fetchUserVestingData={fetchUserVestingData} />
       </WhiteCard>
     </>
   )

@@ -40,7 +40,9 @@ import {
   getCakeFlexibleSideVaultV2Contract,
   getCakePredictionsContract,
   getPredictionsV1Contract,
-  getFarmBoosterContract,
+  getBCakeFarmBoosterContract,
+  getBCakeFarmBoosterProxyFactoryContract,
+  getBCakeProxyContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress, getPredictionsV1Address } from 'utils/addressHelpers'
 import {
@@ -140,17 +142,6 @@ export const useProfileContract = (withSignerIfPossible = true) => {
 export const useLotteryV2Contract = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getLotteryV2Contract(library.getSigner()), [library])
-}
-
-export const useFarmBooster = (withSignerIfPossible = true) => {
-  const { library, account } = useActiveWeb3React()
-
-  const signer = useMemo(
-    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
-    [withSignerIfPossible, library, account],
-  )
-
-  return useMemo(() => getFarmBoosterContract(signer), [signer])
 }
 
 export const useMasterchef = (withSignerIfPossible = true) => {
@@ -396,4 +387,31 @@ export function useZapContract(withSignerIfPossible = true) {
     [withSignerIfPossible, library, account],
   )
   return useMemo(() => getZapContract(signer), [signer])
+}
+
+export function useBCakeFarmBoosterContract(withSignerIfPossible = true) {
+  const { library, account } = useActiveWeb3React()
+  const signer = useMemo(
+    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [withSignerIfPossible, library, account],
+  )
+  return useMemo(() => getBCakeFarmBoosterContract(signer), [signer])
+}
+
+export function useBCakeFarmBoosterProxyFactoryContract(withSignerIfPossible = true) {
+  const { library, account } = useActiveWeb3React()
+  const signer = useMemo(
+    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [withSignerIfPossible, library, account],
+  )
+  return useMemo(() => getBCakeFarmBoosterProxyFactoryContract(signer), [signer])
+}
+
+export function useBCakeProxyContract(proxyContractAddress: string, withSignerIfPossible = true) {
+  const { library, account } = useActiveWeb3React()
+  const signer = useMemo(
+    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [withSignerIfPossible, library, account],
+  )
+  return useMemo(() => getBCakeProxyContract(proxyContractAddress, signer), [signer, proxyContractAddress])
 }

@@ -24,7 +24,7 @@ export const mainnetTokens = defineTokens({
   bnb: new Token(MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'BNB', 'BNB', 'https://www.binance.com/'),
   cake: new Token(
     MAINNET,
-    '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+    '0x30643DF62Db08a607Df1eB69147C290cF97696b5',
     18,
     'CAKE',
     'PancakeSwap Token',
@@ -2143,6 +2143,22 @@ export const mainnetTokens = defineTokens({
     'OLE',
     'OpenLeverage',
     'https://openleverage.finance/',
+  ),
+  xcad: new Token(
+    MAINNET,
+    '0x431e0cD023a32532BF3969CddFc002c00E98429d',
+    18,
+    'XCAD',
+    'Chainport.io-Peg XCAD Token',
+    'https://xcadnetwork.com/',
+  ),
+  shell: new Token(
+    MAINNET,
+    '0x208cfEc94d2BA8B8537da7A9BB361c6baAD77272',
+    18,
+    'SHELL',
+    'Meta Apes Shell',
+    'https://metaapesgame.com/',
   ),
 } as const)
 
