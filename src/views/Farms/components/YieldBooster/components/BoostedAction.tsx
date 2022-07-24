@@ -20,8 +20,8 @@ interface BoostedActionPropsType {
 
 const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPid, proxyPid, title, desc }) => {
   const { t } = useTranslation()
-  const boosterState = useYieldBoosterState({ farmPid, proxyPid })
-  const { isConfirming, ...handlers } = useBoosterFarmHandlers(farmPid)
+  const { state: boosterState, refreshActivePool } = useYieldBoosterState({ farmPid, proxyPid })
+  const { isConfirming, ...handlers } = useBoosterFarmHandlers(farmPid, refreshActivePool)
   const boostMultipler = useBoostMultipler({ proxyPid, boosterState })
 
   const renderBtn = useCallback(() => {
@@ -105,7 +105,7 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
       default:
         return null
     }
-  }, [boosterState, t, handlers.activate, handlers.deactivate, boostMultipler])
+  }, [boosterState, t, handlers.activate, handlers.deactivate, boostMultipler, isConfirming])
 
   let status = null
 

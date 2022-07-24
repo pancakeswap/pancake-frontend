@@ -5,7 +5,7 @@ import useBoostMultipler from '../hooks/useBoostMultipler'
 import useYieldBoosterState, { YieldBoosterState } from '../hooks/useYieldBoosterState'
 
 export default function BoostedApr({ apr, farmPid, proxyPid, ...props }) {
-  const boosterState = useYieldBoosterState({ farmPid, proxyPid })
+  const { state: boosterState } = useYieldBoosterState({ farmPid, proxyPid })
 
   const multiplier = useBoostMultipler({ proxyPid, boosterState })
 

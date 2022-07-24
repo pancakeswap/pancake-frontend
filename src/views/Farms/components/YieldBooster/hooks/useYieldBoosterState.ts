@@ -7,6 +7,7 @@ import isUndefinedOrNull from 'utils/isUndefinedOrNull'
 import { useUserBoosterStatus } from 'views/Farms/hooks/useUserBoosterStatus'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
+import { useCallback } from 'react'
 
 export enum YieldBoosterState {
   UNCONNECTED,
@@ -20,17 +21,20 @@ export enum YieldBoosterState {
   MAX,
 }
 
-function useIsPoolActive(proxyPid: number): boolean {
+function useIsPoolActive(proxyPid: number) {
   const farmBoosterContract = useBCakeFarmBoosterContract()
   const { account } = useActiveWeb3React()
 
-  const { data } = useSWRMulticall(
+  const { data, mutate } = useSWRMulticall(
     farmBoosterAbi,
     [{ address: farmBoosterContract.address, name: 'isBoostedPool', params: [account, proxyPid] }],
     { isPaused: () => !account },
   )
 
-  return Array.isArray(data) ? data[0] : false
+  return {
+    isActivePool: Array.isArray(data) ? data[0] : false,
+    refreshIsPoolActive: mutate,
+  }
 }
 
 interface UseYieldBoosterStateArgs {
@@ -38,51 +42,48 @@ interface UseYieldBoosterStateArgs {
   proxyPid: number
 }
 
-export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoosterStateArgs): YieldBoosterState {
+export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoosterStateArgs) {
   const { farmPid, proxyPid } = yieldBoosterStateArgs
   const { account } = useActiveWeb3React()
-  const { remainingCounts } = useUserBoosterStatus(account)
+  const { remainingCounts, refreshActivePools } = useUserBoosterStatus(account)
+  // REFACTOR: This is overhead
   const { locked, lockedEnd } = useUserLockedCakeStatus()
   const { stakedBalance } = useFarmUser(farmPid)
   const { stakedBalance: proxyStakedBalance } = useFarmUser(proxyPid)
-  const isActivePool = useIsPoolActive(proxyPid)
+  const { isActivePool, refreshIsPoolActive } = useIsPoolActive(proxyPid)
   const { proxyCreated } = useBCakeProxyContractAddress(account)
 
+  const refreshActivePool = useCallback(() => {
+    refreshActivePools()
+    refreshIsPoolActive()
+  }, [refreshActivePools, refreshIsPoolActive])
+
+  let state = null
+
   if (!account || isUndefinedOrNull(locked)) {
-    return YieldBoosterState.UNCONNECTED
+    state = YieldBoosterState.UNCONNECTED
+  } else if (!locked) {
+    // depend on usePoolsPageFetch in BCakeBoosterCard to check state
+    // duplicate logic in BCakeBoosterCard
+    state = YieldBoosterState.NO_LOCKED
+  } else if (lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd) * 1000)) {
+    state = YieldBoosterState.LOCKED_END
+  } else if (!proxyCreated) {
+    state = YieldBoosterState.NO_PROXY_CREATED
+  } else if (stakedBalance.gt(0)) {
+    state = YieldBoosterState.NO_MIGRATE
+  } else if (proxyStakedBalance.isLessThanOrEqualTo(0)) {
+    state = YieldBoosterState.NO_LP
+  } else if (remainingCounts === 0) {
+    state = YieldBoosterState.MAX
+  } else if (isActivePool) {
+    state = YieldBoosterState.DEACTIVE
+  } else {
+    state = YieldBoosterState.ACTIVE
   }
 
-  // depend on usePoolsPageFetch in BCakeBoosterCard to check state
-  // duplicate logic in BCakeBoosterCard
-  if (!locked) {
-    return YieldBoosterState.NO_LOCKED
+  return {
+    state,
+    refreshActivePool,
   }
-
-  if (lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd) * 1000)) {
-    return YieldBoosterState.LOCKED_END
-  }
-
-  // What indicate user created FarmBooster.proxyContract
-  if (!proxyCreated) {
-    return YieldBoosterState.NO_PROXY_CREATED
-  }
-
-  if (stakedBalance.gt(0)) {
-    return YieldBoosterState.NO_MIGRATE
-  }
-
-  // If user no balance after migration
-  if (proxyStakedBalance.isLessThanOrEqualTo(0)) {
-    return YieldBoosterState.NO_LP
-  }
-
-  if (remainingCounts === 0) {
-    return YieldBoosterState.MAX
-  }
-
-  if (isActivePool) {
-    return YieldBoosterState.DEACTIVE
-  }
-
-  return YieldBoosterState.ACTIVE
 }

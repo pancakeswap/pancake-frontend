@@ -9,7 +9,7 @@ interface ProxyFarmContainerPropsType {
 }
 
 const ProxyFarmContainer: React.FC<ProxyFarmContainerPropsType> = ({ children, farm }) => {
-  const boosterState = useYieldBoosterState({
+  const { state: boosterState } = useYieldBoosterState({
     farmPid: farm.pid,
     proxyPid: farm.proxyPid,
   })
