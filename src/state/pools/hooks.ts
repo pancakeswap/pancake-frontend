@@ -148,15 +148,3 @@ export const useIsUserLockedPool = () => {
 
   return useMemo(() => vault?.userData?.locked, [vault?.userData?.locked])
 }
-
-export const useFetchCakeVaultUserData = () => {
-  const { account } = useActiveWeb3React()
-  const dispatch = useAppDispatch()
-
-  // It should called once in the farm page
-  useEffect(() => {
-    if (account) {
-      dispatch(fetchCakeVaultUserData({ account }))
-    }
-  }, [dispatch, account])
-}

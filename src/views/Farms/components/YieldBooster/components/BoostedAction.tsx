@@ -9,6 +9,7 @@ import useBoosterFarmHandlers from '../hooks/useBoosterFarmHandlers'
 
 import useBoostMultipler from '../hooks/useBoostMultipler'
 import ActionButton from './ActionButton'
+import CreateProxyButton from './CreateProxyButton'
 
 interface BoostedActionPropsType {
   farmPid: number
@@ -37,6 +38,14 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
           <ActionButton title={`Up to ${boostMultipler}x`} description={t('Lock CAKE to activate yield booster')}>
             <NextLinkFromReactRouter to="/pools">{t('Go to Pool')}</NextLinkFromReactRouter>
           </ActionButton>
+        )
+      case YieldBoosterState.NO_PROXY_CREATED:
+        return (
+          <ActionButton
+            title={`${boostMultipler}x`}
+            description={t('One-time setup is required for activating farm yield boosters')}
+            button={<CreateProxyButton />}
+          />
         )
       case YieldBoosterState.NO_MIGRATE:
         return (

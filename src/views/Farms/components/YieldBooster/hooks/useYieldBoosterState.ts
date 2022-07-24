@@ -5,6 +5,8 @@ import { useBCakeFarmBoosterContract } from 'hooks/useContract'
 import { useSWRMulticall } from 'hooks/useSWRContract'
 import farmBoosterAbi from 'config/abi/farmBooster.json'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
+import { useUserBoosterStatus } from 'views/Farms/hooks/useUserBoosterStatus'
+import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 
 export enum YieldBoosterState {
   UNCONNECTED,
@@ -17,41 +19,7 @@ export enum YieldBoosterState {
   MAX,
 }
 
-// use swr to refetch the it
-function useHasReachedMaxPool() {
-  const farmBoosterContract = useBCakeFarmBoosterContract()
-  const { account } = useActiveWeb3React()
-
-  const calls = [
-    {
-      address: farmBoosterContract.address,
-      name: 'MAX_BOOST_POOL',
-    },
-    {
-      address: farmBoosterContract.address,
-      name: 'activedPools',
-      params: [account],
-    },
-  ]
-
-  const { data } = useSWRMulticall(farmBoosterAbi, calls, {
-    isPaused: () => !account,
-  })
-
-  if (!data) {
-    return 0
-  }
-
-  // TODO: reuse in Modal PR
-  const [[MAX_BOOST_POOL], [, pools]] = data
-
-  const maxBoosPool = MAX_BOOST_POOL?.toNumber() || 0
-  const hasReachedMaxPool = maxBoosPool && pools?.length === maxBoosPool
-
-  return hasReachedMaxPool
-}
-
-function useIsPoolActive(proxyPid) {
+function useIsPoolActive(proxyPid: number): boolean {
   const farmBoosterContract = useBCakeFarmBoosterContract()
   const { account } = useActiveWeb3React()
 
@@ -64,25 +32,32 @@ function useIsPoolActive(proxyPid) {
   return Array.isArray(data) ? data[0] : false
 }
 
-export default function useYieldBoosterState({ farmPid, proxyPid }) {
+interface UseYieldBoosterStateArgs {
+  farmPid: number
+  proxyPid: number
+}
+
+export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoosterStateArgs): YieldBoosterState {
+  const { farmPid, proxyPid } = yieldBoosterStateArgs
   const { account } = useActiveWeb3React()
+  const { remainingCounts } = useUserBoosterStatus(account)
   const isLocked = useIsUserLockedPool()
   const { stakedBalance } = useFarmUser(farmPid)
-  const hasReachedMaxPool = useHasReachedMaxPool()
-  const { stakedBalance: proxyStakedBalance, allowance } = useFarmUser(proxyPid)
+  const { stakedBalance: proxyStakedBalance } = useFarmUser(proxyPid)
   const isActivePool = useIsPoolActive(proxyPid)
+  const { proxyCreated } = useBCakeProxyContractAddress(account)
 
   if (!account || isUndefinedOrNull(isLocked)) {
     return YieldBoosterState.UNCONNECTED
   }
 
-  // fetch VaultWithUserData in the Farms component to verify locked state
+  // depend on usePoolsPageFetch in BCakeBoosterCard to check state
   if (!isLocked) {
     return YieldBoosterState.NO_LOCKED
   }
 
   // What indicate user created FarmBooster.proxyContract
-  if (!allowance.gt(0)) {
+  if (!proxyCreated) {
     return YieldBoosterState.NO_PROXY_CREATED
   }
 
@@ -95,7 +70,7 @@ export default function useYieldBoosterState({ farmPid, proxyPid }) {
     return YieldBoosterState.NO_LP
   }
 
-  if (hasReachedMaxPool) {
+  if (remainingCounts === 0) {
     return YieldBoosterState.MAX
   }
 

@@ -11,7 +11,15 @@ interface ActionButtonPropsType extends ButtonProps {
   description: string
 }
 
-const ActionButton: React.FC<ActionButtonPropsType> = ({ title, description, ...props }) => {
+const ActionButton: React.FC<ActionButtonPropsType> = ({ title, description, button, ...props }) => {
+  let btn = null
+
+  if (button) {
+    btn = button
+  } else if (!_isEmpty(props)) {
+    btn = <Button {...props} />
+  }
+
   return (
     <>
       <Container>
@@ -20,7 +28,7 @@ const ActionButton: React.FC<ActionButtonPropsType> = ({ title, description, ...
           {description}
         </Text>
       </Container>
-      {_isEmpty(props) ? null : <Button {...props} />}
+      {btn}
     </>
   )
 }
