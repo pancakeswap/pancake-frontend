@@ -4,8 +4,11 @@ import BigNumber from 'bignumber.js'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useTranslation } from 'contexts/Localization'
 import { useBCakeProxyContract } from 'hooks/useContract'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import useToast from 'hooks/useToast'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { useApproveBoostProxyFarm } from '../hooks/useApproveFarm'
 import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
@@ -96,12 +99,14 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   const [activatedState, setActivatedState] = useState<Steps>('unStake')
   const [isLoading, setIsLoading] = useState(false)
   const { t } = useTranslation()
-  const { onApprove } = useApproveBoostProxyFarm(lpContract)
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(stakedBalance)
   }, [stakedBalance])
   const { proxyAddress } = useBCakeProxyContractAddress()
+  const { onApprove } = useApproveBoostProxyFarm(lpContract, proxyAddress)
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
+  const { fetchWithCatchTxError, loading } = useCatchTxError()
+  const { toastSuccess } = useToast()
 
   const onStepChange = async () => {
     if (activatedState === 'unStake') {
@@ -111,20 +116,21 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
         setIsLoading(false)
       })
     } else if (activatedState === 'enable') {
-      setIsLoading(true)
-      try {
-        await onApprove()
+      const receipt = await fetchWithCatchTxError(onApprove)
+      if (receipt?.status) {
+        toastSuccess(
+          `${t('Unstaked')}!`,
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Your earnings have also been harvested to your wallet')}
+          </ToastDescriptionWithTx>,
+        )
         setActivatedState('stake')
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setIsLoading(false)
       }
     } else {
       setIsLoading(true)
       try {
         const value = new BigNumber(fullBalance).times(DEFAULT_TOKEN_DECIMAL).toString()
-        await bCakeProxy.deposit(pid, value)
+        await bCakeProxy?.deposit(pid, value)
         onDismiss?.()
       } catch (error) {
         console.error(error)
@@ -167,11 +173,11 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
         </Text>
         <Button
           onClick={onStepChange}
-          isLoading={isLoading}
+          isLoading={isLoading || loading}
           width="100%"
-          endIcon={isLoading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
+          endIcon={isLoading || loading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
         >
-          {isLoading ? t('Confirming...') : t(activatedState)}
+          {isLoading || loading ? t('Confirming...') : t(activatedState)}
         </Button>
       </FooterBox>
     </Modal>

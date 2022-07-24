@@ -413,5 +413,8 @@ export function useBCakeProxyContract(proxyContractAddress: string, withSignerIf
     () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
     [withSignerIfPossible, library, account],
   )
-  return useMemo(() => getBCakeProxyContract(proxyContractAddress, signer), [signer, proxyContractAddress])
+  return useMemo(
+    () => proxyContractAddress && getBCakeProxyContract(proxyContractAddress, signer),
+    [signer, proxyContractAddress],
+  )
 }
