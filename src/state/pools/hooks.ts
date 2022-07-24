@@ -142,9 +142,3 @@ export const useIfoCredit = () => {
 export const useIfoCeiling = () => {
   return useSelector(ifoCeilingSelector)
 }
-
-export const useIsUserLockedPool = () => {
-  const vault = useCakeVault()
-
-  return useMemo(() => vault?.userData?.locked, [vault?.userData?.locked])
-}
