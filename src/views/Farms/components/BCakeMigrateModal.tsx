@@ -1,5 +1,5 @@
 import { Contract } from '@ethersproject/contracts'
-import { AutoRenewIcon, Box, Button, Modal, Text } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Box, Button, Modal, Text, LogoIcon } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { useBCakeProxyContract } from 'hooks/useContract'
@@ -9,16 +9,46 @@ import { getFullDisplayBalance } from 'utils/formatBalance'
 import { useApproveBoostProxyFarm } from '../hooks/useApproveFarm'
 import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
 
+export const StepperWrapper = styled.div<{ finished: boolean }>`
+  position: relative;
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  vertical-align: top;
+  &:not(:last-child) {
+    margin-right: calc((100% - 60px) / 2);
+    &::before {
+      position: absolute;
+      content: '';
+      width: 90px;
+      height: 2px;
+      top: 9px;
+      left: 30px;
+      background-color: ${({ theme, finished }) => (finished ? theme.colors.textSubtle : theme.colors.disabled)};
+    }
+  }
+`
+
 export const StepperCircle = styled.div`
   height: 20px;
   width: 20px;
   border-radius: 50%;
-  display: inline-block;
+
   background-color: #d0d3d4;
-  vertical-align: top;
+
   color: white;
   text-align: center;
   line-height: 20px; ;
+`
+export const StepperText = styled.div<{ active: boolean }>`
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  transition: 0.3s color ease-in-out;
+  will-change: color;
+  text-transform: uppercase;
+  color: ${({ theme, active }) => (active ? theme.colors.primary : theme.colors.disabled)};
 `
 export const FooterBox = styled.div`
   margin-top: 24px;
@@ -49,6 +79,7 @@ const migrationSteps: Record<Steps, string> = {
   enable: 'Enable staking with yield booster',
   stake: 'Stake LP tokens back to the farm',
 }
+const migrationStepsKeys = Object.keys(migrationSteps)
 
 export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   lpContract,
@@ -101,13 +132,20 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
       <Text width="320px" p="16px">
         {t('You will need to migrate your stakings before activating yield booster for a farm')}
       </Text>
-      <Box>
-        {Object.keys(migrationSteps).map((d, index) => {
-          return <StepperCircle>{index + 1}</StepperCircle>
+      <Box pb={20} pl={23} pr={15}>
+        {migrationStepsKeys.map((step, index) => {
+          return (
+            <StepperWrapper finished={index < migrationStepsKeys.findIndex((d) => d === activatedState)}>
+              {step === activatedState ? <LogoIcon width={22} /> : <StepperCircle>{index + 1}</StepperCircle>}
+              <StepperText active={step === activatedState}>{step}</StepperText>
+            </StepperWrapper>
+          )
         })}
       </Box>
       <FooterBox>
-        <Text mb="16px">{t(migrationSteps[activatedState])}</Text>
+        <Text mb="16px" textAlign="center">
+          {migrationStepsKeys.findIndex((d) => d === activatedState) + 1}. {t(migrationSteps[activatedState])}
+        </Text>
         <Button
           onClick={onStepChange}
           isLoading={isLoading}
