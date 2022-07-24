@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { MaxUint256 } from '@ethersproject/constants'
 import { Contract } from '@ethersproject/contracts'
-import { useMasterchef, useBCakeProxyContract } from 'hooks/useContract'
+import { useMasterchef } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 
 const useApproveFarm = (lpContract: Contract) => {

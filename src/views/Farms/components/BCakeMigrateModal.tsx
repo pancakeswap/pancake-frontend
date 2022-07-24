@@ -5,7 +5,7 @@ import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useTranslation } from 'contexts/Localization'
 import { useBCakeProxyContract } from 'hooks/useContract'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
@@ -98,6 +98,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
 }) => {
   const [activatedState, setActivatedState] = useState<Steps>('unStake')
   const [isLoading, setIsLoading] = useState(false)
+  const [isApproved, setIsApproved] = useState(false)
   const { t } = useTranslation()
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(stakedBalance)
@@ -108,30 +109,40 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   const { fetchWithCatchTxError, loading } = useCatchTxError()
   const { toastSuccess } = useToast()
 
+  useEffect(() => {
+    bCakeProxy.lpApproved(lpContract.address).then((enabled) => {
+      setIsApproved(enabled)
+    })
+  }, [lpContract, bCakeProxy])
+
   const onStepChange = async () => {
     if (activatedState === 'unStake') {
       setIsLoading(true)
       onUnStack(fullBalance, () => {
-        setActivatedState('enable')
+        if (isApproved) setActivatedState('stake')
+        else setActivatedState('enable')
         setIsLoading(false)
       })
     } else if (activatedState === 'enable') {
       const receipt = await fetchWithCatchTxError(onApprove)
       if (receipt?.status) {
-        toastSuccess(
-          `${t('Unstaked')}!`,
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Your earnings have also been harvested to your wallet')}
-          </ToastDescriptionWithTx>,
-        )
+        toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
         setActivatedState('stake')
       }
     } else {
       setIsLoading(true)
       try {
         const value = new BigNumber(fullBalance).times(DEFAULT_TOKEN_DECIMAL).toString()
-        await bCakeProxy?.deposit(pid, value)
-        onDismiss?.()
+        const receipt = await fetchWithCatchTxError(() => bCakeProxy?.deposit(pid, value))
+        if (receipt?.status) {
+          toastSuccess(
+            `${t('Staked')}!`,
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('Your funds have been staked in the farm')}
+            </ToastDescriptionWithTx>,
+          )
+          onDismiss?.()
+        }
       } catch (error) {
         console.error(error)
       } finally {
