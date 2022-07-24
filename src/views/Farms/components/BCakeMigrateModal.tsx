@@ -1,6 +1,7 @@
 import { Contract } from '@ethersproject/contracts'
-import { AutoRenewIcon, Box, Button, Modal, Text, LogoIcon, CheckmarkIcon } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Box, Button, CheckmarkIcon, LogoIcon, Modal, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useTranslation } from 'contexts/Localization'
 import { useBCakeProxyContract } from 'hooks/useContract'
 import { useMemo, useState } from 'react'
@@ -122,7 +123,8 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
     } else {
       setIsLoading(true)
       try {
-        await bCakeProxy.deposit(pid, fullBalance)
+        const value = new BigNumber(fullBalance).times(DEFAULT_TOKEN_DECIMAL).toString()
+        await bCakeProxy.deposit(pid, value)
         onDismiss?.()
       } catch (error) {
         console.error(error)

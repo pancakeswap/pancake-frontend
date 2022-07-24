@@ -1,10 +1,11 @@
-import { Box, Button, Card, CardBody, CardFooter, Flex, Text, AutoRenewIcon } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Box, Button, Card, CardBody, CardFooter, Flex, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useState } from 'react'
-import { useRouter } from 'next/router'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { DEFAULT_GAS_LIMIT } from 'config'
 import { useTranslation } from 'contexts/Localization'
 import { useBCakeFarmBoosterProxyFactoryContract } from 'hooks/useContract'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 import styled from 'styled-components'
 import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
 import { useUserBoosterStatus } from '../hooks/useUserBoosterStatus'
@@ -114,7 +115,7 @@ const CardContent: React.FC = () => {
           onClick={async () => {
             try {
               setIsCreateProxyLoading(true)
-              await farmBoosterProxyFactoryContract.createFarmBoosterProxy()
+              await farmBoosterProxyFactoryContract.createFarmBoosterProxy({ gasLimit: DEFAULT_GAS_LIMIT })
             } catch (error) {
               console.error(error)
             } finally {
