@@ -1,5 +1,5 @@
 import { Contract } from '@ethersproject/contracts'
-import { AutoRenewIcon, Box, Button, Modal, Text, LogoIcon } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Box, Button, Modal, Text, LogoIcon, CheckmarkIcon } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { useBCakeProxyContract } from 'hooks/useContract'
@@ -9,7 +9,25 @@ import { getFullDisplayBalance } from 'utils/formatBalance'
 import { useApproveBoostProxyFarm } from '../hooks/useApproveFarm'
 import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
 
-export const StepperWrapper = styled.div<{ finished: boolean }>`
+export const StepperCircle = styled.div`
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+  line-height: 20px; ;
+`
+export const StepperText = styled.div`
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  transition: 0.3s color ease-in-out;
+  will-change: color;
+  text-transform: uppercase;
+`
+
+export const StepperWrapper = styled.div<{ finished: boolean; active: boolean }>`
   position: relative;
   height: 20px;
   width: 20px;
@@ -27,29 +45,15 @@ export const StepperWrapper = styled.div<{ finished: boolean }>`
       background-color: ${({ theme, finished }) => (finished ? theme.colors.textSubtle : theme.colors.disabled)};
     }
   }
+  ${StepperCircle} {
+    background: ${({ theme, finished }) => (finished ? theme.colors.textSubtle : theme.colors.disabled)};
+  }
+  ${StepperText} {
+    color: ${({ theme, active, finished }) =>
+      active ? theme.colors.primary : finished ? theme.colors.textSubtle : theme.colors.disabled};
+  }
 `
 
-export const StepperCircle = styled.div`
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-
-  background-color: #d0d3d4;
-
-  color: white;
-  text-align: center;
-  line-height: 20px; ;
-`
-export const StepperText = styled.div<{ active: boolean }>`
-  position: absolute;
-  top: calc(100% + 10px);
-  left: 50%;
-  transform: translateX(-50%);
-  transition: 0.3s color ease-in-out;
-  will-change: color;
-  text-transform: uppercase;
-  color: ${({ theme, active }) => (active ? theme.colors.primary : theme.colors.disabled)};
-`
 export const FooterBox = styled.div`
   margin-top: 24px;
   padding-top: 24px;
@@ -135,9 +139,22 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
       <Box pb={20} pl={23} pr={15}>
         {migrationStepsKeys.map((step, index) => {
           return (
-            <StepperWrapper finished={index < migrationStepsKeys.findIndex((d) => d === activatedState)}>
-              {step === activatedState ? <LogoIcon width={22} /> : <StepperCircle>{index + 1}</StepperCircle>}
-              <StepperText active={step === activatedState}>{step}</StepperText>
+            <StepperWrapper
+              active={step === activatedState}
+              finished={index < migrationStepsKeys.findIndex((d) => d === activatedState)}
+            >
+              {step === activatedState ? (
+                <LogoIcon width={22} />
+              ) : (
+                <StepperCircle>
+                  {index < migrationStepsKeys.findIndex((d) => d === activatedState) ? (
+                    <CheckmarkIcon color="white" />
+                  ) : (
+                    index + 1
+                  )}
+                </StepperCircle>
+              )}
+              <StepperText>{step}</StepperText>
             </StepperWrapper>
           )
         })}
