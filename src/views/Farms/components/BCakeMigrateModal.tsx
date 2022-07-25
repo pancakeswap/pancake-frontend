@@ -42,11 +42,18 @@ export const StepperWrapper = styled.div<{ finished: boolean; active: boolean }>
     &::before {
       position: absolute;
       content: '';
-      width: 90px;
+      width: calc(((100vw / 2) - 94px));
       height: 2px;
       top: 9px;
       left: 30px;
+      transition: 0.3s background-color ease-in-out;
+      will-change: background-color;
       background-color: ${({ theme, finished }) => (finished ? theme.colors.textSubtle : theme.colors.disabled)};
+    }
+    ${({ theme }) => theme.mediaQueries.md} {
+      &::before {
+        width: 90px;
+      }
     }
   }
   ${StepperCircle} {
@@ -71,6 +78,18 @@ export const FooterBox = styled.div`
     left: 0px;
     background-color: ${({ theme }) => theme.colors.cardBorder};
   }
+`
+
+export const InfoBox = styled.div`
+  padding: 16px;
+  background: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 16px;
+  font-size: 12px;
+  color: ${({ theme }) => theme.colors.textSubtle};
+  line-height: 120%;
+  width: 370px;
+  margin-bottom: 24px;
 `
 interface BCakeMigrateModalProps {
   lpContract: Contract
@@ -110,7 +129,8 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   const { toastSuccess } = useToast()
 
   useEffect(() => {
-    bCakeProxy?.lpApproved(lpContract.address).then((enabled) => {
+    if (!bCakeProxy) return
+    bCakeProxy.lpApproved(lpContract.address).then((enabled) => {
       setIsApproved(enabled)
     })
   }, [lpContract, bCakeProxy])
@@ -151,10 +171,8 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
     }
   }
   return (
-    <Modal title="Migrate your stakings" width="420px">
-      <Text width="320px" p="16px">
-        {t('You will need to migrate your stakings before activating yield booster for a farm')}
-      </Text>
+    <Modal title="Migrate your stakings" width="420px" onDismiss={onDismiss}>
+      <InfoBox>{t('You will need to migrate your stakings before activating yield booster for a farm')}</InfoBox>
       <Box pb={20} pl={23} pr={15}>
         {migrationStepsKeys.map((step, index) => {
           return (
