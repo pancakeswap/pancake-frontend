@@ -1,11 +1,10 @@
 import { useMemo } from 'react'
-import { Button, AutoRenewIcon, Box, Flex } from '@pancakeswap/uikit'
+import { Button, AutoRenewIcon, Box, Flex, Text, Message, MessageText } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
 import { useTranslation } from 'contexts/Localization'
 import { MAX_LOCK_DURATION } from 'config/constants/pools'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { useIfoCeiling } from 'state/pools/hooks'
-import isUndefinedOrNull from 'utils/isUndefinedOrNull'
 
 import { LockedModalBodyPropsType, ModalValidator } from '../types'
 
@@ -19,7 +18,7 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
   onDismiss,
   lockedAmount,
   currentBalance,
-  checkEnoughBalanceToExtend,
+  extendLockedPosition,
   editAmountOnly,
   prepConfirmArg,
   validator,
@@ -34,7 +33,14 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
     prepConfirmArg,
   })
 
-  const { isValidAmount, isValidDuration, isOverMax }: ModalValidator = useMemo(() => {
+  const {
+    isValidAmount,
+    isValidDuration,
+    isOverMax,
+    maxAvailableDuration,
+    currentDuration,
+    currentDurationLeft,
+  }: ModalValidator = useMemo(() => {
     return typeof validator === 'function'
       ? validator({
           duration,
@@ -43,24 +49,37 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
           isValidAmount: lockedAmount?.toNumber() > 0 && getBalanceAmount(currentBalance).gte(lockedAmount),
           isValidDuration: duration > 0 && duration <= MAX_LOCK_DURATION,
           isOverMax: duration > MAX_LOCK_DURATION,
+          maxAvailableDuration: MAX_LOCK_DURATION,
         }
   }, [validator, currentBalance, lockedAmount, duration])
 
-  const hasEnoughBalanceToExtend = useMemo(
-    () => (checkEnoughBalanceToExtend ? (currentBalance ? currentBalance.gte(MIN_LOCK_AMOUNT) : false) : null),
-    [currentBalance, checkEnoughBalanceToExtend],
+  const cakeNeededForOperation = useMemo(
+    () => extendLockedPosition && currentDuration + duration > MAX_LOCK_DURATION,
+    [extendLockedPosition, currentDuration, duration],
   )
+
+  const hasEnoughBalanceToExtend = useMemo(() => currentBalance?.gte(MIN_LOCK_AMOUNT), [currentBalance])
 
   return (
     <>
       <Box mb="16px">
         {editAmountOnly || (
-          <LockDurationField
-            isOverMax={isOverMax}
-            setDuration={setDuration}
-            duration={duration}
-            hasEnoughBalanceToExtend={hasEnoughBalanceToExtend}
-          />
+          <>
+            <LockDurationField
+              isOverMax={isOverMax}
+              maxAvailableDuration={maxAvailableDuration}
+              setDuration={setDuration}
+              duration={duration}
+              currentDurationLeft={currentDurationLeft}
+            />
+            {extendLockedPosition && maxAvailableDuration !== duration && (
+              <Message variant="warning">
+                <MessageText maxWidth="200px">
+                  {t('Recommend choosing "MAX" to renew your staking position in order to keep similar yield boost.')}
+                </MessageText>
+              </Message>
+            )}
+          </>
         )}
       </Box>
       {customOverview ? (
@@ -80,15 +99,25 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
         />
       )}
 
+      {isValidDuration &&
+        cakeNeededForOperation &&
+        (hasEnoughBalanceToExtend ? (
+          <Text fontSize="12px" mt="24px">
+            {t('0.0001 CAKE will be spent to extend')}
+          </Text>
+        ) : (
+          <Text fontSize="12px" mt="24px" color="failure">
+            {t('0.0001 CAKE required for enabling extension')}
+          </Text>
+        ))}
+
       <Flex mt="24px">
         <Button
           width="100%"
           isLoading={pendingTx}
           endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
           onClick={handleConfirmClick}
-          disabled={
-            !(isValidAmount && isValidDuration && (checkEnoughBalanceToExtend ? hasEnoughBalanceToExtend : true))
-          }
+          disabled={!(isValidAmount && isValidDuration && (cakeNeededForOperation ? hasEnoughBalanceToExtend : true))}
         >
           {pendingTx ? t('Confirming') : t('Confirm')}
         </Button>

@@ -2,11 +2,10 @@ import { Text, Flex, Button, Input, Box } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import _toNumber from 'lodash/toNumber'
-import isUndefinedOrNull from 'utils/isUndefinedOrNull'
 import { secondsToWeeks, weeksToSeconds } from '../../utils/formatSecondsToWeeks'
 import { LockDurationFieldPropsType } from '../types'
 
-const DURATIONS = [1, 5, 10, 25, 52]
+const DURATIONS = [1, 5, 10, 25]
 
 const StyledInput = styled(Input)`
   text-align: right;
@@ -17,7 +16,8 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
   duration,
   setDuration,
   isOverMax,
-  hasEnoughBalanceToExtend,
+  currentDurationLeft,
+  maxAvailableDuration,
 }) => {
   const { t } = useTranslation()
 
@@ -33,18 +33,32 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
           </Text>
         </Flex>
         <Flex flexWrap="wrap">
-          {DURATIONS.map((week) => (
-            <Button
-              key={week}
-              onClick={() => setDuration(weeksToSeconds(week))}
-              mt="4px"
-              mr={['2px', '2px', '4px', '4px']}
-              scale="sm"
-              variant={weeksToSeconds(week) === duration ? 'subtle' : 'tertiary'}
-            >
-              {week}W
-            </Button>
-          ))}
+          {DURATIONS.map((week) => {
+            const weekSeconds = weeksToSeconds(week)
+            return (
+              <Button
+                key={week}
+                onClick={() => setDuration(weekSeconds)}
+                mt="4px"
+                mr={['2px', '2px', '4px', '4px']}
+                scale="sm"
+                disabled={currentDurationLeft && weekSeconds + currentDurationLeft > maxAvailableDuration}
+                variant={weekSeconds === duration ? 'subtle' : 'tertiary'}
+              >
+                {week}W
+              </Button>
+            )
+          })}
+          <Button
+            key={maxAvailableDuration}
+            onClick={() => setDuration(maxAvailableDuration)}
+            mt="4px"
+            mr={['2px', '2px', '4px', '4px']}
+            scale="sm"
+            variant={maxAvailableDuration === duration ? 'subtle' : 'tertiary'}
+          >
+            {t('Max')}
+          </Button>
         </Flex>
       </Box>
       <Flex justifyContent="center" alignItems="center" mb="8px">
@@ -69,11 +83,6 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
       {isOverMax && (
         <Text fontSize="12px" textAlign="right" color="failure">
           {t('Total lock duration exceeds 52 weeks')}
-        </Text>
-      )}
-      {!isUndefinedOrNull(hasEnoughBalanceToExtend) && !hasEnoughBalanceToExtend && (
-        <Text fontSize="12px" textAlign="right" color="failure">
-          {t('0.0001 CAKE needed to extend lock')}
         </Text>
       )}
     </>

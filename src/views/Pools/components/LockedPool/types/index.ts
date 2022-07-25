@@ -73,13 +73,16 @@ export interface ModalValidator {
   isValidAmount: boolean
   isValidDuration: boolean
   isOverMax: boolean
+  maxAvailableDuration: number
+  currentDuration?: number
+  currentDurationLeft?: number
 }
 
 export interface LockedModalBodyPropsType {
   onDismiss?: VoidFn
   stakingToken: Token
   currentBalance?: BigNumber
-  checkEnoughBalanceToExtend?: boolean
+  extendLockedPosition?: boolean
   lockedAmount: BigNumber
   editAmountOnly?: React.ReactElement
   prepConfirmArg?: PrepConfirmArg
@@ -125,7 +128,8 @@ export interface LockDurationFieldPropsType {
   duration: number
   setDuration: Dispatch<SetStateAction<number>>
   isOverMax: boolean
-  hasEnoughBalanceToExtend?: boolean
+  maxAvailableDuration: number
+  currentDurationLeft?: number
 }
 
 export interface LockedStakingApyPropsType {
