@@ -97,6 +97,7 @@ interface BCakeMigrateModalProps {
   onUnStack: (amount: string, callback: () => void) => void
   onDismiss?: () => void
   pid: number
+  onUpdateFarm: () => void
 }
 
 type Steps = 'unStake' | 'enable' | 'stake'
@@ -114,6 +115,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   onDismiss,
   onUnStack,
   pid,
+  onUpdateFarm,
 }) => {
   const [activatedState, setActivatedState] = useState<Steps>('unStake')
   const [isLoading, setIsLoading] = useState(false)
@@ -148,6 +150,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
       if (receipt?.status) {
         toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
         setActivatedState('stake')
+        onUpdateFarm()
       }
     } else {
       setIsLoading(true)
@@ -161,6 +164,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
               {t('Your funds have been staked in the farm')}
             </ToastDescriptionWithTx>,
           )
+          onUpdateFarm()
           onDismiss?.()
         }
       } catch (error) {
