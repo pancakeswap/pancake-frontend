@@ -1,15 +1,16 @@
 import { useTranslation } from 'contexts/Localization'
-import { ReactNode, useCallback } from 'react'
+import { ReactNode, useCallback, useContext } from 'react'
 
 import _isEmpty from 'lodash/isEmpty'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 
-import useYieldBoosterState, { YieldBoosterState } from '../hooks/useYieldBoosterState'
+import { YieldBoosterState } from '../hooks/useYieldBoosterState'
 import useBoosterFarmHandlers from '../hooks/useBoosterFarmHandlers'
 
 import useBoostMultipler from '../hooks/useBoostMultipler'
 import ActionButton from './ActionButton'
 import CreateProxyButton from './CreateProxyButton'
+import { YieldBoosterStateContext } from './ProxyFarmContainer'
 
 interface BoostedActionPropsType {
   farmPid: number
@@ -20,7 +21,7 @@ interface BoostedActionPropsType {
 
 const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPid, proxyPid, title, desc }) => {
   const { t } = useTranslation()
-  const { state: boosterState, refreshActivePool } = useYieldBoosterState({ farmPid, proxyPid })
+  const { boosterState, refreshActivePool } = useContext(YieldBoosterStateContext)
   const { isConfirming, ...handlers } = useBoosterFarmHandlers(farmPid, refreshActivePool)
   const boostMultipler = useBoostMultipler({ proxyPid, boosterState })
 

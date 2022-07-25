@@ -142,3 +142,15 @@ export const useIfoCredit = () => {
 export const useIfoCeiling = () => {
   return useSelector(ifoCeilingSelector)
 }
+
+export const useFetchCakeVaultUserData = () => {
+  const { account } = useActiveWeb3React()
+  const dispatch = useAppDispatch()
+
+  // It should called once in the farm page
+  useEffect(() => {
+    if (account) {
+      dispatch(fetchCakeVaultUserData({ account }))
+    }
+  }, [dispatch, account])
+}

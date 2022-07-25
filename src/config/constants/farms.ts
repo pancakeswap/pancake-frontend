@@ -22,7 +22,6 @@ const farms: SerializedFarmConfig[] = [
   {
     pid: 2,
     v1pid: 251,
-    proxyPid: 91,
     lpSymbol: 'CAKE-BNB LP',
     lpAddresses: {
       97: '0x3ed8936cAFDF85cfDBa29Fbe5940A5b0524824F4',
@@ -1217,13 +1216,5 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: serializedTokens.wbnb,
   },
 ].filter((f) => !!f.lpAddresses[CHAIN_ID])
-
-// lpAddress of proxy by pid
-export const proxyFarms = {
-  91: {
-    91: '',
-    56: '0x62B1b65ebE7Fd13e1f56fAb955c2DbAeE1f5aD09',
-  },
-}
 
 export default farms

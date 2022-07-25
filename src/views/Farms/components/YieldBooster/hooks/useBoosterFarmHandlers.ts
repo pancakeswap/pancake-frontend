@@ -22,7 +22,7 @@ const useBoosterFarmHandlers = (farmPid: number, onDone) => {
 
   const deactivate = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(farmBoosterContract, 'deactivate', [farmPid])
+      return callWithGasPrice(farmBoosterContract, 'deactive', [farmPid])
     })
 
     if (receipt?.status && onDone) {

@@ -58,7 +58,6 @@ const CardContent: React.FC = () => {
   const { proxyCreated } = useBCakeProxyContractAddress(account)
   const { maxBoostCounts, remainingCounts } = useUserBoosterStatus(account)
   const { locked, lockedEnd } = useUserLockedCakeStatus()
-  useUserLockedCakeStatus()
   const [isCreateProxyLoading, setIsCreateProxyLoading] = useState(false)
   const { push } = useRouter()
   if (!account)

@@ -32,7 +32,7 @@ function useIsPoolActive(proxyPid: number) {
   )
 
   return {
-    isActivePool: Array.isArray(data) ? data[0] : false,
+    isActivePool: Array.isArray(data) ? data[0][0] : false,
     refreshIsPoolActive: mutate,
   }
 }
@@ -46,7 +46,7 @@ export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoos
   const { farmPid, proxyPid } = yieldBoosterStateArgs
   const { account } = useActiveWeb3React()
   const { remainingCounts, refreshActivePools } = useUserBoosterStatus(account)
-  // REFACTOR: This is overhead
+  // REFACTOR: This is re-render overhead
   const { locked, lockedEnd } = useUserLockedCakeStatus()
   const { stakedBalance } = useFarmUser(farmPid)
   const { stakedBalance: proxyStakedBalance } = useFarmUser(proxyPid)
@@ -77,9 +77,9 @@ export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoos
   } else if (remainingCounts === 0) {
     state = YieldBoosterState.MAX
   } else if (isActivePool) {
-    state = YieldBoosterState.DEACTIVE
-  } else {
     state = YieldBoosterState.ACTIVE
+  } else {
+    state = YieldBoosterState.DEACTIVE
   }
 
   return {
