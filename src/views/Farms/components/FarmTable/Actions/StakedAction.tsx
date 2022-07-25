@@ -85,7 +85,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
     }
   }
 
-  const handleUnstake = async (amount: string) => {
+  const handleUnstake = async (amount: string, callback?: () => void) => {
     const receipt = await fetchWithCatchTxError(() => {
       return onUnstake(amount)
     })
@@ -96,24 +96,12 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
           {t('Your earnings have also been harvested to your wallet')}
         </ToastDescriptionWithTx>,
       )
+      callback?.()
       dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
     }
   }
-
-  const handleUnstakeWithCallback = async (amount: string, callback: () => void) => {
-    const receipt = await fetchWithCatchTxError(() => {
-      return onUnstake(amount)
-    })
-    if (receipt?.status) {
-      toastSuccess(
-        `${t('Unstaked')}!`,
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('Your earnings have also been harvested to your wallet')}
-        </ToastDescriptionWithTx>,
-      )
-      callback()
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
-    }
+  const onUpdateFarm = () => {
+    dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
   }
 
   const [onPresentDeposit] = useModal(
@@ -144,7 +132,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
       pid={pid}
       stakedBalance={stakedBalance}
       lpContract={lpContract}
-      onUnStack={handleUnstakeWithCallback}
+      onUnStack={handleUnstake}
+      onUpdateFarm={onUpdateFarm}
     />,
   )
 

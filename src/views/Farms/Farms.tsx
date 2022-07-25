@@ -1,14 +1,14 @@
 import { useEffect, useCallback, useState, useMemo, useRef, createContext } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { Image, Heading, Toggle, Text, Button, ArrowForwardIcon, Flex, Link } from '@pancakeswap/uikit'
+import { Image, Heading, Toggle, Text, Button, ArrowForwardIcon, Flex, Link, Box } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import styled from 'styled-components'
 import FlexLayout from 'components/Layout/Flex'
 import Page from 'components/Layout/Page'
 import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'
-import { useFetchCakeVaultUserData } from 'state/pools/hooks'
+import { usePoolsUserData } from 'state/pools/hooks'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { DeserializedFarm } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
@@ -133,7 +133,7 @@ const Farms: React.FC = ({ children }) => {
   const isInactive = pathname.includes('history')
   const isActive = !isInactive && !isArchived
 
-  useFetchCakeVaultUserData()
+  usePoolsUserData()
 
   usePollFarmsWithUserData()
 
@@ -279,21 +279,27 @@ const Farms: React.FC = ({ children }) => {
   return (
     <FarmsContext.Provider value={{ chosenFarmsMemoized }}>
       <PageHeader>
-        <Heading as="h1" scale="xxl" color="secondary" mb="24px">
-          {t('Farms')}
-        </Heading>
-        <Heading scale="lg" color="text">
-          {t('Stake LP tokens to earn.')}
-        </Heading>
-        <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
-          <Button p="0" variant="text">
-            <Text color="primary" bold fontSize="16px" mr="4px">
-              {t('Community Auctions')}
-            </Text>
-            <ArrowForwardIcon color="primary" />
-          </Button>
-        </NextLinkFromReactRouter>
-        <BCakeBoosterCard />
+        <Flex justifyContent="space-between" flexWrap={['nowrap', 'wrap']}>
+          <Box>
+            <Heading as="h1" scale="xxl" color="secondary" mb="24px">
+              {t('Farms')}
+            </Heading>
+            <Heading scale="lg" color="text">
+              {t('Stake LP tokens to earn.')}
+            </Heading>
+            <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
+              <Button p="0" variant="text">
+                <Text color="primary" bold fontSize="16px" mr="4px">
+                  {t('Community Auctions')}
+                </Text>
+                <ArrowForwardIcon color="primary" />
+              </Button>
+            </NextLinkFromReactRouter>
+          </Box>
+          <Box>
+            <BCakeBoosterCard />
+          </Box>
+        </Flex>
       </PageHeader>
       <Page>
         <ControlContainer>

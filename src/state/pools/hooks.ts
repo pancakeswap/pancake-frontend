@@ -5,7 +5,6 @@ import { useAppDispatch } from 'state'
 import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
 import farmsConfig from 'config/constants/farms'
 import { livePools } from 'config/constants/pools'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 import {
   fetchPoolsPublicDataAsync,
@@ -104,6 +103,17 @@ export const usePoolsPageFetch = () => {
   }, [dispatch])
 }
 
+export const usePoolsUserData = () => {
+  const { account } = useWeb3React()
+  const dispatch = useAppDispatch()
+
+  useFastRefreshEffect(() => {
+    if (account) {
+      dispatch(fetchCakeVaultUserData({ account }))
+    }
+  }, [account, dispatch])
+}
+
 export const useFetchIfo = () => {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
@@ -141,16 +151,4 @@ export const useIfoCredit = () => {
 
 export const useIfoCeiling = () => {
   return useSelector(ifoCeilingSelector)
-}
-
-export const useFetchCakeVaultUserData = () => {
-  const { account } = useActiveWeb3React()
-  const dispatch = useAppDispatch()
-
-  // It should called once in the farm page
-  useEffect(() => {
-    if (account) {
-      dispatch(fetchCakeVaultUserData({ account }))
-    }
-  }, [dispatch, account])
 }
