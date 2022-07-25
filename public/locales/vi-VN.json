@@ -1740,8 +1740,8 @@
   "There is not enough %token1% input to match 50/50. Some of %token0% will be converted to %token1%": "Không có đủ %token1% đầu vào để khớp 50/50. Một vài %token0% của bạn sẽ được chuyển thành %token1%.",
   "If you experience any issue when adding or removing liquidity, please disable Zap and retry.": "Nếu bạn gặp bất kỳ vấn đề nào khi bổ sung hoặc giảm thanh khoản, hãy vô hiệu Zap và thử lại.",
   "Receive": "Nhận",
-  "Zap does NOT support tokens with fees on transfers. If you experience any issues, disable Zap": "Zap KHÔNG hỗ trợ các token có phí chuyển khoản. Nếu bạn gặp bất kỳ vấn đề nào, hãy vô hiệu Zap",
-  "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, disable Zap": "Zap KHÔNG hỗ trợ các token có phí chuyển khoản. Vui lòng chọn ’Don't convert’ (Không chuyển đổi) và thử lại. Nếu bạn gặp bất kỳ vấn đề nào khác, hãy vô hiệu Zap",
+  "Zap does NOT support tokens with fees on transfers. If you experience any issues, click": "Zap does NOT support tokens with fees on transfers. If you experience any issues, click",
+  "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, click": "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, click",
   "Vesting Schedule": "Lịch đầu tư",
   "Vesting Start": "Bắt đầu đầu tư",
   "Suspicious rugpull token": "Token nghi vấn rút thảm",
@@ -1764,7 +1764,11 @@
   "No position entered": "Chưa nhập vị thế nào",
   "Add liquidity failed: %message%": "Bổ sung thanh khoản không thành công: %message%",
   "Remove liquidity failed: %message%": "Giảm thanh khoản không thành công: %message%",
+  "to disable Zap temporarily.": "to disable Zap temporarily.",
+  "Temporarily disabled Zap": "Temporarily disabled Zap",
   "Unavailable for legal reasons": "Không khả dụng vì lý do pháp lý",
+  "Zap allows you to add liquidity with only 1 single token. Click": "Zap allows you to add liquidity with only 1 single token. Click",
+  "to try.": "to try.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks."
 }
