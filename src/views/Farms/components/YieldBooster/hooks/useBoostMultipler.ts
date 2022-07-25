@@ -41,12 +41,12 @@ async function getPublicMultipler({ farmBoosterContract }): Promise<number> {
   return _toNumber(boostPercent.toString())
 }
 
-async function getUserMultipler({ farmBoosterContract, account, proxyPid }): Promise<number> {
+async function getUserMultipler({ farmBoosterContract, account, pid }): Promise<number> {
   const calls = [
     {
       address: farmBoosterContract.address,
       name: 'getUserMultiplier',
-      params: [account, proxyPid],
+      params: [account, pid],
     },
     {
       address: farmBoosterContract.address,
@@ -68,7 +68,7 @@ async function getUserMultipler({ farmBoosterContract, account, proxyPid }): Pro
   )
 }
 
-export default function useBoostMultipler({ proxyPid, boosterState }): number {
+export default function useBoostMultipler({ pid, boosterState }): number {
   const farmBoosterContract = useBCakeFarmBoosterContract()
 
   const { account } = useActiveWeb3React()
@@ -77,12 +77,12 @@ export default function useBoostMultipler({ proxyPid, boosterState }): number {
     boosterState,
   )
 
-  const { data } = useSWR(['boostMultipler', shouldMaxUp ? 'public' : `user${proxyPid}`], async () =>
+  const { data } = useSWR(['boostMultipler', shouldMaxUp ? 'public' : `user${pid}`], async () =>
     (await shouldMaxUp)
       ? getPublicMultipler({
           farmBoosterContract,
         })
-      : getUserMultipler({ farmBoosterContract, proxyPid, account }),
+      : getUserMultipler({ farmBoosterContract, pid, account }),
   )
 
   return data

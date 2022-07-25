@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Text } from '@pancakeswap/uikit'
+import { Button, Flex, Text } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from 'contexts/Localization'
@@ -94,7 +94,6 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
           )}
           desc={(actionBtn) => <ActionContainer>{actionBtn}</ActionContainer>}
           farmPid={farm.pid}
-          proxyPid={farm.proxyPid}
         />
       )}
       <Flex>

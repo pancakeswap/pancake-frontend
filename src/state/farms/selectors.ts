@@ -28,8 +28,8 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
     auctionHostingStartSeconds,
     quoteTokenPriceBusd,
     tokenPriceBusd,
-    boosted,
-    proxyPid,
+    proxyLpAddresses,
+    proxyLpInfo,
   } = farm
 
   const auctionHostingStartDate = !isUndefinedOrNull(auctionHostingStartSeconds)
@@ -67,8 +67,9 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
     lpTotalSupply: farm.lpTotalSupply ? new BigNumber(farm.lpTotalSupply) : BIG_ZERO,
     tokenPriceVsQuote: farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : BIG_ZERO,
     poolWeight: farm.poolWeight ? new BigNumber(farm.poolWeight) : BIG_ZERO,
-    boosted: Boolean(boosted),
-    proxyPid: proxyPid || null,
+    boosted: Boolean(proxyLpAddresses),
+    proxyLpAddresses,
+    proxyLpInfo,
   }
 }
 
@@ -128,8 +129,7 @@ export const makeLpTokenPriceFromLpSymbolSelector = (lpSymbol: string) =>
 export const farmSelector = createSelector(
   (state: State) => state.farms,
   (farms) => {
-    // filter out proxy farms
-    const deserializedFarmsData = farms.data.filter((farm) => farm.pid !== farm.proxyPid).map(deserializeFarm)
+    const deserializedFarmsData = farms.data.map(deserializeFarm)
     const { loadArchivedFarmsData, userDataLoaded, poolLength, regularCakePerBlock } = farms
     return {
       loadArchivedFarmsData,

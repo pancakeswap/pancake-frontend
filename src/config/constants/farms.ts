@@ -260,19 +260,20 @@ const farms: SerializedFarmConfig[] = [
   {
     pid: 92,
     v1pid: 523,
-    proxyPid: 91,
     lpSymbol: 'CEEK-BNB',
     lpAddresses: {
       97: '',
       56: '0xF461bc2aD8D16f6B985052C532b38Adb74eD4643',
     },
+    proxyLpAddresses: {
+      97: '',
+      56: '0x62B1b65ebE7Fd13e1f56fAb955c2DbAeE1f5aD09',
+    },
     token: serializedTokens.ceek,
     quoteToken: serializedTokens.wbnb,
-    boosted: true,
   },
   {
     pid: 91,
-    proxyPid: 91,
     v1pid: 522,
     lpSymbol: 'TINC-BNB LP',
     lpAddresses: {
@@ -281,7 +282,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.tinc,
     quoteToken: serializedTokens.wbnb,
-    boosted: true,
   },
   {
     pid: 90,

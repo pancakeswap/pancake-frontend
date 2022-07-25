@@ -6,10 +6,10 @@ import useBoostMultipler from '../hooks/useBoostMultipler'
 import { YieldBoosterState } from '../hooks/useYieldBoosterState'
 import { YieldBoosterStateContext } from './ProxyFarmContainer'
 
-function BoostedApr({ apr, proxyPid, ...props }) {
+function BoostedApr({ apr, pid, ...props }) {
   const { boosterState } = useContext(YieldBoosterStateContext)
 
-  const multiplier = useBoostMultipler({ proxyPid, boosterState })
+  const multiplier = useBoostMultipler({ pid, boosterState })
 
   const boostedApr =
     (!isUndefinedOrNull(multiplier) && !isUndefinedOrNull(apr) && formatNumber(apr * Number(multiplier))) || '0'

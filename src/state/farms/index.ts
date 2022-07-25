@@ -94,35 +94,105 @@ interface FarmUserDataResponse {
   earnings: string
 }
 
+async function getProxyFarmAllowances(farms, account, proxyAddress) {
+  // TODO: Refactor
+  const [userFarmAllowances, userFarmTokenBalances, userStakedBalances, userFarmEarnings] = await Promise.all([
+    fetchFarmUserAllowances(account, farms),
+    fetchFarmUserTokenBalances(account, farms),
+    fetchFarmUserStakedBalances(account, farms),
+    fetchFarmUserEarnings(account, farms),
+  ])
+
+  const [proxyUserFarmAllowances, proxyUserFarmTokenBalances, proxyUserStakedBalances, proxyUserFarmEarnings] =
+    await Promise.all([
+      fetchFarmUserAllowances(
+        proxyAddress,
+        farms.map((f) => ({ lpAddresses: f?.proxyLpAddresses })),
+      ),
+      fetchFarmUserTokenBalances(
+        proxyAddress,
+        farms.map((f) => ({ lpAddresses: f?.proxyLpAddresses })),
+      ),
+      fetchFarmUserStakedBalances(proxyAddress, farms),
+      fetchFarmUserEarnings(proxyAddress, farms),
+    ])
+
+  const farmAllowances = userFarmAllowances.map((farmAllowance, index) => {
+    return {
+      pid: farms[index].pid,
+      allowance: userFarmAllowances[index],
+      tokenBalance: userFarmTokenBalances[index],
+      stakedBalance: userStakedBalances[index],
+      earnings: userFarmEarnings[index],
+      proxy: {
+        allowance: proxyUserFarmAllowances[index],
+        tokenBalance: proxyUserFarmTokenBalances[index],
+        stakedBalance: proxyUserStakedBalances[index],
+        earnings: proxyUserFarmEarnings[index],
+      },
+    }
+  })
+
+  return farmAllowances
+}
+
+async function getFarmAllowances(farms, account) {
+  const [userFarmAllowances, userFarmTokenBalances, userStakedBalances, userFarmEarnings] = await Promise.all([
+    fetchFarmUserAllowances(account, farms),
+    fetchFarmUserTokenBalances(account, farms),
+    fetchFarmUserStakedBalances(account, farms),
+    fetchFarmUserEarnings(account, farms),
+  ])
+
+  const normalFarmAllowances = userFarmAllowances.map((farmAllowance, index) => {
+    return {
+      pid: farms[index].pid,
+      allowance: userFarmAllowances[index],
+      tokenBalance: userFarmTokenBalances[index],
+      stakedBalance: userStakedBalances[index],
+      earnings: userFarmEarnings[index],
+    }
+  })
+
+  return normalFarmAllowances
+}
+
 export const fetchFarmUserDataAsync = createAsyncThunk<
   FarmUserDataResponse[],
-  { account: string; pids: number[] },
+  { account: string; pids: number[]; proxyAddress: string },
   {
     state: AppState
   }
 >(
   'farms/fetchFarmUserDataAsync',
-  async ({ account, pids }) => {
+  async ({ account, pids, proxyAddress }) => {
     const poolLength = await fetchMasterChefFarmPoolLength()
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
     const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
 
-    const [userFarmAllowances, userFarmTokenBalances, userStakedBalances, userFarmEarnings] = await Promise.all([
-      fetchFarmUserAllowances(account, farmsCanFetch),
-      fetchFarmUserTokenBalances(account, farmsCanFetch),
-      fetchFarmUserStakedBalances(account, farmsCanFetch),
-      fetchFarmUserEarnings(account, farmsCanFetch),
+    // TODO: remove duplicate
+    const { normalFarms, farmsWithProxy } = farmsCanFetch.reduce(
+      (acc, f) => {
+        if (f.proxyLpAddresses) {
+          return {
+            ...acc,
+            farmsWithProxy: [...acc.farmsWithProxy, f],
+          }
+        }
+        return {
+          ...acc,
+          normalFarms: [...acc.normalFarms, f],
+        }
+      },
+      { normalFarms: [], farmsWithProxy: [] },
+    )
+
+    const [proxyAllowances, normalAllowances] = await Promise.all([
+      getProxyFarmAllowances(farmsWithProxy, account, proxyAddress),
+      getFarmAllowances(normalFarms, account),
     ])
 
-    return userFarmAllowances.map((farmAllowance, index) => {
-      return {
-        pid: farmsCanFetch[index].pid,
-        allowance: userFarmAllowances[index],
-        tokenBalance: userFarmTokenBalances[index],
-        stakedBalance: userStakedBalances[index],
-        earnings: userFarmEarnings[index],
-      }
-    })
+    return [...proxyAllowances, ...normalAllowances]
   },
   {
     condition: (arg, { getState }) => {
@@ -205,6 +275,9 @@ export const farmsSlice = createSlice({
     builder.addMatcher(
       isAnyOf(fetchFarmsPublicDataAsync.rejected, fetchFarmUserDataAsync.rejected),
       (state, action) => {
+        // TODO: remove when done
+        // eslint-disable-next-line no-console
+        console.log('action: ', action)
         state.loadingKeys[serializeLoadingKey(action, 'rejected')] = false
       },
     )

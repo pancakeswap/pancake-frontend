@@ -15,17 +15,14 @@ const FarmsPage = () => {
       {chosenFarmsMemoized.map((farm) =>
         farm.boosted ? (
           <ProxyFarmContainer farm={farm}>
-            {(finalFarm) => (
-              <FarmCard
-                key={finalFarm.pid}
-                farm={finalFarm}
-                displayApr={getDisplayApr(finalFarm.apr, finalFarm.lpRewardsApr)}
-                cakePrice={cakePrice}
-                account={account}
-                removed={false}
-                originalLiquidity={farm?.liquidity}
-              />
-            )}
+            <FarmCard
+              key={farm.pid}
+              farm={farm}
+              displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
+              cakePrice={cakePrice}
+              account={account}
+              removed={false}
+            />
           </ProxyFarmContainer>
         ) : (
           <FarmCard

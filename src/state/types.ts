@@ -102,7 +102,6 @@ export interface SerializedFarm extends SerializedFarmConfig {
   poolWeight?: SerializedBigNumber
   userData?: SerializedFarmUserData
   boosted?: boolean
-  proxyPid?: number
 }
 
 export interface DeserializedFarm extends DeserializedFarmConfig {
@@ -116,7 +115,6 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   poolWeight?: BigNumber
   userData?: DeserializedFarmUserData
   boosted?: boolean
-  proxyPid?: number
 }
 
 export enum VaultKey {

@@ -191,7 +191,6 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
               )}
               desc={(actionBtn) => <ActionContent>{actionBtn}</ActionContent>}
               farmPid={farm?.pid}
-              proxyPid={farm?.proxyPid}
             />
           </ActionContainerSection>
         )}

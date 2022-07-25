@@ -11,6 +11,7 @@ import { getFarmApr } from 'utils/apr'
 import { useAppDispatch } from 'state'
 import { useRouter } from 'next/router'
 import { FarmWithStakedValue } from 'views/Farms/components/types'
+import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, State } from '../types'
 import {
@@ -26,6 +27,7 @@ import {
 export const usePollFarmsWithUserData = () => {
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
+  const { proxyAddress } = useBCakeProxyContractAddress(account)
 
   useSWRImmutable(
     ['publicFarmData'],
@@ -38,11 +40,12 @@ export const usePollFarmsWithUserData = () => {
     },
   )
 
+  // TODO: remove ProxyAddress check because user dont have proxy will not load
   useSWRImmutable(
-    account ? ['farmsWithUserData', account] : null,
+    account && proxyAddress ? ['farmsWithUserData', account] : null,
     () => {
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
-      dispatch(fetchFarmUserDataAsync({ account, pids }))
+      dispatch(fetchFarmUserDataAsync({ account, pids, proxyAddress }))
     },
     {
       refreshInterval: SLOW_INTERVAL,

@@ -4,7 +4,7 @@ import { memo } from 'react'
 
 interface BoostedTag extends TagProps {
   // Add Object to bypass typescript warning
-  style: object
+  style?: object
 }
 
 const BoostedTag: React.FC<BoostedTag> = (props) => {

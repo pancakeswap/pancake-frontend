@@ -74,8 +74,8 @@ interface FarmConfigBaseProps {
   pid: number
   v1pid?: number
   lpSymbol: string
-  proxyPid?: number
   lpAddresses: Address
+  proxyLpAddresses?: Address
   multiplier?: string
   isCommunity?: boolean
   auctionHostingStartSeconds?: number

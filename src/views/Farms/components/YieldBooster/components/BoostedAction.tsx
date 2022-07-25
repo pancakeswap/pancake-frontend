@@ -15,16 +15,15 @@ import MigrateActionButton from './MigrateActionButton'
 
 interface BoostedActionPropsType {
   farmPid: number
-  proxyPid: number
   title: (status: YieldBoosterState) => ReactNode
   desc: (actionBtn: ReactNode) => ReactNode
 }
 
-const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPid, proxyPid, title, desc }) => {
+const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPid, title, desc }) => {
   const { t } = useTranslation()
   const { boosterState, refreshActivePool } = useContext(YieldBoosterStateContext)
   const { isConfirming, ...handlers } = useBoosterFarmHandlers(farmPid, refreshActivePool)
-  const boostMultipler = useBoostMultipler({ proxyPid, boosterState })
+  const boostMultipler = useBoostMultipler({ pid: farmPid, boosterState })
 
   const renderBtn = useCallback(() => {
     switch (boosterState) {
@@ -103,7 +102,7 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
       default:
         return null
     }
-  }, [boosterState, t, handlers.activate, handlers.deactivate, boostMultipler, isConfirming])
+  }, [boosterState, t, handlers.activate, handlers.deactivate, boostMultipler, isConfirming, farmPid])
 
   let status = null
 
