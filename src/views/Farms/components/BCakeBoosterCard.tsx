@@ -1,9 +1,12 @@
 import { AutoRenewIcon, Box, Button, Card, CardBody, CardFooter, Flex, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { DEFAULT_GAS_LIMIT } from 'config'
 import { useTranslation } from 'contexts/Localization'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { useBCakeFarmBoosterProxyFactoryContract } from 'hooks/useContract'
+import useToast from 'hooks/useToast'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -81,6 +84,9 @@ const CardContent: React.FC = () => {
   const { locked, lockedEnd } = useUserLockedCakeStatus()
   const [isCreateProxyLoading, setIsCreateProxyLoading] = useState(false)
   const { push } = useRouter()
+  const { fetchWithCatchTxError, loading } = useCatchTxError()
+  const { toastSuccess } = useToast()
+
   if (!account)
     return (
       <Box>
@@ -134,18 +140,23 @@ const CardContent: React.FC = () => {
           onClick={async () => {
             try {
               setIsCreateProxyLoading(true)
-              await farmBoosterProxyFactoryContract.createFarmBoosterProxy({ gasLimit: DEFAULT_GAS_LIMIT })
+              const receipt = await fetchWithCatchTxError(() =>
+                farmBoosterProxyFactoryContract.createFarmBoosterProxy({ gasLimit: DEFAULT_GAS_LIMIT }),
+              )
+              if (receipt?.status) {
+                toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
+              }
             } catch (error) {
               console.error(error)
             } finally {
               setIsCreateProxyLoading(false)
             }
           }}
-          isLoading={isCreateProxyLoading}
+          isLoading={isCreateProxyLoading || loading}
           width="100%"
-          endIcon={isCreateProxyLoading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
+          endIcon={isCreateProxyLoading || loading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
         >
-          {isCreateProxyLoading ? t('Confirming...') : t('Enable')}
+          {isCreateProxyLoading || loading ? t('Confirming...') : t('Enable')}
         </Button>
       </Box>
     )

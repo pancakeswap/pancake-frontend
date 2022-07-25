@@ -19,7 +19,14 @@ export const StepperCircle = styled.div`
   border-radius: 50%;
   color: white;
   text-align: center;
-  line-height: 20px; ;
+  line-height: 20px;
+  padding: 2px;
+  box-sizing: border-box;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
 `
 export const StepperText = styled.div`
   position: absolute;
@@ -42,7 +49,7 @@ export const StepperWrapper = styled.div<{ finished: boolean; active: boolean }>
     &::before {
       position: absolute;
       content: '';
-      width: calc(((100vw / 2) - 94px));
+      width: calc(((100vw / 2) - 108px));
       height: 2px;
       top: 9px;
       left: 30px;
@@ -52,7 +59,7 @@ export const StepperWrapper = styled.div<{ finished: boolean; active: boolean }>
     }
     ${({ theme }) => theme.mediaQueries.md} {
       &::before {
-        width: 90px;
+        width: 104px;
       }
     }
   }
@@ -88,8 +95,10 @@ export const InfoBox = styled.div`
   font-size: 12px;
   color: ${({ theme }) => theme.colors.textSubtle};
   line-height: 120%;
-  width: 370px;
   margin-bottom: 24px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 372px;
+  }
 `
 interface BCakeMigrateModalProps {
   lpContract: Contract
@@ -100,12 +109,16 @@ interface BCakeMigrateModalProps {
   onUpdateFarm: () => void
 }
 
-type Steps = 'unStake' | 'enable' | 'stake'
+enum Steps {
+  'UNSTAKE',
+  'ENABLE',
+  'STAKE',
+}
 
 const migrationSteps: Record<Steps, string> = {
-  unStake: 'Unstake LP tokens from the farm',
-  enable: 'Enable staking with yield booster',
-  stake: 'Stake LP tokens back to the farm',
+  [Steps.UNSTAKE]: 'Unstake LP tokens from the farm',
+  [Steps.ENABLE]: 'Enable staking with yield booster',
+  [Steps.STAKE]: 'Stake LP tokens back to the farm',
 }
 const migrationStepsKeys = Object.keys(migrationSteps)
 
@@ -117,7 +130,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   pid,
   onUpdateFarm,
 }) => {
-  const [activatedState, setActivatedState] = useState<Steps>('unStake')
+  const [activatedState, setActivatedState] = useState<Steps>(Steps.ENABLE)
   const [isLoading, setIsLoading] = useState(false)
   const [isApproved, setIsApproved] = useState(false)
   const { t } = useTranslation()
@@ -138,18 +151,18 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   }, [lpContract, bCakeProxy])
 
   const onStepChange = async () => {
-    if (activatedState === 'unStake') {
+    if (activatedState === Steps.UNSTAKE) {
       setIsLoading(true)
       onUnStack(fullBalance, () => {
-        if (isApproved) setActivatedState('stake')
-        else setActivatedState('enable')
+        if (isApproved) setActivatedState(Steps.STAKE)
+        else setActivatedState(Steps.ENABLE)
         setIsLoading(false)
       })
-    } else if (activatedState === 'enable') {
+    } else if (activatedState === Steps.ENABLE) {
       const receipt = await fetchWithCatchTxError(onApprove)
       if (receipt?.status) {
         toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-        setActivatedState('stake')
+        setActivatedState(Steps.STAKE)
         onUpdateFarm()
       }
     } else {
@@ -175,34 +188,34 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
     }
   }
   return (
-    <Modal title="Migrate your stakings" width="420px" onDismiss={onDismiss}>
+    <Modal title={t('Migrate your stakings')} width="420px" onDismiss={onDismiss}>
       <InfoBox>{t('You will need to migrate your stakings before activating yield booster for a farm')}</InfoBox>
-      <Box pb={20} pl={23} pr={15}>
+      <Box pb={20} pl={38} pr={30}>
         {migrationStepsKeys.map((step, index) => {
           return (
             <StepperWrapper
-              active={step === activatedState}
-              finished={index < migrationStepsKeys.findIndex((d) => d === activatedState)}
+              active={step === activatedState.toString()}
+              finished={parseInt(step) < parseInt(activatedState.toString())}
             >
-              {step === activatedState ? (
+              {step === activatedState.toString() ? (
                 <LogoIcon width={22} />
               ) : (
                 <StepperCircle>
-                  {index < migrationStepsKeys.findIndex((d) => d === activatedState) ? (
-                    <CheckmarkIcon color="white" />
+                  {parseInt(step) < parseInt(activatedState.toString()) ? (
+                    <CheckmarkIcon color="white" width={16} />
                   ) : (
                     index + 1
                   )}
                 </StepperCircle>
               )}
-              <StepperText>{step}</StepperText>
+              <StepperText>{Steps[step]}</StepperText>
             </StepperWrapper>
           )
         })}
       </Box>
       <FooterBox>
         <Text mb="16px" textAlign="center">
-          {migrationStepsKeys.findIndex((d) => d === activatedState) + 1}. {t(migrationSteps[activatedState])}
+          {activatedState + 1}. {t(migrationSteps[activatedState])}
         </Text>
         <Button
           onClick={onStepChange}
@@ -210,7 +223,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
           width="100%"
           endIcon={isLoading || loading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
         >
-          {isLoading || loading ? t('Confirming...') : t(activatedState)}
+          {isLoading || loading ? t('Confirming...') : t(Steps[activatedState])}
         </Button>
       </FooterBox>
     </Modal>
