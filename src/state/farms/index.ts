@@ -6,14 +6,13 @@ import type {
 } from '@reduxjs/toolkit/dist/matchers'
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import stringify from 'fast-json-stable-stringify'
-import farmsConfig, { proxyFarms } from 'config/constants/farms'
+import farmsConfig from 'config/constants/farms'
 import multicall from 'utils/multicall'
 import masterchefABI from 'config/abi/masterchef.json'
 import { getMasterChefAddress } from 'utils/addressHelpers'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { ethersToBigNumber } from 'utils/bigNumber'
 import type { AppState } from 'state'
-import { SerializedFarmConfig } from 'config/constants/types'
 import fetchFarms from './fetchFarms'
 import getFarmsPrices from './getFarmsPrices'
 import {
@@ -43,19 +42,6 @@ const initialState: SerializedFarmsState = {
   loadingKeys: {},
 }
 
-function addProxyFarms(originalFarmsCanFetch: SerializedFarmConfig[]): SerializedFarmConfig[] {
-  const proxyFarmsPids = originalFarmsCanFetch
-    .filter((f) => f.proxyPid)
-    .map((f) => ({
-      ...f,
-      pid: f.proxyPid,
-      // proxyPid map with current farm
-      lpAddresses: proxyFarms[f.proxyPid],
-    }))
-
-  return [...originalFarmsCanFetch, ...proxyFarmsPids]
-}
-
 // Async thunks
 export const fetchFarmsPublicDataAsync = createAsyncThunk<
   [SerializedFarm[], number, number],
@@ -81,8 +67,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
     const [[poolLength], [cakePerBlockRaw]] = await multicall(masterchefABI, calls)
     const regularCakePerBlock = getBalanceAmount(ethersToBigNumber(cakePerBlockRaw))
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
-    const originalFarmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
-    const farmsCanFetch = addProxyFarms(originalFarmsCanFetch)
+    const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
 
     const farms = await fetchFarms(farmsCanFetch)
     const farmsWithPrices = getFarmsPrices(farms)
@@ -120,8 +105,7 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
   async ({ account, pids }) => {
     const poolLength = await fetchMasterChefFarmPoolLength()
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
-    const originnalFarmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
-    const farmsCanFetch = addProxyFarms(originnalFarmsCanFetch)
+    const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
 
     const [userFarmAllowances, userFarmTokenBalances, userStakedBalances, userFarmEarnings] = await Promise.all([
       fetchFarmUserAllowances(account, farmsCanFetch),
