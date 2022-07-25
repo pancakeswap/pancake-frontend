@@ -59,8 +59,10 @@ export function useSignMessage() {
      * Wallet Connect does not sign the message correctly unless you use their method
      * @see https://github.com/WalletConnect/walletconnect-monorepo/issues/462
      */
+    // @ts-ignore
     if (library.provider?.wc) {
       const wcMessage = hexlify(toUtf8Bytes(message))
+      // @ts-ignore
       const signature = await library.provider?.wc.signPersonalMessage([wcMessage, account])
       return signature
     }
