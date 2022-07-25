@@ -26,6 +26,7 @@ interface RiskDisclaimerProps extends InjectedModalProps {
   checks: CheckType[]
   header: string
   id: string
+  subtitle?: string
 }
 
 const GradientModalHeader = styled(ModalHeader)`
@@ -37,7 +38,7 @@ const GradientModalHeader = styled(ModalHeader)`
 // TODO: Copy from src/views/Predictions/components/RiskDisclaimer.tsx
 // Will replace that with this modal.
 
-const DisclaimerModal: React.FC<RiskDisclaimerProps> = ({ id, onSuccess, onDismiss, checks, header }) => {
+const DisclaimerModal: React.FC<RiskDisclaimerProps> = ({ id, onSuccess, onDismiss, checks, header, subtitle }) => {
   const [checkState, setCheckState] = useState(checks || [])
   const { t } = useTranslation()
 
@@ -68,12 +69,16 @@ const DisclaimerModal: React.FC<RiskDisclaimerProps> = ({ id, onSuccess, onDismi
           <Heading scale="lg">{t('Welcome!')}</Heading>
         </ModalTitle>
       </GradientModalHeader>
-      <ModalBody p="24px" maxWidth="400px">
+      <ModalBody p="24px" maxWidth={['100%', '100%', '100%', '400px']}>
         <Box maxHeight="300px" overflowY="auto">
           <Heading as="h3" mb="24px">
             {header}
           </Heading>
-
+          {subtitle && (
+            <Text as="p" color="textSubtle" mb="24px">
+              {subtitle}
+            </Text>
+          )}
           {checkState.map((check) => (
             <label
               key={check.key}
@@ -95,7 +100,7 @@ const DisclaimerModal: React.FC<RiskDisclaimerProps> = ({ id, onSuccess, onDismi
           ))}
         </Box>
         <Button
-          id="limitorder-disclaimer-continue"
+          id={`${id}-continue`}
           width="100%"
           onClick={handleConfirm}
           disabled={checkState.some((check) => !check.value)}

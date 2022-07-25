@@ -9,7 +9,7 @@ const ifos: Ifo[] = [
   {
     id: 'trivia',
     address: '0x23C520d8227524E2cDD00360358864fF3fFC36b4',
-    isActive: true,
+    isActive: false,
     name: 'TRIVIA',
     poolBasic: {
       saleAmount: '10,000,000 TRIVIA',
