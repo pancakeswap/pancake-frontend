@@ -29,7 +29,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.cake,
     quoteToken: serializedTokens.wbnb,
-    boosted: true,
   },
   {
     pid: 3,

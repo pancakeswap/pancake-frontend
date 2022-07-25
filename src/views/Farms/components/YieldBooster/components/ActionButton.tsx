@@ -1,5 +1,6 @@
 import { Button, Heading, Text, ButtonProps } from '@pancakeswap/uikit'
 import _isEmpty from 'lodash/isEmpty'
+import { ReactNode } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -9,6 +10,7 @@ const Container = styled.div`
 interface ActionButtonPropsType extends ButtonProps {
   title: string
   description: string
+  button?: ReactNode
 }
 
 const ActionButton: React.FC<ActionButtonPropsType> = ({ title, description, button, ...props }) => {

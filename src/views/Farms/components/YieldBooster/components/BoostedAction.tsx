@@ -11,6 +11,7 @@ import useBoostMultipler from '../hooks/useBoostMultipler'
 import ActionButton from './ActionButton'
 import CreateProxyButton from './CreateProxyButton'
 import { YieldBoosterStateContext } from './ProxyFarmContainer'
+import MigrateActionButton from './MigrateActionButton'
 
 interface BoostedActionPropsType {
   farmPid: number
@@ -60,14 +61,10 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
       case YieldBoosterState.NO_MIGRATE:
         return (
           <ActionButton
-            onClick={() => {
-              // open modal
-            }}
             title={`${boostMultipler}x`}
             description={t('Migration required to activate boost')}
-          >
-            {t('Migrate')}
-          </ActionButton>
+            button={<MigrateActionButton pid={farmPid} />}
+          />
         )
       case YieldBoosterState.NO_LP:
         return (
