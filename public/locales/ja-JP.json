@@ -1740,8 +1740,8 @@
   "There is not enough %token1% input to match 50/50. Some of %token0% will be converted to %token1%": "50/50に一致するための十分な%token1%インプットがありません。一部の%token0%が%token1%に変換されます。",
   "If you experience any issue when adding or removing liquidity, please disable Zap and retry.": "流動性を追加または削除する際に問題が発生する場合は、Zapを無効にしてからもう一度お試しください。",
   "Receive": "受け取る",
-  "Zap does NOT support tokens with fees on transfers. If you experience any issues, disable Zap": "Zapは、送金に手数料がかかるトークンをサポートしていません。問題が発生する場合は、Zapを無効にしてください。",
-  "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, disable Zap": "Zapは、送金に手数料のかかるトークンをサポートしていません。「変換しない」を選択してからもう一度お試しください。さらに問題が発生する場合は、Zapを無効にしてください。",
+  "Zap does NOT support tokens with fees on transfers. If you experience any issues, click": "Zap does NOT support tokens with fees on transfers. If you experience any issues, click",
+  "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, click": "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, click",
   "Vesting Schedule": "べスティング期間",
   "Vesting Start": "べスティング開始",
   "Suspicious rugpull token": "ラグプルトークンの疑いがあります",
@@ -1764,7 +1764,11 @@
   "No position entered": "ポジションが入力されていません",
   "Add liquidity failed: %message%": "流動性の追加に失敗しました: %message%",
   "Remove liquidity failed: %message%": "流動性の削除に失敗しました: %message%",
+  "to disable Zap temporarily.": "to disable Zap temporarily.",
+  "Temporarily disabled Zap": "Temporarily disabled Zap",
   "Unavailable for legal reasons": "法律上の理由により使用できません",
+  "Zap allows you to add liquidity with only 1 single token. Click": "Zap allows you to add liquidity with only 1 single token. Click",
+  "to try.": "to try.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks."
 }
