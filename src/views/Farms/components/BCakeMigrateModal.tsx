@@ -10,6 +10,7 @@ import styled from 'styled-components'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
 import { getFullDisplayBalance } from 'utils/formatBalance'
+import { useWeb3React } from '@web3-react/core'
 import { useApproveBoostProxyFarm } from '../hooks/useApproveFarm'
 import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
 
@@ -130,6 +131,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   pid,
   onUpdateFarm,
 }) => {
+  const { account } = useWeb3React()
   const [activatedState, setActivatedState] = useState<Steps>(Steps.UNSTAKE)
   const [isLoading, setIsLoading] = useState(false)
   const [isApproved, setIsApproved] = useState(false)
@@ -137,7 +139,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(stakedBalance)
   }, [stakedBalance])
-  const { proxyAddress } = useBCakeProxyContractAddress()
+  const { proxyAddress } = useBCakeProxyContractAddress(account)
   const { onApprove } = useApproveBoostProxyFarm(lpContract, proxyAddress)
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
   const { fetchWithCatchTxError, loading } = useCatchTxError()
