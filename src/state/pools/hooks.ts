@@ -103,7 +103,7 @@ export const usePoolsPageFetch = () => {
   }, [dispatch])
 }
 
-export const usePoolsUserData = () => {
+export const useCakeVaultUserData = () => {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
 
