@@ -1740,8 +1740,8 @@
   "There is not enough %token1% input to match 50/50. Some of %token0% will be converted to %token1%": "Nincs elég %token1% bevitel, hogy megfeleléjen az 50/50 aránynak. A %token0% egy részét %token1%-be konvertáljuk",
   "If you experience any issue when adding or removing liquidity, please disable Zap and retry.": "Ha bármilyen problémát tapasztal a likviditás hozzáadásakor vagy eltávolításakor, kérjük, tiltsa le a Zapot, és próbálja meg újra.",
   "Receive": "Beérkeztetés",
-  "Zap does NOT support tokens with fees on transfers. If you experience any issues, disable Zap": "A Zap NEM támogatja az átutalási díjas zsetonokat. Ha bármilyen problémát tapasztal, tiltsa le a Zapot",
-  "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, disable Zap": "A Zap NEM támogatja az átutalási díjas zsetonokat. Kérjük, válassza a \"Nem konvertál\" lehetőséget, és próbálja meg újra. Ha további problémákat tapasztal, tiltsa le a Zapot",
+  "Zap does NOT support tokens with fees on transfers. If you experience any issues, click": "Zap does NOT support tokens with fees on transfers. If you experience any issues, click",
+  "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, click": "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, click",
   "Vesting Schedule": "Megszolgálás ütemezése",
   "Vesting Start": "Megszolgálás kezdete",
   "Suspicious rugpull token": "Gyanús szőnyeghúzó zseton",
@@ -1764,7 +1764,11 @@
   "No position entered": "Nincs megadva pozíció",
   "Add liquidity failed: %message%": "Likviditás hozzáadása sikertelen: %message%",
   "Remove liquidity failed: %message%": "Likviditás törlése sikertelen: %message%",
+  "to disable Zap temporarily.": "to disable Zap temporarily.",
+  "Temporarily disabled Zap": "Temporarily disabled Zap",
   "Unavailable for legal reasons": "Jogi okokból nem áll rendelkezésre",
+  "Zap allows you to add liquidity with only 1 single token. Click": "Zap allows you to add liquidity with only 1 single token. Click",
+  "to try.": "to try.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks."
 }
