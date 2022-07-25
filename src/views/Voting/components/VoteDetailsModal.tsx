@@ -31,7 +31,7 @@ const VoteDetailsModal: React.FC<VoteDetailsModalProps> = ({ block, onDismiss })
 
   return (
     <Modal title={t('Voting Power')} onDismiss={handleDismiss} headerBackground={theme.colors.gradients.cardHeader}>
-      <Box mb="24px" width="320px">
+      <Box mb="24px" width={['100%', '100%', '100%', '320px']}>
         {isLoading ? (
           <Flex height="450px" alignItems="center" justifyContent="center">
             <Spinner size={80} />

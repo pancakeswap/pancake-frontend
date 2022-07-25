@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.12.4",
-    "@pancakeswap/uikit": "0.63.1",
+    "@pancakeswap/wagmi": "*",
+    "@pancakeswap/uikit": "*",
     "next": "^12.1.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

@@ -28,12 +28,13 @@ export const Default: React.FC = () => {
   );
 };
 
-const context = require.context("./Icons", true, /.tsx$/);
-const components = context.keys().reduce((accum, path) => {
+// @ts-ignore
+const modules = import.meta.glob("./Icons/*.tsx", { eager: true });
+const components = Object.keys(modules).reduce((accum, path) => {
   const file = path.substring(2).replace(".tsx", "");
   return {
     ...accum,
-    [file]: context(path),
+    [file]: modules[path],
   };
 }, {});
 

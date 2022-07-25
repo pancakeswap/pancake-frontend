@@ -1,7 +1,7 @@
 import { Currency, Pair, Token } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, Text, useModal, Flex, Box, MetamaskIcon } from '@pancakeswap/uikit'
 import styled, { css } from 'styled-components'
-import { registerToken } from 'utils/wallet'
+import { canRegisterToken, registerToken } from 'utils/wallet'
 import { isAddress } from 'utils'
 import { useTranslation } from 'contexts/Localization'
 import { WrappedTokenInfo } from 'state/types'
@@ -113,7 +113,7 @@ export default function CurrencyInputPanel({
   error,
   showBUSD,
 }: CurrencyInputPanelProps) {
-  const { account, library } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const {
     t,
@@ -186,7 +186,7 @@ export default function CurrencyInputPanel({
                 tooltipRight={40}
                 tooltipFontSize={12}
               />
-              {library?.provider?.isMetaMask && (
+              {canRegisterToken() && (
                 <MetamaskIcon
                   style={{ cursor: 'pointer' }}
                   width="16px"
