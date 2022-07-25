@@ -1,11 +1,13 @@
+import { memo, useContext } from 'react'
 import { RocketIcon, Text } from '@pancakeswap/uikit'
 import { formatNumber } from 'utils/formatBalance'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
 import useBoostMultipler from '../hooks/useBoostMultipler'
-import useYieldBoosterState, { YieldBoosterState } from '../hooks/useYieldBoosterState'
+import { YieldBoosterState } from '../hooks/useYieldBoosterState'
+import { YieldBoosterStateContext } from './ProxyFarmContainer'
 
-export default function BoostedApr({ apr, farmPid, proxyPid, ...props }) {
-  const { state: boosterState } = useYieldBoosterState({ farmPid, proxyPid })
+function BoostedApr({ apr, proxyPid, ...props }) {
+  const { boosterState } = useContext(YieldBoosterStateContext)
 
   const multiplier = useBoostMultipler({ proxyPid, boosterState })
 
@@ -23,3 +25,5 @@ export default function BoostedApr({ apr, farmPid, proxyPid, ...props }) {
     </>
   )
 }
+
+export default memo(BoostedApr)

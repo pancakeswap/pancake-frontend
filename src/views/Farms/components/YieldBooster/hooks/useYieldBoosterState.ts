@@ -46,7 +46,6 @@ export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoos
   const { farmPid, proxyPid } = yieldBoosterStateArgs
   const { account } = useActiveWeb3React()
   const { remainingCounts, refreshActivePools } = useUserBoosterStatus(account)
-  // REFACTOR: This is re-render overhead
   const { locked, lockedEnd } = useUserLockedCakeStatus()
   const { stakedBalance } = useFarmUser(farmPid)
   const { stakedBalance: proxyStakedBalance } = useFarmUser(proxyPid)
@@ -63,10 +62,10 @@ export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoos
   if (!account || isUndefinedOrNull(locked)) {
     state = YieldBoosterState.UNCONNECTED
   } else if (!locked) {
-    // depend on usePoolsPageFetch in BCakeBoosterCard to check state
-    // duplicate logic in BCakeBoosterCard
+    // NOTE: depend on useCakeVaultUserData in Farm Component to check state
     state = YieldBoosterState.NO_LOCKED
   } else if (lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd) * 1000)) {
+    // NOTE: duplicate logic in BCakeBoosterCard
     state = YieldBoosterState.LOCKED_END
   } else if (!proxyCreated) {
     state = YieldBoosterState.NO_PROXY_CREATED

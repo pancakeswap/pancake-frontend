@@ -188,7 +188,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
               <CellLayout label={t('APR')}>
                 <Apr {...props.apr} hideButton />
                 {props?.details?.boosted ? (
-                  <BoostedApr apr={props?.apr?.value} farmPid={props.farm?.pid} proxyPid={props.farm?.proxyPid} />
+                  <BoostedApr apr={props?.apr?.value} proxyPid={props.farm?.proxyPid} />
                 ) : null}
               </CellLayout>
             </AprMobileCell>
