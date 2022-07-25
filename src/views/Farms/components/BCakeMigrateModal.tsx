@@ -130,7 +130,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   pid,
   onUpdateFarm,
 }) => {
-  const [activatedState, setActivatedState] = useState<Steps>(Steps.ENABLE)
+  const [activatedState, setActivatedState] = useState<Steps>(Steps.UNSTAKE)
   const [isLoading, setIsLoading] = useState(false)
   const [isApproved, setIsApproved] = useState(false)
   const { t } = useTranslation()
