@@ -3,7 +3,6 @@ import {
   BlockIcon,
   CommunityIcon,
   RefreshIcon,
-  RocketIcon,
   Tag,
   TagProps,
   Text,
