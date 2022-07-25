@@ -110,7 +110,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   const { toastSuccess } = useToast()
 
   useEffect(() => {
-    bCakeProxy.lpApproved(lpContract.address).then((enabled) => {
+    bCakeProxy?.lpApproved(lpContract.address).then((enabled) => {
       setIsApproved(enabled)
     })
   }, [lpContract, bCakeProxy])

@@ -4,18 +4,35 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { DEFAULT_GAS_LIMIT } from 'config'
 import { useTranslation } from 'contexts/Localization'
 import { useBCakeFarmBoosterProxyFactoryContract } from 'hooks/useContract'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
 import { useUserBoosterStatus } from '../hooks/useUserBoosterStatus'
 import { useUserLockedCakeStatus } from '../hooks/useUserLockedCakeStatus'
+import boosterCardImage from '../images/boosterCardImage.png'
 
 export const CardWrapper = styled.div`
+  position: relative;
+  padding-top: 42px;
+  width: 100%;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 296px;
+    margin-left: 50px;
+  }
+`
+export const ImageWrapper = styled.div`
   position: absolute;
-  top: 30px;
-  right: 25px;
-  width: 328px;
+  top: -20px;
+  transform: translateY(-50%);
+  right: 0;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    right: auto;
+    top: 60%;
+    left: -70px;
+  }
+  z-index: 2;
 `
 const StyledCardBody = styled(CardBody)`
   border-bottom: none;
@@ -38,7 +55,10 @@ export const BCakeBoosterCard = () => {
   const { t } = useTranslation()
   return (
     <CardWrapper>
-      <Card>
+      <ImageWrapper>
+        <Image src={boosterCardImage} alt="boosterCardImage" width={99} height={233} placeholder="blur" />
+      </ImageWrapper>
+      <Card style={{ zIndex: 1 }}>
         <StyledCardBody>
           <Text fontSize={22} bold color="text" marginBottom="-12px">
             {t('Yield Booster')}
