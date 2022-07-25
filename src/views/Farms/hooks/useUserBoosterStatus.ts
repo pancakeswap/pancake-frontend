@@ -8,7 +8,7 @@ export const useUserBoosterStatus = (account: string) => {
   const { data: MAX_BOOST_POOL, status: maxBoostStatus } = useSWRImmutable('maxBoostFarm', () =>
     farmBoosterContract.MAX_BOOST_POOL(),
   )
-  const { data: activatedPools, status } = useSWR(['activatedBoostFarm', account && []], () =>
+  const { data: activatedPools, status } = useSWR(account && ['activatedBoostFarm', [account]], () =>
     farmBoosterContract.activedPools(account),
   )
   return {
