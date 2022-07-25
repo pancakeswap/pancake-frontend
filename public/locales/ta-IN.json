@@ -1740,8 +1740,8 @@
   "There is not enough %token1% input to match 50/50. Some of %token0% will be converted to %token1%": "50/50 உடன் பொருந்த போதுமான %token1% உள்ளீடு இல்லை. %token0% -இல் சில, %token1% -க்கு உருமாற்றப்படும்",
   "If you experience any issue when adding or removing liquidity, please disable Zap and retry.": "லிக்விடிட்டியைச் சேர்க்கும்போதோ அகற்றும்போதோ உங்களுக்கு ஏதேனும் சிக்கல் ஏற்பட்டால், தயவுசெய்து Zap-ஐ முடக்கி மீண்டும் முயற்சிக்கவும்.",
   "Receive": "பெறு",
-  "Zap does NOT support tokens with fees on transfers. If you experience any issues, disable Zap": "இடமாற்றங்களுக்கான கட்டணங்களைக் கொண்ட டோக்கன்களை Zap ஆதரிப்பதில்லை. நீங்கள் ஏதேனும் சிக்கல்களை அனுபவித்தால், Zap-ஐ முடக்கவும்",
-  "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, disable Zap": "இடமாற்றங்களுக்கான கட்டணங்களைக் கொண்ட டோக்கன்களை Zap ஆதரிப்பதில்லை. தயவுசெய்து 'உருமாற்றாதே' என்பதைத் தேர்ந்தெடுத்து மீண்டும் முயற்சிக்கவும். நீங்கள் மேலும் சிக்கல்களை அனுபவித்தால், Zap-ஐ முடக்கவும்",
+  "Zap does NOT support tokens with fees on transfers. If you experience any issues, click": "Zap does NOT support tokens with fees on transfers. If you experience any issues, click",
+  "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, click": "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, click",
   "Vesting Schedule": "வெஸ்டிங் அட்டவணை",
   "Vesting Start": "வெஸ்டிங் தொடக்கம்",
   "Suspicious rugpull token": "சந்தேகத்திற்கிடமான ரக்புல் டோக்கன்",
@@ -1764,7 +1764,11 @@
   "No position entered": "எந்த நிலையும் உள்ளிடப்படவில்லை",
   "Add liquidity failed: %message%": "லிக்விடிட்டியைச் சேர்ப்பது தோல்வியுற்றது: %message%",
   "Remove liquidity failed: %message%": "லிக்விடிட்டியை அகற்றுவது தோல்வியுற்றது: %message%",
+  "to disable Zap temporarily.": "to disable Zap temporarily.",
+  "Temporarily disabled Zap": "Temporarily disabled Zap",
   "Unavailable for legal reasons": "சட்டரீதியான காரணங்களுக்காகக் கிடைக்கவில்லை",
+  "Zap allows you to add liquidity with only 1 single token. Click": "Zap allows you to add liquidity with only 1 single token. Click",
+  "to try.": "to try.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks."
 }
