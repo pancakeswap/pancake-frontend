@@ -71,8 +71,10 @@ const zapAddress = getZapAddress()
 export default function AddLiquidity() {
   const router = useRouter()
   const tokens = serializeTokens()
+  const expertMode = useIsExpertMode()
 
-  const [zapMode, toggleZapMode] = useZapModeManager()
+  const [zapMode] = useZapModeManager()
+  const [temporarilyZapMode, setTemporarilyZapMode] = useState(zapMode)
   const [currencyIdA, currencyIdB] = router.query.currency || [tokens.bnb.symbol, tokens.cake.address]
   const [steps, setSteps] = useState(Steps.Choose)
 
@@ -96,7 +98,7 @@ export default function AddLiquidity() {
     }
   }, [router.query])
 
-  const expertMode = useIsExpertMode()
+  const zapModeStatus = useMemo(() => !!zapMode && temporarilyZapMode, [zapMode, temporarilyZapMode])
 
   // mint state
   const { independentField, typedValue, otherTypedValue } = useMintState()
@@ -159,13 +161,13 @@ export default function AddLiquidity() {
 
   const canZap = useMemo(
     () =>
-      !!zapMode &&
+      !!zapModeStatus &&
       !noLiquidity &&
       !(
         (pair && JSBI.lessThan(pair.reserve0.raw, MINIMUM_LIQUIDITY)) ||
         (pair && JSBI.lessThan(pair.reserve1.raw, MINIMUM_LIQUIDITY))
       ),
-    [noLiquidity, pair, zapMode],
+    [noLiquidity, pair, zapModeStatus],
   )
 
   const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
@@ -466,6 +468,8 @@ export default function AddLiquidity() {
       zapSwapOutTokenField={zapIn.swapOutTokenField}
       zapInEstimated={zapIn.zapInEstimated}
       rebalancing={rebalancing}
+      zapMode={zapModeStatus}
+      toggleZapMode={setTemporarilyZapMode}
     />,
     true,
     true,
@@ -474,7 +478,7 @@ export default function AddLiquidity() {
 
   const handleEnableZap = () => {
     if (!zapMode) {
-      toggleZapMode(!zapMode)
+      setTemporarilyZapMode(!zapMode)
     }
   }
 
