@@ -5,7 +5,7 @@ import { FetchStatus } from 'config/constants/types'
 
 export const useBCakeProxyContractAddress = (account?: string) => {
   const bCakeFarmBoosterContract = useBCakeFarmBoosterContract()
-  const { data, status } = useSWR(['proxyAddress', account], async () =>
+  const { data, status } = useSWR(account && ['proxyAddress', account], async () =>
     bCakeFarmBoosterContract.proxyContract(account),
   )
 
