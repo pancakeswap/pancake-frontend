@@ -7,7 +7,10 @@ import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import useSWRImmutable from 'swr/immutable'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
+import { getFarmApr } from 'utils/apr'
 import { useAppDispatch } from 'state'
+import { useRouter } from 'next/router'
+import { FarmWithStakedValue } from 'views/Farms/components/types'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, State } from '../types'
 import {
@@ -100,4 +103,30 @@ export const useLpTokenPrice = (symbol: string) => {
  */
 export const usePriceCakeBusd = (): BigNumber => {
   return useSelector(priceCakeFromPidSelector)
+}
+
+export const useFarmWithStakeValue = (farm: DeserializedFarm): FarmWithStakedValue => {
+  const { pathname } = useRouter()
+  const cakePrice = usePriceCakeBusd()
+  const { regularCakePerBlock } = useFarms()
+
+  const isArchived = pathname.includes('archived')
+  const isInactive = pathname.includes('history')
+  const isActive = !isInactive && !isArchived
+
+  if (!farm.lpTotalInQuoteToken || !farm.quoteTokenPriceBusd) {
+    return farm
+  }
+  const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
+  const { cakeRewardsApr, lpRewardsApr } = isActive
+    ? getFarmApr(
+        new BigNumber(farm.poolWeight),
+        cakePrice,
+        totalLiquidity,
+        farm.lpAddresses[ChainId.MAINNET],
+        regularCakePerBlock,
+      )
+    : { cakeRewardsApr: 0, lpRewardsApr: 0 }
+
+  return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
 }
