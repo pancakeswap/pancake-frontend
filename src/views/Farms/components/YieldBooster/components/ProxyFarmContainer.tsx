@@ -1,11 +1,11 @@
 import { ReactElement, createContext } from 'react'
-import { useFarmFromPid } from 'state/farms/hooks'
-import { DeserializedFarm } from 'state/types'
+import { useFarmFromPid, useFarmWithStakeValue } from 'state/farms/hooks'
+import { FarmWithStakedValue } from '../../types'
 import useYieldBoosterState, { YieldBoosterState } from '../hooks/useYieldBoosterState'
 
 interface ProxyFarmContainerPropsType {
-  children: (finalFarm: DeserializedFarm) => ReactElement
-  farm: DeserializedFarm
+  children: (finalFarm: FarmWithStakedValue) => ReactElement
+  farm: FarmWithStakedValue
 }
 
 export const YieldBoosterStateContext = createContext(null)
@@ -16,14 +16,14 @@ const ProxyFarmContainer: React.FC<ProxyFarmContainerPropsType> = ({ children, f
     proxyPid: farm.proxyPid,
   })
 
-  // TODO: Add liquidity and apr in the farm. Reference to farmsList in Farms Component
   const proxyFarm = useFarmFromPid(farm.proxyPid)
+  const proxyFarmWithStakeValue = useFarmWithStakeValue(proxyFarm)
 
   const shouldUseOriginalFarm = [YieldBoosterState.NO_MIGRATE, YieldBoosterState.UNCONNECTED].includes(boosterState)
 
   return (
     <YieldBoosterStateContext.Provider value={{ boosterState, refreshActivePool }}>
-      {children(shouldUseOriginalFarm ? farm : proxyFarm)}
+      {children(shouldUseOriginalFarm ? farm : proxyFarmWithStakeValue)}
     </YieldBoosterStateContext.Provider>
   )
 }
