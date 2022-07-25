@@ -45,23 +45,20 @@ const BasicChart = ({
   const [arsPairPrices, setArsPairPrices] = useState([])
   const arsPrices = useARSHistoricPrice()
 
-  
-
   useEffect(() => {
-    const setPrices = () => {
-      setArsPairPrices(
-        pairPrices.map((pairPrice) => {
-          return {
-            ...pairPrice,
-            value: findArsPrice(arsPrices, pairPrice.time)?.price / pairPrice.value,
-          }
-        }),
-      )
+    if (!arsPrices || arsPrices.length === 0) {
+      setArsPairPrices([])
+      return
     }
+    const arsPricedValues = pairPrices.map((pairPrice) => {
+      return {
+        ...pairPrice,
+        value: findArsPrice(arsPrices, pairPrice.time)?.price / pairPrice.value,
+      }
+    })
 
-    const updateData = setInterval(setPrices, 500);
-    return () => clearInterval(updateData);
-  }, [arsPairPrices.length, arsPrices, pairPrices])
+    setArsPairPrices(arsPricedValues.splice(0, 31))
+  }, [arsPrices, pairPrices])
 
   const valueToDisplay = hoverValue || arsPairPrices[arsPairPrices.length - 1]?.value
 
