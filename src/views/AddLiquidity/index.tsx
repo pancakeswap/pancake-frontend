@@ -476,6 +476,12 @@ export default function AddLiquidity() {
     'zapInModal',
   )
 
+  const handleEnableZap = () => {
+    if (!zapMode) {
+      setTemporarilyZapMode(!zapMode)
+    }
+  }
+
   let isValid = !error
   let errorText = error
 
@@ -519,6 +525,7 @@ export default function AddLiquidity() {
     preferZapInstead &&
     !noAnyInputAmount &&
     ((!rebalancing && !(!zapTokenCheckedA && !zapTokenCheckedB)) || (rebalancing && zapIn.priceSeverity > 3))
+
   const showReduceZapTokenButton =
     preferZapInstead && (zapIn.priceSeverity > 3 || zapIn.zapInEstimatedError) && maxAmounts[zapIn.swapTokenField]
 
@@ -529,6 +536,17 @@ export default function AddLiquidity() {
     preferZapInstead &&
     zapIn.isDependentAmountGreaterThanMaxAmount &&
     rebalancing
+
+  const showZapIsAvailable =
+    !zapMode &&
+    !showZapWarning &&
+    !noAnyInputAmount &&
+    (!zapTokenCheckedA || !zapTokenCheckedB) &&
+    !noLiquidity &&
+    !(
+      (pair && JSBI.lessThan(pair.reserve0.raw, MINIMUM_LIQUIDITY)) ||
+      (pair && JSBI.lessThan(pair.reserve1.raw, MINIMUM_LIQUIDITY))
+    )
 
   return (
     <Page>
@@ -662,6 +680,18 @@ export default function AddLiquidity() {
                       {t('Reduce %token%', { token: currencies[zapIn.swapTokenField]?.symbol })}
                     </Button>
                   </RowFixed>
+                )}
+
+                {showZapIsAvailable && (
+                  <Message variant="warning">
+                    <MessageText>
+                      {t('Zap allows you to add liquidity with only 1 single token. Click')}
+                      <Button p="0 4px" scale="sm" variant="text" height="auto" onClick={handleEnableZap}>
+                        {t('here')}
+                      </Button>
+                      {t('to try.')}
+                    </MessageText>
+                  </Message>
                 )}
 
                 {showRebalancingConvert && (

@@ -201,7 +201,7 @@
   "You’ll need an active PancakeSwap Profile to take part in an IFO!": "Para participar numa IFO, necessitará de um Perfil PancakeSwap ativo!",
   "Profile Active!": "Perfil Ativo!",
   "Commit CAKE": "Comprometer CAKE",
-  "When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.": "Quando a venda IFO estiver ativa, pode \"comprometer\" os seus CAKE para a compra dos tokens a serem vendidos.",
+  "Please note that CAKE in the fixed-term staking positions will remain locked and can not be used for committing to IFO sales. You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.": "Please note that CAKE in the fixed-term staking positions will remain locked and can not be used for committing to IFO sales. You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.",
   "Claim your tokens and achievement": "Reclame os seus tokens e resultados",
   "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE tokens will be returned to your wallet.": "Após o fim das vendas IFO, pode reclamar os tokens IFO que comprou, e os tokens CAKE LP não gastas serão devolvidas à sua carteira.",
   "This round’s closing transaction has been submitted to the blockchain, and is awaiting confirmation.": "A transação de encerramento desta ronda foi submetida à blockchain, e está à espera de ser confirmada.",
@@ -1724,7 +1724,7 @@
   "Cannot estimate zap amount": "Não é possível estimar a quantia de zap",
   "Zap in amount too low": "Zap em quantia muito baixa",
   "Insufficient %token% balance": "Saldo %token% insuficiente",
-  "Your pool share": "A tua porção da pool",
+  "Your pool share": "A sua porção da pool",
   "Input": "Entrada",
   "to": "para",
   "Pooled": "Na pool",
@@ -1764,5 +1764,7 @@
   "No position entered": "Sem posição inserida",
   "Add liquidity failed: %message%": "Erro na adição de liquidez: %message%",
   "Remove liquidity failed: %message%": "Erro na remoção de liquidez: %message%",
-  "Unavailable for legal reasons": "Indisponível por questões legais"
+  "Unavailable for legal reasons": "Indisponível por questões legais",
+  "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks."
 }
