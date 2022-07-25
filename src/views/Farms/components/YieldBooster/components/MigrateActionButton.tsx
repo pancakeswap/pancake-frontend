@@ -45,6 +45,9 @@ const MigrateActionButton: React.FunctionComponent<MigrateActionButtonPropsType>
       dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
     }
   }
+  const onUpdateFarm = () => {
+    dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+  }
 
   const [onPresentMigrate] = useModal(
     <BCakeMigrateModal
@@ -52,6 +55,7 @@ const MigrateActionButton: React.FunctionComponent<MigrateActionButtonPropsType>
       stakedBalance={stakedBalance}
       lpContract={lpContract}
       onUnStack={handleUnstakeWithCallback}
+      onUpdateFarm={onUpdateFarm}
     />,
   )
 
