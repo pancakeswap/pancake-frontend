@@ -4,6 +4,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 import { ChainId } from '@pancakeswap/sdk'
 import { BscConnector } from '@binance-chain/bsc-connector'
 import { ConnectorNames } from '@pancakeswap/uikit'
+import useWeb3Provider from 'hooks/useActiveWeb3React'
 import { hexlify } from '@ethersproject/bytes'
 import { toUtf8Bytes } from '@ethersproject/strings'
 import { Web3Provider } from '@ethersproject/providers'
@@ -44,6 +45,32 @@ export const getLibrary = (provider): Web3Provider => {
   const library = new Web3Provider(provider)
   library.pollingInterval = POLLING_INTERVAL
   return library
+}
+
+export function useSignMessage() {
+  const { library, connector, account } = useWeb3Provider()
+  const signMessage = async ({ message }) => {
+    if (window.BinanceChain && connector instanceof BscConnector) {
+      const { signature } = await window.BinanceChain.bnbSign(account, message)
+      return signature
+    }
+
+    /**
+     * Wallet Connect does not sign the message correctly unless you use their method
+     * @see https://github.com/WalletConnect/walletconnect-monorepo/issues/462
+     */
+    if (library.provider?.wc) {
+      const wcMessage = hexlify(toUtf8Bytes(message))
+      const signature = await library.provider?.wc.signPersonalMessage([wcMessage, account])
+      return signature
+    }
+
+    return library.getSigner(account).signMessage(message)
+  }
+
+  return {
+    signMessageAsync: signMessage,
+  }
 }
 
 /**
