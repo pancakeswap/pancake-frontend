@@ -23,22 +23,27 @@ interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
 }
 
-export const ProxyHarvestActionContainer = (props) => {
+export const ProxyHarvestActionContainer = ({ children, ...props }) => {
   const lpAddress = getAddress(props.lpAddresses)
   const lpContract = useERC20(lpAddress)
 
-  const { onReward } = useProxyStakedActions(props.id, lpContract)
+  const { onReward } = useProxyStakedActions(props.pid, lpContract)
 
-  return <HarvestAction {...props} onReward={onReward} />
+  return children({ ...props, onReward })
 }
 
-export const HarvestActionContainer = (props) => {
+export const HarvestActionContainer = ({ children, ...props }) => {
   const { onReward } = useHarvestFarm(props.pid)
 
-  return <HarvestAction {...props} onReward={onReward} />
+  return children({ ...props, onReward })
 }
 
-const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userData, userDataReady }) => {
+export const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
+  onReward,
+  pid,
+  userData,
+  userDataReady,
+}) => {
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const earningsBigNumber = new BigNumber(userData.earnings)
@@ -54,7 +59,6 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
     displayBalance = earnings.toFixed(3, BigNumber.ROUND_DOWN)
   }
 
-  const { onReward } = useHarvestFarm(pid)
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()

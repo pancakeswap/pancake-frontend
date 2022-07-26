@@ -4,7 +4,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { useTranslation } from 'contexts/Localization'
-import { useBCakeProxyContract, useERC20 } from 'hooks/useContract'
+import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useRouter } from 'next/router'
@@ -53,7 +53,7 @@ function useStakedActions(pid, lpContract) {
   }
 }
 
-export const ProxyStakedContainer = (props) => {
+export const ProxyStakedContainer = ({ children, ...props }) => {
   const { account } = useWeb3React()
 
   const lpAddress = getAddress(props.lpAddresses)
@@ -65,19 +65,17 @@ export const ProxyStakedContainer = (props) => {
 
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
-  return (
-    <Staked
-      {...props}
-      isApproved={isApproved}
-      onStake={onStake}
-      onDone={onDone}
-      onUnstake={onUnstake}
-      onApprove={onApprove}
-    />
-  )
+  return children({
+    ...props,
+    onStake,
+    onDone,
+    onUnstake,
+    onApprove,
+    isApproved,
+  })
 }
 
-export const StakedContainer = (props) => {
+export const StakedContainer = ({ children, ...props }) => {
   const { account } = useWeb3React()
 
   const lpAddress = getAddress(props.lpAddresses)
@@ -88,16 +86,14 @@ export const StakedContainer = (props) => {
 
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
-  return (
-    <Staked
-      {...props}
-      isApproved={isApproved}
-      onStake={onStake}
-      onDone={onDone}
-      onUnstake={onUnstake}
-      onApprove={onApprove}
-    />
-  )
+  return children({
+    ...props,
+    onStake,
+    onDone,
+    onUnstake,
+    onApprove,
+    isApproved,
+  })
 }
 
 const Staked: React.FunctionComponent<StackedActionProps> = ({

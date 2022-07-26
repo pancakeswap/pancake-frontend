@@ -7,8 +7,8 @@ import { getBscScanLink } from 'utils'
 import { useContext } from 'react'
 import { FarmWithStakedValue } from '../../types'
 
-import { HarvestActionContainer, ProxyHarvestActionContainer } from './HarvestAction'
-import { ProxyStakedContainer, StakedContainer } from './StakedAction'
+import { HarvestAction, HarvestActionContainer, ProxyHarvestActionContainer } from './HarvestAction'
+import StakedAction, { ProxyStakedContainer, StakedContainer } from './StakedAction'
 import Apr, { AprProps } from '../Apr'
 import Multiplier, { MultiplierProps } from '../Multiplier'
 import Liquidity, { LiquidityProps } from '../Liquidity'
@@ -180,9 +180,13 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
       </InfoContainer>
       <ActionContainer>
         {shouldUseProxyFarm ? (
-          <ProxyHarvestActionContainer {...proxyFarm} userDataReady={userDataReady} />
+          <ProxyHarvestActionContainer {...proxyFarm} userDataReady={userDataReady}>
+            {(props) => <HarvestAction {...props} />}
+          </ProxyHarvestActionContainer>
         ) : (
-          <HarvestActionContainer {...farm} userDataReady={userDataReady} />
+          <HarvestActionContainer {...farm} userDataReady={userDataReady}>
+            {(props) => <HarvestAction {...props} />}
+          </HarvestActionContainer>
         )}
         {farm?.boosted && (
           <ActionContainerSection>
@@ -203,9 +207,13 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
           </ActionContainerSection>
         )}
         {shouldUseProxyFarm ? (
-          <ProxyStakedContainer {...proxyFarm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value} />
+          <ProxyStakedContainer {...proxyFarm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
+            {(props) => <StakedAction {...props} />}
+          </ProxyStakedContainer>
         ) : (
-          <StakedContainer {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value} />
+          <StakedContainer {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
+            {(props) => <StakedAction {...props} />}
+          </StakedContainer>
         )}
       </ActionContainer>
     </Container>

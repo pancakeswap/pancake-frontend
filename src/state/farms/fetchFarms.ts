@@ -53,10 +53,6 @@ function farmLpTransformer(farmResult, masterChefResult) {
     const allocPoint = info ? new BigNumber(info.allocPoint?._hex) : BIG_ZERO
     const poolWeight = totalRegularAllocPoint ? allocPoint.div(new BigNumber(totalRegularAllocPoint)) : BIG_ZERO
 
-    if (farm.pid === 91) {
-      console.log('lpTotalSupply: ', new BigNumber(lpTotalSupply).toString())
-    }
-
     return {
       ...farm,
       token: farm.token,

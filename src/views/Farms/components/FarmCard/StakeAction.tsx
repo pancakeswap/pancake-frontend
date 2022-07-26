@@ -1,18 +1,14 @@
-import { useWeb3React } from '@web3-react/core'
+import { useCallback } from 'react'
 import styled from 'styled-components'
 import { Button, Flex, IconButton, AddIcon, MinusIcon, useModal } from '@pancakeswap/uikit'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from 'contexts/Localization'
-import { useAppDispatch } from 'state'
-import { fetchFarmUserDataAsync } from 'state/farms'
 import { useRouter } from 'next/router'
-import { useLpTokenPrice, useFarmUser, usePriceCakeBusd } from 'state/farms/hooks'
+import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
-import useUnstakeFarms from '../../hooks/useUnstakeFarms'
-import useStakeFarms from '../../hooks/useStakeFarms'
 import { FarmWithStakedValue } from '../types'
 import StakedLP from '../StakedLP'
 
@@ -33,7 +29,6 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
   quoteToken,
   token,
   lpSymbol,
-  pid,
   multiplier,
   apr,
   displayApr,
@@ -42,18 +37,20 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
   lpTotalSupply,
   tokenAmountTotal,
   quoteTokenAmountTotal,
+  userData,
+  onStake,
+  onUnstake,
+  onDone,
+  onApprove,
+  isApproved,
 }) => {
   const { t } = useTranslation()
-  const { onStake } = useStakeFarms(pid)
-  const { onUnstake } = useUnstakeFarms(pid)
-  const { tokenBalance, stakedBalance } = useFarmUser(pid)
+  const { tokenBalance, stakedBalance } = userData
   const cakePrice = usePriceCakeBusd()
   const router = useRouter()
-  const dispatch = useAppDispatch()
-  const { account } = useWeb3React()
   const lpPrice = useLpTokenPrice(lpSymbol)
   const { toastSuccess } = useToast()
-  const { fetchWithCatchTxError } = useCatchTxError()
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
 
   const handleStake = async (amount: string) => {
     const receipt = await fetchWithCatchTxError(() => {
@@ -66,7 +63,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
           {t('Your funds have been staked in the farm')}
         </ToastDescriptionWithTx>,
       )
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      onDone()
     }
   }
 
@@ -81,9 +78,19 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
           {t('Your earnings have also been harvested to your wallet')}
         </ToastDescriptionWithTx>,
       )
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      onDone()
     }
   }
+
+  const handleApprove = useCallback(async () => {
+    const receipt = await fetchWithCatchTxError(() => {
+      return onApprove()
+    })
+    if (receipt?.status) {
+      toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
+      onDone()
+    }
+  }, [onApprove, t, toastSuccess, fetchWithCatchTxError, onDone])
 
   const [onPresentDeposit] = useModal(
     <DepositModal
@@ -125,6 +132,15 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
           <AddIcon color="primary" width="14px" />
         </IconButton>
       </IconButtonWrapper>
+    )
+  }
+
+  // TODO: Move this out to prevent unnecessary re-rendered
+  if (!isApproved) {
+    return (
+      <Button mt="8px" width="100%" disabled={pendingTx} onClick={handleApprove}>
+        {t('Enable Contract')}
+      </Button>
     )
   }
 
