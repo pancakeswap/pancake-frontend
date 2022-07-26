@@ -446,7 +446,6 @@
   "Transfer": "Переказати",
   "Congratulations!": "Вітаємо!",
   "Claim now": "Отримати зараз",
-  "Claiming...": "Отримання…",
   "Receiving address": "Адреса отримувача",
   "Could not retrieve CAKE costs for profile": "Не вдалось отримати вартість CAKE для профілю",
   "Provider Error": "Помилка постачальника",
@@ -1529,7 +1528,6 @@
   "Place a limit order to trade at a set price": "Щоб торгувати за зазначеною ціною, розмістіть лімітний ордер",
   "Place an Order": "Розмістити ордер",
   "Open Order Details": "Відкрити відомості про ордер",
-  "View on BSCScan": "Переглянути в BSCScan",
   "Cancel Order": "Скасувати ордер",
   "Status": "Стан",
   "No Open Orders": "Немає відкритих ордерів",
@@ -1650,7 +1648,6 @@
   "Released": "Розблоковано",
   "Vested": "Довірено",
   "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked": "Ви зможете вивести внесений обсяг CAKE і отримати прибуток, лише коли внесену позицію буде розблоковано",
-  "Failed to claim": "Не вдалось отримати",
   "Hello, early fixed-term staking pool CAKE lovers.": "Вітаємо ранніх користувачів пулу стейкінгу CAKE фіксованої тривалості.",
   "If you staked in our fixed-term staking pool for 52 weeks within the first 24 hours of the launch, you are eligible to claim a special edition “Project Galaxy x PancakeSwap” NFT.": "Якщо ви зробили внесок у наш пул стейкінгу фіксованої тривалості на 52 тижні протягом перших 24 годин із моменту запуску, ви маєте право на особливий невзаємозамінний токен «Project Galaxy x PancakeSwap».",
   "Hold this NFT in your wallet until the snapshot timing (10:00 UTC 11th May 2022) to participate in the $GAL airdrop with a total of 400,000 GAL tokens.": "Зберігайте цей невзаємозамінний токен у гаманці до моменту знімка (11 травня 2022 року, 10:00 UTC), щоб узяти участь у скиданні $GAL на 400 000 токенів GAL.",
@@ -1770,5 +1767,6 @@
   "Zap allows you to add liquidity with only 1 single token. Click": "Zap allows you to add liquidity with only 1 single token. Click",
   "to try.": "to try.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% придбаних токенів перейдуть у довірене користування. Їх розблокування відбуватиметься в лінійній пропорції протягом певного проміжку часу. %percentageTgeRelease%% придбаних токенів буде розблоковано одразу після завершення IFO, і вони стануть доступні для отримання.",
-  "The vested tokens will be released linearly over a period of %weeks% weeks.": "Довірені токени розблоковуватимуться в лінійній пропорції протягом %weeks% тиж."
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "Довірені токени розблоковуватимуться в лінійній пропорції протягом %weeks% тиж.",
+  "Select a Network": "Select a Network"
 }
