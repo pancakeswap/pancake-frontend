@@ -9,6 +9,7 @@ const customJestConfig = {
   testPathIgnorePatterns: ['<rootDir>/cypress/', '<rootDir>/src/config/__tests__/', '<rootDir>/packages'],
   moduleNameMapper: {
     '^@pancakeswap/uikit': '<rootDir>/packages/uikit/src',
+    '^@pancakeswap/sdk': '<rootDir>/packages/swap-sdk/src',
   },
   moduleDirectories: ['node_modules', 'src'],
   testTimeout: 20000,

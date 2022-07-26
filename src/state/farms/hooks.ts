@@ -1,8 +1,6 @@
-import { ChainId } from '@pancakeswap/sdk'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { farmsConfig, SLOW_INTERVAL } from 'config/constants'
-import { CHAIN_ID } from 'config/constants/networks'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import useSWRImmutable from 'swr/immutable'
 import { useMemo } from 'react'
@@ -52,12 +50,18 @@ export const usePollFarmsWithUserData = () => {
  * 2 = CAKE-BNB LP
  * 3 = BUSD-BNB LP
  */
-const coreFarmPIDs = CHAIN_ID === String(ChainId.MAINNET) ? [2, 3] : [1, 2]
+const coreFarmPIDs = {
+  56: [2, 3],
+  97: [1, 2],
+}
+
 export const usePollCoreFarmData = () => {
   const dispatch = useAppDispatch()
+  // TODO: multi
+  // const { chainId } = useActiveWeb3React()
 
   useFastRefreshEffect(() => {
-    dispatch(fetchFarmsPublicDataAsync(coreFarmPIDs))
+    dispatch(fetchFarmsPublicDataAsync(coreFarmPIDs[56]))
   }, [dispatch])
 }
 
