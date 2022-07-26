@@ -26,7 +26,6 @@ jobs:
         run: yarn updateLPsAPR
         env:
           NEXT_PUBLIC_SF_HEADER: ${{ secrets.SF_HEADER }}
-          NEXT_PUBLIC_CHAIN_ID: '56'
 
       - name: Format
         run: yarn format:write

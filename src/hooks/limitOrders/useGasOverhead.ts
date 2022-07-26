@@ -7,8 +7,8 @@ import tryParseAmount from 'utils/tryParseAmount'
 import { Rate } from 'state/limitOrders/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { GENERIC_GAS_LIMIT_ORDER_EXECUTION, BIG_INT_TEN } from 'config/constants/exchange'
-import getGasPrice from 'utils/getGasPrice'
 import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
+import { useGasPrice } from 'state/user/hooks'
 
 export default function useGasOverhead(
   inputAmount: CurrencyAmount | undefined,
@@ -21,7 +21,7 @@ export default function useGasOverhead(
 } {
   const { chainId } = useActiveWeb3React()
 
-  const gasPrice = getGasPrice()
+  const gasPrice = useGasPrice()
   const requiredGas = formatUnits(gasPrice ? BigNumber.from(gasPrice).mul(GENERIC_GAS_LIMIT_ORDER_EXECUTION) : '0')
   const requiredGasAsCurrencyAmount = tryParseAmount(requiredGas, ETHER)
 

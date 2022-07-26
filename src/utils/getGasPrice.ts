@@ -1,16 +1,15 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { CHAIN_ID } from 'config/constants/networks'
 import store from 'state'
 import { GAS_PRICE_GWEI } from 'state/types'
 
 /**
+ * @deprecated not recommend to get state out of redux hook
  * Function to return gasPrice outwith a react component
  */
-const getGasPrice = (): string => {
-  const chainId = CHAIN_ID
+const getGasPrice = (chainId = ChainId.BSC): string => {
   const state = store.getState()
   const userGas = state.user.gasPrice || GAS_PRICE_GWEI.default
-  return chainId === ChainId.BSC.toString() ? userGas : GAS_PRICE_GWEI.testnet
+  return chainId === ChainId.BSC ? userGas : GAS_PRICE_GWEI.testnet
 }
 
 export default getGasPrice
