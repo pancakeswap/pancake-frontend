@@ -57,9 +57,12 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   const prepConfirmArg = useCallback(
     ({ duration }) => ({
       finalDuration: duration,
-      finalLockedAmount: extendLockedPosition ? getBalanceAmount(MIN_LOCK_AMOUNT, stakingToken.decimals).toNumber() : 0,
+      finalLockedAmount:
+        extendLockedPosition && currentDuration + duration > MAX_LOCK_DURATION
+          ? getBalanceAmount(MIN_LOCK_AMOUNT, stakingToken.decimals).toNumber()
+          : 0,
     }),
-    [stakingToken.decimals, extendLockedPosition],
+    [stakingToken.decimals, extendLockedPosition, currentDuration],
   )
 
   const customOverview = useCallback(
