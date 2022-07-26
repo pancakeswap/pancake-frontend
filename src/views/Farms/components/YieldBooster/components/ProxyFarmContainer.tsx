@@ -1,4 +1,4 @@
-import { ReactElement, createContext, useMemo } from 'react'
+import { ReactElement, createContext, useMemo, memo } from 'react'
 import _noop from 'lodash/noop'
 
 import { FarmWithStakedValue } from '../../types'
@@ -16,19 +16,6 @@ export const YieldBoosterStateContext = createContext({
   shouldUseProxyFarm: false,
 })
 
-function useProxyFarm(farm) {
-  const proxyFarm = useMemo(
-    () => ({
-      ...farm,
-      // FIX: Why userData is undefined
-      userData: farm.userData.proxy,
-    }),
-    [farm],
-  )
-
-  return proxyFarm
-}
-
 const ProxyFarmContainer: React.FC<ProxyFarmContainerPropsType> = ({ children, farm }) => {
   const {
     state: boosterState,
@@ -38,7 +25,13 @@ const ProxyFarmContainer: React.FC<ProxyFarmContainerPropsType> = ({ children, f
     farmPid: farm.pid,
   })
 
-  const proxyFarm = useProxyFarm(farm)
+  const proxyFarm = useMemo(
+    () => ({
+      ...farm,
+      userData: farm.userData.proxy,
+    }),
+    [farm],
+  )
 
   return (
     <YieldBoosterStateContext.Provider value={{ boosterState, refreshActivePool, proxyFarm, shouldUseProxyFarm }}>
@@ -47,4 +40,4 @@ const ProxyFarmContainer: React.FC<ProxyFarmContainerPropsType> = ({ children, f
   )
 }
 
-export default ProxyFarmContainer
+export default memo(ProxyFarmContainer)
