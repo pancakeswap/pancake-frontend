@@ -88,7 +88,7 @@ const IfoVesting: React.FC<IfoVestingProps> = () => {
   }, [fetchUserVestingData])
 
   return (
-    <StyleVestingCard isActive>
+    <StyleVestingCard isActive style={{ display: cardStatus.status === VestingStatus.NOT_TOKENS_CLAIM ? `none` : `` }}>
       <CardHeader p="16px">
         <Flex justifyContent="space-between" alignItems="center">
           <Box ml="8px">
