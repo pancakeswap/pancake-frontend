@@ -35,7 +35,10 @@ export const fetchUserBalances = async (account) => {
     name: 'balanceOf',
     params: [account],
   }))
-  const tokenBalancesRaw = await multicall(erc20ABI, calls)
+  const [tokenBalancesRaw, bnbBalance] = await Promise.all([
+    multicall(erc20ABI, calls),
+    bscRpcProvider.getBalance(account),
+  ])
   const tokenBalances = tokens.reduce((acc, token, index) => ({ ...acc, [token]: tokenBalancesRaw[index] }), {})
   const poolTokenBalances = nonBnbPools.reduce(
     (acc, pool) => ({
@@ -48,11 +51,8 @@ export const fetchUserBalances = async (account) => {
   )
 
   // BNB pools
-  const bnbBalance = await bscRpcProvider.getBalance(account)
-  const bnbBalances = bnbPools.reduce(
-    (acc, pool) => ({ ...acc, [pool.sousId]: new BigNumber(bnbBalance.toString()).toJSON() }),
-    {},
-  )
+  const bnbBalanceJson = new BigNumber(bnbBalance.toString()).toJSON()
+  const bnbBalances = bnbPools.reduce((acc, pool) => ({ ...acc, [pool.sousId]: bnbBalanceJson }), {})
 
   return { ...poolTokenBalances, ...bnbBalances }
 }
