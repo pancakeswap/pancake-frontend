@@ -446,7 +446,6 @@
   "Transfer": "전송",
   "Congratulations!": "성공!",
   "Claim now": "지금 클레임",
-  "Claiming...": "클레임 중...",
   "Receiving address": "주소 수신 중",
   "Could not retrieve CAKE costs for profile": "프로필에 대한 CAKE 비용을 가져올 수 없음",
   "Provider Error": "제공자 오류",
@@ -1529,7 +1528,6 @@
   "Place a limit order to trade at a set price": "지정가 주문을 하여 설정된 가격으로 거래",
   "Place an Order": "주문하기",
   "Open Order Details": "오픈 주문 세부 정보",
-  "View on BSCScan": "BSCScan에서 보기",
   "Cancel Order": "주문 취소",
   "Status": "상태",
   "No Open Orders": "오픈 주문 없음",
@@ -1650,7 +1648,6 @@
   "Released": "릴리스됨",
   "Vested": "베스팅됨",
   "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked": "예치 포지션이 잠금 해제된 경우에만 예치된 CAKE 및 수익을 인출할 수 있습니다",
-  "Failed to claim": "클레임 실패",
   "Hello, early fixed-term staking pool CAKE lovers.": "안녕하세요, 초기 고정 기간 예치 풀 CAKE 러버입니다.",
   "If you staked in our fixed-term staking pool for 52 weeks within the first 24 hours of the launch, you are eligible to claim a special edition “Project Galaxy x PancakeSwap” NFT.": "출시하고 처음 24시간 내에 52주 동안 고정 기간 예치 풀에 예치한 경우, 특별 버전 ​​\"Project Galaxy x PancakeSwap\" NFT를 받을 수 있는 자격이 있습니다.",
   "Hold this NFT in your wallet until the snapshot timing (10:00 UTC 11th May 2022) to participate in the $GAL airdrop with a total of 400,000 GAL tokens.": "스냅숏 타이밍(2022년 5월 11일 10:00 UTC)까지 이 NFT를 지갑에 보관하여 총 400,000 GAL 토큰이 포함된 $GAL 에어드롭에 참여하세요.",
@@ -1770,5 +1767,6 @@
   "Zap allows you to add liquidity with only 1 single token. Click": "Zap allows you to add liquidity with only 1 single token. Click",
   "to try.": "to try.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
-  "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks."
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks.",
+  "Select a Network": "Select a Network"
 }
