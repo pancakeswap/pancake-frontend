@@ -19,10 +19,10 @@ interface WalletWrongNetworkProps {
 
 const WalletWrongNetwork: React.FC<WalletWrongNetworkProps> = ({ onDismiss }) => {
   const { t } = useTranslation()
-  const { connector, library } = useWeb3React()
+  const { connector } = useWeb3React()
 
   const handleSwitchNetwork = async (): Promise<void> => {
-    await setupNetwork(ChainId.BSC, library)
+    await setupNetwork(ChainId.BSC)
     onDismiss?.()
   }
 

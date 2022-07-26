@@ -1,6 +1,4 @@
 // Set of helper functions to facilitate wallet setup
-
-import { ExternalProvider } from '@ethersproject/providers'
 import { ChainId } from '@pancakeswap/sdk'
 import { BAD_SRCS } from 'components/Logo/Logo'
 import { BASE_BSC_SCAN_URLS } from 'config'
@@ -23,9 +21,9 @@ const NETWORK_CONFIG = {
  * Prompt the user to add BSC as a network on Metamask, or switch to BSC if the wallet is on a different network
  * @returns {boolean} true if the setup succeeded, false otherwise
  */
-export const setupNetwork = async (chainId?: number, externalProvider?: ExternalProvider) => {
-  const provider = externalProvider || window.ethereum
-  if (!NETWORK_CONFIG[chainId]) {
+export const setupNetwork = async (chainId?: number, config?: any) => {
+  const provider = window.ethereum
+  if (!NETWORK_CONFIG[chainId] && !config) {
     console.error('Invalid chain id')
     return false
   }
@@ -42,7 +40,7 @@ export const setupNetwork = async (chainId?: number, externalProvider?: External
           await provider.request({
             method: 'wallet_addEthereumChain',
             params: [
-              {
+              config || {
                 chainId: `0x${chainId.toString(16)}`,
                 chainName: NETWORK_CONFIG[chainId].name,
                 nativeCurrency: {

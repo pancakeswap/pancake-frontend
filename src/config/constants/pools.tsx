@@ -145,10 +145,6 @@ const finishedPools = [
     tokenPerBlock: '1.58',
     version: 3,
   },
-]
-
-// known finished pools
-const finishedPools = [
   {
     sousId: 281,
     stakingToken: serializedTokens.cake,
