@@ -121,6 +121,7 @@ const CardContent: React.FC = () => {
   const { push } = useRouter()
   const { fetchWithCatchTxError, loading } = useCatchTxError()
   const { toastSuccess } = useToast()
+  const theme = useTheme()
 
   if (!account)
     return (
@@ -131,7 +132,7 @@ const CardContent: React.FC = () => {
         <Text color="textSubtle" fontSize={12} mb="16px">
           {t('An active fixed-term CAKE staking position is required for activating farm yield boosters.')}
         </Text>
-        <ConnectWalletButton />
+        <ConnectWalletButton width="100%" style={{ backgroundColor: theme.colors.textSubtle }} />
       </Box>
     )
   if (!locked)
@@ -143,7 +144,7 @@ const CardContent: React.FC = () => {
         <Text color="textSubtle" fontSize={12} mb="16px">
           {t('An active fixed-term CAKE staking position is required for activating farm yield boosters.')}
         </Text>
-        <Button onClick={() => push('/pools')} width="100%">
+        <Button onClick={() => push('/pools')} width="100%" style={{ backgroundColor: theme.colors.textSubtle }}>
           {t('Go to Pool')}
         </Button>
       </Box>
@@ -157,7 +158,7 @@ const CardContent: React.FC = () => {
         <Text color="textSubtle" fontSize={12} mb="16px">
           {t('An active fixed-term CAKE staking position is required for activating farm yield boosters.')}
         </Text>
-        <Button onClick={() => push('/pools')} width="100%">
+        <Button onClick={() => push('/pools')} width="100%" style={{ backgroundColor: theme.colors.textSubtle }}>
           {t('Go to Pool')}
         </Button>
       </Box>
@@ -172,6 +173,7 @@ const CardContent: React.FC = () => {
           {t('A one-time setup is required for enabling farm yield boosters.')}
         </Text>
         <Button
+          style={{ backgroundColor: theme.colors.textSubtle }}
           onClick={async () => {
             try {
               setIsCreateProxyLoading(true)
