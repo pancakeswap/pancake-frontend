@@ -1,4 +1,17 @@
-import { AutoRenewIcon, Box, Button, Card, CardBody, CardFooter, Flex, Text } from '@pancakeswap/uikit'
+import {
+  AutoRenewIcon,
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  Flex,
+  Text,
+  RocketIcon,
+  HelpIcon,
+  Link,
+  useTooltip,
+} from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -10,7 +23,7 @@ import useToast from 'hooks/useToast'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
 import { useUserBoosterStatus } from '../hooks/useUserBoosterStatus'
 import { useUserLockedCakeStatus } from '../hooks/useUserLockedCakeStatus'
@@ -56,6 +69,23 @@ const StyledCardFooter = styled(CardFooter)`
 
 export const BCakeBoosterCard = () => {
   const { t } = useTranslation()
+  const theme = useTheme()
+
+  const tooltipContent = (
+    <>
+      <Box mb="20px">
+        {t(
+          'Yield Boosters allow you to boost your farming yields by locking CAKE in the fixed-term staking CAKE pool. The more CAKE you lock, and the longer you lock them, the higher the boost you will receive.',
+        )}
+      </Box>
+      <Box>
+        {t('To learn more, check out the')}
+        <Link href="https://pancakeswap.finance">{t('Medium Article')}</Link>
+      </Box>
+    </>
+  )
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
   return (
     <CardWrapper>
       <ImageWrapper>
@@ -63,9 +93,14 @@ export const BCakeBoosterCard = () => {
       </ImageWrapper>
       <Card style={{ zIndex: 1 }}>
         <StyledCardBody>
-          <Text fontSize={22} bold color="text" marginBottom="-12px">
+          <RocketIcon />
+          <Text fontSize={22} bold color="text" marginBottom="-12px" display="inline-block" ml="7px">
             {t('Yield Booster')}
           </Text>
+          {tooltipVisible && tooltip}
+          <Box ref={targetRef} style={{ float: 'right', position: 'relative', top: '6px' }}>
+            <HelpIcon color={theme.colors.textSubtle} />
+          </Box>
         </StyledCardBody>
         <StyledCardFooter>
           <CardContent />
