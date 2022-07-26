@@ -6,6 +6,8 @@ import { useTranslation } from 'contexts/Localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
+import { getAddress } from 'utils/addressHelpers'
+import { useERC20 } from 'hooks/useContract'
 
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
@@ -15,9 +17,25 @@ import { getBalanceAmount } from 'utils/formatBalance'
 import { FarmWithStakedValue } from '../../types'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
+import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
 
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
+}
+
+export const ProxyHarvestActionContainer = (props) => {
+  const lpAddress = getAddress(props.lpAddresses)
+  const lpContract = useERC20(lpAddress)
+
+  const { onReward } = useProxyStakedActions(props.id, lpContract)
+
+  return <HarvestAction {...props} onReward={onReward} />
+}
+
+export const HarvestActionContainer = (props) => {
+  const { onReward } = useHarvestFarm(props.pid)
+
+  return <HarvestAction {...props} onReward={onReward} />
 }
 
 const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userData, userDataReady }) => {

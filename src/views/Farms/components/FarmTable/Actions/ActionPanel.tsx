@@ -7,7 +7,7 @@ import { getBscScanLink } from 'utils'
 import { useContext } from 'react'
 import { FarmWithStakedValue } from '../../types'
 
-import HarvestAction from './HarvestAction'
+import { HarvestActionContainer, ProxyHarvestActionContainer } from './HarvestAction'
 import { ProxyStakedContainer, StakedContainer } from './StakedAction'
 import Apr, { AprProps } from '../Apr'
 import Multiplier, { MultiplierProps } from '../Multiplier'
@@ -179,7 +179,11 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
         <StyledLinkExternal href={info}>{t('See Pair Info')}</StyledLinkExternal>
       </InfoContainer>
       <ActionContainer>
-        <HarvestAction {...farm} userDataReady={userDataReady} />
+        {shouldUseProxyFarm ? (
+          <ProxyHarvestActionContainer {...proxyFarm} userDataReady={userDataReady} />
+        ) : (
+          <HarvestActionContainer {...farm} userDataReady={userDataReady} />
+        )}
         {farm?.boosted && (
           <ActionContainerSection>
             <BoostedAction

@@ -14,9 +14,8 @@ import { fetchFarmUserDataAsync } from 'state/farms'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import styled from 'styled-components'
 import { getAddress } from 'utils/addressHelpers'
-import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import useApproveFarm, { useApproveBoostProxyFarm } from '../../../hooks/useApproveFarm'
+import useApproveFarm from '../../../hooks/useApproveFarm'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
 import DepositModal from '../../DepositModal'
@@ -24,6 +23,7 @@ import WithdrawModal from '../../WithdrawModal'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
 import { FarmWithStakedValue } from '../../types'
 import StakedLP from '../../StakedLP'
+import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -48,27 +48,6 @@ function useStakedActions(pid, lpContract) {
   return {
     onStake,
     onUnstake,
-    onApprove,
-    onDone,
-  }
-}
-
-function useProxyStakedActions(pid, lpContract) {
-  const { account } = useWeb3React()
-  const { proxyAddress } = useBCakeProxyContractAddress(account)
-  const bCakeProxy = useBCakeProxyContract(proxyAddress)
-  const dispatch = useAppDispatch()
-
-  const onDone = useCallback(
-    () => dispatch(fetchFarmUserDataAsync({ account, pids: [pid], proxyAddress })),
-    [account, proxyAddress, pid, dispatch],
-  )
-
-  const { onApprove } = useApproveBoostProxyFarm(lpContract, proxyAddress)
-
-  return {
-    onStake: (value) => bCakeProxy?.deposit(pid, value),
-    onUnstake: (value) => bCakeProxy?.withdraw(pid, value),
     onApprove,
     onDone,
   }
