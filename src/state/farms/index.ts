@@ -92,24 +92,33 @@ interface FarmUserDataResponse {
   tokenBalance: string
   stakedBalance: string
   earnings: string
+  proxy?: {
+    allowance: string
+    tokenBalance: string
+    stakedBalance: string
+    earnings: string
+  }
 }
 
-async function getProxyFarmAllowances(farms, account, proxyAddress) {
-  // TODO: Refactor
-  const [userFarmAllowances, userFarmTokenBalances, userStakedBalances, userFarmEarnings] = await Promise.all([
+async function getBoostedFarmsStakeValue(farms, account, proxyAddress) {
+  const [
+    userFarmAllowances,
+    userFarmTokenBalances,
+    userStakedBalances,
+    userFarmEarnings,
+    proxyUserFarmAllowances,
+    proxyUserStakedBalances,
+    proxyUserFarmEarnings,
+  ] = await Promise.all([
     fetchFarmUserAllowances(account, farms),
     fetchFarmUserTokenBalances(account, farms),
     fetchFarmUserStakedBalances(account, farms),
     fetchFarmUserEarnings(account, farms),
+    // Proxy call
+    fetchFarmUserAllowances(account, farms, proxyAddress),
+    fetchFarmUserStakedBalances(proxyAddress, farms),
+    fetchFarmUserEarnings(proxyAddress, farms),
   ])
-
-  const [proxyUserFarmAllowances, proxyUserFarmTokenBalances, proxyUserStakedBalances, proxyUserFarmEarnings] =
-    await Promise.all([
-      fetchFarmUserAllowances(account, farms, proxyAddress),
-      fetchFarmUserTokenBalances(account, farms),
-      fetchFarmUserStakedBalances(proxyAddress, farms),
-      fetchFarmUserEarnings(proxyAddress, farms),
-    ])
 
   const farmAllowances = userFarmAllowances.map((farmAllowance, index) => {
     return {
@@ -120,7 +129,8 @@ async function getProxyFarmAllowances(farms, account, proxyAddress) {
       earnings: userFarmEarnings[index],
       proxy: {
         allowance: proxyUserFarmAllowances[index],
-        tokenBalance: proxyUserFarmTokenBalances[index],
+        // NOTE: Duplicate tokenBalance to maintain data structure consistence
+        tokenBalance: userFarmTokenBalances[index],
         stakedBalance: proxyUserStakedBalances[index],
         earnings: proxyUserFarmEarnings[index],
       },
@@ -130,7 +140,7 @@ async function getProxyFarmAllowances(farms, account, proxyAddress) {
   return farmAllowances
 }
 
-async function getFarmAllowances(farms, account) {
+async function getNormalFarmsStakeValue(farms, account) {
   const [userFarmAllowances, userFarmTokenBalances, userStakedBalances, userFarmEarnings] = await Promise.all([
     fetchFarmUserAllowances(account, farms),
     fetchFarmUserTokenBalances(account, farms),
@@ -138,7 +148,7 @@ async function getFarmAllowances(farms, account) {
     fetchFarmUserEarnings(account, farms),
   ])
 
-  const normalFarmAllowances = userFarmAllowances.map((farmAllowance, index) => {
+  const normalFarmAllowances = userFarmAllowances.map((_, index) => {
     return {
       pid: farms[index].pid,
       allowance: userFarmAllowances[index],
@@ -183,14 +193,14 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
       )
 
       const [proxyAllowances, normalAllowances] = await Promise.all([
-        getProxyFarmAllowances(farmsWithProxy, account, proxyAddress),
-        getFarmAllowances(normalFarms, account),
+        getBoostedFarmsStakeValue(farmsWithProxy, account, proxyAddress),
+        getNormalFarmsStakeValue(normalFarms, account),
       ])
 
       return [...proxyAllowances, ...normalAllowances]
     }
 
-    return getFarmAllowances(farmsCanFetch, account)
+    return getNormalFarmsStakeValue(farmsCanFetch, account)
   },
   {
     condition: (arg, { getState }) => {
