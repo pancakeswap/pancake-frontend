@@ -43,7 +43,7 @@ const UserMenuComponent: React.FC<{ variant?: Variant; text?: string; account?: 
   text,
   account = "0x8b017905DC96B38f817473dc885F84D4C76bC113",
 }) => {
-  const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : null;
+  const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : undefined;
   return (
     <DropdownMenu items={userMenulinks} py="12px">
       <UserMenu account={text || accountEllipsis} avatarSrc="" variant={variant} />
@@ -91,8 +91,12 @@ const defaultProps = {
   subLinks: links[0].items,
   footerLinks,
   profile: null,
-  userMenu: <UserMenuComponent account="0xbdda50183d817c3289f895a4472eb475967dc980" />,
-  globalMenu: <GlobalMenuComponent />,
+  rightSide: (
+    <>
+      <GlobalMenuComponent />
+      <UserMenuComponent account="0xbdda50183d817c3289f895a4472eb475967dc980" />
+    </>
+  ),
   activeItem: "/swap",
   activeSubItem: "https://exchange.pancakeswap.finance",
   buyCakeLabel: "Buy CAKE",
