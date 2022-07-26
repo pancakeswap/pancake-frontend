@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { currencyEquals, ETHER, JSBI, TokenAmount, WETH, MINIMUM_LIQUIDITY } from '@pancakeswap/sdk'
+import { currencyEquals, ETHER, JSBI, TokenAmount, WNATIVE, MINIMUM_LIQUIDITY } from '@pancakeswap/sdk'
 import {
   Button,
   Text,
@@ -17,18 +17,17 @@ import { logError } from 'utils/sentry'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import { useTranslation } from 'contexts/Localization'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
+import { useZapContract } from 'hooks/useContract'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { getZapContract } from 'utils/contractHelpers'
 import { getZapAddress } from 'utils/addressHelpers'
 import { getLPSymbol } from 'utils/getLpSymbol'
 import { useRouter } from 'next/router'
-import { CHAIN_ID } from 'config/constants/networks'
 import { callWithEstimateGas } from 'utils/calls'
 import { ContractMethodName } from 'utils/types'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useLPApr } from 'state/swap/hooks'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
-import { serializeTokens } from 'config/constants/tokens'
+import { CAKE } from 'config/constants/tokens'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -70,15 +69,14 @@ const zapAddress = getZapAddress()
 
 export default function AddLiquidity() {
   const router = useRouter()
-  const tokens = serializeTokens()
+  const { account, chainId, library } = useActiveWeb3React()
   const expertMode = useIsExpertMode()
 
   const [zapMode] = useZapModeManager()
   const [temporarilyZapMode, setTemporarilyZapMode] = useState(zapMode)
-  const [currencyIdA, currencyIdB] = router.query.currency || [tokens.bnb.symbol, tokens.cake.address]
+  const [currencyIdA, currencyIdB] = router.query.currency || [WNATIVE[chainId]?.address, CAKE[chainId]?.address]
   const [steps, setSteps] = useState(Steps.Choose)
 
-  const { account, chainId, library } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const gasPrice = useGasPrice()
@@ -224,11 +222,11 @@ export default function AddLiquidity() {
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_A],
-    preferZapInstead ? zapAddress : ROUTER_ADDRESS[CHAIN_ID],
+    preferZapInstead ? zapAddress : ROUTER_ADDRESS[chainId],
   )
   const [approvalB, approveBCallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_B],
-    preferZapInstead ? zapAddress : ROUTER_ADDRESS[CHAIN_ID],
+    preferZapInstead ? zapAddress : ROUTER_ADDRESS[chainId],
   )
 
   const addTransaction = useTransactionAdder()
@@ -338,6 +336,8 @@ export default function AddLiquidity() {
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
   const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
+  const zapContract = useZapContract(true)
+
   const [onPresentAddLiquidityModal] = useModal(
     <ConfirmAddLiquidityModal
       title={noLiquidity ? t('You are creating a pool') : t('You will receive')}
@@ -365,8 +365,6 @@ export default function AddLiquidity() {
     if (!canZap || !parsedAmounts || !zapIn.zapInEstimated || !library || !chainId) {
       return
     }
-
-    const zapContract = getZapContract(library.getSigner())
 
     let method: ContractMethodName<typeof zapContract>
     let args
@@ -512,8 +510,8 @@ export default function AddLiquidity() {
 
   const oneCurrencyIsWBNB = Boolean(
     chainId &&
-      ((currencyA && currencyEquals(currencyA, WETH[chainId])) ||
-        (currencyB && currencyEquals(currencyB, WETH[chainId]))),
+      ((currencyA && currencyEquals(currencyA, WNATIVE[chainId])) ||
+        (currencyB && currencyEquals(currencyB, WNATIVE[chainId]))),
   )
 
   const noAnyInputAmount = !parsedAmounts[Field.CURRENCY_A] && !parsedAmounts[Field.CURRENCY_B]

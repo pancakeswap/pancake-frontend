@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
-import { nodes } from 'utils/getRpcUrl'
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -34,9 +33,6 @@ class MyDocument extends Document {
     return (
       <Html translate="no">
         <Head>
-          {nodes.map((node) => (
-            <link key={node} rel="preconnect" href={node} />
-          ))}
           {process.env.NEXT_PUBLIC_NODE_PRODUCTION && (
             <link rel="preconnect" href={process.env.NEXT_PUBLIC_NODE_PRODUCTION} />
           )}

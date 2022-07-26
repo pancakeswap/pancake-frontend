@@ -1,19 +1,20 @@
 import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
 import useSWR, { useSWRConfig } from 'swr'
-import { simpleRpcProvider } from 'utils/providers'
 import useSWRImmutable from 'swr/immutable'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 const REFRESH_BLOCK_INTERVAL = 6000
 
 export const usePollBlockNumber = () => {
   const { cache, mutate } = useSWRConfig()
+  const { library, chainId } = useActiveWeb3React()
 
   const { data } = useSWR(
-    'blockNumber',
+    `blockNumber-${chainId}`,
     async () => {
-      const blockNumber = await simpleRpcProvider.getBlockNumber()
-      if (!cache.get('initialBlockNumber')) {
-        mutate('initialBlockNumber', blockNumber)
+      const blockNumber = await library.getBlockNumber()
+      if (!cache.get(`initialBlockNumber-${chainId}`)) {
+        mutate(`initialBlockNumber-${chainId}`, blockNumber)
       }
       return blockNumber
     },
@@ -23,7 +24,7 @@ export const usePollBlockNumber = () => {
   )
 
   useSWR(
-    [FAST_INTERVAL, 'blockNumber'],
+    [FAST_INTERVAL, 'blockNumber', chainId],
     async () => {
       return data
     },
@@ -33,7 +34,7 @@ export const usePollBlockNumber = () => {
   )
 
   useSWR(
-    [SLOW_INTERVAL, 'blockNumber'],
+    [SLOW_INTERVAL, 'blockNumber', chainId],
     async () => {
       return data
     },
@@ -44,11 +45,13 @@ export const usePollBlockNumber = () => {
 }
 
 export const useCurrentBlock = (): number => {
-  const { data: currentBlock = 0 } = useSWRImmutable('blockNumber')
+  const { chainId } = useActiveWeb3React()
+  const { data: currentBlock = 0 } = useSWRImmutable(`blockNumber-${chainId}`)
   return currentBlock
 }
 
 export const useInitialBlock = (): number => {
-  const { data: initialBlock = 0 } = useSWRImmutable('initialBlockNumber')
+  const { chainId } = useActiveWeb3React()
+  const { data: initialBlock = 0 } = useSWRImmutable(`initialBlockNumber-${chainId}`)
   return initialBlock
 }
