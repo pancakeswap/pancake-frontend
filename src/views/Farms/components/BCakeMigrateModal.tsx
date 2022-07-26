@@ -1,16 +1,26 @@
 import { Contract } from '@ethersproject/contracts'
-import { AutoRenewIcon, Box, Button, CheckmarkIcon, LogoIcon, Modal, Text } from '@pancakeswap/uikit'
+import {
+  AutoRenewIcon,
+  Box,
+  Button,
+  CheckmarkIcon,
+  HelpIcon,
+  LogoIcon,
+  Modal,
+  Text,
+  useTooltip,
+} from '@pancakeswap/uikit'
+import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useTranslation } from 'contexts/Localization'
-import { useBCakeProxyContract } from 'hooks/useContract'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { useMemo, useState, useEffect } from 'react'
-import styled from 'styled-components'
-import { ToastDescriptionWithTx } from 'components/Toast'
+import { useBCakeProxyContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
+import { useEffect, useMemo, useState } from 'react'
+import styled from 'styled-components'
 import { getFullDisplayBalance } from 'utils/formatBalance'
-import { useWeb3React } from '@web3-react/core'
 import { useApproveBoostProxyFarm } from '../hooks/useApproveFarm'
 import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
 
@@ -97,9 +107,19 @@ export const InfoBox = styled.div`
   color: ${({ theme }) => theme.colors.textSubtle};
   line-height: 120%;
   margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   ${({ theme }) => theme.mediaQueries.md} {
     width: 372px;
   }
+`
+export const InfoText = styled.div``
+export const InfoIconBox = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 interface BCakeMigrateModalProps {
   lpContract: Contract
@@ -144,6 +164,17 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
   const { fetchWithCatchTxError, loading } = useCatchTxError()
   const { toastSuccess } = useToast()
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    <Text>
+      {t(
+        'To enable farm yield boosters, you must follow the guide and migrate your current farming positions. However, for each farm, you will only need to migrate once.',
+      )}
+    </Text>,
+    {
+      placement: 'right',
+    },
+  )
 
   useEffect(() => {
     if (!bCakeProxy) return
@@ -191,7 +222,13 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   }
   return (
     <Modal title={t('Migrate your stakings')} width="420px" onDismiss={onDismiss}>
-      <InfoBox>{t('You will need to migrate your stakings before activating yield booster for a farm')}</InfoBox>
+      {tooltipVisible && tooltip}
+      <InfoBox ref={targetRef}>
+        <InfoText>{t('You will need to migrate your stakings before activating yield booster for a farm')}</InfoText>
+        <InfoIconBox>
+          <HelpIcon />
+        </InfoIconBox>
+      </InfoBox>
       <Box pb={20} pl={38} pr={30}>
         {migrationStepsKeys.map((step, index) => {
           return (
