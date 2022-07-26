@@ -23,8 +23,9 @@ export type ConfigMenuItemsType = Omit<MenuItemsType, 'items'> & { hideSubNav?: 
   items?: ConfigMenuDropDownItemsType[]
 }
 
-const filterItemBySupportChainId = (chainId) => (items) =>
-  !chainId || !items.supportChainIds ? true : items.supportChainIds?.includes(chainId)
+const filterItemBySupportChainId = (item, chainId) => {
+  return !chainId || !item.supportChainIds ? true : item.supportChainIds?.includes(chainId)
+}
 
 const config: (
   t: ContextApi['t'],
@@ -64,7 +65,7 @@ const config: (
         //   label: t('Transfer'),
         //   href: '/transfer',
         // },
-      ].filter(filterItemBySupportChainId(chainId)),
+      ].filter((item) => filterItemBySupportChainId(item, chainId)),
     },
     {
       label: t('Earn'),
@@ -167,6 +168,6 @@ const config: (
         },
       ],
     },
-  ].filter(filterItemBySupportChainId(chainId))
+  ].filter((item) => filterItemBySupportChainId(item, chainId))
 
 export default config

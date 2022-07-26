@@ -3,9 +3,8 @@ import { Box, Modal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import { SnapshotCommand } from 'state/types'
-import { signMessage } from 'utils/web3React'
+import { useSignMessage } from 'utils/web3React'
 import useToast from 'hooks/useToast'
-import useWeb3Provider from 'hooks/useActiveWeb3React'
 import useTheme from 'hooks/useTheme'
 import { CastVoteModalProps, ConfirmVoteView } from './types'
 import MainView from './MainView'
@@ -19,8 +18,8 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
   const [isPending, setIsPending] = useState(false)
   const { account } = useWeb3React()
   const { t } = useTranslation()
+  const { signMessageAsync } = useSignMessage()
   const { toastError } = useToast()
-  const { library, connector } = useWeb3Provider()
   const { theme } = useTheme()
   const {
     isLoading,
@@ -60,7 +59,7 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
         },
       })
 
-      const sig = await signMessage(connector, library, account, voteMsg)
+      const sig = await signMessageAsync({ message: voteMsg })
       const msg: Message = { address: account, msg: voteMsg, sig }
 
       // Save proposal to snapshot

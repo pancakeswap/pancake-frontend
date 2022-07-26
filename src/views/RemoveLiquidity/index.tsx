@@ -72,6 +72,7 @@ const zapSupportedChainId = [ChainId.BSC, ChainId.BSC_TESTNET]
 export default function RemoveLiquidity() {
   const router = useRouter()
   const [zapMode] = useZapModeManager()
+  const [temporarilyZapMode, setTemporarilyZapMode] = useState(zapMode)
   const [currencyIdA, currencyIdB] = router.query.currency || []
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
   const { account, chainId, library } = useActiveWeb3React()
@@ -85,6 +86,10 @@ export default function RemoveLiquidity() {
   const gasPrice = useGasPrice()
 
   const canZapOut = useMemo(() => zapSupportedChainId.includes(chainId) && zapMode, [chainId, zapMode])
+  const zapModeStatus = useMemo(
+    () => canZapOut && !!zapMode && temporarilyZapMode,
+    [canZapOut, zapMode, temporarilyZapMode],
+  )
 
   // burn state
   const { independentField, typedValue } = useBurnState()
@@ -95,9 +100,9 @@ export default function RemoveLiquidity() {
     currencyB ?? undefined,
     removalCheckedA,
     removalCheckedB,
-    canZapOut,
+    zapModeStatus,
   )
-  const isZap = (!removalCheckedA || !removalCheckedB) && canZapOut
+  const isZap = (!removalCheckedA || !removalCheckedB) && zapModeStatus
 
   const poolData = useLPApr(pair)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -532,6 +537,7 @@ export default function RemoveLiquidity() {
       parsedAmounts={parsedAmounts}
       currencyA={currencyA}
       currencyB={currencyB}
+      toggleZapMode={setTemporarilyZapMode}
     />,
     true,
     true,
@@ -607,7 +613,7 @@ export default function RemoveLiquidity() {
                 <LightGreyCard>
                   <Flex justifyContent="space-between" mb="8px" as="label" alignItems="center">
                     <Flex alignItems="center">
-                      {canZapOut && (
+                      {zapModeStatus && (
                         <Flex mr="9px">
                           <Checkbox
                             disabled={isZapOutA}
@@ -633,7 +639,7 @@ export default function RemoveLiquidity() {
                   </Flex>
                   <Flex justifyContent="space-between" as="label" alignItems="center">
                     <Flex alignItems="center">
-                      {canZapOut && (
+                      {zapModeStatus && (
                         <Flex mr="9px">
                           <Checkbox
                             disabled={isZapOutB}
@@ -703,7 +709,7 @@ export default function RemoveLiquidity() {
               </ColumnCenter>
               <CurrencyInputPanel
                 beforeButton={
-                  canZapOut && (
+                  zapModeStatus && (
                     <ZapCheckbox
                       disabled={!removalCheckedB && removalCheckedA}
                       checked={removalCheckedA}
@@ -730,7 +736,7 @@ export default function RemoveLiquidity() {
               </ColumnCenter>
               <CurrencyInputPanel
                 beforeButton={
-                  canZapOut && (
+                  zapModeStatus && (
                     <ZapCheckbox
                       disabled={!removalCheckedA && removalCheckedB}
                       checked={removalCheckedB}

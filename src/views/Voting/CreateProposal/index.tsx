@@ -20,10 +20,9 @@ import isEmpty from 'lodash/isEmpty'
 import { useInitialBlock } from 'state/block/hooks'
 import { SnapshotCommand } from 'state/types'
 import useToast from 'hooks/useToast'
-import useWeb3Provider from 'hooks/useActiveWeb3React'
 import { getBscScanLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
-import { signMessage } from 'utils/web3React'
+import { useSignMessage } from 'utils/web3React'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
 import { DatePicker, TimePicker, DatePickerPortal } from 'views/Voting/components/DatePicker'
@@ -63,7 +62,7 @@ const CreateProposal = () => {
   const { account } = useWeb3React()
   const initialBlock = useInitialBlock()
   const { push } = useRouter()
-  const { library, connector } = useWeb3Provider()
+  const { signMessageAsync } = useSignMessage()
   const { toastSuccess, toastError } = useToast()
   const [onPresentVoteDetailsModal] = useModal(<VoteDetailsModal block={state.snapshot} />)
   const { name, body, choices, startDate, startTime, endDate, endTime, snapshot } = state
@@ -93,7 +92,7 @@ const CreateProposal = () => {
         },
       })
 
-      const sig = await signMessage(connector, library, account, proposal)
+      const sig = await signMessageAsync({ message: proposal })
 
       if (sig) {
         const msg: Message = { address: account, msg: proposal, sig }

@@ -15,7 +15,7 @@ export class BnInjectedConnector extends InjectedConnector {
 
   readonly ready = typeof window !== 'undefined' && !!window.bn
 
-  #provider?: any
+  provider?: any
 
   getWeb3Provider?: any
 
@@ -68,8 +68,8 @@ export class BnInjectedConnector extends InjectedConnector {
     if (typeof window !== 'undefined') {
       // TODO: Fallback to `ethereum#initialized` event for async injection
       // https://github.com/MetaMask/detect-provider#synchronous-and-asynchronous-injection=
-      this.#provider = this.getWeb3Provider()
+      this.provider = this.getWeb3Provider()
     }
-    return this.#provider
+    return this.provider
   }
 }
