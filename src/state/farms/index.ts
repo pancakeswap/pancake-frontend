@@ -105,14 +105,8 @@ async function getProxyFarmAllowances(farms, account, proxyAddress) {
 
   const [proxyUserFarmAllowances, proxyUserFarmTokenBalances, proxyUserStakedBalances, proxyUserFarmEarnings] =
     await Promise.all([
-      fetchFarmUserAllowances(
-        proxyAddress,
-        farms.map((f) => ({ lpAddresses: f?.proxyLpAddresses })),
-      ),
-      fetchFarmUserTokenBalances(
-        proxyAddress,
-        farms.map((f) => ({ lpAddresses: f?.proxyLpAddresses })),
-      ),
+      fetchFarmUserAllowances(account, farms, proxyAddress),
+      fetchFarmUserTokenBalances(account, farms),
       fetchFarmUserStakedBalances(proxyAddress, farms),
       fetchFarmUserEarnings(proxyAddress, farms),
     ])
@@ -159,7 +153,7 @@ async function getFarmAllowances(farms, account) {
 
 export const fetchFarmUserDataAsync = createAsyncThunk<
   FarmUserDataResponse[],
-  { account: string; pids: number[]; proxyAddress: string },
+  { account: string; pids: number[]; proxyAddress?: string },
   {
     state: AppState
   }
@@ -170,29 +164,33 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
     const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
 
-    // TODO: remove duplicate
-    const { normalFarms, farmsWithProxy } = farmsCanFetch.reduce(
-      (acc, f) => {
-        if (f.proxyLpAddresses) {
+    if (proxyAddress) {
+      // TODO: remove duplicate
+      const { normalFarms, farmsWithProxy } = farmsCanFetch.reduce(
+        (acc, f) => {
+          if (f.boosted) {
+            return {
+              ...acc,
+              farmsWithProxy: [...acc.farmsWithProxy, f],
+            }
+          }
           return {
             ...acc,
-            farmsWithProxy: [...acc.farmsWithProxy, f],
+            normalFarms: [...acc.normalFarms, f],
           }
-        }
-        return {
-          ...acc,
-          normalFarms: [...acc.normalFarms, f],
-        }
-      },
-      { normalFarms: [], farmsWithProxy: [] },
-    )
+        },
+        { normalFarms: [], farmsWithProxy: [] },
+      )
 
-    const [proxyAllowances, normalAllowances] = await Promise.all([
-      getProxyFarmAllowances(farmsWithProxy, account, proxyAddress),
-      getFarmAllowances(normalFarms, account),
-    ])
+      const [proxyAllowances, normalAllowances] = await Promise.all([
+        getProxyFarmAllowances(farmsWithProxy, account, proxyAddress),
+        getFarmAllowances(normalFarms, account),
+      ])
 
-    return [...proxyAllowances, ...normalAllowances]
+      return [...proxyAllowances, ...normalAllowances]
+    }
+
+    return getFarmAllowances(farmsCanFetch, account)
   },
   {
     condition: (arg, { getState }) => {
@@ -257,6 +255,7 @@ export const farmsSlice = createSlice({
     builder.addCase(fetchFarmUserDataAsync.fulfilled, (state, action) => {
       action.payload.forEach((userDataEl) => {
         const { pid } = userDataEl
+
         const index = state.data.findIndex((farm) => farm.pid === pid)
         state.data[index] = { ...state.data[index], userData: userDataEl }
       })

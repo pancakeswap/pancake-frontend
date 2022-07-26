@@ -6,39 +6,8 @@ import { SerializedFarm } from '../types'
 import { SerializedFarmConfig } from '../../config/constants/types'
 
 const fetchFarmCalls = (farm: SerializedFarm) => {
-  const { lpAddresses, token, quoteToken, proxyLpAddresses } = farm
+  const { lpAddresses, token, quoteToken } = farm
   const lpAddress = getAddress(lpAddresses)
-
-  let proxyCalls = []
-
-  if (proxyLpAddresses) {
-    const proxyLpAddress = getAddress(proxyLpAddresses)
-    proxyCalls = [
-      // Balance of token in the LP contract
-      {
-        address: token.address,
-        name: 'balanceOf',
-        params: [proxyLpAddress],
-      },
-      // Balance of quote token on LP contract
-      {
-        address: quoteToken.address,
-        name: 'balanceOf',
-        params: [proxyLpAddress],
-      },
-      // Balance of LP tokens in the master chef contract
-      {
-        address: proxyLpAddress,
-        name: 'balanceOf',
-        params: [getMasterChefAddress()],
-      },
-      // Total supply of LP tokens
-      {
-        address: proxyLpAddress,
-        name: 'totalSupply',
-      },
-    ]
-  }
 
   return [
     // Balance of token in the LP contract
@@ -74,7 +43,6 @@ const fetchFarmCalls = (farm: SerializedFarm) => {
       address: quoteToken.address,
       name: 'decimals',
     },
-    ...proxyCalls,
   ]
 }
 

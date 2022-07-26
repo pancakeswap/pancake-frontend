@@ -45,10 +45,6 @@ function farmLpTransformer(farmResult, masterChefResult) {
       lpTotalSupply,
       [tokenDecimals],
       [quoteTokenDecimals],
-      proxyTokenBalanceLP,
-      proxyQuoteTokenBalanceLP,
-      proxyLpTokenBalanceMC,
-      proxyLpTotalSupply,
     ] = farmResult[index]
 
     const [info, totalRegularAllocPoint] = masterChefResult[index]
@@ -56,66 +52,31 @@ function farmLpTransformer(farmResult, masterChefResult) {
     const allocPoint = info ? new BigNumber(info.allocPoint?._hex) : BIG_ZERO
     const poolWeight = totalRegularAllocPoint ? allocPoint.div(new BigNumber(totalRegularAllocPoint)) : BIG_ZERO
 
-    const lpInfo = getLpInfo({
-      tokenBalanceLP,
-      quoteTokenBalanceLP,
-      lpTokenBalanceMC,
-      lpTotalSupply,
-      tokenDecimals,
-      quoteTokenDecimals,
-    })
-
-    const proxyLpInfo = proxyTokenBalanceLP
-      ? getLpInfo({
-          tokenBalanceLP: proxyTokenBalanceLP,
-          quoteTokenBalanceLP: proxyQuoteTokenBalanceLP,
-          lpTokenBalanceMC: proxyLpTokenBalanceMC,
-          lpTotalSupply: proxyLpTotalSupply,
-          tokenDecimals,
-          quoteTokenDecimals,
-        })
-      : {}
-
     return {
       ...farm,
       token: farm.token,
       quoteToken: farm.quoteToken,
       poolWeight: poolWeight.toJSON(),
       multiplier: `${allocPoint.div(100).toString()}X`,
-      ...lpInfo,
-      proxyLpInfo,
+      ...getLpInfo({
+        tokenBalanceLP,
+        quoteTokenBalanceLP,
+        lpTokenBalanceMC,
+        lpTotalSupply,
+        tokenDecimals,
+        quoteTokenDecimals,
+      }),
     }
   }
 }
 
 const fetchFarms = async (farmsToFetch: SerializedFarmConfig[]): Promise<SerializedFarm[]> => {
-  const { normalFarms, farmsWithProxy } = farmsToFetch.reduce(
-    (acc, f) => {
-      if (f.proxyLpAddresses) {
-        return {
-          ...acc,
-          farmsWithProxy: [...acc.farmsWithProxy, f],
-        }
-      }
-      return {
-        ...acc,
-        normalFarms: [...acc.normalFarms, f],
-      }
-    },
-    { normalFarms: [], farmsWithProxy: [] },
-  )
-
-  const [farmResult, masterChefResult, proxyFarmResult, proxyMasterChefResult] = await Promise.all([
-    fetchPublicFarmsData(normalFarms),
-    fetchMasterChefData(normalFarms),
-    fetchPublicFarmsData(farmsWithProxy),
-    fetchMasterChefData(farmsWithProxy),
+  const [farmResult, masterChefResult] = await Promise.all([
+    fetchPublicFarmsData(farmsToFetch),
+    fetchMasterChefData(farmsToFetch),
   ])
 
-  return [
-    ...farmsWithProxy.map(farmLpTransformer(proxyFarmResult, proxyMasterChefResult)),
-    ...normalFarms.map(farmLpTransformer(farmResult, masterChefResult)),
-  ]
+  return farmsToFetch.map(farmLpTransformer(farmResult, masterChefResult))
 }
 
 export default fetchFarms

@@ -4,15 +4,17 @@ import { LinkExternal, Text, useMatchBreakpointsContext } from '@pancakeswap/uik
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { getAddress } from 'utils/addressHelpers'
 import { getBscScanLink } from 'utils'
+import { useContext } from 'react'
 import { FarmWithStakedValue } from '../../types'
 
 import HarvestAction from './HarvestAction'
-import StakedAction from './StakedAction'
+import { ProxyStakedContainer, StakedContainer } from './StakedAction'
 import Apr, { AprProps } from '../Apr'
 import Multiplier, { MultiplierProps } from '../Multiplier'
 import Liquidity, { LiquidityProps } from '../Liquidity'
 import BoostedAction from '../../YieldBooster/components/BoostedAction'
 import { ActionTitles, ActionContainer as ActionContainerSection, ActionContent } from './styles'
+import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
 
 export interface ActionPanelProps {
   apr: AprProps
@@ -112,6 +114,8 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
   userDataReady,
   expanded,
 }) => {
+  const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
+
   const farm = details
 
   const { isDesktop } = useMatchBreakpointsContext()
@@ -194,7 +198,11 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
             />
           </ActionContainerSection>
         )}
-        <StakedAction {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value} />
+        {shouldUseProxyFarm ? (
+          <ProxyStakedContainer {...proxyFarm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value} />
+        ) : (
+          <StakedContainer {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value} />
+        )}
       </ActionContainer>
     </Container>
   )

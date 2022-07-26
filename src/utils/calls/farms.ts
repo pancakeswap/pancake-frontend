@@ -10,6 +10,8 @@ export const stakeFarm = async (masterChefContract, pid, amount) => {
   const gasPrice = getGasPrice()
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
 
+  // TODO: Remove when done
+  // bCakeProxy?.deposit(pid, value)
   return masterChefContract.deposit(pid, value, { ...options, gasPrice })
 }
 

@@ -265,12 +265,9 @@ const farms: SerializedFarmConfig[] = [
       97: '',
       56: '0xF461bc2aD8D16f6B985052C532b38Adb74eD4643',
     },
-    proxyLpAddresses: {
-      97: '',
-      56: '0x62B1b65ebE7Fd13e1f56fAb955c2DbAeE1f5aD09',
-    },
     token: serializedTokens.ceek,
     quoteToken: serializedTokens.wbnb,
+    boosted: true,
   },
   {
     pid: 91,
@@ -282,6 +279,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.tinc,
     quoteToken: serializedTokens.wbnb,
+    boosted: true,
   },
   {
     pid: 90,

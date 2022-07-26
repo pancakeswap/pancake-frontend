@@ -4,7 +4,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { useTranslation } from 'contexts/Localization'
-import { useERC20 } from 'hooks/useContract'
+import { useBCakeProxyContract, useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useRouter } from 'next/router'
@@ -14,8 +14,9 @@ import { fetchFarmUserDataAsync } from 'state/farms'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import styled from 'styled-components'
 import { getAddress } from 'utils/addressHelpers'
+import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import useApproveFarm from '../../../hooks/useApproveFarm'
+import useApproveFarm, { useApproveBoostProxyFarm } from '../../../hooks/useApproveFarm'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
 import DepositModal from '../../DepositModal'
@@ -23,7 +24,6 @@ import WithdrawModal from '../../WithdrawModal'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
 import { FarmWithStakedValue } from '../../types'
 import StakedLP from '../../StakedLP'
-import { BCakeMigrateModal } from '../../BCakeMigrateModal'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -35,13 +35,97 @@ interface StackedActionProps extends FarmWithStakedValue {
   displayApr?: string
 }
 
+function useStakedActions(pid, lpContract) {
+  const { account } = useWeb3React()
+  const { onStake } = useStakeFarms(pid)
+  const { onUnstake } = useUnstakeFarms(pid)
+  const dispatch = useAppDispatch()
+
+  const { onApprove } = useApproveFarm(lpContract)
+
+  const onDone = useCallback(() => dispatch(fetchFarmUserDataAsync({ account, pids: [pid] })), [account, pid, dispatch])
+
+  return {
+    onStake,
+    onUnstake,
+    onApprove,
+    onDone,
+  }
+}
+
+function useProxyStakedActions(pid, lpContract) {
+  const { account } = useWeb3React()
+  const { proxyAddress } = useBCakeProxyContractAddress(account)
+  const bCakeProxy = useBCakeProxyContract(proxyAddress)
+  const dispatch = useAppDispatch()
+
+  const onDone = useCallback(
+    () => dispatch(fetchFarmUserDataAsync({ account, pids: [pid], proxyAddress })),
+    [account, proxyAddress, pid, dispatch],
+  )
+
+  const { onApprove } = useApproveBoostProxyFarm(lpContract, proxyAddress)
+
+  return {
+    onStake: (value) => bCakeProxy?.deposit(pid, value),
+    onUnstake: (value) => bCakeProxy?.withdraw(pid, value),
+    onApprove,
+    onDone,
+  }
+}
+
+export const ProxyStakedContainer = (props) => {
+  const { account } = useWeb3React()
+
+  const lpAddress = getAddress(props.lpAddresses)
+  const lpContract = useERC20(lpAddress)
+
+  const { onStake, onUnstake, onApprove, onDone } = useProxyStakedActions(props.pid, lpContract)
+
+  const { allowance } = props.userData || {}
+
+  const isApproved = account && allowance && allowance.isGreaterThan(0)
+
+  return (
+    <Staked
+      {...props}
+      isApproved={isApproved}
+      onStake={onStake}
+      onDone={onDone}
+      onUnstake={onUnstake}
+      onApprove={onApprove}
+    />
+  )
+}
+
+export const StakedContainer = (props) => {
+  const { account } = useWeb3React()
+
+  const lpAddress = getAddress(props.lpAddresses)
+  const lpContract = useERC20(lpAddress)
+  const { onStake, onUnstake, onApprove, onDone } = useStakedActions(props.pid, lpContract)
+
+  const { allowance } = props.userData || {}
+
+  const isApproved = account && allowance && allowance.isGreaterThan(0)
+
+  return (
+    <Staked
+      {...props}
+      isApproved={isApproved}
+      onStake={onStake}
+      onDone={onDone}
+      onUnstake={onUnstake}
+      onApprove={onApprove}
+    />
+  )
+}
+
 const Staked: React.FunctionComponent<StackedActionProps> = ({
-  pid,
   apr,
   multiplier,
   lpSymbol,
   lpLabel,
-  lpAddresses,
   quoteToken,
   token,
   userDataReady,
@@ -50,22 +134,23 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   tokenAmountTotal,
   quoteTokenAmountTotal,
   userData,
+  onDone,
+  onStake,
+  onUnstake,
+  onApprove,
+  isApproved,
 }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { account } = useWeb3React()
 
-  const { allowance, tokenBalance, stakedBalance } = userData
-  const { onStake } = useStakeFarms(pid)
-  const { onUnstake } = useUnstakeFarms(pid)
+  const { tokenBalance, stakedBalance } = userData || {}
+
   const router = useRouter()
   const lpPrice = useLpTokenPrice(lpSymbol)
   const cakePrice = usePriceCakeBusd()
 
-  const isApproved = account && allowance && allowance.isGreaterThan(0)
-
-  const lpAddress = getAddress(lpAddresses)
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,
@@ -83,12 +168,11 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
           {t('Your funds have been staked in the farm')}
         </ToastDescriptionWithTx>,
       )
-      // TODO: add proxyAddress
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      onDone()
     }
   }
 
-  const handleUnstake = async (amount: string, callback?: () => void) => {
+  const handleUnstake = async (amount: string) => {
     const receipt = await fetchWithCatchTxError(() => {
       return onUnstake(amount)
     })
@@ -99,12 +183,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
           {t('Your earnings have also been harvested to your wallet')}
         </ToastDescriptionWithTx>,
       )
-      callback?.()
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      onDone()
     }
-  }
-  const onUpdateFarm = () => {
-    dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
   }
 
   const [onPresentDeposit] = useModal(
@@ -112,6 +192,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
       max={tokenBalance}
       lpPrice={lpPrice}
       lpLabel={lpLabel}
+      // TODO: check apr compatibility
       apr={apr}
       displayApr={displayApr}
       stakedBalance={stakedBalance}
@@ -126,19 +207,6 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   const [onPresentWithdraw] = useModal(
     <WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} />,
   )
-  const lpContract = useERC20(lpAddress)
-  const dispatch = useAppDispatch()
-  const { onApprove } = useApproveFarm(lpContract)
-
-  const [onPresentMigrate] = useModal(
-    <BCakeMigrateModal
-      pid={pid}
-      stakedBalance={stakedBalance}
-      lpContract={lpContract}
-      onUnStack={handleUnstake}
-      onUpdateFarm={onUpdateFarm}
-    />,
-  )
 
   const handleApprove = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
@@ -146,9 +214,9 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
     })
     if (receipt?.status) {
       toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      onDone()
     }
-  }, [onApprove, dispatch, account, pid, t, toastSuccess, fetchWithCatchTxError])
+  }, [onApprove, t, toastSuccess, fetchWithCatchTxError, onDone])
 
   if (!account) {
     return (
@@ -188,7 +256,6 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
               quoteTokenAmountTotal={quoteTokenAmountTotal}
             />
             <IconButtonWrapper>
-              <Button onClick={onPresentMigrate}>Migrate</Button>
               <IconButton variant="secondary" onClick={onPresentWithdraw} mr="6px">
                 <MinusIcon color="primary" width="14px" />
               </IconButton>
