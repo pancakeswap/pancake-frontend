@@ -23,6 +23,7 @@ import styled from 'styled-components'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { useApproveBoostProxyFarm } from '../hooks/useApproveFarm'
 import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
+import useProxyStakedActions from './YieldBooster/hooks/useProxyStakedActions'
 
 export const StepperCircle = styled.div`
   height: 20px;
@@ -127,7 +128,6 @@ interface BCakeMigrateModalProps {
   onUnStack: (amount: string, callback: () => void) => void
   onDismiss?: () => void
   pid: number
-  onUpdateFarm: () => void
 }
 
 enum Steps {
@@ -149,7 +149,6 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   onDismiss,
   onUnStack,
   pid,
-  onUpdateFarm,
 }) => {
   const { account } = useWeb3React()
   const [activatedState, setActivatedState] = useState<Steps>(Steps.UNSTAKE)
@@ -160,7 +159,8 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
     return getFullDisplayBalance(stakedBalance)
   }, [stakedBalance])
   const { proxyAddress } = useBCakeProxyContractAddress(account)
-  const { onApprove } = useApproveBoostProxyFarm(lpContract, proxyAddress)
+  const { onApprove, onDone, onStake } = useProxyStakedActions(pid, lpContract)
+
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
   const { fetchWithCatchTxError, loading } = useCatchTxError()
   const { toastSuccess } = useToast()
@@ -196,13 +196,13 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
       if (receipt?.status) {
         toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
         setActivatedState(Steps.STAKE)
-        onUpdateFarm()
+        onDone()
       }
     } else {
       setIsLoading(true)
       try {
         const value = new BigNumber(fullBalance).times(DEFAULT_TOKEN_DECIMAL).toString()
-        const receipt = await fetchWithCatchTxError(() => bCakeProxy?.deposit(pid, value))
+        const receipt = await fetchWithCatchTxError(() => onStake(value))
         if (receipt?.status) {
           toastSuccess(
             `${t('Staked')}!`,
@@ -210,7 +210,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
               {t('Your funds have been staked in the farm')}
             </ToastDescriptionWithTx>,
           )
-          onUpdateFarm()
+          onDone()
           onDismiss?.()
         }
       } catch (error) {

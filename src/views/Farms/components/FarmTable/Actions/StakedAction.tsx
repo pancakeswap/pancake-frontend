@@ -35,7 +35,7 @@ interface StackedActionProps extends FarmWithStakedValue {
   displayApr?: string
 }
 
-function useStakedActions(pid, lpContract) {
+export function useStakedActions(pid, lpContract) {
   const { account } = useWeb3React()
   const { onStake } = useStakeFarms(pid)
   const { onUnstake } = useUnstakeFarms(pid)
