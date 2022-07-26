@@ -446,7 +446,6 @@
   "Transfer": "转移",
   "Congratulations!": "恭喜！",
   "Claim now": "立即领取",
-  "Claiming...": "正在领取…",
   "Receiving address": "接收地址",
   "Could not retrieve CAKE costs for profile": "无法检索个人资料的 CAKE 成本",
   "Provider Error": "提供商错误",
@@ -1529,7 +1528,6 @@
   "Place a limit order to trade at a set price": "下达限价订单以在设定的价格交易",
   "Place an Order": "下单",
   "Open Order Details": "未结订单详细信息",
-  "View on BSCScan": "在 BSCScan 上查看",
   "Cancel Order": "取消订单",
   "Status": "状态",
   "No Open Orders": "无未结订单",
@@ -1650,7 +1648,6 @@
   "Released": "已释放",
   "Vested": "已授权",
   "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked": "只有在质押头寸解锁时，您才能提取质押的 CAKE 并获利。",
-  "Failed to claim": "无法领取",
   "Hello, early fixed-term staking pool CAKE lovers.": "您好，早期的定期质押糖浆池 CAKE 爱好者。",
   "If you staked in our fixed-term staking pool for 52 weeks within the first 24 hours of the launch, you are eligible to claim a special edition “Project Galaxy x PancakeSwap” NFT.": "如果您在发起后的前 24 小时内在我们的定期质押糖浆池中质押 52 周，您就有资格获得特别版“Project Galaxy x PancakeSwap”NFT。",
   "Hold this NFT in your wallet until the snapshot timing (10:00 UTC 11th May 2022) to participate in the $GAL airdrop with a total of 400,000 GAL tokens.": "将此 NFT 保存在您的钱包中，直到快照时间（世界协调时间 2022 年 5 月 11 日 10:00 ）以总共 400,000 GAL 代币参与 $GAL 空投。",
@@ -1770,5 +1767,6 @@
   "Zap allows you to add liquidity with only 1 single token. Click": "Zap allows you to add liquidity with only 1 single token. Click",
   "to try.": "to try.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
-  "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks."
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks.",
+  "Select a Network": "Select a Network"
 }
