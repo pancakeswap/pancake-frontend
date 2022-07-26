@@ -324,7 +324,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool }) => {
                       lockStartTime={(vaultData as DeserializedLockedCakeVault).userData.lockStartTime}
                       stakingToken={stakingToken}
                       currentBalance={stakingTokenBalance}
-                      checkEnoughBalanceToExtend
+                      extendLockedPosition
                       currentLockedAmount={cakeAsNumberBalance}
                     >
                       {t('Extend')}

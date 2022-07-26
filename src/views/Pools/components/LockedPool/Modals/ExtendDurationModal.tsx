@@ -23,7 +23,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   currentLockedAmount,
   currentDuration,
   currentBalance,
-  checkEnoughBalanceToExtend,
+  extendLockedPosition,
   lockStartTime,
   lockEndTime,
 }) => {
@@ -57,11 +57,9 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   const prepConfirmArg = useCallback(
     ({ duration }) => ({
       finalDuration: duration,
-      finalLockedAmount: checkEnoughBalanceToExtend
-        ? getBalanceAmount(MIN_LOCK_AMOUNT, stakingToken.decimals).toNumber()
-        : 0,
+      finalLockedAmount: extendLockedPosition ? getBalanceAmount(MIN_LOCK_AMOUNT, stakingToken.decimals).toNumber() : 0,
     }),
-    [stakingToken.decimals, checkEnoughBalanceToExtend],
+    [stakingToken.decimals, extendLockedPosition],
   )
 
   const customOverview = useCallback(
@@ -98,7 +96,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
         </Box>
         <LockedBodyModal
           stakingToken={stakingToken}
-          extendLockedPosition={checkEnoughBalanceToExtend}
+          extendLockedPosition={extendLockedPosition}
           currentBalance={currentBalance}
           onDismiss={onDismiss}
           lockedAmount={new BigNumber(currentLockedAmount)}

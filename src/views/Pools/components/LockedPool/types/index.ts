@@ -31,7 +31,7 @@ export interface ExtendDurationModal {
   modalTitle?: string
   currentDuration: number
   currentBalance?: BigNumber
-  checkEnoughBalanceToExtend?: boolean
+  extendLockedPosition?: boolean
   lockStartTime: string
   lockEndTime: string
 }
@@ -94,7 +94,7 @@ export interface ExtendDurationButtonPropsType {
   stakingToken: Token
   currentLockedAmount: number
   currentBalance?: BigNumber
-  checkEnoughBalanceToExtend?: boolean
+  extendLockedPosition?: boolean
   lockEndTime: string
   lockStartTime: string
   children: React.ReactNode

@@ -10,7 +10,7 @@ const ExtendDurationButton: React.FC<ExtendDurationButtonPropsType & ButtonProps
   stakingToken,
   currentLockedAmount,
   currentBalance,
-  checkEnoughBalanceToExtend,
+  extendLockedPosition,
   lockEndTime,
   lockStartTime,
   children,
@@ -26,7 +26,7 @@ const ExtendDurationButton: React.FC<ExtendDurationButtonPropsType & ButtonProps
       stakingToken={stakingToken}
       lockStartTime={lockStartTime}
       currentBalance={currentBalance}
-      checkEnoughBalanceToExtend={checkEnoughBalanceToExtend}
+      extendLockedPosition={extendLockedPosition}
       lockEndTime={lockEndTime}
       currentLockedAmount={currentLockedAmount}
       currentDuration={currentDuration}
