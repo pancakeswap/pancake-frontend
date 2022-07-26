@@ -446,7 +446,6 @@
   "Transfer": "ट्रांसफ़र करें",
   "Congratulations!": "बधाई हो!",
   "Claim now": "अभी क्लेम करें",
-  "Claiming...": "क्लेम किया जा रहा है...",
   "Receiving address": "प्राप्ति का पता",
   "Could not retrieve CAKE costs for profile": "प्रोफ़ाइल के लिए CAKE की लागत रिट्रीव नहीं की जा सकी",
   "Provider Error": "प्रोवाइडर त्रुटि",
@@ -1529,7 +1528,6 @@
   "Place a limit order to trade at a set price": "निश्चित कीमत पर ट्रेड करने के लिए लिमिट ऑर्डर दें",
   "Place an Order": "ऑर्डर दें",
   "Open Order Details": "ओपन ऑर्डर की जानकारी",
-  "View on BSCScan": "BSCScan पर देखें",
   "Cancel Order": "ऑर्डर देखें",
   "Status": "स्टेटस",
   "No Open Orders": "कोई ओपन ऑर्डर नहीं",
@@ -1650,7 +1648,6 @@
   "Released": "रिलीज़ किए गए",
   "Vested": "Vested",
   "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked": "आप स्टेक CAKE और प्रोफिट को केवल तभी निकाल पाएंगे जब स्टेकिंग पोजीशन अनलॉक होती है",
-  "Failed to claim": "क्लेम करना विफल रहा",
   "Hello, early fixed-term staking pool CAKE lovers.": "नमस्ते, शुरुआती निश्चित अवधि स्टेकिंग पूल CAKE के प्रशंसक।",
   "If you staked in our fixed-term staking pool for 52 weeks within the first 24 hours of the launch, you are eligible to claim a special edition “Project Galaxy x PancakeSwap” NFT.": "यदि आप लॉन्च के शुरुआती 24 घंटों के भीतर 52 सप्ताह के लिए हमारे निश्चित अवधि के स्टेकिंग पूल में स्टेक करते हैं, तो आप विशेष संस्करण “Project Galaxy x PancakeSwap” NFT को क्लेम करने के पात्र होते हैं।",
   "Hold this NFT in your wallet until the snapshot timing (10:00 UTC 11th May 2022) to participate in the $GAL airdrop with a total of 400,000 GAL tokens.": "कुल 400,000 GAL टोकन के साथ $GAL एयरड्रॉप में भाग लेने के लिए स्नैपशॉट टाइमिंग (10:00 UTC 11 मई 2022) तक अपने वॉलेट में यह NFT होल्ड करें",
@@ -1770,5 +1767,6 @@
   "Zap allows you to add liquidity with only 1 single token. Click": "Zap allows you to add liquidity with only 1 single token. Click",
   "to try.": "to try.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
-  "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks."
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks.",
+  "Select a Network": "Select a Network"
 }
