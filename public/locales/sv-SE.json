@@ -446,7 +446,6 @@
   "Transfer": "Överför",
   "Congratulations!": "Grattis!",
   "Claim now": "Lös in nu",
-  "Claiming...": "Hämtar ut...",
   "Receiving address": "Mottar adress",
   "Could not retrieve CAKE costs for profile": "Det gick inte att hämta CAKE-kostnad för profil",
   "Provider Error": "Leverantörsfel",
@@ -1529,7 +1528,6 @@
   "Place a limit order to trade at a set price": "Lägg en limiterad order för att handla med fast pris",
   "Place an Order": "Lägg en order",
   "Open Order Details": "Öppna orderuppgifter",
-  "View on BSCScan": "Visa på BSCScan",
   "Cancel Order": "Annullera order",
   "Status": "Status",
   "No Open Orders": "Öppna beställningar saknas",
@@ -1650,7 +1648,6 @@
   "Released": "Lanserad",
   "Vested": "Omfattas av förvärvsperiod",
   "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked": "Du kommer också att kunna ta ut satsade CAKE-tokens och kan endast hämta ut vinst när insatspositionen är upplåst",
-  "Failed to claim": "Kunde inte hämta ut",
   "Hello, early fixed-term staking pool CAKE lovers.": "Hej på er alla som gillar CAKE-tokens med tidsbestämd insatspool.",
   "If you staked in our fixed-term staking pool for 52 weeks within the first 24 hours of the launch, you are eligible to claim a special edition “Project Galaxy x PancakeSwap” NFT.": "Om du, inom 24 timmar efter lansering, satsar i vår tidsbestämda insatspool som gäller i 52 veckor kan du hämta ut en specialutgåva av NFT:n “Project Galaxy x PancakeSwap\".",
   "Hold this NFT in your wallet until the snapshot timing (10:00 UTC 11th May 2022) to participate in the $GAL airdrop with a total of 400,000 GAL tokens.": "Behåll denna NFT i din plånbok till och med ögonblicksbilden (kl. 10.00 den 11 maj 2022) för att delta i vår utdelning av $GAL med totalt 400 000 GAL-tokens.",
@@ -1770,5 +1767,6 @@
   "Zap allows you to add liquidity with only 1 single token. Click": "Zap gör att du kan lägga till likviditet med en enda token. Klicka",
   "to try.": "för att prova.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% av inköpta tokens omfattas av en förvärvsperiod, vilket innebär att de lanseras under en viss tid. %percentageTgeRelease%% av den inköpta token lanseras direkt och kan hämtas ut när det inledande farmerbjudandet är slut.",
-  "The vested tokens will be released linearly over a period of %weeks% weeks.": "Tokens som omfattas av en förvärvsperiod lanseras linjärt under %weeks% veckor."
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "Tokens som omfattas av en förvärvsperiod lanseras linjärt under %weeks% veckor.",
+  "Select a Network": "Select a Network"
 }
