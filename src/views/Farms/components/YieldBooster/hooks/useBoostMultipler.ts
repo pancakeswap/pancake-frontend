@@ -38,7 +38,7 @@ async function getPublicMultipler({ farmBoosterContract }): Promise<number> {
 
   const boostPercent = PRECISION_FACTOR.addUnsafe(MAX_BOOST_PRECISION).divUnsafe(PRECISION_FACTOR)
 
-  return _toNumber(boostPercent.toString())
+  return _toNumber(boostPercent.round(2).toString())
 }
 
 async function getUserMultipler({ farmBoosterContract, account, pid }): Promise<number> {
@@ -64,6 +64,7 @@ async function getUserMultipler({ farmBoosterContract, account, pid }): Promise<
     PRECISION_FACTOR.addUnsafe(FixedNumber.from(multipler))
       .subUnsafe(FixedNumber.from(BOOST_PRECISION))
       .divUnsafe(PRECISION_FACTOR)
+      .round(2)
       .toString(),
   )
 }
@@ -78,7 +79,7 @@ export default function useBoostMultipler({ pid, boosterState }): number {
   )
 
   const { data } = useSWR(['boostMultipler', shouldMaxUp ? 'public' : `user${pid}`], async () =>
-    (await shouldMaxUp)
+    shouldMaxUp
       ? getPublicMultipler({
           farmBoosterContract,
         })
