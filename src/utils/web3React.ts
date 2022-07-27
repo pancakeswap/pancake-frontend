@@ -8,6 +8,7 @@ import useWeb3Provider from 'hooks/useActiveWeb3React'
 import { hexlify } from '@ethersproject/bytes'
 import { toUtf8Bytes } from '@ethersproject/strings'
 import { Web3Provider } from '@ethersproject/providers'
+import getNodeUrl from './getRpcUrl'
 
 const POLLING_INTERVAL = 12000
 
@@ -15,7 +16,11 @@ const SUPPORTED_CHAIN_ID = [ChainId.BSC, ChainId.BSC_TESTNET]
 
 export const injected = new InjectedConnector({ supportedChainIds: SUPPORTED_CHAIN_ID })
 
+const rpcUrl = getNodeUrl()
+const chainId = ChainId.BSC
+
 const walletconnect = new WalletConnectConnector({
+  rpc: { [chainId]: rpcUrl },
   qrcode: true,
   pollingInterval: POLLING_INTERVAL,
 })
