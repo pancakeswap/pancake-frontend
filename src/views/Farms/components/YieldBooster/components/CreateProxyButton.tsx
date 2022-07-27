@@ -1,5 +1,5 @@
 import { Button, AutoRenewIcon } from '@pancakeswap/uikit'
-import { useState } from 'react'
+import { useState, memo } from 'react'
 
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -46,4 +46,4 @@ const CreateProxyButton = (props) => {
   )
 }
 
-export default CreateProxyButton
+export default memo(CreateProxyButton)
