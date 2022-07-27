@@ -74,8 +74,6 @@ export interface ModalValidator {
   isValidDuration: boolean
   isOverMax: boolean
   maxAvailableDuration: number
-  currentDuration?: number
-  currentDurationLeft?: number
 }
 
 export interface LockedModalBodyPropsType {
@@ -86,6 +84,7 @@ export interface LockedModalBodyPropsType {
   lockedAmount: BigNumber
   editAmountOnly?: React.ReactElement
   prepConfirmArg?: PrepConfirmArg
+  currentDuration?: number
   validator?: (arg: ValidatorArg) => ModalValidator
   customOverview?: ({
     isValidDuration,

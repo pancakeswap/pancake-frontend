@@ -21,6 +21,7 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
   onDismiss,
   lockedAmount,
   currentBalance,
+  currentDuration,
   extendLockedPosition,
   editAmountOnly,
   prepConfirmArg,
@@ -36,19 +37,18 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
     prepConfirmArg,
   })
 
-  const { isValidAmount, isValidDuration, isOverMax, maxAvailableDuration, currentDuration }: ModalValidator =
-    useMemo(() => {
-      return typeof validator === 'function'
-        ? validator({
-            duration,
-          })
-        : {
-            isValidAmount: lockedAmount?.toNumber() > 0 && getBalanceAmount(currentBalance).gte(lockedAmount),
-            isValidDuration: duration > 0 && duration <= MAX_LOCK_DURATION,
-            isOverMax: duration > MAX_LOCK_DURATION,
-            maxAvailableDuration: MAX_LOCK_DURATION,
-          }
-    }, [validator, currentBalance, lockedAmount, duration])
+  const { isValidAmount, isValidDuration, isOverMax, maxAvailableDuration }: ModalValidator = useMemo(() => {
+    return typeof validator === 'function'
+      ? validator({
+          duration,
+        })
+      : {
+          isValidAmount: lockedAmount?.toNumber() > 0 && getBalanceAmount(currentBalance).gte(lockedAmount),
+          isValidDuration: duration > 0 && duration <= MAX_LOCK_DURATION,
+          isOverMax: duration > MAX_LOCK_DURATION,
+          maxAvailableDuration: MAX_LOCK_DURATION,
+        }
+  }, [validator, currentBalance, lockedAmount, duration])
 
   const cakeNeeded = useMemo(
     () => isValidDuration && extendLockedPosition && currentDuration + duration > MAX_LOCK_DURATION,

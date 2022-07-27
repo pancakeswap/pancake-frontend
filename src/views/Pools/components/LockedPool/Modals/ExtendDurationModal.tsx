@@ -46,11 +46,10 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
         isValidAmount,
         isValidDuration,
         isOverMax: totalDuration > MAX_LOCK_DURATION,
-        currentDuration,
         maxAvailableDuration: MAX_LOCK_DURATION - currentDurationLeft,
       }
     },
-    [currentDuration, currentLockedAmount, lockEndTime],
+    [currentLockedAmount, lockEndTime],
   )
 
   const prepConfirmArg = useCallback(
@@ -100,6 +99,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
           stakingToken={stakingToken}
           extendLockedPosition={extendLockedPosition}
           currentBalance={currentBalance}
+          currentDuration={currentDuration}
           onDismiss={onDismiss}
           lockedAmount={new BigNumber(currentLockedAmount)}
           validator={validator}
