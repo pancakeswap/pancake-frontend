@@ -82,6 +82,12 @@ interface SerializedFarmUserData {
   tokenBalance: string
   stakedBalance: string
   earnings: string
+  proxy?: {
+    allowance: string
+    tokenBalance: string
+    stakedBalance: string
+    earnings: string
+  }
 }
 
 export interface DeserializedFarmUserData {
@@ -89,7 +95,7 @@ export interface DeserializedFarmUserData {
   tokenBalance: BigNumber
   stakedBalance: BigNumber
   earnings: BigNumber
-  proxy: {
+  proxy?: {
     allowance: BigNumber
     tokenBalance: BigNumber
     stakedBalance: BigNumber

@@ -8,6 +8,7 @@ import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { getAddress } from 'utils/addressHelpers'
 import { useERC20 } from 'hooks/useContract'
+import { TransactionResponse } from '@ethersproject/providers'
 
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
@@ -21,6 +22,7 @@ import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedAction
 
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
+  onReward?: () => Promise<TransactionResponse>
 }
 
 export const ProxyHarvestActionContainer = ({ children, ...props }) => {

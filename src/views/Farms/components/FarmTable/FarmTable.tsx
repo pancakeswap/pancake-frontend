@@ -101,7 +101,7 @@ const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) =
     })
   }, [])
 
-  const generateRow = ({ farm, originalFarm }) => {
+  const generateRow = (farm) => {
     const { token, quoteToken } = farm
     const tokenAddress = token.address
     const quoteTokenAddress = quoteToken.address
@@ -130,10 +130,7 @@ const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) =
         pid: farm.pid,
       },
       liquidity: {
-        liquidity:
-          farm?.liquidity && originalFarm?.liquidity?.gt(0)
-            ? farm.liquidity.plus(originalFarm.liquidity)
-            : farm?.liquidity,
+        liquidity: farm?.liquidity,
       },
       multiplier: {
         multiplier: farm.multiplier,
@@ -145,7 +142,7 @@ const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) =
     return row
   }
 
-  const rowData = farms.map((farm) => generateRow({ farm }))
+  const rowData = farms.map((farm) => generateRow(farm))
 
   const generateSortedRow = (row) => {
     // @ts-ignore

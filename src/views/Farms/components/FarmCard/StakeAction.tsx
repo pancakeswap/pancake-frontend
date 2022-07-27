@@ -7,6 +7,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
+import { TransactionResponse } from '@ethersproject/providers'
 import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
 import { FarmWithStakedValue } from '../types'
@@ -16,6 +17,11 @@ interface FarmCardActionsProps extends FarmWithStakedValue {
   lpLabel?: string
   addLiquidityUrl?: string
   displayApr?: string
+  onStake?: (value: string) => Promise<TransactionResponse>
+  onUnstake?: (value: string) => Promise<TransactionResponse>
+  onDone?: () => void
+  onApprove?: () => Promise<TransactionResponse>
+  isApproved?: boolean
 }
 
 const IconButtonWrapper = styled.div`

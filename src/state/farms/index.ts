@@ -13,6 +13,8 @@ import { getMasterChefAddress } from 'utils/addressHelpers'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { ethersToBigNumber } from 'utils/bigNumber'
 import type { AppState } from 'state'
+import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
+
 import fetchFarms from './fetchFarms'
 import getFarmsPrices from './getFarmsPrices'
 import {
@@ -174,23 +176,8 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
     const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
 
-    if (proxyAddress) {
-      // TODO: remove duplicate
-      const { normalFarms, farmsWithProxy } = farmsCanFetch.reduce(
-        (acc, f) => {
-          if (f.boosted) {
-            return {
-              ...acc,
-              farmsWithProxy: [...acc.farmsWithProxy, f],
-            }
-          }
-          return {
-            ...acc,
-            normalFarms: [...acc.normalFarms, f],
-          }
-        },
-        { normalFarms: [], farmsWithProxy: [] },
-      )
+    if (proxyAddress && farmsCanFetch?.length) {
+      const { normalFarms, farmsWithProxy } = splitProxyFarms(farmsCanFetch)
 
       const [proxyAllowances, normalAllowances] = await Promise.all([
         getBoostedFarmsStakeValue(farmsWithProxy, account, proxyAddress),
@@ -284,9 +271,6 @@ export const farmsSlice = createSlice({
     builder.addMatcher(
       isAnyOf(fetchFarmsPublicDataAsync.rejected, fetchFarmUserDataAsync.rejected),
       (state, action) => {
-        // TODO: remove when done
-        // eslint-disable-next-line no-console
-        console.log('action: ', action)
         state.loadingKeys[serializeLoadingKey(action, 'rejected')] = false
       },
     )

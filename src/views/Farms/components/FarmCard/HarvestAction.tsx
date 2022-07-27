@@ -12,10 +12,12 @@ import { fetchFarmUserDataAsync } from 'state/farms'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
+import { TransactionResponse } from '@ethersproject/providers'
 
 interface FarmCardActionsProps {
   earnings?: BigNumber
   pid?: number
+  onReward?: () => Promise<TransactionResponse>
 }
 
 const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid, onReward }) => {

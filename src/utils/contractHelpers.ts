@@ -107,8 +107,6 @@ import type {
   PancakeBunnies,
   PancakeProfile,
   LotteryV2,
-  FarmBooster,
-  BoosterProxyFactory,
   Masterchef,
   MasterchefV1,
   SousChef,

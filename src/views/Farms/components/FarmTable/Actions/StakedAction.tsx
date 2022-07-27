@@ -14,6 +14,7 @@ import { fetchFarmUserDataAsync } from 'state/farms'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import styled from 'styled-components'
 import { getAddress } from 'utils/addressHelpers'
+import { TransactionResponse } from '@ethersproject/providers'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import useApproveFarm from '../../../hooks/useApproveFarm'
 import useStakeFarms from '../../../hooks/useStakeFarms'
@@ -33,6 +34,11 @@ interface StackedActionProps extends FarmWithStakedValue {
   userDataReady: boolean
   lpLabel?: string
   displayApr?: string
+  onStake?: (value: string) => Promise<TransactionResponse>
+  onUnstake?: (value: string) => Promise<TransactionResponse>
+  onDone?: () => void
+  onApprove?: () => Promise<TransactionResponse>
+  isApproved?: boolean
 }
 
 export function useStakedActions(pid, lpContract) {
@@ -167,7 +173,6 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
       max={tokenBalance}
       lpPrice={lpPrice}
       lpLabel={lpLabel}
-      // TODO: check apr compatibility
       apr={apr}
       displayApr={displayApr}
       stakedBalance={stakedBalance}

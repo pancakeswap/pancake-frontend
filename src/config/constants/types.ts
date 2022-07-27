@@ -84,6 +84,7 @@ interface FarmConfigBaseProps {
     earnLabel: string
     endBlock: number
   }
+  boosted?: boolean
 }
 
 export interface SerializedFarmConfig extends FarmConfigBaseProps {
