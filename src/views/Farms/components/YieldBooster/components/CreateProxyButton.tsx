@@ -6,7 +6,6 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useTranslation } from 'contexts/Localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useBCakeFarmBoosterProxyFactoryContract } from 'hooks/useContract'
-import { DEFAULT_GAS_LIMIT } from 'config'
 
 const CreateProxyButton = (props) => {
   const { t } = useTranslation()
@@ -21,9 +20,7 @@ const CreateProxyButton = (props) => {
       onClick={async () => {
         try {
           setIsCreateProxyLoading(true)
-          const receipt = await fetchWithCatchTxError(() =>
-            farmBoosterProxyFactoryContract.createFarmBoosterProxy({ gasLimit: DEFAULT_GAS_LIMIT }),
-          )
+          const receipt = await fetchWithCatchTxError(() => farmBoosterProxyFactoryContract.createFarmBoosterProxy())
           if (receipt?.status) {
             toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
           }
