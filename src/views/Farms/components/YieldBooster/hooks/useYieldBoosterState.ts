@@ -48,7 +48,7 @@ export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoos
   const { locked, lockedEnd } = useUserLockedCakeStatus()
   const { stakedBalance, proxy } = useFarmUser(farmPid)
   const { isActivePool, refreshIsPoolActive } = useIsPoolActive(farmPid)
-  const { proxyCreated } = useBCakeProxyContractAddress(account)
+  const { proxyCreated, refreshProxyAddress } = useBCakeProxyContractAddress(account)
 
   const refreshActivePool = useCallback(() => {
     refreshActivePools()
@@ -89,5 +89,6 @@ export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoos
       YieldBoosterState.LOCKED_END,
     ].includes(state),
     refreshActivePool,
+    refreshProxyAddress,
   }
 }

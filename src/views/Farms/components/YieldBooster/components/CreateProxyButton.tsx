@@ -28,6 +28,9 @@ const CreateProxyButton = (props) => {
           console.error(error)
         } finally {
           setIsCreateProxyLoading(false)
+          if (props.onDone) {
+            props.onDone()
+          }
         }
       }}
       isLoading={isCreateProxyLoading || loading}

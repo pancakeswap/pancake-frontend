@@ -114,7 +114,7 @@ export const BCakeBoosterCard = () => {
 const CardContent: React.FC = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { proxyCreated } = useBCakeProxyContractAddress(account)
+  const { proxyCreated, refreshProxyAddress } = useBCakeProxyContractAddress(account)
   const { maxBoostCounts, remainingCounts } = useUserBoosterStatus(account)
   const { locked, lockedEnd } = useUserLockedCakeStatus()
   const { push } = useRouter()
@@ -169,7 +169,7 @@ const CardContent: React.FC = () => {
         <Text color="textSubtle" fontSize={12} mb="16px">
           {t('A one-time setup is required for enabling farm yield boosters.')}
         </Text>
-        <CreateProxyButton style={{ backgroundColor: theme.colors.textSubtle }} />
+        <CreateProxyButton onDone={refreshProxyAddress} style={{ backgroundColor: theme.colors.textSubtle }} />
       </Box>
     )
   }

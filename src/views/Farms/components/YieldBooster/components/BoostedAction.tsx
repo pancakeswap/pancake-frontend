@@ -21,7 +21,7 @@ interface BoostedActionPropsType {
 
 const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPid, title, desc }) => {
   const { t } = useTranslation()
-  const { boosterState, refreshActivePool } = useContext(YieldBoosterStateContext)
+  const { boosterState, refreshActivePool, refreshProxyAddress } = useContext(YieldBoosterStateContext)
   const { isConfirming, ...handlers } = useBoosterFarmHandlers(farmPid, refreshActivePool)
   const boostMultipler = useBoostMultipler({ pid: farmPid, boosterState })
 
@@ -54,7 +54,7 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
           <ActionButton
             title={`${boostMultipler}x`}
             description={t('One-time setup is required for activating farm yield boosters')}
-            button={<CreateProxyButton />}
+            button={<CreateProxyButton onDone={refreshProxyAddress} />}
           />
         )
       case YieldBoosterState.NO_MIGRATE:
