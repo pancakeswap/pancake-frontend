@@ -99,7 +99,7 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
       )}
       {extendLockedPosition && !isMaxSelected && (
         <Message variant="warning">
-          <MessageText maxWidth="200px">
+          <MessageText maxWidth="240px">
             {t('Recommend choosing "MAX" to renew your staking position in order to keep similar yield boost.')}
           </MessageText>
         </Message>
