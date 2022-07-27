@@ -7,8 +7,8 @@ import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { PotteryWithdrawAbleData } from 'state/types'
 import WithdrawButton from 'views/Pottery/components/Pot/Claim/WithdrawButton'
-import { convertTimeToSeconds } from 'utils/timeHelper'
 import { calculateCakeAmount } from 'views/Pottery/helpers'
+import { getDrawnDate } from 'views/Lottery/helpers'
 
 interface AvailableWithdrawProps {
   withdrawData: PotteryWithdrawAbleData
@@ -20,7 +20,7 @@ const AvailableWithdraw: React.FC<AvailableWithdrawProps> = ({ withdrawData }) =
     currentLanguage: { locale },
   } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
-  const { previewRedeem, depositDate, shares, status, potteryVaultAddress, totalSupply, totalLockCake } = withdrawData
+  const { previewRedeem, lockedDate, shares, status, potteryVaultAddress, totalSupply, totalLockCake } = withdrawData
 
   const cakeNumber = useMemo(() => new BigNumber(previewRedeem), [previewRedeem])
   const amountAsBn = calculateCakeAmount({
@@ -34,22 +34,12 @@ const AvailableWithdraw: React.FC<AvailableWithdrawProps> = ({ withdrawData }) =
   const amount = getBalanceNumber(amountAsBn)
   const amountInBusd = new BigNumber(amount).times(cakePriceBusd).toNumber()
 
-  const lockDate = useMemo(() => {
-    const lockDateTimeSeconds = convertTimeToSeconds(depositDate)
-    return new Date(lockDateTimeSeconds).toLocaleString(locale, {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    })
-  }, [depositDate, locale])
+  const lockDate = useMemo(() => getDrawnDate(locale, lockedDate.toString()), [lockedDate, locale])
 
   return (
     <Box>
       <Text fontSize="12px" color="secondary" bold as="span" textTransform="uppercase">
-        {t('stake withdraw')}
-      </Text>
-      <Text fontSize="12px" color="textSubtle" bold as="span" ml="4px" textTransform="uppercase">
-        {t('available')}
+        {t('stake withdrawal')}
       </Text>
       <Flex mb="11px">
         <Box>

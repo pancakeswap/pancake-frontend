@@ -729,6 +729,7 @@ export interface PotteryWithdrawAbleData {
   potteryVaultAddress: string
   totalSupply: string
   totalLockCake: string
+  lockedDate: string
 }
 
 // Global state

@@ -68,6 +68,7 @@ export const fetchWithdrawAbleData = async (account: string) => {
             vault {
               id
               status
+              lockDate
             }
           }
         }
@@ -103,6 +104,7 @@ export const fetchWithdrawAbleData = async (account: string) => {
           potteryVaultAddress: vault.id,
           totalSupply: new BigNumber(totalSupply.toString()).toJSON(),
           totalLockCake: new BigNumber(totalLockCake.toString()).toJSON(),
+          lockedDate: vault.lockDate,
         }
       }),
     )
