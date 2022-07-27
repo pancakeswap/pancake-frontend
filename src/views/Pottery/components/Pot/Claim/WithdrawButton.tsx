@@ -15,7 +15,7 @@ const WithdrawButton: React.FC<WithdrawButtonProps> = ({ cakeNumber, redeemShare
 
   return (
     <Button
-      width="162px"
+      width={['110px', '110px', '162px']}
       ml="auto"
       variant="secondary"
       disabled={isPending || cakeNumber.lte(0) || cakeNumber.isNaN()}

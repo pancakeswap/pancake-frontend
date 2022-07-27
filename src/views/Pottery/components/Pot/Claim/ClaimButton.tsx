@@ -15,7 +15,7 @@ const ClaimButton: React.FC<ClaimButtonProps> = ({ rewardToken }) => {
 
   return (
     <Button
-      width="162px"
+      width={['110px', '110px', '162px']}
       ml="auto"
       disabled={isDisabledButton}
       endIcon={isPending ? <AutoRenewIcon spin color="currentColor" /> : null}

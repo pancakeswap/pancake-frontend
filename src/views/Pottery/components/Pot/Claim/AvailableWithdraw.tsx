@@ -45,7 +45,7 @@ const AvailableWithdraw: React.FC<AvailableWithdrawProps> = ({ withdrawData }) =
         <Box>
           <Balance fontSize="20px" lineHeight="110%" value={amount} decimals={2} bold />
           <Balance fontSize="12px" lineHeight="110%" color="textSubtle" value={amountInBusd} decimals={2} unit=" USD" />
-          <Text fontSize="12px" lineHeight="110%" color="textSubtle">
+          <Text fontSize="10px" lineHeight="110%" color="textSubtle">
             {t('Deposited %date%', { date: lockDate })}
           </Text>
         </Box>
