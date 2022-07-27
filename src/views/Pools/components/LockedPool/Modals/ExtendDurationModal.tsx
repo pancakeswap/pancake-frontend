@@ -36,7 +36,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   const validator = useCallback(
     ({ duration }) => {
       const isValidAmount = currentLockedAmount && currentLockedAmount > 0
-      const nowInSeconds = Date.now() / 1000
+      const nowInSeconds = Math.floor(Date.now() / 1000)
       const currentDurationLeftInSeconds = Math.max(Number(lockEndTime) - nowInSeconds, 0)
       const totalDuration = currentDurationLeftInSeconds + duration
 
@@ -48,7 +48,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
         isOverMax: totalDuration > MAX_LOCK_DURATION,
         currentDuration,
         currentDurationLeft: currentDurationLeftInSeconds,
-        maxAvailableDuration: Math.trunc(MAX_LOCK_DURATION - currentDurationLeftInSeconds),
+        maxAvailableDuration: MAX_LOCK_DURATION - currentDurationLeftInSeconds,
       }
     },
     [currentDuration, currentLockedAmount, lockEndTime],
