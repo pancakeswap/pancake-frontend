@@ -78,7 +78,7 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
         customOverview({
           isValidDuration,
           duration,
-          updatedLockStartTime: currentDuration + duration > MAX_LOCK_DURATION ? Date.now() / 1000 : null,
+          updatedLockStartTime: currentDuration + duration > MAX_LOCK_DURATION ? Math.floor(Date.now() / 1000) : null,
           updatedNewDuration: currentDuration + duration > MAX_LOCK_DURATION ? MAX_LOCK_DURATION : null,
         })
       ) : (

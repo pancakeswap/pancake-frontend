@@ -16,7 +16,7 @@ const ExtendDurationButton: React.FC<ExtendDurationButtonPropsType & ButtonProps
   children,
   ...rest
 }) => {
-  const nowInSeconds = Date.now() / 1000
+  const nowInSeconds = Math.floor(Date.now() / 1000)
   const currentDuration = useMemo(() => Number(lockEndTime) - Number(lockStartTime), [lockEndTime, lockStartTime])
   const currentDurationLeftInSeconds = useMemo(() => Number(lockEndTime) - nowInSeconds, [lockEndTime, nowInSeconds])
 
