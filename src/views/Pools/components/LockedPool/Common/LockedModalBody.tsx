@@ -75,15 +75,9 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
               maxAvailableDuration={maxAvailableDuration}
               setDuration={setDuration}
               duration={duration}
+              extendLockedPosition
               currentDurationLeft={currentDurationLeft}
             />
-            {extendLockedPosition && maxAvailableDuration !== duration && (
-              <Message variant="warning">
-                <MessageText maxWidth="200px">
-                  {t('Recommend choosing "MAX" to renew your staking position in order to keep similar yield boost.')}
-                </MessageText>
-              </Message>
-            )}
           </>
         )}
       </Box>
@@ -91,6 +85,8 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
         customOverview({
           isValidDuration,
           duration,
+          updatedLockStartTime: currentDuration + duration > MAX_LOCK_DURATION ? Date.now() / 1000 : null,
+          updatedNewDuration: currentDuration + duration > MAX_LOCK_DURATION ? MAX_LOCK_DURATION : null,
         })
       ) : (
         <Overview
@@ -110,9 +106,9 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
             {t('0.0001 CAKE will be spent to extend')}
           </Text>
         ) : (
-          <Text fontSize="12px" mt="24px" color="failure">
-            {t('0.0001 CAKE required for enabling extension')}
-          </Text>
+          <Message variant="warning">
+            <MessageText maxWidth="200px">{t('0.0001 CAKE required for enabling extension')}</MessageText>
+          </Message>
         ))}
 
       <Flex mt="24px">

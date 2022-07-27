@@ -1,4 +1,5 @@
-import { Text, Flex, Button, Input, Box } from '@pancakeswap/uikit'
+import { useState } from 'react'
+import { Text, Flex, Button, Input, Box, Message, MessageText } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import _toNumber from 'lodash/toNumber'
@@ -18,9 +19,11 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
   setDuration,
   isOverMax,
   currentDurationLeft,
+  extendLockedPosition,
   maxAvailableDuration,
 }) => {
   const { t } = useTranslation()
+  const [isMaxSelected, setIsMaxSelected] = useState(false)
 
   return (
     <>
@@ -39,7 +42,10 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
             return (
               <Button
                 key={week}
-                onClick={() => setDuration(weekSeconds)}
+                onClick={() => {
+                  setIsMaxSelected(false)
+                  setDuration(weekSeconds)
+                }}
                 mt="4px"
                 mr={['2px', '2px', '4px', '4px']}
                 scale="sm"
@@ -52,12 +58,15 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
           })}
           <Button
             key={maxAvailableDuration}
-            onClick={() => setDuration(maxAvailableDuration)}
+            onClick={() => {
+              setIsMaxSelected(true)
+              setDuration(maxAvailableDuration)
+            }}
             mt="4px"
             mr={['2px', '2px', '4px', '4px']}
             scale="sm"
             disabled={maxAvailableDuration < ONE_WEEK_DEFAULT}
-            variant={maxAvailableDuration === duration ? 'subtle' : 'tertiary'}
+            variant={isMaxSelected ? 'subtle' : 'tertiary'}
           >
             {t('Max')}
           </Button>
@@ -70,6 +79,7 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
           pattern="^[0-9]+$"
           inputMode="numeric"
           onChange={(e) => {
+            setIsMaxSelected(false)
             const weeks = _toNumber(e?.target?.value)
 
             // Prevent large number input which cause NaN
@@ -86,6 +96,13 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
         <Text fontSize="12px" textAlign="right" color="failure">
           {t('Total lock duration exceeds 52 weeks')}
         </Text>
+      )}
+      {extendLockedPosition && !isMaxSelected && (
+        <Message variant="warning">
+          <MessageText maxWidth="200px">
+            {t('Recommend choosing "MAX" to renew your staking position in order to keep similar yield boost.')}
+          </MessageText>
+        </Message>
       )}
     </>
   )

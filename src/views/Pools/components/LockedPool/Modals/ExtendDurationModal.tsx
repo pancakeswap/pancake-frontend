@@ -66,13 +66,13 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   )
 
   const customOverview = useCallback(
-    ({ isValidDuration, duration }) => (
+    ({ isValidDuration, duration, updatedLockStartTime, updatedNewDuration }) => (
       <Overview
-        lockStartTime={lockStartTime}
+        lockStartTime={updatedLockStartTime || lockStartTime}
         isValidDuration={isValidDuration}
         openCalculator={_noop}
         duration={currentDuration || duration}
-        newDuration={currentDuration + duration}
+        newDuration={updatedNewDuration || currentDuration + duration}
         lockedAmount={currentLockedAmount}
         usdValueStaked={usdValueStaked}
         showLockWarning={!+lockStartTime}
