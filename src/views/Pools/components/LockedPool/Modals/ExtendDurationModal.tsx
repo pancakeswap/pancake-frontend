@@ -48,7 +48,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
         isOverMax: totalDuration > MAX_LOCK_DURATION,
         currentDuration,
         currentDurationLeft: currentDurationLeftInSeconds,
-        maxAvailableDuration: MAX_LOCK_DURATION - currentDuration,
+        maxAvailableDuration: Math.trunc(MAX_LOCK_DURATION - currentDurationLeftInSeconds),
       }
     },
     [currentDuration, currentLockedAmount, lockEndTime],
