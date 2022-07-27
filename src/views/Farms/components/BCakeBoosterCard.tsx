@@ -28,6 +28,7 @@ import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddr
 import { useUserBoosterStatus } from '../hooks/useUserBoosterStatus'
 import { useUserLockedCakeStatus } from '../hooks/useUserLockedCakeStatus'
 import boosterCardImage from '../images/boosterCardImage.png'
+import CreateProxyButton from './YieldBooster/components/CreateProxyButton'
 
 export const CardWrapper = styled.div`
   position: relative;
@@ -113,14 +114,10 @@ export const BCakeBoosterCard = () => {
 const CardContent: React.FC = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const farmBoosterProxyFactoryContract = useBCakeFarmBoosterProxyFactoryContract()
   const { proxyCreated } = useBCakeProxyContractAddress(account)
   const { maxBoostCounts, remainingCounts } = useUserBoosterStatus(account)
   const { locked, lockedEnd } = useUserLockedCakeStatus()
-  const [isCreateProxyLoading, setIsCreateProxyLoading] = useState(false)
   const { push } = useRouter()
-  const { fetchWithCatchTxError, loading } = useCatchTxError()
-  const { toastSuccess } = useToast()
   const theme = useTheme()
 
   if (!account)
@@ -172,29 +169,7 @@ const CardContent: React.FC = () => {
         <Text color="textSubtle" fontSize={12} mb="16px">
           {t('A one-time setup is required for enabling farm yield boosters.')}
         </Text>
-        <Button
-          style={{ backgroundColor: theme.colors.textSubtle }}
-          onClick={async () => {
-            try {
-              setIsCreateProxyLoading(true)
-              const receipt = await fetchWithCatchTxError(() =>
-                farmBoosterProxyFactoryContract.createFarmBoosterProxy({ gasLimit: DEFAULT_GAS_LIMIT }),
-              )
-              if (receipt?.status) {
-                toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-              }
-            } catch (error) {
-              console.error(error)
-            } finally {
-              setIsCreateProxyLoading(false)
-            }
-          }}
-          isLoading={isCreateProxyLoading || loading}
-          width="100%"
-          endIcon={isCreateProxyLoading || loading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
-        >
-          {isCreateProxyLoading || loading ? t('Confirming...') : t('Enable')}
-        </Button>
+        <CreateProxyButton style={{ backgroundColor: theme.colors.textSubtle }} />
       </Box>
     )
   }
