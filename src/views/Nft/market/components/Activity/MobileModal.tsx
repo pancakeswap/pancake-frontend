@@ -34,8 +34,13 @@ const MobileModal: React.FC<MobileModalProps> = ({
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, priceAsFloat)
 
   return (
-    <Modal title={t('Transaction Details')} onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
-      <Flex flexDirection="column" maxWidth="350px">
+    <Modal
+      title={t('Transaction Details')}
+      maxWidth="320px"
+      onDismiss={onDismiss}
+      headerBackground={theme.colors.gradients.cardHeader}
+    >
+      <Flex flexDirection="column">
         <Flex alignItems="center" mb="16px" justifyContent="space-between">
           <Box width={68} mr="16px">
             <NFTMedia nft={nft} width={68} height={68} />
