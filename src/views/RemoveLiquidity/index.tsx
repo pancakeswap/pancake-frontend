@@ -5,7 +5,7 @@ import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
 import useToast from 'hooks/useToast'
-import { Currency, currencyEquals, ETHER, Percent, WETH } from '@pancakeswap/sdk'
+import { Currency, currencyEquals, ETHER, Percent, WNATIVE } from '@pancakeswap/sdk'
 import {
   Button,
   Text,
@@ -26,7 +26,6 @@ import { getLPSymbol } from 'utils/getLpSymbol'
 import { getZapAddress } from 'utils/addressHelpers'
 import { ZapCheckbox } from 'components/CurrencyInputPanel/ZapCheckbox'
 import { useTranslation } from 'contexts/Localization'
-import { CHAIN_ID } from 'config/constants/networks'
 import { useLPApr } from 'state/swap/hooks'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
@@ -71,6 +70,7 @@ const BorderCard = styled.div`
 export default function RemoveLiquidity() {
   const router = useRouter()
   const [zapMode] = useZapModeManager()
+  const [temporarilyZapMode, setTemporarilyZapMode] = useState(zapMode)
   const [currencyIdA, currencyIdB] = router.query.currency || []
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
   const { account, chainId, library } = useActiveWeb3React()
@@ -83,6 +83,8 @@ export default function RemoveLiquidity() {
   const { t } = useTranslation()
   const gasPrice = useGasPrice()
 
+  const zapModeStatus = useMemo(() => !!zapMode && temporarilyZapMode, [zapMode, temporarilyZapMode])
+
   // burn state
   const { independentField, typedValue } = useBurnState()
   const [removalCheckedA, setRemovalCheckedA] = useState(true)
@@ -92,9 +94,9 @@ export default function RemoveLiquidity() {
     currencyB ?? undefined,
     removalCheckedA,
     removalCheckedB,
-    zapMode,
+    zapModeStatus,
   )
-  const isZap = (!removalCheckedA || !removalCheckedB) && zapMode
+  const isZap = (!removalCheckedA || !removalCheckedB) && zapModeStatus
 
   const poolData = useLPApr(pair)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -145,7 +147,7 @@ export default function RemoveLiquidity() {
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
   const [approval, approveCallback] = useApproveCallback(
     parsedAmounts[Field.LIQUIDITY],
-    isZap ? getZapAddress() : ROUTER_ADDRESS[CHAIN_ID],
+    isZap ? getZapAddress() : ROUTER_ADDRESS[chainId],
   )
 
   async function onAttemptToApprove() {
@@ -180,7 +182,7 @@ export default function RemoveLiquidity() {
     ]
     const message = {
       owner: account,
-      spender: ROUTER_ADDRESS[CHAIN_ID],
+      spender: ROUTER_ADDRESS[chainId],
       value: liquidityAmount.raw.toString(),
       nonce: nonce.toHexString(),
       deadline: deadline.toNumber(),
@@ -257,7 +259,7 @@ export default function RemoveLiquidity() {
 
     let methodName
     let args
-    if (oneCurrencyIsBNB && tokenToReceive.toLowerCase() === WETH[chainId].address.toLowerCase()) {
+    if (oneCurrencyIsBNB && tokenToReceive.toLowerCase() === WNATIVE[chainId].address.toLowerCase()) {
       methodName = 'zapOutBNB'
       args = [
         pair.liquidityToken.address,
@@ -473,8 +475,8 @@ export default function RemoveLiquidity() {
   const oneCurrencyIsBNB = currencyA === ETHER || currencyB === ETHER
   const oneCurrencyIsWBNB = Boolean(
     chainId &&
-      ((currencyA && currencyEquals(WETH[chainId], currencyA)) ||
-        (currencyB && currencyEquals(WETH[chainId], currencyB))),
+      ((currencyA && currencyEquals(WNATIVE[chainId], currencyA)) ||
+        (currencyB && currencyEquals(WNATIVE[chainId], currencyB))),
   )
 
   const handleSelectCurrencyA = useCallback(
@@ -529,6 +531,7 @@ export default function RemoveLiquidity() {
       parsedAmounts={parsedAmounts}
       currencyA={currencyA}
       currencyB={currencyB}
+      toggleZapMode={setTemporarilyZapMode}
     />,
     true,
     true,
@@ -604,7 +607,7 @@ export default function RemoveLiquidity() {
                 <LightGreyCard>
                   <Flex justifyContent="space-between" mb="8px" as="label" alignItems="center">
                     <Flex alignItems="center">
-                      {zapMode && (
+                      {zapModeStatus && (
                         <Flex mr="9px">
                           <Checkbox
                             disabled={isZapOutA}
@@ -630,7 +633,7 @@ export default function RemoveLiquidity() {
                   </Flex>
                   <Flex justifyContent="space-between" as="label" alignItems="center">
                     <Flex alignItems="center">
-                      {zapMode && (
+                      {zapModeStatus && (
                         <Flex mr="9px">
                           <Checkbox
                             disabled={isZapOutB}
@@ -658,8 +661,8 @@ export default function RemoveLiquidity() {
                     <RowBetween style={{ justifyContent: 'flex-end', fontSize: '14px' }}>
                       {oneCurrencyIsBNB ? (
                         <StyledInternalLink
-                          href={`/remove/${currencyA === ETHER ? WETH[chainId].address : currencyIdA}/${
-                            currencyB === ETHER ? WETH[chainId].address : currencyIdB
+                          href={`/remove/${currencyA === ETHER ? WNATIVE[chainId].address : currencyIdA}/${
+                            currencyB === ETHER ? WNATIVE[chainId].address : currencyIdB
                           }`}
                         >
                           {t('Receive WBNB')}
@@ -667,8 +670,8 @@ export default function RemoveLiquidity() {
                       ) : oneCurrencyIsWBNB ? (
                         <StyledInternalLink
                           href={`/remove/${
-                            currencyA && currencyEquals(currencyA, WETH[chainId]) ? 'BNB' : currencyIdA
-                          }/${currencyB && currencyEquals(currencyB, WETH[chainId]) ? 'BNB' : currencyIdB}`}
+                            currencyA && currencyEquals(currencyA, WNATIVE[chainId]) ? 'BNB' : currencyIdA
+                          }/${currencyB && currencyEquals(currencyB, WNATIVE[chainId]) ? 'BNB' : currencyIdB}`}
                         >
                           {t('Receive BNB')}
                         </StyledInternalLink>
@@ -700,7 +703,7 @@ export default function RemoveLiquidity() {
               </ColumnCenter>
               <CurrencyInputPanel
                 beforeButton={
-                  zapMode && (
+                  zapModeStatus && (
                     <ZapCheckbox
                       disabled={!removalCheckedB && removalCheckedA}
                       checked={removalCheckedA}
@@ -727,7 +730,7 @@ export default function RemoveLiquidity() {
               </ColumnCenter>
               <CurrencyInputPanel
                 beforeButton={
-                  zapMode && (
+                  zapModeStatus && (
                     <ZapCheckbox
                       disabled={!removalCheckedA && removalCheckedB}
                       checked={removalCheckedB}

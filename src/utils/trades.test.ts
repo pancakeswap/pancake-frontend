@@ -3,9 +3,9 @@ import { BETTER_TRADE_LESS_HOPS_THRESHOLD } from 'config/constants'
 import { isTradeBetter } from './trades'
 
 describe('isTradeBetter', () => {
-  const token1 = new Token(ChainId.MAINNET, '0x0000000000000000000000000000000000000001', 18)
-  const token2 = new Token(ChainId.MAINNET, '0x0000000000000000000000000000000000000002', 18)
-  const token3 = new Token(ChainId.MAINNET, '0x0000000000000000000000000000000000000003', 18)
+  const token1 = new Token(ChainId.BSC, '0x0000000000000000000000000000000000000001', 18)
+  const token2 = new Token(ChainId.BSC, '0x0000000000000000000000000000000000000002', 18)
+  const token3 = new Token(ChainId.BSC, '0x0000000000000000000000000000000000000003', 18)
 
   const pair12 = new Pair(new TokenAmount(token1, JSBI.BigInt(20000)), new TokenAmount(token2, JSBI.BigInt(20000)))
   const pair23 = new Pair(new TokenAmount(token2, JSBI.BigInt(20000)), new TokenAmount(token3, JSBI.BigInt(30000)))

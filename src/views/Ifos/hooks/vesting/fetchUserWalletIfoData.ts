@@ -11,11 +11,13 @@ export interface VestingCharacteristics {
   vestingAmountTotal: BigNumber
   vestingComputeReleasableAmount: BigNumber
   vestingInformationPercentage: number
+  vestingInformationDuration: number
 }
 
 export interface VestingData {
   ifo: Ifo
   userVestingData: {
+    vestingStartTime: number
     [PoolIds.poolBasic]: VestingCharacteristics
     [PoolIds.poolUnlimited]: VestingCharacteristics
   }
@@ -24,6 +26,7 @@ export interface VestingData {
 export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise<VestingData> => {
   const { address } = ifo
   let userVestingData = {
+    vestingStartTime: 0,
     poolBasic: {
       vestingId: '0',
       offeringAmountInToken: BIG_ZERO,
@@ -31,6 +34,7 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
       vestingAmountTotal: BIG_ZERO,
       vestingComputeReleasableAmount: BIG_ZERO,
       vestingInformationPercentage: 0,
+      vestingInformationDuration: 0,
     },
     poolUnlimited: {
       vestingId: '0',
@@ -39,6 +43,7 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
       vestingAmountTotal: BIG_ZERO,
       vestingComputeReleasableAmount: BIG_ZERO,
       vestingInformationPercentage: 0,
+      vestingInformationDuration: 0,
     },
   }
 
@@ -88,6 +93,10 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
         name: 'viewPoolVestingInformation',
         params: [1],
       },
+      {
+        address,
+        name: 'vestingStartTime',
+      },
     ]
 
     const [
@@ -98,9 +107,11 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
       unlimitedReleasableAmount,
       basicVestingInformation,
       unlimitedVestingInformation,
+      vestingStartTime,
     ] = await multicallv2(ifoV3Abi, ifov3Calls, { requireSuccess: false })
 
     userVestingData = {
+      vestingStartTime: vestingStartTime ? vestingStartTime[0].toNumber() : 0,
       [PoolIds.poolBasic]: {
         ...userVestingData[PoolIds.poolBasic],
         vestingId: basicId ? basicId.toString() : '0',
@@ -111,6 +122,7 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
           ? new BigNumber(basicReleasableAmount.toString())
           : BIG_ZERO,
         vestingInformationPercentage: basicVestingInformation ? basicVestingInformation[0].toNumber() : 0,
+        vestingInformationDuration: basicVestingInformation ? basicVestingInformation[2].toNumber() : 0,
       },
       [PoolIds.poolUnlimited]: {
         ...userVestingData[PoolIds.poolUnlimited],
@@ -122,6 +134,7 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
           ? new BigNumber(unlimitedReleasableAmount.toString())
           : BIG_ZERO,
         vestingInformationPercentage: unlimitedVestingInformation ? unlimitedVestingInformation[0].toNumber() : 0,
+        vestingInformationDuration: unlimitedVestingInformation ? unlimitedVestingInformation[2].toNumber() : 0,
       },
     }
   }

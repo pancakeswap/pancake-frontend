@@ -4,6 +4,7 @@ import { Button, Text, Link, HelpIcon } from '@pancakeswap/uikit'
 import { setupNetwork } from 'utils/wallet'
 import { useWeb3React } from '@web3-react/core'
 import { InjectedConnector } from '@web3-react/injected-connector'
+import { ChainId } from '@pancakeswap/sdk'
 
 const StyledLink = styled(Link)`
   width: 100%;
@@ -21,7 +22,7 @@ const WalletWrongNetwork: React.FC<WalletWrongNetworkProps> = ({ onDismiss }) =>
   const { connector, library } = useWeb3React()
 
   const handleSwitchNetwork = async (): Promise<void> => {
-    await setupNetwork(library)
+    await setupNetwork(ChainId.BSC, library)
     onDismiss?.()
   }
 
