@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
-import { Button, AutoRenewIcon, Box, Flex, Text, Message, MessageText } from '@pancakeswap/uikit'
+import dynamic from 'next/dynamic'
+import { Button, AutoRenewIcon, Box, Flex, Message, MessageText, Text } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
 import { useTranslation } from 'contexts/Localization'
 import { MAX_LOCK_DURATION } from 'config/constants/pools'
@@ -12,6 +13,8 @@ import Overview from './Overview'
 import LockDurationField from './LockDurationField'
 import useLockedPool from '../hooks/useLockedPool'
 import { MIN_LOCK_AMOUNT } from '../../../helpers'
+
+const ExtendEnable = dynamic(() => import('./ExtendEnable'), { ssr: false })
 
 const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
   stakingToken,
@@ -53,12 +56,14 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
         }
   }, [validator, currentBalance, lockedAmount, duration])
 
-  const cakeNeededForOperation = useMemo(
-    () => extendLockedPosition && currentDuration + duration > MAX_LOCK_DURATION,
-    [extendLockedPosition, currentDuration, duration],
+  const cakeNeeded = useMemo(
+    () => isValidDuration && extendLockedPosition && currentDuration + duration > MAX_LOCK_DURATION,
+    [isValidDuration, extendLockedPosition, currentDuration, duration],
   )
 
   const hasEnoughBalanceToExtend = useMemo(() => currentBalance?.gte(MIN_LOCK_AMOUNT), [currentBalance])
+
+  const needsEnable = useMemo(() => cakeNeeded && !hasEnoughBalanceToExtend, [cakeNeeded, hasEnoughBalanceToExtend])
 
   return (
     <>
@@ -99,8 +104,7 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
         />
       )}
 
-      {isValidDuration &&
-        cakeNeededForOperation &&
+      {cakeNeeded &&
         (hasEnoughBalanceToExtend ? (
           <Text fontSize="12px" mt="24px">
             {t('0.0001 CAKE will be spent to extend')}
@@ -112,15 +116,19 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
         ))}
 
       <Flex mt="24px">
-        <Button
-          width="100%"
-          isLoading={pendingTx}
-          endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
-          onClick={handleConfirmClick}
-          disabled={!(isValidAmount && isValidDuration && (cakeNeededForOperation ? hasEnoughBalanceToExtend : true))}
-        >
-          {pendingTx ? t('Confirming') : t('Confirm')}
-        </Button>
+        {needsEnable ? (
+          <ExtendEnable isValidAmount={isValidAmount} isValidDuration={isValidDuration} />
+        ) : (
+          <Button
+            width="100%"
+            isLoading={pendingTx}
+            endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+            onClick={handleConfirmClick}
+            disabled={!(isValidAmount && isValidDuration)}
+          >
+            {pendingTx ? t('Confirming') : t('Confirm')}
+          </Button>
+        )}
       </Flex>
     </>
   )
