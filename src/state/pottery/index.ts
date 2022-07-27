@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { useWeb3React } from '@web3-react/core'
 import { AppState } from 'state'
 import {
   PotteryState,
@@ -65,11 +66,12 @@ export const fetchPublicPotteryDataAsync = createAsyncThunk<SerializedPotteryPub
   'pottery/fetchPublicPotteryData',
   async (arg, { getState }) => {
     const state = getState()
+    const { chainId } = useWeb3React()
     const potteryVaultAddress = (state as AppState).pottery.lastVaultAddress
 
     const [publicPotteryData, totalLockedValue, latestRoundId] = await Promise.all([
       fetchPublicPotteryValue(potteryVaultAddress),
-      fetchTotalLockedValue(potteryVaultAddress),
+      fetchTotalLockedValue(potteryVaultAddress, chainId),
       fetchLatestRoundId(),
     ])
     return { ...publicPotteryData, ...totalLockedValue, ...latestRoundId }
@@ -81,10 +83,11 @@ export const fetchPotteryUserDataAsync = createAsyncThunk<SerializedPotteryUserD
   async (account, { rejectWithValue, getState }) => {
     try {
       const state = getState()
+      const { chainId } = useWeb3React()
       const potteryVaultAddress = (state as AppState).pottery.lastVaultAddress
 
       const [allowance, vaultUserData, drawData, withdrawAbleData] = await Promise.all([
-        fetchPotterysAllowance(account, potteryVaultAddress),
+        fetchPotterysAllowance(account, potteryVaultAddress, chainId),
         fetchVaultUserData(account, potteryVaultAddress),
         fetchUserDrawData(account),
         fetchWithdrawAbleData(account),
