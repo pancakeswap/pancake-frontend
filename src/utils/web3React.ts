@@ -16,6 +16,10 @@ const SUPPORTED_CHAIN_ID = [ChainId.BSC, ChainId.BSC_TESTNET]
 export const injected = new InjectedConnector({ supportedChainIds: SUPPORTED_CHAIN_ID })
 
 const walletconnect = new WalletConnectConnector({
+  rpc: {
+    [ChainId.BSC]: 'https://bsc-dataseed.binance.org',
+    [ChainId.BSC_TESTNET]: 'https://data-seed-prebsc-2-s3.binance.org:8545',
+  },
   qrcode: true,
   pollingInterval: POLLING_INTERVAL,
 })
