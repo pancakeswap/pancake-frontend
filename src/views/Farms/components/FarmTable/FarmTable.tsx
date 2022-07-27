@@ -4,8 +4,9 @@ import { Button, ChevronUpIcon, RowType } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { getDisplayApr } from '../getDisplayApr'
+import { BIG_ZERO } from 'utils/bigNumber'
 
+import { getDisplayApr } from '../getDisplayApr'
 import Row, { RowProps } from './Row'
 import { DesktopColumnSchema, FarmWithStakedValue } from '../types'
 import ProxyFarmContainer from '../YieldBooster/components/ProxyFarmContainer'
@@ -101,6 +102,21 @@ const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) =
     })
   }, [])
 
+  const getFarmEarnings = (farm) => {
+    let earnings = BIG_ZERO
+    const existingEarnings = new BigNumber(farm.userData.earnings)
+
+    if (farm.boosted) {
+      const proxyEarnings = new BigNumber(farm.userData?.proxy?.earnings)
+
+      earnings = proxyEarnings.gt(0) ? proxyEarnings : existingEarnings
+    } else {
+      earnings = existingEarnings
+    }
+
+    return getBalanceNumber(earnings)
+  }
+
   const generateRow = (farm) => {
     const { token, quoteToken } = farm
     const tokenAddress = token.address
@@ -126,7 +142,7 @@ const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) =
         quoteToken: farm.quoteToken,
       },
       earned: {
-        earnings: getBalanceNumber(new BigNumber(farm.userData.earnings)),
+        earnings: getFarmEarnings(farm),
         pid: farm.pid,
       },
       liquidity: {
