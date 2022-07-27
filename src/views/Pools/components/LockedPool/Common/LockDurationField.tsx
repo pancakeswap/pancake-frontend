@@ -2,6 +2,7 @@ import { Text, Flex, Button, Input, Box } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import _toNumber from 'lodash/toNumber'
+import { ONE_WEEK_DEFAULT } from 'config/constants/pools'
 import { secondsToWeeks, weeksToSeconds } from '../../utils/formatSecondsToWeeks'
 import { LockDurationFieldPropsType } from '../types'
 
@@ -55,6 +56,7 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
             mt="4px"
             mr={['2px', '2px', '4px', '4px']}
             scale="sm"
+            disabled={maxAvailableDuration < ONE_WEEK_DEFAULT}
             variant={maxAvailableDuration === duration ? 'subtle' : 'tertiary'}
           >
             {t('Max')}
