@@ -86,5 +86,5 @@ export default function useBoostMultipler({ pid, boosterState }): number {
       : getUserMultipler({ farmBoosterContract, pid, account }),
   )
 
-  return data
+  return data || 0
 }

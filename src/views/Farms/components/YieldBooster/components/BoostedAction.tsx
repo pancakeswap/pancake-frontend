@@ -102,7 +102,16 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
       default:
         return null
     }
-  }, [boosterState, t, handlers.activate, handlers.deactivate, boostMultipler, isConfirming, farmPid])
+  }, [
+    boosterState,
+    t,
+    handlers.activate,
+    handlers.deactivate,
+    boostMultipler,
+    isConfirming,
+    farmPid,
+    refreshProxyAddress,
+  ])
 
   let status = null
 

@@ -14,6 +14,7 @@ export const YieldBoosterStateContext = createContext({
   refreshActivePool: _noop,
   proxyFarm: {},
   shouldUseProxyFarm: false,
+  refreshProxyAddress: _noop,
 })
 
 const ProxyFarmContainer: React.FC<ProxyFarmContainerPropsType> = ({ children, farm }) => {
