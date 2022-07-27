@@ -1,7 +1,5 @@
 import styled from 'styled-components'
-import { Text, Flex, Heading, IconButton, ArrowBackIcon, NotificationDot } from '@pancakeswap/uikit'
-import { useExpertModeManager } from 'state/user/hooks'
-import GlobalSettings from 'components/Menu/GlobalSettings'
+import { Text, Flex, Heading, IconButton, ArrowBackIcon } from '@pancakeswap/uikit'
 import Link from 'next/link'
 import Transactions from './Transactions'
 import QuestionHelper from '../QuestionHelper'
@@ -23,8 +21,6 @@ const AppHeaderContainer = styled(Flex)`
 `
 
 const AppHeader: React.FC<Props> = ({ title, subtitle, helper, backTo, noConfig = false }) => {
-  const [expertMode] = useExpertModeManager()
-
   return (
     <AppHeaderContainer>
       <Flex alignItems="center" width="100%" style={{ gap: '16px' }}>
@@ -45,9 +41,6 @@ const AppHeader: React.FC<Props> = ({ title, subtitle, helper, backTo, noConfig 
             <Heading as="h2">{title}</Heading>
             {!noConfig && (
               <Flex alignItems="center">
-                <NotificationDot show={expertMode}>
-                  <GlobalSettings />
-                </NotificationDot>
                 <Transactions />
               </Flex>
             )}

@@ -1,18 +1,6 @@
 import styled from 'styled-components'
-import {
-  ChartIcon,
-  Flex,
-  Heading,
-  HistoryIcon,
-  IconButton,
-  NotificationDot,
-  Text,
-  useModal,
-  ChartDisableIcon,
-} from '@pancakeswap/uikit'
+import { ChartIcon, Flex, Heading, HistoryIcon, IconButton, Text, useModal, ChartDisableIcon } from '@pancakeswap/uikit'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
-import GlobalSettings from 'components/Menu/GlobalSettings'
-import { useExpertModeManager } from 'state/user/hooks'
 import RefreshIcon from 'components/Svg/RefreshIcon'
 import { useCallback } from 'react'
 
@@ -46,7 +34,6 @@ const CurrencyInputHeader: React.FC<Props> = ({
   hasAmount,
   onRefreshPrice,
 }) => {
-  const [expertMode] = useExpertModeManager()
   const toggleChartDisplayed = () => {
     setIsChartDisplayed((currentIsChartDisplayed) => !currentIsChartDisplayed)
   }
@@ -61,13 +48,10 @@ const CurrencyInputHeader: React.FC<Props> = ({
             {isChartDisplayed ? <ChartDisableIcon color="textSubtle" /> : <ChartIcon width="24px" color="textSubtle" />}
           </ColoredIconButton>
         )}
-        <Flex flexDirection="column" alignItems="flex-end" width="100%" mr={18}>
+        <Flex flexDirection="column" alignItems="flex-end" width="100%" mr={50}>
           <Heading as="h2">{title}</Heading>
         </Flex>
         <Flex>
-          <NotificationDot show={expertMode}>
-            <GlobalSettings color="textSubtle" mr="0" />
-          </NotificationDot>
           <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
             <HistoryIcon color="textSubtle" width="24px" />
           </IconButton>
