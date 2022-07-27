@@ -140,7 +140,6 @@ export interface LockDurationFieldPropsType {
   isOverMax: boolean
   maxAvailableDuration: number
   extendLockedPosition?: boolean
-  currentDurationLeft?: number
 }
 
 export interface LockedStakingApyPropsType {

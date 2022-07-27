@@ -18,7 +18,6 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
   duration,
   setDuration,
   isOverMax,
-  currentDurationLeft,
   extendLockedPosition,
   maxAvailableDuration,
 }) => {
@@ -49,7 +48,7 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
                 mt="4px"
                 mr={['2px', '2px', '4px', '4px']}
                 scale="sm"
-                disabled={currentDurationLeft && weekSeconds + currentDurationLeft > maxAvailableDuration}
+                disabled={weekSeconds > maxAvailableDuration}
                 variant={weekSeconds === duration ? 'subtle' : 'tertiary'}
               >
                 {week}W
