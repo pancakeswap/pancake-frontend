@@ -291,6 +291,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.pex,
     quoteToken: serializedTokens.wbnb,
+    boosted: true,
   },
   // {
   //   pid: 89,
