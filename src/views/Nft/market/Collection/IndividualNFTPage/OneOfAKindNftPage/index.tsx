@@ -59,7 +59,7 @@ const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress
   return (
     <Page>
       <MainNFTCard nft={nft} isOwnNft={isOwnNft} nftIsProfilePic={isProfilePic} onSuccess={refetch} />
-      <TwoColumnsContainer flexDirection={['column', 'column', 'row']}>
+      <TwoColumnsContainer flexDirection={['column', 'column', 'column', 'column', 'row']}>
         <Flex flexDirection="column" width="100%">
           <ManageNFTsCard collection={collection} tokenId={tokenId} onSuccess={isOwnNft ? refetch : noop} />
           <PropertiesCard properties={properties} rarity={attributesRarity} />
