@@ -232,6 +232,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
         {migrationStepsKeys.map((step, index) => {
           return (
             <StepperWrapper
+              key={step}
               active={step === activatedState.toString()}
               finished={parseInt(step) < parseInt(activatedState.toString())}
             >
