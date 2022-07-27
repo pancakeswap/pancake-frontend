@@ -113,7 +113,7 @@ const IndividualPancakeBunnyPageBase: React.FC<IndividualPancakeBunnyPageProps> 
         nothingForSaleBunny={nothingForSaleBunny}
         onSuccessSale={refreshCheapestNft}
       />
-      <TwoColumnsContainer flexDirection={['column', 'column', 'row']}>
+      <TwoColumnsContainer flexDirection={['column', 'column', 'column', 'row']}>
         <Flex flexDirection="column" width="100%">
           <ManageNftsCard
             collection={collection}
