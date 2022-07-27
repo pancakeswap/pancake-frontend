@@ -267,7 +267,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.ceek,
     quoteToken: serializedTokens.wbnb,
-    boosted: true,
+    boosted: false,
   },
   {
     pid: 91,
@@ -279,7 +279,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.tinc,
     quoteToken: serializedTokens.wbnb,
-    boosted: true,
+    boosted: false,
   },
   {
     pid: 90,
@@ -291,6 +291,7 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.pex,
     quoteToken: serializedTokens.wbnb,
+    boosted: false,
   },
   // {
   //   pid: 89,
