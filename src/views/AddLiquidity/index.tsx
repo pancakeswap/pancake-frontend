@@ -73,7 +73,7 @@ export default function AddLiquidity() {
   const expertMode = useIsExpertMode()
 
   const [zapMode] = useZapModeManager()
-  const [temporarilyZapMode, setTemporarilyZapMode] = useState(zapMode)
+  const [temporarilyZapMode, setTemporarilyZapMode] = useState(true)
   const [currencyIdA, currencyIdB] = router.query.currency || [WNATIVE[chainId]?.address, CAKE[chainId]?.address]
   const [steps, setSteps] = useState(Steps.Choose)
 
