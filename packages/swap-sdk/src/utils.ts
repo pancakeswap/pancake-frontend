@@ -4,6 +4,7 @@ import JSBI from 'jsbi'
 import { getAddress } from '@ethersproject/address'
 
 import { BigintIsh, ZERO, ONE, TWO, THREE, SolidityType, SOLIDITY_TYPE_MAXIMA } from './constants'
+import { CurrencyAmount, Percent, Price, Currency } from '.'
 
 export function validateSolidityTypeInstance(value: JSBI, solidityType: SolidityType): void {
   invariant(JSBI.greaterThanOrEqual(value, ZERO), `${value} is not a ${solidityType}.`)
@@ -75,4 +76,21 @@ export function sortedInsert<T>(items: T[], add: T, maxSize: number, comparator:
     items.splice(lo, 0, add)
     return isFull ? items.pop()! : null
   }
+}
+
+/**
+ * Returns the percent difference between the mid price and the execution price, i.e. price impact.
+ * @param midPrice mid price before the trade
+ * @param inputAmount the input amount of the trade
+ * @param outputAmount the output amount of the trade
+ */
+export function computePriceImpact<TBase extends Currency, TQuote extends Currency>(
+  midPrice: Price<TBase, TQuote>,
+  inputAmount: CurrencyAmount<TBase>,
+  outputAmount: CurrencyAmount<TQuote>
+): Percent {
+  const quotedOutputAmount = midPrice.quote(inputAmount)
+  // calculate price impact := (exactQuote - outputAmount) / exactQuote
+  const priceImpact = quotedOutputAmount.subtract(outputAmount).divide(quotedOutputAmount)
+  return new Percent(priceImpact.numerator, priceImpact.denominator)
 }
