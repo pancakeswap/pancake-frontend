@@ -1,6 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
-import { differenceInSeconds } from 'date-fns'
-import { convertTimeToSeconds } from 'utils/timeHelper'
+import { useState, useEffect } from 'react'
 import { Text, Flex, Button, Input, Box, Message, MessageText } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
@@ -20,41 +18,18 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
   duration,
   setDuration,
   isOverMax,
-  currentDuration,
-  lockEndTime,
-  setUpdatedLockStartTime,
-  setUpdatedLockDuration,
+  currentDurationLeft,
 }) => {
   const { t } = useTranslation()
   const [isMaxSelected, setIsMaxSelected] = useState(false)
 
-  const calculateRemainingDuration = useCallback(
-    (now: Date) =>
-      lockEndTime
-        ? differenceInSeconds(new Date(convertTimeToSeconds(lockEndTime)), now, {
-            roundingMethod: 'ceil',
-          })
-        : 0,
-    [lockEndTime],
-  )
-
-  const calculateMaxAvailableDuration = useCallback(
-    (now: Date) => MAX_LOCK_DURATION - calculateRemainingDuration(now),
-    [calculateRemainingDuration],
-  )
+  const maxAvailableDuration = currentDurationLeft ? MAX_LOCK_DURATION - currentDurationLeft : MAX_LOCK_DURATION
 
   useEffect(() => {
-    if (currentDuration) {
-      const now = new Date()
-      if (currentDuration + duration > MAX_LOCK_DURATION) {
-        setUpdatedLockStartTime(Math.floor(now.getTime() / 1000).toString())
-        setUpdatedLockDuration(calculateRemainingDuration(now) + duration)
-      } else {
-        setUpdatedLockStartTime(null)
-        setUpdatedLockDuration(null)
-      }
+    if (isMaxSelected) {
+      setDuration(maxAvailableDuration)
     }
-  }, [calculateRemainingDuration, currentDuration, duration, setUpdatedLockDuration, setUpdatedLockStartTime])
+  }, [isMaxSelected, maxAvailableDuration, setDuration])
 
   return (
     <>
@@ -80,7 +55,7 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
                 mt="4px"
                 mr={['2px', '2px', '4px', '4px']}
                 scale="sm"
-                disabled={weekSeconds > calculateMaxAvailableDuration(new Date())}
+                disabled={weekSeconds > maxAvailableDuration}
                 variant={weekSeconds === duration ? 'subtle' : 'tertiary'}
               >
                 {week}W
@@ -91,14 +66,11 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
             key="max"
             onClick={() => {
               setIsMaxSelected(true)
-              const now = new Date()
-              const maxAvailableDuration = calculateMaxAvailableDuration(now)
-              setDuration(maxAvailableDuration)
             }}
             mt="4px"
             mr={['2px', '2px', '4px', '4px']}
             scale="sm"
-            disabled={calculateMaxAvailableDuration(new Date()) < ONE_WEEK_DEFAULT}
+            disabled={maxAvailableDuration < ONE_WEEK_DEFAULT}
             variant={isMaxSelected ? 'subtle' : 'tertiary'}
           >
             {t('Max')}
@@ -130,7 +102,7 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
           {t('Total lock duration exceeds 52 weeks')}
         </Text>
       )}
-      {currentDuration && !isMaxSelected && (
+      {currentDurationLeft && !isMaxSelected && (
         <Message variant="warning">
           <MessageText maxWidth="240px">
             {t('Recommend choosing "MAX" to renew your staking position in order to keep similar yield boost.')}

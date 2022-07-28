@@ -30,9 +30,9 @@ export interface ExtendDurationModal {
   onDismiss?: VoidFn
   modalTitle?: string
   currentDuration: number
+  currentDurationLeft: number
   currentBalance?: BigNumber
   lockStartTime: string
-  lockEndTime: string
 }
 
 export interface AddButtonProps {
@@ -82,19 +82,9 @@ export interface LockedModalBodyPropsType {
   editAmountOnly?: React.ReactElement
   prepConfirmArg?: PrepConfirmArg
   currentDuration?: number
-  lockEndTime?: string
+  currentDurationLeft?: number
   validator?: (arg: ValidatorArg) => ModalValidator
-  customOverview?: ({
-    isValidDuration,
-    duration,
-    updatedLockStartTime,
-    updatedLockDuration,
-  }: {
-    isValidDuration: boolean
-    duration: number
-    updatedLockStartTime: string
-    updatedLockDuration: number
-  }) => React.ReactElement
+  customOverview?: ({ isValidDuration, duration }: { isValidDuration: boolean; duration: number }) => React.ReactElement
 }
 
 export interface ExtendDurationButtonPropsType {
@@ -134,11 +124,7 @@ export interface LockDurationFieldPropsType {
   duration: number
   setDuration: Dispatch<SetStateAction<number>>
   isOverMax: boolean
-  currentDuration?: number
-  lockEndTime?: string
-  setUpdatedLockStartTime?: (startTime: string) => void
-  setUpdatedLockDuration?: (duration: number) => void
-  extendLockedPosition?: boolean
+  currentDurationLeft?: number
 }
 
 export interface LockedStakingApyPropsType {

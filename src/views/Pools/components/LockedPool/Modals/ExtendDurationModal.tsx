@@ -22,9 +22,9 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   onDismiss,
   currentLockedAmount,
   currentDuration,
+  currentDurationLeft,
   currentBalance,
   lockStartTime,
-  lockEndTime,
 }) => {
   const { theme } = useTheme()
   const ceiling = useIfoCeiling()
@@ -35,8 +35,6 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   const validator = useCallback(
     ({ duration }) => {
       const isValidAmount = currentLockedAmount && currentLockedAmount > 0
-      const nowInSeconds = Math.floor(Date.now() / 1000)
-      const currentDurationLeft = Math.max(Number(lockEndTime) - nowInSeconds, 0)
       const totalDuration = currentDurationLeft + duration
 
       const isValidDuration = duration > 0 && totalDuration > 0 && totalDuration <= MAX_LOCK_DURATION
@@ -47,7 +45,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
         isOverMax: totalDuration > MAX_LOCK_DURATION,
       }
     },
-    [currentLockedAmount, lockEndTime],
+    [currentLockedAmount, currentDurationLeft],
   )
 
   const prepConfirmArg = useCallback(
@@ -62,20 +60,24 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   )
 
   const customOverview = useCallback(
-    ({ isValidDuration, duration, updatedLockStartTime, updatedLockDuration }) => (
+    ({ isValidDuration, duration }) => (
       <Overview
-        lockStartTime={updatedLockStartTime || lockStartTime}
+        lockStartTime={
+          currentDuration + duration > MAX_LOCK_DURATION ? Math.floor(Date.now() / 1000).toString() : lockStartTime
+        }
         isValidDuration={isValidDuration}
         openCalculator={_noop}
         duration={currentDuration || duration}
-        newDuration={updatedLockDuration || currentDuration + duration}
+        newDuration={
+          currentDuration + duration > MAX_LOCK_DURATION ? currentDurationLeft + duration : currentDuration + duration
+        }
         lockedAmount={currentLockedAmount}
         usdValueStaked={usdValueStaked}
         showLockWarning={!+lockStartTime}
         ceiling={ceiling}
       />
     ),
-    [lockStartTime, currentDuration, currentLockedAmount, usdValueStaked, ceiling],
+    [lockStartTime, currentDuration, currentLockedAmount, currentDurationLeft, usdValueStaked, ceiling],
   )
 
   return (
@@ -97,7 +99,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
           stakingToken={stakingToken}
           currentBalance={currentBalance}
           currentDuration={currentDuration}
-          lockEndTime={lockEndTime}
+          currentDurationLeft={currentDurationLeft}
           onDismiss={onDismiss}
           lockedAmount={new BigNumber(currentLockedAmount)}
           validator={validator}

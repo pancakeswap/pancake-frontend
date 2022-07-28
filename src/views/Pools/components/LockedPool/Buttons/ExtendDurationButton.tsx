@@ -17,7 +17,10 @@ const ExtendDurationButton: React.FC<ExtendDurationButtonPropsType & ButtonProps
 }) => {
   const nowInSeconds = Math.floor(Date.now() / 1000)
   const currentDuration = useMemo(() => Number(lockEndTime) - Number(lockStartTime), [lockEndTime, lockStartTime])
-  const currentDurationLeftInSeconds = useMemo(() => Number(lockEndTime) - nowInSeconds, [lockEndTime, nowInSeconds])
+  const currentDurationLeft = useMemo(
+    () => Math.max(Number(lockEndTime) - nowInSeconds, 0),
+    [lockEndTime, nowInSeconds],
+  )
 
   const [openExtendDurationModal] = useModal(
     <ExtendDurationModal
@@ -25,9 +28,9 @@ const ExtendDurationButton: React.FC<ExtendDurationButtonPropsType & ButtonProps
       stakingToken={stakingToken}
       lockStartTime={lockStartTime}
       currentBalance={currentBalance}
-      lockEndTime={lockEndTime}
       currentLockedAmount={currentLockedAmount}
       currentDuration={currentDuration}
+      currentDurationLeft={currentDurationLeft}
     />,
     true,
     true,
@@ -36,10 +39,7 @@ const ExtendDurationButton: React.FC<ExtendDurationButtonPropsType & ButtonProps
 
   return (
     <Button
-      disabled={
-        Number.isFinite(currentDurationLeftInSeconds) &&
-        MAX_LOCK_DURATION - currentDurationLeftInSeconds < ONE_WEEK_DEFAULT
-      }
+      disabled={Number.isFinite(currentDurationLeft) && MAX_LOCK_DURATION - currentDurationLeft < ONE_WEEK_DEFAULT}
       onClick={openExtendDurationModal}
       width="100%"
       {...rest}

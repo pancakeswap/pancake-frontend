@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import { Button, AutoRenewIcon, Box, Flex, Message, MessageText, Text } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
@@ -22,7 +22,7 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
   lockedAmount,
   currentBalance,
   currentDuration,
-  lockEndTime,
+  currentDurationLeft,
   editAmountOnly,
   prepConfirmArg,
   validator,
@@ -36,9 +36,6 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
     lockedAmount,
     prepConfirmArg,
   })
-
-  const [updatedLockStartTime, setUpdatedLockStartTime] = useState<string>()
-  const [updatedLockDuration, setUpdatedLockDuration] = useState<number>()
 
   const { isValidAmount, isValidDuration, isOverMax }: ModalValidator = useMemo(() => {
     return typeof validator === 'function'
@@ -68,11 +65,8 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
           <>
             <LockDurationField
               isOverMax={isOverMax}
-              lockEndTime={lockEndTime}
-              currentDuration={currentDuration}
+              currentDurationLeft={currentDurationLeft}
               setDuration={setDuration}
-              setUpdatedLockStartTime={setUpdatedLockStartTime}
-              setUpdatedLockDuration={setUpdatedLockDuration}
               duration={duration}
             />
           </>
@@ -82,8 +76,6 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
         customOverview({
           isValidDuration,
           duration,
-          updatedLockStartTime,
-          updatedLockDuration,
         })
       ) : (
         <Overview
