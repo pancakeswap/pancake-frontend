@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { CurrencyAmount, Token, Trade } from '@pancakeswap/sdk'
+import { ChainId, CurrencyAmount, Token, Trade } from '@pancakeswap/sdk'
 import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange'
 import {
   Button,
@@ -19,12 +19,12 @@ import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import Footer from 'components/Menu/Footer'
 import { useRouter } from 'next/router'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { EXCHANGE_DOCS_URLS } from 'config/constants'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import shouldShowSwapWarning from 'utils/shouldShowSwapWarning'
-import { useWeb3React } from '@web3-react/core'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import useRefreshBlockNumberID from './hooks/useRefreshBlockNumber'
 import AddressInputPanel from './components/AddressInputPanel'
@@ -90,6 +90,8 @@ const SwitchIconButton = styled(IconButton)`
   }
 `
 
+const CHART_SUPPORT_CHAIN_IDS = [ChainId.BSC]
+
 export default function Swap() {
   const router = useRouter()
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -122,7 +124,7 @@ export default function Swap() {
       return !(token.address in defaultTokens)
     })
 
-  const { account } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
 
   // for expert mode
   const [isExpertMode] = useExpertModeManager()
@@ -212,7 +214,7 @@ export default function Swap() {
   const noRoute = !route
 
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage)
+  const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage, chainId)
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
@@ -367,10 +369,12 @@ export default function Swap() {
     }
   }, [hasAmount, refreshBlockNumber])
 
+  const isChatSupported = useMemo(() => CHART_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
+
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
       <Flex width="100%" justifyContent="center" position="relative">
-        {!isMobile && (
+        {!isMobile && isChatSupported && (
           <PriceChartContainer
             inputCurrencyId={inputCurrencyId}
             inputCurrency={currencies[Field.INPUT]}
@@ -382,23 +386,25 @@ export default function Swap() {
             currentSwapPrice={singleTokenPrice}
           />
         )}
-        <BottomDrawer
-          content={
-            <PriceChartContainer
-              inputCurrencyId={inputCurrencyId}
-              inputCurrency={currencies[Field.INPUT]}
-              outputCurrencyId={outputCurrencyId}
-              outputCurrency={currencies[Field.OUTPUT]}
-              isChartExpanded={isChartExpanded}
-              setIsChartExpanded={setIsChartExpanded}
-              isChartDisplayed={isChartDisplayed}
-              currentSwapPrice={singleTokenPrice}
-              isMobile
-            />
-          }
-          isOpen={isChartDisplayed}
-          setIsOpen={setIsChartDisplayed}
-        />
+        {isChatSupported && (
+          <BottomDrawer
+            content={
+              <PriceChartContainer
+                inputCurrencyId={inputCurrencyId}
+                inputCurrency={currencies[Field.INPUT]}
+                outputCurrencyId={outputCurrencyId}
+                outputCurrency={currencies[Field.OUTPUT]}
+                isChartExpanded={isChartExpanded}
+                setIsChartExpanded={setIsChartExpanded}
+                isChartDisplayed={isChartDisplayed}
+                currentSwapPrice={singleTokenPrice}
+                isMobile
+              />
+            }
+            isOpen={isChartDisplayed}
+            setIsOpen={setIsChartDisplayed}
+          />
+        )}
         <Flex flexDirection="column">
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>

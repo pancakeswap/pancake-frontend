@@ -201,7 +201,7 @@
   "You’ll need an active PancakeSwap Profile to take part in an IFO!": "Χρειάζεστε ένα ενεργό προφίλ PancakeSwap για να λάβετε μέρος σε μία IFO!",
   "Profile Active!": "Ενεργό προφίλ!",
   "Commit CAKE": "Δέσμευση CAKE",
-  "When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.": "Όταν η IFO είναι σε εξέλιξη, μπορείτε να \"δεσμεύσετε\" το CAKE σας για να αγοράσετε τα νομίσματα που πωλούνται.",
+  "Please note that CAKE in the fixed-term staking positions will remain locked and can not be used for committing to IFO sales. You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.": "Please note that CAKE in the fixed-term staking positions will remain locked and can not be used for committing to IFO sales. You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.",
   "Claim your tokens and achievement": "Διεκδικήστε τα νομίσματα και τα έπαθλά σας",
   "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE tokens will be returned to your wallet.": "Μετά τη λήξη της προσφοράς IFO, μπορείτε να διεκδικήσετε τα νομίσματά σας IFO που αγοράσατε, και τυχόν νομίσματα CAKE που δεν ξοδεύτηκαν, θα επιστρέψουν στο πορτοφόλι σας.",
   "This round’s closing transaction has been submitted to the blockchain, and is awaiting confirmation.": "Η συναλλαγή κλεισίματος αυτού του γύρου έχει υποβληθεί στο blockchain και είναι σε αναμονή για επιβεβαίωση.",
@@ -232,7 +232,7 @@
   "d": "η",
   "h": "ω",
   "m": "λ",
-  "s": "s",
+  "s": "δευτ.",
   "Hide or show expandable content": "Απόκρυψη ή εμφάνιση αναπτυσσόμενου περιεχομένου",
   "No tokens to stake": "Δεν υπάρχουν νομίσματα για stake",
   "Error": "Σφάλμα",
@@ -1011,7 +1011,7 @@
   "Rank By": "Κατάταξη κατά",
   "Net Winnings": "Καθαρά κέρδη",
   "Total %symbol%": "Σύνολο %symbol%",
-  "%num%m": "%num%m",
+  "%num%m": "%num% μήν.",
   "Rounds Played": "Ολοκληρωμένοι γύροι",
   "Winnings (%symbol%)": "Κέρδη (%symbol%)",
   "Direction": "Κατεύθυνση",
@@ -1764,5 +1764,7 @@
   "No position entered": "Δεν έχει οριστεί θέση",
   "Add liquidity failed: %message%": "Η προσθήκη ρευστότητας απέτυχε: %message%",
   "Remove liquidity failed: %message%": "Η αφαίρεση ρευστότητας απέτυχε: %message%",
-  "Unavailable for legal reasons": "Μη διαθέσιμο για νομικούς λόγους"
+  "Unavailable for legal reasons": "Μη διαθέσιμο για νομικούς λόγους",
+  "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks."
 }

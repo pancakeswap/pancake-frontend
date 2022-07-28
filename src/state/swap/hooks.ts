@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Trade } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Pair, Trade } from '@pancakeswap/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { ParsedUrlQuery } from 'querystring'
 import { useEffect, useMemo, useState } from 'react'
@@ -397,9 +397,9 @@ export const useFetchPairPrices = ({
   return { pairPrices, pairId }
 }
 
-export const useLPApr = (pair) => {
+export const useLPApr = (pair?: Pair) => {
   const { data: poolData } = useSWRImmutable(
-    pair ? ['LP7dApr', pair.liquidityToken.address] : null,
+    pair && pair.chainId === ChainId.BSC ? ['LP7dApr', pair.liquidityToken.address] : null,
     async () => {
       const timestampsArray = getDeltaTimestamps()
       const blocks = await getBlocksFromTimestamps(timestampsArray, 'desc', 1000)

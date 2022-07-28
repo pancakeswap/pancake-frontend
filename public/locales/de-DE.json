@@ -201,7 +201,7 @@
   "You’ll need an active PancakeSwap Profile to take part in an IFO!": "Sie benötigen ein aktives PancakeSwap-Profil, um an einem IFO teilzunehmen!",
   "Profile Active!": "Profil aktiv!",
   "Commit CAKE": "CAKE einsetzen",
-  "When the IFO sales are live, you can “commit” your CAKE to buy the tokens being sold.": "Wenn die IFO-Verkäufe live sind, können Sie Ihr CAKE für den Kauf der verkauften Token einsetzen.",
+  "Please note that CAKE in the fixed-term staking positions will remain locked and can not be used for committing to IFO sales. You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.": "Please note that CAKE in the fixed-term staking positions will remain locked and can not be used for committing to IFO sales. You will need a separate amount of CAKE in your wallet balance to commit to the IFO sales.",
   "Claim your tokens and achievement": "Beanspruchen Sie Ihre Token und Achievement",
   "After the IFO sales finish, you can claim any IFO tokens that you bought, and any unspent CAKE tokens will be returned to your wallet.": "Nach dem Ende des IFO-Verkaufs können Sie alle IFO-Token, die Sie gekauft haben, einfordern, und alle nicht ausgegebenen CAKE-Token werden an Ihr Wallet zurückgegeben.",
   "This round’s closing transaction has been submitted to the blockchain, and is awaiting confirmation.": "Die abschließende Transaktion dieser Runde wurde an die Blockchain übermittelt und wartet darauf, bestätigt zu werden.",
@@ -1415,7 +1415,7 @@
   "All transfers of the old ITAM token will be disabled after the swap.": "Alle Übertragungen des alten ITAM-Tokens werden nach dem Tausch deaktiviert.",
   "Crypto Cars (CCAR) has been migrated to": "Crypto Cars (CCAR) wurde migríert zu",
   "the announcement.": "die Ankündigung.",
-  "Apply to NFT Marketplace!": "Stellen Sie einen Antrag beim NFT-Marktplatz!",
+  "Apply to NFT Marketplace!": "Machen Sie mit beim NFT-Marktplatz!",
   "%num% Pending": "%num% ausstehend",
   "You’re connected to the wrong network.": "Sie sind mit dem falschen Netzwerk verbunden.",
   "Learn How": "Erfahren Sie wie",
@@ -1748,7 +1748,7 @@
   "Manage Yours in Collection": "Verwalten Sie Ihre in der Sammlung",
   "Risk Warning: This token is subject to high price risk. Please do your own research before trading this token. Please also note that as of 24 June 2022 there is also a reflection fee for every transfer of FREE ranging from 2.5 to 5% per trade/transfer.": "Risiko-Warnung: Dieser Token ist mit einem hohen Kursrisiko verbunden. Bitte stellen Sie Ihre eigenen Nachforschungen an, bevor Sie mit diesem Token handeln. Bitte beachten Sie auch, dass ab dem 24. Juni 2022 eine Reflexionsgebühr für jede FREE-Transaktion anfällt, die zwischen 2,5 und 5 % pro Handel/Transaktion liegt.",
   "Flexible CAKE": "Flexibler CAKE",
-  "Flexible staking on the side.": "Flexibler Nebeneinsatz.",
+  "Flexible staking on the side.": "Zusätzlich flexiblen Einsatz tätigen.",
   "For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the iCake. To increase the max entry, Stake more CAKE into the iCake": "Für den unbegrenzten Verkauf ist der maximale CAKE-Einsatz durch Ihr durchschnittliches CAKE-Guthaben im iCAKE begrenzt. Um den maximalen Einsatz zu erhöhen, setzen Sie mehr CAKE im iCAKE ein",
   "In the Public Sale, everyone with an active PancakeSwap profile can commit. However the maximum amount of CAKE users can commit, is equal to the number of iCAKE they have.": "Am öffentlichen Verkauf kann jeder mit einem aktiven PancakeSwap-Profil teilnehmen. Die maximale Anzahl von CAKE, die Benutzer einsetzen können, entspricht jedoch der Anzahl von iCAKE, die sie besitzen.",
   "And there’s a fee for participation: see below.": "Und es gibt eine Beteiligungsgebühr: siehe unten.",
@@ -1764,5 +1764,7 @@
   "No position entered": "Keine Position eingetragen",
   "Add liquidity failed: %message%": "Liquidität hinzufügen fehlgeschlagen: %message%",
   "Remove liquidity failed: %message%": "Liquidität entfernen fehlgeschlagen: %message%",
-  "Unavailable for legal reasons": "Aus rechtlichen Gründen nicht verfügbar"
+  "Unavailable for legal reasons": "Aus rechtlichen Gründen nicht verfügbar",
+  "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks."
 }

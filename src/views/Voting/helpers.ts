@@ -1,7 +1,7 @@
 import { SNAPSHOT_HUB_API } from 'config/constants/endpoints'
 import BigNumber from 'bignumber.js'
 import { BIG_TEN } from 'utils/bigNumber'
-import tokens from 'config/constants/tokens'
+import { bscTokens } from 'config/constants/tokens'
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
 import { ADMINS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
@@ -38,7 +38,9 @@ export interface Message {
   sig: string
 }
 
-const STRATEGIES = [{ name: 'cake', params: { symbol: 'CAKE', address: tokens.cake.address, decimals: 18, max: 300 } }]
+const STRATEGIES = [
+  { name: 'cake', params: { symbol: 'CAKE', address: bscTokens.cake.address, decimals: 18, max: 300 } },
+]
 const NETWORK = '56'
 
 /**

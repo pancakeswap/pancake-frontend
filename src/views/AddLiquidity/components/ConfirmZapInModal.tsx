@@ -40,6 +40,8 @@ interface ConfirmZapInModalProps {
     swapAmountOut: BigNumber
     isToken0Sold: boolean
   }
+  zapMode: boolean
+  toggleZapMode: (value: boolean) => void
 }
 
 const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max)
@@ -64,6 +66,8 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
   pair,
   zapInEstimated,
   rebalancing,
+  zapMode,
+  toggleZapMode,
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
@@ -249,13 +253,18 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
     () =>
       liquidityErrorMessage ? (
         <>
-          <ZapErrorMessages isSingleToken={!rebalancing} />
+          <ZapErrorMessages
+            isSingleToken={!rebalancing}
+            zapMode={zapMode}
+            toggleZapMode={toggleZapMode}
+            onModalDismiss={onDismiss}
+          />
           <TransactionErrorContent onDismiss={onDismiss} message={liquidityErrorMessage} />
         </>
       ) : (
         <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
       ),
-    [liquidityErrorMessage, rebalancing, onDismiss, modalHeader, modalBottom],
+    [liquidityErrorMessage, rebalancing, zapMode, toggleZapMode, onDismiss, modalHeader, modalBottom],
   )
 
   return (
