@@ -37,11 +37,11 @@ export interface TradeOptionsDeadline extends Omit<TradeOptions, 'ttl'> {
 }
 
 /**
- * The parameters to use in the call to the Uniswap V2 Router to execute a trade.
+ * The parameters to use in the call to the Pancake Router to execute a trade.
  */
 export interface SwapParameters {
   /**
-   * The method to call on the Uniswap V2 Router.
+   * The method to call on the Pancake Router.
    */
   methodName: string
   /**
@@ -61,7 +61,7 @@ function toHex(currencyAmount: CurrencyAmount<Currency>) {
 const ZERO_HEX = '0x0'
 
 /**
- * Represents the Uniswap V2 Router, and has static methods for helping execute trades.
+ * Represents the Pancake Router, and has static methods for helping execute trades.
  */
 export abstract class Router {
   /**
