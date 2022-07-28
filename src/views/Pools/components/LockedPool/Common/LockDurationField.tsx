@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { differenceInSeconds } from 'date-fns'
 import { convertTimeToSeconds } from 'utils/timeHelper'
 import { Text, Flex, Button, Input, Box, Message, MessageText } from '@pancakeswap/uikit'
@@ -43,6 +43,19 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
     [calculateRemainingDuration],
   )
 
+  useEffect(() => {
+    if (currentDuration) {
+      const now = new Date()
+      if (currentDuration + duration > MAX_LOCK_DURATION) {
+        setUpdatedLockStartTime(Math.floor(now.getTime() / 1000).toString())
+        setUpdatedLockDuration(calculateRemainingDuration(now) + duration)
+      } else {
+        setUpdatedLockStartTime(null)
+        setUpdatedLockDuration(null)
+      }
+    }
+  }, [calculateRemainingDuration, currentDuration, duration, setUpdatedLockDuration, setUpdatedLockStartTime])
+
   return (
     <>
       <Box mb="16px">
@@ -63,16 +76,6 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
                 onClick={() => {
                   setIsMaxSelected(false)
                   setDuration(weekSeconds)
-                  if (currentDuration) {
-                    const now = new Date()
-                    if (currentDuration + weekSeconds > MAX_LOCK_DURATION) {
-                      setUpdatedLockStartTime(Math.floor(now.getTime() / 1000).toString())
-                      setUpdatedLockDuration(calculateRemainingDuration(now) + weekSeconds)
-                    } else {
-                      setUpdatedLockStartTime(null)
-                      setUpdatedLockDuration(null)
-                    }
-                  }
                 }}
                 mt="4px"
                 mr={['2px', '2px', '4px', '4px']}
@@ -91,10 +94,6 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
               const now = new Date()
               const maxAvailableDuration = calculateMaxAvailableDuration(now)
               setDuration(maxAvailableDuration)
-              if (currentDuration) {
-                setUpdatedLockStartTime(Math.floor(now.getTime() / 1000).toString())
-                setUpdatedLockDuration(calculateRemainingDuration(now) + maxAvailableDuration)
-              }
             }}
             mt="4px"
             mr={['2px', '2px', '4px', '4px']}
