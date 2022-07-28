@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { getPredictionsContract } from 'utils/contractHelpers'
 import { useConfig } from '../context/ConfigProvider'
 

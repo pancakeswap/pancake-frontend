@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import {
   Flex,
   LogoutIcon,
@@ -26,7 +26,7 @@ import WalletUserMenuItem from './WalletUserMenuItem'
 const UserMenu = () => {
   const router = useRouter()
   const { t } = useTranslation()
-  const { account, error } = useWeb3React()
+  const { account, chain } = useWeb3React()
   const { logout } = useAuth()
   const { hasPendingTransactions, pendingNumber } = usePendingTransactions()
   const { isInitialized, isLoading, profile } = useProfile()
@@ -37,7 +37,7 @@ const UserMenu = () => {
   const avatarSrc = profile?.nft?.image?.thumbnail
   const [userMenuText, setUserMenuText] = useState<string>('')
   const [userMenuVariable, setUserMenuVariable] = useState<UserMenuVariant>('default')
-  const isWrongNetwork: boolean = error && error instanceof UnsupportedChainIdError
+  const isWrongNetwork = chain?.unsupported
 
   useEffect(() => {
     if (hasPendingTransactions) {

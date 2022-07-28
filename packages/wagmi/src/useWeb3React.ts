@@ -12,6 +12,7 @@ export function useWeb3React() {
     library: (library || provider) as Web3Provider,
     chainId: chain?.id,
     account: address,
+    chain,
     connector,
   }
 }

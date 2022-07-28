@@ -4,7 +4,7 @@ import { Button, ChevronDownIcon, Text, AddIcon, useModal } from '@pancakeswap/u
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { NextLinkFromReactRouter } from 'components/NextLink'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'

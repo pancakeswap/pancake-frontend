@@ -1,16 +1,13 @@
 import { Box, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
-import { bsc, bscTest } from '@pancakeswap/wagmi'
-import { mainnet, rinkeby } from 'wagmi/chains'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import Image from 'next/image'
-import { setupNetwork } from 'utils/wallet'
-
-// const chains = [bsc, mainnet]
-const chains = [bsc, bscTest, mainnet, rinkeby]
+import { chains } from 'utils/wagmi'
+import { useSwitchNetwork } from 'wagmi'
 
 export const NetworkSelect = () => {
   const { t } = useTranslation()
+  const { switchNetwork } = useSwitchNetwork()
   return (
     <>
       <Box px="16px" py="8px">
@@ -18,19 +15,7 @@ export const NetworkSelect = () => {
       </Box>
       <UserMenuDivider />
       {chains.map((chain) => (
-        <UserMenuItem
-          key={chain.id}
-          style={{ justifyContent: 'flex-start' }}
-          onClick={() =>
-            setupNetwork(chain.id, {
-              chainId: chain.id,
-              chanName: chain.name,
-              nativeCurrency: chain.nativeCurrency,
-              rpcUrls: chain.rpcUrls.default,
-              blockExplorerUrls: chain.blockExplorers.default,
-            })
-          }
-        >
+        <UserMenuItem key={chain.id} style={{ justifyContent: 'flex-start' }} onClick={() => switchNetwork(chain.id)}>
           <Image width={24} height={24} src={`https://cdn.pancakeswap.com/chains/${chain.id}.png`} unoptimized />
           <Text pl="12px">{chain.name}</Text>
         </UserMenuItem>
@@ -52,8 +37,16 @@ export const NetworkSwitcher = () => {
     <UserMenu
       mr="8px"
       avatarSrc={`https://cdn.pancakeswap.com/chains/${chainId}.png`}
-      account={chain ? chain.name : 'Select a Network'}
-      ellipsis={false}
+      text={
+        chain ? (
+          <>
+            <Box display={['none', null, null, null, null, 'block']}>{chain.name}</Box>
+            <Box display={['block', null, null, null, null, 'none']}>{chain.nativeCurrency?.symbol}</Box>
+          </>
+        ) : (
+          'Select a Network'
+        )
+      }
     >
       {() => <NetworkSelect />}
     </UserMenu>

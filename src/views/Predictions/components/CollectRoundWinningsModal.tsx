@@ -19,7 +19,7 @@ import {
 import { AnyAction, AsyncThunkAction } from '@reduxjs/toolkit'
 import { Token } from '@pancakeswap/sdk'
 
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { REWARD_RATE } from 'state/predictions/config'
 import { fetchNodeHistory, markAsCollected } from 'state/predictions'
 import { Bet } from 'state/types'

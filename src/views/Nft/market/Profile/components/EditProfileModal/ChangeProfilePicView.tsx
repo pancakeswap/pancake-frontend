@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { Button, Box, InjectedModalProps, Text, Skeleton } from '@pancakeswap/uikit'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { useProfile } from 'state/profile/hooks'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'

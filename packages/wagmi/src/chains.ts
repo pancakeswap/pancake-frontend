@@ -1,13 +1,4 @@
-import {
-  arbitrumRinkeby,
-  optimismKovan,
-  polygonMumbai,
-  rinkeby,
-  mainnet,
-  arbitrum,
-  optimism,
-  polygon,
-} from 'wagmi/chains'
+import { arbitrumRinkeby, optimismKovan, polygonMumbai, rinkeby, mainnet } from 'wagmi/chains'
 import { Chain } from 'wagmi'
 
 export const avalandche: Chain = {
@@ -96,7 +87,7 @@ export const bsc: Chain = {
   },
   nativeCurrency: {
     name: 'BNB',
-    symbol: 'bnb',
+    symbol: 'BNB',
     decimals: 18,
   },
 }
@@ -143,4 +134,4 @@ export const CHAINS_STARGATE_TESTNET = [
   fantomTestnet,
 ]
 
-export const CHAINS = [bsc, mainnet, arbitrum, optimism, polygon, fantomOpera, avalandche]
+export const CHAINS = [bsc, mainnet, bscTest, rinkeby]

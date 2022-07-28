@@ -3,7 +3,7 @@ import { SvgProps } from "../../components/Svg/types";
 
 export enum ConnectorNames {
   Injected = "injected",
-  WalletConnect = "walletconnect",
+  WalletConnect = "walletConnect",
   BSC = "bsc",
   Blocto = "blocto",
   WalletLink = "coinbaseWallet",

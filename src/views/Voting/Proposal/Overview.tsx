@@ -1,7 +1,7 @@
 import { ArrowBackIcon, Box, Button, Flex, Heading } from '@pancakeswap/uikit'
 import { PageMeta } from 'components/Layout/Page'
 import { getAllVotes, getProposal } from 'state/voting/helpers'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import useSWRImmutable from 'swr/immutable'
 import { ProposalState } from 'state/types'
 import Link from 'next/link'

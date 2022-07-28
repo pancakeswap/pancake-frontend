@@ -14,7 +14,7 @@ import {
   Text,
   useModal,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React, useSignMessage } from '@pancakeswap/wagmi'
 import times from 'lodash/times'
 import isEmpty from 'lodash/isEmpty'
 import { useInitialBlock } from 'state/block/hooks'
@@ -22,7 +22,6 @@ import { SnapshotCommand } from 'state/types'
 import useToast from 'hooks/useToast'
 import { getBscScanLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
-import { useSignMessage } from 'utils/web3React'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
 import { DatePicker, TimePicker, DatePickerPortal } from 'views/Voting/components/DatePicker'
