@@ -20,7 +20,8 @@ const AvailableWithdraw: React.FC<AvailableWithdrawProps> = ({ withdrawData }) =
     currentLanguage: { locale },
   } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
-  const { previewRedeem, lockedDate, shares, status, potteryVaultAddress, totalSupply, totalLockCake } = withdrawData
+  const { previewRedeem, lockedDate, shares, status, potteryVaultAddress, totalSupply, totalLockCake, balanceOf } =
+    withdrawData
 
   const cakeNumber = useMemo(() => new BigNumber(previewRedeem), [previewRedeem])
   const amountAsBn = calculateCakeAmount({
@@ -49,7 +50,12 @@ const AvailableWithdraw: React.FC<AvailableWithdrawProps> = ({ withdrawData }) =
             {t('Deposited %date%', { date: lockDate })}
           </Text>
         </Box>
-        <WithdrawButton cakeNumber={cakeNumber} redeemShare={shares} potteryVaultAddress={potteryVaultAddress} />
+        <WithdrawButton
+          cakeNumber={cakeNumber}
+          redeemShare={shares}
+          potteryVaultAddress={potteryVaultAddress}
+          balanceOf={balanceOf}
+        />
       </Flex>
     </Box>
   )

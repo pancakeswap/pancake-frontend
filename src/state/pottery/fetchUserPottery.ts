@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { CAKE } from 'config/constants/tokens'
+import { bscTokens } from 'config/constants/tokens'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBep20Contract, getPotteryVaultContract, getPotteryDrawContract } from 'utils/contractHelpers'
 import { request, gql } from 'graphql-request'
@@ -10,9 +10,9 @@ import potteryVaultAbi from 'config/abi/potteryVaultAbi.json'
 
 const potteryDrawContract = getPotteryDrawContract()
 
-export const fetchPotterysAllowance = async (account: string, potteryVaultAddress: string, chainId: number) => {
+export const fetchPotterysAllowance = async (account: string, potteryVaultAddress: string) => {
   try {
-    const contract = getBep20Contract(CAKE[chainId]?.address)
+    const contract = getBep20Contract(bscTokens.cake.address)
     const allowances = await contract.allowance(account, potteryVaultAddress)
     return new BigNumber(allowances.toString()).toJSON()
   } catch (error) {
@@ -92,8 +92,13 @@ export const fetchWithdrawAbleData = async (account: string) => {
             address: vault.id,
             name: 'totalLockCake',
           },
+          {
+            address: vault.id,
+            name: 'balanceOf',
+            params: [account],
+          },
         ]
-        const [[previewRedeem], [totalSupply], [totalLockCake]] = await multicallv2(potteryVaultAbi, calls)
+        const [[previewRedeem], [totalSupply], [totalLockCake], [balanceOf]] = await multicallv2(potteryVaultAbi, calls)
 
         return {
           id,
@@ -105,6 +110,7 @@ export const fetchWithdrawAbleData = async (account: string) => {
           totalSupply: new BigNumber(totalSupply.toString()).toJSON(),
           totalLockCake: new BigNumber(totalLockCake.toString()).toJSON(),
           lockedDate: vault.lockDate,
+          balanceOf: new BigNumber(balanceOf.toString()).toJSON(),
         }
       }),
     )
