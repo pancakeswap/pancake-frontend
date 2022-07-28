@@ -26,7 +26,7 @@ const RenewDuration = ({ setCheckedState, checkedState }) => {
     <>
       {!checkedState && (
         <Message variant="warning" mb="16px">
-          <MessageText>
+          <MessageText maxWidth="320px">
             {t(
               'Adding more CAKE will renew your lock, setting it to remaining duration. Due to shorter lock period, benefits decrease. To keep similar benefits, extend your lock.',
             )}
