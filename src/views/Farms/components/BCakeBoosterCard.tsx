@@ -1,28 +1,21 @@
 import {
-  AutoRenewIcon,
   Box,
   Button,
   Card,
   CardBody,
   CardFooter,
   Flex,
-  Text,
-  RocketIcon,
   HelpIcon,
   Link,
+  RocketIcon,
+  Text,
   useTooltip,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { DEFAULT_GAS_LIMIT } from 'config'
 import { useTranslation } from 'contexts/Localization'
-import useCatchTxError from 'hooks/useCatchTxError'
-import { useBCakeFarmBoosterProxyFactoryContract } from 'hooks/useContract'
-import useToast from 'hooks/useToast'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
 import { useUserBoosterStatus } from '../hooks/useUserBoosterStatus'
@@ -90,7 +83,7 @@ export const BCakeBoosterCard = () => {
   return (
     <CardWrapper>
       <ImageWrapper>
-        <Image src={boosterCardImage} alt="boosterCardImage" width={99} height={233} placeholder="blur" />
+        <Image src={boosterCardImage} alt="boosterCardImage" width={99} height={191} placeholder="blur" />
       </ImageWrapper>
       <Card style={{ zIndex: 1 }}>
         <StyledCardBody>
