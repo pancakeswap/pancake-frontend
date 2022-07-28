@@ -1,47 +1,30 @@
 import {
   Button,
-  ConnectorNames,
   Flex,
   Logo,
-  useWalletModal,
-  walletConnectors,
   UserMenu,
   UserMenuItem,
   UserMenuDivider,
-  LogoutIcon,
   Text,
   Box,
   ThemeSwitcher,
 } from '@pancakeswap/uikit'
 import Image from 'next/future/image'
 import NextLink from 'next/link'
-import { useCallback } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { useTheme as useNextTheme } from 'next-themes'
-import { useAccount, useConnect, useDisconnect, useNetwork, useSwitchNetwork } from 'wagmi'
+import { CHAINS_STARGATE } from '@pancakeswap/wagmi'
 
-const SUPPORTED_CONNECTORS = walletConnectors.filter(
-  (c) => c.connectorId !== ConnectorNames.BSC && c.connectorId !== ConnectorNames.Blocto,
-)
+// function useAuth() {
+//   const logout = () => {
+//     window.stargate.wallet.ethereum.deactivate()
+//   }
 
-function useAuth() {
-  const { connect, connectors } = useConnect()
-  const { disconnect } = useDisconnect()
-
-  const login = (connectorId: ConnectorNames) => {
-    const findConnector = connectors.find((c) => c.id.toLowerCase() === connectorId.toLowerCase())
-    connect({ connector: findConnector })
-  }
-
-  const logout = () => {
-    disconnect()
-  }
-
-  return {
-    login,
-    logout,
-  }
-}
+//   return {
+//     logout,
+//   }
+// }
 
 const StyledMenuItem = styled.a<any>`
   position: relative;
@@ -89,10 +72,8 @@ export function Menu() {
 }
 
 const UserMenuItems = () => {
-  const t = (s: string) => s
-  const { logout } = useAuth()
-
-  const { chains, switchNetwork } = useSwitchNetwork()
+  // const t = (s: string) => s
+  // const { logout } = useAuth()
 
   return (
     <>
@@ -100,34 +81,87 @@ const UserMenuItems = () => {
         <Text>Select a Network</Text>
       </Box>
       <UserMenuDivider />
-      {chains.map((chain) => (
-        <UserMenuItem key={chain.id} style={{ justifyContent: 'flex-start' }} onClick={() => switchNetwork?.(chain.id)}>
+      {CHAINS_STARGATE.map((chain) => (
+        <UserMenuItem key={chain.id} style={{ justifyContent: 'flex-start' }} onClick={() => switchNetwork(chain.id)}>
           <Image width={24} height={24} src={`/chains/${chain.id}.png`} unoptimized />
           <Text pl="12px">{chain.name}</Text>
         </UserMenuItem>
       ))}
-      <UserMenuDivider />
+      {/* <UserMenuDivider />
       <UserMenuItem as="button" onClick={logout}>
         <Flex color="text" alignItems="center" justifyContent="space-between" width="100%">
           {t('Disconnect')}
           <LogoutIcon />
         </Flex>
-      </UserMenuItem>
+      </UserMenuItem> */}
     </>
   )
 }
 
-function User() {
-  const { login } = useAuth()
-  const { onPresentConnectModal } = useWalletModal(
-    login,
-    useCallback((s) => s, []),
-    SUPPORTED_CONNECTORS,
-  )
-  const { address, isConnected } = useAccount()
-  const { chain } = useNetwork()
+async function switchNetwork(chainId: number) {
+  const chain = CHAINS_STARGATE.find((c) => c.id === chainId)
+  const provider = window.stargate?.wallet?.ethereum?.signer?.provider?.provider ?? window.ethereum
+  if (chain && provider) {
+    try {
+      await provider.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: `0x${chainId.toString(16)}` }],
+      })
+      return true
+    } catch (switchError) {
+      if ((switchError as any)?.code === 4902) {
+        try {
+          await provider.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: chain.id,
+                chainName: chain.name,
+                nativeCurrency: chain.nativeCurrency,
+                rpcUrls: chain.rpcUrls.default,
+                blockExplorerUrls: chain.blockExplorers?.default,
+              },
+            ],
+          })
+          return true
+        } catch (error) {
+          console.error('Failed to setup the network', error)
+          return false
+        }
+      }
+      return false
+    }
+  }
+  return false
+}
 
-  const isWrongNetwork = chain?.unsupported
+function useStargateReaction<T>(expression: () => T) {
+  const savedExpression = useRef(expression)
+  const [value, setValue] = useState<T>()
+
+  useEffect(() => {
+    savedExpression.current = expression
+  }, [expression])
+
+  useEffect(() => {
+    customElements.whenDefined('stargate-widget').then(() => {
+      window.stargate.utils.reaction(savedExpression.current, (v: T) => {
+        setValue(v)
+      })
+    })
+  }, [])
+
+  return value
+}
+
+function User() {
+  const account = useStargateReaction(() => window.stargate.wallet.ethereum.account)
+  const chainId = useStargateReaction(() => window.stargate.wallet.ethereum.chainId)
+  const active = useStargateReaction(() => window.stargate.wallet.ethereum.active)
+
+  const chain = CHAINS_STARGATE.find((c) => c.id === chainId)
+
+  const isWrongNetwork = chainId && !chain
 
   if (isWrongNetwork) {
     return (
@@ -137,16 +171,16 @@ function User() {
     )
   }
 
-  if (isConnected) {
+  if (active) {
     return (
-      <UserMenu account={address} avatarSrc={chain ? `/chains/${chain.id}.png` : undefined}>
+      <UserMenu account={account} avatarSrc={chainId ? `/chains/${chainId}.png` : undefined}>
         {() => <UserMenuItems />}
       </UserMenu>
     )
   }
 
   return (
-    <Button scale="sm" onClick={onPresentConnectModal}>
+    <Button scale="sm" onClick={() => window.stargate.ui.connectWalletPopup.open()}>
       <Box display={['none', null, null, 'block']}>Connect Wallet</Box>
       <Box display={['block', null, null, 'none']}>Connect</Box>
     </Button>
