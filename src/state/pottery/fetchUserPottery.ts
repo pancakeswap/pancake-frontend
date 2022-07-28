@@ -61,7 +61,7 @@ export const fetchWithdrawAbleData = async (account: string) => {
       GRAPH_API_POTTERY,
       gql`
         query getUserPotterWithdrawAbleData($account: ID!) {
-          withdrawals(first: 30, where: { user: $account }) {
+          withdrawals(first: 1000, where: { user: $account }) {
             id
             shares
             depositDate
@@ -76,7 +76,7 @@ export const fetchWithdrawAbleData = async (account: string) => {
       { account: account.toLowerCase() },
     )
 
-    const withdrawAbleData = await Promise.all(
+    const withdrawalsData = await Promise.all(
       response.withdrawals.map(async ({ id, shares, depositDate, vault }) => {
         const calls = [
           {
@@ -114,6 +114,14 @@ export const fetchWithdrawAbleData = async (account: string) => {
         }
       }),
     )
+
+    // eslint-disable-next-line array-callback-return, consistent-return
+    const withdrawAbleData = withdrawalsData.filter((data) => {
+      if (data.status === PotteryDepositStatus.UNLOCK && data.balanceOf === '0') {
+        return null
+      }
+      return data
+    })
 
     return withdrawAbleData
   } catch (error) {
