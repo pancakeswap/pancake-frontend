@@ -29,20 +29,17 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
   const [isMaxSelected, setIsMaxSelected] = useState(false)
 
   const calculateRemainingDuration = useCallback(
-    (now: Date) => {
-      return lockEndTime
+    (now: Date) =>
+      lockEndTime
         ? differenceInSeconds(new Date(convertTimeToSeconds(lockEndTime)), now, {
             roundingMethod: 'ceil',
           })
-        : 0
-    },
+        : 0,
     [lockEndTime],
   )
 
   const calculateMaxAvailableDuration = useCallback(
-    (now: Date) => {
-      return MAX_LOCK_DURATION - calculateRemainingDuration(now)
-    },
+    (now: Date) => MAX_LOCK_DURATION - calculateRemainingDuration(now),
     [calculateRemainingDuration],
   )
 
