@@ -10,7 +10,6 @@ import { getRoi } from 'utils/compoundApyHelpers'
 
 import LockDurationField from '../LockedPool/Common/LockDurationField'
 import { weeksToSeconds } from '../utils/formatSecondsToWeeks'
-import { MAX_LOCK_DURATION } from '../../../../config/constants/pools'
 
 export const VaultRoiCalculatorModal = ({
   pool,
@@ -92,12 +91,7 @@ export const VaultRoiCalculatorModal = ({
     >
       {cakeVaultView && (
         <Box mt="16px">
-          <LockDurationField
-            duration={duration}
-            setDuration={setDuration}
-            isOverMax={false}
-            maxAvailableDuration={MAX_LOCK_DURATION}
-          />
+          <LockDurationField duration={duration} setDuration={setDuration} isOverMax={false} />
         </Box>
       )}
     </RoiCalculatorModal>

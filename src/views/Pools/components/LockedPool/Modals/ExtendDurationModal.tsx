@@ -46,7 +46,6 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
         isValidAmount,
         isValidDuration,
         isOverMax: totalDuration > MAX_LOCK_DURATION,
-        maxAvailableDuration: MAX_LOCK_DURATION - currentDurationLeft,
       }
     },
     [currentLockedAmount, lockEndTime],
@@ -64,13 +63,13 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   )
 
   const customOverview = useCallback(
-    ({ isValidDuration, duration, updatedLockStartTime, updatedNewDuration }) => (
+    ({ isValidDuration, duration, updatedLockStartTime, updatedLockDuration }) => (
       <Overview
         lockStartTime={updatedLockStartTime || lockStartTime}
         isValidDuration={isValidDuration}
         openCalculator={_noop}
         duration={currentDuration || duration}
-        newDuration={updatedNewDuration || currentDuration + duration}
+        newDuration={updatedLockDuration || currentDuration + duration}
         lockedAmount={currentLockedAmount}
         usdValueStaked={usdValueStaked}
         showLockWarning={!+lockStartTime}
@@ -100,6 +99,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
           extendLockedPosition={extendLockedPosition}
           currentBalance={currentBalance}
           currentDuration={currentDuration}
+          lockEndTime={lockEndTime}
           onDismiss={onDismiss}
           lockedAmount={new BigNumber(currentLockedAmount)}
           validator={validator}

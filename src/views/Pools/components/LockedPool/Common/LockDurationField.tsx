@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
+import { differenceInSeconds } from 'date-fns'
+import { convertTimeToSeconds } from 'utils/timeHelper'
 import { Text, Flex, Button, Input, Box, Message, MessageText } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import _toNumber from 'lodash/toNumber'
-import { ONE_WEEK_DEFAULT } from 'config/constants/pools'
+import { ONE_WEEK_DEFAULT, MAX_LOCK_DURATION } from 'config/constants/pools'
 import { secondsToWeeks, weeksToSeconds } from '../../utils/formatSecondsToWeeks'
 import { LockDurationFieldPropsType } from '../types'
 
@@ -19,10 +21,31 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
   setDuration,
   isOverMax,
   extendLockedPosition,
-  maxAvailableDuration,
+  currentDuration,
+  lockEndTime,
+  setUpdatedLockStartTime,
+  setUpdatedLockDuration,
 }) => {
   const { t } = useTranslation()
   const [isMaxSelected, setIsMaxSelected] = useState(false)
+
+  const calculateRemainingDuration = useCallback(
+    (now: Date) => {
+      return lockEndTime
+        ? differenceInSeconds(new Date(convertTimeToSeconds(lockEndTime)), now, {
+            roundingMethod: 'ceil',
+          })
+        : 0
+    },
+    [lockEndTime],
+  )
+
+  const calculateMaxAvailableDuration = useCallback(
+    (now: Date) => {
+      return MAX_LOCK_DURATION - calculateRemainingDuration(now)
+    },
+    [calculateRemainingDuration],
+  )
 
   return (
     <>
@@ -44,11 +67,21 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
                 onClick={() => {
                   setIsMaxSelected(false)
                   setDuration(weekSeconds)
+                  if (currentDuration) {
+                    const now = new Date()
+                    if (currentDuration + weekSeconds > MAX_LOCK_DURATION) {
+                      setUpdatedLockStartTime(Math.floor(now.getTime() / 1000).toString())
+                      setUpdatedLockDuration(calculateRemainingDuration(now) + weekSeconds)
+                    } else {
+                      setUpdatedLockStartTime(null)
+                      setUpdatedLockDuration(null)
+                    }
+                  }
                 }}
                 mt="4px"
                 mr={['2px', '2px', '4px', '4px']}
                 scale="sm"
-                disabled={weekSeconds > maxAvailableDuration}
+                disabled={weekSeconds > calculateMaxAvailableDuration(new Date())}
                 variant={weekSeconds === duration ? 'subtle' : 'tertiary'}
               >
                 {week}W
@@ -56,15 +89,21 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
             )
           })}
           <Button
-            key={maxAvailableDuration}
+            key="max"
             onClick={() => {
               setIsMaxSelected(true)
+              const now = new Date()
+              const maxAvailableDuration = calculateMaxAvailableDuration(now)
               setDuration(maxAvailableDuration)
+              if (currentDuration) {
+                setUpdatedLockStartTime(Math.floor(now.getTime() / 1000).toString())
+                setUpdatedLockDuration(calculateRemainingDuration(now) + maxAvailableDuration)
+              }
             }}
             mt="4px"
             mr={['2px', '2px', '4px', '4px']}
             scale="sm"
-            disabled={maxAvailableDuration < ONE_WEEK_DEFAULT}
+            disabled={calculateMaxAvailableDuration(new Date()) < ONE_WEEK_DEFAULT}
             variant={isMaxSelected ? 'subtle' : 'tertiary'}
           >
             {t('Max')}

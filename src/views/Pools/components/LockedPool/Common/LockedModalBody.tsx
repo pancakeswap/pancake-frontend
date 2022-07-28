@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { Button, AutoRenewIcon, Box, Flex, Message, MessageText, Text } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
@@ -22,6 +22,7 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
   lockedAmount,
   currentBalance,
   currentDuration,
+  lockEndTime,
   extendLockedPosition,
   editAmountOnly,
   prepConfirmArg,
@@ -37,7 +38,10 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
     prepConfirmArg,
   })
 
-  const { isValidAmount, isValidDuration, isOverMax, maxAvailableDuration }: ModalValidator = useMemo(() => {
+  const [updatedLockStartTime, setUpdatedLockStartTime] = useState<string>()
+  const [updatedLockDuration, setUpdatedLockDuration] = useState<number>()
+
+  const { isValidAmount, isValidDuration, isOverMax }: ModalValidator = useMemo(() => {
     return typeof validator === 'function'
       ? validator({
           duration,
@@ -46,7 +50,6 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
           isValidAmount: lockedAmount?.toNumber() > 0 && getBalanceAmount(currentBalance).gte(lockedAmount),
           isValidDuration: duration > 0 && duration <= MAX_LOCK_DURATION,
           isOverMax: duration > MAX_LOCK_DURATION,
-          maxAvailableDuration: MAX_LOCK_DURATION,
         }
   }, [validator, currentBalance, lockedAmount, duration])
 
@@ -66,8 +69,11 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
           <>
             <LockDurationField
               isOverMax={isOverMax}
-              maxAvailableDuration={maxAvailableDuration}
+              lockEndTime={lockEndTime}
+              currentDuration={currentDuration}
               setDuration={setDuration}
+              setUpdatedLockStartTime={setUpdatedLockStartTime}
+              setUpdatedLockDuration={setUpdatedLockDuration}
               duration={duration}
               extendLockedPosition
             />
@@ -78,8 +84,8 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
         customOverview({
           isValidDuration,
           duration,
-          updatedLockStartTime: currentDuration + duration > MAX_LOCK_DURATION ? Math.floor(Date.now() / 1000) : null,
-          updatedNewDuration: currentDuration + duration > MAX_LOCK_DURATION ? MAX_LOCK_DURATION : null,
+          updatedLockStartTime,
+          updatedLockDuration,
         })
       ) : (
         <Overview
