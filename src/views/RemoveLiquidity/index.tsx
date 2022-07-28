@@ -72,7 +72,7 @@ const zapSupportedChainId = [ChainId.BSC, ChainId.BSC_TESTNET]
 export default function RemoveLiquidity() {
   const router = useRouter()
   const [zapMode] = useZapModeManager()
-  const [temporarilyZapMode, setTemporarilyZapMode] = useState(zapMode)
+  const [temporarilyZapMode, setTemporarilyZapMode] = useState(true)
   const [currencyIdA, currencyIdB] = router.query.currency || []
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
   const { account, chainId, library } = useActiveWeb3React()

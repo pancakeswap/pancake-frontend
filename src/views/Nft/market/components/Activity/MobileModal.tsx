@@ -1,4 +1,4 @@
-import { InjectedModalProps, Modal, Flex, Text, Button, Link, BinanceIcon, Box } from '@pancakeswap/uikit'
+import { InjectedModalProps, Modal, Flex, Text, Button, BinanceIcon, Box } from '@pancakeswap/uikit'
 import { Price } from '@pancakeswap/sdk'
 import useTheme from 'hooks/useTheme'
 import { Activity, NftToken } from 'state/nftMarket/types'
@@ -34,8 +34,13 @@ const MobileModal: React.FC<MobileModalProps> = ({
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, priceAsFloat)
 
   return (
-    <Modal title={t('Transaction Details')} onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
-      <Flex flexDirection="column" maxWidth="350px">
+    <Modal
+      title={t('Transaction Details')}
+      maxWidth="320px"
+      onDismiss={onDismiss}
+      headerBackground={theme.colors.gradients.cardHeader}
+    >
+      <Flex flexDirection="column">
         <Flex alignItems="center" mb="16px" justifyContent="space-between">
           <Box width={68} mr="16px">
             <NFTMedia nft={nft} width={68} height={68} />
@@ -100,7 +105,7 @@ const MobileModal: React.FC<MobileModalProps> = ({
           </Flex>
         </LightGreyCard>
         <Flex flexDirection="column" pt="16px" alignItems="center">
-          <Button as={Link} external href={getBscScanLink(activity.tx, 'transaction', chainId)}>
+          <Button as="a" external href={getBscScanLink(activity.tx, 'transaction', chainId)}>
             {t('View on BscScan')}
           </Button>
         </Flex>
