@@ -20,7 +20,6 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
   duration,
   setDuration,
   isOverMax,
-  extendLockedPosition,
   currentDuration,
   lockEndTime,
   setUpdatedLockStartTime,
@@ -135,7 +134,7 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
           {t('Total lock duration exceeds 52 weeks')}
         </Text>
       )}
-      {extendLockedPosition && !isMaxSelected && (
+      {currentDuration && !isMaxSelected && (
         <Message variant="warning">
           <MessageText maxWidth="240px">
             {t('Recommend choosing "MAX" to renew your staking position in order to keep similar yield boost.')}

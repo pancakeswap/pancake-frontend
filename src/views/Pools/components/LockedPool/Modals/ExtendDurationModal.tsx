@@ -23,7 +23,6 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   currentLockedAmount,
   currentDuration,
   currentBalance,
-  extendLockedPosition,
   lockStartTime,
   lockEndTime,
 }) => {
@@ -55,11 +54,11 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
     ({ duration }) => ({
       finalDuration: duration,
       finalLockedAmount:
-        extendLockedPosition && currentDuration + duration > MAX_LOCK_DURATION
+        currentDuration && currentDuration + duration > MAX_LOCK_DURATION
           ? getBalanceAmount(MIN_LOCK_AMOUNT, stakingToken.decimals).toNumber()
           : 0,
     }),
-    [stakingToken.decimals, extendLockedPosition, currentDuration],
+    [stakingToken.decimals, currentDuration],
   )
 
   const customOverview = useCallback(
@@ -96,7 +95,6 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
         </Box>
         <LockedBodyModal
           stakingToken={stakingToken}
-          extendLockedPosition={extendLockedPosition}
           currentBalance={currentBalance}
           currentDuration={currentDuration}
           lockEndTime={lockEndTime}

@@ -23,7 +23,6 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
   currentBalance,
   currentDuration,
   lockEndTime,
-  extendLockedPosition,
   editAmountOnly,
   prepConfirmArg,
   validator,
@@ -54,8 +53,8 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
   }, [validator, currentBalance, lockedAmount, duration])
 
   const cakeNeeded = useMemo(
-    () => isValidDuration && extendLockedPosition && currentDuration + duration > MAX_LOCK_DURATION,
-    [isValidDuration, extendLockedPosition, currentDuration, duration],
+    () => isValidDuration && currentDuration && currentDuration + duration > MAX_LOCK_DURATION,
+    [isValidDuration, currentDuration, duration],
   )
 
   const hasEnoughBalanceToExtend = useMemo(() => currentBalance?.gte(MIN_LOCK_AMOUNT), [currentBalance])
@@ -75,7 +74,6 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
               setUpdatedLockStartTime={setUpdatedLockStartTime}
               setUpdatedLockDuration={setUpdatedLockDuration}
               duration={duration}
-              extendLockedPosition
             />
           </>
         )}
