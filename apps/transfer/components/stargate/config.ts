@@ -1,7 +1,7 @@
 const VERSION = '0.0.25-mainnet.11'
 const SHA384 = 'XhIyqO8/J7RuxQ8im0SShtd0+41EV6Er7/B01HU1iYUxuZgB1PlkB4BqSLbTy89X'
 export const PARTNER_ID = 0x0002
-export const FEE_COLLECTOR = '0xc13b65f7c53Cd6db2EA205a4b574b4a0858720A6'
+export const FEE_COLLECTOR = '0x85337EEe92d48872Da544eCFf7B0eAAbB613339e'
 export const FEE_TENTH_BPS = '40'
 
 export const STARGATE_JS = {
