@@ -1,4 +1,4 @@
-import { JSBI, Token, TokenAmount } from '@pancakeswap/sdk'
+import { JSBI, Token, CurrencyAmount } from '@pancakeswap/sdk'
 import getPriceForOneToken from './getPriceForOneToken'
 
 const CAKE = new Token(56, '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', 18, 'CAKE', 'PancakeSwap Token')
@@ -15,16 +15,16 @@ const FIVE_EIGHT_DEC = JSBI.multiply(JSBI.BigInt(5), EIGHT_DECIMALS)
 
 describe('limitOrders/utils/getPriceForOneToken', () => {
   describe.each([
-    [new TokenAmount(CAKE, ONE), new TokenAmount(BUSD, ONE), '1'],
-    [new TokenAmount(CAKE, FIVE), new TokenAmount(BUSD, FIVE), '1'],
-    [new TokenAmount(CAKE, ONE), new TokenAmount(BUSD, FIVE), '5'],
-    [new TokenAmount(CAKE, FIVE), new TokenAmount(BUSD, ONE), '0.2'],
-    [new TokenAmount(DOGE, ONE_EIGHT_DEC), new TokenAmount(BUSD, ONE), '1'],
-    [new TokenAmount(DOGE, FIVE_EIGHT_DEC), new TokenAmount(BUSD, FIVE), '1'],
-    [new TokenAmount(DOGE, ONE_EIGHT_DEC), new TokenAmount(BUSD, FIVE), '5'],
-    [new TokenAmount(DOGE, FIVE_EIGHT_DEC), new TokenAmount(BUSD, ONE), '0.2'],
-    [new TokenAmount(CAKE, ZERO), new TokenAmount(BUSD, ONE), undefined],
-    [new TokenAmount(CAKE, ONE), new TokenAmount(BUSD, ZERO), undefined],
+    [CurrencyAmount.fromRawAmount(CAKE, ONE), CurrencyAmount.fromRawAmount(BUSD, ONE), '1'],
+    [CurrencyAmount.fromRawAmount(CAKE, FIVE), CurrencyAmount.fromRawAmount(BUSD, FIVE), '1'],
+    [CurrencyAmount.fromRawAmount(CAKE, ONE), CurrencyAmount.fromRawAmount(BUSD, FIVE), '5'],
+    [CurrencyAmount.fromRawAmount(CAKE, FIVE), CurrencyAmount.fromRawAmount(BUSD, ONE), '0.2'],
+    [CurrencyAmount.fromRawAmount(DOGE, ONE_EIGHT_DEC), CurrencyAmount.fromRawAmount(BUSD, ONE), '1'],
+    [CurrencyAmount.fromRawAmount(DOGE, FIVE_EIGHT_DEC), CurrencyAmount.fromRawAmount(BUSD, FIVE), '1'],
+    [CurrencyAmount.fromRawAmount(DOGE, ONE_EIGHT_DEC), CurrencyAmount.fromRawAmount(BUSD, FIVE), '5'],
+    [CurrencyAmount.fromRawAmount(DOGE, FIVE_EIGHT_DEC), CurrencyAmount.fromRawAmount(BUSD, ONE), '0.2'],
+    [CurrencyAmount.fromRawAmount(CAKE, ZERO), CurrencyAmount.fromRawAmount(BUSD, ONE), undefined],
+    [CurrencyAmount.fromRawAmount(CAKE, ONE), CurrencyAmount.fromRawAmount(BUSD, ZERO), undefined],
   ])(`returns correct price`, (input, output, expected) => {
     it(`for ${input.toSignificant(6)} ${input.currency.symbol} -> ${output.toSignificant(6)} ${
       output.currency.symbol

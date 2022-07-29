@@ -15,7 +15,7 @@ function PoolPriceBar({
   currencies: { [field in Field]?: Currency }
   noLiquidity?: boolean
   poolTokenPercentage?: Percent
-  price?: Price
+  price?: Price<Currency, Currency>
 }) {
   const { t } = useTranslation()
   return (

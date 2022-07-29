@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { formatUnits } from '@ethersproject/units'
-import { CurrencyAmount, Price, Token, TokenAmount, JSBI, ETHER } from '@pancakeswap/sdk'
+import { CurrencyAmount, Price, Token, JSBI, Currency } from '@pancakeswap/sdk'
 import { BigNumber } from '@ethersproject/bignumber'
 import { useTradeExactIn } from 'hooks/Trades'
 import tryParseAmount from 'utils/tryParseAmount'
@@ -9,21 +9,23 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { GENERIC_GAS_LIMIT_ORDER_EXECUTION, BIG_INT_TEN } from 'config/constants/exchange'
 import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
 import { useGasPrice } from 'state/user/hooks'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 
 export default function useGasOverhead(
-  inputAmount: CurrencyAmount | undefined,
-  outputAmount: CurrencyAmount | undefined,
+  inputAmount: CurrencyAmount<Currency> | undefined,
+  outputAmount: CurrencyAmount<Currency> | undefined,
   rateType: Rate,
 ): {
-  realExecutionPrice: Price | undefined | null
+  realExecutionPrice: Price<Currency, Currency> | undefined | null
   realExecutionPriceAsString: string | undefined
   gasPrice: string | undefined
 } {
   const { chainId } = useActiveWeb3React()
+  const native = useNativeCurrency()
 
   const gasPrice = useGasPrice()
   const requiredGas = formatUnits(gasPrice ? BigNumber.from(gasPrice).mul(GENERIC_GAS_LIMIT_ORDER_EXECUTION) : '0')
-  const requiredGasAsCurrencyAmount = tryParseAmount(requiredGas, ETHER)
+  const requiredGasAsCurrencyAmount = tryParseAmount(requiredGas, native)
 
   const inputIsBNB = inputAmount?.currency.symbol === 'BNB'
 
@@ -38,8 +40,11 @@ export default function useGasOverhead(
     const adjustedGasInWei = adjustedGas.multiply(
       JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(gasCostInInputTokens.outputAmount.currency.decimals)),
     )
-    if (gasCostInInputTokens.outputAmount.currency instanceof Token) {
-      return new TokenAmount(gasCostInInputTokens.outputAmount.currency, adjustedGasInWei.toFixed(0))
+    if (gasCostInInputTokens.outputAmount.currency?.isToken) {
+      return CurrencyAmount.fromRawAmount<Token>(
+        gasCostInInputTokens.outputAmount.currency,
+        adjustedGasInWei.toFixed(0),
+      )
     }
     return undefined
   }, [gasCostInInputTokens, requiredGasAsCurrencyAmount, inputIsBNB])

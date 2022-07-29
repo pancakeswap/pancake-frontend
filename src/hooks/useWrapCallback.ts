@@ -1,4 +1,4 @@
-import { Currency, currencyEquals, ETHER, WNATIVE } from '@pancakeswap/sdk'
+import { Currency, WNATIVE } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
@@ -40,7 +40,7 @@ export default function useWrapCallback(
 
     const sufficientBalance = inputAmount && balance && !balance.lessThan(inputAmount)
 
-    if (inputCurrency === ETHER && currencyEquals(WNATIVE[chainId], outputCurrency)) {
+    if (inputCurrency?.isNative && WNATIVE[chainId]?.equals(outputCurrency)) {
       return {
         wrapType: WrapType.WRAP,
         execute:
@@ -48,7 +48,7 @@ export default function useWrapCallback(
             ? async () => {
                 try {
                   const txReceipt = await callWithGasPrice(wbnbContract, 'deposit', undefined, {
-                    value: `0x${inputAmount.raw.toString(16)}`,
+                    value: `0x${inputAmount.quotient.toString(16)}`,
                   })
                   addTransaction(txReceipt, {
                     summary: `Wrap ${inputAmount.toSignificant(6)} BNB to WBNB`,
@@ -62,7 +62,7 @@ export default function useWrapCallback(
         inputError: sufficientBalance ? undefined : t('Insufficient BNB balance'),
       }
     }
-    if (currencyEquals(WNATIVE[chainId], inputCurrency) && outputCurrency === ETHER) {
+    if (WNATIVE[chainId]?.equals(inputCurrency) && outputCurrency?.isNative) {
       return {
         wrapType: WrapType.UNWRAP,
         execute:
@@ -70,7 +70,7 @@ export default function useWrapCallback(
             ? async () => {
                 try {
                   const txReceipt = await callWithGasPrice(wbnbContract, 'withdraw', [
-                    `0x${inputAmount.raw.toString(16)}`,
+                    `0x${inputAmount.quotient.toString(16)}`,
                   ])
                   addTransaction(txReceipt, { summary: `Unwrap ${inputAmount.toSignificant(6)} WBNB to BNB` })
                 } catch (error) {

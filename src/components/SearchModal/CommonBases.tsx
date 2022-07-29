@@ -1,6 +1,7 @@
-import { ChainId, Currency, currencyEquals, ETHER, Token } from '@pancakeswap/sdk'
+import { ChainId, Currency, Token } from '@pancakeswap/sdk'
 import { Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useTranslation } from 'contexts/Localization'
 
 import { SUGGESTED_BASES } from 'config/constants/exchange'
@@ -51,6 +52,7 @@ export default function CommonBases({
   selectedCurrency?: Currency | null
   onSelect: (currency: Currency) => void
 }) {
+  const native = useNativeCurrency()
   const { t } = useTranslation()
   return (
     <AutoColumn gap="md">
@@ -62,18 +64,18 @@ export default function CommonBases({
         <ButtonWrapper>
           <BaseWrapper
             onClick={() => {
-              if (!selectedCurrency || !currencyEquals(selectedCurrency, ETHER)) {
-                onSelect(ETHER)
+              if (!selectedCurrency || !selectedCurrency.isNative) {
+                onSelect(native)
               }
             }}
-            disable={selectedCurrency === ETHER}
+            disable={selectedCurrency?.isNative}
           >
-            <CurrencyLogo currency={ETHER} style={{ marginRight: 8 }} />
+            <CurrencyLogo currency={native} style={{ marginRight: 8 }} />
             <Text>BNB</Text>
           </BaseWrapper>
         </ButtonWrapper>
         {(chainId ? SUGGESTED_BASES[chainId] : []).map((token: Token) => {
-          const selected = selectedCurrency instanceof Token && selectedCurrency.address === token.address
+          const selected = selectedCurrency?.equals(token)
           return (
             <ButtonWrapper>
               <BaseWrapper onClick={() => !selected && onSelect(token)} disable={selected} key={token.address}>

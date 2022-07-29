@@ -99,7 +99,7 @@ export const WBNB = {
   ),
 }
 
-export const WNATIVE = {
+export const WNATIVE: Record<number, Token> = {
   // [ChainId.ETHEREUM]: WETH9[ChainId.ETHEREUM],
   // [ChainId.RINKEBY]: WETH9[ChainId.RINKEBY],
   [ChainId.BSC]: WBNB[ChainId.BSC],

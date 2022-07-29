@@ -1,5 +1,5 @@
 import { InjectedModalProps, Modal, Flex, Text, Button, BinanceIcon, Box } from '@pancakeswap/uikit'
-import { Price } from '@pancakeswap/sdk'
+import { Price, Currency } from '@pancakeswap/sdk'
 import useTheme from 'hooks/useTheme'
 import { Activity, NftToken } from 'state/nftMarket/types'
 import { LightGreyCard } from 'components/Card'
@@ -14,7 +14,7 @@ import NFTMedia from '../NFTMedia'
 interface MobileModalProps extends InjectedModalProps {
   activity: Activity
   nft: NftToken
-  bnbBusdPrice: Price
+  bnbBusdPrice: Price<Currency, Currency>
   localeTimestamp: string
   isUserActivity?: boolean
 }

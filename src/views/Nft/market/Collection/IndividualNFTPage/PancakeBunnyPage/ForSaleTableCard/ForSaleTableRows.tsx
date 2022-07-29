@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { Price } from '@pancakeswap/sdk'
+import { Price, Currency } from '@pancakeswap/sdk'
 import { Button, Grid, Text, Flex, Box, BinanceIcon, useModal, Skeleton } from '@pancakeswap/uikit'
 import { formatNumber } from 'utils/formatBalance'
 import { ContextApi } from 'contexts/Localization/types'
@@ -26,7 +26,7 @@ const OwnersTableRow = styled(Grid)`
 interface RowProps {
   t: ContextApi['t']
   nft: NftToken
-  bnbBusdPrice: Price
+  bnbBusdPrice: Price<Currency, Currency>
   account: string
   onSuccessSale: () => void
 }

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/router'
-import { CurrencyAmount, Token, Trade } from '@pancakeswap/sdk'
+import { CurrencyAmount, Token, Trade, TradeType, Currency } from '@pancakeswap/sdk'
 import { Button, Box, Flex, useModal, BottomDrawer, Link, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 
 import { useTranslation } from 'contexts/Localization'
@@ -106,7 +106,7 @@ const LimitOrders = () => {
   } = useGelatoLimitOrders()
 
   const [{ swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
-    tradeToConfirm: Trade | undefined
+    tradeToConfirm: Trade<Currency, Currency, TradeType> | undefined
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
     txHash: string | undefined
@@ -121,7 +121,7 @@ const LimitOrders = () => {
 
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
 
-  const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances.input)
+  const maxAmountInput: CurrencyAmount<Currency> | undefined = maxAmountSpend(currencyBalances.input)
   const hideMaxButton = Boolean(maxAmountInput && parsedAmounts.input?.equalTo(maxAmountInput))
 
   // Trade execution price is always "in MUL mode", even if UI handles DIV rate

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Currency, CurrencyAmount, Fraction, Percent, Token, TokenAmount } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, Percent, Token } from '@pancakeswap/sdk'
 import { InjectedModalProps, Button } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import TransactionConfirmationModal, {
@@ -20,10 +20,10 @@ interface ConfirmAddLiquidityModalProps {
   allowedSlippage: number
   liquidityErrorMessage: string
   price: Fraction
-  parsedAmounts: { [field in Field]?: CurrencyAmount }
+  parsedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
   onAdd: () => void
   poolTokenPercentage: Percent
-  liquidityMinted: TokenAmount
+  liquidityMinted: CurrencyAmount<Token>
   currencyToAdd: Token
 }
 
