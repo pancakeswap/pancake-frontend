@@ -2,7 +2,7 @@ import React, { useContext, useRef, useEffect } from "react";
 import { MenuContext } from "../../widgets/Menu/context";
 import StyledMenuItem, { StyledMenuItemContainer } from "./styles";
 import { MenuItemProps } from "./types";
-import { useMatchBreakpoints } from "../../hooks";
+import { useMatchBreakpointsContext } from "../../contexts";
 
 const MenuItem: React.FC<MenuItemProps> = ({
   children,
@@ -13,7 +13,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
   statusColor,
   ...props
 }) => {
-  const { isMobile } = useMatchBreakpoints();
+  const { isMobile } = useMatchBreakpointsContext();
   const menuItemRef = useRef<HTMLDivElement>(null);
   const { linkComponent } = useContext(MenuContext);
   const itemLinkProps: any = href
