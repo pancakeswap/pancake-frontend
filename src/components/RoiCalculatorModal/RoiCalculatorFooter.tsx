@@ -93,7 +93,7 @@ const RoiCalculatorFooter: React.FC<RoiCalculatorFooterProps> = ({
             )}
             {!Number.isFinite(apy) ? (
               <Text color="textSubtle" small>
-                {isFarm ? t('Base APR (CAKE yield only)') : t('APR')}
+                *{isFarm ? t('Base APR (CAKE yield only)') : t('APR')}
               </Text>
             ) : (
               <Text color="textSubtle" small>
@@ -103,6 +103,16 @@ const RoiCalculatorFooter: React.FC<RoiCalculatorFooterProps> = ({
             <Text small textAlign="right">
               {(apy ?? apr).toFixed(2)}%
             </Text>
+            {isFarm && (
+              <>
+                <Text color="textSubtle" small>
+                  *{t('LP rewards only')}
+                </Text>
+                <Text small textAlign="right">
+                  {(Number(displayApr) - apr).toFixed(2)}%
+                </Text>
+              </>
+            )}
             {!Number.isFinite(apy) && (
               <Text color="textSubtle" small>
                 {t('APY (%compoundTimes%x daily compound)', {
