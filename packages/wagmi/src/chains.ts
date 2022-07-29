@@ -95,8 +95,8 @@ export const bsc: Chain = {
     blockCreated: 7162653,
   },
   nativeCurrency: {
-    name: 'BNB',
-    symbol: 'bnb',
+    name: 'Binance Chain Native Token',
+    symbol: 'BNB',
     decimals: 18,
   },
 }
@@ -107,8 +107,8 @@ export const bscTest: Chain = {
   network: 'bsc-testnet',
   nativeCurrency: {
     decimals: 18,
-    name: 'BNB',
-    symbol: 'BNB',
+    name: 'Binance Chain Native Token',
+    symbol: 'tBNB',
   },
   rpcUrls: {
     default: 'https://data-seed-prebsc-1-s2.binance.org:8545/',

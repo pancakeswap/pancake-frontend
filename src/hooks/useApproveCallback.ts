@@ -32,7 +32,7 @@ export function useApproveCallback(
   const { callWithGasPrice } = useCallWithGasPrice()
   const { t } = useTranslation()
   const { toastError } = useToast()
-  const token = amountToApprove.currency?.isToken ? amountToApprove.currency : undefined
+  const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
 

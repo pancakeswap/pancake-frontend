@@ -21,7 +21,7 @@ import { isTokenOnList } from '../../utils'
 import ImportRow from './ImportRow'
 
 function currencyKey(currency: Currency): string {
-  return currency?.isToken ? currency.address : currency?.isNative ? 'ETHER' : ''
+  return currency?.isToken ? currency.address : currency?.isNative ? currency.symbol : ''
 }
 
 const StyledBalanceText = styled(Text)`

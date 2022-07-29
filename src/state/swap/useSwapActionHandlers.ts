@@ -20,7 +20,7 @@ export function useSwapActionHandlers(): {
       dispatch(
         selectCurrency({
           field,
-          currencyId: currency?.isToken ? currency.address : currency?.isNative ? 'BNB' : '',
+          currencyId: currency?.isToken ? currency.address : currency?.isNative ? currency.symbol : '',
         }),
       )
     },

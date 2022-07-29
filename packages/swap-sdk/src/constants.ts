@@ -105,3 +105,23 @@ export const WNATIVE: Record<number, Token> = {
   [ChainId.BSC]: WBNB[ChainId.BSC],
   [ChainId.BSC_TESTNET]: WBNB[ChainId.BSC_TESTNET],
 }
+
+export const NATIVE: Record<
+  number,
+  {
+    name: string
+    symbol: string
+    decimals: number
+  }
+> = {
+  [ChainId.BSC]: {
+    name: 'Binance Chain Native Token',
+    symbol: 'BNB',
+    decimals: 18,
+  },
+  [ChainId.BSC_TESTNET]: {
+    name: 'Binance Chain Native Token',
+    symbol: 'tBNB',
+    decimals: 18,
+  },
+}
