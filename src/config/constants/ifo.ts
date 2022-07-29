@@ -8,7 +8,7 @@ export const cakeBnbLpToken = new Token(ChainId.BSC, CAKE_BNB_LP_MAINNET, 18, 'C
 const ifos: Ifo[] = [
   {
     id: 'peel',
-    address: '',
+    address: '0x35Bb6Dd4E8C63491057c32621c8cDdE43BabE201',
     isActive: true,
     name: 'PEEL',
     poolBasic: {
@@ -25,7 +25,7 @@ const ifos: Ifo[] = [
     },
     currency: bscTokens.cake,
     token: bscTokens.peel,
-    releaseBlockNumber: 0,
+    releaseBlockNumber: 19964276,
     campaignId: '511300000',
     articleUrl:
       'https://pancakeswap.finance/voting/proposal/bafkreibomj5nilvyckdro7ztmm62syt55dcfnonxs63ji6hm2ijq35lru4',
