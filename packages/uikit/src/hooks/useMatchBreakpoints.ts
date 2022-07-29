@@ -16,6 +16,12 @@ type MediaQueries = {
   [key: string]: string;
 };
 
+const DAEMON_STATE = {
+  isMobile: false,
+  isTablet: false,
+  isDesktop: false,
+};
+
 /**
  * Can't use the media queries from "base.mediaQueries" because of how matchMedia works
  * In order for the listener to trigger we need have the media query with a range, e.g.
@@ -59,48 +65,54 @@ const getState = () => {
   return s;
 };
 
-const useMatchBreakpoints = (): BreakpointChecks => {
-  const [state, setState] = useState<State>(() => getState());
+const useMatchBreakpoints = (runAsDaemon = false): BreakpointChecks => {
+  const [state, setState] = useState<State>(() => (!runAsDaemon ? getState() : {}));
 
   useIsomorphicEffect(() => {
-    // Create listeners for each media query returning a function to unsubscribe
-    const handlers = Object.keys(mediaQueries).map((size) => {
-      let mql: MediaQueryList;
-      let handler: (matchMediaQuery: MediaQueryListEvent) => void;
+    if (!runAsDaemon) {
+      // Create listeners for each media query returning a function to unsubscribe
+      const handlers = Object.keys(mediaQueries).map((size) => {
+        let mql: MediaQueryList;
+        let handler: (matchMediaQuery: MediaQueryListEvent) => void;
 
-      if (typeof window?.matchMedia === "function") {
-        mql = window.matchMedia(mediaQueries[size]);
+        if (typeof window?.matchMedia === "function") {
+          mql = window.matchMedia(mediaQueries[size]);
 
-        handler = (matchMediaQuery: MediaQueryListEvent) => {
-          const key = getKey(size);
-          setState((prevState) => ({
-            ...prevState,
-            [key]: matchMediaQuery.matches,
-          }));
-        };
+          handler = (matchMediaQuery: MediaQueryListEvent) => {
+            const key = getKey(size);
+            setState((prevState) => ({
+              ...prevState,
+              [key]: matchMediaQuery.matches,
+            }));
+          };
 
-        // Safari < 14 fix
-        if (mql.addEventListener) {
-          mql.addEventListener("change", handler);
+          // Safari < 14 fix
+          if (mql.addEventListener) {
+            mql.addEventListener("change", handler);
+          }
         }
-      }
+
+        return () => {
+          // Safari < 14 fix
+          if (mql?.removeEventListener) {
+            mql.removeEventListener("change", handler);
+          }
+        };
+      });
+
+      setState(getState());
 
       return () => {
-        // Safari < 14 fix
-        if (mql?.removeEventListener) {
-          mql.removeEventListener("change", handler);
-        }
+        handlers.forEach((unsubscribe) => {
+          unsubscribe();
+        });
       };
-    });
+    }
 
-    setState(getState());
-
-    return () => {
-      handlers.forEach((unsubscribe) => {
-        unsubscribe();
-      });
-    };
+    return undefined;
   }, []);
+
+  if (runAsDaemon) return DAEMON_STATE;
 
   return {
     ...state,

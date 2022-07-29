@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import throttle from "lodash/throttle";
 import styled, { css } from "styled-components";
 import { DropdownProps, PositionProps, Position } from "./types";
-import { useMatchBreakpoints } from "../../hooks";
+import useMatchBreakpointsContext from "../../contexts/MatchBreakpoints/useMatchBreakpointsContext";
 
 const getLeft = ({ position }: PositionProps) => {
   if (position === "top-right") {
@@ -56,7 +56,7 @@ const Container = styled.div<{ $scrolling: boolean }>`
 
 const Dropdown: React.FC<React.PropsWithChildren<DropdownProps>> = ({ target, position = "bottom", children }) => {
   const [scrolling, setScrolling] = useState(false);
-  const { isMobile } = useMatchBreakpoints();
+  const { isMobile } = useMatchBreakpointsContext();
 
   useEffect(() => {
     if (isMobile) {
