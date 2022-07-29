@@ -1,14 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { PotteryDepositStatus } from 'state/types'
 
-export const remainTimeToNextFriday = (): number => {
-  // Get current date and time
-  const today = new Date()
-
-  // Get number of days to Friday
-  const dayNum = today.getDay()
-  const daysToFri = 5 - (dayNum <= 5 ? dayNum : dayNum - 7)
-
+const calculateSecondsRemaining = (today, daysToFri) => {
   // Get milliseconds to noon friday
   const fridayNoon = new Date(+today)
   fridayNoon.setUTCDate(fridayNoon.getDate() + daysToFri)
@@ -16,6 +9,23 @@ export const remainTimeToNextFriday = (): number => {
 
   // Round up remaining
   const secondsRemaining = Math.ceil((fridayNoon.getTime() - today.getTime()) / 1000)
+  return secondsRemaining
+}
+
+export const remainTimeToNextFriday = (): number => {
+  // Get current date and time
+  const today = new Date()
+
+  // Get number of days to Friday
+  const dayNum = today.getDay()
+  let daysToFri = 5 - (dayNum <= 5 ? dayNum : dayNum - 7)
+
+  const secondsRemaining = calculateSecondsRemaining(today, daysToFri)
+  if (secondsRemaining <= 0) {
+    daysToFri = 5 - (dayNum - 7)
+    return calculateSecondsRemaining(today, daysToFri)
+  }
+
   return secondsRemaining
 }
 
