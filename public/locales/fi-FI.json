@@ -1762,10 +1762,10 @@
   "Add liquidity failed: %message%": "Likviditeetin lisääminen epäonnistui: %message%",
   "Remove liquidity failed: %message%": "Likviditeetin poistaminen epäonnistui: %message%",
   "to disable Zap temporarily.": "poistaaksesi Zap käytöstä tilapäisesti.",
-  "Temporarily disabled Zap": "Temporarily disabled Zap",
+  "Temporarily disabled Zap": "Zap on poistettu käytöstä tilapäisesti",
   "Unavailable for legal reasons": "Ei saatavilla laillisista syistä",
-  "Zap allows you to add liquidity with only 1 single token. Click": "Zap allows you to add liquidity with only 1 single token. Click",
-  "to try.": "to try.",
+  "Zap allows you to add liquidity with only 1 single token. Click": "Zapin avulla voit lisätä likviditeettiä yksittäisellä poletilla. Kokeile",
+  "to try.": "napsauttamalla.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks.",
   "Select a Network": "Select a Network"
