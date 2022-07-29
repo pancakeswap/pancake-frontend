@@ -2322,6 +2322,14 @@ export const bscTokens = {
     'Meta Apes Shell',
     'https://metaapesgame.com/',
   ),
+  peel: new Token(
+    ChainId.BSC,
+    '0x734548a9e43d2D564600b1B2ed5bE9C2b911c6aB',
+    18,
+    'PEEL',
+    'Meta Apes Peel',
+    'https://metaapesgame.com/',
+  ),
 }
 
 export const bscTestnetTokens = {
