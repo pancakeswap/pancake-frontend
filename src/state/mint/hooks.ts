@@ -552,13 +552,13 @@ export function useZapIn({
       zapInEstimated.swapAmountOut.toString(),
     )
     const midPrice = new Price(
-      currencies[swapTokenField],
-      currencies[swapOutTokenField],
-      pair.token0.equals(currencies[swapTokenField]) ? pair.reserve0.quotient : pair.reserve1.quotient,
-      pair.token0.equals(currencies[swapTokenField]) ? pair.reserve1.quotient : pair.reserve0.quotient,
+      swapTokens[swapTokenField],
+      swapTokens[swapOutTokenField],
+      pair.token0.equals(swapTokens[swapTokenField]) ? pair.reserve0.quotient : pair.reserve1.quotient,
+      pair.token0.equals(swapTokens[swapTokenField]) ? pair.reserve1.quotient : pair.reserve0.quotient,
     )
     return computePriceImpact(midPrice, tokenAmountIn, tokenAmountOut)
-  }, [currencies, pair, swapOutTokenField, swapTokenField, swapTokens, zapInEstimated])
+  }, [pair, swapOutTokenField, swapTokenField, swapTokens, zapInEstimated])
 
   const overLimitZapRatio = useMemo(() => {
     if (!zapInEstimated) {

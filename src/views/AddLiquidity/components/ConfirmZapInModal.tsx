@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
-import { Currency, CurrencyAmount, Fraction, JSBI, Pair, Percent, Price, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, JSBI, Pair, Percent, Token } from '@pancakeswap/sdk'
 import { InjectedModalProps, Text, ArrowDownIcon, Button, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import TransactionConfirmationModal, {
@@ -123,27 +123,21 @@ const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> =
     [chainId, currencies, zapInEstimated?.swapAmountOut, zapSwapOutTokenField],
   )
 
-  const inputPercent = useMemo(
-    () =>
-      swapInCurrencyAmount && swapOutCurrencyAmount
-        ? clamp(
-            +JSBI.divide(
-              pair.priceOf(swapOutCurrencyAmount.currency.wrapped).quotient,
-              new Price(
-                swapInCurrencyAmount.currency,
-                swapOutCurrencyAmount.currency,
-                JSBI.add(swapInCurrencyAmount.quotient, swapOutCurrencyAmount.quotient),
-                swapInCurrencyAmount.quotient,
-              ).quotient,
-            ).toString(),
-            0.05,
-            0.95,
-          )
-        : swapInCurrencyAmount && !swapOutCurrencyAmount
-        ? 1
-        : undefined,
-    [pair, swapInCurrencyAmount, swapOutCurrencyAmount],
-  )
+  const inputPercent = useMemo(() => {
+    return swapInCurrencyAmount && swapOutCurrencyAmount
+      ? clamp(
+          // TODO: avoid use number
+          +swapInCurrencyAmount.toExact() /
+            +swapOutCurrencyAmount.toExact() /
+            (+pair.priceOf(swapOutCurrencyAmount.currency.wrapped).toSignificant() +
+              +swapInCurrencyAmount.toExact() / +swapOutCurrencyAmount.toExact()),
+          0.05,
+          0.95,
+        )
+      : swapInCurrencyAmount && !swapOutCurrencyAmount
+      ? 1
+      : undefined
+  }, [pair, swapInCurrencyAmount, swapOutCurrencyAmount])
 
   const tokenDeposited = useMemo(
     () => ({
