@@ -1940,7 +1940,7 @@ export const bscTokens = {
     '0x990E7154bB999FAa9b2fa5Ed29E822703311eA85',
     18,
     'TT',
-    'Thunder Token',
+    'ThunderCore',
     'https://www.thundercore.com/',
   ),
   gmee: new Token(
