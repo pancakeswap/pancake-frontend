@@ -13,7 +13,7 @@ export const getActiveSubMenuItem = ({ pathname, menuItem }: { pathname: string;
   }
 
   // When Pathname includes "/nfts/profile", then hide subMenu.
-  if (pathname.includes(`/nfts/profile`)) {
+  if (pathname.includes('/nfts/profile')) {
     return {
       hideSubNav: true,
     }
