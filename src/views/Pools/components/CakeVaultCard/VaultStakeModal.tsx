@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import {
   Modal,
@@ -129,16 +129,23 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
     setStakeAmount(input)
   }
 
-  const handleChangePercent = (sliderPercent: number) => {
-    if (sliderPercent > 0) {
-      const percentageOfStakingMax = stakingMax.dividedBy(100).multipliedBy(sliderPercent)
-      const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingToken.decimals, stakingToken.decimals)
-      setStakeAmount(amountToStake)
-    } else {
-      setStakeAmount('')
-    }
-    setPercent(sliderPercent)
-  }
+  const handleChangePercent = useCallback(
+    (sliderPercent: number) => {
+      if (sliderPercent > 0) {
+        const percentageOfStakingMax = stakingMax.dividedBy(100).multipliedBy(sliderPercent)
+        const amountToStake = getFullDisplayBalance(
+          percentageOfStakingMax,
+          stakingToken.decimals,
+          stakingToken.decimals,
+        )
+        setStakeAmount(amountToStake)
+      } else {
+        setStakeAmount('')
+      }
+      setPercent(sliderPercent)
+    },
+    [stakingMax, stakingToken.decimals],
+  )
 
   const handleWithdrawal = async () => {
     // trigger withdrawAll function if the withdrawal will leave 0.00001 CAKE or less
