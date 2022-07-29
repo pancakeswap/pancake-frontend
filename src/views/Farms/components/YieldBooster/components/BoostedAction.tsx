@@ -36,7 +36,11 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
         )
       case YieldBoosterState.NO_LOCKED:
         return (
-          <ActionButton title={`Up to ${boostMultipler}x`} description={t('Lock CAKE to activate yield booster')}>
+          <ActionButton
+            title={`Up to ${boostMultipler}x`}
+            description={t('Lock CAKE to activate yield booster')}
+            style={{ whiteSpace: 'nowrap' }}
+          >
             <NextLinkFromReactRouter to="/pools">{t('Go to Pool')}</NextLinkFromReactRouter>
           </ActionButton>
         )

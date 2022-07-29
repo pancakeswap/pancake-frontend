@@ -28,7 +28,7 @@ function BoostedApr(props: BoostedAprPropsType) {
   return (
     <>
       <RocketIcon m="4px" color="success" />
-      <Text bold color="success" {...rest}>
+      <Text bold color="success" {...rest} fontSize={14}>
         {msg}
       </Text>
     </>
