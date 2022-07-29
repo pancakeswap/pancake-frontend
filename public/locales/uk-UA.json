@@ -1737,8 +1737,8 @@
   "There is not enough %token1% input to match 50/50. Some of %token0% will be converted to %token1%": "Указаної кількості %token1% замало для відповідності критерію 50/50. Частину %token0% буде сконвертовано в %token1%.",
   "If you experience any issue when adding or removing liquidity, please disable Zap and retry.": "Якщо у вас виникли проблеми з додаванням або вилученням ліквідності, вимкніть зеп і спробуйте ще раз.",
   "Receive": "Отримайте",
-  "Zap does NOT support tokens with fees on transfers. If you experience any issues, click": "Zap does NOT support tokens with fees on transfers. If you experience any issues, click",
-  "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, click": "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, click",
+  "Zap does NOT support tokens with fees on transfers. If you experience any issues, click": "Зеп НЕ ПІДТРИМУЄ токени з комісіями за перекази. Якщо ви стикаєтеся з проблемами, клацніть",
+  "Zap does NOT support tokens with fees on transfers. Please choose ’Don't convert’ and retry. If you experience any further issues, click": "Зеп НЕ ПІДТРИМУЄ токени з комісіями за перекази. Виберіть параметр «Не перетворювати» та спробуйте ще раз. Якщо ви все ще стикаєтеся з проблемами, клацніть",
   "Vesting Schedule": "Розклад довірення",
   "Vesting Start": "Початок довірення",
   "Suspicious rugpull token": "Підозрілий токен rugpull",
@@ -1761,12 +1761,12 @@
   "No position entered": "Не відкрито жодних позицій",
   "Add liquidity failed: %message%": "Помилка додавання ліквідності: %message%",
   "Remove liquidity failed: %message%": "Помилка вилучення ліквідності: %message%",
-  "to disable Zap temporarily.": "to disable Zap temporarily.",
-  "Temporarily disabled Zap": "Temporarily disabled Zap",
+  "to disable Zap temporarily.": "щоб вимкнути зеп тимчасово.",
+  "Temporarily disabled Zap": "Зеп тимчасово вимкнено",
   "Unavailable for legal reasons": "Недоступно з юридичних причин",
-  "Zap allows you to add liquidity with only 1 single token. Click": "Zap allows you to add liquidity with only 1 single token. Click",
-  "to try.": "to try.",
+  "Zap allows you to add liquidity with only 1 single token. Click": "Зеп дає змогу додавати ліквідність одним токеном. Клацніть",
+  "to try.": "щоб спробувати.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% придбаних токенів перейдуть у довірене користування. Їх розблокування відбуватиметься в лінійній пропорції протягом певного проміжку часу. %percentageTgeRelease%% придбаних токенів буде розблоковано одразу після завершення IFO, і вони стануть доступні для отримання.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "Довірені токени розблоковуватимуться в лінійній пропорції протягом %weeks% тиж.",
-  "Select a Network": "Select a Network"
+  "Select a Network": "Виберіть мережу"
 }
