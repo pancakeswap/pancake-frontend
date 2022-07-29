@@ -43,6 +43,7 @@ const maskSharedStyle = css`
   will-change: opacity;
   transition: 0.25s ease-in opacity;
   &.hide {
+    pointer-events: none;
     opacity: 0;
     transition: 0.25s ease-out opacity;
   }
