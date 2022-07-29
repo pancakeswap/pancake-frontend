@@ -56,7 +56,7 @@ const LimitOrders = () => {
     useCurrency(loadedUrlParams?.outputCurrencyId),
   ]
   const urlLoadedTokens: Token[] = useMemo(
-    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
+    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c?.isToken) ?? [],
     [loadedInputCurrency, loadedOutputCurrency],
   )
 
@@ -213,8 +213,8 @@ const LimitOrders = () => {
       if (!account) {
         throw new Error('No account')
       }
-      const inputToken = currencies.input instanceof Token ? wrappedCurrencies.input?.address : GELATO_NATIVE
-      const outputToken = currencies.output instanceof Token ? wrappedCurrencies.output?.address : GELATO_NATIVE
+      const inputToken = currencies.input?.isToken ? wrappedCurrencies.input?.address : GELATO_NATIVE
+      const outputToken = currencies.output?.isToken ? wrappedCurrencies.output?.address : GELATO_NATIVE
 
       const orderToSubmit = {
         inputToken,
