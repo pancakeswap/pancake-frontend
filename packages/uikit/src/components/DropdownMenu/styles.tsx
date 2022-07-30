@@ -65,10 +65,11 @@ export const StyledDropdownMenu = styled.div<{ $isOpen: boolean; $isBottomNav: b
   border-radius: 16px;
   padding-bottom: 4px;
   padding-top: 4px;
-  margin-bottom: ${({ $isBottomNav }) => ($isBottomNav ? "calc(0 - env(safe-area-inset-bottom))" : "auto")};
   pointer-events: auto;
   width: ${({ $isBottomNav }) => ($isBottomNav ? "calc(100% - 32px)" : "280px")};
   visibility: visible;
+  bottom: ${({ $isBottomNav }) => ($isBottomNav ? "calc(50px + env(safe-area-inset-bottom))" : "auto")};
+  position: ${({ $isBottomNav }) => ($isBottomNav ? "absolute" : "fixed")};
   z-index: 1001;
 
   ${({ $isOpen }) =>
