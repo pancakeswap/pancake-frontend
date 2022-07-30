@@ -1,6 +1,5 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useContext, useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
 import { usePopper } from "react-popper";
 import { useOnClickOutside } from "../../hooks";
 import { MenuContext } from "../../widgets/Menu/context";
@@ -31,8 +30,8 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
   const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null);
   const hasItems = items.length > 0;
   const { styles, attributes } = usePopper(targetRef, tooltipRef, {
-    strategy: isMobile || isBottomNav ? "absolute" : "fixed",
-    placement: isMobile || isBottomNav ? "top" : "bottom-start",
+    strategy: isBottomNav ? "absolute" : "fixed",
+    placement: isBottomNav ? "top" : "bottom-start",
     modifiers: [{ name: "offset", options: { offset: [0, isBottomNav ? 6 : 0] } }],
   });
 
