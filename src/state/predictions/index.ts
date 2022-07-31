@@ -118,11 +118,10 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
       return initializedData
     }
 
-    // Bet data
-    const ledgerResponses = await getLedgerData(account, epochs, extra.address)
-
-    // Claim statuses
-    const claimableStatuses = await getClaimStatuses(account, epochs, extra.address)
+    const [ledgerResponses, claimableStatuses] = await Promise.all([
+      getLedgerData(account, epochs, extra.address), // Bet data
+      getClaimStatuses(account, epochs, extra.address), // Claim statuses
+    ])
 
     return merge({}, initializedData, {
       ledgers: makeLedgerData(account, ledgerResponses, epochs),
@@ -168,11 +167,10 @@ export const fetchPredictionData = createAsyncThunk<PredictionInitialization, st
     const epochs =
       currentEpoch > PAST_ROUND_COUNT ? range(currentEpoch, currentEpoch - PAST_ROUND_COUNT) : [currentEpoch]
 
-    // Bet data
-    const ledgerResponses = await getLedgerData(account, epochs, extra.address)
-
-    // Claim statuses
-    const claimableStatuses = await getClaimStatuses(account, epochs, extra.address)
+    const [ledgerResponses, claimableStatuses] = await Promise.all([
+      getLedgerData(account, epochs, extra.address), // Bet data
+      getClaimStatuses(account, epochs, extra.address), // Claim statuses
+    ])
 
     return merge({}, publicData, {
       ledgers: makeLedgerData(account, ledgerResponses, epochs),
@@ -246,8 +244,11 @@ export const fetchNodeHistory = createAsyncThunk<
   }
 
   const epochs = Object.keys(userRounds).map((epochStr) => Number(epochStr))
-  const roundData = await getRoundsData(epochs, extra.address)
-  const claimableStatuses = await getClaimStatuses(account, epochs, extra.address)
+  const [roundData, claimableStatuses] = await Promise.all([
+    getRoundsData(epochs, extra.address),
+    getClaimStatuses(account, epochs, extra.address),
+  ])
+
   // No need getState().predictions in local redux state
   const { bufferSeconds } = getState()
 
