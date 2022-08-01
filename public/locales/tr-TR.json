@@ -1768,5 +1768,6 @@
   "to try.": "deneyin.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "Satın alınan token'ın %%percentageVested% kadarı hak edilir ve belirli bir zaman diliminde lineer olarak serbest bırakılır. Satın alınan token'ın %%percentageTgeRelease% kadarı hemen serbest bırakılır ve IFO sona erdiğinde alınabilir.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "Hak edilen token'lar, %weeks% haftalık bir zaman diliminde lineer olarak serbest bırakılır.",
-  "Select a Network": "Bir Ağ seçin"
+  "Select a Network": "Bir Ağ seçin",
+  "Limit Orders": "Limit Orders"
 }
