@@ -72,6 +72,7 @@ const RoiCalculatorFooter: React.FC<RoiCalculatorFooterProps> = ({
   )
 
   const gridRowCount = isFarm ? 4 : 2
+  const lpRewardsAPR = (Number(displayApr) - apr).toFixed(2)
 
   return (
     <Footer p="16px" flexDirection="column">
@@ -109,7 +110,7 @@ const RoiCalculatorFooter: React.FC<RoiCalculatorFooterProps> = ({
                   *{t('LP Rewards APR')}
                 </Text>
                 <Text small textAlign="right">
-                  {(Number(displayApr) - apr).toFixed(2)}%
+                  {lpRewardsAPR}%
                 </Text>
               </>
             )}
