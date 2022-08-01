@@ -1769,5 +1769,6 @@
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% του αγορασμένου νομίσματος θα δεσμευτεί και θα αποδεσμεύεται γραμμικά κατά τη διάρκεια μιας χρονικής περιόδου. %percentageTgeRelease%% του αγορασμένου νομίσματος θα αποδεσμευτεί αμέσως και θα είναι διαθέσιμο για διεκδίκηση όταν λήξει η IFO.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "Τα δεσμευμένα νομίσματα θα αποδεσμεύονται γραμμικά σε μια περίοδο %weeks% εβδομάδων.",
   "Select a Network": "Επιλέξτε ένα δίκτυο",
+  "LP Rewards APR": "LP Rewards APR",
   "Limit Orders": "Limit Orders"
 }
