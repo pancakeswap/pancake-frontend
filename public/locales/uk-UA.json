@@ -1768,5 +1768,6 @@
   "to try.": "щоб спробувати.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% придбаних токенів перейдуть у довірене користування. Їх розблокування відбуватиметься в лінійній пропорції протягом певного проміжку часу. %percentageTgeRelease%% придбаних токенів буде розблоковано одразу після завершення IFO, і вони стануть доступні для отримання.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "Довірені токени розблоковуватимуться в лінійній пропорції протягом %weeks% тиж.",
-  "Select a Network": "Виберіть мережу"
+  "Select a Network": "Виберіть мережу",
+  "Limit Orders": "Limit Orders"
 }
