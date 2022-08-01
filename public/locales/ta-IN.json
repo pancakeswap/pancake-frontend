@@ -1769,5 +1769,6 @@
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% வாங்கிய டோக்கன் ஒரு குறிப்பிட்ட காலப்பகுதியில் வெஸ்ட் செய்யப்பட்டு வரிசையாக விடுவிக்கப்படும். %percentageTgeRelease%% வாங்கிய டோக்கன் உடனடியாக விடுவிக்கப்படும் மற்றும் IFO முடியும் போது கிளைம் செய்யக் கிடைக்கும்.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "வெஸ்ட் செய்த டோக்கன்கள், %weeks% வார காலத்தில் வரிசையாக விடுவிக்கப்படும்.",
   "Select a Network": "நெட்வொர்க்கைத் தேர்ந்தெடுக்கவும்",
+  "LP Rewards APR": "LP Rewards APR",
   "Limit Orders": "Limit Orders"
 }
