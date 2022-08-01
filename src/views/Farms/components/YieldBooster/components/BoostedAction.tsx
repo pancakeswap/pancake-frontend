@@ -58,7 +58,7 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
           <ActionButton
             title={`${boostMultipler}x`}
             description={t('One-time setup is required for activating farm yield boosters')}
-            button={<CreateProxyButton onDone={refreshProxyAddress} />}
+            button={<CreateProxyButton onDone={refreshProxyAddress} width="auto" />}
           />
         )
       case YieldBoosterState.NO_MIGRATE:

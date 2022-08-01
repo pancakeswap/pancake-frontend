@@ -18,6 +18,7 @@ const CreateProxyButton = (props) => {
 
   return (
     <Button
+      width="100%"
       {...props}
       onClick={async () => {
         try {
@@ -38,7 +39,6 @@ const CreateProxyButton = (props) => {
         }
       }}
       isLoading={isCreateProxyLoading || loading}
-      width="100%"
       endIcon={isCreateProxyLoading || loading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
     >
       {isCreateProxyLoading || loading ? t('Confirming...') : t('Enable')}
