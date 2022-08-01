@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks'
 import { bscTokens } from 'config/constants/tokens'
 import { createReduxWrapper } from 'testUtils'
-import { Pair, TokenAmount, CurrencyAmount, Trade } from '@pancakeswap/sdk'
+import { Pair, CurrencyAmount, Trade, Native } from '@pancakeswap/sdk'
 import * as UsePairs from './usePairs'
 import * as Trades from './Trades'
 
@@ -12,9 +12,27 @@ describe('Trade', () => {
     const mockUsePairs = jest.spyOn(UsePairs, 'usePairs')
     it('should filter only exist Pair', () => {
       mockUsePairs.mockReturnValue([
-        [PairState.EXISTS, new Pair(new TokenAmount(bscTokens.wbnb, '1'), new TokenAmount(bscTokens.cake, '1'))],
-        [PairState.INVALID, new Pair(new TokenAmount(bscTokens.busd, '1'), new TokenAmount(bscTokens.cake, '1'))],
-        [PairState.LOADING, new Pair(new TokenAmount(bscTokens.busd, '1'), new TokenAmount(bscTokens.wbnb, '1'))],
+        [
+          PairState.EXISTS,
+          new Pair(
+            CurrencyAmount.fromRawAmount(bscTokens.wbnb, '1'),
+            CurrencyAmount.fromRawAmount(bscTokens.cake, '1'),
+          ),
+        ],
+        [
+          PairState.INVALID,
+          new Pair(
+            CurrencyAmount.fromRawAmount(bscTokens.busd, '1'),
+            CurrencyAmount.fromRawAmount(bscTokens.cake, '1'),
+          ),
+        ],
+        [
+          PairState.LOADING,
+          new Pair(
+            CurrencyAmount.fromRawAmount(bscTokens.busd, '1'),
+            CurrencyAmount.fromRawAmount(bscTokens.wbnb, '1'),
+          ),
+        ],
         [PairState.EXISTS, null],
       ])
 
@@ -26,14 +44,32 @@ describe('Trade', () => {
       })
 
       expect(result.current.pairs).toStrictEqual([
-        new Pair(new TokenAmount(bscTokens.wbnb, '1'), new TokenAmount(bscTokens.cake, '1')),
+        new Pair(CurrencyAmount.fromRawAmount(bscTokens.wbnb, '1'), CurrencyAmount.fromRawAmount(bscTokens.cake, '1')),
       ])
     })
     it('should filter out duplicated Pair', () => {
       mockUsePairs.mockReturnValue([
-        [PairState.EXISTS, new Pair(new TokenAmount(bscTokens.wbnb, '1'), new TokenAmount(bscTokens.cake, '1'))],
-        [PairState.EXISTS, new Pair(new TokenAmount(bscTokens.wbnb, '1'), new TokenAmount(bscTokens.cake, '1'))],
-        [PairState.EXISTS, new Pair(new TokenAmount(bscTokens.cake, '1'), new TokenAmount(bscTokens.wbnb, '1'))],
+        [
+          PairState.EXISTS,
+          new Pair(
+            CurrencyAmount.fromRawAmount(bscTokens.wbnb, '1'),
+            CurrencyAmount.fromRawAmount(bscTokens.cake, '1'),
+          ),
+        ],
+        [
+          PairState.EXISTS,
+          new Pair(
+            CurrencyAmount.fromRawAmount(bscTokens.wbnb, '1'),
+            CurrencyAmount.fromRawAmount(bscTokens.cake, '1'),
+          ),
+        ],
+        [
+          PairState.EXISTS,
+          new Pair(
+            CurrencyAmount.fromRawAmount(bscTokens.cake, '1'),
+            CurrencyAmount.fromRawAmount(bscTokens.wbnb, '1'),
+          ),
+        ],
         [PairState.EXISTS, null],
       ])
 
@@ -45,7 +81,7 @@ describe('Trade', () => {
       })
 
       expect(result.current.pairs).toStrictEqual([
-        new Pair(new TokenAmount(bscTokens.wbnb, '1'), new TokenAmount(bscTokens.cake, '1')),
+        new Pair(CurrencyAmount.fromRawAmount(bscTokens.wbnb, '1'), CurrencyAmount.fromRawAmount(bscTokens.cake, '1')),
       ])
     })
 
@@ -74,8 +110,10 @@ describe('Trade', () => {
     const mockTradeExactOut = jest.spyOn(Trade, 'bestTradeExactOut')
 
     it('should call with maxHops 1 with singleHopOnly', () => {
-      const allowPairs = [new Pair(new TokenAmount(bscTokens.wbnb, '1'), new TokenAmount(bscTokens.cake, '1'))]
-      const argA = CurrencyAmount.ether('1000000')
+      const allowPairs = [
+        new Pair(CurrencyAmount.fromRawAmount(bscTokens.wbnb, '1'), CurrencyAmount.fromRawAmount(bscTokens.cake, '1')),
+      ]
+      const argA = CurrencyAmount.fromRawAmount(Native.onChain(56), '1000000')
       const argB = bscTokens.cake
       renderHook(
         () => {
@@ -105,8 +143,10 @@ describe('Trade', () => {
     })
 
     it('should call with 3 times without singleHopOnly', () => {
-      const allowPairs = [new Pair(new TokenAmount(bscTokens.wbnb, '1'), new TokenAmount(bscTokens.cake, '1'))]
-      const argA = CurrencyAmount.ether('1000000')
+      const allowPairs = [
+        new Pair(CurrencyAmount.fromRawAmount(bscTokens.wbnb, '1'), CurrencyAmount.fromRawAmount(bscTokens.cake, '1')),
+      ]
+      const argA = CurrencyAmount.fromRawAmount(Native.onChain(56), '1000000')
       const argB = bscTokens.cake
       renderHook(
         () => {

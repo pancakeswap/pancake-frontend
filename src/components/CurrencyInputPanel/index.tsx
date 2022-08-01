@@ -1,4 +1,4 @@
-import { Currency, Pair, Token } from '@pancakeswap/sdk'
+import { Currency, Pair } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, Text, useModal, Flex, Box, MetamaskIcon } from '@pancakeswap/uikit'
 import styled, { css } from 'styled-components'
 import { canRegisterToken, registerToken } from 'utils/wallet'
@@ -120,7 +120,7 @@ export default function CurrencyInputPanel({
     currentLanguage: { locale },
   } = useTranslation()
 
-  const token = pair ? pair.liquidityToken : currency instanceof Token ? currency : null
+  const token = pair ? pair.liquidityToken : currency?.isToken ? currency : null
   const tokenAddress = token ? isAddress(token.address) : null
 
   const amountInDollar = useBUSDCurrencyAmount(

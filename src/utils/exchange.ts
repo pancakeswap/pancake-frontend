@@ -1,7 +1,7 @@
 import { Web3Provider } from '@ethersproject/providers'
 import IPancakeRouter02ABI from 'config/abi/IPancakeRouter02.json'
 import { IPancakeRouter02 } from 'config/abi/types/IPancakeRouter02'
-import { JSBI, Percent, CurrencyAmount, Trade, Fraction, TokenAmount } from '@pancakeswap/sdk'
+import { JSBI, Percent, CurrencyAmount, Trade, Fraction, Currency, TradeType } from '@pancakeswap/sdk'
 import {
   ROUTER_ADDRESS,
   BIPS_BASE,
@@ -20,13 +20,13 @@ export function basisPointsToPercent(num: number): Percent {
   return new Percent(JSBI.BigInt(num), BIPS_BASE)
 }
 
-export function calculateSlippageAmount(value: CurrencyAmount, slippage: number): [JSBI, JSBI] {
+export function calculateSlippageAmount(value: CurrencyAmount<Currency>, slippage: number): [JSBI, JSBI] {
   if (slippage < 0 || slippage > 10000) {
     throw Error(`Unexpected slippage value: ${slippage}`)
   }
   return [
-    JSBI.divide(JSBI.multiply(value.raw, JSBI.BigInt(10000 - slippage)), BIPS_BASE),
-    JSBI.divide(JSBI.multiply(value.raw, JSBI.BigInt(10000 + slippage)), BIPS_BASE),
+    JSBI.divide(JSBI.multiply(value.quotient, JSBI.BigInt(10000 - slippage)), BIPS_BASE),
+    JSBI.divide(JSBI.multiply(value.quotient, JSBI.BigInt(10000 + slippage)), BIPS_BASE),
   ]
 }
 
@@ -40,9 +40,9 @@ export function getRouterContract(chainId: number, library: Web3Provider, accoun
 }
 
 // computes price breakdown for the trade
-export function computeTradePriceBreakdown(trade?: Trade | null): {
+export function computeTradePriceBreakdown(trade?: Trade<Currency, Currency, TradeType> | null): {
   priceImpactWithoutFee: Percent | undefined
-  realizedLPFee: CurrencyAmount | undefined | null
+  realizedLPFee: CurrencyAmount<Currency> | undefined | null
 } {
   // for each hop in our trade, take away the x*y=k price impact from 0.3% fees
   // e.g. for 3 tokens/2 hops: 1 - ((1 - .03) * (1-.03))
@@ -67,18 +67,19 @@ export function computeTradePriceBreakdown(trade?: Trade | null): {
   const realizedLPFeeAmount =
     realizedLPFee &&
     trade &&
-    (trade.inputAmount instanceof TokenAmount
-      ? new TokenAmount(trade.inputAmount.token, realizedLPFee.multiply(trade.inputAmount.raw).quotient)
-      : CurrencyAmount.ether(realizedLPFee.multiply(trade.inputAmount.raw).quotient))
+    CurrencyAmount.fromRawAmount(
+      trade.inputAmount.currency,
+      realizedLPFee.multiply(trade.inputAmount.quotient).quotient,
+    )
 
   return { priceImpactWithoutFee: priceImpactWithoutFeePercent, realizedLPFee: realizedLPFeeAmount }
 }
 
 // computes the minimum amount out and maximum amount in for a trade given a user specified allowed slippage in bips
 export function computeSlippageAdjustedAmounts(
-  trade: Trade | undefined,
+  trade: Trade<Currency, Currency, TradeType> | undefined,
   allowedSlippage: number,
-): { [field in Field]?: CurrencyAmount } {
+): { [field in Field]?: CurrencyAmount<Currency> } {
   const pct = basisPointsToPercent(allowedSlippage)
   return {
     [Field.INPUT]: trade?.maximumAmountIn(pct),
@@ -94,7 +95,7 @@ export function warningSeverity(priceImpact: Percent | undefined): 0 | 1 | 2 | 3
   return 0
 }
 
-export function formatExecutionPrice(trade?: Trade, inverted?: boolean): string {
+export function formatExecutionPrice(trade?: Trade<Currency, Currency, TradeType>, inverted?: boolean): string {
   if (!trade) {
     return ''
   }

@@ -1,12 +1,12 @@
-import { Contract } from '@ethersproject/contracts'
 import type { Signer } from '@ethersproject/abstract-signer'
-import type { Provider } from '@ethersproject/providers'
-import memoize from 'lodash/memoize'
 import { getAddress } from '@ethersproject/address'
-import { AddressZero } from '@ethersproject/constants'
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
-import { Token, Currency, ETHER, ChainId } from '@pancakeswap/sdk'
+import { AddressZero } from '@ethersproject/constants'
+import { Contract } from '@ethersproject/contracts'
+import type { Provider } from '@ethersproject/providers'
+import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
+import { ChainId, Currency } from '@pancakeswap/sdk'
+import memoize from 'lodash/memoize'
 import { TokenAddressMap } from 'state/types'
 import { BASE_BSC_SCAN_URLS } from '../config'
 
@@ -77,6 +77,6 @@ export function escapeRegExp(string: string): string {
 }
 
 export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currency): boolean {
-  if (currency === ETHER) return true
-  return Boolean(currency instanceof Token && defaultTokens[currency.chainId]?.[currency.address])
+  if (currency?.isNative) return true
+  return Boolean(currency?.isToken && defaultTokens[currency.chainId]?.[currency.address])
 }

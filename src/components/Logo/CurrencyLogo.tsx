@@ -1,8 +1,8 @@
-import { Currency, ETHER, Token } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
 import { BinanceIcon } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
-import styled from 'styled-components'
 import { WrappedTokenInfo } from 'state/types'
+import styled from 'styled-components'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import getTokenLogoURL from '../../utils/getTokenLogoURL'
 import Logo from './Logo'
@@ -25,9 +25,9 @@ export default function CurrencyLogo({
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
 
   const srcs: string[] = useMemo(() => {
-    if (currency === ETHER) return []
+    if (currency?.isNative) return []
 
-    if (currency instanceof Token) {
+    if (currency?.isToken) {
       if (currency instanceof WrappedTokenInfo) {
         return [...uriLocations, getTokenLogoURL(currency.address)]
       }
@@ -36,7 +36,7 @@ export default function CurrencyLogo({
     return []
   }, [currency, uriLocations])
 
-  if (currency === ETHER) {
+  if (currency?.isNative) {
     return <BinanceIcon width={size} style={style} />
   }
 
