@@ -1769,5 +1769,6 @@
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "A megvásárolt zseton %percentageVested%% százalékát egy bizonyos idő alatt lineárisan megszolgálja és felszabadítja. A megvásárolt zseton %percentageTgeRelease%% százaléka azonnal felszabadul, és az IFO befejezésekor lesz igényelhető.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "A megszolgált zsetonokat lineárisan szabadítja fel %weeks% hétnyi időszak alatt.",
   "Select a Network": "Válasszon ki egy hálózatot",
+  "LP Rewards APR": "LP Rewards APR",
   "Limit Orders": "Limit Orders"
 }
