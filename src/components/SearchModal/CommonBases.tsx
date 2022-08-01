@@ -71,7 +71,7 @@ export default function CommonBases({
             disable={selectedCurrency?.isNative}
           >
             <CurrencyLogo currency={native} style={{ marginRight: 8 }} />
-            <Text>BNB</Text>
+            <Text>{native?.symbol}</Text>
           </BaseWrapper>
         </ButtonWrapper>
         {(chainId ? SUGGESTED_BASES[chainId] : []).map((token: Token) => {
