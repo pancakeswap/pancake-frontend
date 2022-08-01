@@ -35,6 +35,11 @@ const Menu = (props) => {
     return footerLinks(t)
   }, [t])
 
+  const subLinks =
+    activeMenuItem?.hideSubNav || activeSubMenuItem?.hideSubNav || pathname.includes('/profile')
+      ? []
+      : activeMenuItem?.items
+
   return (
     <UikitMenu
       linkComponent={(linkProps) => {
@@ -55,7 +60,7 @@ const Menu = (props) => {
       setLang={setLanguage}
       cakePriceUsd={cakePriceUsd.toNumber()}
       links={menuItems}
-      subLinks={activeMenuItem?.hideSubNav || activeSubMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
+      subLinks={subLinks}
       footerLinks={getFooterLinks}
       activeItem={activeMenuItem?.href}
       activeSubItem={activeSubMenuItem?.href}
