@@ -1769,5 +1769,6 @@
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% ng nabiling token ang mave-vest at unti-unting ire-release sa loob ng isang yugto ng panahon. %percentageTgeRelease%% ng biniling token ang agad na ire-release at puwede nang i-claim kapag natapos ang IFO.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "Unti-unting ire-release ang mga na-vest na token sa loob ng %weeks% (na) linggo.",
   "Select a Network": "Pumili ng Network",
+  "LP Rewards APR": "LP Rewards APR",
   "Limit Orders": "Limit Orders"
 }
