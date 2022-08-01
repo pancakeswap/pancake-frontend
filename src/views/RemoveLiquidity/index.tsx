@@ -513,6 +513,11 @@ export default function RemoveLiquidity() {
     liquidityPercentChangeCallback,
   )
 
+  const handleChangePercent = useCallback(
+    (value) => setInnerLiquidityPercentage(Math.ceil(value)),
+    [setInnerLiquidityPercentage],
+  )
+
   const [onPresentRemoveLiquidity] = useModal(
     <ConfirmLiquidityModal
       title={t('You will receive')}
@@ -575,7 +580,7 @@ export default function RemoveLiquidity() {
                   min={0}
                   max={100}
                   value={innerLiquidityPercentage}
-                  onValueChanged={(value) => setInnerLiquidityPercentage(Math.ceil(value))}
+                  onValueChanged={handleChangePercent}
                   mb="16px"
                 />
                 <Flex flexWrap="wrap" justifyContent="space-evenly">
