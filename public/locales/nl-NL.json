@@ -1768,5 +1768,6 @@
   "to try.": "om te proberen.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% van het gekochte token wordt gevest en lineair vrijgegeven over een bepaalde periode. %percentageTgeRelease%% van het gekochte token wordt onmiddellijk vrijgegeven en kan worden geclaimd vanneer de IFO eindigt.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "Geveste tokens worden lineair vrijgegeven over een periode van %weeks% weken.",
-  "Select a Network": "Selecteer een netwerk"
+  "Select a Network": "Selecteer een netwerk",
+  "Limit Orders": "Limit Orders"
 }
