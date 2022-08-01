@@ -120,6 +120,8 @@ export const NATIVE: Record<
     decimals: number
   }
 > = {
+  [ChainId.ETHEREUM]: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  [ChainId.RINKEBY]: { name: 'Rinkeby Ether', symbol: 'RIN', decimals: 18 },
   [ChainId.BSC]: {
     name: 'Binance Chain Native Token',
     symbol: 'BNB',
