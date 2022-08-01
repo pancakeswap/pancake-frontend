@@ -23,7 +23,6 @@ interface ModalsContext {
 }
 
 const ModalWrapper = styled(m.div)`
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
