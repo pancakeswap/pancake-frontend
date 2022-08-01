@@ -1769,5 +1769,6 @@
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% 的购买代币将在一段时间内以线性方式授权和释放。%percentageTgeRelease%% 的购买代币将在 IFO 结束时立即释放并可供领取。",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "授权代币将在 %weeks% 周的期间内以线性方式释放。",
   "Select a Network": "选择网络",
+  "LP Rewards APR": "LP Rewards APR",
   "Limit Orders": "Limit Orders"
 }
