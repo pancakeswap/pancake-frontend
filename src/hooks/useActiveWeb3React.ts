@@ -1,26 +1,19 @@
-import { CHAINS, useWeb3React } from '@pancakeswap/wagmi'
-import { Web3Provider } from '@ethersproject/providers'
+import { CHAIN_IDS, useWeb3React } from '@pancakeswap/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
+import { Web3Provider } from '@ethersproject/providers'
 import { bscRpcProvider } from 'utils/providers'
 import { useRouter } from 'next/router'
-import useSWR from 'swr'
-import { localStorageMiddleware } from './useSWRContract'
-
-const supportedChainIds = CHAINS.map((c) => c.id)
 
 function useLocalNetworkChain() {
   const { query } = useRouter()
-  const { data: localChainId } = useSWR(!query.chainId && 'localChainId', {
-    use: [localStorageMiddleware],
-  })
 
-  const chainId = (query.chainId as string) || localChainId
+  const chainId = +query.chainId
 
-  if (supportedChainIds.includes(chainId)) {
+  if (CHAIN_IDS.includes(chainId)) {
     return chainId
   }
 
-  return ChainId.BSC
+  return undefined
 }
 
 /**
@@ -31,7 +24,11 @@ const useActiveWeb3React = () => {
   const localChainId = useLocalNetworkChain()
   const { library, chainId, ...web3React } = useWeb3React()
 
-  return { library: (library ?? bscRpcProvider) as Web3Provider, chainId: chainId ?? localChainId, ...web3React }
+  return {
+    library: (library ?? bscRpcProvider) as Web3Provider,
+    chainId: chainId ?? localChainId ?? ChainId.BSC,
+    ...web3React,
+  }
 }
 
 export default useActiveWeb3React

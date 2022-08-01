@@ -1,20 +1,27 @@
 import { useCallback } from 'react'
-import { useSWRConfig } from 'swr'
+import { useRouter } from 'next/router'
 import { useSwitchNetwork as useSwitchNetworkWallet } from 'wagmi'
 import useActiveWeb3React from './useActiveWeb3React'
 
 export function useSwitchNetwork() {
   const { switchNetworkAsync } = useSwitchNetworkWallet()
   const { account } = useActiveWeb3React()
-  const { mutate } = useSWRConfig()
+  const router = useRouter()
 
   return useCallback(
     (chainId: number) => {
-      if (account) {
+      if (account && typeof switchNetworkAsync === 'function') {
         return switchNetworkAsync(chainId)
       }
-      return mutate('localChainId', chainId)
+      return Promise.resolve(
+        router.replace({
+          query: {
+            ...router.query,
+            chainId,
+          },
+        }),
+      )
     },
-    [account, mutate, switchNetworkAsync],
+    [account, router, switchNetworkAsync],
   )
 }

@@ -135,3 +135,4 @@ export const CHAINS_STARGATE_TESTNET = [
 ]
 
 export const CHAINS = [bsc, mainnet, bscTest, rinkeby]
+export const CHAIN_IDS = CHAINS.map((c) => c.id)
