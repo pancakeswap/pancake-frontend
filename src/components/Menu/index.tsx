@@ -1,11 +1,12 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { NextLinkFromReactRouter } from 'components/NextLink'
-import { Menu as UikitMenu } from '@pancakeswap/uikit'
+import { Menu as UikitMenu, useModal } from '@pancakeswap/uikit'
 import { languageList } from 'config/localization/languages'
 import { useTranslation } from 'contexts/Localization'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
+import { NetworkSupportModal } from 'components/NetworkSupportModal'
 import useTheme from 'hooks/useTheme'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { usePhishingBannerManager } from 'state/user/hooks'
@@ -34,6 +35,20 @@ const Menu = (props) => {
   const getFooterLinks = useMemo(() => {
     return footerLinks(t)
   }, [t])
+
+  const [openNetworkSupportModal] = useModal(
+    <NetworkSupportModal title={activeSubMenuItem.label} />,
+    false,
+    true,
+    'networkSupport',
+  )
+
+  useEffect(() => {
+    if (activeSubMenuItem.disabled) {
+      openNetworkSupportModal()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeSubMenuItem])
 
   return (
     <UikitMenu

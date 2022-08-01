@@ -1,14 +1,14 @@
 import { Box, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useSWRConfig } from 'swr'
 import Image from 'next/image'
 import { chains } from 'utils/wagmi'
-import { useSwitchNetwork } from 'wagmi'
 
 export const NetworkSelect = () => {
   const { t } = useTranslation()
-  const { switchNetwork } = useSwitchNetwork()
+  const switchNetwork = useSwitchNetwork()
   const { account } = useActiveWeb3React()
   const { mutate } = useSWRConfig()
 

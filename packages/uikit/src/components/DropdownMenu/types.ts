@@ -4,6 +4,7 @@ import { BoxProps } from "../Box";
 
 export interface DropdownMenuProps extends BoxProps {
   items?: DropdownMenuItems[];
+  isDisabled?: boolean;
   activeItem?: string;
   /**
    * As BottomNav styles

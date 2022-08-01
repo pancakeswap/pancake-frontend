@@ -37,7 +37,14 @@ export default function CurrencyLogo({
   }, [currency, uriLocations])
 
   if (currency?.isNative) {
-    return <BinanceIcon width={size} style={style} />
+    return (
+      <StyledLogo
+        size={size}
+        srcs={[`https://cdn.pancakeswap.com/chains/${currency.chainId}.png`]}
+        width={size}
+        style={style}
+      />
+    )
   }
 
   return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
