@@ -1768,5 +1768,6 @@
   "to try.": "и повторите попытку.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "Часть в %percentageVested%% купленных токенов будет вестирована и выпущена линейно в течение определенного периода. Часть в %percentageTgeRelease%% купленных токенов будет выпущена немедленно и доступна для получения по окончании IFO.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "Вестированные токены будут выпускаться линейно в течение %weeks% нед.",
-  "Select a Network": "Выберите сеть"
+  "Select a Network": "Выберите сеть",
+  "Limit Orders": "Limit Orders"
 }
