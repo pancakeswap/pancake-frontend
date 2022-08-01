@@ -1769,5 +1769,6 @@
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% من الرموز المميزة المشتراة سيتم تجميدها وإصدارها خطيًا على فترة من الوقت. %percentageTgeRelease%% من الرموز المميزة المشتراة سيتم إصدارها فورًا وإتاحتها للمطالبة عند انتهاء IFO (العرض الأولي للمزرعة).",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "سوف يتم إصدار الرموز المميزة المجمدة خطيًا خلال فترة %weeks% من الأسابيع.",
   "Select a Network": "حدد شبكة",
+  "LP Rewards APR": "LP Rewards APR",
   "Limit Orders": "Limit Orders"
 }
