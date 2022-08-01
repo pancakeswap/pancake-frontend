@@ -14,7 +14,7 @@ export function useNetworkConnectorUpdater() {
   const { chain, chainId } = useActiveWeb3React()
   const { mutate } = useSWRConfig()
   const previousChain = usePreviousValue(chain)
-  const { switchNetwork, isLoading } = useSwitchNetwork()
+  const { switchNetwork, isLoading, pendingChainId } = useSwitchNetwork()
   const router = useRouter()
 
   useEffect(() => {
@@ -34,11 +34,13 @@ export function useNetworkConnectorUpdater() {
 
   useEffect(() => {
     if (router.query.chainId !== String(chainId) && isChainSupported(chainId)) {
+      // @ts-ignore
+      const params = new URLSearchParams(router.query)
+      if (chainId === ChainId.BSC) {
+        params.delete('chainId')
+      }
       router.replace({
-        query: {
-          ...router.query,
-          chainId: chainId !== ChainId.BSC ? chainId : null,
-        },
+        query: params.toString(),
       })
     }
   }, [chainId, router])
@@ -46,6 +48,7 @@ export function useNetworkConnectorUpdater() {
   return {
     isLoading,
     switchNetwork,
+    pendingChainId,
   }
 }
 

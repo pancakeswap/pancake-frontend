@@ -5,7 +5,7 @@ import useActiveWeb3React from './useActiveWeb3React'
 
 export function useSwitchNetwork() {
   const { mutate } = useSWRConfig()
-  const { switchNetworkAsync, isLoading } = useSwitchNetworkWallet()
+  const { switchNetworkAsync, ...switchNetworkArgs } = useSwitchNetworkWallet()
   const { account } = useActiveWeb3React()
 
   const switchNetwork = useCallback(
@@ -23,7 +23,7 @@ export function useSwitchNetwork() {
   )
 
   return {
+    ...switchNetworkArgs,
     switchNetwork,
-    isLoading,
   }
 }

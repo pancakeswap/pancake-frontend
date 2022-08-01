@@ -27,10 +27,10 @@ export const NetworkSelect = ({ switchNetwork }) => {
 export const NetworkSwitcher = () => {
   const { t } = useTranslation()
   const { chainId, chain } = useActiveWeb3React()
-  const foundChain = useMemo(() => chains.find((c) => c.id === chainId), [chainId])
+  const { isLoading, switchNetwork, pendingChainId } = useNetworkConnectorUpdater()
+  const foundChain = useMemo(() => chains.find((c) => c.id === (pendingChainId || chainId)), [pendingChainId, chainId])
 
   const isWrongNetwork = chain?.unsupported
-  const { isLoading, switchNetwork } = useNetworkConnectorUpdater()
 
   return (
     <UserMenu
