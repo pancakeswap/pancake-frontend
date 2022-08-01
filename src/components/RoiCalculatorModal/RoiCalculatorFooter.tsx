@@ -106,7 +106,7 @@ const RoiCalculatorFooter: React.FC<RoiCalculatorFooterProps> = ({
             {isFarm && (
               <>
                 <Text color="textSubtle" small>
-                  *{t('LP rewards only')}
+                  *{t('LP Rewards APR')}
                 </Text>
                 <Text small textAlign="right">
                   {(Number(displayApr) - apr).toFixed(2)}%
