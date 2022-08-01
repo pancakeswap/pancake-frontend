@@ -87,6 +87,14 @@ export const WETH9 = {
 }
 
 export const WBNB = {
+  [ChainId.ETHEREUM]: new Token(
+    ChainId.ETHEREUM,
+    '0x418D75f65a02b3D53B2418FB8E1fe493759c7605',
+    18,
+    'WBNB',
+    'Wrapped BNB',
+    'https://www.binance.org'
+  ),
   [ChainId.BSC]: new Token(
     ChainId.BSC,
     '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
