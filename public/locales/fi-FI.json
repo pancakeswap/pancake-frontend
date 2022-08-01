@@ -1768,5 +1768,6 @@
   "to try.": "napsauttamalla.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested% % ostetusta poletista vestataan ja julkaistaan lineaarisesti ajan kuluessa. %percentageTgeRelease% % ostetusta poletista julkaistaan välittömästi ja on lunastettavissa IFO:n päättyessä.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "Vestatut poletit julkaistaan lineaarisesti %weeks% viikon aikana.",
-  "Select a Network": "Valitse verkko"
+  "Select a Network": "Valitse verkko",
+  "Limit Orders": "Limit Orders"
 }
