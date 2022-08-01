@@ -1769,5 +1769,6 @@
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "구매한 토큰의 %percentageVested%%는 일정 기간 동안 선형적으로 베스팅되고 릴리스됩니다. 구매한 토큰의 %percentageTgeRelease%%는 즉시 릴리스되며 IFO가 종료되면 클레임할 수 있습니다.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "베스팅된 토큰은 %weeks%주 기간 동안 선형적으로 릴리스됩니다.",
   "Select a Network": "네트워크 선택",
+  "LP Rewards APR": "LP Rewards APR",
   "Limit Orders": "Limit Orders"
 }
