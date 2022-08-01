@@ -1,29 +1,12 @@
 import { Box, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
-import { useRouter } from 'next/router'
+import useActiveWeb3React, { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import Image from 'next/image'
+import { useMemo } from 'react'
 import { chains } from 'utils/wagmi'
-import { CHAIN_IDS } from '@pancakeswap/wagmi'
-import { useEffect } from 'react'
 
-export const NetworkSelect = () => {
+export const NetworkSelect = ({ switchNetwork }) => {
   const { t } = useTranslation()
-  const switchNetwork = useSwitchNetwork()
-  const { chainId } = useActiveWeb3React()
-  const router = useRouter()
-
-  useEffect(() => {
-    if (router.query.chainId !== String(chainId) && CHAIN_IDS.includes(chainId)) {
-      router.replace({
-        query: {
-          ...router.query,
-          chainId,
-        },
-      })
-    }
-  }, [chainId, router])
 
   return (
     <>
@@ -44,28 +27,32 @@ export const NetworkSelect = () => {
 export const NetworkSwitcher = () => {
   const { t } = useTranslation()
   const { chainId, chain } = useActiveWeb3React()
+  const foundChain = useMemo(() => chains.find((c) => c.id === chainId), [chainId])
 
   const isWrongNetwork = chain?.unsupported
+  const { isLoading, switchNetwork } = useNetworkConnectorUpdater()
 
   return (
     <UserMenu
       mr="8px"
-      variant={isWrongNetwork ? 'danger' : 'default'}
+      variant={isLoading ? 'pending' : isWrongNetwork ? 'danger' : 'default'}
       avatarSrc={`https://cdn.pancakeswap.com/chains/${chainId}.png`}
       text={
-        isWrongNetwork ? (
+        isLoading ? (
+          t('Requesting')
+        ) : isWrongNetwork ? (
           t('Network')
-        ) : chain ? (
+        ) : foundChain ? (
           <>
-            <Box display={['none', null, null, null, null, 'block']}>{chain.name}</Box>
-            <Box display={['block', null, null, null, null, 'none']}>{chain.nativeCurrency?.symbol}</Box>
+            <Box display={['none', null, null, null, null, 'block']}>{foundChain.name}</Box>
+            <Box display={['block', null, null, null, null, 'none']}>{foundChain.nativeCurrency?.symbol}</Box>
           </>
         ) : (
           t('Select a Network')
         )
       }
     >
-      {() => <NetworkSelect />}
+      {() => <NetworkSelect switchNetwork={switchNetwork} />}
     </UserMenu>
   )
 }

@@ -45,3 +45,7 @@ export const client = createClient({
   provider,
   connectors: [injectedConnector, coinbaseConnector, walletConnectConnector, bscConnector],
 })
+
+const CHAIN_IDS = chains.map((c) => c.id)
+
+export const isChainSupported = (chainId: number) => CHAIN_IDS.includes(chainId)

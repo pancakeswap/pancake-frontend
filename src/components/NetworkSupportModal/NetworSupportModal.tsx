@@ -3,7 +3,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 
 export function NetworkSupportModal({ title, onDismiss }: InjectedModalProps & { title?: React.ReactNode }) {
-  const switchNetwork = useSwitchNetwork()
+  const { switchNetwork } = useSwitchNetwork()
   return (
     <Modal title={title} hideCloseButton>
       <Grid style={{ gap: '16px' }}>

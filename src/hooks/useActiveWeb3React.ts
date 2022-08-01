@@ -1,15 +1,61 @@
-import { CHAIN_IDS, useWeb3React } from '@pancakeswap/wagmi'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { Web3Provider } from '@ethersproject/providers'
 import { bscRpcProvider } from 'utils/providers'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
+import { isChainSupported } from 'utils/wagmi'
+import useSWR, { useSWRConfig } from 'swr'
+import usePreviousValue from './usePreviousValue'
+
+export function useNetworkConnectorUpdater() {
+  const localChainId = useLocalNetworkChain()
+  const { chain, chainId } = useActiveWeb3React()
+  const { mutate } = useSWRConfig()
+  const previousChain = usePreviousValue(chain)
+  const { switchNetwork, isLoading } = useSwitchNetwork()
+  const router = useRouter()
+
+  useEffect(() => {
+    // first chain connected, ask for switch chain
+    if (chain && !previousChain && chain.id !== localChainId && localChainId) {
+      switchNetwork(localChainId)
+        .catch(() => {
+          mutate('session-chain-id', chain.id)
+        })
+        .then((res) => {
+          if (res) {
+            mutate('session-chain-id', res.id)
+          }
+        })
+    }
+  }, [chain, previousChain, localChainId, switchNetwork, mutate])
+
+  useEffect(() => {
+    if (router.query.chainId !== String(chainId) && isChainSupported(chainId)) {
+      router.replace({
+        query: {
+          ...router.query,
+          chainId: chainId !== ChainId.BSC ? chainId : null,
+        },
+      })
+    }
+  }, [chainId, router])
+
+  return {
+    isLoading,
+    switchNetwork,
+  }
+}
 
 function useLocalNetworkChain() {
+  const { data: sessionChainId } = useSWR('session-chain-id')
   const { query } = useRouter()
 
-  const chainId = +query.chainId
+  const chainId = +(sessionChainId || query.chainId)
 
-  if (CHAIN_IDS.includes(chainId)) {
+  if (isChainSupported(chainId)) {
     return chainId
   }
 
