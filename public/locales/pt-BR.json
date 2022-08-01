@@ -1768,5 +1768,6 @@
   "to try.": "para experimentar.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% do token comprado será adquirido e liberado linearmente em um determinado período. %percentageTgeRelease%% do token comprado será liberado imediatamente e disponibilizado para ser reivindicado no término da IFO.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "Os tokens adquiridos serão liberados linearmente em um período de %weeks% semanas.",
-  "Select a Network": "Selecionar uma rede"
+  "Select a Network": "Selecionar uma rede",
+  "Limit Orders": "Limit Orders"
 }
