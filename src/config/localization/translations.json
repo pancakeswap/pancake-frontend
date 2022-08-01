@@ -1768,5 +1768,6 @@
   "to try.": "to try.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks.",
-  "Select a Network": "Select a Network"
+  "Select a Network": "Select a Network",
+  "Limit Orders": "Limit Orders"
 }
