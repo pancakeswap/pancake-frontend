@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import {
@@ -77,12 +77,12 @@ const StakeModal: React.FC<StakeModalProps> = ({
   const [hasReachedStakeLimit, setHasReachedStakedLimit] = useState(false)
   const [percent, setPercent] = useState(0)
   const [showRoiCalculator, setShowRoiCalculator] = useState(false)
-  const getCalculatedStakingLimit = () => {
+  const getCalculatedStakingLimit = useCallback(() => {
     if (isRemovingStake) {
       return userData.stakedBalance
     }
     return stakingLimit.gt(0) && stakingTokenBalance.gt(stakingLimit) ? stakingLimit : stakingTokenBalance
-  }
+  }, [userData.stakedBalance, stakingTokenBalance, stakingLimit, isRemovingStake])
   const fullDecimalStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)
   const userNotEnoughToken = isRemovingStake
     ? userData.stakedBalance.lt(fullDecimalStakeAmount)
@@ -126,16 +126,23 @@ const StakeModal: React.FC<StakeModalProps> = ({
     setStakeAmount(input)
   }
 
-  const handleChangePercent = (sliderPercent: number) => {
-    if (sliderPercent > 0) {
-      const percentageOfStakingMax = getCalculatedStakingLimit().dividedBy(100).multipliedBy(sliderPercent)
-      const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingToken.decimals, stakingToken.decimals)
-      setStakeAmount(amountToStake)
-    } else {
-      setStakeAmount('')
-    }
-    setPercent(sliderPercent)
-  }
+  const handleChangePercent = useCallback(
+    (sliderPercent: number) => {
+      if (sliderPercent > 0) {
+        const percentageOfStakingMax = getCalculatedStakingLimit().dividedBy(100).multipliedBy(sliderPercent)
+        const amountToStake = getFullDisplayBalance(
+          percentageOfStakingMax,
+          stakingToken.decimals,
+          stakingToken.decimals,
+        )
+        setStakeAmount(amountToStake)
+      } else {
+        setStakeAmount('')
+      }
+      setPercent(sliderPercent)
+    },
+    [getCalculatedStakingLimit, stakingToken.decimals],
+  )
 
   const handleConfirmClick = async () => {
     const receipt = await fetchWithCatchTxError(() => {

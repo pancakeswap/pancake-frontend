@@ -8,7 +8,7 @@ interface ThemedProps extends TextProps {
 }
 
 const getColor = ({ color, theme }: ThemedProps) => {
-  return getThemeValue(`colors.${color}`, color)(theme);
+  return getThemeValue(theme, `colors.${color}`, color);
 };
 
 const Text = styled.div<TextProps>`
