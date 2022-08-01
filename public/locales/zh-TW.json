@@ -1769,5 +1769,6 @@
   "to try.": "試試。",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% 的購買代幣將在一段時間內線性授權與釋放。%percentageTgeRelease%% 的購買代幣將在 IFO 結束時立即釋放並可供領取。",
   "Select a Network": "選擇網路",
+  "LP Rewards APR": "LP Rewards APR",
   "Limit Orders": "Limit Orders"
 }
