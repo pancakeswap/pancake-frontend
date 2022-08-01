@@ -37,18 +37,18 @@ const Menu = (props) => {
   }, [t])
 
   const [openNetworkSupportModal] = useModal(
-    <NetworkSupportModal title={activeSubMenuItem?.label} />,
+    <NetworkSupportModal title={activeSubMenuItem ? activeSubMenuItem.label : activeMenuItem?.label} />,
     false,
     true,
     'networkSupport',
   )
 
   useEffect(() => {
-    if (activeSubMenuItem?.disabled) {
+    if (activeSubMenuItem?.disabled || activeMenuItem?.disabled) {
       openNetworkSupportModal()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeSubMenuItem])
+  }, [activeSubMenuItem, activeMenuItem])
 
   return (
     <UikitMenu

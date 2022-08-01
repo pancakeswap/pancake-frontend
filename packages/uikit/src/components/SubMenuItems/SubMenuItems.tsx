@@ -6,7 +6,13 @@ import { OpenNewIcon } from "../Svg";
 import StyledSubMenuItems from "./styles";
 import { SubMenuItemsProps } from "./types";
 
-const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isMobileOnly = false, ...props }) => {
+const SubMenuItems: React.FC<SubMenuItemsProps> = ({
+  items = [],
+  activeItem,
+  isMobileOnly = false,
+  disabled: topDisabled,
+  ...props
+}) => {
   return (
     <StyledSubMenuItems
       justifyContent={[isMobileOnly ? "flex-end" : "start", null, "center"]}
@@ -14,7 +20,7 @@ const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isM
       pl={["12px", null, "0px"]}
       $isMobileOnly={isMobileOnly}
     >
-      {items.map(({ label, href, icon, itemProps, type }) => {
+      {items.map(({ label, href, icon, itemProps, type, disabled }) => {
         const Icon = icon;
         const isExternalLink = type === DropdownMenuItemType.EXTERNAL_LINK;
         const linkProps = isExternalLink
@@ -27,7 +33,14 @@ const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isM
         return (
           label && (
             <Box key={label} mr="20px">
-              <MenuItem href={href} isActive={href === activeItem} variant="subMenu" {...itemProps} {...linkProps}>
+              <MenuItem
+                href={href}
+                isActive={href === activeItem}
+                isDisabled={disabled || topDisabled}
+                variant="subMenu"
+                {...itemProps}
+                {...linkProps}
+              >
                 {Icon && <Icon color={href === activeItem ? "secondary" : "textSubtle"} mr="4px" />}
                 {label}
                 {isExternalLink && (

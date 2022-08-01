@@ -8,12 +8,14 @@ export type SubMenuItemsType = {
   href: string;
   itemProps?: any;
   icon?: ElementType<any>;
+  disabled?: boolean;
   isMobileOnly?: boolean;
   type?: DropdownMenuItemType;
 };
 
 export interface SubMenuItemsProps extends FlexProps {
   items: SubMenuItemsType[];
+  disabled?: boolean;
   activeItem?: string;
   isMobileOnly?: boolean;
 }
