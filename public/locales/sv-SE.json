@@ -1769,5 +1769,6 @@
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% av inköpta tokens omfattas av en förvärvsperiod, vilket innebär att de lanseras under en viss tid. %percentageTgeRelease%% av den inköpta token lanseras direkt och kan hämtas ut när det inledande farmerbjudandet är slut.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "Tokens som omfattas av en förvärvsperiod lanseras linjärt under %weeks% veckor.",
   "Select a Network": "Välj ett nätverk",
+  "LP Rewards APR": "LP Rewards APR",
   "Limit Orders": "Limit Orders"
 }
