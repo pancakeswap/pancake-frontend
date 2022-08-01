@@ -1,4 +1,5 @@
-import { Currency } from '@pancakeswap/sdk'
+import { ChainId, Currency } from '@pancakeswap/sdk'
+import { BinanceIcon } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { WrappedTokenInfo } from 'state/types'
 import styled from 'styled-components'
@@ -36,6 +37,9 @@ export default function CurrencyLogo({
   }, [currency, uriLocations])
 
   if (currency?.isNative) {
+    if (currency.chainId === ChainId.BSC) {
+      return <BinanceIcon width={size} style={style} />
+    }
     return (
       <StyledLogo
         size={size}
