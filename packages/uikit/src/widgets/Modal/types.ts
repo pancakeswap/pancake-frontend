@@ -10,8 +10,8 @@ export interface InjectedProps {
   onDismiss?: Handler;
 }
 
-export interface ModalProps extends InjectedProps, BoxProps {
-  title: string;
+export interface ModalProps extends InjectedProps, Omit<BoxProps, "title"> {
+  title: React.ReactNode;
   hideCloseButton?: boolean;
   onBack?: () => void;
   bodyPadding?: string;

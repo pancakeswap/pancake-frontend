@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Box, Modal } from '@pancakeswap/uikit'
-import { useWeb3React, useSignMessage } from '@pancakeswap/wagmi'
+import { useWeb3React } from '@pancakeswap/wagmi'
+import { useSignMessage } from 'wagmi'
 import { useTranslation } from 'contexts/Localization'
 import { SnapshotCommand } from 'state/types'
 import useToast from 'hooks/useToast'

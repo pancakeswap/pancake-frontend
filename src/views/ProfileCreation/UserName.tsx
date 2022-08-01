@@ -16,7 +16,8 @@ import {
   Checkbox,
 } from '@pancakeswap/uikit'
 import { parseISO, formatDistance } from 'date-fns'
-import { useWeb3React, useSignMessage } from '@pancakeswap/wagmi'
+import { useWeb3React } from '@pancakeswap/wagmi'
+import { useSignMessage } from 'wagmi'
 import { formatUnits } from '@ethersproject/units'
 import { API_PROFILE } from 'config/constants/endpoints'
 import useToast from 'hooks/useToast'

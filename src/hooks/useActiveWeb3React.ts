@@ -1,4 +1,5 @@
 import { CHAINS, useWeb3React } from '@pancakeswap/wagmi'
+import { Web3Provider } from '@ethersproject/providers'
 import { ChainId } from '@pancakeswap/sdk'
 import { bscRpcProvider } from 'utils/providers'
 import { useRouter } from 'next/router'
@@ -30,7 +31,7 @@ const useActiveWeb3React = () => {
   const localChainId = useLocalNetworkChain()
   const { library, chainId, ...web3React } = useWeb3React()
 
-  return { library: library ?? bscRpcProvider, chainId: chainId ?? localChainId, ...web3React }
+  return { library: (library ?? bscRpcProvider) as Web3Provider, chainId: chainId ?? localChainId, ...web3React }
 }
 
 export default useActiveWeb3React

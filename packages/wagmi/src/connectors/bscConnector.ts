@@ -3,6 +3,7 @@
 /* eslint-disable class-methods-use-this */
 import { Chain, ConnectorNotFoundError, ResourceUnavailableError, RpcError, UserRejectedRequestError } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
+import { Ethereum } from '@wagmi/core'
 
 declare global {
   interface Window {

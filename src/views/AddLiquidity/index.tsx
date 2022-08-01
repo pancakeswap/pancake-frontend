@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { JSBI, CurrencyAmount, Token, WNATIVE, MINIMUM_LIQUIDITY } from '@pancakeswap/sdk'
+import { JSBI, CurrencyAmount, Token, WNATIVE, MINIMUM_LIQUIDITY, ChainId } from '@pancakeswap/sdk'
 import {
   Button,
   Text,
@@ -511,7 +511,7 @@ export default function AddLiquidity() {
 
   const shouldShowApprovalGroup = (showFieldAApproval || showFieldBApproval) && isValid
 
-  const oneCurrencyIsWBNB = Boolean(
+  const oneCurrencyIsWNATIVE = Boolean(
     chainId && ((currencyA && currencyA.equals(WNATIVE[chainId])) || (currencyB && currencyB.equals(WNATIVE[chainId]))),
   )
 
