@@ -36,9 +36,15 @@ const USDC_TESTNET = new Token(
   'https://www.centre.io/usdc',
 )
 
-const USDC_ETH = new Token(ChainId.ETHEREUM, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD//C')
+const USDC_ETH = new Token(ChainId.ETHEREUM, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin')
 
-const USDC_RINKEBY = new Token(ChainId.RINKEBY, '0x4DBCdF9B62e891a7cec5A2568C3F4FAF9E8Abe2b', 6, 'tUSDC', 'test USD//C')
+const USDC_RINKEBY = new Token(
+  ChainId.RINKEBY,
+  '0x4DBCdF9B62e891a7cec5A2568C3F4FAF9E8Abe2b',
+  6,
+  'tUSDC',
+  'test USD Coin',
+)
 
 export const USDC = {
   [ChainId.BSC]: USDC_BSC,
@@ -80,7 +86,7 @@ const BUSD_ETH = new Token(
 )
 
 const BUSD_RINKEBY = new Token(
-  ChainId.ETHEREUM,
+  ChainId.RINKEBY,
   '0x4e2442A6f7AeCE64Ca33d31756B5390860BF973E',
   18,
   'BUSD',
