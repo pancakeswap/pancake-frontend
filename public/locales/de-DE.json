@@ -1769,5 +1769,6 @@
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested% % des gekauften Tokens werden vested (beiseite gelegt) und linear über einen bestimmten Zeitraum freigegeben. %percentageTgeRelease% % des gekauften Tokens wird sofort freigegeben und kann nach Ablauf des IFO eingefordert werden.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "Die beiseite gelegten Token werden linear über einen Zeitraum von %weeks% Wochen freigegeben.",
   "Select a Network": "Netzwerk auswählen",
+  "LP Rewards APR": "LP Rewards APR",
   "Limit Orders": "Limit Orders"
 }
