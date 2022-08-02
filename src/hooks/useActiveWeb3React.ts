@@ -34,14 +34,37 @@ export function useNetworkConnectorUpdater() {
 
   useEffect(() => {
     if (router.query.chainId !== String(chainId) && isChainSupported(chainId)) {
-      // @ts-ignore
-      const params = new URLSearchParams(router.query)
       if (chainId === ChainId.BSC) {
-        params.delete('chainId')
+        if (router.query.chainId) {
+          // @ts-ignore
+          const params = new URLSearchParams(router.query)
+          if (chainId === ChainId.BSC) {
+            params.delete('chainId')
+          }
+          router.replace(
+            {
+              query: params.toString(),
+            },
+            undefined,
+            {
+              shallow: true,
+            },
+          )
+        }
+      } else {
+        router.replace(
+          {
+            query: {
+              ...router.query,
+              chainId,
+            },
+          },
+          undefined,
+          {
+            shallow: true,
+          },
+        )
       }
-      router.replace({
-        query: params.toString(),
-      })
     }
   }, [chainId, router])
 
