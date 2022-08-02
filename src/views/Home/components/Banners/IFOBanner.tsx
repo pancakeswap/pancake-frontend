@@ -10,7 +10,8 @@ import { getStatus } from '../../../Ifos/hooks/helpers'
 import { IFOImage, IFOMobileImage } from './images'
 import * as S from './Styled'
 
-const IFOHeaderMobileHeight = 36
+const IFOHeaderMobileLimitHeight = 36
+const IFOHeaderMobileLimitWidth = 335
 
 const shineAnimation = keyframes`
 	0% {transform:translateX(-100%);}
@@ -90,7 +91,10 @@ const IFOBanner = () => {
   useEffect(() => {
     if (!headingRef.current) return
     if (!isMobile) headingRef.current.style.fontSize = ''
-    else if (headingRef.current.offsetHeight > IFOHeaderMobileHeight) {
+    else if (
+      headingRef.current.offsetHeight > IFOHeaderMobileLimitHeight ||
+      headingRef.current.offsetWidth > IFOHeaderMobileLimitWidth
+    ) {
       headingRef.current.style.fontSize = '20px'
     }
   }, [isMobile])
