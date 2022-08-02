@@ -8,6 +8,7 @@ export type Handler = () => void;
 
 export interface InjectedProps {
   onDismiss?: Handler;
+  mode?: string;
 }
 
 export interface ModalProps extends InjectedProps, BoxProps {
