@@ -36,8 +36,11 @@ const Menu = (props) => {
     return footerLinks(t)
   }, [t])
 
-  const [openNetworkSupportModal] = useModal(
-    <NetworkSupportModal title={activeSubMenuItem ? activeSubMenuItem.label : activeMenuItem?.label} />,
+  const [openNetworkSupportModal, onDismiss] = useModal(
+    <NetworkSupportModal
+      title={activeSubMenuItem?.disabled ? activeSubMenuItem?.label : activeMenuItem?.label}
+      image={activeSubMenuItem?.disabled ? activeSubMenuItem?.image || activeMenuItem?.image : activeMenuItem?.image}
+    />,
     false,
     true,
     'networkSupport',
@@ -46,6 +49,8 @@ const Menu = (props) => {
   useEffect(() => {
     if (activeSubMenuItem?.disabled || activeMenuItem?.disabled) {
       openNetworkSupportModal()
+    } else {
+      onDismiss()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeSubMenuItem, activeMenuItem])

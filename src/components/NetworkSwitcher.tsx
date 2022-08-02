@@ -1,9 +1,10 @@
-import { Box, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
+import { Box, Text, useModal, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React, { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import Image from 'next/image'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { chains } from 'utils/wagmi'
+import { WrongNetworkModal } from './WrongNetworkModal'
 
 export const NetworkSelect = ({ switchNetwork }) => {
   const { t } = useTranslation()
@@ -34,6 +35,17 @@ export const NetworkSwitcher = () => {
   )
 
   const isWrongNetwork = chain?.unsupported
+
+  const [openWrongNetworkModal, dismiss] = useModal(<WrongNetworkModal />, false, false, 'wrong-network')
+
+  useEffect(() => {
+    if (isWrongNetwork) {
+      openWrongNetworkModal()
+    } else {
+      dismiss()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isWrongNetwork])
 
   return (
     <UserMenu

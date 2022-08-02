@@ -11,15 +11,16 @@ import usePreviousValue from './usePreviousValue'
 
 export function useNetworkConnectorUpdater() {
   const localChainId = useLocalNetworkChain()
-  const { chain, chainId } = useActiveWeb3React()
+  const { chain } = useActiveWeb3React()
   const { mutate } = useSWRConfig()
   const previousChain = usePreviousValue(chain)
   const { switchNetwork, isLoading, pendingChainId } = useSwitchNetwork()
   const router = useRouter()
+  const chainId = chain.id || localChainId
 
   useEffect(() => {
     // first chain connected, ask for switch chain
-    if (chain && !previousChain && chain.id !== localChainId && localChainId) {
+    if (chain && chain.id !== localChainId && localChainId && isChainSupported(localChainId)) {
       switchNetwork(localChainId)
         .catch(() => {
           mutate('session-chain-id', chain.id)
@@ -33,40 +34,22 @@ export function useNetworkConnectorUpdater() {
   }, [chain, previousChain, localChainId, switchNetwork, mutate])
 
   useEffect(() => {
+    if (isLoading || !router.isReady) return
     if (router.query.chainId !== String(chainId) && isChainSupported(chainId)) {
-      if (chainId === ChainId.BSC) {
-        if (router.query.chainId) {
-          // @ts-ignore
-          const params = new URLSearchParams(router.query)
-          if (chainId === ChainId.BSC) {
-            params.delete('chainId')
-          }
-          router.replace(
-            {
-              query: params.toString(),
-            },
-            undefined,
-            {
-              shallow: true,
-            },
-          )
-        }
-      } else {
-        router.replace(
-          {
-            query: {
-              ...router.query,
-              chainId,
-            },
+      router.replace(
+        {
+          query: {
+            ...router.query,
+            chainId,
           },
-          undefined,
-          {
-            shallow: true,
-          },
-        )
-      }
+        },
+        undefined,
+        {
+          shallow: true,
+        },
+      )
     }
-  }, [chainId, router])
+  }, [chainId, isLoading, router])
 
   return {
     isLoading,
@@ -75,7 +58,7 @@ export function useNetworkConnectorUpdater() {
   }
 }
 
-function useLocalNetworkChain() {
+export function useLocalNetworkChain() {
   const { data: sessionChainId } = useSWR('session-chain-id')
   const { query } = useRouter()
 

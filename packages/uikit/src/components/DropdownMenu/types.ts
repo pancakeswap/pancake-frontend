@@ -39,6 +39,7 @@ export interface DropdownMenuItems {
   label?: string | React.ReactNode;
   href?: string;
   onClick?: () => void;
+  image?: string;
   type?: DropdownMenuItemType;
   status?: LinkStatus;
   disabled?: boolean;

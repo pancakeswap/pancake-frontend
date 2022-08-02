@@ -9,6 +9,7 @@ import { Store } from '@reduxjs/toolkit'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
 import { WagmiProvider } from '@pancakeswap/wagmi'
 import { client } from 'utils/wagmi'
+import { HistoryManagerProvider } from 'contexts/HistoryContext'
 
 const StyledThemeProvider: React.FC<{ children: React.ReactNode }> = (props) => {
   const { resolvedTheme } = useNextTheme()
@@ -29,7 +30,9 @@ const Providers: React.FC<{ store: Store }> = ({ children, store }) => {
                       use: [fetchStatusMiddleware],
                     }}
                   >
-                    <ModalProvider>{children}</ModalProvider>
+                    <HistoryManagerProvider>
+                      <ModalProvider>{children}</ModalProvider>
+                    </HistoryManagerProvider>
                   </SWRConfig>
                 </LanguageProvider>
               </StyledThemeProvider>

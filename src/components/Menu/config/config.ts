@@ -19,7 +19,7 @@ import { DropdownMenuItems } from '@pancakeswap/uikit/src/components/DropdownMen
 import { ChainId } from '@pancakeswap/sdk'
 
 export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }
-export type ConfigMenuItemsType = Omit<MenuItemsType, 'items'> & { hideSubNav?: boolean } & {
+export type ConfigMenuItemsType = Omit<MenuItemsType, 'items'> & { hideSubNav?: boolean; image?: string } & {
   items?: ConfigMenuDropDownItemsType[]
 }
 
@@ -54,6 +54,7 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
             label: t('Limit'),
             href: '/limit-orders',
             supportChainIds: [ChainId.BSC],
+            image: '/images/decorations/3d-coin.png',
           },
           {
             label: t('Liquidity'),
@@ -78,6 +79,7 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
         icon: EarnIcon,
         fillIcon: EarnFillIcon,
         supportChainIds: [ChainId.BSC],
+        image: '/images/decorations/pe2.png',
         items: [
           {
             label: t('Farms'),
@@ -99,15 +101,18 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
           {
             label: t('Trading Competition'),
             href: '/competition',
+            image: '/images/decorations/tc.png',
             hideSubNav: true,
           },
           {
             label: t('Prediction (BETA)'),
             href: '/prediction',
+            image: '/images/decorations/prediction.png',
           },
           {
             label: t('Lottery'),
             href: '/lottery',
+            image: '/images/decorations/lottery.png',
           },
         ],
       },
@@ -117,6 +122,7 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
         icon: NftIcon,
         fillIcon: NftFillIcon,
         supportChainIds: [ChainId.BSC],
+        image: '/images/decorations/nft.png',
         items: [
           {
             label: t('Overview'),
@@ -147,11 +153,13 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
             label: t('IFO'),
             href: '/ifo',
             supportChainIds: [ChainId.BSC],
+            image: '/images/ifos/ifo-bunny.png',
           },
           {
             label: t('Voting'),
             href: '/voting',
             supportChainIds: [ChainId.BSC],
+            image: '/images/voting/voting-bunny.png',
           },
           {
             type: DropdownMenuItemType.DIVIDER,
@@ -160,6 +168,7 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
             label: t('Leaderboard'),
             href: '/teams',
             supportChainIds: [ChainId.BSC],
+            image: '/images/decorations/leaderboard.png',
           },
           {
             type: DropdownMenuItemType.DIVIDER,
