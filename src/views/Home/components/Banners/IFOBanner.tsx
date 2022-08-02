@@ -88,7 +88,6 @@ const IFOBanner = () => {
     : null
   const { isMobile } = useMatchBreakpointsContext()
   useEffect(() => {
-    console.log(isMobile, '???')
     if (!headingRef.current) return
     if (!isMobile) headingRef.current.style.fontSize = ''
     else if (headingRef.current.offsetHeight > IFOHeaderMobileHeight) {
