@@ -5,7 +5,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useProfile } from 'state/profile/hooks'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { formatBigNumber } from 'utils/formatBalance'
-import useGetProfileCosts from 'views/Nft/market/Profile/hooks/useGetProfileCosts'
+import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 import { UseEditProfileResponse } from './reducer'
 
 interface ApproveCakePageProps extends InjectedModalProps {

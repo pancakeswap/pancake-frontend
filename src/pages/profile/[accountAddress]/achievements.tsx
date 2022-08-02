@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useAchievementsForAddress, useProfileForAddress } from 'state/profile/hooks'
-import { NftProfileLayout } from 'views/Nft/market/Profile'
-import Achievements from 'views/Nft/market/Profile/components/Achievements'
+import { NftProfileLayout } from 'views/Profile'
+import Achievements from 'views/Profile/components/Achievements'
 
 const NftProfileAchievementsPage = () => {
   const accountAddress = useRouter().query.accountAddress as string

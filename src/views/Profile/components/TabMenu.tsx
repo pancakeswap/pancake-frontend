@@ -3,7 +3,6 @@ import { useTranslation } from 'contexts/Localization'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
-import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { useRouter } from 'next/router'
 
 const Tab = styled.button<{ $active: boolean }>`
@@ -40,7 +39,7 @@ const TabMenu = () => {
         onClick={() => setIsAchievementsActive(false)}
         $active={!achievementsActive}
         as={NextLinkFromReactRouter}
-        to={`${nftsBaseUrl}/profile/${accountAddress}`}
+        to={`/profile/${accountAddress}`}
       >
         NFTs
       </Tab>
@@ -48,7 +47,7 @@ const TabMenu = () => {
         onClick={() => setIsAchievementsActive(true)}
         $active={achievementsActive}
         as={NextLinkFromReactRouter}
-        to={`${nftsBaseUrl}/profile/${accountAddress}/achievements`}
+        to={`/profile/${accountAddress}/achievements`}
       >
         {t('Achievements')}
       </Tab>

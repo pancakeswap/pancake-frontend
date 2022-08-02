@@ -3,7 +3,7 @@ import { useTranslation } from 'contexts/Localization'
 import { nftsBaseUrl, pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { NftToken } from 'state/nftMarket/types'
 import { getBscScanLinkForNft } from 'utils'
-import EditProfileModal from 'views/Nft/market/Profile/components/EditProfileModal'
+import EditProfileModal from 'views/Profile/components/EditProfileModal'
 import { useProfile } from 'state/profile/hooks'
 import { Divider, HorizontalDivider, RoundedImage } from '../shared/styles'
 

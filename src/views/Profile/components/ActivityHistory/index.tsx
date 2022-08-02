@@ -20,10 +20,10 @@ import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import useTheme from 'hooks/useTheme'
 import { useRouter } from 'next/router'
 import { sortUserActivity } from '../../utils/sortUserActivity'
-import NoNftsImage from '../../../components/Activity/NoNftsImage'
-import { Arrow, PageButtons } from '../../../components/PaginationButtons'
-import ActivityRow from '../../../components/Activity/ActivityRow'
-import { fetchActivityNftMetadata } from '../../../ActivityHistory/utils/fetchActivityNftMetadata'
+import NoNftsImage from '../../../Nft/market/components/Activity/NoNftsImage'
+import { Arrow, PageButtons } from '../../../Nft/market/components/PaginationButtons'
+import ActivityRow from '../../../Nft/market/components/Activity/ActivityRow'
+import { fetchActivityNftMetadata } from '../../../Nft/market/ActivityHistory/utils/fetchActivityNftMetadata'
 
 const MAX_PER_PAGE = 8
 
