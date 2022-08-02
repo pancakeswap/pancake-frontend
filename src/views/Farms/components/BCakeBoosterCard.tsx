@@ -50,6 +50,7 @@ const StyledCardBody = styled(CardBody)`
 const StyledCardFooter = styled(CardFooter)`
   border-top: none;
   position: relative;
+  padding: 8px 24px 16px;
   &::before {
     content: '';
     position: absolute;
@@ -85,8 +86,8 @@ export const BCakeBoosterCard = () => {
       <ImageWrapper>
         <Image src={boosterCardImage} alt="boosterCardImage" width={99} height={191} placeholder="blur" />
       </ImageWrapper>
-      <Card style={{ zIndex: 1 }}>
-        <StyledCardBody>
+      <Card p="0px" style={{ zIndex: 1 }}>
+        <StyledCardBody style={{ padding: '15px 24px' }}>
           <RocketIcon />
           <Text fontSize={22} bold color="text" marginBottom="-12px" display="inline-block" ml="7px">
             {t('Yield Booster')}
@@ -116,7 +117,7 @@ const CardContent: React.FC = () => {
   if (!account)
     return (
       <Box>
-        <Text color="textSubtle" fontSize={12} bold mt="-12px">
+        <Text color="textSubtle" fontSize={12} bold>
           {t('Connect wallet to view booster')}
         </Text>
         <Text color="textSubtle" fontSize={12} mb="16px">
@@ -128,7 +129,7 @@ const CardContent: React.FC = () => {
   if (!locked)
     return (
       <Box width="100%">
-        <Text color="textSubtle" fontSize={12} bold mt="-12px">
+        <Text color="textSubtle" fontSize={12} bold>
           {t('No CAKE locked')}
         </Text>
         <Text color="textSubtle" fontSize={12} mb="16px">
@@ -142,7 +143,7 @@ const CardContent: React.FC = () => {
   if (lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd) * 1000))
     return (
       <Box>
-        <Text color="textSubtle" fontSize={12} bold mt="-12px">
+        <Text color="textSubtle" fontSize={12} bold>
           {t('Locked staking is ended')}
         </Text>
         <Text color="textSubtle" fontSize={12} mb="16px">
@@ -156,7 +157,7 @@ const CardContent: React.FC = () => {
   if (!proxyCreated) {
     return (
       <Box>
-        <Text color="textSubtle" fontSize={12} bold mt="-12px">
+        <Text color="textSubtle" fontSize={12} bold>
           {t('Available Yield Booster')}
         </Text>
         <Text color="textSubtle" fontSize={12} mb="16px">
@@ -169,16 +170,16 @@ const CardContent: React.FC = () => {
   if (remainingCounts > 0)
     return (
       <Box>
-        <Flex justifyContent="space-between">
-          <Text color="secondary" fontSize={12} bold mt="-12px" textTransform="uppercase">
+        <Flex justifyContent="space-between" alignItems="center" mb="5px">
+          <Text color="secondary" fontSize={12} bold textTransform="uppercase">
             {t('Available Yield Booster')}
           </Text>
-          <Text color="secondary" fontSize={12} bold mt="-12px" textTransform="uppercase">
+          <Text color="secondary" fontSize={16} bold textTransform="uppercase">
             {remainingCounts}/{maxBoostCounts}
           </Text>
         </Flex>
 
-        <Text color="textSubtle" fontSize={12} mb="-8px">
+        <Text color="textSubtle" fontSize={12}>
           {t('You will be able to activate the yield booster on an additional %num% farm(s).', {
             num: remainingCounts,
           })}
@@ -188,15 +189,15 @@ const CardContent: React.FC = () => {
   return (
     <Box>
       <Flex justifyContent="space-between">
-        <Text color="secondary" fontSize={12} bold mt="-12px" textTransform="uppercase">
+        <Text color="secondary" fontSize={12} bold textTransform="uppercase">
           {t('Available Yield Booster')}
         </Text>
-        <Text color="secondary" fontSize={12} bold mt="-12px" textTransform="uppercase">
+        <Text color="secondary" fontSize={12} bold textTransform="uppercase">
           0
         </Text>
       </Flex>
 
-      <Text color="textSubtle" fontSize={12} mb="-8px">
+      <Text color="textSubtle" fontSize={12}>
         {t('To activate yield boosters on additional farms, unset yield boosters on some currently boosted farms.')}
       </Text>
     </Box>
