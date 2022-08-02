@@ -16,7 +16,7 @@ export function useNetworkConnectorUpdater() {
   const previousChain = usePreviousValue(chain)
   const { switchNetwork, isLoading, pendingChainId } = useSwitchNetwork()
   const router = useRouter()
-  const chainId = chain.id || localChainId
+  const chainId = chain?.id || localChainId
 
   useEffect(() => {
     // first chain connected, ask for switch chain
