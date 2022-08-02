@@ -10,7 +10,7 @@ const ifos: Ifo[] = [
     id: 'peel',
     address: '0x35Bb6Dd4E8C63491057c32621c8cDdE43BabE201',
     isActive: true,
-    name: 'PEEL',
+    name: 'Meta Apes ($PEEL)',
     poolBasic: {
       saleAmount: '10,000,000 PEEL',
       raiseAmount: '$400,000',

@@ -77,6 +77,8 @@ const IFOBanner = () => {
 
   const activeIfoWithBlocks = useActiveIfoWithBlocks()
 
+  const ifoName = activeIfoWithBlocks?.name ?? 'XXX'
+
   const isIfoAlive = !!(currentBlock && activeIfoWithBlocks && activeIfoWithBlocks.endBlock > currentBlock)
   const status = isIfoAlive
     ? getStatus(currentBlock, activeIfoWithBlocks.startBlock, activeIfoWithBlocks.endBlock)
@@ -88,7 +90,7 @@ const IFOBanner = () => {
         <S.LeftWrapper>
           <S.StyledSubheading>{status === 'live' ? t('Live') : t('Soon')}</S.StyledSubheading>
           <S.StyledHeading scale="xl">
-            {activeIfoWithBlocks?.id ?? 'XXX'} {t('IFO')}
+            {ifoName} {t('IFO')}
           </S.StyledHeading>
           <NextLinkFromReactRouter to="/ifo">
             <Button>
