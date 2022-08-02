@@ -49,7 +49,7 @@ const insertSeparators = (items: ReactNode[], separator: BreadcrumbsProps["separ
 
     return [
       ...accum,
-      <Separator aria-hidden key={`seperator-${index}`}>
+      <Separator aria-hidden key={`separator-${index}`}>
         {separator}
       </Separator>,
       item,
