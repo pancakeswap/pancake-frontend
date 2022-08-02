@@ -16,16 +16,6 @@ import styled, { useTheme } from 'styled-components'
 import { useTheme as useNextTheme } from 'next-themes'
 import { CHAINS_STARGATE } from '@pancakeswap/wagmi'
 
-// function useAuth() {
-//   const logout = () => {
-//     window.stargate.wallet.ethereum.deactivate()
-//   }
-
-//   return {
-//     logout,
-//   }
-// }
-
 const StyledMenuItem = styled.a<any>`
   position: relative;
   display: flex;
@@ -72,9 +62,6 @@ export function Menu() {
 }
 
 const UserMenuItems = () => {
-  // const t = (s: string) => s
-  // const { logout } = useAuth()
-
   return (
     <>
       <Box px="16px" py="8px">
@@ -87,13 +74,6 @@ const UserMenuItems = () => {
           <Text pl="12px">{chain.name}</Text>
         </UserMenuItem>
       ))}
-      {/* <UserMenuDivider />
-      <UserMenuItem as="button" onClick={logout}>
-        <Flex color="text" alignItems="center" justifyContent="space-between" width="100%">
-          {t('Disconnect')}
-          <LogoutIcon />
-        </Flex>
-      </UserMenuItem> */}
     </>
   )
 }
