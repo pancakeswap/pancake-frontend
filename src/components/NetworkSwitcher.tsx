@@ -16,7 +16,7 @@ export const NetworkSelect = ({ switchNetwork }) => {
       <UserMenuDivider />
       {chains.map((chain) => (
         <UserMenuItem key={chain.id} style={{ justifyContent: 'flex-start' }} onClick={() => switchNetwork(chain.id)}>
-          <Image width={24} height={24} src={`https://cdn.pancakeswap.com/chains/${chain.id}.png`} unoptimized />
+          <Image width={24} height={24} src={`/images/chains/${chain.id}.png`} unoptimized />
           <Text pl="12px">{chain.name}</Text>
         </UserMenuItem>
       ))}
@@ -28,7 +28,10 @@ export const NetworkSwitcher = () => {
   const { t } = useTranslation()
   const { chainId, chain } = useActiveWeb3React()
   const { isLoading, switchNetwork, pendingChainId } = useNetworkConnectorUpdater()
-  const foundChain = useMemo(() => chains.find((c) => c.id === (pendingChainId || chainId)), [pendingChainId, chainId])
+  const foundChain = useMemo(
+    () => chains.find((c) => c.id === (isLoading ? pendingChainId || chainId : chainId)),
+    [isLoading, pendingChainId, chainId],
+  )
 
   const isWrongNetwork = chain?.unsupported
 
@@ -36,7 +39,7 @@ export const NetworkSwitcher = () => {
     <UserMenu
       mr="8px"
       variant={isLoading ? 'pending' : isWrongNetwork ? 'danger' : 'default'}
-      avatarSrc={`https://cdn.pancakeswap.com/chains/${chainId}.png`}
+      avatarSrc={`/images/chains/${chainId}.png`}
       text={
         isLoading ? (
           t('Requesting')

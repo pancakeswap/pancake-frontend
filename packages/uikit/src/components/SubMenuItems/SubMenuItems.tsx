@@ -6,13 +6,7 @@ import { OpenNewIcon } from "../Svg";
 import StyledSubMenuItems from "./styles";
 import { SubMenuItemsProps } from "./types";
 
-const SubMenuItems: React.FC<SubMenuItemsProps> = ({
-  items = [],
-  activeItem,
-  isMobileOnly = false,
-  disabled: topDisabled,
-  ...props
-}) => {
+const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isMobileOnly = false, ...props }) => {
   return (
     <StyledSubMenuItems
       justifyContent={[isMobileOnly ? "flex-end" : "start", null, "center"]}
@@ -36,7 +30,7 @@ const SubMenuItems: React.FC<SubMenuItemsProps> = ({
               <MenuItem
                 href={href}
                 isActive={href === activeItem}
-                isDisabled={disabled || topDisabled}
+                isDisabled={disabled}
                 variant="subMenu"
                 {...itemProps}
                 {...linkProps}

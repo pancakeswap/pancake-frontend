@@ -15,7 +15,6 @@ export type SubMenuItemsType = {
 
 export interface SubMenuItemsProps extends FlexProps {
   items: SubMenuItemsType[];
-  disabled?: boolean;
   activeItem?: string;
   isMobileOnly?: boolean;
 }
