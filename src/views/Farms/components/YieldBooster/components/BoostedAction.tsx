@@ -1,4 +1,5 @@
 import { useTranslation } from 'contexts/Localization'
+import { AutoRenewIcon } from '@pancakeswap/uikit'
 import { ReactNode, useCallback, useContext } from 'react'
 
 import _isEmpty from 'lodash/isEmpty'
@@ -81,9 +82,11 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
             disabled={isConfirming}
             onClick={handlers.activate}
             title={`${boostMultipler}x`}
+            isLoading={isConfirming}
             description={t('Yield booster available')}
+            endIcon={isConfirming && <AutoRenewIcon spin color="currentColor" />}
           >
-            {t('Boost')}
+            {isConfirming ? t('Confirming...') : t('Boost')}
           </ActionButton>
         )
       case YieldBoosterState.ACTIVE:
