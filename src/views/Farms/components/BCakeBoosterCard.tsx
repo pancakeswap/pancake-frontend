@@ -25,7 +25,6 @@ import CreateProxyButton from './YieldBooster/components/CreateProxyButton'
 
 export const CardWrapper = styled.div`
   position: relative;
-  padding-top: 42px;
   width: 100%;
   ${({ theme }) => theme.mediaQueries.sm} {
     width: 296px;
