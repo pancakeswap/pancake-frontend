@@ -29,7 +29,7 @@ const useTokenBalance = (tokenAddress: string, forceBSC?: boolean) => {
     [account, contract, forceBSC],
   )
 
-  const { data, status, ...rest } = useSWRContract(key, {
+  const { data, status, ...rest } = useSWRContract(key as any, {
     refreshInterval: FAST_INTERVAL,
   })
 

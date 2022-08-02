@@ -402,7 +402,7 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
 }
 
 export function useGasPrice(): string {
-  const { chainId } = useActiveWeb3React()
+  const { chainId, chain } = useActiveWeb3React()
   const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
   const { data } = useFeeData({ chainId, enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET })
   if (chainId === ChainId.BSC) {
@@ -410,6 +410,9 @@ export function useGasPrice(): string {
   }
   if (chainId === ChainId.BSC_TESTNET) {
     return GAS_PRICE_GWEI.testnet
+  }
+  if (chain?.testnet) {
+    return data?.formatted?.maxPriorityFeePerGas
   }
   return data?.formatted?.gasPrice
 }
