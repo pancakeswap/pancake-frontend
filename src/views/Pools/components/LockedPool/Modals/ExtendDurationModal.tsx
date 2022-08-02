@@ -14,7 +14,7 @@ import LockedBodyModal from '../Common/LockedModalBody'
 import Overview from '../Common/Overview'
 import { ExtendDurationModal } from '../types'
 import RoiCalculatorModalProvider from './RoiCalculatorModalProvider'
-import { MIN_LOCK_AMOUNT } from '../../../helpers'
+import { ENABLE_EXTEND_LOCK_AMOUNT } from '../../../helpers'
 
 const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   modalTitle,
@@ -53,7 +53,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
       finalDuration: duration,
       finalLockedAmount:
         currentDuration && currentDuration + duration > MAX_LOCK_DURATION
-          ? getBalanceAmount(MIN_LOCK_AMOUNT, stakingToken.decimals).toNumber()
+          ? getBalanceAmount(ENABLE_EXTEND_LOCK_AMOUNT, stakingToken.decimals).toNumber()
           : 0,
     }),
     [stakingToken.decimals, currentDuration],

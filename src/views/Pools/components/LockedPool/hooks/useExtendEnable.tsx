@@ -10,7 +10,7 @@ import { useTradeExactOut } from 'hooks/Trades'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
-import { MIN_LOCK_AMOUNT } from '../../../helpers'
+import { ENABLE_EXTEND_LOCK_AMOUNT } from '../../../helpers'
 
 export const useExtendEnable = () => {
   const { account, chainId } = useActiveWeb3React()
@@ -18,7 +18,7 @@ export const useExtendEnable = () => {
   const [pendingEnableTx, setPendingEnableTx] = useState(false)
   const [transactionHash, setTransactionHash] = useState<string>()
   const isTransactionPending = useIsTransactionPending(transactionHash)
-  const swapAmount = useMemo(() => getFullDisplayBalance(MIN_LOCK_AMOUNT), [])
+  const swapAmount = useMemo(() => getFullDisplayBalance(ENABLE_EXTEND_LOCK_AMOUNT), [])
 
   const parsedAmount = tryParseAmount(swapAmount, CAKE[chainId])
 

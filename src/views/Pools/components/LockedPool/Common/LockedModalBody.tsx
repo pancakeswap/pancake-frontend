@@ -12,7 +12,7 @@ import { LockedModalBodyPropsType, ModalValidator } from '../types'
 import Overview from './Overview'
 import LockDurationField from './LockDurationField'
 import useLockedPool from '../hooks/useLockedPool'
-import { MIN_LOCK_AMOUNT } from '../../../helpers'
+import { ENABLE_EXTEND_LOCK_AMOUNT } from '../../../helpers'
 
 const ExtendEnable = dynamic(() => import('./ExtendEnable'), { ssr: false })
 
@@ -54,7 +54,7 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
     [isValidDuration, currentDuration, duration],
   )
 
-  const hasEnoughBalanceToExtend = useMemo(() => currentBalance?.gte(MIN_LOCK_AMOUNT), [currentBalance])
+  const hasEnoughBalanceToExtend = useMemo(() => currentBalance?.gte(ENABLE_EXTEND_LOCK_AMOUNT), [currentBalance])
 
   const needsEnable = useMemo(() => cakeNeeded && !hasEnoughBalanceToExtend, [cakeNeeded, hasEnoughBalanceToExtend])
 
@@ -95,7 +95,7 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
             {t('0.0001 CAKE will be spent to extend')}
           </Text>
         ) : (
-          <Message variant="warning">
+          <Message variant="warning" mt="24px">
             <MessageText maxWidth="200px">{t('0.0001 CAKE required for enabling extension')}</MessageText>
           </Message>
         ))}
