@@ -51,7 +51,11 @@ export default function useWrapCallback(
                     value: `0x${inputAmount.quotient.toString(16)}`,
                   })
                   addTransaction(txReceipt, {
-                    summary: `Wrap ${inputAmount.toSignificant(6)} BNB to WBNB`,
+                    summary: t('Wrap %amount% %native% to %wrap%', {
+                      amount: inputAmount.toSignificant(6),
+                      wrap: WNATIVE[chainId].symbol,
+                      native: inputCurrency.symbol,
+                    }),
                     type: 'wrap',
                   })
                 } catch (error) {
@@ -59,7 +63,9 @@ export default function useWrapCallback(
                 }
               }
             : undefined,
-        inputError: sufficientBalance ? undefined : t('Insufficient BNB balance'),
+        inputError: sufficientBalance
+          ? undefined
+          : t('Insufficient %symbol% balance', { symbol: inputCurrency.symbol }),
       }
     }
     if (WNATIVE[chainId]?.equals(inputCurrency) && outputCurrency?.isNative) {
@@ -72,13 +78,21 @@ export default function useWrapCallback(
                   const txReceipt = await callWithGasPrice(wbnbContract, 'withdraw', [
                     `0x${inputAmount.quotient.toString(16)}`,
                   ])
-                  addTransaction(txReceipt, { summary: `Unwrap ${inputAmount.toSignificant(6)} WBNB to BNB` })
+                  addTransaction(txReceipt, {
+                    summary: t('Unwrap %amount% %wrap% to %native%', {
+                      amount: inputAmount.toSignificant(6),
+                      wrap: WNATIVE[chainId].symbol,
+                      native: outputCurrency.symbol,
+                    }),
+                  })
                 } catch (error) {
                   console.error('Could not withdraw', error)
                 }
               }
             : undefined,
-        inputError: sufficientBalance ? undefined : t('Insufficient WBNB balance'),
+        inputError: sufficientBalance
+          ? undefined
+          : t('Insufficient %symbol% balance', { symbol: inputCurrency.symbol }),
       }
     }
     return NOT_APPLICABLE

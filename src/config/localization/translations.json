@@ -1769,5 +1769,11 @@
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks.",
   "Select a Network": "Select a Network",
-  "Requesting": "Requesting"
+  "Requesting": "Requesting",
+  "Unwrap %amount% %wrap% to %native%": "Unwrap %amount% %wrap% to %native%",
+  "Wrap %amount% %native% to %wrap%": "Unwrap %amount% %wrap% to %native%",
+  "%currency% Balance Low": "%currency% Balance Low",
+  "You need %currency% for transaction fees.": "You need %currency% for transaction fees.",
+  "View on %site%": "View on %site%",
+  "Receive %currency%": "Receive %currency%"
 }

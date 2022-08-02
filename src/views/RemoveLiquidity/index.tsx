@@ -668,7 +668,7 @@ export default function RemoveLiquidity() {
                             currencyB?.isNative ? WNATIVE[chainId]?.address : currencyIdB
                           }`}
                         >
-                          {t('Receive WBNB')}
+                          {t('Receive %currency%', { currency: WNATIVE[chainId]?.symbol })}a
                         </StyledInternalLink>
                       ) : oneCurrencyIsWNative ? (
                         <StyledInternalLink
@@ -676,7 +676,7 @@ export default function RemoveLiquidity() {
                             currencyA && currencyA.equals(WNATIVE[chainId]) ? native?.symbol : currencyIdA
                           }/${currencyB && currencyB.equals(WNATIVE[chainId]) ? native?.symbol : currencyIdB}`}
                         >
-                          {t('Receive BNB')}
+                          {t('Receive %currency%', { currency: native?.symbol })}
                         </StyledInternalLink>
                       ) : null}
                     </RowBetween>

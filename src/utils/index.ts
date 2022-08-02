@@ -9,6 +9,7 @@ import { ChainId, Currency } from '@pancakeswap/sdk'
 import memoize from 'lodash/memoize'
 import { TokenAddressMap } from 'state/types'
 import { BASE_BSC_SCAN_URLS } from '../config'
+import { chains } from './wagmi'
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export const isAddress = memoize((value: any): string | false => {
@@ -25,21 +26,22 @@ export function getBscScanLink(
   chainIdOverride?: number,
 ): string {
   const chainId = chainIdOverride || ChainId.BSC
+  const chain = chains.find((c) => c.id === chainId)
   switch (type) {
     case 'transaction': {
-      return `${BASE_BSC_SCAN_URLS[chainId]}/tx/${data}`
+      return `${chain.blockExplorers.default.url}/tx/${data}`
     }
     case 'token': {
-      return `${BASE_BSC_SCAN_URLS[chainId]}/token/${data}`
+      return `${chain.blockExplorers.default.url}/token/${data}`
     }
     case 'block': {
-      return `${BASE_BSC_SCAN_URLS[chainId]}/block/${data}`
+      return `${chain.blockExplorers.default.url}/block/${data}`
     }
     case 'countdown': {
-      return `${BASE_BSC_SCAN_URLS[chainId]}/block/countdown/${data}`
+      return `${chain.blockExplorers.default.url}/block/countdown/${data}`
     }
     default: {
-      return `${BASE_BSC_SCAN_URLS[chainId]}/address/${data}`
+      return `${chain.blockExplorers.default.url}/address/${data}`
     }
   }
 }
