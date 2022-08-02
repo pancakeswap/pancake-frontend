@@ -3,12 +3,14 @@ import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
 import Image from 'next/image'
-import { memo } from 'react'
+import { memo, useEffect, useRef } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import styled, { keyframes } from 'styled-components'
 import { getStatus } from '../../../Ifos/hooks/helpers'
 import { IFOImage, IFOMobileImage } from './images'
 import * as S from './Styled'
+
+const IFOHeaderMobileHeight = 36
 
 const shineAnimation = keyframes`
 	0% {transform:translateX(-100%);}
@@ -73,6 +75,7 @@ const IFOIconImage = styled.div<{ src: string }>`
 
 const IFOBanner = () => {
   const { t } = useTranslation()
+  const headingRef = useRef<HTMLDivElement>(null)
   const currentBlock = useCurrentBlock()
 
   const activeIfoWithBlocks = useActiveIfoWithBlocks()
@@ -84,12 +87,20 @@ const IFOBanner = () => {
     ? getStatus(currentBlock, activeIfoWithBlocks.startBlock, activeIfoWithBlocks.endBlock)
     : null
   const { isMobile } = useMatchBreakpointsContext()
+  useEffect(() => {
+    console.log(isMobile, '???')
+    if (!headingRef.current) return
+    if (!isMobile) headingRef.current.style.fontSize = ''
+    else if (headingRef.current.offsetHeight > IFOHeaderMobileHeight) {
+      headingRef.current.style.fontSize = '20px'
+    }
+  }, [isMobile])
   return isIfoAlive && status ? (
     <S.Wrapper>
       <S.Inner>
         <S.LeftWrapper>
           <S.StyledSubheading>{status === 'live' ? t('Live') : t('Soon')}</S.StyledSubheading>
-          <S.StyledHeading scale="xl">
+          <S.StyledHeading scale="xl" ref={headingRef}>
             {ifoName} {t('IFO')}
           </S.StyledHeading>
           <NextLinkFromReactRouter to="/ifo">
