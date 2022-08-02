@@ -10,7 +10,7 @@ import { fetchLedgerData, markAsCollected } from 'state/predictions'
 import { Result } from 'state/predictions/helpers'
 import { useGetIsClaimable } from 'state/predictions/hooks'
 import useBUSDPrice from 'hooks/useBUSDPrice'
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink } from 'utils'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 
@@ -136,7 +136,7 @@ const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
         )}
         {bet.claimed && bet.claimedHash && (
           <Flex justifyContent="center">
-            <LinkExternal href={getBscScanLink(bet.claimedHash, 'transaction')} mb="16px">
+            <LinkExternal href={getBlockExploreLink(bet.claimedHash, 'transaction')} mb="16px">
               {t('View on BscScan')}
             </LinkExternal>
           </Flex>

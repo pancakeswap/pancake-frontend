@@ -1,12 +1,12 @@
 import { Box, Button, Flex, InjectedModalProps, LinkExternal, Message, Skeleton, Text } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useAuth from 'hooks/useAuth'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
 
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { formatBigNumber } from 'utils/formatBalance'
 import { useBalance } from 'wagmi'
 import CopyAddress from './CopyAddress'
@@ -18,7 +18,7 @@ interface WalletInfoProps {
 
 const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) => {
   const { t } = useTranslation()
-  const { account, chain } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { data, isFetched } = useBalance({ addressOrName: account })
   const native = useNativeCurrency()
   const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useGetCakeBalance()
@@ -66,9 +66,9 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) 
         )}
       </Flex>
       <Flex alignItems="center" justifyContent="end" mb="24px">
-        <LinkExternal href={getBscScanLink(account, 'address')}>
+        <LinkExternal href={getBlockExploreLink(account, 'address', chainId)}>
           {t('View on %site%', {
-            site: chain ? chain.blockExplorers.default.name : 'BscScan',
+            site: getBlockExploreName(chainId),
           })}
         </LinkExternal>
       </Flex>

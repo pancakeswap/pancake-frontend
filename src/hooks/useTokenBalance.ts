@@ -29,7 +29,7 @@ const useTokenBalance = (tokenAddress: string, forceBSC?: boolean) => {
     [account, contract, forceBSC],
   )
 
-  const { data, status, ...rest } = useSWRContract(key as any, {
+  const { data, status, ...rest } = useSWRContract(key, {
     refreshInterval: FAST_INTERVAL,
   })
 
@@ -53,7 +53,8 @@ export const useGetCakeBalance = () => {
   const { chainId } = useWeb3React()
   const { balance, fetchStatus } = useTokenBalance(CAKE[chainId]?.address || CAKE[ChainId.BSC]?.address, true)
 
-  return { balance, fetchStatus }
+  // TODO: Remove ethers conversion once useTokenBalance is converted to ethers.BigNumber
+  return { balance: EthersBigNumber.from(balance.toString()), fetchStatus }
 }
 
 export default useTokenBalance

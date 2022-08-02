@@ -1,7 +1,7 @@
 import { NextLinkFromReactRouter as ReactRouterLink } from 'components/NextLink'
 import { BscScanIcon, Flex, IconButton, Link, Button, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink } from 'utils'
 import { formatNumber } from 'utils/formatBalance'
 import truncateHash from 'utils/truncateHash'
 import { Achievement, Profile } from 'state/types'
@@ -90,7 +90,7 @@ const ProfileHeader: React.FC<HeaderProps> = ({
               style={{
                 width: 'fit-content',
               }}
-              href={getBscScanLink(accountPath, 'address') || ''}
+              href={getBlockExploreLink(accountPath, 'address') || ''}
               // @ts-ignore
               alt={t('View BscScan for user address')}
             >
@@ -159,7 +159,7 @@ const ProfileHeader: React.FC<HeaderProps> = ({
     return (
       <Flex flexDirection="column" mb={[16, null, 0]} mr={[0, null, 16]}>
         {accountPath && profile?.username && (
-          <Link href={getBscScanLink(accountPath, 'address')} external bold color="primary">
+          <Link href={getBlockExploreLink(accountPath, 'address')} external bold color="primary">
             {truncateHash(accountPath)}
           </Link>
         )}

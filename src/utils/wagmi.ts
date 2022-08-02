@@ -1,4 +1,4 @@
-import { bsc, BscConnector, bscTest, CHAINS } from '@pancakeswap/wagmi'
+import { bsc, BscConnector, CHAINS } from '@pancakeswap/wagmi'
 import { configureChains, createClient } from 'wagmi'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
@@ -30,10 +30,6 @@ export const coinbaseConnector = new CoinbaseWalletConnector({
 export const walletConnectConnector = new WalletConnectConnector({
   chains,
   options: {
-    rpc: {
-      [bsc.id]: bsc.rpcUrls.default,
-      [bscTest.id]: bsc.rpcUrls.default,
-    },
     qrcode: true,
   },
 })

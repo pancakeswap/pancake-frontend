@@ -22,7 +22,7 @@ import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { WrappedTokenInfo } from 'state/types'
 import { RowFixed } from '../Layout/Row'
 import { AutoColumn, ColumnCenter } from '../Layout/Column'
-import { getBscScanLink } from '../../utils'
+import { getBlockExploreLink, getBlockExploreName } from '../../utils'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -81,8 +81,10 @@ export function TransactionSubmittedContent({
         <AutoColumn gap="12px" justify="center">
           <Text fontSize="20px">{t('Transaction Submitted')}</Text>
           {chainId && hash && (
-            <Link external small href={getBscScanLink(hash, 'transaction', chainId)}>
-              {t('View on BscScan')}
+            <Link external small href={getBlockExploreLink(hash, 'transaction', chainId)}>
+              {t('View on %site%', {
+                site: getBlockExploreName(chainId),
+              })}
             </Link>
           )}
           {currencyToAdd && canRegisterToken() && (

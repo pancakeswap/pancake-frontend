@@ -1,22 +1,24 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { AddressZero } from '@ethersproject/constants'
 import { Token, ChainId, Percent, JSBI, CurrencyAmount } from '@pancakeswap/sdk'
-import { getBscScanLink, isAddress, calculateGasMargin } from 'utils'
+import { getBlockExploreLink, isAddress, calculateGasMargin } from 'utils'
 import { calculateSlippageAmount, basisPointsToPercent } from 'utils/exchange'
 
 describe('utils', () => {
   describe('#getBscScanLink', () => {
     it('correct for tx', () => {
-      expect(getBscScanLink('abc', 'transaction', ChainId.BSC)).toEqual('https://bscscan.com/tx/abc')
+      expect(getBlockExploreLink('abc', 'transaction', ChainId.BSC)).toEqual('https://bscscan.com/tx/abc')
     })
     it('correct for token', () => {
-      expect(getBscScanLink('abc', 'token', ChainId.BSC)).toEqual('https://bscscan.com/token/abc')
+      expect(getBlockExploreLink('abc', 'token', ChainId.BSC)).toEqual('https://bscscan.com/token/abc')
     })
     it('correct for address', () => {
-      expect(getBscScanLink('abc', 'address', ChainId.BSC)).toEqual('https://bscscan.com/address/abc')
+      expect(getBlockExploreLink('abc', 'address', ChainId.BSC)).toEqual('https://bscscan.com/address/abc')
     })
     it('enum', () => {
-      expect(getBscScanLink('abc', 'address', ChainId.BSC_TESTNET)).toEqual('https://testnet.bscscan.com/address/abc')
+      expect(getBlockExploreLink('abc', 'address', ChainId.BSC_TESTNET)).toEqual(
+        'https://testnet.bscscan.com/address/abc',
+      )
     })
   })
 

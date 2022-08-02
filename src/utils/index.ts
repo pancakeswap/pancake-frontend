@@ -20,7 +20,7 @@ export const isAddress = memoize((value: any): string | false => {
   }
 })
 
-export function getBscScanLink(
+export function getBlockExploreLink(
   data: string | number,
   type: 'transaction' | 'token' | 'address' | 'block' | 'countdown',
   chainIdOverride?: number,
@@ -44,6 +44,13 @@ export function getBscScanLink(
       return `${chain.blockExplorers.default.url}/address/${data}`
     }
   }
+}
+
+export function getBlockExploreName(chainIdOverride?: number) {
+  const chainId = chainIdOverride || ChainId.BSC
+  const chain = chains.find((c) => c.id === chainId)
+
+  return chain?.blockExplorers?.default.name || 'BscScan'
 }
 
 export function getBscScanLinkForNft(collectionAddress: string, tokenId: string): string {

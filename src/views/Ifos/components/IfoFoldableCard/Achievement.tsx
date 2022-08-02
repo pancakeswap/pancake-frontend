@@ -17,7 +17,7 @@ import { useTranslation } from 'contexts/Localization'
 import { PublicIfoData } from 'views/Ifos/types'
 import { Ifo } from 'config/constants/types'
 import { BIG_TEN } from 'utils/bigNumber'
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink } from 'utils'
 import { formatBigNumber } from 'utils/formatBalance'
 import { FlexGap } from 'components/Layout/Flex'
 
@@ -129,7 +129,7 @@ const IfoAchievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
             <Link external href={ifo.articleUrl}>
               <ProposalIcon color="textSubtle" />
             </Link>
-            <Link external href={getBscScanLink(ifo.address, 'address')}>
+            <Link external href={getBlockExploreLink(ifo.address, 'address')}>
               <SmartContractIcon color="textSubtle" />
             </Link>
             {ifo.twitterUrl && (

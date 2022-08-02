@@ -21,7 +21,7 @@ import isEmpty from 'lodash/isEmpty'
 import { useInitialBlock } from 'state/block/hooks'
 import { SnapshotCommand } from 'state/types'
 import useToast from 'hooks/useToast'
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
 import { useTranslation } from 'contexts/Localization'
 import Container from 'components/Layout/Container'
@@ -265,14 +265,14 @@ const CreateProposal = () => {
                     <Text color="textSubtle" mr="16px">
                       {t('Creator')}
                     </Text>
-                    <LinkExternal href={getBscScanLink(account, 'address')}>{truncateHash(account)}</LinkExternal>
+                    <LinkExternal href={getBlockExploreLink(account, 'address')}>{truncateHash(account)}</LinkExternal>
                   </Flex>
                 )}
                 <Flex alignItems="center" mb="16px">
                   <Text color="textSubtle" mr="16px">
                     {t('Snapshot')}
                   </Text>
-                  <LinkExternal href={getBscScanLink(snapshot, 'block')}>{snapshot}</LinkExternal>
+                  <LinkExternal href={getBlockExploreLink(snapshot, 'block')}>{snapshot}</LinkExternal>
                 </Flex>
                 {account ? (
                   <>

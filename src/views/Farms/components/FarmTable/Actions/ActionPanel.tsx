@@ -3,7 +3,7 @@ import { useTranslation } from 'contexts/Localization'
 import { LinkExternal, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { getAddress } from 'utils/addressHelpers'
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink } from 'utils'
 import { FarmWithStakedValue } from '../../types'
 
 import HarvestAction from './HarvestAction'
@@ -125,7 +125,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
     tokenAddress: token.address,
   })
   const lpAddress = getAddress(farm.lpAddresses)
-  const bsc = getBscScanLink(lpAddress, 'address')
+  const bsc = getBlockExploreLink(lpAddress, 'address')
   const info = `/info/pool/${lpAddress}`
 
   return (

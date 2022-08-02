@@ -73,7 +73,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ initialView = WalletView.WALL
         </IconButton>
       </ModalHeader>
       {view !== WalletView.WRONG_NETWORK && <TabsComponent />}
-      <ModalBody p="24px" maxWidth="400px" width="100%">
+      <ModalBody p="24px" width="100%">
         {view === WalletView.WALLET_INFO && <WalletInfo hasLowBnbBalance={hasLowNativeBalance} onDismiss={onDismiss} />}
         {view === WalletView.TRANSACTIONS && <WalletTransactions />}
         {view === WalletView.WRONG_NETWORK && <WalletWrongNetwork onDismiss={onDismiss} />}

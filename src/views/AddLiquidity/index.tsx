@@ -253,24 +253,24 @@ export default function AddLiquidity() {
     let args: Array<string | string[] | number>
     let value: BigNumber | null
     if (currencyA?.isNative || currencyB?.isNative) {
-      const tokenBIsBNB = currencyB?.isNative
+      const tokenBIsNative = currencyB?.isNative
       estimate = routerContract.estimateGas.addLiquidityETH
       method = routerContract.addLiquidityETH
       args = [
-        wrappedCurrency(tokenBIsBNB ? currencyA : currencyB, chainId)?.address ?? '', // token
-        (tokenBIsBNB ? parsedAmountA : parsedAmountB).quotient.toString(), // token desired
-        amountsMin[tokenBIsBNB ? Field.CURRENCY_A : Field.CURRENCY_B].toString(), // token min
-        amountsMin[tokenBIsBNB ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
+        (tokenBIsNative ? currencyA : currencyB)?.wrapped?.address ?? '', // token
+        (tokenBIsNative ? parsedAmountA : parsedAmountB).quotient.toString(), // token desired
+        amountsMin[tokenBIsNative ? Field.CURRENCY_A : Field.CURRENCY_B].toString(), // token min
+        amountsMin[tokenBIsNative ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
         account,
         deadline.toHexString(),
       ]
-      value = BigNumber.from((tokenBIsBNB ? parsedAmountB : parsedAmountA).quotient.toString())
+      value = BigNumber.from((tokenBIsNative ? parsedAmountB : parsedAmountA).quotient.toString())
     } else {
       estimate = routerContract.estimateGas.addLiquidity
       method = routerContract.addLiquidity
       args = [
-        wrappedCurrency(currencyA, chainId)?.address ?? '',
-        wrappedCurrency(currencyB, chainId)?.address ?? '',
+        currencyA?.wrapped?.address ?? '',
+        currencyB?.wrapped?.address ?? '',
         parsedAmountA.quotient.toString(),
         parsedAmountB.quotient.toString(),
         amountsMin[Field.CURRENCY_A].toString(),

@@ -4,7 +4,7 @@ import { Currency, CurrencyAmount, Fraction, Token } from '@pancakeswap/sdk'
 import { useCurrency } from 'hooks/Tokens'
 import useGelatoLimitOrdersLib from 'hooks/limitOrders/useGelatoLimitOrdersLib'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink } from 'utils'
 import { useIsTransactionPending } from 'state/transactions/hooks'
 import getPriceForOneToken from '../utils/getPriceForOneToken'
 import { LimitOrderStatus } from '../types'
@@ -87,9 +87,9 @@ const useFormattedOrderData = (order: Order): FormattedOrderData => {
     isSubmissionPending,
     isCancellationPending,
     bscScanUrls: {
-      created: order.createdTxHash ? getBscScanLink(order.createdTxHash, 'transaction') : null,
-      executed: order.executedTxHash ? getBscScanLink(order.executedTxHash, 'transaction') : null,
-      cancelled: order.cancelledTxHash ? getBscScanLink(order.cancelledTxHash, 'transaction') : null,
+      created: order.createdTxHash ? getBlockExploreLink(order.createdTxHash, 'transaction') : null,
+      executed: order.executedTxHash ? getBlockExploreLink(order.executedTxHash, 'transaction') : null,
+      cancelled: order.cancelledTxHash ? getBlockExploreLink(order.cancelledTxHash, 'transaction') : null,
     },
   }
 }
