@@ -2,8 +2,10 @@ import { Box, connectorLocalStorageKey, ConnectorNames, LinkExternal, Text } fro
 import { useTranslation } from 'contexts/Localization'
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
+import { mutate } from 'swr'
 import { useConnect, useDisconnect, useNetwork, ConnectorNotFoundError, UserRejectedRequestError } from 'wagmi'
 import { clearUserStates } from '../utils/clearUserStates'
+import { useLocalNetworkChain } from './useActiveWeb3React'
 import useToast from './useToast'
 
 const useAuth = () => {
@@ -13,12 +15,18 @@ const useAuth = () => {
   const { chain } = useNetwork()
   const { disconnect } = useDisconnect()
   const { toastError } = useToast()
+  const localChainId = useLocalNetworkChain()
 
   const login = useCallback(
     async (connectorID: ConnectorNames) => {
       const findConnector = connectors.find((c) => c.id === connectorID)
       try {
-        await connectAsync({ connector: findConnector })
+        const connected = await connectAsync({ connector: findConnector })
+        if (connected.chain.id !== localChainId) {
+          connected.connector.switchChain?.(localChainId).catch(() => {
+            mutate('session-chain-id', connected.chain.id)
+          })
+        }
       } catch (error) {
         console.error(error)
         window?.localStorage?.removeItem(connectorLocalStorageKey)
@@ -42,7 +50,7 @@ const useAuth = () => {
         }
       }
     },
-    [connectors, connectAsync, toastError, t],
+    [connectors, connectAsync, localChainId, toastError, t],
   )
 
   const logout = useCallback(() => {

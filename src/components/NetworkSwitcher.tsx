@@ -1,8 +1,8 @@
-import { Box, Text, useModal, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
+import { Box, ModalV2, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React, { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import Image from 'next/image'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { chains } from 'utils/wagmi'
 import { WrongNetworkModal } from './WrongNetworkModal'
 
@@ -36,38 +36,32 @@ export const NetworkSwitcher = () => {
 
   const isWrongNetwork = chain?.unsupported
 
-  const [openWrongNetworkModal, dismiss] = useModal(<WrongNetworkModal />, false, false, 'wrong-network')
-
-  useEffect(() => {
-    if (isWrongNetwork) {
-      openWrongNetworkModal()
-    } else {
-      dismiss()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isWrongNetwork])
-
   return (
-    <UserMenu
-      mr="8px"
-      variant={isLoading ? 'pending' : isWrongNetwork ? 'danger' : 'default'}
-      avatarSrc={`/images/chains/${chainId}.png`}
-      text={
-        isLoading ? (
-          t('Requesting')
-        ) : isWrongNetwork ? (
-          t('Network')
-        ) : foundChain ? (
-          <>
-            <Box display={['none', null, null, null, null, 'block']}>{foundChain.name}</Box>
-            <Box display={['block', null, null, null, null, 'none']}>{foundChain.nativeCurrency?.symbol}</Box>
-          </>
-        ) : (
-          t('Select a Network')
-        )
-      }
-    >
-      {() => <NetworkSelect switchNetwork={switchNetwork} />}
-    </UserMenu>
+    <>
+      <UserMenu
+        mr="8px"
+        variant={isLoading ? 'pending' : isWrongNetwork ? 'danger' : 'default'}
+        avatarSrc={`/images/chains/${chainId}.png`}
+        text={
+          isLoading ? (
+            t('Requesting')
+          ) : isWrongNetwork ? (
+            t('Network')
+          ) : foundChain ? (
+            <>
+              <Box display={['none', null, null, null, null, 'block']}>{foundChain.name}</Box>
+              <Box display={['block', null, null, null, null, 'none']}>{foundChain.nativeCurrency?.symbol}</Box>
+            </>
+          ) : (
+            t('Select a Network')
+          )
+        }
+      >
+        {() => <NetworkSelect switchNetwork={switchNetwork} />}
+      </UserMenu>
+      <ModalV2 isOpen={chain?.unsupported} closeOnOverlayClick={false}>
+        <WrongNetworkModal />
+      </ModalV2>
+    </>
   )
 }
