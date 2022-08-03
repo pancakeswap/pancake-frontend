@@ -1,9 +1,10 @@
-import { connectorLocalStorageKey, ConnectorNames } from '@pancakeswap/uikit'
+import { Box, connectorLocalStorageKey, ConnectorNames, LinkExternal, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
-import { useConnect, useDisconnect, useNetwork } from 'wagmi'
+import { useConnect, useDisconnect, useNetwork, ConnectorNotFoundError, UserRejectedRequestError } from 'wagmi'
 import { clearUserStates } from '../utils/clearUserStates'
+import useToast from './useToast'
 
 const useAuth = () => {
   const { t } = useTranslation()
@@ -11,7 +12,7 @@ const useAuth = () => {
   const { connectAsync, connectors } = useConnect()
   const { chain } = useNetwork()
   const { disconnect } = useDisconnect()
-  // const { toastError } = useToast()
+  const { toastError } = useToast()
 
   const login = useCallback(
     async (connectorID: ConnectorNames) => {
@@ -21,10 +22,27 @@ const useAuth = () => {
       } catch (error) {
         console.error(error)
         window?.localStorage?.removeItem(connectorLocalStorageKey)
-        // toastError()
+        if (error instanceof ConnectorNotFoundError) {
+          toastError(
+            t('Provider Error'),
+            <Box>
+              <Text>{t('No provider was found')}</Text>
+              <LinkExternal href="https://docs.pancakeswap.finance/get-started/connection-guide">
+                {t('Need help ?')}
+              </LinkExternal>
+            </Box>,
+          )
+          return
+        }
+        if (error instanceof UserRejectedRequestError) {
+          return
+        }
+        if (error instanceof Error) {
+          toastError(error.name, error.message)
+        }
       }
     },
-    [connectors, connectAsync],
+    [connectors, connectAsync, toastError, t],
   )
 
   const logout = useCallback(() => {
