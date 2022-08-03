@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { ChartIcon, Flex, Heading, HistoryIcon, IconButton, Text, useModal, ChartDisableIcon } from '@pancakeswap/uikit'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
-import GlobalSettings from 'components/Menu/GlobalSettings'
 
 interface Props {
   title: string
@@ -48,7 +47,6 @@ const CurrencyInputHeader: React.FC<Props> = ({ title, subtitle, setIsChartDispl
           <Heading as="h2">{title}</Heading>
         </Flex>
         <Flex flex="1" justifyContent="flex-end">
-          <GlobalSettings color="textSubtle" mr="0" />
           <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
             <HistoryIcon color="textSubtle" width="24px" />
           </IconButton>
