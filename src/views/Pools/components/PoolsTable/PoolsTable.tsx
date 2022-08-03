@@ -8,6 +8,7 @@ import PoolRow, { VaultPoolRow } from './PoolRow'
 interface PoolsTableProps {
   pools: DeserializedPool[]
   account: string
+  urlSearch?: string
 }
 
 const StyledTable = styled.div`
@@ -34,7 +35,7 @@ const ScrollButtonContainer = styled.div`
   padding-bottom: 5px;
 `
 
-const PoolsTable: React.FC<PoolsTableProps> = ({ pools, account }) => {
+const PoolsTable: React.FC<PoolsTableProps> = ({ pools, account, urlSearch }) => {
   const { t } = useTranslation()
   const tableWrapperEl = useRef<HTMLDivElement>(null)
 
@@ -50,9 +51,19 @@ const PoolsTable: React.FC<PoolsTableProps> = ({ pools, account }) => {
       <StyledTable id="pools-table" role="table" ref={tableWrapperEl}>
         {pools.map((pool) =>
           pool.vaultKey ? (
-            <VaultPoolRow key={pool.vaultKey} vaultKey={pool.vaultKey} account={account} />
+            <VaultPoolRow
+              initialActivity={urlSearch.toLowerCase() === pool.earningToken.symbol?.toLowerCase()}
+              key={pool.vaultKey}
+              vaultKey={pool.vaultKey}
+              account={account}
+            />
           ) : (
-            <PoolRow key={pool.sousId} sousId={pool.sousId} account={account} />
+            <PoolRow
+              initialActivity={urlSearch.toLowerCase() === pool.earningToken.symbol?.toLowerCase()}
+              key={pool.sousId}
+              sousId={pool.sousId}
+              account={account}
+            />
           ),
         )}
         <ScrollButtonContainer>

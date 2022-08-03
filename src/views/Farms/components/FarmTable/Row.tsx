@@ -24,6 +24,7 @@ export interface RowProps {
   liquidity: LiquidityProps
   details: FarmWithStakedValue
   type: 'core' | 'community'
+  initialActivity: boolean
 }
 
 interface RowPropsWithLoading extends RowProps {
@@ -70,7 +71,7 @@ const FarmMobileCell = styled.td`
 `
 
 const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
-  const { details, userDataReady } = props
+  const { details, userDataReady, initialActivity } = props
   const hasStakedAmount = !!useFarmUser(details.pid).stakedBalance.toNumber()
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
   const shouldRenderChild = useDelayedUnmount(actionPanelExpanded, 300)
@@ -83,6 +84,9 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
   useEffect(() => {
     setActionPanelExpanded(hasStakedAmount)
   }, [hasStakedAmount])
+  useEffect(() => {
+    setActionPanelExpanded(initialActivity)
+  }, [initialActivity])
 
   const { isDesktop, isMobile } = useMatchBreakpointsContext()
 

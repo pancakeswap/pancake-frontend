@@ -166,7 +166,7 @@ const Pools: React.FC = () => {
   const [viewMode, setViewMode] = useUserPoolsViewMode()
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
   const { observerRef, isIntersecting } = useIntersectionObserver()
-  const [searchQuery, setSearchQuery] = useState(typeof router?.query?.search === 'string' ? router?.query?.search : '')
+  const [searchQuery, setSearchQuery] = useState('')
   const [sortOption, setSortOption] = useState('hot')
   const chosenPoolsLength = useRef(0)
   const initialBlock = useInitialBlock()
@@ -215,7 +215,15 @@ const Pools: React.FC = () => {
       })
     }
   }, [isIntersecting])
-
+  const normalizedUrlSearch = useMemo(
+    () => (typeof router?.query?.search === 'string' ? router.query.search : ''),
+    [router.query],
+  )
+  useEffect(() => {
+    if (normalizedUrlSearch) {
+      setSearchQuery(normalizedUrlSearch)
+    }
+  }, [normalizedUrlSearch])
   const showFinishedPools = router.pathname.includes('history')
 
   const handleChangeSearchQuery = useCallback(
@@ -255,7 +263,7 @@ const Pools: React.FC = () => {
     </CardLayout>
   )
 
-  const tableLayout = <PoolsTable pools={chosenPools} account={account} />
+  const tableLayout = <PoolsTable urlSearch={normalizedUrlSearch} pools={chosenPools} account={account} />
 
   return (
     <>

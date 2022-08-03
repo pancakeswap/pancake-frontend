@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Input } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import debounce from 'lodash/debounce'
@@ -23,7 +23,7 @@ interface Props {
 }
 
 const SearchInput: React.FC<Props> = ({ onChange: onChangeCallback, placeholder = 'Search', initialValue }) => {
-  const [searchText, setSearchText] = useState(initialValue)
+  const [searchText, setSearchText] = useState('')
 
   const { t } = useTranslation()
 
@@ -36,6 +36,11 @@ const SearchInput: React.FC<Props> = ({ onChange: onChangeCallback, placeholder 
     setSearchText(e.target.value)
     debouncedOnChange(e)
   }
+  useEffect(() => {
+    if (initialValue) {
+      setSearchText(initialValue)
+    }
+  }, [initialValue])
 
   return (
     <InputWrapper>
