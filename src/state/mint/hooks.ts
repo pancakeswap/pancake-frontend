@@ -8,7 +8,6 @@ import {
   Price,
   Token,
   MINIMUM_LIQUIDITY,
-  Native,
   computePriceImpact,
 } from '@pancakeswap/sdk'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -24,6 +23,7 @@ import { useZapContract } from 'hooks/useContract'
 import { useSWRContract } from 'hooks/useSWRContract'
 import { FetchStatus } from 'config/constants/types'
 import { BigNumber } from '@ethersproject/bignumber'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import usePreviousValue from 'hooks/usePreviousValue'
 import { useTradeExactIn } from 'hooks/Trades'
 import tryParseAmount from 'utils/tryParseAmount'
@@ -284,9 +284,9 @@ function guessMaxZappableAmount(
 // compare the gas is larger than swap in amount
 function useZapInGasOverhead(inputAmount: CurrencyAmount<Currency> | undefined) {
   const gasPrice = useGasPrice()
-  const { chainId } = useActiveWeb3React()
+  const native = useNativeCurrency()
   const requiredGas = formatUnits(gasPrice ? BigNumber.from(gasPrice).mul('500000') : '0')
-  const requiredGasAsCurrencyAmount = inputAmount ? tryParseAmount(requiredGas, Native.onChain(chainId)) : undefined
+  const requiredGasAsCurrencyAmount = inputAmount ? tryParseAmount(requiredGas, native) : undefined
   const inputIsBNB = inputAmount?.currency.symbol === 'BNB'
 
   const gasCostInInputTokens = useTradeExactIn(requiredGasAsCurrencyAmount, inputIsBNB ? null : inputAmount?.currency)

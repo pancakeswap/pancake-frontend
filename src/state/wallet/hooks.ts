@@ -6,16 +6,16 @@ import { useAllTokens } from 'hooks/Tokens'
 import { useMulticallContract } from 'hooks/useContract'
 import { isAddress } from 'utils'
 import orderBy from 'lodash/orderBy'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useSingleContractMultipleData, useMultipleContractSingleData } from '../multicall/hooks'
 
 /**
  * Returns a map of the given addresses to their eventually consistent BNB balances.
  */
-export function useBNBBalances(uncheckedAddresses?: (string | undefined)[]): {
+export function useNativeBalances(uncheckedAddresses?: (string | undefined)[]): {
   [address: string]: CurrencyAmount<Native> | undefined
 } {
-  const { chainId } = useActiveWeb3React()
+  const native = useNativeCurrency()
   const multicallContract = useMulticallContract()
 
   const addresses: string[] = useMemo(
@@ -34,10 +34,10 @@ export function useBNBBalances(uncheckedAddresses?: (string | undefined)[]): {
     () =>
       addresses.reduce<{ [address: string]: CurrencyAmount<Native> }>((memo, address, i) => {
         const value = results?.[i]?.result?.[0]
-        if (value) memo[address] = CurrencyAmount.fromRawAmount(Native.onChain(chainId), JSBI.BigInt(value.toString()))
+        if (value) memo[address] = CurrencyAmount.fromRawAmount(native, JSBI.BigInt(value.toString()))
         return memo
       }, {}),
-    [addresses, results, chainId],
+    [addresses, results, native],
   )
 }
 
@@ -107,19 +107,22 @@ export function useCurrencyBalances(
   )
 
   const tokenBalances = useTokenBalances(account, tokens)
-  const containsBNB: boolean = useMemo(() => currencies?.some((currency) => currency?.isNative) ?? false, [currencies])
-  const uncheckedAddresses = useMemo(() => (containsBNB ? [account] : []), [containsBNB, account])
-  const bnbBalance = useBNBBalances(uncheckedAddresses)
+  const containsNative: boolean = useMemo(
+    () => currencies?.some((currency) => currency?.isNative) ?? false,
+    [currencies],
+  )
+  const uncheckedAddresses = useMemo(() => (containsNative ? [account] : []), [containsNative, account])
+  const nativeBalance = useNativeBalances(uncheckedAddresses)
 
   return useMemo(
     () =>
       currencies?.map((currency) => {
         if (!account || !currency) return undefined
         if (currency?.isToken) return tokenBalances[currency.address]
-        if (currency?.isNative) return bnbBalance[account]
+        if (currency?.isNative) return nativeBalance[account]
         return undefined
       }) ?? [],
-    [account, currencies, bnbBalance, tokenBalances],
+    [account, currencies, nativeBalance, tokenBalances],
   )
 }
 
