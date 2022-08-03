@@ -1762,7 +1762,6 @@
   "to disable Zap temporarily.": "以暫時停用 Zap 功能。",
   "Temporarily disabled Zap": "已暫時停用 Zap 功能",
   "Unavailable for legal reasons": "因為法律原因而無法使用",
-  "The vested tokens will be released linearly over a period of %weeks% weeks.": "獲得的代幣將在 %weeks% 週內線性釋放.",
   "Fixed Term CAKE Staking": "Fixed Term CAKE Staking",
   "Flexible CAKE Staking": "Flexible CAKE Staking",
   "Voting power is calculated using the staking amount and remaining staking duration of the fixed-term CAKE staking position at the block.": "Voting power is calculated using the staking amount and remaining staking duration of the fixed-term CAKE staking position at the block.",
@@ -1774,7 +1773,11 @@
   "Zap allows you to add liquidity with only 1 single token. Click": "借助 Zap 功能，您可以僅使用 1 種代幣來增加流動性。按一下",
   "to try.": "試試。",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% 的購買代幣將在一段時間內線性授權與釋放。%percentageTgeRelease%% 的購買代幣將在 IFO 結束時立即釋放並可供領取。",
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "獲得的代幣將在 %weeks% 週內線性釋放.",
   "Select a Network": "選擇網路",
   "LP Rewards APR": "LP Rewards APR",
-  "Limit Orders": "Limit Orders"
+  "Limit Orders": "Limit Orders",
+  "0.0001 CAKE will be spent to extend": "0.0001 CAKE will be spent to extend",
+  "0.0001 CAKE required for enabling extension": "0.0001 CAKE required for enabling extension",
+  "Recommend choosing \"MAX\" to renew your staking position in order to keep similar yield boost.": "Recommend choosing \"MAX\" to renew your staking position in order to keep similar yield boost."
 }
