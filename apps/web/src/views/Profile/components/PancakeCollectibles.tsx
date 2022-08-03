@@ -1,6 +1,6 @@
-import { Grid, Heading } from "@pancakeswap/uikit"
+import { Grid, Heading } from '@pancakeswap/uikit'
 import useSWR from 'swr'
-import dynamic from "next/dynamic"
+import dynamic from 'next/dynamic'
 import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { Collection } from 'state/nftMarket/types'
@@ -10,7 +10,7 @@ import { nftsBaseUrl } from 'views/Nft/market/constants'
 import PageLoader from 'components/Loader/PageLoader'
 
 const CollectionCardWithVolume = dynamic(
-  () => import("../../Nft/market/components/CollectibleCard/CollectionCardWithVolume"),
+  () => import('../../Nft/market/components/CollectibleCard/CollectionCardWithVolume'),
   { ssr: false },
 )
 

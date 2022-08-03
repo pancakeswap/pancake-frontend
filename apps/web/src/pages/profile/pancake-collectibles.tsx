@@ -3,7 +3,7 @@ import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { unstable_serialize, SWRConfig } from 'swr'
 import { getCollections } from 'state/nftMarket/helpers'
 import multicall from 'utils/multicall'
-import PancakeCollectiblesPageRouter from "views/Profile/components/PancakeCollectiblesPageRouter"
+import PancakeCollectiblesPageRouter from 'views/Profile/components/PancakeCollectiblesPageRouter'
 import profileABI from 'config/abi/pancakeProfile.json'
 import { getProfileContract } from 'utils/contractHelpers'
 
