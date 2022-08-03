@@ -103,6 +103,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss, mode }) => {
                   }}
                 />
               </Flex>
+              <GasSettings />
             </Flex>
           </>
         )}
