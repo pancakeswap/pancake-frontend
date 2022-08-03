@@ -37,7 +37,6 @@ import {
   getBunnySpecialXmasContract,
   getPotteryVaultContract,
   getPotteryDrawContract,
-  getZapContract,
   getCakeFlexibleSideVaultV2Contract,
   getCakePredictionsContract,
   getPredictionsV1Contract,
