@@ -24,7 +24,7 @@ export interface RowProps {
   liquidity: LiquidityProps
   details: FarmWithStakedValue
   type: 'core' | 'community'
-  initialActivity: boolean
+  initialActivity?: boolean
 }
 
 interface RowPropsWithLoading extends RowProps {
@@ -85,7 +85,9 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
     setActionPanelExpanded(hasStakedAmount)
   }, [hasStakedAmount])
   useEffect(() => {
-    setActionPanelExpanded(initialActivity)
+    if (initialActivity) {
+      setActionPanelExpanded(initialActivity)
+    }
   }, [initialActivity])
 
   const { isDesktop, isMobile } = useMatchBreakpointsContext()
