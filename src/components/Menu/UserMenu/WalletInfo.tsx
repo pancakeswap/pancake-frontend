@@ -39,7 +39,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) 
         <Message variant="warning" mb="24px">
           <Box>
             <Text fontWeight="bold">
-              {t('%currency Balance Low', {
+              {t('%currency& Balance Low', {
                 currency: native.symbol,
               })}
             </Text>
