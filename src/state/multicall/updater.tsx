@@ -1,4 +1,3 @@
-import { Contract } from '@ethersproject/contracts'
 import { useEffect, useMemo, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useCurrentBlock } from 'state/block/hooks'
@@ -37,15 +36,15 @@ async function fetchChunk(
   let returnData
   try {
     // prettier-ignore
-    [resultsBlockNumber, , returnData] = await multicallContract.tryBlockAndAggregate(
+    [resultsBlockNumber, , returnData] = await multicallContract.callStatic.tryBlockAndAggregate(
       false,
       chunk.map((obj) => ({
         callData: obj.callData,
         target: obj.address,
       })),
-      {
-        blockTag: minBlockNumber,
-      }
+      // {
+      //   blockTag: minBlockNumber,
+      // }
     )
   } catch (err) {
     const error = err as any
