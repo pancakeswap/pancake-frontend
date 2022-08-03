@@ -19,10 +19,11 @@ const InputWrapper = styled.div`
 interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   placeholder?: string
+  initialValue?: string
 }
 
-const SearchInput: React.FC<Props> = ({ onChange: onChangeCallback, placeholder = 'Search' }) => {
-  const [searchText, setSearchText] = useState('')
+const SearchInput: React.FC<Props> = ({ onChange: onChangeCallback, placeholder = 'Search', initialValue }) => {
+  const [searchText, setSearchText] = useState(initialValue)
 
   const { t } = useTranslation()
 

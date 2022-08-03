@@ -1,7 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef, useEffect } from "react";
 import { MenuContext } from "../../widgets/Menu/context";
 import StyledMenuItem, { StyledMenuItemContainer } from "./styles";
 import { MenuItemProps } from "./types";
+import { useMatchBreakpointsContext } from "../../contexts";
 
 const MenuItem: React.FC<MenuItemProps> = ({
   children,
@@ -9,9 +10,12 @@ const MenuItem: React.FC<MenuItemProps> = ({
   isActive = false,
   isDisabled = false,
   variant = "default",
+  scrollLayerRef,
   statusColor,
   ...props
 }) => {
+  const { isMobile } = useMatchBreakpointsContext();
+  const menuItemRef = useRef<HTMLDivElement>(null);
   const { linkComponent } = useContext(MenuContext);
   const itemLinkProps: any = href
     ? {
@@ -21,12 +25,24 @@ const MenuItem: React.FC<MenuItemProps> = ({
     : {
         as: "div",
       };
+  useEffect(() => {
+    if (!isMobile || !isActive || !menuItemRef.current || !scrollLayerRef?.current) return;
+    const scrollLayer = scrollLayerRef.current;
+    const menuNode = menuItemRef.current.parentNode as HTMLDivElement;
+    if (!menuNode) return;
+    if (
+      scrollLayer.scrollLeft > menuNode.offsetLeft ||
+      scrollLayer.scrollLeft + scrollLayer.offsetWidth < menuNode.offsetLeft + menuNode.offsetWidth
+    ) {
+      scrollLayer.scrollLeft = menuNode.offsetLeft;
+    }
+  }, [isActive, isMobile, scrollLayerRef]);
   return (
-    <StyledMenuItemContainer $isActive={isActive} $variant={variant}>
+    <StyledMenuItemContainer $isActive={isActive} $variant={variant} ref={menuItemRef}>
       <StyledMenuItem
         {...itemLinkProps}
-        $isDisabled={isDisabled}
         $isActive={isActive}
+        $isDisabled={isDisabled}
         $variant={variant}
         $statusColor={statusColor}
         {...props}

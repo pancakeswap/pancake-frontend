@@ -31,6 +31,8 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
     poolsBalance,
     cakeBnbLpBalance,
     ifoPoolBalance,
+    lockedCakeBalance,
+    lockedEndTime,
   } = useGetVotingPower(block, modalIsOpen)
 
   const isStartView = view === ConfirmVoteView.MAIN
@@ -92,6 +94,8 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
             isLoading={isLoading}
             isPending={isPending}
             total={total}
+            lockedCakeBalance={lockedCakeBalance}
+            lockedEndTime={lockedEndTime}
             onConfirm={handleConfirmVote}
             onViewDetails={handleViewDetails}
             onDismiss={handleDismiss}
@@ -107,6 +111,8 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
             poolsBalance={poolsBalance}
             cakeBnbLpBalance={cakeBnbLpBalance}
             block={block}
+            lockedCakeBalance={lockedCakeBalance}
+            lockedEndTime={lockedEndTime}
           />
         )}
       </Box>

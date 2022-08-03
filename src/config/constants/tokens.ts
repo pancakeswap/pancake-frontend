@@ -1972,7 +1972,7 @@ export const bscTokens = {
     '0x990E7154bB999FAa9b2fa5Ed29E822703311eA85',
     18,
     'TT',
-    'Thunder Token',
+    'ThunderCore',
     'https://www.thundercore.com/',
   ),
   gmee: new Token(
@@ -2352,6 +2352,14 @@ export const bscTokens = {
     18,
     'SHELL',
     'Meta Apes Shell',
+    'https://metaapesgame.com/',
+  ),
+  peel: new Token(
+    ChainId.BSC,
+    '0x734548a9e43d2D564600b1B2ed5bE9C2b911c6aB',
+    18,
+    'PEEL',
+    'Meta Apes Peel',
     'https://metaapesgame.com/',
   ),
 }
