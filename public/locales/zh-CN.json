@@ -1776,5 +1776,8 @@
   "The vested tokens will be released linearly over a period of %weeks% weeks.": "授权代币将在 %weeks% 周的期间内以线性方式释放。",
   "Select a Network": "选择网络",
   "LP Rewards APR": "LP Rewards APR",
-  "Limit Orders": "Limit Orders"
+  "Limit Orders": "Limit Orders",
+  "0.0001 CAKE will be spent to extend": "0.0001 CAKE will be spent to extend",
+  "0.0001 CAKE required for enabling extension": "0.0001 CAKE required for enabling extension",
+  "Recommend choosing \"MAX\" to renew your staking position in order to keep similar yield boost.": "Recommend choosing \"MAX\" to renew your staking position in order to keep similar yield boost."
 }
