@@ -26,7 +26,6 @@ import useTokenBalance from 'hooks/useTokenBalance'
 import Container from 'components/Layout/Container'
 import { useProfile } from 'state/profile/hooks'
 import Balance from 'components/Balance'
-import { nftsBaseUrl } from 'views/Nft/market/constants'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { FlexGap } from 'components/Layout/Flex'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -198,7 +197,7 @@ const IfoSteps: React.FC<TypeProps> = ({ isCommitted, hasClaimed, isLive, ifoCur
       }
 
       return (
-        <Button as={RouterLink} to={`${nftsBaseUrl}/profile/${account.toLowerCase()}`}>
+        <Button as={RouterLink} to={`/profile/${account.toLowerCase()}`}>
           {t('Activate your Profile')}
         </Button>
       )

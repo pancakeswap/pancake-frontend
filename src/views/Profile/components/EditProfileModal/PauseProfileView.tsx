@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import useGetProfileCosts from 'views/Nft/market/Profile/hooks/useGetProfileCosts'
+import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 import { useProfile } from 'state/profile/hooks'
 import useToast from 'hooks/useToast'
 import { formatBigNumber } from 'utils/formatBalance'

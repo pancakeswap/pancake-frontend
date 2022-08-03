@@ -6,11 +6,11 @@ import { Box, Flex, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
-import MarketPageHeader from '../components/MarketPageHeader'
+import MarketPageHeader from '../Nft/market/components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
-import NoNftsImage from '../components/Activity/NoNftsImage'
+import NoNftsImage from '../Nft/market/components/Activity/NoNftsImage'
 import TabMenu from './components/TabMenu'
-import { useNftsForAddress } from '../hooks/useNftsForAddress'
+import { useNftsForAddress } from '../Nft/market/hooks/useNftsForAddress'
 
 const TabMenuWrapper = styled(Box)`
   position: absolute;

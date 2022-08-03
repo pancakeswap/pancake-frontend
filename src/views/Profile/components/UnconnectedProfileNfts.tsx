@@ -1,9 +1,9 @@
 import { Grid, Text, Flex } from '@pancakeswap/uikit'
 import { NftToken } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
-import { CollectibleLinkCard } from '../../components/CollectibleCard'
-import GridPlaceholder from '../../components/GridPlaceholder'
-import NoNftsImage from '../../components/Activity/NoNftsImage'
+import { CollectibleLinkCard } from '../../Nft/market/components/CollectibleCard'
+import GridPlaceholder from '../../Nft/market/components/GridPlaceholder'
+import NoNftsImage from '../../Nft/market/components/Activity/NoNftsImage'
 
 const UserNfts: React.FC<{ nfts: NftToken[]; isLoading: boolean }> = ({ nfts, isLoading }) => {
   const { t } = useTranslation()

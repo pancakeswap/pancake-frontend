@@ -1,7 +1,6 @@
 import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'
-import BaseSubMenu from '../../components/BaseSubMenu'
-import { nftsBaseUrl } from '../../constants'
+import BaseSubMenu from '../../Nft/market/components/BaseSubMenu'
 
 const SubMenuComponent: React.FC = () => {
   const { t } = useTranslation()
@@ -12,11 +11,11 @@ const SubMenuComponent: React.FC = () => {
   const ItemsConfig = [
     {
       label: t('Items'),
-      href: `${nftsBaseUrl}/profile/${accountAddress}`,
+      href: `/profile/${accountAddress}`,
     },
     {
       label: t('Activity'),
-      href: `${nftsBaseUrl}/profile/${accountAddress}/activity`,
+      href: `/profile/${accountAddress}/activity`,
     },
   ]
 
