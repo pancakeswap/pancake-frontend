@@ -1,67 +1,67 @@
-import { useMemo } from 'react'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import {
+  Cake,
+  CakeFlexibleSideVaultV2,
+  CakeVaultV2,
+  Erc20,
+  Erc20Bytes32,
+  Erc721collection,
+  Multicall,
+  Weth,
+  Zap,
+} from 'config/abi/types'
+import zapAbi from 'config/abi/zap.json'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useMemo } from 'react'
+import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
+import {
+  getAnniversaryAchievementContract,
   getBep20Contract,
-  getCakeContract,
   getBunnyFactoryContract,
+  getBunnySpecialCakeVaultContract,
   getBunnySpecialContract,
-  getPancakeBunniesContract,
-  getProfileContract,
+  getBunnySpecialLotteryContract,
+  getBunnySpecialPredictionContract,
+  getBunnySpecialXmasContract,
+  getCakeContract,
+  getCakeFlexibleSideVaultV2Contract,
+  getCakePredictionsContract,
+  getCakeVaultV2Contract,
+  getChainlinkOracleContract,
+  getClaimRefundContract,
+  getEasterNftContract,
+  getErc721CollectionContract,
+  getErc721Contract,
+  getFarmAuctionContract,
   getIfoV1Contract,
   getIfoV2Contract,
   getIfoV3Contract,
+  getLotteryV2Contract,
   getMasterchefContract,
   getMasterchefV1Contract,
+  getNftMarketContract,
+  getNftSaleContract,
+  getPancakeBunniesContract,
+  getPancakeSquadContract,
   getPointCenterIfoContract,
+  getPredictionsContract,
+  getPredictionsV1Contract,
+  getProfileContract,
   getSouschefContract,
-  getClaimRefundContract,
   getTradingCompetitionContractEaster,
   getTradingCompetitionContractFanToken,
   getTradingCompetitionContractMobox,
   getTradingCompetitionContractMoD,
-  getEasterNftContract,
-  getErc721Contract,
-  getCakeVaultV2Contract,
-  getPredictionsContract,
-  getChainlinkOracleContract,
-  getLotteryV2Contract,
-  getBunnySpecialCakeVaultContract,
-  getBunnySpecialPredictionContract,
-  getFarmAuctionContract,
-  getBunnySpecialLotteryContract,
-  getAnniversaryAchievementContract,
-  getNftMarketContract,
-  getNftSaleContract,
-  getPancakeSquadContract,
-  getErc721CollectionContract,
-  getBunnySpecialXmasContract,
-  getCakeFlexibleSideVaultV2Contract,
-  getCakePredictionsContract,
-  getPredictionsV1Contract,
 } from 'utils/contractHelpers'
-import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
-import {
-  Erc20,
-  Erc20Bytes32,
-  Multicall,
-  Weth,
-  Cake,
-  Erc721collection,
-  CakeVaultV2,
-  CakeFlexibleSideVaultV2,
-  Zap,
-} from 'config/abi/types'
-import zapAbi from 'config/abi/zap.json'
+import { useSigner } from 'wagmi'
 
 // Imports below migrated from Exchange useContract.ts
 import { Contract } from '@ethersproject/contracts'
-import { bscRpcProvider } from 'utils/providers'
-import { WNATIVE, ChainId } from '@pancakeswap/sdk'
-import IPancakePairABI from '../config/abi/IPancakePair.json'
+import { WNATIVE } from '@pancakeswap/sdk'
 import { ERC20_BYTES32_ABI } from '../config/abi/erc20'
 import ERC20_ABI from '../config/abi/erc20.json'
-import WETH_ABI from '../config/abi/weth.json'
+import IPancakePairABI from '../config/abi/IPancakePair.json'
 import multiCallAbi from '../config/abi/Multicall.json'
+import WETH_ABI from '../config/abi/weth.json'
 import { getContract, getProviderOrSigner } from '../utils'
 
 import { IPancakePair } from '../config/abi/types/IPancakePair'
@@ -330,11 +330,11 @@ function useContract<T extends Contract = Contract>(
   ABI: any,
   withSignerIfPossible = true,
 ): T | null {
-  const { library, account, chainId } = useActiveWeb3React()
-  const signer = useMemo(
-    () =>
-      withSignerIfPossible ? getProviderOrSigner(library, account) : chainId === ChainId.BSC ? bscRpcProvider : library,
-    [withSignerIfPossible, library, account, chainId],
+  const { library, account, provider } = useActiveWeb3React()
+  const { data: signer } = useSigner()
+  const providerOrSigner = useMemo(
+    () => (withSignerIfPossible ? (account ? signer : provider) : provider),
+    [withSignerIfPossible, account, signer, provider],
   )
 
   const canReturnContract = useMemo(
@@ -345,12 +345,12 @@ function useContract<T extends Contract = Contract>(
   return useMemo(() => {
     if (!canReturnContract) return null
     try {
-      return getContract(address, ABI, signer)
+      return getContract(address, ABI, providerOrSigner)
     } catch (error) {
       console.error('Failed to get contract', error)
       return null
     }
-  }, [address, ABI, signer, canReturnContract]) as T
+  }, [address, ABI, providerOrSigner, canReturnContract]) as T
 }
 
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean) {
