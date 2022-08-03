@@ -19,7 +19,7 @@ const SubMenuComponent: React.FC = () => {
     },
   ]
 
-  return <BaseSubMenu items={ItemsConfig} activeItem={asPath} justifyContent="flex-start" mb="60px" />
+  return <BaseSubMenu items={ItemsConfig} activeItem={asPath} justifyContent="flex-start" mb="18px" />
 }
 
 export default SubMenuComponent
