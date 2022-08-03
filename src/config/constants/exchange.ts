@@ -1,19 +1,24 @@
-import { ChainId, JSBI, Percent, Token } from '@pancakeswap/sdk'
+import { ChainId, JSBI, Percent, Token, WNATIVE } from '@pancakeswap/sdk'
 import { BigNumber } from '@ethersproject/bignumber'
-import { bscTokens, bscTestnetTokens } from './tokens'
+import { bscTokens, bscTestnetTokens, USDC, USDT, BUSD } from './tokens'
 import { ChainTokenList } from './types'
 
 export const ROUTER_ADDRESS = {
-  [ChainId.ETHEREUM]: '0xd483eb42f1ADdb133f303Ddcfa4544D081f5d3D7',
-  [ChainId.RINKEBY]: '0xd483eb42f1ADdb133f303Ddcfa4544D081f5d3D7',
+  [ChainId.ETHEREUM]: '0xbee0bFd2745F0F832f784f706bd3b86614551fd6',
+  [ChainId.RINKEBY]: '0xbee0bFd2745F0F832f784f706bd3b86614551fd6',
   [ChainId.BSC]: '0x10ED43C718714eb63d5aA57B78B54704E256024E',
   [ChainId.BSC_TESTNET]: '0xD99D1c33F9fC3444f8101754aBC46c52416550D1',
 }
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
-  [ChainId.ETHEREUM]: [],
-  [ChainId.RINKEBY]: [],
+  [ChainId.ETHEREUM]: [
+    WNATIVE[ChainId.ETHEREUM],
+    USDC[ChainId.ETHEREUM],
+    USDT[ChainId.ETHEREUM],
+    BUSD[ChainId.ETHEREUM],
+  ],
+  [ChainId.RINKEBY]: [WNATIVE[ChainId.RINKEBY], USDC[ChainId.RINKEBY], BUSD[ChainId.RINKEBY]],
   [ChainId.BSC]: [
     bscTokens.wbnb,
     bscTokens.cake,

@@ -46,6 +46,29 @@ const USDC_RINKEBY = new Token(
   'test USD Coin',
 )
 
+const USDT_BSC = new Token(
+  ChainId.BSC,
+  '0x55d398326f99059fF775485246999027B3197955',
+  18,
+  'USDT',
+  'Tether USD',
+  'https://tether.to/',
+)
+
+const USDT_ETH = new Token(
+  ChainId.BSC,
+  '0x55d398326f99059fF775485246999027B3197955',
+  6,
+  'USDT',
+  'Tether USD',
+  'https://tether.to/',
+)
+
+export const USDT = {
+  [ChainId.BSC]: USDT_BSC,
+  [ChainId.ETHEREUM]: USDT_ETH,
+}
+
 export const USDC = {
   [ChainId.BSC]: USDC_BSC,
   [ChainId.BSC_TESTNET]: USDC_TESTNET,
@@ -180,14 +203,7 @@ export const bscTokens = {
     'Dai Stablecoin',
     'https://www.makerdao.com/',
   ),
-  usdt: new Token(
-    ChainId.BSC,
-    '0x55d398326f99059fF775485246999027B3197955',
-    18,
-    'USDT',
-    'Tether USD',
-    'https://tether.to/',
-  ),
+  usdt: USDT_BSC,
   btcb: new Token(
     ChainId.BSC,
     '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c',
