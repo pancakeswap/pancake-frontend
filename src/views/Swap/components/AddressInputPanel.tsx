@@ -6,7 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
 import { AutoColumn } from '../../../components/Layout/Column'
 import { RowBetween } from '../../../components/Layout/Row'
-import { getBlockExploreLink } from '../../../utils'
+import { getBlockExploreLink, getBlockExploreName } from '../../../utils'
 
 const InputPanel = styled.div`
   display: flex;
@@ -103,7 +103,11 @@ export default function AddressInputPanel({
               <Text>{t('Recipient')}</Text>
               {address && chainId && (
                 <Link external small href={getBlockExploreLink(address, 'address', chainId)}>
-                  ({t('View on BscScan')})
+                  (
+                  {t('View on %site%', {
+                    site: getBlockExploreName(chainId),
+                  })}
+                  )
                 </Link>
               )}
             </RowBetween>
