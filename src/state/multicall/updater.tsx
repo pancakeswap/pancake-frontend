@@ -42,9 +42,9 @@ async function fetchChunk(
         callData: obj.callData,
         target: obj.address,
       })),
-      // {
-      //   blockTag: minBlockNumber,
-      // }
+      {
+        blockTag: minBlockNumber,
+      }
     )
   } catch (err) {
     const error = err as any
@@ -244,7 +244,7 @@ export default function Updater(): null {
               console.debug('Cancelled fetch for blockNumber', currentBlock)
               return
             }
-            console.error('Failed to fetch multicall chunk', chunk, chainId, error)
+            console.error('Failed to fetch multicall chunk', chunk, chainId, error, currentBlock)
             dispatch(
               errorFetchingMulticallResults({
                 calls: chunk,
