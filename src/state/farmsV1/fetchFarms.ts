@@ -15,8 +15,10 @@ const fetchFarms = async (farmsToFetch: SerializedFarmConfig[]) => {
 
     const [info, totalAllocPoint] = masterChefResult[index]
 
+    const lpTotalSupplyBN = new BigNumber(lpTotalSupply)
+
     // Ratio in % of LP tokens that are staked in the MC, vs the total number in circulation
-    const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
+    const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(lpTotalSupplyBN)
 
     // Raw amount of token in the LP, including those not staked
     const tokenAmountTotal = new BigNumber(tokenBalanceLP).div(getFullDecimalMultiplier(tokenDecimals))
@@ -36,7 +38,7 @@ const fetchFarms = async (farmsToFetch: SerializedFarmConfig[]) => {
       token: farm.token,
       quoteToken: farm.quoteToken,
       tokenAmountTotal: tokenAmountTotal.toJSON(),
-      lpTotalSupply: new BigNumber(lpTotalSupply).toJSON(),
+      lpTotalSupply: lpTotalSupplyBN.toJSON(),
       lpTotalInQuoteToken: lpTotalInQuoteToken.toJSON(),
       tokenPriceVsQuote: quoteTokenAmountTotal.div(tokenAmountTotal).toJSON(),
       poolWeight: poolWeight.toJSON(),

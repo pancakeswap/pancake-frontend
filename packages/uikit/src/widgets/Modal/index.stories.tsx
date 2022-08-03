@@ -96,7 +96,7 @@ export const WithCustomHeader: React.FC = () => {
   return <Button onClick={onPresent1}>Modal with custom header</Button>;
 };
 
-export const ReactingToOusideChanges: React.FC = () => {
+export const ReactingToOutsideChanges: React.FC = () => {
   const [counter, setCounter] = useState(0);
   useEffect(() => {
     const intervalId = setInterval(() => {

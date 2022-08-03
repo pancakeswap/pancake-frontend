@@ -70,7 +70,7 @@ const BorderCard = styled.div`
 export default function RemoveLiquidity() {
   const router = useRouter()
   const [zapMode] = useZapModeManager()
-  const [temporarilyZapMode, setTemporarilyZapMode] = useState(zapMode)
+  const [temporarilyZapMode, setTemporarilyZapMode] = useState(true)
   const [currencyIdA, currencyIdB] = router.query.currency || []
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
   const { account, chainId, library } = useActiveWeb3React()
@@ -513,6 +513,11 @@ export default function RemoveLiquidity() {
     liquidityPercentChangeCallback,
   )
 
+  const handleChangePercent = useCallback(
+    (value) => setInnerLiquidityPercentage(Math.ceil(value)),
+    [setInnerLiquidityPercentage],
+  )
+
   const [onPresentRemoveLiquidity] = useModal(
     <ConfirmLiquidityModal
       title={t('You will receive')}
@@ -575,7 +580,7 @@ export default function RemoveLiquidity() {
                   min={0}
                   max={100}
                   value={innerLiquidityPercentage}
-                  onValueChanged={(value) => setInnerLiquidityPercentage(Math.ceil(value))}
+                  onValueChanged={handleChangePercent}
                   mb="16px"
                 />
                 <Flex flexWrap="wrap" justifyContent="space-evenly">

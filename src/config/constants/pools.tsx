@@ -70,6 +70,18 @@ export const livePools: SerializedPoolConfig[] = [
     isFinished: false,
   },
   {
+    sousId: 288,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.high,
+    contractAddress: {
+      56: '0x28cc814bE3B994187B7f8Bfed10516A84A671119',
+      97: '',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '0.1332',
+    version: 3,
+  },
+  {
     sousId: 287,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.ole,
@@ -106,18 +118,6 @@ export const livePools: SerializedPoolConfig[] = [
     version: 3,
   },
   {
-    sousId: 284,
-    stakingToken: serializedTokens.cake,
-    earningToken: serializedTokens.antex,
-    contractAddress: {
-      97: '',
-      56: '0xdC37A2B2A6a62008beEe029E36153dF8055a8ADa',
-    },
-    poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '1937.62',
-    version: 3,
-  },
-  {
     sousId: 283,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.xcn,
@@ -133,6 +133,18 @@ export const livePools: SerializedPoolConfig[] = [
 
 // known finished pools
 const finishedPools = [
+  {
+    sousId: 284,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.antex,
+    contractAddress: {
+      97: '',
+      56: '0xdC37A2B2A6a62008beEe029E36153dF8055a8ADa',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '1937.62',
+    version: 3,
+  },
   {
     sousId: 282,
     stakingToken: serializedTokens.cake,

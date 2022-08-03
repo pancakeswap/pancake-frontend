@@ -116,11 +116,11 @@ const FinishedTextLink = styled(Link)`
 const NUMBER_OF_FARMS_VISIBLE = 12
 
 const Farms: React.FC = ({ children }) => {
-  const { pathname } = useRouter()
+  const { pathname, query: urlQuery } = useRouter()
   const { t } = useTranslation()
   const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
   const cakePrice = usePriceCakeBusd()
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState(typeof urlQuery?.search === 'string' ? urlQuery?.search : '')
   const [viewMode, setViewMode] = useUserFarmsViewMode()
   const { account } = useWeb3React()
   const [sortOption, setSortOption] = useState('hot')
@@ -334,7 +334,7 @@ const Farms: React.FC = ({ children }) => {
             </LabelWrapper>
             <LabelWrapper style={{ marginLeft: 16 }}>
               <Text textTransform="uppercase">{t('Search')}</Text>
-              <SearchInput onChange={handleChangeQuery} placeholder="Search Farms" />
+              <SearchInput initialValue={query} onChange={handleChangeQuery} placeholder="Search Farms" />
             </LabelWrapper>
           </FilterContainer>
         </ControlContainer>

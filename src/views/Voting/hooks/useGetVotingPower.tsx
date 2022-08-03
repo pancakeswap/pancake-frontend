@@ -15,6 +15,8 @@ interface State {
   cakeBnbLpBalance?: number
   ifoPoolBalance?: number
   total: number
+  lockedCakeBalance?: number
+  lockedEndTime?: number
 }
 
 const useGetVotingPower = (block?: number, isActive = true): State & { isLoading: boolean; isError: boolean } => {
@@ -25,8 +27,17 @@ const useGetVotingPower = (block?: number, isActive = true): State & { isLoading
       const blockNumber = block || (await bscRpcProvider.getBlockNumber())
       const eligiblePools = await getActivePools(blockNumber)
       const poolAddresses = eligiblePools.map(({ contractAddress }) => getAddress(contractAddress, ChainId.BSC))
-      const { cakeBalance, cakeBnbLpBalance, cakePoolBalance, total, poolsBalance, cakeVaultBalance, ifoPoolBalance } =
-        await getVotingPower(account, poolAddresses, blockNumber)
+      const {
+        cakeBalance,
+        cakeBnbLpBalance,
+        cakePoolBalance,
+        total,
+        poolsBalance,
+        cakeVaultBalance,
+        ifoPoolBalance,
+        lockedCakeBalance,
+        lockedEndTime,
+      } = await getVotingPower(account, poolAddresses, blockNumber)
       return {
         cakeBalance,
         cakeBnbLpBalance,
@@ -35,6 +46,8 @@ const useGetVotingPower = (block?: number, isActive = true): State & { isLoading
         cakeVaultBalance,
         ifoPoolBalance,
         total,
+        lockedCakeBalance,
+        lockedEndTime,
       }
     },
   )

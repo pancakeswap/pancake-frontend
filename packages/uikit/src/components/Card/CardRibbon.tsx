@@ -11,13 +11,11 @@ const StyledCardRibbon = styled.div<Partial<StyledCardRibbonProps>>`
   background-color: ${({ variantColor = "secondary", theme }) => theme.colors[variantColor]};
   color: white;
   margin: 0;
-  padding: 0;
   padding: 8px 0;
   position: absolute;
   right: ${({ ribbonPosition }) => (ribbonPosition === "right" ? 0 : "auto")};
   top: 0;
   text-align: center;
-  transform: translateX(30%) translateY(0%) rotate(45deg);
   transform: ${({ ribbonPosition }) =>
     ribbonPosition === "right"
       ? "translateX(30%) translateY(0%) rotate(45deg)"

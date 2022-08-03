@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useCallback } from 'react'
 import {
   ArrowBackIcon,
   Card,
@@ -134,18 +134,21 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     setValue(input)
   }
 
-  const handlePercentChange = (sliderPercent: number) => {
-    if (sliderPercent > 0) {
-      const maxValueAsFn = FixedNumber.from(maxBalance)
-      const hundredAsFn = FixedNumber.from(100)
-      const sliderPercentAsFn = FixedNumber.from(sliderPercent.toFixed(18)).divUnsafe(hundredAsFn)
-      const balancePercentage = maxValueAsFn.mulUnsafe(sliderPercentAsFn)
-      setValue(formatFixedNumber(balancePercentage))
-    } else {
-      setValue('')
-    }
-    setPercent(sliderPercent)
-  }
+  const handlePercentChange = useCallback(
+    (sliderPercent: number) => {
+      if (sliderPercent > 0) {
+        const maxValueAsFn = FixedNumber.from(maxBalance)
+        const hundredAsFn = FixedNumber.from(100)
+        const sliderPercentAsFn = FixedNumber.from(sliderPercent.toFixed(18)).divUnsafe(hundredAsFn)
+        const balancePercentage = maxValueAsFn.mulUnsafe(sliderPercentAsFn)
+        setValue(formatFixedNumber(balancePercentage))
+      } else {
+        setValue('')
+      }
+      setPercent(sliderPercent)
+    },
+    [maxBalance],
+  )
 
   // Clear value
   const handleGoBack = () => {

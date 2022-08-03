@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { usePopper } from "react-popper";
 import { useOnClickOutside } from "../../hooks";
 import { MenuContext } from "../../widgets/Menu/context";
@@ -63,12 +63,10 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
   }, [isMenuShow, setMenuOpenByIndex, index]);
 
   useOnClickOutside(
-    {
-      current: targetRef,
-    },
-    () => {
+    targetRef,
+    useCallback(() => {
       setIsOpen(false);
-    }
+    }, [setIsOpen])
   );
 
   return (
