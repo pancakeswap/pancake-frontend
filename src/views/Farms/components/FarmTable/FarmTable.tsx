@@ -104,12 +104,12 @@ const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) =
   }, [])
 
   const rowData = farms.map((farm) => {
-    const lowercaseQuery = latinise(typeof query?.search === 'string' ? query.search.toLowerCase() : '')
-    const initialActivity = latinise(farm.lpSymbol.toLowerCase()).includes(lowercaseQuery)
     const { token, quoteToken } = farm
     const tokenAddress = token.address
     const quoteTokenAddress = quoteToken.address
     const lpLabel = farm.lpSymbol && farm.lpSymbol.split(' ')[0].toUpperCase().replace('PANCAKE', '')
+    const lowercaseQuery = latinise(typeof query?.search === 'string' ? query.search.toLowerCase() : '')
+    const initialActivity = latinise(lpLabel?.toLowerCase()) === lowercaseQuery
 
     const row: RowProps = {
       apr: {
