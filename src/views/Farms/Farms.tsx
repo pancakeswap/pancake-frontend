@@ -120,7 +120,7 @@ const Farms: React.FC = ({ children }) => {
   const { t } = useTranslation()
   const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
   const cakePrice = usePriceCakeBusd()
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState(typeof urlQuery?.search === 'string' ? urlQuery?.search : '')
   const [viewMode, setViewMode] = useUserFarmsViewMode()
   const { account } = useWeb3React()
   const [sortOption, setSortOption] = useState('hot')

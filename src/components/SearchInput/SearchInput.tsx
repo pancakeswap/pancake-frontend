@@ -24,7 +24,6 @@ interface Props {
 
 const SearchInput: React.FC<Props> = ({ onChange: onChangeCallback, placeholder = 'Search', initialValue }) => {
   const [searchText, setSearchText] = useState('')
-
   const { t } = useTranslation()
 
   const debouncedOnChange = useMemo(

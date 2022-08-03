@@ -7,9 +7,9 @@ import { usePointCenterIfoContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import AchievementTitle from 'views/Nft/market/Profile/components/Achievements/AchievementTitle'
-import AchievementAvatar from 'views/Nft/market/Profile/components/Achievements/AchievementAvatar'
-import AchievementDescription from 'views/Nft/market/Profile/components/Achievements/AchievementDescription'
+import AchievementTitle from 'views/Profile/components/Achievements/AchievementTitle'
+import AchievementAvatar from 'views/Profile/components/Achievements/AchievementAvatar'
+import AchievementDescription from 'views/Profile/components/Achievements/AchievementDescription'
 import PointsLabel from './PointsLabel'
 
 interface AchievementRowProps {

@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback, ReactElement, memo, useEffect } from 'r
 import { Text, Flex, Box, Grid, ArrowBackIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
+import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
 import NoOrdersMessage from './NoOrdersMessage'
 import { ORDER_CATEGORY } from '../../types'
 import LoadingTable from './LoadingTable'

@@ -43,8 +43,8 @@ function getWeb3Provider() {
           action: 'request',
           payload: params,
           cb: (payload) => {
-            if (payload.error) {
-              reject(payload.message)
+            if (payload?.error) {
+              reject(payload?.message)
             } else {
               resolve(payload)
             }

@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import { Grid, useModal, Text, Flex } from '@pancakeswap/uikit'
 import { NftLocation, NftToken } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
-import { CollectibleActionCard } from '../../components/CollectibleCard'
-import GridPlaceholder from '../../components/GridPlaceholder'
-import ProfileNftModal from '../../components/ProfileNftModal'
-import NoNftsImage from '../../components/Activity/NoNftsImage'
-import SellModal from '../../components/BuySellModals/SellModal'
+import { CollectibleActionCard } from '../../Nft/market/components/CollectibleCard'
+import GridPlaceholder from '../../Nft/market/components/GridPlaceholder'
+import ProfileNftModal from '../../Nft/market/components/ProfileNftModal'
+import NoNftsImage from '../../Nft/market/components/Activity/NoNftsImage'
+import SellModal from '../../Nft/market/components/BuySellModals/SellModal'
 
 interface ProfileNftProps {
   nft: NftToken

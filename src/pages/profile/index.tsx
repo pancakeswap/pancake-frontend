@@ -9,7 +9,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (account) {
-      router.push(`${nftsBaseUrl}/profile/${account.toLowerCase()}`)
+      router.push(`/profile/${account.toLowerCase()}`)
     } else {
       router.push(nftsBaseUrl)
     }
