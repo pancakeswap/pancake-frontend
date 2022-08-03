@@ -35,6 +35,7 @@ const RightWrapper = styled.div`
     bottom: -3px;
     right: 67px;
   }
+  z-index: 0;
 `
 const IFOIconImage = styled.div<{ src: string }>`
   position: absolute;
