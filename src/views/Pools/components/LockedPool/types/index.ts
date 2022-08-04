@@ -124,6 +124,7 @@ export interface LockDurationFieldPropsType {
   duration: number
   setDuration: Dispatch<SetStateAction<number>>
   isOverMax: boolean
+  currentDuration?: number
   currentDurationLeft?: number
 }
 
