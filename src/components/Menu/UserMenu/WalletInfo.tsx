@@ -5,6 +5,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useAuth from 'hooks/useAuth'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
+import Image from 'next/image'
 
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { formatBigNumber } from 'utils/formatBalance'
@@ -12,11 +13,11 @@ import { useBalance } from 'wagmi'
 import CopyAddress from './CopyAddress'
 
 interface WalletInfoProps {
-  hasLowBnbBalance: boolean
+  hasLowNativeBalance: boolean
   onDismiss: InjectedModalProps['onDismiss']
 }
 
-const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) => {
+const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss }) => {
   const { t } = useTranslation()
   const { account, chainId } = useActiveWeb3React()
   const { data, isFetched } = useBalance({ addressOrName: account })
@@ -35,7 +36,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) 
         {t('Your Address')}
       </Text>
       <CopyAddress account={account} mb="24px" />
-      {hasLowBnbBalance && (
+      {hasLowNativeBalance && (
         <Message variant="warning" mb="24px">
           <Box>
             <Text fontWeight="bold">
@@ -52,13 +53,21 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) 
         </Message>
       )}
       <Flex alignItems="center" justifyContent="space-between">
-        <Text color="textSubtle">
-          {native.symbol} {t('Balance')}
-        </Text>
+        <Flex>
+          <Image width={24} height={24} src={`/images/chains/${native.chainId}.png`} unoptimized />
+          <Text ml="8px" color="textSubtle">
+            {native.symbol} {t('Balance')}
+          </Text>
+        </Flex>
         {!isFetched ? <Skeleton height="22px" width="60px" /> : <Text>{formatBigNumber(data.value, 6)}</Text>}
       </Flex>
-      <Flex alignItems="center" justifyContent="space-between" mb="24px">
-        <Text color="textSubtle">{t('CAKE Balance')}</Text>
+      <Flex alignItems="center" justifyContent="space-between" mb="24px" mt="12px">
+        <Flex alignItems="center">
+          <Image width={24} height={24} src="/images/chains/56.png" unoptimized />
+          <Text ml="8px" color="textSubtle">
+            {t('CAKE Balance')}
+          </Text>
+        </Flex>
         {cakeFetchStatus !== FetchStatus.Fetched ? (
           <Skeleton height="22px" width="60px" />
         ) : (
