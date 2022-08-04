@@ -26,6 +26,7 @@ import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import shouldShowSwapWarning from 'utils/shouldShowSwapWarning'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
+import AccessRisk from 'views/Swap/components/AccessRisk'
 import useRefreshBlockNumberID from './hooks/useRefreshBlockNumber'
 import AddressInputPanel from './components/AddressInputPanel'
 import { GreyCard } from '../../components/Card'
@@ -469,6 +470,8 @@ export default function Swap() {
                       otherCurrency={currencies[Field.INPUT]}
                       id="swap-currency-output"
                     />
+
+                    <AccessRisk currency={currencies[Field.OUTPUT]} />
 
                     {isExpertMode && recipient !== null && !showWrap ? (
                       <>
