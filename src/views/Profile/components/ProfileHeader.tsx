@@ -8,11 +8,11 @@ import { Achievement, Profile } from 'state/types'
 import { useWeb3React } from '@web3-react/core'
 import { useMemo } from 'react'
 import EditProfileAvatar from './EditProfileAvatar'
-import BannerHeader from '../../components/BannerHeader'
-import StatBox, { StatBoxItem } from '../../components/StatBox'
-import MarketPageTitle from '../../components/MarketPageTitle'
+import BannerHeader from '../../Nft/market/components/BannerHeader'
+import StatBox, { StatBoxItem } from '../../Nft/market/components/StatBox'
+import MarketPageTitle from '../../Nft/market/components/MarketPageTitle'
 import EditProfileModal from './EditProfileModal'
-import AvatarImage from '../../components/BannerHeader/AvatarImage'
+import AvatarImage from '../../Nft/market/components/BannerHeader/AvatarImage'
 
 interface HeaderProps {
   accountPath: string
