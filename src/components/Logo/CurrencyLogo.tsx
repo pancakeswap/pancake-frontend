@@ -28,10 +28,12 @@ export default function CurrencyLogo({
     if (currency?.isNative) return []
 
     if (currency?.isToken) {
+      const tokenLogoURL = getTokenLogoURL(currency)
+      if (!tokenLogoURL) return []
       if (currency instanceof WrappedTokenInfo) {
-        return [...uriLocations, getTokenLogoURL(currency.address)]
+        return [...uriLocations, tokenLogoURL]
       }
-      return [getTokenLogoURL(currency.address)]
+      return [tokenLogoURL]
     }
     return []
   }, [currency, uriLocations])
