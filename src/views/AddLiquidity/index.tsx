@@ -44,7 +44,13 @@ import { Field, resetMintState } from '../../state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState, useZapIn } from '../../state/mint/hooks'
 
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import { useGasPrice, useIsExpertMode, useUserSlippageTolerance, useZapModeManager } from '../../state/user/hooks'
+import {
+  useGasPrice,
+  useIsExpertMode,
+  usePairAdder,
+  useUserSlippageTolerance,
+  useZapModeManager,
+} from '../../state/user/hooks'
 import { calculateGasMargin } from '../../utils'
 import { getRouterContract, calculateSlippageAmount } from '../../utils/exchange'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
@@ -72,6 +78,7 @@ export default function AddLiquidity() {
   const router = useRouter()
   const { account, chainId, library } = useActiveWeb3React()
 
+  const addPair = usePairAdder()
   const [zapMode] = useZapModeManager()
   const expertMode = useIsExpertMode()
 
@@ -297,6 +304,10 @@ export default function AddLiquidity() {
             } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`,
             type: 'add-liquidity',
           })
+
+          if (pair) {
+            addPair(pair)
+          }
         }),
       )
       .catch((err) => {
@@ -435,6 +446,10 @@ export default function AddLiquidity() {
           summary,
           type: 'add-liquidity',
         })
+
+        if (pair) {
+          addPair(pair)
+        }
       })
       .catch((err) => {
         if (err && err.code !== 4001) {

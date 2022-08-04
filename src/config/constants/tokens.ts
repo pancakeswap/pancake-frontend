@@ -56,7 +56,7 @@ const USDT_BSC = new Token(
 )
 
 const USDT_ETH = new Token(
-  ChainId.BSC,
+  ChainId.ETHEREUM,
   '0x55d398326f99059fF775485246999027B3197955',
   6,
   'USDT',
