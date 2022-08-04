@@ -120,7 +120,11 @@ const Farms: React.FC = ({ children }) => {
   const { t } = useTranslation()
   const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
   const cakePrice = usePriceCakeBusd()
-  const [query, setQuery] = useState(typeof urlQuery?.search === 'string' ? urlQuery?.search : '')
+
+  const [_query, setQuery] = useState('')
+  const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])
+  const query = normalizedUrlSearch && !_query ? normalizedUrlSearch : _query
+
   const [viewMode, setViewMode] = useUserFarmsViewMode()
   const { account } = useWeb3React()
   const [sortOption, setSortOption] = useState('hot')
@@ -261,10 +265,6 @@ const Farms: React.FC = ({ children }) => {
       })
     }
   }, [isIntersecting])
-  const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])
-  useEffect(() => {
-    setQuery(normalizedUrlSearch)
-  }, [normalizedUrlSearch])
 
   const handleSortOptionChange = (option: OptionProps): void => {
     setSortOption(option.value)

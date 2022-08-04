@@ -1,4 +1,4 @@
-import { useEffect, useState, createElement } from 'react'
+import { useEffect, useState, createElement, useRef } from 'react'
 import styled from 'styled-components'
 import { Flex, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -72,6 +72,7 @@ const FarmMobileCell = styled.td`
 
 const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
   const { details, userDataReady, initialActivity } = props
+  const hasSetInitialValue = useRef(false)
   const hasStakedAmount = !!useFarmUser(details.pid).stakedBalance.toNumber()
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
   const shouldRenderChild = useDelayedUnmount(actionPanelExpanded, 300)
@@ -85,8 +86,9 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
     setActionPanelExpanded(hasStakedAmount)
   }, [hasStakedAmount])
   useEffect(() => {
-    if (initialActivity) {
+    if (initialActivity && hasSetInitialValue.current === false) {
       setActionPanelExpanded(initialActivity)
+      hasSetInitialValue.current = true
     }
   }, [initialActivity])
 
