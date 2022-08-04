@@ -1,4 +1,10 @@
-import { arbitrumRinkeby, optimismKovan, polygonMumbai, rinkeby, mainnet } from 'wagmi/chains'
+import {
+  arbitrumRinkeby,
+  optimismKovan,
+  polygonMumbai,
+  rinkeby as defaultRinkeby,
+  mainnet as defaultMainnet,
+} from 'wagmi/chains'
 import { Chain } from 'wagmi'
 
 export const avalandche: Chain = {
@@ -74,8 +80,7 @@ export const bsc: Chain = {
   name: 'BNB Smart Chain',
   network: 'bsc',
   rpcUrls: {
-    default: 'https://binance.nodereal.io',
-    public: 'https://binance.nodereal.io',
+    default: 'https://bsc-dataseed1.binance.org',
   },
   blockExplorers: {
     default: bscExplorer,
@@ -103,7 +108,6 @@ export const bscTest: Chain = {
   },
   rpcUrls: {
     default: 'https://data-seed-prebsc-1-s2.binance.org:8545/',
-    public: 'https://data-seed-prebsc-1-s2.binance.org:8545/',
   },
   blockExplorers: {
     default: { name: 'BscScan', url: 'https://testnet.bscscan.com' },
@@ -113,6 +117,24 @@ export const bscTest: Chain = {
     blockCreated: 9759845,
   },
   testnet: true,
+}
+
+const rinkeby: Chain = {
+  ...defaultRinkeby,
+  rpcUrls: {
+    ...defaultRinkeby.rpcUrls,
+    // https://docs.nodereal.io/nodereal/meganode/meganode-api-overview/public-api-key
+    nodeReal: 'https://eth-rinkeby.nodereal.io/v1/a4da384bf3334c5ea992eb0bf44135e0',
+  },
+}
+
+const mainnet: Chain = {
+  ...defaultMainnet,
+  rpcUrls: {
+    ...defaultMainnet.rpcUrls,
+    // https://docs.nodereal.io/nodereal/meganode/meganode-api-overview/public-api-key
+    nodeReal: 'https://eth-mainnet.nodereal.io/v1/1659dfb40aa24bbb8153a677b98064d7',
+  },
 }
 
 export const CHAINS_TESTNET = [
