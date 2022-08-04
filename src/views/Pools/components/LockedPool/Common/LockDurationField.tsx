@@ -102,13 +102,13 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
           {t('Total lock duration exceeds 52 weeks')}
         </Text>
       )}
-      {currentDurationLeft && !isMaxSelected && (
+      {currentDurationLeft && !isMaxSelected ? (
         <Message variant="warning">
           <MessageText maxWidth="240px">
             {t('Recommend choosing "MAX" to renew your staking position in order to keep similar yield boost.')}
           </MessageText>
         </Message>
-      )}
+      ) : null}
     </>
   )
 }
