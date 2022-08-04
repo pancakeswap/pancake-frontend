@@ -5,7 +5,6 @@ import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
-import { bscRpcProvider } from 'utils/providers'
 import { isChainSupported } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
 
@@ -74,7 +73,7 @@ const useActiveWeb3React = () => {
   const provider = useProvider({ chainId })
 
   return {
-    library: (library ?? bscRpcProvider) as Web3Provider,
+    library: (library ?? provider) as Web3Provider,
     provider,
     chainId,
     ...web3React,

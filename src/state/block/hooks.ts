@@ -3,17 +3,18 @@ import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
 import useSWR, { useSWRConfig, unstable_serialize } from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useBlockNumber } from 'wagmi'
 
 const REFRESH_BLOCK_INTERVAL = 6000
 
 export const usePollBlockNumber = () => {
   const { cache, mutate } = useSWRConfig()
-  const { chainId, provider } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
+  const { data: blockNumber } = useBlockNumber({ chainId, watch: true })
 
   const { data } = useSWR(
     ['blockNumber', chainId],
     async () => {
-      const blockNumber = await provider.getBlockNumber()
       if (!cache.get(unstable_serialize(['initialBlockNumber', chainId]))) {
         mutate(['initialBlockNumber', chainId], blockNumber)
       }

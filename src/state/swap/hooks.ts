@@ -207,7 +207,7 @@ function validatedRecipient(recipient: any): string | null {
 export function queryParametersToSwapState(
   parsedQs: ParsedUrlQuery,
   nativeSymbol?: string,
-  defaultOutputCurrency?: number,
+  defaultOutputCurrency?: string,
 ): SwapState {
   let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency) || (nativeSymbol ?? DEFAULT_INPUT_CURRENCY)
   let outputCurrency =

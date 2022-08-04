@@ -14,8 +14,7 @@ import {
   Text,
   useModal,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
-import { useSignMessage } from 'wagmi'
+import { useWeb3React, useSignMessage } from '@pancakeswap/wagmi'
 import times from 'lodash/times'
 import isEmpty from 'lodash/isEmpty'
 import { useInitialBlock } from 'state/block/hooks'

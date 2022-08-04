@@ -1,5 +1,6 @@
 import { bsc, BscConnector, CHAINS } from '@pancakeswap/wagmi'
 import { configureChains, createClient } from 'wagmi'
+import memoize from 'lodash/memoize'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
@@ -92,4 +93,4 @@ export const client = createClient({
 
 const CHAIN_IDS = chains.map((c) => c.id)
 
-export const isChainSupported = (chainId: number) => CHAIN_IDS.includes(chainId)
+export const isChainSupported = memoize((chainId: number) => CHAIN_IDS.includes(chainId))

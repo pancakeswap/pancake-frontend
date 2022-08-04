@@ -1,4 +1,5 @@
 import { Box, Button, Flex, InjectedModalProps, LinkExternal, Message, Skeleton, Text } from '@pancakeswap/uikit'
+import { ChainId } from '@pancakeswap/sdk'
 import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -30,6 +31,8 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
     logout()
   }
 
+  const isBSC = native.chainId === ChainId.BSC
+
   return (
     <>
       <Text color="secondary" fontSize="12px" textTransform="uppercase" fontWeight="bold" mb="8px">
@@ -40,7 +43,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
         <Message variant="warning" mb="24px">
           <Box>
             <Text fontWeight="bold">
-              {t('%currency& Balance Low', {
+              {t('%currency% Balance Low', {
                 currency: native.symbol,
               })}
             </Text>
@@ -54,8 +57,8 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
       )}
       <Flex alignItems="center" justifyContent="space-between">
         <Flex>
-          <Image width={24} height={24} src={`/images/chains/${native.chainId}.png`} unoptimized />
-          <Text ml="8px" color="textSubtle">
+          {!isBSC && <Image width={24} height={24} src={`/images/chains/${native.chainId}.png`} unoptimized />}
+          <Text ml={isBSC ? 0 : '8px'} color="textSubtle">
             {native.symbol} {t('Balance')}
           </Text>
         </Flex>
@@ -63,8 +66,8 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" mb="24px" mt="12px">
         <Flex alignItems="center">
-          <Image width={24} height={24} src="/images/chains/56.png" unoptimized />
-          <Text ml="8px" color="textSubtle">
+          {!isBSC && <Image width={24} height={24} src="/images/chains/56.png" unoptimized />}
+          <Text ml={isBSC ? 0 : '8px'} color="textSubtle">
             {t('CAKE Balance')}
           </Text>
         </Flex>
