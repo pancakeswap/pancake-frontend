@@ -85,17 +85,6 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss, mode }) => {
               </Flex>
               <Flex justifyContent="space-between" alignItems="center" mb="24px">
                 <Flex alignItems="center">
-                  <Text>{t('Flippy sounds')}</Text>
-                  <QuestionHelper
-                    text={t('Fun sounds to make a truly immersive pancake-flipping trading experience')}
-                    placement="top-start"
-                    ml="4px"
-                  />
-                </Flex>
-                <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" />
-              </Flex>
-              <Flex justifyContent="space-between" alignItems="center" mb="24px">
-                <Flex alignItems="center">
                   <Text>{t('Subgraph Health Indicator')}</Text>
                   <QuestionHelper
                     text={t(
@@ -124,6 +113,9 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss, mode }) => {
               <Text bold textTransform="uppercase" fontSize="18px" color="secondary" mb="24px">
                 {t('Swaps & Liquidity')}
               </Text>
+              <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                <GasSettings />
+              </Flex>
               <TransactionSettings />
             </Flex>
             <Flex justifyContent="space-between" alignItems="center" mb="24px">
@@ -185,6 +177,17 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss, mode }) => {
                   setSingleHopOnly(!singleHopOnly)
                 }}
               />
+            </Flex>
+            <Flex justifyContent="space-between" alignItems="center" mb="24px">
+              <Flex alignItems="center">
+                <Text>{t('Flippy sounds')}</Text>
+                <QuestionHelper
+                  text={t('Fun sounds to make a truly immersive pancake-flipping trading experience')}
+                  placement="top-start"
+                  ml="4px"
+                />
+              </Flex>
+              <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" />
             </Flex>
           </>
         )}

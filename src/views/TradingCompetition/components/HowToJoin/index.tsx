@@ -3,7 +3,6 @@ import { Flex, Text, Heading } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import Link from 'next/link'
-import { nftsBaseUrl } from 'views/Nft/market/constants'
 import HowToCard from './HowToCard'
 
 const StyledLink = styled(Link)`
@@ -24,7 +23,7 @@ const HowToJoin = () => {
         <Text fontSize="14px" color="textSubtle">
           {t('Set up your')}{' '}
           {account ? (
-            <StyledLink href={`${nftsBaseUrl}/profile/${account.toLowerCase()}`}>{t('Pancake Profile')}</StyledLink>
+            <StyledLink href={`/profile/${account.toLowerCase()}`}>{t('Pancake Profile')}</StyledLink>
           ) : (
             t('Pancake Profile')
           )}

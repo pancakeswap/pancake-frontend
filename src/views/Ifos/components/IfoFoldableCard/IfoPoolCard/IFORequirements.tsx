@@ -50,7 +50,7 @@ const NotOkProfilePoints = ({ pointThreshold }) => {
           <br />
           <LinkExternal
             style={{ display: 'inline' }}
-            href={`https://pancakeswap.finance/nfts/profile/${account}/achievements/`}
+            href={`https://pancakeswap.finance/profile/${account}/achievements/`}
           >
             {t('Pancake Profile')}
           </LinkExternal>

@@ -45,6 +45,43 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 106,
+    lpSymbol: 'MHUNT-BNB LP',
+    lpAddresses: {
+      56: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
+      97: '',
+    },
+    token: serializedTokens.mhunt,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1659603600,
+  },
+  {
+    pid: 111,
+    lpSymbol: 'AOG-CAKE LP',
+    lpAddresses: {
+      56: '0xF8cA29a3BF6d34691981D3Ee8D4c9Cd1C437EfeE',
+      97: '',
+    },
+    token: serializedTokens.aog,
+    quoteToken: serializedTokens.cake,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1659603600,
+  },
+  {
+    pid: 94,
+    v1pid: 525,
+    lpSymbol: 'WZRD-BUSD LP',
+    lpAddresses: {
+      56: '0xee456d906a38e10680c9d157FFf143390e9681bA',
+      97: '',
+    },
+    token: serializedTokens.wzrd,
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1659603600,
+  },
+  {
     pid: 73,
     v1pid: 491,
     lpSymbol: 'HIGH-BUSD LP',
@@ -65,7 +102,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.hotcross,
     quoteToken: serializedTokens.wbnb,
-    auctionHostingStartSeconds: 1658476800,
   },
   {
     pid: 109,
@@ -76,7 +112,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.xcad,
     quoteToken: serializedTokens.busd,
-    auctionHostingStartSeconds: 1658476800,
   },
   {
     pid: 110,
@@ -87,7 +122,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.shell,
     quoteToken: serializedTokens.busd,
-    auctionHostingStartSeconds: 1658476800,
   },
   {
     pid: 108,
@@ -108,29 +142,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.trivia,
     quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 94,
-    v1pid: 525,
-    lpSymbol: 'WZRD-BUSD LP',
-    lpAddresses: {
-      56: '0xee456d906a38e10680c9d157FFf143390e9681bA',
-      97: '',
-    },
-    token: serializedTokens.wzrd,
-    quoteToken: serializedTokens.busd,
-    isCommunity: true,
-  },
-  {
-    pid: 106,
-    lpSymbol: 'MHUNT-BNB LP',
-    lpAddresses: {
-      56: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
-      97: '',
-    },
-    token: serializedTokens.mhunt,
-    quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
   },
   {
     pid: 105,

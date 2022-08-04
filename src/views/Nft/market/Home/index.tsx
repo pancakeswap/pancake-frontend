@@ -7,7 +7,6 @@ import PageHeader from 'components/PageHeader'
 import SectionsWithFoldableText from 'components/FoldableSection/SectionsWithFoldableText'
 import PageSection from 'components/PageSection'
 import { PageMeta } from 'components/Layout/Page'
-import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { useGetCollections } from 'state/nftMarket/hooks'
 import { FetchStatus } from 'config/constants/types'
 import PageLoader from 'components/Loader/PageLoader'
@@ -83,7 +82,7 @@ const Home = () => {
               {t('Buy and Sell NFTs on BNB Smart Chain')}
             </Heading>
             {account && (
-              <Button as={NextLinkFromReactRouter} to={`${nftsBaseUrl}/profile/${account.toLowerCase()}`} mt="32px">
+              <Button as={NextLinkFromReactRouter} to={`/profile/${account.toLowerCase()}`} mt="32px">
                 {t('Manage/Sell')}
               </Button>
             )}

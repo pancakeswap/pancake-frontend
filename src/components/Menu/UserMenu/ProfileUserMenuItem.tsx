@@ -3,7 +3,6 @@ import NextLink from 'next/link'
 import { Flex, Skeleton, UserMenuItem } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useTranslation } from 'contexts/Localization'
-import { nftsBaseUrl } from 'views/Nft/market/constants'
 
 interface ProfileUserMenuItemProps {
   isLoading: boolean
@@ -20,7 +19,6 @@ const Dot = styled.div`
 
 const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, hasProfile, disabled }) => {
   const { account } = useWeb3React()
-
   const { t } = useTranslation()
 
   if (isLoading) {
@@ -45,7 +43,7 @@ const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, ha
   }
 
   return (
-    <NextLink href={`${nftsBaseUrl}/profile/${account?.toLowerCase()}/achievements`} passHref>
+    <NextLink href={`/profile/${account?.toLowerCase()}/achievements`} passHref>
       <UserMenuItem as="a" disabled={disabled}>
         {t('Your Profile')}
       </UserMenuItem>

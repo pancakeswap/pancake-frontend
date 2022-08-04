@@ -2,7 +2,6 @@ import { useLayoutEffect, useRef, useState } from 'react'
 
 const useIntersectionObserver = () => {
   const [observerRefElement, setObserverRefElement] = useState(null)
-  const observerRef = useRef((element) => setObserverRefElement(element))
   const intersectionObserverRef = useRef<IntersectionObserver>(null)
   const [isIntersecting, setIsIntersecting] = useState(false)
 
@@ -38,7 +37,7 @@ const useIntersectionObserver = () => {
     }
   }, [observerRefElement])
 
-  return { observerRef: observerRef.current, isIntersecting }
+  return { observerRef: setObserverRefElement, isIntersecting }
 }
 
 export default useIntersectionObserver
