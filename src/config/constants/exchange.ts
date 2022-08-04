@@ -1,4 +1,4 @@
-import { ChainId, JSBI, Percent, Token, WNATIVE } from '@pancakeswap/sdk'
+import { ChainId, JSBI, Percent, Token, WNATIVE, WBNB } from '@pancakeswap/sdk'
 import { BigNumber } from '@ethersproject/bignumber'
 import { bscTokens, bscTestnetTokens, USDC, USDT, BUSD } from './tokens'
 import { ChainTokenList } from './types'
@@ -17,6 +17,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     USDC[ChainId.ETHEREUM],
     USDT[ChainId.ETHEREUM],
     BUSD[ChainId.ETHEREUM],
+    WBNB[ChainId.ETHEREUM],
   ],
   [ChainId.RINKEBY]: [WNATIVE[ChainId.RINKEBY], USDC[ChainId.RINKEBY], BUSD[ChainId.RINKEBY]],
   [ChainId.BSC]: [
@@ -50,21 +51,34 @@ export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: To
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
-  [ChainId.ETHEREUM]: [],
-  [ChainId.RINKEBY]: [],
+  [ChainId.ETHEREUM]: [USDC[ChainId.ETHEREUM], WBNB[ChainId.ETHEREUM], BUSD[ChainId.ETHEREUM], USDT[ChainId.ETHEREUM]],
+  [ChainId.RINKEBY]: [USDC[ChainId.RINKEBY], WNATIVE[ChainId.RINKEBY], BUSD[ChainId.RINKEBY]],
   [ChainId.BSC]: [bscTokens.busd, bscTokens.cake, bscTokens.btcb],
   [ChainId.BSC_TESTNET]: [bscTestnetTokens.wbnb, bscTestnetTokens.cake, bscTestnetTokens.busd],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
-  [ChainId.ETHEREUM]: [],
-  [ChainId.RINKEBY]: [],
-  [ChainId.BSC]: [bscTokens.wbnb, bscTokens.dai, bscTokens.busd, bscTokens.usdt],
+  [ChainId.ETHEREUM]: [
+    USDC[ChainId.ETHEREUM],
+    WNATIVE[ChainId.ETHEREUM],
+    BUSD[ChainId.ETHEREUM],
+    USDT[ChainId.ETHEREUM],
+    WBNB[ChainId.ETHEREUM],
+  ],
+  [ChainId.RINKEBY]: [USDC[ChainId.RINKEBY], WNATIVE[ChainId.RINKEBY], BUSD[ChainId.RINKEBY]],
+  [ChainId.BSC]: [bscTokens.wbnb, bscTokens.dai, bscTokens.busd, bscTokens.usdt, bscTokens.cake],
   [ChainId.BSC_TESTNET]: [bscTestnetTokens.wbnb, bscTestnetTokens.cake, bscTestnetTokens.busd],
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
+  [ChainId.ETHEREUM]: [
+    [WNATIVE[ChainId.ETHEREUM], USDC[ChainId.ETHEREUM]],
+    [WBNB[ChainId.ETHEREUM], USDC[ChainId.ETHEREUM]],
+    [WBNB[ChainId.ETHEREUM], BUSD[ChainId.ETHEREUM]],
+    [WBNB[ChainId.ETHEREUM], USDT[ChainId.ETHEREUM]],
+    [WBNB[ChainId.ETHEREUM], WNATIVE[ChainId.ETHEREUM]],
+  ],
   [ChainId.BSC]: [
     [bscTokens.cake, bscTokens.wbnb],
     [bscTokens.busd, bscTokens.usdt],

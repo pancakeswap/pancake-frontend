@@ -15,12 +15,12 @@ export function useNetworkConnectorUpdater() {
   const { switchNetwork, isLoading, pendingChainId } = useSwitchNetwork()
   const router = useRouter()
   const chainId = chain?.id || localChainId
-  const [triedSwitch, setTriedSwitch] = useState(false)
+  const [triedSwitchFromQuery, setTriedSwitchFromQuery] = useState(false)
 
   useEffect(() => {
     if (isLoading || !router.isReady) return
     const parsedQueryChainId = Number(router.query.chainId)
-    if (triedSwitch) {
+    if (triedSwitchFromQuery) {
       if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
         router.replace(
           {
@@ -36,10 +36,12 @@ export function useNetworkConnectorUpdater() {
         )
       }
     } else if (isChainSupported(parsedQueryChainId)) {
-      setTriedSwitch(true)
+      setTriedSwitchFromQuery(true)
       switchNetwork(parsedQueryChainId)
+    } else {
+      setTriedSwitchFromQuery(true)
     }
-  }, [chainId, isLoading, router, switchNetwork, triedSwitch])
+  }, [chainId, isLoading, router, switchNetwork, triedSwitchFromQuery])
 
   return {
     isLoading,

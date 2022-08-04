@@ -17,6 +17,7 @@ import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
+import { CAKE, USDC } from 'config/constants/tokens'
 import getLpAddress from 'utils/getLpAddress'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
 import tryParseAmount from 'utils/tryParseAmount'
@@ -203,9 +204,14 @@ function validatedRecipient(recipient: any): string | null {
   return null
 }
 
-export function queryParametersToSwapState(parsedQs: ParsedUrlQuery, nativeSymbol?: string): SwapState {
+export function queryParametersToSwapState(
+  parsedQs: ParsedUrlQuery,
+  nativeSymbol?: string,
+  defaultOutputCurrency?: number,
+): SwapState {
   let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency) || (nativeSymbol ?? DEFAULT_INPUT_CURRENCY)
-  let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency) || DEFAULT_OUTPUT_CURRENCY
+  let outputCurrency =
+    parseCurrencyFromURLParameter(parsedQs.outputCurrency) || (defaultOutputCurrency ?? DEFAULT_OUTPUT_CURRENCY)
   if (inputCurrency === outputCurrency) {
     if (typeof parsedQs.outputCurrency === 'string') {
       inputCurrency = ''
@@ -244,7 +250,7 @@ export function useDefaultsFromURLSearch():
 
   useEffect(() => {
     if (!chainId || !native) return
-    const parsed = queryParametersToSwapState(query, native.symbol)
+    const parsed = queryParametersToSwapState(query, native.symbol, CAKE[chainId]?.address ?? USDC[chainId]?.address)
 
     dispatch(
       replaceSwapState({

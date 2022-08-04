@@ -21,13 +21,14 @@ import { useZapContract } from 'hooks/useContract'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getZapAddress } from 'utils/addressHelpers'
 import { getLPSymbol } from 'utils/getLpSymbol'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useRouter } from 'next/router'
 import { callWithEstimateGas } from 'utils/calls'
 import { ContractMethodName } from 'utils/types'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useLPApr } from 'state/swap/hooks'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
-import { CAKE } from 'config/constants/tokens'
+import { CAKE, USDC } from 'config/constants/tokens'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -82,8 +83,13 @@ export default function AddLiquidity() {
   const [zapMode] = useZapModeManager()
   const expertMode = useIsExpertMode()
 
+  const native = useNativeCurrency()
+
   const [temporarilyZapMode, setTemporarilyZapMode] = useState(true)
-  const [currencyIdA, currencyIdB] = router.query.currency || ['BNB', CAKE[chainId]?.address]
+  const [currencyIdA, currencyIdB] = router.query.currency || [
+    native.symbol,
+    CAKE[chainId]?.address ?? USDC[chainId]?.address,
+  ]
   const [steps, setSteps] = useState(Steps.Choose)
 
   const dispatch = useAppDispatch()
