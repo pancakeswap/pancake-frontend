@@ -53,7 +53,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.peel,
     quoteToken: serializedTokens.busd,
-    isCommunity: true,
   },
   {
     pid: 110,
