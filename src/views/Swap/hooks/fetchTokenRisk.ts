@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/sdk'
 import { ACCESS_RISK_API } from 'config/constants/endpoints'
 
 export enum TOKEN_RISK {
@@ -12,14 +13,16 @@ export const TokenRiskPhases = {
   3: TOKEN_RISK.High,
 }
 
-export interface TokenRiskInfo {
+export interface RiskTokenInfo {
+  address: string
+  chainId: ChainId
   isSuccess: boolean
   riskLevel: TOKEN_RISK
   riskResult: string
   scannedTs: number
 }
 
-export const fetchTokenRisk = async (address: string, chainId: number): Promise<TokenRiskInfo> => {
+export const fetchRiskToken = async (address: string, chainId: number): Promise<RiskTokenInfo> => {
   try {
     const message = {
       businessName: 'pancakeswap_smart_contract_detection_realtime',
@@ -42,6 +45,8 @@ export const fetchTokenRisk = async (address: string, chainId: number): Promise<
 
     return {
       isSuccess: true,
+      address,
+      chainId,
       riskLevel: TokenRiskPhases[result.risk_level],
       riskResult: result.risk_result,
       scannedTs: result.scanned_ts,
@@ -49,6 +54,8 @@ export const fetchTokenRisk = async (address: string, chainId: number): Promise<
   } catch (error) {
     return {
       isSuccess: false,
+      address: '',
+      chainId: ChainId.BSC,
       riskLevel: TokenRiskPhases[1],
       riskResult: '',
       scannedTs: 0,

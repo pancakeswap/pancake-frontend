@@ -1,43 +1,91 @@
 import { useState, useEffect } from 'react'
-import { Currency } from '@pancakeswap/sdk'
+import { Currency, ChainId } from '@pancakeswap/sdk'
 import { useTranslation } from 'contexts/Localization'
 import { Flex, Button, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import useToast from 'hooks/useToast'
-import { fetchTokenRisk, TokenRiskPhases, TokenRiskInfo } from 'views/Swap/hooks/fetchTokenRisk'
+import { fetchRiskToken, TokenRiskPhases, RiskTokenInfo } from 'views/Swap/hooks/fetchTokenRisk'
 import RiskMessage from 'views/Swap/components/AccessRisk/RiskMessage'
 
 interface AccessRiskProps {
   currency: Currency
 }
 
+const TOKEN_RISK_KEY = 'pancakeswap-risk-token'
+
 const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
   const { t } = useTranslation()
   const { toastInfo } = useToast()
+
   const [isAccessing, setIsAccessing] = useState(false)
-  const [tokenRiskInfo, setTokenRiskInfo] = useState<TokenRiskInfo>({
+  const [isFetchStatusSuccess, setIsFetchStatusSuccess] = useState(false)
+  const [riskTokenInfo, setRiskTokenInfo] = useState<RiskTokenInfo>({
     isSuccess: false,
+    address: '',
+    chainId: ChainId.BSC,
     riskLevel: TokenRiskPhases[1],
     riskResult: '',
     scannedTs: 0,
   })
 
+  useEffect(() => {
+    if (currency) {
+      setIsAccessing(false)
+      setIsFetchStatusSuccess(false)
+
+      const { address, chainId } = currency as any
+      const storeData = localStorage.getItem(TOKEN_RISK_KEY)
+      const getRiskTokenList = storeData ? JSON.parse(storeData) : {}
+
+      if (getRiskTokenList) {
+        const list = getRiskTokenList[chainId]
+        if (list && list[address]) {
+          setRiskTokenInfo(list[address])
+          setIsFetchStatusSuccess(list[address].isSuccess)
+        }
+      }
+    }
+  }, [currency])
+
+  const handleAccess = async () => {
+    setIsAccessing(true)
+
+    const { address, chainId, symbol } = currency as any
+    toastInfo(t('Accessing Risk'), t('Please wait until we scan the risk for %symbol% token', { symbol }))
+
+    const tokenRiskResult: RiskTokenInfo = await fetchRiskToken(address, chainId)
+    setIsAccessing(false)
+
+    // To avoid response too slow, and user already change to new currency.
+    if (tokenRiskResult.address === address) {
+      saveRiskTokenInfo(tokenRiskResult)
+    }
+  }
+
+  const saveRiskTokenInfo = (data: RiskTokenInfo) => {
+    const { address, chainId } = data
+    const storeData = localStorage.getItem(TOKEN_RISK_KEY)
+    const getRiskTokenList = storeData ? JSON.parse(storeData) : {}
+    const newData = {
+      ...getRiskTokenList,
+      [chainId]: {
+        ...getRiskTokenList[chainId],
+        [address]: {
+          ...data,
+          createDate: new Date().getTime(),
+        },
+      },
+    }
+
+    setRiskTokenInfo(data)
+    setIsFetchStatusSuccess(data.isSuccess)
+    localStorage.setItem(TOKEN_RISK_KEY, JSON.stringify(newData))
+  }
+
+  // Tooltips
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     'The risk level is for reference only, not as investment advice. Powered by Hashdit.',
     { placement: 'bottom' },
   )
-
-  useEffect(() => {
-    setIsAccessing(false)
-  }, [currency])
-
-  const handleAccess = async () => {
-    const { address, chainId, symbol } = currency as any
-
-    setIsAccessing(true)
-    toastInfo(t('Accessing Risk'), t('Please wait until we scan the risk for %symbol% token', { symbol }))
-
-    // const tokenRiskResult = await fetchTokenRisk(address, chainId)
-  }
 
   return (
     <>
@@ -50,7 +98,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
           <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
         </Flex>
       </Flex>
-      <RiskMessage currency={currency} tokenRiskInfo={tokenRiskInfo} />
+      {!isAccessing && isFetchStatusSuccess && <RiskMessage currency={currency} riskTokenInfo={riskTokenInfo} />}
     </>
   )
 }

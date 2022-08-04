@@ -3,16 +3,16 @@ import { Currency } from '@pancakeswap/sdk'
 import { CurrencyLogo } from 'components/Logo'
 import { useTranslation } from 'contexts/Localization'
 import { Flex, Message, MessageText, Text } from '@pancakeswap/uikit'
-import { TokenRiskInfo, TOKEN_RISK } from 'views/Swap/hooks/fetchTokenRisk'
+import { RiskTokenInfo, TOKEN_RISK } from 'views/Swap/hooks/fetchTokenRisk'
 
 interface RiskMessageProps {
   currency: Currency
-  tokenRiskInfo: TokenRiskInfo
+  riskTokenInfo: RiskTokenInfo
 }
 
-const RiskMessage: React.FC<RiskMessageProps> = ({ currency, tokenRiskInfo }) => {
+const RiskMessage: React.FC<RiskMessageProps> = ({ currency, riskTokenInfo }) => {
   const { t } = useTranslation()
-  const { riskLevel } = tokenRiskInfo
+  const { riskLevel } = riskTokenInfo
 
   const messageVariant = useMemo(() => {
     switch (riskLevel) {
