@@ -113,6 +113,9 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss, mode }) => {
               <Text bold textTransform="uppercase" fontSize="18px" color="secondary" mb="24px">
                 {t('Swaps & Liquidity')}
               </Text>
+              <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                <GasSettings />
+              </Flex>
               <TransactionSettings />
             </Flex>
             <Flex justifyContent="space-between" alignItems="center" mb="24px">
