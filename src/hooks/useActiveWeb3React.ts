@@ -3,7 +3,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { bscRpcProvider } from 'utils/providers'
 import { isChainSupported } from 'utils/wagmi'
@@ -15,24 +15,31 @@ export function useNetworkConnectorUpdater() {
   const { switchNetwork, isLoading, pendingChainId } = useSwitchNetwork()
   const router = useRouter()
   const chainId = chain?.id || localChainId
+  const [triedSwitch, setTriedSwitch] = useState(false)
 
   useEffect(() => {
     if (isLoading || !router.isReady) return
-    if (router.query.chainId !== String(chainId) && isChainSupported(chainId)) {
-      router.replace(
-        {
-          query: {
-            ...router.query,
-            chainId,
+    const parsedQueryChainId = Number(router.query.chainId)
+    if (triedSwitch) {
+      if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
+        router.replace(
+          {
+            query: {
+              ...router.query,
+              chainId,
+            },
           },
-        },
-        undefined,
-        {
-          shallow: true,
-        },
-      )
+          undefined,
+          {
+            shallow: true,
+          },
+        )
+      }
+    } else if (isChainSupported(parsedQueryChainId)) {
+      setTriedSwitch(true)
+      switchNetwork(parsedQueryChainId)
     }
-  }, [chainId, isLoading, router])
+  }, [chainId, isLoading, router, switchNetwork, triedSwitch])
 
   return {
     isLoading,

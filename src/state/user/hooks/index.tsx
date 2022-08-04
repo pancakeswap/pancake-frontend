@@ -404,7 +404,11 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
 export function useGasPrice(): string {
   const { chainId, chain } = useActiveWeb3React()
   const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
-  const { data } = useFeeData({ chainId, enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET })
+  const { data } = useFeeData({
+    chainId,
+    enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
+    watch: true,
+  })
   if (chainId === ChainId.BSC) {
     return userGas
   }

@@ -66,6 +66,7 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
               isDark,
             )}`,
             type: DropdownMenuItemType.EXTERNAL_LINK,
+            supportChainIds: [ChainId.BSC],
           },
           // {
           //   label: t('Transfer'),
