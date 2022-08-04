@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Text, Flex, Button, Input, Box, Message, MessageText } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
@@ -18,6 +18,7 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
   duration,
   setDuration,
   isOverMax,
+  currentDuration,
   currentDurationLeft,
 }) => {
   const { t } = useTranslation()
@@ -30,6 +31,13 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
       setDuration(maxAvailableDuration)
     }
   }, [isMaxSelected, maxAvailableDuration, setDuration])
+
+  // When user extends the duration due to time passed when approving
+  // transaction the extended duration will be a couple of seconds off to max duration,
+  // therefore it is better to compare based on weeks
+  const currentDurationInWeeks = useMemo(() => currentDuration && secondsToWeeks(currentDuration), [currentDuration])
+
+  const maxDurationInWeeks = useMemo(() => secondsToWeeks(MAX_LOCK_DURATION), [])
 
   return (
     <>
@@ -102,7 +110,7 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
           {t('Total lock duration exceeds 52 weeks')}
         </Text>
       )}
-      {currentDurationLeft && !isMaxSelected ? (
+      {currentDurationLeft && currentDurationInWeeks === maxDurationInWeeks && !isMaxSelected ? (
         <Message variant="warning">
           <MessageText maxWidth="240px">
             {t('Recommend choosing "MAX" to renew your staking position in order to keep similar yield boost.')}

@@ -65,6 +65,7 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
           <>
             <LockDurationField
               isOverMax={isOverMax}
+              currentDuration={currentDuration}
               currentDurationLeft={currentDurationLeft}
               setDuration={setDuration}
               duration={duration}
