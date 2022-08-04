@@ -4,6 +4,7 @@ import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
+import { SafeConnector } from '@gnosis.pm/safe-apps-wagmi'
 
 const getNodeRealUrl = (networkName: string) => {
   let host = null
@@ -53,6 +54,9 @@ export const { provider, chains } = configureChains(CHAINS, [
 
 export const injectedConnector = new InjectedConnector({
   chains,
+  options: {
+    shimDisconnect: true,
+  },
 })
 
 export const coinbaseConnector = new CoinbaseWalletConnector({
@@ -75,9 +79,15 @@ export const walletConnectConnector = new WalletConnectConnector({
 export const bscConnector = new BscConnector({ chains })
 
 export const client = createClient({
-  autoConnect: true,
+  autoConnect: false,
   provider,
-  connectors: [injectedConnector, coinbaseConnector, walletConnectConnector, bscConnector],
+  connectors: [
+    new SafeConnector({ chains }),
+    injectedConnector,
+    coinbaseConnector,
+    walletConnectConnector,
+    bscConnector,
+  ],
 })
 
 const CHAIN_IDS = chains.map((c) => c.id)
