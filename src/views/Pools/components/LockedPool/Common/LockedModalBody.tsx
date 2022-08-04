@@ -89,8 +89,8 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
         />
       )}
 
-      {cakeNeeded &&
-        (hasEnoughBalanceToExtend ? (
+      {cakeNeeded ? (
+        hasEnoughBalanceToExtend ? (
           <Text fontSize="12px" mt="24px">
             {t('0.0001 CAKE will be spent to extend')}
           </Text>
@@ -98,7 +98,8 @@ const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
           <Message variant="warning" mt="24px">
             <MessageText maxWidth="200px">{t('0.0001 CAKE required for enabling extension')}</MessageText>
           </Message>
-        ))}
+        )
+      ) : null}
 
       <Flex mt="24px">
         {needsEnable ? (
