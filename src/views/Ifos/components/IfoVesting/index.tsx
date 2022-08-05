@@ -16,7 +16,6 @@ const StyleVestingCard = styled(Card)`
   max-width: 400px;
   margin: 24px 0 0 0;
   align-self: baseline;
-  border-radius: 24px;
   ${({ theme }) => theme.mediaQueries.xl} {
     max-width: 350px;
     margin: -22px 12px 0 12px;
@@ -27,18 +26,16 @@ const VestingCardBody = styled(CardBody)`
   overflow-y: auto;
   max-height: 570px;
   padding-bottom: 0;
-  border-radius: 24px;
+  background-color: #d00;
 `
 
 const TokenInfoContainer = styled.div`
   > div {
     margin-bottom: 20px;
-    border-radius: 24px;
   }
 
   > :last-child {
     margin-bottom: 0px;
-    border-radius: 24px;
   }
 `
 
