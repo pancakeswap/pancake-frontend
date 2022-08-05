@@ -38,9 +38,15 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
 
       if (getRiskTokenList) {
         const list = getRiskTokenList[chainId]
-        if (list && list[address]) {
-          setRiskTokenInfo(list[address])
-          setIsFetchStatusSuccess(list[address].isSuccess)
+        if (list?.[address]) {
+          const now = new Date()
+          const sevenDaysInMilliseconds = 60 * 60 * 24 * 7 * 1000
+          const expiredDate = list[address].createDate + sevenDaysInMilliseconds
+          // If create Date more than 7 days. User need to fetch it again
+          if (now.getTime() <= expiredDate) {
+            setRiskTokenInfo(list[address])
+            setIsFetchStatusSuccess(list[address].isSuccess)
+          }
         }
       }
     }
@@ -53,10 +59,10 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
     toastInfo(t('Accessing Risk'), t('Please wait until we scan the risk for %symbol% token', { symbol }))
 
     const tokenRiskResult: RiskTokenInfo = await fetchRiskToken(address, chainId)
-    setIsAccessing(false)
 
     // To avoid response too slow, and user already change to new currency.
     if (tokenRiskResult.address === address) {
+      setIsAccessing(false)
       saveRiskTokenInfo(tokenRiskResult)
     }
   }

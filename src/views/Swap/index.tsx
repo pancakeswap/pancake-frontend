@@ -92,6 +92,7 @@ const SwitchIconButton = styled(IconButton)`
 `
 
 const CHART_SUPPORT_CHAIN_IDS = [ChainId.BSC]
+const ACCESS_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC]
 
 export default function Swap() {
   const router = useRouter()
@@ -371,6 +372,12 @@ export default function Swap() {
   }, [hasAmount, refreshBlockNumber])
 
   const isChartSupported = useMemo(() => CHART_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
+  const isAccessTokenSupported = useMemo(() => ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
+
+  const isShowAccessToken = useMemo(() => {
+    // TODO: Should verify with native token instead of BNB
+    return isAccessTokenSupported && currencies[Field.OUTPUT]?.symbol !== 'BNB'
+  }, [isAccessTokenSupported, currencies])
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
@@ -471,7 +478,7 @@ export default function Swap() {
                       id="swap-currency-output"
                     />
 
-                    <AccessRisk currency={currencies[Field.OUTPUT]} />
+                    {isShowAccessToken && <AccessRisk currency={currencies[Field.OUTPUT]} />}
 
                     {isExpertMode && recipient !== null && !showWrap ? (
                       <>
