@@ -88,7 +88,7 @@ const Deposit: React.FC = () => {
           <Text color="textSubtle">{t('APY')}</Text>
           <Text bold>{apyDisplay}</Text>
         </Flex>
-        <Flex justifyContent="space-between">
+        {/* <Flex justifyContent="space-between">
           <Text color="textSubtle">{t('Next draw date')}</Text>
           {tooltipVisible && tooltip}
           <TooltipText ref={targetRef}>
@@ -99,7 +99,7 @@ const Deposit: React.FC = () => {
             {hours ? <Text bold as="span" ml="2px">{`${hours}${t('h')}`}</Text> : null}
             {minutes ? <Text bold as="span" ml="2px">{`${minutes}${t('m')}`}</Text> : null}
           </TooltipText>
-        </Flex>
+        </Flex> */}
         <Flex justifyContent="space-between">
           <Text color="textSubtle">{t('Total Value Locked')}</Text>
           <Balance bold decimals={2} value={totalValueLocked} unit=" CAKE" />
