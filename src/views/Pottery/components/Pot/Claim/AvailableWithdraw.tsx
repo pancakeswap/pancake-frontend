@@ -35,7 +35,7 @@ const AvailableWithdraw: React.FC<AvailableWithdrawProps> = ({ withdrawData }) =
   const amount = getBalanceNumber(amountAsBn)
   const amountInBusd = new BigNumber(amount).times(cakePriceBusd).toNumber()
 
-  const lockDate = useMemo(() => getDrawnDate(locale, lockedDate.toString()), [lockedDate, locale])
+  const lockDate = useMemo(() => getDrawnDate(locale, lockedDate?.toString()), [lockedDate, locale])
 
   return (
     <Box>
@@ -46,9 +46,11 @@ const AvailableWithdraw: React.FC<AvailableWithdrawProps> = ({ withdrawData }) =
         <Box>
           <Balance fontSize="20px" lineHeight="110%" value={amount} decimals={2} bold />
           <Balance fontSize="12px" lineHeight="110%" color="textSubtle" value={amountInBusd} decimals={2} unit=" USD" />
-          <Text fontSize="10px" lineHeight="110%" color="textSubtle">
-            {t('Deposited %date%', { date: lockDate })}
-          </Text>
+          {lockedDate && (
+            <Text fontSize="10px" lineHeight="110%" color="textSubtle">
+              {t('Deposited %date%', { date: lockDate })}
+            </Text>
+          )}
         </Box>
         <WithdrawButton
           cakeNumber={cakeNumber}
