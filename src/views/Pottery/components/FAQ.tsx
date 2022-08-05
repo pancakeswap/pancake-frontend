@@ -67,9 +67,6 @@ const FAQ = () => {
           </FoldableText>
           <FoldableText title={t('Is there any risk associated with depositing and playing Pottery?')} mt="24px">
             <Text fontSize="14px" color="textSubtle">
-              {t('Is there any risk associated with depositing and playing Pottery?')}
-            </Text>
-            <Text fontSize="14px" color="textSubtle">
               {t(
                 "You will be locking your CAKE deposit for 10 weeks and you will not be able to withdraw early in any circumstances. Your principal (i.e. your deposit) will be returned to your 100% after 10 weeks. Only the staking rewards of your deposit will be used to fill and operate the Pottery. Simply put, you're only risking the staking rewards of your deposit.",
               )}
