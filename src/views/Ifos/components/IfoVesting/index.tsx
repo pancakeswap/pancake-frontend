@@ -25,7 +25,7 @@ const StyleVestingCard = styled(Card)`
 
 const VestingCardBody = styled(CardBody)`
   overflow-y: auto;
-  max-height: 570px;
+  max-height: 550px;
   padding-bottom: 0;
   border-radius: 24px;
 `
