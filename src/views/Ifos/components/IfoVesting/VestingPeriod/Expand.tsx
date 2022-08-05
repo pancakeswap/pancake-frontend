@@ -41,7 +41,6 @@ const StyledExpand = styled(Box)<{ expanded: boolean }>`
   overflow: hidden;
   margin: 0 -24px;
   padding: 24px;
-  border-radius: 24px;
   background: ${({ theme }) => theme.colors.dropdown};
 `
 
