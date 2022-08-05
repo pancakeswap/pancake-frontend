@@ -1,0 +1,15 @@
+{
+  "name": "test",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "integration-test": "cypress run"
+  },
+  "dependencies": {
+    "@ethersproject/providers": "^5.5.2",
+    "typescript": "^4.6.3"
+  },
+  "devDependencies": {
+    "cypress": "8.3.1"
+  }
+}
