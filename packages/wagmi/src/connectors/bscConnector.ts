@@ -11,7 +11,7 @@ import {
 } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { Ethereum } from '@wagmi/core'
-import { hexValue } from 'ethers/lib/utils'
+import { hexValue } from '@ethersproject/bytes'
 
 declare global {
   interface Window {
