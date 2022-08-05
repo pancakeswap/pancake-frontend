@@ -15,6 +15,21 @@
     },
     "dev": {
       "cache": false
+    },
+    "format:check:staged": {
+      "cache": false
+    },
+    "typechain": {
+      "cache": false
+    },
+    "updateLPsAPR": {
+      "cache": false
+    },
+    "integration-test": {
+      "cache": false
+    },
+    "format:check": {
+      "cache": false
     }
   }
 }
