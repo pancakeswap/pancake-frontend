@@ -30,6 +30,8 @@ const VestingCardBody = styled(CardBody)`
 `
 
 const TokenInfoContainer = styled.div`
+  border-radius: 24px;
+
   > div {
     margin-bottom: 20px;
   }
