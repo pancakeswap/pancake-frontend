@@ -15,6 +15,10 @@
     },
     "dev": {
       "cache": false
+    },
+    "integration-test": {
+      "outputs": [],
+      "inputs": ["cypress/integration/**.test.ts"]
     }
   }
 }
