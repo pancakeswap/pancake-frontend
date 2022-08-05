@@ -6,7 +6,7 @@ const createJestConfig = nextJest({ dir: './' })
 
 // Any custom config you want to pass to Jest
 const customJestConfig = {
-  testPathIgnorePatterns: ['<rootDir>/cypress/', '<rootDir>/src/config/__tests__/', '<rootDir>/packages'],
+  testPathIgnorePatterns: ['<rootDir>/apps/test/', '<rootDir>/src/config/__tests__/', '<rootDir>/packages'],
   moduleNameMapper: {
     '^@pancakeswap/uikit': '<rootDir>/packages/uikit/src',
     '^@pancakeswap/sdk': '<rootDir>/packages/swap-sdk/src',
