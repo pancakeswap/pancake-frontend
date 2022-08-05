@@ -34,6 +34,7 @@ const VestingCardBody = styled(CardBody)`
 const TokenInfoContainer = styled.div`
   > div {
     margin-bottom: 20px;
+    background-color: #dd0;
   }
 
   > :last-child {
