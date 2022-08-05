@@ -143,7 +143,7 @@ const Banner: React.FC<BannerProps> = ({ handleScroll }) => {
               {t('win prize pot!')}
             </DarkTextStyle>
           </Box>
-          <BannerTimer />
+          {/* <BannerTimer /> */}
         </Flex>
       </Flex>
     </PotteryBanner>
