@@ -33,7 +33,7 @@ export const fetchRiskToken = async (address: string, chainId: number): Promise<
       },
     }
     const response = await fetch(ACCESS_RISK_API, {
-      method: 'get',
+      method: 'post',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
