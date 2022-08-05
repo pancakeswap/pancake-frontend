@@ -25,7 +25,7 @@ const StyleVestingCard = styled(Card)`
 
 const VestingCardBody = styled(CardBody)`
   overflow-y: auto;
-  max-height: 550px;
+  max-height: 570px;
   padding-bottom: 0;
   border-radius: 24px;
 `
@@ -33,10 +33,6 @@ const VestingCardBody = styled(CardBody)`
 const TokenInfoContainer = styled.div`
   > div {
     margin-bottom: 20px;
-  }
-
-  > :last-child {
-    margin-bottom: 0px;
   }
 `
 
