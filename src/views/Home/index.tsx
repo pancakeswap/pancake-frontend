@@ -12,6 +12,7 @@ import SalesSection from './components/SalesSection'
 import WinSection from './components/WinSection'
 import FarmsPoolsRow from './components/FarmsPoolsRow'
 import Footer from './components/Footer'
+import LivePriceFeed from './components/LivePriceFeed'
 import CakeDataRow from './components/CakeDataRow'
 import { WedgeTopLeft, InnerWedgeWrapper, OuterWedgeWrapper, WedgeTopRight } from './components/WedgeSvgs'
 import UserBanner from './components/UserBanner'
@@ -132,11 +133,12 @@ const Home: React.FC = () => {
       </PageSection>
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}
-        background="linear-gradient(180deg, #7645D9 0%, #5121B1 100%)"
+        background="linear-gradient(180deg, #ffff 0%, #ffff 100%)"
         index={2}
         hasCurvedDivider={false}
       >
         <Footer />
+        <LivePriceFeed />
       </PageSection>
     </>
   )

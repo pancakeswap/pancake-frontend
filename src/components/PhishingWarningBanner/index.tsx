@@ -67,39 +67,7 @@ const PhishingWarningBanner: React.FC = () => {
       ))}
     </>
   )
-  return (
-    <Container className="warning-banner">
-      {isMobile || isMd ? (
-        <>
-          <Box>{warningTextComponent}</Box>
-          <IconButton onClick={hideBanner} variant="text">
-            <CloseIcon color="#FFFFFF" />
-          </IconButton>
-        </>
-      ) : (
-        <>
-          <InnerContainer>
-            <img
-              src="/images/decorations/phishing-warning-bunny.webp"
-              alt="phishing-warning"
-              width="92px"
-              onError={(e) => {
-                const fallbackSrc = '/images/decorations/phishing-warning-bunny.png'
-                if (!e.currentTarget.src.endsWith(fallbackSrc)) {
-                  // eslint-disable-next-line no-param-reassign
-                  e.currentTarget.src = fallbackSrc
-                }
-              }}
-            />
-            <SpeechBubble>{warningTextComponent}</SpeechBubble>
-          </InnerContainer>
-          <IconButton onClick={hideBanner} variant="text">
-            <CloseIcon color="#FFFFFF" />
-          </IconButton>
-        </>
-      )}
-    </Container>
-  )
+  return <>jk</>
 }
 
 export default PhishingWarningBanner
