@@ -1,9 +1,11 @@
 import { useRef, useMemo, useCallback } from 'react'
+import { latinise } from 'utils/latinise'
 import styled from 'styled-components'
 import { Button, ChevronUpIcon, RowType } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { useRouter } from 'next/router'
 import { getDisplayApr } from '../getDisplayApr'
 
 import Row, { RowProps } from './Row'
@@ -64,6 +66,7 @@ const ScrollButtonContainer = styled.div`
 
 const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) => {
   const tableWrapperEl = useRef<HTMLDivElement>(null)
+  const { query } = useRouter()
   const { t } = useTranslation()
 
   const columns = useMemo(
@@ -105,6 +108,8 @@ const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) =
     const tokenAddress = token.address
     const quoteTokenAddress = quoteToken.address
     const lpLabel = farm.lpSymbol && farm.lpSymbol.split(' ')[0].toUpperCase().replace('PANCAKE', '')
+    const lowercaseQuery = latinise(typeof query?.search === 'string' ? query.search.toLowerCase() : '')
+    const initialActivity = latinise(lpLabel?.toLowerCase()) === lowercaseQuery
 
     const row: RowProps = {
       apr: {
@@ -136,6 +141,7 @@ const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) =
       },
       type: farm.isCommunity ? 'community' : 'core',
       details: farm,
+      initialActivity,
     }
 
     return row
@@ -150,6 +156,7 @@ const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) =
       }
       newRow[column.name] = row[column.name]
     })
+    newRow.initialActivity = row.initialActivity
     return newRow
   })
 
