@@ -6,7 +6,7 @@ import { PoolCategory } from 'config/constants/types'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { formatNumber, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import Balance from 'components/Balance'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import BaseCell, { CellContent } from './BaseCell'
 import CollectModal from '../../PoolCard/Modals/CollectModal'
 

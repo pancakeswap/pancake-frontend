@@ -60,4 +60,6 @@ export const languages = {
   'zh-TW': ZHTW,
 }
 
-export const languageList = Object.values(languages)
+const languageList = Object.values(languages)
+
+export default languageList

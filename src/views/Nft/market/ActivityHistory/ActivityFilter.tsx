@@ -3,8 +3,8 @@ import { Box, Button, Flex, IconButton, CloseIcon } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import { addActivityTypeFilters, removeActivityTypeFilters } from 'state/nftMarket/reducer'
 import { useGetNftActivityFilters } from 'state/nftMarket/hooks'
-import { ContextApi } from 'contexts/Localization/types'
-import { useTranslation } from 'contexts/Localization'
+import { ContextApi } from '@pancakeswap/localization/types'
+import { useTranslation } from '@pancakeswap/localization'
 import { MarketEvent } from '../../../../state/nftMarket/types'
 
 interface ActivityFilterProps {

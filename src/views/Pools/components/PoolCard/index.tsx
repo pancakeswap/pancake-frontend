@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 
 import { CardBody, Flex, Text, CardRibbon } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { DeserializedPool } from 'state/types'
 import { TokenPairImage } from 'components/TokenImage'

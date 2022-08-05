@@ -1,4 +1,4 @@
-import { TranslateFunction } from 'contexts/Localization'
+import { TranslateFunction } from '@pancakeswap/localization'
 
 /**
  * This is hacking out the revert reason from the ethers provider thrown error however it can.

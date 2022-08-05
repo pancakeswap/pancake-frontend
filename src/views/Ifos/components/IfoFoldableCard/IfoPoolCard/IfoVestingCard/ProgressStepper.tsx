@@ -2,7 +2,7 @@ import { useEffect, Fragment, useState } from 'react'
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
 import { PoolIds } from 'config/constants/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { PublicIfoData } from 'views/Ifos/types'
 import Step from './Step'
 

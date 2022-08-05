@@ -3,7 +3,7 @@ import useAuth from 'hooks/useAuth'
 // @ts-ignore
 // eslint-disable-next-line import/extensions
 import { useActiveHandle } from 'hooks/useEagerConnect.bmp.ts'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import Trans from './Trans'
 
 const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {

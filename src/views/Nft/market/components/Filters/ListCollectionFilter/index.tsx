@@ -20,7 +20,7 @@ import {
   removeActivityCollectionFilters,
   removeAllActivityCollectionFilters,
 } from 'state/nftMarket/reducer'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { CloseButton, FilterButton, ListOrderState, SearchWrapper, TriggerButton } from '../ListFilter/styles'
 import { CollectionItemRow } from './styles'
 

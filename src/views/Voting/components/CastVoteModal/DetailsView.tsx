@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { Flex, LinkExternal, Text, Box, HelpIcon, useTooltip, RocketIcon, Link } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { getBscScanLink } from 'utils'
 import { formatNumber } from 'utils/formatBalance'

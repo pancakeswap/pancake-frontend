@@ -1,3 +1,5 @@
 export * from './Provider'
 export { default as useTranslation } from './useTranslation'
 export type { TranslateFunction } from './types'
+export { default as languageList } from './config/languages'
+export * from './helpers'

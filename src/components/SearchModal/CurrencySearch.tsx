@@ -2,7 +2,7 @@
 import { KeyboardEvent, RefObject, useCallback, useMemo, useRef, useState, useEffect } from 'react'
 import { Currency, ETHER, Token } from '@pancakeswap/sdk'
 import { Text, Input, Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { FixedSizeList } from 'react-window'
 import { useAudioModeManager } from 'state/user/hooks'
 import useDebounce from 'hooks/useDebounce'

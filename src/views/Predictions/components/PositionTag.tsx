@@ -11,7 +11,7 @@ import {
   InfoIcon,
 } from '@pancakeswap/uikit'
 import { BetPosition } from 'state/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 interface TagProps extends FlexProps {
   startIcon?: ReactNode

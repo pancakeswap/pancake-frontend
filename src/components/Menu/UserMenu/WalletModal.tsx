@@ -12,7 +12,7 @@ import {
   ModalTitle,
 } from '@pancakeswap/uikit'
 import { parseUnits } from '@ethersproject/units'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { useGetBnbBalance } from 'hooks/useTokenBalance'
 import { FetchStatus } from 'config/constants/types'

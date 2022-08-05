@@ -14,7 +14,7 @@ import {
 import { useWeb3React } from '@web3-react/core'
 import { Vote } from 'state/types'
 import { formatNumber } from 'utils/formatBalance'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { FetchStatus } from 'config/constants/types'
 import { calculateVoteResults, getTotalFromVotes } from '../helpers'
 import TextEllipsis from '../components/TextEllipsis'

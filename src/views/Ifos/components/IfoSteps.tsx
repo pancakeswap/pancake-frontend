@@ -21,7 +21,7 @@ import {
 import { NextLinkFromReactRouter as RouterLink } from 'components/NextLink'
 import { useWeb3React } from '@web3-react/core'
 
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useTokenBalance from 'hooks/useTokenBalance'
 import Container from 'components/Layout/Container'
 import { useProfile } from 'state/profile/hooks'

@@ -1,7 +1,7 @@
 import { Tag, TagProps, Text, SplitIcon, LockIcon, UnlockIcon, HotIcon, Box } from '@pancakeswap/uikit'
 import { FlexGap, FlexGapProps } from 'components/Layout/Flex'
 import Trans from 'components/Trans'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { FC, ReactNode, useMemo } from 'react'
 import { DeserializedLockedVaultUser } from 'state/types'
 import { VaultPosition, getVaultPosition } from 'utils/cakePool'

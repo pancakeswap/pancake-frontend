@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Image from 'next/image'
 import { Flex, Text, Heading } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import EasterFlipperBunny from '../../../pngs/easter-flippers.png'
 
 const StyledFlex = styled(Flex)`

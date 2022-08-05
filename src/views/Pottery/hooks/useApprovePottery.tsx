@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { MaxUint256 } from '@ethersproject/constants'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'

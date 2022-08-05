@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 import styled from 'styled-components'
 import { Breadcrumbs, Heading, Text, Link, Button } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { TranslateFunction } from 'contexts/Localization/types'
+import { useTranslation } from '@pancakeswap/localization'
+import { TranslateFunction } from '@pancakeswap/localization/types'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
 const Wrapper = styled.div`

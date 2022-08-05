@@ -16,7 +16,7 @@ import {
 import styled from 'styled-components'
 import { usePreviousValue } from '@pancakeswap/hooks'
 import { TokenList } from '@uniswap/token-lists'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import CurrencySearch from './CurrencySearch'
 import ImportToken from './ImportToken'
 import Manage from './Manage'

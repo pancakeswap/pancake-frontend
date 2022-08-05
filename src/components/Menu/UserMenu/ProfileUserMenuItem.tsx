@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Flex, Skeleton, UserMenuItem } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
 
 interface ProfileUserMenuItemProps {

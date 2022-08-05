@@ -3,7 +3,7 @@ import { Text, Flex, Heading, useMatchBreakpointsContext } from '@pancakeswap/ui
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import Balance from 'components/Balance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { DeserializedPool } from 'state/types'

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Flex, Heading, Card } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import Page from 'components/Layout/Page'
 import LineChart from 'views/Info/components/InfoCharts/LineChart'
 import TokenTable from 'views/Info/components/InfoTables/TokensTable'

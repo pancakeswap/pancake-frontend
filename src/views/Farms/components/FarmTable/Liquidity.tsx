@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { HelpIcon, Text, Skeleton, useTooltip } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 
 const ReferenceElement = styled.div`

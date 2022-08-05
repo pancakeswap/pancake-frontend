@@ -5,7 +5,7 @@ import { Box, Flex, Text, CardBody, CardRibbon, LinkExternal, Skeleton } from '@
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { PotteryRoundInfo } from 'state/types'
 import Divider from 'components/Divider'

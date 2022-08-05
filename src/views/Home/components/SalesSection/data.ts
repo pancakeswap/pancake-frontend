@@ -1,4 +1,4 @@
-import { TranslateFunction } from 'contexts/Localization/types'
+import { TranslateFunction } from '@pancakeswap/localization/types'
 import { SalesSectionProps } from '.'
 
 export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({

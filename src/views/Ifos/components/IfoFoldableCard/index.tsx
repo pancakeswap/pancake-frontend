@@ -11,7 +11,7 @@ import {
 import { useWeb3React } from '@web3-react/core'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Ifo, PoolIds } from 'config/constants/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useEffect, useState, useRef } from 'react'

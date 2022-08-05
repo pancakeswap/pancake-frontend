@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import { Flex, Box, Card, CardBody, Text, Button, BinanceIcon, Skeleton, useModal } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { formatNumber } from 'utils/formatBalance'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { NftToken } from 'state/nftMarket/types'
