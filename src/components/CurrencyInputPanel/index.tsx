@@ -1,5 +1,16 @@
+import React from 'react'
 import { Currency, Pair, Token } from '@pancakeswap/sdk'
-import { Button, ChevronDownIcon, Text, useModal, Flex, Box, MetamaskIcon } from '@pancakeswap/uikit'
+import {
+  Button,
+  ChevronDownIcon,
+  Text,
+  useModal,
+  Flex,
+  Box,
+  MetamaskIcon,
+  TrustWalletIcon,
+  Link,
+} from '@pancakeswap/uikit'
 import styled, { css } from 'styled-components'
 import { canRegisterToken, registerToken } from 'utils/wallet'
 import { isAddress } from 'utils'
@@ -186,7 +197,7 @@ export default function CurrencyInputPanel({
                 tooltipRight={40}
                 tooltipFontSize={12}
               />
-              {canRegisterToken() && (
+              {canRegisterToken() && window?.ethereum?.isMetaMask ? (
                 <MetamaskIcon
                   style={{ cursor: 'pointer' }}
                   width="16px"
@@ -199,7 +210,11 @@ export default function CurrencyInputPanel({
                     )
                   }
                 />
-              )}
+              ) : window?.ethereum?.isTrust ? (
+                <Link href={`https://link.trustwallet.com/add_asset?asset=c714_${tokenAddress}`} external>
+                  <TrustWalletIcon />
+                </Link>
+              ) : null}
             </Flex>
           ) : null}
         </Flex>

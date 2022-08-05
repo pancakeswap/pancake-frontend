@@ -101,4 +101,4 @@ export const registerToken = async (
   return tokenAdded
 }
 
-export const canRegisterToken = () => typeof window !== 'undefined' && window?.ethereum?.isMetaMask
+export const canRegisterToken = () => typeof window !== 'undefined'
