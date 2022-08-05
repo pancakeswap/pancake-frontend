@@ -42,7 +42,7 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ index, data, fetchUserVestingData
   )
 
   return (
-    <Box borderRadius="24px">
+    <Box borderRadius="24px" overflowY="hidden" backgroundColor="#d00">
       <Flex p="24px" m="-24px -24px 0 -24px" style={{ cursor: 'pointer' }} onClick={toggleExpanded}>
         <TokenImage width={32} height={32} token={token} />
         <Flex flexDirection="column" ml="8px">
