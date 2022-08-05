@@ -37,12 +37,14 @@ export const fetchLastVaultAddress = async () => {
 
 export const fetchPublicPotteryValue = async (potteryVaultAddress: string) => {
   try {
-    const calls = ['getStatus', 'totalLockCake', 'totalSupply', 'lockStartTime', 'maxTotalDeposit'].map((method) => ({
-      address: potteryVaultAddress,
-      name: method,
-    }))
+    const calls = ['getStatus', 'totalLockCake', 'totalSupply', 'lockStartTime', 'getMaxTotalDeposit'].map(
+      (method) => ({
+        address: potteryVaultAddress,
+        name: method,
+      }),
+    )
 
-    const [getStatus, [totalLockCake], [totalSupply], [lockStartTime], maxTotalDeposit] = await multicallv2(
+    const [getStatus, [totalLockCake], [totalSupply], [lockStartTime], getMaxTotalDeposit] = await multicallv2(
       potteryVaultAbi,
       calls,
     )
@@ -55,7 +57,7 @@ export const fetchPublicPotteryValue = async (potteryVaultAddress: string) => {
       totalLockCake: new BigNumber(totalLockCake.toString()).toJSON(),
       totalSupply: new BigNumber(totalSupply.toString()).toJSON(),
       lockStartTime: lockStartTime.toString(),
-      maxTotalDeposit: new BigNumber(maxTotalDeposit.toString()).toJSON(),
+      maxTotalDeposit: new BigNumber(getMaxTotalDeposit.toString()).toJSON(),
     }
   } catch (error) {
     console.error('Failed to fetch public pottery value data', error)
