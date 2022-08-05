@@ -14,13 +14,13 @@ import {
   Modal,
   InjectedModalProps,
   ModalProps,
+  TrustWalletIcon,
 } from '@pancakeswap/uikit'
 import { canRegisterToken, registerToken } from 'utils/wallet'
 import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { WrappedTokenInfo } from 'state/types'
-import { RowFixed } from '../Layout/Row'
 import { AutoColumn, ColumnCenter } from '../Layout/Column'
 import { getBscScanLink } from '../../utils'
 
@@ -99,10 +99,17 @@ export function TransactionSubmittedContent({
                 )
               }
             >
-              <RowFixed>
-                {t('Add %asset% to Metamask', { asset: currencyToAdd.symbol })}
-                <MetamaskIcon width="16px" ml="6px" />
-              </RowFixed>
+              {window?.ethereum?.isMetaMask ? (
+                <>
+                  {t('Add %asset% to Metamask', { asset: currencyToAdd.symbol })}
+                  <MetamaskIcon width="16px" ml="6px" />
+                </>
+              ) : window?.ethereum?.isTrust ? (
+                <>
+                  {t('Add %asset% to Trust Wallet', { asset: currencyToAdd.symbol })}
+                  <TrustWalletIcon width="16px" ml="6px" />
+                </>
+              ) : null}
             </Button>
           )}
           <Button onClick={onDismiss} mt="20px">

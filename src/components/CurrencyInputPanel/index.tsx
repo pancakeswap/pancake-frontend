@@ -1,5 +1,5 @@
 import { Currency, Pair, Token } from '@pancakeswap/sdk'
-import { Button, ChevronDownIcon, Text, useModal, Flex, Box, MetamaskIcon } from '@pancakeswap/uikit'
+import { Button, ChevronDownIcon, Text, useModal, Flex, Box, MetamaskIcon, TrustWalletIcon } from '@pancakeswap/uikit'
 import styled, { css } from 'styled-components'
 import { canRegisterToken, registerToken } from 'utils/wallet'
 import { isAddress } from 'utils'
@@ -187,9 +187,11 @@ export default function CurrencyInputPanel({
                 tooltipFontSize={12}
               />
               {canRegisterToken() && (
-                <MetamaskIcon
-                  style={{ cursor: 'pointer' }}
-                  width="16px"
+                <Button
+                  variant="text"
+                  p="0"
+                  height="auto"
+                  width="fit-content"
                   onClick={() =>
                     registerToken(
                       tokenAddress,
@@ -198,7 +200,13 @@ export default function CurrencyInputPanel({
                       token instanceof WrappedTokenInfo ? token.logoURI : undefined,
                     )
                   }
-                />
+                >
+                  {window?.ethereum?.isMetaMask ? (
+                    <MetamaskIcon width="16px" />
+                  ) : window?.ethereum?.isTrust ? (
+                    <TrustWalletIcon />
+                  ) : null}
+                </Button>
               )}
             </Flex>
           ) : null}

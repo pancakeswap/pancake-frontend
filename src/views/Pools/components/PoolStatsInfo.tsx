@@ -1,4 +1,14 @@
-import { Button, Flex, Link, LinkExternal, MetamaskIcon, Skeleton, Text, TimerIcon } from '@pancakeswap/uikit'
+import {
+  Button,
+  Flex,
+  Link,
+  LinkExternal,
+  MetamaskIcon,
+  Skeleton,
+  Text,
+  TimerIcon,
+  TrustWalletIcon,
+} from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { BASE_BSC_SCAN_URL } from 'config'
 import { useTranslation } from '@pancakeswap/localization'
@@ -9,7 +19,7 @@ import { DeserializedPool, VaultKey } from 'state/types'
 import { getBscScanLink } from 'utils'
 import { getAddress, getVaultPoolAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { registerToken } from 'utils/wallet'
+import { registerToken, canRegisterToken } from 'utils/wallet'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
 import MaxStakeRow from './MaxStakeRow'
 import { AprInfo, DurationAvg, PerformanceFee, TotalLocked, TotalStaked } from './Stat'
@@ -57,7 +67,6 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
   const tokenAddress = earningToken.address || ''
   const poolContractAddress = getAddress(contractAddress)
   const cakeVaultContractAddress = getVaultPoolAddress(vaultKey)
-  const isMetaMaskInScope = !!window.ethereum?.isMetaMask
 
   const { shouldShowBlockCountdown, blocksUntilStart, blocksRemaining, hasPoolStarted, blocksToDisplay } =
     getPoolBlockInfo(pool, currentBlock)
@@ -142,7 +151,7 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
           </LinkExternal>
         </Flex>
       )}
-      {account && isMetaMaskInScope && tokenAddress && (
+      {account && canRegisterToken() && tokenAddress && (
         <Flex justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
           <Button
             variant="text"
@@ -157,10 +166,21 @@ const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
               )
             }
           >
-            <Text color="primary" fontSize="14px">
-              {t('Add to Metamask')}
-            </Text>
-            <MetamaskIcon ml="4px" />
+            {window?.ethereum?.isMetaMask ? (
+              <>
+                <Text color="primary" fontSize="14px">
+                  {t('Add to Metamask')}
+                </Text>
+                <MetamaskIcon ml="4px" />
+              </>
+            ) : window?.ethereum?.isTrust ? (
+              <>
+                <Text color="primary" fontSize="14px">
+                  {t('Add to Trust Wallet')}
+                </Text>
+                <TrustWalletIcon ml="4px" />
+              </>
+            ) : null}
           </Button>
         </Flex>
       )}
