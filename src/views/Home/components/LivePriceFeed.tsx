@@ -31,8 +31,22 @@ const Wrapper = styled(Flex)`
   position: relative;
   flex-direction: column;
   align-items: center;
+  background-color: #c0f8f5;
   justify-content: center;
-  overflow: hidden;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  margin-top: 100px;
+  width: 100%;
+  height: 100%;
+`
+const Bullet = styled(Flex)`
+  /* Rectangle 16 */
+
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: #00716f;
+  border-radius: 14px;
 `
 
 const FloatingPancakesWrapper = styled(Container)`
@@ -49,29 +63,6 @@ const FloatingPancakesWrapper = styled(Container)`
     visibility: visible;
   }
 `
-
-const TopLeftImgWrapper = styled(Flex)`
-  position: absolute;
-  left: 0;
-  top: 0;
-  visibility: invisible;
-`
-
-const BottomRightImgWrapper = styled(Flex)`
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  visibility: invisible;
-`
-
-const topLeftImage = {
-  path: '/images/home/flying-pancakes/',
-  attributes: [
-    { src: '1-left', alt: 'Pancake flying on the bottom' },
-    { src: '1-left', alt: 'Pancake flying on the left' },
-    { src: '1-top', alt: 'Pancake flying on the top' },
-  ],
-}
 
 const bottomRightImage = {
   path: '/images/home/flying-pancakes/',
@@ -95,22 +86,7 @@ const Footer = () => {
         </Flex>
       </BgWrapper> */}
 
-      <Wrapper>
-        <Heading mb="24px" scale="xl" color="white">
-          {t('Start in seconds.')}
-        </Heading>
-        <Text textAlign="center" color="white">
-          {t('Connect your crypto wallet to start using the app in seconds.')}
-        </Text>
-        <Text mb="24px" bold color="white">
-          {t('No registration needed.')}
-        </Text>
-
-        <Link external href="https://docs.pancakeswap.finance/">
-          {t('Learn how to start')}
-        </Link>
-        {!account && <ConnectWalletButton mt="24px" />}
-      </Wrapper>
+      <Wrapper>Welcomeom</Wrapper>
     </>
   )
 }

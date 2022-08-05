@@ -4,7 +4,7 @@ import { TwitterIcon, TelegramIcon, RedditIcon, InstagramIcon, GithubIcon, Disco
 
 export const footerLinks: FooterLinkType[] = [
   {
-    label: "About",
+    label: "About Us",
     items: [
       {
         label: "Contact",
@@ -50,11 +50,11 @@ export const footerLinks: FooterLinkType[] = [
     ],
   },
   {
-    label: "Developers",
+    label: "Developers Welocme",
     items: [
       {
         label: "Github",
-        href: "https://github.com/pancakeswap",
+        href: "",
       },
       {
         label: "Documentation",
