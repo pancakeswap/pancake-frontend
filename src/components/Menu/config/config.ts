@@ -104,6 +104,10 @@ const config: (
           label: t('Lottery'),
           href: '/lottery',
         },
+        {
+          label: t('Pottery (BETA)'),
+          href: '/pottery',
+        },
       ],
     },
     {

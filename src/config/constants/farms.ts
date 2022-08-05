@@ -857,7 +857,7 @@ const farms: SerializedFarmConfig[] = [
     v1pid: 389,
     lpSymbol: 'CAKE-BUSD LP',
     lpAddresses: {
-      97: '',
+      97: '0x25293964dcaFd8a6cDf97AFF8b6559FD4A5Af864',
       56: '0x804678fa97d91B974ec2af3c843270886528a9E6',
     },
     token: serializedTokens.cake,
