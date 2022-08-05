@@ -1,6 +1,5 @@
 import { InjectedModalProps, Modal } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { ContextApi } from '@pancakeswap/localization/types'
+import { useTranslation, ContextApi } from '@pancakeswap/localization'
 import useEditProfile, { Views } from './reducer'
 import StartView from './StartView'
 import PauseProfileView from './PauseProfileView'
