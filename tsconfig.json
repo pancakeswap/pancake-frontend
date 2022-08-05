@@ -8,7 +8,8 @@
     "downlevelIteration": true,
     "target": "es5",
     "paths": {
-      "@pancakeswap/sdk": ["../packages/swap-sdk/src/index.ts"]
+      "@pancakeswap/sdk": ["../packages/swap-sdk/src/index.ts"],
+      "@pancakeswap/wagmi": ["../packages/wagmi/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "cypress", "/apps/*"],
