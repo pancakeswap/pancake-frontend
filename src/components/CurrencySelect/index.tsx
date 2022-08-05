@@ -73,6 +73,7 @@ export const CurrencySelect = ({
       selectedCurrency={selectedCurrency}
       otherSelectedCurrency={otherSelectedCurrency}
       showCommonBases={showCommonBases}
+      commonBasesType="LIQUIDITY"
     />,
   )
 

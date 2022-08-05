@@ -46,17 +46,26 @@ export default function CommonBases({
   chainId,
   onSelect,
   selectedCurrency,
+  commonBasesType,
 }: {
   chainId?: ChainId
+  commonBasesType
   selectedCurrency?: Currency | null
   onSelect: (currency: Currency) => void
 }) {
   const { t } = useTranslation()
+
+  const pinTokenDescText = commonBasesType === 'SWAP_LIMIT' ? t('Common tokens') : t('Common bases')
+  const pinTokenQuestionHelperText =
+    commonBasesType === 'SWAP_LIMIT'
+      ? t('These tokens are commonly paired with other tokens.')
+      : t('These tokens are commonly paired with other tokens.')
+
   return (
     <AutoColumn gap="md">
       <AutoRow>
-        <Text fontSize="14px">{t('Common bases')}</Text>
-        <QuestionHelper text={t('These tokens are commonly paired with other tokens.')} ml="4px" />
+        <Text fontSize="14px">{pinTokenDescText}</Text>
+        {commonBasesType === 'LIQUIDITY' && <QuestionHelper text={pinTokenQuestionHelperText} ml="4px" />}
       </AutoRow>
       <RowWrapper>
         <ButtonWrapper>

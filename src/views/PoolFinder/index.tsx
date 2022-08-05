@@ -84,6 +84,7 @@ export default function PoolFinder() {
       onCurrencySelect={handleCurrencySelect}
       showCommonBases
       selectedCurrency={(activeField === Fields.TOKEN0 ? currency1 : currency0) ?? undefined}
+      commonBasesType="LIQUIDITY"
     />,
     true,
     true,
