@@ -34,7 +34,7 @@ const TokenInfoContainer = styled.div`
   }
 
   > :last-child {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
 `
 
