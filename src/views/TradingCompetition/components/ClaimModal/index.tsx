@@ -1,17 +1,18 @@
-import styled from 'styled-components'
-import { Modal, Button, Flex, AutoRenewIcon, Heading, Text } from '@pancakeswap/uikit'
-import Image from 'next/image'
+import { AutoRenewIcon, Button, Flex, Heading, Modal, Text } from '@pancakeswap/uikit'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from 'contexts/Localization'
-import { useTradingCompetitionContractMoD } from 'hooks/useContract'
-import useToast from 'hooks/useToast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { useModCompetitionRewards, getRewardGroupAchievements } from '../../helpers'
+import { useTradingCompetitionContractMoD } from 'hooks/useContract'
+import useToast from 'hooks/useToast'
+import Image from 'next/image'
+import styled from 'styled-components'
+import { modPrizes } from '../../../../config/constants/trading-competition/prizes'
+import { getRewardGroupAchievements, useModCompetitionRewards } from '../../helpers'
+import MoDAllBunnies from '../../pngs/MoD-hero-bunnies.png'
+import ModBunnyNft from '../../pngs/MoD-nft-prize.png'
 import { CompetitionProps } from '../../types'
-import MoboxBunnyNft from '../../pngs/mobox-bunny-nft.png'
-import MoboxAllBunnies from '../../pngs/mobox-all-bunnies.png'
-import { mboxPrizes } from '../../../../config/constants/trading-competition/prizes'
+import { useCanClaimSpecialNFT } from '../../useCanClaimSpecialNFT'
 
 const ImageWrapper = styled(Flex)`
   justify-content: center;
@@ -24,6 +25,7 @@ const ImageWrapper = styled(Flex)`
 
 const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, userTradingInformation }) => {
   const tradingCompetitionContract = useTradingCompetitionContractMoD()
+  const canClaimSpecialNFT = useCanClaimSpecialNFT()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
   const { t } = useTranslation()
@@ -33,7 +35,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
     userCakeRewards,
     userDarRewards,
   })
-  const achievement = getRewardGroupAchievements(mboxPrizes, userRewardGroup, userPointReward)
+  const achievement = getRewardGroupAchievements(modPrizes, userRewardGroup, userPointReward)
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleClaimClick = async () => {
@@ -68,23 +70,23 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
           {darReward.toFixed(4)} DAR
         </Heading>
         {/* NFT */}
-        {canClaimNFT ? (
+        {canClaimSpecialNFT ? (
           <Flex alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>
-              <Image src={MoboxBunnyNft} width={128} height={128} />
+              <Image src={ModBunnyNft} width={128} height={168} />
             </ImageWrapper>
-            <Text mt="8px">{t('Collectible NFT')}</Text>
+            <Text mt="8px">{t('Bunny Helmet NFT')}</Text>
           </Flex>
         ) : null}
         {canClaimNFT ? (
           <Flex mt="8px" alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>
-              <Image src={MoboxAllBunnies} width={128} height={95} />
+              <Image src={MoDAllBunnies} width={128} height={95} />
             </ImageWrapper>
-            <Text mt="8px">{t('Mobox Avatar NFT')}</Text>
+            <Text mt="8px">{t('PancakeSwap NFT')}</Text>
             <Text color="textSubtle" mt="8px" fontSize="12px" textAlign="center">
               {t(
-                'Your Mobox Avatars NFT prizes will be airdropped to your wallet address before 00:00 UTC 25th April.',
+                'Your Mines of Dalarnia - Bunny Helmet NFT will be airdropped to your wallet before 00:00 UTC on 2nd June.',
               )}
             </Text>
           </Flex>

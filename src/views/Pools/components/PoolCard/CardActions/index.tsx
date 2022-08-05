@@ -22,8 +22,7 @@ interface CardActionsProps {
 }
 
 const CardActions: React.FC<CardActionsProps> = ({ pool, stakedBalance }) => {
-  const { sousId, stakingToken, earningToken, harvest, poolCategory, userData, earningTokenPrice, profileRequirement } =
-    pool
+  const { sousId, stakingToken, earningToken, poolCategory, userData, earningTokenPrice, profileRequirement } = pool
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const { t } = useTranslation()
@@ -39,26 +38,24 @@ const CardActions: React.FC<CardActionsProps> = ({ pool, stakedBalance }) => {
   return (
     <Flex flexDirection="column">
       <Flex flexDirection="column">
-        {harvest && (
-          <>
-            <Box display="inline">
-              <InlineText color="secondary" textTransform="uppercase" bold fontSize="12px">
-                {`${earningToken.symbol} `}
-              </InlineText>
-              <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-                {t('Earned')}
-              </InlineText>
-            </Box>
-            <HarvestActions
-              earnings={earnings}
-              earningToken={earningToken}
-              sousId={sousId}
-              earningTokenPrice={earningTokenPrice}
-              isBnbPool={isBnbPool}
-              isLoading={isLoading}
-            />
-          </>
-        )}
+        <>
+          <Box display="inline">
+            <InlineText color="secondary" textTransform="uppercase" bold fontSize="12px">
+              {`${earningToken.symbol} `}
+            </InlineText>
+            <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
+              {t('Earned')}
+            </InlineText>
+          </Box>
+          <HarvestActions
+            earnings={earnings}
+            earningToken={earningToken}
+            sousId={sousId}
+            earningTokenPrice={earningTokenPrice}
+            isBnbPool={isBnbPool}
+            isLoading={isLoading}
+          />
+        </>
         <Box display="inline">
           <InlineText color={isStaked ? 'secondary' : 'textSubtle'} textTransform="uppercase" bold fontSize="12px">
             {isStaked ? stakingToken.symbol : t('Stake')}{' '}

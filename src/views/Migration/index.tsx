@@ -51,7 +51,8 @@ const MigrationPage: React.FC = () => {
   }, [cakePool])
 
   const scrollToTop = (): void => {
-    tableWrapperEl.current.scrollIntoView({
+    window.scrollTo({
+      top: tableWrapperEl.current.offsetTop,
       behavior: 'smooth',
     })
   }

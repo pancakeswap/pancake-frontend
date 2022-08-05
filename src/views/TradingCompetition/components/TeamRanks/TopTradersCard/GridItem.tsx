@@ -1,20 +1,9 @@
-import { Flex, Heading, Text, SkeletonV2 } from '@pancakeswap/uikit'
+import { Flex, Heading, Text, SkeletonV2, ProfileAvatar } from '@pancakeswap/uikit'
 import { useProfileForAddress } from 'state/profile/hooks'
 import styled from 'styled-components'
 import truncateHash from 'utils/truncateHash'
 import { localiseTradingVolume } from '../../../helpers'
 import { LeaderboardDataItem } from '../../../types'
-
-const Avatar = styled.img`
-  margin-right: 4px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    margin-right: 12px;
-  }
-`
 
 const Wrapper = styled.div`
   position: relative;
@@ -100,8 +89,8 @@ const GridItem: React.FC<{
         <Text bold>${localiseTradingVolume(volume)}</Text>
       </Flex>
       <Flex alignItems="center" justifyContent="flex-start">
-        <SkeletonV2 width="32px" height="32px" mr={['4px', null, '12px']} isDataReady={!isFetching}>
-          <Avatar src={profile?.nft?.image?.thumbnail} />
+        <SkeletonV2 width="32px" height="32px" mr={['4px', null, '12px']} borderRadius="50%" isDataReady={!isFetching}>
+          <ProfileAvatar src={profile?.nft?.image?.thumbnail} width={32} height={32} mr={['4px', null, '12px']} />
         </SkeletonV2>
         <Text color="primary">{truncateHash(address)}</Text>
       </Flex>

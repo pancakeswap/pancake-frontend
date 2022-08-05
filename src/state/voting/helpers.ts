@@ -5,7 +5,6 @@ import request, { gql } from 'graphql-request'
 import { getVotingPowerByCakeStrategy } from 'views/Voting/helpers'
 import { Proposal, ProposalState, Vote, VoteWhere } from 'state/types'
 import _chunk from 'lodash/chunk'
-import _flatten from 'lodash/flatten'
 
 export const getProposals = async (first = 5, skip = 0, state = ProposalState.ACTIVE): Promise<Proposal[]> => {
   const response: { proposals: Proposal[] } = await request(
@@ -17,7 +16,7 @@ export const getProposals = async (first = 5, skip = 0, state = ProposalState.AC
           skip: $skip
           orderBy: "end"
           orderDirection: $orderDirection
-          where: { space_in: "cake.eth", state: $state }
+          where: { space_in: "cakevote.eth", state: $state }
         ) {
           id
           title
@@ -68,6 +67,7 @@ export const getProposal = async (id: string): Promise<Proposal> => {
   return response.proposal
 }
 
+const CHUNK_SIZE = 150
 export const getVotes = async (first: number, skip: number, where: VoteWhere): Promise<Vote[]> => {
   const response: { votes: Vote[] } = await request(
     SNAPSHOT_API,
@@ -117,7 +117,7 @@ export const getAllVotes = async (proposal: Proposal, votesPerChunk = 30000): Pr
 
   const voterChunk = _chunk(
     voters.map((v) => v.voter),
-    600,
+    CHUNK_SIZE,
   )
 
   let votingPowers = {}

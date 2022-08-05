@@ -12,7 +12,7 @@ const scaleKeyValues = {
     pancakeThreeOffset: "-3px", // so pancake 2 and 3 are shifted a little bit
     butterTop: "3px", // Fine adjustments for butter position
     butterLeft: "10px",
-    butterWidth: "6px", // Widht and
+    butterWidth: "6px", // Width and
     butterHeight: "5px", // Height of a butter block on top of pancakes
     butterThickness: "0.5px", // Shadow on the bottom of the butter block
     butterRadius: "2px", // Rounded corners for the butter

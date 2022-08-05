@@ -1,71 +1,58 @@
-import { useState } from 'react'
-import styled from 'styled-components'
-import { useMatchBreakpoints } from '@pancakeswap/uikit'
-import { DeserializedPool, VaultKey } from 'state/types'
-import useDelayedUnmount from 'hooks/useDelayedUnmount'
+import { memo } from 'react'
+import { useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { usePool, useDeserializedPoolByVaultKey } from 'state/pools/hooks'
+import { VaultKey } from 'state/types'
+
 import NameCell from './Cells/NameCell'
 import EarningsCell from './Cells/EarningsCell'
 import AprCell from './Cells/AprCell'
 import TotalStakedCell from './Cells/TotalStakedCell'
 import EndsInCell from './Cells/EndsInCell'
-import ExpandActionCell from './Cells/ExpandActionCell'
 import ActionPanel from './ActionPanel/ActionPanel'
 import AutoEarningsCell from './Cells/AutoEarningsCell'
 import AutoAprCell from './Cells/AutoAprCell'
 import StakedCell from './Cells/StakedCell'
+import ExpandRow from './ExpandRow'
 
-interface PoolRowProps {
-  pool: DeserializedPool
-  account: string
-}
-
-const StyledRow = styled.div`
-  background-color: transparent;
-  display: flex;
-  cursor: pointer;
-`
-
-const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
-  const { isXs, isSm, isMd, isLg, isXl, isXxl, isTablet, isDesktop } = useMatchBreakpoints()
+export const VaultPoolRow: React.FC<{ vaultKey: VaultKey; account: string }> = memo(({ vaultKey, account }) => {
+  const { isXs, isSm, isMd, isLg, isXl, isXxl } = useMatchBreakpointsContext()
   const isLargerScreen = isLg || isXl || isXxl
   const isXLargerScreen = isXl || isXxl
-  const [expanded, setExpanded] = useState(false)
-  const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)
-
-  const toggleExpanded = () => {
-    setExpanded((prev) => !prev)
-  }
-
-  const isCakePool = pool.sousId === 0
+  const pool = useDeserializedPoolByVaultKey(vaultKey)
 
   return (
-    <>
-      <StyledRow role="row" onClick={toggleExpanded}>
-        <NameCell pool={pool} />
-        {pool.vaultKey ? (
-          isXLargerScreen && pool.vaultKey === VaultKey.CakeVault && <AutoEarningsCell pool={pool} account={account} />
-        ) : (
-          <EarningsCell pool={pool} account={account} />
-        )}
-        {isXLargerScreen && pool.vaultKey === VaultKey.CakeVault && isCakePool ? (
-          <StakedCell pool={pool} account={account} />
-        ) : null}
-        {isLargerScreen && !isCakePool && <TotalStakedCell pool={pool} />}
-        {pool.vaultKey ? <AutoAprCell pool={pool} /> : <AprCell pool={pool} />}
-        {isLargerScreen && isCakePool && <TotalStakedCell pool={pool} />}
-        {isDesktop && !isCakePool && <EndsInCell pool={pool} />}
-        <ExpandActionCell expanded={expanded} isFullLayout={isTablet || isDesktop} />
-      </StyledRow>
-      {shouldRenderActionPanel && (
-        <ActionPanel
-          account={account}
-          pool={pool}
-          expanded={expanded}
-          breakpoints={{ isXs, isSm, isMd, isLg, isXl, isXxl }}
-        />
-      )}
-    </>
+    <ExpandRow
+      panel={
+        <ActionPanel account={account} pool={pool} expanded breakpoints={{ isXs, isSm, isMd, isLg, isXl, isXxl }} />
+      }
+    >
+      <NameCell pool={pool} />
+      {isXLargerScreen && <AutoEarningsCell pool={pool} account={account} />}
+      {isXLargerScreen ? <StakedCell pool={pool} account={account} /> : null}
+      <AutoAprCell pool={pool} />
+      {isLargerScreen && <TotalStakedCell pool={pool} />}
+    </ExpandRow>
+  )
+})
+
+const PoolRow: React.FC<{ sousId: number; account: string }> = ({ sousId, account }) => {
+  const { isXs, isSm, isMd, isLg, isXl, isXxl, isDesktop } = useMatchBreakpointsContext()
+  const isLargerScreen = isLg || isXl || isXxl
+  const { pool } = usePool(sousId)
+
+  return (
+    <ExpandRow
+      panel={
+        <ActionPanel account={account} pool={pool} expanded breakpoints={{ isXs, isSm, isMd, isLg, isXl, isXxl }} />
+      }
+    >
+      <NameCell pool={pool} />
+      <EarningsCell pool={pool} account={account} />
+      {isLargerScreen && <TotalStakedCell pool={pool} />}
+      <AprCell pool={pool} />
+      {isDesktop && <EndsInCell pool={pool} />}
+    </ExpandRow>
   )
 }
 
-export default PoolRow
+export default memo(PoolRow)

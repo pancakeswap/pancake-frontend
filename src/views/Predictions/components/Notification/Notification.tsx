@@ -1,17 +1,13 @@
 import styled from 'styled-components'
-import { Card, CardBody, Heading } from '@pancakeswap/uikit'
+import { Card, CardBody, Heading, ArrowBackIcon, IconButton } from '@pancakeswap/uikit'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'contexts/Localization'
+import { PredictionSupportedSymbol } from 'state/types'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 
 interface NotificationProps {
   title: string
 }
-
-// const BunnyDecoration = styled.div`
-//   position: absolute;
-//   top: -130px; // line up bunny at the top of the modal
-//   left: 0px;
-//   text-align: center;
-//   width: 100%;
-// `
 
 const Wrapper = styled.div`
   align-items: center;
@@ -22,24 +18,54 @@ const Wrapper = styled.div`
 `
 
 const CardWrapper = styled.div`
-  position: relative;
   width: 320px;
 `
 
 const BunnyDecoration = styled.div`
-  position: absolute;
-  top: -130px;
-  left: 0px;
+  position: relative;
+  top: 12px;
   text-align: center;
   width: 100%;
   z-index: 5;
+  cursor: pointer;
 `
 
+const BackButtonStyle = styled(IconButton)`
+  position: relative;
+  top: 120px;
+  width: 40%;
+`
+
+const BackButton = () => {
+  const { t } = useTranslation()
+
+  return (
+    <BackButtonStyle variant="primary" width="100%">
+      <ArrowBackIcon color="white" mr="8px" />
+      {t('Back')}
+    </BackButtonStyle>
+  )
+}
+
 const Notification: React.FC<NotificationProps> = ({ title, children }) => {
+  const router = useRouter()
+  const { token } = useConfig()
+
   return (
     <Wrapper>
       <CardWrapper>
-        <BunnyDecoration>
+        <BackButton />
+        <BunnyDecoration
+          onClick={() => {
+            if (token.symbol === PredictionSupportedSymbol.CAKE) {
+              router.query.token = PredictionSupportedSymbol.BNB
+            } else if (token.symbol === PredictionSupportedSymbol.BNB) {
+              router.query.token = PredictionSupportedSymbol.CAKE
+            }
+
+            router.push(router)
+          }}
+        >
           <img src="/images/decorations/hiccup-bunny.png" alt="bunny decoration" height="121px" width="130px" />
         </BunnyDecoration>
         <Card>

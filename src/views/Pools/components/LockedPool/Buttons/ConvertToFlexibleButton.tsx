@@ -18,7 +18,7 @@ const ConvertToFlexibleButton: React.FC<ButtonProps> = (props) => {
 
   const { account } = useWeb3React()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const vaultPoolContract = useVaultPoolContract()
+  const vaultPoolContract = useVaultPoolContract(VaultKey.CakeVault)
   const { callWithGasPrice } = useCallWithGasPrice()
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
@@ -45,7 +45,7 @@ const ConvertToFlexibleButton: React.FC<ButtonProps> = (props) => {
   }, [t, toastSuccess, account, callWithGasPrice, dispatch, fetchWithCatchTxError, vaultPoolContract])
 
   return (
-    <Button width="100%" disabled={pendingTx} onClick={() => handleUnlock()} {...props}>
+    <Button width="100%" disabled={pendingTx} onClick={handleUnlock} {...props}>
       {pendingTx ? t('Converting...') : t('Convert to Flexible')}
     </Button>
   )

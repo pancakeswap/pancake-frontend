@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { Skeleton, Text, useTooltip, HelpIcon, Flex, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { DeserializedPool } from 'state/types'
+import { Skeleton, Text, useTooltip, HelpIcon, Flex, Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { DeserializedPool, VaultKey, DeserializedPoolLockedVault } from 'state/types'
 import Balance from 'components/Balance'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { useTranslation } from 'contexts/Localization'
@@ -26,27 +26,25 @@ const HelpIconWrapper = styled.div`
 
 const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
-  const { earningTokenPrice } = pool
+  const { isMobile } = useMatchBreakpointsContext()
+  const { earningTokenPrice, vaultKey } = pool
 
+  const vaultData = useVaultPoolByKey(vaultKey)
   const {
-    userData: {
-      isLoading: userDataLoading,
-      cakeAtLastUserAction,
-      userShares,
-      currentOverdueFee,
-      currentPerformanceFee,
-      userBoostedShare,
-    },
+    userData: { userShares, cakeAtLastUserAction, isLoading },
     pricePerFullShare,
-  } = useVaultPoolByKey(pool.vaultKey)
+  } = vaultData
   const { hasAutoEarnings, autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
     account,
     cakeAtLastUserAction,
     userShares,
     pricePerFullShare,
     earningTokenPrice,
-    currentPerformanceFee.plus(currentOverdueFee).plus(userBoostedShare),
+    vaultKey === VaultKey.CakeVault
+      ? (vaultData as DeserializedPoolLockedVault).userData.currentPerformanceFee
+          .plus((vaultData as DeserializedPoolLockedVault).userData.currentOverdueFee)
+          .plus((vaultData as DeserializedPoolLockedVault).userData.userBoostedShare)
+      : null,
   )
 
   const labelText = t('Recent CAKE profit')
@@ -58,7 +56,7 @@ const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) =>
     placement: 'bottom',
   })
 
-  if (!userShares.gt(0)) {
+  if (vaultKey === VaultKey.CakeVault && !userShares.gt(0)) {
     return null
   }
 
@@ -68,7 +66,7 @@ const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) =>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
-        {userDataLoading && account ? (
+        {isLoading && account ? (
           <Skeleton width="80px" height="16px" />
         ) : (
           <>

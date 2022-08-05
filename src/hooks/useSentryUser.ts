@@ -1,9 +1,9 @@
 import * as Sentry from '@sentry/react'
 import { useEffect } from 'react'
-import useActiveWeb3React from './useActiveWeb3React'
+import { useWeb3React } from '@web3-react/core'
 
 function useSentryUser() {
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
   useEffect(() => {
     if (account) {
       Sentry.setUser({ account })

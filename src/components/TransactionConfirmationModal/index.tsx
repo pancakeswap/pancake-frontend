@@ -13,8 +13,9 @@ import {
   Spinner,
   Modal,
   InjectedModalProps,
+  ModalProps,
 } from '@pancakeswap/uikit'
-import { registerToken } from 'utils/wallet'
+import { canRegisterToken, registerToken } from 'utils/wallet'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
@@ -67,8 +68,6 @@ export function TransactionSubmittedContent({
   chainId: ChainId
   currencyToAdd?: Currency | undefined
 }) {
-  const { library } = useActiveWeb3React()
-
   const { t } = useTranslation()
 
   const token: Token | undefined = wrappedCurrency(currencyToAdd, chainId)
@@ -86,7 +85,7 @@ export function TransactionSubmittedContent({
               {t('View on BscScan')}
             </Link>
           )}
-          {currencyToAdd && library?.provider?.isMetaMask && (
+          {currencyToAdd && canRegisterToken() && (
             <Button
               variant="tertiary"
               mt="12px"
@@ -158,7 +157,7 @@ interface ConfirmationModalProps {
   currencyToAdd?: Currency | undefined
 }
 
-const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationModalProps> = ({
+const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationModalProps & ModalProps> = ({
   title,
   onDismiss,
   customOnDismiss,
@@ -167,6 +166,7 @@ const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationMo
   pendingText,
   content,
   currencyToAdd,
+  ...props
 }) => {
   const { chainId } = useActiveWeb3React()
 
@@ -180,7 +180,7 @@ const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationMo
   if (!chainId) return null
 
   return (
-    <Modal title={title} headerBackground="gradients.cardHeader" onDismiss={handleDismiss}>
+    <Modal title={title} headerBackground="gradients.cardHeader" {...props} onDismiss={handleDismiss}>
       {attemptingTxn ? (
         <ConfirmationPendingContent pendingText={pendingText} />
       ) : hash ? (

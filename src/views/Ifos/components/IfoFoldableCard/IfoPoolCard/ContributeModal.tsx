@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { MaxUint256 } from '@ethersproject/constants'
@@ -16,7 +17,6 @@ import {
   Box,
   Link,
   Message,
-  MessageText,
 } from '@pancakeswap/uikit'
 import { PoolIds, Ifo } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
@@ -29,9 +29,16 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useToast from 'hooks/useToast'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useERC20 } from 'hooks/useContract'
-import tokens from 'config/constants/tokens'
+import { bscTokens } from 'config/constants/tokens'
 import { requiresApproval } from 'utils/requiresApproval'
 
+const MessageTextLink = styled(Link)`
+  display: inline;
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 14px;
+  white-space: nowrap;
+`
 interface Props {
   poolId: PoolIds
   ifo: Ifo
@@ -48,15 +55,20 @@ const multiplierValues = [0.1, 0.25, 0.5, 0.75, 1]
 // Default value for transaction setting, tweak based on BSC network congestion.
 const gasPrice = parseUnits('10', 'gwei').toString()
 
-const SmallAmountNotice: React.FC = () => {
+const SmallAmountNotice: React.FC<{ url: string }> = ({ url }) => {
   const { t } = useTranslation()
 
   return (
     <Box maxWidth="350px">
       <Message variant="warning" mb="16px">
-        <MessageText>
-          {t('If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.')}
-        </MessageText>
+        <Box>
+          <Text fontSize="14px" color="#D67E0A">
+            {t('This IFO has token vesting. Purchased tokens are released over a period of time.')}
+          </Text>
+          <MessageTextLink external href={url} color="#D67E0A" display="inline">
+            {t('Learn more in the vote proposal')}
+          </MessageTextLink>
+        </Box>
       </Message>
     </Box>
   )
@@ -75,9 +87,9 @@ const ContributeModal: React.FC<Props> = ({
   const publicPoolCharacteristics = publicIfoData[poolId]
   const userPoolCharacteristics = walletIfoData[poolId]
 
-  const { currency } = ifo
+  const { currency, articleUrl } = ifo
   const { toastSuccess } = useToast()
-  const { limitPerUserInLP } = publicPoolCharacteristics
+  const { limitPerUserInLP, vestingInformation } = publicPoolCharacteristics
   const { amountTokenCommittedInLP } = userPoolCharacteristics
   const { contract } = walletIfoData
   const [value, setValue] = useState('')
@@ -87,7 +99,7 @@ const ContributeModal: React.FC<Props> = ({
   const raisingTokenContractApprover = useERC20(currency.address)
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
-  const label = currency === tokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
+  const label = currency === bscTokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
@@ -125,7 +137,7 @@ const ContributeModal: React.FC<Props> = ({
 
   // in v3 max token entry is based on ifo credit and hard cap limit per user minus amount already committed
   const maximumTokenEntry = useMemo(() => {
-    if (!creditLeft || (ifo.version === 3.1 && poolId === PoolIds.poolBasic)) {
+    if (!creditLeft || (ifo.version >= 3.1 && poolId === PoolIds.poolBasic)) {
       return limitPerUserInLP.minus(amountTokenCommittedInLP)
     }
     if (limitPerUserInLP.isGreaterThan(0)) {
@@ -147,8 +159,16 @@ const ContributeModal: React.FC<Props> = ({
     'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
   )
 
-  const unlimitedToolipContent = t(
-    'For the public sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+  const unlimitedToolipContent = (
+    <Box>
+      <Text display="inline">{t('For the public sale, Max CAKE entry is capped by')} </Text>
+      <Text bold display="inline">
+        {t('the number of iCAKE.')}{' '}
+      </Text>
+      <Text display="inline">
+        {t('Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale.')}
+      </Text>
+    </Box>
   )
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -162,7 +182,6 @@ const ContributeModal: React.FC<Props> = ({
   return (
     <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
       <ModalBody maxWidth="360px">
-        {poolId === PoolIds.poolUnlimited && <SmallAmountNotice />}
         <Box p="2px">
           <Flex justifyContent="space-between" mb="16px">
             {tooltipVisible && tooltip}
@@ -230,9 +249,10 @@ const ContributeModal: React.FC<Props> = ({
               </Button>
             ))}
           </Flex>
+          {vestingInformation.percentage > 0 && <SmallAmountNotice url={articleUrl} />}
           <Text color="textSubtle" fontSize="12px" mb="24px">
             {t(
-              'If you don’t commit enough CAKE, you may not receive any IFO tokens at all and will only receive a full refund of your CAKE.',
+              'If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.',
             )}
             <Link
               fontSize="12px"

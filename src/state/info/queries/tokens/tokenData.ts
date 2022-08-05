@@ -3,9 +3,10 @@ import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
 import { TokenData } from 'state/info/types'
 import { infoClient } from 'utils/graphql'
+import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
-import { getAmountChange, getChangeForPeriod, getPercentChange } from 'views/Info/utils/infoDataHelpers'
-import { getDeltaTimestamps } from 'views/Info/utils/infoQueryHelpers'
+import { getAmountChange, getPercentChange } from 'views/Info/utils/infoDataHelpers'
 
 interface TokenFields {
   id: string

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useRef } from 'react'
 import { Currency, Token } from '@pancakeswap/sdk'
 import {
   ModalContainer,
@@ -10,6 +10,8 @@ import {
   InjectedModalProps,
   Heading,
   Button,
+  useMatchBreakpointsContext,
+  MODAL_SWIPE_TO_CLOSE_VELOCITY,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import usePrevious from 'hooks/usePreviousValue'
@@ -26,10 +28,10 @@ const Footer = styled.div`
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   text-align: center;
 `
-
 const StyledModalContainer = styled(ModalContainer)`
-  max-width: 420px;
   width: 100%;
+  min-width: 320px;
+  max-width: 420px !important;
 `
 
 const StyledModalBody = styled(ModalBody)`
@@ -42,7 +44,7 @@ const StyledModalBody = styled(ModalBody)`
   }
 `
 
-interface CurrencySearchModalProps extends InjectedModalProps {
+export interface CurrencySearchModalProps extends InjectedModalProps {
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
@@ -88,9 +90,24 @@ export default function CurrencySearchModal({
     },
     [CurrencyModalView.importList]: { title: t('Import List'), onBack: () => setModalView(CurrencyModalView.search) },
   }
+  const { isMobile } = useMatchBreakpointsContext()
+  const wrapperRef = useRef<HTMLDivElement>(null)
 
   return (
-    <StyledModalContainer minWidth="320px">
+    <StyledModalContainer
+      drag={isMobile ? 'y' : false}
+      dragConstraints={{ top: 0, bottom: 600 }}
+      dragElastic={{ top: 0 }}
+      dragSnapToOrigin
+      onDragStart={() => {
+        if (wrapperRef.current) wrapperRef.current.style.animation = 'none'
+      }}
+      // @ts-ignore
+      onDragEnd={(e, info) => {
+        if (info.velocity.y > MODAL_SWIPE_TO_CLOSE_VELOCITY && onDismiss) onDismiss()
+      }}
+      ref={wrapperRef}
+    >
       <ModalHeader>
         <ModalTitle>
           {config[modalView].onBack && <ModalBackButton onBack={config[modalView].onBack} />}

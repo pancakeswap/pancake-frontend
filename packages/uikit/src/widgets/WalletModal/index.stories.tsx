@@ -11,7 +11,6 @@ export default {
 export const Wallet: React.FC = () => {
   const { onPresentConnectModal } = useWalletModal(
     () => null,
-    () => null,
     (s) => s
   );
   return (

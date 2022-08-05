@@ -33,7 +33,7 @@ const EndEventButtons: React.FC<EndEventProps> = ({
       )}
       {hasSquad && (
         <Button>
-          <NextLinkFromReactRouter to={`/nfts/profile/${account}`}>
+          <NextLinkFromReactRouter to={`/profile/${account}`}>
             {t('Your Squad (%tokens%)', { tokens: numberTokensOfUser })}
           </NextLinkFromReactRouter>
         </Button>

@@ -5,6 +5,7 @@ import { Menu as UikitMenu } from '@pancakeswap/uikit'
 import { languageList } from 'config/localization/languages'
 import { useTranslation } from 'contexts/Localization'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
+import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import useTheme from 'hooks/useTheme'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { usePhishingBannerManager } from 'state/user/hooks'
@@ -13,6 +14,7 @@ import { useMenuItems } from './hooks/useMenuItems'
 import GlobalSettings from './GlobalSettings'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
 import { footerLinks } from './config/footerConfig'
+import { SettingsMode } from './GlobalSettings/types'
 
 const Menu = (props) => {
   const { isDark, setTheme } = useTheme()
@@ -30,13 +32,22 @@ const Menu = (props) => {
     return () => setTheme(isDark ? 'light' : 'dark')
   }, [setTheme, isDark])
 
+  const getFooterLinks = useMemo(() => {
+    return footerLinks(t)
+  }, [t])
+
   return (
     <UikitMenu
       linkComponent={(linkProps) => {
         return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
       }}
-      userMenu={<UserMenu />}
-      globalMenu={<GlobalSettings />}
+      rightSide={
+        <>
+          <GlobalSettings mode={SettingsMode.GLOBAL} />
+          <NetworkSwitcher />
+          <UserMenu />
+        </>
+      }
       banner={showPhishingWarningBanner && typeof window !== 'undefined' && <PhishingWarningBanner />}
       isDark={isDark}
       toggleTheme={toggleTheme}
@@ -46,7 +57,7 @@ const Menu = (props) => {
       cakePriceUsd={cakePriceUsd.toNumber()}
       links={menuItems}
       subLinks={activeMenuItem?.hideSubNav || activeSubMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
-      footerLinks={footerLinks(t)}
+      footerLinks={getFooterLinks}
       activeItem={activeMenuItem?.href}
       activeSubItem={activeSubMenuItem?.href}
       buyCakeLabel={t('Buy CAKE')}

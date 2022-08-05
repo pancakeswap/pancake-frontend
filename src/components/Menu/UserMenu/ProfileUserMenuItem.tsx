@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import { Flex, Skeleton, UserMenuItem } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
-import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { useRouter } from 'next/router'
 
 interface ProfileUserMenuItemProps {
@@ -24,7 +23,7 @@ const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, ha
   const { t } = useTranslation()
 
   const handleClick = () => {
-    router.push(`${nftsBaseUrl}/profile/${account.toLowerCase()}/achievements`)
+    router.push(`/profile/${account.toLowerCase()}/achievements`)
   }
 
   const handleNoProfileClick = () => {

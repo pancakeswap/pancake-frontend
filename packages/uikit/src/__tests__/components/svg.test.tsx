@@ -20,6 +20,13 @@ it("renders correctly", () => {
       flex-shrink: 0;
     }
 
+    @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+      .c0 {
+        -webkit-filter: none !important;
+        filter: none !important;
+      }
+    }
+
     <svg
         class="c0"
         color="text"

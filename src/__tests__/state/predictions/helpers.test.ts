@@ -1,10 +1,6 @@
 /* eslint-disable @typescript-eslint/no-loss-of-precision */
-import {
-  makeFutureRoundResponse,
-  numberOrNull,
-  transformBetResponse,
-  transformUserResponse,
-} from 'state/predictions/helpers'
+import { makeFutureRoundResponse, transformBetResponse, transformUserResponse } from 'state/predictions/helpers'
+import numberOrNull from 'utils/numberOrNull'
 
 describe('numberOrNull', () => {
   it.each([
@@ -58,7 +54,7 @@ describe('transformUserResponse', () => {
   }
 
   it('transforms user response correctly', () => {
-    expect(transformUserResponse(userResponse)).toEqual({
+    expect(transformUserResponse('BNB')(userResponse)).toEqual({
       averageBNB: 0.0101753905736882928,
       block: 9316304,
       createdAt: 1626767110,
@@ -115,7 +111,7 @@ describe('transformBetResponse', () => {
       user: userResponse,
     }
 
-    expect(transformBetResponse(betResponseWithoutRound)).toEqual({
+    expect(transformBetResponse('BNB')(betResponseWithoutRound)).toEqual({
       amount: 0.001030231215331515,
       block: 9318174,
       claimed: false,
@@ -193,7 +189,7 @@ describe('transformBetResponse', () => {
       },
     }
 
-    expect(transformBetResponse(betResponseWithRound)).toEqual({
+    expect(transformBetResponse('BNB')(betResponseWithRound)).toEqual({
       amount: 0.001030231215331515,
       block: 9318174,
       claimed: false,

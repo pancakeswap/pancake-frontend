@@ -11,4 +11,5 @@ module.exports = {
     "@storybook/addon-a11y",
     "themeprovider-storybook/register",
   ],
+  core: { builder: "@storybook/builder-vite" },
 };

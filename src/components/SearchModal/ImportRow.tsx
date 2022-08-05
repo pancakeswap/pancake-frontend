@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react'
 import { Token } from '@pancakeswap/sdk'
-import { Button, Text, CheckmarkCircleIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Button, Text, CheckmarkCircleIcon, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { AutoRow, RowFixed } from 'components/Layout/Row'
 import { AutoColumn } from 'components/Layout/Column'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
@@ -56,7 +56,7 @@ export default function ImportRow({
 }) {
   // globals
   const { chainId } = useActiveWeb3React()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
 
   const { t } = useTranslation()
 

@@ -1,19 +1,16 @@
-import { useEffect, useRef, useMemo } from 'react'
-import { useCountUp } from 'react-countup'
-import styled from 'styled-components'
-import { BnbUsdtPairTokenIcon, LogoRoundIcon, Box, Flex, PocketWatchIcon, Text } from '@pancakeswap/uikit'
-import { formatBigNumberToFixed } from 'utils/formatBalance'
-import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
+import { Box, CoinSwitcher, Flex, PocketWatchIcon, Text, CloseIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { useRouter } from 'next/router'
+import { useCallback, useState } from 'react'
+import { PREDICTION_TOOLTIP_DISMISS_KEY } from 'config/constants'
+import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
+import { PredictionSupportedSymbol } from 'state/types'
+import styled, { keyframes } from 'styled-components'
+import { useConfig } from '../context/ConfigProvider'
 import { formatRoundTime } from '../helpers'
 import useCountdown from '../hooks/useCountdown'
+import LabelPrice from './LabelPrice'
 import usePollOraclePrice from '../hooks/usePollOraclePrice'
-import { useConfig } from '../context/ConfigProvider'
-
-const TOKEN_LOGOS = {
-  BNB: <BnbUsdtPairTokenIcon />,
-  CAKE: <LogoRoundIcon />,
-}
 
 const Token = styled(Box)`
   margin-top: -24px;
@@ -60,16 +57,6 @@ const ClosingTitle = styled(Text)`
   }
 `
 
-const Price = styled(Text)`
-  height: 18px;
-  justify-self: start;
-  width: 70px;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    text-align: center;
-  }
-`
-
 const Interval = styled(Text)`
   ${({ theme }) => theme.mediaQueries.lg} {
     text-align: center;
@@ -77,7 +64,66 @@ const Interval = styled(Text)`
   }
 `
 
-const Label = styled(Flex)<{ dir: 'left' | 'right' }>`
+const tooltipAnimation = keyframes`
+  0%{
+    opacity:0;
+  }
+  20%{
+    opacity:1;
+  }
+  30%{
+    transform: translateX(5px);
+  }
+  40%{
+    transform: translateX(0px);
+  }
+  50%{
+    transform: translateX(5px);
+  }
+  60%{
+    transform: translateX(5px);
+  }
+  100%{
+    opacity:1;
+  }
+`
+
+export const Tooltip = styled.div`
+  position: absolute;
+  top: -5px;
+  left: 55px;
+  border-radius: 16px;
+  padding: 16px;
+  background: ${({ theme }) => theme.tooltip.background};
+  box-shadow: ${({ theme }) => theme.tooltip.boxShadow};
+  white-space: nowrap;
+  opacity: 0;
+  z-index: 100;
+  animation: ${tooltipAnimation} 3s forwards ease-in-out;
+  ${Text},svg {
+    color: ${({ theme }) => theme.tooltip.text};
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    top: -10px;
+    left: 81px;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 21px;
+    left: -6px;
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    background: ${({ theme }) => theme.tooltip.background};
+    transform: rotate(45deg);
+  }
+`
+
+const Label = styled(Flex)<{ dir: 'left' | 'right'; backgroundOpacity?: boolean }>`
+  position: relative;
+  z-index: 1;
   background-color: ${({ theme }) => theme.card.background};
   box-shadow: ${({ theme }) => theme.shadows.level1};
   align-items: ${({ dir }) => (dir === 'right' ? 'flex-end' : 'flex-start')};
@@ -87,46 +133,70 @@ const Label = styled(Flex)<{ dir: 'left' | 'right' }>`
   padding: ${({ dir }) => (dir === 'right' ? '0 28px 0 8px' : '0 8px 0 24px')};
 
   ${({ theme }) => theme.mediaQueries.lg} {
+    background-color: ${({ theme, backgroundOpacity }) => (backgroundOpacity ? 'transparent' : theme.card.background)};
     align-items: center;
     border-radius: ${({ theme }) => theme.radii.card};
     flex-direction: row;
     padding: ${({ dir }) => (dir === 'right' ? '8px 40px 8px 8px' : '8px 8px 8px 40px')};
+    transition: 0.3s background-color ease-in-out;
+    will-change: background-color;
   }
 `
 
 export const PricePairLabel: React.FC = () => {
-  const { price } = usePollOraclePrice()
   const { token } = useConfig()
-  const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
-  const countUpState = useCountUp({
-    start: 0,
-    end: priceAsNumber,
-    duration: 1,
-    decimals: 3,
+  const router = useRouter()
+  const { t } = useTranslation()
+  const { price } = usePollOraclePrice()
+  const [dismissTooltip, setDismissTooltip] = useState(() => {
+    if (localStorage?.getItem(PREDICTION_TOOLTIP_DISMISS_KEY)) return true
+    return false
   })
 
-  const logo = useMemo(() => {
-    return TOKEN_LOGOS[token.symbol]
-  }, [token.symbol])
+  const onDismissTooltip = useCallback(() => {
+    localStorage?.setItem(PREDICTION_TOOLTIP_DISMISS_KEY, '1')
+    setDismissTooltip(true)
+  }, [])
 
-  const { countUp, update } = countUpState || {}
+  const onTokenSwitch = useCallback(() => {
+    if (router.query.token === PredictionSupportedSymbol.CAKE) {
+      router.query.token = PredictionSupportedSymbol.BNB
+    } else if (router.query.token === undefined && token.symbol === PredictionSupportedSymbol.CAKE) {
+      router.query.token = PredictionSupportedSymbol.BNB
+    } else if (router.query.token === undefined && token.symbol === PredictionSupportedSymbol.BNB) {
+      router.query.token = PredictionSupportedSymbol.CAKE
+    } else if (token.symbol === undefined && router.query.token === undefined) {
+      router.query.token = PredictionSupportedSymbol.BNB
+    } else {
+      router.query.token = PredictionSupportedSymbol.CAKE
+    }
+    if (!dismissTooltip) onDismissTooltip()
 
-  const updateRef = useRef(update)
-
-  useEffect(() => {
-    updateRef.current(priceAsNumber)
-  }, [priceAsNumber, updateRef])
-
+    router.replace(router, undefined, { scroll: false })
+  }, [router, token, dismissTooltip, onDismissTooltip])
   return (
-    <Box pl="24px" position="relative" display="inline-block">
-      <Token left={0}>{logo}</Token>
-      <Label dir="left">
-        <Title bold textTransform="uppercase">
-          {`${token.symbol}USD`}
-        </Title>
-        <Price fontSize="12px">{`$${countUp}`}</Price>
-      </Label>
-    </Box>
+    <>
+      <Box pl={['20px', '20px', '20px', '20px', '40px']} position="relative" display="inline-block">
+        {!dismissTooltip && (
+          <Tooltip>
+            <Text mr="5px" display="inline-block" verticalAlign="super">
+              {t('Switch pairs here.')}
+            </Text>
+            <CloseIcon cursor="pointer" onClick={onDismissTooltip} />
+          </Tooltip>
+        )}
+        <CoinSwitcher
+          isDefaultBnb={router.query.token === 'BNB' || (router.query.token === undefined && token.symbol === 'BNB')}
+          onTokenSwitch={onTokenSwitch}
+        />
+        <Label dir="left" backgroundOpacity={!dismissTooltip}>
+          <Title bold textTransform="uppercase">
+            {`${token.symbol}USD`}
+          </Title>
+          <LabelPrice price={price} />
+        </Label>
+      </Box>
+    </>
   )
 }
 

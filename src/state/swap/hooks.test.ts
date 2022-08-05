@@ -1,7 +1,7 @@
 /* eslint-disable no-var */
 /* eslint-disable vars-on-top */
 import { renderHook } from '@testing-library/react-hooks'
-import { DEFAULT_OUTPUT_CURRENCY } from 'config/constants'
+import { DEFAULT_OUTPUT_CURRENCY } from 'config/constants/exchange'
 import { parse } from 'querystring'
 import { useCurrency } from 'hooks/Tokens'
 import { createReduxWrapper } from 'testUtils'
@@ -98,10 +98,23 @@ describe('hooks', () => {
 var mockUseActiveWeb3React: jest.Mock
 
 jest.mock('../../hooks/useActiveWeb3React', () => {
-  mockUseActiveWeb3React = jest.fn().mockReturnValue({})
+  mockUseActiveWeb3React = jest.fn().mockReturnValue({
+    chainId: 56,
+  })
   return {
     __esModule: true,
     default: mockUseActiveWeb3React,
+  }
+})
+
+var mockUseWeb3React: jest.Mock
+
+jest.mock('@web3-react/core', () => {
+  mockUseWeb3React = jest.fn().mockReturnValue({})
+  const original = jest.requireActual('@web3-react/core') // Step 2.
+  return {
+    ...original,
+    useWeb3React: mockUseWeb3React,
   }
 })
 
@@ -124,15 +137,15 @@ describe('#useDerivedSwapInfo', () => {
     )
     expect(result.current.inputError).toBe('Connect Wallet')
 
-    mockUseActiveWeb3React.mockReturnValue({ account: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
+    mockUseWeb3React.mockReturnValue({ account: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
     rerender()
 
     expect(result.current.inputError).toBe('Enter an amount')
-    mockUseActiveWeb3React.mockClear()
+    mockUseWeb3React.mockClear()
   })
 
   it('should show [Enter a recipient] Error', async () => {
-    mockUseActiveWeb3React.mockReturnValue({ account: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
+    mockUseWeb3React.mockReturnValue({ account: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
     const { result, rerender } = renderHook(
       () => {
         const {
@@ -160,7 +173,7 @@ describe('#useDerivedSwapInfo', () => {
     rerender()
 
     expect(result.current.inputError).toBe('Enter a recipient')
-    mockUseActiveWeb3React.mockClear()
+    mockUseWeb3React.mockClear()
   })
 
   it('should return undefined when no pair', async () => {

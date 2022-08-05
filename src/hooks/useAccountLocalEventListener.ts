@@ -1,10 +1,10 @@
-import { useWeb3React } from '@web3-react/core'
 import { useEffect } from 'react'
 import useLocalDispatch from '../contexts/LocalRedux/useLocalDispatch'
 import { resetUserState } from '../state/global/actions'
+import useActiveWeb3React from './useActiveWeb3React'
 
 export const useAccountLocalEventListener = () => {
-  const { account, chainId, connector } = useWeb3React()
+  const { account, chainId, connector } = useActiveWeb3React()
   const dispatch = useLocalDispatch()
 
   useEffect(() => {

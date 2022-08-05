@@ -8,14 +8,15 @@ it("renders correctly", () => {
     <DocumentFragment>
       .c0 {
       color: #280D5F;
-      font-size: 16px;
       font-weight: 400;
       line-height: 1.5;
+      font-size: 16px;
     }
 
     <div
         class="c0"
         color="text"
+        font-size="16px"
       >
         pancake
       </div>

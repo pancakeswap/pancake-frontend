@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
-import { Text, Input, Flex, Skeleton, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, Input, Flex, Skeleton, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import useFetchSearchResults from 'state/info/queries/search'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -141,7 +141,7 @@ const poolIncludesSearchTerm = (pool: PoolData, value: string) => {
 
 const Search = () => {
   const router = useRouter()
-  const { isXs, isSm } = useMatchBreakpoints()
+  const { isXs, isSm } = useMatchBreakpointsContext()
   const { t } = useTranslation()
 
   const inputRef = useRef<HTMLInputElement>(null)

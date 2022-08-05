@@ -1,6 +1,5 @@
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import ToggleView from 'components/ToggleView/ToggleView'
-import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { ButtonMenu, ButtonMenuItem, Toggle, Text, NotificationDot } from '@pancakeswap/uikit'
@@ -57,11 +56,9 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, vi
 
   const { t } = useTranslation()
 
-  const isExact = router.asPath === '/pools'
+  const isExact = router.asPath === '/pools' || router.asPath === '/_mp/pools'
 
-  const viewModeToggle = (
-    <ToggleView idPrefix="clickPool" viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
-  )
+  const viewModeToggle = <ToggleView idPrefix="clickPool" viewMode={viewMode} onToggle={setViewMode} />
 
   const liveOrFinishedSwitch = (
     <Wrapper>

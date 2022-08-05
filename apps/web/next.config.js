@@ -3,7 +3,7 @@ const { withSentryConfig } = require('@sentry/nextjs')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
-const withTM = require('next-transpile-modules')(['@pancakeswap/uikit'])
+const withTM = require('next-transpile-modules')(['@pancakeswap/uikit', '@pancakeswap/sdk'])
 
 const sentryWebpackPluginOptions =
   process.env.VERCEL_ENV === 'production'
@@ -37,6 +37,7 @@ const config = {
     scrollRestoration: true,
   },
   reactStrictMode: true,
+  swcMinify: true,
   images: {
     domains: ['static-nft.pancakeswap.com'],
   },

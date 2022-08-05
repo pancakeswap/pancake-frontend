@@ -33,16 +33,19 @@ const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5,
           numberOfBets,
           undefined,
           api,
+          token.symbol,
         )
 
-        setBets(response.map(transformBetResponse))
+        const transformer = transformBetResponse(token.symbol)
+
+        setBets(response.map(transformer))
       } finally {
         setIsFetching(false)
       }
     }
 
     fetchBetHistory()
-  }, [account, numberOfBets, setIsFetching, setBets, api])
+  }, [account, numberOfBets, setIsFetching, setBets, api, token.symbol])
 
   return (
     <Table>

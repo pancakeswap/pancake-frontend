@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { ContextApi } from 'contexts/Localization/types'
 import { Box, Card, CardBody, CardHeader, Flex, HelpIcon, Text, useTooltip } from '@pancakeswap/uikit'
@@ -11,12 +12,12 @@ import { EnableStatus, CardConfigReturn } from '../types'
 import IfoCardTokens from './IfoCardTokens'
 import IfoCardActions from './IfoCardActions'
 import IfoCardDetails from './IfoCardDetails'
+import IfoVestingCard from './IfoVestingCard'
 
 const StyledCard = styled(Card)`
-  background: none;
-  max-width: 368px;
   width: 100%;
   margin: 0 auto;
+  padding: 0 0 3px 0;
   height: fit-content;
 `
 
@@ -40,7 +41,7 @@ export const cardConfig = (
 ): CardConfigReturn => {
   switch (poolId) {
     case PoolIds.poolBasic:
-      if (meta?.version === 3.1) {
+      if (meta?.version >= 3.1) {
         const MSG_MAP = {
           needQualifiedNFT: t('Set PancakeSquad NFT as Pancake Profile avatar.'),
           needQualifiedPoints: t('Reach a certain Pancake Profile Points threshold.'),
@@ -76,7 +77,7 @@ export const cardConfig = (
       }
     case PoolIds.poolUnlimited:
       return {
-        title: meta?.version === 3.1 ? t('Public Sale') : t('Unlimited Sale'),
+        title: meta?.version >= 3.1 ? t('Public Sale') : t('Unlimited Sale'),
         variant: 'violet',
         tooltip: t('No limits on the amount you can commit. Additional fee applies when claiming.'),
       }
@@ -88,11 +89,12 @@ export const cardConfig = (
 
 const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletIfoData, onApprove, enableStatus }) => {
   const { t } = useTranslation()
+  const { account } = useActiveWeb3React()
 
-  const { admissionProfile, pointThreshold } = publicIfoData[poolId]
+  const { admissionProfile, pointThreshold, vestingInformation } = publicIfoData[poolId]
 
   const { needQualifiedNFT, needQualifiedPoints } = useMemo(() => {
-    return ifo.version === 3.1 && poolId === PoolIds.poolBasic
+    return ifo.version >= 3.1 && poolId === PoolIds.poolBasic
       ? {
           needQualifiedNFT: Boolean(admissionProfile),
           needQualifiedPoints: pointThreshold ? pointThreshold > 0 : false,
@@ -116,6 +118,16 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
     needQualifiedPoints,
   })
 
+  const isVesting = useMemo(() => {
+    return (
+      account &&
+      ifo.version >= 3.2 &&
+      vestingInformation.percentage > 0 &&
+      publicIfoData.status === 'finished' &&
+      walletIfoData[poolId].amountTokenCommittedInLP.gt(0)
+    )
+  }, [account, ifo, poolId, publicIfoData, vestingInformation, walletIfoData])
+
   return (
     <>
       {tooltipVisible && tooltip}
@@ -131,37 +143,43 @@ const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletI
           </Flex>
         </CardHeader>
         <CardBody p="12px">
-          <IfoCardTokens
-            criterias={criterias}
-            isEligible={isEligible}
-            poolId={poolId}
-            ifo={ifo}
-            publicIfoData={publicIfoData}
-            walletIfoData={walletIfoData}
-            hasProfile={hasActiveProfile}
-            isLoading={isLoading}
-            onApprove={onApprove}
-            enableStatus={enableStatus}
-          />
-          <Box mt="24px">
-            <IfoCardActions
-              isEligible={isEligible}
-              poolId={poolId}
-              ifo={ifo}
-              publicIfoData={publicIfoData}
-              walletIfoData={walletIfoData}
-              hasProfile={hasActiveProfile}
-              isLoading={isLoading}
-              enableStatus={enableStatus}
-            />
-          </Box>
-          <IfoCardDetails
-            isEligible={isEligible}
-            poolId={poolId}
-            ifo={ifo}
-            publicIfoData={publicIfoData}
-            walletIfoData={walletIfoData}
-          />
+          {isVesting ? (
+            <IfoVestingCard ifo={ifo} poolId={poolId} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
+          ) : (
+            <>
+              <IfoCardTokens
+                criterias={criterias}
+                isEligible={isEligible}
+                poolId={poolId}
+                ifo={ifo}
+                publicIfoData={publicIfoData}
+                walletIfoData={walletIfoData}
+                hasProfile={hasActiveProfile}
+                isLoading={isLoading}
+                onApprove={onApprove}
+                enableStatus={enableStatus}
+              />
+              <Box mt="24px">
+                <IfoCardActions
+                  isEligible={isEligible}
+                  poolId={poolId}
+                  ifo={ifo}
+                  publicIfoData={publicIfoData}
+                  walletIfoData={walletIfoData}
+                  hasProfile={hasActiveProfile}
+                  isLoading={isLoading}
+                  enableStatus={enableStatus}
+                />
+              </Box>
+              <IfoCardDetails
+                isEligible={isEligible}
+                poolId={poolId}
+                ifo={ifo}
+                publicIfoData={publicIfoData}
+                walletIfoData={walletIfoData}
+              />
+            </>
+          )}
         </CardBody>
       </StyledCard>
     </>

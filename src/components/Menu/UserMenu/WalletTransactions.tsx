@@ -1,6 +1,5 @@
-import { useDispatch } from 'react-redux'
 import { Box, Button, Flex, Text } from '@pancakeswap/uikit'
-import { AppDispatch } from 'state'
+import { useAppDispatch } from 'state'
 import { isTransactionRecent, useAllTransactions } from 'state/transactions/hooks'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -10,7 +9,7 @@ import TransactionRow from './TransactionRow'
 
 const WalletTransactions: React.FC = () => {
   const { chainId } = useActiveWeb3React()
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const allTransactions = useAllTransactions()
   const sortedTransactions = orderBy(Object.values(allTransactions).filter(isTransactionRecent), 'addedTime', 'desc')

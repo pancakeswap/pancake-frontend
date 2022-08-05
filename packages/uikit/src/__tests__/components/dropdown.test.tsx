@@ -10,7 +10,10 @@ it("renders correctly", () => {
       width: -webkit-max-content;
       width: -moz-max-content;
       width: max-content;
-      display: none;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
       -webkit-flex-direction: column;
       -ms-flex-direction: column;
       flex-direction: column;
@@ -23,10 +26,15 @@ it("renders correctly", () => {
       background-color: #FFFFFF;
       box-shadow: 0px 2px 12px -8px rgba(25,19,38,0.1),0px 1px 1px rgba(25,19,38,0.05);
       padding: 16px;
-      max-height: 400px;
-      overflow-y: auto;
+      max-height: 0px;
+      overflow: hidden;
       z-index: 10;
       border-radius: 4px;
+      opacity: 0;
+      -webkit-transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
+      transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
+      will-change: opacity;
+      pointer-events: none;
     }
 
     .c0 {
@@ -35,10 +43,12 @@ it("renders correctly", () => {
 
     .c0:hover .c1,
     .c0:focus-within .c1 {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
+      opacity: 1;
+      max-height: 400px;
+      overflow-y: auto;
+      -webkit-transition: max-height 0s 0s,opacity 0.3s ease-in-out;
+      transition: max-height 0s 0s,opacity 0.3s ease-in-out;
+      pointer-events: auto;
     }
 
     <div

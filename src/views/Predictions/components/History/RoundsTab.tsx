@@ -5,6 +5,7 @@ import { useTranslation } from 'contexts/Localization'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { Bet } from 'state/types'
 import { fetchNodeHistory } from 'state/predictions'
+import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { useGetCurrentHistoryPage, useGetHasHistoryLoaded, useGetIsFetchingHistory } from 'state/predictions/hooks'
 import HistoricalBet from './HistoricalBet'
 import V1ClaimCheck from '../v1/V1ClaimCheck'
@@ -21,14 +22,17 @@ const RoundsTab: React.FC<RoundsTabProps> = ({ hasBetHistory, bets }) => {
   const hasHistoryLoaded = useGetHasHistoryLoaded()
   const currentHistoryPage = useGetCurrentHistoryPage()
   const isFetchingHistory = useGetIsFetchingHistory()
+  const { token } = useConfig()
 
   const handleClick = () => {
     dispatch(fetchNodeHistory({ account, page: currentHistoryPage + 1 }))
   }
 
+  const v1Claim = token.symbol === 'BNB' ? <V1ClaimCheck /> : null
+
   return hasBetHistory ? (
     <>
-      <V1ClaimCheck />
+      {v1Claim}
       {orderBy(bets, ['round.epoch'], ['desc']).map((bet) => (
         <HistoricalBet key={bet.round.epoch} bet={bet} />
       ))}
@@ -42,7 +46,7 @@ const RoundsTab: React.FC<RoundsTabProps> = ({ hasBetHistory, bets }) => {
     </>
   ) : (
     <>
-      <V1ClaimCheck />
+      {v1Claim}
       <Box p="24px">
         <Heading size="lg" textAlign="center" mb="8px">
           {t('No prediction history available')}

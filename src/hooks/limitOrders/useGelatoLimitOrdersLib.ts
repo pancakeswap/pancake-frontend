@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { ChainId, GelatoLimitOrders } from '@gelatonetwork/limit-orders-lib'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { GELATO_HANDLER } from 'config/constants'
+import { GELATO_HANDLER } from 'config/constants/exchange'
 
 const useGelatoLimitOrdersLib = (): GelatoLimitOrders | undefined => {
   const { chainId, library } = useActiveWeb3React()

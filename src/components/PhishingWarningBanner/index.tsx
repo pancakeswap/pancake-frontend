@@ -1,5 +1,6 @@
+import { useMemo } from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Box, CloseIcon, IconButton, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, Flex, Box, CloseIcon, IconButton, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { usePhishingBannerManager } from 'state/user/hooks'
 
@@ -42,9 +43,11 @@ const SpeechBubble = styled.div`
 const PhishingWarningBanner: React.FC = () => {
   const { t } = useTranslation()
   const [, hideBanner] = usePhishingBannerManager()
-  const { isMobile, isMd } = useMatchBreakpoints()
-  const warningText = t("please make sure you're visiting https://pancakeswap.finance - check the URL carefully.")
-  const warningTextAsParts = warningText.split(/(https:\/\/pancakeswap.finance)/g)
+  const { isMobile, isMd } = useMatchBreakpointsContext()
+  const warningTextAsParts = useMemo(() => {
+    const warningText = t("please make sure you're visiting https://pancakeswap.finance - check the URL carefully.")
+    return warningText.split(/(https:\/\/pancakeswap.finance)/g)
+  }, [t])
   const warningTextComponent = (
     <>
       <Text as="span" color="warning" small bold textTransform="uppercase">
@@ -76,11 +79,18 @@ const PhishingWarningBanner: React.FC = () => {
       ) : (
         <>
           <InnerContainer>
-            <picture>
-              <source type="image/webp" srcSet="/images/decorations/phishing-warning-bunny.webp" />
-              <source type="image/png" srcSet="/images/decorations/phishing-warning-bunny.png" />
-              <img src="/images/decorations/phishing-warning-bunny.png" alt="phishing-warning" width="92px" />
-            </picture>
+            <img
+              src="/images/decorations/phishing-warning-bunny.webp"
+              alt="phishing-warning"
+              width="92px"
+              onError={(e) => {
+                const fallbackSrc = '/images/decorations/phishing-warning-bunny.png'
+                if (!e.currentTarget.src.endsWith(fallbackSrc)) {
+                  // eslint-disable-next-line no-param-reassign
+                  e.currentTarget.src = fallbackSrc
+                }
+              }}
+            />
             <SpeechBubble>{warningTextComponent}</SpeechBubble>
           </InnerContainer>
           <IconButton onClick={hideBanner} variant="text">

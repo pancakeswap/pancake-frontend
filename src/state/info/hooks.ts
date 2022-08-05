@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { getUnixTime, startOfHour, Duration, sub } from 'date-fns'
-import { AppState, AppDispatch } from 'state'
+import { AppState, useAppDispatch } from 'state'
 import { isAddress } from 'utils'
 import { Transaction } from 'state/info/types'
 import fetchPoolChartData from 'state/info/queries/pools/chartData'
@@ -32,7 +32,7 @@ import { ProtocolData, PoolData, TokenData, ChartEntry, PriceChartEntry } from '
 export const useProtocolData = (): [ProtocolData | undefined, (protocolData: ProtocolData) => void] => {
   const protocolData: ProtocolData | undefined = useSelector((state: AppState) => state.info.protocol.overview)
 
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const setProtocolData: (protocolData: ProtocolData) => void = useCallback(
     (data: ProtocolData) => dispatch(updateProtocolData({ protocolData: data })),
     [dispatch],
@@ -43,7 +43,7 @@ export const useProtocolData = (): [ProtocolData | undefined, (protocolData: Pro
 
 export const useProtocolChartData = (): [ChartEntry[] | undefined, (chartData: ChartEntry[]) => void] => {
   const chartData: ChartEntry[] | undefined = useSelector((state: AppState) => state.info.protocol.chartData)
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const setChartData: (chartData: ChartEntry[]) => void = useCallback(
     (data: ChartEntry[]) => dispatch(updateProtocolChartData({ chartData: data })),
     [dispatch],
@@ -53,7 +53,7 @@ export const useProtocolChartData = (): [ChartEntry[] | undefined, (chartData: C
 
 export const useProtocolTransactions = (): [Transaction[] | undefined, (transactions: Transaction[]) => void] => {
   const transactions: Transaction[] | undefined = useSelector((state: AppState) => state.info.protocol.transactions)
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const setTransactions: (transactions: Transaction[]) => void = useCallback(
     (transactionsData: Transaction[]) => dispatch(updateProtocolTransactions({ transactions: transactionsData })),
     [dispatch],
@@ -70,12 +70,12 @@ export const useAllPoolData = (): {
 }
 
 export const useUpdatePoolData = (): ((pools: PoolData[]) => void) => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   return useCallback((pools: PoolData[]) => dispatch(updatePoolData({ pools })), [dispatch])
 }
 
 export const useAddPoolKeys = (): ((addresses: string[]) => void) => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   return useCallback((poolAddresses: string[]) => dispatch(addPoolKeys({ poolAddresses })), [dispatch])
 }
 
@@ -106,7 +106,7 @@ export const usePoolDatas = (poolAddresses: string[]): PoolData[] => {
 }
 
 export const usePoolChartData = (address: string): ChartEntry[] | undefined => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const pool = useSelector((state: AppState) => state.info.pools.byAddress[address])
   const chartData = pool?.chartData
   const [error, setError] = useState(false)
@@ -130,7 +130,7 @@ export const usePoolChartData = (address: string): ChartEntry[] | undefined => {
 }
 
 export const usePoolTransactions = (address: string): Transaction[] | undefined => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const pool = useSelector((state: AppState) => state.info.pools.byAddress[address])
   const transactions = pool?.transactions
   const [error, setError] = useState(false)
@@ -161,7 +161,7 @@ export const useAllTokenData = (): {
 }
 
 export const useUpdateTokenData = (): ((tokens: TokenData[]) => void) => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   return useCallback(
     (tokens: TokenData[]) => {
       dispatch(updateTokenData({ tokens }))
@@ -171,7 +171,7 @@ export const useUpdateTokenData = (): ((tokens: TokenData[]) => void) => {
 }
 
 export const useAddTokenKeys = (): ((addresses: string[]) => void) => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   return useCallback((tokenAddresses: string[]) => dispatch(addTokenKeys({ tokenAddresses })), [dispatch])
 }
 
@@ -217,7 +217,7 @@ export const useTokenData = (address: string | undefined): TokenData | undefined
 }
 
 export const usePoolsForToken = (address: string): string[] | undefined => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const token = useSelector((state: AppState) => state.info.tokens.byAddress[address])
   const poolsForToken = token.poolAddresses
   const [error, setError] = useState(false)
@@ -241,7 +241,7 @@ export const usePoolsForToken = (address: string): string[] | undefined => {
 }
 
 export const useTokenChartData = (address: string): ChartEntry[] | undefined => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const token = useSelector((state: AppState) => state.info.tokens.byAddress[address])
   const { chartData } = token
   const [error, setError] = useState(false)
@@ -269,7 +269,7 @@ export const useTokenPriceData = (
   interval: number,
   timeWindow: Duration,
 ): PriceChartEntry[] | undefined => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const token = useSelector((state: AppState) => state.info.tokens.byAddress[address])
   const priceData = token?.priceData[interval]
   const [error, setError] = useState(false)
@@ -305,7 +305,7 @@ export const useTokenPriceData = (
 }
 
 export const useTokenTransactions = (address: string): Transaction[] | undefined => {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
   const token = useSelector((state: AppState) => state.info.tokens.byAddress[address])
   const { transactions } = token
   const [error, setError] = useState(false)

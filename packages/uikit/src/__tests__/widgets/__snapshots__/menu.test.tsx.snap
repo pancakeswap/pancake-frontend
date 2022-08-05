@@ -274,7 +274,6 @@ exports[`renders correctly 1`] = `
 
 .c15 {
   color: #ED4B9E;
-  font-size: 14px;
   font-weight: 400;
   line-height: 1.5;
   font-size: 14px;
@@ -282,7 +281,6 @@ exports[`renders correctly 1`] = `
 
 .c19 {
   color: #FFB237;
-  font-size: 14px;
   font-weight: 400;
   line-height: 1.5;
   font-size: 14px;
@@ -290,53 +288,53 @@ exports[`renders correctly 1`] = `
 
 .c29 {
   color: #7A6EAA;
-  font-size: 16px;
   font-weight: 600;
   line-height: 1.5;
+  font-size: 16px;
 }
 
 .c60 {
   color: #F4EEFF;
-  font-size: 16px;
   font-weight: 400;
   line-height: 1.5;
+  font-size: 16px;
 }
 
 .c63 {
   color: #FFB237;
-  font-size: 16px;
   font-weight: 400;
   line-height: 1.5;
+  font-size: 16px;
 }
 
 .c68 {
   color: #1FC7D4;
-  font-size: 16px;
   font-weight: 600;
   line-height: 1.5;
   margin-right: 24px;
+  font-size: 16px;
 }
 
 .c72 {
   color: #1FC7D4;
-  font-size: 16px;
   font-weight: 600;
   line-height: 1.5;
   margin-right: 0;
+  font-size: 16px;
 }
 
 .c87 {
   color: #B8ADD2;
-  font-size: 16px;
   font-weight: 400;
   line-height: 1.5;
+  font-size: 16px;
 }
 
 .c91 {
   color: #B8ADD2;
-  font-size: 16px;
   font-weight: 600;
   line-height: 1.5;
+  font-size: 16px;
 }
 
 .c5 {
@@ -555,7 +553,10 @@ exports[`renders correctly 1`] = `
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
-  display: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -568,17 +569,25 @@ exports[`renders correctly 1`] = `
   background-color: #FFFFFF;
   box-shadow: 0px 2px 12px -8px rgba(25,19,38,0.1),0px 1px 1px rgba(25,19,38,0.05);
   padding: 16px;
-  max-height: 400px;
-  overflow-y: auto;
+  max-height: 0px;
+  overflow: hidden;
   z-index: 10;
   border-radius: 4px;
+  opacity: 0;
+  -webkit-transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
+  transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
+  will-change: opacity;
+  pointer-events: none;
 }
 
 .c71 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
-  display: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -591,17 +600,25 @@ exports[`renders correctly 1`] = `
   background-color: #FFFFFF;
   box-shadow: 0px 2px 12px -8px rgba(25,19,38,0.1),0px 1px 1px rgba(25,19,38,0.05);
   padding: 16px;
-  max-height: 400px;
-  overflow-y: auto;
+  max-height: 0px;
+  overflow: hidden;
   z-index: 10;
   border-radius: 4px;
+  opacity: 0;
+  -webkit-transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
+  transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
+  will-change: opacity;
+  pointer-events: none;
 }
 
 .c88 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
-  display: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
@@ -614,10 +631,15 @@ exports[`renders correctly 1`] = `
   background-color: #FFFFFF;
   box-shadow: 0px 2px 12px -8px rgba(25,19,38,0.1),0px 1px 1px rgba(25,19,38,0.05);
   padding: 16px;
-  max-height: 400px;
-  overflow-y: auto;
+  max-height: 0px;
+  overflow: hidden;
   z-index: 10;
   border-radius: 4px;
+  opacity: 0;
+  -webkit-transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
+  transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
+  will-change: opacity;
+  pointer-events: none;
 }
 
 .c31 {
@@ -626,10 +648,12 @@ exports[`renders correctly 1`] = `
 
 .c31:hover .c34,
 .c31:focus-within .c34 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+  opacity: 1;
+  max-height: 400px;
+  overflow-y: auto;
+  -webkit-transition: max-height 0s 0s,opacity 0.3s ease-in-out;
+  transition: max-height 0s 0s,opacity 0.3s ease-in-out;
+  pointer-events: auto;
 }
 
 .c51 {
@@ -730,6 +754,7 @@ exports[`renders correctly 1`] = `
 }
 
 .c32 {
+  position: relative;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -788,6 +813,7 @@ exports[`renders correctly 1`] = `
 }
 
 .c36 {
+  position: relative;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -847,6 +873,7 @@ exports[`renders correctly 1`] = `
 }
 
 .c85 {
+  position: relative;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -904,6 +931,7 @@ exports[`renders correctly 1`] = `
 }
 
 .c92 {
+  position: relative;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -1395,6 +1423,76 @@ exports[`renders correctly 1`] = `
   }
 }
 
+@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+  .c5 {
+    -webkit-filter: none !important;
+    filter: none !important;
+  }
+}
+
+@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+  .c18 {
+    -webkit-filter: none !important;
+    filter: none !important;
+  }
+}
+
+@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+  .c28 {
+    -webkit-filter: none !important;
+    filter: none !important;
+  }
+}
+
+@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+  .c33 {
+    -webkit-filter: none !important;
+    filter: none !important;
+  }
+}
+
+@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+  .c69 {
+    -webkit-filter: none !important;
+    filter: none !important;
+  }
+}
+
+@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+  .c70 {
+    -webkit-filter: none !important;
+    filter: none !important;
+  }
+}
+
+@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+  .c81 {
+    -webkit-filter: none !important;
+    filter: none !important;
+  }
+}
+
+@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+  .c84 {
+    -webkit-filter: none !important;
+    filter: none !important;
+  }
+}
+
+@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+  .c86 {
+    -webkit-filter: none !important;
+    filter: none !important;
+  }
+}
+
+@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+  .c93 {
+    -webkit-filter: none !important;
+    filter: none !important;
+  }
+}
+
 @media screen and (min-width:852px) {
   .c58 {
     margin-bottom: 0px;
@@ -1870,6 +1968,7 @@ exports[`renders correctly 1`] = `
               <div
                 class="c29"
                 color="textSubtle"
+                font-size="16px"
               >
                 $0.232
               </div>
@@ -2169,6 +2268,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
+                    font-size="16px"
                     href="https://docs.pancakeswap.finance/contact-us"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2182,7 +2282,8 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
-                    href="https://pancakeswap.medium.com/"
+                    font-size="16px"
+                    href="https://medium.com/pancakeswap"
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -2195,6 +2296,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
+                    font-size="16px"
                     href="https://docs.pancakeswap.finance/contact-us/telegram"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2208,6 +2310,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
+                    font-size="16px"
                     href="https://docs.pancakeswap.finance/tokenomics/cake"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2230,6 +2333,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c63 c61"
                     color="#FFB237"
+                    font-size="16px"
                     href="https://pancakeswap.creator-spring.com/"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2252,6 +2356,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
+                    font-size="16px"
                     href="Support https://docs.pancakeswap.finance/contact-us/customer-support"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2265,6 +2370,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
+                    font-size="16px"
                     href="https://docs.pancakeswap.finance/help/troubleshooting"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2278,6 +2384,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
+                    font-size="16px"
                     href="https://docs.pancakeswap.finance/get-started"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2300,6 +2407,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
+                    font-size="16px"
                     href="https://github.com/pancakeswap"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2313,6 +2421,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
+                    font-size="16px"
                     href="https://docs.pancakeswap.finance"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2326,6 +2435,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
+                    font-size="16px"
                     href="https://app.gitbook.com/@pancakeswap-1/s/pancakeswap/code/bug-bounty"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2339,6 +2449,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
+                    font-size="16px"
                     href="https://docs.pancakeswap.finance/help/faq#is-pancakeswap-safe-has-pancakeswap-been-audited"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2352,6 +2463,7 @@ exports[`renders correctly 1`] = `
                   <a
                     class="c60 c61"
                     color="#F4EEFF"
+                    font-size="16px"
                     href="https://docs.pancakeswap.finance/hiring/become-a-chef"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2405,6 +2517,7 @@ exports[`renders correctly 1`] = `
                 aria-label="Twitter"
                 class="c68 c61"
                 color="primary"
+                font-size="16px"
                 href="https://twitter.com/pancakeswap"
                 rel="noreferrer noopener"
                 target="_blank"
@@ -2419,6 +2532,7 @@ exports[`renders correctly 1`] = `
                 >
                   <path
                     d="M5.659 15c6.79 0 10.507-5.766 10.507-10.763 0-.16 0-.32-.01-.49A7.578 7.578 0 0018 1.79c-.663.3-1.376.5-2.127.6a3.824 3.824 0 001.63-2.1c-.713.44-1.503.75-2.352.92A3.6 3.6 0 0012.46 0C10.419 0 8.76 1.699 8.76 3.787c0 .3.039.58.098.86-3.064-.15-5.786-1.669-7.61-3.957A3.858 3.858 0 00.75 2.598c0 1.31.654 2.469 1.64 3.148a3.638 3.638 0 01-1.669-.47v.05c0 1.83 1.278 3.368 2.956 3.708-.312.09-.634.13-.976.13-.234 0-.468-.02-.692-.07.468 1.509 1.834 2.598 3.453 2.628a7.284 7.284 0 01-4.585 1.62c-.293 0-.595-.01-.878-.05A10.206 10.206 0 005.659 15z"
+                    fill="currentColor"
                   />
                 </svg>
               </a>
@@ -2444,6 +2558,7 @@ exports[`renders correctly 1`] = `
                     aria-label="English"
                     class="c29 c61"
                     color="textSubtle"
+                    font-size="16px"
                     href="https://t.me/pancakeswap"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2454,6 +2569,7 @@ exports[`renders correctly 1`] = `
                     aria-label="Bahasa Indonesia"
                     class="c29 c61"
                     color="textSubtle"
+                    font-size="16px"
                     href="https://t.me/PancakeSwapIndonesia"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2464,6 +2580,7 @@ exports[`renders correctly 1`] = `
                     aria-label="中文"
                     class="c29 c61"
                     color="textSubtle"
+                    font-size="16px"
                     href="https://t.me/PancakeSwap_CN"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2474,6 +2591,7 @@ exports[`renders correctly 1`] = `
                     aria-label="Tiếng Việt"
                     class="c29 c61"
                     color="textSubtle"
+                    font-size="16px"
                     href="https://t.me/PancakeSwapVN"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2484,6 +2602,7 @@ exports[`renders correctly 1`] = `
                     aria-label="Italiano"
                     class="c29 c61"
                     color="textSubtle"
+                    font-size="16px"
                     href="https://t.me/pancakeswap_ita"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2494,6 +2613,7 @@ exports[`renders correctly 1`] = `
                     aria-label="русский"
                     class="c29 c61"
                     color="textSubtle"
+                    font-size="16px"
                     href="https://t.me/pancakeswap_ru"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2504,6 +2624,7 @@ exports[`renders correctly 1`] = `
                     aria-label="Türkiye"
                     class="c29 c61"
                     color="textSubtle"
+                    font-size="16px"
                     href="https://t.me/pancakeswapturkiye"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2514,6 +2635,7 @@ exports[`renders correctly 1`] = `
                     aria-label="Português"
                     class="c29 c61"
                     color="textSubtle"
+                    font-size="16px"
                     href="https://t.me/PancakeSwapPortuguese"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2524,6 +2646,7 @@ exports[`renders correctly 1`] = `
                     aria-label="Español"
                     class="c29 c61"
                     color="textSubtle"
+                    font-size="16px"
                     href="https://t.me/PancakeswapEs"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2534,6 +2657,7 @@ exports[`renders correctly 1`] = `
                     aria-label="日本語"
                     class="c29 c61"
                     color="textSubtle"
+                    font-size="16px"
                     href="https://t.me/pancakeswapjp"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2544,6 +2668,7 @@ exports[`renders correctly 1`] = `
                     aria-label="Français"
                     class="c29 c61"
                     color="textSubtle"
+                    font-size="16px"
                     href="https://t.me/pancakeswapfr"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2554,6 +2679,7 @@ exports[`renders correctly 1`] = `
                     aria-label="Deutsch"
                     class="c29 c61"
                     color="textSubtle"
+                    font-size="16px"
                     href="https://t.me/PancakeSwap_DE"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2564,6 +2690,7 @@ exports[`renders correctly 1`] = `
                     aria-label="Filipino"
                     class="c29 c61"
                     color="textSubtle"
+                    font-size="16px"
                     href="https://t.me/Pancakeswap_Ph"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2574,6 +2701,7 @@ exports[`renders correctly 1`] = `
                     aria-label="ქართული ენა"
                     class="c29 c61"
                     color="textSubtle"
+                    font-size="16px"
                     href="https://t.me/PancakeSwapGeorgia"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2584,6 +2712,7 @@ exports[`renders correctly 1`] = `
                     aria-label="Announcements"
                     class="c29 c61"
                     color="textSubtle"
+                    font-size="16px"
                     href="https://t.me/PancakeSwapAnn"
                     rel="noreferrer noopener"
                     target="_blank"
@@ -2596,6 +2725,7 @@ exports[`renders correctly 1`] = `
                 aria-label="Reddit"
                 class="c68 c61"
                 color="primary"
+                font-size="16px"
                 href="https://reddit.com/r/pancakeswap"
                 rel="noreferrer noopener"
                 target="_blank"
@@ -2623,6 +2753,7 @@ exports[`renders correctly 1`] = `
                 aria-label="Instagram"
                 class="c68 c61"
                 color="primary"
+                font-size="16px"
                 href="https://instagram.com/pancakeswap_official"
                 rel="noreferrer noopener"
                 target="_blank"
@@ -2647,6 +2778,7 @@ exports[`renders correctly 1`] = `
                 aria-label="Github"
                 class="c68 c61"
                 color="primary"
+                font-size="16px"
                 href="https://github.com/pancakeswap/"
                 rel="noreferrer noopener"
                 target="_blank"
@@ -2668,8 +2800,9 @@ exports[`renders correctly 1`] = `
               </a>
               <a
                 aria-label="Discord"
-                class="c72 c61"
+                class="c68 c61"
                 color="primary"
+                font-size="16px"
                 href="https://discord.gg/pancakeswap"
                 rel="noreferrer noopener"
                 target="_blank"
@@ -2684,6 +2817,28 @@ exports[`renders correctly 1`] = `
                 >
                   <path
                     d="M16.93 1.644A16.491 16.491 0 0012.86.38a.062.062 0 00-.066.031c-.175.313-.37.72-.506 1.041a15.226 15.226 0 00-4.573 0A10.54 10.54 0 007.2.412a.064.064 0 00-.065-.031 16.447 16.447 0 00-4.07 1.263.058.058 0 00-.028.023C.444 5.54-.266 9.319.083 13.05a.069.069 0 00.026.047 16.584 16.584 0 004.994 2.525.064.064 0 00.07-.023c.385-.526.728-1.08 1.022-1.662a.063.063 0 00-.035-.088 10.917 10.917 0 01-1.56-.744.064.064 0 01-.007-.106c.105-.079.21-.16.31-.243a.062.062 0 01.065-.009c3.273 1.495 6.817 1.495 10.051 0a.062.062 0 01.066.008c.1.083.204.165.31.244a.064.064 0 01-.005.106c-.499.291-1.017.537-1.561.743a.064.064 0 00-.034.089c.3.582.643 1.135 1.02 1.66a.063.063 0 00.07.025 16.53 16.53 0 005.003-2.525.064.064 0 00.026-.046c.417-4.314-.699-8.061-2.957-11.384a.05.05 0 00-.026-.023zM6.684 10.778c-.985 0-1.797-.905-1.797-2.016 0-1.11.796-2.015 1.797-2.015 1.01 0 1.814.912 1.798 2.015 0 1.111-.796 2.016-1.798 2.016zm6.646 0c-.986 0-1.797-.905-1.797-2.016 0-1.11.796-2.015 1.797-2.015 1.009 0 1.813.912 1.797 2.015 0 1.111-.788 2.016-1.797 2.016z"
+                  />
+                </svg>
+              </a>
+              <a
+                aria-label="Medium"
+                class="c72 c61"
+                color="primary"
+                font-size="16px"
+                href="https://medium.com/pancakeswap"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                <svg
+                  class="c69"
+                  color="#B8ADD2"
+                  style="cursor: pointer;"
+                  viewBox="0 0 24 24"
+                  width="20px"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.64 6.32c3.116 0 5.641 2.544 5.641 5.68 0 3.137-2.525 5.68-5.64 5.68C4.526 17.68 2 15.136 2 12c0-3.136 2.525-5.68 5.64-5.68zm9.008.333c1.558 0 2.82 2.394 2.82 5.347h.001c0 2.953-1.263 5.347-2.82 5.347-1.558 0-2.82-2.395-2.82-5.347 0-2.952 1.262-5.347 2.82-5.347zm4.36.557c.548 0 .992 2.145.992 4.79s-.444 4.79-.992 4.79-.992-2.145-.992-4.79.444-4.79.992-4.79z"
                   />
                 </svg>
               </a>
@@ -2830,6 +2985,7 @@ exports[`renders correctly 1`] = `
                     <div
                       class="c87"
                       color="#B8ADD2"
+                      font-size="16px"
                     >
                       EN-US
                     </div>
@@ -3045,6 +3201,7 @@ exports[`renders correctly 1`] = `
                     <div
                       class="c91"
                       color="#B8ADD2"
+                      font-size="16px"
                     >
                       $0.232
                     </div>

@@ -4,9 +4,8 @@ import { formatBigNumberToFixed } from 'utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
 import { NegativeOne, One, Zero } from '@ethersproject/constants'
 
-const MIN_PRICE_USD_DISPLAYED = BigNumber.from(100000)
 const MIN_PRICE_BNB_DISPLAYED = BigNumber.from('1000000000000000')
-const DISPLAYED_DECIMALS = 3
+const DISPLAYED_DECIMALS = 4
 
 type formatPriceDifferenceProps = {
   price?: BigNumber
@@ -31,8 +30,8 @@ const formatPriceDifference = ({
   return `${unitPrefix}${formatBigNumberToFixed(price, DISPLAYED_DECIMALS, decimals)}`
 }
 
-export const formatUsdv2 = (usd: BigNumber) => {
-  return formatPriceDifference({ price: usd, minPriceDisplayed: MIN_PRICE_USD_DISPLAYED, unitPrefix: '$', decimals: 8 })
+export const formatUsdv2 = (usd: BigNumber, minPriceDisplayed: BigNumber) => {
+  return formatPriceDifference({ price: usd, minPriceDisplayed, unitPrefix: '$', decimals: 8 })
 }
 
 export const formatBnbv2 = (bnb: BigNumber) => {

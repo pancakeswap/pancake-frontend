@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
+import { UnsupportedChainIdError } from '@web3-react/core'
 import { NoBscProviderError } from '@binance-chain/bsc-connector'
 import {
   NoEthereumProviderError,
@@ -16,11 +16,12 @@ import useToast from 'hooks/useToast'
 import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
 import { clearUserStates } from '../utils/clearUserStates'
+import useActiveWeb3React from './useActiveWeb3React'
 
 const useAuth = () => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { chainId, activate, deactivate, setError } = useWeb3React()
+  const { chainId, activate, deactivate, setError } = useActiveWeb3React()
   const { toastError } = useToast()
 
   const login = useCallback(
@@ -34,7 +35,7 @@ const useAuth = () => {
           if (error instanceof UnsupportedChainIdError) {
             setError(error)
             const provider = await connector.getProvider()
-            const hasSetup = await setupNetwork(provider)
+            const hasSetup = await setupNetwork(56, provider)
             if (hasSetup) {
               activate(connector)
             }
@@ -74,7 +75,7 @@ const useAuth = () => {
 
   const logout = useCallback(() => {
     deactivate()
-    clearUserStates(dispatch, chainId)
+    clearUserStates(dispatch, chainId, true)
   }, [deactivate, dispatch, chainId])
 
   return { login, logout }

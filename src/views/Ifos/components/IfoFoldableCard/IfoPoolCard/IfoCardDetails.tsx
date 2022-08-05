@@ -1,9 +1,10 @@
 import { ReactNode } from 'react'
-import tokens from 'config/constants/tokens'
+import { bscTokens } from 'config/constants/tokens'
 import { Text, Flex, Box, Skeleton, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import { Ifo, PoolIds } from 'config/constants/types'
+import BigNumber from 'bignumber.js'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import useBUSDPrice from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
@@ -20,14 +21,26 @@ export interface IfoCardDetailsProps {
 export interface FooterEntryProps {
   label: ReactNode
   value: ReactNode
+  tooltipContent?: string
 }
 
-const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
+const FooterEntry: React.FC<FooterEntryProps> = ({ label, value, tooltipContent }) => {
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
+
   return (
     <Flex justifyContent="space-between" alignItems="center">
-      <Text small color="textSubtle">
-        {label}
-      </Text>
+      {tooltipVisible && tooltip}
+      {tooltipContent ? (
+        <TooltipText ref={targetRef}>
+          <Text small color="textSubtle">
+            {label}
+          </Text>
+        </TooltipText>
+      ) : (
+        <Text small color="textSubtle">
+          {label}
+        </Text>
+      )}
       {value ? (
         <Text small textAlign="right">
           {value}
@@ -40,27 +53,35 @@ const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
 }
 
 const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; poolId: PoolIds }) => {
-  const isCurrencyCake = ifo.currency === tokens.cake
-  const isV3 = ifo.version === 3 || ifo.version === 3.1
+  const isCurrencyCake = ifo.currency === bscTokens.cake
+  const isV3 = ifo.version >= 3
   const { t } = useTranslation()
 
   const basicTooltipContent =
-    ifo.version === 3.1
+    ifo.version >= 3.1
       ? t(
           'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
         )
       : t(
-          'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the IFO CAKE pool, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+          'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the iCAKE, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the iCAKE',
         )
 
   const unlimitedToolipContent =
-    ifo.version === 3.1
-      ? t(
-          'For the public sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
-        )
-      : t(
-          'For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
-        )
+    ifo.version >= 3.1 ? (
+      <Box>
+        <Text display="inline">{t('For the public sale, Max CAKE entry is capped by')} </Text>
+        <Text bold display="inline">
+          {t('the number of iCAKE.')}{' '}
+        </Text>
+        <Text display="inline">
+          {t('Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale.')}
+        </Text>
+      </Box>
+    ) : (
+      t(
+        'For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the iCake. To increase the max entry, Stake more CAKE into the iCake',
+      )
+    )
 
   const tooltipContent = poolId === PoolIds.poolBasic ? basicTooltipContent : unlimitedToolipContent
 
@@ -115,7 +136,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
 
   /* Format start */
   const maxLpTokens =
-    (ifo.version === 3 || (ifo.version === 3.1 && poolId === PoolIds.poolUnlimited)) && ifo.isActive
+    (ifo.version === 3 || (ifo.version >= 3.1 && poolId === PoolIds.poolUnlimited)) && ifo.isActive
       ? version3MaxTokens
         ? getBalanceNumber(version3MaxTokens, ifo.currency.decimals)
         : 0
@@ -141,9 +162,13 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
     2,
   )}`
 
-  const maxToken = ifo.version === 3.1 && poolId === PoolIds.poolBasic && !isEligible ? 0 : maxLpTokens
+  const maxToken = ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isEligible ? 0 : maxLpTokens
 
   const tokenEntry = <MaxTokenEntry poolId={poolId} ifo={ifo} maxToken={maxToken} />
+
+  const oneWeek = 604800
+  const weeksInSeconds = ifo.version >= 3.2 ? poolCharacteristic.vestingInformation.duration : 0
+  const vestingWeeks = Math.ceil(weeksInSeconds / oneWeek)
 
   /* Format end */
   const renderBasedOnIfoStatus = () => {
@@ -178,9 +203,34 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo
             />
           )}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
+          {ifo.version >= 3.2 && poolCharacteristic.vestingInformation.percentage > 0 && (
+            <>
+              <FooterEntry
+                label={t('Vested percentage:')}
+                value={`${poolCharacteristic.vestingInformation.percentage}%`}
+                tooltipContent={t(
+                  '%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.',
+                  {
+                    percentageVested: poolCharacteristic.vestingInformation.percentage,
+                    percentageTgeRelease: new BigNumber(100)
+                      .minus(poolCharacteristic.vestingInformation.percentage)
+                      .toString(),
+                  },
+                )}
+              />
+              <FooterEntry
+                label={t('Vesting schedule:')}
+                value={`${vestingWeeks} weeks`}
+                tooltipContent={t('The vested tokens will be released linearly over a period of %weeks% weeks.', {
+                  weeks: vestingWeeks,
+                })}
+              />
+            </>
+          )}
         </>
       )
     }
+
     if (status === 'finished') {
       return (
         <>

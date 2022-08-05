@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Button, Heading, Text, Flex, Link, Breadcrumbs } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
+import { PageMeta } from 'components/Layout/Page'
 import PageHeader from 'components/PageHeader'
 import PageSection from 'components/PageSection'
 import useTheme from 'hooks/useTheme'
@@ -76,6 +77,7 @@ const FarmAuction = () => {
 
   return (
     <>
+      <PageMeta />
       <StyledHeader>
         <Breadcrumbs>
           <NextLink href="/" passHref>

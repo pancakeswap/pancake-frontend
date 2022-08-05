@@ -11,6 +11,7 @@ import useSWR, {
   unstable_serialize,
 } from 'swr'
 import { multicallv2, MulticallOptions, Call } from 'utils/multicall'
+import { MaybeContract, ContractMethodName, ContractMethodParams } from 'utils/types'
 
 declare module 'swr' {
   interface SWRResponse<Data = any, Error = any> {
@@ -44,14 +45,6 @@ export const fetchStatusMiddleware: Middleware = (useSWRNext) => {
     })
   }
 }
-
-type MaybeContract<C extends Contract = Contract> = C | null | undefined
-type ContractMethodName<C extends Contract = Contract> = keyof C['callStatic'] & string
-
-type ContractMethodParams<
-  C extends Contract = Contract,
-  N extends ContractMethodName<C> = ContractMethodName<C>,
-> = Parameters<C['callStatic'][N]>
 
 type UseSWRContractArrayKey<C extends Contract = Contract, N extends ContractMethodName<C> = any> =
   | [MaybeContract<C>, N, ContractMethodParams<C, N>]

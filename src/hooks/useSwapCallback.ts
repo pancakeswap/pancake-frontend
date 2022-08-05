@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { SwapParameters, Trade } from '@pancakeswap/sdk'
-import { TranslateFunction, useTranslation } from 'contexts/Localization'
+import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { useGasPrice } from 'state/user/hooks'
@@ -11,6 +11,7 @@ import { useTransactionAdder } from '../state/transactions/hooks'
 import { calculateGasMargin, isAddress } from '../utils'
 import isZero from '../utils/isZero'
 import { useSwapCallArguments } from './useSwapCallArguments'
+import { transactionErrorToUserReadableMessage } from '../utils/transactionErrorToUserReadableMessage'
 
 export enum SwapCallbackState {
   INVALID,
@@ -93,7 +94,7 @@ export function useSwapCallback(
                   .catch((callError) => {
                     console.error('Call threw error', call, callError)
 
-                    return { call, error: swapErrorToUserReadableMessage(callError, t) }
+                    return { call, error: transactionErrorToUserReadableMessage(callError, t) }
                   })
               })
           }),
@@ -152,53 +153,11 @@ export function useSwapCallback(
             } else {
               // otherwise, the error was unexpected and we need to convey that
               console.error(`Swap failed`, error, methodName, args, value)
-              throw new Error(t('Swap failed: %message%', { message: swapErrorToUserReadableMessage(error, t) }))
+              throw new Error(t('Swap failed: %message%', { message: transactionErrorToUserReadableMessage(error, t) }))
             }
           })
       },
       error: null,
     }
   }, [trade, library, account, chainId, recipient, recipientAddress, swapCalls, gasPrice, t, addTransaction])
-}
-
-/**
- * This is hacking out the revert reason from the ethers provider thrown error however it can.
- * This object seems to be undocumented by ethers.
- * @param error an error from the ethers provider
- */
-function swapErrorToUserReadableMessage(error: any, t: TranslateFunction) {
-  let reason: string | undefined
-  while (error) {
-    reason = error.reason ?? error.data?.message ?? error.message ?? reason
-    // eslint-disable-next-line no-param-reassign
-    error = error.error ?? error.data?.originalError
-  }
-
-  if (reason?.indexOf('execution reverted: ') === 0) reason = reason.substring('execution reverted: '.length)
-
-  switch (reason) {
-    case 'PancakeRouter: EXPIRED':
-      return t(
-        'The transaction could not be sent because the deadline has passed. Please check that your transaction deadline is not too low.',
-      )
-    case 'PancakeRouter: INSUFFICIENT_OUTPUT_AMOUNT':
-    case 'PancakeRouter: EXCESSIVE_INPUT_AMOUNT':
-      return t(
-        'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.',
-      )
-    case 'TransferHelper: TRANSFER_FROM_FAILED':
-      return t('The input token cannot be transferred. There may be an issue with the input token.')
-    case 'Pancake: TRANSFER_FAILED':
-      return t('The output token cannot be transferred. There may be an issue with the output token.')
-    default:
-      if (reason?.indexOf('undefined is not an object') !== -1) {
-        console.error(error, reason)
-        return t(
-          'An error occurred when trying to execute this swap. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.',
-        )
-      }
-      return t('Unknown error%reason%. Try increasing your slippage tolerance.', {
-        reason: reason ? `: "${reason}"` : '',
-      })
-  }
 }

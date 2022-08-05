@@ -1,0 +1,30 @@
+{
+  "name": "transfer",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.12.4",
+    "@pancakeswap/wagmi": "*",
+    "@pancakeswap/uikit": "*",
+    "next": "^12.1.6",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "styled-components": "^5.3.3",
+    "typescript": "^4.6.3",
+    "wagmi": "^0.5.9"
+  },
+  "devDependencies": {
+    "@types/node": "18.0.4",
+    "@types/react": "^17.0.5",
+    "@types/react-dom": "^17.0.4",
+    "eslint": "^7.26.0",
+    "eslint-config-next": "12.2.2",
+    "tsconfig": "*"
+  }
+}

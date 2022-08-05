@@ -10,12 +10,17 @@ import {
   Flex,
   CardProps,
   AddIcon,
+  TooltipText,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import useTotalSupply from '../../hooks/useTotalSupply'
+import useTotalSupply from 'hooks/useTotalSupply'
+import useBUSDPrice from 'hooks/useBUSDPrice'
+import { multiplyPriceByAmount } from 'utils/prices'
+import { useWeb3React } from '@web3-react/core'
+import { BIG_INT_ZERO } from 'config/constants/exchange'
 
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { currencyId } from '../../utils/currencyId'
@@ -26,8 +31,9 @@ import { AutoColumn } from '../Layout/Column'
 import CurrencyLogo from '../Logo/CurrencyLogo'
 import { DoubleCurrencyLogo } from '../Logo'
 import { RowBetween, RowFixed } from '../Layout/Row'
-import { BIG_INT_ZERO } from '../../config/constants'
 import Dots from '../Loader/Dots'
+import { formatAmount } from '../../utils/formatInfoNumbers'
+import { useLPApr } from '../../state/swap/hooks'
 
 const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -38,15 +44,9 @@ interface PositionCardProps extends CardProps {
   showUnwrapped?: boolean
 }
 
-export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCardProps) {
-  const { account } = useActiveWeb3React()
-
-  const { t } = useTranslation()
-
-  const currency0 = showUnwrapped ? pair.token0 : unwrappedToken(pair.token0)
-  const currency1 = showUnwrapped ? pair.token1 : unwrappedToken(pair.token1)
-
-  const [showMore, setShowMore] = useState(false)
+const useLPValues = (account, pair, currency0, currency1) => {
+  const token0Price = useBUSDPrice(currency0)
+  const token1Price = useBUSDPrice(currency1)
 
   const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
   const totalPoolTokens = useTotalSupply(pair.liquidityToken)
@@ -68,9 +68,43 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
         ]
       : [undefined, undefined]
 
+  const token0USDValue =
+    token0Deposited && token0Price
+      ? multiplyPriceByAmount(token0Price, parseFloat(token0Deposited.toSignificant(6)))
+      : null
+  const token1USDValue =
+    token1Deposited && token1Price
+      ? multiplyPriceByAmount(token1Price, parseFloat(token1Deposited.toSignificant(6)))
+      : null
+  const totalUSDValue = token0USDValue && token1USDValue ? token0USDValue + token1USDValue : null
+
+  return { token0Deposited, token1Deposited, totalUSDValue, poolTokenPercentage, userPoolBalance }
+}
+
+export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCardProps) {
+  const { t } = useTranslation()
+  const { account } = useWeb3React()
+  const poolData = useLPApr(pair)
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t(`Based on last 7 days' performance. Does not account for impermanent loss`),
+    {
+      placement: 'bottom',
+    },
+  )
+
+  const currency0 = showUnwrapped ? pair.token0 : unwrappedToken(pair.token0)
+  const currency1 = showUnwrapped ? pair.token1 : unwrappedToken(pair.token1)
+
+  const { totalUSDValue, poolTokenPercentage, token0Deposited, token1Deposited, userPoolBalance } = useLPValues(
+    account,
+    pair,
+    currency0,
+    currency1,
+  )
+
   return (
     <>
-      {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, JSBI.BigInt(0)) ? (
+      {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, BIG_INT_ZERO) ? (
         <Card>
           <CardBody>
             <AutoColumn gap="16px">
@@ -81,7 +115,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
                   </Text>
                 </RowFixed>
               </FixedHeightRow>
-              <FixedHeightRow onClick={() => setShowMore(!showMore)}>
+              <FixedHeightRow>
                 <RowFixed>
                   <DoubleCurrencyLogo currency0={currency0} currency1={currency1} margin size={20} />
                   <Text small color="textSubtle">
@@ -89,10 +123,27 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
                   </Text>
                 </RowFixed>
                 <RowFixed>
-                  <Text>{userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}</Text>
+                  <Flex flexDirection="column" alignItems="flex-end">
+                    <Text>{userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}</Text>
+                    {Number.isFinite(totalUSDValue) && (
+                      <Text small color="textSubtle">{`(~${totalUSDValue.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })} USD)`}</Text>
+                    )}
+                  </Flex>
                 </RowFixed>
               </FixedHeightRow>
               <AutoColumn gap="4px">
+                {poolData && (
+                  <FixedHeightRow>
+                    <TooltipText ref={targetRef} color="textSubtle" small>
+                      {t('LP reward APR')}:
+                    </TooltipText>
+                    {tooltipVisible && tooltip}
+                    <Text>{formatAmount(poolData.lpApr7d)}%</Text>
+                  </FixedHeightRow>
+                )}
                 <FixedHeightRow>
                   <Text color="textSubtle" small>
                     {t('Share of Pool')}:
@@ -144,37 +195,29 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
 }
 
 export default function FullPositionCard({ pair, ...props }: PositionCardProps) {
-  const { account } = useActiveWeb3React()
-
   const { t } = useTranslation()
+  const { account } = useWeb3React()
+  const poolData = useLPApr(pair)
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t(`Based on last 7 days' performance. Does not account for impermanent loss`),
+    {
+      placement: 'bottom',
+    },
+  )
+  const [showMore, setShowMore] = useState(false)
 
   const currency0 = unwrappedToken(pair.token0)
   const currency1 = unwrappedToken(pair.token1)
 
-  const [showMore, setShowMore] = useState(false)
-
-  const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
-  const totalPoolTokens = useTotalSupply(pair.liquidityToken)
-
-  const poolTokenPercentage =
-    !!userPoolBalance && !!totalPoolTokens && JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
-      ? new Percent(userPoolBalance.raw, totalPoolTokens.raw)
-      : undefined
-
-  const [token0Deposited, token1Deposited] =
-    !!pair &&
-    !!totalPoolTokens &&
-    !!userPoolBalance &&
-    // this condition is a short-circuit in the case where useTokenBalance updates sooner than useTotalSupply
-    JSBI.greaterThanOrEqual(totalPoolTokens.raw, userPoolBalance.raw)
-      ? [
-          pair.getLiquidityValue(pair.token0, totalPoolTokens, userPoolBalance, false),
-          pair.getLiquidityValue(pair.token1, totalPoolTokens, userPoolBalance, false),
-        ]
-      : [undefined, undefined]
+  const { totalUSDValue, poolTokenPercentage, token0Deposited, token1Deposited, userPoolBalance } = useLPValues(
+    account,
+    pair,
+    currency0,
+    currency1,
+  )
 
   return (
-    <Card style={{ borderRadius: '12px' }} {...props}>
+    <Card {...props}>
       <Flex justifyContent="space-between" role="button" onClick={() => setShowMore(!showMore)} p="16px">
         <Flex flexDirection="column">
           <Flex alignItems="center" mb="4px">
@@ -186,6 +229,12 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
           <Text fontSize="14px" color="textSubtle">
             {userPoolBalance?.toSignificant(4)}
           </Text>
+          {Number.isFinite(totalUSDValue) && (
+            <Text small color="textSubtle">{`(~${totalUSDValue.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })} USD)`}</Text>
+          )}
         </Flex>
         {showMore ? <ChevronUpIcon /> : <ChevronDownIcon />}
       </Flex>
@@ -224,6 +273,18 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
             )}
           </FixedHeightRow>
 
+          {poolData && (
+            <FixedHeightRow>
+              <RowFixed>
+                <TooltipText ref={targetRef} color="textSubtle">
+                  {t('LP reward APR')}:
+                </TooltipText>
+                {tooltipVisible && tooltip}
+              </RowFixed>
+              <Text>{formatAmount(poolData.lpApr7d)}%</Text>
+            </FixedHeightRow>
+          )}
+
           <FixedHeightRow>
             <Text color="textSubtle">{t('Share of Pool')}</Text>
             <Text>
@@ -246,7 +307,7 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
               </Button>
               <Button
                 as={NextLinkFromReactRouter}
-                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
+                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}?step=1`}
                 variant="text"
                 startIcon={<AddIcon color="primary" />}
                 width="100%"

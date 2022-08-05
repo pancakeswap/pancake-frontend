@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { CurrencyAmount, Token, Trade } from '@pancakeswap/sdk'
-import { Button, Box, Flex, useModal, useMatchBreakpoints, BottomDrawer, Link } from '@pancakeswap/uikit'
+import { Button, Box, Flex, useModal, BottomDrawer, Link, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 
 import { useTranslation } from 'contexts/Localization'
 import { AutoColumn } from 'components/Layout/Column'
@@ -9,7 +9,6 @@ import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { AppBody } from 'components/App'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Footer from 'components/Menu/Footer'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useGelatoLimitOrders from 'hooks/limitOrders/useGelatoLimitOrders'
 import useGasOverhead from 'hooks/limitOrders/useGasOverhead'
 import useTheme from 'hooks/useTheme'
@@ -17,9 +16,11 @@ import { ApprovalState, useApproveCallbackFromInputCurrencyAmount } from 'hooks/
 import { Field } from 'state/limitOrders/types'
 import { useDefaultsFromURLSearch } from 'state/limitOrders/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import { GELATO_NATIVE, LIMIT_ORDERS_DOCS_URL } from 'config/constants'
+import { GELATO_NATIVE } from 'config/constants'
+import { LIMIT_ORDERS_DOCS_URL } from 'config/constants/exchange'
 import { useExchangeChartManager } from 'state/user/hooks'
 import PriceChartContainer from 'views/Swap/components/Chart/PriceChartContainer'
+import { useWeb3React } from '@web3-react/core'
 import ClaimWarning from './components/ClaimWarning'
 
 import { Wrapper, StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
@@ -35,10 +36,10 @@ import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
 
 const LimitOrders = () => {
   // Helpers
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
   const { t } = useTranslation()
   const router = useRouter()
-  const { isMobile, isTablet } = useMatchBreakpoints()
+  const { isMobile, isTablet } = useMatchBreakpointsContext()
   const { theme } = useTheme()
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartExpanded, setIsChartExpanded] = useState(false)
@@ -253,6 +254,11 @@ const LimitOrders = () => {
     wrappedCurrencies.output?.address,
   ])
 
+  const handleTokenSwitch = useCallback(() => {
+    setApprovalSubmitted(false)
+    handleSwitchTokens()
+  }, [handleSwitchTokens])
+
   const { realExecutionPriceAsString } = useGasOverhead(parsedAmounts.input, parsedAmounts.output, rateType)
 
   const [showConfirmModal] = useModal(
@@ -306,7 +312,7 @@ const LimitOrders = () => {
         mt={isChartExpanded ? '24px' : null}
       >
         {!isMobile && (
-          <Flex width={isChartExpanded ? '100%' : '50%'} flexDirection="column">
+          <Flex width={isChartExpanded ? '100%' : '50%'} maxWidth="928px" flexDirection="column">
             <PriceChartContainer
               inputCurrencyId={currencyIds.input}
               inputCurrency={currencies.input}
@@ -349,10 +355,7 @@ const LimitOrders = () => {
                     />
 
                     <SwitchTokensButton
-                      handleSwitchTokens={() => {
-                        setApprovalSubmitted(false)
-                        handleSwitchTokens()
-                      }}
+                      handleSwitchTokens={handleTokenSwitch}
                       color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
                     />
                     <CurrencyInputPanel

@@ -27,7 +27,7 @@ const ArrowIcon = styled(ChevronDownIcon)<{ toggled: boolean }>`
   height: 24px;
 `
 
-const TotalStakedCell: React.FC<ExpandActionCellProps> = ({ expanded, isFullLayout }) => {
+const ExpandActionCell: React.FC<ExpandActionCellProps> = ({ expanded, isFullLayout }) => {
   const { t } = useTranslation()
   return (
     <StyledCell role="cell">
@@ -41,4 +41,4 @@ const TotalStakedCell: React.FC<ExpandActionCellProps> = ({ expanded, isFullLayo
   )
 }
 
-export default TotalStakedCell
+export default ExpandActionCell

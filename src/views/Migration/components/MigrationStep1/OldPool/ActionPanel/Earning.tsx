@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Flex, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, Flex, Heading, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -15,7 +15,7 @@ const Container = styled(ActionContainer)`
 
 const Earning: React.FunctionComponent<DeserializedPool> = ({ earningToken, userData, earningTokenPrice }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
 
   const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO
   const earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals)

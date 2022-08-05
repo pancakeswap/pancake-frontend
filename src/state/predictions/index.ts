@@ -71,7 +71,7 @@ export const initialState: PredictionsState = {
     loadingState: FetchStatus.Idle,
     filters: {
       address: null,
-      orderBy: 'netBNB',
+      orderBy: 'totalBets',
       timePeriod: 'all',
     },
     skip: 0,
@@ -118,11 +118,10 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
       return initializedData
     }
 
-    // Bet data
-    const ledgerResponses = await getLedgerData(account, epochs, extra.address)
-
-    // Claim statuses
-    const claimableStatuses = await getClaimStatuses(account, epochs, extra.address)
+    const [ledgerResponses, claimableStatuses] = await Promise.all([
+      getLedgerData(account, epochs, extra.address), // Bet data
+      getClaimStatuses(account, epochs, extra.address), // Claim statuses
+    ])
 
     return merge({}, initializedData, {
       ledgers: makeLedgerData(account, ledgerResponses, epochs),
@@ -168,11 +167,10 @@ export const fetchPredictionData = createAsyncThunk<PredictionInitialization, st
     const epochs =
       currentEpoch > PAST_ROUND_COUNT ? range(currentEpoch, currentEpoch - PAST_ROUND_COUNT) : [currentEpoch]
 
-    // Bet data
-    const ledgerResponses = await getLedgerData(account, epochs, extra.address)
-
-    // Claim statuses
-    const claimableStatuses = await getClaimStatuses(account, epochs, extra.address)
+    const [ledgerResponses, claimableStatuses] = await Promise.all([
+      getLedgerData(account, epochs, extra.address), // Bet data
+      getClaimStatuses(account, epochs, extra.address), // Claim statuses
+    ])
 
     return merge({}, publicData, {
       ledgers: makeLedgerData(account, ledgerResponses, epochs),
@@ -203,8 +201,12 @@ export const fetchHistory = createAsyncThunk<
     undefined,
     undefined,
     extra.api,
+    extra.token.symbol,
   )
-  const bets = response.map(transformBetResponse)
+
+  const transformer = transformBetResponse(extra.token.symbol)
+
+  const bets = response.map(transformer)
 
   return { account, bets }
 })
@@ -242,8 +244,11 @@ export const fetchNodeHistory = createAsyncThunk<
   }
 
   const epochs = Object.keys(userRounds).map((epochStr) => Number(epochStr))
-  const roundData = await getRoundsData(epochs, extra.address)
-  const claimableStatuses = await getClaimStatuses(account, epochs, extra.address)
+  const [roundData, claimableStatuses] = await Promise.all([
+    getRoundsData(epochs, extra.address),
+    getClaimStatuses(account, epochs, extra.address),
+  ])
+
   // No need getState().predictions in local redux state
   const { bufferSeconds } = getState()
 
@@ -327,9 +332,12 @@ export const filterLeaderboard = createAsyncThunk<
       where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED, [`${filters.orderBy}_gt`]: 0 },
     },
     extra.api,
+    extra.token.symbol,
   )
 
-  return { results: usersResponse.map(transformUserResponse) }
+  const transformer = transformUserResponse(extra.token.symbol)
+
+  return { results: usersResponse.map(transformer) }
 })
 
 export const fetchAddressResult = createAsyncThunk<
@@ -337,13 +345,13 @@ export const fetchAddressResult = createAsyncThunk<
   string,
   { rejectValue: string; extra: PredictionConfig }
 >('predictions/fetchAddressResult', async (account, { rejectWithValue, extra }) => {
-  const userResponse = await getPredictionUser(account, extra.api)
+  const userResponse = await getPredictionUser(account, extra.api, extra.token.symbol)
 
   if (!userResponse) {
     return rejectWithValue(account)
   }
 
-  return { account, data: transformUserResponse(userResponse) }
+  return { account, data: transformUserResponse(extra.token.symbol)(userResponse) }
 })
 
 export const filterNextPageLeaderboard = createAsyncThunk<
@@ -359,9 +367,12 @@ export const filterNextPageLeaderboard = createAsyncThunk<
       where: { totalBets_gte: LEADERBOARD_MIN_ROUNDS_PLAYED, [`${state.leaderboard.filters.orderBy}_gt`]: 0 },
     },
     extra.api,
+    extra.token.symbol,
   )
 
-  return { results: usersResponse.map(transformUserResponse), skip }
+  const transformer = transformUserResponse(extra.token.symbol)
+
+  return { results: usersResponse.map(transformer), skip }
 })
 
 export const predictionsSlice = createSlice({

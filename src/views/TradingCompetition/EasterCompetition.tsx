@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
-import { Flex, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex, Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTradingCompetitionContractEaster } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
@@ -50,7 +50,7 @@ const BannerFlex = styled(Flex)`
 const EasterCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
   const { profile, isLoading } = useProfile()
   const { isDark } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractEaster(false)

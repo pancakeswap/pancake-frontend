@@ -34,7 +34,6 @@ const getHeight = ({ scale = scales.MD }: StyledInputProps) => {
 
 const Input = styled.input<InputProps>`
   background-color: ${({ theme }) => theme.colors.input};
-  border: 0;
   border-radius: 16px;
   box-shadow: ${getBoxShadow};
   color: ${({ theme }) => theme.colors.text};
@@ -58,7 +57,16 @@ const Input = styled.input<InputProps>`
   }
 
   &:focus:not(:disabled) {
-    box-shadow: ${({ theme }) => theme.shadows.focus};
+    box-shadow: ${({ theme, isWarning, isSuccess }) => {
+      if (isWarning) {
+        return theme.shadows.warning;
+      }
+
+      if (isSuccess) {
+        return theme.shadows.success;
+      }
+      return theme.shadows.focus;
+    }};
   }
 `;
 

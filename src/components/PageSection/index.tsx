@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import styled from 'styled-components'
 import { BoxProps, Box, Flex, FlexProps } from '@pancakeswap/uikit'
 import Container from 'components/Layout/Container'
@@ -19,7 +20,7 @@ interface PageSectionProps extends BackgroundColorProps {
 interface BackgroundColorProps extends FlexProps {
   index: number
   background?: string
-  getPadding?: () => string
+  padding?: string
 }
 
 const BackgroundColor = styled(Flex)<BackgroundColorProps>`
@@ -28,7 +29,7 @@ const BackgroundColor = styled(Flex)<BackgroundColorProps>`
   align-items: center;
   z-index: ${({ index }) => index - 1};
   background: ${({ background, theme }) => background || theme.colors.background};
-  padding: ${({ getPadding }) => getPadding()};
+  padding: ${({ padding }) => padding};
 `
 
 const ChildrenWrapper = styled(Container)`
@@ -62,7 +63,7 @@ const PageSection: React.FC<PageSectionProps> = ({
   innerProps,
   ...props
 }) => {
-  const getPadding = () => {
+  const padding = useMemo(() => {
     // No curved divider
     if (!hasCurvedDivider) {
       return '48px 0'
@@ -78,7 +79,7 @@ const PageSection: React.FC<PageSectionProps> = ({
       return '14px 0 48px'
     }
     return '48px 0'
-  }
+  }, [dividerPosition, hasCurvedDivider])
 
   return (
     <Box {...containerProps}>
@@ -93,7 +94,7 @@ const PageSection: React.FC<PageSectionProps> = ({
           dividerFill={dividerFill}
         />
       )}
-      <BackgroundColor background={background} index={index} getPadding={getPadding} {...props}>
+      <BackgroundColor background={background} index={index} padding={padding} {...props}>
         <ChildrenWrapper {...innerProps}>{children}</ChildrenWrapper>
       </BackgroundColor>
       {hasCurvedDivider && dividerPosition === 'bottom' && (

@@ -44,7 +44,7 @@ const Newest: React.FC = () => {
   const nfts = useNewestNfts()
 
   return (
-    <div>
+    <>
       <Flex justifyContent="space-between" alignItems="center" mb="26px">
         <Heading data-test="nfts-newest">{t('Newest Arrivals')}</Heading>
         <Button
@@ -80,7 +80,7 @@ const Newest: React.FC = () => {
       ) : (
         <GridPlaceholder numItems={8} />
       )}
-    </div>
+    </>
   )
 }
 

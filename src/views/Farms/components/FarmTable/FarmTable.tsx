@@ -1,14 +1,18 @@
-import { useRef } from 'react'
+import { useRef, useMemo, useCallback } from 'react'
 import styled from 'styled-components'
-import { useTable, Button, ChevronUpIcon, ColumnType } from '@pancakeswap/uikit'
+import { Button, ChevronUpIcon, RowType } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import BigNumber from 'bignumber.js'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { getDisplayApr } from '../getDisplayApr'
 
 import Row, { RowProps } from './Row'
+import { DesktopColumnSchema, FarmWithStakedValue } from '../types'
 
 export interface ITableProps {
-  data: RowProps[]
-  columns: ColumnType<RowProps>[]
+  farms: FarmWithStakedValue[]
   userDataReady: boolean
+  cakePrice: BigNumber
   sortColumn?: string
 }
 
@@ -58,18 +62,96 @@ const ScrollButtonContainer = styled.div`
   padding-bottom: 5px;
 `
 
-const FarmTable: React.FC<ITableProps> = (props) => {
+const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) => {
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const { t } = useTranslation()
-  const { data, columns, userDataReady } = props
 
-  const { rows } = useTable(columns, data, { sortable: true, sortColumn: 'farm' })
+  const columns = useMemo(
+    () =>
+      DesktopColumnSchema.map((column) => ({
+        id: column.id,
+        name: column.name,
+        label: column.label,
+        sort: (a: RowType<RowProps>, b: RowType<RowProps>) => {
+          switch (column.name) {
+            case 'farm':
+              return b.id - a.id
+            case 'apr':
+              if (a.original.apr.value && b.original.apr.value) {
+                return Number(a.original.apr.value) - Number(b.original.apr.value)
+              }
 
-  const scrollToTop = (): void => {
-    tableWrapperEl.current.scrollIntoView({
+              return 0
+            case 'earned':
+              return a.original.earned.earnings - b.original.earned.earnings
+            default:
+              return 1
+          }
+        },
+        sortable: column.sortable,
+      })),
+    [],
+  )
+
+  const scrollToTop = useCallback((): void => {
+    window.scrollTo({
+      top: tableWrapperEl.current.offsetTop,
       behavior: 'smooth',
     })
-  }
+  }, [])
+
+  const rowData = farms.map((farm) => {
+    const { token, quoteToken } = farm
+    const tokenAddress = token.address
+    const quoteTokenAddress = quoteToken.address
+    const lpLabel = farm.lpSymbol && farm.lpSymbol.split(' ')[0].toUpperCase().replace('PANCAKE', '')
+
+    const row: RowProps = {
+      apr: {
+        value: getDisplayApr(farm.apr, farm.lpRewardsApr),
+        pid: farm.pid,
+        multiplier: farm.multiplier,
+        lpLabel,
+        lpSymbol: farm.lpSymbol,
+        tokenAddress,
+        quoteTokenAddress,
+        cakePrice,
+        originalValue: farm.apr,
+      },
+      farm: {
+        label: lpLabel,
+        pid: farm.pid,
+        token: farm.token,
+        quoteToken: farm.quoteToken,
+      },
+      earned: {
+        earnings: getBalanceNumber(new BigNumber(farm.userData.earnings)),
+        pid: farm.pid,
+      },
+      liquidity: {
+        liquidity: farm.liquidity,
+      },
+      multiplier: {
+        multiplier: farm.multiplier,
+      },
+      type: farm.isCommunity ? 'community' : 'core',
+      details: farm,
+    }
+
+    return row
+  })
+
+  const sortedRows = rowData.map((row) => {
+    // @ts-ignore
+    const newRow: RowProps = {}
+    columns.forEach((column) => {
+      if (!(column.name in row)) {
+        throw new Error(`Invalid row data, ${column.name} not found`)
+      }
+      newRow[column.name] = row[column.name]
+    })
+    return newRow
+  })
 
   return (
     <Container id="farms-table">
@@ -77,8 +159,8 @@ const FarmTable: React.FC<ITableProps> = (props) => {
         <TableWrapper ref={tableWrapperEl}>
           <StyledTable>
             <TableBody>
-              {rows.map((row) => {
-                return <Row {...row.original} userDataReady={userDataReady} key={`table-row-${row.id}`} />
+              {sortedRows.map((row) => {
+                return <Row {...row} userDataReady={userDataReady} key={`table-row-${row.farm.pid}`} />
               })}
             </TableBody>
           </StyledTable>

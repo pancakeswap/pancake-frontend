@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 import { Flex, HelpIcon, Button, PrizeIcon } from '@pancakeswap/uikit'
+import { useGetPredictionsStatus } from 'state/predictions/hooks'
+import { PredictionStatus } from 'state/types'
 import FlexRow from './FlexRow'
 import { PricePairLabel, TimerLabel } from './Label'
 import PrevNextNav from './PrevNextNav'
@@ -57,43 +59,49 @@ const ButtonWrapper = styled.div`
 `
 
 const Menu = () => {
+  const status = useGetPredictionsStatus()
+
   return (
-    <FlexRow alignItems="center" p="16px">
+    <FlexRow alignItems="center" p="16px" width="100%">
       <SetCol>
         <PricePairLabel />
       </SetCol>
-      <FlexRow justifyContent="center">
-        <PrevNextNav />
-      </FlexRow>
-      <SetCol>
-        <Flex alignItems="center" justifyContent="flex-end">
-          <TimerLabelWrapper>
-            <TimerLabel interval="5" unit="m" />
-          </TimerLabelWrapper>
-          <HelpButtonWrapper>
-            <Button
-              variant="subtle"
-              as="a"
-              href="https://docs.pancakeswap.finance/products/prediction"
-              target="_blank"
-              rel="noreferrer noopener"
-              width="48px"
-            >
-              <HelpIcon width="24px" color="white" />
-            </Button>
-          </HelpButtonWrapper>
-          <LeaderboardButtonWrapper>
-            <Link href="/prediction/leaderboard" passHref>
-              <Button as="a" variant="subtle" width="48px">
-                <PrizeIcon color="white" />
-              </Button>
-            </Link>
-          </LeaderboardButtonWrapper>
-          <ButtonWrapper style={{ order: 4 }}>
-            <HistoryButton />
-          </ButtonWrapper>
-        </Flex>
-      </SetCol>
+      {status === PredictionStatus.LIVE && (
+        <>
+          <FlexRow justifyContent="center">
+            <PrevNextNav />
+          </FlexRow>
+          <SetCol>
+            <Flex alignItems="center" justifyContent="flex-end">
+              <TimerLabelWrapper>
+                <TimerLabel interval="5" unit="m" />
+              </TimerLabelWrapper>
+              <HelpButtonWrapper>
+                <Button
+                  variant="subtle"
+                  as="a"
+                  href="https://docs.pancakeswap.finance/products/prediction"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  width="48px"
+                >
+                  <HelpIcon width="24px" color="white" />
+                </Button>
+              </HelpButtonWrapper>
+              <LeaderboardButtonWrapper>
+                <Link href="/prediction/leaderboard" passHref>
+                  <Button as="a" variant="subtle" width="48px">
+                    <PrizeIcon color="white" />
+                  </Button>
+                </Link>
+              </LeaderboardButtonWrapper>
+              <ButtonWrapper style={{ order: 4 }}>
+                <HistoryButton />
+              </ButtonWrapper>
+            </Flex>
+          </SetCol>
+        </>
+      )}
     </FlexRow>
   )
 }

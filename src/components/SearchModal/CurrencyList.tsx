@@ -8,6 +8,7 @@ import { LightGreyCard } from 'components/Card'
 import QuestionHelper from 'components/QuestionHelper'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useWeb3React } from '@web3-react/core'
 import { useCombinedActiveList } from '../../state/lists/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useIsUserAddedToken } from '../../hooks/Tokens'
@@ -68,7 +69,7 @@ function CurrencyRow({
   otherSelected: boolean
   style: CSSProperties
 }) {
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
   const { t } = useTranslation()
   const key = currencyKey(currency)
   const selectedTokenList = useCombinedActiveList()

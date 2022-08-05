@@ -1,6 +1,7 @@
 import { createContext, useCallback, useEffect, useState } from 'react'
 import { Language } from '@pancakeswap/uikit'
 import memoize from 'lodash/memoize'
+import useLastUpdated from 'hooks/useLastUpdated'
 import { EN, languages } from 'config/localization/languages'
 import translations from 'config/localization/translations.json'
 import { ContextApi, ProviderState, TranslateFunction } from './types'
@@ -24,6 +25,7 @@ languageMap.set(EN.locale, translations)
 export const LanguageContext = createContext<ContextApi>(undefined)
 
 export const LanguageProvider: React.FC = ({ children }) => {
+  const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
   const [state, setState] = useState<ProviderState>(() => {
     const codeFromStorage = getLanguageCodeFromLS()
 
@@ -43,6 +45,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
         const currentLocale = await fetchLocale(codeFromStorage)
         if (currentLocale) {
           languageMap.set(codeFromStorage, { ...enLocale, ...currentLocale })
+          refresh()
         }
       }
 
@@ -53,7 +56,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
     }
 
     fetchInitialLocales()
-  }, [setState])
+  }, [refresh])
 
   const setLanguage = useCallback(async (language: Language) => {
     if (!languageMap.has(language.locale)) {
@@ -92,7 +95,7 @@ export const LanguageProvider: React.FC = ({ children }) => {
       const translatedText = translationSet[key] || key
 
       // Check the existence of at least one combination of %%, separated by 1 or more non space characters
-      const includesVariable = translatedTextIncludesVariable(translatedText)
+      const includesVariable = translatedTextIncludesVariable(key)
 
       if (includesVariable && data) {
         let interpolatedText = translatedText
@@ -106,7 +109,8 @@ export const LanguageProvider: React.FC = ({ children }) => {
 
       return translatedText
     },
-    [currentLanguage],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currentLanguage, lastUpdated],
   )
 
   return <LanguageContext.Provider value={{ ...state, setLanguage, t: translate }}>{children}</LanguageContext.Provider>

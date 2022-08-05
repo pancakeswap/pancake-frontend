@@ -6,9 +6,8 @@ import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import Balance from 'components/Balance'
 import styled from 'styled-components'
-import { fetchCurrentLotteryIdAndMaxBuy, fetchLottery } from 'state/lottery/helpers'
+import { fetchLottery, fetchCurrentLotteryId } from 'state/lottery/helpers'
 import { getBalanceAmount } from 'utils/formatBalance'
-import useSWR from 'swr'
 import { SLOW_INTERVAL } from 'config/constants'
 import useSWRImmutable from 'swr/immutable'
 
@@ -27,22 +26,12 @@ const LotteryCardContent = () => {
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
   const cakePriceBusd = usePriceCakeBusd()
-  const { data: lotteryId = null } = useSWRImmutable(loadData ? ['lottery', 'currentLotteryId'] : null, async () => {
-    const { currentLotteryId } = await fetchCurrentLotteryIdAndMaxBuy()
-    if (currentLotteryId) {
-      return currentLotteryId
-    }
-    throw new Error('Error fetching current lottery id')
+  const { data: currentLotteryId } = useSWRImmutable(loadData ? ['currentLotteryId'] : null, fetchCurrentLotteryId, {
+    refreshInterval: SLOW_INTERVAL,
   })
-  const { data: currentLotteryPrizeInCake = null } = useSWR(
-    lotteryId ? ['lottery', 'currentLotteryPrize'] : null,
-    async () => {
-      const { amountCollectedInCake } = await fetchLottery(lotteryId)
-      if (amountCollectedInCake) {
-        return parseFloat(amountCollectedInCake)
-      }
-      throw new Error('Error fetching current lottery prize')
-    },
+  const { data: currentLottery } = useSWRImmutable(
+    currentLotteryId ? ['currentLottery'] : null,
+    async () => fetchLottery(currentLotteryId.toString()),
     {
       refreshInterval: SLOW_INTERVAL,
     },
@@ -50,8 +39,8 @@ const LotteryCardContent = () => {
 
   const cakePrizesText = t('%cakePrizeInUsd% in CAKE prizes this round', { cakePrizeInUsd: cakePriceBusd.toString() })
   const [pretext, prizesThisRound] = cakePrizesText.split(cakePriceBusd.toString())
-
-  const currentLotteryPrize = currentLotteryPrizeInCake ? cakePriceBusd.times(currentLotteryPrizeInCake) : null
+  const amountCollectedInCake = currentLottery ? parseFloat(currentLottery.amountCollectedInCake) : null
+  const currentLotteryPrize = amountCollectedInCake ? cakePriceBusd.times(amountCollectedInCake) : null
 
   useEffect(() => {
     if (isIntersecting) {

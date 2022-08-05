@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Text, Flex, CardBody, CardFooter, Button, AddIcon } from '@pancakeswap/uikit'
 import Link from 'next/link'
 import { useTranslation } from 'contexts/Localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useWeb3React } from '@web3-react/core'
 import FullPositionCard from '../../components/PositionCard'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { usePairs, PairState } from '../../hooks/usePairs'
@@ -17,7 +17,7 @@ const Body = styled(CardBody)`
 `
 
 export default function Pool() {
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
   const { t } = useTranslation()
 
   // fetch the user's balances of all tracked V2 LP tokens

@@ -15,6 +15,7 @@ import CardHeader from './CardHeader'
 import CanceledRoundCard from './CanceledRoundCard'
 import CalculatingCard from './CalculatingCard'
 import LiveRoundPrice from './LiveRoundPrice'
+import { useConfig } from '../../context/ConfigProvider'
 
 interface LiveRoundCardProps {
   round: NodeRound
@@ -39,6 +40,7 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
   const { lockPrice, totalAmount, lockTimestamp, closeTimestamp } = round
   const { price, refresh } = usePollOraclePrice()
   const bufferSeconds = useGetBufferSeconds()
+  const { minPriceUsdDisplayed } = useConfig()
 
   const [isCalculatingPhase, setIsCalculatingPhase] = useState(false)
 
@@ -100,10 +102,10 @@ const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
           </Text>
           <Flex alignItems="center" justifyContent="space-between" mb="16px" height="36px">
             <div ref={targetRef}>
-              <LiveRoundPrice isBull={isBull} />
+              <LiveRoundPrice isBull={isBull} price={price} />
             </div>
             <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
-              {formatUsdv2(priceDifference)}
+              {formatUsdv2(priceDifference, minPriceUsdDisplayed)}
             </PositionTag>
           </Flex>
           {lockPrice && <LockPriceRow lockPrice={lockPrice} />}

@@ -8,7 +8,7 @@ import { useTranslation } from 'contexts/Localization'
 export type SwapLineChartProps = {
   data: any[]
   setHoverValue: Dispatch<SetStateAction<number | undefined>> // used for value on hover
-  setHoverDate: Dispatch<SetStateAction<string | undefined>> // used for label of valye
+  setHoverDate: Dispatch<SetStateAction<string | undefined>> // used for label of value
   isChangePositive: boolean
   timeWindow: PairDataTimeWindowEnum
 } & React.HTMLAttributes<HTMLDivElement>

@@ -41,7 +41,7 @@ const OldFarmStep1: React.FC = () => {
           new BigNumber(farm.poolWeight),
           cakePrice,
           totalLiquidity,
-          farm.lpAddresses[ChainId.MAINNET],
+          farm.lpAddresses[ChainId.BSC],
           CAKE_PER_YEAR,
         )
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
@@ -92,8 +92,7 @@ const OldFarmStep1: React.FC = () => {
   })
 
   const renderContent = (): JSX.Element => {
-    const columnSchema = DesktopColumnSchema
-    const columns = columnSchema.map((column) => ({
+    const columns = DesktopColumnSchema.map((column) => ({
       id: column.id,
       name: column.name,
       label: column.label,

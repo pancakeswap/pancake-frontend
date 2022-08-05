@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { FC, ReactNode } from 'react'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { DeserializedLockedVaultUser, DeserializedPool } from 'state/types'
+import { DeserializedPool, DeserializedVaultUser } from 'state/types'
 import { isLocked, isStaked } from 'utils/cakePool'
 import useAvgLockDuration from './LockedPool/hooks/useAvgLockDuration'
 import Apr from './Apr'
@@ -19,7 +19,7 @@ const StatWrapper: FC<{ label: ReactNode }> = ({ children, label }) => {
   )
 }
 
-export const PerformanceFee: FC<{ userData?: DeserializedLockedVaultUser; performanceFeeAsDecimal?: number }> = ({
+export const PerformanceFee: FC<{ userData?: DeserializedVaultUser; performanceFeeAsDecimal?: number }> = ({
   userData,
   performanceFeeAsDecimal,
 }) => {

@@ -7,6 +7,8 @@ import modImage from './mod-tc-desktop.png'
 import modMobileImage from './mod-tc-mobile.png'
 import lotteryMobileImage from './lotteryMobile.png'
 import modWhiteLogo from './mod-white-logo.png'
+import perpetualImage from './perpetual.png'
+import perpetualMobileImage from './perpetualMobile.png'
 
 export {
   lotteryImage,
@@ -18,4 +20,6 @@ export {
   competitionMobileImage,
   IFOMobileImage,
   modWhiteLogo,
+  perpetualImage,
+  perpetualMobileImage,
 }

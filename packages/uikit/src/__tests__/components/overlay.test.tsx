@@ -14,6 +14,9 @@ it("renders correctly", () => {
       height: 100%;
       background-color: #280D5F99;
       z-index: 20;
+      will-change: opacity;
+      -webkit-animation: dHqLl 350ms ease forwards;
+      animation: dHqLl 350ms ease forwards;
     }
 
     <div

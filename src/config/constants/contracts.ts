@@ -15,6 +15,7 @@ export default {
     97: '0x5790c3534F30437641541a0FA04C992799602998',
     56: '0x5aF6D33DE2ccEC94efb1bDF8f92Bd58085432d2c',
   },
+  // TODO: multi
   multiCall: {
     56: '0xfF6FD90A470Aaa0c1B8A54681746b07AcdFedc9B',
     97: '0x8F3273Fb89B075b1645095ABaC6ed17B2d4Bc576',
@@ -56,7 +57,7 @@ export default {
     97: '',
   },
   tradingCompetitionMoD: {
-    56: '0x9F9b4728Cff3eb28aA8dC21482D3b542e4c6d039',
+    56: '0xbDd9a61c67ee16c10f5E37b1D0c907a9EC959f33',
     97: '',
   },
   easterNft: {
@@ -67,12 +68,28 @@ export default {
     56: '0x45c54210128a065de780C4B0Df3d16664f7f859e',
     97: '',
   },
-  predictions: {
+  cakeFlexibleSideVault: {
+    56: '0x615e896A8C2CA8470A2e9dc2E9552998f8658Ea0',
+    97: '',
+  },
+  predictionsBNB: {
     56: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',
     97: '',
   },
-  chainlinkOracle: {
+  predictionsCAKE: {
+    56: '0x0E3A8078EDD2021dadcdE733C6b4a86E51EE8f07',
+    97: '',
+  },
+  chainlinkOracleBNB: {
     56: '0xD276fCF34D54A926773c399eBAa772C12ec394aC',
+    97: '',
+  },
+  chainlinkOracleCAKE: {
+    56: '0xB6064eD41d4f67e353768aA239cA86f4F73665a1',
+    97: '',
+  },
+  predictionsV1: {
+    56: '0x516ffd7d1e0ca40b1879935b2de87cb20fc1124b',
     97: '',
   },
   bunnySpecialCakeVault: {
@@ -99,10 +116,6 @@ export default {
     56: '0x787980da5491118C3cB33B21aB50c8c379D2C552',
     97: '0x981aE96378e770DE44F89cD9175E708f9EDB70a9',
   },
-  galaxyNftClaiming: {
-    56: '0x2D18f2d27D50C9b4013DEBA3D54f60996bD8847E',
-    97: '',
-  },
   nftMarket: {
     56: '0x17539cCa21C7933Df5c980172d22659B8C345C5A',
     97: '0x7f9f37ddcaa33893f9beb3d8748c8d6bfbde6ab2',
@@ -114,5 +127,14 @@ export default {
   pancakeSquad: {
     56: '0x0a8901b0E25DEb55A87524f0cC164E9644020EBA',
     97: '0xfC0c3F11fDA72Cb9A56F28Ec8D44C0ae4B3ABF86',
+  },
+  // TODO: multi
+  zap: {
+    56: '0xD4c4a7C55c9f7B3c48bafb6E8643Ba79F42418dF',
+    97: '0xD85835207054F25620109bdc745EC1D1f84F04e1',
+  },
+  iCake: {
+    56: '0x3C458828D1622F5f4d526eb0d24Da8C4Eb8F07b1',
+    97: '',
   },
 }

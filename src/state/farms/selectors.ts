@@ -1,9 +1,12 @@
 import BigNumber from 'bignumber.js'
+import addSeconds from 'date-fns/addSeconds'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { createSelector } from '@reduxjs/toolkit'
 import { State, SerializedFarm, DeserializedFarm, DeserializedFarmUserData } from '../types'
 import { deserializeToken } from '../user/hooks/helpers'
+import isUndefinedOrNull from '../../utils/isUndefinedOrNull'
+import { FARM_AUCTION_HOSTING_IN_SECONDS } from '../../config/constants'
 
 const deserializeFarmUserData = (farm: SerializedFarm): DeserializedFarmUserData => {
   return {
@@ -22,10 +25,26 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
     dual,
     multiplier,
     isCommunity,
-    auctionHostingEndDate,
+    auctionHostingStartSeconds,
     quoteTokenPriceBusd,
     tokenPriceBusd,
   } = farm
+
+  const auctionHostingStartDate = !isUndefinedOrNull(auctionHostingStartSeconds)
+    ? new Date(auctionHostingStartSeconds * 1000)
+    : null
+  const auctionHostingEndDate = auctionHostingStartDate
+    ? addSeconds(auctionHostingStartDate, FARM_AUCTION_HOSTING_IN_SECONDS)
+    : null
+  const now = Date.now()
+  const isFarmCommunity =
+    isCommunity ||
+    !!(
+      auctionHostingStartDate &&
+      auctionHostingEndDate &&
+      auctionHostingStartDate.getTime() < now &&
+      auctionHostingEndDate.getTime() > now
+    )
 
   return {
     lpAddresses,
@@ -33,8 +52,8 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
     pid,
     dual,
     multiplier,
-    isCommunity,
-    auctionHostingEndDate,
+    isCommunity: isFarmCommunity,
+    auctionHostingEndDate: auctionHostingEndDate?.toJSON(),
     quoteTokenPriceBusd,
     tokenPriceBusd,
     token: deserializeToken(farm.token),
@@ -58,14 +77,12 @@ export const makeFarmFromPidSelector = (pid: number) =>
 
 export const makeBusdPriceFromPidSelector = (pid: number) =>
   createSelector([selectFarmByKey('pid', pid)], (farm) => {
-    const deserializedFarm = deserializeFarm(farm)
-    return deserializedFarm && new BigNumber(deserializedFarm.tokenPriceBusd)
+    return farm && new BigNumber(farm.tokenPriceBusd)
   })
 
 export const makeUserFarmFromPidSelector = (pid: number) =>
   createSelector([selectFarmByKey('pid', pid)], (farm) => {
-    const { userData } = deserializeFarm(farm)
-    const { allowance, tokenBalance, stakedBalance, earnings } = userData
+    const { allowance, tokenBalance, stakedBalance, earnings } = deserializeFarmUserData(farm)
     return {
       allowance,
       tokenBalance,
@@ -75,8 +92,7 @@ export const makeUserFarmFromPidSelector = (pid: number) =>
   })
 
 export const priceCakeFromPidSelector = createSelector([selectCakeFarm], (cakeBnbFarm) => {
-  const deserializedCakeBnbFarm = deserializeFarm(cakeBnbFarm)
-  const cakePriceBusdAsString = deserializedCakeBnbFarm.tokenPriceBusd
+  const cakePriceBusdAsString = cakeBnbFarm.tokenPriceBusd
   return new BigNumber(cakePriceBusdAsString)
 })
 
@@ -85,17 +101,20 @@ export const farmFromLpSymbolSelector = (lpSymbol: string) =>
 
 export const makeLpTokenPriceFromLpSymbolSelector = (lpSymbol: string) =>
   createSelector([selectFarmByKey('lpSymbol', lpSymbol)], (farm) => {
-    const deserializedFarm = deserializeFarm(farm)
-    const farmTokenPriceInUsd = deserializedFarm && new BigNumber(deserializedFarm.tokenPriceBusd)
     let lpTokenPrice = BIG_ZERO
 
-    if (deserializedFarm.lpTotalSupply.gt(0) && deserializedFarm.lpTotalInQuoteToken.gt(0)) {
+    const lpTotalInQuoteToken = farm.lpTotalInQuoteToken ? new BigNumber(farm.lpTotalInQuoteToken) : BIG_ZERO
+    const lpTotalSupply = farm.lpTotalSupply ? new BigNumber(farm.lpTotalSupply) : BIG_ZERO
+
+    if (lpTotalSupply.gt(0) && lpTotalInQuoteToken.gt(0)) {
+      const farmTokenPriceInUsd = new BigNumber(farm.tokenPriceBusd)
+      const tokenAmountTotal = farm.tokenAmountTotal ? new BigNumber(farm.tokenAmountTotal) : BIG_ZERO
       // Total value of base token in LP
-      const valueOfBaseTokenInFarm = farmTokenPriceInUsd.times(deserializedFarm.tokenAmountTotal)
+      const valueOfBaseTokenInFarm = farmTokenPriceInUsd.times(tokenAmountTotal)
       // Double it to get overall value in LP
       const overallValueOfAllTokensInFarm = valueOfBaseTokenInFarm.times(2)
       // Divide total value of all tokens, by the number of LP tokens
-      const totalLpTokens = getBalanceAmount(deserializedFarm.lpTotalSupply)
+      const totalLpTokens = getBalanceAmount(lpTotalSupply)
       lpTokenPrice = overallValueOfAllTokensInFarm.div(totalLpTokens)
     }
 

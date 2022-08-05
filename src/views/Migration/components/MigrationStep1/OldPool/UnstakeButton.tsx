@@ -43,7 +43,7 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ pool }) => {
 
   const { onUnstake } = useUnstakePool(sousId, pool.enableEmergencyWithdraw)
 
-  const isNeedUnstake = vaultKey ? userShares && userShares.gt(0) : new BigNumber(userData.stakedBalance).gt(0)
+  const isNeedUnstake = vaultKey ? userShares?.gt(0) : new BigNumber(userData.stakedBalance).gt(0)
 
   const handleUnstake = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()

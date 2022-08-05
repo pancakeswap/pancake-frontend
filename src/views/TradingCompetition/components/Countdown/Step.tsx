@@ -43,7 +43,9 @@ const Step: React.FC<CountdownProps> = ({ stepText, index, activeStepIndex }) =>
     return (
       <ExpiredWrapper>
         <CheckmarkCircleIcon />
-        <StyledText color="textSubtle">{stepText}</StyledText>
+        <StyledText color="textSubtle" textTransform="uppercase">
+          {stepText}
+        </StyledText>
       </ExpiredWrapper>
     )
   }
@@ -52,7 +54,9 @@ const Step: React.FC<CountdownProps> = ({ stepText, index, activeStepIndex }) =>
     return (
       <ActiveWrapper>
         <LogoIcon />
-        <StyledText color="primaryBright">{stepText}</StyledText>
+        <StyledText color="primaryBright" textTransform="uppercase">
+          {stepText}
+        </StyledText>
       </ActiveWrapper>
     )
   }
@@ -61,7 +65,9 @@ const Step: React.FC<CountdownProps> = ({ stepText, index, activeStepIndex }) =>
     return (
       <FutureWrapper>
         <CircleOutlineIcon />
-        <StyledText color="textDisabled">{stepText}</StyledText>
+        <StyledText color="textDisabled" textTransform="uppercase">
+          {stepText}
+        </StyledText>
       </FutureWrapper>
     )
   }

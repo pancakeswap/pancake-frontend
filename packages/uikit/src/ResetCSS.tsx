@@ -44,7 +44,6 @@ const ResetCSS = createGlobalStyle`
   blockquote:after,
   q:before,
   q:after {
-    content: "";
     content: none;
   }
   table {

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Skeleton, Text, Flex, Box, useModal, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Skeleton, Text, Flex, Box, useModal, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { DeserializedPool } from 'state/types'
 import BigNumber from 'bignumber.js'
 import { PoolCategory } from 'config/constants/types'
@@ -24,7 +24,7 @@ const StyledCell = styled(BaseCell)`
 
 const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
   const { sousId, earningToken, poolCategory, userData, earningTokenPrice } = pool
   const isManualCakePool = sousId === 0
 

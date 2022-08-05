@@ -3,8 +3,8 @@ import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { Dispatch, useMemo, memo, SetStateAction, useCallback } from 'react'
 import styled from 'styled-components'
-import { BIG_TEN } from 'utils/bigNumber'
 import { getFullDisplayBalance } from 'utils/formatBalance'
+import { getFullDecimalMultiplier } from 'utils/getFullDecimalMultiplier'
 import { useUserEnoughCakeValidator } from '../hooks/useUserEnoughCakeValidator'
 
 const StyledButton = styled(Button)`
@@ -38,7 +38,7 @@ const BalanceField: React.FC<PropsType> = ({
   const percent = useMemo(() => {
     const amount = new BigNumber(lockedAmount)
     if (amount.gt(0)) {
-      const convertedInput = amount.multipliedBy(BIG_TEN.pow(stakingDecimals))
+      const convertedInput = amount.multipliedBy(getFullDecimalMultiplier(stakingDecimals))
       const percentage = Math.floor(convertedInput.dividedBy(stakingMax).multipliedBy(100).toNumber())
       return percentage > 100 ? 100 : percentage
     }

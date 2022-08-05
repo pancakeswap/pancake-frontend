@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import { DEFAULT_TOKEN_DECIMAL, DEFAULT_GAS_LIMIT } from 'config'
-import { BIG_TEN } from 'utils/bigNumber'
+import { getFullDecimalMultiplier } from 'utils/getFullDecimalMultiplier'
 import { useSousChef } from 'hooks/useContract'
 import getGasPrice from 'utils/getGasPrice'
 
@@ -11,7 +11,7 @@ const options = {
 
 const sousStake = async (sousChefContract, amount, decimals = 18) => {
   const gasPrice = getGasPrice()
-  return sousChefContract.deposit(new BigNumber(amount).times(BIG_TEN.pow(decimals)).toString(), {
+  return sousChefContract.deposit(new BigNumber(amount).times(getFullDecimalMultiplier(decimals)).toString(), {
     ...options,
     gasPrice,
   })

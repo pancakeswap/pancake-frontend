@@ -88,6 +88,13 @@ it("renders correctly", () => {
       animation-delay: 8s;
     }
 
+    @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+      .c1 {
+        -webkit-filter: none !important;
+        filter: none !important;
+      }
+    }
+
     <div>
         <div
           class="c0"

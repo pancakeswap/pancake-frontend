@@ -5,7 +5,6 @@ import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { useTranslation } from 'contexts/Localization'
 import _toNumber from 'lodash/toNumber'
 import BigNumber from 'bignumber.js'
-
 import { GenericModalProps } from '../types'
 import BalanceField from '../Common/BalanceField'
 import LockedBodyModal from '../Common/LockedModalBody'
@@ -18,7 +17,7 @@ const LockedStakeModal: React.FC<GenericModalProps> = ({
   stakingTokenBalance,
 }) => {
   const { theme } = useTheme()
-  const [lockedAmount, setLockedAmount] = useState('0')
+  const [lockedAmount, setLockedAmount] = useState('')
   const { t } = useTranslation()
 
   const usdValueStaked = useBUSDCakeAmount(_toNumber(lockedAmount))

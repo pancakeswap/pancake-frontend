@@ -32,7 +32,7 @@ const EventStepsSection: React.FC<EventStepsProps> = ({ eventInfos, userInfos, i
                 {t('The minting period is now over: all 10,000 bunnies have now been minted.')}
               </Text>
               <Text fontSize="16px" color="text" textAlign="center" mb="64px">
-                {t('Head to the NFT Market to buy!')}
+                {t('Head to the NFT Marketplace to buy!')}
               </Text>
               <Box>
                 <Link href="/nfts" passHref>

@@ -1,5 +1,5 @@
 import { request, gql } from 'graphql-request'
-import { GRAPH_API_PREDICTION } from 'config/constants/endpoints'
+import { GRAPH_API_PREDICTION_BNB, GRAPH_API_PREDICTION_CAKE } from 'config/constants/endpoints'
 import { BigNumber } from '@ethersproject/bignumber'
 import {
   Bet,
@@ -9,9 +9,7 @@ import {
   PredictionStatus,
   ReduxNodeLedger,
   ReduxNodeRound,
-  Round,
   RoundData,
-  PredictionUser,
   HistoryFilter,
 } from 'state/types'
 import { multicallv2 } from 'utils/multicall'
@@ -19,16 +17,13 @@ import { getPredictionsContract } from 'utils/contractHelpers'
 import predictionsAbi from 'config/abi/predictions.json'
 import { Zero } from '@ethersproject/constants'
 import { PredictionsClaimableResponse, PredictionsLedgerResponse, PredictionsRoundsResponse } from 'utils/types'
-import {
-  BetResponse,
-  getRoundBaseFields,
-  getBetBaseFields,
-  getUserBaseFields,
-  RoundResponse,
-  TotalWonMarketResponse,
-  UserResponse,
-} from './queries'
+import { getRoundBaseFields, getBetBaseFields, getUserBaseFields } from './queries'
 import { ROUNDS_PER_PAGE } from './config'
+import { transformBetResponseCAKE, transformUserResponseCAKE } from './cakeTransformers'
+import { transformBetResponseBNB, transformUserResponseBNB } from './bnbTransformers'
+import { BetResponse, UserResponse } from './responseType'
+import { BetResponseBNB } from './bnbQueries'
+import { BetResponseCAKE } from './cakeQueries'
 
 export enum Result {
   WIN = 'win',
@@ -38,152 +33,11 @@ export enum Result {
   LIVE = 'live',
 }
 
-export const numberOrNull = (value: string) => {
-  if (value === null) {
-    return null
-  }
+export const transformBetResponse = (tokenSymbol) =>
+  tokenSymbol === 'CAKE' ? transformBetResponseCAKE : transformBetResponseBNB
 
-  const valueNum = Number(value)
-  return Number.isNaN(valueNum) ? null : valueNum
-}
-
-const getRoundPosition = (positionResponse: string) => {
-  if (positionResponse === 'Bull') {
-    return BetPosition.BULL
-  }
-
-  if (positionResponse === 'Bear') {
-    return BetPosition.BEAR
-  }
-
-  if (positionResponse === 'House') {
-    return BetPosition.HOUSE
-  }
-
-  return null
-}
-
-export const transformBetResponse = (betResponse: BetResponse): Bet => {
-  const bet = {
-    id: betResponse.id,
-    hash: betResponse.hash,
-    block: numberOrNull(betResponse.block),
-    amount: betResponse.amount ? parseFloat(betResponse.amount) : 0,
-    position: betResponse.position === 'Bull' ? BetPosition.BULL : BetPosition.BEAR,
-    claimed: betResponse.claimed,
-    claimedAt: numberOrNull(betResponse.claimedAt),
-    claimedBlock: numberOrNull(betResponse.claimedBlock),
-    claimedHash: betResponse.claimedHash,
-    claimedBNB: betResponse.claimedBNB ? parseFloat(betResponse.claimedBNB) : 0,
-    claimedNetBNB: betResponse.claimedNetBNB ? parseFloat(betResponse.claimedNetBNB) : 0,
-    createdAt: numberOrNull(betResponse.createdAt),
-    updatedAt: numberOrNull(betResponse.updatedAt),
-  } as Bet
-
-  if (betResponse.user) {
-    bet.user = transformUserResponse(betResponse.user)
-  }
-
-  if (betResponse.round) {
-    bet.round = transformRoundResponse(betResponse.round)
-  }
-
-  return bet
-}
-
-export const transformUserResponse = (userResponse: UserResponse): PredictionUser => {
-  const {
-    id,
-    createdAt,
-    updatedAt,
-    block,
-    totalBets,
-    totalBetsBull,
-    totalBetsBear,
-    totalBNB,
-    totalBNBBull,
-    totalBNBBear,
-    totalBetsClaimed,
-    totalBNBClaimed,
-    winRate,
-    averageBNB,
-    netBNB,
-  } = userResponse
-
-  return {
-    id,
-    createdAt: numberOrNull(createdAt),
-    updatedAt: numberOrNull(updatedAt),
-    block: numberOrNull(block),
-    totalBets: numberOrNull(totalBets),
-    totalBetsBull: numberOrNull(totalBetsBull),
-    totalBetsBear: numberOrNull(totalBetsBear),
-    totalBNB: totalBNB ? parseFloat(totalBNB) : 0,
-    totalBNBBull: totalBNBBull ? parseFloat(totalBNBBull) : 0,
-    totalBNBBear: totalBNBBear ? parseFloat(totalBNBBear) : 0,
-    totalBetsClaimed: numberOrNull(totalBetsClaimed),
-    totalBNBClaimed: totalBNBClaimed ? parseFloat(totalBNBClaimed) : 0,
-    winRate: winRate ? parseFloat(winRate) : 0,
-    averageBNB: averageBNB ? parseFloat(averageBNB) : 0,
-    netBNB: netBNB ? parseFloat(netBNB) : 0,
-  }
-}
-
-export const transformRoundResponse = (roundResponse: RoundResponse): Round => {
-  const {
-    id,
-    epoch,
-    failed,
-    position,
-    startAt,
-    startBlock,
-    startHash,
-    lockAt,
-    lockBlock,
-    lockHash,
-    lockPrice,
-    lockRoundId,
-    closeAt,
-    closeBlock,
-    closeHash,
-    closePrice,
-    closeRoundId,
-    totalBets,
-    totalAmount,
-    bullBets,
-    bullAmount,
-    bearBets,
-    bearAmount,
-    bets = [],
-  } = roundResponse
-
-  return {
-    id,
-    failed,
-    startHash,
-    lockHash,
-    lockRoundId,
-    closeRoundId,
-    closeHash,
-    position: getRoundPosition(position),
-    epoch: numberOrNull(epoch),
-    startAt: numberOrNull(startAt),
-    startBlock: numberOrNull(startBlock),
-    lockAt: numberOrNull(lockAt),
-    lockBlock: numberOrNull(lockBlock),
-    lockPrice: lockPrice ? parseFloat(lockPrice) : 0,
-    closeAt: numberOrNull(closeAt),
-    closeBlock: numberOrNull(closeBlock),
-    closePrice: closePrice ? parseFloat(closePrice) : 0,
-    totalBets: numberOrNull(totalBets),
-    totalAmount: totalAmount ? parseFloat(totalAmount) : 0,
-    bullBets: numberOrNull(bullBets),
-    bullAmount: bullAmount ? parseFloat(bullAmount) : 0,
-    bearBets: numberOrNull(bearBets),
-    bearAmount: bearAmount ? parseFloat(bearAmount) : 0,
-    bets: bets.map(transformBetResponse),
-  }
-}
+export const transformUserResponse = (tokenSymbol) =>
+  tokenSymbol === 'CAKE' ? transformUserResponseCAKE : transformUserResponseBNB
 
 export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
   const { round } = bet
@@ -218,23 +72,43 @@ export const getFilteredBets = (bets: Bet[], filter: HistoryFilter) => {
   }
 }
 
-export const getTotalWon = async (): Promise<number> => {
-  const { market } = (await request(
-    GRAPH_API_PREDICTION,
-    gql`
-      query getTotalWonData {
-        market(id: 1) {
-          totalBNB
-          totalBNBTreasury
+const getTotalWonMarket = (market, tokenSymbol) => {
+  const total = market[`total${tokenSymbol}`] ? parseFloat(market[`total${tokenSymbol}`]) : 0
+  const totalTreasury = market[`total${tokenSymbol}Treasury`] ? parseFloat(market[`total${tokenSymbol}Treasury`]) : 0
+
+  return Math.max(total - totalTreasury, 0)
+}
+
+export const getTotalWon = async (): Promise<{ totalWonBNB: number; totalWonCAKE: number }> => {
+  const [{ market: BNBMarket, market: CAKEMarket }] = await Promise.all([
+    request(
+      GRAPH_API_PREDICTION_BNB,
+      gql`
+        query getTotalWonData {
+          market(id: 1) {
+            totalBNB
+            totalBNBTreasury
+          }
         }
-      }
-    `,
-  )) as { market: TotalWonMarketResponse }
+      `,
+    ),
+    request(
+      GRAPH_API_PREDICTION_CAKE,
+      gql`
+        query getTotalWonData {
+          market(id: 1) {
+            totalCAKE
+            totalCAKETreasury
+          }
+        }
+      `,
+    ),
+  ])
 
-  const totalBNB = market.totalBNB ? parseFloat(market.totalBNB) : 0
-  const totalBNBTreasury = market.totalBNBTreasury ? parseFloat(market.totalBNBTreasury) : 0
+  const totalWonBNB = getTotalWonMarket(BNBMarket, 'BNB')
+  const totalWonCAKE = getTotalWonMarket(CAKEMarket, 'CAKE')
 
-  return Math.max(totalBNB - totalBNBTreasury, 0)
+  return { totalWonBNB, totalWonCAKE }
 }
 
 type WhereClause = Record<string, string | number | boolean | string[]>
@@ -244,18 +118,19 @@ export const getBetHistory = async (
   first = 1000,
   skip = 0,
   api: string,
-): Promise<BetResponse[]> => {
+  tokenSymbol: string,
+): Promise<Array<BetResponseBNB | BetResponseCAKE>> => {
   const response = await request(
     api,
     gql`
       query getBetHistory($first: Int!, $skip: Int!, $where: Bet_filter) {
         bets(first: $first, skip: $skip, where: $where, order: createdAt, orderDirection: desc) {
-          ${getBetBaseFields()}
+          ${getBetBaseFields(tokenSymbol)}
           round {
-            ${getRoundBaseFields()}
+            ${getRoundBaseFields(tokenSymbol)}
           }
           user {
-            ${getUserBaseFields()}
+            ${getUserBaseFields(tokenSymbol)}
           }
         }
       }
@@ -263,29 +138,6 @@ export const getBetHistory = async (
     { first, skip, where },
   )
   return response.bets
-}
-
-export const getBet = async (betId: string): Promise<BetResponse> => {
-  const response = await request(
-    GRAPH_API_PREDICTION,
-    gql`
-      query getBet($id: ID!) {
-        bet(id: $id) {
-          ${getBetBaseFields()}
-          round {
-            ${getRoundBaseFields()}
-          }
-          user {
-            ${getUserBaseFields()}
-          }
-        }
-      }
-  `,
-    {
-      id: betId.toLowerCase(),
-    },
-  )
-  return response.bet
 }
 
 export const getLedgerData = async (account: string, epochs: number[], address: string) => {
@@ -329,14 +181,15 @@ export const getHasRoundFailed = (oracleCalled: boolean, closeTimestamp: number,
 export const getPredictionUsers = async (
   options: GetPredictionUsersOptions = {},
   api: string,
-): Promise<UserResponse[]> => {
+  tokenSymbol: string,
+): Promise<UserResponse<BetResponse>[]> => {
   const { first, skip, where, orderBy, orderDir } = { ...defaultPredictionUserOptions, ...options }
   const response = await request(
     api,
     gql`
       query getUsers($first: Int!, $skip: Int!, $where: User_filter, $orderBy: User_orderBy, $orderDir: OrderDirection) {
         users(first: $first, skip: $skip, where: $where, orderBy: $orderBy, orderDirection: $orderDir) {
-          ${getUserBaseFields()}
+          ${getUserBaseFields(tokenSymbol)}
         }
       }
     `,
@@ -345,13 +198,17 @@ export const getPredictionUsers = async (
   return response.users
 }
 
-export const getPredictionUser = async (account: string, api: string): Promise<UserResponse> => {
+export const getPredictionUser = async (
+  account: string,
+  api: string,
+  tokenSymbol: string,
+): Promise<UserResponse<BetResponse>> => {
   const response = await request(
     api,
     gql`
       query getUser($id: ID!) {
         user(id: $id) {
-          ${getUserBaseFields()}
+          ${getUserBaseFields(tokenSymbol)}
         }
       }
   `,

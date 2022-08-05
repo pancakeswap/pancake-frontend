@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useAppDispatch } from 'state'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
-import { DeserializedPool } from 'state/types'
+import { DeserializedPool, VaultKey } from 'state/types'
 import { fetchCakeVaultFees, fetchPoolsPublicDataAsync, fetchCakeVaultPublicData } from 'state/pools'
 import { usePoolsWithVault } from 'state/pools/hooks'
 import { useInitialBlock } from 'state/block/hooks'
@@ -41,10 +41,11 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
   }, [dispatch, setFetchStatus, fetchStatus, topPools, isIntersecting, initialBlock])
 
   useEffect(() => {
-    const [cakePool, otherPools] = partition(pools, (pool) => pool.sousId === 0)
+    const [cakePools, otherPools] = partition(pools, (pool) => pool.sousId === 0)
+    const masterCakePool = cakePools.filter((cakePool) => cakePool.vaultKey === VaultKey.CakeVault)
     const getTopPoolsByApr = (activePools: DeserializedPool[]) => {
       const sortedByApr = orderBy(activePools, (pool: DeserializedPool) => pool.apr || 0, 'desc')
-      setTopPools([...cakePool, ...sortedByApr.slice(0, 4)])
+      setTopPools([...masterCakePool, ...sortedByApr.slice(0, 4)])
     }
     if (fetchStatus === FetchStatus.Fetched && !topPools[0]) {
       getTopPoolsByApr(otherPools)

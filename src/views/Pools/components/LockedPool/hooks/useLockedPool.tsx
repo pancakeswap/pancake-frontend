@@ -2,7 +2,6 @@ import { useState, useCallback, Dispatch, SetStateAction } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
-import _noop from 'lodash/noop'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { useVaultPoolContract } from 'hooks/useContract'
 import BigNumber from 'bignumber.js'
@@ -40,7 +39,7 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
 
   const { account } = useWeb3React()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const vaultPoolContract = useVaultPoolContract()
+  const vaultPoolContract = useVaultPoolContract(VaultKey.CakeVault)
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const { t } = useTranslation()

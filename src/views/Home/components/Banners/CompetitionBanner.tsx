@@ -1,4 +1,4 @@
-import { Flex, ArrowForwardIcon, Button, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex, ArrowForwardIcon, Button, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import Image from 'next/image'
@@ -39,7 +39,7 @@ const TradingCompetition = styled(S.StyledSubheading)`
 
 const CompetitionBanner = () => {
   const { t } = useTranslation()
-  const { isDesktop, isMobile } = useMatchBreakpoints()
+  const { isDesktop, isMobile } = useMatchBreakpointsContext()
   return (
     <S.Wrapper>
       <S.Inner>

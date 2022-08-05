@@ -1,5 +1,5 @@
 import { Trade, Percent, currencyEquals } from '@pancakeswap/sdk'
-import { ZERO_PERCENT, ONE_HUNDRED_PERCENT } from '../config/constants/index'
+import { ZERO_PERCENT, ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
 
 // returns whether tradeB is better than tradeA by at least a threshold percentage amount
 export function isTradeBetter(

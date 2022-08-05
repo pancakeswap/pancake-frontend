@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, Flex, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { DeserializedPool } from 'state/types'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -25,7 +25,7 @@ const StyledCell = styled(BaseCell)`
 
 const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpointsContext()
   const { earningToken, userData } = pool
 
   const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO

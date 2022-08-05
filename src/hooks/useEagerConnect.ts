@@ -69,6 +69,12 @@ const useEagerConnect = () => {
 
         return
       }
+
+      // Prevent eager connect on mobile & coinbase wallet not injected, as it keeps trying deeplink to app store.
+      if (connectorId === ConnectorNames.WalletLink && isMobile && window?.ethereum?.isCoinbaseWallet !== true) {
+        return
+      }
+
       if (connectorId === ConnectorNames.Injected) {
         const isEthereumDefined = Reflect.has(window, 'ethereum')
 

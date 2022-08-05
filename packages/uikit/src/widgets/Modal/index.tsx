@@ -1,4 +1,4 @@
-export { default as Modal } from "./Modal";
+export { default as Modal, MODAL_SWIPE_TO_CLOSE_VELOCITY } from "./Modal";
 export { default as ModalProvider } from "./ModalContext";
 export { default as useModal } from "./useModal";
 export * from "./styles";

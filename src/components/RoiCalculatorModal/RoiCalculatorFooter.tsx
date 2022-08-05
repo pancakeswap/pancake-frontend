@@ -72,6 +72,7 @@ const RoiCalculatorFooter: React.FC<RoiCalculatorFooterProps> = ({
   )
 
   const gridRowCount = isFarm ? 4 : 2
+  const lpRewardsAPR = (Number(displayApr) - apr).toFixed(2)
 
   return (
     <Footer p="16px" flexDirection="column">
@@ -93,7 +94,7 @@ const RoiCalculatorFooter: React.FC<RoiCalculatorFooterProps> = ({
             )}
             {!Number.isFinite(apy) ? (
               <Text color="textSubtle" small>
-                {isFarm ? t('Base APR (CAKE yield only)') : t('APR')}
+                *{isFarm ? t('Base APR (CAKE yield only)') : t('APR')}
               </Text>
             ) : (
               <Text color="textSubtle" small>
@@ -103,6 +104,16 @@ const RoiCalculatorFooter: React.FC<RoiCalculatorFooterProps> = ({
             <Text small textAlign="right">
               {(apy ?? apr).toFixed(2)}%
             </Text>
+            {isFarm && (
+              <>
+                <Text color="textSubtle" small>
+                  *{t('LP Rewards APR')}
+                </Text>
+                <Text small textAlign="right">
+                  {lpRewardsAPR}%
+                </Text>
+              </>
+            )}
             {!Number.isFinite(apy) && (
               <Text color="textSubtle" small>
                 {t('APY (%compoundTimes%x daily compound)', {

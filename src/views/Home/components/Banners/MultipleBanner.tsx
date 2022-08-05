@@ -1,4 +1,4 @@
-import { appearAnimation, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { appearAnimation, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useLayoutEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -91,16 +91,16 @@ const StyledSwiper = styled(Swiper)`
 const MultipleBanner: React.FC = () => {
   const bannerList = useMultipleBannerConfig()
   const { account } = useWeb3React()
-  const { isDesktop, isTablet } = useMatchBreakpoints()
+  const { isDesktop, isTablet } = useMatchBreakpointsContext()
   const [swiperRef, setSwiperRef] = useState<SwiperCore>(null)
 
   useLayoutEffect(() => {
-    if (swiperRef && bannerList.length > 1 && !swiperRef.autoplay.running) {
-      swiperRef.autoplay.start()
+    if (swiperRef && bannerList.length > 1 && !swiperRef?.autoplay?.running) {
+      swiperRef?.autoplay?.start()
     }
 
     if (swiperRef && bannerList.length <= 1) {
-      swiperRef.autoplay.stop()
+      swiperRef?.autoplay?.stop()
     }
   }, [bannerList, swiperRef])
 
@@ -112,10 +112,10 @@ const MultipleBanner: React.FC = () => {
         spaceBetween={50}
         observer
         slidesPerView={1}
-        effect={'fade' as const}
+        effect="fade"
         fadeEffect={{ crossFade: true }}
         speed={500}
-        autoplay={{ delay: 5000 }}
+        autoplay={{ delay: 5000, pauseOnMouseEnter: true, disableOnInteraction: false }}
         loop
         pagination={{ clickable: true }}
       >

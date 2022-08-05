@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Flex, Grid, Box, Text, Button, BinanceIcon, ErrorIcon, useTooltip, Skeleton } from '@pancakeswap/uikit'
 import { multiplyPriceByAmount } from 'utils/prices'
+import { escapeRegExp } from 'utils'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import { useTranslation } from 'contexts/Localization'
 import { NftToken } from 'state/nftMarket/types'
@@ -20,6 +21,8 @@ interface SetPriceStageProps {
 
 const MIN_PRICE = 0.005
 const MAX_PRICE = 10000
+
+const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
 
 // Stage where user puts price for NFT they're about to put on sale
 // Also shown when user wants to adjust the price of already listed NFT
@@ -45,6 +48,12 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
   const priceInUsd = multiplyPriceByAmount(bnbPrice, priceAsFloat)
 
   const priceIsOutOfRange = priceAsFloat > MAX_PRICE || priceAsFloat < MIN_PRICE
+
+  const enforcer = (nextUserInput: string) => {
+    if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
+      setPrice(nextUserInput)
+    }
+  }
 
   const { tooltip, tooltipVisible, targetRef } = useTooltip(
     <>
@@ -93,12 +102,18 @@ const SetPriceStage: React.FC<SetPriceStageProps> = ({
           <Flex flex="2">
             <RightAlignedInput
               scale="sm"
-              type="number"
+              type="text"
+              pattern="^[0-9]*[.,]?[0-9]*$"
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck="false"
               inputMode="decimal"
               value={price}
               ref={inputRef}
               isWarning={priceIsOutOfRange}
-              onChange={(e) => setPrice(e.target.value)}
+              onChange={(e) => {
+                enforcer(e.target.value.replace(/,/g, '.'))
+              }}
             />
           </Flex>
         </Flex>

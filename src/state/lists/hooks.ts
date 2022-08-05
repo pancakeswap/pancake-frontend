@@ -8,8 +8,9 @@ import { useSelector } from 'react-redux'
 import { createSelector } from '@reduxjs/toolkit'
 import { DEFAULT_LIST_OF_LISTS, OFFICIAL_LISTS } from 'config/constants/lists'
 import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-default.tokenlist.json'
-import { UNSUPPORTED_LIST_URLS } from '../../config/constants/lists'
+import { UNSUPPORTED_LIST_URLS, WARNING_LIST_URLS } from '../../config/constants/lists'
 import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
+import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
 import { AppState } from '../index'
 import { WrappedTokenInfo, TagInfo, TokenAddressMap, EMPTY_LIST } from '../types'
 
@@ -95,6 +96,15 @@ export const combinedTokenMapFromUnsupportedUrlsSelector = createSelector([selec
   return combineMaps(localUnsupportedListMap, loadedUnsupportedListMap)
 })
 
+export const combinedTokenMapFromWarningUrlsSelector = createSelector([selectorByUrls], (lists) => {
+  // get hard coded unsupported tokens
+  const localUnsupportedListMap = listToTokenMap(WARNING_TOKEN_LIST)
+  // get any loaded unsupported tokens
+  const loadedUnsupportedListMap = combineTokenMaps(lists, WARNING_LIST_URLS)
+
+  return combineMaps(localUnsupportedListMap, loadedUnsupportedListMap)
+})
+
 const listCache: WeakMap<TokenList, TokenAddressMap> | null =
   typeof WeakMap !== 'undefined' ? new WeakMap<TokenList, TokenAddressMap>() : null
 
@@ -155,8 +165,8 @@ export function useAllLists(): {
 
 function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddressMap {
   return {
-    [ChainId.MAINNET]: { ...map1[ChainId.MAINNET], ...map2[ChainId.MAINNET] },
-    [ChainId.TESTNET]: { ...map1[ChainId.TESTNET], ...map2[ChainId.TESTNET] },
+    [ChainId.BSC]: { ...map1[ChainId.BSC], ...map2[ChainId.BSC] },
+    [ChainId.BSC_TESTNET]: { ...map1[ChainId.BSC_TESTNET], ...map2[ChainId.BSC_TESTNET] },
   }
 }
 
@@ -183,6 +193,11 @@ export function useCombinedInactiveList(): TokenAddressMap {
 // list of tokens not supported on interface, used to show warnings and prevent swaps and adds
 export function useUnsupportedTokenList(): TokenAddressMap {
   return useSelector(combinedTokenMapFromUnsupportedUrlsSelector)
+}
+
+// list of warning tokens on interface, used to show warnings and prevent adds
+export function useWarningTokenList(): TokenAddressMap {
+  return useSelector(combinedTokenMapFromWarningUrlsSelector)
 }
 
 export function useIsListActive(url: string): boolean {

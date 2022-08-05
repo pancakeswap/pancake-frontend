@@ -1,18 +1,13 @@
-import { useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
+import { useModal, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { PageMeta } from 'components/Layout/Page'
-import PageLoader from 'components/Loader/PageLoader'
 import { useEffect, useRef } from 'react'
 import { useInitialBlock } from 'state/block/hooks'
 import { initializePredictions } from 'state/predictions'
-import { useChartView, useGetPredictionsStatus, useIsChartPaneOpen } from 'state/predictions/hooks'
+import { useChartView, useIsChartPaneOpen } from 'state/predictions/hooks'
+import { PredictionsChartView } from 'state/types'
 import { useAccountLocalEventListener } from 'hooks/useAccountLocalEventListener'
-import { PredictionsChartView, PredictionStatus } from 'state/types'
-import {
-  useUserPredictionAcceptedRisk,
-  useUserPredictionChainlinkChartDisclaimerShow,
-  useUserPredictionChartDisclaimerShow,
-} from 'state/user/hooks'
+import { useUserPredictionChainlinkChartDisclaimerShow, useUserPredictionChartDisclaimerShow } from 'state/user/hooks'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 
 import ChartDisclaimer from './components/ChartDisclaimer'
@@ -26,28 +21,17 @@ import usePollPredictions from './hooks/usePollPredictions'
 import Mobile from './Mobile'
 
 function Warnings() {
-  const [hasAcceptedRisk, setHasAcceptedRisk] = useUserPredictionAcceptedRisk()
   const [showDisclaimer] = useUserPredictionChartDisclaimerShow()
   const [showChainlinkDisclaimer] = useUserPredictionChainlinkChartDisclaimerShow()
   const isChartPaneOpen = useIsChartPaneOpen()
   const chartView = useChartView()
-  const handleAcceptRiskSuccess = () => setHasAcceptedRisk(true)
 
-  const [onPresentRiskDisclaimer] = useModal(<RiskDisclaimer onSuccess={handleAcceptRiskSuccess} />, false)
   const [onPresentChartDisclaimer] = useModal(<ChartDisclaimer />, false)
   const [onPresentChainlinkChartDisclaimer] = useModal(<ChainlinkChartDisclaimer />, false)
 
   // TODO: memoize modal's handlers
-  const onPresentRiskDisclaimerRef = useRef(onPresentRiskDisclaimer)
   const onPresentChartDisclaimerRef = useRef(onPresentChartDisclaimer)
   const onPresentChainlinkChartDisclaimerRef = useRef(onPresentChainlinkChartDisclaimer)
-
-  // Disclaimer
-  useEffect(() => {
-    if (!hasAcceptedRisk) {
-      onPresentRiskDisclaimerRef.current()
-    }
-  }, [hasAcceptedRisk, onPresentRiskDisclaimerRef])
 
   // Chart Disclaimer
   useEffect(() => {
@@ -67,9 +51,8 @@ function Warnings() {
 }
 
 const Predictions = () => {
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpointsContext()
   const { account } = useWeb3React()
-  const status = useGetPredictionsStatus()
   const dispatch = useLocalDispatch()
   const initialBlock = useInitialBlock()
 
@@ -84,14 +67,11 @@ const Predictions = () => {
 
   usePollPredictions()
 
-  if (status === PredictionStatus.INITIAL) {
-    return <PageLoader />
-  }
-
   return (
     <>
       <PageMeta />
       <Warnings />
+      <RiskDisclaimer />
       <SwiperProvider>
         <Container>
           {isDesktop ? <Desktop /> : <Mobile />}

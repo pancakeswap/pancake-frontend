@@ -1,0 +1,21 @@
+{
+  "name": "Pancake Unsupported List",
+  "timestamp": "2021-01-05T20:47:02.923Z",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 0
+  },
+  "tags": {},
+  "logoURI": "ipfs://QmNa8mQkrNKp1WEEeGjFezDmDeodkWRevGFN8JCV7b4Xir",
+  "keywords": ["pancake", "unsupported"],
+  "tokens": [
+    {
+      "name": "Pokemoney Coin",
+      "symbol": "PMY",
+      "address": "0x32ff5b4C3B1744F0344D96fA2f87799Ed2805749",
+      "chainId": 56,
+      "decimals": 18
+    }
+  ]
+}

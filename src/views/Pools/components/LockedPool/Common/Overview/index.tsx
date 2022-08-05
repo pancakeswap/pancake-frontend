@@ -12,6 +12,7 @@ import TextRow from './TextRow'
 import BalanceRow from './BalanceRow'
 import DateRow from './DateRow'
 import formatRoi from '../../utils/formatRoi'
+import formatiCake from '../../utils/formatICake'
 import { OverviewPropsType } from '../../types'
 import CalculatorButton from '../../Buttons/CalculatorButton'
 
@@ -25,6 +26,7 @@ const Overview: React.FC<OverviewPropsType> = ({
   lockStartTime,
   lockEndTime,
   showLockWarning,
+  ceiling,
 }) => {
   const { getLockedApy, getBoostFactor } = useVaultApy()
   const { t } = useTranslation()
@@ -50,6 +52,17 @@ const Overview: React.FC<OverviewPropsType> = ({
     ? new Date(convertTimeToSeconds(lockEndTime))
     : addSeconds(now, duration)
 
+  const formattediCake = useMemo(() => {
+    return formatiCake({ lockedAmount, duration, ceiling })
+  }, [lockedAmount, duration, ceiling])
+
+  const newFormattediCake = useMemo(() => {
+    const amount = Number(newLockedAmount) ? newLockedAmount : lockedAmount
+    const lockDuration = Number(newDuration) ? newDuration : duration
+
+    return formatiCake({ lockedAmount: amount, duration: lockDuration, ceiling })
+  }, [lockedAmount, newLockedAmount, duration, newDuration, ceiling])
+
   return (
     <>
       <Box>
@@ -63,6 +76,7 @@ const Overview: React.FC<OverviewPropsType> = ({
         </Flex>
         <LightGreyCard>
           <BalanceRow title={t('Cake to be locked')} value={lockedAmount} newValue={newLockedAmount} decimals={2} />
+          <BalanceRow title="iCake" decimals={2} value={formattediCake} newValue={newFormattediCake} />
           <BalanceRow
             title="apy"
             unit="%"

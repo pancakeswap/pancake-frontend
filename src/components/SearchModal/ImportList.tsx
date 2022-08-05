@@ -7,8 +7,7 @@ import { RowBetween, RowFixed } from 'components/Layout/Row'
 import useTheme from 'hooks/useTheme'
 import { ListLogo } from 'components/Logo'
 import { TokenList } from '@uniswap/token-lists'
-import { useDispatch } from 'react-redux'
-import { AppDispatch } from 'state'
+import { useAppDispatch } from 'state'
 import useFetchListCallback from 'hooks/useFetchListCallback'
 import { removeList, enableList } from 'state/lists/actions'
 import { useAllLists } from 'state/lists/hooks'
@@ -34,7 +33,7 @@ const TextDot = styled.div`
 
 function ImportList({ listURL, list, onImport }: ImportProps) {
   const { theme } = useTheme()
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useAppDispatch()
 
   const { t } = useTranslation()
 

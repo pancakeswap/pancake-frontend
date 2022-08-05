@@ -1,36 +1,27 @@
-import React, { useEffect, useRef, memo } from 'react'
-import { useCountUp } from 'react-countup'
+import React, { memo, useMemo } from 'react'
+import { BigNumber } from '@ethersproject/bignumber'
+import CountUp from 'react-countup'
 import { Skeleton, TooltipText } from '@pancakeswap/uikit'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
-import usePollOraclePrice from '../../hooks/usePollOraclePrice'
 
 interface LiveRoundPriceProps {
   isBull: boolean
+  price: BigNumber
 }
 
-const LiveRoundPrice: React.FC<LiveRoundPriceProps> = ({ isBull }) => {
-  const { price } = usePollOraclePrice()
+const LiveRoundPrice: React.FC<LiveRoundPriceProps> = ({ isBull, price }) => {
+  const priceAsNumber = useMemo(() => parseFloat(formatBigNumberToFixed(price, 4, 8)), [price])
 
-  const priceAsNumber = parseFloat(formatBigNumberToFixed(price, 3, 8))
   const priceColor = isBull ? 'success' : 'failure'
 
-  const { countUp, update } = useCountUp({
-    start: 0,
-    end: priceAsNumber,
-    duration: 1,
-    decimals: 3,
-  })
-
-  const updateRef = useRef(update)
-
-  useEffect(() => {
-    updateRef.current(priceAsNumber)
-  }, [priceAsNumber, updateRef])
-
   return (
-    <TooltipText bold color={priceColor} fontSize="24px" style={{ minHeight: '36px' }}>
-      {price.gt(0) ? `$${countUp}` : <Skeleton height="36px" width="94px" />}
-    </TooltipText>
+    <CountUp start={0} preserveValue delay={0} end={priceAsNumber} prefix="$" decimals={4} duration={1}>
+      {({ countUpRef }) => (
+        <TooltipText bold color={priceColor} fontSize="24px" style={{ minHeight: '36px' }}>
+          {price.gt(0) ? <span ref={countUpRef} /> : <Skeleton height="36px" width="94px" />}
+        </TooltipText>
+      )}
+    </CountUp>
   )
 }
 

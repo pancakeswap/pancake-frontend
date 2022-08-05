@@ -54,7 +54,7 @@ const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
         )}
       </Text>
     </>,
-    { placement: 'right' },
+    { placement: 'top' },
   )
 
   const currentEpoch = useGetCurrentEpoch()

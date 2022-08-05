@@ -7,6 +7,7 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
+      position: relative;
       -webkit-align-items: center;
       -webkit-box-align: center;
       -ms-flex-align: center;
