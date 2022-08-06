@@ -1,6 +1,7 @@
 import { Token, TokenAmount } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
 import { SUGGESTED_BASES } from 'config/constants/exchange'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAllTokenBalances } from '../../state/wallet/hooks'
 
 // compare two token amounts with highest one coming first
@@ -51,10 +52,11 @@ export function useTokenComparator(inverted: boolean): (tokenA: Token, tokenB: T
   }, [inverted, comparator])
 }
 
-export function finalSortTokens({ tokens, balances, chainId }) {
+export function useFinalSortTokens(tokens) {
+  const balances = useAllTokenBalances()
+  const { chainId } = useActiveWeb3React()
   const result = []
-
-  let tokensTemp = tokens
+  const tokensTemp = tokens
 
   // Tokens with balances will be placed first
   tokens.forEach((token) => {
@@ -65,7 +67,8 @@ export function finalSortTokens({ tokens, balances, chainId }) {
 
     result.push(token)
 
-    tokensTemp = tokensTemp.filter((_token) => _token.symbol.toLowerCase() !== token.symbol.toLowerCase())
+    const tokenIndex = tokensTemp.findIndex((_token) => _token.symbol.toLowerCase() === token.symbol.toLowerCase())
+    tokensTemp.splice(tokenIndex, 1)
   })
 
   // PinToken will be placed second
@@ -77,7 +80,8 @@ export function finalSortTokens({ tokens, balances, chainId }) {
 
     result.push(matchToken)
 
-    tokensTemp = tokensTemp.filter((_token) => _token.symbol.toLowerCase() !== matchToken.symbol.toLowerCase())
+    const tokenIndex = tokensTemp.findIndex((_token) => _token.symbol.toLowerCase() === matchToken.symbol.toLowerCase())
+    tokensTemp.splice(tokenIndex, 1)
   })
 
   tokensTemp.forEach((token) => {

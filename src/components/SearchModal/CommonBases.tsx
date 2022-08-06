@@ -56,16 +56,14 @@ export default function CommonBases({
   const { t } = useTranslation()
 
   const pinTokenDescText = commonBasesType === 'SWAP_LIMIT' ? t('Common tokens') : t('Common bases')
-  const pinTokenQuestionHelperText =
-    commonBasesType === 'SWAP_LIMIT'
-      ? t('These tokens are commonly paired with other tokens.')
-      : t('These tokens are commonly paired with other tokens.')
 
   return (
     <AutoColumn gap="md">
       <AutoRow>
         <Text fontSize="14px">{pinTokenDescText}</Text>
-        {commonBasesType === 'LIQUIDITY' && <QuestionHelper text={pinTokenQuestionHelperText} ml="4px" />}
+        {commonBasesType === 'LIQUIDITY' && (
+          <QuestionHelper text={t('These tokens are commonly paired with other tokens.')} ml="4px" />
+        )}
       </AutoRow>
       <RowWrapper>
         <ButtonWrapper>
