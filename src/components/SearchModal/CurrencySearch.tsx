@@ -16,10 +16,10 @@ import Row from '../Layout/Row'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
 import { useSortedTokensByQuery, createFilterToken } from './filtering'
-import useTokenComparator from './sorting'
+import { useTokenComparator, finalSortTokens } from './sorting'
 import { getSwapSound } from './swapSound'
-
 import ImportRow from './ImportRow'
+import { useAllTokenBalances } from '../../state/wallet/hooks'
 
 interface CurrencySearchProps {
   selectedCurrency?: Currency | null
@@ -120,9 +120,16 @@ function CurrencySearch({
 
   const tokenComparator = useTokenComparator(invertSearchOrder)
 
-  const filteredSortedTokens: Token[] = useMemo(() => {
+  const filteredSortedTokensFirst: Token[] = useMemo(() => {
     return [...filteredQueryTokens].sort(tokenComparator)
   }, [filteredQueryTokens, tokenComparator])
+
+  const balances = useAllTokenBalances()
+  const filteredSortedTokens = finalSortTokens({
+    tokens: filteredSortedTokensFirst,
+    balances,
+    chainId,
+  })
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {

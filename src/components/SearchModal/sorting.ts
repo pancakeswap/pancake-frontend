@@ -1,5 +1,6 @@
 import { Token, TokenAmount } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
+import { SUGGESTED_BASES } from 'config/constants/exchange'
 import { useAllTokenBalances } from '../../state/wallet/hooks'
 
 // compare two token amounts with highest one coming first
@@ -38,8 +39,9 @@ function getTokenComparator(balances: {
   }
 }
 
-function useTokenComparator(inverted: boolean): (tokenA: Token, tokenB: Token) => number {
+export function useTokenComparator(inverted: boolean): (tokenA: Token, tokenB: Token) => number {
   const balances = useAllTokenBalances()
+
   const comparator = useMemo(() => getTokenComparator(balances ?? {}), [balances])
   return useMemo(() => {
     if (inverted) {
@@ -49,4 +51,38 @@ function useTokenComparator(inverted: boolean): (tokenA: Token, tokenB: Token) =
   }, [inverted, comparator])
 }
 
-export default useTokenComparator
+export function finalSortTokens({ tokens, balances, chainId }) {
+  const result = []
+
+  let tokensTemp = tokens
+
+  // Tokens with balances will be placed first
+  tokens.forEach((token) => {
+    const balance = Number(balances[token.address]?.toSignificant(4))
+    if (Number.isNaN(balance) || balance === 0) {
+      return
+    }
+
+    result.push(token)
+
+    tokensTemp = tokensTemp.filter((_token) => _token.symbol.toLowerCase() !== token.symbol.toLowerCase())
+  })
+
+  // PinToken will be placed second
+  SUGGESTED_BASES[chainId].forEach((token) => {
+    const matchToken = tokensTemp.find((_token) => _token.symbol.toLowerCase() === token.symbol.toLowerCase())
+    if (typeof matchToken === 'undefined') {
+      return
+    }
+
+    result.push(matchToken)
+
+    tokensTemp = tokensTemp.filter((_token) => _token.symbol.toLowerCase() !== matchToken.symbol.toLowerCase())
+  })
+
+  tokensTemp.forEach((token) => {
+    result.push(token)
+  })
+
+  return result
+}

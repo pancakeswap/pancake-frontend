@@ -1,6 +1,8 @@
 import { useMemo } from 'react'
 import { TokenInfo } from '@uniswap/token-lists'
+import { SUGGESTED_BASES } from 'config/constants/exchange'
 import { Token } from '@pancakeswap/sdk'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { isAddress } from '../../utils'
 
 export function filterTokens(tokens: Token[], search: string): Token[] {
@@ -68,6 +70,8 @@ export function createFilterToken<T extends TokenInfo | Token>(search: string): 
 }
 
 export function useSortedTokensByQuery(tokens: Token[] | undefined, searchQuery: string): Token[] {
+  const { chainId } = useActiveWeb3React()
+
   return useMemo(() => {
     if (!tokens) {
       return []
@@ -84,6 +88,7 @@ export function useSortedTokensByQuery(tokens: Token[] | undefined, searchQuery:
     const exactMatches: Token[] = []
     const symbolSubstrings: Token[] = []
     const rest: Token[] = []
+    let symbolSubstringsBeforePinToken: Token[] = []
 
     // sort tokens by exact match -> substring on symbol match -> rest
     tokens.forEach((token) => {
@@ -92,11 +97,31 @@ export function useSortedTokensByQuery(tokens: Token[] | undefined, searchQuery:
         return exactMatches.push(token)
       }
       if (tokenSymbol.startsWith(trimmedSearchQuery)) {
-        return symbolSubstrings.push(token)
+        return symbolSubstringsBeforePinToken.push(token)
       }
       return rest.push(token)
     })
 
+    // 排序 symbolSubstrings，依照 pin token 排序
+    SUGGESTED_BASES[chainId].forEach((token) => {
+      const matchToken = symbolSubstringsBeforePinToken.find(
+        (_token) => _token.symbol.toLowerCase() === token.symbol.toLowerCase(),
+      )
+      if (typeof matchToken === 'undefined') {
+        return
+      }
+
+      symbolSubstrings.push(matchToken)
+
+      symbolSubstringsBeforePinToken = symbolSubstringsBeforePinToken.filter(
+        (_token) => _token.symbol.toLowerCase() !== matchToken.symbol.toLowerCase(),
+      )
+    })
+
+    symbolSubstringsBeforePinToken.forEach((token) => {
+      symbolSubstrings.push(token)
+    })
+
     return [...exactMatches, ...symbolSubstrings, ...rest]
-  }, [tokens, searchQuery])
+  }, [tokens, searchQuery, chainId])
 }
