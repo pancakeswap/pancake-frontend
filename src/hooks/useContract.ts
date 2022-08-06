@@ -35,6 +35,8 @@ import {
   getPancakeSquadContract,
   getErc721CollectionContract,
   getBunnySpecialXmasContract,
+  getPotteryVaultContract,
+  getPotteryDrawContract,
   getCakeFlexibleSideVaultV2Contract,
   getCakePredictionsContract,
   getPredictionsV1Contract,
@@ -373,6 +375,16 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 export function useMulticallContract() {
   const { chainId } = useActiveWeb3React()
   return useContract<Multicall>(getMulticallAddress(chainId), multiCallAbi, false)
+}
+
+export const usePotterytVaultContract = (address) => {
+  const { library } = useActiveWeb3React()
+  return useMemo(() => getPotteryVaultContract(address, library.getSigner()), [address, library])
+}
+
+export const usePotterytDrawContract = () => {
+  const { library } = useActiveWeb3React()
+  return useMemo(() => getPotteryDrawContract(library.getSigner()), [library])
 }
 
 export function useZapContract(withSignerIfPossible = true) {
