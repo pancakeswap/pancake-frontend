@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
-import { SwapParameters, Trade } from '@pancakeswap/sdk'
+import { SwapParameters, Trade, TradeType } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
@@ -12,6 +12,7 @@ import { calculateGasMargin, isAddress } from '../utils'
 import isZero from '../utils/isZero'
 import { useSwapCallArguments } from './useSwapCallArguments'
 import { transactionErrorToUserReadableMessage } from '../utils/transactionErrorToUserReadableMessage'
+import { basisPointsToPercent } from '../utils/exchange'
 
 export enum SwapCallbackState {
   INVALID,
@@ -128,10 +129,21 @@ export function useSwapCallback(
           .then((response: any) => {
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = trade.outputAmount.currency.symbol
-            const inputAmount = trade.inputAmount.toSignificant(3)
-            const outputAmount = trade.outputAmount.toSignificant(3)
+            const pct = basisPointsToPercent(allowedSlippage)
+            const inputAmount =
+              trade.tradeType === TradeType.EXACT_INPUT
+                ? trade.inputAmount.toSignificant(3)
+                : trade.maximumAmountIn(pct).toSignificant(3)
+            const outputAmount =
+              trade.tradeType === TradeType.EXACT_OUTPUT
+                ? trade.outputAmount.toSignificant(3)
+                : trade.minimumAmountOut(pct).toSignificant(3)
 
-            const base = `Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
+            const base = `Swap ${
+              trade.tradeType === TradeType.EXACT_OUTPUT ? 'max.' : ''
+            } ${inputAmount} ${inputSymbol} for ${
+              trade.tradeType === TradeType.EXACT_INPUT ? 'min.' : ''
+            } ${outputAmount} ${outputSymbol}`
             const withRecipient =
               recipient === account
                 ? base
@@ -159,5 +171,17 @@ export function useSwapCallback(
       },
       error: null,
     }
-  }, [trade, library, account, chainId, recipient, recipientAddress, swapCalls, gasPrice, t, addTransaction])
+  }, [
+    trade,
+    library,
+    account,
+    chainId,
+    recipient,
+    recipientAddress,
+    swapCalls,
+    gasPrice,
+    t,
+    addTransaction,
+    allowedSlippage,
+  ])
 }
