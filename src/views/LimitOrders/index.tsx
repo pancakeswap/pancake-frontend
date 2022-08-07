@@ -145,6 +145,13 @@ const LimitOrders = () => {
     (inputCurrency) => {
       setApprovalSubmitted(false)
       handleCurrencySelection(Field.INPUT, inputCurrency)
+
+      // set inputCurrency to url parameter
+      // Except for bnb, the other tokens will be address.
+      const tokenAddress = inputCurrency.symbol.toLowerCase() === 'bnb' ? 'BNB' : inputCurrency.address
+      const url = new URL(window.location.href)
+      url.searchParams.set('inputCurrency', tokenAddress)
+      window.history.pushState({}, null, url)
     },
     [handleCurrencySelection],
   )
@@ -162,6 +169,13 @@ const LimitOrders = () => {
   const handleOutputSelect = useCallback(
     (outputCurrency) => {
       handleCurrencySelection(Field.OUTPUT, outputCurrency)
+
+      // set outputCurrency to url parameter
+      // Except for bnb, the other tokens will be address.
+      const tokenAddress = outputCurrency.symbol.toLowerCase() === 'bnb' ? 'BNB' : outputCurrency.address
+      const url = new URL(window.location.href)
+      url.searchParams.set('outputCurrency', tokenAddress)
+      window.history.pushState({}, null, url)
     },
     [handleCurrencySelection],
   )

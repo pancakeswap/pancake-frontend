@@ -306,6 +306,13 @@ export default function Swap() {
       } else {
         setSwapWarningCurrency(null)
       }
+
+      // set inputCurrency to url parameter
+      // Except for bnb, the other tokens will be address.
+      const tokenAddress = currencyInput.symbol.toLowerCase() === 'bnb' ? 'BNB' : currencyInput.address
+      const url = new URL(window.location.href)
+      url.searchParams.set('inputCurrency', tokenAddress)
+      window.history.pushState({}, null, url)
     },
     [onCurrencySelection],
   )
@@ -325,6 +332,13 @@ export default function Swap() {
       } else {
         setSwapWarningCurrency(null)
       }
+
+      // set outputCurrency to url parameter
+      // Except for bnb, the other tokens will be address.
+      const tokenAddress = currencyOutput.symbol.toLowerCase() === 'bnb' ? 'BNB' : currencyOutput.address
+      const url = new URL(window.location.href)
+      url.searchParams.set('outputCurrency', tokenAddress)
+      window.history.pushState({}, null, url)
     },
 
     [onCurrencySelection],
