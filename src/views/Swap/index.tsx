@@ -65,6 +65,7 @@ import PriceChartContainer from './components/Chart/PriceChartContainer'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
 import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
+import { currencyId } from '../../utils/currencyId'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -309,12 +310,11 @@ export default function Swap() {
 
       // set inputCurrency to url parameter
       // Except for bnb, the other tokens will be address.
-      const tokenAddress = currencyInput.symbol.toLowerCase() === 'bnb' ? 'BNB' : currencyInput.address
       const url = new URL(window.location.href)
-      url.searchParams.set('inputCurrency', tokenAddress)
-      window.history.pushState({}, null, url)
+      url.searchParams.set('inputCurrency', currencyId(currencyInput))
+      router.replace({ pathname: '/swap', query: url.searchParams.toString() }, undefined, { shallow: true })
     },
-    [onCurrencySelection],
+    [onCurrencySelection, router],
   )
 
   const handleMaxInput = useCallback(() => {
@@ -335,13 +335,12 @@ export default function Swap() {
 
       // set outputCurrency to url parameter
       // Except for bnb, the other tokens will be address.
-      const tokenAddress = currencyOutput.symbol.toLowerCase() === 'bnb' ? 'BNB' : currencyOutput.address
       const url = new URL(window.location.href)
-      url.searchParams.set('outputCurrency', tokenAddress)
-      window.history.pushState({}, null, url)
+      url.searchParams.set('outputCurrency', currencyId(currencyOutput))
+      router.replace({ pathname: '/swap', query: url.searchParams.toString() }, undefined, { shallow: true })
     },
 
-    [onCurrencySelection],
+    [onCurrencySelection, router],
   )
 
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)

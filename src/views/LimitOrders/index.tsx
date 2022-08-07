@@ -33,6 +33,7 @@ import { ConfirmLimitOrderModal } from './components/ConfirmLimitOrderModal'
 import getRatePercentageDifference from './utils/getRatePercentageDifference'
 import { useCurrency, useAllTokens } from '../../hooks/Tokens'
 import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
+import { currencyId } from '../../utils/currencyId'
 
 const LimitOrders = () => {
   // Helpers
@@ -148,12 +149,11 @@ const LimitOrders = () => {
 
       // set inputCurrency to url parameter
       // Except for bnb, the other tokens will be address.
-      const tokenAddress = inputCurrency.symbol.toLowerCase() === 'bnb' ? 'BNB' : inputCurrency.address
       const url = new URL(window.location.href)
-      url.searchParams.set('inputCurrency', tokenAddress)
-      window.history.pushState({}, null, url)
+      url.searchParams.set('inputCurrency', currencyId(inputCurrency))
+      router.replace({ pathname: '/limit-orders', query: url.searchParams.toString() }, undefined, { shallow: true })
     },
-    [handleCurrencySelection],
+    [handleCurrencySelection, router],
   )
   const handleTypeDesiredRate = useCallback(
     (value: string) => {
@@ -172,12 +172,11 @@ const LimitOrders = () => {
 
       // set outputCurrency to url parameter
       // Except for bnb, the other tokens will be address.
-      const tokenAddress = outputCurrency.symbol.toLowerCase() === 'bnb' ? 'BNB' : outputCurrency.address
       const url = new URL(window.location.href)
-      url.searchParams.set('outputCurrency', tokenAddress)
-      window.history.pushState({}, null, url)
+      url.searchParams.set('outputCurrency', currencyId(outputCurrency))
+      router.replace({ pathname: '/limit-orders', query: url.searchParams.toString() }, undefined, { shallow: true })
     },
-    [handleCurrencySelection],
+    [handleCurrencySelection, router],
   )
   const handleApprove = useCallback(async () => {
     await approveCallback()
