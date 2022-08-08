@@ -1,7 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import { Currency, Token } from '@pancakeswap/sdk'
 import { Box, Input, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
 import { KeyboardEvent, RefObject, useCallback, useMemo, useRef, useState, useEffect } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
