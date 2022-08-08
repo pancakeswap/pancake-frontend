@@ -35,6 +35,7 @@ import {
   getTradingCompetitionAddressMoD,
   getBunnySpecialXmasAddress,
   getICakeAddress,
+  getPotteryDrawAddress,
   getZapAddress,
   getCakeFlexibleSideVaultAddress,
   getPredictionsV1Address,
@@ -80,6 +81,8 @@ import nftMarketAbi from 'config/abi/nftMarket.json'
 import nftSaleAbi from 'config/abi/nftSale.json'
 import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
+import potteryVaultAbi from 'config/abi/potteryVaultAbi.json'
+import potteryDrawAbi from 'config/abi/potteryDrawAbi.json'
 import zapAbi from 'config/abi/zap.json'
 import iCakeAbi from 'config/abi/iCake.json'
 import ifoV3Abi from 'config/abi/ifoV3.json'
@@ -124,6 +127,8 @@ import type {
   TradingCompetitionMobox,
   ICake,
   TradingCompetitionMoD,
+  PotteryVaultAbi,
+  PotteryDrawAbi,
   Zap,
   PredictionsV1,
 } from 'config/abi/types'
@@ -274,6 +279,14 @@ export const getPancakeSquadContract = (signer?: Signer | Provider) => {
 }
 export const getErc721CollectionContract = (signer?: Signer | Provider, address?: string) => {
   return getContract(erc721CollectionAbi, address, signer) as Erc721collection
+}
+
+export const getPotteryVaultContract = (address: string, signer?: Signer | Provider) => {
+  return getContract(potteryVaultAbi, address, signer) as PotteryVaultAbi
+}
+
+export const getPotteryDrawContract = (signer?: Signer | Provider) => {
+  return getContract(potteryDrawAbi, getPotteryDrawAddress(), signer) as PotteryDrawAbi
 }
 
 export const getZapContract = (signer?: Signer | Provider) => {

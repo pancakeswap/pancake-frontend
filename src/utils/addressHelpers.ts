@@ -102,6 +102,9 @@ export const getNftSaleAddress = () => {
 export const getPancakeSquadAddress = () => {
   return getAddress(addresses.pancakeSquad)
 }
+export const getPotteryDrawAddress = () => {
+  return getAddress(addresses.potteryDraw)
+}
 
 export const getZapAddress = () => {
   return getAddress(addresses.zap)

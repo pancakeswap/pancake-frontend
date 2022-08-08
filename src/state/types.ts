@@ -36,11 +36,9 @@ export class WrappedTokenInfo extends Token {
   }
 }
 
-export type TokenAddressMap = Readonly<
-  {
-    [chainId in ChainId]: Readonly<{ [tokenAddress: string]: { token: WrappedTokenInfo; list: TokenList } }>
-  }
->
+export type TokenAddressMap = Readonly<{
+  [chainId in ChainId]: Readonly<{ [tokenAddress: string]: { token: WrappedTokenInfo; list: TokenList } }>
+}>
 
 type TagDetails = Tags[keyof Tags]
 export interface TagInfo extends TagDetails {
@@ -655,6 +653,88 @@ export interface PredictionConfig {
   token: Token
 }
 
+// Pottery
+export interface PotteryState {
+  lastVaultAddress: string
+  publicData: SerializedPotteryPublicData
+  userData: SerializedPotteryUserData
+  finishedRoundInfo: PotteryRoundInfo
+}
+
+export interface SerializedPotteryPublicData {
+  lastDrawId: string
+  totalPrize: string
+  getStatus: PotteryDepositStatus
+  totalLockCake: string
+  totalSupply: string
+  lockStartTime: string
+  totalLockedValue: string
+  latestRoundId: string
+  maxTotalDeposit: string
+}
+
+export interface DeserializedPublicData {
+  lastDrawId: string
+  totalPrize: BigNumber
+  getStatus: PotteryDepositStatus
+  totalLockCake: BigNumber
+  totalSupply: BigNumber
+  lockStartTime: string
+  totalLockedValue: BigNumber
+  latestRoundId: string
+  maxTotalDeposit: BigNumber
+}
+
+export interface SerializedPotteryUserData {
+  isLoading?: boolean
+  allowance: string
+  previewDepositBalance: string
+  stakingTokenBalance: string
+  rewards: string
+  winCount: string
+  withdrawAbleData: PotteryWithdrawAbleData[]
+}
+
+export interface DeserializedPotteryUserData {
+  isLoading?: boolean
+  allowance: BigNumber
+  previewDepositBalance: BigNumber
+  stakingTokenBalance: BigNumber
+  rewards: BigNumber
+  winCount: string
+  withdrawAbleData: PotteryWithdrawAbleData[]
+}
+
+export interface PotteryRoundInfo {
+  isFetched: boolean
+  roundId: string
+  drawDate: string
+  prizePot: string
+  totalPlayers: string
+  txid: string
+  winners: Array<string>
+  lockDate: string
+}
+
+export enum PotteryDepositStatus {
+  BEFORE_LOCK = 0,
+  LOCK = 1,
+  UNLOCK = 2,
+}
+
+export interface PotteryWithdrawAbleData {
+  id: string
+  shares: string
+  depositDate: string
+  previewRedeem: string
+  status: PotteryDepositStatus
+  potteryVaultAddress: string
+  totalSupply: string
+  totalLockCake: string
+  lockedDate: string
+  balanceOf: string
+}
+
 // Global state
 
 export interface State {
@@ -664,4 +744,5 @@ export interface State {
   predictions: PredictionsState
   lottery: LotteryState
   nftMarket: NftMarketState
+  pottery: PotteryState
 }

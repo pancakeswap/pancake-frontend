@@ -45,6 +45,26 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 112,
+    lpSymbol: 'PEEL-BUSD LP',
+    lpAddresses: {
+      56: '0x25bfD3162360BbD8FF97b86169288b311c2A68D7',
+      97: '',
+    },
+    token: serializedTokens.peel,
+    quoteToken: serializedTokens.busd,
+  },
+  {
+    pid: 110,
+    lpSymbol: 'SHELL-BUSD LP',
+    lpAddresses: {
+      56: '0x02D75D7beebF6D5228A3Fa5f810CedF2BEa5aB1E',
+      97: '',
+    },
+    token: serializedTokens.shell,
+    quoteToken: serializedTokens.busd,
+  },
+  {
     pid: 106,
     lpSymbol: 'MHUNT-BNB LP',
     lpAddresses: {
@@ -111,16 +131,6 @@ const farms: SerializedFarmConfig[] = [
       97: '',
     },
     token: serializedTokens.xcad,
-    quoteToken: serializedTokens.busd,
-  },
-  {
-    pid: 110,
-    lpSymbol: 'SHELL-BUSD LP',
-    lpAddresses: {
-      56: '0x02D75D7beebF6D5228A3Fa5f810CedF2BEa5aB1E',
-      97: '',
-    },
-    token: serializedTokens.shell,
     quoteToken: serializedTokens.busd,
   },
   {
@@ -847,7 +857,7 @@ const farms: SerializedFarmConfig[] = [
     v1pid: 389,
     lpSymbol: 'CAKE-BUSD LP',
     lpAddresses: {
-      97: '',
+      97: '0x25293964dcaFd8a6cDf97AFF8b6559FD4A5Af864',
       56: '0x804678fa97d91B974ec2af3c843270886528a9E6',
     },
     token: serializedTokens.cake,
