@@ -1,6 +1,6 @@
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Button } from '@pancakeswap/uikit'
-import { ContextApi } from 'contexts/Localization/types'
+import { ContextApi } from '@pancakeswap/localization'
 import { UserStatusEnum } from 'views/PancakeSquad/types'
 
 type ActivateProfileButtonProps = {

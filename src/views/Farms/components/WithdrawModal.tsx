@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import { useCallback, useMemo, useState } from 'react'
 import { Button, Modal, AutoRenewIcon } from '@pancakeswap/uikit'
 import { ModalActions, ModalInput } from 'components/Modal'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 
 interface WithdrawModalProps {

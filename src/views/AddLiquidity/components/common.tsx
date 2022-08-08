@@ -1,7 +1,7 @@
 import React from 'react'
 import { Currency, Fraction, Percent, TokenAmount } from '@pancakeswap/sdk'
 import { Text, useTooltip, TooltipText, Box, Flex, Svg, SvgProps } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { AutoColumn } from 'components/Layout/Column'
 import { AutoRow, RowBetween } from 'components/Layout/Row'

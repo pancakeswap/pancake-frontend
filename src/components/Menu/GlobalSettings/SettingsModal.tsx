@@ -10,7 +10,7 @@ import {
   useZapModeManager,
 } from 'state/user/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import QuestionHelper from '../../QuestionHelper'
 import TransactionSettings from './TransactionSettings'

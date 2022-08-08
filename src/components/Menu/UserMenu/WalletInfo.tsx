@@ -2,7 +2,7 @@ import { Box, Button, Flex, InjectedModalProps, LinkExternal, Message, Skeleton,
 import { useWeb3React } from '@web3-react/core'
 import { CAKE } from 'config/constants/tokens'
 import { FetchStatus } from 'config/constants/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useAuth from 'hooks/useAuth'
 import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
 

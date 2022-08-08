@@ -1,5 +1,5 @@
 import { Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 const BondlyWarning = () => {
   const { t } = useTranslation()

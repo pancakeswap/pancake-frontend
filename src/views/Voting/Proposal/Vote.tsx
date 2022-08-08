@@ -4,7 +4,7 @@ import { Button, Card, CardBody, CardHeader, CardProps, Heading, Radio, Text, us
 import { useWeb3React } from '@web3-react/core'
 import { Proposal } from 'state/types'
 import useToast from 'hooks/useToast'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import CastVoteModal from '../components/CastVoteModal'
 

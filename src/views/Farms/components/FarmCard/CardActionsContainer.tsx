@@ -1,8 +1,7 @@
 import { useContext } from 'react'
 import { Flex, Text } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useTranslation } from 'contexts/Localization'
-
+import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { FarmWithStakedValue } from '../types'
 import HarvestAction from './HarvestAction'

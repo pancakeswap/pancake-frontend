@@ -15,7 +15,7 @@ import {
 import Image from 'next/image'
 import Trans from 'components/Trans'
 import { Tiers, PrizesConfig } from 'config/constants/trading-competition/prizes'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useState } from 'react'
 import { BoldTd, Td, StyledPrizeTable } from '../../StyledPrizeTable'
 

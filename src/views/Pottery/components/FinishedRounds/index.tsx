@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { OutlineText } from 'views/Pottery/components/TextStyle'
 import { FINISHED_ROUNDS_BG, FINISHED_ROUNDS_BG_DARK } from 'views/Lottery/pageSectionStyles'
 import { ConvexTop } from 'components/PageSection/svg/CurvedSvg'

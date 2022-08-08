@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import usePrevious from 'hooks/usePreviousValue'
+import { usePreviousValue } from '@pancakeswap/hooks'
 import useSwiper from './useSwiper'
 import { PageView } from '../types'
 
@@ -8,7 +8,7 @@ import { PageView } from '../types'
  */
 const useOnViewChange = (liveSwiperIndex: number, view?: PageView) => {
   const { swiper } = useSwiper()
-  const prevView = usePrevious(view)
+  const prevView = usePreviousValue(view)
 
   useEffect(() => {
     if (swiper && view !== prevView && swiper.activeIndex !== liveSwiperIndex) {

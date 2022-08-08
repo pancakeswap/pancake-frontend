@@ -4,7 +4,8 @@ import { Button, Flex, IconButton, AddIcon, MinusIcon, useModal } from '@pancake
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
+
 import { useRouter } from 'next/router'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import { TransactionResponse } from '@ethersproject/providers'
