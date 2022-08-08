@@ -45,6 +45,26 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 114,
+    lpSymbol: 'stkBNB-BNB LP',
+    lpAddresses: {
+      56: '',
+      97: '',
+    },
+    token: serializedTokens.stkbnb,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
+    pid: 113,
+    lpSymbol: 'PSTAKE-BUSD LP',
+    lpAddresses: {
+      56: '',
+      97: '',
+    },
+    token: serializedTokens.pstake,
+    quoteToken: serializedTokens.busd,
+  },
+  {
     pid: 112,
     lpSymbol: 'PEEL-BUSD LP',
     lpAddresses: {
