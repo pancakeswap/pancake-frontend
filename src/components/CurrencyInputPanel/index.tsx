@@ -1,7 +1,6 @@
 import { Currency, Pair, Token } from '@pancakeswap/sdk'
-import { Button, ChevronDownIcon, Text, useModal, Flex, Box, MetamaskIcon } from '@pancakeswap/uikit'
+import { Button, ChevronDownIcon, Text, useModal, Flex, Box } from '@pancakeswap/uikit'
 import styled, { css } from 'styled-components'
-import { canRegisterToken, registerToken } from 'utils/wallet'
 import { isAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
 import { WrappedTokenInfo } from 'state/types'
@@ -14,6 +13,7 @@ import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
 
 import { Input as NumericalInput } from './NumericalInput'
 import { CopyButton } from '../CopyButton'
+import AddToWalletButton from '../AddToWallet/AddToWalletButton'
 
 const InputRow = styled.div<{ selected: boolean }>`
   display: flex;
@@ -186,20 +186,16 @@ export default function CurrencyInputPanel({
                 tooltipRight={40}
                 tooltipFontSize={12}
               />
-              {canRegisterToken() && (
-                <MetamaskIcon
-                  style={{ cursor: 'pointer' }}
-                  width="16px"
-                  onClick={() =>
-                    registerToken(
-                      tokenAddress,
-                      token.symbol,
-                      token.decimals,
-                      token instanceof WrappedTokenInfo ? token.logoURI : undefined,
-                    )
-                  }
-                />
-              )}
+              <AddToWalletButton
+                variant="text"
+                p="0"
+                height="auto"
+                width="fit-content"
+                tokenAddress={tokenAddress}
+                tokenSymbol={token.symbol}
+                tokenDecimals={token.decimals}
+                tokenLogo={token instanceof WrappedTokenInfo ? token.logoURI : undefined}
+              />
             </Flex>
           ) : null}
         </Flex>

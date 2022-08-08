@@ -6,7 +6,6 @@ import {
   Text,
   ErrorIcon,
   ArrowUpIcon,
-  MetamaskIcon,
   Flex,
   Box,
   Link,
@@ -15,14 +14,13 @@ import {
   InjectedModalProps,
   ModalProps,
 } from '@pancakeswap/uikit'
-import { canRegisterToken, registerToken } from 'utils/wallet'
 import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { WrappedTokenInfo } from 'state/types'
-import { RowFixed } from '../Layout/Row'
 import { AutoColumn, ColumnCenter } from '../Layout/Column'
 import { getBscScanLink } from '../../utils'
+import AddToWalletButton, { AddToWalletTextOptions } from '../AddToWallet/AddToWalletButton'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -85,25 +83,18 @@ export function TransactionSubmittedContent({
               {t('View on BscScan')}
             </Link>
           )}
-          {currencyToAdd && canRegisterToken() && (
-            <Button
+          {currencyToAdd && (
+            <AddToWalletButton
               variant="tertiary"
               mt="12px"
               width="fit-content"
-              onClick={() =>
-                registerToken(
-                  token.address,
-                  token.symbol,
-                  token.decimals,
-                  token instanceof WrappedTokenInfo ? token.logoURI : undefined,
-                )
-              }
-            >
-              <RowFixed>
-                {t('Add %asset% to Metamask', { asset: currencyToAdd.symbol })}
-                <MetamaskIcon width="16px" ml="6px" />
-              </RowFixed>
-            </Button>
+              marginTextBetweenLogo="6px"
+              textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
+              tokenAddress={token.address}
+              tokenSymbol={currencyToAdd.symbol}
+              tokenDecimals={token.decimals}
+              tokenLogo={token instanceof WrappedTokenInfo ? token.logoURI : undefined}
+            />
           )}
           <Button onClick={onDismiss} mt="20px">
             {t('Close')}
