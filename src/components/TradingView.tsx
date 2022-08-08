@@ -1,7 +1,7 @@
 import { Box, FlexProps, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import Script from 'next/script'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { DefaultTheme, useTheme } from 'styled-components'
 import { ChartByLabel } from './Chart/ChartbyLabel'
 
@@ -59,7 +59,6 @@ interface TradingViewProps {
 const TradingView = ({ id, symbol }: TradingViewProps) => {
   const { currentLanguage } = useTranslation()
   const theme = useTheme()
-  const widgetRef = useRef<any>()
   const { isMobile } = useMatchBreakpointsContext()
 
   useEffect(() => {
@@ -75,10 +74,10 @@ const TradingView = ({ id, symbol }: TradingViewProps) => {
     // @ts-ignore
     if (window.tv) {
       // @ts-ignore
-      widgetRef.current = initializeTradingView(window.tv, theme, currentLanguage.code, opts)
+      initializeTradingView(window.tv, theme, currentLanguage.code, opts)
     } else {
       tradingViewListener().then((tv) => {
-        widgetRef.current = initializeTradingView(tv, theme, currentLanguage.code, opts)
+        initializeTradingView(tv, theme, currentLanguage.code, opts)
       })
     }
 
