@@ -16,7 +16,7 @@ import Row from '../Layout/Row'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
 import { useSortedTokensByQuery, createFilterToken } from './filtering'
-import { useTokenComparator, useFinalSortTokens } from './sorting'
+import useTokenComparator from './sorting'
 import { getSwapSound } from './swapSound'
 import ImportRow from './ImportRow'
 
@@ -119,11 +119,9 @@ function CurrencySearch({
 
   const tokenComparator = useTokenComparator(invertSearchOrder)
 
-  const filteredSortedTokensFirst: Token[] = useMemo(() => {
+  const filteredSortedTokens: Token[] = useMemo(() => {
     return [...filteredQueryTokens].sort(tokenComparator)
   }, [filteredQueryTokens, tokenComparator])
-
-  const filteredSortedTokens = useFinalSortTokens(filteredSortedTokensFirst)
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {

@@ -1,7 +1,5 @@
 import { Token, TokenAmount } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
-import { SUGGESTED_BASES } from 'config/constants/exchange'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAllTokenBalances } from '../../state/wallet/hooks'
 
 // compare two token amounts with highest one coming first
@@ -40,7 +38,7 @@ function getTokenComparator(balances: {
   }
 }
 
-export function useTokenComparator(inverted: boolean): (tokenA: Token, tokenB: Token) => number {
+function useTokenComparator(inverted: boolean): (tokenA: Token, tokenB: Token) => number {
   const balances = useAllTokenBalances()
 
   const comparator = useMemo(() => getTokenComparator(balances ?? {}), [balances])
@@ -52,41 +50,4 @@ export function useTokenComparator(inverted: boolean): (tokenA: Token, tokenB: T
   }, [inverted, comparator])
 }
 
-export function useFinalSortTokens(tokens) {
-  const balances = useAllTokenBalances()
-  const { chainId } = useActiveWeb3React()
-  const result = []
-  const tokensTemp = tokens
-
-  // Tokens with balances will be placed first
-  tokens.forEach((token) => {
-    const balance = Number(balances[token.address]?.toSignificant(4))
-    if (Number.isNaN(balance) || balance === 0) {
-      return
-    }
-
-    result.push(token)
-
-    const tokenIndex = tokensTemp.findIndex((_token) => _token.symbol.toLowerCase() === token.symbol.toLowerCase())
-    tokensTemp.splice(tokenIndex, 1)
-  })
-
-  // PinToken will be placed second
-  SUGGESTED_BASES[chainId].forEach((token) => {
-    const matchToken = tokensTemp.find((_token) => _token.symbol.toLowerCase() === token.symbol.toLowerCase())
-    if (typeof matchToken === 'undefined') {
-      return
-    }
-
-    result.push(matchToken)
-
-    const tokenIndex = tokensTemp.findIndex((_token) => _token.symbol.toLowerCase() === matchToken.symbol.toLowerCase())
-    tokensTemp.splice(tokenIndex, 1)
-  })
-
-  tokensTemp.forEach((token) => {
-    result.push(token)
-  })
-
-  return result
-}
+export default useTokenComparator
