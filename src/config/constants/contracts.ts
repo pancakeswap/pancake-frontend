@@ -1,7 +1,7 @@
 export default {
   masterChef: {
-    97: '',
-    56: '0x97Dcad25C802F126F00D11308b532e5Ff4a7fEF6',
+    97: '0xB4A466911556e39210a6bB2FaECBB59E4eB7E43d',
+    56: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
   },
   masterChefV1: {
     97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
@@ -15,6 +15,7 @@ export default {
     97: '0x5790c3534F30437641541a0FA04C992799602998',
     56: '0x5aF6D33DE2ccEC94efb1bDF8f92Bd58085432d2c',
   },
+  // TODO: multi
   multiCall: {
     56: '0xfF6FD90A470Aaa0c1B8A54681746b07AcdFedc9B',
     97: '0x8F3273Fb89B075b1645095ABaC6ed17B2d4Bc576',
@@ -64,8 +65,8 @@ export default {
     97: '0x24ec6962dbe874F6B67B5C50857565667fA0854F',
   },
   cakeVault: {
-    56: '0xbB349c2704fB344557608D4abD948199BAfdd0AD',
-    97: '',
+    56: '0x45c54210128a065de780C4B0Df3d16664f7f859e',
+    97: '0x683433ba14e8F26774D43D3E90DA6Dd7a22044Fe',
   },
   cakeFlexibleSideVault: {
     56: '0x615e896A8C2CA8470A2e9dc2E9552998f8658Ea0',
@@ -115,10 +116,6 @@ export default {
     56: '0x787980da5491118C3cB33B21aB50c8c379D2C552',
     97: '0x981aE96378e770DE44F89cD9175E708f9EDB70a9',
   },
-  galaxyNftClaiming: {
-    56: '0x2D18f2d27D50C9b4013DEBA3D54f60996bD8847E',
-    97: '',
-  },
   nftMarket: {
     56: '0x17539cCa21C7933Df5c980172d22659B8C345C5A',
     97: '0x7f9f37ddcaa33893f9beb3d8748c8d6bfbde6ab2',
@@ -131,20 +128,17 @@ export default {
     56: '0x0a8901b0E25DEb55A87524f0cC164E9644020EBA',
     97: '0xfC0c3F11fDA72Cb9A56F28Ec8D44C0ae4B3ABF86',
   },
+  potteryDraw: {
+    56: '0x01871991587d5671f3A2d4E2BcDC22F4E026396e',
+    97: '0xDB9D365b50E62fce747A90515D2bd1254A16EbB9',
+  },
+  // TODO: multi
   zap: {
     56: '0xD4c4a7C55c9f7B3c48bafb6E8643Ba79F42418dF',
     97: '0xD85835207054F25620109bdc745EC1D1f84F04e1',
   },
   iCake: {
     56: '0x3C458828D1622F5f4d526eb0d24Da8C4Eb8F07b1',
-    97: '',
-  },
-  bCakeFarmBooster: {
-    56: '0x9396817286dcEA1885AC79b19d779D687dd101Cb',
-    97: '',
-  },
-  bCakeFarmBoosterProxyFactory: {
-    56: '0xdbCd3e76600125918037590446F710Ada01754b7',
     97: '',
   },
 }

@@ -6,7 +6,11 @@
     "noImplicitAny": false,
     "noFallthroughCasesInSwitch": true,
     "downlevelIteration": true,
-    "target": "es5"
+    "target": "es5",
+    "paths": {
+      "@pancakeswap/sdk": ["../packages/swap-sdk/src/index.ts"],
+      "@pancakeswap/wagmi": ["../packages/wagmi/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "cypress", "/apps/*"],
   "include": ["next-env.d.ts", "./src/**/*.ts", "./src/**/*.tsx"]
