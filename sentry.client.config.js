@@ -2,7 +2,7 @@
 // The config you add here will be used whenever a page is visited.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
-import * as Sentry from '@sentry/nextjs'
+import { init, GlobalHandlers, Breadcrumbs } from '@sentry/nextjs'
 
 const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN
 
@@ -13,13 +13,13 @@ const isUserRejected = (err) => {
 
 const ENV = process.env.VERCEL_ENV || process.env.NODE_ENV
 
-Sentry.init({
+init({
   dsn: SENTRY_DSN,
   integrations: [
-    new Sentry.Integrations.Breadcrumbs({
+    Breadcrumbs({
       console: ENV === 'production',
     }),
-    new Sentry.Integrations.GlobalHandlers({
+    GlobalHandlers({
       onerror: false,
       onunhandledrejection: false,
     }),

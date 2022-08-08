@@ -52,7 +52,7 @@
     "@gnosis.pm/safe-apps-wagmi": "^1.0.2",
     "@next/bundle-analyzer": "^12.0.7",
     "@reduxjs/toolkit": "^1.8.2",
-    "@sentry/nextjs": "6.19.6",
+    "@sentry/nextjs": "^7.9.0",
     "@uniswap/token-lists": "^1.0.0-beta.19",
     "ajv": "^6.12.3",
     "bignumber.js": "^9.0.0",

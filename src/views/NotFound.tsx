@@ -12,14 +12,14 @@ const StyledNotFound = styled.div`
   justify-content: center;
 `
 
-const NotFound = () => {
+const NotFound = ({ statusCode = 404 }: { statusCode?: number }) => {
   const { t } = useTranslation()
 
   return (
     <Page>
       <StyledNotFound>
         <LogoIcon width="64px" mb="8px" />
-        <Heading scale="xxl">404</Heading>
+        <Heading scale="xxl">{statusCode}</Heading>
         <Text mb="16px">{t('Oops, page not found.')}</Text>
         <Link href="/" passHref>
           <Button as="a" scale="sm">
