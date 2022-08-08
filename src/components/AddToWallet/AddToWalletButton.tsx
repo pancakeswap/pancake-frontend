@@ -29,9 +29,6 @@ const getWalletIcon = (marginTextBetweenLogo: string) => {
     width: '16px',
     ...(marginTextBetweenLogo && { ml: marginTextBetweenLogo }),
   }
-  if (window?.ethereum?.isMetaMask) {
-    return <MetamaskIcon {...iconProps} />
-  }
   if (window?.ethereum?.isTrust) {
     return <TrustWalletIcon {...iconProps} />
   }
@@ -41,13 +38,13 @@ const getWalletIcon = (marginTextBetweenLogo: string) => {
   if (window?.ethereum?.isTokenPocket) {
     return <TokenPocketIcon {...iconProps} />
   }
+  if (window?.ethereum?.isMetaMask) {
+    return <MetamaskIcon {...iconProps} />
+  }
   return null
 }
 
 const getWalletName = () => {
-  if (window?.ethereum?.isMetaMask) {
-    return 'Metamask'
-  }
   if (window?.ethereum?.isTrust) {
     return 'Trust Wallet'
   }
@@ -56,6 +53,9 @@ const getWalletName = () => {
   }
   if (window?.ethereum?.isTokenPocket) {
     return 'TokenPocket Wallet'
+  }
+  if (window?.ethereum?.isMetaMask) {
+    return 'Metamask'
   }
   return null
 }
