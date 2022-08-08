@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { DeserializedPool } from 'state/types'
 import { Flex, Spinner } from '@pancakeswap/uikit'
 import TableHeader from '../../MigrationTable/TableHeader'

@@ -13,7 +13,7 @@ import {
   Spinner,
   useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import AuctionLeaderboardTable from './AuctionLeaderboard/AuctionLeaderboardTable'
 import { useFarmAuction } from '../hooks/useFarmAuction'
 

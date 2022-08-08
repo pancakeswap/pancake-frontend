@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import styled from 'styled-components'
 import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { FlexGap } from 'components/Layout/Flex'
 
 interface TopFarmPoolProps {

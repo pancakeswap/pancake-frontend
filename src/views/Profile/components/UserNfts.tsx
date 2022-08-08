@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Grid, useModal, Text, Flex } from '@pancakeswap/uikit'
 import { NftLocation, NftToken } from 'state/nftMarket/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { CollectibleActionCard } from '../../Nft/market/components/CollectibleCard'
 import GridPlaceholder from '../../Nft/market/components/GridPlaceholder'
 import ProfileNftModal from '../../Nft/market/components/ProfileNftModal'

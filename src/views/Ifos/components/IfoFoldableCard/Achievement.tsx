@@ -13,7 +13,7 @@ import {
   TelegramIcon,
 } from '@pancakeswap/uikit'
 import { bscTokens } from 'config/constants/tokens'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { PublicIfoData } from 'views/Ifos/types'
 import { Ifo } from 'config/constants/types'
 import { BIG_TEN } from 'utils/bigNumber'

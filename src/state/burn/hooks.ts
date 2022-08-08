@@ -6,7 +6,7 @@ import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { usePair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
 
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import tryParseAmount from 'utils/tryParseAmount'
 import { AppState, useAppDispatch } from '../index'
 import { useTokenBalances } from '../wallet/hooks'

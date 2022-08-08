@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Button, Text, Link, HelpIcon } from '@pancakeswap/uikit'
 import { useSwitchNetwork } from 'wagmi'
 import { ChainId } from '@pancakeswap/sdk'

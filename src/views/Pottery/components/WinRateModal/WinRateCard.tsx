@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text, Input, CheckmarkIcon, PencilIcon, IconButton } from '@pancakeswap/uikit'
 import { WinRateCalculatorState } from 'views/Pottery/hooks/useWinRateCalculator'
 import { CalculatorMode } from '../../types'

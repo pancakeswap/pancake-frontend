@@ -37,7 +37,7 @@ import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import { useWatchlistTokens } from 'state/user/hooks'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
 
 const ContentLayout = styled.div`

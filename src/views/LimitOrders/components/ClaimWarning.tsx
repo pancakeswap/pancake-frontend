@@ -3,7 +3,7 @@ import { useModal } from '@pancakeswap/uikit'
 import DisclaimerModal from 'components/DisclaimerModal'
 import { useUserLimitOrderAcceptedWarning } from 'state/user/hooks'
 
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 function ClaimWarning() {
   const { t } = useTranslation()

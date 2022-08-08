@@ -1,4 +1,4 @@
-import { ContextApi } from 'contexts/Localization/types'
+import { ContextApi } from '@pancakeswap/localization'
 import { format, parseISO, isValid } from 'date-fns'
 import { MINIMUM_CHOICES } from './Choices'
 import { FormState } from './types'

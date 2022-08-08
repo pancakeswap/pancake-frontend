@@ -14,7 +14,7 @@ import {
   useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
 import { Activity, NftToken } from 'state/nftMarket/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import TableLoader from 'components/TableLoader'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import useTheme from 'hooks/useTheme'

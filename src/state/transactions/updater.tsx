@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCurrentBlock } from 'state/block/hooks'
 import { ToastDescriptionWithTx } from 'components/Toast'

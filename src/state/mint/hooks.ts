@@ -1,31 +1,31 @@
+import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
+import { useTranslation } from '@pancakeswap/localization'
 import {
+  computePriceImpact,
   Currency,
   CurrencyAmount,
   JSBI,
+  MINIMUM_LIQUIDITY,
   Pair,
   Percent,
   Price,
   Token,
-  MINIMUM_LIQUIDITY,
-  computePriceImpact,
 } from '@pancakeswap/sdk'
+import { BIG_INT_ZERO } from 'config/constants/exchange'
+import { FetchStatus } from 'config/constants/types'
+import { useTradeExactIn } from 'hooks/Trades'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useZapContract } from 'hooks/useContract'
+import useNativeCurrency from 'hooks/useNativeCurrency'
+import { PairState, usePair } from 'hooks/usePairs'
+import { usePreviousValue } from '@pancakeswap/hooks'
+import { useSWRContract } from 'hooks/useSWRContract'
+import useTotalSupply from 'hooks/useTotalSupply'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { PairState, usePair } from 'hooks/usePairs'
-import useTotalSupply from 'hooks/useTotalSupply'
 import { useGasPrice } from 'state/user/hooks'
 import { warningSeverity } from 'utils/exchange'
-import { BIG_INT_ZERO } from 'config/constants/exchange'
-import { useTranslation } from 'contexts/Localization'
-import { useZapContract } from 'hooks/useContract'
-import { useSWRContract } from 'hooks/useSWRContract'
-import { FetchStatus } from 'config/constants/types'
-import { BigNumber } from '@ethersproject/bignumber'
-import useNativeCurrency from 'hooks/useNativeCurrency'
-import usePreviousValue from 'hooks/usePreviousValue'
-import { useTradeExactIn } from 'hooks/Trades'
 import tryParseAmount from 'utils/tryParseAmount'
 import { AppState, useAppDispatch } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'

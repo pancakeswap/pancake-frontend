@@ -1,5 +1,5 @@
 import { Flex, UserMenuItem, WarningIcon } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useGetBnbBalance } from 'hooks/useTokenBalance'
 import { FetchStatus } from 'config/constants/types'
 import { LOW_BNB_BALANCE } from './WalletModal'

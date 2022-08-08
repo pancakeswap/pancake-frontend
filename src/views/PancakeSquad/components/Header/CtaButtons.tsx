@@ -2,7 +2,7 @@
 
 import { BigNumber } from '@ethersproject/bignumber'
 import { Flex } from '@pancakeswap/uikit'
-import { ContextApi } from 'contexts/Localization/types'
+import { ContextApi } from '@pancakeswap/localization'
 import { DefaultTheme } from 'styled-components'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
 import BuyTicketsButtons from '../Buttons/BuyTickets'

@@ -8,7 +8,7 @@ import truncateHash from 'utils/truncateHash'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import { ListLogo } from 'components/Logo'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 interface ImportProps {
   tokens: Token[]

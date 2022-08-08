@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { BIG_TEN } from 'utils/bigNumber'
 import useToast from 'hooks/useToast'

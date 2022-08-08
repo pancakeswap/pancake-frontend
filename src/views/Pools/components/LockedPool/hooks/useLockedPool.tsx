@@ -1,6 +1,6 @@
 import { useState, useCallback, Dispatch, SetStateAction } from 'react'
-import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@pancakeswap/wagmi'
+import { useTranslation } from '@pancakeswap/localization'
 import { useAppDispatch } from 'state'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { useVaultPoolContract } from 'hooks/useContract'

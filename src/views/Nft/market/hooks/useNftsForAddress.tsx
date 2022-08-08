@@ -7,7 +7,7 @@ import { getCompleteAccountNftData } from 'state/nftMarket/helpers'
 import useSWR from 'swr'
 import { FetchStatus } from 'config/constants/types'
 import { laggyMiddleware } from 'hooks/useSWRContract'
-import usePrevious from 'hooks/usePreviousValue'
+import { usePreviousValue } from '@pancakeswap/hooks'
 import { isAddress } from 'utils'
 
 export const useNftsForAddress = (account: string, profile: Profile, isProfileFetching: boolean) => {
@@ -24,7 +24,7 @@ export const useCollectionsNftsForAddress = (
   collections: ApiCollections,
 ) => {
   const resetLaggyRef = useRef(null)
-  const previousAccount = usePrevious(account)
+  const previousAccount = usePreviousValue(account)
 
   if (resetLaggyRef.current && previousAccount !== account) {
     resetLaggyRef.current()

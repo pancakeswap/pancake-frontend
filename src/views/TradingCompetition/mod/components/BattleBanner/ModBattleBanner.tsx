@@ -1,7 +1,7 @@
 import { Flex, Text, Heading } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import AllBunniesImage from '../../../pngs/MoD-hero-bunnies.png'
 import Dar1 from '../../../pngs/MoD-banner-dar.png'

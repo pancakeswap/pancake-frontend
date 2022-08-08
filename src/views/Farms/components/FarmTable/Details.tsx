@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { ChevronDownIcon, useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 interface DetailsProps {
   actionPanelToggled: boolean

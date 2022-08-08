@@ -1,6 +1,6 @@
 import { Box, ModalV2, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React, { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
+import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
 import { useMemo } from 'react'
 import { chains } from 'utils/wagmi'

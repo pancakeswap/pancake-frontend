@@ -1,6 +1,6 @@
 import { memo, useCallback } from 'react'
 import { Button, ButtonProps } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 import { useAppDispatch } from 'state'
 import { fetchCakeVaultUserData } from 'state/pools'

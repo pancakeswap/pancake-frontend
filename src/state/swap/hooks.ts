@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useRouter } from 'next/router'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { isAddress } from 'utils'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
@@ -245,8 +245,9 @@ export function useDefaultsFromURLSearch():
   const dispatch = useAppDispatch()
   const native = useNativeCurrency()
   const { query } = useRouter()
-  const [result, setResult] =
-    useState<{ inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined>()
+  const [result, setResult] = useState<
+    { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
+  >()
 
   useEffect(() => {
     if (!chainId || !native) return

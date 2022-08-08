@@ -2,7 +2,7 @@ import { ModalProvider, light, dark, MatchBreakpointsProvider } from '@pancakesw
 import { Provider } from 'react-redux'
 import { SWRConfig } from 'swr'
 import { ThemeProvider } from 'styled-components'
-import { LanguageProvider } from 'contexts/Localization'
+import { LanguageProvider } from '@pancakeswap/localization'
 import { ToastsProvider } from 'contexts/ToastsContext'
 import { fetchStatusMiddleware } from 'hooks/useSWRContract'
 import { Store } from '@reduxjs/toolkit'

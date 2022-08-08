@@ -13,7 +13,7 @@ import {
   Skeleton,
 } from '@pancakeswap/uikit'
 import { Currency, Price } from '@pancakeswap/sdk'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { multiplyPriceByAmount } from 'utils/prices'
 import styled from 'styled-components'
 

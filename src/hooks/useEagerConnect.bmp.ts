@@ -1,10 +1,11 @@
 /* eslint-disable no-console */
 import { useCallback } from 'react'
 
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { BnInjectedConnector } from 'utils/bnInjectedConnector'
 import { useConnect } from 'wagmi'
 import { chains } from '../utils/wagmi'
+/* eslint max-classes-per-file: off -- noop */
 import useToast from './useToast'
 
 const injected = new BnInjectedConnector({ chains })

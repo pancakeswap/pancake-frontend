@@ -17,7 +17,7 @@ import {
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { NextLinkFromReactRouter } from 'components/NextLink'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useState } from 'react'
 import { usePoolChartData, usePoolDatas, usePoolTransactions } from 'state/info/hooks'
 import { useWatchlistPools } from 'state/user/hooks'

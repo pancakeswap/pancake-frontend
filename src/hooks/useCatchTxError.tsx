@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
-import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@pancakeswap/wagmi'
+import { useTranslation } from '@pancakeswap/localization'
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import { ToastDescriptionWithTx } from 'components/Toast'
 

@@ -14,7 +14,7 @@ import { NextLinkFromReactRouter } from 'components/NextLink'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import Percent from 'views/Info/components/Percent'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import orderBy from 'lodash/orderBy'
 import { ClickableColumnHeader, TableWrapper, PageButtons, Arrow, Break } from './shared'
 
