@@ -1,3 +1,4 @@
+import { useTranslation } from '@pancakeswap/localization'
 import {
   Button,
   ButtonProps,
@@ -7,7 +8,6 @@ import {
   TokenPocketIcon,
 } from '@pancakeswap/uikit'
 import { registerToken, canRegisterToken } from '../../utils/wallet'
-import { useTranslation } from '../../contexts/Localization'
 
 export enum AddToWalletTextOptions {
   NO_TEXT,
