@@ -136,7 +136,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
                   <td key={key}>
                     <CellInner>
                       <CellLayout label={t('APR')}>
-                        <Apr {...props.apr} hideButton={isSmallerScreen} />
+                        <Apr {...props.apr} hideButton={isSmallerScreen} strikethrough={props?.details?.boosted} />
                         {props?.details?.boosted ? (
                           <BoostedApr apr={props?.apr?.originalValue} pid={props.farm?.pid} />
                         ) : null}
@@ -190,7 +190,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
           <td width="33%">
             <AprMobileCell>
               <CellLayout label={t('APR')}>
-                <Apr {...props.apr} hideButton />
+                <Apr {...props.apr} hideButton strikethrough={props?.details?.boosted} />
                 {props?.details?.boosted ? <BoostedApr apr={props?.apr?.originalValue} pid={props.farm?.pid} /> : null}
               </CellLayout>
             </AprMobileCell>

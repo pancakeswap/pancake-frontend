@@ -1,4 +1,5 @@
 import { useTranslation } from 'contexts/Localization'
+import { AutoRenewIcon } from '@pancakeswap/uikit'
 import { ReactNode, useCallback, useContext } from 'react'
 
 import _isEmpty from 'lodash/isEmpty'
@@ -36,7 +37,11 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
         )
       case YieldBoosterState.NO_LOCKED:
         return (
-          <ActionButton title={`Up to ${boostMultipler}x`} description={t('Lock CAKE to activate yield booster')}>
+          <ActionButton
+            title={`Up to ${boostMultipler}x`}
+            description={t('Lock CAKE to activate yield booster')}
+            style={{ whiteSpace: 'nowrap' }}
+          >
             <NextLinkFromReactRouter to="/pools">{t('Go to Pool')}</NextLinkFromReactRouter>
           </ActionButton>
         )
@@ -54,7 +59,7 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
           <ActionButton
             title={`${boostMultipler}x`}
             description={t('One-time setup is required for activating farm yield boosters')}
-            button={<CreateProxyButton onDone={refreshProxyAddress} />}
+            button={<CreateProxyButton onDone={refreshProxyAddress} width="auto" />}
           />
         )
       case YieldBoosterState.NO_MIGRATE:
@@ -77,9 +82,11 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
             disabled={isConfirming}
             onClick={handlers.activate}
             title={`${boostMultipler}x`}
+            isLoading={isConfirming}
             description={t('Yield booster available')}
+            endIcon={isConfirming && <AutoRenewIcon spin color="currentColor" />}
           >
-            {t('Boost')}
+            {isConfirming ? t('Confirming...') : t('Boost')}
           </ActionButton>
         )
       case YieldBoosterState.ACTIVE:
