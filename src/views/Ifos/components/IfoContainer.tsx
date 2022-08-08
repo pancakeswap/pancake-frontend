@@ -1,6 +1,6 @@
 import { ReactElement } from 'react'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Box, LinkExternal } from '@pancakeswap/uikit'
 import Container from 'components/Layout/Container'
 import IfoLayout, { IfoLayoutWrapper } from './IfoLayout'

@@ -1,7 +1,7 @@
 import { Link, Text } from '@pancakeswap/uikit'
 import { getBscScanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import truncateHash from 'utils/truncateHash'
 
 interface DescriptionWithTxProps {

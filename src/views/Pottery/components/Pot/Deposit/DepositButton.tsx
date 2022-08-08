@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Button, AutoRenewIcon } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { BIG_TEN } from 'utils/bigNumber'

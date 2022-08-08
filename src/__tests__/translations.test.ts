@@ -1,6 +1,6 @@
 import Path from 'path'
 import fs from 'fs'
-import translations from 'config/localization/translations.json'
+import { translations } from '@pancakeswap/localization'
 import teams from 'config/constants/teams'
 import { NftLocation } from 'state/nftMarket/types'
 

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Button, AutoRenewIcon } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { DeserializedPool, VaultKey } from 'state/types'

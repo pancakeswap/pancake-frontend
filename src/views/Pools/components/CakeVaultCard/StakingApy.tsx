@@ -1,6 +1,6 @@
 import { Flex, Text, Skeleton, useModal, Button, CalculateIcon } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import Balance from 'components/Balance'
 import { memo } from 'react'

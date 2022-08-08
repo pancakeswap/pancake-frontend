@@ -1,7 +1,7 @@
 import { Box, ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
 import RoiCalculatorModal, { RoiCalculatorModalProps } from 'components/RoiCalculatorModal'
 import { CalculatorMode } from 'components/RoiCalculatorModal/useRoiCalculatorReducer'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { useEffect, useState, useMemo } from 'react'
 import { DeserializedPool, VaultKey } from 'state/types'

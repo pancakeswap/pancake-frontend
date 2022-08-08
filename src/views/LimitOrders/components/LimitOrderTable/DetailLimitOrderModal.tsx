@@ -1,5 +1,5 @@
 import { Button, Flex, Box, Modal, Text, ChevronRightIcon, InjectedModalProps, Tag, Spinner } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { memo, useCallback, useState } from 'react'
 import styled from 'styled-components'

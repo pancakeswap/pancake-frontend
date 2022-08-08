@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { CheckmarkCircleIcon, CheckmarkCircleFillIcon, Tag, useTooltip } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { formatBnbv2 } from '../../helpers'
 

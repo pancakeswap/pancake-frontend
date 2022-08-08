@@ -3,7 +3,7 @@ import { ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area } from 'rec
 import useTheme from 'hooks/useTheme'
 import { LineChartLoader } from 'views/Info/components/ChartLoaders'
 import { PairDataTimeWindowEnum } from 'state/swap/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 export type SwapLineChartProps = {
   data: any[]

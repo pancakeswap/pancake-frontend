@@ -2,7 +2,7 @@ import { ArrowForwardIcon, Button, Heading, Skeleton, Text, useMatchBreakpointsC
 import BigNumber from 'bignumber.js'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { FetchStatus, LotteryStatus } from 'config/constants/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
 import { memo } from 'react'
 import { usePriceCakeBusd } from 'state/farms/hooks'

@@ -14,7 +14,7 @@ import {
   Skeleton,
   Box,
 } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
 

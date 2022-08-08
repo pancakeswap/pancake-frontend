@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Flex, Box, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { Ifo } from 'config/constants/types'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'

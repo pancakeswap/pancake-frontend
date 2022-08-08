@@ -2,7 +2,7 @@ import { Text, TokenPairImage as UITokenPairImage, useMatchBreakpointsContext } 
 import BigNumber from 'bignumber.js'
 import { TokenPairImage } from 'components/TokenImage'
 import { vaultPoolConfig } from 'config/constants/pools'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { memo } from 'react'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool, VaultKey, DeserializedLockedCakeVault } from 'state/types'

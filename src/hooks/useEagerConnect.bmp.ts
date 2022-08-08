@@ -6,7 +6,7 @@ import { useWeb3React } from '@web3-react/core'
 import { AbstractConnectorArguments, ConnectorUpdate } from '@web3-react/types'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import warning from 'tiny-warning'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import getWeb3Provider from '../utils/mpBridge'
 import useToast from './useToast'
 

@@ -3,7 +3,7 @@ import { Skeleton, Table, Td, Th, Flex, ArrowUpIcon, ArrowDownIcon } from '@panc
 import times from 'lodash/times'
 import { useRouter } from 'next/router'
 import { formatNumber } from 'utils/formatBalance'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import CollapsibleCard from 'components/CollapsibleCard'
 import orderBy from 'lodash/orderBy'
 import { useGetCollection } from 'state/nftMarket/hooks'

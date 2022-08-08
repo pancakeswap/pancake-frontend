@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { Button } from '@pancakeswap/uikit'
 import { useConfig } from 'views/Ifos/contexts/IfoContext'
 
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 const StakeVaultButton = (props) => {
   const { t } = useTranslation()

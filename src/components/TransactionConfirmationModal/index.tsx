@@ -16,7 +16,7 @@ import {
   ModalProps,
 } from '@pancakeswap/uikit'
 import { canRegisterToken, registerToken } from 'utils/wallet'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { WrappedTokenInfo } from 'state/types'

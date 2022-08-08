@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Heading, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { getBalanceNumber, formatLpBalance } from 'utils/formatBalance'

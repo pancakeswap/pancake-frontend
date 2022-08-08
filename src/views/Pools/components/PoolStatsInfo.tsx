@@ -1,7 +1,7 @@
 import { Button, Flex, Link, LinkExternal, MetamaskIcon, Skeleton, Text, TimerIcon } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { BASE_BSC_SCAN_URL } from 'config'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { memo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useVaultPoolByKey } from 'state/pools/hooks'

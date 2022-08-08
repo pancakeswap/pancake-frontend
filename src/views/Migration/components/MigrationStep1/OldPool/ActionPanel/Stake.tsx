@@ -1,7 +1,7 @@
 import React from 'react'
 import { DeserializedPool } from 'state/types'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { ActionContainer, ActionContent, ActionTitles } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
 import BigNumber from 'bignumber.js'

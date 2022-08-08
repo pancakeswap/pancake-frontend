@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Flex, Text, TicketFillIcon, PredictionsIcon } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import ColoredWordHeading from '../ColoredWordHeading'
 import IconCard, { IconCardData } from '../IconCard'

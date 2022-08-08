@@ -21,7 +21,7 @@ import { getBscScanLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
 import { Token } from '@pancakeswap/sdk'
 
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { FetchStatus } from 'config/constants/types'
 import { PredictionUser } from 'state/types'
 import { NetWinningsView } from './Results/styles'

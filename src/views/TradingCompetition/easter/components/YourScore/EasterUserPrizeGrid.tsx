@@ -10,7 +10,7 @@ import {
   TrophyGoldIcon,
   Skeleton,
 } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useCompetitionCakeRewards, getEasterRewardGroupAchievements } from '../../../helpers'
 import { BoldTd, Td, StyledPrizeTable } from '../../../components/StyledPrizeTable'
 

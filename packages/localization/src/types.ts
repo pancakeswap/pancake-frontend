@@ -1,7 +1,7 @@
 import { ReactText } from 'react'
 import { Language } from '@pancakeswap/uikit'
 
-import translations from 'config/localization/translations.json'
+import translations from './config/translations.json'
 
 export type ContextData = {
   [key: string]: ReactText

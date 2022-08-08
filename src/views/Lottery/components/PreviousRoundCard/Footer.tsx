@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Flex, ExpandableLabel, CardFooter } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { LotteryRound } from 'state/types'
 import FooterExpanded from './FooterExpanded'
 

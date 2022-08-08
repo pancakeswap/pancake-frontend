@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Button, Text, Link, HelpIcon } from '@pancakeswap/uikit'
 import { setupNetwork } from 'utils/wallet'
 import { useWeb3React } from '@web3-react/core'

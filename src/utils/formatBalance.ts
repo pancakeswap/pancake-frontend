@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { BigNumber as EthersBigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
-import { getLanguageCodeFromLS } from 'contexts/Localization/helpers'
+import { getLanguageCodeFromLS } from '@pancakeswap/localization'
 import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
 
 /**

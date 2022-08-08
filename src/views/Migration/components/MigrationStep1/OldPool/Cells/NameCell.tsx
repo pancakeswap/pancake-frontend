@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Text, TokenPairImage as UITokenPairImage, useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { DeserializedPool } from 'state/types'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { vaultPoolConfig } from 'config/constants/pools'

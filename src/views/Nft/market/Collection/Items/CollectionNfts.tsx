@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { BunnyPlaceholderIcon, AutoRenewIcon, Button, Flex, Grid, Text } from '@pancakeswap/uikit'
 import { Collection } from 'state/nftMarket/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import GridPlaceholder from '../../components/GridPlaceholder'
 import { CollectibleLinkCard } from '../../components/CollectibleCard'
 import { useCollectionNfts } from '../../hooks/useCollectionNfts'

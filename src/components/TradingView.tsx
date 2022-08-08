@@ -1,5 +1,5 @@
 import { Box, FlexProps, useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import Script from 'next/script'
 import { useEffect, useRef } from 'react'
 import { DefaultTheme, useTheme } from 'styled-components'

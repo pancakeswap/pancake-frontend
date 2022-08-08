@@ -2,7 +2,7 @@ import { Skeleton, Text, Flex, Button, CalculateIcon, useModal, useMatchBreakpoi
 import styled from 'styled-components'
 import Balance from 'components/Balance'
 import { FlexGap } from 'components/Layout/Flex'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool, DeserializedLockedVaultUser, VaultKey } from 'state/types'

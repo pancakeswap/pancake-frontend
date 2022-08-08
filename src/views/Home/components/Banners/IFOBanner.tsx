@@ -1,6 +1,6 @@
 import { ArrowForwardIcon, Button, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
 import Image from 'next/image'
 import { memo, useEffect, useRef } from 'react'

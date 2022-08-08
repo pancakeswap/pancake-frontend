@@ -3,7 +3,7 @@ import { Text, Flex, useModal, CalculateIcon, Skeleton, FlexProps, Button } from
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { BalanceWithLoading } from 'components/Balance'
 import { DeserializedPool } from 'state/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { vaultPoolConfig } from 'config/constants/pools'

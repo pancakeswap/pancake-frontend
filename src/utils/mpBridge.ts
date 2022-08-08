@@ -1,6 +1,5 @@
 import { NextRouter, useRouter } from 'next/router'
-import { useTranslation } from 'contexts/Localization'
-import { languageList } from 'config/localization/languages'
+import { useTranslation, languageList } from '@pancakeswap/localization'
 import { useEffect, useState } from 'react'
 /* eslint-disable no-console */
 const cbList = {}

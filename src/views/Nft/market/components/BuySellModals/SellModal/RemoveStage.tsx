@@ -1,5 +1,5 @@
 import { Flex, Box, Text, Button } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Divider } from '../shared/styles'
 
 interface RemoveStageProps {
