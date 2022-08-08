@@ -3,7 +3,7 @@ import { useState, memo } from 'react'
 
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useBCakeFarmBoosterProxyFactoryContract } from 'hooks/useContract'
 

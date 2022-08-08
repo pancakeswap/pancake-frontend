@@ -1,4 +1,4 @@
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon } from '@pancakeswap/uikit'
 import { ReactNode, useCallback, useContext } from 'react'
 

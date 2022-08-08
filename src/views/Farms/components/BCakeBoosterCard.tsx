@@ -13,7 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import styled, { useTheme } from 'styled-components'
