@@ -36,6 +36,7 @@ interface ConfirmRemoveLiquidityModalProps {
   currencyA: Currency | null | undefined
   currencyB: Currency | null | undefined
   isZap?: boolean
+  toggleZapMode: (value: boolean) => void
 }
 
 const ConfirmRemoveLiquidityModal: React.FC<InjectedModalProps & ConfirmRemoveLiquidityModalProps> = ({
@@ -57,6 +58,7 @@ const ConfirmRemoveLiquidityModal: React.FC<InjectedModalProps & ConfirmRemoveLi
   currencyA,
   currencyB,
   isZap,
+  toggleZapMode,
 }) => {
   const { t } = useTranslation()
 
@@ -144,13 +146,15 @@ const ConfirmRemoveLiquidityModal: React.FC<InjectedModalProps & ConfirmRemoveLi
     () =>
       liquidityErrorMessage ? (
         <>
-          {isZap && <ZapErrorMessages isSingleToken />}
+          {isZap && (
+            <ZapErrorMessages isSingleToken zapMode={isZap} toggleZapMode={toggleZapMode} onModalDismiss={onDismiss} />
+          )}
           <TransactionErrorContent onDismiss={onDismiss} message={liquidityErrorMessage} />
         </>
       ) : (
         <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
       ),
-    [liquidityErrorMessage, isZap, onDismiss, modalHeader, modalBottom],
+    [liquidityErrorMessage, isZap, toggleZapMode, onDismiss, modalHeader, modalBottom],
   )
 
   return (

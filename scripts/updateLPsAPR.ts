@@ -97,7 +97,7 @@ const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): P
 }
 
 const fetchAndUpdateLPsAPR = async () => {
-  const lowerCaseAddresses = farmsConfig.map((farm) => farm.lpAddresses[ChainId.MAINNET].toLowerCase())
+  const lowerCaseAddresses = farmsConfig.map((farm) => farm.lpAddresses[ChainId.BSC].toLowerCase())
   console.info(`Fetching farm data for ${lowerCaseAddresses.length} addresses`)
   // Split it into chunks of 30 addresses to avoid gateway timeout
   const addressesInGroups = chunk(lowerCaseAddresses, 30)

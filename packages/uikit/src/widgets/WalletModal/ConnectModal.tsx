@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled, { useTheme } from "styled-components";
-import getExternalLinkProps from "../../util/getExternalLinkProps";
+import EXTERNAL_LINK_PROPS from "../../util/externalLinkProps";
 import Grid from "../../components/Box/Grid";
 import Box from "../../components/Box/Box";
 import getThemeValue from "../../util/getThemeValue";
@@ -65,7 +65,7 @@ const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayC
 
   return (
     <ModalContainer minWidth="320px">
-      <ModalHeader background={getThemeValue("colors.gradients.bubblegum")(theme)}>
+      <ModalHeader background={getThemeValue(theme, "colors.gradients.bubblegum")}>
         <ModalTitle>
           <Heading>{t("Connect Wallet")}</Heading>
         </ModalTitle>
@@ -91,7 +91,7 @@ const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayC
             href="https://docs.pancakeswap.finance/get-started/connection-guide"
             variant="subtle"
             width="100%"
-            {...getExternalLinkProps()}
+            {...EXTERNAL_LINK_PROPS}
           >
             {t("Learn How to Connect")}
           </Button>

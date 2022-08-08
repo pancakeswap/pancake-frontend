@@ -17,7 +17,7 @@ export class BscConnector extends InjectedConnector {
 
   readonly ready = typeof window !== 'undefined' && !!window.BinanceChain
 
-  #provider?: Window['BinanceChain']
+  provider?: Window['BinanceChain']
 
   constructor({
     chains,
@@ -70,8 +70,8 @@ export class BscConnector extends InjectedConnector {
     if (typeof window !== 'undefined') {
       // TODO: Fallback to `ethereum#initialized` event for async injection
       // https://github.com/MetaMask/detect-provider#synchronous-and-asynchronous-injection=
-      this.#provider = window.BinanceChain
+      this.provider = window.BinanceChain
     }
-    return this.#provider
+    return this.provider
   }
 }

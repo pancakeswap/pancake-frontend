@@ -1,4 +1,4 @@
-import { ElementType, ReactElement } from "react";
+import { ElementType, ReactElement, ReactNode } from "react";
 import { FooterLinkType } from "../../components/Footer/types";
 import { MenuItemsType } from "../../components/MenuItems/types";
 import { SubMenuItemsType } from "../../components/SubMenuItems/types";
@@ -17,9 +17,8 @@ export interface LinkStatus {
 
 export interface NavProps {
   linkComponent?: ElementType;
-  userMenu?: ReactElement;
+  rightSide?: ReactNode;
   banner?: ReactElement;
-  globalMenu?: ReactElement;
   links: Array<MenuItemsType>;
   subLinks: Array<SubMenuItemsType>;
   footerLinks: Array<FooterLinkType>;

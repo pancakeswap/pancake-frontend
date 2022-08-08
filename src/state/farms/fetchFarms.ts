@@ -14,8 +14,10 @@ function getLpInfo({
   tokenDecimals,
   quoteTokenDecimals,
 }) {
+  const lpTotalSupplyBN = new BigNumber(lpTotalSupply)
+
   // Ratio in % of LP tokens that are staked in the MC, vs the total number in circulation
-  const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
+  const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupplyBN))
 
   // TODO: Hardcode tokenBalanceLP and quoteTokenBalanceLP to display APR and liquidity
   // Raw amount of token in the LP, including those not staked
@@ -33,7 +35,7 @@ function getLpInfo({
   return {
     tokenAmountTotal: tokenAmountTotal.toJSON(),
     quoteTokenAmountTotal: quoteTokenAmountTotal.toJSON(),
-    lpTotalSupply: new BigNumber(lpTotalSupply).toJSON(),
+    lpTotalSupply: lpTotalSupplyBN.toJSON(),
     lpTotalInQuoteToken: lpTotalInQuoteToken.toJSON(),
     tokenPriceVsQuote: quoteTokenAmountTotal.div(tokenAmountTotal).toJSON(),
   }
@@ -51,7 +53,6 @@ function farmLpTransformer(farmResult, masterChefResult) {
     ] = farmResult[index]
 
     const [info, totalRegularAllocPoint] = masterChefResult[index]
-
     const allocPoint = info ? new BigNumber(info.allocPoint?._hex) : BIG_ZERO
     const poolWeight = totalRegularAllocPoint ? allocPoint.div(new BigNumber(totalRegularAllocPoint)) : BIG_ZERO
 

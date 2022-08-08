@@ -18,7 +18,6 @@ import { useProfile } from 'state/profile/hooks'
 import { usePendingTransactions } from 'state/transactions/hooks'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'contexts/Localization'
-import { nftsBaseUrl } from 'views/Nft/market/constants'
 import WalletModal, { WalletView } from './WalletModal'
 import ProfileUserMenuItem from './ProfileUserMenuItem'
 import WalletUserMenuItem from './WalletUserMenuItem'
@@ -69,7 +68,7 @@ const UserMenu = () => {
         <UserMenuItem
           as="button"
           disabled={isWrongNetwork}
-          onClick={() => router.push(`${nftsBaseUrl}/profile/${account.toLowerCase()}`)}
+          onClick={() => router.push(`/profile/${account.toLowerCase()}`)}
         >
           {t('Your NFTs')}
         </UserMenuItem>

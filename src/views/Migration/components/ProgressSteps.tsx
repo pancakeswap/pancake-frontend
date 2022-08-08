@@ -40,8 +40,7 @@ const Step = styled.div<{ confirmed?: boolean; disabled?: boolean; canHover?: bo
     left: 16px;
     z-index: 0;
     pointer-events: none;
-    border: solid 1px;
-    border-color: ${({ theme, confirmed }) => (confirmed ? theme.colors.secondary : theme.colors.textDisabled)};
+    background-color: ${({ theme, confirmed }) => (confirmed ? theme.colors.secondary : theme.colors.textDisabled)};
   }
 
   &:hover {

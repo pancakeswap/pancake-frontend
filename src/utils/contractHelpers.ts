@@ -1,10 +1,10 @@
 import type { Signer } from '@ethersproject/abstract-signer'
 import type { Provider } from '@ethersproject/providers'
 import { Contract } from '@ethersproject/contracts'
-import { simpleRpcProvider } from 'utils/providers'
+import { bscRpcProvider } from 'utils/providers'
 import poolsConfig from 'config/constants/pools'
 import { PoolCategory } from 'config/constants/types'
-import tokens from 'config/constants/tokens'
+import { CAKE } from 'config/constants/tokens'
 
 // Addresses
 import {
@@ -35,7 +35,7 @@ import {
   getTradingCompetitionAddressMoD,
   getBunnySpecialXmasAddress,
   getICakeAddress,
-  getGalaxyNFTClaimingAddress,
+  getPotteryDrawAddress,
   getZapAddress,
   getCakeFlexibleSideVaultAddress,
   getPredictionsV1Address,
@@ -79,11 +79,12 @@ import bunnySpecialLotteryAbi from 'config/abi/bunnySpecialLottery.json'
 import bunnySpecialXmasAbi from 'config/abi/bunnySpecialXmas.json'
 import farmAuctionAbi from 'config/abi/farmAuction.json'
 import anniversaryAchievementAbi from 'config/abi/anniversaryAchievement.json'
-import galaxyNFTClaimingAbi from 'config/abi/galaxyNFTClaiming.json'
 import nftMarketAbi from 'config/abi/nftMarket.json'
 import nftSaleAbi from 'config/abi/nftSale.json'
 import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
+import potteryVaultAbi from 'config/abi/potteryVaultAbi.json'
+import potteryDrawAbi from 'config/abi/potteryDrawAbi.json'
 import zapAbi from 'config/abi/zap.json'
 import iCakeAbi from 'config/abi/iCake.json'
 import ifoV3Abi from 'config/abi/ifoV3.json'
@@ -121,7 +122,6 @@ import type {
   BunnySpecialCakeVault,
   BunnySpecialPrediction,
   BunnySpecialLottery,
-  GalaxyNFTClaiming,
   NftMarket,
   NftSale,
   PancakeSquad,
@@ -132,15 +132,18 @@ import type {
   TradingCompetitionMobox,
   ICake,
   TradingCompetitionMoD,
+  PotteryVaultAbi,
+  PotteryDrawAbi,
   Zap,
   PredictionsV1,
   BCakeFarmBooster,
   BCakeFarmBoosterProxyFactory,
   BCakeProxy,
 } from 'config/abi/types'
+import { ChainId } from '@pancakeswap/sdk'
 
 export const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
-  const signerOrProvider = signer ?? simpleRpcProvider
+  const signerOrProvider = signer ?? bscRpcProvider
   return new Contract(address, abi, signerOrProvider)
 }
 
@@ -175,8 +178,8 @@ export const getSouschefV2Contract = (id: number, signer?: Signer | Provider) =>
 export const getPointCenterIfoContract = (signer?: Signer | Provider) => {
   return getContract(pointCenterIfo, getPointCenterIfoAddress(), signer) as PointCenterIfo
 }
-export const getCakeContract = (signer?: Signer | Provider) => {
-  return getContract(cakeAbi, tokens.cake.address, signer) as Cake
+export const getCakeContract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract(cakeAbi, chainId ? CAKE[chainId].address : CAKE[ChainId.BSC].address, signer) as Cake
 }
 export const getProfileContract = (signer?: Signer | Provider) => {
   return getContract(profileABI, getPancakeProfileAddress(), signer) as PancakeProfile
@@ -252,7 +255,7 @@ export const getChainlinkOracleContract = (address: string, signer?: Signer | Pr
   return getContract(chainlinkOracleAbi, address, signer) as ChainlinkOracle
 }
 export const getMulticallContract = () => {
-  return getContract(MultiCallAbi, getMulticallAddress(), simpleRpcProvider) as Multicall
+  return getContract(MultiCallAbi, getMulticallAddress(), bscRpcProvider) as Multicall
 }
 export const getBunnySpecialCakeVaultContract = (signer?: Signer | Provider) => {
   return getContract(bunnySpecialCakeVaultAbi, getBunnySpecialCakeVaultAddress(), signer) as BunnySpecialCakeVault
@@ -272,9 +275,6 @@ export const getFarmAuctionContract = (signer?: Signer | Provider) => {
 export const getAnniversaryAchievementContract = (signer?: Signer | Provider) => {
   return getContract(anniversaryAchievementAbi, getAnniversaryAchievement(), signer) as AnniversaryAchievement
 }
-export const getGalaxyNTFClaimingContract = (signer?: Signer | Provider) => {
-  return getContract(galaxyNFTClaimingAbi, getGalaxyNFTClaimingAddress(), signer) as GalaxyNFTClaiming
-}
 
 export const getNftMarketContract = (signer?: Signer | Provider) => {
   return getContract(nftMarketAbi, getNftMarketAddress(), signer) as NftMarket
@@ -287,6 +287,14 @@ export const getPancakeSquadContract = (signer?: Signer | Provider) => {
 }
 export const getErc721CollectionContract = (signer?: Signer | Provider, address?: string) => {
   return getContract(erc721CollectionAbi, address, signer) as Erc721collection
+}
+
+export const getPotteryVaultContract = (address: string, signer?: Signer | Provider) => {
+  return getContract(potteryVaultAbi, address, signer) as PotteryVaultAbi
+}
+
+export const getPotteryDrawContract = (signer?: Signer | Provider) => {
+  return getContract(potteryDrawAbi, getPotteryDrawAddress(), signer) as PotteryDrawAbi
 }
 
 export const getZapContract = (signer?: Signer | Provider) => {

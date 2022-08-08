@@ -1,19 +1,43 @@
-import { Text, Flex, Button, Input, Box } from '@pancakeswap/uikit'
+import { useState, useEffect, useMemo } from 'react'
+import { Text, Flex, Button, Input, Box, Message, MessageText } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import _toNumber from 'lodash/toNumber'
+import { ONE_WEEK_DEFAULT, MAX_LOCK_DURATION } from 'config/constants/pools'
 import { secondsToWeeks, weeksToSeconds } from '../../utils/formatSecondsToWeeks'
 import { LockDurationFieldPropsType } from '../types'
 
-const DURATIONS = [1, 5, 10, 25, 52]
+const DURATIONS = [1, 5, 10, 25]
 
 const StyledInput = styled(Input)`
   text-align: right;
   margin-right: 8px;
 `
 
-const LockDurationField: React.FC<LockDurationFieldPropsType> = ({ duration, setDuration, isOverMax }) => {
+const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
+  duration,
+  setDuration,
+  isOverMax,
+  currentDuration,
+  currentDurationLeft,
+}) => {
   const { t } = useTranslation()
+  const [isMaxSelected, setIsMaxSelected] = useState(false)
+
+  const maxAvailableDuration = currentDurationLeft ? MAX_LOCK_DURATION - currentDurationLeft : MAX_LOCK_DURATION
+
+  useEffect(() => {
+    if (isMaxSelected) {
+      setDuration(maxAvailableDuration)
+    }
+  }, [isMaxSelected, maxAvailableDuration, setDuration])
+
+  // When user extends the duration due to time passed when approving
+  // transaction the extended duration will be a couple of seconds off to max duration,
+  // therefore it is better to compare based on weeks
+  const currentDurationInWeeks = useMemo(() => currentDuration && secondsToWeeks(currentDuration), [currentDuration])
+
+  const maxDurationInWeeks = useMemo(() => secondsToWeeks(MAX_LOCK_DURATION), [])
 
   return (
     <>
@@ -27,18 +51,38 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({ duration, set
           </Text>
         </Flex>
         <Flex flexWrap="wrap">
-          {DURATIONS.map((week) => (
-            <Button
-              key={week}
-              onClick={() => setDuration(weeksToSeconds(week))}
-              mt="4px"
-              mr={['2px', '2px', '4px', '4px']}
-              scale="sm"
-              variant={weeksToSeconds(week) === duration ? 'subtle' : 'tertiary'}
-            >
-              {week}W
-            </Button>
-          ))}
+          {DURATIONS.map((week) => {
+            const weekSeconds = weeksToSeconds(week)
+            return (
+              <Button
+                key={week}
+                onClick={() => {
+                  setIsMaxSelected(false)
+                  setDuration(weekSeconds)
+                }}
+                mt="4px"
+                mr={['2px', '2px', '4px', '4px']}
+                scale="sm"
+                disabled={weekSeconds > maxAvailableDuration}
+                variant={weekSeconds === duration ? 'subtle' : 'tertiary'}
+              >
+                {week}W
+              </Button>
+            )
+          })}
+          <Button
+            key="max"
+            onClick={() => {
+              setIsMaxSelected(true)
+            }}
+            mt="4px"
+            mr={['2px', '2px', '4px', '4px']}
+            scale="sm"
+            disabled={maxAvailableDuration < ONE_WEEK_DEFAULT}
+            variant={isMaxSelected ? 'subtle' : 'tertiary'}
+          >
+            {t('Max')}
+          </Button>
         </Flex>
       </Box>
       <Flex justifyContent="center" alignItems="center" mb="8px">
@@ -48,6 +92,7 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({ duration, set
           pattern="^[0-9]+$"
           inputMode="numeric"
           onChange={(e) => {
+            setIsMaxSelected(false)
             const weeks = _toNumber(e?.target?.value)
 
             // Prevent large number input which cause NaN
@@ -65,6 +110,13 @@ const LockDurationField: React.FC<LockDurationFieldPropsType> = ({ duration, set
           {t('Total lock duration exceeds 52 weeks')}
         </Text>
       )}
+      {currentDurationLeft && currentDurationInWeeks === maxDurationInWeeks && !isMaxSelected ? (
+        <Message variant="warning">
+          <MessageText maxWidth="240px">
+            {t('Recommend choosing "MAX" to renew your staking position in order to keep similar yield boost.')}
+          </MessageText>
+        </Message>
+      ) : null}
     </>
   )
 }

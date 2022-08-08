@@ -1,11 +1,11 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import Trans from 'components/Trans'
 import { VaultKey } from 'state/types'
-import { CHAIN_ID } from './networks'
-import tokens, { serializeTokens } from './tokens'
+import { serializeTokens } from 'utils/serializeTokens'
+import { bscTokens } from './tokens'
 import { SerializedPoolConfig, PoolCategory } from './types'
 
-const serializedTokens = serializeTokens()
+const serializedTokens = serializeTokens(bscTokens)
 
 export const MAX_LOCK_DURATION = 31536000
 export const UNLOCK_FREE_DURATION = 604800
@@ -20,7 +20,7 @@ export const vaultPoolConfig = {
     autoCompoundFrequency: 5000,
     gasLimit: 380000,
     tokenImage: {
-      primarySrc: `/images/tokens/${tokens.cake.address}.svg`,
+      primarySrc: `/images/tokens/${bscTokens.cake.address}.svg`,
       secondarySrc: '/images/tokens/autorenew.svg',
     },
   },
@@ -31,7 +31,7 @@ export const vaultPoolConfig = {
     // TODO: Remove when test is done
     gasLimit: 1500000,
     tokenImage: {
-      primarySrc: `/images/tokens/${tokens.cake.address}.svg`,
+      primarySrc: `/images/tokens/${bscTokens.cake.address}.svg`,
       secondarySrc: '/images/tokens/autorenew.svg',
     },
   },
@@ -41,7 +41,7 @@ export const vaultPoolConfig = {
     autoCompoundFrequency: 5000,
     gasLimit: 500000,
     tokenImage: {
-      primarySrc: `/images/tokens/${tokens.cake.address}.svg`,
+      primarySrc: `/images/tokens/${bscTokens.cake.address}.svg`,
       secondarySrc: '/images/tokens/autorenew.svg',
     },
   },
@@ -51,7 +51,7 @@ export const vaultPoolConfig = {
     autoCompoundFrequency: 1,
     gasLimit: 500000,
     tokenImage: {
-      primarySrc: `/images/tokens/${tokens.cake.address}.svg`,
+      primarySrc: `/images/tokens/${bscTokens.cake.address}.svg`,
       secondarySrc: `/images/tokens/ifo-pool-icon.svg`,
     },
   },
@@ -69,6 +69,42 @@ export const livePools: SerializedPoolConfig[] = [
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '10',
     isFinished: false,
+  },
+  {
+    sousId: 290,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.peel,
+    contractAddress: {
+      56: '0x288d1aD79c113552B618765B4986f7DE679367Da',
+      97: '',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '4.34',
+    version: 3,
+  },
+  {
+    sousId: 289,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.shell,
+    contractAddress: {
+      56: '0x595B7AF4F1828AB4953792482b01B2AFC4A46b72',
+      97: '',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '89.699',
+    version: 3,
+  },
+  {
+    sousId: 288,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.high,
+    contractAddress: {
+      56: '0x28cc814bE3B994187B7f8Bfed10516A84A671119',
+      97: '',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '0.1332',
+    version: 3,
   },
   {
     sousId: 287,
@@ -95,6 +131,22 @@ export const livePools: SerializedPoolConfig[] = [
     version: 3,
   },
   {
+    sousId: 283,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.xcn,
+    contractAddress: {
+      97: '',
+      56: '0xa79D37ce9DF9443eF4B6DEC2e38a8ecd35303adc',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '2.2505',
+    version: 3,
+  },
+]
+
+// known finished pools
+const finishedPools = [
+  {
     sousId: 285,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.sdao,
@@ -119,15 +171,15 @@ export const livePools: SerializedPoolConfig[] = [
     version: 3,
   },
   {
-    sousId: 283,
+    sousId: 282,
     stakingToken: serializedTokens.cake,
-    earningToken: serializedTokens.xcn,
+    earningToken: serializedTokens.chr,
     contractAddress: {
       97: '',
-      56: '0xa79D37ce9DF9443eF4B6DEC2e38a8ecd35303adc',
+      56: '0x2D17ec6cd0AF737B2adE40ea527d41ceEedc166f',
     },
     poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '2.2505',
+    tokenPerBlock: '1.58',
     version: 3,
   },
   {
@@ -140,22 +192,6 @@ export const livePools: SerializedPoolConfig[] = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '63.136',
-    version: 3,
-  },
-].filter((p) => !!p.contractAddress[CHAIN_ID])
-
-// known finished pools
-const finishedPools = [
-  {
-    sousId: 282,
-    stakingToken: serializedTokens.cake,
-    earningToken: serializedTokens.chr,
-    contractAddress: {
-      97: '',
-      56: '0x2D17ec6cd0AF737B2adE40ea527d41ceEedc166f',
-    },
-    poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '1.58',
     version: 3,
   },
   {
@@ -3254,8 +3290,6 @@ const finishedPools = [
     enableEmergencyWithdraw: true,
     tokenPerBlock: '7.502',
   },
-]
-  .filter((p) => !!p.contractAddress[CHAIN_ID])
-  .map((p) => ({ ...p, isFinished: true }))
+].map((p) => ({ ...p, isFinished: true }))
 
 export default [...livePools, ...finishedPools]

@@ -6,6 +6,11 @@ import { getApy } from 'utils/compoundApyHelpers'
 import { getBalanceNumber, getFullDisplayBalance, getDecimalAmount } from 'utils/formatBalance'
 import memoize from 'lodash/memoize'
 
+// min deposit and withdraw amount
+export const MIN_LOCK_AMOUNT = new BigNumber(10000000000000)
+
+export const ENABLE_EXTEND_LOCK_AMOUNT = new BigNumber(100000000000000)
+
 export const convertSharesToCake = (
   shares: BigNumber,
   cakePerFullShare: BigNumber,
