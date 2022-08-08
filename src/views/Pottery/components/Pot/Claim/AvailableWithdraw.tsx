@@ -53,6 +53,7 @@ const AvailableWithdraw: React.FC<AvailableWithdrawProps> = ({ withdrawData }) =
           )}
         </Box>
         <WithdrawButton
+          status={status}
           cakeNumber={cakeNumber}
           redeemShare={shares}
           potteryVaultAddress={potteryVaultAddress}

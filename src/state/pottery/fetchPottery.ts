@@ -103,9 +103,9 @@ export const fetchLatestRoundId = async () => {
       { roundId: 0 },
     )
 
-    const { roundId: id } = response.potteryVaultRounds[0]
+    const latestRoundId = response.potteryVaultRounds[0]?.roundId
     return {
-      latestRoundId: id || '',
+      latestRoundId: latestRoundId || '',
     }
   } catch (error) {
     console.error('Failed to fetch last roundId ', error)
