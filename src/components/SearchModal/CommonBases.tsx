@@ -8,6 +8,7 @@ import { AutoColumn } from '../Layout/Column'
 import QuestionHelper from '../QuestionHelper'
 import { AutoRow } from '../Layout/Row'
 import { CurrencyLogo } from '../Logo'
+import { CommonBasesType } from './types'
 
 const ButtonWrapper = styled.div`
   display: inline-block;
@@ -55,13 +56,13 @@ export default function CommonBases({
 }) {
   const { t } = useTranslation()
 
-  const pinTokenDescText = commonBasesType === 'SWAP_LIMIT' ? t('Common tokens') : t('Common bases')
+  const pinTokenDescText = commonBasesType === CommonBasesType.SWAP_LIMITORDER ? t('Common tokens') : t('Common bases')
 
   return (
     <AutoColumn gap="md">
       <AutoRow>
         <Text fontSize="14px">{pinTokenDescText}</Text>
-        {commonBasesType === 'LIQUIDITY' && (
+        {commonBasesType === CommonBasesType.LIQUIDITY && (
           <QuestionHelper text={t('These tokens are commonly paired with other tokens.')} ml="4px" />
         )}
       </AutoRow>
