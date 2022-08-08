@@ -144,15 +144,33 @@ export function useSwapCallback(
             } ${inputAmount} ${inputSymbol} for ${
               trade.tradeType === TradeType.EXACT_INPUT ? 'min.' : ''
             } ${outputAmount} ${outputSymbol}`
-            const withRecipient =
-              recipient === account
-                ? base
-                : `${base} to ${
-                    recipientAddress && isAddress(recipientAddress) ? truncateHash(recipientAddress) : recipientAddress
-                  }`
+
+            const recipientAddressText =
+              recipientAddress && isAddress(recipientAddress) ? truncateHash(recipientAddress) : recipientAddress
+
+            const withRecipient = recipient === account ? base : `${base} to ${recipientAddressText}`
+
+            const translatableWithRecipient =
+              trade.tradeType === TradeType.EXACT_OUTPUT
+                ? recipient === account
+                  ? 'Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol%'
+                  : 'Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol% to %recipientAddress%'
+                : recipient === account
+                ? 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%'
+                : 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%'
 
             addTransaction(response, {
               summary: withRecipient,
+              translatableSummary: {
+                text: translatableWithRecipient,
+                data: {
+                  inputAmount,
+                  inputSymbol,
+                  outputAmount,
+                  outputSymbol,
+                  ...(recipient !== account && { recipientAddress: recipientAddressText }),
+                },
+              },
               type: 'swap',
             })
 
