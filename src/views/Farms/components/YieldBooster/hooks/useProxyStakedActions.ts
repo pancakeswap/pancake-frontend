@@ -8,7 +8,7 @@ import { fetchFarmUserDataAsync } from 'state/farms'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { useApproveBoostProxyFarm } from '../../../hooks/useApproveFarm'
 
-export default function useProxyStakedActions(pid, lpContract) {
+export default function useProxyStakedActions(pid, lpContract, callback?: any) {
   const { account } = useWeb3React()
   const { proxyAddress } = useBCakeProxyContractAddress(account)
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
@@ -21,10 +21,46 @@ export default function useProxyStakedActions(pid, lpContract) {
 
   const { onApprove } = useApproveBoostProxyFarm(lpContract, proxyAddress)
 
+  const onStake = useCallback(
+    async (value) => {
+      const res = await stakeFarm(bCakeProxy, pid, value)
+
+      if (callback) {
+        callback()
+      }
+
+      return res
+    },
+    [callback, bCakeProxy, pid],
+  )
+
+  const onUnstake = useCallback(
+    async (value) => {
+      const res = await unstakeFarm(bCakeProxy, pid, value)
+
+      if (callback) {
+        callback()
+      }
+
+      return res
+    },
+    [callback, bCakeProxy, pid],
+  )
+
+  const onReward = useCallback(async () => {
+    const res = await harvestFarm(bCakeProxy, pid)
+
+    if (callback) {
+      callback()
+    }
+
+    return res
+  }, [callback, bCakeProxy, pid])
+
   return {
-    onStake: (value) => stakeFarm(bCakeProxy, pid, value),
-    onUnstake: (value) => unstakeFarm(bCakeProxy, pid, value),
-    onReward: () => harvestFarm(bCakeProxy, pid),
+    onStake,
+    onUnstake,
+    onReward,
     onApprove,
     onDone,
   }

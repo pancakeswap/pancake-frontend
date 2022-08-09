@@ -1,4 +1,4 @@
-import { Button, Heading, Skeleton, Text } from '@pancakeswap/uikit'
+import { Button, Heading, Skeleton, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
@@ -10,8 +10,6 @@ import { getAddress } from 'utils/addressHelpers'
 import { useERC20 } from 'hooks/useContract'
 import { TransactionResponse } from '@ethersproject/providers'
 
-import { useAppDispatch } from 'state'
-import { fetchFarmUserDataAsync } from 'state/farms'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
@@ -19,19 +17,23 @@ import { FarmWithStakedValue } from '../../types'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
 import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
+import useProxyCAKEBalance from '../../YieldBooster/hooks/useProxyCAKEBalance'
 
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
   onReward?: () => Promise<TransactionResponse>
+  proxyCakeBalance?: number
+  onDone?: () => void
 }
 
 export const ProxyHarvestActionContainer = ({ children, ...props }) => {
   const lpAddress = getAddress(props.lpAddresses)
   const lpContract = useERC20(lpAddress)
+  const { proxyCakeBalance, refreshProxyCakeBalance } = useProxyCAKEBalance()
 
-  const { onReward } = useProxyStakedActions(props.pid, lpContract)
+  const { onReward, onDone } = useProxyStakedActions(props.pid, lpContract, refreshProxyCakeBalance)
 
-  return children({ ...props, onReward })
+  return children({ ...props, onReward, proxyCakeBalance, onDone })
 }
 
 export const HarvestActionContainer = ({ children, ...props }) => {
@@ -42,10 +44,13 @@ export const HarvestActionContainer = ({ children, ...props }) => {
 
 export const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
   onReward,
-  pid,
+  onDone,
   userData,
   userDataReady,
+  proxyCakeBalance,
 }) => {
+  const { t } = useTranslation()
+
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const earningsBigNumber = new BigNumber(userData.earnings)
@@ -53,6 +58,14 @@ export const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
   let earnings = BIG_ZERO
   let earningsBusd = 0
   let displayBalance = userDataReady ? earnings.toLocaleString() : <Skeleton width={60} />
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t(
+      `CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.`,
+    ),
+    {
+      placement: 'bottom',
+    },
+  )
 
   // If user didn't connect wallet default balance will be 0
   if (!earningsBigNumber.isZero()) {
@@ -60,10 +73,6 @@ export const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
     earningsBusd = earnings.multipliedBy(cakePrice).toNumber()
     displayBalance = earnings.toFixed(3, BigNumber.ROUND_DOWN)
   }
-
-  const { t } = useTranslation()
-  const dispatch = useAppDispatch()
-  const { account } = useWeb3React()
 
   return (
     <ActionContainer>
@@ -77,7 +86,16 @@ export const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
       </ActionTitles>
       <ActionContent>
         <div>
-          <Heading>{displayBalance}</Heading>
+          {proxyCakeBalance ? (
+            <>
+              <TooltipText ref={targetRef} decorationColor="secondary">
+                <Heading>{displayBalance}</Heading>
+              </TooltipText>
+              {tooltipVisible && tooltip}
+            </>
+          ) : (
+            <Heading>{displayBalance}</Heading>
+          )}
           {earningsBusd > 0 && (
             <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
           )}
@@ -95,7 +113,9 @@ export const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
                   {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
                 </ToastDescriptionWithTx>,
               )
-              dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+              if (onDone) {
+                onDone()
+              }
             }
           }}
           ml="4px"
