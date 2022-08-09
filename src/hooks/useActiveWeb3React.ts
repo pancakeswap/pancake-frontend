@@ -10,14 +10,14 @@ import { useAccount, useNetwork, useProvider, useSigner } from 'wagmi'
 
 export function useNetworkConnectorUpdater() {
   const localChainId = useLocalNetworkChain()
-  const { chain } = useActiveWeb3React()
+  const { chain, isConnecting } = useActiveWeb3React()
   const { switchNetwork, isLoading, pendingChainId } = useSwitchNetwork()
   const router = useRouter()
   const chainId = chain?.id || localChainId
   const [triedSwitchFromQuery, setTriedSwitchFromQuery] = useState(false)
 
   useEffect(() => {
-    if (isLoading || !router.isReady) return
+    if (isLoading || !router.isReady || isConnecting) return
     const parsedQueryChainId = Number(router.query.chainId)
     if (triedSwitchFromQuery) {
       if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
@@ -35,12 +35,18 @@ export function useNetworkConnectorUpdater() {
         )
       }
     } else if (isChainSupported(parsedQueryChainId)) {
-      setTriedSwitchFromQuery(true)
       switchNetwork(parsedQueryChainId)
+        .then((r) => {
+          console.info('Auto switch network', r)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+        .finally(() => setTriedSwitchFromQuery(true))
     } else {
       setTriedSwitchFromQuery(true)
     }
-  }, [chainId, isLoading, router, switchNetwork, triedSwitchFromQuery])
+  }, [chainId, isConnecting, isLoading, router, switchNetwork, triedSwitchFromQuery])
 
   return {
     isLoading,

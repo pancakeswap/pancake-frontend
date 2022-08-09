@@ -4,7 +4,7 @@ import { useWeb3LibraryContext } from './provider'
 
 export function useWeb3React() {
   const { chain } = useNetwork()
-  const { address, connector, isConnected } = useAccount()
+  const { address, connector, isConnected, isConnecting } = useAccount()
   const library = useWeb3LibraryContext()
   const provider = useProvider()
 
@@ -13,6 +13,7 @@ export function useWeb3React() {
     chainId: chain?.id,
     account: isConnected ? address : null, // TODO: migrate using `isConnected` instead of account to check wallet auth
     isConnected,
+    isConnecting,
     chain,
     connector,
   }
