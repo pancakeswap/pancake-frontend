@@ -4,6 +4,7 @@ import {
   polygonMumbai,
   rinkeby as defaultRinkeby,
   mainnet as defaultMainnet,
+  goerli as defaultGoerli,
 } from 'wagmi/chains'
 import { Chain } from 'wagmi'
 
@@ -137,6 +138,15 @@ const mainnet: Chain = {
   },
 }
 
+const goerli: Chain = {
+  ...defaultGoerli,
+  rpcUrls: {
+    ...defaultGoerli.rpcUrls,
+    // https://docs.nodereal.io/nodereal/meganode/meganode-api-overview/public-api-key
+    nodeReal: 'https://eth-goerli.nodereal.io/v1/8a4432e42df94dcca2814fde8aea2a2e',
+  },
+}
+
 export const CHAINS_TESTNET = [
   bscTest,
   rinkeby,
@@ -156,5 +166,5 @@ export const CHAINS_STARGATE_TESTNET = [
   fantomTestnet,
 ]
 
-export const CHAINS = [bsc, mainnet, bscTest, rinkeby]
+export const CHAINS = [bsc, mainnet, bscTest, rinkeby, goerli]
 export const CHAIN_IDS = CHAINS.map((c) => c.id)

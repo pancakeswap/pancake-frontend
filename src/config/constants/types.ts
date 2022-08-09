@@ -2,9 +2,11 @@ import BigNumber from 'bignumber.js'
 import { Token, ChainId } from '@pancakeswap/sdk'
 
 // a list of tokens by chain
-export type ChainTokenList = {
-  readonly [chainId in ChainId]: Token[]
+export type ChainMap<T> = {
+  readonly [chainId in ChainId]: T
 }
+
+export type ChainTokenList = ChainMap<Token[]>
 
 export type TranslatableText =
   | string

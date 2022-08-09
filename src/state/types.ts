@@ -36,9 +36,11 @@ export class WrappedTokenInfo extends Token {
   }
 }
 
-export type TokenAddressMap = Readonly<{
-  [chainId in ChainId]: Readonly<{ [tokenAddress: string]: { token: WrappedTokenInfo; list: TokenList } }>
-}>
+export type TokenAddressMap = Readonly<
+  {
+    [chainId in ChainId]: Readonly<{ [tokenAddress: string]: { token: WrappedTokenInfo; list: TokenList } }>
+  }
+>
 
 type TagDetails = Tags[keyof Tags]
 export interface TagInfo extends TagDetails {
@@ -51,6 +53,7 @@ export interface TagInfo extends TagDetails {
 export const EMPTY_LIST: TokenAddressMap = {
   [ChainId.ETHEREUM]: {},
   [ChainId.RINKEBY]: {},
+  [ChainId.GOERLI]: {},
   [ChainId.BSC]: {},
   [ChainId.BSC_TESTNET]: {},
 }

@@ -46,6 +46,8 @@ const USDC_RINKEBY = new Token(
   'test USD Coin',
 )
 
+const USDC_GOERLI = new Token(ChainId.GOERLI, '0x07865c6e87b9f70255377e024ace6630c1eaa37f', 6, 'tUSDC', 'test USD Coin')
+
 const USDT_BSC = new Token(
   ChainId.BSC,
   '0x55d398326f99059fF775485246999027B3197955',
@@ -74,6 +76,7 @@ export const USDC = {
   [ChainId.BSC_TESTNET]: USDC_TESTNET,
   [ChainId.ETHEREUM]: USDC_ETH,
   [ChainId.RINKEBY]: USDC_RINKEBY,
+  [ChainId.GOERLI]: USDC_GOERLI,
 }
 
 export const CAKE = {
@@ -117,9 +120,19 @@ const BUSD_RINKEBY = new Token(
   'https://www.paxos.com/busd/',
 )
 
+const BUSD_GOERLI = new Token(
+  ChainId.GOERLI,
+  '0xb809b9B2dc5e93CB863176Ea2D565425B03c0540',
+  18,
+  'BUSD',
+  'Binance USD',
+  'https://www.paxos.com/busd/',
+)
+
 export const BUSD: Record<ChainId, Token> = {
   [ChainId.ETHEREUM]: BUSD_ETH,
   [ChainId.RINKEBY]: BUSD_RINKEBY,
+  [ChainId.GOERLI]: BUSD_GOERLI,
   [ChainId.BSC]: BUSD_MAINNET,
   [ChainId.BSC_TESTNET]: BUSD_TESTNET,
 }
