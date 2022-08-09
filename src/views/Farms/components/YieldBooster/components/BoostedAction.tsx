@@ -86,7 +86,7 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
             description={t('Yield booster available')}
             endIcon={isConfirming && <AutoRenewIcon spin color="currentColor" />}
           >
-            {isConfirming ? t('Confirming...') : t('Boost')}
+            {t('Boost')}
           </ActionButton>
         )
       case YieldBoosterState.ACTIVE:
