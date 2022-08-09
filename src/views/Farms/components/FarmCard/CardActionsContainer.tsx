@@ -83,7 +83,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
         <ConnectWalletButton mt="8px" width="100%" />
       ) : shouldUseProxyFarm ? (
         <ProxyStakedContainer {...farm} lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} displayApr={displayApr}>
-          {(props) => <StakeAction {...props} />}
+          {(props) => <StakeAction shouldUseProxyFarm={shouldUseProxyFarm} {...props} />}
         </ProxyStakedContainer>
       ) : (
         <StakedContainer {...farm} lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} displayApr={displayApr}>

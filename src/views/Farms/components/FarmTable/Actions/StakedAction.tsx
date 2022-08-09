@@ -8,7 +8,7 @@ import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useRouter } from 'next/router'
-import { useCallback } from 'react'
+import { useCallback, useContext } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
@@ -25,6 +25,7 @@ import { ActionContainer, ActionContent, ActionTitles } from './styles'
 import { FarmWithStakedValue } from '../../types'
 import StakedLP from '../../StakedLP'
 import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
+import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -39,6 +40,7 @@ interface StackedActionProps extends FarmWithStakedValue {
   onDone?: () => void
   onApprove?: () => Promise<TransactionResponse>
   isApproved?: boolean
+  shouldUseProxyFarm?: boolean
 }
 
 export function useStakedActions(pid, lpContract) {
@@ -121,6 +123,8 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   onApprove,
   isApproved,
 }) => {
+  const { shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
+
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
@@ -181,11 +185,17 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
       multiplier={multiplier}
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
+      shouldUseProxyFarm={shouldUseProxyFarm}
     />,
   )
 
   const [onPresentWithdraw] = useModal(
-    <WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} />,
+    <WithdrawModal
+      shouldUseProxyFarm={shouldUseProxyFarm}
+      max={stakedBalance}
+      onConfirm={handleUnstake}
+      tokenName={lpSymbol}
+    />,
   )
 
   const handleApprove = useCallback(async () => {

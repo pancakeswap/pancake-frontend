@@ -23,6 +23,7 @@ interface FarmCardActionsProps extends FarmWithStakedValue {
   onDone?: () => void
   onApprove?: () => Promise<TransactionResponse>
   isApproved?: boolean
+  shouldUseProxyFarm?: boolean
 }
 
 const IconButtonWrapper = styled.div`
@@ -50,6 +51,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
   onDone,
   onApprove,
   isApproved,
+  shouldUseProxyFarm,
 }) => {
   const { t } = useTranslation()
   const { tokenBalance, stakedBalance } = userData
@@ -112,10 +114,17 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
       displayApr={displayApr}
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
+      shouldUseProxyFarm={shouldUseProxyFarm}
     />,
   )
+
   const [onPresentWithdraw] = useModal(
-    <WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} />,
+    <WithdrawModal
+      shouldUseProxyFarm={shouldUseProxyFarm}
+      max={stakedBalance}
+      onConfirm={handleUnstake}
+      tokenName={lpSymbol}
+    />,
   )
 
   const renderStakingButtons = () => {

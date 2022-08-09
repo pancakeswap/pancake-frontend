@@ -11,6 +11,8 @@ import {
   IconButton,
   Skeleton,
   AutoRenewIcon,
+  Message,
+  MessageText,
 } from '@pancakeswap/uikit'
 import { ModalActions, ModalInput } from 'components/Modal'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
@@ -43,6 +45,7 @@ interface DepositModalProps {
   displayApr?: string
   addLiquidityUrl?: string
   cakePrice?: BigNumber
+  shouldUseProxyFarm?: boolean
 }
 
 const DepositModal: React.FC<DepositModalProps> = ({
@@ -58,6 +61,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
   apr,
   addLiquidityUrl,
   cakePrice,
+  shouldUseProxyFarm,
 }) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
@@ -125,6 +129,13 @@ const DepositModal: React.FC<DepositModalProps> = ({
         addLiquidityUrl={addLiquidityUrl}
         inputTitle={t('Stake')}
       />
+      {shouldUseProxyFarm ? (
+        <Message variant="danger" mt="8px">
+          <MessageText>
+            {t('The yield booster multiplier will be updated based on the latest staking conditions.')}
+          </MessageText>
+        </Message>
+      ) : null}
       <Flex mt="24px" alignItems="center" justifyContent="space-between">
         <Text mr="8px" color="textSubtle">
           {t('Annual ROI at current rates')}:

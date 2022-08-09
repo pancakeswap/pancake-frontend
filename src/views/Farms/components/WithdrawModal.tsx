@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { useCallback, useMemo, useState } from 'react'
-import { Button, Modal, AutoRenewIcon } from '@pancakeswap/uikit'
+import { Button, Modal, AutoRenewIcon, Message, MessageText } from '@pancakeswap/uikit'
 import { ModalActions, ModalInput } from 'components/Modal'
 import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance } from 'utils/formatBalance'
@@ -10,9 +10,16 @@ interface WithdrawModalProps {
   onConfirm: (amount: string) => void
   onDismiss?: () => void
   tokenName?: string
+  shouldUseProxyFarm?: boolean
 }
 
-const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max, tokenName = '' }) => {
+const WithdrawModal: React.FC<WithdrawModalProps> = ({
+  onConfirm,
+  onDismiss,
+  max,
+  tokenName = '',
+  shouldUseProxyFarm,
+}) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
   const { t } = useTranslation()
@@ -46,6 +53,13 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
         symbol={tokenName}
         inputTitle={t('Unstake')}
       />
+      {shouldUseProxyFarm ? (
+        <Message variant="danger" mt="8px">
+          <MessageText>
+            {t('The yield booster multiplier will be updated based on the latest staking conditions.')}
+          </MessageText>
+        </Message>
+      ) : null}
       <ModalActions>
         <Button variant="secondary" onClick={onDismiss} width="100%" disabled={pendingTx}>
           {t('Cancel')}
