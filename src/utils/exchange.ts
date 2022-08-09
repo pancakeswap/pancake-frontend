@@ -1,18 +1,18 @@
-import { Web3Provider } from '@ethersproject/providers'
+import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Trade, TradeType } from '@pancakeswap/sdk'
 import IPancakeRouter02ABI from 'config/abi/IPancakeRouter02.json'
 import { IPancakeRouter02 } from 'config/abi/types/IPancakeRouter02'
-import { JSBI, Percent, CurrencyAmount, Trade, Fraction, Currency, TradeType } from '@pancakeswap/sdk'
 import {
-  ROUTER_ADDRESS,
-  BIPS_BASE,
-  ONE_HUNDRED_PERCENT,
-  INPUT_FRACTION_AFTER_FEE,
-  BLOCKED_PRICE_IMPACT_NON_EXPERT,
   ALLOWED_PRICE_IMPACT_HIGH,
-  ALLOWED_PRICE_IMPACT_MEDIUM,
   ALLOWED_PRICE_IMPACT_LOW,
+  ALLOWED_PRICE_IMPACT_MEDIUM,
+  BIPS_BASE,
+  BLOCKED_PRICE_IMPACT_NON_EXPERT,
+  INPUT_FRACTION_AFTER_FEE,
+  ONE_HUNDRED_PERCENT,
+  ROUTER_ADDRESS,
 } from 'config/constants/exchange'
-import { getContract, getProviderOrSigner } from './index'
+import { useActiveChainId } from 'hooks/useActiveWeb3React'
+import { useContract } from 'hooks/useContract'
 import { Field } from '../state/swap/actions'
 
 // converts a basis points value to a sdk percent
@@ -30,13 +30,9 @@ export function calculateSlippageAmount(value: CurrencyAmount<Currency>, slippag
   ]
 }
 
-// account is optional
-export function getRouterContract(chainId: number, library: Web3Provider, account?: string) {
-  return getContract(
-    ROUTER_ADDRESS[chainId],
-    IPancakeRouter02ABI,
-    getProviderOrSigner(library, account),
-  ) as IPancakeRouter02
+export function useRouterContract() {
+  const chainId = useActiveChainId()
+  return useContract<IPancakeRouter02>(ROUTER_ADDRESS[chainId], IPancakeRouter02ABI, true)
 }
 
 // computes price breakdown for the trade

@@ -10,6 +10,7 @@ import { useProfileContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { useSigner } from 'wagmi'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import SelectionCard from 'views/ProfileCreation/SelectionCard'
 import { useApprovalNfts } from 'state/nftMarket/hooks'
@@ -26,7 +27,8 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss, 
     collectionAddress: null,
   })
   const { t } = useTranslation()
-  const { account, library } = useWeb3React()
+  const { account } = useWeb3React()
+  const { data: signer } = useSigner()
   const { isLoading: isProfileLoading, profile, refresh: refreshProfile } = useProfile()
   const { nfts, isLoading } = useNftsForAddress(account, profile, isProfileLoading)
   const profileContract = useProfileContract()
@@ -43,7 +45,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss, 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onApprove: () => {
-        const contract = getErc721Contract(selectedNft.collectionAddress, library.getSigner())
+        const contract = getErc721Contract(selectedNft.collectionAddress, signer)
 
         return callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), selectedNft.tokenId])
       },

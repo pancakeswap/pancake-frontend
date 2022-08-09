@@ -1,23 +1,24 @@
 import { useMemo } from 'react'
 import { ChainId, GelatoLimitOrders } from '@gelatonetwork/limit-orders-lib'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useActiveWeb3React, { useProviderOrSigner } from 'hooks/useActiveWeb3React'
 import { GELATO_HANDLER } from 'config/constants/exchange'
 
 const useGelatoLimitOrdersLib = (): GelatoLimitOrders | undefined => {
-  const { chainId, library } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
+  const providerOrSigner = useProviderOrSigner()
 
   return useMemo(() => {
-    if (!chainId || !library) {
+    if (!chainId || !providerOrSigner) {
       console.error('Could not instantiate GelatoLimitOrders: missing chainId or library')
       return undefined
     }
     try {
-      return new GelatoLimitOrders(chainId as ChainId, library?.getSigner(), GELATO_HANDLER, false)
+      return new GelatoLimitOrders(chainId as ChainId, providerOrSigner, GELATO_HANDLER, false)
     } catch (error: any) {
       console.error(`Could not instantiate GelatoLimitOrders: ${error.message}`)
       return undefined
     }
-  }, [chainId, library])
+  }, [chainId, providerOrSigner])
 }
 
 export default useGelatoLimitOrdersLib

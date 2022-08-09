@@ -53,7 +53,7 @@ import {
   useZapModeManager,
 } from '../../state/user/hooks'
 import { calculateGasMargin } from '../../utils'
-import { getRouterContract, calculateSlippageAmount } from '../../utils/exchange'
+import { calculateSlippageAmount, useRouterContract } from '../../utils/exchange'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import Dots from '../../components/Loader/Dots'
@@ -77,7 +77,7 @@ const zapSupportedChain = [ChainId.BSC, ChainId.BSC_TESTNET]
 
 export default function AddLiquidity() {
   const router = useRouter()
-  const { account, chainId, library } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
 
   const addPair = usePairAdder()
   const [zapMode] = useZapModeManager()
@@ -247,9 +247,10 @@ export default function AddLiquidity() {
 
   const addTransaction = useTransactionAdder()
 
+  const routerContract = useRouterContract()
+
   async function onAdd() {
-    if (!chainId || !library || !account) return
-    const routerContract = getRouterContract(chainId, library, account)
+    if (!chainId || !account || !routerContract) return
 
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = mintParsedAmounts
     if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
@@ -382,7 +383,7 @@ export default function AddLiquidity() {
   )
 
   async function onZapIn() {
-    if (!canZap || !parsedAmounts || !zapIn.zapInEstimated || !library || !chainId) {
+    if (!canZap || !parsedAmounts || !zapIn.zapInEstimated || !chainId || !zapContract) {
       return
     }
 
