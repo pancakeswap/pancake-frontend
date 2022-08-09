@@ -57,11 +57,7 @@ const MobileChart = () => {
         </TabToggleGroup>
       </div>
       <ChartWrapper>
-        {chartView === PredictionsChartView.TradingView ? (
-          <TradingView />
-        ) : (
-          <ChainlinkChart pt="8px" background="background" isMobile />
-        )}
+        {chartView === PredictionsChartView.TradingView ? <TradingView /> : <ChainlinkChart pt="8px" isMobile />}
       </ChartWrapper>
     </MobileChartWrapper>
   )
