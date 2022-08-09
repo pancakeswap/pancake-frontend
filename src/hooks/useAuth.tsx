@@ -5,7 +5,7 @@ import { useAppDispatch } from 'state'
 import { mutate } from 'swr'
 import { useConnect, useDisconnect, useNetwork, ConnectorNotFoundError, UserRejectedRequestError } from 'wagmi'
 import { clearUserStates } from '../utils/clearUserStates'
-import { useLocalNetworkChain } from './useActiveWeb3React'
+import { useActiveChainId } from './useActiveWeb3React'
 import useToast from './useToast'
 
 const useAuth = () => {
@@ -15,15 +15,15 @@ const useAuth = () => {
   const { chain } = useNetwork()
   const { disconnect } = useDisconnect()
   const { toastError } = useToast()
-  const localChainId = useLocalNetworkChain()
+  const chainId = useActiveChainId()
 
   const login = useCallback(
     async (connectorID: ConnectorNames) => {
       const findConnector = connectors.find((c) => c.id === connectorID)
       try {
-        const connected = await connectAsync({ connector: findConnector })
-        if (connected.chain.id !== localChainId) {
-          connected.connector.switchChain?.(localChainId).catch(() => {
+        const connected = await connectAsync({ connector: findConnector, chainId })
+        if (connected.chain.id !== chainId) {
+          connected.connector.switchChain?.(chainId).catch(() => {
             mutate('session-chain-id', connected.chain.id)
           })
         }
@@ -50,7 +50,7 @@ const useAuth = () => {
         }
       }
     },
-    [connectors, connectAsync, localChainId, toastError, t],
+    [connectors, connectAsync, chainId, toastError, t],
   )
 
   const logout = useCallback(() => {

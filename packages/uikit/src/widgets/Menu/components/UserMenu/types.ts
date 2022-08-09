@@ -15,6 +15,7 @@ export interface UserMenuProps extends FlexProps {
   text?: ReactNode;
   avatarSrc?: string;
   variant?: Variant;
+  disabled?: boolean;
   children?: (exposedProps: { isOpen: boolean }) => ReactElement;
 }
 

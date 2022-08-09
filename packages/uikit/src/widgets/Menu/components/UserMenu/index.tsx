@@ -69,6 +69,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
   avatarSrc,
   variant = variants.DEFAULT,
   children,
+  disabled,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -112,11 +113,13 @@ const UserMenu: React.FC<UserMenuProps> = ({
       >
         <MenuIcon avatarSrc={avatarSrc} variant={variant} />
         <LabelText title={typeof text === "string" ? text || account : account}>{text || accountEllipsis}</LabelText>
-        <ChevronDownIcon color="text" width="24px" />
+        {!disabled && <ChevronDownIcon color="text" width="24px" />}
       </StyledUserMenu>
-      <Menu style={styles.popper} ref={setTooltipRef} {...attributes.popper} isOpen={isOpen}>
-        <Box onClick={() => setIsOpen(false)}>{children?.({ isOpen })}</Box>
-      </Menu>
+      {!disabled && (
+        <Menu style={styles.popper} ref={setTooltipRef} {...attributes.popper} isOpen={isOpen}>
+          <Box onClick={() => setIsOpen(false)}>{children?.({ isOpen })}</Box>
+        </Menu>
+      )}
     </Flex>
   );
 };

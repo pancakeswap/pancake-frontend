@@ -27,7 +27,7 @@ export const NetworkSelect = ({ switchNetwork }) => {
 
 export const NetworkSwitcher = () => {
   const { t } = useTranslation()
-  const { chainId, chain } = useActiveWeb3React()
+  const { chainId, chain, connector } = useActiveWeb3React()
   const { isLoading, switchNetwork, pendingChainId } = useNetworkConnectorUpdater()
   const foundChain = useMemo(
     () => chains.find((c) => c.id === (isLoading ? pendingChainId || chainId : chainId)),
@@ -36,12 +36,15 @@ export const NetworkSwitcher = () => {
 
   const isWrongNetwork = chain?.unsupported
 
+  const isWalletConnect = connector?.id === 'walletConnect'
+
   return (
     <>
       <UserMenu
         mr="8px"
         variant={isLoading ? 'pending' : isWrongNetwork ? 'danger' : 'default'}
         avatarSrc={`/images/chains/${chainId}.png`}
+        disabled={isWalletConnect}
         text={
           isLoading ? (
             t('Requesting')
