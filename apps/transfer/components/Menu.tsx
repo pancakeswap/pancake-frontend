@@ -8,13 +8,22 @@ import {
   Text,
   Box,
   ThemeSwitcher,
+  useModal,
+  Modal,
+  Link,
+  RefreshIcon,
+  CheckmarkCircleIcon,
+  BlockIcon,
+  OpenNewIcon,
 } from '@pancakeswap/uikit'
+import { CurrencyAmount, Token } from '@pancakeswap/sdk'
 import Image from 'next/future/image'
 import NextLink from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { useTheme as useNextTheme } from 'next-themes'
-import { CHAINS_STARGATE } from '@pancakeswap/wagmi'
+import { CHAINS_STARGATE, bsc, fantomOpera, avalandche } from '@pancakeswap/wagmi'
+import { mainnet, arbitrum, optimism, polygon } from 'wagmi/chains'
 
 const StyledMenuItem = styled.a<any>`
   position: relative;
@@ -33,6 +42,29 @@ const StyledMenuItem = styled.a<any>`
   }
 `
 
+const TxnIcon = styled(Flex)`
+  align-items: center;
+  flex: none;
+  width: 24px;
+`
+
+const Summary = styled.div`
+  flex: 1;
+  padding: 0 8px;
+`
+
+const TxnLink = styled(Link)`
+  align-items: center;
+  color: ${({ theme }) => theme.colors.text};
+  display: flex;
+  margin-bottom: 16px;
+  width: 100%;
+
+  &:hover {
+    text-decoration: none;
+  }
+`
+
 export function Menu() {
   const theme = useTheme()
   const { setTheme } = useNextTheme()
@@ -45,7 +77,7 @@ export function Menu() {
         <Flex pl={['25px', null, '50px']}>
           <Box display={['none', null, 'flex']}>
             <NextLink href="/" passHref>
-              <StyledMenuItem $isActive>Transfer</StyledMenuItem>
+              <StyledMenuItem $isActive>Bridge</StyledMenuItem>
             </NextLink>
           </Box>
           <StyledMenuItem href="https://pancakeswap.finance/swap">Swap</StyledMenuItem>
@@ -61,9 +93,13 @@ export function Menu() {
   )
 }
 
-const UserMenuItems = () => {
+const UserMenuItems = ({ onShowTx }: { onShowTx: () => void }) => {
   return (
     <>
+      <UserMenuItem onClick={onShowTx}>
+        <Text>Recent Transactions</Text>
+      </UserMenuItem>
+      <UserMenuDivider />
       <Box px="16px" py="8px">
         <Text>Select a Network</Text>
       </Box>
@@ -125,6 +161,7 @@ function useStargateReaction<T>(expression: () => T) {
 
   useEffect(() => {
     customElements.whenDefined('stargate-widget').then(() => {
+      setValue(savedExpression.current)
       window.stargate.utils.reaction(savedExpression.current, (v: T) => {
         setValue(v)
       })
@@ -134,27 +171,189 @@ function useStargateReaction<T>(expression: () => T) {
   return value
 }
 
+const renderIcon = (txn: TransactionType) => {
+  if (!txn.completed) {
+    return <RefreshIcon spin width="24px" />
+  }
+
+  if (txn.error) {
+    return <BlockIcon color="failure" width="24px" />
+  }
+
+  return <CheckmarkCircleIcon color="success" width="24px" />
+}
+
+const stargateNetowrk = [
+  {
+    chainId: 1,
+    name: 'Ethereum',
+    chain: mainnet,
+  },
+  {
+    name: 'BNB Chain',
+    chainId: 2,
+    chain: bsc,
+  },
+  {
+    chainId: 9,
+    name: 'Matic',
+    chain: polygon,
+  },
+  {
+    chainId: 6,
+    name: 'Avalanche',
+    chain: avalandche,
+  },
+  {
+    chainId: 12,
+    name: 'Fantom',
+    chain: fantomOpera,
+  },
+  {
+    chainId: 10,
+    name: 'Arbitrum',
+    chain: arbitrum,
+  },
+  {
+    chainId: 11,
+    name: 'Optimism',
+    chain: optimism,
+  },
+]
+
+const findChainByStargateId = (chainId: number) => stargateNetowrk.find((s) => s.chainId === chainId)
+
+function RecentTransactionsModal({
+  onDismiss,
+  transactions,
+}: {
+  onDismiss?: () => void
+  transactions: TransactionType[]
+}) {
+  return (
+    <Modal title="Recent Transactions" onDismiss={onDismiss}>
+      <Box mb="16px" style={{ textAlign: 'right' }}>
+        <Button scale="sm" onClick={() => window.stargate.transaction.clear()} variant="text" px="0">
+          Clear all
+        </Button>
+      </Box>
+      {transactions?.map((txn, i) => (
+        <TxnLink
+          // eslint-disable-next-line react/no-array-index-key
+          key={i}
+          href={
+            txn.confirmation
+              ? `${findChainByStargateId(txn.confirmation.chainId)?.chain.blockExplorers?.default.url}/tx/${
+                  txn.confirmation.hash
+                }`
+              : `${findChainByStargateId(txn.chainId)?.chain.blockExplorers?.default.url}/tx/${txn.hash}`
+          }
+          external
+        >
+          <TxnIcon>{renderIcon(txn)}</TxnIcon>
+          <Summary>
+            {txn.type === 'APPROVE'
+              ? `Approve ${txn?.input?.amount?.currency?.symbol}`
+              : `Transfer ${txn.input.amount.toSignificant(2)} ${txn.input.from.token.symbol} to ${
+                  findChainByStargateId(txn.input.to.chainId)?.name
+                }`}
+          </Summary>
+          <TxnIcon>
+            <OpenNewIcon width="24px" color="primary" />
+          </TxnIcon>
+        </TxnLink>
+      ))}
+    </Modal>
+  )
+}
+
+type BaseTxnType = {
+  chainId: number
+  progress: number
+  completed: boolean
+  hash: string
+  expected: string // date
+  exceeded: boolean
+  submitted: string // date
+  confirmations: number
+  confirmation?: {
+    hash: string
+    chainId: number
+  }
+  error?: any // ??
+}
+
+type TransactionApprove = {
+  type: 'APPROVE'
+  input: {
+    amount: CurrencyAmount
+    spender: string
+    account: string
+  }
+} & BaseTxnType
+
+type TransactionTransfer = {
+  type: 'TRANSFER'
+  input: TransferInput
+} & BaseTxnType
+
+type TransactionType = TransactionApprove | TransactionTransfer
+
+type TransferInput = {
+  from: {
+    account: string
+    chainId: number
+    token: Token
+  }
+  to: {
+    account: string
+    chainId: number
+    token: Token
+  }
+  amount: CurrencyAmount
+  minAmount: CurrencyAmount
+  nativeFee: CurrencyAmount
+  dstNativeAmount: CurrencyAmount
+}
+
 function User() {
-  const account = useStargateReaction(() => window.stargate.wallet.ethereum.account)
-  const chainId = useStargateReaction(() => window.stargate.wallet.ethereum.chainId)
-  const active = useStargateReaction(() => window.stargate.wallet.ethereum.active)
+  const wallet = useStargateReaction(() => window.stargate.wallet.ethereum)
+  const [pending, setPending] = useState([])
+  const transactions = useStargateReaction(() => window.stargate.transaction.transactions)
+  const [showRecentTxModal] = useModal(<RecentTransactionsModal transactions={transactions} />, true, true, 'recent-tx')
+
+  useEffect(() => {
+    customElements.whenDefined('stargate-widget').then(() => {
+      setInterval(() => {
+        setPending(window.stargate.transaction.pickPendingTransactions())
+      }, 1000)
+    })
+  }, [])
+
+  const { account, chainId, active } = wallet || {}
 
   const chain = CHAINS_STARGATE.find((c) => c.id === chainId)
 
   const isWrongNetwork = chainId && !chain
+  const hasPendingTransactions = pending.length > 0
 
   if (isWrongNetwork) {
     return (
       <UserMenu text="Network" variant="danger">
-        {() => <UserMenuItems />}
+        {() => <UserMenuItems onShowTx={() => showRecentTxModal()} />}
       </UserMenu>
     )
   }
 
   if (active) {
     return (
-      <UserMenu account={account} avatarSrc={chainId ? `/chains/${chainId}.png` : undefined}>
-        {() => <UserMenuItems />}
+      <UserMenu
+        variant={hasPendingTransactions ? 'pending' : 'default'}
+        account={account}
+        text={hasPendingTransactions ? `${pending.length} Pending` : ''}
+        avatarSrc={chainId ? `/chains/${chainId}.png` : undefined}
+      >
+        {() => <UserMenuItems onShowTx={() => showRecentTxModal()} />}
       </UserMenu>
     )
   }
