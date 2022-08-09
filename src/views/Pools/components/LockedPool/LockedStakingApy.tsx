@@ -66,7 +66,7 @@ const LockedStakingApy: React.FC<LockedStakingApyProps> = ({
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
 
   const tooltipContentOfBurn = t(
-    'After Burning starts at %burnStartTime%.  You need to renew  your fix-term position, to initiate a new lock or convert your staking position to flexible before it starts. Otherwise all the rewards will be burned within the next 90 days .',
+    'After Burning starts at %burnStartTime%. You need to renew your fix-term position, to initiate a new lock or convert your staking position to flexible before it starts. Otherwise all the rewards will be burned within the next 90 days.',
     { burnStartTime },
   )
   const {

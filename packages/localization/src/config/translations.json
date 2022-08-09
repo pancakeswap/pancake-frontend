@@ -1856,5 +1856,5 @@
   "Recommend choosing \"MAX\" to renew your staking position in order to keep similar yield boost.": "Recommend choosing \"MAX\" to renew your staking position in order to keep similar yield boost.",
   "Add to %wallet%": "Add to %wallet%",
   "Add %asset% to %wallet%": "Add %asset% to %wallet%",
-  "After Burning starts at %burnStartTime%.  You need to renew  your fix-term position, to initiate a new lock or convert your staking position to flexible before it starts. Otherwise all the rewards will be burned within the next 90 days .": "After Burning starts at %burnStartTime%.  You need to renew  your fix-term position, to initiate a new lock or convert your staking position to flexible before it starts. Otherwise all the rewards will be burned within the next 90 days ."
+  "After Burning starts at %burnStartTime%. You need to renew your fix-term position, to initiate a new lock or convert your staking position to flexible before it starts. Otherwise all the rewards will be burned within the next 90 days.": "After Burning starts at %burnStartTime%. You need to renew your fix-term position, to initiate a new lock or convert your staking position to flexible before it starts. Otherwise all the rewards will be burned within the next 90 days."
 }
