@@ -1,13 +1,15 @@
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useBCakeFarmBoosterContract } from 'hooks/useContract'
+import { useBCakeFarmBoosterContract, useMasterchef } from 'hooks/useContract'
 import farmBoosterAbi from 'config/abi/farmBooster.json'
+import masterChefAbi from 'config/abi/masterchef.json'
 import { FixedNumber } from '@ethersproject/bignumber'
 import { multicallv2 } from 'utils/multicall'
+import { useCallback } from 'react'
 import useSWR from 'swr'
 import _toNumber from 'lodash/toNumber'
 import { YieldBoosterState } from './useYieldBoosterState'
 
-const PRECISION_FACTOR = FixedNumber.from('1000000000000')
+const PRECISION_FACTOR = FixedNumber.from('1000000000000') // 1e12
 
 async function getPublicMultipler({ farmBoosterContract }): Promise<number> {
   const calls = [
@@ -69,8 +71,27 @@ async function getUserMultipler({ farmBoosterContract, account, pid }): Promise<
   )
 }
 
+async function getMultiplerFromMC({ pid, account, masterChefContract }): Promise<number> {
+  const calls = [
+    {
+      address: masterChefContract.address,
+      name: 'getBoostMultiplier',
+      params: [account, pid],
+    },
+  ]
+
+  const data = await multicallv2(masterChefAbi, calls)
+
+  if (!data?.length) return 0
+
+  const [[boostMultiplier]] = data
+
+  return _toNumber(FixedNumber.from(boostMultiplier).divUnsafe(PRECISION_FACTOR).round(2).toString())
+}
+
 export default function useBoostMultipler({ pid, boosterState }): number {
   const farmBoosterContract = useBCakeFarmBoosterContract()
+  const masterChefContract = useMasterchef()
 
   const { account } = useActiveWeb3React()
 
@@ -78,13 +99,19 @@ export default function useBoostMultipler({ pid, boosterState }): number {
     boosterState,
   )
 
-  const { data } = useSWR(['boostMultipler', shouldMaxUp ? 'public' : `user${pid}`], async () =>
-    shouldMaxUp
+  const getMultipler = useCallback(async () => {
+    if (boosterState === YieldBoosterState.ACTIVE) {
+      return getMultiplerFromMC({ pid, account, masterChefContract })
+    }
+
+    return shouldMaxUp
       ? getPublicMultipler({
           farmBoosterContract,
         })
-      : getUserMultipler({ farmBoosterContract, pid, account }),
-  )
+      : getUserMultipler({ farmBoosterContract, pid, account })
+  }, [boosterState, farmBoosterContract, masterChefContract, pid, account, shouldMaxUp])
+
+  const { data } = useSWR(['boostMultipler', shouldMaxUp ? 'public' : `user${pid}`], getMultipler)
 
   return data || 0
 }
