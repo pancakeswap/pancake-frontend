@@ -63,7 +63,7 @@ const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayC
     ? sortedConfig.filter((wallet) => wallet.title !== "WalletConnect")
     : sortedConfig;
   if (isMobile) {
-    walletsToShow = walletsToShow.filter((c) => c.connectorId === ConnectorNames.BSC);
+    walletsToShow = walletsToShow.filter((c) => c.connectorId !== ConnectorNames.BSC);
   }
   const displayListConfig = showMore ? walletsToShow : walletsToShow.slice(0, displayCount);
 
