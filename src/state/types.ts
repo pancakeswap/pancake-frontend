@@ -243,6 +243,7 @@ export interface DeserializedLockedVaultUser extends DeserializedVaultUser {
   lastUserActionTime: string
   lockStartTime: string
   lockEndTime: string
+  burnStartTime: string
   userBoostedShare: BigNumber
   locked: boolean
   lockedAmount: BigNumber
