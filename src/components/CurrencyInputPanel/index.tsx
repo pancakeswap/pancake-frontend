@@ -13,6 +13,7 @@ import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
 
 import { Input as NumericalInput } from './NumericalInput'
 import { CopyButton } from '../CopyButton'
+import { CommonBasesType } from '../SearchModal/types'
 import AddToWalletButton from '../AddToWallet/AddToWalletButton'
 
 const InputRow = styled.div<{ selected: boolean }>`
@@ -86,6 +87,7 @@ interface CurrencyInputPanelProps {
   otherCurrency?: Currency | null
   id: string
   showCommonBases?: boolean
+  commonBasesType?: string
   zapStyle?: ZapStyle
   beforeButton?: React.ReactNode
   disabled?: boolean
@@ -134,6 +136,7 @@ export default function CurrencyInputPanel({
       selectedCurrency={currency}
       otherSelectedCurrency={otherCurrency}
       showCommonBases={showCommonBases}
+      commonBasesType={CommonBasesType.SWAP_LIMITORDER}
     />,
   )
 
