@@ -57,7 +57,7 @@ const getWalletName = () => {
   if (window?.ethereum?.isMetaMask) {
     return 'Metamask'
   }
-  return null
+  return 'Wallet'
 }
 
 const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
