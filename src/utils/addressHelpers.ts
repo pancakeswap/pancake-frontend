@@ -7,8 +7,8 @@ export const getAddress = (address: Address, chainId?: number): string => {
   return address[chainId] ? address[chainId] : address[ChainId.BSC]
 }
 
-export const getMasterChefAddress = () => {
-  return getAddress(addresses.masterChef)
+export const getMasterChefAddress = (chainId?: number) => {
+  return getAddress(addresses.masterChef, chainId)
 }
 export const getMasterChefV1Address = () => {
   return getAddress(addresses.masterChefV1)

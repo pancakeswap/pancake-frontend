@@ -188,8 +188,8 @@ export const getBunnySpecialContract = (signer?: Signer | Provider) => {
 export const getLotteryV2Contract = (signer?: Signer | Provider) => {
   return getContract(lotteryV2Abi, getLotteryV2Address(), signer) as LotteryV2
 }
-export const getMasterchefContract = (signer?: Signer | Provider) => {
-  return getContract(masterChef, getMasterChefAddress(), signer) as Masterchef
+export const getMasterchefContract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract(masterChef, getMasterChefAddress(chainId), signer) as Masterchef
 }
 export const getMasterchefV1Contract = (signer?: Signer | Provider) => {
   return getContract(masterChefV1, getMasterChefV1Address(), signer) as MasterchefV1

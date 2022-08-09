@@ -1,11 +1,14 @@
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
+import { SerializedFarmConfig } from 'config/constants/types'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { farmsConfig, SLOW_INTERVAL } from 'config/constants'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import useSWRImmutable from 'swr/immutable'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
+import { getMasterchefContract } from 'utils/contractHelpers'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, State } from '../types'
 import {
@@ -17,6 +20,23 @@ import {
   makeLpTokenPriceFromLpSymbolSelector,
   makeFarmFromPidSelector,
 } from './selectors'
+
+export const getFarmFiles = async (chainId: number): Promise<SerializedFarmConfig[]> => {
+  try {
+    return (await import(`config/constants/farms/${chainId}.ts`)).default
+  } catch (error) {
+    console.error('Farm config not supported in chain: ', chainId, error)
+    return []
+  }
+}
+
+export function useFarmsLength() {
+  const { chainId } = useActiveWeb3React()
+  return useSWRImmutable(chainId ? ['farmsLength', chainId] : null, async () => {
+    const mc = getMasterchefContract(undefined, chainId)
+    return (await mc.poolLength()).toNumber()
+  })
+}
 
 export const usePollFarmsWithUserData = () => {
   const dispatch = useAppDispatch()

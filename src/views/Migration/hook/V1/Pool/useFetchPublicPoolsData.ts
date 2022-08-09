@@ -1,5 +1,5 @@
 import { useAppDispatch } from 'state'
-import farmsConfig from 'config/constants/farms'
+import farmsConfig from 'config/constants/farms/56'
 import { useSlowRefreshEffect } from 'hooks/useRefreshEffect'
 import { fetchFarmsPublicDataAsync } from 'state/farmsV1/index'
 
