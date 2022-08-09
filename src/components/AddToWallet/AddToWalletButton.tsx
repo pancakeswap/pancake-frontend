@@ -30,7 +30,7 @@ export interface AddToWalletButtonProps {
 const Icons = {
   // TODO: Brave
   Binance: BinanceChainIcon,
-  injected: CoinbaseWalletIcon,
+  'Coinbase Wallet': CoinbaseWalletIcon,
   Opera: OperaIcon,
   TokenPocket: TokenPocketIcon,
   'Trust Wallet': TrustWalletIcon,
