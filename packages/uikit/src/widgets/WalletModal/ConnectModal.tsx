@@ -64,7 +64,7 @@ const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayC
   const displayListConfig = showMore ? walletsToShow : walletsToShow.slice(0, displayCount);
 
   return (
-    <ModalContainer minWidth="320px">
+    <ModalContainer $minWidth="320px">
       <ModalHeader background={getThemeValue(theme, "colors.gradients.bubblegum")}>
         <ModalTitle>
           <Heading>{t("Connect Wallet")}</Heading>
