@@ -53,7 +53,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   }
 
   return (
-    <ModalContainer minWidth="375px">
+    <ModalContainer $minWidth="375px">
       <ModalHeader background={headerBackground}>
         <ModalTitle>
           <Heading>{title}</Heading>
