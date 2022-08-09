@@ -13,7 +13,6 @@ import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
 
 import { Input as NumericalInput } from './NumericalInput'
 import { CopyButton } from '../CopyButton'
-import { CommonBasesType } from '../SearchModal/types'
 import AddToWalletButton from '../AddToWallet/AddToWalletButton'
 
 const InputRow = styled.div<{ selected: boolean }>`
@@ -111,6 +110,7 @@ export default function CurrencyInputPanel({
   otherCurrency,
   id,
   showCommonBases,
+  commonBasesType,
   disabled,
   error,
   showBUSD,
@@ -136,7 +136,7 @@ export default function CurrencyInputPanel({
       selectedCurrency={currency}
       otherSelectedCurrency={otherCurrency}
       showCommonBases={showCommonBases}
-      commonBasesType={CommonBasesType.SWAP_LIMITORDER}
+      commonBasesType={commonBasesType}
     />,
   )
 

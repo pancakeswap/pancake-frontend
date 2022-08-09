@@ -8,7 +8,6 @@ import { useCurrencyBalance } from 'state/wallet/hooks'
 import useBUSDPrice from 'hooks/useBUSDPrice'
 import { CurrencyLogo } from '../Logo'
 import { RowBetween, AutoRow } from '../Layout/Row'
-import { CommonBasesType } from '../SearchModal/types'
 
 const DropDownHeader = styled.div`
   width: 100%;
@@ -56,6 +55,7 @@ export const CurrencySelect = ({
   selectedCurrency,
   otherSelectedCurrency,
   showCommonBases,
+  commonBasesType,
   hideBalance,
   ...props
 }: CurrencySelectProps) => {
@@ -74,7 +74,7 @@ export const CurrencySelect = ({
       selectedCurrency={selectedCurrency}
       otherSelectedCurrency={otherSelectedCurrency}
       showCommonBases={showCommonBases}
-      commonBasesType={CommonBasesType.LIQUIDITY}
+      commonBasesType={commonBasesType}
     />,
   )
 
