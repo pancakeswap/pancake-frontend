@@ -3,6 +3,7 @@ import { configureChains, createClient } from 'wagmi'
 import memoize from 'lodash/memoize'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { SafeConnector } from '@gnosis.pm/safe-apps-wagmi'
@@ -77,6 +78,13 @@ export const walletConnectConnector = new WalletConnectConnector({
   },
 })
 
+export const metaMaskConnector = new MetaMaskConnector({
+  chains,
+  options: {
+    shimChainChangedDisconnect: true,
+  },
+})
+
 export const bscConnector = new BscConnector({ chains })
 
 export const client = createClient({
@@ -84,6 +92,7 @@ export const client = createClient({
   provider,
   connectors: [
     new SafeConnector({ chains }),
+    metaMaskConnector,
     injectedConnector,
     coinbaseConnector,
     walletConnectConnector,

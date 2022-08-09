@@ -16,7 +16,7 @@ const connectors: Config[] = [
   {
     title: "Metamask",
     icon: Metamask,
-    connectorId: ConnectorNames.Injected,
+    connectorId: ConnectorNames.MetaMask,
     priority: 1,
     href: "https://metamask.app.link/dapp/pancakeswap.finance/",
   },

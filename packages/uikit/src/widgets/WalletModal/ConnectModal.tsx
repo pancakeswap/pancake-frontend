@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled, { useTheme } from "styled-components";
+import { isMobile } from "react-device-detect";
 import EXTERNAL_LINK_PROPS from "../../util/externalLinkProps";
 import Grid from "../../components/Box/Grid";
 import Box from "../../components/Box/Box";
@@ -10,7 +11,7 @@ import { Button } from "../../components/Button";
 import { ModalBody, ModalCloseButton, ModalContainer, ModalHeader, ModalTitle } from "../Modal";
 import WalletCard, { MoreWalletCard } from "./WalletCard";
 import config, { walletLocalStorageKey } from "./config";
-import { Config, Login } from "./types";
+import { Config, ConnectorNames, Login } from "./types";
 
 interface Props {
   login: Login;
@@ -58,9 +59,12 @@ const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayC
   const theme = useTheme();
   const sortedConfig = getPreferredConfig(connectors || config);
   // Filter out WalletConnect if user is inside TrustWallet built-in browser
-  const walletsToShow = window.ethereum?.isTrust
+  let walletsToShow = window.ethereum?.isTrust
     ? sortedConfig.filter((wallet) => wallet.title !== "WalletConnect")
     : sortedConfig;
+  if (isMobile) {
+    walletsToShow = walletsToShow.filter((c) => c.connectorId === ConnectorNames.BSC);
+  }
   const displayListConfig = showMore ? walletsToShow : walletsToShow.slice(0, displayCount);
 
   return (
