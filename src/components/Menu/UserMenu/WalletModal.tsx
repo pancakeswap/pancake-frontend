@@ -12,7 +12,7 @@ import {
   ModalTitle,
 } from '@pancakeswap/uikit'
 import { parseUnits } from '@ethersproject/units'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { useGetBnbBalance } from 'hooks/useTokenBalance'
 import { FetchStatus } from 'config/constants/types'
@@ -62,7 +62,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ initialView = WalletView.WALL
   )
 
   return (
-    <ModalContainer title={t('Welcome!')} minWidth="320px">
+    <ModalContainer title={t('Welcome!')} $minWidth="320px">
       <ModalHeader>
         <ModalTitle>
           <Heading>{t('Your Wallet')}</Heading>

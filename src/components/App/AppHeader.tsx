@@ -5,6 +5,7 @@ import GlobalSettings from 'components/Menu/GlobalSettings'
 import Link from 'next/link'
 import Transactions from './Transactions'
 import QuestionHelper from '../QuestionHelper'
+import { SettingsMode } from '../Menu/GlobalSettings/types'
 
 interface Props {
   title: string
@@ -46,7 +47,7 @@ const AppHeader: React.FC<Props> = ({ title, subtitle, helper, backTo, noConfig 
             {!noConfig && (
               <Flex alignItems="center">
                 <NotificationDot show={expertMode}>
-                  <GlobalSettings />
+                  <GlobalSettings mode={SettingsMode.SWAP_LIQUIDITY} />
                 </NotificationDot>
                 <Transactions />
               </Flex>

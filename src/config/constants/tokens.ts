@@ -2330,6 +2330,22 @@ export const bscTokens = {
     'Meta Apes Peel',
     'https://metaapesgame.com/',
   ),
+  stkbnb: new Token(
+    ChainId.BSC,
+    '0xc2E9d07F66A89c44062459A47a0D2Dc038E4fb16',
+    18,
+    'stkBNB',
+    'Staked BNB',
+    'https://pstake.finance/bnb',
+  ),
+  pstake: new Token(
+    ChainId.BSC,
+    '0x4C882ec256823eE773B25b414d36F92ef58a7c0C',
+    18,
+    'PSTAKE',
+    'pStake Finance',
+    'https://pstake.finance/',
+  ),
 }
 
 export const bscTestnetTokens = {

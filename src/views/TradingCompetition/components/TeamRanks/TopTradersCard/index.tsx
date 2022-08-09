@@ -11,8 +11,8 @@ import {
   Flex,
   ExpandableLabel,
 } from '@pancakeswap/uikit'
-import { SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
-import { useTranslation } from 'contexts/Localization'
+import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
+import { useTranslation } from '@pancakeswap/localization'
 import { TeamRanksProps } from '../../../types'
 import TopTradersGrid from './TopTradersGrid'
 

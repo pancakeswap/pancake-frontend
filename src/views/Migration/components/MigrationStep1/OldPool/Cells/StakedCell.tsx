@@ -1,7 +1,7 @@
 import { Box, Flex, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import React from 'react'
 import { DeserializedPool } from 'state/types'
 import styled from 'styled-components'

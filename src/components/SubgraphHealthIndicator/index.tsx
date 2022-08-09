@@ -1,11 +1,9 @@
 import { BSC_BLOCK_TIME } from 'config'
-import { useTranslation } from 'contexts/Localization'
-import { TranslateFunction } from 'contexts/Localization/types'
+import { useTranslation, TranslateFunction } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { Card, Flex, Box, InfoIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { useSubgraphHealthIndicatorManager } from 'state/user/hooks'
 import useSubgraphHealth, { SubgraphStatus } from 'hooks/useSubgraphHealth'
-import { useRouter } from 'next/router'
 
 const StyledCard = styled(Card)`
   border-radius: 8px;
@@ -79,13 +77,7 @@ export interface BlockResponse {
   }[]
 }
 
-const FixedSubgraphHealthIndicator = () => {
-  const { pathname } = useRouter()
-  const isOnNftPages = pathname.includes('nfts')
-  return isOnNftPages ? <SubgraphHealthIndicator subgraphName="pancakeswap/nft-market" /> : null
-}
-
-export const SubgraphHealthIndicator: React.FC<{
+const SubgraphHealthIndicator: React.FC<{
   subgraphName: string
   inline?: boolean
   customDescriptions?: CustomDescriptions
@@ -175,4 +167,4 @@ const TooltipContent = ({
   )
 }
 
-export default FixedSubgraphHealthIndicator
+export default SubgraphHealthIndicator

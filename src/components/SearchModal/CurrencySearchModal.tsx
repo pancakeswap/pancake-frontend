@@ -14,9 +14,9 @@ import {
   MODAL_SWIPE_TO_CLOSE_VELOCITY,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import usePrevious from 'hooks/usePreviousValue'
+import { usePreviousValue } from '@pancakeswap/hooks'
 import { TokenList } from '@uniswap/token-lists'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import CurrencySearch from './CurrencySearch'
 import ImportToken from './ImportToken'
 import Manage from './Manage'
@@ -69,7 +69,7 @@ export default function CurrencySearchModal({
   )
 
   // for token import view
-  const prevView = usePrevious(modalView)
+  const prevView = usePreviousValue(modalView)
 
   // used for import token flow
   const [importToken, setImportToken] = useState<Token | undefined>()

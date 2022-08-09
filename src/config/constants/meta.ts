@@ -1,5 +1,5 @@
 import memoize from 'lodash/memoize'
-import { ContextApi } from 'contexts/Localization/types'
+import { ContextApi } from '@pancakeswap/localization'
 import { PageMeta } from './types'
 
 export const DEFAULT_META: PageMeta = {
@@ -41,8 +41,9 @@ const getPathList = (t: ContextApi['t']): PathList => {
       '/info/tokens': { title: t('Tokens'), description: 'View statistics for Pancakeswap exchanges.' },
       '/nfts/collections': { basePath: true, title: t('Collections') },
       '/nfts/activity': { title: t('Activity') },
-      '/nfts/profile': { basePath: true, title: t('Profile') },
+      '/profile': { basePath: true, title: t('Profile') },
       '/pancake-squad': { basePath: true, title: t('Pancake Squad') },
+      '/pottery': { basePath: true, title: t('Pottery') },
     },
     defaultTitleSuffix: t('PancakeSwap'),
   }

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Card, CardBody, CardHeader, Heading, Text, Flex } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import FoldableText from 'components/FoldableSection/FoldableText'
 
 const Wrapper = styled(Flex)`

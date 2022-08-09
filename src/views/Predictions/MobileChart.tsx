@@ -6,7 +6,7 @@ import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import dynamic from 'next/dynamic'
 import { PredictionsChartView } from 'state/types'
 import { TabToggleGroup, TabToggle } from 'components/TabToggle'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import Menu from './components/Menu'
 import TradingView from './components/TradingView'
 
@@ -57,11 +57,7 @@ const MobileChart = () => {
         </TabToggleGroup>
       </div>
       <ChartWrapper>
-        {chartView === PredictionsChartView.TradingView ? (
-          <TradingView />
-        ) : (
-          <ChainlinkChart pt="8px" background="background" isMobile />
-        )}
+        {chartView === PredictionsChartView.TradingView ? <TradingView /> : <ChainlinkChart pt="8px" isMobile />}
       </ChartWrapper>
     </MobileChartWrapper>
   )

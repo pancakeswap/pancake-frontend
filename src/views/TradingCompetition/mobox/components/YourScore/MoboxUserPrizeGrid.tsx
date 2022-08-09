@@ -1,5 +1,5 @@
 import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 import styled from 'styled-components'
 import { getRewardGroupAchievements, useMoboxCompetitionRewards } from '../../../helpers'

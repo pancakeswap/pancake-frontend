@@ -16,7 +16,7 @@ import {
   Spinner,
   Text,
 } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTheme from 'hooks/useTheme'
 
@@ -53,7 +53,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   }
 
   return (
-    <ModalContainer minWidth="375px">
+    <ModalContainer $minWidth="375px">
       <ModalHeader background={headerBackground}>
         <ModalTitle>
           <Heading>{title}</Heading>

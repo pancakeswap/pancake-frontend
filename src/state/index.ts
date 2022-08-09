@@ -29,6 +29,7 @@ import swap from './swap/reducer'
 import transactions from './transactions/reducer'
 import user from './user/reducer'
 import limitOrders from './limitOrders/reducer'
+import potteryReducer from './pottery'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions']
 
@@ -76,6 +77,7 @@ const persistedReducer = persistReducer(
     lottery: lotteryReducer,
     info: infoReducer,
     nftMarket: nftMarketReducer,
+    pottery: potteryReducer,
 
     limitOrders,
 

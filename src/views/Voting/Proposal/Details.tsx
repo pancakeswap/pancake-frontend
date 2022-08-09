@@ -2,7 +2,7 @@ import { Box, Card, CardBody, CardHeader, Flex, Heading, LinkExternal, Text } fr
 import styled from 'styled-components'
 import { format } from 'date-fns'
 import { Proposal } from 'state/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { getBscScanLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
 import { IPFS_GATEWAY } from '../config'

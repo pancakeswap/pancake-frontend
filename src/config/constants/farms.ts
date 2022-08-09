@@ -45,6 +45,83 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 114,
+    lpSymbol: 'stkBNB-BNB LP',
+    lpAddresses: {
+      56: '0xaA2527ff1893e0D40d4a454623d362B79E8bb7F1',
+      97: '',
+    },
+    token: serializedTokens.stkbnb,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
+    pid: 113,
+    lpSymbol: 'PSTAKE-BUSD LP',
+    lpAddresses: {
+      56: '0x009C58e79779982eB53a9941F9F4a2269d093566',
+      97: '',
+    },
+    token: serializedTokens.pstake,
+    quoteToken: serializedTokens.busd,
+  },
+  {
+    pid: 112,
+    lpSymbol: 'PEEL-BUSD LP',
+    lpAddresses: {
+      56: '0x25bfD3162360BbD8FF97b86169288b311c2A68D7',
+      97: '',
+    },
+    token: serializedTokens.peel,
+    quoteToken: serializedTokens.busd,
+  },
+  {
+    pid: 110,
+    lpSymbol: 'SHELL-BUSD LP',
+    lpAddresses: {
+      56: '0x02D75D7beebF6D5228A3Fa5f810CedF2BEa5aB1E',
+      97: '',
+    },
+    token: serializedTokens.shell,
+    quoteToken: serializedTokens.busd,
+  },
+  {
+    pid: 106,
+    lpSymbol: 'MHUNT-BNB LP',
+    lpAddresses: {
+      56: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
+      97: '',
+    },
+    token: serializedTokens.mhunt,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1659603600,
+  },
+  {
+    pid: 111,
+    lpSymbol: 'AOG-CAKE LP',
+    lpAddresses: {
+      56: '0xF8cA29a3BF6d34691981D3Ee8D4c9Cd1C437EfeE',
+      97: '',
+    },
+    token: serializedTokens.aog,
+    quoteToken: serializedTokens.cake,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1659603600,
+  },
+  {
+    pid: 94,
+    v1pid: 525,
+    lpSymbol: 'WZRD-BUSD LP',
+    lpAddresses: {
+      56: '0xee456d906a38e10680c9d157FFf143390e9681bA',
+      97: '',
+    },
+    token: serializedTokens.wzrd,
+    quoteToken: serializedTokens.busd,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1659603600,
+  },
+  {
     pid: 73,
     v1pid: 491,
     lpSymbol: 'HIGH-BUSD LP',
@@ -65,7 +142,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.hotcross,
     quoteToken: serializedTokens.wbnb,
-    auctionHostingStartSeconds: 1658476800,
   },
   {
     pid: 109,
@@ -76,18 +152,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.xcad,
     quoteToken: serializedTokens.busd,
-    auctionHostingStartSeconds: 1658476800,
-  },
-  {
-    pid: 110,
-    lpSymbol: 'SHELL-BUSD LP',
-    lpAddresses: {
-      56: '0x02D75D7beebF6D5228A3Fa5f810CedF2BEa5aB1E',
-      97: '',
-    },
-    token: serializedTokens.shell,
-    quoteToken: serializedTokens.busd,
-    auctionHostingStartSeconds: 1658476800,
   },
   {
     pid: 108,
@@ -108,29 +172,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.trivia,
     quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 94,
-    v1pid: 525,
-    lpSymbol: 'WZRD-BUSD LP',
-    lpAddresses: {
-      56: '0xee456d906a38e10680c9d157FFf143390e9681bA',
-      97: '',
-    },
-    token: serializedTokens.wzrd,
-    quoteToken: serializedTokens.busd,
-    isCommunity: true,
-  },
-  {
-    pid: 106,
-    lpSymbol: 'MHUNT-BNB LP',
-    lpAddresses: {
-      56: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
-      97: '',
-    },
-    token: serializedTokens.mhunt,
-    quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
   },
   {
     pid: 105,
@@ -836,7 +877,7 @@ const farms: SerializedFarmConfig[] = [
     v1pid: 389,
     lpSymbol: 'CAKE-BUSD LP',
     lpAddresses: {
-      97: '',
+      97: '0x25293964dcaFd8a6cDf97AFF8b6559FD4A5Af864',
       56: '0x804678fa97d91B974ec2af3c843270886528a9E6',
     },
     token: serializedTokens.cake,

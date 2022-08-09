@@ -5,7 +5,7 @@ import BalanceWithLoading from 'components/Balance'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { WalletIfoData } from 'views/Ifos/types'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 interface TotalPurchasedProps {
   ifo: Ifo

@@ -70,6 +70,42 @@ export const livePools: SerializedPoolConfig[] = [
     isFinished: false,
   },
   {
+    sousId: 291,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.pstake,
+    contractAddress: {
+      56: '0x56D6955Ba6404647191DD7A5D65A5c9Fe43905e1',
+      97: '',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '1.1574',
+    version: 3,
+  },
+  {
+    sousId: 290,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.peel,
+    contractAddress: {
+      56: '0x288d1aD79c113552B618765B4986f7DE679367Da',
+      97: '',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '4.34',
+    version: 3,
+  },
+  {
+    sousId: 289,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.shell,
+    contractAddress: {
+      56: '0x595B7AF4F1828AB4953792482b01B2AFC4A46b72',
+      97: '',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '89.699',
+    version: 3,
+  },
+  {
     sousId: 288,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.high,
@@ -105,6 +141,10 @@ export const livePools: SerializedPoolConfig[] = [
     tokenPerBlock: '4.976',
     version: 3,
   },
+]
+
+// known finished pools
+const finishedPools = [
   {
     sousId: 285,
     stakingToken: serializedTokens.cake,
@@ -118,22 +158,6 @@ export const livePools: SerializedPoolConfig[] = [
     version: 3,
   },
   {
-    sousId: 283,
-    stakingToken: serializedTokens.cake,
-    earningToken: serializedTokens.xcn,
-    contractAddress: {
-      97: '',
-      56: '0xa79D37ce9DF9443eF4B6DEC2e38a8ecd35303adc',
-    },
-    poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '2.2505',
-    version: 3,
-  },
-]
-
-// known finished pools
-const finishedPools = [
-  {
     sousId: 284,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.antex,
@@ -143,6 +167,18 @@ const finishedPools = [
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '1937.62',
+    version: 3,
+  },
+  {
+    sousId: 283,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.xcn,
+    contractAddress: {
+      97: '',
+      56: '0xa79D37ce9DF9443eF4B6DEC2e38a8ecd35303adc',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '2.2505',
     version: 3,
   },
   {

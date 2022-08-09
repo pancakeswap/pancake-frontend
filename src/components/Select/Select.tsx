@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import { ArrowDropDownIcon, Box, BoxProps, Text } from '@pancakeswap/uikit'
 
@@ -111,7 +111,6 @@ const Select: React.FunctionComponent<SelectProps> = ({
   placeHolderText,
   ...props
 }) => {
-  const dropdownRef = useRef(null)
   const [isOpen, setIsOpen] = useState(false)
   const [optionSelected, setOptionSelected] = useState(false)
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(defaultOptionIndex)
@@ -151,7 +150,7 @@ const Select: React.FunctionComponent<SelectProps> = ({
       </DropDownHeader>
       <ArrowDropDownIcon color="text" onClick={toggling} />
       <DropDownListContainer>
-        <DropDownList ref={dropdownRef}>
+        <DropDownList>
           {options.map((option, index) =>
             placeHolderText || index !== selectedOptionIndex ? (
               <ListItem onClick={onOptionClicked(index)} key={option.label}>

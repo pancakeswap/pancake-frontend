@@ -17,7 +17,7 @@ import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { PoolCategory } from 'config/constants/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useERC20 } from 'hooks/useContract'
 
 import { useVaultPoolByKey } from 'state/pools/hooks'
@@ -323,6 +323,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool }) => {
                       lockEndTime={(vaultData as DeserializedLockedCakeVault).userData.lockEndTime}
                       lockStartTime={(vaultData as DeserializedLockedCakeVault).userData.lockStartTime}
                       stakingToken={stakingToken}
+                      currentBalance={stakingTokenBalance}
                       currentLockedAmount={cakeAsNumberBalance}
                     >
                       {t('Extend')}

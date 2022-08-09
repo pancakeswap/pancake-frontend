@@ -1,9 +1,7 @@
 import { useContext } from 'react'
 import styled from 'styled-components'
 import { Breadcrumbs, Heading, Text, Link, Button } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { nftsBaseUrl } from 'views/Nft/market/constants'
-import { TranslateFunction } from 'contexts/Localization/types'
+import { useTranslation, TranslateFunction } from '@pancakeswap/localization'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
 const Wrapper = styled.div`
@@ -35,7 +33,7 @@ const Header: React.FC = () => {
       <Text color="textSubtle" mb="8px">
         {t('Total cost: 1.5 CAKE')}
       </Text>
-      <Link href={`${nftsBaseUrl}/profile`}>
+      <Link href="/profile">
         <Button mb="24px" scale="sm" variant="secondary">
           {t('Back to profile')}
         </Button>

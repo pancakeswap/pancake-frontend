@@ -1,7 +1,7 @@
 import React from 'react'
 import { Currency, Fraction, Percent, TokenAmount } from '@pancakeswap/sdk'
 import { Text, useTooltip, TooltipText, Box, Flex, Svg, SvgProps } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { AutoColumn } from 'components/Layout/Column'
 import { AutoRow, RowBetween } from 'components/Layout/Row'
@@ -27,7 +27,7 @@ const CircleSvg = ({ percent = 1, ...props }: SvgProps & { percent?: number }) =
         fill="transparent"
         stroke="#1FC7D4"
         strokeWidth="10"
-        strokeDasharray={`calc(${percent * 100} * 31.4 / 100) 31.4`}
+        strokeDasharray={`calc(${percent * 100}px * 31.4 / 100) 31.4`}
         transform="rotate(-90) translate(-20)"
       />
     </g>

@@ -1,4 +1,4 @@
-import { useState, memo, ReactNode, useCallback } from 'react'
+import { useState, memo, ReactNode, useCallback, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useMatchBreakpointsContext } from '@pancakeswap/uikit'
@@ -11,15 +11,26 @@ const StyledRow = styled.div`
   cursor: pointer;
 `
 
-const ExpandRow: React.FC<{ children: ReactNode; panel: ReactNode }> = ({ children, panel }) => {
+const ExpandRow: React.FC<{ children: ReactNode; panel: ReactNode; initialActivity?: boolean }> = ({
+  children,
+  panel,
+  initialActivity,
+}) => {
+  const hasSetInitialValue = useRef(false)
   const { isTablet, isDesktop } = useMatchBreakpointsContext()
 
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(initialActivity)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)
 
   const toggleExpanded = useCallback(() => {
     setExpanded((prev) => !prev)
   }, [])
+  useEffect(() => {
+    if (initialActivity && hasSetInitialValue.current === false) {
+      setExpanded(initialActivity)
+      hasSetInitialValue.current = true
+    }
+  }, [initialActivity])
 
   return (
     <>
