@@ -6,7 +6,8 @@ import { FAST_INTERVAL } from 'config/constants'
 import { SerializedFarmConfig } from 'config/constants/types'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import useSWR from 'swr'
-import { getFarmFiles, useFarmsLength } from 'state/farms/hooks'
+import { useFarmsLength } from 'state/farms/hooks'
+import { getFarmConfig } from 'config/constants/farms/index'
 import { useMulticall } from 'utils/multicall'
 
 export interface FarmWithBalance extends SerializedFarmConfig {
@@ -27,7 +28,7 @@ const useFarmsWithBalance = () => {
   } = useSWR(
     account && poolLength && chainId ? [account, 'farmsWithBalance', chainId, poolLength] : null,
     async () => {
-      const farmsConfig = await getFarmFiles(chainId)
+      const farmsConfig = await getFarmConfig(chainId)
       const farmsCanFetch = farmsConfig.filter((f) => poolLength > f.pid)
       const calls = farmsCanFetch.map((farm) => ({
         address: getMasterChefAddress(chainId),

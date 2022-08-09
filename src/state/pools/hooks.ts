@@ -4,7 +4,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { batch, useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
-import farmsConfig from 'config/constants/farms'
+import { getFarmConfig } from 'config/constants/farms/index'
 import { livePools } from 'config/constants/pools'
 
 import {
@@ -34,14 +34,17 @@ import {
 const lPoolAddresses = livePools.filter(({ sousId }) => sousId !== 0).map(({ earningToken }) => earningToken.address)
 
 // Only fetch farms for live pools
-const activeFarms = farmsConfig
-  .filter(
-    ({ token, pid, quoteToken }) =>
-      pid !== 0 &&
-      ((token.symbol === 'BUSD' && quoteToken.symbol === 'WBNB') ||
-        lPoolAddresses.find((poolAddress) => poolAddress === token.address)),
-  )
-  .map((farm) => farm.pid)
+const getActiveFarms = (chainId: number) => {
+  const farmsConfig = getFarmConfig(chainId)
+  return farmsConfig
+    .filter(
+      ({ token, pid, quoteToken }) =>
+        pid !== 0 &&
+        ((token.symbol === 'BUSD' && quoteToken.symbol === 'WBNB') ||
+          lPoolAddresses.find((poolAddress) => poolAddress === token.address)),
+    )
+    .map((farm) => farm.pid)
+}
 
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
@@ -50,6 +53,7 @@ export const useFetchPublicPoolsData = () => {
   useSlowRefreshEffect(
     (currentBlock) => {
       const fetchPoolsDataWithFarms = async () => {
+        const activeFarms = getActiveFarms(chainId)
         await dispatch(fetchFarmsPublicDataAsync(activeFarms))
 
         batch(() => {

@@ -2,7 +2,6 @@ import styled, { keyframes, css } from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { LinkExternal, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { getAddress } from 'utils/addressHelpers'
 import { getBscScanLink } from 'utils'
 import { FarmWithStakedValue } from '../../types'
 
@@ -124,7 +123,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,
   })
-  const lpAddress = getAddress(farm.lpAddresses)
+  const lpAddress = farm.lpAddresses
   const bsc = getBscScanLink(lpAddress, 'address')
   const info = `/info/pool/${lpAddress}`
 

@@ -1,14 +1,13 @@
-import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
-import { SerializedFarmConfig } from 'config/constants/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { farmsConfig, SLOW_INTERVAL } from 'config/constants'
+import { SLOW_INTERVAL } from 'config/constants'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import useSWRImmutable from 'swr/immutable'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { getMasterchefContract } from 'utils/contractHelpers'
+import { getFarmConfig } from 'config/constants/farms/index'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, State } from '../types'
 import {
@@ -21,15 +20,6 @@ import {
   makeFarmFromPidSelector,
 } from './selectors'
 
-export const getFarmFiles = async (chainId: number): Promise<SerializedFarmConfig[]> => {
-  try {
-    return (await import(`config/constants/farms/${chainId}.ts`)).default
-  } catch (error) {
-    console.error('Farm config not supported in chain: ', chainId, error)
-    return []
-  }
-}
-
 export function useFarmsLength() {
   const { chainId } = useActiveWeb3React()
   return useSWRImmutable(chainId ? ['farmsLength', chainId] : null, async () => {
@@ -40,10 +30,11 @@ export function useFarmsLength() {
 
 export const usePollFarmsWithUserData = () => {
   const dispatch = useAppDispatch()
-  const { account } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
+  const farmsConfig = getFarmConfig(chainId)
 
   useSWRImmutable(
-    ['publicFarmData'],
+    chainId ? ['publicFarmData', chainId] : null,
     () => {
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
       dispatch(fetchFarmsPublicDataAsync(pids))
@@ -54,7 +45,7 @@ export const usePollFarmsWithUserData = () => {
   )
 
   useSWRImmutable(
-    account ? ['farmsWithUserData', account] : null,
+    account && chainId ? ['farmsWithUserData', account, chainId] : null,
     () => {
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
       dispatch(fetchFarmUserDataAsync({ account, pids }))
@@ -77,12 +68,11 @@ const coreFarmPIDs = {
 
 export const usePollCoreFarmData = () => {
   const dispatch = useAppDispatch()
-  // TODO: multi
-  // const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
 
   useFastRefreshEffect(() => {
-    dispatch(fetchFarmsPublicDataAsync(coreFarmPIDs[56]))
-  }, [dispatch])
+    dispatch(fetchFarmsPublicDataAsync(coreFarmPIDs[chainId]))
+  }, [dispatch, chainId])
 }
 
 export const useFarms = (): DeserializedFarmsState => {
