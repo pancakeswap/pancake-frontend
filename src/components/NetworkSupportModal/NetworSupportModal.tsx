@@ -22,7 +22,7 @@ export function NetworkSupportModal({
     <Modal title={title} hideCloseButton headerBackground="gradients.cardHeader">
       <Grid style={{ gap: '16px' }} maxWidth="360px">
         <Text bold>It’s a BNB Smart Chain only feature</Text>
-        <Text small>Currently only Swap & Farm is supported in BNB Smart Chain</Text>
+        <Text small>Currently only Swap is supported in BNB Smart Chain</Text>
 
         {image && (
           <Box mx="auto" my="8px">

@@ -39,7 +39,7 @@ const Menu = (props) => {
   const [openNetworkSupportModal, onDismiss] = useModal(
     <NetworkSupportModal
       title={activeSubMenuItem?.disabled ? activeSubMenuItem?.label : activeMenuItem?.label}
-      image={activeSubMenuItem?.disabled ? activeSubMenuItem?.image || activeMenuItem?.image : activeMenuItem?.image}
+      image={activeSubMenuItem?.image || activeMenuItem?.image}
     />,
     false,
     true,
