@@ -2,7 +2,7 @@ import { Button, ChevronRightIcon, Flex, Grid, Heading, Text } from '@pancakeswa
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { Collection } from 'state/nftMarket/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { CollectionCard } from '../components/CollectibleCard'
 import { BNBAmountLabel } from '../components/CollectibleCard/styles'
 

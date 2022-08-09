@@ -3,7 +3,7 @@ import { Box, Text, AddIcon, CardBody, Button, CardFooter } from '@pancakeswap/u
 import { CurrencySelect } from 'components/CurrencySelect'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { FlexGap } from 'components/Layout/Flex'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { AppHeader } from '../../components/App'
 import { useCurrencySelectRoute } from './useCurrencySelectRoute'

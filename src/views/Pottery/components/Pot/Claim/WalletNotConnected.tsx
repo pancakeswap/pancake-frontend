@@ -1,6 +1,6 @@
 import { Flex, BunnyPlaceholderIcon, Text } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 const WalletNotConnected: React.FC = () => {
   const { t } = useTranslation()

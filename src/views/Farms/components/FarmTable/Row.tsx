@@ -1,7 +1,7 @@
 import { useEffect, useState, createElement, useRef } from 'react'
 import styled from 'styled-components'
 import { Flex, useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useFarmUser } from 'state/farms/hooks'
 

@@ -10,6 +10,8 @@ const customJestConfig = {
   moduleNameMapper: {
     '^@pancakeswap/uikit': '<rootDir>/packages/uikit/src',
     '^@pancakeswap/sdk': '<rootDir>/packages/swap-sdk/src',
+    '^@pancakeswap/localization': ['<rootDir>/packages/localization/src'],
+    '^@pancakeswap/hooks': ['<rootDir>/packages/hooks/src'],
   },
   moduleDirectories: ['node_modules', 'src'],
   testTimeout: 20000,

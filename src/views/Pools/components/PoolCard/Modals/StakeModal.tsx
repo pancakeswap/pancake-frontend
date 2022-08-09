@@ -15,7 +15,7 @@ import {
   IconButton,
   Skeleton,
 } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'

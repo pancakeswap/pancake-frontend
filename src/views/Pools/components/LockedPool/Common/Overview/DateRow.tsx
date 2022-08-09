@@ -1,4 +1,4 @@
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Text, Flex, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { format } from 'date-fns'
 

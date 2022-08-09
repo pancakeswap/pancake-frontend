@@ -1,6 +1,6 @@
 import { memo, ReactNode } from 'react'
 import { Message, MessageText, Box, Flex, useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import Trans from 'components/Trans'
 import { VaultPosition } from 'utils/cakePool'
 

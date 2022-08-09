@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Card, Text, Skeleton, CardHeader, Flex, BunnyPlaceholderIcon } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useAppDispatch } from 'state'
 import { setFinishedRoundInfoFetched, fetchPotteryRoundData } from 'state/pottery/index'
 import { usePotteryData } from 'state/pottery/hook'
@@ -101,6 +101,7 @@ const AllHistoryCard = () => {
         />
         <Flex mt={['8px', '8px', '8px', '0px']} alignSelf={['flex-start', 'flex-start', 'flex-start', 'center']}>
           {selectedRoundId &&
+            finishedRoundInfo.winners &&
             (finishedRoundInfo.isFetched ? (
               finishedRoundInfo.drawDate && (
                 <Text fontSize="14px">
@@ -112,7 +113,7 @@ const AllHistoryCard = () => {
             ))}
         </Flex>
       </StyledCardHeader>
-      {selectedRoundId ? (
+      {selectedRoundId && finishedRoundInfo.winners ? (
         <PreviousRoundCardBody latestRoundId={latestRoundId} finishedRoundInfo={finishedRoundInfo} />
       ) : (
         <Flex m="24px auto" flexDirection="column" alignItems="center" width="240px">

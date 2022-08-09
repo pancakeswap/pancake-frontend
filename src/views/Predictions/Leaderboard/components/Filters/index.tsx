@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { setLeaderboardFilter } from 'state/predictions'
 import Select, { OptionProps } from 'components/Select/Select'

@@ -12,7 +12,7 @@ import {
 } from '@pancakeswap/uikit'
 import { CurrencyLogo } from 'components/Logo'
 import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTheme from 'hooks/useTheme'
 import { memo } from 'react'

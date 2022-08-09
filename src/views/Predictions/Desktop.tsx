@@ -14,7 +14,7 @@ import {
 import { setChartPaneState, setChartView } from 'state/predictions'
 import { PredictionsChartView, PredictionStatus } from 'state/types'
 import dynamic from 'next/dynamic'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { ChartByLabel } from 'components/Chart/ChartbyLabel'
 import { TabToggle } from 'components/TabToggle'
 import TradingView from './components/TradingView'

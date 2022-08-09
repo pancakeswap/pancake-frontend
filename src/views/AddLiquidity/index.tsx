@@ -15,7 +15,7 @@ import {
 } from '@pancakeswap/uikit'
 import { logError } from 'utils/sentry'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import { useZapContract } from 'hooks/useContract'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'

@@ -2,7 +2,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { useEffect, useState } from 'react'
 import { AutoRenewIcon, Button, useModal } from '@pancakeswap/uikit'
-import { ContextApi } from 'contexts/Localization/types'
+import { ContextApi } from '@pancakeswap/localization'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useNftSaleContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'

@@ -3,7 +3,7 @@ import { Box, Flex, Text, SearchIcon, Link } from '@pancakeswap/uikit'
 import { getBscScanLink } from 'utils'
 import { formatNumber } from 'utils/formatBalance'
 import uriToHttp from 'utils/uriToHttp'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ExpandableCard from './ExpandableCard'
 

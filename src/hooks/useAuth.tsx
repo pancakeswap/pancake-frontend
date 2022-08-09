@@ -14,7 +14,7 @@ import { connectorsByName } from 'utils/web3React'
 import { setupNetwork } from 'utils/wallet'
 import useToast from 'hooks/useToast'
 import { useAppDispatch } from 'state'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { clearUserStates } from '../utils/clearUserStates'
 import useActiveWeb3React from './useActiveWeb3React'
 

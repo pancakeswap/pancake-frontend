@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Box, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { usePriceCakeBusd } from 'state/farms/hooks'
@@ -53,6 +53,7 @@ const AvailableWithdraw: React.FC<AvailableWithdrawProps> = ({ withdrawData }) =
           )}
         </Box>
         <WithdrawButton
+          status={status}
           cakeNumber={cakeNumber}
           redeemShare={shares}
           potteryVaultAddress={potteryVaultAddress}

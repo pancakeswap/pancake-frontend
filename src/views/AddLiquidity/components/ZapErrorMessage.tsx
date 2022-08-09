@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { Message, MessageText, Button, Box, Flex } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useToast from 'hooks/useToast'
 
 interface ZapErrorMessagesProps {

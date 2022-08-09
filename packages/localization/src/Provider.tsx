@@ -1,9 +1,9 @@
 import { createContext, useCallback, useEffect, useState } from 'react'
 import { Language } from '@pancakeswap/uikit'
+import { useLastUpdated } from '@pancakeswap/hooks'
 import memoize from 'lodash/memoize'
-import useLastUpdated from 'hooks/useLastUpdated'
-import { EN, languages } from 'config/localization/languages'
-import translations from 'config/localization/translations.json'
+import { EN, languages } from './config/languages'
+import translations from './config/translations.json'
 import { ContextApi, ProviderState, TranslateFunction } from './types'
 import { LS_KEY, fetchLocale, getLanguageCodeFromLS } from './helpers'
 

@@ -1,5 +1,5 @@
 import { AutoRenewIcon, Button, Flex, InjectedModalProps, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useCake } from 'hooks/useContract'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useProfile } from 'state/profile/hooks'

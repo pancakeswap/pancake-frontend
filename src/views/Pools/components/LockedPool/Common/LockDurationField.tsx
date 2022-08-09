@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Text, Flex, Button, Input, Box, Message, MessageText } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import _toNumber from 'lodash/toNumber'
 import { ONE_WEEK_DEFAULT, MAX_LOCK_DURATION } from 'config/constants/pools'
 import { secondsToWeeks, weeksToSeconds } from '../../utils/formatSecondsToWeeks'

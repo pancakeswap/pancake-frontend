@@ -1,4 +1,4 @@
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Box, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { DeserializedPotteryUserData } from 'state/types'

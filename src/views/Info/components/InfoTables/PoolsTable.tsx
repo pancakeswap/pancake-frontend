@@ -6,7 +6,7 @@ import { formatAmount } from 'utils/formatInfoNumbers'
 import { PoolData } from 'state/info/types'
 import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
 import { DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { ClickableColumnHeader, TableWrapper, PageButtons, Arrow, Break } from './shared'
 
 /**

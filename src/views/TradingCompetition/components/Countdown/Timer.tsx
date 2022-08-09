@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { Flex, Heading, Text, Link, useTooltip } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { ContextApi } from 'contexts/Localization/types'
+import { useTranslation, ContextApi } from '@pancakeswap/localization'
 import { getBscScanLink } from 'utils'
 
 export interface TimerProps {

@@ -1,6 +1,6 @@
 import { useCallback, memo } from 'react'
 import { Button, useModal, Skeleton } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { usePool } from 'state/pools/hooks'
 import AddAmountModal from '../Modals/AddAmountModal'
 import { AddButtonProps } from '../types'
