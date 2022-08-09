@@ -96,7 +96,7 @@ const LockedStakingApy: React.FC<LockedStakingApyProps> = ({
         </Box>
         <Box>
           <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-            2{t('Unlocks In')}
+            {t('Unlocks In')}
           </Text>
           <Text color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'} bold fontSize="16px">
             {position >= VaultPosition.LockedEnd ? t('Unlocked') : remainingTime}
