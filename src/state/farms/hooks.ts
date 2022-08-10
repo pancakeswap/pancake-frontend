@@ -2,6 +2,7 @@ import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { farmsConfig, SLOW_INTERVAL } from 'config/constants'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
+import { ChainId } from '@pancakeswap/sdk'
 import useSWRImmutable from 'swr/immutable'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
@@ -130,7 +131,7 @@ export const useFarmWithStakeValue = (farm: DeserializedFarm): FarmWithStakedVal
         new BigNumber(farm.poolWeight),
         cakePrice,
         totalLiquidity,
-        farm.lpAddresses[ChainId.MAINNET],
+        farm.lpAddresses[ChainId.BSC],
         regularCakePerBlock,
       )
     : { cakeRewardsApr: 0, lpRewardsApr: 0 }
