@@ -46,6 +46,8 @@ export const StepperText = styled.div`
   transform: translateX(-50%);
   transition: 0.3s color ease-in-out;
   will-change: color;
+  font-size: 12px;
+  font-weight: 600;
   text-transform: uppercase;
 `
 
@@ -130,15 +132,15 @@ interface BCakeMigrateModalProps {
 }
 
 enum Steps {
-  'UNSTAKE',
-  'ENABLE',
-  'STAKE',
+  'UnStake',
+  'Enable',
+  'Stake',
 }
 
 const migrationSteps: Record<Steps, string> = {
-  [Steps.UNSTAKE]: 'Unstake LP tokens from the farm',
-  [Steps.ENABLE]: 'Enable staking with yield booster',
-  [Steps.STAKE]: 'Stake LP tokens back to the farm',
+  [Steps.UnStake]: 'Unstake LP tokens from the farm',
+  [Steps.Enable]: 'Enable staking with yield booster',
+  [Steps.Stake]: 'Stake LP tokens back to the farm',
 }
 const migrationStepsKeys = Object.keys(migrationSteps)
 
@@ -150,7 +152,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   pid,
 }) => {
   const { account } = useWeb3React()
-  const [activatedState, setActivatedState] = useState<Steps>(Steps.UNSTAKE)
+  const [activatedState, setActivatedState] = useState<Steps>(Steps.UnStake)
   const [isLoading, setIsLoading] = useState(false)
   const [isApproved, setIsApproved] = useState(false)
   const { t } = useTranslation()
@@ -183,18 +185,18 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   }, [lpContract, bCakeProxy])
 
   const onStepChange = async () => {
-    if (activatedState === Steps.UNSTAKE) {
+    if (activatedState === Steps.UnStake) {
       setIsLoading(true)
       onUnStack(fullBalance, () => {
-        if (isApproved) setActivatedState(Steps.STAKE)
-        else setActivatedState(Steps.ENABLE)
+        if (isApproved) setActivatedState(Steps.Stake)
+        else setActivatedState(Steps.Enable)
         setIsLoading(false)
       })
-    } else if (activatedState === Steps.ENABLE) {
+    } else if (activatedState === Steps.Enable) {
       const receipt = await fetchWithCatchTxError(onApprove)
       if (receipt?.status) {
         toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-        setActivatedState(Steps.STAKE)
+        setActivatedState(Steps.Stake)
         onDone()
       }
     } else {

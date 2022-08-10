@@ -42,7 +42,7 @@ export const ImageWrapper = styled.div`
   right: 0;
   ${({ theme }) => theme.mediaQueries.sm} {
     right: auto;
-    top: 60%;
+    top: 50%;
     left: -70px;
   }
   z-index: 2;
