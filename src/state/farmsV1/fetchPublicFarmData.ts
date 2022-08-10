@@ -1,13 +1,13 @@
 import erc20 from 'config/abi/erc20.json'
 import chunk from 'lodash/chunk'
-import { getAddress, getMasterChefV1Address } from 'utils/addressHelpers'
+import { getMasterChefV1Address } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
 import { SerializedFarm } from '../types'
 import { SerializedFarmConfig } from '../../config/constants/types'
 
 const fetchFarmCalls = (farm: SerializedFarm) => {
   const { lpAddresses, token, quoteToken } = farm
-  const lpAddress = getAddress(lpAddresses)
+  const lpAddress = lpAddresses
   return [
     // Balance of token in the LP contract
     {

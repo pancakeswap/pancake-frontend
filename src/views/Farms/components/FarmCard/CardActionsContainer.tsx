@@ -33,7 +33,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { pid, lpAddresses } = farm
   const { allowance, earnings } = farm.userData || {}
-  const lpAddress = getAddress(lpAddresses)
+  const lpAddress = lpAddresses
   const isApproved = account && allowance && allowance.isGreaterThan(0)
   const dispatch = useAppDispatch()
 

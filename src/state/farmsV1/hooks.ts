@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
-import { farmsConfig } from 'config/constants'
+import farmsConfig from 'config/constants/farms/56'
 import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'

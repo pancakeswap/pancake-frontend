@@ -53,7 +53,7 @@ const StakeButton: React.FC<StackedActionProps> = ({
 
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
-  const lpAddress = getAddress(lpAddresses)
+  const lpAddress = lpAddresses
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,
