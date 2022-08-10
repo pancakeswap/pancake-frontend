@@ -88,7 +88,7 @@ export const metaMaskConnector = new MetaMaskConnector({
 export const bscConnector = new BscConnector({ chains })
 
 export const client = createClient({
-  autoConnect: true,
+  autoConnect: false,
   provider,
   connectors: [
     new SafeConnector({ chains }),
