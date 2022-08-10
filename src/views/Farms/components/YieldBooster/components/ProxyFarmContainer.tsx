@@ -24,6 +24,7 @@ const ProxyFarmContainer: React.FC<ProxyFarmContainerPropsType> = ({ children, f
     refreshActivePool,
     shouldUseProxyFarm,
     refreshProxyAddress,
+    proxyAddress,
   } = useYieldBoosterState({
     farmPid: farm.pid,
   })
@@ -38,7 +39,7 @@ const ProxyFarmContainer: React.FC<ProxyFarmContainerPropsType> = ({ children, f
 
   return (
     <YieldBoosterStateContext.Provider
-      value={{ boosterState, refreshActivePool, refreshProxyAddress, proxyFarm, shouldUseProxyFarm }}
+      value={{ proxyAddress, boosterState, refreshActivePool, refreshProxyAddress, proxyFarm, shouldUseProxyFarm }}
     >
       {children}
     </YieldBoosterStateContext.Provider>
