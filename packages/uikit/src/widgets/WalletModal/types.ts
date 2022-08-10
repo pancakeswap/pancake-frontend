@@ -18,4 +18,5 @@ export interface Config {
   connectorId: ConnectorNames;
   priority: number | (() => number);
   href?: string;
+  installed?: boolean;
 }

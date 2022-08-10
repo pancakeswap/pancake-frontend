@@ -4,9 +4,9 @@ import { bscTokens, bscTestnetTokens, USDC, USDT, BUSD } from './tokens'
 import { ChainMap, ChainTokenList } from './types'
 
 export const ROUTER_ADDRESS: ChainMap<string> = {
-  [ChainId.ETHEREUM]: '0xbee0bFd2745F0F832f784f706bd3b86614551fd6',
-  [ChainId.RINKEBY]: '0xbee0bFd2745F0F832f784f706bd3b86614551fd6',
-  [ChainId.GOERLI]: '0xbee0bFd2745F0F832f784f706bd3b86614551fd6',
+  [ChainId.ETHEREUM]: '0x3BC722f252C7bAE2f55647e49aDcB9d33Ff6eBcC',
+  [ChainId.RINKEBY]: '0x3BC722f252C7bAE2f55647e49aDcB9d33Ff6eBcC',
+  [ChainId.GOERLI]: '0x3BC722f252C7bAE2f55647e49aDcB9d33Ff6eBcC',
   [ChainId.BSC]: '0x10ED43C718714eb63d5aA57B78B54704E256024E',
   [ChainId.BSC_TESTNET]: '0xD99D1c33F9fC3444f8101754aBC46c52416550D1',
 }

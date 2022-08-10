@@ -12,7 +12,7 @@ export const useWallet = () => {
   const finalConnectors = useMemo(() => {
     return walletConnectors.map((config) => {
       const found = connectors.find((c) => c.id === config.connectorId)
-      if (!found.ready) {
+      if (!config.installed || !found.ready) {
         if (config.connectorId === ConnectorNames.MetaMask) {
           return {
             ...config,
