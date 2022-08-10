@@ -69,6 +69,7 @@ const connectors: Config[] = [
     title: "MathWallet",
     icon: MathWallet,
     connectorId: ConnectorNames.Injected,
+    // @ts-ignore
     installed: typeof window !== "undefined" && Boolean(window.ethereum?.isMathWallet),
     priority: 999,
   },
@@ -83,6 +84,7 @@ const connectors: Config[] = [
     title: "SafePal",
     icon: SafePal,
     connectorId: ConnectorNames.Injected,
+    // @ts-ignore
     installed: typeof window !== "undefined" && Boolean(window.ethereum?.isSafePal),
     priority: 999,
   },
@@ -90,6 +92,7 @@ const connectors: Config[] = [
     title: "Coin98",
     icon: Coin98,
     connectorId: ConnectorNames.Injected,
+    // @ts-ignore
     installed: typeof window !== "undefined" && (Boolean(window.ethereum?.isCoin98) || Boolean(window.coin98)),
     priority: 999,
   },
@@ -97,6 +100,7 @@ const connectors: Config[] = [
     title: "Blocto",
     icon: Blocto,
     connectorId: ConnectorNames.Injected,
+    // @ts-ignore
     installed: typeof window !== "undefined" && Boolean(window.ethereum?.isBlocto),
     priority: 999,
   },
