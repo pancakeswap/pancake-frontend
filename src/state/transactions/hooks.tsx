@@ -1,5 +1,5 @@
 import { TransactionResponse } from '@ethersproject/providers'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, ReactText } from 'react'
 import { useSelector } from 'react-redux'
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -12,6 +12,7 @@ export function useTransactionAdder(): (
   response: TransactionResponse,
   customData?: {
     summary?: string
+    translatableSummary?: { text: string; data: Record<string, ReactText> }
     approval?: { tokenAddress: string; spender: string }
     claim?: { recipient: string }
     type?: TransactionType
@@ -26,12 +27,14 @@ export function useTransactionAdder(): (
       response: TransactionResponse,
       {
         summary,
+        translatableSummary,
         approval,
         claim,
         type,
         order,
       }: {
         summary?: string
+        translatableSummary?: { text: string; data: Record<string, ReactText> }
         claim?: { recipient: string }
         approval?: { tokenAddress: string; spender: string }
         type?: TransactionType
@@ -45,7 +48,9 @@ export function useTransactionAdder(): (
       if (!hash) {
         throw Error('No transaction hash found.')
       }
-      dispatch(addTransaction({ hash, from: account, chainId, approval, summary, claim, type, order }))
+      dispatch(
+        addTransaction({ hash, from: account, chainId, approval, summary, translatableSummary, claim, type, order }),
+      )
     },
     [dispatch, chainId, account],
   )

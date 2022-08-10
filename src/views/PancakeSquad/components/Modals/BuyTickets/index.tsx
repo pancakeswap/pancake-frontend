@@ -66,7 +66,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
   const buyButtons = new Array(maxBuyButtons).fill('')
 
   return (
-    <ModalContainer minWidth="375px">
+    <ModalContainer $minWidth="375px">
       <ModalHeader background={headerBackground}>
         <ModalTitle>
           <Heading>{title}</Heading>
