@@ -61,6 +61,7 @@ const Container = styled.div<{ expanded }>`
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
+    align-items: center;
     padding: 16px 32px;
   }
 `
