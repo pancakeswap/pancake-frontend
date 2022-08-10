@@ -50,6 +50,7 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
           <ActionButton
             title={`Up to ${boostMultipler}x`}
             description={t('Lock CAKE is ended. Re-lock CAKE to activate yield booster')}
+            style={{ whiteSpace: 'nowrap' }}
           >
             <NextLinkFromReactRouter to="/pools">{t('Go to Pool')}</NextLinkFromReactRouter>
           </ActionButton>

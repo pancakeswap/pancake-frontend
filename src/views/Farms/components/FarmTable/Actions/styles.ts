@@ -24,6 +24,7 @@ export const ActionContainer = styled.div`
 
 export const ActionTitles = styled.div`
   display: flex;
+  margin-bottom: 8px;
 `
 
 export const ActionContent = styled.div`

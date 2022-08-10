@@ -302,7 +302,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   }
 
   return (
-    <ActionContainer>
+    <ActionContainer style={{ minHeight: 124.5 }}>
       <ActionTitles>
         <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
           {t('Enable Farm')}

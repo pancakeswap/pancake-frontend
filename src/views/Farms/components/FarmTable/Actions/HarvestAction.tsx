@@ -72,7 +72,7 @@ export const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
   }
 
   return (
-    <ActionContainer>
+    <ActionContainer style={{ minHeight: 124.5 }}>
       <ActionTitles>
         <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
           CAKE
