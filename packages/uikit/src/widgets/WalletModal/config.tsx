@@ -71,13 +71,18 @@ const connectors: Config[] = [
     connectorId: ConnectorNames.Injected,
     // @ts-ignore
     installed: typeof window !== "undefined" && Boolean(window.ethereum?.isMathWallet),
-    priority: 999,
+    priority: () => {
+      // @ts-ignore
+      return typeof window !== "undefined" && Boolean(window.ethereum?.isMathWallet) ? 0 : 999;
+    },
   },
   {
     title: "TokenPocket",
     icon: TokenPocket,
     connectorId: ConnectorNames.Injected,
-    priority: 999,
+    priority: () => {
+      return typeof window !== "undefined" && Boolean(window.ethereum?.isTokenPocket) ? 0 : 999;
+    },
     installed: typeof window !== "undefined" && Boolean(window.ethereum?.isTokenPocket),
   },
   {
@@ -86,7 +91,10 @@ const connectors: Config[] = [
     connectorId: ConnectorNames.Injected,
     // @ts-ignore
     installed: typeof window !== "undefined" && Boolean(window.ethereum?.isSafePal),
-    priority: 999,
+    priority: () => {
+      // @ts-ignore
+      return typeof window !== "undefined" && Boolean(window.ethereum?.isSafePal) ? 0 : 999;
+    },
   },
   {
     title: "Coin98",
@@ -94,7 +102,10 @@ const connectors: Config[] = [
     connectorId: ConnectorNames.Injected,
     // @ts-ignore
     installed: typeof window !== "undefined" && (Boolean(window.ethereum?.isCoin98) || Boolean(window.coin98)),
-    priority: 999,
+    priority: () => {
+      // @ts-ignore
+      return typeof window !== "undefined" && (Boolean(window.ethereum?.isCoin98) || Boolean(window.coin98)) ? 0 : 999;
+    },
   },
   {
     title: "Blocto",
@@ -102,7 +113,10 @@ const connectors: Config[] = [
     connectorId: ConnectorNames.Injected,
     // @ts-ignore
     installed: typeof window !== "undefined" && Boolean(window.ethereum?.isBlocto),
-    priority: 999,
+    priority: () => {
+      // @ts-ignore
+      return typeof window !== "undefined" && Boolean(window.ethereum?.isBlocto) ? 0 : 999;
+    },
   },
 ];
 

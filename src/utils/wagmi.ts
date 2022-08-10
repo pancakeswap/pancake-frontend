@@ -81,14 +81,14 @@ export const walletConnectConnector = new WalletConnectConnector({
 export const metaMaskConnector = new MetaMaskConnector({
   chains,
   options: {
-    shimChainChangedDisconnect: true,
+    shimDisconnect: true,
   },
 })
 
 export const bscConnector = new BscConnector({ chains })
 
 export const client = createClient({
-  autoConnect: false,
+  autoConnect: true,
   provider,
   connectors: [
     new SafeConnector({ chains }),
