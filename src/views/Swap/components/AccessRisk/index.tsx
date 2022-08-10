@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Currency, ChainId } from '@pancakeswap/sdk'
 import { useTranslation } from 'contexts/Localization'
-import { Flex, Button, HelpIcon, useTooltip } from '@pancakeswap/uikit'
+import { Flex, Button, HelpIcon, useTooltip, Text } from '@pancakeswap/uikit'
 import useToast from 'hooks/useToast'
 import { fetchRiskToken, TokenRiskPhases, RiskTokenInfo } from 'views/Swap/hooks/fetchTokenRisk'
 import RiskMessage from 'views/Swap/components/AccessRisk/RiskMessage'
@@ -22,7 +22,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
     isSuccess: false,
     address: '',
     chainId: ChainId.BSC,
-    riskLevel: TokenRiskPhases[1],
+    riskLevel: TokenRiskPhases[0],
     riskResult: '',
     scannedTs: 0,
   })
@@ -51,6 +51,14 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
       }
     }
   }, [currency])
+
+  const disabledButton = useMemo(() => {
+    if (currency) {
+      const { address } = currency as any
+      return isAccessing || (address === riskTokenInfo.address && riskTokenInfo.isSuccess)
+    }
+    return false
+  }, [currency, riskTokenInfo, isAccessing])
 
   const handleAccess = async () => {
     setIsAccessing(true)
@@ -89,14 +97,23 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
 
   // Tooltips
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    'The risk level is for reference only, not as investment advice. Powered by Hashdit.',
+    <>
+      <Text bold>
+        {t(
+          'Scan risk level for the output token. This risk level is for a reference only, not as an investment advice.',
+        )}
+      </Text>
+      <Text bold mt="4px">
+        {t('Powered by Hashdit.')}
+      </Text>
+    </>,
     { placement: 'bottom' },
   )
 
   return (
     <>
       <Flex justifyContent="flex-end">
-        <Button scale="xs" style={{ textTransform: 'uppercase' }} disabled={isAccessing} onClick={handleAccess}>
+        <Button scale="xs" style={{ textTransform: 'uppercase' }} disabled={disabledButton} onClick={handleAccess}>
           {isAccessing ? t('Accessing...') : t('Access risk')}
         </Button>
         {tooltipVisible && tooltip}

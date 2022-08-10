@@ -1785,5 +1785,7 @@
   "Accessing Risk": "Accessing Risk",
   "Please wait until we scan the risk for %symbol% token": "Please wait until we scan the risk for %symbol% token",
   "Accessing...": "Accessing...",
-  "Access risk": "Access risk"
+  "Access risk": "Access risk",
+  "Scan risk level for the output token. This risk level is for a reference only, not as an investment advice.": "Scan risk level for the output token. This risk level is for a reference only, not as an investment advice.",
+  "Powered by Hashdit.": "Powered by Hashdit."
 }

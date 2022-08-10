@@ -8,9 +8,12 @@ export enum TOKEN_RISK {
 }
 
 export const TokenRiskPhases = {
-  1: TOKEN_RISK.Low,
+  0: TOKEN_RISK.Low,
+  1: TOKEN_RISK.Medium,
   2: TOKEN_RISK.Medium,
-  3: TOKEN_RISK.High,
+  3: TOKEN_RISK.Medium,
+  4: TOKEN_RISK.High,
+  5: TOKEN_RISK.High,
 }
 
 export interface RiskTokenInfo {
@@ -56,7 +59,7 @@ export const fetchRiskToken = async (address: string, chainId: number): Promise<
       isSuccess: false,
       address: '',
       chainId: ChainId.BSC,
-      riskLevel: TokenRiskPhases[1],
+      riskLevel: TokenRiskPhases[0],
       riskResult: '',
       scannedTs: 0,
     }
