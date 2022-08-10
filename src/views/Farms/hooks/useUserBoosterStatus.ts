@@ -13,6 +13,7 @@ export const useUserBoosterStatus = (account: string) => {
     status,
     mutate,
   } = useSWR(account && ['activatedBoostFarm', [account]], () => farmBoosterContract.activedPools(account))
+
   return {
     maxBoostCounts: MAX_BOOST_POOL?.toNumber() ?? 0,
     activatedPoolsCounts: activatedPools?.length ?? 0,
