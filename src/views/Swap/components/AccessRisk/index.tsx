@@ -16,7 +16,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
   const { t } = useTranslation()
   const { toastInfo } = useToast()
 
-  const [isAccessing, setIsAccessing] = useState(false)
+  const [isScanning, setIsScanning] = useState(false)
   const [isFetchStatusSuccess, setIsFetchStatusSuccess] = useState(false)
   const [riskTokenInfo, setRiskTokenInfo] = useState<RiskTokenInfo>({
     isSuccess: false,
@@ -29,7 +29,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
 
   useEffect(() => {
     if (currency) {
-      setIsAccessing(false)
+      setIsScanning(false)
       setIsFetchStatusSuccess(false)
 
       const { address, chainId } = currency as any
@@ -55,22 +55,22 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
   const disabledButton = useMemo(() => {
     if (currency) {
       const { address } = currency as any
-      return isAccessing || (address === riskTokenInfo.address && riskTokenInfo.isSuccess)
+      return isScanning || (address === riskTokenInfo.address && riskTokenInfo.isSuccess)
     }
     return false
-  }, [currency, riskTokenInfo, isAccessing])
+  }, [currency, riskTokenInfo, isScanning])
 
-  const handleAccess = async () => {
-    setIsAccessing(true)
+  const handleScan = async () => {
+    setIsScanning(true)
 
     const { address, chainId, symbol } = currency as any
-    toastInfo(t('Accessing Risk'), t('Please wait until we scan the risk for %symbol% token', { symbol }))
+    toastInfo(t('Scanning Risk'), t('Please wait until we scan the risk for %symbol% token', { symbol }))
 
     const tokenRiskResult: RiskTokenInfo = await fetchRiskToken(address, chainId)
 
     // To avoid response too slow, and user already change to new currency.
     if (tokenRiskResult.address === address) {
-      setIsAccessing(false)
+      setIsScanning(false)
       saveRiskTokenInfo(tokenRiskResult)
     }
   }
@@ -113,15 +113,15 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
   return (
     <>
       <Flex justifyContent="flex-end">
-        <Button scale="xs" style={{ textTransform: 'uppercase' }} disabled={disabledButton} onClick={handleAccess}>
-          {isAccessing ? t('Accessing...') : t('Access risk')}
+        <Button scale="xs" style={{ textTransform: 'uppercase' }} disabled={disabledButton} onClick={handleScan}>
+          {isScanning ? t('scanning...') : t('scan risk')}
         </Button>
         {tooltipVisible && tooltip}
         <Flex ref={targetRef}>
           <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
         </Flex>
       </Flex>
-      {!isAccessing && isFetchStatusSuccess && <RiskMessage currency={currency} riskTokenInfo={riskTokenInfo} />}
+      {!isScanning && isFetchStatusSuccess && <RiskMessage currency={currency} riskTokenInfo={riskTokenInfo} />}
     </>
   )
 }
