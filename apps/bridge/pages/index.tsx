@@ -28,7 +28,7 @@ declare global {
   }
 }
 
-function Transfer() {
+function Bridge() {
   const theme = useTheme()
 
   const [show, setShow] = useState(false)
@@ -96,4 +96,4 @@ function PoweredBy() {
   )
 }
 
-export default Transfer
+export default Bridge

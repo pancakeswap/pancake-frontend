@@ -1,29 +1,30 @@
+import { CurrencyAmount, Token } from '@pancakeswap/sdk'
 import {
-  Button,
-  Flex,
-  Logo,
-  UserMenu,
-  UserMenuItem,
-  UserMenuDivider,
-  Text,
+  BlockIcon,
   Box,
+  Button,
+  CheckmarkCircleIcon,
+  Flex,
+  Link,
+  Logo,
+  Modal,
+  OpenNewIcon,
+  RefreshIcon,
+  Text,
   ThemeSwitcher,
   useModal,
-  Modal,
-  Link,
-  RefreshIcon,
-  CheckmarkCircleIcon,
-  BlockIcon,
-  OpenNewIcon,
+  UserMenu,
+  UserMenuDivider,
+  UserMenuItem,
 } from '@pancakeswap/uikit'
-import { CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { CHAINS_STARGATE } from '@pancakeswap/wagmi'
+import { useTheme as useNextTheme } from 'next-themes'
 import Image from 'next/future/image'
 import NextLink from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useReducer, useRef, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
-import { useTheme as useNextTheme } from 'next-themes'
-import { CHAINS_STARGATE, bsc, fantomOpera, avalandche } from '@pancakeswap/wagmi'
-import { mainnet, arbitrum, optimism, polygon } from 'wagmi/chains'
+import { getTimePeriods } from './getTimePeriods'
+import { findChainByStargateId } from './stargate/network'
 
 const StyledMenuItem = styled.a<any>`
   position: relative;
@@ -48,9 +49,11 @@ const TxnIcon = styled(Flex)`
   width: 24px;
 `
 
-const Summary = styled.div`
+const Summary = styled(Flex)`
   flex: 1;
+  align-items: center;
   padding: 0 8px;
+  gap: 4px;
 `
 
 const TxnLink = styled(Link)`
@@ -183,46 +186,6 @@ const renderIcon = (txn: TransactionType) => {
   return <CheckmarkCircleIcon color="success" width="24px" />
 }
 
-const stargateNetowrk = [
-  {
-    chainId: 1,
-    name: 'Ethereum',
-    chain: mainnet,
-  },
-  {
-    name: 'BNB Chain',
-    chainId: 2,
-    chain: bsc,
-  },
-  {
-    chainId: 9,
-    name: 'Matic',
-    chain: polygon,
-  },
-  {
-    chainId: 6,
-    name: 'Avalanche',
-    chain: avalandche,
-  },
-  {
-    chainId: 12,
-    name: 'Fantom',
-    chain: fantomOpera,
-  },
-  {
-    chainId: 10,
-    name: 'Arbitrum',
-    chain: arbitrum,
-  },
-  {
-    chainId: 11,
-    name: 'Optimism',
-    chain: optimism,
-  },
-]
-
-const findChainByStargateId = (chainId: number) => stargateNetowrk.find((s) => s.chainId === chainId)
-
 function RecentTransactionsModal({
   onDismiss,
   transactions,
@@ -237,33 +200,78 @@ function RecentTransactionsModal({
           Clear all
         </Button>
       </Box>
-      {transactions?.map((txn, i) => (
-        <TxnLink
-          // eslint-disable-next-line react/no-array-index-key
-          key={i}
-          href={
-            txn.confirmation
-              ? `${findChainByStargateId(txn.confirmation.chainId)?.chain.blockExplorers?.default.url}/tx/${
-                  txn.confirmation.hash
-                }`
-              : `${findChainByStargateId(txn.chainId)?.chain.blockExplorers?.default.url}/tx/${txn.hash}`
-          }
-          external
-        >
-          <TxnIcon>{renderIcon(txn)}</TxnIcon>
-          <Summary>
-            {txn.type === 'APPROVE'
-              ? `Approve ${txn?.input?.amount?.currency?.symbol}`
-              : `Transfer ${txn.input.amount.toSignificant(2)} ${txn.input.from.token.symbol} to ${
-                  findChainByStargateId(txn.input.to.chainId)?.name
-                }`}
-          </Summary>
-          <TxnIcon>
-            <OpenNewIcon width="24px" color="primary" />
-          </TxnIcon>
-        </TxnLink>
-      ))}
+      {transactions?.map((txn, i) => {
+        const txnChain = findChainByStargateId(txn.chainId)
+        return (
+          <TxnLink
+            // eslint-disable-next-line react/no-array-index-key
+            key={i}
+            href={
+              txn.confirmation
+                ? `${findChainByStargateId(txn.confirmation.chainId)?.chain.blockExplorers?.default.url}/tx/${
+                    txn.confirmation.hash
+                  }`
+                : `${txnChain?.chain.blockExplorers?.default.url}/tx/${txn.hash}`
+            }
+            external
+          >
+            <TxnIcon>{renderIcon(txn)}</TxnIcon>
+            <Summary>
+              {txn.type === 'APPROVE' && (
+                <>
+                  {`Approve ${txn?.input?.amount?.currency?.symbol ?? ''}`}{' '}
+                  <Image width={18} height={18} src={`/chains/${txnChain?.chain.id}.png`} unoptimized />
+                </>
+              )}
+              {txn.type === 'TRANSFER' && (
+                <>
+                  Transfer {txn.input.amount.toSignificant(2)} {txn.input.from.token.symbol}
+                  <Image
+                    width={18}
+                    height={18}
+                    src={`/chains/${findChainByStargateId(txn.input.from.chainId)?.chain.id}.png`}
+                    unoptimized
+                  />
+                  to {txn.input.to.token.symbol}{' '}
+                  <Image
+                    width={18}
+                    height={18}
+                    src={`/chains/${findChainByStargateId(txn.input.to.chainId)?.chain.id}.png`}
+                    unoptimized
+                  />
+                </>
+              )}
+            </Summary>
+            <Flex>
+              {txn.type === 'TRANSFER' && !txn.completed && txn.expected && <CountDown expected={txn.expected} />}
+              <TxnIcon>
+                <OpenNewIcon width="24px" color="primary" />
+              </TxnIcon>
+            </Flex>
+          </TxnLink>
+        )
+      })}
     </Modal>
+  )
+}
+
+function CountDown({ expected }: { expected: string }) {
+  const secondLeft = (Date.now() - new Date(expected).getTime()) / 1000
+  const { hours, minutes, seconds } = getTimePeriods(secondLeft)
+  const [, forceUpdate] = useReducer((s) => s + 1, 0)
+
+  useEffect(() => {
+    setInterval(() => forceUpdate(), 1000)
+  }, [])
+
+  if (secondLeft > 0) {
+    return null
+  }
+
+  return (
+    <Flex>
+      {hours ? `${hours} h` : null} {hours || minutes ? `${minutes} m` : null} {`${parseInt(seconds)} s`}
+    </Flex>
   )
 }
 
