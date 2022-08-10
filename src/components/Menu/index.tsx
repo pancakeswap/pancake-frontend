@@ -6,6 +6,7 @@ import { useTranslation, languageList } from '@pancakeswap/localization'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import { NetworkSupportModal } from 'components/NetworkSupportModal'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTheme from 'hooks/useTheme'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { usePhishingBannerManager } from 'state/user/hooks'
@@ -22,6 +23,7 @@ const Menu = (props) => {
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useRouter()
   const [showPhishingWarningBanner] = usePhishingBannerManager()
+  const { chain } = useActiveWeb3React()
 
   const menuItems = useMenuItems()
 
@@ -47,13 +49,13 @@ const Menu = (props) => {
   )
 
   useEffect(() => {
-    if (activeSubMenuItem?.disabled || activeMenuItem?.disabled) {
+    if ((activeSubMenuItem?.disabled || activeMenuItem?.disabled) && !chain?.unsupported) {
       openNetworkSupportModal()
     } else {
       onDismiss()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeSubMenuItem, activeMenuItem])
+  }, [activeSubMenuItem, activeMenuItem, chain])
 
   return (
     <UikitMenu

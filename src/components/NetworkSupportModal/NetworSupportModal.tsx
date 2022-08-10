@@ -18,6 +18,8 @@ export function NetworkSupportModal({
   const foundChain = useMemo(() => chains.find((c) => c.id === chainId), [chainId])
   const historyManager = useHistory()
 
+  const lastValidPath = historyManager?.history?.find((h) => ['/swap', 'liquidity', '/'].includes(h))
+
   return (
     <Modal title={title} hideCloseButton headerBackground="gradients.cardHeader">
       <Grid style={{ gap: '16px' }} maxWidth="360px">
@@ -40,8 +42,8 @@ export function NetworkSupportModal({
         >
           Switch to BNB Smart Chain
         </Button>
-        {foundChain && historyManager?.canGoBack() && (
-          <NextLink href={historyManager.history[historyManager.history.length - 2]} passHref>
+        {foundChain && lastValidPath && (
+          <NextLink href={lastValidPath} passHref>
             <Button as="a">Stay on {foundChain.name}</Button>
           </NextLink>
         )}

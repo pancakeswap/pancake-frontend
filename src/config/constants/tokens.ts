@@ -46,7 +46,7 @@ const USDC_RINKEBY = new Token(
   'test USD Coin',
 )
 
-const USDC_GOERLI = new Token(ChainId.GOERLI, '0x07865c6e87b9f70255377e024ace6630c1eaa37f', 6, 'tUSDC', 'test USD Coin')
+const USDC_GOERLI = new Token(ChainId.GOERLI, '0x07865c6E87B9F70255377e024ace6630C1Eaa37F', 6, 'tUSDC', 'test USD Coin')
 
 const USDT_BSC = new Token(
   ChainId.BSC,

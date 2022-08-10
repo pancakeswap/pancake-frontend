@@ -62,7 +62,7 @@ export const NetworkSwitcher = () => {
       >
         {() => <NetworkSelect switchNetwork={switchNetwork} />}
       </UserMenu>
-      <ModalV2 isOpen={chain?.unsupported} closeOnOverlayClick={false}>
+      <ModalV2 isOpen={isWrongNetwork} closeOnOverlayClick={false}>
         <WrongNetworkModal />
       </ModalV2>
     </>

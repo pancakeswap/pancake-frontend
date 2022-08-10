@@ -196,10 +196,10 @@
     },
     {
       "name": "Test USD Coin",
-      "address": "0x07865c6e87b9f70255377e024ace6630c1eaa37f",
+      "address": "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
       "symbol": "tUSDC",
       "decimals": 6,
-      "chainId": 4,
+      "chainId": 5,
       "logoURI": "https://pancakeswap.finance/images/tokens/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d.png"
     },
     {
