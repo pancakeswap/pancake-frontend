@@ -270,7 +270,7 @@ function CountDown({ expected }: { expected: string }) {
 
   return (
     <Flex>
-      {hours ? `${hours} h` : null} {hours || minutes ? `${minutes} m` : null} {`${parseInt(seconds)} s`}
+      {hours ? `${hours} h` : null} {hours || minutes ? `${minutes} m` : null} {`${parseInt(String(seconds))} s`}
     </Flex>
   )
 }
