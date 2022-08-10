@@ -37,13 +37,14 @@ export const CardWrapper = styled.div`
 `
 export const ImageWrapper = styled.div`
   position: absolute;
-  top: -20px;
-  transform: translateY(-50%);
-  right: 0;
+  top: -50px;
+  transform: translateY(-50%) scale(75%);
+  right: 10px;
   ${({ theme }) => theme.mediaQueries.sm} {
     right: auto;
     top: 50%;
     left: -70px;
+    transform: translateY(-50%);
   }
   z-index: 2;
 `

@@ -45,6 +45,22 @@ const ControlContainer = styled.div`
     margin-bottom: 0;
   }
 `
+const FarmH1 = styled(Heading)`
+  font-size: 32px;
+  margin-bottom: 8px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 64px;
+    margin-bottom: 24px;
+  }
+`
+const FarmH2 = styled(Heading)`
+  font-size: 16px;
+  margin-bottom: 8px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 24px;
+    margin-bottom: 18px;
+  }
+`
 
 const ToggleWrapper = styled.div`
   display: flex;
@@ -285,12 +301,12 @@ const Farms: React.FC = ({ children }) => {
       <PageHeader>
         <Flex justifyContent="space-between" flexWrap={['nowrap', 'wrap']}>
           <Box>
-            <Heading as="h1" scale="xxl" color="secondary" mb="24px">
+            <FarmH1 as="h1" scale="xxl" color="secondary" mb="24px">
               {t('Farms')}
-            </Heading>
-            <Heading scale="lg" color="text">
+            </FarmH1>
+            <FarmH2 scale="lg" color="text">
               {t('Stake LP tokens to earn.')}
-            </Heading>
+            </FarmH2>
             <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
               <Button p="0" variant="text">
                 <Text color="primary" bold fontSize="16px" mr="4px">
