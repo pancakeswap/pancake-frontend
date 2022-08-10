@@ -200,8 +200,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
     } else {
       setIsLoading(true)
       try {
-        const value = new BigNumber(fullBalance).times(DEFAULT_TOKEN_DECIMAL).toString()
-        const receipt = await fetchWithCatchTxError(() => onStake(value))
+        const receipt = await fetchWithCatchTxError(() => onStake(fullBalance))
         if (receipt?.status) {
           toastSuccess(
             `${t('Staked')}!`,
