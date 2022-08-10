@@ -10,6 +10,7 @@ const Page = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
+  min-height: calc(100% - 56px);
   align-items: center;
   flex-direction: column;
   background: ${({ theme }) => theme.colors.gradients.bubblegum};
@@ -27,7 +28,7 @@ declare global {
   }
 }
 
-function Transfer() {
+function Bridge() {
   const theme = useTheme()
 
   const [show, setShow] = useState(false)
@@ -36,8 +37,8 @@ function Transfer() {
     customElements.whenDefined('stargate-widget').then(() => {
       setTimeout(() => {
         if (window.stargate) {
-          window.stargate.setDstChainId(10002)
-          window.stargate.setConfig({ dstChainIdList: [10002] })
+          window.stargate.setDstChainId(2)
+          window.stargate.setConfig({ dstChainIdList: [2] })
         }
       }, 600)
       console.info('stargate widget mount')
@@ -75,22 +76,24 @@ function Transfer() {
 function PoweredBy() {
   const { isDark } = useTheme()
   return (
-    <Flex mt="10px" alignItems="center" justifyContent="center">
+    <Flex py="10px" alignItems="center" justifyContent="center">
       <Text small color="textSubtle" mr="8px">
         Powered By
       </Text>
-      <Image
-        width={78}
-        height={20}
-        src="/stargate.png"
-        alt="Powered By Stargate"
-        unoptimized
-        style={{
-          filter: isDark ? 'invert(1)' : 'unset',
-        }}
-      />
+      <a href="https://stargate.finance" target="_blank" rel="noreferrer noopener">
+        <Image
+          width={78}
+          height={20}
+          src="/stargate.png"
+          alt="Powered By Stargate"
+          unoptimized
+          style={{
+            filter: isDark ? 'invert(1)' : 'unset',
+          }}
+        />
+      </a>
     </Flex>
   )
 }
 
-export default Transfer
+export default Bridge

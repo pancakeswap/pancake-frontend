@@ -5,8 +5,6 @@ import Script from 'next/script'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
 import Head from 'next/head'
-import { WagmiConfig } from 'wagmi'
-import { client } from '../wagmi'
 import { Menu } from '../components/Menu'
 
 declare module 'styled-components' {
@@ -75,24 +73,22 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="🥞 PancakeSwap - A next evolution DeFi exchange on BNB Smart Chain (BSC)" />
-        <title>PancakeSwap</title>
+        <title>PancakeSwap Bridge</title>
       </Head>
-      <WagmiConfig client={client}>
-        <NextThemeProvider>
-          <StyledThemeProvider>
-            <ModalProvider>
-              <ResetCSS />
-              <GlobalStyle />
-              {isMounted && (
-                <>
-                  <Menu />
-                  <Component {...pageProps} />
-                </>
-              )}
-            </ModalProvider>
-          </StyledThemeProvider>
-        </NextThemeProvider>
-      </WagmiConfig>
+      <NextThemeProvider>
+        <StyledThemeProvider>
+          <ModalProvider>
+            <ResetCSS />
+            <GlobalStyle />
+            {isMounted && (
+              <>
+                <Menu />
+                <Component {...pageProps} />
+              </>
+            )}
+          </ModalProvider>
+        </StyledThemeProvider>
+      </NextThemeProvider>
       <Script
         strategy="afterInteractive"
         id="google-tag"

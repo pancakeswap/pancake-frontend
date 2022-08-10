@@ -26,6 +26,10 @@ const whitelist = [
   `These bunnies like their pancakes with blueberries. What's your favorite topping?`,
   "Love makes the world go 'round... but so do pancakes. And these bunnies know it.",
   `It’s sparkling syrup, pancakes, and even lottery tickets! This bunny really loves it.`,
+  'Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol%',
+  'Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol% to %recipientAddress%',
+  'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%',
+  'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%',
 ]
 
 describe('Check translations integrity', () => {
