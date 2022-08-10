@@ -56,6 +56,9 @@ export const { provider, chains } = configureChains(CHAINS, [
 
 export const injectedConnector = new InjectedConnector({
   chains,
+  options: {
+    shimDisconnect: false,
+  },
 })
 
 export const coinbaseConnector = new CoinbaseWalletConnector({
@@ -77,6 +80,9 @@ export const walletConnectConnector = new WalletConnectConnector({
 
 export const metaMaskConnector = new MetaMaskConnector({
   chains,
+  options: {
+    shimDisconnect: false,
+  },
 })
 
 export const bscConnector = new BscConnector({ chains })
