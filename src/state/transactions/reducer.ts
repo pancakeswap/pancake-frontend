@@ -21,7 +21,7 @@ export interface TransactionDetails {
   type?: TransactionType
   order?: Order
   summary?: string
-  translatableSummary?: { text: string; data: Record<string, ReactText> }
+  translatableSummary?: { text: string; data?: Record<string, ReactText> }
   claim?: { recipient: string }
   receipt?: SerializableTransactionReceipt
   lastCheckedBlockNumber?: number

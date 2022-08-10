@@ -30,6 +30,12 @@ const whitelist = [
   'Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol% to %recipientAddress%',
   'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%',
   'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%',
+  'Wrap %amount% BNB to WBNB',
+  'Unwrap %amount% BNB to WBNB',
+  'Approve %symbol%',
+  'Add %amountA% %symbolA% and %amountB% %symbolB%',
+  'Remove %amount% %symbol%',
+  'Remove %amountA% %symbolA% and %amountB% %symbolB%',
 ]
 
 describe('Check translations integrity', () => {

@@ -12,7 +12,7 @@ export function useTransactionAdder(): (
   response: TransactionResponse,
   customData?: {
     summary?: string
-    translatableSummary?: { text: string; data: Record<string, ReactText> }
+    translatableSummary?: { text: string; data?: Record<string, ReactText> }
     approval?: { tokenAddress: string; spender: string }
     claim?: { recipient: string }
     type?: TransactionType
@@ -34,7 +34,7 @@ export function useTransactionAdder(): (
         order,
       }: {
         summary?: string
-        translatableSummary?: { text: string; data: Record<string, ReactText> }
+        translatableSummary?: { text: string; data?: Record<string, ReactText> }
         claim?: { recipient: string }
         approval?: { tokenAddress: string; spender: string }
         type?: TransactionType

@@ -306,10 +306,16 @@ export default function AddLiquidity() {
         }).then((response) => {
           setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
 
+          const symbolA = currencies[Field.CURRENCY_A]?.symbol
+          const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
+          const symbolB = currencies[Field.CURRENCY_B]?.symbol
+          const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)
           addTransaction(response, {
-            summary: `Add ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
-              currencies[Field.CURRENCY_A]?.symbol
-            } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`,
+            summary: `Add ${amountA} ${symbolA} and ${amountB} ${symbolB}`,
+            translatableSummary: {
+              text: 'Add %amountA% %symbolA% and %amountB% %symbolB%',
+              data: { amountA, symbolA, amountB, symbolB },
+            },
             type: 'add-liquidity',
           })
 
