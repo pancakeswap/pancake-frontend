@@ -1,4 +1,5 @@
 import { Box, ModalV2, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
+import { NATIVE } from '@pancakeswap/sdk'
 import useActiveWeb3React, { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
@@ -33,6 +34,7 @@ export const NetworkSwitcher = () => {
     () => chains.find((c) => c.id === (isLoading ? pendingChainId || chainId : chainId)),
     [isLoading, pendingChainId, chainId],
   )
+  const symbol = NATIVE[foundChain?.id]?.symbol ?? foundChain?.nativeCurrency?.symbol
 
   const isWrongNetwork = chain?.unsupported
 
@@ -53,7 +55,7 @@ export const NetworkSwitcher = () => {
           ) : foundChain ? (
             <>
               <Box display={['none', null, null, null, null, 'block']}>{foundChain.name}</Box>
-              <Box display={['block', null, null, null, null, 'none']}>{foundChain.nativeCurrency?.symbol}</Box>
+              <Box display={['block', null, null, null, null, 'none']}>{symbol}</Box>
             </>
           ) : (
             t('Select a Network')
