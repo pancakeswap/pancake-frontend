@@ -45,6 +45,12 @@ const ControlContainer = styled.div`
     margin-bottom: 0;
   }
 `
+const FarmFlexWrapper = styled(Flex)`
+  flex-wrap: wrap;
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-wrap: nowrap;
+  }
+`
 const FarmH1 = styled(Heading)`
   font-size: 32px;
   margin-bottom: 8px;
@@ -299,7 +305,7 @@ const Farms: React.FC = ({ children }) => {
   return (
     <FarmsContext.Provider value={{ chosenFarmsMemoized }}>
       <PageHeader>
-        <Flex justifyContent="space-between" flexWrap={['nowrap', 'wrap']}>
+        <FarmFlexWrapper justifyContent="space-between">
           <Box>
             <FarmH1 as="h1" scale="xxl" color="secondary" mb="24px">
               {t('Farms')}
@@ -319,7 +325,7 @@ const Farms: React.FC = ({ children }) => {
           <Box>
             <BCakeBoosterCard />
           </Box>
-        </Flex>
+        </FarmFlexWrapper>
       </PageHeader>
       <Page>
         <ControlContainer>
