@@ -1,5 +1,4 @@
 import { Button, Heading, Skeleton, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
-import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { useTranslation } from '@pancakeswap/localization'
@@ -17,7 +16,6 @@ import { FarmWithStakedValue } from '../../types'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
 import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
-import useProxyCAKEBalance from '../../YieldBooster/hooks/useProxyCAKEBalance'
 
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
@@ -29,9 +27,8 @@ interface HarvestActionProps extends FarmWithStakedValue {
 export const ProxyHarvestActionContainer = ({ children, ...props }) => {
   const lpAddress = getAddress(props.lpAddresses)
   const lpContract = useERC20(lpAddress)
-  const { proxyCakeBalance, refreshProxyCakeBalance } = useProxyCAKEBalance()
 
-  const { onReward, onDone } = useProxyStakedActions(props.pid, lpContract, refreshProxyCakeBalance)
+  const { onReward, onDone, proxyCakeBalance } = useProxyStakedActions(props.pid, lpContract)
 
   return children({ ...props, onReward, proxyCakeBalance, onDone })
 }

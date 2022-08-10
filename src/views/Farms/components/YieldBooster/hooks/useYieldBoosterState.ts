@@ -71,7 +71,7 @@ export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoos
     state = YieldBoosterState.LOCKED_END
   } else if (!proxy?.stakedBalance.gt(0)) {
     state = YieldBoosterState.NO_LP
-  } else if (remainingCounts === 0) {
+  } else if (!isActivePool && remainingCounts === 0) {
     state = YieldBoosterState.MAX
   } else if (isActivePool) {
     state = YieldBoosterState.ACTIVE

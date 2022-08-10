@@ -7,55 +7,27 @@ import { harvestFarm, stakeFarm, unstakeFarm } from 'utils/calls/farms'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { useApproveBoostProxyFarm } from '../../../hooks/useApproveFarm'
+import useProxyCAKEBalance from './useProxyCAKEBalance'
 
-export default function useProxyStakedActions(pid, lpContract, callback?: any) {
+export default function useProxyStakedActions(pid, lpContract) {
   const { account } = useWeb3React()
   const { proxyAddress } = useBCakeProxyContractAddress(account)
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
   const dispatch = useAppDispatch()
+  const { proxyCakeBalance, refreshProxyCakeBalance } = useProxyCAKEBalance()
 
-  const onDone = useCallback(
-    () => dispatch(fetchFarmUserDataAsync({ account, pids: [pid], proxyAddress })),
-    [account, proxyAddress, pid, dispatch],
-  )
+  const onDone = useCallback(() => {
+    refreshProxyCakeBalance()
+    dispatch(fetchFarmUserDataAsync({ account, pids: [pid], proxyAddress }))
+  }, [account, proxyAddress, pid, dispatch, refreshProxyCakeBalance])
 
   const { onApprove } = useApproveBoostProxyFarm(lpContract, proxyAddress)
 
-  const onStake = useCallback(
-    async (value) => {
-      const res = await stakeFarm(bCakeProxy, pid, value)
+  const onStake = useCallback((value) => stakeFarm(bCakeProxy, pid, value), [bCakeProxy, pid])
 
-      if (callback) {
-        callback()
-      }
+  const onUnstake = useCallback((value) => unstakeFarm(bCakeProxy, pid, value), [bCakeProxy, pid])
 
-      return res
-    },
-    [callback, bCakeProxy, pid],
-  )
-
-  const onUnstake = useCallback(
-    async (value) => {
-      const res = await unstakeFarm(bCakeProxy, pid, value)
-
-      if (callback) {
-        callback()
-      }
-
-      return res
-    },
-    [callback, bCakeProxy, pid],
-  )
-
-  const onReward = useCallback(async () => {
-    const res = await harvestFarm(bCakeProxy, pid)
-
-    if (callback) {
-      callback()
-    }
-
-    return res
-  }, [callback, bCakeProxy, pid])
+  const onReward = useCallback(() => harvestFarm(bCakeProxy, pid), [bCakeProxy, pid])
 
   return {
     onStake,
@@ -63,5 +35,6 @@ export default function useProxyStakedActions(pid, lpContract, callback?: any) {
     onReward,
     onApprove,
     onDone,
+    proxyCakeBalance,
   }
 }
