@@ -15,9 +15,9 @@ interface BoostedAprPropsType {
 
 function BoostedApr(props: BoostedAprPropsType) {
   const { apr, pid, ...rest } = props
-  const { boosterState } = useContext(YieldBoosterStateContext)
+  const { boosterState, proxyAddress } = useContext(YieldBoosterStateContext)
 
-  const multiplier = useBoostMultipler({ pid, boosterState })
+  const multiplier = useBoostMultipler({ pid, boosterState, proxyAddress })
 
   const boostedApr =
     (!isUndefinedOrNull(multiplier) && !isUndefinedOrNull(apr) && formatNumber(_toNumber(apr) * Number(multiplier))) ||

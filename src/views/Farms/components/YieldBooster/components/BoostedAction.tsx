@@ -22,9 +22,9 @@ interface BoostedActionPropsType {
 
 const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPid, title, desc }) => {
   const { t } = useTranslation()
-  const { boosterState, refreshActivePool, refreshProxyAddress } = useContext(YieldBoosterStateContext)
+  const { boosterState, refreshActivePool, refreshProxyAddress, proxyAddress } = useContext(YieldBoosterStateContext)
   const { isConfirming, ...handlers } = useBoosterFarmHandlers(farmPid, refreshActivePool)
-  const boostMultipler = useBoostMultipler({ pid: farmPid, boosterState })
+  const boostMultipler = useBoostMultipler({ pid: farmPid, boosterState, proxyAddress })
 
   const renderBtn = useCallback(() => {
     switch (boosterState) {

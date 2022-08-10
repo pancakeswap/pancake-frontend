@@ -71,12 +71,12 @@ async function getUserMultipler({ farmBoosterContract, account, pid }): Promise<
   )
 }
 
-async function getMultiplerFromMC({ pid, account, masterChefContract }): Promise<number> {
+async function getMultiplerFromMC({ pid, proxyAddress, masterChefContract }): Promise<number> {
   const calls = [
     {
       address: masterChefContract.address,
       name: 'getBoostMultiplier',
-      params: [account, pid],
+      params: [proxyAddress, pid],
     },
   ]
 
@@ -89,7 +89,7 @@ async function getMultiplerFromMC({ pid, account, masterChefContract }): Promise
   return _toNumber(FixedNumber.from(boostMultiplier).divUnsafe(PRECISION_FACTOR).round(2).toString())
 }
 
-export default function useBoostMultipler({ pid, boosterState }): number {
+export default function useBoostMultipler({ pid, boosterState, proxyAddress }): number {
   const farmBoosterContract = useBCakeFarmBoosterContract()
   const masterChefContract = useMasterchef()
 
@@ -101,7 +101,7 @@ export default function useBoostMultipler({ pid, boosterState }): number {
 
   const getMultipler = useCallback(async () => {
     if (boosterState === YieldBoosterState.ACTIVE) {
-      return getMultiplerFromMC({ pid, account, masterChefContract })
+      return getMultiplerFromMC({ pid, masterChefContract, proxyAddress })
     }
 
     return shouldMaxUp
@@ -109,7 +109,7 @@ export default function useBoostMultipler({ pid, boosterState }): number {
           farmBoosterContract,
         })
       : getUserMultipler({ farmBoosterContract, pid, account })
-  }, [boosterState, farmBoosterContract, masterChefContract, pid, account, shouldMaxUp])
+  }, [boosterState, farmBoosterContract, masterChefContract, pid, account, shouldMaxUp, proxyAddress])
 
   const { data } = useSWR(['boostMultipler', shouldMaxUp ? 'public' : `user${pid}`], getMultipler)
 
