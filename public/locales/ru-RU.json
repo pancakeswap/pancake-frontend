@@ -1855,5 +1855,9 @@
   "0.0001 CAKE required for enabling extension": "0.0001 CAKE required for enabling extension",
   "Recommend choosing \"MAX\" to renew your staking position in order to keep similar yield boost.": "Recommend choosing \"MAX\" to renew your staking position in order to keep similar yield boost.",
   "Add to %wallet%": "Add to %wallet%",
-  "Add %asset% to %wallet%": "Add %asset% to %wallet%"
+  "Add %asset% to %wallet%": "Add %asset% to %wallet%",
+  "Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol%": "Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol%",
+  "Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol% to %recipientAddress%": "Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol% to %recipientAddress%",
+  "Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%": "Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%",
+  "Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%": "Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%"
 }
