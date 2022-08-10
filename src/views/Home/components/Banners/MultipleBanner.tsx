@@ -95,12 +95,12 @@ const MultipleBanner: React.FC = () => {
   const [swiperRef, setSwiperRef] = useState<SwiperCore>(null)
 
   useLayoutEffect(() => {
-    if (swiperRef && bannerList.length > 1 && !swiperRef?.autoplay?.running) {
-      swiperRef?.autoplay?.start()
-    }
-
-    if (swiperRef && bannerList.length <= 1) {
-      swiperRef?.autoplay?.stop()
+    if (swiperRef) {
+      if (bannerList.length > 1 && !swiperRef.autoplay?.running) {
+        swiperRef.autoplay?.start()
+      } else if (bannerList.length <= 1 && swiperRef.autoplay?.running) {
+        swiperRef.autoplay?.stop()
+      }
     }
   }, [bannerList, swiperRef])
 

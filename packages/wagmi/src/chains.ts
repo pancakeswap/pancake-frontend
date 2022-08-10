@@ -5,6 +5,9 @@ import {
   rinkeby as defaultRinkeby,
   mainnet as defaultMainnet,
   goerli as defaultGoerli,
+  arbitrum,
+  optimism,
+  polygon,
 } from 'wagmi/chains'
 import { Chain } from 'wagmi'
 
@@ -157,14 +160,6 @@ export const CHAINS_TESTNET = [
   fantomTestnet,
 ]
 
-export const CHAINS_STARGATE_TESTNET = [
-  rinkeby,
-  arbitrumRinkeby,
-  optimismKovan,
-  polygonMumbai,
-  avalandcheFuji,
-  fantomTestnet,
-]
-
 export const CHAINS = [bsc, mainnet, bscTest, rinkeby, goerli]
 export const CHAIN_IDS = CHAINS.map((c) => c.id)
+export const CHAINS_STARGATE = [mainnet, arbitrum, optimism, polygon, avalandche, fantomOpera]

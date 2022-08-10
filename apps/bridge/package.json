@@ -1,5 +1,5 @@
 {
-  "name": "transfer",
+  "name": "bridge",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,6 +12,7 @@
     "@material-ui/core": "^4.12.4",
     "@pancakeswap/wagmi": "*",
     "@pancakeswap/uikit": "*",
+    "@pancakeswap/sdk": "*",
     "next": "^12.1.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

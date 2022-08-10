@@ -97,15 +97,18 @@ export const fetchLatestRoundId = async () => {
         query getUserPotterWithdrawAbleData($roundId: BigInt) {
           potteryVaultRounds(first: 1, orderDirection: desc, orderBy: roundId) {
             roundId
+            winners
           }
         }
       `,
       { roundId: 0 },
     )
 
+    const winners = response.potteryVaultRounds[0]?.winners
     const latestRoundId = response.potteryVaultRounds[0]?.roundId
+
     return {
-      latestRoundId: latestRoundId || '',
+      latestRoundId: winners?.length > 0 ? latestRoundId || '' : latestRoundId - 1,
     }
   } catch (error) {
     console.error('Failed to fetch last roundId ', error)
