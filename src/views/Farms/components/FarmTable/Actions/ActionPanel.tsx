@@ -190,7 +190,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
           </HarvestActionContainer>
         )}
         {farm?.boosted && (
-          <ActionContainerSection>
+          <ActionContainerSection style={{ minHeight: 124.5 }}>
             <BoostedAction
               title={(status) => (
                 <ActionTitles>
