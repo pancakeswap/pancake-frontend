@@ -100,8 +100,12 @@ export default function CurrencySearchModal({
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(undefined)
   useEffect(() => {
-    if (!wrapperRef.current) return
-    setHeight(wrapperRef.current.offsetHeight - 330)
+    const calHeight = () => {
+      if (!wrapperRef.current) return
+      setHeight(wrapperRef.current.offsetHeight - 330)
+    }
+    window.addEventListener('resize', calHeight)
+    return () => window.removeEventListener('resize', calHeight)
   }, [])
 
   return (
