@@ -29,7 +29,7 @@ const getWalletIcon = (marginTextBetweenLogo: string) => {
     width: '16px',
     ...(marginTextBetweenLogo && { ml: marginTextBetweenLogo }),
   }
-  if (window?.ethereum?.isTrust) {
+  if (window?.ethereum?.isTrust && !window?.ethereum?.isSafePal) {
     return <TrustWalletIcon {...iconProps} />
   }
   if (window?.ethereum?.isCoinbaseWallet) {
@@ -47,6 +47,9 @@ const getWalletIcon = (marginTextBetweenLogo: string) => {
 const getWalletName = () => {
   if (window?.ethereum?.isTrust) {
     return 'Trust Wallet'
+  }
+  if (window?.ethereum?.isSafePal) {
+    return 'SafePal Wallet'
   }
   if (window?.ethereum?.isCoinbaseWallet) {
     return 'Coinbase Wallet'

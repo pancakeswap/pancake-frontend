@@ -105,5 +105,6 @@ export const canRegisterToken = () =>
   typeof window !== 'undefined' &&
   (window?.ethereum?.isMetaMask ||
     window?.ethereum?.isTrust ||
+    window?.ethereum?.isSafePal ||
     window?.ethereum?.isCoinbaseWallet ||
     window?.ethereum?.isTokenPocket)
