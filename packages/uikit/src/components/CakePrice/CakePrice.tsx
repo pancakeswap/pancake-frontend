@@ -24,7 +24,11 @@ const PriceLink = styled.a`
   }
 `;
 
-const CakePrice: React.FC<Props> = ({ cakePriceUsd, color = "textSubtle", showSkeleton = true }) => {
+const CakePrice: React.FC<React.PropsWithChildren<Props>> = ({
+  cakePriceUsd,
+  color = "textSubtle",
+  showSkeleton = true,
+}) => {
   return cakePriceUsd ? (
     <PriceLink
       href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"

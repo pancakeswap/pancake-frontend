@@ -8,7 +8,7 @@ const Wrapper = styled(Page)`
   align-items: center;
 `
 
-const PageLoader: React.FC = () => {
+const PageLoader: React.FC<React.PropsWithChildren<unknown>> = () => {
   return (
     <Wrapper>
       <Spinner />

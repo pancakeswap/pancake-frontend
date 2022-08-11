@@ -6,7 +6,7 @@ interface Props {
   keyword: string
 }
 
-const TransWithElement: React.FC<Props> = ({ text, element, keyword }) => {
+const TransWithElement: React.FC<React.PropsWithChildren<Props>> = ({ text, element, keyword }) => {
   const [head, tail] = useMemo(() => {
     return text.split(keyword)
   }, [text, keyword])

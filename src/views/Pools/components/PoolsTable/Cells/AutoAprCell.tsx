@@ -21,7 +21,7 @@ interface AprCellProps {
   pool: DeserializedPool
 }
 
-const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
+const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
 

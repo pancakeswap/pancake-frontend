@@ -11,7 +11,7 @@ import {
 } from "./styles";
 import SliderProps from "./types";
 
-const Slider: React.FC<SliderProps> = ({
+const Slider: React.FC<React.PropsWithChildren<SliderProps>> = ({
   name,
   min,
   max,

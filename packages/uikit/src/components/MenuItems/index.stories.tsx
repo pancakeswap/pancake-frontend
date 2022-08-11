@@ -10,7 +10,7 @@ export default {
   component: MenuItems,
 };
 
-const Template: React.FC<MenuItemsProps> = (args) => {
+const Template: React.FC<React.PropsWithChildren<MenuItemsProps>> = (args) => {
   return (
     <BrowserRouter>
       <MenuItems {...args} />

@@ -12,7 +12,7 @@ const BackLink = styled(NextLinkFromReactRouter)`
   font-weight: 600;
 `
 
-const TopBar: React.FC = () => {
+const TopBar: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
 
   return (

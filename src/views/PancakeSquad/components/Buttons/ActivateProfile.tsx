@@ -8,7 +8,7 @@ type ActivateProfileButtonProps = {
   userStatus: UserStatusEnum
 }
 
-const ActivateProfileButton: React.FC<ActivateProfileButtonProps> = ({ t, userStatus }) => (
+const ActivateProfileButton: React.FC<React.PropsWithChildren<ActivateProfileButtonProps>> = ({ t, userStatus }) => (
   <>
     {(userStatus === UserStatusEnum.NO_PROFILE || userStatus === UserStatusEnum.UNCONNECTED) && (
       <Button as={NextLinkFromReactRouter} to="/create-profile" mr="4px">

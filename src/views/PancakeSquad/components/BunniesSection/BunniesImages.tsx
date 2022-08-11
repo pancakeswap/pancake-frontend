@@ -9,7 +9,7 @@ type BunniesImages = {
 
 const BUNNIES_CYCLING_TIME = 2500
 
-const BunniesImages: React.FC<BunniesImages> = ({ basePath, altText }) => {
+const BunniesImages: React.FC<React.PropsWithChildren<BunniesImages>> = ({ basePath, altText }) => {
   const bunnies = new Array(11).fill({})
   const [selectedBunny, setSelectedBunny] = useState(0)
 

@@ -21,10 +21,9 @@ const NextDrawWrapper = styled(Flex)`
   }
 `
 
-const PreviousRoundCardFooter: React.FC<{ lotteryNodeData: LotteryRound; lotteryId: string }> = ({
-  lotteryNodeData,
-  lotteryId,
-}) => {
+const PreviousRoundCardFooter: React.FC<
+  React.PropsWithChildren<{ lotteryNodeData: LotteryRound; lotteryId: string }>
+> = ({ lotteryNodeData, lotteryId }) => {
   const { t } = useTranslation()
   const [fetchedLotteryGraphData, setFetchedLotteryGraphData] = useState<LotteryRoundGraphEntity>()
   const lotteryGraphDataFromState = useGetLotteryGraphDataById(lotteryId)

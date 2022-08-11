@@ -35,7 +35,9 @@ export const ModalBody = styled(Flex)`
   }
 `;
 
-export const ModalCloseButton: React.FC<{ onDismiss: ModalProps["onDismiss"] }> = ({ onDismiss }) => {
+export const ModalCloseButton: React.FC<React.PropsWithChildren<{ onDismiss: ModalProps["onDismiss"] }>> = ({
+  onDismiss,
+}) => {
   return (
     <IconButton variant="text" onClick={onDismiss} aria-label="Close the dialog">
       <CloseIcon color="primary" />
@@ -43,7 +45,7 @@ export const ModalCloseButton: React.FC<{ onDismiss: ModalProps["onDismiss"] }> 
   );
 };
 
-export const ModalBackButton: React.FC<{ onBack: ModalProps["onBack"] }> = ({ onBack }) => {
+export const ModalBackButton: React.FC<React.PropsWithChildren<{ onBack: ModalProps["onBack"] }>> = ({ onBack }) => {
   return (
     <IconButton variant="text" onClick={onBack} area-label="go back" mr="8px">
       <ArrowBackIcon color="primary" />

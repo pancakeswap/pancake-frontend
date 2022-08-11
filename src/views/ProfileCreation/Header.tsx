@@ -18,7 +18,7 @@ const steps = (t: TranslateFunction) => [
   t('Set Name'),
 ]
 
-const Header: React.FC = () => {
+const Header: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { currentStep } = useContext(ProfileCreationContext)
 

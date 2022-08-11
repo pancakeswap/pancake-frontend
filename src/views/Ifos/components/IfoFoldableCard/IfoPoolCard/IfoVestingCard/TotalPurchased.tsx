@@ -13,7 +13,7 @@ interface TotalPurchasedProps {
   walletIfoData: WalletIfoData
 }
 
-const TotalPurchased: React.FC<TotalPurchasedProps> = ({ ifo, poolId, walletIfoData }) => {
+const TotalPurchased: React.FC<React.PropsWithChildren<TotalPurchasedProps>> = ({ ifo, poolId, walletIfoData }) => {
   const { t } = useTranslation()
   const { token } = ifo
   const { offeringAmountInToken } = walletIfoData[poolId]

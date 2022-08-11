@@ -21,7 +21,7 @@ interface Props {
   enableStatus: EnableStatus
 }
 
-const IfoCardActions: React.FC<Props> = ({
+const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   poolId,
   ifo,
   publicIfoData,

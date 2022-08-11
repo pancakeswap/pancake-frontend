@@ -9,7 +9,7 @@ interface ClearAllButtonProps extends ButtonProps {
   collectionAddress: string
 }
 
-const ClearAllButton: React.FC<ClearAllButtonProps> = ({ collectionAddress, ...props }) => {
+const ClearAllButton: React.FC<React.PropsWithChildren<ClearAllButtonProps>> = ({ collectionAddress, ...props }) => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const nftFilterState = useGetNftFilterLoadingState(collectionAddress)

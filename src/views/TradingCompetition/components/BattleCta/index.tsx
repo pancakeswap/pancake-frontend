@@ -58,7 +58,7 @@ const StyledHeadingText = styled(Heading2Text)`
   padding: 0px 10px;
 `
 
-const BattleCta: React.FC<CompetitionProps> = ({
+const BattleCta: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
   userTradingInformation,
   currentPhase,
   account,

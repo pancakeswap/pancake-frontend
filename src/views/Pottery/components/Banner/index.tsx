@@ -68,7 +68,7 @@ interface BannerProps {
   handleScroll: () => void
 }
 
-const Banner: React.FC<BannerProps> = ({ handleScroll }) => {
+const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ handleScroll }) => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
   const { publicData } = usePotteryData()

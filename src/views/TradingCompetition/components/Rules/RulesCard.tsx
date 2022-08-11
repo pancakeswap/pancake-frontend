@@ -1,6 +1,6 @@
 import { Heading, Card, CardBody } from '@pancakeswap/uikit'
 
-const RulesCard: React.FC<{ title?: string }> = ({ title, children }) => {
+const RulesCard: React.FC<React.PropsWithChildren<{ title?: string }>> = ({ title, children }) => {
   return (
     <Card mb="16px">
       <CardBody>

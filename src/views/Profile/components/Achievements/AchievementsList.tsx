@@ -14,7 +14,7 @@ const Grid = styled.div`
   }
 `
 
-const AchievementsList: React.FC<{ achievements: Achievement[]; isLoading: boolean }> = ({
+const AchievementsList: React.FC<React.PropsWithChildren<{ achievements: Achievement[]; isLoading: boolean }>> = ({
   achievements,
   isLoading,
 }) => {

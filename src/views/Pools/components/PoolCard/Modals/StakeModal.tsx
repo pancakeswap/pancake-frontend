@@ -56,7 +56,7 @@ const AnnualRoiDisplay = styled(Text)`
   text-overflow: ellipsis;
 `
 
-const StakeModal: React.FC<StakeModalProps> = ({
+const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
   isBnbPool,
   pool,
   stakingTokenBalance,

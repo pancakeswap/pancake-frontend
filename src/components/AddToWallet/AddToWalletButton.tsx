@@ -60,7 +60,7 @@ const getWalletName = () => {
   return null
 }
 
-const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
+const AddToWalletButton: React.FC<React.PropsWithChildren<AddToWalletButtonProps & ButtonProps>> = ({
   tokenAddress,
   tokenSymbol,
   tokenDecimals,

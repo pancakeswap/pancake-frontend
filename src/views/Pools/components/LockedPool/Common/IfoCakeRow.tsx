@@ -11,7 +11,7 @@ const InlineLink = styled(Link)`
   display: inline;
 `
 
-const IfoCakeRow: React.FC = () => {
+const IfoCakeRow: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const credit = useIfoCredit()
   const ceiling = useIfoCeiling()

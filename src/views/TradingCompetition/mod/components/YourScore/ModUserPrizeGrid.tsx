@@ -14,7 +14,7 @@ const StyledThead = styled.thead`
   border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
-const ModUserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformation }> = ({
+const ModUserPrizeGrid: React.FC<React.PropsWithChildren<{ userTradingInformation?: UserTradingInformation }>> = ({
   userTradingInformation,
 }) => {
   const { t } = useTranslation()

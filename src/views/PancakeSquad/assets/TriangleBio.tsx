@@ -1,7 +1,7 @@
 import { Svg, SvgProps } from '@pancakeswap/uikit'
 import * as React from 'react'
 
-const Icon: React.FC<SvgProps & { isDark: boolean }> = ({ isDark, ...props }) => {
+const Icon: React.FC<React.PropsWithChildren<SvgProps & { isDark: boolean }>> = ({ isDark, ...props }) => {
   return (
     <Svg viewBox="0 0 21 47" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path

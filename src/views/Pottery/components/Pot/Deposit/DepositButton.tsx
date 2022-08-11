@@ -13,7 +13,7 @@ interface DepositButtonProps {
   setDepositAmount: (value: string) => void
 }
 
-const DepositButton: React.FC<DepositButtonProps> = ({
+const DepositButton: React.FC<React.PropsWithChildren<DepositButtonProps>> = ({
   status,
   depositAmount,
   potteryVaultAddress,

@@ -7,7 +7,7 @@ interface ClaimButtonProps {
   rewardToken: number
 }
 
-const ClaimButton: React.FC<ClaimButtonProps> = ({ rewardToken }) => {
+const ClaimButton: React.FC<React.PropsWithChildren<ClaimButtonProps>> = ({ rewardToken }) => {
   const { t } = useTranslation()
   const { isPending, handleClaim } = useClaimPottery()
 

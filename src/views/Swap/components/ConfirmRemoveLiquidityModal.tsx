@@ -39,7 +39,9 @@ interface ConfirmRemoveLiquidityModalProps {
   toggleZapMode: (value: boolean) => void
 }
 
-const ConfirmRemoveLiquidityModal: React.FC<InjectedModalProps & ConfirmRemoveLiquidityModalProps> = ({
+const ConfirmRemoveLiquidityModal: React.FC<
+  React.PropsWithChildren<InjectedModalProps & ConfirmRemoveLiquidityModalProps>
+> = ({
   title,
   onDismiss,
   customOnDismiss,

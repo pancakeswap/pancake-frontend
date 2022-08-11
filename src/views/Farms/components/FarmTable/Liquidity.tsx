@@ -28,7 +28,7 @@ const Container = styled.div`
   align-items: center;
 `
 
-const Liquidity: React.FunctionComponent<LiquidityProps> = ({ liquidity }) => {
+const Liquidity: React.FunctionComponent<React.PropsWithChildren<LiquidityProps>> = ({ liquidity }) => {
   const displayLiquidity =
     liquidity && liquidity.gt(0) ? (
       `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}`

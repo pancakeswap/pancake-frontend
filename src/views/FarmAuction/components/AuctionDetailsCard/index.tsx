@@ -31,7 +31,11 @@ interface AuctionDetailsProps {
   refreshBidders: () => void
 }
 
-const AuctionDetails: React.FC<AuctionDetailsProps> = ({ auction, connectedBidder, refreshBidders }) => {
+const AuctionDetails: React.FC<React.PropsWithChildren<AuctionDetailsProps>> = ({
+  auction,
+  connectedBidder,
+  refreshBidders,
+}) => {
   const { t } = useTranslation()
 
   const [onPresentPlaceBid] = useModal(

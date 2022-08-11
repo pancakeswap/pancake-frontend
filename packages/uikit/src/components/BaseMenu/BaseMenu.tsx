@@ -5,7 +5,7 @@ import { ClickableElementContainer } from "./styles";
 import { BaseMenuProps } from "./types";
 import getPortalRoot from "../../util/getPortalRoot";
 
-const BaseMenu: React.FC<BaseMenuProps> = ({ component, options, children, isOpen = false }) => {
+const BaseMenu: React.FC<BaseMenuProps & { children: any }> = ({ component, options, children, isOpen = false }) => {
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
   const [menuElement, setMenuElement] = useState<HTMLElement | null>(null);
   const placement = options?.placement ?? "bottom";

@@ -12,7 +12,12 @@ interface WithdrawModalProps {
   tokenName?: string
 }
 
-const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max, tokenName = '' }) => {
+const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
+  onConfirm,
+  onDismiss,
+  max,
+  tokenName = '',
+}) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
   const { t } = useTranslation()

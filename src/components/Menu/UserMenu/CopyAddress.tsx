@@ -50,7 +50,7 @@ const Address = styled.div`
   }
 `
 
-const CopyAddress: React.FC<CopyAddressProps> = ({ account, ...props }) => {
+const CopyAddress: React.FC<React.PropsWithChildren<CopyAddressProps>> = ({ account, ...props }) => {
   const { t } = useTranslation()
   return (
     <Box position="relative" {...props}>

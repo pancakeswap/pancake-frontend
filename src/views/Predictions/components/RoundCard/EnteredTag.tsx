@@ -9,7 +9,7 @@ interface EnteredTagProps {
   hasClaimed?: boolean
 }
 
-const EnteredTag: React.FC<EnteredTagProps> = ({ amount, hasClaimed = false }) => {
+const EnteredTag: React.FC<React.PropsWithChildren<EnteredTagProps>> = ({ amount, hasClaimed = false }) => {
   const { t } = useTranslation()
   const { token } = useConfig()
 

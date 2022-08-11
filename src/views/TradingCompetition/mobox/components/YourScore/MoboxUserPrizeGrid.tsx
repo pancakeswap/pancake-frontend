@@ -13,7 +13,7 @@ const StyledThead = styled.thead`
   border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
-const MoboxUserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformation }> = ({
+const MoboxUserPrizeGrid: React.FC<React.PropsWithChildren<{ userTradingInformation?: UserTradingInformation }>> = ({
   userTradingInformation,
 }) => {
   const { t } = useTranslation()

@@ -7,7 +7,7 @@ const FallingBunnies = dynamic<FallingBunniesProps>(
   { ssr: false },
 )
 
-const EasterEgg: React.FC<FallingBunniesProps> = (props) => {
+const EasterEgg: React.FC<React.PropsWithChildren<FallingBunniesProps>> = (props) => {
   const [show, setShow] = useState(false)
   const startFalling = useCallback(() => setShow(true), [setShow])
   useKonamiCheatCode(startFalling)

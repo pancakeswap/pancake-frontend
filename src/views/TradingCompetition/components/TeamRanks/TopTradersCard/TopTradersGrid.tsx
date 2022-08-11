@@ -35,7 +35,10 @@ const ExpandedWrapper = styled.div`
   }
 `
 
-const TopTradersGrid: React.FC<{ data?: LeaderboardDataItem[]; isExpanded: boolean }> = ({ data, isExpanded }) => {
+const TopTradersGrid: React.FC<React.PropsWithChildren<{ data?: LeaderboardDataItem[]; isExpanded: boolean }>> = ({
+  data,
+  isExpanded,
+}) => {
   const topFive = data && data.slice(0, 5)
   const nextTwenty = data && data.slice(5, 20)
   const teamImages = [<LeaderboardStorm />, <LeaderboardFlippers />, <LeaderboardCakers />]

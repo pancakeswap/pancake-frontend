@@ -7,7 +7,7 @@ interface CurrencyFormatProps {
   bold?: boolean
 }
 
-const CurrencyFormat: React.FC<CurrencyFormatProps> = ({ currency, bold }) => {
+const CurrencyFormat: React.FC<React.PropsWithChildren<CurrencyFormatProps>> = ({ currency, bold }) => {
   return <TextIcon bold={bold} text={currency?.symbol} icon={<CurrencyLogo currency={currency} />} />
 }
 

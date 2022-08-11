@@ -30,7 +30,7 @@ interface WinRateFooterProps {
   apy: number
 }
 
-const WinRateFooter: React.FC<WinRateFooterProps> = ({ apy }) => {
+const WinRateFooter: React.FC<React.PropsWithChildren<WinRateFooterProps>> = ({ apy }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const { t } = useTranslation()
 

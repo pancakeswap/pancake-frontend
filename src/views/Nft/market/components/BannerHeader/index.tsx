@@ -9,7 +9,13 @@ interface BannerHeaderProps extends FlexProps {
   avatar?: ReactNode
 }
 
-const BannerHeader: React.FC<BannerHeaderProps> = ({ bannerImage, bannerAlt, avatar, children, ...props }) => {
+const BannerHeader: React.FC<React.PropsWithChildren<BannerHeaderProps>> = ({
+  bannerImage,
+  bannerAlt,
+  avatar,
+  children,
+  ...props
+}) => {
   return (
     <Flex flexDirection="column" mb="24px" {...props}>
       <Box position="relative" pb="56px">

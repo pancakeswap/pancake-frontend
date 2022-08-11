@@ -20,7 +20,13 @@ type PreEventProps = {
   ticketsOfUser: BigNumber[]
 }
 
-const MintButton: React.FC<PreEventProps> = ({ t, theme, saleStatus, numberTicketsOfUser, ticketsOfUser }) => {
+const MintButton: React.FC<React.PropsWithChildren<PreEventProps>> = ({
+  t,
+  theme,
+  saleStatus,
+  numberTicketsOfUser,
+  ticketsOfUser,
+}) => {
   const { callWithGasPrice } = useCallWithGasPrice()
   const nftSaleContract = useNftSaleContract()
   const [txHashMintingResult, setTxHashMintingResult] = useState(null)

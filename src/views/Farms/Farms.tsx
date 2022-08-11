@@ -115,7 +115,7 @@ const FinishedTextLink = styled(Link)`
 
 const NUMBER_OF_FARMS_VISIBLE = 12
 
-const Farms: React.FC = ({ children }) => {
+const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { pathname, query: urlQuery } = useRouter()
   const { t } = useTranslation()
   const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()

@@ -9,7 +9,7 @@ interface LiveRoundPriceProps {
   price: BigNumber
 }
 
-const LiveRoundPrice: React.FC<LiveRoundPriceProps> = ({ isBull, price }) => {
+const LiveRoundPrice: React.FC<React.PropsWithChildren<LiveRoundPriceProps>> = ({ isBull, price }) => {
   const priceAsNumber = useMemo(() => parseFloat(formatBigNumberToFixed(price, 4, 8)), [price])
 
   const priceColor = isBull ? 'success' : 'failure'

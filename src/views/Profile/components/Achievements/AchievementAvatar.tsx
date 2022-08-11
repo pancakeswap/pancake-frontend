@@ -26,7 +26,7 @@ const StyledAchievementAvatar = styled.img`
   }
 `
 
-const AchievementAvatar: React.FC<AchievementAvatarProps> = ({ badge, ...props }) => {
+const AchievementAvatar: React.FC<React.PropsWithChildren<AchievementAvatarProps>> = ({ badge, ...props }) => {
   if (!badge) {
     return <NoBadgePlaceholder />
   }

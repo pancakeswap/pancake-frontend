@@ -2,7 +2,7 @@ import { Flex, BunnyPlaceholderIcon, Text } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
 
-const WalletNotConnected: React.FC = () => {
+const WalletNotConnected: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   return (
     <Flex flexDirection="column" padding="16px">

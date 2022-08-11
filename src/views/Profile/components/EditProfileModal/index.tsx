@@ -25,7 +25,7 @@ const viewTitle = (t: ContextApi['t'], currentView: Views) => {
   }
 }
 
-const EditProfileModal: React.FC<EditProfileModalProps> = ({ onDismiss, onSuccess }) => {
+const EditProfileModal: React.FC<React.PropsWithChildren<EditProfileModalProps>> = ({ onDismiss, onSuccess }) => {
   const { currentView, goToChange, goToRemove, goToApprove, goPrevious } = useEditProfile()
   const { t } = useTranslation()
 

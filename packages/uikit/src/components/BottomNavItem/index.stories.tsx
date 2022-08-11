@@ -11,7 +11,7 @@ export default {
   component: BottomNavItem,
 };
 
-const Template: React.FC<BottomNavItemProps> = ({ ...args }) => {
+const Template: React.FC<React.PropsWithChildren<BottomNavItemProps>> = ({ ...args }) => {
   return (
     <BrowserRouter>
       <Flex p="10px">

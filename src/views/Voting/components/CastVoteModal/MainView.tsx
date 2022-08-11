@@ -35,7 +35,7 @@ interface MainViewProps {
   onDismiss: CastVoteModalProps['onDismiss']
 }
 
-const MainView: React.FC<MainViewProps> = ({
+const MainView: React.FC<React.PropsWithChildren<MainViewProps>> = ({
   vote,
   total,
   isPending,

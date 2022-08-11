@@ -69,12 +69,14 @@ const getIdLabel = (id: number): string => {
   return `#${id}`
 }
 
-const TicketContainer: React.FC<{
-  ticket: Ticket
-  duplicateWith: number[]
-  updateTicket: UpdateTicketAction
-  disabled: boolean
-}> = ({ ticket, duplicateWith, updateTicket, disabled }) => {
+const TicketContainer: React.FC<
+  React.PropsWithChildren<{
+    ticket: Ticket
+    duplicateWith: number[]
+    updateTicket: UpdateTicketAction
+    disabled: boolean
+  }>
+> = ({ ticket, duplicateWith, updateTicket, disabled }) => {
   const [focused, setFocused] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const digit1 = useRef<HTMLInputElement>(null)

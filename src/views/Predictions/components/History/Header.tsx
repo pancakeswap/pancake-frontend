@@ -52,7 +52,7 @@ export enum HistoryTabs {
   PNL,
 }
 
-const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
+const Header: React.FC<React.PropsWithChildren<HeaderProps>> = ({ activeTab, setActiveTab }) => {
   const historyFilter = useGetHistoryFilter()
   const isFetchingHistory = useGetIsFetchingHistory()
   const { t } = useTranslation()

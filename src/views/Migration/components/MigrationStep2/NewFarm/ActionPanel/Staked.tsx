@@ -20,7 +20,7 @@ interface StakedProps {
   farm: FarmProps
 }
 
-const Staked: React.FC<StakedProps> = ({ earned, farm }) => {
+const Staked: React.FC<React.PropsWithChildren<StakedProps>> = ({ earned, farm }) => {
   const { t } = useTranslation()
   const { earnings } = earned
   const earningsBigNumber = new BigNumber(earnings)

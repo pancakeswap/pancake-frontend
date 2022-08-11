@@ -8,7 +8,7 @@ interface FarmTabButtonsProps {
   hasStakeInFinishedFarms: boolean
 }
 
-const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms }) => {
+const FarmTabButtons: React.FC<React.PropsWithChildren<FarmTabButtonsProps>> = ({ hasStakeInFinishedFarms }) => {
   const router = useRouter()
   const { t } = useTranslation()
 

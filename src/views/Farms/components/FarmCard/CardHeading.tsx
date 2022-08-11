@@ -22,7 +22,13 @@ const MultiplierTag = styled(Tag)`
   margin-left: 4px;
 `
 
-const CardHeading: React.FC<ExpandableSectionProps> = ({ lpLabel, multiplier, isCommunityFarm, token, quoteToken }) => {
+const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = ({
+  lpLabel,
+  multiplier,
+  isCommunityFarm,
+  token,
+  quoteToken,
+}) => {
   return (
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
       <TokenPairImage variant="inverted" primaryToken={token} secondaryToken={quoteToken} width={64} height={64} />

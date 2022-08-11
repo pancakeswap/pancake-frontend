@@ -13,7 +13,7 @@ interface WithdrawButtonProps {
   balanceOf: string
 }
 
-const WithdrawButton: React.FC<WithdrawButtonProps> = ({
+const WithdrawButton: React.FC<React.PropsWithChildren<WithdrawButtonProps>> = ({
   status,
   cakeNumber,
   redeemShare,

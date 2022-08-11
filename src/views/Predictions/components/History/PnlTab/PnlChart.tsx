@@ -15,7 +15,7 @@ interface PnlChartProps {
 // 2 * Pi * R
 const CIRCUMFERENCE = 339.292
 
-const PnlChart: React.FC<PnlChartProps> = ({ lost, won }) => {
+const PnlChart: React.FC<React.PropsWithChildren<PnlChartProps>> = ({ lost, won }) => {
   const { t } = useTranslation()
   const percentageWon = (won * 100) / (lost + won)
   const percentageWonDisplay = !Number.isNaN(percentageWon) ? `${percentageWon.toFixed(2)}%` : '0%'

@@ -8,7 +8,7 @@ export default {
   argTypes: {},
 };
 
-export const Bnb2Cake: React.FC = () => {
+export const Bnb2Cake: React.FC<React.PropsWithChildren> = () => {
   return (
     <div>
       <SequencePlayer images={bnb2CakeImages()} />
@@ -16,7 +16,7 @@ export const Bnb2Cake: React.FC = () => {
   );
 };
 
-export const Cake2Bnb: React.FC = () => {
+export const Cake2Bnb: React.FC<React.PropsWithChildren> = () => {
   return (
     <div>
       <SequencePlayer images={cake2BnbImages()} />

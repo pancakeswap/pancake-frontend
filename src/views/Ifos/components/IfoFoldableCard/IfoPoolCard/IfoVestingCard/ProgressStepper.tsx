@@ -20,7 +20,7 @@ interface ProgressStepperProps {
   publicIfoData: PublicIfoData
 }
 
-const ProgressStepper: React.FC<ProgressStepperProps> = ({ poolId, publicIfoData }) => {
+const ProgressStepper: React.FC<React.PropsWithChildren<ProgressStepperProps>> = ({ poolId, publicIfoData }) => {
   const { t } = useTranslation()
   const [steps, setSteps] = useState([])
   const [activeStepIndex, setActiveStepIndex] = useState(0)

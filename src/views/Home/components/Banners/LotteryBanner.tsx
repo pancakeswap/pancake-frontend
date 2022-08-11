@@ -61,7 +61,7 @@ export const StyledSubheading = styled(Heading)`
 `
 const isLotteryLive = (status: LotteryStatus) => status === LotteryStatus.OPEN
 
-const LotteryPrice: React.FC = () => {
+const LotteryPrice: React.FC<React.PropsWithChildren> = () => {
   const { data } = useSWR<LotteryResponse>(['currentLottery'])
   const cakePriceBusd = usePriceCakeBusd()
   const prizeInBusd = new BigNumber(data.amountCollectedInCake).times(cakePriceBusd)

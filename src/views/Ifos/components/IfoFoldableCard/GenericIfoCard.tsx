@@ -9,7 +9,7 @@ interface GenericIfoCardElements {
   content: ReactElement
 }
 
-const GenericIfoCard: React.FC<CardConfigReturn & GenericIfoCardElements> = ({
+const GenericIfoCard: React.FC<React.PropsWithChildren<CardConfigReturn & GenericIfoCardElements>> = ({
   title,
   variant,
   action,

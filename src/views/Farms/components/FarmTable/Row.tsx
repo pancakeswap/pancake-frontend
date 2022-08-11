@@ -70,7 +70,7 @@ const FarmMobileCell = styled.td`
   padding-top: 24px;
 `
 
-const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
+const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>> = (props) => {
   const { details, userDataReady, initialActivity } = props
   const hasSetInitialValue = useRef(false)
   const hasStakedAmount = !!useFarmUser(details.pid).stakedBalance.toNumber()

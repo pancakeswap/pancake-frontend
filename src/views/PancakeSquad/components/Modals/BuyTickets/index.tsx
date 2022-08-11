@@ -35,7 +35,7 @@ interface BuyTicketsModalProps extends ModalProps {
 
 const DEFAULT_MAX_PER_TX = 3
 
-const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({
+const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> = ({
   onDismiss,
   buyTicketCallBack,
   title,

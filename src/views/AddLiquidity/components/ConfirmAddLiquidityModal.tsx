@@ -27,7 +27,9 @@ interface ConfirmAddLiquidityModalProps {
   currencyToAdd: Token
 }
 
-const ConfirmAddLiquidityModal: React.FC<InjectedModalProps & ConfirmAddLiquidityModalProps> = ({
+const ConfirmAddLiquidityModal: React.FC<
+  React.PropsWithChildren<InjectedModalProps & ConfirmAddLiquidityModalProps>
+> = ({
   title,
   onDismiss,
   customOnDismiss,

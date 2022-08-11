@@ -44,7 +44,7 @@ interface CardUserInfoProps extends YourScoreProps {
   extraUserRankBox?: ReactNode
 }
 
-const CardUserInfo: React.FC<CardUserInfoProps> = ({
+const CardUserInfo: React.FC<React.PropsWithChildren<CardUserInfoProps>> = ({
   shareModal,
   extraUserRankBox,
   hasRegistered,

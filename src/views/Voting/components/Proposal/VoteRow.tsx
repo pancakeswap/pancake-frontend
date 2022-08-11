@@ -12,7 +12,7 @@ interface VoteRowProps {
   isVoter: boolean
 }
 
-const VoteRow: React.FC<VoteRowProps> = ({ vote, isVoter }) => {
+const VoteRow: React.FC<React.PropsWithChildren<VoteRowProps>> = ({ vote, isVoter }) => {
   const { t } = useTranslation()
   const hasVotingPower = !!vote.metadata?.votingPower
 

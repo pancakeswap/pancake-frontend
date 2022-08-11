@@ -11,7 +11,7 @@ interface PrizeToBeClaimedProps {
   userData: DeserializedPotteryUserData
 }
 
-const PrizeToBeClaimed: React.FC<PrizeToBeClaimedProps> = ({ userData }) => {
+const PrizeToBeClaimed: React.FC<React.PropsWithChildren<PrizeToBeClaimedProps>> = ({ userData }) => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
 

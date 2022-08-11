@@ -25,7 +25,7 @@ const StyledCell = styled(BaseCell)`
   }
 `
 
-const NameCell: React.FC<NameCellProps> = ({ pool }) => {
+const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
   const { sousId, stakingToken, earningToken, userData, isFinished, vaultKey } = pool
@@ -95,12 +95,14 @@ const stakedStatus = {
   [VaultPosition.Flexible]: { text: 'Flexible', color: 'success' },
 }
 
-export const StakedCakeStatus: React.FC<VaultPositionParams> = memo(({ userShares, locked, lockEndTime }) => {
-  const vaultPosition = getVaultPosition({ userShares, locked, lockEndTime })
-  const { t } = useTranslation()
-  return (
-    <Text fontSize="12px" bold color={stakedStatus[vaultPosition].color} textTransform="uppercase">
-      {t(stakedStatus[vaultPosition].text)}
-    </Text>
-  )
-})
+export const StakedCakeStatus: React.FC<React.PropsWithChildren<VaultPositionParams>> = memo(
+  ({ userShares, locked, lockEndTime }) => {
+    const vaultPosition = getVaultPosition({ userShares, locked, lockEndTime })
+    const { t } = useTranslation()
+    return (
+      <Text fontSize="12px" bold color={stakedStatus[vaultPosition].color} textTransform="uppercase">
+        {t(stakedStatus[vaultPosition].text)}
+      </Text>
+    )
+  },
+)

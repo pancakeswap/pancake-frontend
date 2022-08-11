@@ -7,7 +7,7 @@ import { clearAllTransactions } from 'state/transactions/actions'
 import orderBy from 'lodash/orderBy'
 import TransactionRow from './TransactionRow'
 
-const WalletTransactions: React.FC = () => {
+const WalletTransactions: React.FC<React.PropsWithChildren> = () => {
   const { chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()

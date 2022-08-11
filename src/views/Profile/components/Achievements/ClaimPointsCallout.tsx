@@ -9,7 +9,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { getClaimableIfoData } from 'utils/achievements'
 import AchievementRow from './AchievementRow'
 
-const ClaimPointsCallout: React.FC<{ onSuccess?: () => void }> = ({ onSuccess = null }) => {
+const ClaimPointsCallout: React.FC<React.PropsWithChildren<{ onSuccess?: () => void }>> = ({ onSuccess = null }) => {
   const [claimableAchievements, setClaimableAchievement] = useState<Achievement[]>([])
   const { t } = useTranslation()
   const dispatch = useAppDispatch()

@@ -16,7 +16,7 @@ import { ENABLE_EXTEND_LOCK_AMOUNT } from '../../../helpers'
 
 const ExtendEnable = dynamic(() => import('./ExtendEnable'), { ssr: false })
 
-const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
+const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType>> = ({
   stakingToken,
   onDismiss,
   lockedAmount,

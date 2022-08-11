@@ -28,7 +28,7 @@ interface MoreWalletCardProps extends ButtonProps {
   t: (key: string) => string;
 }
 
-export const MoreWalletCard: React.FC<MoreWalletCardProps> = ({ t, ...props }) => {
+export const MoreWalletCard: React.FC<React.PropsWithChildren<MoreWalletCardProps>> = ({ t, ...props }) => {
   return (
     <WalletButton variant="tertiary" {...props}>
       <MoreHorizontal width="40px" mb="8px" color="textSubtle" />
@@ -37,7 +37,7 @@ export const MoreWalletCard: React.FC<MoreWalletCardProps> = ({ t, ...props }) =
   );
 };
 
-const WalletCard: React.FC<Props> = ({ login, walletConfig, onDismiss }) => {
+const WalletCard: React.FC<React.PropsWithChildren<Props>> = ({ login, walletConfig, onDismiss }) => {
   const { title, icon: Icon } = walletConfig;
   return (
     <WalletButton

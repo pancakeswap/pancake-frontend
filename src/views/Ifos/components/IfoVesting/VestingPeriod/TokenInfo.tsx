@@ -21,7 +21,7 @@ interface TokenInfoProps {
   fetchUserVestingData: () => void
 }
 
-const TokenInfo: React.FC<TokenInfoProps> = ({ index, data, fetchUserVestingData }) => {
+const TokenInfo: React.FC<React.PropsWithChildren<TokenInfoProps>> = ({ index, data, fetchUserVestingData }) => {
   const { vestingTitle, token } = data.ifo
   const { vestingComputeReleasableAmount } = data.userVestingData[PoolIds.poolUnlimited]
   const { vestingComputeReleasableAmount: basicReleaseAmount } = data.userVestingData[PoolIds.poolBasic]

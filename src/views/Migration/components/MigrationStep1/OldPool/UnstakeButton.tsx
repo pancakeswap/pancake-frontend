@@ -22,7 +22,7 @@ export interface UnstakeButtonProps {
   pool: DeserializedPool
 }
 
-const UnstakeButton: React.FC<UnstakeButtonProps> = ({ pool }) => {
+const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ pool }) => {
   const { sousId, stakingToken, earningToken, userData, vaultKey } = pool
   const { t } = useTranslation()
   const { account } = useWeb3React()

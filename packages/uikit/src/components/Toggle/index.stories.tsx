@@ -7,7 +7,7 @@ export default {
   component: Toggle,
 };
 
-export const Default: React.FC = () => {
+export const Default: React.FC<React.PropsWithChildren> = () => {
   const [isChecked, setIsChecked] = useState(false);
 
   const toggle = () => setIsChecked(!isChecked);

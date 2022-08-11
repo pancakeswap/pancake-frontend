@@ -40,7 +40,7 @@ const StyledBackgroundImage = styled.div<{ src: string }>`
   width: 80px;
 `
 
-const SelectionCard: React.FC<SelectionCardProps> = ({
+const SelectionCard: React.FC<React.PropsWithChildren<SelectionCardProps>> = ({
   name,
   value,
   isChecked = false,

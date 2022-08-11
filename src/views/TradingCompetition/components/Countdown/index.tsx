@@ -68,10 +68,9 @@ const StyledHeading = styled(Heading2Text)`
   }
 `
 
-const Countdown: React.FC<{ currentPhase: CompetitionPhaseProps; hasCompetitionEnded: boolean }> = ({
-  currentPhase,
-  hasCompetitionEnded,
-}) => {
+const Countdown: React.FC<
+  React.PropsWithChildren<{ currentPhase: CompetitionPhaseProps; hasCompetitionEnded: boolean }>
+> = ({ currentPhase, hasCompetitionEnded }) => {
   const { theme } = useTheme()
   const { t } = useTranslation()
   const finishMs = currentPhase.ends

@@ -45,7 +45,7 @@ const RenewDuration = ({ setCheckedState, checkedState }) => {
 // add 60s buffer in order to make sure minimum duration by pass on renew extension
 const MIN_DURATION_BUFFER = 60
 
-const AddAmountModal: React.FC<AddAmountModalProps> = ({
+const AddAmountModal: React.FC<React.PropsWithChildren<AddAmountModalProps>> = ({
   onDismiss,
   currentBalance,
   currentLockedAmount,

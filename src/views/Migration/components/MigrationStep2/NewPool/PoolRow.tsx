@@ -26,7 +26,7 @@ const StyledRow = styled.div`
   cursor: pointer;
 `
 
-const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
+const PoolRow: React.FC<React.PropsWithChildren<PoolRowProps>> = ({ pool, account }) => {
   const { isXl, isXxl, isXs, isSm, isMd, isLg, isTablet, isDesktop } = useMatchBreakpointsContext()
   const isLargerScreen = isLg || isXl || isXxl
   const isXLargerScreen = isXl || isXxl

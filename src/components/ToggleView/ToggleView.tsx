@@ -17,7 +17,11 @@ const Container = styled.div`
   }
 `
 
-const ToggleView: React.FunctionComponent<ToggleViewProps> = ({ idPrefix, viewMode, onToggle }) => {
+const ToggleView: React.FunctionComponent<React.PropsWithChildren<ToggleViewProps>> = ({
+  idPrefix,
+  viewMode,
+  onToggle,
+}) => {
   const handleToggleCard = useCallback(() => {
     if (viewMode !== ViewMode.CARD) {
       onToggle(ViewMode.CARD)

@@ -11,7 +11,13 @@ interface MinMaxFilterProps extends BoxProps {
   onClear?: () => void
 }
 
-export const MinMaxFilter: React.FC<MinMaxFilterProps> = ({ onApply, onClear, max, min = 0, ...props }) => {
+export const MinMaxFilter: React.FC<React.PropsWithChildren<MinMaxFilterProps>> = ({
+  onApply,
+  onClear,
+  max,
+  min = 0,
+  ...props
+}) => {
   const { t } = useTranslation()
   const [currentMax, setCurrentMax] = useState(max)
   const [currentMin, setCurrentMin] = useState(min)

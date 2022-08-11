@@ -13,7 +13,7 @@ interface WinningNumbersProps extends FlexProps {
   rotateText?: boolean
 }
 
-const WinningNumbers: React.FC<WinningNumbersProps> = ({
+const WinningNumbers: React.FC<React.PropsWithChildren<WinningNumbersProps>> = ({
   number,
   size = '32px',
   fontSize = '16px',

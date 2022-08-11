@@ -16,7 +16,7 @@ interface AutoEarningProps {
   earningTokenPrice: number
 }
 
-const AutoEarning: React.FunctionComponent<AutoEarningProps> = ({
+const AutoEarning: React.FunctionComponent<React.PropsWithChildren<AutoEarningProps>> = ({
   earningTokenBalance,
   earningTokenDollarBalance,
   earningTokenPrice,

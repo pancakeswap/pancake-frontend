@@ -23,7 +23,13 @@ const StyledTimerText = styled(Heading)`
   -webkit-text-fill-color: transparent;
 `
 
-const Wrapper: React.FC<TimerProps> = ({ minutes, hours, days, seconds, wrapperClassName }) => {
+const Wrapper: React.FC<React.PropsWithChildren<TimerProps>> = ({
+  minutes,
+  hours,
+  days,
+  seconds,
+  wrapperClassName,
+}) => {
   const { t } = useTranslation()
 
   return (

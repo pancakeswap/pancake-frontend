@@ -7,7 +7,7 @@ interface Props extends BoxProps {
   config: { title: string; description: ReactNode[] }[]
 }
 
-const SectionsWithFoldableText: React.FC<Props> = ({ header, config, ...props }) => {
+const SectionsWithFoldableText: React.FC<React.PropsWithChildren<Props>> = ({ header, config, ...props }) => {
   return (
     <Box maxWidth="888px" {...props}>
       <Card>

@@ -9,7 +9,7 @@ import TextIcon from './TextIcon'
 import { DetailLimitOrderModal } from './DetailLimitOrderModal'
 import OrderStatus, { StatusElementType } from './OrderStatus'
 
-const FullRow: React.FC<{ order: Order }> = ({ order }) => {
+const FullRow: React.FC<React.PropsWithChildren<{ order: Order }>> = ({ order }) => {
   const formattedOrder = useFormattedOrderData(order)
   const { inputToken, outputToken, inputAmount, outputAmount, executionPrice } = formattedOrder
   const [openDetailLimitOrderModal] = useModal(<DetailLimitOrderModal order={order} formattedOrder={formattedOrder} />)

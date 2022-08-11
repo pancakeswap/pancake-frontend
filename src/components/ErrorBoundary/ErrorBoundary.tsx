@@ -9,6 +9,7 @@ export default function ErrorBoundary({ children }) {
   const { t } = useTranslation()
   const handleOnClick = useCallback(() => window.location.reload(), [])
   return (
+    // @ts-ignore
     <Sentry.ErrorBoundary
       beforeCapture={(scope) => {
         scope.setLevel(Sentry.Severity.Fatal)

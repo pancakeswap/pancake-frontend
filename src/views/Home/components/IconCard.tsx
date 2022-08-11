@@ -33,7 +33,14 @@ export interface IconCardData {
   rotation?: string
 }
 
-const IconCard: React.FC<IconCardProps> = ({ icon, background, borderColor, rotation, children, ...props }) => {
+const IconCard: React.FC<React.PropsWithChildren<IconCardProps>> = ({
+  icon,
+  background,
+  borderColor,
+  rotation,
+  children,
+  ...props
+}) => {
   return (
     <StyledCard background={background} borderBackground={borderColor} rotation={rotation} {...props}>
       <CardBody>

@@ -32,7 +32,7 @@ export interface FarmProps extends FarmWithStakedValue {
   lpSymbol: string
 }
 
-const Farm: React.FC<FarmProps> = ({ token, quoteToken, label }) => {
+const Farm: React.FC<React.PropsWithChildren<FarmProps>> = ({ token, quoteToken, label }) => {
   return (
     <StyledCell role="cell">
       <CellContent>

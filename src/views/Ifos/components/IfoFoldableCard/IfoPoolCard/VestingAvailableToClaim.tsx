@@ -10,7 +10,11 @@ interface VestingAvailableToClaimProps {
   decimals: number
 }
 
-const VestingAvailableToClaim: React.FC<VestingAvailableToClaimProps> = ({ amountToReceive, percentage, decimals }) => {
+const VestingAvailableToClaim: React.FC<React.PropsWithChildren<VestingAvailableToClaimProps>> = ({
+  amountToReceive,
+  percentage,
+  decimals,
+}) => {
   const { t } = useTranslation()
 
   const num = useMemo(() => {

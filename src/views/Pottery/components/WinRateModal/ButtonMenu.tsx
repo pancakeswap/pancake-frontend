@@ -10,7 +10,11 @@ interface ButtonMenuProps {
   setPrincipalFromUSDValue: (amount: string) => void
 }
 
-const ButtonMenu: React.FC<ButtonMenuProps> = ({ cakePrice, stakingTokenBalance, setPrincipalFromUSDValue }) => {
+const ButtonMenu: React.FC<React.PropsWithChildren<ButtonMenuProps>> = ({
+  cakePrice,
+  stakingTokenBalance,
+  setPrincipalFromUSDValue,
+}) => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
 

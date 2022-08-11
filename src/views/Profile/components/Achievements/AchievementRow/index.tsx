@@ -51,7 +51,7 @@ const Body = styled(Flex)`
   }
 `
 
-const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectSuccess }) => {
+const AchievementRow: React.FC<React.PropsWithChildren<AchievementRowProps>> = ({ achievement, onCollectSuccess }) => {
   const { t } = useTranslation()
   const pointCenterContract = usePointCenterIfoContract()
   const { toastSuccess } = useToast()

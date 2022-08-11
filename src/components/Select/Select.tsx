@@ -104,7 +104,7 @@ export interface OptionProps {
   value: any
 }
 
-const Select: React.FunctionComponent<SelectProps> = ({
+const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
   options,
   onOptionChange,
   defaultOptionIndex = 0,

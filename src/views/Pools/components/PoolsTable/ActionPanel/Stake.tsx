@@ -52,7 +52,7 @@ interface StackedActionProps {
   pool: DeserializedPool
 }
 
-const Staked: React.FunctionComponent<StackedActionProps> = ({ pool }) => {
+const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps>> = ({ pool }) => {
   const {
     sousId,
     stakingToken,

@@ -23,7 +23,7 @@ export interface ITableProps {
   sortColumn?: string
 }
 
-const FarmTable: React.FC<ITableProps> = ({ account, data, columns, userDataReady }) => {
+const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ account, data, columns, userDataReady }) => {
   const { t } = useTranslation()
   const { rows } = useTable(columns, data, { sortable: true, sortColumn: 'farm' })
 

@@ -49,7 +49,7 @@ interface PlaceBidModalProps {
   refreshBidders: () => void
 }
 
-const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
+const PlaceBidModal: React.FC<React.PropsWithChildren<PlaceBidModalProps>> = ({
   onDismiss,
   initialBidAmount,
   connectedBidder,

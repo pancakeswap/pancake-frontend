@@ -7,7 +7,7 @@ export default {
   argTypes: {},
 };
 
-export const Default: React.FC = () => {
+export const Default: React.FC<React.PropsWithChildren> = () => {
   const [radio, setRadio] = useState("one");
   const [radioSm, setRadioSm] = useState("one");
 
