@@ -32,6 +32,10 @@ const StyledModalContainer = styled(ModalContainer)`
   width: 100%;
   min-width: 320px;
   max-width: 420px !important;
+  min-height: 90vh;
+  ${({ theme }) => theme.mediaQueries.md} {
+    min-height: auto;
+  }
 `
 
 const StyledModalBody = styled(ModalBody)`

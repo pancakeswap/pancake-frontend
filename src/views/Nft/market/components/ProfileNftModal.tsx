@@ -32,7 +32,7 @@ const ProfileNftModal: React.FC<React.PropsWithChildren<ProfileNftModalProps>> =
 
   return (
     <StyledModal title={t('Details')} onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
-      <Flex flexDirection="column" maxWidth="350px">
+      <Flex flexDirection="column" maxWidth="420px">
         <Flex p="16px">
           <RoundedImage src={nft.image.thumbnail} height={68} width={68} mr="16px" />
           <Grid flex="1" gridTemplateColumns="1fr 1fr" alignItems="center">
