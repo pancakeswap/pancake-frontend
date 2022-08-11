@@ -5,6 +5,8 @@ import useTheme from 'hooks/useTheme'
 import Container from 'components/Layout/Container'
 import { PageMeta } from 'components/Layout/Page'
 import { useTranslation } from '@pancakeswap/localization'
+import { useActiveChainId } from 'hooks/useActiveWeb3React'
+import { ChainId } from '@pancakeswap/sdk'
 import Hero from './components/Hero'
 import { swapSectionData, earnSectionData, cakeSectionData } from './components/SalesSection/data'
 import MetricsSection from './components/MetricsSection'
@@ -44,6 +46,7 @@ const UserBannerWrapper = styled(Container)`
 const Home: React.FC<React.PropsWithChildren> = () => {
   const { theme } = useTheme()
   const { account } = useWeb3React()
+  const chainId = useActiveChainId()
 
   const HomeSectionContainerStyles = { margin: '0', width: '100%', maxWidth: '968px' }
 
@@ -62,7 +65,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         index={2}
         hasCurvedDivider={false}
       >
-        {account && (
+        {account && chainId === ChainId.BSC && (
           <UserBannerWrapper>
             <UserBanner />
           </UserBannerWrapper>
