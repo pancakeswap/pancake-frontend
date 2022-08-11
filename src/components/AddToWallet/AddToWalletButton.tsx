@@ -45,7 +45,7 @@ const getWalletIcon = (marginTextBetweenLogo: string) => {
 }
 
 const getWalletName = () => {
-  if (window?.ethereum?.isTrust) {
+  if (window?.ethereum?.isTrust && !window?.ethereum?.isSafePal) {
     return 'Trust Wallet'
   }
   if (window?.ethereum?.isSafePal) {
