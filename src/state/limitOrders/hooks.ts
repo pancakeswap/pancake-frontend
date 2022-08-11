@@ -35,13 +35,18 @@ const getDesiredInput = (
   }
 
   if (isInverted) {
-    return parsedOutAmount
+    const invertedResultAsFraction = parsedOutAmount
       .multiply(parsedExchangeRate.asFraction)
-      .divide(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(outputCurrency.decimals)))
+      .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals)))
+    const invertedResultAsAmount = CurrencyAmount.fromRawAmount(inputCurrency, invertedResultAsFraction.toFixed(0))
+
+    return invertedResultAsAmount
   }
-  return parsedOutAmount
+  const resultAsFraction = parsedOutAmount
     .divide(parsedExchangeRate.asFraction)
     .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals)))
+
+  return CurrencyAmount.fromRawAmount(inputCurrency, resultAsFraction.quotient.toString())
 }
 
 // Get desired output amount in input basis mode
@@ -63,14 +68,17 @@ const getDesiredOutput = (
   }
 
   if (isInverted) {
-    return parsedInputAmount
+    const invertedResultAsFraction = parsedInputAmount
       .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals)))
       .divide(parsedExchangeRate.asFraction)
+    return CurrencyAmount.fromRawAmount(outputCurrency, invertedResultAsFraction.quotient)
   }
 
-  return parsedInputAmount
+  const resultAsFraction = parsedInputAmount
+    .divide(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals)))
     .multiply(parsedExchangeRate.asFraction)
-    .divide(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(outputCurrency.decimals)))
+
+  return CurrencyAmount.fromRawAmount(outputCurrency, resultAsFraction.quotient.toString())
 }
 
 // Just returns Redux state for limitOrders
