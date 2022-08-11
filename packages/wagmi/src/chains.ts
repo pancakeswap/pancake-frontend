@@ -160,6 +160,13 @@ export const CHAINS_TESTNET = [
   fantomTestnet,
 ]
 
-export const CHAINS = [bsc, mainnet, bscTest, rinkeby, goerli]
+export const CHAINS = [
+  bsc,
+  // TODO: ETH
+  // mainnet,
+  bscTest,
+  rinkeby,
+  goerli,
+]
 export const CHAIN_IDS = CHAINS.map((c) => c.id)
 export const CHAINS_STARGATE = [mainnet, arbitrum, optimism, polygon, avalandche, fantomOpera]

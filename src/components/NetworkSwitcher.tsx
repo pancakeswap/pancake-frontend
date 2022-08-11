@@ -38,7 +38,11 @@ export const NetworkSwitcher = () => {
 
   const isWrongNetwork = chain?.unsupported
 
-  const isWalletConnect = connector?.id === 'walletConnect'
+  const cannotChangeNetwork =
+    connector?.id === 'walletConnect' ||
+    (typeof window !== 'undefined' &&
+      // @ts-ignore // TODO: add type later
+      window.ethereum?.isSafePal)
 
   return (
     <>
@@ -46,7 +50,7 @@ export const NetworkSwitcher = () => {
         mr="8px"
         variant={isLoading ? 'pending' : isWrongNetwork ? 'danger' : 'default'}
         avatarSrc={`/images/chains/${chainId}.png`}
-        disabled={isWalletConnect}
+        disabled={cannotChangeNetwork}
         text={
           isLoading ? (
             t('Requesting')

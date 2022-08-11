@@ -65,7 +65,8 @@ const Menu = (props) => {
       rightSide={
         <>
           <GlobalSettings mode={SettingsMode.GLOBAL} />
-          <NetworkSwitcher />
+          {/* TODO: ETH enable */}
+          {/* <NetworkSwitcher /> */}
           <UserMenu />
         </>
       }

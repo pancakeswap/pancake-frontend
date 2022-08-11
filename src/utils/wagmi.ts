@@ -9,17 +9,21 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { SafeConnector } from '@gnosis.pm/safe-apps-wagmi'
 
 const getNodeRealUrl = (networkName: string) => {
+  const formatHost = (apiKey?: string) => {
+    if (!apiKey) return null
+    return `eth-mainnet.nodereal.io/v1/${apiKey}`
+  }
+
   let host = null
   switch (networkName) {
     case 'homestead':
-      if (process.env.NEXT_PUBLIC_NODEREAL_API_ETH) {
-        host = `eth-mainnet.nodereal.io/v1/${process.env.NEXT_PUBLIC_NODEREAL_API_ETH}`
-      }
+      host = formatHost(process.env.NEXT_PUBLIC_NODE_REAL_API_ETH)
       break
     case 'rinkeby':
-      if (process.env.NEXT_PUBLIC_NODEREAL_API_RINKEBY) {
-        host = `eth-rinkeby.nodereal.io/v1/${process.env.NEXT_PUBLIC_NODEREAL_API_RINKEBY}`
-      }
+      host = formatHost(process.env.NEXT_PUBLIC_NODE_REAL_API_RINKEBY)
+      break
+    case 'goerli':
+      host = formatHost(process.env.NEXT_PUBLIC_NODE_REAL_API_GOERLI)
       break
     default:
       host = null
@@ -88,7 +92,7 @@ export const metaMaskConnector = new MetaMaskConnector({
 export const bscConnector = new BscConnector({ chains })
 
 export const client = createClient({
-  autoConnect: false,
+  autoConnect: false, // disable default autoConnect, try safe first
   provider,
   connectors: [
     new SafeConnector({ chains }),
