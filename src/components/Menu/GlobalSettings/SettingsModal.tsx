@@ -20,13 +20,12 @@ import { SettingsMode } from './types'
 
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
+  height: auto;
   ${({ theme }) => theme.mediaQueries.xs} {
-    max-height: none;
-    height: 90vh;
+    max-height: 90vh;
   }
   ${({ theme }) => theme.mediaQueries.md} {
     max-height: none;
-    height: auto;
   }
 `
 
