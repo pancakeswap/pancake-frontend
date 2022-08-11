@@ -25,16 +25,6 @@ import { SerializedFarmsState, SerializedFarm } from '../types'
 import { fetchMasterChefFarmPoolLength } from './fetchMasterChefData'
 import { resetUserState } from '../global/actions'
 
-// const noAccountFarmConfig = farmsConfig.map((farm) => ({
-//   ...farm,
-//   userData: {
-//     allowance: '0',
-//     tokenBalance: '0',
-//     stakedBalance: '0',
-//     earnings: '0',
-//   },
-// }))
-
 const initialState: SerializedFarmsState = {
   data: [],
   loadArchivedFarmsData: false,
