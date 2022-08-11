@@ -32,7 +32,7 @@ const StyledModalContainer = styled(ModalContainer)`
   width: 100%;
   min-width: 320px;
   max-width: 420px !important;
-  min-height: 90vh;
+  min-height: calc(var(--vh, 1vh) * 90);
   ${({ theme }) => theme.mediaQueries.md} {
     min-height: auto;
   }
@@ -100,12 +100,8 @@ export default function CurrencySearchModal({
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(undefined)
   useEffect(() => {
-    const calHeight = () => {
-      if (!wrapperRef.current) return
-      setHeight(wrapperRef.current.offsetHeight - 330)
-    }
-    window.addEventListener('resize', calHeight)
-    return () => window.removeEventListener('resize', calHeight)
+    if (!wrapperRef.current) return
+    setHeight(wrapperRef.current.offsetHeight - 330)
   }, [])
 
   return (
