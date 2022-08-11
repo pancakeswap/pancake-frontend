@@ -55,6 +55,7 @@ export const CurrencySelect = ({
   selectedCurrency,
   otherSelectedCurrency,
   showCommonBases,
+  commonBasesType,
   hideBalance,
   ...props
 }: CurrencySelectProps) => {
@@ -73,6 +74,7 @@ export const CurrencySelect = ({
       selectedCurrency={selectedCurrency}
       otherSelectedCurrency={otherSelectedCurrency}
       showCommonBases={showCommonBases}
+      commonBasesType={commonBasesType}
     />,
   )
 

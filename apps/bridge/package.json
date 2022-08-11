@@ -13,7 +13,7 @@
     "@pancakeswap/wagmi": "*",
     "@pancakeswap/uikit": "*",
     "@pancakeswap/sdk": "*",
-    "next": "^12.1.6",
+    "next": "^12.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-components": "^5.3.3",

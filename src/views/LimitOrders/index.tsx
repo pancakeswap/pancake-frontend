@@ -33,6 +33,7 @@ import { ConfirmLimitOrderModal } from './components/ConfirmLimitOrderModal'
 import getRatePercentageDifference from './utils/getRatePercentageDifference'
 import { useCurrency, useAllTokens } from '../../hooks/Tokens'
 import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
+import { CommonBasesType } from '../../components/SearchModal/types'
 
 const LimitOrders = () => {
   // Helpers
@@ -352,6 +353,8 @@ const LimitOrders = () => {
                       onCurrencySelect={handleInputSelect}
                       otherCurrency={currencies.output}
                       id="limit-order-currency-input"
+                      showCommonBases
+                      commonBasesType={CommonBasesType.SWAP_LIMITORDER}
                     />
 
                     <SwitchTokensButton
@@ -367,6 +370,8 @@ const LimitOrders = () => {
                       onCurrencySelect={handleOutputSelect}
                       otherCurrency={currencies.output}
                       id="limit-order-currency-output"
+                      showCommonBases
+                      commonBasesType={CommonBasesType.SWAP_LIMITORDER}
                     />
                     <LimitOrderPrice
                       id="limit-order-desired-rate-input"

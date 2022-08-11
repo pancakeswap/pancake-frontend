@@ -36,11 +36,9 @@ export class WrappedTokenInfo extends Token {
   }
 }
 
-export type TokenAddressMap = Readonly<
-  {
-    [chainId in ChainId]: Readonly<{ [tokenAddress: string]: { token: WrappedTokenInfo; list: TokenList } }>
-  }
->
+export type TokenAddressMap = Readonly<{
+  [chainId in ChainId]: Readonly<{ [tokenAddress: string]: { token: WrappedTokenInfo; list: TokenList } }>
+}>
 
 type TagDetails = Tags[keyof Tags]
 export interface TagInfo extends TagDetails {
@@ -248,6 +246,7 @@ export interface DeserializedLockedVaultUser extends DeserializedVaultUser {
   lastUserActionTime: string
   lockStartTime: string
   lockEndTime: string
+  burnStartTime: string
   userBoostedShare: BigNumber
   locked: boolean
   lockedAmount: BigNumber

@@ -27,6 +27,7 @@ interface CurrencySearchProps {
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
   showCommonBases?: boolean
+  commonBasesType?: string
   showImportView: () => void
   setImportToken: (token: Token) => void
 }
@@ -83,6 +84,7 @@ function CurrencySearch({
   onCurrencySelect,
   otherSelectedCurrency,
   showCommonBases,
+  commonBasesType,
   showImportView,
   setImportToken,
 }: CurrencySearchProps) {
@@ -241,7 +243,12 @@ function CurrencySearch({
           />
         </Row>
         {showCommonBases && (
-          <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
+          <CommonBases
+            chainId={chainId}
+            onSelect={handleCurrencySelect}
+            selectedCurrency={selectedCurrency}
+            commonBasesType={commonBasesType}
+          />
         )}
       </AutoColumn>
       {getCurrencyListRows()}

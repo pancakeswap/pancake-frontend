@@ -66,6 +66,7 @@ import { ZapCheckbox } from '../../components/CurrencyInputPanel/ZapCheckbox'
 import { formatAmount } from '../../utils/formatInfoNumbers'
 import { useCurrencySelectRoute } from './useCurrencySelectRoute'
 import { useAppDispatch } from '../../state'
+import { CommonBasesType } from '../../components/SearchModal/types'
 
 enum Steps {
   Choose,
@@ -637,6 +638,7 @@ export default function AddLiquidity() {
                   currency={currencies[Field.CURRENCY_A]}
                   id="add-liquidity-input-tokena"
                   showCommonBases
+                  commonBasesType={CommonBasesType.LIQUIDITY}
                 />
                 <ColumnCenter>
                   <AddIcon width="16px" />
@@ -668,6 +670,8 @@ export default function AddLiquidity() {
                   showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
                   currency={currencies[Field.CURRENCY_B]}
                   id="add-liquidity-input-tokenb"
+                  showCommonBases
+                  commonBasesType={CommonBasesType.LIQUIDITY}
                 />
 
                 {showZapWarning && (

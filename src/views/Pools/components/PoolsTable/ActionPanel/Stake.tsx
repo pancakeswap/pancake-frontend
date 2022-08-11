@@ -4,6 +4,7 @@ import {
   Flex,
   IconButton,
   MinusIcon,
+  HelpIcon,
   Skeleton,
   Text,
   useModal,
@@ -104,11 +105,13 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     },
   } = vaultData
 
-  const { lockEndDate, remainingTime } = useUserDataInVaultPresenter({
+  const { lockEndDate, remainingTime, burnStartTime } = useUserDataInVaultPresenter({
     lockStartTime:
       vaultKey === VaultKey.CakeVault ? (vaultData as DeserializedLockedCakeVault).userData?.lockStartTime ?? '0' : '0',
     lockEndTime:
       vaultKey === VaultKey.CakeVault ? (vaultData as DeserializedLockedCakeVault).userData?.lockEndTime ?? '0' : '0',
+    burnStartTime:
+      vaultKey === VaultKey.CakeVault ? (vaultData as DeserializedLockedCakeVault).userData?.burnStartTime ?? '0' : '0',
   })
 
   const hasSharesStaked = userShares.gt(0)
@@ -172,6 +175,18 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     t("You've already staked the maximum amount you can stake in this pool!"),
     { placement: 'bottom' },
   )
+
+  const tooltipContentOfBurn = t(
+    'After Burning starts at %burnStartTime%. You need to renew your fix-term position, to initiate a new lock or convert your staking position to flexible before it starts. Otherwise all the rewards will be burned within the next 90 days.',
+    { burnStartTime },
+  )
+  const {
+    targetRef: tagTargetRefOfBurn,
+    tooltip: tagTooltipOfBurn,
+    tooltipVisible: tagTooltipVisibleOfBurn,
+  } = useTooltip(tooltipContentOfBurn, {
+    placement: 'bottom',
+  })
 
   const reachStakingLimit = stakingLimit.gt(0) && userData.stakedBalance.gte(stakingLimit)
 
@@ -308,6 +323,10 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                   color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
                 >
                   {vaultPosition >= VaultPosition.LockedEnd ? t('Unlocked') : remainingTime}
+                  {tagTooltipVisibleOfBurn && tagTooltipOfBurn}
+                  <span ref={tagTargetRefOfBurn}>
+                    <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+                  </span>
                 </Text>
                 <Text
                   height="20px"
