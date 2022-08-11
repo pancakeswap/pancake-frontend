@@ -9,7 +9,10 @@ interface CollectionNftsProps {
   sortBy?: string
 }
 
-const PancakeBunniesCollectionNfts: React.FC<CollectionNftsProps> = ({ address, sortBy = 'updatedAt' }) => {
+const PancakeBunniesCollectionNfts: React.FC<React.PropsWithChildren<CollectionNftsProps>> = ({
+  address,
+  sortBy = 'updatedAt',
+}) => {
   const allPancakeBunnyNfts = useAllPancakeBunnyNfts(address)
 
   const sortedNfts = allPancakeBunnyNfts

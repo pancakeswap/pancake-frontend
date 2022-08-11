@@ -14,7 +14,7 @@ interface PauseProfilePageProps extends InjectedModalProps {
   onSuccess?: () => void
 }
 
-const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss, onSuccess }) => {
+const PauseProfilePage: React.FC<React.PropsWithChildren<PauseProfilePageProps>> = ({ onDismiss, onSuccess }) => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
   const { profile, refresh: refreshProfile } = useProfile()
   const {

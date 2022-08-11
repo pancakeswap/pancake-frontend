@@ -4,7 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { CompetitionProps } from 'views/TradingCompetition/types'
 import { useRouter } from 'next/router'
 
-const MakeProfile: React.FC<CompetitionProps> = ({ onDismiss }) => {
+const MakeProfile: React.FC<React.PropsWithChildren<CompetitionProps>> = ({ onDismiss }) => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const router = useRouter()

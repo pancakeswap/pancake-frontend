@@ -7,7 +7,12 @@ import { BottomNavProps } from "./types";
 import { NotificationDot } from "../NotificationDot";
 import { Overlay } from "../Overlay";
 
-const BottomNav: React.FC<BottomNavProps> = ({ items = [], activeItem = "", activeSubItem = "", ...props }) => {
+const BottomNav: React.FC<React.PropsWithChildren<BottomNavProps>> = ({
+  items = [],
+  activeItem = "",
+  activeSubItem = "",
+  ...props
+}) => {
   const [menuOpenByIndex, setMenuOpenByIndex] = useState({});
   const isBottomMenuOpen = Object.values(menuOpenByIndex).reduce((acc, value) => acc || value, false);
   return (

@@ -1,6 +1,6 @@
 import { Svg, SvgProps } from '@pancakeswap/uikit'
 
-const RibbonDownSide: React.FC<SvgProps> = (props) => {
+const RibbonDownSide: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
   return (
     <Svg viewBox="0 0 32 64" {...props}>
       <path

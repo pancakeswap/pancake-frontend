@@ -48,7 +48,7 @@ const ChildrenWrapper = styled(Container)`
   }
 `
 
-const PageSection: React.FC<PageSectionProps> = ({
+const PageSection: React.FC<React.PropsWithChildren<PageSectionProps>> = ({
   children,
   background,
   svgFill,

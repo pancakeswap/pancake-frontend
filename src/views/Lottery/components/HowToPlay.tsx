@@ -56,7 +56,7 @@ const StepCardInner = styled(Box)`
 
 type Step = { title: string; subtitle: string; label: string }
 
-const StepCard: React.FC<{ step: Step }> = ({ step }) => {
+const StepCard: React.FC<React.PropsWithChildren<{ step: Step }>> = ({ step }) => {
   return (
     <StyledStepCard width="100%">
       <StepCardInner height={['200px', '180px', null, '200px']}>
@@ -154,7 +154,7 @@ const AllocationColorCircle = styled.div<{ color: string }>`
   background-color: ${({ color }) => color};
 `
 
-const AllocationMatch: React.FC<{ color: string; text: string }> = ({ color, text }) => {
+const AllocationMatch: React.FC<React.PropsWithChildren<{ color: string; text: string }>> = ({ color, text }) => {
   return (
     <Flex alignItems="center">
       <AllocationColorCircle color={color} />
@@ -218,7 +218,7 @@ const GappedFlex = styled(Flex)`
   gap: 24px;
 `
 
-const HowToPlay: React.FC = () => {
+const HowToPlay: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
 
   const steps: Step[] = [

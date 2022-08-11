@@ -4,7 +4,7 @@ type ReadyTextProps = {
   text: string
 } & FlexProps
 
-const ReadyText: React.FC<ReadyTextProps> = ({ text, ...props }) => {
+const ReadyText: React.FC<React.PropsWithChildren<ReadyTextProps>> = ({ text, ...props }) => {
   return (
     <Flex alignItems="center" {...props}>
       <Text fontSize="16px" color="success" mr="4px" bold>

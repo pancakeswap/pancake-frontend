@@ -30,7 +30,7 @@ interface TicketNumberProps extends LotteryTicket {
   rewardBracket?: number
 }
 
-const TicketNumber: React.FC<TicketNumberProps> = ({ localId, id, number, rewardBracket }) => {
+const TicketNumber: React.FC<React.PropsWithChildren<TicketNumberProps>> = ({ localId, id, number, rewardBracket }) => {
   const { t } = useTranslation()
   const reversedNumber = parseRetrievedNumber(number)
   const numberAsArray = reversedNumber.split('')

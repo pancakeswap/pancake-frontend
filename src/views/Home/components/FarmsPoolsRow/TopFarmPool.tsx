@@ -38,7 +38,13 @@ const AbsoluteWrapper = styled(Flex)<{ visible: boolean; index: number; topOffse
       : `padding-right: 16px;`}
 `
 
-const TopFarmPool: React.FC<TopFarmPoolProps> = ({ title, percentage, index, visible, isApy }) => {
+const TopFarmPool: React.FC<React.PropsWithChildren<TopFarmPoolProps>> = ({
+  title,
+  percentage,
+  index,
+  visible,
+  isApy,
+}) => {
   const { t } = useTranslation()
 
   const topOffset = () => {

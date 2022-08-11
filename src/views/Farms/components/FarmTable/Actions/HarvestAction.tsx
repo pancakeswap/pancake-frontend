@@ -20,7 +20,11 @@ interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
 }
 
-const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userData, userDataReady }) => {
+const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActionProps>> = ({
+  pid,
+  userData,
+  userDataReady,
+}) => {
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const earningsBigNumber = new BigNumber(userData.earnings)

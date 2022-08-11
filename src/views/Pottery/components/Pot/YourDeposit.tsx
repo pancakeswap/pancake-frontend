@@ -11,7 +11,7 @@ interface YourDepositProps {
   depositBalance?: any
 }
 
-const YourDeposit: React.FC<YourDepositProps> = ({ depositBalance }) => {
+const YourDeposit: React.FC<React.PropsWithChildren<YourDepositProps>> = ({ depositBalance }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const cakePriceBusd = usePriceCakeBusd()

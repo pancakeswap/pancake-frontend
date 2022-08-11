@@ -101,7 +101,7 @@ const ValueWrapper = styled.div`
   margin: 4px 0px;
 `
 
-const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
+const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelProps>> = ({
   details,
   apr,
   multiplier,

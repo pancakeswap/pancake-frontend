@@ -16,7 +16,7 @@ import {
 import { batch } from 'react-redux'
 import PoolsTable from './PoolTable'
 
-const NewPool: React.FC = () => {
+const NewPool: React.FC<React.PropsWithChildren> = () => {
   const { account } = useWeb3React()
   const { pools } = usePoolsWithVault()
   const cakeVault = useCakeVault()

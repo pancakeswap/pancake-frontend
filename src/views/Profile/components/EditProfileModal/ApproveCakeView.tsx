@@ -12,7 +12,7 @@ interface ApproveCakePageProps extends InjectedModalProps {
   goToChange: UseEditProfileResponse['goToChange']
 }
 
-const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss }) => {
+const ApproveCakePage: React.FC<React.PropsWithChildren<ApproveCakePageProps>> = ({ goToChange, onDismiss }) => {
   const { profile } = useProfile()
   const { t } = useTranslation()
   const { fetchWithCatchTxError, loading: isApproving } = useCatchTxError()

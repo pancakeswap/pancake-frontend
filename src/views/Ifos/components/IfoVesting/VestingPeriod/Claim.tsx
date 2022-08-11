@@ -15,7 +15,12 @@ interface Props {
   fetchUserVestingData: () => void
 }
 
-const ClaimButton: React.FC<Props> = ({ poolId, data, claimableAmount, fetchUserVestingData }) => {
+const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
+  poolId,
+  data,
+  claimableAmount,
+  fetchUserVestingData,
+}) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { address, token } = data.ifo

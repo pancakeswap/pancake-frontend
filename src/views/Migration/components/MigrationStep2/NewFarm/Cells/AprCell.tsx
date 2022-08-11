@@ -13,7 +13,7 @@ const StyledCell = styled(BaseCell)`
   }
 `
 
-const AprCell: React.FC<AprProps> = (apr) => {
+const AprCell: React.FC<React.PropsWithChildren<AprProps>> = (apr) => {
   const { t } = useTranslation()
 
   return (

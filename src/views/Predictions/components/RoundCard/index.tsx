@@ -12,7 +12,7 @@ interface RoundCardProps {
   isActive?: boolean
 }
 
-const RoundCard: React.FC<RoundCardProps> = ({ round, isActive }) => {
+const RoundCard: React.FC<React.PropsWithChildren<RoundCardProps>> = ({ round, isActive }) => {
   const { epoch, lockPrice, closePrice, totalAmount, bullAmount, bearAmount } = round
   const currentEpoch = useGetCurrentEpoch()
   const { account } = useWeb3React()

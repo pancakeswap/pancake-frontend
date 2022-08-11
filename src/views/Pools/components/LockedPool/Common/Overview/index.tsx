@@ -16,7 +16,7 @@ import formatiCake from '../../utils/formatICake'
 import { OverviewPropsType } from '../../types'
 import CalculatorButton from '../../Buttons/CalculatorButton'
 
-const Overview: React.FC<OverviewPropsType> = ({
+const Overview: React.FC<React.PropsWithChildren<OverviewPropsType>> = ({
   usdValueStaked,
   lockedAmount,
   duration,

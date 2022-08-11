@@ -35,7 +35,7 @@ interface CollectModalProps {
   onDismiss?: () => void
 }
 
-const CollectModal: React.FC<CollectModalProps> = ({
+const CollectModal: React.FC<React.PropsWithChildren<CollectModalProps>> = ({
   formattedBalance,
   fullBalance,
   earningToken,

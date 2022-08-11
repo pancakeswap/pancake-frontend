@@ -10,7 +10,7 @@ import BalanceField from '../Common/BalanceField'
 import LockedBodyModal from '../Common/LockedModalBody'
 import RoiCalculatorModalProvider from './RoiCalculatorModalProvider'
 
-const LockedStakeModal: React.FC<GenericModalProps> = ({
+const LockedStakeModal: React.FC<React.PropsWithChildren<GenericModalProps>> = ({
   onDismiss,
   currentBalance,
   stakingToken,

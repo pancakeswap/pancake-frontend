@@ -12,7 +12,7 @@ interface Props {
   walletIfoData: WalletIfoData
 }
 
-const ClaimButton: React.FC<Props> = ({ poolId, ifoVersion, walletIfoData }) => {
+const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifoVersion, walletIfoData }) => {
   const userPoolCharacteristics = walletIfoData[poolId]
   const { t } = useTranslation()
   const { toastSuccess } = useToast()

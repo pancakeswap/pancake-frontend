@@ -40,7 +40,12 @@ interface WinRateModalProps {
   totalSupply: BigNumber
 }
 
-const WinRateModal: React.FC<WinRateModalProps> = ({ onDismiss, onBack, stakingTokenBalance, totalSupply }) => {
+const WinRateModal: React.FC<React.PropsWithChildren<WinRateModalProps>> = ({
+  onDismiss,
+  onBack,
+  stakingTokenBalance,
+  totalSupply,
+}) => {
   const { t } = useTranslation()
   const cakePrice = usePriceCakeBusd()
   const { getLockedApy } = useVaultApy()

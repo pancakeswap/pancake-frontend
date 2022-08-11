@@ -65,7 +65,7 @@ const AnnualRoiDisplay = styled(Text)`
   text-overflow: ellipsis;
 `
 
-const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
+const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> = ({
   pool,
   stakingMax,
   performanceFee,

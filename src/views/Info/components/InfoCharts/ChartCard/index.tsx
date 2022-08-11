@@ -26,7 +26,12 @@ interface ChartCardProps {
   tokenPriceData?: PriceChartEntry[]
 }
 
-const ChartCard: React.FC<ChartCardProps> = ({ variant, chartData, tokenData, tokenPriceData }) => {
+const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
+  variant,
+  chartData,
+  tokenData,
+  tokenPriceData,
+}) => {
   const [view, setView] = useState(ChartView.VOLUME)
   const [hoverValue, setHoverValue] = useState<number | undefined>()
   const [hoverDate, setHoverDate] = useState<string | undefined>()

@@ -13,7 +13,10 @@ interface UnstakingFeeCountdownRowProps {
   vaultKey: VaultKey
 }
 
-const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({ isTableVariant, vaultKey }) => {
+const UnstakingFeeCountdownRow: React.FC<React.PropsWithChildren<UnstakingFeeCountdownRowProps>> = ({
+  isTableVariant,
+  vaultKey,
+}) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const {

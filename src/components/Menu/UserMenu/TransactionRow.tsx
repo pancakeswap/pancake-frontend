@@ -44,7 +44,7 @@ const renderIcon = (txn: TransactionDetails) => {
   )
 }
 
-const TransactionRow: React.FC<TransactionRowProps> = ({ txn }) => {
+const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = ({ txn }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
 

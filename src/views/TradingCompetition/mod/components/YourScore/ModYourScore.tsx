@@ -27,7 +27,7 @@ export interface MoDYourScoreProps extends CompetitionProps {
   }
 }
 
-const ModYourScore: React.FC<MoDYourScoreProps> = ({
+const ModYourScore: React.FC<React.PropsWithChildren<MoDYourScoreProps>> = ({
   hasRegistered = false,
   account,
   userTradingInformation,

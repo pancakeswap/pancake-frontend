@@ -18,7 +18,10 @@ const StyledCell = styled(BaseCell)`
   }
 `
 
-const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ hasEarnings, earningTokenBalance }) => {
+const AutoEarningsCell: React.FC<React.PropsWithChildren<AutoEarningsCellProps>> = ({
+  hasEarnings,
+  earningTokenBalance,
+}) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
   const labelText = t('Recent CAKE profit')

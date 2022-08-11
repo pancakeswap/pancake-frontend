@@ -11,12 +11,19 @@ import { WagmiProvider } from '@pancakeswap/wagmi'
 import { client } from 'utils/wagmi'
 import { HistoryManagerProvider } from 'contexts/HistoryContext'
 
-const StyledThemeProvider: React.FC<{ children: React.ReactNode }> = (props) => {
+const StyledThemeProvider: React.FC<React.PropsWithChildren> = ({ children, ...props }) => {
   const { resolvedTheme } = useNextTheme()
-  return <ThemeProvider theme={resolvedTheme === 'dark' ? dark : light} {...props} />
+  return (
+    <ThemeProvider theme={resolvedTheme === 'dark' ? dark : light} {...props}>
+      {children}
+    </ThemeProvider>
+  )
 }
 
-const Providers: React.FC<{ store: Store }> = ({ children, store }) => {
+const Providers: React.FC<React.PropsWithChildren<{ store: Store; children: React.ReactNode }>> = ({
+  children,
+  store,
+}) => {
   return (
     <WagmiProvider client={client}>
       <Provider store={store}>

@@ -4,7 +4,7 @@ import { Auction, AuctionStatus } from 'config/constants/types'
 import { SLOW_INTERVAL } from 'config/constants'
 import useSWR from 'swr'
 
-const AuctionProgress: React.FC<{ auction: Auction }> = ({ auction }) => {
+const AuctionProgress: React.FC<React.PropsWithChildren<{ auction: Auction }>> = ({ auction }) => {
   const { data: progress = 0 } = useSWR(
     ['farmAuction', 'auctionProgress'],
     async () => {

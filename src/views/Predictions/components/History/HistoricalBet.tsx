@@ -39,7 +39,7 @@ const YourResult = styled(Box)`
   flex: 1;
 `
 
-const HistoricalBet: React.FC<BetProps> = ({ bet }) => {
+const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => {
   const [isOpen, setIsOpen] = useState(false)
   const { amount, round } = bet
   const { t } = useTranslation()

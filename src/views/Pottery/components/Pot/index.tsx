@@ -66,7 +66,7 @@ const BalanceStyle = styled(Balance)`
   text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2), 0px 4px 12px rgba(14, 14, 44, 0.1);
 `
 
-const Pot: React.FC = () => {
+const Pot: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
   const { isMobile } = useMatchBreakpointsContext()

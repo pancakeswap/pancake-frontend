@@ -32,7 +32,7 @@ const UsernameWrapper = styled(Box)`
   }
 `
 
-const ResultAvatar: React.FC<ResultAvatarProps> = ({ user, ...props }) => {
+const ResultAvatar: React.FC<React.PropsWithChildren<ResultAvatarProps>> = ({ user, ...props }) => {
   const { t } = useTranslation()
   const { profile } = useProfileForAddress(user.id)
   const { result, address, leaderboardLoadingState } = useStatModalProps(user.id)

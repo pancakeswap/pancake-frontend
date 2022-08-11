@@ -25,7 +25,7 @@ const summaryTypeSigns = {
   entered: '',
 }
 
-const SummaryRow: React.FC<SummaryRowProps> = ({ type, summary, bnbBusdPrice }) => {
+const SummaryRow: React.FC<React.PropsWithChildren<SummaryRowProps>> = ({ type, summary, bnbBusdPrice }) => {
   const { t } = useTranslation()
 
   const color = summaryTypeColors[type]

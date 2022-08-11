@@ -62,7 +62,7 @@ interface DetailsViewProps {
   block: number
 }
 
-const DetailsView: React.FC<DetailsViewProps> = ({
+const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
   total,
   cakeBalance,
   cakeVaultBalance,

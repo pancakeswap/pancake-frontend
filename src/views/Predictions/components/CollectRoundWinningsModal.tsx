@@ -83,7 +83,7 @@ const calculateClaimableRounds = (history): ClaimableRounds => {
   )
 }
 
-const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
+const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWinningsModalProps>> = ({
   onDismiss,
   onSuccess,
   history,

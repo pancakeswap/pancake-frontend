@@ -26,7 +26,7 @@ interface HeaderProps {
 }
 
 // Account and profile passed down as the profile could be used to render _other_ users' profiles.
-const ProfileHeader: React.FC<HeaderProps> = ({
+const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   accountPath,
   profile,
   achievements,

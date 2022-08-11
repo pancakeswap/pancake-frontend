@@ -23,7 +23,7 @@ const StyledCell = styled(BaseCell)`
   }
 `
 
-const NameCell: React.FC<NameCellProps> = ({ pool }) => {
+const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
   const { sousId, stakingToken, earningToken, userData, isFinished, vaultKey } = pool

@@ -7,7 +7,7 @@ import RibbonWithImage from './RibbonWithImage'
 import TeamRanks from './TeamRanks/TeamRanks'
 import RanksIcon from '../svgs/RanksIcon'
 
-const TeamRanksSection: React.FC<TeamRanksProps> = ({
+const TeamRanksSection: React.FC<React.PropsWithChildren<TeamRanksProps>> = ({
   image,
   team1LeaderboardInformation,
   team2LeaderboardInformation,

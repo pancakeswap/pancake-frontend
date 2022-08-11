@@ -21,7 +21,7 @@ interface CardActionsProps {
   stakedBalance: BigNumber
 }
 
-const CardActions: React.FC<CardActionsProps> = ({ pool, stakedBalance }) => {
+const CardActions: React.FC<React.PropsWithChildren<CardActionsProps>> = ({ pool, stakedBalance }) => {
   const { sousId, stakingToken, earningToken, poolCategory, userData, earningTokenPrice, profileRequirement } = pool
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE

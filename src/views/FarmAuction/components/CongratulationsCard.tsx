@@ -11,7 +11,10 @@ const StyledReclaimBidCard = styled(Card)`
   flex: 1;
 `
 
-const CongratulationsCard: React.FC<{ currentAuction: Auction; bidders: Bidder[] }> = ({ currentAuction, bidders }) => {
+const CongratulationsCard: React.FC<React.PropsWithChildren<{ currentAuction: Auction; bidders: Bidder[] }>> = ({
+  currentAuction,
+  bidders,
+}) => {
   const { t } = useTranslation()
   const wonAuction = useCongratulateAuctionWinner(currentAuction, bidders)
 

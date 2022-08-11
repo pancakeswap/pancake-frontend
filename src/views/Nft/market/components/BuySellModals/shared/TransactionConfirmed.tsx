@@ -9,7 +9,7 @@ interface TransactionConfirmedProps {
   onDismiss: () => void
 }
 
-const TransactionConfirmed: React.FC<TransactionConfirmedProps> = ({ txHash, onDismiss }) => {
+const TransactionConfirmed: React.FC<React.PropsWithChildren<TransactionConfirmedProps>> = ({ txHash, onDismiss }) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   return (

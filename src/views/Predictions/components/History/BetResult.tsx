@@ -36,7 +36,7 @@ const Divider = styled.hr`
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
-const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
+const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, result }) => {
   const { t } = useTranslation()
   const dispatch = useLocalDispatch()
   const { account } = useWeb3React()

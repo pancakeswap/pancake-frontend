@@ -10,7 +10,7 @@ const floatingTicketTop = keyframes`
   }
   to {
     transform: translate(0, 0px);
-  }  
+  }
 `
 
 const floatingTicketRight = keyframes`
@@ -22,7 +22,7 @@ const floatingTicketRight = keyframes`
   }
   to {
     transform: translate(0, -0px);
-  }  
+  }
 `
 const floatingTicketLeft = keyframes`
   from {
@@ -33,7 +33,7 @@ const floatingTicketLeft = keyframes`
   }
   to {
     transform: translate(0, -0px);
-  }  
+  }
 `
 
 const Container = styled(Box)`
@@ -149,7 +149,7 @@ const Container = styled(Box)`
   }
 `
 
-const TicketsDecorations: React.FC = () => {
+const TicketsDecorations: React.FC<React.PropsWithChildren> = () => {
   return (
     <Container>
       <img src="/images/pottery/banner-ticket/left1.png" alt="" />

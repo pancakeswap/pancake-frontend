@@ -17,7 +17,7 @@ import { getUserStatus } from './utils'
 
 const REFRESH_INTERVAL = 4000
 
-const PancakeSquad: React.FC = () => {
+const PancakeSquad: React.FC<React.PropsWithChildren> = () => {
   const { account } = useWeb3React()
   const { hasProfile, isInitialized } = useProfile()
   const [eventInfos, setEventInfo] = useState<EventInfos>()

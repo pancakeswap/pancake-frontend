@@ -65,7 +65,7 @@ const AllocationColorCircle = styled.div<{ color: string }>`
   background-color: ${({ color }) => color};
 `
 
-const AllocationMatch: React.FC<{ color: string; text: string }> = ({ color, text }) => {
+const AllocationMatch: React.FC<React.PropsWithChildren<{ color: string; text: string }>> = ({ color, text }) => {
   return (
     <Flex alignItems="center">
       <AllocationColorCircle color={color} />
@@ -101,7 +101,7 @@ const PoolAllocations = () => {
   )
 }
 
-const PrizeFunds: React.FC = () => {
+const PrizeFunds: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
 
   return (

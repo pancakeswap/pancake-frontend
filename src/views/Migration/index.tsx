@@ -16,7 +16,7 @@ import OldFarm from './components/MigrationStep1/OldFarm'
 import NewPool from './components/MigrationStep2/NewPool'
 import NewFarm from './components/MigrationStep2/NewFarm'
 
-const MigrationPage: React.FC = () => {
+const MigrationPage: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const tableWrapperEl = useRef<HTMLDivElement>(null)

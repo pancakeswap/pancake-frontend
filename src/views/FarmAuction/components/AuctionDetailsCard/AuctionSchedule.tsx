@@ -16,7 +16,7 @@ interface ScheduleProps {
   showForClosedAuction?: boolean
 }
 
-const AuctionSchedule: React.FC<ScheduleProps> = ({ auction }) => {
+const AuctionSchedule: React.FC<React.PropsWithChildren<ScheduleProps>> = ({ auction }) => {
   const { startBlock, endBlock, auctionDuration, startDate, endDate, status } = auction
   const {
     t,

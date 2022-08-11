@@ -53,7 +53,7 @@ const CircleSvg = ({ percent = 1, ...props }: SvgProps & { percent?: number }) =
   </Svg>
 )
 
-const Subtitle: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const Subtitle: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <Text fontSize="12px" textTransform="uppercase" bold color="secondary">
       {children}

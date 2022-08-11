@@ -50,7 +50,10 @@ interface PreviousRoundCardBodyProps {
   finishedRoundInfo: PotteryRoundInfo
 }
 
-const PreviousRoundCardBody: React.FC<PreviousRoundCardBodyProps> = ({ latestRoundId, finishedRoundInfo }) => {
+const PreviousRoundCardBody: React.FC<React.PropsWithChildren<PreviousRoundCardBodyProps>> = ({
+  latestRoundId,
+  finishedRoundInfo,
+}) => {
   const {
     t,
     currentLanguage: { locale },

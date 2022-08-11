@@ -23,7 +23,7 @@ interface AprRowProps {
   pool: DeserializedPool
 }
 
-const AprRow: React.FunctionComponent<AprRowProps> = ({ pool }) => {
+const AprRow: React.FunctionComponent<React.PropsWithChildren<AprRowProps>> = ({ pool }) => {
   const { vaultKey, userData } = pool
   const { t } = useTranslation()
 

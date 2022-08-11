@@ -29,7 +29,7 @@ const IconButtonWrapper = styled.div`
   }
 `
 
-const StakeAction: React.FC<FarmCardActionsProps> = ({
+const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   quoteToken,
   token,
   lpSymbol,

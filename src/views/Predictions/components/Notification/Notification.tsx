@@ -47,7 +47,7 @@ const BackButton = () => {
   )
 }
 
-const Notification: React.FC<NotificationProps> = ({ title, children }) => {
+const Notification: React.FC<React.PropsWithChildren<NotificationProps>> = ({ title, children }) => {
   const router = useRouter()
   const { token } = useConfig()
 

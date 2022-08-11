@@ -15,7 +15,7 @@ interface CollectionTraitsProps {
   collectionAddress: string
 }
 
-const CollectionTraits: React.FC<CollectionTraitsProps> = ({ collectionAddress }) => {
+const CollectionTraits: React.FC<React.PropsWithChildren<CollectionTraitsProps>> = ({ collectionAddress }) => {
   const { data, isFetching } = useGetCollectionDistribution(collectionAddress)
   const [raritySort, setRaritySort] = useState<Record<string, SortType>>({})
   const { t } = useTranslation()

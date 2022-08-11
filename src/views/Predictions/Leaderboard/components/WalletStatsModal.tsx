@@ -46,7 +46,7 @@ const ExternalLink = styled(LinkExternal)`
   }
 `
 
-const WalletStatsModal: React.FC<WalletStatsModalProps> = ({
+const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>> = ({
   result,
   address,
   leaderboardLoadingState,

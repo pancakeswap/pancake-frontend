@@ -9,7 +9,12 @@ interface RoundResultProps extends BoxProps {
   hasFailed?: boolean
 }
 
-const RoundResult: React.FC<RoundResultProps> = ({ round, hasFailed = false, children, ...props }) => {
+const RoundResult: React.FC<React.PropsWithChildren<RoundResultProps>> = ({
+  round,
+  hasFailed = false,
+  children,
+  ...props
+}) => {
   const { lockPrice, closePrice, totalAmount } = round
   const betPosition = getRoundPosition(lockPrice, closePrice)
   const { t } = useTranslation()

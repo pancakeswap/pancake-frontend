@@ -4,7 +4,7 @@ import StyledMenuItem, { StyledMenuItemContainer } from "./styles";
 import { MenuItemProps } from "./types";
 import { useMatchBreakpointsContext } from "../../contexts";
 
-const MenuItem: React.FC<MenuItemProps> = ({
+const MenuItem: React.FC<React.PropsWithChildren<MenuItemProps>> = ({
   children,
   href,
   isActive = false,

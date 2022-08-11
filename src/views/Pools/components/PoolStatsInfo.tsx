@@ -21,7 +21,7 @@ interface ExpandedFooterProps {
   alignLinksToRight?: boolean
 }
 
-const PoolStatsInfo: React.FC<ExpandedFooterProps> = ({
+const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
   pool,
   account,
   showTotalStaked = true,

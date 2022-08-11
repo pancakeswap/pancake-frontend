@@ -60,7 +60,7 @@ enum BuyingStage {
   EDIT = 'Edit',
 }
 
-const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
+const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> = ({ onDismiss }) => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { theme } = useTheme()

@@ -30,7 +30,7 @@ const CardAction = styled(Flex)`
   padding: 26px 24px 36px 24px;
 `
 
-const Deposit: React.FC = () => {
+const Deposit: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const { getLockedApy } = useVaultApy()

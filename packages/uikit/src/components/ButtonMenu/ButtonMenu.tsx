@@ -54,7 +54,7 @@ const StyledButtonMenu = styled.div<StyledButtonMenuProps>`
   ${space}
 `;
 
-const ButtonMenu: React.FC<ButtonMenuProps> = ({
+const ButtonMenu: React.FC<React.PropsWithChildren<ButtonMenuProps>> = ({
   activeIndex = 0,
   scale = scales.MD,
   variant = variants.PRIMARY,

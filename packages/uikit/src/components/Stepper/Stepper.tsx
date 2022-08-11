@@ -8,7 +8,7 @@ const StepperWrapper = styled.div<ThemedProps>`
   width: fit-content;
 `;
 
-const Stepper: React.FC = ({ children }) => {
+const Stepper: React.FC<React.PropsWithChildren> = ({ children }) => {
   const numberOfSteps = React.Children.count(children);
   return (
     <StepperWrapper>

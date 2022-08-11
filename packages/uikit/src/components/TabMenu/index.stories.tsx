@@ -15,7 +15,7 @@ const Row = styled.div`
   margin-bottom: 32px;
 `;
 
-export const Default: React.FC = () => {
+export const Default: React.FC<React.PropsWithChildren> = () => {
   const [index, setIndex] = useState(0);
   const [index2, setIndex2] = useState(0);
   const [index3, setIndex3] = useState(0);
@@ -51,7 +51,7 @@ export const Default: React.FC = () => {
   );
 };
 
-export const Tabs: React.FC = () => {
+export const Tabs: React.FC<React.PropsWithChildren> = () => {
   return (
     <>
       <Row>

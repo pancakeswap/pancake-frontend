@@ -81,7 +81,13 @@ const TOKEN_BALANCE_CONFIG = {
   CAKE: useGetCakeBalance,
 }
 
-const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosition, epoch, onBack, onSuccess }) => {
+const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> = ({
+  position,
+  togglePosition,
+  epoch,
+  onBack,
+  onSuccess,
+}) => {
   const [value, setValue] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [percent, setPercent] = useState(0)

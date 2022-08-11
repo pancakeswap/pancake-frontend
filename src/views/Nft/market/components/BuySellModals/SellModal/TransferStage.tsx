@@ -14,7 +14,7 @@ interface TransferStageProps {
   continueToNextStage: () => void
 }
 
-const TransferStage: React.FC<TransferStageProps> = ({
+const TransferStage: React.FC<React.PropsWithChildren<TransferStageProps>> = ({
   nftToSell,
   lowestPrice,
   transferAddress,

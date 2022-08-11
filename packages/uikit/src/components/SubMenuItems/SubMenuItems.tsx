@@ -16,7 +16,12 @@ import { SubMenuItemsProps } from "./types";
 const SUBMENU_CHEVRON_CLICK_MOVE_PX = 100;
 const SUBMENU_SCROLL_DEVIATION = 3;
 
-const SubMenuItems: React.FC<SubMenuItemsProps> = ({ items = [], activeItem, isMobileOnly = false, ...props }) => {
+const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
+  items = [],
+  activeItem,
+  isMobileOnly = false,
+  ...props
+}) => {
   const { isMobile } = useMatchBreakpointsContext();
   const scrollLayerRef = useRef<HTMLDivElement>(null);
   const chevronLeftRef = useRef<HTMLDivElement>(null);

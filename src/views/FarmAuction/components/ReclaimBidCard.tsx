@@ -19,7 +19,7 @@ const StyledReclaimBidCard = styled(Card)`
   flex: 1;
 `
 
-const ReclaimBidCard: React.FC = () => {
+const ReclaimBidCard: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { callWithGasPrice } = useCallWithGasPrice()

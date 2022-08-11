@@ -42,7 +42,10 @@ const Tabs = styled.div`
   padding: 16px 24px;
 `
 
-const WalletModal: React.FC<WalletModalProps> = ({ initialView = WalletView.WALLET_INFO, onDismiss }) => {
+const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
+  initialView = WalletView.WALLET_INFO,
+  onDismiss,
+}) => {
   const [view, setView] = useState(initialView)
   const { t } = useTranslation()
   const { account } = useWeb3React()
@@ -53,7 +56,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ initialView = WalletView.WALL
     setView(newIndex)
   }
 
-  const TabsComponent: React.FC = () => (
+  const TabsComponent: React.FC<React.PropsWithChildren> = () => (
     <Tabs>
       <ButtonMenu scale="sm" variant="subtle" onItemClick={handleClick} activeIndex={view} fullWidth>
         <ButtonMenuItem>{t('Wallet')}</ButtonMenuItem>

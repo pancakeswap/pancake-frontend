@@ -35,7 +35,7 @@ interface DepositActionProps {
   totalValueLockedValue: number
 }
 
-const DepositAction: React.FC<DepositActionProps> = ({ totalValueLockedValue }) => {
+const DepositAction: React.FC<React.PropsWithChildren<DepositActionProps>> = ({ totalValueLockedValue }) => {
   const { t } = useTranslation()
   const { chainId } = useWeb3React()
   const { publicData, userData } = usePotteryData()

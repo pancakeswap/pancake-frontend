@@ -16,7 +16,7 @@ const StyledCell = styled(BaseCell)`
   flex: 2 0 100px;
 `
 
-const EndsInCell: React.FC<FinishCellProps> = ({ pool }) => {
+const EndsInCell: React.FC<React.PropsWithChildren<FinishCellProps>> = ({ pool }) => {
   const { sousId, totalStaked, startBlock, endBlock, isFinished } = pool
   const currentBlock = useCurrentBlock()
   const { t } = useTranslation()

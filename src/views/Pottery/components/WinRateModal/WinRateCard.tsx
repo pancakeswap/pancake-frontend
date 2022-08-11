@@ -40,7 +40,12 @@ interface WinRateCardProps {
   setTargetWinRate: (percentage: string) => void
 }
 
-const WinRateCard: React.FC<WinRateCardProps> = ({ winRate, calculatorState, setCalculatorMode, setTargetWinRate }) => {
+const WinRateCard: React.FC<React.PropsWithChildren<WinRateCardProps>> = ({
+  winRate,
+  calculatorState,
+  setCalculatorMode,
+  setTargetWinRate,
+}) => {
   const { t } = useTranslation()
   const [expectedWinRate, setExpectedWinRate] = useState('')
   const { mode } = calculatorState.controls

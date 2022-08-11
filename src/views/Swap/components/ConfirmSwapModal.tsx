@@ -39,7 +39,7 @@ interface ConfirmSwapModalProps {
   customOnDismiss?: () => void
 }
 
-const ConfirmSwapModal: React.FC<InjectedModalProps & ConfirmSwapModalProps> = ({
+const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & ConfirmSwapModalProps>> = ({
   trade,
   originalTrade,
   onAcceptChanges,

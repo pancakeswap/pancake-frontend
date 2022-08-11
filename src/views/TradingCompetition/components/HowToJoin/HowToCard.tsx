@@ -28,7 +28,7 @@ const ChildrenWrapper = styled.div`
   grid-row: 2 / 2;
 `
 
-const HowToJoin: React.FC<HowToCardProps> = ({ number, title, children }) => {
+const HowToJoin: React.FC<React.PropsWithChildren<HowToCardProps>> = ({ number, title, children }) => {
   return (
     <Card mb="16px">
       <CardBody>

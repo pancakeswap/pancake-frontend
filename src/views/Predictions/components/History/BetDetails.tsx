@@ -19,7 +19,7 @@ const StyledBetDetails = styled.div`
   padding: 24px;
 `
 
-const BetDetails: React.FC<BetDetailsProps> = ({ bet, result }) => {
+const BetDetails: React.FC<React.PropsWithChildren<BetDetailsProps>> = ({ bet, result }) => {
   const { t } = useTranslation()
   const { totalAmount, bullAmount, bearAmount } = bet.round
   const bullMultiplier = getMultiplier(totalAmount, bullAmount)

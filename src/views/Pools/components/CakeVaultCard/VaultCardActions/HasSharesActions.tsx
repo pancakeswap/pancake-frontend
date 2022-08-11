@@ -15,7 +15,11 @@ interface HasStakeActionProps {
   performanceFee: number
 }
 
-const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBalance, performanceFee }) => {
+const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> = ({
+  pool,
+  stakingTokenBalance,
+  performanceFee,
+}) => {
   const {
     userData: {
       balance: { cakeAsBigNumber, cakeAsNumberBalance },

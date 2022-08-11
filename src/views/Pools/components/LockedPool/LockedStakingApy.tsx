@@ -22,7 +22,7 @@ interface LockedStakingApyProps extends LockedStakingApyPropsType {
   showICake?: boolean
 }
 
-const LockedStakingApy: React.FC<LockedStakingApyProps> = ({
+const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>> = ({
   stakingToken,
   stakingTokenBalance,
   userData,

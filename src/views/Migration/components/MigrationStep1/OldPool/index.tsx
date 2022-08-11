@@ -8,7 +8,7 @@ interface OldPoolProps {
   userDataLoaded: boolean
 }
 
-const OldPool: React.FC<OldPoolProps> = ({ account, pools, userDataLoaded }) => {
+const OldPool: React.FC<React.PropsWithChildren<OldPoolProps>> = ({ account, pools, userDataLoaded }) => {
   const userDataReady: boolean = !account || (!!account && userDataLoaded)
   return <PoolsTable pools={pools} account={account} userDataReady={userDataReady} />
 }

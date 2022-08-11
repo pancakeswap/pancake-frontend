@@ -12,7 +12,7 @@ import HowToPlay from './components/HowToPlay'
 import PrizeFunds from './components/PrizeFunds'
 import FAQ from './components/FAQ'
 
-const Pottery: React.FC = () => {
+const Pottery: React.FC<React.PropsWithChildren> = () => {
   usePotteryFetch()
   const potWrapperEl = useRef<HTMLDivElement>(null)
 

@@ -73,7 +73,7 @@ interface ActionPanelProps {
   expanded: boolean
 }
 
-const ActionPanel: React.FC<ActionPanelProps> = ({ pool, account, expanded }) => {
+const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ pool, account, expanded }) => {
   const { vaultPoolData } = useVaultPoolByKeyV1(pool.vaultKey)
   const { totalCakeInVault, pricePerFullShare } = vaultPoolData
   const { cakeAtLastUserAction, userShares } = vaultPoolData.userData

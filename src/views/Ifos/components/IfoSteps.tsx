@@ -162,7 +162,12 @@ const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLiv
   )
 }
 
-const IfoSteps: React.FC<TypeProps> = ({ isCommitted, hasClaimed, isLive, ifoCurrencyAddress }) => {
+const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
+  isCommitted,
+  hasClaimed,
+  isLive,
+  ifoCurrencyAddress,
+}) => {
   const { hasActiveProfile } = useProfile()
   const { account } = useWeb3React()
   const { t } = useTranslation()

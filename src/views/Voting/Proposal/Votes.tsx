@@ -31,7 +31,7 @@ const parseVotePower = (incomingVote: Vote) => {
   return votingPower
 }
 
-const Votes: React.FC<VotesProps> = ({ votes, votesLoadingStatus, totalVotes }) => {
+const Votes: React.FC<React.PropsWithChildren<VotesProps>> = ({ votes, votesLoadingStatus, totalVotes }) => {
   const [showAll, setShowAll] = useState(false)
   const { t } = useTranslation()
   const { account } = useWeb3React()

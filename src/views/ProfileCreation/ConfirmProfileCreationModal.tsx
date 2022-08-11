@@ -23,7 +23,7 @@ interface Props {
   onDismiss?: () => void
 }
 
-const ConfirmProfileCreationModal: React.FC<Props> = ({
+const ConfirmProfileCreationModal: React.FC<React.PropsWithChildren<Props>> = ({
   account,
   teamId,
   selectedNft,

@@ -18,7 +18,7 @@ const DetailBox = styled(Box)`
   border-radius: 16px;
 `
 
-const Details: React.FC<DetailsProps> = ({ proposal }) => {
+const Details: React.FC<React.PropsWithChildren<DetailsProps>> = ({ proposal }) => {
   const { t } = useTranslation()
   const startDate = new Date(proposal.start * 1000)
   const endDate = new Date(proposal.end * 1000)

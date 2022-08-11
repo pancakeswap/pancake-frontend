@@ -19,7 +19,7 @@ const StyledMobileRow = styled(Box)`
   }
 `
 
-const MobileRow: React.FC<MobileRowProps> = ({ rank, user }) => {
+const MobileRow: React.FC<React.PropsWithChildren<MobileRowProps>> = ({ rank, user }) => {
   const { t } = useTranslation()
 
   return (

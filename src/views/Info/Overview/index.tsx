@@ -33,7 +33,7 @@ export const ChartCardsContainer = styled(Flex)`
   } ;
 `
 
-const Overview: React.FC = () => {
+const Overview: React.FC<React.PropsWithChildren> = () => {
   const {
     t,
     currentLanguage: { locale },

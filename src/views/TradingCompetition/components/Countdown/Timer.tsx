@@ -71,7 +71,7 @@ const TooltipContent = ({ blockNumber, t }: { blockNumber: number; t: ContextApi
   </>
 )
 
-const Wrapper: React.FC<TimerProps> = ({
+const Wrapper: React.FC<React.PropsWithChildren<TimerProps>> = ({
   prefix,
   suffix,
   minutes,

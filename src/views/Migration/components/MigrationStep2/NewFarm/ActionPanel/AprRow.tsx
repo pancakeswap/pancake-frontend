@@ -15,7 +15,7 @@ const Containter = styled(Flex)`
   }
 `
 
-const AprRow: React.FC<AprProps> = (apr) => {
+const AprRow: React.FC<React.PropsWithChildren<AprProps>> = (apr) => {
   const { t } = useTranslation()
 
   return (

@@ -28,7 +28,7 @@ const BunnyDecoration = styled.div`
   width: 100%;
 `
 
-const CollectRoundWinningsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
+const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
   const [isFetching, setIsFetching] = useState(false)
   const [history, setHistory] = useState([])
   const { t } = useTranslation()

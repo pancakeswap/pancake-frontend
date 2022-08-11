@@ -52,7 +52,7 @@ const TicketSkeleton = () => {
   )
 }
 
-const PreviousRoundTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) => {
+const PreviousRoundTicketsInner: React.FC<React.PropsWithChildren<{ roundId: string }>> = ({ roundId }) => {
   const [lotteryInfo, setLotteryInfo] = useState<LotteryRound>(null)
   const [allUserTickets, setAllUserTickets] = useState<LotteryTicket[]>(null)
   const [userWinningTickets, setUserWinningTickets] = useState<{

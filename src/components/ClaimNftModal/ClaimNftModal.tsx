@@ -19,7 +19,7 @@ const showConfetti = () => {
   })
 }
 
-const ClaimNftModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
+const ClaimNftModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
   const { t } = useTranslation()
   const [isClaiming, setIsClaiming] = useState(false)
   const bunnyXmasContract = useBunnySpecialXmasContract()

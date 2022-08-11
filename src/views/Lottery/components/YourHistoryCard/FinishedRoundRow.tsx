@@ -24,7 +24,7 @@ const StyledSmallDotIcon = styled(SmallDotIcon)`
   }
 `
 
-const FinishedRoundRow: React.FC<FinishedRoundRowProps> = ({
+const FinishedRoundRow: React.FC<React.PropsWithChildren<FinishedRoundRowProps>> = ({
   roundId,
   numberTickets,
   endTime,

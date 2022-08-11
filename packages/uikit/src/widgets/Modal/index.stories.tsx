@@ -11,14 +11,14 @@ export default {
   argTypes: {},
 };
 
-const CustomModal: React.FC<ModalProps> = ({ title, onDismiss, ...props }) => (
+const CustomModal: React.FC<React.PropsWithChildren<ModalProps>> = ({ title, onDismiss, ...props }) => (
   <Modal title={title} onDismiss={onDismiss} {...props}>
     <Heading>{title}</Heading>
     <Button>This button Does nothing</Button>
   </Modal>
 );
 
-export const Default: React.FC = () => {
+export const Default: React.FC<React.PropsWithChildren> = () => {
   const theme = useTheme();
   const [onPresent1] = useModal(<CustomModal title="Modal 1" />);
   const [onPresent2] = useModal(<CustomModal title="Modal 2" />);
@@ -32,7 +32,7 @@ export const Default: React.FC = () => {
   );
 };
 
-export const DisableOverlayClick: React.FC = () => {
+export const DisableOverlayClick: React.FC<React.PropsWithChildren> = () => {
   const [onPresent1] = useModal(<CustomModal title="Modal 1" />, false);
 
   return (
@@ -42,8 +42,8 @@ export const DisableOverlayClick: React.FC = () => {
   );
 };
 
-export const WithBackButton: React.FC = () => {
-  const BackButtonModal: React.FC<ModalProps> = ({ title, onDismiss }) => {
+export const WithBackButton: React.FC<React.PropsWithChildren> = () => {
+  const BackButtonModal: React.FC<React.PropsWithChildren<ModalProps>> = ({ title, onDismiss }) => {
     const handleOnBack = () => {
       return 1;
     };
@@ -62,8 +62,8 @@ export const WithBackButton: React.FC = () => {
   return <Button onClick={onPresent1}>Only Back Button</Button>;
 };
 
-export const WithCustomHeader: React.FC = () => {
-  const CustomHeaderModal: React.FC<ModalProps> = ({ title, onDismiss }) => {
+export const WithCustomHeader: React.FC<React.PropsWithChildren> = () => {
+  const CustomHeaderModal: React.FC<React.PropsWithChildren<ModalProps>> = ({ title, onDismiss }) => {
     return (
       <Modal title={title} headerBackground="primary" onDismiss={onDismiss}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu pretium massa. Donec et gravida eros, eget
@@ -96,7 +96,7 @@ export const WithCustomHeader: React.FC = () => {
   return <Button onClick={onPresent1}>Modal with custom header</Button>;
 };
 
-export const ReactingToOutsideChanges: React.FC = () => {
+export const ReactingToOutsideChanges: React.FC<React.PropsWithChildren> = () => {
   const [counter, setCounter] = useState(0);
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -104,7 +104,11 @@ export const ReactingToOutsideChanges: React.FC = () => {
     }, 500);
     return () => clearInterval(intervalId);
   }, []);
-  const ReactiveModal: React.FC<ModalProps & { count: number }> = ({ title, count, onDismiss }) => {
+  const ReactiveModal: React.FC<React.PropsWithChildren<ModalProps & { count: number }>> = ({
+    title,
+    count,
+    onDismiss,
+  }) => {
     return (
       <Modal title={title} onDismiss={onDismiss}>
         <h2>Counter: {count}</h2>

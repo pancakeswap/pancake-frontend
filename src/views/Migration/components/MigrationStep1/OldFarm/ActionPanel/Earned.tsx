@@ -13,7 +13,7 @@ const Container = styled(ActionContainer)`
   height: 100%;
 `
 
-const Earned: React.FC<EarnedProps> = ({ earnings }) => {
+const Earned: React.FC<React.PropsWithChildren<EarnedProps>> = ({ earnings }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
 

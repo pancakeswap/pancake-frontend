@@ -102,7 +102,7 @@ const getPnlSummary = (bets: Bet[], currentEpoch: number): PnlSummary => {
   }, initialPnlSummary)
 }
 
-const PnlTab: React.FC<PnlTabProps> = ({ hasBetHistory, bets }) => {
+const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory, bets }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const currentEpoch = useGetCurrentEpoch()

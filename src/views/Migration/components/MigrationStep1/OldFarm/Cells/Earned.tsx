@@ -18,7 +18,7 @@ export interface EarnedProps {
   pid: number
 }
 
-const Earned: React.FC<EarnedProps> = ({ earnings }) => {
+const Earned: React.FC<React.PropsWithChildren<EarnedProps>> = ({ earnings }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
   const labelText = t('%asset% Earned', { asset: 'CAKE' })

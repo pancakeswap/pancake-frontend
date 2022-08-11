@@ -21,7 +21,10 @@ interface ChangeProfilePicPageProps extends InjectedModalProps {
   onSuccess?: () => void
 }
 
-const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss, onSuccess }) => {
+const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPageProps>> = ({
+  onDismiss,
+  onSuccess,
+}) => {
   const [selectedNft, setSelectedNft] = useState({
     tokenId: null,
     collectionAddress: null,

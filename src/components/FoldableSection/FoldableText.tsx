@@ -25,7 +25,7 @@ const StyledChildrenFlex = styled(Flex)<{ isExpanded?: boolean }>`
   border-bottom: 1px solid ${({ theme }) => theme.colors.inputSecondary};
 `
 
-const FoldableText: React.FC<FoldableTextProps> = ({ title, children, ...props }) => {
+const FoldableText: React.FC<React.PropsWithChildren<FoldableTextProps>> = ({ title, children, ...props }) => {
   const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(false)
 

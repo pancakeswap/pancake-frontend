@@ -38,7 +38,7 @@ const langs: Language[] = [...Array(20)].map((_, i) => ({
   locale: `Locale${i}`,
 }));
 
-const UserMenuComponent: React.FC<{ variant?: Variant; text?: string; account?: string }> = ({
+const UserMenuComponent: React.FC<React.PropsWithChildren<{ variant?: Variant; text?: string; account?: string }>> = ({
   variant = variants.DEFAULT,
   text,
   account = "0x8b017905DC96B38f817473dc885F84D4C76bC113",
@@ -51,14 +51,14 @@ const UserMenuComponent: React.FC<{ variant?: Variant; text?: string; account?: 
   );
 };
 
-const GlobalMenuModal: React.FC<ModalProps> = ({ title, onDismiss, ...props }) => (
+const GlobalMenuModal: React.FC<React.PropsWithChildren<ModalProps>> = ({ title, onDismiss, ...props }) => (
   <Modal title={title} onDismiss={onDismiss} {...props}>
     <Heading>{title}</Heading>
     <Button>This button Does nothing</Button>
   </Modal>
 );
 
-const GlobalMenuComponent: React.FC = () => {
+const GlobalMenuComponent: React.FC<React.PropsWithChildren> = () => {
   const [onPresent1] = useModal(<GlobalMenuModal title="Display Settings Modal" />);
   const [onPresent2] = useModal(<GlobalMenuModal title="Global Settings Modal" />);
 
@@ -102,7 +102,7 @@ const defaultProps = {
   buyCakeLabel: "Buy CAKE",
 };
 
-const ConnectedTemplate: React.FC<NavProps> = (args) => {
+const ConnectedTemplate: React.FC<React.PropsWithChildren<NavProps>> = (args) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -189,7 +189,7 @@ ConnectedWithBanner.args = {
   ),
 };
 
-export const NotConnected: React.FC = () => {
+export const NotConnected: React.FC<React.PropsWithChildren> = () => {
   return (
     <BrowserRouter>
       <Menu
@@ -222,7 +222,7 @@ export const NotConnected: React.FC = () => {
   );
 };
 
-export const WithoutConnectButton: React.FC = () => {
+export const WithoutConnectButton: React.FC<React.PropsWithChildren> = () => {
   return (
     <BrowserRouter>
       <Menu
@@ -247,7 +247,7 @@ export const WithoutConnectButton: React.FC = () => {
   );
 };
 
-export const WithSubmenuSelected: React.FC = () => {
+export const WithSubmenuSelected: React.FC<React.PropsWithChildren> = () => {
   return (
     <MemoryRouter initialEntries={["/teams"]}>
       <Menu
@@ -274,7 +274,7 @@ export const WithSubmenuSelected: React.FC = () => {
   );
 };
 
-export const UserMenuWithVariants: React.FC = () => {
+export const UserMenuWithVariants: React.FC<React.PropsWithChildren> = () => {
   const [variant, setVariant] = useState<Variant>(variants.DEFAULT);
   const [text, setText] = useState(undefined);
 

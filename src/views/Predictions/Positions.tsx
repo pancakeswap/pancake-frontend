@@ -25,7 +25,7 @@ const StyledSwiper = styled.div`
   }
 `
 
-const Positions: React.FC<{ view?: PageView }> = ({ view }) => {
+const Positions: React.FC<React.PropsWithChildren<{ view?: PageView }>> = ({ view }) => {
   const { setSwiper, swiper } = useSwiper()
   const { currentEpoch, rounds } = useGetSortedRoundsCurrentEpoch()
   const previousEpoch = currentEpoch > 0 ? currentEpoch - 1 : currentEpoch

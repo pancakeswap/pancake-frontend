@@ -37,7 +37,7 @@ const ChoiceText = styled.div`
   width: 0;
 `
 
-const Vote: React.FC<VoteProps> = ({ proposal, onSuccess, ...props }) => {
+const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, onSuccess, ...props }) => {
   const [vote, setVote] = useState<State>(null)
   const { t } = useTranslation()
   const { toastSuccess } = useToast()

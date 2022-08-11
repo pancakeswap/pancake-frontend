@@ -17,13 +17,13 @@ export const SecondaryLabel = styled(BaseLabel)`
   text-transform: uppercase;
 `
 
-export const FormError: React.FC = ({ children }) => (
+export const FormError: React.FC<React.PropsWithChildren> = ({ children }) => (
   <Text color="failure" mb="4px">
     {children}
   </Text>
 )
 
-export const FormErrors: React.FC<{ errors: string[] }> = ({ errors }) => {
+export const FormErrors: React.FC<React.PropsWithChildren<{ errors: string[] }>> = ({ errors }) => {
   return (
     <Box mt="8px">
       {errors.map((error) => {

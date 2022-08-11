@@ -13,7 +13,13 @@ interface DiffBalancePropsType {
   prefix?: string
 }
 
-const DiffBalance: React.FC<DiffBalancePropsType> = ({ value, newValue, decimals, unit, prefix }) => {
+const DiffBalance: React.FC<React.PropsWithChildren<DiffBalancePropsType>> = ({
+  value,
+  newValue,
+  decimals,
+  unit,
+  prefix,
+}) => {
   if (isUndefinedOrNull(newValue) || !value || value === newValue || _toNumber(newValue) === 0) {
     return <BalanceWithLoading bold fontSize="16px" value={value} decimals={decimals} unit={unit} prefix={prefix} />
   }
@@ -52,7 +58,7 @@ interface BalanceRowPropsType extends DiffBalancePropsType {
   suffix?: React.ReactNode
 }
 
-const BalanceRow: React.FC<BalanceRowPropsType> = ({
+const BalanceRow: React.FC<React.PropsWithChildren<BalanceRowPropsType>> = ({
   title,
   value,
   newValue,

@@ -19,7 +19,7 @@ interface MobileModalProps extends InjectedModalProps {
   isUserActivity?: boolean
 }
 
-const MobileModal: React.FC<MobileModalProps> = ({
+const MobileModal: React.FC<React.PropsWithChildren<MobileModalProps>> = ({
   nft,
   activity,
   bnbBusdPrice,

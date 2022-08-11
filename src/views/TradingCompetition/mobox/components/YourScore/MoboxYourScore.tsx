@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   max-width: 768px;
 `
 
-const MoboxYourScore: React.FC<YourScoreProps> = ({
+const MoboxYourScore: React.FC<React.PropsWithChildren<YourScoreProps>> = ({
   hasRegistered = false,
   account,
   userTradingInformation,

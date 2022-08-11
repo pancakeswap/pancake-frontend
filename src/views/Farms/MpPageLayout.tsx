@@ -6,7 +6,7 @@ import { useTheme } from 'next-themes'
 import Farms from './Farms'
 
 listenOnBnMessage()
-const FarmsMpPageLayout: FC = ({ children }) => {
+const FarmsMpPageLayout: FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   useInterceptLink()
   const systemInfo = useSystemInfo()
   const { setTheme } = useTheme()

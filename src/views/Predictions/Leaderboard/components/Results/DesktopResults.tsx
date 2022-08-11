@@ -9,7 +9,7 @@ interface DesktopResultsProps {
   results: PredictionUser[]
 }
 
-const DesktopResults: React.FC<DesktopResultsProps> = ({ results }) => {
+const DesktopResults: React.FC<React.PropsWithChildren<DesktopResultsProps>> = ({ results }) => {
   const { t } = useTranslation()
   const { token } = useConfig()
 

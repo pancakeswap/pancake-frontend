@@ -17,7 +17,7 @@ interface MainPancakeBunnyCardProps {
   onSuccessSale: () => void
 }
 
-const MainPancakeBunnyCard: React.FC<MainPancakeBunnyCardProps> = ({
+const MainPancakeBunnyCard: React.FC<React.PropsWithChildren<MainPancakeBunnyCardProps>> = ({
   cheapestNft,
   nothingForSaleBunny,
   onSuccessSale,

@@ -14,7 +14,7 @@ import OldFarm from './FarmTable'
 import { RowProps } from './FarmRow'
 import { DesktopV2ColumnSchema } from '../../types'
 
-const OldFarmStep1: React.FC = () => {
+const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
   const { account } = useWeb3React()
   const { data: farmsLP, userDataLoaded, regularCakePerBlock } = useFarms()
   const { data: farmsV1LP } = useFarmsV1()

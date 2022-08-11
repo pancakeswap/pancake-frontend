@@ -28,7 +28,12 @@ const StyledToastContainer = styled.div`
   }
 `
 
-const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onRemove, ttl = 6000, stackSpacing = 24 }) => {
+const ToastContainer: React.FC<React.PropsWithChildren<ToastContainerProps>> = ({
+  toasts,
+  onRemove,
+  ttl = 6000,
+  stackSpacing = 24,
+}) => {
   return (
     <StyledToastContainer>
       <TransitionGroup>

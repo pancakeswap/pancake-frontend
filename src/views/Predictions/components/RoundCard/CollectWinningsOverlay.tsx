@@ -28,7 +28,11 @@ const Wrapper = styled(Flex)<{ isBottom: CollectWinningsOverlayProps['isBottom']
   }}
 `
 
-const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({ epoch, isBottom = false, ...props }) => {
+const CollectWinningsOverlay: React.FC<React.PropsWithChildren<CollectWinningsOverlayProps>> = ({
+  epoch,
+  isBottom = false,
+  ...props
+}) => {
   const { t } = useTranslation()
   const isClaimable = useGetIsClaimable(epoch)
 

@@ -62,7 +62,7 @@ const StyledCMCLink = styled(UIKitLink)`
 `
 const DEFAULT_TIME_WINDOW: Duration = { weeks: 1 }
 
-const TokenPage: React.FC<{ routeAddress: string }> = ({ routeAddress }) => {
+const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = ({ routeAddress }) => {
   const { isXs, isSm } = useMatchBreakpointsContext()
   const { t } = useTranslation()
 
