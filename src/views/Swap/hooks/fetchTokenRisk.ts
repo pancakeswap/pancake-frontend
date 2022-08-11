@@ -28,8 +28,6 @@ export interface RiskTokenInfo {
 export const fetchRiskToken = async (address: string, chainId: number): Promise<RiskTokenInfo> => {
   try {
     const message = {
-      businessName: 'pancakeswap_smart_contract_detection_realtime',
-      token: '14EE457A1FD0DE889F255422DFD4BD7E',
       params: {
         address,
         chain_id: chainId,
