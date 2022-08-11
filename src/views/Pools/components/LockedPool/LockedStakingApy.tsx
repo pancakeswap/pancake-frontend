@@ -1,7 +1,7 @@
 import { useMemo, memo } from 'react'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 
-import { Flex, Text, Box, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { Flex, Text, Box, TooltipText, useTooltip, HelpIcon } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import { useVaultApy } from 'hooks/useVaultApy'
@@ -47,9 +47,10 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
 
   const usdValueStaked = useBUSDCakeAmount(currentLockedAmount)
 
-  const { weekDuration, lockEndDate, secondDuration, remainingTime } = useUserDataInVaultPresenter({
+  const { weekDuration, lockEndDate, secondDuration, remainingTime, burnStartTime } = useUserDataInVaultPresenter({
     lockStartTime: userData?.lockStartTime,
     lockEndTime: userData?.lockEndTime,
+    burnStartTime: userData?.burnStartTime,
   })
 
   const { lockedApy } = useVaultApy({ duration: secondDuration })
@@ -63,6 +64,18 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
     'Calculated based on current rates and subject to change based on pool conditions. It is an estimate provided for your convenience only, and by no means represents guaranteed returns.',
   )
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
+
+  const tooltipContentOfBurn = t(
+    'After Burning starts at %burnStartTime%. You need to renew your fix-term position, to initiate a new lock or convert your staking position to flexible before it starts. Otherwise all the rewards will be burned within the next 90 days.',
+    { burnStartTime },
+  )
+  const {
+    targetRef: tagTargetRefOfBurn,
+    tooltip: tagTooltipOfBurn,
+    tooltipVisible: tagTooltipVisibleOfBurn,
+  } = useTooltip(tooltipContentOfBurn, {
+    placement: 'bottom',
+  })
 
   return (
     <LightGreyCard>
@@ -87,6 +100,10 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
           </Text>
           <Text color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'} bold fontSize="16px">
             {position >= VaultPosition.LockedEnd ? t('Unlocked') : remainingTime}
+            {tagTooltipVisibleOfBurn && tagTooltipOfBurn}
+            <span ref={tagTargetRefOfBurn}>
+              <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+            </span>
           </Text>
           <Text color={position >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'} fontSize="12px">
             {t('On %date%', { date: lockEndDate })}
