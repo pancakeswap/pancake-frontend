@@ -112,6 +112,8 @@ export const bscTest: Chain = {
   },
   rpcUrls: {
     default: 'https://data-seed-prebsc-1-s2.binance.org:8545/',
+    // https://docs.nodereal.io/nodereal/meganode/meganode-api-overview/public-api-key
+    nodeReal: 'https://bsc-testnet.nodereal.io/v1/e9a36765eb8a40b9bd12e680a1fd2bc5',
   },
   blockExplorers: {
     default: { name: 'BscScan', url: 'https://testnet.bscscan.com' },
