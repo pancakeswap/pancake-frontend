@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef } from 'react'
+import { useCallback, useState, useRef, useEffect } from 'react'
 import { Currency, Token } from '@pancakeswap/sdk'
 import {
   ModalContainer,
@@ -98,6 +98,11 @@ export default function CurrencySearchModal({
   }
   const { isMobile } = useMatchBreakpointsContext()
   const wrapperRef = useRef<HTMLDivElement>(null)
+  const [height, setHeight] = useState(undefined)
+  useEffect(() => {
+    if (!wrapperRef.current) return
+    setHeight(wrapperRef.current.offsetHeight - 330)
+  }, [])
 
   return (
     <StyledModalContainer
@@ -131,6 +136,7 @@ export default function CurrencySearchModal({
             commonBasesType={commonBasesType}
             showImportView={() => setModalView(CurrencyModalView.importToken)}
             setImportToken={setImportToken}
+            height={height}
           />
         ) : modalView === CurrencyModalView.importToken && importToken ? (
           <ImportToken tokens={[importToken]} handleCurrencySelect={handleCurrencySelect} />
