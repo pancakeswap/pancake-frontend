@@ -1,5 +1,5 @@
 import { Box, ModalV2, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
-import { NATIVE } from '@pancakeswap/sdk'
+import { ChainId, NATIVE } from '@pancakeswap/sdk'
 import useActiveWeb3React, { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
@@ -43,6 +43,10 @@ export const NetworkSwitcher = () => {
     (typeof window !== 'undefined' &&
       // @ts-ignore // TODO: add type later
       window.ethereum?.isSafePal)
+
+  if (chainId === ChainId.BSC) {
+    return null
+  }
 
   return (
     <>
