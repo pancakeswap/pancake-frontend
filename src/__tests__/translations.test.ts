@@ -36,6 +36,9 @@ const whitelist = [
   'Add %amountA% %symbolA% and %amountB% %symbolB%',
   'Remove %amount% %symbol%',
   'Remove %amountA% %symbolA% and %amountB% %symbolB%',
+  'Zap %amountA% %symbolA% and %amountB% %symbolB%',
+  'Zap in %amount% BNB for %symbol%',
+  'Zap in %amount% %symbol% for %lpSymbol%',
 ]
 
 describe('Check translations integrity', () => {
