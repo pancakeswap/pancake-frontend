@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { NextLinkFromReactRouter } from 'components/NextLink'
-import { Menu as UikitMenu, useModal } from '@pancakeswap/uikit'
+import { Menu as UikitMenu, ModalV2 } from '@pancakeswap/uikit'
 import { useTranslation, languageList } from '@pancakeswap/localization'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
@@ -38,52 +38,41 @@ const Menu = (props) => {
     return footerLinks(t)
   }, [t])
 
-  const [openNetworkSupportModal, onDismiss] = useModal(
-    <NetworkSupportModal
-      title={activeSubMenuItem?.disabled ? activeSubMenuItem?.label : activeMenuItem?.label}
-      image={activeSubMenuItem?.image || activeMenuItem?.image}
-    />,
-    false,
-    true,
-    'networkSupport',
-  )
-
-  useEffect(() => {
-    if ((activeSubMenuItem?.disabled || activeMenuItem?.disabled) && !chain?.unsupported) {
-      openNetworkSupportModal()
-    } else {
-      onDismiss()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeSubMenuItem, activeMenuItem, chain])
-
   return (
-    <UikitMenu
-      linkComponent={(linkProps) => {
-        return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
-      }}
-      rightSide={
-        <>
-          <GlobalSettings mode={SettingsMode.GLOBAL} />
-          <NetworkSwitcher />
-          <UserMenu />
-        </>
-      }
-      banner={showPhishingWarningBanner && typeof window !== 'undefined' && <PhishingWarningBanner />}
-      isDark={isDark}
-      toggleTheme={toggleTheme}
-      currentLang={currentLanguage.code}
-      langs={languageList}
-      setLang={setLanguage}
-      cakePriceUsd={cakePriceUsd.toNumber()}
-      links={menuItems}
-      subLinks={activeMenuItem?.hideSubNav || activeSubMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
-      footerLinks={getFooterLinks}
-      activeItem={activeMenuItem?.href}
-      activeSubItem={activeSubMenuItem?.href}
-      buyCakeLabel={t('Buy CAKE')}
-      {...props}
-    />
+    <>
+      <UikitMenu
+        linkComponent={(linkProps) => {
+          return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
+        }}
+        rightSide={
+          <>
+            <GlobalSettings mode={SettingsMode.GLOBAL} />
+            <NetworkSwitcher />
+            <UserMenu />
+          </>
+        }
+        banner={showPhishingWarningBanner && typeof window !== 'undefined' && <PhishingWarningBanner />}
+        isDark={isDark}
+        toggleTheme={toggleTheme}
+        currentLang={currentLanguage.code}
+        langs={languageList}
+        setLang={setLanguage}
+        cakePriceUsd={cakePriceUsd.toNumber()}
+        links={menuItems}
+        subLinks={activeMenuItem?.hideSubNav || activeSubMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
+        footerLinks={getFooterLinks}
+        activeItem={activeMenuItem?.href}
+        activeSubItem={activeSubMenuItem?.href}
+        buyCakeLabel={t('Buy CAKE')}
+        {...props}
+      />
+      <ModalV2 isOpen={(activeSubMenuItem?.disabled || activeMenuItem?.disabled) && !chain?.unsupported}>
+        <NetworkSupportModal
+          title={activeSubMenuItem?.disabled ? activeSubMenuItem?.label : activeMenuItem?.label}
+          image={activeSubMenuItem?.image || activeMenuItem?.image}
+        />
+      </ModalV2>
+    </>
   )
 }
 

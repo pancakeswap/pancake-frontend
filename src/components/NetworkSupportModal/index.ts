@@ -1,1 +1,1 @@
-export * from './NetworSupportModal'
+export * from './NetworkSupportModal'
