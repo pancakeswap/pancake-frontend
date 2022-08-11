@@ -86,6 +86,7 @@ interface CurrencyInputPanelProps {
   otherCurrency?: Currency | null
   id: string
   showCommonBases?: boolean
+  commonBasesType?: string
   zapStyle?: ZapStyle
   beforeButton?: React.ReactNode
   disabled?: boolean
@@ -109,6 +110,7 @@ export default function CurrencyInputPanel({
   otherCurrency,
   id,
   showCommonBases,
+  commonBasesType,
   disabled,
   error,
   showBUSD,
@@ -134,6 +136,7 @@ export default function CurrencyInputPanel({
       selectedCurrency={currency}
       otherSelectedCurrency={otherCurrency}
       showCommonBases={showCommonBases}
+      commonBasesType={commonBasesType}
     />,
   )
 
