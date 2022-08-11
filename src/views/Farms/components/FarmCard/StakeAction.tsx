@@ -1,4 +1,4 @@
-import { useWeb3React } from '@web3-react/core'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import styled from 'styled-components'
 import { Button, Flex, IconButton, AddIcon, MinusIcon, useModal } from '@pancakeswap/uikit'
 import useToast from 'hooks/useToast'
@@ -50,7 +50,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
   const cakePrice = usePriceCakeBusd()
   const router = useRouter()
   const dispatch = useAppDispatch()
-  const { account } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const lpPrice = useLpTokenPrice(lpSymbol)
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
@@ -66,7 +66,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
           {t('Your funds have been staked in the farm')}
         </ToastDescriptionWithTx>,
       )
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId }))
     }
   }
 
@@ -81,7 +81,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
           {t('Your earnings have also been harvested to your wallet')}
         </ToastDescriptionWithTx>,
       )
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId }))
     }
   }
 

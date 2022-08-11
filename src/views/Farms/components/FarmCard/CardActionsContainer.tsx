@@ -1,4 +1,5 @@
 import { Button, Flex, Text } from '@pancakeswap/uikit'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from 'contexts/Localization'
@@ -28,6 +29,7 @@ interface FarmCardActionsProps {
 
 const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidityUrl, lpLabel, displayApr }) => {
   const { t } = useTranslation()
+  const { chainId } = useActiveWeb3React()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { pid, lpAddresses } = farm
@@ -46,9 +48,9 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
     })
     if (receipt?.status) {
       toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId }))
     }
-  }, [onApprove, dispatch, account, pid, t, toastSuccess, fetchWithCatchTxError])
+  }, [onApprove, dispatch, chainId, account, pid, t, toastSuccess, fetchWithCatchTxError])
 
   const renderApprovalOrStakeButton = () => {
     return isApproved ? (

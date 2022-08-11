@@ -3,12 +3,12 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import useSWRImmutable from 'swr/immutable'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { getMasterchefContract } from 'utils/contractHelpers'
 import { getFarmConfig } from 'config/constants/farms/index'
-import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
+import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, State } from '../types'
 import {
   farmSelector,
@@ -37,7 +37,7 @@ export const usePollFarmsWithUserData = () => {
     chainId ? ['publicFarmData', chainId] : null,
     () => {
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
-      dispatch(fetchFarmsPublicDataAsync(pids))
+      dispatch(fetchFarmsPublicDataAsync({ pids, chainId }))
     },
     {
       refreshInterval: SLOW_INTERVAL,
@@ -48,7 +48,7 @@ export const usePollFarmsWithUserData = () => {
     account && chainId ? ['farmsWithUserData', account, chainId] : null,
     () => {
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
-      dispatch(fetchFarmUserDataAsync({ account, pids }))
+      dispatch(fetchFarmUserDataAsync({ account, pids, chainId }))
     },
     {
       refreshInterval: SLOW_INTERVAL,
@@ -70,8 +70,12 @@ export const usePollCoreFarmData = () => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
 
+  useEffect(() => {
+    dispatch(fetchInitialFarmsData({ chainId }))
+  }, [chainId, dispatch])
+
   useFastRefreshEffect(() => {
-    dispatch(fetchFarmsPublicDataAsync(coreFarmPIDs[chainId]))
+    dispatch(fetchFarmsPublicDataAsync({ pids: coreFarmPIDs[chainId], chainId }))
   }, [dispatch, chainId])
 }
 

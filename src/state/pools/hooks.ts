@@ -54,7 +54,7 @@ export const useFetchPublicPoolsData = () => {
     (currentBlock) => {
       const fetchPoolsDataWithFarms = async () => {
         const activeFarms = getActiveFarms(chainId)
-        await dispatch(fetchFarmsPublicDataAsync(activeFarms))
+        await dispatch(fetchFarmsPublicDataAsync({ pids: activeFarms, chainId }))
 
         batch(() => {
           dispatch(fetchPoolsPublicDataAsync(currentBlock, chainId))

@@ -6,13 +6,13 @@ import type {
 } from '@reduxjs/toolkit/dist/matchers'
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import stringify from 'fast-json-stable-stringify'
-import farmsConfig from 'config/constants/farms/56'
 import multicall from 'utils/multicall'
 import masterchefABI from 'config/abi/masterchef.json'
 import { getMasterChefAddress } from 'utils/addressHelpers'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { ethersToBigNumber } from 'utils/bigNumber'
 import type { AppState } from 'state'
+import { getFarmConfig } from 'config/constants/farms/index'
 import fetchFarms from './fetchFarms'
 import getFarmsPrices from './getFarmsPrices'
 import {
@@ -25,33 +25,49 @@ import { SerializedFarmsState, SerializedFarm } from '../types'
 import { fetchMasterChefFarmPoolLength } from './fetchMasterChefData'
 import { resetUserState } from '../global/actions'
 
-const noAccountFarmConfig = farmsConfig.map((farm) => ({
-  ...farm,
-  userData: {
-    allowance: '0',
-    tokenBalance: '0',
-    stakedBalance: '0',
-    earnings: '0',
-  },
-}))
+// const noAccountFarmConfig = farmsConfig.map((farm) => ({
+//   ...farm,
+//   userData: {
+//     allowance: '0',
+//     tokenBalance: '0',
+//     stakedBalance: '0',
+//     earnings: '0',
+//   },
+// }))
 
 const initialState: SerializedFarmsState = {
-  data: noAccountFarmConfig,
+  data: [],
   loadArchivedFarmsData: false,
   userDataLoaded: false,
   loadingKeys: {},
 }
 
 // Async thunks
+export const fetchInitialFarmsData = createAsyncThunk<SerializedFarm[], { chainId: number }>(
+  'farms/fetchInitialFarmsData',
+  ({ chainId }) => {
+    const farmDataList = getFarmConfig(chainId)
+    return farmDataList.map((farm) => ({
+      ...farm,
+      userData: {
+        allowance: '0',
+        tokenBalance: '0',
+        stakedBalance: '0',
+        earnings: '0',
+      },
+    }))
+  },
+)
+
 export const fetchFarmsPublicDataAsync = createAsyncThunk<
   [SerializedFarm[], number, number],
-  number[],
+  { pids: number[]; chainId: number },
   {
     state: AppState
   }
 >(
   'farms/fetchFarmsPublicDataAsync',
-  async (pids) => {
+  async ({ pids, chainId }) => {
     const masterChefAddress = getMasterChefAddress()
     const calls = [
       {
@@ -66,6 +82,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
     ]
     const [[poolLength], [cakePerBlockRaw]] = await multicall(masterchefABI, calls)
     const regularCakePerBlock = getBalanceAmount(ethersToBigNumber(cakePerBlockRaw))
+    const farmsConfig = getFarmConfig(chainId)
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
     const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
 
@@ -96,14 +113,15 @@ interface FarmUserDataResponse {
 
 export const fetchFarmUserDataAsync = createAsyncThunk<
   FarmUserDataResponse[],
-  { account: string; pids: number[] },
+  { account: string; pids: number[]; chainId: number },
   {
     state: AppState
   }
 >(
   'farms/fetchFarmUserDataAsync',
-  async ({ account, pids }) => {
+  async ({ account, pids, chainId }) => {
     const poolLength = await fetchMasterChefFarmPoolLength()
+    const farmsConfig = getFarmConfig(chainId)
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
     const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
     const [userFarmAllowances, userFarmTokenBalances, userStakedBalances, userFarmEarnings] = await Promise.all([
@@ -171,6 +189,12 @@ export const farmsSlice = createSlice({
       })
       state.userDataLoaded = false
     })
+    // Init farm data
+    builder.addCase(fetchInitialFarmsData.fulfilled, (state, action) => {
+      const farmData = action.payload
+      state.data = farmData
+    })
+
     // Update farms with live data
     builder.addCase(fetchFarmsPublicDataAsync.fulfilled, (state, action) => {
       const [farmPayload, poolLength, regularCakePerBlock] = action.payload

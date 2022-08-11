@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from 'contexts/Localization'
 import { Button, useModal, IconButton, AddIcon, MinusIcon, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { FarmWithStakedValue } from 'views/Farms/components/types'
@@ -40,7 +40,7 @@ const StakeButton: React.FC<StackedActionProps> = ({
   displayApr,
 }) => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { isDesktop } = useMatchBreakpointsContext()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
@@ -70,7 +70,7 @@ const StakeButton: React.FC<StackedActionProps> = ({
           {t('Your funds have been staked in the farm')}
         </ToastDescriptionWithTx>,
       )
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId }))
     }
   }
 
@@ -85,7 +85,7 @@ const StakeButton: React.FC<StackedActionProps> = ({
           {t('Your earnings have also been harvested to your wallet')}
         </ToastDescriptionWithTx>,
       )
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId }))
     }
   }
 
@@ -122,9 +122,9 @@ const StakeButton: React.FC<StackedActionProps> = ({
     })
     if (receipt?.status) {
       toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId }))
     }
-  }, [onApprove, dispatch, account, pid, t, toastSuccess, fetchWithCatchTxError])
+  }, [onApprove, dispatch, chainId, account, pid, t, toastSuccess, fetchWithCatchTxError])
 
   const handleDeposit = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()

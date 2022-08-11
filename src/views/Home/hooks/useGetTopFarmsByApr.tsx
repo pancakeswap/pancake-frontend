@@ -24,7 +24,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
       setFetchStatus(FetchStatus.Fetching)
       const activeFarms = farmsConfig.filter((farm) => farm.pid !== 0)
       try {
-        await dispatch(fetchFarmsPublicDataAsync(activeFarms.map((farm) => farm.pid)))
+        await dispatch(fetchFarmsPublicDataAsync({ pids: activeFarms.map((farm) => farm.pid), chainId }))
         setFetchStatus(FetchStatus.Fetched)
       } catch (e) {
         console.error(e)
@@ -35,7 +35,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
     if (isIntersecting && fetchStatus === FetchStatus.Idle) {
       fetchFarmData()
     }
-  }, [dispatch, setFetchStatus, fetchStatus, topFarms, isIntersecting, farmsConfig])
+  }, [dispatch, setFetchStatus, fetchStatus, topFarms, isIntersecting, farmsConfig, chainId])
 
   useEffect(() => {
     const getTopFarmsByApr = (farmsState: DeserializedFarm[]) => {
