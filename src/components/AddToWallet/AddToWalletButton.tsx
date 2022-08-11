@@ -6,8 +6,10 @@ import {
   TrustWalletIcon,
   CoinbaseWalletIcon,
   TokenPocketIcon,
+  WalletIcon,
 } from '@pancakeswap/uikit'
-import { registerToken, canRegisterToken } from '../../utils/wallet'
+import { registerToken } from '../../utils/wallet'
+import useCanRegisterToken from '../../hooks/useCanRegisterToken'
 
 export enum AddToWalletTextOptions {
   NO_TEXT,
@@ -41,7 +43,7 @@ const getWalletIcon = (marginTextBetweenLogo: string) => {
   if (window?.ethereum?.isMetaMask) {
     return <MetamaskIcon {...iconProps} />
   }
-  return null
+  return <WalletIcon {...iconProps} />
 }
 
 const getWalletName = () => {
@@ -57,7 +59,7 @@ const getWalletName = () => {
   if (window?.ethereum?.isMetaMask) {
     return 'Metamask'
   }
-  return null
+  return 'Wallet'
 }
 
 const AddToWalletButton: React.FC<React.PropsWithChildren<AddToWalletButtonProps & ButtonProps>> = ({
@@ -70,8 +72,9 @@ const AddToWalletButton: React.FC<React.PropsWithChildren<AddToWalletButtonProps
   ...props
 }) => {
   const { t } = useTranslation()
+  const { canRegisterToken } = useCanRegisterToken()
 
-  if (!canRegisterToken()) return null
+  if (!canRegisterToken) return null
   return (
     <Button {...props} onClick={() => registerToken(tokenAddress, tokenSymbol, tokenDecimals, tokenLogo)}>
       {textOptions !== AddToWalletTextOptions.NO_TEXT &&

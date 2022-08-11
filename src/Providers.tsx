@@ -9,6 +9,7 @@ import { ToastsProvider } from 'contexts/ToastsContext'
 import { fetchStatusMiddleware } from 'hooks/useSWRContract'
 import { Store } from '@reduxjs/toolkit'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
+import { CanRegisterTokenProvider } from './contexts/CanRegisterToken/Provider'
 
 const StyledThemeProvider: React.FC<React.PropsWithChildren> = ({ children, ...props }) => {
   const { resolvedTheme } = useNextTheme()
@@ -27,21 +28,23 @@ const Providers: React.FC<React.PropsWithChildren<{ store: Store; children: Reac
     <Web3ReactProvider getLibrary={getLibrary}>
       <Provider store={store}>
         <MatchBreakpointsProvider>
-          <ToastsProvider>
-            <NextThemeProvider>
-              <StyledThemeProvider>
-                <LanguageProvider>
-                  <SWRConfig
-                    value={{
-                      use: [fetchStatusMiddleware],
-                    }}
-                  >
-                    <ModalProvider>{children}</ModalProvider>
-                  </SWRConfig>
-                </LanguageProvider>
-              </StyledThemeProvider>
-            </NextThemeProvider>
-          </ToastsProvider>
+          <CanRegisterTokenProvider>
+            <ToastsProvider>
+              <NextThemeProvider>
+                <StyledThemeProvider>
+                  <LanguageProvider>
+                    <SWRConfig
+                      value={{
+                        use: [fetchStatusMiddleware],
+                      }}
+                    >
+                      <ModalProvider>{children}</ModalProvider>
+                    </SWRConfig>
+                  </LanguageProvider>
+                </StyledThemeProvider>
+              </NextThemeProvider>
+            </ToastsProvider>
+          </CanRegisterTokenProvider>
         </MatchBreakpointsProvider>
       </Provider>
     </Web3ReactProvider>
