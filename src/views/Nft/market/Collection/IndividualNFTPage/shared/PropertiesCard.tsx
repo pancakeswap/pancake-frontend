@@ -13,7 +13,7 @@ const KNOWN_TRAITS_TEXT = {
   bunnyId: 'Bunny ID',
 }
 
-const SingleProperty: React.FC<{ title: string; value: string | number; rarity: number }> = ({
+const SingleProperty: React.FC<React.PropsWithChildren<{ title: string; value: string | number; rarity: number }>> = ({
   title,
   value,
   rarity,
@@ -37,7 +37,7 @@ const SingleProperty: React.FC<{ title: string; value: string | number; rarity: 
   )
 }
 
-const PropertiesCard: React.FC<PropertiesCardProps> = ({ properties, rarity }) => {
+const PropertiesCard: React.FC<React.PropsWithChildren<PropertiesCardProps>> = ({ properties, rarity }) => {
   const { t } = useTranslation()
   const content = (
     <Box p="24px">

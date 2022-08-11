@@ -11,7 +11,7 @@ interface ConfirmStageProps {
 // or if user wants to pay with WBNB and it is already approved
 // Sell Flow:
 // Shown if user adjusts the price or removes NFT from the market
-const ConfirmStage: React.FC<ConfirmStageProps> = ({ isConfirming, handleConfirm }) => {
+const ConfirmStage: React.FC<React.PropsWithChildren<ConfirmStageProps>> = ({ isConfirming, handleConfirm }) => {
   const { t } = useTranslation()
   return (
     <Flex p="16px" flexDirection="column">

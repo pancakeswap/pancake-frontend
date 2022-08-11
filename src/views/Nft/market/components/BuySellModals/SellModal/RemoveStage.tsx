@@ -6,7 +6,7 @@ interface RemoveStageProps {
   continueToNextStage: () => void
 }
 
-const RemoveStage: React.FC<RemoveStageProps> = ({ continueToNextStage }) => {
+const RemoveStage: React.FC<React.PropsWithChildren<RemoveStageProps>> = ({ continueToNextStage }) => {
   const { t } = useTranslation()
   return (
     <>

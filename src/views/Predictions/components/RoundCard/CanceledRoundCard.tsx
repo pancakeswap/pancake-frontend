@@ -12,7 +12,7 @@ interface CanceledRoundCardProps {
   round: NodeRound
 }
 
-const CanceledRoundCard: React.FC<CanceledRoundCardProps> = ({ round }) => {
+const CanceledRoundCard: React.FC<React.PropsWithChildren<CanceledRoundCardProps>> = ({ round }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { isRefundable, setIsRefundable } = useIsRefundable(round.epoch)

@@ -11,7 +11,7 @@ interface PrizesInfoSectionProps {
   prizesInfoComponent: ReactNode
 }
 
-const PrizesInfoSection: React.FC<PrizesInfoSectionProps> = ({ prizesInfoComponent }) => {
+const PrizesInfoSection: React.FC<React.PropsWithChildren<PrizesInfoSectionProps>> = ({ prizesInfoComponent }) => {
   const { isDark } = useTheme()
   const { t } = useTranslation()
 

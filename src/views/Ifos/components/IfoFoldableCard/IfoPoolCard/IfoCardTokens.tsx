@@ -36,7 +36,12 @@ interface TokenSectionProps extends FlexProps {
   secondaryToken?: Token
 }
 
-const TokenSection: React.FC<TokenSectionProps> = ({ primaryToken, secondaryToken, children, ...props }) => {
+const TokenSection: React.FC<React.PropsWithChildren<TokenSectionProps>> = ({
+  primaryToken,
+  secondaryToken,
+  children,
+  ...props
+}) => {
   const renderTokenComponent = () => {
     if (!primaryToken) {
       return <BunnyPlaceholderIcon width={32} mr="16px" />
@@ -66,7 +71,10 @@ const TokenSection: React.FC<TokenSectionProps> = ({ primaryToken, secondaryToke
   )
 }
 
-const CommitTokenSection: React.FC<TokenSectionProps & { commitToken: Token }> = ({ commitToken, ...props }) => {
+const CommitTokenSection: React.FC<React.PropsWithChildren<TokenSectionProps & { commitToken: Token }>> = ({
+  commitToken,
+  ...props
+}) => {
   if (commitToken.equals(cakeBnbLpToken)) {
     return <TokenSection primaryToken={bscTokens.cake} secondaryToken={bscTokens.wbnb} {...props} />
   }
@@ -105,7 +113,7 @@ const OnSaleInfo = ({ token, saleAmount, distributionRatio }) => {
   )
 }
 
-const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
+const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
   criterias,
   isEligible,
   poolId,

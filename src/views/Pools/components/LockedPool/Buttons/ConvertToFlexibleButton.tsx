@@ -13,7 +13,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { VaultKey } from 'state/types'
 
-const ConvertToFlexibleButton: React.FC<ButtonProps> = (props) => {
+const ConvertToFlexibleButton: React.FC<React.PropsWithChildren<ButtonProps>> = (props) => {
   const dispatch = useAppDispatch()
 
   const { account } = useWeb3React()

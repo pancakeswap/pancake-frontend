@@ -7,7 +7,10 @@ interface LowestPriceStatBoxItemProps extends Omit<StatBoxItemProps, 'title' | '
   collectionAddress: string
 }
 
-const LowestPriceStatBoxItem: React.FC<LowestPriceStatBoxItemProps> = ({ collectionAddress, ...props }) => {
+const LowestPriceStatBoxItem: React.FC<React.PropsWithChildren<LowestPriceStatBoxItemProps>> = ({
+  collectionAddress,
+  ...props
+}) => {
   const { t } = useTranslation()
   const { data: lowestCollectionPrice = null } = useSWR(
     collectionAddress ? [collectionAddress, 'lowestPrice'] : null,

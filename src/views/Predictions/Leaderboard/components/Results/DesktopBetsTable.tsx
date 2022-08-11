@@ -9,7 +9,7 @@ interface DesktopBetsTableProps {
   api: string
 }
 
-const DesktopBetsTable: React.FC<DesktopBetsTableProps> = ({ account, token, api }) => {
+const DesktopBetsTable: React.FC<React.PropsWithChildren<DesktopBetsTableProps>> = ({ account, token, api }) => {
   const { t } = useTranslation()
 
   return (

@@ -16,7 +16,7 @@ interface StakeActionsProps {
   isLoading?: boolean
 }
 
-const StakeAction: React.FC<StakeActionsProps> = ({
+const StakeAction: React.FC<React.PropsWithChildren<StakeActionsProps>> = ({
   pool,
   stakingTokenBalance,
   stakedBalance,

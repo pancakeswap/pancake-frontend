@@ -19,7 +19,7 @@ const Spacer = styled.div<{ isPastSpacer?: boolean }>`
   }
 `
 
-const ProgressStepper: React.FC<CountdownProps> = ({ steps, activeStepIndex }) => {
+const ProgressStepper: React.FC<React.PropsWithChildren<CountdownProps>> = ({ steps, activeStepIndex }) => {
   const { t } = useTranslation()
   return (
     <Flex>

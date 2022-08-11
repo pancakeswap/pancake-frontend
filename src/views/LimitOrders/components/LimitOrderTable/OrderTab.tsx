@@ -21,7 +21,7 @@ interface OrderTabProps {
   onItemClick: (index: ORDER_CATEGORY) => void
 }
 
-const OrderTab: React.FC<OrderTabProps> = ({ activeIndex, onItemClick }) => {
+const OrderTab: React.FC<React.PropsWithChildren<OrderTabProps>> = ({ activeIndex, onItemClick }) => {
   const { theme } = useTheme()
   const { t } = useTranslation()
 

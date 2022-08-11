@@ -8,7 +8,7 @@ export const MatchBreakpointsContext = createContext<BreakpointChecks>({
   isDesktop: false,
 });
 
-export const MatchBreakpointsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const MatchBreakpointsProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const state = useMatchBreakpoints();
 
   return <MatchBreakpointsContext.Provider value={state}>{children}</MatchBreakpointsContext.Provider>;

@@ -10,7 +10,7 @@ interface ZapErrorMessagesProps {
   onModalDismiss: () => void
 }
 
-export const ZapErrorMessages: React.FC<ZapErrorMessagesProps> = memo(
+export const ZapErrorMessages: React.FC<React.PropsWithChildren<ZapErrorMessagesProps>> = memo(
   ({ isSingleToken, zapMode, toggleZapMode, onModalDismiss }) => {
     const { t } = useTranslation()
     const { toastInfo } = useToast()

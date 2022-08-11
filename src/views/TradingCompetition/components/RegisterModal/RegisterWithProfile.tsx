@@ -17,7 +17,11 @@ const StyledLabel = styled.label`
   cursor: pointer;
 `
 
-const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss, onRegisterSuccess }) => {
+const RegisterWithProfile: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
+  profile,
+  onDismiss,
+  onRegisterSuccess,
+}) => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
   const tradingCompetitionContract = useTradingCompetitionContractMoD()
   const { toastSuccess } = useToast()

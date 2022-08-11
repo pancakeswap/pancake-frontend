@@ -50,7 +50,12 @@ const StyledCardRibbon = styled.div<Partial<StyledCardRibbonProps>>`
   }
 `;
 
-const CardRibbon: React.FC<CardRibbonProps> = ({ variantColor, text, ribbonPosition, ...props }) => {
+const CardRibbon: React.FC<React.PropsWithChildren<CardRibbonProps>> = ({
+  variantColor,
+  text,
+  ribbonPosition,
+  ...props
+}) => {
   return (
     <StyledCardRibbon variantColor={variantColor} ribbonPosition={ribbonPosition} {...props}>
       <div title={text}>{text}</div>

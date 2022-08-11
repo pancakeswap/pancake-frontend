@@ -88,7 +88,7 @@ const StyledTeamCard = styled(Card)`
   margin-bottom: 16px;
 `
 
-const TeamCard: React.FC<TeamCardProps> = ({ rank, team }) => {
+const TeamCard: React.FC<React.PropsWithChildren<TeamCardProps>> = ({ rank, team }) => {
   const { t } = useTranslation()
   const avatar = <Avatar src={`/images/teams/${team.images.md}`} alt="team avatar" />
 

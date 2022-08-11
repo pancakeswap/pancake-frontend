@@ -9,7 +9,10 @@ interface PreviousRoundCardFooterProps {
   lotteryId: string
 }
 
-const PreviousRoundCardFooter: React.FC<PreviousRoundCardFooterProps> = ({ lotteryNodeData, lotteryId }) => {
+const PreviousRoundCardFooter: React.FC<React.PropsWithChildren<PreviousRoundCardFooterProps>> = ({
+  lotteryNodeData,
+  lotteryId,
+}) => {
   const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(false)
 

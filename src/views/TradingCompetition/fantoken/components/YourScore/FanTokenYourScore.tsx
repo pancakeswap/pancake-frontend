@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   max-width: 768px;
 `
 
-const FanTokenYourScore: React.FC<YourScoreProps> = ({
+const FanTokenYourScore: React.FC<React.PropsWithChildren<YourScoreProps>> = ({
   hasRegistered = false,
   account,
   userTradingInformation,

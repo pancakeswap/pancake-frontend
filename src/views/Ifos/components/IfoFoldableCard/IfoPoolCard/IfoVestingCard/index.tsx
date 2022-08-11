@@ -21,7 +21,12 @@ interface IfoVestingCardProps {
   walletIfoData: WalletIfoData
 }
 
-const IfoVestingCard: React.FC<IfoVestingCardProps> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
+const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = ({
+  poolId,
+  ifo,
+  publicIfoData,
+  walletIfoData,
+}) => {
   const { t } = useTranslation()
   const { token } = ifo
   const userPool = walletIfoData[poolId]

@@ -40,7 +40,7 @@ interface CakeVaultDetailProps {
   performanceFeeAsDecimal: number
 }
 
-export const CakeVaultDetail: React.FC<CakeVaultDetailProps> = ({
+export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailProps>> = ({
   isLoading = false,
   account,
   pool,
@@ -105,7 +105,7 @@ export const CakeVaultDetail: React.FC<CakeVaultDetailProps> = ({
   )
 }
 
-const CakeVaultCard: React.FC<CakeVaultProps> = ({
+const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
   pool,
   showStakedOnly,
   defaultFooterExpanded,

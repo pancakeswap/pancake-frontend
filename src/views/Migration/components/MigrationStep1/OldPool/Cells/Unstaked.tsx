@@ -22,7 +22,7 @@ export interface UnstakeProps {
   pool: DeserializedPool
 }
 
-const Unstake: React.FC<UnstakeProps> = ({ pool }) => {
+const Unstake: React.FC<React.PropsWithChildren<UnstakeProps>> = ({ pool }) => {
   return (
     <Container>
       <UnstakeButton pool={pool} />

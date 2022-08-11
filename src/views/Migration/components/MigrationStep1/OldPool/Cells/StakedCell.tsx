@@ -32,7 +32,7 @@ const StyledCell = styled(BaseCell)`
   }
 `
 
-const StakedCell: React.FC<StakedCellProps> = ({ pool }) => {
+const StakedCell: React.FC<React.PropsWithChildren<StakedCellProps>> = ({ pool }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
 

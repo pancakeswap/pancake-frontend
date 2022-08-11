@@ -57,7 +57,7 @@ const initialState = {
 
 const defaultValidAddressHandler = () => Promise.resolve(true)
 
-const AddressInputSelect: React.FC<AddressInputSelectProps> = ({
+const AddressInputSelect: React.FC<React.PropsWithChildren<AddressInputSelectProps>> = ({
   onValidAddress = defaultValidAddressHandler,
   onAddressClick,
   ...props

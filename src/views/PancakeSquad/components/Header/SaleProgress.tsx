@@ -34,7 +34,7 @@ const saleProgressTextMapping = (t: ContextApi['t'], saleStatus: SaleStatusEnum,
   }
 }
 
-const SaleProgress: React.FC<PreEventProps> = ({
+const SaleProgress: React.FC<React.PropsWithChildren<PreEventProps>> = ({
   t,
   saleStatus,
   totalTicketsDistributed,

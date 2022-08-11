@@ -19,7 +19,7 @@ interface LabelPriceProps {
   price: BigNumber
 }
 
-const LabelPrice: React.FC<LabelPriceProps> = ({ price }) => {
+const LabelPrice: React.FC<React.PropsWithChildren<LabelPriceProps>> = ({ price }) => {
   const priceAsNumber = useMemo(() => parseFloat(formatBigNumberToFixed(price, 4, 8)), [price])
 
   return (

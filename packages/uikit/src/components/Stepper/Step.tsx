@@ -86,7 +86,7 @@ export const StepNumber = styled.div<StatusProps>`
  * ChildrenLeftWrapper and ChildrenRightWrapper are used on the non mobile version, to force the alternate layout.
  * One of the child is hidden based on the step number.
  */
-export const Step: React.FC<StepProps> = ({
+export const Step: React.FC<React.PropsWithChildren<StepProps>> = ({
   index,
   statusFirstPart,
   statusSecondPart,

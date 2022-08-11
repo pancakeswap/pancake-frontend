@@ -27,7 +27,7 @@ interface InfoProps {
   fetchUserVestingData: () => void
 }
 
-const Info: React.FC<InfoProps> = ({ poolId, data, fetchUserVestingData }) => {
+const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetchUserVestingData }) => {
   const { t } = useTranslation()
   const { token } = data.ifo
   const { vestingComputeReleasableAmount, offeringAmountInToken, vestingInformationPercentage, vestingReleased } =

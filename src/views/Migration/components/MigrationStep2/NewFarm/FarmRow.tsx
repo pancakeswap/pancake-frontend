@@ -54,7 +54,14 @@ const RightContainer = styled.div`
   }
 `
 
-const FarmRow: React.FunctionComponent<RowProps> = ({ earned, farm, staked, apr, multiplier, liquidity }) => {
+const FarmRow: React.FunctionComponent<React.PropsWithChildren<RowProps>> = ({
+  earned,
+  farm,
+  staked,
+  apr,
+  multiplier,
+  liquidity,
+}) => {
   const { isMobile, isXl, isXxl } = useMatchBreakpointsContext()
   const isLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)

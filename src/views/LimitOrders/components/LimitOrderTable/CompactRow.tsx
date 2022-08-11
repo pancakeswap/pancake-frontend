@@ -10,7 +10,7 @@ interface CompactRowProps {
   order: Order
 }
 
-const CompactRow: React.FC<CompactRowProps> = ({ order }) => {
+const CompactRow: React.FC<React.PropsWithChildren<CompactRowProps>> = ({ order }) => {
   const { t } = useTranslation()
   const formattedOrder = useFormattedOrderData(order)
   const { inputToken, outputToken, inputAmount, outputAmount, executionPrice } = formattedOrder

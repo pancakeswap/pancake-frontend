@@ -54,7 +54,7 @@ const Container = styled.div<{ $scrolling: boolean }>`
     `}
 `;
 
-const Dropdown: React.FC<DropdownProps> = ({ target, position = "bottom", children }) => {
+const Dropdown: React.FC<React.PropsWithChildren<DropdownProps>> = ({ target, position = "bottom", children }) => {
   const [scrolling, setScrolling] = useState(false);
   const { isMobile } = useMatchBreakpoints();
 

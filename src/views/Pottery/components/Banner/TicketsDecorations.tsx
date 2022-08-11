@@ -149,7 +149,7 @@ const Container = styled(Box)`
   }
 `
 
-const TicketsDecorations: React.FC<{ children: React.ReactNode }> = () => {
+const TicketsDecorations: React.FC<React.PropsWithChildren> = () => {
   return (
     <Container>
       <img src="/images/pottery/banner-ticket/left1.png" alt="" />

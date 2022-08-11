@@ -24,7 +24,7 @@ const ArrowIcon = styled(ChevronDownIcon)<{ toggled: boolean }>`
   height: 24px;
 `
 
-const ExpandActionCell: React.FC<ExpandActionCellProps> = ({ expanded, showExpandedText }) => {
+const ExpandActionCell: React.FC<React.PropsWithChildren<ExpandActionCellProps>> = ({ expanded, showExpandedText }) => {
   const { t } = useTranslation()
   return (
     <StyledCell role="cell">

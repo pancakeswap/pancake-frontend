@@ -10,7 +10,7 @@ const AuctionCountDown = styled(Flex)`
   margin: 0 16px 0 16px;
 `
 
-const AuctionTimer: React.FC<{ auction: Auction }> = ({ auction }) => {
+const AuctionTimer: React.FC<React.PropsWithChildren<{ auction: Auction }>> = ({ auction }) => {
   const { t } = useTranslation()
   if (!auction) {
     return (

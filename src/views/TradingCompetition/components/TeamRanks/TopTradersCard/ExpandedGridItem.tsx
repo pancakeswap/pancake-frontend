@@ -81,10 +81,9 @@ const TeamImageWrapper = styled(Flex)`
   }
 `
 
-const GridItem: React.FC<{ traderData?: LeaderboardDataItem; teamImages: React.ReactNode[] }> = ({
-  traderData = { address: '', volume: 0, teamId: 0, rank: 0 },
-  teamImages,
-}) => {
+const GridItem: React.FC<
+  React.PropsWithChildren<{ traderData?: LeaderboardDataItem; teamImages: React.ReactNode[] }>
+> = ({ traderData = { address: '', volume: 0, teamId: 0, rank: 0 }, teamImages }) => {
   const { address, volume, teamId, rank } = traderData
   const { profile, isFetching } = useProfileForAddress(address)
 

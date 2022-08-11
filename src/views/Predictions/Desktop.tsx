@@ -113,7 +113,7 @@ const PowerLinkStyle = styled.div`
   top: -40px;
 `
 
-const Desktop: React.FC<{ children: React.ReactNode }> = () => {
+const Desktop: React.FC<React.PropsWithChildren> = () => {
   const splitWrapperRef = useRef<HTMLDivElement>()
   const chartRef = useRef<HTMLDivElement>()
   const gutterRef = useRef<HTMLDivElement>()

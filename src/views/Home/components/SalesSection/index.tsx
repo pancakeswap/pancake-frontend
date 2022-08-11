@@ -18,7 +18,7 @@ export interface SalesSectionProps {
   images: CompositeImageProps
 }
 
-const SalesSection: React.FC<SalesSectionProps> = (props) => {
+const SalesSection: React.FC<React.PropsWithChildren<SalesSectionProps>> = (props) => {
   const { headingText, bodyText, reverse, primaryButton, secondaryButton, images } = props
 
   return (

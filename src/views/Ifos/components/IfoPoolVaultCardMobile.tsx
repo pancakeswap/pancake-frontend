@@ -34,7 +34,7 @@ interface IfoPoolVaultCardMobileProps {
   pool: DeserializedPool
 }
 
-const IfoPoolVaultCardMobile: React.FC<IfoPoolVaultCardMobileProps> = ({ pool }) => {
+const IfoPoolVaultCardMobile: React.FC<React.PropsWithChildren<IfoPoolVaultCardMobileProps>> = ({ pool }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const credit = useIfoCredit()

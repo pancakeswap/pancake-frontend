@@ -17,7 +17,11 @@ const Dot = styled.div`
   width: 8px;
 `
 
-const ProfileUserMenuItem: React.FC<ProfileUserMenuItemProps> = ({ isLoading, hasProfile, disabled }) => {
+const ProfileUserMenuItem: React.FC<React.PropsWithChildren<ProfileUserMenuItemProps>> = ({
+  isLoading,
+  hasProfile,
+  disabled,
+}) => {
   const { account } = useWeb3React()
   const router = useRouter()
   const { t } = useTranslation()

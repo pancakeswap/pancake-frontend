@@ -69,7 +69,7 @@ interface TeamRanksWithParticipantsProps extends TeamRanksProps {
   subgraphName: string
 }
 
-const TeamRanksWithParticipants: React.FC<TeamRanksWithParticipantsProps> = ({
+const TeamRanksWithParticipants: React.FC<React.PropsWithChildren<TeamRanksWithParticipantsProps>> = ({
   image,
   team1LeaderboardInformation,
   team2LeaderboardInformation,

@@ -52,7 +52,10 @@ interface ClaimPrizesModalModalProps {
   onDismiss?: () => void
 }
 
-const ClaimPrizesModal: React.FC<ClaimPrizesModalModalProps> = ({ onDismiss, roundsToClaim }) => {
+const ClaimPrizesModal: React.FC<React.PropsWithChildren<ClaimPrizesModalModalProps>> = ({
+  onDismiss,
+  roundsToClaim,
+}) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { currentLotteryId } = useLottery()

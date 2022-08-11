@@ -15,7 +15,7 @@ interface HarvestActionsProps {
   isLoading?: boolean
 }
 
-const HarvestActions: React.FC<HarvestActionsProps> = ({
+const HarvestActions: React.FC<React.PropsWithChildren<HarvestActionsProps>> = ({
   earnings,
   earningToken,
   sousId,

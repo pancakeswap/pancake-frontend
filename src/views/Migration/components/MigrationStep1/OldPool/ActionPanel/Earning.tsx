@@ -13,7 +13,11 @@ const Container = styled(ActionContainer)`
   flex: 2;
 `
 
-const Earning: React.FunctionComponent<DeserializedPool> = ({ earningToken, userData, earningTokenPrice }) => {
+const Earning: React.FunctionComponent<React.PropsWithChildren<DeserializedPool>> = ({
+  earningToken,
+  userData,
+  earningTokenPrice,
+}) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
 

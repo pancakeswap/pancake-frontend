@@ -5,7 +5,7 @@ interface ComingSoonProps {
   children?: React.ReactNode
 }
 
-const ComingSoon: React.FC<ComingSoonProps> = ({ children }) => {
+const ComingSoon: React.FC<React.PropsWithChildren<ComingSoonProps>> = ({ children }) => {
   const { t } = useTranslation()
 
   return (

@@ -6,7 +6,7 @@ import AddAmountModal from '../Modals/AddAmountModal'
 import { AddButtonProps } from '../types'
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 
-const AddCakeButton: React.FC<AddButtonProps> = ({
+const AddCakeButton: React.FC<React.PropsWithChildren<AddButtonProps>> = ({
   currentBalance,
   stakingToken,
   currentLockedAmount,

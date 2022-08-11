@@ -48,7 +48,7 @@ interface TabToggleGroupProps {
   children: React.ReactElement[]
 }
 
-export const TabToggleGroup: React.FC<TabToggleGroupProps> = ({ children }) => {
+export const TabToggleGroup: React.FC<React.PropsWithChildren<TabToggleGroupProps>> = ({ children }) => {
   return (
     <Wrapper p={['0 4px', '0 16px']}>
       <Inner>{children}</Inner>

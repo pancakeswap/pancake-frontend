@@ -7,7 +7,7 @@ interface Props {
   onDismiss?: () => void
 }
 
-const GetTokenModal: React.FC<Partial<Props>> = ({ currency, onDismiss }) => {
+const GetTokenModal: React.FC<React.PropsWithChildren<Partial<Props>>> = ({ currency, onDismiss }) => {
   const { t } = useTranslation()
   return (
     <Modal title={t('%symbol% required', { symbol: currency.symbol })} onDismiss={onDismiss}>

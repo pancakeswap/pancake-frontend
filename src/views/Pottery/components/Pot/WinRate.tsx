@@ -4,7 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import WinRateModal from 'views/Pottery/components/WinRateModal'
 import { usePotteryData } from 'state/pottery/hook'
 
-const WinRate: React.FC<{ children: React.ReactNode }> = () => {
+const WinRate: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { publicData, userData } = usePotteryData()
 

@@ -14,7 +14,7 @@ const StyledInput = styled(Input)`
   margin-right: 8px;
 `
 
-const LockDurationField: React.FC<LockDurationFieldPropsType> = ({
+const LockDurationField: React.FC<React.PropsWithChildren<LockDurationFieldPropsType>> = ({
   duration,
   setDuration,
   isOverMax,

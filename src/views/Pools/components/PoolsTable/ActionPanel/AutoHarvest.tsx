@@ -12,7 +12,7 @@ import { ActionContainer, ActionTitles, ActionContent, RowActionContainer } from
 import UnstakingFeeCountdownRow from '../../CakeVaultCard/UnstakingFeeCountdownRow'
 import useUserDataInVaultPresenter from '../../LockedPool/hooks/useUserDataInVaultPresenter'
 
-const AutoHarvestAction: React.FunctionComponent<DeserializedPool> = ({
+const AutoHarvestAction: React.FunctionComponent<React.PropsWithChildren<DeserializedPool>> = ({
   userDataLoaded,
   earningTokenPrice,
   vaultKey,

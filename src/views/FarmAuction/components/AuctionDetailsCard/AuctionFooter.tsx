@@ -9,7 +9,7 @@ const FooterInner = styled(Box)`
   background-color: ${({ theme }) => theme.colors.dropdown};
 `
 
-const AuctionFooter: React.FC<{ auction: Auction }> = ({ auction }) => {
+const AuctionFooter: React.FC<React.PropsWithChildren<{ auction: Auction }>> = ({ auction }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const { t } = useTranslation()
   const { topLeaderboard, status } = auction

@@ -20,7 +20,7 @@ const LoadingIndicator = styled(Box)`
   position: relative;
 `
 
-export const BarChartLoader: React.FC<{ children: React.ReactNode }> = () => {
+export const BarChartLoader: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   return (
     <LoadingIndicator>
@@ -34,7 +34,7 @@ export const BarChartLoader: React.FC<{ children: React.ReactNode }> = () => {
   )
 }
 
-export const LineChartLoader: React.FC<{ children: React.ReactNode }> = () => {
+export const LineChartLoader: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   return (
     <LoadingIndicator>
@@ -48,7 +48,7 @@ export const LineChartLoader: React.FC<{ children: React.ReactNode }> = () => {
   )
 }
 
-export const CandleChartLoader: React.FC<{ children: React.ReactNode }> = () => {
+export const CandleChartLoader: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   return (
     <LoadingIndicator>

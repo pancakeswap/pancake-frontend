@@ -1,6 +1,6 @@
 import { Svg, SvgProps } from '@pancakeswap/uikit'
 
-const BarChartLoaderSVG: React.FC<SvgProps> = (props) => {
+const BarChartLoaderSVG: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
   return (
     <Svg width="100%" height="100%" viewBox="0 0 50 25" preserveAspectRatio="none" opacity="0.1" {...props}>
       <rect width="8%" fill="#1FC7D4">

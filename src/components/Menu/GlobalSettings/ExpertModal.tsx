@@ -8,7 +8,10 @@ interface ExpertModalProps extends InjectedModalProps {
   setShowExpertModeAcknowledgement: (boolean) => void
 }
 
-const ExpertModal: React.FC<ExpertModalProps> = ({ setShowConfirmExpertModal, setShowExpertModeAcknowledgement }) => {
+const ExpertModal: React.FC<React.PropsWithChildren<ExpertModalProps>> = ({
+  setShowConfirmExpertModal,
+  setShowExpertModeAcknowledgement,
+}) => {
   const [, toggleExpertMode] = useExpertModeManager()
   const [isRememberChecked, setIsRememberChecked] = useState(false)
 

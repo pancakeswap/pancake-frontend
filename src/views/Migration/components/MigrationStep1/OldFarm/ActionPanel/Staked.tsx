@@ -13,7 +13,7 @@ const Container = styled(ActionContainer)`
   flex: 3;
 `
 
-const Staked: React.FC<FarmProps> = ({ pid, lpSymbol }) => {
+const Staked: React.FC<React.PropsWithChildren<FarmProps>> = ({ pid, lpSymbol }) => {
   const { t } = useTranslation()
   const lpPrice = useLpTokenPrice(lpSymbol)
   const { stakedBalance } = useFarmUser(pid)

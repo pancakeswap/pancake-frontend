@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   max-width: 768px;
 `
 
-const EasterYourScore: React.FC<YourScoreProps> = ({
+const EasterYourScore: React.FC<React.PropsWithChildren<YourScoreProps>> = ({
   hasRegistered = false,
   account,
   userTradingInformation,

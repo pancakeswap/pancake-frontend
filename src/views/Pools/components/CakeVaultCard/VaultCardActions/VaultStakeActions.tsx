@@ -14,7 +14,7 @@ interface VaultStakeActionsProps {
   performanceFee: number
 }
 
-const VaultStakeActions: React.FC<VaultStakeActionsProps> = ({
+const VaultStakeActions: React.FC<React.PropsWithChildren<VaultStakeActionsProps>> = ({
   pool,
   stakingTokenBalance,
   accountHasSharesStaked,

@@ -25,7 +25,9 @@ const showConfetti = () => {
   })
 }
 
-const GalaxyNFTClaimModal: React.FC<InjectedModalProps & { cid: number }> = ({ onDismiss }) => {
+const GalaxyNFTClaimModal: React.FC<React.PropsWithChildren<InjectedModalProps & { cid: number }>> = ({
+  onDismiss,
+}) => {
   const { t } = useTranslation()
 
   useEffect(() => {

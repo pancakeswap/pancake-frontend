@@ -30,7 +30,7 @@ const ScrollableContainer = styled(Flex)`
   }
 `
 
-const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss, mode }) => {
+const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss, mode }) => {
   const [showConfirmExpertModal, setShowConfirmExpertModal] = useState(false)
   const [showExpertModeAcknowledgement, setShowExpertModeAcknowledgement] = useUserExpertModeAcknowledgementShow()
   const [expertMode, toggleExpertMode] = useExpertModeManager()

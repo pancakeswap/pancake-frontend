@@ -8,7 +8,7 @@ interface DesktopRowProps {
   user: PredictionUser
 }
 
-const DesktopRow: React.FC<DesktopRowProps> = ({ rank, user, ...props }) => (
+const DesktopRow: React.FC<React.PropsWithChildren<DesktopRowProps>> = ({ rank, user, ...props }) => (
   <tr {...props}>
     {rank ? (
       <Td>

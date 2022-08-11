@@ -6,7 +6,7 @@ interface ActivityEventTextProps extends TextProps {
   marketEvent: MarketEvent
 }
 
-const ActivityEventText: React.FC<ActivityEventTextProps> = ({ marketEvent, ...props }) => {
+const ActivityEventText: React.FC<React.PropsWithChildren<ActivityEventTextProps>> = ({ marketEvent, ...props }) => {
   const { t } = useTranslation()
 
   const events = {

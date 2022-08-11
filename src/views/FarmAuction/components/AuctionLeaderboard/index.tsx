@@ -34,7 +34,7 @@ const getMostRecentClosedAuctionId = (latestAuctionId: number, latestAuctionStat
   return latestAuctionId - 1
 }
 
-const CurrentAuctionCard: React.FC<AuctionLeaderboardProps> = ({ auction, bidders }) => {
+const CurrentAuctionCard: React.FC<React.PropsWithChildren<AuctionLeaderboardProps>> = ({ auction, bidders }) => {
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState(Tabs.Latest)
 

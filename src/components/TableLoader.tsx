@@ -5,7 +5,7 @@ const GridItem = styled(Flex)`
   align-items: center;
 `
 
-const LoadingRow: React.FC<{ children: React.ReactNode }> = () => {
+const LoadingRow: React.FC<React.PropsWithChildren> = () => {
   const { isXs, isSm } = useMatchBreakpointsContext()
 
   return (
@@ -43,7 +43,7 @@ const LoadingRow: React.FC<{ children: React.ReactNode }> = () => {
   )
 }
 
-const TableLoader: React.FC<{ children: React.ReactNode }> = () => (
+const TableLoader: React.FC<React.PropsWithChildren> = () => (
   <>
     <LoadingRow />
     <LoadingRow />

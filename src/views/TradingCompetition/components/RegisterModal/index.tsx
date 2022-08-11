@@ -18,7 +18,11 @@ const StyledNoProfileAvatarIcon = styled(NoProfileAvatarIcon)`
   height: 100%;
 `
 
-const RegisterModal: React.FC<CompetitionProps> = ({ onDismiss, profile, onRegisterSuccess }) => {
+const RegisterModal: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
+  onDismiss,
+  profile,
+  onRegisterSuccess,
+}) => {
   const { t } = useTranslation()
 
   const modalInner = () => {

@@ -24,7 +24,7 @@ export interface StakedProps {
   stakedBalance: BigNumber
 }
 
-const Staked: React.FC<StakedProps> = ({ label, stakedBalance }) => {
+const Staked: React.FC<React.PropsWithChildren<StakedProps>> = ({ label, stakedBalance }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
 

@@ -21,7 +21,7 @@ const StyledLinkExternal = styled(LinkExternal)`
   font-weight: 400;
 `
 
-const DetailsSection: React.FC<ExpandableSectionProps> = ({
+const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = ({
   bscScanAddress,
   infoAddress,
   removed,

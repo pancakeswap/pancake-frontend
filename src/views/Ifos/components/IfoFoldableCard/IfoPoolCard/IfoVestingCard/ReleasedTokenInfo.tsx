@@ -22,7 +22,11 @@ interface ReleasedTokenInfoProps {
   amountInVesting: BigNumber
 }
 
-const ReleasedTokenInfo: React.FC<ReleasedTokenInfoProps> = ({ ifo, amountReleased, amountInVesting }) => {
+const ReleasedTokenInfo: React.FC<React.PropsWithChildren<ReleasedTokenInfoProps>> = ({
+  ifo,
+  amountReleased,
+  amountInVesting,
+}) => {
   const { t } = useTranslation()
   const { token } = ifo
 

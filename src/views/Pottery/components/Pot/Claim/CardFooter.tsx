@@ -22,7 +22,7 @@ interface CardFooterProps {
   userData: DeserializedPotteryUserData
 }
 
-const CardFooter: React.FC<CardFooterProps> = ({ account, publicData, userData }) => {
+const CardFooter: React.FC<React.PropsWithChildren<CardFooterProps>> = ({ account, publicData, userData }) => {
   const { t } = useTranslation()
   const { getBoostFactor } = useVaultApy()
 

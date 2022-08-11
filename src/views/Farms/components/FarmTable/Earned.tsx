@@ -16,7 +16,10 @@ const Amount = styled.span<{ earned: number }>`
   align-items: center;
 `
 
-const Earned: React.FunctionComponent<EarnedPropsWithLoading> = ({ earnings, userDataReady }) => {
+const Earned: React.FunctionComponent<React.PropsWithChildren<EarnedPropsWithLoading>> = ({
+  earnings,
+  userDataReady,
+}) => {
   if (userDataReady) {
     return <Amount earned={earnings}>{earnings.toLocaleString()}</Amount>
   }

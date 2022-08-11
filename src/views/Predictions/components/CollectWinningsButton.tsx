@@ -9,7 +9,12 @@ interface CollectWinningsButtonProps extends ButtonProps {
   onSuccess?: () => Promise<void>
 }
 
-const CollectWinningsButton: React.FC<CollectWinningsButtonProps> = ({ hasClaimed, onSuccess, children, ...props }) => {
+const CollectWinningsButton: React.FC<React.PropsWithChildren<CollectWinningsButtonProps>> = ({
+  hasClaimed,
+  onSuccess,
+  children,
+  ...props
+}) => {
   const { history, isLoadingHistory } = useCollectWinningModalProps()
   const dispatch = useLocalDispatch()
   const { address: predictionsAddress, token } = useConfig()

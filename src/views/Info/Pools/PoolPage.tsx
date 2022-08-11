@@ -61,7 +61,7 @@ const LockedTokensContainer = styled(Flex)`
   max-width: 280px;
 `
 
-const PoolPage: React.FC<{ address: string }> = ({ address: routeAddress }) => {
+const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ address: routeAddress }) => {
   const { isXs, isSm } = useMatchBreakpointsContext()
   const { t } = useTranslation()
   const [showWeeklyData, setShowWeeklyData] = useState(0)

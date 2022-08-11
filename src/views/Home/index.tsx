@@ -41,7 +41,7 @@ const UserBannerWrapper = styled(Container)`
   }
 `
 
-const Home: React.FC<{ children: React.ReactNode }> = () => {
+const Home: React.FC<React.PropsWithChildren> = () => {
   const { theme } = useTheme()
   const { account } = useWeb3React()
 

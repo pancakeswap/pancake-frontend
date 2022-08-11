@@ -16,7 +16,7 @@ interface BottomDrawerProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const BottomDrawer: React.FC<BottomDrawerProps> = ({ content, isOpen, setIsOpen }) => {
+const BottomDrawer: React.FC<React.PropsWithChildren<BottomDrawerProps>> = ({ content, isOpen, setIsOpen }) => {
   const ref = useRef<HTMLDivElement>(null);
   const shouldRender = useDelayedUnmount(isOpen, 350);
   const { isMobile } = useMatchBreakpoints();

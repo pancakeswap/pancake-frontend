@@ -12,7 +12,11 @@ interface CalculatingCardProps {
   hasEnteredDown: boolean
 }
 
-const CalculatingCard: React.FC<CalculatingCardProps> = ({ round, hasEnteredUp, hasEnteredDown }) => {
+const CalculatingCard: React.FC<React.PropsWithChildren<CalculatingCardProps>> = ({
+  round,
+  hasEnteredUp,
+  hasEnteredDown,
+}) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(

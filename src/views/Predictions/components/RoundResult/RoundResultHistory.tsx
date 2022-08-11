@@ -9,7 +9,7 @@ interface RoundResultProps extends BoxProps {
   round: Round
 }
 
-const RoundResult: React.FC<RoundResultProps> = ({ round, children, ...props }) => {
+const RoundResult: React.FC<React.PropsWithChildren<RoundResultProps>> = ({ round, children, ...props }) => {
   const { lockPrice, closePrice, totalAmount } = round
   const betPosition = closePrice > lockPrice ? BetPosition.BULL : BetPosition.BEAR
   const isPositionUp = betPosition === BetPosition.BULL

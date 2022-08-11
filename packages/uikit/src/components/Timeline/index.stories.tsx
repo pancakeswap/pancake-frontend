@@ -35,7 +35,7 @@ const eventsMock: Event[] = [
   },
 ];
 
-const Template: React.FC<TimelineProps> = (args) => {
+const Template: React.FC<React.PropsWithChildren<TimelineProps>> = (args) => {
   return (
     <Box p="20px">
       <Timeline {...args} />

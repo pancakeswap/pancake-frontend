@@ -73,7 +73,7 @@ const StatRow = styled.div`
   }
 `
 
-const TeamCard: React.FC<TeamCardProps> = ({ id }) => {
+const TeamCard: React.FC<React.PropsWithChildren<TeamCardProps>> = ({ id }) => {
   const { t } = useTranslation()
   const idNumber = Number(id)
   const { data: team, status } = useSWR(['team', id], async () => getTeam(idNumber))

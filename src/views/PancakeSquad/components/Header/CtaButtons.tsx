@@ -33,7 +33,7 @@ export type CtaButtonsProps = {
   ticketsOfUser: BigNumber[]
 }
 
-const CtaButtons: React.FC<CtaButtonsProps> = ({
+const CtaButtons: React.FC<React.PropsWithChildren<CtaButtonsProps>> = ({
   t,
   account,
   saleStatus,

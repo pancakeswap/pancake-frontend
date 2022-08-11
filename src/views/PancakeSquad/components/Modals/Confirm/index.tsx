@@ -32,7 +32,7 @@ type ConfirmModalProps = {
   onConfirmClose: () => void
 } & ModalProps
 
-const ConfirmModal: React.FC<ConfirmModalProps> = ({
+const ConfirmModal: React.FC<React.PropsWithChildren<ConfirmModalProps>> = ({
   onDismiss,
   onConfirmClose,
   title,

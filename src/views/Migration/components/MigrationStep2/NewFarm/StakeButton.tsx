@@ -29,7 +29,7 @@ interface StackedActionProps extends FarmWithStakedValue {
   displayApr?: string
 }
 
-const StakeButton: React.FC<StackedActionProps> = ({
+const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
   pid,
   apr,
   multiplier,

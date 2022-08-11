@@ -8,7 +8,7 @@ export default {
   argTypes: {},
 };
 
-export const Wallet: React.FC<{ children: React.ReactNode }> = () => {
+export const Wallet: React.FC<React.PropsWithChildren> = () => {
   const { onPresentConnectModal } = useWalletModal(
     () => null,
     (s) => s

@@ -25,7 +25,7 @@ const DetailsFooter = styled.div`
   text-align: center;
 `
 
-const UnsupportedModal: React.FC<Props> = ({ currencies, onDismiss }) => {
+const UnsupportedModal: React.FC<React.PropsWithChildren<Props>> = ({ currencies, onDismiss }) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const tokens =

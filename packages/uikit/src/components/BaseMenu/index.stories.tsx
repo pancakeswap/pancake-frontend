@@ -14,7 +14,7 @@ export default {
   title: "Components/Menu",
 };
 
-export const Default: React.FC<{ children: React.ReactNode }> = () => {
+export const Default: React.FC<React.PropsWithChildren> = () => {
   return (
     <Flex justifyContent="space-around" p="64px">
       <InlineMenu component={<Button>Inline Menu #1</Button>}>
@@ -43,7 +43,7 @@ export const Default: React.FC<{ children: React.ReactNode }> = () => {
   );
 };
 
-export const Controlled: React.FC<{ children: React.ReactNode }> = () => {
+export const Controlled: React.FC<React.PropsWithChildren> = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -63,7 +63,7 @@ export const Controlled: React.FC<{ children: React.ReactNode }> = () => {
   );
 };
 
-export const SubMenu: React.FC<{ children: React.ReactNode }> = () => {
+export const SubMenu: React.FC<React.PropsWithChildren> = () => {
   return (
     <BrowserRouter>
       <Flex mb="24px" p="8px" width="300px" border="1px solid grey" justifyContent="space-between" alignItems="center">

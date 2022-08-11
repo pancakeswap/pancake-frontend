@@ -35,7 +35,10 @@ interface RewardsState {
   countWinnersPerBracket: string[]
 }
 
-const RewardBrackets: React.FC<RewardMatchesProps> = ({ lotteryNodeData, isHistoricRound }) => {
+const RewardBrackets: React.FC<React.PropsWithChildren<RewardMatchesProps>> = ({
+  lotteryNodeData,
+  isHistoricRound,
+}) => {
   const { t } = useTranslation()
   const [state, setState] = useState<RewardsState>({
     isLoading: true,

@@ -38,7 +38,7 @@ const DIRECTION_COLORS = {
   [PercentageDirection.MARKET]: 'textSubtle',
 }
 
-const LimitOrderPrice: React.FC<LimitOrderPriceProps> = ({
+const LimitOrderPrice: React.FC<React.PropsWithChildren<LimitOrderPriceProps>> = ({
   id,
   value,
   onUserInput,

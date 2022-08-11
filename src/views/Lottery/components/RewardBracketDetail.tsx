@@ -14,7 +14,7 @@ interface RewardBracketDetailProps {
   isLoading?: boolean
 }
 
-const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
+const RewardBracketDetail: React.FC<React.PropsWithChildren<RewardBracketDetailProps>> = ({
   rewardBracket,
   cakeAmount,
   numberWinners,

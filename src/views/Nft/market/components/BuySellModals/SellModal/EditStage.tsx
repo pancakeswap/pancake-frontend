@@ -14,7 +14,7 @@ interface EditStageProps {
 }
 
 // Initial stage when user wants to edit already listed NFT (i.e. adjust price or remove from sale)
-const EditStage: React.FC<EditStageProps> = ({
+const EditStage: React.FC<React.PropsWithChildren<EditStageProps>> = ({
   nftToSell,
   lowestPrice,
   continueToAdjustPriceStage,
