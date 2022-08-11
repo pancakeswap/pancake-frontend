@@ -145,8 +145,8 @@ export default function CurrencyList({
   const Row = useCallback(
     ({ data, index, style }) => {
       const currency: Currency = data[index]
-      const isSelected = Boolean(selectedCurrency && selectedCurrency.equals(currency))
-      const otherSelected = Boolean(otherCurrency && otherCurrency.equals(currency))
+      const isSelected = Boolean(selectedCurrency && currency && selectedCurrency.equals(currency))
+      const otherSelected = Boolean(otherCurrency && currency && otherCurrency.equals(currency))
       const handleSelect = () => onCurrencySelect(currency)
 
       const token = wrappedCurrency(currency, chainId)

@@ -1,7 +1,7 @@
 import JSBI from 'jsbi'
 import { useDispatch, useSelector } from 'react-redux'
 import { ParsedUrlQuery } from 'querystring'
-import { Currency, CurrencyAmount, Trade, Token, Price, Native, ChainId, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Trade, Token, Price, Native, TradeType } from '@pancakeswap/sdk'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY, BIG_INT_TEN } from 'config/constants/exchange'
 import { useRouter } from 'next/router'
@@ -35,22 +35,13 @@ const getDesiredInput = (
   }
 
   if (isInverted) {
-    const invertedResultAsFraction = parsedOutAmount.asFraction
+    return parsedOutAmount
       .multiply(parsedExchangeRate.asFraction)
-      .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals)))
-    const invertedResultAsAmount = inputCurrency?.isToken
-      ? CurrencyAmount.fromRawAmount(inputCurrency, invertedResultAsFraction.toFixed(0))
-      : CurrencyAmount.fromRawAmount(Native.onChain(ChainId.BSC), invertedResultAsFraction.toFixed(0))
-
-    return invertedResultAsAmount
+      .divide(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(outputCurrency.decimals)))
   }
-  const resultAsFraction = parsedOutAmount.asFraction
+  return parsedOutAmount
     .divide(parsedExchangeRate.asFraction)
     .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals)))
-  const resultAsAmount = inputCurrency?.isToken
-    ? CurrencyAmount.fromRawAmount(inputCurrency, resultAsFraction.quotient.toString())
-    : CurrencyAmount.fromRawAmount(Native.onChain(ChainId.BSC), resultAsFraction.quotient.toString())
-  return resultAsAmount
 }
 
 // Get desired output amount in input basis mode
@@ -60,7 +51,7 @@ const getDesiredOutput = (
   inputCurrency: Currency,
   outputCurrency: Currency,
   isInverted: boolean,
-): CurrencyAmount<Token> | CurrencyAmount<Native> | undefined => {
+): CurrencyAmount<Native | Token> | undefined => {
   if (!inputValue || !inputCurrency || !outputCurrency) {
     return undefined
   }
@@ -72,23 +63,14 @@ const getDesiredOutput = (
   }
 
   if (isInverted) {
-    const invertedResultAsFraction = parsedInputAmount.asFraction
-      .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(outputCurrency.decimals)))
+    return parsedInputAmount
+      .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals)))
       .divide(parsedExchangeRate.asFraction)
-    const invertedResultAsAmount = outputCurrency?.isToken
-      ? CurrencyAmount.fromRawAmount(outputCurrency, invertedResultAsFraction.toFixed(0))
-      : CurrencyAmount.fromRawAmount(Native.onChain(ChainId.BSC), invertedResultAsFraction.toFixed(0))
-
-    return invertedResultAsAmount
   }
 
-  const resultAsFraction = parsedInputAmount.asFraction
+  return parsedInputAmount
     .multiply(parsedExchangeRate.asFraction)
-    .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(outputCurrency.decimals)))
-  const resultAsAmount = outputCurrency?.isToken
-    ? CurrencyAmount.fromRawAmount(outputCurrency, resultAsFraction.quotient.toString())
-    : CurrencyAmount.fromRawAmount(Native.onChain(ChainId.BSC), resultAsFraction.quotient.toString())
-  return resultAsAmount
+    .divide(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(outputCurrency.decimals)))
 }
 
 // Just returns Redux state for limitOrders
@@ -504,8 +486,9 @@ export const useDefaultsFromURLSearch = ():
   const { chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const { query } = useRouter()
-  const [result, setResult] =
-    useState<{ inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined>()
+  const [result, setResult] = useState<
+    { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
+  >()
 
   useEffect(() => {
     if (!chainId) return
