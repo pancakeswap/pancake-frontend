@@ -48,7 +48,7 @@ export default {
   title: "Hooks/useTooltip",
 };
 
-export const Placement: React.FC = () => {
+export const Placement: React.FC<{ children: React.ReactNode }> = () => {
   // Trigger doesn't matter in this story, it just shows tooltips no matter what
   // TOP
   const { targetRef: targetRefTopStart, tooltip: tooltipTopStart } = useTooltip("top-start", {
@@ -140,7 +140,7 @@ export const Placement: React.FC = () => {
   );
 };
 
-export const Triggers: React.FC = () => {
+export const Triggers: React.FC<{ children: React.ReactNode }> = () => {
   const {
     tooltipVisible: tooltipVisibleClick,
     targetRef: targetRefClick,
@@ -177,7 +177,7 @@ export const Triggers: React.FC = () => {
   );
 };
 
-export const EventPropagationAndMobile: React.FC = () => {
+export const EventPropagationAndMobile: React.FC<{ children: React.ReactNode }> = () => {
   const [showExpandedClick, setShowExpandedClick] = useState(false);
   const [showExpandedHover, setShowExpandedHover] = useState(false);
   const {
@@ -240,7 +240,7 @@ export const EventPropagationAndMobile: React.FC = () => {
   );
 };
 
-export const FineTuning: React.FC = () => {
+export const FineTuning: React.FC<{ children: React.ReactNode }> = () => {
   const {
     tooltipVisible: tooltipVisibleDefault,
     targetRef: targetRefDefault,
@@ -268,7 +268,7 @@ export const FineTuning: React.FC = () => {
   );
 };
 
-export const Flipping: React.FC = () => {
+export const Flipping: React.FC<{ children: React.ReactNode }> = () => {
   const { targetRef, tooltip } = useTooltip("All tooltips flip automatically when you scroll", { placement: "top" });
   return (
     <div style={{ padding: "200px", width: "500px", height: "2000px" }}>
@@ -278,7 +278,7 @@ export const Flipping: React.FC = () => {
   );
 };
 
-export const ScreenEdges: React.FC = () => {
+export const ScreenEdges: React.FC<{ children: React.ReactNode }> = () => {
   const {
     targetRef: targetRefLeft,
     tooltip: tooltipLeft,
@@ -319,7 +319,7 @@ export const ScreenEdges: React.FC = () => {
   );
 };
 
-export const ThemeInversion: React.FC = () => {
+export const ThemeInversion: React.FC<{ children: React.ReactNode }> = () => {
   const tooltipContent = (
     <>
       <Text>Tooltips have inverted theme</Text>

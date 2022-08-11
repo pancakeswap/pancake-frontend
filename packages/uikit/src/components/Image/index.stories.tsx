@@ -17,7 +17,7 @@ export default {
   argTypes: {},
 };
 
-export const Image: React.FC = () => {
+export const Image: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <div>
       <Img src="https://via.placeholder.com/800x400" width={800} height={400} alt="test" />
@@ -26,7 +26,7 @@ export const Image: React.FC = () => {
   );
 };
 
-export const Background: React.FC = () => {
+export const Background: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <div>
       <BackgroundImage src="https://via.placeholder.com/800x400" width={800} height={400} mr="16px" />
@@ -35,7 +35,7 @@ export const Background: React.FC = () => {
   );
 };
 
-export const LazyImages: React.FC = () => {
+export const LazyImages: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <Flex flexWrap="wrap">
       {times(40, (index) => (
@@ -52,7 +52,7 @@ export const LazyImages: React.FC = () => {
   );
 };
 
-export const LazyBackgrounds: React.FC = () => {
+export const LazyBackgrounds: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <Flex flexWrap="wrap">
       {times(40, (index) => (
@@ -75,7 +75,7 @@ const StyledBox = styled(Box)`
   text-align: center;
 `;
 
-export const TokenImages: React.FC = () => {
+export const TokenImages: React.FC<{ children: React.ReactNode }> = () => {
   const tokens = Object.values(tokenList).filter((token) => !!token?.address);
   return (
     <Flex flexWrap="wrap">
@@ -95,7 +95,7 @@ export const TokenImages: React.FC = () => {
   );
 };
 
-export const TokenPairImages: React.FC = () => {
+export const TokenPairImages: React.FC<{ children: React.ReactNode }> = () => {
   const tokens = Object.values(tokenList).filter((token) => !!token?.address);
   return (
     <Flex flexWrap="wrap">
@@ -129,7 +129,7 @@ export const TokenPairImages: React.FC = () => {
   );
 };
 
-export const ProfileAvatar: React.FC = () => {
+export const ProfileAvatar: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <div>
       <Text>Shows Placeholder until image is downloaded</Text>

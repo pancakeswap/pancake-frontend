@@ -1,7 +1,7 @@
 import { Text, Flex, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 
-const CannotBidMessage: React.FC = () => {
+const CannotBidMessage: React.FC<{ children: React.ReactNode }> = () => {
   const { t } = useTranslation()
   const { tooltip, targetRef, tooltipVisible } = useTooltip(
     <>

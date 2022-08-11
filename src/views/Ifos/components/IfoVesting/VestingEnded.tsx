@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Text } from '@pancakeswap/uikit'
 
-const VestingEnded: React.FC = () => {
+const VestingEnded: React.FC<{ children: React.ReactNode }> = () => {
   const { t } = useTranslation()
 
   return (

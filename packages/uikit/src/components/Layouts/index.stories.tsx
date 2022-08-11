@@ -13,7 +13,7 @@ const Stub = styled.div`
   height: 300px;
 `;
 
-export const Base: React.FC = () => {
+export const Base: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <BaseLayout>
       {[...Array(24)].map((value) => (
@@ -23,7 +23,7 @@ export const Base: React.FC = () => {
   );
 };
 
-export const Cards: React.FC = () => {
+export const Cards: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <CardsLayout>
       {[...Array(10)].map((value) => (

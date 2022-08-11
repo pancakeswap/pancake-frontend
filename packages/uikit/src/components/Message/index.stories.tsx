@@ -8,7 +8,7 @@ export default {
   argTypes: {},
 };
 
-export const Default: React.FC = () => {
+export const Default: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <>
       <Message variant="warning" mb="16px">

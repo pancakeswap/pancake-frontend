@@ -243,7 +243,7 @@ const LimitTradeInfoCard: React.FC<LimitTradeInfoCardProps> = memo(
   },
 )
 
-const LoadingContent: React.FC = memo(() => {
+const LoadingContent: React.FC<{ children: React.ReactNode }> = memo(() => {
   const { t } = useTranslation()
   return (
     <Flex>

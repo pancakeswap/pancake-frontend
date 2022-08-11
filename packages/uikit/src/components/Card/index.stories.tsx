@@ -20,7 +20,7 @@ export default {
   argTypes: {},
 } as Meta;
 
-export const Default: React.FC = () => {
+export const Default: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <div style={{ padding: "32px", width: "500px" }}>
       <Row>
@@ -57,7 +57,7 @@ export const Default: React.FC = () => {
   );
 };
 
-export const CardHeader: React.FC = () => {
+export const CardHeader: React.FC<{ children: React.ReactNode }> = () => {
   const theme = useTheme();
   // This is example how to make card header "overlap" the border.
   // Seems to be easiest solution that works on all screens and does not rely on absolute positioning trickery
@@ -130,7 +130,7 @@ export const CardHeader: React.FC = () => {
   );
 };
 
-export const CustomBackground: React.FC = () => {
+export const CustomBackground: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <div style={{ padding: "32px", width: "500px" }}>
       <Card background="#f0c243" borderBackground="#b88700">
@@ -140,7 +140,7 @@ export const CustomBackground: React.FC = () => {
   );
 };
 
-export const Ribbon: React.FC = () => {
+export const Ribbon: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <div style={{ padding: "32px", width: "500px" }}>
       <Row>

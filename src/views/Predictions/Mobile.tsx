@@ -41,7 +41,7 @@ const getView = (isHistoryPaneOpen: boolean, isChartPaneOpen: boolean): PageView
   return PageView.POSITIONS
 }
 
-const Mobile: React.FC = () => {
+const Mobile: React.FC<{ children: React.ReactNode }> = () => {
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const isChartPaneOpen = useIsChartPaneOpen()
   const view = getView(isHistoryPaneOpen, isChartPaneOpen)

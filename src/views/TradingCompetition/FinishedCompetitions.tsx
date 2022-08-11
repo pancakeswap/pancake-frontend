@@ -6,7 +6,7 @@ import MoboxAllBunnies from './pngs/mobox-all-bunnies.png'
 import SubMenu from './components/SubMenu'
 import FinishedCompetitionBanner from './components/FinishedCompetitionBanner'
 
-const FinishedCompetitions: React.FC = () => {
+const FinishedCompetitions: React.FC<{ children: React.ReactNode }> = () => {
   const { t } = useTranslation()
   return (
     <>

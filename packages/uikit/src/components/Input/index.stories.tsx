@@ -25,7 +25,7 @@ export default {
   argTypes: {},
 } as Meta;
 
-export const Default: React.FC = () => {
+export const Default: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <div>
       {Object.keys(scales).map((key) => (
@@ -44,7 +44,7 @@ export const Default: React.FC = () => {
   );
 };
 
-export const Icons: React.FC = () => {
+export const Icons: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <Box width="300px">
       <InputGroup startIcon={<Search width="18px" />} endIcon={<StarFill width="18px" />} mb="24px" scale="sm">

@@ -33,25 +33,25 @@ const ProfileIcon = styled(Image)`
   }
 `;
 
-export const NoProfileMenuIcon: React.FC = () => (
+export const NoProfileMenuIcon: React.FC<{ children: React.ReactNode }> = () => (
   <MenuIconWrapper borderColor="primary">
     <WalletFilledIcon color="primary" width="24px" />
   </MenuIconWrapper>
 );
 
-export const PendingMenuIcon: React.FC = () => (
+export const PendingMenuIcon: React.FC<{ children: React.ReactNode }> = () => (
   <MenuIconWrapper borderColor="secondary">
     <RefreshIcon color="secondary" width="24px" spin />
   </MenuIconWrapper>
 );
 
-export const WarningMenuIcon: React.FC = () => (
+export const WarningMenuIcon: React.FC<{ children: React.ReactNode }> = () => (
   <MenuIconWrapper borderColor="warning">
     <WarningIcon color="warning" width="24px" />
   </MenuIconWrapper>
 );
 
-export const DangerMenuIcon: React.FC = () => (
+export const DangerMenuIcon: React.FC<{ children: React.ReactNode }> = () => (
   <MenuIconWrapper borderColor="failure">
     <WarningIcon color="failure" width="24px" />
   </MenuIconWrapper>

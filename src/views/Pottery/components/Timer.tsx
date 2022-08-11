@@ -29,7 +29,7 @@ const StyledWhiteText = styled(Text)`
   }
 `
 
-export const BannerTimer: React.FC = () => {
+export const BannerTimer: React.FC<{ children: React.ReactNode }> = () => {
   const { t } = useTranslation()
 
   const secondsRemaining = remainTimeToNextFriday()

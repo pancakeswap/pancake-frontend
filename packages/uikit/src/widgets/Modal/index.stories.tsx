@@ -18,7 +18,7 @@ const CustomModal: React.FC<ModalProps> = ({ title, onDismiss, ...props }) => (
   </Modal>
 );
 
-export const Default: React.FC = () => {
+export const Default: React.FC<{ children: React.ReactNode }> = () => {
   const theme = useTheme();
   const [onPresent1] = useModal(<CustomModal title="Modal 1" />);
   const [onPresent2] = useModal(<CustomModal title="Modal 2" />);
@@ -32,7 +32,7 @@ export const Default: React.FC = () => {
   );
 };
 
-export const DisableOverlayClick: React.FC = () => {
+export const DisableOverlayClick: React.FC<{ children: React.ReactNode }> = () => {
   const [onPresent1] = useModal(<CustomModal title="Modal 1" />, false);
 
   return (
@@ -42,7 +42,7 @@ export const DisableOverlayClick: React.FC = () => {
   );
 };
 
-export const WithBackButton: React.FC = () => {
+export const WithBackButton: React.FC<{ children: React.ReactNode }> = () => {
   const BackButtonModal: React.FC<ModalProps> = ({ title, onDismiss }) => {
     const handleOnBack = () => {
       return 1;
@@ -62,7 +62,7 @@ export const WithBackButton: React.FC = () => {
   return <Button onClick={onPresent1}>Only Back Button</Button>;
 };
 
-export const WithCustomHeader: React.FC = () => {
+export const WithCustomHeader: React.FC<{ children: React.ReactNode }> = () => {
   const CustomHeaderModal: React.FC<ModalProps> = ({ title, onDismiss }) => {
     return (
       <Modal title={title} headerBackground="primary" onDismiss={onDismiss}>
@@ -96,7 +96,7 @@ export const WithCustomHeader: React.FC = () => {
   return <Button onClick={onPresent1}>Modal with custom header</Button>;
 };
 
-export const ReactingToOutsideChanges: React.FC = () => {
+export const ReactingToOutsideChanges: React.FC<{ children: React.ReactNode }> = () => {
   const [counter, setCounter] = useState(0);
   useEffect(() => {
     const intervalId = setInterval(() => {

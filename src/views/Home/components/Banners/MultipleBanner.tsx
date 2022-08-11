@@ -88,7 +88,7 @@ const StyledSwiper = styled(Swiper)`
   }
 `
 
-const MultipleBanner: React.FC = () => {
+const MultipleBanner: React.FC<{ children: React.ReactNode }> = () => {
   const bannerList = useMultipleBannerConfig()
   const { account } = useWeb3React()
   const { isDesktop, isTablet } = useMatchBreakpointsContext()

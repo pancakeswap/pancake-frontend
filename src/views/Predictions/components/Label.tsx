@@ -143,7 +143,7 @@ const Label = styled(Flex)<{ dir: 'left' | 'right'; backgroundOpacity?: boolean 
   }
 `
 
-export const PricePairLabel: React.FC = () => {
+export const PricePairLabel: React.FC<{ children: React.ReactNode }> = () => {
   const { token } = useConfig()
   const router = useRouter()
   const { t } = useTranslation()

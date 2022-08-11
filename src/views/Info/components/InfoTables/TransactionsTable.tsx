@@ -72,7 +72,7 @@ const SORT_FIELD = {
   amountToken1: 'amountToken1',
 }
 
-const TableLoader: React.FC = () => {
+const TableLoader: React.FC<{ children: React.ReactNode }> = () => {
   const loadingRow = (
     <ResponsiveGrid>
       <Skeleton />

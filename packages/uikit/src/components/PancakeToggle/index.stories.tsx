@@ -6,7 +6,7 @@ export default {
   component: PancakeToggle,
 };
 
-export const Default: React.FC = () => {
+export const Default: React.FC<{ children: React.ReactNode }> = () => {
   const [isChecked, setIsChecked] = useState(false);
 
   const toggle = () => setIsChecked(!isChecked);

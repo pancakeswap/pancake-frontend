@@ -52,7 +52,7 @@ const WalletModal: React.FC<WalletModalProps> = ({ initialView = WalletView.WALL
     setView(newIndex)
   }
 
-  const TabsComponent: React.FC = () => (
+  const TabsComponent: React.FC<{ children: React.ReactNode }> = () => (
     <Tabs>
       <ButtonMenu scale="sm" variant="subtle" onItemClick={handleClick} activeIndex={view} fullWidth>
         <ButtonMenuItem>{t('Wallet')}</ButtonMenuItem>

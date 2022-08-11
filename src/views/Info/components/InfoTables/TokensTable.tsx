@@ -75,7 +75,7 @@ const ResponsiveLogo = styled(CurrencyLogo)`
   }
 `
 
-const TableLoader: React.FC = () => {
+const TableLoader: React.FC<{ children: React.ReactNode }> = () => {
   const loadingRow = (
     <ResponsiveGrid>
       <Skeleton />

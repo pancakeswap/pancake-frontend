@@ -39,7 +39,7 @@ export default {
   },
 };
 
-export const Default: React.FC = () => {
+export const Default: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <div>
       <Text>Default</Text>
@@ -68,7 +68,7 @@ export const Default: React.FC = () => {
   );
 };
 
-export const TooltipTextVariant: React.FC = () => {
+export const TooltipTextVariant: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <div>
       <Text>Use TooltipText for text that has tooltip, it accepts the same props as normal Text component</Text>

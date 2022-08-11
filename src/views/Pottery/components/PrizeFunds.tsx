@@ -101,7 +101,7 @@ const PoolAllocations = () => {
   )
 }
 
-const PrizeFunds: React.FC = () => {
+const PrizeFunds: React.FC<{ children: React.ReactNode }> = () => {
   const { t } = useTranslation()
 
   return (

@@ -9,7 +9,7 @@ export default {
   argTypes: {},
 };
 
-export const Default: React.FC = () => {
+export const Default: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <div style={{ width: "640px" }}>
       <Card>

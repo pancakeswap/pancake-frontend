@@ -10,7 +10,7 @@ export default {
   argTypes: {},
 };
 
-export const Default: React.FC = () => {
+export const Default: React.FC<{ children: React.ReactNode }> = () => {
   const [isOpen, setIsOpen] = useState(false);
   const content = (
     <Box px="16px" pt="22px" height="100%" overflowY="auto">

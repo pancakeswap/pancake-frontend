@@ -6,7 +6,7 @@ import { useAllPoolData, usePoolDatas } from 'state/info/hooks'
 import { useWatchlistPools } from 'state/user/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 
-const PoolsOverview: React.FC = () => {
+const PoolsOverview: React.FC<{ children: React.ReactNode }> = () => {
   const { t } = useTranslation()
 
   // get all the pool datas that exist

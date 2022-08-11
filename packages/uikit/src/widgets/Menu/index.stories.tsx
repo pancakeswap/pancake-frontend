@@ -58,7 +58,7 @@ const GlobalMenuModal: React.FC<ModalProps> = ({ title, onDismiss, ...props }) =
   </Modal>
 );
 
-const GlobalMenuComponent: React.FC = () => {
+const GlobalMenuComponent: React.FC<{ children: React.ReactNode }> = () => {
   const [onPresent1] = useModal(<GlobalMenuModal title="Display Settings Modal" />);
   const [onPresent2] = useModal(<GlobalMenuModal title="Global Settings Modal" />);
 
@@ -189,7 +189,7 @@ ConnectedWithBanner.args = {
   ),
 };
 
-export const NotConnected: React.FC = () => {
+export const NotConnected: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <BrowserRouter>
       <Menu
@@ -222,7 +222,7 @@ export const NotConnected: React.FC = () => {
   );
 };
 
-export const WithoutConnectButton: React.FC = () => {
+export const WithoutConnectButton: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <BrowserRouter>
       <Menu
@@ -247,7 +247,7 @@ export const WithoutConnectButton: React.FC = () => {
   );
 };
 
-export const WithSubmenuSelected: React.FC = () => {
+export const WithSubmenuSelected: React.FC<{ children: React.ReactNode }> = () => {
   return (
     <MemoryRouter initialEntries={["/teams"]}>
       <Menu
@@ -274,7 +274,7 @@ export const WithSubmenuSelected: React.FC = () => {
   );
 };
 
-export const UserMenuWithVariants: React.FC = () => {
+export const UserMenuWithVariants: React.FC<{ children: React.ReactNode }> = () => {
   const [variant, setVariant] = useState<Variant>(variants.DEFAULT);
   const [text, setText] = useState(undefined);
 

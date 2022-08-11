@@ -218,7 +218,7 @@ const GappedFlex = styled(Flex)`
   gap: 24px;
 `
 
-const HowToPlay: React.FC = () => {
+const HowToPlay: React.FC<{ children: React.ReactNode }> = () => {
   const { t } = useTranslation()
 
   const steps: Step[] = [

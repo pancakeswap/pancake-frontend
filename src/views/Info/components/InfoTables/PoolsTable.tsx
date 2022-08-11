@@ -63,7 +63,7 @@ const SORT_FIELD = {
   lpApr7d: 'lpApr7d',
 }
 
-const LoadingRow: React.FC = () => (
+const LoadingRow: React.FC<{ children: React.ReactNode }> = () => (
   <ResponsiveGrid>
     <Skeleton />
     <Skeleton />
@@ -75,7 +75,7 @@ const LoadingRow: React.FC = () => (
   </ResponsiveGrid>
 )
 
-const TableLoader: React.FC = () => (
+const TableLoader: React.FC<{ children: React.ReactNode }> = () => (
   <>
     <LoadingRow />
     <LoadingRow />
