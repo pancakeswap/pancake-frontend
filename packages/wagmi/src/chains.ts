@@ -90,10 +90,6 @@ export const bsc: Chain = {
     default: bscExplorer,
     etherscan: bscExplorer,
   },
-  multicall: {
-    address: '0xfF6FD90A470Aaa0c1B8A54681746b07AcdFedc9B',
-    blockCreated: 7162653,
-  },
   nativeCurrency: {
     name: 'Binance Chain Native Token',
     symbol: 'BNB',
@@ -117,10 +113,6 @@ export const bscTest: Chain = {
   },
   blockExplorers: {
     default: { name: 'BscScan', url: 'https://testnet.bscscan.com' },
-  },
-  multicall: {
-    address: '0x8F3273Fb89B075b1645095ABaC6ed17B2d4Bc576',
-    blockCreated: 9759845,
   },
   testnet: true,
 }
