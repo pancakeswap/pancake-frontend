@@ -40,7 +40,7 @@ interface State {
   position: BetPosition
 }
 
-const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
+const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
   round,
   betAmount,
   hasEnteredUp,

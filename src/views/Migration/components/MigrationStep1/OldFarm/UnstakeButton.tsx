@@ -15,7 +15,7 @@ export interface UnstakeButtonProps {
   pid: number
 }
 
-const UnstakeButton: React.FC<UnstakeButtonProps> = ({ pid }) => {
+const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ pid }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { toastSuccess } = useToast()

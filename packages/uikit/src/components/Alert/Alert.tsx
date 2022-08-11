@@ -74,7 +74,7 @@ const StyledAlert = styled(Flex)`
   box-shadow: 0px 20px 36px -8px rgba(14, 14, 44, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.05);
 `;
 
-const Alert: React.FC<AlertProps> = ({ title, children, variant, onClick }) => {
+const Alert: React.FC<React.PropsWithChildren<AlertProps>> = ({ title, children, variant, onClick }) => {
   const Icon = getIcon(variant);
 
   return (

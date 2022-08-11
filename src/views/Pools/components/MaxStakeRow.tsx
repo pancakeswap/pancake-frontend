@@ -16,7 +16,7 @@ interface MaxStakeRowProps {
   hasPoolStarted: boolean
 }
 
-const MaxStakeRow: React.FC<MaxStakeRowProps> = ({
+const MaxStakeRow: React.FC<React.PropsWithChildren<MaxStakeRowProps>> = ({
   small = false,
   stakingLimit,
   currentBlock,

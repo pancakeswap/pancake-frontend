@@ -24,7 +24,7 @@ export interface FooterEntryProps {
   tooltipContent?: string
 }
 
-const FooterEntry: React.FC<FooterEntryProps> = ({ label, value, tooltipContent }) => {
+const FooterEntry: React.FC<React.PropsWithChildren<FooterEntryProps>> = ({ label, value, tooltipContent }) => {
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
 
   return (
@@ -116,7 +116,13 @@ const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; 
   )
 }
 
-const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ isEligible, poolId, ifo, publicIfoData, walletIfoData }) => {
+const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = ({
+  isEligible,
+  poolId,
+  ifo,
+  publicIfoData,
+  walletIfoData,
+}) => {
   const { t } = useTranslation()
   const { status, currencyPriceInUSD } = publicIfoData
   const poolCharacteristic = publicIfoData[poolId]

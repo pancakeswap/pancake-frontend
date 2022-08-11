@@ -8,7 +8,10 @@ interface AchievementPointsProps {
   userPointReward: number | string
 }
 
-const AchievementPoints: React.FC<AchievementPointsProps> = ({ achievement, userPointReward }) => {
+const AchievementPoints: React.FC<React.PropsWithChildren<AchievementPointsProps>> = ({
+  achievement,
+  userPointReward,
+}) => {
   const { t } = useTranslation()
 
   return (

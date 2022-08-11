@@ -53,7 +53,7 @@ interface CountdownProps {
   activeStepIndex: number
 }
 
-const Step: React.FC<CountdownProps> = ({ index, stepText, timeStamp, activeStepIndex }) => {
+const Step: React.FC<React.PropsWithChildren<CountdownProps>> = ({ index, stepText, timeStamp, activeStepIndex }) => {
   const { t } = useTranslation()
   const isExpired = index < activeStepIndex
   const isActive = index === activeStepIndex

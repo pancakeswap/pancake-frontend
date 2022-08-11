@@ -23,7 +23,7 @@ import { PancakeSquadHeaderType } from './types'
 const DEFAULT_CAKE_COST = 15
 const DEFAULT_MAX_TICKETS = 10
 
-const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
+const PancakeSquadHeader: React.FC<React.PropsWithChildren<PancakeSquadHeaderType>> = ({
   userInfos,
   eventInfos,
   account,

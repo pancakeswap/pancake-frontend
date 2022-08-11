@@ -19,7 +19,7 @@ import { LogoWithTextIcon, ArrowForwardIcon } from "../Svg";
 import { Button } from "../Button";
 import { Colors } from "../..";
 
-const MenuItem: React.FC<FooterProps> = ({
+const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
   items,
   isDark,
   toggleTheme,

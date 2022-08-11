@@ -30,7 +30,9 @@ const IndividualPancakeBunnyPage = (props: IndividualPancakeBunnyPageProps) => {
   return <IndividualPancakeBunnyPageBase {...props} />
 }
 
-const IndividualPancakeBunnyPageBase: React.FC<IndividualPancakeBunnyPageProps> = ({ bunnyId }) => {
+const IndividualPancakeBunnyPageBase: React.FC<React.PropsWithChildren<IndividualPancakeBunnyPageProps>> = ({
+  bunnyId,
+}) => {
   const collection = useGetCollection(pancakeBunniesAddress)
   const totalBunnyCount = Number(collection?.totalSupply)
   const [nothingForSaleBunny, setNothingForSaleBunny] = useState<NftToken>(null)

@@ -24,7 +24,7 @@ interface AprProps extends FlexProps {
   fontSize?: string
 }
 
-const Apr: React.FC<AprProps> = ({
+const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
   pool,
   showIcon,
   stakedBalance,

@@ -9,7 +9,7 @@ interface SequencePlayerProps {
   onPlayFinish?: () => void;
 }
 
-export const SequencePlayer: React.FC<SequencePlayerProps> = ({
+export const SequencePlayer: React.FC<React.PropsWithChildren<SequencePlayerProps>> = ({
   images,
   msPerFrame = 32,
   onPlayFinish,

@@ -73,7 +73,12 @@ interface FinishedCompetitionBannerProps {
   to: string
 }
 
-const FinishedCompetitionBanner: React.FC<FinishedCompetitionBannerProps> = ({ title, imgSrc, background, to }) => {
+const FinishedCompetitionBanner: React.FC<React.PropsWithChildren<FinishedCompetitionBannerProps>> = ({
+  title,
+  imgSrc,
+  background,
+  to,
+}) => {
   const { isDesktop } = useMatchBreakpointsContext()
 
   return (

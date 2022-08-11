@@ -25,7 +25,7 @@ interface ResultsProps {
   votesLoadingStatus: FetchStatus
 }
 
-const Results: React.FC<ResultsProps> = ({ choices, votes, votesLoadingStatus }) => {
+const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ choices, votes, votesLoadingStatus }) => {
   const { t } = useTranslation()
   const results = calculateVoteResults(votes)
   const { account } = useWeb3React()

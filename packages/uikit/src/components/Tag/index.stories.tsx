@@ -10,7 +10,7 @@ export default {
   argTypes: {},
 };
 
-export const Default: React.FC = () => {
+export const Default: React.FC<React.PropsWithChildren> = () => {
   return (
     <Box>
       {Object.values(variants).map((variant) => {
@@ -44,7 +44,7 @@ export const Default: React.FC = () => {
   );
 };
 
-export const TextVariations: React.FC = () => {
+export const TextVariations: React.FC<React.PropsWithChildren> = () => {
   return (
     <div>
       <Tag textTransform="uppercase" mr="16px">

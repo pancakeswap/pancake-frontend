@@ -16,7 +16,7 @@ interface FinishedRoundTableProps {
   numUserRoundsRequested: number
 }
 
-const FinishedRoundTable: React.FC<FinishedRoundTableProps> = ({
+const FinishedRoundTable: React.FC<React.PropsWithChildren<FinishedRoundTableProps>> = ({
   handleShowMoreClick,
   numUserRoundsRequested,
   handleHistoryRowClick,

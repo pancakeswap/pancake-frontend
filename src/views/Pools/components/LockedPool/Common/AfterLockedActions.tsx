@@ -25,7 +25,7 @@ const msg: Record<VaultPosition, ReactNode> = {
   ),
 }
 
-const AfterLockedActions: React.FC<AfterLockedActionsPropsType> = ({
+const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPropsType>> = ({
   currentLockedAmount,
   stakingToken,
   position,

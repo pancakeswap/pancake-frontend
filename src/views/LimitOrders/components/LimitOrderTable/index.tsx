@@ -9,7 +9,7 @@ import CompactLimitOrderTable from './CompactLimitOrderTable'
 import SpaciousLimitOrderTable from './SpaciousLimitOrderTable'
 import Navigation from './TableNavigation'
 
-const OrderTable: React.FC<{ isCompact: boolean; orderCategory: ORDER_CATEGORY }> = memo(
+const OrderTable: React.FC<React.PropsWithChildren<{ isCompact: boolean; orderCategory: ORDER_CATEGORY }>> = memo(
   ({ orderCategory, isCompact }) => {
     const orders = useGelatoLimitOrdersHistory(orderCategory)
 
@@ -27,7 +27,7 @@ const OrderTable: React.FC<{ isCompact: boolean; orderCategory: ORDER_CATEGORY }
   },
 )
 
-const LimitOrderTable: React.FC<{ isCompact: boolean }> = ({ isCompact }) => {
+const LimitOrderTable: React.FC<React.PropsWithChildren<{ isCompact: boolean }>> = ({ isCompact }) => {
   const [activeTab, setIndex] = useState<ORDER_CATEGORY>(ORDER_CATEGORY.Open)
   const handleClick = useCallback((tabType: ORDER_CATEGORY) => setIndex(tabType), [])
 

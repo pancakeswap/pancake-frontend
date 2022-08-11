@@ -30,7 +30,7 @@ export interface LiquidityProps {
   liquidity: BigNumber
 }
 
-const Liquidity: React.FC<LiquidityProps> = ({ liquidity }) => {
+const Liquidity: React.FC<React.PropsWithChildren<LiquidityProps>> = ({ liquidity }) => {
   const { t } = useTranslation()
   const displayLiquidity =
     liquidity && liquidity.gt(0)

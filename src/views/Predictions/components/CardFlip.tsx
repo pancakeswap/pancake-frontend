@@ -56,7 +56,7 @@ const getComponents = (children: CardFlipProps['children']) => {
   return children
 }
 
-const CardFlip: React.FC<CardFlipProps> = ({ isFlipped, height, children }) => {
+const CardFlip: React.FC<React.PropsWithChildren<CardFlipProps>> = ({ isFlipped, height, children }) => {
   const [front, back] = getComponents(children)
 
   return (

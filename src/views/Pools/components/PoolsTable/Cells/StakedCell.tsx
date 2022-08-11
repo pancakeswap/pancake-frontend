@@ -17,7 +17,7 @@ interface StakedCellProps {
 
 const StyledCell = styled(BaseCell)``
 
-const StakedCell: React.FC<StakedCellProps> = ({ pool, account }) => {
+const StakedCell: React.FC<React.PropsWithChildren<StakedCellProps>> = ({ pool, account }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
 

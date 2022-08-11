@@ -34,7 +34,7 @@ const StyledExpiredRoundCard = styled(Card)`
   }
 `
 
-const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
+const ExpiredRoundCard: React.FC<React.PropsWithChildren<ExpiredRoundCardProps>> = ({
   round,
   betAmount,
   hasEnteredUp,

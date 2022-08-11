@@ -4,7 +4,9 @@ interface UserPrizeGridDollarProps {
   dollarValueOfTokensReward: number
 }
 
-const UserPrizeGridDollar: React.FC<UserPrizeGridDollarProps> = ({ dollarValueOfTokensReward }) => {
+const UserPrizeGridDollar: React.FC<React.PropsWithChildren<UserPrizeGridDollarProps>> = ({
+  dollarValueOfTokensReward,
+}) => {
   return dollarValueOfTokensReward !== null ? (
     <Text fontSize="12px" color="textSubtle">
       ~{dollarValueOfTokensReward.toFixed(2)} USD

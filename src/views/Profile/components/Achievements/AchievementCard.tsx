@@ -17,7 +17,7 @@ const Details = styled(Flex)`
   padding-right: 8px;
 `
 
-const AchievementCard: React.FC<AchievementCardProps> = ({ achievement }) => {
+const AchievementCard: React.FC<React.PropsWithChildren<AchievementCardProps>> = ({ achievement }) => {
   return (
     <Flex>
       <AchievementAvatar badge={achievement.badge} />

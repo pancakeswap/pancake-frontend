@@ -7,7 +7,7 @@ interface Props {
   ifo: Ifo
 }
 
-const IfoCardV1Data: React.FC<Props> = ({ ifo }) => {
+const IfoCardV1Data: React.FC<React.PropsWithChildren<Props>> = ({ ifo }) => {
   const publicIfoData = useGetPublicIfoV1Data(ifo)
   const walletIfoData = useGetWalletIfoV1Data(ifo)
 

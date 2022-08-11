@@ -76,7 +76,7 @@ interface SellModalProps extends InjectedModalProps {
   onSuccessEditProfile?: () => void
 }
 
-const SellModal: React.FC<SellModalProps> = ({
+const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
   variant,
   nftToSell,
   onDismiss,

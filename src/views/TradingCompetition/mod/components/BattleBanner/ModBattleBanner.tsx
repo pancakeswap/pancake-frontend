@@ -221,7 +221,7 @@ const ModBattleBanner = () => {
 
 export default ModBattleBanner
 
-export const CoinDecoration: React.FC = () => {
+export const CoinDecoration: React.FC<React.PropsWithChildren> = () => {
   return (
     <Dar3ImageWrapper>
       <Image src={Dar3} alt="dar coin2" width={216} height={298} />

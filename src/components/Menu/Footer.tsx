@@ -38,7 +38,7 @@ const BubbleWrapper = styled(Flex)`
 
 type FooterVariant = 'default' | 'side'
 
-const Footer: React.FC<{ variant?: FooterVariant; helpUrl?: string }> = ({
+const Footer: React.FC<React.PropsWithChildren<{ variant?: FooterVariant; helpUrl?: string }>> = ({
   variant = 'default',
   helpUrl = EXCHANGE_DOCS_URLS,
 }) => {

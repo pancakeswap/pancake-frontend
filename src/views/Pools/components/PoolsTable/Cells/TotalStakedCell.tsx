@@ -16,7 +16,7 @@ const StyledCell = styled(BaseCell)`
   flex: 2 0 100px;
 `
 
-const TotalStakedCell: React.FC<TotalStakedCellProps> = ({ pool }) => {
+const TotalStakedCell: React.FC<React.PropsWithChildren<TotalStakedCellProps>> = ({ pool }) => {
   const { t } = useTranslation()
   const { stakingToken, totalStaked, vaultKey } = pool
   const { totalCakeInVault } = useVaultPoolByKey(vaultKey)

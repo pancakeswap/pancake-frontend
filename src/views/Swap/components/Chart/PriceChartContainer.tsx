@@ -21,7 +21,7 @@ type PriceChartContainerProps = {
   isFullWidthContainer?: boolean
 }
 
-const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
+const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerProps>> = ({
   inputCurrencyId,
   inputCurrency,
   outputCurrency,

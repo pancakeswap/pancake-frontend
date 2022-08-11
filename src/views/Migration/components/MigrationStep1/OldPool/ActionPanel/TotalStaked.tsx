@@ -23,7 +23,7 @@ interface TotalStakedProps {
   cakeInVaults: BigNumber
 }
 
-const TotalStaked: React.FC<TotalStakedProps> = ({ pool, totalCakeInVault, cakeInVaults }) => {
+const TotalStaked: React.FC<React.PropsWithChildren<TotalStakedProps>> = ({ pool, totalCakeInVault, cakeInVaults }) => {
   const { t } = useTranslation()
   const { sousId, stakingToken, totalStaked, vaultKey } = pool
 

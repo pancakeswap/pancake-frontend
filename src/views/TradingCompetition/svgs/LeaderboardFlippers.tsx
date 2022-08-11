@@ -1,6 +1,6 @@
 import { Svg, SvgProps } from '@pancakeswap/uikit'
 
-const RibbonDownMid: React.FC<SvgProps> = (props) => {
+const RibbonDownMid: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
   return (
     <Svg viewBox="0 0 124 72" {...props}>
       <g opacity="0.2" clipPath="url(#leaderboard_flippers_clip0)">

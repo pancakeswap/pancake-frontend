@@ -26,7 +26,7 @@ const Ul = styled.ul`
   }
 `
 
-const ChartDisclaimer: React.FC<InjectedModalProps> = ({ onDismiss }) => {
+const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
   const [showDisclaimer, setShowDisclaimer] = useUserPredictionChartDisclaimerShow()
   const { t } = useTranslation()
 

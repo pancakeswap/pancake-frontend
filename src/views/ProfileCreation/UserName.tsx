@@ -56,7 +56,7 @@ const Indicator = styled(Flex)`
   width: 24px;
 `
 
-const UserName: React.FC = () => {
+const UserName: React.FC<React.PropsWithChildren> = () => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
   const { teamId, selectedNft, userName, actions, minimumCakeRequired, allowance } = useProfileCreation()
   const { t } = useTranslation()

@@ -59,7 +59,7 @@ const defaultOptions: EasyMde.Options = {
   styleSelectedText: false,
 }
 
-const SimpleMde: React.FC<SimpleMdeProps> = ({ options, onTextChange, ...props }) => {
+const SimpleMde: React.FC<React.PropsWithChildren<SimpleMdeProps>> = ({ options, onTextChange, ...props }) => {
   const ref = useRef()
   const onTextChangeHandler = useRef(onTextChange)
 

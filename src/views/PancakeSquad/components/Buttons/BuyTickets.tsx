@@ -36,7 +36,7 @@ type BuyTicketsProps = {
   startTimestamp: number
 }
 
-const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
+const BuyTicketsButtons: React.FC<React.PropsWithChildren<BuyTicketsProps>> = ({
   t,
   account,
   saleStatus,

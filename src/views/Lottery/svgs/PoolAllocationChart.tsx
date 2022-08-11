@@ -1,6 +1,6 @@
 import { Svg, SvgProps } from '@pancakeswap/uikit'
 
-const PoolAllocationChart: React.FC<SvgProps> = (props) => {
+const PoolAllocationChart: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
   return (
     <Svg viewBox="0 0 103 105" {...props}>
       <svg width="103" height="105" viewBox="0 0 403 405" fill="none" xmlns="http://www.w3.org/2000/svg">

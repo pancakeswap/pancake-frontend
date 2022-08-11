@@ -44,7 +44,13 @@ interface FarmCardProps {
   account?: string
 }
 
-const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePrice, account }) => {
+const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
+  farm,
+  displayApr,
+  removed,
+  cakePrice,
+  account,
+}) => {
   const { t } = useTranslation()
 
   const [showExpandableSection, setShowExpandableSection] = useState(false)

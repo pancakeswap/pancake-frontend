@@ -12,7 +12,10 @@ const StyledLink = styled(Link)`
   width: 100%;
 `
 
-const NotEnoughTokensModal: React.FC<NotEnoughTokensModalProps> = ({ tokenSymbol, onDismiss }) => {
+const NotEnoughTokensModal: React.FC<React.PropsWithChildren<NotEnoughTokensModalProps>> = ({
+  tokenSymbol,
+  onDismiss,
+}) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
 

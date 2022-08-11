@@ -3,7 +3,9 @@ import { Flex, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import CountdownCircle from './CountdownCircle'
 
-const UpdateIndicator: React.FC<{ isFetchingPancakeBunnies: boolean }> = ({ isFetchingPancakeBunnies }) => {
+const UpdateIndicator: React.FC<React.PropsWithChildren<{ isFetchingPancakeBunnies: boolean }>> = ({
+  isFetchingPancakeBunnies,
+}) => {
   const { t } = useTranslation()
   const [secondsRemaining, setSecondsRemaining] = useState(10)
   const { tooltip, tooltipVisible, targetRef } = useTooltip(t('Items in the table update every 10 seconds'), {

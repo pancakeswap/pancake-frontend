@@ -118,7 +118,7 @@ const YieldBoostDurationRow = ({ lockEndTime, lockStartTime }) => {
   )
 }
 
-const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, expanded }) => {
+const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ account, pool, expanded }) => {
   const { userData, vaultKey } = pool
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()

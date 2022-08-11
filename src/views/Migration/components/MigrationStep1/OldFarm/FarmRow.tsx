@@ -51,7 +51,14 @@ export interface RowProps {
   unstake: UnstakeProps
 }
 
-const FarmRow: React.FunctionComponent<RowProps> = ({ farm, staked, earned, multiplier, liquidity, unstake }) => {
+const FarmRow: React.FunctionComponent<React.PropsWithChildren<RowProps>> = ({
+  farm,
+  staked,
+  earned,
+  multiplier,
+  liquidity,
+  unstake,
+}) => {
   const { isMobile, isXl, isXxl } = useMatchBreakpointsContext()
   const isLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)

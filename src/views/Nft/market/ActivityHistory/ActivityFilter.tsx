@@ -42,7 +42,10 @@ const eventName = (t: ContextApi['t'], eventType: string) => {
   }
 }
 
-export const ActivityFilter: React.FC<ActivityFilterProps> = ({ eventType, collectionAddress }) => {
+export const ActivityFilter: React.FC<React.PropsWithChildren<ActivityFilterProps>> = ({
+  eventType,
+  collectionAddress,
+}) => {
   const nftActivityFilters = useGetNftActivityFilters(collectionAddress)
   const dispatch = useAppDispatch()
   const { t } = useTranslation()

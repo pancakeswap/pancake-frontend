@@ -17,7 +17,7 @@ const getTextColor = ({ eventStatus, useDark }: getTextColorProps): keyof Colors
   return useDark ? "textSubtle" : (lightColors.textSubtle as keyof Colors);
 };
 
-const Timeline: React.FC<TimelineProps> = ({ events, useDark = true }) => {
+const Timeline: React.FC<React.PropsWithChildren<TimelineProps>> = ({ events, useDark = true }) => {
   return (
     <TimelineContainer>
       {events.map(({ text, status, altText, infoText }) => {

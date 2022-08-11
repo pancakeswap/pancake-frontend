@@ -10,7 +10,7 @@ interface AutoEarningsBreakdownProps {
   account: string
 }
 
-const AutoEarningsBreakdown: React.FC<AutoEarningsBreakdownProps> = ({ pool, account }) => {
+const AutoEarningsBreakdown: React.FC<React.PropsWithChildren<AutoEarningsBreakdownProps>> = ({ pool, account }) => {
   const { t } = useTranslation()
 
   const { earningTokenPrice } = pool

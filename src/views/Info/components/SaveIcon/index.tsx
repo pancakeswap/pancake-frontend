@@ -13,7 +13,10 @@ const HoverIcon = styled.div`
   }
 `
 
-const SaveIcon: React.FC<{ fill: boolean } & HTMLAttributes<HTMLDivElement>> = ({ fill = false, ...rest }) => {
+const SaveIcon: React.FC<React.PropsWithChildren<{ fill: boolean } & HTMLAttributes<HTMLDivElement>>> = ({
+  fill = false,
+  ...rest
+}) => {
   const { theme } = useTheme()
   return (
     <HoverIcon {...rest}>

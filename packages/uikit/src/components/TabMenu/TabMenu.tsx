@@ -27,7 +27,7 @@ const Inner = styled(Flex)`
   }
 `;
 
-const ButtonMenu: React.FC<TabMenuProps> = ({ activeIndex = 0, onItemClick, children }) => {
+const ButtonMenu: React.FC<React.PropsWithChildren<TabMenuProps>> = ({ activeIndex = 0, onItemClick, children }) => {
   return (
     <Wrapper p={["0 4px", "0 16px"]}>
       <Inner>

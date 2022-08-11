@@ -86,7 +86,14 @@ export const cardConfig = (
   }
 }
 
-const SmallCard: React.FC<IfoCardProps> = ({ poolId, ifo, publicIfoData, walletIfoData, onApprove, enableStatus }) => {
+const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
+  poolId,
+  ifo,
+  publicIfoData,
+  walletIfoData,
+  onApprove,
+  enableStatus,
+}) => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
 

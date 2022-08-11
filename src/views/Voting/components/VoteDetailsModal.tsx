@@ -9,7 +9,7 @@ interface VoteDetailsModalProps extends InjectedModalProps {
   block: number
 }
 
-const VoteDetailsModal: React.FC<VoteDetailsModalProps> = ({ block, onDismiss }) => {
+const VoteDetailsModal: React.FC<React.PropsWithChildren<VoteDetailsModalProps>> = ({ block, onDismiss }) => {
   const { t } = useTranslation()
   const [modalIsOpen, setModalIsOpen] = useState(true)
   const {

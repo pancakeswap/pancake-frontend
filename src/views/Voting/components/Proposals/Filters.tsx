@@ -28,7 +28,7 @@ const options = [
   { value: ProposalState.CLOSED, label: 'Closed' },
 ]
 
-const Filters: React.FC<FiltersProps> = ({ filterState, onFilterChange, isLoading }) => {
+const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({ filterState, onFilterChange, isLoading }) => {
   const { t } = useTranslation()
 
   return (

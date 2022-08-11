@@ -20,7 +20,7 @@ interface ReviewStageProps {
   continueToNextStage: () => void
 }
 
-const ReviewStage: React.FC<ReviewStageProps> = ({
+const ReviewStage: React.FC<React.PropsWithChildren<ReviewStageProps>> = ({
   nftToBuy,
   paymentCurrency,
   setPaymentCurrency,

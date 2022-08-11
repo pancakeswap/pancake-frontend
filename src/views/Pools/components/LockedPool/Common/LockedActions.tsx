@@ -10,7 +10,7 @@ import ExtendButton from '../Buttons/ExtendDurationButton'
 import AfterLockedActions from './AfterLockedActions'
 import { LockedActionsPropsType } from '../types'
 
-const LockedActions: React.FC<LockedActionsPropsType> = ({
+const LockedActions: React.FC<React.PropsWithChildren<LockedActionsPropsType>> = ({
   userShares,
   locked,
   lockEndTime,

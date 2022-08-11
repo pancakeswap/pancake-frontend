@@ -8,7 +8,7 @@ import { useMatchBreakpointsContext } from "../../contexts";
 
 export const MODAL_SWIPE_TO_CLOSE_VELOCITY = 300;
 
-const Modal: React.FC<ModalProps> = ({
+const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
   title,
   onDismiss,
   onBack,

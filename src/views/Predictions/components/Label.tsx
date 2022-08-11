@@ -143,7 +143,7 @@ const Label = styled(Flex)<{ dir: 'left' | 'right'; backgroundOpacity?: boolean 
   }
 `
 
-export const PricePairLabel: React.FC = () => {
+export const PricePairLabel: React.FC<React.PropsWithChildren> = () => {
   const { token } = useConfig()
   const router = useRouter()
   const { t } = useTranslation()
@@ -205,7 +205,7 @@ interface TimerLabelProps {
   unit: 'm' | 'h' | 'd'
 }
 
-export const TimerLabel: React.FC<TimerLabelProps> = ({ interval, unit }) => {
+export const TimerLabel: React.FC<React.PropsWithChildren<TimerLabelProps>> = ({ interval, unit }) => {
   const currentRoundCloseTimestamp = useGetCurrentRoundCloseTimestamp()
   const { secondsRemaining } = useCountdown(currentRoundCloseTimestamp)
   const countdown = formatRoundTime(secondsRemaining)

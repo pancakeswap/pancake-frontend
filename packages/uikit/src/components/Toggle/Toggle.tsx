@@ -3,7 +3,7 @@ import { Flex } from "../Box";
 import StyledToggle, { Input, Handle } from "./StyledToggle";
 import { ToggleProps, scales } from "./types";
 
-const Toggle: React.FC<ToggleProps> = ({
+const Toggle: React.FC<React.PropsWithChildren<ToggleProps>> = ({
   checked,
   defaultColor = "input",
   checkedColor = "success",

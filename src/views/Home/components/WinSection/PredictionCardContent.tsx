@@ -15,7 +15,10 @@ const StyledLink = styled(NextLinkFromReactRouter)`
   width: 100%;
 `
 
-const PredictionCardHeader: React.FC<{ preText: string; bnbWon: number }> = ({ preText, bnbWon }) => {
+const PredictionCardHeader: React.FC<React.PropsWithChildren<{ preText: string; bnbWon: number }>> = ({
+  preText,
+  bnbWon,
+}) => {
   const bnbBusdPrice = useBNBBusdPrice()
   const bnbWonInUsd = multiplyPriceByAmount(bnbBusdPrice, bnbWon)
 

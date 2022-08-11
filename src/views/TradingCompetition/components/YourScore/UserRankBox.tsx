@@ -25,7 +25,7 @@ const Wrapper = styled(Flex)`
   }
 `
 
-const UserRank: React.FC<UserRankProps> = ({ title = '', footer, children, ...props }) => {
+const UserRank: React.FC<React.PropsWithChildren<UserRankProps>> = ({ title = '', footer, children, ...props }) => {
   return (
     <Wrapper {...props}>
       <Text mb="8px" fontSize="12px" bold textAlign="center">

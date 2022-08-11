@@ -8,10 +8,12 @@ const Wrapper = styled(CardHeader)<{ isFinished?: boolean; background?: string }
   border-radius: ${({ theme }) => `${theme.radii.card} ${theme.radii.card} 0 0`};
 `
 
-const PoolCardHeader: React.FC<{
-  isFinished?: boolean
-  isStaking?: boolean
-}> = ({ isFinished = false, isStaking = false, children }) => {
+const PoolCardHeader: React.FC<
+  React.PropsWithChildren<{
+    isFinished?: boolean
+    isStaking?: boolean
+  }>
+> = ({ isFinished = false, isStaking = false, children }) => {
   const background = isStaking ? 'bubblegum' : 'cardHeader'
 
   return (
@@ -23,11 +25,9 @@ const PoolCardHeader: React.FC<{
   )
 }
 
-export const PoolCardHeaderTitle: React.FC<{ isFinished?: boolean; title: ReactNode; subTitle: ReactNode }> = ({
-  isFinished,
-  title,
-  subTitle,
-}) => {
+export const PoolCardHeaderTitle: React.FC<
+  React.PropsWithChildren<{ isFinished?: boolean; title: ReactNode; subTitle: ReactNode }>
+> = ({ isFinished, title, subTitle }) => {
   return (
     <Flex flexDirection="column">
       <Heading color={isFinished ? 'textDisabled' : 'body'} scale="lg">

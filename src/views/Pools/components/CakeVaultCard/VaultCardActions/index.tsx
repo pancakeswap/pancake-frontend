@@ -13,12 +13,14 @@ const InlineText = styled(Text)`
   display: inline;
 `
 
-const CakeVaultCardActions: React.FC<{
-  pool: DeserializedPool
-  accountHasSharesStaked: boolean
-  isLoading: boolean
-  performanceFee: number
-}> = ({ pool, accountHasSharesStaked, isLoading, performanceFee }) => {
+const CakeVaultCardActions: React.FC<
+  React.PropsWithChildren<{
+    pool: DeserializedPool
+    accountHasSharesStaked: boolean
+    isLoading: boolean
+    performanceFee: number
+  }>
+> = ({ pool, accountHasSharesStaked, isLoading, performanceFee }) => {
   const { stakingToken, userData } = pool
   const { t } = useTranslation()
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO

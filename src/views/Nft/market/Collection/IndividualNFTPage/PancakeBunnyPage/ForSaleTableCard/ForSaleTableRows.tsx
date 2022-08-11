@@ -30,7 +30,7 @@ interface RowProps {
   onSuccessSale: () => void
 }
 
-const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account, onSuccessSale }) => {
+const Row: React.FC<React.PropsWithChildren<RowProps>> = ({ t, nft, bnbBusdPrice, account, onSuccessSale }) => {
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nft?.marketData?.currentAskPrice))
 
   const ownNft = account ? nft.marketData.currentSeller === account.toLowerCase() : false
@@ -91,7 +91,7 @@ interface ForSaleTableRowsProps {
   onSuccessSale: () => void
 }
 
-const ForSaleTableRow: React.FC<ForSaleTableRowsProps> = ({ nftsForSale, onSuccessSale }) => {
+const ForSaleTableRow: React.FC<React.PropsWithChildren<ForSaleTableRowsProps>> = ({ nftsForSale, onSuccessSale }) => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()

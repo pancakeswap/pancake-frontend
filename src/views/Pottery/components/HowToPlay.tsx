@@ -43,7 +43,7 @@ const CardStyle = styled(Card)`
 
 type Step = { title: string; subtitle: string; label: string }
 
-const HowToPlay: React.FC = () => {
+const HowToPlay: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const steps: Step[] = [
     {

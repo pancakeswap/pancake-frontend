@@ -26,7 +26,11 @@ interface DetailLimitOrderModalProps extends InjectedModalProps {
   formattedOrder: FormattedOrderData
 }
 
-export const DetailLimitOrderModal: React.FC<DetailLimitOrderModalProps> = ({ onDismiss, order, formattedOrder }) => {
+export const DetailLimitOrderModal: React.FC<React.PropsWithChildren<DetailLimitOrderModalProps>> = ({
+  onDismiss,
+  order,
+  formattedOrder,
+}) => {
   const { chainId } = useActiveWeb3React()
   const { theme } = useTheme()
   const { t } = useTranslation()
@@ -180,7 +184,7 @@ interface LimitTradeInfoCardProps {
   isCancellationPending: boolean
 }
 
-const LimitTradeInfoCard: React.FC<LimitTradeInfoCardProps> = memo(
+const LimitTradeInfoCard: React.FC<React.PropsWithChildren<LimitTradeInfoCardProps>> = memo(
   ({
     limitPriceExchangeRateText,
     limitPriceExchangeRateTextReversed,
@@ -228,7 +232,7 @@ const LimitTradeInfoCard: React.FC<LimitTradeInfoCardProps> = memo(
   },
 )
 
-const LoadingContent: React.FC = memo(() => {
+const LoadingContent: React.FC<React.PropsWithChildren> = memo(() => {
   const { t } = useTranslation()
   return (
     <Flex>

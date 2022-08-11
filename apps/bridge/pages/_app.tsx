@@ -12,7 +12,7 @@ declare module 'styled-components' {
   export interface DefaultTheme extends PancakeTheme {}
 }
 
-const StyledThemeProvider: React.FC<{ children: React.ReactNode }> = (props) => {
+const StyledThemeProvider: React.FC<React.PropsWithChildren> = (props) => {
   const { resolvedTheme } = useNextTheme()
   return (
     <ThemeProvider theme={resolvedTheme === 'dark' ? dark : light} {...props}>

@@ -74,7 +74,7 @@ interface PrizesGridProps {
   prizesConfig: PrizesConfig
 }
 
-const PrizesGrid: React.FC<PrizesGridProps> = ({ prizesConfig }) => {
+const PrizesGrid: React.FC<React.PropsWithChildren<PrizesGridProps>> = ({ prizesConfig }) => {
   const [tab, setTab] = useState(0)
   const { t } = useTranslation()
   const rows = prizesConfig[tab + 1]

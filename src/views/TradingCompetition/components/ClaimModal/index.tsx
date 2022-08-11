@@ -23,7 +23,11 @@ const ImageWrapper = styled(Flex)`
   }
 `
 
-const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, userTradingInformation }) => {
+const ClaimModal: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
+  onDismiss,
+  onClaimSuccess,
+  userTradingInformation,
+}) => {
   const tradingCompetitionContract = useTradingCompetitionContractMoD()
   const canClaimSpecialNFT = useCanClaimSpecialNFT()
   const { toastSuccess } = useToast()

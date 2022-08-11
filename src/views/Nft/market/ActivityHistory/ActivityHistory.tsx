@@ -36,7 +36,7 @@ interface ActivityHistoryProps {
   collection?: Collection
 }
 
-const ActivityHistory: React.FC<ActivityHistoryProps> = ({ collection }) => {
+const ActivityHistory: React.FC<React.PropsWithChildren<ActivityHistoryProps>> = ({ collection }) => {
   const dispatch = useAppDispatch()
   const { address: collectionAddress } = collection || { address: '' }
   const nftActivityFilters = useGetNftActivityFilters(collectionAddress)

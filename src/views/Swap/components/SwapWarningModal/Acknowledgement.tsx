@@ -6,7 +6,7 @@ interface AcknowledgementProps {
   handleContinueClick: () => void
 }
 
-const Acknowledgement: React.FC<AcknowledgementProps> = ({ handleContinueClick }) => {
+const Acknowledgement: React.FC<React.PropsWithChildren<AcknowledgementProps>> = ({ handleContinueClick }) => {
   const { t } = useTranslation()
   const [isConfirmed, setIsConfirmed] = useState(false)
 

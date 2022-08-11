@@ -9,7 +9,11 @@ interface ApprovalActionProps {
   isLoading?: boolean
 }
 
-const VaultApprovalAction: React.FC<ApprovalActionProps> = ({ vaultKey, isLoading = false, setLastUpdated }) => {
+const VaultApprovalAction: React.FC<React.PropsWithChildren<ApprovalActionProps>> = ({
+  vaultKey,
+  isLoading = false,
+  setLastUpdated,
+}) => {
   const { t } = useTranslation()
 
   const { handleApprove, pendingTx } = useVaultApprove(vaultKey, setLastUpdated)

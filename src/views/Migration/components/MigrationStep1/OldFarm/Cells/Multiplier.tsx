@@ -32,7 +32,7 @@ export interface MultiplierProps {
   multiplier: string
 }
 
-const Multiplier: React.FC<MultiplierProps> = ({ multiplier }) => {
+const Multiplier: React.FC<React.PropsWithChildren<MultiplierProps>> = ({ multiplier }) => {
   const displayMultiplier = multiplier ? multiplier.toLowerCase() : `0x`
   const { t } = useTranslation()
   const tooltipContent = (

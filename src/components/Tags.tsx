@@ -15,7 +15,7 @@ import {
 import { useTranslation } from '@pancakeswap/localization'
 import { memo } from 'react'
 
-const CoreTag: React.FC<TagProps> = (props) => {
+const CoreTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation()
   return (
     <Tag variant="secondary" outline startIcon={<VerifiedIcon width="18px" color="secondary" mr="4px" />} {...props}>
@@ -29,7 +29,7 @@ const FarmAuctionTagToolTipContent = memo(() => {
   return <Text color="text">{t('Farm Auction Winner, add liquidity at your own risk.')}</Text>
 })
 
-const FarmAuctionTag: React.FC<TagProps> = (props) => {
+const FarmAuctionTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(<FarmAuctionTagToolTipContent />, { placement: 'right' })
   return (
@@ -44,7 +44,7 @@ const FarmAuctionTag: React.FC<TagProps> = (props) => {
   )
 }
 
-const CommunityTag: React.FC<TagProps> = (props) => {
+const CommunityTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation()
   return (
     <Tag variant="failure" outline startIcon={<CommunityIcon width="18px" color="failure" mr="4px" />} {...props}>
@@ -53,7 +53,7 @@ const CommunityTag: React.FC<TagProps> = (props) => {
   )
 }
 
-const DualTag: React.FC<TagProps> = (props) => {
+const DualTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation()
   return (
     <Tag variant="textSubtle" outline {...props}>
@@ -62,7 +62,7 @@ const DualTag: React.FC<TagProps> = (props) => {
   )
 }
 
-const ManualPoolTag: React.FC<TagProps> = (props) => {
+const ManualPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation()
   return (
     <Tag variant="secondary" outline startIcon={<RefreshIcon width="18px" color="secondary" mr="4px" />} {...props}>
@@ -71,7 +71,7 @@ const ManualPoolTag: React.FC<TagProps> = (props) => {
   )
 }
 
-const CompoundingPoolTag: React.FC<TagProps> = (props) => {
+const CompoundingPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation()
   return (
     <Tag variant="success" outline startIcon={<AutoRenewIcon width="18px" color="success" mr="4px" />} {...props}>
@@ -80,7 +80,7 @@ const CompoundingPoolTag: React.FC<TagProps> = (props) => {
   )
 }
 
-const VoteNowTag: React.FC<TagProps> = (props) => {
+const VoteNowTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation()
   return (
     <Tag variant="success" startIcon={<VoteIcon width="18px" color="success" mr="4px" />} {...props}>
@@ -89,7 +89,7 @@ const VoteNowTag: React.FC<TagProps> = (props) => {
   )
 }
 
-const SoonTag: React.FC<TagProps> = (props) => {
+const SoonTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation()
   return (
     <Tag variant="binance" startIcon={<TimerIcon width="18px" color="success" mr="4px" />} {...props}>
@@ -98,7 +98,7 @@ const SoonTag: React.FC<TagProps> = (props) => {
   )
 }
 
-const ClosedTag: React.FC<TagProps> = (props) => {
+const ClosedTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation()
   return (
     <Tag variant="textDisabled" startIcon={<BlockIcon width="18px" color="textDisabled" mr="4px" />} {...props}>

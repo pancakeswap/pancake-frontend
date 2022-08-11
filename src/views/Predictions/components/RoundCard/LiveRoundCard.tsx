@@ -28,7 +28,7 @@ interface LiveRoundCardProps {
 
 const REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE = 2
 
-const LiveRoundCard: React.FC<LiveRoundCardProps> = ({
+const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
   round,
   betAmount,
   hasEnteredUp,

@@ -5,4 +5,9 @@ export enum CurrencyModalView {
   importList,
 }
 
+export enum CommonBasesType {
+  LIQUIDITY = 'LIQUIDITY',
+  SWAP_LIMITORDER = 'SWAP_LIMITORDER',
+}
+
 export default CurrencyModalView

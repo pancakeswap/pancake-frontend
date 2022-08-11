@@ -45,7 +45,11 @@ interface ForSaleTableCardProps {
   onSuccessSale: () => void
 }
 
-const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ bunnyId, nftMetadata, onSuccessSale }) => {
+const ForSaleTableCard: React.FC<React.PropsWithChildren<ForSaleTableCardProps>> = ({
+  bunnyId,
+  nftMetadata,
+  onSuccessSale,
+}) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { isMobile } = useMatchBreakpointsContext()

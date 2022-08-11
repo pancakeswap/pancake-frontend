@@ -6,7 +6,7 @@ interface MobileResultsProps {
   results: PredictionUser[]
 }
 
-const MobileResults: React.FC<MobileResultsProps> = ({ results }) => {
+const MobileResults: React.FC<React.PropsWithChildren<MobileResultsProps>> = ({ results }) => {
   return (
     <Box mb="24px">
       {results.map((result, index) => (

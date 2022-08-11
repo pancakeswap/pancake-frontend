@@ -14,7 +14,7 @@ interface AvailableWithdrawProps {
   withdrawData: PotteryWithdrawAbleData
 }
 
-const AvailableWithdraw: React.FC<AvailableWithdrawProps> = ({ withdrawData }) => {
+const AvailableWithdraw: React.FC<React.PropsWithChildren<AvailableWithdrawProps>> = ({ withdrawData }) => {
   const {
     t,
     currentLanguage: { locale },

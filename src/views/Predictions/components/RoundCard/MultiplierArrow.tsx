@@ -54,7 +54,7 @@ const getTextColor =
     return fallback
   }
 
-const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
+const MultiplierArrow: React.FC<React.PropsWithChildren<MultiplierArrowProps>> = ({
   betAmount,
   multiplier,
   hasEntered = false,

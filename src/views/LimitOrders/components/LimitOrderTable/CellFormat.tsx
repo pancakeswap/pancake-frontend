@@ -6,7 +6,7 @@ interface CellFormatProps {
   secondRow: ReactElement
 }
 
-const CellFormat: React.FC<CellFormatProps> = ({ firstRow, secondRow }) => {
+const CellFormat: React.FC<React.PropsWithChildren<CellFormatProps>> = ({ firstRow, secondRow }) => {
   return (
     <Box>
       <Box mb="4px">{firstRow}</Box>

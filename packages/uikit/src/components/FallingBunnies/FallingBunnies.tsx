@@ -65,7 +65,7 @@ const Bunny = styled.div<BunnyProps>`
   }
 `;
 
-const FallingBunnies: React.FC<FallingBunniesProps> = ({
+const FallingBunnies: React.FC<React.PropsWithChildren<FallingBunniesProps>> = ({
   count = 30,
   size = 32,
   iterations = Infinity,

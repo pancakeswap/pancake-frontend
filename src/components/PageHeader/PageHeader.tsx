@@ -12,7 +12,7 @@ const Inner = styled(Container)`
   padding-bottom: 32px;
 `
 
-const PageHeader: React.FC<PageHeaderProps> = ({ background, children, ...props }) => (
+const PageHeader: React.FC<React.PropsWithChildren<PageHeaderProps>> = ({ background, children, ...props }) => (
   <Outer background={background} {...props}>
     <Inner>{children}</Inner>
   </Outer>

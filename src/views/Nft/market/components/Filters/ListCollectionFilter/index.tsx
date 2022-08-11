@@ -24,7 +24,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { CloseButton, FilterButton, ListOrderState, SearchWrapper, TriggerButton } from '../ListFilter/styles'
 import { CollectionItemRow } from './styles'
 
-export const ListCollectionFilter: React.FC = () => {
+export const ListCollectionFilter: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [query, setQuery] = useState('')

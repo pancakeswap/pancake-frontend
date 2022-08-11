@@ -13,7 +13,7 @@ type EndEventProps = {
   numberTokensOfUser: number
 }
 
-const EndEventButtons: React.FC<EndEventProps> = ({
+const EndEventButtons: React.FC<React.PropsWithChildren<EndEventProps>> = ({
   t,
   account,
   saleStatus,

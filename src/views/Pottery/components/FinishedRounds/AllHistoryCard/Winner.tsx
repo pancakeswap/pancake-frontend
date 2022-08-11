@@ -25,7 +25,7 @@ interface WinnerProps {
   address: string
 }
 
-const Winner: React.FC<WinnerProps> = ({ address }) => {
+const Winner: React.FC<React.PropsWithChildren<WinnerProps>> = ({ address }) => {
   const { profile, isFetching } = useProfileForAddress(address)
 
   return (

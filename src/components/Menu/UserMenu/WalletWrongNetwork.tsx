@@ -17,7 +17,7 @@ interface WalletWrongNetworkProps {
   onDismiss: () => void
 }
 
-const WalletWrongNetwork: React.FC<WalletWrongNetworkProps> = ({ onDismiss }) => {
+const WalletWrongNetwork: React.FC<React.PropsWithChildren<WalletWrongNetworkProps>> = ({ onDismiss }) => {
   const { t } = useTranslation()
   const { connector, library } = useWeb3React()
 

@@ -50,7 +50,7 @@ interface ExpandProps {
   fetchUserVestingData: () => void
 }
 
-const Expand: React.FC<ExpandProps> = ({ data, expanded, fetchUserVestingData }) => {
+const Expand: React.FC<React.PropsWithChildren<ExpandProps>> = ({ data, expanded, fetchUserVestingData }) => {
   const { t } = useTranslation()
   const { token } = data.ifo
   const router = useRouter()

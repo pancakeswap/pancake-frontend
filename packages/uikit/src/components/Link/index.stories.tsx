@@ -19,7 +19,7 @@ export default {
   },
 };
 
-export const Default: React.FC = () => {
+export const Default: React.FC<React.PropsWithChildren> = () => {
   return (
     <div>
       <div>

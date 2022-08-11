@@ -10,12 +10,19 @@ import { fetchStatusMiddleware } from 'hooks/useSWRContract'
 import { Store } from '@reduxjs/toolkit'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
 
-const StyledThemeProvider: React.FC<{ children: React.ReactNode }> = (props) => {
+const StyledThemeProvider: React.FC<React.PropsWithChildren> = ({ children, ...props }) => {
   const { resolvedTheme } = useNextTheme()
-  return <ThemeProvider theme={resolvedTheme === 'dark' ? dark : light} {...props} />
+  return (
+    <ThemeProvider theme={resolvedTheme === 'dark' ? dark : light} {...props}>
+      {children}
+    </ThemeProvider>
+  )
 }
 
-const Providers: React.FC<{ store: Store }> = ({ children, store }) => {
+const Providers: React.FC<React.PropsWithChildren<{ store: Store; children: React.ReactNode }>> = ({
+  children,
+  store,
+}) => {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <Provider store={store}>

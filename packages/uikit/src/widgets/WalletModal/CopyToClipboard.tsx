@@ -27,7 +27,7 @@ const Tooltip = styled.div<{ isTooltipDisplayed: boolean }>`
   opacity: 0.7;
 `;
 
-const CopyToClipboard: React.FC<Props> = ({ toCopy, children, ...props }) => {
+const CopyToClipboard: React.FC<React.PropsWithChildren<Props>> = ({ toCopy, children, ...props }) => {
   const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false);
 
   const copyToClipboardWithCommand = (content: string) => {

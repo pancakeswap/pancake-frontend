@@ -8,7 +8,7 @@ interface Props extends InjectedModalProps {
   onCancel: () => void
 }
 
-const ImportTokenWarningModal: React.FC<Props> = ({ tokens, onDismiss, onCancel }) => {
+const ImportTokenWarningModal: React.FC<React.PropsWithChildren<Props>> = ({ tokens, onDismiss, onCancel }) => {
   const { t } = useTranslation()
   return (
     <Modal

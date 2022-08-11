@@ -46,7 +46,7 @@ interface ConfirmZapInModalProps {
 
 const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max)
 
-const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> = ({
+const ConfirmZapInModal: React.FC<React.PropsWithChildren<InjectedModalProps & ConfirmZapInModalProps>> = ({
   title,
   onDismiss,
   customOnDismiss,

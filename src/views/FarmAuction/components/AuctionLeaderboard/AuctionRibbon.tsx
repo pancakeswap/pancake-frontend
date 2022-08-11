@@ -25,7 +25,10 @@ const StyledRibbon = styled.div<{ color: string }>`
   }
 `
 
-const AuctionRibbon: React.FC<{ auction: Auction; noAuctionHistory: boolean }> = ({ auction, noAuctionHistory }) => {
+const AuctionRibbon: React.FC<React.PropsWithChildren<{ auction: Auction; noAuctionHistory: boolean }>> = ({
+  auction,
+  noAuctionHistory,
+}) => {
   const { t } = useTranslation()
   const { status } = auction
 

@@ -12,7 +12,13 @@ import DetailsView from './DetailsView'
 import { generatePayloadData, Message, sendSnapshotData } from '../../helpers'
 import useGetVotingPower from '../../hooks/useGetVotingPower'
 
-const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vote, block, onDismiss }) => {
+const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
+  onSuccess,
+  proposalId,
+  vote,
+  block,
+  onDismiss,
+}) => {
   const [view, setView] = useState<ConfirmVoteView>(ConfirmVoteView.MAIN)
   const [modalIsOpen, setModalIsOpen] = useState(true)
   const [isPending, setIsPending] = useState(false)

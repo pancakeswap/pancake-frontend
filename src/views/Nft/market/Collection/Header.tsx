@@ -18,7 +18,7 @@ interface HeaderProps {
   collection: Collection
 }
 
-const Header: React.FC<HeaderProps> = ({ collection }) => {
+const Header: React.FC<React.PropsWithChildren<HeaderProps>> = ({ collection }) => {
   const router = useRouter()
   const collectionAddress = router.query.collectionAddress as string
   const { totalSupply, numberTokensListed, totalVolumeBNB, banner, avatar } = collection

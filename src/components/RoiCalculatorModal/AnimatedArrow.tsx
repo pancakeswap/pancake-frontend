@@ -30,7 +30,7 @@ interface AnimatedArrowProps {
   calculatorState: RoiCalculatorReducerState
 }
 
-const AnimatedArrow: React.FC<AnimatedArrowProps> = ({ calculatorState }) => {
+const AnimatedArrow: React.FC<React.PropsWithChildren<AnimatedArrowProps>> = ({ calculatorState }) => {
   const [key, setKey] = useState('roiArrow-0')
   const { mode } = calculatorState.controls
 

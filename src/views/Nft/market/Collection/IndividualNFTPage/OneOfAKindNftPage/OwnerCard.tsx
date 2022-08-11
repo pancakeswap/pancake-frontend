@@ -35,7 +35,12 @@ interface OwnerCardProps {
   onSuccess: () => void
 }
 
-const OwnerCard: React.FC<OwnerCardProps> = ({ nft, isOwnNft, nftIsProfilePic, onSuccess }) => {
+const OwnerCard: React.FC<React.PropsWithChildren<OwnerCardProps>> = ({
+  nft,
+  isOwnNft,
+  nftIsProfilePic,
+  onSuccess,
+}) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const bnbBusdPrice = useBNBBusdPrice()

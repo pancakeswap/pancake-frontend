@@ -75,7 +75,7 @@ const ResponsiveLogo = styled(CurrencyLogo)`
   }
 `
 
-const TableLoader: React.FC = () => {
+const TableLoader: React.FC<React.PropsWithChildren> = () => {
   const loadingRow = (
     <ResponsiveGrid>
       <Skeleton />
@@ -95,7 +95,7 @@ const TableLoader: React.FC = () => {
   )
 }
 
-const DataRow: React.FC<{ tokenData: TokenData; index: number }> = ({ tokenData, index }) => {
+const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: number }>> = ({ tokenData, index }) => {
   const { isXs, isSm } = useMatchBreakpointsContext()
   return (
     <LinkWrapper to={`/info/token/${tokenData.address}`}>
@@ -135,10 +135,12 @@ const SORT_FIELD = {
 
 const MAX_ITEMS = 10
 
-const TokenTable: React.FC<{
-  tokenDatas: TokenData[] | undefined
-  maxItems?: number
-}> = ({ tokenDatas, maxItems = MAX_ITEMS }) => {
+const TokenTable: React.FC<
+  React.PropsWithChildren<{
+    tokenDatas: TokenData[] | undefined
+    maxItems?: number
+  }>
+> = ({ tokenDatas, maxItems = MAX_ITEMS }) => {
   const [sortField, setSortField] = useState(SORT_FIELD.volumeUSD)
   const [sortDirection, setSortDirection] = useState<boolean>(true)
 

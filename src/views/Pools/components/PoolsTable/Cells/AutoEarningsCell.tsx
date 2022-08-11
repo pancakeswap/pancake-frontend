@@ -24,7 +24,7 @@ const HelpIconWrapper = styled.div`
   align-self: center;
 `
 
-const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) => {
+const AutoEarningsCell: React.FC<React.PropsWithChildren<AutoEarningsCellProps>> = ({ pool, account }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
   const { earningTokenPrice, vaultKey } = pool

@@ -59,7 +59,7 @@ interface ScoreCardProps extends YourScoreProps {
   subgraphName?: string
 }
 
-const ScoreCard: React.FC<ScoreCardProps> = ({
+const ScoreCard: React.FC<React.PropsWithChildren<ScoreCardProps>> = ({
   userPrizeGrid,
   extraUserRankBox,
   flippersShareImage,

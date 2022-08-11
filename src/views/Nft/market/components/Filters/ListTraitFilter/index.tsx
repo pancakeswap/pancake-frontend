@@ -46,7 +46,12 @@ const CloseButton = styled(IconButton)`
   border-bottom-left-radius: 0;
 `
 
-export const ListTraitFilter: React.FC<ListTraitFilterProps> = ({ title, traitType, items, collectionAddress }) => {
+export const ListTraitFilter: React.FC<React.PropsWithChildren<ListTraitFilterProps>> = ({
+  title,
+  traitType,
+  items,
+  collectionAddress,
+}) => {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [query, setQuery] = useState('')

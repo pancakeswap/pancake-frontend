@@ -19,6 +19,7 @@ import { currencyId } from '../../utils/currencyId'
 import Dots from '../../components/Loader/Dots'
 import { AppHeader, AppBody } from '../../components/App'
 import Page from '../Page'
+import { CommonBasesType } from '../../components/SearchModal/types'
 
 enum Fields {
   TOKEN0 = 0,
@@ -84,6 +85,7 @@ export default function PoolFinder() {
       onCurrencySelect={handleCurrencySelect}
       showCommonBases
       selectedCurrency={(activeField === Fields.TOKEN0 ? currency1 : currency0) ?? undefined}
+      commonBasesType={CommonBasesType.LIQUIDITY}
     />,
     true,
     true,

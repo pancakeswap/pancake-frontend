@@ -75,7 +75,12 @@ interface RoiCardProps {
   setCalculatorMode: (mode: CalculatorMode) => void
 }
 
-const RoiCard: React.FC<RoiCardProps> = ({ earningTokenSymbol, calculatorState, setTargetRoi, setCalculatorMode }) => {
+const RoiCard: React.FC<React.PropsWithChildren<RoiCardProps>> = ({
+  earningTokenSymbol,
+  calculatorState,
+  setTargetRoi,
+  setCalculatorMode,
+}) => {
   const [expectedRoi, setExpectedRoi] = useState('')
   const inputRef = useRef<HTMLInputElement | null>(null)
   const { roiUSD, roiTokens, roiPercentage } = calculatorState.data

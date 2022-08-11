@@ -8,7 +8,9 @@ import BattleCta from './components/BattleCta'
 import { CompetitionProps } from './types'
 import { BottomBunnyWrapper } from './styles'
 
-const Footer: React.FC<CompetitionProps & { shouldHideCta: boolean; image: StaticImageData }> = ({
+const Footer: React.FC<
+  React.PropsWithChildren<CompetitionProps & { shouldHideCta: boolean; image: StaticImageData }>
+> = ({
   image,
   shouldHideCta,
   userTradingInformation,

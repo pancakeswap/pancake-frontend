@@ -7,7 +7,7 @@ export interface Props {
   toggleTheme: (isDark: boolean) => void;
 }
 
-const ThemeSwitcher: React.FC<Props> = ({ isDark, toggleTheme }) => (
+const ThemeSwitcher: React.FC<React.PropsWithChildren<Props>> = ({ isDark, toggleTheme }) => (
   <Toggle
     checked={isDark}
     defaultColor="textDisabled"

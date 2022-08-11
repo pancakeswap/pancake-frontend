@@ -1,6 +1,6 @@
 import { Grid, GridProps } from '@pancakeswap/uikit'
 
-const FilterFooter: React.FC<GridProps> = ({ children, ...props }) => (
+const FilterFooter: React.FC<React.PropsWithChildren<GridProps>> = ({ children, ...props }) => (
   <Grid
     gridGap="16px"
     gridTemplateColumns="repeat(2,1fr)"

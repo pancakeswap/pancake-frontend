@@ -16,7 +16,7 @@ interface SellStageProps {
 }
 
 // Initial stage when user wants to put their NFT for sale or transfer to another wallet
-const SellStage: React.FC<SellStageProps> = ({
+const SellStage: React.FC<React.PropsWithChildren<SellStageProps>> = ({
   nftToSell,
   lowestPrice,
   continueToNextStage,

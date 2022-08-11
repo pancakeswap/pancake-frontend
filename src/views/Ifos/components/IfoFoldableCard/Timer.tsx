@@ -20,7 +20,7 @@ const FlexGap = styled(Flex)<{ gap: string }>`
   gap: ${({ gap }) => gap};
 `
 
-export const SoonTimer: React.FC<Props> = ({ publicIfoData }) => {
+export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
   const { t } = useTranslation()
   const { status, secondsUntilStart } = publicIfoData
   const timeUntil = getTimePeriods(secondsUntilStart)
@@ -87,7 +87,7 @@ const LiveNowHeading = styled(EndInHeading)`
   }
 `
 
-const LiveTimer: React.FC<Props> = ({ publicIfoData }) => {
+const LiveTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
   const { t } = useTranslation()
   const { status, secondsUntilEnd } = publicIfoData
   const timeUntil = getTimePeriods(secondsUntilEnd)

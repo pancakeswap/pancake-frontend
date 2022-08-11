@@ -141,7 +141,7 @@ interface ProgressArrayProps {
   onClick?: (id: ProgressStepsType) => void
 }
 
-const ProgressSteps: React.FC<ProgressArrayProps> = ({ pickedStep, steps, onClick }) => {
+const ProgressSteps: React.FC<React.PropsWithChildren<ProgressArrayProps>> = ({ pickedStep, steps, onClick }) => {
   return (
     <ProgressWrap>
       {steps.map((step: Step, index: number) => {

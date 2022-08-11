@@ -40,7 +40,7 @@ const AprWrapper = styled.div`
   text-align: left;
 `
 
-const Apr: React.FC<AprProps> = ({
+const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
   value,
   pid,
   lpLabel,
