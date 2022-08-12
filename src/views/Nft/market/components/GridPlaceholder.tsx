@@ -5,7 +5,7 @@ interface GridPlaceholderProps extends GridProps {
   numItems?: number
 }
 
-export const GridPlaceholderItem: React.FC<BoxProps> = (props) => (
+export const GridPlaceholderItem: React.FC<React.PropsWithChildren<BoxProps>> = (props) => (
   <Box {...props}>
     <Skeleton height="258px" mb="8px" />
     <Skeleton width="30%" mb="4px" />
@@ -14,7 +14,7 @@ export const GridPlaceholderItem: React.FC<BoxProps> = (props) => (
   </Box>
 )
 
-const GridPlaceholder: React.FC<GridPlaceholderProps> = ({ numItems = 12, ...props }) => (
+const GridPlaceholder: React.FC<React.PropsWithChildren<GridPlaceholderProps>> = ({ numItems = 12, ...props }) => (
   <Grid gridGap="16px" gridTemplateColumns={['1fr', null, null, 'repeat(4, 1fr)']} {...props}>
     {times(numItems).map((itemKey) => (
       <GridPlaceholderItem key={itemKey} />

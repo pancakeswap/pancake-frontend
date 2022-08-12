@@ -2,8 +2,8 @@ import { ReactNode } from 'react'
 import { Box } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import PageSection from 'components/PageSection'
+import { useTranslation } from '@pancakeswap/localization'
 import RibbonWithImage from './RibbonWithImage'
-import { useTranslation } from '../../../contexts/Localization'
 import { LIGHTBLUEBG_DARK, LIGHTBLUEBG } from '../pageSectionStyles'
 import PrizesIcon from '../svgs/PrizesIcon'
 
@@ -11,7 +11,7 @@ interface PrizesInfoSectionProps {
   prizesInfoComponent: ReactNode
 }
 
-const PrizesInfoSection: React.FC<PrizesInfoSectionProps> = ({ prizesInfoComponent }) => {
+const PrizesInfoSection: React.FC<React.PropsWithChildren<PrizesInfoSectionProps>> = ({ prizesInfoComponent }) => {
   const { isDark } = useTheme()
   const { t } = useTranslation()
 

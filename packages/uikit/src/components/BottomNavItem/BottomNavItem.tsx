@@ -5,7 +5,7 @@ import AnimatedIconComponent from "../Svg/AnimatedIconComponent";
 import { StyledBottomNavItem, StyledBottomNavText } from "./styles";
 import { BottomNavItemProps } from "./types";
 
-const BottomNavItem: React.FC<BottomNavItemProps> = ({
+const BottomNavItem: React.FC<React.PropsWithChildren<BottomNavItemProps>> = ({
   label,
   icon,
   fillIcon,

@@ -9,7 +9,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import styled from 'styled-components'
 import { useIsUserAddedToken, useIsTokenActive } from 'hooks/Tokens'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 const TokenSection = styled.div<{ dim?: boolean }>`
   padding: 4px 20px;

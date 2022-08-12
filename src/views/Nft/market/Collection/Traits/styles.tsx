@@ -32,7 +32,10 @@ export const ClickableRow = styled.tr`
   }
 `
 
-export const NftName: React.FC<{ thumbnailSrc: string; name: string }> = ({ thumbnailSrc, name }) => (
+export const NftName: React.FC<React.PropsWithChildren<{ thumbnailSrc: string; name: string }>> = ({
+  thumbnailSrc,
+  name,
+}) => (
   <Flex alignItems="center">
     <NftImage src={thumbnailSrc} width={48} height={48} mr="8px" />
     <Text>{name}</Text>

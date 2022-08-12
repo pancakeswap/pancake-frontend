@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -34,7 +34,7 @@ interface StackedActionProps extends FarmWithStakedValue {
   displayApr?: string
 }
 
-const Staked: React.FunctionComponent<StackedActionProps> = ({
+const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps>> = ({
   pid,
   apr,
   multiplier,

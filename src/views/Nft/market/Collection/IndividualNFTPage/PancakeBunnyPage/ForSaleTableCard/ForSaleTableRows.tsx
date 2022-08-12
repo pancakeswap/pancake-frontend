@@ -3,8 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Price } from '@pancakeswap/sdk'
 import { Button, Grid, Text, Flex, Box, BinanceIcon, useModal, Skeleton } from '@pancakeswap/uikit'
 import { formatNumber } from 'utils/formatBalance'
-import { ContextApi } from 'contexts/Localization/types'
-import { useTranslation } from 'contexts/Localization'
+import { ContextApi, useTranslation } from '@pancakeswap/localization'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { NftToken } from 'state/nftMarket/types'
@@ -31,7 +30,7 @@ interface RowProps {
   onSuccessSale: () => void
 }
 
-const Row: React.FC<RowProps> = ({ t, nft, bnbBusdPrice, account, onSuccessSale }) => {
+const Row: React.FC<React.PropsWithChildren<RowProps>> = ({ t, nft, bnbBusdPrice, account, onSuccessSale }) => {
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nft?.marketData?.currentAskPrice))
 
   const ownNft = account ? nft.marketData.currentSeller === account.toLowerCase() : false
@@ -92,7 +91,7 @@ interface ForSaleTableRowsProps {
   onSuccessSale: () => void
 }
 
-const ForSaleTableRow: React.FC<ForSaleTableRowsProps> = ({ nftsForSale, onSuccessSale }) => {
+const ForSaleTableRow: React.FC<React.PropsWithChildren<ForSaleTableRowsProps>> = ({ nftsForSale, onSuccessSale }) => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()

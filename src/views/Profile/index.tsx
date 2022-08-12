@@ -4,7 +4,7 @@ import { isAddress } from 'utils'
 import { useAchievementsForAddress, useProfileForAddress } from 'state/profile/hooks'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import MarketPageHeader from '../Nft/market/components/MarketPageHeader'
 import ProfileHeader from './components/ProfileHeader'
@@ -24,7 +24,7 @@ const TabMenuWrapper = styled(Box)`
   }
 `
 
-const NftProfile: FC = ({ children }) => {
+const NftProfile: FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   const accountAddress = useRouter().query.accountAddress as string
   const { t } = useTranslation()
 
@@ -100,7 +100,7 @@ const NftProfile: FC = ({ children }) => {
   )
 }
 
-export const NftProfileLayout: FC = ({ children }) => {
+export const NftProfileLayout: FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   return <NftProfile>{children}</NftProfile>
 }
 

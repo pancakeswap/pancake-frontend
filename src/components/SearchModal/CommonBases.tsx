@@ -1,13 +1,14 @@
 import { ChainId, Currency, currencyEquals, ETHER, Token } from '@pancakeswap/sdk'
 import { Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 import { SUGGESTED_BASES } from 'config/constants/exchange'
 import { AutoColumn } from '../Layout/Column'
 import QuestionHelper from '../QuestionHelper'
 import { AutoRow } from '../Layout/Row'
 import { CurrencyLogo } from '../Logo'
+import { CommonBasesType } from './types'
 
 const ButtonWrapper = styled.div`
   display: inline-block;
@@ -46,17 +47,23 @@ export default function CommonBases({
   chainId,
   onSelect,
   selectedCurrency,
+  commonBasesType,
 }: {
   chainId?: ChainId
+  commonBasesType
   selectedCurrency?: Currency | null
   onSelect: (currency: Currency) => void
 }) {
   const { t } = useTranslation()
+  const pinTokenDescText = commonBasesType === CommonBasesType.SWAP_LIMITORDER ? t('Common tokens') : t('Common bases')
+
   return (
     <AutoColumn gap="md">
       <AutoRow>
-        <Text fontSize="14px">{t('Common bases')}</Text>
-        <QuestionHelper text={t('These tokens are commonly paired with other tokens.')} ml="4px" />
+        <Text fontSize="14px">{pinTokenDescText}</Text>
+        {commonBasesType === CommonBasesType.LIQUIDITY && (
+          <QuestionHelper text={t('These tokens are commonly paired with other tokens.')} ml="4px" />
+        )}
       </AutoRow>
       <RowWrapper>
         <ButtonWrapper>

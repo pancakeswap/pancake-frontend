@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { AutoRenewIcon, Button, Flex } from '@pancakeswap/uikit'
 import { Achievement } from 'state/types'
 import useToast from 'hooks/useToast'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { usePointCenterIfoContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -51,7 +51,7 @@ const Body = styled(Flex)`
   }
 `
 
-const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectSuccess }) => {
+const AchievementRow: React.FC<React.PropsWithChildren<AchievementRowProps>> = ({ achievement, onCollectSuccess }) => {
   const { t } = useTranslation()
   const pointCenterContract = usePointCenterIfoContract()
   const { toastSuccess } = useToast()

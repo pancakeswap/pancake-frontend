@@ -1,7 +1,7 @@
 import { AutoRenewIcon, Button } from '@pancakeswap/uikit'
 import { PoolIds } from 'config/constants/types'
 import { WalletIfoData } from 'views/Ifos/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -12,7 +12,7 @@ interface Props {
   walletIfoData: WalletIfoData
 }
 
-const ClaimButton: React.FC<Props> = ({ poolId, ifoVersion, walletIfoData }) => {
+const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifoVersion, walletIfoData }) => {
   const userPoolCharacteristics = walletIfoData[poolId]
   const { t } = useTranslation()
   const { toastSuccess } = useToast()

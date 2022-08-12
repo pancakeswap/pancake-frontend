@@ -9,7 +9,11 @@ interface CountdownProps {
   postCountdownText?: string
 }
 
-const Countdown: React.FC<CountdownProps> = ({ nextEventTime, preCountdownText, postCountdownText }) => {
+const Countdown: React.FC<React.PropsWithChildren<CountdownProps>> = ({
+  nextEventTime,
+  preCountdownText,
+  postCountdownText,
+}) => {
   const secondsRemaining = useNextEventCountdown(nextEventTime)
   const { days, hours, minutes } = getTimePeriods(secondsRemaining)
 

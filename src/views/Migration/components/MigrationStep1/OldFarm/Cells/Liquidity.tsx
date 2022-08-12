@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Flex, HelpIcon, Text, useTooltip } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
@@ -30,7 +30,7 @@ export interface LiquidityProps {
   liquidity: BigNumber
 }
 
-const Liquidity: React.FC<LiquidityProps> = ({ liquidity }) => {
+const Liquidity: React.FC<React.PropsWithChildren<LiquidityProps>> = ({ liquidity }) => {
   const { t } = useTranslation()
   const displayLiquidity =
     liquidity && liquidity.gt(0)

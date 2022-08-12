@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Text, Button, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ProgressStepsType } from './ProgressSteps'
@@ -64,7 +64,7 @@ interface MigrationStickyProps {
   handleClick: () => void
 }
 
-const MigrationSticky: React.FC<MigrationStickyProps> = ({ step, handleClick }) => {
+const MigrationSticky: React.FC<React.PropsWithChildren<MigrationStickyProps>> = ({ step, handleClick }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { isMobile } = useMatchBreakpointsContext()

@@ -2,7 +2,7 @@ import * as React from "react";
 import Svg from "../Svg";
 import { SvgProps } from "../types";
 
-const Icon: React.FC<SvgProps> = (props) => (
+const Icon: React.FC<React.PropsWithChildren<SvgProps>> = (props) => (
   <Svg viewBox="0 0 18 20" {...props}>
     <path
       fillRule="evenodd"

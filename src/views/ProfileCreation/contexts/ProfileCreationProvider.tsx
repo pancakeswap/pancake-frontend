@@ -58,7 +58,7 @@ const reducer = (state: State, action: Actions): State => {
 
 export const ProfileCreationContext = createContext<ContextType>(null)
 
-const ProfileCreationProvider: React.FC = ({ children }) => {
+const ProfileCreationProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { account } = useWeb3React()
 

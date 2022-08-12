@@ -14,7 +14,7 @@ import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { HistoryFilter } from 'state/types'
 import { setHistoryFilter, setHistoryPaneState } from 'state/predictions'
 import { useGetHistoryFilter, useGetIsFetchingHistory } from 'state/predictions/hooks'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 
 const Filter = styled.label`
@@ -52,7 +52,7 @@ export enum HistoryTabs {
   PNL,
 }
 
-const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
+const Header: React.FC<React.PropsWithChildren<HeaderProps>> = ({ activeTab, setActiveTab }) => {
   const historyFilter = useGetHistoryFilter()
   const isFetchingHistory = useGetIsFetchingHistory()
   const { t } = useTranslation()

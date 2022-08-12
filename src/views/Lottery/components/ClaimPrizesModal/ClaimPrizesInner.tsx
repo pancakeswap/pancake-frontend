@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Flex, Button, Text, AutoRenewIcon, PresentWonIcon } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { callWithEstimateGas } from 'utils/calls'
@@ -21,7 +21,7 @@ interface ClaimInnerProps {
   onSuccess?: () => void
 }
 
-const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToClaim }) => {
+const ClaimInnerContainer: React.FC<React.PropsWithChildren<ClaimInnerProps>> = ({ onSuccess, roundsToClaim }) => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()

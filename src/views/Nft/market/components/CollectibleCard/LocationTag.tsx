@@ -1,8 +1,8 @@
 import { NftLocation } from 'state/nftMarket/types'
 import { Text, Flex, WalletFilledIcon, CameraIcon, SellIcon } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
-const LocationTag: React.FC<{ nftLocation: NftLocation }> = ({ nftLocation }) => {
+const LocationTag: React.FC<React.PropsWithChildren<{ nftLocation: NftLocation }>> = ({ nftLocation }) => {
   const { t } = useTranslation()
 
   const WalletTag = () => {

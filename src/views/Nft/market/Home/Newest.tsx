@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Heading, Flex, Button, Grid, ChevronRightIcon } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { NftToken } from 'state/nftMarket/types'
 import { getLatestListedNfts, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
@@ -39,7 +39,7 @@ const useNewestNfts = () => {
   return newestNfts
 }
 
-const Newest: React.FC = () => {
+const Newest: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const nfts = useNewestNfts()
 

@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import { useCallback, useMemo, useState } from 'react'
 import { Button, Modal, AutoRenewIcon } from '@pancakeswap/uikit'
 import { ModalActions, ModalInput } from 'components/Modal'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 
 interface WithdrawModalProps {
@@ -12,7 +12,12 @@ interface WithdrawModalProps {
   tokenName?: string
 }
 
-const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max, tokenName = '' }) => {
+const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
+  onConfirm,
+  onDismiss,
+  max,
+  tokenName = '',
+}) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
   const { t } = useTranslation()

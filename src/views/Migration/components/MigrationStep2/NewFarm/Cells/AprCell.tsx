@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Flex, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
 import Apr, { AprProps } from 'views/Farms/components/FarmTable/Apr'
 
@@ -13,7 +13,7 @@ const StyledCell = styled(BaseCell)`
   }
 `
 
-const AprCell: React.FC<AprProps> = (apr) => {
+const AprCell: React.FC<React.PropsWithChildren<AprProps>> = (apr) => {
   const { t } = useTranslation()
 
   return (

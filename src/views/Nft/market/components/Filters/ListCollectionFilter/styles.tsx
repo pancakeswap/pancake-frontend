@@ -12,7 +12,11 @@ interface CollectionItem {
   collectionAddress: string
 }
 
-export const CollectionItemRow: React.FC<CollectionItemRowProps> = ({ item, isSelected, onClick }) => (
+export const CollectionItemRow: React.FC<React.PropsWithChildren<CollectionItemRowProps>> = ({
+  item,
+  isSelected,
+  onClick,
+}) => (
   <StyledItemRow alignItems="center" px="16px" py="8px">
     <Text style={{ flex: 1 }}>{item.label}</Text>
     <Flex ml="24px">

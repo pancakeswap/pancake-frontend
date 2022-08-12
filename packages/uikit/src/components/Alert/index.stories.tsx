@@ -16,7 +16,7 @@ export default {
   argTypes: {},
 } as Meta;
 
-export const Default: React.FC = () => {
+export const Default: React.FC<React.PropsWithChildren> = () => {
   return (
     <div style={{ padding: "32px", width: "400px" }}>
       <Row>
@@ -45,7 +45,7 @@ export const Default: React.FC = () => {
 
 const handleClick = noop;
 
-export const WithHandler: React.FC = () => {
+export const WithHandler: React.FC<React.PropsWithChildren> = () => {
   return (
     <div style={{ padding: "32px", width: "400px" }}>
       <Row>

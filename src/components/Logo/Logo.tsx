@@ -10,7 +10,7 @@ export interface LogoProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 /**
  * Renders an image by sequentially trying a list of URIs, and then eventually a fallback triangle alert
  */
-const Logo: React.FC<LogoProps> = ({ srcs, alt, ...rest }) => {
+const Logo: React.FC<React.PropsWithChildren<LogoProps>> = ({ srcs, alt, ...rest }) => {
   const [, refresh] = useState<number>(0)
 
   const src: string | undefined = srcs.find((s) => !BAD_SRCS[s])

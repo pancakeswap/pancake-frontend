@@ -1,7 +1,7 @@
 import { useState, ReactNode } from 'react'
 import styled from 'styled-components'
 import { ExpandableLabel, Flex, FlexProps, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 interface FoldableTextProps extends Omit<FlexProps, 'title'> {
   title?: ReactNode
@@ -25,7 +25,7 @@ const StyledChildrenFlex = styled(Flex)<{ isExpanded?: boolean }>`
   border-bottom: 1px solid ${({ theme }) => theme.colors.inputSecondary};
 `
 
-const FoldableText: React.FC<FoldableTextProps> = ({ title, children, ...props }) => {
+const FoldableText: React.FC<React.PropsWithChildren<FoldableTextProps>> = ({ title, children, ...props }) => {
   const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(false)
 

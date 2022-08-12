@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Heading, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { ActionContainer, ActionContent, ActionTitles } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
@@ -20,7 +20,7 @@ interface StakedProps {
   farm: FarmProps
 }
 
-const Staked: React.FC<StakedProps> = ({ earned, farm }) => {
+const Staked: React.FC<React.PropsWithChildren<StakedProps>> = ({ earned, farm }) => {
   const { t } = useTranslation()
   const { earnings } = earned
   const earningsBigNumber = new BigNumber(earnings)

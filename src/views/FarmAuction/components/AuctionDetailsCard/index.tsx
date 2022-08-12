@@ -13,7 +13,7 @@ import {
   CheckmarkCircleIcon,
   useModal,
 } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Auction, AuctionStatus, ConnectedBidder } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import PlaceBidModal from '../PlaceBidModal'
@@ -31,7 +31,11 @@ interface AuctionDetailsProps {
   refreshBidders: () => void
 }
 
-const AuctionDetails: React.FC<AuctionDetailsProps> = ({ auction, connectedBidder, refreshBidders }) => {
+const AuctionDetails: React.FC<React.PropsWithChildren<AuctionDetailsProps>> = ({
+  auction,
+  connectedBidder,
+  refreshBidders,
+}) => {
   const { t } = useTranslation()
 
   const [onPresentPlaceBid] = useModal(

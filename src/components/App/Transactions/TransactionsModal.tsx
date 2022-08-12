@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Modal, ModalBody, Text, Button, Flex, InjectedModalProps } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import orderBy from 'lodash/orderBy'
 import { isTransactionRecent, useAllTransactions } from 'state/transactions/hooks'
 import { TransactionDetails } from 'state/transactions/reducer'
@@ -21,7 +21,7 @@ function renderTransactions(transactions: TransactionDetails[]) {
   )
 }
 
-const TransactionsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
+const TransactionsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
   const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const allTransactions = useAllTransactions()

@@ -20,7 +20,7 @@ export const useWeb3LibraryContext = () => {
   return useContext(Web3LibraryContext)
 }
 
-const Web3LibraryProvider: React.FC<{ children: React.ReactNode }> = (props) => {
+const Web3LibraryProvider: React.FC<React.PropsWithChildren> = (props) => {
   const { connector } = useAccount()
   const { data: library } = useSWRImmutable(connector && ['web3-library', connector], async () => {
     const provider = await connector?.getProvider()

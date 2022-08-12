@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { Currency, CurrencyAmount, Fraction, Percent, Token, TokenAmount } from '@pancakeswap/sdk'
 import { InjectedModalProps, Button } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
   TransactionErrorContent,
@@ -27,7 +27,9 @@ interface ConfirmAddLiquidityModalProps {
   currencyToAdd: Token
 }
 
-const ConfirmAddLiquidityModal: React.FC<InjectedModalProps & ConfirmAddLiquidityModalProps> = ({
+const ConfirmAddLiquidityModal: React.FC<
+  React.PropsWithChildren<InjectedModalProps & ConfirmAddLiquidityModalProps>
+> = ({
   title,
   onDismiss,
   customOnDismiss,

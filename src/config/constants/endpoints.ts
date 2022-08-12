@@ -8,6 +8,7 @@ export const API_PROFILE = process.env.NEXT_PUBLIC_API_PROFILE
 export const API_NFT = process.env.NEXT_PUBLIC_API_NFT
 export const SNAPSHOT_API = `${SNAPSHOT_BASE_URL}/graphql`
 export const SNAPSHOT_HUB_API = `${SNAPSHOT_BASE_URL}/api/message`
+export const GRAPH_API_POTTERY = process.env.NEXT_PUBLIC_GRAPH_API_POTTERY
 
 /**
  * V1 will be deprecated but is still used to claim old rounds

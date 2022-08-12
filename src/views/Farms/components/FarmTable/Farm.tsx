@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useFarmUser } from 'state/farms/hooks'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Text } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -32,7 +32,7 @@ const TokenWrapper = styled.div`
   }
 `
 
-const Farm: React.FunctionComponent<FarmProps> = ({ token, quoteToken, label, pid }) => {
+const Farm: React.FunctionComponent<React.PropsWithChildren<FarmProps>> = ({ token, quoteToken, label, pid }) => {
   const { stakedBalance } = useFarmUser(pid)
   const { t } = useTranslation()
   const rawStakedBalance = getBalanceNumber(stakedBalance)

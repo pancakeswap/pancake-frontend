@@ -1,5 +1,5 @@
 import { Flex, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 interface NoChartAvailableProps {
   token0Address: string
@@ -8,7 +8,12 @@ interface NoChartAvailableProps {
   isMobile: boolean
 }
 
-const NoChartAvailable: React.FC<NoChartAvailableProps> = ({ token0Address, token1Address, pairAddress, isMobile }) => {
+const NoChartAvailable: React.FC<React.PropsWithChildren<NoChartAvailableProps>> = ({
+  token0Address,
+  token1Address,
+  pairAddress,
+  isMobile,
+}) => {
   const { t } = useTranslation()
   return (
     <>

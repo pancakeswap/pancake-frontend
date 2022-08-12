@@ -11,7 +11,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import orderBy from 'lodash/orderBy'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Vote } from 'state/types'
 import { FetchStatus } from 'config/constants/types'
 import VotesLoading from '../components/Proposal/VotesLoading'
@@ -31,7 +31,7 @@ const parseVotePower = (incomingVote: Vote) => {
   return votingPower
 }
 
-const Votes: React.FC<VotesProps> = ({ votes, votesLoadingStatus, totalVotes }) => {
+const Votes: React.FC<React.PropsWithChildren<VotesProps>> = ({ votes, votesLoadingStatus, totalVotes }) => {
   const [showAll, setShowAll] = useState(false)
   const { t } = useTranslation()
   const { account } = useWeb3React()

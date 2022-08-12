@@ -1,7 +1,7 @@
 import { Box, ChevronLeftIcon, Flex } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import SearchBar from '../components/SearchBar'
 
@@ -12,7 +12,7 @@ const BackLink = styled(NextLinkFromReactRouter)`
   font-weight: 600;
 `
 
-const TopBar: React.FC = () => {
+const TopBar: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
 
   return (

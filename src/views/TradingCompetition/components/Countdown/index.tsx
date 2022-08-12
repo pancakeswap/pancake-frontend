@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Flex, Skeleton, PocketWatchIcon, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import getTimePeriods from 'utils/getTimePeriods'
 import { CompetitionSteps, LIVE } from 'config/constants/trading-competition/phases'
 import useTheme from 'hooks/useTheme'
@@ -68,10 +68,9 @@ const StyledHeading = styled(Heading2Text)`
   }
 `
 
-const Countdown: React.FC<{ currentPhase: CompetitionPhaseProps; hasCompetitionEnded: boolean }> = ({
-  currentPhase,
-  hasCompetitionEnded,
-}) => {
+const Countdown: React.FC<
+  React.PropsWithChildren<{ currentPhase: CompetitionPhaseProps; hasCompetitionEnded: boolean }>
+> = ({ currentPhase, hasCompetitionEnded }) => {
   const { theme } = useTheme()
   const { t } = useTranslation()
   const finishMs = currentPhase.ends

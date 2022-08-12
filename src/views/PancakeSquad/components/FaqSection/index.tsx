@@ -1,5 +1,5 @@
 import { Text, Heading, Card, CardHeader, CardBody } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { LandingBodyWrapper } from 'views/PancakeSquad/styles'
 import FoldableText from 'components/FoldableSection/FoldableText'
 import configBuilder from './config'

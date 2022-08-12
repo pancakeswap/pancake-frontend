@@ -3,7 +3,7 @@ import { Price } from '@pancakeswap/sdk'
 import useTheme from 'hooks/useTheme'
 import { Activity, NftToken } from 'state/nftMarket/types'
 import { LightGreyCard } from 'components/Card'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import truncateHash from 'utils/truncateHash'
 import { multiplyPriceByAmount } from 'utils/prices'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -19,7 +19,7 @@ interface MobileModalProps extends InjectedModalProps {
   isUserActivity?: boolean
 }
 
-const MobileModal: React.FC<MobileModalProps> = ({
+const MobileModal: React.FC<React.PropsWithChildren<MobileModalProps>> = ({
   nft,
   activity,
   bnbBusdPrice,

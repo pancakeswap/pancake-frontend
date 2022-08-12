@@ -15,7 +15,7 @@ import {
   Spinner,
   useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { ApiResponseCollectionTokens } from 'state/nftMarket/types'
 import ForSaleTableRows from './ForSaleTableRows'
@@ -45,7 +45,11 @@ interface ForSaleTableCardProps {
   onSuccessSale: () => void
 }
 
-const ForSaleTableCard: React.FC<ForSaleTableCardProps> = ({ bunnyId, nftMetadata, onSuccessSale }) => {
+const ForSaleTableCard: React.FC<React.PropsWithChildren<ForSaleTableCardProps>> = ({
+  bunnyId,
+  nftMetadata,
+  onSuccessSale,
+}) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { isMobile } = useMatchBreakpointsContext()

@@ -1,6 +1,6 @@
 import { Skeleton, Heading, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import ScoreHeader from '../../../components/YourScore/ScoreHeader'
 import RibbonWithImage from '../../../components/RibbonWithImage'
 import { YourScoreProps } from '../../../types'
@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   max-width: 768px;
 `
 
-const MoboxYourScore: React.FC<YourScoreProps> = ({
+const MoboxYourScore: React.FC<React.PropsWithChildren<YourScoreProps>> = ({
   hasRegistered = false,
   account,
   userTradingInformation,

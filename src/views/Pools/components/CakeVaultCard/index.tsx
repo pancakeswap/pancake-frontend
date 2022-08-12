@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { FlexGap } from 'components/Layout/Flex'
 import { vaultPoolConfig } from 'config/constants/pools'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool, VaultKey, DeserializedLockedCakeVault, DeserializedCakeVault } from 'state/types'
 import styled from 'styled-components'
@@ -40,7 +40,7 @@ interface CakeVaultDetailProps {
   performanceFeeAsDecimal: number
 }
 
-export const CakeVaultDetail: React.FC<CakeVaultDetailProps> = ({
+export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailProps>> = ({
   isLoading = false,
   account,
   pool,
@@ -105,7 +105,7 @@ export const CakeVaultDetail: React.FC<CakeVaultDetailProps> = ({
   )
 }
 
-const CakeVaultCard: React.FC<CakeVaultProps> = ({
+const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
   pool,
   showStakedOnly,
   defaultFooterExpanded,

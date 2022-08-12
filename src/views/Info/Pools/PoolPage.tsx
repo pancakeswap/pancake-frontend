@@ -17,7 +17,7 @@ import {
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { NextLinkFromReactRouter } from 'components/NextLink'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useState } from 'react'
 import { usePoolChartData, usePoolDatas, usePoolTransactions } from 'state/info/hooks'
 import { useWatchlistPools } from 'state/user/hooks'
@@ -61,7 +61,7 @@ const LockedTokensContainer = styled(Flex)`
   max-width: 280px;
 `
 
-const PoolPage: React.FC<{ address: string }> = ({ address: routeAddress }) => {
+const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ address: routeAddress }) => {
   const { isXs, isSm } = useMatchBreakpointsContext()
   const { t } = useTranslation()
   const [showWeeklyData, setShowWeeklyData] = useState(0)

@@ -1,7 +1,7 @@
 import React from 'react'
 import { DeserializedPool } from 'state/types'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { ActionContainer, ActionContent, ActionTitles } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
 import BigNumber from 'bignumber.js'
@@ -20,7 +20,7 @@ interface StackedActionProps {
   pool: DeserializedPool
 }
 
-const Staked: React.FC<StackedActionProps> = ({ pool }) => {
+const Staked: React.FC<React.PropsWithChildren<StackedActionProps>> = ({ pool }) => {
   const { stakingToken, userData, stakingTokenPrice, vaultKey } = pool
   const { t } = useTranslation()
 

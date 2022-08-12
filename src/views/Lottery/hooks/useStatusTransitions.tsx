@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import { LotteryStatus } from 'config/constants/types'
-import usePreviousValue from 'hooks/usePreviousValue'
+import { usePreviousValue } from '@pancakeswap/hooks'
 import { useEffect } from 'react'
 import { useAppDispatch } from 'state'
 import { useLottery } from 'state/lottery/hooks'

@@ -10,7 +10,7 @@ import Page from 'components/Layout/Page'
 import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { DeserializedFarm } from 'state/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { getFarmApr } from 'utils/apr'
 import orderBy from 'lodash/orderBy'
 import { latinise } from 'utils/latinise'
@@ -115,12 +115,16 @@ const FinishedTextLink = styled(Link)`
 
 const NUMBER_OF_FARMS_VISIBLE = 12
 
-const Farms: React.FC = ({ children }) => {
+const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { pathname, query: urlQuery } = useRouter()
   const { t } = useTranslation()
   const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
   const cakePrice = usePriceCakeBusd()
-  const [query, setQuery] = useState(typeof urlQuery?.search === 'string' ? urlQuery?.search : '')
+
+  const [_query, setQuery] = useState('')
+  const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])
+  const query = normalizedUrlSearch && !_query ? normalizedUrlSearch : _query
+
   const [viewMode, setViewMode] = useUserFarmsViewMode()
   const { account } = useWeb3React()
   const [sortOption, setSortOption] = useState('hot')
@@ -334,7 +338,7 @@ const Farms: React.FC = ({ children }) => {
             </LabelWrapper>
             <LabelWrapper style={{ marginLeft: 16 }}>
               <Text textTransform="uppercase">{t('Search')}</Text>
-              <SearchInput initialValue={query} onChange={handleChangeQuery} placeholder="Search Farms" />
+              <SearchInput initialValue={normalizedUrlSearch} onChange={handleChangeQuery} placeholder="Search Farms" />
             </LabelWrapper>
           </FilterContainer>
         </ControlContainer>

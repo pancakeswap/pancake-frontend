@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Flex, Box, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { Ifo } from 'config/constants/types'
 import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
@@ -22,7 +22,11 @@ interface ReleasedTokenInfoProps {
   amountInVesting: BigNumber
 }
 
-const ReleasedTokenInfo: React.FC<ReleasedTokenInfoProps> = ({ ifo, amountReleased, amountInVesting }) => {
+const ReleasedTokenInfo: React.FC<React.PropsWithChildren<ReleasedTokenInfoProps>> = ({
+  ifo,
+  amountReleased,
+  amountInVesting,
+}) => {
   const { t } = useTranslation()
   const { token } = ifo
 

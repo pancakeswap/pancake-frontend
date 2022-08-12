@@ -5,7 +5,11 @@ interface RoundProgressProps extends ProgressProps {
   closeTimestamp: number
 }
 
-const RoundProgress: React.FC<RoundProgressProps> = ({ lockTimestamp, closeTimestamp, ...props }) => {
+const RoundProgress: React.FC<React.PropsWithChildren<RoundProgressProps>> = ({
+  lockTimestamp,
+  closeTimestamp,
+  ...props
+}) => {
   const startMs = lockTimestamp * 1000
   const endMs = closeTimestamp * 1000
   const now = Date.now()

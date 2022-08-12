@@ -1,5 +1,5 @@
 import { AutoRenewIcon, Button, Flex, InjectedModalProps, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useCake } from 'hooks/useContract'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useProfile } from 'state/profile/hooks'
@@ -12,7 +12,7 @@ interface ApproveCakePageProps extends InjectedModalProps {
   goToChange: UseEditProfileResponse['goToChange']
 }
 
-const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss }) => {
+const ApproveCakePage: React.FC<React.PropsWithChildren<ApproveCakePageProps>> = ({ goToChange, onDismiss }) => {
   const { profile } = useProfile()
   const { t } = useTranslation()
   const { fetchWithCatchTxError, loading: isApproving } = useCatchTxError()

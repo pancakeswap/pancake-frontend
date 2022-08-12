@@ -1,5 +1,5 @@
 import { BinanceIcon, Box, Button, Card, CardBody, Flex, Skeleton, Text, useModal } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 
 import { NftToken } from 'state/nftMarket/types'
@@ -19,7 +19,12 @@ interface MainNFTCardProps {
   onSuccess: () => void
 }
 
-const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePic, onSuccess }) => {
+const MainNFTCard: React.FC<React.PropsWithChildren<MainNFTCardProps>> = ({
+  nft,
+  isOwnNft,
+  nftIsProfilePic,
+  onSuccess,
+}) => {
   const { t } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
 

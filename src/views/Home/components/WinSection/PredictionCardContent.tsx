@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ArrowForwardIcon, Button, Flex, Heading, Skeleton, Text } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { formatLocalisedCompactNumber } from 'utils/formatBalance'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { getTotalWon } from 'state/predictions/helpers'
@@ -15,7 +15,10 @@ const StyledLink = styled(NextLinkFromReactRouter)`
   width: 100%;
 `
 
-const PredictionCardHeader: React.FC<{ preText: string; bnbWon: number }> = ({ preText, bnbWon }) => {
+const PredictionCardHeader: React.FC<React.PropsWithChildren<{ preText: string; bnbWon: number }>> = ({
+  preText,
+  bnbWon,
+}) => {
   const bnbBusdPrice = useBNBBusdPrice()
   const bnbWonInUsd = multiplyPriceByAmount(bnbBusdPrice, bnbWon)
 

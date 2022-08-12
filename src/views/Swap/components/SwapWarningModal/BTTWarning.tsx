@@ -1,4 +1,4 @@
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Text, Link, LinkExternal } from '@pancakeswap/uikit'
 
 const BTTWarning = () => {

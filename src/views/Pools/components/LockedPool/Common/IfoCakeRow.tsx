@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Flex, Text, TooltipText, useTooltip, Box, Link } from '@pancakeswap/uikit'
 
 import { BalanceWithLoading } from 'components/Balance'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useIfoCredit, useIfoCeiling } from 'state/pools/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getICakeWeekDisplay } from 'views/Pools/helpers'
@@ -11,7 +11,7 @@ const InlineLink = styled(Link)`
   display: inline;
 `
 
-const IfoCakeRow: React.FC = () => {
+const IfoCakeRow: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const credit = useIfoCredit()
   const ceiling = useIfoCeiling()

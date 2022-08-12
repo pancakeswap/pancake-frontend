@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Modal } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { LotteryStatus } from 'config/constants/types'
 import { useLottery } from 'state/lottery/hooks'
 import useTheme from 'hooks/useTheme'
@@ -19,7 +19,11 @@ interface ViewTicketsModalProps {
   onDismiss?: () => void
 }
 
-const ViewTicketsModal: React.FC<ViewTicketsModalProps> = ({ onDismiss, roundId, roundStatus }) => {
+const ViewTicketsModal: React.FC<React.PropsWithChildren<ViewTicketsModalProps>> = ({
+  onDismiss,
+  roundId,
+  roundStatus,
+}) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { currentLotteryId } = useLottery()

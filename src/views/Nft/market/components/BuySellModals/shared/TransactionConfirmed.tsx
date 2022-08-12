@@ -1,5 +1,5 @@
 import { Flex, Text, Button, ArrowUpIcon, LinkExternal } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { getBscScanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Divider } from './styles'
@@ -9,7 +9,7 @@ interface TransactionConfirmedProps {
   onDismiss: () => void
 }
 
-const TransactionConfirmed: React.FC<TransactionConfirmedProps> = ({ txHash, onDismiss }) => {
+const TransactionConfirmed: React.FC<React.PropsWithChildren<TransactionConfirmedProps>> = ({ txHash, onDismiss }) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   return (

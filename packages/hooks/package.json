@@ -1,0 +1,12 @@
+{
+  "name": "@pancakeswap/hooks",
+  "license": "MIT",
+  "version": "0.0.1",
+  "description": "Generic hooks used for common usecases",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {},
+  "dependencies": {
+    "react": "^18.2.0"
+  }
+}

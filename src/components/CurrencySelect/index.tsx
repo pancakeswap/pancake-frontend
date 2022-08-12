@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { ArrowDropDownIcon, Box, Button, Text, useModal, Flex, BoxProps } from '@pancakeswap/uikit'
 import CurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { formatNumber } from 'utils/formatBalance'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import useBUSDPrice from 'hooks/useBUSDPrice'
@@ -55,6 +55,7 @@ export const CurrencySelect = ({
   selectedCurrency,
   otherSelectedCurrency,
   showCommonBases,
+  commonBasesType,
   hideBalance,
   ...props
 }: CurrencySelectProps) => {
@@ -73,6 +74,7 @@ export const CurrencySelect = ({
       selectedCurrency={selectedCurrency}
       otherSelectedCurrency={otherSelectedCurrency}
       showCommonBases={showCommonBases}
+      commonBasesType={commonBasesType}
     />,
   )
 

@@ -1,7 +1,7 @@
 import { Flex, Text, Button, Modal, InjectedModalProps } from '@pancakeswap/uikit'
 import confetti from 'canvas-confetti'
 import delay from 'lodash/delay'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useEffect, useState } from 'react'
 import { useBunnySpecialXmasContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
@@ -19,7 +19,7 @@ const showConfetti = () => {
   })
 }
 
-const ClaimNftModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
+const ClaimNftModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
   const { t } = useTranslation()
   const [isClaiming, setIsClaiming] = useState(false)
   const bunnyXmasContract = useBunnySpecialXmasContract()

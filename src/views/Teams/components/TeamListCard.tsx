@@ -1,7 +1,7 @@
 import styled, { DefaultTheme } from 'styled-components'
 import Link from 'next/link'
 import { Button, Card, CommunityIcon, Flex, Heading, PrizeIcon, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Team } from 'config/constants/types'
 
 interface TeamCardProps {
@@ -88,7 +88,7 @@ const StyledTeamCard = styled(Card)`
   margin-bottom: 16px;
 `
 
-const TeamCard: React.FC<TeamCardProps> = ({ rank, team }) => {
+const TeamCard: React.FC<React.PropsWithChildren<TeamCardProps>> = ({ rank, team }) => {
   const { t } = useTranslation()
   const avatar = <Avatar src={`/images/teams/${team.images.md}`} alt="team avatar" />
 

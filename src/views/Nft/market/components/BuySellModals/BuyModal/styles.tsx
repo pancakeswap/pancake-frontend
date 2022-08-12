@@ -38,7 +38,11 @@ interface BnbAmountCellProps {
   isInsufficient?: boolean
 }
 
-export const BnbAmountCell: React.FC<BnbAmountCellProps> = ({ bnbAmount, isLoading, isInsufficient }) => {
+export const BnbAmountCell: React.FC<React.PropsWithChildren<BnbAmountCellProps>> = ({
+  bnbAmount,
+  isLoading,
+  isInsufficient,
+}) => {
   const bnbBusdPrice = useBNBBusdPrice()
   if (isLoading) {
     return (

@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from 'react'
 import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { BalanceWithLoading } from 'components/Balance'
 import { Box, Flex, Text, ChevronDownIcon } from '@pancakeswap/uikit'
@@ -20,9 +21,10 @@ interface TokenInfoProps {
   fetchUserVestingData: () => void
 }
 
-const TokenInfo: React.FC<TokenInfoProps> = ({ index, data, fetchUserVestingData }) => {
+const TokenInfo: React.FC<React.PropsWithChildren<TokenInfoProps>> = ({ index, data, fetchUserVestingData }) => {
   const { vestingTitle, token } = data.ifo
   const { vestingComputeReleasableAmount } = data.userVestingData[PoolIds.poolUnlimited]
+  const { vestingComputeReleasableAmount: basicReleaseAmount } = data.userVestingData[PoolIds.poolBasic]
   const [expanded, setExpanded] = useState(false)
   const shouldRenderExpand = useDelayedUnmount(expanded, 300)
 
@@ -36,10 +38,10 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ index, data, fetchUserVestingData
     setExpanded((prev) => !prev)
   }
 
-  const amountAvailable = useMemo(
-    () => getBalanceNumber(vestingComputeReleasableAmount, token.decimals),
-    [token, vestingComputeReleasableAmount],
-  )
+  const amountAvailable = useMemo(() => {
+    const totalReleaseAmount = new BigNumber(vestingComputeReleasableAmount).plus(basicReleaseAmount)
+    return getBalanceNumber(totalReleaseAmount, token.decimals)
+  }, [token, vestingComputeReleasableAmount, basicReleaseAmount])
 
   return (
     <Box>

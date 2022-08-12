@@ -6,7 +6,7 @@ import { formatBigNumber } from 'utils/formatBalance'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { useCake } from 'hooks/useContract'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 import { FetchStatus } from 'config/constants/types'
 import { requiresApproval } from 'utils/requiresApproval'
@@ -41,7 +41,12 @@ const AvatarWrapper = styled.div`
   }
 `
 
-const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemove, onDismiss }) => {
+const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({
+  goToApprove,
+  goToChange,
+  goToRemove,
+  onDismiss,
+}) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { reader: cakeContract } = useCake()

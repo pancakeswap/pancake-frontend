@@ -1,6 +1,7 @@
-import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
-import React, { createContext, useRef, useState, useEffect } from "react";
+import { AnimatePresence, domMax, LazyMotion, m } from "framer-motion";
+import React, { createContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { mountAnimation, unmountAnimation } from "../../components/BottomDrawer/styles";
 import { Overlay } from "../../components/Overlay";
 import {
   animationHandler,
@@ -9,9 +10,8 @@ import {
   appearAnimation,
   disappearAnimation,
 } from "../../util/animationToolkit";
-import { Handler } from "./types";
 import { ModalContainer } from "./styles";
-import { unmountAnimation, mountAnimation } from "../../components/BottomDrawer/styles";
+import { Handler } from "./types";
 
 interface ModalsContext {
   isOpen: boolean;
@@ -64,7 +64,7 @@ export const Context = createContext<ModalsContext>({
   onDismiss: () => null,
 });
 
-const ModalProvider: React.FC = ({ children }) => {
+const ModalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [modalNode, setModalNode] = useState<React.ReactNode>();
   const [nodeId, setNodeId] = useState("");
@@ -112,7 +112,7 @@ const ModalProvider: React.FC = ({ children }) => {
         onDismiss: handleDismiss,
       }}
     >
-      <LazyMotion features={domAnimation}>
+      <LazyMotion features={domMax}>
         <AnimatePresence>
           {isOpen && (
             <ModalWrapper

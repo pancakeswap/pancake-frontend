@@ -2,7 +2,7 @@ import { Button, Flex, Heading } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -19,7 +19,7 @@ interface FarmCardActionsProps {
   pid?: number
 }
 
-const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
+const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({ earnings, pid }) => {
   const { account } = useWeb3React()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()

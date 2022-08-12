@@ -17,7 +17,7 @@ import { useProfile } from 'state/profile/hooks'
 import { NftLocation, NftToken, Collection } from 'state/nftMarket/types'
 import { formatNumber } from 'utils/formatBalance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { CollectibleRowContainer, SmallRoundedImage } from './styles'
 import ProfileNftModal from '../../../components/ProfileNftModal'
 import SellModal from '../../../components/BuySellModals/SellModal'
@@ -52,7 +52,11 @@ interface CollectibleRowProps {
   onSuccessSale: () => void
 }
 
-const CollectibleRow: React.FC<CollectibleRowProps> = ({ nft, lowestPrice, onSuccessSale }) => {
+const CollectibleRow: React.FC<React.PropsWithChildren<CollectibleRowProps>> = ({
+  nft,
+  lowestPrice,
+  onSuccessSale,
+}) => {
   const { t } = useTranslation()
   const modalVariant = nft.location === NftLocation.WALLET ? 'sell' : 'edit'
   const [onPresentProfileNftModal] = useModal(<ProfileNftModal nft={nft} />)
@@ -109,7 +113,7 @@ interface CollectiblesByLocationProps {
   onSuccessSale: () => void
 }
 
-const CollectiblesByLocation: React.FC<CollectiblesByLocationProps> = ({
+const CollectiblesByLocation: React.FC<React.PropsWithChildren<CollectiblesByLocationProps>> = ({
   location,
   nfts,
   lowestPrice,
@@ -151,7 +155,12 @@ const getNftFilter = (location: NftLocation) => {
   }
 }
 
-const ManageNFTsCard: React.FC<ManageNftsCardProps> = ({ collection, tokenId, lowestPrice, onSuccess }) => {
+const ManageNFTsCard: React.FC<React.PropsWithChildren<ManageNftsCardProps>> = ({
+  collection,
+  tokenId,
+  lowestPrice,
+  onSuccess,
+}) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
 

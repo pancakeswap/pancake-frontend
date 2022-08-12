@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import styled from 'styled-components'
 import { Flex, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Ticket, UpdateTicketAction } from './useTicketsReducer'
 
 const InputsContainer = styled.div<{ focused: boolean; isDuplicate: boolean }>`
@@ -69,12 +69,14 @@ const getIdLabel = (id: number): string => {
   return `#${id}`
 }
 
-const TicketContainer: React.FC<{
-  ticket: Ticket
-  duplicateWith: number[]
-  updateTicket: UpdateTicketAction
-  disabled: boolean
-}> = ({ ticket, duplicateWith, updateTicket, disabled }) => {
+const TicketContainer: React.FC<
+  React.PropsWithChildren<{
+    ticket: Ticket
+    duplicateWith: number[]
+    updateTicket: UpdateTicketAction
+    disabled: boolean
+  }>
+> = ({ ticket, duplicateWith, updateTicket, disabled }) => {
   const [focused, setFocused] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const digit1 = useRef<HTMLInputElement>(null)

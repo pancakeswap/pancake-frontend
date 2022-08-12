@@ -21,6 +21,6 @@ export const VotingBoxCardInner = styled(Box)<{ hasBoosted?: boolean }>`
   background: ${({ theme, hasBoosted }) => (hasBoosted ? theme.colors.gradients.bubblegum : 'transparent')};
 `
 
-export const ModalInner: React.FC<BoxProps> = (props) => {
+export const ModalInner: React.FC<React.PropsWithChildren<BoxProps>> = (props) => {
   return <Box mb="24px" maxWidth={['100%', '100%', '100%', '320px']} {...props} />
 }

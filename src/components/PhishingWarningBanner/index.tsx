@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Box, CloseIcon, IconButton, useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { usePhishingBannerManager } from 'state/user/hooks'
 
 const Container = styled(Flex)`
@@ -40,7 +40,7 @@ const SpeechBubble = styled.div`
   }
 `
 
-const PhishingWarningBanner: React.FC = () => {
+const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const [, hideBanner] = usePhishingBannerManager()
   const { isMobile, isMd } = useMatchBreakpointsContext()
@@ -79,11 +79,18 @@ const PhishingWarningBanner: React.FC = () => {
       ) : (
         <>
           <InnerContainer>
-            <picture>
-              <source type="image/webp" srcSet="/images/decorations/phishing-warning-bunny.webp" />
-              <source type="image/png" srcSet="/images/decorations/phishing-warning-bunny.png" />
-              <img src="/images/decorations/phishing-warning-bunny.png" alt="phishing-warning" width="92px" />
-            </picture>
+            <img
+              src="/images/decorations/phishing-warning-bunny.webp"
+              alt="phishing-warning"
+              width="92px"
+              onError={(e) => {
+                const fallbackSrc = '/images/decorations/phishing-warning-bunny.png'
+                if (!e.currentTarget.src.endsWith(fallbackSrc)) {
+                  // eslint-disable-next-line no-param-reassign
+                  e.currentTarget.src = fallbackSrc
+                }
+              }}
+            />
             <SpeechBubble>{warningTextComponent}</SpeechBubble>
           </InnerContainer>
           <IconButton onClick={hideBanner} variant="text">

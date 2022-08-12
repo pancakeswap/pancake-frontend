@@ -6,7 +6,10 @@ interface ProposalStateTagProps extends TagProps {
   proposalState: ProposalState
 }
 
-export const ProposalStateTag: React.FC<ProposalStateTagProps> = ({ proposalState, ...props }) => {
+export const ProposalStateTag: React.FC<React.PropsWithChildren<ProposalStateTagProps>> = ({
+  proposalState,
+  ...props
+}) => {
   if (proposalState === ProposalState.ACTIVE) {
     return <VoteNowTag {...props} />
   }
@@ -22,7 +25,10 @@ interface ProposalTypeTagProps extends TagProps {
   isCoreProposal: boolean
 }
 
-export const ProposalTypeTag: React.FC<ProposalTypeTagProps> = ({ isCoreProposal, ...props }) => {
+export const ProposalTypeTag: React.FC<React.PropsWithChildren<ProposalTypeTagProps>> = ({
+  isCoreProposal,
+  ...props
+}) => {
   if (isCoreProposal) {
     return <CoreTag {...props} />
   }

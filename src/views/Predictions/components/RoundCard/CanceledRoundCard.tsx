@@ -1,5 +1,5 @@
 import { Card, CardBody, Text, Flex, BlockIcon, LinkExternal } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { NodeRound, BetPosition } from 'state/types'
 import useTheme from 'hooks/useTheme'
 import ReclaimPositionButton from '../ReclaimPositionButton'
@@ -12,7 +12,7 @@ interface CanceledRoundCardProps {
   round: NodeRound
 }
 
-const CanceledRoundCard: React.FC<CanceledRoundCardProps> = ({ round }) => {
+const CanceledRoundCard: React.FC<React.PropsWithChildren<CanceledRoundCardProps>> = ({ round }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { isRefundable, setIsRefundable } = useIsRefundable(round.epoch)

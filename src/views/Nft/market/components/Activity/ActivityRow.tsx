@@ -30,7 +30,7 @@ interface ActivityRowProps {
   isNftActivity?: boolean
 }
 
-const ActivityRow: React.FC<ActivityRowProps> = ({
+const ActivityRow: React.FC<React.PropsWithChildren<ActivityRowProps>> = ({
   activity,
   bnbBusdPrice,
   nft,

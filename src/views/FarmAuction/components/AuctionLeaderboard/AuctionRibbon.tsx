@@ -1,6 +1,6 @@
 import { Text } from '@pancakeswap/uikit'
 import { Auction, AuctionStatus } from 'config/constants/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 import styled from 'styled-components'
 
@@ -25,7 +25,10 @@ const StyledRibbon = styled.div<{ color: string }>`
   }
 `
 
-const AuctionRibbon: React.FC<{ auction: Auction; noAuctionHistory: boolean }> = ({ auction, noAuctionHistory }) => {
+const AuctionRibbon: React.FC<React.PropsWithChildren<{ auction: Auction; noAuctionHistory: boolean }>> = ({
+  auction,
+  noAuctionHistory,
+}) => {
   const { t } = useTranslation()
   const { status } = auction
 

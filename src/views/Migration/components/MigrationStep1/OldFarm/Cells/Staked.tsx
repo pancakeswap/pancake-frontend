@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Flex, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { formatLpBalance } from 'utils/formatBalance'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
 
@@ -24,7 +24,7 @@ export interface StakedProps {
   stakedBalance: BigNumber
 }
 
-const Staked: React.FC<StakedProps> = ({ label, stakedBalance }) => {
+const Staked: React.FC<React.PropsWithChildren<StakedProps>> = ({ label, stakedBalance }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
 

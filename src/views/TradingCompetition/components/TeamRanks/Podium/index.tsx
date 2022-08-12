@@ -1,4 +1,4 @@
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { Flex, Box, Text, Skeleton } from '@pancakeswap/uikit'
 import TeamPodiumIcon from './TeamPodiumIcon'
@@ -82,7 +82,7 @@ const StyledVolumeText = styled(Text)`
   }
 `
 
-const Podium: React.FC<PodiumProps> = ({ teamsSortedByVolume }) => {
+const Podium: React.FC<React.PropsWithChildren<PodiumProps>> = ({ teamsSortedByVolume }) => {
   const { t } = useTranslation()
   const firstTeam = teamsSortedByVolume && teamsSortedByVolume[0]
   const secondTeam = teamsSortedByVolume && teamsSortedByVolume[1]

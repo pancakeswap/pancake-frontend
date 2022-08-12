@@ -5,7 +5,7 @@ import { useWeb3React } from '@web3-react/core'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getErc721Contract } from 'utils/contractHelpers'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useToast from 'hooks/useToast'
 import { useProfileContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -28,7 +28,7 @@ const NftWrapper = styled.div`
   margin-bottom: 24px;
 `
 
-const ProfilePicture: React.FC = () => {
+const ProfilePicture: React.FC<React.PropsWithChildren> = () => {
   const { account, library } = useWeb3React()
   const [isApproved, setIsApproved] = useState(false)
   const [userProfileCreationNfts, setUserProfileCreationNfts] = useState(null)

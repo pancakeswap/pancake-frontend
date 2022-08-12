@@ -5,7 +5,7 @@ import BalanceWithLoading from 'components/Balance'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { WalletIfoData } from 'views/Ifos/types'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 interface TotalPurchasedProps {
   ifo: Ifo
@@ -13,7 +13,7 @@ interface TotalPurchasedProps {
   walletIfoData: WalletIfoData
 }
 
-const TotalPurchased: React.FC<TotalPurchasedProps> = ({ ifo, poolId, walletIfoData }) => {
+const TotalPurchased: React.FC<React.PropsWithChildren<TotalPurchasedProps>> = ({ ifo, poolId, walletIfoData }) => {
   const { t } = useTranslation()
   const { token } = ifo
   const { offeringAmountInToken } = walletIfoData[poolId]

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Text, Heading, Card, CardHeader, CardBody, Flex } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake, useFarmAuctionContract } from 'hooks/useContract'
 import { requiresApproval } from 'utils/requiresApproval'
@@ -19,7 +19,7 @@ const StyledReclaimBidCard = styled(Card)`
   flex: 1;
 `
 
-const ReclaimBidCard: React.FC = () => {
+const ReclaimBidCard: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { callWithGasPrice } = useCallWithGasPrice()

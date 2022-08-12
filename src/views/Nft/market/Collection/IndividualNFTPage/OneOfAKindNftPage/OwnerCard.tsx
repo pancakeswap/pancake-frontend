@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Flex, Card, Grid, SellIcon, Text, useModal, Box, BinanceIcon, Skeleton, Button } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { NftToken } from 'state/nftMarket/types'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
@@ -35,7 +35,12 @@ interface OwnerCardProps {
   onSuccess: () => void
 }
 
-const OwnerCard: React.FC<OwnerCardProps> = ({ nft, isOwnNft, nftIsProfilePic, onSuccess }) => {
+const OwnerCard: React.FC<React.PropsWithChildren<OwnerCardProps>> = ({
+  nft,
+  isOwnNft,
+  nftIsProfilePic,
+  onSuccess,
+}) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const bnbBusdPrice = useBNBBusdPrice()

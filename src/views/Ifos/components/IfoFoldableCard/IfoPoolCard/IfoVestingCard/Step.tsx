@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useMemo } from 'react'
 import { format } from 'date-fns'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { LogoIcon, CheckmarkCircleIcon, CircleOutlineIcon, Flex, Text } from '@pancakeswap/uikit'
 
 const sharedFlexStyles = `
@@ -53,7 +53,7 @@ interface CountdownProps {
   activeStepIndex: number
 }
 
-const Step: React.FC<CountdownProps> = ({ index, stepText, timeStamp, activeStepIndex }) => {
+const Step: React.FC<React.PropsWithChildren<CountdownProps>> = ({ index, stepText, timeStamp, activeStepIndex }) => {
   const { t } = useTranslation()
   const isExpired = index < activeStepIndex
   const isActive = index === activeStepIndex

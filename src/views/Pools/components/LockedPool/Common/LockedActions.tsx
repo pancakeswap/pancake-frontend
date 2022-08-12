@@ -3,14 +3,14 @@ import { Flex, Box } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import AddCakeButton from '../Buttons/AddCakeButton'
 import ExtendButton from '../Buttons/ExtendDurationButton'
 import AfterLockedActions from './AfterLockedActions'
 import { LockedActionsPropsType } from '../types'
 
-const LockedActions: React.FC<LockedActionsPropsType> = ({
+const LockedActions: React.FC<React.PropsWithChildren<LockedActionsPropsType>> = ({
   userShares,
   locked,
   lockEndTime,

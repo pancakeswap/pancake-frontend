@@ -1,11 +1,11 @@
 import { Token } from '@pancakeswap/sdk'
 import { Flex, FlexProps, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useBUSDPrice from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 
-export const Row: React.FC<FlexProps> = ({ children, ...props }) => {
+export const Row: React.FC<React.PropsWithChildren<FlexProps>> = ({ children, ...props }) => {
   return (
     <Flex alignItems="center" justifyContent="space-between" {...props}>
       {children}
@@ -19,12 +19,12 @@ interface NetWinningsProps extends FlexProps {
   textColor?: string
 }
 
-export const NetWinnings: React.FC<NetWinningsProps> = (props) => {
+export const NetWinnings: React.FC<React.PropsWithChildren<NetWinningsProps>> = (props) => {
   const { token } = useConfig()
   return <NetWinningsView token={token} {...props} />
 }
 
-export const NetWinningsView: React.FC<NetWinningsProps & { token: Token }> = ({
+export const NetWinningsView: React.FC<React.PropsWithChildren<NetWinningsProps & { token: Token }>> = ({
   token,
   amount,
   textPrefix = '',
@@ -50,7 +50,7 @@ export const NetWinningsView: React.FC<NetWinningsProps & { token: Token }> = ({
   )
 }
 
-export const NetWinningsRow: React.FC<{ amount: number }> = ({ amount }) => {
+export const NetWinningsRow: React.FC<React.PropsWithChildren<{ amount: number }>> = ({ amount }) => {
   const { t } = useTranslation()
   const { token } = useConfig()
 

@@ -53,7 +53,13 @@ const getPreferredConfig = (walletConfig: Config[]) => {
   ];
 };
 
-const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayCount = 3, t, connectors }) => {
+const ConnectModal: React.FC<React.PropsWithChildren<Props>> = ({
+  login,
+  onDismiss = () => null,
+  displayCount = 3,
+  t,
+  connectors,
+}) => {
   const [showMore, setShowMore] = useState(false);
   const theme = useTheme();
   const sortedConfig = getPreferredConfig(connectors || config);
@@ -64,7 +70,7 @@ const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null, displayC
   const displayListConfig = showMore ? walletsToShow : walletsToShow.slice(0, displayCount);
 
   return (
-    <ModalContainer minWidth="320px">
+    <ModalContainer $minWidth="320px">
       <ModalHeader background={getThemeValue(theme, "colors.gradients.bubblegum")}>
         <ModalTitle>
           <Heading>{t("Connect Wallet")}</Heading>

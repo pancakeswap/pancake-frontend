@@ -1,5 +1,5 @@
 import { Card, CardBody, Flex, Spinner, WaitIcon, TooltipText, useTooltip, InfoIcon } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { NodeRound, BetPosition } from 'state/types'
 import useTheme from 'hooks/useTheme'
 import { RoundResultBox } from '../RoundResult'
@@ -12,7 +12,11 @@ interface CalculatingCardProps {
   hasEnteredDown: boolean
 }
 
-const CalculatingCard: React.FC<CalculatingCardProps> = ({ round, hasEnteredUp, hasEnteredDown }) => {
+const CalculatingCard: React.FC<React.PropsWithChildren<CalculatingCardProps>> = ({
+  round,
+  hasEnteredUp,
+  hasEnteredDown,
+}) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(

@@ -1,5 +1,5 @@
 import { Message, MessageText } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 const LimitOrderDisclaimer = () => {
   const { t } = useTranslation()

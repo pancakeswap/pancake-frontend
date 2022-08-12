@@ -1,5 +1,5 @@
 import { darkColors, Text } from '@pancakeswap/uikit'
-import { ContextApi } from 'contexts/Localization/types'
+import { ContextApi } from '@pancakeswap/localization'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
 
 type PreEventProps = {
@@ -23,7 +23,7 @@ const preEventTextMapping = (t: ContextApi['t'], userStatus: UserStatusEnum) => 
   }
 }
 
-const PreEventText: React.FC<PreEventProps> = ({ t, saleStatus, userStatus }) =>
+const PreEventText: React.FC<React.PropsWithChildren<PreEventProps>> = ({ t, saleStatus, userStatus }) =>
   [SaleStatusEnum.Pending, SaleStatusEnum.Premint].includes(saleStatus) ? (
     <Text fontSize="16px" color={darkColors.text}>
       {preEventTextMapping(t, userStatus)}

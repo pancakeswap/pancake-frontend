@@ -1,7 +1,7 @@
 import { Button, Flex, Text } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -27,7 +27,13 @@ interface FarmCardActionsProps {
   displayApr?: string
 }
 
-const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidityUrl, lpLabel, displayApr }) => {
+const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
+  farm,
+  account,
+  addLiquidityUrl,
+  lpLabel,
+  displayApr,
+}) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Card, CardBody, Heading, ArrowBackIcon, IconButton } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { PredictionSupportedSymbol } from 'state/types'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 
@@ -47,7 +47,7 @@ const BackButton = () => {
   )
 }
 
-const Notification: React.FC<NotificationProps> = ({ title, children }) => {
+const Notification: React.FC<React.PropsWithChildren<NotificationProps>> = ({ title, children }) => {
   const router = useRouter()
   const { token } = useConfig()
 

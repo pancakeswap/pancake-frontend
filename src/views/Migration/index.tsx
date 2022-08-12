@@ -2,7 +2,7 @@ import React, { memo, useState, useRef, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { useWeb3React } from '@web3-react/core'
 import { Heading, Text, Button, ArrowForwardIcon, Link } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { usePollFarmsV1WithUserData } from 'state/farmsV1/hooks'
 import { VaultKey } from 'state/types'
 import { useFetchUserPools } from 'views/Migration/hook/V1/Pool/useFetchUserPools'
@@ -16,7 +16,7 @@ import OldFarm from './components/MigrationStep1/OldFarm'
 import NewPool from './components/MigrationStep2/NewPool'
 import NewFarm from './components/MigrationStep2/NewFarm'
 
-const MigrationPage: React.FC = () => {
+const MigrationPage: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const tableWrapperEl = useRef<HTMLDivElement>(null)

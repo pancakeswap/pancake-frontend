@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Currency, CurrencyAmount, Fraction, JSBI, Pair, Percent, Price, TokenAmount } from '@pancakeswap/sdk'
 import { InjectedModalProps, Text, ArrowDownIcon, Button, useTooltip } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
   TransactionErrorContent,
@@ -46,7 +46,7 @@ interface ConfirmZapInModalProps {
 
 const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max)
 
-const ConfirmZapInModal: React.FC<InjectedModalProps & ConfirmZapInModalProps> = ({
+const ConfirmZapInModal: React.FC<React.PropsWithChildren<InjectedModalProps & ConfirmZapInModalProps>> = ({
   title,
   onDismiss,
   customOnDismiss,

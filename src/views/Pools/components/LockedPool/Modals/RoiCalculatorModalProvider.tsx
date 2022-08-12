@@ -1,5 +1,5 @@
 import React, { useState, createContext } from 'react'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { usePool } from 'state/pools/hooks'
 import _toString from 'lodash/toString'
 
@@ -7,10 +7,9 @@ import { VaultRoiCalculatorModal } from '../../Vault/VaultRoiCalculatorModal'
 
 export const RoiCalculatorModalContext = createContext(null)
 
-const RoiCalculatorModalProvider: React.FC<{ children: React.ReactNode; lockedAmount: string | number }> = ({
-  children,
-  lockedAmount,
-}) => {
+const RoiCalculatorModalProvider: React.FC<
+  React.PropsWithChildren<{ children: React.ReactNode; lockedAmount: string | number }>
+> = ({ children, lockedAmount }) => {
   const [showRoiCalculator, setShowRoiCalculator] = useState(false)
   const { t } = useTranslation()
   // Get Vault pool

@@ -75,7 +75,13 @@ interface ActionPanelProps {
   liquidity: LiquidityProps
 }
 
-const ActionPanel: React.FC<ActionPanelProps> = ({ expanded, earned, farm, multiplier, liquidity }) => {
+const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({
+  expanded,
+  earned,
+  farm,
+  multiplier,
+  liquidity,
+}) => {
   return (
     <StyledActionPanel expanded={expanded}>
       <ActionContainer>

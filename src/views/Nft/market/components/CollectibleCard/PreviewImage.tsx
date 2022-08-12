@@ -7,7 +7,7 @@ interface PreviewImageProps extends BoxProps {
   width?: number
 }
 
-const PreviewImage: React.FC<PreviewImageProps> = ({ height = 64, width = 64, ...props }) => {
+const PreviewImage: React.FC<React.PropsWithChildren<PreviewImageProps>> = ({ height = 64, width = 64, ...props }) => {
   return (
     <BackgroundImage
       loadingPlaceholder={<PlaceholderImage />}

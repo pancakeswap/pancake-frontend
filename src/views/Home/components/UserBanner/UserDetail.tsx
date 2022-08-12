@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
 import { useProfile } from 'state/profile/hooks'
 import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import truncateHash from 'utils/truncateHash'
 
 const Desktop = styled(Flex)`

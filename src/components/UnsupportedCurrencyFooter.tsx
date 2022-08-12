@@ -1,6 +1,6 @@
 import { Currency, Token } from '@pancakeswap/sdk'
 import { Button, Text, Modal, useModal, InjectedModalProps, Link } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { AutoRow } from 'components/Layout/Row'
 import { AutoColumn } from 'components/Layout/Column'
@@ -25,7 +25,7 @@ const DetailsFooter = styled.div`
   text-align: center;
 `
 
-const UnsupportedModal: React.FC<Props> = ({ currencies, onDismiss }) => {
+const UnsupportedModal: React.FC<React.PropsWithChildren<Props>> = ({ currencies, onDismiss }) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const tokens =

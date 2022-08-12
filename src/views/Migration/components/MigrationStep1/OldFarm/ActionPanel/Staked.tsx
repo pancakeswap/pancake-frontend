@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Heading, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { getBalanceNumber, formatLpBalance } from 'utils/formatBalance'
@@ -13,7 +13,7 @@ const Container = styled(ActionContainer)`
   flex: 3;
 `
 
-const Staked: React.FC<FarmProps> = ({ pid, lpSymbol }) => {
+const Staked: React.FC<React.PropsWithChildren<FarmProps>> = ({ pid, lpSymbol }) => {
   const { t } = useTranslation()
   const lpPrice = useLpTokenPrice(lpSymbol)
   const { stakedBalance } = useFarmUser(pid)

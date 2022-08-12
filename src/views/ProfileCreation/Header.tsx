@@ -1,8 +1,7 @@
 import { useContext } from 'react'
 import styled from 'styled-components'
 import { Breadcrumbs, Heading, Text, Link, Button } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { TranslateFunction } from 'contexts/Localization/types'
+import { useTranslation, TranslateFunction } from '@pancakeswap/localization'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 
 const Wrapper = styled.div`
@@ -19,7 +18,7 @@ const steps = (t: TranslateFunction) => [
   t('Set Name'),
 ]
 
-const Header: React.FC = () => {
+const Header: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { currentStep } = useContext(ProfileCreationContext)
 

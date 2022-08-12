@@ -7,7 +7,7 @@ interface DiffTextPropsType {
   newValue?: string
 }
 
-const DiffText: React.FC<DiffTextPropsType> = ({ value, newValue }) => {
+const DiffText: React.FC<React.PropsWithChildren<DiffTextPropsType>> = ({ value, newValue }) => {
   if (isUndefinedOrNull(newValue) || isUndefinedOrNull(value) || value === newValue) {
     return (
       <Text bold fontSize="16px">
@@ -33,7 +33,7 @@ interface TextRowPropsType extends DiffTextPropsType {
   title: string
 }
 
-const TextRow: React.FC<TextRowPropsType> = ({ title, value, newValue }) => (
+const TextRow: React.FC<React.PropsWithChildren<TextRowPropsType>> = ({ title, value, newValue }) => (
   <Flex alignItems="center" justifyContent="space-between">
     <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
       {title}

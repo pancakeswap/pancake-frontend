@@ -10,7 +10,7 @@ import {
   TrophyGoldIcon,
   Skeleton,
 } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useCompetitionCakeRewards, getEasterRewardGroupAchievements } from '../../../helpers'
 import { BoldTd, Td, StyledPrizeTable } from '../../../components/StyledPrizeTable'
 
@@ -18,7 +18,9 @@ const StyledThead = styled.thead`
   border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
-const EasterUserPrizeGrid: React.FC<{ userTradingInformation? }> = ({ userTradingInformation }) => {
+const EasterUserPrizeGrid: React.FC<React.PropsWithChildren<{ userTradingInformation? }>> = ({
+  userTradingInformation,
+}) => {
   const { t } = useTranslation()
   const { userRewardGroup, userCakeRewards, userPointReward, canClaimNFT } = userTradingInformation
   const { cakeReward, dollarValueOfCakeReward } = useCompetitionCakeRewards(userCakeRewards)

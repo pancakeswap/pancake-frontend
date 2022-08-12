@@ -2,7 +2,7 @@
 import { KeyboardEvent, RefObject, useCallback, useMemo, useRef, useState, useEffect } from 'react'
 import { Currency, ETHER, Token } from '@pancakeswap/sdk'
 import { Text, Input, Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { FixedSizeList } from 'react-window'
 import { useAudioModeManager } from 'state/user/hooks'
 import useDebounce from 'hooks/useDebounce'
@@ -26,6 +26,7 @@ interface CurrencySearchProps {
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
   showCommonBases?: boolean
+  commonBasesType?: string
   showImportView: () => void
   setImportToken: (token: Token) => void
 }
@@ -82,6 +83,7 @@ function CurrencySearch({
   onCurrencySelect,
   otherSelectedCurrency,
   showCommonBases,
+  commonBasesType,
   showImportView,
   setImportToken,
 }: CurrencySearchProps) {
@@ -237,7 +239,12 @@ function CurrencySearch({
           />
         </Row>
         {showCommonBases && (
-          <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
+          <CommonBases
+            chainId={chainId}
+            onSelect={handleCurrencySelect}
+            selectedCurrency={selectedCurrency}
+            commonBasesType={commonBasesType}
+          />
         )}
       </AutoColumn>
       {getCurrencyListRows()}

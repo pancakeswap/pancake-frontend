@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Box, CardFooter, ExpandableLabel } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Auction, AuctionStatus } from 'config/constants/types'
 import WhitelistedBiddersButton from '../WhitelistedBiddersButton'
 
@@ -9,7 +9,7 @@ const FooterInner = styled(Box)`
   background-color: ${({ theme }) => theme.colors.dropdown};
 `
 
-const AuctionFooter: React.FC<{ auction: Auction }> = ({ auction }) => {
+const AuctionFooter: React.FC<React.PropsWithChildren<{ auction: Auction }>> = ({ auction }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const { t } = useTranslation()
   const { topLeaderboard, status } = auction

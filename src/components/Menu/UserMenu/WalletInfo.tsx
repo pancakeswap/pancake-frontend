@@ -2,7 +2,7 @@ import { Box, Button, Flex, InjectedModalProps, LinkExternal, Message, Skeleton,
 import { useWeb3React } from '@web3-react/core'
 import { CAKE } from 'config/constants/tokens'
 import { FetchStatus } from 'config/constants/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useAuth from 'hooks/useAuth'
 import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
 
@@ -15,7 +15,7 @@ interface WalletInfoProps {
   onDismiss: InjectedModalProps['onDismiss']
 }
 
-const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) => {
+const WalletInfo: React.FC<React.PropsWithChildren<WalletInfoProps>> = ({ hasLowBnbBalance, onDismiss }) => {
   const { t } = useTranslation()
   const { account, chainId } = useWeb3React()
   const { balance, fetchStatus } = useGetBnbBalance()

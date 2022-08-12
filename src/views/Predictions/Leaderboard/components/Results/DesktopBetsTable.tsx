@@ -1,6 +1,6 @@
 import { Token } from '@pancakeswap/sdk'
 import { Box, Card, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import PreviousBetsTable from '../PreviousBetsTable'
 
 interface DesktopBetsTableProps {
@@ -9,7 +9,7 @@ interface DesktopBetsTableProps {
   api: string
 }
 
-const DesktopBetsTable: React.FC<DesktopBetsTableProps> = ({ account, token, api }) => {
+const DesktopBetsTable: React.FC<React.PropsWithChildren<DesktopBetsTableProps>> = ({ account, token, api }) => {
   const { t } = useTranslation()
 
   return (

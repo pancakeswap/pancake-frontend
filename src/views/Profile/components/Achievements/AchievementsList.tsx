@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Flex, Heading, Skeleton, useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Achievement } from 'state/types'
 import AchievementCard from './AchievementCard'
 
@@ -14,7 +14,7 @@ const Grid = styled.div`
   }
 `
 
-const AchievementsList: React.FC<{ achievements: Achievement[]; isLoading: boolean }> = ({
+const AchievementsList: React.FC<React.PropsWithChildren<{ achievements: Achievement[]; isLoading: boolean }>> = ({
   achievements,
   isLoading,
 }) => {

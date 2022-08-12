@@ -1,7 +1,7 @@
 import { Box, Text } from '@pancakeswap/uikit'
 import { PredictionUser } from 'state/types'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { NetWinningsRow, Row } from './styles'
 import ResultAvatar from './ResultAvatar'
 
@@ -19,7 +19,7 @@ const StyledMobileRow = styled(Box)`
   }
 `
 
-const MobileRow: React.FC<MobileRowProps> = ({ rank, user }) => {
+const MobileRow: React.FC<React.PropsWithChildren<MobileRowProps>> = ({ rank, user }) => {
   const { t } = useTranslation()
 
   return (

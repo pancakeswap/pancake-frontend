@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon, LinkExternal, useTooltip, InfoIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { REWARD_RATE } from 'state/predictions/config'
 import { Bet, BetPosition } from 'state/types'
 import { fetchLedgerData, markAsCollected } from 'state/predictions'
@@ -36,7 +36,7 @@ const Divider = styled.hr`
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
-const BetResult: React.FC<BetResultProps> = ({ bet, result }) => {
+const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, result }) => {
   const { t } = useTranslation()
   const dispatch = useLocalDispatch()
   const { account } = useWeb3React()

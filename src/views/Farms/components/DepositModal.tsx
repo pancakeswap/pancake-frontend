@@ -14,7 +14,7 @@ import {
 } from '@pancakeswap/uikit'
 import { ModalActions, ModalInput } from 'components/Modal'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance, formatNumber } from 'utils/formatBalance'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
 
@@ -45,7 +45,7 @@ interface DepositModalProps {
   cakePrice?: BigNumber
 }
 
-const DepositModal: React.FC<DepositModalProps> = ({
+const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   max,
   stakedBalance,
   onConfirm,

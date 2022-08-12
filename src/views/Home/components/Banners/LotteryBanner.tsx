@@ -2,7 +2,7 @@ import { ArrowForwardIcon, Button, Heading, Skeleton, Text, useMatchBreakpointsC
 import BigNumber from 'bignumber.js'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { FetchStatus, LotteryStatus } from 'config/constants/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
 import { memo } from 'react'
 import { usePriceCakeBusd } from 'state/farms/hooks'
@@ -61,7 +61,7 @@ export const StyledSubheading = styled(Heading)`
 `
 const isLotteryLive = (status: LotteryStatus) => status === LotteryStatus.OPEN
 
-const LotteryPrice: React.FC = () => {
+const LotteryPrice: React.FC<React.PropsWithChildren> = () => {
   const { data } = useSWR<LotteryResponse>(['currentLottery'])
   const cakePriceBusd = usePriceCakeBusd()
   const prizeInBusd = new BigNumber(data.amountCollectedInCake).times(cakePriceBusd)

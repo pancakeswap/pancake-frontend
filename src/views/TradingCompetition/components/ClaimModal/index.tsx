@@ -1,6 +1,6 @@
 import { AutoRenewIcon, Button, Flex, Heading, Modal, Text } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
@@ -23,7 +23,11 @@ const ImageWrapper = styled(Flex)`
   }
 `
 
-const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, userTradingInformation }) => {
+const ClaimModal: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
+  onDismiss,
+  onClaimSuccess,
+  userTradingInformation,
+}) => {
   const tradingCompetitionContract = useTradingCompetitionContractMoD()
   const canClaimSpecialNFT = useCanClaimSpecialNFT()
   const { toastSuccess } = useToast()

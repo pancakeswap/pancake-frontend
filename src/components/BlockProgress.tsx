@@ -6,7 +6,7 @@ interface BlockProgressProps extends ProgressProps {
   endBlock: number
 }
 
-const BlockProgress: React.FC<BlockProgressProps> = ({ startBlock, endBlock, ...props }) => {
+const BlockProgress: React.FC<React.PropsWithChildren<BlockProgressProps>> = ({ startBlock, endBlock, ...props }) => {
   const currentBlock = useCurrentBlock()
   const rawProgress = ((currentBlock - startBlock) / (endBlock - startBlock)) * 100
   const progress = rawProgress <= 100 ? rawProgress : 100

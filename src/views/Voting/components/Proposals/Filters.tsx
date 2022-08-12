@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react'
 import { Flex, Radio, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { ProposalState } from 'state/types'
 
 interface FiltersProps {
@@ -28,7 +28,7 @@ const options = [
   { value: ProposalState.CLOSED, label: 'Closed' },
 ]
 
-const Filters: React.FC<FiltersProps> = ({ filterState, onFilterChange, isLoading }) => {
+const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({ filterState, onFilterChange, isLoading }) => {
   const { t } = useTranslation()
 
   return (

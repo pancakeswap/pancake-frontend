@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Text, Heading, Card, CardHeader, CardBody, Flex } from '@pancakeswap/uikit'
 import { Auction, Bidder } from 'config/constants/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useCongratulateAuctionWinner from '../hooks/useCongratulateAuctionWinner'
 import WhitelistedBiddersButton from './WhitelistedBiddersButton'
@@ -11,7 +11,10 @@ const StyledReclaimBidCard = styled(Card)`
   flex: 1;
 `
 
-const CongratulationsCard: React.FC<{ currentAuction: Auction; bidders: Bidder[] }> = ({ currentAuction, bidders }) => {
+const CongratulationsCard: React.FC<React.PropsWithChildren<{ currentAuction: Auction; bidders: Bidder[] }>> = ({
+  currentAuction,
+  bidders,
+}) => {
   const { t } = useTranslation()
   const wonAuction = useCongratulateAuctionWinner(currentAuction, bidders)
 

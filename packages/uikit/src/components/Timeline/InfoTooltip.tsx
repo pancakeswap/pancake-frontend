@@ -7,7 +7,7 @@ type InfoTooltip = {
   iconColor?: string;
 } & BoxProps;
 
-const InfoTooltip: React.FC<InfoTooltip> = ({ text, iconColor = "textSubtle", ...props }) => {
+const InfoTooltip: React.FC<React.PropsWithChildren<InfoTooltip>> = ({ text, iconColor = "textSubtle", ...props }) => {
   const { targetRef, tooltip, tooltipVisible } = useTooltip(text, {});
   return (
     <Flex {...props} alignItems="center">

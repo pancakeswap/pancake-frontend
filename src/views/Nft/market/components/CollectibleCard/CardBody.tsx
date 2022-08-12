@@ -1,5 +1,5 @@
 import { Box, CardBody, Flex, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import PreviewImage from './PreviewImage'
 import { CostLabel, LowestPriceMetaRow, MetaRow } from './styles'
@@ -9,7 +9,12 @@ import { useGetLowestPriceFromNft } from '../../hooks/useGetLowestPrice'
 import { pancakeBunniesAddress } from '../../constants'
 import NFTMedia from '../NFTMedia'
 
-const CollectibleCardBody: React.FC<CollectibleCardProps> = ({ nft, nftLocation, currentAskPrice, isUserNft }) => {
+const CollectibleCardBody: React.FC<React.PropsWithChildren<CollectibleCardProps>> = ({
+  nft,
+  nftLocation,
+  currentAskPrice,
+  isUserNft,
+}) => {
   const { t } = useTranslation()
   const { name } = nft
   const bnbBusdPrice = useBNBBusdPrice()

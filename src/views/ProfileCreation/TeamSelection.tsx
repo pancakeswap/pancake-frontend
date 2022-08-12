@@ -3,12 +3,12 @@ import { Card, CardBody, CommunityIcon, Flex, Heading, Text } from '@pancakeswap
 import useSWR from 'swr'
 import shuffle from 'lodash/shuffle'
 import { getTeams } from 'state/teams/helpers'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
 import useProfileCreation from './contexts/hook'
 
-const Team: React.FC = () => {
+const Team: React.FC<React.PropsWithChildren> = () => {
   const { teamId: currentTeamId, actions } = useProfileCreation()
   const { t } = useTranslation()
   const { data: teams } = useSWR('teams', async () => getTeams())

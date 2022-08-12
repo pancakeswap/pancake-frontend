@@ -15,7 +15,7 @@ interface StackedLPProps {
   quoteTokenAmountTotal: BigNumber
 }
 
-const StakedLP: React.FunctionComponent<StackedLPProps> = ({
+const StakedLP: React.FunctionComponent<React.PropsWithChildren<StackedLPProps>> = ({
   stakedBalance,
   lpSymbol,
   quoteTokenSymbol,

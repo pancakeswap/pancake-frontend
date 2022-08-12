@@ -39,7 +39,7 @@ const ColoredIconButton = styled(IconButton)`
   color: ${({ theme }) => theme.colors.textSubtle};
 `
 
-const CurrencyInputHeader: React.FC<Props> = ({
+const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   title,
   subtitle,
   setIsChartDisplayed,

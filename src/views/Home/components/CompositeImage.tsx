@@ -83,21 +83,55 @@ export const getSrcSet = (base: string, imageSrc: string, extension = '.png') =>
   ${getImageUrl(base, imageSrc, Resolution.LG, extension)} 1024w,`
 }
 
-const CompositeImage: React.FC<ComponentProps> = ({ path, attributes, maxHeight = '512px' }) => {
+const CompositeImage: React.FC<React.PropsWithChildren<ComponentProps>> = ({
+  path,
+  attributes,
+  maxHeight = '512px',
+}) => {
   return (
     <Wrapper maxHeight={maxHeight}>
-      <picture>
-        <source type="image/webp" srcSet={getSrcSet(path, attributes[0].src, '.webp')} />
-        <source type="image/png" srcSet={getSrcSet(path, attributes[0].src)} />
-        <DummyImg src={getImageUrl(path, attributes[0].src)} maxHeight={maxHeight} loading="lazy" decoding="async" />
-      </picture>
+      <DummyImg
+        srcSet={getSrcSet(path, attributes[0].src, '.webp')}
+        maxHeight={maxHeight}
+        loading="lazy"
+        decoding="async"
+        onError={(e) => {
+          const fallbackSrcSet = getSrcSet(path, attributes[0].src)
+          if (e.currentTarget.srcset !== '' && e.currentTarget.srcset !== fallbackSrcSet) {
+            // eslint-disable-next-line no-param-reassign
+            e.currentTarget.srcset = fallbackSrcSet
+          } else {
+            const fallbackSrc = getImageUrl(path, attributes[0].src)
+            if (e.currentTarget.srcset !== '' && !e.currentTarget.src.endsWith(fallbackSrc)) {
+              // eslint-disable-next-line no-param-reassign
+              e.currentTarget.srcset = ''
+              // eslint-disable-next-line no-param-reassign
+              e.currentTarget.src = fallbackSrc
+            }
+          }
+        }}
+      />
       {attributes.map((image) => (
         <ImageWrapper key={image.src}>
-          <picture>
-            <source type="image/webp" srcSet={getSrcSet(path, image.src, '.webp')} />
-            <source type="image/png" srcSet={getSrcSet(path, image.src)} />
-            <img src={getImageUrl(path, image.src)} alt={image.alt} loading="lazy" decoding="async" />
-          </picture>
+          <img
+            srcSet={getSrcSet(path, image.src, '.webp')}
+            alt={image.alt}
+            onError={(e) => {
+              const fallbackSrcSet = getSrcSet(path, image.src)
+              if (e.currentTarget.srcset !== '' && e.currentTarget.srcset !== fallbackSrcSet) {
+                // eslint-disable-next-line no-param-reassign
+                e.currentTarget.srcset = fallbackSrcSet
+              } else {
+                const fallbackSrc = getImageUrl(path, image.src)
+                if (e.currentTarget.srcset !== '' && !e.currentTarget.src.endsWith(fallbackSrc)) {
+                  // eslint-disable-next-line no-param-reassign
+                  e.currentTarget.srcset = ''
+                  // eslint-disable-next-line no-param-reassign
+                  e.currentTarget.src = fallbackSrc
+                }
+              }
+            }}
+          />
         </ImageWrapper>
       ))}
     </Wrapper>

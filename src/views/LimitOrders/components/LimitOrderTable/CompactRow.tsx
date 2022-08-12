@@ -1,6 +1,6 @@
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import { Flex, ChevronRightIcon, Text, Box, useModal } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useFormattedOrderData from 'views/LimitOrders/hooks/useFormattedOrderData'
 import CurrencyFormat from './CurrencyFormat'
 import { DetailLimitOrderModal } from './DetailLimitOrderModal'
@@ -10,7 +10,7 @@ interface CompactRowProps {
   order: Order
 }
 
-const CompactRow: React.FC<CompactRowProps> = ({ order }) => {
+const CompactRow: React.FC<React.PropsWithChildren<CompactRowProps>> = ({ order }) => {
   const { t } = useTranslation()
   const formattedOrder = useFormattedOrderData(order)
   const { inputToken, outputToken, inputAmount, outputAmount, executionPrice } = formattedOrder

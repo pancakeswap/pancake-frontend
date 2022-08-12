@@ -1,5 +1,5 @@
 import { Box, lightColors, Progress, Text } from '@pancakeswap/uikit'
-import { ContextApi } from 'contexts/Localization/types'
+import { ContextApi } from '@pancakeswap/localization'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
 
 type PreEventProps = {
@@ -34,7 +34,7 @@ const saleProgressTextMapping = (t: ContextApi['t'], saleStatus: SaleStatusEnum,
   }
 }
 
-const SaleProgress: React.FC<PreEventProps> = ({
+const SaleProgress: React.FC<React.PropsWithChildren<PreEventProps>> = ({
   t,
   saleStatus,
   totalTicketsDistributed,

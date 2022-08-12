@@ -9,7 +9,11 @@ interface RecentCakeProfitBalanceProps {
   account: string
 }
 
-const RecentCakeProfitBalance: React.FC<RecentCakeProfitBalanceProps> = ({ cakeToDisplay, pool, account }) => {
+const RecentCakeProfitBalance: React.FC<React.PropsWithChildren<RecentCakeProfitBalanceProps>> = ({
+  cakeToDisplay,
+  pool,
+  account,
+}) => {
   const { targetRef, tooltip, tooltipVisible } = useTooltip(<AutoEarningsBreakdown pool={pool} account={account} />, {
     placement: 'bottom-end',
   })

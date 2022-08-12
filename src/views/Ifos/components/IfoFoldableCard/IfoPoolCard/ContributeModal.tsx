@@ -20,7 +20,7 @@ import {
 } from '@pancakeswap/uikit'
 import { PoolIds, Ifo } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { formatNumber, getBalanceAmount } from 'utils/formatBalance'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -55,7 +55,7 @@ const multiplierValues = [0.1, 0.25, 0.5, 0.75, 1]
 // Default value for transaction setting, tweak based on BSC network congestion.
 const gasPrice = parseUnits('10', 'gwei').toString()
 
-const SmallAmountNotice: React.FC<{ url: string }> = ({ url }) => {
+const SmallAmountNotice: React.FC<React.PropsWithChildren<{ url: string }>> = ({ url }) => {
   const { t } = useTranslation()
 
   return (
@@ -74,7 +74,7 @@ const SmallAmountNotice: React.FC<{ url: string }> = ({ url }) => {
   )
 }
 
-const ContributeModal: React.FC<Props> = ({
+const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   poolId,
   ifo,
   publicIfoData,

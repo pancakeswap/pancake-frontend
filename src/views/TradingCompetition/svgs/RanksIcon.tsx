@@ -1,6 +1,6 @@
 import { Svg, SvgProps } from '@pancakeswap/uikit'
 
-const Ranks: React.FC<SvgProps> = (props) => {
+const Ranks: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
   return (
     <Svg viewBox="0 0 166 88" {...props}>
       <path

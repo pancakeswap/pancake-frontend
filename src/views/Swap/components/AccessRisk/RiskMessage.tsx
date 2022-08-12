@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Currency } from '@pancakeswap/sdk'
 import { CurrencyLogo } from 'components/Logo'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Message, MessageText, Text } from '@pancakeswap/uikit'
 import { RiskTokenInfo, TOKEN_RISK } from 'views/Swap/hooks/fetchTokenRisk'
 

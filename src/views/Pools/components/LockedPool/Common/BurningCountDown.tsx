@@ -11,7 +11,7 @@ interface PropsType {
   lockEndTime: string
 }
 
-const BurningCountDown: React.FC<PropsType> = ({ lockEndTime }) => {
+const BurningCountDown: React.FC<React.PropsWithChildren<PropsType>> = ({ lockEndTime }) => {
   const [remainingSeconds, setRemainingSeconds] = useState(0)
 
   // 1 week after lockEndTime

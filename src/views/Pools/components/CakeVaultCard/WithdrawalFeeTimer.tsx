@@ -1,8 +1,8 @@
 import { Text } from '@pancakeswap/uikit'
 import getTimePeriods from 'utils/getTimePeriods'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
-const WithdrawalFeeTimer: React.FC<{ secondsRemaining: number }> = ({ secondsRemaining }) => {
+const WithdrawalFeeTimer: React.FC<React.PropsWithChildren<{ secondsRemaining: number }>> = ({ secondsRemaining }) => {
   const { t } = useTranslation()
   const { days, hours, minutes } = getTimePeriods(secondsRemaining)
 

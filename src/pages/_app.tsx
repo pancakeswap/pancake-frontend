@@ -113,7 +113,7 @@ function MyApp(props: AppProps) {
 }
 
 type NextPageWithLayout = NextPage & {
-  Layout?: React.FC
+  Layout?: React.FC<React.PropsWithChildren<unknown>>
   mp?: boolean
 }
 

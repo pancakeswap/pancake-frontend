@@ -4,7 +4,7 @@ import { getBscScanLink } from 'utils'
 import { PredictionUser } from 'state/types'
 import { useProfileForAddress } from 'state/profile/hooks'
 import truncateHash from 'utils/truncateHash'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useStatModalProps } from 'state/predictions/hooks'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import WalletStatsModal from '../WalletStatsModal'
@@ -32,7 +32,7 @@ const UsernameWrapper = styled(Box)`
   }
 `
 
-const ResultAvatar: React.FC<ResultAvatarProps> = ({ user, ...props }) => {
+const ResultAvatar: React.FC<React.PropsWithChildren<ResultAvatarProps>> = ({ user, ...props }) => {
   const { t } = useTranslation()
   const { profile } = useProfileForAddress(user.id)
   const { result, address, leaderboardLoadingState } = useStatModalProps(user.id)

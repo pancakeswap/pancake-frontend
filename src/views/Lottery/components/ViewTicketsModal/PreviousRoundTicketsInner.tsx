@@ -19,7 +19,7 @@ import { fetchLottery } from 'state/lottery/helpers'
 import { getWinningTickets } from 'state/lottery/fetchUnclaimedUserRewards'
 import { fetchUserTicketsForOneRound } from 'state/lottery/getUserTicketsData'
 import { LotteryRound } from 'state/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
 import WinningNumbers from '../WinningNumbers'
@@ -52,7 +52,7 @@ const TicketSkeleton = () => {
   )
 }
 
-const PreviousRoundTicketsInner: React.FC<{ roundId: string }> = ({ roundId }) => {
+const PreviousRoundTicketsInner: React.FC<React.PropsWithChildren<{ roundId: string }>> = ({ roundId }) => {
   const [lotteryInfo, setLotteryInfo] = useState<LotteryRound>(null)
   const [allUserTickets, setAllUserTickets] = useState<LotteryTicket[]>(null)
   const [userWinningTickets, setUserWinningTickets] = useState<{

@@ -1,12 +1,12 @@
 import { Flex, Box, Text, Button } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Divider } from '../shared/styles'
 
 interface RemoveStageProps {
   continueToNextStage: () => void
 }
 
-const RemoveStage: React.FC<RemoveStageProps> = ({ continueToNextStage }) => {
+const RemoveStage: React.FC<React.PropsWithChildren<RemoveStageProps>> = ({ continueToNextStage }) => {
   const { t } = useTranslation()
   return (
     <>

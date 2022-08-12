@@ -12,10 +12,12 @@ const StyledLogo = styled(LogoLoader)<{ size: string }>`
   color: ${({ theme }) => theme.colors.text};
 `
 
-export const CurrencyLogo: React.FC<{
-  address?: string
-  size?: string
-}> = ({ address, size = '24px', ...rest }) => {
+export const CurrencyLogo: React.FC<
+  React.PropsWithChildren<{
+    address?: string
+    size?: string
+  }>
+> = ({ address, size = '24px', ...rest }) => {
   const src = useMemo(() => {
     const checksummedAddress = isAddress(address)
     if (checksummedAddress) {
@@ -41,7 +43,11 @@ interface DoubleCurrencyLogoProps {
   size?: number
 }
 
-export const DoubleCurrencyLogo: React.FC<DoubleCurrencyLogoProps> = ({ address0, address1, size = 16 }) => {
+export const DoubleCurrencyLogo: React.FC<React.PropsWithChildren<DoubleCurrencyLogoProps>> = ({
+  address0,
+  address1,
+  size = 16,
+}) => {
   return (
     <DoubleCurrencyWrapper>
       {address0 && <CurrencyLogo address={address0} size={`${size.toString()}px`} />}

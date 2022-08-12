@@ -14,7 +14,7 @@ import {
   TwitterIcon,
 } from '@pancakeswap/uikit'
 import useAuth from 'hooks/useAuth'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { FINISHED, OVER } from 'config/constants/trading-competition/phases'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
@@ -58,7 +58,7 @@ const StyledHeadingText = styled(Heading2Text)`
   padding: 0px 10px;
 `
 
-const BattleCta: React.FC<CompetitionProps> = ({
+const BattleCta: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
   userTradingInformation,
   currentPhase,
   account,

@@ -1,7 +1,7 @@
 import { ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { ORDER_CATEGORY } from '../../types'
 
 const Wrapper = styled.div`
@@ -21,7 +21,7 @@ interface OrderTabProps {
   onItemClick: (index: ORDER_CATEGORY) => void
 }
 
-const OrderTab: React.FC<OrderTabProps> = ({ activeIndex, onItemClick }) => {
+const OrderTab: React.FC<React.PropsWithChildren<OrderTabProps>> = ({ activeIndex, onItemClick }) => {
   const { theme } = useTheme()
   const { t } = useTranslation()
 

@@ -23,7 +23,7 @@ import { useWeb3React } from '@web3-react/core'
 import { REWARD_RATE } from 'state/predictions/config'
 import { fetchNodeHistory, markAsCollected } from 'state/predictions'
 import { Bet } from 'state/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useBUSDPrice from 'hooks/useBUSDPrice'
 import useToast from 'hooks/useToast'
 import { usePredictionsContract } from 'hooks/useContract'
@@ -83,7 +83,7 @@ const calculateClaimableRounds = (history): ClaimableRounds => {
   )
 }
 
-const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
+const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWinningsModalProps>> = ({
   onDismiss,
   onSuccess,
   history,
@@ -144,7 +144,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({
   }
 
   return (
-    <Modal minWidth="288px" position="relative" mt="124px">
+    <Modal $minWidth="288px" position="relative" mt="124px">
       <BunnyDecoration>
         <img src="/images/decorations/prize-bunny.png" alt="bunny decoration" height="124px" width="168px" />
       </BunnyDecoration>
