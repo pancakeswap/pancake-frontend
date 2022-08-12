@@ -9,6 +9,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Item, ListTraitFilter } from 'views/Nft/market/components/Filters'
 import { useAppDispatch } from 'state'
 import { setShowOnlyOnSale } from 'state/nftMarket/reducer'
+import groupBy from 'lodash/groupBy'
 import useGetCollectionDistribution from '../../hooks/useGetCollectionDistribution'
 import ClearAllButton from './ClearAllButton'
 import SortSelect from './SortSelect'
@@ -101,13 +102,8 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({ address, att
   }
 
   const nftFilters = useGetNftFilters(address)
-  const attrsByType: Record<string, NftAttribute[]> = attributes?.reduce(
-    (accum, attr) => ({
-      ...accum,
-      [attr.traitType]: accum[attr.traitType] ? [...accum[attr.traitType], attr] : [attr],
-    }),
-    {},
-  )
+
+  const attrsByType: Record<string, NftAttribute[]> = attributes ? groupBy(attributes, (attr) => attr.traitType) : null
   const uniqueTraitTypes = attrsByType ? Object.keys(attrsByType) : []
 
   return (

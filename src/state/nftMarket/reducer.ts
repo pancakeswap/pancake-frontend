@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { FetchStatus } from 'config/constants/types'
 import isEmpty from 'lodash/isEmpty'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
+import fromPairs from 'lodash/fromPairs'
 import { fetchNftsFiltered, getMarketDataForTokenIds, getNftsFromCollectionApi, getNftsMarketData } from './helpers'
 import { MarketEvent, NftActivityFilter, NftAttribute, NftFilter, NftToken, State } from './types'
 

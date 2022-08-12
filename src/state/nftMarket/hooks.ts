@@ -10,6 +10,7 @@ import useSWRImmutable from 'swr/immutable'
 import isEmpty from 'lodash/isEmpty'
 import shuffle from 'lodash/shuffle'
 
+import fromPairs from 'lodash/fromPairs'
 import { State } from '../types'
 import { ApiCollections, NftActivityFilter, NftFilter, NftToken, Collection, NftAttribute } from './types'
 import { getCollection, getCollections } from './helpers'
@@ -68,14 +69,10 @@ export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
   )
 
   const { data } = useSWRMulticall(erc721Abi, nftApprovalCalls)
+  const profileAddress = getPancakeProfileAddress()
 
   const approvedTokenIds = Array.isArray(data)
-    ? data
-        .flat()
-        .reduce(
-          (acc, address, index) => ({ ...acc, [nftsInWallet[index].tokenId]: getPancakeProfileAddress() === address }),
-          {},
-        )
+    ? fromPairs(data.flat().map((address, index) => [nftsInWallet[index].tokenId, profileAddress === address]))
     : null
 
   return { data: approvedTokenIds }
