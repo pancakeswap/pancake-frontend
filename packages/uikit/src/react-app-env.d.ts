@@ -4,7 +4,6 @@ interface Window {
     isOpera?: true;
     isCoinbaseWallet?: true;
     isTrust?: true;
-    // @ts-ignore
     isSafePal?: true;
     providers?: any[];
     request?: (...args: any[]) => Promise<void>;
