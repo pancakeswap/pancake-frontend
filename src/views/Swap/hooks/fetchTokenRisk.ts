@@ -45,9 +45,9 @@ export const fetchRiskToken = async (address: string, chainId: number): Promise<
       isSuccess: true,
       address,
       chainId,
-      riskLevel: TokenRiskPhases[result.risk_level],
-      riskResult: result.risk_result,
-      scannedTs: result.scanned_ts,
+      riskLevel: TokenRiskPhases[result.data.risk_level],
+      riskResult: result.data.risk_result,
+      scannedTs: result.data.scanned_ts,
     }
   } catch (error) {
     return {
