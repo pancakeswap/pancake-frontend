@@ -37,7 +37,7 @@ import { CommonBasesType } from '../../components/SearchModal/types'
 
 const LimitOrders = () => {
   // Helpers
-  const { account } = useWeb3React()
+  const { account, chainId } = useWeb3React()
   const { t } = useTranslation()
   const router = useRouter()
   const { isMobile, isTablet } = useMatchBreakpointsContext()
@@ -67,10 +67,10 @@ const LimitOrders = () => {
     return (
       urlLoadedTokens &&
       urlLoadedTokens.filter((token: Token) => {
-        return !(token.address in defaultTokens)
+        return !(token.address in defaultTokens) && token.chainId === chainId
       })
     )
-  }, [defaultTokens, urlLoadedTokens])
+  }, [defaultTokens, urlLoadedTokens, chainId])
 
   const [onPresentImportTokenWarningModal] = useModal(
     <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => router.push('/limit-orders')} />,
