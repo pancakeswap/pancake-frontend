@@ -13,12 +13,11 @@ import {
   SearchIcon,
   CloseIcon,
 } from '@pancakeswap/uikit'
-import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
 import orderBy from 'lodash/orderBy'
 import { useAppDispatch } from 'state'
-import { useGetNftFilterLoadingState, useGetNftFilters } from 'state/nftMarket/hooks'
-import { filterNftsFromCollection } from 'state/nftMarket/reducer'
+import { useGetNftFilters } from 'state/nftMarket/hooks'
+import { updateItemFilters } from 'state/nftMarket/reducer'
 import styled from 'styled-components'
 import { Item } from './types'
 import { FilterButton, ListOrderState, SearchWrapper } from '../ListFilter/styles'
@@ -59,7 +58,6 @@ export const ListTraitFilter: React.FC<React.PropsWithChildren<ListTraitFilterPr
   const wrapperRef = useRef(null)
   const menuRef = useRef(null)
   const nftFilters = useGetNftFilters(collectionAddress)
-  const nftFilterState = useGetNftFilterLoadingState(collectionAddress)
   const dispatch = useAppDispatch()
   const { orderKey, orderDir } = orderState
 
@@ -77,7 +75,7 @@ export const ListTraitFilter: React.FC<React.PropsWithChildren<ListTraitFilterPr
     delete newFilters[traitType]
 
     dispatch(
-      filterNftsFromCollection({
+      updateItemFilters({
         collectionAddress,
         nftFilters: newFilters,
       }),
@@ -93,7 +91,7 @@ export const ListTraitFilter: React.FC<React.PropsWithChildren<ListTraitFilterPr
 
   const handleItemSelect = ({ attr }: Item) => {
     dispatch(
-      filterNftsFromCollection({
+      updateItemFilters({
         collectionAddress,
         nftFilters: { ...nftFilters, [traitType]: attr },
       }),
@@ -146,7 +144,6 @@ export const ListTraitFilter: React.FC<React.PropsWithChildren<ListTraitFilterPr
               onClick={handleMenuClick}
               variant={isTraitSelected ? 'subtle' : 'light'}
               scale="sm"
-              disabled={nftFilterState === FetchStatus.Fetching}
               hasItem={isTraitSelected}
             >
               {title}
@@ -208,12 +205,7 @@ export const ListTraitFilter: React.FC<React.PropsWithChildren<ListTraitFilterPr
         </InlineMenu>
       </Box>
       {isTraitSelected && (
-        <CloseButton
-          variant={isTraitSelected ? 'subtle' : 'light'}
-          scale="sm"
-          onClick={handleClearItem}
-          disabled={nftFilterState === FetchStatus.Fetching}
-        >
+        <CloseButton variant={isTraitSelected ? 'subtle' : 'light'} scale="sm" onClick={handleClearItem}>
           <CloseIcon color="currentColor" width="18px" />
         </CloseButton>
       )}

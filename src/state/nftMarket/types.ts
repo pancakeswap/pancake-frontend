@@ -1,4 +1,3 @@
-import { FetchStatus } from 'config/constants/types'
 import { BigNumberish } from '@ethersproject/bignumber'
 
 // Collections -> Nfts -> Transactions
@@ -90,7 +89,6 @@ export interface NftToken {
 }
 
 export interface NftFilter {
-  loadingState: FetchStatus
   activeFilters: Record<string, NftAttribute>
   showOnlyOnSale: boolean
   ordering: {

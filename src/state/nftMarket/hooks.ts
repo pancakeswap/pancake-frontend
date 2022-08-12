@@ -83,11 +83,6 @@ export const useGetNftFilters = (collectionAddress: string): Readonly<Record<str
   return collectionFilter ? collectionFilter.activeFilters : EMPTY_OBJECT
 }
 
-export const useGetNftFilterLoadingState = (collectionAddress: string) => {
-  const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
-  return collectionFilter ? collectionFilter.loadingState : FetchStatus.Idle
-}
-
 export const useGetNftOrdering = (collectionAddress: string) => {
   const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
   return collectionFilter ? collectionFilter.ordering : DEFAULT_NFT_ORDERING
