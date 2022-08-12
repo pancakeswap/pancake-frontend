@@ -10,7 +10,7 @@ interface WithdrawModalProps {
   onConfirm: (amount: string) => void
   onDismiss?: () => void
   tokenName?: string
-  shouldUseProxyFarm?: boolean
+  showActiveBooster?: boolean
 }
 
 const WithdrawModal: React.FC<WithdrawModalProps> = ({
@@ -18,7 +18,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
   onDismiss,
   max,
   tokenName = '',
-  shouldUseProxyFarm,
+  showActiveBooster,
 }) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
@@ -53,7 +53,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
         symbol={tokenName}
         inputTitle={t('Unstake')}
       />
-      {shouldUseProxyFarm ? (
+      {showActiveBooster ? (
         <Message variant="danger" mt="8px">
           <MessageText>
             {t('The yield booster multiplier will be updated based on the latest staking conditions.')}

@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useContext } from 'react'
 import styled from 'styled-components'
 import { Button, Flex, IconButton, AddIcon, MinusIcon, useModal } from '@pancakeswap/uikit'
 import useToast from 'hooks/useToast'
@@ -13,6 +13,8 @@ import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
 import { FarmWithStakedValue } from '../types'
 import StakedLP from '../StakedLP'
+import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
+import { YieldBoosterState } from '../YieldBooster/hooks/useYieldBoosterState'
 
 interface FarmCardActionsProps extends FarmWithStakedValue {
   lpLabel?: string
@@ -23,7 +25,6 @@ interface FarmCardActionsProps extends FarmWithStakedValue {
   onDone?: () => void
   onApprove?: () => Promise<TransactionResponse>
   isApproved?: boolean
-  shouldUseProxyFarm?: boolean
 }
 
 const IconButtonWrapper = styled.div`
@@ -51,7 +52,6 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
   onDone,
   onApprove,
   isApproved,
-  shouldUseProxyFarm,
 }) => {
   const { t } = useTranslation()
   const { tokenBalance, stakedBalance } = userData
@@ -60,6 +60,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
   const lpPrice = useLpTokenPrice(lpSymbol)
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
+  const { boosterState } = useContext(YieldBoosterStateContext)
 
   const handleStake = async (amount: string) => {
     const receipt = await fetchWithCatchTxError(() => {
@@ -114,13 +115,13 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
       displayApr={displayApr}
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
-      shouldUseProxyFarm={shouldUseProxyFarm}
+      showActiveBooster={boosterState === YieldBoosterState.ACTIVE}
     />,
   )
 
   const [onPresentWithdraw] = useModal(
     <WithdrawModal
-      shouldUseProxyFarm={shouldUseProxyFarm}
+      showActiveBooster={boosterState === YieldBoosterState.ACTIVE}
       max={stakedBalance}
       onConfirm={handleUnstake}
       tokenName={lpSymbol}

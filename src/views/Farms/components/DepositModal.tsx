@@ -13,6 +13,7 @@ import {
   AutoRenewIcon,
   Message,
   MessageText,
+  ErrorIcon,
 } from '@pancakeswap/uikit'
 import { ModalActions, ModalInput } from 'components/Modal'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
@@ -130,7 +131,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
         inputTitle={t('Stake')}
       />
       {shouldUseProxyFarm ? (
-        <Message variant="danger" mt="32px">
+        <Message variant="warning" icon={<ErrorIcon width="24px" color="warning" />} mt="32px">
           <MessageText>
             {t('The yield booster multiplier will be updated based on the latest staking conditions.')}
           </MessageText>

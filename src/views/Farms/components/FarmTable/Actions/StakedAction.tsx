@@ -26,6 +26,7 @@ import { FarmWithStakedValue } from '../../types'
 import StakedLP from '../../StakedLP'
 import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
 import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
+import { YieldBoosterState } from '../../YieldBooster/hooks/useYieldBoosterState'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -123,7 +124,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   onApprove,
   isApproved,
 }) => {
-  const { shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
+  const { boosterState } = useContext(YieldBoosterStateContext)
 
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
@@ -185,13 +186,13 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
       multiplier={multiplier}
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
-      shouldUseProxyFarm={shouldUseProxyFarm}
+      showActiveBooster={boosterState === YieldBoosterState.ACTIVE}
     />,
   )
 
   const [onPresentWithdraw] = useModal(
     <WithdrawModal
-      shouldUseProxyFarm={shouldUseProxyFarm}
+      showActiveBooster={boosterState === YieldBoosterState.ACTIVE}
       max={stakedBalance}
       onConfirm={handleUnstake}
       tokenName={lpSymbol}
