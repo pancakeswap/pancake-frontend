@@ -8,7 +8,10 @@ const getPriceForOneToken = (inputAmount: CurrencyAmount<Currency>, outputAmount
   if (!inputAmount || !outputAmount || inputAmount.equalTo(0) || outputAmount.equalTo(0)) {
     return undefined
   }
-  return new Price(inputAmount.currency, outputAmount.currency, inputAmount.quotient, outputAmount.quotient)
+  return new Price({
+    baseAmount: inputAmount,
+    quoteAmount: outputAmount,
+  })
 }
 
 export default getPriceForOneToken

@@ -1,12 +1,12 @@
 import { useMemo } from 'react'
 import { formatUnits } from '@ethersproject/units'
-import { CurrencyAmount, Price, Token, JSBI, Currency } from '@pancakeswap/sdk'
+import { CurrencyAmount, Price, Currency } from '@pancakeswap/sdk'
 import { BigNumber } from '@ethersproject/bignumber'
 import { useTradeExactIn } from 'hooks/Trades'
 import tryParseAmount from 'utils/tryParseAmount'
 import { Rate } from 'state/limitOrders/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { GENERIC_GAS_LIMIT_ORDER_EXECUTION, BIG_INT_TEN } from 'config/constants/exchange'
+import { GENERIC_GAS_LIMIT_ORDER_EXECUTION } from 'config/constants/exchange'
 import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
 import { useGasPrice } from 'state/user/hooks'
 import useNativeCurrency from 'hooks/useNativeCurrency'
@@ -35,26 +35,12 @@ export default function useGasOverhead(
     if (inputIsBNB) return requiredGasAsCurrencyAmount
     if (!gasCostInInputTokens || !gasCostInInputTokens?.outputAmount) return undefined
     // Add 2000 BPS on top (20%) to account for gas price fluctuations
-    const margin = gasCostInInputTokens.outputAmount.asFraction.multiply(2000).divide(10000)
-    const adjustedGas = gasCostInInputTokens.outputAmount.asFraction.add(margin)
-    const adjustedGasInWei = adjustedGas.multiply(
-      JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(gasCostInInputTokens.outputAmount.currency.decimals)),
-    )
-    if (gasCostInInputTokens.outputAmount.currency?.isToken) {
-      return CurrencyAmount.fromRawAmount<Token>(
-        gasCostInInputTokens.outputAmount.currency,
-        adjustedGasInWei.toFixed(0),
-      )
-    }
-    return undefined
+
+    return gasCostInInputTokens.outputAmount.add(gasCostInInputTokens.outputAmount.multiply(2000).divide(10000))
   }, [gasCostInInputTokens, requiredGasAsCurrencyAmount, inputIsBNB])
 
   const realInputAmount = useMemo(
-    () =>
-      bufferedOutputAmount &&
-      inputAmount &&
-      inputAmount.greaterThan(bufferedOutputAmount) &&
-      inputAmount.subtract(bufferedOutputAmount),
+    () => bufferedOutputAmount && inputAmount && inputAmount.subtract(bufferedOutputAmount),
     [bufferedOutputAmount, inputAmount],
   )
 
