@@ -1,4 +1,6 @@
 import { SNAPSHOT_HUB_API } from 'config/constants/endpoints'
+import fromPairs from 'lodash/fromPairs'
+import groupBy from 'lodash/groupBy'
 import BigNumber from 'bignumber.js'
 import { BIG_TEN } from 'utils/bigNumber'
 import { bscTokens } from 'config/constants/tokens'
@@ -178,14 +180,8 @@ export const getVotingPower = async (
 
 export const calculateVoteResults = (votes: Vote[]): { [key: string]: Vote[] } => {
   if (votes) {
-    return votes.reduce((accum, vote) => {
-      const choiceText = vote.proposal.choices[vote.choice - 1]
-
-      return {
-        ...accum,
-        [choiceText]: accum[choiceText] ? [...accum[choiceText], vote] : [vote],
-      }
-    }, {})
+    const result = groupBy(votes, (vote) => vote.proposal.choices[vote.choice - 1])
+    return result
   }
   return {}
 }
@@ -211,17 +207,16 @@ export const getTotalFromVotes = (votes: Vote[]) => {
 export async function getVotingPowerByCakeStrategy(voters: string[], blockNumber: number) {
   const strategyResponse = await getScores(PANCAKE_SPACE, STRATEGIES, NETWORK, voters, blockNumber)
 
-  const result = voters.reduce<Record<string, string>>((accum, voter) => {
-    const defaultTotal = strategyResponse.reduce(
-      (total, scoreList) => total + (scoreList[voter] ? scoreList[voter] : 0),
-      0,
-    )
+  const result = fromPairs(
+    voters.map((voter) => {
+      const defaultTotal = strategyResponse.reduce(
+        (total, scoreList) => total + (scoreList[voter] ? scoreList[voter] : 0),
+        0,
+      )
 
-    return {
-      ...accum,
-      [voter]: defaultTotal,
-    }
-  }, {})
+      return [voter, defaultTotal]
+    }),
+  )
 
   return result
 }
