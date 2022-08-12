@@ -10,7 +10,8 @@ import {
   Zap,
 } from 'config/abi/types'
 import zapAbi from 'config/abi/zap.json'
-import useActiveWeb3React, { useProviderOrSigner } from 'hooks/useActiveWeb3React'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
 import { useMemo } from 'react'
 import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
 import {

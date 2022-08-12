@@ -11,7 +11,7 @@ import {
   ONE_HUNDRED_PERCENT,
   ROUTER_ADDRESS,
 } from 'config/constants/exchange'
-import { useActiveChainId } from 'hooks/useActiveWeb3React'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useContract } from 'hooks/useContract'
 import { Field } from '../state/swap/actions'
 

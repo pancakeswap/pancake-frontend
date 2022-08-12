@@ -5,7 +5,7 @@ import { useAppDispatch } from 'state'
 import { mutate } from 'swr'
 import { useConnect, useDisconnect, useNetwork, ConnectorNotFoundError, UserRejectedRequestError } from 'wagmi'
 import { clearUserStates } from '../utils/clearUserStates'
-import { useActiveChainId } from './useActiveWeb3React'
+import { useActiveChainId } from './useActiveChainId'
 import useToast from './useToast'
 
 const useAuth = () => {

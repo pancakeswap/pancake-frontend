@@ -12,7 +12,7 @@ export const useHistory = () => useContext(historyManagerContext)
 
 function useHistoryManager() {
   const router = useRouter()
-  const [history, setHistory] = useState<string[]>(() => [router.asPath])
+  const [history, setHistory] = useState<string[]>(() => [router?.asPath])
 
   useEffect(() => {
     const handleRouteChange = (url, { shallow }) => {

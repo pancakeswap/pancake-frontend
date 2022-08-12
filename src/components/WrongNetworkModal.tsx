@@ -1,5 +1,5 @@
 import { Button, Grid, Message, MessageText, Modal, Text } from '@pancakeswap/uikit'
-import { useLocalNetworkChain } from 'hooks/useActiveWeb3React'
+import { useLocalNetworkChain } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import Image from 'next/image'

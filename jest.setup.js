@@ -36,3 +36,19 @@ jest.mock('next/dynamic', () => () => {
   DynamicComponent.preload = jest.fn()
   return DynamicComponent
 })
+
+jest.mock('next/router', () => ({
+  useRouter: () => ({
+    route: '/',
+    pathname: '',
+    query: '',
+    asPath: '',
+    push: jest.fn(),
+    events: {
+      on: jest.fn(),
+      off: jest.fn(),
+    },
+    beforePopState: jest.fn(() => null),
+    prefetch: jest.fn(() => null),
+  }),
+}))
