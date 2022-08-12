@@ -130,7 +130,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
         inputTitle={t('Stake')}
       />
       {shouldUseProxyFarm ? (
-        <Message variant="danger" mt="8px">
+        <Message variant="danger" mt="32px">
           <MessageText>
             {t('The yield booster multiplier will be updated based on the latest staking conditions.')}
           </MessageText>
