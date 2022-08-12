@@ -92,7 +92,7 @@ export const makeUserFarmFromPidSelector = (pid: number) =>
   })
 
 export const priceCakeFromPidSelector = createSelector([selectCakeFarm], (cakeBnbFarm) => {
-  const cakePriceBusdAsString = cakeBnbFarm.tokenPriceBusd
+  const cakePriceBusdAsString = cakeBnbFarm?.tokenPriceBusd
   return new BigNumber(cakePriceBusdAsString)
 })
 
@@ -121,17 +121,20 @@ export const makeLpTokenPriceFromLpSymbolSelector = (lpSymbol: string) =>
     return lpTokenPrice
   })
 
-export const farmSelector = createSelector(
-  (state: State) => state.farms,
-  (farms) => {
-    const deserializedFarmsData = farms.data.map(deserializeFarm)
-    const { loadArchivedFarmsData, userDataLoaded, poolLength, regularCakePerBlock } = farms
-    return {
-      loadArchivedFarmsData,
-      userDataLoaded,
-      data: deserializedFarmsData,
-      poolLength,
-      regularCakePerBlock,
-    }
-  },
-)
+export const farmSelector = (chainId: number) =>
+  createSelector(
+    (state: State) => state.farms,
+    (farms) => {
+      const deserializedFarmsData = farms.data.map(deserializeFarm)
+      const isSameChainId = deserializedFarmsData[0].token.chainId === chainId
+      const { loadArchivedFarmsData, userDataLoaded, poolLength, regularCakePerBlock } = farms
+
+      return {
+        loadArchivedFarmsData,
+        userDataLoaded,
+        data: isSameChainId ? deserializedFarmsData : [],
+        poolLength,
+        regularCakePerBlock,
+      }
+    },
+  )

@@ -7,9 +7,9 @@ import { getMasterChefAddress } from '../../utils/addressHelpers'
 import { getMasterchefContract } from '../../utils/contractHelpers'
 
 const masterChefAddress = getMasterChefAddress()
-const masterChefContract = getMasterchefContract()
 
-export const fetchMasterChefFarmPoolLength = async () => {
+export const fetchMasterChefFarmPoolLength = async (chainId: number) => {
+  const masterChefContract = getMasterchefContract(undefined, chainId)
   const poolLength = await masterChefContract.poolLength()
   return poolLength
 }

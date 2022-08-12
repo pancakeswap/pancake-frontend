@@ -80,7 +80,8 @@ export const usePollCoreFarmData = () => {
 }
 
 export const useFarms = (): DeserializedFarmsState => {
-  return useSelector(farmSelector)
+  const { chainId } = useActiveWeb3React()
+  return useSelector(farmSelector(chainId))
 }
 
 export const useFarmsPoolLength = (): number => {

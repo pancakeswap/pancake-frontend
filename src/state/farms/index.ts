@@ -110,7 +110,7 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
 >(
   'farms/fetchFarmUserDataAsync',
   async ({ account, pids, chainId }) => {
-    const poolLength = await fetchMasterChefFarmPoolLength()
+    const poolLength = await fetchMasterChefFarmPoolLength(chainId)
     const farmsConfig = getFarmConfig(chainId)
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
     const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
