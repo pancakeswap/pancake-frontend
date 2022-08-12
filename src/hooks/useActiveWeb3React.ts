@@ -29,9 +29,6 @@ export function useNetworkConnectorUpdater() {
             },
           },
           undefined,
-          {
-            shallow: true,
-          },
         )
       }
     } else if (isChainSupported(parsedQueryChainId)) {
