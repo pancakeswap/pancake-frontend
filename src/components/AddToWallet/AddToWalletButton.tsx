@@ -47,12 +47,11 @@ const getWalletIcon = (marginTextBetweenLogo: string) => {
 
 const getWalletName = () => {
   // @ts-ignore
-  if (window?.ethereum?.isTrust && !window?.ethereum?.isSafePal) {
-    return 'Trust Wallet'
-  }
-  // @ts-ignore
   if (window?.ethereum?.isSafePal) {
     return 'SafePal Wallet'
+  }
+  if (window?.ethereum?.isTrust) {
+    return 'Trust Wallet'
   }
   if (window?.ethereum?.isCoinbaseWallet) {
     return 'Coinbase Wallet'
