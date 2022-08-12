@@ -32,7 +32,7 @@ interface RoundSwitcherProps {
   handleArrowButtonPress: (targetRound: number) => void
 }
 
-const RoundSwitcher: React.FC<RoundSwitcherProps> = ({
+const RoundSwitcher: React.FC<React.PropsWithChildren<RoundSwitcherProps>> = ({
   isLoading,
   selectedRoundId,
   mostRecentRound,

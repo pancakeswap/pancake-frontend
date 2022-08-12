@@ -34,7 +34,7 @@ interface FiltersProps {
   address: string
 }
 
-const ActivityFilters: React.FC<FiltersProps> = ({ address }) => {
+const ActivityFilters: React.FC<React.PropsWithChildren<FiltersProps>> = ({ address }) => {
   const { t } = useTranslation()
   const nftActivityFilters = useGetNftActivityFilters(address)
 

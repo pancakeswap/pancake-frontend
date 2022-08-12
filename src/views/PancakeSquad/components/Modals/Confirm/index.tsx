@@ -32,7 +32,7 @@ type ConfirmModalProps = {
   onConfirmClose: () => void
 } & ModalProps
 
-const ConfirmModal: React.FC<ConfirmModalProps> = ({
+const ConfirmModal: React.FC<React.PropsWithChildren<ConfirmModalProps>> = ({
   onDismiss,
   onConfirmClose,
   title,
@@ -53,7 +53,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   }
 
   return (
-    <ModalContainer minWidth="375px">
+    <ModalContainer $minWidth="375px">
       <ModalHeader background={headerBackground}>
         <ModalTitle>
           <Heading>{title}</Heading>

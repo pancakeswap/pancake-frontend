@@ -20,7 +20,12 @@ interface FarmCardActionsProps {
   onDone?: () => void
 }
 
-const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, onReward, proxyCakeBalance, onDone }) => {
+const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
+  earnings,
+  onReward,
+  proxyCakeBalance,
+  onDone,
+}) => {
   const { account } = useWeb3React()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()

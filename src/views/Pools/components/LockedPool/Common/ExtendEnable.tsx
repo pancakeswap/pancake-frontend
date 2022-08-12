@@ -7,7 +7,7 @@ interface ExtendEnableProps {
   isValidDuration: boolean
 }
 
-const ExtendEnable: React.FC<ExtendEnableProps> = ({ isValidAmount, isValidDuration }) => {
+const ExtendEnable: React.FC<React.PropsWithChildren<ExtendEnableProps>> = ({ isValidAmount, isValidDuration }) => {
   const { t } = useTranslation()
 
   const { handleEnable, pendingEnableTx } = useExtendEnable()

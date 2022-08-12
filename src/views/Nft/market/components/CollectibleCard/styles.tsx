@@ -17,7 +17,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { multiplyPriceByAmount } from 'utils/prices'
 import styled from 'styled-components'
 
-export const Footer: React.FC<BoxProps> = ({ children, ...props }) => (
+export const Footer: React.FC<React.PropsWithChildren<BoxProps>> = ({ children, ...props }) => (
   <Box borderTop={[null, null, null, '1px solid']} borderColor="cardBorder" pt="8px" {...props}>
     {children}
   </Box>
@@ -27,7 +27,7 @@ interface BNBAmountLabelProps extends FlexProps {
   amount: number
 }
 
-export const BNBAmountLabel: React.FC<BNBAmountLabelProps> = ({ amount, ...props }) => (
+export const BNBAmountLabel: React.FC<React.PropsWithChildren<BNBAmountLabelProps>> = ({ amount, ...props }) => (
   <Flex alignItems="center" {...props}>
     <BinanceIcon width="16px" mx="4px" />
     <Text fontWeight="600">
@@ -44,7 +44,7 @@ interface CostLabelProps extends FlexProps {
   bnbBusdPrice: Price
 }
 
-export const CostLabel: React.FC<CostLabelProps> = ({ cost, bnbBusdPrice, ...props }) => {
+export const CostLabel: React.FC<React.PropsWithChildren<CostLabelProps>> = ({ cost, bnbBusdPrice, ...props }) => {
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, cost)
 
   return (
@@ -64,7 +64,7 @@ interface MetaRowProps extends FlexProps {
   title: string
 }
 
-export const MetaRow: React.FC<MetaRowProps> = ({ title, children, ...props }) => (
+export const MetaRow: React.FC<React.PropsWithChildren<MetaRowProps>> = ({ title, children, ...props }) => (
   <Flex alignItems="center" justifyContent="space-between" {...props}>
     <Text fontSize="12px" color="textSubtle" maxWidth="120px" ellipsis title={title}>
       {title}
@@ -78,7 +78,12 @@ export interface NftTagProps extends FlexProps {
   color?: string
 }
 
-export const NftTag: React.FC<NftTagProps> = ({ icon, color = 'text', children, ...props }) => (
+export const NftTag: React.FC<React.PropsWithChildren<NftTagProps>> = ({
+  icon,
+  color = 'text',
+  children,
+  ...props
+}) => (
   <Flex display="inline-flex" alignItems="center" height="24px" {...props}>
     {icon}
     <Text color={color} fontSize="14px" fontWeight="600">
@@ -87,7 +92,7 @@ export const NftTag: React.FC<NftTagProps> = ({ icon, color = 'text', children, 
   </Flex>
 )
 
-export const ProfileNftTag: React.FC<NftTagProps> = (props) => {
+export const ProfileNftTag: React.FC<React.PropsWithChildren<NftTagProps>> = (props) => {
   const { t } = useTranslation()
 
   return (
@@ -97,7 +102,7 @@ export const ProfileNftTag: React.FC<NftTagProps> = (props) => {
   )
 }
 
-export const WalletNftTag: React.FC<NftTagProps> = (props) => {
+export const WalletNftTag: React.FC<React.PropsWithChildren<NftTagProps>> = (props) => {
   const { t } = useTranslation()
 
   return (
@@ -107,7 +112,7 @@ export const WalletNftTag: React.FC<NftTagProps> = (props) => {
   )
 }
 
-export const SellingNftTag: React.FC<NftTagProps> = (props) => {
+export const SellingNftTag: React.FC<React.PropsWithChildren<NftTagProps>> = (props) => {
   const { t } = useTranslation()
 
   return (

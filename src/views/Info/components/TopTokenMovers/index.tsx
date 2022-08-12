@@ -59,7 +59,7 @@ const DataCard = ({ tokenData }: { tokenData: TokenData }) => {
   )
 }
 
-const TopTokenMovers: React.FC = () => {
+const TopTokenMovers: React.FC<React.PropsWithChildren> = () => {
   const allTokens = useAllTokenData()
   const { t } = useTranslation()
 

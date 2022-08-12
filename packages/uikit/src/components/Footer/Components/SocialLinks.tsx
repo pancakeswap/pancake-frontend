@@ -6,7 +6,7 @@ import Dropdown from "../../Dropdown/Dropdown";
 import Link from "../../Link/Link";
 import { socials } from "../config";
 
-const SocialLinks: React.FC<FlexProps> = ({ ...props }) => (
+const SocialLinks: React.FC<React.PropsWithChildren<FlexProps>> = ({ ...props }) => (
   <Flex {...props}>
     {socials.map((social, index) => {
       const iconProps = {

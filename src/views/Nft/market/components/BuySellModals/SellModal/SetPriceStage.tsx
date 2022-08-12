@@ -26,7 +26,7 @@ const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." charact
 
 // Stage where user puts price for NFT they're about to put on sale
 // Also shown when user wants to adjust the price of already listed NFT
-const SetPriceStage: React.FC<SetPriceStageProps> = ({
+const SetPriceStage: React.FC<React.PropsWithChildren<SetPriceStageProps>> = ({
   nftToSell,
   variant,
   lowestPrice,

@@ -16,7 +16,12 @@ interface PreviousBetsTableProps {
   api: string
 }
 
-const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5, account, token, api }) => {
+const PreviousBetsTable: React.FC<React.PropsWithChildren<PreviousBetsTableProps>> = ({
+  numberOfBets = 5,
+  account,
+  token,
+  api,
+}) => {
   const [isFetching, setIsFetching] = useState(false)
   const [bets, setBets] = useState<Bet[]>([])
   const { t } = useTranslation()

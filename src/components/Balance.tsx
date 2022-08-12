@@ -16,7 +16,7 @@ interface BalanceProps extends TextProps {
   onClick?: (event: React.MouseEvent<HTMLElement>) => void
 }
 
-const Balance: React.FC<BalanceProps> = ({
+const Balance: React.FC<React.PropsWithChildren<BalanceProps>> = ({
   value,
   color = 'text',
   decimals = 3,
@@ -50,11 +50,9 @@ const Balance: React.FC<BalanceProps> = ({
   )
 }
 
-export const BalanceWithLoading: React.FC<Omit<BalanceProps, 'value'> & { value: string | number }> = ({
-  value,
-  fontSize,
-  ...props
-}) => {
+export const BalanceWithLoading: React.FC<
+  React.PropsWithChildren<Omit<BalanceProps, 'value'> & { value: string | number }>
+> = ({ value, fontSize, ...props }) => {
   const isValueUndefinedOrNull = useMemo(() => isUndefinedOrNull(value), [value])
   const finalValue = useMemo(() => {
     if (isValueUndefinedOrNull) return null

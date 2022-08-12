@@ -10,7 +10,7 @@ interface AprCellProps {
   pool: DeserializedPool
 }
 
-const AprCell: React.FC<AprCellProps> = ({ pool }) => {
+const AprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
   const { userData } = pool

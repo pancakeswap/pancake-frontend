@@ -1,6 +1,6 @@
 import { Svg, SvgProps } from '@pancakeswap/uikit'
 
-const Prizes: React.FC<SvgProps> = (props) => {
+const Prizes: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
   return (
     <Svg viewBox="0 0 124 72" {...props}>
       <g opacity="0.2" clipPath="url(#leaderboard_cakers_clip0)">

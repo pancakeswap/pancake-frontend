@@ -143,4 +143,6 @@ export const CHAINS_STARGATE_TESTNET = [
   fantomTestnet,
 ]
 
+export const CHAINS_STARGATE = [mainnet, arbitrum, optimism, polygon, avalandche, fantomOpera]
+
 export const CHAINS = [bsc, mainnet, arbitrum, optimism, polygon, fantomOpera, avalandche]

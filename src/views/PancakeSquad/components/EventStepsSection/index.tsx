@@ -10,7 +10,13 @@ import stepsConfigBuilder from './config'
 import { StyledBunniesSquadImg, StyledEventStepsSectionContainer } from './styles'
 import { EventStepsProps } from './types'
 
-const EventStepsSection: React.FC<EventStepsProps> = ({ eventInfos, userInfos, isLoading, userStatus, account }) => {
+const EventStepsSection: React.FC<React.PropsWithChildren<EventStepsProps>> = ({
+  eventInfos,
+  userInfos,
+  isLoading,
+  userStatus,
+  account,
+}) => {
   const { t } = useTranslation()
   const { theme, isDark } = useTheme()
   const { balance: cakeBalance } = useGetCakeBalance()

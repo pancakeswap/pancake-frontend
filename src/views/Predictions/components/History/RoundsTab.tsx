@@ -15,7 +15,7 @@ interface RoundsTabProps {
   bets: Bet[]
 }
 
-const RoundsTab: React.FC<RoundsTabProps> = ({ hasBetHistory, bets }) => {
+const RoundsTab: React.FC<React.PropsWithChildren<RoundsTabProps>> = ({ hasBetHistory, bets }) => {
   const { t } = useTranslation()
   const dispatch = useLocalDispatch()
   const { account } = useWeb3React()

@@ -32,7 +32,7 @@ interface WinRateTvlProps {
   setMultiplyNumber: (multiply: number) => void
 }
 
-const WinRateTvl: React.FC<WinRateTvlProps> = ({
+const WinRateTvl: React.FC<React.PropsWithChildren<WinRateTvlProps>> = ({
   calculatorState,
   totalLockValue,
   totalLockValueAsUSD,

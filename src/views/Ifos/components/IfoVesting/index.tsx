@@ -60,7 +60,7 @@ interface IfoVestingProps {
   pool: DeserializedPool
 }
 
-const IfoVesting: React.FC<IfoVestingProps> = () => {
+const IfoVesting: React.FC<React.PropsWithChildren<IfoVestingProps>> = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const [isFirstTime, setIsFirstTime] = useState(true)

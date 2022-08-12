@@ -13,7 +13,7 @@ interface WithdrawModalProps {
   showActiveBooster?: boolean
 }
 
-const WithdrawModal: React.FC<WithdrawModalProps> = ({
+const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
   onConfirm,
   onDismiss,
   max,

@@ -5,7 +5,7 @@ interface PointsLabelProps extends FlexProps {
   points: number
 }
 
-const PointsLabel: React.FC<PointsLabelProps> = ({ points, ...props }) => {
+const PointsLabel: React.FC<React.PropsWithChildren<PointsLabelProps>> = ({ points, ...props }) => {
   const { t } = useTranslation()
   const localePoints = points.toLocaleString()
 

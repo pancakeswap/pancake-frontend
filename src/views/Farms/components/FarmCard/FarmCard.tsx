@@ -46,7 +46,14 @@ interface FarmCardProps {
   originalLiquidity?: BigNumber
 }
 
-const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePrice, account, originalLiquidity }) => {
+const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
+  farm,
+  displayApr,
+  removed,
+  cakePrice,
+  account,
+  originalLiquidity,
+}) => {
   const { t } = useTranslation()
 
   const [showExpandableSection, setShowExpandableSection] = useState(false)

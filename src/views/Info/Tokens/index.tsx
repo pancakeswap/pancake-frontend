@@ -7,7 +7,7 @@ import { useWatchlistTokens } from 'state/user/hooks'
 import TokenTable from 'views/Info/components/InfoTables/TokensTable'
 import TopTokenMovers from 'views/Info/components/TopTokenMovers'
 
-const TokensOverview: React.FC = () => {
+const TokensOverview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
 
   const allTokens = useAllTokenData()

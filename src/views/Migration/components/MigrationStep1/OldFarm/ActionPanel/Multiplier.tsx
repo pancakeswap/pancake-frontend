@@ -31,7 +31,7 @@ const MultiplierWrapper = styled.div`
   }
 `
 
-const TotalStaked: React.FC<MultiplierProps> = ({ multiplier }) => {
+const TotalStaked: React.FC<React.PropsWithChildren<MultiplierProps>> = ({ multiplier }) => {
   const { t } = useTranslation()
   const displayMultiplier = multiplier ? multiplier.toLowerCase() : '0x'
 

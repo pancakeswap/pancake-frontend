@@ -45,7 +45,7 @@ const StyledTopTradersWrapper = styled(Flex)`
   }
 `
 
-const TeamRanks: React.FC<TeamRanksProps> = ({
+const TeamRanks: React.FC<React.PropsWithChildren<TeamRanksProps>> = ({
   team1LeaderboardInformation,
   team2LeaderboardInformation,
   team3LeaderboardInformation,

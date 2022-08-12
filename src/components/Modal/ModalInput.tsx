@@ -51,7 +51,7 @@ const StyledErrorMessage = styled(Text)`
   }
 `
 
-const ModalInput: React.FC<ModalInputProps> = ({
+const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
   max,
   symbol,
   onChange,

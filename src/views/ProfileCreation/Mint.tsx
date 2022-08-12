@@ -23,7 +23,7 @@ interface MintNftData extends ApiSingleTokenData {
   bunnyId?: string
 }
 
-const Mint: React.FC = () => {
+const Mint: React.FC<React.PropsWithChildren> = () => {
   const [selectedBunnyId, setSelectedBunnyId] = useState<string>('')
   const [starterNfts, setStarterNfts] = useState<MintNftData[]>([])
   const { actions, minimumCakeRequired, allowance } = useProfileCreation()

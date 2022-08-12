@@ -6,7 +6,7 @@ interface ChoiceProps extends InputProps, InputHTMLAttributes<HTMLInputElement> 
   onRemove?: () => void
 }
 
-const Choice: React.FC<ChoiceProps> = ({ onRemove, onTextInput, ...props }) => {
+const Choice: React.FC<React.PropsWithChildren<ChoiceProps>> = ({ onRemove, onTextInput, ...props }) => {
   const [isWarning, setIsWarning] = useState(false)
   const [isDirty, setIsDirty] = useState(false)
 

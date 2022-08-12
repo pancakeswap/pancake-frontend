@@ -46,7 +46,7 @@ const StyledImage = styled(Image)`
   border-radius: 4px;
 `
 
-const CollectionCard: React.FC<HotCollectionCardProps> = ({
+const CollectionCard: React.FC<React.PropsWithChildren<HotCollectionCardProps>> = ({
   bgSrc,
   avatarSrc,
   collectionName,

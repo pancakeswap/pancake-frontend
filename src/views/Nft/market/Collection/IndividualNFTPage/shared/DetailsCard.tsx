@@ -21,7 +21,12 @@ const LongTextContainer = styled(Text)`
   text-overflow: ellipsis;
 `
 
-const DetailsCard: React.FC<DetailsCardProps> = ({ contractAddress, ipfsJson, count, rarity }) => {
+const DetailsCard: React.FC<React.PropsWithChildren<DetailsCardProps>> = ({
+  contractAddress,
+  ipfsJson,
+  count,
+  rarity,
+}) => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const ipfsLink = ipfsJson ? uriToHttp(ipfsJson)[0] : null

@@ -7,7 +7,7 @@ interface TextIconProps {
   icon: ReactElement
 }
 
-const TextIcon: React.FC<TextIconProps> = ({ icon, text, bold = false }) => {
+const TextIcon: React.FC<React.PropsWithChildren<TextIconProps>> = ({ icon, text, bold = false }) => {
   return (
     <Flex alignItems="center">
       <Text color="text" mr="8px" bold={bold} textTransform="uppercase">

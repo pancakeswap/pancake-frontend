@@ -68,8 +68,9 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
     ]
     const [[poolLength], [cakePerBlockRaw]] = await multicall(masterchefABI, calls)
     const regularCakePerBlock = getBalanceAmount(ethersToBigNumber(cakePerBlockRaw))
-    const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
-    const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
+    const farmsCanFetch = farmsConfig.filter(
+      (farmConfig) => pids.includes(farmConfig.pid) && poolLength.gt(farmConfig.pid),
+    )
 
     const farms = await fetchFarms(farmsCanFetch)
     const farmsWithPrices = getFarmsPrices(farms)
@@ -171,11 +172,11 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
   }
 >(
   'farms/fetchFarmUserDataAsync',
-  async ({ account, pids, proxyAddress }) => {
-    const poolLength = await fetchMasterChefFarmPoolLength()
-    const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
-    const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
-
+  async ({ account, pids, proxyAddress }, config) => {
+    const poolLength = config.getState().farms.poolLength ?? (await fetchMasterChefFarmPoolLength()).toNumber()
+    const farmsCanFetch = farmsConfig.filter(
+      (farmConfig) => pids.includes(farmConfig.pid) && poolLength > farmConfig.pid,
+    )
     if (proxyAddress && farmsCanFetch?.length) {
       const { normalFarms, farmsWithProxy } = splitProxyFarms(farmsCanFetch)
 

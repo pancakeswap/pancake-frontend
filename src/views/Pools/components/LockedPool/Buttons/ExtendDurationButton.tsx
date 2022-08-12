@@ -5,7 +5,7 @@ import { ONE_WEEK_DEFAULT, MAX_LOCK_DURATION } from 'config/constants/pools'
 import ExtendDurationModal from '../Modals/ExtendDurationModal'
 import { ExtendDurationButtonPropsType } from '../types'
 
-const ExtendDurationButton: React.FC<ExtendDurationButtonPropsType & ButtonProps> = ({
+const ExtendDurationButton: React.FC<React.PropsWithChildren<ExtendDurationButtonPropsType & ButtonProps>> = ({
   modalTitle,
   stakingToken,
   currentLockedAmount,

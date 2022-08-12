@@ -22,7 +22,11 @@ interface Props {
   initialValue?: string
 }
 
-const SearchInput: React.FC<Props> = ({ onChange: onChangeCallback, placeholder = 'Search', initialValue }) => {
+const SearchInput: React.FC<React.PropsWithChildren<Props>> = ({
+  onChange: onChangeCallback,
+  placeholder = 'Search',
+  initialValue,
+}) => {
   const [searchText, setSearchText] = useState('')
   const { t } = useTranslation()
 

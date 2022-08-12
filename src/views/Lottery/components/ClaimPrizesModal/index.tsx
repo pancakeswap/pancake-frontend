@@ -52,7 +52,10 @@ interface ClaimPrizesModalModalProps {
   onDismiss?: () => void
 }
 
-const ClaimPrizesModal: React.FC<ClaimPrizesModalModalProps> = ({ onDismiss, roundsToClaim }) => {
+const ClaimPrizesModal: React.FC<React.PropsWithChildren<ClaimPrizesModalModalProps>> = ({
+  onDismiss,
+  roundsToClaim,
+}) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { currentLotteryId } = useLottery()
@@ -63,7 +66,7 @@ const ClaimPrizesModal: React.FC<ClaimPrizesModalModalProps> = ({ onDismiss, rou
   }, [])
 
   return (
-    <StyledModal minWidth="280px">
+    <StyledModal $minWidth="280px">
       <BunnyDecoration>
         <img src="/images/decorations/prize-bunny.png" alt="bunny decoration" height="124px" width="168px" />
       </BunnyDecoration>

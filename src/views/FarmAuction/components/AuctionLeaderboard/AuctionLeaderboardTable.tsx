@@ -44,7 +44,11 @@ interface LeaderboardRowProps {
   isMobile: boolean
 }
 
-const LeaderboardRow: React.FC<LeaderboardRowProps> = ({ bidder, cakePriceBusd, isMobile }) => {
+const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = ({
+  bidder,
+  cakePriceBusd,
+  isMobile,
+}) => {
   const { t } = useTranslation()
   const { isTopPosition, position, samePositionAsAbove, farmName, tokenName, amount, projectSite, lpAddress, account } =
     bidder
@@ -109,7 +113,10 @@ const LeaderboardRow: React.FC<LeaderboardRowProps> = ({ bidder, cakePriceBusd, 
   )
 }
 
-const AuctionLeaderboardTable: React.FC<{ bidders: Bidder[]; noBidsText: string }> = ({ bidders, noBidsText }) => {
+const AuctionLeaderboardTable: React.FC<React.PropsWithChildren<{ bidders: Bidder[]; noBidsText: string }>> = ({
+  bidders,
+  noBidsText,
+}) => {
   const [visibleBidders, setVisibleBidders] = useState(10)
   const cakePriceBusd = usePriceCakeBusd()
   const { t } = useTranslation()

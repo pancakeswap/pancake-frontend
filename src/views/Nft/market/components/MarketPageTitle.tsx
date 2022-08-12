@@ -6,7 +6,12 @@ interface MarketPageTitleProps extends GridProps {
   description?: ReactNode
 }
 
-const MarketPageTitle: React.FC<MarketPageTitleProps> = ({ title, description, children, ...props }) => (
+const MarketPageTitle: React.FC<React.PropsWithChildren<MarketPageTitleProps>> = ({
+  title,
+  description,
+  children,
+  ...props
+}) => (
   <Grid gridGap="16px" alignItems="center" gridTemplateColumns={['1fr', null, null, null, 'repeat(2, 1fr)']} {...props}>
     <Box>
       <Heading as="h1" scale="xl" color="secondary" mb="16px">

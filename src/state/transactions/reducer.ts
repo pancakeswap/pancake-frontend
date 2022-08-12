@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import { ReactText } from 'react'
 import { createReducer } from '@reduxjs/toolkit'
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import { confirmOrderCancellation, confirmOrderSubmission, saveOrder } from 'utils/localStorageOrders'
@@ -20,6 +21,7 @@ export interface TransactionDetails {
   type?: TransactionType
   order?: Order
   summary?: string
+  translatableSummary?: { text: string; data: Record<string, ReactText> }
   claim?: { recipient: string }
   receipt?: SerializableTransactionReceipt
   lastCheckedBlockNumber?: number
@@ -40,12 +42,15 @@ export default createReducer(initialState, (builder) =>
   builder
     .addCase(
       addTransaction,
-      (transactions, { payload: { chainId, from, hash, approval, summary, claim, type, order } }) => {
+      (
+        transactions,
+        { payload: { chainId, from, hash, approval, summary, translatableSummary, claim, type, order } },
+      ) => {
         if (transactions[chainId]?.[hash]) {
           throw Error('Attempted to add existing transaction.')
         }
         const txs = transactions[chainId] ?? {}
-        txs[hash] = { hash, approval, summary, claim, from, addedTime: now(), type, order }
+        txs[hash] = { hash, approval, summary, translatableSummary, claim, from, addedTime: now(), type, order }
         transactions[chainId] = txs
         if (order) saveOrder(chainId, from, order, true)
       },

@@ -33,31 +33,34 @@ const ProfileIcon = styled(Image)`
   }
 `;
 
-export const NoProfileMenuIcon: React.FC = () => (
+export const NoProfileMenuIcon: React.FC<React.PropsWithChildren> = () => (
   <MenuIconWrapper borderColor="primary">
     <WalletFilledIcon color="primary" width="24px" />
   </MenuIconWrapper>
 );
 
-export const PendingMenuIcon: React.FC = () => (
+export const PendingMenuIcon: React.FC<React.PropsWithChildren> = () => (
   <MenuIconWrapper borderColor="secondary">
     <RefreshIcon color="secondary" width="24px" spin />
   </MenuIconWrapper>
 );
 
-export const WarningMenuIcon: React.FC = () => (
+export const WarningMenuIcon: React.FC<React.PropsWithChildren> = () => (
   <MenuIconWrapper borderColor="warning">
     <WarningIcon color="warning" width="24px" />
   </MenuIconWrapper>
 );
 
-export const DangerMenuIcon: React.FC = () => (
+export const DangerMenuIcon: React.FC<React.PropsWithChildren> = () => (
   <MenuIconWrapper borderColor="failure">
     <WarningIcon color="failure" width="24px" />
   </MenuIconWrapper>
 );
 
-const MenuIcon: React.FC<{ avatarSrc?: string; variant: Variant }> = ({ avatarSrc, variant }) => {
+const MenuIcon: React.FC<React.PropsWithChildren<{ avatarSrc?: string; variant: Variant }>> = ({
+  avatarSrc,
+  variant,
+}) => {
   if (variant === variants.DANGER) {
     return <DangerMenuIcon />;
   }

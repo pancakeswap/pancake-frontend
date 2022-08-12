@@ -12,7 +12,10 @@ interface TotalAvailableClaimProps {
   amountAvailableToClaim: BigNumber
 }
 
-const TotalAvailableClaim: React.FC<TotalAvailableClaimProps> = ({ ifo, amountAvailableToClaim }) => {
+const TotalAvailableClaim: React.FC<React.PropsWithChildren<TotalAvailableClaimProps>> = ({
+  ifo,
+  amountAvailableToClaim,
+}) => {
   const { t } = useTranslation()
   const { token } = ifo
 

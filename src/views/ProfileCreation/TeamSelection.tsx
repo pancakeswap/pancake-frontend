@@ -8,7 +8,7 @@ import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
 import useProfileCreation from './contexts/hook'
 
-const Team: React.FC = () => {
+const Team: React.FC<React.PropsWithChildren> = () => {
   const { teamId: currentTeamId, actions } = useProfileCreation()
   const { t } = useTranslation()
   const { data: teams } = useSWR('teams', async () => getTeams())

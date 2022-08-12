@@ -6,7 +6,7 @@ interface AchievementTitleProps extends TextProps {
   title: AchievementTitleType
 }
 
-const AchievementTitle: React.FC<AchievementTitleProps> = ({ title, ...props }) => {
+const AchievementTitle: React.FC<React.PropsWithChildren<AchievementTitleProps>> = ({ title, ...props }) => {
   const { t } = useTranslation()
 
   if (typeof title === 'string') {

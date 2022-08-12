@@ -58,7 +58,7 @@ const ChevronBottom = styled(ChevronDownIcon).attrs(iconAttrs)`
 
 const spinnerIcon = <AutoRenewIcon spin color="currentColor" />
 
-const ApproveConfirmButtons: React.FC<ApproveConfirmButtonsProps> = ({
+const ApproveConfirmButtons: React.FC<React.PropsWithChildren<ApproveConfirmButtonsProps>> = ({
   isApproveDisabled,
   isApproving,
   isConfirming,

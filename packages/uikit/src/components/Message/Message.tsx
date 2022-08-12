@@ -38,7 +38,7 @@ const colors = {
   danger: "failure",
 };
 
-export const MessageText: React.FC<TextProps> = ({ children, ...props }) => {
+export const MessageText: React.FC<React.PropsWithChildren<TextProps>> = ({ children, ...props }) => {
   const ctx = useContext(MessageContext);
   return (
     <Text fontSize="14px" color={colors[ctx?.variant]} {...props}>
@@ -47,7 +47,14 @@ export const MessageText: React.FC<TextProps> = ({ children, ...props }) => {
   );
 };
 
-const Message: React.FC<MessageProps> = ({ children, variant, icon, action, actionInline, ...props }) => {
+const Message: React.FC<React.PropsWithChildren<MessageProps>> = ({
+  children,
+  variant,
+  icon,
+  action,
+  actionInline,
+  ...props
+}) => {
   const Icon = Icons[variant];
   return (
     <MessageContext.Provider value={{ variant }}>

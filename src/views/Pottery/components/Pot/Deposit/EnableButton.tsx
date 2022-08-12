@@ -6,7 +6,7 @@ interface Props {
   potteryVaultAddress: string
 }
 
-const EnableButton: React.FC<Props> = ({ potteryVaultAddress }) => {
+const EnableButton: React.FC<React.PropsWithChildren<Props>> = ({ potteryVaultAddress }) => {
   const { t } = useTranslation()
   const { isPending, onApprove } = useApprovePottery(potteryVaultAddress)
 

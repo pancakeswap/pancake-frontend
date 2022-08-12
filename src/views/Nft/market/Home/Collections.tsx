@@ -6,7 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { CollectionCard } from '../components/CollectibleCard'
 import { BNBAmountLabel } from '../components/CollectibleCard/styles'
 
-const Collections: React.FC<{ title: string; testId: string; collections: Collection[] }> = ({
+const Collections: React.FC<React.PropsWithChildren<{ title: string; testId: string; collections: Collection[] }>> = ({
   title,
   testId,
   collections,

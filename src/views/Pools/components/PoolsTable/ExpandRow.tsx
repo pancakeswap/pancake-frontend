@@ -11,11 +11,9 @@ const StyledRow = styled.div`
   cursor: pointer;
 `
 
-const ExpandRow: React.FC<{ children: ReactNode; panel: ReactNode; initialActivity?: boolean }> = ({
-  children,
-  panel,
-  initialActivity,
-}) => {
+const ExpandRow: React.FC<
+  React.PropsWithChildren<{ children: ReactNode; panel: ReactNode; initialActivity?: boolean }>
+> = ({ children, panel, initialActivity }) => {
   const hasSetInitialValue = useRef(false)
   const { isTablet, isDesktop } = useMatchBreakpointsContext()
 

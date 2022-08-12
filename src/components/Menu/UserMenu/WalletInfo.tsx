@@ -15,7 +15,7 @@ interface WalletInfoProps {
   onDismiss: InjectedModalProps['onDismiss']
 }
 
-const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowBnbBalance, onDismiss }) => {
+const WalletInfo: React.FC<React.PropsWithChildren<WalletInfoProps>> = ({ hasLowBnbBalance, onDismiss }) => {
   const { t } = useTranslation()
   const { account, chainId } = useWeb3React()
   const { balance, fetchStatus } = useGetBnbBalance()

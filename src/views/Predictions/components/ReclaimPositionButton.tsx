@@ -14,7 +14,12 @@ interface ReclaimPositionButtonProps extends ButtonProps {
   children?: ReactNode
 }
 
-const ReclaimPositionButton: React.FC<ReclaimPositionButtonProps> = ({ epoch, onSuccess, children, ...props }) => {
+const ReclaimPositionButton: React.FC<React.PropsWithChildren<ReclaimPositionButtonProps>> = ({
+  epoch,
+  onSuccess,
+  children,
+  ...props
+}) => {
   const { t } = useTranslation()
   const { address: predictionsAddress } = useConfig()
   const { token } = useConfig()

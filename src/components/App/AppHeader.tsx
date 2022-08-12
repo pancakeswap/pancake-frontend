@@ -23,7 +23,7 @@ const AppHeaderContainer = styled(Flex)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
-const AppHeader: React.FC<Props> = ({ title, subtitle, helper, backTo, noConfig = false }) => {
+const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({ title, subtitle, helper, backTo, noConfig = false }) => {
   const [expertMode] = useExpertModeManager()
 
   return (

@@ -24,16 +24,18 @@ const ScrollableContainer = styled.div`
   padding: 24px;
 `
 
-const EditNumbersModal: React.FC<{
-  totalCost: string
-  updateTicket: UpdateTicketAction
-  randomize: () => void
-  tickets: Ticket[]
-  allComplete: boolean
-  onConfirm: () => void
-  isConfirming: boolean
-  onDismiss?: () => void
-}> = ({ totalCost, updateTicket, randomize, tickets, allComplete, onConfirm, isConfirming, onDismiss }) => {
+const EditNumbersModal: React.FC<
+  React.PropsWithChildren<{
+    totalCost: string
+    updateTicket: UpdateTicketAction
+    randomize: () => void
+    tickets: Ticket[]
+    allComplete: boolean
+    onConfirm: () => void
+    isConfirming: boolean
+    onDismiss?: () => void
+  }>
+> = ({ totalCost, updateTicket, randomize, tickets, allComplete, onConfirm, isConfirming, onDismiss }) => {
   const { theme } = useTheme()
   const { t } = useTranslation()
   const handleOnConfirm = useCallback(() => onConfirm(), [onConfirm])

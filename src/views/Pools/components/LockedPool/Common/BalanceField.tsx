@@ -22,7 +22,7 @@ interface PropsType {
   stakingTokenBalance: BigNumber
 }
 
-const BalanceField: React.FC<PropsType> = ({
+const BalanceField: React.FC<React.PropsWithChildren<PropsType>> = ({
   stakingAddress,
   stakingSymbol,
   stakingDecimals,

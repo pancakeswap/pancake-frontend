@@ -15,7 +15,12 @@ interface CollapsibleCardProps extends CardProps {
   title: string
 }
 
-const CollapsibleCard: React.FC<CollapsibleCardProps> = ({ initialOpenState = true, title, children, ...props }) => {
+const CollapsibleCard: React.FC<React.PropsWithChildren<CollapsibleCardProps>> = ({
+  initialOpenState = true,
+  title,
+  children,
+  ...props
+}) => {
   const [isOpen, setIsOpen] = useState(initialOpenState)
 
   const toggleOpen = () => setIsOpen(!isOpen)

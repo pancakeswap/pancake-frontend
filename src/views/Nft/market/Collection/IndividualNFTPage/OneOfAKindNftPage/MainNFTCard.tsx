@@ -19,7 +19,12 @@ interface MainNFTCardProps {
   onSuccess: () => void
 }
 
-const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePic, onSuccess }) => {
+const MainNFTCard: React.FC<React.PropsWithChildren<MainNFTCardProps>> = ({
+  nft,
+  isOwnNft,
+  nftIsProfilePic,
+  onSuccess,
+}) => {
   const { t } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
 

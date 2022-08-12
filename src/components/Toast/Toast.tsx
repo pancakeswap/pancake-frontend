@@ -23,7 +23,7 @@ const StyledToast = styled.div`
   }
 `
 
-const Toast: React.FC<ToastProps> = ({ toast, onRemove, style, ttl, ...props }) => {
+const Toast: React.FC<React.PropsWithChildren<ToastProps>> = ({ toast, onRemove, style, ttl, ...props }) => {
   const timer = useRef<number>()
   const { id, title, description, type } = toast
 

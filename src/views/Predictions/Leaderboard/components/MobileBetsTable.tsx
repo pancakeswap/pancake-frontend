@@ -10,7 +10,7 @@ interface MobileBetsTableProps {
   api: string
 }
 
-const MobileBetsTable: React.FC<MobileBetsTableProps> = ({ account, token, api }) => {
+const MobileBetsTable: React.FC<React.PropsWithChildren<MobileBetsTableProps>> = ({ account, token, api }) => {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
 

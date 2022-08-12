@@ -16,7 +16,12 @@ interface CardHeaderProps {
   secondarySrc: string
 }
 
-const CardHeader: React.FC<CardHeaderProps> = ({ title, subTitle, primarySrc, secondarySrc }) => {
+const CardHeader: React.FC<React.PropsWithChildren<CardHeaderProps>> = ({
+  title,
+  subTitle,
+  primarySrc,
+  secondarySrc,
+}) => {
   return (
     <Container>
       <PoolCardHeaderTitle title={title} subTitle={subTitle} />

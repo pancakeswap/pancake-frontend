@@ -11,7 +11,7 @@ export interface LogoLoaderProps {
 /**
  * Renders an image by sequentially trying a list of URIs, and then eventually a fallback to HelpIcon
  */
-const LogoLoader: React.FC<LogoLoaderProps> = ({ src, alt, ...rest }) => {
+const LogoLoader: React.FC<React.PropsWithChildren<LogoLoaderProps>> = ({ src, alt, ...rest }) => {
   const [, refresh] = useState(0)
 
   const srcFailedLoading = BAD_SRCS.includes(src)

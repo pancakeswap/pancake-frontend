@@ -30,7 +30,7 @@ const Row = ({ children, ...props }) => {
   )
 }
 
-export const PrizePoolRow: React.FC<PrizePoolRowProps> = ({ totalAmount, ...props }) => {
+export const PrizePoolRow: React.FC<React.PropsWithChildren<PrizePoolRowProps>> = ({ totalAmount, ...props }) => {
   const { t } = useTranslation()
   const { token } = useConfig()
 
@@ -49,7 +49,12 @@ interface PayoutRowProps extends FlexProps {
   amount: number
 }
 
-export const PayoutRow: React.FC<PayoutRowProps> = ({ positionLabel, multiplier, amount, ...props }) => {
+export const PayoutRow: React.FC<React.PropsWithChildren<PayoutRowProps>> = ({
+  positionLabel,
+  multiplier,
+  amount,
+  ...props
+}) => {
   const { t } = useTranslation()
   const formattedMultiplier = `${multiplier.toLocaleString(undefined, { maximumFractionDigits: 2 })}x`
   const { token } = useConfig()
@@ -74,7 +79,7 @@ interface LockPriceRowProps extends FlexProps {
   lockPrice: NodeRound['lockPrice']
 }
 
-export const LockPriceRow: React.FC<LockPriceRowProps> = ({ lockPrice, ...props }) => {
+export const LockPriceRow: React.FC<React.PropsWithChildren<LockPriceRowProps>> = ({ lockPrice, ...props }) => {
   const { t } = useTranslation()
   const { minPriceUsdDisplayed } = useConfig()
 
@@ -133,7 +138,7 @@ const StyledRoundResultBox = styled.div`
   padding: 16px;
 `
 
-export const RoundResultBox: React.FC<RoundResultBoxProps> = ({
+export const RoundResultBox: React.FC<React.PropsWithChildren<RoundResultBoxProps>> = ({
   isNext = false,
   hasEntered = false,
   isLive = false,
@@ -152,7 +157,7 @@ interface RoundPriceProps {
   closePrice: BigNumber
 }
 
-export const RoundPrice: React.FC<RoundPriceProps> = ({ lockPrice, closePrice }) => {
+export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({ lockPrice, closePrice }) => {
   const { minPriceUsdDisplayed } = useConfig()
   const betPosition = getRoundPosition(lockPrice, closePrice)
   const priceDifference = getPriceDifference(closePrice, lockPrice)
@@ -200,7 +205,10 @@ const getPrizePoolAmountHistory = (totalAmount: PrizePoolHistoryRowProps['totalA
   return formatBnb(totalAmount)
 }
 
-export const PrizePoolHistoryRow: React.FC<PrizePoolHistoryRowProps> = ({ totalAmount, ...props }) => {
+export const PrizePoolHistoryRow: React.FC<React.PropsWithChildren<PrizePoolHistoryRowProps>> = ({
+  totalAmount,
+  ...props
+}) => {
   const { t } = useTranslation()
   const { token } = useConfig()
 
@@ -216,7 +224,10 @@ interface LockPriceHistoryRowProps extends FlexProps {
   lockPrice: Round['lockPrice']
 }
 
-export const LockPriceHistoryRow: React.FC<LockPriceHistoryRowProps> = ({ lockPrice, ...props }) => {
+export const LockPriceHistoryRow: React.FC<React.PropsWithChildren<LockPriceHistoryRowProps>> = ({
+  lockPrice,
+  ...props
+}) => {
   const { t } = useTranslation()
 
   return (

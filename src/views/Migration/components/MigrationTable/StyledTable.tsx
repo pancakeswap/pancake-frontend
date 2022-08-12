@@ -14,7 +14,7 @@ const StyledTable = styled.div`
   }
 `
 
-const TableStyle: React.FC = ({ children }) => {
+const TableStyle: React.FC<React.PropsWithChildren> = ({ children }) => {
   return <StyledTable role="table">{children}</StyledTable>
 }
 

@@ -39,7 +39,7 @@ interface RoiCalculatorFooterProps {
   performanceFee: number
 }
 
-const RoiCalculatorFooter: React.FC<RoiCalculatorFooterProps> = ({
+const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterProps>> = ({
   isFarm,
   apr,
   apy,

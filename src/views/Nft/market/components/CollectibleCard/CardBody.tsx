@@ -9,7 +9,12 @@ import { useGetLowestPriceFromNft } from '../../hooks/useGetLowestPrice'
 import { pancakeBunniesAddress } from '../../constants'
 import NFTMedia from '../NFTMedia'
 
-const CollectibleCardBody: React.FC<CollectibleCardProps> = ({ nft, nftLocation, currentAskPrice, isUserNft }) => {
+const CollectibleCardBody: React.FC<React.PropsWithChildren<CollectibleCardProps>> = ({
+  nft,
+  nftLocation,
+  currentAskPrice,
+  isUserNft,
+}) => {
   const { t } = useTranslation()
   const { name } = nft
   const bnbBusdPrice = useBNBBusdPrice()

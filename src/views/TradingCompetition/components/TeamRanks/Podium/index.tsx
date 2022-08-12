@@ -82,7 +82,7 @@ const StyledVolumeText = styled(Text)`
   }
 `
 
-const Podium: React.FC<PodiumProps> = ({ teamsSortedByVolume }) => {
+const Podium: React.FC<React.PropsWithChildren<PodiumProps>> = ({ teamsSortedByVolume }) => {
   const { t } = useTranslation()
   const firstTeam = teamsSortedByVolume && teamsSortedByVolume[0]
   const secondTeam = teamsSortedByVolume && teamsSortedByVolume[1]

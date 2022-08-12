@@ -32,7 +32,7 @@ interface CopyButtonProps extends SvgProps {
   buttonColor?: string
 }
 
-export const CopyButton: React.FC<CopyButtonProps> = ({
+export const CopyButton: React.FC<React.PropsWithChildren<CopyButtonProps>> = ({
   text,
   tooltipMessage,
   width,

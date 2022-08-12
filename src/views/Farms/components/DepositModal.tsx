@@ -49,7 +49,7 @@ interface DepositModalProps {
   shouldUseProxyFarm?: boolean
 }
 
-const DepositModal: React.FC<DepositModalProps> = ({
+const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   max,
   stakedBalance,
   onConfirm,

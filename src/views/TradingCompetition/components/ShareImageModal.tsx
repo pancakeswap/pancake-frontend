@@ -36,7 +36,7 @@ interface ShareImageModalProps extends YourScoreProps {
   cakersShareImage: StaticImageData
 }
 
-const ShareImageModal: React.FC<ShareImageModalProps> = ({
+const ShareImageModal: React.FC<React.PropsWithChildren<ShareImageModalProps>> = ({
   onDismiss,
   profile,
   userLeaderboardInformation,

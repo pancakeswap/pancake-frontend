@@ -72,7 +72,7 @@ const SORT_FIELD = {
   amountToken1: 'amountToken1',
 }
 
-const TableLoader: React.FC = () => {
+const TableLoader: React.FC<React.PropsWithChildren> = () => {
   const loadingRow = (
     <ResponsiveGrid>
       <Skeleton />
@@ -92,7 +92,7 @@ const TableLoader: React.FC = () => {
   )
 }
 
-const DataRow: React.FC<{ transaction: Transaction }> = ({ transaction }) => {
+const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> = ({ transaction }) => {
   const { t } = useTranslation()
   const abs0 = Math.abs(transaction.amountToken0)
   const abs1 = Math.abs(transaction.amountToken1)
@@ -125,9 +125,11 @@ const DataRow: React.FC<{ transaction: Transaction }> = ({ transaction }) => {
   )
 }
 
-const TransactionTable: React.FC<{
-  transactions: Transaction[]
-}> = ({ transactions }) => {
+const TransactionTable: React.FC<
+  React.PropsWithChildren<{
+    transactions: Transaction[]
+  }>
+> = ({ transactions }) => {
   const [sortField, setSortField] = useState(SORT_FIELD.timestamp)
   const [sortDirection, setSortDirection] = useState<boolean>(true)
 

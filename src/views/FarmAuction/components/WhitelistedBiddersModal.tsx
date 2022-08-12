@@ -32,7 +32,10 @@ const AddressRowContainer = styled.div`
   }
 `
 
-const AddressRow: React.FC<{ bidder: FarmAuctionBidderConfig; isMobile: boolean }> = ({ bidder, isMobile }) => {
+const AddressRow: React.FC<React.PropsWithChildren<{ bidder: FarmAuctionBidderConfig; isMobile: boolean }>> = ({
+  bidder,
+  isMobile,
+}) => {
   const { farmName, tokenName, account, projectSite } = bidder
   return (
     <a href={projectSite} target="_blank" rel="noopener noreferrer">
@@ -52,7 +55,7 @@ const AddressRow: React.FC<{ bidder: FarmAuctionBidderConfig; isMobile: boolean 
   )
 }
 
-const WhitelistedBiddersModal: React.FC<WhitelistedBiddersModalProps> = ({ onDismiss }) => {
+const WhitelistedBiddersModal: React.FC<React.PropsWithChildren<WhitelistedBiddersModalProps>> = ({ onDismiss }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const { t } = useTranslation()
   const { theme } = useTheme()

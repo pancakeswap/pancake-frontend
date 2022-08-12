@@ -12,7 +12,11 @@ interface FeeSummaryProps {
   vaultKey: VaultKey
 }
 
-const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, stakeAmount, vaultKey }) => {
+const FeeSummary: React.FC<React.PropsWithChildren<FeeSummaryProps>> = ({
+  stakingTokenSymbol,
+  stakeAmount,
+  vaultKey,
+}) => {
   const { t } = useTranslation()
   const {
     fees: { withdrawalFee, withdrawalFeePeriod },

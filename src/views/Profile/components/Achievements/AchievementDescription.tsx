@@ -15,7 +15,10 @@ const Description = styled(Text).attrs({ as: 'p' })`
   }
 `
 
-const AchievementDescription: React.FC<AchievementDescriptionProps> = ({ description, ...props }) => {
+const AchievementDescription: React.FC<React.PropsWithChildren<AchievementDescriptionProps>> = ({
+  description,
+  ...props
+}) => {
   const { t } = useTranslation()
 
   if (!description) {

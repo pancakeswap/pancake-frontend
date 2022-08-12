@@ -10,7 +10,7 @@ interface TraitItemRowProps {
   onSelect: () => void
 }
 
-export const TraitItemRow: React.FC<TraitItemRowProps> = ({ item, isSelected, onSelect }) => (
+export const TraitItemRow: React.FC<React.PropsWithChildren<TraitItemRowProps>> = ({ item, isSelected, onSelect }) => (
   <StyledItemRow alignItems="center" px="16px" py="8px" onClick={onSelect}>
     {item.image && <ItemImage src={item.image} height={48} width={48} mr="16px" />}
     <Text style={{ flex: 1 }}>{item.label}</Text>

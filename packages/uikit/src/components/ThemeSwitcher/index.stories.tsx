@@ -8,7 +8,7 @@ export default {
   component: ThemeSwitcher,
 };
 
-const Template: React.FC<ThemeSwitcherProps> = ({ ...args }) => {
+const Template: React.FC<React.PropsWithChildren<ThemeSwitcherProps>> = ({ ...args }) => {
   return (
     <Flex p="10px">
       <ThemeSwitcher {...args} />

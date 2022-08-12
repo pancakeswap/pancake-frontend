@@ -17,7 +17,7 @@ const BurnedText = styled(Text)`
   }
 `
 
-const AuctionCakeBurn: React.FC = () => {
+const AuctionCakeBurn: React.FC<React.PropsWithChildren> = () => {
   const [burnedCakeAmount, setBurnedCakeAmount] = useState(0)
   const { t } = useTranslation()
   const farmAuctionContract = useFarmAuctionContract(false)

@@ -48,7 +48,7 @@ interface StakeToWinButtonProps {
   handleScroll: () => void
 }
 
-const StakeToWinButton: React.FC<StakeToWinButtonProps> = ({ handleScroll }) => {
+const StakeToWinButton: React.FC<React.PropsWithChildren<StakeToWinButtonProps>> = ({ handleScroll }) => {
   const { t } = useTranslation()
 
   return (

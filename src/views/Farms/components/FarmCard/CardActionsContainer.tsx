@@ -30,7 +30,13 @@ interface FarmCardActionsProps {
   displayApr?: string
 }
 
-const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidityUrl, lpLabel, displayApr }) => {
+const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
+  farm,
+  account,
+  addLiquidityUrl,
+  lpLabel,
+  displayApr,
+}) => {
   const { t } = useTranslation()
   const { pid, lpAddresses } = farm
   const { earnings } = farm.userData || {}

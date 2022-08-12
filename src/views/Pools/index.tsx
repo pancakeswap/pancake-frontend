@@ -157,7 +157,7 @@ const sortPools = (account: string, sortOption: string, pools: DeserializedPool[
 
 const POOL_START_BLOCK_THRESHOLD = (60 / BSC_BLOCK_TIME) * 4
 
-const Pools: React.FC = () => {
+const Pools: React.FC<React.PropsWithChildren> = () => {
   const router = useRouter()
   const { t } = useTranslation()
   const { account } = useWeb3React()

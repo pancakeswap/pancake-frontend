@@ -16,7 +16,7 @@ interface CellLayoutProps {
   label?: string
 }
 
-const CellLayout: React.FC<CellLayoutProps> = ({ label = '', children }) => {
+const CellLayout: React.FC<React.PropsWithChildren<CellLayoutProps>> = ({ label = '', children }) => {
   return (
     <div>
       {label && <Label>{label}</Label>}

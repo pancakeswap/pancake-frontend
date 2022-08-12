@@ -24,7 +24,7 @@ languageMap.set(EN.locale, translations)
 
 export const LanguageContext = createContext<ContextApi>(undefined)
 
-export const LanguageProvider: React.FC = ({ children }) => {
+export const LanguageProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
   const [state, setState] = useState<ProviderState>(() => {
     const codeFromStorage = getLanguageCodeFromLS()

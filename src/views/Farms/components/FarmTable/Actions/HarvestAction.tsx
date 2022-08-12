@@ -39,7 +39,7 @@ export const HarvestActionContainer = ({ children, ...props }) => {
   return children({ ...props, onReward })
 }
 
-export const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
+export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActionProps>> = ({
   onReward,
   onDone,
   userData,
@@ -47,7 +47,6 @@ export const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
   proxyCakeBalance,
 }) => {
   const { t } = useTranslation()
-
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const earningsBigNumber = new BigNumber(userData.earnings)

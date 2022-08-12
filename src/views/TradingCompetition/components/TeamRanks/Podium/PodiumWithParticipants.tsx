@@ -28,7 +28,10 @@ const ParticipantBox = ({ participants, t }) => {
   )
 }
 
-const PodiumWithParticipants: React.FC<MoboxPodiumProps> = ({ teamsSortedByVolume, participants }) => {
+const PodiumWithParticipants: React.FC<React.PropsWithChildren<MoboxPodiumProps>> = ({
+  teamsSortedByVolume,
+  participants,
+}) => {
   const { t } = useTranslation()
   const firstTeam = teamsSortedByVolume && teamsSortedByVolume[0]
   const secondTeam = teamsSortedByVolume && teamsSortedByVolume[1]

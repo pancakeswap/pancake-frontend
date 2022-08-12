@@ -36,7 +36,7 @@ const getTypeFromIndex = (index: number) => {
   }
 }
 
-const TabMenu: React.FC<TabMenuProps> = ({ proposalType, onTypeChange }) => {
+const TabMenu: React.FC<React.PropsWithChildren<TabMenuProps>> = ({ proposalType, onTypeChange }) => {
   const { t } = useTranslation()
   const handleItemClick = (index: number) => {
     onTypeChange(getTypeFromIndex(index))

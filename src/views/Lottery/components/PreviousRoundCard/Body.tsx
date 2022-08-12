@@ -47,10 +47,9 @@ const StyledCardRibbon = styled(CardRibbon)`
   }
 `
 
-const PreviousRoundCardBody: React.FC<{ lotteryNodeData: LotteryRound; lotteryId: string }> = ({
-  lotteryNodeData,
-  lotteryId,
-}) => {
+const PreviousRoundCardBody: React.FC<
+  React.PropsWithChildren<{ lotteryNodeData: LotteryRound; lotteryId: string }>
+> = ({ lotteryNodeData, lotteryId }) => {
   const { t } = useTranslation()
   const {
     currentLotteryId,

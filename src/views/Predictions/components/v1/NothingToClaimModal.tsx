@@ -28,7 +28,7 @@ const BunnyDecoration = styled.div`
   width: 100%;
 `
 
-const CollectRoundWinningsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
+const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
   const [isFetching, setIsFetching] = useState(false)
   const [history, setHistory] = useState([])
   const { t } = useTranslation()
@@ -102,7 +102,7 @@ const CollectRoundWinningsModal: React.FC<InjectedModalProps> = ({ onDismiss }) 
   }, [account, setHistory, setIsFetching])
 
   return (
-    <Modal minWidth="288px" position="relative" mt="124px">
+    <Modal $minWidth="288px" position="relative" mt="124px">
       <BunnyDecoration>
         <img src="/images/decorations/prize-bunny.png" alt="bunny decoration" height="124px" width="168px" />
       </BunnyDecoration>

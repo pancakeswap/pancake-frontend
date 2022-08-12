@@ -50,7 +50,7 @@ const RightContainer = styled.div`
   }
 `
 
-const PoolRow: React.FC<PoolRowProps> = ({ pool, account }) => {
+const PoolRow: React.FC<React.PropsWithChildren<PoolRowProps>> = ({ pool, account }) => {
   const { isMobile, isXl, isXxl } = useMatchBreakpointsContext()
   const isLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)

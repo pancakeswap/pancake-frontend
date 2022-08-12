@@ -8,7 +8,7 @@ interface GlobalCheckClaimStatusProps {
 // change it to true if we have events to check claim status
 const enable = false
 
-const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = (props) => {
+const GlobalCheckClaimStatus: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusProps>> = (props) => {
   const { account } = useWeb3React()
   if (!enable) {
     return null
@@ -22,7 +22,7 @@ const GlobalCheckClaimStatus: React.FC<GlobalCheckClaimStatusProps> = (props) =>
  *
  * TODO: Put global checks in redux or make a generic area to house global checks
  */
-const GlobalCheckClaim: React.FC<GlobalCheckClaimStatusProps> = () => {
+const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusProps>> = () => {
   const hasDisplayedModal = useRef(false)
 
   const { account } = useWeb3React()

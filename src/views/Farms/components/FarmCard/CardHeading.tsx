@@ -24,7 +24,7 @@ const MultiplierTag = styled(Tag)`
   margin-left: 4px;
 `
 
-const CardHeading: React.FC<ExpandableSectionProps> = ({
+const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = ({
   lpLabel,
   multiplier,
   isCommunityFarm,

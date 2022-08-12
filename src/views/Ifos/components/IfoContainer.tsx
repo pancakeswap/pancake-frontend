@@ -16,7 +16,7 @@ interface TypeProps {
   ifoSteps: ReactElement
 }
 
-const IfoContainer: React.FC<TypeProps> = ({ ifoSection, ifoSteps }) => {
+const IfoContainer: React.FC<React.PropsWithChildren<TypeProps>> = ({ ifoSection, ifoSteps }) => {
   const { t } = useTranslation()
 
   return (

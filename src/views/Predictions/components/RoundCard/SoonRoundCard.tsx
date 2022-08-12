@@ -14,7 +14,7 @@ interface SoonRoundCardProps {
   round: NodeRound
 }
 
-const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {
+const SoonRoundCard: React.FC<React.PropsWithChildren<SoonRoundCardProps>> = ({ round }) => {
   const intervalSeconds = useGetIntervalSeconds()
   const { secondsRemaining } = useCountdown(round.startTimestamp + intervalSeconds + ROUND_BUFFER)
   const countdown = formatRoundTime(secondsRemaining)

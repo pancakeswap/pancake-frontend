@@ -28,7 +28,7 @@ const NftWrapper = styled.div`
   margin-bottom: 24px;
 `
 
-const ProfilePicture: React.FC = () => {
+const ProfilePicture: React.FC<React.PropsWithChildren> = () => {
   const { account, library } = useWeb3React()
   const [isApproved, setIsApproved] = useState(false)
   const [userProfileCreationNfts, setUserProfileCreationNfts] = useState(null)

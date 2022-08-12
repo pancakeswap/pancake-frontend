@@ -105,7 +105,7 @@ export const StakedContainer = ({ children, ...props }) => {
   })
 }
 
-const Staked: React.FunctionComponent<StackedActionProps> = ({
+const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps>> = ({
   apr,
   multiplier,
   lpSymbol,

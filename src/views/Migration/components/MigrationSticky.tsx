@@ -64,7 +64,7 @@ interface MigrationStickyProps {
   handleClick: () => void
 }
 
-const MigrationSticky: React.FC<MigrationStickyProps> = ({ step, handleClick }) => {
+const MigrationSticky: React.FC<React.PropsWithChildren<MigrationStickyProps>> = ({ step, handleClick }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { isMobile } = useMatchBreakpointsContext()

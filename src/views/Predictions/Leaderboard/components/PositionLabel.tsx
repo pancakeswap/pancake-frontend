@@ -30,7 +30,7 @@ const Label = styled.div`
   }
 `
 
-const PositionLabel: React.FC<PositionLabelProps> = ({ position }) => {
+const PositionLabel: React.FC<React.PropsWithChildren<PositionLabelProps>> = ({ position }) => {
   const { t } = useTranslation()
   const isBull = position === BetPosition.BULL
   const bgColor = isBull ? 'success' : 'failure'

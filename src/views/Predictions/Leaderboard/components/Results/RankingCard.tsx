@@ -49,7 +49,7 @@ const getRankingColor = (rank: number) => {
   return 'gold'
 }
 
-const RankingCard: React.FC<RankingCardProps> = ({ rank, user }) => {
+const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank, user }) => {
   const { t } = useTranslation()
   const rankColor = getRankingColor(rank)
   const { profile } = useProfileForAddress(user.id)

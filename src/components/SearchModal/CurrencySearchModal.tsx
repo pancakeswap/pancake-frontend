@@ -32,6 +32,10 @@ const StyledModalContainer = styled(ModalContainer)`
   width: 100%;
   min-width: 320px;
   max-width: 420px !important;
+  min-height: 90vh;
+  ${({ theme }) => theme.mediaQueries.md} {
+    min-height: auto;
+  }
 `
 
 const StyledModalBody = styled(ModalBody)`
@@ -49,6 +53,7 @@ export interface CurrencySearchModalProps extends InjectedModalProps {
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
   showCommonBases?: boolean
+  commonBasesType?: string
 }
 
 export default function CurrencySearchModal({
@@ -56,7 +61,8 @@ export default function CurrencySearchModal({
   onCurrencySelect,
   selectedCurrency,
   otherSelectedCurrency,
-  showCommonBases = false,
+  showCommonBases = true,
+  commonBasesType,
 }: CurrencySearchModalProps) {
   const [modalView, setModalView] = useState<CurrencyModalView>(CurrencyModalView.search)
 
@@ -122,6 +128,7 @@ export default function CurrencySearchModal({
             selectedCurrency={selectedCurrency}
             otherSelectedCurrency={otherSelectedCurrency}
             showCommonBases={showCommonBases}
+            commonBasesType={commonBasesType}
             showImportView={() => setModalView(CurrencyModalView.importToken)}
             setImportToken={setImportToken}
           />

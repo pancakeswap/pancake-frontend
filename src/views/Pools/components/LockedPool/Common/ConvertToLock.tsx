@@ -13,7 +13,11 @@ interface ConvertToLockProps {
   isInline?: boolean
 }
 
-const ConvertToLock: React.FC<ConvertToLockProps> = ({ stakingToken, currentStakedAmount, isInline }) => {
+const ConvertToLock: React.FC<React.PropsWithChildren<ConvertToLockProps>> = ({
+  stakingToken,
+  currentStakedAmount,
+  isInline,
+}) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
   const isTableView = isInline && !isMobile

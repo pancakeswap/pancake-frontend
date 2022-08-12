@@ -38,7 +38,14 @@ const GradientModalHeader = styled(ModalHeader)`
 // TODO: Copy from src/views/Predictions/components/RiskDisclaimer.tsx
 // Will replace that with this modal.
 
-const DisclaimerModal: React.FC<RiskDisclaimerProps> = ({ id, onSuccess, onDismiss, checks, header, subtitle }) => {
+const DisclaimerModal: React.FC<React.PropsWithChildren<RiskDisclaimerProps>> = ({
+  id,
+  onSuccess,
+  onDismiss,
+  checks,
+  header,
+  subtitle,
+}) => {
   const [checkState, setCheckState] = useState(checks || [])
   const { t } = useTranslation()
 
@@ -63,7 +70,7 @@ const DisclaimerModal: React.FC<RiskDisclaimerProps> = ({ id, onSuccess, onDismi
   }, [onSuccess, onDismiss])
 
   return (
-    <ModalContainer title={t('Welcome!')} minWidth="320px" id={id}>
+    <ModalContainer title={t('Welcome!')} $minWidth="320px" id={id}>
       <GradientModalHeader>
         <ModalTitle>
           <Heading scale="lg">{t('Welcome!')}</Heading>

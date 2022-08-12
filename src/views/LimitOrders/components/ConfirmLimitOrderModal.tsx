@@ -50,7 +50,7 @@ interface ConfirmLimitOrderModalProps extends InjectedModalProps {
   swapErrorMessage: string
 }
 
-export const ConfirmLimitOrderModal: React.FC<ConfirmLimitOrderModalProps> = ({
+export const ConfirmLimitOrderModal: React.FC<React.PropsWithChildren<ConfirmLimitOrderModalProps>> = ({
   onDismiss,
   currencies,
   formattedAmounts,
@@ -133,7 +133,7 @@ interface OrderContentProps {
   percentageRateDifference: string
 }
 
-const OrderContent: React.FC<OrderContentProps> = ({
+const OrderContent: React.FC<React.PropsWithChildren<OrderContentProps>> = ({
   currencies,
   formattedAmounts,
   currentMarketRate,
@@ -202,7 +202,7 @@ interface LimitTradeInfoCardProps {
   limitPriceExchangeRateTextReversed: string
 }
 
-const LimitTradeInfoCard: React.FC<LimitTradeInfoCardProps> = memo(
+const LimitTradeInfoCard: React.FC<React.PropsWithChildren<LimitTradeInfoCardProps>> = memo(
   ({
     currentPriceExchangeRateText,
     currentPriceExchangeRateTextReversed,
@@ -243,7 +243,7 @@ const LimitTradeInfoCard: React.FC<LimitTradeInfoCardProps> = memo(
   },
 )
 
-const LoadingContent: React.FC = memo(() => {
+const LoadingContent: React.FC<React.PropsWithChildren> = memo(() => {
   const { t } = useTranslation()
   return (
     <Flex>

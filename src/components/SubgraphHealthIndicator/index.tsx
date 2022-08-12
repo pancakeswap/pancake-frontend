@@ -77,12 +77,14 @@ export interface BlockResponse {
   }[]
 }
 
-const SubgraphHealthIndicator: React.FC<{
-  subgraphName: string
-  inline?: boolean
-  customDescriptions?: CustomDescriptions
-  obeyGlobalSetting?: boolean
-}> = ({ subgraphName, inline, customDescriptions, obeyGlobalSetting }) => {
+const SubgraphHealthIndicator: React.FC<
+  React.PropsWithChildren<{
+    subgraphName: string
+    inline?: boolean
+    customDescriptions?: CustomDescriptions
+    obeyGlobalSetting?: boolean
+  }>
+> = ({ subgraphName, inline, customDescriptions, obeyGlobalSetting }) => {
   const { t } = useTranslation()
   const { status, currentBlock, blockDifference, latestBlock } = useSubgraphHealth(subgraphName)
   const [alwaysShowIndicator] = useSubgraphHealthIndicatorManager()

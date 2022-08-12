@@ -18,7 +18,7 @@ interface PancakeBunniesTraitsProps {
   collectionAddress: string
 }
 
-const LowestPriceCell: React.FC<{ bunnyId: string }> = ({ bunnyId }) => {
+const LowestPriceCell: React.FC<React.PropsWithChildren<{ bunnyId: string }>> = ({ bunnyId }) => {
   const { isFetching, lowestPrice } = useGetLowestPriceFromBunnyId(bunnyId)
 
   if (isFetching) {
@@ -36,7 +36,7 @@ const LowestPriceCell: React.FC<{ bunnyId: string }> = ({ bunnyId }) => {
   return <BNBAmountLabel justifyContent="flex-end" amount={lowestPrice} width="100px" />
 }
 
-const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionAddress }) => {
+const PancakeBunniesTraits: React.FC<React.PropsWithChildren<PancakeBunniesTraitsProps>> = ({ collectionAddress }) => {
   const [raritySort, setRaritySort] = useState<SortType>('asc')
   const collection = useGetCollection(collectionAddress)
   const totalBunnyCount = Number(collection?.totalSupply)
