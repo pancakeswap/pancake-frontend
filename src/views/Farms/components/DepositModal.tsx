@@ -46,7 +46,7 @@ interface DepositModalProps {
   displayApr?: string
   addLiquidityUrl?: string
   cakePrice?: BigNumber
-  shouldUseProxyFarm?: boolean
+  showActiveBooster?: boolean
 }
 
 const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
@@ -62,7 +62,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   apr,
   addLiquidityUrl,
   cakePrice,
-  shouldUseProxyFarm,
+  showActiveBooster,
 }) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
@@ -130,7 +130,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
         addLiquidityUrl={addLiquidityUrl}
         inputTitle={t('Stake')}
       />
-      {shouldUseProxyFarm ? (
+      {showActiveBooster ? (
         <Message variant="warning" icon={<ErrorIcon width="24px" color="warning" />} mt="32px">
           <MessageText>
             {t('The yield booster multiplier will be updated based on the latest staking conditions.')}
