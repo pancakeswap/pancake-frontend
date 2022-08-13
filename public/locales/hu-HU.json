@@ -1788,7 +1788,7 @@
   "Input": "Bevitel",
   "to": "hova",
   "Pooled": "Összevont alapban",
-  "Price Impact Too High.": "Price Impact Too High.",
+  "Price Impact Too High.": "Az árhatás túl nagy.",
   "Reduce amount of %token% to maximum limit": "A %token% mennyiségének csökkentése a maximális határértékre",
   "No %token% input.": "Nincs %token% bevitel.",
   "Some of your %token0% will be converted to %token1%.": "Az Ön %token0% zsetonjának egy részét %token1%-re konvertálják.",
