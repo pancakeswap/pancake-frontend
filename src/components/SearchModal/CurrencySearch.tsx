@@ -222,6 +222,7 @@ function CurrencySearch({
     showImportView,
     t,
     showCommonBases,
+    commonBasesType,
     isMobile,
   ])
 
