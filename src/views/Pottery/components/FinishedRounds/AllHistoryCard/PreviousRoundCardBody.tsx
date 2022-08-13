@@ -99,7 +99,7 @@ const PreviousRoundCardBody: React.FC<React.PropsWithChildren<PreviousRoundCardB
           fontSize={['32px', '32px', '40px']}
           textAlign={['center', 'center', 'left']}
           decimals={0}
-          value={prize}
+          value={prizeInBusd}
         />
         <Balance
           unit=" CAKE"
@@ -108,7 +108,7 @@ const PreviousRoundCardBody: React.FC<React.PropsWithChildren<PreviousRoundCardB
           color="textSubtle"
           textAlign={['center', 'center', 'left']}
           decimals={0}
-          value={prizeInBusd}
+          value={prize}
         />
         <Flex flexDirection={['column', 'column', 'row']} justifyContent="space-between">
           <Flex flexDirection="column">
