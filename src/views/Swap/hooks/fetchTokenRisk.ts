@@ -1,10 +1,15 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { ACCESS_RISK_API } from 'config/constants/endpoints'
+import { PANCAKE_EXTENDED } from 'config/constants/lists'
 
 export enum TOKEN_RISK {
   'Low' = 'Low',
   'Medium' = 'Medium',
   'High' = 'High',
+}
+
+const VerifyTokensLink = {
+  [ChainId.BSC]: PANCAKE_EXTENDED,
 }
 
 export const TokenRiskPhases = {
@@ -25,31 +30,51 @@ export interface RiskTokenInfo {
   scannedTs: number
 }
 
+const fetchVerifyTokens = async (chainId: number) => {
+  const response = await fetch(VerifyTokensLink[chainId], {
+    method: 'get',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
+
+  const result = await response.json()
+  return result
+}
+
+const fetchRiskApi = async (address: string, chainId: number) => {
+  const response = await fetch(ACCESS_RISK_API, {
+    method: 'post',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      address,
+      chain_id: chainId,
+    }),
+  })
+
+  const result = await response.json()
+  return result
+}
+
 export const fetchRiskToken = async (address: string, chainId: number): Promise<RiskTokenInfo> => {
   try {
-    const response = await fetch(ACCESS_RISK_API, {
-      method: 'post',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        address,
-        chain_id: chainId,
-      }),
-    })
-
-    const result = await response.json()
+    const [verifyTokens, riskApi] = await Promise.all([fetchVerifyTokens(chainId), fetchRiskApi(address, chainId)])
+    console.log('verifyTokens', verifyTokens)
 
     return {
       isSuccess: true,
       address,
       chainId,
-      riskLevel: TokenRiskPhases[result.data.risk_level],
-      riskResult: result.data.risk_result,
-      scannedTs: result.data.scanned_ts,
+      riskLevel: TokenRiskPhases[riskApi.data.risk_level],
+      riskResult: riskApi.data.risk_result,
+      scannedTs: riskApi.data.scanned_ts,
     }
   } catch (error) {
+    console.log('error', error)
     return {
       isSuccess: false,
       address: '',
