@@ -186,7 +186,7 @@ function CurrencySearch({
     return Boolean(filteredSortedTokens?.length) || hasFilteredInactiveTokens ? (
       <Box margin="24px -24px">
         <CurrencyList
-          height={isMobile ? (showCommonBases && commonBasesType === CommonBasesType.LIQUIDITY ? 250 : 350) : 390}
+          height={isMobile ? (showCommonBases && commonBasesType === CommonBasesType.LIQUIDITY ? 250 : 300) : 390}
           showBNB={showBNB}
           currencies={filteredSortedTokens}
           inactiveCurrencies={filteredInactiveTokens}
