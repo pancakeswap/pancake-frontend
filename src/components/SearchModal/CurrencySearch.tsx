@@ -134,6 +134,13 @@ function CurrencySearch({
     [audioPlay, onCurrencySelect],
   )
 
+  // manage focus on modal show
+  const inputRef = useRef<HTMLInputElement>()
+
+  useEffect(() => {
+    if (!isMobile) inputRef.current.focus()
+  }, [])
+
   const handleInput = useCallback((event) => {
     const input = event.target.value
     const checksummedInput = isAddress(input)
@@ -226,6 +233,7 @@ function CurrencySearch({
             scale="lg"
             autoComplete="off"
             value={searchQuery}
+            ref={inputRef as RefObject<HTMLInputElement>}
             onChange={handleInput}
             onKeyDown={handleEnter}
           />
