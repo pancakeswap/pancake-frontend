@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Currency, ChainId } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Button, HelpIcon, useTooltip, Text } from '@pancakeswap/uikit'
+import { Flex, Button, HelpIcon, useTooltip, Text, Link } from '@pancakeswap/uikit'
 import useToast from 'hooks/useToast'
 import { fetchRiskToken, TokenRiskPhases, RiskTokenInfo } from 'views/Swap/hooks/fetchTokenRisk'
 import RiskMessage from 'views/Swap/components/AccessRisk/RiskMessage'
@@ -98,14 +98,17 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
   // Tooltips
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
-      <Text bold>
+      <Text>
         {t(
           'Scan risk level for the output token. This risk level is for a reference only, not as an investment advice.',
         )}
       </Text>
-      <Text bold mt="4px">
-        {t('Powered by Hashdit.')}
-      </Text>
+      <Flex mt="4px">
+        <Text>{t('Powered by')}</Text>
+        <Link ml="4px" external href="https://www.hashdit.io/en">
+          {t('Hashdit.')}
+        </Link>
+      </Flex>
     </>,
     { placement: 'bottom' },
   )

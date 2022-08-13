@@ -31,16 +31,10 @@ export interface RiskTokenInfo {
 }
 
 const fetchVerifyTokens = async (chainId: number) => {
-  const response = await fetch(VerifyTokensLink[chainId], {
-    method: 'get',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  })
-
-  const result = await response.json()
-  return result
+  const listUrl = VerifyTokensLink[chainId]
+  const getTokenList = (await import('utils/getTokenList')).default
+  const response = await getTokenList(listUrl)
+  return response.tokens
 }
 
 const fetchRiskApi = async (address: string, chainId: number) => {
@@ -63,13 +57,14 @@ const fetchRiskApi = async (address: string, chainId: number) => {
 export const fetchRiskToken = async (address: string, chainId: number): Promise<RiskTokenInfo> => {
   try {
     const [verifyTokens, riskApi] = await Promise.all([fetchVerifyTokens(chainId), fetchRiskApi(address, chainId)])
-    console.log('verifyTokens', verifyTokens)
+    const isVerifyAddress = verifyTokens.find((token) => token.address.toLocaleLowerCase() === address.toLowerCase())
+    const riskLevel = isVerifyAddress ? TokenRiskPhases[0] : TokenRiskPhases[riskApi.data.risk_level]
 
     return {
       isSuccess: true,
       address,
       chainId,
-      riskLevel: TokenRiskPhases[riskApi.data.risk_level],
+      riskLevel,
       riskResult: riskApi.data.risk_result,
       scannedTs: riskApi.data.scanned_ts,
     }
