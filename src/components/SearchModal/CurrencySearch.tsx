@@ -104,6 +104,7 @@ function CurrencySearch({
   const searchToken = useToken(debouncedQuery)
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
 
+  const { isMobile } = useMatchBreakpointsContext()
   const [audioPlay] = useAudioModeManager()
 
   const showBNB: boolean = useMemo(() => {
@@ -139,7 +140,7 @@ function CurrencySearch({
 
   useEffect(() => {
     if (!isMobile) inputRef.current.focus()
-  }, [])
+  }, [isMobile])
 
   const handleInput = useCallback((event) => {
     const input = event.target.value
@@ -171,7 +172,7 @@ function CurrencySearch({
   const filteredInactiveTokens = useSearchInactiveTokenLists(debouncedQuery)
 
   const hasFilteredInactiveTokens = Boolean(filteredInactiveTokens?.length)
-  const { isMobile } = useMatchBreakpointsContext()
+
   const getCurrencyListRows = useCallback(() => {
     if (searchToken && !searchTokenIsAdded && !hasFilteredInactiveTokens) {
       return (
