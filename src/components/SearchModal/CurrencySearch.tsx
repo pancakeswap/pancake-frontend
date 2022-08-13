@@ -20,6 +20,7 @@ import useTokenComparator from './sorting'
 import { getSwapSound } from './swapSound'
 
 import ImportRow from './ImportRow'
+import { CommonBasesType } from './types'
 
 interface CurrencySearchProps {
   selectedCurrency?: Currency | null
@@ -185,7 +186,7 @@ function CurrencySearch({
     return Boolean(filteredSortedTokens?.length) || hasFilteredInactiveTokens ? (
       <Box margin="24px -24px">
         <CurrencyList
-          height={isMobile ? (showCommonBases ? 250 : 350) : 390}
+          height={isMobile ? (showCommonBases && commonBasesType === CommonBasesType.LIQUIDITY ? 250 : 350) : 390}
           showBNB={showBNB}
           currencies={filteredSortedTokens}
           inactiveCurrencies={filteredInactiveTokens}
