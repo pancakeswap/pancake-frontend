@@ -69,7 +69,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
     const tokenRiskResult: RiskTokenInfo = await fetchRiskToken(address, chainId)
 
     // To avoid response too slow, and user already change to new currency.
-    if (tokenRiskResult.address === address) {
+    if (tokenRiskResult.isSuccess && tokenRiskResult.address === address) {
       setIsScanning(false)
       saveRiskTokenInfo(tokenRiskResult)
     }

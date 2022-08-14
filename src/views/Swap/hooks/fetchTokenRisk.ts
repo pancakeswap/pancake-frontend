@@ -57,7 +57,7 @@ const fetchRiskApi = async (address: string, chainId: number) => {
 export const fetchRiskToken = async (address: string, chainId: number): Promise<RiskTokenInfo> => {
   try {
     const [verifyTokens, riskApi] = await Promise.all([fetchVerifyTokens(chainId), fetchRiskApi(address, chainId)])
-    const isVerifyAddress = verifyTokens.find((token) => token.address.toLocaleLowerCase() === address.toLowerCase())
+    const isVerifyAddress = verifyTokens.find((token) => token.address.toLowerCase() === address.toLowerCase())
     const riskLevel = isVerifyAddress ? TokenRiskPhases[0] : TokenRiskPhases[riskApi.data.risk_level]
 
     return {
@@ -69,7 +69,7 @@ export const fetchRiskToken = async (address: string, chainId: number): Promise<
       scannedTs: riskApi.data.scanned_ts,
     }
   } catch (error) {
-    console.log('error', error)
+    console.error('Fetch Risk Token error: ', error)
     return {
       isSuccess: false,
       address: '',
