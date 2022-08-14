@@ -96,7 +96,9 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
             disabled={isConfirming}
             onClick={handlers.deactivate}
             title={`${boostMultipler}x`}
+            isLoading={isConfirming}
             description={t('Active')}
+            endIcon={isConfirming && <AutoRenewIcon spin color="currentColor" />}
           >
             {t('Unset')}
           </ActionButton>
