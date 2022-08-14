@@ -227,7 +227,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   if (isApproved) {
     if (stakedBalance.gt(0)) {
       return (
-        <ActionContainer>
+        <ActionContainer style={{ minHeight: 124.5 }}>
           <ActionTitles>
             <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
               {lpSymbol}
@@ -264,7 +264,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     }
 
     return (
-      <ActionContainer>
+      <ActionContainer style={{ minHeight: 124.5 }}>
         <ActionTitles>
           <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px" pr="4px">
             {t('Stake')}
@@ -289,7 +289,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   if (!userDataReady) {
     return (
-      <ActionContainer>
+      <ActionContainer style={{ minHeight: 124.5 }}>
         <ActionTitles>
           <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
             {t('Start Farming')}
