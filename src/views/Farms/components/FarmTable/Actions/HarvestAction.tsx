@@ -55,9 +55,9 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   let earningsBusd = 0
   let displayBalance = userDataReady ? earnings.toLocaleString() : <Skeleton width={60} />
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t(
+    `${displayBalance} ${t(
       `CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.`,
-    ),
+    )}`,
     {
       placement: 'bottom',
     },
