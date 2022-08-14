@@ -223,6 +223,7 @@ function CurrencySearch({
     t,
     showCommonBases,
     isMobile,
+    height,
   ])
 
   return (
