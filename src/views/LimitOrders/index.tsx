@@ -34,7 +34,8 @@ import getRatePercentageDifference from './utils/getRatePercentageDifference'
 import { useCurrency, useAllTokens } from '../../hooks/Tokens'
 import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
 import { CommonBasesType } from '../../components/SearchModal/types'
-import { setInputCurrencyToUrlParameter, setOutputCurrencyToUrlParameter } from '../../utils/setTokenPair'
+import replaceBrowserHistory from '../../utils/replaceBrowserHistory'
+import { currencyId } from '../../utils/currencyId'
 
 const LimitOrders = () => {
   // Helpers
@@ -148,7 +149,7 @@ const LimitOrders = () => {
       setApprovalSubmitted(false)
       handleCurrencySelection(Field.INPUT, inputCurrency)
 
-      setInputCurrencyToUrlParameter(inputCurrency)
+      replaceBrowserHistory('inputCurrency', currencyId(inputCurrency))
     },
     [handleCurrencySelection],
   )
@@ -167,7 +168,7 @@ const LimitOrders = () => {
     (outputCurrency) => {
       handleCurrencySelection(Field.OUTPUT, outputCurrency)
 
-      setOutputCurrencyToUrlParameter(outputCurrency)
+      replaceBrowserHistory('outputCurrency', currencyId(outputCurrency))
     },
     [handleCurrencySelection],
   )

@@ -66,7 +66,8 @@ import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
 import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
 import { CommonBasesType } from '../../components/SearchModal/types'
-import { setInputCurrencyToUrlParameter, setOutputCurrencyToUrlParameter } from '../../utils/setTokenPair'
+import replaceBrowserHistory from '../../utils/replaceBrowserHistory'
+import { currencyId } from '../../utils/currencyId'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -309,7 +310,7 @@ export default function Swap() {
         setSwapWarningCurrency(null)
       }
 
-      setInputCurrencyToUrlParameter(currencyInput)
+      replaceBrowserHistory('inputCurrency', currencyId(currencyInput))
     },
     [onCurrencySelection],
   )
@@ -330,7 +331,7 @@ export default function Swap() {
         setSwapWarningCurrency(null)
       }
 
-      setOutputCurrencyToUrlParameter(currencyOutput)
+      replaceBrowserHistory('outputCurrency', currencyId(currencyOutput))
     },
 
     [onCurrencySelection],
