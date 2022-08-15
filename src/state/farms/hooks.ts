@@ -39,12 +39,15 @@ export const usePollFarmsWithUserData = () => {
     },
   )
 
-  // TODO: remove ProxyAddress check because user dont have proxy will not load
+  const name = proxyAddress ? ['farmsWithUserData', account, proxyAddress] : ['farmsWithUserData', account]
+
   useSWRImmutable(
-    account && proxyAddress ? ['farmsWithUserData', account, proxyAddress] : null,
+    account ? name : null,
     () => {
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
-      dispatch(fetchFarmUserDataAsync({ account, pids, proxyAddress }))
+      const params = proxyAddress ? { account, pids, proxyAddress } : { account, pids }
+
+      dispatch(fetchFarmUserDataAsync(params))
     },
     {
       refreshInterval: SLOW_INTERVAL,
