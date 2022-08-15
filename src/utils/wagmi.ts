@@ -71,8 +71,6 @@ export const coinbaseConnector = new CoinbaseWalletConnector({
   options: {
     appName: 'PancakeSwap',
     appLogoUrl: 'https://pancakeswap.com/logo.png',
-    chainId: bsc.id,
-    jsonRpcUrl: bsc.rpcUrls.default,
   },
 })
 
