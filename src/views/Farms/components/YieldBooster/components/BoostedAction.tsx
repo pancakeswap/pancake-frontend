@@ -31,14 +31,14 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
       case YieldBoosterState.UNCONNECTED:
         return (
           <ActionButton
-            title={`Up to ${boostMultipler}x`}
+            title={`${t('Up to')} ${boostMultipler}x`}
             description={t('Connect wallet to activate yield booster')}
           />
         )
       case YieldBoosterState.NO_LOCKED:
         return (
           <ActionButton
-            title={`Up to ${boostMultipler}x`}
+            title={`${t('Up to')} ${boostMultipler}x`}
             description={t('Lock CAKE to activate yield booster')}
             style={{ whiteSpace: 'nowrap' }}
           >
@@ -48,7 +48,7 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
       case YieldBoosterState.LOCKED_END:
         return (
           <ActionButton
-            title={`Up to ${boostMultipler}x`}
+            title={`${t('Up to')} ${boostMultipler}x`}
             description={t('Lock CAKE is ended. Re-lock CAKE to activate yield booster')}
             style={{ whiteSpace: 'nowrap' }}
           >
