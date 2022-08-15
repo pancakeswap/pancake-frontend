@@ -66,7 +66,7 @@ import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
 import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
 import { CommonBasesType } from '../../components/SearchModal/types'
-import { currencyId } from '../../utils/currencyId'
+import { setInputCurrencyToUrlParameter, setOutputCurrencyToUrlParameter } from '../../utils/setTokenPair'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -309,11 +309,7 @@ export default function Swap() {
         setSwapWarningCurrency(null)
       }
 
-      // set inputCurrency to url parameter
-      // Except for bnb, the other tokens will be address.
-      const url = new URL(window.location.href)
-      url.searchParams.set('inputCurrency', currencyId(currencyInput))
-      window.history.replaceState({}, null, url)
+      setInputCurrencyToUrlParameter(currencyInput)
     },
     [onCurrencySelection],
   )
@@ -334,11 +330,7 @@ export default function Swap() {
         setSwapWarningCurrency(null)
       }
 
-      // set outputCurrency to url parameter
-      // Except for bnb, the other tokens will be address.
-      const url = new URL(window.location.href)
-      url.searchParams.set('outputCurrency', currencyId(currencyOutput))
-      window.history.replaceState({}, null, url)
+      setOutputCurrencyToUrlParameter(currencyOutput)
     },
 
     [onCurrencySelection],

@@ -34,7 +34,7 @@ import getRatePercentageDifference from './utils/getRatePercentageDifference'
 import { useCurrency, useAllTokens } from '../../hooks/Tokens'
 import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
 import { CommonBasesType } from '../../components/SearchModal/types'
-import { currencyId } from '../../utils/currencyId'
+import { setInputCurrencyToUrlParameter, setOutputCurrencyToUrlParameter } from '../../utils/setTokenPair'
 
 const LimitOrders = () => {
   // Helpers
@@ -148,11 +148,7 @@ const LimitOrders = () => {
       setApprovalSubmitted(false)
       handleCurrencySelection(Field.INPUT, inputCurrency)
 
-      // set inputCurrency to url parameter
-      // Except for bnb, the other tokens will be address.
-      const url = new URL(window.location.href)
-      url.searchParams.set('inputCurrency', currencyId(inputCurrency))
-      window.history.replaceState({}, null, url)
+      setInputCurrencyToUrlParameter(currencyInput)
     },
     [handleCurrencySelection],
   )
@@ -171,11 +167,7 @@ const LimitOrders = () => {
     (outputCurrency) => {
       handleCurrencySelection(Field.OUTPUT, outputCurrency)
 
-      // set outputCurrency to url parameter
-      // Except for bnb, the other tokens will be address.
-      const url = new URL(window.location.href)
-      url.searchParams.set('outputCurrency', currencyId(outputCurrency))
-      window.history.replaceState({}, null, url)
+      setOutputCurrencyToUrlParameter(currencyOutput)
     },
     [handleCurrencySelection],
   )
