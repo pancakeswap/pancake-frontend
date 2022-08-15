@@ -18,6 +18,10 @@ const translatedTextIncludesVariable = memoize((translatedText: string): boolean
   return !!translatedText?.match(includesVariableRegex)
 })
 
+const getRegExpForDataKey = memoize((dataKey: string): RegExp => {
+  return new RegExp(`%${dataKey}%`, 'g')
+})
+
 // Export the translations directly
 export const languageMap = new Map<Language['locale'], Record<string, string>>()
 languageMap.set(EN.locale, translations)
@@ -94,17 +98,17 @@ export const LanguageProvider: React.FC<React.PropsWithChildren> = ({ children }
       const translationSet = languageMap.get(currentLanguage.locale) ?? languageMap.get(EN.locale)
       const translatedText = translationSet[key] || key
 
-      // Check the existence of at least one combination of %%, separated by 1 or more non space characters
-      const includesVariable = translatedTextIncludesVariable(key)
+      if (data) {
+        // Check the existence of at least one combination of %%, separated by 1 or more non space characters
+        const includesVariable = translatedTextIncludesVariable(key)
+        if (includesVariable) {
+          let interpolatedText = translatedText
+          Object.keys(data).forEach((dataKey) => {
+            interpolatedText = interpolatedText.replace(getRegExpForDataKey(dataKey), data[dataKey].toString())
+          })
 
-      if (includesVariable && data) {
-        let interpolatedText = translatedText
-        Object.keys(data).forEach((dataKey) => {
-          const templateKey = new RegExp(`%${dataKey}%`, 'g')
-          interpolatedText = interpolatedText.replace(templateKey, data[dataKey].toString())
-        })
-
-        return interpolatedText
+          return interpolatedText
+        }
       }
 
       return translatedText
