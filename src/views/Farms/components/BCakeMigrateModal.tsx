@@ -13,7 +13,6 @@ import {
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useTranslation } from '@pancakeswap/localization'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useBCakeProxyContract } from 'hooks/useContract'
@@ -256,6 +255,9 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
       <FooterBox>
         <Text mb="16px" textAlign="center">
           {activatedState + 1}. {t(migrationSteps[activatedState])}
+          {/* t('Unstake LP tokens from the farm') */}
+          {/* t('Enable staking with yield booster') */}
+          {/* t('Stake LP tokens back to the farm') */}
         </Text>
         <Button
           onClick={onStepChange}
