@@ -54,7 +54,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
         inputTitle={t('Unstake')}
       />
       {showActiveBooster ? (
-        <Message variant="danger" mt="8px">
+        <Message variant="warning" mt="8px">
           <MessageText>
             {t('The yield booster multiplier will be updated based on the latest staking conditions.')}
           </MessageText>
