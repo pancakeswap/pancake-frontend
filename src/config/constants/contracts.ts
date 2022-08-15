@@ -141,4 +141,12 @@ export default {
     56: '0x3C458828D1622F5f4d526eb0d24Da8C4Eb8F07b1',
     97: '',
   },
+  bCakeFarmBooster: {
+    56: '0xE4FAa3Ef5A9708C894435B0F39c2B440936A3A52',
+    97: '',
+  },
+  bCakeFarmBoosterProxyFactory: {
+    56: '0x2C36221bF724c60E9FEE3dd44e2da8017a8EF3BA',
+    97: '',
+  },
 }

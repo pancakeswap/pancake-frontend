@@ -40,6 +40,9 @@ import {
   getCakeFlexibleSideVaultV2Contract,
   getCakePredictionsContract,
   getPredictionsV1Contract,
+  getBCakeFarmBoosterContract,
+  getBCakeFarmBoosterProxyFactoryContract,
+  getBCakeProxyContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
 import {
@@ -389,4 +392,34 @@ export const usePotterytDrawContract = () => {
 
 export function useZapContract(withSignerIfPossible = true) {
   return useContract<Zap>(getZapAddress(), zapAbi, withSignerIfPossible)
+}
+
+export function useBCakeFarmBoosterContract(withSignerIfPossible = true) {
+  const { library, account } = useActiveWeb3React()
+  const signer = useMemo(
+    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [withSignerIfPossible, library, account],
+  )
+  return useMemo(() => getBCakeFarmBoosterContract(signer), [signer])
+}
+
+export function useBCakeFarmBoosterProxyFactoryContract(withSignerIfPossible = true) {
+  const { library, account } = useActiveWeb3React()
+  const signer = useMemo(
+    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [withSignerIfPossible, library, account],
+  )
+  return useMemo(() => getBCakeFarmBoosterProxyFactoryContract(signer), [signer])
+}
+
+export function useBCakeProxyContract(proxyContractAddress: string, withSignerIfPossible = true) {
+  const { library, account } = useActiveWeb3React()
+  const signer = useMemo(
+    () => (withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [withSignerIfPossible, library, account],
+  )
+  return useMemo(
+    () => proxyContractAddress && getBCakeProxyContract(proxyContractAddress, signer),
+    [signer, proxyContractAddress],
+  )
 }

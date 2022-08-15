@@ -13,6 +13,7 @@ import CardHeading from './CardHeading'
 import { FarmWithStakedValue } from '../types'
 import CardActionsContainer from './CardActionsContainer'
 import ApyButton from './ApyButton'
+import BoostedApr from '../YieldBooster/components/BoostedApr'
 
 const StyledCard = styled(Card)`
   align-self: baseline;
@@ -42,6 +43,7 @@ interface FarmCardProps {
   removed: boolean
   cakePrice?: BigNumber
   account?: string
+  originalLiquidity?: BigNumber
 }
 
 const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
@@ -50,14 +52,18 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   removed,
   cakePrice,
   account,
+  originalLiquidity,
 }) => {
   const { t } = useTranslation()
 
   const [showExpandableSection, setShowExpandableSection] = useState(false)
 
+  const liquidity =
+    farm?.liquidity && originalLiquidity?.gt(0) ? farm.liquidity.plus(originalLiquidity) : farm.liquidity
+
   const totalValueFormatted =
-    farm.liquidity && farm.liquidity.gt(0)
-      ? `$${farm.liquidity.toNumber().toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+    liquidity && liquidity.gt(0)
+      ? `$${liquidity.toNumber().toLocaleString(undefined, { maximumFractionDigits: 0 })}`
       : ''
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
@@ -84,23 +90,28 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           isCommunityFarm={farm.isCommunity}
           token={farm.token}
           quoteToken={farm.quoteToken}
+          boosted={farm.boosted}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
             <Text>{t('APR')}:</Text>
             <Text bold style={{ display: 'flex', alignItems: 'center' }}>
               {farm.apr ? (
-                <ApyButton
-                  variant="text-and-button"
-                  pid={farm.pid}
-                  lpSymbol={farm.lpSymbol}
-                  multiplier={farm.multiplier}
-                  lpLabel={lpLabel}
-                  addLiquidityUrl={addLiquidityUrl}
-                  cakePrice={cakePrice}
-                  apr={farm.apr}
-                  displayApr={displayApr}
-                />
+                <>
+                  {farm.boosted ? <BoostedApr mr="4px" apr={displayApr} pid={farm?.pid} /> : null}
+                  <ApyButton
+                    variant="text-and-button"
+                    pid={farm.pid}
+                    lpSymbol={farm.lpSymbol}
+                    multiplier={farm.multiplier}
+                    lpLabel={lpLabel}
+                    addLiquidityUrl={addLiquidityUrl}
+                    cakePrice={cakePrice}
+                    apr={farm.apr}
+                    displayApr={displayApr}
+                    strikethrough={farm.boosted}
+                  />
+                </>
               ) : (
                 <Skeleton height={24} width={80} />
               )}

@@ -11,20 +11,20 @@ export const ActionContainer = styled.div`
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-left: 12px;
     margin-right: 12px;
-    margin-bottom: 0;
-    max-height: 100px;
+    margin-bottom: 12px;
+    /* max-height: 130px; */
   }
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    margin-left: 48px;
     margin-right: 0;
     margin-bottom: 0;
-    max-height: 100px;
+    /* max-height: 130px; */
   }
 `
 
 export const ActionTitles = styled.div`
   display: flex;
+  margin-bottom: 8px;
 `
 
 export const ActionContent = styled.div`

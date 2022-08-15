@@ -18,7 +18,13 @@ import { memo } from 'react'
 const CoreTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation()
   return (
-    <Tag variant="secondary" outline startIcon={<VerifiedIcon width="18px" color="secondary" mr="4px" />} {...props}>
+    <Tag
+      variant="secondary"
+      style={{ background: 'none' }}
+      outline
+      startIcon={<VerifiedIcon width="18px" color="secondary" mr="4px" />}
+      {...props}
+    >
       {t('Core')}
     </Tag>
   )

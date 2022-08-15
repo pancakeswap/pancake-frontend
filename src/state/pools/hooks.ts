@@ -103,6 +103,17 @@ export const usePoolsPageFetch = () => {
   }, [dispatch])
 }
 
+export const useCakeVaultUserData = () => {
+  const { account } = useWeb3React()
+  const dispatch = useAppDispatch()
+
+  useFastRefreshEffect(() => {
+    if (account) {
+      dispatch(fetchCakeVaultUserData({ account }))
+    }
+  }, [account, dispatch])
+}
+
 export const useFetchIfo = () => {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()

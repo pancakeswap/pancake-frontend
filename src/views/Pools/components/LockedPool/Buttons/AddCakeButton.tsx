@@ -41,7 +41,7 @@ const AddCakeButton: React.FC<React.PropsWithChildren<AddButtonProps>> = ({
   }, [currentBalance, openAddAmountModal, onPresentTokenRequired])
 
   return userDataLoaded ? (
-    <Button onClick={handleClicked} width="100%">
+    <Button onClick={handleClicked} width="100%" style={{ whiteSpace: 'nowrap', paddingLeft: 0, paddingRight: 0 }}>
       {t('Add CAKE')}
     </Button>
   ) : (

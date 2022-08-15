@@ -82,6 +82,12 @@ interface SerializedFarmUserData {
   tokenBalance: string
   stakedBalance: string
   earnings: string
+  proxy?: {
+    allowance: string
+    tokenBalance: string
+    stakedBalance: string
+    earnings: string
+  }
 }
 
 export interface DeserializedFarmUserData {
@@ -89,6 +95,12 @@ export interface DeserializedFarmUserData {
   tokenBalance: BigNumber
   stakedBalance: BigNumber
   earnings: BigNumber
+  proxy?: {
+    allowance: BigNumber
+    tokenBalance: BigNumber
+    stakedBalance: BigNumber
+    earnings: BigNumber
+  }
 }
 
 export interface SerializedFarm extends SerializedFarmConfig {
@@ -101,6 +113,7 @@ export interface SerializedFarm extends SerializedFarmConfig {
   tokenPriceVsQuote?: SerializedBigNumber
   poolWeight?: SerializedBigNumber
   userData?: SerializedFarmUserData
+  boosted?: boolean
 }
 
 export interface DeserializedFarm extends DeserializedFarmConfig {
@@ -113,6 +126,7 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   tokenPriceVsQuote?: BigNumber
   poolWeight?: BigNumber
   userData?: DeserializedFarmUserData
+  boosted?: boolean
 }
 
 export enum VaultKey {
