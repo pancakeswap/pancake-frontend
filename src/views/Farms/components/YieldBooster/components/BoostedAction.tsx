@@ -25,7 +25,7 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPi
   const { boosterState, refreshActivePool, refreshProxyAddress, proxyAddress } = useContext(YieldBoosterStateContext)
   const { isConfirming, ...handlers } = useBoosterFarmHandlers(farmPid, refreshActivePool)
   const boostMultipler = useBoostMultipler({ pid: farmPid, boosterState, proxyAddress })
-  const boostMultiplerDisplay = boostMultipler.toFixed(1)
+  const boostMultiplerDisplay = boostMultipler.toLocaleString(undefined, { maximumFractionDigits: 3 })
 
   const renderBtn = useCallback(() => {
     switch (boosterState) {
