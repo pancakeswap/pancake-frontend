@@ -53,9 +53,10 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   const cakePrice = usePriceCakeBusd()
   let earnings = BIG_ZERO
   let earningsBusd = 0
-  let displayBalance = userDataReady ? earnings.toLocaleString() : <Skeleton width={60} />
+  let displayBalance = userDataReady ? earnings.toFixed(5, BigNumber.ROUND_DOWN) : <Skeleton width={60} />
+  const toolTipBalance = earningsBigNumber.isGreaterThan(new BigNumber(0.00001)) ? displayBalance : `< 0.00001`
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    `${displayBalance} ${t(
+    `${toolTipBalance} ${t(
       `CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.`,
     )}`,
     {
@@ -67,7 +68,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   if (!earningsBigNumber.isZero()) {
     earnings = getBalanceAmount(earningsBigNumber)
     earningsBusd = earnings.multipliedBy(cakePrice).toNumber()
-    displayBalance = earnings.toFixed(3, BigNumber.ROUND_DOWN)
+    displayBalance = earnings.toFixed(5, BigNumber.ROUND_DOWN)
   }
 
   return (

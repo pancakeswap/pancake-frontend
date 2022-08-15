@@ -32,7 +32,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   const { t } = useTranslation()
   const cakePrice = usePriceCakeBusd()
   const rawEarningsBalance = account ? getBalanceAmount(earnings) : BIG_ZERO
-  const displayBalance = rawEarningsBalance.toFixed(3, BigNumber.ROUND_DOWN)
+  const displayBalance = rawEarningsBalance.toFixed(5, BigNumber.ROUND_DOWN)
   const earningsBusd = rawEarningsBalance ? rawEarningsBalance.multipliedBy(cakePrice).toNumber() : 0
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     `${displayBalance} ${t(
