@@ -148,7 +148,7 @@ const LimitOrders = () => {
       setApprovalSubmitted(false)
       handleCurrencySelection(Field.INPUT, inputCurrency)
 
-      setInputCurrencyToUrlParameter(currencyInput)
+      setInputCurrencyToUrlParameter(inputCurrency)
     },
     [handleCurrencySelection],
   )
@@ -167,7 +167,7 @@ const LimitOrders = () => {
     (outputCurrency) => {
       handleCurrencySelection(Field.OUTPUT, outputCurrency)
 
-      setOutputCurrencyToUrlParameter(currencyOutput)
+      setOutputCurrencyToUrlParameter(outputCurrency)
     },
     [handleCurrencySelection],
   )
