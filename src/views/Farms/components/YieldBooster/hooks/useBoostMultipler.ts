@@ -40,7 +40,7 @@ async function getPublicMultipler({ farmBoosterContract }): Promise<number> {
 
   const boostPercent = PRECISION_FACTOR.addUnsafe(MAX_BOOST_PRECISION).divUnsafe(PRECISION_FACTOR)
 
-  return _toNumber(boostPercent.round(2).toString())
+  return _toNumber(boostPercent.round(3).toString())
 }
 
 async function getUserMultipler({ farmBoosterContract, account, pid }): Promise<number> {
@@ -66,7 +66,7 @@ async function getUserMultipler({ farmBoosterContract, account, pid }): Promise<
     PRECISION_FACTOR.addUnsafe(FixedNumber.from(multipler))
       .subUnsafe(FixedNumber.from(BOOST_PRECISION))
       .divUnsafe(PRECISION_FACTOR)
-      .round(2)
+      .round(3)
       .toString(),
   )
 }
@@ -86,7 +86,7 @@ async function getMultiplerFromMC({ pid, proxyAddress, masterChefContract }): Pr
 
   const [[boostMultiplier]] = data
 
-  return _toNumber(FixedNumber.from(boostMultiplier).divUnsafe(PRECISION_FACTOR).round(2).toString())
+  return _toNumber(FixedNumber.from(boostMultiplier).divUnsafe(PRECISION_FACTOR).round(3).toString())
 }
 
 export default function useBoostMultipler({ pid, boosterState, proxyAddress }): number {
