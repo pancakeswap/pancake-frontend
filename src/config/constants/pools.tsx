@@ -28,8 +28,7 @@ export const vaultPoolConfig = {
     name: <Trans>Stake CAKE</Trans>,
     description: <Trans>Stake, Earn – And more!</Trans>,
     autoCompoundFrequency: 5000,
-    // TODO: Remove when test is done
-    gasLimit: 1500000,
+    gasLimit: 500000,
     tokenImage: {
       primarySrc: `/images/tokens/${bscTokens.cake.address}.svg`,
       secondarySrc: '/images/tokens/autorenew.svg',
@@ -64,7 +63,7 @@ export const livePools: SerializedPoolConfig[] = [
     earningToken: serializedTokens.cake,
     contractAddress: {
       97: '0xB4A466911556e39210a6bB2FaECBB59E4eB7E43d',
-      56: '0x97Dcad25C802F126F00D11308b532e5Ff4a7fEF6',
+      56: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
     },
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '10',

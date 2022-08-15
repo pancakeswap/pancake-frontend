@@ -2,7 +2,7 @@ import { ChainId, Token, WBNB } from '@pancakeswap/sdk'
 
 const CAKE_MAINNET = new Token(
   ChainId.BSC,
-  '0x30643DF62Db08a607Df1eB69147C290cF97696b5',
+  '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
   18,
   'CAKE',
   'PancakeSwap Token',
@@ -69,15 +69,6 @@ export const BUSD: Record<ChainId, Token> = {
   [ChainId.BSC_TESTNET]: BUSD_TESTNET,
 }
 
-const REAL_CAKE = new Token(
-  ChainId.BSC,
-  '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
-  18,
-  'CAKE',
-  'PancakeSwap Token',
-  'https://pancakeswap.finance/',
-)
-
 export const bscTokens = {
   wbnb: WBNB[ChainId.BSC],
   // bnb here points to the wbnb contract. Wherever the currency BNB is required, conditional checks for the symbol 'BNB' can be used
@@ -89,7 +80,6 @@ export const bscTokens = {
     'BNB',
     'https://www.binance.com/',
   ),
-  mockCake: REAL_CAKE,
   cake: CAKE_MAINNET,
   gmi: new Token(ChainId.BSC, '0x93D8d25E3C9A847a5Da79F79ecaC89461FEcA846', 18, 'GMI', 'Gamifi', 'https://gamifi.gg/'),
   tlos: new Token(

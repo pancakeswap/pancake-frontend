@@ -1,7 +1,7 @@
 export default {
   masterChef: {
     97: '0xB4A466911556e39210a6bB2FaECBB59E4eB7E43d',
-    56: '0x97Dcad25C802F126F00D11308b532e5Ff4a7fEF6',
+    56: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
   },
   masterChefV1: {
     97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
@@ -65,7 +65,7 @@ export default {
     97: '0x24ec6962dbe874F6B67B5C50857565667fA0854F',
   },
   cakeVault: {
-    56: '0xbB349c2704fB344557608D4abD948199BAfdd0AD',
+    56: '0x45c54210128a065de780C4B0Df3d16664f7f859e',
     97: '0x683433ba14e8F26774D43D3E90DA6Dd7a22044Fe',
   },
   cakeFlexibleSideVault: {
@@ -142,11 +142,11 @@ export default {
     97: '',
   },
   bCakeFarmBooster: {
-    56: '0x9396817286dcEA1885AC79b19d779D687dd101Cb',
+    56: '0xE4FAa3Ef5A9708C894435B0F39c2B440936A3A52',
     97: '',
   },
   bCakeFarmBoosterProxyFactory: {
-    56: '0xdbCd3e76600125918037590446F710Ada01754b7',
+    56: '0x2C36221bF724c60E9FEE3dd44e2da8017a8EF3BA',
     97: '',
   },
 }
