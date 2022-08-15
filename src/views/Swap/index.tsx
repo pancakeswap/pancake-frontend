@@ -483,7 +483,9 @@ export default function Swap() {
                       commonBasesType={CommonBasesType.SWAP_LIMITORDER}
                     />
 
-                    {isShowAccessToken && <AccessRisk currency={currencies[Field.OUTPUT]} />}
+                    <Box style={{ display: isShowAccessToken ? 'block' : 'none' }}>
+                      <AccessRisk currency={currencies[Field.OUTPUT]} />
+                    </Box>
 
                     {isExpertMode && recipient !== null && !showWrap ? (
                       <>

@@ -1860,7 +1860,7 @@
   "Please wait until we scan the risk for %symbol% token": "Please wait until we scan the risk for %symbol% token",
   "scanning...": "scanning...",
   "scan risk": "scan risk",
-  "Scan risk level for the output token. This risk level is for a reference only, not as an investment advice.": "Scan risk level for the output token. This risk level is for a reference only, not as an investment advice.",
+  "Scan risk level for the output token. The scan result is provided by 3rd party and is for reference only, do NOT take it as investment or financial advice.": "Scan risk level for the output token. The scan result is provided by 3rd party and is for reference only, do NOT take it as investment or financial advice.",
   "Powered by": "Powered by",
   "Hashdit.": "Hashdit.",
   "Add to %wallet%": "Add to %wallet%",

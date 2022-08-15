@@ -10,14 +10,13 @@ interface AccessRiskProps {
   currency: Currency
 }
 
-const TOKEN_RISK_KEY = 'pancakeswap-risk-token'
-
 const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
   const { t } = useTranslation()
   const { toastInfo } = useToast()
 
   const [isScanning, setIsScanning] = useState(false)
   const [isFetchStatusSuccess, setIsFetchStatusSuccess] = useState(false)
+  const [allTokenInfo, setAllTokenInfo] = useState<{ [key: number]: RiskTokenInfo }>({})
   const [riskTokenInfo, setRiskTokenInfo] = useState<RiskTokenInfo>({
     isSuccess: false,
     address: '',
@@ -33,24 +32,15 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
       setIsFetchStatusSuccess(false)
 
       const { address, chainId } = currency as any
-      const storeData = localStorage.getItem(TOKEN_RISK_KEY)
-      const getRiskTokenList = storeData ? JSON.parse(storeData) : {}
-
-      if (getRiskTokenList) {
-        const list = getRiskTokenList[chainId]
+      if (allTokenInfo) {
+        const list = allTokenInfo[chainId]
         if (list?.[address]) {
-          const now = new Date()
-          const sevenDaysInMilliseconds = 60 * 60 * 24 * 7 * 1000
-          const expiredDate = list[address].createDate + sevenDaysInMilliseconds
-          // If create Date more than 7 days. User need to fetch it again
-          if (now.getTime() <= expiredDate) {
-            setRiskTokenInfo(list[address])
-            setIsFetchStatusSuccess(list[address].isSuccess)
-          }
+          setRiskTokenInfo(list[address])
+          setIsFetchStatusSuccess(list[address].isSuccess)
         }
       }
     }
-  }, [currency])
+  }, [currency, allTokenInfo])
 
   const disabledButton = useMemo(() => {
     if (currency) {
@@ -77,8 +67,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
 
   const saveRiskTokenInfo = (data: RiskTokenInfo) => {
     const { address, chainId } = data
-    const storeData = localStorage.getItem(TOKEN_RISK_KEY)
-    const getRiskTokenList = storeData ? JSON.parse(storeData) : {}
+    const getRiskTokenList = allTokenInfo
     const newData = {
       ...getRiskTokenList,
       [chainId]: {
@@ -92,7 +81,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
 
     setRiskTokenInfo(data)
     setIsFetchStatusSuccess(data.isSuccess)
-    localStorage.setItem(TOKEN_RISK_KEY, JSON.stringify(newData))
+    setAllTokenInfo(newData)
   }
 
   // Tooltips
@@ -100,7 +89,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
     <>
       <Text>
         {t(
-          'Scan risk level for the output token. This risk level is for a reference only, not as an investment advice.',
+          'Scan risk level for the output token. The scan result is provided by 3rd party and is for reference only, do NOT take it as investment or financial advice.',
         )}
       </Text>
       <Flex mt="4px">
