@@ -38,20 +38,14 @@ const farms: SerializedFarmConfig[] = [
   {
     pid: 114,
     lpSymbol: 'stkBNB-BNB LP',
-    lpAddresses: {
-      56: '0xaA2527ff1893e0D40d4a454623d362B79E8bb7F1',
-      97: '',
-    },
+    lpAddresses: '0xaA2527ff1893e0D40d4a454623d362B79E8bb7F1',
     token: serializedTokens.stkbnb,
     quoteToken: serializedTokens.wbnb,
   },
   {
     pid: 113,
     lpSymbol: 'PSTAKE-BUSD LP',
-    lpAddresses: {
-      56: '0x009C58e79779982eB53a9941F9F4a2269d093566',
-      97: '',
-    },
+    lpAddresses: '0x009C58e79779982eB53a9941F9F4a2269d093566',
     token: serializedTokens.pstake,
     quoteToken: serializedTokens.busd,
   },

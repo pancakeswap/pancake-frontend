@@ -19,7 +19,7 @@ interface FarmCardActionsProps {
   pid?: number
 }
 
-const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
+const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({ earnings, pid }) => {
   const { account, chainId } = useActiveWeb3React()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
