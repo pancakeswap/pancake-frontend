@@ -39,7 +39,7 @@ const StyledExpand = styled(Box)<{ expanded: boolean }>`
           ${collapseAnimation} 300ms linear forwards
         `};
   overflow: auto;
-  margin: 0 -6px;
+  margin: 0 -4px;
   padding: 24px;
   border-radius: 24px;
   background: ${({ theme }) => theme.colors.dropdown};
