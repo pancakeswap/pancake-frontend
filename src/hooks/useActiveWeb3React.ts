@@ -1,4 +1,3 @@
-import { Web3Provider } from '@ethersproject/providers'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useRouter } from 'next/router'
@@ -56,12 +55,11 @@ export function useNetworkConnectorUpdater() {
  * Recreate web3 instance only if the provider change
  */
 const useActiveWeb3React = () => {
-  const { library, ...web3React } = useWeb3React()
+  const web3React = useWeb3React()
   const chainId = useActiveChainId()
   const provider = useProvider({ chainId })
 
   return {
-    library: (library ?? provider) as Web3Provider,
     provider,
     ...web3React,
     chainId,
