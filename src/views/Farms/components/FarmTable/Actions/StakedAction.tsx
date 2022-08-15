@@ -45,9 +45,14 @@ interface StackedActionProps extends FarmWithStakedValue {
 }
 
 const StyledActionContainer = styled(ActionContainer)`
-  flex-basis: 100%;
+  &:nth-child(3) {
+    flex-basis: 100%;
+  }
+  min-height: 124.5px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    margin-top: 16px;
+    &:nth-child(3) {
+      margin-top: 16px;
+    }
   }
 `
 
@@ -218,7 +223,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   if (!account) {
     return (
-      <StyledActionContainer style={{ minHeight: 124.5 }}>
+      <StyledActionContainer>
         <ActionTitles>
           <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
             {t('Start Farming')}
@@ -234,7 +239,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   if (isApproved) {
     if (stakedBalance.gt(0)) {
       return (
-        <StyledActionContainer style={{ minHeight: 124.5 }}>
+        <StyledActionContainer>
           <ActionTitles>
             <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
               {lpSymbol}
@@ -271,7 +276,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     }
 
     return (
-      <StyledActionContainer style={{ minHeight: 124.5 }}>
+      <StyledActionContainer>
         <ActionTitles>
           <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px" pr="4px">
             {t('Stake')}
@@ -296,7 +301,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   if (!userDataReady) {
     return (
-      <StyledActionContainer style={{ minHeight: 124.5 }}>
+      <StyledActionContainer>
         <ActionTitles>
           <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
             {t('Start Farming')}
@@ -310,7 +315,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   }
 
   return (
-    <StyledActionContainer style={{ minHeight: 124.5 }}>
+    <StyledActionContainer>
       <ActionTitles>
         <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
           {t('Enable Farm')}
