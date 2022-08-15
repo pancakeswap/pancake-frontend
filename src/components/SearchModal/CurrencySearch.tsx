@@ -29,6 +29,7 @@ interface CurrencySearchProps {
   commonBasesType?: string
   showImportView: () => void
   setImportToken: (token: Token) => void
+  height?: number
 }
 
 function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
@@ -86,6 +87,7 @@ function CurrencySearch({
   commonBasesType,
   showImportView,
   setImportToken,
+  height,
 }: CurrencySearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
@@ -184,7 +186,7 @@ function CurrencySearch({
     return Boolean(filteredSortedTokens?.length) || hasFilteredInactiveTokens ? (
       <Box margin="24px -24px">
         <CurrencyList
-          height={isMobile ? (showCommonBases ? 250 : 350) : 390}
+          height={isMobile ? (showCommonBases ? height || 250 : height ? height + 80 : 350) : 390}
           showBNB={showBNB}
           currencies={filteredSortedTokens}
           inactiveCurrencies={filteredInactiveTokens}
@@ -221,6 +223,7 @@ function CurrencySearch({
     t,
     showCommonBases,
     isMobile,
+    height,
   ])
 
   return (
