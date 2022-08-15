@@ -19,12 +19,9 @@ function getLpInfo({
   // Ratio in % of LP tokens that are staked in the MC, vs the total number in circulation
   const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupplyBN))
 
-  // TODO: Hardcode tokenBalanceLP and quoteTokenBalanceLP to display APR and liquidity
   // Raw amount of token in the LP, including those not staked
-  const tokenAmountTotal = new BigNumber('3308185382654829785179259').div(getFullDecimalMultiplier(tokenDecimals))
-  const quoteTokenAmountTotal = new BigNumber('3170307921028128913364').div(
-    getFullDecimalMultiplier(quoteTokenDecimals),
-  )
+  const tokenAmountTotal = new BigNumber(tokenBalanceLP).div(getFullDecimalMultiplier(tokenDecimals))
+  const quoteTokenAmountTotal = new BigNumber(quoteTokenBalanceLP).div(getFullDecimalMultiplier(quoteTokenDecimals))
 
   // Amount of quoteToken in the LP that are staked in the MC
   const quoteTokenAmountMc = quoteTokenAmountTotal.times(lpTokenRatio)
