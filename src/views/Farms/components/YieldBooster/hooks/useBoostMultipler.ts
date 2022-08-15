@@ -95,23 +95,24 @@ export default function useBoostMultipler({ pid, boosterState, proxyAddress }): 
 
   const { account } = useActiveWeb3React()
 
-  const shouldMaxUp = [YieldBoosterState.UNCONNECTED, YieldBoosterState.NO_LOCKED, YieldBoosterState.NO_LP].includes(
+  const shouldGetFromSC = [YieldBoosterState.DEACTIVE, YieldBoosterState.ACTIVE, YieldBoosterState.MAX].includes(
     boosterState,
   )
+  const should1X = [YieldBoosterState.LOCKED_END].includes(boosterState)
 
   const getMultipler = useCallback(async () => {
-    if (boosterState === YieldBoosterState.ACTIVE) {
+    if (shouldGetFromSC) {
       return getMultiplerFromMC({ pid, masterChefContract, proxyAddress })
     }
 
-    return shouldMaxUp
-      ? getPublicMultipler({
+    return should1X
+      ? getUserMultipler({ farmBoosterContract, pid, account })
+      : getPublicMultipler({
           farmBoosterContract,
         })
-      : getUserMultipler({ farmBoosterContract, pid, account })
-  }, [boosterState, farmBoosterContract, masterChefContract, pid, account, shouldMaxUp, proxyAddress])
+  }, [farmBoosterContract, masterChefContract, should1X, shouldGetFromSC, pid, account, proxyAddress])
 
-  const { data } = useSWR(['boostMultipler', shouldMaxUp ? 'public' : `user${pid}`], getMultipler)
+  const { data } = useSWR(['boostMultipler', should1X ? `user${pid}` : 'public'], getMultipler)
 
   return data || 0
 }

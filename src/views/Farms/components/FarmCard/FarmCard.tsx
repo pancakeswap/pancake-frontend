@@ -98,7 +98,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
             <Text bold style={{ display: 'flex', alignItems: 'center' }}>
               {farm.apr ? (
                 <>
-                  {farm.boosted ? <BoostedApr mr="4px" apr={farm.apr} pid={farm?.pid} /> : null}
+                  {farm.boosted ? <BoostedApr mr="4px" apr={displayApr} pid={farm?.pid} /> : null}
                   <ApyButton
                     variant="text-and-button"
                     pid={farm.pid}

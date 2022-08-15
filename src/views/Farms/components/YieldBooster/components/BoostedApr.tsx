@@ -9,7 +9,7 @@ import { YieldBoosterState } from '../hooks/useYieldBoosterState'
 import { YieldBoosterStateContext } from './ProxyFarmContainer'
 
 interface BoostedAprPropsType {
-  apr: number
+  apr: string
   pid: number
   mr?: string
 }
