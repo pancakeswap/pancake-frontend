@@ -44,6 +44,13 @@ interface StackedActionProps extends FarmWithStakedValue {
   shouldUseProxyFarm?: boolean
 }
 
+const StyledActionContainer = styled(ActionContainer)`
+  flex-basis: 100%;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-top: 16px;
+  }
+`
+
 export function useStakedActions(pid, lpContract) {
   const { account } = useWeb3React()
   const { onStake } = useStakeFarms(pid)
@@ -211,7 +218,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   if (!account) {
     return (
-      <ActionContainer style={{ minHeight: 124.5 }}>
+      <StyledActionContainer style={{ minHeight: 124.5 }}>
         <ActionTitles>
           <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
             {t('Start Farming')}
@@ -220,14 +227,14 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
         <ActionContent>
           <ConnectWalletButton width="100%" />
         </ActionContent>
-      </ActionContainer>
+      </StyledActionContainer>
     )
   }
 
   if (isApproved) {
     if (stakedBalance.gt(0)) {
       return (
-        <ActionContainer style={{ minHeight: 124.5 }}>
+        <StyledActionContainer style={{ minHeight: 124.5 }}>
           <ActionTitles>
             <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
               {lpSymbol}
@@ -259,12 +266,12 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
               </IconButton>
             </IconButtonWrapper>
           </ActionContent>
-        </ActionContainer>
+        </StyledActionContainer>
       )
     }
 
     return (
-      <ActionContainer style={{ minHeight: 124.5 }}>
+      <StyledActionContainer style={{ minHeight: 124.5 }}>
         <ActionTitles>
           <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px" pr="4px">
             {t('Stake')}
@@ -283,13 +290,13 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
             {t('Stake LP')}
           </Button>
         </ActionContent>
-      </ActionContainer>
+      </StyledActionContainer>
     )
   }
 
   if (!userDataReady) {
     return (
-      <ActionContainer style={{ minHeight: 124.5 }}>
+      <StyledActionContainer style={{ minHeight: 124.5 }}>
         <ActionTitles>
           <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
             {t('Start Farming')}
@@ -298,12 +305,12 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
         <ActionContent>
           <Skeleton width={180} marginBottom={28} marginTop={14} />
         </ActionContent>
-      </ActionContainer>
+      </StyledActionContainer>
     )
   }
 
   return (
-    <ActionContainer style={{ minHeight: 124.5 }}>
+    <StyledActionContainer style={{ minHeight: 124.5 }}>
       <ActionTitles>
         <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
           {t('Enable Farm')}
@@ -314,7 +321,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
           {t('Enable')}
         </Button>
       </ActionContent>
-    </ActionContainer>
+    </StyledActionContainer>
   )
 }
 
