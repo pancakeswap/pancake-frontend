@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Text, HelpIcon, Skeleton, useTooltip } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 const ReferenceElement = styled.div`
   display: inline-block;
@@ -27,7 +27,7 @@ const Container = styled.div`
   align-items: center;
 `
 
-const Multiplier: React.FunctionComponent<MultiplierProps> = ({ multiplier }) => {
+const Multiplier: React.FunctionComponent<React.PropsWithChildren<MultiplierProps>> = ({ multiplier }) => {
   const displayMultiplier = multiplier ? multiplier.toLowerCase() : <Skeleton width={30} />
   const { t } = useTranslation()
   const tooltipContent = (

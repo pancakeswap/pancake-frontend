@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import styled from 'styled-components'
 import { ButtonMenu, ButtonMenuItem, LinkExternal, Flex, Svg, Image, Button } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { EXCHANGE_DOCS_URLS } from 'config/constants'
 
 const Wrapper = memo(styled.div<{ $isSide: boolean }>`
@@ -38,7 +38,7 @@ const BubbleWrapper = styled(Flex)`
 
 type FooterVariant = 'default' | 'side'
 
-const Footer: React.FC<{ variant?: FooterVariant; helpUrl?: string }> = ({
+const Footer: React.FC<React.PropsWithChildren<{ variant?: FooterVariant; helpUrl?: string }>> = ({
   variant = 'default',
   helpUrl = EXCHANGE_DOCS_URLS,
 }) => {

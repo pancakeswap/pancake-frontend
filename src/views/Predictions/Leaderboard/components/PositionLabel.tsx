@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { ArrowDownIcon, ArrowUpIcon } from '@pancakeswap/uikit'
 import { BetPosition } from 'state/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 interface PositionLabelProps {
   position: BetPosition
@@ -30,7 +30,7 @@ const Label = styled.div`
   }
 `
 
-const PositionLabel: React.FC<PositionLabelProps> = ({ position }) => {
+const PositionLabel: React.FC<React.PropsWithChildren<PositionLabelProps>> = ({ position }) => {
   const { t } = useTranslation()
   const isBull = position === BetPosition.BULL
   const bgColor = isBull ? 'success' : 'failure'

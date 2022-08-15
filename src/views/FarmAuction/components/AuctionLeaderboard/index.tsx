@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 import { Text, Card, Flex, Box, Spinner } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Auction, AuctionStatus, Bidder } from 'config/constants/types'
 import { TabToggleGroup, TabToggle } from 'components/TabToggle'
 import AuctionHistory from '../AuctionHistory'
@@ -34,7 +34,7 @@ const getMostRecentClosedAuctionId = (latestAuctionId: number, latestAuctionStat
   return latestAuctionId - 1
 }
 
-const CurrentAuctionCard: React.FC<AuctionLeaderboardProps> = ({ auction, bidders }) => {
+const CurrentAuctionCard: React.FC<React.PropsWithChildren<AuctionLeaderboardProps>> = ({ auction, bidders }) => {
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState(Tabs.Latest)
 

@@ -1,5 +1,5 @@
 import { Flex, Grid, Text, Button, Link, LinkExternal, BinanceIcon } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { nftsBaseUrl, pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { NftToken } from 'state/nftMarket/types'
 import { getBscScanLinkForNft } from 'utils'
@@ -14,7 +14,7 @@ interface EditStageProps {
 }
 
 // Initial stage when user wants to edit already listed NFT (i.e. adjust price or remove from sale)
-const EditStage: React.FC<EditStageProps> = ({
+const EditStage: React.FC<React.PropsWithChildren<EditStageProps>> = ({
   nftToSell,
   lowestPrice,
   continueToAdjustPriceStage,

@@ -2,7 +2,7 @@ import { useRef, useMemo, useCallback } from 'react'
 import { latinise } from 'utils/latinise'
 import styled from 'styled-components'
 import { Button, ChevronUpIcon, RowType } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useRouter } from 'next/router'
@@ -64,7 +64,7 @@ const ScrollButtonContainer = styled.div`
   padding-bottom: 5px;
 `
 
-const FarmTable: React.FC<ITableProps> = ({ farms, cakePrice, userDataReady }) => {
+const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cakePrice, userDataReady }) => {
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const { query } = useRouter()
   const { t } = useTranslation()

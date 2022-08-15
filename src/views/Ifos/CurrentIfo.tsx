@@ -12,7 +12,7 @@ interface TypeProps {
   activeIfo: Ifo
 }
 
-const CurrentIfo: React.FC<TypeProps> = ({ activeIfo }) => {
+const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo }) => {
   const publicIfoData = useGetPublicIfoV3Data(activeIfo)
   const walletIfoData = useGetWalletIfoV3Data(activeIfo)
 

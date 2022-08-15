@@ -1,5 +1,5 @@
 import { Flex, Text, Button, Spinner } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { StepIndicator } from './styles'
 
 interface ApproveAndConfirmStageProps {
@@ -15,7 +15,7 @@ interface ApproveAndConfirmStageProps {
 // Shown if user wants to pay with WBNB and contract isn't approved yet
 // Sell Flow:
 // Shown the first time user puts NFT for sale
-const ApproveAndConfirmStage: React.FC<ApproveAndConfirmStageProps> = ({
+const ApproveAndConfirmStage: React.FC<React.PropsWithChildren<ApproveAndConfirmStageProps>> = ({
   variant,
   isApproved,
   isApproving,

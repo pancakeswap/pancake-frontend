@@ -1,4 +1,4 @@
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Box, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { DeserializedPotteryUserData } from 'state/types'
@@ -11,7 +11,7 @@ interface PrizeToBeClaimedProps {
   userData: DeserializedPotteryUserData
 }
 
-const PrizeToBeClaimed: React.FC<PrizeToBeClaimedProps> = ({ userData }) => {
+const PrizeToBeClaimed: React.FC<React.PropsWithChildren<PrizeToBeClaimedProps>> = ({ userData }) => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
 

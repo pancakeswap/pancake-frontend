@@ -73,8 +73,9 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
     const [[poolLength], [cakePerBlockRaw]] = await multicall(masterchefABI, calls)
     const regularCakePerBlock = getBalanceAmount(ethersToBigNumber(cakePerBlockRaw))
     const farmsConfig = getFarmConfig(chainId)
-    const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
-    const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
+    const farmsCanFetch = farmsConfig.filter(
+      (farmConfig) => pids.includes(farmConfig.pid) && poolLength.gt(farmConfig.pid),
+    )
 
     const farms = await fetchFarms(farmsCanFetch)
     const farmsWithPrices = getFarmsPrices(farms)
@@ -109,11 +110,12 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
   }
 >(
   'farms/fetchFarmUserDataAsync',
-  async ({ account, pids, chainId }) => {
-    const poolLength = await fetchMasterChefFarmPoolLength(chainId)
+  async ({ account, pids, chainId }, config) => {
+    const poolLength = config.getState().farms.poolLength ?? (await fetchMasterChefFarmPoolLength(chainId)).toNumber()
     const farmsConfig = getFarmConfig(chainId)
-    const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
-    const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.pid))
+    const farmsCanFetch = farmsConfig.filter(
+      (farmConfig) => pids.includes(farmConfig.pid) && poolLength > farmConfig.pid,
+    )
     const [userFarmAllowances, userFarmTokenBalances, userStakedBalances, userFarmEarnings] = await Promise.all([
       fetchFarmUserAllowances(account, farmsCanFetch),
       fetchFarmUserTokenBalances(account, farmsCanFetch),

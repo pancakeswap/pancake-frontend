@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Box, Flex, lightColors, Spinner, Text, Timeline } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import useTheme from 'hooks/useTheme'
 import { StyledWaveContainer } from 'views/PancakeSquad/styles'
@@ -23,7 +23,7 @@ import { PancakeSquadHeaderType } from './types'
 const DEFAULT_CAKE_COST = 15
 const DEFAULT_MAX_TICKETS = 10
 
-const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
+const PancakeSquadHeader: React.FC<React.PropsWithChildren<PancakeSquadHeaderType>> = ({
   userInfos,
   eventInfos,
   account,

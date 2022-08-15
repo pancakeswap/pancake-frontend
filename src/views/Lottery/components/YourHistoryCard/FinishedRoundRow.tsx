@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Text, Flex, ChevronRightIcon, Box, SmallDotIcon, PrizeIcon } from '@pancakeswap/uikit'
 import { dateOptions, timeOptions } from '../../helpers'
 
@@ -24,7 +24,7 @@ const StyledSmallDotIcon = styled(SmallDotIcon)`
   }
 `
 
-const FinishedRoundRow: React.FC<FinishedRoundRowProps> = ({
+const FinishedRoundRow: React.FC<React.PropsWithChildren<FinishedRoundRowProps>> = ({
   roundId,
   numberTickets,
   endTime,

@@ -43,7 +43,7 @@ interface CountdownCircleProps {
   isUpdating: boolean
 }
 
-const CountdownCircle: React.FC<CountdownCircleProps> = ({ secondsRemaining, isUpdating }) => {
+const CountdownCircle: React.FC<React.PropsWithChildren<CountdownCircleProps>> = ({ secondsRemaining, isUpdating }) => {
   if (secondsRemaining < 1 || isUpdating) {
     return <Spinner size={42} />
   }

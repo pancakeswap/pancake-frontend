@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Card, Box, BlockIcon, CardBody } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { NodeRound, BetPosition, NodeLedger } from 'state/types'
 import { useGetBufferSeconds } from 'state/predictions/hooks'
 import { getHasRoundFailed } from 'state/predictions/helpers'
@@ -34,7 +34,7 @@ const StyledExpiredRoundCard = styled(Card)`
   }
 `
 
-const ExpiredRoundCard: React.FC<ExpiredRoundCardProps> = ({
+const ExpiredRoundCard: React.FC<React.PropsWithChildren<ExpiredRoundCardProps>> = ({
   round,
   betAmount,
   hasEnteredUp,

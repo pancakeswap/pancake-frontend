@@ -1,11 +1,11 @@
 import { Flex, FlexProps, PrizeIcon, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 interface PointsLabelProps extends FlexProps {
   points: number
 }
 
-const PointsLabel: React.FC<PointsLabelProps> = ({ points, ...props }) => {
+const PointsLabel: React.FC<React.PropsWithChildren<PointsLabelProps>> = ({ points, ...props }) => {
   const { t } = useTranslation()
   const localePoints = points.toLocaleString()
 

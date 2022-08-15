@@ -20,7 +20,7 @@ export interface UnstakeProps {
   pid: number
 }
 
-const Unstake: React.FC<UnstakeProps> = ({ pid }) => {
+const Unstake: React.FC<React.PropsWithChildren<UnstakeProps>> = ({ pid }) => {
   return (
     <Container>
       <UnstakeButton pid={pid} />

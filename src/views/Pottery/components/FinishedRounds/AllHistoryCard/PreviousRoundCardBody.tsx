@@ -5,7 +5,7 @@ import { Box, Flex, Text, CardBody, CardRibbon, LinkExternal, Skeleton } from '@
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { PotteryRoundInfo } from 'state/types'
 import Divider from 'components/Divider'
@@ -50,7 +50,10 @@ interface PreviousRoundCardBodyProps {
   finishedRoundInfo: PotteryRoundInfo
 }
 
-const PreviousRoundCardBody: React.FC<PreviousRoundCardBodyProps> = ({ latestRoundId, finishedRoundInfo }) => {
+const PreviousRoundCardBody: React.FC<React.PropsWithChildren<PreviousRoundCardBodyProps>> = ({
+  latestRoundId,
+  finishedRoundInfo,
+}) => {
   const {
     t,
     currentLanguage: { locale },
@@ -96,7 +99,7 @@ const PreviousRoundCardBody: React.FC<PreviousRoundCardBodyProps> = ({ latestRou
           fontSize={['32px', '32px', '40px']}
           textAlign={['center', 'center', 'left']}
           decimals={0}
-          value={prize}
+          value={prizeInBusd}
         />
         <Balance
           unit=" CAKE"
@@ -105,7 +108,7 @@ const PreviousRoundCardBody: React.FC<PreviousRoundCardBodyProps> = ({ latestRou
           color="textSubtle"
           textAlign={['center', 'center', 'left']}
           decimals={0}
-          value={prizeInBusd}
+          value={prize}
         />
         <Flex flexDirection={['column', 'column', 'row']} justifyContent="space-between">
           <Flex flexDirection="column">

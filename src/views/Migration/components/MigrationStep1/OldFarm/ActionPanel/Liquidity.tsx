@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import { LiquidityProps } from '../Cells/Liquidity'
 
@@ -31,7 +31,7 @@ const LiquidityWrapper = styled.div`
   }
 `
 
-const Liquidity: React.FC<LiquidityProps> = ({ liquidity }) => {
+const Liquidity: React.FC<React.PropsWithChildren<LiquidityProps>> = ({ liquidity }) => {
   const { t } = useTranslation()
   const displayLiquidity =
     liquidity && liquidity.gt(0)

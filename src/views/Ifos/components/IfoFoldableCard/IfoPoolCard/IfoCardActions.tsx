@@ -1,4 +1,4 @@
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Button } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { NextLinkFromReactRouter } from 'components/NextLink'
@@ -21,7 +21,7 @@ interface Props {
   enableStatus: EnableStatus
 }
 
-const IfoCardActions: React.FC<Props> = ({
+const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   poolId,
   ifo,
   publicIfoData,

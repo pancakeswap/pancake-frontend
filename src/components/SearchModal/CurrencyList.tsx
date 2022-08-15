@@ -6,7 +6,7 @@ import { FixedSizeList } from 'react-window'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { LightGreyCard } from 'components/Card'
 import QuestionHelper from 'components/QuestionHelper'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useWeb3React } from '@web3-react/core'
 import { useCombinedActiveList } from '../../state/lists/hooks'
@@ -113,7 +113,7 @@ export default function CurrencyList({
   setImportToken,
   breakIndex,
 }: {
-  height: number
+  height: number | string
   currencies: Currency[]
   inactiveCurrencies: Currency[]
   selectedCurrency?: Currency | null

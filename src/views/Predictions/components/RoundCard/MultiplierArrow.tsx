@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import styled, { CSSProperties } from 'styled-components'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { BetPosition } from 'state/types'
 import { RoundMultiplierDownArrow, RoundMultiplierUpArrow } from '../../RoundMultiplierArrows'
 import EnteredTag from './EnteredTag'
@@ -54,7 +54,7 @@ const getTextColor =
     return fallback
   }
 
-const MultiplierArrow: React.FC<MultiplierArrowProps> = ({
+const MultiplierArrow: React.FC<React.PropsWithChildren<MultiplierArrowProps>> = ({
   betAmount,
   multiplier,
   hasEntered = false,

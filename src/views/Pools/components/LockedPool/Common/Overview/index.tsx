@@ -4,7 +4,7 @@ import { Box, Text, Flex, MessageText, Message } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { addSeconds } from 'date-fns'
 import { useVaultApy } from 'hooks/useVaultApy'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import _toNumber from 'lodash/toNumber'
 import { convertTimeToSeconds } from 'utils/timeHelper'
 import formatSecondsToWeeks from '../../../utils/formatSecondsToWeeks'
@@ -16,7 +16,7 @@ import formatiCake from '../../utils/formatICake'
 import { OverviewPropsType } from '../../types'
 import CalculatorButton from '../../Buttons/CalculatorButton'
 
-const Overview: React.FC<OverviewPropsType> = ({
+const Overview: React.FC<React.PropsWithChildren<OverviewPropsType>> = ({
   usdValueStaked,
   lockedAmount,
   duration,

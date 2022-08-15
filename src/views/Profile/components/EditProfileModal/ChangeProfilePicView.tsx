@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react'
 import { Button, Box, InjectedModalProps, Text, Skeleton } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useProfile } from 'state/profile/hooks'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useToast from 'hooks/useToast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { getErc721Contract } from 'utils/contractHelpers'
@@ -20,7 +20,10 @@ interface ChangeProfilePicPageProps extends InjectedModalProps {
   onSuccess?: () => void
 }
 
-const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss, onSuccess }) => {
+const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPageProps>> = ({
+  onDismiss,
+  onSuccess,
+}) => {
   const [selectedNft, setSelectedNft] = useState({
     tokenId: null,
     collectionAddress: null,

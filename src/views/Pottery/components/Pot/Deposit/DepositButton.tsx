@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Button, AutoRenewIcon } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { BIG_TEN } from 'utils/bigNumber'
@@ -13,7 +13,7 @@ interface DepositButtonProps {
   setDepositAmount: (value: string) => void
 }
 
-const DepositButton: React.FC<DepositButtonProps> = ({
+const DepositButton: React.FC<React.PropsWithChildren<DepositButtonProps>> = ({
   status,
   depositAmount,
   potteryVaultAddress,

@@ -1,6 +1,6 @@
 import { useMemo, useState, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import Trans from 'components/Trans'
 import { Box, Card, CardBody, CardHeader, Flex, Text, Image } from '@pancakeswap/uikit'
@@ -60,7 +60,7 @@ interface IfoVestingProps {
   pool: DeserializedPool
 }
 
-const IfoVesting: React.FC<IfoVestingProps> = () => {
+const IfoVesting: React.FC<React.PropsWithChildren<IfoVestingProps>> = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const [isFirstTime, setIsFirstTime] = useState(true)

@@ -16,7 +16,7 @@ const stepGuard = (step: number) => {
   return step;
 };
 
-const Progress: React.FC<ProgressProps> = ({
+const Progress: React.FC<React.PropsWithChildren<ProgressProps>> = ({
   variant = variants.ROUND,
   scale = scales.MD,
   primaryStep = 0,

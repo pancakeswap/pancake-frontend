@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { Text } from '@pancakeswap/uikit'
 import { Collection } from 'state/nftMarket/types'
 import { formatNumber } from 'utils/formatBalance'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import Container from 'components/Layout/Container'
 import MarketPageHeader from '../components/MarketPageHeader'
 import MarketPageTitle from '../components/MarketPageTitle'
@@ -18,7 +18,7 @@ interface HeaderProps {
   collection: Collection
 }
 
-const Header: React.FC<HeaderProps> = ({ collection }) => {
+const Header: React.FC<React.PropsWithChildren<HeaderProps>> = ({ collection }) => {
   const router = useRouter()
   const collectionAddress = router.query.collectionAddress as string
   const { totalSupply, numberTokensListed, totalVolumeBNB, banner, avatar } = collection

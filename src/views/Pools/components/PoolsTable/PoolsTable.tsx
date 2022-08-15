@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import styled from 'styled-components'
 import { Button, ChevronUpIcon } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { DeserializedPool } from 'state/types'
 import PoolRow, { VaultPoolRow } from './PoolRow'
 
@@ -35,7 +35,7 @@ const ScrollButtonContainer = styled.div`
   padding-bottom: 5px;
 `
 
-const PoolsTable: React.FC<PoolsTableProps> = ({ pools, account, urlSearch }) => {
+const PoolsTable: React.FC<React.PropsWithChildren<PoolsTableProps>> = ({ pools, account, urlSearch }) => {
   const { t } = useTranslation()
   const tableWrapperEl = useRef<HTMLDivElement>(null)
 

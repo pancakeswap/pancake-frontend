@@ -1,7 +1,7 @@
 import { Text, Flex, Skeleton, Heading, Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { BalanceWithLoading } from 'components/Balance'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool, VaultKey, DeserializedLockedCakeVault } from 'state/types'
@@ -12,7 +12,7 @@ import { ActionContainer, ActionTitles, ActionContent, RowActionContainer } from
 import UnstakingFeeCountdownRow from '../../CakeVaultCard/UnstakingFeeCountdownRow'
 import useUserDataInVaultPresenter from '../../LockedPool/hooks/useUserDataInVaultPresenter'
 
-const AutoHarvestAction: React.FunctionComponent<DeserializedPool> = ({
+const AutoHarvestAction: React.FunctionComponent<React.PropsWithChildren<DeserializedPool>> = ({
   userDataLoaded,
   earningTokenPrice,
   vaultKey,

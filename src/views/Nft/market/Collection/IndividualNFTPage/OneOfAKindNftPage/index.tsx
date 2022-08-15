@@ -26,7 +26,10 @@ const OwnerActivityContainer = styled(Flex)`
   gap: 22px;
 `
 
-const IndividualNFTPage: React.FC<IndividualNFTPageProps> = ({ collectionAddress, tokenId }) => {
+const IndividualNFTPage: React.FC<React.PropsWithChildren<IndividualNFTPageProps>> = ({
+  collectionAddress,
+  tokenId,
+}) => {
   const collection = useGetCollection(collectionAddress)
   const { data: distributionData, isFetching: isFetchingDistribution } = useGetCollectionDistribution(collectionAddress)
   const { combinedNft: nft, isOwn: isOwnNft, isProfilePic, refetch } = useCompleteNft(collectionAddress, tokenId)

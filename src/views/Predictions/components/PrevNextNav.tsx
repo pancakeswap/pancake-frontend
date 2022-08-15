@@ -32,18 +32,18 @@ const PrevNextNav = () => {
   const { currentEpoch, rounds } = useGetSortedRoundsCurrentEpoch()
 
   const handlePrevSlide = () => {
-    swiper.slidePrev()
+    swiper?.slidePrev()
   }
 
   const handleNextSlide = () => {
-    swiper.slideNext()
+    swiper?.slideNext()
   }
 
   const handleSlideToLive = () => {
-    const currentEpochIndex = rounds.findIndex((round) => round.epoch === currentEpoch)
-
-    swiper.slideTo(currentEpochIndex - 1)
-    swiper.update()
+    if (swiper) {
+      const currentEpochIndex = rounds.findIndex((round) => round.epoch === currentEpoch)
+      swiper.slideTo(currentEpochIndex - 1)
+    }
   }
 
   return (

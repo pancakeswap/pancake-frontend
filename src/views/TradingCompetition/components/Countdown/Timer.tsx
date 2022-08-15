@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { Flex, Heading, Text, Link, useTooltip } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { ContextApi } from 'contexts/Localization/types'
+import { useTranslation, ContextApi } from '@pancakeswap/localization'
 import { getBscScanLink } from 'utils'
 
 export interface TimerProps {
@@ -72,7 +71,7 @@ const TooltipContent = ({ blockNumber, t }: { blockNumber: number; t: ContextApi
   </>
 )
 
-const Wrapper: React.FC<TimerProps> = ({
+const Wrapper: React.FC<React.PropsWithChildren<TimerProps>> = ({
   prefix,
   suffix,
   minutes,

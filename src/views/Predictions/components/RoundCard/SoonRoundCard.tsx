@@ -1,5 +1,5 @@
 import { Card, CardBody, Text, WaitIcon } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { NodeRound, BetPosition } from 'state/types'
 import useTheme from 'hooks/useTheme'
 import { useGetIntervalSeconds } from 'state/predictions/hooks'
@@ -14,7 +14,7 @@ interface SoonRoundCardProps {
   round: NodeRound
 }
 
-const SoonRoundCard: React.FC<SoonRoundCardProps> = ({ round }) => {
+const SoonRoundCard: React.FC<React.PropsWithChildren<SoonRoundCardProps>> = ({ round }) => {
   const intervalSeconds = useGetIntervalSeconds()
   const { secondsRemaining } = useCountdown(round.startTimestamp + intervalSeconds + ROUND_BUFFER)
   const countdown = formatRoundTime(secondsRemaining)

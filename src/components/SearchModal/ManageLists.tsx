@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { TokenList, Version } from '@uniswap/token-lists'
 import Card from 'components/Card'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useFetchListCallback from '../../hooks/useFetchListCallback'
 
 import { AppState, useAppDispatch } from '../../state'

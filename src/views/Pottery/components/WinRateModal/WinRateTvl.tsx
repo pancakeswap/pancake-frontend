@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Trans from 'components/Trans'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Text, Button, Flex, Box } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { WinRateCalculatorState } from 'views/Pottery/hooks/useWinRateCalculator'
@@ -32,7 +32,7 @@ interface WinRateTvlProps {
   setMultiplyNumber: (multiply: number) => void
 }
 
-const WinRateTvl: React.FC<WinRateTvlProps> = ({
+const WinRateTvl: React.FC<React.PropsWithChildren<WinRateTvlProps>> = ({
   calculatorState,
   totalLockValue,
   totalLockValueAsUSD,

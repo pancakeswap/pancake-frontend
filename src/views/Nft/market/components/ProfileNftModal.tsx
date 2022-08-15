@@ -2,7 +2,7 @@ import { InjectedModalProps, Modal, Flex, Text, Button, useModal, Link, Grid, Li
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { NftToken } from 'state/nftMarket/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { getBscScanLinkForNft } from 'utils'
 import { HorizontalDivider, RoundedImage } from './BuySellModals/shared/styles'
 import EditProfileModal from '../../../Profile/components/EditProfileModal'
@@ -23,7 +23,7 @@ interface ProfileNftModalProps extends InjectedModalProps {
   onSuccess?: () => void
 }
 
-const ProfileNftModal: React.FC<ProfileNftModalProps> = ({ nft, onDismiss, onSuccess }) => {
+const ProfileNftModal: React.FC<React.PropsWithChildren<ProfileNftModalProps>> = ({ nft, onDismiss, onSuccess }) => {
   const [onEditProfileModal] = useModal(<EditProfileModal onSuccess={onSuccess} />, false)
   const { t } = useTranslation()
   const { theme } = useTheme()
@@ -32,7 +32,7 @@ const ProfileNftModal: React.FC<ProfileNftModalProps> = ({ nft, onDismiss, onSuc
 
   return (
     <StyledModal title={t('Details')} onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
-      <Flex flexDirection="column" maxWidth="350px">
+      <Flex flexDirection="column" maxWidth="420px">
         <Flex p="16px">
           <RoundedImage src={nft.image.thumbnail} height={68} width={68} mr="16px" />
           <Grid flex="1" gridTemplateColumns="1fr 1fr" alignItems="center">

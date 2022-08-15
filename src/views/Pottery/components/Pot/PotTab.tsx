@@ -1,7 +1,7 @@
 import { ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { POT_CATEGORY } from '../../types'
 
 const Wrapper = styled.div`
@@ -25,7 +25,7 @@ interface PotTabProps {
   onItemClick: (index: POT_CATEGORY) => void
 }
 
-const PotTab: React.FC<PotTabProps> = ({ activeIndex, onItemClick }) => {
+const PotTab: React.FC<React.PropsWithChildren<PotTabProps>> = ({ activeIndex, onItemClick }) => {
   const { theme } = useTheme()
   const { t } = useTranslation()
 

@@ -1,6 +1,6 @@
 import { Skeleton, Heading, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import ScoreHeader from '../../../components/YourScore/ScoreHeader'
 import RibbonWithImage from '../../../components/RibbonWithImage'
 import { UserLeaderboardSharedInformation, CompetitionProps } from '../../../types'
@@ -27,7 +27,7 @@ export interface MoDYourScoreProps extends CompetitionProps {
   }
 }
 
-const ModYourScore: React.FC<MoDYourScoreProps> = ({
+const ModYourScore: React.FC<React.PropsWithChildren<MoDYourScoreProps>> = ({
   hasRegistered = false,
   account,
   userTradingInformation,

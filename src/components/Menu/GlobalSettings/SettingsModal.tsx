@@ -10,7 +10,7 @@ import {
   useZapModeManager,
 } from 'state/user/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import QuestionHelper from '../../QuestionHelper'
 import TransactionSettings from './TransactionSettings'
@@ -20,17 +20,16 @@ import { SettingsMode } from './types'
 
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
+  height: auto;
   ${({ theme }) => theme.mediaQueries.xs} {
-    max-height: none;
-    height: 90vh;
+    max-height: 90vh;
   }
   ${({ theme }) => theme.mediaQueries.md} {
     max-height: none;
-    height: auto;
   }
 `
 
-const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss, mode }) => {
+const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss, mode }) => {
   const [showConfirmExpertModal, setShowConfirmExpertModal] = useState(false)
   const [showExpertModeAcknowledgement, setShowExpertModeAcknowledgement] = useUserExpertModeAcknowledgementShow()
   const [expertMode, toggleExpertMode] = useExpertModeManager()

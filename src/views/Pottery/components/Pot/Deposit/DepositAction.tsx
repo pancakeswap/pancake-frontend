@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { useState, useMemo } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Flex, Box, Button, Text, HelpIcon, useTooltip, LogoRoundIcon, Skeleton, InputProps } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { usePotteryData, useLatestVaultAddress } from 'state/pottery/hook'
 import { Input as NumericalInput } from 'components/CurrencyInputPanel/NumericalInput'
@@ -35,7 +35,7 @@ interface DepositActionProps {
   totalValueLockedValue: number
 }
 
-const DepositAction: React.FC<DepositActionProps> = ({ totalValueLockedValue }) => {
+const DepositAction: React.FC<React.PropsWithChildren<DepositActionProps>> = ({ totalValueLockedValue }) => {
   const { t } = useTranslation()
   const { chainId } = useWeb3React()
   const { publicData, userData } = usePotteryData()

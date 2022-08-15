@@ -36,7 +36,7 @@ const ComponentWrapper = styled.div<WrapperProps>`
   transform: translate(-50%, -50%);
 `
 
-const CurvedDivider: React.FC<CurvedDividerProps> = ({
+const CurvedDivider: React.FC<React.PropsWithChildren<CurvedDividerProps>> = ({
   index,
   dividerPosition,
   dividerComponent,

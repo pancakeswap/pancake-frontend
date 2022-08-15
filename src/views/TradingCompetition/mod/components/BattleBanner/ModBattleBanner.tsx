@@ -1,7 +1,7 @@
 import { Flex, Text, Heading } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import AllBunniesImage from '../../../pngs/MoD-hero-bunnies.png'
 import Dar1 from '../../../pngs/MoD-banner-dar.png'
@@ -221,7 +221,7 @@ const ModBattleBanner = () => {
 
 export default ModBattleBanner
 
-export const CoinDecoration: React.FC = () => {
+export const CoinDecoration: React.FC<React.PropsWithChildren> = () => {
   return (
     <Dar3ImageWrapper>
       <Image src={Dar3} alt="dar coin2" width={216} height={298} />

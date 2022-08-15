@@ -1,5 +1,5 @@
 import { Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { differenceInHours } from 'date-fns'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool, VaultKey, DeserializedLockedVaultUser } from 'state/types'
@@ -10,7 +10,7 @@ interface AutoEarningsBreakdownProps {
   account: string
 }
 
-const AutoEarningsBreakdown: React.FC<AutoEarningsBreakdownProps> = ({ pool, account }) => {
+const AutoEarningsBreakdown: React.FC<React.PropsWithChildren<AutoEarningsBreakdownProps>> = ({ pool, account }) => {
   const { t } = useTranslation()
 
   const { earningTokenPrice } = pool

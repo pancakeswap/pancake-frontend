@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useState, useCallback } from 'react'
 import { Flex, Box, Card, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
@@ -66,7 +66,7 @@ const BalanceStyle = styled(Balance)`
   text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2), 0px 4px 12px rgba(14, 14, 44, 0.1);
 `
 
-const Pot: React.FC = () => {
+const Pot: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
   const { isMobile } = useMatchBreakpointsContext()

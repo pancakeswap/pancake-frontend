@@ -5,7 +5,7 @@ import Navbar from 'components/Navbar.bmp'
 import { useTheme } from 'next-themes'
 
 listenOnBnMessage()
-const PoolsMpPageLayout: FC = ({ children }) => {
+const PoolsMpPageLayout: FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   useInterceptLink()
   const systemInfo = useSystemInfo()
   const { setTheme } = useTheme()

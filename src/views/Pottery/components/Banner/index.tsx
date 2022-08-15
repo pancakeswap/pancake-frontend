@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useMemo } from 'react'
 import { Flex, Box, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import StakeToWinButton from 'views/Pottery/components/Banner/StakeToWinButton'
 import { BannerTimer } from 'views/Pottery/components/Timer'
@@ -68,7 +68,7 @@ interface BannerProps {
   handleScroll: () => void
 }
 
-const Banner: React.FC<BannerProps> = ({ handleScroll }) => {
+const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ handleScroll }) => {
   const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
   const { publicData } = usePotteryData()

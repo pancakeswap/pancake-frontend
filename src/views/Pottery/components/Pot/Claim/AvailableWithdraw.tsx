@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Box, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { usePriceCakeBusd } from 'state/farms/hooks'
@@ -14,7 +14,7 @@ interface AvailableWithdrawProps {
   withdrawData: PotteryWithdrawAbleData
 }
 
-const AvailableWithdraw: React.FC<AvailableWithdrawProps> = ({ withdrawData }) => {
+const AvailableWithdraw: React.FC<React.PropsWithChildren<AvailableWithdrawProps>> = ({ withdrawData }) => {
   const {
     t,
     currentLanguage: { locale },

@@ -1,6 +1,6 @@
 import { ReactElement } from 'react'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Box, LinkExternal } from '@pancakeswap/uikit'
 import Container from 'components/Layout/Container'
 import IfoLayout, { IfoLayoutWrapper } from './IfoLayout'
@@ -16,7 +16,7 @@ interface TypeProps {
   ifoSteps: ReactElement
 }
 
-const IfoContainer: React.FC<TypeProps> = ({ ifoSection, ifoSteps }) => {
+const IfoContainer: React.FC<React.PropsWithChildren<TypeProps>> = ({ ifoSection, ifoSteps }) => {
   const { t } = useTranslation()
 
   return (

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { HelpIcon, Text, Skeleton, useTooltip } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 
 const ReferenceElement = styled.div`
@@ -28,7 +28,7 @@ const Container = styled.div`
   align-items: center;
 `
 
-const Liquidity: React.FunctionComponent<LiquidityProps> = ({ liquidity }) => {
+const Liquidity: React.FunctionComponent<React.PropsWithChildren<LiquidityProps>> = ({ liquidity }) => {
   const displayLiquidity =
     liquidity && liquidity.gt(0) ? (
       `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}`

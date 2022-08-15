@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Flex, CardFooter, ExpandableLabel, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import { DeserializedPool } from 'state/types'
 import { CompoundingPoolTag, ManualPoolTag } from 'components/Tags'
@@ -28,7 +28,7 @@ const ExpandedWrapper = styled(Flex)`
   }
 `
 
-const Footer: React.FC<FooterProps> = ({ pool, account, defaultExpanded, children }) => {
+const Footer: React.FC<React.PropsWithChildren<FooterProps>> = ({ pool, account, defaultExpanded, children }) => {
   const { vaultKey } = pool
   const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(defaultExpanded || false)

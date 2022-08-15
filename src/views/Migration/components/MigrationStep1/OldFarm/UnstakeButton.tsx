@@ -1,6 +1,6 @@
 import React from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Button, AutoRenewIcon } from '@pancakeswap/uikit'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useFarmUser } from 'state/farmsV1/hooks'
@@ -15,7 +15,7 @@ export interface UnstakeButtonProps {
   pid: number
 }
 
-const UnstakeButton: React.FC<UnstakeButtonProps> = ({ pid }) => {
+const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ pid }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { toastSuccess } = useToast()

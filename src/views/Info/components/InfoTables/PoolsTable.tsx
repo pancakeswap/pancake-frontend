@@ -6,7 +6,7 @@ import { formatAmount } from 'utils/formatInfoNumbers'
 import { PoolData } from 'state/info/types'
 import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
 import { DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { ClickableColumnHeader, TableWrapper, PageButtons, Arrow, Break } from './shared'
 
 /**
@@ -63,7 +63,7 @@ const SORT_FIELD = {
   lpApr7d: 'lpApr7d',
 }
 
-const LoadingRow: React.FC = () => (
+const LoadingRow: React.FC<React.PropsWithChildren> = () => (
   <ResponsiveGrid>
     <Skeleton />
     <Skeleton />
@@ -75,7 +75,7 @@ const LoadingRow: React.FC = () => (
   </ResponsiveGrid>
 )
 
-const TableLoader: React.FC = () => (
+const TableLoader: React.FC<React.PropsWithChildren> = () => (
   <>
     <LoadingRow />
     <LoadingRow />
@@ -109,7 +109,7 @@ interface PoolTableProps {
   loading?: boolean // If true shows indication that SOME pools are loading, but the ones already fetched will be shown
 }
 
-const PoolTable: React.FC<PoolTableProps> = ({ poolDatas, loading }) => {
+const PoolTable: React.FC<React.PropsWithChildren<PoolTableProps>> = ({ poolDatas, loading }) => {
   // for sorting
   const [sortField, setSortField] = useState(SORT_FIELD.volumeUSD)
   const [sortDirection, setSortDirection] = useState<boolean>(true)

@@ -2,7 +2,7 @@ import React from 'react'
 import { Currency, Percent, Price } from '@pancakeswap/sdk'
 import styled from 'styled-components'
 import { Input, Flex, Text, Button, AutoRenewIcon, SyncAltIcon, HelpIcon, useTooltip } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { escapeRegExp } from 'utils'
 import { Rate } from 'state/limitOrders/types'
 import { getRatePercentageMessage, PercentageDirection } from '../utils/getRatePercentageMessage'
@@ -38,7 +38,7 @@ const DIRECTION_COLORS = {
   [PercentageDirection.MARKET]: 'textSubtle',
 }
 
-const LimitOrderPrice: React.FC<LimitOrderPriceProps> = ({
+const LimitOrderPrice: React.FC<React.PropsWithChildren<LimitOrderPriceProps>> = ({
   id,
   value,
   onUserInput,

@@ -6,7 +6,7 @@ export interface StatBoxItemProps extends BoxProps {
   stat: string
 }
 
-export const StatBoxItem: React.FC<StatBoxItemProps> = ({ title, stat, ...props }) => (
+export const StatBoxItem: React.FC<React.PropsWithChildren<StatBoxItemProps>> = ({ title, stat, ...props }) => (
   <Box {...props}>
     <Text fontSize="12px" color="textSubtle" textAlign="center">
       {title}

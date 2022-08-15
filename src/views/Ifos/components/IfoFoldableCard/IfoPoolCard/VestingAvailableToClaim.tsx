@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 
 interface VestingAvailableToClaimProps {
@@ -10,7 +10,11 @@ interface VestingAvailableToClaimProps {
   decimals: number
 }
 
-const VestingAvailableToClaim: React.FC<VestingAvailableToClaimProps> = ({ amountToReceive, percentage, decimals }) => {
+const VestingAvailableToClaim: React.FC<React.PropsWithChildren<VestingAvailableToClaimProps>> = ({
+  amountToReceive,
+  percentage,
+  decimals,
+}) => {
   const { t } = useTranslation()
 
   const num = useMemo(() => {

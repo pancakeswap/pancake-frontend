@@ -2,7 +2,7 @@ import { Token } from '@pancakeswap/sdk'
 import Balance from 'components/Balance'
 import { Flex, Skeleton, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { FC, ReactNode } from 'react'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { DeserializedPool, DeserializedVaultUser } from 'state/types'
@@ -10,7 +10,7 @@ import { isLocked, isStaked } from 'utils/cakePool'
 import useAvgLockDuration from './LockedPool/hooks/useAvgLockDuration'
 import Apr from './Apr'
 
-const StatWrapper: FC<{ label: ReactNode }> = ({ children, label }) => {
+const StatWrapper: FC<React.PropsWithChildren<{ label: ReactNode }>> = ({ children, label }) => {
   return (
     <Flex mb="2px" justifyContent="space-between" alignItems="center" width="100%">
       {label}
@@ -19,10 +19,9 @@ const StatWrapper: FC<{ label: ReactNode }> = ({ children, label }) => {
   )
 }
 
-export const PerformanceFee: FC<{ userData?: DeserializedVaultUser; performanceFeeAsDecimal?: number }> = ({
-  userData,
-  performanceFeeAsDecimal,
-}) => {
+export const PerformanceFee: FC<
+  React.PropsWithChildren<{ userData?: DeserializedVaultUser; performanceFeeAsDecimal?: number }>
+> = ({ userData, performanceFeeAsDecimal }) => {
   const { t } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Performance fee only applies to the flexible staking rewards.'),
@@ -59,7 +58,10 @@ const TotalToken = ({ total, token }: { total: BigNumber; token: Token }) => {
   return <Skeleton width="90px" height="21px" />
 }
 
-export const TotalLocked: FC<{ totalLocked: BigNumber; lockedToken: Token }> = ({ totalLocked, lockedToken }) => {
+export const TotalLocked: FC<React.PropsWithChildren<{ totalLocked: BigNumber; lockedToken: Token }>> = ({
+  totalLocked,
+  lockedToken,
+}) => {
   const { t } = useTranslation()
 
   return (
@@ -94,7 +96,10 @@ export const DurationAvg = () => {
   )
 }
 
-export const TotalStaked: FC<{ totalStaked: BigNumber; stakingToken: Token }> = ({ totalStaked, stakingToken }) => {
+export const TotalStaked: FC<React.PropsWithChildren<{ totalStaked: BigNumber; stakingToken: Token }>> = ({
+  totalStaked,
+  stakingToken,
+}) => {
   const { t } = useTranslation()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -118,7 +123,10 @@ export const TotalStaked: FC<{ totalStaked: BigNumber; stakingToken: Token }> = 
   )
 }
 
-export const AprInfo: FC<{ pool: DeserializedPool; stakedBalance: BigNumber }> = ({ pool, stakedBalance }) => {
+export const AprInfo: FC<React.PropsWithChildren<{ pool: DeserializedPool; stakedBalance: BigNumber }>> = ({
+  pool,
+  stakedBalance,
+}) => {
   const { t } = useTranslation()
   return (
     <Flex justifyContent="space-between" alignItems="center">

@@ -1,5 +1,5 @@
 import { Button, AutoRenewIcon, Skeleton } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useERC20 } from 'hooks/useContract'
 import { DeserializedPool } from 'state/types'
 import { useApprovePool } from '../../../hooks/useApprove'
@@ -9,7 +9,7 @@ interface ApprovalActionProps {
   isLoading?: boolean
 }
 
-const ApprovalAction: React.FC<ApprovalActionProps> = ({ pool, isLoading = false }) => {
+const ApprovalAction: React.FC<React.PropsWithChildren<ApprovalActionProps>> = ({ pool, isLoading = false }) => {
   const { sousId, stakingToken, earningToken } = pool
   const { t } = useTranslation()
   const stakingTokenContract = useERC20(stakingToken.address || '')

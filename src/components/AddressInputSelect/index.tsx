@@ -2,7 +2,7 @@ import { ChangeEvent, useState, useEffect } from 'react'
 import { Box, BoxProps, Text, Input } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { isAddress } from 'utils'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import CircleLoader from 'components/Loader/CircleLoader'
 
 enum ResultStatus {
@@ -57,7 +57,7 @@ const initialState = {
 
 const defaultValidAddressHandler = () => Promise.resolve(true)
 
-const AddressInputSelect: React.FC<AddressInputSelectProps> = ({
+const AddressInputSelect: React.FC<React.PropsWithChildren<AddressInputSelectProps>> = ({
   onValidAddress = defaultValidAddressHandler,
   onAddressClick,
   ...props

@@ -4,7 +4,7 @@ export interface PercentProps extends TextProps {
   value: number | undefined
 }
 
-const Percent: React.FC<PercentProps> = ({ value, ...rest }) => {
+const Percent: React.FC<React.PropsWithChildren<PercentProps>> = ({ value, ...rest }) => {
   if (!value || Number.isNaN(value)) {
     return <Text {...rest}>-</Text>
   }

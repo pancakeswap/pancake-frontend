@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { TabMenu as UIKitTabMenu, Tab, Flex, VerifiedIcon, CommunityIcon } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { ProposalType } from 'state/types'
 
 interface TabMenuProps {
@@ -36,7 +36,7 @@ const getTypeFromIndex = (index: number) => {
   }
 }
 
-const TabMenu: React.FC<TabMenuProps> = ({ proposalType, onTypeChange }) => {
+const TabMenu: React.FC<React.PropsWithChildren<TabMenuProps>> = ({ proposalType, onTypeChange }) => {
   const { t } = useTranslation()
   const handleItemClick = (index: number) => {
     onTypeChange(getTypeFromIndex(index))

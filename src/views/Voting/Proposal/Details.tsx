@@ -2,7 +2,7 @@ import { Box, Card, CardBody, CardHeader, Flex, Heading, LinkExternal, Text } fr
 import styled from 'styled-components'
 import { format } from 'date-fns'
 import { Proposal } from 'state/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { getBscScanLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
 import { IPFS_GATEWAY } from '../config'
@@ -18,7 +18,7 @@ const DetailBox = styled(Box)`
   border-radius: 16px;
 `
 
-const Details: React.FC<DetailsProps> = ({ proposal }) => {
+const Details: React.FC<React.PropsWithChildren<DetailsProps>> = ({ proposal }) => {
   const { t } = useTranslation()
   const startDate = new Date(proposal.start * 1000)
   const endDate = new Date(proposal.end * 1000)

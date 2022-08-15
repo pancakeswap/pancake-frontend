@@ -20,12 +20,14 @@ export const AspectRatio = ({ ratio, children, ...props }) => (
 )
 
 const NFTMedia: FC<
-  {
-    nft?: NftToken
-    as?: any
-    width: number
-    height: number
-  } & Omit<BoxProps, 'width' | 'height' | 'as'>
+  React.PropsWithChildren<
+    {
+      nft?: NftToken
+      as?: any
+      width: number
+      height: number
+    } & Omit<BoxProps, 'width' | 'height' | 'as'>
+  >
 > = ({ width, height, nft, borderRadius = 'default', as, ...props }) => {
   const dispatch = useAppDispatch()
   const tryVideoNftMedia = useTryVideoNftMedia()

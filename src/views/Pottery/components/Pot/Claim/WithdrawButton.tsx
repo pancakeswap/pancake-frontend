@@ -1,4 +1,4 @@
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Button, AutoRenewIcon } from '@pancakeswap/uikit'
 import { useWithdrawPottery } from 'views/Pottery/hooks/useWithdrawPottery'
 import { PotteryDepositStatus } from 'state/types'
@@ -13,7 +13,7 @@ interface WithdrawButtonProps {
   balanceOf: string
 }
 
-const WithdrawButton: React.FC<WithdrawButtonProps> = ({
+const WithdrawButton: React.FC<React.PropsWithChildren<WithdrawButtonProps>> = ({
   status,
   cakeNumber,
   redeemShare,

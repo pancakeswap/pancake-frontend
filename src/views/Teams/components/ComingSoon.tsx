@@ -1,11 +1,11 @@
 import { BunnyPlaceholderIcon, Flex, Heading } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 interface ComingSoonProps {
   children?: React.ReactNode
 }
 
-const ComingSoon: React.FC<ComingSoonProps> = ({ children }) => {
+const ComingSoon: React.FC<React.PropsWithChildren<ComingSoonProps>> = ({ children }) => {
   const { t } = useTranslation()
 
   return (

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import { Button, AutoRenewIcon, Box, Flex, Message, MessageText, Text } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { MAX_LOCK_DURATION } from 'config/constants/pools'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { useIfoCeiling } from 'state/pools/hooks'
@@ -16,7 +16,7 @@ import { ENABLE_EXTEND_LOCK_AMOUNT } from '../../../helpers'
 
 const ExtendEnable = dynamic(() => import('./ExtendEnable'), { ssr: false })
 
-const LockedModalBody: React.FC<LockedModalBodyPropsType> = ({
+const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType>> = ({
   stakingToken,
   onDismiss,
   lockedAmount,

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Box, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import LineChartLoaderSVG from './LineChartLoaderSVG'
 import BarChartLoaderSVG from './BarChartLoaderSVG'
 import CandleChartLoaderSVG from './CandleChartLoaderSVG'
@@ -20,7 +20,7 @@ const LoadingIndicator = styled(Box)`
   position: relative;
 `
 
-export const BarChartLoader: React.FC = () => {
+export const BarChartLoader: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   return (
     <LoadingIndicator>
@@ -34,7 +34,7 @@ export const BarChartLoader: React.FC = () => {
   )
 }
 
-export const LineChartLoader: React.FC = () => {
+export const LineChartLoader: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   return (
     <LoadingIndicator>
@@ -48,7 +48,7 @@ export const LineChartLoader: React.FC = () => {
   )
 }
 
-export const CandleChartLoader: React.FC = () => {
+export const CandleChartLoader: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   return (
     <LoadingIndicator>

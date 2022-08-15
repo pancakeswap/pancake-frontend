@@ -18,7 +18,13 @@ interface IconStatBoxProps extends TextProps {
   isDisabled?: boolean
 }
 
-const IconStatBox: React.FC<IconStatBoxProps> = ({ icon: Icon, title, subtitle, isDisabled = false, ...props }) => {
+const IconStatBox: React.FC<React.PropsWithChildren<IconStatBoxProps>> = ({
+  icon: Icon,
+  title,
+  subtitle,
+  isDisabled = false,
+  ...props
+}) => {
   return (
     <SecondaryCard {...props}>
       <Flex alignItems="start">

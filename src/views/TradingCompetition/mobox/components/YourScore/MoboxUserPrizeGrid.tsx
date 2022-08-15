@@ -1,5 +1,5 @@
 import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 import styled from 'styled-components'
 import { getRewardGroupAchievements, useMoboxCompetitionRewards } from '../../../helpers'
@@ -13,7 +13,7 @@ const StyledThead = styled.thead`
   border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
-const MoboxUserPrizeGrid: React.FC<{ userTradingInformation?: UserTradingInformation }> = ({
+const MoboxUserPrizeGrid: React.FC<React.PropsWithChildren<{ userTradingInformation?: UserTradingInformation }>> = ({
   userTradingInformation,
 }) => {
   const { t } = useTranslation()

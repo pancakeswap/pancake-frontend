@@ -1,7 +1,7 @@
 import { Tag, TagProps, Text, SplitIcon, LockIcon, UnlockIcon, HotIcon, Box } from '@pancakeswap/uikit'
 import { FlexGap, FlexGapProps } from 'components/Layout/Flex'
 import Trans from 'components/Trans'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { FC, ReactNode, useMemo } from 'react'
 import { DeserializedLockedVaultUser } from 'state/types'
 import { VaultPosition, getVaultPosition } from 'utils/cakePool'
@@ -39,7 +39,7 @@ const positionLabel: Record<VaultPosition, ReactNode> = {
   [VaultPosition.AfterBurning]: <Trans>After Burning</Trans>,
 }
 
-const VaultPositionTag: FC<{ position: VaultPosition }> = ({ position }) => {
+const VaultPositionTag: FC<React.PropsWithChildren<{ position: VaultPosition }>> = ({ position }) => {
   return (
     <Tag {...tagConfig[position]}>
       <Box as={iconConfig[position]} mr="4px" />
@@ -48,10 +48,9 @@ const VaultPositionTag: FC<{ position: VaultPosition }> = ({ position }) => {
   )
 }
 
-export const VaultPositionTagWithLabel: FC<{ userData: DeserializedLockedVaultUser } & FlexGapProps> = ({
-  userData,
-  ...props
-}) => {
+export const VaultPositionTagWithLabel: FC<
+  React.PropsWithChildren<{ userData: DeserializedLockedVaultUser } & FlexGapProps>
+> = ({ userData, ...props }) => {
   const { t } = useTranslation()
 
   const position = useMemo(() => getVaultPosition(userData), [userData])

@@ -6,7 +6,7 @@ import orderBy from 'lodash/orderBy'
 import { ArrowDownIcon, ArrowUpIcon, Flex, Skeleton, Table, Td, Th } from '@pancakeswap/uikit'
 import { formatNumber } from 'utils/formatBalance'
 import CollapsibleCard from 'components/CollapsibleCard'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { SortType } from '../../types'
 import { StyledSortButton, TableWrapper } from './styles'
 import useGetCollectionDistribution from '../../hooks/useGetCollectionDistribution'
@@ -15,7 +15,7 @@ interface CollectionTraitsProps {
   collectionAddress: string
 }
 
-const CollectionTraits: React.FC<CollectionTraitsProps> = ({ collectionAddress }) => {
+const CollectionTraits: React.FC<React.PropsWithChildren<CollectionTraitsProps>> = ({ collectionAddress }) => {
   const { data, isFetching } = useGetCollectionDistribution(collectionAddress)
   const [raritySort, setRaritySort] = useState<Record<string, SortType>>({})
   const { t } = useTranslation()

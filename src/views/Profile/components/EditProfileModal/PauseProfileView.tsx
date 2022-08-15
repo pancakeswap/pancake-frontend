@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 import { useProfile } from 'state/profile/hooks'
 import useToast from 'hooks/useToast'
@@ -14,7 +14,7 @@ interface PauseProfilePageProps extends InjectedModalProps {
   onSuccess?: () => void
 }
 
-const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss, onSuccess }) => {
+const PauseProfilePage: React.FC<React.PropsWithChildren<PauseProfilePageProps>> = ({ onDismiss, onSuccess }) => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
   const { profile, refresh: refreshProfile } = useProfile()
   const {

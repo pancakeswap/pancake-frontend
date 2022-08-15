@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Modal, InjectedModalProps, Flex, Box, Text, Button, AutoRenewIcon, Image } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import Balance from 'components/Balance'

@@ -25,7 +25,7 @@ interface WinnerProps {
   address: string
 }
 
-const Winner: React.FC<WinnerProps> = ({ address }) => {
+const Winner: React.FC<React.PropsWithChildren<WinnerProps>> = ({ address }) => {
   const { profile, isFetching } = useProfileForAddress(address)
 
   return (
@@ -37,9 +37,11 @@ const Winner: React.FC<WinnerProps> = ({ address }) => {
             <Text fontSize="12px" color="primary">
               {truncateHash(address)}
             </Text>
-            <Text fontSize="12px" color="primary">
-              {`@${profile?.username}`}
-            </Text>
+            {profile?.username && (
+              <Text fontSize="12px" color="primary">
+                {`@${profile?.username}`}
+              </Text>
+            )}
           </Box>
         </>
       ) : (

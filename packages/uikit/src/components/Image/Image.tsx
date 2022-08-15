@@ -13,7 +13,7 @@ const StyledImage = styled.img`
   width: 100%;
 `;
 
-const Image: React.FC<ImageProps> = ({ src, alt, width, height, ...props }) => {
+const Image: React.FC<React.PropsWithChildren<ImageProps>> = ({ src, alt, width, height, ...props }) => {
   const imgRef = useRef<HTMLDivElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text, Flex } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { DeserializedPool } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
@@ -23,7 +23,7 @@ interface AprRowProps {
   pool: DeserializedPool
 }
 
-const AprRow: React.FunctionComponent<AprRowProps> = ({ pool }) => {
+const AprRow: React.FunctionComponent<React.PropsWithChildren<AprRowProps>> = ({ pool }) => {
   const { vaultKey, userData } = pool
   const { t } = useTranslation()
 

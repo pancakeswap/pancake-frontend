@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Button, Text, Link, HelpIcon } from '@pancakeswap/uikit'
 import { setupNetwork } from 'utils/wallet'
 import { useWeb3React } from '@web3-react/core'
@@ -17,7 +17,7 @@ interface WalletWrongNetworkProps {
   onDismiss: () => void
 }
 
-const WalletWrongNetwork: React.FC<WalletWrongNetworkProps> = ({ onDismiss }) => {
+const WalletWrongNetwork: React.FC<React.PropsWithChildren<WalletWrongNetworkProps>> = ({ onDismiss }) => {
   const { t } = useTranslation()
   const { connector, library } = useWeb3React()
 

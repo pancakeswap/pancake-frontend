@@ -1,5 +1,5 @@
 import { Flex, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import isEmpty from 'lodash/isEmpty'
 import { useGetNftActivityFilters } from 'state/nftMarket/hooks'
 import { MarketEvent } from 'state/nftMarket/types'
@@ -34,7 +34,7 @@ interface FiltersProps {
   address: string
 }
 
-const ActivityFilters: React.FC<FiltersProps> = ({ address }) => {
+const ActivityFilters: React.FC<React.PropsWithChildren<FiltersProps>> = ({ address }) => {
   const { t } = useTranslation()
   const nftActivityFilters = useGetNftActivityFilters(address)
 

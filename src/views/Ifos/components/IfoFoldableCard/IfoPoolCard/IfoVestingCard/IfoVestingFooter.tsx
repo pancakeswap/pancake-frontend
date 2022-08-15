@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { Flex, Text, Skeleton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { format } from 'date-fns'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { getFullDisplayBalance } from 'utils/formatBalance'
@@ -19,7 +19,7 @@ export interface FooterEntryProps {
   value: string
 }
 
-const FooterEntry: React.FC<FooterEntryProps> = ({ label, value }) => {
+const FooterEntry: React.FC<React.PropsWithChildren<FooterEntryProps>> = ({ label, value }) => {
   return (
     <Flex justifyContent="space-between" alignItems="center">
       <Text bold fontSize="12px" color="textSubtle" textTransform="uppercase">
@@ -43,7 +43,12 @@ interface IfoVestingFooterProps {
   walletIfoData: WalletIfoData
 }
 
-const IfoVestingFooter: React.FC<IfoVestingFooterProps> = ({ ifo, poolId, publicIfoData, walletIfoData }) => {
+const IfoVestingFooter: React.FC<React.PropsWithChildren<IfoVestingFooterProps>> = ({
+  ifo,
+  poolId,
+  publicIfoData,
+  walletIfoData,
+}) => {
   const { t } = useTranslation()
   const { token } = ifo
   const { vestingInformation } = publicIfoData[poolId]

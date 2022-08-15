@@ -28,7 +28,11 @@ const StyledEditProfileAvatar = styled.div`
   }
 `
 
-const EditProfileAvatar: React.FC<{ src: string; alt?: string; onSuccess: () => void }> = ({ src, alt, onSuccess }) => {
+const EditProfileAvatar: React.FC<React.PropsWithChildren<{ src: string; alt?: string; onSuccess: () => void }>> = ({
+  src,
+  alt,
+  onSuccess,
+}) => {
   const [onEditProfileModal] = useModal(<EditProfileModal onSuccess={onSuccess} />, false)
 
   return (

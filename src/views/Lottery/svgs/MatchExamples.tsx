@@ -1,6 +1,9 @@
 import { Svg, SvgProps } from '@pancakeswap/uikit'
 
-export const MatchExampleA: React.FC<{ isDark: boolean } & SvgProps> = ({ isDark, ...rest }) => {
+export const MatchExampleA: React.FC<React.PropsWithChildren<{ isDark: boolean } & SvgProps>> = ({
+  isDark,
+  ...rest
+}) => {
   return (
     <Svg viewBox="0 0 258 46" {...rest}>
       <svg width="258" height="46" viewBox="0 0 258 46" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -93,7 +96,10 @@ export const MatchExampleA: React.FC<{ isDark: boolean } & SvgProps> = ({ isDark
     </Svg>
   )
 }
-export const MatchExampleB: React.FC<{ isDark: boolean } & SvgProps> = ({ isDark, ...rest }) => {
+export const MatchExampleB: React.FC<React.PropsWithChildren<{ isDark: boolean } & SvgProps>> = ({
+  isDark,
+  ...rest
+}) => {
   return (
     <Svg viewBox="0 0 258 45" {...rest}>
       <svg width="258" height="45" viewBox="0 0 258 45" fill="none" xmlns="http://www.w3.org/2000/svg">

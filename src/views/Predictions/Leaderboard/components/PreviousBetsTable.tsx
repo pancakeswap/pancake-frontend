@@ -3,7 +3,7 @@ import times from 'lodash/times'
 import orderBy from 'lodash/orderBy'
 import { Skeleton, Table, Td, Th } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { getBetHistory, transformBetResponse } from 'state/predictions/helpers'
 import { Bet } from 'state/types'
 import PositionLabel from './PositionLabel'
@@ -16,7 +16,12 @@ interface PreviousBetsTableProps {
   api: string
 }
 
-const PreviousBetsTable: React.FC<PreviousBetsTableProps> = ({ numberOfBets = 5, account, token, api }) => {
+const PreviousBetsTable: React.FC<React.PropsWithChildren<PreviousBetsTableProps>> = ({
+  numberOfBets = 5,
+  account,
+  token,
+  api,
+}) => {
   const [isFetching, setIsFetching] = useState(false)
   const [bets, setBets] = useState<Bet[]>([])
   const { t } = useTranslation()

@@ -1,4 +1,4 @@
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Text, Flex, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { format } from 'date-fns'
 
@@ -8,7 +8,7 @@ interface PropsType {
   color: string
 }
 
-const DateRow: React.FC<PropsType> = ({ title, value, color }) => {
+const DateRow: React.FC<React.PropsWithChildren<PropsType>> = ({ title, value, color }) => {
   const { t } = useTranslation()
   const tooltipContent = t(
     'You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked, i.e. when the staking period ends.',

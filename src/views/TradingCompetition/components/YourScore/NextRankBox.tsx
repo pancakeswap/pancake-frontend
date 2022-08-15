@@ -44,7 +44,7 @@ const ArrowWrapper = styled(Flex)`
   }
 `
 
-const NextRank: React.FC<NextRankProps> = ({
+const NextRank: React.FC<React.PropsWithChildren<NextRankProps>> = ({
   title = '',
   footer,
   currentMedal,

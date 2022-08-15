@@ -1,4 +1,4 @@
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { Flex, Heading, Text } from '@pancakeswap/uikit'
 import getTimePeriods from 'utils/getTimePeriods'
@@ -29,7 +29,7 @@ const StyledWhiteText = styled(Text)`
   }
 `
 
-export const BannerTimer: React.FC = () => {
+export const BannerTimer: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
 
   const secondsRemaining = remainTimeToNextFriday()

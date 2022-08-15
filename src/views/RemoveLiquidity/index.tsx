@@ -25,7 +25,7 @@ import { callWithEstimateGas } from 'utils/calls'
 import { getLPSymbol } from 'utils/getLpSymbol'
 import { getZapAddress } from 'utils/addressHelpers'
 import { ZapCheckbox } from 'components/CurrencyInputPanel/ZapCheckbox'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useLPApr } from 'state/swap/hooks'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
@@ -60,6 +60,7 @@ import Page from '../Page'
 import ConfirmLiquidityModal from '../Swap/components/ConfirmRemoveLiquidityModal'
 import { logError } from '../../utils/sentry'
 import { formatAmount } from '../../utils/formatInfoNumbers'
+import { CommonBasesType } from '../../components/SearchModal/types'
 
 const BorderCard = styled.div`
   border: solid 1px ${({ theme }) => theme.colors.cardBorder};
@@ -702,6 +703,8 @@ export default function RemoveLiquidity() {
                 pair={pair}
                 id="liquidity-amount"
                 onCurrencySelect={() => null}
+                showCommonBases
+                commonBasesType={CommonBasesType.LIQUIDITY}
               />
               <ColumnCenter>
                 <ArrowDownIcon width="24px" my="16px" />
@@ -729,6 +732,8 @@ export default function RemoveLiquidity() {
                 label={t('Output')}
                 onCurrencySelect={handleSelectCurrencyA}
                 id="remove-liquidity-tokena"
+                showCommonBases
+                commonBasesType={CommonBasesType.LIQUIDITY}
               />
               <ColumnCenter>
                 <AddIcon width="24px" my="16px" />
@@ -756,6 +761,8 @@ export default function RemoveLiquidity() {
                 label={t('Output')}
                 onCurrencySelect={handleSelectCurrencyB}
                 id="remove-liquidity-tokenb"
+                showCommonBases
+                commonBasesType={CommonBasesType.LIQUIDITY}
               />
             </Box>
           )}

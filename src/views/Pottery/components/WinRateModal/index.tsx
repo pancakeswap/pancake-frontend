@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Modal, Text, Box, Flex, BalanceInput } from '@pancakeswap/uikit'
 import useWinRateCalculator from 'views/Pottery/hooks/useWinRateCalculator'
 import { usePriceCakeBusd } from 'state/farms/hooks'
@@ -40,7 +40,12 @@ interface WinRateModalProps {
   totalSupply: BigNumber
 }
 
-const WinRateModal: React.FC<WinRateModalProps> = ({ onDismiss, onBack, stakingTokenBalance, totalSupply }) => {
+const WinRateModal: React.FC<React.PropsWithChildren<WinRateModalProps>> = ({
+  onDismiss,
+  onBack,
+  stakingTokenBalance,
+  totalSupply,
+}) => {
   const { t } = useTranslation()
   const cakePrice = usePriceCakeBusd()
   const { getLockedApy } = useVaultApy()

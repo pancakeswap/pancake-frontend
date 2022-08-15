@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text, ChevronRightIcon, useModal } from '@pancakeswap/uikit'
 import Loading from 'components/Loading'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'

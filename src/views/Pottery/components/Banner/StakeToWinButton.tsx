@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components'
 import { Flex, Button, Link } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { TicketCard } from '../../svgs'
 
 const mainTicketAnimation = keyframes`
@@ -48,7 +48,7 @@ interface StakeToWinButtonProps {
   handleScroll: () => void
 }
 
-const StakeToWinButton: React.FC<StakeToWinButtonProps> = ({ handleScroll }) => {
+const StakeToWinButton: React.FC<React.PropsWithChildren<StakeToWinButtonProps>> = ({ handleScroll }) => {
   const { t } = useTranslation()
 
   return (

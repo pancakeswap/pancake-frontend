@@ -12,7 +12,7 @@ import {
   Box,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useUserPredictionChartDisclaimerShow } from 'state/user/hooks'
 
 const Ul = styled.ul`
@@ -26,7 +26,7 @@ const Ul = styled.ul`
   }
 `
 
-const ChartDisclaimer: React.FC<InjectedModalProps> = ({ onDismiss }) => {
+const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
   const [showDisclaimer, setShowDisclaimer] = useUserPredictionChartDisclaimerShow()
   const { t } = useTranslation()
 
@@ -35,7 +35,7 @@ const ChartDisclaimer: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   }
 
   return (
-    <ModalContainer minWidth="320px">
+    <ModalContainer $minWidth="320px">
       <ModalBody p="24px" maxWidth="400px">
         <Flex justifyContent="center" mb="32px">
           <Image src="/images/predictions/chartwarning.svg" width={190} height={118} />

@@ -32,7 +32,7 @@ const RibbonWrapper = styled(Flex)<{ ribbonDirection?: string }>`
   transform: translate(-50%, 0);
 `
 
-const RibbonWithImage: React.FC<RibbonProps> = ({
+const RibbonWithImage: React.FC<React.PropsWithChildren<RibbonProps>> = ({
   imageComponent,
   ribbonDirection = 'down',
   children,

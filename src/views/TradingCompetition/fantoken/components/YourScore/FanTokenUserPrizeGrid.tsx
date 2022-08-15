@@ -1,5 +1,5 @@
 import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 import styled from 'styled-components'
 import { getRewardGroupAchievements, useFanTokenCompetitionRewards } from '../../../helpers'
@@ -12,7 +12,9 @@ const StyledThead = styled.thead`
   border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
-const FanTokenUserPrizeGrid: React.FC<{ userTradingInformation? }> = ({ userTradingInformation }) => {
+const FanTokenUserPrizeGrid: React.FC<React.PropsWithChildren<{ userTradingInformation? }>> = ({
+  userTradingInformation,
+}) => {
   const { t } = useTranslation()
   const {
     userRewardGroup,

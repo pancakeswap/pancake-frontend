@@ -14,7 +14,7 @@ import {
   CloseIcon,
 } from '@pancakeswap/uikit'
 import { FetchStatus } from 'config/constants/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import orderBy from 'lodash/orderBy'
 import { useAppDispatch } from 'state'
 import { useGetNftFilterLoadingState, useGetNftFilters } from 'state/nftMarket/hooks'
@@ -46,7 +46,12 @@ const CloseButton = styled(IconButton)`
   border-bottom-left-radius: 0;
 `
 
-export const ListTraitFilter: React.FC<ListTraitFilterProps> = ({ title, traitType, items, collectionAddress }) => {
+export const ListTraitFilter: React.FC<React.PropsWithChildren<ListTraitFilterProps>> = ({
+  title,
+  traitType,
+  items,
+  collectionAddress,
+}) => {
   const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [query, setQuery] = useState('')

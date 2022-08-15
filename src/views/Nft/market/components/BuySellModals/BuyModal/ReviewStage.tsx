@@ -1,7 +1,7 @@
 import { useWeb3React } from '@web3-react/core'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { Flex, Text, Button, ButtonMenu, ButtonMenuItem, Message, Link } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { NftToken } from 'state/nftMarket/types'
 import { getBscScanLinkForNft } from 'utils'
 import { FetchStatus } from 'config/constants/types'
@@ -20,7 +20,7 @@ interface ReviewStageProps {
   continueToNextStage: () => void
 }
 
-const ReviewStage: React.FC<ReviewStageProps> = ({
+const ReviewStage: React.FC<React.PropsWithChildren<ReviewStageProps>> = ({
   nftToBuy,
   paymentCurrency,
   setPaymentCurrency,

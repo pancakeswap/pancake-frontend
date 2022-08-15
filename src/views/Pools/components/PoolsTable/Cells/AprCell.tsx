@@ -2,7 +2,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { DeserializedPool } from 'state/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import BaseCell, { CellContent } from './BaseCell'
 import Apr from '../../Apr'
 
@@ -10,7 +10,7 @@ interface AprCellProps {
   pool: DeserializedPool
 }
 
-const AprCell: React.FC<AprCellProps> = ({ pool }) => {
+const AprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
   const { userData } = pool

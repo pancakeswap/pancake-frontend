@@ -8,7 +8,7 @@ interface Props {
   expanded?: boolean;
 }
 
-export const ExpandableButton: React.FC<Props> = ({ onClick, expanded, children }) => {
+export const ExpandableButton: React.FC<React.PropsWithChildren<Props>> = ({ onClick, expanded, children }) => {
   return (
     <IconButton aria-label="Hide or show expandable content" onClick={onClick}>
       {children}
@@ -20,7 +20,7 @@ ExpandableButton.defaultProps = {
   expanded: false,
 };
 
-export const ExpandableLabel: React.FC<Props> = ({ onClick, expanded, children }) => {
+export const ExpandableLabel: React.FC<React.PropsWithChildren<Props>> = ({ onClick, expanded, children }) => {
   return (
     <Button
       variant="text"

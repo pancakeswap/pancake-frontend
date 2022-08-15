@@ -45,7 +45,7 @@ const LaurelWrapper = styled.div<{ dir?: 'left' | 'right' }>`
   }
 `
 
-const Ribbon: React.FC<RibbonProps> = ({ children, ribbonDirection }) => {
+const Ribbon: React.FC<React.PropsWithChildren<RibbonProps>> = ({ children, ribbonDirection }) => {
   const RibbonDown = () => {
     return (
       <Wrapper ribbonDirection={ribbonDirection}>

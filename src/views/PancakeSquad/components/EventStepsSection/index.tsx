@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Box, Button, Card, CardBody, Flex, Step, Stepper, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { StyledWaveContainer, LandingBodyWrapper } from 'views/PancakeSquad/styles'
 import useTheme from 'hooks/useTheme'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
@@ -10,7 +10,13 @@ import stepsConfigBuilder from './config'
 import { StyledBunniesSquadImg, StyledEventStepsSectionContainer } from './styles'
 import { EventStepsProps } from './types'
 
-const EventStepsSection: React.FC<EventStepsProps> = ({ eventInfos, userInfos, isLoading, userStatus, account }) => {
+const EventStepsSection: React.FC<React.PropsWithChildren<EventStepsProps>> = ({
+  eventInfos,
+  userInfos,
+  isLoading,
+  userStatus,
+  account,
+}) => {
   const { t } = useTranslation()
   const { theme, isDark } = useTheme()
   const { balance: cakeBalance } = useGetCakeBalance()

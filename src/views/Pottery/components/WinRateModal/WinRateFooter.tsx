@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 import { Flex, Box, Text, ExpandableLabel, Grid } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 const Footer = styled(Flex)`
   width: 100%;
@@ -30,7 +30,7 @@ interface WinRateFooterProps {
   apy: number
 }
 
-const WinRateFooter: React.FC<WinRateFooterProps> = ({ apy }) => {
+const WinRateFooter: React.FC<React.PropsWithChildren<WinRateFooterProps>> = ({ apy }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const { t } = useTranslation()
 

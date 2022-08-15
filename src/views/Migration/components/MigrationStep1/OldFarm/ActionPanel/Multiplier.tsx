@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import { MultiplierProps } from '../Cells/Multiplier'
 
@@ -31,7 +31,7 @@ const MultiplierWrapper = styled.div`
   }
 `
 
-const TotalStaked: React.FC<MultiplierProps> = ({ multiplier }) => {
+const TotalStaked: React.FC<React.PropsWithChildren<MultiplierProps>> = ({ multiplier }) => {
   const { t } = useTranslation()
   const displayMultiplier = multiplier ? multiplier.toLowerCase() : '0x'
 

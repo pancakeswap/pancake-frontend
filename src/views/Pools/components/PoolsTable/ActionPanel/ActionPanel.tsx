@@ -4,7 +4,7 @@ import { useVaultPoolByKey } from 'state/pools/hooks'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import BigNumber from 'bignumber.js'
 import { DeserializedPool, VaultKey, DeserializedLockedCakeVault, DeserializedLockedVaultUser } from 'state/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { CompoundingPoolTag, ManualPoolTag } from 'components/Tags'
 import { BIG_ZERO } from 'utils/bigNumber'
 import Harvest from './Harvest'
@@ -118,7 +118,7 @@ const YieldBoostDurationRow = ({ lockEndTime, lockStartTime }) => {
   )
 }
 
-const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, expanded }) => {
+const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ account, pool, expanded }) => {
   const { userData, vaultKey } = pool
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()

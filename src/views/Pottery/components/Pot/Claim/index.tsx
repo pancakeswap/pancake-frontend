@@ -18,7 +18,7 @@ const Container = styled(Flex)`
   padding: 16px 24px;
 `
 
-const Claim: React.FC = () => {
+const Claim: React.FC<React.PropsWithChildren> = () => {
   const { account } = useActiveWeb3React()
   const { publicData, userData } = usePotteryData()
 

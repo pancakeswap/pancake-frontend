@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import Balance from 'components/Balance'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
@@ -14,7 +14,7 @@ interface RewardBracketDetailProps {
   isLoading?: boolean
 }
 
-const RewardBracketDetail: React.FC<RewardBracketDetailProps> = ({
+const RewardBracketDetail: React.FC<React.PropsWithChildren<RewardBracketDetailProps>> = ({
   rewardBracket,
   cakeAmount,
   numberWinners,

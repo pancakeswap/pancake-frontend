@@ -6,7 +6,12 @@ interface HeadingProps extends TextProps {
   firstColor?: keyof Colors
 }
 
-const ColoredWordHeading: React.FC<HeadingProps> = ({ text, firstColor, mb = '24px', ...props }) => {
+const ColoredWordHeading: React.FC<React.PropsWithChildren<HeadingProps>> = ({
+  text,
+  firstColor,
+  mb = '24px',
+  ...props
+}) => {
   const { theme } = useTheme()
   const split = text.split(' ')
   const firstWord = split[0]

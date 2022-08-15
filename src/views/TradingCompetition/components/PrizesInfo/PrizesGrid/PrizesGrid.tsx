@@ -15,7 +15,7 @@ import {
 import Image from 'next/image'
 import Trans from 'components/Trans'
 import { Tiers, PrizesConfig } from 'config/constants/trading-competition/prizes'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useState } from 'react'
 import { BoldTd, Td, StyledPrizeTable } from '../../StyledPrizeTable'
 
@@ -74,7 +74,7 @@ interface PrizesGridProps {
   prizesConfig: PrizesConfig
 }
 
-const PrizesGrid: React.FC<PrizesGridProps> = ({ prizesConfig }) => {
+const PrizesGrid: React.FC<React.PropsWithChildren<PrizesGridProps>> = ({ prizesConfig }) => {
   const [tab, setTab] = useState(0)
   const { t } = useTranslation()
   const rows = prizesConfig[tab + 1]

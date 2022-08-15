@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Box, Heading, Text, Button, Flex, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import Container from 'components/Layout/Container'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
 
 const StyledHero = styled(Box)`

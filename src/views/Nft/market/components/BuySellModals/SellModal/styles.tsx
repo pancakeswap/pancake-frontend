@@ -41,7 +41,7 @@ interface BnbAmountCellProps {
   bnbAmount: number
 }
 
-export const BnbAmountCell: React.FC<BnbAmountCellProps> = ({ bnbAmount }) => {
+export const BnbAmountCell: React.FC<React.PropsWithChildren<BnbAmountCellProps>> = ({ bnbAmount }) => {
   const bnbBusdPrice = useBNBBusdPrice()
   if (!bnbAmount || bnbAmount === 0) {
     return (
@@ -77,7 +77,11 @@ interface FeeAmountCellProps {
   tradingFee: number
 }
 
-export const FeeAmountCell: React.FC<FeeAmountCellProps> = ({ bnbAmount, creatorFee, tradingFee }) => {
+export const FeeAmountCell: React.FC<React.PropsWithChildren<FeeAmountCellProps>> = ({
+  bnbAmount,
+  creatorFee,
+  tradingFee,
+}) => {
   if (!bnbAmount || bnbAmount === 0) {
     return (
       <Flex alignItems="center" justifyContent="flex-end">

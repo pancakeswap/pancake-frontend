@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
 
@@ -32,7 +32,7 @@ export interface MultiplierProps {
   multiplier: string
 }
 
-const Multiplier: React.FC<MultiplierProps> = ({ multiplier }) => {
+const Multiplier: React.FC<React.PropsWithChildren<MultiplierProps>> = ({ multiplier }) => {
   const displayMultiplier = multiplier ? multiplier.toLowerCase() : `0x`
   const { t } = useTranslation()
   const tooltipContent = (

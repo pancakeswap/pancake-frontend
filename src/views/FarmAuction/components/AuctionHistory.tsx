@@ -13,7 +13,7 @@ import {
   Spinner,
   useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import AuctionLeaderboardTable from './AuctionLeaderboard/AuctionLeaderboardTable'
 import { useFarmAuction } from '../hooks/useFarmAuction'
 
@@ -37,7 +37,7 @@ const StyledIconButton = styled(IconButton)`
   }
 `
 
-const AuctionHistory: React.FC<AuctionHistoryProps> = ({ mostRecentClosedAuctionId }) => {
+const AuctionHistory: React.FC<React.PropsWithChildren<AuctionHistoryProps>> = ({ mostRecentClosedAuctionId }) => {
   const [historyAuctionId, setHistoryAuctionId] = useState(
     mostRecentClosedAuctionId ? mostRecentClosedAuctionId.toString() : '0',
   )

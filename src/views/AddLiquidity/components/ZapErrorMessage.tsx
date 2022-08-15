@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { Message, MessageText, Button, Box, Flex } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useToast from 'hooks/useToast'
 
 interface ZapErrorMessagesProps {
@@ -10,7 +10,7 @@ interface ZapErrorMessagesProps {
   onModalDismiss: () => void
 }
 
-export const ZapErrorMessages: React.FC<ZapErrorMessagesProps> = memo(
+export const ZapErrorMessages: React.FC<React.PropsWithChildren<ZapErrorMessagesProps>> = memo(
   ({ isSingleToken, zapMode, toggleZapMode, onModalDismiss }) => {
     const { t } = useTranslation()
     const { toastInfo } = useToast()

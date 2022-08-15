@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Flex, Heading } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
 export interface TimerProps {
   seconds?: number
@@ -23,7 +23,13 @@ const StyledTimerText = styled(Heading)`
   -webkit-text-fill-color: transparent;
 `
 
-const Wrapper: React.FC<TimerProps> = ({ minutes, hours, days, seconds, wrapperClassName }) => {
+const Wrapper: React.FC<React.PropsWithChildren<TimerProps>> = ({
+  minutes,
+  hours,
+  days,
+  seconds,
+  wrapperClassName,
+}) => {
   const { t } = useTranslation()
 
   return (

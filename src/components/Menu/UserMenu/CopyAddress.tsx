@@ -1,6 +1,6 @@
 import { Box, Flex, FlexProps } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { CopyButton } from '../../CopyButton'
 
 interface CopyAddressProps extends FlexProps {
@@ -50,7 +50,7 @@ const Address = styled.div`
   }
 `
 
-const CopyAddress: React.FC<CopyAddressProps> = ({ account, ...props }) => {
+const CopyAddress: React.FC<React.PropsWithChildren<CopyAddressProps>> = ({ account, ...props }) => {
   const { t } = useTranslation()
   return (
     <Box position="relative" {...props}>

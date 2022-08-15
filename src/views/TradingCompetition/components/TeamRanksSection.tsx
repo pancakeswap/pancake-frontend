@@ -1,13 +1,13 @@
 import { Box } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import PageSection from 'components/PageSection'
+import { useTranslation } from '@pancakeswap/localization'
 import { TeamRanksProps } from '../types'
 import RibbonWithImage from './RibbonWithImage'
 import TeamRanks from './TeamRanks/TeamRanks'
-import { useTranslation } from '../../../contexts/Localization'
 import RanksIcon from '../svgs/RanksIcon'
 
-const TeamRanksSection: React.FC<TeamRanksProps> = ({
+const TeamRanksSection: React.FC<React.PropsWithChildren<TeamRanksProps>> = ({
   image,
   team1LeaderboardInformation,
   team2LeaderboardInformation,

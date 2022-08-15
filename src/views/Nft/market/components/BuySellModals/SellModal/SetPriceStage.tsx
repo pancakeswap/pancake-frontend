@@ -3,7 +3,7 @@ import { Flex, Grid, Box, Text, Button, BinanceIcon, ErrorIcon, useTooltip, Skel
 import { multiplyPriceByAmount } from 'utils/prices'
 import { escapeRegExp } from 'utils'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { NftToken } from 'state/nftMarket/types'
 import { useGetCollection } from 'state/nftMarket/hooks'
 import { Divider } from '../shared/styles'
@@ -26,7 +26,7 @@ const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." charact
 
 // Stage where user puts price for NFT they're about to put on sale
 // Also shown when user wants to adjust the price of already listed NFT
-const SetPriceStage: React.FC<SetPriceStageProps> = ({
+const SetPriceStage: React.FC<React.PropsWithChildren<SetPriceStageProps>> = ({
   nftToSell,
   variant,
   lowestPrice,

@@ -1,5 +1,5 @@
 import { Heading } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import PageHeader from 'components/PageHeader'
 import Crumbs from './Crumbs'
 

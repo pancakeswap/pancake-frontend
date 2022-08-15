@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 import { Flex, Box, Text, ExpandableLabel, LinkExternal, Grid, HelpIcon, useTooltip } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { getApy } from 'utils/compoundApyHelpers'
 
 const Footer = styled(Flex)`
@@ -39,7 +39,7 @@ interface RoiCalculatorFooterProps {
   performanceFee: number
 }
 
-const RoiCalculatorFooter: React.FC<RoiCalculatorFooterProps> = ({
+const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterProps>> = ({
   isFarm,
   apr,
   apy,

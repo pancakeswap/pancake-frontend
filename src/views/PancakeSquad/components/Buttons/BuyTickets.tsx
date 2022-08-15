@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from 'react'
 import { Button, useModal } from '@pancakeswap/uikit'
-import { ContextApi } from 'contexts/Localization/types'
+import { ContextApi } from '@pancakeswap/localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BigNumber } from '@ethersproject/bignumber'
 import { MaxUint256 } from '@ethersproject/constants'
@@ -36,7 +36,7 @@ type BuyTicketsProps = {
   startTimestamp: number
 }
 
-const BuyTicketsButtons: React.FC<BuyTicketsProps> = ({
+const BuyTicketsButtons: React.FC<React.PropsWithChildren<BuyTicketsProps>> = ({
   t,
   account,
   saleStatus,

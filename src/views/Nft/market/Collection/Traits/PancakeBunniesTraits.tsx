@@ -3,7 +3,7 @@ import { Skeleton, Table, Td, Th, Flex, ArrowUpIcon, ArrowDownIcon } from '@panc
 import times from 'lodash/times'
 import { useRouter } from 'next/router'
 import { formatNumber } from 'utils/formatBalance'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import CollapsibleCard from 'components/CollapsibleCard'
 import orderBy from 'lodash/orderBy'
 import { useGetCollection } from 'state/nftMarket/hooks'
@@ -18,7 +18,7 @@ interface PancakeBunniesTraitsProps {
   collectionAddress: string
 }
 
-const LowestPriceCell: React.FC<{ bunnyId: string }> = ({ bunnyId }) => {
+const LowestPriceCell: React.FC<React.PropsWithChildren<{ bunnyId: string }>> = ({ bunnyId }) => {
   const { isFetching, lowestPrice } = useGetLowestPriceFromBunnyId(bunnyId)
 
   if (isFetching) {
@@ -36,7 +36,7 @@ const LowestPriceCell: React.FC<{ bunnyId: string }> = ({ bunnyId }) => {
   return <BNBAmountLabel justifyContent="flex-end" amount={lowestPrice} width="100px" />
 }
 
-const PancakeBunniesTraits: React.FC<PancakeBunniesTraitsProps> = ({ collectionAddress }) => {
+const PancakeBunniesTraits: React.FC<React.PropsWithChildren<PancakeBunniesTraitsProps>> = ({ collectionAddress }) => {
   const [raritySort, setRaritySort] = useState<SortType>('asc')
   const collection = useGetCollection(collectionAddress)
   const totalBunnyCount = Number(collection?.totalSupply)

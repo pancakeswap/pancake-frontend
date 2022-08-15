@@ -1,5 +1,5 @@
 import { Text, Flex, useTooltip, TooltipText } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { VaultKey } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { secondsToDay } from 'utils/timeHelper'
@@ -12,7 +12,11 @@ interface FeeSummaryProps {
   vaultKey: VaultKey
 }
 
-const FeeSummary: React.FC<FeeSummaryProps> = ({ stakingTokenSymbol, stakeAmount, vaultKey }) => {
+const FeeSummary: React.FC<React.PropsWithChildren<FeeSummaryProps>> = ({
+  stakingTokenSymbol,
+  stakeAmount,
+  vaultKey,
+}) => {
   const { t } = useTranslation()
   const {
     fees: { withdrawalFee, withdrawalFeePeriod },

@@ -23,7 +23,7 @@ import useToast from 'hooks/useToast'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import { useSignMessage } from 'utils/web3React'
 import fetchWithTimeout from 'utils/fetchWithTimeout'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { FetchStatus } from 'config/constants/types'
 import ConfirmProfileCreationModal from './ConfirmProfileCreationModal'
 import useProfileCreation from './contexts/hook'
@@ -56,7 +56,7 @@ const Indicator = styled(Flex)`
   width: 24px;
 `
 
-const UserName: React.FC = () => {
+const UserName: React.FC<React.PropsWithChildren> = () => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
   const { teamId, selectedNft, userName, actions, minimumCakeRequired, allowance } = useProfileCreation()
   const { t } = useTranslation()

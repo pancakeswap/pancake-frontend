@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Svg, SvgProps } from '@pancakeswap/uikit'
 
-const Icon: React.FC<SvgProps & { isDark }> = ({ isDark, ...props }) => {
+const Icon: React.FC<React.PropsWithChildren<SvgProps & { isDark }>> = ({ isDark, ...props }) => {
   return (
     <Svg viewBox="0 0 1280 17" preserveAspectRatio="none" {...props}>
       <path

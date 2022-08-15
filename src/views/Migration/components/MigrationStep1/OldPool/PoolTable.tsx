@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { DeserializedPool } from 'state/types'
 import { Flex, Spinner } from '@pancakeswap/uikit'
 import TableHeader from '../../MigrationTable/TableHeader'
@@ -22,7 +22,7 @@ const Container = styled.div`
   padding: 1px 1px 3px 1px;
 `
 
-const PoolsTable: React.FC<PoolsTableProps> = ({ pools, userDataReady, account }) => {
+const PoolsTable: React.FC<React.PropsWithChildren<PoolsTableProps>> = ({ pools, userDataReady, account }) => {
   const { t } = useTranslation()
 
   return (

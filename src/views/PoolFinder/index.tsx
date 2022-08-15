@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Currency, ETHER, JSBI, TokenAmount } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, Text, AddIcon, useModal } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useWeb3React } from '@web3-react/core'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
@@ -19,6 +19,7 @@ import { currencyId } from '../../utils/currencyId'
 import Dots from '../../components/Loader/Dots'
 import { AppHeader, AppBody } from '../../components/App'
 import Page from '../Page'
+import { CommonBasesType } from '../../components/SearchModal/types'
 
 enum Fields {
   TOKEN0 = 0,
@@ -84,6 +85,7 @@ export default function PoolFinder() {
       onCurrencySelect={handleCurrencySelect}
       showCommonBases
       selectedCurrency={(activeField === Fields.TOKEN0 ? currency1 : currency0) ?? undefined}
+      commonBasesType={CommonBasesType.LIQUIDITY}
     />,
     true,
     true,

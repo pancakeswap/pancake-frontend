@@ -9,7 +9,7 @@ import {
   ArrowForwardIcon,
   useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { Activity, NftToken } from 'state/nftMarket/types'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
@@ -27,7 +27,7 @@ interface ActivityCardProps {
 
 const MAX_PER_PAGE = 5
 
-const ActivityCard: React.FC<ActivityCardProps> = ({ nft }) => {
+const ActivityCard: React.FC<React.PropsWithChildren<ActivityCardProps>> = ({ nft }) => {
   const dispatch = useAppDispatch()
   const { theme } = useTheme()
   const { t } = useTranslation()

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Button, useModal, IconButton, AddIcon, MinusIcon, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { FarmWithStakedValue } from 'views/Farms/components/types'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -28,7 +28,7 @@ interface StackedActionProps extends FarmWithStakedValue {
   displayApr?: string
 }
 
-const StakeButton: React.FC<StackedActionProps> = ({
+const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
   pid,
   apr,
   multiplier,

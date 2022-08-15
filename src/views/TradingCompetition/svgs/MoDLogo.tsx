@@ -1,6 +1,6 @@
 import { Svg, SvgProps } from '@pancakeswap/uikit'
 
-const MoDLogo: React.FC<SvgProps> = (props) => (
+const MoDLogo: React.FC<React.PropsWithChildren<SvgProps>> = (props) => (
   <Svg width={322} height={64} viewBox="0 0 322 64" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
     <g clipPath="url(#clip0_2329_330398)" fillRule="evenodd" clipRule="evenodd">
       <path

@@ -14,7 +14,7 @@ import {
   useModal,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { REGISTRATION, LIVE } from 'config/constants/trading-competition/phases'
 import { YourScoreProps } from '../../types'
 import UserRankBox from './UserRankBox'
@@ -44,7 +44,7 @@ interface CardUserInfoProps extends YourScoreProps {
   extraUserRankBox?: ReactNode
 }
 
-const CardUserInfo: React.FC<CardUserInfoProps> = ({
+const CardUserInfo: React.FC<React.PropsWithChildren<CardUserInfoProps>> = ({
   shareModal,
   extraUserRankBox,
   hasRegistered,

@@ -1,4 +1,4 @@
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { Flex, Text, Card, Box } from '@pancakeswap/uikit'
 import Divider from 'components/Divider'
@@ -43,7 +43,7 @@ const CardStyle = styled(Card)`
 
 type Step = { title: string; subtitle: string; label: string }
 
-const HowToPlay: React.FC = () => {
+const HowToPlay: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const steps: Step[] = [
     {

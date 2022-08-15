@@ -34,7 +34,7 @@ const StyledText = styled(Text)`
   font-size: 12px;
 `
 
-const Step: React.FC<CountdownProps> = ({ stepText, index, activeStepIndex }) => {
+const Step: React.FC<React.PropsWithChildren<CountdownProps>> = ({ stepText, index, activeStepIndex }) => {
   const isExpired = index < activeStepIndex
   const isActive = index === activeStepIndex
   const isFuture = index > activeStepIndex

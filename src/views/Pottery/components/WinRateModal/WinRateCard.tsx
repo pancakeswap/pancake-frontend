@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text, Input, CheckmarkIcon, PencilIcon, IconButton } from '@pancakeswap/uikit'
 import { WinRateCalculatorState } from 'views/Pottery/hooks/useWinRateCalculator'
 import { CalculatorMode } from '../../types'
@@ -40,7 +40,12 @@ interface WinRateCardProps {
   setTargetWinRate: (percentage: string) => void
 }
 
-const WinRateCard: React.FC<WinRateCardProps> = ({ winRate, calculatorState, setCalculatorMode, setTargetWinRate }) => {
+const WinRateCard: React.FC<React.PropsWithChildren<WinRateCardProps>> = ({
+  winRate,
+  calculatorState,
+  setCalculatorMode,
+  setTargetWinRate,
+}) => {
   const { t } = useTranslation()
   const [expectedWinRate, setExpectedWinRate] = useState('')
   const { mode } = calculatorState.controls

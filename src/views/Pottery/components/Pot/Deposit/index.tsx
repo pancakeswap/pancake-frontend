@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { Flex, Box, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { GreyCard } from 'components/Card'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -30,7 +30,7 @@ const CardAction = styled(Flex)`
   padding: 26px 24px 36px 24px;
 `
 
-const Deposit: React.FC = () => {
+const Deposit: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const { getLockedApy } = useVaultApy()

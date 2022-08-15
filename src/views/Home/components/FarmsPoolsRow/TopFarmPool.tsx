@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import styled from 'styled-components'
 import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { FlexGap } from 'components/Layout/Flex'
 
 interface TopFarmPoolProps {
@@ -38,7 +38,13 @@ const AbsoluteWrapper = styled(Flex)<{ visible: boolean; index: number; topOffse
       : `padding-right: 16px;`}
 `
 
-const TopFarmPool: React.FC<TopFarmPoolProps> = ({ title, percentage, index, visible, isApy }) => {
+const TopFarmPool: React.FC<React.PropsWithChildren<TopFarmPoolProps>> = ({
+  title,
+  percentage,
+  index,
+  visible,
+  isApy,
+}) => {
   const { t } = useTranslation()
 
   const topOffset = () => {

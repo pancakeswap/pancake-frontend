@@ -2,7 +2,7 @@
 import { KeyboardEvent, RefObject, useCallback, useMemo, useRef, useState, useEffect } from 'react'
 import { Currency, ETHER, Token } from '@pancakeswap/sdk'
 import { Text, Input, Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { FixedSizeList } from 'react-window'
 import { useAudioModeManager } from 'state/user/hooks'
 import useDebounce from 'hooks/useDebounce'
@@ -26,8 +26,10 @@ interface CurrencySearchProps {
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
   showCommonBases?: boolean
+  commonBasesType?: string
   showImportView: () => void
   setImportToken: (token: Token) => void
+  height?: number
 }
 
 function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
@@ -82,8 +84,10 @@ function CurrencySearch({
   onCurrencySelect,
   otherSelectedCurrency,
   showCommonBases,
+  commonBasesType,
   showImportView,
   setImportToken,
+  height,
 }: CurrencySearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
@@ -182,7 +186,7 @@ function CurrencySearch({
     return Boolean(filteredSortedTokens?.length) || hasFilteredInactiveTokens ? (
       <Box margin="24px -24px">
         <CurrencyList
-          height={isMobile ? (showCommonBases ? 250 : 350) : 390}
+          height={isMobile ? (showCommonBases ? height || 250 : height ? height + 80 : 350) : 390}
           showBNB={showBNB}
           currencies={filteredSortedTokens}
           inactiveCurrencies={filteredInactiveTokens}
@@ -219,6 +223,7 @@ function CurrencySearch({
     t,
     showCommonBases,
     isMobile,
+    height,
   ])
 
   return (
@@ -237,7 +242,12 @@ function CurrencySearch({
           />
         </Row>
         {showCommonBases && (
-          <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
+          <CommonBases
+            chainId={chainId}
+            onSelect={handleCurrencySelect}
+            selectedCurrency={selectedCurrency}
+            commonBasesType={commonBasesType}
+          />
         )}
       </AutoColumn>
       {getCurrencyListRows()}

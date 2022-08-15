@@ -19,7 +19,7 @@ interface Props {
   hideLanguage?: boolean;
 }
 
-const LangSelector: React.FC<Props> = ({
+const LangSelector: React.FC<React.PropsWithChildren<Props>> = ({
   currentLang,
   langs,
   color,

@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useCallback, Dispatch, SetStateAction } from 'react'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { createChart, IChartApi } from 'lightweight-charts'
 import { format } from 'date-fns'
 import useTheme from 'hooks/useTheme'

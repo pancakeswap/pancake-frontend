@@ -1,7 +1,7 @@
 import { useWeb3React } from '@web3-react/core'
 import { Flex, Text, Heading } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import Link from 'next/link'
 import HowToCard from './HowToCard'
 

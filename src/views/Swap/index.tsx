@@ -20,7 +20,7 @@ import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import Footer from 'components/Menu/Footer'
 import { useRouter } from 'next/router'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { EXCHANGE_DOCS_URLS } from 'config/constants'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
@@ -65,6 +65,7 @@ import PriceChartContainer from './components/Chart/PriceChartContainer'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
 import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
+import { CommonBasesType } from '../../components/SearchModal/types'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -431,6 +432,8 @@ export default function Swap() {
                       onCurrencySelect={handleInputSelect}
                       otherCurrency={currencies[Field.OUTPUT]}
                       id="swap-currency-input"
+                      showCommonBases
+                      commonBasesType={CommonBasesType.SWAP_LIMITORDER}
                     />
 
                     <AutoColumn justify="space-between">
@@ -468,6 +471,8 @@ export default function Swap() {
                       onCurrencySelect={handleOutputSelect}
                       otherCurrency={currencies[Field.INPUT]}
                       id="swap-currency-output"
+                      showCommonBases
+                      commonBasesType={CommonBasesType.SWAP_LIMITORDER}
                     />
 
                     {isExpertMode && recipient !== null && !showWrap ? (

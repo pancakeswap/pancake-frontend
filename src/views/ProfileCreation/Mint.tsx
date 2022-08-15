@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { formatUnits } from '@ethersproject/units'
 import { Card, CardBody, Heading, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake, useBunnyFactory } from 'hooks/useContract'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
@@ -23,7 +23,7 @@ interface MintNftData extends ApiSingleTokenData {
   bunnyId?: string
 }
 
-const Mint: React.FC = () => {
+const Mint: React.FC<React.PropsWithChildren> = () => {
   const [selectedBunnyId, setSelectedBunnyId] = useState<string>('')
   const [starterNfts, setStarterNfts] = useState<MintNftData[]>([])
   const { actions, minimumCakeRequired, allowance } = useProfileCreation()

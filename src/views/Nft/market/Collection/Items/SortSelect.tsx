@@ -1,10 +1,10 @@
 import Select, { OptionProps } from 'components/Select/Select'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useAppDispatch } from 'state'
 import { setOrdering } from 'state/nftMarket/reducer'
 import { useGetNftOrdering } from 'state/nftMarket/hooks'
 
-const SortSelect: React.FC<{ collectionAddress: string }> = ({ collectionAddress }) => {
+const SortSelect: React.FC<React.PropsWithChildren<{ collectionAddress: string }>> = ({ collectionAddress }) => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const selectedOrder = useGetNftOrdering(collectionAddress)

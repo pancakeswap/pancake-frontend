@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import styled from 'styled-components'
 import { Heading, ModalContainer, ModalHeader, ModalTitle, ModalBody, ModalCloseButton } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import delay from 'lodash/delay'
 import confetti from 'canvas-confetti'
 import { LotteryTicketClaimData } from 'config/constants/types'
@@ -52,7 +52,10 @@ interface ClaimPrizesModalModalProps {
   onDismiss?: () => void
 }
 
-const ClaimPrizesModal: React.FC<ClaimPrizesModalModalProps> = ({ onDismiss, roundsToClaim }) => {
+const ClaimPrizesModal: React.FC<React.PropsWithChildren<ClaimPrizesModalModalProps>> = ({
+  onDismiss,
+  roundsToClaim,
+}) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { currentLotteryId } = useLottery()
@@ -63,7 +66,7 @@ const ClaimPrizesModal: React.FC<ClaimPrizesModalModalProps> = ({ onDismiss, rou
   }, [])
 
   return (
-    <StyledModal minWidth="280px">
+    <StyledModal $minWidth="280px">
       <BunnyDecoration>
         <img src="/images/decorations/prize-bunny.png" alt="bunny decoration" height="124px" width="168px" />
       </BunnyDecoration>

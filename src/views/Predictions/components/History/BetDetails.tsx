@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Bet } from 'state/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { getBscScanLink } from 'utils'
 import { Flex, Text, Link, Heading } from '@pancakeswap/uikit'
 import { Result } from 'state/predictions/helpers'
@@ -19,7 +19,7 @@ const StyledBetDetails = styled.div`
   padding: 24px;
 `
 
-const BetDetails: React.FC<BetDetailsProps> = ({ bet, result }) => {
+const BetDetails: React.FC<React.PropsWithChildren<BetDetailsProps>> = ({ bet, result }) => {
   const { t } = useTranslation()
   const { totalAmount, bullAmount, bearAmount } = bet.round
   const bullMultiplier = getMultiplier(totalAmount, bullAmount)

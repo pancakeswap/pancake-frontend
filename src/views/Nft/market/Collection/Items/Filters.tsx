@@ -5,7 +5,7 @@ import capitalize from 'lodash/capitalize'
 import isEmpty from 'lodash/isEmpty'
 import { useGetNftFilters, useGetNftShowOnlyOnSale } from 'state/nftMarket/hooks'
 import { NftAttribute } from 'state/nftMarket/types'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Item, ListTraitFilter } from 'views/Nft/market/components/Filters'
 import { useAppDispatch } from 'state'
 import { setShowOnlyOnSale } from 'state/nftMarket/reducer'
@@ -85,7 +85,7 @@ const ScrollableFlexContainer = styled(Flex)`
   }
 `
 
-const Filters: React.FC<FiltersProps> = ({ address, attributes }) => {
+const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({ address, attributes }) => {
   const dispatch = useAppDispatch()
   const { data } = useGetCollectionDistribution(address)
   const { t } = useTranslation()

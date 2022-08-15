@@ -32,17 +32,16 @@ export const SequenceWrapper = styled.div`
   }
 `;
 
-export const CoinSwitcher: React.FC<{ isDefaultBnb: boolean; onTokenSwitch: () => void }> = memo(
-  ({ isDefaultBnb, onTokenSwitch }) => {
+export const CoinSwitcher: React.FC<React.PropsWithChildren<{ isDefaultBnb: boolean; onTokenSwitch: () => void }>> =
+  memo(({ isDefaultBnb, onTokenSwitch }) => {
     const onSwitch = useCallback(() => {
       onTokenSwitch();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <Inner isDefaultBnb={isDefaultBnb} onTokenSwitch={onSwitch} />;
-  }
-);
+  });
 
-const Inner: React.FC<{ isDefaultBnb: boolean; onTokenSwitch: () => void }> = memo(
+const Inner: React.FC<React.PropsWithChildren<{ isDefaultBnb: boolean; onTokenSwitch: () => void }>> = memo(
   ({ isDefaultBnb, onTokenSwitch }) => {
     const [isBnb, setIsBnb] = useState(isDefaultBnb);
     const bnb2Cake = useMemo(() => bnb2CakeImages(), []);

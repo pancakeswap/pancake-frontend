@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Text, TokenPairImage as UITokenPairImage, useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { DeserializedPool } from 'state/types'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { vaultPoolConfig } from 'config/constants/pools'
@@ -23,7 +23,7 @@ const StyledCell = styled(BaseCell)`
   }
 `
 
-const NameCell: React.FC<NameCellProps> = ({ pool }) => {
+const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
   const { sousId, stakingToken, earningToken, userData, isFinished, vaultKey } = pool

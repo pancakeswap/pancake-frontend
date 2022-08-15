@@ -4,9 +4,9 @@ import Page from 'components/Layout/Page'
 import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
 import { useAllPoolData, usePoolDatas } from 'state/info/hooks'
 import { useWatchlistPools } from 'state/user/hooks'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 
-const PoolsOverview: React.FC = () => {
+const PoolsOverview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
 
   // get all the pool datas that exist

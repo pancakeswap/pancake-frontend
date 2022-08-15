@@ -1,4 +1,4 @@
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text, Skeleton, AccountFilledIcon } from '@pancakeswap/uikit'
 import { StyledVolumeText, PodiumProps, RightBox, MiddleBox, LeftBox, Wrapper, Inner, StyledVolumeFlex } from './styles'
 import TeamPodiumIcon from './TeamPodiumIcon'
@@ -28,7 +28,10 @@ const ParticipantBox = ({ participants, t }) => {
   )
 }
 
-const PodiumWithParticipants: React.FC<MoboxPodiumProps> = ({ teamsSortedByVolume, participants }) => {
+const PodiumWithParticipants: React.FC<React.PropsWithChildren<MoboxPodiumProps>> = ({
+  teamsSortedByVolume,
+  participants,
+}) => {
   const { t } = useTranslation()
   const firstTeam = teamsSortedByVolume && teamsSortedByVolume[0]
   const secondTeam = teamsSortedByVolume && teamsSortedByVolume[1]

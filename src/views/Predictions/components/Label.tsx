@@ -1,5 +1,5 @@
 import { Box, CoinSwitcher, Flex, PocketWatchIcon, Text, CloseIcon } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
 import { PREDICTION_TOOLTIP_DISMISS_KEY } from 'config/constants'
@@ -143,7 +143,7 @@ const Label = styled(Flex)<{ dir: 'left' | 'right'; backgroundOpacity?: boolean 
   }
 `
 
-export const PricePairLabel: React.FC = () => {
+export const PricePairLabel: React.FC<React.PropsWithChildren> = () => {
   const { token } = useConfig()
   const router = useRouter()
   const { t } = useTranslation()
@@ -205,7 +205,7 @@ interface TimerLabelProps {
   unit: 'm' | 'h' | 'd'
 }
 
-export const TimerLabel: React.FC<TimerLabelProps> = ({ interval, unit }) => {
+export const TimerLabel: React.FC<React.PropsWithChildren<TimerLabelProps>> = ({ interval, unit }) => {
   const currentRoundCloseTimestamp = useGetCurrentRoundCloseTimestamp()
   const { secondsRemaining } = useCountdown(currentRoundCloseTimestamp)
   const countdown = formatRoundTime(secondsRemaining)

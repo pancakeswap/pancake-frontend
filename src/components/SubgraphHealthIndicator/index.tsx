@@ -1,6 +1,5 @@
 import { BSC_BLOCK_TIME } from 'config'
-import { useTranslation } from 'contexts/Localization'
-import { TranslateFunction } from 'contexts/Localization/types'
+import { useTranslation, TranslateFunction } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { Card, Flex, Box, InfoIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { useSubgraphHealthIndicatorManager } from 'state/user/hooks'
@@ -78,12 +77,14 @@ export interface BlockResponse {
   }[]
 }
 
-const SubgraphHealthIndicator: React.FC<{
-  subgraphName: string
-  inline?: boolean
-  customDescriptions?: CustomDescriptions
-  obeyGlobalSetting?: boolean
-}> = ({ subgraphName, inline, customDescriptions, obeyGlobalSetting }) => {
+const SubgraphHealthIndicator: React.FC<
+  React.PropsWithChildren<{
+    subgraphName: string
+    inline?: boolean
+    customDescriptions?: CustomDescriptions
+    obeyGlobalSetting?: boolean
+  }>
+> = ({ subgraphName, inline, customDescriptions, obeyGlobalSetting }) => {
   const { t } = useTranslation()
   const { status, currentBlock, blockDifference, latestBlock } = useSubgraphHealth(subgraphName)
   const [alwaysShowIndicator] = useSubgraphHealthIndicatorManager()

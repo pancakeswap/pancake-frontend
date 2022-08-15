@@ -1,6 +1,6 @@
 import { Box, Text, Skeleton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useWeb3React } from '@web3-react/core'
 import Balance from 'components/Balance'
 import { usePriceCakeBusd } from 'state/farms/hooks'
@@ -11,7 +11,7 @@ interface YourDepositProps {
   depositBalance?: any
 }
 
-const YourDeposit: React.FC<YourDepositProps> = ({ depositBalance }) => {
+const YourDeposit: React.FC<React.PropsWithChildren<YourDepositProps>> = ({ depositBalance }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const cakePriceBusd = usePriceCakeBusd()

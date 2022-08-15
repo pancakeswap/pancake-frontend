@@ -2,7 +2,7 @@ import { useModal, Button, Skeleton } from '@pancakeswap/uikit'
 import WhitelistedBiddersModal from './WhitelistedBiddersModal'
 import useWhitelistedAddresses from '../hooks/useWhitelistedAddresses'
 
-const WhitelistedBiddersButton: React.FC = () => {
+const WhitelistedBiddersButton: React.FC<React.PropsWithChildren> = () => {
   const whitelistedBidders = useWhitelistedAddresses()
   const [onShowWhitelistedBidders] = useModal(<WhitelistedBiddersModal />)
 

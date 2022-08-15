@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Flex, Box, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -22,7 +22,7 @@ interface CardFooterProps {
   userData: DeserializedPotteryUserData
 }
 
-const CardFooter: React.FC<CardFooterProps> = ({ account, publicData, userData }) => {
+const CardFooter: React.FC<React.PropsWithChildren<CardFooterProps>> = ({ account, publicData, userData }) => {
   const { t } = useTranslation()
   const { getBoostFactor } = useVaultApy()
 

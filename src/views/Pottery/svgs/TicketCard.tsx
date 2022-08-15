@@ -1,6 +1,6 @@
 import { Svg, SvgProps } from '@pancakeswap/uikit'
 
-const TicketCard: React.FC<SvgProps> = (props) => {
+const TicketCard: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
   return (
     <Svg viewBox="0 0 296 121" {...props}>
       <g filter="url(#filter0_dd_ticket_purchase_card)">

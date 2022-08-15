@@ -1,5 +1,5 @@
 import { Text, TextProps } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { TranslatableText as AchievementDescriptionType } from 'config/constants/types'
 import styled from 'styled-components'
 
@@ -15,7 +15,10 @@ const Description = styled(Text).attrs({ as: 'p' })`
   }
 `
 
-const AchievementDescription: React.FC<AchievementDescriptionProps> = ({ description, ...props }) => {
+const AchievementDescription: React.FC<React.PropsWithChildren<AchievementDescriptionProps>> = ({
+  description,
+  ...props
+}) => {
   const { t } = useTranslation()
 
   if (!description) {

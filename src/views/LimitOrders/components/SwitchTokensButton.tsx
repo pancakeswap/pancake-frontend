@@ -27,7 +27,7 @@ interface SwitchIconButtonProps {
   handleSwitchTokens: () => void
 }
 
-const SwitchIconButton: React.FC<SwitchIconButtonProps> = ({ handleSwitchTokens, color }) => {
+const SwitchIconButton: React.FC<React.PropsWithChildren<SwitchIconButtonProps>> = ({ handleSwitchTokens, color }) => {
   const handleOnClick = useCallback(() => handleSwitchTokens?.(), [handleSwitchTokens])
 
   return (

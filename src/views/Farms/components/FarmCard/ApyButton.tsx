@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Flex, IconButton, useModal, CalculateIcon } from '@pancakeswap/uikit'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useFarmUser, useLpTokenPrice } from 'state/farms/hooks'
 
 const ApyLabelContainer = styled(Flex)`
@@ -25,7 +25,7 @@ export interface ApyButtonProps {
   addLiquidityUrl?: string
 }
 
-const ApyButton: React.FC<ApyButtonProps> = ({
+const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   variant,
   pid,
   lpLabel,

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useTable, ColumnType, Flex, Spinner } from '@pancakeswap/uikit'
 import Row, { RowProps } from './FarmRow'
 import TableHeader from '../../MigrationTable/TableHeader'
@@ -23,7 +23,7 @@ export interface ITableProps {
   sortColumn?: string
 }
 
-const FarmTable: React.FC<ITableProps> = ({ account, data, columns, userDataReady }) => {
+const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ account, data, columns, userDataReady }) => {
   const { t } = useTranslation()
   const { rows } = useTable(columns, data, { sortable: true, sortColumn: 'farm' })
 

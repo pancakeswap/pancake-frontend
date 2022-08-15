@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import Balance from 'components/Balance'
 import { DeserializedPool } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
@@ -16,7 +16,7 @@ const StyledCell = styled(BaseCell)`
   flex: 2 0 100px;
 `
 
-const TotalStakedCell: React.FC<TotalStakedCellProps> = ({ pool }) => {
+const TotalStakedCell: React.FC<React.PropsWithChildren<TotalStakedCellProps>> = ({ pool }) => {
   const { t } = useTranslation()
   const { stakingToken, totalStaked, vaultKey } = pool
   const { totalCakeInVault } = useVaultPoolByKey(vaultKey)

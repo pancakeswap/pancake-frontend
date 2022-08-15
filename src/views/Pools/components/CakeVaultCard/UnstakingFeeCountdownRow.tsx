@@ -1,5 +1,5 @@
 import { Flex, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useWeb3React } from '@web3-react/core'
 import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
 import { secondsToHours } from 'date-fns'
@@ -13,7 +13,10 @@ interface UnstakingFeeCountdownRowProps {
   vaultKey: VaultKey
 }
 
-const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({ isTableVariant, vaultKey }) => {
+const UnstakingFeeCountdownRow: React.FC<React.PropsWithChildren<UnstakingFeeCountdownRowProps>> = ({
+  isTableVariant,
+  vaultKey,
+}) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const {

@@ -17,7 +17,7 @@ export default {
   },
 };
 
-const Template: React.FC<BottomNavProps> = (args) => {
+const Template: React.FC<React.PropsWithChildren<BottomNavProps>> = (args) => {
   return (
     <BrowserRouter>
       <Box height="100vh">

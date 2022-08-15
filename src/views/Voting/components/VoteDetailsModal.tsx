@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Box, Flex, InjectedModalProps, Modal, Button, Spinner } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import useGetVotingPower from '../hooks/useGetVotingPower'
 import DetailsView from './CastVoteModal/DetailsView'
@@ -9,7 +9,7 @@ interface VoteDetailsModalProps extends InjectedModalProps {
   block: number
 }
 
-const VoteDetailsModal: React.FC<VoteDetailsModalProps> = ({ block, onDismiss }) => {
+const VoteDetailsModal: React.FC<React.PropsWithChildren<VoteDetailsModalProps>> = ({ block, onDismiss }) => {
   const { t } = useTranslation()
   const [modalIsOpen, setModalIsOpen] = useState(true)
   const {

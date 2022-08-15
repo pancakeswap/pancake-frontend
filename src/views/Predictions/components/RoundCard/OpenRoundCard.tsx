@@ -10,7 +10,7 @@ import {
   ArrowDownIcon,
 } from '@pancakeswap/uikit'
 import { getNow } from 'utils/getNow'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { BetPosition, NodeLedger, NodeRound } from 'state/types'
 import { fetchLedgerData } from 'state/predictions'
@@ -40,7 +40,7 @@ interface State {
   position: BetPosition
 }
 
-const OpenRoundCard: React.FC<OpenRoundCardProps> = ({
+const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
   round,
   betAmount,
   hasEnteredUp,

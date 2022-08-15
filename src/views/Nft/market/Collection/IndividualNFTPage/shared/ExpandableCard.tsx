@@ -42,7 +42,7 @@ interface ExpandableCardProps {
   content: React.ReactNode
 }
 
-const ExpandableCard: React.FC<ExpandableCardProps> = ({ icon, title, content }) => {
+const ExpandableCard: React.FC<React.PropsWithChildren<ExpandableCardProps>> = ({ icon, title, content }) => {
   const [expanded, setExpanded] = useState(true)
   const { theme } = useTheme()
   return (

@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Skeleton, Text, CalculateIcon, useModal } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { DeserializedPool, DeserializedLockedVaultUser, VaultKey, DeserializedVaultUser } from 'state/types'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { VaultPosition } from 'utils/cakePool'
@@ -13,7 +13,7 @@ interface CakeVaultAprProps {
   vaultPosition: VaultPosition
 }
 
-const CakeVaultApr: React.FC<CakeVaultAprProps> = ({ pool, userData, vaultPosition }) => {
+const CakeVaultApr: React.FC<React.PropsWithChildren<CakeVaultAprProps>> = ({ pool, userData, vaultPosition }) => {
   const { t } = useTranslation()
 
   const { flexibleApy, lockedApy } = useVaultApy({

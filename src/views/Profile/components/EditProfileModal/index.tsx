@@ -1,6 +1,5 @@
 import { InjectedModalProps, Modal } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
-import { ContextApi } from 'contexts/Localization/types'
+import { useTranslation, ContextApi } from '@pancakeswap/localization'
 import useEditProfile, { Views } from './reducer'
 import StartView from './StartView'
 import PauseProfileView from './PauseProfileView'
@@ -26,7 +25,7 @@ const viewTitle = (t: ContextApi['t'], currentView: Views) => {
   }
 }
 
-const EditProfileModal: React.FC<EditProfileModalProps> = ({ onDismiss, onSuccess }) => {
+const EditProfileModal: React.FC<React.PropsWithChildren<EditProfileModalProps>> = ({ onDismiss, onSuccess }) => {
   const { currentView, goToChange, goToRemove, goToApprove, goPrevious } = useEditProfile()
   const { t } = useTranslation()
 

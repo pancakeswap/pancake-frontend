@@ -14,7 +14,7 @@ import {
   Skeleton,
   Box,
 } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
 
@@ -65,7 +65,7 @@ const AnnualRoiDisplay = styled(Text)`
   text-overflow: ellipsis;
 `
 
-const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
+const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> = ({
   pool,
   stakingMax,
   performanceFee,

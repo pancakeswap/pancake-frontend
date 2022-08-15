@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Flex, TrophyGoldIcon } from '@pancakeswap/uikit'
 import { useGetIsClaimable } from 'state/predictions/hooks'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import CollectWinningsButton from '../CollectWinningsButton'
 
 interface CollectWinningsOverlayProps {
@@ -28,7 +28,11 @@ const Wrapper = styled(Flex)<{ isBottom: CollectWinningsOverlayProps['isBottom']
   }}
 `
 
-const CollectWinningsOverlay: React.FC<CollectWinningsOverlayProps> = ({ epoch, isBottom = false, ...props }) => {
+const CollectWinningsOverlay: React.FC<React.PropsWithChildren<CollectWinningsOverlayProps>> = ({
+  epoch,
+  isBottom = false,
+  ...props
+}) => {
   const { t } = useTranslation()
   const isClaimable = useGetIsClaimable(epoch)
 

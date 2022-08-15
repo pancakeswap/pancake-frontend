@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { ChevronDownIcon, ChevronUpIcon, Text } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useCallback } from 'react'
 
 export interface ExpandableSectionButtonProps {
@@ -19,7 +19,10 @@ const Wrapper = styled.div`
   }
 `
 
-const ExpandableSectionButton: React.FC<ExpandableSectionButtonProps> = ({ onClick, expanded = false }) => {
+const ExpandableSectionButton: React.FC<React.PropsWithChildren<ExpandableSectionButtonProps>> = ({
+  onClick,
+  expanded = false,
+}) => {
   const { t } = useTranslation()
   const handleOnClick = useCallback(() => onClick?.(), [onClick])
 
