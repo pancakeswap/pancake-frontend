@@ -95,6 +95,10 @@ export const bsc: Chain = {
     symbol: 'BNB',
     decimals: 18,
   },
+  multicall: {
+    address: '0x72dba3Fa54C73D9EDB493e9F4eDf884439B1eBC4',
+    blockCreated: 20455688,
+  },
 }
 
 export const bscTest: Chain = {
@@ -113,6 +117,10 @@ export const bscTest: Chain = {
   },
   blockExplorers: {
     default: { name: 'BscScan', url: 'https://testnet.bscscan.com' },
+  },
+  multicall: {
+    address: '0xb66a4fE12138C4391A98F29E34EFE4Cc7A445AE5',
+    blockCreated: 21965366,
   },
   testnet: true,
 }
