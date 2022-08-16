@@ -80,7 +80,7 @@ export default function useWrapCallback(
                   ])
                   const amount = inputAmount.toSignificant(6)
                   const wrap = WNATIVE[chainId].symbol
-                  const native = inputCurrency.symbol
+                  const native = outputCurrency.symbol
                   addTransaction(txReceipt, {
                     summary: `Unwrap ${amount} ${wrap} to ${native}`,
                     translatableSummary: { text: 'Unwrap %amount% %wrap% to %native%', data: { amount, wrap, native } },
