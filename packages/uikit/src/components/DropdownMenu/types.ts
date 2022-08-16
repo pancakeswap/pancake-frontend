@@ -4,6 +4,7 @@ import { BoxProps } from "../Box";
 
 export interface DropdownMenuProps extends BoxProps {
   items?: DropdownMenuItems[];
+  isDisabled?: boolean;
   activeItem?: string;
   /**
    * As BottomNav styles
@@ -38,6 +39,7 @@ export interface DropdownMenuItems {
   label?: string | React.ReactNode;
   href?: string;
   onClick?: () => void;
+  image?: string;
   type?: DropdownMenuItemType;
   status?: LinkStatus;
   disabled?: boolean;

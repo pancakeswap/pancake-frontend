@@ -38,7 +38,7 @@ export interface GelatoLimitOrdersHandlers {
   handleInput: (field: Field, value: string) => void
   handleCurrencySelection: (field: Field.INPUT | Field.OUTPUT, currency: Currency) => void
   handleSwitchTokens: () => void
-  handleRateType: (rateType: Rate, price?: Price) => void
+  handleRateType: (rateType: Rate, price?: Price<Currency, Currency>) => void
 }
 
 const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
@@ -195,7 +195,7 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
   }, [onSwitchTokens])
 
   const handleRateType = useCallback(
-    async (rateType: Rate, price?: Price) => {
+    async (rateType: Rate, price?: Price<Currency, Currency>) => {
       if (rateType === Rate.MUL) {
         if (price) onUserInput(Field.PRICE, price.invert().toSignificant(6))
         onChangeRateType(Rate.DIV)

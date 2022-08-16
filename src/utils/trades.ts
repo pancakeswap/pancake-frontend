@@ -1,10 +1,10 @@
-import { Trade, Percent, currencyEquals } from '@pancakeswap/sdk'
+import { Trade, Percent, Currency, TradeType } from '@pancakeswap/sdk'
 import { ZERO_PERCENT, ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
 
 // returns whether tradeB is better than tradeA by at least a threshold percentage amount
 export function isTradeBetter(
-  tradeA: Trade | undefined | null,
-  tradeB: Trade | undefined | null,
+  tradeA: Trade<Currency, Currency, TradeType> | undefined | null,
+  tradeB: Trade<Currency, Currency, TradeType> | undefined | null,
   minimumDelta: Percent = ZERO_PERCENT,
 ): boolean | undefined {
   if (tradeA && !tradeB) return false
@@ -13,8 +13,8 @@ export function isTradeBetter(
 
   if (
     tradeA.tradeType !== tradeB.tradeType ||
-    !currencyEquals(tradeA.inputAmount.currency, tradeB.inputAmount.currency) ||
-    !currencyEquals(tradeA.outputAmount.currency, tradeB.outputAmount.currency)
+    !tradeA.inputAmount.currency.equals(tradeB.inputAmount.currency) ||
+    !tradeA.outputAmount.currency.equals(tradeB.outputAmount.currency)
   ) {
     throw new Error('Trades are not comparable')
   }
@@ -22,7 +22,9 @@ export function isTradeBetter(
   if (minimumDelta.equalTo(ZERO_PERCENT)) {
     return tradeA.executionPrice.lessThan(tradeB.executionPrice)
   }
-  return tradeA.executionPrice.raw.multiply(minimumDelta.add(ONE_HUNDRED_PERCENT)).lessThan(tradeB.executionPrice)
+  return tradeA.executionPrice.asFraction
+    .multiply(minimumDelta.add(ONE_HUNDRED_PERCENT))
+    .lessThan(tradeB.executionPrice)
 }
 
 export default isTradeBetter

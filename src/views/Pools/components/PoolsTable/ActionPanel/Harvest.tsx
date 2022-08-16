@@ -1,6 +1,6 @@
 import { Button, Text, useModal, Flex, Skeleton, Heading } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { PoolCategory } from 'config/constants/types'
 import { formatNumber, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'

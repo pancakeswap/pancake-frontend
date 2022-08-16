@@ -1,21 +1,22 @@
 /* eslint-disable no-restricted-syntax */
+import { Currency, Token } from '@pancakeswap/sdk'
+import { Box, Input, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { KeyboardEvent, RefObject, useCallback, useMemo, useRef, useState, useEffect } from 'react'
-import { Currency, ETHER, Token } from '@pancakeswap/sdk'
-import { Text, Input, Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { FixedSizeList } from 'react-window'
-import { useAudioModeManager } from 'state/user/hooks'
-import useDebounce from 'hooks/useDebounce'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useDebounce from 'hooks/useDebounce'
+import useNativeCurrency from 'hooks/useNativeCurrency'
+import { FixedSizeList } from 'react-window'
 import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
 import { TagInfo, WrappedTokenInfo } from 'state/types'
-import { useAllTokens, useToken, useIsUserAddedToken } from '../../hooks/Tokens'
+import { useAudioModeManager } from 'state/user/hooks'
+import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
 import { isAddress } from '../../utils'
 import Column, { AutoColumn } from '../Layout/Column'
 import Row from '../Layout/Row'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
-import { useSortedTokensByQuery, createFilterToken } from './filtering'
+import { createFilterToken, useSortedTokensByQuery } from './filtering'
 import useTokenComparator from './sorting'
 import { getSwapSound } from './swapSound'
 
@@ -29,6 +30,7 @@ interface CurrencySearchProps {
   commonBasesType?: string
   showImportView: () => void
   setImportToken: (token: Token) => void
+  height?: number
 }
 
 function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
@@ -86,6 +88,7 @@ function CurrencySearch({
   commonBasesType,
   showImportView,
   setImportToken,
+  height,
 }: CurrencySearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
@@ -106,10 +109,12 @@ function CurrencySearch({
 
   const [audioPlay] = useAudioModeManager()
 
+  const native = useNativeCurrency()
+
   const showBNB: boolean = useMemo(() => {
     const s = debouncedQuery.toLowerCase().trim()
-    return s === '' || s === 'b' || s === 'bn' || s === 'bnb'
-  }, [debouncedQuery])
+    return native && native.symbol?.toLowerCase?.()?.indexOf(s) !== -1
+  }, [debouncedQuery, native])
 
   const filteredTokens: Token[] = useMemo(() => {
     const filterToken = createFilterToken(debouncedQuery)
@@ -152,8 +157,9 @@ function CurrencySearch({
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
         const s = debouncedQuery.toLowerCase().trim()
+        // TODO: FIXME
         if (s === 'bnb') {
-          handleCurrencySelect(ETHER)
+          handleCurrencySelect(native)
         } else if (filteredSortedTokens.length > 0) {
           if (
             filteredSortedTokens[0].symbol?.toLowerCase() === debouncedQuery.trim().toLowerCase() ||
@@ -164,7 +170,7 @@ function CurrencySearch({
         }
       }
     },
-    [filteredSortedTokens, handleCurrencySelect, debouncedQuery],
+    [debouncedQuery, filteredSortedTokens, handleCurrencySelect, native],
   )
 
   // if no results on main list, show option to expand into inactive
@@ -184,7 +190,7 @@ function CurrencySearch({
     return Boolean(filteredSortedTokens?.length) || hasFilteredInactiveTokens ? (
       <Box margin="24px -24px">
         <CurrencyList
-          height={isMobile ? (showCommonBases ? 250 : 350) : 390}
+          height={isMobile ? (showCommonBases ? height || 250 : height ? height + 80 : 350) : 390}
           showBNB={showBNB}
           currencies={filteredSortedTokens}
           inactiveCurrencies={filteredInactiveTokens}
@@ -221,6 +227,7 @@ function CurrencySearch({
     t,
     showCommonBases,
     isMobile,
+    height,
   ])
 
   return (

@@ -25,8 +25,8 @@ interface LimitOrderPriceProps {
   outputCurrency: Currency
   percentageRateDifference: Percent
   rateType: Rate
-  handleRateType: (rateType: Rate, price?: Price) => void
-  price: Price
+  handleRateType: (rateType: Rate, price?: Price<Currency, Currency>) => void
+  price: Price<Currency, Currency>
   handleResetToMarketPrice: () => void
   realExecutionPriceAsString: string
   disabled: boolean

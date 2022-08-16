@@ -60,7 +60,7 @@ export const fetchWithdrawAbleData = async (account: string) => {
     const response = await request(
       GRAPH_API_POTTERY,
       gql`
-        query getUserPotterWithdrawAbleData($account: ID!) {
+        query getUserPotteryWithdrawAbleData($account: ID!) {
           withdrawals(first: 1000, where: { user: $account }) {
             id
             shares

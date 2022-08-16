@@ -3,7 +3,7 @@ import { Flex, Heading, Text, Link, useMatchBreakpointsContext } from '@pancakes
 import { useTranslation } from '@pancakeswap/localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Container from 'components/Layout/Container'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import SunburstSvg from './SunburstSvg'
 import CompositeImage from './CompositeImage'
 

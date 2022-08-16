@@ -7,13 +7,12 @@ import {
   LaurelRightIcon,
   Button,
   CheckmarkCircleIcon,
-  useWalletModal,
   useModal,
   Text,
   Box,
   TwitterIcon,
 } from '@pancakeswap/uikit'
-import useAuth from 'hooks/useAuth'
+import { useWallet } from 'hooks/useWallet'
 import { useTranslation } from '@pancakeswap/localization'
 import { FINISHED, OVER } from 'config/constants/trading-competition/phases'
 import { useRouter } from 'next/router'
@@ -75,8 +74,7 @@ const BattleCta: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
 }) => {
   const router = useRouter()
   const { t } = useTranslation()
-  const { login } = useAuth()
-  const { onPresentConnectModal } = useWalletModal(login, t)
+  const { onPresentConnectModal } = useWallet()
   const [onPresentRegisterModal] = useModal(
     <RegisterModal profile={profile} onRegisterSuccess={onRegisterSuccess} />,
     false,

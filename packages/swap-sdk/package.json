@@ -37,11 +37,11 @@
     "@ethersproject/solidity": "^5.0.0"
   },
   "devDependencies": {
-    "@ethersproject/address": "^5.0.2",
-    "@ethersproject/contracts": "^5.0.2",
-    "@ethersproject/networks": "^5.0.2",
-    "@ethersproject/providers": "^5.0.5",
-    "@ethersproject/solidity": "^5.0.2",
+    "@ethersproject/address": "^5.0.0",
+    "@ethersproject/contracts": "^5.0.0",
+    "@ethersproject/networks": "^5.0.0",
+    "@ethersproject/providers": "^5.0.0",
+    "@ethersproject/solidity": "^5.0.0",
     "@swc/core": "^1.2.215",
     "@swc/jest": "^0.2.21",
     "@types/big.js": "^4.0.5",

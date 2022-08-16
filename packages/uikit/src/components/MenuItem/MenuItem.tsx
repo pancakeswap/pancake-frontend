@@ -8,6 +8,7 @@ const MenuItem: React.FC<React.PropsWithChildren<MenuItemProps>> = ({
   children,
   href,
   isActive = false,
+  isDisabled = false,
   variant = "default",
   scrollLayerRef,
   statusColor,
@@ -38,7 +39,14 @@ const MenuItem: React.FC<React.PropsWithChildren<MenuItemProps>> = ({
   }, [isActive, isMobile, scrollLayerRef]);
   return (
     <StyledMenuItemContainer $isActive={isActive} $variant={variant} ref={menuItemRef}>
-      <StyledMenuItem {...itemLinkProps} $isActive={isActive} $variant={variant} $statusColor={statusColor} {...props}>
+      <StyledMenuItem
+        {...itemLinkProps}
+        $isActive={isActive}
+        $isDisabled={isDisabled}
+        $variant={variant}
+        $statusColor={statusColor}
+        {...props}
+      >
         {children}
       </StyledMenuItem>
     </StyledMenuItemContainer>

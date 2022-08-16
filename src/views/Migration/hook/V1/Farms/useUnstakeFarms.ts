@@ -1,11 +1,11 @@
 import BigNumber from 'bignumber.js'
-import { DEFAULT_GAS_LIMIT, DEFAULT_TOKEN_DECIMAL } from 'config'
+import { BOOSTED_FARM_GAS_LIMIT, DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useCallback } from 'react'
 import getGasPrice from 'utils/getGasPrice'
 import { useMasterchefV1 } from 'hooks/useContract'
 
 const options = {
-  gasLimit: DEFAULT_GAS_LIMIT,
+  gasLimit: BOOSTED_FARM_GAS_LIMIT,
 }
 
 const useUnstakeFarms = (pid: number) => {

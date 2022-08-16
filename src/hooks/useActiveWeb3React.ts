@@ -1,18 +1,69 @@
-import { useWeb3React } from '@web3-react/core'
-import { Web3Provider } from '@ethersproject/providers'
-// eslint-disable-next-line import/no-unresolved
-import { Web3ReactContextInterface } from '@web3-react/core/dist/types'
-import { ChainId } from '@pancakeswap/sdk'
-import { bscRpcProvider } from 'utils/providers'
+import { useWeb3React } from '@pancakeswap/wagmi'
+import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { isChainSupported } from 'utils/wagmi'
+import { useProvider } from 'wagmi'
+import { useActiveChainId, useLocalNetworkChain } from './useActiveChainId'
+
+export function useNetworkConnectorUpdater() {
+  const localChainId = useLocalNetworkChain()
+  const { chain, isConnecting } = useActiveWeb3React()
+  const { switchNetwork, isLoading, pendingChainId } = useSwitchNetwork()
+  const router = useRouter()
+  const chainId = chain?.id || localChainId
+  const [triedSwitchFromQuery, setTriedSwitchFromQuery] = useState(false)
+
+  useEffect(() => {
+    if (isLoading || !router.isReady || isConnecting) return
+    const parsedQueryChainId = Number(router.query.chainId)
+    if (triedSwitchFromQuery) {
+      if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
+        router.replace(
+          {
+            query: {
+              ...router.query,
+              chainId,
+            },
+          },
+          undefined,
+        )
+      }
+    } else if (isChainSupported(parsedQueryChainId)) {
+      switchNetwork(parsedQueryChainId)
+        .then((r) => {
+          console.info('Auto switch network', r)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+        .finally(() => setTriedSwitchFromQuery(true))
+    } else {
+      setTriedSwitchFromQuery(true)
+    }
+  }, [chainId, isConnecting, isLoading, router, switchNetwork, triedSwitchFromQuery])
+
+  return {
+    isLoading,
+    switchNetwork,
+    pendingChainId,
+  }
+}
 
 /**
  * Provides a web3 provider with or without user's signer
  * Recreate web3 instance only if the provider change
  */
-const useActiveWeb3React = (): Web3ReactContextInterface<Web3Provider> => {
-  const { library, chainId, ...web3React } = useWeb3React()
+const useActiveWeb3React = () => {
+  const web3React = useWeb3React()
+  const chainId = useActiveChainId()
+  const provider = useProvider({ chainId })
 
-  return { library: library ?? bscRpcProvider, chainId: chainId ?? ChainId.BSC, ...web3React }
+  return {
+    provider,
+    ...web3React,
+    chainId,
+  }
 }
 
 export default useActiveWeb3React

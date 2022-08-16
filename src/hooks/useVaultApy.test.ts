@@ -5,6 +5,11 @@ import BigNumber from 'bignumber.js'
 import * as PoolHooks from '../state/pools/hooks'
 import { useVaultApy } from './useVaultApy'
 
+BigNumber.config({
+  EXPONENTIAL_AT: 1000,
+  DECIMAL_PLACES: 80,
+})
+
 jest.mock('../state/pools/hooks', () => ({
   // @ts-ignore
   ...jest.requireActual('state/pools/hooks'),

@@ -3,6 +3,7 @@ import addSeconds from 'date-fns/addSeconds'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { createSelector } from '@reduxjs/toolkit'
+import _isEmpty from 'lodash/isEmpty'
 import { State, SerializedFarm, DeserializedFarm, DeserializedFarmUserData } from '../types'
 import { deserializeToken } from '../user/hooks/helpers'
 import isUndefinedOrNull from '../../utils/isUndefinedOrNull'
@@ -14,6 +15,12 @@ const deserializeFarmUserData = (farm: SerializedFarm): DeserializedFarmUserData
     tokenBalance: farm.userData ? new BigNumber(farm.userData.tokenBalance) : BIG_ZERO,
     stakedBalance: farm.userData ? new BigNumber(farm.userData.stakedBalance) : BIG_ZERO,
     earnings: farm.userData ? new BigNumber(farm.userData.earnings) : BIG_ZERO,
+    proxy: {
+      allowance: farm?.userData?.proxy ? new BigNumber(farm?.userData?.proxy.allowance) : BIG_ZERO,
+      tokenBalance: farm?.userData?.proxy ? new BigNumber(farm?.userData?.proxy.tokenBalance) : BIG_ZERO,
+      stakedBalance: farm?.userData?.proxy ? new BigNumber(farm?.userData?.proxy.stakedBalance) : BIG_ZERO,
+      earnings: farm?.userData?.proxy ? new BigNumber(farm?.userData?.proxy.earnings) : BIG_ZERO,
+    },
   }
 }
 
@@ -28,6 +35,7 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
     auctionHostingStartSeconds,
     quoteTokenPriceBusd,
     tokenPriceBusd,
+    boosted,
   } = farm
 
   const auctionHostingStartDate = !isUndefinedOrNull(auctionHostingStartSeconds)
@@ -65,6 +73,7 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
     lpTotalSupply: farm.lpTotalSupply ? new BigNumber(farm.lpTotalSupply) : BIG_ZERO,
     tokenPriceVsQuote: farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : BIG_ZERO,
     poolWeight: farm.poolWeight ? new BigNumber(farm.poolWeight) : BIG_ZERO,
+    boosted,
   }
 }
 
@@ -82,12 +91,13 @@ export const makeBusdPriceFromPidSelector = (pid: number) =>
 
 export const makeUserFarmFromPidSelector = (pid: number) =>
   createSelector([selectFarmByKey('pid', pid)], (farm) => {
-    const { allowance, tokenBalance, stakedBalance, earnings } = deserializeFarmUserData(farm)
+    const { allowance, tokenBalance, stakedBalance, earnings, proxy } = deserializeFarmUserData(farm)
     return {
       allowance,
       tokenBalance,
       stakedBalance,
       earnings,
+      proxy,
     }
   })
 
