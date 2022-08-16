@@ -8,6 +8,7 @@ import {
   TooltipText,
   useTooltip,
   LinkExternal,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import _isEmpty from 'lodash/isEmpty'
 import { ReactNode } from 'react'
@@ -43,10 +44,12 @@ const BoosterTooltip = () => {
 }
 
 const ActionButton: React.FC<ActionButtonPropsType> = ({ title, description, button, ...props }) => {
+  const { isMobile } = useMatchBreakpoints()
   let btn = null
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(<BoosterTooltip />, {
     placement: 'top',
+    ...(isMobile && { hideTimeout: 1500 }),
   })
 
   if (button) {

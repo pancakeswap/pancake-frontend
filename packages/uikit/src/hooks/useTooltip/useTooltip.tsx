@@ -35,6 +35,7 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
     arrowPadding = 16,
     tooltipPadding = { left: 16, right: 16 },
     tooltipOffset = [0, 10],
+    hideTimeout = 100,
   } = options;
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
   const [tooltipElement, setTooltipElement] = useState<HTMLElement | null>(null);
@@ -42,7 +43,7 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
 
   const [visible, setVisible] = useState(false);
   const isHoveringOverTooltip = useRef(false);
-  const hideTimeout = useRef<number>();
+  const hideTimeoutRef = useRef<number>();
 
   const hideTooltip = useCallback(
     (e: Event) => {
@@ -53,24 +54,24 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
       };
 
       if (trigger === "hover") {
-        if (hideTimeout.current) {
-          window.clearTimeout(hideTimeout.current);
+        if (hideTimeoutRef.current) {
+          window.clearTimeout(hideTimeoutRef.current);
         }
         if (e.target === tooltipElement) {
           isHoveringOverTooltip.current = false;
         }
         if (!isHoveringOverTooltip.current) {
-          hideTimeout.current = window.setTimeout(() => {
+          hideTimeoutRef.current = window.setTimeout(() => {
             if (!isHoveringOverTooltip.current) {
               hide();
             }
-          }, 100);
+          }, hideTimeout);
         }
       } else {
         hide();
       }
     },
-    [tooltipElement, trigger]
+    [tooltipElement, trigger, hideTimeout]
   );
 
   const showTooltip = useCallback(
@@ -82,7 +83,7 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
         if (e.target === targetElement) {
           // If we were about to close the tooltip and got back to it
           // then prevent closing it.
-          clearTimeout(hideTimeout.current);
+          clearTimeout(hideTimeoutRef.current);
         }
         if (e.target === tooltipElement) {
           isHoveringOverTooltip.current = true;
