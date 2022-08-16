@@ -47,6 +47,7 @@ const ActionButton: React.FC<ActionButtonPropsType> = ({ title, description, but
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(<BoosterTooltip />, {
     placement: 'top',
+    hideTimeout: 1500,
   })
 
   if (button) {
