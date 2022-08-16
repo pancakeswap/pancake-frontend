@@ -15,7 +15,7 @@ const RoiCardWrapper = styled(Box)`
 `
 
 const RoiCardInner = styled(Box)`
-  height: 120px;
+  min-height: 120px;
   padding: 24px;
   border-radius: ${({ theme }) => theme.radii.default};
   background: ${({ theme }) => theme.colors.gradients.bubblegum};
@@ -160,9 +160,18 @@ const RoiCard: React.FC<React.PropsWithChildren<RoiCardProps>> = ({
           )}
         </Flex>
         <Text fontSize="12px" color="textSubtle">
-          ~ {roiTokens} {earningTokenSymbol} (
-          {roiPercentage.toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-          %)
+          ~ {roiTokens} {earningTokenSymbol}
+          <Text
+            fontSize="12px"
+            color="textSubtle"
+            ml="3px"
+            display="inline-block"
+            maxWidth="100%"
+            style={{ lineBreak: 'anywhere' }}
+          >
+            ({roiPercentage.toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            %)
+          </Text>
         </Text>
       </RoiCardInner>
     </RoiCardWrapper>

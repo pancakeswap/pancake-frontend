@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import { currencyEquals, Trade } from '@pancakeswap/sdk'
+import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
 import { InjectedModalProps } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import TransactionConfirmationModal, {
@@ -14,18 +14,21 @@ import SwapModalHeader from './SwapModalHeader'
  * @param tradeA trade A
  * @param tradeB trade B
  */
-function tradeMeaningfullyDiffers(tradeA: Trade, tradeB: Trade): boolean {
+function tradeMeaningfullyDiffers(
+  tradeA: Trade<Currency, Currency, TradeType>,
+  tradeB: Trade<Currency, Currency, TradeType>,
+): boolean {
   return (
     tradeA.tradeType !== tradeB.tradeType ||
-    !currencyEquals(tradeA.inputAmount.currency, tradeB.inputAmount.currency) ||
+    !tradeA.inputAmount.currency.equals(tradeB.inputAmount.currency) ||
     !tradeA.inputAmount.equalTo(tradeB.inputAmount) ||
-    !currencyEquals(tradeA.outputAmount.currency, tradeB.outputAmount.currency) ||
+    !tradeA.outputAmount.currency.equals(tradeB.outputAmount.currency) ||
     !tradeA.outputAmount.equalTo(tradeB.outputAmount)
   )
 }
 interface ConfirmSwapModalProps {
-  trade?: Trade
-  originalTrade?: Trade
+  trade?: Trade<Currency, Currency, TradeType>
+  originalTrade?: Trade<Currency, Currency, TradeType>
   attemptingTxn: boolean
   txHash?: string
   recipient: string | null

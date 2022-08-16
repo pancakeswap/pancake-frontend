@@ -1,14 +1,15 @@
 import { ModalProvider, light, dark, MatchBreakpointsProvider } from '@pancakeswap/uikit'
-import { Web3ReactProvider } from '@web3-react/core'
 import { Provider } from 'react-redux'
 import { SWRConfig } from 'swr'
 import { ThemeProvider } from 'styled-components'
-import { getLibrary } from 'utils/web3React'
 import { LanguageProvider } from '@pancakeswap/localization'
 import { ToastsProvider } from 'contexts/ToastsContext'
 import { fetchStatusMiddleware } from 'hooks/useSWRContract'
 import { Store } from '@reduxjs/toolkit'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
+import { WagmiProvider } from '@pancakeswap/wagmi'
+import { client } from 'utils/wagmi'
+import { HistoryManagerProvider } from 'contexts/HistoryContext'
 
 const StyledThemeProvider: React.FC<React.PropsWithChildren> = ({ children, ...props }) => {
   const { resolvedTheme } = useNextTheme()
@@ -24,7 +25,7 @@ const Providers: React.FC<React.PropsWithChildren<{ store: Store; children: Reac
   store,
 }) => {
   return (
-    <Web3ReactProvider getLibrary={getLibrary}>
+    <WagmiProvider client={client}>
       <Provider store={store}>
         <MatchBreakpointsProvider>
           <ToastsProvider>
@@ -36,7 +37,9 @@ const Providers: React.FC<React.PropsWithChildren<{ store: Store; children: Reac
                       use: [fetchStatusMiddleware],
                     }}
                   >
-                    <ModalProvider>{children}</ModalProvider>
+                    <HistoryManagerProvider>
+                      <ModalProvider>{children}</ModalProvider>
+                    </HistoryManagerProvider>
                   </SWRConfig>
                 </LanguageProvider>
               </StyledThemeProvider>
@@ -44,7 +47,7 @@ const Providers: React.FC<React.PropsWithChildren<{ store: Store; children: Reac
           </ToastsProvider>
         </MatchBreakpointsProvider>
       </Provider>
-    </Web3ReactProvider>
+    </WagmiProvider>
   )
 }
 

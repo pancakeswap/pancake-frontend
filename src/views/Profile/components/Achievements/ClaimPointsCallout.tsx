@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import sumBy from 'lodash/sumBy'
 import { useAppDispatch } from 'state'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { Card, CardBody, CardHeader, Flex, Heading, PrizeIcon } from '@pancakeswap/uikit'
 import { useProfile } from 'state/profile/hooks'
 import { Achievement } from 'state/types'

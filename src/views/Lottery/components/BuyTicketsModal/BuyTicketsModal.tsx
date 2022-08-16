@@ -15,8 +15,8 @@ import {
   Button,
   ArrowForwardIcon,
 } from '@pancakeswap/uikit'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { useWeb3React } from '@web3-react/core'
 import { bscTokens } from 'config/constants/tokens'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Box, Flex, Text, SearchIcon, Link } from '@pancakeswap/uikit'
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink } from 'utils'
 import { formatNumber } from 'utils/formatBalance'
 import uriToHttp from 'utils/uriToHttp'
 import { useTranslation } from '@pancakeswap/localization'
@@ -36,7 +36,7 @@ const DetailsCard: React.FC<React.PropsWithChildren<DetailsCardProps>> = ({
         <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
           {t('Contract address')}
         </Text>
-        <Link external href={getBscScanLink(contractAddress, 'address', chainId)}>
+        <Link external href={getBlockExploreLink(contractAddress, 'address', chainId)}>
           <LongTextContainer bold>{contractAddress}</LongTextContainer>
         </Link>
       </Flex>

@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon, LinkExternal, useTooltip, InfoIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
@@ -10,7 +10,7 @@ import { fetchLedgerData, markAsCollected } from 'state/predictions'
 import { Result } from 'state/predictions/helpers'
 import { useGetIsClaimable } from 'state/predictions/hooks'
 import useBUSDPrice from 'hooks/useBUSDPrice'
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink } from 'utils'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 
@@ -136,7 +136,7 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
         )}
         {bet.claimed && bet.claimedHash && (
           <Flex justifyContent="center">
-            <LinkExternal href={getBscScanLink(bet.claimedHash, 'transaction')} mb="16px">
+            <LinkExternal href={getBlockExploreLink(bet.claimedHash, 'transaction')} mb="16px">
               {t('View on BscScan')}
             </LinkExternal>
           </Flex>

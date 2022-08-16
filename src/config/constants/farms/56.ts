@@ -34,6 +34,15 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.busd,
     quoteToken: serializedTokens.wbnb,
   },
+  {
+    pid: 39,
+    v1pid: 389,
+    lpSymbol: 'CAKE-BUSD LP',
+    lpAddresses: '0x804678fa97d91B974ec2af3c843270886528a9E6',
+    boosted: true,
+    token: serializedTokens.cake,
+    quoteToken: serializedTokens.busd,
+  },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
     pid: 114,
@@ -633,14 +642,6 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'TUSD-BUSD LP',
     lpAddresses: '0x2e28b9b74d6d99d4697e913b82b41ef1cac51c6c',
     token: serializedTokens.tusd,
-    quoteToken: serializedTokens.busd,
-  },
-  {
-    pid: 39,
-    v1pid: 389,
-    lpSymbol: 'CAKE-BUSD LP',
-    lpAddresses: '0x804678fa97d91B974ec2af3c843270886528a9E6',
-    token: serializedTokens.cake,
     quoteToken: serializedTokens.busd,
   },
   {

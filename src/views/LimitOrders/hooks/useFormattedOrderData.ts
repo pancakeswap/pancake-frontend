@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 import { Order } from '@gelatonetwork/limit-orders-lib'
-import { Currency, CurrencyAmount, Price, Token, TokenAmount } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, Token } from '@pancakeswap/sdk'
 import { useCurrency } from 'hooks/Tokens'
 import useGelatoLimitOrdersLib from 'hooks/limitOrders/useGelatoLimitOrdersLib'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink } from 'utils'
 import { useIsTransactionPending } from 'state/transactions/hooks'
 import getPriceForOneToken from '../utils/getPriceForOneToken'
 import { LimitOrderStatus } from '../types'
@@ -28,7 +28,7 @@ export interface FormattedOrderData {
   }
 }
 
-const formatForDisplay = (amount: CurrencyAmount | Price) => {
+const formatForDisplay = (amount: Fraction) => {
   if (!amount) {
     return undefined
   }
@@ -50,10 +50,7 @@ const useFormattedOrderData = (order: Order): FormattedOrderData => {
 
   const inputAmount = useMemo(() => {
     if (inputToken && order.inputAmount) {
-      if (inputToken instanceof Token) {
-        return new TokenAmount(inputToken, order.inputAmount)
-      }
-      return CurrencyAmount.ether(order.inputAmount)
+      return CurrencyAmount.fromRawAmount(inputToken, order.inputAmount)
     }
     return undefined
   }, [inputToken, order.inputAmount])
@@ -70,10 +67,7 @@ const useFormattedOrderData = (order: Order): FormattedOrderData => {
 
   const outputAmount = useMemo(() => {
     if (outputToken && rawMinReturn) {
-      if (outputToken instanceof Token) {
-        return new TokenAmount(outputToken, rawMinReturn)
-      }
-      return CurrencyAmount.ether(rawMinReturn)
+      return CurrencyAmount.fromRawAmount(outputToken, rawMinReturn)
     }
     return undefined
   }, [outputToken, rawMinReturn])
@@ -93,9 +87,9 @@ const useFormattedOrderData = (order: Order): FormattedOrderData => {
     isSubmissionPending,
     isCancellationPending,
     bscScanUrls: {
-      created: order.createdTxHash ? getBscScanLink(order.createdTxHash, 'transaction') : null,
-      executed: order.executedTxHash ? getBscScanLink(order.executedTxHash, 'transaction') : null,
-      cancelled: order.cancelledTxHash ? getBscScanLink(order.cancelledTxHash, 'transaction') : null,
+      created: order.createdTxHash ? getBlockExploreLink(order.createdTxHash, 'transaction') : null,
+      executed: order.executedTxHash ? getBlockExploreLink(order.executedTxHash, 'transaction') : null,
+      cancelled: order.cancelledTxHash ? getBlockExploreLink(order.cancelledTxHash, 'transaction') : null,
     },
   }
 }

@@ -2,8 +2,9 @@ import { FC } from "react";
 import { SvgProps } from "../../components/Svg/types";
 
 export enum ConnectorNames {
+  MetaMask = "metaMask",
   Injected = "injected",
-  WalletConnect = "walletconnect",
+  WalletConnect = "walletConnect",
   BSC = "bsc",
   Blocto = "blocto",
   WalletLink = "coinbaseWallet",
@@ -17,4 +18,5 @@ export interface Config {
   connectorId: ConnectorNames;
   priority: number | (() => number);
   href?: string;
+  installed?: boolean;
 }

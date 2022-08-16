@@ -1,11 +1,11 @@
 import { useCallback, useState } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { useWeb3React } from '@web3-react/core'
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import { ToastDescriptionWithTx } from 'components/Toast'
 
 import useToast from 'hooks/useToast'
 import { logError, isUserRejected } from 'utils/sentry'
+import useActiveWeb3React from './useActiveWeb3React'
 
 export type TxResponse = TransactionResponse | null
 
@@ -28,7 +28,7 @@ type TxError = {
 const isGasEstimationError = (err: TxError): boolean => err?.data?.code === -32000
 
 export default function useCatchTxError(): CatchTxErrorReturn {
-  const { library } = useWeb3React()
+  const { provider } = useActiveWeb3React()
   const { t } = useTranslation()
   const { toastError, toastSuccess } = useToast()
   const [loading, setLoading] = useState(false)
@@ -75,7 +75,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
           if (!tx) {
             handleNormalError(error)
           } else {
-            library
+            provider
               .call(tx, tx.blockNumber)
               .then(() => {
                 handleNormalError(error, tx)
@@ -127,7 +127,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
 
       return null
     },
-    [handleNormalError, toastError, library, toastSuccess, t],
+    [handleNormalError, toastError, provider, toastSuccess, t],
   )
 
   return {

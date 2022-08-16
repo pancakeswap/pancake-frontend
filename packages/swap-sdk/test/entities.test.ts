@@ -1,6 +1,6 @@
 import invariant from 'tiny-invariant'
 import JSBI from 'jsbi'
-import { ChainId, WNATIVE as _WETH, TradeType, Rounding, Token, TokenAmount, Pair, Route, Trade } from '../src'
+import { ChainId, WNATIVE as _WETH, TradeType, Rounding, Token, Pair, Route, Trade, CurrencyAmount } from '../src'
 
 const ADDRESSES = [
   '0x0000000000000000000000000000000000000001',
@@ -36,23 +36,23 @@ describe('entities', () => {
       it('Pair', () => {
         pairs = [
           new Pair(
-            new TokenAmount(tokens[0], decimalize(1, tokens[0].decimals)),
-            new TokenAmount(tokens[1], decimalize(1, tokens[1].decimals))
+            CurrencyAmount.fromRawAmount(tokens[0], decimalize(1, tokens[0].decimals)),
+            CurrencyAmount.fromRawAmount(tokens[1], decimalize(1, tokens[1].decimals))
           ),
           new Pair(
-            new TokenAmount(tokens[1], decimalize(1, tokens[1].decimals)),
-            new TokenAmount(tokens[2], decimalize(1, tokens[2].decimals))
+            CurrencyAmount.fromRawAmount(tokens[1], decimalize(1, tokens[1].decimals)),
+            CurrencyAmount.fromRawAmount(tokens[2], decimalize(1, tokens[2].decimals))
           ),
           new Pair(
-            new TokenAmount(tokens[2], decimalize(1, tokens[2].decimals)),
-            new TokenAmount(WETH, decimalize(1234, WETH.decimals))
+            CurrencyAmount.fromRawAmount(tokens[2], decimalize(1, tokens[2].decimals)),
+            CurrencyAmount.fromRawAmount(WETH, decimalize(1234, WETH.decimals))
           ),
         ]
       })
 
-      let route: Route
+      let route: Route<Token, Token>
       it('Route', () => {
-        route = new Route(pairs, tokens[0])
+        route = new Route(pairs, tokens[0], WETH)
         expect(route.pairs).toEqual(pairs)
         expect(route.path).toEqual(tokens.concat([WETH]))
         expect(route.input).toEqual(tokens[0])
@@ -62,12 +62,15 @@ describe('entities', () => {
       it('Price:Route.midPrice', () => {
         invariant(route.input instanceof Token)
         invariant(route.output instanceof Token)
-        expect(route.midPrice.quote(new TokenAmount(route.input, decimalize(1, route.input.decimals)))).toEqual(
-          new TokenAmount(route.output, decimalize(1234, route.output.decimals))
-        )
         expect(
-          route.midPrice.invert().quote(new TokenAmount(route.output, decimalize(1234, route.output.decimals)))
-        ).toEqual(new TokenAmount(route.input, decimalize(1, route.input.decimals)))
+          route.midPrice.quote(CurrencyAmount.fromRawAmount(route.input, decimalize(1, route.input.decimals))).toExact()
+        ).toEqual(CurrencyAmount.fromRawAmount(route.output, decimalize(1234, route.output.decimals)).toExact())
+        expect(
+          route.midPrice
+            .invert()
+            .quote(CurrencyAmount.fromRawAmount(route.output, decimalize(1234, route.output.decimals)))
+            .toExact()
+        ).toEqual(CurrencyAmount.fromRawAmount(route.input, decimalize(1, route.input.decimals)).toExact())
 
         expect(route.midPrice.toSignificant(1)).toEqual('1000')
         expect(route.midPrice.toSignificant(2)).toEqual('1200')
@@ -99,19 +102,20 @@ describe('entities', () => {
       })
 
       describe('Trade', () => {
-        let route: Route
+        let route: Route<Token, Token>
         it('TradeType.EXACT_INPUT', () => {
           route = new Route(
             [
               new Pair(
-                new TokenAmount(tokens[1], decimalize(5, tokens[1].decimals)),
-                new TokenAmount(WETH, decimalize(10, WETH.decimals))
+                CurrencyAmount.fromRawAmount(tokens[1], decimalize(5, tokens[1].decimals)),
+                CurrencyAmount.fromRawAmount(WETH, decimalize(10, WETH.decimals))
               ),
             ],
-            tokens[1]
+            tokens[1],
+            WETH
           )
-          const inputAmount = new TokenAmount(tokens[1], decimalize(1, tokens[1].decimals))
-          const expectedOutputAmount = new TokenAmount(WETH, '1663192997082117548')
+          const inputAmount = CurrencyAmount.fromRawAmount(tokens[1], decimalize(1, tokens[1].decimals))
+          const expectedOutputAmount = CurrencyAmount.fromRawAmount(WETH, '1663192997082117548')
           const trade = new Trade(route, inputAmount, TradeType.EXACT_INPUT)
           expect(trade.route).toEqual(route)
           expect(trade.tradeType).toEqual(TradeType.EXACT_INPUT)
@@ -120,18 +124,15 @@ describe('entities', () => {
 
           expect(trade.executionPrice.toSignificant(18)).toEqual('1.66319299708211755')
           expect(trade.executionPrice.invert().toSignificant(18)).toEqual('0.601253132832080201')
-          expect(trade.executionPrice.quote(inputAmount)).toEqual(expectedOutputAmount)
-          expect(trade.executionPrice.invert().quote(expectedOutputAmount)).toEqual(inputAmount)
-
-          expect(trade.nextMidPrice.toSignificant(18)).toEqual('1.38946783381964708')
-          expect(trade.nextMidPrice.invert().toSignificant(18)).toEqual('0.7197')
+          expect(trade.executionPrice.quote(inputAmount).quotient).toEqual(expectedOutputAmount.quotient)
+          expect(trade.executionPrice.invert().quote(expectedOutputAmount).quotient).toEqual(inputAmount.quotient)
 
           expect(trade.priceImpact.toSignificant(18)).toEqual('16.8403501458941226')
         })
 
         it('TradeType.EXACT_OUTPUT', () => {
-          const outputAmount = new TokenAmount(WETH, '1663192997082117548')
-          const expectedInputAmount = new TokenAmount(tokens[1], decimalize(1, tokens[1].decimals))
+          const outputAmount = CurrencyAmount.fromRawAmount(WETH, '1663192997082117548')
+          const expectedInputAmount = CurrencyAmount.fromRawAmount(tokens[1], decimalize(1, tokens[1].decimals))
           const trade = new Trade(route, outputAmount, TradeType.EXACT_OUTPUT)
           expect(trade.route).toEqual(route)
           expect(trade.tradeType).toEqual(TradeType.EXACT_OUTPUT)
@@ -140,11 +141,8 @@ describe('entities', () => {
 
           expect(trade.executionPrice.toSignificant(18)).toEqual('1.66319299708211755')
           expect(trade.executionPrice.invert().toSignificant(18)).toEqual('0.601253132832080201')
-          expect(trade.executionPrice.quote(expectedInputAmount)).toEqual(outputAmount)
-          expect(trade.executionPrice.invert().quote(outputAmount)).toEqual(expectedInputAmount)
-
-          expect(trade.nextMidPrice.toSignificant(18)).toEqual('1.38946783381964708')
-          expect(trade.nextMidPrice.invert().toSignificant(18)).toEqual('0.7197')
+          expect(trade.executionPrice.quote(expectedInputAmount).quotient).toEqual(outputAmount.quotient)
+          expect(trade.executionPrice.invert().quote(outputAmount).quotient).toEqual(expectedInputAmount.quotient)
 
           expect(trade.priceImpact.toSignificant(18)).toEqual('16.8403501458941226')
         })
@@ -154,8 +152,8 @@ describe('entities', () => {
             const route = new Route(
               [
                 new Pair(
-                  new TokenAmount(tokens[1], decimalize(1, tokens[1].decimals)),
-                  new TokenAmount(
+                  CurrencyAmount.fromRawAmount(tokens[1], decimalize(1, tokens[1].decimals)),
+                  CurrencyAmount.fromRawAmount(
                     WETH,
                     JSBI.add(
                       decimalize(10, WETH.decimals),
@@ -168,7 +166,7 @@ describe('entities', () => {
               tokens[1],
               WETH
             )
-            const outputAmount = new TokenAmount(tokens[1], '1')
+            const outputAmount = CurrencyAmount.fromRawAmount(tokens[1], '1')
             const trade = new Trade(route, outputAmount, TradeType.EXACT_INPUT)
 
             expect(trade.priceImpact.toSignificant(18)).toEqual(
@@ -179,7 +177,7 @@ describe('entities', () => {
       })
 
       it('TokenAmount', () => {
-        const amount = new TokenAmount(WETH, '1234567000000000000000')
+        const amount = CurrencyAmount.fromRawAmount(WETH, '1234567000000000000000')
         expect(amount.toExact()).toEqual('1234.567')
         expect(amount.toExact({ groupSeparator: ',' })).toEqual('1,234.567')
       })

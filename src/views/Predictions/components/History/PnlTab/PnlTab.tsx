@@ -1,10 +1,10 @@
 import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { Box, Flex, Heading, Text, Button, Link, OpenNewIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { getRoundResult, Result } from 'state/predictions/helpers'
 import { REWARD_RATE } from 'state/predictions/config'
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink } from 'utils'
 import { multiplyPriceByAmount } from 'utils/prices'
 import useBUSDPrice from 'hooks/useBUSDPrice'
 import { useGetCurrentEpoch } from 'state/predictions/hooks'
@@ -191,7 +191,7 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
         <SummaryRow type="entered" summary={summary} bnbBusdPrice={bnbBusdPrice} />
 
         <Flex justifyContent="center" mt="24px">
-          <Link href={`${getBscScanLink(account, 'address')}#internaltx`} mb="16px" external>
+          <Link href={`${getBlockExploreLink(account, 'address')}#internaltx`} mb="16px" external>
             <Button mt="8px" width="100%">
               {t('View Reclaimed & Won')}
               <OpenNewIcon color="white" ml="4px" />

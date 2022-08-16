@@ -1,7 +1,7 @@
 import { Heading, Button, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { CompetitionProps } from 'views/TradingCompetition/types'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { useRouter } from 'next/router'
 
 const ReactivateProfile: React.FC<React.PropsWithChildren<CompetitionProps>> = ({ onDismiss }) => {

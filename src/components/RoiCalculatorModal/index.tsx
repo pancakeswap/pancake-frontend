@@ -16,7 +16,7 @@ import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import RoiCalculatorFooter from './RoiCalculatorFooter'
 import RoiCard from './RoiCard'
 import useRoiCalculatorReducer, {

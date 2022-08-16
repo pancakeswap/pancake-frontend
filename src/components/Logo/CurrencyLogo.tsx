@@ -1,8 +1,8 @@
-import { Currency, ETHER, Token } from '@pancakeswap/sdk'
+import { ChainId, Currency } from '@pancakeswap/sdk'
 import { BinanceIcon } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
-import styled from 'styled-components'
 import { WrappedTokenInfo } from 'state/types'
+import styled from 'styled-components'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import getTokenLogoURL from '../../utils/getTokenLogoURL'
 import Logo from './Logo'
@@ -25,19 +25,26 @@ export default function CurrencyLogo({
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
 
   const srcs: string[] = useMemo(() => {
-    if (currency === ETHER) return []
+    if (currency?.isNative) return []
 
-    if (currency instanceof Token) {
+    if (currency?.isToken) {
+      const tokenLogoURL = getTokenLogoURL(currency)
+
       if (currency instanceof WrappedTokenInfo) {
-        return [...uriLocations, getTokenLogoURL(currency.address)]
+        if (!tokenLogoURL) return [...uriLocations]
+        return [...uriLocations, tokenLogoURL]
       }
-      return [getTokenLogoURL(currency.address)]
+      if (!tokenLogoURL) return []
+      return [tokenLogoURL]
     }
     return []
   }, [currency, uriLocations])
 
-  if (currency === ETHER) {
-    return <BinanceIcon width={size} style={style} />
+  if (currency?.isNative) {
+    if (currency.chainId === ChainId.BSC) {
+      return <BinanceIcon width={size} style={style} />
+    }
+    return <StyledLogo size={size} srcs={[`/images/chains/${currency.chainId}.png`]} width={size} style={style} />
   }
 
   return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />

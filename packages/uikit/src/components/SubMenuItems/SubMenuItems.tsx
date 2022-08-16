@@ -68,7 +68,7 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
         onScroll={debounce(layerController, 100)}
         ref={scrollLayerRef}
       >
-        {items.map(({ label, href, icon, itemProps, type }) => {
+        {items.map(({ label, href, icon, itemProps, type, disabled }) => {
           const Icon = icon;
           const isExternalLink = type === DropdownMenuItemType.EXTERNAL_LINK;
           const linkProps = isExternalLink
@@ -85,6 +85,7 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
                   href={href}
                   scrollLayerRef={scrollLayerRef}
                   isActive={href === activeItem}
+                  isDisabled={disabled}
                   variant="subMenu"
                   {...itemProps}
                   {...linkProps}

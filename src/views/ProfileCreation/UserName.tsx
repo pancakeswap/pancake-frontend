@@ -16,12 +16,11 @@ import {
   Checkbox,
 } from '@pancakeswap/uikit'
 import { parseISO, formatDistance } from 'date-fns'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React, useSignMessage } from '@pancakeswap/wagmi'
 import { formatUnits } from '@ethersproject/units'
 import { API_PROFILE } from 'config/constants/endpoints'
 import useToast from 'hooks/useToast'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
-import { useSignMessage } from 'utils/web3React'
 import fetchWithTimeout from 'utils/fetchWithTimeout'
 import { useTranslation } from '@pancakeswap/localization'
 import { FetchStatus } from 'config/constants/types'

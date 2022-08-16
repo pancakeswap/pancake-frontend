@@ -112,3 +112,11 @@ export const getZapAddress = () => {
 export const getICakeAddress = () => {
   return getAddress(addresses.iCake)
 }
+
+export const getBCakeFarmBoosterAddress = () => {
+  return getAddress(addresses.bCakeFarmBooster)
+}
+
+export const getBCakeFarmBoosterProxyFactoryAddress = () => {
+  return getAddress(addresses.bCakeFarmBoosterProxyFactory)
+}

@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import NoWalletConnected from './WalletNotConnected'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
 import Mint from './Mint'

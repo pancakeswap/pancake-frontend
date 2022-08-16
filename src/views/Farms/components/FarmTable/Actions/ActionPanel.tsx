@@ -2,14 +2,18 @@ import styled, { keyframes, css } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { LinkExternal, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink } from 'utils'
+import { useContext } from 'react'
 import { FarmWithStakedValue } from '../../types'
 
-import HarvestAction from './HarvestAction'
-import StakedAction from './StakedAction'
+import { HarvestAction, HarvestActionContainer, ProxyHarvestActionContainer } from './HarvestAction'
+import StakedAction, { ProxyStakedContainer, StakedContainer } from './StakedAction'
 import Apr, { AprProps } from '../Apr'
 import Multiplier, { MultiplierProps } from '../Multiplier'
 import Liquidity, { LiquidityProps } from '../Liquidity'
+import BoostedAction from '../../YieldBooster/components/BoostedAction'
+import { ActionTitles, ActionContainer as ActionContainerSection, ActionContent } from './styles'
+import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
 
 export interface ActionPanelProps {
   apr: AprProps
@@ -25,13 +29,13 @@ const expandAnimation = keyframes`
     max-height: 0px;
   }
   to {
-    max-height: 500px;
+    max-height: 700px;
   }
 `
 
 const collapseAnimation = keyframes`
   from {
-    max-height: 500px;
+    max-height: 700px;
   }
   to {
     max-height: 0px;
@@ -56,6 +60,7 @@ const Container = styled.div<{ expanded }>`
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
+    align-items: center;
     padding: 16px 32px;
   }
 `
@@ -84,6 +89,7 @@ const ActionContainer = styled.div`
     align-items: center;
     flex-grow: 1;
     flex-basis: 0;
+    flex-wrap: wrap;
   }
 `
 
@@ -108,6 +114,8 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
   userDataReady,
   expanded,
 }) => {
+  const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
+
   const farm = details
 
   const { isDesktop } = useMatchBreakpointsContext()
@@ -124,7 +132,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
     tokenAddress: token.address,
   })
   const lpAddress = farm.lpAddresses
-  const bsc = getBscScanLink(lpAddress, 'address')
+  const bsc = getBlockExploreLink(lpAddress, 'address')
   const info = `/info/pool/${lpAddress}`
 
   return (
@@ -171,8 +179,42 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
         <StyledLinkExternal href={info}>{t('See Pair Info')}</StyledLinkExternal>
       </InfoContainer>
       <ActionContainer>
-        <HarvestAction {...farm} userDataReady={userDataReady} />
-        <StakedAction {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value} />
+        {shouldUseProxyFarm ? (
+          <ProxyHarvestActionContainer {...proxyFarm} userDataReady={userDataReady}>
+            {(props) => <HarvestAction {...props} />}
+          </ProxyHarvestActionContainer>
+        ) : (
+          <HarvestActionContainer {...farm} userDataReady={userDataReady}>
+            {(props) => <HarvestAction {...props} />}
+          </HarvestActionContainer>
+        )}
+        {farm?.boosted && (
+          <ActionContainerSection style={{ minHeight: 124.5 }}>
+            <BoostedAction
+              title={(status) => (
+                <ActionTitles>
+                  <Text mr="3px" bold textTransform="uppercase" color="textSubtle" fontSize="12px">
+                    {t('Yield Booster')}
+                  </Text>
+                  <Text bold textTransform="uppercase" color="secondary" fontSize="12px">
+                    {status}
+                  </Text>
+                </ActionTitles>
+              )}
+              desc={(actionBtn) => <ActionContent>{actionBtn}</ActionContent>}
+              farmPid={farm?.pid}
+            />
+          </ActionContainerSection>
+        )}
+        {shouldUseProxyFarm ? (
+          <ProxyStakedContainer {...proxyFarm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
+            {(props) => <StakedAction {...props} />}
+          </ProxyStakedContainer>
+        ) : (
+          <StakedContainer {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
+            {(props) => <StakedAction {...props} />}
+          </StakedContainer>
+        )}
       </ActionContainer>
     </Container>
   )

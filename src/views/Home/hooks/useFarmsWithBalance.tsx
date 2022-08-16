@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import multicall from 'utils/multicall'
 import { getMasterChefAddress } from 'utils/addressHelpers'
 import masterChefABI from 'config/abi/masterchef.json'
 import { FAST_INTERVAL } from 'config/constants'
@@ -8,7 +9,6 @@ import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import useSWR from 'swr'
 import { useFarmsLength } from 'state/farms/hooks'
 import { getFarmConfig } from 'config/constants/farms/index'
-import { useMulticall } from 'utils/multicall'
 
 export interface FarmWithBalance extends SerializedFarmConfig {
   balance: BigNumber
@@ -17,8 +17,6 @@ export interface FarmWithBalance extends SerializedFarmConfig {
 const useFarmsWithBalance = () => {
   const { account, chainId } = useActiveWeb3React()
   const { data: poolLength } = useFarmsLength()
-
-  const multicall = useMulticall()
 
   const {
     data: { farmsWithStakedBalance, earningsSum } = {

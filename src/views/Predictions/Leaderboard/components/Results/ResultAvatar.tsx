@@ -1,6 +1,6 @@
 import { Box, Flex, FlexProps, Link, ProfileAvatar, SubMenu, SubMenuItem, useModal, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink } from 'utils'
 import { PredictionUser } from 'state/types'
 import { useProfileForAddress } from 'state/profile/hooks'
 import truncateHash from 'utils/truncateHash'
@@ -71,7 +71,7 @@ const ResultAvatar: React.FC<React.PropsWithChildren<ResultAvatarProps>> = ({ us
       options={{ placement: 'bottom-start' }}
     >
       <SubMenuItem onClick={onPresentWalletStatsModal}>{t('View Stats')}</SubMenuItem>
-      <SubMenuItem as={Link} href={getBscScanLink(user.id, 'address')} bold={false} color="text" external>
+      <SubMenuItem as={Link} href={getBlockExploreLink(user.id, 'address')} bold={false} color="text" external>
         {t('View on BscScan')}
       </SubMenuItem>
     </SubMenu>

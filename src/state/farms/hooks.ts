@@ -2,10 +2,15 @@ import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
+import { ChainId } from '@pancakeswap/sdk'
 import useSWRImmutable from 'swr/immutable'
 import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
+import { getFarmApr } from 'utils/apr'
 import { useAppDispatch } from 'state'
+import { useRouter } from 'next/router'
+import { FarmWithStakedValue } from 'views/Farms/components/types'
+import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { getMasterchefContract } from 'utils/contractHelpers'
 import { getFarmConfig } from 'config/constants/farms/index'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
@@ -31,6 +36,7 @@ export function useFarmsLength() {
 export const usePollFarmsWithUserData = () => {
   const dispatch = useAppDispatch()
   const { account, chainId } = useActiveWeb3React()
+  const { proxyAddress } = useBCakeProxyContractAddress(account)
   const farmsConfig = getFarmConfig(chainId)
 
   useSWRImmutable(
@@ -44,11 +50,17 @@ export const usePollFarmsWithUserData = () => {
     },
   )
 
+  const name = proxyAddress
+    ? ['farmsWithUserData', account, proxyAddress, chainId]
+    : ['farmsWithUserData', account, chainId]
+
   useSWRImmutable(
-    account && chainId ? ['farmsWithUserData', account, chainId] : null,
+    account ? name : null,
     () => {
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
-      dispatch(fetchFarmUserDataAsync({ account, pids, chainId }))
+      const params = proxyAddress ? { account, pids, proxyAddress, chainId } : { account, pids, chainId }
+
+      dispatch(fetchFarmUserDataAsync(params))
     },
     {
       refreshInterval: SLOW_INTERVAL,
@@ -119,4 +131,30 @@ export const useLpTokenPrice = (symbol: string) => {
  */
 export const usePriceCakeBusd = (): BigNumber => {
   return useSelector(priceCakeFromPidSelector)
+}
+
+export const useFarmWithStakeValue = (farm: DeserializedFarm): FarmWithStakedValue => {
+  const { pathname } = useRouter()
+  const cakePrice = usePriceCakeBusd()
+  const { regularCakePerBlock } = useFarms()
+
+  const isArchived = pathname.includes('archived')
+  const isInactive = pathname.includes('history')
+  const isActive = !isInactive && !isArchived
+
+  if (!farm.lpTotalInQuoteToken || !farm.quoteTokenPriceBusd) {
+    return farm
+  }
+  const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
+  const { cakeRewardsApr, lpRewardsApr } = isActive
+    ? getFarmApr(
+        new BigNumber(farm.poolWeight),
+        cakePrice,
+        totalLiquidity,
+        farm.lpAddresses[ChainId.BSC],
+        regularCakePerBlock,
+      )
+    : { cakeRewardsApr: 0, lpRewardsApr: 0 }
+
+  return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
 }

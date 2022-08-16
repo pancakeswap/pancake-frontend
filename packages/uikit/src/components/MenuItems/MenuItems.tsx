@@ -14,14 +14,20 @@ const MenuItems: React.FC<React.PropsWithChildren<MenuItemsProps>> = ({
 }) => {
   return (
     <Flex {...props}>
-      {items.map(({ label, items: menuItems = [], href, icon }) => {
+      {items.map(({ label, items: menuItems = [], href, icon, disabled }) => {
         const statusColor = menuItems?.find((menuItem) => menuItem.status !== undefined)?.status?.color;
         const isActive = activeItem === href;
         const linkProps = isTouchDevice() && menuItems && menuItems.length > 0 ? {} : { href };
         const Icon = icon;
         return (
-          <DropdownMenu key={`${label}#${href}`} items={menuItems} py={1} activeItem={activeSubItem}>
-            <MenuItem {...linkProps} isActive={isActive} statusColor={statusColor}>
+          <DropdownMenu
+            key={`${label}#${href}`}
+            items={menuItems}
+            py={1}
+            activeItem={activeSubItem}
+            isDisabled={disabled}
+          >
+            <MenuItem {...linkProps} isActive={isActive} statusColor={statusColor} isDisabled={disabled}>
               {label || (icon && createElement(Icon as any, { color: isActive ? "secondary" : "textSubtle" }))}
             </MenuItem>
           </DropdownMenu>

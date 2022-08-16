@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { parseUnits } from '@ethersproject/units'
 import {
   ButtonMenu,
   ButtonMenuItem,
@@ -11,11 +11,11 @@ import {
   ModalHeader as UIKitModalHeader,
   ModalTitle,
 } from '@pancakeswap/uikit'
-import { parseUnits } from '@ethersproject/units'
+import { useWeb3React } from '@pancakeswap/wagmi'
+import { useState } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
-import { useGetBnbBalance } from 'hooks/useTokenBalance'
-import { FetchStatus } from 'config/constants/types'
+import { useBalance } from 'wagmi'
 import WalletInfo from './WalletInfo'
 import WalletTransactions from './WalletTransactions'
 import WalletWrongNetwork from './WalletWrongNetwork'
@@ -48,8 +48,9 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
 }) => {
   const [view, setView] = useState(initialView)
   const { t } = useTranslation()
-  const { balance, fetchStatus } = useGetBnbBalance()
-  const hasLowBnbBalance = fetchStatus === FetchStatus.Fetched && balance.lte(LOW_BNB_BALANCE)
+  const { account } = useWeb3React()
+  const { data, isFetched } = useBalance({ addressOrName: account })
+  const hasLowNativeBalance = isFetched && data && data.value.lte(LOW_BNB_BALANCE)
 
   const handleClick = (newIndex: number) => {
     setView(newIndex)
@@ -75,8 +76,10 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
         </IconButton>
       </ModalHeader>
       {view !== WalletView.WRONG_NETWORK && <TabsComponent />}
-      <ModalBody p="24px" maxWidth="400px" width="100%">
-        {view === WalletView.WALLET_INFO && <WalletInfo hasLowBnbBalance={hasLowBnbBalance} onDismiss={onDismiss} />}
+      <ModalBody p="24px" width="100%">
+        {view === WalletView.WALLET_INFO && (
+          <WalletInfo hasLowNativeBalance={hasLowNativeBalance} onDismiss={onDismiss} />
+        )}
         {view === WalletView.TRANSACTIONS && <WalletTransactions />}
         {view === WalletView.WRONG_NETWORK && <WalletWrongNetwork onDismiss={onDismiss} />}
       </ModalBody>

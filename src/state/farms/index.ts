@@ -12,6 +12,7 @@ import { getMasterChefAddress } from 'utils/addressHelpers'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { ethersToBigNumber } from 'utils/bigNumber'
 import type { AppState } from 'state'
+import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
 import { getFarmConfig } from 'config/constants/farms/index'
 import fetchFarms from './fetchFarms'
 import getFarmsPrices from './getFarmsPrices'
@@ -100,38 +101,101 @@ interface FarmUserDataResponse {
   tokenBalance: string
   stakedBalance: string
   earnings: string
+  proxy?: {
+    allowance: string
+    tokenBalance: string
+    stakedBalance: string
+    earnings: string
+  }
+}
+
+async function getBoostedFarmsStakeValue(farms, account, proxyAddress) {
+  const [
+    userFarmAllowances,
+    userFarmTokenBalances,
+    userStakedBalances,
+    userFarmEarnings,
+    proxyUserFarmAllowances,
+    proxyUserStakedBalances,
+    proxyUserFarmEarnings,
+  ] = await Promise.all([
+    fetchFarmUserAllowances(account, farms),
+    fetchFarmUserTokenBalances(account, farms),
+    fetchFarmUserStakedBalances(account, farms),
+    fetchFarmUserEarnings(account, farms),
+    // Proxy call
+    fetchFarmUserAllowances(account, farms, proxyAddress),
+    fetchFarmUserStakedBalances(proxyAddress, farms),
+    fetchFarmUserEarnings(proxyAddress, farms),
+  ])
+
+  const farmAllowances = userFarmAllowances.map((farmAllowance, index) => {
+    return {
+      pid: farms[index].pid,
+      allowance: userFarmAllowances[index],
+      tokenBalance: userFarmTokenBalances[index],
+      stakedBalance: userStakedBalances[index],
+      earnings: userFarmEarnings[index],
+      proxy: {
+        allowance: proxyUserFarmAllowances[index],
+        // NOTE: Duplicate tokenBalance to maintain data structure consistence
+        tokenBalance: userFarmTokenBalances[index],
+        stakedBalance: proxyUserStakedBalances[index],
+        earnings: proxyUserFarmEarnings[index],
+      },
+    }
+  })
+
+  return farmAllowances
+}
+
+async function getNormalFarmsStakeValue(farms, account) {
+  const [userFarmAllowances, userFarmTokenBalances, userStakedBalances, userFarmEarnings] = await Promise.all([
+    fetchFarmUserAllowances(account, farms),
+    fetchFarmUserTokenBalances(account, farms),
+    fetchFarmUserStakedBalances(account, farms),
+    fetchFarmUserEarnings(account, farms),
+  ])
+
+  const normalFarmAllowances = userFarmAllowances.map((_, index) => {
+    return {
+      pid: farms[index].pid,
+      allowance: userFarmAllowances[index],
+      tokenBalance: userFarmTokenBalances[index],
+      stakedBalance: userStakedBalances[index],
+      earnings: userFarmEarnings[index],
+    }
+  })
+
+  return normalFarmAllowances
 }
 
 export const fetchFarmUserDataAsync = createAsyncThunk<
   FarmUserDataResponse[],
-  { account: string; pids: number[]; chainId: number },
+  { account: string; pids: number[]; proxyAddress?: string; chainId: number },
   {
     state: AppState
   }
 >(
   'farms/fetchFarmUserDataAsync',
-  async ({ account, pids, chainId }, config) => {
+  async ({ account, pids, proxyAddress, chainId }, config) => {
     const poolLength = config.getState().farms.poolLength ?? (await fetchMasterChefFarmPoolLength(chainId)).toNumber()
     const farmsConfig = getFarmConfig(chainId)
     const farmsCanFetch = farmsConfig.filter(
       (farmConfig) => pids.includes(farmConfig.pid) && poolLength > farmConfig.pid,
     )
-    const [userFarmAllowances, userFarmTokenBalances, userStakedBalances, userFarmEarnings] = await Promise.all([
-      fetchFarmUserAllowances(account, farmsCanFetch),
-      fetchFarmUserTokenBalances(account, farmsCanFetch),
-      fetchFarmUserStakedBalances(account, farmsCanFetch),
-      fetchFarmUserEarnings(account, farmsCanFetch),
-    ])
+    if (proxyAddress && farmsCanFetch?.length) {
+      const { normalFarms, farmsWithProxy } = splitProxyFarms(farmsCanFetch)
 
-    return userFarmAllowances.map((farmAllowance, index) => {
-      return {
-        pid: farmsCanFetch[index].pid,
-        allowance: userFarmAllowances[index],
-        tokenBalance: userFarmTokenBalances[index],
-        stakedBalance: userStakedBalances[index],
-        earnings: userFarmEarnings[index],
-      }
-    })
+      const [proxyAllowances, normalAllowances] = await Promise.all([
+        getBoostedFarmsStakeValue(farmsWithProxy, account, proxyAddress),
+        getNormalFarmsStakeValue(normalFarms, account),
+      ])
+
+      return [...proxyAllowances, ...normalAllowances]
+    }
+
+    return getNormalFarmsStakeValue(farmsCanFetch, account)
   },
   {
     condition: (arg, { getState }) => {
@@ -202,6 +266,7 @@ export const farmsSlice = createSlice({
     builder.addCase(fetchFarmUserDataAsync.fulfilled, (state, action) => {
       action.payload.forEach((userDataEl) => {
         const { pid } = userDataEl
+
         const index = state.data.findIndex((farm) => farm.pid === pid)
         state.data[index] = { ...state.data[index], userData: userDataEl }
       })
