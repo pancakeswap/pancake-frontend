@@ -1,11 +1,44 @@
-import { useCallback } from 'react'
+import { useCallback, memo } from 'react'
 import { Trade } from '@pancakeswap/sdk'
-import { InjectedModalProps, Modal } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
+import { InjectedModalProps, LinkExternal, Text } from '@pancakeswap/uikit'
 import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConfirmationPendingContent from './ConfirmationPendingContent'
 import TransactionConfirmSwapContent from './TransactionConfirmSwapContent'
+import ConfirmSwapModalContainer from './ConfirmSwapModalContainer'
+import useTranslation from '../../../../packages/localization/src/useTranslation'
+
+const PancakeRouterSlippageErrorMsg =
+  'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.'
+
+const SwapTransactionErrorContent = ({ onDismiss, message, openSettingModal }) => {
+  const handleErrorDismiss = useCallback(() => {
+    onDismiss?.()
+    if (message?.includes(PancakeRouterSlippageErrorMsg) && openSettingModal) {
+      openSettingModal()
+    }
+  }, [message, onDismiss, openSettingModal])
+  const { t } = useTranslation()
+
+  const slippageElement = (
+    <>
+      <Text mb="16px">
+        {t('This transaction will not succeed either due to price movement or fee on transfer. Try increasing your')}{' '}
+        <Text bold display="inline" style={{ cursor: 'pointer' }} onClick={handleErrorDismiss}>
+          <u>{t('slippage tolerance.')}</u>
+        </Text>
+      </Text>
+      <LinkExternal
+        href="https://docs.pancakeswap.finance/products/pancakeswap-mini-program/mini-program-faq"
+        style={{ width: '100%', justifyContent: 'center' }}
+      >
+        {t('What are the potential issues with the token?')}
+      </LinkExternal>
+    </>
+  )
+
+  return <TransactionErrorContent message={slippageElement} />
+}
 
 interface ConfirmSwapModalProps {
   trade?: Trade
@@ -18,6 +51,7 @@ interface ConfirmSwapModalProps {
   onConfirm: () => void
   swapErrorMessage?: string
   customOnDismiss?: () => void
+  openSettingModal?: () => void
 }
 
 const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & ConfirmSwapModalProps>> = ({
@@ -32,6 +66,7 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
   swapErrorMessage,
   attemptingTxn,
   txHash,
+  openSettingModal,
 }) => {
   const { chainId } = useActiveWeb3React()
 
@@ -42,12 +77,14 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
     onDismiss?.()
   }, [customOnDismiss, onDismiss])
 
-  const { t } = useTranslation()
-
   const confirmationContent = useCallback(
     () =>
       swapErrorMessage ? (
-        <TransactionErrorContent onDismiss={onDismiss} message={swapErrorMessage} />
+        <SwapTransactionErrorContent
+          openSettingModal={openSettingModal}
+          onDismiss={onDismiss}
+          message={swapErrorMessage}
+        />
       ) : (
         <TransactionConfirmSwapContent
           trade={trade}
@@ -56,16 +93,25 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
           allowedSlippage={allowedSlippage}
           onConfirm={onConfirm}
           recipient={recipient}
-          swapErrorMessage={swapErrorMessage}
         />
       ),
-    [onDismiss, trade, originalTrade, onAcceptChanges, allowedSlippage, onConfirm, recipient, swapErrorMessage],
+    [
+      trade,
+      originalTrade,
+      onAcceptChanges,
+      allowedSlippage,
+      onConfirm,
+      recipient,
+      swapErrorMessage,
+      onDismiss,
+      openSettingModal,
+    ],
   )
 
   if (!chainId) return null
 
   return (
-    <Modal title={t('Confirm Swap')} headerBackground="gradients.cardHeader" onDismiss={handleDismiss}>
+    <ConfirmSwapModalContainer handleDismiss={handleDismiss}>
       {attemptingTxn ? (
         <ConfirmationPendingContent trade={trade} />
       ) : txHash ? (
@@ -78,8 +124,8 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
       ) : (
         confirmationContent()
       )}
-    </Modal>
+    </ConfirmSwapModalContainer>
   )
 }
 
-export default ConfirmSwapModal
+export default memo(ConfirmSwapModal)

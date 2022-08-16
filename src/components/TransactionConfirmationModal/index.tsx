@@ -120,7 +120,7 @@ export function ConfirmationModalContent({
   )
 }
 
-export function TransactionErrorContent({ message, onDismiss }: { message: string; onDismiss: () => void }) {
+export function TransactionErrorContent({ message, onDismiss }: { message: string; onDismiss?: () => void }) {
   const { t } = useTranslation()
   return (
     <Wrapper>
@@ -131,9 +131,11 @@ export function TransactionErrorContent({ message, onDismiss }: { message: strin
         </Text>
       </AutoColumn>
 
-      <Flex justifyContent="center" pt="24px">
-        <Button onClick={onDismiss}>{t('Dismiss')}</Button>
-      </Flex>
+      {onDismiss ? (
+        <Flex justifyContent="center" pt="24px">
+          <Button onClick={onDismiss}>{t('Dismiss')}</Button>
+        </Flex>
+      ) : null}
     </Wrapper>
   )
 }

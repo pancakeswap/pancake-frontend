@@ -26,7 +26,6 @@ const TransactionConfirmSwapContent = ({
   allowedSlippage,
   onConfirm,
   recipient,
-  swapErrorMessage,
 }) => {
   const showAcceptChanges = useMemo(
     () => Boolean(trade && originalTrade && tradeMeaningfullyDiffers(trade, originalTrade)),
@@ -51,11 +50,10 @@ const TransactionConfirmSwapContent = ({
         onConfirm={onConfirm}
         trade={trade}
         disabledConfirm={showAcceptChanges}
-        swapErrorMessage={swapErrorMessage}
         allowedSlippage={allowedSlippage}
       />
     ) : null
-  }, [allowedSlippage, onConfirm, showAcceptChanges, swapErrorMessage, trade])
+  }, [allowedSlippage, onConfirm, showAcceptChanges, trade])
 
   return <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
 }

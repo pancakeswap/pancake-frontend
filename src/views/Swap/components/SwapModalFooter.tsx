@@ -35,7 +35,7 @@ export default function SwapModalFooter({
   trade: Trade
   allowedSlippage: number
   onConfirm: () => void
-  swapErrorMessage: string | undefined
+  swapErrorMessage?: string | undefined
   disabledConfirm: boolean
 }) {
   const { t } = useTranslation()
