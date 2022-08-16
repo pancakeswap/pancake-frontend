@@ -114,7 +114,7 @@ export default function CurrencyList({
   setImportToken,
   breakIndex,
 }: {
-  height: number
+  height: number | string
   currencies: Currency[]
   inactiveCurrencies: Currency[]
   selectedCurrency?: Currency | null
