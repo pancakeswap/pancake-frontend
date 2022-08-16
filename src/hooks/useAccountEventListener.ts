@@ -17,12 +17,12 @@ export const useAccountEventListener = () => {
         clearUserStates(dispatch, chainId, true)
       }
 
-      connector.addListener('Web3ReactDeactivate', handleDeactiveEvent)
-      connector.addListener('Web3ReactUpdate', handleUpdateEvent)
+      connector.addListener('disconnect', handleDeactiveEvent)
+      connector.addListener('change', handleUpdateEvent)
 
       return () => {
-        connector.removeListener('Web3ReactDeactivate', handleDeactiveEvent)
-        connector.removeListener('Web3ReactUpdate', handleUpdateEvent)
+        connector.removeListener('disconnect', handleDeactiveEvent)
+        connector.removeListener('change', handleUpdateEvent)
       }
     }
     return undefined

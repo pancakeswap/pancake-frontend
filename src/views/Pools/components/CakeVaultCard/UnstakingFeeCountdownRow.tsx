@@ -1,6 +1,6 @@
 import { Flex, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { useWeb3React } from '@web3-react/core'
 import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
 import { secondsToHours } from 'date-fns'
 import { useVaultPoolByKey } from 'state/pools/hooks'

@@ -1,10 +1,10 @@
 import { Contract } from '@ethersproject/contracts'
-import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@pancakeswap/sdk'
+import { JSBI, Percent, Router, SwapParameters, Trade, TradeType, Currency } from '@pancakeswap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { BIPS_BASE } from 'config/constants/exchange'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
-import { getRouterContract } from 'utils/exchange'
+import { useRouterContract } from 'utils/exchange'
 import useTransactionDeadline from './useTransactionDeadline'
 
 interface SwapCall {
@@ -19,19 +19,19 @@ interface SwapCall {
  * @param recipientAddressOrName
  */
 export function useSwapCallArguments(
-  trade: Trade | undefined, // trade to execute, required
+  trade: Trade<Currency, Currency, TradeType> | undefined, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
-  const { account, chainId, library } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
 
   const recipient = recipientAddress === null ? account : recipientAddress
   const deadline = useTransactionDeadline()
+  const contract = useRouterContract()
 
   return useMemo(() => {
-    if (!trade || !recipient || !library || !account || !chainId || !deadline) return []
+    if (!trade || !recipient || !account || !chainId || !deadline) return []
 
-    const contract = getRouterContract(chainId, library, account)
     if (!contract) {
       return []
     }
@@ -59,5 +59,5 @@ export function useSwapCallArguments(
     }
 
     return swapMethods.map((parameters) => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, deadline, library, recipient, trade])
+  }, [account, allowedSlippage, chainId, contract, deadline, recipient, trade])
 }

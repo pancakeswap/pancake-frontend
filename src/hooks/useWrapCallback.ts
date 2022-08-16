@@ -1,11 +1,11 @@
-import { Currency, currencyEquals, ETHER, WNATIVE } from '@pancakeswap/sdk'
+import { Currency, WNATIVE } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import tryParseAmount from 'utils/tryParseAmount'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { useCurrencyBalance } from '../state/wallet/hooks'
-import { useWBNBContract } from './useContract'
+import { useWNativeContract } from './useContract'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
 
 export enum WrapType {
@@ -29,7 +29,7 @@ export default function useWrapCallback(
   const { t } = useTranslation()
   const { chainId, account } = useActiveWeb3React()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const wbnbContract = useWBNBContract()
+  const wbnbContract = useWNativeContract()
   const balance = useCurrencyBalance(account ?? undefined, inputCurrency)
   // we can always parse the amount typed as the input currency, since wrapping is 1:1
   const inputAmount = useMemo(() => tryParseAmount(typedValue, inputCurrency), [inputCurrency, typedValue])
@@ -40,7 +40,7 @@ export default function useWrapCallback(
 
     const sufficientBalance = inputAmount && balance && !balance.lessThan(inputAmount)
 
-    if (inputCurrency === ETHER && currencyEquals(WNATIVE[chainId], outputCurrency)) {
+    if (inputCurrency?.isNative && WNATIVE[chainId]?.equals(outputCurrency)) {
       return {
         wrapType: WrapType.WRAP,
         execute:
@@ -48,10 +48,14 @@ export default function useWrapCallback(
             ? async () => {
                 try {
                   const txReceipt = await callWithGasPrice(wbnbContract, 'deposit', undefined, {
-                    value: `0x${inputAmount.raw.toString(16)}`,
+                    value: `0x${inputAmount.quotient.toString(16)}`,
                   })
                   addTransaction(txReceipt, {
-                    summary: `Wrap ${inputAmount.toSignificant(6)} BNB to WBNB`,
+                    summary: t('Wrap %amount% %native% to %wrap%', {
+                      amount: inputAmount.toSignificant(6),
+                      wrap: WNATIVE[chainId].symbol,
+                      native: inputCurrency.symbol,
+                    }),
                     type: 'wrap',
                   })
                 } catch (error) {
@@ -59,10 +63,12 @@ export default function useWrapCallback(
                 }
               }
             : undefined,
-        inputError: sufficientBalance ? undefined : t('Insufficient BNB balance'),
+        inputError: sufficientBalance
+          ? undefined
+          : t('Insufficient %symbol% balance', { symbol: inputCurrency.symbol }),
       }
     }
-    if (currencyEquals(WNATIVE[chainId], inputCurrency) && outputCurrency === ETHER) {
+    if (WNATIVE[chainId]?.equals(inputCurrency) && outputCurrency?.isNative) {
       return {
         wrapType: WrapType.UNWRAP,
         execute:
@@ -70,15 +76,23 @@ export default function useWrapCallback(
             ? async () => {
                 try {
                   const txReceipt = await callWithGasPrice(wbnbContract, 'withdraw', [
-                    `0x${inputAmount.raw.toString(16)}`,
+                    `0x${inputAmount.quotient.toString(16)}`,
                   ])
-                  addTransaction(txReceipt, { summary: `Unwrap ${inputAmount.toSignificant(6)} WBNB to BNB` })
+                  addTransaction(txReceipt, {
+                    summary: t('Unwrap %amount% %wrap% to %native%', {
+                      amount: inputAmount.toSignificant(6),
+                      wrap: WNATIVE[chainId].symbol,
+                      native: outputCurrency.symbol,
+                    }),
+                  })
                 } catch (error) {
                   console.error('Could not withdraw', error)
                 }
               }
             : undefined,
-        inputError: sufficientBalance ? undefined : t('Insufficient WBNB balance'),
+        inputError: sufficientBalance
+          ? undefined
+          : t('Insufficient %symbol% balance', { symbol: inputCurrency.symbol }),
       }
     }
     return NOT_APPLICABLE

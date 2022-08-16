@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Card, Heading, Table, Th, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import Container from 'components/Layout/Container'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { fetchAddressResult } from 'state/predictions'

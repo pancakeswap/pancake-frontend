@@ -9,7 +9,7 @@ import {
   Button,
   ChevronUpIcon,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import orderBy from 'lodash/orderBy'
 import { useTranslation } from '@pancakeswap/localization'
 import { Vote } from 'state/types'

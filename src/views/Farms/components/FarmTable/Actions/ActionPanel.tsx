@@ -3,7 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { LinkExternal, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { getAddress } from 'utils/addressHelpers'
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink } from 'utils'
 import { useContext } from 'react'
 import { FarmWithStakedValue } from '../../types'
 
@@ -133,7 +133,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
     tokenAddress: token.address,
   })
   const lpAddress = getAddress(farm.lpAddresses)
-  const bsc = getBscScanLink(lpAddress, 'address')
+  const bsc = getBlockExploreLink(lpAddress, 'address')
   const info = `/info/pool/${lpAddress}`
 
   return (

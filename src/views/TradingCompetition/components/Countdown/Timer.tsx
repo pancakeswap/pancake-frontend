@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Flex, Heading, Text, Link, useTooltip } from '@pancakeswap/uikit'
+import { getBlockExploreLink } from 'utils'
 import { useTranslation, ContextApi } from '@pancakeswap/localization'
-import { getBscScanLink } from 'utils'
 
 export interface TimerProps {
   prefix?: string
@@ -65,7 +65,7 @@ const TooltipContent = ({ blockNumber, t }: { blockNumber: number; t: ContextApi
     <Text color="body" mb="10px" fontWeight="600">
       {t('Block %num%', { num: blockNumber })}
     </Text>
-    <Link external href={getBscScanLink(blockNumber, 'block')}>
+    <Link external href={getBlockExploreLink(blockNumber, 'block')}>
       {t('View on BscScan')}
     </Link>
   </>

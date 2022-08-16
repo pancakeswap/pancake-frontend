@@ -3,23 +3,28 @@ import QuestionHelper from 'components/QuestionHelper'
 import { useTranslation } from '@pancakeswap/localization'
 import { useGasPriceManager } from 'state/user/hooks'
 import { GAS_PRICE_GWEI, GAS_PRICE } from 'state/types'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { ChainId } from '@pancakeswap/sdk'
 
 const GasSettings = () => {
   const { t } = useTranslation()
+  const { chainId } = useActiveWeb3React()
   const [gasPrice, setGasPrice] = useGasPriceManager()
 
   return (
     <Flex flexDirection="column">
-      <Flex mb="12px" alignItems="center">
-        <Text>{t('Default Transaction Speed (GWEI)')}</Text>
-        <QuestionHelper
-          text={t(
-            'Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees',
-          )}
-          placement="top-start"
-          ml="4px"
-        />
-      </Flex>
+      {chainId === ChainId.BSC && (
+        <Flex mb="12px" alignItems="center">
+          <Text>{t('Default Transaction Speed (GWEI)')}</Text>
+          <QuestionHelper
+            text={t(
+              'Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees',
+            )}
+            placement="top-start"
+            ml="4px"
+          />
+        </Flex>
+      )}
       <Flex flexWrap="wrap">
         <Button
           mt="4px"

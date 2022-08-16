@@ -10,7 +10,7 @@ import { usePriceCakeBusd } from 'state/farms/hooks'
 import { PotteryRoundInfo } from 'state/types'
 import Divider from 'components/Divider'
 import { getDrawnDate } from 'views/Lottery/helpers'
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink } from 'utils'
 import Winner from './Winner'
 
 const StyledCardBody = styled(CardBody)`
@@ -125,7 +125,7 @@ const PreviousRoundCardBody: React.FC<React.PropsWithChildren<PreviousRoundCardB
           </Flex>
           <LinkExternal
             m={['10px auto auto auto', '10px auto auto auto', 'auto 0 0 auto']}
-            href={getBscScanLink(txid, 'transaction')}
+            href={getBlockExploreLink(txid, 'transaction')}
           >
             {t('View on BscScan')}
           </LinkExternal>

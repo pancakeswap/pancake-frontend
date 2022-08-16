@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Currency, CurrencyAmount, Pair, Percent, Token, TokenAmount } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Percent, Token } from '@pancakeswap/sdk'
 import { AddIcon, Button, InjectedModalProps, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import TransactionConfirmationModal, {
@@ -22,9 +22,9 @@ interface ConfirmRemoveLiquidityModalProps {
   pendingText: string
   parsedAmounts: {
     [Field.LIQUIDITY_PERCENT]: Percent
-    [Field.LIQUIDITY]?: TokenAmount
-    [Field.CURRENCY_A]?: CurrencyAmount
-    [Field.CURRENCY_B]?: CurrencyAmount
+    [Field.LIQUIDITY]?: CurrencyAmount<Token>
+    [Field.CURRENCY_A]?: CurrencyAmount<Currency>
+    [Field.CURRENCY_B]?: CurrencyAmount<Currency>
   }
   allowedSlippage: number
   onRemove: () => void

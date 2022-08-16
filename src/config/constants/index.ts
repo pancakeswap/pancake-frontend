@@ -1,22 +1,4 @@
 // used to construct the list of all pairs we consider by default in the frontend
-import { ChainId, Token } from '@pancakeswap/sdk'
-import { bscTokens, bscTestnetTokens } from './tokens'
-import { ChainTokenList } from './types'
-
-export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
-  [ChainId.BSC]: [bscTokens.wbnb, bscTokens.dai, bscTokens.busd, bscTokens.usdt],
-  [ChainId.BSC_TESTNET]: [bscTestnetTokens.wbnb, bscTestnetTokens.cake, bscTestnetTokens.busd],
-}
-
-export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
-  [ChainId.BSC]: [
-    [bscTokens.cake, bscTokens.wbnb],
-    [bscTokens.busd, bscTokens.usdt],
-    [bscTokens.dai, bscTokens.usdt],
-  ],
-}
-
-export const NetworkContextName = 'NETWORK'
 
 // SDN OFAC addresses
 export const BLOCKED_ADDRESSES: string[] = [
@@ -33,8 +15,8 @@ export const INITIAL_ALLOWED_SLIPPAGE = 50
 export const DEFAULT_DEADLINE_FROM_NOW = 60 * 20
 
 export { default as farmsConfig } from './farms'
-export { default as poolsConfig } from './pools'
 export { default as ifosConfig } from './ifo'
+export { default as poolsConfig } from './pools'
 
 export const FAST_INTERVAL = 10000
 export const SLOW_INTERVAL = 60000
