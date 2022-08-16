@@ -1,4 +1,4 @@
-import { CurrencyAmount, JSBI } from '@pancakeswap/sdk'
+import { CurrencyAmount, JSBI, Native } from '@pancakeswap/sdk'
 import { maxAmountSpend } from './maxAmountSpend'
 
 describe('maxAmountSpend', () => {
@@ -9,13 +9,17 @@ describe('maxAmountSpend', () => {
   it('should has value when CurrencyAmount is BNB and CurrencyAmount is higher than min bnb', () => {
     expect(
       JSBI.greaterThan(
-        maxAmountSpend(CurrencyAmount.ether(JSBI.exponentiate(JSBI.BigInt(100), JSBI.BigInt(16)))).raw,
+        maxAmountSpend(
+          CurrencyAmount.fromRawAmount(Native.onChain(56), JSBI.exponentiate(JSBI.BigInt(100), JSBI.BigInt(16))),
+        ).quotient,
         JSBI.BigInt(0),
       ),
     ).toBeTruthy()
   })
 
   it('should be 0 when CurrencyAmount is BNB and CurrencyAmount is low', () => {
-    expect(JSBI.equal(maxAmountSpend(CurrencyAmount.ether('0')).raw, JSBI.BigInt(0))).toBeTruthy()
+    expect(
+      JSBI.equal(maxAmountSpend(CurrencyAmount.fromRawAmount(Native.onChain(56), '0')).quotient, JSBI.BigInt(0)),
+    ).toBeTruthy()
   })
 })

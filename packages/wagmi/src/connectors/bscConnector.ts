@@ -1,15 +1,31 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
-import { Chain, ConnectorNotFoundError, ResourceUnavailableError, RpcError, UserRejectedRequestError } from 'wagmi'
+import {
+  Chain,
+  ConnectorNotFoundError,
+  ResourceUnavailableError,
+  RpcError,
+  UserRejectedRequestError,
+  SwitchChainNotSupportedError,
+} from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
+import { Ethereum } from '@wagmi/core'
+import { hexValue } from '@ethersproject/bytes'
 
 declare global {
   interface Window {
     BinanceChain?: {
       bnbSign?: (address: string, message: string) => Promise<{ publicKey: string; signature: string }>
+      switchNetwork?: (networkId: string) => Promise<string>
     } & Ethereum
   }
+}
+
+const mappingNetwork: Record<number, string> = {
+  1: 'eth-mainnet',
+  56: 'bsc-mainnet',
+  97: 'bsc-testnet',
 }
 
 export class BscConnector extends InjectedConnector {
@@ -73,5 +89,32 @@ export class BscConnector extends InjectedConnector {
       this.provider = window.BinanceChain
     }
     return this.provider
+  }
+
+  async switchChain(chainId: number): Promise<Chain> {
+    const provider = await this.getProvider()
+    if (!provider) throw new ConnectorNotFoundError()
+
+    const id = hexValue(chainId)
+
+    if (mappingNetwork[chainId]) {
+      try {
+        await provider.switchNetwork?.(mappingNetwork[chainId])
+
+        return (
+          this.chains.find((x) => x.id === chainId) ?? {
+            id: chainId,
+            name: `Chain ${id}`,
+            network: `${id}`,
+            rpcUrls: { default: '' },
+          }
+        )
+      } catch (error) {
+        if ((error as any).error === 'user rejected') {
+          throw new UserRejectedRequestError(error)
+        }
+      }
+    }
+    throw new SwitchChainNotSupportedError({ connector: this })
   }
 }

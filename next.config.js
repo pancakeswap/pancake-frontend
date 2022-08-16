@@ -35,6 +35,9 @@ const config = {
   },
   experimental: {
     scrollRestoration: true,
+    images: {
+      allowFutureImage: true,
+    },
   },
   reactStrictMode: true,
   swcMinify: true,

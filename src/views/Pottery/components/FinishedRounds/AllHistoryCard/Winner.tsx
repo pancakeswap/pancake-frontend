@@ -37,9 +37,11 @@ const Winner: React.FC<React.PropsWithChildren<WinnerProps>> = ({ address }) => 
             <Text fontSize="12px" color="primary">
               {truncateHash(address)}
             </Text>
-            <Text fontSize="12px" color="primary">
-              {`@${profile?.username}`}
-            </Text>
+            {profile?.username && (
+              <Text fontSize="12px" color="primary">
+                {`@${profile?.username}`}
+              </Text>
+            )}
           </Box>
         </>
       ) : (

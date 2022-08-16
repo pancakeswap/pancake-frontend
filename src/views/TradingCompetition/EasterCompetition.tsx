@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { useProfile } from 'state/profile/hooks'
 import { Flex, Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import styled from 'styled-components'

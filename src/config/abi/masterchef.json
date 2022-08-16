@@ -8,7 +8,7 @@
       },
       {
         "internalType": "contract IBEP20",
-        "name": "_cake",
+        "name": "_CAKE",
         "type": "address"
       },
       {
@@ -158,15 +158,40 @@
         "internalType": "address",
         "name": "boostContract",
         "type": "address"
+      }
+    ],
+    "name": "UpdateBoostContract",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "maxBoostVal",
+        "name": "pid",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "oldMultiplier",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newMultiplier",
         "type": "uint256"
       }
     ],
-    "name": "UpdateBoostContract",
+    "name": "UpdateBoostMultiplier",
     "type": "event"
   },
   {
@@ -255,31 +280,6 @@
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "oldBoostVal",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "newBoostVal",
-        "type": "uint256"
-      }
-    ],
-    "name": "UpdateUserBoost",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "indexed": false,
         "internalType": "bool",
         "name": "isValid",
         "type": "bool"
@@ -315,12 +315,64 @@
   },
   {
     "inputs": [],
+    "name": "ACC_CAKE_PRECISION",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "BOOST_PRECISION",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "CAKE",
     "outputs": [
       {
         "internalType": "contract IBEP20",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "CAKE_RATE_TOTAL_PRECISION",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MASTERCHEF_CAKE_PER_BLOCK",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -342,6 +394,19 @@
   {
     "inputs": [],
     "name": "MASTER_PID",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_BOOST_PRECISION",
     "outputs": [
       {
         "internalType": "uint256",
@@ -407,7 +472,13 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_withUpdate",
+        "type": "bool"
+      }
+    ],
     "name": "burnCake",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -528,7 +599,7 @@
         "type": "uint256"
       }
     ],
-    "name": "getBoostValue",
+    "name": "getBoostMultiplier",
     "outputs": [
       {
         "internalType": "uint256",
@@ -596,19 +667,6 @@
     "name": "massUpdatePools",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "maxBoostValue",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -775,14 +833,32 @@
         "internalType": "address",
         "name": "_newBoostContract",
         "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_maxBoostVal",
-        "type": "uint256"
       }
     ],
     "name": "updateBoostContract",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_newMultiplier",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateBoostMultiplier",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -816,6 +892,11 @@
         "internalType": "uint256",
         "name": "_specialFarmRate",
         "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_withUpdate",
+        "type": "bool"
       }
     ],
     "name": "updateCakeRate",
@@ -877,24 +958,6 @@
         "type": "address"
       },
       {
-        "internalType": "uint256",
-        "name": "_pid",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateUserBoost",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
-      },
-      {
         "internalType": "bool",
         "name": "_isValid",
         "type": "bool"
@@ -929,6 +992,11 @@
         "internalType": "uint256",
         "name": "rewardDebt",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "boostMultiplier",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -942,7 +1010,7 @@
         "type": "address"
       }
     ],
-    "name": "whiteListMapping",
+    "name": "whiteList",
     "outputs": [
       {
         "internalType": "bool",

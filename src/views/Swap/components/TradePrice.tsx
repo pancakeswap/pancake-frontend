@@ -1,9 +1,9 @@
-import { Price } from '@pancakeswap/sdk'
+import { Price, Currency } from '@pancakeswap/sdk'
 import { Text, AutoRenewIcon } from '@pancakeswap/uikit'
 import { StyledBalanceMaxMini } from './styleds'
 
 interface TradePriceProps {
-  price?: Price
+  price?: Price<Currency, Currency>
   showInverted: boolean
   setShowInverted: (showInverted: boolean) => void
 }

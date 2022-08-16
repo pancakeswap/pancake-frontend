@@ -22,6 +22,7 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
   items = [],
   index,
   setMenuOpenByIndex,
+  isDisabled,
   ...props
 }) => {
   const { linkComponent } = useContext(MenuContext);
@@ -88,59 +89,71 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
         >
           {items
             .filter((item) => !item.isMobileOnly)
-            .map(({ type = DropdownMenuItemType.INTERNAL_LINK, label, href = "/", status, ...itemProps }, itemItem) => {
-              const MenuItemContent = (
-                <>
-                  {label}
-                  {status && (
-                    <LinkStatus color={status.color} fontSize="14px">
-                      {status.text}
-                    </LinkStatus>
-                  )}
-                </>
-              );
-              const isActive = href === activeItem;
-              return (
-                <StyledDropdownMenuItemContainer key={itemItem}>
-                  {type === DropdownMenuItemType.BUTTON && (
-                    <DropdownMenuItem $isActive={isActive} type="button" {...itemProps}>
-                      {MenuItemContent}
-                    </DropdownMenuItem>
-                  )}
-                  {type === DropdownMenuItemType.INTERNAL_LINK && (
-                    <DropdownMenuItem
-                      $isActive={isActive}
-                      as={linkComponent}
-                      href={href}
-                      onClick={() => {
-                        setIsOpen(false);
-                      }}
-                      {...itemProps}
-                    >
-                      {MenuItemContent}
-                    </DropdownMenuItem>
-                  )}
-                  {type === DropdownMenuItemType.EXTERNAL_LINK && (
-                    <DropdownMenuItem
-                      $isActive={isActive}
-                      as="a"
-                      href={href}
-                      target="_blank"
-                      onClick={() => {
-                        setIsOpen(false);
-                      }}
-                      {...itemProps}
-                    >
-                      <Flex alignItems="center" justifyContent="space-between" width="100%">
-                        {label}
-                        <LogoutIcon />
-                      </Flex>
-                    </DropdownMenuItem>
-                  )}
-                  {type === DropdownMenuItemType.DIVIDER && <DropdownMenuDivider />}
-                </StyledDropdownMenuItemContainer>
-              );
-            })}
+            .map(
+              (
+                { type = DropdownMenuItemType.INTERNAL_LINK, label, href = "/", status, disabled, ...itemProps },
+                itemItem
+              ) => {
+                const MenuItemContent = (
+                  <>
+                    {label}
+                    {status && (
+                      <LinkStatus color={status.color} fontSize="14px">
+                        {status.text}
+                      </LinkStatus>
+                    )}
+                  </>
+                );
+                const isActive = href === activeItem;
+                return (
+                  <StyledDropdownMenuItemContainer key={itemItem}>
+                    {type === DropdownMenuItemType.BUTTON && (
+                      <DropdownMenuItem
+                        $isActive={isActive}
+                        disabled={disabled || isDisabled}
+                        type="button"
+                        {...itemProps}
+                      >
+                        {MenuItemContent}
+                      </DropdownMenuItem>
+                    )}
+                    {type === DropdownMenuItemType.INTERNAL_LINK && (
+                      <DropdownMenuItem
+                        $isActive={isActive}
+                        disabled={disabled || isDisabled}
+                        as={linkComponent}
+                        href={href}
+                        onClick={() => {
+                          setIsOpen(false);
+                        }}
+                        {...itemProps}
+                      >
+                        {MenuItemContent}
+                      </DropdownMenuItem>
+                    )}
+                    {type === DropdownMenuItemType.EXTERNAL_LINK && (
+                      <DropdownMenuItem
+                        $isActive={isActive}
+                        disabled={disabled || isDisabled}
+                        as="a"
+                        href={href}
+                        target="_blank"
+                        onClick={() => {
+                          setIsOpen(false);
+                        }}
+                        {...itemProps}
+                      >
+                        <Flex alignItems="center" justifyContent="space-between" width="100%">
+                          {label}
+                          <LogoutIcon />
+                        </Flex>
+                      </DropdownMenuItem>
+                    )}
+                    {type === DropdownMenuItemType.DIVIDER && <DropdownMenuDivider />}
+                  </StyledDropdownMenuItemContainer>
+                );
+              }
+            )}
         </StyledDropdownMenu>
       )}
     </Box>

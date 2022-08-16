@@ -4,8 +4,9 @@ import flatMap from 'lodash/flatMap'
 import farms from 'config/constants/farms'
 import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants'
+import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useFeeData } from 'wagmi'
 import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
 import { AppState, useAppDispatch } from '../../index'
 import {
@@ -401,9 +402,23 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
 }
 
 export function useGasPrice(): string {
-  const { chainId } = useActiveWeb3React()
+  const { chainId, chain } = useActiveWeb3React()
   const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
-  return chainId === ChainId.BSC ? userGas : GAS_PRICE_GWEI.testnet
+  const { data } = useFeeData({
+    chainId,
+    enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
+    watch: true,
+  })
+  if (chainId === ChainId.BSC) {
+    return userGas
+  }
+  if (chainId === ChainId.BSC_TESTNET) {
+    return GAS_PRICE_GWEI.testnet
+  }
+  if (chain?.testnet) {
+    return data?.formatted?.maxPriorityFeePerGas
+  }
+  return data?.formatted?.gasPrice
 }
 
 export function useGasPriceManager(): [string, (userGasPrice: string) => void] {
@@ -459,10 +474,12 @@ export function useTrackedTokenPairs(): [Token, Token][] {
 
   const farmPairs: [Token, Token][] = useMemo(
     () =>
-      farms
-        .filter((farm) => farm.pid !== 0)
-        .map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)]),
-    [],
+      chainId === ChainId.BSC
+        ? farms
+            .filter((farm) => farm.pid !== 0)
+            .map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)])
+        : [],
+    [chainId],
   )
 
   // pairs for every token against every base

@@ -2,8 +2,9 @@ import {
   arbitrumRinkeby,
   optimismKovan,
   polygonMumbai,
-  rinkeby,
-  mainnet,
+  rinkeby as defaultRinkeby,
+  mainnet as defaultMainnet,
+  goerli as defaultGoerli,
   arbitrum,
   optimism,
   polygon,
@@ -83,21 +84,20 @@ export const bsc: Chain = {
   name: 'BNB Smart Chain',
   network: 'bsc',
   rpcUrls: {
-    default: 'https://binance.nodereal.io',
-    public: 'https://binance.nodereal.io',
+    default: 'https://bsc-dataseed1.binance.org',
   },
   blockExplorers: {
     default: bscExplorer,
     etherscan: bscExplorer,
   },
-  multicall: {
-    address: '0xfF6FD90A470Aaa0c1B8A54681746b07AcdFedc9B',
-    blockCreated: 7162653,
-  },
   nativeCurrency: {
-    name: 'BNB',
-    symbol: 'bnb',
+    name: 'Binance Chain Native Token',
+    symbol: 'BNB',
     decimals: 18,
+  },
+  multicall: {
+    address: '0x72dba3Fa54C73D9EDB493e9F4eDf884439B1eBC4',
+    blockCreated: 20455688,
   },
 }
 
@@ -107,21 +107,49 @@ export const bscTest: Chain = {
   network: 'bsc-testnet',
   nativeCurrency: {
     decimals: 18,
-    name: 'BNB',
-    symbol: 'BNB',
+    name: 'Binance Chain Native Token',
+    symbol: 'tBNB',
   },
   rpcUrls: {
     default: 'https://data-seed-prebsc-1-s2.binance.org:8545/',
-    public: 'https://data-seed-prebsc-1-s2.binance.org:8545/',
+    // https://docs.nodereal.io/nodereal/meganode/meganode-api-overview/public-api-key
+    nodeReal: 'https://bsc-testnet.nodereal.io/v1/e9a36765eb8a40b9bd12e680a1fd2bc5',
   },
   blockExplorers: {
     default: { name: 'BscScan', url: 'https://testnet.bscscan.com' },
   },
   multicall: {
-    address: '0x8F3273Fb89B075b1645095ABaC6ed17B2d4Bc576',
-    blockCreated: 9759845,
+    address: '0xb66a4fE12138C4391A98F29E34EFE4Cc7A445AE5',
+    blockCreated: 21965366,
   },
   testnet: true,
+}
+
+const rinkeby: Chain = {
+  ...defaultRinkeby,
+  rpcUrls: {
+    ...defaultRinkeby.rpcUrls,
+    // https://docs.nodereal.io/nodereal/meganode/meganode-api-overview/public-api-key
+    nodeReal: 'https://eth-rinkeby.nodereal.io/v1/a4da384bf3334c5ea992eb0bf44135e0',
+  },
+}
+
+const mainnet: Chain = {
+  ...defaultMainnet,
+  rpcUrls: {
+    ...defaultMainnet.rpcUrls,
+    // https://docs.nodereal.io/nodereal/meganode/meganode-api-overview/public-api-key
+    nodeReal: 'https://eth-mainnet.nodereal.io/v1/1659dfb40aa24bbb8153a677b98064d7',
+  },
+}
+
+const goerli: Chain = {
+  ...defaultGoerli,
+  rpcUrls: {
+    ...defaultGoerli.rpcUrls,
+    // https://docs.nodereal.io/nodereal/meganode/meganode-api-overview/public-api-key
+    nodeReal: 'https://eth-goerli.nodereal.io/v1/8a4432e42df94dcca2814fde8aea2a2e',
+  },
 }
 
 export const CHAINS_TESTNET = [
@@ -134,15 +162,13 @@ export const CHAINS_TESTNET = [
   fantomTestnet,
 ]
 
-export const CHAINS_STARGATE_TESTNET = [
+export const CHAINS = [
+  bsc,
+  // TODO: ETH
+  // mainnet,
+  bscTest,
   rinkeby,
-  arbitrumRinkeby,
-  optimismKovan,
-  polygonMumbai,
-  avalandcheFuji,
-  fantomTestnet,
+  goerli,
 ]
-
+export const CHAIN_IDS = CHAINS.map((c) => c.id)
 export const CHAINS_STARGATE = [mainnet, arbitrum, optimism, polygon, avalandche, fantomOpera]
-
-export const CHAINS = [bsc, mainnet, arbitrum, optimism, polygon, fantomOpera, avalandche]

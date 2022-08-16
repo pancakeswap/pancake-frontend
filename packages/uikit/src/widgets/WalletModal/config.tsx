@@ -7,6 +7,7 @@ import BinanceChain from "../../components/Svg/Icons/BinanceChain";
 import SafePal from "../../components/Svg/Icons/SafePal";
 import Coin98 from "../../components/Svg/Icons/Coin98";
 import Blocto from "../../components/Svg/Icons/Blocto";
+import Brave from "../../components/Svg/Icons/Brave";
 import CoinbaseWallet from "../../components/Svg/Icons/CoinbaseWallet";
 import Opera from "../../components/Svg/Icons/Opera";
 
@@ -16,7 +17,7 @@ const connectors: Config[] = [
   {
     title: "Metamask",
     icon: Metamask,
-    connectorId: ConnectorNames.Injected,
+    connectorId: ConnectorNames.MetaMask,
     priority: 1,
     href: "https://metamask.app.link/dapp/pancakeswap.finance/",
   },
@@ -50,39 +51,72 @@ const connectors: Config[] = [
     icon: Opera,
     connectorId: ConnectorNames.Injected,
     priority: () => {
-      return typeof window !== "undefined" && Boolean(window?.ethereum?.isOpera) ? 0 : 6;
+      return typeof window !== "undefined" && Boolean(window.ethereum?.isOpera) ? 0 : 6;
     },
+    installed: typeof window !== "undefined" && Boolean(window.ethereum?.isOpera),
     href: "https://www.opera.com/crypto/next",
+  },
+  {
+    title: "Brave Wallet",
+    icon: Brave,
+    connectorId: ConnectorNames.Injected,
+    priority: () => {
+      return typeof window !== "undefined" && Boolean(window.ethereum?.isBraveWallet) ? 0 : 6;
+    },
+    installed: typeof window !== "undefined" && Boolean(window.ethereum?.isBraveWallet),
   },
   {
     title: "MathWallet",
     icon: MathWallet,
     connectorId: ConnectorNames.Injected,
-    priority: 999,
+    // @ts-ignore
+    installed: typeof window !== "undefined" && Boolean(window.ethereum?.isMathWallet),
+    priority: () => {
+      // @ts-ignore
+      return typeof window !== "undefined" && Boolean(window.ethereum?.isMathWallet) ? 0 : 999;
+    },
   },
   {
     title: "TokenPocket",
     icon: TokenPocket,
     connectorId: ConnectorNames.Injected,
-    priority: 999,
+    priority: () => {
+      return typeof window !== "undefined" && Boolean(window.ethereum?.isTokenPocket) ? 0 : 999;
+    },
+    installed: typeof window !== "undefined" && Boolean(window.ethereum?.isTokenPocket),
   },
   {
     title: "SafePal",
     icon: SafePal,
     connectorId: ConnectorNames.Injected,
-    priority: 999,
+    // @ts-ignore
+    installed: typeof window !== "undefined" && Boolean(window.ethereum?.isSafePal),
+    priority: () => {
+      // @ts-ignore
+      return typeof window !== "undefined" && Boolean(window.ethereum?.isSafePal) ? 0 : 999;
+    },
   },
   {
     title: "Coin98",
     icon: Coin98,
     connectorId: ConnectorNames.Injected,
-    priority: 999,
+    // @ts-ignore
+    installed: typeof window !== "undefined" && (Boolean(window.ethereum?.isCoin98) || Boolean(window.coin98)),
+    priority: () => {
+      // @ts-ignore
+      return typeof window !== "undefined" && (Boolean(window.ethereum?.isCoin98) || Boolean(window.coin98)) ? 0 : 999;
+    },
   },
   {
     title: "Blocto",
     icon: Blocto,
-    connectorId: ConnectorNames.Blocto,
-    priority: 999,
+    connectorId: ConnectorNames.Injected,
+    // @ts-ignore
+    installed: typeof window !== "undefined" && Boolean(window.ethereum?.isBlocto),
+    priority: () => {
+      // @ts-ignore
+      return typeof window !== "undefined" && Boolean(window.ethereum?.isBlocto) ? 0 : 999;
+    },
   },
 ];
 

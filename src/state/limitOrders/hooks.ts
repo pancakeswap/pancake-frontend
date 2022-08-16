@@ -1,7 +1,7 @@
 import JSBI from 'jsbi'
 import { useDispatch, useSelector } from 'react-redux'
 import { ParsedUrlQuery } from 'querystring'
-import { Currency, CurrencyAmount, TokenAmount, Trade, Token, Price, ETHER } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Trade, Token, Price, Native, TradeType } from '@pancakeswap/sdk'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY, BIG_INT_TEN } from 'config/constants/exchange'
 import { useRouter } from 'next/router'
@@ -35,24 +35,18 @@ const getDesiredInput = (
   }
 
   if (isInverted) {
-    const invertedResultAsFraction = parsedOutAmount.asFraction
+    const invertedResultAsFraction = parsedOutAmount
       .multiply(parsedExchangeRate.asFraction)
       .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals)))
-    const invertedResultAsAmount =
-      inputCurrency instanceof Token
-        ? new TokenAmount(inputCurrency, invertedResultAsFraction.toFixed(0))
-        : CurrencyAmount.ether(invertedResultAsFraction.toFixed(0))
+    const invertedResultAsAmount = CurrencyAmount.fromRawAmount(inputCurrency, invertedResultAsFraction.toFixed(0))
 
     return invertedResultAsAmount
   }
-  const resultAsFraction = parsedOutAmount.asFraction
+  const resultAsFraction = parsedOutAmount
     .divide(parsedExchangeRate.asFraction)
     .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals)))
-  const resultAsAmount =
-    inputCurrency instanceof Token
-      ? new TokenAmount(inputCurrency, resultAsFraction.quotient.toString())
-      : CurrencyAmount.ether(resultAsFraction.quotient.toString())
-  return resultAsAmount
+
+  return CurrencyAmount.fromRawAmount(inputCurrency, resultAsFraction.quotient.toString())
 }
 
 // Get desired output amount in input basis mode
@@ -62,7 +56,7 @@ const getDesiredOutput = (
   inputCurrency: Currency,
   outputCurrency: Currency,
   isInverted: boolean,
-): CurrencyAmount | undefined => {
+): CurrencyAmount<Native | Token> | undefined => {
   if (!inputValue || !inputCurrency || !outputCurrency) {
     return undefined
   }
@@ -74,25 +68,17 @@ const getDesiredOutput = (
   }
 
   if (isInverted) {
-    const invertedResultAsFraction = parsedInputAmount.asFraction
-      .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(outputCurrency.decimals)))
+    const invertedResultAsFraction = parsedInputAmount
+      .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals)))
       .divide(parsedExchangeRate.asFraction)
-    const invertedResultAsAmount =
-      outputCurrency instanceof Token
-        ? new TokenAmount(outputCurrency, invertedResultAsFraction.toFixed(0))
-        : CurrencyAmount.ether(invertedResultAsFraction.toFixed(0))
-
-    return invertedResultAsAmount
+    return CurrencyAmount.fromRawAmount(outputCurrency, invertedResultAsFraction.quotient)
   }
 
-  const resultAsFraction = parsedInputAmount.asFraction
+  const resultAsFraction = parsedInputAmount
+    .divide(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals)))
     .multiply(parsedExchangeRate.asFraction)
-    .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(outputCurrency.decimals)))
-  const resultAsAmount =
-    outputCurrency instanceof Token
-      ? new TokenAmount(outputCurrency, resultAsFraction.quotient.toString())
-      : CurrencyAmount.ether(resultAsFraction.quotient.toString())
-  return resultAsAmount
+
+  return CurrencyAmount.fromRawAmount(outputCurrency, resultAsFraction.quotient.toString())
 }
 
 // Just returns Redux state for limitOrders
@@ -113,7 +99,7 @@ export const useOrderActionHandlers = (): {
       dispatch(
         selectCurrency({
           field,
-          currencyId: currency instanceof Token ? currency.address : currency === ETHER ? 'BNB' : '',
+          currencyId: currency.isToken ? currency.address : currency.isNative ? 'BNB' : '',
         }),
       )
     },
@@ -149,14 +135,14 @@ export const useOrderActionHandlers = (): {
 export interface DerivedOrderInfo {
   currencies: { input: Currency | Token | undefined; output: Currency | Token | undefined }
   currencyBalances: {
-    input: CurrencyAmount | undefined
-    output: CurrencyAmount | undefined
+    input: CurrencyAmount<Currency> | undefined
+    output: CurrencyAmount<Currency> | undefined
   }
   inputError?: string
-  trade: Trade | undefined
+  trade: Trade<Currency, Currency, TradeType> | undefined
   parsedAmounts: {
-    input: CurrencyAmount | undefined
-    output: CurrencyAmount | undefined
+    input: CurrencyAmount<Currency> | undefined
+    output: CurrencyAmount<Currency> | undefined
   }
   formattedAmounts: {
     input: string
@@ -167,7 +153,7 @@ export interface DerivedOrderInfo {
     input: string | undefined
     output: string | undefined
   }
-  price: Price | undefined
+  price: Price<Currency, Currency> | undefined
   wrappedCurrencies: {
     input: Token
     output: Token
@@ -188,10 +174,10 @@ const getErrorMessage = (
     output: Token
   },
   currencies: { input: Currency | Token; output: Currency | Token },
-  currencyBalances: { input: CurrencyAmount; output: CurrencyAmount },
-  parsedAmounts: { input: CurrencyAmount; output: CurrencyAmount },
-  trade: Trade,
-  price: Price,
+  currencyBalances: { input: CurrencyAmount<Currency>; output: CurrencyAmount<Currency> },
+  parsedAmounts: { input: CurrencyAmount<Currency>; output: CurrencyAmount<Currency> },
+  trade: Trade<Currency, Currency, TradeType>,
+  price: Price<Currency, Currency>,
   rateType: Rate,
 ) => {
   if (!account) {
@@ -360,7 +346,7 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
     }
     // Use trade amount as default
     // If we're in output basis mode - no matter what keep output as specified by user
-    let output: CurrencyAmount | TokenAmount
+    let output: CurrencyAmount<Currency>
     if (isOutputBasis) {
       output = outputAmount
     } else if (independentField === Field.OUTPUT) {
@@ -508,9 +494,8 @@ export const useDefaultsFromURLSearch = ():
   const { chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const { query } = useRouter()
-  const [result, setResult] = useState<
-    { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
-  >()
+  const [result, setResult] =
+    useState<{ inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined>()
 
   useEffect(() => {
     if (!chainId) return

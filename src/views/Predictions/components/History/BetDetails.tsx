@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Bet } from 'state/types'
 import { useTranslation } from '@pancakeswap/localization'
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink } from 'utils'
 import { Flex, Text, Link, Heading } from '@pancakeswap/uikit'
 import { Result } from 'state/predictions/helpers'
 import { PayoutRow, RoundResultHistory } from '../RoundResult'
@@ -43,7 +43,7 @@ const BetDetails: React.FC<React.PropsWithChildren<BetDetailsProps>> = ({ bet, r
       {bet.round.lockBlock && (
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
           <Text>{t('Opening Block')}</Text>
-          <Link href={getBscScanLink(bet.round.lockBlock, 'block')} external>
+          <Link href={getBlockExploreLink(bet.round.lockBlock, 'block')} external>
             {bet.round.lockBlock}
           </Link>
         </Flex>
@@ -51,7 +51,7 @@ const BetDetails: React.FC<React.PropsWithChildren<BetDetailsProps>> = ({ bet, r
       {bet.round.closeBlock && (
         <Flex alignItems="center" justifyContent="space-between">
           <Text>{t('Closing Block')}</Text>
-          <Link href={getBscScanLink(bet.round.closeBlock, 'block')} external>
+          <Link href={getBlockExploreLink(bet.round.closeBlock, 'block')} external>
             {bet.round.closeBlock}
           </Link>
         </Flex>

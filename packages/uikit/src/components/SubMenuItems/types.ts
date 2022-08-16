@@ -8,6 +8,7 @@ export type SubMenuItemsType = {
   href: string;
   itemProps?: any;
   icon?: ElementType<any>;
+  disabled?: boolean;
   isMobileOnly?: boolean;
   type?: DropdownMenuItemType;
 };

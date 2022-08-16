@@ -11,7 +11,7 @@ import {
   Tag,
   CheckmarkCircleIcon,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { Vote } from 'state/types'
 import { formatNumber } from 'utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'

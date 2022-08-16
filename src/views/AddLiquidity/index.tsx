@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { currencyEquals, ETHER, JSBI, TokenAmount, WNATIVE, MINIMUM_LIQUIDITY } from '@pancakeswap/sdk'
+import { JSBI, CurrencyAmount, Token, WNATIVE, MINIMUM_LIQUIDITY, ChainId } from '@pancakeswap/sdk'
 import {
   Button,
   Text,
@@ -21,13 +21,14 @@ import { useZapContract } from 'hooks/useContract'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getZapAddress } from 'utils/addressHelpers'
 import { getLPSymbol } from 'utils/getLpSymbol'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useRouter } from 'next/router'
 import { callWithEstimateGas } from 'utils/calls'
 import { ContractMethodName } from 'utils/types'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useLPApr } from 'state/swap/hooks'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
-import { CAKE } from 'config/constants/tokens'
+import { CAKE, USDC } from 'config/constants/tokens'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -44,9 +45,15 @@ import { Field, resetMintState } from '../../state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState, useZapIn } from '../../state/mint/hooks'
 
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import { useGasPrice, useIsExpertMode, useUserSlippageTolerance, useZapModeManager } from '../../state/user/hooks'
+import {
+  useGasPrice,
+  useIsExpertMode,
+  usePairAdder,
+  useUserSlippageTolerance,
+  useZapModeManager,
+} from '../../state/user/hooks'
 import { calculateGasMargin } from '../../utils'
-import { getRouterContract, calculateSlippageAmount } from '../../utils/exchange'
+import { calculateSlippageAmount, useRouterContract } from '../../utils/exchange'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import Dots from '../../components/Loader/Dots'
@@ -67,15 +74,23 @@ enum Steps {
 }
 
 const zapAddress = getZapAddress()
+const zapSupportedChain = [ChainId.BSC, ChainId.BSC_TESTNET]
 
 export default function AddLiquidity() {
   const router = useRouter()
-  const { account, chainId, library } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
+
+  const addPair = usePairAdder()
+  const [zapMode] = useZapModeManager()
   const expertMode = useIsExpertMode()
 
-  const [zapMode] = useZapModeManager()
+  const native = useNativeCurrency()
+
   const [temporarilyZapMode, setTemporarilyZapMode] = useState(true)
-  const [currencyIdA, currencyIdB] = router.query.currency || ['BNB', CAKE[chainId]?.address]
+  const [currencyIdA, currencyIdB] = router.query.currency || [
+    native.symbol,
+    CAKE[chainId]?.address ?? USDC[chainId]?.address,
+  ]
   const [steps, setSteps] = useState(Steps.Choose)
 
   const dispatch = useAppDispatch()
@@ -148,7 +163,7 @@ export default function AddLiquidity() {
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
 
   // get the max amounts user can add
-  const maxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+  const maxAmounts: { [field in Field]?: CurrencyAmount<Token> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
     (accumulator, field) => {
       return {
         ...accumulator,
@@ -162,11 +177,12 @@ export default function AddLiquidity() {
     () =>
       !!zapModeStatus &&
       !noLiquidity &&
+      zapSupportedChain.includes(chainId) &&
       !(
-        (pair && JSBI.lessThan(pair.reserve0.raw, MINIMUM_LIQUIDITY)) ||
-        (pair && JSBI.lessThan(pair.reserve1.raw, MINIMUM_LIQUIDITY))
+        (pair && JSBI.lessThan(pair.reserve0.quotient, MINIMUM_LIQUIDITY)) ||
+        (pair && JSBI.lessThan(pair.reserve1.quotient, MINIMUM_LIQUIDITY))
       ),
-    [noLiquidity, pair, zapModeStatus],
+    [chainId, noLiquidity, pair, zapModeStatus],
   )
 
   const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
@@ -210,7 +226,7 @@ export default function AddLiquidity() {
     ],
   )
 
-  const atMaxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+  const atMaxAmounts: { [field in Field]?: CurrencyAmount<Token> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
     (accumulator, field) => {
       return {
         ...accumulator,
@@ -232,9 +248,10 @@ export default function AddLiquidity() {
 
   const addTransaction = useTransactionAdder()
 
+  const routerContract = useRouterContract()
+
   async function onAdd() {
-    if (!chainId || !library || !account) return
-    const routerContract = getRouterContract(chainId, library, account)
+    if (!chainId || !account || !routerContract) return
 
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = mintParsedAmounts
     if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
@@ -250,27 +267,27 @@ export default function AddLiquidity() {
     let method: (...args: any) => Promise<TransactionResponse>
     let args: Array<string | string[] | number>
     let value: BigNumber | null
-    if (currencyA === ETHER || currencyB === ETHER) {
-      const tokenBIsBNB = currencyB === ETHER
+    if (currencyA?.isNative || currencyB?.isNative) {
+      const tokenBIsNative = currencyB?.isNative
       estimate = routerContract.estimateGas.addLiquidityETH
       method = routerContract.addLiquidityETH
       args = [
-        wrappedCurrency(tokenBIsBNB ? currencyA : currencyB, chainId)?.address ?? '', // token
-        (tokenBIsBNB ? parsedAmountA : parsedAmountB).raw.toString(), // token desired
-        amountsMin[tokenBIsBNB ? Field.CURRENCY_A : Field.CURRENCY_B].toString(), // token min
-        amountsMin[tokenBIsBNB ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
+        (tokenBIsNative ? currencyA : currencyB)?.wrapped?.address ?? '', // token
+        (tokenBIsNative ? parsedAmountA : parsedAmountB).quotient.toString(), // token desired
+        amountsMin[tokenBIsNative ? Field.CURRENCY_A : Field.CURRENCY_B].toString(), // token min
+        amountsMin[tokenBIsNative ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
         account,
         deadline.toHexString(),
       ]
-      value = BigNumber.from((tokenBIsBNB ? parsedAmountB : parsedAmountA).raw.toString())
+      value = BigNumber.from((tokenBIsNative ? parsedAmountB : parsedAmountA).quotient.toString())
     } else {
       estimate = routerContract.estimateGas.addLiquidity
       method = routerContract.addLiquidity
       args = [
-        wrappedCurrency(currencyA, chainId)?.address ?? '',
-        wrappedCurrency(currencyB, chainId)?.address ?? '',
-        parsedAmountA.raw.toString(),
-        parsedAmountB.raw.toString(),
+        currencyA?.wrapped?.address ?? '',
+        currencyB?.wrapped?.address ?? '',
+        parsedAmountA.quotient.toString(),
+        parsedAmountB.quotient.toString(),
         amountsMin[Field.CURRENCY_A].toString(),
         amountsMin[Field.CURRENCY_B].toString(),
         account,
@@ -295,6 +312,10 @@ export default function AddLiquidity() {
             } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`,
             type: 'add-liquidity',
           })
+
+          if (pair) {
+            addPair(pair)
+          }
         }),
       )
       .catch((err) => {
@@ -363,7 +384,7 @@ export default function AddLiquidity() {
   )
 
   async function onZapIn() {
-    if (!canZap || !parsedAmounts || !zapIn.zapInEstimated || !library || !chainId) {
+    if (!canZap || !parsedAmounts || !zapIn.zapInEstimated || !chainId || !zapContract) {
       return
     }
 
@@ -377,44 +398,44 @@ export default function AddLiquidity() {
       summary = `Zap ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
         currencies[Field.CURRENCY_A]?.symbol
       } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`
-      if (currencyA === ETHER || currencyB === ETHER) {
-        const tokenBIsBNB = currencyB === ETHER
+      if (currencyA?.isNative || currencyB?.isNative) {
+        const tokenBIsBNB = currencyB?.isNative
         method = 'zapInBNBRebalancing'
         args = [
           wrappedCurrency(currencies[tokenBIsBNB ? Field.CURRENCY_A : Field.CURRENCY_B], chainId).address, // token1
-          parsedAmounts[tokenBIsBNB ? Field.CURRENCY_A : Field.CURRENCY_B].raw.toString(), // token1AmountIn
+          parsedAmounts[tokenBIsBNB ? Field.CURRENCY_A : Field.CURRENCY_B].quotient.toString(), // token1AmountIn
           pair.liquidityToken.address, // lp
           maxAmountIn, // tokenAmountInMax
           minAmountOut, // tokenAmountOutMin
           zapIn.zapInEstimated.isToken0Sold && !tokenBIsBNB, // isToken0Sold
         ]
-        value = parsedAmounts[tokenBIsBNB ? Field.CURRENCY_B : Field.CURRENCY_A].raw.toString()
+        value = parsedAmounts[tokenBIsBNB ? Field.CURRENCY_B : Field.CURRENCY_A].quotient.toString()
       } else {
         method = 'zapInTokenRebalancing'
         args = [
           wrappedCurrency(currencies[Field.CURRENCY_A], chainId).address, // token0
           wrappedCurrency(currencies[Field.CURRENCY_B], chainId).address, // token1
-          parsedAmounts[Field.CURRENCY_A].raw.toString(), // token0AmountIn
-          parsedAmounts[Field.CURRENCY_B].raw.toString(), // token1AmountIn
+          parsedAmounts[Field.CURRENCY_A].quotient.toString(), // token0AmountIn
+          parsedAmounts[Field.CURRENCY_B].quotient.toString(), // token1AmountIn
           pair.liquidityToken.address, // lp
           maxAmountIn, // tokenAmountInMax
           minAmountOut, // tokenAmountOutMin
           zapIn.zapInEstimated.isToken0Sold, // isToken0Sold
         ]
       }
-    } else if (currencies[zapIn.swapTokenField] === ETHER) {
+    } else if (currencies[zapIn.swapTokenField]?.isNative) {
       method = 'zapInBNB'
       args = [pair.liquidityToken.address, minAmountOut]
       summary = `Zap in ${parsedAmounts[zapIn.swapTokenField]?.toSignificant(3)} BNB for ${getLPSymbol(
         pair.token0.symbol,
         pair.token1.symbol,
       )}`
-      value = parsedAmounts[zapIn.swapTokenField].raw.toString()
+      value = parsedAmounts[zapIn.swapTokenField].quotient.toString()
     } else {
       method = 'zapInToken'
       args = [
         wrappedCurrency(currencies[zapIn.swapTokenField], chainId).address,
-        parsedAmounts[zapIn.swapTokenField].raw.toString(),
+        parsedAmounts[zapIn.swapTokenField].quotient.toString(),
         pair.liquidityToken.address,
         minAmountOut,
       ]
@@ -433,6 +454,10 @@ export default function AddLiquidity() {
           summary,
           type: 'add-liquidity',
         })
+
+        if (pair) {
+          addPair(pair)
+        }
       })
       .catch((err) => {
         if (err && err.code !== 4001) {
@@ -509,10 +534,8 @@ export default function AddLiquidity() {
 
   const shouldShowApprovalGroup = (showFieldAApproval || showFieldBApproval) && isValid
 
-  const oneCurrencyIsWBNB = Boolean(
-    chainId &&
-      ((currencyA && currencyEquals(currencyA, WNATIVE[chainId])) ||
-        (currencyB && currencyEquals(currencyB, WNATIVE[chainId]))),
+  const oneCurrencyIsWNATIVE = Boolean(
+    chainId && ((currencyA && currencyA.equals(WNATIVE[chainId])) || (currencyB && currencyB.equals(WNATIVE[chainId]))),
   )
 
   const noAnyInputAmount = !parsedAmounts[Field.CURRENCY_A] && !parsedAmounts[Field.CURRENCY_B]
@@ -543,8 +566,8 @@ export default function AddLiquidity() {
     (!zapTokenCheckedA || !zapTokenCheckedB) &&
     !noLiquidity &&
     !(
-      (pair && JSBI.lessThan(pair.reserve0.raw, MINIMUM_LIQUIDITY)) ||
-      (pair && JSBI.lessThan(pair.reserve1.raw, MINIMUM_LIQUIDITY))
+      (pair && JSBI.lessThan(pair.reserve0.quotient, MINIMUM_LIQUIDITY)) ||
+      (pair && JSBI.lessThan(pair.reserve1.quotient, MINIMUM_LIQUIDITY))
     )
 
   return (
@@ -854,7 +877,7 @@ export default function AddLiquidity() {
       {!(addIsUnsupported || addIsWarning) ? (
         pair && !noLiquidity && pairState !== PairState.INVALID ? (
           <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
-            <MinimalPositionCard showUnwrapped={oneCurrencyIsWBNB} pair={pair} />
+            <MinimalPositionCard showUnwrapped={oneCurrencyIsWNATIVE} pair={pair} />
           </AutoColumn>
         ) : null
       ) : (

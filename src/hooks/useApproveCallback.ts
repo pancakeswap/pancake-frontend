@@ -1,9 +1,9 @@
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Trade, TokenAmount, CurrencyAmount, ETHER } from '@pancakeswap/sdk'
+import { Trade, CurrencyAmount, TradeType, Currency } from '@pancakeswap/sdk'
 import { useCallback, useMemo } from 'react'
 import { logError } from 'utils/sentry'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import useTokenAllowance from './useTokenAllowance'
@@ -25,21 +25,21 @@ export enum ApprovalState {
 
 // returns a variable indicating the state of the approval and a function which approves if necessary or early returns
 export function useApproveCallback(
-  amountToApprove?: CurrencyAmount,
+  amountToApprove?: CurrencyAmount<Currency>,
   spender?: string,
 ): [ApprovalState, () => Promise<void>] {
   const { account } = useWeb3React()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { t } = useTranslation()
   const { toastError } = useToast()
-  const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined
+  const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
 
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
-    if (amountToApprove.currency === ETHER) return ApprovalState.APPROVED
+    if (amountToApprove.currency?.isNative) return ApprovalState.APPROVED
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN
 
@@ -89,14 +89,14 @@ export function useApproveCallback(
     const estimatedGas = await tokenContract.estimateGas.approve(spender, MaxUint256).catch(() => {
       // general fallback for tokens who restrict approval amounts
       useExact = true
-      return tokenContract.estimateGas.approve(spender, amountToApprove.raw.toString())
+      return tokenContract.estimateGas.approve(spender, amountToApprove.quotient.toString())
     })
 
     // eslint-disable-next-line consistent-return
     return callWithGasPrice(
       tokenContract,
       'approve',
-      [spender, useExact ? amountToApprove.raw.toString() : MaxUint256],
+      [spender, useExact ? amountToApprove.quotient.toString() : MaxUint256],
       {
         gasLimit: calculateGasMargin(estimatedGas),
       },
@@ -122,7 +122,11 @@ export function useApproveCallback(
 }
 
 // wraps useApproveCallback in the context of a swap
-export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0, chainId?: number) {
+export function useApproveCallbackFromTrade(
+  trade?: Trade<Currency, Currency, TradeType>,
+  allowedSlippage = 0,
+  chainId?: number,
+) {
   const amountToApprove = useMemo(
     () => (trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage)[Field.INPUT] : undefined),
     [trade, allowedSlippage],
@@ -132,7 +136,7 @@ export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0, 
 }
 
 // Wraps useApproveCallback in the context of a Gelato Limit Orders
-export function useApproveCallbackFromInputCurrencyAmount(currencyAmountIn: CurrencyAmount | undefined) {
+export function useApproveCallbackFromInputCurrencyAmount(currencyAmountIn: CurrencyAmount<Currency> | undefined) {
   const gelatoLibrary = useGelatoLimitOrdersLib()
 
   return useApproveCallback(currencyAmountIn, gelatoLibrary?.erc20OrderRouter.address ?? undefined)

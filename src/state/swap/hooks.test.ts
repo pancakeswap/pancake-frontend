@@ -28,7 +28,7 @@ describe('hooks', () => {
       })
     })
 
-    test('should return BNB BUSD pair by default', () => {
+    test('should return BNB CAKE pair by default', () => {
       expect(queryParametersToSwapState(parse(''))).toEqual({
         [Field.OUTPUT]: { currencyId: DEFAULT_OUTPUT_CURRENCY },
         [Field.INPUT]: { currencyId: 'BNB' },
@@ -109,9 +109,9 @@ jest.mock('../../hooks/useActiveWeb3React', () => {
 
 var mockUseWeb3React: jest.Mock
 
-jest.mock('@web3-react/core', () => {
+jest.mock('@pancakeswap/wagmi', () => {
   mockUseWeb3React = jest.fn().mockReturnValue({})
-  const original = jest.requireActual('@web3-react/core') // Step 2.
+  const original = jest.requireActual('@pancakeswap/wagmi') // Step 2.
   return {
     ...original,
     useWeb3React: mockUseWeb3React,

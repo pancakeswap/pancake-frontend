@@ -23,6 +23,7 @@ export interface ApyButtonProps {
   apr?: number
   displayApr?: string
   addLiquidityUrl?: string
+  strikethrough?: boolean
 }
 
 const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
@@ -35,6 +36,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   multiplier,
   displayApr,
   addLiquidityUrl,
+  strikethrough,
 }) => {
   const { t } = useTranslation()
   const lpPrice = useLpTokenPrice(lpSymbol)
@@ -60,7 +62,11 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   }
 
   return (
-    <ApyLabelContainer alignItems="center" onClick={handleClickButton}>
+    <ApyLabelContainer
+      alignItems="center"
+      onClick={handleClickButton}
+      style={strikethrough && { textDecoration: 'line-through' }}
+    >
       {displayApr}%
       {variant === 'text-and-button' && (
         <IconButton variant="text" scale="sm" ml="4px">

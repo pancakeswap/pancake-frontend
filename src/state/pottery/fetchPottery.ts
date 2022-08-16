@@ -17,7 +17,7 @@ export const fetchLastVaultAddress = async () => {
     const response = await request(
       GRAPH_API_POTTERY,
       gql`
-        query getUserPotterWithdrawAbleData($contract: ID!) {
+        query getLastVaultAddress($contract: ID!) {
           pottery(id: $contract) {
             id
             lastVaultAddress
@@ -94,14 +94,13 @@ export const fetchLatestRoundId = async () => {
     const response = await request(
       GRAPH_API_POTTERY,
       gql`
-        query getUserPotterWithdrawAbleData($roundId: BigInt) {
+        query getLatestRoundId {
           potteryVaultRounds(first: 1, orderDirection: desc, orderBy: roundId) {
             roundId
             winners
           }
         }
       `,
-      { roundId: 0 },
     )
 
     const winners = response.potteryVaultRounds[0]?.winners

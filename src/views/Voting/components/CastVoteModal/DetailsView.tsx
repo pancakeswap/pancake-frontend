@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import { Flex, LinkExternal, Text, Box, HelpIcon, useTooltip, RocketIcon, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink } from 'utils'
 import { formatNumber } from 'utils/formatBalance'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import { ModalInner, VotingBoxBorder, VotingBoxCardInner } from './styles'
@@ -126,7 +126,7 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
       </VotingBoxBorder>
       <Text color="secondary" textTransform="uppercase" mb="4px" bold fontSize="14px">
         {t('Your voting power at block')}
-        <StyledLinkExternal href={getBscScanLink(block, 'block')} ml="8px">
+        <StyledLinkExternal href={getBlockExploreLink(block, 'block')} ml="8px">
           {block}
         </StyledLinkExternal>
       </Text>
