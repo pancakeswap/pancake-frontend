@@ -10,6 +10,7 @@ import {
   RocketIcon,
   Text,
   useTooltip,
+  useMatchBreakpointsContext,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -69,6 +70,7 @@ const StyledCardFooter = styled(CardFooter)`
 export const BCakeBoosterCard = () => {
   const { t } = useTranslation()
   const theme = useTheme()
+  const { isMobile } = useMatchBreakpointsContext()
 
   const tooltipContent = (
     <>
@@ -86,7 +88,10 @@ export const BCakeBoosterCard = () => {
     </>
   )
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, {
+    placement: 'bottom-start',
+    ...(isMobile && { hideTimeout: 1500 }),
+  })
   return (
     <CardWrapper>
       <ImageWrapper>
