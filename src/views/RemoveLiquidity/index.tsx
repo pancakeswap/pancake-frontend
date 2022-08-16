@@ -677,7 +677,7 @@ export default function RemoveLiquidity() {
                             currencyB?.isNative ? WNATIVE[chainId]?.address : currencyIdB
                           }`}
                         >
-                          {t('Receive %currency%', { currency: WNATIVE[chainId]?.symbol })}a
+                          {t('Receive %currency%', { currency: WNATIVE[chainId]?.symbol })}
                         </StyledInternalLink>
                       ) : oneCurrencyIsWNative ? (
                         <StyledInternalLink
@@ -818,7 +818,7 @@ export default function RemoveLiquidity() {
           )}
           <Box position="relative" mt="16px">
             {!account ? (
-              <ConnectWalletButton />
+              <ConnectWalletButton width="100%" />
             ) : (
               <RowBetween>
                 <Button
