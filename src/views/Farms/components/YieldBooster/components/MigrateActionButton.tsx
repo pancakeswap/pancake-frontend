@@ -1,5 +1,5 @@
 import { Button, useModal } from '@pancakeswap/uikit'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from '@pancakeswap/localization'
 import { useERC20 } from 'hooks/useContract'

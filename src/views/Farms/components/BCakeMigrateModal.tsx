@@ -10,7 +10,7 @@ import {
   Text,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from '@pancakeswap/localization'
