@@ -1,28 +1,12 @@
-import { useCallback, useMemo } from 'react'
-import { currencyEquals, Trade } from '@pancakeswap/sdk'
-import { InjectedModalProps } from '@pancakeswap/uikit'
+import { useCallback } from 'react'
+import { Trade } from '@pancakeswap/sdk'
+import { InjectedModalProps, Modal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import TransactionConfirmationModal, {
-  ConfirmationModalContent,
-  TransactionErrorContent,
-} from 'components/TransactionConfirmationModal'
-import SwapModalFooter from './SwapModalFooter'
-import SwapModalHeader from './SwapModalHeader'
+import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import ConfirmationPendingContent from './ConfirmationPendingContent'
+import TransactionConfirmSwapContent from './TransactionConfirmSwapContent'
 
-/**
- * Returns true if the trade requires a confirmation of details before we can submit it
- * @param tradeA trade A
- * @param tradeB trade B
- */
-function tradeMeaningfullyDiffers(tradeA: Trade, tradeB: Trade): boolean {
-  return (
-    tradeA.tradeType !== tradeB.tradeType ||
-    !currencyEquals(tradeA.inputAmount.currency, tradeB.inputAmount.currency) ||
-    !tradeA.inputAmount.equalTo(tradeB.inputAmount) ||
-    !currencyEquals(tradeA.outputAmount.currency, tradeB.outputAmount.currency) ||
-    !tradeA.outputAmount.equalTo(tradeB.outputAmount)
-  )
-}
 interface ConfirmSwapModalProps {
   trade?: Trade
   originalTrade?: Trade
@@ -49,66 +33,52 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
   attemptingTxn,
   txHash,
 }) => {
-  const showAcceptChanges = useMemo(
-    () => Boolean(trade && originalTrade && tradeMeaningfullyDiffers(trade, originalTrade)),
-    [originalTrade, trade],
-  )
+  const { chainId } = useActiveWeb3React()
+
+  const handleDismiss = useCallback(() => {
+    if (customOnDismiss) {
+      customOnDismiss()
+    }
+    onDismiss?.()
+  }, [customOnDismiss, onDismiss])
 
   const { t } = useTranslation()
-
-  const modalHeader = useCallback(() => {
-    return trade ? (
-      <SwapModalHeader
-        trade={trade}
-        allowedSlippage={allowedSlippage}
-        recipient={recipient}
-        showAcceptChanges={showAcceptChanges}
-        onAcceptChanges={onAcceptChanges}
-      />
-    ) : null
-  }, [allowedSlippage, onAcceptChanges, recipient, showAcceptChanges, trade])
-
-  const modalBottom = useCallback(() => {
-    return trade ? (
-      <SwapModalFooter
-        onConfirm={onConfirm}
-        trade={trade}
-        disabledConfirm={showAcceptChanges}
-        swapErrorMessage={swapErrorMessage}
-        allowedSlippage={allowedSlippage}
-      />
-    ) : null
-  }, [allowedSlippage, onConfirm, showAcceptChanges, swapErrorMessage, trade])
-
-  // text to show while loading
-  const pendingText = t('Swapping %amountA% %symbolA% for %amountB% %symbolB%', {
-    amountA: trade?.inputAmount?.toSignificant(6) ?? '',
-    symbolA: trade?.inputAmount?.currency?.symbol ?? '',
-    amountB: trade?.outputAmount?.toSignificant(6) ?? '',
-    symbolB: trade?.outputAmount?.currency?.symbol ?? '',
-  })
 
   const confirmationContent = useCallback(
     () =>
       swapErrorMessage ? (
         <TransactionErrorContent onDismiss={onDismiss} message={swapErrorMessage} />
       ) : (
-        <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
+        <TransactionConfirmSwapContent
+          trade={trade}
+          originalTrade={originalTrade}
+          onAcceptChanges={onAcceptChanges}
+          allowedSlippage={allowedSlippage}
+          onConfirm={onConfirm}
+          recipient={recipient}
+          swapErrorMessage={swapErrorMessage}
+        />
       ),
-    [onDismiss, modalBottom, modalHeader, swapErrorMessage],
+    [onDismiss, trade, originalTrade, onAcceptChanges, allowedSlippage, onConfirm, recipient, swapErrorMessage],
   )
 
+  if (!chainId) return null
+
   return (
-    <TransactionConfirmationModal
-      title={t('Confirm Swap')}
-      onDismiss={onDismiss}
-      customOnDismiss={customOnDismiss}
-      attemptingTxn={attemptingTxn}
-      hash={txHash}
-      content={confirmationContent}
-      pendingText={pendingText}
-      currencyToAdd={trade?.outputAmount.currency}
-    />
+    <Modal title={t('Confirm Swap')} headerBackground="gradients.cardHeader" onDismiss={handleDismiss}>
+      {attemptingTxn ? (
+        <ConfirmationPendingContent trade={trade} />
+      ) : txHash ? (
+        <TransactionSubmittedContent
+          chainId={chainId}
+          hash={txHash}
+          onDismiss={handleDismiss}
+          currencyToAdd={trade?.outputAmount.currency}
+        />
+      ) : (
+        confirmationContent()
+      )}
+    </Modal>
   )
 }
 
