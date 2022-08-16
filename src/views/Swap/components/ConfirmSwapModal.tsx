@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import { Trade, CurrencyAmount, Currency, TradeType } from "@pancakeswap/sdk"
+import { Trade, CurrencyAmount, Currency, TradeType } from '@pancakeswap/sdk'
 import { InjectedModalProps } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Field } from 'state/swap/actions'
@@ -10,7 +10,7 @@ import TransactionConfirmationModal, {
 import SwapModalFooter from './SwapModalFooter'
 import SwapModalHeader from './SwapModalHeader'
 import { maxAmountSpend } from '../../../utils/maxAmountSpend'
-import { computeSlippageAdjustedAmounts } from "../../../utils/exchange"
+import { computeSlippageAdjustedAmounts } from '../../../utils/exchange'
 
 /**
  * Returns true if the trade requires a confirmation of details before we can submit it
