@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import styled, { keyframes, css } from 'styled-components'
+import { space } from 'styled-system'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Text } from '@pancakeswap/uikit'
 import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
@@ -38,11 +39,12 @@ const StyledExpand = styled(Box)<{ expanded: boolean }>`
       : css`
           ${collapseAnimation} 300ms linear forwards
         `};
-  overflow: auto;
-  margin: 0 -4px;
+  overflow: hidden;
+  margin: 0 -24px;
   padding: 24px;
   border-radius: 24px;
   background: ${({ theme }) => theme.colors.dropdown};
+  ${space}
 `
 
 interface ExpandProps {
