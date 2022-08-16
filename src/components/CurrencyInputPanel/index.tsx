@@ -117,10 +117,7 @@ export default function CurrencyInputPanel({
 }: CurrencyInputPanelProps) {
   const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
 
   const token = pair ? pair.liquidityToken : currency?.isToken ? currency : null
   const tokenAddress = token ? isAddress(token.address) : null
@@ -236,8 +233,8 @@ export default function CurrencyInputPanel({
               </Text>
             )}
             {account && currency && !disabled && showMaxButton && label !== 'To' && (
-              <Button onClick={onMax} scale="xs" variant="secondary">
-                {t('Max').toLocaleUpperCase(locale)}
+              <Button onClick={onMax} scale="xs" variant="secondary" style={{ textTransform: 'uppercase' }}>
+                {t('Max')}
               </Button>
             )}
           </InputRow>
