@@ -1890,7 +1890,7 @@
   "Add to %wallet%": "添加到 %wallet%",
   "Add %asset% to %wallet%": "将 %asset% 添加到 %wallet%",
   "After Burning starts at %burnStartTime%. You need to renew your fix-term position, to initiate a new lock or convert your staking position to flexible before it starts. Otherwise all the rewards will be burned within the next 90 days.": "在 %burnStartTime% 开始焚毁之后。您需要更新您的定期头寸、启动新的锁定或在开始之前将您的质押头寸转换为灵活头寸。否则，所有奖励将在接下来的 90 天内焚毁。",
-  "Common tokens": "普通代币",
+  "Common tokens": "常用代币",
   "Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol%": "将最大 %inputAmount% %inputSymbol% 兑换为 %outputAmount% %outputSymbol%",
   "Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol% to %recipientAddress%": "将最大 %inputAmount% %inputSymbol% 兑换为 %outputAmount% %outputSymbol% 并发送到 %recipientAddress%",
   "Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%": "将 %inputAmount% %inputSymbol% 兑换为最小 %outputAmount% %outputSymbol%",
