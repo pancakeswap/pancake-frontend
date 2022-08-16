@@ -9,7 +9,7 @@ import { useBCakeFarmBoosterProxyFactoryContract } from 'hooks/useContract'
 
 const MAX_GAS_LIMIT = 2500000
 
-const CreateProxyButton = (props) => {
+const CreateProxyButton = ({ onDone, ...props }) => {
   const { t } = useTranslation()
   const farmBoosterProxyFactoryContract = useBCakeFarmBoosterProxyFactoryContract()
   const [isCreateProxyLoading, setIsCreateProxyLoading] = useState(false)
@@ -33,8 +33,8 @@ const CreateProxyButton = (props) => {
           console.error(error)
         } finally {
           setIsCreateProxyLoading(false)
-          if (props.onDone) {
-            props.onDone()
+          if (onDone) {
+            onDone()
           }
         }
       }}
