@@ -78,7 +78,6 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
         href: '/farms',
         icon: EarnIcon,
         fillIcon: EarnFillIcon,
-        supportChainIds: [ChainId.BSC],
         image: '/images/decorations/pe2.png',
         items: [
           {
@@ -88,6 +87,7 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
           {
             label: t('Pools'),
             href: '/pools',
+            supportChainIds: [ChainId.BSC],
           },
         ],
       },

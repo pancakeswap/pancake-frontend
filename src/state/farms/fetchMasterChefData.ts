@@ -6,16 +6,15 @@ import { SerializedFarm } from '../types'
 import { getMasterChefAddress } from '../../utils/addressHelpers'
 import { getMasterchefContract } from '../../utils/contractHelpers'
 
-const masterChefAddress = getMasterChefAddress()
-
 export const fetchMasterChefFarmPoolLength = async (chainId: number) => {
   const masterChefContract = getMasterchefContract(undefined, chainId)
   const poolLength = await masterChefContract.poolLength()
   return poolLength
 }
 
-const masterChefFarmCalls = (farm: SerializedFarm) => {
+const masterChefFarmCalls = (farm: SerializedFarm, chainId: number) => {
   const { pid } = farm
+  const masterChefAddress = getMasterChefAddress(chainId)
   return pid || pid === 0
     ? [
         {
@@ -31,8 +30,8 @@ const masterChefFarmCalls = (farm: SerializedFarm) => {
     : [null, null]
 }
 
-export const fetchMasterChefData = async (farms: SerializedFarmConfig[]): Promise<any[]> => {
-  const masterChefCalls = farms.map((farm) => masterChefFarmCalls(farm))
+export const fetchMasterChefData = async (farms: SerializedFarmConfig[], chainId: number): Promise<any[]> => {
+  const masterChefCalls = farms.map((farm) => masterChefFarmCalls(farm, chainId))
   const chunkSize = masterChefCalls.flat().length / farms.length
   const masterChefAggregatedCalls = masterChefCalls
     .filter((masterChefCall) => masterChefCall[0] !== null && masterChefCall[1] !== null)

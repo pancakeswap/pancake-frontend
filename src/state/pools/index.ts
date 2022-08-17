@@ -158,7 +158,7 @@ export const fetchPoolsPublicDataAsync =
         )
       })
       const poolsWithDifferentFarmToken =
-        activePriceHelperLpsConfig.length > 0 ? await fetchFarms(priceHelperLpsConfig) : []
+        activePriceHelperLpsConfig.length > 0 ? await fetchFarms(priceHelperLpsConfig, chainId) : []
       const farmsData = getState().farms.data
       const bnbBusdFarm =
         activePriceHelperLpsConfig.length > 0

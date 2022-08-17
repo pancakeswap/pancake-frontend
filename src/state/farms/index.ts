@@ -10,7 +10,8 @@ import multicall from 'utils/multicall'
 import masterchefABI from 'config/abi/masterchef.json'
 import { getMasterChefAddress } from 'utils/addressHelpers'
 import { getBalanceAmount } from 'utils/formatBalance'
-import { ethersToBigNumber } from 'utils/bigNumber'
+import { ChainId } from '@pancakeswap/sdk'
+import { BIG_ZERO, ethersToBigNumber } from 'utils/bigNumber'
 import type { AppState } from 'state'
 import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
 import { getFarmConfig } from 'config/constants/farms/index'
@@ -59,26 +60,27 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
 >(
   'farms/fetchFarmsPublicDataAsync',
   async ({ pids, chainId }) => {
-    const masterChefAddress = getMasterChefAddress()
+    const BSC_NETWORK = chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET
+    const masterChefAddress = getMasterChefAddress(chainId)
     const calls = [
       {
         address: masterChefAddress,
         name: 'poolLength',
       },
-      {
+      BSC_NETWORK && {
         address: masterChefAddress,
         name: 'cakePerBlock',
         params: [true],
       },
-    ]
+    ].filter(Boolean)
     const [[poolLength], [cakePerBlockRaw]] = await multicall(masterchefABI, calls)
-    const regularCakePerBlock = getBalanceAmount(ethersToBigNumber(cakePerBlockRaw))
+    const regularCakePerBlock = cakePerBlockRaw ? getBalanceAmount(ethersToBigNumber(cakePerBlockRaw)) : BIG_ZERO
     const farmsConfig = getFarmConfig(chainId)
     const farmsCanFetch = farmsConfig.filter(
       (farmConfig) => pids.includes(farmConfig.pid) && poolLength.gt(farmConfig.pid),
     )
 
-    const farms = await fetchFarms(farmsCanFetch)
+    const farms = await fetchFarms(farmsCanFetch, chainId)
     const farmsWithPrices = getFarmsPrices(farms)
 
     return [farmsWithPrices, poolLength.toNumber(), regularCakePerBlock.toNumber()]
@@ -109,7 +111,7 @@ interface FarmUserDataResponse {
   }
 }
 
-async function getBoostedFarmsStakeValue(farms, account, proxyAddress) {
+async function getBoostedFarmsStakeValue(farms, account, chainId, proxyAddress) {
   const [
     userFarmAllowances,
     userFarmTokenBalances,
@@ -119,14 +121,14 @@ async function getBoostedFarmsStakeValue(farms, account, proxyAddress) {
     proxyUserStakedBalances,
     proxyUserFarmEarnings,
   ] = await Promise.all([
-    fetchFarmUserAllowances(account, farms),
+    fetchFarmUserAllowances(account, farms, chainId),
     fetchFarmUserTokenBalances(account, farms),
-    fetchFarmUserStakedBalances(account, farms),
-    fetchFarmUserEarnings(account, farms),
+    fetchFarmUserStakedBalances(account, farms, chainId),
+    fetchFarmUserEarnings(account, farms, chainId),
     // Proxy call
-    fetchFarmUserAllowances(account, farms, proxyAddress),
-    fetchFarmUserStakedBalances(proxyAddress, farms),
-    fetchFarmUserEarnings(proxyAddress, farms),
+    fetchFarmUserAllowances(account, farms, chainId, proxyAddress),
+    fetchFarmUserStakedBalances(proxyAddress, chainId, farms),
+    fetchFarmUserEarnings(proxyAddress, chainId, farms),
   ])
 
   const farmAllowances = userFarmAllowances.map((farmAllowance, index) => {
@@ -149,12 +151,12 @@ async function getBoostedFarmsStakeValue(farms, account, proxyAddress) {
   return farmAllowances
 }
 
-async function getNormalFarmsStakeValue(farms, account) {
+async function getNormalFarmsStakeValue(farms, account, chainId) {
   const [userFarmAllowances, userFarmTokenBalances, userStakedBalances, userFarmEarnings] = await Promise.all([
-    fetchFarmUserAllowances(account, farms),
+    fetchFarmUserAllowances(account, farms, chainId),
     fetchFarmUserTokenBalances(account, farms),
-    fetchFarmUserStakedBalances(account, farms),
-    fetchFarmUserEarnings(account, farms),
+    fetchFarmUserStakedBalances(account, farms, chainId),
+    fetchFarmUserEarnings(account, farms, chainId),
   ])
 
   const normalFarmAllowances = userFarmAllowances.map((_, index) => {
@@ -188,14 +190,14 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
       const { normalFarms, farmsWithProxy } = splitProxyFarms(farmsCanFetch)
 
       const [proxyAllowances, normalAllowances] = await Promise.all([
-        getBoostedFarmsStakeValue(farmsWithProxy, account, proxyAddress),
-        getNormalFarmsStakeValue(normalFarms, account),
+        getBoostedFarmsStakeValue(farmsWithProxy, account, chainId, proxyAddress),
+        getNormalFarmsStakeValue(normalFarms, account, chainId),
       ])
 
       return [...proxyAllowances, ...normalAllowances]
     }
 
-    return getNormalFarmsStakeValue(farmsCanFetch, account)
+    return getNormalFarmsStakeValue(farmsCanFetch, account, chainId)
   },
   {
     condition: (arg, { getState }) => {
