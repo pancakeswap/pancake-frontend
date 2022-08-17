@@ -3,7 +3,12 @@ import { Trade, TradeType, Currency } from '@pancakeswap/sdk'
 import { Button, Text, ErrorIcon, ArrowDownIcon } from '@pancakeswap/uikit'
 import { Field } from 'state/swap/actions'
 import { useTranslation } from '@pancakeswap/localization'
-import { computeTradePriceBreakdown, warningSeverity, computeSlippageAdjustedAmounts } from 'utils/exchange'
+import {
+  computeTradePriceBreakdown,
+  warningSeverity,
+  computeSlippageAdjustedAmounts,
+  basisPointsToPercent,
+} from 'utils/exchange'
 import { AutoColumn } from 'components/Layout/Column'
 import { CurrencyLogo } from 'components/Logo'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
@@ -40,14 +45,8 @@ export default function SwapModalHeader({
 
   const tradeInfoText =
     trade.tradeType === TradeType.EXACT_INPUT
-      ? t('Output is estimated. You will receive at least %amount% %symbol% or the transaction will revert.', {
-          amount,
-          symbol,
-        })
-      : t('Input is estimated. You will sell at most %amount% %symbol% or the transaction will revert.', {
-          amount,
-          symbol,
-        })
+      ? t('Output is estimated. You will receive at least or the transaction will revert.')
+      : t('Input is estimated. You will sell at most or the transaction will revert.')
 
   const [estimatedText, transactionRevertText] = tradeInfoText.split(`${amount} ${symbol}`)
 
@@ -96,7 +95,7 @@ export default function SwapModalHeader({
             {trade.outputAmount.toSignificant(6)}
           </TruncatedText>
         </RowFixed>
-        <RowFixed gap="0px">
+        <RowFixed>
           <Text fontSize="24px" ml="10px">
             {trade.outputAmount.currency.symbol}
           </Text>
@@ -114,11 +113,17 @@ export default function SwapModalHeader({
         </SwapShowAcceptChanges>
       ) : null}
       <AutoColumn justify="flex-start" gap="sm" style={{ padding: '24px 0 0 0px' }}>
+        <RowFixed style={{ width: '100%' }}>
+          <Text color="secondary" bold textTransform="uppercase">
+            {t('slippage tolerance')}
+          </Text>
+          <Text bold color="primary" ml="auto" textAlign="end">
+            {`${basisPointsToPercent(allowedSlippage).toFixed(1)}%`}
+          </Text>
+        </RowFixed>
         <Text small color="textSubtle" textAlign="left" style={{ width: '100%' }}>
           {estimatedText}
-          <b>
-            {amount} {symbol}
-          </b>
+
           {transactionRevertText}
         </Text>
       </AutoColumn>
