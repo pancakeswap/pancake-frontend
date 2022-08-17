@@ -32,7 +32,7 @@ export const addTransaction =
     approval?: { tokenAddress: string; spender: string }
     claim?: { recipient: string }
     summary?: string
-    translatableSummary?: { text: string; data: Record<string, ReactText> }
+    translatableSummary?: { text: string; data?: Record<string, ReactText> }
     type?: TransactionType
     order?: Order
   }>('transactions/addTransaction')
