@@ -40,10 +40,9 @@ export const LanguageProvider: React.FC<React.PropsWithChildren> = ({ children }
       const codeFromStorage = getLanguageCodeFromLS()
 
       if (codeFromStorage !== EN.locale) {
-        const enLocale = languageMap.get(EN.locale)
         const currentLocale = await fetchLocale(codeFromStorage)
         if (currentLocale) {
-          languageMap.set(codeFromStorage, { ...enLocale, ...currentLocale })
+          languageMap.set(codeFromStorage, currentLocale)
           refresh()
         }
       }
