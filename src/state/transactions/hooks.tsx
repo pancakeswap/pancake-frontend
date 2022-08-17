@@ -1,5 +1,5 @@
 import { TransactionResponse } from '@ethersproject/providers'
-import { useCallback, useMemo, ReactText } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -12,7 +12,7 @@ export function useTransactionAdder(): (
   response: TransactionResponse,
   customData?: {
     summary?: string
-    translatableSummary?: { text: string; data?: Record<string, ReactText> }
+    translatableSummary?: { text: string; data?: Record<string, string | number> }
     approval?: { tokenAddress: string; spender: string }
     claim?: { recipient: string }
     type?: TransactionType
@@ -34,7 +34,7 @@ export function useTransactionAdder(): (
         order,
       }: {
         summary?: string
-        translatableSummary?: { text: string; data?: Record<string, ReactText> }
+        translatableSummary?: { text: string; data?: Record<string, string | number> }
         claim?: { recipient: string }
         approval?: { tokenAddress: string; spender: string }
         type?: TransactionType

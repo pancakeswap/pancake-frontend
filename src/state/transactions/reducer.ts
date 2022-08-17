@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-import { ReactText } from 'react'
 import { createReducer } from '@reduxjs/toolkit'
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import { confirmOrderCancellation, confirmOrderSubmission, saveOrder } from 'utils/localStorageOrders'
@@ -21,7 +20,7 @@ export interface TransactionDetails {
   type?: TransactionType
   order?: Order
   summary?: string
-  translatableSummary?: { text: string; data?: Record<string, ReactText> }
+  translatableSummary?: { text: string; data?: Record<string, string | number> }
   claim?: { recipient: string }
   receipt?: SerializableTransactionReceipt
   lastCheckedBlockNumber?: number
