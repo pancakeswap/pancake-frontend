@@ -21,6 +21,7 @@ import useTokenComparator from './sorting'
 import { getSwapSound } from './swapSound'
 
 import ImportRow from './ImportRow'
+import { CommonBasesType } from './types'
 
 interface CurrencySearchProps {
   selectedCurrency?: Currency | null
@@ -107,6 +108,7 @@ function CurrencySearch({
   const searchToken = useToken(debouncedQuery)
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
 
+  const { isMobile } = useMatchBreakpointsContext()
   const [audioPlay] = useAudioModeManager()
 
   const native = useNativeCurrency()
@@ -143,8 +145,8 @@ function CurrencySearch({
   const inputRef = useRef<HTMLInputElement>()
 
   useEffect(() => {
-    inputRef.current.focus()
-  }, [])
+    if (!isMobile) inputRef.current.focus()
+  }, [isMobile])
 
   const handleInput = useCallback((event) => {
     const input = event.target.value
@@ -177,7 +179,7 @@ function CurrencySearch({
   const filteredInactiveTokens = useSearchInactiveTokenLists(debouncedQuery)
 
   const hasFilteredInactiveTokens = Boolean(filteredInactiveTokens?.length)
-  const { isMobile } = useMatchBreakpointsContext()
+
   const getCurrencyListRows = useCallback(() => {
     if (searchToken && !searchTokenIsAdded && !hasFilteredInactiveTokens) {
       return (
@@ -226,6 +228,7 @@ function CurrencySearch({
     showImportView,
     t,
     showCommonBases,
+    commonBasesType,
     isMobile,
     height,
   ])
