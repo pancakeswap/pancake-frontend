@@ -89,7 +89,7 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
             href: '/pools',
             supportChainIds: [ChainId.BSC],
           },
-        ],
+        ].map((item) => addMenuItemSupported(item, chainId)),
       },
       {
         label: t('Win'),
