@@ -6,7 +6,9 @@ import { isChainSupported } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
 import { useActiveChainId, useLocalNetworkChain } from './useActiveChainId'
 
-const getHashFromRouter = (router: NextRouter) => router.asPath.match(/#([a-z0-9]+)/gi)
+const getHashFromRouter = (router: NextRouter) => {
+  return router.asPath.match(/#([a-z0-9]+)/gi)
+}
 
 export function useNetworkConnectorUpdater() {
   const localChainId = useLocalNetworkChain()
@@ -21,7 +23,7 @@ export function useNetworkConnectorUpdater() {
     const parsedQueryChainId = Number(router.query.chainId)
     if (triedSwitchFromQuery) {
       if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
-        const uriHash = getHashFromRouter(router)[0]
+        const uriHash = getHashFromRouter(router)?.[0]
         router.replace(
           {
             query: {
