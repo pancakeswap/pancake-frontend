@@ -69,17 +69,19 @@ export const LanguageProvider: React.FC<React.PropsWithChildren> = ({ children }
 
       const locale = await fetchLocale(language.locale)
       if (locale) {
-        // Merge the EN locale to ensure that any locale fetched has all the keys
         languageMap.set(language.locale, locale)
+        localStorage?.setItem(LS_KEY, language.locale)
+        setState((prevState) => ({
+          ...prevState,
+          isFetching: false,
+          currentLanguage: language,
+        }))
+      } else {
+        setState((prevState) => ({
+          ...prevState,
+          isFetching: false,
+        }))
       }
-
-      localStorage?.setItem(LS_KEY, language.locale)
-
-      setState((prevState) => ({
-        ...prevState,
-        isFetching: false,
-        currentLanguage: language,
-      }))
     } else {
       localStorage?.setItem(LS_KEY, language.locale)
       setState((prevState) => ({
