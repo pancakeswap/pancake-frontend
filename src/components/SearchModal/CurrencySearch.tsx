@@ -21,7 +21,6 @@ import useTokenComparator from './sorting'
 import { getSwapSound } from './swapSound'
 
 import ImportRow from './ImportRow'
-import { CommonBasesType } from './types'
 
 interface CurrencySearchProps {
   selectedCurrency?: Currency | null
@@ -228,7 +227,6 @@ function CurrencySearch({
     showImportView,
     t,
     showCommonBases,
-    commonBasesType,
     isMobile,
     height,
   ])
