@@ -316,7 +316,7 @@
   "Manual": "手動",
   "Earn CAKE, stake CAKE": "賺取 CAKE，質押 CAKE",
   "Help": "說明",
-  "Syrup Pools": "Syrup 資金池",
+  "Syrup Pools": "糖漿池",
   "Best round: #%roundId%": "最佳回合：#%roundId%",
   "View Reclaimed & Won": "檢查收回和贏得",
   "This round was automatically cancelled due to an error. If you entered a position, please reclaim your funds below.": "由於發生錯誤，此回合已自動取消。如果您輸入了部位，請在下面收回您的資金。",
@@ -583,7 +583,7 @@
   "Your voting power is determined by the amount of CAKE you held and the remaining duration on the fixed-term staking position (if you have one) at the block detailed below. CAKE held in other places does not contribute to your voting power.": "Your voting power is determined by the amount of CAKE you held and the remaining duration on the fixed-term staking position (if you have one) at the block detailed below. CAKE held in other places does not contribute to your voting power.",
   "Wallet": "錢包",
   "CAKE BNB LP": "CAKE BNB LP",
-  "Other Syrup Pools": "其他 Syrup 資金池",
+  "Other Syrup Pools": "其他糖漿池",
   "Voting Power": "投票權",
   "You need at least %count% voting power to publish a proposal.": "您至少需要 %count% 的投票權才能發佈提案。",
   "Check voting power": "檢查投票權",
@@ -1903,5 +1903,12 @@
   "Our Trading Competition, Prediction and Lottery features are currently available only on BNB Chain! Come over and join the community in the fun!": "Our Trading Competition, Prediction and Lottery features are currently available only on BNB Chain! Come over and join the community in the fun!",
   "Switch to %chain%": "Switch to %chain%",
   "Stay on %chain%": "Stay on %chain%",
-  "Go to Pool": "Go to Pool"
+  "Go to Pool": "Go to Pool",
+  "Approve %symbol%": "Approve %symbol%",
+  "Add %amountA% %symbolA% and %amountB% %symbolB%": "Add %amountA% %symbolA% and %amountB% %symbolB%",
+  "Remove %amount% %symbol%": "Remove %amount% %symbol%",
+  "Remove %amountA% %symbolA% and %amountB% %symbolB%": "Remove %amountA% %symbolA% and %amountB% %symbolB%",
+  "Zap %amountA% %symbolA% and %amountB% %symbolB%": "Zap %amountA% %symbolA% and %amountB% %symbolB%",
+  "Zap in %amount% BNB for %symbol%": "Zap in %amount% BNB for %symbol%",
+  "Zap in %amount% %symbol% for %lpSymbol%": "Zap in %amount% %symbol% for %lpSymbol%"
 }
