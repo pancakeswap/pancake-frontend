@@ -1,10 +1,12 @@
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
-import { useRouter } from 'next/router'
+import { useRouter, NextRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { isChainSupported } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
 import { useActiveChainId, useLocalNetworkChain } from './useActiveChainId'
+
+const getHashFromRouter = (router: NextRouter) => router.asPath.match(/#([a-z0-9]+)/gi)
 
 export function useNetworkConnectorUpdater() {
   const localChainId = useLocalNetworkChain()
@@ -19,12 +21,14 @@ export function useNetworkConnectorUpdater() {
     const parsedQueryChainId = Number(router.query.chainId)
     if (triedSwitchFromQuery) {
       if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
+        const uriHash = getHashFromRouter(router)[0]
         router.replace(
           {
             query: {
               ...router.query,
               chainId,
             },
+            ...(uriHash && { hash: uriHash }),
           },
           undefined,
         )
