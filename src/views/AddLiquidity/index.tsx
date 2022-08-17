@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, ReactText } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { JSBI, CurrencyAmount, Token, WNATIVE, MINIMUM_LIQUIDITY, ChainId } from '@pancakeswap/sdk'
@@ -398,7 +398,7 @@ export default function AddLiquidity() {
     let args
     let value: BigNumberish | null
     let summary: string
-    let translatableSummary: { text: string; data?: Record<string, ReactText> }
+    let translatableSummary: { text: string; data?: Record<string, string | number> }
     const minAmountOut = zapIn.zapInEstimated.swapAmountOut.mul(10000 - allowedSlippage).div(10000)
     if (rebalancing) {
       const maxAmountIn = zapIn.zapInEstimated.swapAmountIn.mul(10000 + allowedSlippage).div(10000)
