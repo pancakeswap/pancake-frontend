@@ -2,7 +2,7 @@
 // The config you add here will be used whenever a page is visited.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
-import { init, GlobalHandlers, Breadcrumbs } from '@sentry/nextjs'
+import { init, GlobalHandlers, Breadcrumbs, Dedupe } from '@sentry/react'
 
 const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN
 
@@ -23,6 +23,7 @@ init({
       onerror: false,
       onunhandledrejection: false,
     }),
+    Dedupe(),
   ],
   environment: ENV === 'production' ? 'production' : 'development',
   // Adjust this value in production, or use tracesSampler for greater control
