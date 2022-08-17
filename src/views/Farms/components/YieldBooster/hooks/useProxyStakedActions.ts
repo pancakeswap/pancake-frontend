@@ -1,6 +1,6 @@
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useBCakeProxyContract } from 'hooks/useContract'
-
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
 import { harvestFarm, stakeFarm, unstakeFarm } from 'utils/calls/farms'
@@ -11,6 +11,7 @@ import useProxyCAKEBalance from './useProxyCAKEBalance'
 
 export default function useProxyStakedActions(pid, lpContract) {
   const { account } = useWeb3React()
+  const { chainId } = useActiveWeb3React()
   const { proxyAddress } = useBCakeProxyContractAddress(account)
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
   const dispatch = useAppDispatch()
@@ -18,8 +19,8 @@ export default function useProxyStakedActions(pid, lpContract) {
 
   const onDone = useCallback(() => {
     refreshProxyCakeBalance()
-    dispatch(fetchFarmUserDataAsync({ account, pids: [pid], proxyAddress }))
-  }, [account, proxyAddress, pid, dispatch, refreshProxyCakeBalance])
+    dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId, proxyAddress }))
+  }, [account, proxyAddress, chainId, pid, dispatch, refreshProxyCakeBalance])
 
   const { onApprove } = useApproveBoostProxyFarm(lpContract, proxyAddress)
 
