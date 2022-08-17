@@ -1,5 +1,6 @@
 import type { Signer } from '@ethersproject/abstract-signer'
 import type { Provider } from '@ethersproject/providers'
+import { provider } from 'utils/wagmi'
 import { Contract } from '@ethersproject/contracts'
 import { bscRpcProvider } from 'utils/providers'
 import poolsConfig from 'config/constants/pools'
@@ -254,8 +255,9 @@ export const getCakePredictionsContract = (address: string, signer?: Signer | Pr
 export const getChainlinkOracleContract = (address: string, signer?: Signer | Provider) => {
   return getContract(chainlinkOracleAbi, address, signer) as ChainlinkOracle
 }
-export const getMulticallContract = () => {
-  return getContract(MultiCallAbi, getMulticallAddress(), bscRpcProvider) as Multicall
+export const getMulticallContract = (chainId: ChainId) => {
+  const multiChainProvider = provider({ chainId })
+  return getContract(MultiCallAbi, getMulticallAddress(chainId), multiChainProvider) as Multicall
 }
 export const getBunnySpecialCakeVaultContract = (signer?: Signer | Provider) => {
   return getContract(bunnySpecialCakeVaultAbi, getBunnySpecialCakeVaultAddress(), signer) as BunnySpecialCakeVault

@@ -84,11 +84,15 @@ export const usePollCoreFarmData = () => {
   const { chainId } = useActiveWeb3React()
 
   useEffect(() => {
-    dispatch(fetchInitialFarmsData({ chainId }))
+    if (chainId) {
+      dispatch(fetchInitialFarmsData({ chainId }))
+    }
   }, [chainId, dispatch])
 
   useFastRefreshEffect(() => {
-    dispatch(fetchFarmsPublicDataAsync({ pids: coreFarmPIDs[chainId], chainId }))
+    if (chainId) {
+      dispatch(fetchFarmsPublicDataAsync({ pids: coreFarmPIDs[chainId], chainId }))
+    }
   }, [dispatch, chainId])
 }
 
