@@ -3,7 +3,6 @@ import { Language } from '@pancakeswap/uikit'
 import { useLastUpdated } from '@pancakeswap/hooks'
 import memoize from 'lodash/memoize'
 import { EN, languages } from './config/languages'
-import translations from './config/translations.json'
 import { ContextApi, ProviderState, TranslateFunction } from './types'
 import { LS_KEY, fetchLocale, getLanguageCodeFromLS } from './helpers'
 
@@ -23,8 +22,8 @@ const getRegExpForDataKey = memoize((dataKey: string): RegExp => {
 })
 
 // Export the translations directly
-export const languageMap = new Map<Language['locale'], Record<string, string>>()
-languageMap.set(EN.locale, translations)
+const languageMap = new Map<Language['locale'], Record<string, string>>()
+languageMap.set(EN.locale, {})
 
 export const LanguageContext = createContext<ContextApi>(undefined)
 
@@ -45,10 +44,9 @@ export const LanguageProvider: React.FC<React.PropsWithChildren> = ({ children }
       const codeFromStorage = getLanguageCodeFromLS()
 
       if (codeFromStorage !== EN.locale) {
-        const enLocale = languageMap.get(EN.locale)
         const currentLocale = await fetchLocale(codeFromStorage)
         if (currentLocale) {
-          languageMap.set(codeFromStorage, { ...enLocale, ...currentLocale })
+          languageMap.set(codeFromStorage, currentLocale)
           refresh()
         }
       }
@@ -71,9 +69,8 @@ export const LanguageProvider: React.FC<React.PropsWithChildren> = ({ children }
 
       const locale = await fetchLocale(language.locale)
       if (locale) {
-        const enLocale = languageMap.get(EN.locale)
         // Merge the EN locale to ensure that any locale fetched has all the keys
-        languageMap.set(language.locale, { ...enLocale, ...locale })
+        languageMap.set(language.locale, locale)
       }
 
       localStorage?.setItem(LS_KEY, language.locale)
@@ -95,7 +92,7 @@ export const LanguageProvider: React.FC<React.PropsWithChildren> = ({ children }
 
   const translate: TranslateFunction = useCallback(
     (key, data) => {
-      const translationSet = languageMap.get(currentLanguage.locale) ?? languageMap.get(EN.locale)
+      const translationSet = languageMap.get(currentLanguage.locale)
       const translatedText = translationSet[key] || key
 
       if (data) {

@@ -1,8 +1,10 @@
 import Path from 'path'
 import fs from 'fs'
-import { translations } from '@pancakeswap/localization'
 import teams from 'config/constants/teams'
 import { NftLocation } from 'state/nftMarket/types'
+
+// FIXME: should move this test file inside localization pkg
+import translations from '../../packages/localization/src/config/translations.json'
 
 const allTranslationKeys = Object.keys(translations)
 
