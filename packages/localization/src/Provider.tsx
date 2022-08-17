@@ -92,8 +92,8 @@ export const LanguageProvider: React.FC<React.PropsWithChildren> = ({ children }
 
   const translate: TranslateFunction = useCallback(
     (key, data) => {
-      const translationSet = languageMap.get(currentLanguage.locale)
-      const translatedText = translationSet[key] || key
+      const translationSet = languageMap.get(currentLanguage.locale) ?? {}
+      const translatedText = translationSet?.[key] || key
 
       if (data) {
         // Check the existence of at least one combination of %%, separated by 1 or more non space characters
