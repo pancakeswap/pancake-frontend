@@ -21,6 +21,7 @@ export const useActiveChainId = () => {
   const localChainId = useLocalNetworkChain()
   const { status } = useAccount()
   const { chain } = useNetwork()
-  const chainId = chain?.id ?? localChainId ?? (status !== 'connecting' ? ChainId.BSC : undefined)
+  const chainId =
+    chain?.id ?? localChainId ?? (status !== 'connecting' && status !== 'reconnecting' ? ChainId.BSC : undefined)
   return chainId
 }
