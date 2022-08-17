@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { ReactElement, useCallback } from 'react'
 import { ChainId, Currency, Token } from '@pancakeswap/sdk'
 import styled from 'styled-components'
 import {
@@ -120,7 +120,13 @@ export function ConfirmationModalContent({
   )
 }
 
-export function TransactionErrorContent({ message, onDismiss }: { message: string; onDismiss?: () => void }) {
+export function TransactionErrorContent({
+  message,
+  onDismiss,
+}: {
+  message: ReactElement | string
+  onDismiss?: () => void
+}) {
   const { t } = useTranslation()
   return (
     <Wrapper>
