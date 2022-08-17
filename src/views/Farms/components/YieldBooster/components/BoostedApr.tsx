@@ -18,6 +18,7 @@ function BoostedApr(props: BoostedAprPropsType) {
   const { apr, pid, ...rest } = props
   const { boosterState, proxyAddress } = useContext(YieldBoosterStateContext)
   const { t } = useTranslation()
+
   const multiplier = useBoostMultipler({ pid, boosterState, proxyAddress })
 
   const boostedApr =
