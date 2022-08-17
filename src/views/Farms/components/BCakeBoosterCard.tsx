@@ -16,7 +16,7 @@ import { useWeb3React } from '@pancakeswap/wagmi'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
+import NextLink from 'next/link'
 import styled, { useTheme } from 'styled-components'
 import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
 import { useUserBoosterStatus } from '../hooks/useUserBoosterStatus'
@@ -122,7 +122,6 @@ const CardContent: React.FC = () => {
   const { proxyCreated, refreshProxyAddress } = useBCakeProxyContractAddress(account)
   const { maxBoostCounts, remainingCounts } = useUserBoosterStatus(account)
   const { locked, lockedEnd } = useUserLockedCakeStatus()
-  const { push } = useRouter()
   const theme = useTheme()
 
   if (!account)
@@ -146,9 +145,11 @@ const CardContent: React.FC = () => {
         <Text color="textSubtle" fontSize={12} mb="16px">
           {t('An active fixed-term CAKE staking position is required for activating farm yield boosters.')}
         </Text>
-        <Button onClick={() => push('/pools')} width="100%" style={{ backgroundColor: theme.colors.textSubtle }}>
-          {t('Go to Pool')}
-        </Button>
+        <NextLink href="/pools" passHref>
+          <Button as="a" width="100%" style={{ backgroundColor: theme.colors.textSubtle }}>
+            {t('Go to Pool')}
+          </Button>
+        </NextLink>
       </Box>
     )
   if (lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd) * 1000))
@@ -160,9 +161,11 @@ const CardContent: React.FC = () => {
         <Text color="textSubtle" fontSize={12} mb="16px">
           {t('An active fixed-term CAKE staking position is required for activating farm yield boosters.')}
         </Text>
-        <Button onClick={() => push('/pools')} width="100%" style={{ backgroundColor: theme.colors.textSubtle }}>
-          {t('Go to Pool')}
-        </Button>
+        <NextLink href="/pools" passHref>
+          <Button as="a" width="100%" style={{ backgroundColor: theme.colors.textSubtle }}>
+            {t('Go to Pool')}
+          </Button>
+        </NextLink>
       </Box>
     )
   if (!proxyCreated) {
