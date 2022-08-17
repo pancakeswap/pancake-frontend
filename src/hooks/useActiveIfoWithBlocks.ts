@@ -11,9 +11,9 @@ export const useActiveIfoWithBlocks = (): Ifo & { startBlock: number; endBlock: 
     activeIfo ? ['ifo', 'currentIfo'] : null,
     async () => {
       const abi = ifoV3Abi
-      const [startBlock, endBlock] = await multicallv2(
+      const [startBlock, endBlock] = await multicallv2({
         abi,
-        [
+        calls: [
           {
             address: activeIfo.address,
             name: 'startBlock',
@@ -23,8 +23,8 @@ export const useActiveIfoWithBlocks = (): Ifo & { startBlock: number; endBlock: 
             name: 'endBlock',
           },
         ],
-        { requireSuccess: false },
-      )
+        options: { requireSuccess: false },
+      })
 
       return { startBlock: startBlock ? startBlock[0].toNumber() : 0, endBlock: endBlock ? endBlock[0].toNumber() : 0 }
     },

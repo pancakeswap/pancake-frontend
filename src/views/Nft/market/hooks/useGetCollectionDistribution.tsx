@@ -50,7 +50,7 @@ export const useGetCollectionDistributionPB = () => {
         params: [tokenId],
       }))
       try {
-        const response = await multicallv2(pancakeBunniesAbi, bunnyCountCalls)
+        const response = await multicallv2({ abi: pancakeBunniesAbi, calls: bunnyCountCalls })
         const tokenListResponse = response.reduce((obj, tokenCount, index) => {
           return {
             ...obj,

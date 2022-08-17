@@ -49,6 +49,6 @@ const fetchFarmCalls = (farm: SerializedFarm) => {
 export const fetchPublicFarmsData = async (farms: SerializedFarmConfig[], chainId = ChainId.BSC): Promise<any[]> => {
   const farmCalls = farms.flatMap((farm) => fetchFarmCalls(farm))
   const chunkSize = farmCalls.length / farms.length
-  const farmMultiCallResult = await multicallv2(erc20, farmCalls, chainId)
+  const farmMultiCallResult = await multicallv2({ abi: erc20, calls: farmCalls, chainId })
   return chunk(farmMultiCallResult, chunkSize)
 }

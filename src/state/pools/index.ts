@@ -118,7 +118,7 @@ export const fetchCakePoolUserDataAsync = (account: string) => async (dispatch) 
     params: [account],
   }
   const cakeContractCalls = [allowanceCall, balanceOfCall]
-  const [[allowance], [stakingTokenBalance]] = await multicallv2(cakeAbi, cakeContractCalls)
+  const [[allowance], [stakingTokenBalance]] = await multicallv2({ abi: cakeAbi, calls: cakeContractCalls })
 
   dispatch(
     setPoolUserData({

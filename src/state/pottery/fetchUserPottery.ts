@@ -98,7 +98,10 @@ export const fetchWithdrawAbleData = async (account: string) => {
             params: [account],
           },
         ]
-        const [[previewRedeem], [totalSupply], [totalLockCake], [balanceOf]] = await multicallv2(potteryVaultAbi, calls)
+        const [[previewRedeem], [totalSupply], [totalLockCake], [balanceOf]] = await multicallv2({
+          abi: potteryVaultAbi,
+          calls,
+        })
 
         return {
           id,

@@ -95,8 +95,12 @@ const CakeDataRow = () => {
         params: ['0x000000000000000000000000000000000000dEaD'],
       }
       const [tokenDataResultRaw, totalLockedAmount] = await Promise.all([
-        multicallv2(cakeAbi, [totalSupplyCall, burnedTokenCall], {
-          requireSuccess: false,
+        multicallv2({
+          abi: cakeAbi,
+          calls: [totalSupplyCall, burnedTokenCall],
+          options: {
+            requireSuccess: false,
+          },
         }),
         cakeVault.totalLockedAmount(),
       ])

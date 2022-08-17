@@ -36,12 +36,14 @@ const multicall = async <T = any>(abi: any[], calls: Call[], chainId = ChainId.B
  * 1. If "requireSuccess" is false multicall will not bail out if one of the calls fails
  * 2. The return includes a boolean whether the call was successful e.g. [wasSuccessful, callResult]
  */
-export const multicallv2 = async <T = any>(
-  abi: any[],
-  calls: Call[],
-  chainId = ChainId.BSC,
-  options?: MulticallOptions,
-): Promise<T> => {
+interface MulticallV2 {
+  abi: any[]
+  calls: Call[]
+  chainId?: ChainId
+  options?: MulticallOptions
+}
+
+export const multicallv2 = async <T = any>({ abi, calls, chainId = ChainId.BSC, options }: MulticallV2): Promise<T> => {
   const { requireSuccess = true, ...overrides } = options || {}
   const multi = getMulticallContract(chainId)
   const itf = new Interface(abi)

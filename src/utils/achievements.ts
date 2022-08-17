@@ -56,14 +56,16 @@ export const getClaimableIfoData = async (account: string): Promise<Achievement[
     }
   })
 
-  const claimStatuses = (await multicallv2(pointCenterIfoABI, claimStatusCalls, { requireSuccess: false })) as
-    | [boolean][]
-    | null
+  const claimStatuses = (await multicallv2({
+    abi: pointCenterIfoABI,
+    calls: claimStatusCalls,
+    options: { requireSuccess: false },
+  })) as [boolean][] | null
 
   // Get IFO data for all IFO's that are eligible to claim
-  const claimableIfoData = (await multicallv2(
-    pointCenterIfoABI,
-    claimStatuses.reduce((accum, claimStatusArr, index) => {
+  const claimableIfoData = (await multicallv2({
+    abi: pointCenterIfoABI,
+    calls: claimStatuses.reduce((accum, claimStatusArr, index) => {
       if (claimStatusArr === null) {
         return accum
       }
@@ -76,7 +78,7 @@ export const getClaimableIfoData = async (account: string): Promise<Achievement[
 
       return accum
     }, []),
-  )) as IfoMapResponse[]
+  })) as IfoMapResponse[]
 
   // Transform response to an Achievement
   return claimableIfoData.reduce((accum, claimableIfoDataItem) => {
