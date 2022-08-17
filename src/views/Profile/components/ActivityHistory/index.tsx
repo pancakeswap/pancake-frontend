@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { isAddress } from 'utils'
 import { useAppDispatch } from 'state'
 import { getUserActivity } from 'state/nftMarket/helpers'
@@ -45,7 +45,7 @@ const ActivityHistory = () => {
   useEffect(() => {
     const fetchAddressActivity = async () => {
       try {
-        const addressActivity = await getUserActivity(accountAddress.toLocaleLowerCase())
+        const addressActivity = await getUserActivity(accountAddress.toLowerCase())
         setSortedUserActivities(sortUserActivity(accountAddress, addressActivity))
         setIsLoading(false)
       } catch (error) {

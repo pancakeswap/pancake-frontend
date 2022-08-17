@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { AutoRenewIcon, Button, Card, CardBody, Heading, Skeleton, Text } from '@pancakeswap/uikit'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getErc721Contract } from 'utils/contractHelpers'
@@ -13,6 +13,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { NftLocation } from 'state/nftMarket/types'
 import { useProfile } from 'state/profile/hooks'
+import { useSigner } from 'wagmi'
 import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
@@ -28,8 +29,8 @@ const NftWrapper = styled.div`
   margin-bottom: 24px;
 `
 
-const ProfilePicture: React.FC<React.PropsWithChildren> = () => {
-  const { account, library } = useWeb3React()
+const ProfilePicture: React.FC = () => {
+  const { account } = useWeb3React()
   const [isApproved, setIsApproved] = useState(false)
   const [userProfileCreationNfts, setUserProfileCreationNfts] = useState(null)
   const { selectedNft, actions } = useContext(ProfileCreationContext)
@@ -75,9 +76,10 @@ const ProfilePicture: React.FC<React.PropsWithChildren> = () => {
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isApproving } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()
+  const { data: signer } = useSigner()
 
   const handleApprove = async () => {
-    const contract = getErc721Contract(selectedNft.collectionAddress, library.getSigner())
+    const contract = getErc721Contract(selectedNft.collectionAddress, signer)
     const receipt = await fetchWithCatchTxError(() => {
       return callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), selectedNft.tokenId])
     })

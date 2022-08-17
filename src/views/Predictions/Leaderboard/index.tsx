@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useGetLeaderboardFilters, useGetLeaderboardLoadingState } from 'state/predictions/hooks'
 import { filterLeaderboard } from 'state/predictions'

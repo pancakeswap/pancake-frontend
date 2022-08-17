@@ -41,10 +41,11 @@ const ButtonMenu: React.FC<React.PropsWithChildren<ButtonMenuProps>> = ({
         p="4px 16px"
         width="128px"
         variant="tertiary"
+        style={{ textTransform: 'uppercase' }}
         disabled={!stakingTokenBalance.isFinite() || stakingTokenBalance.lte(0) || !account}
         onClick={() => setPrincipalFromUSDValue(getBalanceNumber(stakingTokenBalance.times(cakePrice)).toString())}
       >
-        {t('My Balance').toLocaleUpperCase()}
+        {t('My Balance')}
       </Button>
       <span ref={targetRef}>
         <HelpIcon width="16px" height="16px" color="textSubtle" />

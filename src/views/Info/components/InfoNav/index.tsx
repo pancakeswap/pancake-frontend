@@ -20,8 +20,9 @@ const NavWrapper = styled(Flex)`
 const InfoNav = () => {
   const { t } = useTranslation()
   const router = useRouter()
-  const isPools = router.asPath === '/info/pools'
-  const isTokens = router.asPath === '/info/tokens'
+
+  const isPools = router.pathname === '/info/pools'
+  const isTokens = router.pathname === '/info/tokens'
   let activeIndex = 0
   if (isPools) {
     activeIndex = 1

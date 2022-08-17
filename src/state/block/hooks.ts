@@ -1,5 +1,6 @@
 import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
-import useSWR, { useSWRConfig } from 'swr'
+// eslint-disable-next-line camelcase
+import useSWR, { useSWRConfig, unstable_serialize } from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
@@ -7,14 +8,14 @@ const REFRESH_BLOCK_INTERVAL = 6000
 
 export const usePollBlockNumber = () => {
   const { cache, mutate } = useSWRConfig()
-  const { library, chainId } = useActiveWeb3React()
+  const { chainId, provider } = useActiveWeb3React()
 
   const { data } = useSWR(
-    `blockNumber-${chainId}`,
+    ['blockNumber', chainId],
     async () => {
-      const blockNumber = await library.getBlockNumber()
-      if (!cache.get(`initialBlockNumber-${chainId}`)) {
-        mutate(`initialBlockNumber-${chainId}`, blockNumber)
+      const blockNumber = await provider.getBlockNumber()
+      if (!cache.get(unstable_serialize(['initialBlockNumber', chainId]))) {
+        mutate(['initialBlockNumber', chainId], blockNumber)
       }
       return blockNumber
     },
@@ -46,12 +47,12 @@ export const usePollBlockNumber = () => {
 
 export const useCurrentBlock = (): number => {
   const { chainId } = useActiveWeb3React()
-  const { data: currentBlock = 0 } = useSWRImmutable(`blockNumber-${chainId}`)
+  const { data: currentBlock = 0 } = useSWRImmutable(['blockNumber', chainId])
   return currentBlock
 }
 
 export const useInitialBlock = (): number => {
   const { chainId } = useActiveWeb3React()
-  const { data: initialBlock = 0 } = useSWRImmutable(`initialBlockNumber-${chainId}`)
+  const { data: initialBlock = 0 } = useSWRImmutable(['initialBlockNumber', chainId])
   return initialBlock
 }

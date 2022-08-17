@@ -16,6 +16,7 @@ export interface AprProps {
   cakePrice: BigNumber
   originalValue: number
   hideButton?: boolean
+  strikethrough?: boolean
 }
 
 const Container = styled.div`
@@ -51,10 +52,10 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
   cakePrice,
   originalValue,
   hideButton = false,
+  strikethrough,
 }) => {
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAddress, tokenAddress })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
-
   return originalValue !== 0 ? (
     <Container>
       {originalValue ? (
@@ -68,6 +69,7 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
           apr={originalValue}
           displayApr={value}
           addLiquidityUrl={addLiquidityUrl}
+          strikethrough={strikethrough}
         />
       ) : (
         <AprWrapper>

@@ -1,52 +1,78 @@
-import { Button, Heading, Skeleton, Text } from '@pancakeswap/uikit'
-import { useWeb3React } from '@web3-react/core'
+import { Button, Heading, Skeleton, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { useTranslation } from '@pancakeswap/localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
+import { getAddress } from 'utils/addressHelpers'
+import { useERC20 } from 'hooks/useContract'
+import { TransactionResponse } from '@ethersproject/providers'
 
-import { useAppDispatch } from 'state'
-import { fetchFarmUserDataAsync } from 'state/farms'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { FarmWithStakedValue } from '../../types'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
+import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
 
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
+  onReward?: () => Promise<TransactionResponse>
+  proxyCakeBalance?: number
+  onDone?: () => void
 }
 
-const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActionProps>> = ({
-  pid,
+export const ProxyHarvestActionContainer = ({ children, ...props }) => {
+  const lpAddress = getAddress(props.lpAddresses)
+  const lpContract = useERC20(lpAddress)
+
+  const { onReward, onDone, proxyCakeBalance } = useProxyStakedActions(props.pid, lpContract)
+
+  return children({ ...props, onReward, proxyCakeBalance, onDone })
+}
+
+export const HarvestActionContainer = ({ children, ...props }) => {
+  const { onReward } = useHarvestFarm(props.pid)
+
+  return children({ ...props, onReward })
+}
+
+export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActionProps>> = ({
+  onReward,
+  onDone,
   userData,
   userDataReady,
+  proxyCakeBalance,
 }) => {
+  const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const earningsBigNumber = new BigNumber(userData.earnings)
   const cakePrice = usePriceCakeBusd()
   let earnings = BIG_ZERO
   let earningsBusd = 0
-  let displayBalance = userDataReady ? earnings.toLocaleString() : <Skeleton width={60} />
+  let displayBalance = userDataReady ? earnings.toFixed(5, BigNumber.ROUND_DOWN) : <Skeleton width={60} />
+  const toolTipBalance = earningsBigNumber.isGreaterThan(new BigNumber(0.00001)) ? displayBalance : `< 0.00001`
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    `${toolTipBalance} ${t(
+      `CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.`,
+    )}`,
+    {
+      placement: 'bottom',
+    },
+  )
 
   // If user didn't connect wallet default balance will be 0
   if (!earningsBigNumber.isZero()) {
     earnings = getBalanceAmount(earningsBigNumber)
     earningsBusd = earnings.multipliedBy(cakePrice).toNumber()
-    displayBalance = earnings.toFixed(3, BigNumber.ROUND_DOWN)
+    displayBalance = earnings.toFixed(5, BigNumber.ROUND_DOWN)
   }
 
-  const { onReward } = useHarvestFarm(pid)
-  const { t } = useTranslation()
-  const dispatch = useAppDispatch()
-  const { account } = useWeb3React()
-
   return (
-    <ActionContainer>
+    <ActionContainer style={{ minHeight: 124.5 }}>
       <ActionTitles>
         <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
           CAKE
@@ -57,7 +83,16 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
       </ActionTitles>
       <ActionContent>
         <div>
-          <Heading>{displayBalance}</Heading>
+          {proxyCakeBalance ? (
+            <>
+              <TooltipText ref={targetRef} decorationColor="secondary">
+                <Heading>{displayBalance}</Heading>
+              </TooltipText>
+              {tooltipVisible && tooltip}
+            </>
+          ) : (
+            <Heading>{displayBalance}</Heading>
+          )}
           {earningsBusd > 0 && (
             <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
           )}
@@ -75,7 +110,9 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
                   {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
                 </ToastDescriptionWithTx>,
               )
-              dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+              if (onDone) {
+                onDone()
+              }
             }
           }}
           ml="4px"

@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { useCallback, useMemo, useState } from 'react'
-import { Button, Modal, AutoRenewIcon } from '@pancakeswap/uikit'
+import { Button, Modal, AutoRenewIcon, Message, MessageText } from '@pancakeswap/uikit'
 import { ModalActions, ModalInput } from 'components/Modal'
 import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance } from 'utils/formatBalance'
@@ -10,6 +10,7 @@ interface WithdrawModalProps {
   onConfirm: (amount: string) => void
   onDismiss?: () => void
   tokenName?: string
+  showActiveBooster?: boolean
 }
 
 const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
@@ -17,6 +18,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
   onDismiss,
   max,
   tokenName = '',
+  showActiveBooster,
 }) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
@@ -51,6 +53,13 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
         symbol={tokenName}
         inputTitle={t('Unstake')}
       />
+      {showActiveBooster ? (
+        <Message variant="warning" mt="8px">
+          <MessageText>
+            {t('The yield booster multiplier will be updated based on the latest staking conditions.')}
+          </MessageText>
+        </Message>
+      ) : null}
       <ModalActions>
         <Button variant="secondary" onClick={onDismiss} width="100%" disabled={pendingTx}>
           {t('Cancel')}

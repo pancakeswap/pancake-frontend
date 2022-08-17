@@ -1,16 +1,19 @@
-import { BigNumber } from '@ethersproject/bignumber'
-import { Token, TokenAmount } from '@pancakeswap/sdk'
+import { useMemo } from 'react'
+import { Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { useTokenContract } from './useContract'
 import { useSingleCallResult } from '../state/multicall/hooks'
 
 // returns undefined if input token is undefined, or fails to get token contract,
 // or contract total supply cannot be fetched
-function useTotalSupply(token?: Token): TokenAmount | undefined {
-  const contract = useTokenContract(token?.address, false)
+export function useTotalSupply(token?: Currency): CurrencyAmount<Token> | undefined {
+  const contract = useTokenContract(token?.isToken ? token.address : undefined, false)
 
-  const totalSupply: BigNumber = useSingleCallResult(contract, 'totalSupply')?.result?.[0]
+  const totalSupplyStr: string | undefined = useSingleCallResult(contract, 'totalSupply')?.result?.[0]?.toString()
 
-  return token && totalSupply ? new TokenAmount(token, totalSupply.toString()) : undefined
+  return useMemo(
+    () => (token?.isToken && totalSupplyStr ? CurrencyAmount.fromRawAmount(token, totalSupplyStr) : undefined),
+    [token, totalSupplyStr],
+  )
 }
 
 export default useTotalSupply

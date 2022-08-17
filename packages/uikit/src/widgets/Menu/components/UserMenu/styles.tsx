@@ -13,7 +13,7 @@ export const UserMenuItem = styled.button<UserMenuItemProps>`
   border: 0;
   background: transparent;
   color: ${({ theme, disabled }) => theme.colors[disabled ? "textDisabled" : "textSubtle"]};
-  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  cursor: pointer;
   display: flex;
   font-size: 16px;
   height: 48px;
@@ -22,6 +22,10 @@ export const UserMenuItem = styled.button<UserMenuItemProps>`
   padding-left: 16px;
   padding-right: 16px;
   width: 100%;
+
+  &:is(button) {
+    cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  }
 
   &:hover:not(:disabled) {
     background-color: ${({ theme }) => theme.colors.tertiary};

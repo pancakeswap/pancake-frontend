@@ -1,6 +1,8 @@
 describe('Swap', () => {
   beforeEach(() => {
     cy.visit('/swap')
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(3000)
   })
   it('can enter an amount into input', () => {
     cy.get('#swap-currency-input .token-amount-input').type('0.001', { delay: 200 }).should('have.value', '0.001')

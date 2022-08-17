@@ -156,8 +156,8 @@ export const transformVault = (vaultKey: VaultKey, vault: SerializedCakeVault): 
 
 export const getTokenPricesFromFarm = (farms: SerializedFarm[]) => {
   return farms.reduce((prices, farm) => {
-    const quoteTokenAddress = farm.quoteToken.address.toLocaleLowerCase()
-    const tokenAddress = farm.token.address.toLocaleLowerCase()
+    const quoteTokenAddress = farm.quoteToken.address.toLowerCase()
+    const tokenAddress = farm.token.address.toLowerCase()
     /* eslint-disable no-param-reassign */
     if (!prices[quoteTokenAddress]) {
       prices[quoteTokenAddress] = new BigNumber(farm.quoteTokenPriceBusd).toNumber()

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Currency, Fraction, Percent, TokenAmount } from '@pancakeswap/sdk'
+import { Currency, Fraction, Percent, CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { Text, useTooltip, TooltipText, Box, Flex, Svg, SvgProps } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
@@ -118,7 +118,7 @@ export const PairDistribution = ({
 interface AddLiquidityModalHeaderProps {
   currencies: { [field in Field]?: Currency }
   poolTokenPercentage?: Percent
-  liquidityMinted: TokenAmount
+  liquidityMinted: CurrencyAmount<Token>
   price: Fraction
   allowedSlippage: number
   children: React.ReactNode

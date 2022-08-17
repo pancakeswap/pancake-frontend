@@ -1,7 +1,7 @@
 import { Box, Text, Skeleton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { useWeb3React } from '@web3-react/core'
 import Balance from 'components/Balance'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { usePotteryData } from 'state/pottery/hook'

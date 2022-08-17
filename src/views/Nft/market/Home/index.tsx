@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Box, Button, Flex, Heading, LinkExternal } from '@pancakeswap/uikit'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from '@pancakeswap/localization'
 import PageHeader from 'components/PageHeader'

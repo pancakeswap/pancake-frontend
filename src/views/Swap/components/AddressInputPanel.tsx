@@ -6,7 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
 import { AutoColumn } from '../../../components/Layout/Column'
 import { RowBetween } from '../../../components/Layout/Row'
-import { getBscScanLink } from '../../../utils'
+import { getBlockExploreLink, getBlockExploreName } from '../../../utils'
 
 const InputPanel = styled.div`
   display: flex;
@@ -102,8 +102,12 @@ export default function AddressInputPanel({
             <RowBetween>
               <Text>{t('Recipient')}</Text>
               {address && chainId && (
-                <Link external small href={getBscScanLink(address, 'address', chainId)}>
-                  ({t('View on BscScan')})
+                <Link external small href={getBlockExploreLink(address, 'address', chainId)}>
+                  (
+                  {t('View on %site%', {
+                    site: getBlockExploreName(chainId),
+                  })}
+                  )
                 </Link>
               )}
             </RowBetween>

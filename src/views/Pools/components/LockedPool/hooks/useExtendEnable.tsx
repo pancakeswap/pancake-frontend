@@ -3,7 +3,7 @@ import { useIsTransactionPending } from 'state/transactions/hooks'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { useAppDispatch } from 'state'
 import { updateUserBalance } from 'state/pools'
-import { ETHER } from '@pancakeswap/sdk'
+import { ChainId, Native } from '@pancakeswap/sdk'
 import { CAKE } from 'config/constants/tokens'
 import tryParseAmount from 'utils/tryParseAmount'
 import { useTradeExactOut } from 'hooks/Trades'
@@ -22,7 +22,7 @@ export const useExtendEnable = () => {
 
   const parsedAmount = tryParseAmount(swapAmount, CAKE[chainId])
 
-  const trade = useTradeExactOut(ETHER, parsedAmount)
+  const trade = useTradeExactOut(Native.onChain(ChainId.BSC), parsedAmount)
 
   const { callback: swapCallback } = useSwapCallback(trade, INITIAL_ALLOWED_SLIPPAGE, null)
 

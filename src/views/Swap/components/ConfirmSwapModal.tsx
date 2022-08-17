@@ -1,5 +1,5 @@
 import { useCallback, memo } from 'react'
-import { Trade } from '@pancakeswap/sdk'
+import { Trade, Currency, TradeType } from '@pancakeswap/sdk'
 import { InjectedModalProps, LinkExternal, Text } from '@pancakeswap/uikit'
 import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -41,8 +41,8 @@ const SwapTransactionErrorContent = ({ onDismiss, message, openSettingModal }) =
 }
 
 interface ConfirmSwapModalProps {
-  trade?: Trade
-  originalTrade?: Trade
+  trade?: Trade<Currency, Currency, TradeType>
+  originalTrade?: Trade<Currency, Currency, TradeType>
   attemptingTxn: boolean
   txHash?: string
   recipient: string | null

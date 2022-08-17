@@ -160,7 +160,7 @@ export const localStorageMiddleware: Middleware = (useSWRNext) => (key, fetcher,
 
   let localStorageDataParsed
 
-  if (!data) {
+  if (!data && typeof window !== 'undefined') {
     const localStorageData = localStorage?.getItem(serializedKey)
 
     if (localStorageData) {

@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { batch, useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
@@ -101,6 +101,17 @@ export const usePoolsPageFetch = () => {
       dispatch(fetchCakeFlexibleSideVaultFees())
     })
   }, [dispatch])
+}
+
+export const useCakeVaultUserData = () => {
+  const { account } = useWeb3React()
+  const dispatch = useAppDispatch()
+
+  useFastRefreshEffect(() => {
+    if (account) {
+      dispatch(fetchCakeVaultUserData({ account }))
+    }
+  }, [account, dispatch])
 }
 
 export const useFetchIfo = () => {

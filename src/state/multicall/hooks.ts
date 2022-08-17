@@ -4,7 +4,11 @@ import { Contract } from '@ethersproject/contracts'
 import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useSWRConfig } from 'swr'
+import {
+  useSWRConfig,
+  // eslint-disable-next-line camelcase
+  unstable_serialize,
+} from 'swr'
 import { AppState, useAppDispatch } from '../index'
 import {
   addMulticallListeners,
@@ -189,7 +193,7 @@ export function useSingleContractMultipleData(
   const { cache } = useSWRConfig()
 
   return useMemo(() => {
-    const currentBlockNumber = cache.get(`blockNumber-${chainId}`)
+    const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))
     return results.map((result) => toCallState(result, contract?.interface, fragment, currentBlockNumber))
   }, [cache, chainId, results, contract?.interface, fragment])
 }
@@ -231,7 +235,7 @@ export function useMultipleContractSingleData(
   const { cache } = useSWRConfig()
 
   return useMemo(() => {
-    const currentBlockNumber = cache.get(`blockNumber-${chainId}`)
+    const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))
     return results.map((result) => toCallState(result, contractInterface, fragment, currentBlockNumber))
   }, [cache, chainId, results, contractInterface, fragment])
 }
@@ -260,7 +264,7 @@ export function useSingleCallResult(
   const { chainId } = useActiveWeb3React()
 
   return useMemo(() => {
-    const currentBlockNumber = cache.get(`blockNumber-${chainId}`)
+    const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))
     return toCallState(result, contract?.interface, fragment, currentBlockNumber)
   }, [cache, chainId, result, contract?.interface, fragment])
 }
