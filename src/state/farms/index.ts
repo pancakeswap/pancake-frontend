@@ -61,32 +61,37 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
 >(
   'farms/fetchFarmsPublicDataAsync',
   async ({ pids, chainId }) => {
-    const farmsConfig = getFarmConfig(chainId)
-    const BSC_NETWORK = chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET
-    const masterChefAddress = getMasterChefAddress(chainId)
-    const calls = [
-      {
-        address: masterChefAddress,
-        name: 'poolLength',
-      },
-      BSC_NETWORK && {
-        address: masterChefAddress,
-        name: 'cakePerBlock',
-        params: [true],
-      },
-    ].filter(Boolean)
+    const [[poolLength], [cakePerBlockRaw]] = await Promise.all([
+      multicall(
+        masterchefABI,
+        [
+          {
+            address: getMasterChefAddress(chainId),
+            name: 'poolLength',
+          },
+        ],
+        chainId,
+      ),
+      multicall(masterchefABI, [
+        {
+          address: getMasterChefAddress(),
+          name: 'cakePerBlock',
+          params: [true],
+        },
+      ]),
+    ])
 
-    const response = await multicall(masterchefABI, calls, chainId)
-    const poolLength = new BigNumber(response[0])
-    const regularCakePerBlock = response[1] ? getBalanceAmount(new BigNumber(response[1])) : BIG_ZERO
+    const poolLengthAsBigNumber = new BigNumber(poolLength)
+    const regularCakePerBlock = getBalanceAmount(new BigNumber(cakePerBlockRaw))
+    const farmsConfig = getFarmConfig(chainId)
     const farmsCanFetch = farmsConfig.filter(
-      (farmConfig) => pids.includes(farmConfig.pid) && poolLength.gt(farmConfig.pid),
+      (farmConfig) => pids.includes(farmConfig.pid) && poolLengthAsBigNumber.gt(farmConfig.pid),
     )
 
     const farms = await fetchFarms(farmsCanFetch, chainId)
     const farmsWithPrices = getFarmsPrices(farms)
 
-    return [farmsWithPrices, poolLength.toNumber(), regularCakePerBlock.toNumber()]
+    return [farmsWithPrices, poolLengthAsBigNumber.toNumber(), regularCakePerBlock.toNumber()]
   },
   {
     condition: (arg, { getState }) => {
