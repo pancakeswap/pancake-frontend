@@ -110,9 +110,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
                   {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
                 </ToastDescriptionWithTx>,
               )
-              if (onDone) {
-                onDone()
-              }
+              onDone?.()
             }
           }}
           ml="4px"
