@@ -16,38 +16,38 @@ export function useNetworkConnectorUpdater() {
   const { switchNetwork, isLoading, pendingChainId } = useSwitchNetwork()
   const router = useRouter()
   const chainId = chain?.id || localChainId
-  const [triedSwitchFromQuery, setTriedSwitchFromQuery] = useState(false)
+  // const [triedSwitchFromQuery, setTriedSwitchFromQuery] = useState(false)
 
   useEffect(() => {
     if (isLoading || !router.isReady || isConnecting) return
     const parsedQueryChainId = Number(router.query.chainId)
-    if (triedSwitchFromQuery) {
-      if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
-        const uriHash = getHashFromRouter(router)?.[0]
-        router.replace(
-          {
-            query: {
-              ...router.query,
-              chainId,
-            },
-            ...(uriHash && { hash: uriHash }),
+    // if (triedSwitchFromQuery) {
+    if (parsedQueryChainId === chainId && isChainSupported(chainId)) {
+      const uriHash = getHashFromRouter(router)?.[0]
+      router.replace(
+        {
+          query: {
+            ...router.query,
+            chainId,
           },
-          undefined,
-        )
-      }
-    } else if (isChainSupported(parsedQueryChainId)) {
-      switchNetwork(parsedQueryChainId)
-        .then((r) => {
-          console.info('Auto switch network', r)
-        })
-        .catch((err) => {
-          console.error(err)
-        })
-        .finally(() => setTriedSwitchFromQuery(true))
-    } else {
-      setTriedSwitchFromQuery(true)
+          ...(uriHash && { hash: uriHash }),
+        },
+        undefined,
+      )
     }
-  }, [chainId, isConnecting, isLoading, router, switchNetwork, triedSwitchFromQuery])
+    // } else if (isChainSupported(parsedQueryChainId)) {
+    //   switchNetwork(parsedQueryChainId)
+    //     .then((r) => {
+    //       console.info('Auto switch network', r)
+    //     })
+    //     .catch((err) => {
+    //       console.error(err)
+    //     })
+    //     .finally(() => setTriedSwitchFromQuery(true))
+    // } else {
+    //   setTriedSwitchFromQuery(true)
+    // }
+  }, [chainId, isConnecting, isLoading, router, switchNetwork])
 
   return {
     isLoading,
@@ -62,13 +62,14 @@ export function useNetworkConnectorUpdater() {
  */
 const useActiveWeb3React = () => {
   const web3React = useWeb3React()
-  const chainId = useActiveChainId()
+  const { chainId, isWrongNetwork } = useActiveChainId()
   const provider = useProvider({ chainId })
 
   return {
     provider,
     ...web3React,
     chainId,
+    isWrongNetwork,
   }
 }
 

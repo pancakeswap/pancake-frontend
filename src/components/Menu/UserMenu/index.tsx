@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import {
   Flex,
   LogoutIcon,
@@ -12,6 +11,7 @@ import {
   Box,
 } from '@pancakeswap/uikit'
 import Trans from 'components/Trans'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useAuth from 'hooks/useAuth'
 import NextLink from 'next/link'
 import { ChainId } from '@pancakeswap/sdk'
@@ -25,7 +25,7 @@ import WalletUserMenuItem from './WalletUserMenuItem'
 
 const UserMenu = () => {
   const { t } = useTranslation()
-  const { account, chain, chainId } = useWeb3React()
+  const { account, chainId, isWrongNetwork } = useActiveWeb3React()
   const { logout } = useAuth()
   const { hasPendingTransactions, pendingNumber } = usePendingTransactions()
   const { isInitialized, isLoading, profile } = useProfile()
@@ -36,7 +36,6 @@ const UserMenu = () => {
   const avatarSrc = profile?.nft?.image?.thumbnail
   const [userMenuText, setUserMenuText] = useState<string>('')
   const [userMenuVariable, setUserMenuVariable] = useState<UserMenuVariant>('default')
-  const isWrongNetwork = chain?.unsupported
 
   useEffect(() => {
     if (hasPendingTransactions) {

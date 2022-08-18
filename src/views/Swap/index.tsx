@@ -119,7 +119,7 @@ export default function Swap() {
     [loadedInputCurrency, loadedOutputCurrency],
   )
 
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId, isWrongNetwork } = useActiveWeb3React()
 
   // dismiss warning if all imported tokens are in active lists
   const defaultTokens = useAllTokens()
@@ -529,7 +529,11 @@ export default function Swap() {
                     )}
                   </AutoColumn>
                   <Box mt="0.25rem">
-                    {swapIsUnsupported ? (
+                    {isWrongNetwork ? (
+                      <Button width="100%" disabled>
+                        {t('Wrong Network')}
+                      </Button>
+                    ) : swapIsUnsupported ? (
                       <Button width="100%" disabled>
                         {t('Unsupported Asset')}
                       </Button>

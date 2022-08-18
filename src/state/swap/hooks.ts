@@ -7,6 +7,7 @@ import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from 'config/constant
 import useSWRImmutable from 'swr/immutable'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useRouter } from 'next/router'
 import { useTranslation } from '@pancakeswap/localization'
@@ -103,6 +104,7 @@ export function useDerivedSwapInfo(
   inputError?: string
 } {
   const { account } = useWeb3React()
+  const { isWrongNetwork } = useActiveChainId()
   const { t } = useTranslation()
 
   const to: string | null = (recipient === null ? account : isAddress(recipient) || null) ?? null
@@ -133,6 +135,10 @@ export function useDerivedSwapInfo(
   let inputError: string | undefined
   if (!account) {
     inputError = t('Connect Wallet')
+  }
+
+  if (isWrongNetwork) {
+    inputError = t('Wrong Network')
   }
 
   if (!parsedAmount) {

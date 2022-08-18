@@ -2,10 +2,11 @@ import { Box, ModalV2, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pa
 import { ChainId, NATIVE } from '@pancakeswap/sdk'
 import useActiveWeb3React, { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
+import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import Image from 'next/image'
 import { useMemo } from 'react'
 import { chains } from 'utils/wagmi'
-import { WrongNetworkModal } from './WrongNetworkModal'
+import { UnsupportedNetworkModal } from './UnsupportedNetworkModal'
 
 export const NetworkSelect = ({ switchNetwork }) => {
   const { t } = useTranslation()
@@ -28,15 +29,15 @@ export const NetworkSelect = ({ switchNetwork }) => {
 
 export const NetworkSwitcher = () => {
   const { t } = useTranslation()
-  const { chainId, chain, connector } = useActiveWeb3React()
-  const { isLoading, switchNetwork, pendingChainId } = useNetworkConnectorUpdater()
+  const { chainId, connector, chain, isWrongNetwork } = useActiveWeb3React()
+  const { pendingChainId, isLoading, switchNetwork } = useSwitchNetwork()
+  useNetworkConnectorUpdater()
+
   const foundChain = useMemo(
     () => chains.find((c) => c.id === (isLoading ? pendingChainId || chainId : chainId)),
     [isLoading, pendingChainId, chainId],
   )
   const symbol = NATIVE[foundChain?.id]?.symbol ?? foundChain?.nativeCurrency?.symbol
-
-  const isWrongNetwork = chain?.unsupported
 
   const cannotChangeNetwork =
     connector?.id === 'walletConnect' ||
@@ -52,13 +53,13 @@ export const NetworkSwitcher = () => {
     <>
       <UserMenu
         mr="8px"
-        variant={isLoading ? 'pending' : isWrongNetwork ? 'danger' : 'default'}
+        variant={isLoading ? 'pending' : chain?.unsupported || isWrongNetwork ? 'danger' : 'default'}
         avatarSrc={`/images/chains/${chainId}.png`}
         disabled={cannotChangeNetwork}
         text={
           isLoading ? (
             t('Requesting')
-          ) : isWrongNetwork ? (
+          ) : chain?.unsupported || isWrongNetwork ? (
             t('Network')
           ) : foundChain ? (
             <>
@@ -72,8 +73,8 @@ export const NetworkSwitcher = () => {
       >
         {() => <NetworkSelect switchNetwork={switchNetwork} />}
       </UserMenu>
-      <ModalV2 isOpen={isWrongNetwork} closeOnOverlayClick={false}>
-        <WrongNetworkModal />
+      <ModalV2 isOpen={chain?.unsupported} closeOnOverlayClick={false}>
+        <UnsupportedNetworkModal />
       </ModalV2>
     </>
   )

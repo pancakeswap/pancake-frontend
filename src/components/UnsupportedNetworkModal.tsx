@@ -8,7 +8,7 @@ import { useMemo } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
 import Dots from './Loader/Dots'
 
-export function WrongNetworkModal() {
+export function UnsupportedNetworkModal() {
   const { switchNetwork, isLoading } = useSwitchNetwork()
   const { chains } = useNetwork()
   const chainId = useLocalNetworkChain() || ChainId.BSC

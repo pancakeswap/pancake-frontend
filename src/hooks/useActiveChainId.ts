@@ -1,5 +1,6 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { useRouter } from 'next/router'
+import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import { isChainSupported } from 'utils/wagmi'
 import { useNetwork } from 'wagmi'
@@ -27,7 +28,11 @@ export const useActiveChainId = () => {
   const localChainId = useLocalNetworkChain()
   const { isValidating } = useSWRImmutable('query-chain-id')
   const { chain } = useNetwork()
-  const chainId = chain?.id ?? localChainId ?? (!isValidating ? ChainId.BSC : undefined)
+  const chainId = localChainId ?? chain?.id ?? (!isValidating ? ChainId.BSC : undefined)
+  const { data: isLoading } = useSWR('switch-network-loading', { fallbackData: false })
 
-  return chainId
+  return {
+    chainId,
+    isWrongNetwork: isLoading ? false : chain?.unsupported || (chain && chain.id !== localChainId),
+  }
 }
