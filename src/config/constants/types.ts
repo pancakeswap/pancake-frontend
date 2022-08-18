@@ -76,6 +76,7 @@ export enum PoolCategory {
 interface FarmConfigBaseProps {
   pid: number
   v1pid?: number
+  bscPid?: number
   lpSymbol: string
   lpAddresses: string
   multiplier?: string

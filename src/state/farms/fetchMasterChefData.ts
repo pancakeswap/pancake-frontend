@@ -1,6 +1,8 @@
 import masterchefABI from 'config/abi/masterchef.json'
 import chunk from 'lodash/chunk'
 import { multicallv2 } from 'utils/multicall'
+import { ChainId } from '@pancakeswap/sdk'
+import { getBscChainId } from 'state/farms/getBscChainId'
 import { SerializedFarmConfig } from '../../config/constants/types'
 import { SerializedFarm } from '../types'
 import { getMasterChefAddress } from '../../utils/addressHelpers'
@@ -12,15 +14,19 @@ export const fetchMasterChefFarmPoolLength = async (chainId: number) => {
   return poolLength
 }
 
-const masterChefFarmCalls = (farm: SerializedFarm, chainId: number) => {
-  const { pid } = farm
-  const masterChefAddress = getMasterChefAddress(chainId)
-  return pid || pid === 0
+const masterChefFarmCalls = async (farm: SerializedFarm) => {
+  const { pid, bscPid, quoteToken } = farm
+  const isNonBscVault = quoteToken.chainId !== (ChainId.BSC || ChainId.BSC_TESTNET)
+  const multiCallChainId = isNonBscVault ? await getBscChainId(quoteToken.chainId) : quoteToken.chainId
+  const masterChefAddress = getMasterChefAddress(multiCallChainId)
+  const masterChefPid = isNonBscVault ? bscPid : pid
+
+  return masterChefPid || masterChefPid === 0
     ? [
         {
           address: masterChefAddress,
           name: 'poolInfo',
-          params: [pid],
+          params: [masterChefPid],
         },
         {
           address: masterChefAddress,
@@ -31,13 +37,20 @@ const masterChefFarmCalls = (farm: SerializedFarm, chainId: number) => {
 }
 
 export const fetchMasterChefData = async (farms: SerializedFarmConfig[], chainId: number): Promise<any[]> => {
-  const masterChefCalls = farms.map((farm) => masterChefFarmCalls(farm, chainId))
+  const masterChefCalls = await Promise.all(farms.map((farm) => masterChefFarmCalls(farm)))
   const chunkSize = masterChefCalls.flat().length / farms.length
   const masterChefAggregatedCalls = masterChefCalls
     .filter((masterChefCall) => masterChefCall[0] !== null && masterChefCall[1] !== null)
     .flat()
-  const masterChefMultiCallResult = await multicallv2({ abi: masterchefABI, calls: masterChefAggregatedCalls, chainId })
+  const isNonBscVault = chainId !== (ChainId.BSC || ChainId.BSC_TESTNET)
+  const multiCallChainId = isNonBscVault ? await getBscChainId(chainId) : chainId
+  const masterChefMultiCallResult = await multicallv2({
+    abi: masterchefABI,
+    calls: masterChefAggregatedCalls,
+    chainId: multiCallChainId,
+  })
   const masterChefChunkedResultRaw = chunk(masterChefMultiCallResult, chunkSize)
+
   let masterChefChunkedResultCounter = 0
   return masterChefCalls.map((masterChefCall) => {
     if (masterChefCall[0] === null && masterChefCall[1] === null) {

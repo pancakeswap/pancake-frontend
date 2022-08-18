@@ -6,7 +6,7 @@ import { multicallv2 } from 'utils/multicall'
 import { SerializedFarm } from '../types'
 import { SerializedFarmConfig } from '../../config/constants/types'
 
-const fetchFarmCalls = (farm: SerializedFarm) => {
+const fetchFarmCalls = (farm: SerializedFarm, chainId: number) => {
   const { lpAddresses, token, quoteToken } = farm
   const lpAddress = lpAddresses
   return [
@@ -26,7 +26,7 @@ const fetchFarmCalls = (farm: SerializedFarm) => {
     {
       address: lpAddress,
       name: 'balanceOf',
-      params: [getMasterChefAddress()],
+      params: [getMasterChefAddress(chainId)],
     },
     // Total supply of LP tokens
     {
@@ -47,7 +47,7 @@ const fetchFarmCalls = (farm: SerializedFarm) => {
 }
 
 export const fetchPublicFarmsData = async (farms: SerializedFarmConfig[], chainId = ChainId.BSC): Promise<any[]> => {
-  const farmCalls = farms.flatMap((farm) => fetchFarmCalls(farm))
+  const farmCalls = farms.flatMap((farm) => fetchFarmCalls(farm, chainId))
   const chunkSize = farmCalls.length / farms.length
   const farmMultiCallResult = await multicallv2({ abi: erc20, calls: farmCalls, chainId })
   return chunk(farmMultiCallResult, chunkSize)
