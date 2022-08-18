@@ -294,7 +294,7 @@ type BaseTxnType = {
 type TransactionApprove = {
   type: 'APPROVE'
   input: {
-    amount: CurrencyAmount
+    amount: CurrencyAmount<Token>
     spender: string
     account: string
   }
@@ -318,10 +318,10 @@ type TransferInput = {
     chainId: number
     token: Token
   }
-  amount: CurrencyAmount
-  minAmount: CurrencyAmount
-  nativeFee: CurrencyAmount
-  dstNativeAmount: CurrencyAmount
+  amount: CurrencyAmount<Token>
+  minAmount: CurrencyAmount<Token>
+  nativeFee: CurrencyAmount<Token>
+  dstNativeAmount: CurrencyAmount<Token>
 }
 
 function User() {

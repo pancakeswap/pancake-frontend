@@ -1,14 +1,18 @@
 {
   "name": "@pancakeswap/sdk",
   "license": "MIT",
-  "version": "3.0.0-2",
+  "version": "3.0.0",
   "description": "🛠 An SDK for building applications on top of Pancakeswap.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist"
   ],
-  "repository": "https://github.com/pancakeswap/pancake-swap-sdk.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pancakeswap/pancake-frontend.git",
+    "directory": "packages/swap-sdk"
+  },
   "keywords": [
     "pancakeswap",
     "bsc"
