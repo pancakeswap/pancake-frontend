@@ -1,4 +1,4 @@
-import { Box, ModalV2, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
+import { Box, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
 import { ChainId, NATIVE } from '@pancakeswap/sdk'
 import useActiveWeb3React, { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
@@ -6,7 +6,6 @@ import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import Image from 'next/image'
 import { useMemo } from 'react'
 import { chains } from 'utils/wagmi'
-import { UnsupportedNetworkModal } from './UnsupportedNetworkModal'
 
 export const NetworkSelect = ({ switchNetwork }) => {
   const { t } = useTranslation()
@@ -73,9 +72,6 @@ export const NetworkSwitcher = () => {
       >
         {() => <NetworkSelect switchNetwork={switchNetwork} />}
       </UserMenu>
-      <ModalV2 isOpen={chain?.unsupported} closeOnOverlayClick={false}>
-        <UnsupportedNetworkModal />
-      </ModalV2>
     </>
   )
 }

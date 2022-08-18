@@ -16,6 +16,7 @@ import Head from 'next/head'
 import { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
 import { useStore, persistor } from 'state'
+import { NetworkModal } from 'components/NetworkModal'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { NextPage } from 'next'
@@ -114,7 +115,12 @@ function MyApp(props: AppProps) {
 
 type NextPageWithLayout = NextPage & {
   Layout?: React.FC<React.PropsWithChildren<unknown>>
+  /** render component without all layouts */
+  pure?: true
+  /** is mini program */
   mp?: boolean
+  /** */
+  chains?: number[]
 }
 
 type AppPropsWithLayout = AppProps & {
@@ -123,10 +129,8 @@ type AppPropsWithLayout = AppProps & {
 
 const ProductionErrorBoundary = process.env.NODE_ENV === 'production' ? ErrorBoundary : Fragment
 
-const App = ({ Component, pageProps, ...appProps }: AppPropsWithLayout) => {
-  const noNeedLayout = [`/451`].includes(appProps.router.pathname)
-
-  if (noNeedLayout) {
+const App = ({ Component, pageProps }: AppPropsWithLayout) => {
+  if (Component.pure) {
     return <Component {...pageProps} />
   }
 
@@ -144,6 +148,7 @@ const App = ({ Component, pageProps, ...appProps }: AppPropsWithLayout) => {
       <EasterEgg iterations={2} />
       <ToastListener />
       <FixedSubgraphHealthIndicator />
+      <NetworkModal pageSupportedChains={Component.chains} />
     </ProductionErrorBoundary>
   )
 }

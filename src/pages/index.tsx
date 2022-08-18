@@ -137,4 +137,6 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 }
 
+IndexPage.chains = []
+
 export default IndexPage

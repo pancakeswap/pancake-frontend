@@ -20,4 +20,6 @@ const NotSupport = () => {
   )
 }
 
+NotSupport.pure = true
+
 export default NotSupport

@@ -6,7 +6,7 @@ import { isChainSupported } from 'utils/wagmi'
 import { useNetwork } from 'wagmi'
 
 export function useLocalNetworkChain() {
-  const { data: sessionChainId } = useSWRImmutable('session-chain-id')
+  const { data: sessionChainId } = useSWR('session-chain-id')
   // useRouter is kind of slow, we only get this query chainId once
   const { data: queryChainId } = useSWRImmutable('query-chain-id', () => {
     const params = new URL(window.location.href).searchParams
@@ -29,10 +29,9 @@ export const useActiveChainId = () => {
   const { isValidating } = useSWRImmutable('query-chain-id')
   const { chain } = useNetwork()
   const chainId = localChainId ?? chain?.id ?? (!isValidating ? ChainId.BSC : undefined)
-  const { data: isLoading } = useSWR('switch-network-loading', { fallbackData: false })
 
   return {
     chainId,
-    isWrongNetwork: isLoading ? false : chain?.unsupported || (chain && chain.id !== localChainId),
+    isWrongNetwork: chain?.unsupported || (chain && chain.id !== localChainId),
   }
 }

@@ -1,12 +1,10 @@
 import { useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { NextLinkFromReactRouter } from 'components/NextLink'
-import { Menu as UikitMenu, ModalV2 } from '@pancakeswap/uikit'
+import { Menu as UikitMenu } from '@pancakeswap/uikit'
 import { useTranslation, languageList } from '@pancakeswap/localization'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
-import { NetworkSupportModal } from 'components/NetworkSupportModal'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTheme from 'hooks/useTheme'
 import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 import { usePhishingBannerManager } from 'state/user/hooks'
@@ -23,7 +21,6 @@ const Menu = (props) => {
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useRouter()
   const [showPhishingWarningBanner] = usePhishingBannerManager()
-  const { chain } = useActiveWeb3React()
 
   const menuItems = useMenuItems()
 
@@ -66,12 +63,6 @@ const Menu = (props) => {
         buyCakeLabel={t('Buy CAKE')}
         {...props}
       />
-      <ModalV2 isOpen={(activeSubMenuItem?.disabled || activeMenuItem?.disabled) && !chain?.unsupported}>
-        <NetworkSupportModal
-          title={activeSubMenuItem?.disabled ? activeSubMenuItem?.label : activeMenuItem?.label}
-          image={activeSubMenuItem?.image || activeMenuItem?.image}
-        />
-      </ModalV2>
     </>
   )
 }

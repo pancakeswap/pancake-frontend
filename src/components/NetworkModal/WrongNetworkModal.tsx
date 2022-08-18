@@ -3,39 +3,39 @@ import { useLocalNetworkChain } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import Image from 'next/image'
-import { useNetwork } from 'wagmi'
-import { useMemo } from 'react'
+import { useNetwork, Chain } from 'wagmi'
 import { ChainId } from '@pancakeswap/sdk'
-import Dots from './Loader/Dots'
+import Dots from '../Loader/Dots'
 
-export function UnsupportedNetworkModal() {
+// Where page network is not equal to wallet network
+export function WrongNetworkModal({ currentChain }: { currentChain: Chain }) {
   const { switchNetwork, isLoading } = useSwitchNetwork()
-  const { chains } = useNetwork()
+  const { chain } = useNetwork()
   const chainId = useLocalNetworkChain() || ChainId.BSC
   const { t } = useTranslation()
 
-  const supportedMainnetChains = useMemo(() => chains.filter((chain) => !chain.testnet), [chains])
+  const switchText = t('Switch to %network%', { network: currentChain.name })
 
   return (
-    <Modal title="Check your network" hideCloseButton headerBackground="gradients.cardHeader">
+    <Modal title={t('You are in wrong network')} headerBackground="gradients.cardHeader">
       <Grid style={{ gap: '16px' }} maxWidth="336px">
-        <Text>
-          {t('Currently exchange only supported in')} {supportedMainnetChains?.map((c) => c.name).join(', ')}
-        </Text>
+        <Text>{t('This page is located for %network%.', { network: currentChain.name })}</Text>
         <div style={{ textAlign: 'center' }}>
           <Image
             layout="fixed"
             width="194px"
             height="175px"
-            src="/images/check-your-network.png"
+            src="/images/decorations/3d-pan-bunny.png"
             alt="check your network"
           />
         </div>
         <Message variant="warning">
-          <MessageText>{t('Please switch your network to continue.')}</MessageText>
+          <MessageText>
+            {t('You are under %network% now, please switch the network to continue.', { network: chain.name })}
+          </MessageText>
         </Message>
         <Button isLoading={isLoading} onClick={() => switchNetwork(chainId)}>
-          {isLoading ? <Dots>{t('Switch network in wallet')}</Dots> : t('Switch network in wallet')}
+          {isLoading ? <Dots>{switchText}</Dots> : switchText}
         </Button>
       </Grid>
     </Modal>
