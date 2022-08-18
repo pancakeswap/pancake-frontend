@@ -3,8 +3,6 @@ import { Flex, Text } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
-import { fetchFarmUserDataAsync } from 'state/farms'
-import { useAppDispatch } from 'state'
 import { FarmWithStakedValue } from '../types'
 import HarvestAction from './HarvestAction'
 import StakeAction from './StakeAction'
@@ -40,10 +38,9 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   displayApr,
 }) => {
   const { t } = useTranslation()
-  const dispatch = useAppDispatch()
   const { pid, lpAddresses } = farm
   const { earnings } = farm.userData || {}
-  const { shouldUseProxyFarm, proxyAddress } = useContext(YieldBoosterStateContext)
+  const { shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
 
   return (
     <Action>
@@ -56,20 +53,11 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
         </Text>
       </Flex>
       {shouldUseProxyFarm ? (
-        <ProxyHarvestActionContainer
-          earnings={earnings}
-          pid={pid}
-          lpAddresses={lpAddresses}
-          onDone={() => dispatch(fetchFarmUserDataAsync({ account, pids: [pid], proxyAddress }))}
-        >
+        <ProxyHarvestActionContainer earnings={earnings} pid={pid} lpAddresses={lpAddresses}>
           {(props) => <HarvestAction {...props} />}
         </ProxyHarvestActionContainer>
       ) : (
-        <HarvestActionContainer
-          earnings={earnings}
-          pid={pid}
-          onDone={() => dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))}
-        >
+        <HarvestActionContainer earnings={earnings} pid={pid}>
           {(props) => <HarvestAction {...props} />}
         </HarvestActionContainer>
       )}

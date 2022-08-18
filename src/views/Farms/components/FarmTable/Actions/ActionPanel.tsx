@@ -1,8 +1,5 @@
 import styled, { keyframes, css } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { useWeb3React } from '@pancakeswap/wagmi'
-import { useAppDispatch } from 'state'
-import { fetchFarmUserDataAsync } from 'state/farms'
 import { LinkExternal, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { getAddress } from 'utils/addressHelpers'
@@ -118,9 +115,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
   userDataReady,
   expanded,
 }) => {
-  const { proxyFarm, shouldUseProxyFarm, proxyAddress } = useContext(YieldBoosterStateContext)
-  const { account } = useWeb3React()
-  const dispatch = useAppDispatch()
+  const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
 
   const farm = details
 
@@ -186,19 +181,11 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
       </InfoContainer>
       <ActionContainer>
         {shouldUseProxyFarm ? (
-          <ProxyHarvestActionContainer
-            {...proxyFarm}
-            userDataReady={userDataReady}
-            onDone={() => dispatch(fetchFarmUserDataAsync({ account, pids: [farm.pid], proxyAddress }))}
-          >
+          <ProxyHarvestActionContainer {...proxyFarm} userDataReady={userDataReady}>
             {(props) => <HarvestAction {...props} />}
           </ProxyHarvestActionContainer>
         ) : (
-          <HarvestActionContainer
-            {...farm}
-            userDataReady={userDataReady}
-            onDone={() => dispatch(fetchFarmUserDataAsync({ account, pids: [farm.pid] }))}
-          >
+          <HarvestActionContainer {...farm} userDataReady={userDataReady}>
             {(props) => <HarvestAction {...props} />}
           </HarvestActionContainer>
         )}
