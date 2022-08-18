@@ -11,6 +11,7 @@ export interface AprProps {
   pid: number
   lpLabel: string
   lpSymbol: string
+  lpRewardsApr: number
   tokenAddress?: string
   quoteTokenAddress?: string
   cakePrice: BigNumber

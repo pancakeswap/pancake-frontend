@@ -85,6 +85,7 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
         tokenAddress,
         quoteTokenAddress,
         cakePrice,
+        lpRewardsApr: farm.lpRewardsApr,
         originalValue: farm.apr,
       },
       farm: {
