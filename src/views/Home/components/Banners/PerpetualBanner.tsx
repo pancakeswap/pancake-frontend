@@ -1,7 +1,7 @@
 import { ArrowForwardIcon, Button, Text, Link, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
-import { memo, useMemo } from 'react'
+import { memo, useMemo, useRef, useEffect } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { perpLangMap } from 'utils/getPerpetualLanguageCode'
 import { perpTheme } from 'utils/getPerpetualTheme'
@@ -10,6 +10,7 @@ import * as S from './Styled'
 
 const RightWrapper = styled.div`
   position: absolute;
+  min-height: 100%;
   right: 0;
   bottom: 0px;
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -24,8 +25,10 @@ const RightWrapper = styled.div`
 `
 const Header = styled(S.StyledHeading)`
   font-size: 20px;
+  min-height: 44px;
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 40px;
+    min-height: auto;
   }
 `
 
@@ -34,19 +37,29 @@ const PerpetualBanner = () => {
     t,
     currentLanguage: { code },
   } = useTranslation()
-  const { isDesktop } = useMatchBreakpointsContext()
+  const { isDesktop, isMobile } = useMatchBreakpointsContext()
   const { isDark } = useTheme()
 
   const perpetualUrl = useMemo(
     () => `https://perp.pancakeswap.finance/${perpLangMap(code)}/futures/BTCUSDT?theme=${perpTheme(isDark)}`,
     [code, isDark],
   )
+  const headerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const target = headerRef.current
+    if (!isMobile) target.style.fontSize = ''
+    if (!target) return
+    if (target.offsetHeight > 27) {
+      target.style.fontSize = '16px'
+    }
+  }, [isMobile, code])
 
   return (
     <S.Wrapper>
       <S.Inner>
         <S.LeftWrapper>
-          <S.StyledSubheading>{t('Perpetual Futures')}</S.StyledSubheading>
+          <S.StyledSubheading ref={headerRef}>{t('Perpetual Futures')}</S.StyledSubheading>
           <Header width={['160px', '160px', 'auto']}>{t('Up to 100× Leverage')}</Header>
           <Link href={perpetualUrl} external>
             <Button>
