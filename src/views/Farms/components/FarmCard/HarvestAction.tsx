@@ -72,9 +72,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
                 {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
               </ToastDescriptionWithTx>,
             )
-            if (onDone) {
-              onDone()
-            }
+            onDone?.()
           }
         }}
       >
