@@ -13,7 +13,7 @@
     "pancakeswap",
     "bsc"
   ],
-  "module": "dist/sdk.esm.js",
+  "module": "dist/index.mjs",
   "scripts": {
     "lint": "tsdx lint src test",
     "build": "tsup src/index.ts --format esm,cjs --dts",
