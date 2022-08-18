@@ -51,9 +51,11 @@ const PerpetualBanner = () => {
   useEffect(() => {
     const target = headerRef.current
     target.style.fontSize = '' // reset
+    target.style.lineHeight = ''
     if (!target || !isMobile) return
     if (target.offsetHeight > HEADING_ONE_LINE_HEIGHT) {
-      target.style.fontSize = '16px'
+      target.style.fontSize = '18px'
+      target.style.lineHeight = `${HEADING_ONE_LINE_HEIGHT}px`
     }
   }, [isMobile, code])
 
