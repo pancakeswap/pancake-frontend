@@ -32,6 +32,8 @@ const Header = styled(S.StyledHeading)`
   }
 `
 
+const HEADING_ONE_LINE_HEIGHT = 27
+
 const PerpetualBanner = () => {
   const {
     t,
@@ -48,9 +50,9 @@ const PerpetualBanner = () => {
 
   useEffect(() => {
     const target = headerRef.current
-    if (!isMobile) target.style.fontSize = ''
-    if (!target) return
-    if (target.offsetHeight > 27) {
+    target.style.fontSize = '' // reset
+    if (!target || !isMobile) return
+    if (target.offsetHeight > HEADING_ONE_LINE_HEIGHT) {
       target.style.fontSize = '16px'
     }
   }, [isMobile, code])
