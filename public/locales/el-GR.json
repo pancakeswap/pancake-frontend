@@ -1904,11 +1904,11 @@
   "Switch to %chain%": "Αλλαγή στο %chain%",
   "Stay on %chain%": "Παραμονή στο %chain%",
   "Go to Pool": "Μετάβαση στη δεξαμενή",
-  "Approve %symbol%": "Approve %symbol%",
-  "Add %amountA% %symbolA% and %amountB% %symbolB%": "Add %amountA% %symbolA% and %amountB% %symbolB%",
-  "Remove %amount% %symbol%": "Remove %amount% %symbol%",
-  "Remove %amountA% %symbolA% and %amountB% %symbolB%": "Remove %amountA% %symbolA% and %amountB% %symbolB%",
-  "Zap %amountA% %symbolA% and %amountB% %symbolB%": "Zap %amountA% %symbolA% and %amountB% %symbolB%",
+  "Approve %symbol%": "Έγκριση %symbol%",
+  "Add %amountA% %symbolA% and %amountB% %symbolB%": "Προσθήκη %amountA% %symbolA% και %amountB% %symbolB%",
+  "Remove %amount% %symbol%": "Αφαίρεση %amount% %symbol%",
+  "Remove %amountA% %symbolA% and %amountB% %symbolB%": "Αφαίρεση %amountA% %symbolA% και %amountB% %symbolB%",
+  "Zap %amountA% %symbolA% and %amountB% %symbolB%": "Zap %amountA% %symbolA% και %amountB% %symbolB%",
   "Zap in %amount% BNB for %symbol%": "Zap in %amount% BNB for %symbol%",
   "Zap in %amount% %symbol% for %lpSymbol%": "Zap in %amount% %symbol% for %lpSymbol%"
 }
