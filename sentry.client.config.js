@@ -16,14 +16,14 @@ const ENV = process.env.VERCEL_ENV || process.env.NODE_ENV
 init({
   dsn: SENTRY_DSN,
   integrations: [
-    Breadcrumbs({
+    new Breadcrumbs({
       console: ENV === 'production',
     }),
-    GlobalHandlers({
+    new GlobalHandlers({
       onerror: false,
       onunhandledrejection: false,
     }),
-    Dedupe(),
+    new Dedupe(),
   ],
   environment: ENV === 'production' ? 'production' : 'development',
   // Adjust this value in production, or use tracesSampler for greater control
