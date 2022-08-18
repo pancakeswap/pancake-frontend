@@ -8,7 +8,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import Dots from '../Loader/Dots'
 
 // Where page network is not equal to wallet network
-export function WrongNetworkModal({ currentChain }: { currentChain: Chain }) {
+export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: Chain; onDismiss: () => void }) {
   const { switchNetwork, isLoading } = useSwitchNetwork()
   const { chain } = useNetwork()
   const chainId = useLocalNetworkChain() || ChainId.BSC
@@ -17,7 +17,7 @@ export function WrongNetworkModal({ currentChain }: { currentChain: Chain }) {
   const switchText = t('Switch to %network%', { network: currentChain.name })
 
   return (
-    <Modal title={t('You are in wrong network')} headerBackground="gradients.cardHeader">
+    <Modal title={t('You are in wrong network')} headerBackground="gradients.cardHeader" onDismiss={onDismiss}>
       <Grid style={{ gap: '16px' }} maxWidth="336px">
         <Text>{t('This page is located for %network%.', { network: currentChain.name })}</Text>
         <div style={{ textAlign: 'center' }}>

@@ -119,7 +119,10 @@ type NextPageWithLayout = NextPage & {
   pure?: true
   /** is mini program */
   mp?: boolean
-  /** */
+  /**
+   * allow chain per page, empty array bypass chain block modal
+   * @default [ChainId.BSC]
+   * */
   chains?: number[]
 }
 
