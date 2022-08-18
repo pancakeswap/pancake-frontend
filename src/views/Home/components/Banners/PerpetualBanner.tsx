@@ -1,7 +1,7 @@
 import { ArrowForwardIcon, Button, Text, Link, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
-import { memo, useMemo, useRef, useEffect } from 'react'
+import { memo, useMemo, useRef, useLayoutEffect } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { perpLangMap } from 'utils/getPerpetualLanguageCode'
 import { perpTheme } from 'utils/getPerpetualTheme'
@@ -48,7 +48,7 @@ const PerpetualBanner = () => {
   )
   const headerRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const target = headerRef.current
     target.style.fontSize = '' // reset
     target.style.lineHeight = ''
