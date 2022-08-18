@@ -84,7 +84,7 @@ const SubgraphHealthIndicator: React.FC<
     customDescriptions?: CustomDescriptions
     obeyGlobalSetting?: boolean
   }>
-> = ({ subgraphName, inline, customDescriptions, obeyGlobalSetting }) => {
+> = ({ subgraphName, inline, customDescriptions, obeyGlobalSetting = true }) => {
   const { t } = useTranslation()
   const { status, currentBlock, blockDifference, latestBlock } = useSubgraphHealth(subgraphName)
   const [alwaysShowIndicator] = useSubgraphHealthIndicatorManager()
@@ -127,7 +127,13 @@ const SubgraphHealthIndicator: React.FC<
   }
 
   return (
-    <Box position="fixed" bottom="55px" right="5%" ref={targetRef} data-test="subgraph-health-indicator">
+    <Box
+      position="fixed"
+      bottom="calc(55px + env(safe-area-inset-bottom))"
+      right="5%"
+      ref={targetRef}
+      data-test="subgraph-health-indicator"
+    >
       {tooltipVisible && tooltip}
       <StyledCard>
         <IndicatorWrapper alignItems="center" p="10px">

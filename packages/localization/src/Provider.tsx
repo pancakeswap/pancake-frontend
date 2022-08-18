@@ -3,7 +3,6 @@ import { Language } from '@pancakeswap/uikit'
 import { useLastUpdated } from '@pancakeswap/hooks'
 import memoize from 'lodash/memoize'
 import { EN, languages } from './config/languages'
-import translations from './config/translations.json'
 import { ContextApi, ProviderState, TranslateFunction } from './types'
 import { LS_KEY, fetchLocale, getLanguageCodeFromLS } from './helpers'
 
@@ -18,9 +17,13 @@ const translatedTextIncludesVariable = memoize((translatedText: string): boolean
   return !!translatedText?.match(includesVariableRegex)
 })
 
+const getRegExpForDataKey = memoize((dataKey: string): RegExp => {
+  return new RegExp(`%${dataKey}%`, 'g')
+})
+
 // Export the translations directly
-export const languageMap = new Map<Language['locale'], Record<string, string>>()
-languageMap.set(EN.locale, translations)
+const languageMap = new Map<Language['locale'], Record<string, string>>()
+languageMap.set(EN.locale, {})
 
 export const LanguageContext = createContext<ContextApi>(undefined)
 
@@ -41,10 +44,9 @@ export const LanguageProvider: React.FC<React.PropsWithChildren> = ({ children }
       const codeFromStorage = getLanguageCodeFromLS()
 
       if (codeFromStorage !== EN.locale) {
-        const enLocale = languageMap.get(EN.locale)
         const currentLocale = await fetchLocale(codeFromStorage)
         if (currentLocale) {
-          languageMap.set(codeFromStorage, { ...enLocale, ...currentLocale })
+          languageMap.set(codeFromStorage, currentLocale)
           refresh()
         }
       }
@@ -67,9 +69,8 @@ export const LanguageProvider: React.FC<React.PropsWithChildren> = ({ children }
 
       const locale = await fetchLocale(language.locale)
       if (locale) {
-        const enLocale = languageMap.get(EN.locale)
         // Merge the EN locale to ensure that any locale fetched has all the keys
-        languageMap.set(language.locale, { ...enLocale, ...locale })
+        languageMap.set(language.locale, locale)
       }
 
       localStorage?.setItem(LS_KEY, language.locale)
@@ -91,20 +92,20 @@ export const LanguageProvider: React.FC<React.PropsWithChildren> = ({ children }
 
   const translate: TranslateFunction = useCallback(
     (key, data) => {
-      const translationSet = languageMap.get(currentLanguage.locale) ?? languageMap.get(EN.locale)
-      const translatedText = translationSet[key] || key
+      const translationSet = languageMap.get(currentLanguage.locale) ?? {}
+      const translatedText = translationSet?.[key] || key
 
-      // Check the existence of at least one combination of %%, separated by 1 or more non space characters
-      const includesVariable = translatedTextIncludesVariable(key)
+      if (data) {
+        // Check the existence of at least one combination of %%, separated by 1 or more non space characters
+        const includesVariable = translatedTextIncludesVariable(key)
+        if (includesVariable) {
+          let interpolatedText = translatedText
+          Object.keys(data).forEach((dataKey) => {
+            interpolatedText = interpolatedText.replace(getRegExpForDataKey(dataKey), data[dataKey].toString())
+          })
 
-      if (includesVariable && data) {
-        let interpolatedText = translatedText
-        Object.keys(data).forEach((dataKey) => {
-          const templateKey = new RegExp(`%${dataKey}%`, 'g')
-          interpolatedText = interpolatedText.replace(templateKey, data[dataKey].toString())
-        })
-
-        return interpolatedText
+          return interpolatedText
+        }
       }
 
       return translatedText

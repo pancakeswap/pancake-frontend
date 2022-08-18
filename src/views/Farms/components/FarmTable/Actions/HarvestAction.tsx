@@ -5,6 +5,8 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
+import { fetchFarmUserDataAsync } from 'state/farms'
+import { useAppDispatch } from 'state'
 import { getAddress } from 'utils/addressHelpers'
 import { useERC20 } from 'hooks/useContract'
 import { TransactionResponse } from '@ethersproject/providers'
@@ -12,6 +14,8 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
+import { useWeb3React } from '@pancakeswap/wagmi'
+import { useCallback } from 'react'
 import { FarmWithStakedValue } from '../../types'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
@@ -35,8 +39,15 @@ export const ProxyHarvestActionContainer = ({ children, ...props }) => {
 
 export const HarvestActionContainer = ({ children, ...props }) => {
   const { onReward } = useHarvestFarm(props.pid)
+  const { account } = useWeb3React()
+  const dispatch = useAppDispatch()
 
-  return children({ ...props, onReward })
+  const onDone = useCallback(
+    () => dispatch(fetchFarmUserDataAsync({ account, pids: [props.pid] })),
+    [account, dispatch, props.pid],
+  )
+
+  return children({ ...props, onDone, onReward })
 }
 
 export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActionProps>> = ({
@@ -110,9 +121,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
                   {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
                 </ToastDescriptionWithTx>,
               )
-              if (onDone) {
-                onDone()
-              }
+              onDone?.()
             }
           }}
           ml="4px"

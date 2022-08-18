@@ -112,7 +112,9 @@ export default function useBoostMultipler({ pid, boosterState, proxyAddress }): 
         })
   }, [farmBoosterContract, masterChefContract, should1X, shouldGetFromSC, pid, account, proxyAddress])
 
-  const { data } = useSWR(['boostMultipler', should1X ? `user${pid}` : 'public'], getMultipler)
+  const cacheName = shouldGetFromSC ? `proxy${pid}` : should1X ? `user${pid}` : `public${pid}`
+
+  const { data } = useSWR(['boostMultipler', cacheName], getMultipler)
 
   return data || 0
 }

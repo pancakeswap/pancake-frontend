@@ -93,7 +93,8 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
       const now = Math.round(Date.now() / 1000)
 
       addTransaction(tx, {
-        summary: `Order submission`,
+        summary: 'Order submission',
+        translatableSummary: { text: 'Order submission' },
         type: 'limit-order-submission',
         order: {
           ...order,

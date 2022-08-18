@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/react'
+import { ErrorBoundary as SentryErrorBoundary } from '@sentry/nextjs'
 import Page from 'components/Layout/Page'
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Text, LogoIcon, Flex, IconButton, CopyIcon } from '@pancakeswap/uikit'
@@ -9,10 +9,9 @@ export default function ErrorBoundary({ children }) {
   const { t } = useTranslation()
   const handleOnClick = useCallback(() => window.location.reload(), [])
   return (
-    // @ts-ignore
-    <Sentry.ErrorBoundary
+    <SentryErrorBoundary
       beforeCapture={(scope) => {
-        scope.setLevel(Sentry.Severity.Fatal)
+        scope.setLevel('fatal')
       }}
       fallback={({ eventId }) => {
         return (
@@ -38,6 +37,6 @@ export default function ErrorBoundary({ children }) {
       }}
     >
       {children}
-    </Sentry.ErrorBoundary>
+    </SentryErrorBoundary>
   )
 }
