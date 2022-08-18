@@ -1,5 +1,7 @@
 import { useEffect, useCallback, useState, useMemo, useRef, createContext } from 'react'
 import BigNumber from 'bignumber.js'
+import { ChainId } from '@pancakeswap/sdk'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { Image, Heading, Toggle, Text, Button, ArrowForwardIcon, Flex, Link, Box } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
@@ -141,6 +143,7 @@ const NUMBER_OF_FARMS_VISIBLE = 12
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { pathname, query: urlQuery } = useRouter()
   const { t } = useTranslation()
+  const { chainId } = useActiveWeb3React()
   const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
   const cakePrice = usePriceCakeBusd()
 
@@ -315,9 +318,11 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               </Button>
             </NextLinkFromReactRouter>
           </Box>
-          <Box>
-            <BCakeBoosterCard />
-          </Box>
+          {(chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET) && (
+            <Box>
+              <BCakeBoosterCard />
+            </Box>
+          )}
         </FarmFlexWrapper>
       </PageHeader>
       <Page>

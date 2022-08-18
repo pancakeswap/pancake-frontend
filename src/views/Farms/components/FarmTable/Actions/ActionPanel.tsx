@@ -1,4 +1,5 @@
 import styled, { keyframes, css } from 'styled-components'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import { LinkExternal, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
@@ -114,6 +115,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
   userDataReady,
   expanded,
 }) => {
+  const { chainId } = useActiveWeb3React()
   const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
 
   const farm = details
@@ -132,7 +134,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
     tokenAddress: token.address,
   })
   const lpAddress = farm.lpAddresses
-  const bsc = getBlockExploreLink(lpAddress, 'address')
+  const bsc = getBlockExploreLink(lpAddress, 'address', chainId)
   const info = `/info/pool/${lpAddress}`
 
   return (
