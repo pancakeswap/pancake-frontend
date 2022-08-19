@@ -1,42 +1,26 @@
-import { ErrorBoundary as SentryErrorBoundary } from '@sentry/nextjs'
-import Page from 'components/Layout/Page'
-import { useTranslation } from '@pancakeswap/localization'
-import { Button, Text, LogoIcon, Flex, IconButton, CopyIcon } from '@pancakeswap/uikit'
-import { copyText } from 'utils/copyText'
-import { useCallback } from 'react'
+import { Component, PropsWithChildren, ReactNode } from 'react'
 
-export default function ErrorBoundary({ children }) {
-  const { t } = useTranslation()
-  const handleOnClick = useCallback(() => window.location.reload(), [])
-  return (
-    <SentryErrorBoundary
-      beforeCapture={(scope) => {
-        scope.setLevel('fatal')
-      }}
-      fallback={({ eventId }) => {
-        return (
-          <Page>
-            <Flex flexDirection="column" justifyContent="center" alignItems="center">
-              <LogoIcon width="64px" mb="8px" />
-              <Text mb="16px">{t('Oops, something wrong.')}</Text>
-              {eventId && (
-                <Flex flexDirection="column" style={{ textAlign: 'center' }} mb="8px">
-                  <Text>{t('Error Tracking Id')}</Text>
-                  <Flex alignItems="center">
-                    <Text>{eventId}</Text>
-                    <IconButton variant="text" onClick={() => copyText(eventId)}>
-                      <CopyIcon color="primary" width="24px" />
-                    </IconButton>
-                  </Flex>
-                </Flex>
-              )}
-              <Button onClick={handleOnClick}>{t('Click here to reset!')}</Button>
-            </Flex>
-          </Page>
-        )
-      }}
-    >
-      {children}
-    </SentryErrorBoundary>
-  )
+export class ErrorBoundary extends Component<PropsWithChildren<{ fallback?: ReactNode }>, { hasError: boolean }> {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false }
+  }
+
+  static getDerivedStateFromError(_error) {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true }
+  }
+
+  componentDidCatch(_error, _errorInfo) {
+    //
+  }
+
+  render() {
+    if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return this.props.fallback || <h1>Something went wrong.</h1>
+    }
+
+    return this.props.children
+  }
 }
