@@ -1,13 +1,11 @@
-import { atom, useAtom } from 'jotai'
 import { useCallback } from 'react'
-import { useSWRConfig } from 'swr'
 import { useAccount, useSwitchNetwork as useSwitchNetworkWallet } from 'wagmi'
-
-export const switchNetworkLoadingAtom = atom(false)
+import { useSessionChainId } from './useSessionChainId'
+import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 
 export function useSwitchNetwork() {
-  const [loading, setLoading] = useAtom(switchNetworkLoadingAtom)
-  const { mutate } = useSWRConfig()
+  const [loading, setLoading] = useSwitchNetworkLoading()
+  const [, setSessionChainId] = useSessionChainId()
   const { switchNetworkAsync, isLoading: _isLoading, ...switchNetworkArgs } = useSwitchNetworkWallet()
   const { isConnected } = useAccount()
 
@@ -18,14 +16,17 @@ export function useSwitchNetwork() {
         return switchNetworkAsync(chainId)
           .then((c) => {
             if (c) {
-              mutate('session-chain-id', c.id)
+              setSessionChainId(c.id)
             }
           })
           .finally(() => setLoading(false))
       }
-      return mutate('session-chain-id', chainId).finally(() => setLoading(false))
+      return new Promise(() => {
+        setSessionChainId(chainId)
+        setLoading(false)
+      })
     },
-    [isConnected, mutate, setLoading, switchNetworkAsync],
+    [isConnected, setLoading, setSessionChainId, switchNetworkAsync],
   )
 
   const isLoading = _isLoading || loading

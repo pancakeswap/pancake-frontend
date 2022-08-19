@@ -3,9 +3,10 @@ import { atom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { isChainSupported } from 'utils/wagmi'
 import { useNetwork } from 'wagmi'
-import { switchNetworkLoadingAtom } from './useSwitchNetwork'
+import { useSessionChainId } from './useSessionChainId'
+import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 
-const sessionChainIdAtom = atom<number>(0)
+export const sessionChainIdAtom = atom<number>(0)
 const queryChainIdAtom = atom(-1) // -1 unload, 0 no chainId on query
 
 queryChainIdAtom.onMount = (set) => {
@@ -19,7 +20,7 @@ queryChainIdAtom.onMount = (set) => {
 }
 
 export function useLocalNetworkChain() {
-  const sessionChainId = useAtomValue(sessionChainIdAtom)
+  const [sessionChainId] = useSessionChainId()
   // useRouter is kind of slow, we only get this query chainId once
   const queryChainId = useAtomValue(queryChainIdAtom)
 
@@ -37,7 +38,7 @@ export function useLocalNetworkChain() {
 export const useActiveChainId = () => {
   const localChainId = useLocalNetworkChain()
   const queryChainId = useAtomValue(queryChainIdAtom)
-  const loading = useAtomValue(switchNetworkLoadingAtom)
+  const [loading] = useSwitchNetworkLoading()
 
   const { chain } = useNetwork()
   const chainId = localChainId ?? chain?.id ?? (queryChainId >= 0 ? ChainId.BSC : undefined)

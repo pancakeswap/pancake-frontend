@@ -1,19 +1,20 @@
 import { useEffect } from 'react'
-import { mutate } from 'swr'
 import { ConnectorData } from 'wagmi'
 import { useAppDispatch } from '../state'
 import { clearUserStates } from '../utils/clearUserStates'
 import useActiveWeb3React from './useActiveWeb3React'
+import { useSessionChainId } from './useSessionChainId'
 
 export const useAccountEventListener = () => {
   const { account, chainId, connector } = useActiveWeb3React()
+  const [, setSessionChainId] = useSessionChainId()
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (account && connector) {
       const handleUpdateEvent = (e: ConnectorData<any>) => {
         if (e?.chain?.id && !e?.chain?.unsupported) {
-          mutate('session-chain-id', e.chain.id)
+          setSessionChainId(e.chain.id)
         }
         clearUserStates(dispatch, chainId)
       }
@@ -31,5 +32,5 @@ export const useAccountEventListener = () => {
       }
     }
     return undefined
-  }, [account, chainId, dispatch, connector])
+  }, [account, chainId, dispatch, connector, setSessionChainId])
 }
