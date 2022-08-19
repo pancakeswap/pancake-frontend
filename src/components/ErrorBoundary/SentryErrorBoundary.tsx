@@ -5,7 +5,7 @@ import { Button, Text, LogoIcon, Flex, IconButton, CopyIcon } from '@pancakeswap
 import { copyText } from 'utils/copyText'
 import { useCallback } from 'react'
 
-export default function SentryErrorBoundary({ children }) {
+export function SentryErrorBoundary({ children }) {
   const { t } = useTranslation()
   const handleOnClick = useCallback(() => window.location.reload(), [])
   return (
