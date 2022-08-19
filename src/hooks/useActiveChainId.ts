@@ -1,12 +1,11 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { useRouter } from 'next/router'
-import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import { isChainSupported } from 'utils/wagmi'
 import { useNetwork } from 'wagmi'
 
 export function useLocalNetworkChain() {
-  const { data: sessionChainId } = useSWR('session-chain-id')
+  const { data: sessionChainId } = useSWRImmutable('session-chain-id')
   // useRouter is kind of slow, we only get this query chainId once
   const { data: queryChainId } = useSWRImmutable('query-chain-id', () => {
     const params = new URL(window.location.href).searchParams
@@ -27,11 +26,12 @@ export function useLocalNetworkChain() {
 export const useActiveChainId = () => {
   const localChainId = useLocalNetworkChain()
   const { isValidating } = useSWRImmutable('query-chain-id')
+  const { data: isLoading } = useSWRImmutable('switch-network-loading')
   const { chain } = useNetwork()
   const chainId = localChainId ?? chain?.id ?? (!isValidating ? ChainId.BSC : undefined)
 
   return {
     chainId,
-    isWrongNetwork: chain?.unsupported || (chain && localChainId && chain.id !== localChainId),
+    isWrongNetwork: chain?.unsupported || isLoading ? false : chain && localChainId && chain.id !== localChainId,
   }
 }
