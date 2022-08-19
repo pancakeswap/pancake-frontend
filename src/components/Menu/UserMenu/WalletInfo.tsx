@@ -6,7 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import useAuth from 'hooks/useAuth'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
-import Image from 'next/image'
+import { ChainLogo } from 'components/Logo/ChainLogo'
 
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { formatBigNumber } from 'utils/formatBalance'
@@ -57,7 +57,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
       )}
       <Flex alignItems="center" justifyContent="space-between">
         <Flex>
-          {!isBSC && <Image width={24} height={24} src={`/images/chains/${native.chainId}.png`} unoptimized />}
+          {!isBSC && <ChainLogo chainId={native.chainId} />}
           <Text ml={isBSC ? 0 : '8px'} color="textSubtle">
             {native.symbol} {t('Balance')}
           </Text>
@@ -66,7 +66,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" mb="24px" mt="12px">
         <Flex alignItems="center">
-          {!isBSC && <Image width={24} height={24} src="/images/chains/56.png" unoptimized />}
+          {!isBSC && <ChainLogo chainId={56} />}
           <Text ml={isBSC ? 0 : '8px'} color="textSubtle">
             {t('CAKE Balance')}
           </Text>

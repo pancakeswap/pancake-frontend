@@ -32,6 +32,6 @@ export const useActiveChainId = () => {
 
   return {
     chainId,
-    isWrongNetwork: chain?.unsupported || (chain && chain.id !== localChainId),
+    isWrongNetwork: chain?.unsupported || (chain && localChainId && chain.id !== localChainId),
   }
 }

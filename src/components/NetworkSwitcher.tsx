@@ -6,6 +6,7 @@ import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import Image from 'next/image'
 import { useMemo } from 'react'
 import { chains } from 'utils/wagmi'
+import { ChainLogo } from './Logo/ChainLogo'
 
 export const NetworkSelect = ({ switchNetwork }) => {
   const { t } = useTranslation()
@@ -18,6 +19,7 @@ export const NetworkSelect = ({ switchNetwork }) => {
       <UserMenuDivider />
       {chains.map((chain) => (
         <UserMenuItem key={chain.id} style={{ justifyContent: 'flex-start' }} onClick={() => switchNetwork(chain.id)}>
+          <ChainLogo chainId={chain.id} />
           <Image width={24} height={24} src={`/images/chains/${chain.id}.png`} unoptimized />
           <Text pl="12px">{chain.name}</Text>
         </UserMenuItem>
