@@ -5,6 +5,7 @@ import { useDeferredValue } from 'react'
 import { isChainSupported } from 'utils/wagmi'
 import { useNetwork } from 'wagmi'
 import { useSessionChainId } from './useSessionChainId'
+import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 
 export const sessionChainIdAtom = atom<number>(0)
 const queryChainIdAtom = atom(-1) // -1 unload, 0 no chainId on query
@@ -38,6 +39,7 @@ export function useLocalNetworkChain() {
 export const useActiveChainId = () => {
   const localChainId = useLocalNetworkChain()
   const queryChainId = useAtomValue(queryChainIdAtom)
+  const [loading] = useSwitchNetworkLoading()
 
   const { chain } = useNetwork()
   const chainId = localChainId ?? chain?.id ?? (queryChainId >= 0 ? ChainId.BSC : undefined)
@@ -46,6 +48,6 @@ export const useActiveChainId = () => {
 
   return {
     chainId,
-    isWrongNetwork: chain?.unsupported || isNotMatched,
+    isWrongNetwork: chain?.unsupported || (loading ? false : isNotMatched),
   }
 }
