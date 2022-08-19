@@ -1,9 +1,9 @@
-import { Currency, JSBI, Price, WNATIVE, ChainId } from '@pancakeswap/sdk'
+import { Currency, JSBI, Price, WNATIVE, ChainId, Token } from '@pancakeswap/sdk'
 import { CAKE, BUSD } from 'config/constants/tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { multiplyPriceByAmount } from 'utils/prices'
-import { PairState, usePairs } from './usePairs'
+import { PairState, usePairs, usePair } from './usePairs'
 
 /**
  * Returns the price in BUSD of the input currency
@@ -77,10 +77,17 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
   ])
 }
 
+export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
+  const [state, pair] = usePair(currencyA?.wrapped, currencyB?.wrapped)
+
+  return currencyB && state === PairState.EXISTS && pair.priceOf(currencyB.wrapped)
+}
+
 export const useCakeBusdPrice = (): Price<Currency, Currency> | undefined => {
   const { chainId } = useActiveWeb3React()
-  const cakeBusdPrice = useBUSDPrice(CAKE[chainId])
-  return cakeBusdPrice
+  // Default bsc cake, if no cake address found
+  const cake: Token = CAKE[chainId] ? CAKE[chainId] : CAKE[ChainId.BSC]
+  return usePriceByPairs(BUSD[cake.chainId], cake)
 }
 
 export const useBUSDCurrencyAmount = (currency?: Currency, amount?: number): number | undefined => {
