@@ -26,7 +26,7 @@ import WalletUserMenuItem from './WalletUserMenuItem'
 
 const UserMenu = () => {
   const { t } = useTranslation()
-  const { address: account, isConnecting, isReconnecting } = useAccount()
+  const { address: account } = useAccount()
   const { chainId, isWrongNetwork } = useActiveChainId()
   const { logout } = useAuth()
   const { hasPendingTransactions, pendingNumber } = usePendingTransactions()
@@ -104,7 +104,7 @@ const UserMenu = () => {
   }
 
   return (
-    <ConnectWalletButton disabled={isConnecting || isReconnecting} scale="sm">
+    <ConnectWalletButton scale="sm">
       <Box display={['none', , , 'block']}>
         <Trans>Connect Wallet</Trans>
       </Box>
