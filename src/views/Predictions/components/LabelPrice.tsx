@@ -4,7 +4,7 @@ import { Text } from '@pancakeswap/uikit'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
 import styled from 'styled-components'
 import { BigNumber } from '@ethersproject/bignumber'
-import ErrorBoundary from 'components/ErrorBoundary'
+import { ErrorBoundary } from 'components/ErrorBoundary'
 
 const Price = styled(Text)`
   height: 18px;
