@@ -1,4 +1,3 @@
-import { ReactText } from 'react'
 import { Profile } from 'state/types'
 import { StaticImageData } from 'next/dist/client/image'
 
@@ -102,8 +101,8 @@ export interface UserTradingInformation {
 }
 
 export interface UserLeaderboardSharedInformation {
-  global?: ReactText
-  team?: ReactText
+  global?: string | number
+  team?: string | number
   volume?: number
   // eslint-disable-next-line camelcase
   next_rank?: number

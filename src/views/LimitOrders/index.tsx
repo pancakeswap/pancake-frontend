@@ -34,6 +34,8 @@ import getRatePercentageDifference from './utils/getRatePercentageDifference'
 import { useCurrency, useAllTokens } from '../../hooks/Tokens'
 import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
 import { CommonBasesType } from '../../components/SearchModal/types'
+import replaceBrowserHistory from '../../utils/replaceBrowserHistory'
+import { currencyId } from '../../utils/currencyId'
 
 const LimitOrders = () => {
   // Helpers
@@ -146,6 +148,8 @@ const LimitOrders = () => {
     (inputCurrency) => {
       setApprovalSubmitted(false)
       handleCurrencySelection(Field.INPUT, inputCurrency)
+
+      replaceBrowserHistory('inputCurrency', currencyId(inputCurrency))
     },
     [handleCurrencySelection],
   )
@@ -163,6 +167,8 @@ const LimitOrders = () => {
   const handleOutputSelect = useCallback(
     (outputCurrency) => {
       handleCurrencySelection(Field.OUTPUT, outputCurrency)
+
+      replaceBrowserHistory('outputCurrency', currencyId(outputCurrency))
     },
     [handleCurrencySelection],
   )

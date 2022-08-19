@@ -1,10 +1,9 @@
-import { ReactText } from 'react'
 import { Language } from '@pancakeswap/uikit'
 
 import translations from './config/translations.json'
 
 export type ContextData = {
-  [key: string]: ReactText
+  [key: string]: string | number
 }
 
 export interface ProviderState {

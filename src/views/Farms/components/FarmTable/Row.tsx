@@ -137,7 +137,13 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     <CellInner>
                       <CellLayout label={t('APR')}>
                         <Apr {...props.apr} hideButton={isSmallerScreen} strikethrough={props?.details?.boosted} />
-                        {props?.details?.boosted ? <BoostedApr apr={props?.apr?.value} pid={props.farm?.pid} /> : null}
+                        {props?.details?.boosted ? (
+                          <BoostedApr
+                            lpRewardsApr={props?.apr?.lpRewardsApr}
+                            apr={props?.apr?.originalValue}
+                            pid={props.farm?.pid}
+                          />
+                        ) : null}
                       </CellLayout>
                     </CellInner>
                   </td>
@@ -189,7 +195,13 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
             <AprMobileCell>
               <CellLayout label={t('APR')}>
                 <Apr {...props.apr} hideButton strikethrough={props?.details?.boosted} />
-                {props?.details?.boosted ? <BoostedApr apr={props?.apr?.value} pid={props.farm?.pid} /> : null}
+                {props?.details?.boosted ? (
+                  <BoostedApr
+                    lpRewardsApr={props?.apr?.lpRewardsApr}
+                    apr={props?.apr?.originalValue}
+                    pid={props.farm?.pid}
+                  />
+                ) : null}
               </CellLayout>
             </AprMobileCell>
           </td>

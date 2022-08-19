@@ -14,7 +14,7 @@ const BottomNav: React.FC<React.PropsWithChildren<BottomNavProps>> = ({
   ...props
 }) => {
   const [menuOpenByIndex, setMenuOpenByIndex] = useState({});
-  const isBottomMenuOpen = Object.values(menuOpenByIndex).reduce((acc, value) => acc || value, false);
+  const isBottomMenuOpen = Object.values(menuOpenByIndex).some((acc) => acc);
   return (
     <>
       {isBottomMenuOpen && <Overlay />}

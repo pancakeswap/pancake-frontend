@@ -57,6 +57,41 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 106,
+    lpSymbol: 'MHUNT-BNB LP',
+    lpAddresses: {
+      56: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
+      97: '',
+    },
+    token: serializedTokens.mhunt,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1660896000,
+  },
+  {
+    pid: 111,
+    lpSymbol: 'AOG-CAKE LP',
+    lpAddresses: {
+      56: '0xF8cA29a3BF6d34691981D3Ee8D4c9Cd1C437EfeE',
+      97: '',
+    },
+    token: serializedTokens.aog,
+    quoteToken: serializedTokens.cake,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1660896000,
+  },
+  {
+    pid: 109,
+    lpSymbol: 'XCAD-BUSD LP',
+    lpAddresses: {
+      56: '0x07C10ecFb0e1CF81E3e05ddb693Cc114C8EBe498',
+      97: '',
+    },
+    token: serializedTokens.xcad,
+    quoteToken: serializedTokens.busd,
+    auctionHostingStartSeconds: 1660896000,
+  },
+  {
     pid: 114,
     lpSymbol: 'stkBNB-BNB LP',
     lpAddresses: {
@@ -97,30 +132,6 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: serializedTokens.busd,
   },
   {
-    pid: 106,
-    lpSymbol: 'MHUNT-BNB LP',
-    lpAddresses: {
-      56: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
-      97: '',
-    },
-    token: serializedTokens.mhunt,
-    quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
-    auctionHostingStartSeconds: 1659603600,
-  },
-  {
-    pid: 111,
-    lpSymbol: 'AOG-CAKE LP',
-    lpAddresses: {
-      56: '0xF8cA29a3BF6d34691981D3Ee8D4c9Cd1C437EfeE',
-      97: '',
-    },
-    token: serializedTokens.aog,
-    quoteToken: serializedTokens.cake,
-    isCommunity: true,
-    auctionHostingStartSeconds: 1659603600,
-  },
-  {
     pid: 94,
     v1pid: 525,
     lpSymbol: 'WZRD-BUSD LP',
@@ -131,7 +142,6 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.wzrd,
     quoteToken: serializedTokens.busd,
     isCommunity: true,
-    auctionHostingStartSeconds: 1659603600,
   },
   {
     pid: 73,
@@ -154,16 +164,6 @@ const farms: SerializedFarmConfig[] = [
     },
     token: serializedTokens.hotcross,
     quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 109,
-    lpSymbol: 'XCAD-BUSD LP',
-    lpAddresses: {
-      56: '0x07C10ecFb0e1CF81E3e05ddb693Cc114C8EBe498',
-      97: '',
-    },
-    token: serializedTokens.xcad,
-    quoteToken: serializedTokens.busd,
   },
   {
     pid: 108,

@@ -10,8 +10,7 @@
     "paths": {
       "@pancakeswap/sdk": ["../packages/swap-sdk/src/index.ts"],
       "@pancakeswap/wagmi": ["../packages/wagmi/src/index.ts"],
-      "@pancakeswap/hooks": ["../packages/hooks/src/index.ts"],
-      "@pancakeswap/localization": ["../packages/localization/src/index.tsx"]
+      "@pancakeswap/hooks": ["../packages/hooks/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "cypress", "/apps/*"],

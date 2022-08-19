@@ -1,4 +1,3 @@
-import { ReactText } from 'react'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { easterPrizes, PrizesConfig } from 'config/constants/trading-competition/prizes'
 import BigNumber from 'bignumber.js'
@@ -10,7 +9,7 @@ export const localiseTradingVolume = (value: number, decimals = 0) => {
   return value.toLocaleString('en-US', { maximumFractionDigits: decimals })
 }
 
-export const useCompetitionCakeRewards = (userCakeReward: ReactText) => {
+export const useCompetitionCakeRewards = (userCakeReward: string | number) => {
   const cakeAsBigNumber = new BigNumber(userCakeReward as string)
   const cakeBalance = getBalanceNumber(cakeAsBigNumber)
   const cakePriceBusd = useCakeBusdPrice()
@@ -26,10 +25,10 @@ export const useFanTokenCompetitionRewards = ({
   userPortoRewards,
   userSantosRewards,
 }: {
-  userCakeRewards: ReactText
-  userLazioRewards: ReactText
-  userPortoRewards: ReactText
-  userSantosRewards: ReactText
+  userCakeRewards: string | number
+  userLazioRewards: string | number
+  userPortoRewards: string | number
+  userSantosRewards: string | number
 }) => {
   const lazioPriceBUSD = useBUSDPrice(bscTokens.lazio)
   const portoPriceBUSD = useBUSDPrice(bscTokens.porto)
@@ -65,8 +64,8 @@ export const useMoboxCompetitionRewards = ({
   userCakeRewards,
   userMoboxRewards,
 }: {
-  userCakeRewards: ReactText
-  userMoboxRewards: ReactText
+  userCakeRewards: string | number
+  userMoboxRewards: string | number
 }) => {
   const moboxPriceBUSD = useBUSDPrice(bscTokens.mbox)
   const cakeAsBigNumber = new BigNumber(userCakeRewards as string)
@@ -91,8 +90,8 @@ export const useModCompetitionRewards = ({
   userCakeRewards,
   userDarRewards,
 }: {
-  userCakeRewards: ReactText
-  userDarRewards: ReactText
+  userCakeRewards: string | number
+  userDarRewards: string | number
 }) => {
   const darPriceBUSD = useBUSDPrice(bscTokens.dar)
   const cakeAsBigNumber = new BigNumber(userCakeRewards as string)

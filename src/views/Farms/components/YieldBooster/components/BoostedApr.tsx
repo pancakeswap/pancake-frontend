@@ -4,24 +4,30 @@ import _toNumber from 'lodash/toNumber'
 import { memo, useContext } from 'react'
 import { formatNumber } from 'utils/formatBalance'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
-import useBoostMultipler from '../hooks/useBoostMultipler'
+import useBoostMultiplier from '../hooks/useBoostMultiplier'
 import { YieldBoosterState } from '../hooks/useYieldBoosterState'
 import { YieldBoosterStateContext } from './ProxyFarmContainer'
 
 interface BoostedAprPropsType {
-  apr: string
+  apr: number
+  lpRewardsApr: number
   pid: number
   mr?: string
 }
 
 function BoostedApr(props: BoostedAprPropsType) {
-  const { apr, pid, ...rest } = props
+  const { lpRewardsApr, apr, pid, ...rest } = props
   const { boosterState, proxyAddress } = useContext(YieldBoosterStateContext)
   const { t } = useTranslation()
-  const multiplier = useBoostMultipler({ pid, boosterState, proxyAddress })
+
+  const multiplier = useBoostMultiplier({ pid, boosterState, proxyAddress })
 
   const boostedApr =
-    (!isUndefinedOrNull(multiplier) && !isUndefinedOrNull(apr) && formatNumber(_toNumber(apr) * Number(multiplier))) ||
+    (!isUndefinedOrNull(multiplier) &&
+      !isUndefinedOrNull(apr) &&
+      formatNumber(
+        _toNumber(apr) * Number(multiplier) + (!isUndefinedOrNull(lpRewardsApr) ? _toNumber(lpRewardsApr) : 0),
+      )) ||
     '0'
 
   const msg =
