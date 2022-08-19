@@ -1,11 +1,11 @@
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useRouter, NextRouter } from 'next/router'
 import { useEffect } from 'react'
 import { isChainSupported } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { useActiveChainId } from './useActiveChainId'
+import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 
 const getHashFromRouter = (router: NextRouter) => {
   return router.asPath.match(/#([a-z0-9]+)/gi)
@@ -13,11 +13,11 @@ const getHashFromRouter = (router: NextRouter) => {
 
 export function useNetworkConnectorUpdater() {
   const { chainId, isConnecting } = useActiveWeb3React()
-  const { switchNetwork, isLoading, pendingChainId } = useSwitchNetwork()
+  const [loading] = useSwitchNetworkLoading()
   const router = useRouter()
 
   useEffect(() => {
-    if (isLoading || !router.isReady || isConnecting) return
+    if (loading || !router.isReady || isConnecting) return
     const parsedQueryChainId = Number(router.query.chainId)
     if (!parsedQueryChainId && chainId === ChainId.BSC) return
     if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
@@ -33,13 +33,7 @@ export function useNetworkConnectorUpdater() {
         undefined,
       )
     }
-  }, [chainId, isConnecting, isLoading, router])
-
-  return {
-    isLoading,
-    switchNetwork,
-    pendingChainId,
-  }
+  }, [chainId, isConnecting, loading, router])
 }
 
 /**

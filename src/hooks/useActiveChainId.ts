@@ -1,11 +1,10 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { atom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
-import { useDeferredValue } from 'react'
 import { isChainSupported } from 'utils/wagmi'
 import { useNetwork } from 'wagmi'
+import useDebounce from './useDebounce'
 import { useSessionChainId } from './useSessionChainId'
-import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 
 export const sessionChainIdAtom = atom<number>(0)
 const queryChainIdAtom = atom(-1) // -1 unload, 0 no chainId on query
@@ -39,15 +38,14 @@ export function useLocalNetworkChain() {
 export const useActiveChainId = () => {
   const localChainId = useLocalNetworkChain()
   const queryChainId = useAtomValue(queryChainIdAtom)
-  const [loading] = useSwitchNetworkLoading()
 
   const { chain } = useNetwork()
   const chainId = localChainId ?? chain?.id ?? (queryChainId >= 0 ? ChainId.BSC : undefined)
 
-  const isNotMatched = useDeferredValue(chain && localChainId && chain.id !== localChainId)
+  const isNotMatched = useDebounce(chain && localChainId && chain.id !== localChainId, 300)
 
   return {
     chainId,
-    isWrongNetwork: chain?.unsupported || (loading ? false : isNotMatched),
+    isWrongNetwork: chain?.unsupported || isNotMatched,
   }
 }
