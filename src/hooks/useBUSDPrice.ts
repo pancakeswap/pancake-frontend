@@ -1,4 +1,5 @@
 import { ChainId, Currency, CurrencyAmount, JSBI, Pair, Price, Token, WNATIVE } from '@pancakeswap/sdk'
+import { FAST_INTERVAL } from 'config/constants'
 import { BUSD, CAKE } from 'config/constants/tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
@@ -87,21 +88,25 @@ export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
   const pairContract = usePairContract(pairAddress)
   const provider = useProvider({ chainId: currencyA.chainId })
 
-  const { data: price } = useSWR(currencyA && currencyB && ['pair-price', currencyA, currencyB], async () => {
-    const reserves = await pairContract.connect(provider).getReserves()
-    if (!reserves) {
-      return null
-    }
-    const { reserve0, reserve1 } = reserves
-    const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
+  const { data: price } = useSWR(
+    currencyA && currencyB && ['pair-price', currencyA, currencyB],
+    async () => {
+      const reserves = await pairContract.connect(provider).getReserves()
+      if (!reserves) {
+        return null
+      }
+      const { reserve0, reserve1 } = reserves
+      const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
 
-    const pair = new Pair(
-      CurrencyAmount.fromRawAmount(token0, reserve0.toString()),
-      CurrencyAmount.fromRawAmount(token1, reserve1.toString()),
-    )
+      const pair = new Pair(
+        CurrencyAmount.fromRawAmount(token0, reserve0.toString()),
+        CurrencyAmount.fromRawAmount(token1, reserve1.toString()),
+      )
 
-    return pair.priceOf(currencyB.wrapped)
-  })
+      return pair.priceOf(tokenB)
+    },
+    { dedupingInterval: FAST_INTERVAL, refreshInterval: FAST_INTERVAL },
+  )
 
   return price
 }
