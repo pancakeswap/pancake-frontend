@@ -1909,6 +1909,6 @@
   "Remove %amount% %symbol%": "Αφαίρεση %amount% %symbol%",
   "Remove %amountA% %symbolA% and %amountB% %symbolB%": "Αφαίρεση %amountA% %symbolA% και %amountB% %symbolB%",
   "Zap %amountA% %symbolA% and %amountB% %symbolB%": "Zap %amountA% %symbolA% και %amountB% %symbolB%",
-  "Zap in %amount% BNB for %symbol%": "Zap in %amount% BNB for %symbol%",
-  "Zap in %amount% %symbol% for %lpSymbol%": "Zap in %amount% %symbol% for %lpSymbol%"
+  "Zap in %amount% BNB for %symbol%": "Zap %amount% BNB για %symbol%",
+  "Zap in %amount% %symbol% for %lpSymbol%": "Zap %amount% %symbol% για %lpSymbol%"
 }
