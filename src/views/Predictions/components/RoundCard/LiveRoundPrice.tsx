@@ -3,7 +3,6 @@ import { BigNumber } from '@ethersproject/bignumber'
 import CountUp from 'react-countup'
 import { Skeleton, TooltipText } from '@pancakeswap/uikit'
 import { formatBigNumberToFixed } from 'utils/formatBalance'
-import { ErrorBoundary } from 'components/ErrorBoundary'
 
 interface LiveRoundPriceProps {
   isBull: boolean
@@ -15,16 +14,22 @@ const LiveRoundPrice: React.FC<React.PropsWithChildren<LiveRoundPriceProps>> = (
 
   const priceColor = isBull ? 'success' : 'failure'
 
+  if (!Number.isFinite(priceAsNumber)) {
+    return null
+  }
+
+  if (price.lt(0)) {
+    return <Skeleton height="36px" width="94px" />
+  }
+
   return (
-    <ErrorBoundary>
-      <CountUp start={0} preserveValue delay={0} end={priceAsNumber} prefix="$" decimals={4} duration={1}>
-        {({ countUpRef }) => (
-          <TooltipText bold color={priceColor} fontSize="24px" style={{ minHeight: '36px' }}>
-            {price.gt(0) ? <span ref={countUpRef} /> : <Skeleton height="36px" width="94px" />}
-          </TooltipText>
-        )}
-      </CountUp>
-    </ErrorBoundary>
+    <CountUp start={0} preserveValue delay={0} end={priceAsNumber} prefix="$" decimals={4} duration={1}>
+      {({ countUpRef }) => (
+        <TooltipText bold color={priceColor} fontSize="24px" style={{ minHeight: '36px' }}>
+          <span ref={countUpRef} />
+        </TooltipText>
+      )}
+    </CountUp>
   )
 }
 

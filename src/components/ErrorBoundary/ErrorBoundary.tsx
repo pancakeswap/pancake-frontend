@@ -11,8 +11,8 @@ export class ErrorBoundary extends Component<PropsWithChildren<{ fallback?: Reac
     return { hasError: true }
   }
 
-  componentDidCatch(_error, _errorInfo) {
-    //
+  componentDidCatch(error, errorInfo) {
+    console.error(error, errorInfo)
   }
 
   render() {
