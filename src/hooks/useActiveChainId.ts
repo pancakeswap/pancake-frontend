@@ -1,16 +1,27 @@
 import { ChainId } from '@pancakeswap/sdk'
+import { atom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
-import useSWRImmutable from 'swr/immutable'
 import { isChainSupported } from 'utils/wagmi'
 import { useNetwork } from 'wagmi'
+import { switchNetworkLoadingAtom } from './useSwitchNetwork'
+
+const sessionChainIdAtom = atom<number>(0)
+const queryChainIdAtom = atom(-1) // -1 unload, 0 no chainId on query
+
+queryChainIdAtom.onMount = (set) => {
+  const params = new URL(window.location.href).searchParams
+  const c = params.get('chainId')
+  if (isChainSupported(+c)) {
+    set(+c)
+  } else {
+    set(0)
+  }
+}
 
 export function useLocalNetworkChain() {
-  const { data: sessionChainId } = useSWRImmutable('session-chain-id')
+  const sessionChainId = useAtomValue(sessionChainIdAtom)
   // useRouter is kind of slow, we only get this query chainId once
-  const { data: queryChainId } = useSWRImmutable('query-chain-id', () => {
-    const params = new URL(window.location.href).searchParams
-    return params.get('chainId')
-  })
+  const queryChainId = useAtomValue(queryChainIdAtom)
 
   const { query } = useRouter()
 
@@ -25,13 +36,14 @@ export function useLocalNetworkChain() {
 
 export const useActiveChainId = () => {
   const localChainId = useLocalNetworkChain()
-  const { isValidating } = useSWRImmutable('query-chain-id')
-  const { data: isLoading } = useSWRImmutable('switch-network-loading')
+  const queryChainId = useAtomValue(queryChainIdAtom)
+  const loading = useAtomValue(switchNetworkLoadingAtom)
+
   const { chain } = useNetwork()
-  const chainId = localChainId ?? chain?.id ?? (!isValidating ? ChainId.BSC : undefined)
+  const chainId = localChainId ?? chain?.id ?? (queryChainId >= 0 ? ChainId.BSC : undefined)
 
   return {
     chainId,
-    isWrongNetwork: chain?.unsupported || isLoading ? false : chain && localChainId && chain.id !== localChainId,
+    isWrongNetwork: chain?.unsupported || loading ? false : chain && localChainId && chain.id !== localChainId,
   }
 }

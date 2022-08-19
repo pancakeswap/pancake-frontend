@@ -1,19 +1,20 @@
+import { atom, useAtom } from 'jotai'
 import { useCallback } from 'react'
 import { useSWRConfig } from 'swr'
-import useSWRImmutable from 'swr/immutable'
-import { useSwitchNetwork as useSwitchNetworkWallet } from 'wagmi'
-import useActiveWeb3React from './useActiveWeb3React'
+import { useAccount, useSwitchNetwork as useSwitchNetworkWallet } from 'wagmi'
+
+export const switchNetworkLoadingAtom = atom(false)
 
 export function useSwitchNetwork() {
-  const { data: __isLoading, mutate: setLoading } = useSWRImmutable('switch-network-loading', { fallbackData: false })
+  const [loading, setLoading] = useAtom(switchNetworkLoadingAtom)
   const { mutate } = useSWRConfig()
   const { switchNetworkAsync, isLoading: _isLoading, ...switchNetworkArgs } = useSwitchNetworkWallet()
-  const { account } = useActiveWeb3React()
+  const { isConnected } = useAccount()
 
   const switchNetwork = useCallback(
     (chainId: number) => {
       setLoading(true)
-      if (account && typeof switchNetworkAsync === 'function') {
+      if (isConnected && typeof switchNetworkAsync === 'function') {
         return switchNetworkAsync(chainId)
           .then((c) => {
             if (c) {
@@ -24,10 +25,10 @@ export function useSwitchNetwork() {
       }
       return mutate('session-chain-id', chainId).finally(() => setLoading(false))
     },
-    [account, mutate, setLoading, switchNetworkAsync],
+    [isConnected, mutate, setLoading, switchNetworkAsync],
   )
 
-  const isLoading = _isLoading || __isLoading
+  const isLoading = _isLoading || loading
 
   return {
     ...switchNetworkArgs,
