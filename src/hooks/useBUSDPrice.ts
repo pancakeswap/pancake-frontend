@@ -1,9 +1,13 @@
-import { Currency, JSBI, Price, WNATIVE, ChainId, Token } from '@pancakeswap/sdk'
-import { CAKE, BUSD } from 'config/constants/tokens'
+import { ChainId, Currency, CurrencyAmount, JSBI, Pair, Price, Token, WNATIVE } from '@pancakeswap/sdk'
+import { BUSD, CAKE } from 'config/constants/tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
+import useSWR from 'swr'
+import getLpAddress from 'utils/getLpAddress'
 import { multiplyPriceByAmount } from 'utils/prices'
-import { PairState, usePairs, usePair } from './usePairs'
+import { useProvider } from 'wagmi'
+import { usePairContract } from './useContract'
+import { PairState, usePairs } from './usePairs'
 
 /**
  * Returns the price in BUSD of the input currency
@@ -78,9 +82,28 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
 }
 
 export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
-  const [state, pair] = usePair(currencyA?.wrapped, currencyB?.wrapped)
+  const [tokenA, tokenB] = [currencyA?.wrapped, currencyB?.wrapped]
+  const pairAddress = getLpAddress(tokenA, tokenB)
+  const pairContract = usePairContract(pairAddress)
+  const provider = useProvider({ chainId: currencyA.chainId })
 
-  return currencyB && state === PairState.EXISTS && pair.priceOf(currencyB.wrapped)
+  const { data: price } = useSWR(currencyA && currencyB && ['pair-price', currencyA, currencyB], async () => {
+    const reserves = await pairContract.connect(provider).getReserves()
+    if (!reserves) {
+      return null
+    }
+    const { reserve0, reserve1 } = reserves
+    const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
+
+    const pair = new Pair(
+      CurrencyAmount.fromRawAmount(token0, reserve0.toString()),
+      CurrencyAmount.fromRawAmount(token1, reserve1.toString()),
+    )
+
+    return pair.priceOf(currencyB.wrapped)
+  })
+
+  return price
 }
 
 export const useCakeBusdPrice = (): Price<Currency, Currency> | undefined => {
