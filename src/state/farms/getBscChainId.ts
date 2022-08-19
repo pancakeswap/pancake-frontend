@@ -3,8 +3,13 @@ import { getMasterChefAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
 import { ChainId } from '@pancakeswap/sdk'
 
+// will return BSC or BSC Testnet chainId
 export const getBscChainId = async (chainId: number) => {
   try {
+    if (!chainId) {
+      return ChainId.BSC
+    }
+
     const calls = [
       {
         name: 'BSC_CHAIN_ID',

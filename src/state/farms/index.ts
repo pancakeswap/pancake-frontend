@@ -59,17 +59,8 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
 >(
   'farms/fetchFarmsPublicDataAsync',
   async ({ pids, chainId }) => {
-    const [[poolLength], [cakePerBlockRaw]] = await Promise.all([
-      multicall(
-        masterchefABI,
-        [
-          {
-            address: getMasterChefAddress(chainId),
-            name: 'poolLength',
-          },
-        ],
-        chainId,
-      ),
+    const [poolLength, [cakePerBlockRaw]] = await Promise.all([
+      fetchMasterChefFarmPoolLength(chainId),
       multicall(masterchefABI, [
         {
           address: getMasterChefAddress(),
@@ -133,8 +124,8 @@ async function getBoostedFarmsStakeValue(farms, account, chainId, proxyAddress) 
     fetchFarmUserEarnings(account, farms, chainId),
     // Proxy call
     fetchFarmUserAllowances(account, farms, chainId, proxyAddress),
-    fetchFarmUserStakedBalances(proxyAddress, chainId, farms),
-    fetchFarmUserEarnings(proxyAddress, chainId, farms),
+    fetchFarmUserStakedBalances(proxyAddress, farms, chainId),
+    fetchFarmUserEarnings(proxyAddress, farms, chainId),
   ])
 
   const farmAllowances = userFarmAllowances.map((farmAllowance, index) => {
@@ -187,7 +178,7 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
 >(
   'farms/fetchFarmUserDataAsync',
   async ({ account, pids, proxyAddress, chainId }, config) => {
-    const poolLength = config.getState().farms.poolLength ?? (await fetchMasterChefFarmPoolLength(chainId)).toNumber()
+    const poolLength = config.getState().farms.poolLength ?? (await fetchMasterChefFarmPoolLength(chainId))
     const farmsConfig = getFarmConfig(chainId)
     const farmsCanFetch = farmsConfig.filter(
       (farmConfig) => pids.includes(farmConfig.pid) && poolLength > farmConfig.pid,

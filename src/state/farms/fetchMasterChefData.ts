@@ -1,25 +1,40 @@
 import masterchefABI from 'config/abi/masterchef.json'
 import chunk from 'lodash/chunk'
+import BigNumber from 'bignumber.js'
 import { multicallv2 } from 'utils/multicall'
-import { ChainId } from '@pancakeswap/sdk'
 import { getBscChainId } from 'state/farms/getBscChainId'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { SerializedFarmConfig } from '../../config/constants/types'
 import { SerializedFarm } from '../types'
 import { getMasterChefAddress } from '../../utils/addressHelpers'
-import { getMasterchefContract } from '../../utils/contractHelpers'
 
 export const fetchMasterChefFarmPoolLength = async (chainId: number) => {
-  const masterChefContract = getMasterchefContract(undefined, chainId)
-  const poolLength = await masterChefContract.poolLength()
-  return poolLength
+  try {
+    const [poolLength] = await multicallv2({
+      abi: masterchefABI,
+      calls: [
+        {
+          name: 'poolLength',
+          address: getMasterChefAddress(chainId),
+        },
+      ],
+      chainId,
+    })
+
+    return new BigNumber(poolLength).toNumber()
+  } catch (error) {
+    console.error('Fetch MasterChef Farm Pool Length Error: ', error)
+    return BIG_ZERO.toNumber()
+  }
 }
 
 const masterChefFarmCalls = async (farm: SerializedFarm) => {
   const { pid, bscPid, quoteToken } = farm
-  const isNonBscVault = quoteToken.chainId !== (ChainId.BSC || ChainId.BSC_TESTNET)
-  const multiCallChainId = isNonBscVault ? await getBscChainId(quoteToken.chainId) : quoteToken.chainId
+  const isBscNetwork = verifyBscNetwork(quoteToken.chainId)
+  const multiCallChainId = isBscNetwork ? quoteToken.chainId : await getBscChainId(quoteToken.chainId)
   const masterChefAddress = getMasterChefAddress(multiCallChainId)
-  const masterChefPid = isNonBscVault ? bscPid : pid
+  const masterChefPid = isBscNetwork ? pid : bscPid
 
   return masterChefPid || masterChefPid === 0
     ? [
@@ -42,8 +57,9 @@ export const fetchMasterChefData = async (farms: SerializedFarmConfig[], chainId
   const masterChefAggregatedCalls = masterChefCalls
     .filter((masterChefCall) => masterChefCall[0] !== null && masterChefCall[1] !== null)
     .flat()
-  const isNonBscVault = chainId !== (ChainId.BSC || ChainId.BSC_TESTNET)
-  const multiCallChainId = isNonBscVault ? await getBscChainId(chainId) : chainId
+
+  const isBscNetwork = verifyBscNetwork(chainId)
+  const multiCallChainId = isBscNetwork ? chainId : await getBscChainId(chainId)
   const masterChefMultiCallResult = await multicallv2({
     abi: masterchefABI,
     calls: masterChefAggregatedCalls,

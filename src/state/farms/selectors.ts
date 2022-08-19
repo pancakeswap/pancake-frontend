@@ -135,14 +135,13 @@ export const farmSelector = (chainId: number) =>
   createSelector(
     (state: State) => state.farms,
     (farms) => {
-      const deserializedFarmsData = farms.data.map(deserializeFarm)
-      const isSameChainId = deserializedFarmsData[0]?.token.chainId === chainId
+      const deserializedFarmsData = farms.data.map(deserializeFarm).filter((farm) => farm.token.chainId === chainId)
       const { loadArchivedFarmsData, userDataLoaded, poolLength, regularCakePerBlock } = farms
 
       return {
         loadArchivedFarmsData,
         userDataLoaded,
-        data: isSameChainId ? deserializedFarmsData : [],
+        data: deserializedFarmsData,
         poolLength,
         regularCakePerBlock,
       }
