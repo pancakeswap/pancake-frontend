@@ -1,4 +1,5 @@
 import { Button, ButtonProps } from '@pancakeswap/uikit'
+import { useSwitchNetworkLoading } from 'hooks/useSwitchNetworkLoading'
 import { useSetAtom } from 'jotai'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { hideWrongNetworkModalAtom } from './NetworkModal'
@@ -12,6 +13,7 @@ const wrongNetworkProps: ButtonProps = {
 
 export const CommitButton = (props: ButtonProps) => {
   const { isWrongNetwork } = useActiveChainId()
+  const [switchNetworkLoading] = useSwitchNetworkLoading()
   const setHideWrongNetwork = useSetAtom(hideWrongNetworkModalAtom)
 
   return (
@@ -24,6 +26,7 @@ export const CommitButton = (props: ButtonProps) => {
           props.onClick?.(e)
         }
       }}
+      {...(switchNetworkLoading && { disabled: true })}
       {...(isWrongNetwork && wrongNetworkProps)}
     />
   )

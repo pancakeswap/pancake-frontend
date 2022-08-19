@@ -1,6 +1,6 @@
 import { ModalV2 } from '@pancakeswap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useMemo, useDeferredValue } from 'react'
+import { useMemo } from 'react'
 import { useNetwork } from 'wagmi'
 import { atom, useAtom } from 'jotai'
 import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
@@ -14,7 +14,6 @@ export const NetworkModal = ({ pageSupportedChains = SUPPORT_ONLY_BSC }: { pageS
   const { chainId, chain, isWrongNetwork } = useActiveWeb3React()
   const { chains } = useNetwork()
   const [dismissWrongNetwork, setDismissWrongNetwork] = useAtom(hideWrongNetworkModalAtom)
-  const deferIsWrongNetwork = useDeferredValue(isWrongNetwork)
 
   const isPageNotSupported = useMemo(
     () => Boolean(pageSupportedChains.length) && !pageSupportedChains.includes(chainId),
@@ -41,7 +40,7 @@ export const NetworkModal = ({ pageSupportedChains = SUPPORT_ONLY_BSC }: { pageS
     const currentChain = chains.find((c) => c.id === chainId)
     if (!currentChain) return null
     return (
-      <ModalV2 isOpen={deferIsWrongNetwork} closeOnOverlayClick onDismiss={() => setDismissWrongNetwork(true)}>
+      <ModalV2 isOpen={isWrongNetwork} closeOnOverlayClick onDismiss={() => setDismissWrongNetwork(true)}>
         <WrongNetworkModal currentChain={currentChain} onDismiss={() => setDismissWrongNetwork(true)} />
       </ModalV2>
     )
