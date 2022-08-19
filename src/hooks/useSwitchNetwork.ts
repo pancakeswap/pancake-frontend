@@ -17,9 +17,11 @@ export function useSwitchNetwork() {
           .then((c) => {
             if (c) {
               setSessionChainId(c.id)
+            } else {
+              setSessionChainId(chainId)
             }
           })
-          .finally(() => setLoading(false))
+          .finally(() => setTimeout(() => setLoading(false), 60))
       }
       return new Promise(() => {
         setSessionChainId(chainId)

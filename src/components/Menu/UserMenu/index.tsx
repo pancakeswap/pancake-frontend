@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
 import {
+  Box,
   Flex,
   LogoutIcon,
   RefreshIcon,
@@ -8,24 +10,24 @@ import {
   UserMenuDivider,
   UserMenuItem,
   UserMenuVariant,
-  Box,
 } from '@pancakeswap/uikit'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import Trans from 'components/Trans'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useAuth from 'hooks/useAuth'
 import NextLink from 'next/link'
-import { ChainId } from '@pancakeswap/sdk'
+import { useEffect, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { usePendingTransactions } from 'state/transactions/hooks'
-import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useTranslation } from '@pancakeswap/localization'
-import WalletModal, { WalletView } from './WalletModal'
+import { useAccount } from 'wagmi'
 import ProfileUserMenuItem from './ProfileUserMenuItem'
+import WalletModal, { WalletView } from './WalletModal'
 import WalletUserMenuItem from './WalletUserMenuItem'
 
 const UserMenu = () => {
   const { t } = useTranslation()
-  const { account, chainId, isWrongNetwork } = useActiveWeb3React()
+  const { address: account, isConnecting, isReconnecting } = useAccount()
+  const { chainId, isWrongNetwork } = useActiveChainId()
   const { logout } = useAuth()
   const { hasPendingTransactions, pendingNumber } = usePendingTransactions()
   const { isInitialized, isLoading, profile } = useProfile()
@@ -102,7 +104,7 @@ const UserMenu = () => {
   }
 
   return (
-    <ConnectWalletButton scale="sm">
+    <ConnectWalletButton disabled={isConnecting || isReconnecting} scale="sm">
       <Box display={['none', , , 'block']}>
         <Trans>Connect Wallet</Trans>
       </Box>

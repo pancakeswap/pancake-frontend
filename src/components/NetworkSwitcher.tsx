@@ -7,7 +7,7 @@ import { useMemo } from 'react'
 import { chains } from 'utils/wagmi'
 import { ChainLogo } from './Logo/ChainLogo'
 
-export const NetworkSelect = ({ switchNetwork }) => {
+export const NetworkSelect = ({ switchNetwork, chainId }) => {
   const { t } = useTranslation()
 
   return (
@@ -17,7 +17,12 @@ export const NetworkSelect = ({ switchNetwork }) => {
       </Box>
       <UserMenuDivider />
       {chains.map((chain) => (
-        <UserMenuItem key={chain.id} style={{ justifyContent: 'flex-start' }} onClick={() => switchNetwork(chain.id)}>
+        <UserMenuItem
+          disabled={chain.id === chainId}
+          key={chain.id}
+          style={{ justifyContent: 'flex-start' }}
+          onClick={() => switchNetwork(chain.id)}
+        >
           <ChainLogo chainId={chain.id} />
           <Text pl="12px">{chain.name}</Text>
         </UserMenuItem>
@@ -70,7 +75,7 @@ export const NetworkSwitcher = () => {
           )
         }
       >
-        {() => <NetworkSelect switchNetwork={switchNetwork} />}
+        {() => <NetworkSelect switchNetwork={switchNetwork} chainId={chainId} />}
       </UserMenu>
     </>
   )
