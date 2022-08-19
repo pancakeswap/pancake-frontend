@@ -21,7 +21,7 @@ export function useSwitchNetwork() {
               setSessionChainId(chainId)
             }
           })
-          .finally(() => setTimeout(() => setLoading(false), 200))
+          .finally(() => setTimeout(() => setLoading(false), 1000))
       }
       return new Promise(() => {
         setSessionChainId(chainId)
