@@ -117,9 +117,9 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                 {t('Swaps & Liquidity')}
               </Text>
               <Flex justifyContent="space-between" alignItems="center" mb="24px">
-                <GasSettings />
+                {chainId === ChainId.BSC && <GasSettings />}
               </Flex>
-              {chainId === ChainId.BSC && <TransactionSettings />}
+              <TransactionSettings />
             </Flex>
             {SUPPORT_ZAP.includes(chainId) && (
               <Flex justifyContent="space-between" alignItems="center" mb="24px">
