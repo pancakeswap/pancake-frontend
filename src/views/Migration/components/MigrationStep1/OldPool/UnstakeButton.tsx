@@ -37,8 +37,8 @@ const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ 
 
   const vaultPoolContract = useMemo(() => {
     return vaultKey === VaultKey.CakeVaultV1
-      ? getContract(cakeVaultAbi, cakeVaultAddress, signer)
-      : getContract(ifoPoolAbi, ifoPoolV1Contract, signer)
+      ? getContract({ abi: cakeVaultAbi, address: cakeVaultAddress, signer })
+      : getContract({ abi: ifoPoolAbi, address: ifoPoolV1Contract, signer })
   }, [signer, vaultKey])
 
   const { onUnstake } = useUnstakePool(sousId, pool.enableEmergencyWithdraw)
