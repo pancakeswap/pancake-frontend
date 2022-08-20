@@ -1,9 +1,9 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { atom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
+import { useDeferredValue } from 'react'
 import { isChainSupported } from 'utils/wagmi'
 import { useNetwork } from 'wagmi'
-import useDebounce from './useDebounce'
 import { useSessionChainId } from './useSessionChainId'
 
 export const sessionChainIdAtom = atom<number>(0)
@@ -42,7 +42,7 @@ export const useActiveChainId = () => {
   const { chain } = useNetwork()
   const chainId = localChainId ?? chain?.id ?? (queryChainId >= 0 ? ChainId.BSC : undefined)
 
-  const isNotMatched = useDebounce(chain && localChainId && chain.id !== localChainId, 300)
+  const isNotMatched = useDeferredValue(chain && localChainId && chain.id !== localChainId)
 
   return {
     chainId,
