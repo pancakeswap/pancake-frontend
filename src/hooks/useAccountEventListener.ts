@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import replaceBrowserHistory from 'utils/replaceBrowserHistory'
 import { ConnectorData } from 'wagmi'
 import { useAppDispatch } from '../state'
 import { clearUserStates } from '../utils/clearUserStates'
@@ -14,6 +15,7 @@ export const useAccountEventListener = () => {
     if (account && connector) {
       const handleUpdateEvent = (e: ConnectorData<any>) => {
         if (e?.chain?.id && !e?.chain?.unsupported) {
+          replaceBrowserHistory('chainId', e.chain.id)
           setSessionChainId(e.chain.id)
         }
         clearUserStates(dispatch, chainId)
