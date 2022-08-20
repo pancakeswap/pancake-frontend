@@ -13,7 +13,6 @@ import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import styled from 'styled-components'
-import { getAddress } from 'utils/addressHelpers'
 import { TransactionResponse } from '@ethersproject/providers'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import useApproveFarm from '../../../hooks/useApproveFarm'
@@ -62,7 +61,7 @@ export function useStakedActions(pid, lpContract) {
   const { onUnstake } = useUnstakeFarms(pid)
   const dispatch = useAppDispatch()
 
-  const { onApprove } = useApproveFarm(lpContract)
+  const { onApprove } = useApproveFarm(lpContract, chainId)
 
   const onDone = useCallback(
     () => dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId })),

@@ -109,7 +109,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
   )
   const lpContract = useERC20(lpAddress)
   const dispatch = useAppDispatch()
-  const { onApprove } = useApproveFarm(lpContract)
+  const { onApprove } = useApproveFarm(lpContract, chainId)
 
   const handleApprove = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()
