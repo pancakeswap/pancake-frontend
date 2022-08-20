@@ -13,7 +13,7 @@ export function useSwitchNetwork() {
     (chainId: number) => {
       if (isConnected && typeof switchNetworkAsync === 'function') {
         setLoading(true)
-        return switchNetworkAsync(chainId).finally(() => setTimeout(() => setLoading(false), 1000))
+        return switchNetworkAsync(chainId).finally(() => setLoading(false))
       }
       return new Promise(() => {
         setSessionChainId(chainId)
