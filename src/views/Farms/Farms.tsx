@@ -1,4 +1,5 @@
 import { useEffect, useCallback, useState, useMemo, useRef, createContext } from 'react'
+import { createPortal } from 'react-dom'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { Image, Heading, Toggle, Text, Button, ArrowForwardIcon, Flex, Link, Box } from '@pancakeswap/uikit'
@@ -23,6 +24,7 @@ import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
 import Loading from 'components/Loading'
 import ToggleView from 'components/ToggleView/ToggleView'
+import ScrollToTopButton from 'components/ScrollToTopButton/ScrollToTopButtonV2'
 import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
 import { FarmWithStakedValue } from './components/types'
@@ -435,6 +437,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         <div ref={observerRef} />
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </Page>
+      {createPortal(<ScrollToTopButton />, document.body)}
     </FarmsContext.Provider>
   )
 }
