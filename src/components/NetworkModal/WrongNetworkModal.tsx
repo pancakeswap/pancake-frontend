@@ -36,7 +36,7 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
           <MessageText>
             <FlexGap gap="12px">
               <FlexGap gap="6px">
-                <ChainLogo chainId={chain.id} /> <ArrowForwardIcon color="#D67E0A" />
+                <ChainLogo chainId={chain?.id} /> <ArrowForwardIcon color="#D67E0A" />
                 <ChainLogo chainId={chainId} />
               </FlexGap>
               <span>{t('Switch network to continue.')}</span>

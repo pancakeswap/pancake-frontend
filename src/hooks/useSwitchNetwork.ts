@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useAccount, useSwitchNetwork as useSwitchNetworkWallet } from 'wagmi'
 import { useSessionChainId } from './useSessionChainId'
 import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
@@ -40,14 +40,18 @@ export function useSwitchNetwork() {
   )
 
   const isLoading = _isLoading || loading
-  const canSwitch = isConnected
-    ? !!_switchNetworkAsync &&
-      !(
-        typeof window !== 'undefined' &&
-        // @ts-ignore // TODO: add type later
-        window.ethereum?.isSafePal
-      )
-    : true
+  const canSwitch = useMemo(
+    () =>
+      isConnected
+        ? !!_switchNetworkAsync &&
+          !(
+            typeof window !== 'undefined' &&
+            // @ts-ignore // TODO: add type later
+            window.ethereum?.isSafePal
+          )
+        : true,
+    [_switchNetworkAsync, isConnected],
+  )
 
   return {
     ...switchNetworkArgs,
