@@ -4,12 +4,15 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import Image from 'next/image'
 import useAuth from 'hooks/useAuth'
+import { useMenuItems } from 'components/Menu/hooks/useMenuItems'
+import { useRouter } from 'next/router'
+import { getActiveMenuItem, getActiveSubMenuItem } from 'components/Menu/utils'
 import { useAccount, useNetwork } from 'wagmi'
 import { useMemo } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
 import Dots from '../Loader/Dots'
 
-// Where chain is not supported
+// Where chain is not supported or page not supported
 export function UnsupportedNetworkModal() {
   const { switchNetworkAsync, isLoading, canSwitch } = useSwitchNetwork()
   const { chains } = useNetwork()
@@ -17,6 +20,15 @@ export function UnsupportedNetworkModal() {
   const { isConnected } = useAccount()
   const { logout } = useAuth()
   const { t } = useTranslation()
+  const menuItems = useMenuItems()
+  const { pathname } = useRouter()
+
+  const title = useMemo(() => {
+    const activeMenuItem = getActiveMenuItem({ menuConfig: menuItems, pathname })
+    const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })
+
+    return activeSubMenuItem?.label || activeMenuItem?.label
+  }, [menuItems, pathname])
 
   const supportedMainnetChains = useMemo(() => chains.filter((chain) => !chain.testnet), [chains])
 
@@ -24,7 +36,8 @@ export function UnsupportedNetworkModal() {
     <Modal title={t('Check your network')} hideCloseButton headerBackground="gradients.cardHeader">
       <Grid style={{ gap: '16px' }} maxWidth="336px">
         <Text>
-          {t('Currently exchange only supported in')} {supportedMainnetChains?.map((c) => c.name).join(', ')}
+          {t('Currently %feature% only supported in', { feature: typeof title === 'string' ? title : 'this page' })}{' '}
+          {supportedMainnetChains?.map((c) => c.name).join(', ')}
         </Text>
         <div style={{ textAlign: 'center' }}>
           <Image

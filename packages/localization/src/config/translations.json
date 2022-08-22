@@ -1895,7 +1895,7 @@
   "Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol% to %recipientAddress%": "Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol% to %recipientAddress%",
   "Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%": "Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%",
   "Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%": "Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%",
-  "Currently exchange only supported in": "Currently exchange only supported in",
+  "Currently %feature% only supported in": "Currently %feature% only supported in",
   "Please switch your network to continue.": "Please switch your network to continue.",
   "Switch network in wallet": "Switch network in wallet",
   "It’s a BNB Smart Chain only feature": "It’s a BNB Smart Chain only feature",
