@@ -46,13 +46,14 @@ export function useSwitchNetwork() {
   )
 
   const isLoading = _isLoading || loading
-  const canSwitch =
-    !!_switchNetworkAsync &&
-    !(
-      typeof window !== 'undefined' &&
-      // @ts-ignore // TODO: add type later
-      window.ethereum?.isSafePal
-    )
+  const canSwitch = isConnected
+    ? !!_switchNetworkAsync &&
+      !(
+        typeof window !== 'undefined' &&
+        // @ts-ignore // TODO: add type later
+        window.ethereum?.isSafePal
+      )
+    : true
 
   return {
     ...switchNetworkArgs,
