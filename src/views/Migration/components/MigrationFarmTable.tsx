@@ -62,7 +62,7 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
     } : { unstake: { pid: farm.pid } }
 
     const row: RowProps = {
-      { ...customColumnSchema },
+      ...customColumnSchema,
       farm: {
         ...farm,
         label: lpLabel,
