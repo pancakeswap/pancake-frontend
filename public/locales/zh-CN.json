@@ -1910,7 +1910,7 @@
   "Zap in %amount% %symbol% for %lpSymbol%": "Zap in %amount% %symbol% for %lpSymbol%",
   "never executes": "无法执行",
   "Order not allowed": "Order not allowed",
-  "Only possible to place sell orders above market rate": "Only possible to place sell orders above market rate",
+  "Only possible to place sell orders above market rate": "只能提交优于市价的订单",
   "Only possible to place buy orders below market rate": "Only possible to place buy orders below market rate",
   "Insufficient input token balance. Your transaction may fail.": "Insufficient input token balance. Your transaction may fail.",
   "Wrong Network": "Wrong Network",
@@ -1922,5 +1922,5 @@
   "Switch network to continue.": "Switch network to continue.",
   "The real execution price includes the gas cost necessary to execute your order and guarantees that your order will be executed at the desired price.": "The real execution price includes the gas cost necessary to execute your order and guarantees that your order will be executed at the desired price.",
   "It fluctuates according to gas prices when the order is getting executed.": "It fluctuates according to gas prices when the order is getting executed.",
-  "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.": "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order."
+  "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.": "执行订单所需的gas不足，此订单将无法执行。尝试增加要交换的代币数量。"
 }
