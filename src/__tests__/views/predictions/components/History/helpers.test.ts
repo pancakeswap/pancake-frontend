@@ -3,31 +3,33 @@ import { formatBnb, formatUsd, getMultiplier, getPayout } from 'views/Prediction
 
 describe('formatUsd', () => {
   it.each([
-    [500, '$500.000'],
-    [265.22, '$265.220'],
-    [689.889, '$689.889'],
-    [10.8829, '$10.883'],
-  ])('format %i USD correctly with 3 decimals', (value, expected) => {
-    expect(formatUsd(value)).toEqual(expected)
+    [500, '$500.0000'],
+    [265.22, '$265.2200'],
+    [689.889, '$689.8890'],
+    [10.8829, '$10.8829'],
+    [10.88296, '$10.8830'],
+  ])('format %i USD correctly with 4 decimals', (value, expected) => {
+    expect(formatUsd(value, 4)).toEqual(expected)
   })
 
   it('returns 0 if USD is undefined', () => {
-    expect(formatUsd(undefined)).toEqual('$0.000')
+    expect(formatUsd(undefined, 4)).toEqual('$0.0000')
   })
 })
 
 describe('formatBnb', () => {
   it.each([
-    [20, '20.000'],
-    [265.22, '265.220'],
-    [689.889, '689.889'],
-    [10.8829, '10.883'],
-  ])('format %i BNB correctly with 3 decimals', (value, expected) => {
-    expect(formatBnb(value)).toEqual(expected)
+    [20, '20.0000'],
+    [265.22, '265.2200'],
+    [689.889, '689.8890'],
+    [10.8829, '10.8829'],
+    [10.88296, '10.8830'],
+  ])('format %i BNB correctly with 4 decimals', (value, expected) => {
+    expect(formatBnb(value, 4)).toEqual(expected)
   })
 
   it('returns 0 if BNB is undefined', () => {
-    expect(formatBnb(undefined)).toEqual('0')
+    expect(formatBnb(undefined, 4)).toEqual('0')
   })
 })
 

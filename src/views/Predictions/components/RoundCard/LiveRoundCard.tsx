@@ -40,7 +40,7 @@ const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
   const { lockPrice, totalAmount, lockTimestamp, closeTimestamp } = round
   const { price, refresh } = usePollOraclePrice()
   const bufferSeconds = useGetBufferSeconds()
-  const { minPriceUsdDisplayed } = useConfig()
+  const { minPriceUsdDisplayed, displayedDecimals } = useConfig()
 
   const [isCalculatingPhase, setIsCalculatingPhase] = useState(false)
 
@@ -105,7 +105,7 @@ const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
               <LiveRoundPrice isBull={isBull} price={price} />
             </div>
             <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
-              {formatUsdv2(priceDifference, minPriceUsdDisplayed)}
+              {formatUsdv2(priceDifference, minPriceUsdDisplayed, displayedDecimals)}
             </PositionTag>
           </Flex>
           {lockPrice && <LockPriceRow lockPrice={lockPrice} />}

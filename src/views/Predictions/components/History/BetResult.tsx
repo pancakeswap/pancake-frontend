@@ -42,7 +42,7 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
   const { account } = useWeb3React()
   const { isRefundable } = useIsRefundable(bet.round.epoch)
   const canClaim = useGetIsClaimable(bet.round.epoch)
-  const { token } = useConfig()
+  const { token, displayedDecimals } = useConfig()
   const bnbBusdPrice = useBUSDPrice(token)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Text as="p">{t('Includes your original position and your winnings, minus the %fee% fee.', { fee: '3%' })}</Text>,
@@ -152,12 +152,14 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
         </Flex>
         <Flex alignItems="center" justifyContent="space-between" mb="16px">
           <Text>{t('Your position')}</Text>
-          <Text>{`${formatBnb(bet.amount)} ${token.symbol}`}</Text>
+          <Text>{`${formatBnb(bet.amount, displayedDecimals)} ${token.symbol}`}</Text>
         </Flex>
         <Flex alignItems="start" justifyContent="space-between">
           <Text bold>{isWinner ? t('Your winnings') : t('Your Result')}:</Text>
           <Box style={{ textAlign: 'right' }}>
-            <Text bold color={resultColor}>{`${isWinner ? '+' : '-'}${formatBnb(payout)} ${token.symbol}`}</Text>
+            <Text bold color={resultColor}>{`${isWinner ? '+' : '-'}${formatBnb(payout, displayedDecimals)} ${
+              token.symbol
+            }`}</Text>
             <Text fontSize="12px" color="textSubtle">
               {`~$${totalPayout.toFixed(2)}`}
             </Text>
@@ -171,7 +173,9 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
                 {t('Amount to collect')}:
               </Text>
               <Flex justifyContent="end">
-                <Text fontSize="14px" color="textSubtle">{`${formatBnb(returned)} ${token.symbol}`}</Text>
+                <Text fontSize="14px" color="textSubtle">{`${formatBnb(returned, displayedDecimals)} ${
+                  token.symbol
+                }`}</Text>
                 <span ref={targetRef}>
                   <InfoIcon color="textSubtle" ml="4px" />
                 </span>
