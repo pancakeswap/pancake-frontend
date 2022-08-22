@@ -1,31 +1,33 @@
-import { useCallback, useEffect, useState, useMemo } from 'react'
+import { ChainId } from '@pancakeswap/sdk'
+import { Duration, getUnixTime, startOfHour, sub } from 'date-fns'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { getUnixTime, startOfHour, Duration, sub } from 'date-fns'
 import { AppState, useAppDispatch } from 'state'
-import { isAddress } from 'utils'
-import { Transaction } from 'state/info/types'
 import fetchPoolChartData from 'state/info/queries/pools/chartData'
 import fetchPoolTransactions from 'state/info/queries/pools/transactions'
 import fetchTokenChartData from 'state/info/queries/tokens/chartData'
-import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
-import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
 import fetchPoolsForToken from 'state/info/queries/tokens/poolsForToken'
+import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
+import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
+import { Transaction } from 'state/info/types'
+import { isAddress } from 'utils'
 import {
-  updateProtocolData,
-  updateProtocolChartData,
-  updateProtocolTransactions,
-  updatePoolData,
   addPoolKeys,
-  updatePoolChartData,
-  updatePoolTransactions,
-  updateTokenData,
   addTokenKeys,
   addTokenPoolAddresses,
+  updatePoolChartData,
+  updatePoolData,
+  updatePoolTransactions,
+  updateProtocolChartData,
+  updateProtocolData,
+  updateProtocolTransactions,
   updateTokenChartData,
+  updateTokenData,
   updateTokenPriceData,
   updateTokenTransactions,
 } from './actions'
-import { ProtocolData, PoolData, TokenData, ChartEntry, PriceChartEntry } from './types'
+import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 
 // Protocol hooks
 
@@ -325,4 +327,10 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
   }, [address, dispatch, error, transactions])
 
   return transactions
+}
+
+export const useGetChainName = () => {
+  const { chainId } = useActiveWeb3React()
+  if (ChainId.ETHEREUM === chainId) return 'ETH'
+  return 'BSC'
 }

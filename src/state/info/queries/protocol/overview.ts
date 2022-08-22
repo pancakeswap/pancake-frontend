@@ -6,6 +6,7 @@ import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getPercentChange } from 'views/Info/utils/infoDataHelpers'
+import { useGetChainName } from '../../hooks'
 
 interface PancakeFactory {
   totalTransactions: string
@@ -105,9 +106,10 @@ const useFetchProtocolData = (): ProtocolFetchState => {
   const [t24, t48] = getDeltaTimestamps()
   const { blocks, error: blockError } = useBlocksFromTimestamps([t24, t48])
   const [block24, block48] = blocks ?? []
+  const chainName = useGetChainName()
 
   useEffect(() => {
-    const fetch = async () => {
+    const fetchBSC = async () => {
       const [{ error, data }, { error: error24, data: data24 }, { error: error48, data: data48 }] = await Promise.all([
         getOverviewData(),
         getOverviewData(block24?.number ?? undefined),
@@ -149,11 +151,54 @@ const useFetchProtocolData = (): ProtocolFetchState => {
         })
       }
     }
+    const fetchETH = async () => {
+      const [{ error, data }, { error: error24, data: data24 }, { error: error48, data: data48 }] = await Promise.all([
+        getOverviewDataUni(),
+        getOverviewDataUni(block24?.number ?? undefined),
+        getOverviewDataUni(block48?.number ?? undefined),
+      ])
+      const anyError = error || error24 || error48
+      const overviewData = formatUniSwapFactoryResponse(data?.uniswapFactories?.[0])
+      const overviewData24 = formatUniSwapFactoryResponse(data24?.uniswapFactories?.[0])
+      const overviewData48 = formatUniSwapFactoryResponse(data48?.uniswapFactories?.[0])
+      const allDataAvailable = overviewData && overviewData24 && overviewData48
+      if (anyError || !allDataAvailable) {
+        setFetchState({
+          error: true,
+        })
+      } else {
+        const [volumeUSD, volumeUSDChange] = getChangeForPeriod(
+          overviewData.totalVolumeUSD,
+          overviewData24.totalVolumeUSD,
+          overviewData48.totalVolumeUSD,
+        )
+        const liquidityUSDChange = getPercentChange(overviewData.totalLiquidityUSD, overviewData24.totalLiquidityUSD)
+        // 24H transactions
+        const [txCount, txCountChange] = getChangeForPeriod(
+          overviewData.totalTransactions,
+          overviewData24.totalTransactions,
+          overviewData48.totalTransactions,
+        )
+        const protocolData: ProtocolData = {
+          volumeUSD,
+          volumeUSDChange: typeof volumeUSDChange === 'number' ? volumeUSDChange : 0,
+          liquidityUSD: overviewData.totalLiquidityUSD,
+          liquidityUSDChange,
+          txCount,
+          txCountChange,
+        }
+        setFetchState({
+          error: false,
+          data: protocolData,
+        })
+      }
+    }
     const allBlocksAvailable = block24?.number && block48?.number
     if (allBlocksAvailable && !blockError && !fetchState.data) {
-      fetch()
+      if (chainName === 'ETH') fetchETH()
+      else fetchBSC()
     }
-  }, [block24, block48, blockError, fetchState])
+  }, [block24, block48, blockError, fetchState, chainName])
 
   return fetchState
 }
