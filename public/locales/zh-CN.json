@@ -1887,8 +1887,8 @@
   "0.0001 CAKE will be spent to extend": "0.0001 CAKE 将用于延长",
   "0.0001 CAKE required for enabling extension": "启用延长需要 0.0001 CAKE",
   "Recommend choosing \"MAX\" to renew your staking position in order to keep similar yield boost.": "建议选择“MAX”来更新您的质押头寸，以保持类似的收益提升。",
-  "Add to %wallet%": "添加到 %wallet%",
-  "Add %asset% to %wallet%": "将 %asset% 添加到 %wallet%",
+  "Add to Wallet": "Add to Wallet",
+  "Add %asset% to Wallet": "Add %asset% to Wallet",
   "After Burning starts at %burnStartTime%. You need to renew your fix-term position, to initiate a new lock or convert your staking position to flexible before it starts. Otherwise all the rewards will be burned within the next 90 days.": "在 %burnStartTime% 开始焚毁之后。您需要更新您的定期头寸、启动新的锁定或在开始之前将您的质押头寸转换为灵活头寸。否则，所有奖励将在接下来的 90 天内焚毁。",
   "Common tokens": "常用代币",
   "Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol%": "将最大 %inputAmount% %inputSymbol% 兑换为 %outputAmount% %outputSymbol%",
@@ -1910,5 +1910,13 @@
   "Remove %amountA% %symbolA% and %amountB% %symbolB%": "Remove %amountA% %symbolA% and %amountB% %symbolB%",
   "Zap %amountA% %symbolA% and %amountB% %symbolB%": "Zap %amountA% %symbolA% and %amountB% %symbolB%",
   "Zap in %amount% BNB for %symbol%": "Zap in %amount% BNB for %symbol%",
-  "Zap in %amount% %symbol% for %lpSymbol%": "Zap in %amount% %symbol% for %lpSymbol%"
+  "Zap in %amount% %symbol% for %lpSymbol%": "Zap in %amount% %symbol% for %lpSymbol%",
+  "Insufficient input token balance. Your transaction may fail.": "Insufficient input token balance. Your transaction may fail.",
+  "Wrong Network": "Wrong Network",
+  "Check your network": "Check your network",
+  "Switch to %network%": "Switch to %network%",
+  "You are in wrong network": "You are in wrong network",
+  "This page is located for %network%.": "This page is located for %network%.",
+  "You are under %network% now, please switch the network to continue.": "You are under %network% now, please switch the network to continue.",
+  "Switch network to continue.": "Switch network to continue."
 }
