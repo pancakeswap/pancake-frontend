@@ -1887,8 +1887,8 @@
   "0.0001 CAKE will be spent to extend": "سيتم إنفاق 0.0001 من CAKE للتمديد",
   "0.0001 CAKE required for enabling extension": "مطلوب 0.0001 من CAKE لتمكين التمديد",
   "Recommend choosing \"MAX\" to renew your staking position in order to keep similar yield boost.": "يوصى باختيار \"MAX\" لتجديد مركز الرهن الخاص بك من أجل الحفاظ على تعزيز عائد مماثل.",
-  "Add to %wallet%": "إضافة إلى %wallet%",
-  "Add %asset% to %wallet%": "إضافة %asset% إلى %wallet%",
+  "Add to Wallet": "Add to Wallet",
+  "Add %asset% to Wallet": "Add %asset% to Wallet",
   "After Burning starts at %burnStartTime%. You need to renew your fix-term position, to initiate a new lock or convert your staking position to flexible before it starts. Otherwise all the rewards will be burned within the next 90 days.": "بعد بدء الحرق في %burnStartTime%. ستحتاج إلى تجديد مركزك ثابت المدة، لبدء تجميد جديد أو تحويل مركز الرهن الخاص بك إلى مرن قبل أن يبدأ. خلاف ذلك، سيتم حرق جميع المكافآت خلال 90 يومًا التالية.",
   "Common tokens": "الرموز المميزة العامة",
   "Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol%": "مبادلة %inputAmount% %inputSymbol% بحد أقصى بـ %outputAmount% %outputSymbol%",
@@ -1910,5 +1910,13 @@
   "Remove %amountA% %symbolA% and %amountB% %symbolB%": "Remove %amountA% %symbolA% and %amountB% %symbolB%",
   "Zap %amountA% %symbolA% and %amountB% %symbolB%": "Zap %amountA% %symbolA% and %amountB% %symbolB%",
   "Zap in %amount% BNB for %symbol%": "Zap in %amount% BNB for %symbol%",
-  "Zap in %amount% %symbol% for %lpSymbol%": "Zap in %amount% %symbol% for %lpSymbol%"
+  "Zap in %amount% %symbol% for %lpSymbol%": "Zap in %amount% %symbol% for %lpSymbol%",
+  "Insufficient input token balance. Your transaction may fail.": "Insufficient input token balance. Your transaction may fail.",
+  "Wrong Network": "Wrong Network",
+  "Check your network": "Check your network",
+  "Switch to %network%": "Switch to %network%",
+  "You are in wrong network": "You are in wrong network",
+  "This page is located for %network%.": "This page is located for %network%.",
+  "You are under %network% now, please switch the network to continue.": "You are under %network% now, please switch the network to continue.",
+  "Switch network to continue.": "Switch network to continue."
 }
