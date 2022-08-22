@@ -43,7 +43,11 @@ export function UnsupportedNetworkModal() {
             {isLoading ? <Dots>{t('Switch network in wallet')}</Dots> : t('Switch network in wallet')}
           </Button>
         )}
-        {isConnected && <Button onClick={logout}>{t('Disconnect Wallet')}</Button>}
+        {isConnected && (
+          <Button variant="secondary" onClick={logout}>
+            {t('Disconnect Wallet')}
+          </Button>
+        )}
       </Grid>
     </Modal>
   )

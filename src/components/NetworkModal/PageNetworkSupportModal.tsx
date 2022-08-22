@@ -60,6 +60,7 @@ export function PageNetworkSupportModal() {
         )}
         {isConnected && (
           <Button
+            variant="secondary"
             onClick={() =>
               logout().then(() => {
                 push('/')
