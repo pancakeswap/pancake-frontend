@@ -1550,10 +1550,7 @@
   "%percentage%% above market": "高于市价 %percentage%%",
   "%percentage%% below market": "低于市价 %percentage%%",
   "Real execution price: %price%": "实际执行价格：%price%",
-  "Takes into account the gas necessary to execute your order and guarantees that your desired rate is fulfilled.": "考虑到执行您的订单所需的 gas，并保证您的期望费率得到满足。",
-  "It fluctuates according to gas prices.": "它根据 gas 价格波动。",
   "Assuming current gas price it should execute when 1 %assetOneSymbol% = %price% %assetTwoSymbol%": "根据当前 gas 价格，它应该在 1 %assetOneSymbol% = %price% %assetTwoSymbol% 时执行",
-  "Assuming current gas price this order will never execute. Try increasing the amount of tokens to swap.": "根据当前 gas 价格，此订单将永远不会执行。尝试增加要兑换的代币金额。",
   "Real Execution Price:": "实际执行价格：",
   "Your execution gas fees are paid for by the spread between your specified price and the real execution price.": "您的执行 gas 费用由您指定的价格与实际执行价格之间的差价支付。",
   "Gas fees are volatile and thus the exact market price at which your order will execute is unpredictable.": "Gas 费用不稳定，因此您的订单将执行的确切市场价格不可预测。",
@@ -1911,7 +1908,7 @@
   "Zap %amountA% %symbolA% and %amountB% %symbolB%": "Zap %amountA% %symbolA% and %amountB% %symbolB%",
   "Zap in %amount% BNB for %symbol%": "Zap in %amount% BNB for %symbol%",
   "Zap in %amount% %symbol% for %lpSymbol%": "Zap in %amount% %symbol% for %lpSymbol%",
-  "never executes": "never executes",
+  "never executes": "无法执行",
   "Order not allowed": "Order not allowed",
   "Only possible to place sell orders above market rate": "Only possible to place sell orders above market rate",
   "Only possible to place buy orders below market rate": "Only possible to place buy orders below market rate",
@@ -1922,5 +1919,8 @@
   "You are in wrong network": "You are in wrong network",
   "This page is located for %network%.": "This page is located for %network%.",
   "You are under %network% now, please switch the network to continue.": "You are under %network% now, please switch the network to continue.",
-  "Switch network to continue.": "Switch network to continue."
+  "Switch network to continue.": "Switch network to continue.",
+  "The real execution price includes the gas cost necessary to execute your order and guarantees that your order will be executed at the desired price.": "The real execution price includes the gas cost necessary to execute your order and guarantees that your order will be executed at the desired price.",
+  "It fluctuates according to gas prices when the order is getting executed.": "It fluctuates according to gas prices when the order is getting executed.",
+  "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.": "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order."
 }
