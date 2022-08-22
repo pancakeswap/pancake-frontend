@@ -16,7 +16,7 @@ import useAuth from 'hooks/useAuth'
 export function PageNetworkSupportModal() {
   const { t } = useTranslation()
   const { switchNetworkAsync, isLoading, canSwitch } = useSwitchNetwork()
-  const { chainId } = useActiveWeb3React()
+  const { chainId, isConnected } = useActiveWeb3React()
   const { logout } = useAuth()
 
   const foundChain = useMemo(() => chains.find((c) => c.id === chainId), [chainId])
@@ -53,11 +53,12 @@ export function PageNetworkSupportModal() {
             'Our Trading Competition, Prediction and Lottery features are currently available only on BNB Chain! Come over and join the community in the fun!',
           )}
         </Text>
-        {canSwitch ? (
+        {canSwitch && (
           <Button variant="secondary" isLoading={isLoading} onClick={() => switchNetworkAsync(ChainId.BSC)}>
             {t('Switch to %chain%', { chain: 'BNB Smart Chain' })}
           </Button>
-        ) : (
+        )}
+        {isConnected && (
           <Button
             onClick={() =>
               logout().then(() => {
