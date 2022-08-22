@@ -2,11 +2,12 @@
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
 import { TokenData } from 'state/info/types'
-import { infoClient } from 'utils/graphql'
+import { infoClient, infoClientETH } from 'utils/graphql'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getAmountChange, getPercentChange } from 'views/Info/utils/infoDataHelpers'
+import { useGetChainName } from '../../hooks'
 
 interface TokenFields {
   id: string
@@ -106,6 +107,31 @@ const fetchTokenData = async (
   }
 }
 
+const fetchTokenDataETH = async (
+  block24h: number,
+  block48h: number,
+  block7d: number,
+  block14d: number,
+  tokenAddresses: string[],
+) => {
+  try {
+    const query = gql`
+      query tokens {
+        now: ${TOKEN_AT_BLOCK_ETH(null, tokenAddresses)}
+        oneDayAgo: ${TOKEN_AT_BLOCK_ETH(block24h, tokenAddresses)}
+        twoDaysAgo: ${TOKEN_AT_BLOCK_ETH(block48h, tokenAddresses)}
+        oneWeekAgo: ${TOKEN_AT_BLOCK_ETH(block7d, tokenAddresses)}
+        twoWeeksAgo: ${TOKEN_AT_BLOCK_ETH(block14d, tokenAddresses)}
+      }
+    `
+    const data = await infoClientETH.request<TokenQueryResponse>(query)
+    return { data, error: false }
+  } catch (error) {
+    console.error('Failed to fetch token data', error)
+    return { error: true }
+  }
+}
+
 // Transforms tokens into "0xADDRESS: { ...TokenFields }" format and cast strings to numbers
 const parseTokenData = (tokens?: TokenFields[]) => {
   if (!tokens) {
@@ -140,16 +166,14 @@ const useFetchedTokenDatas = (tokenAddresses: string[]): TokenDatas => {
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks, error: blockError } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
   const [block24h, block48h, block7d, block14d] = blocks ?? []
+  const chainName = useGetChainName()
 
   useEffect(() => {
     const fetch = async () => {
-      const { error, data } = await fetchTokenData(
-        block24h.number,
-        block48h.number,
-        block7d.number,
-        block14d.number,
-        tokenAddresses,
-      )
+      const { error, data } = await (chainName === 'ETH'
+        ? fetchTokenDataETH(block24h.number, block48h.number, block7d.number, block14d.number, tokenAddresses)
+        : fetchTokenData(block24h.number, block48h.number, block7d.number, block14d.number, tokenAddresses))
+
       if (error) {
         setFetchState({ error: true })
       } else {
