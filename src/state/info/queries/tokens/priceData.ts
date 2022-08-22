@@ -18,6 +18,18 @@ const getPriceSubqueries = (tokenAddress: string, blocks: any) =>
     `,
   )
 
+const getPriceSubqueriesETH = (tokenAddress: string, blocks: any) =>
+  blocks.map(
+    (block: any) => `
+      t${block.timestamp}:token(id:"${tokenAddress}", block: { number: ${block.number} }) { 
+        derivedETH
+      }
+      b${block.timestamp}: bundle(id:"1", block: { number: ${block.number} }) { 
+        ethPrice
+      }
+    `,
+  )
+
 /**
  * Price data for token and bnb based on block number
  */

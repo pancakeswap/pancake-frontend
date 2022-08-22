@@ -57,6 +57,10 @@ export interface PancakeDayDatasResponse {
   pancakeDayDatas: PancakeDayData[]
 }
 
+export interface UniSwapDayDatasResponse {
+  uniswapDayDatas: PancakeDayData[]
+}
+
 export interface PairDayData {
   date: number // UNIX timestamp in seconds
   dailyVolumeUSD: string

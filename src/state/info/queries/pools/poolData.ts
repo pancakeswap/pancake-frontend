@@ -81,6 +81,35 @@ const POOL_AT_BLOCK = (block: number | null, pools: string[]) => {
   }`
 }
 
+const POOL_AT_BLOCK_ETH = (block: number | null, pools: string[]) => {
+  const blockString = block ? `block: {number: ${block}}` : ``
+  const addressesString = `["${pools.join('","')}"]`
+  return `pairs(
+    where: { id_in: ${addressesString} }
+    ${blockString}
+    orderBy: trackedReserveBNB
+    orderDirection: desc
+  ) {
+  id
+    reserve0
+    reserve1
+    reserveUSD
+    volumeUSD
+    token0Price
+    token1Price
+    token0 {
+      id
+      symbol
+      name
+    }
+    token1 {
+      id
+      symbol
+      name
+    }
+  }`
+}
+
 export const fetchPoolData = async (
   block24h: number,
   block48h: number,

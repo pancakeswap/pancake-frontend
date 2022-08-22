@@ -26,6 +26,27 @@ const POOLS_FOR_TOKEN = gql`
   }
 `
 
+const POOLS_FOR_TOKEN_ETH = gql`
+  query poolsForToken($address: Bytes!, $blacklist: [String!]) {
+    asToken0: pairs(
+      first: 15
+      orderBy: trackedReserveETH
+      orderDirection: desc
+      where: { txCount_gt: 100, token0: $address, token1_not_in: $blacklist }
+    ) {
+      id
+    }
+    asToken1: pairs(
+      first: 15
+      orderBy: trackedReserveETH
+      orderDirection: desc
+      where: { txCount_gt: 100, token1: $address, token0_not_in: $blacklist }
+    ) {
+      id
+    }
+  }
+`
+
 interface PoolsForTokenResponse {
   asToken0: {
     id: string

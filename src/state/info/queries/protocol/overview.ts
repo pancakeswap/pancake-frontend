@@ -17,6 +17,38 @@ interface OverviewResponse {
   pancakeFactories: PancakeFactory[]
 }
 
+interface UniSwapFactory {
+  txCount: string
+  totalVolumeUSD: string
+  totalLiquidityUSD: string
+}
+
+interface OverviewUniSwapResponse {
+  uniswapFactories: UniSwapFactory[]
+}
+
+const getOverviewDataUni = async (block?: number): Promise<{ data?: OverviewUniSwapResponse; error: boolean }> => {
+  try {
+    const query = gql`
+      query overview {
+        uniswapFactories(where: { id: "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f" }, ${
+          block ? `block: { number: ${block}}` : ``
+        }) {
+          totalVolumeUSD
+          totalLiquidityUSD
+          txCount
+        }
+      }
+    `
+
+    console.log({ getOverviewData: query })
+    const data = await infoClient.request<OverviewUniSwapResponse>(query)
+    return { data, error: false }
+  } catch (error) {
+    console.error('Failed to fetch info overview', error)
+    return { data: null, error: true }
+  }
+}
 /**
  * Latest Liquidity, Volume and Transaction count
  */
@@ -53,6 +85,17 @@ const formatPancakeFactoryResponse = (rawPancakeFactory?: PancakeFactory) => {
 interface ProtocolFetchState {
   error: boolean
   data?: ProtocolData
+}
+
+const formatUniSwapFactoryResponse = (rawPancakeFactory?: UniSwapFactory) => {
+  if (rawPancakeFactory) {
+    return {
+      totalTransactions: parseFloat(rawPancakeFactory.txCount),
+      totalVolumeUSD: parseFloat(rawPancakeFactory.totalVolumeUSD),
+      totalLiquidityUSD: parseFloat(rawPancakeFactory.totalLiquidityUSD),
+    }
+  }
+  return null
 }
 
 const useFetchProtocolData = (): ProtocolFetchState => {

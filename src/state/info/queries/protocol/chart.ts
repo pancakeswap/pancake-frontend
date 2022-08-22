@@ -20,6 +20,16 @@ const PANCAKE_DAY_DATAS = gql`
   }
 `
 
+const UNISWAP_DAY_DATAS = gql`
+  query overviewCharts($startTime: Int!, $skip: Int!) {
+    uniswapDayDatas(first: 1000, skip: $skip, where: { date_gt: $startTime }, orderBy: date, orderDirection: asc) {
+      date
+      dailyVolumeUSD
+      totalLiquidityUSD
+    }
+  }
+`
+
 const getOverviewChartData = async (skip: number): Promise<{ data?: ChartEntry[]; error: boolean }> => {
   try {
     const { pancakeDayDatas } = await infoClient.request<PancakeDayDatasResponse>(PANCAKE_DAY_DATAS, {
