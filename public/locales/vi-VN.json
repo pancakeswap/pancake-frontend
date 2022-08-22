@@ -1550,10 +1550,7 @@
   "%percentage%% above market": "%percentage%% cao hơn giá thị trường",
   "%percentage%% below market": "%percentage%% thấp hơn giá thị trường",
   "Real execution price: %price%": "Giá thực thi thực tế: %price%",
-  "Takes into account the gas necessary to execute your order and guarantees that your desired rate is fulfilled.": "Tính đến phí ga cần thiết để thực thi lệnh của bạn và đảm bảo rằng mức giá mong muốn của bạn được đáp ứng.",
-  "It fluctuates according to gas prices.": "Nó sẽ biến động theo phí ga.",
   "Assuming current gas price it should execute when 1 %assetOneSymbol% = %price% %assetTwoSymbol%": "Giả sử với phí ga hiện tại, lệnh sẽ được thực thi khi 1 %assetOneSymbol% = %price% %assetTwoSymbol%",
-  "Assuming current gas price this order will never execute. Try increasing the amount of tokens to swap.": "Giả sử với phí ga hiện tại, lệnh này sẽ không bao giờ được thực thi. Hãy thử tăng số token để hoán đổi.",
   "Real Execution Price:": "Giá thực thi thực tế:",
   "Your execution gas fees are paid for by the spread between your specified price and the real execution price.": "Phí ga thực thi của bạn được thanh toán bởi mức chênh giá giữa giá mà bạn đã quy định và giá thực thi thực tế.",
   "Gas fees are volatile and thus the exact market price at which your order will execute is unpredictable.": "Phí ga thường bất ổn và do đó khó xác định giá thị trường chính xác để thực thi lệnh của bạn.",
@@ -1922,5 +1919,8 @@
   "You are in wrong network": "You are in wrong network",
   "This page is located for %network%.": "This page is located for %network%.",
   "You are under %network% now, please switch the network to continue.": "You are under %network% now, please switch the network to continue.",
-  "Switch network to continue.": "Switch network to continue."
+  "Switch network to continue.": "Switch network to continue.",
+  "The real execution price includes the gas cost necessary to execute your order and guarantees that your order will be executed at the desired price.": "The real execution price includes the gas cost necessary to execute your order and guarantees that your order will be executed at the desired price.",
+  "It fluctuates according to gas prices when the order is getting executed.": "It fluctuates according to gas prices when the order is getting executed.",
+  "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.": "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order."
 }
