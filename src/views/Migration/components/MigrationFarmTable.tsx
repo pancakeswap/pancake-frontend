@@ -10,7 +10,7 @@ import Row, { RowProps } from './MigrationStep2/NewFarm/FarmRow'
 import { FarmWithStakedValue } from '../../Farms/components/types'
 import { getDisplayApr } from '../../Farms/components/getDisplayApr'
 import { getBalanceNumber } from '../../../utils/formatBalance'
-import { ColumnsDefTypes } from './types'
+import { ColumnsDefTypes, DesktopV2ColumnSchema } from './types'
 
 const Container = styled.div`
   overflow: hidden;
@@ -47,9 +47,7 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
     const tokenAddress = token.address
     const quoteTokenAddress = quoteToken.address
     const lpLabel = farm.lpSymbol && farm.lpSymbol.split(' ')[0].toUpperCase().replace('PANCAKE', '')
-
-    const row: RowProps = {
-      apr: {
+    const customColumnSchema = columnSchema === DesktopV2ColumnSchema ? { apr: {
         value: getDisplayApr(farm.apr, farm.lpRewardsApr),
         pid: farm.pid,
         multiplier: farm.multiplier,
@@ -60,7 +58,11 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
         cakePrice,
         lpRewardsApr: farm.lpRewardsApr,
         originalValue: farm.apr,
-      },
+      }
+    } : { unstake: { pid: farm.pid } }
+
+    const row: RowProps = {
+      { ...customColumnSchema },
       farm: {
         ...farm,
         label: lpLabel,
