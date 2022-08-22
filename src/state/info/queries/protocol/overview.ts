@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
 import { ProtocolData } from 'state/info/types'
-import { infoClient } from 'utils/graphql'
+import { infoClient, infoClientETH } from 'utils/graphql'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
@@ -43,7 +43,7 @@ const getOverviewDataUni = async (block?: number): Promise<{ data?: OverviewUniS
     `
 
     console.log({ getOverviewData: query })
-    const data = await infoClient.request<OverviewUniSwapResponse>(query)
+    const data = await infoClientETH.request<OverviewUniSwapResponse>(query)
     return { data, error: false }
   } catch (error) {
     console.error('Failed to fetch info overview', error)

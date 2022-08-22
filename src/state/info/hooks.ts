@@ -330,6 +330,7 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
 }
 
 export const useGetChainName = () => {
+  return 'ETH'
   const { chainId } = useActiveWeb3React()
   if (ChainId.ETHEREUM === chainId) return 'ETH'
   return 'BSC'
