@@ -41,7 +41,6 @@ export function PageNetworkSupportModal() {
     <Modal title={title || t('Check your network')} hideCloseButton headerBackground="gradients.cardHeader">
       <Grid style={{ gap: '16px' }} maxWidth="360px">
         <Text bold>{t('It’s a BNB Smart Chain only feature')}</Text>
-        <Text small>{t('Currently only Swap is supported in BNB Smart Chain')}</Text>
 
         {image && (
           <Box mx="auto" my="8px" position="relative" width="100%" minHeight="250px">
@@ -50,7 +49,7 @@ export function PageNetworkSupportModal() {
         )}
         <Text small>
           {t(
-            'Our Trading Competition, Prediction and Lottery features are currently available only on BNB Chain! Come over and join the community in the fun!',
+            'Our Pools, Limit, Trading Competition, Prediction, Lottery and NFTs features are currently available only on BNB Chain! Come over and join the community in the fun!',
           )}
         </Text>
         {canSwitch && (
