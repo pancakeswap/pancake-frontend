@@ -60,10 +60,10 @@ async function getUserMultiplier({ farmBoosterContract, account, pid }): Promise
 
   if (!data) return 0
 
-  const [[multipler], [BOOST_PRECISION]] = data
+  const [[multiplier], [BOOST_PRECISION]] = data
 
   return _toNumber(
-    PRECISION_FACTOR.addUnsafe(FixedNumber.from(multipler))
+    PRECISION_FACTOR.addUnsafe(FixedNumber.from(multiplier))
       .subUnsafe(FixedNumber.from(BOOST_PRECISION))
       .divUnsafe(PRECISION_FACTOR)
       .round(3)
