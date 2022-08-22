@@ -45,7 +45,7 @@ const ActivityHistory = () => {
   useEffect(() => {
     const fetchAddressActivity = async () => {
       try {
-        const addressActivity = await getUserActivity(accountAddress.toLocaleLowerCase())
+        const addressActivity = await getUserActivity(accountAddress.toLowerCase())
         setSortedUserActivities(sortUserActivity(accountAddress, addressActivity))
         setIsLoading(false)
       } catch (error) {

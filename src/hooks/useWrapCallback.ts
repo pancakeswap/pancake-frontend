@@ -50,12 +50,12 @@ export default function useWrapCallback(
                   const txReceipt = await callWithGasPrice(wbnbContract, 'deposit', undefined, {
                     value: `0x${inputAmount.quotient.toString(16)}`,
                   })
+                  const amount = inputAmount.toSignificant(6)
+                  const native = inputCurrency.symbol
+                  const wrap = WNATIVE[chainId].symbol
                   addTransaction(txReceipt, {
-                    summary: t('Wrap %amount% %native% to %wrap%', {
-                      amount: inputAmount.toSignificant(6),
-                      wrap: WNATIVE[chainId].symbol,
-                      native: inputCurrency.symbol,
-                    }),
+                    summary: `Wrap ${amount} ${native} to ${wrap}`,
+                    translatableSummary: { text: 'Wrap %amount% %native% to %wrap%', data: { amount, native, wrap } },
                     type: 'wrap',
                   })
                 } catch (error) {
@@ -78,12 +78,12 @@ export default function useWrapCallback(
                   const txReceipt = await callWithGasPrice(wbnbContract, 'withdraw', [
                     `0x${inputAmount.quotient.toString(16)}`,
                   ])
+                  const amount = inputAmount.toSignificant(6)
+                  const wrap = WNATIVE[chainId].symbol
+                  const native = outputCurrency.symbol
                   addTransaction(txReceipt, {
-                    summary: t('Unwrap %amount% %wrap% to %native%', {
-                      amount: inputAmount.toSignificant(6),
-                      wrap: WNATIVE[chainId].symbol,
-                      native: outputCurrency.symbol,
-                    }),
+                    summary: `Unwrap ${amount} ${wrap} to ${native}`,
+                    translatableSummary: { text: 'Unwrap %amount% %wrap% to %native%', data: { amount, wrap, native } },
                   })
                 } catch (error) {
                   console.error('Could not withdraw', error)

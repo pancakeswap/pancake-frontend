@@ -1,4 +1,6 @@
 import { SerializedFarmConfig } from 'config/constants/types'
+import groupBy from 'lodash/groupBy'
+import isUndefinedOrNull from 'utils/isUndefinedOrNull'
 
 interface SplitProxyFarmsResponse {
   normalFarms: SerializedFarmConfig[]
@@ -6,20 +8,8 @@ interface SplitProxyFarmsResponse {
 }
 
 export default function splitProxyFarms(farms: SerializedFarmConfig[]): SplitProxyFarmsResponse {
-  const { normalFarms, farmsWithProxy } = farms.reduce(
-    (acc, farm) => {
-      if (farm.boosted) {
-        return {
-          ...acc,
-          farmsWithProxy: [...acc.farmsWithProxy, farm],
-        }
-      }
-      return {
-        ...acc,
-        normalFarms: [...acc.normalFarms, farm],
-      }
-    },
-    { normalFarms: [], farmsWithProxy: [] },
+  const { false: normalFarms, true: farmsWithProxy } = groupBy(farms, (farm) =>
+    isUndefinedOrNull(farm.boosted) ? false : farm.boosted,
   )
 
   return { normalFarms, farmsWithProxy }

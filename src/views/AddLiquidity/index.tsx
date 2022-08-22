@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { JSBI, CurrencyAmount, Token, WNATIVE, MINIMUM_LIQUIDITY, ChainId } from '@pancakeswap/sdk'
+import { JSBI, CurrencyAmount, Token, WNATIVE, MINIMUM_LIQUIDITY } from '@pancakeswap/sdk'
 import {
   Button,
   Text,
@@ -24,6 +24,7 @@ import { getLPSymbol } from 'utils/getLpSymbol'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useRouter } from 'next/router'
 import { callWithEstimateGas } from 'utils/calls'
+import { SUPPORT_ZAP } from 'config/constants/supportChains'
 import { ContractMethodName } from 'utils/types'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useLPApr } from 'state/swap/hooks'
@@ -74,7 +75,6 @@ enum Steps {
 }
 
 const zapAddress = getZapAddress()
-const zapSupportedChain = [ChainId.BSC, ChainId.BSC_TESTNET]
 
 export default function AddLiquidity() {
   const router = useRouter()
@@ -177,7 +177,7 @@ export default function AddLiquidity() {
     () =>
       !!zapModeStatus &&
       !noLiquidity &&
-      zapSupportedChain.includes(chainId) &&
+      SUPPORT_ZAP.includes(chainId) &&
       !(
         (pair && JSBI.lessThan(pair.reserve0.quotient, MINIMUM_LIQUIDITY)) ||
         (pair && JSBI.lessThan(pair.reserve1.quotient, MINIMUM_LIQUIDITY))
@@ -306,10 +306,16 @@ export default function AddLiquidity() {
         }).then((response) => {
           setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
 
+          const symbolA = currencies[Field.CURRENCY_A]?.symbol
+          const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
+          const symbolB = currencies[Field.CURRENCY_B]?.symbol
+          const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)
           addTransaction(response, {
-            summary: `Add ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
-              currencies[Field.CURRENCY_A]?.symbol
-            } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`,
+            summary: `Add ${amountA} ${symbolA} and ${amountB} ${symbolB}`,
+            translatableSummary: {
+              text: 'Add %amountA% %symbolA% and %amountB% %symbolB%',
+              data: { amountA, symbolA, amountB, symbolB },
+            },
             type: 'add-liquidity',
           })
 
@@ -392,12 +398,19 @@ export default function AddLiquidity() {
     let args
     let value: BigNumberish | null
     let summary: string
+    let translatableSummary: { text: string; data?: Record<string, string | number> }
     const minAmountOut = zapIn.zapInEstimated.swapAmountOut.mul(10000 - allowedSlippage).div(10000)
     if (rebalancing) {
       const maxAmountIn = zapIn.zapInEstimated.swapAmountIn.mul(10000 + allowedSlippage).div(10000)
-      summary = `Zap ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
-        currencies[Field.CURRENCY_A]?.symbol
-      } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`
+      const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
+      const symbolA = currencies[Field.CURRENCY_A]?.symbol
+      const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)
+      const symbolB = currencies[Field.CURRENCY_B]?.symbol
+      summary = `Zap ${amountA} ${symbolA} and ${amountB} ${symbolB}`
+      translatableSummary = {
+        text: 'Zap %amountA% %symbolA% and %amountB% %symbolB%',
+        data: { amountA, symbolA, amountB, symbolB },
+      }
       if (currencyA?.isNative || currencyB?.isNative) {
         const tokenBIsBNB = currencyB?.isNative
         method = 'zapInBNBRebalancing'
@@ -426,10 +439,13 @@ export default function AddLiquidity() {
     } else if (currencies[zapIn.swapTokenField]?.isNative) {
       method = 'zapInBNB'
       args = [pair.liquidityToken.address, minAmountOut]
-      summary = `Zap in ${parsedAmounts[zapIn.swapTokenField]?.toSignificant(3)} BNB for ${getLPSymbol(
-        pair.token0.symbol,
-        pair.token1.symbol,
-      )}`
+      const amount = parsedAmounts[zapIn.swapTokenField]?.toSignificant(3)
+      const symbol = getLPSymbol(pair.token0.symbol, pair.token1.symbol)
+      summary = `Zap in ${amount} BNB for ${symbol}`
+      translatableSummary = {
+        text: 'Zap in %amount% BNB for %symbol%',
+        data: { amount, symbol },
+      }
       value = parsedAmounts[zapIn.swapTokenField].quotient.toString()
     } else {
       method = 'zapInToken'
@@ -439,9 +455,14 @@ export default function AddLiquidity() {
         pair.liquidityToken.address,
         minAmountOut,
       ]
-      summary = `Zap in ${parsedAmounts[zapIn.swapTokenField]?.toSignificant(3)} ${
-        currencies[zapIn.swapTokenField].symbol
-      } for ${getLPSymbol(pair.token0.symbol, pair.token1.symbol)}`
+      const amount = parsedAmounts[zapIn.swapTokenField]?.toSignificant(3)
+      const { symbol } = currencies[zapIn.swapTokenField]
+      const lpSymbol = getLPSymbol(pair.token0.symbol, pair.token1.symbol)
+      summary = `Zap in ${amount} ${symbol} for ${lpSymbol}`
+      translatableSummary = {
+        text: 'Zap in %amount% %symbol% for %lpSymbol%',
+        data: { amount, symbol, lpSymbol },
+      }
     }
 
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
@@ -452,6 +473,7 @@ export default function AddLiquidity() {
 
         addTransaction(response, {
           summary,
+          translatableSummary,
           type: 'add-liquidity',
         })
 
@@ -466,7 +488,10 @@ export default function AddLiquidity() {
         }
         setLiquidityState({
           attemptingTxn: false,
-          liquidityErrorMessage: err && err.code !== 4001 ? `Add Liquidity failed: ${err.message}` : undefined,
+          liquidityErrorMessage:
+            err && err.code !== 4001
+              ? t('Add liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err, t) })
+              : undefined,
           txHash: undefined,
         })
       })

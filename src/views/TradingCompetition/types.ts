@@ -1,4 +1,3 @@
-import { ReactText } from 'react'
 import { Profile } from 'state/types'
 import { StaticImageData } from 'next/dist/client/image'
 
@@ -88,7 +87,35 @@ export interface UserRewardsProps {
     pointsToClaim?: string
   }
 }
+
+export const initialUserLeaderboardInformation = {
+  global: 0,
+  team: 0,
+  volume: 0,
+  next_rank: 0,
+  moboxVolumeRank: '???',
+  moboxVolume: '???',
+  darVolumeRank: '???',
+  darVolume: '???',
+}
+
+export const initialUserTradingInformation = {
+  isLoading: true,
+  hasRegistered: false,
+  isUserActive: false,
+  hasUserClaimed: false,
+  userRewardGroup: '0',
+  userCakeRewards: '0',
+  userMoboxRewards: '0',
+  userDarRewards: '0',
+  userPointReward: '0',
+  canClaimMysteryBox: false,
+  canClaimNFT: false,
+}
+
 export interface UserTradingInformation {
+  isLoading: boolean
+  account?: string
   hasRegistered?: boolean
   isUserActive?: boolean
   hasUserClaimed?: boolean
@@ -102,8 +129,8 @@ export interface UserTradingInformation {
 }
 
 export interface UserLeaderboardSharedInformation {
-  global?: ReactText
-  team?: ReactText
+  global?: string | number
+  team?: string | number
   volume?: number
   // eslint-disable-next-line camelcase
   next_rank?: number

@@ -50,6 +50,8 @@ const farms: SerializedFarmConfig[] = [
     lpAddresses: '0xaA2527ff1893e0D40d4a454623d362B79E8bb7F1',
     token: serializedTokens.stkbnb,
     quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1660896000,
   },
   {
     pid: 113,
@@ -98,7 +100,6 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.wzrd,
     quoteToken: serializedTokens.busd,
     isCommunity: true,
-    auctionHostingStartSeconds: 1659603600,
   },
   {
     pid: 73,

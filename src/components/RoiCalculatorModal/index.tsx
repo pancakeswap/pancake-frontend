@@ -225,11 +225,12 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
               p="4px 16px"
               width="128px"
               variant="tertiary"
+              style={{ textTransform: 'uppercase' }}
               onClick={() =>
                 setPrincipalFromUSDValue(getBalanceNumber(stakingTokenBalance.times(stakingTokenPrice)).toString())
               }
             >
-              {t('My Balance').toLocaleUpperCase()}
+              {t('My Balance')}
             </Button>
             <span ref={targetRef}>
               <HelpIcon width="16px" height="16px" color="textSubtle" />

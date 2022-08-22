@@ -1,8 +1,13 @@
-import { Currency, JSBI, Price, WNATIVE, ChainId } from '@pancakeswap/sdk'
-import { CAKE, BUSD } from 'config/constants/tokens'
+import { ChainId, Currency, CurrencyAmount, JSBI, Pair, Price, Token, WNATIVE } from '@pancakeswap/sdk'
+import { FAST_INTERVAL } from 'config/constants'
+import { BUSD, CAKE } from 'config/constants/tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
+import useSWR from 'swr'
+import getLpAddress from 'utils/getLpAddress'
 import { multiplyPriceByAmount } from 'utils/prices'
+import { useProvider } from 'wagmi'
+import { usePairContract } from './useContract'
 import { PairState, usePairs } from './usePairs'
 
 /**
@@ -77,10 +82,40 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
   ])
 }
 
+export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
+  const [tokenA, tokenB] = [currencyA?.wrapped, currencyB?.wrapped]
+  const pairAddress = getLpAddress(tokenA, tokenB)
+  const pairContract = usePairContract(pairAddress)
+  const provider = useProvider({ chainId: currencyA.chainId })
+
+  const { data: price } = useSWR(
+    currencyA && currencyB && ['pair-price', currencyA, currencyB],
+    async () => {
+      const reserves = await pairContract.connect(provider).getReserves()
+      if (!reserves) {
+        return null
+      }
+      const { reserve0, reserve1 } = reserves
+      const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
+
+      const pair = new Pair(
+        CurrencyAmount.fromRawAmount(token0, reserve0.toString()),
+        CurrencyAmount.fromRawAmount(token1, reserve1.toString()),
+      )
+
+      return pair.priceOf(tokenB)
+    },
+    { dedupingInterval: FAST_INTERVAL, refreshInterval: FAST_INTERVAL },
+  )
+
+  return price
+}
+
 export const useCakeBusdPrice = (): Price<Currency, Currency> | undefined => {
   const { chainId } = useActiveWeb3React()
-  const cakeBusdPrice = useBUSDPrice(CAKE[chainId])
-  return cakeBusdPrice
+  // Default bsc cake, if no cake address found
+  const cake: Token = CAKE[chainId] ? CAKE[chainId] : CAKE[ChainId.BSC]
+  return usePriceByPairs(BUSD[cake.chainId], cake)
 }
 
 export const useBUSDCurrencyAmount = (currency?: Currency, amount?: number): number | undefined => {

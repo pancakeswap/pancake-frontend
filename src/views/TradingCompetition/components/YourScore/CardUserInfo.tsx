@@ -1,4 +1,4 @@
-import { ReactText, ReactNode } from 'react'
+import { ReactNode } from 'react'
 import {
   Text,
   Heading,
@@ -58,7 +58,7 @@ const CardUserInfo: React.FC<React.PropsWithChildren<CardUserInfoProps>> = ({
   const { global, team, volume, next_rank: nextRank } = userLeaderboardInformation
   const shouldShowUserRanks = account && hasRegistered
 
-  const getMedal = (currentRank: ReactText) => {
+  const getMedal = (currentRank: string | number) => {
     if (currentRank === 1) {
       return {
         current: <MedalGoldIcon />,
@@ -95,7 +95,7 @@ const CardUserInfo: React.FC<React.PropsWithChildren<CardUserInfoProps>> = ({
     }
   }
 
-  const getNextTier = (currentRank: ReactText) => {
+  const getNextTier = (currentRank: string | number) => {
     if (currentRank === 1) {
       return {
         color: null,

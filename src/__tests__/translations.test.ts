@@ -1,8 +1,10 @@
 import Path from 'path'
 import fs from 'fs'
-import { translations } from '@pancakeswap/localization'
 import teams from 'config/constants/teams'
 import { NftLocation } from 'state/nftMarket/types'
+
+// FIXME: should move this test file inside localization pkg
+import translations from '../../packages/localization/src/config/translations.json'
 
 const allTranslationKeys = Object.keys(translations)
 
@@ -30,6 +32,15 @@ const whitelist = [
   'Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol% to %recipientAddress%',
   'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%',
   'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%',
+  'Unwrap %amount% %wrap% to %native%',
+  'Wrap %amount% %native% to %wrap%',
+  'Approve %symbol%',
+  'Add %amountA% %symbolA% and %amountB% %symbolB%',
+  'Remove %amount% %symbol%',
+  'Remove %amountA% %symbolA% and %amountB% %symbolB%',
+  'Zap %amountA% %symbolA% and %amountB% %symbolB%',
+  'Zap in %amount% BNB for %symbol%',
+  'Zap in %amount% %symbol% for %lpSymbol%',
 ]
 
 describe('Check translations integrity', () => {

@@ -1,7 +1,12 @@
+import { CHAIN_IDS } from '@pancakeswap/wagmi'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import AddLiquidity from 'views/AddLiquidity'
 
-export default AddLiquidity
+const AddLiquidityPage = () => <AddLiquidity />
+
+AddLiquidityPage.chains = CHAIN_IDS
+
+export default AddLiquidityPage
 
 const OLD_PATH_STRUCTURE = /^(0x[a-fA-F0-9]{40}|BNB)-(0x[a-fA-F0-9]{40}|BNB)$/
 

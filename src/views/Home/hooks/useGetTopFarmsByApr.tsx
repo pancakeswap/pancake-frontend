@@ -14,6 +14,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
   const dispatch = useAppDispatch()
   const { data: farms, regularCakePerBlock } = useFarms()
   const [fetchStatus, setFetchStatus] = useState(FetchStatus.Idle)
+  const [fetched, setFetched] = useState(false)
   const [topFarms, setTopFarms] = useState<FarmWithStakedValue[]>([null, null, null, null, null])
   const cakePriceBusd = usePriceCakeBusd()
   const { chainId } = useActiveWeb3React()
@@ -61,6 +62,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
 
       const sortedByApr = orderBy(farmsWithApr, (farm) => farm.apr + farm.lpRewardsApr, 'desc')
       setTopFarms(sortedByApr.slice(0, 5))
+      setFetched(true)
     }
 
     if (fetchStatus === FetchStatus.Fetched && !topFarms[0]) {
@@ -68,7 +70,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
     }
   }, [setTopFarms, farms, fetchStatus, cakePriceBusd, topFarms, regularCakePerBlock])
 
-  return { topFarms }
+  return { topFarms, fetched }
 }
 
 export default useGetTopFarmsByApr

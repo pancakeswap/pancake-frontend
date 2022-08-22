@@ -13,6 +13,7 @@ export default {
     api: GRAPH_API_PREDICTION_BNB,
     chainlinkOracleAddress: getAddress(addresses.chainlinkOracleBNB),
     minPriceUsdDisplayed: DEFAULT_MIN_PRICE_USD_DISPLAYED,
+    displayedDecimals: 4,
     token: bscTokens.bnb,
   },
   CAKE: {
@@ -20,6 +21,7 @@ export default {
     api: GRAPH_API_PREDICTION_CAKE,
     chainlinkOracleAddress: getAddress(addresses.chainlinkOracleCAKE),
     minPriceUsdDisplayed: DEFAULT_MIN_PRICE_USD_DISPLAYED,
+    displayedDecimals: 4,
     token: bscTokens.cake,
   },
 }

@@ -292,11 +292,14 @@ export default function RemoveLiquidity() {
     })
       .then((response) => {
         setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
+        const amount = parsedAmounts[Field.LIQUIDITY].toSignificant(3)
+        const symbol = getLPSymbol(pair.token0.symbol, pair.token1.symbol)
         addTransaction(response, {
-          summary: `Remove ${parsedAmounts[Field.LIQUIDITY].toSignificant(3)} ${getLPSymbol(
-            pair.token0.symbol,
-            pair.token1.symbol,
-          )}`,
+          summary: `Remove ${amount} ${symbol}`,
+          translatableSummary: {
+            text: 'Remove %amount% %symbol%',
+            data: { amount, symbol },
+          },
           type: 'remove-liquidity',
         })
       })
@@ -413,27 +416,27 @@ export default function RemoveLiquidity() {
       throw new Error('Attempting to confirm without approval or a signature')
     }
 
-    const safeGasEstimates: (BigNumber | undefined)[] = await Promise.all(
-      methodNames.map((methodName) =>
-        routerContract.estimateGas[methodName](...args)
-          .then(calculateGasMargin)
-          .catch((err) => {
-            console.error(`estimateGas failed`, methodName, args, err)
-            return undefined
-          }),
-      ),
-    )
+    let methodSafeGasEstimate: { methodName: string; safeGasEstimate: BigNumber }
+    for (let i = 0; i < methodNames.length; i++) {
+      let safeGasEstimate
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        safeGasEstimate = calculateGasMargin(await routerContract.estimateGas[methodNames[i]](...args))
+      } catch (e) {
+        console.error(`estimateGas failed`, methodNames[i], args, e)
+      }
 
-    const indexOfSuccessfulEstimation = safeGasEstimates.findIndex((safeGasEstimate) =>
-      BigNumber.isBigNumber(safeGasEstimate),
-    )
+      if (BigNumber.isBigNumber(safeGasEstimate)) {
+        methodSafeGasEstimate = { methodName: methodNames[i], safeGasEstimate }
+        break
+      }
+    }
 
     // all estimations failed...
-    if (indexOfSuccessfulEstimation === -1) {
+    if (!methodSafeGasEstimate) {
       toastError(t('Error'), t('This transaction would fail'))
     } else {
-      const methodName = methodNames[indexOfSuccessfulEstimation]
-      const safeGasEstimate = safeGasEstimates[indexOfSuccessfulEstimation]
+      const { methodName, safeGasEstimate } = methodSafeGasEstimate
 
       setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
       await routerContract[methodName](...args, {
@@ -442,10 +445,14 @@ export default function RemoveLiquidity() {
       })
         .then((response: TransactionResponse) => {
           setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
+          const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
+          const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)
           addTransaction(response, {
-            summary: `Remove ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
-              currencyA?.symbol
-            } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencyB?.symbol}`,
+            summary: `Remove ${amountA} ${currencyA?.symbol} and ${amountB} ${currencyB?.symbol}`,
+            translatableSummary: {
+              text: 'Remove %amountA% %symbolA% and %amountB% %symbolB%',
+              data: { amountA, symbolA: currencyA?.symbol, amountB, symbolB: currencyB?.symbol },
+            },
             type: 'remove-liquidity',
           })
         })

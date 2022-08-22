@@ -668,6 +668,7 @@ export interface PredictionConfig {
   api: string
   chainlinkOracleAddress: string
   minPriceUsdDisplayed: EthersBigNumber
+  displayedDecimals: number
   token: Token
 }
 

@@ -30,6 +30,22 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   },
   // Below farms was the latest.
   {
+    account: '0x75db63125A4f04E59A1A2Ab4aCC4FC1Cd5Daddd5', // Auction #28
+    farmName: 'BNBx-BNB',
+    tokenAddress: '0x1bdd3Cf7F79cfB8EdbB955f20ad99211551BA275',
+    quoteToken: bscTokens.wbnb,
+    tokenName: 'BNBx',
+    projectSite: 'https://binance.staderlabs.com/liquid-staking/bnbx',
+  },
+  {
+    account: '0x901cc1A23BFc4B4a3C11b0c7873457240B0E7A8c', // Auction #28
+    farmName: 'HAY-BUSD',
+    tokenAddress: '0x0782b6d8c4551B9760e74c0545a9bCD90bdc41E5',
+    quoteToken: bscTokens.busd,
+    tokenName: 'BNBx',
+    projectSite: 'https://helio.money/',
+  },
+  {
     account: '0x9Ed5a62535A5Dd2dB2d9bB21bAc42035Af47F630',
     farmName: 'NAV-BNB',
     tokenAddress: '0xBFEf6cCFC830D3BaCA4F6766a0d4AaA242Ca9F3D',
@@ -55,7 +71,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   },
   {
     account: '0x58092273a044D6e1d23B5095AE873F6E24E906ed',
-    farmName: 'rUSD-BUSD',
+    farmName: 'RUSD-BUSD',
     tokenAddress: '0x07663837218A003e66310a01596af4bf4e44623D',
     quoteToken: bscTokens.busd,
     tokenName: 'RAMP DEFI',
@@ -544,7 +560,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x304dDD664C961141B9C11F0ab597244306e021F4',
     farmName: '8PAY-BUSD',
-    tokenAddress: '0xfeea0bdd3d07eb6fe305938878c0cadbfa169042',
+    tokenAddress: '0xFeea0bDd3D07eb6FE305938878C0caDBFa169042',
     quoteToken: bscTokens.busd,
     tokenName: '8PAY',
     projectSite: 'https://8pay.network/',
@@ -560,7 +576,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x3591b656D753226dE239d2b9A48221daf0751Fca',
     farmName: 'HE-BNB',
-    tokenAddress: '0x20d39a5130f799b95b55a930e5b7ebc589ea9ed8',
+    tokenAddress: '0x20D39a5130F799b95B55a930E5b7eBC589eA9Ed8',
     quoteToken: bscTokens.wbnb,
     tokenName: 'Heroes & Empires',
     projectSite: 'https://heroesempires.com/',
@@ -584,7 +600,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xe60035673BAFDaD24C5B14E9556F5793dFFb3362',
     farmName: 'LOA-BUSD',
-    tokenAddress: '0x94b69263fca20119ae817b6f783fc0f13b02ad50',
+    tokenAddress: '0x94b69263FCA20119Ae817b6f783Fc0F13B02ad50',
     quoteToken: bscTokens.busd,
     tokenName: 'League of Ancients',
     projectSite: 'https://leagueofancients.com/',
@@ -592,7 +608,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0x05Adabb0f3bff63F5f7712f05F04F509494A18F3',
     farmName: 'HOTCROSS-BNB',
-    tokenAddress: '0x4fa7163e153419e0e1064e418dd7a99314ed27b6',
+    tokenAddress: '0x4FA7163E153419E0E1064e418dd7A99314Ed27b6',
     quoteToken: bscTokens.wbnb,
     tokenName: 'Hot Cross',
     projectSite: 'https://hotcross.com/',
@@ -608,7 +624,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xE9ab352015928CBE21771564E97bDAA3F5fbCBAC',
     farmName: 'GRAV-BUSD',
-    tokenAddress: '0xa6168c7e5eb7c5c379f3a1d7cf1073e09b2f031e',
+    tokenAddress: '0xa6168c7E5Eb7C5c379f3A1d7Cf1073e09B2F031E',
     quoteToken: bscTokens.busd,
     tokenName: 'Graviton Zero',
     projectSite: 'https://gravitonzero.com/',
@@ -656,7 +672,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   {
     account: '0xdE78F42bff7EDF1e70450e7BCFd8aBCF94e3a65e',
     farmName: 'TINC-BNB',
-    tokenAddress: '0x05ad6e30a855be07afa57e08a4f30d00810a402e',
+    tokenAddress: '0x05aD6E30A855BE07AfA57e08a4f30d00810a402e',
     quoteToken: bscTokens.wbnb,
     tokenName: 'Tiny World',
     projectSite: 'https://tinyworlds.io/',

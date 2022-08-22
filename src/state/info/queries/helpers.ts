@@ -1,3 +1,4 @@
+import fromPairs from 'lodash/fromPairs'
 import { ONE_DAY_UNIX, PCS_V2_START } from 'config/constants/info'
 import { getUnixTime } from 'date-fns'
 import { TransactionType } from 'state/info/types'
@@ -95,14 +96,13 @@ export const fetchChartData = async (
     }
   }
 
-  const formattedDayDatas = chartEntries.reduce((accum: { [date: number]: ChartEntry }, dayData) => {
-    // At this stage we track unix day ordinal for each data point to check for empty days later
-    const dayOrdinal = parseInt((dayData.date / ONE_DAY_UNIX).toFixed(0))
-    return {
-      [dayOrdinal]: dayData,
-      ...accum,
-    }
-  }, {})
+  const formattedDayDatas = fromPairs(
+    chartEntries.map((dayData) => {
+      // At this stage we track unix day ordinal for each data point to check for empty days later
+      const dayOrdinal = parseInt((dayData.date / ONE_DAY_UNIX).toFixed(0))
+      return [dayOrdinal, dayData]
+    }),
+  )
 
   const availableDays = Object.keys(formattedDayDatas).map((dayOrdinal) => parseInt(dayOrdinal, 10))
 

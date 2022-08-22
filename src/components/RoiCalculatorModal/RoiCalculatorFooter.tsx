@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import styled from 'styled-components'
 import { Flex, Box, Text, ExpandableLabel, LinkExternal, Grid, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
@@ -72,7 +72,10 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
   )
 
   const gridRowCount = isFarm ? 4 : 2
-  const lpRewardsAPR = (Number(displayApr) - apr).toFixed(2)
+  const lpRewardsAPR = useMemo(
+    () => (isFarm ? Math.max(Number(displayApr) - apr, 0).toFixed(2) : null),
+    [isFarm, displayApr, apr],
+  )
 
   return (
     <Footer p="16px" flexDirection="column">

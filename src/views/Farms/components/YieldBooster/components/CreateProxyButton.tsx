@@ -1,4 +1,4 @@
-import { Button, AutoRenewIcon } from '@pancakeswap/uikit'
+import { Button, AutoRenewIcon, ButtonProps } from '@pancakeswap/uikit'
 import { useState, memo } from 'react'
 
 import useToast from 'hooks/useToast'
@@ -9,7 +9,11 @@ import { useBCakeFarmBoosterProxyFactoryContract } from 'hooks/useContract'
 
 const MAX_GAS_LIMIT = 2500000
 
-const CreateProxyButton = (props) => {
+interface CreateProxyButtonProps extends ButtonProps {
+  onDone?: () => void
+}
+
+const CreateProxyButton: React.FC<React.PropsWithChildren<CreateProxyButtonProps>> = ({ onDone, ...props }) => {
   const { t } = useTranslation()
   const farmBoosterProxyFactoryContract = useBCakeFarmBoosterProxyFactoryContract()
   const [isCreateProxyLoading, setIsCreateProxyLoading] = useState(false)
@@ -33,9 +37,7 @@ const CreateProxyButton = (props) => {
           console.error(error)
         } finally {
           setIsCreateProxyLoading(false)
-          if (props.onDone) {
-            props.onDone()
-          }
+          onDone?.()
         }
       }}
       isLoading={isCreateProxyLoading || loading}
