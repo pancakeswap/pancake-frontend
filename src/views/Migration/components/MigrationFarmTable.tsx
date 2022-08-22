@@ -6,7 +6,7 @@ import { Flex, Spinner, RowType } from '@pancakeswap/uikit'
 import TableHeader from './MigrationTable/TableHeader'
 import EmptyText from './MigrationTable/EmptyText'
 import TableStyle from './MigrationTable/StyledTable'
-import Row, { RowProps } from './MigrationStep2/NewFarm/FarmRow'
+import Row from './MigrationStep2/NewFarm/FarmRow'
 import { FarmWithStakedValue } from '../../Farms/components/types'
 import { getDisplayApr } from '../../Farms/components/getDisplayApr'
 import { getBalanceNumber } from '../../../utils/formatBalance'
@@ -61,7 +61,7 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
       }
     } : { unstake: { pid: farm.pid } }
 
-    const row: RowProps = {
+    const row = {
       ...customColumnSchema,
       farm: {
         ...farm,
@@ -112,7 +112,7 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
 
   const sortedRows = rowData.map((row) => {
     // @ts-ignore
-    const newRow: RowProps = {}
+    const newRow = {}
     columns.forEach((column) => {
       if (!(column.name in row)) {
         throw new Error(`Invalid row data, ${column.name} not found`)
