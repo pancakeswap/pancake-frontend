@@ -1887,8 +1887,8 @@
   "0.0001 CAKE will be spent to extend": "0.0001 CAKE-et a kiterjesztésre fordítjuk",
   "0.0001 CAKE required for enabling extension": "0.0001 CAKE szükséges, hogy lehetővé tegyük a kiterjesztést",
   "Recommend choosing \"MAX\" to renew your staking position in order to keep similar yield boost.": "Javasoljuk a \"MAX\" választását, hogy megújítsa tétes pozícióját, hogy a hozamnövelés azonos maradjon.",
-  "Add to %wallet%": "Hozzáadja %wallet% tárcához",
-  "Add %asset% to %wallet%": "Hozzáadja az %asset%- eszközt a %wallet% tárcához",
+  "Add to Wallet": "Add to Wallet",
+  "Add %asset% to Wallet": "Add %asset% to Wallet",
   "After Burning starts at %burnStartTime%. You need to renew your fix-term position, to initiate a new lock or convert your staking position to flexible before it starts. Otherwise all the rewards will be burned within the next 90 days.": "Az utóégetés %burnStartTime% időpontban kezdődik. Meg kell újítania a fix lejáratú pozícióját, új zárolást kell indítania vagy tétes pozícióját rugalmasra kell konvertálnia, mielőtt ez elkezdődik. Ellenkező esetben az minden jutalma elég a következő 90 napon belül.",
   "Common tokens": "Közös zsetonok",
   "Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol%": "Csere max. %inputAmount% %inputSymbol% erre %outputAmount% %outputSymbol%",
@@ -1910,5 +1910,13 @@
   "Remove %amountA% %symbolA% and %amountB% %symbolB%": "Eltávolítja %amountA%%symbolA% és %amountB%%symbolB%",
   "Zap %amountA% %symbolA% and %amountB% %symbolB%": "Zappolja %amountA%%symbolA% és %amountB%%symbolB%",
   "Zap in %amount% BNB for %symbol%": "Be-zappol %amount% BNB-t a %symbol%-hoz",
-  "Zap in %amount% %symbol% for %lpSymbol%": "Be-zappol %amount%%symbol% %lpSymbol%-hoz"
+  "Zap in %amount% %symbol% for %lpSymbol%": "Be-zappol %amount%%symbol% %lpSymbol%-hoz",
+  "Insufficient input token balance. Your transaction may fail.": "Insufficient input token balance. Your transaction may fail.",
+  "Wrong Network": "Wrong Network",
+  "Check your network": "Check your network",
+  "Switch to %network%": "Switch to %network%",
+  "You are in wrong network": "You are in wrong network",
+  "This page is located for %network%.": "This page is located for %network%.",
+  "You are under %network% now, please switch the network to continue.": "You are under %network% now, please switch the network to continue.",
+  "Switch network to continue.": "Switch network to continue."
 }
