@@ -14,12 +14,12 @@ interface PrizePoolRowProps extends FlexProps {
   totalAmount: NodeRound['totalAmount']
 }
 
-const getPrizePoolAmount = (totalAmount: PrizePoolRowProps['totalAmount']) => {
+const getPrizePoolAmount = (totalAmount: PrizePoolRowProps['totalAmount'], displayedDecimals: number) => {
   if (!totalAmount) {
     return '0'
   }
 
-  return formatBnbv2(totalAmount)
+  return formatBnbv2(totalAmount, displayedDecimals)
 }
 
 const Row = ({ children, ...props }) => {
@@ -32,12 +32,12 @@ const Row = ({ children, ...props }) => {
 
 export const PrizePoolRow: React.FC<React.PropsWithChildren<PrizePoolRowProps>> = ({ totalAmount, ...props }) => {
   const { t } = useTranslation()
-  const { token } = useConfig()
+  const { token, displayedDecimals } = useConfig()
 
   return (
     <Row {...props}>
       <Text bold>{t('Prize Pool')}:</Text>
-      <Text bold>{`${getPrizePoolAmount(totalAmount)} ${token.symbol}`}</Text>
+      <Text bold>{`${getPrizePoolAmount(totalAmount, displayedDecimals)} ${token.symbol}`}</Text>
     </Row>
   )
 }
@@ -57,7 +57,7 @@ export const PayoutRow: React.FC<React.PropsWithChildren<PayoutRowProps>> = ({
 }) => {
   const { t } = useTranslation()
   const formattedMultiplier = `${multiplier.toLocaleString(undefined, { maximumFractionDigits: 2 })}x`
-  const { token } = useConfig()
+  const { token, displayedDecimals } = useConfig()
 
   return (
     <Row height="18px" {...props}>
@@ -69,7 +69,7 @@ export const PayoutRow: React.FC<React.PropsWithChildren<PayoutRowProps>> = ({
           {t('%multiplier% Payout', { multiplier: formattedMultiplier })}
         </Text>
         <Text mx="4px">|</Text>
-        <Text fontSize="12px" lineHeight="18px">{`${formatBnb(amount)} ${token.symbol}`}</Text>
+        <Text fontSize="12px" lineHeight="18px">{`${formatBnb(amount, displayedDecimals)} ${token.symbol}`}</Text>
       </Flex>
     </Row>
   )
@@ -81,12 +81,12 @@ interface LockPriceRowProps extends FlexProps {
 
 export const LockPriceRow: React.FC<React.PropsWithChildren<LockPriceRowProps>> = ({ lockPrice, ...props }) => {
   const { t } = useTranslation()
-  const { minPriceUsdDisplayed } = useConfig()
+  const { displayedDecimals, minPriceUsdDisplayed } = useConfig()
 
   return (
     <Row {...props}>
       <Text fontSize="14px">{t('Locked Price')}:</Text>
-      <Text fontSize="14px">{formatUsdv2(lockPrice, minPriceUsdDisplayed)}</Text>
+      <Text fontSize="14px">{formatUsdv2(lockPrice, minPriceUsdDisplayed, displayedDecimals)}</Text>
     </Row>
   )
 }
@@ -158,7 +158,7 @@ interface RoundPriceProps {
 }
 
 export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({ lockPrice, closePrice }) => {
-  const { minPriceUsdDisplayed } = useConfig()
+  const { displayedDecimals, minPriceUsdDisplayed } = useConfig()
   const betPosition = getRoundPosition(lockPrice, closePrice)
   const priceDifference = getPriceDifference(closePrice, lockPrice)
 
@@ -178,12 +178,14 @@ export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({
     <Flex alignItems="center" justifyContent="space-between" mb="16px">
       {closePrice ? (
         <Text color={textColor} bold fontSize="24px">
-          {formatUsdv2(closePrice, minPriceUsdDisplayed)}
+          {formatUsdv2(closePrice, minPriceUsdDisplayed, displayedDecimals)}
         </Text>
       ) : (
         <Skeleton height="34px" my="1px" />
       )}
-      <PositionTag betPosition={betPosition}>{formatUsdv2(priceDifference, minPriceUsdDisplayed)}</PositionTag>
+      <PositionTag betPosition={betPosition}>
+        {formatUsdv2(priceDifference, minPriceUsdDisplayed, displayedDecimals)}
+      </PositionTag>
     </Flex>
   )
 }
@@ -197,12 +199,12 @@ interface PrizePoolHistoryRowProps extends FlexProps {
   totalAmount: number
 }
 
-const getPrizePoolAmountHistory = (totalAmount: PrizePoolHistoryRowProps['totalAmount']) => {
+const getPrizePoolAmountHistory = (totalAmount: PrizePoolHistoryRowProps['totalAmount'], displayedDecimals: number) => {
   if (!totalAmount) {
     return '0'
   }
 
-  return formatBnb(totalAmount)
+  return formatBnb(totalAmount, displayedDecimals)
 }
 
 export const PrizePoolHistoryRow: React.FC<React.PropsWithChildren<PrizePoolHistoryRowProps>> = ({
@@ -210,12 +212,12 @@ export const PrizePoolHistoryRow: React.FC<React.PropsWithChildren<PrizePoolHist
   ...props
 }) => {
   const { t } = useTranslation()
-  const { token } = useConfig()
+  const { token, displayedDecimals } = useConfig()
 
   return (
     <Row {...props}>
       <Text bold>{t('Prize Pool')}:</Text>
-      <Text bold>{`${getPrizePoolAmountHistory(totalAmount)} ${token.symbol}`}</Text>
+      <Text bold>{`${getPrizePoolAmountHistory(totalAmount, displayedDecimals)} ${token.symbol}`}</Text>
     </Row>
   )
 }
@@ -229,11 +231,12 @@ export const LockPriceHistoryRow: React.FC<React.PropsWithChildren<LockPriceHist
   ...props
 }) => {
   const { t } = useTranslation()
+  const { displayedDecimals } = useConfig()
 
   return (
     <Row {...props}>
       <Text fontSize="14px">{t('Locked Price')}:</Text>
-      <Text fontSize="14px">{formatUsd(lockPrice)}</Text>
+      <Text fontSize="14px">{formatUsd(lockPrice, displayedDecimals)}</Text>
     </Row>
   )
 }

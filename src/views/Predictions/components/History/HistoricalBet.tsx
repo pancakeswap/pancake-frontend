@@ -24,6 +24,7 @@ import { formatBnb, getNetPayout } from './helpers'
 import CollectWinningsButton from '../CollectWinningsButton'
 import ReclaimPositionButton from '../ReclaimPositionButton'
 import BetDetails from './BetDetails'
+import { useConfig } from '../../context/ConfigProvider'
 
 interface BetProps {
   bet: Bet
@@ -62,6 +63,7 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
   const canClaim = useGetIsClaimable(bet.round.epoch)
   const dispatch = useLocalDispatch()
   const { account } = useWeb3React()
+  const { displayedDecimals } = useConfig()
 
   const toggleOpen = () => setIsOpen(!isOpen)
 
@@ -141,7 +143,7 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
               </Flex>
             </>
           ) : (
-            `${resultTextPrefix}${formatBnb(payout)}`
+            `${resultTextPrefix}${formatBnb(payout, displayedDecimals)}`
           )}
         </Text>
       </>

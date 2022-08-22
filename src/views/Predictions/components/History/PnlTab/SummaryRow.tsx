@@ -35,7 +35,7 @@ const SummaryRow: React.FC<React.PropsWithChildren<SummaryRowProps>> = ({ type, 
   const typeTranslationKey = type.charAt(0).toUpperCase() + type.slice(1)
   const displayAmount = type === 'won' ? summary[type].payout : amount
   const amountInUsd = multiplyPriceByAmount(bnbBusdPrice, displayAmount)
-  const { token } = useConfig()
+  const { token, displayedDecimals } = useConfig()
   const roundsInPercentsDisplay = !Number.isNaN(parseFloat(roundsInPercents)) ? `${roundsInPercents}%` : '0%'
 
   return (
@@ -54,7 +54,7 @@ const SummaryRow: React.FC<React.PropsWithChildren<SummaryRowProps>> = ({ type, 
         </Flex>
         <Flex flex="3" flexDirection="column">
           <Text bold fontSize="20px" color={color}>
-            {`${summaryTypeSigns[type]}${formatBnb(displayAmount)} ${token.symbol}`}
+            {`${summaryTypeSigns[type]}${formatBnb(displayAmount, displayedDecimals)} ${token.symbol}`}
           </Text>
           <Text fontSize="12px" color="textSubtle">
             {`~$${amountInUsd.toFixed(2)}`}

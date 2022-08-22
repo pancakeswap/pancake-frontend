@@ -8,6 +8,7 @@ interface Window {
     isCoinbaseWallet?: true;
     isSafePal?: true;
     isTrust?: true;
+    isSafePal?: true;
     isCoin98?: true;
     isBlocto?: true;
     isMathWallet?: true;

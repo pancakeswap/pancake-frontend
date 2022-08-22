@@ -1,8 +1,7 @@
-import { useRef, useMemo, useCallback } from 'react'
+import { useRef, useMemo } from 'react'
 import { latinise } from 'utils/latinise'
 import styled from 'styled-components'
-import { Button, ChevronUpIcon, RowType } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
+import { RowType } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -59,17 +58,9 @@ const TableContainer = styled.div`
   position: relative;
 `
 
-const ScrollButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  padding-top: 5px;
-  padding-bottom: 5px;
-`
-
 const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cakePrice, userDataReady }) => {
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const { query } = useRouter()
-  const { t } = useTranslation()
 
   const columns = useMemo(
     () =>
@@ -97,13 +88,6 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
       })),
     [],
   )
-
-  const scrollToTop = useCallback((): void => {
-    window.scrollTo({
-      top: tableWrapperEl.current.offsetTop,
-      behavior: 'smooth',
-    })
-  }, [])
 
   const getFarmEarnings = (farm) => {
     let earnings = BIG_ZERO
@@ -200,12 +184,6 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
             </TableBody>
           </StyledTable>
         </TableWrapper>
-        <ScrollButtonContainer>
-          <Button variant="text" onClick={scrollToTop}>
-            {t('To Top')}
-            <ChevronUpIcon color="primary" />
-          </Button>
-        </ScrollButtonContainer>
       </TableContainer>
     </Container>
   )

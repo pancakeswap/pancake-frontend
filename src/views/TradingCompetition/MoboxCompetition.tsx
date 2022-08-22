@@ -7,6 +7,7 @@ import { useTradingCompetitionContractMobox } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { PageMeta } from 'components/Layout/Page'
 import { TC_MOBOX_SUBGRAPH } from 'config/constants/endpoints'
+import orderBy from 'lodash/orderBy'
 import {
   SmartContractPhases,
   CompetitionPhases,
@@ -18,17 +19,14 @@ import {
 } from 'config/constants/trading-competition/phases'
 import PageSection from 'components/PageSection'
 import { MIDBLUEBG, MIDBLUEBG_DARK, TRADINGCOMPETITIONBANNER } from './pageSectionStyles'
-import {
-  //  RanksIcon,
-  RulesIcon,
-} from './svgs'
+import { RulesIcon } from './svgs'
 import Countdown from './components/Countdown'
 import StormBunny from './pngs/mobox-storm-bunny.png'
 import RibbonWithImage from './components/RibbonWithImage'
 import HowToJoin from './components/HowToJoin'
 import BattleCta from './components/BattleCta'
 import Rules from './components/Rules'
-import { UserTradingInformation } from './types'
+import { UserTradingInformation, initialUserTradingInformation, initialUserLeaderboardInformation } from './types'
 import { CompetitionPage, BannerFlex } from './styles'
 import RanksIcon from './svgs/RanksIcon'
 import MoboxYourScore from './mobox/components/YourScore/MoboxYourScore'
@@ -46,30 +44,28 @@ const MoboxCompetition = () => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpointsContext()
-  const { profile, isLoading } = useProfile()
+  const { profile, isLoading: isProfileLoading } = useProfile()
   const { isDark, theme } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractMobox(false)
-  const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.OVER)
+  const [currentPhase, setCurrentPhase] = useState(() => {
+    const now = Date.now()
+    const actualPhase = orderBy(
+      Object.values(CompetitionPhases).filter(
+        (competitionPhase) => competitionPhase.ends && now < competitionPhase.ends,
+      ),
+      'endsIn',
+      'asc',
+    )[0]
+
+    if (!actualPhase) {
+      return CompetitionPhases.FINISHED
+    }
+    return actualPhase
+  })
   const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
-  const [userTradingInformation, setUserTradingInformation] = useState<UserTradingInformation>({
-    hasRegistered: false,
-    isUserActive: false,
-    hasUserClaimed: false,
-    userRewardGroup: '0',
-    userCakeRewards: '0',
-    userMoboxRewards: '0',
-    userPointReward: '0',
-    canClaimMysteryBox: false,
-    canClaimNFT: false,
-  })
-  const [userLeaderboardInformation, setUserLeaderboardInformation] = useState({
-    global: 0,
-    team: 0,
-    volume: 0,
-    next_rank: 0,
-    moboxVolumeRank: '???',
-    moboxVolume: '???',
-  })
+  const [userTradingInformation, setUserTradingInformation] =
+    useState<UserTradingInformation>(initialUserTradingInformation)
+  const [userLeaderboardInformation, setUserLeaderboardInformation] = useState(initialUserLeaderboardInformation)
 
   const {
     globalLeaderboardInformation,
@@ -103,7 +99,6 @@ const MoboxCompetition = () => {
       canClaimNFT)
   const finishedAndPrizesClaimed = hasCompetitionEnded && account && hasUserClaimed
   const finishedAndNothingToClaim = hasCompetitionEnded && account && !userCanClaimPrizes
-
   useEffect(() => {
     const fetchCompetitionInfoContract = async () => {
       const competitionStatus = await tradingCompetitionContract.currentStatus()
@@ -114,6 +109,8 @@ const MoboxCompetition = () => {
       try {
         const user = await tradingCompetitionContract.claimInformation(account)
         const userObject = {
+          isLoading: false,
+          account,
           hasRegistered: user[0],
           isUserActive: user[1],
           hasUserClaimed: user[2],
@@ -132,42 +129,41 @@ const MoboxCompetition = () => {
         setUserTradingInformation(userObject)
       } catch (error) {
         console.error(error)
+        setUserTradingInformation({ ...initialUserTradingInformation, isLoading: false })
       }
     }
 
     fetchCompetitionInfoContract()
     if (account) {
+      setUserTradingInformation({ ...initialUserTradingInformation })
       fetchUserContract()
     } else {
-      setUserTradingInformation({
-        hasRegistered: false,
-        isUserActive: false,
-        hasUserClaimed: false,
-        userRewardGroup: '0',
-        userCakeRewards: '0',
-        userMoboxRewards: '0',
-        userPointReward: '0',
-        canClaimMysteryBox: false,
-        canClaimNFT: false,
-      })
+      setUserTradingInformation({ ...initialUserTradingInformation, isLoading: false })
     }
   }, [account, registrationSuccessful, claimSuccessful, tradingCompetitionContract])
 
   useEffect(() => {
     const fetchUserTradingStats = async () => {
-      const res = await fetch(`${profileApiUrl}/api/users/${account}`)
+      const res = await fetch(`${profileApiUrl}/api/users/${userTradingInformation.account}`)
       const data = await res.json()
       setUserLeaderboardInformation(data.leaderboard_mobox)
     }
     // If user has not registered, user trading information will not be displayed and should not be fetched
-    if (account && userTradingInformation.hasRegistered) {
+    if (userTradingInformation.account && userTradingInformation.hasRegistered) {
       fetchUserTradingStats()
+    } else {
+      setUserLeaderboardInformation({ ...initialUserLeaderboardInformation })
     }
-  }, [account, userTradingInformation, profileApiUrl])
+  }, [userTradingInformation, profileApiUrl])
+
+  const isLoading = isProfileLoading || userTradingInformation.isLoading
 
   // Don't hide when loading. Hide if the account is connected && the user hasn't registered && the competition is live or finished
   const shouldHideCta =
-    !isLoading && account && !userTradingInformation.hasRegistered && (isCompetitionLive || hasCompetitionEnded)
+    !isLoading &&
+    userTradingInformation.account &&
+    !userTradingInformation.hasRegistered &&
+    (isCompetitionLive || hasCompetitionEnded)
 
   return (
     <>

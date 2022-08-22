@@ -34,7 +34,7 @@ const BannerPlaceHolder = styled.div<{ walletConnected: boolean }>`
       bottom: 20px;
     }
   }
-  margin-top: ${({ walletConnected }) => (walletConnected ? '220px' : '0px')};
+  margin-top: ${({ walletConnected }) => (walletConnected ? '250px' : '0px')};
   margin-bottom: ${({ walletConnected }) => (walletConnected ? '-220px' : '0px')};
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-top: ${({ walletConnected }) => (walletConnected ? '190px' : '-32px')};
