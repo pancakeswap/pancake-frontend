@@ -25,7 +25,7 @@ const useAuth = () => {
       try {
         const connected = await connectAsync({ connector: findConnector, chainId })
         if (!connected.chain.unsupported && connected.chain.id !== chainId) {
-          replaceBrowserHistory(connected.chain.id)
+          replaceBrowserHistory('chainId', connected.chain.id)
           setSessionChainId(connected.chain.id)
         }
       } catch (error) {
