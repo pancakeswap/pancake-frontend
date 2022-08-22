@@ -132,7 +132,7 @@ export const fetchCakePoolUserDataAsync = (account: string) => async (dispatch) 
   )
 }
 
-export const fetchPoolsPublicDataAsync = (currentBlockNumber: number) => async (dispatch, getState) => {
+export const fetchPoolsPublicDataAsync = (currentBlockNumber?: number) => async (dispatch, getState) => {
   try {
     const [blockLimits, totalStakings, profileRequirements, currentBlock] = await Promise.all([
       fetchPoolsBlockLimits(),

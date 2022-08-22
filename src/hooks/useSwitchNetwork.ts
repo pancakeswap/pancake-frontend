@@ -1,29 +1,32 @@
 import { useCallback } from 'react'
-import { useSWRConfig } from 'swr'
-import { useSwitchNetwork as useSwitchNetworkWallet } from 'wagmi'
-import useActiveWeb3React from './useActiveWeb3React'
+import { useAccount, useSwitchNetwork as useSwitchNetworkWallet } from 'wagmi'
+import { useSessionChainId } from './useSessionChainId'
+import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 
 export function useSwitchNetwork() {
-  const { mutate } = useSWRConfig()
-  const { switchNetworkAsync, ...switchNetworkArgs } = useSwitchNetworkWallet()
-  const { account } = useActiveWeb3React()
+  const [loading, setLoading] = useSwitchNetworkLoading()
+  const [, setSessionChainId] = useSessionChainId()
+  const { switchNetworkAsync, isLoading: _isLoading, ...switchNetworkArgs } = useSwitchNetworkWallet()
+  const { isConnected } = useAccount()
 
   const switchNetwork = useCallback(
     (chainId: number) => {
-      if (account && typeof switchNetworkAsync === 'function') {
-        return switchNetworkAsync(chainId).then((c) => {
-          if (c) {
-            mutate('session-chain-id', c.id)
-          }
-        })
+      if (isConnected && typeof switchNetworkAsync === 'function') {
+        setLoading(true)
+        return switchNetworkAsync(chainId).finally(() => setLoading(false))
       }
-      return mutate('session-chain-id', chainId)
+      return new Promise(() => {
+        setSessionChainId(chainId)
+      })
     },
-    [account, mutate, switchNetworkAsync],
+    [isConnected, setLoading, setSessionChainId, switchNetworkAsync],
   )
+
+  const isLoading = _isLoading || loading
 
   return {
     ...switchNetworkArgs,
     switchNetwork,
+    isLoading,
   }
 }

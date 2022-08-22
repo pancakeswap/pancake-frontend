@@ -1,13 +1,13 @@
-import { Box, ModalV2, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
+import { Box, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
 import { ChainId, NATIVE } from '@pancakeswap/sdk'
 import useActiveWeb3React, { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
-import Image from 'next/image'
+import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useMemo } from 'react'
 import { chains } from 'utils/wagmi'
-import { WrongNetworkModal } from './WrongNetworkModal'
+import { ChainLogo } from './Logo/ChainLogo'
 
-export const NetworkSelect = ({ switchNetwork }) => {
+export const NetworkSelect = ({ switchNetwork, chainId }) => {
   const { t } = useTranslation()
 
   return (
@@ -17,8 +17,13 @@ export const NetworkSelect = ({ switchNetwork }) => {
       </Box>
       <UserMenuDivider />
       {chains.map((chain) => (
-        <UserMenuItem key={chain.id} style={{ justifyContent: 'flex-start' }} onClick={() => switchNetwork(chain.id)}>
-          <Image width={24} height={24} src={`/images/chains/${chain.id}.png`} unoptimized />
+        <UserMenuItem
+          disabled={chain.id === chainId}
+          key={chain.id}
+          style={{ justifyContent: 'flex-start' }}
+          onClick={() => switchNetwork(chain.id)}
+        >
+          <ChainLogo chainId={chain.id} />
           <Text pl="12px">{chain.name}</Text>
         </UserMenuItem>
       ))}
@@ -28,15 +33,15 @@ export const NetworkSelect = ({ switchNetwork }) => {
 
 export const NetworkSwitcher = () => {
   const { t } = useTranslation()
-  const { chainId, chain, connector } = useActiveWeb3React()
-  const { isLoading, switchNetwork, pendingChainId } = useNetworkConnectorUpdater()
+  const { chainId, connector, isWrongNetwork } = useActiveWeb3React()
+  const { pendingChainId, isLoading, switchNetwork } = useSwitchNetwork()
+  useNetworkConnectorUpdater()
+
   const foundChain = useMemo(
     () => chains.find((c) => c.id === (isLoading ? pendingChainId || chainId : chainId)),
     [isLoading, pendingChainId, chainId],
   )
   const symbol = NATIVE[foundChain?.id]?.symbol ?? foundChain?.nativeCurrency?.symbol
-
-  const isWrongNetwork = chain?.unsupported
 
   const cannotChangeNetwork =
     connector?.id === 'walletConnect' ||
@@ -70,11 +75,8 @@ export const NetworkSwitcher = () => {
           )
         }
       >
-        {() => <NetworkSelect switchNetwork={switchNetwork} />}
+        {() => <NetworkSelect switchNetwork={switchNetwork} chainId={chainId} />}
       </UserMenu>
-      <ModalV2 isOpen={isWrongNetwork} closeOnOverlayClick={false}>
-        <WrongNetworkModal />
-      </ModalV2>
     </>
   )
 }

@@ -2,7 +2,6 @@ import { Box, connectorLocalStorageKey, ConnectorNames, LinkExternal, Text } fro
 import { useTranslation } from '@pancakeswap/localization'
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
-import { mutate } from 'swr'
 import { useConnect, useDisconnect, useNetwork, ConnectorNotFoundError, UserRejectedRequestError } from 'wagmi'
 import { clearUserStates } from '../utils/clearUserStates'
 import { useActiveChainId } from './useActiveChainId'
@@ -15,18 +14,13 @@ const useAuth = () => {
   const { chain } = useNetwork()
   const { disconnect } = useDisconnect()
   const { toastError } = useToast()
-  const chainId = useActiveChainId()
+  const { chainId } = useActiveChainId()
 
   const login = useCallback(
     async (connectorID: ConnectorNames) => {
       const findConnector = connectors.find((c) => c.id === connectorID)
       try {
-        const connected = await connectAsync({ connector: findConnector, chainId })
-        if (connected.chain.id !== chainId) {
-          connected.connector.switchChain?.(chainId).catch(() => {
-            mutate('session-chain-id', connected.chain.id)
-          })
-        }
+        await connectAsync({ connector: findConnector, chainId })
       } catch (error) {
         console.error(error)
         window?.localStorage?.removeItem(connectorLocalStorageKey)

@@ -26,7 +26,7 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
         await Promise.all([
           dispatch(fetchCakeVaultFees()),
           dispatch(fetchCakeVaultPublicData()),
-          dispatch(fetchPoolsPublicDataAsync(initialBlock)),
+          dispatch(fetchPoolsPublicDataAsync()),
         ])
         setFetchStatus(FetchStatus.Fetched)
       } catch (e) {
