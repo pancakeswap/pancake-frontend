@@ -16,12 +16,9 @@ export function useSwitchNetwork() {
 
   const switchNetworkAsync = useCallback(
     async (chainId: number) => {
-      if (isConnected) {
-        if (typeof _switchNetworkAsync === 'function') {
-          setLoading(true)
-          return _switchNetworkAsync(chainId).finally(() => setLoading(false))
-        }
-        return undefined
+      if (isConnected && typeof _switchNetworkAsync === 'function') {
+        setLoading(true)
+        return _switchNetworkAsync(chainId).finally(() => setLoading(false))
       }
       return new Promise(() => {
         setSessionChainId(chainId)
@@ -32,11 +29,8 @@ export function useSwitchNetwork() {
 
   const switchNetwork = useCallback(
     (chainId: number) => {
-      if (isConnected) {
-        if (typeof _switchNetwork === 'function') {
-          return _switchNetwork(chainId)
-        }
-        return undefined
+      if (isConnected && typeof _switchNetwork === 'function') {
+        return _switchNetwork(chainId)
       }
       return () => {
         setSessionChainId(chainId)
