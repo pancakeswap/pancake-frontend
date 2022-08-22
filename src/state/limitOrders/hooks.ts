@@ -12,6 +12,7 @@ import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
 import { isAddress } from 'utils'
 import tryParseAmount from 'utils/tryParseAmount'
+import { useTranslation } from '@pancakeswap/localization'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { replaceLimitOrdersState, selectCurrency, setRateType, switchCurrencies, typeInput } from './actions'
 import { Field, Rate, OrderState } from './types'
@@ -179,33 +180,34 @@ const getErrorMessage = (
   trade: Trade<Currency, Currency, TradeType>,
   price: Price<Currency, Currency>,
   rateType: Rate,
+  t: any,
 ) => {
   if (!account) {
-    return 'Connect Wallet'
+    return t('Connect Wallet')
   }
   if (
     wrappedCurrencies.input &&
     wrappedCurrencies.output &&
     wrappedCurrencies.input.address.toLowerCase() === wrappedCurrencies.output.address.toLowerCase()
   ) {
-    return 'Order not allowed'
+    return t('Order not allowed')
   }
   const hasBothTokensSelected = currencies.input && currencies.output
   if (!hasBothTokensSelected) {
-    return 'Select a token'
+    return t('Select a token')
   }
   const hasAtLeastOneParsedAmount = parsedAmounts.input || parsedAmounts.output
 
   const tradeIsNotAvailable = !trade || !trade?.route
   if (hasAtLeastOneParsedAmount && tradeIsNotAvailable) {
-    return 'Insufficient liquidity for this trade'
+    return t('Insufficient liquidity for this trade.')
   }
   const someParsedAmountIsMissing = !parsedAmounts.input || !parsedAmounts.output
   if (someParsedAmountIsMissing) {
-    return 'Enter an amount'
+    return t('Enter an amount')
   }
   if (currencyBalances.input && currencyBalances.input.lessThan(parsedAmounts.input)) {
-    return `Insufficient ${currencyBalances.input.currency.symbol} balance`
+    return t(`Insufficient %symbol% balance`, { symbol: currencyBalances.input.currency.symbol })
   }
 
   if (price) {
@@ -213,14 +215,14 @@ const getErrorMessage = (
       rateType === Rate.MUL &&
       (price.lessThan(trade.executionPrice.asFraction) || price.equalTo(trade.executionPrice.asFraction))
     ) {
-      return 'Only possible to place sell orders above market rate'
+      return t('Only possible to place sell orders above market rate')
     }
     if (
       rateType === Rate.DIV &&
       (price.invert().greaterThan(trade.executionPrice.invert().asFraction) ||
         price.invert().equalTo(trade.executionPrice.invert().asFraction))
     ) {
-      return 'Only possible to place buy orders below market rate'
+      return t('Only possible to place buy orders below market rate')
     }
   }
 
@@ -230,6 +232,7 @@ const getErrorMessage = (
 // from the current swap inputs, compute the best trade and return it.
 export const useDerivedOrderInfo = (): DerivedOrderInfo => {
   const { account, chainId } = useActiveWeb3React()
+  const { t } = useTranslation()
   const {
     independentField,
     basisField,
@@ -421,6 +424,7 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
       trade,
       price,
       rateType,
+      t,
     ),
     formattedAmounts,
     trade: trade ?? undefined,

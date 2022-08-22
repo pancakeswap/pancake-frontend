@@ -99,6 +99,9 @@ const LimitOrderPrice: React.FC<React.PropsWithChildren<LimitOrderPriceProps>> =
   const isAtMarketPrice = percentageRateDifference?.equalTo(0) ?? true
   const [ratePercentageMessage, direction] = getRatePercentageMessage(percentageRateDifference, t)
   const priceLabelColor = DIRECTION_COLORS[direction]
+  const _realExecutionPriceAsString =
+    realExecutionPriceAsString === 'never executes' ? t('never executes') : realExecutionPriceAsString
+
   return (
     <>
       <Flex justifyContent="space-between" id={id}>
@@ -149,7 +152,7 @@ const LimitOrderPrice: React.FC<React.PropsWithChildren<LimitOrderPriceProps>> =
         {realExecutionPriceAsString && (
           <>
             <Text small color="textSubtle" mr="4px">
-              {t('Real execution price: %price%', { price: realExecutionPriceAsString })}
+              {t('Real execution price: %price%', { price: _realExecutionPriceAsString })}
             </Text>
             <span ref={targetRef}>
               <HelpIcon color="textSubtle" />
