@@ -42,13 +42,12 @@ const getWalletIcon = (marginTextBetweenLogo: string, name?: string) => {
     width: '16px',
     ...(marginTextBetweenLogo && { ml: marginTextBetweenLogo }),
   }
-
   if (name && Icons[name]) {
     const Icon = Icons[name]
     return <Icon {...iconProps} />
   }
-
-  if (window?.ethereum?.isTrust) {
+  // @ts-ignore
+  if (window?.ethereum?.isTrust && !window?.ethereum?.isSafePal) {
     return <TrustWalletIcon {...iconProps} />
   }
   if (window?.ethereum?.isCoinbaseWallet) {
@@ -60,7 +59,7 @@ const getWalletIcon = (marginTextBetweenLogo: string, name?: string) => {
   if (window?.ethereum?.isMetaMask) {
     return <MetamaskIcon {...iconProps} />
   }
-  return null
+  return <MetamaskIcon {...iconProps} />
 }
 
 const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
@@ -92,8 +91,8 @@ const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
     >
       {textOptions !== AddToWalletTextOptions.NO_TEXT &&
         (textOptions === AddToWalletTextOptions.TEXT
-          ? t('Add to %wallet%', { wallet: connector.name })
-          : t('Add %asset% to %wallet%', { asset: tokenSymbol, wallet: connector.name }))}
+          ? t('Add to Wallet')
+          : t('Add %asset% to Wallet', { asset: tokenSymbol }))}
       {getWalletIcon(marginTextBetweenLogo, connector?.name)}
     </Button>
   )
