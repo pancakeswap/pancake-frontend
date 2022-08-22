@@ -74,7 +74,7 @@ export const livePools: SerializedPoolConfig[] = [
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.sfund,
     contractAddress: {
-      56: '',
+      56: '0x449EC6B2779A3F63E6c2527CBB162A38Ef199d7D',
       97: '',
     },
     poolCategory: PoolCategory.CORE,
