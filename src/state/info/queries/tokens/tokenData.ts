@@ -60,6 +60,27 @@ const TOKEN_AT_BLOCK = (block: number | undefined, tokens: string[]) => {
   `
 }
 
+const TOKEN_AT_BLOCK_ETH = (block: number | undefined, tokens: string[]) => {
+  const addressesString = `["${tokens.join('","')}"]`
+  const blockString = block ? `block: {number: ${block}}` : ``
+  return `tokens(
+      where: {id_in: ${addressesString}}
+      ${blockString}
+      orderBy: tradeVolumeUSD
+      orderDirection: desc
+    ) {
+      id
+      symbol
+      name
+      derivedETH
+      tradeVolume
+      tradeVolumeUSD
+      txCount
+      totalLiquidity
+    }
+  `
+}
+
 const fetchTokenData = async (
   block24h: number,
   block48h: number,
