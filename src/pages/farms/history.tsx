@@ -27,5 +27,6 @@ const FarmsHistoryPage = () => {
 }
 
 FarmsHistoryPage.Layout = FarmsPageLayout
+FarmsHistoryPage.chains = []
 
 export default FarmsHistoryPage
