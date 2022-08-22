@@ -2,18 +2,17 @@ import React, { useMemo, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { getFarmApr } from 'utils/apr'
-import { RowType } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { CAKE_PER_YEAR } from 'config'
 import { useFarmsV1, usePriceCakeBusd } from 'state/farmsV1/hooks'
 import { DeserializedFarm } from 'state/types'
-import { getBalanceNumber } from 'utils/formatBalance'
 import { FarmWithStakedValue } from 'views/Farms/components/types'
-import OldFarm from './FarmTable'
-import { RowProps } from './FarmRow'
+import MigrationFarmTable from '../../MigrationFarmTable'
 import { DesktopColumnSchema } from '../../types'
 
 const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
+  const { t } = useTranslation()
   const { account } = useWeb3React()
   const { data: farmsLP, userDataLoaded } = useFarmsV1()
   const cakePrice = usePriceCakeBusd()
@@ -56,60 +55,17 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
     return farmsList(stakedOrHasTokenBalance)
   }, [stakedOrHasTokenBalance, farmsList])
 
-  const rowData = chosenFarmsMemoized.map((farm) => {
-    const lpLabel = farm.lpSymbol && farm.lpSymbol.split(' ')[0].toUpperCase().replace('PANCAKE', '')
-
-    const row: RowProps = {
-      farm: {
-        ...farm,
-        label: lpLabel,
-        pid: farm.pid,
-        token: farm.token,
-        lpSymbol: farm.lpSymbol,
-        quoteToken: farm.quoteToken,
-      },
-      staked: {
-        label: lpLabel,
-        pid: farm.pid,
-        stakedBalance: farm.userData.stakedBalance,
-      },
-      earned: {
-        earnings: getBalanceNumber(new BigNumber(farm.userData.earnings)),
-        pid: farm.pid,
-      },
-      liquidity: {
-        liquidity: farm.liquidity,
-      },
-      multiplier: {
-        multiplier: farm.multiplier,
-      },
-      unstake: {
-        pid: farm.pid,
-      },
-    }
-
-    return row
-  })
-
-  const renderContent = (): JSX.Element => {
-    const columns = DesktopColumnSchema.map((column) => ({
-      id: column.id,
-      name: column.name,
-      label: column.label,
-      sort: (a: RowType<RowProps>, b: RowType<RowProps>) => {
-        switch (column.name) {
-          case 'farm':
-            return b.id - a.id
-          default:
-            return 1
-        }
-      },
-    }))
-
-    return <OldFarm account={account} data={rowData} columns={columns} userDataReady={userDataReady} />
-  }
-
-  return <>{renderContent()}</>
+  return (
+    <MigrationFarmTable
+      title={t('Old Farms')}
+      noStakedFarmText={t('You are not currently staking in any v1 farms.')}
+      account={account}
+      cakePrice={cakePrice}
+      columnSchema={DesktopColumnSchema}
+      farms={chosenFarmsMemoized}
+      userDataReady={userDataReady}
+    />
+  )
 }
 
 export default OldFarmStep1

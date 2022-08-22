@@ -1,7 +1,7 @@
 import { ArrowForwardIcon, Button, Text, Link, useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
-import { memo, useMemo } from 'react'
+import { memo, useMemo, useRef, useLayoutEffect } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { perpLangMap } from 'utils/getPerpetualLanguageCode'
 import { perpTheme } from 'utils/getPerpetualTheme'
@@ -10,6 +10,7 @@ import * as S from './Styled'
 
 const RightWrapper = styled.div`
   position: absolute;
+  min-height: 100%;
   right: 0;
   bottom: 0px;
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -24,29 +25,45 @@ const RightWrapper = styled.div`
 `
 const Header = styled(S.StyledHeading)`
   font-size: 20px;
+  min-height: 44px;
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 40px;
+    min-height: auto;
   }
 `
+
+const HEADING_ONE_LINE_HEIGHT = 27
 
 const PerpetualBanner = () => {
   const {
     t,
     currentLanguage: { code },
   } = useTranslation()
-  const { isDesktop } = useMatchBreakpointsContext()
+  const { isDesktop, isMobile } = useMatchBreakpointsContext()
   const { isDark } = useTheme()
 
   const perpetualUrl = useMemo(
     () => `https://perp.pancakeswap.finance/${perpLangMap(code)}/futures/BTCUSDT?theme=${perpTheme(isDark)}`,
     [code, isDark],
   )
+  const headerRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    const target = headerRef.current
+    target.style.fontSize = '' // reset
+    target.style.lineHeight = ''
+    if (!target || !isMobile) return
+    if (target.offsetHeight > HEADING_ONE_LINE_HEIGHT) {
+      target.style.fontSize = '18px'
+      target.style.lineHeight = `${HEADING_ONE_LINE_HEIGHT}px`
+    }
+  }, [isMobile, code])
 
   return (
     <S.Wrapper>
       <S.Inner>
         <S.LeftWrapper>
-          <S.StyledSubheading>{t('Perpetual Futures')}</S.StyledSubheading>
+          <S.StyledSubheading ref={headerRef}>{t('Perpetual Futures')}</S.StyledSubheading>
           <Header width={['160px', '160px', 'auto']}>{t('Up to 100× Leverage')}</Header>
           <Link href={perpetualUrl} external>
             <Button>

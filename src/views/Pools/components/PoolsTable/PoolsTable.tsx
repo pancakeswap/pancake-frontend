@@ -1,7 +1,5 @@
 import { useRef } from 'react'
 import styled from 'styled-components'
-import { Button, ChevronUpIcon } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
 import { DeserializedPool } from 'state/types'
 import PoolRow, { VaultPoolRow } from './PoolRow'
 
@@ -28,23 +26,8 @@ const StyledTableBorder = styled.div`
   background-size: 400% 400%;
 `
 
-const ScrollButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  padding-top: 5px;
-  padding-bottom: 5px;
-`
-
 const PoolsTable: React.FC<React.PropsWithChildren<PoolsTableProps>> = ({ pools, account, urlSearch }) => {
-  const { t } = useTranslation()
   const tableWrapperEl = useRef<HTMLDivElement>(null)
-
-  const scrollToTop = (): void => {
-    window.scrollTo({
-      top: tableWrapperEl.current.offsetTop,
-      behavior: 'smooth',
-    })
-  }
 
   return (
     <StyledTableBorder>
@@ -66,12 +49,6 @@ const PoolsTable: React.FC<React.PropsWithChildren<PoolsTableProps>> = ({ pools,
             />
           ),
         )}
-        <ScrollButtonContainer>
-          <Button variant="text" onClick={scrollToTop}>
-            {t('To Top')}
-            <ChevronUpIcon color="primary" />
-          </Button>
-        </ScrollButtonContainer>
       </StyledTable>
     </StyledTableBorder>
   )

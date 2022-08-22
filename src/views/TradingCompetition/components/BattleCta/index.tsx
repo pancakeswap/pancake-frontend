@@ -14,7 +14,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useWallet } from 'hooks/useWallet'
 import { useTranslation } from '@pancakeswap/localization'
-import { FINISHED, OVER } from 'config/constants/trading-competition/phases'
+import { FINISHED, OVER, REGISTRATION } from 'config/constants/trading-competition/phases'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import RegisterModal from '../RegisterModal'
@@ -116,15 +116,14 @@ const BattleCta: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
     if (!account) {
       return t('Connect Wallet')
     }
-    // User not registered
-    if (!hasRegistered) {
+    // User not registered and competition in register
+    if (currentPhase.state === REGISTRATION && !hasRegistered) {
       return t('I want to Battle!')
     }
-    // User registered and competition live
+    // Competition live
     if (isCompetitionLive) {
       return t('Trade Now')
     }
-
     // User registered and competition finished
     if (hasCompetitionEnded) {
       // Claim period has ended

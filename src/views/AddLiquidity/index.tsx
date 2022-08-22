@@ -488,7 +488,10 @@ export default function AddLiquidity() {
         }
         setLiquidityState({
           attemptingTxn: false,
-          liquidityErrorMessage: err && err.code !== 4001 ? `Add Liquidity failed: ${err.message}` : undefined,
+          liquidityErrorMessage:
+            err && err.code !== 4001
+              ? t('Add liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err, t) })
+              : undefined,
           txHash: undefined,
         })
       })
