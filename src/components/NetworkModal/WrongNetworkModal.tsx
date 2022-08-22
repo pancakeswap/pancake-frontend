@@ -3,6 +3,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import { ArrowForwardIcon, Button, Grid, Message, MessageText, Modal, Text } from '@pancakeswap/uikit'
 import { FlexGap } from 'components/Layout/Flex'
 import { ChainLogo } from 'components/Logo/ChainLogo'
+import useAuth from 'hooks/useAuth'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import Image from 'next/future/image'
 import { Chain, useNetwork } from 'wagmi'
@@ -10,8 +11,9 @@ import Dots from '../Loader/Dots'
 
 // Where page network is not equal to wallet network
 export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: Chain; onDismiss: () => void }) {
-  const { switchNetwork, isLoading } = useSwitchNetwork()
+  const { switchNetworkAsync, isLoading, canSwitch } = useSwitchNetwork()
   const { chain } = useNetwork()
+  const { logout } = useAuth()
   const chainId = currentChain.id || ChainId.BSC
   const { t } = useTranslation()
 
@@ -36,9 +38,13 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
             </FlexGap>
           </MessageText>
         </Message>
-        <Button isLoading={isLoading} onClick={() => switchNetwork(chainId)}>
-          {isLoading ? <Dots>{switchText}</Dots> : switchText}
-        </Button>
+        {canSwitch ? (
+          <Button isLoading={isLoading} onClick={() => switchNetworkAsync(chainId)}>
+            {isLoading ? <Dots>{switchText}</Dots> : switchText}
+          </Button>
+        ) : (
+          <Button onClick={logout}>{t('Disconnect Wallet')}</Button>
+        )}
       </Grid>
     </Modal>
   )

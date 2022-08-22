@@ -1,3 +1,4 @@
+import replaceBrowserHistory from 'utils/replaceBrowserHistory'
 import { Box, connectorLocalStorageKey, ConnectorNames, LinkExternal, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useCallback } from 'react'
@@ -6,6 +7,7 @@ import { useConnect, useDisconnect, useNetwork, ConnectorNotFoundError, UserReje
 import { clearUserStates } from '../utils/clearUserStates'
 import { useActiveChainId } from './useActiveChainId'
 import useToast from './useToast'
+import { useSessionChainId } from './useSessionChainId'
 
 const useAuth = () => {
   const { t } = useTranslation()
@@ -15,12 +17,17 @@ const useAuth = () => {
   const { disconnect } = useDisconnect()
   const { toastError } = useToast()
   const { chainId } = useActiveChainId()
+  const [, setSessionChainId] = useSessionChainId()
 
   const login = useCallback(
     async (connectorID: ConnectorNames) => {
       const findConnector = connectors.find((c) => c.id === connectorID)
       try {
-        await connectAsync({ connector: findConnector, chainId })
+        const connected = await connectAsync({ connector: findConnector, chainId })
+        if (!connected.chain.unsupported && connected.chain.id !== chainId) {
+          replaceBrowserHistory(connected.chain.id)
+          setSessionChainId(connected.chain.id)
+        }
       } catch (error) {
         console.error(error)
         window?.localStorage?.removeItem(connectorLocalStorageKey)
@@ -44,7 +51,7 @@ const useAuth = () => {
         }
       }
     },
-    [connectors, connectAsync, chainId, toastError, t],
+    [connectors, connectAsync, chainId, setSessionChainId, toastError, t],
   )
 
   const logout = useCallback(() => {

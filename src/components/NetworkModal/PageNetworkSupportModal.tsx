@@ -11,11 +11,13 @@ import NextLink from 'next/link'
 import { useMenuItems } from 'components/Menu/hooks/useMenuItems'
 import { getActiveMenuItem, getActiveSubMenuItem } from 'components/Menu/utils'
 import { useRouter } from 'next/router'
+import useAuth from 'hooks/useAuth'
 
 export function PageNetworkSupportModal() {
   const { t } = useTranslation()
-  const { switchNetwork, isLoading } = useSwitchNetwork()
+  const { switchNetworkAsync, isLoading, canSwitch } = useSwitchNetwork()
   const { chainId } = useActiveWeb3React()
+  const { logout } = useAuth()
 
   const foundChain = useMemo(() => chains.find((c) => c.id === chainId), [chainId])
   const historyManager = useHistory()
@@ -51,9 +53,13 @@ export function PageNetworkSupportModal() {
             'Our Trading Competition, Prediction and Lottery features are currently available only on BNB Chain! Come over and join the community in the fun!',
           )}
         </Text>
-        <Button variant="secondary" isLoading={isLoading} onClick={() => switchNetwork(ChainId.BSC)}>
-          {t('Switch to %chain%', { chain: 'BNB Smart Chain' })}
-        </Button>
+        {canSwitch ? (
+          <Button variant="secondary" isLoading={isLoading} onClick={() => switchNetworkAsync(ChainId.BSC)}>
+            {t('Switch to %chain%', { chain: 'BNB Smart Chain' })}
+          </Button>
+        ) : (
+          <Button onClick={logout}>{t('Disconnect Wallet')}</Button>
+        )}
         {foundChain && lastValidPath && (
           <NextLink href={lastValidPath} passHref>
             <Button as="a">{t('Stay on %chain%', { chain: foundChain.name })}</Button>

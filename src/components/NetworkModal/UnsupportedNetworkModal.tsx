@@ -3,6 +3,7 @@ import { useLocalNetworkChain } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import Image from 'next/image'
+import useAuth from 'hooks/useAuth'
 import { useNetwork } from 'wagmi'
 import { useMemo } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
@@ -10,9 +11,10 @@ import Dots from '../Loader/Dots'
 
 // Where chain is not supported
 export function UnsupportedNetworkModal() {
-  const { switchNetwork, isLoading } = useSwitchNetwork()
+  const { switchNetworkAsync, isLoading, canSwitch } = useSwitchNetwork()
   const { chains } = useNetwork()
   const chainId = useLocalNetworkChain() || ChainId.BSC
+  const { logout } = useAuth()
   const { t } = useTranslation()
 
   const supportedMainnetChains = useMemo(() => chains.filter((chain) => !chain.testnet), [chains])
@@ -35,9 +37,13 @@ export function UnsupportedNetworkModal() {
         <Message variant="warning">
           <MessageText>{t('Please switch your network to continue.')}</MessageText>
         </Message>
-        <Button isLoading={isLoading} onClick={() => switchNetwork(chainId)}>
-          {isLoading ? <Dots>{t('Switch network in wallet')}</Dots> : t('Switch network in wallet')}
-        </Button>
+        {canSwitch ? (
+          <Button isLoading={isLoading} onClick={() => switchNetworkAsync(chainId)}>
+            {isLoading ? <Dots>{t('Switch network in wallet')}</Dots> : t('Switch network in wallet')}
+          </Button>
+        ) : (
+          <Button onClick={logout}>{t('Disconnect Wallet')}</Button>
+        )}
       </Grid>
     </Modal>
   )

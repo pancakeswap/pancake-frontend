@@ -6,27 +6,59 @@ import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 export function useSwitchNetwork() {
   const [loading, setLoading] = useSwitchNetworkLoading()
   const [, setSessionChainId] = useSessionChainId()
-  const { switchNetworkAsync, isLoading: _isLoading, ...switchNetworkArgs } = useSwitchNetworkWallet()
+  const {
+    switchNetworkAsync: _switchNetworkAsync,
+    isLoading: _isLoading,
+    switchNetwork: _switchNetwork,
+    ...switchNetworkArgs
+  } = useSwitchNetworkWallet()
   const { isConnected } = useAccount()
 
-  const switchNetwork = useCallback(
-    (chainId: number) => {
-      if (isConnected && typeof switchNetworkAsync === 'function') {
-        setLoading(true)
-        return switchNetworkAsync(chainId).finally(() => setLoading(false))
+  const switchNetworkAsync = useCallback(
+    async (chainId: number) => {
+      if (isConnected) {
+        if (typeof _switchNetworkAsync === 'function') {
+          setLoading(true)
+          return _switchNetworkAsync(chainId).finally(() => setLoading(false))
+        }
+        return undefined
       }
       return new Promise(() => {
         setSessionChainId(chainId)
       })
     },
-    [isConnected, setLoading, setSessionChainId, switchNetworkAsync],
+    [isConnected, setLoading, setSessionChainId, _switchNetworkAsync],
+  )
+
+  const switchNetwork = useCallback(
+    (chainId: number) => {
+      if (isConnected) {
+        if (typeof _switchNetwork === 'function') {
+          return _switchNetwork(chainId)
+        }
+        return undefined
+      }
+      return () => {
+        setSessionChainId(chainId)
+      }
+    },
+    [_switchNetwork, isConnected, setSessionChainId],
   )
 
   const isLoading = _isLoading || loading
+  const canSwitch =
+    !!_switchNetworkAsync &&
+    !(
+      typeof window !== 'undefined' &&
+      // @ts-ignore // TODO: add type later
+      window.ethereum?.isSafePal
+    )
 
   return {
     ...switchNetworkArgs,
     switchNetwork,
+    switchNetworkAsync,
     isLoading,
+    canSwitch,
   }
 }
