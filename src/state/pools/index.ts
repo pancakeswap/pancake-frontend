@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction, isAnyOf } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
+import fromPairs from 'lodash/fromPairs'
 import poolsConfig from 'config/constants/pools'
 import {
   PoolsState,
@@ -140,12 +141,15 @@ export const fetchPoolsPublicDataAsync = (currentBlockNumber: number) => async (
       currentBlockNumber ? Promise.resolve(currentBlockNumber) : bscRpcProvider.getBlockNumber(),
     ])
 
+    const blockLimitsSousIdMap = fromPairs(blockLimits.map((entry) => [entry.sousId, entry]))
+    const totalStakingsSousIdMap = fromPairs(totalStakings.map((entry) => [entry.sousId, entry]))
+
     const activePriceHelperLpsConfig = priceHelperLpsConfig.filter((priceHelperLpConfig) => {
       return (
         poolsConfig
           .filter((pool) => pool.earningToken.address.toLowerCase() === priceHelperLpConfig.token.address.toLowerCase())
           .filter((pool) => {
-            const poolBlockLimit = blockLimits.find((blockLimit) => blockLimit.sousId === pool.sousId)
+            const poolBlockLimit = blockLimitsSousIdMap[pool.sousId]
             if (poolBlockLimit) {
               return poolBlockLimit.endBlock > currentBlock
             }
@@ -167,8 +171,8 @@ export const fetchPoolsPublicDataAsync = (currentBlockNumber: number) => async (
     const prices = getTokenPricesFromFarm([...farmsData, ...farmsWithPricesOfDifferentTokenPools])
 
     const liveData = poolsConfig.map((pool) => {
-      const blockLimit = blockLimits.find((entry) => entry.sousId === pool.sousId)
-      const totalStaking = totalStakings.find((entry) => entry.sousId === pool.sousId)
+      const blockLimit = blockLimitsSousIdMap[pool.sousId]
+      const totalStaking = totalStakingsSousIdMap[pool.sousId]
       const isPoolEndBlockExceeded = currentBlock > 0 && blockLimit ? currentBlock > Number(blockLimit.endBlock) : false
       const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded
 
@@ -372,8 +376,9 @@ export const PoolsSlice = createSlice({
     },
     setPoolsPublicData: (state, action) => {
       const livePoolsData: SerializedPool[] = action.payload
+      const livePoolsSousIdMap = fromPairs(livePoolsData.map((entry) => [entry.sousId, entry]))
       state.data = state.data.map((pool) => {
-        const livePoolData = livePoolsData.find((entry) => entry.sousId === pool.sousId)
+        const livePoolData = livePoolsSousIdMap[pool.sousId]
         return { ...pool, ...livePoolData }
       })
     },
@@ -402,10 +407,12 @@ export const PoolsSlice = createSlice({
         >,
       ) => {
         const userData = action.payload
-        state.data = state.data.map((pool) => {
-          const userPoolData = userData.find((entry) => entry.sousId === pool.sousId)
-          return { ...pool, userDataLoaded: true, userData: userPoolData }
-        })
+        const userDataSousIdMap = fromPairs(userData.map((entry) => [entry.sousId, entry]))
+        state.data = state.data.map((pool) => ({
+          ...pool,
+          userDataLoaded: true,
+          userData: userDataSousIdMap[pool.sousId],
+        }))
         state.userDataLoaded = true
       },
     )
