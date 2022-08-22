@@ -1887,8 +1887,8 @@
   "0.0001 CAKE will be spent to extend": "0.0001CAKEが延長に使用されます",
   "0.0001 CAKE required for enabling extension": "延長を有効にするには0.0001CAKEが必要です",
   "Recommend choosing \"MAX\" to renew your staking position in order to keep similar yield boost.": "同様の利回り強化を維持するには、「最大」を選択してステーキングポジションを更新することをお勧めします。",
-  "Add to %wallet%": "%wallet%に追加",
-  "Add %asset% to %wallet%": "%wallet%に%asset%を追加",
+  "Add to Wallet": "Add to Wallet",
+  "Add %asset% to Wallet": "Add %asset% to Wallet",
   "After Burning starts at %burnStartTime%. You need to renew your fix-term position, to initiate a new lock or convert your staking position to flexible before it starts. Otherwise all the rewards will be burned within the next 90 days.": "バーン後は%burnStartTime%に開始します。定期ポジションを更新して新しいロックを開始するか、開始前にステーキングポジションをフレキシブルに変換する必要があります。そうでない場合、すべての報酬は翌90日以内にバーンされます。",
   "Common tokens": "コモントークン",
   "Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol%": "最大%inputAmount% %inputSymbol%を%outputAmount% %outputSymbol%にスワップ",
@@ -1910,5 +1910,13 @@
   "Remove %amountA% %symbolA% and %amountB% %symbolB%": "Remove %amountA% %symbolA% and %amountB% %symbolB%",
   "Zap %amountA% %symbolA% and %amountB% %symbolB%": "Zap %amountA% %symbolA% and %amountB% %symbolB%",
   "Zap in %amount% BNB for %symbol%": "Zap in %amount% BNB for %symbol%",
-  "Zap in %amount% %symbol% for %lpSymbol%": "Zap in %amount% %symbol% for %lpSymbol%"
+  "Zap in %amount% %symbol% for %lpSymbol%": "Zap in %amount% %symbol% for %lpSymbol%",
+  "Insufficient input token balance. Your transaction may fail.": "Insufficient input token balance. Your transaction may fail.",
+  "Wrong Network": "Wrong Network",
+  "Check your network": "Check your network",
+  "Switch to %network%": "Switch to %network%",
+  "You are in wrong network": "You are in wrong network",
+  "This page is located for %network%.": "This page is located for %network%.",
+  "You are under %network% now, please switch the network to continue.": "You are under %network% now, please switch the network to continue.",
+  "Switch network to continue.": "Switch network to continue."
 }
