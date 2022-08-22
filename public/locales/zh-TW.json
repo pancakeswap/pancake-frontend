@@ -1910,7 +1910,7 @@
   "Zap in %amount% %symbol% for %lpSymbol%": "Zap in %amount% %symbol% for %lpSymbol%",
   "never executes": "無法執行",
   "Order not allowed": "Order not allowed",
-  "Only possible to place sell orders above market rate": "Only possible to place sell orders above market rate",
+  "Only possible to place sell orders above market rate": "只能提交優於市價的訂單",
   "Only possible to place buy orders below market rate": "Only possible to place buy orders below market rate",
   "Insufficient input token balance. Your transaction may fail.": "Insufficient input token balance. Your transaction may fail.",
   "Wrong Network": "Wrong Network",
