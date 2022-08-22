@@ -416,27 +416,27 @@ export default function RemoveLiquidity() {
       throw new Error('Attempting to confirm without approval or a signature')
     }
 
-    const safeGasEstimates: (BigNumber | undefined)[] = await Promise.all(
-      methodNames.map((methodName) =>
-        routerContract.estimateGas[methodName](...args)
-          .then(calculateGasMargin)
-          .catch((err) => {
-            console.error(`estimateGas failed`, methodName, args, err)
-            return undefined
-          }),
-      ),
-    )
+    let methodSafeGasEstimate: { methodName: string; safeGasEstimate: BigNumber }
+    for (let i = 0; i < methodNames.length; i++) {
+      let safeGasEstimate
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        safeGasEstimate = calculateGasMargin(await routerContract.estimateGas[methodNames[i]](...args))
+      } catch (e) {
+        console.error(`estimateGas failed`, methodNames[i], args, e)
+      }
 
-    const indexOfSuccessfulEstimation = safeGasEstimates.findIndex((safeGasEstimate) =>
-      BigNumber.isBigNumber(safeGasEstimate),
-    )
+      if (BigNumber.isBigNumber(safeGasEstimate)) {
+        methodSafeGasEstimate = { methodName: methodNames[i], safeGasEstimate }
+        break
+      }
+    }
 
     // all estimations failed...
-    if (indexOfSuccessfulEstimation === -1) {
+    if (!methodSafeGasEstimate) {
       toastError(t('Error'), t('This transaction would fail'))
     } else {
-      const methodName = methodNames[indexOfSuccessfulEstimation]
-      const safeGasEstimate = safeGasEstimates[indexOfSuccessfulEstimation]
+      const { methodName, safeGasEstimate } = methodSafeGasEstimate
 
       setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
       await routerContract[methodName](...args, {
