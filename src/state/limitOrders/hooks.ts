@@ -200,7 +200,7 @@ const getErrorMessage = (
 
   const tradeIsNotAvailable = !trade || !trade?.route
   if (hasAtLeastOneParsedAmount && tradeIsNotAvailable) {
-    return t('Insufficient liquidity for this trade')
+    return t('Insufficient liquidity for this trade.')
   }
   const someParsedAmountIsMissing = !parsedAmounts.input || !parsedAmounts.output
   if (someParsedAmountIsMissing) {
