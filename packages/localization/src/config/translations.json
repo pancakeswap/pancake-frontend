@@ -780,6 +780,7 @@
   "- Remove send": "- Remove send",
   "Slippage Tolerance": "Slippage Tolerance",
   "Insufficient liquidity for this trade.": "Insufficient liquidity for this trade.",
+  "Insufficient liquidity for this trade": "Insufficient liquidity for this trade",
   "Try enabling multi-hop trades.": "Try enabling multi-hop trades.",
   "Price Impact High": "Price Impact High",
   "Swap": "Swap",
@@ -1911,5 +1912,8 @@
   "Zap %amountA% %symbolA% and %amountB% %symbolB%": "Zap %amountA% %symbolA% and %amountB% %symbolB%",
   "Zap in %amount% BNB for %symbol%": "Zap in %amount% BNB for %symbol%",
   "Zap in %amount% %symbol% for %lpSymbol%": "Zap in %amount% %symbol% for %lpSymbol%",
-  "never executes": "never executes"
+  "never executes": "never executes",
+  "Order not allowed": "Order not allowed",
+  "Only possible to place sell orders above market rate": "Only possible to place sell orders above market rate",
+  "Only possible to place buy orders below market rate": "Only possible to place buy orders below market rate"
 }
