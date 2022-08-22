@@ -4,6 +4,7 @@ import type {
   UnknownAsyncThunkRejectedAction,
   // eslint-disable-next-line import/no-unresolved
 } from '@reduxjs/toolkit/dist/matchers'
+import fromPairs from 'lodash/fromPairs'
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import stringify from 'fast-json-stable-stringify'
 import farmsConfig from 'config/constants/farms'
@@ -241,8 +242,9 @@ export const farmsSlice = createSlice({
     // Update farms with live data
     builder.addCase(fetchFarmsPublicDataAsync.fulfilled, (state, action) => {
       const [farmPayload, poolLength, regularCakePerBlock] = action.payload
+      const farmPayloadPidMap = fromPairs(farmPayload.map((farmData) => [farmData.pid, farmData]))
       state.data = state.data.map((farm) => {
-        const liveFarmData = farmPayload.find((farmData) => farmData.pid === farm.pid)
+        const liveFarmData = farmPayloadPidMap[farm.pid]
         return { ...farm, ...liveFarmData }
       })
       state.poolLength = poolLength
@@ -251,11 +253,10 @@ export const farmsSlice = createSlice({
 
     // Update farms with user data
     builder.addCase(fetchFarmUserDataAsync.fulfilled, (state, action) => {
-      action.payload.forEach((userDataEl) => {
-        const { pid } = userDataEl
-
-        const index = state.data.findIndex((farm) => farm.pid === pid)
-        state.data[index] = { ...state.data[index], userData: userDataEl }
+      const userDataMap = fromPairs(action.payload.map((userDataEl) => [userDataEl.pid, userDataEl]))
+      state.data = state.data.map((farm) => {
+        const userDataEl = userDataMap[farm.pid]
+        return { ...farm, userData: userDataEl }
       })
       state.userDataLoaded = true
     })
