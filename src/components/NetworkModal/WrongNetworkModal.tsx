@@ -4,6 +4,7 @@ import { ArrowForwardIcon, Button, Grid, Message, MessageText, Modal, Text } fro
 import { FlexGap } from 'components/Layout/Flex'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import useAuth from 'hooks/useAuth'
+import { useSessionChainId } from 'hooks/useSessionChainId'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import Image from 'next/future/image'
 import { Chain, useNetwork } from 'wagmi'
@@ -14,6 +15,7 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
   const { switchNetworkAsync, isLoading, canSwitch } = useSwitchNetwork()
   const { chain } = useNetwork()
   const { logout } = useAuth()
+  const [, setSessionChainId] = useSessionChainId()
   const chainId = currentChain.id || ChainId.BSC
   const { t } = useTranslation()
 
@@ -43,7 +45,15 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
             {isLoading ? <Dots>{switchText}</Dots> : switchText}
           </Button>
         ) : (
-          <Button onClick={logout}>{t('Disconnect Wallet')}</Button>
+          <Button
+            onClick={() =>
+              logout().then(() => {
+                setSessionChainId(chainId)
+              })
+            }
+          >
+            {t('Disconnect Wallet')}
+          </Button>
         )}
       </Grid>
     </Modal>

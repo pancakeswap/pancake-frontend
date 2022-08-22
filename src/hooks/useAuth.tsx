@@ -14,7 +14,7 @@ const useAuth = () => {
   const dispatch = useAppDispatch()
   const { connectAsync, connectors } = useConnect()
   const { chain } = useNetwork()
-  const { disconnect } = useDisconnect()
+  const { disconnectAsync } = useDisconnect()
   const { toastError } = useToast()
   const { chainId } = useActiveChainId()
   const [, setSessionChainId] = useSessionChainId()
@@ -54,10 +54,15 @@ const useAuth = () => {
     [connectors, connectAsync, chainId, setSessionChainId, toastError, t],
   )
 
-  const logout = useCallback(() => {
-    disconnect()
-    clearUserStates(dispatch, chain?.id, true)
-  }, [disconnect, dispatch, chain?.id])
+  const logout = useCallback(async () => {
+    try {
+      await disconnectAsync()
+    } catch (error) {
+      console.error(error)
+    } finally {
+      clearUserStates(dispatch, chain?.id, true)
+    }
+  }, [disconnectAsync, dispatch, chain?.id])
 
   return { login, logout }
 }

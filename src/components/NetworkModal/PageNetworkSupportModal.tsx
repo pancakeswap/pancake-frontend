@@ -25,7 +25,7 @@ export function PageNetworkSupportModal() {
   const lastValidPath = historyManager?.history?.find((h) => ['/swap', 'liquidity', '/'].includes(h))
 
   const menuItems = useMenuItems()
-  const { pathname } = useRouter()
+  const { pathname, push } = useRouter()
 
   const { title, image } = useMemo(() => {
     const activeMenuItem = getActiveMenuItem({ menuConfig: menuItems, pathname })
@@ -58,7 +58,15 @@ export function PageNetworkSupportModal() {
             {t('Switch to %chain%', { chain: 'BNB Smart Chain' })}
           </Button>
         ) : (
-          <Button onClick={logout}>{t('Disconnect Wallet')}</Button>
+          <Button
+            onClick={() =>
+              logout().then(() => {
+                push('/')
+              })
+            }
+          >
+            {t('Disconnect Wallet')}
+          </Button>
         )}
         {foundChain && lastValidPath && (
           <NextLink href={lastValidPath} passHref>
