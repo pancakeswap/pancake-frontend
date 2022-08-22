@@ -99,7 +99,7 @@ export const useSystemInfo = () => {
   return info
 }
 
-const mpWebviewPath = new Set(['/farms', '/farms/history', '/pools', '/pools/history'])
+const mpWebviewPath = new Set(['/farms/history', '/pools/history'])
 const handleLinkClick = (e: MouseEvent, router: NextRouter) => {
   // @ts-ignore
   const href = e.target?.closest('a')?.href || ''
@@ -112,6 +112,10 @@ const handleLinkClick = (e: MouseEvent, router: NextRouter) => {
     } else if (url.pathname === '/swap') {
       const query = url.search ? url.search.slice(1).split('=') : undefined
       _bridgeUtils.jump({ path: 'swap', query: query ? { [query[0]]: query[1] } : undefined })
+    } else if (url.pathname === '/pools') {
+      _bridgeUtils.jump({ path: 'pools' })
+    } else if (url.pathname === '/farms') {
+      _bridgeUtils.jump({ path: 'farms' })
     } else if (mpWebviewPath.has(url.pathname)) {
       const newPathname = `/_mp${url.pathname}`
       router.push(newPathname)
