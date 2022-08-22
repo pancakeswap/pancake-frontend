@@ -57,6 +57,17 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 59,
+    v1pid: 450,
+    lpSymbol: 'SFUND-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x74fA517715C4ec65EF01d55ad5335f90dce7CC87',
+    },
+    token: serializedTokens.sfund,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 106,
     lpSymbol: 'MHUNT-BNB LP',
     lpAddresses: {
@@ -673,17 +684,6 @@ const farms: SerializedFarmConfig[] = [
       56: '0x0ecc84c9629317a494f12bc56aa2522475bf32e8',
     },
     token: serializedTokens.nft,
-    quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 59,
-    v1pid: 450,
-    lpSymbol: 'SFUND-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0x74fA517715C4ec65EF01d55ad5335f90dce7CC87',
-    },
-    token: serializedTokens.sfund,
     quoteToken: serializedTokens.wbnb,
   },
   {
