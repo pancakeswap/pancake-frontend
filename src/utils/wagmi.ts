@@ -63,6 +63,7 @@ export const injectedConnector = new InjectedConnector({
   chains,
   options: {
     shimDisconnect: false,
+    shimChainChangedDisconnect: true,
   },
 })
 
@@ -85,6 +86,7 @@ export const metaMaskConnector = new MetaMaskConnector({
   chains,
   options: {
     shimDisconnect: false,
+    shimChainChangedDisconnect: true,
   },
 })
 

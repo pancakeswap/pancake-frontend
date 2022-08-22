@@ -3,7 +3,7 @@ import { useAccount, useProvider, useSigner } from 'wagmi'
 import { useActiveChainId } from './useActiveChainId'
 
 export const useProviderOrSigner = (withSignerIfPossible = true) => {
-  const chainId = useActiveChainId()
+  const { chainId } = useActiveChainId()
   const provider = useProvider({ chainId })
   const { address, isConnected } = useAccount()
   const { data: signer } = useSigner()

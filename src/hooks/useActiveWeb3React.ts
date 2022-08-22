@@ -1,59 +1,39 @@
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useRouter, NextRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { isChainSupported } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
-import { useActiveChainId, useLocalNetworkChain } from './useActiveChainId'
+import { ChainId } from '@pancakeswap/sdk'
+import { useActiveChainId } from './useActiveChainId'
+import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 
 const getHashFromRouter = (router: NextRouter) => {
   return router.asPath.match(/#([a-z0-9]+)/gi)
 }
 
 export function useNetworkConnectorUpdater() {
-  const localChainId = useLocalNetworkChain()
-  const { chain, isConnecting } = useActiveWeb3React()
-  const { switchNetwork, isLoading, pendingChainId } = useSwitchNetwork()
+  const { chainId, isConnecting } = useActiveWeb3React()
+  const [loading] = useSwitchNetworkLoading()
   const router = useRouter()
-  const chainId = chain?.id || localChainId
-  const [triedSwitchFromQuery, setTriedSwitchFromQuery] = useState(false)
 
   useEffect(() => {
-    if (isLoading || !router.isReady || isConnecting) return
+    if (loading || !router.isReady || isConnecting) return
     const parsedQueryChainId = Number(router.query.chainId)
-    if (triedSwitchFromQuery) {
-      if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
-        const uriHash = getHashFromRouter(router)?.[0]
-        router.replace(
-          {
-            query: {
-              ...router.query,
-              chainId,
-            },
-            ...(uriHash && { hash: uriHash }),
+    if (!parsedQueryChainId && chainId === ChainId.BSC) return
+    if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
+      const uriHash = getHashFromRouter(router)?.[0]
+      router.replace(
+        {
+          query: {
+            ...router.query,
+            chainId,
           },
-          undefined,
-        )
-      }
-    } else if (isChainSupported(parsedQueryChainId)) {
-      switchNetwork(parsedQueryChainId)
-        .then((r) => {
-          console.info('Auto switch network', r)
-        })
-        .catch((err) => {
-          console.error(err)
-        })
-        .finally(() => setTriedSwitchFromQuery(true))
-    } else {
-      setTriedSwitchFromQuery(true)
+          ...(uriHash && { hash: uriHash }),
+        },
+        undefined,
+      )
     }
-  }, [chainId, isConnecting, isLoading, router, switchNetwork, triedSwitchFromQuery])
-
-  return {
-    isLoading,
-    switchNetwork,
-    pendingChainId,
-  }
+  }, [chainId, isConnecting, loading, router])
 }
 
 /**
@@ -62,13 +42,14 @@ export function useNetworkConnectorUpdater() {
  */
 const useActiveWeb3React = () => {
   const web3React = useWeb3React()
-  const chainId = useActiveChainId()
+  const { chainId, isWrongNetwork } = useActiveChainId()
   const provider = useProvider({ chainId })
 
   return {
     provider,
     ...web3React,
     chainId,
+    isWrongNetwork,
   }
 }
 

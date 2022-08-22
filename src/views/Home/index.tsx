@@ -46,7 +46,7 @@ const UserBannerWrapper = styled(Container)`
 const Home: React.FC<React.PropsWithChildren> = () => {
   const { theme } = useTheme()
   const { account } = useWeb3React()
-  const chainId = useActiveChainId()
+  const { chainId } = useActiveChainId()
 
   const HomeSectionContainerStyles = { margin: '0', width: '100%', maxWidth: '968px' }
 

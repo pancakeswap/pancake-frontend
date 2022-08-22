@@ -1,4 +1,4 @@
-import { Button, Modal, Text, Grid, InjectedModalProps, Box } from '@pancakeswap/uikit'
+import { Button, Modal, Text, Grid, Box } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
 import Image from 'next/future/image'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
@@ -8,12 +8,11 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useMemo } from 'react'
 import { useHistory } from 'contexts/HistoryContext'
 import NextLink from 'next/link'
+import { useMenuItems } from 'components/Menu/hooks/useMenuItems'
+import { getActiveMenuItem, getActiveSubMenuItem } from 'components/Menu/utils'
+import { useRouter } from 'next/router'
 
-export function NetworkSupportModal({
-  title,
-  onDismiss,
-  image,
-}: InjectedModalProps & { title?: React.ReactNode; image?: string }) {
+export function PageNetworkSupportModal() {
   const { t } = useTranslation()
   const { switchNetwork, isLoading } = useSwitchNetwork()
   const { chainId } = useActiveWeb3React()
@@ -23,8 +22,21 @@ export function NetworkSupportModal({
 
   const lastValidPath = historyManager?.history?.find((h) => ['/swap', 'liquidity', '/'].includes(h))
 
+  const menuItems = useMenuItems()
+  const { pathname } = useRouter()
+
+  const { title, image } = useMemo(() => {
+    const activeMenuItem = getActiveMenuItem({ menuConfig: menuItems, pathname })
+    const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })
+
+    return {
+      title: activeSubMenuItem?.disabled ? activeSubMenuItem?.label : activeMenuItem?.label,
+      image: activeSubMenuItem?.image || activeMenuItem?.image,
+    }
+  }, [menuItems, pathname])
+
   return (
-    <Modal title={title} hideCloseButton headerBackground="gradients.cardHeader">
+    <Modal title={title || t('Check your network')} hideCloseButton headerBackground="gradients.cardHeader">
       <Grid style={{ gap: '16px' }} maxWidth="360px">
         <Text bold>{t('It’s a BNB Smart Chain only feature')}</Text>
         <Text small>{t('Currently only Swap is supported in BNB Smart Chain')}</Text>
@@ -39,11 +51,7 @@ export function NetworkSupportModal({
             'Our Trading Competition, Prediction and Lottery features are currently available only on BNB Chain! Come over and join the community in the fun!',
           )}
         </Text>
-        <Button
-          variant="secondary"
-          isLoading={isLoading}
-          onClick={() => switchNetwork(ChainId.BSC).then(() => onDismiss?.())}
-        >
+        <Button variant="secondary" isLoading={isLoading} onClick={() => switchNetwork(ChainId.BSC)}>
           {t('Switch to %chain%', { chain: 'BNB Smart Chain' })}
         </Button>
         {foundChain && lastValidPath && (

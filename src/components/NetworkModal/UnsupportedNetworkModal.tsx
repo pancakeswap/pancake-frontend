@@ -6,9 +6,10 @@ import Image from 'next/image'
 import { useNetwork } from 'wagmi'
 import { useMemo } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
-import Dots from './Loader/Dots'
+import Dots from '../Loader/Dots'
 
-export function WrongNetworkModal() {
+// Where chain is not supported
+export function UnsupportedNetworkModal() {
   const { switchNetwork, isLoading } = useSwitchNetwork()
   const { chains } = useNetwork()
   const chainId = useLocalNetworkChain() || ChainId.BSC
@@ -17,7 +18,7 @@ export function WrongNetworkModal() {
   const supportedMainnetChains = useMemo(() => chains.filter((chain) => !chain.testnet), [chains])
 
   return (
-    <Modal title="Check your network" hideCloseButton headerBackground="gradients.cardHeader">
+    <Modal title={t('Check your network')} hideCloseButton headerBackground="gradients.cardHeader">
       <Grid style={{ gap: '16px' }} maxWidth="336px">
         <Text>
           {t('Currently exchange only supported in')} {supportedMainnetChains?.map((c) => c.name).join(', ')}
