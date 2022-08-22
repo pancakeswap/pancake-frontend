@@ -1,26 +1,27 @@
+import { ChainId } from '@pancakeswap/sdk'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import { farmsConfig, SLOW_INTERVAL } from 'config/constants'
+import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
-import { ChainId } from '@pancakeswap/sdk'
-import useSWRImmutable from 'swr/immutable'
+import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { getFarmApr } from 'utils/apr'
 import { useAppDispatch } from 'state'
-import { useRouter } from 'next/router'
+import useSWRImmutable from 'swr/immutable'
+import { getFarmApr } from 'utils/apr'
+import { BIG_ZERO } from 'utils/bigNumber'
 import { FarmWithStakedValue } from 'views/Farms/components/types'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, State } from '../types'
 import {
-  farmSelector,
   farmFromLpSymbolSelector,
-  priceCakeFromPidSelector,
+  farmSelector,
   makeBusdPriceFromPidSelector,
-  makeUserFarmFromPidSelector,
-  makeLpTokenPriceFromLpSymbolSelector,
   makeFarmFromPidSelector,
+  makeLpTokenPriceFromLpSymbolSelector,
+  makeUserFarmFromPidSelector,
 } from './selectors'
 
 export const usePollFarmsWithUserData = () => {
@@ -110,10 +111,11 @@ export const useLpTokenPrice = (symbol: string) => {
 }
 
 /**
- * @@deprecated use the BUSD hook in /hooks
+ * @deprecated use the BUSD hook in /hooks
  */
 export const usePriceCakeBusd = (): BigNumber => {
-  return useSelector(priceCakeFromPidSelector)
+  const price = useCakeBusdPrice()
+  return useMemo(() => (price ? new BigNumber(price.toSignificant(6)) : BIG_ZERO), [price])
 }
 
 export const useFarmWithStakeValue = (farm: DeserializedFarm): FarmWithStakedValue => {
