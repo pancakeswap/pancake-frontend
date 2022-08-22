@@ -22,6 +22,7 @@ declare global {
   }
 }
 
+// BSC wallet support network
 const mappingNetwork: Record<number, string> = {
   1: 'eth-mainnet',
   56: 'bsc-mainnet',
@@ -36,7 +37,7 @@ export class BscConnector extends InjectedConnector {
   provider?: Window['BinanceChain']
 
   constructor({
-    chains,
+    chains: _chains,
   }: {
     chains?: Chain[]
   } = {}) {
@@ -45,6 +46,7 @@ export class BscConnector extends InjectedConnector {
       shimDisconnect: true,
       shimChainChangedDisconnect: true,
     }
+    const chains = _chains?.filter((c) => !!mappingNetwork[c.id])
     super({
       chains,
       options,
