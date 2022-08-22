@@ -354,6 +354,7 @@ export default function Swap() {
     <ConfirmSwapModal
       trade={trade}
       originalTrade={tradeToConfirm}
+      currencyBalances={currencyBalances}
       onAcceptChanges={handleAcceptChanges}
       attemptingTxn={attemptingTxn}
       txHash={txHash}

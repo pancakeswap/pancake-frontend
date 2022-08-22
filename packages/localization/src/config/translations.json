@@ -1910,5 +1910,6 @@
   "Remove %amountA% %symbolA% and %amountB% %symbolB%": "Remove %amountA% %symbolA% and %amountB% %symbolB%",
   "Zap %amountA% %symbolA% and %amountB% %symbolB%": "Zap %amountA% %symbolA% and %amountB% %symbolB%",
   "Zap in %amount% BNB for %symbol%": "Zap in %amount% BNB for %symbol%",
-  "Zap in %amount% %symbol% for %lpSymbol%": "Zap in %amount% %symbol% for %lpSymbol%"
+  "Zap in %amount% %symbol% for %lpSymbol%": "Zap in %amount% %symbol% for %lpSymbol%",
+  "Insufficient input token balance. Your transaction may fail.": "Insufficient input token balance. Your transaction may fail."
 }
