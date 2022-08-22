@@ -1887,8 +1887,8 @@
   "0.0001 CAKE will be spent to extend": "0,0001 CAKEa käytetään pidentämiseen",
   "0.0001 CAKE required for enabling extension": "0,0001 CAKEa vaaditaan pidennyksen mahdollistamiseen",
   "Recommend choosing \"MAX\" to renew your staking position in order to keep similar yield boost.": "Suosittelemme valitsemaan \"maksimin\" panostuspositiosi uusimiseen säilyttääksesi samankaltaisen tuoton parannuksen.",
-  "Add to %wallet%": "Lisää lompakkoon %wallet%",
-  "Add %asset% to %wallet%": "Lisää %asset% lompakkoon %wallet%",
+  "Add to Wallet": "Add to Wallet",
+  "Add %asset% to Wallet": "Add %asset% to Wallet",
   "After Burning starts at %burnStartTime%. You need to renew your fix-term position, to initiate a new lock or convert your staking position to flexible before it starts. Otherwise all the rewards will be burned within the next 90 days.": "Jälkipoltto alkaa %burnStartTime%. Sinun täytyy uusia kiinteä positiosi uuden lukituksen aloittamiseksi tai muun panostuspositiosi joustavaksi ennen sen alkamista. Muutoin kaikki palkinnot poltetaan seuraavien 90 päivän kuluessa.",
   "Common tokens": "Yleiset poletit",
   "Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol%": "Vaihda enintään %inputAmount% %inputSymbol% → %outputAmount% %outputSymbol%",
@@ -1910,5 +1910,13 @@
   "Remove %amountA% %symbolA% and %amountB% %symbolB%": "Poista %amountA% %symbolA% ja %amountB% %symbolB%",
   "Zap %amountA% %symbolA% and %amountB% %symbolB%": "Zappaa %amountA% %symbolA% ja %amountB% %symbolB%",
   "Zap in %amount% BNB for %symbol%": "Zappaa %amount% BNB:tä poleteiksi %symbol%",
-  "Zap in %amount% %symbol% for %lpSymbol%": "Zappaa %amount% %symbol% poleteiksi %lpSymbol%"
+  "Zap in %amount% %symbol% for %lpSymbol%": "Zappaa %amount% %symbol% poleteiksi %lpSymbol%",
+  "Insufficient input token balance. Your transaction may fail.": "Insufficient input token balance. Your transaction may fail.",
+  "Wrong Network": "Wrong Network",
+  "Check your network": "Check your network",
+  "Switch to %network%": "Switch to %network%",
+  "You are in wrong network": "You are in wrong network",
+  "This page is located for %network%.": "This page is located for %network%.",
+  "You are under %network% now, please switch the network to continue.": "You are under %network% now, please switch the network to continue.",
+  "Switch network to continue.": "Switch network to continue."
 }
