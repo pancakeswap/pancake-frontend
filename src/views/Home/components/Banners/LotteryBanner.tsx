@@ -45,6 +45,9 @@ const TimerWrapper = styled.div`
     background-size: 100% 100%;
     padding: 0px 10px 7px;
     display: inline-flex;
+    white-space: nowrap;
+    transform: scale(0.88);
+    transform-origin: top left;
   }
 `
 
@@ -53,6 +56,9 @@ export const StyledSubheading = styled(Heading)`
   color: white;
   ${({ theme }) => theme.mediaQueries.xs} {
     font-size: 24px;
+    &.lottery {
+      font-size: 20px;
+    }
   }
   ${({ theme }) => theme.mediaQueries.sm} {
     -webkit-text-stroke: unset;
@@ -106,7 +112,7 @@ const LotteryBanner = () => {
         <S.LeftWrapper>
           {status === FetchStatus.Fetched && isLotteryLive(data.status) ? (
             <>
-              <StyledSubheading style={{ textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
+              <StyledSubheading className="lottery" style={{ textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
                 <LotteryPrice />
               </StyledSubheading>
               <TimerWrapper>
