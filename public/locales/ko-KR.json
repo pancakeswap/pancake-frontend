@@ -1887,8 +1887,8 @@
   "0.0001 CAKE will be spent to extend": "0.0001 CAKE가 연장하는 데 사용됩니다",
   "0.0001 CAKE required for enabling extension": "연장을 활성화하려면 0.0001 CAKE가 필요합니다",
   "Recommend choosing \"MAX\" to renew your staking position in order to keep similar yield boost.": "유사한 일드 부스트를 유지하려면 \"최대\"를 선택하여 스테이킹 포지션을 갱신하는 것이 좋습니다.",
-  "Add to %wallet%": "%wallet%에 추가",
-  "Add %asset% to %wallet%": "%wallet%에 %asset% 추가",
+  "Add to Wallet": "Add to Wallet",
+  "Add %asset% to Wallet": "Add %asset% to Wallet",
   "After Burning starts at %burnStartTime%. You need to renew your fix-term position, to initiate a new lock or convert your staking position to flexible before it starts. Otherwise all the rewards will be burned within the next 90 days.": "%burnStartTime%에 소각이 시작된 후. 소각이 시작되기 전에 고정 기간 포지션을 갱신하거나, 새로운 잠금을 개시하거나, 스테이킹 포지션을 유연으로 전환해야 합니다. 그렇지 않으면 다음 90일 이내에 모든 리워드가 소각됩니다.",
   "Common tokens": "공통 토큰",
   "Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol%": "%outputAmount% %outputSymbol%에 대해 최대 %inputAmount% %inputSymbol% 스왑",
@@ -1910,5 +1910,13 @@
   "Remove %amountA% %symbolA% and %amountB% %symbolB%": "Remove %amountA% %symbolA% and %amountB% %symbolB%",
   "Zap %amountA% %symbolA% and %amountB% %symbolB%": "Zap %amountA% %symbolA% and %amountB% %symbolB%",
   "Zap in %amount% BNB for %symbol%": "Zap in %amount% BNB for %symbol%",
-  "Zap in %amount% %symbol% for %lpSymbol%": "Zap in %amount% %symbol% for %lpSymbol%"
+  "Zap in %amount% %symbol% for %lpSymbol%": "Zap in %amount% %symbol% for %lpSymbol%",
+  "Insufficient input token balance. Your transaction may fail.": "Insufficient input token balance. Your transaction may fail.",
+  "Wrong Network": "Wrong Network",
+  "Check your network": "Check your network",
+  "Switch to %network%": "Switch to %network%",
+  "You are in wrong network": "You are in wrong network",
+  "This page is located for %network%.": "This page is located for %network%.",
+  "You are under %network% now, please switch the network to continue.": "You are under %network% now, please switch the network to continue.",
+  "Switch network to continue.": "Switch network to continue."
 }
