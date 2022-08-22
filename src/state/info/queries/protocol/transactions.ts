@@ -2,7 +2,7 @@ import { gql } from 'graphql-request'
 import { mapBurns, mapMints, mapSwaps } from 'state/info/queries/helpers'
 import { BurnResponse, MintResponse, SwapResponse } from 'state/info/queries/types'
 import { Transaction } from 'state/info/types'
-import { infoClient } from 'utils/graphql'
+import { infoClient, infoClientETH } from 'utils/graphql'
 
 /**
  * Transactions for Transaction table on the Home page
@@ -137,6 +137,26 @@ interface TransactionResults {
 const fetchTopTransactions = async (): Promise<Transaction[] | undefined> => {
   try {
     const data = await infoClient.request<TransactionResults>(GLOBAL_TRANSACTIONS)
+
+    if (!data) {
+      return undefined
+    }
+
+    const mints = data.mints.map(mapMints)
+    const burns = data.burns.map(mapBurns)
+    const swaps = data.swaps.map(mapSwaps)
+
+    return [...mints, ...burns, ...swaps].sort((a, b) => {
+      return parseInt(b.timestamp, 10) - parseInt(a.timestamp, 10)
+    })
+  } catch {
+    return undefined
+  }
+}
+
+export const fetchTopTransactionsETH = async (): Promise<Transaction[] | undefined> => {
+  try {
+    const data = await infoClientETH.request<TransactionResults>(GLOBAL_TRANSACTIONS_ETH)
 
     if (!data) {
       return undefined

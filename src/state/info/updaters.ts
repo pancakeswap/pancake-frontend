@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import useFetchProtocolData from 'state/info/queries/protocol/overview'
 import useFetchGlobalChartData from 'state/info/queries/protocol/chart'
-import fetchTopTransactions from 'state/info/queries/protocol/transactions'
+import fetchTopTransactions, { fetchTopTransactionsETH } from 'state/info/queries/protocol/transactions'
 import useTopPoolAddresses from 'state/info/queries/pools/topPools'
 import usePoolDatas from 'state/info/queries/pools/poolData'
 import useFetchedTokenDatas from 'state/info/queries/tokens/tokenData'
@@ -16,6 +16,7 @@ import {
   useAllTokenData,
   useUpdateTokenData,
   useAddTokenKeys,
+  useGetChainName,
 } from './hooks'
 
 export const ProtocolUpdater: React.FC<React.PropsWithChildren> = () => {
@@ -26,6 +27,7 @@ export const ProtocolUpdater: React.FC<React.PropsWithChildren> = () => {
   const { data: fetchedChartData, error: chartError } = useFetchGlobalChartData()
 
   const [transactions, updateTransactions] = useProtocolTransactions()
+  const chainName = useGetChainName()
 
   // update overview data if available and not set
   useEffect(() => {
@@ -43,7 +45,7 @@ export const ProtocolUpdater: React.FC<React.PropsWithChildren> = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const data = await fetchTopTransactions()
+      const data = await (chainName === 'ETH' ? fetchTopTransactionsETH() : fetchTopTransactions())
       if (data) {
         updateTransactions(data)
       }
@@ -51,7 +53,7 @@ export const ProtocolUpdater: React.FC<React.PropsWithChildren> = () => {
     if (!transactions) {
       fetch()
     }
-  }, [transactions, updateTransactions])
+  }, [transactions, updateTransactions, chainName])
 
   return null
 }

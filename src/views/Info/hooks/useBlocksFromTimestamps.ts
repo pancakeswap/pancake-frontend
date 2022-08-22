@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { Block } from 'state/info/types'
+import { useGetChainName } from 'state/info/hooks'
 
 /**
  * for a given array of timestamps, returns block entities
@@ -21,11 +22,12 @@ export const useBlocksFromTimestamps = (
 
   const timestampsString = JSON.stringify(timestamps)
   const blocksString = blocks ? JSON.stringify(blocks) : undefined
+  const chainName = useGetChainName()
 
   useEffect(() => {
     const fetchData = async () => {
       const timestampsArray = JSON.parse(timestampsString)
-      const result = await getBlocksFromTimestamps(timestampsArray, sortDirection, skipCount)
+      const result = await getBlocksFromTimestamps(timestampsArray, sortDirection, skipCount, chainName)
       if (result.length === 0) {
         setError(true)
       } else {
@@ -36,7 +38,7 @@ export const useBlocksFromTimestamps = (
     if (!blocksArray && !error) {
       fetchData()
     }
-  }, [blocksString, error, skipCount, sortDirection, timestampsString])
+  }, [blocksString, error, skipCount, sortDirection, timestampsString, chainName])
 
   return {
     blocks,
