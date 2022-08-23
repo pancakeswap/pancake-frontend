@@ -6,7 +6,7 @@ import { Flex, Heading, Text, useMatchBreakpointsContext } from '@pancakeswap/ui
 import Balance from 'components/Balance'
 import { ActionContainer, ActionContent, ActionTitles } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
 import { usePriceCakeBusd } from 'state/farmsV1/hooks'
-import { EarnedProps } from '../Cells/Earned'
+import { EarnedProps } from '../../../Farm/Cells/Earned'
 
 const Container = styled(ActionContainer)`
   flex: 2;
