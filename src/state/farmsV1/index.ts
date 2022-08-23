@@ -56,7 +56,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
     const farmsWithPriceHelpers = farmsCanFetch.concat(priceHelperLpsConfig)
 
     const farms = await fetchFarms(farmsWithPriceHelpers)
-    const farmsWithPrices = getFarmsPrices(farms, 56)
+    const farmsWithPrices = getFarmsPrices(farms)
 
     // Filter out price helper LP config farms
     const farmsWithoutHelperLps = farmsWithPrices.filter((farm: SerializedFarm) => {
