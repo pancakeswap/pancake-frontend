@@ -67,10 +67,10 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
             )}`,
             type: DropdownMenuItemType.EXTERNAL_LINK,
           },
-          // {
-          //   label: t('Transfer'),
-          //   href: '/transfer',
-          // },
+          {
+            label: t('Bridge'),
+            href: 'https://bridge.pancakeswap.finance/',
+          },
         ].map((item) => addMenuItemSupported(item, chainId)),
       },
       {
