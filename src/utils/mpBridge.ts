@@ -53,7 +53,7 @@ function getWeb3Provider() {
         })
       })
     },
-    removeEventListener(event: string, cb: () => void) {
+    removeEventListener(event: string) {
       if (onCallbackIdList[event]) {
         onCallbackIdList[event] = undefined
       }
