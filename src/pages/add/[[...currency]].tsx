@@ -1,4 +1,4 @@
-import { CHAIN_IDS } from '@pancakeswap/wagmi'
+import { CHAIN_IDS } from '@pancakeswap/wagmi/chains'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import AddLiquidity from 'views/AddLiquidity'
 

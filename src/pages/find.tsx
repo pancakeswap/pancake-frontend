@@ -1,4 +1,4 @@
-import { CHAIN_IDS } from '@pancakeswap/wagmi'
+import { CHAIN_IDS } from '@pancakeswap/wagmi/chains'
 import PoolFinder from '../views/PoolFinder'
 
 const PoolFinderPage = () => <PoolFinder />

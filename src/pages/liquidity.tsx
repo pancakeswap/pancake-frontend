@@ -1,4 +1,4 @@
-import { CHAIN_IDS } from '@pancakeswap/wagmi'
+import { CHAIN_IDS } from '@pancakeswap/wagmi/chains'
 import Liquidity from '../views/Pool'
 
 const LiquidityPage = () => <Liquidity />

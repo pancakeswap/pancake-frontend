@@ -2,7 +2,10 @@
   "extends": "tsconfig/nextjs.json",
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "compilerOptions": {
-    "target": "ES2015"
+    "target": "ES2015",
+    "paths": {
+      "@pancakeswap/wagmi/chains": ["../../packages/wagmi/chains"]
+    }
   },
   "exclude": ["node_modules"]
 }

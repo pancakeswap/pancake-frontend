@@ -1,4 +1,5 @@
-import { bsc, BscConnector, CHAINS } from '@pancakeswap/wagmi'
+import { BinanceWalletConnector } from '@pancakeswap/wagmi/connectors/binanceWallet'
+import { bsc, CHAINS } from '@pancakeswap/wagmi/chains'
 import { configureChains, createClient } from 'wagmi'
 import memoize from 'lodash/memoize'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
@@ -90,7 +91,7 @@ export const metaMaskConnector = new MetaMaskConnector({
   },
 })
 
-export const bscConnector = new BscConnector({ chains })
+export const bscConnector = new BinanceWalletConnector({ chains })
 
 export const client = createClient({
   autoConnect: false,

@@ -17,7 +17,7 @@ import {
   UserMenuDivider,
   UserMenuItem,
 } from '@pancakeswap/uikit'
-import { CHAINS_STARGATE } from '@pancakeswap/wagmi'
+import { CHAINS_STARGATE } from '@pancakeswap/wagmi/chains'
 import { useTheme as useNextTheme } from 'next-themes'
 import Image from 'next/future/image'
 import NextLink from 'next/link'

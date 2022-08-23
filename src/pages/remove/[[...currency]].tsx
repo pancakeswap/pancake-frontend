@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { CHAIN_IDS } from '@pancakeswap/wagmi'
+import { CHAIN_IDS } from '@pancakeswap/wagmi/chains'
 import RemoveLiquidity from 'views/RemoveLiquidity'
 
 const RemoveLiquidityPage = () => <RemoveLiquidity />

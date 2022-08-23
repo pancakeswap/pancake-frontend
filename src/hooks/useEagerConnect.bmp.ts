@@ -2,13 +2,14 @@
 import { useCallback } from 'react'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { BnInjectedConnector } from 'utils/bnInjectedConnector'
+import { MiniProgramConnector } from '@pancakeswap/wagmi/connectors/miniProgram'
 import { useConnect } from 'wagmi'
+import getWeb3Provider from 'utils/mpBridge'
 import { chains } from '../utils/wagmi'
 /* eslint max-classes-per-file: off -- noop */
 import useToast from './useToast'
 
-const injected = new BnInjectedConnector({ chains })
+const injected = new MiniProgramConnector({ chains, getWeb3Provider })
 export const getAccount = () => injected.getAccount()
 
 const useActive = () => {

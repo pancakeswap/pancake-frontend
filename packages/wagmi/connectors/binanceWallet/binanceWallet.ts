@@ -29,7 +29,7 @@ const mappingNetwork: Record<number, string> = {
   97: 'bsc-testnet',
 }
 
-export class BscConnector extends InjectedConnector {
+export class BinanceWalletConnector extends InjectedConnector {
   readonly id = 'bsc'
 
   readonly ready = typeof window !== 'undefined' && !!window.BinanceChain
