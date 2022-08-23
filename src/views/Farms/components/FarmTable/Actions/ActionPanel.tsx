@@ -133,7 +133,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,
   })
-  const lpAddress = farm.lpAddresses
+  const { lpAddress } = farm
   const bsc = getBlockExploreLink(lpAddress, 'address', chainId)
   const info = `/info/pool/${lpAddress}`
 

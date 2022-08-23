@@ -17,7 +17,7 @@ export const fetchFarmUserAllowances = async (
   const masterChefAddress = getMasterChefAddress(chainId)
 
   const calls = farmsToFetch.map((farm) => {
-    const lpContractAddress = farm.lpAddresses
+    const lpContractAddress = farm.lpAddress
     return { address: lpContractAddress, name: 'allowance', params: [account, proxyAddress || masterChefAddress] }
   })
 
@@ -35,7 +35,7 @@ export const fetchFarmUserTokenBalances = async (
   chainId: number,
 ) => {
   const calls = farmsToFetch.map((farm) => {
-    const lpContractAddress = farm.lpAddresses
+    const lpContractAddress = farm.lpAddress
     return {
       address: lpContractAddress,
       name: 'balanceOf',
