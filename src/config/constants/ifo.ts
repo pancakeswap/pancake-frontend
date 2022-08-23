@@ -7,9 +7,38 @@ export const cakeBnbLpToken = new Token(ChainId.BSC, CAKE_BNB_LP_MAINNET, 18, 'C
 
 const ifos: Ifo[] = [
   {
+    id: 'wom',
+    address: '0x98828e9D69E49104a62ecb4FA3d6F9e06A295CBA',
+    isActive: true,
+    name: 'WOM',
+    poolBasic: {
+      saleAmount: '2,800,000 WOM',
+      raiseAmount: '$210,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.1,
+    },
+    poolUnlimited: {
+      saleAmount: '25,200,000 WOM',
+      raiseAmount: '$1,890,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.9,
+    },
+    currency: bscTokens.cake,
+    token: bscTokens.wom,
+    releaseBlockNumber: 20685666,
+    campaignId: '511400000',
+    articleUrl:
+      'https://pancakeswap.finance/voting/proposal/bafkreieqv7mbzmumyftstt6l32x6okfzq4syrea7k5zbqgohhcekcvbduu',
+    tokenOfferingPrice: 0.075,
+    version: 3.2,
+    twitterUrl: 'https://twitter.com/WombatExchange',
+    description: 'Wombat Exchange is a next generation multi-chain stableswap native to BNB Chain.',
+    vestingTitle: 'Earn $WOM by staking stablecoins; Lock $WOM to maximize stablecoin yields',
+  },
+  {
     id: 'peel',
     address: '0x35Bb6Dd4E8C63491057c32621c8cDdE43BabE201',
-    isActive: true,
+    isActive: false,
     name: 'Meta Apes ($PEEL)',
     poolBasic: {
       saleAmount: '10,000,000 PEEL',
