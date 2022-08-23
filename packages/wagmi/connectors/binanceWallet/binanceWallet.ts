@@ -10,19 +10,8 @@ import {
   SwitchChainNotSupportedError,
 } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
-import { Ethereum } from '@wagmi/core'
 import { hexValue } from '@ethersproject/bytes'
 
-declare global {
-  interface Window {
-    BinanceChain?: {
-      bnbSign?: (address: string, message: string) => Promise<{ publicKey: string; signature: string }>
-      switchNetwork?: (networkId: string) => Promise<string>
-    } & Ethereum
-  }
-}
-
-// BSC wallet support network
 const mappingNetwork: Record<number, string> = {
   1: 'eth-mainnet',
   56: 'bsc-mainnet',
