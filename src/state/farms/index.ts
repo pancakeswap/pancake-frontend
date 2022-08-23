@@ -257,7 +257,7 @@ export const farmsSlice = createSlice({
       state.data = state.data.map((farm) => {
         const userDataEl = userDataMap[farm.pid]
         if (userDataEl) {
-            return { ...farm, userData: userDataEl }
+          return { ...farm, userData: userDataEl }
         }
         return farm
       })
