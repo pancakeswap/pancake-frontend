@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo, useState, useEffect } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Button, Text, CheckmarkIcon, CogIcon, Input, Toggle, LinkExternal, useTooltip } from '@pancakeswap/uikit'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
@@ -44,7 +44,7 @@ function listUrlRowHTMLId(listUrl: string) {
 }
 
 const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
-  const { chainId } = useWeb3React()
+  const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const isActive = useIsListActive(listUrl)
 
