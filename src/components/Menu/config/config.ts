@@ -70,6 +70,7 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
           {
             label: t('Bridge'),
             href: 'https://bridge.pancakeswap.finance/',
+            type: DropdownMenuItemType.EXTERNAL_LINK,
           },
         ].map((item) => addMenuItemSupported(item, chainId)),
       },
