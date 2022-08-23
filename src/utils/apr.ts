@@ -55,7 +55,7 @@ export const getFarmApr = (
   if (!cakeRewardsApr.isNaN() && cakeRewardsApr.isFinite()) {
     cakeRewardsAprAsNumber = cakeRewardsApr.toNumber()
   }
-  const lpRewardsApr = getLpApr(chainId)?.[farmAddress?.toLowerCase()] ?? 0
+  const lpRewardsApr = getLpApr(chainId)[farmAddress?.toLowerCase()] ?? 0
   return { cakeRewardsApr: cakeRewardsAprAsNumber, lpRewardsApr }
 }
 
