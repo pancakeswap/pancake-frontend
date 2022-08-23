@@ -2407,6 +2407,14 @@ export const bscTokens = {
     'pStake Finance',
     'https://pstake.finance/',
   ),
+  wom: new Token(
+    ChainId.BSC,
+    '0xAD6742A35fB341A9Cc6ad674738Dd8da98b94Fb1',
+    18,
+    'WOM',
+    'Wombat Token',
+    'https://www.wombat.exchange/',
+  ),
 }
 
 export const bscTestnetTokens = {
