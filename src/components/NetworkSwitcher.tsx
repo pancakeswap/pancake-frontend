@@ -1,6 +1,7 @@
 import { Box, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
 import { ChainId, NATIVE } from '@pancakeswap/sdk'
-import useActiveWeb3React, { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useMemo } from 'react'
@@ -33,8 +34,8 @@ export const NetworkSelect = ({ switchNetwork, chainId }) => {
 
 export const NetworkSwitcher = () => {
   const { t } = useTranslation()
-  const { chainId, connector, isWrongNetwork } = useActiveWeb3React()
-  const { pendingChainId, isLoading, switchNetwork } = useSwitchNetwork()
+  const { chainId, isWrongNetwork } = useActiveChainId()
+  const { pendingChainId, isLoading, canSwitch, switchNetworkAsync } = useSwitchNetwork()
   useNetworkConnectorUpdater()
 
   const foundChain = useMemo(
@@ -43,11 +44,7 @@ export const NetworkSwitcher = () => {
   )
   const symbol = NATIVE[foundChain?.id]?.symbol ?? foundChain?.nativeCurrency?.symbol
 
-  const cannotChangeNetwork =
-    connector?.id === 'walletConnect' ||
-    (typeof window !== 'undefined' &&
-      // @ts-ignore // TODO: add type later
-      window.ethereum?.isSafePal)
+  const cannotChangeNetwork = !canSwitch
 
   if (!chainId || chainId === ChainId.BSC) {
     return null
@@ -75,7 +72,7 @@ export const NetworkSwitcher = () => {
           )
         }
       >
-        {() => <NetworkSelect switchNetwork={switchNetwork} chainId={chainId} />}
+        {() => <NetworkSelect switchNetwork={switchNetworkAsync} chainId={chainId} />}
       </UserMenu>
     </>
   )
