@@ -34,7 +34,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
   multiplier,
   lpSymbol,
   lpLabel,
-  lpAddresses,
+  lpAddress,
   quoteToken,
   token,
   displayApr,
@@ -52,7 +52,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
 
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
-  const lpAddress = lpAddresses
+  const lpAddress = lpAddress
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,

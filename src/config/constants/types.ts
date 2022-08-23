@@ -78,7 +78,7 @@ interface FarmConfigBaseProps {
   v1pid?: number
   bscPid?: number
   lpSymbol: string
-  lpAddresses: string
+  lpAddress: string
   multiplier?: string
   isCommunity?: boolean
   auctionHostingStartSeconds?: number

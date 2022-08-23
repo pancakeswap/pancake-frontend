@@ -209,7 +209,14 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         }
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
         const { cakeRewardsApr, lpRewardsApr } = isActive
-          ? getFarmApr(new BigNumber(farm.poolWeight), cakePrice, totalLiquidity, farm.lpAddresses, regularCakePerBlock)
+          ? getFarmApr(
+              chainId,
+              new BigNumber(farm.poolWeight),
+              cakePrice,
+              totalLiquidity,
+              farm.lpAddress,
+              regularCakePerBlock,
+            )
           : { cakeRewardsApr: 0, lpRewardsApr: 0 }
 
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
@@ -223,7 +230,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       }
       return farmsToDisplayWithAPR
     },
-    [cakePrice, query, isActive, regularCakePerBlock],
+    [query, isActive, chainId, cakePrice, regularCakePerBlock],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {

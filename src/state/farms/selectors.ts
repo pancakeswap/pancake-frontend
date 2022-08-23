@@ -26,7 +26,7 @@ const deserializeFarmUserData = (farm: SerializedFarm): DeserializedFarmUserData
 
 const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
   const {
-    lpAddresses,
+    lpAddress,
     lpSymbol,
     pid,
     dual,
@@ -55,7 +55,7 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
     )
 
   return {
-    lpAddresses,
+    lpAddress,
     lpSymbol,
     pid,
     dual,

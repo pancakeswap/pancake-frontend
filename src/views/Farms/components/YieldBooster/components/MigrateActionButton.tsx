@@ -23,9 +23,7 @@ const MigrateActionButton: React.FunctionComponent<MigrateActionButtonPropsType>
   const { account, chainId } = useActiveWeb3React()
   const { onUnstake } = useUnstakeFarms(pid)
   const { stakedBalance } = useFarmUser(pid)
-  const { lpAddresses } = useFarmFromPid(pid)
-
-  const lpAddress = lpAddresses
+  const { lpAddress } = useFarmFromPid(pid)
   const lpContract = useERC20(lpAddress)
   const dispatch = useAppDispatch()
 

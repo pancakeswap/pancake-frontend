@@ -28,7 +28,7 @@ interface HarvestActionProps extends FarmWithStakedValue {
 }
 
 export const ProxyHarvestActionContainer = ({ children, ...props }) => {
-  const lpAddress = props.lpAddresses
+  const { lpAddress } = props
   const lpContract = useERC20(lpAddress)
 
   const { onReward, onDone, proxyCakeBalance } = useProxyStakedActions(props.pid, lpContract)

@@ -3,7 +3,7 @@ import { SerializedFarm } from 'state/types'
 const getFarmsAuctionData = (farms: SerializedFarm[], winnerFarms: string[], auctionHostingEndDate: string) => {
   return farms.map((farm) => {
     const isAuctionWinnerFarm = winnerFarms.find(
-      (winnerFarm) => winnerFarm.toLowerCase() === farm.lpAddresses.toLowerCase(),
+      (winnerFarm) => winnerFarm.toLowerCase() === farm.lpAddress.toLowerCase(),
     )
     return {
       ...farm,

@@ -139,29 +139,3 @@ export const usePriceCakeBusd = (): BigNumber => {
   const price = useCakeBusdPrice()
   return useMemo(() => (price ? new BigNumber(price.toSignificant(6)) : BIG_ZERO), [price])
 }
-
-export const useFarmWithStakeValue = (farm: DeserializedFarm): FarmWithStakedValue => {
-  const { pathname } = useRouter()
-  const cakePrice = usePriceCakeBusd()
-  const { regularCakePerBlock } = useFarms()
-
-  const isArchived = pathname.includes('archived')
-  const isInactive = pathname.includes('history')
-  const isActive = !isInactive && !isArchived
-
-  if (!farm.lpTotalInQuoteToken || !farm.quoteTokenPriceBusd) {
-    return farm
-  }
-  const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
-  const { cakeRewardsApr, lpRewardsApr } = isActive
-    ? getFarmApr(
-        new BigNumber(farm.poolWeight),
-        cakePrice,
-        totalLiquidity,
-        farm.lpAddresses[ChainId.BSC],
-        regularCakePerBlock,
-      )
-    : { cakeRewardsApr: 0, lpRewardsApr: 0 }
-
-  return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
-}

@@ -79,7 +79,7 @@ export function useStakedActions(pid, lpContract) {
 export const ProxyStakedContainer = ({ children, ...props }) => {
   const { account } = useActiveWeb3React()
 
-  const lpAddress = props.lpAddresses
+  const { lpAddress } = props
   const lpContract = useERC20(lpAddress)
 
   const { onStake, onUnstake, onApprove, onDone } = useProxyStakedActions(props.pid, lpContract)
@@ -101,7 +101,7 @@ export const ProxyStakedContainer = ({ children, ...props }) => {
 export const StakedContainer = ({ children, ...props }) => {
   const { account } = useActiveWeb3React()
 
-  const lpAddress = props.lpAddresses
+  const { lpAddress } = props
   const lpContract = useERC20(lpAddress)
   const { onStake, onUnstake, onApprove, onDone } = useStakedActions(props.pid, lpContract)
 
