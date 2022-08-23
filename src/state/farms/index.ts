@@ -256,7 +256,10 @@ export const farmsSlice = createSlice({
       const userDataMap = fromPairs(action.payload.map((userDataEl) => [userDataEl.pid, userDataEl]))
       state.data = state.data.map((farm) => {
         const userDataEl = userDataMap[farm.pid]
-        return { ...farm, userData: userDataEl }
+        if (userDataEl) {
+          return { ...farm, userData: userDataEl }
+        }
+        return farm
       })
       state.userDataLoaded = true
     })
