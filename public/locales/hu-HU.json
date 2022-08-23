@@ -1892,12 +1892,11 @@
   "Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol% to %recipientAddress%": "Csere max. %inputAmount%%inputSymbol% erre %outputAmount%%outputSymbol% a %recipientAddress% címre",
   "Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%": "Csere %inputAmount%%inputSymbol% erre min%outputAmount%%outputSymbol%",
   "Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol% to %recipientAddress%": "Csere %inputAmount%%inputSymbol% erre min. %outputAmount%%outputSymbol% a %recipientAddress% címre",
-  "Currently exchange only supported in": "Jelenleg a váltás csak a következőkben támogatott",
+  "Currently %feature% only supported in": "Currently %feature% only supported in",
   "Please switch your network to continue.": "Kérjük, a folytatáshoz kapcsolja át a saját hálózatát.",
   "Switch network in wallet": "Kapcsolja át a hálózatot a tárcában",
   "It’s a BNB Smart Chain only feature": "Ez kizárólag a BNB Smart Chain funkciója",
-  "Currently only Swap is supported in BNB Smart Chain": "A BNB Smart Chain jelenleg csak a Swap (cserét) támogatja",
-  "Our Trading Competition, Prediction and Lottery features are currently available only on BNB Chain! Come over and join the community in the fun!": "Kereskedési verseny, előrejelzés és lottó funkcióink jelenleg csak a BNB Chain-en érhetőek el! Gyere át és lépj be a közösségbe a jó szórakozáshoz!",
+  "Our Pools, Limit, Trading Competition, Prediction, Lottery and NFTs features are currently available only on BNB Chain! Come over and join the community in the fun!": "Our Pools, Limit, Trading Competition, Prediction, Lottery and NFTs features are currently available only on BNB Chain! Come over and join the community in the fun!",
   "Switch to %chain%": "Átkapcsolás ide %chain%",
   "Stay on %chain%": "Marad itt %chain%",
   "Go to Pool": "Ugrás ide Összevont alap",
@@ -1922,5 +1921,6 @@
   "Switch network to continue.": "Switch network to continue.",
   "The real execution price includes the gas cost necessary to execute your order and guarantees that your order will be executed at the desired price.": "The real execution price includes the gas cost necessary to execute your order and guarantees that your order will be executed at the desired price.",
   "It fluctuates according to gas prices when the order is getting executed.": "It fluctuates according to gas prices when the order is getting executed.",
-  "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.": "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order."
+  "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.": "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.",
+  "Bridge": "Bridge"
 }
