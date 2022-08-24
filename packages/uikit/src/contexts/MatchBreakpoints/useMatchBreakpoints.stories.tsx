@@ -2,7 +2,7 @@ import React from "react";
 import useMatchBreakpoints from "./useMatchBreakpoints";
 
 export default {
-  title: "Hooks/useMatchBreakpoints",
+  title: "Context/useMatchBreakpoints",
   argTypes: {},
 };
 

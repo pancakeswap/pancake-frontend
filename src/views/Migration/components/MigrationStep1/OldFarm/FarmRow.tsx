@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import ExpandActionCell from 'views/Migration/components/Cells/ExpandActionCell'
 import { useFarmUser } from 'state/farmsV1/hooks'
-import { useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import Farm from '../../Farm/Cells/Farm'
 import Staked from '../../Farm/Cells/Staked'
 import Earned from '../../Farm/Cells/Earned'
@@ -51,7 +51,7 @@ const FarmRow: React.FunctionComponent<React.PropsWithChildren<RowProps>> = ({
   liquidity,
   unstake,
 }) => {
-  const { isMobile, isXl, isXxl } = useMatchBreakpointsContext()
+  const { isMobile, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)

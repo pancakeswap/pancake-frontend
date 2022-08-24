@@ -1,6 +1,6 @@
 import debounce from "lodash/debounce";
 import React, { useCallback, useEffect, useRef } from "react";
-import { useMatchBreakpointsContext } from "../../contexts";
+import { useMatchBreakpoints } from "../../contexts";
 import { Box } from "../Box";
 import { DropdownMenuItemType } from "../DropdownMenu/types";
 import MenuItem from "../MenuItem/MenuItem";
@@ -22,7 +22,7 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
   isMobileOnly = false,
   ...props
 }) => {
-  const { isMobile } = useMatchBreakpointsContext();
+  const { isMobile } = useMatchBreakpoints();
   const scrollLayerRef = useRef<HTMLDivElement>(null);
   const chevronLeftRef = useRef<HTMLDivElement>(null);
   const chevronRightRef = useRef<HTMLDivElement>(null);

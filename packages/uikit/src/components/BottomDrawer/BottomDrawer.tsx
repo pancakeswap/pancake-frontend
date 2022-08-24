@@ -1,7 +1,7 @@
 import React, { useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import useDelayedUnmount from "../../hooks/useDelayedUnmount";
-import useMatchBreakpointsContext from "../../contexts/MatchBreakpoints/useMatchBreakpointsContext";
+import useMatchBreakpoints from "../../contexts/MatchBreakpoints/useMatchBreakpoints";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
 import getPortalRoot from "../../util/getPortalRoot";
 import { Box } from "../Box";
@@ -19,7 +19,7 @@ interface BottomDrawerProps {
 const BottomDrawer: React.FC<React.PropsWithChildren<BottomDrawerProps>> = ({ content, isOpen, setIsOpen }) => {
   const ref = useRef<HTMLDivElement>(null);
   const shouldRender = useDelayedUnmount(isOpen, 350);
-  const { isMobile } = useMatchBreakpointsContext();
+  const { isMobile } = useMatchBreakpoints();
 
   useOnClickOutside(
     ref?.current,

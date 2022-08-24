@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { Modal, Box, Text, Flex, Input, OpenNewIcon, Spinner, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Modal, Box, Text, Flex, Input, OpenNewIcon, Spinner, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { FarmAuctionBidderConfig } from 'config/constants/types'
@@ -59,7 +59,7 @@ const WhitelistedBiddersModal: React.FC<React.PropsWithChildren<WhitelistedBidde
   const [searchTerm, setSearchTerm] = useState('')
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { isMobile } = useMatchBreakpointsContext()
+  const { isMobile } = useMatchBreakpoints()
   const bidders = useWhitelistedAddresses()
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

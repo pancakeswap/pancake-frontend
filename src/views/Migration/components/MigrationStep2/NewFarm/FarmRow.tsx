@@ -7,7 +7,7 @@ import Multiplier from 'views/Migration/components/Farm/Cells/Multiplier'
 import Liquidity from 'views/Migration/components/Farm/Cells/Liquidity'
 import ExpandActionCell from 'views/Migration/components/Cells/ExpandActionCell'
 import { useFarmUser } from 'state/farms/hooks'
-import { useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import AprCell from './Cells/AprCell'
 import StakeButtonCells from './Cells/StakeButtonCells'
 import StakeButton from './StakeButton'
@@ -52,7 +52,7 @@ const FarmRow: React.FunctionComponent<React.PropsWithChildren<RowProps>> = ({
   multiplier,
   liquidity,
 }) => {
-  const { isMobile, isXl, isXxl } = useMatchBreakpointsContext()
+  const { isMobile, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)

@@ -4,12 +4,15 @@ import light from "../src/theme/light";
 import dark from "../src/theme/dark";
 import ResetCSS from "../src/ResetCSS";
 import { ModalProvider } from "../src/widgets/Modal";
+import { MatchBreakpointsProvider } from "../src";
 
 const globalDecorator = (StoryFn) => (
-  <ModalProvider>
-    <ResetCSS />
-    <StoryFn />
-  </ModalProvider>
+  <MatchBreakpointsProvider>
+    <ModalProvider>
+      <ResetCSS />
+      <StoryFn />
+    </ModalProvider>
+  </MatchBreakpointsProvider>
 );
 
 export const parameters = {

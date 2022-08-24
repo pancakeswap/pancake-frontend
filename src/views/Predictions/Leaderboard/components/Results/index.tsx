@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Flex, AutoRenewIcon, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Box, Button, Grid, Flex, AutoRenewIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import {
   useGetLeaderboardHasMoreResults,
@@ -16,7 +16,7 @@ import MobileResults from './MobileResults'
 import RankingCard from './RankingCard'
 
 const Results = () => {
-  const { isDesktop } = useMatchBreakpointsContext()
+  const { isDesktop } = useMatchBreakpoints()
   const { t } = useTranslation()
   const [first, second, third, ...rest] = useGetLeaderboardResults()
   const leaderboardLoadingState = useGetLeaderboardLoadingState()
