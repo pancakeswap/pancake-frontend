@@ -43,7 +43,7 @@ const mediaQueries: MediaQueries = (() => {
 
 const getKey = (size: string) => `is${size.charAt(0).toUpperCase()}${size.slice(1)}`;
 
-const getState = () => {
+const getState = (): State => {
   const s = Object.keys(mediaQueries).reduce((accum, size) => {
     const key = getKey(size);
     if (typeof window === "undefined") {
@@ -65,8 +65,17 @@ export const MatchBreakpointsContext = createContext<BreakpointChecks>({
   isDesktop: false,
 });
 
+export const getBreakpointChecks = (state: State): BreakpointChecks => {
+  return {
+    ...state,
+    isMobile: state.isXs || state.isSm,
+    isTablet: state.isMd || state.isLg,
+    isDesktop: state.isXl || state.isXxl,
+  };
+};
+
 export const MatchBreakpointsProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [state, setState] = useState<State>(getState());
+  const [state, setState] = useState<BreakpointChecks>(() => getBreakpointChecks(getState()));
 
   useIsomorphicEffect(() => {
     // Create listeners for each media query returning a function to unsubscribe
@@ -79,10 +88,13 @@ export const MatchBreakpointsProvider: React.FC<React.PropsWithChildren> = ({ ch
 
         handler = (matchMediaQuery: MediaQueryListEvent) => {
           const key = getKey(size);
-          setState((prevState) => ({
-            ...prevState,
-            [key]: matchMediaQuery.matches,
-          }));
+
+          setState((prevState) =>
+            getBreakpointChecks({
+              ...prevState,
+              [key]: matchMediaQuery.matches,
+            })
+          );
         };
 
         // Safari < 14 fix
@@ -99,7 +111,7 @@ export const MatchBreakpointsProvider: React.FC<React.PropsWithChildren> = ({ ch
       };
     });
 
-    setState(getState());
+    setState(getBreakpointChecks(getState()));
 
     return () => {
       handlers.forEach((unsubscribe) => {
@@ -108,12 +120,5 @@ export const MatchBreakpointsProvider: React.FC<React.PropsWithChildren> = ({ ch
     };
   }, []);
 
-  const fullState = {
-    ...state,
-    isMobile: state.isXs || state.isSm,
-    isTablet: state.isMd || state.isLg,
-    isDesktop: state.isXl || state.isXxl,
-  };
-
-  return <MatchBreakpointsContext.Provider value={fullState}>{children}</MatchBreakpointsContext.Provider>;
+  return <MatchBreakpointsContext.Provider value={state}>{children}</MatchBreakpointsContext.Provider>;
 };

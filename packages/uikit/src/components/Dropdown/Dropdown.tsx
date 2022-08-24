@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import throttle from "lodash/throttle";
 import styled, { css } from "styled-components";
 import { DropdownProps, PositionProps, Position } from "./types";
-import useMatchBreakpoints from "../../contexts/MatchBreakpoints/useMatchBreakpoints";
+import { useMatchBreakpoints } from "../../contexts";
 
 const getLeft = ({ position }: PositionProps) => {
   if (position === "top-right") {

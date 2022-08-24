@@ -1,10 +1,10 @@
 import React from "react";
-import { renderWithTheme, setupMockIntersectionObserver } from "../../testHelpers";
+import { renderWithProvider, setupMockIntersectionObserver } from "../../testHelpers";
 import TokenImage from "../../components/Image/TokenImage";
 
 it("renders correctly", () => {
   setupMockIntersectionObserver();
-  const { asFragment } = renderWithTheme(
+  const { asFragment } = renderWithProvider(
     <TokenImage
       src="https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.svg"
       height={48}
