@@ -1,5 +1,5 @@
 import { BinanceWalletConnector } from '@pancakeswap/wagmi/connectors/binanceWallet'
-import { bsc, CHAINS } from '@pancakeswap/wagmi/chains'
+import { bsc, bscTest, goerli, rinkeby } from '@pancakeswap/wagmi/chains'
 import { configureChains, createClient } from 'wagmi'
 import memoize from 'lodash/memoize'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
@@ -8,6 +8,15 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { SafeConnector } from '@gnosis.pm/safe-apps-wagmi'
+
+const CHAINS = [
+  bsc,
+  // TODO: ETH
+  // mainnet,
+  bscTest,
+  rinkeby,
+  goerli,
+]
 
 const getNodeRealUrl = (networkName: string) => {
   let host = null
@@ -106,6 +115,6 @@ export const client = createClient({
   ],
 })
 
-const CHAIN_IDS = chains.map((c) => c.id)
+export const CHAIN_IDS = chains.map((c) => c.id)
 
 export const isChainSupported = memoize((chainId: number) => CHAIN_IDS.includes(chainId))

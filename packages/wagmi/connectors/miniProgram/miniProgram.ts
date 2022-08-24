@@ -23,8 +23,8 @@ export class MiniProgramConnector extends InjectedConnector {
   constructor({ chains, getWeb3Provider }: { getWeb3Provider: () => any; chains?: Chain[] }) {
     const options = {
       name: 'BnInjected',
-      shimDisconnect: true,
-      shimChainChangedDisconnect: true,
+      shimDisconnect: false,
+      shimChainChangedDisconnect: false,
     }
     super({
       chains,
