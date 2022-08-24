@@ -30,3 +30,5 @@ yarn build
 # start the application after build
 yarn start
 ```
+
+PancakeSwap has the most users of any decentralized platform, ever. And those users are now entrusting the platform with over $4 billion in funds.
