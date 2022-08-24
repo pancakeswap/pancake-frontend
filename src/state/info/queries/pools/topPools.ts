@@ -1,8 +1,9 @@
 import { TOKEN_BLACKLIST } from 'config/constants/info'
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
-import { infoClient } from 'utils/graphql'
+import { infoClient, infoClientETH } from 'utils/graphql'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { useGetChainName } from '../../hooks'
 
 interface TopPoolsResponse {
   pairDayDatas: {
@@ -13,7 +14,7 @@ interface TopPoolsResponse {
 /**
  * Initial pools to display on the home page
  */
-const fetchTopPools = async (timestamp24hAgo: number): Promise<string[]> => {
+const fetchTopPools = async (timestamp24hAgo: number, chainName: 'ETH' | 'BSC'): Promise<string[]> => {
   try {
     const query = gql`
       query topPools($blacklist: [String!], $timestamp24hAgo: Int) {
@@ -27,7 +28,9 @@ const fetchTopPools = async (timestamp24hAgo: number): Promise<string[]> => {
         }
       }
     `
-    const data = await infoClient.request<TopPoolsResponse>(query, { blacklist: TOKEN_BLACKLIST, timestamp24hAgo })
+    const data = await (chainName === 'ETH'
+      ? infoClientETH.request<TopPoolsResponse>(query, { blacklist: TOKEN_BLACKLIST, timestamp24hAgo })
+      : infoClient.request<TopPoolsResponse>(query, { blacklist: TOKEN_BLACKLIST, timestamp24hAgo }))
     // pairDayDatas id has compound id "0xPOOLADDRESS-NUMBERS", extracting pool address with .split('-')
     return data.pairDayDatas.map((p) => p.id.split('-')[0])
   } catch (error) {
@@ -42,16 +45,17 @@ const fetchTopPools = async (timestamp24hAgo: number): Promise<string[]> => {
 const useTopPoolAddresses = (): string[] => {
   const [topPoolAddresses, setTopPoolAddresses] = useState([])
   const [timestamp24hAgo] = getDeltaTimestamps()
+  const chainName = useGetChainName()
 
   useEffect(() => {
     const fetch = async () => {
-      const addresses = await fetchTopPools(timestamp24hAgo)
+      const addresses = await fetchTopPools(timestamp24hAgo, chainName)
       setTopPoolAddresses(addresses)
     }
     if (topPoolAddresses.length === 0) {
       fetch()
     }
-  }, [topPoolAddresses, timestamp24hAgo])
+  }, [topPoolAddresses, timestamp24hAgo, chainName])
 
   return topPoolAddresses
 }

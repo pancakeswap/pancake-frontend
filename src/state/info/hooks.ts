@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState, useAppDispatch } from 'state'
 import fetchPoolChartData from 'state/info/queries/pools/chartData'
-import fetchPoolTransactions from 'state/info/queries/pools/transactions'
+import fetchPoolTransactions, { fetchPoolTransactionsETH } from 'state/info/queries/pools/transactions'
 import fetchTokenChartData from 'state/info/queries/tokens/chartData'
 import fetchPoolsForToken from 'state/info/queries/tokens/poolsForToken'
 import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
@@ -136,10 +136,13 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
   const pool = useSelector((state: AppState) => state.info.pools.byAddress[address])
   const transactions = pool?.transactions
   const [error, setError] = useState(false)
+  const chainName = useGetChainName()
 
   useEffect(() => {
     const fetch = async () => {
-      const { error: fetchError, data } = await fetchPoolTransactions(address)
+      const { error: fetchError, data } = await (chainName === 'ETH'
+        ? fetchPoolTransactionsETH(address)
+        : fetchPoolTransactions(address))
       if (fetchError) {
         setError(true)
       } else {

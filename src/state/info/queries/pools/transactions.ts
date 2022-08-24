@@ -2,7 +2,7 @@ import { gql } from 'graphql-request'
 import { mapBurns, mapMints, mapSwaps } from 'state/info/queries/helpers'
 import { BurnResponse, MintResponse, SwapResponse } from 'state/info/queries/types'
 import { Transaction } from 'state/info/types'
-import { infoClient } from 'utils/graphql'
+import { infoClient, infoClientETH } from 'utils/graphql'
 /**
  * Transactions of the given pool, used on Pool page
  */
@@ -100,7 +100,7 @@ const POOL_TRANSACTIONS_ETH = gql`
           symbol
         }
       }
-      from
+      # from
       amount0In
       amount1In
       amount0Out
@@ -137,6 +137,23 @@ interface TransactionResults {
 const fetchPoolTransactions = async (address: string): Promise<{ data?: Transaction[]; error: boolean }> => {
   try {
     const data = await infoClient.request<TransactionResults>(POOL_TRANSACTIONS, {
+      address,
+    })
+    const mints = data.mints.map(mapMints)
+    const burns = data.burns.map(mapBurns)
+    const swaps = data.swaps.map(mapSwaps)
+    return { data: [...mints, ...burns, ...swaps], error: false }
+  } catch (error) {
+    console.error(`Failed to fetch transactions for pool ${address}`, error)
+    return {
+      error: true,
+    }
+  }
+}
+
+export const fetchPoolTransactionsETH = async (address: string): Promise<{ data?: Transaction[]; error: boolean }> => {
+  try {
+    const data = await infoClientETH.request<TransactionResults>(POOL_TRANSACTIONS_ETH, {
       address,
     })
     const mints = data.mints.map(mapMints)
