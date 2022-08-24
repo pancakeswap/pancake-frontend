@@ -82,7 +82,7 @@ export default function AddStableLiquidity() {
 
   // input handlers
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
-  const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
+  const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute('add-stable')
 
   // get formatted amounts
   const formattedAmounts = useMemo(
@@ -113,14 +113,14 @@ export default function AddStableLiquidity() {
               showBUSD
               onCurrencySelect={handleCurrencyASelect}
               zapStyle="noZap"
-              value={formattedAmounts[Field.CURRENCY_B]}
+              value={formattedAmounts[Field.CURRENCY_A]}
               onUserInput={onFieldAInput}
               onMax={_noop}
               showMaxButton={false}
               id="add-stable-liquidity-input-tokena"
               showCommonBases
               commonBasesType={CommonBasesType.LIQUIDITY}
-              currency={currencies[Field.CURRENCY_B]}
+              currency={currencies[Field.CURRENCY_A]}
             />
           </AutoColumn>
           <ColumnCenter>
@@ -134,7 +134,7 @@ export default function AddStableLiquidity() {
             onUserInput={onFieldBInput}
             onMax={_noop}
             showMaxButton={false}
-            id="add-stable-liquidity-outpuy-tokena"
+            id="add-stable-liquidity-output-tokena"
             showCommonBases
             commonBasesType={CommonBasesType.LIQUIDITY}
             currency={currencies[Field.CURRENCY_B]}

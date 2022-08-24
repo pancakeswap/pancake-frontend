@@ -438,7 +438,7 @@ const tokens = {
     symbol: "wBNB",
     address: {
       56: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-      97: "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
+      97: "0x2fB98DCc527c1403F92c6Bed05a50725d3005636",
     },
     decimals: 18,
     projectLink: "https://pancakeswap.finance/",
