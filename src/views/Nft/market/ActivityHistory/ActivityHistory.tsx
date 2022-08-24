@@ -118,7 +118,7 @@ const ActivityHistory: React.FC<React.PropsWithChildren<ActivityHistoryProps>> =
           flexDirection={['column', 'column', 'row']}
           flexWrap={isMd ? 'wrap' : 'nowrap'}
         >
-          <ActivityFilters address={collection?.address || ''} />
+          <ActivityFilters address={collection?.address || ''} nftActivityFilters={nftActivityFilters} />
           <Button
             scale="sm"
             disabled={isLoading}

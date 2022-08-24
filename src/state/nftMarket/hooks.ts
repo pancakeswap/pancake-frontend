@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import { useSelector } from 'react-redux'
 import { isAddress } from 'utils'
 import { FetchStatus } from 'config/constants/types'
 import erc721Abi from 'config/abi/erc721.json'
@@ -11,9 +10,9 @@ import isEmpty from 'lodash/isEmpty'
 import shuffle from 'lodash/shuffle'
 
 import fromPairs from 'lodash/fromPairs'
-import { State } from '../types'
-import { ApiCollections, NftActivityFilter, NftFilter, NftToken, Collection, NftAttribute } from './types'
+import { ApiCollections, NftToken, Collection, NftAttribute, MarketEvent } from './types'
 import { getCollection, getCollections } from './helpers'
+import { useSessionStorageListener } from './storage'
 
 const DEFAULT_NFT_ORDERING = { field: 'currentAskPrice', direction: 'asc' as 'asc' | 'desc' }
 const DEFAULT_NFT_ACTIVITY_FILTER = { typeFilters: [], collectionFilters: [] }
@@ -47,12 +46,6 @@ export const useGetShuffledCollections = (): { data: Collection[]; status: Fetch
   return { data: shuffledCollections, status }
 }
 
-export const useNftsFromCollection = (collectionAddress: string) => {
-  const checksummedCollectionAddress = isAddress(collectionAddress) || ''
-  const nfts: NftToken[] = useSelector((state: State) => state.nftMarket.data.nfts[checksummedCollectionAddress])
-  return nfts
-}
-
 export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
   const nftApprovalCalls = useMemo(
     () =>
@@ -79,28 +72,37 @@ export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
 }
 
 export const useGetNftFilters = (collectionAddress: string): Readonly<Record<string, NftAttribute>> => {
-  const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
-  return collectionFilter ? collectionFilter.activeFilters : EMPTY_OBJECT
+  useSessionStorageListener('nftMarketFilters')
+  const rawNftMarketFilters = sessionStorage?.getItem('nftMarketFilters')
+  const collectionFilters = rawNftMarketFilters ? JSON.parse(rawNftMarketFilters) : {}
+  return collectionFilters[collectionAddress]?.activeFilters ?? EMPTY_OBJECT
 }
 
 export const useGetNftOrdering = (collectionAddress: string) => {
-  const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
-  return collectionFilter ? collectionFilter.ordering : DEFAULT_NFT_ORDERING
+  useSessionStorageListener('nftMarketFilters')
+  const rawNftMarketFilters = sessionStorage?.getItem('nftMarketFilters')
+  const collectionFilters = rawNftMarketFilters ? JSON.parse(rawNftMarketFilters) : {}
+  return collectionFilters[collectionAddress]?.ordering ?? DEFAULT_NFT_ORDERING
 }
 
 export const useGetNftShowOnlyOnSale = (collectionAddress: string) => {
-  const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
-  return collectionFilter ? collectionFilter.showOnlyOnSale : true
+  useSessionStorageListener('nftMarketFilters')
+  const rawNftMarketFilters = sessionStorage?.getItem('nftMarketFilters')
+  const collectionFilters = rawNftMarketFilters ? JSON.parse(rawNftMarketFilters) : {}
+  return collectionFilters[collectionAddress]?.showOnlyOnSale ?? true
 }
 
 export const useTryVideoNftMedia = () => {
-  const tryVideoNftMedia = useSelector((state: State) => state.nftMarket.data.tryVideoNftMedia)
-  return tryVideoNftMedia ?? true
+  useSessionStorageListener('nftMarketTryVideoNftMedia')
+  const rawNftMarketTryVideoNftMedia = sessionStorage?.getItem('nftMarketTryVideoNftMedia')
+  return rawNftMarketTryVideoNftMedia ? JSON.parse(rawNftMarketTryVideoNftMedia) : true
 }
 
-export const useGetNftActivityFilters = (collectionAddress: string) => {
-  const collectionFilter: NftActivityFilter = useSelector(
-    (state: State) => state.nftMarket.data.activityFilters[collectionAddress],
-  )
-  return collectionFilter || DEFAULT_NFT_ACTIVITY_FILTER
+export const useGetNftActivityFilters = (
+  collectionAddress: string,
+): { typeFilters: MarketEvent[]; collectionFilters: string[] } => {
+  useSessionStorageListener('nftMarketActivityFilters')
+  const rawNftMarketActivityFilters = sessionStorage?.getItem('nftMarketActivityFilters')
+  const collectionFilters = rawNftMarketActivityFilters ? JSON.parse(rawNftMarketActivityFilters) : {}
+  return collectionFilters[collectionAddress] ?? DEFAULT_NFT_ACTIVITY_FILTER
 }

@@ -15,9 +15,8 @@ import {
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import orderBy from 'lodash/orderBy'
-import { useAppDispatch } from 'state'
 import { useGetNftFilters } from 'state/nftMarket/hooks'
-import { updateItemFilters } from 'state/nftMarket/reducer'
+import { updateItemFilters } from 'state/nftMarket/storage'
 import styled from 'styled-components'
 import { Item } from './types'
 import { FilterButton, ListOrderState, SearchWrapper } from '../ListFilter/styles'
@@ -58,7 +57,6 @@ export const ListTraitFilter: React.FC<React.PropsWithChildren<ListTraitFilterPr
   const wrapperRef = useRef(null)
   const menuRef = useRef(null)
   const nftFilters = useGetNftFilters(collectionAddress)
-  const dispatch = useAppDispatch()
   const { orderKey, orderDir } = orderState
 
   const traitFilter = nftFilters[traitType]
@@ -74,12 +72,10 @@ export const ListTraitFilter: React.FC<React.PropsWithChildren<ListTraitFilterPr
 
     delete newFilters[traitType]
 
-    dispatch(
-      updateItemFilters({
-        collectionAddress,
-        nftFilters: newFilters,
-      }),
-    )
+    updateItemFilters({
+      collectionAddress,
+      nftFilters: newFilters,
+    })
   }
 
   const handleMenuClick = () => setIsOpen(!isOpen)
@@ -90,12 +86,10 @@ export const ListTraitFilter: React.FC<React.PropsWithChildren<ListTraitFilterPr
   }
 
   const handleItemSelect = ({ attr }: Item) => {
-    dispatch(
-      updateItemFilters({
-        collectionAddress,
-        nftFilters: { ...nftFilters, [traitType]: attr },
-      }),
-    )
+    updateItemFilters({
+      collectionAddress,
+      nftFilters: { ...nftFilters, [traitType]: attr },
+    })
   }
 
   const toggleSort = (newOrderKey: string) => () => {
