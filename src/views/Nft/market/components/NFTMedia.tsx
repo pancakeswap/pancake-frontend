@@ -5,7 +5,7 @@ import { NftToken } from 'state/nftMarket/types'
 import styled from 'styled-components'
 import { useTryVideoNftMedia } from 'state/nftMarket/hooks'
 import { useAppDispatch } from 'state'
-import { setTryVideoNftMedia } from 'state/nftMarket/storage'
+import { useNftStorage } from 'state/nftMarket/storage'
 import { RoundedImage } from '../Collection/IndividualNFTPage/shared/styles'
 
 const StyledAspectRatio = styled(Box)`
@@ -30,6 +30,7 @@ const NFTMedia: FC<
   >
 > = ({ width, height, nft, borderRadius = 'default', as, ...props }) => {
   const dispatch = useAppDispatch()
+  const { setTryVideoNftMedia } = useNftStorage()
   const tryVideoNftMedia = useTryVideoNftMedia()
   const vidRef = useRef(null)
   const { observerRef, isIntersecting } = useIntersectionObserver()
@@ -46,7 +47,7 @@ const NFTMedia: FC<
         vidRef.current.pause()
       }
     }
-  }, [dispatch, isIntersecting])
+  }, [dispatch, isIntersecting, setTryVideoNftMedia])
 
   if (tryVideoNftMedia && (nft?.image.webm || nft?.image.mp4)) {
     return (

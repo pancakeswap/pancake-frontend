@@ -16,7 +16,7 @@ import {
 import { useTranslation } from '@pancakeswap/localization'
 import orderBy from 'lodash/orderBy'
 import { useGetNftFilters } from 'state/nftMarket/hooks'
-import { updateItemFilters } from 'state/nftMarket/storage'
+import { useNftStorage } from 'state/nftMarket/storage'
 import styled from 'styled-components'
 import { Item } from './types'
 import { FilterButton, ListOrderState, SearchWrapper } from '../ListFilter/styles'
@@ -51,6 +51,7 @@ export const ListTraitFilter: React.FC<React.PropsWithChildren<ListTraitFilterPr
   collectionAddress,
 }) => {
   const { t } = useTranslation()
+  const { updateItemFilters } = useNftStorage()
   const [isOpen, setIsOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [orderState, setOrderState] = useState<ListOrderState>({ orderKey: 'count', orderDir: 'asc' })

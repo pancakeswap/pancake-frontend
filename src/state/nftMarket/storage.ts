@@ -1,6 +1,7 @@
-import { useLastUpdated } from '@pancakeswap/hooks'
-import { useEffect } from 'react'
-import { MarketEvent, NftActivityFilter, NftFilter, NftAttribute } from './types'
+import { NftFilter, NftActivityFilter, MarketEvent, NftAttribute } from 'state/nftMarket/types'
+import { useAtom } from 'jotai'
+import { nftMarketFiltersAtom, nftMarketActivityFiltersAtom, tryVideoNftMediaAtom } from 'state/nftMarket/atoms'
+import { useCallback } from 'react'
 
 const initialNftFilterState: NftFilter = {
   activeFilters: {},
@@ -16,202 +17,154 @@ const initialNftActivityFilterState: NftActivityFilter = {
   collectionFilters: [],
 }
 
-export const addActivityTypeFilters = ({ collection, field }: { collection: string; field: MarketEvent }) => {
-  const nftMarketActivityFilters = JSON.parse(sessionStorage?.getItem('nftMarketActivityFilters') ?? '{}')
-  if (nftMarketActivityFilters[collection]) {
-    nftMarketActivityFilters[collection].typeFilters.push(field)
-  } else {
-    nftMarketActivityFilters[collection] = {
-      ...initialNftActivityFilterState,
-      typeFilters: [field],
-    }
-  }
-  sessionStorage?.setItem('nftMarketActivityFilters', JSON.stringify(nftMarketActivityFilters))
-  const event = new Event('itemUpdated')
+export function useNftStorage() {
+  const [nftMarketFilters, setNftMarketFilters] = useAtom(nftMarketFiltersAtom)
+  const [nftMarketActivityFilters, setNftMarketActivityFilters] = useAtom(nftMarketActivityFiltersAtom)
+  const [tryVideoNftMedia, setTryVideoNftMedia] = useAtom(tryVideoNftMediaAtom)
 
-  // @ts-ignore
-  event.key = 'nftMarketActivityFilters'
-  document.dispatchEvent(event)
-}
-
-export const addActivityCollectionFilters = ({ collection }: { collection: string }) => {
-  const nftMarketActivityFilters = JSON.parse(sessionStorage?.getItem('nftMarketActivityFilters') ?? '{}')
-  if (nftMarketActivityFilters['']) {
-    nftMarketActivityFilters[''].collectionFilters.push(collection)
-  } else {
-    nftMarketActivityFilters[''] = {
-      ...initialNftActivityFilterState,
-      collectionFilters: [collection],
-    }
-  }
-  sessionStorage?.setItem('nftMarketActivityFilters', JSON.stringify(nftMarketActivityFilters))
-  const event = new Event('itemUpdated')
-
-  // @ts-ignore
-  event.key = 'nftMarketActivityFilters'
-  document.dispatchEvent(event)
-}
-
-export const removeActivityTypeFilters = ({ collection, field }: { collection: string; field: MarketEvent }) => {
-  const nftMarketActivityFilters = JSON.parse(sessionStorage?.getItem('nftMarketActivityFilters') ?? '{}')
-  if (nftMarketActivityFilters[collection]) {
-    nftMarketActivityFilters[collection].typeFilters = nftMarketActivityFilters[collection].typeFilters.filter(
-      (activeFilter) => activeFilter !== field,
-    )
-  }
-  sessionStorage?.setItem('nftMarketActivityFilters', JSON.stringify(nftMarketActivityFilters))
-  const event = new Event('itemUpdated')
-
-  // @ts-ignore
-  event.key = 'nftMarketActivityFilters'
-  document.dispatchEvent(event)
-}
-
-export const removeActivityCollectionFilters = ({ collection }: { collection: string }) => {
-  const nftMarketActivityFilters = JSON.parse(sessionStorage?.getItem('nftMarketActivityFilters') ?? '{}')
-  if (nftMarketActivityFilters['']) {
-    nftMarketActivityFilters[collection].collectionFilters = nftMarketActivityFilters[
-      collection
-    ].collectionFilters.filter((activeFilter) => activeFilter !== collection)
-  }
-  sessionStorage?.setItem('nftMarketActivityFilters', JSON.stringify(nftMarketActivityFilters))
-  const event = new Event('itemUpdated')
-
-  // @ts-ignore
-  event.key = 'nftMarketActivityFilters'
-  document.dispatchEvent(event)
-}
-
-export const removeAllActivityFilters = (collectionAddress: string) => {
-  const nftMarketActivityFilters = JSON.parse(sessionStorage?.getItem('nftMarketActivityFilters') ?? '{}')
-  nftMarketActivityFilters[collectionAddress] = { ...initialNftActivityFilterState }
-  sessionStorage?.setItem('nftMarketActivityFilters', JSON.stringify(nftMarketActivityFilters))
-  const event = new Event('itemUpdated')
-
-  // @ts-ignore
-  event.key = 'nftMarketActivityFilters'
-  document.dispatchEvent(event)
-}
-
-export const removeAllActivityCollectionFilters = () => {
-  const nftMarketActivityFilters = JSON.parse(sessionStorage?.getItem('nftMarketActivityFilters') ?? '{}')
-  nftMarketActivityFilters[''].collectionFilters = []
-  sessionStorage?.setItem('nftMarketActivityFilters', JSON.stringify(nftMarketActivityFilters))
-  const event = new Event('itemUpdated')
-
-  // @ts-ignore
-  event.key = 'nftMarketActivityFilters'
-  document.dispatchEvent(event)
-}
-
-export const setShowOnlyOnSale = ({ collection, showOnlyOnSale }: { collection: string; showOnlyOnSale: boolean }) => {
-  const nftMarketFilters = JSON.parse(sessionStorage?.getItem('nftMarketFilters') ?? '{}')
-  if (nftMarketFilters[collection]) {
-    nftMarketFilters[collection].showOnlyOnSale = showOnlyOnSale
-  } else {
-    nftMarketFilters[collection] = {
-      ...initialNftFilterState,
-      showOnlyOnSale,
-    }
-  }
-  sessionStorage?.setItem('nftMarketFilters', JSON.stringify(nftMarketFilters))
-  const event = new Event('itemUpdated')
-
-  // @ts-ignore
-  event.key = 'nftMarketFilters'
-  document.dispatchEvent(event)
-}
-
-export const setOrdering = ({
-  collection,
-  field,
-  direction,
-}: {
-  collection: string
-  field: string
-  direction: 'asc' | 'desc'
-}) => {
-  const nftMarketFilters = JSON.parse(sessionStorage?.getItem('nftMarketFilters') ?? '{}')
-  if (nftMarketFilters[collection]) {
-    nftMarketFilters[collection].ordering = {
-      field,
-      direction,
-    }
-  } else {
-    nftMarketFilters[collection] = {
-      ...initialNftFilterState,
-      ordering: {
-        field,
-        direction,
-      },
-    }
-  }
-  sessionStorage?.setItem('nftMarketFilters', JSON.stringify(nftMarketFilters))
-  const event = new Event('itemUpdated')
-
-  // @ts-ignore
-  event.key = 'nftMarketFilters'
-  document.dispatchEvent(event)
-}
-
-export const removeAllItemFilters = (collectionAddress: string) => {
-  const nftMarketFilters = JSON.parse(sessionStorage?.getItem('nftMarketFilters') ?? '{}')
-  nftMarketFilters[collectionAddress] = { ...initialNftActivityFilterState }
-  sessionStorage?.setItem('nftMarketFilters', JSON.stringify(nftMarketFilters))
-  const event = new Event('itemUpdated')
-
-  // @ts-ignore
-  event.key = 'nftMarketFilters'
-  document.dispatchEvent(event)
-}
-
-export const setTryVideoNftMedia = (tryVideoNftMedia: boolean) => {
-  sessionStorage?.setItem('nftMarketTryVideoNftMedia', JSON.stringify(tryVideoNftMedia))
-  const event = new Event('itemUpdated')
-
-  // @ts-ignore
-  event.key = 'nftMarketTryVideoNftMedia'
-  document.dispatchEvent(event)
-}
-
-export const updateItemFilters = ({
-  collectionAddress,
-  nftFilters,
-}: {
-  collectionAddress: string
-  nftFilters: Record<string, NftAttribute>
-}) => {
-  const nftMarketFilters = JSON.parse(sessionStorage?.getItem('nftMarketFilters') ?? '{}')
-  if (nftMarketFilters[collectionAddress]) {
-    nftMarketFilters[collectionAddress] = {
-      ...nftMarketFilters[collectionAddress],
-      activeFilters: { ...nftFilters },
-    }
-  } else {
-    nftMarketFilters[collectionAddress] = {
-      ...initialNftFilterState,
-      activeFilters: { ...nftFilters },
-    }
-  }
-  sessionStorage?.setItem('nftMarketFilters', JSON.stringify(nftMarketFilters))
-  const event = new Event('itemUpdated')
-
-  // @ts-ignore
-  event.key = 'nftMarketFilters'
-  document.dispatchEvent(event)
-}
-
-export const useSessionStorageListener = (key: string) => {
-  const { setLastUpdated: refresh } = useLastUpdated()
-  useEffect(() => {
-    const handleStorage = (event) => {
-      if (event.key === key) {
-        refresh()
+  const addActivityTypeFilters = useCallback(
+    ({ collection, field }: { collection: string; field: MarketEvent }) => {
+      if (nftMarketActivityFilters[collection]) {
+        nftMarketActivityFilters[collection].typeFilters.push(field)
+      } else {
+        nftMarketActivityFilters[collection] = {
+          ...initialNftActivityFilterState,
+          typeFilters: [field],
+        }
       }
-    }
-    document.addEventListener('itemUpdated', handleStorage)
-    return () => {
-      document.removeEventListener('itemUpdated', handleStorage)
-    }
-  }, [refresh, key])
+      setNftMarketActivityFilters({ ...nftMarketActivityFilters })
+    },
+    [setNftMarketActivityFilters, nftMarketActivityFilters],
+  )
+
+  const addActivityCollectionFilters = useCallback(
+    ({ collection }: { collection: string }) => {
+      if (nftMarketActivityFilters['']) {
+        nftMarketActivityFilters[''].collectionFilters.push(collection)
+      } else {
+        nftMarketActivityFilters[''] = {
+          ...initialNftActivityFilterState,
+          collectionFilters: [collection],
+        }
+      }
+      setNftMarketActivityFilters({ ...nftMarketActivityFilters })
+    },
+    [setNftMarketActivityFilters, nftMarketActivityFilters],
+  )
+
+  const removeActivityTypeFilters = useCallback(
+    ({ collection, field }: { collection: string; field: MarketEvent }) => {
+      if (nftMarketActivityFilters[collection]) {
+        nftMarketActivityFilters[collection].typeFilters = nftMarketActivityFilters[collection].typeFilters.filter(
+          (activeFilter) => activeFilter !== field,
+        )
+      }
+      setNftMarketActivityFilters({ ...nftMarketActivityFilters })
+    },
+    [setNftMarketActivityFilters, nftMarketActivityFilters],
+  )
+
+  const removeActivityCollectionFilters = useCallback(
+    ({ collection }: { collection: string }) => {
+      if (nftMarketActivityFilters['']) {
+        nftMarketActivityFilters[collection].collectionFilters = nftMarketActivityFilters[
+          collection
+        ].collectionFilters.filter((activeFilter) => activeFilter !== collection)
+      }
+      setNftMarketActivityFilters({ ...nftMarketActivityFilters })
+    },
+    [setNftMarketActivityFilters, nftMarketActivityFilters],
+  )
+
+  const removeAllActivityFilters = useCallback(
+    (collectionAddress: string) => {
+      nftMarketActivityFilters[collectionAddress] = { ...initialNftActivityFilterState }
+      setNftMarketActivityFilters({ ...nftMarketActivityFilters })
+    },
+    [nftMarketActivityFilters, setNftMarketActivityFilters],
+  )
+
+  const removeAllActivityCollectionFilters = useCallback(() => {
+    nftMarketActivityFilters[''].collectionFilters = []
+    setNftMarketActivityFilters({ ...nftMarketActivityFilters })
+  }, [nftMarketActivityFilters, setNftMarketActivityFilters])
+
+  const setShowOnlyOnSale = useCallback(
+    ({ collection, showOnlyOnSale }: { collection: string; showOnlyOnSale: boolean }) => {
+      if (nftMarketFilters[collection]) {
+        nftMarketFilters[collection].showOnlyOnSale = showOnlyOnSale
+      } else {
+        nftMarketFilters[collection] = {
+          ...initialNftFilterState,
+          showOnlyOnSale,
+        }
+      }
+      setNftMarketFilters({ ...nftMarketFilters })
+    },
+    [setNftMarketFilters, nftMarketFilters],
+  )
+
+  const setOrdering = useCallback(
+    ({ collection, field, direction }: { collection: string; field: string; direction: 'asc' | 'desc' }) => {
+      if (nftMarketFilters[collection]) {
+        nftMarketFilters[collection].ordering = {
+          field,
+          direction,
+        }
+      } else {
+        nftMarketFilters[collection] = {
+          ...initialNftFilterState,
+          ordering: {
+            field,
+            direction,
+          },
+        }
+      }
+      setNftMarketFilters({ ...nftMarketFilters })
+    },
+    [setNftMarketFilters, nftMarketFilters],
+  )
+
+  const removeAllItemFilters = useCallback(
+    (collectionAddress: string) => {
+      nftMarketFilters[collectionAddress] = { ...initialNftActivityFilterState }
+      setNftMarketFilters({ ...nftMarketFilters })
+    },
+    [nftMarketFilters, setNftMarketFilters],
+  )
+
+  const updateItemFilters = useCallback(
+    ({ collectionAddress, nftFilters }: { collectionAddress: string; nftFilters: Record<string, NftAttribute> }) => {
+      if (nftMarketFilters[collectionAddress]) {
+        nftMarketFilters[collectionAddress] = {
+          ...nftMarketFilters[collectionAddress],
+          activeFilters: { ...nftFilters },
+        }
+      } else {
+        nftMarketFilters[collectionAddress] = {
+          ...initialNftFilterState,
+          activeFilters: { ...nftFilters },
+        }
+      }
+      setNftMarketFilters({ ...nftMarketFilters })
+    },
+    [nftMarketFilters, setNftMarketFilters],
+  )
+
+  return {
+    nftMarketFilters,
+    nftMarketActivityFilters,
+    tryVideoNftMedia,
+    addActivityTypeFilters,
+    addActivityCollectionFilters,
+    removeActivityTypeFilters,
+    removeActivityCollectionFilters,
+    removeAllActivityFilters,
+    removeAllActivityCollectionFilters,
+    setShowOnlyOnSale,
+    setOrdering,
+    setTryVideoNftMedia,
+    removeAllItemFilters,
+    updateItemFilters,
+  }
 }

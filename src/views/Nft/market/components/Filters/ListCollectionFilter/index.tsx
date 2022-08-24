@@ -14,11 +14,7 @@ import {
 } from '@pancakeswap/uikit'
 import { Collection, MarketEvent } from 'state/nftMarket/types'
 import { useGetCollections } from 'state/nftMarket/hooks'
-import {
-  removeAllActivityCollectionFilters,
-  removeActivityCollectionFilters,
-  addActivityCollectionFilters,
-} from 'state/nftMarket/storage'
+import { useNftStorage } from 'state/nftMarket/storage'
 import { useTranslation } from '@pancakeswap/localization'
 import { CloseButton, FilterButton, ListOrderState, SearchWrapper, TriggerButton } from '../ListFilter/styles'
 import { CollectionItemRow } from './styles'
@@ -37,6 +33,8 @@ export const ListCollectionFilter: React.FC<React.PropsWithChildren<ListCollecti
   const { data: collections } = useGetCollections()
   const wrapperRef = useRef(null)
   const menuRef = useRef(null)
+  const { addActivityCollectionFilters, removeActivityCollectionFilters, removeAllActivityCollectionFilters } =
+    useNftStorage()
 
   const { orderKey, orderDir } = orderState
   const isAnyCollectionSelected = nftActivityFilters.collectionFilters.length > 0

@@ -1,6 +1,6 @@
 import { Button, ButtonProps } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { removeAllActivityFilters } from 'state/nftMarket/storage'
+import { useNftStorage } from 'state/nftMarket/storage'
 
 interface ClearAllButtonProps extends ButtonProps {
   collectionAddress: string
@@ -8,6 +8,7 @@ interface ClearAllButtonProps extends ButtonProps {
 
 const ClearAllButton: React.FC<React.PropsWithChildren<ClearAllButtonProps>> = ({ collectionAddress, ...props }) => {
   const { t } = useTranslation()
+  const { removeAllActivityFilters } = useNftStorage()
 
   const clearAll = () => {
     removeAllActivityFilters(collectionAddress)

@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import { Box, Button, Flex, IconButton, CloseIcon } from '@pancakeswap/uikit'
-import { addActivityTypeFilters, removeActivityTypeFilters } from 'state/nftMarket/storage'
 import { ContextApi, useTranslation } from '@pancakeswap/localization'
 import { MarketEvent } from '../../../../state/nftMarket/types'
+import { useNftStorage } from '../../../../state/nftMarket/storage'
 
 interface ActivityFilterProps {
   eventType: MarketEvent
@@ -47,6 +47,7 @@ export const ActivityFilter: React.FC<React.PropsWithChildren<ActivityFilterProp
   nftActivityFilters,
 }) => {
   const { t } = useTranslation()
+  const { addActivityTypeFilters, removeActivityTypeFilters } = useNftStorage()
 
   const isEventSelected = nftActivityFilters.typeFilters.some((nftActivityFilter) => nftActivityFilter === eventType)
 

@@ -15,7 +15,7 @@ import {
 import { Token, ChainId } from '@pancakeswap/sdk'
 import { TokenInfo, TokenList, Tags } from '@uniswap/token-lists'
 import { parseUnits } from '@ethersproject/units'
-import { NftToken, State as NftMarketState } from './nftMarket/types'
+import { NftToken } from './nftMarket/types'
 
 /**
  * Token instances created from token info.
@@ -762,6 +762,5 @@ export interface State {
   pools: PoolsState
   predictions: PredictionsState
   lottery: LotteryState
-  nftMarket: NftMarketState
   pottery: PotteryState
 }

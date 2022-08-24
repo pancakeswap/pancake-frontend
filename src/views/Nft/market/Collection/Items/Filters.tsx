@@ -7,7 +7,7 @@ import { useGetNftFilters, useGetNftShowOnlyOnSale } from 'state/nftMarket/hooks
 import { NftAttribute } from 'state/nftMarket/types'
 import { useTranslation } from '@pancakeswap/localization'
 import { Item, ListTraitFilter } from 'views/Nft/market/components/Filters'
-import { setShowOnlyOnSale } from 'state/nftMarket/storage'
+import { useNftStorage } from 'state/nftMarket/storage'
 import groupBy from 'lodash/groupBy'
 import useGetCollectionDistribution from '../../hooks/useGetCollectionDistribution'
 import ClearAllButton from './ClearAllButton'
@@ -89,6 +89,7 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({ address, att
   const { data } = useGetCollectionDistribution(address)
   const { t } = useTranslation()
   const showOnlyNftsOnSale = useGetNftShowOnlyOnSale(address)
+  const { setShowOnlyOnSale } = useNftStorage()
   const [activeButtonIndex, setActiveButtonIndex] = useState(showOnlyNftsOnSale ? 1 : 0)
 
   useEffect(() => {
