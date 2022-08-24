@@ -14,6 +14,8 @@ import {
   ArrowUpDownIcon,
   Skeleton,
   useMatchBreakpointsContext,
+  TabMenu,
+  Tab,
 } from '@pancakeswap/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
@@ -33,7 +35,7 @@ import { GreyCard } from '../../components/Card'
 import Column, { AutoColumn } from '../../components/Layout/Column'
 import ConfirmSwapModal from './components/ConfirmSwapModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import { AutoRow, RowBetween } from '../../components/Layout/Row'
+import Row, { AutoRow, RowBetween } from '../../components/Layout/Row'
 import AdvancedSwapDetailsDropdown from './components/AdvancedSwapDetailsDropdown'
 import confirmPriceImpactWithoutFee from './components/confirmPriceImpactWithoutFee'
 import { ArrowWrapper, SwapCallbackError, Wrapper } from './components/styleds'
@@ -69,6 +71,7 @@ import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
 import { CommonBasesType } from '../../components/SearchModal/types'
 import replaceBrowserHistory from '../../utils/replaceBrowserHistory'
 import { currencyId } from '../../utils/currencyId'
+import StableSwap from './components/StableSwap'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -97,6 +100,9 @@ const SwitchIconButton = styled(IconButton)`
 const CHART_SUPPORT_CHAIN_IDS = [ChainId.BSC]
 
 export default function Swap() {
+  const [tabIndex, setTabIndex] = useState(0)
+  const handletab = (newIndex) => setTabIndex(newIndex)
+
   const router = useRouter()
   const loadedUrlParams = useDefaultsFromURLSearch()
   const { t } = useTranslation()
@@ -423,8 +429,12 @@ export default function Swap() {
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
+                <TabMenu activeIndex={tabIndex} onItemClick={handletab}>
+                  <Tab>Swap</Tab>
+                  <Tab>Stable Swap</Tab>
+                </TabMenu>
                 <CurrencyInputHeader
-                  title={t('Swap')}
+                  title={tabIndex === 0 ? t('Swap') : t('StableSwap')}
                   subtitle={t('Trade tokens in an instant')}
                   setIsChartDisplayed={setIsChartDisplayed}
                   isChartDisplayed={isChartDisplayed}
