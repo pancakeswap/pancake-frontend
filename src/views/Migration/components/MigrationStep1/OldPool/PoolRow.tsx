@@ -9,10 +9,10 @@ import { useMatchBreakpointsContext } from '@pancakeswap/uikit'
 import NameCell from './Cells/NameCell'
 import StakedCell from './Cells/StakedCell'
 import AutoEarningsCell from './Cells/AutoEarningsCell'
-import EarningsCell from './Cells/EarningsCell'
-import TotalStakedCell from './Cells/TotalStakedCell'
+import EarningsCell from '../../Pool/Cells/EarningsCell'
+import TotalStakedCell from '../../Pool/Cells/TotalStakedCell'
 import Unstaked from './Cells/Unstaked'
-import ExpandActionCell from './Cells/ExpandActionCell'
+import ExpandActionCell from '../../Cells/ExpandActionCell'
 import ActionPanel from './ActionPanel/ActionPanel'
 
 interface PoolRowProps {

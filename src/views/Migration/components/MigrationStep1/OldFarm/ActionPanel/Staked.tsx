@@ -6,7 +6,7 @@ import Balance from 'components/Balance'
 import { getBalanceNumber, formatLpBalance } from 'utils/formatBalance'
 import { ActionContainer, ActionContent, ActionTitles } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
 import { useFarmUser, useLpTokenPrice } from 'state/farmsV1/hooks'
-import { FarmProps } from '../Cells/Farm'
+import { FarmProps } from '../../../Farm/Cells/Farm'
 import UnstakeButton from '../UnstakeButton'
 
 const Container = styled(ActionContainer)`
