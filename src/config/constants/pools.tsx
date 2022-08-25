@@ -2,7 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import Trans from 'components/Trans'
 import { VaultKey } from 'state/types'
 import { serializeTokens } from 'utils/serializeTokens'
-import { bscTokens } from './tokens'
+import { bscTokens } from '@pancakeswap/tokens'
 import { SerializedPoolConfig, PoolCategory } from './types'
 
 const serializedTokens = serializeTokens(bscTokens)

@@ -1,6 +1,6 @@
 import { serializeTokens } from 'utils/serializeTokens'
+import { bscTokens } from '@pancakeswap/tokens'
 import { CAKE_BNB_LP_MAINNET } from '../lp'
-import { bscTokens } from '../tokens'
 import { SerializedFarmConfig } from '../types'
 
 const serializedTokens = serializeTokens(bscTokens)
