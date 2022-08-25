@@ -37,6 +37,9 @@
       "last 1 safari version"
     ]
   },
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "dependencies": {
     "@ethersproject/abi": "^5.0.0",
     "@ethersproject/address": "^5.0.0",
