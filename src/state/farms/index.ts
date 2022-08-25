@@ -16,6 +16,7 @@ import type { AppState } from 'state'
 import { getPriceHelperLpFiles } from 'config/constants/priceHelperLps'
 import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
 import { getFarmConfig } from 'config/constants/farms/index'
+import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import fetchFarms from './fetchFarms'
 import getFarmsPrices from './getFarmsPrices'
 import {
@@ -186,7 +187,7 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
     const farmsCanFetch = farmsConfig.filter(
       (farmConfig) => pids.includes(farmConfig.pid) && poolLength > farmConfig.pid,
     )
-    if (proxyAddress && farmsCanFetch?.length) {
+    if (proxyAddress && farmsCanFetch?.length && verifyBscNetwork(chainId)) {
       const { normalFarms, farmsWithProxy } = splitProxyFarms(farmsCanFetch)
 
       const [proxyAllowances, normalAllowances] = await Promise.all([
