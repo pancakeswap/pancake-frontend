@@ -9,7 +9,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { getBalanceAmount } from 'utils/formatBalance'
+import { getBalanceAmount, formatNumber } from 'utils/formatBalance'
 import { TransactionResponse } from '@ethersproject/providers'
 
 interface FarmCardActionsProps {
@@ -34,8 +34,9 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   const rawEarningsBalance = account ? getBalanceAmount(earnings) : BIG_ZERO
   const displayBalance = rawEarningsBalance.toFixed(5, BigNumber.ROUND_DOWN)
   const earningsBusd = rawEarningsBalance ? rawEarningsBalance.multipliedBy(cakePrice).toNumber() : 0
+  const tooltipBalance = rawEarningsBalance.isGreaterThan(new BigNumber(0.00001)) ? displayBalance : '< 0.00001'
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    `${displayBalance} ${t(
+    `${tooltipBalance} ${t(
       `CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.`,
     )}`,
     {
