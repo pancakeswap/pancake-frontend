@@ -109,24 +109,6 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: serializedTokens.busd,
   },
   {
-    pid: 106,
-    lpSymbol: 'MHUNT-BNB LP',
-    lpAddress: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
-    token: serializedTokens.mhunt,
-    quoteToken: serializedTokens.wbnb,
-    isCommunity: true,
-    auctionHostingStartSeconds: 1659603600,
-  },
-  {
-    pid: 111,
-    lpSymbol: 'AOG-CAKE LP',
-    lpAddress: '0xF8cA29a3BF6d34691981D3Ee8D4c9Cd1C437EfeE',
-    token: serializedTokens.aog,
-    quoteToken: serializedTokens.cake,
-    isCommunity: true,
-    auctionHostingStartSeconds: 1659603600,
-  },
-  {
     pid: 94,
     v1pid: 525,
     lpSymbol: 'WZRD-BUSD LP',
@@ -150,13 +132,6 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0xf23bad605e94de0e3b60c9718a43a94a5af43915',
     token: serializedTokens.hotcross,
     quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 109,
-    lpSymbol: 'XCAD-BUSD LP',
-    lpAddress: '0x07C10ecFb0e1CF81E3e05ddb693Cc114C8EBe498',
-    token: serializedTokens.xcad,
-    quoteToken: serializedTokens.busd,
   },
   {
     pid: 108,
@@ -525,14 +500,6 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'NFT-BNB LP',
     lpAddress: '0x0ecc84c9629317a494f12bc56aa2522475bf32e8',
     token: serializedTokens.nft,
-    quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 59,
-    v1pid: 450,
-    lpSymbol: 'SFUND-BNB LP',
-    lpAddress: '0x74fA517715C4ec65EF01d55ad5335f90dce7CC87',
-    token: serializedTokens.sfund,
     quoteToken: serializedTokens.wbnb,
   },
   {
