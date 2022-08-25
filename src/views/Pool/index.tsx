@@ -109,11 +109,6 @@ export default function Pool() {
               {t('Add Liquidity')}
             </Button>
           </Link>
-          <Link href="/add-stable" passHref>
-            <Button id="join-pool-button" width="100%" startIcon={<AddIcon color="white" />}>
-              {t('Add Stable Liquidity')}
-            </Button>
-          </Link>
         </CardFooter>
       </AppBody>
     </Page>

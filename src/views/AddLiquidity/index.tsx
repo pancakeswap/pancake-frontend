@@ -31,6 +31,7 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { useLPApr } from 'state/swap/hooks'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { CAKE, USDC } from 'config/constants/tokens'
+import stableSwapMap from 'config/constants/stableSwapMap'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -98,6 +99,10 @@ export default function AddLiquidity() {
   const { t } = useTranslation()
   const gasPrice = useGasPrice()
 
+  const stableMap = stableSwapMap[0]
+
+  const isStable = currencyIdA === stableMap.token0.address
+
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
 
@@ -130,7 +135,7 @@ export default function AddLiquidity() {
     poolTokenPercentage,
     error,
     addError,
-  } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
+  } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined, isStable)
 
   const poolData = useLPApr(pair)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -240,11 +245,11 @@ export default function AddLiquidity() {
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_A],
-    preferZapInstead ? zapAddress : ROUTER_ADDRESS[chainId],
+    isStable ? stableMap.stableSwapAddress : preferZapInstead ? zapAddress : ROUTER_ADDRESS[chainId],
   )
   const [approvalB, approveBCallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_B],
-    preferZapInstead ? zapAddress : ROUTER_ADDRESS[chainId],
+    isStable ? stableMap.stableSwapAddress : preferZapInstead ? zapAddress : ROUTER_ADDRESS[chainId],
   )
 
   const addTransaction = useTransactionAdder()
