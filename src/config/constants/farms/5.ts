@@ -15,7 +15,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 2,
-    bscPid: 6,
+    bscPid: 8,
     lpSymbol: 'LEET-WETH LP',
     lpAddress: '0x846f5e6DDb29dC5D07f8dE0a980E30cb5aa07109',
     token: serializedTokens.leet,
