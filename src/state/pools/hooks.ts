@@ -34,8 +34,8 @@ import {
 const lPoolAddresses = livePools.filter(({ sousId }) => sousId !== 0).map(({ earningToken }) => earningToken.address)
 
 // Only fetch farms for live pools
-const getActiveFarms = (chainId: number) => {
-  const farmsConfig = getFarmConfig(chainId)
+const getActiveFarms = async (chainId: number) => {
+  const farmsConfig = await getFarmConfig(chainId)
   return farmsConfig
     .filter(
       ({ token, pid, quoteToken }) =>
@@ -53,7 +53,7 @@ export const useFetchPublicPoolsData = () => {
   useSlowRefreshEffect(
     (currentBlock) => {
       const fetchPoolsDataWithFarms = async () => {
-        const activeFarms = getActiveFarms(chainId)
+        const activeFarms = await getActiveFarms(chainId)
         await dispatch(fetchFarmsPublicDataAsync({ pids: activeFarms, chainId }))
 
         batch(() => {
