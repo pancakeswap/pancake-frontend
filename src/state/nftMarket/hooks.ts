@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
-import { useSelector } from 'react-redux'
 import { isAddress } from 'utils'
+import { useAtom } from 'jotai'
 import { FetchStatus } from 'config/constants/types'
 import erc721Abi from 'config/abi/erc721.json'
 import { useSWRMulticall } from 'hooks/useSWRContract'
@@ -11,9 +11,9 @@ import isEmpty from 'lodash/isEmpty'
 import shuffle from 'lodash/shuffle'
 
 import fromPairs from 'lodash/fromPairs'
-import { State } from '../types'
-import { ApiCollections, NftActivityFilter, NftFilter, NftToken, Collection, NftAttribute } from './types'
+import { ApiCollections, NftToken, Collection, NftAttribute, MarketEvent } from './types'
 import { getCollection, getCollections } from './helpers'
+import { nftMarketActivityFiltersAtom, tryVideoNftMediaAtom, nftMarketFiltersAtom } from './atoms'
 
 const DEFAULT_NFT_ORDERING = { field: 'currentAskPrice', direction: 'asc' as 'asc' | 'desc' }
 const DEFAULT_NFT_ACTIVITY_FILTER = { typeFilters: [], collectionFilters: [] }
@@ -47,12 +47,6 @@ export const useGetShuffledCollections = (): { data: Collection[]; status: Fetch
   return { data: shuffledCollections, status }
 }
 
-export const useNftsFromCollection = (collectionAddress: string) => {
-  const checksummedCollectionAddress = isAddress(collectionAddress) || ''
-  const nfts: NftToken[] = useSelector((state: State) => state.nftMarket.data.nfts[checksummedCollectionAddress])
-  return nfts
-}
-
 export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
   const nftApprovalCalls = useMemo(
     () =>
@@ -79,33 +73,28 @@ export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
 }
 
 export const useGetNftFilters = (collectionAddress: string): Readonly<Record<string, NftAttribute>> => {
-  const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
-  return collectionFilter ? collectionFilter.activeFilters : EMPTY_OBJECT
-}
-
-export const useGetNftFilterLoadingState = (collectionAddress: string) => {
-  const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
-  return collectionFilter ? collectionFilter.loadingState : FetchStatus.Idle
+  const [nftMarketFilters] = useAtom(nftMarketFiltersAtom)
+  return nftMarketFilters[collectionAddress]?.activeFilters ?? EMPTY_OBJECT
 }
 
 export const useGetNftOrdering = (collectionAddress: string) => {
-  const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
-  return collectionFilter ? collectionFilter.ordering : DEFAULT_NFT_ORDERING
+  const [nftMarketFilters] = useAtom(nftMarketFiltersAtom)
+  return nftMarketFilters[collectionAddress]?.ordering ?? DEFAULT_NFT_ORDERING
 }
 
 export const useGetNftShowOnlyOnSale = (collectionAddress: string) => {
-  const collectionFilter: NftFilter = useSelector((state: State) => state.nftMarket.data.filters[collectionAddress])
-  return collectionFilter ? collectionFilter.showOnlyOnSale : true
+  const [nftMarketFilters] = useAtom(nftMarketFiltersAtom)
+  return nftMarketFilters[collectionAddress]?.showOnlyOnSale ?? true
 }
 
 export const useTryVideoNftMedia = () => {
-  const tryVideoNftMedia = useSelector((state: State) => state.nftMarket.data.tryVideoNftMedia)
+  const [tryVideoNftMedia] = useAtom(tryVideoNftMediaAtom)
   return tryVideoNftMedia ?? true
 }
 
-export const useGetNftActivityFilters = (collectionAddress: string) => {
-  const collectionFilter: NftActivityFilter = useSelector(
-    (state: State) => state.nftMarket.data.activityFilters[collectionAddress],
-  )
-  return collectionFilter || DEFAULT_NFT_ACTIVITY_FILTER
+export const useGetNftActivityFilters = (
+  collectionAddress: string,
+): { typeFilters: MarketEvent[]; collectionFilters: string[] } => {
+  const [nftMarketActivityFilters] = useAtom(nftMarketActivityFiltersAtom)
+  return nftMarketActivityFilters[collectionAddress] ?? DEFAULT_NFT_ACTIVITY_FILTER
 }

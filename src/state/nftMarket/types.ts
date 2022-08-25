@@ -1,17 +1,7 @@
-import { FetchStatus } from 'config/constants/types'
 import { BigNumberish } from '@ethersproject/bignumber'
 
 // Collections -> Nfts -> Transactions
 // Users -> Nft tokens IDs
-
-export interface State {
-  data: {
-    nfts: Record<string, NftToken[]> // string is the collection address
-    filters: Record<string, NftFilter> // string is the collection address
-    activityFilters: Record<string, NftActivityFilter> // string is the collection address
-    tryVideoNftMedia: boolean
-  }
-}
 
 export interface Transaction {
   id: string
@@ -90,7 +80,6 @@ export interface NftToken {
 }
 
 export interface NftFilter {
-  loadingState: FetchStatus
   activeFilters: Record<string, NftAttribute>
   showOnlyOnSale: boolean
   ordering: {

@@ -1,7 +1,6 @@
 import { Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import isEmpty from 'lodash/isEmpty'
-import { useGetNftActivityFilters } from 'state/nftMarket/hooks'
 import { MarketEvent } from 'state/nftMarket/types'
 import styled from 'styled-components'
 import { ListCollectionFilter } from '../components/Filters/ListCollectionFilter'
@@ -32,11 +31,11 @@ const ScrollableFlexContainer = styled(Flex)`
 
 interface FiltersProps {
   address: string
+  nftActivityFilters: { typeFilters: MarketEvent[]; collectionFilters: string[] }
 }
 
-const ActivityFilters: React.FC<React.PropsWithChildren<FiltersProps>> = ({ address }) => {
+const ActivityFilters: React.FC<React.PropsWithChildren<FiltersProps>> = ({ address, nftActivityFilters }) => {
   const { t } = useTranslation()
-  const nftActivityFilters = useGetNftActivityFilters(address)
 
   return (
     <Container justifyContent="space-between" flexDirection={['column', 'column', 'row']}>
@@ -44,9 +43,16 @@ const ActivityFilters: React.FC<React.PropsWithChildren<FiltersProps>> = ({ addr
         {t('Filter by')}
       </Text>
       <ScrollableFlexContainer>
-        {address === '' && <ListCollectionFilter />}
+        {address === '' && <ListCollectionFilter nftActivityFilters={nftActivityFilters} />}
         {[MarketEvent.NEW, MarketEvent.CANCEL, MarketEvent.MODIFY, MarketEvent.SELL].map((eventType) => {
-          return <ActivityFilter key={eventType} eventType={eventType} collectionAddress={address} />
+          return (
+            <ActivityFilter
+              key={eventType}
+              eventType={eventType}
+              collectionAddress={address}
+              nftActivityFilters={nftActivityFilters}
+            />
+          )
         })}
       </ScrollableFlexContainer>
       {!isEmpty(nftActivityFilters.typeFilters) || !isEmpty(nftActivityFilters.collectionFilters) ? (
