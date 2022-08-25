@@ -1,6 +1,7 @@
 import { useWeb3React } from '@pancakeswap/wagmi'
+import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
-import farmsConfig from 'config/constants/farms/56'
+import { getFarmConfig } from 'config/constants/farms'
 import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
@@ -48,13 +49,15 @@ export const usePollFarmsV1WithUserData = () => {
   const { account } = useWeb3React()
 
   useSlowRefreshEffect(() => {
-    const pids = farmsConfig.filter((farmToFetch) => farmToFetch.v1pid).map((farmToFetch) => farmToFetch.v1pid)
+    getFarmConfig(ChainId.BSC).then((farmsConfig) => {
+      const pids = farmsConfig.filter((farmToFetch) => farmToFetch.v1pid).map((farmToFetch) => farmToFetch.v1pid)
 
-    dispatch(fetchFarmsPublicDataAsync(pids))
+      dispatch(fetchFarmsPublicDataAsync(pids))
 
-    if (account) {
-      dispatch(fetchFarmUserDataAsync({ account, pids }))
-    }
+      if (account) {
+        dispatch(fetchFarmUserDataAsync({ account, pids }))
+      }
+    })
   }, [dispatch, account])
 }
 
