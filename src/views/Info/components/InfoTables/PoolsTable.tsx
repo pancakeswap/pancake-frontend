@@ -1,13 +1,14 @@
-import { useCallback, useState, useMemo, useEffect, Fragment } from 'react'
-import styled from 'styled-components'
-import { NextLinkFromReactRouter } from 'components/NextLink'
-import { Text, Flex, Box, Skeleton, ArrowBackIcon, ArrowForwardIcon } from '@pancakeswap/uikit'
-import { formatAmount } from 'utils/formatInfoNumbers'
-import { PoolData } from 'state/info/types'
-import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
-import { DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { useTranslation } from '@pancakeswap/localization'
-import { ClickableColumnHeader, TableWrapper, PageButtons, Arrow, Break } from './shared'
+import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from 'components/NextLink'
+import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
+import { useGetChainName } from 'state/info/hooks'
+import { PoolData } from 'state/info/types'
+import styled from 'styled-components'
+import { formatAmount } from 'utils/formatInfoNumbers'
+import { DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
+import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from './shared'
 
 /**
  *  Columns on different layouts
@@ -84,12 +85,17 @@ const TableLoader: React.FC<React.PropsWithChildren> = () => (
 )
 
 const DataRow = ({ poolData, index }: { poolData: PoolData; index: number }) => {
+  const chainName = useGetChainName()
   return (
     <LinkWrapper to={`/info/pool/${poolData.address}`}>
       <ResponsiveGrid>
         <Text>{index + 1}</Text>
         <Flex>
-          <DoubleCurrencyLogo address0={poolData.token0.address} address1={poolData.token1.address} />
+          <DoubleCurrencyLogo
+            address0={poolData.token0.address}
+            address1={poolData.token1.address}
+            chainName={chainName}
+          />
           <Text ml="8px">
             {poolData.token0.symbol}/{poolData.token1.symbol}
           </Text>
