@@ -49,7 +49,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'HAY-BUSD LP',
     lpAddress: '0x70c26e9805ec5Df3d4aB0b2a3dF86BBA2231B6c1',
     token: serializedTokens.hay,
-    quoteToken: serializedTokens.wbnb,
+    quoteToken: serializedTokens.busd,
   },
   {
     pid: 95,
