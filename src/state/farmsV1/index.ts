@@ -141,10 +141,14 @@ export const farmsSlice = createSlice({
     // Update farms with live data
     builder.addCase(fetchFarmsPublicDataAsync.fulfilled, (state, action) => {
       const [farmPayload, poolLength] = action.payload
-      state.data = state.data.map((farm) => {
-        const liveFarmData = farmPayload.find((farmData) => farmData.v1pid === farm.v1pid)
-        return { ...farm, ...liveFarmData }
-      })
+      if (state.data.length > 0) {
+        state.data = state.data.map((farm) => {
+          const liveFarmData = farmPayload.find((farmData) => farmData.v1pid === farm.v1pid)
+          return { ...farm, ...liveFarmData }
+        })
+      } else {
+        state.data = farmPayload
+      }
       state.poolLength = poolLength
     })
 
