@@ -2415,6 +2415,14 @@ export const bscTokens = {
     'Wombat Token',
     'https://www.wombat.exchange/',
   ),
+  hay: new Token(
+    ChainId.BSC,
+    '0x0782b6d8c4551B9760e74c0545a9bCD90bdc41E5',
+    18,
+    'HAY',
+    'Hay Stablecoin',
+    'https://helio.money/',
+  ),
 }
 
 export const bscTestnetTokens = {
