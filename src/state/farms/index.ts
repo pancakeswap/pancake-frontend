@@ -16,6 +16,7 @@ import type { AppState } from 'state'
 import { getPriceHelperLpFiles } from 'config/constants/priceHelperLps'
 import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
 import { getFarmConfig } from 'config/constants/farms/index'
+import { deserializeToken } from 'state/user/hooks/helpers'
 import fetchFarms from './fetchFarms'
 import getFarmsPrices from './getFarmsPrices'
 import {
@@ -78,11 +79,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
     const farmsCanFetch = farmsConfig.filter(
       (farmConfig) => pids.includes(farmConfig.pid) && poolLengthAsBigNumber.gt(farmConfig.pid),
     )
-    const priceHelperLpsConfig = getPriceHelperLpFiles(chainId).map((farm) => ({
-      ...farm,
-      token: { ...farm.token },
-      quoteToken: { ...farm.quoteToken },
-    }))
+    const priceHelperLpsConfig = getPriceHelperLpFiles(chainId)
 
     const farms = await fetchFarms(farmsCanFetch.concat(priceHelperLpsConfig), chainId)
     const farmsWithPrices = getFarmsPrices(farms, chainId)
