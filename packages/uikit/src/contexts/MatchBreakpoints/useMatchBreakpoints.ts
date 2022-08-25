@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { MatchBreakpointsContext } from "./Provider";
 
-const useMatchBreakpointsContext = () => {
+const useMatchBreakpoints = () => {
   const matchBreakpointContext = useContext(MatchBreakpointsContext);
 
   if (matchBreakpointContext === undefined) {
@@ -11,4 +11,4 @@ const useMatchBreakpointsContext = () => {
   return matchBreakpointContext;
 };
 
-export default useMatchBreakpointsContext;
+export default useMatchBreakpoints;

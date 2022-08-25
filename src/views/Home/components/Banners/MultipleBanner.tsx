@@ -1,4 +1,4 @@
-import { appearAnimation, useIsomorphicEffect, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { appearAnimation, useIsomorphicEffect, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useState } from 'react'
 import styled from 'styled-components'
@@ -91,7 +91,7 @@ const StyledSwiper = styled(Swiper)`
 const MultipleBanner: React.FC<React.PropsWithChildren> = () => {
   const bannerList = useMultipleBannerConfig()
   const { account } = useWeb3React()
-  const { isDesktop, isTablet } = useMatchBreakpointsContext()
+  const { isDesktop, isTablet } = useMatchBreakpoints()
   const [swiperRef, setSwiperRef] = useState<SwiperCore>(null)
 
   useIsomorphicEffect(() => {

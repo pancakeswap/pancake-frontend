@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, useModal, IconButton, AddIcon, MinusIcon, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Button, useModal, IconButton, AddIcon, MinusIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { FarmWithStakedValue } from 'views/Farms/components/types'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useERC20 } from 'hooks/useContract'
@@ -41,7 +41,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { account, chainId } = useActiveWeb3React()
-  const { isDesktop } = useMatchBreakpointsContext()
+  const { isDesktop } = useMatchBreakpoints()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { allowance, tokenBalance, stakedBalance } = useFarmUser(pid)

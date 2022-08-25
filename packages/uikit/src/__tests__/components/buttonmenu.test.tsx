@@ -1,12 +1,12 @@
 import React from "react";
-import { renderWithTheme } from "../../testHelpers";
+import { renderWithProvider } from "../../testHelpers";
 import ButtonMenu from "../../components/ButtonMenu/ButtonMenu";
 import ButtonMenuItem from "../../components/ButtonMenu/ButtonMenuItem";
 
 const handleClick = jest.fn();
 
 it("renders correctly", () => {
-  const { asFragment } = renderWithTheme(
+  const { asFragment } = renderWithProvider(
     <ButtonMenu activeIndex={0} onItemClick={handleClick}>
       <ButtonMenuItem>Item 1</ButtonMenuItem>
       <ButtonMenuItem>Item 2</ButtonMenuItem>

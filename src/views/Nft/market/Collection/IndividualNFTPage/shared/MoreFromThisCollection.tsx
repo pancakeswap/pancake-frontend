@@ -6,15 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 // eslint-disable-next-line import/no-unresolved
 import 'swiper/css/bundle'
 import SwiperCore from 'swiper'
-import {
-  ArrowBackIcon,
-  ArrowForwardIcon,
-  Box,
-  IconButton,
-  Text,
-  Flex,
-  useMatchBreakpointsContext,
-} from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, Box, IconButton, Text, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { isAddress } from 'utils'
 import useSWRImmutable from 'swr/immutable'
 import { getNftsFromCollectionApi, getMarketDataForTokenIds } from 'state/nftMarket/helpers'
@@ -56,7 +48,7 @@ const MoreFromThisCollection: React.FC<React.PropsWithChildren<MoreFromThisColle
 }) => {
   const [swiperRef, setSwiperRef] = useState<SwiperCore>(null)
   const [activeIndex, setActiveIndex] = useState(1)
-  const { isMobile, isMd, isLg } = useMatchBreakpointsContext()
+  const { isMobile, isMd, isLg } = useMatchBreakpoints()
   const allPancakeBunnyNfts = useAllPancakeBunnyNfts(collectionAddress)
 
   const isPBCollection = isAddress(collectionAddress) === pancakeBunniesAddress

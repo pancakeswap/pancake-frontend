@@ -1,9 +1,9 @@
 import React from "react";
-import { renderWithTheme } from "../../testHelpers";
+import { renderWithProvider } from "../../testHelpers";
 import { Spinner } from "../../components/Spinner";
 
 it("renders correctly", () => {
-  const { asFragment } = renderWithTheme(<Spinner />);
+  const { asFragment } = renderWithProvider(<Spinner />);
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c1 {
