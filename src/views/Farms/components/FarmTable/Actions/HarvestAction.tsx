@@ -12,7 +12,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { getBalanceAmount } from 'utils/formatBalance'
+import { formatNumber, getBalanceAmount } from 'utils/formatBalance'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback } from 'react'
 import { FarmWithStakedValue } from '../../types'
@@ -64,9 +64,8 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   let earnings = BIG_ZERO
   let earningsBusd = 0
   let displayBalance = userDataReady ? earnings.toFixed(5, BigNumber.ROUND_DOWN) : <Skeleton width={60} />
-  const toolTipBalance = earningsBigNumber.isGreaterThan(new BigNumber(0.00001)) ? displayBalance : `< 0.00001`
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    `${toolTipBalance} ${t(
+    `${formatNumber(proxyCakeBalance, 10, 10)} ${t(
       `CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.`,
     )}`,
     {
