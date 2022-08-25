@@ -70,6 +70,30 @@ export const livePools: SerializedPoolConfig[] = [
     isFinished: false,
   },
   {
+    sousId: 294,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.hay,
+    contractAddress: {
+      56: '0x8cBCf2f2be93D154be5135f465369Ee6dD84314B',
+      97: '',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '0.2604',
+    version: 3,
+  },
+  {
+    sousId: 293,
+    stakingToken: serializedTokens.cake,
+    earningToken: serializedTokens.ankr,
+    contractAddress: {
+      56: '0x985a20998c7c59e98005c556393215e39c9a4978',
+      97: '',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '6.0763',
+    version: 3,
+  },
+  {
     sousId: 292,
     stakingToken: serializedTokens.cake,
     earningToken: serializedTokens.sfund,

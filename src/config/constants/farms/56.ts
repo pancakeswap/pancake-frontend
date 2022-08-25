@@ -45,6 +45,20 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 115,
+    lpSymbol: 'HAY-BUSD LP',
+    lpAddress: '0x70c26e9805ec5Df3d4aB0b2a3dF86BBA2231B6c1',
+    token: serializedTokens.hay,
+    quoteToken: serializedTokens.busd,
+  },
+  {
+    pid: 95,
+    lpSymbol: 'aBNBc-BNB LP',
+    lpAddress: '0x272c2CF847A49215A3A1D4bFf8760E503A06f880',
+    token: serializedTokens.abnbc,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
     pid: 59,
     v1pid: 450,
     lpSymbol: 'SFUND-BNB LP',
@@ -238,13 +252,6 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0x55cdb14855220b239Cf857A03849D96736b9103f',
     token: serializedTokens.rpg,
     quoteToken: serializedTokens.busd,
-  },
-  {
-    pid: 95,
-    lpSymbol: 'aBNBc-BNB LP',
-    lpAddress: '0x272c2CF847A49215A3A1D4bFf8760E503A06f880',
-    token: serializedTokens.abnbc,
-    quoteToken: serializedTokens.wbnb,
   },
   {
     pid: 92,
