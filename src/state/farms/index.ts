@@ -78,7 +78,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
     const farmsCanFetch = farmsConfig.filter(
       (farmConfig) => pids.includes(farmConfig.pid) && poolLengthAsBigNumber.gt(farmConfig.pid),
     )
-    const priceHelperLpsConfig = getPriceHelperLpFiles(chainId)
+    const priceHelperLpsConfig = JSON.parse(JSON.stringify(getPriceHelperLpFiles(chainId)))
 
     const farms = await fetchFarms(farmsCanFetch.concat(priceHelperLpsConfig), chainId)
     const farmsWithPrices = getFarmsPrices(farms, chainId)
