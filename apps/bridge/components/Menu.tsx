@@ -73,7 +73,7 @@ export function Menu() {
   const { setTheme } = useNextTheme()
 
   return (
-    <Flex height="56px" bg="backgroundAlt" px="16px" alignItems="center" justifyContent="space-between" zIndex={1}>
+    <Flex height="56px" bg="backgroundAlt" px="16px" alignItems="center" justifyContent="space-between" zIndex={9}>
       <Flex>
         <Logo isDark={theme.isDark} href="https://pancakeswap.finance" />
 

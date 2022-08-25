@@ -542,14 +542,15 @@ export const getAllPancakeBunniesLowestPrice = async (bunnyIds: string[]): Promi
         }
       `,
     )
-    return Object.keys(rawResponse).reduce((lowestPricesData, subQueryKey) => {
-      const bunnyId = subQueryKey.split('b')[1]
-      return {
-        ...lowestPricesData,
-        [bunnyId]:
+    return fromPairs(
+      Object.keys(rawResponse).map((subQueryKey) => {
+        const bunnyId = subQueryKey.split('b')[1]
+        return [
+          bunnyId,
           rawResponse[subQueryKey].length > 0 ? parseFloat(rawResponse[subQueryKey][0].currentAskPrice) : Infinity,
-      }
-    }, {})
+        ]
+      }),
+    )
   } catch (error) {
     console.error('Failed to fetch PancakeBunnies lowest prices', error)
     return {}
@@ -574,13 +575,15 @@ export const getAllPancakeBunniesRecentUpdatedAt = async (bunnyIds: string[]): P
         }
       `,
     )
-    return Object.keys(rawResponse).reduce((updatedAtData, subQueryKey) => {
-      const bunnyId = subQueryKey.split('b')[1]
-      return {
-        ...updatedAtData,
-        [bunnyId]: rawResponse[subQueryKey].length > 0 ? Number(rawResponse[subQueryKey][0].updatedAt) : -Infinity,
-      }
-    }, {})
+    return fromPairs(
+      Object.keys(rawResponse).map((subQueryKey) => {
+        const bunnyId = subQueryKey.split('b')[1]
+        return [
+          bunnyId,
+          rawResponse[subQueryKey].length > 0 ? Number(rawResponse[subQueryKey][0].updatedAt) : -Infinity,
+        ]
+      }),
+    )
   } catch (error) {
     console.error('Failed to fetch PancakeBunnies latest market updates', error)
     return {}
@@ -965,29 +968,27 @@ export const combineCollectionData = (
   collectionApiData: ApiCollection[],
   collectionSgData: CollectionMarketDataBaseFields[],
 ): Record<string, Collection> => {
-  const collectionsMarketObj: Record<string, CollectionMarketDataBaseFields> = collectionSgData.reduce(
-    (prev, current) => ({ ...prev, [current.id]: { ...current } }),
-    {},
+  const collectionsMarketObj: Record<string, CollectionMarketDataBaseFields> = fromPairs(
+    collectionSgData.map((current) => [current.id, current]),
   )
 
-  return collectionApiData
-    .filter((collection) => collection?.address)
-    .reduce((accum, current) => {
-      const collectionMarket = collectionsMarketObj[current.address.toLowerCase()]
-      const collection: Collection = {
-        ...current,
-        ...collectionMarket,
-      }
+  return fromPairs(
+    collectionApiData
+      .filter((collection) => collection?.address)
+      .map((current) => {
+        const collectionMarket = collectionsMarketObj[current.address.toLowerCase()]
+        const collection: Collection = {
+          ...current,
+          ...collectionMarket,
+        }
 
-      if (current.name) {
-        collection.name = current.name
-      }
+        if (current.name) {
+          collection.name = current.name
+        }
 
-      return {
-        ...accum,
-        [current.address]: collection,
-      }
-    }, {})
+        return [current.address, collection]
+      }),
+  )
 }
 
 /**
