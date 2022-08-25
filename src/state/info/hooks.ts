@@ -4,7 +4,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState, useAppDispatch } from 'state'
-import fetchPoolChartData from 'state/info/queries/pools/chartData'
+import fetchPoolChartData, { fetchPoolChartDataETH } from 'state/info/queries/pools/chartData'
 import fetchPoolTransactions, { fetchPoolTransactionsETH } from 'state/info/queries/pools/transactions'
 import fetchTokenChartData from 'state/info/queries/tokens/chartData'
 import fetchPoolsForToken from 'state/info/queries/tokens/poolsForToken'
@@ -112,10 +112,13 @@ export const usePoolChartData = (address: string): ChartEntry[] | undefined => {
   const pool = useSelector((state: AppState) => state.info.pools.byAddress[address])
   const chartData = pool?.chartData
   const [error, setError] = useState(false)
+  const chainName = useGetChainName()
 
   useEffect(() => {
     const fetch = async () => {
-      const { error: fetchError, data } = await fetchPoolChartData(address)
+      const { error: fetchError, data } = await (chainName === 'ETH'
+        ? fetchPoolChartDataETH(address)
+        : fetchPoolChartData(address))
       if (!fetchError && data) {
         dispatch(updatePoolChartData({ poolAddress: address, chartData: data }))
       }
