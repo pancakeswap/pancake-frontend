@@ -64,7 +64,11 @@ const fetchCollectionsTotalSupply = async (collections: ApiCollection[]): Promis
       name: 'totalSupply',
     }))
   if (totalSupplyCalls.length > 0) {
-    const totalSupplyRaw = await multicallv2(erc721Abi, totalSupplyCalls, { requireSuccess: false })
+    const totalSupplyRaw = await multicallv2({
+      abi: erc721Abi,
+      calls: totalSupplyCalls,
+      options: { requireSuccess: false },
+    })
     const totalSupply = totalSupplyRaw.flat()
     return totalSupply.map((totalCount) => (totalCount ? totalCount.toNumber() : 0))
   }
@@ -462,7 +466,11 @@ export const getAccountNftsOnChainMarketData = async (
       }
     })
 
-    const askCallsResultsRaw = await multicallv2(nftMarketAbi, askCalls, { requireSuccess: false })
+    const askCallsResultsRaw = await multicallv2({
+      abi: nftMarketAbi,
+      calls: askCalls,
+      options: { requireSuccess: false },
+    })
     const askCallsResults = askCallsResultsRaw
       .map((askCallsResultRaw, askCallIndex) => {
         if (!askCallsResultRaw?.tokenIds || !askCallsResultRaw?.askInfo || !collectionList[askCallIndex]?.address)
@@ -927,7 +935,11 @@ export const fetchWalletTokenIdsForCollections = async (
     }
   })
 
-  const balanceOfCallsResultRaw = await multicallv2(erc721Abi, balanceOfCalls, { requireSuccess: false })
+  const balanceOfCallsResultRaw = await multicallv2({
+    abi: erc721Abi,
+    calls: balanceOfCalls,
+    options: { requireSuccess: false },
+  })
   const balanceOfCallsResult = balanceOfCallsResultRaw.flat()
 
   const tokenIdCalls = Object.values(collections)
@@ -945,7 +957,11 @@ export const fetchWalletTokenIdsForCollections = async (
     })
     .flat()
 
-  const tokenIdResultRaw = await multicallv2(erc721Abi, tokenIdCalls, { requireSuccess: false })
+  const tokenIdResultRaw = await multicallv2({
+    abi: erc721Abi,
+    calls: tokenIdCalls,
+    options: { requireSuccess: false },
+  })
   const tokenIdResult = tokenIdResultRaw.flat()
 
   const nftLocation = NftLocation.WALLET

@@ -51,13 +51,13 @@ export const useGetCollectionDistributionPB = () => {
         params: [tokenId],
       }))
       try {
-        const response = await multicallv2(pancakeBunniesAbi, bunnyCountCalls)
-        const tokenListResponse: Record<string, ApiSingleTokenData & { tokenCount: number }> = fromPairs(
-          response.map((tokenCount, index) => [
-            tokenIds[index],
-            { ...apiResponse.data[index], tokenCount: tokenCount[0].toNumber() },
-          ]),
-        )
+        const response = await multicallv2({ abi: pancakeBunniesAbi, calls: bunnyCountCalls })
+        const tokenListResponse = response.reduce((obj, tokenCount, index) => {
+          return {
+            ...obj,
+            [tokenIds[index]]: { ...apiResponse.data[index], tokenCount: tokenCount[0].toNumber() },
+          }
+        }, {})
         setState({
           isFetching: false,
           data: tokenListResponse,

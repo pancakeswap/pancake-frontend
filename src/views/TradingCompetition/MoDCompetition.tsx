@@ -87,9 +87,9 @@ const MoDCompetition = () => {
 
     const fetchUserContract = async () => {
       try {
-        const [user, [userClaimed]] = await multicallv2(
-          tradingCompetitionMoDAbi,
-          [
+        const [user, [userClaimed]] = await multicallv2({
+          abi: tradingCompetitionMoDAbi,
+          calls: [
             {
               address: tradingCompetitionContract.address,
               name: 'claimInformation',
@@ -101,8 +101,8 @@ const MoDCompetition = () => {
               params: [account],
             },
           ],
-          { requireSuccess: false },
-        )
+          options: { requireSuccess: false },
+        })
         const userObject: UserTradingInformation = {
           isLoading: false,
           account,

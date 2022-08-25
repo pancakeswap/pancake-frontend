@@ -2438,3 +2438,19 @@ export const bscTestnetTokens = {
     'https://www.bakeryswap.org/',
   ),
 }
+
+export const ethereumTokens = {}
+
+export const goerliTestnetTokens = {
+  weth: new Token(
+    ChainId.GOERLI,
+    '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    18,
+    'WETH',
+    'Wrapped Ether',
+    'https://weth.io',
+  ),
+  celr: new Token(ChainId.GOERLI, '0x5D3c0F4cA5EE99f8E8F59Ff9A5fAb04F6a7e007f', 18, 'CELR', 'CelerToken', ''),
+  leet: new Token(ChainId.GOERLI, '0xBd509651E6374c327d24b9d7E3Ea46704f6F31E8', 18, 'LEET', 'Leet Token', ''),
+  usdc: USDC_GOERLI,
+}

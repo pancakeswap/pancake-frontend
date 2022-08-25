@@ -1,7 +1,7 @@
 import { ChainId, Pair, Token } from '@pancakeswap/sdk'
 import { differenceInDays } from 'date-fns'
 import flatMap from 'lodash/flatMap'
-import farms from 'config/constants/farms'
+import { getFarmConfig } from 'config/constants/farms/index'
 import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
@@ -472,14 +472,13 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])
 
+  const farms = getFarmConfig(chainId)
   const farmPairs: [Token, Token][] = useMemo(
     () =>
-      chainId === ChainId.BSC
-        ? farms
-            .filter((farm) => farm.pid !== 0)
-            .map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)])
-        : [],
-    [chainId],
+      farms
+        .filter((farm) => farm.pid !== 0)
+        .map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)]),
+    [farms],
   )
 
   // pairs for every token against every base

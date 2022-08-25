@@ -1,27 +1,47 @@
 import masterchefABI from 'config/abi/masterchef.json'
 import chunk from 'lodash/chunk'
+import BigNumber from 'bignumber.js'
 import { multicallv2 } from 'utils/multicall'
+import { getBscChainId } from 'state/farms/getBscChainId'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { SerializedFarmConfig } from '../../config/constants/types'
 import { SerializedFarm } from '../types'
 import { getMasterChefAddress } from '../../utils/addressHelpers'
-import { getMasterchefContract } from '../../utils/contractHelpers'
 
-const masterChefAddress = getMasterChefAddress()
-const masterChefContract = getMasterchefContract()
+export const fetchMasterChefFarmPoolLength = async (chainId: number) => {
+  try {
+    const [poolLength] = await multicallv2({
+      abi: masterchefABI,
+      calls: [
+        {
+          name: 'poolLength',
+          address: getMasterChefAddress(chainId),
+        },
+      ],
+      chainId,
+    })
 
-export const fetchMasterChefFarmPoolLength = async () => {
-  const poolLength = await masterChefContract.poolLength()
-  return poolLength
+    return new BigNumber(poolLength).toNumber()
+  } catch (error) {
+    console.error('Fetch MasterChef Farm Pool Length Error: ', error)
+    return BIG_ZERO.toNumber()
+  }
 }
 
-const masterChefFarmCalls = (farm: SerializedFarm) => {
-  const { pid } = farm
-  return pid || pid === 0
+const masterChefFarmCalls = async (farm: SerializedFarm) => {
+  const { pid, bscPid, quoteToken } = farm
+  const isBscNetwork = verifyBscNetwork(quoteToken.chainId)
+  const multiCallChainId = isBscNetwork ? quoteToken.chainId : await getBscChainId(quoteToken.chainId)
+  const masterChefAddress = getMasterChefAddress(multiCallChainId)
+  const masterChefPid = isBscNetwork ? pid : bscPid
+
+  return masterChefPid || masterChefPid === 0
     ? [
         {
           address: masterChefAddress,
           name: 'poolInfo',
-          params: [pid],
+          params: [masterChefPid],
         },
         {
           address: masterChefAddress,
@@ -31,14 +51,22 @@ const masterChefFarmCalls = (farm: SerializedFarm) => {
     : [null, null]
 }
 
-export const fetchMasterChefData = async (farms: SerializedFarmConfig[]): Promise<any[]> => {
-  const masterChefCalls = farms.map((farm) => masterChefFarmCalls(farm))
+export const fetchMasterChefData = async (farms: SerializedFarmConfig[], chainId: number): Promise<any[]> => {
+  const masterChefCalls = await Promise.all(farms.map((farm) => masterChefFarmCalls(farm)))
   const chunkSize = masterChefCalls.flat().length / farms.length
   const masterChefAggregatedCalls = masterChefCalls
     .filter((masterChefCall) => masterChefCall[0] !== null && masterChefCall[1] !== null)
     .flat()
-  const masterChefMultiCallResult = await multicallv2(masterchefABI, masterChefAggregatedCalls)
+
+  const isBscNetwork = verifyBscNetwork(chainId)
+  const multiCallChainId = isBscNetwork ? chainId : await getBscChainId(chainId)
+  const masterChefMultiCallResult = await multicallv2({
+    abi: masterchefABI,
+    calls: masterChefAggregatedCalls,
+    chainId: multiCallChainId,
+  })
   const masterChefChunkedResultRaw = chunk(masterChefMultiCallResult, chunkSize)
+
   let masterChefChunkedResultCounter = 0
   return masterChefCalls.map((masterChefCall) => {
     if (masterChefCall[0] === null && masterChefCall[1] === null) {

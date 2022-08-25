@@ -9,7 +9,7 @@ const fetchIfoPoolUser = async (account: string, ifoPoolAddress: string) => {
       name: method,
       params: [account],
     }))
-    const [userContractResponse, creditResponse] = await multicallv2(ifoPoolAbi, calls)
+    const [userContractResponse, creditResponse] = await multicallv2({ abi: ifoPoolAbi, calls })
 
     return {
       isLoading: false,

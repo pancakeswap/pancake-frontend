@@ -12,9 +12,9 @@ const fetchFarmsWithAuctions = async (
 ): Promise<{ winnerFarms: string[]; auctionHostingEndDate: string }> => {
   const farmAuctionContract = getFarmAuctionContract()
   const currentAuctionId = await farmAuctionContract.currentAuctionId()
-  const [auctionData, [auctionBidders]] = await multicallv2(
-    farmAuctionAbi,
-    [
+  const [auctionData, [auctionBidders]] = await multicallv2({
+    abi: farmAuctionAbi,
+    calls: [
       {
         address: farmAuctionContract.address,
         name: 'auctions',
@@ -26,8 +26,8 @@ const fetchFarmsWithAuctions = async (
         params: [currentAuctionId, 0, 500],
       },
     ],
-    { requireSuccess: false },
-  )
+    options: { requireSuccess: false },
+  })
   const blocksSinceEnd = currentBlock - auctionData.endBlock.toNumber()
   if (blocksSinceEnd > 0) {
     const secondsSinceEnd = blocksSinceEnd * BSC_BLOCK_TIME

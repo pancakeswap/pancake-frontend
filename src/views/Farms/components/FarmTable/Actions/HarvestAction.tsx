@@ -7,14 +7,13 @@ import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useAppDispatch } from 'state'
-import { getAddress } from 'utils/addressHelpers'
 import { useERC20 } from 'hooks/useContract'
 import { TransactionResponse } from '@ethersproject/providers'
 
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback } from 'react'
 import { FarmWithStakedValue } from '../../types'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
@@ -29,7 +28,7 @@ interface HarvestActionProps extends FarmWithStakedValue {
 }
 
 export const ProxyHarvestActionContainer = ({ children, ...props }) => {
-  const lpAddress = getAddress(props.lpAddresses)
+  const { lpAddress } = props
   const lpContract = useERC20(lpAddress)
 
   const { onReward, onDone, proxyCakeBalance } = useProxyStakedActions(props.pid, lpContract)
@@ -39,12 +38,12 @@ export const ProxyHarvestActionContainer = ({ children, ...props }) => {
 
 export const HarvestActionContainer = ({ children, ...props }) => {
   const { onReward } = useHarvestFarm(props.pid)
-  const { account } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
 
   const onDone = useCallback(
-    () => dispatch(fetchFarmUserDataAsync({ account, pids: [props.pid] })),
-    [account, dispatch, props.pid],
+    () => dispatch(fetchFarmUserDataAsync({ account, pids: [props.pid], chainId })),
+    [account, dispatch, chainId, props.pid],
   )
 
   return children({ ...props, onDone, onReward })

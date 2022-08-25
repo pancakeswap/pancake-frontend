@@ -66,9 +66,9 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const fetchIfoData = useCallback(
     async (currentBlock: number) => {
       const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints, thresholdPoints] =
-        await multicallv2(
-          ifoV2Abi,
-          [
+        await multicallv2({
+          abi: ifoV2Abi,
+          calls: [
             {
               address,
               name: 'startBlock',
@@ -101,7 +101,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
               name: 'thresholdPoints',
             },
           ].filter(Boolean),
-        )
+        })
 
       const poolBasicFormatted = formatPool(poolBasic)
       const poolUnlimitedFormatted = formatPool(poolUnlimited)

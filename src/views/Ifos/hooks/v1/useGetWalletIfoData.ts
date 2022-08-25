@@ -66,7 +66,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       params: [account],
     }))
 
-    const [offeringAmount, userInfoResponse, refundingAmount] = await multicallv2(ifoV1Abi, ifoCalls)
+    const [offeringAmount, userInfoResponse, refundingAmount] = await multicallv2({ abi: ifoV1Abi, calls: ifoCalls })
     const parsedUserInfo: UserInfo = userInfoResponse
       ? {
           amount: new BigNumber(userInfoResponse.amount.toString()),

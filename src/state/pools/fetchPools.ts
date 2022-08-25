@@ -87,7 +87,11 @@ export const fetchPoolsStakingLimits = async (
     })
     .flat()
 
-  const poolStakingResultRaw = await multicallv2(sousChefV2, poolStakingCalls, { requireSuccess: false })
+  const poolStakingResultRaw = await multicallv2({
+    abi: sousChefV2,
+    calls: poolStakingCalls,
+    options: { requireSuccess: false },
+  })
   const chunkSize = poolStakingCalls.length / validPools.length
   const poolStakingChunkedResultRaw = chunk(poolStakingResultRaw.flat(), chunkSize)
   return fromPairs(
@@ -118,7 +122,11 @@ export const fetchPoolsProfileRequirement = async (): Promise<{
     })
     .flat()
 
-  const poolProfileRequireResultRaw = await multicallv2(sousChefV3, poolProfileRequireCalls, { requireSuccess: false })
+  const poolProfileRequireResultRaw = await multicallv2({
+    abi: sousChefV3,
+    calls: poolProfileRequireCalls,
+    options: { requireSuccess: false },
+  })
   const chunkSize = poolProfileRequireCalls.length / poolsWithV3.length
   const poolStakingChunkedResultRaw = chunk(poolProfileRequireResultRaw.flat(), chunkSize)
   return fromPairs(

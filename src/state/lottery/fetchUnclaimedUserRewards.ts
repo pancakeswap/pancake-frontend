@@ -31,7 +31,7 @@ const fetchCakeRewardsForTickets = async (
   })
 
   try {
-    const cakeRewards = await multicallv2<any>(lotteryV2Abi, calls)
+    const cakeRewards = await multicallv2({ abi: lotteryV2Abi, calls })
 
     const cakeTotal = cakeRewards.reduce((accum: BigNumber, cakeReward: EthersBigNumber[]) => {
       return accum.plus(new BigNumber(cakeReward[0].toString()))
