@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, Button, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Text, Button, useMatchBreakpoints } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ProgressStepsType } from './ProgressSteps'
 
@@ -67,7 +67,7 @@ interface MigrationStickyProps {
 const MigrationSticky: React.FC<React.PropsWithChildren<MigrationStickyProps>> = ({ step, handleClick }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { isMobile } = useMatchBreakpointsContext()
+  const { isMobile } = useMatchBreakpoints()
 
   const isStep1: boolean = step === ProgressStepsType.STEP1
   const title: string = isStep1 ? t('Unstaking LP Tokens and CAKE') : t('Stake in the new contract.')

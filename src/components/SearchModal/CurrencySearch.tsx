@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import { Currency, Token } from '@pancakeswap/sdk'
-import { Box, Input, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Box, Input, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { KeyboardEvent, RefObject, useCallback, useMemo, useRef, useState, useEffect } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -107,7 +107,7 @@ function CurrencySearch({
   const searchToken = useToken(debouncedQuery)
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
 
-  const { isMobile } = useMatchBreakpointsContext()
+  const { isMobile } = useMatchBreakpoints()
   const [audioPlay] = useAudioModeManager()
 
   const native = useNativeCurrency()

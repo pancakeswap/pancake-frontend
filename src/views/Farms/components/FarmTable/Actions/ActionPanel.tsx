@@ -1,7 +1,7 @@
 import styled, { keyframes, css } from 'styled-components'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
-import { LinkExternal, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { LinkExternal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { getBlockExploreLink } from 'utils'
 import { useContext } from 'react'
@@ -120,7 +120,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
 
   const farm = details
 
-  const { isDesktop } = useMatchBreakpointsContext()
+  const { isDesktop } = useMatchBreakpoints()
 
   const {
     t,

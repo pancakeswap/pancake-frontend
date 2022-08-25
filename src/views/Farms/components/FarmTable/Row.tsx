@@ -1,6 +1,6 @@
 import { useEffect, useState, createElement, useRef } from 'react'
 import styled from 'styled-components'
-import { Box, Flex, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useFarmUser } from 'state/farms/hooks'
@@ -97,7 +97,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
     }
   }, [initialActivity])
 
-  const { isDesktop, isMobile } = useMatchBreakpointsContext()
+  const { isDesktop, isMobile } = useMatchBreakpoints()
 
   const isSmallerScreen = !isDesktop
   const tableSchema = isSmallerScreen ? MobileColumnSchema : DesktopColumnSchema

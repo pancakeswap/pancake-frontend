@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { CHAIN_IDS } from 'utils/wagmi'
+import { SUPPORT_FARMS } from 'config/constants/supportChains'
 import { FarmsPageLayout, FarmsContext } from 'views/Farms'
 import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
 import { getDisplayApr } from 'views/Farms/components/getDisplayApr'
@@ -55,6 +55,7 @@ const FarmsPage = () => {
 }
 
 FarmsPage.Layout = FarmsPageLayout
-FarmsPage.chains = CHAIN_IDS
+
+FarmsPage.chains = SUPPORT_FARMS
 
 export default FarmsPage

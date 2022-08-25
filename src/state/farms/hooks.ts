@@ -34,11 +34,11 @@ export const usePollFarmsWithUserData = () => {
   const dispatch = useAppDispatch()
   const { account, chainId } = useActiveWeb3React()
   const { proxyAddress } = useBCakeProxyContractAddress(account)
-  const farmsConfig = getFarmConfig(chainId)
 
   useSWRImmutable(
     chainId ? ['publicFarmData', chainId] : null,
-    () => {
+    async () => {
+      const farmsConfig = await getFarmConfig(chainId)
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
       dispatch(fetchFarmsPublicDataAsync({ pids, chainId }))
     },
@@ -53,7 +53,8 @@ export const usePollFarmsWithUserData = () => {
 
   useSWRImmutable(
     account ? name : null,
-    () => {
+    async () => {
+      const farmsConfig = await getFarmConfig(chainId)
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
       const params = proxyAddress ? { account, pids, proxyAddress, chainId } : { account, pids, chainId }
 
@@ -72,7 +73,7 @@ export const usePollFarmsWithUserData = () => {
  */
 const coreFarmPIDs = {
   56: [2, 3],
-  97: [1, 2],
+  97: [4, 10],
   5: [1, 2],
 }
 

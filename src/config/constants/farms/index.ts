@@ -1,20 +1,11 @@
 import { ChainId } from '@pancakeswap/sdk'
-import BscFarmConfig from './56'
-import BscTestnetFarmConfig from './97'
-import EthereumFarmConfig from './1'
-import GoerliFarmConfig from './5'
+import { SerializedFarmConfig } from '../types'
 
-export const getFarmConfig = (chainId: ChainId) => {
-  switch (chainId) {
-    case ChainId.BSC:
-      return BscFarmConfig
-    case ChainId.BSC_TESTNET:
-      return BscTestnetFarmConfig
-    case ChainId.ETHEREUM:
-      return EthereumFarmConfig
-    case ChainId.GOERLI:
-      return GoerliFarmConfig
-    default:
-      return []
+export const getFarmConfig = async (chainId: ChainId) => {
+  try {
+    return (await import(`/${chainId}.ts`)).default as SerializedFarmConfig[]
+  } catch (error) {
+    console.error('Cannot get farm config', error, chainId)
+    return []
   }
 }

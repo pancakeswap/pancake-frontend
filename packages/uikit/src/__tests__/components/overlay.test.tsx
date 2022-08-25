@@ -1,9 +1,9 @@
 import React from "react";
-import { renderWithTheme } from "../../testHelpers";
+import { renderWithProvider } from "../../testHelpers";
 import { Overlay } from "../../components/Overlay";
 
 it("renders correctly", () => {
-  const { asFragment } = renderWithTheme(<Overlay />);
+  const { asFragment } = renderWithProvider(<Overlay />);
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {

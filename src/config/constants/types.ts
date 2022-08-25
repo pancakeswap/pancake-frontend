@@ -74,6 +74,7 @@ export enum PoolCategory {
 }
 
 interface FarmConfigBaseProps {
+  isStable?: boolean
   pid: number
   v1pid?: number
   bscPid?: number

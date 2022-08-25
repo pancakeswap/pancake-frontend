@@ -1,11 +1,4 @@
-import {
-  ArrowForwardIcon,
-  Button,
-  Text,
-  Link,
-  useMatchBreakpointsContext,
-  useIsomorphicEffect,
-} from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Button, Text, Link, useMatchBreakpoints, useIsomorphicEffect } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
 import { memo, useMemo, useRef } from 'react'
@@ -46,7 +39,7 @@ const PerpetualBanner = () => {
     t,
     currentLanguage: { code },
   } = useTranslation()
-  const { isDesktop, isMobile } = useMatchBreakpointsContext()
+  const { isDesktop, isMobile } = useMatchBreakpoints()
   const { isDark } = useTheme()
 
   const perpetualUrl = useMemo(

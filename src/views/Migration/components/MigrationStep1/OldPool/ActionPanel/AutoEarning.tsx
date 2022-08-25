@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Heading, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Text, Flex, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import Balance from 'components/Balance'
 import { ActionContainer, ActionTitles, ActionContent } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
@@ -22,7 +22,7 @@ const AutoEarning: React.FunctionComponent<React.PropsWithChildren<AutoEarningPr
   earningTokenPrice,
 }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpointsContext()
+  const { isMobile } = useMatchBreakpoints()
 
   const actionTitle = (
     <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">

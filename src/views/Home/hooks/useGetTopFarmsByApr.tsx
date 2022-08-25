@@ -18,10 +18,10 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
   const [topFarms, setTopFarms] = useState<FarmWithStakedValue[]>([null, null, null, null, null])
   const cakePriceBusd = usePriceCakeBusd()
   const { chainId } = useActiveWeb3React()
-  const farmsConfig = getFarmConfig(chainId)
 
   useEffect(() => {
     const fetchFarmData = async () => {
+      const farmsConfig = await getFarmConfig(chainId)
       setFetchStatus(FetchStatus.Fetching)
       const activeFarms = farmsConfig.filter((farm) => farm.pid !== 0)
       try {
@@ -36,7 +36,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
     if (isIntersecting && fetchStatus === FetchStatus.Idle) {
       fetchFarmData()
     }
-  }, [dispatch, setFetchStatus, fetchStatus, topFarms, isIntersecting, farmsConfig, chainId])
+  }, [dispatch, setFetchStatus, fetchStatus, topFarms, isIntersecting, chainId])
 
   useEffect(() => {
     const getTopFarmsByApr = (farmsState: DeserializedFarm[]) => {
