@@ -37,6 +37,9 @@
       "last 1 safari version"
     ]
   },
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "dependencies": {
     "@ethersproject/abi": "^5.0.0",
     "@ethersproject/address": "^5.0.0",
@@ -70,6 +73,7 @@
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
     "next": "^12.2.5",
+    "next-axiom": "^0.13.0",
     "next-themes": "^0.2.0",
     "numeral": "^2.0.6",
     "react": "^18.2.0",
