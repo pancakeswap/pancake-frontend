@@ -9,7 +9,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { getBalanceAmount, formatNumber } from 'utils/formatBalance'
+import { getBalanceAmount } from 'utils/formatBalance'
 import { TransactionResponse } from '@ethersproject/providers'
 
 interface FarmCardActionsProps {
