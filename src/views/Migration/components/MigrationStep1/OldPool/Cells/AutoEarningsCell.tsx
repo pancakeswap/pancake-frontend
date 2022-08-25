@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Text, Flex, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { useTranslation } from '@pancakeswap/localization'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
@@ -23,7 +23,7 @@ const AutoEarningsCell: React.FC<React.PropsWithChildren<AutoEarningsCellProps>>
   earningTokenBalance,
 }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpointsContext()
+  const { isMobile } = useMatchBreakpoints()
   const labelText = t('Recent CAKE profit')
 
   return (

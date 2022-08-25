@@ -18,6 +18,7 @@ import {
 import useSWRInfinite from 'swr/infinite'
 import isEmpty from 'lodash/isEmpty'
 import uniqBy from 'lodash/uniqBy'
+import fromPairs from 'lodash/fromPairs'
 import { REQUEST_SIZE } from '../Collection/config'
 
 interface ItemListingSettings {
@@ -29,13 +30,7 @@ interface ItemListingSettings {
 
 const fetchTokenIdsFromFilter = async (address: string, settings: ItemListingSettings) => {
   const filterObject: Record<string, NftAttribute> = settings.nftFilters
-  const attrParams = Object.values(filterObject).reduce(
-    (accum, attr) => ({
-      ...accum,
-      [attr.traitType]: attr.value,
-    }),
-    {},
-  )
+  const attrParams = fromPairs(Object.values(filterObject).map((attr) => [attr.traitType, attr.value]))
   const attrFilters = !isEmpty(attrParams) ? await fetchNftsFiltered(address, attrParams) : null
   return attrFilters ? Object.values(attrFilters.data).map((apiToken) => apiToken.tokenId) : null
 }

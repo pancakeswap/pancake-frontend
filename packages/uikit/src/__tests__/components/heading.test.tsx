@@ -1,9 +1,9 @@
 import React from "react";
-import { renderWithTheme } from "../../testHelpers";
+import { renderWithProvider } from "../../testHelpers";
 import Heading from "../../components/Heading/Heading";
 
 it("renders correctly", () => {
-  const { asFragment } = renderWithTheme(<Heading>Title</Heading>);
+  const { asFragment } = renderWithProvider(<Heading>Title</Heading>);
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {

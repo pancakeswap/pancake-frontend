@@ -16,8 +16,12 @@ export const fetchPublicVaultData = async (cakeVaultAddress = cakeVaultV2) => {
     }))
 
     const [[[sharePrice], [shares], totalLockedAmount], totalCakeInVault] = await Promise.all([
-      multicallv2(cakeVaultAbi, calls, {
-        requireSuccess: false,
+      multicallv2({
+        abi: cakeVaultAbi,
+        calls,
+        options: {
+          requireSuccess: false,
+        },
       }),
       cakeContract.balanceOf(cakeVaultV2),
     ])
@@ -49,8 +53,10 @@ export const fetchPublicFlexibleSideVaultData = async (cakeVaultAddress = cakeFl
     }))
 
     const [[[sharePrice], [shares]], totalCakeInVault] = await Promise.all([
-      multicallv2(cakeVaultAbi, calls, {
-        requireSuccess: false,
+      multicallv2({
+        abi: cakeVaultAbi,
+        calls,
+        options: { requireSuccess: false },
       }),
       cakeContract.balanceOf(cakeVaultAddress),
     ])
@@ -78,7 +84,7 @@ export const fetchVaultFees = async (cakeVaultAddress = cakeVaultV2) => {
       name: method,
     }))
 
-    const [[performanceFee], [withdrawalFee], [withdrawalFeePeriod]] = await multicallv2(cakeVaultAbi, calls)
+    const [[performanceFee], [withdrawalFee], [withdrawalFeePeriod]] = await multicallv2({ abi: cakeVaultAbi, calls })
 
     return {
       performanceFee: performanceFee.toNumber(),

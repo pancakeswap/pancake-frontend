@@ -1,14 +1,13 @@
 import styled from 'styled-components'
 import { Box, Button, Flex, IconButton, CloseIcon } from '@pancakeswap/uikit'
-import { useAppDispatch } from 'state'
-import { addActivityTypeFilters, removeActivityTypeFilters } from 'state/nftMarket/reducer'
-import { useGetNftActivityFilters } from 'state/nftMarket/hooks'
 import { ContextApi, useTranslation } from '@pancakeswap/localization'
 import { MarketEvent } from '../../../../state/nftMarket/types'
+import { useNftStorage } from '../../../../state/nftMarket/storage'
 
 interface ActivityFilterProps {
   eventType: MarketEvent
   collectionAddress: string
+  nftActivityFilters: { typeFilters: MarketEvent[]; collectionFilters: string[] }
 }
 
 const TriggerButton = styled(Button)<{ hasItem: boolean }>`
@@ -45,21 +44,21 @@ const eventName = (t: ContextApi['t'], eventType: string) => {
 export const ActivityFilter: React.FC<React.PropsWithChildren<ActivityFilterProps>> = ({
   eventType,
   collectionAddress,
+  nftActivityFilters,
 }) => {
-  const nftActivityFilters = useGetNftActivityFilters(collectionAddress)
-  const dispatch = useAppDispatch()
   const { t } = useTranslation()
+  const { addActivityTypeFilters, removeActivityTypeFilters } = useNftStorage()
 
   const isEventSelected = nftActivityFilters.typeFilters.some((nftActivityFilter) => nftActivityFilter === eventType)
 
   const handleMenuClick = () => {
     if (!isEventSelected) {
-      dispatch(addActivityTypeFilters({ collection: collectionAddress, field: eventType }))
+      addActivityTypeFilters({ collection: collectionAddress, field: eventType })
     }
   }
 
   const handleClearItem = () => {
-    dispatch(removeActivityTypeFilters({ collection: collectionAddress, field: eventType }))
+    removeActivityTypeFilters({ collection: collectionAddress, field: eventType })
   }
 
   return (

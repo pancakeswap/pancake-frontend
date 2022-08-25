@@ -8,5 +8,9 @@ declare global {
       isBlocto?: true
       isMathWallet?: true
     }
+    BinanceChain?: {
+      bnbSign?: (address: string, message: string) => Promise<{ publicKey: string; signature: string }>
+      switchNetwork?: (networkId: string) => Promise<string>
+    } & Ethereum
   }
 }

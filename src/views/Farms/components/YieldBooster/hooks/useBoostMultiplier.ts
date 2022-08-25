@@ -27,7 +27,7 @@ async function getPublicMultiplier({ farmBoosterContract }): Promise<number> {
     },
   ]
 
-  const data = await multicallv2(farmBoosterAbi, calls)
+  const data = await multicallv2({ abi: farmBoosterAbi, calls })
 
   if (!data) return 0
 
@@ -56,7 +56,7 @@ async function getUserMultiplier({ farmBoosterContract, account, pid }): Promise
     },
   ]
 
-  const data = await multicallv2(farmBoosterAbi, calls)
+  const data = await multicallv2({ abi: farmBoosterAbi, calls })
 
   if (!data) return 0
 
@@ -80,7 +80,7 @@ async function getMultiplierFromMC({ pid, proxyAddress, masterChefContract }): P
     },
   ]
 
-  const data = await multicallv2(masterChefAbi, calls)
+  const data = await multicallv2({ abi: masterChefAbi, calls })
 
   if (!data?.length) return 0
 

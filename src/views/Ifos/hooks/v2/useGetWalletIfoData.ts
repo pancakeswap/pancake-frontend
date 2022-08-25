@@ -68,7 +68,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       params: [account, [0, 1]],
     }))
 
-    const [userInfo, amounts] = await multicallv2(ifoV2Abi, ifoCalls)
+    const [userInfo, amounts] = await multicallv2({ abi: ifoV2Abi, calls: ifoCalls })
 
     setState((prevState) => ({
       ...prevState,

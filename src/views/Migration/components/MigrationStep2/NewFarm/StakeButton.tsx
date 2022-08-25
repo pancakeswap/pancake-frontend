@@ -1,15 +1,14 @@
 import React, { useCallback } from 'react'
 import styled from 'styled-components'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, useModal, IconButton, AddIcon, MinusIcon, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Button, useModal, IconButton, AddIcon, MinusIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { FarmWithStakedValue } from 'views/Farms/components/types'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useERC20 } from 'hooks/useContract'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { getAddress } from 'utils/addressHelpers'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { useFarmUser, useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import useApproveFarm from 'views/Farms/hooks/useApproveFarm'
@@ -35,14 +34,14 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
   multiplier,
   lpSymbol,
   lpLabel,
-  lpAddresses,
+  lpAddress,
   quoteToken,
   token,
   displayApr,
 }) => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
-  const { isDesktop } = useMatchBreakpointsContext()
+  const { account, chainId } = useActiveWeb3React()
+  const { isDesktop } = useMatchBreakpoints()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { allowance, tokenBalance, stakedBalance } = useFarmUser(pid)
@@ -53,7 +52,6 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
 
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
-  const lpAddress = getAddress(lpAddresses)
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,
@@ -71,7 +69,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
           {t('Your funds have been staked in the farm')}
         </ToastDescriptionWithTx>,
       )
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId }))
     }
   }
 
@@ -86,7 +84,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
           {t('Your earnings have also been harvested to your wallet')}
         </ToastDescriptionWithTx>,
       )
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId }))
     }
   }
 
@@ -110,7 +108,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
   )
   const lpContract = useERC20(lpAddress)
   const dispatch = useAppDispatch()
-  const { onApprove } = useApproveFarm(lpContract)
+  const { onApprove } = useApproveFarm(lpContract, chainId)
 
   const handleApprove = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()
@@ -123,9 +121,9 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
     })
     if (receipt?.status) {
       toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId }))
     }
-  }, [onApprove, dispatch, account, pid, t, toastSuccess, fetchWithCatchTxError])
+  }, [onApprove, dispatch, chainId, account, pid, t, toastSuccess, fetchWithCatchTxError])
 
   const handleDeposit = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()

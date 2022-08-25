@@ -1,9 +1,19 @@
-export type TableProps = {
-  data?: TableDataTypes[]
-  selectedFilters?: string
-  sortBy?: string
-  sortDir?: string
-  onSort?: (value: string) => void
+import { FarmProps } from './Farm/Cells/Farm'
+import { AprProps } from '../../Farms/components/FarmTable/Apr'
+import { EarnedProps } from './Farm/Cells/Earned'
+import { StakedProps } from './Farm/Cells/Staked'
+import { MultiplierProps } from './Farm/Cells/Multiplier'
+import { LiquidityProps } from './Farm/Cells/Liquidity'
+import { UnstakeProps } from './MigrationStep1/OldFarm/Cells/Unstake'
+
+export interface RowProps {
+  farm: FarmProps
+  earned: EarnedProps
+  staked: StakedProps
+  multiplier: MultiplierProps
+  liquidity: LiquidityProps
+  unstake?: UnstakeProps
+  apr?: AprProps
 }
 
 export type ColumnsDefTypes = {
@@ -11,15 +21,6 @@ export type ColumnsDefTypes = {
   label: string
   name: string
   sortable: boolean
-}
-
-export type TableDataTypes = {
-  POOL: string
-  APR: string
-  EARNED: string
-  STAKED: string
-  DETAILS: string
-  LINKS: string
 }
 
 export const DesktopColumnSchema: ColumnsDefTypes[] = [

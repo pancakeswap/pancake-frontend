@@ -1,21 +1,22 @@
 import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import multicall from 'utils/multicall'
 import { getMasterChefAddress } from 'utils/addressHelpers'
 import masterChefABI from 'config/abi/masterchef.json'
-import { farmsConfig, FAST_INTERVAL } from 'config/constants'
+import { FAST_INTERVAL } from 'config/constants'
 import { SerializedFarmConfig } from 'config/constants/types'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import useSWR from 'swr'
-import { useFarmsPoolLength } from 'state/farms/hooks'
+import { useFarmsLength } from 'state/farms/hooks'
+import { getFarmConfig } from 'config/constants/farms/index'
 
 export interface FarmWithBalance extends SerializedFarmConfig {
   balance: BigNumber
 }
 
 const useFarmsWithBalance = () => {
-  const { account } = useWeb3React()
-  const poolLength = useFarmsPoolLength()
+  const { account, chainId } = useActiveWeb3React()
+  const { data: poolLength } = useFarmsLength()
 
   const {
     data: { farmsWithStakedBalance, earningsSum } = {
@@ -23,11 +24,12 @@ const useFarmsWithBalance = () => {
       earningsSum: null,
     },
   } = useSWR(
-    account && poolLength ? [account, 'farmsWithBalance'] : null,
+    account && poolLength && chainId ? [account, 'farmsWithBalance', chainId, poolLength] : null,
     async () => {
+      const farmsConfig = await getFarmConfig(chainId)
       const farmsCanFetch = farmsConfig.filter((f) => poolLength > f.pid)
       const calls = farmsCanFetch.map((farm) => ({
-        address: getMasterChefAddress(),
+        address: getMasterChefAddress(chainId),
         name: 'pendingCake',
         params: [farm.pid, account],
       }))

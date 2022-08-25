@@ -64,7 +64,11 @@ const fetchCollectionsTotalSupply = async (collections: ApiCollection[]): Promis
       name: 'totalSupply',
     }))
   if (totalSupplyCalls.length > 0) {
-    const totalSupplyRaw = await multicallv2(erc721Abi, totalSupplyCalls, { requireSuccess: false })
+    const totalSupplyRaw = await multicallv2({
+      abi: erc721Abi,
+      calls: totalSupplyCalls,
+      options: { requireSuccess: false },
+    })
     const totalSupply = totalSupplyRaw.flat()
     return totalSupply.map((totalCount) => (totalCount ? totalCount.toNumber() : 0))
   }
@@ -462,7 +466,11 @@ export const getAccountNftsOnChainMarketData = async (
       }
     })
 
-    const askCallsResultsRaw = await multicallv2(nftMarketAbi, askCalls, { requireSuccess: false })
+    const askCallsResultsRaw = await multicallv2({
+      abi: nftMarketAbi,
+      calls: askCalls,
+      options: { requireSuccess: false },
+    })
     const askCallsResults = askCallsResultsRaw
       .map((askCallsResultRaw, askCallIndex) => {
         if (!askCallsResultRaw?.tokenIds || !askCallsResultRaw?.askInfo || !collectionList[askCallIndex]?.address)
@@ -542,14 +550,15 @@ export const getAllPancakeBunniesLowestPrice = async (bunnyIds: string[]): Promi
         }
       `,
     )
-    return Object.keys(rawResponse).reduce((lowestPricesData, subQueryKey) => {
-      const bunnyId = subQueryKey.split('b')[1]
-      return {
-        ...lowestPricesData,
-        [bunnyId]:
+    return fromPairs(
+      Object.keys(rawResponse).map((subQueryKey) => {
+        const bunnyId = subQueryKey.split('b')[1]
+        return [
+          bunnyId,
           rawResponse[subQueryKey].length > 0 ? parseFloat(rawResponse[subQueryKey][0].currentAskPrice) : Infinity,
-      }
-    }, {})
+        ]
+      }),
+    )
   } catch (error) {
     console.error('Failed to fetch PancakeBunnies lowest prices', error)
     return {}
@@ -574,13 +583,15 @@ export const getAllPancakeBunniesRecentUpdatedAt = async (bunnyIds: string[]): P
         }
       `,
     )
-    return Object.keys(rawResponse).reduce((updatedAtData, subQueryKey) => {
-      const bunnyId = subQueryKey.split('b')[1]
-      return {
-        ...updatedAtData,
-        [bunnyId]: rawResponse[subQueryKey].length > 0 ? Number(rawResponse[subQueryKey][0].updatedAt) : -Infinity,
-      }
-    }, {})
+    return fromPairs(
+      Object.keys(rawResponse).map((subQueryKey) => {
+        const bunnyId = subQueryKey.split('b')[1]
+        return [
+          bunnyId,
+          rawResponse[subQueryKey].length > 0 ? Number(rawResponse[subQueryKey][0].updatedAt) : -Infinity,
+        ]
+      }),
+    )
   } catch (error) {
     console.error('Failed to fetch PancakeBunnies latest market updates', error)
     return {}
@@ -924,7 +935,11 @@ export const fetchWalletTokenIdsForCollections = async (
     }
   })
 
-  const balanceOfCallsResultRaw = await multicallv2(erc721Abi, balanceOfCalls, { requireSuccess: false })
+  const balanceOfCallsResultRaw = await multicallv2({
+    abi: erc721Abi,
+    calls: balanceOfCalls,
+    options: { requireSuccess: false },
+  })
   const balanceOfCallsResult = balanceOfCallsResultRaw.flat()
 
   const tokenIdCalls = Object.values(collections)
@@ -942,7 +957,11 @@ export const fetchWalletTokenIdsForCollections = async (
     })
     .flat()
 
-  const tokenIdResultRaw = await multicallv2(erc721Abi, tokenIdCalls, { requireSuccess: false })
+  const tokenIdResultRaw = await multicallv2({
+    abi: erc721Abi,
+    calls: tokenIdCalls,
+    options: { requireSuccess: false },
+  })
   const tokenIdResult = tokenIdResultRaw.flat()
 
   const nftLocation = NftLocation.WALLET
@@ -965,29 +984,27 @@ export const combineCollectionData = (
   collectionApiData: ApiCollection[],
   collectionSgData: CollectionMarketDataBaseFields[],
 ): Record<string, Collection> => {
-  const collectionsMarketObj: Record<string, CollectionMarketDataBaseFields> = collectionSgData.reduce(
-    (prev, current) => ({ ...prev, [current.id]: { ...current } }),
-    {},
+  const collectionsMarketObj: Record<string, CollectionMarketDataBaseFields> = fromPairs(
+    collectionSgData.map((current) => [current.id, current]),
   )
 
-  return collectionApiData
-    .filter((collection) => collection?.address)
-    .reduce((accum, current) => {
-      const collectionMarket = collectionsMarketObj[current.address.toLowerCase()]
-      const collection: Collection = {
-        ...current,
-        ...collectionMarket,
-      }
+  return fromPairs(
+    collectionApiData
+      .filter((collection) => collection?.address)
+      .map((current) => {
+        const collectionMarket = collectionsMarketObj[current.address.toLowerCase()]
+        const collection: Collection = {
+          ...current,
+          ...collectionMarket,
+        }
 
-      if (current.name) {
-        collection.name = current.name
-      }
+        if (current.name) {
+          collection.name = current.name
+        }
 
-      return {
-        ...accum,
-        [current.address]: collection,
-      }
-    }, {})
+        return [current.address, collection]
+      }),
+  )
 }
 
 /**

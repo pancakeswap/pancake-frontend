@@ -14,7 +14,6 @@ export const INITIAL_ALLOWED_SLIPPAGE = 50
 // 20 minutes, denominated in seconds
 export const DEFAULT_DEADLINE_FROM_NOW = 60 * 20
 
-export { default as farmsConfig } from './farms'
 export { default as ifosConfig } from './ifo'
 export { default as poolsConfig } from './pools'
 

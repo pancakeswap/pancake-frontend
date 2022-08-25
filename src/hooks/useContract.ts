@@ -72,6 +72,7 @@ import { getContract } from '../utils'
 
 import { IPancakePair } from '../config/abi/types/IPancakePair'
 import { VaultKey } from '../state/types'
+import { useActiveChainId } from './useActiveChainId'
 
 /**
  * Helper hooks to get specific contracts (by ABI)
@@ -137,8 +138,9 @@ export const useLotteryV2Contract = () => {
 }
 
 export const useMasterchef = (withSignerIfPossible = true) => {
+  const { chainId } = useActiveChainId()
   const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
-  return useMemo(() => getMasterchefContract(providerOrSigner), [providerOrSigner])
+  return useMemo(() => getMasterchefContract(providerOrSigner, chainId), [providerOrSigner, chainId])
 }
 
 export const useMasterchefV1 = () => {

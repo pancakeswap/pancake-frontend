@@ -2,10 +2,9 @@ import fs from 'fs'
 import os from 'os'
 import { request, gql } from 'graphql-request'
 import BigNumber from 'bignumber.js'
-import { ChainId } from '@pancakeswap/sdk'
 import chunk from 'lodash/chunk'
 import { sub, getUnixTime } from 'date-fns'
-import farmsConfig from '../src/config/constants/farms'
+import farmsConfig from '../src/config/constants/farms/56'
 import type { BlockResponse } from '../src/components/SubgraphHealthIndicator'
 import { BLOCKS_CLIENT } from '../src/config/constants/endpoints'
 import { infoClient } from '../src/utils/graphql'
@@ -97,7 +96,7 @@ const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): P
 }
 
 const fetchAndUpdateLPsAPR = async () => {
-  const lowerCaseAddresses = farmsConfig.map((farm) => farm.lpAddresses[ChainId.BSC].toLowerCase())
+  const lowerCaseAddresses = farmsConfig.map((farm) => farm.lpAddress.toLowerCase())
   console.info(`Fetching farm data for ${lowerCaseAddresses.length} addresses`)
   // Split it into chunks of 30 addresses to avoid gateway timeout
   const addressesInGroups = chunk(lowerCaseAddresses, 30)
@@ -112,7 +111,7 @@ const fetchAndUpdateLPsAPR = async () => {
     allAprs = { ...allAprs, ...aprs }
   }
 
-  fs.writeFile(`src/config/constants/lpAprs.json`, JSON.stringify(allAprs, null, 2) + os.EOL, (err) => {
+  fs.writeFile(`src/config/constants/lpAprs/56.json`, JSON.stringify(allAprs, null, 2) + os.EOL, (err) => {
     if (err) throw err
     console.info(` ✅ - lpAprs.json has been updated!`)
   })

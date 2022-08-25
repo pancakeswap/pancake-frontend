@@ -1,7 +1,7 @@
 import React, { useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import useDelayedUnmount from "../../hooks/useDelayedUnmount";
-import useMatchBreakpoints from "../../hooks/useMatchBreakpoints";
+import { useMatchBreakpoints } from "../../contexts";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
 import getPortalRoot from "../../util/getPortalRoot";
 import { Box } from "../Box";
