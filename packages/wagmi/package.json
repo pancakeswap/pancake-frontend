@@ -1,9 +1,64 @@
 {
   "name": "@pancakeswap/wagmi",
-  "version": "1.0.0",
+  "version": "0.0.1",
+  "license": "WAGMIT",
   "description": "wagmi adaptor for pancakeswap",
-  "main": "src/index.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pancakeswap/pancake-frontend.git",
+    "directory": "packages/wagmi"
+  },
+  "scripts": {
+    "build:src": "tsup src/index.ts --format esm,cjs --dts",
+    "build:mp": "tsup connectors/miniProgram/index.ts --format esm,cjs --dts --outDir connectors/miniProgram/dist",
+    "build:bsc": "tsup connectors/binanceWallet/index.ts --format esm,cjs --dts --outDir connectors/binanceWallet/dist",
+    "build:chains": "tsup chains/index.ts --format esm,cjs --dts --outDir chains/dist",
+    "build:all": "yarn build:src && yarn build:mp && yarn build:bsc && yarn build:chains",
+    "prepublishOnly": "yarn run build:all"
+  },
+  "peerDependencies": {
+    "swr": "^1.3.0",
+    "wagmi": "^0.6.0",
+    "@ethersproject/abi": "^5.0.0",
+    "@ethersproject/address": "^5.0.0",
+    "@ethersproject/bignumber": "^5.0.0",
+    "@ethersproject/bytes": "^5.0.0",
+    "@ethersproject/constants": "^5.0.0",
+    "@ethersproject/contracts": "^5.0.0",
+    "@ethersproject/providers": "^5.0.0",
+    "@ethersproject/strings": "^5.0.0",
+    "@ethersproject/units": "^5.0.0",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0"
+  },
   "devDependencies": {
-    "tsconfig": "*"
+    "tsconfig": "*",
+    "tsup": "^5.10.1"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./connectors/miniProgram": {
+      "types": "./connectors/miniProgram/dist/index.d.ts",
+      "import": "./connectors/miniProgram/dist/index.mjs",
+      "require": "./connectors/miniProgram/dist/index.js"
+    },
+    "./connectors/binanceWallet": {
+      "types": "./connectors/binanceWallet/dist/index.d.ts",
+      "import": "./connectors/binanceWallet/dist/index.mjs",
+      "require": "./connectors/binanceWallet/dist/index.js"
+    },
+    "./chains": {
+      "types": "./chains/dist/index.d.ts",
+      "import": "./chains/dist/index.mjs",
+      "require": "./chains/dist/index.js"
+    }
   }
 }

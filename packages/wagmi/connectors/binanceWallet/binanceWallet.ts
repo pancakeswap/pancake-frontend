@@ -1,28 +1,41 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
-import { getAddress } from '@ethersproject/address'
-import { Chain, ConnectorNotFoundError, ResourceUnavailableError, RpcError, UserRejectedRequestError } from 'wagmi'
+import {
+  Chain,
+  ConnectorNotFoundError,
+  ResourceUnavailableError,
+  RpcError,
+  UserRejectedRequestError,
+  SwitchChainNotSupportedError,
+} from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
-import getWeb3Provider from './mpBridge'
+import { hexValue } from '@ethersproject/bytes'
 
-export class BnInjectedConnector extends InjectedConnector {
-  readonly id = 'bn'
+const mappingNetwork: Record<number, string> = {
+  1: 'eth-mainnet',
+  56: 'bsc-mainnet',
+  97: 'bsc-testnet',
+}
 
-  readonly ready = typeof window !== 'undefined' && !!window.bn
+export class BinanceWalletConnector extends InjectedConnector {
+  readonly id = 'bsc'
 
-  provider?: any
+  readonly ready = typeof window !== 'undefined' && !!window.BinanceChain
+
+  provider?: Window['BinanceChain']
 
   constructor({
-    chains,
+    chains: _chains,
   }: {
     chains?: Chain[]
   } = {}) {
     const options = {
-      name: 'BnInjected',
-      shimDisconnect: false,
-      shimChainChangedDisconnect: false,
+      name: 'Binance',
+      shimDisconnect: true,
+      shimChainChangedDisconnect: true,
     }
+    const chains = _chains?.filter((c) => !!mappingNetwork[c.id])
     super({
       chains,
       options,
@@ -60,22 +73,39 @@ export class BnInjectedConnector extends InjectedConnector {
     }
   }
 
-  async getAccount() {
-    const provider = await this.getProvider()
-    if (!provider) throw new ConnectorNotFoundError()
-    const accounts = await provider.request({
-      method: 'eth_accounts',
-    })
-    // return checksum address
-    return getAddress(<string>accounts[0])
-  }
-
   async getProvider() {
     if (typeof window !== 'undefined') {
       // TODO: Fallback to `ethereum#initialized` event for async injection
       // https://github.com/MetaMask/detect-provider#synchronous-and-asynchronous-injection=
-      this.provider = getWeb3Provider()
+      this.provider = window.BinanceChain
     }
     return this.provider
+  }
+
+  async switchChain(chainId: number): Promise<Chain> {
+    const provider = await this.getProvider()
+    if (!provider) throw new ConnectorNotFoundError()
+
+    const id = hexValue(chainId)
+
+    if (mappingNetwork[chainId]) {
+      try {
+        await provider.switchNetwork?.(mappingNetwork[chainId])
+
+        return (
+          this.chains.find((x) => x.id === chainId) ?? {
+            id: chainId,
+            name: `Chain ${id}`,
+            network: `${id}`,
+            rpcUrls: { default: '' },
+          }
+        )
+      } catch (error) {
+        if ((error as any).error === 'user rejected') {
+          throw new UserRejectedRequestError(error)
+        }
+      }
+    }
+    throw new SwitchChainNotSupportedError({ connector: this })
   }
 }

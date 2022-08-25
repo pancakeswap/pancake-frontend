@@ -1,5 +1,5 @@
-import { CHAIN_IDS } from '@pancakeswap/wagmi'
 import { GetStaticPaths, GetStaticProps } from 'next'
+import { CHAIN_IDS } from 'utils/wagmi'
 import AddLiquidity from 'views/AddLiquidity'
 
 const AddLiquidityPage = () => <AddLiquidity />

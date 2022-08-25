@@ -1,6 +1,7 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
+import { getAddress } from '@ethersproject/address'
 import { Chain, ConnectorNotFoundError, ResourceUnavailableError, RpcError, UserRejectedRequestError } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 
@@ -10,8 +11,8 @@ declare global {
   }
 }
 
-export class BnInjectedConnector extends InjectedConnector {
-  readonly id = 'bn'
+export class MiniProgramConnector extends InjectedConnector {
+  readonly id = 'miniprogram'
 
   readonly ready = typeof window !== 'undefined' && !!window.bn
 
@@ -22,8 +23,8 @@ export class BnInjectedConnector extends InjectedConnector {
   constructor({ chains, getWeb3Provider }: { getWeb3Provider: () => any; chains?: Chain[] }) {
     const options = {
       name: 'BnInjected',
-      shimDisconnect: true,
-      shimChainChangedDisconnect: true,
+      shimDisconnect: false,
+      shimChainChangedDisconnect: false,
     }
     super({
       chains,
@@ -62,6 +63,16 @@ export class BnInjectedConnector extends InjectedConnector {
       if ((<RpcError>error).code === -32002) throw new ResourceUnavailableError(error)
       throw error
     }
+  }
+
+  async getAccount() {
+    const provider = await this.getProvider()
+    if (!provider) throw new ConnectorNotFoundError()
+    const accounts = await provider.request({
+      method: 'eth_accounts',
+    })
+    // return checksum address
+    return getAddress(<string>accounts[0])
   }
 
   async getProvider() {

@@ -17,13 +17,13 @@ import {
   UserMenuDivider,
   UserMenuItem,
 } from '@pancakeswap/uikit'
-import { CHAINS_STARGATE } from '@pancakeswap/wagmi'
 import { useTheme as useNextTheme } from 'next-themes'
 import Image from 'next/future/image'
 import NextLink from 'next/link'
 import { useEffect, useReducer, useRef, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { getTimePeriods } from './getTimePeriods'
+import { CHAINS_STARGATE } from './stargate/config'
 import { findChainByStargateId } from './stargate/network'
 
 const StyledMenuItem = styled.a<any>`
