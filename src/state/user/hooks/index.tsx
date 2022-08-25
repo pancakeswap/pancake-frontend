@@ -6,6 +6,7 @@ import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useSWRImmutable from 'swr/immutable'
 import { useFeeData } from 'wagmi'
 import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
 import { AppState, useAppDispatch } from '../../index'
@@ -472,14 +473,12 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])
 
-  const farms = getFarmConfig(chainId)
-  const farmPairs: [Token, Token][] = useMemo(
-    () =>
-      farms
-        .filter((farm) => farm.pid !== 0)
-        .map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)]),
-    [farms],
-  )
+  const { data: farmPairs = [] } = useSWRImmutable(chainId && ['track-farms-pairs', chainId], async () => {
+    const farms = await getFarmConfig(chainId)
+    farms
+      .filter((farm) => farm.pid !== 0)
+      .map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)])
+  })
 
   // pairs for every token against every base
   const generatedPairs: [Token, Token][] = useMemo(

@@ -9,6 +9,7 @@ import BigNumber from 'bignumber.js'
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import stringify from 'fast-json-stable-stringify'
 import multicall from 'utils/multicall'
+import { ChainId } from '@pancakeswap/sdk'
 import masterchefABI from 'config/abi/masterchef.json'
 import { getMasterChefAddress } from 'utils/addressHelpers'
 import { getBalanceAmount } from 'utils/formatBalance'
@@ -38,8 +39,8 @@ const initialState: SerializedFarmsState = {
 // Async thunks
 export const fetchInitialFarmsData = createAsyncThunk<SerializedFarm[], { chainId: number }>(
   'farms/fetchInitialFarmsData',
-  ({ chainId }) => {
-    const farmDataList = getFarmConfig(chainId)
+  async ({ chainId }) => {
+    const farmDataList = await getFarmConfig(chainId)
     return farmDataList.map((farm) => ({
       ...farm,
       userData: {
@@ -65,7 +66,8 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
       fetchMasterChefFarmPoolLength(chainId),
       multicall(masterchefABI, [
         {
-          address: getMasterChefAddress(),
+          // BSC only
+          address: getMasterChefAddress(ChainId.BSC),
           name: 'cakePerBlock',
           params: [true],
         },
@@ -74,14 +76,14 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
 
     const poolLengthAsBigNumber = new BigNumber(poolLength)
     const regularCakePerBlock = getBalanceAmount(new BigNumber(cakePerBlockRaw))
-    const farmsConfig = getFarmConfig(chainId)
+    const farmsConfig = await getFarmConfig(chainId)
     const farmsCanFetch = farmsConfig.filter(
       (farmConfig) => pids.includes(farmConfig.pid) && poolLengthAsBigNumber.gt(farmConfig.pid),
     )
     const priceHelperLpsConfig = getPriceHelperLpFiles(chainId)
 
     const farms = await fetchFarms(farmsCanFetch.concat(priceHelperLpsConfig), chainId)
-    const farmsWithPrices = getFarmsPrices(farms, chainId)
+    const farmsWithPrices = farms.length > 0 ? getFarmsPrices(farms, chainId) : []
 
     return [farmsWithPrices, poolLengthAsBigNumber.toNumber(), regularCakePerBlock.toNumber()]
   },
@@ -182,7 +184,7 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
   'farms/fetchFarmUserDataAsync',
   async ({ account, pids, proxyAddress, chainId }, config) => {
     const poolLength = config.getState().farms.poolLength ?? (await fetchMasterChefFarmPoolLength(chainId))
-    const farmsConfig = getFarmConfig(chainId)
+    const farmsConfig = await getFarmConfig(chainId)
     const farmsCanFetch = farmsConfig.filter(
       (farmConfig) => pids.includes(farmConfig.pid) && poolLength > farmConfig.pid,
     )
