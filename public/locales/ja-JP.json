@@ -27,7 +27,7 @@
   "CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.": "CAKE はファームブースタースマートコントラクトに収穫されました。次回収穫時に自動的にウォレットに送信されます。",
   "One-time setup is required for activating farm yield boosters": "ファーム利回りブースターを有効化するには、1回限りのセットアップが必要です",
   "Connect wallet to activate yield booster": "ウォレットを接続して利回りブースターを有効化します",
-  "Lock CAKE to activate yield booster": "CKAEをロックして利回りブースターを有効化します",
+  "Lock CAKE to activate yield booster": "CAKEをロックして利回りブースターを有効化します",
   "Stake LP tokens to start boosting": "LPトークンをステーキングして強化を開始します",
   "Lock CAKE is ended. Re-lock CAKE to activate yield booster": "CAKEのロックが終了しました。利回りブースターを有効化するにはもう一度CAKEをロックしてください",
   "Boost": "強化",
