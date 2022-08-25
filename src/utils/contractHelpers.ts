@@ -153,8 +153,7 @@ export const getContract = ({
   chainId?: ChainId
   signer?: Signer | Provider
 }) => {
-  const multiChainProvider = provider({ chainId })
-  const signerOrProvider = signer ?? multiChainProvider
+  const signerOrProvider = signer ?? provider({ chainId })
   return new Contract(address, abi, signerOrProvider)
 }
 
