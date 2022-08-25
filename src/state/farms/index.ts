@@ -16,7 +16,6 @@ import type { AppState } from 'state'
 import { getPriceHelperLpFiles } from 'config/constants/priceHelperLps'
 import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
 import { getFarmConfig } from 'config/constants/farms/index'
-import { deserializeToken } from 'state/user/hooks/helpers'
 import fetchFarms from './fetchFarms'
 import getFarmsPrices from './getFarmsPrices'
 import {
