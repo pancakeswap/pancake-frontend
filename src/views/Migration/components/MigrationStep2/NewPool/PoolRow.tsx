@@ -11,8 +11,8 @@ import ActionPanel from 'views/Pools/components/PoolsTable/ActionPanel/ActionPan
 import ExpandActionCell from 'views/Pools/components/PoolsTable/Cells/ExpandActionCell'
 import AutoEarningsCell from 'views/Pools/components/PoolsTable/Cells/AutoEarningsCell'
 import { useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import EarningsCell from '../../MigrationStep1/OldPool/Cells/EarningsCell'
-import TotalStakedCell from '../../MigrationStep1/OldPool/Cells/TotalStakedCell'
+import EarningsCell from '../../Pool/Cells/EarningsCell'
+import TotalStakedCell from '../../Pool/Cells/TotalStakedCell'
 import StakedCell from './Cells/StakedCell'
 
 interface PoolRowProps {

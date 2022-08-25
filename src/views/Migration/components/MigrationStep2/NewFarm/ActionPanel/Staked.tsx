@@ -6,8 +6,8 @@ import { Heading, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import { ActionContainer, ActionContent, ActionTitles } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import { EarnedProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Earned'
-import { FarmProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Farm'
+import { EarnedProps } from 'views/Migration/components/Farm/Cells/Earned'
+import { FarmProps } from 'views/Migration/components/Farm/Cells/Farm'
 import StakeButton from '../StakeButton'
 
 const Container = styled(ActionContainer)`

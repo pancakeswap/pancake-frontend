@@ -11,11 +11,13 @@ import NextLink from 'next/link'
 import { useMenuItems } from 'components/Menu/hooks/useMenuItems'
 import { getActiveMenuItem, getActiveSubMenuItem } from 'components/Menu/utils'
 import { useRouter } from 'next/router'
+import useAuth from 'hooks/useAuth'
 
 export function PageNetworkSupportModal() {
   const { t } = useTranslation()
-  const { switchNetwork, isLoading } = useSwitchNetwork()
-  const { chainId } = useActiveWeb3React()
+  const { switchNetworkAsync, isLoading, canSwitch } = useSwitchNetwork()
+  const { chainId, isConnected } = useActiveWeb3React()
+  const { logout } = useAuth()
 
   const foundChain = useMemo(() => chains.find((c) => c.id === chainId), [chainId])
   const historyManager = useHistory()
@@ -23,7 +25,7 @@ export function PageNetworkSupportModal() {
   const lastValidPath = historyManager?.history?.find((h) => ['/swap', 'liquidity', '/'].includes(h))
 
   const menuItems = useMenuItems()
-  const { pathname } = useRouter()
+  const { pathname, push } = useRouter()
 
   const { title, image } = useMemo(() => {
     const activeMenuItem = getActiveMenuItem({ menuConfig: menuItems, pathname })
@@ -39,7 +41,6 @@ export function PageNetworkSupportModal() {
     <Modal title={title || t('Check your network')} hideCloseButton headerBackground="gradients.cardHeader">
       <Grid style={{ gap: '16px' }} maxWidth="360px">
         <Text bold>{t('It’s a BNB Smart Chain only feature')}</Text>
-        <Text small>{t('Currently only Swap is supported in BNB Smart Chain')}</Text>
 
         {image && (
           <Box mx="auto" my="8px" position="relative" width="100%" minHeight="250px">
@@ -48,12 +49,30 @@ export function PageNetworkSupportModal() {
         )}
         <Text small>
           {t(
-            'Our Trading Competition, Prediction and Lottery features are currently available only on BNB Chain! Come over and join the community in the fun!',
+            'Our Pools, Limit, Trading Competition, Prediction, Lottery and NFTs features are currently available only on BNB Chain! Come over and join the community in the fun!',
           )}
         </Text>
-        <Button variant="secondary" isLoading={isLoading} onClick={() => switchNetwork(ChainId.BSC)}>
-          {t('Switch to %chain%', { chain: 'BNB Smart Chain' })}
-        </Button>
+        {canSwitch && (
+          <Button
+            variant={foundChain && lastValidPath ? 'secondary' : 'primary'}
+            isLoading={isLoading}
+            onClick={() => switchNetworkAsync(ChainId.BSC)}
+          >
+            {t('Switch to %chain%', { chain: 'BNB Smart Chain' })}
+          </Button>
+        )}
+        {isConnected && (
+          <Button
+            variant="secondary"
+            onClick={() =>
+              logout().then(() => {
+                push('/')
+              })
+            }
+          >
+            {t('Disconnect Wallet')}
+          </Button>
+        )}
         {foundChain && lastValidPath && (
           <NextLink href={lastValidPath} passHref>
             <Button as="a">{t('Stay on %chain%', { chain: foundChain.name })}</Button>

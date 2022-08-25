@@ -1,11 +1,12 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useIsomorphicEffect } from '@pancakeswap/uikit'
+import { useRef, useState } from 'react'
 
 const useIntersectionObserver = () => {
   const [observerRefElement, setObserverRefElement] = useState(null)
   const intersectionObserverRef = useRef<IntersectionObserver>(null)
   const [isIntersecting, setIsIntersecting] = useState(false)
 
-  useLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     const isSupported = typeof window === 'object' && window.IntersectionObserver
 
     if (isSupported) {
