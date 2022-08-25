@@ -34,9 +34,16 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
     if (!currency || !wrapped || !chainId) {
       return undefined
     }
+
+    const isBUSDPairExist =
+      busdPair &&
+      busdPairState === PairState.EXISTS &&
+      busdPair.reserve0.greaterThan('0') &&
+      busdPair.reserve1.greaterThan('0')
+
     // handle wbnb/bnb
     if (wrapped.equals(wnative)) {
-      if (busdPair) {
+      if (isBUSDPairExist) {
         const price = busdPair.priceOf(wnative)
         return new Price(currency, busd, price.denominator, price.numerator)
       }
@@ -47,17 +54,30 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
       return new Price(busd, busd, '1', '1')
     }
 
-    const bnbPairBNBAmount = bnbPair?.reserveOf(wnative)
+    const isBnbPairExist =
+      bnbPair &&
+      bnbPairState === PairState.EXISTS &&
+      bnbPair.reserve0.greaterThan('0') &&
+      bnbPair.reserve1.greaterThan('0')
+    const isBusdBnbPairExist =
+      busdBnbPair &&
+      busdBnbPairState === PairState.EXISTS &&
+      busdBnbPair.reserve0.greaterThan('0') &&
+      busdBnbPair.reserve1.greaterThan('0')
+
+    const bnbPairBNBAmount = isBnbPairExist && bnbPair?.reserveOf(wnative)
     const bnbPairBNBBUSDValue: JSBI =
-      bnbPairBNBAmount && busdBnbPair ? busdBnbPair.priceOf(wnative).quote(bnbPairBNBAmount).quotient : JSBI.BigInt(0)
+      bnbPairBNBAmount && isBUSDPairExist && isBusdBnbPairExist
+        ? busdBnbPair.priceOf(wnative).quote(bnbPairBNBAmount).quotient
+        : JSBI.BigInt(0)
 
     // all other tokens
     // first try the busd pair
-    if (busdPairState === PairState.EXISTS && busdPair && busdPair.reserveOf(busd).greaterThan(bnbPairBNBBUSDValue)) {
+    if (isBUSDPairExist && busdPair.reserveOf(busd).greaterThan(bnbPairBNBBUSDValue)) {
       const price = busdPair.priceOf(wrapped)
       return new Price(currency, busd, price.denominator, price.numerator)
     }
-    if (bnbPairState === PairState.EXISTS && bnbPair && busdBnbPairState === PairState.EXISTS && busdBnbPair) {
+    if (isBnbPairExist && isBusdBnbPairExist) {
       if (busdBnbPair.reserveOf(busd).greaterThan('0') && bnbPair.reserveOf(wnative).greaterThan('0')) {
         const bnbBusdPrice = busdBnbPair.priceOf(busd)
         const currencyBnbPrice = bnbPair.priceOf(wnative)
