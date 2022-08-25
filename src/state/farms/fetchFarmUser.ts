@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import erc20ABI from 'config/abi/erc20.json'
 import masterchefABI from 'config/abi/masterchef.json'
-import NoBscVaultAbi from 'config/abi/NoBscVaultAbi.json'
+import noBscVaultAbi from 'config/abi/noBscVaultAbi.json'
 import multicall, { multicallv2 } from 'utils/multicall'
 import { getMasterChefAddress } from 'utils/addressHelpers'
 import { SerializedFarmConfig } from 'config/constants/types'
@@ -67,7 +67,7 @@ export const fetchFarmUserStakedBalances = async (
   })
 
   const rawStakedBalances = await multicallv2({
-    abi: isBscNetwork ? masterchefABI : NoBscVaultAbi,
+    abi: isBscNetwork ? masterchefABI : noBscVaultAbi,
     calls,
     chainId,
     options: { requireSuccess: false },

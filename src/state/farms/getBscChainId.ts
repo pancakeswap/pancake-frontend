@@ -1,4 +1,4 @@
-import NoBscVaultAbi from 'config/abi/NoBscVaultAbi.json'
+import noBscVaultAbi from 'config/abi/noBscVaultAbi.json'
 import { getMasterChefAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
 import { ChainId } from '@pancakeswap/sdk'
@@ -16,7 +16,7 @@ export const getBscChainId = async (chainId: number) => {
         address: getMasterChefAddress(chainId),
       },
     ]
-    const [[bscChainId]] = await multicallv2({ abi: NoBscVaultAbi, calls, chainId })
+    const [[bscChainId]] = await multicallv2({ abi: noBscVaultAbi, calls, chainId })
     return bscChainId
   } catch (error) {
     console.error('Get BSC Chain Id Error: ', error)

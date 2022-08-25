@@ -152,4 +152,14 @@ export default {
     56: '0x2C36221bF724c60E9FEE3dd44e2da8017a8EF3BA',
     97: '',
   },
+  crossFarming: {
+    56: '',
+    97: '',
+    5: '0xbE1D884a00E1984632881f7BA5e201BB2F088e01',
+  },
+  messageBus: {
+    56: '',
+    97: '',
+    5: '0xF25170F86E4291a99a9A560032Fe9948b8BcFBB2',
+  },
 }
