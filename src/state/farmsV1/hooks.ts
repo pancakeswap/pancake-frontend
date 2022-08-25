@@ -6,6 +6,7 @@ import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffe
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
+import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 import { deserializeToken } from 'state/user/hooks/helpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
@@ -139,13 +140,6 @@ export const useLpTokenPrice = (symbol: string) => {
  * @deprecated use the BUSD hook in /hooks
  */
 export const usePriceCakeBusd = (): BigNumber => {
-  const cakeBnbFarm = useFarmFromPid(251)
-
-  const cakePriceBusdAsString = cakeBnbFarm.tokenPriceBusd
-
-  const cakePriceBusd = useMemo(() => {
-    return new BigNumber(cakePriceBusdAsString)
-  }, [cakePriceBusdAsString])
-
-  return cakePriceBusd
+  const price = useCakeBusdPrice()
+  return useMemo(() => (price ? new BigNumber(price.toSignificant(6)) : BIG_ZERO), [price])
 }
