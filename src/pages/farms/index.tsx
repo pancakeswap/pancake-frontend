@@ -54,6 +54,5 @@ const FarmsPage = () => {
 }
 
 FarmsPage.Layout = FarmsPageLayout
-FarmsPage.chains = []
 
 export default FarmsPage
