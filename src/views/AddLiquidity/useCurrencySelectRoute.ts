@@ -3,7 +3,9 @@ import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import currencyId from 'utils/currencyId'
 
-export const useCurrencySelectRoute = (path = 'add') => {
+const PATH = 'add'
+
+export const useCurrencySelectRoute = () => {
   const router = useRouter()
   const [currencyIdA, currencyIdB] = router.query.currency || []
 
@@ -11,29 +13,29 @@ export const useCurrencySelectRoute = (path = 'add') => {
     (currencyA_: Currency) => {
       const newCurrencyIdA = currencyId(currencyA_)
       if (newCurrencyIdA === currencyIdB) {
-        router.replace(`/${path}/${currencyIdB}/${currencyIdA}`, undefined, { shallow: true })
+        router.replace(`/${PATH}/${currencyIdB}/${currencyIdA}`, undefined, { shallow: true })
       } else if (currencyIdB) {
-        router.replace(`/${path}/${newCurrencyIdA}/${currencyIdB}`, undefined, { shallow: true })
+        router.replace(`/${PATH}/${newCurrencyIdA}/${currencyIdB}`, undefined, { shallow: true })
       } else {
-        router.replace(`/${path}/${newCurrencyIdA}`, undefined, { shallow: true })
+        router.replace(`/${PATH}/${newCurrencyIdA}`, undefined, { shallow: true })
       }
     },
-    [currencyIdB, router, currencyIdA, path],
+    [currencyIdB, router, currencyIdA],
   )
   const handleCurrencyBSelect = useCallback(
     (currencyB_: Currency) => {
       const newCurrencyIdB = currencyId(currencyB_)
       if (currencyIdA === newCurrencyIdB) {
         if (currencyIdB) {
-          router.replace(`/${path}/${currencyIdB}/${newCurrencyIdB}`, undefined, { shallow: true })
+          router.replace(`/${PATH}/${currencyIdB}/${newCurrencyIdB}`, undefined, { shallow: true })
         } else {
-          router.replace(`/${path}/${newCurrencyIdB}`, undefined, { shallow: true })
+          router.replace(`/${PATH}/${newCurrencyIdB}`, undefined, { shallow: true })
         }
       } else {
-        router.replace(`/${path}/${currencyIdA || 'BNB'}/${newCurrencyIdB}`, undefined, { shallow: true })
+        router.replace(`/${PATH}/${currencyIdA || 'BNB'}/${newCurrencyIdB}`, undefined, { shallow: true })
       }
     },
-    [currencyIdA, router, currencyIdB, path],
+    [currencyIdA, router, currencyIdB],
   )
 
   return {
