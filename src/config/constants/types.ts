@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { Token, ChainId } from '@pancakeswap/sdk'
+import { SerializedToken } from '@pancakeswap/tokens'
 
 // a list of tokens by chain
 export type ChainMap<T> = {
@@ -20,16 +21,6 @@ export interface Address {
   97?: string
   56: string
   [chainId: number]: string
-}
-
-export interface SerializedToken {
-  chainId: number
-  address: string
-  decimals: number
-  symbol?: string
-  name?: string
-  projectLink?: string
-  logoURI?: string
 }
 
 export enum PoolIds {

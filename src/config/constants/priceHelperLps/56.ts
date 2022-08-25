@@ -1,5 +1,4 @@
-import { serializeTokens } from 'utils/serializeTokens'
-import { bscTokens } from '@pancakeswap/tokens'
+import { bscTokens, serializeTokens } from '@pancakeswap/tokens'
 import { SerializedFarmConfig } from '../types'
 
 const serializedTokens = serializeTokens(bscTokens)

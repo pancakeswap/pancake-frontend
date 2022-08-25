@@ -1,5 +1,4 @@
-import { serializeTokens } from 'utils/serializeTokens'
-import { bscTokens } from '@pancakeswap/tokens'
+import { bscTokens, serializeTokens } from '@pancakeswap/tokens'
 import { CAKE_BNB_LP_MAINNET } from '../lp'
 import { SerializedFarmConfig } from '../types'
 
