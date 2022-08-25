@@ -1,4 +1,4 @@
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { LotteryStatus } from 'config/constants/types'
 import { usePreviousValue } from '@pancakeswap/hooks'
 import { useEffect } from 'react'

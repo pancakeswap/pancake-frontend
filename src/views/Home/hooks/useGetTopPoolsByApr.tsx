@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAppDispatch } from 'state'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { DeserializedPool, VaultKey } from 'state/types'
@@ -10,6 +11,7 @@ import { FetchStatus } from 'config/constants/types'
 
 const useGetTopPoolsByApr = (isIntersecting: boolean) => {
   const dispatch = useAppDispatch()
+  const { chainId } = useActiveWeb3React()
 
   const [fetchStatus, setFetchStatus] = useState(FetchStatus.Idle)
   const [topPools, setTopPools] = useState<DeserializedPool[]>([null, null, null, null, null])
@@ -26,7 +28,7 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
         await Promise.all([
           dispatch(fetchCakeVaultFees()),
           dispatch(fetchCakeVaultPublicData()),
-          dispatch(fetchPoolsPublicDataAsync(initialBlock)),
+          dispatch(fetchPoolsPublicDataAsync(initialBlock, chainId)),
         ])
         setFetchStatus(FetchStatus.Fetched)
       } catch (e) {
@@ -38,7 +40,7 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
     if (isIntersecting && fetchStatus === FetchStatus.Idle && initialBlock > 0) {
       fetchPoolsPublicData()
     }
-  }, [dispatch, setFetchStatus, fetchStatus, topPools, isIntersecting, initialBlock])
+  }, [dispatch, setFetchStatus, fetchStatus, topPools, isIntersecting, initialBlock, chainId])
 
   useEffect(() => {
     const [cakePools, otherPools] = partition(pools, (pool) => pool.sousId === 0)

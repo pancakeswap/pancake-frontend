@@ -1,11 +1,12 @@
+import type { Ethereum } from "@wagmi/core";
+
 interface Window {
-  ethereum?: {
-    isMetaMask?: true;
-    isOpera?: true;
-    isCoinbaseWallet?: true;
-    isTrust?: true;
-    providers?: any[];
-    request?: (...args: any[]) => Promise<void>;
+  coin98?: true;
+  ethereum?: Ethereum & {
+    isSafePal?: true;
+    isCoin98?: true;
+    isBlocto?: true;
+    isMathWallet?: true;
   };
   BinanceChain?: {
     bnbSign?: (address: string, message: string) => Promise<{ publicKey: string; signature: string }>;

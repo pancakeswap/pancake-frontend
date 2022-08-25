@@ -1,18 +1,9 @@
 import { useEffect, useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { isAddress } from 'utils'
 import { useAppDispatch } from 'state'
 import { getUserActivity } from 'state/nftMarket/helpers'
-import {
-  ArrowBackIcon,
-  ArrowForwardIcon,
-  Card,
-  Flex,
-  Table,
-  Text,
-  Th,
-  useMatchBreakpointsContext,
-} from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, Card, Flex, Table, Text, Th, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { Activity, NftToken } from 'state/nftMarket/types'
 import { useTranslation } from '@pancakeswap/localization'
 import TableLoader from 'components/TableLoader'
@@ -40,12 +31,12 @@ const ActivityHistory = () => {
   const [sortedUserActivities, setSortedUserActivities] = useState<Activity[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const bnbBusdPrice = useBNBBusdPrice()
-  const { isXs, isSm } = useMatchBreakpointsContext()
+  const { isXs, isSm } = useMatchBreakpoints()
 
   useEffect(() => {
     const fetchAddressActivity = async () => {
       try {
-        const addressActivity = await getUserActivity(accountAddress.toLocaleLowerCase())
+        const addressActivity = await getUserActivity(accountAddress.toLowerCase())
         setSortedUserActivities(sortUserActivity(accountAddress, addressActivity))
         setIsLoading(false)
       } catch (error) {

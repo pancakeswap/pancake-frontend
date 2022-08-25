@@ -11,7 +11,7 @@ const CAKE_MAINNET = new Token(
 
 const CAKE_TESTNET = new Token(
   ChainId.BSC_TESTNET,
-  '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
+  '0xFa60D973F7642B748046464e165A65B7323b0DEE',
   18,
   'CAKE',
   'PancakeSwap Token',
@@ -36,9 +36,47 @@ const USDC_TESTNET = new Token(
   'https://www.centre.io/usdc',
 )
 
+const USDC_ETH = new Token(ChainId.ETHEREUM, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin')
+
+const USDC_RINKEBY = new Token(
+  ChainId.RINKEBY,
+  '0x4DBCdF9B62e891a7cec5A2568C3F4FAF9E8Abe2b',
+  6,
+  'tUSDC',
+  'test USD Coin',
+)
+
+const USDC_GOERLI = new Token(ChainId.GOERLI, '0x07865c6E87B9F70255377e024ace6630C1Eaa37F', 6, 'tUSDC', 'test USD Coin')
+
+const USDT_BSC = new Token(
+  ChainId.BSC,
+  '0x55d398326f99059fF775485246999027B3197955',
+  18,
+  'USDT',
+  'Tether USD',
+  'https://tether.to/',
+)
+
+const USDT_ETH = new Token(
+  ChainId.ETHEREUM,
+  '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+  6,
+  'USDT',
+  'Tether USD',
+  'https://tether.to/',
+)
+
+export const USDT = {
+  [ChainId.BSC]: USDT_BSC,
+  [ChainId.ETHEREUM]: USDT_ETH,
+}
+
 export const USDC = {
   [ChainId.BSC]: USDC_BSC,
   [ChainId.BSC_TESTNET]: USDC_TESTNET,
+  [ChainId.ETHEREUM]: USDC_ETH,
+  [ChainId.RINKEBY]: USDC_RINKEBY,
+  [ChainId.GOERLI]: USDC_GOERLI,
 }
 
 export const CAKE = {
@@ -57,7 +95,34 @@ const BUSD_MAINNET = new Token(
 
 const BUSD_TESTNET = new Token(
   ChainId.BSC_TESTNET,
-  '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee',
+  '0x8516Fc284AEEaa0374E66037BD2309349FF728eA',
+  18,
+  'BUSD',
+  'Binance USD',
+  'https://www.paxos.com/busd/',
+)
+
+const BUSD_ETH = new Token(
+  ChainId.ETHEREUM,
+  '0x4Fabb145d64652a948d72533023f6E7A623C7C53',
+  18,
+  'BUSD',
+  'Binance USD',
+  'https://www.paxos.com/busd/',
+)
+
+const BUSD_RINKEBY = new Token(
+  ChainId.RINKEBY,
+  '0x4e2442A6f7AeCE64Ca33d31756B5390860BF973E',
+  18,
+  'BUSD',
+  'Binance USD',
+  'https://www.paxos.com/busd/',
+)
+
+const BUSD_GOERLI = new Token(
+  ChainId.GOERLI,
+  '0xb809b9B2dc5e93CB863176Ea2D565425B03c0540',
   18,
   'BUSD',
   'Binance USD',
@@ -65,6 +130,9 @@ const BUSD_TESTNET = new Token(
 )
 
 export const BUSD: Record<ChainId, Token> = {
+  [ChainId.ETHEREUM]: BUSD_ETH,
+  [ChainId.RINKEBY]: BUSD_RINKEBY,
+  [ChainId.GOERLI]: BUSD_GOERLI,
   [ChainId.BSC]: BUSD_MAINNET,
   [ChainId.BSC_TESTNET]: BUSD_TESTNET,
 }
@@ -148,14 +216,7 @@ export const bscTokens = {
     'Dai Stablecoin',
     'https://www.makerdao.com/',
   ),
-  usdt: new Token(
-    ChainId.BSC,
-    '0x55d398326f99059fF775485246999027B3197955',
-    18,
-    'USDT',
-    'Tether USD',
-    'https://tether.to/',
-  ),
+  usdt: USDT_BSC,
   btcb: new Token(
     ChainId.BSC,
     '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c',
@@ -2346,6 +2407,22 @@ export const bscTokens = {
     'pStake Finance',
     'https://pstake.finance/',
   ),
+  wom: new Token(
+    ChainId.BSC,
+    '0xAD6742A35fB341A9Cc6ad674738Dd8da98b94Fb1',
+    18,
+    'WOM',
+    'Wombat Token',
+    'https://www.wombat.exchange/',
+  ),
+  hay: new Token(
+    ChainId.BSC,
+    '0x0782b6d8c4551B9760e74c0545a9bCD90bdc41E5',
+    18,
+    'HAY',
+    'Hay Stablecoin',
+    'https://helio.money/',
+  ),
 }
 
 export const bscTestnetTokens = {
@@ -2368,4 +2445,22 @@ export const bscTestnetTokens = {
     'Bakeryswap Token',
     'https://www.bakeryswap.org/',
   ),
+  hbtc: new Token(ChainId.BSC_TESTNET, '0x3Fb6a6C06c7486BD194BB99a078B89B9ECaF4c82', 18, 'HBTC', 'Huobi BTC'),
+  wbtc: new Token(ChainId.BSC_TESTNET, '0xfC8bFbe9644e1BC836b8821660593e7de711e564', 18, 'WBTC', 'Wrapped BTC'),
+}
+
+export const ethereumTokens = {}
+
+export const goerliTestnetTokens = {
+  weth: new Token(
+    ChainId.GOERLI,
+    '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    18,
+    'WETH',
+    'Wrapped Ether',
+    'https://weth.io',
+  ),
+  celr: new Token(ChainId.GOERLI, '0x5D3c0F4cA5EE99f8E8F59Ff9A5fAb04F6a7e007f', 18, 'CELR', 'CelerToken', ''),
+  leet: new Token(ChainId.GOERLI, '0xBd509651E6374c327d24b9d7E3Ea46704f6F31E8', 18, 'LEET', 'Leet Token', ''),
+  usdc: USDC_GOERLI,
 }

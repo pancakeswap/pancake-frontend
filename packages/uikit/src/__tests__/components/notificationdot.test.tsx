@@ -1,9 +1,9 @@
 import React from "react";
-import { renderWithTheme } from "../../testHelpers";
+import { renderWithProvider } from "../../testHelpers";
 import NotificationDot from "../../components/NotificationDot/NotificationDot";
 
 it("renders correctly", () => {
-  const { asFragment } = renderWithTheme(
+  const { asFragment } = renderWithProvider(
     <NotificationDot>
       <div />
     </NotificationDot>

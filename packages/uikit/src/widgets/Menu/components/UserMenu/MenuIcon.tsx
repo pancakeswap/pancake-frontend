@@ -13,19 +13,19 @@ const MenuIconWrapper = styled.div<{ borderColor: keyof Colors }>`
   border-style: solid;
   border-width: 2px;
   display: flex;
-  height: 40px;
+  height: 32px;
   justify-content: center;
   left: 0;
   position: absolute;
-  top: -4px;
-  width: 40px;
+  top: 0;
+  width: 32px;
   z-index: 102;
 `;
 
 const ProfileIcon = styled(Image)`
   left: 0;
   position: absolute;
-  top: -4px;
+  top: 0;
   z-index: 102;
 
   & > img {
@@ -77,7 +77,7 @@ const MenuIcon: React.FC<React.PropsWithChildren<{ avatarSrc?: string; variant: 
     return <NoProfileMenuIcon />;
   }
 
-  return <ProfileIcon src={avatarSrc} height={40} width={40} />;
+  return <ProfileIcon src={avatarSrc} height={32} width={32} />;
 };
 
 export default MenuIcon;

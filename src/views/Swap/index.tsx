@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { ChainId, CurrencyAmount, Token, Trade } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Token, Trade, TradeType } from '@pancakeswap/sdk'
 import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange'
 import {
   Button,
@@ -13,11 +13,12 @@ import {
   BottomDrawer,
   ArrowUpDownIcon,
   Skeleton,
-  useMatchBreakpointsContext,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import Footer from 'components/Menu/Footer'
+import { CommitButton } from 'components/CommitButton'
 import { useRouter } from 'next/router'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
@@ -67,6 +68,8 @@ import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
 import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
 import { CommonBasesType } from '../../components/SearchModal/types'
+import replaceBrowserHistory from '../../utils/replaceBrowserHistory'
+import { currencyId } from '../../utils/currencyId'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -99,7 +102,7 @@ export default function Swap() {
   const router = useRouter()
   const loadedUrlParams = useDefaultsFromURLSearch()
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpointsContext()
+  const { isMobile } = useMatchBreakpoints()
   const [isChartExpanded, setIsChartExpanded] = useState(false)
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
@@ -115,19 +118,19 @@ export default function Swap() {
     useCurrency(loadedUrlParams?.outputCurrencyId),
   ]
   const urlLoadedTokens: Token[] = useMemo(
-    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
+    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c?.isToken) ?? [],
     [loadedInputCurrency, loadedOutputCurrency],
   )
+
+  const { account, chainId } = useActiveWeb3React()
 
   // dismiss warning if all imported tokens are in active lists
   const defaultTokens = useAllTokens()
   const importTokensNotInDefault =
     urlLoadedTokens &&
     urlLoadedTokens.filter((token: Token) => {
-      return !(token.address in defaultTokens)
+      return !(token.address in defaultTokens) && token.chainId === chainId
     })
-
-  const { account, chainId } = useActiveWeb3React()
 
   // for expert mode
   const [isExpertMode] = useExpertModeManager()
@@ -192,7 +195,7 @@ export default function Swap() {
 
   // modal and loading
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
-    tradeToConfirm: Trade | undefined
+    tradeToConfirm: Trade<Currency, Currency, TradeType> | undefined
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
     txHash: string | undefined
@@ -229,7 +232,7 @@ export default function Swap() {
     }
   }, [approval, approvalSubmitted])
 
-  const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
+  const maxAmountInput: CurrencyAmount<Currency> | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
   // the callback to execute the swap
@@ -309,6 +312,8 @@ export default function Swap() {
       } else {
         setSwapWarningCurrency(null)
       }
+
+      replaceBrowserHistory('inputCurrency', currencyId(currencyInput))
     },
     [onCurrencySelection],
   )
@@ -328,6 +333,8 @@ export default function Swap() {
       } else {
         setSwapWarningCurrency(null)
       }
+
+      replaceBrowserHistory('outputCurrency', currencyId(currencyOutput))
     },
 
     [onCurrencySelection],
@@ -350,6 +357,7 @@ export default function Swap() {
     <ConfirmSwapModal
       trade={trade}
       originalTrade={tradeToConfirm}
+      currencyBalances={currencyBalances}
       onAcceptChanges={handleAcceptChanges}
       attemptingTxn={attemptingTxn}
       txHash={txHash}
@@ -372,9 +380,14 @@ export default function Swap() {
     }
   }, [hasAmount, refreshBlockNumber])
 
-  const isChartSupported = useMemo(() => CHART_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
-  const isAccessTokenSupported = useMemo(() => ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
+  const isChartSupported = useMemo(
+    () =>
+      // avoid layout shift, by default showing
+      !chainId || CHART_SUPPORT_CHAIN_IDS.includes(chainId),
+    [chainId],
+  )
 
+  const isAccessTokenSupported = useMemo(() => ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
   const isShowAccessToken = useMemo(() => {
     // TODO: Should verify with native token instead of BNB
     return isAccessTokenSupported && currencies[Field.OUTPUT]?.symbol !== 'BNB'
@@ -536,10 +549,10 @@ export default function Swap() {
                     ) : !account ? (
                       <ConnectWalletButton width="100%" />
                     ) : showWrap ? (
-                      <Button width="100%" disabled={Boolean(wrapInputError)} onClick={onWrap}>
+                      <CommitButton width="100%" disabled={Boolean(wrapInputError)} onClick={onWrap}>
                         {wrapInputError ??
                           (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
-                      </Button>
+                      </CommitButton>
                     ) : noRoute && userHasSpecifiedInputOutput ? (
                       <GreyCard style={{ textAlign: 'center', padding: '0.75rem' }}>
                         <Text color="textSubtle">{t('Insufficient liquidity for this trade.')}</Text>
@@ -547,7 +560,7 @@ export default function Swap() {
                       </GreyCard>
                     ) : showApproveFlow ? (
                       <RowBetween>
-                        <Button
+                        <CommitButton
                           variant={approval === ApprovalState.APPROVED ? 'success' : 'primary'}
                           onClick={approveCallback}
                           disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
@@ -562,8 +575,8 @@ export default function Swap() {
                           ) : (
                             t('Enable %asset%', { asset: currencies[Field.INPUT]?.symbol ?? '' })
                           )}
-                        </Button>
-                        <Button
+                        </CommitButton>
+                        <CommitButton
                           variant={isValid && priceImpactSeverity > 2 ? 'danger' : 'primary'}
                           onClick={() => {
                             if (isExpertMode) {
@@ -591,10 +604,10 @@ export default function Swap() {
                             : priceImpactSeverity > 2
                             ? t('Swap Anyway')
                             : t('Swap')}
-                        </Button>
+                        </CommitButton>
                       </RowBetween>
                     ) : (
-                      <Button
+                      <CommitButton
                         variant={isValid && priceImpactSeverity > 2 && !swapCallbackError ? 'danger' : 'primary'}
                         onClick={() => {
                           if (isExpertMode) {
@@ -619,7 +632,7 @@ export default function Swap() {
                             : priceImpactSeverity > 2
                             ? t('Swap Anyway')
                             : t('Swap'))}
-                      </Button>
+                      </CommitButton>
                     )}
                     {showApproveFlow && (
                       <Column style={{ marginTop: '1rem' }}>

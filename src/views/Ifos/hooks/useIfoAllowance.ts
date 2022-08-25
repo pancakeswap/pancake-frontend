@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { Contract } from '@ethersproject/contracts'
 import { BIG_ZERO } from 'utils/bigNumber'
 

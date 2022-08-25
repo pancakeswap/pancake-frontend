@@ -8,12 +8,12 @@ import {
   OpenNewIcon,
   useModal,
   Skeleton,
-  useMatchBreakpointsContext,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Activity, NftToken } from 'state/nftMarket/types'
-import { Price } from '@pancakeswap/sdk'
-import { getBscScanLink } from 'utils'
+import { Price, Currency } from '@pancakeswap/sdk'
+import { getBlockExploreLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ProfileCell from 'views/Nft/market/components/ProfileCell'
 import MobileModal from './MobileModal'
@@ -25,7 +25,7 @@ import NFTMedia from '../NFTMedia'
 interface ActivityRowProps {
   activity: Activity
   nft: NftToken
-  bnbBusdPrice: Price
+  bnbBusdPrice: Price<Currency, Currency>
   isUserActivity?: boolean
   isNftActivity?: boolean
 }
@@ -38,7 +38,7 @@ const ActivityRow: React.FC<React.PropsWithChildren<ActivityRowProps>> = ({
   isNftActivity = false,
 }) => {
   const { chainId } = useActiveWeb3React()
-  const { isXs, isSm } = useMatchBreakpointsContext()
+  const { isXs, isSm } = useMatchBreakpoints()
   const priceAsFloat = parseFloat(activity.price)
   const timestampAsMs = parseFloat(activity.timestamp) * 1000
   const localeTimestamp = new Date(timestampAsMs).toLocaleString(undefined, {
@@ -157,7 +157,7 @@ const ActivityRow: React.FC<React.PropsWithChildren<ActivityRowProps>> = ({
       </Td>
       {isXs || isSm ? null : (
         <Td>
-          <IconButton as={Link} external href={getBscScanLink(activity.tx, 'transaction', chainId)}>
+          <IconButton as={Link} external href={getBlockExploreLink(activity.tx, 'transaction', chainId)}>
             <OpenNewIcon color="textSubtle" width="18px" />
           </IconButton>
         </Td>

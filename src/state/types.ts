@@ -15,7 +15,7 @@ import {
 import { Token, ChainId } from '@pancakeswap/sdk'
 import { TokenInfo, TokenList, Tags } from '@uniswap/token-lists'
 import { parseUnits } from '@ethersproject/units'
-import { NftToken, State as NftMarketState } from './nftMarket/types'
+import { NftToken } from './nftMarket/types'
 
 /**
  * Token instances created from token info.
@@ -36,9 +36,11 @@ export class WrappedTokenInfo extends Token {
   }
 }
 
-export type TokenAddressMap = Readonly<{
-  [chainId in ChainId]: Readonly<{ [tokenAddress: string]: { token: WrappedTokenInfo; list: TokenList } }>
-}>
+export type TokenAddressMap = Readonly<
+  {
+    [chainId in ChainId]: Readonly<{ [tokenAddress: string]: { token: WrappedTokenInfo; list: TokenList } }>
+  }
+>
 
 type TagDetails = Tags[keyof Tags]
 export interface TagInfo extends TagDetails {
@@ -49,6 +51,9 @@ export interface TagInfo extends TagDetails {
  * An empty result, useful as a default.
  */
 export const EMPTY_LIST: TokenAddressMap = {
+  [ChainId.ETHEREUM]: {},
+  [ChainId.RINKEBY]: {},
+  [ChainId.GOERLI]: {},
   [ChainId.BSC]: {},
   [ChainId.BSC_TESTNET]: {},
 }
@@ -82,6 +87,12 @@ interface SerializedFarmUserData {
   tokenBalance: string
   stakedBalance: string
   earnings: string
+  proxy?: {
+    allowance: string
+    tokenBalance: string
+    stakedBalance: string
+    earnings: string
+  }
 }
 
 export interface DeserializedFarmUserData {
@@ -89,6 +100,12 @@ export interface DeserializedFarmUserData {
   tokenBalance: BigNumber
   stakedBalance: BigNumber
   earnings: BigNumber
+  proxy?: {
+    allowance: BigNumber
+    tokenBalance: BigNumber
+    stakedBalance: BigNumber
+    earnings: BigNumber
+  }
 }
 
 export interface SerializedFarm extends SerializedFarmConfig {
@@ -101,6 +118,7 @@ export interface SerializedFarm extends SerializedFarmConfig {
   tokenPriceVsQuote?: SerializedBigNumber
   poolWeight?: SerializedBigNumber
   userData?: SerializedFarmUserData
+  boosted?: boolean
 }
 
 export interface DeserializedFarm extends DeserializedFarmConfig {
@@ -113,6 +131,7 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   tokenPriceVsQuote?: BigNumber
   poolWeight?: BigNumber
   userData?: DeserializedFarmUserData
+  boosted?: boolean
 }
 
 export enum VaultKey {
@@ -649,6 +668,7 @@ export interface PredictionConfig {
   api: string
   chainlinkOracleAddress: string
   minPriceUsdDisplayed: EthersBigNumber
+  displayedDecimals: number
   token: Token
 }
 
@@ -742,6 +762,5 @@ export interface State {
   pools: PoolsState
   predictions: PredictionsState
   lottery: LotteryState
-  nftMarket: NftMarketState
   pottery: PotteryState
 }

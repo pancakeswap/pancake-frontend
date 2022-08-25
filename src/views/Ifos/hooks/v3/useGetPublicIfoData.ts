@@ -102,9 +102,9 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         vestingStartTime,
         basicVestingInformation,
         unlimitedVestingInformation,
-      ] = await multicallv2(
+      ] = await multicallv2({
         abi,
-        [
+        calls: [
           {
             address,
             name: 'startBlock',
@@ -159,7 +159,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
             params: [1],
           },
         ].filter(Boolean),
-      )
+      })
 
       const poolBasicFormatted = formatPool(poolBasic)
       const poolUnlimitedFormatted = formatPool(poolUnlimited)

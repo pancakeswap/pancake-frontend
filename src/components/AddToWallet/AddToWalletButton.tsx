@@ -6,8 +6,11 @@ import {
   TrustWalletIcon,
   CoinbaseWalletIcon,
   TokenPocketIcon,
+  OperaIcon,
+  BinanceChainIcon,
 } from '@pancakeswap/uikit'
-import { registerToken, canRegisterToken } from '../../utils/wallet'
+import { BAD_SRCS } from 'components/Logo/Logo'
+import { useAccount } from 'wagmi'
 
 export enum AddToWalletTextOptions {
   NO_TEXT,
@@ -24,10 +27,43 @@ export interface AddToWalletButtonProps {
   marginTextBetweenLogo?: string
 }
 
-const getWalletIcon = (marginTextBetweenLogo: string) => {
+const Icons = {
+  // TODO: Brave
+  Binance: BinanceChainIcon,
+  'Coinbase Wallet': CoinbaseWalletIcon,
+  Opera: OperaIcon,
+  TokenPocket: TokenPocketIcon,
+  'Trust Wallet': TrustWalletIcon,
+  MetaMask: MetamaskIcon,
+}
+
+const getWalletText = (textOptions: AddToWalletTextOptions, tokenSymbol: string, t: any) => {
+  // @ts-ignore
+  if (window?.ethereum?.isSafePal) {
+    return null
+  }
+
+  return (
+    textOptions !== AddToWalletTextOptions.NO_TEXT &&
+    (textOptions === AddToWalletTextOptions.TEXT
+      ? t('Add to Wallet')
+      : t('Add %asset% to Wallet', { asset: tokenSymbol }))
+  )
+}
+
+const getWalletIcon = (marginTextBetweenLogo: string, name?: string) => {
+  // @ts-ignore
+  if (window?.ethereum?.isSafePal) {
+    return null
+  }
+
   const iconProps = {
     width: '16px',
     ...(marginTextBetweenLogo && { ml: marginTextBetweenLogo }),
+  }
+  if (name && Icons[name]) {
+    const Icon = Icons[name]
+    return <Icon {...iconProps} />
   }
   if (window?.ethereum?.isTrust) {
     return <TrustWalletIcon {...iconProps} />
@@ -41,26 +77,10 @@ const getWalletIcon = (marginTextBetweenLogo: string) => {
   if (window?.ethereum?.isMetaMask) {
     return <MetamaskIcon {...iconProps} />
   }
-  return null
+  return <MetamaskIcon {...iconProps} />
 }
 
-const getWalletName = () => {
-  if (window?.ethereum?.isTrust) {
-    return 'Trust Wallet'
-  }
-  if (window?.ethereum?.isCoinbaseWallet) {
-    return 'Coinbase Wallet'
-  }
-  if (window?.ethereum?.isTokenPocket) {
-    return 'TokenPocket Wallet'
-  }
-  if (window?.ethereum?.isMetaMask) {
-    return 'Metamask'
-  }
-  return null
-}
-
-const AddToWalletButton: React.FC<React.PropsWithChildren<AddToWalletButtonProps & ButtonProps>> = ({
+const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
   tokenAddress,
   tokenSymbol,
   tokenDecimals,
@@ -70,15 +90,25 @@ const AddToWalletButton: React.FC<React.PropsWithChildren<AddToWalletButtonProps
   ...props
 }) => {
   const { t } = useTranslation()
+  const { connector, isConnected } = useAccount()
 
-  if (!canRegisterToken()) return null
+  if (!(connector && connector.watchAsset && isConnected)) return null
   return (
-    <Button {...props} onClick={() => registerToken(tokenAddress, tokenSymbol, tokenDecimals, tokenLogo)}>
-      {textOptions !== AddToWalletTextOptions.NO_TEXT &&
-        (textOptions === AddToWalletTextOptions.TEXT
-          ? t('Add to %wallet%', { wallet: getWalletName() })
-          : t('Add %asset% to %wallet%', { asset: tokenSymbol, wallet: getWalletName() }))}
-      {getWalletIcon(marginTextBetweenLogo)}
+    <Button
+      {...props}
+      onClick={() => {
+        const image = tokenLogo ? (BAD_SRCS[tokenLogo] ? undefined : tokenLogo) : undefined
+        connector.watchAsset?.({
+          address: tokenAddress,
+          symbol: tokenSymbol,
+          image,
+          // @ts-ignore
+          decimals: tokenDecimals,
+        })
+      }}
+    >
+      {getWalletText(textOptions, tokenSymbol, t)}
+      {getWalletIcon(marginTextBetweenLogo, connector?.name)}
     </Button>
   )
 }

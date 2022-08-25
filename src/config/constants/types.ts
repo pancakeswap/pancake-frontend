@@ -2,9 +2,11 @@ import BigNumber from 'bignumber.js'
 import { Token, ChainId } from '@pancakeswap/sdk'
 
 // a list of tokens by chain
-export type ChainTokenList = {
-  readonly [chainId in ChainId]: Token[]
+export type ChainMap<T> = {
+  readonly [chainId in ChainId]: T
 }
+
+export type ChainTokenList = ChainMap<Token[]>
 
 export type TranslatableText =
   | string
@@ -72,10 +74,12 @@ export enum PoolCategory {
 }
 
 interface FarmConfigBaseProps {
+  isStable?: boolean
   pid: number
   v1pid?: number
+  bscPid?: number
   lpSymbol: string
-  lpAddresses: Address
+  lpAddress: string
   multiplier?: string
   isCommunity?: boolean
   auctionHostingStartSeconds?: number
@@ -85,6 +89,7 @@ interface FarmConfigBaseProps {
     earnLabel: string
     endBlock: number
   }
+  boosted?: boolean
 }
 
 export interface SerializedFarmConfig extends FarmConfigBaseProps {

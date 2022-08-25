@@ -135,7 +135,7 @@ export const immutableMiddleware: Middleware = (useSWRNext) => (key, fetcher, co
 
 export function useSWRMulticall<Data>(abi: any[], calls: Call[], options?: MulticallOptions & SWRConfiguration) {
   const { requireSuccess = true, ...config } = options || {}
-  return useSWR<Data>(calls, () => multicallv2(abi, calls, { requireSuccess }), {
+  return useSWR<Data>(calls, () => multicallv2({ abi, calls, options: { requireSuccess } }), {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     ...config,
@@ -160,7 +160,7 @@ export const localStorageMiddleware: Middleware = (useSWRNext) => (key, fetcher,
 
   let localStorageDataParsed
 
-  if (!data) {
+  if (!data && typeof window !== 'undefined') {
     const localStorageData = localStorage?.getItem(serializedKey)
 
     if (localStorageData) {

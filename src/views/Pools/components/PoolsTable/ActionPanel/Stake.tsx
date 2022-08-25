@@ -11,9 +11,9 @@ import {
   useTooltip,
   Box,
   SkeletonV2,
-  useMatchBreakpointsContext,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -69,7 +69,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   } = pool
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { isMobile } = useMatchBreakpointsContext()
+  const { isMobile } = useMatchBreakpoints()
 
   const stakingTokenContract = useERC20(stakingToken.address || '')
   const { handleApprove: handlePoolApprove, pendingTx: pendingPoolTx } = useApprovePool(

@@ -12,7 +12,7 @@ import {
   WalletFilledIcon,
   Skeleton,
 } from '@pancakeswap/uikit'
-import { Price } from '@pancakeswap/sdk'
+import { Currency, Price } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { multiplyPriceByAmount } from 'utils/prices'
 import styled from 'styled-components'
@@ -41,7 +41,7 @@ export const BNBAmountLabel: React.FC<React.PropsWithChildren<BNBAmountLabelProp
 
 interface CostLabelProps extends FlexProps {
   cost: number
-  bnbBusdPrice: Price
+  bnbBusdPrice: Price<Currency, Currency>
 }
 
 export const CostLabel: React.FC<React.PropsWithChildren<CostLabelProps>> = ({ cost, bnbBusdPrice, ...props }) => {
@@ -141,7 +141,7 @@ export const StyledCollectibleCard = styled(Card)`
 interface LowestPriceMetaRowProps {
   lowestPrice: number
   isFetching: boolean
-  bnbBusdPrice: Price
+  bnbBusdPrice: Price<Currency, Currency>
 }
 
 export const LowestPriceMetaRow = ({ lowestPrice, isFetching, bnbBusdPrice }: LowestPriceMetaRowProps) => {

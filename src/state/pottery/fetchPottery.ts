@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import multicallv2 from 'utils/multicall'
+import multicall from 'utils/multicall'
 import potteryVaultAbi from 'config/abi/potteryVaultAbi.json'
 import { getPotteryDrawAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -17,7 +17,7 @@ export const fetchLastVaultAddress = async () => {
     const response = await request(
       GRAPH_API_POTTERY,
       gql`
-        query getUserPotterWithdrawAbleData($contract: ID!) {
+        query getLastVaultAddress($contract: ID!) {
           pottery(id: $contract) {
             id
             lastVaultAddress
@@ -44,7 +44,7 @@ export const fetchPublicPotteryValue = async (potteryVaultAddress: string) => {
       }),
     )
 
-    const [getStatus, [totalLockCake], [totalSupply], [lockStartTime], getMaxTotalDeposit] = await multicallv2(
+    const [getStatus, [totalLockCake], [totalSupply], [lockStartTime], getMaxTotalDeposit] = await multicall(
       potteryVaultAbi,
       calls,
     )
@@ -94,14 +94,13 @@ export const fetchLatestRoundId = async () => {
     const response = await request(
       GRAPH_API_POTTERY,
       gql`
-        query getUserPotterWithdrawAbleData($roundId: BigInt) {
+        query getLatestRoundId {
           potteryVaultRounds(first: 1, orderDirection: desc, orderBy: roundId) {
             roundId
             winners
           }
         }
       `,
-      { roundId: 0 },
     )
 
     const winners = response.potteryVaultRounds[0]?.winners

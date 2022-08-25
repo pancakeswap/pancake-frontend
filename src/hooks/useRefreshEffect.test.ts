@@ -2,14 +2,20 @@ import { act, renderHook } from '@testing-library/react-hooks'
 import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
 import { useState } from 'react'
 import useSWR from 'swr'
+import { createWagmiWrapper } from 'testUtils'
 import { useFastRefreshEffect, useSlowRefreshEffect } from './useRefreshEffect'
 
 test('should refresh when deps changes', () => {
   const callback = jest.fn()
   let deps = [1, 2, () => 1]
-  const { rerender } = renderHook(() => {
-    useFastRefreshEffect(callback, deps)
-  })
+  const { rerender } = renderHook(
+    () => {
+      useFastRefreshEffect(callback, deps)
+    },
+    {
+      wrapper: createWagmiWrapper(),
+    },
+  )
 
   expect(callback).toHaveBeenCalledTimes(1)
   rerender()
@@ -26,11 +32,16 @@ test('should refresh when deps changes', () => {
 
 test('should refresh when block changes', async () => {
   const callback = jest.fn()
-  const { result, rerender } = renderHook(() => {
-    const { mutate, data } = useSWR([FAST_INTERVAL, 'blockNumber', 56])
-    useFastRefreshEffect(callback, [callback])
-    return { mutate, data }
-  })
+  const { result, rerender } = renderHook(
+    () => {
+      const { mutate, data } = useSWR([FAST_INTERVAL, 'blockNumber', 56])
+      useFastRefreshEffect(callback, [callback])
+      return { mutate, data }
+    },
+    {
+      wrapper: createWagmiWrapper(),
+    },
+  )
 
   expect(result.current.data).toBeUndefined()
   expect(callback).toHaveBeenCalledTimes(1)
@@ -46,14 +57,19 @@ test('should refresh when block changes', async () => {
 })
 
 test('should get latest block number when block changes', async () => {
-  const { result, rerender } = renderHook(() => {
-    const [callbackResult, setCallbackResult] = useState<number>()
-    const { mutate, data } = useSWR([SLOW_INTERVAL, 'blockNumber', 56])
-    useSlowRefreshEffect((b) => {
-      setCallbackResult(b)
-    }, [])
-    return { mutate, data, callbackResult }
-  })
+  const { result, rerender } = renderHook(
+    () => {
+      const [callbackResult, setCallbackResult] = useState<number>()
+      const { mutate, data } = useSWR([SLOW_INTERVAL, 'blockNumber', 56])
+      useSlowRefreshEffect((b) => {
+        setCallbackResult(b)
+      }, [])
+      return { mutate, data, callbackResult }
+    },
+    {
+      wrapper: createWagmiWrapper(),
+    },
+  )
 
   expect(result.current.data).toBeUndefined()
   expect(result.current.callbackResult).toBe(0)

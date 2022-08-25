@@ -3,18 +3,20 @@ import { useTranslation, languageList } from '@pancakeswap/localization'
 import { useEffect, useState } from 'react'
 /* eslint-disable no-console */
 const cbList = {}
-const onCallbackIdList = new Map<() => void, string>()
+const onCallbackIdList = {}
 
 export const listenOnBnMessage = () => {
   if (typeof window !== 'undefined') {
-    window.bn.onMessage = ({ data: { id, payload } }) => {
+    window.bn.onMessage = ({ data: { id, payload, on } }) => {
       console.log('~ onMessage: ', id, payload)
       let newPayload = payload
       if (typeof payload === 'string') {
         newPayload = JSON.parse(payload)
         console.log('~ onMessage parse payload: ', payload)
       }
-      if (typeof cbList[id] === 'function') {
+      if (on && typeof onCallbackIdList[on] === 'function') {
+        onCallbackIdList[on](newPayload)
+      } else if (typeof cbList[id] === 'function') {
         cbList[id](newPayload)
         delete cbList[id]
       }
@@ -33,8 +35,8 @@ const postMessage = ({ action, payload, cb }: { action: string; payload?: any; c
 function getWeb3Provider() {
   return {
     on(event: string, cb: () => void) {
-      const finalId = postMessage({ action: 'on', payload: { event } })
-      onCallbackIdList.set(cb, finalId)
+      postMessage({ action: 'on', payload: { event } })
+      onCallbackIdList[event] = cb
     },
     request(params) {
       return new Promise((resolve, reject) => {
@@ -51,10 +53,10 @@ function getWeb3Provider() {
         })
       })
     },
-    removeEventListener(event: string, cb: () => void) {
-      const localId = onCallbackIdList.get(cb)
-      delete cbList[localId]
-      onCallbackIdList.delete(cb)
+    removeEventListener(event: string) {
+      if (onCallbackIdList[event]) {
+        onCallbackIdList[event] = undefined
+      }
     },
   }
 }
@@ -99,7 +101,7 @@ export const useSystemInfo = () => {
   return info
 }
 
-const mpWebviewPath = new Set(['/farms', '/farms/history', '/pools', '/pools/history'])
+const mpWebviewPath = new Set(['/farms/history', '/pools/history'])
 const handleLinkClick = (e: MouseEvent, router: NextRouter) => {
   // @ts-ignore
   const href = e.target?.closest('a')?.href || ''
@@ -112,6 +114,10 @@ const handleLinkClick = (e: MouseEvent, router: NextRouter) => {
     } else if (url.pathname === '/swap') {
       const query = url.search ? url.search.slice(1).split('=') : undefined
       _bridgeUtils.jump({ path: 'swap', query: query ? { [query[0]]: query[1] } : undefined })
+    } else if (url.pathname === '/pools') {
+      _bridgeUtils.jump({ path: 'pools' })
+    } else if (url.pathname === '/farms') {
+      _bridgeUtils.jump({ path: 'farms' })
     } else if (mpWebviewPath.has(url.pathname)) {
       const newPathname = `/_mp${url.pathname}`
       router.push(newPathname)

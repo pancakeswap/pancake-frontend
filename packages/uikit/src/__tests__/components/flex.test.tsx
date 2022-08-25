@@ -1,9 +1,9 @@
 import React from "react";
-import { renderWithTheme } from "../../testHelpers";
+import { renderWithProvider } from "../../testHelpers";
 import Flex from "../../components/Box/Flex";
 
 it("renders correctly", () => {
-  const { asFragment } = renderWithTheme(<Flex>flex</Flex>);
+  const { asFragment } = renderWithProvider(<Flex>flex</Flex>);
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {

@@ -7,7 +7,7 @@ import throttle from 'lodash/throttle'
 const FixedContainer = styled.div`
   position: fixed;
   right: 5%;
-  bottom: 110px;
+  bottom: calc(110px + env(safe-area-inset-bottom));
 `
 
 const ScrollToTopButton = () => {

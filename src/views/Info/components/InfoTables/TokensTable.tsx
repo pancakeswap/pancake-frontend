@@ -1,14 +1,6 @@
 import { useState, useMemo, useCallback, useEffect, Fragment } from 'react'
 import styled from 'styled-components'
-import {
-  Text,
-  Flex,
-  Box,
-  Skeleton,
-  ArrowBackIcon,
-  ArrowForwardIcon,
-  useMatchBreakpointsContext,
-} from '@pancakeswap/uikit'
+import { Text, Flex, Box, Skeleton, ArrowBackIcon, ArrowForwardIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { TokenData } from 'state/info/types'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
@@ -96,7 +88,7 @@ const TableLoader: React.FC<React.PropsWithChildren> = () => {
 }
 
 const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: number }>> = ({ tokenData, index }) => {
-  const { isXs, isSm } = useMatchBreakpointsContext()
+  const { isXs, isSm } = useMatchBreakpoints()
   return (
     <LinkWrapper to={`/info/token/${tokenData.address}`}>
       <ResponsiveGrid>

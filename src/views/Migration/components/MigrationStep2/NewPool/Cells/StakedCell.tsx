@@ -1,4 +1,4 @@
-import { Box, Flex, Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Box, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { useTranslation } from '@pancakeswap/localization'
@@ -31,7 +31,7 @@ const StyledCell = styled(BaseCell)`
 
 const StakedCell: React.FC<React.PropsWithChildren<StakedCellProps>> = ({ pool }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpointsContext()
+  const { isMobile } = useMatchBreakpoints()
 
   // vault
   const {

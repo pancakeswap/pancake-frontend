@@ -1,7 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 import { ChainId } from '@pancakeswap/sdk'
 import { Order } from '@gelatonetwork/limit-orders-lib'
-import { ReactText } from 'react'
 
 export type TransactionType =
   | 'approve'
@@ -24,17 +23,18 @@ export interface SerializableTransactionReceipt {
   status?: number
 }
 
-export const addTransaction = createAction<{
-  chainId: ChainId
-  hash: string
-  from: string
-  approval?: { tokenAddress: string; spender: string }
-  claim?: { recipient: string }
-  summary?: string
-  translatableSummary?: { text: string; data: Record<string, ReactText> }
-  type?: TransactionType
-  order?: Order
-}>('transactions/addTransaction')
+export const addTransaction =
+  createAction<{
+    chainId: ChainId
+    hash: string
+    from: string
+    approval?: { tokenAddress: string; spender: string }
+    claim?: { recipient: string }
+    summary?: string
+    translatableSummary?: { text: string; data?: Record<string, string | number> }
+    type?: TransactionType
+    order?: Order
+  }>('transactions/addTransaction')
 export const clearAllTransactions = createAction<{ chainId: ChainId }>('transactions/clearAllTransactions')
 export const finalizeTransaction = createAction<{
   chainId: ChainId

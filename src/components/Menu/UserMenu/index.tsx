@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
-import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core'
+import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
 import {
+  Box,
   Flex,
   LogoutIcon,
   RefreshIcon,
@@ -9,23 +10,24 @@ import {
   UserMenuDivider,
   UserMenuItem,
   UserMenuVariant,
-  Box,
 } from '@pancakeswap/uikit'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import Trans from 'components/Trans'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useAuth from 'hooks/useAuth'
-import { useRouter } from 'next/router'
+import NextLink from 'next/link'
+import { useEffect, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { usePendingTransactions } from 'state/transactions/hooks'
-import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useTranslation } from '@pancakeswap/localization'
-import WalletModal, { WalletView } from './WalletModal'
+import { useAccount } from 'wagmi'
 import ProfileUserMenuItem from './ProfileUserMenuItem'
+import WalletModal, { WalletView } from './WalletModal'
 import WalletUserMenuItem from './WalletUserMenuItem'
 
 const UserMenu = () => {
-  const router = useRouter()
   const { t } = useTranslation()
-  const { account, error } = useWeb3React()
+  const { address: account } = useAccount()
+  const { chainId, isWrongNetwork } = useActiveChainId()
   const { logout } = useAuth()
   const { hasPendingTransactions, pendingNumber } = usePendingTransactions()
   const { isInitialized, isLoading, profile } = useProfile()
@@ -36,7 +38,6 @@ const UserMenu = () => {
   const avatarSrc = profile?.nft?.image?.thumbnail
   const [userMenuText, setUserMenuText] = useState<string>('')
   const [userMenuVariable, setUserMenuVariable] = useState<UserMenuVariant>('default')
-  const isWrongNetwork: boolean = error && error instanceof UnsupportedChainIdError
 
   useEffect(() => {
     if (hasPendingTransactions) {
@@ -65,14 +66,16 @@ const UserMenu = () => {
           {hasPendingTransactions && <RefreshIcon spin />}
         </UserMenuItem>
         <UserMenuDivider />
-        <UserMenuItem
-          as="button"
-          disabled={isWrongNetwork}
-          onClick={() => router.push(`/profile/${account.toLowerCase()}`)}
-        >
-          {t('Your NFTs')}
-        </UserMenuItem>
-        <ProfileUserMenuItem isLoading={isLoading} hasProfile={hasProfile} disabled={isWrongNetwork} />
+        <NextLink href={`/profile/${account?.toLowerCase()}`} passHref>
+          <UserMenuItem as="a" disabled={isWrongNetwork || chainId !== ChainId.BSC}>
+            {t('Your NFTs')}
+          </UserMenuItem>
+        </NextLink>
+        <ProfileUserMenuItem
+          isLoading={isLoading}
+          hasProfile={hasProfile}
+          disabled={isWrongNetwork || chainId !== ChainId.BSC}
+        />
         <UserMenuDivider />
         <UserMenuItem as="button" onClick={logout}>
           <Flex alignItems="center" justifyContent="space-between" width="100%">

@@ -7,7 +7,7 @@ import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { usePotterytVaultContract } from 'hooks/useContract'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { fetchPotteryUserDataAsync } from 'state/pottery'
 
 export const useDepositPottery = (amount: string, potteryVaultAddress: string) => {

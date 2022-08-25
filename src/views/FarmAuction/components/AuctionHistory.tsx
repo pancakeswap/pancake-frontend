@@ -11,7 +11,7 @@ import {
   IconButton,
   BunnyPlaceholderIcon,
   Spinner,
-  useMatchBreakpointsContext,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import AuctionLeaderboardTable from './AuctionLeaderboard/AuctionLeaderboardTable'
@@ -48,7 +48,7 @@ const AuctionHistory: React.FC<React.PropsWithChildren<AuctionHistoryProps>> = (
     currentLanguage: { locale },
   } = useTranslation()
 
-  const { isXs, isSm, isMd, isLg, isXl, isXxl } = useMatchBreakpointsContext()
+  const { isXs, isSm, isMd, isLg, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isLg || isXl || isXxl
   const isSmallerScreen = isXs || isSm || isMd
 

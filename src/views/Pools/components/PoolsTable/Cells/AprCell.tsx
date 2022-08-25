@@ -1,5 +1,5 @@
 import { BIG_ZERO } from 'utils/bigNumber'
-import { Text, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { DeserializedPool } from 'state/types'
 import { useTranslation } from '@pancakeswap/localization'
@@ -12,7 +12,7 @@ interface AprCellProps {
 
 const AprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpointsContext()
+  const { isMobile } = useMatchBreakpoints()
   const { userData } = pool
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
 

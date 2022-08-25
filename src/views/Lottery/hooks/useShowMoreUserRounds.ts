@@ -1,4 +1,4 @@
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { useState } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchAdditionalUserLotteries } from 'state/lottery'

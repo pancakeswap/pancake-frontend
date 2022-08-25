@@ -1,23 +1,24 @@
-import { useCallback, useEffect, useState } from 'react'
-import { Currency, ETHER, JSBI, TokenAmount } from '@pancakeswap/sdk'
-import { Button, ChevronDownIcon, Text, AddIcon, useModal } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { Currency, JSBI } from '@pancakeswap/sdk'
+import { AddIcon, Button, ChevronDownIcon, Text, useModal } from '@pancakeswap/uikit'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { NextLinkFromReactRouter } from 'components/NextLink'
-import { useWeb3React } from '@web3-react/core'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
+import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useCallback, useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { AppBody, AppHeader } from '../../components/App'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
+import Row from '../../components/Layout/Row'
+import Dots from '../../components/Loader/Dots'
 import { CurrencyLogo } from '../../components/Logo'
 import { MinimalPositionCard } from '../../components/PositionCard'
-import Row from '../../components/Layout/Row'
 import CurrencySearchModal from '../../components/SearchModal/CurrencySearchModal'
 import { PairState, usePair } from '../../hooks/usePairs'
 import { usePairAdder } from '../../state/user/hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { currencyId } from '../../utils/currencyId'
-import Dots from '../../components/Loader/Dots'
-import { AppHeader, AppBody } from '../../components/App'
 import Page from '../Page'
 import { CommonBasesType } from '../../components/SearchModal/types'
 
@@ -36,9 +37,10 @@ const StyledButton = styled(Button)`
 export default function PoolFinder() {
   const { account } = useWeb3React()
   const { t } = useTranslation()
+  const native = useNativeCurrency()
 
   const [activeField, setActiveField] = useState<number>(Fields.TOKEN1)
-  const [currency0, setCurrency0] = useState<Currency | null>(ETHER)
+  const [currency0, setCurrency0] = useState<Currency | null>(() => native)
   const [currency1, setCurrency1] = useState<Currency | null>(null)
 
   const [pairState, pair] = usePair(currency0 ?? undefined, currency1 ?? undefined)
@@ -54,12 +56,12 @@ export default function PoolFinder() {
     Boolean(
       pairState === PairState.EXISTS &&
         pair &&
-        JSBI.equal(pair.reserve0.raw, BIG_INT_ZERO) &&
-        JSBI.equal(pair.reserve1.raw, BIG_INT_ZERO),
+        JSBI.equal(pair.reserve0.quotient, BIG_INT_ZERO) &&
+        JSBI.equal(pair.reserve1.quotient, BIG_INT_ZERO),
     )
 
-  const position: TokenAmount | undefined = useTokenBalance(account ?? undefined, pair?.liquidityToken)
-  const hasPosition = Boolean(position && JSBI.greaterThan(position.raw, BIG_INT_ZERO))
+  const position = useTokenBalance(account ?? undefined, pair?.liquidityToken)
+  const hasPosition = Boolean(position && JSBI.greaterThan(position.quotient, BIG_INT_ZERO))
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {

@@ -2,6 +2,7 @@ export default {
   masterChef: {
     97: '0xB4A466911556e39210a6bB2FaECBB59E4eB7E43d',
     56: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
+    5: '0x8CB958bBdb45597cc918147469eb650A9397aBDA',
   },
   masterChefV1: {
     97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
@@ -15,8 +16,10 @@ export default {
     97: '0x5790c3534F30437641541a0FA04C992799602998',
     56: '0x5aF6D33DE2ccEC94efb1bDF8f92Bd58085432d2c',
   },
-  // TODO: multi
   multiCall: {
+    1: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
+    4: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
+    5: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
     56: '0xfF6FD90A470Aaa0c1B8A54681746b07AcdFedc9B',
     97: '0x8F3273Fb89B075b1645095ABaC6ed17B2d4Bc576',
   },
@@ -139,6 +142,14 @@ export default {
   },
   iCake: {
     56: '0x3C458828D1622F5f4d526eb0d24Da8C4Eb8F07b1',
+    97: '',
+  },
+  bCakeFarmBooster: {
+    56: '0xE4FAa3Ef5A9708C894435B0F39c2B440936A3A52',
+    97: '',
+  },
+  bCakeFarmBoosterProxyFactory: {
+    56: '0x2C36221bF724c60E9FEE3dd44e2da8017a8EF3BA',
     97: '',
   },
 }

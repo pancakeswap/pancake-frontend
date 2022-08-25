@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/router'
-import { CurrencyAmount, Token, Trade } from '@pancakeswap/sdk'
-import { Button, Box, Flex, useModal, BottomDrawer, Link, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { CurrencyAmount, Token, Trade, TradeType, Currency } from '@pancakeswap/sdk'
+import { Button, Box, Flex, useModal, BottomDrawer, Link, useMatchBreakpoints } from '@pancakeswap/uikit'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn } from 'components/Layout/Column'
@@ -20,7 +20,7 @@ import { GELATO_NATIVE } from 'config/constants'
 import { LIMIT_ORDERS_DOCS_URL } from 'config/constants/exchange'
 import { useExchangeChartManager } from 'state/user/hooks'
 import PriceChartContainer from 'views/Swap/components/Chart/PriceChartContainer'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import ClaimWarning from './components/ClaimWarning'
 
 import { Wrapper, StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
@@ -34,13 +34,15 @@ import getRatePercentageDifference from './utils/getRatePercentageDifference'
 import { useCurrency, useAllTokens } from '../../hooks/Tokens'
 import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
 import { CommonBasesType } from '../../components/SearchModal/types'
+import replaceBrowserHistory from '../../utils/replaceBrowserHistory'
+import { currencyId } from '../../utils/currencyId'
 
 const LimitOrders = () => {
   // Helpers
-  const { account } = useWeb3React()
+  const { account, chainId } = useWeb3React()
   const { t } = useTranslation()
   const router = useRouter()
-  const { isMobile, isTablet } = useMatchBreakpointsContext()
+  const { isMobile, isTablet } = useMatchBreakpoints()
   const { theme } = useTheme()
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartExpanded, setIsChartExpanded] = useState(false)
@@ -57,7 +59,7 @@ const LimitOrders = () => {
     useCurrency(loadedUrlParams?.outputCurrencyId),
   ]
   const urlLoadedTokens: Token[] = useMemo(
-    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
+    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c?.isToken) ?? [],
     [loadedInputCurrency, loadedOutputCurrency],
   )
 
@@ -67,10 +69,10 @@ const LimitOrders = () => {
     return (
       urlLoadedTokens &&
       urlLoadedTokens.filter((token: Token) => {
-        return !(token.address in defaultTokens)
+        return !(token.address in defaultTokens) && token.chainId === chainId
       })
     )
-  }, [defaultTokens, urlLoadedTokens])
+  }, [defaultTokens, urlLoadedTokens, chainId])
 
   const [onPresentImportTokenWarningModal] = useModal(
     <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => router.push('/limit-orders')} />,
@@ -107,7 +109,7 @@ const LimitOrders = () => {
   } = useGelatoLimitOrders()
 
   const [{ swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
-    tradeToConfirm: Trade | undefined
+    tradeToConfirm: Trade<Currency, Currency, TradeType> | undefined
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
     txHash: string | undefined
@@ -122,7 +124,7 @@ const LimitOrders = () => {
 
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
 
-  const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances.input)
+  const maxAmountInput: CurrencyAmount<Currency> | undefined = maxAmountSpend(currencyBalances.input)
   const hideMaxButton = Boolean(maxAmountInput && parsedAmounts.input?.equalTo(maxAmountInput))
 
   // Trade execution price is always "in MUL mode", even if UI handles DIV rate
@@ -146,6 +148,8 @@ const LimitOrders = () => {
     (inputCurrency) => {
       setApprovalSubmitted(false)
       handleCurrencySelection(Field.INPUT, inputCurrency)
+
+      replaceBrowserHistory('inputCurrency', currencyId(inputCurrency))
     },
     [handleCurrencySelection],
   )
@@ -163,6 +167,8 @@ const LimitOrders = () => {
   const handleOutputSelect = useCallback(
     (outputCurrency) => {
       handleCurrencySelection(Field.OUTPUT, outputCurrency)
+
+      replaceBrowserHistory('outputCurrency', currencyId(outputCurrency))
     },
     [handleCurrencySelection],
   )
@@ -214,8 +220,8 @@ const LimitOrders = () => {
       if (!account) {
         throw new Error('No account')
       }
-      const inputToken = currencies.input instanceof Token ? wrappedCurrencies.input?.address : GELATO_NATIVE
-      const outputToken = currencies.output instanceof Token ? wrappedCurrencies.output?.address : GELATO_NATIVE
+      const inputToken = currencies.input?.isToken ? wrappedCurrencies.input?.address : GELATO_NATIVE
+      const outputToken = currencies.output?.isToken ? wrappedCurrencies.output?.address : GELATO_NATIVE
 
       const orderToSubmit = {
         inputToken,

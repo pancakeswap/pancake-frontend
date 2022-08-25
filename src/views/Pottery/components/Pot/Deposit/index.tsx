@@ -58,7 +58,7 @@ const Deposit: React.FC<React.PropsWithChildren> = () => {
   }, [getStatus, totalLockCake, totalLockedValue])
 
   const currentDeposit = userData.withdrawAbleData.find(
-    (data) => data.potteryVaultAddress.toLocaleLowerCase() === lastVaultAddress.toLocaleLowerCase(),
+    (data) => data.potteryVaultAddress.toLowerCase() === lastVaultAddress.toLowerCase(),
   )
 
   const depositBalance = useMemo(() => {

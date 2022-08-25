@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import styled from 'styled-components'
 import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
 import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { Heading, Flex, Image, Text, Link } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
@@ -23,6 +24,7 @@ import { useRouter } from 'next/router'
 import Loading from 'components/Loading'
 import { useInitialBlock } from 'state/block/hooks'
 import { BSC_BLOCK_TIME } from 'config'
+import ScrollToTopButton from 'components/ScrollToTopButton/ScrollToTopButtonV2'
 import PoolCard from './components/PoolCard'
 import CakeVaultCard from './components/CakeVaultCard'
 import PoolTabButtons from './components/PoolTabButtons'
@@ -354,6 +356,7 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
           height={184.5}
         />
       </Page>
+      {createPortal(<ScrollToTopButton />, document.body)}
     </>
   )
 }

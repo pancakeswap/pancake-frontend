@@ -19,7 +19,7 @@ export const DropdownMenuItem = styled.button<StyledDropdownMenuItemProps & { $i
   border: 0;
   background: transparent;
   color: ${({ theme, disabled, $isActive }) => getTextColor({ theme, disabled, $isActive })};
-  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  cursor: pointer;
   font-weight: ${({ $isActive = false }) => ($isActive ? "600" : "400")};
   display: flex;
   font-size: 16px;
@@ -29,6 +29,10 @@ export const DropdownMenuItem = styled.button<StyledDropdownMenuItemProps & { $i
   padding-left: 16px;
   padding-right: 16px;
   width: 100%;
+
+  &:is(button) {
+    cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  }
 
   &:hover:not(:disabled) {
     background-color: ${({ theme }) => theme.colors.tertiary};
@@ -66,6 +70,7 @@ export const StyledDropdownMenu = styled.div<{ $isOpen: boolean; $isBottomNav: b
   padding-bottom: 4px;
   padding-top: 4px;
   pointer-events: auto;
+  margin-bottom: 0;
   width: ${({ $isBottomNav }) => ($isBottomNav ? "calc(100% - 32px)" : "280px")};
   visibility: visible;
   z-index: 1001;

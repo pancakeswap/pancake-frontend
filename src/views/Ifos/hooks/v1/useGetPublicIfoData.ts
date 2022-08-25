@@ -42,7 +42,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         name: method,
       }))
 
-      const [startBlock, endBlock, raisingAmount, totalAmount] = await multicallv2(ifoV1Abi, ifoCalls)
+      const [startBlock, endBlock, raisingAmount, totalAmount] = await multicallv2({ abi: ifoV1Abi, calls: ifoCalls })
 
       const startBlockNum = startBlock ? startBlock[0].toNumber() : 0
       const endBlockNum = endBlock ? endBlock[0].toNumber() : 0

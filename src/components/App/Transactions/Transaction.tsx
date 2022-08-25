@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { CheckmarkIcon, CloseIcon, LinkExternal } from '@pancakeswap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { getBscScanLink } from 'utils'
+import { getBlockExploreLink } from 'utils'
 import { TransactionDetails } from 'state/transactions/reducer'
 import CircleLoader from '../../Loader/CircleLoader'
 
@@ -33,7 +33,7 @@ export default function Transaction({ tx }: { tx: TransactionDetails }) {
 
   return (
     <TransactionState pending={pending} success={success}>
-      <LinkExternal href={getBscScanLink(tx.hash, 'transaction', chainId)}>{summary ?? tx.hash}</LinkExternal>
+      <LinkExternal href={getBlockExploreLink(tx.hash, 'transaction', chainId)}>{summary ?? tx.hash}</LinkExternal>
       <IconWrapper pending={pending} success={success}>
         {pending ? <CircleLoader /> : success ? <CheckmarkIcon color="success" /> : <CloseIcon color="failure" />}
       </IconWrapper>

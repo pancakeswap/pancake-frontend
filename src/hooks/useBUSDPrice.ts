@@ -1,28 +1,32 @@
-import { Currency, currencyEquals, JSBI, Price, WNATIVE } from '@pancakeswap/sdk'
-import { CAKE, BUSD } from 'config/constants/tokens'
+import { ChainId, Currency, CurrencyAmount, JSBI, Pair, Price, Token, WNATIVE } from '@pancakeswap/sdk'
+import { FAST_INTERVAL } from 'config/constants'
+import { BUSD, CAKE } from 'config/constants/tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
+import useSWR from 'swr'
+import getLpAddress from 'utils/getLpAddress'
 import { multiplyPriceByAmount } from 'utils/prices'
-import { wrappedCurrency } from '../utils/wrappedCurrency'
+import { useProvider } from 'wagmi'
+import { usePairContract } from './useContract'
 import { PairState, usePairs } from './usePairs'
 
 /**
  * Returns the price in BUSD of the input currency
  * @param currency currency to compute the BUSD price of
  */
-export default function useBUSDPrice(currency?: Currency): Price | undefined {
+export default function useBUSDPrice(currency?: Currency): Price<Currency, Currency> | undefined {
   const { chainId } = useActiveWeb3React()
-  const wrapped = wrappedCurrency(currency, chainId)
-  const WBNB = WNATIVE[chainId]
-  const busd = BUSD[chainId]
+  const wrapped = currency?.wrapped
+  const wnative = WNATIVE[chainId] || WNATIVE[ChainId.BSC]
+  const busd = BUSD[chainId] || BUSD[ChainId.BSC]
 
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
-      [chainId && wrapped && currencyEquals(WBNB, wrapped) ? undefined : currency, chainId ? WBNB : undefined],
+      [chainId && wrapped && wnative?.equals(wrapped) ? undefined : currency, chainId ? wnative : undefined],
       [wrapped?.equals(busd) ? undefined : wrapped, busd],
-      [chainId ? WBNB : undefined, busd],
+      [chainId ? wnative : undefined, busd],
     ],
-    [WBNB, busd, chainId, currency, wrapped],
+    [wnative, busd, chainId, currency, wrapped],
   )
   const [[bnbPairState, bnbPair], [busdPairState, busdPair], [busdBnbPairState, busdBnbPair]] = usePairs(tokenPairs)
 
@@ -30,10 +34,17 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
     if (!currency || !wrapped || !chainId) {
       return undefined
     }
+
+    const isBUSDPairExist =
+      busdPair &&
+      busdPairState === PairState.EXISTS &&
+      busdPair.reserve0.greaterThan('0') &&
+      busdPair.reserve1.greaterThan('0')
+
     // handle wbnb/bnb
-    if (wrapped.equals(WBNB)) {
-      if (busdPair) {
-        const price = busdPair.priceOf(WBNB)
+    if (wrapped.equals(wnative)) {
+      if (isBUSDPairExist) {
+        const price = busdPair.priceOf(wnative)
         return new Price(currency, busd, price.denominator, price.numerator)
       }
       return undefined
@@ -43,20 +54,33 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
       return new Price(busd, busd, '1', '1')
     }
 
-    const bnbPairBNBAmount = bnbPair?.reserveOf(WBNB)
+    const isBnbPairExist =
+      bnbPair &&
+      bnbPairState === PairState.EXISTS &&
+      bnbPair.reserve0.greaterThan('0') &&
+      bnbPair.reserve1.greaterThan('0')
+    const isBusdBnbPairExist =
+      busdBnbPair &&
+      busdBnbPairState === PairState.EXISTS &&
+      busdBnbPair.reserve0.greaterThan('0') &&
+      busdBnbPair.reserve1.greaterThan('0')
+
+    const bnbPairBNBAmount = isBnbPairExist && bnbPair?.reserveOf(wnative)
     const bnbPairBNBBUSDValue: JSBI =
-      bnbPairBNBAmount && busdBnbPair ? busdBnbPair.priceOf(WBNB).quote(bnbPairBNBAmount).raw : JSBI.BigInt(0)
+      bnbPairBNBAmount && isBUSDPairExist && isBusdBnbPairExist
+        ? busdBnbPair.priceOf(wnative).quote(bnbPairBNBAmount).quotient
+        : JSBI.BigInt(0)
 
     // all other tokens
     // first try the busd pair
-    if (busdPairState === PairState.EXISTS && busdPair && busdPair.reserveOf(busd).greaterThan(bnbPairBNBBUSDValue)) {
+    if (isBUSDPairExist && busdPair.reserveOf(busd).greaterThan(bnbPairBNBBUSDValue)) {
       const price = busdPair.priceOf(wrapped)
       return new Price(currency, busd, price.denominator, price.numerator)
     }
-    if (bnbPairState === PairState.EXISTS && bnbPair && busdBnbPairState === PairState.EXISTS && busdBnbPair) {
-      if (busdBnbPair.reserveOf(busd).greaterThan('0') && bnbPair.reserveOf(WBNB).greaterThan('0')) {
+    if (isBnbPairExist && isBusdBnbPairExist) {
+      if (busdBnbPair.reserveOf(busd).greaterThan('0') && bnbPair.reserveOf(wnative).greaterThan('0')) {
         const bnbBusdPrice = busdBnbPair.priceOf(busd)
-        const currencyBnbPrice = bnbPair.priceOf(WBNB)
+        const currencyBnbPrice = bnbPair.priceOf(wnative)
         const busdPrice = bnbBusdPrice.multiply(currencyBnbPrice).invert()
         return new Price(currency, busd, busdPrice.denominator, busdPrice.numerator)
       }
@@ -67,7 +91,7 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
     currency,
     wrapped,
     chainId,
-    WBNB,
+    wnative,
     busd,
     bnbPair,
     busdBnbPair,
@@ -78,10 +102,40 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
   ])
 }
 
-export const useCakeBusdPrice = (): Price | undefined => {
+export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
+  const [tokenA, tokenB] = [currencyA?.wrapped, currencyB?.wrapped]
+  const pairAddress = getLpAddress(tokenA, tokenB)
+  const pairContract = usePairContract(pairAddress)
+  const provider = useProvider({ chainId: currencyA.chainId })
+
+  const { data: price } = useSWR(
+    currencyA && currencyB && ['pair-price', currencyA, currencyB],
+    async () => {
+      const reserves = await pairContract.connect(provider).getReserves()
+      if (!reserves) {
+        return null
+      }
+      const { reserve0, reserve1 } = reserves
+      const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
+
+      const pair = new Pair(
+        CurrencyAmount.fromRawAmount(token0, reserve0.toString()),
+        CurrencyAmount.fromRawAmount(token1, reserve1.toString()),
+      )
+
+      return pair.priceOf(tokenB)
+    },
+    { dedupingInterval: FAST_INTERVAL, refreshInterval: FAST_INTERVAL },
+  )
+
+  return price
+}
+
+export const useCakeBusdPrice = (): Price<Currency, Currency> | undefined => {
   const { chainId } = useActiveWeb3React()
-  const cakeBusdPrice = useBUSDPrice(CAKE[chainId])
-  return cakeBusdPrice
+  // Default bsc cake, if no cake address found
+  const cake: Token = CAKE[chainId] ? CAKE[chainId] : CAKE[ChainId.BSC]
+  return usePriceByPairs(BUSD[cake.chainId], cake)
 }
 
 export const useBUSDCurrencyAmount = (currency?: Currency, amount?: number): number | undefined => {
@@ -103,7 +157,7 @@ export const useBUSDCakeAmount = (amount: number): number | undefined => {
   return undefined
 }
 
-export const useBNBBusdPrice = (): Price | undefined => {
+export const useBNBBusdPrice = (): Price<Currency, Currency> | undefined => {
   const { chainId } = useActiveWeb3React()
   const bnbBusdPrice = useBUSDPrice(WNATIVE[chainId])
   return bnbBusdPrice

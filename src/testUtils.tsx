@@ -4,10 +4,12 @@
 /* eslint-disable import/no-unresolved */
 import { render as rtlRender } from '@testing-library/react'
 import Provider from 'Providers'
+import { WagmiConfig } from 'wagmi'
 import { initializeStore, makeStore } from 'state'
 import { RouterContext } from 'next/dist/shared/lib/router-context'
 import { NextRouter } from 'next/router'
 import { SWRConfig } from 'swr'
+import { client } from './utils/wagmi'
 
 const mockRouter: NextRouter = {
   basePath: '',
@@ -54,7 +56,16 @@ export const createReduxWrapper =
 export const createSWRWrapper =
   (fallbackData = undefined) =>
   ({ children }) =>
-    <SWRConfig value={{ fallback: fallbackData }}>{children}</SWRConfig>
+    (
+      <WagmiConfig client={client}>
+        <SWRConfig value={{ fallback: fallbackData }}>{children}</SWRConfig>
+      </WagmiConfig>
+    )
+
+export const createWagmiWrapper =
+  () =>
+  ({ children }) =>
+    <WagmiConfig client={client}>{children}</WagmiConfig>
 
 // re-export everything
 export * from '@testing-library/react'

@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import { Flex, Heading, Text, Link, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Flex, Heading, Text, Link, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Container from 'components/Layout/Container'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import SunburstSvg from './SunburstSvg'
 import CompositeImage from './CompositeImage'
 
@@ -83,7 +83,7 @@ const bottomRightImage = {
 const Footer = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { isTablet, isDesktop } = useMatchBreakpointsContext()
+  const { isTablet, isDesktop } = useMatchBreakpoints()
 
   return (
     <>

@@ -1,6 +1,6 @@
 import { useEffect, useState, createElement, useRef } from 'react'
 import styled from 'styled-components'
-import { Flex, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useFarmUser } from 'state/farms/hooks'
@@ -8,6 +8,7 @@ import { useFarmUser } from 'state/farms/hooks'
 import { FarmAuctionTag, CoreTag } from 'components/Tags'
 import Apr, { AprProps } from './Apr'
 import Farm, { FarmProps } from './Farm'
+
 import Earned, { EarnedProps } from './Earned'
 import Details from './Details'
 import Multiplier, { MultiplierProps } from './Multiplier'
@@ -15,6 +16,8 @@ import Liquidity, { LiquidityProps } from './Liquidity'
 import ActionPanel from './Actions/ActionPanel'
 import CellLayout from './CellLayout'
 import { DesktopColumnSchema, MobileColumnSchema, FarmWithStakedValue } from '../types'
+import BoostedApr from '../YieldBooster/components/BoostedApr'
+import BoostedTag from '../YieldBooster/components/BoostedTag'
 
 export interface RowProps {
   apr: AprProps
@@ -54,7 +57,9 @@ const CellInner = styled.div`
 
 const StyledTr = styled.tr`
   cursor: pointer;
-  border-bottom: 2px solid ${({ theme }) => theme.colors.disabled};
+  &:not(:last-child) {
+    border-bottom: 2px solid ${({ theme }) => theme.colors.disabled};
+  }
 `
 
 const EarnedMobileCell = styled.td`
@@ -92,7 +97,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
     }
   }, [initialActivity])
 
-  const { isDesktop, isMobile } = useMatchBreakpointsContext()
+  const { isDesktop, isMobile } = useMatchBreakpoints()
 
   const isSmallerScreen = !isDesktop
   const tableSchema = isSmallerScreen ? MobileColumnSchema : DesktopColumnSchema
@@ -112,8 +117,9 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               case 'type':
                 return (
                   <td key={key}>
-                    <CellInner style={{ width: '100px' }}>
+                    <CellInner style={{ width: '140px' }}>
                       {props[key] === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />}
+                      {props?.details?.boosted ? <BoostedTag scale="sm" ml="16px" /> : null}
                     </CellInner>
                   </td>
                 )
@@ -132,7 +138,14 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   <td key={key}>
                     <CellInner>
                       <CellLayout label={t('APR')}>
-                        <Apr {...props.apr} hideButton={isSmallerScreen} />
+                        <Apr {...props.apr} hideButton={isSmallerScreen} strikethrough={props?.details?.boosted} />
+                        {props?.details?.boosted ? (
+                          <BoostedApr
+                            lpRewardsApr={props?.apr?.lpRewardsApr}
+                            apr={props?.apr?.originalValue}
+                            pid={props.farm?.pid}
+                          />
+                        ) : null}
                       </CellLayout>
                     </CellInner>
                   </td>
@@ -162,7 +175,12 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               {props.type === 'community' ? (
                 <FarmAuctionTag marginRight="16px" scale="sm" />
               ) : (
-                <CoreTag marginRight="16px" scale="sm" />
+                <Box style={{ marginRight: '16px' }}>
+                  <CoreTag scale="sm" />
+                  {props?.details?.boosted ? (
+                    <BoostedTag style={{ verticalAlign: 'bottom' }} scale="sm" ml="4px" />
+                  ) : null}
+                </Box>
               )}
             </Flex>
           </FarmMobileCell>
@@ -178,7 +196,14 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           <td width="33%">
             <AprMobileCell>
               <CellLayout label={t('APR')}>
-                <Apr {...props.apr} hideButton />
+                <Apr {...props.apr} hideButton strikethrough={props?.details?.boosted} />
+                {props?.details?.boosted ? (
+                  <BoostedApr
+                    lpRewardsApr={props?.apr?.lpRewardsApr}
+                    apr={props?.apr?.originalValue}
+                    pid={props.farm?.pid}
+                  />
+                ) : null}
               </CellLayout>
             </AprMobileCell>
           </td>

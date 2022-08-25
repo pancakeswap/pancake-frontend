@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
-import { Currency, CurrencyAmount, Fraction, JSBI, Pair, Percent, Price, TokenAmount } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, JSBI, Pair, Percent, Token } from '@pancakeswap/sdk'
 import { InjectedModalProps, Text, ArrowDownIcon, Button, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import TransactionConfirmationModal, {
@@ -27,10 +27,10 @@ interface ConfirmZapInModalProps {
   allowedSlippage: number
   liquidityErrorMessage: string
   price: Fraction
-  parsedAmounts: { [field in Field]?: CurrencyAmount }
+  parsedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
   onAdd: () => void
   poolTokenPercentage: Percent
-  liquidityMinted: TokenAmount
+  liquidityMinted: CurrencyAmount<Token>
   pair: Pair
   rebalancing?: boolean
   zapSwapTokenField: Field
@@ -96,7 +96,7 @@ const ConfirmZapInModal: React.FC<React.PropsWithChildren<InjectedModalProps & C
     !!totalPoolTokens &&
     !!liquidityMinted &&
     // this condition is a short-circuit in the case where useTokenBalance updates sooner than useTotalSupply
-    JSBI.greaterThanOrEqual(totalPoolTokens.raw, liquidityMinted.raw)
+    JSBI.greaterThanOrEqual(totalPoolTokens.quotient, liquidityMinted.quotient)
       ? [
           pair.getLiquidityValue(pair.token0, totalPoolTokens, liquidityMinted, false),
           pair.getLiquidityValue(pair.token1, totalPoolTokens, liquidityMinted, false),
@@ -106,55 +106,50 @@ const ConfirmZapInModal: React.FC<React.PropsWithChildren<InjectedModalProps & C
   const swapInTokenAmount = useMemo(
     () =>
       zapInEstimated &&
-      new TokenAmount(wrappedCurrency(currencies[zapSwapTokenField], chainId), zapInEstimated.swapAmountIn.toString()),
+      CurrencyAmount.fromRawAmount(
+        wrappedCurrency(currencies[zapSwapTokenField], chainId),
+        zapInEstimated.swapAmountIn.toString(),
+      ),
     [chainId, currencies, zapInEstimated, zapSwapTokenField],
   )
 
   const swapOutTokenAmount = useMemo(
     () =>
       zapInEstimated?.swapAmountOut &&
-      new TokenAmount(
+      CurrencyAmount.fromRawAmount(
         wrappedCurrency(currencies[zapSwapOutTokenField], chainId),
         zapInEstimated.swapAmountOut.toString(),
       ),
     [chainId, currencies, zapInEstimated?.swapAmountOut, zapSwapOutTokenField],
   )
 
-  const inputPercent = useMemo(
-    () =>
-      swapInCurrencyAmount && swapOutCurrencyAmount
-        ? clamp(
-            +pair
-              .priceOf(wrappedCurrency(swapOutCurrencyAmount.currency, chainId))
-              .raw.divide(
-                new Price(
-                  swapInCurrencyAmount.currency,
-                  swapOutCurrencyAmount.currency,
-                  JSBI.add(swapInCurrencyAmount.raw, swapOutCurrencyAmount.raw),
-                  swapInCurrencyAmount.raw,
-                ),
-              )
-              .toSignificant(2),
-            0.05,
-            0.95,
-          )
-        : swapInCurrencyAmount && !swapOutCurrencyAmount
-        ? 1
-        : undefined,
-    [chainId, pair, swapInCurrencyAmount, swapOutCurrencyAmount],
-  )
+  const inputPercent = useMemo(() => {
+    return swapInCurrencyAmount && swapOutCurrencyAmount
+      ? clamp(
+          // TODO: avoid use number
+          +swapInCurrencyAmount.toExact() /
+            +swapOutCurrencyAmount.toExact() /
+            (+pair.priceOf(swapOutCurrencyAmount.currency.wrapped).toSignificant() +
+              +swapInCurrencyAmount.toExact() / +swapOutCurrencyAmount.toExact()),
+          0.05,
+          0.95,
+        )
+      : swapInCurrencyAmount && !swapOutCurrencyAmount
+      ? 1
+      : undefined
+  }, [pair, swapInCurrencyAmount, swapOutCurrencyAmount])
 
   const tokenDeposited = useMemo(
     () => ({
       [zapSwapTokenField]:
-        swapInTokenAmount?.token && pair?.token0
-          ? pair.token0.equals(swapInTokenAmount.token)
+        swapInTokenAmount?.currency && pair?.token0
+          ? pair.token0.equals(swapInTokenAmount.currency)
             ? token0Deposited
             : token1Deposited
           : undefined,
       [zapSwapOutTokenField]:
-        swapOutTokenAmount?.token && pair?.token1
-          ? pair.token1.equals(swapOutTokenAmount.token)
+        swapOutTokenAmount?.currency && pair?.token1
+          ? pair.token1.equals(swapOutTokenAmount.currency)
             ? token1Deposited
             : token0Deposited
           : undefined,
@@ -162,8 +157,8 @@ const ConfirmZapInModal: React.FC<React.PropsWithChildren<InjectedModalProps & C
     [
       pair.token0,
       pair.token1,
-      swapInTokenAmount?.token,
-      swapOutTokenAmount?.token,
+      swapInTokenAmount?.currency,
+      swapOutTokenAmount?.currency,
       token0Deposited,
       token1Deposited,
       zapSwapOutTokenField,

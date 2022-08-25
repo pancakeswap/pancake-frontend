@@ -1,4 +1,4 @@
-import farms from 'config/constants/farms'
+import farms from 'config/constants/farms/56'
 import { SerializedFarm } from 'state/types'
 import { getLpContract } from 'utils/contractHelpers'
 
@@ -15,14 +15,14 @@ describe('Config farms', () => {
   })
 
   it.each(farmsToTest)('Farm #%d has an unique address', (pid, farm) => {
-    const duplicates = farms.filter((f) => farm.lpAddresses[56] === f.lpAddresses[56])
+    const duplicates = farms.filter((f) => farm.lpAddress === f.lpAddress)
     expect(duplicates).toHaveLength(1)
   })
 
   it.each(farmsToTest)('Farm %d has the correct token addresses', async (pid, farm) => {
     const tokenAddress = farm.token.address
     const quoteTokenAddress = farm.quoteToken.address
-    const lpContract = getLpContract(farm.lpAddresses[56])
+    const lpContract = getLpContract(farm.lpAddress)
 
     const token0Address = (await lpContract.token0()).toLowerCase()
     const token1Address = (await lpContract.token1()).toLowerCase()
@@ -41,7 +41,7 @@ describe('Config farms', () => {
   const newFarmsToTest = farmsToTest.filter((farmSet) => farmSet[0] >= START_PID)
 
   it.each(newFarmsToTest)('farm %d is using correct factory address', async (pid, farm) => {
-    const lpContract = getLpContract(farm.lpAddresses[56])
+    const lpContract = getLpContract(farm.lpAddress)
     const factory = await lpContract.factory()
     expect(factory.toLowerCase()).toEqual(FACTORY_ADDRESS)
   })

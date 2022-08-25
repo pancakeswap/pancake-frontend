@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useERC20, useIfoV1Contract } from 'hooks/useContract'
@@ -66,7 +66,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       params: [account],
     }))
 
-    const [offeringAmount, userInfoResponse, refundingAmount] = await multicallv2(ifoV1Abi, ifoCalls)
+    const [offeringAmount, userInfoResponse, refundingAmount] = await multicallv2({ abi: ifoV1Abi, calls: ifoCalls })
     const parsedUserInfo: UserInfo = userInfoResponse
       ? {
           amount: new BigNumber(userInfoResponse.amount.toString()),

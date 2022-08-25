@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
-import ExpandActionCell from 'views/Migration/components/MigrationStep1/OldPool/Cells/ExpandActionCell'
+import ExpandActionCell from 'views/Migration/components/Cells/ExpandActionCell'
 import { useFarmUser } from 'state/farmsV1/hooks'
-import { useMatchBreakpointsContext } from '@pancakeswap/uikit'
-import Farm, { FarmProps } from './Cells/Farm'
-import Staked, { StakedProps } from './Cells/Staked'
-import Earned, { EarnedProps } from './Cells/Earned'
-import Multiplier, { MultiplierProps } from './Cells/Multiplier'
-import Liquidity, { LiquidityProps } from './Cells/Liquidity'
-import Unstake, { UnstakeProps } from './Cells/Unstake'
+import { useMatchBreakpoints } from '@pancakeswap/uikit'
+import Farm from '../../Farm/Cells/Farm'
+import Staked from '../../Farm/Cells/Staked'
+import Earned from '../../Farm/Cells/Earned'
+import Multiplier from '../../Farm/Cells/Multiplier'
+import Liquidity from '../../Farm/Cells/Liquidity'
+import Unstake from './Cells/Unstake'
 import ActionPanel from './ActionPanel/ActionPanel'
+import { RowProps } from '../../types'
 
 const StyledRow = styled.div`
   display: flex;
@@ -42,15 +43,6 @@ const RightContainer = styled.div`
   }
 `
 
-export interface RowProps {
-  earned: EarnedProps
-  staked: StakedProps
-  farm: FarmProps
-  multiplier: MultiplierProps
-  liquidity: LiquidityProps
-  unstake: UnstakeProps
-}
-
 const FarmRow: React.FunctionComponent<React.PropsWithChildren<RowProps>> = ({
   farm,
   staked,
@@ -59,7 +51,7 @@ const FarmRow: React.FunctionComponent<React.PropsWithChildren<RowProps>> = ({
   liquidity,
   unstake,
 }) => {
-  const { isMobile, isXl, isXxl } = useMatchBreakpointsContext()
+  const { isMobile, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)

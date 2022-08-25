@@ -7,7 +7,7 @@ import Flex from "../../components/Box/Flex";
 import Footer from "../../components/Footer";
 import MenuItems from "../../components/MenuItems/MenuItems";
 import { SubMenuItems } from "../../components/SubMenuItems";
-import { useMatchBreakpoints } from "../../hooks";
+import { useMatchBreakpoints } from "../../contexts";
 import CakePrice from "../../components/CakePrice/CakePrice";
 import Logo from "./components/Logo";
 import { MENU_HEIGHT, MOBILE_MENU_HEIGHT, TOP_BANNER_HEIGHT, TOP_BANNER_HEIGHT_MOBILE } from "./config";

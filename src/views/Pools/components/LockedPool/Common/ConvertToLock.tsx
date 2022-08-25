@@ -1,5 +1,5 @@
 import { Token } from '@pancakeswap/sdk'
-import { Flex, Message, MessageText, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Flex, Message, MessageText, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { memo } from 'react'
 import { useVaultApy } from 'hooks/useVaultApy'
@@ -19,7 +19,7 @@ const ConvertToLock: React.FC<React.PropsWithChildren<ConvertToLockProps>> = ({
   isInline,
 }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpointsContext()
+  const { isMobile } = useMatchBreakpoints()
   const isTableView = isInline && !isMobile
   const { avgLockDurationsInSeconds } = useAvgLockDuration()
   const { lockedApy } = useVaultApy({ duration: avgLockDurationsInSeconds })

@@ -16,7 +16,7 @@ import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import RoiCalculatorFooter from './RoiCalculatorFooter'
 import RoiCard from './RoiCard'
 import useRoiCalculatorReducer, {
@@ -225,11 +225,12 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
               p="4px 16px"
               width="128px"
               variant="tertiary"
+              style={{ textTransform: 'uppercase' }}
               onClick={() =>
                 setPrincipalFromUSDValue(getBalanceNumber(stakingTokenBalance.times(stakingTokenPrice)).toString())
               }
             >
-              {t('My Balance').toLocaleUpperCase()}
+              {t('My Balance')}
             </Button>
             <span ref={targetRef}>
               <HelpIcon width="16px" height="16px" color="textSubtle" />

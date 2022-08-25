@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useERC20, useIfoV3Contract } from 'hooks/useContract'
@@ -86,14 +86,14 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     let basicId = null
     let unlimitedId = null
     if (version >= 3.2) {
-      const [[basicIdData], [unlimitedIdData]] = await multicallv2(
-        ifoV3Abi,
-        [
+      const [[basicIdData], [unlimitedIdData]] = await multicallv2({
+        abi: ifoV3Abi,
+        calls: [
           { address, name: 'computeVestingScheduleIdForAddressAndPid', params: [account, 0] },
           { address, name: 'computeVestingScheduleIdForAddressAndPid', params: [account, 1] },
         ],
-        { requireSuccess: false },
-      )
+        options: { requireSuccess: false },
+      })
 
       basicId = basicIdData
       unlimitedId = unlimitedIdData
@@ -146,7 +146,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       unlimitedSchedule,
       basicReleasableAmount,
       unlimitedReleasableAmount,
-    ] = await multicallv2(ifoV3Abi, [...ifoCalls, ...ifov3Calls], { requireSuccess: false })
+    ] = await multicallv2({ abi: ifoV3Abi, calls: [...ifoCalls, ...ifov3Calls], options: { requireSuccess: false } })
 
     setState((prevState) => ({
       ...prevState,

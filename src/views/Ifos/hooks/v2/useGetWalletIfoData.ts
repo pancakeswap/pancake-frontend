@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useERC20, useIfoV2Contract } from 'hooks/useContract'
@@ -68,7 +68,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       params: [account, [0, 1]],
     }))
 
-    const [userInfo, amounts] = await multicallv2(ifoV2Abi, ifoCalls)
+    const [userInfo, amounts] = await multicallv2({ abi: ifoV2Abi, calls: ifoCalls })
 
     setState((prevState) => ({
       ...prevState,

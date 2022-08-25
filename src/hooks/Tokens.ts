@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { arrayify } from '@ethersproject/bytes'
 import { parseBytes32String } from '@ethersproject/strings'
-import { Currency, currencyEquals, ETHER, Token } from '@pancakeswap/sdk'
+import { Currency, Token } from '@pancakeswap/sdk'
 import { createSelector } from '@reduxjs/toolkit'
 import { GELATO_NATIVE } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -18,9 +18,10 @@ import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
 import useUserAddedTokens, { userAddedTokenSelector } from '../state/user/hooks/useUserAddedTokens'
 import { isAddress } from '../utils'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
+import useNativeCurrency from './useNativeCurrency'
 
 const mapWithoutUrls = (tokenMap: TokenAddressMap, chainId: number) =>
-  Object.keys(tokenMap[chainId]).reduce<{ [address: string]: Token }>((newMap, address) => {
+  Object.keys(tokenMap[chainId] || {}).reduce<{ [address: string]: Token }>((newMap, address) => {
     newMap[address] = tokenMap[chainId][address].token
     return newMap
   }, {})
@@ -111,7 +112,7 @@ export function useIsUserAddedToken(currency: Currency | undefined | null): bool
     return false
   }
 
-  return !!userAddedTokens.find((token) => currencyEquals(currency, token))
+  return !!userAddedTokens.find((token) => currency?.equals(token))
 }
 
 // parse a name or symbol from a token response
@@ -180,7 +181,9 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 }
 
 export function useCurrency(currencyId: string | undefined): Currency | Token | null | undefined {
-  const isBNB = currencyId?.toUpperCase() === 'BNB' || currencyId?.toLowerCase() === GELATO_NATIVE
-  const token = useToken(isBNB ? undefined : currencyId)
-  return isBNB ? ETHER : token
+  const native = useNativeCurrency()
+  const isNative =
+    currencyId?.toUpperCase() === native.symbol?.toUpperCase() || currencyId?.toLowerCase() === GELATO_NATIVE
+  const token = useToken(isNative ? undefined : currencyId)
+  return isNative ? native : token
 }

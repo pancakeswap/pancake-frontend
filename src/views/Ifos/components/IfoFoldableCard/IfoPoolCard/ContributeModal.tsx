@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import { MaxUint256 } from '@ethersproject/constants'
 import { parseUnits } from '@ethersproject/units'
@@ -197,7 +197,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
                 src={
                   ifo.currency.symbol === 'CAKE'
                     ? '/images/cake.svg'
-                    : `/images/farms/${currency.symbol.split(' ')[0].toLocaleLowerCase()}.svg`
+                    : `/images/farms/${currency.symbol.split(' ')[0].toLowerCase()}.svg`
                 }
                 width={24}
                 height={24}

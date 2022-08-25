@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { useProfile } from 'state/profile/hooks'
-import { Flex, Box, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Flex, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTradingCompetitionContractEaster } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
@@ -50,13 +50,15 @@ const BannerFlex = styled(Flex)`
 const EasterCompetition = () => {
   const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
-  const { isMobile } = useMatchBreakpointsContext()
-  const { profile, isLoading } = useProfile()
+  const { isMobile } = useMatchBreakpoints()
+  const { profile, isLoading: isProfileLoading } = useProfile()
   const { isDark } = useTheme()
   const tradingCompetitionContract = useTradingCompetitionContractEaster(false)
   const [currentPhase, setCurrentPhase] = useState(CompetitionPhases.OVER)
   const { registrationSuccessful, claimSuccessful, onRegisterSuccess, onClaimSuccess } = useRegistrationClaimStatus()
   const [userTradingInformation, setUserTradingInformation] = useState({
+    isLoading: true,
+    account: undefined,
     hasRegistered: false,
     hasUserClaimed: false,
     userRewardGroup: '0',
@@ -100,6 +102,8 @@ const EasterCompetition = () => {
     const fetchUserContract = async () => {
       const user = await tradingCompetitionContract.claimInformation(account)
       const userObject = {
+        isLoading: false,
+        account,
         hasRegistered: user[0],
         hasUserClaimed: user[1],
         userRewardGroup: user[2].toString(),
@@ -115,6 +119,8 @@ const EasterCompetition = () => {
       fetchCompetitionInfoContract()
     } else {
       setUserTradingInformation({
+        isLoading: false,
+        account,
         hasRegistered: false,
         hasUserClaimed: false,
         userRewardGroup: '0',
@@ -132,14 +138,19 @@ const EasterCompetition = () => {
       setUserLeaderboardInformation(data.leaderboard)
     }
     // If user has not registered, user trading information will not be displayed and should not be fetched
-    if (account && userTradingInformation.hasRegistered) {
+    if (userTradingInformation.account && userTradingInformation.hasRegistered) {
       fetchUserTradingStats()
     }
   }, [account, userTradingInformation, profileApiUrl])
 
+  const isLoading = isProfileLoading || userTradingInformation.isLoading
+
   // Don't hide when loading. Hide if the account is connected && the user hasn't registered && the competition is live or finished
   const shouldHideCta =
-    !isLoading && account && !userTradingInformation.hasRegistered && (isCompetitionLive || hasCompetitionEnded)
+    !isLoading &&
+    userTradingInformation.account &&
+    !userTradingInformation.hasRegistered &&
+    (isCompetitionLive || hasCompetitionEnded)
 
   return (
     <CompetitionPage>
