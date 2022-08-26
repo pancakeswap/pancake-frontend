@@ -101,22 +101,23 @@ export function useDerivedMintInfo(
 
   const lpstableToken = new Token(currencies[Field.CURRENCY_A].chainId, lpStableToken, 18, 'Cake-LP', 'Pancake LPs')
 
-  console.log('isStable: ', isStable)
-
   const totalSupply = useTotalSupply(isStable ? lpstableToken : pair?.liquidityToken)
 
-  // TODO: if stable, check totalSupply
-  console.log('totalSupply: ', Boolean(totalSupply && JSBI.equal(totalSupply.quotient, BIG_INT_ZERO)))
+  let noLiquidity = true
 
-  const noLiquidity: boolean =
-    pairState === PairState.NOT_EXISTS ||
-    Boolean(totalSupply && JSBI.equal(totalSupply.quotient, BIG_INT_ZERO)) ||
-    Boolean(
-      pairState === PairState.EXISTS &&
-        pair &&
-        JSBI.equal(pair.reserve0.quotient, BIG_INT_ZERO) &&
-        JSBI.equal(pair.reserve1.quotient, BIG_INT_ZERO),
-    )
+  if (isStable) {
+    noLiquidity = Boolean(totalSupply && JSBI.equal(totalSupply.quotient, BIG_INT_ZERO))
+  } else {
+    noLiquidity =
+      pairState === PairState.NOT_EXISTS ||
+      Boolean(totalSupply && JSBI.equal(totalSupply.quotient, BIG_INT_ZERO)) ||
+      Boolean(
+        pairState === PairState.EXISTS &&
+          pair &&
+          JSBI.equal(pair.reserve0.quotient, BIG_INT_ZERO) &&
+          JSBI.equal(pair.reserve1.quotient, BIG_INT_ZERO),
+      )
+  }
 
   // balances
   const balances = useCurrencyBalances(account ?? undefined, [
@@ -178,7 +179,7 @@ export function useDerivedMintInfo(
   )
 
   const price = useMemo(() => {
-    if (noLiquidity) {
+    if (noLiquidity || isStable) {
       const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts
       if (currencyAAmount && currencyBAmount) {
         return new Price(
@@ -192,7 +193,7 @@ export function useDerivedMintInfo(
     }
     const wrappedCurrencyA = currencyA?.wrapped
     return pair && wrappedCurrencyA ? pair.priceOf(wrappedCurrencyA) : undefined
-  }, [currencyA, noLiquidity, pair, parsedAmounts])
+  }, [currencyA, noLiquidity, pair, parsedAmounts, isStable])
 
   // liquidity minted
   const liquidityMinted = useMemo(() => {

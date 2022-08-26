@@ -62,7 +62,8 @@ export class Fraction {
 
   // performs floor division
   public get quotient(): JSBI {
-    return JSBI.divide(this.numerator, this.denominator)
+    // Philip NOTE: stable quotient is 1:1 without slippage and fee
+    return JSBI.divide(this.denominator, this.denominator)
   }
 
   // remainder after floor division

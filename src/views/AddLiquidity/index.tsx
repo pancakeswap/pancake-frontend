@@ -70,6 +70,8 @@ import { formatAmount } from '../../utils/formatInfoNumbers'
 import { useCurrencySelectRoute } from './useCurrencySelectRoute'
 import { useAppDispatch } from '../../state'
 import { CommonBasesType } from '../../components/SearchModal/types'
+import { useSWRContract } from 'hooks/useSWRContract'
+import useSWR from 'swr'
 
 enum Steps {
   Choose,
@@ -101,6 +103,7 @@ export default function AddLiquidity() {
 
   const stableMap = stableSwapMap[0]
 
+  // Philip TODO: Check if stable pair in stableswap config
   const isStable = currencyIdA === stableMap.token0.address
 
   const currencyA = useCurrency(currencyIdA)
@@ -119,6 +122,10 @@ export default function AddLiquidity() {
   }, [router.query])
 
   const zapModeStatus = useMemo(() => !!zapMode && temporarilyZapMode, [zapMode, temporarilyZapMode])
+
+  // txn values
+  const deadline = useTransactionDeadline() // custom from users settings
+  const [allowedSlippage] = useUserSlippageTolerance() // custom from users
 
   // mint state
   const { independentField, typedValue, otherTypedValue } = useMintState()
@@ -145,7 +152,7 @@ export default function AddLiquidity() {
     },
   )
 
-  const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
+  const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity || isStable)
 
   // modal and loading
   const [{ attemptingTxn, liquidityErrorMessage, txHash }, setLiquidityState] = useState<{
@@ -163,10 +170,6 @@ export default function AddLiquidity() {
   const [zapTokenToggleB, setZapTokenToggleB] = useState(true)
   const zapTokenCheckedA = zapTokenToggleA && currencyBalances?.[Field.CURRENCY_A]?.greaterThan(0)
   const zapTokenCheckedB = zapTokenToggleB && currencyBalances?.[Field.CURRENCY_B]?.greaterThan(0)
-
-  // txn values
-  const deadline = useTransactionDeadline() // custom from users settings
-  const [allowedSlippage] = useUserSlippageTolerance() // custom from users
 
   // get the max amounts user can add
   const maxAmounts: { [field in Field]?: CurrencyAmount<Token> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
