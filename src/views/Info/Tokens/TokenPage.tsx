@@ -15,7 +15,7 @@ import {
   LinkExternal,
   Spinner,
   Image,
-  useMatchBreakpointsContext,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { getBlockExploreLink } from 'utils'
@@ -63,7 +63,7 @@ const StyledCMCLink = styled(UIKitLink)`
 const DEFAULT_TIME_WINDOW: Duration = { weeks: 1 }
 
 const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = ({ routeAddress }) => {
-  const { isXs, isSm } = useMatchBreakpointsContext()
+  const { isXs, isSm } = useMatchBreakpoints()
   const { t } = useTranslation()
 
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)

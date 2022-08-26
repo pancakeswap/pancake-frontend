@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { SerializedToken } from 'config/constants/types'
+import { SerializedToken } from '@pancakeswap/tokens'
 import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../../config/constants'
 import { updateVersion } from '../global/actions'
 import {

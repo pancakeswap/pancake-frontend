@@ -31,7 +31,7 @@ export function calculateSlippageAmount(value: CurrencyAmount<Currency>, slippag
 }
 
 export function useRouterContract() {
-  const chainId = useActiveChainId()
+  const { chainId } = useActiveChainId()
   return useContract<IPancakeRouter02>(ROUTER_ADDRESS[chainId], IPancakeRouter02ABI, true)
 }
 

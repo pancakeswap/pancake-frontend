@@ -4,7 +4,7 @@ import _toNumber from 'lodash/toNumber'
 import { memo, useContext } from 'react'
 import { formatNumber } from 'utils/formatBalance'
 import isUndefinedOrNull from 'utils/isUndefinedOrNull'
-import useBoostMultipler from '../hooks/useBoostMultipler'
+import useBoostMultiplier from '../hooks/useBoostMultiplier'
 import { YieldBoosterState } from '../hooks/useYieldBoosterState'
 import { YieldBoosterStateContext } from './ProxyFarmContainer'
 
@@ -20,7 +20,7 @@ function BoostedApr(props: BoostedAprPropsType) {
   const { boosterState, proxyAddress } = useContext(YieldBoosterStateContext)
   const { t } = useTranslation()
 
-  const multiplier = useBoostMultipler({ pid, boosterState, proxyAddress })
+  const multiplier = useBoostMultiplier({ pid, boosterState, proxyAddress })
 
   const boostedApr =
     (!isUndefinedOrNull(multiplier) &&

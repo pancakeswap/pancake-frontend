@@ -67,7 +67,7 @@ const Header: React.FC<React.PropsWithChildren<HeaderProps>> = ({ collection }) 
         </MarketPageTitle>
       </MarketPageHeader>
       <Container>
-        <BaseSubMenu items={itemsConfig} activeItem={router.pathname} mt="24px" mb="8px" />
+        <BaseSubMenu items={itemsConfig} activeItem={router.asPath} mt="24px" mb="8px" />
       </Container>
     </>
   )

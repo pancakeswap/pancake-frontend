@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import { useState, useCallback } from 'react'
 import { BSC_BLOCK_TIME } from 'config'
 import ifoV2Abi from 'config/abi/ifoV2.json'
-import { bscTokens } from 'config/constants/tokens'
+import { bscTokens } from '@pancakeswap/tokens'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { FixedNumber } from '@ethersproject/bignumber'
 
@@ -66,9 +66,9 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const fetchIfoData = useCallback(
     async (currentBlock: number) => {
       const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints, thresholdPoints] =
-        await multicallv2(
-          ifoV2Abi,
-          [
+        await multicallv2({
+          abi: ifoV2Abi,
+          calls: [
             {
               address,
               name: 'startBlock',
@@ -101,7 +101,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
               name: 'thresholdPoints',
             },
           ].filter(Boolean),
-        )
+        })
 
       const poolBasicFormatted = formatPool(poolBasic)
       const poolUnlimitedFormatted = formatPool(poolUnlimited)

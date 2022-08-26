@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Text, Link, HelpIcon } from '@pancakeswap/uikit'
-import { useSwitchNetwork } from 'wagmi'
 import { ChainId } from '@pancakeswap/sdk'
+import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 
 const StyledLink = styled(Link)`
   width: 100%;
@@ -17,7 +17,7 @@ interface WalletWrongNetworkProps {
 
 const WalletWrongNetwork: React.FC<React.PropsWithChildren<WalletWrongNetworkProps>> = ({ onDismiss }) => {
   const { t } = useTranslation()
-  const { switchNetworkAsync } = useSwitchNetwork()
+  const { switchNetworkAsync, canSwitch } = useSwitchNetwork()
 
   const handleSwitchNetwork = async (): Promise<void> => {
     await switchNetworkAsync(ChainId.BSC)
@@ -27,9 +27,11 @@ const WalletWrongNetwork: React.FC<React.PropsWithChildren<WalletWrongNetworkPro
   return (
     <>
       <Text mb="24px">{t('You’re connected to the wrong network.')}</Text>
-      <Button onClick={handleSwitchNetwork} mb="24px">
-        {t('Switch Network')}
-      </Button>
+      {canSwitch && (
+        <Button onClick={handleSwitchNetwork} mb="24px">
+          {t('Switch Network')}
+        </Button>
+      )}
       <StyledLink href="https://docs.pancakeswap.finance/get-started/connection-guide" external>
         <Button width="100%" variant="secondary">
           {t('Learn How')}

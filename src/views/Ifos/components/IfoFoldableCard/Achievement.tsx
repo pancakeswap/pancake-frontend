@@ -12,7 +12,7 @@ import {
   Link,
   TelegramIcon,
 } from '@pancakeswap/uikit'
-import { bscTokens } from 'config/constants/tokens'
+import { bscTokens } from '@pancakeswap/tokens'
 import { useTranslation } from '@pancakeswap/localization'
 import { PublicIfoData } from 'views/Ifos/types'
 import { Ifo } from 'config/constants/types'

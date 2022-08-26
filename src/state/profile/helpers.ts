@@ -50,7 +50,11 @@ export const getProfile = async (address: string): Promise<GetProfileResponse> =
     const profileCalls = ['hasRegistered', 'getUserProfile'].map((method) => {
       return { address: getPancakeProfileAddress(), name: method, params: [address] }
     })
-    const profileCallsResult = await multicallv2(profileABI, profileCalls, { requireSuccess: false })
+    const profileCallsResult = await multicallv2({
+      abi: profileABI,
+      calls: profileCalls,
+      options: { requireSuccess: false },
+    })
     const [[hasRegistered], profileResponse] = profileCallsResult
     if (!hasRegistered) {
       return { hasRegistered, profile: null }

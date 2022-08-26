@@ -1,7 +1,7 @@
 import { Flex, Heading, Skeleton, Text } from '@pancakeswap/uikit'
 import Balance from 'components/Balance'
 import cakeAbi from 'config/abi/cake.json'
-import { bscTokens } from 'config/constants/tokens'
+import { bscTokens } from '@pancakeswap/tokens'
 import { useTranslation } from '@pancakeswap/localization'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { useEffect, useState } from 'react'
@@ -95,8 +95,12 @@ const CakeDataRow = () => {
         params: ['0x000000000000000000000000000000000000dEaD'],
       }
       const [tokenDataResultRaw, totalLockedAmount] = await Promise.all([
-        multicallv2(cakeAbi, [totalSupplyCall, burnedTokenCall], {
-          requireSuccess: false,
+        multicallv2({
+          abi: cakeAbi,
+          calls: [totalSupplyCall, burnedTokenCall],
+          options: {
+            requireSuccess: false,
+          },
         }),
         cakeVault.totalLockedAmount(),
       ])

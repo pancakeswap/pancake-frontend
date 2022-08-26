@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { CurrencyAmount, Token, Trade, TradeType, Currency } from '@pancakeswap/sdk'
-import { Button, Box, Flex, useModal, BottomDrawer, Link, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { Button, Box, Flex, useModal, BottomDrawer, Link, useMatchBreakpoints } from '@pancakeswap/uikit'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn } from 'components/Layout/Column'
@@ -34,13 +34,15 @@ import getRatePercentageDifference from './utils/getRatePercentageDifference'
 import { useCurrency, useAllTokens } from '../../hooks/Tokens'
 import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
 import { CommonBasesType } from '../../components/SearchModal/types'
+import replaceBrowserHistory from '../../utils/replaceBrowserHistory'
+import { currencyId } from '../../utils/currencyId'
 
 const LimitOrders = () => {
   // Helpers
   const { account, chainId } = useWeb3React()
   const { t } = useTranslation()
   const router = useRouter()
-  const { isMobile, isTablet } = useMatchBreakpointsContext()
+  const { isMobile, isTablet } = useMatchBreakpoints()
   const { theme } = useTheme()
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartExpanded, setIsChartExpanded] = useState(false)
@@ -146,6 +148,8 @@ const LimitOrders = () => {
     (inputCurrency) => {
       setApprovalSubmitted(false)
       handleCurrencySelection(Field.INPUT, inputCurrency)
+
+      replaceBrowserHistory('inputCurrency', currencyId(inputCurrency))
     },
     [handleCurrencySelection],
   )
@@ -163,6 +167,8 @@ const LimitOrders = () => {
   const handleOutputSelect = useCallback(
     (outputCurrency) => {
       handleCurrencySelection(Field.OUTPUT, outputCurrency)
+
+      replaceBrowserHistory('outputCurrency', currencyId(outputCurrency))
     },
     [handleCurrencySelection],
   )

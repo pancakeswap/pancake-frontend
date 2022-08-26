@@ -57,7 +57,7 @@ const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
   const { toastSuccess } = useToast()
   const { account } = useWeb3React()
   const dispatch = useLocalDispatch()
-  const { token } = useConfig()
+  const { token, displayedDecimals } = useConfig()
   const { lockTimestamp } = round ?? { lockTimestamp: null }
   const { isSettingPosition, position } = state
   const [isBufferPhase, setIsBufferPhase] = useState(false)
@@ -79,7 +79,7 @@ const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
     [hasEnteredUp, hasEnteredDown],
   )
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
-    <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnbv2(betAmount)} ${token.symbol}`}</div>,
+    <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnbv2(betAmount, displayedDecimals)} ${token.symbol}`}</div>,
     { placement: 'top' },
   )
 

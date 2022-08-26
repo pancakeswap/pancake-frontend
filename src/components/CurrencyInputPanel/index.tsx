@@ -3,7 +3,7 @@ import { Button, ChevronDownIcon, Text, useModal, Flex, Box } from '@pancakeswap
 import styled, { css } from 'styled-components'
 import { isAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
-import { WrappedTokenInfo } from 'state/types'
+import { WrappedTokenInfo } from '@pancakeswap/tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useBUSDCurrencyAmount } from 'hooks/useBUSDPrice'
 import { formatNumber } from 'utils/formatBalance'

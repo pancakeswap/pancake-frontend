@@ -1,4 +1,5 @@
 import transpileModules from 'next-transpile-modules'
+import { withAxiom } from 'next-axiom'
 
 const withTH = transpileModules(['@pancakeswap/uikit', '@pancakeswap/wagmi', '@pancakeswap/sdk'])
 
@@ -16,4 +17,4 @@ const nextConfig = {
   },
 }
 
-export default withTH(nextConfig)
+export default withTH(withAxiom(nextConfig))

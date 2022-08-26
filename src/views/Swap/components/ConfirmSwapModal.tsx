@@ -43,6 +43,7 @@ const SwapTransactionErrorContent = ({ onDismiss, message, openSettingModal }) =
 interface ConfirmSwapModalProps {
   trade?: Trade<Currency, Currency, TradeType>
   originalTrade?: Trade<Currency, Currency, TradeType>
+  currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   attemptingTxn: boolean
   txHash?: string
   recipient: string | null
@@ -57,6 +58,7 @@ interface ConfirmSwapModalProps {
 const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & ConfirmSwapModalProps>> = ({
   trade,
   originalTrade,
+  currencyBalances,
   onAcceptChanges,
   allowedSlippage,
   onConfirm,
@@ -88,6 +90,7 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
       ) : (
         <TransactionConfirmSwapContent
           trade={trade}
+          currencyBalances={currencyBalances}
           originalTrade={originalTrade}
           onAcceptChanges={onAcceptChanges}
           allowedSlippage={allowedSlippage}
@@ -105,6 +108,7 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
       swapErrorMessage,
       onDismiss,
       openSettingModal,
+      currencyBalances,
     ],
   )
 

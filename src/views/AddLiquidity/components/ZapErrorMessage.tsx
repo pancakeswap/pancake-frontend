@@ -25,7 +25,7 @@ export const ZapErrorMessages: React.FC<React.PropsWithChildren<ZapErrorMessages
     }
 
     return (
-      <Box width={['100%', '100%', '380px']}>
+      <Box margin="auto" width={['100%', '100%', '380px']}>
         <Message variant="warning" mb="16px">
           <Flex flexDirection="column">
             <MessageText bold>{t('Currently using Zap for liquidity provisions.')}</MessageText>

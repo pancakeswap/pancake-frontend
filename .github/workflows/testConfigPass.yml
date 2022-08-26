@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        node: [14]
+        node: [16]
     name: Config (Jest)
     steps:
       - run: 'echo "No Test Config required" '

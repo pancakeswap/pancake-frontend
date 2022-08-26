@@ -68,15 +68,15 @@ const LimitOrderPrice: React.FC<React.PropsWithChildren<LimitOrderPriceProps>> =
     <>
       <Text>
         {t(
-          'Takes into account the gas necessary to execute your order and guarantees that your desired rate is fulfilled.',
+          'The real execution price includes the gas cost necessary to execute your order and guarantees that your order will be executed at the desired price.',
         )}
       </Text>
-      <Text>{t('It fluctuates according to gas prices.')}</Text>
+      <Text>{t('It fluctuates according to gas prices when the order is getting executed.')}</Text>
       {inputCurrency?.symbol && outputCurrency?.symbol && realExecutionPriceAsString && (
         <Text>
           {realExecutionPriceAsString === 'never executes'
             ? t(
-                'Assuming current gas price this order will never execute. Try increasing the amount of tokens to swap.',
+                'Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.',
               )
             : t('Assuming current gas price it should execute when 1 %assetOneSymbol% = %price% %assetTwoSymbol%', {
                 assetOneSymbol: rateType === Rate.MUL ? inputCurrency?.symbol : outputCurrency?.symbol,
@@ -99,6 +99,9 @@ const LimitOrderPrice: React.FC<React.PropsWithChildren<LimitOrderPriceProps>> =
   const isAtMarketPrice = percentageRateDifference?.equalTo(0) ?? true
   const [ratePercentageMessage, direction] = getRatePercentageMessage(percentageRateDifference, t)
   const priceLabelColor = DIRECTION_COLORS[direction]
+  const _realExecutionPriceAsString =
+    realExecutionPriceAsString === 'never executes' ? t('never executes') : realExecutionPriceAsString
+
   return (
     <>
       <Flex justifyContent="space-between" id={id}>
@@ -149,7 +152,7 @@ const LimitOrderPrice: React.FC<React.PropsWithChildren<LimitOrderPriceProps>> =
         {realExecutionPriceAsString && (
           <>
             <Text small color="textSubtle" mr="4px">
-              {t('Real execution price: %price%', { price: realExecutionPriceAsString })}
+              {t('Real execution price: %price%', { price: _realExecutionPriceAsString })}
             </Text>
             <span ref={targetRef}>
               <HelpIcon color="textSubtle" />

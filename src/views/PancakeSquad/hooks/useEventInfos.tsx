@@ -33,7 +33,7 @@ const useEventInfos = ({ refreshCounter, setCallback }) => {
           [currentTotalTicketsDistributed],
           [currentSaleStatus],
           [currentStartTimestamp],
-        ] = await multicallv2(nftSaleAbi, calls)
+        ] = await multicallv2({ abi: nftSaleAbi, calls })
 
         const currentTotalSupplyMinted = await pancakeSquadContract.totalSupply()
 

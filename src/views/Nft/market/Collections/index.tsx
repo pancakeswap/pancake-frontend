@@ -13,7 +13,7 @@ import {
   Th,
   Card,
   Skeleton,
-  useMatchBreakpointsContext,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import useSWRImmutable from 'swr/immutable'
 import orderBy from 'lodash/orderBy'
@@ -73,7 +73,7 @@ const getNewSortDirection = (oldSortField: string, newSortField: string, oldSort
 const Collectible = () => {
   const { t } = useTranslation()
   const { data: shuffledCollections } = useGetShuffledCollections()
-  const { isMobile } = useMatchBreakpointsContext()
+  const { isMobile } = useMatchBreakpoints()
   const [sortField, setSortField] = useState(null)
   const [page, setPage] = useState(1)
   const [maxPage, setMaxPage] = useState(1)

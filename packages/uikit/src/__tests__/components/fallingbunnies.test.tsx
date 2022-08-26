@@ -1,5 +1,5 @@
 import React from "react";
-import { renderWithTheme } from "../../testHelpers";
+import { renderWithProvider } from "../../testHelpers";
 import FallingBunnies from "../../components/FallingBunnies/FallingBunnies";
 
 beforeEach(() => {
@@ -11,7 +11,7 @@ afterEach(() => {
 });
 
 it("renders correctly", () => {
-  const { asFragment } = renderWithTheme(<FallingBunnies count={1} />);
+  const { asFragment } = renderWithProvider(<FallingBunnies count={1} />);
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c1 {
