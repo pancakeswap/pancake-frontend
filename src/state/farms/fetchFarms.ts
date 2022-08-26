@@ -41,10 +41,10 @@ function getLpInfo({
 function farmLpTransformer(farmResult, masterChefResult) {
   return (farm, index) => {
     const [
-      tokenBalanceLP, // not good
-      quoteTokenBalanceLP, // not good
-      lpTokenBalanceMC, // Good
-      lpTotalSupply, // Good
+      tokenBalanceLP,
+      quoteTokenBalanceLP,
+      lpTokenBalanceMC,
+      lpTotalSupply,
       [tokenDecimals],
       [quoteTokenDecimals],
     ] = farmResult[index]
