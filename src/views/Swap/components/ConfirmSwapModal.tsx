@@ -13,34 +13,40 @@ const PancakeRouterSlippageErrorMsg =
   'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.'
 
 const SwapTransactionErrorContent = ({ onDismiss, message, openSettingModal }) => {
+  const isSlippagedErrorMsg = message?.includes(PancakeRouterSlippageErrorMsg)
+
   const handleErrorDismiss = useCallback(() => {
     onDismiss?.()
-    if (message?.includes(PancakeRouterSlippageErrorMsg) && openSettingModal) {
+    if (isSlippagedErrorMsg && openSettingModal) {
       openSettingModal()
     }
-  }, [message, onDismiss, openSettingModal])
+  }, [isSlippagedErrorMsg, onDismiss, openSettingModal])
   const { t } = useTranslation()
 
-  const errorMessage = message?.includes(PancakeRouterSlippageErrorMsg) ? (
-    <>
-      <Text mb="16px">
-        {t('This transaction will not succeed either due to price movement or fee on transfer. Try increasing your')}{' '}
-        <Text bold display="inline" style={{ cursor: 'pointer' }} onClick={handleErrorDismiss}>
-          <u>{t('slippage tolerance.')}</u>
-        </Text>
-      </Text>
-      <LinkExternal
-        href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/trade-guide"
-        style={{ width: '100%', justifyContent: 'center' }}
-      >
-        {t('What are the potential issues with the token?')}
-      </LinkExternal>
-    </>
+  return isSlippagedErrorMsg ? (
+    <TransactionErrorContent
+      message={
+        <>
+          <Text mb="16px">
+            {t(
+              'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your',
+            )}{' '}
+            <Text bold display="inline" style={{ cursor: 'pointer' }} onClick={handleErrorDismiss}>
+              <u>{t('slippage tolerance.')}</u>
+            </Text>
+          </Text>
+          <LinkExternal
+            href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/trade-guide"
+            style={{ width: '100%', justifyContent: 'center' }}
+          >
+            {t('What are the potential issues with the token?')}
+          </LinkExternal>
+        </>
+      }
+    />
   ) : (
-    message
+    <TransactionErrorContent message={message} onDismiss={onDismiss} />
   )
-
-  return <TransactionErrorContent message={errorMessage} />
 }
 
 interface ConfirmSwapModalProps {

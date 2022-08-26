@@ -115,7 +115,7 @@ export default function SwapModalHeader({
       <AutoColumn justify="flex-start" gap="sm" style={{ padding: '24px 0 0 0px' }}>
         <RowFixed style={{ width: '100%' }}>
           <Text color="secondary" bold textTransform="uppercase">
-            {t('slippage tolerance')}
+            {t('Slippage Tolerance')}
           </Text>
           <Text bold color="primary" ml="auto" textAlign="end">
             {`${basisPointsToPercent(allowedSlippage).toFixed(1)}%`}

@@ -1088,8 +1088,6 @@
   "The difference between the market price and your price due to trade size.": "The difference between the market price and your price due to trade size.",
   "Liquidity Provider Fee": "Liquidity Provider Fee",
   "Import Token": "Import Token",
-  "Output is estimated. You will receive at least %amount% %symbol% or the transaction will revert.": "Output is estimated. You will receive at least %amount% %symbol% or the transaction will revert.",
-  "Input is estimated. You will sell at most %amount% %symbol% or the transaction will revert.": "Input is estimated. You will sell at most %amount% %symbol% or the transaction will revert.",
   "Output will be sent to %recipient%": "Output will be sent to %recipient%",
   "Price Updated": "Price Updated",
   "Accept": "Accept",
