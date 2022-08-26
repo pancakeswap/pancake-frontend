@@ -8,7 +8,7 @@ import fetchPoolChartData, { fetchPoolChartDataETH } from 'state/info/queries/po
 import fetchPoolTransactions, { fetchPoolTransactionsETH } from 'state/info/queries/pools/transactions'
 import fetchTokenChartData from 'state/info/queries/tokens/chartData'
 import fetchPoolsForToken from 'state/info/queries/tokens/poolsForToken'
-import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
+import fetchTokenPriceData, { fetchTokenPriceDataETH } from 'state/info/queries/tokens/priceData'
 import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
 import { Transaction } from 'state/info/types'
 import { isAddress } from 'utils'
@@ -129,7 +129,7 @@ export const usePoolChartData = (address: string): ChartEntry[] | undefined => {
     if (!chartData && !error) {
       fetch()
     }
-  }, [address, dispatch, error, chartData])
+  }, [address, dispatch, error, chartData, chainName])
 
   return chartData
 }
@@ -286,10 +286,12 @@ export const useTokenPriceData = (
   const oldestTimestampFetched = token?.priceData.oldestFetchedTimestamp
   const utcCurrentTime = getUnixTime(new Date()) * 1000
   const startTimestamp = getUnixTime(startOfHour(sub(utcCurrentTime, timeWindow)))
-
+  const chainName = useGetChainName()
   useEffect(() => {
     const fetch = async () => {
-      const { data, error: fetchingError } = await fetchTokenPriceData(address, interval, startTimestamp)
+      const { data, error: fetchingError } = await (chainName === 'ETH'
+        ? fetchTokenPriceDataETH(address, interval, startTimestamp)
+        : fetchTokenPriceData(address, interval, startTimestamp))
       if (data) {
         dispatch(
           updateTokenPriceData({
@@ -307,7 +309,7 @@ export const useTokenPriceData = (
     if (!priceData && !error) {
       fetch()
     }
-  }, [address, dispatch, error, interval, oldestTimestampFetched, priceData, startTimestamp, timeWindow])
+  }, [address, dispatch, error, interval, oldestTimestampFetched, priceData, startTimestamp, timeWindow, chainName])
 
   return priceData
 }
