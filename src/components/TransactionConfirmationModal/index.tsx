@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { ReactElement, useCallback } from 'react'
 import { ChainId, Currency, Token } from '@pancakeswap/sdk'
 import styled from 'styled-components'
 import {
@@ -122,7 +122,13 @@ export function ConfirmationModalContent({
   )
 }
 
-export function TransactionErrorContent({ message, onDismiss }: { message: string; onDismiss: () => void }) {
+export function TransactionErrorContent({
+  message,
+  onDismiss,
+}: {
+  message: ReactElement | string
+  onDismiss?: () => void
+}) {
   const { t } = useTranslation()
   return (
     <Wrapper>
@@ -133,9 +139,11 @@ export function TransactionErrorContent({ message, onDismiss }: { message: strin
         </Text>
       </AutoColumn>
 
-      <Flex justifyContent="center" pt="24px">
-        <Button onClick={onDismiss}>{t('Dismiss')}</Button>
-      </Flex>
+      {onDismiss ? (
+        <Flex justifyContent="center" pt="24px">
+          <Button onClick={onDismiss}>{t('Dismiss')}</Button>
+        </Flex>
+      ) : null}
     </Wrapper>
   )
 }

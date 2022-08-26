@@ -94,8 +94,6 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0xaA2527ff1893e0D40d4a454623d362B79E8bb7F1',
     token: bscTokens.stkbnb,
     quoteToken: bscTokens.wbnb,
-    isCommunity: true,
-    auctionHostingStartSeconds: 1660896000,
   },
   {
     pid: 113,
