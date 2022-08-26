@@ -9,6 +9,7 @@ import useSWRImmutable from 'swr/immutable'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { getMasterchefContract } from 'utils/contractHelpers'
+import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { getFarmConfig } from 'config/constants/farms/index'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, State } from '../types'
@@ -70,12 +71,11 @@ export const usePollFarmsWithUserData = () => {
  * 2 = CAKE-BNB LP
  * 3 = BUSD-BNB LP
  */
-// TODO: FARMS is it needed
-// const coreFarmPIDs = {
-//   56: [2, 3],
-//   97: [4, 10],
-//   5: [1, 2],
-// }
+const coreFarmPIDs = {
+  56: [2, 3],
+  97: [4, 10],
+  5: [1, 2],
+}
 
 export const usePollCoreFarmData = () => {
   const dispatch = useAppDispatch()
@@ -87,12 +87,11 @@ export const usePollCoreFarmData = () => {
     }
   }, [chainId, dispatch])
 
-  // TODO: FARMS is it needed
-  // useFastRefreshEffect(() => {
-  //   if (chainId) {
-  //     dispatch(fetchFarmsPublicDataAsync({ pids: coreFarmPIDs[chainId], chainId }))
-  //   }
-  // }, [dispatch, chainId])
+  useFastRefreshEffect(() => {
+    if (chainId) {
+      dispatch(fetchFarmsPublicDataAsync({ pids: coreFarmPIDs[chainId], chainId }))
+    }
+  }, [dispatch, chainId])
 }
 
 export const useFarms = (): DeserializedFarmsState => {
