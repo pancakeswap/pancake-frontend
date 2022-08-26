@@ -145,7 +145,7 @@ export const USDT = {
 
 export const WBTC_ETH = new Token(
   ChainId.ETHEREUM,
-  '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+  '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
   8,
   'WBTC',
   'Wrapped BTC',
