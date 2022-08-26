@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { bscTokens } from 'config/constants/tokens'
+import { bscTokens } from '@pancakeswap/tokens'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBep20Contract, getPotteryVaultContract, getPotteryDrawContract } from 'utils/contractHelpers'
 import { request, gql } from 'graphql-request'
@@ -98,7 +98,10 @@ export const fetchWithdrawAbleData = async (account: string) => {
             params: [account],
           },
         ]
-        const [[previewRedeem], [totalSupply], [totalLockCake], [balanceOf]] = await multicallv2(potteryVaultAbi, calls)
+        const [[previewRedeem], [totalSupply], [totalLockCake], [balanceOf]] = await multicallv2({
+          abi: potteryVaultAbi,
+          calls,
+        })
 
         return {
           id,

@@ -5,12 +5,12 @@ import getTimePeriods from 'utils/getTimePeriods'
 import { NegativeOne, One, Zero } from '@ethersproject/constants'
 
 const MIN_PRICE_BNB_DISPLAYED = BigNumber.from('1000000000000000')
-const DISPLAYED_DECIMALS = 4
 
 type formatPriceDifferenceProps = {
   price?: BigNumber
   minPriceDisplayed: BigNumber
   unitPrefix: string
+  displayedDecimals: number
   decimals: number
 }
 
@@ -18,24 +18,31 @@ const formatPriceDifference = ({
   price = Zero,
   minPriceDisplayed,
   unitPrefix,
+  displayedDecimals,
   decimals,
 }: formatPriceDifferenceProps) => {
   const sign = price.isNegative() ? NegativeOne : One
 
   if (price.abs().lt(minPriceDisplayed)) {
     const signedPriceToFormat = minPriceDisplayed.mul(sign)
-    return `<${unitPrefix}${formatBigNumberToFixed(signedPriceToFormat, DISPLAYED_DECIMALS, decimals)}`
+    return `<${unitPrefix}${formatBigNumberToFixed(signedPriceToFormat, displayedDecimals, decimals)}`
   }
 
-  return `${unitPrefix}${formatBigNumberToFixed(price, DISPLAYED_DECIMALS, decimals)}`
+  return `${unitPrefix}${formatBigNumberToFixed(price, displayedDecimals, decimals)}`
 }
 
-export const formatUsdv2 = (usd: BigNumber, minPriceDisplayed: BigNumber) => {
-  return formatPriceDifference({ price: usd, minPriceDisplayed, unitPrefix: '$', decimals: 8 })
+export const formatUsdv2 = (usd: BigNumber, minPriceDisplayed: BigNumber, displayedDecimals: number) => {
+  return formatPriceDifference({ price: usd, minPriceDisplayed, unitPrefix: '$', displayedDecimals, decimals: 8 })
 }
 
-export const formatBnbv2 = (bnb: BigNumber) => {
-  return formatPriceDifference({ price: bnb, minPriceDisplayed: MIN_PRICE_BNB_DISPLAYED, unitPrefix: '', decimals: 18 })
+export const formatBnbv2 = (bnb: BigNumber, displayedDecimals: number) => {
+  return formatPriceDifference({
+    price: bnb,
+    minPriceDisplayed: MIN_PRICE_BNB_DISPLAYED,
+    unitPrefix: '',
+    displayedDecimals,
+    decimals: 18,
+  })
 }
 
 export const padTime = (num: number) => num.toString().padStart(2, '0')

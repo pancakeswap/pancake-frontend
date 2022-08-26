@@ -10,7 +10,7 @@ import {
   useModal,
   CardRibbon,
   BunnyPlaceholderIcon,
-  useMatchBreakpointsContext,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { LotteryRound } from 'state/types'
 import { useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
@@ -56,7 +56,7 @@ const PreviousRoundCardBody: React.FC<React.PropsWithChildren<{ lotteryNodeData:
     } = useLottery()
     const userLotteryData = useGetUserLotteriesGraphData()
     const userDataForRound = userLotteryData.rounds.find((userLotteryRound) => userLotteryRound.lotteryId === lotteryId)
-    const { isLg, isXl, isXxl } = useMatchBreakpointsContext()
+    const { isLg, isXl, isXxl } = useMatchBreakpoints()
     const isLargerScreen = isLg || isXl || isXxl
 
     const currentLotteryIdAsInt = parseInt(currentLotteryId)

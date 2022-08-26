@@ -48,14 +48,14 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
   }
 
   if (account) {
-    const [[basicId], [unlimitedId]] = await multicallv2(
-      ifoV3Abi,
-      [
+    const [[basicId], [unlimitedId]] = await multicallv2({
+      abi: ifoV3Abi,
+      calls: [
         { address, name: 'computeVestingScheduleIdForAddressAndPid', params: [account, 0] },
         { address, name: 'computeVestingScheduleIdForAddressAndPid', params: [account, 1] },
       ],
-      { requireSuccess: false },
-    )
+      options: { requireSuccess: false },
+    })
 
     const ifov3Calls = [
       {
@@ -108,7 +108,7 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
       basicVestingInformation,
       unlimitedVestingInformation,
       vestingStartTime,
-    ] = await multicallv2(ifoV3Abi, ifov3Calls, { requireSuccess: false })
+    ] = await multicallv2({ abi: ifoV3Abi, calls: ifov3Calls, options: { requireSuccess: false } })
 
     userVestingData = {
       vestingStartTime: vestingStartTime ? vestingStartTime[0].toNumber() : 0,

@@ -20,9 +20,9 @@ import { sqrt } from '../utils'
 import { CurrencyAmount } from './fractions'
 import { Token } from './token'
 
-// let PAIR_ADDRESS_CACHE: { [key: string]: string } = {}
+let PAIR_ADDRESS_CACHE: { [key: string]: string } = {}
 
-// const composeKey = (token0: Token, token1: Token) => `${token0.chainId}-${token0.address}-${token1.address}`
+const composeKey = (token0: Token, token1: Token) => `${token0.chainId}-${token0.address}-${token1.address}`
 
 export const computePairAddress = ({
   factoryAddress,
@@ -34,11 +34,20 @@ export const computePairAddress = ({
   tokenB: Token
 }): string => {
   const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // does safety checks
-  return getCreate2Address(
-    factoryAddress,
-    keccak256(['bytes'], [pack(['address', 'address'], [token0.address, token1.address])]),
-    INIT_CODE_HASH_MAP[token0.chainId]
-  )
+  const key = composeKey(token0, token1)
+
+  if (PAIR_ADDRESS_CACHE?.[key] === undefined) {
+    PAIR_ADDRESS_CACHE = {
+      ...PAIR_ADDRESS_CACHE,
+      [key]: getCreate2Address(
+        factoryAddress,
+        keccak256(['bytes'], [pack(['address', 'address'], [token0.address, token1.address])]),
+        INIT_CODE_HASH_MAP[token0.chainId]
+      ),
+    }
+  }
+
+  return PAIR_ADDRESS_CACHE[key]
 }
 
 export class Pair {

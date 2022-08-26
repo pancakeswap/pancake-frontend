@@ -26,7 +26,7 @@ const useGetProfileCosts = () => {
         }))
         const [[numberCakeToReactivate], [numberCakeToRegister], [numberCakeToUpdate]] = await multicallv2<
           [[BigNumber], [BigNumber], [BigNumber]]
-        >(profileABI, calls)
+        >({ abi: profileABI, calls })
 
         setCosts({
           numberCakeToReactivate,

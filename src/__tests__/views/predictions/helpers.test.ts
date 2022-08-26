@@ -48,7 +48,7 @@ describe('formatUsdv2', () => {
   `(
     'should format $priceDifference to $expectedPriceDifferenceFormatted',
     ({ priceDifference, expectedPriceDifferenceFormatted }) =>
-      expect(formatUsdv2(BigNumber.from(priceDifference), BigNumber.from(100000))).toEqual(
+      expect(formatUsdv2(BigNumber.from(priceDifference), BigNumber.from(100000), 4)).toEqual(
         expectedPriceDifferenceFormatted,
       ),
   )
@@ -79,6 +79,6 @@ describe('formatBnbv2', () => {
   `(
     'should format $priceDifference to $expectedPriceDifferenceFormatted',
     ({ priceDifference, expectedPriceDifferenceFormatted }) =>
-      expect(formatBnbv2(BigNumber.from(priceDifference))).toEqual(expectedPriceDifferenceFormatted),
+      expect(formatBnbv2(BigNumber.from(priceDifference), 4)).toEqual(expectedPriceDifferenceFormatted),
   )
 })

@@ -35,6 +35,8 @@ export const registerToken = async (
 
 export const canRegisterToken = () =>
   typeof window !== 'undefined' &&
+  // @ts-ignore
+  !window?.ethereum?.isSafePal &&
   (window?.ethereum?.isMetaMask ||
     window?.ethereum?.isTrust ||
     window?.ethereum?.isCoinbaseWallet ||

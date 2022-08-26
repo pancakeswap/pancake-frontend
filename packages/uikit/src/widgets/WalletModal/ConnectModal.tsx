@@ -64,9 +64,12 @@ const ConnectModal: React.FC<React.PropsWithChildren<Props>> = ({
   const theme = useTheme();
   const sortedConfig = getPreferredConfig(connectors || config);
   // Filter out WalletConnect if user is inside TrustWallet built-in browser
-  const walletsToShow = window.ethereum?.isTrust
-    ? sortedConfig.filter((wallet) => wallet.title !== "WalletConnect")
-    : sortedConfig;
+  const walletsToShow =
+    window.ethereum?.isTrust &&
+    // @ts-ignore
+    !window?.ethereum?.isSafePal
+      ? sortedConfig.filter((wallet) => wallet.title !== "WalletConnect")
+      : sortedConfig;
   const displayListConfig = showMore ? walletsToShow : walletsToShow.slice(0, displayCount);
 
   return (

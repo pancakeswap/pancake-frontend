@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, ReactNode } from 'react'
+import { useState, useMemo, ReactNode } from 'react'
 import shuffle from 'lodash/shuffle'
 import styled from 'styled-components'
 // eslint-disable-next-line import/no-unresolved
@@ -6,19 +6,11 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 // eslint-disable-next-line import/no-unresolved
 import 'swiper/css/bundle'
 import SwiperCore from 'swiper'
-import {
-  ArrowBackIcon,
-  ArrowForwardIcon,
-  Box,
-  IconButton,
-  Text,
-  Flex,
-  useMatchBreakpointsContext,
-} from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, Box, IconButton, Text, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { isAddress } from 'utils'
-import { useNftsFromCollection } from 'state/nftMarket/hooks'
-import { fetchNftsFromCollections } from 'state/nftMarket/reducer'
-import { useAppDispatch } from 'state'
+import useSWRImmutable from 'swr/immutable'
+import { getNftsFromCollectionApi, getMarketDataForTokenIds } from 'state/nftMarket/helpers'
+import { NftToken } from 'state/nftMarket/types'
 import Trans from 'components/Trans'
 import { pancakeBunniesAddress } from '../../../constants'
 import { CollectibleLinkCard } from '../../../components/CollectibleCard'
@@ -54,26 +46,50 @@ const MoreFromThisCollection: React.FC<React.PropsWithChildren<MoreFromThisColle
   currentTokenName = '',
   title = <Trans>More from this collection</Trans>,
 }) => {
-  const dispatch = useAppDispatch()
   const [swiperRef, setSwiperRef] = useState<SwiperCore>(null)
   const [activeIndex, setActiveIndex] = useState(1)
-  const { isMobile, isMd, isLg } = useMatchBreakpointsContext()
+  const { isMobile, isMd, isLg } = useMatchBreakpoints()
   const allPancakeBunnyNfts = useAllPancakeBunnyNfts(collectionAddress)
-  const collectionNfts = useNftsFromCollection(collectionAddress)
 
   const isPBCollection = isAddress(collectionAddress) === pancakeBunniesAddress
+  const checkSummedCollectionAddress = isAddress(collectionAddress) || collectionAddress
 
-  useEffect(() => {
-    if (!isPBCollection && !collectionNfts) {
-      dispatch(
-        fetchNftsFromCollections({
-          collectionAddress: isAddress(collectionAddress) || collectionAddress,
-          page: 1,
-          size: 100,
-        }),
-      )
-    }
-  }, [collectionNfts, collectionAddress, dispatch, isPBCollection])
+  const { data: collectionNfts } = useSWRImmutable<NftToken[]>(
+    !isPBCollection && checkSummedCollectionAddress
+      ? ['nft', 'moreFromCollection', checkSummedCollectionAddress]
+      : null,
+    async () => {
+      try {
+        const nfts = await getNftsFromCollectionApi(collectionAddress, 100, 1)
+
+        if (!nfts?.data) {
+          return []
+        }
+
+        const tokenIds = Object.values(nfts.data).map((nft) => nft.tokenId)
+        const nftsMarket = await getMarketDataForTokenIds(collectionAddress, tokenIds)
+
+        return tokenIds.map((id) => {
+          const apiMetadata = nfts.data[id]
+          const marketData = nftsMarket.find((nft) => nft.tokenId === id)
+
+          return {
+            tokenId: id,
+            name: apiMetadata.name,
+            description: apiMetadata.description,
+            collectionName: apiMetadata.collection.name,
+            collectionAddress,
+            image: apiMetadata.image,
+            attributes: apiMetadata.attributes,
+            marketData,
+          }
+        })
+      } catch (error) {
+        console.error(`Failed to fetch collection NFTs for ${collectionAddress}`, error)
+        return []
+      }
+    },
+  )
 
   let nftsToShow = useMemo(() => {
     return shuffle(

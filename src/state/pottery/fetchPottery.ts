@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js'
-import multicallv2 from 'utils/multicall'
+import multicall from 'utils/multicall'
 import potteryVaultAbi from 'config/abi/potteryVaultAbi.json'
 import { getPotteryDrawAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { PotteryDepositStatus } from 'state/types'
-import { bscTokens } from 'config/constants/tokens'
+import { bscTokens } from '@pancakeswap/tokens'
 import { getPotteryDrawContract, getBep20Contract } from 'utils/contractHelpers'
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
@@ -44,7 +44,7 @@ export const fetchPublicPotteryValue = async (potteryVaultAddress: string) => {
       }),
     )
 
-    const [getStatus, [totalLockCake], [totalSupply], [lockStartTime], getMaxTotalDeposit] = await multicallv2(
+    const [getStatus, [totalLockCake], [totalSupply], [lockStartTime], getMaxTotalDeposit] = await multicall(
       potteryVaultAbi,
       calls,
     )

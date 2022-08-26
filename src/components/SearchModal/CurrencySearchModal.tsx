@@ -10,7 +10,7 @@ import {
   InjectedModalProps,
   Heading,
   Button,
-  useMatchBreakpointsContext,
+  useMatchBreakpoints,
   MODAL_SWIPE_TO_CLOSE_VELOCITY,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
@@ -96,7 +96,7 @@ export default function CurrencySearchModal({
     },
     [CurrencyModalView.importList]: { title: t('Import List'), onBack: () => setModalView(CurrencyModalView.search) },
   }
-  const { isMobile } = useMatchBreakpointsContext()
+  const { isMobile } = useMatchBreakpoints()
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState(undefined)
   useEffect(() => {

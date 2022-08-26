@@ -37,17 +37,34 @@ const Icons = {
   MetaMask: MetamaskIcon,
 }
 
+const getWalletText = (textOptions: AddToWalletTextOptions, tokenSymbol: string, t: any) => {
+  // @ts-ignore
+  if (window?.ethereum?.isSafePal) {
+    return null
+  }
+
+  return (
+    textOptions !== AddToWalletTextOptions.NO_TEXT &&
+    (textOptions === AddToWalletTextOptions.TEXT
+      ? t('Add to Wallet')
+      : t('Add %asset% to Wallet', { asset: tokenSymbol }))
+  )
+}
+
 const getWalletIcon = (marginTextBetweenLogo: string, name?: string) => {
+  // @ts-ignore
+  if (window?.ethereum?.isSafePal) {
+    return null
+  }
+
   const iconProps = {
     width: '16px',
     ...(marginTextBetweenLogo && { ml: marginTextBetweenLogo }),
   }
-
   if (name && Icons[name]) {
     const Icon = Icons[name]
     return <Icon {...iconProps} />
   }
-
   if (window?.ethereum?.isTrust) {
     return <TrustWalletIcon {...iconProps} />
   }
@@ -60,7 +77,7 @@ const getWalletIcon = (marginTextBetweenLogo: string, name?: string) => {
   if (window?.ethereum?.isMetaMask) {
     return <MetamaskIcon {...iconProps} />
   }
-  return null
+  return <MetamaskIcon {...iconProps} />
 }
 
 const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
@@ -90,10 +107,7 @@ const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
         })
       }}
     >
-      {textOptions !== AddToWalletTextOptions.NO_TEXT &&
-        (textOptions === AddToWalletTextOptions.TEXT
-          ? t('Add to %wallet%', { wallet: connector.name })
-          : t('Add %asset% to %wallet%', { asset: tokenSymbol, wallet: connector.name }))}
+      {getWalletText(textOptions, tokenSymbol, t)}
       {getWalletIcon(marginTextBetweenLogo, connector?.name)}
     </Button>
   )

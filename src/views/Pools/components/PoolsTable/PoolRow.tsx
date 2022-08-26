@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { usePool, useDeserializedPoolByVaultKey } from 'state/pools/hooks'
 import { VaultKey } from 'state/types'
 
@@ -17,7 +17,7 @@ import ExpandRow from './ExpandRow'
 export const VaultPoolRow: React.FC<
   React.PropsWithChildren<{ vaultKey: VaultKey; account: string; initialActivity?: boolean }>
 > = memo(({ vaultKey, account, initialActivity }) => {
-  const { isXs, isSm, isMd, isLg, isXl, isXxl } = useMatchBreakpointsContext()
+  const { isXs, isSm, isMd, isLg, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isLg || isXl || isXxl
   const isXLargerScreen = isXl || isXxl
   const pool = useDeserializedPoolByVaultKey(vaultKey)
@@ -43,7 +43,7 @@ const PoolRow: React.FC<React.PropsWithChildren<{ sousId: number; account: strin
   account,
   initialActivity,
 }) => {
-  const { isXs, isSm, isMd, isLg, isXl, isXxl, isDesktop } = useMatchBreakpointsContext()
+  const { isXs, isSm, isMd, isLg, isXl, isXxl, isDesktop } = useMatchBreakpoints()
   const isLargerScreen = isLg || isXl || isXxl
   const { pool } = usePool(sousId)
 

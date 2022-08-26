@@ -1,11 +1,11 @@
 import React, { ReactNode } from "react";
 import { render, RenderResult } from "@testing-library/react";
-import { ThemeProvider } from "styled-components";
 import { light } from "./theme";
+import { UIKitProvider } from "./Providers";
 
 /* eslint-disable import/prefer-default-export */
-export const renderWithTheme = (component: ReactNode, theme = light): RenderResult => {
-  return render(<ThemeProvider theme={theme}>{component}</ThemeProvider>);
+export const renderWithProvider = (component: ReactNode, theme = light): RenderResult => {
+  return render(<UIKitProvider theme={theme}>{component}</UIKitProvider>);
 };
 
 export const setupMockIntersectionObserver = (): void => {

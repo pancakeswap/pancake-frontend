@@ -9,7 +9,10 @@ import {
   useUserSingleHopOnly,
   useZapModeManager,
 } from 'state/user/hooks'
+import { ChainId } from '@pancakeswap/sdk'
+import { SUPPORT_ZAP } from 'config/constants/supportChains'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import QuestionHelper from '../../QuestionHelper'
@@ -38,6 +41,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [zapMode, toggleZapMode] = useZapModeManager()
   const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
   const { onChangeRecipient } = useSwapActionHandlers()
+  const { chainId } = useActiveChainId()
 
   const { t } = useTranslation()
   const { isDark, setTheme } = useTheme()
@@ -113,40 +117,42 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                 {t('Swaps & Liquidity')}
               </Text>
               <Flex justifyContent="space-between" alignItems="center" mb="24px">
-                <GasSettings />
+                {chainId === ChainId.BSC && <GasSettings />}
               </Flex>
               <TransactionSettings />
             </Flex>
-            <Flex justifyContent="space-between" alignItems="center" mb="24px">
-              <Flex alignItems="center">
-                <Text>{t('Zap (Beta)')}</Text>
-                <QuestionHelper
-                  text={
-                    <Box>
-                      <Text>
-                        {t(
-                          'Zap enables simple liquidity provision. Add liquidity with one token and one click, without manual swapping or token balancing.',
-                        )}
-                      </Text>
-                      <Text>
-                        {t(
-                          'If you experience any issue when adding or removing liquidity, please disable Zap and retry.',
-                        )}
-                      </Text>
-                    </Box>
-                  }
-                  placement="top-start"
-                  ml="4px"
+            {SUPPORT_ZAP.includes(chainId) && (
+              <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                <Flex alignItems="center">
+                  <Text>{t('Zap (Beta)')}</Text>
+                  <QuestionHelper
+                    text={
+                      <Box>
+                        <Text>
+                          {t(
+                            'Zap enables simple liquidity provision. Add liquidity with one token and one click, without manual swapping or token balancing.',
+                          )}
+                        </Text>
+                        <Text>
+                          {t(
+                            'If you experience any issue when adding or removing liquidity, please disable Zap and retry.',
+                          )}
+                        </Text>
+                      </Box>
+                    }
+                    placement="top-start"
+                    ml="4px"
+                  />
+                </Flex>
+                <Toggle
+                  checked={zapMode}
+                  scale="md"
+                  onChange={() => {
+                    toggleZapMode(!zapMode)
+                  }}
                 />
               </Flex>
-              <Toggle
-                checked={zapMode}
-                scale="md"
-                onChange={() => {
-                  toggleZapMode(!zapMode)
-                }}
-              />
-            </Flex>
+            )}
             <Flex justifyContent="space-between" alignItems="center" mb="24px">
               <Flex alignItems="center">
                 <Text>{t('Expert Mode')}</Text>

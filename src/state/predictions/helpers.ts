@@ -146,7 +146,7 @@ export const getLedgerData = async (account: string, epochs: number[], address: 
     name: 'ledger',
     params: [epoch, account],
   }))
-  const response = await multicallv2<PredictionsLedgerResponse[]>(predictionsAbi, ledgerCalls)
+  const response = await multicallv2<PredictionsLedgerResponse[]>({ abi: predictionsAbi, calls: ledgerCalls })
   return response
 }
 
@@ -229,7 +229,10 @@ export const getClaimStatuses = async (
     name: 'claimable',
     params: [epoch, account],
   }))
-  const claimableResponses = await multicallv2<[PredictionsClaimableResponse][]>(predictionsAbi, claimableCalls)
+  const claimableResponses = await multicallv2<[PredictionsClaimableResponse][]>({
+    abi: predictionsAbi,
+    calls: claimableCalls,
+  })
 
   return claimableResponses.reduce((accum, claimableResponse, index) => {
     const epoch = epochs[index]
@@ -248,7 +251,10 @@ export const getPredictionData = async (address: string): Promise<MarketData> =>
     address,
     name: method,
   }))
-  const [[currentEpoch], [intervalSeconds], [minBetAmount], [paused]] = await multicallv2(predictionsAbi, staticCalls)
+  const [[currentEpoch], [intervalSeconds], [minBetAmount], [paused]] = await multicallv2({
+    abi: predictionsAbi,
+    calls: staticCalls,
+  })
 
   return {
     status: paused ? PredictionStatus.PAUSED : PredictionStatus.LIVE,
@@ -264,7 +270,7 @@ export const getRoundsData = async (epochs: number[], address: string): Promise<
     name: 'rounds',
     params: [epoch],
   }))
-  const response = await multicallv2<PredictionsRoundsResponse[]>(predictionsAbi, calls)
+  const response = await multicallv2<PredictionsRoundsResponse[]>({ abi: predictionsAbi, calls })
   return response
 }
 

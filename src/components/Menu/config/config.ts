@@ -16,7 +16,7 @@ import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { perpLangMap } from 'utils/getPerpetualLanguageCode'
 import { perpTheme } from 'utils/getPerpetualTheme'
 import { DropdownMenuItems } from '@pancakeswap/uikit/src/components/DropdownMenu/types'
-import { ChainId } from '@pancakeswap/sdk'
+import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
 
 export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }
 export type ConfigMenuItemsType = Omit<MenuItemsType, 'items'> & { hideSubNav?: boolean; image?: string } & {
@@ -52,7 +52,7 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
           {
             label: t('Limit'),
             href: '/limit-orders',
-            supportChainIds: [ChainId.BSC],
+            supportChainIds: SUPPORT_ONLY_BSC,
             image: '/images/decorations/3d-coin.png',
           },
           {
@@ -66,10 +66,11 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
             )}`,
             type: DropdownMenuItemType.EXTERNAL_LINK,
           },
-          // {
-          //   label: t('Transfer'),
-          //   href: '/transfer',
-          // },
+          {
+            label: t('Bridge'),
+            href: 'https://bridge.pancakeswap.finance/',
+            type: DropdownMenuItemType.EXTERNAL_LINK,
+          },
         ].map((item) => addMenuItemSupported(item, chainId)),
       },
       {
@@ -77,7 +78,6 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
         href: '/farms',
         icon: EarnIcon,
         fillIcon: EarnFillIcon,
-        supportChainIds: [ChainId.BSC],
         image: '/images/decorations/pe2.png',
         items: [
           {
@@ -87,15 +87,16 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
           {
             label: t('Pools'),
             href: '/pools',
+            supportChainIds: SUPPORT_ONLY_BSC,
           },
-        ],
+        ].map((item) => addMenuItemSupported(item, chainId)),
       },
       {
         label: t('Win'),
         href: '/prediction',
         icon: TrophyIcon,
         fillIcon: TrophyFillIcon,
-        supportChainIds: [ChainId.BSC],
+        supportChainIds: SUPPORT_ONLY_BSC,
         items: [
           {
             label: t('Trading Competition'),
@@ -125,7 +126,7 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
         href: `${nftsBaseUrl}`,
         icon: NftIcon,
         fillIcon: NftFillIcon,
-        supportChainIds: [ChainId.BSC],
+        supportChainIds: SUPPORT_ONLY_BSC,
         image: '/images/decorations/nft.png',
         items: [
           {
@@ -151,18 +152,18 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
           {
             label: t('Info'),
             href: '/info',
-            supportChainIds: [ChainId.BSC],
+            supportChainIds: SUPPORT_ONLY_BSC,
           },
           {
             label: t('IFO'),
             href: '/ifo',
-            supportChainIds: [ChainId.BSC],
+            supportChainIds: SUPPORT_ONLY_BSC,
             image: '/images/ifos/ifo-bunny.png',
           },
           {
             label: t('Voting'),
             href: '/voting',
-            supportChainIds: [ChainId.BSC],
+            supportChainIds: SUPPORT_ONLY_BSC,
             image: '/images/voting/voting-bunny.png',
           },
           {
@@ -171,7 +172,7 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
           {
             label: t('Leaderboard'),
             href: '/teams',
-            supportChainIds: [ChainId.BSC],
+            supportChainIds: SUPPORT_ONLY_BSC,
             image: '/images/decorations/leaderboard.png',
           },
           {

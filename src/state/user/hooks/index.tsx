@@ -1,11 +1,12 @@
 import { ChainId, Pair, Token } from '@pancakeswap/sdk'
 import { differenceInDays } from 'date-fns'
 import flatMap from 'lodash/flatMap'
-import farms from 'config/constants/farms'
+import { getFarmConfig } from 'config/constants/farms/index'
 import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useSWRImmutable from 'swr/immutable'
 import { useFeeData } from 'wagmi'
 import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
 import { AppState, useAppDispatch } from '../../index'
@@ -472,15 +473,12 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   // pinned pairs
   const pinnedPairs = useMemo(() => (chainId ? PINNED_PAIRS[chainId] ?? [] : []), [chainId])
 
-  const farmPairs: [Token, Token][] = useMemo(
-    () =>
-      chainId === ChainId.BSC
-        ? farms
-            .filter((farm) => farm.pid !== 0)
-            .map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)])
-        : [],
-    [chainId],
-  )
+  const { data: farmPairs = [] } = useSWRImmutable(chainId && ['track-farms-pairs', chainId], async () => {
+    const farms = await getFarmConfig(chainId)
+    farms
+      .filter((farm) => farm.pid !== 0)
+      .map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)])
+  })
 
   // pairs for every token against every base
   const generatedPairs: [Token, Token][] = useMemo(

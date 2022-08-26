@@ -1,28 +1,18 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
-import { AprProps } from 'views/Farms/components/FarmTable/Apr'
-import Farm, { FarmProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Farm'
-import Staked, { StakedProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Staked'
-import { EarnedProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Earned'
-import Multiplier, { MultiplierProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Multiplier'
-import Liquidity, { LiquidityProps } from 'views/Migration/components/MigrationStep1/OldFarm/Cells/Liquidity'
-import ExpandActionCell from 'views/Migration/components/MigrationStep1/OldPool/Cells/ExpandActionCell'
+import Farm from 'views/Migration/components/Farm/Cells/Farm'
+import Staked from 'views/Migration/components/Farm/Cells/Staked'
+import Multiplier from 'views/Migration/components/Farm/Cells/Multiplier'
+import Liquidity from 'views/Migration/components/Farm/Cells/Liquidity'
+import ExpandActionCell from 'views/Migration/components/Cells/ExpandActionCell'
 import { useFarmUser } from 'state/farms/hooks'
-import { useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import AprCell from './Cells/AprCell'
 import StakeButtonCells from './Cells/StakeButtonCells'
 import StakeButton from './StakeButton'
 import ActionPanel from './ActionPanel/ActionPanel'
-
-export interface RowProps {
-  farm: FarmProps
-  apr: AprProps
-  earned: EarnedProps
-  staked: StakedProps
-  multiplier: MultiplierProps
-  liquidity: LiquidityProps
-}
+import { RowProps } from '../../types'
 
 const StyledRow = styled.div`
   display: flex;
@@ -62,7 +52,7 @@ const FarmRow: React.FunctionComponent<React.PropsWithChildren<RowProps>> = ({
   multiplier,
   liquidity,
 }) => {
-  const { isMobile, isXl, isXxl } = useMatchBreakpointsContext()
+  const { isMobile, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)

@@ -27,7 +27,7 @@ async function getPublicMultiplier({ farmBoosterContract }): Promise<number> {
     },
   ]
 
-  const data = await multicallv2(farmBoosterAbi, calls)
+  const data = await multicallv2({ abi: farmBoosterAbi, calls })
 
   if (!data) return 0
 
@@ -56,14 +56,14 @@ async function getUserMultiplier({ farmBoosterContract, account, pid }): Promise
     },
   ]
 
-  const data = await multicallv2(farmBoosterAbi, calls)
+  const data = await multicallv2({ abi: farmBoosterAbi, calls })
 
   if (!data) return 0
 
-  const [[multipler], [BOOST_PRECISION]] = data
+  const [[multiplier], [BOOST_PRECISION]] = data
 
   return _toNumber(
-    PRECISION_FACTOR.addUnsafe(FixedNumber.from(multipler))
+    PRECISION_FACTOR.addUnsafe(FixedNumber.from(multiplier))
       .subUnsafe(FixedNumber.from(BOOST_PRECISION))
       .divUnsafe(PRECISION_FACTOR)
       .round(3)
@@ -80,7 +80,7 @@ async function getMultiplierFromMC({ pid, proxyAddress, masterChefContract }): P
     },
   ]
 
-  const data = await multicallv2(masterChefAbi, calls)
+  const data = await multicallv2({ abi: masterChefAbi, calls })
 
   if (!data?.length) return 0
 

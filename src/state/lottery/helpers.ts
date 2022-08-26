@@ -89,7 +89,7 @@ export const fetchMultipleLotteries = async (lotteryIds: string[]): Promise<Lott
     params: [id],
   }))
   try {
-    const multicallRes = await multicallv2(lotteryV2Abi, calls, { requireSuccess: false })
+    const multicallRes = await multicallv2({ abi: lotteryV2Abi, calls, options: { requireSuccess: false } })
     const processedResponses = multicallRes.map((res, index) =>
       processViewLotterySuccessResponse(res[0], lotteryIds[index]),
     )
@@ -110,10 +110,10 @@ export const fetchCurrentLotteryIdAndMaxBuy = async () => {
       address: getLotteryV2Address(),
       name: method,
     }))
-    const [[currentLotteryId], [maxNumberTicketsPerBuyOrClaim]] = (await multicallv2(
-      lotteryV2Abi,
+    const [[currentLotteryId], [maxNumberTicketsPerBuyOrClaim]] = (await multicallv2({
+      abi: lotteryV2Abi,
       calls,
-    )) as EthersBigNumber[][]
+    })) as EthersBigNumber[][]
 
     return {
       currentLotteryId: currentLotteryId ? currentLotteryId.toString() : null,

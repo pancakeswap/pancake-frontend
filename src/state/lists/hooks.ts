@@ -6,13 +6,13 @@ import groupBy from 'lodash/groupBy'
 import fromPairs from 'lodash/fromPairs'
 import { useSelector } from 'react-redux'
 import { createSelector } from '@reduxjs/toolkit'
+import { WrappedTokenInfo, TagInfo, TokenAddressMap, EMPTY_LIST } from '@pancakeswap/tokens'
 import { DEFAULT_LIST_OF_LISTS, OFFICIAL_LISTS } from 'config/constants/lists'
 import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-default.tokenlist.json'
 import { UNSUPPORTED_LIST_URLS, WARNING_LIST_URLS } from '../../config/constants/lists'
 import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
 import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
 import { AppState } from '../index'
-import { WrappedTokenInfo, TagInfo, TokenAddressMap, EMPTY_LIST } from '../types'
 
 // use ordering of default list of lists to assign priority
 function sortByListPriority(urlA: string, urlB: string) {

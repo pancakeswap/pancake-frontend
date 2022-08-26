@@ -1,9 +1,9 @@
 import React from "react";
-import { renderWithTheme } from "../../testHelpers";
+import { renderWithProvider } from "../../testHelpers";
 import { Card, CardBody, CardHeader, CardFooter } from "../../components/Card";
 
 it("renders correctly", () => {
-  const { asFragment } = renderWithTheme(
+  const { asFragment } = renderWithProvider(
     <Card>
       <CardHeader>Header</CardHeader>
       <CardBody>Body</CardBody>

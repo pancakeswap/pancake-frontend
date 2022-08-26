@@ -7,14 +7,13 @@ import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useAppDispatch } from 'state'
-import { getAddress } from 'utils/addressHelpers'
 import { useERC20 } from 'hooks/useContract'
 import { TransactionResponse } from '@ethersproject/providers'
 
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback } from 'react'
 import { FarmWithStakedValue } from '../../types'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
@@ -29,7 +28,7 @@ interface HarvestActionProps extends FarmWithStakedValue {
 }
 
 export const ProxyHarvestActionContainer = ({ children, ...props }) => {
-  const lpAddress = getAddress(props.lpAddresses)
+  const { lpAddress } = props
   const lpContract = useERC20(lpAddress)
 
   const { onReward, onDone, proxyCakeBalance } = useProxyStakedActions(props.pid, lpContract)
@@ -39,12 +38,12 @@ export const ProxyHarvestActionContainer = ({ children, ...props }) => {
 
 export const HarvestActionContainer = ({ children, ...props }) => {
   const { onReward } = useHarvestFarm(props.pid)
-  const { account } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
 
   const onDone = useCallback(
-    () => dispatch(fetchFarmUserDataAsync({ account, pids: [props.pid] })),
-    [account, dispatch, props.pid],
+    () => dispatch(fetchFarmUserDataAsync({ account, pids: [props.pid], chainId })),
+    [account, dispatch, chainId, props.pid],
   )
 
   return children({ ...props, onDone, onReward })
@@ -65,7 +64,22 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   let earnings = BIG_ZERO
   let earningsBusd = 0
   let displayBalance = userDataReady ? earnings.toFixed(5, BigNumber.ROUND_DOWN) : <Skeleton width={60} />
-  const toolTipBalance = earningsBigNumber.isGreaterThan(new BigNumber(0.00001)) ? displayBalance : `< 0.00001`
+
+  // If user didn't connect wallet default balance will be 0
+  if (!earningsBigNumber.isZero()) {
+    earnings = getBalanceAmount(earningsBigNumber)
+    earningsBusd = earnings.multipliedBy(cakePrice).toNumber()
+    displayBalance = earnings.toFixed(5, BigNumber.ROUND_DOWN)
+  }
+
+  const toolTipBalance = !userDataReady ? (
+    <Skeleton width={60} />
+  ) : earnings.isGreaterThan(new BigNumber(0.00001)) ? (
+    earnings.toFixed(5, BigNumber.ROUND_DOWN)
+  ) : (
+    `< 0.00001`
+  )
+
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     `${toolTipBalance} ${t(
       `CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.`,
@@ -74,13 +88,6 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
       placement: 'bottom',
     },
   )
-
-  // If user didn't connect wallet default balance will be 0
-  if (!earningsBigNumber.isZero()) {
-    earnings = getBalanceAmount(earningsBigNumber)
-    earningsBusd = earnings.multipliedBy(cakePrice).toNumber()
-    displayBalance = earnings.toFixed(5, BigNumber.ROUND_DOWN)
-  }
 
   return (
     <ActionContainer style={{ minHeight: 124.5 }}>

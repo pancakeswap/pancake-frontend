@@ -29,8 +29,8 @@ const FarmsPoolsRow = () => {
   const [showFarms, setShowFarms] = useState(false)
   const { t } = useTranslation()
   const { observerRef, isIntersecting } = useIntersectionObserver()
-  const { topFarms } = useGetTopFarmsByApr(isIntersecting)
-  const { topPools } = useGetTopPoolsByApr(isIntersecting)
+  const { topFarms, fetched } = useGetTopFarmsByApr(isIntersecting)
+  const { topPools } = useGetTopPoolsByApr(fetched && isIntersecting)
   const { lockedApy } = useVaultApy()
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null)

@@ -1,3 +1,7 @@
 import NotFound from '../views/NotFound'
 
-export default NotFound
+const NotFoundPage = () => <NotFound />
+
+NotFoundPage.chains = []
+
+export default NotFoundPage

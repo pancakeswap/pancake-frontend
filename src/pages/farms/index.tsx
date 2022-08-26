@@ -1,4 +1,5 @@
 import { useContext } from 'react'
+import { SUPPORT_FARMS } from 'config/constants/supportChains'
 import { FarmsPageLayout, FarmsContext } from 'views/Farms'
 import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
 import { getDisplayApr } from 'views/Farms/components/getDisplayApr'
@@ -54,5 +55,7 @@ const FarmsPage = () => {
 }
 
 FarmsPage.Layout = FarmsPageLayout
+
+FarmsPage.chains = SUPPORT_FARMS
 
 export default FarmsPage
