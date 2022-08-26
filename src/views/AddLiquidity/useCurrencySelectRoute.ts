@@ -1,9 +1,11 @@
-import { Currency } from '@pancakeswap/sdk'
+import { Currency, NATIVE } from '@pancakeswap/sdk'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import currencyId from 'utils/currencyId'
 
 export const useCurrencySelectRoute = () => {
+  const { chainId } = useActiveWeb3React()
   const router = useRouter()
   const [currencyIdA, currencyIdB] = router.query.currency || []
 
@@ -30,10 +32,10 @@ export const useCurrencySelectRoute = () => {
           router.replace(`/add/${newCurrencyIdB}`, undefined, { shallow: true })
         }
       } else {
-        router.replace(`/add/${currencyIdA || 'BNB'}/${newCurrencyIdB}`, undefined, { shallow: true })
+        router.replace(`/add/${currencyIdA || NATIVE[chainId]?.symbol}/${newCurrencyIdB}`, undefined, { shallow: true })
       }
     },
-    [currencyIdA, router, currencyIdB],
+    [currencyIdA, router, currencyIdB, chainId],
   )
 
   return {
