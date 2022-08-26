@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { Text, PancakeToggle, Toggle, Flex, Modal, InjectedModalProps, ThemeSwitcher, Box } from '@pancakeswap/uikit'
 import {
@@ -31,6 +31,28 @@ const ScrollableContainer = styled(Flex)`
     max-height: none;
   }
 `
+
+export const withCustomOnDismiss =
+  (Component) =>
+  ({
+    onDismiss,
+    customOnDismiss,
+    mode,
+    ...props
+  }: {
+    onDismiss?: () => void
+    customOnDismiss: () => void
+    mode: SettingsMode
+  }) => {
+    const handleDismiss = useCallback(() => {
+      onDismiss?.()
+      if (customOnDismiss) {
+        customOnDismiss()
+      }
+    }, [customOnDismiss, onDismiss])
+
+    return <Component {...props} mode={mode} onDismiss={handleDismiss} />
+  }
 
 const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss, mode }) => {
   const [showConfirmExpertModal, setShowConfirmExpertModal] = useState(false)
