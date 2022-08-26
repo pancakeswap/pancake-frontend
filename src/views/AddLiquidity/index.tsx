@@ -135,7 +135,7 @@ export default function AddLiquidity() {
     poolTokenPercentage,
     error,
     addError,
-  } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined, isStable)
+  } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined, isStable, stableMap.lpAddress)
 
   const poolData = useLPApr(pair)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(

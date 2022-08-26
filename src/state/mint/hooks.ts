@@ -64,6 +64,7 @@ export function useDerivedMintInfo(
   currencyA: Currency | undefined,
   currencyB: Currency | undefined,
   isStable: boolean,
+  lpStableToken: string,
 ): {
   dependentField: Field
   currencies: { [field in Field]?: Currency }
@@ -98,7 +99,14 @@ export function useDerivedMintInfo(
   // pair
   const [pairState, pair] = usePair(currencies[Field.CURRENCY_A], currencies[Field.CURRENCY_B])
 
-  const totalSupply = useTotalSupply(pair?.liquidityToken)
+  const lpstableToken = new Token(currencies[Field.CURRENCY_A].chainId, lpStableToken, 18, 'Cake-LP', 'Pancake LPs')
+
+  console.log('isStable: ', isStable)
+
+  const totalSupply = useTotalSupply(isStable ? lpstableToken : pair?.liquidityToken)
+
+  // TODO: if stable, check totalSupply
+  console.log('totalSupply: ', Boolean(totalSupply && JSBI.equal(totalSupply.quotient, BIG_INT_ZERO)))
 
   const noLiquidity: boolean =
     pairState === PairState.NOT_EXISTS ||
