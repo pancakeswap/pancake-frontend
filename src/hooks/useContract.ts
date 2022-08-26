@@ -57,6 +57,7 @@ import {
   getTradingCompetitionContractFanToken,
   getTradingCompetitionContractMobox,
   getTradingCompetitionContractMoD,
+  getNonBscVaultContract,
 } from 'utils/contractHelpers'
 import { useSigner } from 'wagmi'
 
@@ -362,4 +363,10 @@ export function useBCakeProxyContract(proxyContractAddress: string, withSignerIf
     () => proxyContractAddress && getBCakeProxyContract(proxyContractAddress, providerOrSigner),
     [providerOrSigner, proxyContractAddress],
   )
+}
+
+export const useNonBscVault = (withSignerIfPossible = true) => {
+  const { chainId } = useActiveChainId()
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
+  return useMemo(() => getNonBscVaultContract(providerOrSigner, chainId), [providerOrSigner, chainId])
 }

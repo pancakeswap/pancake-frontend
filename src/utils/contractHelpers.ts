@@ -41,6 +41,7 @@ import {
   getPredictionsV1Address,
   getBCakeFarmBoosterAddress,
   getBCakeFarmBoosterProxyFactoryAddress,
+  getCrossFarmingAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -92,6 +93,8 @@ import cakePredictionsAbi from 'config/abi/cakePredictions.json'
 import bCakeFarmBoosterAbi from 'config/abi/bCakeFarmBooster.json'
 import bCakeFarmBoosterProxyFactoryAbi from 'config/abi/bCakeFarmBoosterProxyFactory.json'
 import bCakeProxyAbi from 'config/abi/bCakeProxy.json'
+import nonBscVault from 'config/abi/nonBscVault.json'
+import crossFarmingAbi from 'config/abi/crossFarming.json'
 
 // Types
 import type {
@@ -139,6 +142,8 @@ import type {
   BCakeFarmBooster,
   BCakeFarmBoosterProxyFactory,
   BCakeProxy,
+  NonBscVault,
+  CrossFarming,
 } from 'config/abi/types'
 import { ChainId } from '@pancakeswap/sdk'
 
@@ -361,4 +366,17 @@ export const getBCakeFarmBoosterProxyFactoryContract = (signer?: Signer | Provid
 
 export const getBCakeProxyContract = (proxyContractAddress: string, signer?: Signer | Provider) => {
   return getContract({ abi: bCakeProxyAbi, address: proxyContractAddress, signer }) as BCakeProxy
+}
+
+export const getNonBscVaultContract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract({ abi: nonBscVault, address: getMasterChefAddress(chainId), chainId, signer }) as NonBscVault
+}
+
+export const getCrossFarmingContract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract({
+    abi: crossFarmingAbi,
+    address: getCrossFarmingAddress(chainId),
+    chainId,
+    signer,
+  }) as CrossFarming
 }
