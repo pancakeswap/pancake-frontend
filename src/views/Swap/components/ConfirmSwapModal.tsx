@@ -21,7 +21,7 @@ const SwapTransactionErrorContent = ({ onDismiss, message, openSettingModal }) =
   }, [message, onDismiss, openSettingModal])
   const { t } = useTranslation()
 
-  const slippageElement = (
+  const errorMessage = message?.includes(PancakeRouterSlippageErrorMsg) ? (
     <>
       <Text mb="16px">
         {t('This transaction will not succeed either due to price movement or fee on transfer. Try increasing your')}{' '}
@@ -36,9 +36,11 @@ const SwapTransactionErrorContent = ({ onDismiss, message, openSettingModal }) =
         {t('What are the potential issues with the token?')}
       </LinkExternal>
     </>
+  ) : (
+    message
   )
 
-  return <TransactionErrorContent message={slippageElement} />
+  return <TransactionErrorContent message={errorMessage} />
 }
 
 interface ConfirmSwapModalProps {
