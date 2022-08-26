@@ -1,33 +1,28 @@
+import { formatEther } from '@ethersproject/units'
+import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import type {
   UnknownAsyncThunkFulfilledAction,
   UnknownAsyncThunkPendingAction,
   UnknownAsyncThunkRejectedAction,
-  // eslint-disable-next-line import/no-unresolved
 } from '@reduxjs/toolkit/dist/matchers'
-import fromPairs from 'lodash/fromPairs'
-import BigNumber from 'bignumber.js'
-import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
-import stringify from 'fast-json-stable-stringify'
-import multicall from 'utils/multicall'
-import { ChainId } from '@pancakeswap/sdk'
-import masterchefABI from 'config/abi/masterchef.json'
-import { getMasterChefAddress } from 'utils/addressHelpers'
-import { getBalanceAmount } from 'utils/formatBalance'
-import type { AppState } from 'state'
-import { getFarmsPriceHelperLpFiles } from 'config/constants/priceHelperLps'
-import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
 import { getFarmConfig } from 'config/constants/farms/index'
-import fetchFarms from './fetchFarms'
-import getFarmsPrices from './getFarmsPrices'
-import {
-  fetchFarmUserEarnings,
-  fetchFarmUserAllowances,
-  fetchFarmUserTokenBalances,
-  fetchFarmUserStakedBalances,
-} from './fetchFarmUser'
-import { SerializedFarmsState, SerializedFarm } from '../types'
-import { fetchMasterChefFarmPoolLength } from './fetchMasterChefData'
+import { getFarmsPriceHelperLpFiles } from 'config/constants/priceHelperLps'
+import stringify from 'fast-json-stable-stringify'
+import fromPairs from 'lodash/fromPairs'
+import type { AppState } from 'state'
+import { chains } from 'utils/wagmi'
+import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
 import { resetUserState } from '../global/actions'
+import { SerializedFarm, SerializedFarmsState } from '../types'
+import {
+  fetchFarmUserAllowances,
+  fetchFarmUserEarnings,
+  fetchFarmUserStakedBalances,
+  fetchFarmUserTokenBalances,
+} from './fetchFarmUser'
+import { fetchMasterChefFarmPoolLength } from './fetchMasterChefData'
+import getFarmsPrices from './getFarmsPrices'
+import { farmV2FetchFarms, fetchMasterChefV2Data } from './v2/fetchFarms'
 
 const initialState: SerializedFarmsState = {
   data: [],
@@ -62,30 +57,34 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
 >(
   'farms/fetchFarmsPublicDataAsync',
   async ({ pids, chainId }) => {
-    const [poolLength, [cakePerBlockRaw]] = await Promise.all([
-      fetchMasterChefFarmPoolLength(chainId),
-      multicall(masterchefABI, [
-        {
-          // BSC only
-          address: getMasterChefAddress(ChainId.BSC),
-          name: 'cakePerBlock',
-          params: [true],
-        },
-      ]),
-    ])
+    const chain = chains.find((c) => c.id === chainId)
+    if (!chain) throw new Error('chain not supported')
+    try {
+      const { poolLength, totalRegularAllocPoint, totalSpecialAllocPoint, cakePerBlock } = await fetchMasterChefV2Data(
+        chain.testnet,
+      )
 
-    const poolLengthAsBigNumber = new BigNumber(poolLength)
-    const regularCakePerBlock = getBalanceAmount(new BigNumber(cakePerBlockRaw))
-    const farmsConfig = await getFarmConfig(chainId)
-    const farmsCanFetch = farmsConfig.filter(
-      (farmConfig) => pids.includes(farmConfig.pid) && poolLengthAsBigNumber.gt(farmConfig.pid),
-    )
-    const priceHelperLpsConfig = getFarmsPriceHelperLpFiles(chainId)
+      const regularCakePerBlock = formatEther(cakePerBlock)
+      const farmsConfig = await getFarmConfig(chainId)
+      const farmsCanFetch = farmsConfig.filter(
+        (farmConfig) => pids.includes(farmConfig.pid) && poolLength.gt(farmConfig.pid),
+      )
+      const priceHelperLpsConfig = getFarmsPriceHelperLpFiles(chainId)
 
-    const farms = await fetchFarms(farmsCanFetch.concat(priceHelperLpsConfig), chainId)
-    const farmsWithPrices = farms.length > 0 ? getFarmsPrices(farms, chainId) : []
+      const farms = await farmV2FetchFarms({
+        farms: farmsCanFetch.concat(priceHelperLpsConfig),
+        isTestnet: chain.testnet,
+        chainId,
+        totalRegularAllocPoint,
+        totalSpecialAllocPoint,
+      })
+      const farmsWithPrices = farms.length > 0 ? getFarmsPrices(farms, chainId) : []
 
-    return [farmsWithPrices, poolLengthAsBigNumber.toNumber(), regularCakePerBlock.toNumber()]
+      return [farmsWithPrices, poolLength.toNumber(), +regularCakePerBlock]
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
   },
   {
     condition: (arg, { getState }) => {

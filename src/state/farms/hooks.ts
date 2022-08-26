@@ -52,7 +52,7 @@ export const usePollFarmsWithUserData = () => {
     : ['farmsWithUserData', account, chainId]
 
   useSWRImmutable(
-    account ? name : null,
+    account && chainId ? name : null,
     async () => {
       const farmsConfig = await getFarmConfig(chainId)
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
@@ -87,11 +87,11 @@ export const usePollCoreFarmData = () => {
     }
   }, [chainId, dispatch])
 
-  useFastRefreshEffect(() => {
-    if (chainId) {
-      dispatch(fetchFarmsPublicDataAsync({ pids: coreFarmPIDs[chainId], chainId }))
-    }
-  }, [dispatch, chainId])
+  // useFastRefreshEffect(() => {
+  //   if (chainId) {
+  //     dispatch(fetchFarmsPublicDataAsync({ pids: coreFarmPIDs[chainId], chainId }))
+  //   }
+  // }, [dispatch, chainId])
 }
 
 export const useFarms = (): DeserializedFarmsState => {

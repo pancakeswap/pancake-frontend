@@ -62,7 +62,7 @@ export const fetchFarmUserStakedBalances = async (
     return {
       address: masterChefAddress,
       name: 'userInfo',
-      params: [farm.pid, account],
+      params: [farm.vaultPid ?? farm.pid, account],
     }
   })
 
@@ -84,11 +84,10 @@ export const fetchFarmUserEarnings = async (account: string, farmsToFetch: Seria
   const masterChefAddress = getMasterChefAddress(multiCallChainId)
 
   const calls = farmsToFetch.map((farm) => {
-    const pid = isBscNetwork ? farm.pid : farm.bscPid
     return {
       address: masterChefAddress,
       name: 'pendingCake',
-      params: [pid, account],
+      params: [farm.pid, account],
     }
   })
 
