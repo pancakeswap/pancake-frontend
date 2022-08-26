@@ -176,7 +176,6 @@ export const livePools: SerializedPoolConfig[] = [
   },
 ].map((p) => ({
   ...p,
-  isFinished: true,
   stakingToken: serializeToken(p.stakingToken),
   earningToken: serializeToken(p.earningToken),
 }))
