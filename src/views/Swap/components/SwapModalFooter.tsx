@@ -32,7 +32,7 @@ export default function SwapModalFooter({
   slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
   isEnoughInputBalance: boolean
   onConfirm: () => void
-  swapErrorMessage: string | undefined
+  swapErrorMessage?: string | undefined
   disabledConfirm: boolean
 }) {
   const { t } = useTranslation()
