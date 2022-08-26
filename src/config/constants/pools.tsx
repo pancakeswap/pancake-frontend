@@ -174,7 +174,11 @@ export const livePools: SerializedPoolConfig[] = [
     tokenPerBlock: '4.976',
     version: 3,
   },
-]
+].map((p) => ({
+  ...p,
+  stakingToken: serializeToken(p.stakingToken),
+  earningToken: serializeToken(p.earningToken),
+}))
 
 // known finished pools
 const finishedPools = [
