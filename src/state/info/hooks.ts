@@ -7,7 +7,7 @@ import { AppState, useAppDispatch } from 'state'
 import fetchPoolChartData, { fetchPoolChartDataETH } from 'state/info/queries/pools/chartData'
 import fetchPoolTransactions, { fetchPoolTransactionsETH } from 'state/info/queries/pools/transactions'
 import fetchTokenChartData from 'state/info/queries/tokens/chartData'
-import fetchPoolsForToken from 'state/info/queries/tokens/poolsForToken'
+import fetchPoolsForToken, { fetchPoolsForTokenETH } from 'state/info/queries/tokens/poolsForToken'
 import fetchTokenPriceData, { fetchTokenPriceDataETH } from 'state/info/queries/tokens/priceData'
 import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
 import { Transaction } from 'state/info/types'
@@ -229,10 +229,13 @@ export const usePoolsForToken = (address: string): string[] | undefined => {
   const token = useSelector((state: AppState) => state.info.tokens.byAddress[address])
   const poolsForToken = token.poolAddresses
   const [error, setError] = useState(false)
+  const chainName = useGetChainName()
 
   useEffect(() => {
     const fetch = async () => {
-      const { error: fetchError, addresses } = await fetchPoolsForToken(address)
+      const { error: fetchError, addresses } = await (chainName === 'ETH'
+        ? fetchPoolsForTokenETH(address)
+        : fetchPoolsForToken(address))
       if (!fetchError && addresses) {
         dispatch(addTokenPoolAddresses({ tokenAddress: address, poolAddresses: addresses }))
       }
@@ -319,10 +322,11 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
   const token = useSelector((state: AppState) => state.info.tokens.byAddress[address])
   const { transactions } = token
   const [error, setError] = useState(false)
+  const chainName = useGetChainName()
 
   useEffect(() => {
     const fetch = async () => {
-      const { error: fetchError, data } = await fetchTokenTransactions(address)
+      const { error: fetchError, data } = await fetchTokenTransactions(address, chainName)
       if (fetchError) {
         setError(true)
       } else if (data) {
@@ -332,7 +336,7 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
     if (!transactions && !error) {
       fetch()
     }
-  }, [address, dispatch, error, transactions])
+  }, [address, dispatch, error, transactions, chainName])
 
   return transactions
 }
