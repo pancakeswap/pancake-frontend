@@ -25,7 +25,7 @@ export function useNftStorage() {
   const addActivityTypeFilters = useCallback(
     ({ collection, field }: { collection: string; field: MarketEvent }) => {
       if (nftMarketActivityFilters[collection]) {
-        nftMarketActivityFilters[collection].typeFilters.push(field)
+        nftMarketActivityFilters[collection].typeFilters = [...nftMarketActivityFilters[collection].typeFilters, field]
       } else {
         nftMarketActivityFilters[collection] = {
           ...initialNftActivityFilterState,
@@ -40,7 +40,7 @@ export function useNftStorage() {
   const addActivityCollectionFilters = useCallback(
     ({ collection }: { collection: string }) => {
       if (nftMarketActivityFilters['']) {
-        nftMarketActivityFilters[''].collectionFilters.push(collection)
+        nftMarketActivityFilters[''].collectionFilters = [...nftMarketActivityFilters[''].collectionFilters, collection]
       } else {
         nftMarketActivityFilters[''] = {
           ...initialNftActivityFilterState,
