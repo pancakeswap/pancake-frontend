@@ -1,17 +1,16 @@
 import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { ChainId } from '@pancakeswap/sdk'
-import { SerializedFarm } from 'state/types'
-import { equalsIgnoreCase } from 'utils/equalsIgnoreCase'
-import filterFarmsByQuoteToken from 'utils/farmsPriceHelpers'
+import { SerializedFarmPublicData, FarmData } from './types'
+import { equalsIgnoreCase } from './equalsIgnoreCase'
+import { filterFarmsByQuoteToken } from './farmsPriceHelpers'
 import { FIXED_ONE, FIXED_TEN_IN_POWER_18, FIXED_TWO, FIXED_ZERO } from './const'
-import { FarmData } from './types'
 
 // Find BUSD price for token
 // either via direct calculation if farm is X-BNB or X-BUSD
 // or via quoteTokenFarm which is quoteToken-BNB or quoteToken-BUSD farm
 export const getFarmBaseTokenPrice = (
-  farm: SerializedFarm,
-  quoteTokenFarm: SerializedFarm,
+  farm: SerializedFarmPublicData,
+  quoteTokenFarm: SerializedFarmPublicData,
   nativePriceUSD: FixedNumber,
   wNative: string,
   stable: string,
@@ -48,8 +47,8 @@ export const getFarmBaseTokenPrice = (
 }
 
 export const getFarmQuoteTokenPrice = (
-  farm: SerializedFarm,
-  quoteTokenFarm: SerializedFarm,
+  farm: SerializedFarmPublicData,
+  quoteTokenFarm: SerializedFarmPublicData,
   nativePriceUSD: FixedNumber,
   wNative: string,
   stable: string,
@@ -80,10 +79,10 @@ export const getFarmQuoteTokenPrice = (
 }
 
 const getFarmFromTokenSymbol = (
-  farms: SerializedFarm[],
+  farms: SerializedFarmPublicData[],
   tokenSymbol: string,
   preferredQuoteTokens?: string[],
-): SerializedFarm => {
+): SerializedFarmPublicData => {
   const farmsWithTokenSymbol = farms.filter((farm) => farm.token.symbol === tokenSymbol)
   const filteredFarm = filterFarmsByQuoteToken(farmsWithTokenSymbol, preferredQuoteTokens)
   return filteredFarm
@@ -124,12 +123,12 @@ export const getFarmsPrices = (farms: FarmData[], chainId: number): FarmWithPric
   }
 
   const nativeStableFarm = farms.find((farm) => equalsIgnoreCase(farm.lpAddress, nativeStableLpMap[chainId].address))
-  const nativePriceUSD = nativeStableFarm.tokenPriceVsQuote
+  const nativePriceUSD = nativeStableFarm?.tokenPriceVsQuote
     ? FIXED_ONE.divUnsafe(FixedNumber.from(nativeStableFarm.tokenPriceVsQuote))
     : FIXED_ZERO
 
   const farmsWithPrices = farms.map((farm) => {
-    const quoteTokenFarm = getFarmFromTokenSymbol(farms, farm.quoteToken.symbol, [
+    const quoteTokenFarm = getFarmFromTokenSymbol(farms, farm.quoteToken.symbol!, [
       nativeStableLpMap[chainId].wNative,
       nativeStableLpMap[chainId].stable,
     ])

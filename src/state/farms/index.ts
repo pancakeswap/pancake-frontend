@@ -11,7 +11,9 @@ import stringify from 'fast-json-stable-stringify'
 import fromPairs from 'lodash/fromPairs'
 import type { AppState } from 'state'
 import { chains } from 'utils/wagmi'
+import { createFarmFetcher } from '@pancakeswap/farms'
 import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
+import { multicallv2 } from 'utils/multicall'
 import { resetUserState } from '../global/actions'
 import { SerializedFarm, SerializedFarmsState } from '../types'
 import {
@@ -22,7 +24,8 @@ import {
 } from './fetchFarmUser'
 import { fetchMasterChefFarmPoolLength } from './fetchMasterChefData'
 import getFarmsPrices from './getFarmsPrices'
-import { farmV2FetchFarms, fetchMasterChefV2Data } from './v2/fetchFarms'
+
+const farmFetcher = createFarmFetcher(multicallv2)
 
 const initialState: SerializedFarmsState = {
   data: [],
@@ -60,9 +63,8 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
     const chain = chains.find((c) => c.id === chainId)
     if (!chain) throw new Error('chain not supported')
     try {
-      const { poolLength, totalRegularAllocPoint, totalSpecialAllocPoint, cakePerBlock } = await fetchMasterChefV2Data(
-        chain.testnet,
-      )
+      const { poolLength, totalRegularAllocPoint, totalSpecialAllocPoint, cakePerBlock } =
+        await farmFetcher.fetchMasterChefV2Data(chain.testnet)
 
       const regularCakePerBlock = formatEther(cakePerBlock)
       const farmsConfig = await getFarmConfig(chainId)
@@ -71,7 +73,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
       )
       const priceHelperLpsConfig = getFarmsPriceHelperLpFiles(chainId)
 
-      const farms = await farmV2FetchFarms({
+      const farms = await farmFetcher.fetchFarms({
         farms: farmsCanFetch.concat(priceHelperLpsConfig),
         isTestnet: chain.testnet,
         chainId,

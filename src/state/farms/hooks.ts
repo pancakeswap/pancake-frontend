@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { SLOW_INTERVAL } from 'config/constants'
 import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
-import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
@@ -71,11 +70,12 @@ export const usePollFarmsWithUserData = () => {
  * 2 = CAKE-BNB LP
  * 3 = BUSD-BNB LP
  */
-const coreFarmPIDs = {
-  56: [2, 3],
-  97: [4, 10],
-  5: [1, 2],
-}
+// TODO: FARMS is it needed
+// const coreFarmPIDs = {
+//   56: [2, 3],
+//   97: [4, 10],
+//   5: [1, 2],
+// }
 
 export const usePollCoreFarmData = () => {
   const dispatch = useAppDispatch()
@@ -87,6 +87,7 @@ export const usePollCoreFarmData = () => {
     }
   }, [chainId, dispatch])
 
+  // TODO: FARMS is it needed
   // useFastRefreshEffect(() => {
   //   if (chainId) {
   //     dispatch(fetchFarmsPublicDataAsync({ pids: coreFarmPIDs[chainId], chainId }))
