@@ -9,7 +9,7 @@ import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import stringify from 'fast-json-stable-stringify'
 import { getFarmConfig } from 'config/constants/farms'
 import type { AppState } from 'state'
-import { getPriceHelperLpFiles } from 'config/constants/priceHelperLps/index'
+import { getFarmsPriceHelperLpFiles } from 'config/constants/priceHelperLps/index'
 import fetchFarms from './fetchFarms'
 import getFarmsPrices from './getFarmsPrices'
 import {
@@ -44,7 +44,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
     const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.v1pid))
 
     // Add price helper farms
-    const priceHelperLpsConfig = getPriceHelperLpFiles(56)
+    const priceHelperLpsConfig = getFarmsPriceHelperLpFiles(56)
     const farmsWithPriceHelpers = farmsCanFetch.concat(priceHelperLpsConfig)
 
     const farms = await fetchFarms(farmsWithPriceHelpers)
