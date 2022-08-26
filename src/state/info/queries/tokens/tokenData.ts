@@ -20,6 +20,17 @@ interface TokenFields {
   totalLiquidity: string
 }
 
+interface TokenFieldsETH {
+  id: string
+  symbol: string
+  name: string
+  derivedETH: string // Price in BNB per token
+  derivedUSD: string // Price in USD per token
+  tradeVolumeUSD: string
+  txCount: string
+  totalLiquidity: string
+}
+
 interface FormattedTokenFields
   extends Omit<TokenFields, 'derivedBNB' | 'derivedUSD' | 'tradeVolumeUSD' | 'totalTransactions' | 'totalLiquidity'> {
   derivedBNB: number
@@ -35,6 +46,14 @@ interface TokenQueryResponse {
   twoDaysAgo: TokenFields[]
   oneWeekAgo: TokenFields[]
   twoWeeksAgo: TokenFields[]
+}
+
+interface TokenQueryResponseETH {
+  now: TokenFieldsETH[]
+  oneDayAgo: TokenFieldsETH[]
+  twoDaysAgo: TokenFieldsETH[]
+  oneWeekAgo: TokenFieldsETH[]
+  twoWeeksAgo: TokenFieldsETH[]
 }
 
 /**
@@ -81,6 +100,12 @@ const TOKEN_AT_BLOCK_ETH = (block: number | undefined, tokens: string[]) => {
     }
   `
 }
+const TOKEN_PRICE_AT_BLOCK_ETH = (block: number) => {
+  const blockString = block ? `block: {number: ${block}}` : ``
+  return `bundle(id:"1", ${blockString}) { 
+        ethPrice
+  }`
+}
 
 const fetchTokenData = async (
   block24h: number,
@@ -124,8 +149,18 @@ const fetchTokenDataETH = async (
         twoWeeksAgo: ${TOKEN_AT_BLOCK_ETH(block14d, tokenAddresses)}
       }
     `
-    const data = await infoClientETH.request<TokenQueryResponse>(query)
-    return { data, error: false }
+    const priceQuery = gql`
+      query tokens {
+        now: ${TOKEN_PRICE_AT_BLOCK_ETH(null)}
+        oneDayAgo: ${TOKEN_PRICE_AT_BLOCK_ETH(block24h)}
+        twoDaysAgo: ${TOKEN_PRICE_AT_BLOCK_ETH(block48h)}
+        oneWeekAgo: ${TOKEN_PRICE_AT_BLOCK_ETH(block7d)}
+        twoWeeksAgo: ${TOKEN_PRICE_AT_BLOCK_ETH(block14d)}
+      }
+    `
+    const data = await infoClientETH.request<TokenQueryResponseETH>(query)
+    const priceData = await infoClientETH.request(priceQuery)
+    return { data, priceData, error: false }
   } catch (error) {
     console.error('Failed to fetch token data', error)
     return { error: true }
@@ -151,6 +186,24 @@ const parseTokenData = (tokens?: TokenFields[]) => {
   }, {})
 }
 
+const parseTokenDataETH = (ethPrice: string, tokens?: TokenFieldsETH[]) => {
+  if (!tokens) {
+    return {}
+  }
+  return tokens.reduce((accum: { [address: string]: FormattedTokenFields }, tokenData) => {
+    const { derivedETH, tradeVolumeUSD, txCount, totalLiquidity } = tokenData
+    accum[tokenData.id] = {
+      ...tokenData,
+      derivedBNB: parseFloat(derivedETH),
+      derivedUSD: parseFloat(derivedETH) * parseFloat(ethPrice),
+      tradeVolumeUSD: parseFloat(tradeVolumeUSD),
+      totalTransactions: parseFloat(txCount),
+      totalLiquidity: parseFloat(totalLiquidity),
+    }
+    return accum
+  }, {})
+}
+
 interface TokenDatas {
   error: boolean
   data?: {
@@ -166,13 +219,16 @@ const useFetchedTokenDatas = (tokenAddresses: string[]): TokenDatas => {
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks, error: blockError } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
   const [block24h, block48h, block7d, block14d] = blocks ?? []
-  const chainName = useGetChainName()
 
   useEffect(() => {
     const fetch = async () => {
-      const { error, data } = await (chainName === 'ETH'
-        ? fetchTokenDataETH(block24h.number, block48h.number, block7d.number, block14d.number, tokenAddresses)
-        : fetchTokenData(block24h.number, block48h.number, block7d.number, block14d.number, tokenAddresses))
+      const { error, data } = await fetchTokenData(
+        block24h.number,
+        block48h.number,
+        block7d.number,
+        block14d.number,
+        tokenAddresses,
+      )
 
       if (error) {
         setFetchState({ error: true })
@@ -182,6 +238,92 @@ const useFetchedTokenDatas = (tokenAddresses: string[]): TokenDatas => {
         const parsed48 = parseTokenData(data?.twoDaysAgo)
         const parsed7d = parseTokenData(data?.oneWeekAgo)
         const parsed14d = parseTokenData(data?.twoWeeksAgo)
+
+        // Calculate data and format
+        const formatted = tokenAddresses.reduce((accum: { [address: string]: TokenData }, address) => {
+          const current: FormattedTokenFields | undefined = parsed[address]
+          const oneDay: FormattedTokenFields | undefined = parsed24[address]
+          const twoDays: FormattedTokenFields | undefined = parsed48[address]
+          const week: FormattedTokenFields | undefined = parsed7d[address]
+          const twoWeeks: FormattedTokenFields | undefined = parsed14d[address]
+
+          const [volumeUSD, volumeUSDChange] = getChangeForPeriod(
+            current?.tradeVolumeUSD,
+            oneDay?.tradeVolumeUSD,
+            twoDays?.tradeVolumeUSD,
+          )
+          const [volumeUSDWeek] = getChangeForPeriod(
+            current?.tradeVolumeUSD,
+            week?.tradeVolumeUSD,
+            twoWeeks?.tradeVolumeUSD,
+          )
+          const liquidityUSD = current ? current.totalLiquidity * current.derivedUSD : 0
+          const liquidityUSDOneDayAgo = oneDay ? oneDay.totalLiquidity * oneDay.derivedUSD : 0
+          const liquidityUSDChange = getPercentChange(liquidityUSD, liquidityUSDOneDayAgo)
+          const liquidityToken = current ? current.totalLiquidity : 0
+          // Prices of tokens for now, 24h ago and 7d ago
+          const priceUSD = current ? current.derivedUSD : 0
+          const priceUSDOneDay = oneDay ? oneDay.derivedUSD : 0
+          const priceUSDWeek = week ? week.derivedUSD : 0
+          const priceUSDChange = getPercentChange(priceUSD, priceUSDOneDay)
+          const priceUSDChangeWeek = getPercentChange(priceUSD, priceUSDWeek)
+          const txCount = getAmountChange(current?.totalTransactions, oneDay?.totalTransactions)
+
+          accum[address] = {
+            exists: !!current,
+            address,
+            name: current ? current.name : '',
+            symbol: current ? current.symbol : '',
+            volumeUSD,
+            volumeUSDChange,
+            volumeUSDWeek,
+            txCount,
+            liquidityUSD,
+            liquidityUSDChange,
+            liquidityToken,
+            priceUSD,
+            priceUSDChange,
+            priceUSDChangeWeek,
+          }
+
+          return accum
+        }, {})
+        setFetchState({ data: formatted, error: false })
+      }
+    }
+    const allBlocksAvailable = block24h?.number && block48h?.number && block7d?.number && block14d?.number
+    if (tokenAddresses.length > 0 && allBlocksAvailable && !blockError) {
+      fetch()
+    }
+  }, [tokenAddresses, block24h, block48h, block7d, block14d, blockError])
+
+  return fetchState
+}
+
+export const useFetchedTokenDatasETH = (tokenAddresses: string[]): TokenDatas => {
+  const [fetchState, setFetchState] = useState<TokenDatas>({ error: false })
+  const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
+  const { blocks, error: blockError } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
+  const [block24h, block48h, block7d, block14d] = blocks ?? []
+
+  useEffect(() => {
+    const fetch = async () => {
+      const { error, data, priceData } = await fetchTokenDataETH(
+        block24h.number,
+        block48h.number,
+        block7d.number,
+        block14d.number,
+        tokenAddresses,
+      )
+
+      if (error) {
+        setFetchState({ error: true })
+      } else {
+        const parsed = parseTokenDataETH(priceData.now.ethPrice, data?.now)
+        const parsed24 = parseTokenDataETH(priceData.oneDayAgo.ethPrice, data?.oneDayAgo)
+        const parsed48 = parseTokenDataETH(priceData.twoDaysAgo.ethPrice, data?.twoDaysAgo)
+        const parsed7d = parseTokenDataETH(priceData.oneWeekAgo.ethPrice, data?.oneWeekAgo)
+        const parsed14d = parseTokenDataETH(priceData.twoWeeksAgo.ethPrice, data?.twoWeeksAgo)
 
         // Calculate data and format
         const formatted = tokenAddresses.reduce((accum: { [address: string]: TokenData }, address) => {

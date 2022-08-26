@@ -4,7 +4,7 @@ import useFetchGlobalChartData from 'state/info/queries/protocol/chart'
 import fetchTopTransactions, { fetchTopTransactionsETH } from 'state/info/queries/protocol/transactions'
 import useTopPoolAddresses from 'state/info/queries/pools/topPools'
 import usePoolDatas from 'state/info/queries/pools/poolData'
-import useFetchedTokenDatas from 'state/info/queries/tokens/tokenData'
+import useFetchedTokenDatas, { useFetchedTokenDatasETH } from 'state/info/queries/tokens/tokenData'
 import useTopTokenAddresses from 'state/info/queries/tokens/topTokens'
 import {
   useProtocolData,
@@ -120,7 +120,7 @@ export const TokenUpdater = (): null => {
   }, [allTokenData])
 
   // fetch data for unfetched tokens and update them
-  const { error: tokenDataError, data: tokenDatas } = useFetchedTokenDatas(unfetchedTokenAddresses)
+  const { error: tokenDataError, data: tokenDatas } = useFetchedTokenDatasETH(unfetchedTokenAddresses)
   useEffect(() => {
     if (tokenDatas && !tokenDataError) {
       updateTokenDatas(Object.values(tokenDatas))
