@@ -8,8 +8,9 @@ export const CoinSwitcherWrapper = styled.div`
   top: -25px;
   left: -25px;
   z-index: 31;
-  width: 150px;
+  width: 100%;
   height: 100px;
+  overflow: hidden;
   cursor: pointer;
   transform: scale(0.6) translateX(-40px);
   ${({ theme }) => theme.mediaQueries.lg} {
