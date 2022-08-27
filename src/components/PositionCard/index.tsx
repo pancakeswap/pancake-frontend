@@ -296,7 +296,9 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
             </Text>
           </FixedHeightRow>
 
-          {userPoolBalance && JSBI.greaterThan(userPoolBalance.quotient, BIG_INT_ZERO) && (
+          {
+            // Philip TODO: Temp Remove
+            // userPoolBalance && JSBI.greaterThan(userPoolBalance.quotient, BIG_INT_ZERO) &&
             <Flex flexDirection="column">
               <Button
                 as={NextLinkFromReactRouter}
@@ -317,7 +319,7 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
                 {t('Add liquidity instead')}
               </Button>
             </Flex>
-          )}
+          }
         </AutoColumn>
       )}
     </Card>

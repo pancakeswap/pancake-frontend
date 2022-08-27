@@ -17,7 +17,7 @@ import { logError } from 'utils/sentry'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import { useTranslation } from '@pancakeswap/localization'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
-import { useZapContract } from 'hooks/useContract'
+import { useContract, useZapContract } from 'hooks/useContract'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getZapAddress } from 'utils/addressHelpers'
 import { CommitButton } from 'components/CommitButton'
@@ -31,7 +31,10 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { useLPApr } from 'state/swap/hooks'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import stableSwapMap from 'config/constants/stableSwapMap'
+import infoStableSwapABI from 'config/abi/infoStableSwap.json'
+import stableSwapABI from 'config/abi/stableSwap.json'
 import { CAKE, USDC } from '@pancakeswap/tokens'
+
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -259,6 +262,66 @@ export default function AddLiquidity() {
 
   const routerContract = useRouterContract()
 
+  const stableSwapInfoContract = useContract(stableMap.infoStableSwapAddress, infoStableSwapABI, true)
+  const stableSwapContract = useContract(stableMap.stableSwapAddress, stableSwapABI, true)
+
+  const onStableAdd = async () => {
+    try {
+      // min amount
+      const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = mintParsedAmounts
+      if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
+        return
+      }
+
+      const amountsMin = {
+        [Field.CURRENCY_A]: calculateSlippageAmount(parsedAmountA, noLiquidity ? 0 : allowedSlippage)[0],
+        [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0],
+      }
+
+      setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
+
+      const minAmount = await stableSwapInfoContract.get_add_liquidity_mint_amount(
+        ...[
+          stableMap.stableSwapAddress,
+          [amountsMin[Field.CURRENCY_A].toString(), amountsMin[Field.CURRENCY_B].toString()],
+        ],
+      )
+
+      const response = await stableSwapContract.add_liquidity(
+        ...[[amountsMin[Field.CURRENCY_A].toString(), amountsMin[Field.CURRENCY_B].toString()], minAmount.toString()],
+      )
+
+      setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
+
+      const symbolA = currencies[Field.CURRENCY_A]?.symbol
+      const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
+      const symbolB = currencies[Field.CURRENCY_B]?.symbol
+      const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)
+
+      addTransaction(response, {
+        summary: `Add ${amountA} ${symbolA} and ${amountB} ${symbolB}`,
+        translatableSummary: {
+          text: 'Add %amountA% %symbolA% and %amountB% %symbolB%',
+          data: { amountA, symbolA, amountB, symbolB },
+        },
+        type: 'add-liquidity',
+      })
+    } catch (err) {
+      if (err && err.code !== 4001) {
+        logError(err)
+        console.error(`Add Liquidity failed`, err, args, value)
+      }
+      setLiquidityState({
+        attemptingTxn: false,
+        liquidityErrorMessage:
+          err && err.code !== 4001
+            ? t('Add liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err, t) })
+            : undefined,
+        txHash: undefined,
+      })
+    }
+  }
+
   async function onAdd() {
     if (!chainId || !account || !routerContract) return
 
@@ -384,7 +447,7 @@ export default function AddLiquidity() {
       pendingText={pendingText}
       currencyToAdd={pair?.liquidityToken}
       allowedSlippage={allowedSlippage}
-      onAdd={onAdd}
+      onAdd={isStable ? onStableAdd : onAdd}
       parsedAmounts={parsedAmounts}
       currencies={currencies}
       liquidityErrorMessage={liquidityErrorMessage}

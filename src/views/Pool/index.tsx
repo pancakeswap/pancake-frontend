@@ -4,6 +4,11 @@ import { Text, Flex, CardBody, CardFooter, Button, AddIcon } from '@pancakeswap/
 import Link from 'next/link'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
+import stableSwapMap from 'config/constants/stableSwapMap'
+import { CurrencyAmount, Pair, Token } from '@pancakeswap/sdk'
+import { useContract } from 'hooks/useContract'
+import infoStableSwapABI from 'config/abi/infoStableSwap.json'
+
 import FullPositionCard from '../../components/PositionCard'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { usePairs, PairState } from '../../hooks/usePairs'
@@ -11,25 +16,65 @@ import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks
 import Dots from '../../components/Loader/Dots'
 import { AppHeader, AppBody } from '../../components/App'
 import Page from '../Page'
+import useSWR from 'swr'
 
 const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
 `
 
+function useStableBalance(infoStableSwapAddress, swapAddress, token0, token1) {
+  const infoStableSwap = useContract(infoStableSwapAddress, infoStableSwapABI, true)
+
+  const getBalances = async () => {
+    const response = await infoStableSwap.balances(swapAddress)
+
+    return response
+  }
+
+  const { data } = useSWR(['infoStableSwap', infoStableSwapAddress, infoStableSwapABI], getBalances)
+
+  if (!data) return 0
+
+  const [reserve0, reserve1] = data
+
+  const pair = new Pair(
+    CurrencyAmount.fromRawAmount(token0, reserve0.toString()),
+    CurrencyAmount.fromRawAmount(token1, reserve1.toString()),
+  )
+
+  return pair
+}
+
 export default function Pool() {
   const { account } = useWeb3React()
   const { t } = useTranslation()
 
+  // Philip NOTE: get contract
+  const stableMap = stableSwapMap[0]
+
+  const lpstableToken = useMemo(
+    () => new Token(stableMap.token0.chainId, stableMap.lpAddress, 18, 'Cake-LP', 'Pancake LPs'),
+    [stableMap.token0.chainId, stableMap.lpAddress],
+  )
+
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
+
   const tokenPairsWithLiquidityTokens = useMemo(
-    () => trackedTokenPairs.map((tokens) => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
-    [trackedTokenPairs],
+    () => [
+      ...trackedTokenPairs.map((tokens) => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
+      {
+        liquidityToken: lpstableToken,
+        tokens: [stableMap.token0, stableMap.token1],
+      },
+    ],
+    [trackedTokenPairs, stableMap.token0, stableMap.token1, lpstableToken],
   )
   const liquidityTokens = useMemo(
     () => tokenPairsWithLiquidityTokens.map((tpwlt) => tpwlt.liquidityToken),
     [tokenPairsWithLiquidityTokens],
   )
+
   const [v2PairsBalances, fetchingV2PairBalances] = useTokenBalancesWithLoadingIndicator(
     account ?? undefined,
     liquidityTokens,
@@ -45,6 +90,14 @@ export default function Pool() {
   )
 
   const v2Pairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
+
+  const stablePair = useStableBalance(
+    stableMap.infoStableSwapAddress,
+    stableMap.stableSwapAddress,
+    stableMap.token0,
+    stableMap.token1,
+  )
+
   const v2IsLoading =
     fetchingV2PairBalances ||
     v2Pairs?.length < liquidityTokensWithBalances.length ||
@@ -77,6 +130,11 @@ export default function Pool() {
         />
       ))
     }
+
+    if (stablePair) {
+      return <FullPositionCard key={stableMap.lpAddress} pair={stablePair} />
+    }
+
     return (
       <Text color="textSubtle" textAlign="center">
         {t('No liquidity found.')}

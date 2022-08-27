@@ -99,7 +99,7 @@ export function useDerivedMintInfo(
   // pair
   const [pairState, pair] = usePair(currencies[Field.CURRENCY_A], currencies[Field.CURRENCY_B])
 
-  const lpstableToken = new Token(currencies[Field.CURRENCY_A].chainId, lpStableToken, 18, 'Cake-LP', 'Pancake LPs')
+  const lpstableToken = new Token(currencies[Field.CURRENCY_A]?.chainId, lpStableToken, 18, 'Cake-LP', 'Pancake LPs')
 
   const totalSupply = useTotalSupply(isStable ? lpstableToken : pair?.liquidityToken)
 
@@ -134,6 +134,7 @@ export function useDerivedMintInfo(
     typedValue,
     currencies[independentField],
   )
+
   const dependentAmount: CurrencyAmount<Currency> | undefined = useMemo(() => {
     if (noLiquidity || isStable) {
       if (otherTypedValue && currencies[dependentField]) {

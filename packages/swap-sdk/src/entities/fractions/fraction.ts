@@ -62,6 +62,11 @@ export class Fraction {
 
   // performs floor division
   public get quotient(): JSBI {
+    // Philip NOTE: take care quotient: determine price and amount decimal
+    if (this?.numerator && this?.denominator) {
+      return JSBI.divide(this.numerator, this.denominator)
+    }
+
     // Philip NOTE: stable quotient is 1:1 without slippage and fee
     return JSBI.divide(this.denominator, this.denominator)
   }

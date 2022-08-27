@@ -47,6 +47,9 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
     [tokens],
   )
 
+  // Philip TODO: get reserves of stable LP
+  // infoSwapAddress.balances
+
   const results = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'getReserves')
 
   return useMemo(() => {
