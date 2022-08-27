@@ -111,8 +111,6 @@ export const MatchBreakpointsProvider: React.FC<React.PropsWithChildren> = ({ ch
       };
     });
 
-    setState(getBreakpointChecks(getState()));
-
     return () => {
       handlers.forEach((unsubscribe) => {
         unsubscribe();
