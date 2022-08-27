@@ -75,7 +75,7 @@ export const getBreakpointChecks = (state: State): BreakpointChecks => {
 };
 
 export const MatchBreakpointsProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [state, setState] = useState<BreakpointChecks>(() => getBreakpointChecks(getState()));
+  const [state, setState] = useState<BreakpointChecks>();
 
   useIsomorphicEffect(() => {
     // Create listeners for each media query returning a function to unsubscribe
@@ -102,6 +102,8 @@ export const MatchBreakpointsProvider: React.FC<React.PropsWithChildren> = ({ ch
           mql.addEventListener("change", handler);
         }
       }
+
+      setState(getBreakpointChecks(getState()));
 
       return () => {
         // Safari < 14 fix
