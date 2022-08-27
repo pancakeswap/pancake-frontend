@@ -103,8 +103,6 @@ export const MatchBreakpointsProvider: React.FC<React.PropsWithChildren> = ({ ch
         }
       }
 
-      setState(getBreakpointChecks(getState()));
-
       return () => {
         // Safari < 14 fix
         if (mql?.removeEventListener) {
@@ -112,6 +110,8 @@ export const MatchBreakpointsProvider: React.FC<React.PropsWithChildren> = ({ ch
         }
       };
     });
+
+    setState(getBreakpointChecks(getState()));
 
     return () => {
       handlers.forEach((unsubscribe) => {
