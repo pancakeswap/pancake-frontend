@@ -1910,7 +1910,7 @@
   "Zap %amountA% %symbolA% and %amountB% %symbolB%": "%amountA% %symbolA% ve %amountB% %symbolB% zap'leyin",
   "Zap in %amount% BNB for %symbol%": "%symbol% için %amount% BNB zap'leyin",
   "Zap in %amount% %symbol% for %lpSymbol%": "%lpSymbol% için %amount% %symbol% zap'leyin",
-  "never executes": "asla gerçekleştirmez",
+  "never executes": "asla gerçekleşmez",
   "Order not allowed": "Emre izin verilmiyor",
   "Only possible to place sell orders above market rate": "Sadece piyasa oranının üzerinde satış emirleri verilebilir",
   "Only possible to place buy orders below market rate": "Sadece piyasa oranının altında satın alma emirleri verilebilir",
@@ -1922,7 +1922,7 @@
   "This page is located for %network%.": "Bu sayfa %network% ağında yer almaktadır.",
   "You are under %network% now, please switch the network to continue.": "Şu anda %network% ağındasınız, lütfen devam etmek için ağı değiştirin.",
   "Switch network to continue.": "Devam etmek için ağınızı değiştirin.",
-  "The real execution price includes the gas cost necessary to execute your order and guarantees that your order will be executed at the desired price.": "Gerçek gerçekleştirme fiyatı, emrinizin gerçekleştirilmesi için gereken gas maliyetini içerir ve emrinizin, istediğiniz fiyata gerçekleşitirilmesini garantiler.",
+  "The real execution price includes the gas cost necessary to execute your order and guarantees that your order will be executed at the desired price.": "Gerçek gerçekleştirme fiyatı, emrinizin gerçekleştirilmesi için gereken gas maliyetini içerir ve emrinizin, istediğiniz fiyata gerçekleştirilmesini garantiler.",
   "It fluctuates according to gas prices when the order is getting executed.": "Emir gerçekleştirilirken gas fiyatlarına göre değişkenlik gösterir.",
   "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.": "Mevcut gas fiyatını varsayarsak bu emir hiçbir zaman yerine getirilmeyecektir. Emrinizde değiştirilecek token miktarını artırmayı deneyin.",
   "Bridge": "Köprü"
