@@ -15,6 +15,7 @@ import { ChainId, NATIVE } from '@pancakeswap/sdk'
 import { useActiveChainId, useLocalNetworkChain } from 'hooks/useActiveChainId'
 import { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
+import { useSessionChainId } from 'hooks/useSessionChainId'
 import { useHover } from 'hooks/useHover'
 import { useNetwork } from 'wagmi'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
@@ -63,6 +64,7 @@ const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
   )
   const { chain } = useNetwork()
   const localChainId = useLocalNetworkChain() || ChainId.BSC
+  const [, setSessionChainId] = useSessionChainId()
 
   const localChainName = chains.find((c) => c.id === localChainId)?.name ?? 'BSC'
 
@@ -79,7 +81,7 @@ const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
       </Flex>
       <UserMenuDivider />
       {chain && (
-        <UserMenuItem ref={ref1} onClick={() => switchNetwork(chain.id)} style={{ justifyContent: 'flex-start' }}>
+        <UserMenuItem ref={ref1} onClick={() => setSessionChainId(chain.id)} style={{ justifyContent: 'flex-start' }}>
           <ChainLogo chainId={chain.id} />
           <Text color="secondary" bold pl="12px">
             {chain.name}
