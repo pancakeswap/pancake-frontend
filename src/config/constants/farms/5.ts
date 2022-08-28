@@ -1,4 +1,4 @@
-import { goerliTestnetTokens, serializeToken } from '@pancakeswap/tokens'
+import { goerliTestnetTokens } from '@pancakeswap/tokens'
 import { SerializedFarmConfig } from '../types'
 
 const farms: SerializedFarmConfig[] = [
@@ -18,6 +18,6 @@ const farms: SerializedFarmConfig[] = [
     token: goerliTestnetTokens.leet,
     quoteToken: goerliTestnetTokens.weth,
   },
-].map((p) => ({ ...p, token: serializeToken(p.token), quoteToken: serializeToken(p.quoteToken) }))
+].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
 
 export default farms

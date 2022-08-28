@@ -128,7 +128,7 @@ export const getFarmsPrices = (farms: FarmData[], chainId: number): FarmWithPric
     : FIXED_ZERO
 
   const farmsWithPrices = farms.map((farm) => {
-    const quoteTokenFarm = getFarmFromTokenSymbol(farms, farm.quoteToken.symbol!, [
+    const quoteTokenFarm = getFarmFromTokenSymbol(farms, farm.quoteToken.symbol, [
       nativeStableLpMap[chainId].wNative,
       nativeStableLpMap[chainId].stable,
     ])

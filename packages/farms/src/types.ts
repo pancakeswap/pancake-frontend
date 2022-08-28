@@ -1,4 +1,4 @@
-import { SerializedToken } from '@pancakeswap/tokens'
+import { SerializedWrappedToken } from '@pancakeswap/tokens'
 
 export type FarmsDynamicDataResult = {
   tokenAmountTotal: string
@@ -31,8 +31,8 @@ export interface FarmConfigBaseProps {
 }
 
 export interface SerializedFarmConfig extends FarmConfigBaseProps {
-  token: SerializedToken
-  quoteToken: SerializedToken
+  token: SerializedWrappedToken
+  quoteToken: SerializedWrappedToken
 }
 
 export interface SerializedFarmPublicData extends SerializedFarmConfig {

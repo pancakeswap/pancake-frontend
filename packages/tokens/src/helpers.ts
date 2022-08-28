@@ -1,11 +1,11 @@
 import { TokenInfo, TokenList, Tags } from '@uniswap/token-lists'
-import { Token, ChainId } from '@pancakeswap/sdk'
+import { Token, ChainId, SerializedToken } from '@pancakeswap/sdk'
 
-export interface SerializedToken {
+export interface SerializedWrappedToken extends SerializedToken {
   chainId: number
   address: string
   decimals: number
-  symbol?: string
+  symbol: string
   name?: string
   projectLink?: string
   logoURI?: string
@@ -27,6 +27,18 @@ export class WrappedTokenInfo extends Token {
 
   public get logoURI(): string | undefined {
     return this.tokenInfo.logoURI
+  }
+
+  public get serialize(): SerializedWrappedToken {
+    return {
+      address: this.address,
+      chainId: this.chainId,
+      decimals: this.decimals,
+      symbol: this.symbol,
+      name: this.name,
+      projectLink: this.projectLink,
+      logoURI: this.logoURI,
+    }
   }
 }
 type TagDetails = Tags[keyof Tags]
@@ -51,7 +63,11 @@ export const EMPTY_LIST: TokenAddressMap = {
   [ChainId.BSC_TESTNET]: {},
 }
 
-export function serializeToken(token: Token): SerializedToken {
+/**
+ *
+ * @deprecated Use Token.serialize
+ */
+export function serializeToken(token: Token): SerializedWrappedToken {
   return {
     chainId: token.chainId,
     address: token.address,
@@ -63,7 +79,7 @@ export function serializeToken(token: Token): SerializedToken {
   }
 }
 
-export function deserializeToken(serializedToken: SerializedToken): Token {
+export function deserializeToken(serializedToken: SerializedWrappedToken): Token {
   if (serializedToken.logoURI) {
     return new WrappedTokenInfo(
       {

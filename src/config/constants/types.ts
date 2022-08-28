@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { Token, ChainId } from '@pancakeswap/sdk'
-import { SerializedToken } from '@pancakeswap/tokens'
+import { SerializedWrappedToken } from '@pancakeswap/tokens'
 import type { SerializedFarmConfig, FarmConfigBaseProps } from '@pancakeswap/farms'
 
 // a list of tokens by chain
@@ -83,8 +83,8 @@ interface PoolConfigBaseProps {
 }
 
 export interface SerializedPoolConfig extends PoolConfigBaseProps {
-  earningToken: SerializedToken
-  stakingToken: SerializedToken
+  earningToken: SerializedWrappedToken
+  stakingToken: SerializedWrappedToken
 }
 
 export interface DeserializedPoolConfig extends PoolConfigBaseProps {

@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import Trans from 'components/Trans'
 import { VaultKey } from 'state/types'
-import { bscTokens, serializeToken } from '@pancakeswap/tokens'
+import { bscTokens } from '@pancakeswap/tokens'
 import { SerializedPoolConfig, PoolCategory } from './types'
 
 export const MAX_LOCK_DURATION = 31536000
@@ -176,8 +176,8 @@ export const livePools: SerializedPoolConfig[] = [
   },
 ].map((p) => ({
   ...p,
-  stakingToken: serializeToken(p.stakingToken),
-  earningToken: serializeToken(p.earningToken),
+  stakingToken: p.stakingToken.serialize,
+  earningToken: p.earningToken.serialize,
 }))
 
 // known finished pools
@@ -3341,8 +3341,8 @@ const finishedPools = [
 ].map((p) => ({
   ...p,
   isFinished: true,
-  stakingToken: serializeToken(p.stakingToken),
-  earningToken: serializeToken(p.earningToken),
+  stakingToken: p.stakingToken.serialize,
+  earningToken: p.earningToken.serialize,
 }))
 
 export default [...livePools, ...finishedPools]

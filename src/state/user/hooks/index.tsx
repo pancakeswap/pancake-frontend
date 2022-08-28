@@ -1,4 +1,5 @@
 import { ChainId, Pair, Token } from '@pancakeswap/sdk'
+import { deserializeToken } from '@pancakeswap/tokens'
 import { differenceInDays } from 'date-fns'
 import flatMap from 'lodash/flatMap'
 import { getFarmConfig } from 'config/constants/farms/index'
@@ -43,7 +44,6 @@ import {
   updateUserLimitOrderAcceptedWarning,
   setZapDisabled,
 } from '../actions'
-import { deserializeToken, serializeToken } from './helpers'
 import { GAS_PRICE_GWEI } from '../../types'
 
 export function useAudioModeManager(): [boolean, () => void] {
@@ -386,7 +386,7 @@ export function useAddUserToken(): (token: Token) => void {
   const dispatch = useAppDispatch()
   return useCallback(
     (token: Token) => {
-      dispatch(addSerializedToken({ serializedToken: serializeToken(token) }))
+      dispatch(addSerializedToken({ serializedToken: token.serialize }))
     },
     [dispatch],
   )
@@ -438,8 +438,8 @@ export function useGasPriceManager(): [string, (userGasPrice: string) => void] {
 
 function serializePair(pair: Pair): SerializedPair {
   return {
-    token0: serializeToken(pair.token0),
-    token1: serializeToken(pair.token1),
+    token0: pair.token0.serialize,
+    token1: pair.token1.serialize,
   }
 }
 
