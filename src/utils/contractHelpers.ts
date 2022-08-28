@@ -92,6 +92,7 @@ import cakePredictionsAbi from 'config/abi/cakePredictions.json'
 import bCakeFarmBoosterAbi from 'config/abi/bCakeFarmBooster.json'
 import bCakeFarmBoosterProxyFactoryAbi from 'config/abi/bCakeFarmBoosterProxyFactory.json'
 import bCakeProxyAbi from 'config/abi/bCakeProxy.json'
+import stableSwapAbi from 'config/abi/stableSwap.json'
 
 // Types
 import type {
@@ -349,6 +350,10 @@ export const getIfoCreditAddressContract = (signer?: Signer | Provider) => {
 
 export const getBCakeFarmBoosterContract = (signer?: Signer | Provider) => {
   return getContract({ abi: bCakeFarmBoosterAbi, address: getBCakeFarmBoosterAddress(), signer }) as BCakeFarmBooster
+}
+
+export const getStableSwapContract = (address, signer?: Signer | Provider) => {
+  return getContract({ abi: stableSwapAbi, address, signer }) as BCakeFarmBooster
 }
 
 export const getBCakeFarmBoosterProxyFactoryContract = (signer?: Signer | Provider) => {

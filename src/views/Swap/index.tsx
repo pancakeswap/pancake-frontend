@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { ChainId, Currency, CurrencyAmount, Token, Trade, TradeType } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Token, Trade, TradeType, JSBI } from '@pancakeswap/sdk'
 import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange'
+
 import {
   Button,
   Text,
@@ -75,6 +76,12 @@ import { CommonBasesType } from '../../components/SearchModal/types'
 import replaceBrowserHistory from '../../utils/replaceBrowserHistory'
 import { currencyId } from '../../utils/currencyId'
 import StableSwap from './components/StableSwap'
+import stableSwapMap from 'config/constants/stableSwapMap'
+import useSWR from 'swr'
+import { laggyMiddleware, useSWRContract, useSWRMulticall } from 'hooks/useSWRContract'
+import { getStableSwapContract } from 'utils/contractHelpers'
+import { useContract } from 'hooks/useContract'
+import stableSwapABI from 'config/abi/stableSwap.json'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -103,6 +110,21 @@ const SwitchIconButton = styled(IconButton)`
 const CHART_SUPPORT_CHAIN_IDS = [ChainId.BSC]
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
+
+function useOutputAmountCalculation(tokenAmount) {
+  const stableMap = stableSwapMap[0]
+  const stableSwapContract = useContract(stableMap.stableSwapAddress, stableSwapABI, true)
+
+  const { data } = useSWR(tokenAmount ? [stableMap.stableSwapAddress, tokenAmount] : null, async () => {
+    try {
+      return await stableSwapContract.get_dy(...[0, 1, tokenAmount])
+    } catch (err) {
+      console.log(err)
+    }
+  })
+
+  return data
+}
 
 export default function Swap() {
   const [tabIndex, setTabIndex] = useState(0)
@@ -175,7 +197,7 @@ export default function Swap() {
 
   const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
 
-  const parsedAmounts = showWrap
+  let parsedAmounts = showWrap
     ? {
         [Field.INPUT]: parsedAmount,
         [Field.OUTPUT]: parsedAmount,
@@ -184,6 +206,13 @@ export default function Swap() {
         [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
         [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
       }
+
+  // Philip NOTE: try useOutputAmount
+  const outputAmount = useOutputAmountCalculation(parsedAmounts[Field.INPUT]?.quotient?.toString())
+
+  if (outputAmount) {
+    parsedAmounts[Field.OUTPUT] = CurrencyAmount.fromRawAmount(currencies[Field.INPUT], JSBI.BigInt(outputAmount))
+  }
 
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
   const isValid = !swapInputError
@@ -417,6 +446,9 @@ export default function Swap() {
     [chainId],
   )
 
+  console.log('isValid || !!swapCallbackError: ', isValid)
+  console.log('swapCallbackError: ', swapCallbackError)
+
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
       <Flex width="100%" justifyContent="center" position="relative">
@@ -577,7 +609,7 @@ export default function Swap() {
                         {wrapInputError ??
                           (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
                       </CommitButton>
-                    ) : noRoute && userHasSpecifiedInputOutput ? (
+                    ) : !noRoute && !userHasSpecifiedInputOutput ? (
                       <GreyCard style={{ textAlign: 'center', padding: '0.75rem' }}>
                         <Text color="textSubtle">{t('Insufficient liquidity for this trade.')}</Text>
                         {singleHopOnly && <Text color="textSubtle">{t('Try enabling multi-hop trades.')}</Text>}
@@ -623,7 +655,7 @@ export default function Swap() {
                             (priceImpactSeverity > 3 && !isExpertMode)
                           }
                         >
-                          {priceImpactSeverity > 3 && !isExpertMode
+                          {!isExpertMode
                             ? t('Price Impact High')
                             : priceImpactSeverity > 2
                             ? t('Swap Anyway')
@@ -648,10 +680,10 @@ export default function Swap() {
                         }}
                         id="swap-button"
                         width="100%"
-                        disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
+                        disabled={!isValid || !swapCallbackError}
                       >
                         {swapInputError ||
-                          (priceImpactSeverity > 3 && !isExpertMode
+                          (!!isExpertMode
                             ? t('Price Impact Too High')
                             : priceImpactSeverity > 2
                             ? t('Swap Anyway')
