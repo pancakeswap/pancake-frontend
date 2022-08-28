@@ -1,6 +1,7 @@
 import styled from 'styled-components'
+import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import { Flex, IconButton, useModal, CalculateIcon } from '@pancakeswap/uikit'
+import { Flex, IconButton, useModal, CalculateIcon, TooltipText, useTooltip, Text } from '@pancakeswap/uikit'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { useTranslation } from '@pancakeswap/localization'
 import { useFarmUser, useLpTokenPrice } from 'state/farms/hooks'
@@ -61,19 +62,45 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
     onPresentApyModal()
   }
 
+  const lpRewardsAPR = useMemo(() => Math.max(Number(displayApr) - apr, 0).toFixed(2), [displayApr, apr])
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    <>
+      <Text>
+        {t(`APR (incl. LP rewards)`)}: {displayApr}%
+      </Text>
+      <Text ml="5px">
+        *{t(`Base APR (CAKE yield only)`)}: {apr.toFixed(2)}%
+      </Text>
+      <Text ml="5px">
+        *{t(`LP Rewards APR`)}: {lpRewardsAPR}%
+      </Text>
+    </>,
+    {
+      placement: 'top',
+    },
+  )
+
   return (
-    <ApyLabelContainer
-      alignItems="center"
-      onClick={handleClickButton}
-      style={strikethrough && { textDecoration: 'line-through' }}
-    >
-      {displayApr}%
-      {variant === 'text-and-button' && (
-        <IconButton variant="text" scale="sm" ml="4px">
-          <CalculateIcon width="18px" />
-        </IconButton>
-      )}
-    </ApyLabelContainer>
+    <Flex flexDirection="column" alignItems="flex-start">
+      <ApyLabelContainer
+        alignItems="center"
+        onClick={handleClickButton}
+        style={strikethrough && { textDecoration: 'line-through' }}
+      >
+        <>
+          <TooltipText ref={targetRef} decorationColor="secondary">
+            {displayApr}%
+          </TooltipText>
+          {tooltipVisible && tooltip}
+        </>
+        {variant === 'text-and-button' && (
+          <IconButton variant="text" scale="sm" ml="4px">
+            <CalculateIcon width="18px" />
+          </IconButton>
+        )}
+      </ApyLabelContainer>
+    </Flex>
   )
 }
 
