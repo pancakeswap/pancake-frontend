@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { Flex, IconButton, useModal, CalculateIcon, TooltipText, useTooltip, Text } from '@pancakeswap/uikit'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
@@ -23,6 +22,7 @@ export interface ApyButtonProps {
   cakePrice?: BigNumber
   apr?: number
   displayApr?: string
+  lpRewardsApr?: number
   addLiquidityUrl?: string
   strikethrough?: boolean
 }
@@ -36,6 +36,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   apr,
   multiplier,
   displayApr,
+  lpRewardsApr,
   addLiquidityUrl,
   strikethrough,
 }) => {
@@ -62,18 +63,16 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
     onPresentApyModal()
   }
 
-  const lpRewardsAPR = useMemo(() => Math.max(Number(displayApr) - apr, 0).toFixed(2), [displayApr, apr])
-
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
       <Text>
-        {t(`APR (incl. LP rewards)`)}: {displayApr}%
+        {t('APR (incl. LP rewards)')}: {displayApr}%
       </Text>
       <Text ml="5px">
-        *{t(`Base APR (CAKE yield only)`)}: {apr.toFixed(2)}%
+        *{t('Base APR (CAKE yield only)')}: {apr.toFixed(2)}%
       </Text>
       <Text ml="5px">
-        *{t(`LP Rewards APR`)}: {lpRewardsAPR}%
+        *{t('LP Rewards APR')}: {lpRewardsApr}%
       </Text>
     </>,
     {
