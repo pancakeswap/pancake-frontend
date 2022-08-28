@@ -141,6 +141,10 @@ const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
     }
   }, [])
 
+  useEffect(() => {
+    setSelectedOptionIndex(defaultOptionIndex)
+  }, [defaultOptionIndex])
+
   return (
     <DropDownContainer isOpen={isOpen} {...props}>
       <DropDownHeader onClick={toggling}>
