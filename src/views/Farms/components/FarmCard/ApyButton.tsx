@@ -25,6 +25,7 @@ export interface ApyButtonProps {
   lpRewardsApr?: number
   addLiquidityUrl?: string
   strikethrough?: boolean
+  useTooltipText?: boolean
   hideButton?: boolean
 }
 
@@ -40,6 +41,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   lpRewardsApr,
   addLiquidityUrl,
   strikethrough,
+  useTooltipText,
   hideButton,
 }) => {
   const { t } = useTranslation()
@@ -88,15 +90,22 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
     <Flex flexDirection="column" alignItems="flex-start">
       <ApyLabelContainer
         alignItems="center"
-        onClick={handleClickButton}
+        onClick={(event) => {
+          if (hideButton) return
+          handleClickButton(event)
+        }}
         style={strikethrough && { textDecoration: 'line-through' }}
       >
-        <>
-          <TooltipText ref={targetRef} decorationColor="secondary">
-            {displayApr}%
-          </TooltipText>
-          {tooltipVisible && tooltip}
-        </>
+        {useTooltipText ? (
+          <>
+            <TooltipText ref={targetRef} decorationColor="secondary">
+              {displayApr}%
+            </TooltipText>
+            {tooltipVisible && tooltip}
+          </>
+        ) : (
+          <>{displayApr}%</>
+        )}
         {variant === 'text-and-button' && (
           <IconButton variant="text" scale="sm" ml="4px">
             <CalculateIcon width="18px" />
