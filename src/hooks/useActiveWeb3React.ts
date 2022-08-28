@@ -1,15 +1,12 @@
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { useRouter, NextRouter } from 'next/router'
+import replaceBrowserHistory from 'utils/replaceBrowserHistory'
+import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { isChainSupported } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { useActiveChainId } from './useActiveChainId'
 import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
-
-const getHashFromRouter = (router: NextRouter) => {
-  return router.asPath.match(/#([a-z0-9]+)/gi)
-}
 
 export function useNetworkConnectorUpdater() {
   const { chainId, isConnecting } = useActiveWeb3React()
@@ -21,17 +18,7 @@ export function useNetworkConnectorUpdater() {
     const parsedQueryChainId = Number(router.query.chainId)
     if (!parsedQueryChainId && chainId === ChainId.BSC) return
     if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
-      const uriHash = getHashFromRouter(router)?.[0]
-      router.replace(
-        {
-          query: {
-            ...router.query,
-            chainId,
-          },
-          ...(uriHash && { hash: uriHash }),
-        },
-        undefined,
-      )
+      replaceBrowserHistory('chainId', chainId === ChainId.BSC ? null : chainId)
     }
   }, [chainId, isConnecting, loading, router])
 }

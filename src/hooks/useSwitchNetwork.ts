@@ -1,3 +1,4 @@
+import { ConnectorNames } from '@pancakeswap/uikit'
 import { useCallback, useMemo } from 'react'
 import { useAccount, useSwitchNetwork as useSwitchNetworkWallet } from 'wagmi'
 import { useSessionChainId } from './useSessionChainId'
@@ -12,7 +13,7 @@ export function useSwitchNetwork() {
     switchNetwork: _switchNetwork,
     ...switchNetworkArgs
   } = useSwitchNetworkWallet()
-  const { isConnected } = useAccount()
+  const { isConnected, connector } = useAccount()
 
   const switchNetworkAsync = useCallback(
     async (chainId: number) => {
@@ -44,13 +45,14 @@ export function useSwitchNetwork() {
     () =>
       isConnected
         ? !!_switchNetworkAsync &&
+          connector.id !== ConnectorNames.WalletConnect &&
           !(
             typeof window !== 'undefined' &&
             // @ts-ignore // TODO: add type later
             window.ethereum?.isSafePal
           )
         : true,
-    [_switchNetworkAsync, isConnected],
+    [_switchNetworkAsync, isConnected, connector],
   )
 
   return {
