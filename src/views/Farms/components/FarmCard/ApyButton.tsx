@@ -25,6 +25,7 @@ export interface ApyButtonProps {
   lpRewardsApr?: number
   addLiquidityUrl?: string
   strikethrough?: boolean
+  hideButton?: boolean
 }
 
 const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
@@ -39,6 +40,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   lpRewardsApr,
   addLiquidityUrl,
   strikethrough,
+  hideButton,
 }) => {
   const { t } = useTranslation()
   const lpPrice = useLpTokenPrice(lpSymbol)
@@ -71,9 +73,11 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       <Text ml="5px">
         *{t('Base APR (CAKE yield only)')}: {apr.toFixed(2)}%
       </Text>
-      <Text ml="5px">
-        *{t('LP Rewards APR')}: {lpRewardsApr}%
-      </Text>
+      {lpRewardsApr !== 0 && (
+        <Text ml="5px">
+          *{t('LP Rewards APR')}: {lpRewardsApr}%
+        </Text>
+      )}
     </>,
     {
       placement: 'top',
