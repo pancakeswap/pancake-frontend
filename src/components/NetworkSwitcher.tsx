@@ -59,7 +59,7 @@ const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
       },
     ),
     {
-      placement: 'left',
+      placement: 'auto-start',
     },
   )
   const { chain } = useNetwork()
