@@ -282,8 +282,8 @@ export const getCakePredictionsContract = (address: string, signer?: Signer | Pr
   return getContract({ abi: cakePredictionsAbi, address, signer }) as Predictions
 }
 
-export const getChainlinkOracleContract = (address: string, signer?: Signer | Provider) => {
-  return getContract({ abi: chainlinkOracleAbi, address, signer }) as ChainlinkOracle
+export const getChainlinkOracleContract = (address: string, signer?: Signer | Provider, chainId?: number) => {
+  return getContract({ abi: chainlinkOracleAbi, address, signer, chainId }) as ChainlinkOracle
 }
 export const getMulticallContract = (chainId: ChainId) => {
   return getContract({ abi: MultiCallAbi, address: getMulticallAddress(chainId), chainId }) as Multicall
