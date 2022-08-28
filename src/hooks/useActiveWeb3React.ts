@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { isChainSupported } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
 import { ChainId } from '@pancakeswap/sdk'
-import { queryChainIdAtom, useActiveChainId } from './useActiveChainId'
+import { useActiveChainId } from './useActiveChainId'
 import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 
 const getHashFromRouter = (router: NextRouter) => {
@@ -14,7 +14,7 @@ const getHashFromRouter = (router: NextRouter) => {
 export function useNetworkConnectorUpdater() {
   const { chainId, isConnecting } = useActiveWeb3React()
   const [loading] = useSwitchNetworkLoading()
-  const queryChainId = useAtomValue(queryChainIdAtom)
+  const router = useRouter()
 
   useEffect(() => {
     if (loading || !router.isReady || isConnecting) return
