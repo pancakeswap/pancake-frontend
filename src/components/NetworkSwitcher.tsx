@@ -1,5 +1,6 @@
 import {
   ArrowDownIcon,
+  ArrowUpIcon,
   Box,
   Button,
   Flex,
@@ -14,6 +15,7 @@ import { ChainId, NATIVE } from '@pancakeswap/sdk'
 import { useActiveChainId, useLocalNetworkChain } from 'hooks/useActiveChainId'
 import { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
+import { useHover } from 'hooks/useHover'
 import { useNetwork } from 'wagmi'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useMemo } from 'react'
@@ -64,6 +66,8 @@ const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
 
   const localChainName = chains.find((c) => c.id === localChainId)?.name ?? 'BSC'
 
+  const [ref1, isHover] = useHover<HTMLButtonElement>()
+
   return (
     <>
       <Flex ref={targetRef} alignItems="center" px="16px" py="8px">
@@ -75,7 +79,7 @@ const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
       </Flex>
       <UserMenuDivider />
       {chain && (
-        <UserMenuItem disabled style={{ justifyContent: 'flex-start' }}>
+        <UserMenuItem ref={ref1} onClick={() => switchNetwork(chain.id)} style={{ justifyContent: 'flex-start' }}>
           <ChainLogo chainId={chain.id} />
           <Text color="secondary" bold pl="12px">
             {chain.name}
@@ -83,9 +87,9 @@ const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
         </UserMenuItem>
       )}
       <Box px="16px" pt="8px">
-        <ArrowDownIcon color="text" />
+        {isHover ? <ArrowUpIcon color="text" /> : <ArrowDownIcon color="text" />}
       </Box>
-      <UserMenuItem disabled style={{ justifyContent: 'flex-start' }}>
+      <UserMenuItem onClick={() => switchNetwork(localChainId)} style={{ justifyContent: 'flex-start' }}>
         <ChainLogo chainId={localChainId} />
         <Text pl="12px">{localChainName}</Text>
       </UserMenuItem>
