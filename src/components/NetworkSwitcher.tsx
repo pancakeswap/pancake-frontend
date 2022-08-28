@@ -1,40 +1,110 @@
-import { Box, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  Box,
+  Button,
+  Flex,
+  InfoIcon,
+  Text,
+  UserMenu,
+  UserMenuDivider,
+  UserMenuItem,
+  useTooltip,
+} from '@pancakeswap/uikit'
 import { ChainId, NATIVE } from '@pancakeswap/sdk'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useActiveChainId, useLocalNetworkChain } from 'hooks/useActiveChainId'
 import { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
+import { useSessionChainId } from 'hooks/useSessionChainId'
+import { useHover } from 'hooks/useHover'
+import { useNetwork } from 'wagmi'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useMemo } from 'react'
 import { chains } from 'utils/wagmi'
 import { ChainLogo } from './Logo/ChainLogo'
 
-export const NetworkSelect = ({ switchNetwork, chainId }) => {
+const NetworkSelect = ({ switchNetwork, chainId }) => {
   const { t } = useTranslation()
 
   return (
     <>
       <Box px="16px" py="8px">
-        <Text>{t('Select a Network')}</Text>
+        <Text color="textSubtle">{t('Select a Network')}</Text>
       </Box>
       <UserMenuDivider />
       {chains.map((chain) => (
         <UserMenuItem
-          disabled={chain.id === chainId}
           key={chain.id}
           style={{ justifyContent: 'flex-start' }}
-          onClick={() => switchNetwork(chain.id)}
+          onClick={() => chain.id !== chainId && switchNetwork(chain.id)}
         >
           <ChainLogo chainId={chain.id} />
-          <Text pl="12px">{chain.name}</Text>
+          <Text color={chain.id === chainId ? 'secondary' : 'text'} bold={chain.id === chainId} pl="12px">
+            {chain.name}
+          </Text>
         </UserMenuItem>
       ))}
     </>
   )
 }
 
+const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
+  const { t } = useTranslation()
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t(
+      'The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.',
+      {
+        chainId,
+        network: chains.find((c) => c.id === chainId)?.name ?? 'Unknown network',
+      },
+    ),
+    {
+      placement: 'auto-start',
+    },
+  )
+  const { chain } = useNetwork()
+  const localChainId = useLocalNetworkChain() || ChainId.BSC
+  const [, setSessionChainId] = useSessionChainId()
+
+  const localChainName = chains.find((c) => c.id === localChainId)?.name ?? 'BSC'
+
+  const [ref1, isHover] = useHover<HTMLButtonElement>()
+
+  return (
+    <>
+      <Flex ref={targetRef} alignItems="center" px="16px" py="8px">
+        <InfoIcon color="textSubtle" />
+        <Text color="textSubtle" pl="6px">
+          {t('Please switch network')}
+        </Text>
+        {tooltipVisible && tooltip}
+      </Flex>
+      <UserMenuDivider />
+      {chain && (
+        <UserMenuItem ref={ref1} onClick={() => setSessionChainId(chain.id)} style={{ justifyContent: 'flex-start' }}>
+          <ChainLogo chainId={chain.id} />
+          <Text color="secondary" bold pl="12px">
+            {chain.name}
+          </Text>
+        </UserMenuItem>
+      )}
+      <Box px="16px" pt="8px">
+        {isHover ? <ArrowUpIcon color="text" /> : <ArrowDownIcon color="text" />}
+      </Box>
+      <UserMenuItem onClick={() => switchNetwork(localChainId)} style={{ justifyContent: 'flex-start' }}>
+        <ChainLogo chainId={localChainId} />
+        <Text pl="12px">{localChainName}</Text>
+      </UserMenuItem>
+      <Button mx="16px" my="8px" scale="sm" onClick={() => switchNetwork(localChainId)}>
+        {t('Switch network in wallet')}
+      </Button>
+    </>
+  )
+}
+
 export const NetworkSwitcher = () => {
   const { t } = useTranslation()
-  const { chainId, isWrongNetwork } = useActiveChainId()
+  const { chainId, isWrongNetwork, isNotMatched } = useActiveChainId()
   const { pendingChainId, isLoading, canSwitch, switchNetworkAsync } = useSwitchNetwork()
   useNetworkConnectorUpdater()
 
@@ -72,7 +142,13 @@ export const NetworkSwitcher = () => {
           )
         }
       >
-        {() => <NetworkSelect switchNetwork={switchNetworkAsync} chainId={chainId} />}
+        {() =>
+          isNotMatched ? (
+            <WrongNetworkSelect switchNetwork={switchNetworkAsync} chainId={chainId} />
+          ) : (
+            <NetworkSelect switchNetwork={switchNetworkAsync} chainId={chainId} />
+          )
+        }
       </UserMenu>
     </>
   )
