@@ -1925,5 +1925,7 @@
   "The real execution price includes the gas cost necessary to execute your order and guarantees that your order will be executed at the desired price.": "असली निष्पादन कीमत में आपका ऑर्डर निष्पादित करने के लिए आवश्यक गैस लागत शामिल होती हैं और गारंटी दी जाती है कि आपका ऑर्डर मनचाही कीमत पर निष्पादित किया जाएगा।",
   "It fluctuates according to gas prices when the order is getting executed.": "जब ऑर्डर निष्पादित होता है, तो गैस की कीमतों में उतार-चढ़ाव आता है।",
   "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.": "गैस की वर्तमान कीमत को मानते हुए यह ऑर्डर कभी निष्पादित नहीं किया जाएगा। अपने ऑर्डर में स्वैप करने के लिए टोकन की संख्या बढ़ाने की कोशिश करें।",
-  "Bridge": "ब्रिज"
+  "Bridge": "ब्रिज",
+  "Please switch network": "Please switch network",
+  "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue."
 }
