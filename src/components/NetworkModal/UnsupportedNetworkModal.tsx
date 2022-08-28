@@ -1,7 +1,7 @@
 import { Button, Grid, Message, MessageText, Modal, Text } from '@pancakeswap/uikit'
 import { useLocalNetworkChain } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
-import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
+import { useSwitchNetwork, useSwitchNetworkLocal } from 'hooks/useSwitchNetwork'
 import Image from 'next/image'
 import useAuth from 'hooks/useAuth'
 import { useMenuItems } from 'components/Menu/hooks/useMenuItems'
@@ -13,8 +13,9 @@ import { ChainId } from '@pancakeswap/sdk'
 import Dots from '../Loader/Dots'
 
 // Where chain is not supported or page not supported
-export function UnsupportedNetworkModal() {
+export function UnsupportedNetworkModal({ pageSupportedChains }: { pageSupportedChains: number[] }) {
   const { switchNetworkAsync, isLoading, canSwitch } = useSwitchNetwork()
+  const switchNetworkLocal = useSwitchNetworkLocal()
   const { chains } = useNetwork()
   const chainId = useLocalNetworkChain() || ChainId.BSC
   const { isConnected } = useAccount()
@@ -30,7 +31,10 @@ export function UnsupportedNetworkModal() {
     return activeSubMenuItem?.label || activeMenuItem?.label
   }, [menuItems, pathname])
 
-  const supportedMainnetChains = useMemo(() => chains.filter((chain) => !chain.testnet), [chains])
+  const supportedMainnetChains = useMemo(
+    () => chains.filter((chain) => !chain.testnet && pageSupportedChains?.includes(chain.id)),
+    [chains, pageSupportedChains],
+  )
 
   return (
     <Modal title={t('Check your network')} hideCloseButton headerBackground="gradientCardHeader">
@@ -58,7 +62,7 @@ export function UnsupportedNetworkModal() {
               if (supportedMainnetChains.map((c) => c.id).includes(chainId)) {
                 switchNetworkAsync(chainId)
               } else {
-                switchNetworkAsync(supportedMainnetChains[0].id)
+                switchNetworkAsync(ChainId.BSC)
               }
             }}
           >
@@ -66,7 +70,14 @@ export function UnsupportedNetworkModal() {
           </Button>
         )}
         {isConnected && (
-          <Button variant="secondary" onClick={logout}>
+          <Button
+            variant="secondary"
+            onClick={() =>
+              logout().then(() => {
+                switchNetworkLocal(ChainId.BSC)
+              })
+            }
+          >
             {t('Disconnect Wallet')}
           </Button>
         )}
