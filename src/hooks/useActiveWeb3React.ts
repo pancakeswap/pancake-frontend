@@ -14,13 +14,13 @@ export function useNetworkConnectorUpdater() {
   const router = useRouter()
 
   useEffect(() => {
-    if (loading || !router.isReady || isConnecting) return
+    if (loading || isConnecting) return
     const parsedQueryChainId = Number(router.query.chainId)
     if (!parsedQueryChainId && chainId === ChainId.BSC) return
     if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
       replaceBrowserHistory('chainId', chainId === ChainId.BSC ? null : chainId)
     }
-  }, [chainId, isConnecting, loading, router])
+  }, [chainId, isConnecting, loading, router.query.chainId])
 }
 
 /**
