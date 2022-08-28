@@ -1,32 +1,30 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { atom, useAtomValue } from 'jotai'
-import { useRouter } from 'next/router'
 import { useDeferredValue } from 'react'
+import { atomWithLocation } from 'utils/atomWithLocation'
 import { isChainSupported } from 'utils/wagmi'
 import { useNetwork } from 'wagmi'
 import { useSessionChainId } from './useSessionChainId'
 
 export const sessionChainIdAtom = atom<number>(0)
-const queryChainIdAtom = atom(-1) // -1 unload, 0 no chainId on query
-
-queryChainIdAtom.onMount = (set) => {
-  const params = new URL(window.location.href).searchParams
-  const c = params.get('chainId')
-  if (isChainSupported(+c)) {
-    set(+c)
-  } else {
-    set(0)
+export const queryChainIdAtom = atom((get) => {
+  const location = get(atomWithLocation())
+  if (!location) {
+    return -1
   }
-}
+  const c = location.searchParams.get('chainId')
+  if (isChainSupported(+c)) {
+    return +c
+  }
+  return 0
+}) // -1 unload, 0 no chainId on query
 
 export function useLocalNetworkChain() {
   const [sessionChainId] = useSessionChainId()
-  // useRouter is kind of slow, we only get this query chainId once
+  // useRouter.query is kind of slow
   const queryChainId = useAtomValue(queryChainIdAtom)
 
-  const { query } = useRouter()
-
-  const chainId = +(sessionChainId || query.chainId || queryChainId)
+  const chainId = +(sessionChainId || queryChainId)
 
   if (isChainSupported(chainId)) {
     return chainId
