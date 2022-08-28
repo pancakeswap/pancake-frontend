@@ -1925,5 +1925,7 @@
   "The real execution price includes the gas cost necessary to execute your order and guarantees that your order will be executed at the desired price.": "実際の実行価格には注文の実行に必要なガス代が含まれており、注文が希望価格で実行されることが保証されています。",
   "It fluctuates according to gas prices when the order is getting executed.": "注文が実行される際のガス代に応じて変動します。",
   "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.": "現在のガス代を想定すると、この注文は実行されません。注文のスワップトークン数を高めてみてください。",
-  "Bridge": "ブリッジ"
+  "Bridge": "ブリッジ",
+  "Please switch network": "Please switch network",
+  "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue."
 }
