@@ -11,7 +11,7 @@ import {
   UserMenuItem,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { NATIVE } from '@pancakeswap/sdk'
+import { ChainId, NATIVE } from '@pancakeswap/sdk'
 import { useActiveChainId, useLocalNetworkChain } from 'hooks/useActiveChainId'
 import { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
@@ -36,14 +36,14 @@ const NetworkSelect = ({ switchNetwork, chainId }) => {
         .filter((chain) => !chain.testnet || chain.id === chainId)
         .map((chain) => (
           <UserMenuItem
-              key={chain.id}
+            key={chain.id}
             style={{ justifyContent: 'flex-start' }}
             onClick={() => chain.id !== chainId && switchNetwork(chain.id)}
           >
             <ChainLogo chainId={chain.id} />
             <Text color={chain.id === chainId ? 'secondary' : 'text'} bold={chain.id === chainId} pl="12px">
-            {chain.name}
-          </Text>
+              {chain.name}
+            </Text>
           </UserMenuItem>
         ))}
     </>
