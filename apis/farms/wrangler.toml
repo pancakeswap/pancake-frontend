@@ -1,16 +1,25 @@
 compatibility_date = "2022-05-20"
 kv_namespaces = [
-  {binding = "FARMS", id = "e67e7b9d27784f64a1c65af5e8eb1509", preview_id = "4ac09dba355c44fa858a67a22a9a63f1"},
+  {binding = "FARMS", id = "d8c9b05a13174eb59574425beceb2574", preview_id = "4ac09dba355c44fa858a67a22a9a63f1"},
 ]
 main = "src/index.ts"
 name = "farms-dev"
 node_compat = true
+[triggers]
+crons = ["0 0 * * *", "*/5 * * * *"]
 
 [env.staging]
+kv_namespaces = [
+  {binding = "FARMS", id = "f734a2405aa3476bbf173d5c9664d0b7"},
+]
 name = "farms-staging"
+[env.staging.triggers]
+crons = ["0 0 * * *", "*/5 * * * *"]
 
 [env.prodiction]
+kv_namespaces = [
+  {binding = "FARMS", id = "e67e7b9d27784f64a1c65af5e8eb1509"},
+]
 name = "farms"
-
-[triggers]
+[env.prodiction.triggers]
 crons = ["0 0 * * *", "*/1 * * * *"]
