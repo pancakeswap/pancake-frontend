@@ -10,6 +10,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { getMasterchefContract } from 'utils/contractHelpers'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
+import { FLAG_FARM } from 'config/flag'
 import { getFarmConfig } from '@pancakeswap/farm-constants'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, State } from '../types'
@@ -43,7 +44,7 @@ export const usePollFarmsWithUserData = () => {
       dispatch(fetchFarmsPublicDataAsync({ pids, chainId }))
     },
     {
-      refreshInterval: SLOW_INTERVAL,
+      refreshInterval: FLAG_FARM === 'api' ? 50 * 1000 : SLOW_INTERVAL,
     },
   )
 
@@ -88,7 +89,7 @@ export const usePollCoreFarmData = () => {
   }, [chainId, dispatch])
 
   useFastRefreshEffect(() => {
-    if (chainId) {
+    if (chainId && FLAG_FARM !== 'api') {
       dispatch(fetchFarmsPublicDataAsync({ pids: coreFarmPIDs[chainId], chainId }))
     }
   }, [dispatch, chainId])

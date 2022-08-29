@@ -1,4 +1,5 @@
 import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
+import { formatEther } from '@ethersproject/units'
 import { FarmWithPrices } from './farmPrices'
 
 // copy from src/config
@@ -27,7 +28,9 @@ export const getFarmCakeRewardApr = (
     return cakeRewardsAprAsString
   }
   const yearlyCakeRewardAllocation = poolWeight
-    ? poolWeight.mulUnsafe(FixedNumber.from(BLOCKS_PER_YEAR).mulUnsafe(FixedNumber.from(regularCakePerBlock)))
+    ? poolWeight.mulUnsafe(
+        FixedNumber.from(BLOCKS_PER_YEAR).mulUnsafe(FixedNumber.from(formatEther(regularCakePerBlock))),
+      )
     : FIXED_ZERO
   const cakeRewardsApr = yearlyCakeRewardAllocation
     .mulUnsafe(cakePriceBusd)
