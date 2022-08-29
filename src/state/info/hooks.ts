@@ -1,9 +1,10 @@
-import { ChainId } from '@pancakeswap/sdk'
 import { Duration, getUnixTime, startOfHour, sub } from 'date-fns'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useRouter } from 'next/router'
+import { ChainId } from '@pancakeswap/sdk'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState, useAppDispatch } from 'state'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import fetchPoolChartData, { fetchPoolChartDataETH } from 'state/info/queries/pools/chartData'
 import fetchPoolTransactions, { fetchPoolTransactionsETH } from 'state/info/queries/pools/transactions'
 import fetchTokenChartData from 'state/info/queries/tokens/chartData'
@@ -28,7 +29,6 @@ import {
   updateTokenTransactions,
 } from './actions'
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
-
 // Protocol hooks
 
 export const useProtocolData = (): [ProtocolData | undefined, (protocolData: ProtocolData) => void] => {
@@ -342,7 +342,9 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
 }
 
 export const useGetChainName = () => {
+  const router = useRouter()
+  const { chainName } = router.query
   const { chainId } = useActiveWeb3React()
-  if (ChainId.ETHEREUM === chainId) return 'ETH'
+  if (ChainId.ETHEREUM === chainId || chainName === 'eth') return 'ETH'
   return 'BSC'
 }
