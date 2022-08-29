@@ -248,7 +248,10 @@ interface TransactionResults {
   burnsAs1: BurnResponse[]
 }
 
-const fetchTokenTransactions = async (address: string): Promise<{ data?: Transaction[]; error: boolean }> => {
+const fetchTokenTransactions = async (
+  address: string,
+  chainName: 'ETH' | 'BSC',
+): Promise<{ data?: Transaction[]; error: boolean }> => {
   try {
     const data = await infoClient.request<TransactionResults>(TOKEN_TRANSACTIONS, {
       address,

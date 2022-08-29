@@ -348,3 +348,9 @@ export const useGetChainName = () => {
   if (ChainId.ETHEREUM === chainId || chainName === 'eth') return 'ETH'
   return 'BSC'
 }
+
+export const useMultiChainPath = () => {
+  const router = useRouter()
+  const { chainName } = router.query
+  return chainName ? `/${chainName}` : ''
+}
