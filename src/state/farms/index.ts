@@ -61,7 +61,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
   'farms/fetchFarmsPublicDataAsync',
   async ({ pids, chainId }) => {
     const chain = chains.find((c) => c.id === chainId)
-    if (!chain) throw new Error('chain not supported')
+    if (!chain || !farmFetcher.isChainSupported(chain.id)) throw new Error('chain not supported')
     try {
       const { poolLength, totalRegularAllocPoint, totalSpecialAllocPoint, cakePerBlock } =
         await farmFetcher.fetchMasterChefV2Data(chain.testnet)
@@ -184,6 +184,9 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
 >(
   'farms/fetchFarmUserDataAsync',
   async ({ account, pids, proxyAddress, chainId }, config) => {
+    if (!farmFetcher.isChainSupported(chainId)) {
+      throw new Error(`chain id ${chainId} not supported`)
+    }
     const poolLength = config.getState().farms.poolLength ?? (await fetchMasterChefFarmPoolLength(chainId))
     const farmsConfig = await getFarmConfig(chainId)
     const farmsCanFetch = farmsConfig.filter(

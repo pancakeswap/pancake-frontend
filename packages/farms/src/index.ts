@@ -10,6 +10,8 @@ export const nonBSCVaultAddresses = {
   5: '0x8CB958bBdb45597cc918147469eb650A9397aBDA',
 }
 
+const supportedChainId = [5, 56, 97]
+
 export function createFarmFetcher(multicall: MultiCallV2) {
   const fetchFarms = (params: Omit<fetchFarmsParams, 'masterChefAddresses' | 'multicall'>) => {
     return farmV2FetchFarms({ ...params, multicall, masterChefAddresses })
@@ -18,6 +20,7 @@ export function createFarmFetcher(multicall: MultiCallV2) {
     fetchFarms,
     fetchMasterChefV2Data: (isTestnet: boolean) =>
       _fetchMasterChefV2Data({ isTestnet, masterChefAddresses, multicall }),
+    isChainSupported: (chainId: number) => supportedChainId.includes(chainId),
   }
 }
 
