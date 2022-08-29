@@ -1,8 +1,12 @@
-import { getFarmConfig } from '@pancakeswap/farm-constants'
+import bscFarms from '@pancakeswap/farm-constants/56'
+import ethFarms from '@pancakeswap/farm-constants/1'
+import bsctestnetFarms from '@pancakeswap/farm-constants/97'
+import goerliFarms from '@pancakeswap/farm-constants/5'
+
 import { FixedNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { ChainId, CurrencyAmount, Pair } from '@pancakeswap/sdk'
-import { getFarmCakeRewardApr } from '@pancakeswap/farms'
+import { getFarmCakeRewardApr, SerializedFarmConfig } from '@pancakeswap/farms'
 import { CAKE, BUSD } from '@pancakeswap/tokens'
 import { FarmKV, FarmResult } from './kv'
 import { farmFetcher } from './helper'
@@ -65,14 +69,24 @@ const getCakePrice = async (isTestnet: boolean) => {
   return pair.priceOf(tokenB)
 }
 
+const farmConfig: Record<number, SerializedFarmConfig[]> = {
+  1: ethFarms,
+  56: bscFarms,
+  97: bsctestnetFarms,
+  5: goerliFarms,
+}
+
 export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEvent) {
   try {
     const isTestnet = farmFetcher.isTestnet(chainId)
     const { cakePerBlock, poolLength, totalRegularAllocPoint, totalSpecialAllocPoint } =
       await farmFetcher.fetchMasterChefV2Data(isTestnet)
 
-    const farmsConfig = await getFarmConfig(chainId)
-    const farmsCanFetch = farmsConfig.filter((farmConfig) => poolLength.gt(farmConfig.pid))
+    const farmsConfig = farmConfig[chainId]
+    if (!farmsConfig) {
+      throw new Error(`Farms config not found ${chainId}`)
+    }
+    const farmsCanFetch = farmsConfig.filter((f) => poolLength.gt(f.pid))
 
     const farms = await farmFetcher.fetchFarms({
       chainId,
@@ -95,6 +109,8 @@ export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEv
 
     const savedFarms = {
       updatedAt: new Date().toISOString(),
+      poolLength: poolLength.toNumber(),
+      regularCakePerBlock: cakePerBlock.toString(),
       data: finalFarm,
     }
 

@@ -11,6 +11,8 @@ export type FarmResult = Record<number, FarmWithPrices & { cakeApr?: string }>
 
 export type SavedFarmResult = {
   updatedAt: string
+  poolLength: number
+  regularCakePerBlock: string
   data: FarmResult
 }
 

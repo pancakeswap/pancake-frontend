@@ -59,7 +59,8 @@ addEventListener('scheduled', (event) => {
 // eslint-disable-next-line consistent-return
 async function handleScheduled(event: ScheduledEvent) {
   switch (event.cron) {
-    case '*/1 * * * *': {
+    case '*/1 * * * *':
+    case '*/5 * * * *': {
       const result = await Promise.allSettled(farmFetcher.supportedChainId.map((id) => saveFarms(id, event)))
       console.log(result.map((r) => r))
       return result

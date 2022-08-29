@@ -10,6 +10,7 @@ import type {
 } from '@reduxjs/toolkit/dist/matchers'
 import BigNumber from 'bignumber.js'
 import masterchefABI from 'config/abi/masterchef.json'
+import { FARM_API } from 'config/constants/endpoints'
 import { getFarmsPriceHelperLpFiles } from 'config/constants/priceHelperLps'
 import { FLAG_FARM } from 'config/flag'
 import stringify from 'fast-json-stable-stringify'
@@ -35,7 +36,7 @@ import getFarmsPrices from './getFarmsPrices'
 /**
  * @deprecated
  */
-export const fetchFetchPublicDataOld = async ({ pids, chainId }): Promise<[SerializedFarm[], number, number]> => {
+const fetchFetchPublicDataOld = async ({ pids, chainId }): Promise<[SerializedFarm[], number, number]> => {
   const [poolLength, [cakePerBlockRaw]] = await Promise.all([
     fetchMasterChefFarmPoolLength(chainId),
     multicall(masterchefABI, [
@@ -61,7 +62,32 @@ export const fetchFetchPublicDataOld = async ({ pids, chainId }): Promise<[Seria
   return [farmsWithPrices, poolLengthAsBigNumber.toNumber(), regularCakePerBlock.toNumber()]
 }
 
+const fetchFarmPublicDataPkg = async ({ pids, chainId, chain }): Promise<[SerializedFarm[], number, number]> => {
+  const { poolLength, totalRegularAllocPoint, totalSpecialAllocPoint, cakePerBlock } =
+    await farmFetcher.fetchMasterChefV2Data(chain.testnet)
+
+  const regularCakePerBlock = formatEther(cakePerBlock)
+  const farmsConfig = await getFarmConfig(chainId)
+  const farmsCanFetch = farmsConfig.filter(
+    (farmConfig) => pids.includes(farmConfig.pid) && poolLength.gt(farmConfig.pid),
+  )
+  const priceHelperLpsConfig = getFarmsPriceHelperLpFiles(chainId)
+
+  const farms = await farmFetcher.fetchFarms({
+    farms: farmsCanFetch.concat(priceHelperLpsConfig),
+    isTestnet: chain.testnet,
+    chainId,
+    totalRegularAllocPoint,
+    totalSpecialAllocPoint,
+  })
+  const farmsWithPrices = farms.length > 0 ? getFarmsPrices(farms, chainId) : []
+
+  return [farmsWithPrices, poolLength.toNumber(), +regularCakePerBlock]
+}
+
 const farmFetcher = createFarmFetcher(multicallv2)
+
+const farmApiFetch = (chainId: number) => fetch(`${FARM_API}/${chainId}`).then((res) => res.json())
 
 const initialState: SerializedFarmsState = {
   data: [],
@@ -102,26 +128,16 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
       if (FLAG_FARM === 'old') {
         return fetchFetchPublicDataOld({ pids, chainId })
       }
-      const { poolLength, totalRegularAllocPoint, totalSpecialAllocPoint, cakePerBlock } =
-        await farmFetcher.fetchMasterChefV2Data(chain.testnet)
-
-      const regularCakePerBlock = formatEther(cakePerBlock)
-      const farmsConfig = await getFarmConfig(chainId)
-      const farmsCanFetch = farmsConfig.filter(
-        (farmConfig) => pids.includes(farmConfig.pid) && poolLength.gt(farmConfig.pid),
-      )
-      const priceHelperLpsConfig = getFarmsPriceHelperLpFiles(chainId)
-
-      const farms = await farmFetcher.fetchFarms({
-        farms: farmsCanFetch.concat(priceHelperLpsConfig),
-        isTestnet: chain.testnet,
-        chainId,
-        totalRegularAllocPoint,
-        totalSpecialAllocPoint,
-      })
-      const farmsWithPrices = farms.length > 0 ? getFarmsPrices(farms, chainId) : []
-
-      return [farmsWithPrices, poolLength.toNumber(), +regularCakePerBlock]
+      if (FLAG_FARM === 'api') {
+        try {
+          const { updatedAt, data, poolLength, regularCakePerBlock } = await farmApiFetch(chainId)
+          return [Object.values(data), poolLength, regularCakePerBlock]
+        } catch (error) {
+          console.error(error)
+          return fetchFarmPublicDataPkg({ pids, chainId, chain })
+        }
+      }
+      return fetchFarmPublicDataPkg({ pids, chainId, chain })
     } catch (error) {
       console.error(error)
       throw error

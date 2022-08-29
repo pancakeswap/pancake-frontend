@@ -2,7 +2,7 @@ import { StaticJsonRpcProvider } from '@ethersproject/providers'
 
 export const bscProvider = new StaticJsonRpcProvider(
   {
-    url: 'https://bsc.nodereal.io',
+    url: 'https://nodes.pancakeswap.com',
     skipFetchSetup: true,
   },
   56,
