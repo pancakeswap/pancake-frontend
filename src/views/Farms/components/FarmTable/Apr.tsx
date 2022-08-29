@@ -18,6 +18,7 @@ export interface AprProps {
   originalValue: number
   hideButton?: boolean
   strikethrough?: boolean
+  useTooltipText?: boolean
 }
 
 const Container = styled.div`
@@ -54,6 +55,8 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
   originalValue,
   hideButton = false,
   strikethrough,
+  lpRewardsApr,
+  useTooltipText = true,
 }) => {
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAddress, tokenAddress })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
@@ -69,8 +72,11 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
           cakePrice={cakePrice}
           apr={originalValue}
           displayApr={value}
+          lpRewardsApr={lpRewardsApr}
           addLiquidityUrl={addLiquidityUrl}
           strikethrough={strikethrough}
+          useTooltipText={useTooltipText}
+          hideButton={hideButton}
         />
       ) : (
         <AprWrapper>

@@ -1,4 +1,4 @@
-import { goerliTestnetTokens, serializeToken } from '@pancakeswap/tokens'
+import { goerliTestnetTokens } from '@pancakeswap/tokens'
 import { SerializedFarmConfig } from '../../types'
 
 const priceHelperLps: SerializedFarmConfig[] = [
@@ -9,6 +9,6 @@ const priceHelperLps: SerializedFarmConfig[] = [
     token: goerliTestnetTokens.weth,
     quoteToken: goerliTestnetTokens.usdc,
   },
-].map((p) => ({ ...p, token: serializeToken(p.token), quoteToken: serializeToken(p.quoteToken) }))
+].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
 
 export default priceHelperLps
