@@ -4,7 +4,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { batch, useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
-import { getFarmConfig } from '@pancakeswap/farm-constants'
+import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { livePools } from 'config/constants/pools'
 
 import {
