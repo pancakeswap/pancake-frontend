@@ -256,6 +256,7 @@ export default function MintView({ history }: RouteComponentProps) {
                       onCurrencySelect={null}
                       otherCurrency={currencies[Field.INPUT]}
                       id="swap-currency-output"
+                      disabled
                       disableCurrencySelect
                     />
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading, Flex, Text, CommunityIcon, SwapIcon, useMatchBreakpoints } from 'peronio-uikit'
+import { Heading, Flex, Text, SwapIcon, useMatchBreakpoints, IcoIcon, InterestIcon } from 'peronio-uikit'
 import { useTranslation } from 'contexts/Localization'
 // import { useGetStats } from 'hooks/api'
 import useTheme from 'hooks/useTheme'
@@ -19,30 +19,30 @@ const Stats = () => {
   const { t } = useTranslation()
   // const data = useGetStats()
   const { theme } = useTheme()
-  const inputCurrencyId = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174" // USDC
-  const outputCurrencyId = "0xc2768beF7a6BB57F0FfA169a9ED4017c09696FF1" // PE
+  const inputCurrencyId = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174' // USDC
+  const outputCurrencyId = '0xc2768beF7a6BB57F0FfA169a9ED4017c09696FF1' // PE
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
   const singleTokenPrice = useSingleTokenSwapInfo()
   const { isMobile } = useMatchBreakpoints()
 
-  const arsInputCurrency = {...inputCurrency, name:'Peso Argentino', symbol:'ARS', }
+  const arsInputCurrency = { ...inputCurrency, name: 'Peso Argentino', symbol: 'ARS' }
 
   // const tvlString = data ? formatLocalisedCompactNumber(data.tvl) : '-'
   // const trades = formatLocalisedCompactNumber(txCount)
   // const users = formatLocalisedCompactNumber(addressCount)
 
   const UsersCardData: IconCardData = {
-    icon: <CommunityIcon color="secondary" width="36px" />,
+    icon: <IcoIcon color="secondary" width="36px" />,
   }
 
   const TradesCardData: IconCardData = {
     icon: <SwapIcon color="primary" width="36px" />,
   }
 
-  // const StakedCardData: IconCardData = {
-  //   icon: <ChartIcon color="failure" width="36px" />,
-  // }
+  const InterestCardData: IconCardData = {
+    icon: <InterestIcon color="primary" width="36px" />,
+  }
 
   return (
     <Flex justifyContent="center" alignItems="center" flexDirection="column">
@@ -93,7 +93,7 @@ const Stats = () => {
             highlightColor={theme.colors.primary}
           />
         </IconCard>
-        <IconCard {...TradesCardData} mr={[null, null, null, '16px']} mb={['16px', null, null, '0']}>
+        <IconCard {...InterestCardData} mr={[null, null, null, '16px']} mb={['16px', null, null, '0']}>
           <StatCardContent
             headingText={t('15% Interest')}
             bodyText={t('Provided by MAI/USDC in QiDao')}

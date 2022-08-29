@@ -6,7 +6,10 @@ import { useTranslation } from 'contexts/Localization'
 // import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import useTheme from 'hooks/useTheme'
 // import { usePhishingBannerManager } from 'state/user/hooks'
-import { usePePriceArs } from 'hooks/useBUSDPrice'
+import { usePePriceArs, usePePriceUsd } from 'hooks/useBUSDPrice'
+import useARSPrice from 'hooks/useARSPrice'
+import AddToken from 'utils/addToken'
+import logo from 'assets/pe.png'
 import config from './config/config'
 import UserMenu from './UserMenu'
 import GlobalSettings from './GlobalSettings'
@@ -15,7 +18,9 @@ import { footerLinks } from './config/footerConfig'
 
 const Menu = (props) => {
   const { isDark, toggleTheme } = useTheme()
-  const pePriceUsd = usePePriceArs()
+  const pesosBlueAvg = useARSPrice()
+  const pePriceArs = usePePriceArs()
+  const pePriceUsdc = usePePriceUsd()
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useLocation()
   // const [showPhishingWarningBanner] = usePhishingBannerManager()
@@ -33,13 +38,27 @@ const Menu = (props) => {
       currentLang={currentLanguage.code}
       langs={languageList}
       setLang={setLanguage}
-      cakePriceUsd={pePriceUsd}
+      cakePriceUsd={pePriceArs}
       links={config(t)}
       subLinks={activeMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
       footerLinks={footerLinks(t)}
       activeItem={activeMenuItem?.href}
       activeSubItem={activeSubMenuItem?.href}
-      buyCakeLabel={t('Buy CAKE')}
+      contentTooltip={
+        <>
+          {pesosBlueAvg && <div>1 ARS = ${(1 / pesosBlueAvg).toFixed(5)} USDC</div>}
+          {pePriceUsdc && <div>1 PE = ${pePriceUsdc.toFixed(5)} USDC</div>}
+          {pePriceArs && <div>1 PE = ${pePriceArs.toFixed(4)} ARS</div>}
+        </>
+      }
+      onClick={() =>
+        AddToken({
+          address: '0xc2768beF7a6BB57F0FfA169a9ED4017c09696FF1',
+          symbol: 'PE',
+          decimals: 6,
+          image: logo,
+        })
+      }
       {...props}
     />
   )

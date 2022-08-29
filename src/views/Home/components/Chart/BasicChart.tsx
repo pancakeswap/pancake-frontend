@@ -10,8 +10,8 @@ import NoChartAvailable from './NoChartAvailable'
 import TokenDisplay from './TokenDisplay'
 import { getTimeWindowChange } from './utils'
 
-const findArsPrice = (prices, date) => {
-  let priceFound
+const findArsPrice = (prices: any[], date: string | number | Date) => {
+  let priceFound: any
   let lookupDate = new Date(date)
   while (priceFound === undefined) {
     // eslint-disable-next-line no-loop-func
@@ -32,7 +32,7 @@ const BasicChart = ({
   isMobile,
   currentSwapPrice,
 }) => {
-  const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(0)
+  const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(2)
 
   const { pairPrices = [], pairId } = useFetchPairPrices({
     token0Address,
@@ -42,23 +42,22 @@ const BasicChart = ({
   })
   const [hoverValue, setHoverValue] = useState<number | undefined>()
   const [hoverDate, setHoverDate] = useState<string | undefined>()
+  const [arsPairPrices, setArsPairPrices] = useState([])
   const arsPrices = useARSHistoricPrice()
 
-  const [arsPairPrices, setArsPairPrices] = useState([])
   useEffect(() => {
     if (!arsPrices || arsPrices.length === 0) {
       setArsPairPrices([])
       return
     }
+    const arsPricedValues = pairPrices.map((pairPrice) => {
+      return {
+        ...pairPrice,
+        value: findArsPrice(arsPrices, pairPrice.time)?.price / pairPrice.value,
+      }
+    })
 
-    setArsPairPrices(
-      pairPrices.map((pairPrice) => {
-        return {
-          ...pairPrice,
-          value: findArsPrice(arsPrices, pairPrice.time)?.price / pairPrice.value,
-        }
-      }),
-    )
+    setArsPairPrices(arsPricedValues.splice(0, 31))
   }, [arsPrices, pairPrices])
 
   const valueToDisplay = hoverValue || arsPairPrices[arsPairPrices.length - 1]?.value
