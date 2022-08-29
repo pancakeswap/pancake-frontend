@@ -11,7 +11,7 @@ export const getTokenAmount = (balance: FixedNumber, decimals: number) => {
   return balance.divUnsafe(tokenDividerFixed)
 }
 
-export type fetchFarmsParams = {
+export type FetchFarmsParams = {
   farms
   multicall: MultiCallV2
   isTestnet: boolean
@@ -29,7 +29,7 @@ export async function farmV2FetchFarms({
   chainId,
   totalRegularAllocPoint,
   totalSpecialAllocPoint,
-}: fetchFarmsParams) {
+}: FetchFarmsParams) {
   const lpData = (await fetchPublicFarmsData(farms, chainId, multicall)).map(formatFarmResponse)
   const poolInfos = await fetchMasterChefData(farms, isTestnet, multicall, masterChefAddresses)
 

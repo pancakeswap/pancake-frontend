@@ -10,7 +10,7 @@ const BLOCKS_PER_YEAR = (60 / BSC_BLOCK_TIME) * 60 * 24 * 365 // 10512000
 const FIXED_ZERO = FixedNumber.from(0)
 const FIXED_100 = FixedNumber.from(100)
 
-export const getFarmCakeRewardApr = (farm: FarmWithPrices, cakePriceBusd: FixedNumber, regularCakePerBlock: string) => {
+export const getFarmCakeRewardApr = (farm: FarmWithPrices, cakePriceBusd: FixedNumber, regularCakePerBlock: number) => {
   let cakeRewardsAprAsString = '0'
   if (!cakePriceBusd) {
     return cakeRewardsAprAsString

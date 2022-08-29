@@ -1,4 +1,3 @@
-import { formatEther } from '@ethersproject/units'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { createFarmFetcher } from '@pancakeswap/farms'
 import { ChainId } from '@pancakeswap/sdk'
@@ -63,26 +62,15 @@ const fetchFetchPublicDataOld = async ({ pids, chainId }): Promise<[SerializedFa
 }
 
 const fetchFarmPublicDataPkg = async ({ pids, chainId, chain }): Promise<[SerializedFarm[], number, number]> => {
-  const { poolLength, totalRegularAllocPoint, totalSpecialAllocPoint, cakePerBlock } =
-    await farmFetcher.fetchMasterChefV2Data(chain.testnet)
-
-  const regularCakePerBlock = formatEther(cakePerBlock)
   const farmsConfig = await getFarmConfig(chainId)
-  const farmsCanFetch = farmsConfig.filter(
-    (farmConfig) => pids.includes(farmConfig.pid) && poolLength.gt(farmConfig.pid),
-  )
-  const priceHelperLpsConfig = getFarmsPriceHelperLpFiles(chainId)
+  const farmsCanFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
 
-  const farms = await farmFetcher.fetchFarms({
-    farms: farmsCanFetch.concat(priceHelperLpsConfig),
-    isTestnet: chain.testnet,
+  const { farmsWithPrice, poolLength, regularCakePerBlock } = await farmFetcher.fetchFarms({
     chainId,
-    totalRegularAllocPoint,
-    totalSpecialAllocPoint,
+    isTestnet: chain.testnet,
+    farms: farmsCanFetch,
   })
-  const farmsWithPrices = farms.length > 0 ? getFarmsPrices(farms, chainId) : []
-
-  return [farmsWithPrices, poolLength.toNumber(), +regularCakePerBlock]
+  return [farmsWithPrice, poolLength, regularCakePerBlock]
 }
 
 const farmFetcher = createFarmFetcher(multicallv2)
@@ -113,6 +101,8 @@ export const fetchInitialFarmsData = createAsyncThunk<SerializedFarm[], { chainI
   },
 )
 
+let fallback = false
+
 export const fetchFarmsPublicDataAsync = createAsyncThunk<
   [SerializedFarm[], number, number],
   { pids: number[]; chainId: number },
@@ -128,10 +118,14 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
       if (FLAG_FARM === 'old') {
         return fetchFetchPublicDataOld({ pids, chainId })
       }
-      if (FLAG_FARM === 'api') {
+      if (FLAG_FARM === 'api' && !fallback) {
         try {
           const { updatedAt, data, poolLength, regularCakePerBlock } = await farmApiFetch(chainId)
-          return [Object.values(data), poolLength, regularCakePerBlock]
+          if (Date.now() - new Date(updatedAt).getTime() > 3 * 60 * 1000) {
+            fallback = true
+            throw new Error('Farm Api out dated')
+          }
+          return [data, poolLength, regularCakePerBlock]
         } catch (error) {
           console.error(error)
           return fetchFarmPublicDataPkg({ pids, chainId, chain })

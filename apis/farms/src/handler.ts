@@ -3,7 +3,6 @@ import ethFarms from '@pancakeswap/farms/constants/1'
 import bsctestnetFarms from '@pancakeswap/farms/constants/97'
 import goerliFarms from '@pancakeswap/farms/constants/5'
 
-import { formatEther } from '@ethersproject/units'
 import { FixedNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { ChainId, CurrencyAmount, Pair } from '@pancakeswap/sdk'
@@ -80,40 +79,30 @@ const farmConfig: Record<number, SerializedFarmConfig[]> = {
 export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEvent) {
   try {
     const isTestnet = farmFetcher.isTestnet(chainId)
-    const { cakePerBlock, poolLength, totalRegularAllocPoint, totalSpecialAllocPoint } =
-      await farmFetcher.fetchMasterChefV2Data(isTestnet)
-
     const farmsConfig = farmConfig[chainId]
     if (!farmsConfig) {
       throw new Error(`Farms config not found ${chainId}`)
     }
-    const farmsCanFetch = farmsConfig.filter((f) => f.pid !== 0 && poolLength.gt(f.pid))
-
-    const farms = await farmFetcher.fetchFarms({
+    const { farmsWithPrice, poolLength, regularCakePerBlock } = await farmFetcher.fetchFarms({
       chainId,
-      farms: farmsCanFetch,
       isTestnet,
-      totalRegularAllocPoint,
-      totalSpecialAllocPoint,
+      farms: farmsConfig.filter((f) => f.pid !== 0),
     })
 
     const cakeBusdPrice = await getCakePrice(isTestnet)
     const lpAprs = await handleLpAprs(chainId)
-    const regularCakePerBlock = formatEther(cakePerBlock)
 
-    const finalFarm = farms.reduce((acc, f) => {
-      // eslint-disable-next-line no-param-reassign
-      acc[f.pid] = {
+    const finalFarm = farmsWithPrice.map((f) => {
+      return {
         ...f,
         lpApr: lpAprs?.[f.lpAddress] || 0,
         cakeApr: getFarmCakeRewardApr(f, FixedNumber.from(cakeBusdPrice.toSignificant(6)), regularCakePerBlock),
       }
-      return acc
-    }, {} as FarmResult)
+    }) as FarmResult
 
     const savedFarms = {
       updatedAt: new Date().toISOString(),
-      poolLength: poolLength.toNumber(),
+      poolLength,
       regularCakePerBlock,
       data: finalFarm,
     }
