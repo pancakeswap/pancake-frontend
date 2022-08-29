@@ -4,11 +4,11 @@ import { ChainId } from '@pancakeswap/sdk'
 import multicallAbi from './Multicall.json'
 
 const multicallAddresses = {
-  1: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
-  4: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
-  5: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
-  56: '0xfF6FD90A470Aaa0c1B8A54681746b07AcdFedc9B',
-  97: '0x8F3273Fb89B075b1645095ABaC6ed17B2d4Bc576',
+  1: '0xcA11bde05977b3631167028862bE2a173976CA11',
+  4: '0xcA11bde05977b3631167028862bE2a173976CA11',
+  5: '0xcA11bde05977b3631167028862bE2a173976CA11',
+  56: '0xcA11bde05977b3631167028862bE2a173976CA11',
+  97: '0xcA11bde05977b3631167028862bE2a173976CA11',
 }
 
 export const getMulticallContract = (chainId: ChainId, provider) => {
@@ -54,7 +54,7 @@ export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: n
       target: call.address.toLowerCase(),
       callData: itf.encodeFunctionData(call.name, call.params),
     }))
-    const { returnData } = await multi.aggregate(calldata)
+    const { returnData } = await multi.callStatic.aggregate(calldata)
 
     const res = returnData.map((call, i) => itf.decodeFunctionResult(calls[i].name, call))
 
@@ -72,7 +72,7 @@ export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: n
       callData: itf.encodeFunctionData(call.name, call.params),
     }))
 
-    const returnData = await multi.tryAggregate(requireSuccess, calldata, overrides)
+    const returnData = await multi.callStatic.tryAggregate(requireSuccess, calldata, overrides)
     const res = returnData.map((call, i) => {
       const [result, data] = call
       return result ? itf.decodeFunctionResult(calls[i].name, data) : null
