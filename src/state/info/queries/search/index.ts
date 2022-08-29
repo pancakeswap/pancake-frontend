@@ -1,9 +1,9 @@
 import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
-import { usePoolDatas, useTokenDatas } from 'state/info/hooks'
+import { usePoolDatas, useTokenDatas, useGetChainName } from 'state/info/hooks'
 import { PoolData, TokenData } from 'state/info/types'
-import { infoClient } from 'utils/graphql'
+import { infoClient, infoClientETH } from 'utils/graphql'
 
 const TOKEN_SEARCH = gql`
   query tokens($symbol: String, $name: String, $id: String) {
@@ -19,8 +19,36 @@ const TOKEN_SEARCH = gql`
   }
 `
 
+const TOKEN_SEARCH_ETH = gql`
+  query tokens($symbol: String, $name: String, $id: ID) {
+    asSymbol: tokens(first: 10, where: { symbol_contains: $symbol }, orderBy: tradeVolumeUSD, orderDirection: desc) {
+      id
+    }
+    asName: tokens(first: 10, where: { name_contains: $name }, orderBy: tradeVolumeUSD, orderDirection: desc) {
+      id
+    }
+    asAddress: tokens(first: 1, where: { id: $id }, orderBy: tradeVolumeUSD, orderDirection: desc) {
+      id
+    }
+  }
+`
+
 const POOL_SEARCH = gql`
   query pools($tokens: [Bytes]!, $id: String) {
+    as0: pairs(first: 10, where: { token0_in: $tokens }) {
+      id
+    }
+    as1: pairs(first: 10, where: { token1_in: $tokens }) {
+      id
+    }
+    asAddress: pairs(first: 1, where: { id: $id }) {
+      id
+    }
+  }
+`
+
+const POOL_SEARCH_ETH = gql`
+  query pools($tokens: [Bytes]!, $id: ID) {
     as0: pairs(first: 10, where: { token0_in: $tokens }) {
       id
     }
@@ -73,6 +101,8 @@ const useFetchSearchResults = (
 
   const searchStringTooShort = searchString.length < MINIMUM_SEARCH_CHARACTERS
 
+  const chainName = useGetChainName()
+
   // New value received, reset state
   useEffect(() => {
     setSearchResults({
@@ -83,17 +113,21 @@ const useFetchSearchResults = (
     })
   }, [searchString, searchStringTooShort])
 
+  const tokenQuery = chainName === 'ETH' ? TOKEN_SEARCH_ETH : TOKEN_SEARCH
+  const poolQuery = chainName === 'ETH' ? POOL_SEARCH_ETH : TOKEN_SEARCH
+  const queryClient = chainName === 'ETH' ? infoClientETH : infoClient
+
   useEffect(() => {
     const search = async () => {
       try {
-        const tokens = await infoClient.request<TokenSearchResponse>(TOKEN_SEARCH, {
+        const tokens = await queryClient.request<TokenSearchResponse>(tokenQuery, {
           symbol: searchString.toUpperCase(),
           // Most well known tokens have first letter capitalized
           name: searchString.charAt(0).toUpperCase() + searchString.slice(1),
           id: searchString.toLowerCase(),
         })
         const tokenIds = getIds([tokens.asAddress, tokens.asSymbol, tokens.asName])
-        const pools = await infoClient.request<PoolSearchResponse>(POOL_SEARCH, {
+        const pools = await queryClient.request<PoolSearchResponse>(poolQuery, {
           tokens: tokenIds,
           id: searchString.toLowerCase(),
         })
@@ -116,7 +150,7 @@ const useFetchSearchResults = (
     if (!searchStringTooShort) {
       search()
     }
-  }, [searchString, searchStringTooShort])
+  }, [searchString, searchStringTooShort, chainName, tokenQuery, poolQuery, queryClient])
 
   // Save ids to Redux
   // Token and Pool updater will then go fetch full data for these addresses
