@@ -1926,6 +1926,6 @@
   "It fluctuates according to gas prices when the order is getting executed.": "Fluttua in base ai prezzi del gas nel momento in cui l'ordine viene eseguito.",
   "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.": "All'attuale prezzo del gas, questo ordine non verrà mai eseguito. Prova ad aumentare la quantità di token da scambiare nel tuo ordine.",
   "Bridge": "Ponte",
-  "Please switch network": "Please switch network",
-  "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue."
+  "Please switch network": "Cambia rete",
+  "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "L'URL a cui stai accedendo (ID catena: %chainId%) appartiene a %network%; c'è una mancata corrispondenza della rete del tuo portafoglio. Cambia la rete per continuare."
 }
