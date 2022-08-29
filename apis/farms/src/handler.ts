@@ -3,6 +3,7 @@ import ethFarms from '@pancakeswap/farm-constants/1'
 import bsctestnetFarms from '@pancakeswap/farm-constants/97'
 import goerliFarms from '@pancakeswap/farm-constants/5'
 
+import { formatEther } from '@ethersproject/units'
 import { FixedNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { ChainId, CurrencyAmount, Pair } from '@pancakeswap/sdk'
@@ -66,7 +67,7 @@ const getCakePrice = async (isTestnet: boolean) => {
     CurrencyAmount.fromRawAmount(token1, reserve1.toString()),
   )
 
-  return pair.priceOf(tokenB)
+  return pair.priceOf(tokenA)
 }
 
 const farmConfig: Record<number, SerializedFarmConfig[]> = {
@@ -86,7 +87,7 @@ export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEv
     if (!farmsConfig) {
       throw new Error(`Farms config not found ${chainId}`)
     }
-    const farmsCanFetch = farmsConfig.filter((f) => poolLength.gt(f.pid))
+    const farmsCanFetch = farmsConfig.filter((f) => f.pid !== 0 && poolLength.gt(f.pid))
 
     const farms = await farmFetcher.fetchFarms({
       chainId,
@@ -98,13 +99,14 @@ export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEv
 
     const cakeBusdPrice = await getCakePrice(isTestnet)
     const lpAprs = await handleLpAprs(chainId)
+    const regularCakePerBlock = formatEther(cakePerBlock)
 
     const finalFarm = farms.reduce((acc, f) => {
       // eslint-disable-next-line no-param-reassign
       acc[f.pid] = {
         ...f,
         lpApr: lpAprs?.[f.lpAddress] || 0,
-        cakeApr: getFarmCakeRewardApr(f, FixedNumber.from(cakeBusdPrice.toSignificant(6)), cakePerBlock),
+        cakeApr: getFarmCakeRewardApr(f, FixedNumber.from(cakeBusdPrice.toSignificant(6)), regularCakePerBlock),
       }
       return acc
     }, {} as FarmResult)
@@ -112,7 +114,7 @@ export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEv
     const savedFarms = {
       updatedAt: new Date().toISOString(),
       poolLength: poolLength.toNumber(),
-      regularCakePerBlock: cakePerBlock.toString(),
+      regularCakePerBlock,
       data: finalFarm,
     }
 
