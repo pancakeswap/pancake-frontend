@@ -15,19 +15,14 @@ const StyledLink = styled(NextLinkFromReactRouter)`
   width: 100%;
 `
 
-const PredictionCardHeader: React.FC<React.PropsWithChildren<{ preText: string; bnbWon: number }>> = ({
+const PredictionCardHeader: React.FC<React.PropsWithChildren<{ preText: string; won: string }>> = ({
   preText,
-  bnbWon,
+  won,
 }) => {
-  const bnbBusdPrice = useBNBBusdPrice()
-  const bnbWonInUsd = multiplyPriceByAmount(bnbBusdPrice, bnbWon)
-
-  const localisedBnbUsdString = formatLocalisedCompactNumber(bnbWonInUsd)
-
   return (
     <Heading color="#280D5F" my="8px" scale="xl" bold>
       {preText}
-      {localisedBnbUsdString}
+      {won}
     </Heading>
   )
 }
@@ -36,8 +31,8 @@ const PredictionCardContent = () => {
   const { t } = useTranslation()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
-  const bnbBusdPrice = useBNBBusdPrice()
-  const cakePriceBusd = useCakeBusdPrice()
+  const bnbBusdPrice = useBNBBusdPrice({ forceMainnet: true })
+  const cakePriceBusd = useCakeBusdPrice({ forceMainnet: true })
 
   const { data } = useSWR(loadData ? ['prediction', 'tokenWon'] : null, getTotalWon, {
     refreshInterval: SLOW_INTERVAL,
@@ -63,7 +58,7 @@ const PredictionCardContent = () => {
           {t('Prediction')}
         </Text>
         {bnbWonInUsd ? (
-          <PredictionCardHeader preText={pretext} bnbWon={bnbWonInUsd} />
+          <PredictionCardHeader preText={pretext} won={localisedBnbUsdString} />
         ) : (
           <>
             <Skeleton width={230} height={40} my="8px" />

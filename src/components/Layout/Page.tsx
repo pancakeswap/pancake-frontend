@@ -28,7 +28,7 @@ export const PageMeta: React.FC<React.PropsWithChildren<{ symbol?: string }>> = 
     currentLanguage: { locale },
   } = useTranslation()
   const { pathname } = useRouter()
-  const cakePriceUsd = useCakeBusdPrice()
+  const cakePriceUsd = useCakeBusdPrice({ forceMainnet: true })
   const cakePriceUsdDisplay = cakePriceUsd ? `$${cakePriceUsd.toFixed(3)}` : '...'
 
   const pageMeta = getCustomMeta(pathname, t, locale) || {}
