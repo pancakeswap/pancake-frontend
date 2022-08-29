@@ -106,7 +106,7 @@ const Collectible = () => {
         value: SORT_FIELD.highestPrice,
       },
     ]
-  }, []);
+  }, [t]);
   const sortFieldIndexMap = useMemo(() => {
     return new Map([
       [SORT_FIELD.createdAt, 1],
