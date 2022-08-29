@@ -79,32 +79,44 @@ const Collectible = () => {
   const [maxPage, setMaxPage] = useState(1)
   const [viewMode, setViewMode] = useState(ViewMode.CARD)
   const [sortDirection, setSortDirection] = useState<boolean>(false)
-  const options = [
-    {
-      label: t('Collection'),
-      value: SORT_FIELD.createdAt,
-    },
-    {
-      label: t('Volume'),
-      value: SORT_FIELD.volumeBNB,
-    },
-    {
-      label: t('Items'),
-      value: SORT_FIELD.items,
-    },
-    {
-      label: t('Supply'),
-      value: SORT_FIELD.supply,
-    },
-    {
-      label: t('Lowest Price'),
-      value: SORT_FIELD.lowestPrice,
-    },
-    {
-      label: t('Highest Price'),
-      value: SORT_FIELD.highestPrice,
-    },
-  ]
+  const options = useMemo(() => {
+    return [
+      {
+        label: t('Collection'),
+        value: SORT_FIELD.createdAt,
+      },
+      {
+        label: t('Volume'),
+        value: SORT_FIELD.volumeBNB,
+      },
+      {
+        label: t('Items'),
+        value: SORT_FIELD.items,
+      },
+      {
+        label: t('Supply'),
+        value: SORT_FIELD.supply,
+      },
+      {
+        label: t('Lowest Price'),
+        value: SORT_FIELD.lowestPrice,
+      },
+      {
+        label: t('Highest Price'),
+        value: SORT_FIELD.highestPrice,
+      },
+    ]
+  }, []);
+  const sortFieldIndexMap = useMemo(() => {
+    return new Map([
+      [SORT_FIELD.createdAt, 1],
+      [SORT_FIELD.volumeBNB, 2],
+      [SORT_FIELD.items, 3],
+      [SORT_FIELD.supply, 4],
+      [SORT_FIELD.lowestPrice, 5],
+      [SORT_FIELD.highestPrice, 6],
+    ])
+  }, [])
 
   const { data: collections = [], status } = useSWRImmutable<
     (Collection & Partial<{ lowestPrice: number; highestPrice: number }>)[]
@@ -211,7 +223,8 @@ const Collectible = () => {
                 </Text>
                 <Select
                   options={options}
-                  defaultOptionIndex={options.findIndex((option) => option.value === sortField)}
+                  placeHolderText={t('Select')}
+                  defaultOptionIndex={sortFieldIndexMap.get(sortField)}
                   onOptionChange={(option: OptionProps) => handleSort(option.value)}
                 />
               </Flex>
