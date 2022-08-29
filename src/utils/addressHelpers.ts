@@ -44,6 +44,11 @@ export const getTradingCompetitionAddressV2 = () => {
 export const getEasterNftAddress = () => {
   return getAddress(addresses.easterNft)
 }
+export const getMigratorV1ContractAdress = () => {
+  return getAddress(addresses.migratorV1)
+}
+
+
 
 export const getVaultPoolAddress = (vaultKey: VaultKey) => {
   if (!vaultKey) {

@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { CurrencyAmount, Withdraw } from 'peronio-sdk'
-import { Button, Text, ArrowDownIcon, Box, useModal, Flex, IconButton, ArrowUpDownIcon } from 'peronio-uikit'
+import { Button, Text, ArrowDownIcon, Box, useModal, Flex, IconButton } from 'peronio-uikit'
 // import Footer from 'components/Menu/Footer'
 import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import { useWithdrawCallback } from 'hooks/useWithdrawCallback'
 import { useWithdrawTokenInfo } from 'state/tokenWithdraw/hooks'
 
+import { useMigratorContract } from 'hooks/useContract'
 import AddressInputPanel from './components/AddressInputPanel'
 import Column, { AutoColumn } from '../../components/Layout/Column'
 import ConfirmWithdrawModal from './components/ConfirmWithdrawModal'
@@ -35,7 +36,7 @@ import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import CircleLoader from '../../components/Loader/CircleLoader'
 import Page from '../Page'
 // import SwapWarningModal from './components/SwapWarningModal'
-import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
+import { StyledInputCurrencyWrapper } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
 
 const Label = styled(Text)`
@@ -44,7 +45,7 @@ const Label = styled(Text)`
   color: ${({ theme }) => theme.colors.secondary};
 `
 
-const SwitchIconButton = styled(IconButton)`
+export const SwitchIconButton = styled(IconButton)`
   box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
   .icon-up-down {
     display: none;
@@ -65,6 +66,10 @@ const SwitchIconButton = styled(IconButton)`
 export default function WithdrawView({ history }: RouteComponentProps) {
   useDefaultsFromURLSearch()
   const { t } = useTranslation()
+
+  const migratorContract = useMigratorContract()
+
+  console.info(migratorContract);
 
   const { account } = useActiveWeb3React()
 

@@ -68,7 +68,7 @@
     "multicodec": "^2.0.0",
     "multihashes": "^3.0.1",
     "numeral": "^2.0.6",
-    "peronio-core": "^0.9.1",
+    "peronio-core": "^0.9.2",
     "peronio-sdk": "^0.8.17",
     "peronio-uikit": "^0.63.7",
     "qs": "^6.9.4",

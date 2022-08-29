@@ -33,6 +33,7 @@ import {
   getPancakeSquadAddress,
   getTradingCompetitionAddressV2,
   getBunnySpecialXmasAddress,
+  getMigratorV1ContractAdress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -71,6 +72,7 @@ import nftMarketAbi from 'config/abi/nftMarket.json'
 import nftSaleAbi from 'config/abi/nftSale.json'
 import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
+import migratorAbi from "config/abi/migrator.json";
 
 // Types
 import {
@@ -222,7 +224,9 @@ export const getPancakeSquadContract = (signer?: ethers.Signer | ethers.provider
 export const getErc721CollectionContract = (signer?: ethers.Signer | ethers.providers.Provider, address?: string) => {
   return getContract(erc721CollectionAbi, address, signer) as Erc721collection
 }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getPeronioContract = (signer?: ethers.Signer | ethers.providers.Provider, address?: string) => {
   return getContract(PeronioABI, mainnetTokens.pe.address, signer)
+}
+export const getMigratorContract = (signer?: ethers.Signer | ethers.providers.Provider, address?: string) => {
+  return getContract(migratorAbi, getMigratorV1ContractAdress(), signer)
 }
