@@ -1,0 +1,16 @@
+compatibility_date = "2022-05-20"
+kv_namespaces = [
+  {binding = "FARMS", id = "e67e7b9d27784f64a1c65af5e8eb1509", preview_id = "4ac09dba355c44fa858a67a22a9a63f1"},
+]
+main = "src/index.ts"
+name = "farms-dev"
+node_compat = true
+
+[env.staging]
+name = "farms-staging"
+
+[env.prodiction]
+name = "farms"
+
+[triggers]
+crons = ["0 0 * * *", "*/1 * * * *"]

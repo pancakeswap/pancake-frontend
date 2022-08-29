@@ -7,7 +7,7 @@ import type {
 } from '@reduxjs/toolkit/dist/matchers'
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import stringify from 'fast-json-stable-stringify'
-import { getFarmConfig } from 'config/constants/farms'
+import { getFarmConfig } from '@pancakeswap/farm-constants'
 import type { AppState } from 'state'
 import { getFarmsPriceHelperLpFiles } from 'config/constants/priceHelperLps/index'
 import fetchFarms from './fetchFarms'

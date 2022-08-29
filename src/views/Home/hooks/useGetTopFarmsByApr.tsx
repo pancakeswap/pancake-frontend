@@ -7,7 +7,7 @@ import { getFarmApr } from 'utils/apr'
 import orderBy from 'lodash/orderBy'
 import { DeserializedFarm } from 'state/types'
 import { FetchStatus } from 'config/constants/types'
-import { getFarmConfig } from 'config/constants/farms/index'
+import { getFarmConfig } from '@pancakeswap/farm-constants'
 import { FarmWithStakedValue } from '../../Farms/components/types'
 
 const useGetTopFarmsByApr = (isIntersecting: boolean) => {
