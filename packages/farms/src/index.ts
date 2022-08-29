@@ -7,7 +7,7 @@ export const masterChefAddresses = {
 }
 
 export const nonBSCVaultAddresses = {
-  5: '0x8CB958bBdb45597cc918147469eb650A9397aBDA',
+  5: '0x40c7ee3f04bfbfda64bb032770a8fa01483f4378',
 }
 
 const supportedChainId = [5, 56, 97]

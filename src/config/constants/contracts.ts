@@ -2,7 +2,7 @@ export default {
   masterChef: {
     97: '0xB4A466911556e39210a6bB2FaECBB59E4eB7E43d',
     56: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
-    5: '0x8CB958bBdb45597cc918147469eb650A9397aBDA',
+    5: '0x40C7Ee3f04BFBfda64Bb032770A8fA01483F4378',
   },
   masterChefV1: {
     97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
@@ -155,6 +155,6 @@ export default {
   crossFarming: {
     56: '',
     97: '',
-    5: '0xbE1D884a00E1984632881f7BA5e201BB2F088e01',
+    5: '0x7D793a1039E17230AcD1834f16155946cFd55b62',
   },
 }

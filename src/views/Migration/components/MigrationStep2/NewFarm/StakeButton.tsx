@@ -30,6 +30,7 @@ interface StackedActionProps extends FarmWithStakedValue {
 
 const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
   pid,
+  vaultPid,
   apr,
   multiplier,
   lpSymbol,
@@ -44,9 +45,10 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
   const { isDesktop } = useMatchBreakpoints()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
+  const stakedPid = vaultPid ?? pid
   const { allowance, tokenBalance, stakedBalance } = useFarmUser(pid)
-  const { onStake } = useStakeFarms(pid)
-  const { onUnstake } = useUnstakeFarms(pid)
+  const { onStake } = useStakeFarms(stakedPid)
+  const { onUnstake } = useUnstakeFarms(stakedPid)
   const lpPrice = useLpTokenPrice(lpSymbol)
   const cakePrice = usePriceCakeBusd()
 

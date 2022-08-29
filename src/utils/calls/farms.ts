@@ -34,6 +34,19 @@ export const nonBscStakeFarm = async (contract, pid, amount, gasPrice, account, 
     userAddress: account,
     messageType: MessageTypes.Deposit,
   })
-
   return contract.deposit(pid, value, { value: totalFee })
+}
+
+export const nonBscUnstakeFarm = async (contract, pid, amount, gasPrice, account, oraclePrice, chainId) => {
+  const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
+  const totalFee = await getNonBscVaultContractFee({
+    pid,
+    chainId,
+    gasPrice,
+    oraclePrice,
+    amount: value,
+    userAddress: account,
+    messageType: MessageTypes.Withdraw,
+  })
+  return contract.withdraw(pid, value, { value: totalFee })
 }

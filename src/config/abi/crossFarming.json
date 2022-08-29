@@ -13,8 +13,8 @@
   },
   {
     "anonymous": false,
-    "inputs": [{ "indexed": false, "internalType": "uint256", "name": "rate", "type": "uint256" }],
-    "name": "CompensationRateUpdated",
+    "inputs": [{ "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }],
+    "name": "BnbChangeUpdated",
     "type": "event"
   },
   {
@@ -41,6 +41,12 @@
     "anonymous": false,
     "inputs": [{ "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }],
     "name": "FeeClaimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{ "indexed": false, "internalType": "uint256", "name": "rate", "type": "uint256" }],
+    "name": "FloatRateUpdated",
     "type": "event"
   },
   {
@@ -86,6 +92,19 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [{ "indexed": false, "internalType": "address", "name": "vault", "type": "address" }],
+    "name": "VaultUpdated",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "BNB_CHANGE",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "CAKE",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
@@ -94,14 +113,14 @@
   },
   {
     "inputs": [],
-    "name": "COMPENSATION_PRECISION",
+    "name": "EXCHANGE_RATE_PRECISION",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "EXCHANGE_RATE_PRECISION",
+    "name": "FLOAT_RATE_PRECISION",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
@@ -115,15 +134,22 @@
   },
   {
     "inputs": [],
-    "name": "MAX_COMPENSATION_RATE",
+    "name": "MAX_FLOAT_RATE",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "PRICE_PRECISION",
+    "name": "MIN_FLOAT_RATE",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "Vault",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -135,13 +161,6 @@
     "type": "function"
   },
   { "inputs": [], "name": "claimFee", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
-  {
-    "inputs": [],
-    "name": "compensationRate",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
   {
     "inputs": [],
     "name": "createProxyGasLimit",
@@ -157,18 +176,6 @@
     "name": "drainToken",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_account", "type": "address" },
-      { "internalType": "uint256", "name": "_pid", "type": "uint256" },
-      { "internalType": "uint256", "name": "_amount", "type": "uint256" },
-      { "internalType": "enum CrossFarming.MessageTypes", "name": "_msgType", "type": "uint8" }
-    ],
-    "name": "encodeMessage",
-    "outputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -255,6 +262,13 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "nonces",
+    "outputs": [{ "internalType": "uint64", "name": "", "type": "uint64" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "oracleUpdateBuffer",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -278,10 +292,7 @@
   {
     "inputs": [
       { "internalType": "address", "name": "_receiver", "type": "address" },
-      { "internalType": "address", "name": "_account", "type": "address" },
-      { "internalType": "uint256", "name": "_pid", "type": "uint256" },
-      { "internalType": "uint256", "name": "_amount", "type": "uint256" },
-      { "internalType": "enum CrossFarming.MessageTypes", "name": "_msgType", "type": "uint8" },
+      { "internalType": "bytes", "name": "_message", "type": "bytes" },
       { "internalType": "uint64", "name": "_dstChainId", "type": "uint64" }
     ],
     "name": "sendFarmMessage",
@@ -290,8 +301,8 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "uint256", "name": "_rate", "type": "uint256" }],
-    "name": "setCompensationRate",
+    "inputs": [{ "internalType": "uint256", "name": "_change", "type": "uint256" }],
+    "name": "setBnbChange",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -299,6 +310,13 @@
   {
     "inputs": [{ "internalType": "uint256", "name": "_gaslimit", "type": "uint256" }],
     "name": "setCreateProxyGasLimit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_rate", "type": "uint256" }],
+    "name": "setFloatRate",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -338,10 +356,24 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "address", "name": "_vault", "type": "address" }],
+    "name": "setVault",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "txFeeFloatRate",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
