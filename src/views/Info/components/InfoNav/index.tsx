@@ -20,7 +20,6 @@ const NavWrapper = styled(Flex)`
 const InfoNav = () => {
   const { t } = useTranslation()
   const router = useRouter()
-
   const isPools = router.pathname === '/info/pools'
   const isTokens = router.pathname === '/info/tokens'
   let activeIndex = 0
@@ -34,13 +33,13 @@ const InfoNav = () => {
     <NavWrapper>
       <Box>
         <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
-          <ButtonMenuItem as={NextLinkFromReactRouter} to="/info">
+          <ButtonMenuItem as={NextLinkFromReactRouter} to="/info/[chainname]">
             {t('Overview')}
           </ButtonMenuItem>
-          <ButtonMenuItem as={NextLinkFromReactRouter} to="/info/pools">
+          <ButtonMenuItem as={NextLinkFromReactRouter} to="/info/[chainname]/pools">
             {t('Pools')}
           </ButtonMenuItem>
-          <ButtonMenuItem as={NextLinkFromReactRouter} to="/info/tokens">
+          <ButtonMenuItem as={NextLinkFromReactRouter} to="/info/[chainname]/tokens">
             {t('Tokens')}
           </ButtonMenuItem>
         </ButtonMenu>
