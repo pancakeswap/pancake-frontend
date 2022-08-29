@@ -1,5 +1,6 @@
 import { MultiCallV2 } from '@pancakeswap/multicall'
 import { farmV2FetchFarms, fetchFarmsParams, fetchMasterChefV2Data as _fetchMasterChefV2Data } from './fetchFarms'
+import type { FarmWithPrices } from './farmPrices'
 
 export const masterChefAddresses = {
   97: '0xB4A466911556e39210a6bB2FaECBB59E4eB7E43d',
@@ -21,8 +22,12 @@ export function createFarmFetcher(multicall: MultiCallV2) {
     fetchMasterChefV2Data: (isTestnet: boolean) =>
       _fetchMasterChefV2Data({ isTestnet, masterChefAddresses, multicall }),
     isChainSupported: (chainId: number) => supportedChainId.includes(chainId),
+    supportedChainId,
+    isTestnet: (chainId: number) => ![56].includes(chainId),
   }
 }
 
 export * from './types'
 export * from './farmsPriceHelpers'
+export * from './apr'
+export type { FarmWithPrices }

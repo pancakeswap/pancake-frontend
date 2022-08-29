@@ -4,7 +4,9 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "apis/*",
+    "constants/*"
   ],
   "scripts": {
     "analyze": "ANALYZE=true yarn build",

@@ -46,3 +46,7 @@ export interface SerializedFarmPublicData extends SerializedFarmConfig {
   poolWeight?: string
   boosted?: boolean
 }
+
+export interface AprMap {
+  [key: string]: number
+}

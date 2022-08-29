@@ -1,21 +1,28 @@
 import { formatEther } from '@ethersproject/units'
+import { getFarmConfig } from '@pancakeswap/farm-constants'
+import { createFarmFetcher } from '@pancakeswap/farms'
+import { ChainId } from '@pancakeswap/sdk'
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import type {
   UnknownAsyncThunkFulfilledAction,
   UnknownAsyncThunkPendingAction,
   UnknownAsyncThunkRejectedAction,
 } from '@reduxjs/toolkit/dist/matchers'
-import { getFarmConfig } from 'config/constants/farms/index'
+import BigNumber from 'bignumber.js'
+import masterchefABI from 'config/abi/masterchef.json'
 import { getFarmsPriceHelperLpFiles } from 'config/constants/priceHelperLps'
+import { FLAG_FARM } from 'config/flag'
 import stringify from 'fast-json-stable-stringify'
 import fromPairs from 'lodash/fromPairs'
 import type { AppState } from 'state'
+import { getMasterChefAddress } from 'utils/addressHelpers'
+import { getBalanceAmount } from 'utils/formatBalance'
+import multicall, { multicallv2 } from 'utils/multicall'
 import { chains } from 'utils/wagmi'
-import { createFarmFetcher } from '@pancakeswap/farms'
 import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
-import { multicallv2 } from 'utils/multicall'
 import { resetUserState } from '../global/actions'
 import { SerializedFarm, SerializedFarmsState } from '../types'
+import fetchFarms from './fetchFarms'
 import {
   fetchFarmUserAllowances,
   fetchFarmUserEarnings,
@@ -24,6 +31,35 @@ import {
 } from './fetchFarmUser'
 import { fetchMasterChefFarmPoolLength } from './fetchMasterChefData'
 import getFarmsPrices from './getFarmsPrices'
+
+/**
+ * @deprecated
+ */
+export const fetchFetchPublicDataOld = async ({ pids, chainId }): Promise<[SerializedFarm[], number, number]> => {
+  const [poolLength, [cakePerBlockRaw]] = await Promise.all([
+    fetchMasterChefFarmPoolLength(chainId),
+    multicall(masterchefABI, [
+      {
+        // BSC only
+        address: getMasterChefAddress(ChainId.BSC),
+        name: 'cakePerBlock',
+        params: [true],
+      },
+    ]),
+  ])
+
+  const poolLengthAsBigNumber = new BigNumber(poolLength)
+  const regularCakePerBlock = getBalanceAmount(new BigNumber(cakePerBlockRaw))
+  const farmsConfig = await getFarmConfig(chainId)
+  const farmsCanFetch = farmsConfig.filter(
+    (farmConfig) => pids.includes(farmConfig.pid) && poolLengthAsBigNumber.gt(farmConfig.pid),
+  )
+  const priceHelperLpsConfig = getFarmsPriceHelperLpFiles(chainId)
+
+  const farms = await fetchFarms(farmsCanFetch.concat(priceHelperLpsConfig), chainId)
+  const farmsWithPrices = farms.length > 0 ? getFarmsPrices(farms, chainId) : []
+  return [farmsWithPrices, poolLengthAsBigNumber.toNumber(), regularCakePerBlock.toNumber()]
+}
 
 const farmFetcher = createFarmFetcher(multicallv2)
 
@@ -63,6 +99,9 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
     const chain = chains.find((c) => c.id === chainId)
     if (!chain || !farmFetcher.isChainSupported(chain.id)) throw new Error('chain not supported')
     try {
+      if (FLAG_FARM === 'old') {
+        return fetchFetchPublicDataOld({ pids, chainId })
+      }
       const { poolLength, totalRegularAllocPoint, totalSpecialAllocPoint, cakePerBlock } =
         await farmFetcher.fetchMasterChefV2Data(chain.testnet)
 

@@ -1,7 +1,7 @@
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
-import { getFarmConfig } from 'config/constants/farms'
+import { getFarmConfig } from '@pancakeswap/farm-constants'
 import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'

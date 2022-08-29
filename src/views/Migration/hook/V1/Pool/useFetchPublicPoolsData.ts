@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { useAppDispatch } from 'state'
-import { getFarmConfig } from 'config/constants/farms'
+import { getFarmConfig } from '@pancakeswap/farm-constants'
 import { useSlowRefreshEffect } from 'hooks/useRefreshEffect'
 import { fetchFarmsPublicDataAsync } from 'state/farmsV1/index'
 
