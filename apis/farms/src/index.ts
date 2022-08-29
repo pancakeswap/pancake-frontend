@@ -25,10 +25,12 @@ router.get('/:chainId', async ({ params }, event) => {
   if (err) return err
   const { chainId } = params!
 
-  const cached = await FarmKV.getFarms(chainId)
+  const cached = KV_CACHE && (await FarmKV.getFarms(chainId))
 
   if (!cached) {
-    console.info('no cached found!')
+    if (KV_CACHE) {
+      console.info('no cached found!')
+    }
     try {
       const savedFarms = await saveFarms(+chainId, event)
 
@@ -60,7 +62,7 @@ addEventListener('scheduled', (event) => {
 async function handleScheduled(event: ScheduledEvent) {
   switch (event.cron) {
     case '*/1 * * * *':
-    case '*/5 * * * *': {
+    case '*/2 * * * *': {
       const result = await Promise.allSettled(farmFetcher.supportedChainId.map((id) => saveFarms(id, event)))
       console.log(result.map((r) => r))
       return result
