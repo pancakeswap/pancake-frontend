@@ -246,7 +246,7 @@ export const getFarmsDynamicData = ({
   token0Decimals,
   token1Decimals,
   allocPoint,
-  isRegular,
+  isRegular = true,
 }: FormatFarmResponse & {
   allocPoint?: BigNumber
   isRegular?: boolean
