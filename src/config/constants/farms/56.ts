@@ -1,4 +1,4 @@
-import { bscTokens, serializeToken } from '@pancakeswap/tokens'
+import { bscTokens } from '@pancakeswap/tokens'
 import { CAKE_BNB_LP_MAINNET } from '../lp'
 import { SerializedFarmConfig } from '../types'
 
@@ -919,6 +919,6 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.ada,
     quoteToken: bscTokens.wbnb,
   },
-].map((p) => ({ ...p, token: serializeToken(p.token), quoteToken: serializeToken(p.quoteToken) }))
+].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
 
 export default farms

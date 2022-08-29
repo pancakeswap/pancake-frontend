@@ -439,7 +439,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             <Loading />
           </Flex>
         )}
-        <div ref={observerRef} />
+        {poolLength && <div ref={observerRef} />}
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </Page>
       {createPortal(<ScrollToTopButton />, document.body)}
