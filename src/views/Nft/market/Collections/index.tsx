@@ -46,6 +46,15 @@ const SORT_FIELD = {
   highestPrice: 'highestPrice',
 }
 
+const SORT_FIELD_INDEX_MAP = new Map([
+  [SORT_FIELD.createdAt, 1],
+  [SORT_FIELD.volumeBNB, 2],
+  [SORT_FIELD.items, 3],
+  [SORT_FIELD.supply, 4],
+  [SORT_FIELD.lowestPrice, 5],
+  [SORT_FIELD.highestPrice, 6],
+])
+
 export const PageButtons = styled.div`
   width: 100%;
   display: flex;
@@ -107,16 +116,6 @@ const Collectible = () => {
       },
     ]
   }, [t]);
-  const sortFieldIndexMap = useMemo(() => {
-    return new Map([
-      [SORT_FIELD.createdAt, 1],
-      [SORT_FIELD.volumeBNB, 2],
-      [SORT_FIELD.items, 3],
-      [SORT_FIELD.supply, 4],
-      [SORT_FIELD.lowestPrice, 5],
-      [SORT_FIELD.highestPrice, 6],
-    ])
-  }, [])
 
   const { data: collections = [], status } = useSWRImmutable<
     (Collection & Partial<{ lowestPrice: number; highestPrice: number }>)[]
@@ -224,7 +223,7 @@ const Collectible = () => {
                 <Select
                   options={options}
                   placeHolderText={t('Select')}
-                  defaultOptionIndex={sortFieldIndexMap.get(sortField)}
+                  defaultOptionIndex={SORT_FIELD_INDEX_MAP.get(sortField)}
                   onOptionChange={(option: OptionProps) => handleSort(option.value)}
                 />
               </Flex>
