@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { BIG_ZERO } from 'utils/bigNumber'
+import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber'
 import { getNonBscVaultContract, getCrossFarmingContract } from 'utils/contractHelpers'
 
 export enum MessageTypes {
@@ -34,7 +34,7 @@ export const getNonBscVaultContractFee = async ({
   try {
     const masterChefContract = getNonBscVaultContract(null, chainId)
     const crossFarmingAddress = getCrossFarmingContract(null, chainId)
-    const exchangeRate = new BigNumber(oraclePrice).times(EXCHANGE_RATE_PRECISION)
+    const exchangeRate = new BigNumber(oraclePrice).times(EXCHANGE_RATE_PRECISION).div(BIG_TEN.pow(18))
 
     const [encodeMessage, estimateDestGaslimit] = await Promise.all([
       masterChefContract.encodeMessage(userAddress, pid, amount, messageType),
