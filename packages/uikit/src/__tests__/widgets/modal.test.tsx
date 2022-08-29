@@ -1,10 +1,10 @@
 import React from "react";
 import noop from "lodash/noop";
-import { renderWithTheme } from "../../testHelpers";
+import { renderWithProvider } from "../../testHelpers";
 import { Modal } from "../../widgets/Modal";
 
 it("renders correctly", () => {
-  const { asFragment } = renderWithTheme(
+  const { asFragment } = renderWithProvider(
     <Modal title="Title" onDismiss={noop}>
       body
     </Modal>

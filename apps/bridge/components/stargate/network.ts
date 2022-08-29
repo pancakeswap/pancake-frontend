@@ -1,4 +1,4 @@
-import { bsc, fantomOpera, avalandche } from '@pancakeswap/wagmi'
+import { bsc, fantomOpera, avalandche } from '@pancakeswap/wagmi/chains'
 import { mainnet, arbitrum, optimism, polygon } from 'wagmi/chains'
 
 // Chain Id is defined by Stargate

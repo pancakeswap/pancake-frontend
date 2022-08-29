@@ -1,5 +1,5 @@
 import { AddIcon, Button, IconButton, MinusIcon, Skeleton, Text, useModal } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
@@ -13,7 +13,6 @@ import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import styled from 'styled-components'
-import { getAddress } from 'utils/addressHelpers'
 import { TransactionResponse } from '@ethersproject/providers'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import useApproveFarm from '../../../hooks/useApproveFarm'
@@ -57,14 +56,17 @@ const StyledActionContainer = styled(ActionContainer)`
 `
 
 export function useStakedActions(pid, lpContract) {
-  const { account } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { onStake } = useStakeFarms(pid)
   const { onUnstake } = useUnstakeFarms(pid)
   const dispatch = useAppDispatch()
 
-  const { onApprove } = useApproveFarm(lpContract)
+  const { onApprove } = useApproveFarm(lpContract, chainId)
 
-  const onDone = useCallback(() => dispatch(fetchFarmUserDataAsync({ account, pids: [pid] })), [account, pid, dispatch])
+  const onDone = useCallback(
+    () => dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId })),
+    [account, pid, chainId, dispatch],
+  )
 
   return {
     onStake,
@@ -75,9 +77,9 @@ export function useStakedActions(pid, lpContract) {
 }
 
 export const ProxyStakedContainer = ({ children, ...props }) => {
-  const { account } = useWeb3React()
+  const { account } = useActiveWeb3React()
 
-  const lpAddress = getAddress(props.lpAddresses)
+  const { lpAddress } = props
   const lpContract = useERC20(lpAddress)
 
   const { onStake, onUnstake, onApprove, onDone } = useProxyStakedActions(props.pid, lpContract)
@@ -97,9 +99,9 @@ export const ProxyStakedContainer = ({ children, ...props }) => {
 }
 
 export const StakedContainer = ({ children, ...props }) => {
-  const { account } = useWeb3React()
+  const { account } = useActiveWeb3React()
 
-  const lpAddress = getAddress(props.lpAddresses)
+  const { lpAddress } = props
   const lpContract = useERC20(lpAddress)
   const { onStake, onUnstake, onApprove, onDone } = useStakedActions(props.pid, lpContract)
 
@@ -141,7 +143,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const { account } = useWeb3React()
+  const { account } = useActiveWeb3React()
 
   const { tokenBalance, stakedBalance } = userData || {}
 

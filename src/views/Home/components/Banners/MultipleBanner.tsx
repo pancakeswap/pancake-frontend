@@ -1,6 +1,6 @@
-import { appearAnimation, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { appearAnimation, useIsomorphicEffect, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { useLayoutEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 import SwiperCore, { Autoplay, EffectFade, Pagination } from 'swiper'
 import 'swiper/css'
@@ -91,10 +91,10 @@ const StyledSwiper = styled(Swiper)`
 const MultipleBanner: React.FC<React.PropsWithChildren> = () => {
   const bannerList = useMultipleBannerConfig()
   const { account } = useWeb3React()
-  const { isDesktop, isTablet } = useMatchBreakpointsContext()
+  const { isDesktop, isTablet } = useMatchBreakpoints()
   const [swiperRef, setSwiperRef] = useState<SwiperCore>(null)
 
-  useLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     if (swiperRef) {
       if (bannerList.length > 1 && !swiperRef.autoplay?.running) {
         swiperRef.autoplay?.start()

@@ -74,10 +74,12 @@ export enum PoolCategory {
 }
 
 interface FarmConfigBaseProps {
+  isStable?: boolean
   pid: number
   v1pid?: number
+  bscPid?: number
   lpSymbol: string
-  lpAddresses: Address
+  lpAddress: string
   multiplier?: string
   isCommunity?: boolean
   auctionHostingStartSeconds?: number

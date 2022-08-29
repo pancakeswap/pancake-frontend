@@ -5,14 +5,14 @@ import { DeserializedPool, VaultKey } from 'state/types'
 import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
-import { useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import NameCell from './Cells/NameCell'
 import StakedCell from './Cells/StakedCell'
 import AutoEarningsCell from './Cells/AutoEarningsCell'
-import EarningsCell from './Cells/EarningsCell'
-import TotalStakedCell from './Cells/TotalStakedCell'
+import EarningsCell from '../../Pool/Cells/EarningsCell'
+import TotalStakedCell from '../../Pool/Cells/TotalStakedCell'
 import Unstaked from './Cells/Unstaked'
-import ExpandActionCell from './Cells/ExpandActionCell'
+import ExpandActionCell from '../../Cells/ExpandActionCell'
 import ActionPanel from './ActionPanel/ActionPanel'
 
 interface PoolRowProps {
@@ -51,7 +51,7 @@ const RightContainer = styled.div`
 `
 
 const PoolRow: React.FC<React.PropsWithChildren<PoolRowProps>> = ({ pool, account }) => {
-  const { isMobile, isXl, isXxl } = useMatchBreakpointsContext()
+  const { isMobile, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)

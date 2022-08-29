@@ -10,7 +10,7 @@ import {
   Table,
   Text,
   Th,
-  useMatchBreakpointsContext,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { getCollectionActivity } from 'state/nftMarket/helpers'
 import Container from 'components/Layout/Container'
@@ -58,7 +58,7 @@ const ActivityHistory: React.FC<React.PropsWithChildren<ActivityHistoryProps>> =
   const [queryPage, setQueryPage] = useState(1)
   const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
   const bnbBusdPrice = useBNBBusdPrice()
-  const { isXs, isSm, isMd } = useMatchBreakpointsContext()
+  const { isXs, isSm, isMd } = useMatchBreakpoints()
 
   const nftActivityFiltersString = JSON.stringify(nftActivityFilters)
 
@@ -118,7 +118,7 @@ const ActivityHistory: React.FC<React.PropsWithChildren<ActivityHistoryProps>> =
           flexDirection={['column', 'column', 'row']}
           flexWrap={isMd ? 'wrap' : 'nowrap'}
         >
-          <ActivityFilters address={collection?.address || ''} />
+          <ActivityFilters address={collection?.address || ''} nftActivityFilters={nftActivityFilters} />
           <Button
             scale="sm"
             disabled={isLoading}

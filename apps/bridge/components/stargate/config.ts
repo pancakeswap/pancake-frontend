@@ -1,3 +1,6 @@
+import { avalandche, fantomOpera } from '@pancakeswap/wagmi/chains'
+import { arbitrum, mainnet, optimism, polygon } from 'wagmi/chains'
+
 const VERSION = '0.0.25-mainnet.13'
 const SHA384 = 'toBorozqlXJ4GWTlZXE3XunuRQccctvrZ1tJWY+OhsOtKZuF/XO3QxJUUED74xZd'
 export const PARTNER_ID = 0x0002
@@ -8,3 +11,5 @@ export const STARGATE_JS = {
   src: `https://unpkg.com/@layerzerolabs/stargate-ui@${VERSION}/element.js`,
   integrity: `sha384-${SHA384}`,
 }
+
+export const CHAINS_STARGATE = [mainnet, arbitrum, optimism, polygon, avalandche, fantomOpera]

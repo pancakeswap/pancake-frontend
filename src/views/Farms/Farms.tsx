@@ -1,9 +1,10 @@
 import { useEffect, useCallback, useState, useMemo, useRef, createContext } from 'react'
 import { createPortal } from 'react-dom'
 import BigNumber from 'bignumber.js'
+import { ChainId } from '@pancakeswap/sdk'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { Image, Heading, Toggle, Text, Button, ArrowForwardIcon, Flex, Link, Box } from '@pancakeswap/uikit'
-import { ChainId } from '@pancakeswap/sdk'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import styled from 'styled-components'
 import FlexLayout from 'components/Layout/Flex'
@@ -144,6 +145,7 @@ const NUMBER_OF_FARMS_VISIBLE = 12
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { pathname, query: urlQuery } = useRouter()
   const { t } = useTranslation()
+  const { chainId } = useActiveWeb3React()
   const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
   const cakePrice = usePriceCakeBusd()
 
@@ -208,10 +210,11 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
         const { cakeRewardsApr, lpRewardsApr } = isActive
           ? getFarmApr(
+              chainId,
               new BigNumber(farm.poolWeight),
               cakePrice,
               totalLiquidity,
-              farm.lpAddresses[ChainId.BSC],
+              farm.lpAddress,
               regularCakePerBlock,
             )
           : { cakeRewardsApr: 0, lpRewardsApr: 0 }
@@ -227,7 +230,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       }
       return farmsToDisplayWithAPR
     },
-    [cakePrice, query, isActive, regularCakePerBlock],
+    [query, isActive, chainId, cakePrice, regularCakePerBlock],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -333,9 +336,11 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               </Button>
             </NextLinkFromReactRouter>
           </Box>
-          <Box>
-            <BCakeBoosterCard />
-          </Box>
+          {(chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET) && (
+            <Box>
+              <BCakeBoosterCard />
+            </Box>
+          )}
         </FarmFlexWrapper>
       </PageHeader>
       <Page>

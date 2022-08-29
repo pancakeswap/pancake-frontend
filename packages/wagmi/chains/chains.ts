@@ -1,14 +1,4 @@
-import {
-  arbitrumRinkeby,
-  optimismKovan,
-  polygonMumbai,
-  rinkeby as defaultRinkeby,
-  mainnet as defaultMainnet,
-  goerli as defaultGoerli,
-  arbitrum,
-  optimism,
-  polygon,
-} from 'wagmi/chains'
+import { rinkeby as defaultRinkeby, mainnet as defaultMainnet, goerli as defaultGoerli } from 'wagmi/chains'
 import { Chain } from 'wagmi'
 
 export const avalandche: Chain = {
@@ -125,7 +115,7 @@ export const bscTest: Chain = {
   testnet: true,
 }
 
-const rinkeby: Chain = {
+export const rinkeby: Chain = {
   ...defaultRinkeby,
   rpcUrls: {
     ...defaultRinkeby.rpcUrls,
@@ -134,7 +124,7 @@ const rinkeby: Chain = {
   },
 }
 
-const mainnet: Chain = {
+export const mainnet: Chain = {
   ...defaultMainnet,
   rpcUrls: {
     ...defaultMainnet.rpcUrls,
@@ -143,7 +133,7 @@ const mainnet: Chain = {
   },
 }
 
-const goerli: Chain = {
+export const goerli: Chain = {
   ...defaultGoerli,
   rpcUrls: {
     ...defaultGoerli.rpcUrls,
@@ -151,24 +141,3 @@ const goerli: Chain = {
     nodeReal: 'https://eth-goerli.nodereal.io/v1/8a4432e42df94dcca2814fde8aea2a2e',
   },
 }
-
-export const CHAINS_TESTNET = [
-  bscTest,
-  rinkeby,
-  arbitrumRinkeby,
-  optimismKovan,
-  polygonMumbai,
-  avalandcheFuji,
-  fantomTestnet,
-]
-
-export const CHAINS = [
-  bsc,
-  // TODO: ETH
-  // mainnet,
-  bscTest,
-  rinkeby,
-  goerli,
-]
-export const CHAIN_IDS = CHAINS.map((c) => c.id)
-export const CHAINS_STARGATE = [mainnet, arbitrum, optimism, polygon, avalandche, fantomOpera]

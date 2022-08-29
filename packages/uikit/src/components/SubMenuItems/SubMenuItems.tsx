@@ -1,6 +1,6 @@
 import debounce from "lodash/debounce";
 import React, { useCallback, useEffect, useRef } from "react";
-import { useMatchBreakpointsContext } from "../../contexts";
+import { useMatchBreakpoints } from "../../contexts";
 import { Box } from "../Box";
 import { DropdownMenuItemType } from "../DropdownMenu/types";
 import MenuItem from "../MenuItem/MenuItem";
@@ -22,7 +22,7 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
   isMobileOnly = false,
   ...props
 }) => {
-  const { isMobile } = useMatchBreakpointsContext();
+  const { isMobile } = useMatchBreakpoints();
   const scrollLayerRef = useRef<HTMLDivElement>(null);
   const chevronLeftRef = useRef<HTMLDivElement>(null);
   const chevronRightRef = useRef<HTMLDivElement>(null);
@@ -78,19 +78,21 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
               }
             : {};
 
+          const isActive = href === activeItem;
+
           return (
             label && (
               <StyledSubMenuItemWrapper key={label} mr="20px">
                 <MenuItem
                   href={href}
                   scrollLayerRef={scrollLayerRef}
-                  isActive={href === activeItem}
+                  isActive={isActive}
                   isDisabled={disabled}
                   variant="subMenu"
                   {...itemProps}
                   {...linkProps}
                 >
-                  {Icon && <Icon color={href === activeItem ? "secondary" : "textSubtle"} mr="4px" />}
+                  {Icon && <Icon color={isActive ? "secondary" : "textSubtle"} mr="4px" />}
                   {label}
                   {isExternalLink && (
                     <Box display={["none", null, "flex"]} style={{ alignItems: "center" }} ml="4px">

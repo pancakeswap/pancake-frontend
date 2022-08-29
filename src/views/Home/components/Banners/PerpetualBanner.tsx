@@ -1,7 +1,7 @@
-import { ArrowForwardIcon, Button, Text, Link, useMatchBreakpointsContext } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Button, Text, Link, useMatchBreakpoints, useIsomorphicEffect } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
-import { memo, useMemo, useRef, useLayoutEffect } from 'react'
+import { memo, useMemo, useRef } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { perpLangMap } from 'utils/getPerpetualLanguageCode'
 import { perpTheme } from 'utils/getPerpetualTheme'
@@ -39,7 +39,7 @@ const PerpetualBanner = () => {
     t,
     currentLanguage: { code },
   } = useTranslation()
-  const { isDesktop, isMobile } = useMatchBreakpointsContext()
+  const { isDesktop, isMobile } = useMatchBreakpoints()
   const { isDark } = useTheme()
 
   const perpetualUrl = useMemo(
@@ -48,7 +48,7 @@ const PerpetualBanner = () => {
   )
   const headerRef = useRef<HTMLDivElement>(null)
 
-  useLayoutEffect(() => {
+  useIsomorphicEffect(() => {
     const target = headerRef.current
     target.style.fontSize = '' // reset
     target.style.lineHeight = ''

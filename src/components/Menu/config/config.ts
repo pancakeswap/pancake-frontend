@@ -67,10 +67,11 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
             )}`,
             type: DropdownMenuItemType.EXTERNAL_LINK,
           },
-          // {
-          //   label: t('Transfer'),
-          //   href: '/transfer',
-          // },
+          {
+            label: t('Bridge'),
+            href: 'https://bridge.pancakeswap.finance/',
+            type: DropdownMenuItemType.EXTERNAL_LINK,
+          },
         ].map((item) => addMenuItemSupported(item, chainId)),
       },
       {
@@ -78,7 +79,6 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
         href: '/farms',
         icon: EarnIcon,
         fillIcon: EarnFillIcon,
-        supportChainIds: SUPPORT_ONLY_BSC,
         image: '/images/decorations/pe2.png',
         items: [
           {
@@ -88,8 +88,9 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
           {
             label: t('Pools'),
             href: '/pools',
+            supportChainIds: SUPPORT_ONLY_BSC,
           },
-        ],
+        ].map((item) => addMenuItemSupported(item, chainId)),
       },
       {
         label: t('Win'),

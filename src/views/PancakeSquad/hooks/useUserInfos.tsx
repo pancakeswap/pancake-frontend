@@ -30,7 +30,7 @@ const useUserInfos = ({ account, refreshCounter, setCallback }) => {
             [currentNumberTicketsUsedForGen0],
             [currentNumberTicketsOfUser],
             [currentTicketsOfUser],
-          ] = await multicallv2(nftSaleAbi, calls)
+          ] = await multicallv2({ abi: nftSaleAbi, calls })
 
           const currentNumberTokensOfUser = await pancakeSquadContract.balanceOf(account)
 

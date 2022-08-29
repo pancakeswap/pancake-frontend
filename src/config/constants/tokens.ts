@@ -11,7 +11,7 @@ const CAKE_MAINNET = new Token(
 
 const CAKE_TESTNET = new Token(
   ChainId.BSC_TESTNET,
-  '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
+  '0xFa60D973F7642B748046464e165A65B7323b0DEE',
   18,
   'CAKE',
   'PancakeSwap Token',
@@ -95,7 +95,7 @@ const BUSD_MAINNET = new Token(
 
 const BUSD_TESTNET = new Token(
   ChainId.BSC_TESTNET,
-  '0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee',
+  '0x8516Fc284AEEaa0374E66037BD2309349FF728eA',
   18,
   'BUSD',
   'Binance USD',
@@ -2407,6 +2407,22 @@ export const bscTokens = {
     'pStake Finance',
     'https://pstake.finance/',
   ),
+  wom: new Token(
+    ChainId.BSC,
+    '0xAD6742A35fB341A9Cc6ad674738Dd8da98b94Fb1',
+    18,
+    'WOM',
+    'Wombat Token',
+    'https://www.wombat.exchange/',
+  ),
+  hay: new Token(
+    ChainId.BSC,
+    '0x0782b6d8c4551B9760e74c0545a9bCD90bdc41E5',
+    18,
+    'HAY',
+    'Hay Stablecoin',
+    'https://helio.money/',
+  ),
 }
 
 export const bscTestnetTokens = {
@@ -2429,4 +2445,22 @@ export const bscTestnetTokens = {
     'Bakeryswap Token',
     'https://www.bakeryswap.org/',
   ),
+  hbtc: new Token(ChainId.BSC_TESTNET, '0x3Fb6a6C06c7486BD194BB99a078B89B9ECaF4c82', 18, 'HBTC', 'Huobi BTC'),
+  wbtc: new Token(ChainId.BSC_TESTNET, '0xfC8bFbe9644e1BC836b8821660593e7de711e564', 18, 'WBTC', 'Wrapped BTC'),
+}
+
+export const ethereumTokens = {}
+
+export const goerliTestnetTokens = {
+  weth: new Token(
+    ChainId.GOERLI,
+    '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    18,
+    'WETH',
+    'Wrapped Ether',
+    'https://weth.io',
+  ),
+  celr: new Token(ChainId.GOERLI, '0x5D3c0F4cA5EE99f8E8F59Ff9A5fAb04F6a7e007f', 18, 'CELR', 'CelerToken', ''),
+  leet: new Token(ChainId.GOERLI, '0xBd509651E6374c327d24b9d7E3Ea46704f6F31E8', 18, 'LEET', 'Leet Token', ''),
+  usdc: USDC_GOERLI,
 }

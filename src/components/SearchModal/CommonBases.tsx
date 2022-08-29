@@ -81,7 +81,7 @@ export default function CommonBases({
             <Text>{native?.symbol}</Text>
           </BaseWrapper>
         </ButtonWrapper>
-        {(chainId ? SUGGESTED_BASES[chainId] : []).map((token: Token) => {
+        {(chainId ? SUGGESTED_BASES[chainId] || [] : []).map((token: Token) => {
           const selected = selectedCurrency?.equals(token)
           return (
             <ButtonWrapper>

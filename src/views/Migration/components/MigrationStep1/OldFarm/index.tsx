@@ -3,7 +3,6 @@ import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { getFarmApr } from 'utils/apr'
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
 import { CAKE_PER_YEAR } from 'config'
 import { useFarmsV1, usePriceCakeBusd } from 'state/farmsV1/hooks'
 import { DeserializedFarm } from 'state/types'
@@ -37,10 +36,11 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
         }
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
         const { cakeRewardsApr, lpRewardsApr } = getFarmApr(
+          56,
           new BigNumber(farm.poolWeight),
           cakePrice,
           totalLiquidity,
-          farm.lpAddresses[ChainId.BSC],
+          farm.lpAddress,
           CAKE_PER_YEAR,
         )
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }

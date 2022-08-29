@@ -6,11 +6,12 @@ import { Flex, Spinner, RowType } from '@pancakeswap/uikit'
 import TableHeader from './MigrationTable/TableHeader'
 import EmptyText from './MigrationTable/EmptyText'
 import TableStyle from './MigrationTable/StyledTable'
-import Row, { RowProps } from './MigrationStep2/NewFarm/FarmRow'
+import NewRow from './MigrationStep2/NewFarm/FarmRow'
+import OldRow from './MigrationStep1/OldFarm/FarmRow'
 import { FarmWithStakedValue } from '../../Farms/components/types'
 import { getDisplayApr } from '../../Farms/components/getDisplayApr'
 import { getBalanceNumber } from '../../../utils/formatBalance'
-import { ColumnsDefTypes } from './types'
+import { ColumnsDefTypes, DesktopV2ColumnSchema, RowProps } from './types'
 
 const Container = styled.div`
   overflow: hidden;
@@ -47,20 +48,26 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
     const tokenAddress = token.address
     const quoteTokenAddress = quoteToken.address
     const lpLabel = farm.lpSymbol && farm.lpSymbol.split(' ')[0].toUpperCase().replace('PANCAKE', '')
+    const customRows =
+      columnSchema === DesktopV2ColumnSchema
+        ? {
+            apr: {
+              value: getDisplayApr(farm.apr, farm.lpRewardsApr),
+              pid: farm.pid,
+              multiplier: farm.multiplier,
+              lpLabel,
+              lpSymbol: farm.lpSymbol,
+              tokenAddress,
+              quoteTokenAddress,
+              cakePrice,
+              lpRewardsApr: farm.lpRewardsApr,
+              originalValue: farm.apr,
+            },
+          }
+        : { unstake: { pid: farm.pid } }
 
     const row: RowProps = {
-      apr: {
-        value: getDisplayApr(farm.apr, farm.lpRewardsApr),
-        pid: farm.pid,
-        multiplier: farm.multiplier,
-        lpLabel,
-        lpSymbol: farm.lpSymbol,
-        tokenAddress,
-        quoteTokenAddress,
-        cakePrice,
-        lpRewardsApr: farm.lpRewardsApr,
-        originalValue: farm.apr,
-      },
+      ...customRows,
       farm: {
         ...farm,
         label: lpLabel,
@@ -134,7 +141,10 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
         {account &&
           userDataReady &&
           sortedRows.map((row) => {
-            return <Row {...row} key={`table-row-${row.farm.pid}`} />
+            if (columnSchema === DesktopV2ColumnSchema) {
+              return <NewRow {...row} key={`table-row-${row.farm.pid}`} />
+            }
+            return <OldRow {...row} key={`table-row-${row.farm.pid}`} />
           })}
       </TableStyle>
     </Container>

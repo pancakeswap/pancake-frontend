@@ -1,4 +1,4 @@
-import { CHAIN_IDS } from '@pancakeswap/wagmi'
+import { CHAIN_IDS } from 'utils/wagmi'
 import Swap from '../views/Swap'
 
 const SwapPage = () => {

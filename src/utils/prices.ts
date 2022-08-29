@@ -7,5 +7,9 @@ export const multiplyPriceByAmount = (price: Price<Currency, Currency>, amount: 
     return 0
   }
 
-  return parseFloat(price.toSignificant(significantDigits)) * amount
+  try {
+    return parseFloat(price.toSignificant(significantDigits)) * amount
+  } catch (error) {
+    return 0
+  }
 }
