@@ -96,7 +96,7 @@ export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEv
       return {
         ...f,
         lpApr: lpAprs?.[f.lpAddress] || 0,
-        cakeApr: getFarmCakeRewardApr(f, FixedNumber.from(cakeBusdPrice.toSignificant(6)), regularCakePerBlock),
+        cakeApr: getFarmCakeRewardApr(f, FixedNumber.from(cakeBusdPrice.toSignificant(3)), regularCakePerBlock),
       }
     }) as FarmResult
 

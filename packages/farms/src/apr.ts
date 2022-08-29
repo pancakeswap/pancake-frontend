@@ -23,7 +23,7 @@ export const getFarmCakeRewardApr = (farm: FarmWithPrices, cakePriceBusd: FixedN
     return cakeRewardsAprAsString
   }
   const yearlyCakeRewardAllocation = poolWeight
-    ? poolWeight.mulUnsafe(FixedNumber.from(BLOCKS_PER_YEAR).mulUnsafe(FixedNumber.from(regularCakePerBlock)))
+    ? poolWeight.mulUnsafe(FixedNumber.from(BLOCKS_PER_YEAR).mulUnsafe(FixedNumber.from(String(regularCakePerBlock))))
     : FIXED_ZERO
   const cakeRewardsApr = yearlyCakeRewardAllocation
     .mulUnsafe(cakePriceBusd)
