@@ -66,7 +66,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
       setFetched(true)
     }
 
-    if (fetchStatus === FetchStatus.Fetched && !topFarms[0]) {
+    if (fetchStatus === FetchStatus.Fetched && !topFarms[0] && farms?.length > 0) {
       getTopFarmsByApr(farms)
     }
   }, [setTopFarms, farms, fetchStatus, cakePriceBusd, topFarms, regularCakePerBlock, chainId])

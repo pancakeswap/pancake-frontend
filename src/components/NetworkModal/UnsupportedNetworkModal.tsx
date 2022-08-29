@@ -52,7 +52,16 @@ export function UnsupportedNetworkModal() {
           <MessageText>{t('Please switch your network to continue.')}</MessageText>
         </Message>
         {canSwitch && (
-          <Button isLoading={isLoading} onClick={() => switchNetworkAsync(chainId)}>
+          <Button
+            isLoading={isLoading}
+            onClick={() => {
+              if (supportedMainnetChains.map((c) => c.id).includes(chainId)) {
+                switchNetworkAsync(chainId)
+              } else {
+                switchNetworkAsync(supportedMainnetChains[0].id)
+              }
+            }}
+          >
             {isLoading ? <Dots>{t('Switch network in wallet')}</Dots> : t('Switch network in wallet')}
           </Button>
         )}

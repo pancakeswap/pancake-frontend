@@ -26,7 +26,7 @@ export abstract class BaseCurrency {
   /**
    * The symbol of the currency, i.e. a short textual non-unique identifier
    */
-  public readonly symbol?: string
+  public readonly symbol: string
   /**
    * The name of the currency, i.e. a descriptive textual non-unique identifier
    */
@@ -39,7 +39,7 @@ export abstract class BaseCurrency {
    * @param symbol symbol of the currency
    * @param name of the currency
    */
-  protected constructor(chainId: number, decimals: number, symbol?: string, name?: string) {
+  protected constructor(chainId: number, decimals: number, symbol: string, name?: string) {
     invariant(Number.isSafeInteger(chainId), 'CHAIN_ID')
     invariant(decimals >= 0 && decimals < 255 && Number.isInteger(decimals), 'DECIMALS')
 

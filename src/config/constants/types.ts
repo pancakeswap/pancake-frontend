@@ -1,5 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { Token, ChainId } from '@pancakeswap/sdk'
+import { SerializedWrappedToken } from '@pancakeswap/tokens'
+import type { SerializedFarmConfig, FarmConfigBaseProps } from '@pancakeswap/farms'
 
 // a list of tokens by chain
 export type ChainMap<T> = {
@@ -20,16 +22,6 @@ export interface Address {
   97?: string
   56: string
   [chainId: number]: string
-}
-
-export interface SerializedToken {
-  chainId: number
-  address: string
-  decimals: number
-  symbol?: string
-  name?: string
-  projectLink?: string
-  logoURI?: string
 }
 
 export enum PoolIds {
@@ -73,29 +65,7 @@ export enum PoolCategory {
   'AUTO' = 'Auto',
 }
 
-interface FarmConfigBaseProps {
-  isStable?: boolean
-  pid: number
-  v1pid?: number
-  bscPid?: number
-  lpSymbol: string
-  lpAddress: string
-  multiplier?: string
-  isCommunity?: boolean
-  auctionHostingStartSeconds?: number
-  auctionHostingEndDate?: string
-  dual?: {
-    rewardPerBlock: number
-    earnLabel: string
-    endBlock: number
-  }
-  boosted?: boolean
-}
-
-export interface SerializedFarmConfig extends FarmConfigBaseProps {
-  token: SerializedToken
-  quoteToken: SerializedToken
-}
+export type { SerializedFarmConfig, FarmConfigBaseProps }
 
 export interface DeserializedFarmConfig extends FarmConfigBaseProps {
   token: Token
@@ -113,8 +83,8 @@ interface PoolConfigBaseProps {
 }
 
 export interface SerializedPoolConfig extends PoolConfigBaseProps {
-  earningToken: SerializedToken
-  stakingToken: SerializedToken
+  earningToken: SerializedWrappedToken
+  stakingToken: SerializedWrappedToken
 }
 
 export interface DeserializedPoolConfig extends PoolConfigBaseProps {

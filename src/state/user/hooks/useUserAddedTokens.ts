@@ -1,9 +1,9 @@
 import { Token } from '@pancakeswap/sdk'
 import { createSelector } from '@reduxjs/toolkit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { deserializeToken } from '@pancakeswap/tokens'
 import { useSelector } from 'react-redux'
 import { AppState } from '../../index'
-import { deserializeToken } from './helpers'
 
 const selectUserTokens = ({ user: { tokens } }: AppState) => tokens
 

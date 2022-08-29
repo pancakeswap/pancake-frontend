@@ -55,11 +55,9 @@ const StyledActionContainer = styled(ActionContainer)`
   }
 `
 
-export function useStakedActions(lpContract, pid, bscPid) {
+export function useStakedActions(lpContract, pid) {
   const { account, chainId } = useActiveWeb3React()
-  const stakePid = bscPid || pid
-
-  const { onStake } = useStakeFarms(stakePid)
+  const { onStake } = useStakeFarms(pid)
   const { onUnstake } = useUnstakeFarms(pid)
   const dispatch = useAppDispatch()
 
@@ -105,7 +103,7 @@ export const StakedContainer = ({ children, ...props }) => {
 
   const { lpAddress } = props
   const lpContract = useERC20(lpAddress)
-  const { onStake, onUnstake, onApprove, onDone } = useStakedActions(lpContract, props.pid, props.bscPid)
+  const { onStake, onUnstake, onApprove, onDone } = useStakedActions(lpContract, props.pid)
 
   const { allowance } = props.userData || {}
 

@@ -1,5 +1,6 @@
 import { NftFilter, NftActivityFilter, MarketEvent, NftAttribute } from 'state/nftMarket/types'
 import { useAtom } from 'jotai'
+import cloneDeep from 'lodash/cloneDeep'
 import { nftMarketFiltersAtom, nftMarketActivityFiltersAtom, tryVideoNftMediaAtom } from 'state/nftMarket/atoms'
 import { useCallback } from 'react'
 
@@ -28,7 +29,7 @@ export function useNftStorage() {
         nftMarketActivityFilters[collection].typeFilters.push(field)
       } else {
         nftMarketActivityFilters[collection] = {
-          ...initialNftActivityFilterState,
+          ...cloneDeep(initialNftActivityFilterState),
           typeFilters: [field],
         }
       }
@@ -43,7 +44,7 @@ export function useNftStorage() {
         nftMarketActivityFilters[''].collectionFilters.push(collection)
       } else {
         nftMarketActivityFilters[''] = {
-          ...initialNftActivityFilterState,
+          ...cloneDeep(initialNftActivityFilterState),
           collectionFilters: [collection],
         }
       }
@@ -78,7 +79,7 @@ export function useNftStorage() {
 
   const removeAllActivityFilters = useCallback(
     (collectionAddress: string) => {
-      nftMarketActivityFilters[collectionAddress] = { ...initialNftActivityFilterState }
+      nftMarketActivityFilters[collectionAddress] = cloneDeep(initialNftActivityFilterState)
       setNftMarketActivityFilters({ ...nftMarketActivityFilters })
     },
     [nftMarketActivityFilters, setNftMarketActivityFilters],
@@ -95,7 +96,7 @@ export function useNftStorage() {
         nftMarketFilters[collection].showOnlyOnSale = showOnlyOnSale
       } else {
         nftMarketFilters[collection] = {
-          ...initialNftFilterState,
+          ...cloneDeep(initialNftFilterState),
           showOnlyOnSale,
         }
       }
@@ -113,7 +114,7 @@ export function useNftStorage() {
         }
       } else {
         nftMarketFilters[collection] = {
-          ...initialNftFilterState,
+          ...cloneDeep(initialNftFilterState),
           ordering: {
             field,
             direction,
@@ -127,7 +128,7 @@ export function useNftStorage() {
 
   const removeAllItemFilters = useCallback(
     (collectionAddress: string) => {
-      nftMarketFilters[collectionAddress] = { ...initialNftActivityFilterState }
+      nftMarketFilters[collectionAddress] = { ...cloneDeep(initialNftActivityFilterState) }
       setNftMarketFilters({ ...nftMarketFilters })
     },
     [nftMarketFilters, setNftMarketFilters],
@@ -142,7 +143,7 @@ export function useNftStorage() {
         }
       } else {
         nftMarketFilters[collectionAddress] = {
-          ...initialNftFilterState,
+          ...cloneDeep(initialNftFilterState),
           activeFilters: { ...nftFilters },
         }
       }
