@@ -97,11 +97,13 @@ export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEv
     })
 
     const cakeBusdPrice = await getCakePrice(isTestnet)
+    const lpAprs = await handleLpAprs(chainId)
 
     const finalFarm = farms.reduce((acc, f) => {
       // eslint-disable-next-line no-param-reassign
       acc[f.pid] = {
         ...f,
+        lpApr: lpAprs?.[f.lpAddress] || 0,
         cakeApr: getFarmCakeRewardApr(f, FixedNumber.from(cakeBusdPrice.toSignificant(6)), cakePerBlock),
       }
       return acc

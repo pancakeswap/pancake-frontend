@@ -7,7 +7,7 @@ const KV_PREFIX = {
   farmList: 'farmList:',
 }
 
-export type FarmResult = Record<number, FarmWithPrices & { cakeApr?: string }>
+export type FarmResult = Record<number, FarmWithPrices & { cakeApr?: string; lpApr?: number }>
 
 export type SavedFarmResult = {
   updatedAt: string
