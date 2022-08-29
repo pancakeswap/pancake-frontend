@@ -1,5 +1,6 @@
 import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { parseUnits } from '@ethersproject/units'
+import { SerializedFarmPublicData } from '@pancakeswap/farms'
 import { Token } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
 import {
@@ -9,7 +10,6 @@ import {
   FetchStatus,
   LotteryStatus,
   LotteryTicket,
-  SerializedFarmConfig,
   SerializedPoolConfig,
   Team,
   TranslatableText,
@@ -66,17 +66,8 @@ export interface DeserializedFarmUserData {
   }
 }
 
-export interface SerializedFarm extends SerializedFarmConfig {
-  tokenPriceBusd?: string
-  quoteTokenPriceBusd?: string
-  tokenAmountTotal?: SerializedBigNumber
-  quoteTokenAmountTotal?: SerializedBigNumber
-  lpTotalInQuoteToken?: SerializedBigNumber
-  lpTotalSupply?: SerializedBigNumber
-  tokenPriceVsQuote?: SerializedBigNumber
-  poolWeight?: SerializedBigNumber
+export interface SerializedFarm extends SerializedFarmPublicData {
   userData?: SerializedFarmUserData
-  boosted?: boolean
 }
 
 export interface DeserializedFarm extends DeserializedFarmConfig {

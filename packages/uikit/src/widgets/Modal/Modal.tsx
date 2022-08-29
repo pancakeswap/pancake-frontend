@@ -36,7 +36,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
         if (info.velocity.y > MODAL_SWIPE_TO_CLOSE_VELOCITY && onDismiss) onDismiss();
       }}
       ref={wrapperRef}
-      minWidth={minWidth}
+      $minWidth={minWidth}
       {...props}
     >
       <ModalHeader background={getThemeValue(theme, `colors.${headerBackground}`, headerBackground)}>

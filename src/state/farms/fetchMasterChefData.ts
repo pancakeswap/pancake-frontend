@@ -30,11 +30,11 @@ export const fetchMasterChefFarmPoolLength = async (chainId: number) => {
 }
 
 const masterChefFarmCalls = async (farm: SerializedFarm) => {
-  const { pid, bscPid, quoteToken } = farm
+  const { pid, quoteToken } = farm
   const isBscNetwork = verifyBscNetwork(quoteToken.chainId)
   const multiCallChainId = isBscNetwork ? quoteToken.chainId : await getBscChainId(quoteToken.chainId)
   const masterChefAddress = getMasterChefAddress(multiCallChainId)
-  const masterChefPid = isBscNetwork ? pid : bscPid
+  const masterChefPid = pid
 
   return masterChefPid || masterChefPid === 0
     ? [

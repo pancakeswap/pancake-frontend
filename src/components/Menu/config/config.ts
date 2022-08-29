@@ -80,6 +80,7 @@ const config: (t: ContextApi['t'], isDark: boolean, languageCode?: string, chain
         icon: EarnIcon,
         fillIcon: EarnFillIcon,
         image: '/images/decorations/pe2.png',
+        supportChainIds: SUPPORT_ONLY_BSC,
         items: [
           {
             label: t('Farms'),
