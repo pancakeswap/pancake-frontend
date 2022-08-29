@@ -4,6 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import Search from 'views/Info/components/InfoSearch'
+import { useMultiChainPath } from 'state/info/hooks'
 
 const NavWrapper = styled(Flex)`
   background: ${({ theme }) => theme.colors.gradientCardHeader};
@@ -20,10 +21,10 @@ const NavWrapper = styled(Flex)`
 const InfoNav = () => {
   const { t } = useTranslation()
   const router = useRouter()
-  const { chainName } = router.query
-  const isPools = router.pathname === `/info${chainName && `/[chainName]`}/pools`
-  const isTokens = router.pathname === `/info${chainName && `/[chainName]`}/tokens`
-  const chianNamePath = chainName ? `/${chainName}` : ''
+  const chainPath = useMultiChainPath()
+
+  const isPools = router.pathname === `/info${chainPath && `/[chainName]`}/pools`
+  const isTokens = router.pathname === `/info${chainPath && `/[chainName]`}/tokens`
   let activeIndex = 0
   if (isPools) {
     activeIndex = 1
@@ -35,13 +36,13 @@ const InfoNav = () => {
     <NavWrapper>
       <Box>
         <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
-          <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chianNamePath}`}>
+          <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chainPath}`}>
             {t('Overview')}
           </ButtonMenuItem>
-          <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chianNamePath}/pools`}>
+          <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chainPath}/pools`}>
             {t('Pools')}
           </ButtonMenuItem>
-          <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chianNamePath}/tokens`}>
+          <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chainPath}/tokens`}>
             {t('Tokens')}
           </ButtonMenuItem>
         </ButtonMenu>
