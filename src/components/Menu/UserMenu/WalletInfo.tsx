@@ -65,7 +65,9 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
           <Flex justifyContent="space-between" alignItems="center" mb="8px">
             <Flex bg={COLORS.ETH} borderRadius="16px" pl="4px" pr="8px" py="2px">
               <ChainLogo chainId={chain.id} />
-              <Text ml="4px">{chain.name}</Text>
+              <Text color="white" ml="4px">
+                {chain.name}
+              </Text>
             </Flex>
             <LinkExternal href={getBlockExploreLink(account, 'address', chainId)}>
               {getBlockExploreName(chainId)}
@@ -87,7 +89,9 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
         <Flex justifyContent="space-between" alignItems="center" mb="8px">
           <Flex bg={COLORS.BNB} borderRadius="16px" pl="4px" pr="8px" py="2px">
             <ChainLogo chainId={ChainId.BSC} />
-            <Text ml="4px">BNB Smart Chain</Text>
+            <Text color="white" ml="4px">
+              BNB Smart Chain
+            </Text>
           </Flex>
           <LinkExternal href={getBlockExploreLink(account, 'address', ChainId.BSC)}>
             {getBlockExploreName(ChainId.BSC)}
