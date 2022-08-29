@@ -11,7 +11,7 @@ import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyCon
 import { getMasterchefContract } from 'utils/contractHelpers'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { FLAG_FARM } from 'config/flag'
-import { getFarmConfig } from '@pancakeswap/farm-constants'
+import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, State } from '../types'
 import {

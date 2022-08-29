@@ -1,7 +1,7 @@
-import bscFarms from '@pancakeswap/farm-constants/56'
-import ethFarms from '@pancakeswap/farm-constants/1'
-import bsctestnetFarms from '@pancakeswap/farm-constants/97'
-import goerliFarms from '@pancakeswap/farm-constants/5'
+import bscFarms from '@pancakeswap/farms/constants/56'
+import ethFarms from '@pancakeswap/farms/constants/1'
+import bsctestnetFarms from '@pancakeswap/farms/constants/97'
+import goerliFarms from '@pancakeswap/farms/constants/5'
 
 import { formatEther } from '@ethersproject/units'
 import { FixedNumber } from '@ethersproject/bignumber'
