@@ -88,6 +88,7 @@ const getFarmFromTokenSymbol = (
   return filteredFarm
 }
 
+// TODO: Stable
 export const getLpTokenPrice = (
   lpTotalSupply: FixedNumber,
   lpTotalInQuoteToken: FixedNumber,
