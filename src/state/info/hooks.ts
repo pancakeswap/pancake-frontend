@@ -7,7 +7,7 @@ import { AppState, useAppDispatch } from 'state'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import fetchPoolChartData, { fetchPoolChartDataETH } from 'state/info/queries/pools/chartData'
 import fetchPoolTransactions, { fetchPoolTransactionsETH } from 'state/info/queries/pools/transactions'
-import fetchTokenChartData from 'state/info/queries/tokens/chartData'
+import fetchTokenChartData, { fetchTokenChartDataETH } from 'state/info/queries/tokens/chartData'
 import fetchPoolsForToken, { fetchPoolsForTokenETH } from 'state/info/queries/tokens/poolsForToken'
 import fetchTokenPriceData, { fetchTokenPriceDataETH } from 'state/info/queries/tokens/priceData'
 import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
@@ -155,7 +155,7 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
     if (!transactions && !error) {
       fetch()
     }
-  }, [address, dispatch, error, transactions])
+  }, [address, dispatch, error, transactions, chainName])
 
   return transactions
 }
@@ -246,7 +246,7 @@ export const usePoolsForToken = (address: string): string[] | undefined => {
     if (!poolsForToken && !error) {
       fetch()
     }
-  }, [address, dispatch, error, poolsForToken])
+  }, [address, dispatch, error, poolsForToken, chainName])
 
   return poolsForToken
 }
@@ -256,10 +256,13 @@ export const useTokenChartData = (address: string): ChartEntry[] | undefined => 
   const token = useSelector((state: AppState) => state.info.tokens.byAddress[address])
   const { chartData } = token
   const [error, setError] = useState(false)
+  const chainName = useGetChainName()
 
   useEffect(() => {
     const fetch = async () => {
-      const { error: fetchError, data } = await fetchTokenChartData(address)
+      const { error: fetchError, data } = await (chainName === 'ETH'
+        ? fetchTokenChartDataETH(address)
+        : fetchTokenChartData(address))
       if (!fetchError && data) {
         dispatch(updateTokenChartData({ tokenAddress: address, chartData: data }))
       }
@@ -270,7 +273,7 @@ export const useTokenChartData = (address: string): ChartEntry[] | undefined => 
     if (!chartData && !error) {
       fetch()
     }
-  }, [address, dispatch, error, chartData])
+  }, [address, dispatch, error, chartData, chainName])
 
   return chartData
 }
