@@ -7,6 +7,7 @@ import { Text, Flex, Box, Radio, Skeleton, LinkExternal, ArrowForwardIcon, Arrow
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { getBlockExploreLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
+import { useGetChainName } from 'state/info/hooks'
 import { Transaction, TransactionType } from 'state/info/types'
 import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
 import { useTranslation } from '@pancakeswap/localization'
@@ -98,10 +99,10 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
   const abs1 = Math.abs(transaction.amountToken1)
   const outputTokenSymbol = transaction.amountToken0 < 0 ? transaction.token0Symbol : transaction.token1Symbol
   const inputTokenSymbol = transaction.amountToken1 < 0 ? transaction.token0Symbol : transaction.token1Symbol
-
+  const chainName = useGetChainName()
   return (
     <ResponsiveGrid>
-      <LinkExternal href={getBlockExploreLink(transaction.hash, 'transaction')}>
+      <LinkExternal href={getBlockExploreLink(transaction.hash, 'transaction', chainName === 'ETH' && 1)}>
         <Text>
           {transaction.type === TransactionType.MINT
             ? t('Add %token0% and %token1%', { token0: transaction.token0Symbol, token1: transaction.token1Symbol })
@@ -117,7 +118,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
       <Text>
         <Text>{`${formatAmount(abs1)} ${transaction.token1Symbol}`}</Text>
       </Text>
-      <LinkExternal href={getBlockExploreLink(transaction.sender, 'address')}>
+      <LinkExternal href={getBlockExploreLink(transaction.sender, 'address', chainName === 'ETH' && 1)}>
         {truncateHash(transaction.sender)}
       </LinkExternal>
       <Text>{formatDistanceToNowStrict(parseInt(transaction.timestamp, 10) * 1000)}</Text>
