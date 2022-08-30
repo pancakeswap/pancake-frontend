@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { ChainId, Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import {
   Button,
   Text,
   ArrowDownIcon,
   Box,
-  useModal,
   Flex,
   IconButton,
   BottomDrawer,
@@ -17,12 +16,10 @@ import {
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import Footer from 'components/Menu/Footer'
-import { useRouter } from 'next/router'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import { EXCHANGE_DOCS_URLS } from 'config/constants'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import shouldShowSwapWarning from 'utils/shouldShowSwapWarning'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 
 import useRefreshBlockNumberID from './hooks/useRefreshBlockNumber'
@@ -35,27 +32,21 @@ import { ArrowWrapper, Wrapper } from './components/styleds'
 import TradePrice from './components/TradePrice'
 import { AppBody } from '../../components/App'
 
-import { useCurrency, useAllTokens } from '../../hooks/Tokens'
+import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback'
 import { Field } from '../../state/swap/actions'
-import {
-  useDefaultsFromURLSearch,
-  useDerivedSwapInfo,
-  useSwapState,
-  useSingleTokenSwapInfo,
-} from '../../state/swap/hooks'
+import { useDerivedSwapInfo, useSwapState, useSingleTokenSwapInfo } from '../../state/swap/hooks'
 import { useExpertModeManager, useUserSlippageTolerance, useExchangeChartManager } from '../../state/user/hooks'
 import Page from '../Page'
-import SwapWarningModal from './components/SwapWarningModal'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
-import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
 import { CommonBasesType } from '../../components/SearchModal/types'
 import replaceBrowserHistory from '../../utils/replaceBrowserHistory'
 import { currencyId } from '../../utils/currencyId'
 import SwapCommitButton from './components/SwapCommitButton'
+import useWarningImport from './hooks/useWarningImport'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -84,38 +75,19 @@ const SwitchIconButton = styled(IconButton)`
 const CHART_SUPPORT_CHAIN_IDS = [ChainId.BSC]
 
 export default function Swap() {
-  const router = useRouter()
-  const loadedUrlParams = useDefaultsFromURLSearch()
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const [isChartExpanded, setIsChartExpanded] = useState(false)
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
+  const warningSwapHandler = useWarningImport()
 
   useEffect(() => {
     setUserChartPreference(isChartDisplayed)
   }, [isChartDisplayed, setUserChartPreference])
 
-  // token warning stuff
-  const [loadedInputCurrency, loadedOutputCurrency] = [
-    useCurrency(loadedUrlParams?.inputCurrencyId),
-    useCurrency(loadedUrlParams?.outputCurrencyId),
-  ]
-  const urlLoadedTokens: Token[] = useMemo(
-    () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c?.isToken) ?? [],
-    [loadedInputCurrency, loadedOutputCurrency],
-  )
-
   const { account, chainId } = useActiveWeb3React()
-
-  // dismiss warning if all imported tokens are in active lists
-  const defaultTokens = useAllTokens()
-  const importTokensNotInDefault =
-    urlLoadedTokens &&
-    urlLoadedTokens.filter((token: Token) => {
-      return !(token.address in defaultTokens) && token.chainId === chainId
-    })
 
   // for expert mode
   const [isExpertMode] = useExpertModeManager()
@@ -178,8 +150,6 @@ export default function Swap() {
     [onUserInput],
   )
 
-  // modal and loading
-
   const formattedAmounts = {
     [independentField]: typedValue,
     [dependentField]: showWrap
@@ -206,31 +176,16 @@ export default function Swap() {
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false)
 
-  // swap warning state
-  const [swapWarningCurrency, setSwapWarningCurrency] = useState(null)
-  const [onPresentSwapWarningModal] = useModal(<SwapWarningModal swapCurrency={swapWarningCurrency} />, false)
-
-  useEffect(() => {
-    if (swapWarningCurrency) {
-      onPresentSwapWarningModal()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [swapWarningCurrency])
-
   const handleInputSelect = useCallback(
     (currencyInput) => {
       setApprovalSubmitted(false) // reset 2 step UI for approvals
       onCurrencySelection(Field.INPUT, currencyInput)
-      const showSwapWarning = shouldShowSwapWarning(currencyInput)
-      if (showSwapWarning) {
-        setSwapWarningCurrency(currencyInput)
-      } else {
-        setSwapWarningCurrency(null)
-      }
+
+      warningSwapHandler(currencyInput)
 
       replaceBrowserHistory('inputCurrency', currencyId(currencyInput))
     },
-    [onCurrencySelection],
+    [onCurrencySelection, warningSwapHandler],
   )
 
   const handleMaxInput = useCallback(() => {
@@ -242,31 +197,15 @@ export default function Swap() {
   const handleOutputSelect = useCallback(
     (currencyOutput) => {
       onCurrencySelection(Field.OUTPUT, currencyOutput)
-      const showSwapWarning = shouldShowSwapWarning(currencyOutput)
-      if (showSwapWarning) {
-        setSwapWarningCurrency(currencyOutput)
-      } else {
-        setSwapWarningCurrency(null)
-      }
+      warningSwapHandler(currencyOutput)
 
       replaceBrowserHistory('outputCurrency', currencyId(currencyOutput))
     },
 
-    [onCurrencySelection],
+    [onCurrencySelection, warningSwapHandler],
   )
 
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
-
-  const [onPresentImportTokenWarningModal] = useModal(
-    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => router.push('/swap')} />,
-  )
-
-  useEffect(() => {
-    if (importTokensNotInDefault.length > 0) {
-      onPresentImportTokenWarningModal()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [importTokensNotInDefault.length])
 
   const hasAmount = Boolean(parsedAmount)
 
