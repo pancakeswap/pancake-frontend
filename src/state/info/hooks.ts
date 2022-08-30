@@ -10,7 +10,7 @@ import fetchPoolTransactions, { fetchPoolTransactionsETH } from 'state/info/quer
 import fetchTokenChartData, { fetchTokenChartDataETH } from 'state/info/queries/tokens/chartData'
 import fetchPoolsForToken, { fetchPoolsForTokenETH } from 'state/info/queries/tokens/poolsForToken'
 import fetchTokenPriceData, { fetchTokenPriceDataETH } from 'state/info/queries/tokens/priceData'
-import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
+import fetchTokenTransactions, { fetchTokenTransactionsETH } from 'state/info/queries/tokens/transactions'
 import { Transaction } from 'state/info/types'
 import { isAddress } from 'utils'
 import {
@@ -329,7 +329,9 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
 
   useEffect(() => {
     const fetch = async () => {
-      const { error: fetchError, data } = await fetchTokenTransactions(address, chainName)
+      const { error: fetchError, data } = await (chainName === 'ETH'
+        ? fetchTokenTransactionsETH(address)
+        : fetchTokenTransactions(address))
       if (fetchError) {
         setError(true)
       } else if (data) {

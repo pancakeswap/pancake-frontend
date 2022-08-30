@@ -26,7 +26,7 @@ const POOLS_FOR_TOKEN = gql`
   }
 `
 
-const POOLS_FOR_TOKEN_ETH = gql`
+export const POOLS_FOR_TOKEN_ETH = gql`
   query poolsForToken($address: Bytes!, $blacklist: [String!]) {
     asToken0: pairs(
       first: 15
@@ -47,7 +47,7 @@ const POOLS_FOR_TOKEN_ETH = gql`
   }
 `
 
-interface PoolsForTokenResponse {
+export interface PoolsForTokenResponse {
   asToken0: {
     id: string
   }[]
