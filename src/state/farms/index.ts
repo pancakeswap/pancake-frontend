@@ -11,7 +11,6 @@ import BigNumber from 'bignumber.js'
 import masterchefABI from 'config/abi/masterchef.json'
 import { FARM_API } from 'config/constants/endpoints'
 import { getFarmsPriceHelperLpFiles } from 'config/constants/priceHelperLps'
-import { FLAG_FARM } from 'config/flag'
 import stringify from 'fast-json-stable-stringify'
 import fromPairs from 'lodash/fromPairs'
 import type { AppState } from 'state'
@@ -105,20 +104,20 @@ let fallback = false
 
 export const fetchFarmsPublicDataAsync = createAsyncThunk<
   [SerializedFarm[], number, number],
-  { pids: number[]; chainId: number },
+  { pids: number[]; chainId: number; flag: string },
   {
     state: AppState
   }
 >(
   'farms/fetchFarmsPublicDataAsync',
-  async ({ pids, chainId }) => {
+  async ({ pids, chainId, flag = 'pkg' }) => {
     const chain = chains.find((c) => c.id === chainId)
     if (!chain || !farmFetcher.isChainSupported(chain.id)) throw new Error('chain not supported')
     try {
-      if (FLAG_FARM === 'old') {
+      if (flag === 'old') {
         return fetchFetchPublicDataOld({ pids, chainId })
       }
-      if (FLAG_FARM === 'api' && !fallback) {
+      if (flag === 'api' && !fallback) {
         try {
           const { updatedAt, data, poolLength, regularCakePerBlock } = await farmApiFetch(chainId)
           if (Date.now() - new Date(updatedAt).getTime() > 3 * 60 * 1000) {

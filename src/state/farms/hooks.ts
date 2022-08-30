@@ -10,7 +10,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { getMasterchefContract } from 'utils/contractHelpers'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
-import { FLAG_FARM } from 'config/flag'
+import { featureFarmApiAtom, useFeatureFlag } from 'hooks/useFeatureFlag'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, State } from '../types'
@@ -35,16 +35,17 @@ export const usePollFarmsWithUserData = () => {
   const dispatch = useAppDispatch()
   const { account, chainId } = useActiveWeb3React()
   const { proxyAddress } = useBCakeProxyContractAddress(account)
+  const farmFlag = useFeatureFlag(featureFarmApiAtom)
 
   useSWRImmutable(
     chainId ? ['publicFarmData', chainId] : null,
     async () => {
       const farmsConfig = await getFarmConfig(chainId)
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
-      dispatch(fetchFarmsPublicDataAsync({ pids, chainId }))
+      dispatch(fetchFarmsPublicDataAsync({ pids, chainId, flag: farmFlag }))
     },
     {
-      refreshInterval: FLAG_FARM === 'api' ? 50 * 1000 : SLOW_INTERVAL,
+      refreshInterval: farmFlag === 'api' ? 50 * 1000 : SLOW_INTERVAL,
     },
   )
 
@@ -81,6 +82,7 @@ const coreFarmPIDs = {
 export const usePollCoreFarmData = () => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
+  const farmFlag = useFeatureFlag(featureFarmApiAtom)
 
   useEffect(() => {
     if (chainId) {
@@ -89,10 +91,10 @@ export const usePollCoreFarmData = () => {
   }, [chainId, dispatch])
 
   useFastRefreshEffect(() => {
-    if (chainId && FLAG_FARM !== 'api') {
-      dispatch(fetchFarmsPublicDataAsync({ pids: coreFarmPIDs[chainId], chainId }))
+    if (chainId && farmFlag !== 'api') {
+      dispatch(fetchFarmsPublicDataAsync({ pids: coreFarmPIDs[chainId], chainId, flag: farmFlag }))
     }
-  }, [dispatch, chainId])
+  }, [dispatch, chainId, farmFlag])
 }
 
 export const useFarms = (): DeserializedFarmsState => {
