@@ -1,7 +1,7 @@
 import { goerliTestnetTokens } from '@pancakeswap/tokens'
 import { SerializedFarmConfig } from '@pancakeswap/farms'
 
-const priceHelperLps: Omit<SerializedFarmConfig, 'pid'>[] = [
+const priceHelperLps: SerializedFarmConfig[] = [
   {
     pid: null,
     lpSymbol: 'WETH-USDC LP',
