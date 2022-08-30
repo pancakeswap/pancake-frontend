@@ -13,9 +13,9 @@ export const getTokenAmount = (balance: FixedNumber, decimals: number) => {
 
 export type FetchFarmsParams = {
   farms
-  multicall: MultiCallV2
+  multicallv2: MultiCallV2
   isTestnet: boolean
-  masterChefAddresses: Record<number, string>
+  masterChefAddress: string
   chainId: number
   totalRegularAllocPoint: BigNumber
   totalSpecialAllocPoint: BigNumber
@@ -23,24 +23,21 @@ export type FetchFarmsParams = {
 
 export async function farmV2FetchFarms({
   farms,
-  multicall,
+  multicallv2,
   isTestnet,
-  masterChefAddresses,
+  masterChefAddress,
   chainId,
   totalRegularAllocPoint,
   totalSpecialAllocPoint,
 }: FetchFarmsParams) {
-  const lpData = (await fetchPublicFarmsData(farms, chainId, multicall)).map(formatFarmResponse)
-  const poolInfos = await fetchMasterChefData(farms, isTestnet, multicall, masterChefAddresses)
-
-  // const lpAprs = getAprs
+  const lpData = (await fetchPublicFarmsData(farms, chainId, multicallv2, masterChefAddress)).map(formatFarmResponse)
+  const poolInfos = await fetchMasterChefData(farms, isTestnet, multicallv2, masterChefAddress)
 
   const farmsData = farms.map((farm, index) => {
     try {
       return {
         pid: farm.pid,
         ...farm,
-        // lpApr: lpAprs?.[farm.lpAddress] || 0,
         ...getFarmsDynamicData({
           ...lpData[index],
           allocPoint: poolInfos[index]?.allocPoint,
@@ -113,9 +110,8 @@ const masterChefV2Abi = [
   },
 ]
 
-const masterChefFarmCalls = (farm: SerializedFarmConfig, isTestnet: boolean, masterChefAddresses) => {
+const masterChefFarmCalls = (farm: SerializedFarmConfig, masterChefAddress: string) => {
   const { pid } = farm
-  const masterChefAddress = isTestnet ? masterChefAddresses[ChainId.BSC_TESTNET] : masterChefAddresses[ChainId.BSC]
 
   return pid || pid === 0
     ? {
@@ -129,14 +125,14 @@ const masterChefFarmCalls = (farm: SerializedFarmConfig, isTestnet: boolean, mas
 export const fetchMasterChefData = async (
   farms: SerializedFarmConfig[],
   isTestnet: boolean,
-  multicall,
-  masterChefAddresses,
+  multicallv2: MultiCallV2,
+  masterChefAddress: string,
 ): Promise<any[]> => {
   try {
-    const masterChefCalls = farms.map((farm) => masterChefFarmCalls(farm, isTestnet, masterChefAddresses))
+    const masterChefCalls = farms.map((farm) => masterChefFarmCalls(farm, masterChefAddress))
     const masterChefAggregatedCalls = masterChefCalls.filter((masterChefCall) => masterChefCall !== null)
 
-    const masterChefMultiCallResult = await multicall({
+    const masterChefMultiCallResult = await multicallv2({
       abi: masterChefV2Abi,
       calls: masterChefAggregatedCalls,
       chainId: isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC,
@@ -159,35 +155,33 @@ export const fetchMasterChefData = async (
 
 export const fetchMasterChefV2Data = async ({
   isTestnet,
-  multicall,
-  masterChefAddresses,
+  multicallv2,
+  masterChefAddress,
 }: {
   isTestnet: boolean
-  multicall: MultiCallV2
-  masterChefAddresses
+  multicallv2: MultiCallV2
+  masterChefAddress: string
 }) => {
   try {
-    const masterChefV2Address = isTestnet ? masterChefAddresses[ChainId.BSC_TESTNET] : masterChefAddresses[ChainId.BSC]
-
-    const [[poolLength], [totalRegularAllocPoint], [totalSpecialAllocPoint], [cakePerBlock]] = await multicall<
+    const [[poolLength], [totalRegularAllocPoint], [totalSpecialAllocPoint], [cakePerBlock]] = await multicallv2<
       [[BigNumber], [BigNumber], [BigNumber], [BigNumber]]
     >({
       abi: masterChefV2Abi,
       calls: [
         {
-          address: masterChefV2Address,
+          address: masterChefAddress,
           name: 'poolLength',
         },
         {
-          address: masterChefV2Address,
+          address: masterChefAddress,
           name: 'totalRegularAllocPoint',
         },
         {
-          address: masterChefV2Address,
+          address: masterChefAddress,
           name: 'totalSpecialAllocPoint',
         },
         {
-          address: masterChefV2Address,
+          address: masterChefAddress,
           name: 'cakePerBlock',
           params: [true],
         },
