@@ -1927,5 +1927,6 @@
   "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.": "Olettaen nykyisen kaasuhinnan tätä tilausta ei toimeenpanna koskaan. Kokeile korottaa vaihdettavien polettien määrää.",
   "Bridge": "Silta",
   "Please switch network": "Vaihda verkkoa",
-  "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "Käyttämäsi URL (ketjutunnus: %chainId%) kuuluu verkkoon %network%, joka ei vastaa lompakkosi verkkoa. Vaihda verkkoa jatkaaksesi."
+  "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "Käyttämäsi URL (ketjutunnus: %chainId%) kuuluu verkkoon %network%, joka ei vastaa lompakkosi verkkoa. Vaihda verkkoa jatkaaksesi.",
+  "Error connecting, please retry and confirm in wallet!": "Error connecting, please retry and confirm in wallet!"
 }
