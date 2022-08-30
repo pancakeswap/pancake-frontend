@@ -1927,5 +1927,6 @@
   "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.": "Considerando o preço de gás atual, esta ordem nunca será executada. Tente aumentar o número de tokens para fazer swap na sua ordem.",
   "Bridge": "Ponte",
   "Please switch network": "Please switch network",
-  "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue."
+  "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.",
+  "Error connecting, please retry and confirm in wallet!": "Error connecting, please retry and confirm in wallet!"
 }
