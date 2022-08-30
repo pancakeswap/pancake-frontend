@@ -1,1 +1,1 @@
-export const FLAG_FARM: 'old' | 'pkg' | 'api' = 'api'
+export const FLAG_FARM: 'old' | 'pkg' | 'api' = 'pkg'
