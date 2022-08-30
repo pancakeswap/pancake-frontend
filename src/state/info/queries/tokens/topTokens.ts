@@ -43,12 +43,7 @@ const fetchTopTokensETH = async (timestamp24hAgo: number): Promise<string[]> => 
   try {
     const query = gql`
       query topTokens($blacklist: [String!], $timestamp24hAgo: Int) {
-        tokenDayDatas(
-          first: 30
-          where: { dailyTxns_gt: 300, id_not_in: $blacklist, date_gt: $timestamp24hAgo }
-          orderBy: dailyVolumeUSD
-          orderDirection: desc
-        ) {
+        tokenDayDatas(first: 30, where: { date_gt: $timestamp24hAgo }, orderBy: dailyVolumeUSD, orderDirection: desc) {
           id
         }
       }
