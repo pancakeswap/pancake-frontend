@@ -11,6 +11,14 @@ interface TopPoolsResponse {
   }[]
 }
 
+const queryETH = gql`
+  query topPools($blacklist: [String!], $timestamp24hAgo: Int) {
+    pairDayDatas(first: 200, orderBy: dailyVolumeUSD, orderDirection: desc) {
+      id
+    }
+  }
+`
+
 /**
  * Initial pools to display on the home page
  */
@@ -29,7 +37,7 @@ const fetchTopPools = async (timestamp24hAgo: number, chainName: 'ETH' | 'BSC'):
       }
     `
     const data = await (chainName === 'ETH'
-      ? infoClientETH.request<TopPoolsResponse>(query, { blacklist: TOKEN_BLACKLIST, timestamp24hAgo })
+      ? infoClientETH.request<TopPoolsResponse>(queryETH, { blacklist: TOKEN_BLACKLIST, timestamp24hAgo })
       : infoClient.request<TopPoolsResponse>(query, { blacklist: TOKEN_BLACKLIST, timestamp24hAgo }))
     // pairDayDatas id has compound id "0xPOOLADDRESS-NUMBERS", extracting pool address with .split('-')
     return data.pairDayDatas.map((p) => p.id.split('-')[0])
