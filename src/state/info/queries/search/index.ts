@@ -127,7 +127,6 @@ const useFetchSearchResults = (
           id: searchString.toLowerCase(),
         })
         const tokenIds = getIds([tokens.asAddress, tokens.asSymbol, tokens.asName])
-        console.log({ tokenIds }, 'show')
         const pools = await queryClient.request<PoolSearchResponse>(poolQuery, {
           tokens: tokenIds,
           id: searchString.toLowerCase(),
