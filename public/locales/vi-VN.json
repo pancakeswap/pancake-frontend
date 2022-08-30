@@ -1927,5 +1927,6 @@
   "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.": "Giả sử với phí ga hiện tại, lệnh này sẽ không bao giờ được thực thi. Hãy thử tăng số token để hoán đổi trong lệnh của bạn.",
   "Bridge": "Cầu nối",
   "Please switch network": "Vui lòng chuyển mạng lưới của bạn",
-  "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "URL bạn đang truy cập (ID chuỗi: %chainId%) thuộc về %network%; không khớp với mạng lưới của ví bạn. Vui lòng chuyển mạng lưới để tiếp tục."
+  "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "URL bạn đang truy cập (ID chuỗi: %chainId%) thuộc về %network%; không khớp với mạng lưới của ví bạn. Vui lòng chuyển mạng lưới để tiếp tục.",
+  "Error connecting, please retry and confirm in wallet!": "Error connecting, please retry and confirm in wallet!"
 }
