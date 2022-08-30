@@ -114,7 +114,7 @@ const useFetchSearchResults = (
   }, [searchString, searchStringTooShort])
 
   const tokenQuery = chainName === 'ETH' ? TOKEN_SEARCH_ETH : TOKEN_SEARCH
-  const poolQuery = chainName === 'ETH' ? POOL_SEARCH_ETH : TOKEN_SEARCH
+  const poolQuery = chainName === 'ETH' ? POOL_SEARCH_ETH : POOL_SEARCH
   const queryClient = chainName === 'ETH' ? infoClientETH : infoClient
 
   useEffect(() => {
@@ -127,6 +127,7 @@ const useFetchSearchResults = (
           id: searchString.toLowerCase(),
         })
         const tokenIds = getIds([tokens.asAddress, tokens.asSymbol, tokens.asName])
+        console.log({ tokenIds }, 'show')
         const pools = await queryClient.request<PoolSearchResponse>(poolQuery, {
           tokens: tokenIds,
           id: searchString.toLowerCase(),
