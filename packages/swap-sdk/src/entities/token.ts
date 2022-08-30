@@ -3,6 +3,15 @@ import { validateAndParseAddress } from '../utils'
 import { BaseCurrency } from './baseCurrency'
 import { Currency } from './currency'
 
+export interface SerializedToken {
+  chainId: number
+  address: string
+  decimals: number
+  symbol: string
+  name?: string
+  projectLink?: string
+}
+
 /**
  * Represents an ERC20 token with a unique address and some metadata.
  */
@@ -20,7 +29,7 @@ export class Token extends BaseCurrency {
     chainId: number,
     address: string,
     decimals: number,
-    symbol?: string,
+    symbol: string,
     name?: string,
     projectLink?: string
   ) {
@@ -54,5 +63,16 @@ export class Token extends BaseCurrency {
    */
   public get wrapped(): Token {
     return this
+  }
+
+  public get serialize(): SerializedToken {
+    return {
+      address: this.address,
+      chainId: this.chainId,
+      decimals: this.decimals,
+      symbol: this.symbol,
+      name: this.name,
+      projectLink: this.projectLink,
+    }
   }
 }

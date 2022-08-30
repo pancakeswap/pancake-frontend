@@ -86,8 +86,8 @@ export const bsc: Chain = {
     decimals: 18,
   },
   multicall: {
-    address: '0x72dba3Fa54C73D9EDB493e9F4eDf884439B1eBC4',
-    blockCreated: 20455688,
+    address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    blockCreated: 15921452,
   },
 }
 
@@ -109,8 +109,8 @@ export const bscTest: Chain = {
     default: { name: 'BscScan', url: 'https://testnet.bscscan.com' },
   },
   multicall: {
-    address: '0xb66a4fE12138C4391A98F29E34EFE4Cc7A445AE5',
-    blockCreated: 21965366,
+    address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    blockCreated: 17422483,
   },
   testnet: true,
 }

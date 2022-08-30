@@ -7,7 +7,7 @@ import { GELATO_NATIVE } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { TokenAddressMap } from 'state/types'
+import { TokenAddressMap } from '@pancakeswap/tokens'
 import {
   combinedTokenMapFromActiveUrlsSelector,
   combinedTokenMapFromOfficialsUrlsSelector,

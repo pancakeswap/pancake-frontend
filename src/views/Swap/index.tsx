@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { ChainId, Currency, CurrencyAmount, Token, Trade, TradeType } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Token, Trade, TradeType, NATIVE } from '@pancakeswap/sdk'
 import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange'
 import {
   Button,
@@ -27,6 +27,9 @@ import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import shouldShowSwapWarning from 'utils/shouldShowSwapWarning'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
+import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
+import { SettingsMode } from 'components/Menu/GlobalSettings/types'
+
 import AccessRisk from 'views/Swap/components/AccessRisk'
 import useRefreshBlockNumberID from './hooks/useRefreshBlockNumber'
 import AddressInputPanel from './components/AddressInputPanel'
@@ -97,6 +100,8 @@ const SwitchIconButton = styled(IconButton)`
 
 const CHART_SUPPORT_CHAIN_IDS = [ChainId.BSC]
 const ACCESS_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC]
+
+const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
 export default function Swap() {
   const router = useRouter()
@@ -353,6 +358,15 @@ export default function Swap() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [importTokensNotInDefault.length])
 
+  const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
+
+  const [onPresentSettingsModal] = useModal(
+    <SettingsModalWithCustomDismiss
+      customOnDismiss={() => setIndirectlyOpenConfirmModalState(true)}
+      mode={SettingsMode.SWAP_LIQUIDITY}
+    />,
+  )
+
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal
       trade={trade}
@@ -366,11 +380,23 @@ export default function Swap() {
       onConfirm={handleSwap}
       swapErrorMessage={swapErrorMessage}
       customOnDismiss={handleConfirmDismiss}
+      openSettingModal={onPresentSettingsModal}
     />,
     true,
     true,
     'confirmSwapModal',
   )
+
+  useEffect(() => {
+    if (indirectlyOpenConfirmModalState) {
+      setIndirectlyOpenConfirmModalState(false)
+      setSwapState((state) => ({
+        ...state,
+        swapErrorMessage: undefined,
+      }))
+      onPresentConfirmModal()
+    }
+  }, [indirectlyOpenConfirmModalState, onPresentConfirmModal])
 
   const hasAmount = Boolean(parsedAmount)
 
@@ -389,9 +415,8 @@ export default function Swap() {
 
   const isAccessTokenSupported = useMemo(() => ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
   const isShowAccessToken = useMemo(() => {
-    // TODO: Should verify with native token instead of BNB
-    return isAccessTokenSupported && currencies[Field.OUTPUT]?.symbol !== 'BNB'
-  }, [isAccessTokenSupported, currencies])
+    return isAccessTokenSupported && currencies[Field.OUTPUT]?.symbol !== NATIVE[chainId].symbol
+  }, [isAccessTokenSupported, currencies, chainId])
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>

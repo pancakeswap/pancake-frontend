@@ -1,7 +1,7 @@
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { BinanceIcon } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
-import { WrappedTokenInfo } from 'state/types'
+import { WrappedTokenInfo } from '@pancakeswap/tokens'
 import styled from 'styled-components'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import getTokenLogoURL from '../../utils/getTokenLogoURL'

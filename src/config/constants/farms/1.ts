@@ -1,5 +1,4 @@
-// import { serializeTokens } from 'utils/serializeTokens'
-// import { ethereumTokens } from '../tokens'
+// import { ethereumTokens, serializeTokens } from '@pancakeswap/tokens'
 import { SerializedFarmConfig } from '../types'
 
 // const serializedTokens = serializeTokens(ethereumTokens)

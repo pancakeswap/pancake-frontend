@@ -1,0 +1,8 @@
+{
+  "name": "@pancakeswap/farms",
+  "version": "0.0.1",
+  "main": "./src/index.ts",
+  "peerDependencies": {
+    "@pancakeswap/sdk": "^3.0.0"
+  }
+}

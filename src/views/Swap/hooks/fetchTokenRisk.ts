@@ -58,6 +58,8 @@ const fetchRiskApi = async (address: string, chainId: number) => {
 export const fetchRiskToken = async (address: string, chainId: number): Promise<RiskTokenInfo> => {
   try {
     const [verifyTokens, riskApi] = await Promise.all([fetchVerifyTokens(chainId), fetchRiskApi(address, chainId)])
+    // eslint-disable-next-line camelcase
+    const { risk_result, scanned_ts, risk_level_description } = riskApi.data
     const isVerifyAddress = verifyTokens.find((token) => token.address.toLowerCase() === address.toLowerCase())
     const riskLevel = isVerifyAddress ? TokenRiskPhases[0] : TokenRiskPhases[riskApi.data.risk_level]
 
@@ -66,9 +68,9 @@ export const fetchRiskToken = async (address: string, chainId: number): Promise<
       address,
       chainId,
       riskLevel,
-      riskResult: riskApi.data.risk_result,
-      scannedTs: riskApi.data.scanned_ts,
-      riskLevelDescription: riskApi.risk_level_description,
+      riskResult: risk_result,
+      scannedTs: scanned_ts,
+      riskLevelDescription: risk_level_description,
     }
   } catch (error) {
     console.error('Fetch Risk Token error: ', error)

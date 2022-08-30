@@ -1,19 +1,38 @@
 import { ChainId } from '@pancakeswap/sdk'
-import BscPriceHelper from './56'
-import BscTestnetPriceHelper from './97'
-import EthereumPriceHelper from './1'
-import GoerliPriceHelper from './5'
+import FarmsBscPriceHelper from './farms/56'
+import FarmsBscTestnetPriceHelper from './farms/97'
+import FarmsEthereumPriceHelper from './farms/1'
+import FarmsGoerliPriceHelper from './farms/5'
+import PoolsBscPriceHelper from './pools/56'
+import PoolsBscTestnetPriceHelper from './pools/97'
+import PoolsEthereumPriceHelper from './pools/1'
+import PoolsGoerliPriceHelper from './pools/5'
 
-export const getPriceHelperLpFiles = (chainId: ChainId) => {
+export const getFarmsPriceHelperLpFiles = (chainId: ChainId) => {
   switch (chainId) {
     case ChainId.BSC:
-      return BscPriceHelper
+      return FarmsBscPriceHelper
     case ChainId.BSC_TESTNET:
-      return BscTestnetPriceHelper
+      return FarmsBscTestnetPriceHelper
     case ChainId.ETHEREUM:
-      return EthereumPriceHelper
+      return FarmsEthereumPriceHelper
     case ChainId.GOERLI:
-      return GoerliPriceHelper
+      return FarmsGoerliPriceHelper
+    default:
+      return []
+  }
+}
+
+export const getPoolsPriceHelperLpFiles = (chainId: ChainId) => {
+  switch (chainId) {
+    case ChainId.BSC:
+      return PoolsBscPriceHelper
+    case ChainId.BSC_TESTNET:
+      return PoolsBscTestnetPriceHelper
+    case ChainId.ETHEREUM:
+      return PoolsEthereumPriceHelper
+    case ChainId.GOERLI:
+      return PoolsGoerliPriceHelper
     default:
       return []
   }
