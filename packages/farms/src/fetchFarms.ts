@@ -1,10 +1,12 @@
 import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
+import { formatUnits } from '@ethersproject/units'
 import { MultiCallV2 } from '@pancakeswap/multicall'
 import { ChainId } from '@pancakeswap/sdk'
 import { BIG_TEN, FIXED_TWO, FIXED_ZERO } from './const'
 import { getFarmsPrices } from './farmPrices'
 import { fetchPublicFarmsData } from './fetchPublicFarmData'
-import { SerializedFarmConfig } from './types'
+import { fetchStableFarmData } from './fetchStableFarmData'
+import { isStableFarm, SerializedFarmConfig } from './types'
 
 export const getTokenAmount = (balance: FixedNumber, decimals: number) => {
   const tokenDividerFixed = FixedNumber.from(BIG_TEN.pow(decimals))
@@ -12,7 +14,7 @@ export const getTokenAmount = (balance: FixedNumber, decimals: number) => {
 }
 
 export type FetchFarmsParams = {
-  farms
+  farms: SerializedFarmConfig[]
   multicallv2: MultiCallV2
   isTestnet: boolean
   masterChefAddress: string
@@ -30,20 +32,41 @@ export async function farmV2FetchFarms({
   totalRegularAllocPoint,
   totalSpecialAllocPoint,
 }: FetchFarmsParams) {
-  const lpData = (await fetchPublicFarmsData(farms, chainId, multicallv2, masterChefAddress)).map(formatFarmResponse)
+  const stableFarms = farms.filter(isStableFarm)
+  const stableFarmsResults = ((await fetchStableFarmData(stableFarms, chainId, multicallv2)) as StableLpData[]).map(
+    formatStableFarm,
+  )
+  const stableFarmsDataMap = stableFarms.reduce<Record<number, FormatStableFarmResponse>>((map, farm, index) => {
+    return {
+      ...map,
+      [farm.pid]: stableFarmsResults[index],
+    }
+  }, {})
+
   const poolInfos = await fetchMasterChefData(farms, isTestnet, multicallv2, masterChefAddress)
+  const lpData = (await fetchPublicFarmsData(farms, chainId, multicallv2, masterChefAddress)).map(
+    formatClassicFarmResponse,
+  )
 
   const farmsData = farms.map((farm, index) => {
     try {
       return {
         pid: farm.pid,
         ...farm,
-        ...getFarmsDynamicData({
+        ...getClassicFarmsDynamicData({
           ...lpData[index],
-          allocPoint: poolInfos[index]?.allocPoint,
-          isRegular: poolInfos[index]?.isRegular,
+          ...stableFarmsDataMap[farm.pid],
           token0Decimals: farm.token.decimals,
           token1Decimals: farm.quoteToken.decimals,
+        }),
+        ...(stableFarmsDataMap[farm.pid] &&
+          getStableFarmDynamicData({
+            price0: stableFarmsDataMap[farm.pid].price0,
+            token1Decimals: farm.quoteToken.decimals,
+          })),
+        ...getFarmAllocation({
+          allocPoint: poolInfos[index]?.allocPoint,
+          isRegular: poolInfos[index]?.isRegular,
           totalRegularAllocPoint,
           totalSpecialAllocPoint,
         }),
@@ -201,10 +224,33 @@ export const fetchMasterChefV2Data = async ({
   }
 }
 
+type StableLpData = [balanceResponse, balanceResponse, balanceResponse, balanceResponse]
+
+type FormatStableFarmResponse = {
+  tokenBalanceLP: FixedNumber
+  quoteTokenBalanceLP: FixedNumber
+  price0: BigNumber
+}
+
+const formatStableFarm = (stableFarmData: StableLpData): FormatStableFarmResponse => {
+  const [balance1, balance2, price0, _price1] = stableFarmData
+  return {
+    tokenBalanceLP: FixedNumber.from(balance1[0]),
+    quoteTokenBalanceLP: FixedNumber.from(balance2[0]),
+    price0: price0[0],
+  }
+}
+
+const getStableFarmDynamicData = ({ price0, token1Decimals }: { token1Decimals: number; price0: BigNumber }) => {
+  return {
+    tokenPriceVsQuote: formatUnits(price0, token1Decimals),
+  }
+}
+
 type balanceResponse = [BigNumber]
 type decimalsResponse = [number]
 
-export type LPData = [
+export type ClassicLPData = [
   balanceResponse,
   balanceResponse,
   balanceResponse,
@@ -213,14 +259,14 @@ export type LPData = [
   decimalsResponse,
 ]
 
-type FormatFarmResponse = {
+type FormatClassicFarmResponse = {
   tokenBalanceLP: FixedNumber
   quoteTokenBalanceLP: FixedNumber
   lpTokenBalanceMC: FixedNumber
   lpTotalSupply: FixedNumber
 }
 
-const formatFarmResponse = (farmData: LPData): FormatFarmResponse => {
+const formatClassicFarmResponse = (farmData: ClassicLPData): FormatClassicFarmResponse => {
   const [tokenBalanceLP, quoteTokenBalanceLP, lpTokenBalanceMC, lpTotalSupply] = farmData
   return {
     tokenBalanceLP: FixedNumber.from(tokenBalanceLP[0]),
@@ -230,22 +276,38 @@ const formatFarmResponse = (farmData: LPData): FormatFarmResponse => {
   }
 }
 
-export const getFarmsDynamicData = ({
-  lpTokenBalanceMC,
-  lpTotalSupply,
-  quoteTokenBalanceLP,
-  tokenBalanceLP,
-  totalRegularAllocPoint,
-  totalSpecialAllocPoint,
-  token0Decimals,
-  token1Decimals,
-  allocPoint,
-  isRegular = true,
-}: FormatFarmResponse & {
+interface FarmAllocationParams {
   allocPoint?: BigNumber
   isRegular?: boolean
   totalRegularAllocPoint: BigNumber
   totalSpecialAllocPoint: BigNumber
+}
+
+const getFarmAllocation = ({
+  allocPoint,
+  isRegular,
+  totalRegularAllocPoint,
+  totalSpecialAllocPoint,
+}: FarmAllocationParams) => {
+  const _allocPoint = allocPoint ? FixedNumber.from(allocPoint) : FIXED_ZERO
+  const totalAlloc = isRegular ? totalRegularAllocPoint : totalSpecialAllocPoint
+  const poolWeight =
+    !totalAlloc.isZero() && !_allocPoint.isZero() ? _allocPoint.divUnsafe(FixedNumber.from(totalAlloc)) : FIXED_ZERO
+
+  return {
+    poolWeight: poolWeight.toString(),
+    multiplier: !_allocPoint.isZero() ? `${+_allocPoint.divUnsafe(FixedNumber.from(100)).toString()}X` : `0X`,
+  }
+}
+
+const getClassicFarmsDynamicData = ({
+  lpTokenBalanceMC,
+  lpTotalSupply,
+  quoteTokenBalanceLP,
+  tokenBalanceLP,
+  token0Decimals,
+  token1Decimals,
+}: FormatClassicFarmResponse & {
   token0Decimals: number
   token1Decimals: number
 }) => {
@@ -263,19 +325,11 @@ export const getFarmsDynamicData = ({
   // // Total staked in LP, in quote token value
   const lpTotalInQuoteToken = quoteTokenAmountMcFixed.mulUnsafe(FIXED_TWO)
 
-  const _allocPoint = allocPoint ? FixedNumber.from(allocPoint) : FIXED_ZERO
-  const totalAlloc = isRegular ? totalRegularAllocPoint : totalSpecialAllocPoint
-
-  const poolWeight =
-    !totalAlloc.isZero() && !_allocPoint.isZero() ? _allocPoint.divUnsafe(FixedNumber.from(totalAlloc)) : FIXED_ZERO
-
   return {
     tokenAmountTotal: tokenAmountTotal.toString(),
     quoteTokenAmountTotal: quoteTokenAmountTotal.toString(),
     lpTotalSupply: lpTotalSupply.toString(),
     lpTotalInQuoteToken: lpTotalInQuoteToken.toString(),
     tokenPriceVsQuote: !quoteTokenAmountTotal.isZero() && quoteTokenAmountTotal.divUnsafe(tokenAmountTotal).toString(),
-    poolWeight: poolWeight.toString(),
-    multiplier: !_allocPoint.isZero() ? `${+_allocPoint.divUnsafe(FixedNumber.from(100)).toString()}X` : `0X`,
   }
 }
