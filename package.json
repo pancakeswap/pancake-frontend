@@ -5,8 +5,7 @@
   "workspaces": [
     "apps/*",
     "packages/*",
-    "apis/*",
-    "constants/*"
+    "apis/*"
   ],
   "scripts": {
     "analyze": "ANALYZE=true yarn build",
