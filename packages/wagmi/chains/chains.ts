@@ -79,7 +79,7 @@ export const fantomTestnet: Chain = {
 
 const bscExplorer = { name: 'BscScan', url: 'https://bscscan.com' }
 
-const etherExplorer = { name: 'Etherscan', url: 'https://etherscan.io/' }
+const etherExplorer = { name: 'Etherscan', url: 'https://etherscan.io' }
 
 export const bsc: Chain = {
   id: 56,

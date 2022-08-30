@@ -1,17 +1,18 @@
 // TODO PCS refactor ternaries
 /* eslint-disable no-nested-ternary */
-import { useCallback, useState, useMemo, useEffect, Fragment } from 'react'
-import styled from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
+import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, LinkExternal, Radio, Skeleton, Text } from '@pancakeswap/uikit'
+import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
 import { formatDistanceToNowStrict } from 'date-fns'
-import { Text, Flex, Box, Radio, Skeleton, LinkExternal, ArrowForwardIcon, ArrowBackIcon } from '@pancakeswap/uikit'
-import { formatAmount } from 'utils/formatInfoNumbers'
-import { getBlockExploreLink } from 'utils'
-import truncateHash from 'utils/truncateHash'
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { useGetChainName } from 'state/info/hooks'
 import { Transaction, TransactionType } from 'state/info/types'
-import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
-import { useTranslation } from '@pancakeswap/localization'
-import { ClickableColumnHeader, TableWrapper, PageButtons, Arrow, Break } from './shared'
+import styled from 'styled-components'
+import { getBlockExploreLink } from 'utils'
+import { formatAmount } from 'utils/formatInfoNumbers'
+import truncateHash from 'utils/truncateHash'
+import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from './shared'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -102,7 +103,9 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
   const chainName = useGetChainName()
   return (
     <ResponsiveGrid>
-      <LinkExternal href={getBlockExploreLink(transaction.hash, 'transaction', chainName === 'ETH' && 1)}>
+      <LinkExternal
+        href={getBlockExploreLink(transaction.hash, 'transaction', chainName === 'ETH' && ChainId.ETHEREUM)}
+      >
         <Text>
           {transaction.type === TransactionType.MINT
             ? t('Add %token0% and %token1%', { token0: transaction.token0Symbol, token1: transaction.token1Symbol })
@@ -118,7 +121,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
       <Text>
         <Text>{`${formatAmount(abs1)} ${transaction.token1Symbol}`}</Text>
       </Text>
-      <LinkExternal href={getBlockExploreLink(transaction.sender, 'address', chainName === 'ETH' && 1)}>
+      <LinkExternal href={getBlockExploreLink(transaction.sender, 'address', chainName === 'ETH' && ChainId.ETHEREUM)}>
         {truncateHash(transaction.sender)}
       </LinkExternal>
       <Text>{formatDistanceToNowStrict(parseInt(transaction.timestamp, 10) * 1000)}</Text>
