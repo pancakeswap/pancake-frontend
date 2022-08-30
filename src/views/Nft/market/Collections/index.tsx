@@ -115,7 +115,7 @@ const Collectible = () => {
         value: SORT_FIELD.highestPrice,
       },
     ]
-  }, [t]);
+  }, [t])
 
   const { data: collections = [], status } = useSWRImmutable<
     (Collection & Partial<{ lowestPrice: number; highestPrice: number }>)[]
