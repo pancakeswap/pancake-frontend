@@ -12,7 +12,7 @@ interface RiskMessageProps {
 
 const RiskMessage: React.FC<RiskMessageProps> = ({ currency, riskTokenInfo }) => {
   const { t } = useTranslation()
-  const { riskLevel } = riskTokenInfo
+  const { riskLevel, riskLevelDescription } = riskTokenInfo
 
   const messageVariant = useMemo(() => {
     switch (riskLevel) {
@@ -33,21 +33,12 @@ const RiskMessage: React.FC<RiskMessageProps> = ({ currency, riskTokenInfo }) =>
           <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
           <Flex flexDirection="column">
             <Text fontSize="14px" lineHeight="120%">
-              Although no obvious risk is found in the address, it is not guaranteed that there is 100% no risk for the
-              address as the project can still fail or the token price can go down under natural market forces.
+              {riskLevelDescription}
             </Text>
-            <Link fontSize="14px" mt="8px" ml="auto" external href="https://www.hashdit.io/en">
+            <Link fontSize="14px" mt="8px" ml="auto" external href="https://hashdit.github.io/hashdit/docs/intro">
               {t('Learn More')}
             </Link>
           </Flex>
-          {/* <Text fontSize="14px" lineHeight="120%">
-            <Text fontSize="14px" bold mr="4px" as="span" lineHeight="120%">
-              {currency?.symbol}
-            </Text>
-            {t('is in the average category with %riskLevel% risk', {
-              riskLevel: riskLevel.toLowerCase(),
-            })}
-          </Text> */}
         </Flex>
       </MessageText>
     </Message>

@@ -28,6 +28,7 @@ export interface RiskTokenInfo {
   riskLevel: TOKEN_RISK
   riskResult: string
   scannedTs: number
+  riskLevelDescription: string
 }
 
 const fetchVerifyTokens = async (chainId: number) => {
@@ -67,6 +68,7 @@ export const fetchRiskToken = async (address: string, chainId: number): Promise<
       riskLevel,
       riskResult: riskApi.data.risk_result,
       scannedTs: riskApi.data.scanned_ts,
+      riskLevelDescription: riskApi.risk_level_description,
     }
   } catch (error) {
     console.error('Fetch Risk Token error: ', error)
@@ -77,6 +79,7 @@ export const fetchRiskToken = async (address: string, chainId: number): Promise<
       riskLevel: TokenRiskPhases[0],
       riskResult: '',
       scannedTs: 0,
+      riskLevelDescription: '',
     }
   }
 }

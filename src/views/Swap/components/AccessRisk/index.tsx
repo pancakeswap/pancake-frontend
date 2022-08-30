@@ -24,6 +24,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
     riskLevel: TokenRiskPhases[0],
     riskResult: '',
     scannedTs: 0,
+    riskLevelDescription: '',
   })
 
   useEffect(() => {
@@ -94,7 +95,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
       </Text>
       <Flex mt="4px">
         <Text>{t('Powered by')}</Text>
-        <Link ml="4px" external href="https://www.hashdit.io/en">
+        <Link ml="4px" external href="https://hashdit.github.io/hashdit/docs/intro">
           {t('Hashdit.')}
         </Link>
       </Flex>
