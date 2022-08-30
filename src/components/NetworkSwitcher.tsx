@@ -60,6 +60,7 @@ const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
     ),
     {
       placement: 'auto-start',
+      hideTimeout: 0,
     },
   )
   const { chain } = useNetwork()
@@ -77,8 +78,8 @@ const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
         <Text color="textSubtle" pl="6px">
           {t('Please switch network')}
         </Text>
-        {tooltipVisible && tooltip}
       </Flex>
+      {tooltipVisible && tooltip}
       <UserMenuDivider />
       {chain && (
         <UserMenuItem ref={ref1} onClick={() => setSessionChainId(chain.id)} style={{ justifyContent: 'flex-start' }}>
