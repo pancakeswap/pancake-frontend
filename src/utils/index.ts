@@ -4,8 +4,10 @@ import { getAddress } from '@ethersproject/address'
 import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
-import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
-import { abi as PeronioABI } from 'peronio-core/deployments/matic/Peronio.json'
+// eslint-disable-next-line
+import { default as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
+// eslint-disable-next-line
+import { default as PeronioABI } from 'peronio-core/deployments/matic/Peronio.json'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from 'peronio-sdk'
 import { ROUTER_ADDRESS } from '../config/constants'
 import { BASE_BSC_SCAN_URLS } from '../config'
@@ -95,12 +97,12 @@ export function getContract(address: string, ABI: any, signer?: ethers.Signer | 
 
 // account is optional
 export function getRouterContract(_: number, library: Web3Provider, account?: string): Contract {
-  return getContract(ROUTER_ADDRESS, IUniswapV2Router02ABI, getProviderOrSigner(library, account))
+  return getContract(ROUTER_ADDRESS, IUniswapV2Router02ABI.abi, getProviderOrSigner(library, account))
 }
 
 // account is optional
 export function getPeronioContract(_: number, library: Web3Provider, account?: string): Contract {
-  return getContract(mainnetTokens.pe.address, PeronioABI, getProviderOrSigner(library, account))
+  return getContract(mainnetTokens.pe.address, PeronioABI.abi, getProviderOrSigner(library, account))
 }
 
 export function escapeRegExp(string: string): string {

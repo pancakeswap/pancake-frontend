@@ -3,7 +3,8 @@ import { simpleRpcProvider } from 'utils/providers'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 import tokens, { mainnetTokens } from 'config/constants/tokens'
-import { abi as PeronioABI } from 'peronio-core/deployments/matic/Peronio.json'
+// eslint-disable-next-line
+import { default as PeronioABI } from 'peronio-core/deployments/matic/Peronio.json'
 
 // Addresses
 import {
@@ -225,7 +226,7 @@ export const getErc721CollectionContract = (signer?: ethers.Signer | ethers.prov
   return getContract(erc721CollectionAbi, address, signer) as Erc721collection
 }
 export const getPeronioContract = (signer?: ethers.Signer | ethers.providers.Provider, address?: string) => {
-  return getContract(PeronioABI, mainnetTokens.pe.address, signer)
+  return getContract(PeronioABI.abi, mainnetTokens.pe.address, signer)
 }
 export const getMigratorContract = (signer?: ethers.Signer | ethers.providers.Provider, address?: string) => {
   return getContract(migratorAbi, getMigratorV1ContractAdress(), signer)

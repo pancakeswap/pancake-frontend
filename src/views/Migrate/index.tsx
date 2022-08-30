@@ -2,13 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { CurrencyAmount, Withdraw } from 'peronio-sdk'
 import { Button, Text, ArrowDownIcon, Box, useModal, Flex, IconButton } from 'peronio-uikit'
-// import Footer from 'components/Menu/Footer'
 import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import { useWithdrawCallback } from 'hooks/useWithdrawCallback'
 import { useWithdrawTokenInfo } from 'state/tokenWithdraw/hooks'
-
 import { useMigratorContract } from 'hooks/useContract'
+import { BigNumber } from "@ethersproject/bignumber";
 import AddressInputPanel from './components/AddressInputPanel'
 import Column, { AutoColumn } from '../../components/Layout/Column'
 import ConfirmWithdrawModal from './components/ConfirmWithdrawModal'
@@ -19,14 +18,11 @@ import { ArrowWrapper, WithdrawCallbackError, Wrapper } from './components/style
 import WithdrawPrice from './components/WithdrawPrice'
 import ProgressSteps from './components/ProgressSteps'
 import { AppBody } from '../../components/App'
-
 import ConnectWalletButton from '../../components/ConnectWalletButton'
-
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { ApprovalState, useApproveCallbackFromWithdraw } from '../../hooks/useApproveCallback'
 import { Field } from '../../state/swap/actions'
 import { useDefaultsFromURLSearch, useSwapActionHandlers, useSwapState } from '../../state/swap/hooks'
-import MintComponent from '../Mint/mintComponent'
 
 import {
   useExpertModeManager,
@@ -35,7 +31,6 @@ import {
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import CircleLoader from '../../components/Loader/CircleLoader'
 import Page from '../Page'
-// import SwapWarningModal from './components/SwapWarningModal'
 import { StyledInputCurrencyWrapper } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
 
@@ -63,29 +58,23 @@ export const SwitchIconButton = styled(IconButton)`
   }
 `
 
-export default function WithdrawView({ history }: RouteComponentProps) {
+export default function MigrateView({ history }: RouteComponentProps) {
   useDefaultsFromURLSearch()
   const { t } = useTranslation()
-
-  const migratorContract = useMigratorContract()
-
-  console.info(migratorContract);
-
   const { account } = useActiveWeb3React()
-
-  // for expert mode
   const [isExpertMode] = useExpertModeManager()
-
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
   const { withdraw, parsedAmount, currencies, currencyBalances, inputError: swapInputError } = useWithdrawTokenInfo()
+  const { quote, address } = useMigratorContract()
+
+  
 
   const parsedAmounts = {
     [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : withdraw?.inputAmount,
     [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : withdraw?.outputAmount,
     // [Field.FINAL]: independentField === Field.FINAL ? parsedAmount : withdraw?.finalAmmount,
   }
-
   const { onUserInput, onChangeRecipient } = useSwapActionHandlers()
   const isValid = !swapInputError
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
@@ -245,39 +234,15 @@ export default function WithdrawView({ history }: RouteComponentProps) {
                       </AutoRow>
                     </AutoColumn>
                     <CurrencyInputPanel
+                      label={independentField === Field.OUTPUT && withdraw ? t('From (estimated)') : t('From')}
                       value={formattedAmounts[Field.OUTPUT]}
-                      onUserInput={handleTypeOutput}
-                      label={independentField === Field.INPUT && withdraw ? t('To (estimated)') : t('To')}
-                      showMaxButton={false}
                       currency={currencies[Field.OUTPUT]}
+                      onUserInput={handleTypeOutput}
+                      onMax={handleMaxInput}
+                      showMaxButton={false}
                       onCurrencySelect={null}
                       otherCurrency={currencies[Field.INPUT]}
                       id="swap-currency-output"
-                      disableCurrencySelect
-                    />
-                                        <AutoColumn justify="space-between">
-                      <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
-                        <ArrowDownIcon
-                          className="icon-down"
-                          color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
-                        />
-                        {recipient === null && isExpertMode ? (
-                          <Button variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
-                            {t('+ Add a send (optional)')}
-                          </Button>
-                        ) : null}
-                      </AutoRow>
-                    </AutoColumn>
-                    <CurrencyInputPanel
-                      label={independentField === Field.OUTPUT && withdraw ? t('From (estimated)') : t('From')}
-                      value={formattedAmounts[Field.INPUT]}
-                      showMaxButton={!atMaxAmountInput}
-                      currency={currencies[Field.INPUT]}
-                      onUserInput={handleTypeInput}
-                      onMax={handleMaxInput}
-                      onCurrencySelect={null}
-                      otherCurrency={currencies[Field.OUTPUT]}
-                      id="swap-currency-input"
                       disableCurrencySelect
                     />
 

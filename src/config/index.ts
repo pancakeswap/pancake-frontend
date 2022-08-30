@@ -1,5 +1,5 @@
 import { ChainId } from 'peronio-sdk'
-import BigNumber from 'bignumber.js/bignumber'
+import BigNumber from 'bignumber.js'
 import { BIG_TEN } from 'utils/bigNumber'
 
 BigNumber.config({

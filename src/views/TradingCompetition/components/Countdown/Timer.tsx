@@ -91,6 +91,7 @@ const Wrapper: React.FC<TimerProps> = ({
   const shouldDisplayTooltip = showTooltip && tooltipVisible
   return (
     <Flex alignItems="flex-end" position="relative">
+      {/* @ts-ignore */}
       {prefix && <BodyTextComponent mr="16px">{prefix}</BodyTextComponent>}
       <div ref={targetRef}>
         <Timer
@@ -103,6 +104,7 @@ const Wrapper: React.FC<TimerProps> = ({
         />
         {shouldDisplayTooltip && tooltip}
       </div>
+      {/* @ts-ignore */}
       {suffix && <BodyTextComponent ml="16px">{suffix}</BodyTextComponent>}
     </Flex>
   )

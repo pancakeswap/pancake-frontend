@@ -37,6 +37,7 @@ export const PageMeta: React.FC<{ symbol?: string }> = ({ symbol }) => {
   }
 
   return (
+    // @ts-ignore
     <Helmet>
       <title>{pageTitle}</title>
       <meta property="og:title" content={title} />

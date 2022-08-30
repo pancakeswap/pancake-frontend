@@ -23,6 +23,7 @@ const Providers: React.FC = ({ children }) => {
     <Web3ReactProvider getLibrary={getLibrary}>
       <Provider store={store}>
         <ToastsProvider>
+          {/* @ts-ignore */}
           <HelmetProvider>
             <ThemeProviderWrapper>
               <LanguageProvider>

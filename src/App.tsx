@@ -85,6 +85,7 @@ const App: React.FC = () => {
       <MixpanelTracker/>
       {/* <GlobalCheckClaimStatus excludeLocations={[]} /> */}
       <Menu>
+        {/* @ts-ignore */}
         <SuspenseWithChunkError fallback={<PageLoader />}>
           <Switch>
             <Route path="/" exact>

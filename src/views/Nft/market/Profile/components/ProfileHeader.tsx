@@ -30,6 +30,7 @@ const StyledIconButton = styled(IconButton)`
 `
 
 // Account and profile passed down as the profile could be used to render _other_ users' profiles.
+// @ts-ignore
 const ProfileHeader: React.FC<HeaderProps> = ({
   accountPath,
   profile,
@@ -77,14 +78,14 @@ const ProfileHeader: React.FC<HeaderProps> = ({
         // TODO: Share functionality once user profiles routed by ID
         <Flex display="inline-flex">
           {accountPath && (
-            <StyledIconButton
-              target="_blank"
-              as="a"
-              href={getBscScanLink(accountPath, 'address')}
-              alt={t('View BscScan for user address')}
-            >
+            // <StyledIconButton
+            //   target="_blank"
+            //   as="a"
+            //   href={getBscScanLink(accountPath, 'address')}
+            //   alt={t('View BscScan for user address')}
+            // >
               <BscScanIcon width="20px" color="primary" />
-            </StyledIconButton>
+            //* </StyledIconButton>
           )}
         </Flex>
       )

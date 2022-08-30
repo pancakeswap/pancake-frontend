@@ -22,6 +22,7 @@ const IconStatBox: React.FC<IconStatBoxProps> = ({ icon: Icon, title, subtitle, 
   return (
     <SecondaryCard {...props}>
       <Flex alignItems="start">
+        {/* @ts-ignore */}
         <Icon width="44px" mr="24px" color={isDisabled ? 'textDisabled' : 'currentColor'} />
         <div>
           <Heading as="h3" scale="xl" color={isDisabled ? 'textDisabled' : 'text'}>
