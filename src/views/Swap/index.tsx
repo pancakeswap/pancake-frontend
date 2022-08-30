@@ -13,6 +13,7 @@ import Page from '../Page'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
 
 import SwapForm from './components/SwapForm'
+import StableSwapForm from './StableSwap/components/StableSwapForm'
 
 const CHART_SUPPORT_CHAIN_IDS = [ChainId.BSC]
 
@@ -85,7 +86,7 @@ export default function Swap() {
           />
         )}
         <Flex flexDirection="column">
-          <SwapForm
+          <StableSwapForm
             isChartExpanded={isChartExpanded}
             setIsChartDisplayed={setIsChartDisplayed}
             isChartDisplayed={isChartDisplayed}
