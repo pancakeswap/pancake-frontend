@@ -8,7 +8,8 @@ const InfoPage = () => {
   const { chainId, chainName } = router.query
   if (chainId === ChainId.ETHEREUM.toString() && !chainName)
     router.replace({ pathname: '/info/eth', query: '' }, undefined, { shallow: true })
-  else if (!chainName) router.replace({ pathname: '/info', query: '' }, undefined, { shallow: true })
+  else if (!chainName && chainId === ChainId.BSC.toString())
+    router.replace({ pathname: '/info', query: '' }, undefined, { shallow: true })
   return <Overview />
 }
 

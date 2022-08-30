@@ -100,6 +100,7 @@ export const TokenUpdater = (): null => {
 
   const allTokenData = useAllTokenData()
   const addresses = useTopTokenAddresses()
+  const chainName = useGetChainName()
 
   // add top tokens on first load
   useEffect(() => {
@@ -120,7 +121,10 @@ export const TokenUpdater = (): null => {
   }, [allTokenData])
 
   // fetch data for unfetched tokens and update them
-  const { error: tokenDataError, data: tokenDatas } = useFetchedTokenDatasETH(unfetchedTokenAddresses)
+  const { error: tokenDataErrorETH, data: tokenDatasETH } = useFetchedTokenDatasETH(unfetchedTokenAddresses)
+  const { error: tokenDataErrorBSC, data: tokenDatasBSC } = useFetchedTokenDatas(unfetchedTokenAddresses)
+  const tokenDatas = chainName === 'ETH' ? tokenDatasETH : tokenDatasBSC
+  const tokenDataError = chainName === 'ETH' ? tokenDataErrorETH : tokenDataErrorBSC
   useEffect(() => {
     if (tokenDatas && !tokenDataError) {
       updateTokenDatas(Object.values(tokenDatas))
