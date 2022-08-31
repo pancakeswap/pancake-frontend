@@ -19,7 +19,8 @@ const useEagerConnect = () => {
         client.autoConnect()
       })
     } else {
-      console.log('or or here????')
+      const bsc = connectors.find((c) => c.id === 'bsc')
+      console.log('or or here????', bsc)
       client.autoConnect()
     }
   }, [client, connectAsync, connectors])
