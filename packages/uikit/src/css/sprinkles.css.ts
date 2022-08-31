@@ -1,8 +1,8 @@
 import { calc } from "@vanilla-extract/css-utils";
 import {
   ConditionalValue,
-  // createMapValueFn,
-  // createNormalizeValueFn,
+  createMapValueFn,
+  createNormalizeValueFn,
   RequiredConditionalValue,
   defineProperties as defaultDefineProperties,
 } from "@vanilla-extract/sprinkles";
@@ -58,6 +58,7 @@ const responsiveProperties = defineProperties({
     xl: { "@media": `(min-width: ${breakpoints.xl}px)` },
     xxl: { "@media": `(min-width: ${breakpoints.xxl}px)` },
   },
+  // responsiveArray: ["xs", "sm", "md", "lg", "xl", "xxl"],
   staticProperties: {
     display: ["block", "flex", "grid", "inline", "inline-flex", "inline-block", "none", "contents"],
     flexDirection: ["column", "row", "column-reverse"],
@@ -70,36 +71,8 @@ const responsiveProperties = defineProperties({
     justifyContent: [...flexAlignment, "space-around", "space-between"],
     justifyItems: flexAlignment,
     justifySelf: flexAlignment,
-  },
-  dynamicProperties: {
-    borderWidth: vars.borderWidths,
-    // borderBottomWidth: vars.borderWidths,
-    // borderLeftWidth: vars.borderWidths,
-    // borderRightWidth: vars.borderWidths,
-    // borderTopWidth: vars.borderWidths,
-    borderRadius: vars.radii,
-    borderBottomLeftRadius: vars.radii,
-    borderBottomRightRadius: vars.radii,
-    borderTopLeftRadius: vars.radii,
-    borderTopRightRadius: vars.radii,
-    bottom: { ...vars.space, ...negativeSpace },
-    flex: {
-      1: "1 1 0%",
-      auto: "1 1 auto",
-      initial: "0 1 auto",
-      none: "none",
-    },
-    flexBasis: {
-      ...vars.space,
-      ...extendedSpace,
-    },
-    fontSize: {
-      ...vars.fontSizes,
-      inherit: "inherit",
-    },
-    gap: vars.space,
-    height: { ...vars.space, ...extendedSpace },
     inset: { ...vars.space, ...negativeSpace },
+    height: { ...vars.space, ...extendedSpace },
     left: { ...vars.space, ...negativeSpace },
     marginBottom: { ...margin, ...negativeSpace },
     marginLeft: { ...margin, ...negativeSpace },
@@ -119,10 +92,63 @@ const responsiveProperties = defineProperties({
     paddingTop: vars.space,
     right: { ...vars.space, ...negativeSpace },
     top: { ...vars.space, ...negativeSpace },
+    flex: {
+      1: "1 1 0%",
+      auto: "1 1 auto",
+      initial: "0 1 auto",
+      none: "none",
+    },
     width: {
       ...vars.space,
       ...extendedSpace,
     },
+  },
+  dynamicProperties: {
+    display: true,
+    flexDirection: true,
+    alignItems: true,
+    justifyContent: true,
+    borderWidth: true,
+    borderBottomWidth: true,
+    borderLeftWidth: true,
+    borderRightWidth: true,
+    borderTopWidth: true,
+    textAlign: true,
+    zIndex: true,
+    borderRadius: vars.radii,
+    borderBottomLeftRadius: vars.radii,
+    borderBottomRightRadius: vars.radii,
+    borderTopLeftRadius: vars.radii,
+    borderTopRightRadius: vars.radii,
+    bottom: true,
+    flex: true,
+    flexBasis: {
+      ...vars.space,
+      ...extendedSpace,
+    },
+    fontSize: {
+      ...vars.fontSizes,
+      inherit: "inherit",
+    },
+    gap: vars.space,
+    inset: true,
+    height: true,
+    left: true,
+    marginBottom: true,
+    marginLeft: true,
+    marginRight: true,
+    marginTop: true,
+    maxHeight: true,
+    maxWidth: true,
+    minHeight: true,
+    minWidth: true,
+    paddingBottom: true,
+    paddingLeft: true,
+    paddingRight: true,
+    paddingTop: true,
+    right: true,
+    top: true,
+    width: true,
   },
   shorthands: {
     borderLeftRadius: ["borderBottomLeftRadius", "borderTopLeftRadius"],
@@ -154,7 +180,7 @@ const responsiveProperties = defineProperties({
 });
 
 const unresponsiveProperties = defineProperties({
-  conditions: {},
+  // conditions: {},
   staticProperties: {
     isolation: ["isolate"],
     objectFit: ["contain", "cover"],
@@ -283,5 +309,5 @@ export type OptionalResponsiveObject<Value> = Value | Partial<Record<Breakpoint,
 export type RequiredResponsiveObject<Value> = Partial<Record<Breakpoint, Value>> &
   Record<typeof breakpointNames[0], Value>;
 
-export const normalizeResponsiveValue = createNormalizeValueFn(responsiveProperties);
-export const mapResponsiveValue = createMapValueFn(responsiveProperties);
+// export const normalizeResponsiveValue = createNormalizeValueFn(responsiveProperties);
+// export const mapResponsiveValue = createMapValueFn(responsiveProperties);
