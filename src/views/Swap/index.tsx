@@ -483,6 +483,8 @@ export default function Swap() {
                           onClick={() => {
                             setApprovalSubmitted(false) // reset 2 step UI for approvals
                             onSwitchTokens()
+                            replaceBrowserHistory('inputCurrency', currencyId(inputCurrency))
+                            replaceBrowserHistory('outputCurrency', currencyId(outputCurrency))
                           }}
                         >
                           <ArrowDownIcon
