@@ -152,7 +152,7 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
 
   const handleSuccess = async () => {
     // We have to mark the bet as claimed immediately because it does not update fast enough
-    dispatch(markAsCollected({ [bet.round.epoch]: true }))
+    dispatch(markAsCollected([bet.round.epoch]))
     dispatch(fetchLedgerData({ account, epochs: [bet.round.epoch] }))
   }
 

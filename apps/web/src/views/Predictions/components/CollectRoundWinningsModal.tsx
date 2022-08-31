@@ -120,13 +120,7 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWi
     if (receipt?.status) {
       if (!isV1Claim) {
         // Immediately mark rounds as claimed
-        dispatch(
-          markAsCollected(
-            epochs.reduce((accum, epoch) => {
-              return { ...accum, [epoch]: true }
-            }, {}),
-          ),
-        )
+        dispatch(markAsCollected(epochs))
       }
 
       await onSuccess?.()

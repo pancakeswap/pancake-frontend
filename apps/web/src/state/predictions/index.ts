@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
+import fromPairs from 'lodash/fromPairs'
 import merge from 'lodash/merge'
 import range from 'lodash/range'
 import pickBy from 'lodash/pickBy'
@@ -324,8 +325,9 @@ export const predictionsSlice = createSlice({
     setHistoryFilter: (state, action: PayloadAction<HistoryFilter>) => {
       state.historyFilter = action.payload
     },
-    markAsCollected: (state, action: PayloadAction<{ [key: string]: boolean }>) => {
-      state.claimableStatuses = { ...state.claimableStatuses, ...action.payload }
+    markAsCollected: (state, action: PayloadAction<number[]>) => {
+      const claimableStatuses = fromPairs(action.payload?.map((epoch) => [epoch, false]) ?? [])
+      state.claimableStatuses = { ...state.claimableStatuses, ...claimableStatuses }
     },
     setSelectedAddress: (state, action: PayloadAction<string>) => {
       state.leaderboard.selectedAddress = action.payload
