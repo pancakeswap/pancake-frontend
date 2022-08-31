@@ -34,7 +34,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     farmName: 'SPIN-BNB',
     tokenAddress: '0x6AA217312960A21aDbde1478DC8cBCf828110A67',
     quoteToken: bscTokens.wbnb,
-    tokenName: 'SPIN',
+    tokenName: 'Spintop',
     projectSite: 'https://spintop.network/',
   },
   {
@@ -50,7 +50,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     farmName: 'HAY-BUSD',
     tokenAddress: '0x0782b6d8c4551B9760e74c0545a9bCD90bdc41E5',
     quoteToken: bscTokens.busd,
-    tokenName: 'BNBx',
+    tokenName: 'Helio Protocol',
     projectSite: 'https://helio.money/',
   },
   {
