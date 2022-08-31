@@ -21,6 +21,16 @@ export interface StableTrade {
   minimumAmountOut: (slippaged: Percent) => CurrencyAmount<Currency>
 }
 
+function useStableConfig(address = '') {
+  const stablePair = findStablePair()
+  const stableSwapContract = useContract(stablePair?.stableSwapAddress, stableSwapABI)
+
+  return {
+    stableSwapConfig: stablePair,
+    stableSwapContract,
+  }
+}
+
 /**
  * Returns the best trade for the exact amount of tokens in to the given token out
  */
@@ -30,12 +40,10 @@ export default function useStableTradeExactIn(
 ): StableTrade | null {
   const isInvalid = !currencyAmountIn || !currencyOut
 
-  const stablePair = findStablePair()
-
-  const stableSwapContract = useContract(stablePair?.stableSwapAddress, stableSwapABI)
+  const { stableSwapContract, stableSwapConfig } = useStableConfig()
 
   const { data: estimatedOutputAmount } = useSWR(
-    isInvalid ? null : ['swapContract', stablePair?.stableSwapAddress, currencyAmountIn?.quotient?.toString()],
+    isInvalid ? null : ['swapContract', stableSwapConfig?.stableSwapAddress, currencyAmountIn?.quotient?.toString()],
     async () => {
       return stableSwapContract.get_dy(0, 1, currencyAmountIn?.quotient?.toString())
     },
@@ -46,7 +54,7 @@ export default function useStableTradeExactIn(
 
   if (isInvalid || !estimatedOutputAmount) return null
 
-  if (!stablePair) return null
+  if (!stableSwapConfig) return null
 
   const currencyAmountOut = CurrencyAmount.fromRawAmount(currencyOut, estimatedOutputAmount)
 

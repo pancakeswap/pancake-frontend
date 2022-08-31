@@ -14,8 +14,7 @@ import { AppBody } from 'components/App'
 import { AutoColumn } from 'components/Layout/Column'
 
 import { useCurrency } from 'hooks/Tokens'
-import { ApprovalState, useApproveCallbackFromTrade } from 'hooks/useApproveCallback'
-import AdvancedSwapDetailsDropdown from 'views/Swap/components/AdvancedSwapDetailsDropdown'
+import { ApprovalState } from 'hooks/useApproveCallback'
 
 import { Field } from 'state/swap/actions'
 import { useSwapState, useDefaultsFromURLSearch } from 'state/swap/hooks'
@@ -32,6 +31,8 @@ import AddressInputPanel from '../../components/AddressInputPanel'
 import { ArrowWrapper, Wrapper } from '../../components/styleds'
 import StableSwapCommitButton from './StableSwapCommitButton'
 import { useDerivedStableSwapInfo } from '../hooks/useDerivedStableSwapInfo'
+import useApproveCallbackFromStableTrade from '../hooks/useApproveCallbackFromStableTrade'
+import useStableConfig from '../hooks/useStableConfig'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -64,10 +65,11 @@ interface StableSwapForm {
 }
 
 export default function StableSwapForm({ isChartExpanded, setIsChartDisplayed, isChartDisplayed }) {
+  useDefaultsFromURLSearch()
+
   const { t } = useTranslation()
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
-  useDefaultsFromURLSearch()
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
 
   // for expert mode
   const [isExpertMode] = useExpertModeManager()
@@ -85,6 +87,8 @@ export default function StableSwapForm({ isChartExpanded, setIsChartDisplayed, i
   } = useSwapState()
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
+
+  const { stableSwapConfig } = useStableConfig()
 
   const currencies: { [field in Field]?: Currency } = {
     [Field.INPUT]: inputCurrency ?? undefined,
@@ -126,7 +130,11 @@ export default function StableSwapForm({ isChartExpanded, setIsChartDisplayed, i
   }
 
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage, chainId)
+  const [approval, approveCallback] = useApproveCallbackFromStableTrade({
+    trade,
+    allowedSlippage,
+    swapAddress: stableSwapConfig?.stableSwapAddress,
+  })
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)

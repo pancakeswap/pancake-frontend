@@ -1,12 +1,12 @@
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { isAddress } from 'utils'
 
 import tryParseAmount from 'utils/tryParseAmount'
 import { Field } from 'state/swap/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
-import useStableTradeExactIn from './useStableTradeExactIn'
+import useStableTradeExactIn, { StableTrade } from './useStableTradeExactIn'
 import useStableTradeExactOut from './useStableTradeExactOut'
 
 // from the current swap inputs, compute the best trade and return it.
@@ -20,7 +20,7 @@ export function useDerivedStableSwapInfo(
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   parsedAmount: CurrencyAmount<Currency> | undefined
-  v2Trade: Trade<Currency, Currency, TradeType> | undefined
+  v2Trade: StableTrade | undefined
   inputError?: string
 } {
   const { account } = useWeb3React()
