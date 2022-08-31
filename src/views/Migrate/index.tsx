@@ -1,37 +1,33 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { CurrencyAmount, Withdraw } from 'peronio-sdk'
-import { Button, Text, ArrowDownIcon, Box, useModal, Flex, IconButton } from 'peronio-uikit'
+import { CurrencyAmount, Mint } from 'peronio-sdk'
+import { Button, Text, ArrowDownIcon, Box, useModal, Flex, IconButton, ArrowUpDownIcon } from 'peronio-uikit'
 import { RouteComponentProps } from 'react-router-dom'
+import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
-import { useWithdrawCallback } from 'hooks/useWithdrawCallback'
-import { useWithdrawTokenInfo } from 'state/tokenWithdraw/hooks'
+import { useMintCallback } from 'hooks/useMintCallback'
+import { useMigrateTokenInfo } from 'state/tokenMigrate/hooks'
 import { useMigratorContract } from 'hooks/useContract'
-import { BigNumber } from "@ethersproject/bignumber";
 import AddressInputPanel from './components/AddressInputPanel'
 import Column, { AutoColumn } from '../../components/Layout/Column'
-import ConfirmWithdrawModal from './components/ConfirmWithdrawModal'
+import ConfirmMintModal from './components/ConfirmMintModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { AutoRow, RowBetween } from '../../components/Layout/Row'
-import AdvancedWithdrawDetailsDropdown from './components/AdvancedWithdrawDetailsDropdown'
-import { ArrowWrapper, WithdrawCallbackError, Wrapper } from './components/styleds'
-import WithdrawPrice from './components/WithdrawPrice'
+import AdvancedMintDetailsDropdown from './components/AdvancedMintDetailsDropdown'
+import { ArrowWrapper, MintCallbackError, Wrapper } from './components/styleds'
+import MintPrice from './components/MintPrice'
 import ProgressSteps from './components/ProgressSteps'
 import { AppBody } from '../../components/App'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import { ApprovalState, useApproveCallbackFromWithdraw } from '../../hooks/useApproveCallback'
+import { ApprovalState, useApproveCallbackFromMint } from '../../hooks/useApproveCallback'
 import { Field } from '../../state/swap/actions'
 import { useDefaultsFromURLSearch, useSwapActionHandlers, useSwapState } from '../../state/swap/hooks'
-
-import {
-  useExpertModeManager,
-  // useExchangeChartManager,
-} from '../../state/user/hooks'
+import { useExpertModeManager } from '../../state/user/hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import CircleLoader from '../../components/Loader/CircleLoader'
 import Page from '../Page'
-import { StyledInputCurrencyWrapper } from './styles'
+import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
 
 const Label = styled(Text)`
@@ -40,7 +36,7 @@ const Label = styled(Text)`
   color: ${({ theme }) => theme.colors.secondary};
 `
 
-export const SwitchIconButton = styled(IconButton)`
+const SwitchIconButton = styled(IconButton)`
   box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
   .icon-up-down {
     display: none;
@@ -61,58 +57,68 @@ export const SwitchIconButton = styled(IconButton)`
 export default function MigrateView({ history }: RouteComponentProps) {
   useDefaultsFromURLSearch()
   const { t } = useTranslation()
+
   const { account } = useActiveWeb3React()
+
+  // for expert mode
   const [isExpertMode] = useExpertModeManager()
+  const migratorContract = useMigratorContract()
+
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
-  const { withdraw, parsedAmount, currencies, currencyBalances, inputError: swapInputError } = useWithdrawTokenInfo()
-  const { quote, address } = useMigratorContract()
-
-  
+  const { mint, parsedAmount, currencies, currencyBalances, inputError: swapInputError } = useMigrateTokenInfo()
+  const [state, setState] = useState<string>();
+  const [outPutState, setOutPutState] = useState<string>();
 
   const parsedAmounts = {
-    [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : withdraw?.inputAmount,
-    [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : withdraw?.outputAmount,
-    // [Field.FINAL]: independentField === Field.FINAL ? parsedAmount : withdraw?.finalAmmount,
+    [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : mint?.inputAmount,
+    [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : mint?.outputAmount,
   }
+
   const { onUserInput, onChangeRecipient } = useSwapActionHandlers()
   const isValid = !swapInputError
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
 
   const handleTypeInput = useCallback(
     (value: string) => {
+      if (value === undefined) return;
+      setState(value)
+      migratorContract.quote(value).then((resultado: any) => setOutPutState(resultado))
       onUserInput(Field.INPUT, value)
     },
-    [onUserInput],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
   )
   const handleTypeOutput = useCallback(
     (value: string) => {
-      onUserInput(Field.OUTPUT, value)
+      console.info(outPutState);
     },
-    [onUserInput],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
   )
+  // console.info("value", state)
+  console.info("output", outPutState)
 
   // modal and loading
-  const [{ withdrawToConfirm, withdrawErrorMessage, attemptingTxn, txHash }, setWithdrawState] = useState<{
-    withdrawToConfirm: Withdraw | undefined
+  const [{ mintToConfirm, mintErrorMessage, attemptingTxn, txHash }, setMintState] = useState<{
+    mintToConfirm: Mint | undefined
     attemptingTxn: boolean
-    withdrawErrorMessage: string | undefined
+    mintErrorMessage: string | undefined
     txHash: string | undefined
   }>({
-    withdrawToConfirm: undefined,
+    mintToConfirm: undefined,
     attemptingTxn: false,
-    withdrawErrorMessage: undefined,
+    mintErrorMessage: undefined,
     txHash: undefined,
   })
 
   const formattedAmounts = {
     [independentField]: typedValue,
     [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
-    [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   }
 
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromWithdraw(withdraw)
+  const [approval, approveCallback] = useApproveCallbackFromMint(mint)
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
@@ -128,26 +134,26 @@ export default function MigrateView({ history }: RouteComponentProps) {
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
   // the callback to execute the swap
-  const { callback: withdrawCallback, error: swapCallbackError } = useWithdrawCallback(withdraw, recipient)
+  const { callback: mintCallback, error: swapCallbackError } = useMintCallback(mint, recipient)
 
   const handleSwap = useCallback(() => {
-    if (!withdrawCallback) {
+    if (!mintCallback) {
       return
     }
-    setWithdrawState({ attemptingTxn: true, withdrawToConfirm, withdrawErrorMessage: undefined, txHash: undefined })
-    withdrawCallback()
+    setMintState({ attemptingTxn: true, mintToConfirm, mintErrorMessage: undefined, txHash: undefined })
+    mintCallback()
       .then((hash) => {
-        setWithdrawState({ attemptingTxn: false, withdrawToConfirm, withdrawErrorMessage: undefined, txHash: hash })
+        setMintState({ attemptingTxn: false, mintToConfirm, mintErrorMessage: undefined, txHash: hash })
       })
       .catch((error) => {
-        setWithdrawState({
+        setMintState({
           attemptingTxn: false,
-          withdrawToConfirm,
-          withdrawErrorMessage: error.message,
+          mintToConfirm,
+          mintErrorMessage: error.message,
           txHash: undefined,
         })
       })
-  }, [withdrawCallback, withdrawToConfirm])
+  }, [mintCallback, mintToConfirm])
 
   // errors
   const [showInverted, setShowInverted] = useState<boolean>(false)
@@ -165,12 +171,12 @@ export default function MigrateView({ history }: RouteComponentProps) {
     !(priceImpactSeverity > 3 && !isExpertMode)
 
   const handleConfirmDismiss = useCallback(() => {
-    setWithdrawState({ withdrawToConfirm, attemptingTxn, withdrawErrorMessage, txHash })
+    setMintState({ mintToConfirm, attemptingTxn, mintErrorMessage, txHash })
     // if there was a tx hash, we want to clear the input
     if (txHash) {
       onUserInput(Field.INPUT, '')
     }
-  }, [attemptingTxn, onUserInput, withdrawErrorMessage, withdrawToConfirm, txHash])
+  }, [attemptingTxn, onUserInput, mintErrorMessage, mintToConfirm, txHash])
 
   const handleMaxInput = useCallback(() => {
     if (maxAmountInput) {
@@ -179,24 +185,25 @@ export default function MigrateView({ history }: RouteComponentProps) {
   }, [maxAmountInput, onUserInput])
 
   const [onPresentConfirmModal] = useModal(
-    <ConfirmWithdrawModal
-      withdraw={withdraw}
+    <ConfirmMintModal
+      mint={mint}
       attemptingTxn={attemptingTxn}
       txHash={txHash}
       recipient={recipient}
       onConfirm={handleSwap}
-      withdrawErrorMessage={withdrawErrorMessage}
+      mintErrorMessage={mintErrorMessage}
       customOnDismiss={handleConfirmDismiss}
     />,
     true,
     true,
-    'confirmWithdrawModal',
+    'confirmMintModal',
   )
 
   return (
     <Page removePadding={false} hideFooterOnDesktop={false}>
       <Flex width="100%" justifyContent="center" position="relative">
         <Flex flexDirection="column">
+          <StyledSwapContainer $isChartExpanded={false}>
             <StyledInputCurrencyWrapper mt="0">
               <AppBody>
                 <CurrencyInputHeader
@@ -208,8 +215,8 @@ export default function MigrateView({ history }: RouteComponentProps) {
                 <Wrapper id="swap-page">
                   <AutoColumn gap="md">
                     <CurrencyInputPanel
-                      label={independentField === Field.OUTPUT && withdraw ? t('From (estimated)') : t('From')}
-                      value={formattedAmounts[Field.INPUT]}
+                      label={independentField === Field.OUTPUT && mint ? t('From (estimated)') : t('From')}
+                      value={state}
                       showMaxButton={!atMaxAmountInput}
                       currency={currencies[Field.INPUT]}
                       onUserInput={handleTypeInput}
@@ -222,10 +229,22 @@ export default function MigrateView({ history }: RouteComponentProps) {
 
                     <AutoColumn justify="space-between">
                       <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
-                        <ArrowDownIcon
-                          className="icon-down"
-                          color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
-                        />
+                        <SwitchIconButton
+                          variant="light"
+                          scale="sm"
+                          onClick={() => {
+                            history.push('/withdraw')
+                          }}
+                        >
+                          <ArrowDownIcon
+                            className="icon-down"
+                            color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
+                          />
+                          <ArrowUpDownIcon
+                            className="icon-up-down"
+                            color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
+                          />
+                        </SwitchIconButton>
                         {recipient === null && isExpertMode ? (
                           <Button variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
                             {t('+ Add a send (optional)')}
@@ -234,15 +253,15 @@ export default function MigrateView({ history }: RouteComponentProps) {
                       </AutoRow>
                     </AutoColumn>
                     <CurrencyInputPanel
-                      label={independentField === Field.OUTPUT && withdraw ? t('From (estimated)') : t('From')}
-                      value={formattedAmounts[Field.OUTPUT]}
-                      currency={currencies[Field.OUTPUT]}
+                      value={outPutState ? outPutState[1] : null}
                       onUserInput={handleTypeOutput}
-                      onMax={handleMaxInput}
+                      label={independentField === Field.INPUT && mint ? t('To (estimated)') : t('To')}
                       showMaxButton={false}
+                      currency={currencies[Field.OUTPUT]}
                       onCurrencySelect={null}
                       otherCurrency={currencies[Field.INPUT]}
                       id="swap-currency-output"
+                      disabled
                       disableCurrencySelect
                     />
 
@@ -261,11 +280,11 @@ export default function MigrateView({ history }: RouteComponentProps) {
                     ) : null}
 
                     <AutoColumn gap="8px" style={{ padding: '0 16px' }}>
-                      {Boolean(withdraw) && (
+                      {Boolean(mint) && (
                         <RowBetween align="center">
                           <Label>{t('Price')}</Label>
-                          <WithdrawPrice
-                            price={withdraw?.executionPrice}
+                          <MintPrice
+                            price={mint?.executionPrice}
                             showInverted={showInverted}
                             setShowInverted={setShowInverted}
                           />
@@ -300,10 +319,10 @@ export default function MigrateView({ history }: RouteComponentProps) {
                             if (isExpertMode) {
                               handleSwap()
                             } else {
-                              setWithdrawState({
-                                withdrawToConfirm: withdraw,
+                              setMintState({
+                                mintToConfirm: mint,
                                 attemptingTxn: false,
-                                withdrawErrorMessage: undefined,
+                                mintErrorMessage: undefined,
                                 txHash: undefined,
                               })
                               onPresentConfirmModal()
@@ -317,7 +336,7 @@ export default function MigrateView({ history }: RouteComponentProps) {
                             (priceImpactSeverity > 3 && !isExpertMode)
                           }
                         >
-                          {t('Migrate')}
+                          {t('Mint')}
                         </Button>
                       </RowBetween>
                     ) : (
@@ -327,10 +346,10 @@ export default function MigrateView({ history }: RouteComponentProps) {
                           if (isExpertMode) {
                             handleSwap()
                           } else {
-                            setWithdrawState({
-                              withdrawToConfirm: withdraw,
+                            setMintState({
+                              mintToConfirm: mint,
                               attemptingTxn: false,
-                              withdrawErrorMessage: undefined,
+                              mintErrorMessage: undefined,
                               txHash: undefined,
                             })
                             onPresentConfirmModal()
@@ -344,8 +363,8 @@ export default function MigrateView({ history }: RouteComponentProps) {
                           (priceImpactSeverity > 3 && !isExpertMode
                             ? t('Price Impact Too High')
                             : priceImpactSeverity > 2
-                            ? t('Withdraw Anyway')
-                            : t('Withdraw'))}
+                            ? t('Mint Anyway')
+                            : t('Mint'))}
                       </Button>
                     )}
                     {showApproveFlow && (
@@ -353,14 +372,13 @@ export default function MigrateView({ history }: RouteComponentProps) {
                         <ProgressSteps steps={[approval === ApprovalState.APPROVED]} />
                       </Column>
                     )}
-                    {isExpertMode && withdrawErrorMessage ? (
-                      <WithdrawCallbackError error={withdrawErrorMessage} />
-                    ) : null}
+                    {isExpertMode && mintErrorMessage ? <MintCallbackError error={mintErrorMessage} /> : null}
                   </Box>
                 </Wrapper>
               </AppBody>
-              {withdraw && <AdvancedWithdrawDetailsDropdown withdraw={withdraw} />}
+              {mint && <AdvancedMintDetailsDropdown mint={mint} />}
             </StyledInputCurrencyWrapper>
+          </StyledSwapContainer>
         </Flex>
       </Flex>
     </Page>

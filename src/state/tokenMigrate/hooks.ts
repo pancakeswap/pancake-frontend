@@ -1,10 +1,13 @@
+import { mainnetTokens } from 'config/constants/tokens'
 import { useTranslation } from 'contexts/Localization'
 import useENS from 'hooks/ENS/useENS'
+import { useMigrateExactIn, useMigrateExactOut } from 'hooks/Migrate'
 import { useMintExactIn, useMintExactOut } from 'hooks/Mints'
 import { useCurrency } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMigratorContract } from 'hooks/useContract'
 import { Currency, CurrencyAmount, Mint } from 'peronio-sdk'
+import { WrappedTokenInfo } from 'state/lists/hooks'
 import { tryParseAmount, useSwapState } from 'state/swap/hooks'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { isAddress } from 'utils'
@@ -20,7 +23,7 @@ import {
 } from './actions'
 
 // TODO: Replace with functionality
-export function useMintTokenInfo(): {
+export function useMigrateTokenInfo(): {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount }
   parsedAmount: CurrencyAmount | undefined
@@ -51,8 +54,8 @@ export function useMintTokenInfo(): {
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
-  const mintOut = useMintExactOut(!isExactIn ? parsedAmount : null, outputCurrency)
-  const mintIn = useMintExactIn(isExactIn ? parsedAmount : null, outputCurrency)
+  const mintOut = useMigrateExactOut(!isExactIn ? parsedAmount : null, outputCurrency)
+  const mintIn = useMigrateExactIn(isExactIn ? parsedAmount : null, outputCurrency)
 
   const mint = isExactIn ? mintIn : mintOut
 

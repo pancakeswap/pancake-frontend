@@ -1,12 +1,15 @@
 import React from 'react'
-import { Withdraw } from 'peronio-sdk'
+import { Mint } from 'peronio-sdk'
 import { Text } from 'peronio-uikit'
 import { useTranslation } from 'contexts/Localization'
 import { AutoColumn } from 'components/Layout/Column'
+import QuestionHelper from 'components/QuestionHelper'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
 
-function TradeSummary({ withdraw }: { withdraw: Withdraw }) {
+function TradeSummary({ mint }: { mint: Mint }) {
   const { t } = useTranslation()
+  const markupRate = mint.markup.toFixed(2)
+  const markupAmount = mint.feeAmount
   const isExactIn = true
   // const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage)
 
@@ -21,12 +24,12 @@ function TradeSummary({ withdraw }: { withdraw: Withdraw }) {
         <RowFixed>
           <Text fontSize="14px">
             {isExactIn
-              ? `${withdraw?.outputAmount.toSignificant(4)} ${withdraw.outputAmount.currency.symbol}` ?? '-'
-              : `${withdraw?.inputAmount.toSignificant(4)} ${withdraw.inputAmount.currency.symbol}` ?? '-'}
+              ? `${mint?.outputAmount.toSignificant(4)} ${mint.outputAmount.currency.symbol}` ?? '-'
+              : `${mint?.inputAmount.toSignificant(4)} ${mint.inputAmount.currency.symbol}` ?? '-'}
           </Text>
         </RowFixed>
       </RowBetween>
-      {/* <RowBetween>
+      <RowBetween>
         <RowFixed>
           <Text fontSize="14px" color="textSubtle">
             {t('Markup (%markup%%)', { markup: markupRate })}
@@ -34,24 +37,24 @@ function TradeSummary({ withdraw }: { withdraw: Withdraw }) {
           <QuestionHelper
             text={
               <>
-                <Text mb="12px">{t('The vault charges a fee for withdrawing')}</Text>
+                <Text mb="12px">{t('The vault charges a fee for minting')}</Text>
                 <Text>
                   -{' '}
                   {t('The markup is %amount%% from the %symbol% amount', {
                     amount: markupRate,
-                    symbol: withdraw.inputAmount.currency.symbol,
+                    symbol: mint.inputAmount.currency.symbol,
                   })}
                 </Text>
                 <Text>
                   -{' '}
                   {t('This is already included in total %symbol% input above', {
-                    symbol: withdraw.inputAmount.currency.symbol,
+                    symbol: mint.inputAmount.currency.symbol,
                   })}
                 </Text>
                 <Text>
                   -{' '}
                   {t('This additional fee will increase the total %token_name% collateral', {
-                    token_name: withdraw.outputAmount.currency.name,
+                    token_name: mint.outputAmount.currency.name,
                   })}
                 </Text>
               </>
@@ -61,15 +64,15 @@ function TradeSummary({ withdraw }: { withdraw: Withdraw }) {
           />
         </RowFixed>
         <Text fontSize="14px">USDT {markupAmount.toFixed(2)}</Text>
-      </RowBetween> */}
+      </RowBetween>
     </AutoColumn>
   )
 }
 
-export interface AdvancedWithdrawDetailsProps {
-  withdraw?: Withdraw
+export interface AdvancedMintDetailsProps {
+  mint?: Mint
 }
 
-export function AdvancedWithdrawDetails({ withdraw }: AdvancedWithdrawDetailsProps) {
-  return <AutoColumn gap="0px">{withdraw && <TradeSummary withdraw={withdraw} />}</AutoColumn>
+export function AdvancedMintDetails({ mint }: AdvancedMintDetailsProps) {
+  return <AutoColumn gap="0px">{mint && <TradeSummary mint={mint} />}</AutoColumn>
 }
