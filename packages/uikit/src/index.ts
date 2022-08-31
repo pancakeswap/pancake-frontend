@@ -1,4 +1,4 @@
-import "./css/global.css";
+import "@pancakeswap/ui/css/global.css";
 
 // Components
 export * from "./components/Alert";

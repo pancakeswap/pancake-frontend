@@ -6,7 +6,7 @@ import {
   RequiredConditionalValue,
   defineProperties as defaultDefineProperties,
 } from "@vanilla-extract/sprinkles";
-import { defineProperties, createRainbowSprinkles } from "rainbow-sprinkles";
+import { defineProperties, createRainbowSprinkles } from "../sprinkles";
 
 import { Breakpoint, breakpointNames, breakpoints } from "./breakpoints";
 import { vars } from "./vars.css";
@@ -58,7 +58,7 @@ const responsiveProperties = defineProperties({
     xl: { "@media": `(min-width: ${breakpoints.xl}px)` },
     xxl: { "@media": `(min-width: ${breakpoints.xxl}px)` },
   },
-  // responsiveArray: ["xs", "sm", "md", "lg", "xl", "xxl"],
+  responsiveArray: ["xs", "sm", "md", "lg", "xl", "xxl"],
   staticProperties: {
     display: ["block", "flex", "grid", "inline", "inline-flex", "inline-block", "none", "contents"],
     flexDirection: ["column", "row", "column-reverse"],
