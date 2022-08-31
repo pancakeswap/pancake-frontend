@@ -1,3 +1,4 @@
+import fromPairs from 'lodash/fromPairs'
 import { BigNumber } from '@ethersproject/bignumber'
 import orderBy from 'lodash/orderBy'
 import { createSelector } from '@reduxjs/toolkit'
@@ -30,22 +31,18 @@ export const makeGetIsClaimableSelector = (epoch: number) =>
   })
 
 export const getRoundsByCloseOracleIdSelector = createSelector([selectRounds], (rounds) => {
-  return Object.keys(rounds).reduce((accum, epoch) => {
-    const parsed = parseBigNumberObj<ReduxNodeRound, NodeRound>(rounds[epoch])
-    return {
-      ...accum,
-      [parsed.closeOracleId]: parsed,
-    }
-  }, {}) as { [key: string]: NodeRound }
+  return fromPairs(
+    Object.keys(rounds).map((epoch) => {
+      const parsed = parseBigNumberObj<ReduxNodeRound, NodeRound>(rounds[epoch])
+      return [parsed.closeOracleId, parsed]
+    }),
+  ) as { [key: string]: NodeRound }
 })
 
 export const getBigNumberRounds = createSelector([selectRounds], (rounds) => {
-  return Object.keys(rounds).reduce((accum, epoch) => {
-    return {
-      ...accum,
-      [epoch]: parseBigNumberObj<ReduxNodeRound, NodeRound>(rounds[epoch]),
-    }
-  }, {}) as { [key: string]: NodeRound }
+  return fromPairs(
+    Object.keys(rounds).map((epoch) => [epoch, parseBigNumberObj<ReduxNodeRound, NodeRound>(rounds[epoch])]),
+  ) as { [key: string]: NodeRound }
 })
 
 export const getSortedRoundsSelector = createSelector([getBigNumberRounds], (rounds) => {

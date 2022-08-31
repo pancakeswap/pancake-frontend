@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
+import fromPairs from 'lodash/fromPairs'
+import maxBy from 'lodash/maxBy'
 import merge from 'lodash/merge'
 import range from 'lodash/range'
 import pickBy from 'lodash/pickBy'
@@ -89,14 +91,13 @@ export const fetchPredictionData = createAsyncThunk<PredictionInitialization, st
 
     // Round data
     const roundsResponse = await getRoundsData(epochs, extra.address)
-    const initialRoundData: { [key: string]: ReduxNodeRound } = roundsResponse.reduce((accum, roundResponse) => {
-      const reduxNodeRound = serializePredictionsRoundsResponse(roundResponse)
+    const initialRoundData: { [key: string]: ReduxNodeRound } = fromPairs(
+      roundsResponse.map((roundResponse) => {
+        const reduxNodeRound = serializePredictionsRoundsResponse(roundResponse)
 
-      return {
-        ...accum,
-        [reduxNodeRound.epoch.toString()]: reduxNodeRound,
-      }
-    }, {})
+        return [reduxNodeRound.epoch.toString(), reduxNodeRound]
+      }, {}),
+    )
 
     const initializedData = {
       ...marketData,
@@ -190,52 +191,50 @@ export const fetchNodeHistory = createAsyncThunk<
       return round.closePrice.gt(round.lockPrice) ? BetPosition.BULL : BetPosition.BEAR
     }
 
-    return [
-      ...accum,
-      {
+    accum.push({
+      id: null,
+      hash: null,
+      amount: parseFloat(formatUnits(ledgerAmount)),
+      position: ledger.position,
+      claimed: ledger.claimed,
+      claimedAt: null,
+      claimedHash: null,
+      claimedBNB: 0,
+      claimedNetBNB: 0,
+      createdAt: null,
+      updatedAt: null,
+      block: 0,
+      round: {
         id: null,
-        hash: null,
-        amount: parseFloat(formatUnits(ledgerAmount)),
-        position: ledger.position,
-        claimed: ledger.claimed,
-        claimedAt: null,
-        claimedHash: null,
-        claimedBNB: 0,
-        claimedNetBNB: 0,
-        createdAt: null,
-        updatedAt: null,
-        block: 0,
-        round: {
-          id: null,
-          epoch: round.epoch.toNumber(),
-          failed: getHasRoundFailed(
-            round.oracleCalled,
-            round.closeTimestamp.eq(0) ? null : round.closeTimestamp.toNumber(),
-            bufferSeconds,
-          ),
-          startBlock: null,
-          startAt: round.startTimestamp ? round.startTimestamp.toNumber() : null,
-          startHash: null,
-          lockAt: round.lockTimestamp ? round.lockTimestamp.toNumber() : null,
-          lockBlock: null,
-          lockPrice,
-          lockHash: null,
-          lockRoundId: round.lockOracleId ? round.lockOracleId.toString() : null,
-          closeRoundId: round.closeOracleId ? round.closeOracleId.toString() : null,
-          closeHash: null,
-          closeAt: null,
-          closePrice,
-          closeBlock: null,
-          totalBets: 0,
-          totalAmount: parseFloat(formatUnits(round.totalAmount)),
-          bullBets: 0,
-          bullAmount: parseFloat(formatUnits(round.bullAmount)),
-          bearBets: 0,
-          bearAmount: parseFloat(formatUnits(round.bearAmount)),
-          position: getRoundPosition(),
-        },
+        epoch: round.epoch.toNumber(),
+        failed: getHasRoundFailed(
+          round.oracleCalled,
+          round.closeTimestamp.eq(0) ? null : round.closeTimestamp.toNumber(),
+          bufferSeconds,
+        ),
+        startBlock: null,
+        startAt: round.startTimestamp ? round.startTimestamp.toNumber() : null,
+        startHash: null,
+        lockAt: round.lockTimestamp ? round.lockTimestamp.toNumber() : null,
+        lockBlock: null,
+        lockPrice,
+        lockHash: null,
+        lockRoundId: round.lockOracleId ? round.lockOracleId.toString() : null,
+        closeRoundId: round.closeOracleId ? round.closeOracleId.toString() : null,
+        closeHash: null,
+        closeAt: null,
+        closePrice,
+        closeBlock: null,
+        totalBets: 0,
+        totalAmount: parseFloat(formatUnits(round.totalAmount)),
+        bullBets: 0,
+        bullAmount: parseFloat(formatUnits(round.bullAmount)),
+        bearBets: 0,
+        bearAmount: parseFloat(formatUnits(round.bearAmount)),
+        position: getRoundPosition(),
       },
-    ]
+    })
+    return accum
   }, [])
 
   return { bets, claimableStatuses, page, totalHistory: userRoundsLength.toNumber() }
@@ -361,12 +360,7 @@ export const predictionsSlice = createSlice({
       // Populate address results to reduce calls
       state.leaderboard.addressResults = {
         ...state.leaderboard.addressResults,
-        ...results.reduce((accum, result) => {
-          return {
-            ...accum,
-            [result.id]: result,
-          }
-        }, {}),
+        ...fromPairs(results.map((result) => [result.id, result])),
       }
     })
 

@@ -1,6 +1,7 @@
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_PREDICTION_BNB, GRAPH_API_PREDICTION_CAKE } from 'config/constants/endpoints'
 import { BigNumber } from '@ethersproject/bignumber'
+import fromPairs from 'lodash/fromPairs'
 import {
   Bet,
   LedgerData,
@@ -234,15 +235,14 @@ export const getClaimStatuses = async (
     calls: claimableCalls,
   })
 
-  return claimableResponses.reduce((accum, claimableResponse, index) => {
-    const epoch = epochs[index]
-    const [claimable] = claimableResponse
+  return fromPairs(
+    claimableResponses.map((claimableResponse, index) => {
+      const epoch = epochs[index]
+      const [claimable] = claimableResponse
 
-    return {
-      ...accum,
-      [epoch]: claimable,
-    }
-  }, {})
+      return [epoch, claimable]
+    }),
+  )
 }
 
 export type MarketData = Pick<PredictionsState, 'status' | 'currentEpoch' | 'intervalSeconds' | 'minBetAmount'>
@@ -294,12 +294,7 @@ export const makeFutureRoundResponse = (epoch: number, startTimestamp: number): 
 }
 
 export const makeRoundData = (rounds: ReduxNodeRound[]): RoundData => {
-  return rounds.reduce((accum, round) => {
-    return {
-      ...accum,
-      [round.epoch.toString()]: round,
-    }
-  }, {})
+  return fromPairs(rounds.map((round) => [round.epoch.toString(), round]))
 }
 
 export const serializePredictionsLedgerResponse = (ledgerResponse: PredictionsLedgerResponse): ReduxNodeLedger => ({
@@ -375,21 +370,17 @@ export const serializePredictionsRoundsResponse = (response: PredictionsRoundsRe
  * BigNumber values are stored with the "toJSON()" method, e.g  { type: "BigNumber", hex: string }
  */
 export const parseBigNumberObj = <T = Record<string, any>, K = Record<string, any>>(data: T): K => {
-  return Object.keys(data).reduce((accum, key) => {
-    const value = data[key]
+  return fromPairs(
+    Object.keys(data).map((key) => {
+      const value = data[key]
 
-    if (value && value?.type === 'BigNumber') {
-      return {
-        ...accum,
-        [key]: BigNumber.from(value),
+      if (value && value?.type === 'BigNumber') {
+        return [key, BigNumber.from(value)]
       }
-    }
 
-    return {
-      ...accum,
-      [key]: value,
-    }
-  }, {}) as K
+      return [key, value]
+    }),
+  ) as K
 }
 
 export const fetchUsersRoundsLength = async (account: string, address: string) => {
@@ -416,12 +407,12 @@ export const fetchUserRounds = async (
   try {
     const [rounds, ledgers] = await contract.getUserRounds(account, cursor, size)
 
-    return rounds.reduce((accum, round, index) => {
-      return {
-        ...accum,
-        [round.toString()]: serializePredictionsLedgerResponse(ledgers[index] as PredictionsLedgerResponse),
-      }
-    }, {})
+    return fromPairs(
+      rounds.map((round, index) => [
+        round.toString(),
+        serializePredictionsLedgerResponse(ledgers[index] as PredictionsLedgerResponse),
+      ]),
+    )
   } catch {
     // When the results run out the contract throws an error.
     return null
