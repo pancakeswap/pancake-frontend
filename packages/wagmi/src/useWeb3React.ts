@@ -1,9 +1,15 @@
+import { useEffect } from 'react'
 import { useAccount, useNetwork } from 'wagmi'
 
 export function useWeb3React() {
   const { chain } = useNetwork()
   const { address, connector, isConnected, isConnecting } = useAccount()
-  console.log(isConnected, 'isConnected')
+  useEffect(() => {
+    console.log('isConnecting', isConnecting)
+  }, [isConnecting])
+  useEffect(() => {
+    console.log('isConnecting', isConnected)
+  }, [isConnected])
 
   return {
     chainId: chain?.id,

@@ -13,10 +13,13 @@ const useEagerConnect = () => {
       // @ts-ignore
       !window.cy
     ) {
+      console.log('here????')
       connectAsync({ connector: connectorInstance }).catch(() => {
+        console.log('or here????')
         client.autoConnect()
       })
     } else {
+      console.log('or or here????')
       client.autoConnect()
     }
   }, [client, connectAsync, connectors])
