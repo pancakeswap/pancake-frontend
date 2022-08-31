@@ -62,6 +62,7 @@ interface ConfirmSwapModalProps {
   swapErrorMessage?: string
   customOnDismiss?: () => void
   openSettingModal?: () => void
+  isStable: boolean
 }
 
 const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & ConfirmSwapModalProps>> = ({

@@ -5,7 +5,6 @@ import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { WrapType } from 'hooks/useWrapCallback'
 import { AutoRow, RowBetween } from 'components/Layout/Row'
 import { ApprovalState } from 'hooks/useApproveCallback'
 import CircleLoader from 'components/Loader/CircleLoader'
@@ -14,11 +13,12 @@ import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettin
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { useCallback, useEffect, useState } from 'react'
 import Column from 'components/Layout/Column'
+import { useSwapCallback } from 'hooks/useSwapCallback'
 
 import ConfirmSwapModal from '../../components/ConfirmSwapModal'
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
-import { useStableSwapCallback } from '../hooks/useStableSwapCallback'
+import useStableSwapCallArgs from '../hooks/useStableSwapCallArgs'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
@@ -59,7 +59,12 @@ export default function StableSwapCommitButton({
 }: StableSwapCommitButtonPropsType) {
   const { t } = useTranslation()
   // the callback to execute the swap
-  const { callback: swapCallback, error: swapCallbackError } = useStableSwapCallback(trade, allowedSlippage, recipient)
+  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
+    trade,
+    allowedSlippage,
+    recipient,
+    useStableSwapCallArgs,
+  )
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade<Currency, Currency, TradeType> | undefined
     attemptingTxn: boolean

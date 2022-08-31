@@ -43,11 +43,16 @@ export function useSwapCallback(
   trade: Trade<Currency, Currency, TradeType> | undefined, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
+  useSwapCall: (
+    tradeX: Trade<Currency, Currency, TradeType> | undefined,
+    allowedSlippageX: number,
+    recipientAddressX: string | null,
+  ) => SwapCall[] = useSwapCallArguments,
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId } = useActiveWeb3React()
   const gasPrice = useGasPrice()
 
-  const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddress)
+  const swapCalls = useSwapCall(trade, allowedSlippage, recipientAddress)
 
   const { t } = useTranslation()
 
