@@ -6,6 +6,8 @@ import { Field } from 'state/swap/actions'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import SwapModalFooter from './SwapModalFooter'
 import SwapModalHeader from './SwapModalHeader'
+import StableSwapModalHeader from '../StableSwap/components/StableSwapModalHeader'
+import StableSwapModalFooter from '../StableSwap/components/StableSwapModalFooter'
 
 /**
  * Returns true if the trade requires a confirmation of details before we can submit it
@@ -33,6 +35,7 @@ const TransactionConfirmSwapContent = ({
   onConfirm,
   recipient,
   currencyBalances,
+  isStable,
 }) => {
   const showAcceptChanges = useMemo(
     () => Boolean(trade && originalTrade && tradeMeaningfullyDiffers(trade, originalTrade)),
@@ -61,8 +64,10 @@ const TransactionConfirmSwapContent = ({
   }, [currencyBalances, trade, slippageAdjustedAmounts])
 
   const modalHeader = useCallback(() => {
+    const SwapModalHead = isStable ? StableSwapModalHeader : SwapModalHeader
+
     return trade ? (
-      <SwapModalHeader
+      <SwapModalHead
         trade={trade}
         allowedSlippage={allowedSlippage}
         slippageAdjustedAmounts={slippageAdjustedAmounts}
@@ -80,11 +85,14 @@ const TransactionConfirmSwapContent = ({
     trade,
     slippageAdjustedAmounts,
     isEnoughInputBalance,
+    isStable,
   ])
 
   const modalBottom = useCallback(() => {
+    const SwapModalF = isStable ? StableSwapModalFooter : SwapModalFooter
+
     return trade ? (
-      <SwapModalFooter
+      <SwapModalF
         onConfirm={onConfirm}
         trade={trade}
         disabledConfirm={showAcceptChanges}
@@ -92,7 +100,7 @@ const TransactionConfirmSwapContent = ({
         isEnoughInputBalance={isEnoughInputBalance}
       />
     ) : null
-  }, [onConfirm, showAcceptChanges, trade, isEnoughInputBalance, slippageAdjustedAmounts])
+  }, [onConfirm, showAcceptChanges, trade, isEnoughInputBalance, slippageAdjustedAmounts, isStable])
 
   return <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
 }

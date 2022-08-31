@@ -78,6 +78,7 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
   attemptingTxn,
   txHash,
   openSettingModal,
+  isStable,
 }) => {
   const { chainId } = useActiveWeb3React()
 
@@ -98,6 +99,7 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
         />
       ) : (
         <TransactionConfirmSwapContent
+          isStable={isStable}
           trade={trade}
           currencyBalances={currencyBalances}
           originalTrade={originalTrade}
@@ -108,6 +110,7 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
         />
       ),
     [
+      isStable,
       trade,
       originalTrade,
       onAcceptChanges,

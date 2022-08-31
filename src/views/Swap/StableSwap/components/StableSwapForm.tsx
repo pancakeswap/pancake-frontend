@@ -194,7 +194,7 @@ export default function StableSwapForm({ isChartExpanded, setIsChartDisplayed, i
           <Wrapper id="swap-page" style={{ minHeight: '412px' }}>
             <AutoColumn gap="sm">
               <CurrencyInputPanel
-                label={independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')}
+                label={independentField === Field.OUTPUT && trade ? t('From (estimated)') : t('From')}
                 value={formattedAmounts[Field.INPUT]}
                 showMaxButton={!atMaxAmountInput}
                 currency={currencies[Field.INPUT]}
@@ -303,7 +303,6 @@ export default function StableSwapForm({ isChartExpanded, setIsChartDisplayed, i
             </Box>
           </Wrapper>
         </AppBody>
-        {trade && <AdvancedSwapDetailsDropdown trade={trade} />}
       </StyledInputCurrencyWrapper>
     </StyledSwapContainer>
   )

@@ -118,6 +118,7 @@ export default function StableSwapCommitButton({
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal
+      isStable
       trade={trade}
       originalTrade={tradeToConfirm}
       currencyBalances={currencyBalances}

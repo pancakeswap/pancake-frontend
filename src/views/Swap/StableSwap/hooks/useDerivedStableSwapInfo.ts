@@ -1,12 +1,13 @@
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
-import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useTranslation } from '@pancakeswap/localization'
 import { isAddress } from 'utils'
 
 import tryParseAmount from 'utils/tryParseAmount'
 import { Field } from 'state/swap/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
+import useStableTradeExactIn from './useStableTradeExactIn'
+import useStableTradeExactOut from './useStableTradeExactOut'
 
 // from the current swap inputs, compute the best trade and return it.
 export function useDerivedStableSwapInfo(
@@ -36,8 +37,8 @@ export function useDerivedStableSwapInfo(
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
   // Philip TODO: useStableTrade
-  const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
-  const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
+  const bestTradeExactIn = useStableTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
+  const bestTradeExactOut = useStableTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
 
   const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
 
