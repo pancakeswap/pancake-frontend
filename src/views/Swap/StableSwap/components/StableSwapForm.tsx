@@ -88,7 +88,10 @@ export default function StableSwapForm({ isChartExpanded, setIsChartDisplayed, i
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
 
-  const { stableSwapConfig } = useStableConfig()
+  const stableConfig = useStableConfig({
+    tokenAAddress: inputCurrency?.address,
+    tokenBAddress: outputCurrency?.address,
+  })
 
   const currencies: { [field in Field]?: Currency } = {
     [Field.INPUT]: inputCurrency ?? undefined,
@@ -133,7 +136,7 @@ export default function StableSwapForm({ isChartExpanded, setIsChartDisplayed, i
   const [approval, approveCallback] = useApproveCallbackFromStableTrade({
     trade,
     allowedSlippage,
-    swapAddress: stableSwapConfig?.stableSwapAddress,
+    swapAddress: stableConfig.stableSwapConfig?.stableSwapAddress,
   })
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change

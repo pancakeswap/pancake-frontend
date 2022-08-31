@@ -40,7 +40,10 @@ export default function useStableTradeExactIn(
 ): StableTrade | null {
   const isInvalid = !currencyAmountIn || !currencyOut
 
-  const { stableSwapContract, stableSwapConfig } = useStableConfig()
+  const { stableSwapContract, stableSwapConfig } = useStableConfig({
+    tokenAAddress: currencyAmountIn?.currency?.address,
+    tokenBAddress: currencyOut?.address,
+  })
 
   const { data: estimatedOutputAmount } = useSWR(
     isInvalid ? null : ['swapContract', stableSwapConfig?.stableSwapAddress, currencyAmountIn?.quotient?.toString()],

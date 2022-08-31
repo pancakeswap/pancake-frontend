@@ -1,15 +1,8 @@
 import { Currency, CurrencyAmount, Fraction, ONE, Price, TradeType } from '@pancakeswap/sdk'
 import useSWR from 'swr'
-import stableSwapConfigs from 'config/constants/stableSwapConfigs'
-import { useContract } from 'hooks/useContract'
-import stableSwapABI from 'config/abi/stableSwap.json'
+
 import { StableTrade } from './useStableTradeExactIn'
-
-function findStablePair() {
-  const stableSwapPair = stableSwapConfigs[0]
-
-  return stableSwapPair
-}
+import useStableConfig from './useStableConfig'
 
 /**
  * Returns the best trade for the exact amount of tokens in to the given token out
@@ -20,17 +13,17 @@ export default function useStableTradeExactIn(
 ): StableTrade | null {
   const isInvalid = !currencyAmountOut || !currencyIn
 
-  const stablePair = findStablePair()
-
-  const stableSwapContract = useContract(stablePair?.stableSwapAddress, stableSwapABI)
-
+  const { stableSwapContract, stableSwapConfig } = useStableConfig({
+    tokenAAddress: currencyAmountOut?.currency?.address,
+    tokenBAddress: currencyIn?.address,
+  })
   // Philip TODO: Bounce the request
   const { data: estimatedOutputAmount } = useSWR(
     isInvalid
       ? null
       : [
           'swapContract',
-          stablePair?.stableSwapAddress,
+          stableSwapContract?.stableSwapAddress,
           currencyAmountOut?.currency?.symbol,
           currencyAmountOut?.quotient?.toString(),
         ],
@@ -45,7 +38,7 @@ export default function useStableTradeExactIn(
 
   if (isInvalid || !estimatedOutputAmount) return null
 
-  if (!stablePair) return null
+  if (!stableSwapConfig) return null
 
   const currencyAmountIn = CurrencyAmount.fromRawAmount(currencyIn, estimatedOutputAmount)
 

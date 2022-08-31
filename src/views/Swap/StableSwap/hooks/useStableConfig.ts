@@ -8,7 +8,7 @@ function findStablePair() {
   return stableSwapPair
 }
 
-export default function useStableConfig(address = '') {
+export default function useStableConfig({ tokenAAddress, tokenBAddress }) {
   const stablePair = findStablePair()
   const stableSwapContract = useContract(stablePair?.stableSwapAddress, stableSwapABI)
 
