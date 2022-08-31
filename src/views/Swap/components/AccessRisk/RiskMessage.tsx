@@ -35,7 +35,7 @@ const RiskMessage: React.FC<RiskMessageProps> = ({ currency, riskTokenInfo }) =>
             <Text fontSize="14px" lineHeight="120%">
               {riskLevelDescription}
             </Text>
-            <Link fontSize="14px" mt="8px" ml="auto" external href="https://hashdit.github.io/hashdit/docs/intro">
+            <Link fontSize="14px" mt="8px" ml="auto" external href="https://www.hashdit.io/en">
               {t('Learn More')}
             </Link>
           </Flex>

@@ -95,7 +95,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
       </Text>
       <Flex mt="4px">
         <Text>{t('Powered by')}</Text>
-        <Link ml="4px" external href="https://hashdit.github.io/hashdit/docs/intro">
+        <Link ml="4px" external href="https://www.hashdit.io/en">
           {t('Hashdit.')}
         </Link>
       </Flex>
