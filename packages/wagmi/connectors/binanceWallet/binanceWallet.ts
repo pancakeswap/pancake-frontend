@@ -57,8 +57,10 @@ export class BinanceWalletConnector extends InjectedConnector {
   }
 
   async connect({ chainId }: { chainId?: number } = {}) {
+    console.log('chainId', { chainId })
     try {
       const provider = await this.getProvider()
+      console.log({ provider })
       if (!provider) throw new ConnectorNotFoundError()
 
       if (provider.on) {
