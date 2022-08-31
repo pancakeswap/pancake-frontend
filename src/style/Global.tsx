@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+// import { createGlobalStyle } from 'styled-components'
 import { PancakeTheme } from '@pancakeswap/uikit'
 
 declare module 'styled-components' {
@@ -6,18 +6,6 @@ declare module 'styled-components' {
   export interface DefaultTheme extends PancakeTheme {}
 }
 
-const GlobalStyle = createGlobalStyle`
-  * {
-    font-family: 'Kanit', sans-serif;
-  }
-  body {
-    background-color: ${({ theme }) => theme.colors.background};
-
-    img {
-      height: auto;
-      max-width: 100%;
-    }
-  }
-`
+const GlobalStyle = () => <></>
 
 export default GlobalStyle

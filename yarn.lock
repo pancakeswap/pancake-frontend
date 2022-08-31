@@ -5286,6 +5286,13 @@
     media-query-parser "^2.0.2"
     outdent "^0.8.0"
 
+"@vanilla-extract/dynamic@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@vanilla-extract/dynamic/-/dynamic-2.0.2.tgz#13a3e461964c8029a52e6b6b631009ca6a8b27f5"
+  integrity sha512-U4nKaEQ8Kuz+exXEr51DUpyaOuzo24/S/k1YbDPQR06cYcNjQqvwFRnwWtZ+9ImocqM1wTKtzrdUgSTtLGIwAg==
+  dependencies:
+    "@vanilla-extract/private" "^1.0.3"
+
 "@vanilla-extract/integration@^2.0.1":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@vanilla-extract/integration/-/integration-2.0.2.tgz#d1d2c081f591a6e75f78f7fb6800f452ca62dfd0"
@@ -15854,6 +15861,11 @@ quick-lru@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-4.0.1.tgz#5b8878f113a58217848c6482026c73e1ba57727f"
   integrity sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==
+
+rainbow-sprinkles@^0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/rainbow-sprinkles/-/rainbow-sprinkles-0.12.1.tgz#82ef603d1e722a32c3f9b1d3caecc4f2853a2d48"
+  integrity sha512-mwbB/cy5fR/4TmQ1Evo6eqgx7Bl+EMd7e+EgCEuTrwOD3NilgGwKF7yRtpN04cLpDoS5ofqSia4XfBoaB0ur3w==
 
 ramda@^0.28.0:
   version "0.28.0"

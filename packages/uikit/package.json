@@ -66,6 +66,7 @@
     "@vanilla-extract/sprinkles": "1.4.1",
     "framer-motion": "6.5.1",
     "lodash": "^4.17.20",
+    "rainbow-sprinkles": "^0.12.1",
     "react-popper": "^2.2.5",
     "styled-system": "^5.1.5",
     "tslib": "^2.2.0"

@@ -17,25 +17,25 @@ type Props = Atoms &
   };
 
 export const Box = forwardRef<HTMLElement, Props>(({ as = "div", className, ...props }: Props, ref) => {
-  const atomProps: Record<string, unknown> = {};
-  const nativeProps: Record<string, unknown> = {};
+  const { className: atomicClasses, style, otherProps } = sprinkles(props);
 
-  for (const key in props) {
-    if (sprinkles.properties.has(key as keyof Omit<Atoms, "reset">)) {
-      atomProps[key] = props[key as keyof typeof props];
-    } else {
-      nativeProps[key] = props[key as keyof typeof props];
-    }
-  }
+  // for (const key in props) {
+  //   if (sprinkles.properties.has(key as keyof Omit<Atoms, "reset">)) {
+  //     atomProps[key] = props[key as keyof typeof props];
+  //   } else {
+  //     nativeProps[key] = props[key as keyof typeof props];
+  //   }
+  // }
 
-  const atomicClasses = atoms({
-    reset: typeof as === "string" ? (as as Atoms["reset"]) : "div",
-    ...atomProps,
-  });
+  // const atomicClasses = atoms({
+  //   reset: typeof as === "string" ? (as as Atoms["reset"]) : "div",
+  //   ...atomProps,
+  // });
 
   return createElement(as, {
     className: clsx(atomicClasses, className),
-    ...nativeProps,
+    style,
+    ...otherProps,
     ref,
   });
 });

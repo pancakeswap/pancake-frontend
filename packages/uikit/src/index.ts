@@ -1,3 +1,5 @@
+import "./css/global.css";
+
 // Components
 export * from "./components/Alert";
 export * from "./components/BalanceInput";

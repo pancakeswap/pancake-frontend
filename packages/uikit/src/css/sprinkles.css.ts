@@ -1,12 +1,12 @@
 import { calc } from "@vanilla-extract/css-utils";
 import {
   ConditionalValue,
-  createMapValueFn,
-  createNormalizeValueFn,
-  createSprinkles,
-  defineProperties,
+  // createMapValueFn,
+  // createNormalizeValueFn,
   RequiredConditionalValue,
+  defineProperties as defaultDefineProperties,
 } from "@vanilla-extract/sprinkles";
+import { defineProperties, createRainbowSprinkles } from "rainbow-sprinkles";
 
 import { Breakpoint, breakpointNames, breakpoints } from "./breakpoints";
 import { vars } from "./vars.css";
@@ -58,22 +58,31 @@ const responsiveProperties = defineProperties({
     xl: { "@media": `(min-width: ${breakpoints.xl}px)` },
     xxl: { "@media": `(min-width: ${breakpoints.xxl}px)` },
   },
-  properties: {
-    alignItems: [...flexAlignment, "baseline"],
-    alignContent: [...flexAlignment, "baseline"],
-    alignSelf: [...flexAlignment, "baseline"],
+  staticProperties: {
+    display: ["block", "flex", "grid", "inline", "inline-flex", "inline-block", "none", "contents"],
+    flexDirection: ["column", "row", "column-reverse"],
+    flexGrow: flexibility,
+    flexShrink: flexibility,
+    flexWrap: ["wrap", "nowrap"],
+    overflow: ["auto", "hidden", "scroll", "unset"],
+    position: ["absolute", "fixed", "relative", "sticky"],
+    textAlign: ["center", "left", "right"],
+    justifyContent: [...flexAlignment, "space-around", "space-between"],
+    justifyItems: flexAlignment,
+    justifySelf: flexAlignment,
+  },
+  dynamicProperties: {
     borderWidth: vars.borderWidths,
-    borderBottomWidth: vars.borderWidths,
-    borderLeftWidth: vars.borderWidths,
-    borderRightWidth: vars.borderWidths,
-    borderTopWidth: vars.borderWidths,
+    // borderBottomWidth: vars.borderWidths,
+    // borderLeftWidth: vars.borderWidths,
+    // borderRightWidth: vars.borderWidths,
+    // borderTopWidth: vars.borderWidths,
     borderRadius: vars.radii,
     borderBottomLeftRadius: vars.radii,
     borderBottomRightRadius: vars.radii,
     borderTopLeftRadius: vars.radii,
     borderTopRightRadius: vars.radii,
     bottom: { ...vars.space, ...negativeSpace },
-    display: ["block", "flex", "grid", "inline", "inline-flex", "inline-block", "none", "contents"],
     flex: {
       1: "1 1 0%",
       auto: "1 1 auto",
@@ -84,10 +93,6 @@ const responsiveProperties = defineProperties({
       ...vars.space,
       ...extendedSpace,
     },
-    flexDirection: ["column", "row"],
-    flexGrow: flexibility,
-    flexShrink: flexibility,
-    flexWrap: ["wrap", "nowrap"],
     fontSize: {
       ...vars.fontSizes,
       inherit: "inherit",
@@ -95,9 +100,6 @@ const responsiveProperties = defineProperties({
     gap: vars.space,
     height: { ...vars.space, ...extendedSpace },
     inset: { ...vars.space, ...negativeSpace },
-    justifyContent: [...flexAlignment, "space-around", "space-between"],
-    justifyItems: flexAlignment,
-    justifySelf: flexAlignment,
     left: { ...vars.space, ...negativeSpace },
     marginBottom: { ...margin, ...negativeSpace },
     marginLeft: { ...margin, ...negativeSpace },
@@ -111,14 +113,11 @@ const responsiveProperties = defineProperties({
     },
     minHeight: vars.space,
     minWidth: vars.space,
-    overflow: ["auto", "hidden", "scroll", "unset"],
     paddingBottom: vars.space,
     paddingLeft: vars.space,
     paddingRight: vars.space,
     paddingTop: vars.space,
-    position: ["absolute", "fixed", "relative", "sticky"],
     right: { ...vars.space, ...negativeSpace },
-    textAlign: ["center", "left", "right"],
     top: { ...vars.space, ...negativeSpace },
     width: {
       ...vars.space,
@@ -142,7 +141,7 @@ const responsiveProperties = defineProperties({
     my: ["marginTop", "marginBottom"],
     padding: ["paddingTop", "paddingBottom", "paddingLeft", "paddingRight"],
     pl: ["paddingLeft"],
-    pr: ["paddinRight"],
+    pr: ["paddingRight"],
     pt: ["paddingTop"],
     pb: ["paddingBottom"],
     p: ["paddingTop", "paddingBottom", "paddingLeft", "paddingRight"],
@@ -155,7 +154,19 @@ const responsiveProperties = defineProperties({
 });
 
 const unresponsiveProperties = defineProperties({
-  properties: {
+  conditions: {},
+  staticProperties: {
+    isolation: ["isolate"],
+    objectFit: ["contain", "cover"],
+    pointerEvents: ["none"],
+    textTransform: ["capitalize", "lowercase", "uppercase"],
+    cursor: ["default", "pointer", "not-allowed"],
+    visibility: ["hidden", "visible"],
+    whiteSpace: ["normal", "nowrap", "pre", "pre-line", "pre-wrap"],
+    wordBreak: ["break-word"],
+    wordWrap: ["normal", "break-word"],
+  },
+  dynamicProperties: {
     aspectRatio: {
       auto: "auto",
       "1/1": "1 / 1",
@@ -164,13 +175,8 @@ const unresponsiveProperties = defineProperties({
       "4/3": "4 / 3",
       "16/9": "16 / 9",
     },
-    cursor: ["default", "pointer", "not-allowed"],
+    // scrollMarginTop: vars.space,
     fontFamily: vars.fonts,
-    isolation: ["isolate"],
-    objectFit: ["contain", "cover"],
-    pointerEvents: ["none"],
-    scrollMarginTop: vars.space,
-    textTransform: ["capitalize", "lowercase", "uppercase"],
     transitionProperty: {
       none: "none",
       all: "all",
@@ -187,10 +193,6 @@ const unresponsiveProperties = defineProperties({
       out: "cubic-bezier(0, 0, 0.2, 1)",
       inOut: "cubic-bezier(0.42, 0, 0.58, 1)",
     },
-    visibility: ["hidden", "visible"],
-    whiteSpace: ["normal", "nowrap", "pre", "pre-line", "pre-wrap", "initial", "inherit"],
-    wordBreak: ["break-word"],
-    wordWrap: ["normal", "break-word", "initial", "inherit"],
     zIndex: {
       "0": 0,
       ribbon: 9,
@@ -216,7 +218,7 @@ const colorProperties = defineProperties({
     hover: { selector: "&:hover" },
   },
   defaultCondition: "base",
-  properties: {
+  dynamicProperties: {
     backgroundColor: vars.colors,
     borderColor: vars.colors,
     color: vars.colors,
@@ -229,7 +231,7 @@ const motionSafeProperties = defineProperties({
     base: { "@media": "(prefers-reduced-motion: no-preference)" },
   },
   defaultCondition: "base",
-  properties: {
+  staticProperties: {
     transitionDuration: {
       "75": "75ms",
       "100": "100ms",
@@ -251,7 +253,7 @@ const interactionProperties = defineProperties({
     active: { selector: "&:active" },
   },
   defaultCondition: "base",
-  properties: {
+  staticProperties: {
     transform: {
       grow: "scale(1.04)",
       shrink: "scale(0.95)",
@@ -259,7 +261,7 @@ const interactionProperties = defineProperties({
   },
 });
 
-export const sprinkles = createSprinkles(
+export const sprinkles = createRainbowSprinkles(
   responsiveProperties,
   unresponsiveProperties,
   colorProperties,

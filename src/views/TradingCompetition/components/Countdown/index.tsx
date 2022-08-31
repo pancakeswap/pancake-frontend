@@ -82,7 +82,7 @@ const Countdown: React.FC<
   const renderTimer = () => {
     if (hasCompetitionEnded) {
       return (
-        <StyledHeading background={theme.colors.gradients.gold} $fill>
+        <StyledHeading background={theme.colors.gradientGold} $fill>
           {t('Finished')}!
         </StyledHeading>
       )
@@ -94,7 +94,7 @@ const Countdown: React.FC<
         hours={hours}
         days={days}
         HeadingTextComponent={({ children }) => (
-          <StyledHeading background={theme.colors.gradients.gold} $fill>
+          <StyledHeading background={theme.colors.gradientGold} $fill>
             {children}
           </StyledHeading>
         )}
