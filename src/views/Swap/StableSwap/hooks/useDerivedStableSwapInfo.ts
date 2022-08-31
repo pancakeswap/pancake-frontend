@@ -36,7 +36,6 @@ export function useDerivedStableSwapInfo(
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
-  // Philip TODO: useStableTrade
   const bestTradeExactIn = useStableTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
   const bestTradeExactOut = useStableTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
 

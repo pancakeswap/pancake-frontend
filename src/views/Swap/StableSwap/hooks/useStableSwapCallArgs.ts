@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
 
-import { TradeType } from '@pancakeswap/sdk'
-
 import useStableConfig from './useStableConfig'
 
 export default function useStableSwapCallArgs(trade) {
@@ -13,11 +11,23 @@ export default function useStableSwapCallArgs(trade) {
 
   const swapCalls = useMemo(() => {
     if (!trade) return []
+    const inputAmountAddress = trade?.inputAmount?.currency?.address
+    const outputAmountAddress = trade?.outputAmount?.currency?.address
+    const token0Address = stableConfig?.stableSwapConfig?.token0?.address
+    const token1Address = stableConfig?.stableSwapConfig?.token1?.address
+
+    const tokenAmounts = {
+      [inputAmountAddress]: trade?.inputAmount?.quotient?.toString(),
+      [outputAmountAddress]: trade?.outputAmount?.quotient?.toString(),
+    }
+
+    const token0Amount = tokenAmounts[token0Address]
+    const token1Amount = tokenAmounts[token1Address]
 
     const args =
-      trade?.tradeType === TradeType.EXACT_INPUT
-        ? ['0', '1', trade?.inputAmount?.quotient?.toString(), trade?.outputAmount?.quotient?.toString()]
-        : ['1', '0', trade?.outputAmount?.quotient?.toString(), trade?.inputAmount?.quotient?.toString()]
+      inputAmountAddress === token0Amount
+        ? ['0', '1', token0Amount, token1Amount]
+        : ['1', '0', token1Amount, token0Amount]
 
     return [
       {
@@ -29,7 +39,7 @@ export default function useStableSwapCallArgs(trade) {
         contract: swapContract,
       },
     ]
-  }, [swapContract, trade])
+  }, [swapContract, trade, stableConfig])
 
   return swapCalls
 }

@@ -1,93 +1,111 @@
-import { Currency, CurrencyAmount, Price, Percent, TradeType, Fraction, ONE } from '@pancakeswap/sdk'
-
+import { CurrencyAmount, Price, Percent, TradeType, Fraction, ONE, Token, JSBI } from '@pancakeswap/sdk'
+import { BIG_INT_ZERO } from 'config/constants/exchange'
+import { useCallback, useMemo } from 'react'
 import useSWR from 'swr'
-import stableSwapConfigs from 'config/constants/stableSwapConfigs'
-import { useContract } from 'hooks/useContract'
-import stableSwapABI from 'config/abi/stableSwap.json'
-
-function findStablePair() {
-  const stableSwapPair = stableSwapConfigs[0]
-
-  return stableSwapPair
-}
+import useStableConfig from './useStableConfig'
 
 export interface StableTrade {
   tradeType: TradeType
-  inputAmount: CurrencyAmount<Currency>
-  outputAmount: CurrencyAmount<Currency>
-  executionPrice: Price<Currency, Currency>
+  inputAmount: CurrencyAmount<Token>
+  outputAmount: CurrencyAmount<Token>
+  executionPrice: Price<Token, Token>
   priceImpact: null
-  maximumAmountIn: (slippaged: Percent) => CurrencyAmount<Currency>
-  minimumAmountOut: (slippaged: Percent) => CurrencyAmount<Currency>
+  maximumAmountIn: (slippaged: Percent) => CurrencyAmount<Token> | JSBI
+  minimumAmountOut: (slippaged: Percent) => CurrencyAmount<Token> | JSBI
 }
 
-function useStableConfig(address = '') {
-  const stablePair = findStablePair()
-  const stableSwapContract = useContract(stablePair?.stableSwapAddress, stableSwapABI)
+export const maximumAmountInFactory = (currencyAmountIn, slippageTolerance) => {
+  const slippageAdjustedAmountIn = new Fraction(ONE).add(slippageTolerance).multiply(currencyAmountIn.quotient).quotient
+  return CurrencyAmount.fromRawAmount(currencyAmountIn.currency, slippageAdjustedAmountIn)
+}
+
+export const minimumAmountOutFactory = (currencyAmountOut, slippageTolerance) => {
+  const slippageAdjustedAmountOut = new Fraction(ONE)
+    .add(slippageTolerance)
+    .invert()
+    .multiply(currencyAmountOut.quotient).quotient
+  return CurrencyAmount.fromRawAmount(currencyAmountOut.currency, slippageAdjustedAmountOut)
+}
+
+export function useStableTradeResponse({ isParamInvalid, currencyAmountIn, currencyAmountOut, stableSwapConfig }) {
+  const maximumAmountIn = useCallback(
+    (slippageTolerance) =>
+      currencyAmountIn ? maximumAmountInFactory(currencyAmountIn, slippageTolerance) : BIG_INT_ZERO,
+    [currencyAmountIn],
+  )
+
+  const minimumAmountOut = useCallback(
+    (slippageTolerance) =>
+      currencyAmountOut ? minimumAmountOutFactory(currencyAmountOut, slippageTolerance) : BIG_INT_ZERO,
+    [currencyAmountOut],
+  )
+
+  const isInvalid = isParamInvalid || !currencyAmountOut || !stableSwapConfig
+
+  const executionPrice = useMemo(() => {
+    if (isInvalid) return null
+
+    return new Price(
+      currencyAmountIn.currency,
+      currencyAmountOut.currency,
+      currencyAmountIn.quotient,
+      currencyAmountOut.quotient,
+    )
+  }, [isInvalid, currencyAmountIn, currencyAmountOut])
+
+  if (isInvalid) return null
 
   return {
-    stableSwapConfig: stablePair,
-    stableSwapContract,
+    tradeType: TradeType.EXACT_INPUT,
+    inputAmount: currencyAmountIn,
+    outputAmount: currencyAmountOut,
+    executionPrice,
+    priceImpact: null,
+    maximumAmountIn,
+    minimumAmountOut,
   }
+}
+
+export function useEstimatedAmount({ currency, stableSwapConfig, quotient, stableSwapContract, isParamInvalid }) {
+  return useSWR(isParamInvalid ? null : ['swapContract', stableSwapConfig?.stableSwapAddress, quotient], async () => {
+    const isToken0 = stableSwapConfig?.token0?.address === currency?.address
+
+    const args = isToken0 ? [1, 0, quotient] : [0, 1, quotient]
+
+    const estimatedAmount = await stableSwapContract.get_dy(...args)
+
+    return CurrencyAmount.fromRawAmount(currency, estimatedAmount)
+  })
 }
 
 /**
  * Returns the best trade for the exact amount of tokens in to the given token out
  */
 export default function useStableTradeExactIn(
-  currencyAmountIn?: CurrencyAmount<Currency>,
-  currencyOut?: Currency,
+  currencyAmountIn?: CurrencyAmount<Token>,
+  currencyOut?: Token,
 ): StableTrade | null {
-  const isInvalid = !currencyAmountIn || !currencyOut
+  const isParamInvalid = !currencyAmountIn || !currencyOut
 
   const { stableSwapContract, stableSwapConfig } = useStableConfig({
     tokenAAddress: currencyAmountIn?.currency?.address,
     tokenBAddress: currencyOut?.address,
   })
 
-  const { data: estimatedOutputAmount } = useSWR(
-    isInvalid ? null : ['swapContract', stableSwapConfig?.stableSwapAddress, currencyAmountIn?.quotient?.toString()],
-    async () => {
-      return stableSwapContract.get_dy(0, 1, currencyAmountIn?.quotient?.toString())
-    },
-    {
-      dedupingInterval: 5000,
-    },
-  )
+  const currencyAmountInQuotient = currencyAmountIn?.quotient?.toString()
 
-  if (isInvalid || !estimatedOutputAmount) return null
+  const { data: currencyAmountOut } = useEstimatedAmount({
+    currency: currencyOut,
+    quotient: currencyAmountInQuotient,
+    stableSwapContract,
+    stableSwapConfig,
+    isParamInvalid,
+  })
 
-  if (!stableSwapConfig) return null
-
-  const currencyAmountOut = CurrencyAmount.fromRawAmount(currencyOut, estimatedOutputAmount)
-
-  const maximumAmountIn = (slippageTolerance) => {
-    const slippageAdjustedAmountIn = new Fraction(ONE)
-      .add(slippageTolerance)
-      .multiply(currencyAmountIn.quotient).quotient
-    return CurrencyAmount.fromRawAmount(currencyAmountIn.currency, slippageAdjustedAmountIn)
-  }
-
-  const minimumAmountOut = (slippageTolerance) => {
-    const slippageAdjustedAmountOut = new Fraction(ONE)
-      .add(slippageTolerance)
-      .invert()
-      .multiply(currencyAmountOut.quotient).quotient
-    return CurrencyAmount.fromRawAmount(currencyAmountOut.currency, slippageAdjustedAmountOut)
-  }
-
-  return {
-    tradeType: TradeType.EXACT_INPUT,
-    inputAmount: currencyAmountIn,
-    outputAmount: currencyAmountOut,
-    executionPrice: new Price(
-      currencyAmountIn.currency,
-      currencyAmountOut.currency,
-      currencyAmountIn.quotient,
-      currencyAmountOut.quotient,
-    ),
-    priceImpact: null,
-    maximumAmountIn,
-    minimumAmountOut,
-  }
+  return useStableTradeResponse({
+    isParamInvalid,
+    currencyAmountIn,
+    currencyAmountOut,
+    stableSwapConfig,
+  })
 }

@@ -165,7 +165,6 @@ export default function StableSwapForm({ isChartExpanded, setIsChartDisplayed, i
     [onCurrencySelection],
   )
 
-  // Philip Diff: warningSwapHandler is removed
   const handleMaxInput = useCallback(() => {
     if (maxAmountInput) {
       onUserInput(Field.INPUT, maxAmountInput.toExact())
