@@ -30,6 +30,14 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   },
   // Below farms was the latest.
   {
+    account: '0xF0a693994b40a645DD99D83844BEBc29370e6126', // Auction #29
+    farmName: 'SPIN-BNB',
+    tokenAddress: '0x6AA217312960A21aDbde1478DC8cBCf828110A67',
+    quoteToken: bscTokens.wbnb,
+    tokenName: 'SPIN',
+    projectSite: 'https://spintop.network/',
+  },
+  {
     account: '0x75db63125A4f04E59A1A2Ab4aCC4FC1Cd5Daddd5', // Auction #28
     farmName: 'BNBx-BNB',
     tokenAddress: '0x1bdd3Cf7F79cfB8EdbB955f20ad99211551BA275',
