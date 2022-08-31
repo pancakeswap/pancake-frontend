@@ -264,7 +264,9 @@ const LimitOrders = () => {
   const handleTokenSwitch = useCallback(() => {
     setApprovalSubmitted(false)
     handleSwitchTokens()
-  }, [handleSwitchTokens])
+    replaceBrowserHistory('inputCurrency', currencyIds.output)
+    replaceBrowserHistory('outputCurrency', currencyIds.input)
+  }, [handleSwitchTokens, currencyIds.output, currencyIds.input])
 
   const { realExecutionPriceAsString } = useGasOverhead(parsedAmounts.input, parsedAmounts.output, rateType)
 
