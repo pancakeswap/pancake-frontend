@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Grid from "../Box/Grid";
+import { Grid } from "../Box/Grid";
 
 const GridLayout = styled(Grid)`
   grid-template-columns: repeat(6, 1fr);

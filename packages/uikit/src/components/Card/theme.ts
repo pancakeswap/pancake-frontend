@@ -9,10 +9,10 @@ export const light: CardTheme = {
   boxShadowSuccess: shadows.success,
   boxShadowWarning: shadows.warning,
   cardHeaderBackground: {
-    default: lightColors.gradients.cardHeader,
-    blue: lightColors.gradients.blue,
-    bubblegum: lightColors.gradients.bubblegum,
-    violet: lightColors.gradients.violet,
+    default: lightColors.gradientCardHeader,
+    blue: lightColors.gradientBlue,
+    bubblegum: lightColors.gradientBubblegum,
+    violet: lightColors.gradientViolet,
   },
   dropShadow: "drop-shadow(0px 1px 4px rgba(25, 19, 38, 0.15))",
 };
@@ -24,10 +24,10 @@ export const dark: CardTheme = {
   boxShadowSuccess: shadows.success,
   boxShadowWarning: shadows.warning,
   cardHeaderBackground: {
-    default: darkColors.gradients.cardHeader,
-    blue: darkColors.gradients.blue,
-    bubblegum: lightColors.gradients.bubblegum,
-    violet: darkColors.gradients.violet,
+    default: darkColors.gradientCardHeader,
+    blue: darkColors.gradientBlue,
+    bubblegum: lightColors.gradientBubblegum,
+    violet: darkColors.gradientViolet,
   },
   dropShadow: "drop-shadow(0px 1px 4px rgba(25, 19, 38, 0.15))",
 };

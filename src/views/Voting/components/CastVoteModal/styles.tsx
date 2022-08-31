@@ -18,7 +18,7 @@ export const VotingBoxCardInner = styled(Box)<{ hasBoosted?: boolean }>`
   align-items: center;
   border-radius: 12px;
   justify-content: space-between;
-  background: ${({ theme, hasBoosted }) => (hasBoosted ? theme.colors.gradients.bubblegum : 'transparent')};
+  background: ${({ theme, hasBoosted }) => (hasBoosted ? theme.colors.gradientBubblegum : 'transparent')};
 `
 
 export const ModalInner: React.FC<React.PropsWithChildren<BoxProps>> = (props) => {

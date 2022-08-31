@@ -1,6 +1,6 @@
 import React, { cloneElement } from "react";
 import styled from "styled-components";
-import Box from "../Box/Box";
+import { Box } from "../Box/Box";
 import Input from "./Input";
 import { InputGroupProps, scales, Scales } from "./types";
 

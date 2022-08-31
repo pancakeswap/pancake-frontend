@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styled, { keyframes } from "styled-components";
-import Flex from "../../../components/Box/Flex";
+import { Flex } from "../../../components/Box/Flex";
 import { LogoIcon, LogoWithTextIcon } from "../../../components/Svg";
 import { MenuContext } from "../context";
 

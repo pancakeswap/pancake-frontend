@@ -29,16 +29,6 @@ export type Shadows = {
   tooltip: string;
 };
 
-export type Gradients = {
-  bubblegum: string;
-  inverseBubblegum: string;
-  cardHeader: string;
-  blue: string;
-  violet: string;
-  violetAlt: string;
-  gold: string;
-};
-
 export type Colors = {
   primary: string;
   primaryBright: string;
@@ -65,7 +55,13 @@ export type Colors = {
   disabled: string;
 
   // Gradients
-  gradients: Gradients;
+  gradientBubblegum: string;
+  gradientInverseBubblegum: string;
+  gradientCardHeader: string;
+  gradientBlue: string;
+  gradientViolet: string;
+  gradientVioletAlt: string;
+  gradientGold: string;
 
   // Additional colors
   binance: string;

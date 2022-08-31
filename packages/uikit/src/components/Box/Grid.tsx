@@ -1,12 +1,9 @@
 import styled from "styled-components";
 import { grid, flexbox } from "styled-system";
-import Box from "./Box";
-import { GridProps } from "./types";
+import { Box, BoxProps } from "./Box";
 
-const Grid = styled(Box)<GridProps>`
+export const Grid = styled(Box)<BoxProps>`
   display: grid;
   ${flexbox}
   ${grid}
 `;
-
-export default Grid;

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled, { useTheme } from "styled-components";
 import EXTERNAL_LINK_PROPS from "../../util/externalLinkProps";
-import Grid from "../../components/Box/Grid";
-import Box from "../../components/Box/Box";
+import { Grid } from "../../components/Box/Grid";
+import { Box } from "../../components/Box/Box";
 import getThemeValue from "../../util/getThemeValue";
 import Text from "../../components/Text/Text";
 import Heading from "../../components/Heading/Heading";
@@ -74,7 +74,7 @@ const ConnectModal: React.FC<React.PropsWithChildren<Props>> = ({
 
   return (
     <ModalContainer $minWidth="320px">
-      <ModalHeader background={getThemeValue(theme, "colors.gradients.bubblegum")}>
+      <ModalHeader background={getThemeValue(theme, "colors.gradientBubblegum")}>
         <ModalTitle>
           <Heading>{t("Connect Wallet")}</Heading>
         </ModalTitle>

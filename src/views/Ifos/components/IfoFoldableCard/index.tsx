@@ -54,7 +54,7 @@ const StyledCard = styled(Card)<{ $isCurrent?: boolean }>`
   `}
 
   > div {
-    background: ${({ theme, $isCurrent }) => ($isCurrent ? theme.colors.gradients.bubblegum : theme.colors.dropdown)};
+    background: ${({ theme, $isCurrent }) => ($isCurrent ? theme.colors.gradientBubblegum : theme.colors.dropdown)};
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {

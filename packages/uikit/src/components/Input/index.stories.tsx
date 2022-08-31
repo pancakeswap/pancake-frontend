@@ -8,7 +8,7 @@ import Heading from "../Heading/Heading";
 import Input from "./Input";
 import InputGroup from "./InputGroup";
 import { scales } from "./types";
-import Box from "../Box/Box";
+import { Box } from "../Box/Box";
 
 const Row = styled.div`
   display: flex;

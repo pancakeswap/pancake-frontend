@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Box from "../Box/Box";
+import { Box } from "../Box/Box";
 import BalanceInput from "./BalanceInput";
 import TextFieldComp from "./TextField";
 

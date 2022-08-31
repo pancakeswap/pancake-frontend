@@ -33,7 +33,7 @@ const ViewTicketsModal: React.FC<React.PropsWithChildren<ViewTicketsModalProps>>
     <StyledModal
       title={`${t('Round')} ${roundId}`}
       onDismiss={onDismiss}
-      headerBackground={theme.colors.gradients.cardHeader}
+      headerBackground={theme.colors.gradientCardHeader}
     >
       {isPreviousRound ? <PreviousRoundTicketsInner roundId={roundId} /> : <CurrentRoundTicketsInner />}
     </StyledModal>

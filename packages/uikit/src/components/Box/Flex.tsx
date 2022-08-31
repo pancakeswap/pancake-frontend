@@ -1,11 +1,5 @@
-import styled from "styled-components";
-import { flexbox } from "styled-system";
-import Box from "./Box";
-import { FlexProps } from "./types";
+import { forwardRef } from "react";
+import { Box, BoxProps } from "./Box";
 
-const Flex = styled(Box)<FlexProps>`
-  display: flex;
-  ${flexbox}
-`;
+export const Flex = forwardRef<HTMLElement, BoxProps>((props, ref) => <Box display="flex" ref={ref} {...props} />);
 
-export default Flex;

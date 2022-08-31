@@ -88,7 +88,7 @@ const WhitelistedBiddersModal: React.FC<React.PropsWithChildren<WhitelistedBidde
       p="0"
       title={t('All Whitelisted Project Wallets')}
       onDismiss={onDismiss}
-      headerBackground={theme.colors.gradients.cardHeader}
+      headerBackground={theme.colors.gradientCardHeader}
     >
       <InputContainer py="16px" px="24px">
         <Input placeholder={t('Search address or token')} value={searchTerm} onChange={handleSearchChange} />

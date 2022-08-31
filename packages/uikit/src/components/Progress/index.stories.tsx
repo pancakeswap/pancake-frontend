@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import capitalize from "lodash/capitalize";
 import random from "lodash/random";
-import Box from "../Box/Box";
+import { Box } from "../Box/Box";
 import Heading from "../Heading/Heading";
 import Button from "../Button/Button";
 import Progress from "./Progress";

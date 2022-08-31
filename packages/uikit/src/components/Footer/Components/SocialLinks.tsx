@@ -1,7 +1,7 @@
 import React from "react";
 import { darkColors } from "../../../theme";
 import { FlexProps } from "../../Box";
-import Flex from "../../Box/Flex";
+import { Flex } from "../../Box/Flex";
 import Dropdown from "../../Dropdown/Dropdown";
 import Link from "../../Link/Link";
 import { socials } from "../config";

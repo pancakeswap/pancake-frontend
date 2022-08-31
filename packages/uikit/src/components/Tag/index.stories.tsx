@@ -1,6 +1,6 @@
 import capitalize from "lodash/capitalize";
-import Box from "../Box/Box";
-import Flex from "../Box/Flex";
+import { Box } from "../Box/Box";
+import { Flex } from "../Box/Flex";
 import { CommunityIcon, RemoveIcon } from "../Svg";
 import Tag from "./Tag";
 import { scales, variants } from "./types";

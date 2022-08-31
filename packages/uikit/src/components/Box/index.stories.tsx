@@ -1,7 +1,7 @@
 import React from "react";
-import BoxComponent from "./Box";
-import FlexComponent from "./Flex";
-import GridComponent from "./Grid";
+import { Box as BoxComponent } from "./Box";
+import { Flex as FlexComponent } from "./Flex";
+import { Grid as GridComponent } from "./Grid";
 import Text from "../Text/Text";
 import { Link } from "../Link";
 
@@ -31,7 +31,7 @@ export const Flex: React.FC<React.PropsWithChildren> = () => {
       <Link href="https://styled-system.com/api#flexbox" target="_blank">
         List of applicable props
       </Link>
-      <FlexComponent justifyContent="space-between" mt="40px">
+      <FlexComponent justifyContent="space-between" mt="48px">
         <span>Left</span>
         <span>right</span>
       </FlexComponent>

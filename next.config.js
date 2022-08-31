@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin')
 const { withSentryConfig } = require('@sentry/nextjs')
 const { withAxiom } = require('next-axiom')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
+const withVanillaExtract = createVanillaExtractPlugin()
 const withTM = require('next-transpile-modules')(['@pancakeswap/uikit', '@pancakeswap/sdk'])
 
 const sentryWebpackPluginOptions =
@@ -143,4 +145,6 @@ const config = {
   },
 }
 
-module.exports = withBundleAnalyzer(withSentryConfig(withTM(withAxiom(config)), sentryWebpackPluginOptions))
+module.exports = withBundleAnalyzer(
+  withSentryConfig(withTM(withAxiom(withVanillaExtract(config))), sentryWebpackPluginOptions),
+)
