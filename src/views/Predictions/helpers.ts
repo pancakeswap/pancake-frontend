@@ -21,8 +21,9 @@ const formatPriceDifference = ({
   displayedDecimals,
   decimals,
 }: formatPriceDifferenceProps) => {
+  const sign = price.isNegative() ? NegativeOne : One
+
   if (price.abs().lt(minPriceDisplayed)) {
-    const sign = price.isNegative() ? NegativeOne : One
     const signedPriceToFormat = minPriceDisplayed.mul(sign)
     return `<${unitPrefix}${formatBigNumberToFixed(signedPriceToFormat, displayedDecimals, decimals)}`
   }
