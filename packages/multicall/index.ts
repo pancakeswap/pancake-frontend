@@ -3,7 +3,7 @@ import { CallOverrides, Contract } from '@ethersproject/contracts'
 import { ChainId } from '@pancakeswap/sdk'
 import multicallAbi from './Multicall.json'
 
-const multicallAddresses = {
+export const multicallAddresses = {
   1: '0xcA11bde05977b3631167028862bE2a173976CA11',
   4: '0xcA11bde05977b3631167028862bE2a173976CA11',
   5: '0xcA11bde05977b3631167028862bE2a173976CA11',
@@ -39,6 +39,18 @@ interface MulticallV2Params {
   calls: Call[]
   chainId?: ChainId
   options?: MulticallOptions
+}
+
+export interface CallV3 extends Call {
+  abi: any[]
+  allowFailure?: boolean
+}
+
+interface MulticallV3Params {
+  calls: CallV3[]
+  chainId?: ChainId
+  allowFailure?: boolean
+  overrides?: CallOverrides
 }
 
 export type MultiCallV2 = <T = any>(params: MulticallV2Params) => Promise<T>
@@ -81,8 +93,35 @@ export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: n
     return res as any
   }
 
+  const multicallv3 = async ({ calls, chainId = ChainId.BSC, allowFailure, overrides }: MulticallV3Params) => {
+    const multi = getMulticallContract(chainId, provider({ chainId }))
+    if (!multi) throw new Error(`Multicall Provider missing for ${chainId}`)
+    const _calls = calls.map(({ abi, address, name, params, allowFailure: _allowFailure }) => {
+      const contract = new Contract(address, abi)
+      const callData = contract.interface.encodeFunctionData(name, params ?? [])
+      if (!contract[name]) console.error(`${name} missing on ${address}`)
+      return {
+        target: address,
+        allowFailure: allowFailure || _allowFailure,
+        callData,
+      }
+    })
+
+    const result = await multi.callStatic.aggregate3([...[_calls], ...(overrides ? [overrides] : [])])
+
+    return result.map((call, i) => {
+      const { returnData, success } = call
+      if (!success || returnData === '0x') return null
+      const { address, abi, name } = calls[i]
+      const contract = new Contract(address, abi)
+      const decoded = contract.interface.decodeFunctionResult(name, returnData)
+      return decoded
+    })
+  }
+
   return {
     multicall,
     multicallv2,
+    multicallv3,
   }
 }

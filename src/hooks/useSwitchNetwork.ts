@@ -1,10 +1,12 @@
 import { ConnectorNames } from '@pancakeswap/uikit'
 import { useCallback, useMemo } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
 import replaceBrowserHistory from 'utils/replaceBrowserHistory'
 import { useAccount, useSwitchNetwork as useSwitchNetworkWallet } from 'wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { useSessionChainId } from './useSessionChainId'
 import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
+import useToast from './useToast'
 
 export function useSwitchNetworkLocal() {
   const [, setSessionChainId] = useSessionChainId()
@@ -25,6 +27,8 @@ export function useSwitchNetwork() {
     switchNetwork: _switchNetwork,
     ...switchNetworkArgs
   } = useSwitchNetworkWallet()
+  const { t } = useTranslation()
+  const { toastError } = useToast()
   const { isConnected, connector } = useAccount()
 
   const switchNetworkLocal = useSwitchNetworkLocal()
@@ -33,13 +37,18 @@ export function useSwitchNetwork() {
     async (chainId: number) => {
       if (isConnected && typeof _switchNetworkAsync === 'function') {
         setLoading(true)
-        return _switchNetworkAsync(chainId).finally(() => setLoading(false))
+        return _switchNetworkAsync(chainId)
+          .catch(() => {
+            // TODO: review the error
+            toastError(t('Error connecting, please retry and confirm in wallet!'))
+          })
+          .finally(() => setLoading(false))
       }
       return new Promise(() => {
         switchNetworkLocal(chainId)
       })
     },
-    [isConnected, setLoading, switchNetworkLocal, _switchNetworkAsync],
+    [isConnected, _switchNetworkAsync, t, setLoading, toastError, switchNetworkLocal],
   )
 
   const switchNetwork = useCallback(

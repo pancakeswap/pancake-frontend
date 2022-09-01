@@ -79,7 +79,7 @@ const Header = styled(CardHeader)<{ ifoId: string; $isCurrent?: boolean }>`
   border-top-left-radius: 32px;
   border-top-right-radius: 32px;
   background-color: ${({ theme }) => theme.colors.dropdown};
-  background-image: ${({ ifoId }) => `url('/images/ifos/${ifoId}-bg.svg'), url('/images/ifos/${ifoId}-bg.png')`};
+  background-image: ${({ ifoId }) => `url('/images/ifos/${ifoId}-bg.png')`};
   ${({ theme }) => theme.mediaQueries.md} {
     height: 112px;
   }
