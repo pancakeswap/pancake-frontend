@@ -1,5 +1,3 @@
-import "@pancakeswap/ui/css/global.css";
-
 // Components
 export * from "./components/Alert";
 export * from "./components/BalanceInput";

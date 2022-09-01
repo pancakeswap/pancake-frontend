@@ -26,6 +26,8 @@ import Menu from '../components/Menu'
 import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
 
+import '@pancakeswap/ui/css/global.css'
+
 const EasterEgg = dynamic(() => import('components/EasterEgg'), { ssr: false })
 
 // This config is required for number formatting
@@ -90,10 +92,10 @@ function MyApp(props: AppProps) {
           <ResetCSS />
           <GlobalStyle />
           <GlobalCheckClaimStatus excludeLocations={[]} />
-          {/* <PersistGate loading={null} persistor={persistor}> */}
+          <PersistGate loading={null} persistor={persistor}>
             <Updaters />
             <App {...props} />
-          {/* </PersistGate> */}
+          </PersistGate>
         </Blocklist>
       </Providers>
       <Script
