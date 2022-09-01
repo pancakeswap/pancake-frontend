@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { Button, Flex, Heading, TooltipText, useTooltip, useModal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
@@ -11,16 +11,20 @@ import { usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { TransactionResponse } from '@ethersproject/providers'
+import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModal'
 
 interface FarmCardActionsProps {
   earnings?: BigNumber
   pid?: number
+  vaultPid?: number
   onReward?: () => Promise<TransactionResponse>
   proxyCakeBalance?: number
   onDone?: () => void
 }
 
 const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
+  pid,
+  vaultPid,
   earnings,
   onReward,
   proxyCakeBalance,
@@ -43,6 +47,34 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
       placement: 'bottom',
     },
   )
+
+  const onClickHarvestButton = () => {
+    if (vaultPid) {
+      onPresentNonBscHarvestModal()
+    } else {
+      handleHarvest()
+    }
+  }
+
+  const handleHarvest = async () => {
+    const receipt = await fetchWithCatchTxError(() => {
+      return onReward()
+    })
+    if (receipt?.status) {
+      toastSuccess(
+        `${t('Harvested')}!`,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+        </ToastDescriptionWithTx>,
+      )
+      onDone?.()
+    }
+  }
+
+  const [onPresentNonBscHarvestModal] = useModal(
+    <MultiChainHarvestModal pid={pid} vaultPid={vaultPid} earningsBigNumber={earnings} earningsBusd={earningsBusd} />,
+  )
+
   return (
     <Flex mb="8px" justifyContent="space-between" alignItems="center">
       <Flex flexDirection="column" alignItems="flex-start">
@@ -60,23 +92,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
           <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
         )}
       </Flex>
-      <Button
-        disabled={rawEarningsBalance.eq(0) || pendingTx}
-        onClick={async () => {
-          const receipt = await fetchWithCatchTxError(() => {
-            return onReward()
-          })
-          if (receipt?.status) {
-            toastSuccess(
-              `${t('Harvested')}!`,
-              <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-                {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
-              </ToastDescriptionWithTx>,
-            )
-            onDone?.()
-          }
-        }}
-      >
+      <Button disabled={rawEarningsBalance.eq(0) || pendingTx} onClick={onClickHarvestButton}>
         {pendingTx ? t('Harvesting') : t('Harvest')}
       </Button>
     </Flex>

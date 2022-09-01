@@ -1,36 +1,63 @@
-import { useState } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
+import { useCallback } from 'react'
+import { useAppDispatch } from 'state'
+import { BigNumber } from 'bignumber.js'
+import { fetchFarmUserDataAsync } from 'state/farms'
 import { Modal, InjectedModalProps, Flex, Box, Text, Button, AutoRenewIcon, Image } from '@pancakeswap/uikit'
-import { LightGreyCard } from 'components/Card'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useTranslation } from '@pancakeswap/localization'
+import { useNonBscVault } from 'hooks/useContract'
+import { getBalanceAmount } from 'utils/formatBalance'
+import { useGasPrice } from 'state/user/hooks'
+import { useOraclePrice } from 'views/Farms/hooks/useFetchOraclePrice'
+import { nonBscHarvestFarm } from 'utils/calls'
+import useCatchTxError from 'hooks/useCatchTxError'
 import Balance from 'components/Balance'
-// import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
+import { LightGreyCard } from 'components/Card'
 
 interface MultiChainHarvestModalProp extends InjectedModalProps {
-  onCancel?: () => void
+  pid: number
+  vaultPid: number
+  earningsBigNumber: BigNumber
+  earningsBusd: number
 }
 
-const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({ onDismiss, onCancel }) => {
+const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
+  pid,
+  vaultPid,
+  earningsBigNumber,
+  earningsBusd,
+  onDismiss,
+}) => {
   const { t } = useTranslation()
-  const [pendingTx] = useState(false)
-  // const cakePriceUsd = useCakeBusdPrice()
+  const dispatch = useAppDispatch()
+  const { account, chainId } = useActiveWeb3React()
+  const gasPrice = useGasPrice()
+  const oraclePrice = useOraclePrice(chainId)
+  const nonBscVaultContract = useNonBscVault()
+  const displayBalance = getBalanceAmount(earningsBigNumber)
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
 
-  const handleHarvest = () => {
-    onDismiss?.()
+  const handleHarvest = async () => {
+    const receipt = await fetchWithCatchTxError(() => {
+      return nonBscHarvestFarm(nonBscVaultContract, vaultPid, gasPrice, account, oraclePrice, chainId)
+    })
+    if (receipt?.status) {
+      onDone()
+      onDismiss?.()
+    }
   }
 
   const handleCancel = () => {
     onDismiss?.()
   }
 
+  const onDone = useCallback(
+    () => dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId })),
+    [account, pid, chainId, dispatch],
+  )
+
   return (
-    <Modal
-      title={t('Harvest')}
-      style={{ maxWidth: '340px' }}
-      onDismiss={() => {
-        onDismiss?.()
-        onCancel()
-      }}
-    >
+    <Modal title={t('Harvest')} style={{ maxWidth: '340px' }} onDismiss={handleCancel}>
       <Flex flexDirection="column">
         <Text bold mb="16px">
           {t('You have earned CAKE rewards on BNB Chain')}
@@ -45,8 +72,8 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({ onDismis
             </Text>
           </Box>
           <Box mb="16px">
-            <Balance bold decimals={3} fontSize="20px" lineHeight="110%" value={31.89} />
-            <Balance prefix="~" unit=" USD" decimals={2} value={4.223} fontSize="12px" color="textSubtle" />
+            <Balance bold decimals={5} fontSize="20px" lineHeight="110%" value={displayBalance?.toNumber()} />
+            <Balance prefix="~" unit=" USD" decimals={2} value={earningsBusd} fontSize="12px" color="textSubtle" />
           </Box>
           <Button
             width="100%"

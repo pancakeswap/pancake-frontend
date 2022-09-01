@@ -1,4 +1,4 @@
-import { Button, Heading, Skeleton, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { Button, Heading, Skeleton, Text, TooltipText, useTooltip, useModal } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import { useTranslation } from '@pancakeswap/localization'
@@ -15,6 +15,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback } from 'react'
+import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModal'
 import { FarmWithStakedValue } from '../../types'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
@@ -50,6 +51,8 @@ export const HarvestActionContainer = ({ children, ...props }) => {
 }
 
 export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActionProps>> = ({
+  pid,
+  vaultPid,
   onReward,
   onDone,
   userData,
@@ -89,6 +92,38 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
     },
   )
 
+  const onClickHarvestButton = () => {
+    if (vaultPid) {
+      onPresentNonBscHarvestModal()
+    } else {
+      handleHarvest()
+    }
+  }
+
+  const handleHarvest = async () => {
+    const receipt = await fetchWithCatchTxError(() => {
+      return onReward()
+    })
+    if (receipt?.status) {
+      toastSuccess(
+        `${t('Harvested')}!`,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+        </ToastDescriptionWithTx>,
+      )
+      onDone?.()
+    }
+  }
+
+  const [onPresentNonBscHarvestModal] = useModal(
+    <MultiChainHarvestModal
+      pid={pid}
+      vaultPid={vaultPid}
+      earningsBigNumber={earningsBigNumber}
+      earningsBusd={earningsBusd}
+    />,
+  )
+
   return (
     <ActionContainer style={{ minHeight: 124.5 }}>
       <ActionTitles>
@@ -115,24 +150,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
             <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
           )}
         </div>
-        <Button
-          disabled={earnings.eq(0) || pendingTx || !userDataReady}
-          onClick={async () => {
-            const receipt = await fetchWithCatchTxError(() => {
-              return onReward()
-            })
-            if (receipt?.status) {
-              toastSuccess(
-                `${t('Harvested')}!`,
-                <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-                  {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
-                </ToastDescriptionWithTx>,
-              )
-              onDone?.()
-            }
-          }}
-          ml="4px"
-        >
+        <Button ml="4px" disabled={earnings.eq(0) || pendingTx || !userDataReady} onClick={onClickHarvestButton}>
           {pendingTx ? t('Harvesting') : t('Harvest')}
         </Button>
       </ActionContent>
