@@ -149,6 +149,7 @@ export const PricePairLabel: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { price } = usePollOraclePrice()
   const [dismissTooltip, setDismissTooltip] = useState(() => {
+    if (typeof window === 'undefined') return false
     if (localStorage?.getItem(PREDICTION_TOOLTIP_DISMISS_KEY)) return true
     return false
   })

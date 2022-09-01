@@ -24,7 +24,7 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
       [chainId && wrapped && wnative?.equals(wrapped) ? undefined : currency, chainId ? wnative : undefined],
-      [wrapped?.equals(stable) ? undefined : wrapped, stable],
+      [chainId && wrapped && wrapped.equals(stable) ? undefined : wrapped, stable],
       [chainId ? wnative : undefined, stable],
     ],
     [wnative, stable, chainId, currency, wrapped],

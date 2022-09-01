@@ -14,7 +14,8 @@ const PredictionConfigProviders = ({ children }) => {
   const { query } = useRouter()
   const { token } = query
   const [selectedToken, setConfig] = useState(() => {
-    const initToken = localStorage?.getItem(PREDICTION_TOKEN_KEY) as PredictionSupportedSymbol
+    const initToken =
+      typeof window !== 'undefined' && (localStorage?.getItem(PREDICTION_TOKEN_KEY) as PredictionSupportedSymbol)
 
     if ([PredictionSupportedSymbol.BNB, PredictionSupportedSymbol.CAKE].includes(initToken)) {
       return initToken

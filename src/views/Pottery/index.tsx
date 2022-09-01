@@ -34,13 +34,14 @@ const Pottery: React.FC<React.PropsWithChildren> = () => {
       <HowToPlay />
       <PrizeFunds />
       <FAQ />
-      {createPortal(
-        <>
-          <ScrollToTopButton />
-          <SubgraphHealthIndicator subgraphName="pancakeswap/pottery" />
-        </>,
-        document.body,
-      )}
+      {typeof window !== 'undefined' &&
+        createPortal(
+          <>
+            <ScrollToTopButton />
+            <SubgraphHealthIndicator subgraphName="pancakeswap/pottery" />
+          </>,
+          document.body,
+        )}
     </Box>
   )
 }

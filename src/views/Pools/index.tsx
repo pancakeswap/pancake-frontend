@@ -356,7 +356,7 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
           height={184.5}
         />
       </Page>
-      {createPortal(<ScrollToTopButton />, document.body)}
+      {typeof window !== 'undefined' && createPortal(<ScrollToTopButton />, document.body)}
     </>
   )
 }

@@ -19,7 +19,7 @@ const CollectionWrapper: React.FC<React.PropsWithChildren<CollectionWrapperProps
       <Container>
         <CollectionNfts collection={collection} />
       </Container>
-      {createPortal(<ScrollToTopButton />, document.body)}
+      {typeof window !== 'undefined' &&  createPortal(<ScrollToTopButton />, document.body)}
     </Box>
   )
 }
