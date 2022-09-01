@@ -36,7 +36,7 @@ interface ConfirmRemoveLiquidityModalProps {
   currencyA: Currency | null | undefined
   currencyB: Currency | null | undefined
   isZap?: boolean
-  toggleZapMode: (value: boolean) => void
+  toggleZapMode?: (value: boolean) => void
 }
 
 const ConfirmRemoveLiquidityModal: React.FC<
