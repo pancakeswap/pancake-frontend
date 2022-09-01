@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import { Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { useTest } from 'state/lists/lists'
+import { useEffect, useState } from 'react'
 
 const StyledNotFound = styled.div`
   align-items: center;
@@ -12,6 +14,8 @@ const StyledNotFound = styled.div`
 
 const NotSupport = () => {
   const { t } = useTranslation()
+
+  useTest()
 
   return (
     <StyledNotFound>

@@ -17,6 +17,10 @@ function IndexedDBStorage(dbName) {
       removeItem: db.removeItem,
     }
   }
-  return storage
+  return {
+    getItem: () => {},
+    setItem: () => {},
+    removeItem: () => {},
+  }
 }
 export default IndexedDBStorage

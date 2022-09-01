@@ -1,11 +1,11 @@
 import { nanoid } from '@reduxjs/toolkit'
 import { TokenList } from '@uniswap/token-lists'
 import { useCallback } from 'react'
-import { useAppDispatch } from '../state'
+import { useListState } from 'state/lists/lists'
 import { fetchTokenList } from '../state/lists/actions'
 
 function useFetchListCallback(): (listUrl: string, sendDispatch?: boolean) => Promise<TokenList> {
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useListState()
 
   // note: prevent dispatch if using for list search or unsupported list
   return useCallback(
@@ -19,6 +19,7 @@ function useFetchListCallback(): (listUrl: string, sendDispatch?: boolean) => Pr
       return getTokenList(listUrl)
         .then((tokenList) => {
           if (sendDispatch) {
+          console.log('?????????')
             dispatch(fetchTokenList.fulfilled({ url: listUrl, tokenList, requestId }))
           }
           return tokenList

@@ -8,12 +8,13 @@ import useFetchListCallback from 'hooks/useFetchListCallback'
 import useInterval from 'hooks/useInterval'
 import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { useAppDispatch } from '../index'
-import { acceptListUpdate } from './actions'
+import { acceptListUpdate, updateListVersion } from './actions'
 import { useActiveListUrls } from './hooks'
+import { useListState } from './lists'
 
 export default function Updater(): null {
   const { provider } = useWeb3Provider()
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useListState()
   const isWindowVisible = useIsWindowVisible()
   const router = useRouter()
   const includeListUpdater = useMemo(() => {
@@ -25,6 +26,10 @@ export default function Updater(): null {
   // get all loaded lists, and the active urls
   const lists = useAllLists()
   const activeListUrls = useActiveListUrls()
+
+  useEffect(() => {
+    dispatch(updateListVersion())
+  }, [dispatch])
 
   const fetchList = useFetchListCallback()
   const fetchAllListsCallback = useCallback(() => {
@@ -45,7 +50,7 @@ export default function Updater(): null {
         fetchList(listUrl).catch((error) => console.debug('list added fetching error', error))
       }
     })
-  }, [dispatch, fetchList, provider, lists])
+  }, [fetchList, provider, lists])
 
   // if any lists from unsupported lists are loaded, check them too (in case new updates since last visit)
   useEffect(() => {
@@ -55,7 +60,7 @@ export default function Updater(): null {
         fetchList(listUrl).catch((error) => console.debug('list added fetching error', error))
       }
     })
-  }, [dispatch, fetchList, provider, lists])
+  }, [fetchList, provider, lists])
 
   // automatically update lists if versions are minor/patch
   useEffect(() => {

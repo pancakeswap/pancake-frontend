@@ -4,8 +4,8 @@ import { getVersionUpgrade, VersionUpgrade } from '@uniswap/token-lists'
 import { TokenList } from '@uniswap/token-lists/dist/types'
 import { DEFAULT_ACTIVE_LIST_URLS, UNSUPPORTED_LIST_URLS, DEFAULT_LIST_OF_LISTS } from '../../config/constants/lists'
 
-import { updateVersion } from '../global/actions'
-import { acceptListUpdate, addList, fetchTokenList, removeList, enableList, disableList } from './actions'
+// import { updateVersion } from '../global/actions'
+import { acceptListUpdate, addList, fetchTokenList, removeList, enableList, disableList, updateListVersion } from './actions'
 
 export interface ListsState {
   readonly byUrl: {
@@ -145,7 +145,7 @@ export default createReducer(initialState, (builder) =>
         current: state.byUrl[url].pendingUpdate,
       }
     })
-    .addCase(updateVersion, (state) => {
+    .addCase(updateListVersion, (state) => {
       // state loaded from localStorage, but new lists have never been initialized
       if (!state.lastInitializedDefaultListOfLists) {
         state.byUrl = initialState.byUrl
