@@ -4,16 +4,16 @@ import { TokenList, Version } from '@uniswap/token-lists'
 import Card from 'components/Card'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useAtomValue } from 'jotai'
+import { useListState } from 'state/lists/lists'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import useFetchListCallback from '../../hooks/useFetchListCallback'
 
-import { useAppDispatch } from '../../state'
 import { acceptListUpdate, disableList, enableList, removeList } from '../../state/lists/actions'
 import { selectorByUrlsAtom, useActiveListUrls, useAllLists, useIsListActive } from '../../state/lists/hooks'
 import uriToHttp from '../../utils/uriToHttp'
 
-import { useAtomValue } from 'jotai'
 import Column, { AutoColumn } from '../Layout/Column'
 import Row, { RowBetween, RowFixed } from '../Layout/Row'
 import { ListLogo } from '../Logo'
@@ -49,8 +49,7 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
   const isActive = useIsListActive(listUrl)
 
   const listsByUrl = useAtomValue(selectorByUrlsAtom)
-  console.log(listsByUrl, 'listsByUrl')
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useListState()
   const { current: list, pendingUpdate: pending } = listsByUrl[listUrl]
 
   const activeTokensOnThisChain = useMemo(() => {

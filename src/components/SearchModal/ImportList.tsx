@@ -12,6 +12,7 @@ import useFetchListCallback from 'hooks/useFetchListCallback'
 import { removeList, enableList } from 'state/lists/actions'
 import { useAllLists } from 'state/lists/hooks'
 import { useTranslation } from '@pancakeswap/localization'
+import { useListState } from 'state/lists/lists'
 
 interface ImportProps {
   listURL: string
@@ -33,7 +34,7 @@ const TextDot = styled.div`
 
 function ImportList({ listURL, list, onImport }: ImportProps) {
   const { theme } = useTheme()
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useListState()
 
   const { t } = useTranslation()
 

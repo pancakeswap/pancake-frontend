@@ -7,7 +7,7 @@ import listReducer, { initialState } from './reducer'
 
 const storage = createJSONStorage(() => IndexedDBStorage('lists'))
 storage.delayInit = true
-const listsAtom = atomWithStorage('lists-2', initialState, storage)
+export const listsAtom = atomWithStorage('lists-2', initialState, storage)
 
 export function useListState() {
   return useAtom(listStateAtom)

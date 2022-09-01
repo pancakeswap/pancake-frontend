@@ -86,7 +86,7 @@ const persistedReducer = persistReducer(
     mint,
     burn,
     multicall,
-    lists,
+    // lists,
   }),
 )
 

@@ -14,7 +14,7 @@ import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-un
 import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
 import { AppState } from '../index'
 import { atom, useAtomValue } from 'jotai'
-import { listStateAtom } from './lists'
+import { listStateAtom, listsAtom } from './lists'
 
 // use ordering of default list of lists to assign priority
 function sortByListPriority(urlA: string, urlB: string) {
@@ -34,8 +34,8 @@ function enumKeys<O extends object, K extends keyof O = keyof O>(obj: O): K[] {
 // -------------------------------------
 //   Selectors
 // -------------------------------------
-const selectorActiveUrlsAtom = atom((get) => get(listStateAtom).activeListUrls)
-export const selectorByUrlsAtom = atom((get) => get(listStateAtom).byUrl)
+const selectorActiveUrlsAtom = atom((get) => get(listsAtom).activeListUrls)
+export const selectorByUrlsAtom = atom((get) => get(listsAtom).byUrl)
 
 const activeListUrlsAtom = atom((get) => {
   const urls = get(selectorActiveUrlsAtom)
