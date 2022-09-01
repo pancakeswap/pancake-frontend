@@ -4,9 +4,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { CurrencyAmount, Token, WNATIVE } from '@pancakeswap/sdk'
 import { Button, Text, AddIcon, CardBody, Message, useModal, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { logError } from 'utils/sentry'
-import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import { useTranslation } from '@pancakeswap/localization'
-import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { CommitButton } from 'components/CommitButton'
 import { getLPSymbol } from 'utils/getLpSymbol'
@@ -16,34 +14,35 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { useLPApr } from 'state/swap/hooks'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { CAKE, USDC } from '@pancakeswap/tokens'
-import { LightCard } from '../../components/Card'
-import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
-import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import ConnectWalletButton from '../../components/ConnectWalletButton'
+import { LightCard } from '../../../components/Card'
+import { AutoColumn, ColumnCenter } from '../../../components/Layout/Column'
+import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
+import ConnectWalletButton from '../../../components/ConnectWalletButton'
 
-import { PairState } from '../../hooks/usePairs'
-import { useCurrency } from '../../hooks/Tokens'
-import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
-import useTransactionDeadline from '../../hooks/useTransactionDeadline'
-import { Field, resetMintState } from '../../state/mint/actions'
-import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
+import { PairState } from '../../../hooks/usePairs'
+import { useCurrency } from '../../../hooks/Tokens'
+import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback'
+import useTransactionDeadline from '../../../hooks/useTransactionDeadline'
+import { Field, resetMintState } from '../../../state/mint/actions'
+import { useMintActionHandlers, useMintState } from '../../../state/mint/hooks'
 
-import { useTransactionAdder } from '../../state/transactions/hooks'
-import { useGasPrice, useIsExpertMode, usePairAdder, useUserSlippageTolerance } from '../../state/user/hooks'
-import { calculateGasMargin } from '../../utils'
-import { calculateSlippageAmount, useRouterContract } from '../../utils/exchange'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import Dots from '../../components/Loader/Dots'
-import PoolPriceBar from './PoolPriceBar'
-import Page from '../Page'
-import ConfirmAddLiquidityModal from './components/ConfirmAddLiquidityModal'
-import { formatAmount } from '../../utils/formatInfoNumbers'
-import { useCurrencySelectRoute } from './useCurrencySelectRoute'
-import { useAppDispatch } from '../../state'
-import { CommonBasesType } from '../../components/SearchModal/types'
-import { AppHeader, AppBody } from '../../components/App'
-import { RowBetween } from '../../components/Layout/Row'
-import { MinimalPositionCard } from '../../components/PositionCard'
+import { useTransactionAdder } from '../../../state/transactions/hooks'
+import { useGasPrice, useIsExpertMode, usePairAdder, useUserSlippageTolerance } from '../../../state/user/hooks'
+import { calculateGasMargin } from '../../../utils'
+import { calculateSlippageAmount, useRouterContract } from '../../../utils/exchange'
+import { maxAmountSpend } from '../../../utils/maxAmountSpend'
+import Dots from '../../../components/Loader/Dots'
+import PoolPriceBar from '../PoolPriceBar'
+import Page from '../../Page'
+import ConfirmAddLiquidityModal from '../components/ConfirmAddLiquidityModal'
+import { formatAmount } from '../../../utils/formatInfoNumbers'
+import { useCurrencySelectRoute } from '../useCurrencySelectRoute'
+import { useAppDispatch } from '../../../state'
+import { CommonBasesType } from '../../../components/SearchModal/types'
+import { AppHeader, AppBody } from '../../../components/App'
+import { RowBetween } from '../../../components/Layout/Row'
+import { MinimalPositionCard } from '../../../components/PositionCard'
+import { useStableLPDerivedMintInfo } from './hooks/useStableLPDerivedMintInfo'
 
 export default function AddStableLiquidity() {
   const router = useRouter()
@@ -54,6 +53,7 @@ export default function AddStableLiquidity() {
 
   const native = useNativeCurrency()
 
+  // Philip TODO: use stable coins by default
   const [currencyIdA, currencyIdB] = router.query.currency || [
     native.symbol,
     CAKE[chainId]?.address ?? USDC[chainId]?.address,
@@ -80,14 +80,14 @@ export default function AddStableLiquidity() {
     pair,
     pairState,
     currencyBalances,
-    parsedAmounts: mintParsedAmounts,
+    parsedAmounts,
     price,
     noLiquidity,
     liquidityMinted,
     poolTokenPercentage,
     error,
     addError,
-  } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
+  } = useStableLPDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
 
   const poolData = useLPApr(pair)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -127,15 +127,13 @@ export default function AddStableLiquidity() {
 
   const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
 
-  const parsedAmounts = mintParsedAmounts
-
   // get formatted amounts
   const formattedAmounts = useMemo(
     () => ({
       [independentField]: typedValue,
-      [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
+      [dependentField]: otherTypedValue,
     }),
-    [dependentField, independentField, noLiquidity, otherTypedValue, parsedAmounts, typedValue],
+    [dependentField, independentField, otherTypedValue, typedValue],
   )
 
   const atMaxAmounts: { [field in Field]?: CurrencyAmount<Token> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
@@ -159,7 +157,7 @@ export default function AddStableLiquidity() {
   async function onAdd() {
     if (!chainId || !account || !routerContract) return
 
-    const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = mintParsedAmounts
+    const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
     if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
       return
     }
@@ -259,9 +257,6 @@ export default function AddStableLiquidity() {
       onFieldAInput('')
     }
   }, [onFieldAInput, txHash])
-
-  const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
-  const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
   const [onPresentAddLiquidityModal] = useModal(
     <ConfirmAddLiquidityModal
@@ -409,11 +404,7 @@ export default function AddStableLiquidity() {
                 </RowBetween>
               )}
 
-              {addIsUnsupported || addIsWarning ? (
-                <Button disabled mb="4px">
-                  {t('Unsupported Asset')}
-                </Button>
-              ) : !account ? (
+              {!account ? (
                 <ConnectWalletButton />
               ) : isWrongNetwork ? (
                 <CommitButton />
@@ -465,15 +456,11 @@ export default function AddStableLiquidity() {
           </CardBody>
         </>
       </AppBody>
-      {!(addIsUnsupported || addIsWarning) ? (
-        pair && !noLiquidity && pairState !== PairState.INVALID ? (
-          <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
-            <MinimalPositionCard showUnwrapped={oneCurrencyIsWNATIVE} pair={pair} />
-          </AutoColumn>
-        ) : null
-      ) : (
-        <UnsupportedCurrencyFooter currencies={[currencies.CURRENCY_A, currencies.CURRENCY_B]} />
-      )}
+      {pair && !noLiquidity && pairState !== PairState.INVALID ? (
+        <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
+          <MinimalPositionCard showUnwrapped={oneCurrencyIsWNATIVE} pair={pair} />
+        </AutoColumn>
+      ) : null}
     </Page>
   )
 }
