@@ -27,7 +27,7 @@ function _assignInlineVars(propertyConfig: CreateStylesOutput, propValue: unknow
 
   const variableAssignments = Object.entries(propValue).reduce((acc: Record<string, string>, [bp, value]) => {
     if (value) {
-      const parsedValue = trim$(value) ?? value
+      const parsedValue = typeof value === 'string' ? trim$(value) ?? value : value
       if (values?.[parsedValue] || !dynamic) {
         // If value has a static class, don't assign any variables
         return acc

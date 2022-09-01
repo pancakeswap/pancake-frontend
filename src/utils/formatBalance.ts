@@ -70,8 +70,8 @@ export const formatFixedNumber = (number: FixedNumber, displayDecimals = 18, dec
 export const formatLocalisedCompactNumber = (number: number): string => {
   const codeFromStorage = getLanguageCodeFromLS()
 
-  const isClient = typeof window === 'object'
-  const isSupported = window?.Intl
+  const isClient = typeof window !== 'undefined'
+  const isSupported = isClient && window?.Intl
 
   // For clients do not support Intl, just return number
   if (isClient && !isSupported) {

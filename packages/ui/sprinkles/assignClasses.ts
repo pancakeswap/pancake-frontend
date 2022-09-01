@@ -1,25 +1,22 @@
-import type { CreateStylesOutput } from './types';
-import { trim$ } from './utils';
+import type { CreateStylesOutput } from './types'
+import { trim$ } from './utils'
 
-export function assignClasses(
-  propertyConfig: CreateStylesOutput,
-  propValue: unknown,
-): string {
+export function assignClasses(propertyConfig: CreateStylesOutput, propValue: unknown): string {
   if (!propValue) {
-    return '';
+    return ''
   }
 
-  const { dynamic, values, name: propName } = propertyConfig;
+  const { dynamic, values, name: propName } = propertyConfig
 
   // Value is a string or number, ie not responsive
   if (typeof propValue === 'string') {
-    const value = trim$(propValue) ?? propValue;
+    const value = trim$(propValue) ?? propValue
     // Check for static value first
     if (values?.[value]) {
-      return values[value].default;
+      return values[value].default
     }
     if (dynamic) {
-      return dynamic.default;
+      return dynamic.default
     }
     // If the property is not dynamic, and unrecognized value is provided
     // Quietly warn
@@ -31,42 +28,40 @@ export function assignClasses(
       )
         .map((className) => `"${className}"`)
         .join(', ')}. Received: ${JSON.stringify(propValue)}.`,
-    );
-    return '';
+    )
+    return ''
   }
 
-  const keys = Object.keys(propValue);
+  const keys = Object.keys(propValue)
 
   // If no entries, exit gracefully
   if (keys.length < 1) {
-    return '';
+    return ''
   }
 
   const className = keys
     .map((bp) => {
-      const rawValueAtBp = propValue[bp];
-      const valueAtBp = trim$(rawValueAtBp) ?? rawValueAtBp;
+      const rawValueAtBp = propValue[bp]
+      const valueAtBp = typeof rawValueAtBp === 'string' ? trim$(rawValueAtBp) ?? rawValueAtBp : rawValueAtBp
 
       // Check for static value first
       if (values?.[valueAtBp]) {
-        return values[valueAtBp].conditions[bp];
+        return values[valueAtBp].conditions[bp]
       }
       if (dynamic) {
-        return dynamic.conditions[bp];
+        return dynamic.conditions[bp]
       }
       // If the property is not dynamic, and unrecognized value is provided
       // Quietly warn
       // eslint-disable-next-line no-console
       console.error(
-        `Rainbow Sprinkles: invalid value provided to prop '${propName}'. Expected one of ${Object.keys(
-          values,
-        )
+        `Rainbow Sprinkles: invalid value provided to prop '${propName}'. Expected one of ${Object.keys(values)
           .map((className) => `"${className}"`)
           .join(', ')}. Received: ${JSON.stringify(valueAtBp)}.`,
-      );
-      return null;
+      )
+      return null
     })
-    .filter(Boolean);
+    .filter(Boolean)
 
-  return className.join(' ').trim();
+  return className.join(' ').trim()
 }

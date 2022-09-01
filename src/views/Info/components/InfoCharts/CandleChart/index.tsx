@@ -30,7 +30,7 @@ const CandleChart = ({ data, setValue, setLabel, ...rest }: LineChartProps) => {
   }, [chartCreated, chartRef])
 
   // add event listener for resize
-  const isClient = typeof window === 'object'
+  const isClient = typeof window !== 'undefined'
   useEffect(() => {
     if (!isClient) {
       return null
