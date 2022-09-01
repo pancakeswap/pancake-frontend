@@ -132,6 +132,8 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,
   })
+  console.log(farm)
+  // console.log(quoteToken, token, liquidityUrlPathParts)
   const lpAddress = getAddress(farm.lpAddresses)
   const bsc = getBlockExploreLink(lpAddress, 'address')
   const info = `/info/pool/${lpAddress}`

@@ -13,10 +13,12 @@ const farms: SerializedFarmConfig[] = [
   {
     pid: 0,
     v1pid: 0,
-    lpSymbol: 'CAKE',
+    lpSymbol: 'BANCC',
     lpAddresses: {
       97: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
-      56: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+      // 56: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+      // 56: '0xe0B81b04D0d7e31D791923e0f8BCDb182401A4b9',
+      56: '0x9fD42c8fc9Ac3011Dd478329f03c3966D03A672F',
     },
     token: serializedTokens.syrup,
     quoteToken: serializedTokens.wbnb,
@@ -29,7 +31,7 @@ const farms: SerializedFarmConfig[] = [
       97: '0x3ed8936cAFDF85cfDBa29Fbe5940A5b0524824F4',
       56: '0x3D017e582f8Ec1A1807b8d19388B9Cd754B0Aad0',
     },
-    token: serializedTokens.cake,
+    token: serializedTokens.sbancc,
     quoteToken: serializedTokens.wbnb,
   },
   {

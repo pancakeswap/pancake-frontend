@@ -1,4 +1,5 @@
 import { ChainId, Token, WBNB } from '@pancakeswap/sdk'
+import { watch } from 'fs'
 
 const CAKE_MAINNET = new Token(
   ChainId.BSC,
@@ -157,6 +158,14 @@ export const bscTokens = {
     'TLOS',
     'Telos',
     'https://www.telos.net/',
+  ),
+  sbancc: new Token(
+    ChainId.BSC,
+    '0x1BD8cA161F0b311162365248b39B38F85e238345',
+    9,
+    'sBanc',
+    'Bancc Finance',
+    'https://bancc.finance/',
   ),
   beta: new Token(
     ChainId.BSC,
