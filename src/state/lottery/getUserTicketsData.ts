@@ -57,19 +57,15 @@ export const fetchUserTicketsForMultipleRounds = async (
   idsToCheck: string[],
   account: string,
 ): Promise<{ roundId: string; userTickets: LotteryTicket[] }[]> => {
-  const ticketsForMultipleRounds = []
-
   const results = await Promise.all(
     idsToCheck.map((roundId) => Promise.all([Promise.resolve(roundId), fetchUserTicketsForOneRound(account, roundId)])),
   )
 
-  results.forEach((result) => {
+  return results.map((result) => {
     const [roundId, ticketsForRound] = result
-    ticketsForMultipleRounds.push({
+    return {
       roundId,
       userTickets: ticketsForRound,
-    })
+    }
   })
-
-  return ticketsForMultipleRounds
 }
