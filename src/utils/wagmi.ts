@@ -57,7 +57,7 @@ export const { provider, chains } = configureChains(CHAINS, [
       if (!!process.env.NEXT_PUBLIC_NODE_PRODUCTION && chain.id === bsc.id) {
         return { http: process.env.NEXT_PUBLIC_NODE_PRODUCTION }
       }
-      if (getNodeRealUrl(chain.network)) {
+      if (chain.rpcUrls.nodeReal) {
         return (
           getNodeRealUrl(chain.network) || {
             http: chain.rpcUrls.nodeReal,
