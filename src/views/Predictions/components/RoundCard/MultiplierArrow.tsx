@@ -88,7 +88,7 @@ const MultiplierArrow: React.FC<React.PropsWithChildren<MultiplierArrowProps>> =
 
     return (
       <EnteredTagWrapper style={position}>
-        <EnteredTag amount={betAmount} hasClaimed={hasClaimed} />
+        <EnteredTag amount={betAmount} hasClaimed={hasClaimed} multiplier={multiplier} />
       </EnteredTagWrapper>
     )
   }
