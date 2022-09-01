@@ -46,6 +46,7 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0x89c68051543Fa135B31c2CE7BD8Cdf392345FF01',
     token: bscTokens.spin,
     quoteToken: bscTokens.wbnb,
+    isCommunity: true,
     auctionHostingStartSeconds: 1662105600,
   },
   {
@@ -64,6 +65,7 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0x07C10ecFb0e1CF81E3e05ddb693Cc114C8EBe498',
     token: bscTokens.xcad,
     quoteToken: bscTokens.busd,
+    isCommunity: true,
     auctionHostingStartSeconds: 1662105600,
   },
   {
