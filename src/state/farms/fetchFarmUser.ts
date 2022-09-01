@@ -7,6 +7,7 @@ import { getMasterChefAddress } from 'utils/addressHelpers'
 import { SerializedFarmConfig } from 'config/constants/types'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { getBscChainId } from 'state/farms/getBscChainId'
+import { getCrossFarmingContract } from 'utils/contractHelpers'
 
 export const fetchFarmUserAllowances = async (
   account: string,
@@ -81,13 +82,14 @@ export const fetchFarmUserStakedBalances = async (
 export const fetchFarmUserEarnings = async (account: string, farmsToFetch: SerializedFarmConfig[], chainId: number) => {
   const isBscNetwork = verifyBscNetwork(chainId)
   const multiCallChainId = isBscNetwork ? chainId : await getBscChainId(chainId)
+  const userAddress = isBscNetwork ? account : await fetchCProxyAddress(account, multiCallChainId)
   const masterChefAddress = getMasterChefAddress(multiCallChainId)
 
   const calls = farmsToFetch.map((farm) => {
     return {
       address: masterChefAddress,
       name: 'pendingCake',
-      params: [farm.pid, account],
+      params: [farm.pid, userAddress],
     }
   })
 
@@ -96,4 +98,15 @@ export const fetchFarmUserEarnings = async (account: string, farmsToFetch: Seria
     return new BigNumber(earnings).toJSON()
   })
   return parsedEarnings
+}
+
+export const fetchCProxyAddress = async (address: string, chainId: number) => {
+  try {
+    const crossFarmingAddress = getCrossFarmingContract(null, chainId)
+    const cProxyAddress = await crossFarmingAddress.cProxy(address)
+    return cProxyAddress.toString()
+  } catch (error) {
+    console.error('Failed Fetch CProxy Address', error)
+    return address
+  }
 }

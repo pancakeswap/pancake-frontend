@@ -154,7 +154,7 @@ export default {
   },
   crossFarming: {
     56: '',
-    97: '',
+    97: '0x6AA249Ff0d95a915dcA2f8f53637072998d35f8B',
     5: '0x38D3c31A7B4ba9C76b56e72EccF0e8503Be46C64',
   },
 }

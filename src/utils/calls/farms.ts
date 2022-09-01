@@ -59,7 +59,7 @@ export const nonBscHarvestFarm = async (contract, pid, gasPrice, account, oracle
     oraclePrice,
     amount: '0',
     userAddress: account,
-    messageType: MessageTypes.Deposit,
+    messageType: MessageTypes.Claim,
   })
-  return contract.deposit(pid, '0', { value: totalFee })
+  return contract.claim(pid, { value: totalFee })
 }
