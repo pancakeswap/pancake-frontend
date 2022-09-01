@@ -1,8 +1,9 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { CHAIN_IDS } from 'utils/wagmi'
 import AddLiquidity from 'views/AddLiquidity'
+import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity'
 
-const AddLiquidityPage = () => <AddLiquidity />
+const AddLiquidityPage = () => <AddStableLiquidity />
 
 AddLiquidityPage.chains = CHAIN_IDS
 
