@@ -5,7 +5,15 @@ import { TokenList } from '@uniswap/token-lists/dist/types'
 import { DEFAULT_ACTIVE_LIST_URLS, UNSUPPORTED_LIST_URLS, DEFAULT_LIST_OF_LISTS } from '../../config/constants/lists'
 
 // import { updateVersion } from '../global/actions'
-import { acceptListUpdate, addList, fetchTokenList, removeList, enableList, disableList, updateListVersion } from './actions'
+import {
+  acceptListUpdate,
+  addList,
+  fetchTokenList,
+  removeList,
+  enableList,
+  disableList,
+  updateListVersion,
+} from './actions'
 
 export interface ListsState {
   readonly byUrl: {
@@ -45,7 +53,81 @@ export const initialState: ListsState = {
   activeListUrls: DEFAULT_ACTIVE_LIST_URLS,
 }
 
-export default createReducer(initialState, (builder) =>
+export default (state, action) => {
+  switch (action.type) {
+    case fetchTokenList.pending.type: {
+      const {
+        payload: { requestId, url },
+      } = action
+      return {
+        ...state,
+        byUrl: {
+          ...state.byUrl,
+          [url]: {
+            current: null,
+            pendingUpdate: null,
+            ...state.byUrl[url],
+            loadingRequestId: requestId,
+            error: null,
+          },
+        },
+      }
+    }
+    case fetchTokenList.fulfilled.type: {
+      const {
+        payload: { requestId, tokenList, url },
+      } = action
+      const current = state.byUrl[url]?.current
+      const loadingRequestId = state.byUrl[url]?.loadingRequestId
+
+      // no-op if update does nothing
+      if (current) {
+        const upgradeType = getVersionUpgrade(current.version, tokenList.version)
+
+        if (upgradeType === VersionUpgrade.NONE) return state
+        if (loadingRequestId === null || loadingRequestId === requestId) {
+          return {
+            ...state,
+            byUrl: {
+              ...state.byUrl,
+              [url]: {
+                ...state.byUrl[url],
+                loadingRequestId: null,
+                error: null,
+                current,
+                pendingUpdate: tokenList,
+              },
+            },
+          }
+        }
+      } else {
+        // activate if on default active
+        if (DEFAULT_ACTIVE_LIST_URLS.includes(url)) {
+          state.activeListUrls?.push(url)
+        }
+
+        return {
+          ...state,
+          byUrl: {
+            ...state.byUrl,
+            [url]: {
+              ...state.byUrl[url],
+              loadingRequestId: null,
+              error: null,
+              current: tokenList,
+              pendingUpdate: null,
+            },
+          },
+        }
+      }
+
+      return state
+    }
+    default:
+      return state
+  }
+}
+createReducer(initialState, (builder) =>
   builder
     .addCase(fetchTokenList.pending, (state, { payload: { requestId, url } }) => {
       state.byUrl[url] = {
