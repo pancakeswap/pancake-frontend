@@ -99,7 +99,7 @@ const SwitchIconButton = styled(IconButton)`
 `
 
 const CHART_SUPPORT_CHAIN_IDS = [ChainId.BSC]
-const ACCESS_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC]
+export const ACCESS_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC]
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
