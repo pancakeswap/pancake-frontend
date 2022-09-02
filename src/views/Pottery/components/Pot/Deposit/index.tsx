@@ -88,18 +88,20 @@ const Deposit: React.FC<React.PropsWithChildren> = () => {
           <Text color="textSubtle">{t('APY')}</Text>
           <Text bold>{apyDisplay}</Text>
         </Flex>
-        <Flex justifyContent="space-between">
-          <Text color="textSubtle">{t('Next draw date')}</Text>
-          {tooltipVisible && tooltip}
-          <TooltipText ref={targetRef}>
-            <Text bold as="span">
-              {t('in')}
-            </Text>
-            {days ? <Text bold as="span" ml="2px">{`${days}${t('d')}`}</Text> : null}
-            {hours ? <Text bold as="span" ml="2px">{`${hours}${t('h')}`}</Text> : null}
-            {minutes ? <Text bold as="span" ml="2px">{`${minutes}${t('m')}`}</Text> : null}
-          </TooltipText>
-        </Flex>
+        {getStatus !== PotteryDepositStatus.BEFORE_LOCK && (
+          <Flex justifyContent="space-between">
+            <Text color="textSubtle">{t('Next draw date')}</Text>
+            {tooltipVisible && tooltip}
+            <TooltipText ref={targetRef}>
+              <Text bold as="span">
+                {t('in')}
+              </Text>
+              {days ? <Text bold as="span" ml="2px">{`${days}${t('d')}`}</Text> : null}
+              {hours ? <Text bold as="span" ml="2px">{`${hours}${t('h')}`}</Text> : null}
+              {minutes ? <Text bold as="span" ml="2px">{`${minutes}${t('m')}`}</Text> : null}
+            </TooltipText>
+          </Flex>
+        )}
         <Flex justifyContent="space-between">
           <Text color="textSubtle">{t('Total Value Locked')}</Text>
           <Balance bold decimals={2} value={totalValueLocked} unit=" CAKE" />
