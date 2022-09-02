@@ -41,6 +41,13 @@ export function useSwitchNetwork() {
         if (isLoading) return
         setLoading(true)
         return _switchNetworkAsync(chainId)
+          .then((c) => {
+            // well token pocket
+            if (window.ethereum?.isTokenPocket === true) {
+              window.location.reload()
+            }
+            return c
+          })
           .catch(() => {
             // TODO: review the error
             toastError(t('Error connecting, please retry and confirm in wallet!'))
