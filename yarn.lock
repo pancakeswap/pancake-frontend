@@ -3239,6 +3239,11 @@
   dependencies:
     "@octokit/openapi-types" "^11.2.0"
 
+"@pancakeswap/rainbow-sprinkles@^0.12.2":
+  version "0.12.2"
+  resolved "https://registry.yarnpkg.com/@pancakeswap/rainbow-sprinkles/-/rainbow-sprinkles-0.12.2.tgz#81f3eb31fe22d12016b830c883e82db224887b8f"
+  integrity sha512-MSnvicDwJTEcGliDXU9UHiWh/27FULQH28DwQbUYu0zNQnRGDj0WgZaAQZZ/2WHhY6dz+zTJAmo2R6CHdQ5UOQ==
+
 "@pedrouid/environment@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@pedrouid/environment/-/environment-1.0.1.tgz#858f0f8a057340e0b250398b75ead77d6f4342ec"

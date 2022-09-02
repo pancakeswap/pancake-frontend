@@ -3,5 +3,8 @@
   "version": "0.0.1",
   "sideEffects": [
     "*.css.ts"
-  ]
+  ],
+  "dependencies": {
+    "@pancakeswap/rainbow-sprinkles": "^0.12.2"
+  }
 }
