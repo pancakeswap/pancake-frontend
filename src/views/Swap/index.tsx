@@ -30,6 +30,7 @@ import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 
+import AccessRisk from 'views/Swap/components/AccessRisk'
 import useRefreshBlockNumberID from './hooks/useRefreshBlockNumber'
 import AddressInputPanel from './components/AddressInputPanel'
 import { GreyCard } from '../../components/Card'
@@ -98,6 +99,7 @@ const SwitchIconButton = styled(IconButton)`
 `
 
 const CHART_SUPPORT_CHAIN_IDS = [ChainId.BSC]
+const ACCESS_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC]
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
@@ -411,6 +413,11 @@ export default function Swap() {
     [chainId],
   )
 
+  const isAccessTokenSupported = useMemo(() => ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
+  const isShowAccessToken = useMemo(() => {
+    return isAccessTokenSupported && !currencies[Field.OUTPUT]?.isNative
+  }, [isAccessTokenSupported, currencies])
+
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
       <Flex width="100%" justifyContent="center" position="relative">
@@ -515,6 +522,10 @@ export default function Swap() {
                       showCommonBases
                       commonBasesType={CommonBasesType.SWAP_LIMITORDER}
                     />
+
+                    <Box style={{ display: isShowAccessToken ? 'block' : 'none' }}>
+                      <AccessRisk currency={currencies[Field.OUTPUT]} />
+                    </Box>
 
                     {isExpertMode && recipient !== null && !showWrap ? (
                       <>
