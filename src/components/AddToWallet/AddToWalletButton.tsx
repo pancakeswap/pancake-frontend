@@ -38,11 +38,6 @@ const Icons = {
 }
 
 const getWalletText = (textOptions: AddToWalletTextOptions, tokenSymbol: string, t: any) => {
-  // @ts-ignore
-  if (window?.ethereum?.isSafePal) {
-    return null
-  }
-
   return (
     textOptions !== AddToWalletTextOptions.NO_TEXT &&
     (textOptions === AddToWalletTextOptions.TEXT
@@ -52,11 +47,6 @@ const getWalletText = (textOptions: AddToWalletTextOptions, tokenSymbol: string,
 }
 
 const getWalletIcon = (marginTextBetweenLogo: string, name?: string) => {
-  // @ts-ignore
-  if (window?.ethereum?.isSafePal) {
-    return null
-  }
-
   const iconProps = {
     width: '16px',
     ...(marginTextBetweenLogo && { ml: marginTextBetweenLogo }),
@@ -93,6 +83,10 @@ const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
   const { connector, isConnected } = useAccount()
 
   if (!(connector && connector.watchAsset && isConnected)) return null
+
+  // @ts-ignore
+  if (window?.ethereum?.isSafePal) return null
+
   return (
     <Button
       {...props}
