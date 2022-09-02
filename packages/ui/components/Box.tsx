@@ -1,14 +1,10 @@
 /* eslint-disable no-restricted-syntax */
-import * as React from 'react'
 import clsx, { ClassValue } from 'clsx'
 import { m as motion } from 'framer-motion'
-import { ComponentPropsWithoutRef, createElement, ElementType, forwardRef } from 'react'
-import { Sprinkles, sprinkles } from '../css/sprinkles.css'
+import * as React from 'react'
+import { createElement, forwardRef } from 'react'
 import { Atoms } from '../css/atoms'
-
-// export interface BoxBaseProps extends Omit<Atoms, 'reset'> {
-// className?: ClassValue
-// }
+import { sprinkles } from '../css/sprinkles.css'
 
 type HTMLProperties<T = HTMLElement> = Omit<
   React.AllHTMLAttributes<T>,
@@ -23,24 +19,17 @@ type Props = Atoms &
 
 export const Box = forwardRef<HTMLElement, Props>(({ as = 'div', className, ...props }, ref) => {
   const { className: atomicClasses, style, otherProps } = sprinkles(props)
-
-  // for (const key in props) {
-  //   if (sprinkles.properties.has(key as keyof Omit<Atoms, "reset">)) {
-  //     atomProps[key] = props[key as keyof typeof props];
-  //   } else {
-  //     nativeProps[key] = props[key as keyof typeof props];
-  //   }
-  // }
-
-  // const atomicClasses = atoms({
-  //   reset: typeof as === "string" ? (as as Atoms["reset"]) : "div",
-  //   ...atomProps,
-  // });
+  if (props.flexGrow) {
+    console.log(style, 'lfex')
+  }
 
   return createElement(as, {
     className: clsx(atomicClasses, className),
-    style,
     ...otherProps,
+    style: {
+      ...style,
+      ...otherProps.style,
+    },
     ref,
   })
 })

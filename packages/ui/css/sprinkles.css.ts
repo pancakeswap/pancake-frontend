@@ -12,7 +12,7 @@ import './reset.css'
 
 const flexAlignment = ['flex-start', 'center', 'flex-end', 'stretch'] as const
 
-const flexibility = [0, 1, 2, 3, 4] as const
+const flexibility = ['0', 1, '1', '2', '3', '4'] as const
 
 const negativeSpace = {
   '-px': `${calc(vars.space.px).negate()}`,
@@ -56,7 +56,7 @@ const responsiveProperties = defineProperties({
   staticProperties: {
     display: ['block', 'flex', 'grid', 'inline', 'inline-flex', 'inline-block', 'none', 'contents'],
     flexDirection: ['column', 'row', 'column-reverse'],
-    // flexGrow: flexibility,
+    flexGrow: flexibility,
     // flexShrink: flexibility,
     flexWrap: ['wrap', 'nowrap'],
     overflow: ['auto', 'hidden', 'scroll', 'unset'],
@@ -96,6 +96,20 @@ const responsiveProperties = defineProperties({
       ...vars.space,
       ...extendedSpace,
     },
+    zIndex: {
+      '0': 0,
+      ribbon: 9,
+      dropdown: 10,
+      '10': 10,
+      '20': 20,
+      '30': 30,
+      '40': 40,
+      '50': 50,
+      '75': 75,
+      '100': 100,
+      modal: 100,
+      auto: 'auto',
+    },
   },
   dynamicProperties: {
     order: true,
@@ -117,10 +131,8 @@ const responsiveProperties = defineProperties({
     borderTopRightRadius: vars.radii,
     bottom: true,
     flex: true,
-    // flexBasis: {
-    //   ...vars.space,
-    //   ...extendedSpace,
-    // },
+    flexGrow: true,
+    flexShrink: true,
     fontSize: {
       ...vars.fontSizes,
       inherit: 'inherit',
@@ -187,6 +199,7 @@ const unresponsiveProperties = defineProperties({
     wordBreak: ['break-word'],
     wordWrap: ['normal', 'break-word'],
   },
+  shorthands: {},
   dynamicProperties: {
     aspectRatio: {
       auto: 'auto',
@@ -196,7 +209,6 @@ const unresponsiveProperties = defineProperties({
       '4/3': '4 / 3',
       '16/9': '16 / 9',
     },
-    // scrollMarginTop: vars.space,
     fontFamily: vars.fonts,
     transitionProperty: {
       none: 'none',
@@ -214,29 +226,15 @@ const unresponsiveProperties = defineProperties({
       out: 'cubic-bezier(0, 0, 0.2, 1)',
       inOut: 'cubic-bezier(0.42, 0, 0.58, 1)',
     },
-    zIndex: {
-      '0': 0,
-      ribbon: 9,
-      dropdown: 10,
-      '10': 10,
-      '20': 20,
-      '30': 30,
-      '40': 40,
-      '50': 50,
-      '75': 75,
-      '100': 100,
-      modal: 100,
-      auto: 'auto',
-    },
   },
 })
 
-const colorProperties = defineProperties({
+const interactiveProperties = defineProperties({
   conditions: {
     base: {},
-    active: { selector: '&:active' },
-    focus: { selector: '&:focus' },
     hover: { selector: '&:hover' },
+    focus: { selector: '&:focus' },
+    active: { selector: '&:active' },
   },
   defaultCondition: 'base',
   dynamicProperties: {
@@ -244,50 +242,20 @@ const colorProperties = defineProperties({
     borderColor: vars.colors,
     color: vars.colors,
     outlineColor: vars.colors,
+    transform: true,
+    transition: true,
+    animation: true,
   },
-})
-
-const motionSafeProperties = defineProperties({
-  conditions: {
-    base: { '@media': '(prefers-reduced-motion: no-preference)' },
-  },
-  defaultCondition: 'base',
-  staticProperties: {
-    transitionDuration: {
-      '75': '75ms',
-      '100': '100ms',
-      '150': '150ms',
-      '200': '200ms',
-      '300': '300ms',
-      '500': '500ms',
-      '700': '700ms',
-      '1000': '1000ms',
-    },
-  },
-})
-
-const interactionProperties = defineProperties({
-  conditions: {
-    base: {},
-    hover: { selector: '&:hover' },
-    focus: { selector: '&:focus' },
-    active: { selector: '&:active' },
-  },
-  defaultCondition: 'base',
-  staticProperties: {
-    transform: {
-      grow: 'scale(1.04)',
-      shrink: 'scale(0.95)',
-    },
+  shorthands: {
+    bg: ['backgroundColor'],
   },
 })
 
 export const sprinkles = createRainbowSprinkles(
   responsiveProperties,
   unresponsiveProperties,
-  colorProperties,
-  motionSafeProperties,
-  interactionProperties,
+  // motionSafeProperties,
+  interactiveProperties,
 )
 export type Sprinkles = Parameters<typeof sprinkles>[0]
 
