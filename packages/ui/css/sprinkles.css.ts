@@ -1,6 +1,5 @@
 import { createRainbowSprinkles, defineProperties } from '@pancakeswap/rainbow-sprinkles'
 import { calc } from '@vanilla-extract/css-utils'
-import { ConditionalValue, RequiredConditionalValue } from '@vanilla-extract/sprinkles'
 
 import { Breakpoint, breakpointNames, breakpoints } from './breakpoints'
 import { vars } from './vars.css'
@@ -11,8 +10,6 @@ import './reset.css'
 /* DO NOT MOVE THIS LINE */
 
 const flexAlignment = ['flex-start', 'center', 'flex-end', 'stretch'] as const
-
-const flexibility = ['0', 1, '1', '2', '3', '4'] as const
 
 const negativeSpace = {
   '-px': `${calc(vars.space.px).negate()}`,
@@ -86,12 +83,12 @@ const responsiveProperties = defineProperties({
     paddingTop: vars.space,
     right: { ...vars.space, ...negativeSpace },
     top: { ...vars.space, ...negativeSpace },
-    // flex: {
-    //   1: '1 1 0%',
-    //   auto: '1 1 auto',
-    //   initial: '0 1 auto',
-    //   none: 'none',
-    // },
+    flex: {
+      1: '1 1 0%',
+      auto: '1 1 auto',
+      initial: '0 1 auto',
+      none: 'none',
+    },
     width: {
       ...vars.space,
       ...extendedSpace,

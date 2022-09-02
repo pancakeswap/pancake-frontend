@@ -1,11 +1,15 @@
 export const baseColors = {
   failure: '#ED4B9E',
+  failure33: '#ED4B9E33',
   primary: '#1FC7D4',
+  primary19: '#1FC7D419',
+  primary3D: '#1FC7D43D',
   primaryBright: '#53DEE9',
   primaryDark: '#0098A1',
-  secondary: '#7645D9',
   success: '#31D0AA',
   warning: '#FFB237',
+  warning2D: '#ED4B9E2D',
+  warning33: '#ED4B9E33',
 }
 
 export const additionalColors = {
@@ -19,6 +23,8 @@ export const additionalColors = {
 export const lightColors = {
   ...baseColors,
   ...additionalColors,
+  secondary: '#7645D9',
+  secondary80: '#7645D980',
   background: '#FAF9FA',
   backgroundDisabled: '#E9EAEB',
   backgroundAlt: '#FFFFFF',
@@ -48,6 +54,7 @@ export const darkColors = {
   ...baseColors,
   ...additionalColors,
   secondary: '#9A6AFF',
+  secondary80: '#9A6AFF80',
   background: '#08060B',
   backgroundDisabled: '#3c3742',
   backgroundAlt: '#27262c',

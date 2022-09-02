@@ -32,6 +32,7 @@ export const TabToggle = styled(Box).attrs({
   border: 0;
   outline: 0;
   margin: 0;
+  padding: 16px;
   border-radius: 24px 24px 0 0;
   font-size: 16px;
   font-weight: 600;
@@ -39,10 +40,6 @@ export const TabToggle = styled(Box).attrs({
   background-color: ${({ theme, isActive }) => (isActive ? theme.card.background : theme.colors.input)};
   box-shadow: none;
 `
-
-TabToggle.defaultProps = {
-  p: '16px',
-}
 
 interface TabToggleGroupProps {
   children: React.ReactElement[]
