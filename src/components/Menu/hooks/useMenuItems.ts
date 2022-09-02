@@ -30,6 +30,8 @@ export const useMenuItems = (): ConfigMenuItemsType[] => {
               itemMenuStatus = menuStatus.SOON
             } else if (itemStatus === 'live') {
               itemMenuStatus = menuStatus.LIVE
+            } else if (typeof itemStatus === 'function') {
+              itemMenuStatus = itemStatus()
             } else {
               itemMenuStatus = menuStatus.NEW
             }
