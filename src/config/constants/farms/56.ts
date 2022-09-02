@@ -40,15 +40,15 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: bscTokens.busd,
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
-  {
-    pid: 117,
-    lpSymbol: 'SPIN-BNB LP',
-    lpAddress: '0x89c68051543Fa135B31c2CE7BD8Cdf392345FF01',
-    token: bscTokens.spin,
-    quoteToken: bscTokens.wbnb,
-    isCommunity: true,
-    auctionHostingStartSeconds: 1662105600,
-  },
+  // {
+  //   pid: 117,
+  //   lpSymbol: 'SPIN-BNB LP',
+  //   lpAddress: '0x89c68051543Fa135B31c2CE7BD8Cdf392345FF01',
+  //   token: bscTokens.spin,
+  //   quoteToken: bscTokens.wbnb,
+  //   isCommunity: true,
+  //   auctionHostingStartSeconds: 1662105600,
+  // },
   {
     pid: 93,
     v1pid: 524,
