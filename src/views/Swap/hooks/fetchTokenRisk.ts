@@ -1,15 +1,10 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { ACCESS_RISK_API } from 'config/constants/endpoints'
-import { PANCAKE_EXTENDED } from 'config/constants/lists'
 
 export enum TOKEN_RISK {
   'Low' = 'Low',
   'Medium' = 'Medium',
   'High' = 'High',
-}
-
-const VerifyTokensLink = {
-  [ChainId.BSC]: PANCAKE_EXTENDED,
 }
 
 export const TokenRiskPhases = {
@@ -31,13 +26,6 @@ export interface RiskTokenInfo {
   riskLevelDescription: string
 }
 
-const fetchVerifyTokens = async (chainId: number) => {
-  const listUrl = VerifyTokensLink[chainId]
-  const getTokenList = (await import('utils/getTokenList')).default
-  const response = await getTokenList(listUrl)
-  return response.tokens
-}
-
 const fetchRiskApi = async (address: string, chainId: number) => {
   const response = await fetch(ACCESS_RISK_API, {
     method: 'post',
@@ -57,17 +45,15 @@ const fetchRiskApi = async (address: string, chainId: number) => {
 
 export const fetchRiskToken = async (address: string, chainId: number): Promise<RiskTokenInfo> => {
   try {
-    const [verifyTokens, riskApi] = await Promise.all([fetchVerifyTokens(chainId), fetchRiskApi(address, chainId)])
+    const riskApi = await fetchRiskApi(address, chainId)
     // eslint-disable-next-line camelcase
-    const { risk_result, scanned_ts, risk_level_description } = riskApi.data
-    const isVerifyAddress = verifyTokens.find((token) => token.address.toLowerCase() === address.toLowerCase())
-    const riskLevel = isVerifyAddress ? TokenRiskPhases[0] : TokenRiskPhases[riskApi.data.risk_level]
+    const { risk_result, scanned_ts, risk_level, risk_level_description } = riskApi.data
 
     return {
       isSuccess: true,
       address,
       chainId,
-      riskLevel,
+      riskLevel: TokenRiskPhases[risk_level],
       riskResult: risk_result,
       scannedTs: scanned_ts,
       riskLevelDescription: risk_level_description,

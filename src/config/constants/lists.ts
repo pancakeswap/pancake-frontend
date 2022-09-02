@@ -1,4 +1,4 @@
-export const PANCAKE_EXTENDED = 'https://tokens.pancakeswap.finance/pancakeswap-extended.json'
+const PANCAKE_EXTENDED = 'https://tokens.pancakeswap.finance/pancakeswap-extended.json'
 const COINGECKO = 'https://tokens.pancakeswap.finance/coingecko.json'
 const CMC = 'https://tokens.pancakeswap.finance/cmc.json'
 
