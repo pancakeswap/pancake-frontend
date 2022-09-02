@@ -34,12 +34,22 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.BSC_TESTNET]: [bscTestnetTokens.wbnb, bscTestnetTokens.cake, bscTestnetTokens.busd],
 }
 
+export const SPECIAL_BASES_TO_CHECK_TRADES_AGAINST = {
+  [ChainId.BSC]: {
+    [bscTokens.sfund.address]: [],
+  },
+}
+
 /**
  * Additional bases for specific tokens
  * @example { [WBTC.address]: [renBTC], [renBTC.address]: [WBTC] }
  */
 export const ADDITIONAL_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
-  [ChainId.BSC]: {},
+  [ChainId.BSC]: {
+    // SNFTS-SFUND
+    [bscTokens.sfund.address]: [bscTokens.snfts],
+    [bscTokens.snfts.address]: [bscTokens.sfund],
+  },
 }
 
 /**
