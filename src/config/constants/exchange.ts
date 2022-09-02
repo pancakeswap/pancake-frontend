@@ -34,12 +34,6 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.BSC_TESTNET]: [bscTestnetTokens.wbnb, bscTestnetTokens.cake, bscTestnetTokens.busd],
 }
 
-export const SPECIAL_BASES_TO_CHECK_TRADES_AGAINST = {
-  [ChainId.BSC]: {
-    [bscTokens.sfund.address]: [],
-  },
-}
-
 /**
  * Additional bases for specific tokens
  * @example { [WBTC.address]: [renBTC], [renBTC.address]: [WBTC] }
