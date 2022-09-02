@@ -1,20 +1,18 @@
 import { ChainId } from '@pancakeswap/sdk'
+import { EMPTY_LIST, TagInfo, TokenAddressMap, WrappedTokenInfo } from '@pancakeswap/tokens'
 import { TokenList } from '@uniswap/token-lists'
-import { useMemo } from 'react'
-import uniqBy from 'lodash/uniqBy'
-import groupBy from 'lodash/groupBy'
-import fromPairs from 'lodash/fromPairs'
-import { useSelector } from 'react-redux'
-import { createSelector } from '@reduxjs/toolkit'
-import { WrappedTokenInfo, TagInfo, TokenAddressMap, EMPTY_LIST } from '@pancakeswap/tokens'
 import { DEFAULT_LIST_OF_LISTS, OFFICIAL_LISTS } from 'config/constants/lists'
-import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-default.tokenlist.json'
+import { atom, useAtomValue } from 'jotai'
+import fromPairs from 'lodash/fromPairs'
+import groupBy from 'lodash/groupBy'
+import uniqBy from 'lodash/uniqBy'
+import { useMemo } from 'react'
 import { UNSUPPORTED_LIST_URLS, WARNING_LIST_URLS } from '../../config/constants/lists'
+import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-default.tokenlist.json'
 import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
 import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
 import { AppState } from '../index'
-import { atom, useAtomValue } from 'jotai'
-import { listStateAtom, listsAtom } from './lists'
+import { listsAtom } from './lists'
 
 // use ordering of default list of lists to assign priority
 function sortByListPriority(urlA: string, urlB: string) {
@@ -34,8 +32,8 @@ function enumKeys<O extends object, K extends keyof O = keyof O>(obj: O): K[] {
 // -------------------------------------
 //   Selectors
 // -------------------------------------
-const selectorActiveUrlsAtom = atom((get) => get(listsAtom).activeListUrls)
-export const selectorByUrlsAtom = atom((get) => get(listsAtom).byUrl)
+const selectorActiveUrlsAtom = atom((get) => get(listsAtom)?.activeListUrls ?? [])
+export const selectorByUrlsAtom = atom((get) => get(listsAtom)?.byUrl ?? {})
 
 const activeListUrlsAtom = atom((get) => {
   const urls = get(selectorActiveUrlsAtom)
@@ -209,5 +207,6 @@ export function useWarningTokenList(): TokenAddressMap {
 
 export function useIsListActive(url: string): boolean {
   const activeListUrls = useActiveListUrls()
+  console.log(activeListUrls, 'activeListUrls', url)
   return useMemo(() => Boolean(activeListUrls?.includes(url)), [activeListUrls, url])
 }

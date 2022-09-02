@@ -1,24 +1,38 @@
-import { atom, Atom, useAtom } from 'jotai'
-import { atomWithStorage, createJSONStorage } from 'jotai/utils'
-import { useEffect } from 'react'
-import IndexedDBStorage from 'utils/IndexedDBStorage'
-import { fetchTokenList } from './actions'
+import { atomWithStorage } from 'hooks/atomWithStorage'
+import { createStore, del, get, set } from 'idb-keyval'
+import { useReducerAtom } from 'jotai/utils'
 import listReducer, { initialState } from './reducer'
 
-const storage = createJSONStorage(() => IndexedDBStorage('lists'))
-storage.delayInit = true
-export const listsAtom = atomWithStorage('lists-2', initialState, storage)
+let gotOnce = false
+
+export const listStore = typeof window !== 'undefined' && createStore('lists', 'list-v1')
+function createStorage<T>() {
+  return {
+    // eslint-disable-next-line consistent-return
+    setItem: (key, value) => {
+      if (listStore && gotOnce) {
+        return set(key, value, listStore)
+      }
+    },
+    getItem: (key) =>
+      get<T>(key, listStore).then((value) => {
+        if (value !== undefined) {
+          gotOnce = true
+          return value
+        }
+        return undefined
+      }),
+    removeItem: (key) => {
+      return del(key, listStore)
+    },
+    delayInit: true,
+  }
+}
+
+const storage = createStorage()
+
+export const listsAtom = atomWithStorage('lists', initialState, storage)
 
 export function useListState() {
-  return useAtom(listStateAtom)
+  return useReducerAtom(listsAtom, listReducer)
 }
-
-function atomWithReducerAtom<Atom, Action>(initatom: Atom, reducer: (value: Value, action: Action) => Value) {
-  const anAtom: any = atom(
-    (get) => get(initatom),
-    (get, set, action: Action) => set(initatom, reducer(get(initatom), action)),
-  )
-  return anAtom
-}
-
-export const listStateAtom = atomWithReducerAtom(listsAtom, listReducer)

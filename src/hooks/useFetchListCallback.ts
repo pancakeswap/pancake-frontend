@@ -19,7 +19,6 @@ function useFetchListCallback(): (listUrl: string, sendDispatch?: boolean) => Pr
       return getTokenList(listUrl)
         .then((tokenList) => {
           if (sendDispatch) {
-          console.log('?????????')
             dispatch(fetchTokenList.fulfilled({ url: listUrl, tokenList, requestId }))
           }
           return tokenList

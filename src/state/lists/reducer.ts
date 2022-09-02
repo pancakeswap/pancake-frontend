@@ -53,31 +53,18 @@ export const initialState: ListsState = {
   activeListUrls: DEFAULT_ACTIVE_LIST_URLS,
 }
 
-export default (state, action) => {
-  console.log(state, action)
-  switch (action.type) {
-    case fetchTokenList.pending.type: {
-      const {
-        payload: { requestId, url },
-      } = action
-      return {
-        ...state,
-        byUrl: {
-          ...state.byUrl,
-          [url]: {
-            current: null,
-            pendingUpdate: null,
-            ...state.byUrl[url],
-            loadingRequestId: requestId,
-            error: null,
-          },
-        },
+export default createReducer(initialState, (builder) =>
+  builder
+    .addCase(fetchTokenList.pending, (state, { payload: { requestId, url } }) => {
+      state.byUrl[url] = {
+        current: null,
+        pendingUpdate: null,
+        ...state.byUrl[url],
+        loadingRequestId: requestId,
+        error: null,
       }
-    }
-    case fetchTokenList.fulfilled.type: {
-      const {
-        payload: { requestId, tokenList, url },
-      } = action
+    })
+    .addCase(fetchTokenList.fulfilled, (state, { payload: { requestId, tokenList, url } }) => {
       const current = state.byUrl[url]?.current
       const loadingRequestId = state.byUrl[url]?.loadingRequestId
 
@@ -85,21 +72,14 @@ export default (state, action) => {
       if (current) {
         const upgradeType = getVersionUpgrade(current.version, tokenList.version)
 
-        if (upgradeType === VersionUpgrade.NONE) return state
+        if (upgradeType === VersionUpgrade.NONE) return
         if (loadingRequestId === null || loadingRequestId === requestId) {
-          console.log('here???????')
-          return {
-            ...state,
-            byUrl: {
-              ...state.byUrl,
-              [url]: {
-                ...state.byUrl[url],
-                loadingRequestId: null,
-                error: null,
-                current,
-                pendingUpdate: tokenList,
-              },
-            },
+          state.byUrl[url] = {
+            ...state.byUrl[url],
+            loadingRequestId: null,
+            error: null,
+            current,
+            pendingUpdate: tokenList,
           }
         }
       } else {
@@ -108,58 +88,36 @@ export default (state, action) => {
           state.activeListUrls?.push(url)
         }
 
-        return {
-          ...state,
-          byUrl: {
-            ...state.byUrl,
-            [url]: {
-              ...state.byUrl[url],
-              loadingRequestId: null,
-              error: null,
-              current: tokenList,
-              pendingUpdate: null,
-            },
-          },
+        state.byUrl[url] = {
+          ...state.byUrl[url],
+          loadingRequestId: null,
+          error: null,
+          current: tokenList,
+          pendingUpdate: null,
         }
       }
-
-      return state
-    }
-    case fetchTokenList.rejected.type: {
-      const {
-        payload: { url, requestId, errorMessage },
-      } = action
+      console.log(state, 'state')
+    })
+    .addCase(fetchTokenList.rejected, (state, { payload: { url, requestId, errorMessage } }) => {
       if (state.byUrl[url]?.loadingRequestId !== requestId) {
         // no-op since it's not the latest request
-        return state
+        return
       }
 
-      return {
-        ...state,
-        byUrl: {
-          ...state.byUrl,
-          [url]: {
-            ...state.byUrl[url],
-            loadingRequestId: null,
-            error: errorMessage,
-            current: null,
-            pendingUpdate: null,
-          },
-        },
+      state.byUrl[url] = {
+        ...state.byUrl[url],
+        loadingRequestId: null,
+        error: errorMessage,
+        current: null,
+        pendingUpdate: null,
       }
-    }
-    case addList.type: {
-      const { payload: url } = action
-      return {
-        ...state,
-        byUrl: {
-          ...state.byUrl,
-          [url]: NEW_LIST_STATE,
-        },
+    })
+    .addCase(addList, (state, { payload: url }) => {
+      if (!state.byUrl[url]) {
+        state.byUrl[url] = NEW_LIST_STATE
       }
-    }
-    case removeList.type: {
-      const { payload: url } = action
+    })
+    .addCase(removeList, (state, { payload: url }) => {
       if (state.byUrl[url]) {
         delete state.byUrl[url]
       }
@@ -167,59 +125,41 @@ export default (state, action) => {
       if (state.activeListUrls && state.activeListUrls.includes(url)) {
         state.activeListUrls = state.activeListUrls.filter((u) => u !== url)
       }
-      return state
-    }
-    case enableList.type: {
-      const { payload: url } = action
+    })
+    .addCase(enableList, (state, { payload: url }) => {
       if (!state.byUrl[url]) {
         state.byUrl[url] = NEW_LIST_STATE
       }
 
       if (state.activeListUrls && !state.activeListUrls.includes(url)) {
-        state.activeListUrls = [...state.activeListUrls, url]
+        state.activeListUrls.push(url)
       }
 
       if (!state.activeListUrls) {
         state.activeListUrls = [url]
       }
-      console.log('====================================')
-      console.log(state, 'state')
-      console.log('====================================')
-      return state
-    }
-    case disableList.type: {
-      const { payload: url } = action
+    })
+    .addCase(disableList, (state, { payload: url }) => {
       if (state.activeListUrls && state.activeListUrls.includes(url)) {
         state.activeListUrls = state.activeListUrls.filter((u) => u !== url)
       }
-      return state
-    }
-    case acceptListUpdate.type: {
-      const { payload: url } = action
+    })
+    .addCase(acceptListUpdate, (state, { payload: url }) => {
       if (!state.byUrl[url]?.pendingUpdate) {
         throw new Error('accept list update called without pending update')
       }
-
-      return {
-        ...state,
-        byUrl: {
-          ...state.byUrl,
-          [url]: {
-            ...state.byUrl[url],
-            pendingUpdate: null,
-            current: state.byUrl[url].pendingUpdate,
-          },
-        },
+      state.byUrl[url] = {
+        ...state.byUrl[url],
+        pendingUpdate: null,
+        current: state.byUrl[url].pendingUpdate,
       }
-    }
-    case updateListVersion.type: {
+    })
+    .addCase(updateListVersion, (state) => {
       // state loaded from localStorage, but new lists have never been initialized
       if (!state.lastInitializedDefaultListOfLists) {
         state.byUrl = initialState.byUrl
         state.activeListUrls = initialState.activeListUrls
-        return state
-      }
-      if (state.lastInitializedDefaultListOfLists) {
+      } else if (state.lastInitializedDefaultListOfLists) {
         const lastInitializedSet = state.lastInitializedDefaultListOfLists.reduce<Set<string>>(
           (s, l) => s.add(l),
           new Set(),
@@ -237,7 +177,6 @@ export default (state, action) => {
             delete state.byUrl[listUrl]
           }
         })
-        return state
       }
 
       state.lastInitializedDefaultListOfLists = DEFAULT_LIST_OF_LISTS
@@ -254,150 +193,5 @@ export default (state, action) => {
           return true
         })
       }
-      return state
-    }
-    default:
-      return state
-  }
-}
-// createReducer(initialState, (builder) =>
-//   builder
-//     .addCase(fetchTokenList.pending, (state, { payload: { requestId, url } }) => {
-//       state.byUrl[url] = {
-//         current: null,
-//         pendingUpdate: null,
-//         ...state.byUrl[url],
-//         loadingRequestId: requestId,
-//         error: null,
-//       }
-//     })
-//     .addCase(fetchTokenList.fulfilled, (state, { payload: { requestId, tokenList, url } }) => {
-//       const current = state.byUrl[url]?.current
-//       const loadingRequestId = state.byUrl[url]?.loadingRequestId
-
-//       // no-op if update does nothing
-//       if (current) {
-//         const upgradeType = getVersionUpgrade(current.version, tokenList.version)
-
-//         if (upgradeType === VersionUpgrade.NONE) return
-//         if (loadingRequestId === null || loadingRequestId === requestId) {
-//           state.byUrl[url] = {
-//             ...state.byUrl[url],
-//             loadingRequestId: null,
-//             error: null,
-//             current,
-//             pendingUpdate: tokenList,
-//           }
-//         }
-//       } else {
-//         // activate if on default active
-//         if (DEFAULT_ACTIVE_LIST_URLS.includes(url)) {
-//           state.activeListUrls?.push(url)
-//         }
-
-//         state.byUrl[url] = {
-//           ...state.byUrl[url],
-//           loadingRequestId: null,
-//           error: null,
-//           current: tokenList,
-//           pendingUpdate: null,
-//         }
-//       }
-//     })
-//     .addCase(fetchTokenList.rejected, (state, { payload: { url, requestId, errorMessage } }) => {
-//       if (state.byUrl[url]?.loadingRequestId !== requestId) {
-//         // no-op since it's not the latest request
-//         return
-//       }
-
-//       state.byUrl[url] = {
-//         ...state.byUrl[url],
-//         loadingRequestId: null,
-//         error: errorMessage,
-//         current: null,
-//         pendingUpdate: null,
-//       }
-//     })
-//     .addCase(addList, (state, { payload: url }) => {
-//       if (!state.byUrl[url]) {
-//         state.byUrl[url] = NEW_LIST_STATE
-//       }
-//     })
-//     .addCase(removeList, (state, { payload: url }) => {
-//       if (state.byUrl[url]) {
-//         delete state.byUrl[url]
-//       }
-//       // remove list from active urls if needed
-//       if (state.activeListUrls && state.activeListUrls.includes(url)) {
-//         state.activeListUrls = state.activeListUrls.filter((u) => u !== url)
-//       }
-//     })
-//     .addCase(enableList, (state, { payload: url }) => {
-//       if (!state.byUrl[url]) {
-//         state.byUrl[url] = NEW_LIST_STATE
-//       }
-
-//       if (state.activeListUrls && !state.activeListUrls.includes(url)) {
-//         state.activeListUrls.push(url)
-//       }
-
-//       if (!state.activeListUrls) {
-//         state.activeListUrls = [url]
-//       }
-//     })
-//     .addCase(disableList, (state, { payload: url }) => {
-//       if (state.activeListUrls && state.activeListUrls.includes(url)) {
-//         state.activeListUrls = state.activeListUrls.filter((u) => u !== url)
-//       }
-//     })
-//     .addCase(acceptListUpdate, (state, { payload: url }) => {
-//       if (!state.byUrl[url]?.pendingUpdate) {
-//         throw new Error('accept list update called without pending update')
-//       }
-//       state.byUrl[url] = {
-//         ...state.byUrl[url],
-//         pendingUpdate: null,
-//         current: state.byUrl[url].pendingUpdate,
-//       }
-//     })
-//     .addCase(updateListVersion, (state) => {
-//       // state loaded from localStorage, but new lists have never been initialized
-//       if (!state.lastInitializedDefaultListOfLists) {
-//         state.byUrl = initialState.byUrl
-//         state.activeListUrls = initialState.activeListUrls
-//       } else if (state.lastInitializedDefaultListOfLists) {
-//         const lastInitializedSet = state.lastInitializedDefaultListOfLists.reduce<Set<string>>(
-//           (s, l) => s.add(l),
-//           new Set(),
-//         )
-//         const newListOfListsSet = DEFAULT_LIST_OF_LISTS.reduce<Set<string>>((s, l) => s.add(l), new Set())
-
-//         DEFAULT_LIST_OF_LISTS.forEach((listUrl) => {
-//           if (!lastInitializedSet.has(listUrl)) {
-//             state.byUrl[listUrl] = NEW_LIST_STATE
-//           }
-//         })
-
-//         state.lastInitializedDefaultListOfLists.forEach((listUrl) => {
-//           if (!newListOfListsSet.has(listUrl)) {
-//             delete state.byUrl[listUrl]
-//           }
-//         })
-//       }
-
-//       state.lastInitializedDefaultListOfLists = DEFAULT_LIST_OF_LISTS
-
-//       // if no active lists, activate defaults
-//       if (!state.activeListUrls) {
-//         state.activeListUrls = DEFAULT_ACTIVE_LIST_URLS
-
-//         // for each list on default list, initialize if needed
-//         DEFAULT_ACTIVE_LIST_URLS.forEach((listUrl: string) => {
-//           if (!state.byUrl[listUrl]) {
-//             state.byUrl[listUrl] = NEW_LIST_STATE
-//           }
-//           return true
-//         })
-//       }
-//     }),
-// )
+    }),
+)
