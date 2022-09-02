@@ -5,8 +5,8 @@ import Card from 'components/Card'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAtomValue } from 'jotai'
-import { useListState } from 'state/lists/lists'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { useListState } from 'state/lists/lists'
 import styled from 'styled-components'
 import useFetchListCallback from '../../hooks/useFetchListCallback'
 
@@ -159,7 +159,6 @@ function ManageLists({
   const { t } = useTranslation()
 
   const lists = useAllLists()
-  console.log(lists, 'lists')
 
   // sort by active but only if not visible
   const activeListUrls = useActiveListUrls()

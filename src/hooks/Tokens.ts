@@ -2,12 +2,12 @@
 import { arrayify } from '@ethersproject/bytes'
 import { parseBytes32String } from '@ethersproject/strings'
 import { Currency, Token } from '@pancakeswap/sdk'
-import { createSelector } from '@reduxjs/toolkit'
+import { TokenAddressMap } from '@pancakeswap/tokens'
 import { GELATO_NATIVE } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { TokenAddressMap } from '@pancakeswap/tokens'
 import {
   combinedTokenMapFromActiveUrlsAtom,
   combinedTokenMapFromOfficialsUrlsAtom,
@@ -19,7 +19,6 @@ import useUserAddedTokens, { userAddedTokenSelector } from '../state/user/hooks/
 import { isAddress } from '../utils'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
 import useNativeCurrency from './useNativeCurrency'
-import { useAtomValue } from 'jotai'
 
 const mapWithoutUrls = (tokenMap: TokenAddressMap, chainId: number) =>
   Object.keys(tokenMap[chainId] || {}).reduce<{ [address: string]: Token }>((newMap, address) => {

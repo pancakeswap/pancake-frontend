@@ -1,4 +1,4 @@
-import { ReactNode, Suspense, useMemo } from 'react'
+import { ReactNode, useMemo } from 'react'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { BLOCKED_ADDRESSES } from './config/constants'
 import ListsUpdater from './state/lists/updater'
@@ -8,9 +8,7 @@ import TransactionUpdater from './state/transactions/updater'
 export function Updaters() {
   return (
     <>
-      <Suspense fallback={<></>}>
-        <ListsUpdater />
-      </Suspense>
+      <ListsUpdater />
       <TransactionUpdater />
       <MulticallUpdater />
     </>

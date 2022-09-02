@@ -11,8 +11,8 @@ import { UNSUPPORTED_LIST_URLS, WARNING_LIST_URLS } from '../../config/constants
 import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-default.tokenlist.json'
 import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
 import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
-import { AppState } from '../index'
 import { listsAtom } from './lists'
+import { ListsState } from './reducer'
 
 // use ordering of default list of lists to assign priority
 function sortByListPriority(urlA: string, urlB: string) {
@@ -40,13 +40,13 @@ const activeListUrlsAtom = atom((get) => {
   return urls?.filter((url) => !UNSUPPORTED_LIST_URLS.includes(url))
 })
 
-const combineTokenMapsWithDefault = (lists: AppState['lists']['byUrl'], urls: string[]) => {
+const combineTokenMapsWithDefault = (lists: ListsState['byUrl'], urls: string[]) => {
   const defaultTokenMap = listToTokenMap(DEFAULT_TOKEN_LIST)
   if (!urls) return defaultTokenMap
   return combineMaps(combineTokenMaps(lists, urls), defaultTokenMap)
 }
 
-const combineTokenMaps = (lists: AppState['lists']['byUrl'], urls: string[]) => {
+const combineTokenMaps = (lists: ListsState['byUrl'], urls: string[]) => {
   if (!urls) return EMPTY_LIST
   return (
     urls

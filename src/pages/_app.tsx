@@ -91,7 +91,7 @@ function MyApp(props: AppProps) {
           <GlobalStyle />
           <GlobalCheckClaimStatus excludeLocations={[]} />
           <PersistGate loading={null} persistor={persistor}>
-            {typeof window !== 'undefined' && <Updaters />}
+            <Updaters />
             <App {...props} />
           </PersistGate>
         </Blocklist>
