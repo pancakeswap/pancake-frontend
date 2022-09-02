@@ -19,9 +19,6 @@ type Props = Atoms &
 
 export const Box = forwardRef<HTMLElement, Props>(({ as = 'div', className, ...props }, ref) => {
   const { className: atomicClasses, style, otherProps } = sprinkles(props)
-  if (props.flexGrow) {
-    console.log(style, 'lfex')
-  }
 
   return createElement(as, {
     className: clsx(atomicClasses, className),

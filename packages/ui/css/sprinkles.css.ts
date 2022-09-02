@@ -56,7 +56,7 @@ const responsiveProperties = defineProperties({
   staticProperties: {
     display: ['block', 'flex', 'grid', 'inline', 'inline-flex', 'inline-block', 'none', 'contents'],
     flexDirection: ['column', 'row', 'column-reverse'],
-    flexGrow: flexibility,
+    // flexGrow: flexibility,
     // flexShrink: flexibility,
     flexWrap: ['wrap', 'nowrap'],
     overflow: ['auto', 'hidden', 'scroll', 'unset'],
@@ -86,12 +86,12 @@ const responsiveProperties = defineProperties({
     paddingTop: vars.space,
     right: { ...vars.space, ...negativeSpace },
     top: { ...vars.space, ...negativeSpace },
-    flex: {
-      1: '1 1 0%',
-      auto: '1 1 auto',
-      initial: '0 1 auto',
-      none: 'none',
-    },
+    // flex: {
+    //   1: '1 1 0%',
+    //   auto: '1 1 auto',
+    //   initial: '0 1 auto',
+    //   none: 'none',
+    // },
     width: {
       ...vars.space,
       ...extendedSpace,
