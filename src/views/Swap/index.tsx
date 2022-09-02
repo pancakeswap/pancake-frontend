@@ -415,8 +415,8 @@ export default function Swap() {
 
   const isAccessTokenSupported = useMemo(() => ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
   const isShowAccessToken = useMemo(() => {
-    return isAccessTokenSupported && currencies[Field.OUTPUT]?.symbol !== NATIVE[chainId].symbol
-  }, [isAccessTokenSupported, currencies, chainId])
+    return isAccessTokenSupported && !currencies[Field.OUTPUT]?.isNative
+  }, [isAccessTokenSupported, currencies])
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>

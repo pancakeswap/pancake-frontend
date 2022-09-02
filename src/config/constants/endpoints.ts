@@ -23,4 +23,4 @@ export const GRAPH_HEALTH = 'https://api.thegraph.com/index-node/graphql'
 export const TC_MOBOX_SUBGRAPH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/trading-competition-v3'
 export const TC_MOD_SUBGRAPH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/trading-competition-v4'
 
-export const ACCESS_RISK_API = process.env.NEXT_PUBLIC_ACCESS_RISK
+export const ACCESS_RISK_API = 'https://red.alert.pancakeswap.com/red-api'
