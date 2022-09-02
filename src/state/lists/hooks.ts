@@ -207,6 +207,5 @@ export function useWarningTokenList(): TokenAddressMap {
 
 export function useIsListActive(url: string): boolean {
   const activeListUrls = useActiveListUrls()
-  console.log(activeListUrls, 'activeListUrls', url)
   return useMemo(() => Boolean(activeListUrls?.includes(url)), [activeListUrls, url])
 }

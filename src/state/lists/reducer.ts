@@ -96,7 +96,6 @@ export default createReducer(initialState, (builder) =>
           pendingUpdate: null,
         }
       }
-      console.log(state, 'state')
     })
     .addCase(fetchTokenList.rejected, (state, { payload: { url, requestId, errorMessage } }) => {
       if (state.byUrl[url]?.loadingRequestId !== requestId) {

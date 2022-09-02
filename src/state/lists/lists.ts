@@ -1,7 +1,7 @@
 import { atomWithStorage } from 'hooks/atomWithStorage'
 import { createStore, del, get, set } from 'idb-keyval'
 import { useReducerAtom } from 'jotai/utils'
-import listReducer, { initialState } from './reducer'
+import listReducer, { initialState, ListsState } from './reducer'
 
 let gotOnce = false
 
@@ -29,9 +29,9 @@ function createStorage<T>() {
   }
 }
 
-const storage = createStorage()
+const storage = createStorage<ListsState>()
 
-export const listsAtom = atomWithStorage('lists', initialState, storage)
+export const listsAtom = atomWithStorage<ListsState>('lists', initialState, storage)
 
 export function useListState() {
   return useReducerAtom(listsAtom, listReducer)
