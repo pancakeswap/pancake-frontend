@@ -1,6 +1,7 @@
 import stableSwapConfigs from 'config/constants/stableSwapConfigs'
 import { useContract } from 'hooks/useContract'
 import stableSwapABI from 'config/abi/stableSwap.json'
+import stableSwapInfoABI from 'config/abi/infoStableSwap.json'
 
 function findStablePair({ tokenAAddress, tokenBAddress }) {
   const stableSwapPair = stableSwapConfigs.find((stablePair) => {
@@ -16,9 +17,11 @@ function findStablePair({ tokenAAddress, tokenBAddress }) {
 export default function useStableConfig({ tokenAAddress, tokenBAddress }) {
   const stablePair = findStablePair({ tokenAAddress, tokenBAddress })
   const stableSwapContract = useContract(stablePair?.stableSwapAddress, stableSwapABI)
+  const stableSwapInfoContract = useContract(stablePair?.infoStableSwapAddress, stableSwapInfoABI)
 
   return {
     stableSwapConfig: stablePair,
     stableSwapContract,
+    stableSwapInfoContract,
   }
 }

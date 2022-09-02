@@ -12,8 +12,9 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useRouter } from 'next/router'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useLPApr } from 'state/swap/hooks'
-import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { CAKE, USDC } from '@pancakeswap/tokens'
+import useStableConfig from 'views/Swap/StableSwap/hooks/useStableConfig'
+
 import { LightCard } from '../../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../../components/Layout/Column'
 import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
@@ -22,14 +23,13 @@ import ConnectWalletButton from '../../../components/ConnectWalletButton'
 import { PairState } from '../../../hooks/usePairs'
 import { useCurrency } from '../../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback'
-import useTransactionDeadline from '../../../hooks/useTransactionDeadline'
 import { Field, resetMintState } from '../../../state/mint/actions'
 import { useMintActionHandlers, useMintState } from '../../../state/mint/hooks'
 
 import { useTransactionAdder } from '../../../state/transactions/hooks'
-import { useGasPrice, useIsExpertMode, usePairAdder, useUserSlippageTolerance } from '../../../state/user/hooks'
+import { useGasPrice, useIsExpertMode, useUserSlippageTolerance } from '../../../state/user/hooks'
 import { calculateGasMargin } from '../../../utils'
-import { calculateSlippageAmount, useRouterContract } from '../../../utils/exchange'
+import { calculateSlippageAmount } from '../../../utils/exchange'
 import { maxAmountSpend } from '../../../utils/maxAmountSpend'
 import Dots from '../../../components/Loader/Dots'
 import PoolPriceBar from '../PoolPriceBar'
@@ -48,7 +48,6 @@ export default function AddStableLiquidity() {
   const router = useRouter()
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
 
-  const addPair = usePairAdder()
   const expertMode = useIsExpertMode()
 
   const native = useNativeCurrency()
@@ -97,7 +96,7 @@ export default function AddStableLiquidity() {
     },
   )
 
-  const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
+  const { onFieldAInput, onFieldBInput } = useMintActionHandlers(true)
 
   // modal and loading
   const [{ attemptingTxn, liquidityErrorMessage, txHash }, setLiquidityState] = useState<{
@@ -111,7 +110,6 @@ export default function AddStableLiquidity() {
   })
 
   // txn values
-  const deadline = useTransactionDeadline() // custom from users settings
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
 
   // get the max amounts user can add
@@ -146,59 +144,38 @@ export default function AddStableLiquidity() {
     {},
   )
 
+  const { stableSwapContract, stableSwapConfig } = useStableConfig({
+    tokenAAddress: currencyA?.address,
+    tokenBAddress: currencyB?.address,
+  })
+
   // check whether the user has approved the router on the tokens
-  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS[chainId])
-  const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS[chainId])
+  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], stableSwapContract?.address)
+  const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], stableSwapContract?.address)
 
   const addTransaction = useTransactionAdder()
 
-  const routerContract = useRouterContract()
-
   async function onAdd() {
-    if (!chainId || !account || !routerContract) return
+    if (!chainId || !account || !stableSwapContract) return
 
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
-    if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
+    if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB) {
       return
     }
 
-    const amountsMin = {
-      [Field.CURRENCY_A]: calculateSlippageAmount(parsedAmountA, noLiquidity ? 0 : allowedSlippage)[0],
-      [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0],
-    }
+    const lpMintedSlippage = calculateSlippageAmount(liquidityMinted, noLiquidity ? 0 : allowedSlippage)[0]
 
-    let estimate
-    let method: (...args: any) => Promise<TransactionResponse>
-    let args: Array<string | string[] | number>
-    let value: BigNumber | null
-    if (currencyA?.isNative || currencyB?.isNative) {
-      const tokenBIsNative = currencyB?.isNative
-      estimate = routerContract.estimateGas.addLiquidityETH
-      method = routerContract.addLiquidityETH
-      args = [
-        (tokenBIsNative ? currencyA : currencyB)?.wrapped?.address ?? '', // token
-        (tokenBIsNative ? parsedAmountA : parsedAmountB).quotient.toString(), // token desired
-        amountsMin[tokenBIsNative ? Field.CURRENCY_A : Field.CURRENCY_B].toString(), // token min
-        amountsMin[tokenBIsNative ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
-        account,
-        deadline.toHexString(),
-      ]
-      value = BigNumber.from((tokenBIsNative ? parsedAmountB : parsedAmountA).quotient.toString())
-    } else {
-      estimate = routerContract.estimateGas.addLiquidity
-      method = routerContract.addLiquidity
-      args = [
-        currencyA?.wrapped?.address ?? '',
-        currencyB?.wrapped?.address ?? '',
-        parsedAmountA.quotient.toString(),
-        parsedAmountB.quotient.toString(),
-        amountsMin[Field.CURRENCY_A].toString(),
-        amountsMin[Field.CURRENCY_B].toString(),
-        account,
-        deadline.toHexString(),
-      ]
-      value = null
-    }
+    const estimate = stableSwapContract.estimateGas.add_liquidity
+    const method = stableSwapContract.add_liquidity
+
+    const amountOrder =
+      stableSwapConfig?.token0?.address === parsedAmountA?.currency?.address
+        ? [parsedAmountA?.quotient?.toString(), parsedAmountB?.quotient?.toString()]
+        : [parsedAmountB?.quotient?.toString(), parsedAmountA?.quotient?.toString()]
+
+    const args = [amountOrder, lpMintedSlippage?.toString()]
+
+    const value = null
 
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
     await estimate(...args, value ? { value } : {})
@@ -222,10 +199,6 @@ export default function AddStableLiquidity() {
             },
             type: 'add-liquidity',
           })
-
-          if (pair) {
-            addPair(pair)
-          }
         }),
       )
       .catch((err) => {
