@@ -1892,7 +1892,7 @@
   "Please wait until we scan the risk for %symbol% token": "Please wait until we scan the risk for %symbol% token",
   "scanning...": "scanning...",
   "scan risk": "scan risk",
-  "Scan risk level for the output token. The scan result is provided by 3rd party and is for reference only, do NOT take it as investment or financial advice.": "Scan risk level for the output token. The scan result is provided by 3rd party and is for reference only, do NOT take it as investment or financial advice.",
+  "The scan result is provided by 3rd parties and may not cover every token. Therefore the result is for reference only, do NOT take it as investment or financial advice. Always DYOR!": "The scan result is provided by 3rd parties and may not cover every token. Therefore the result is for reference only, do NOT take it as investment or financial advice. Always DYOR!",
   "Powered by": "Powered by",
   "Hashdit.": "Hashdit.",
   "Add to Wallet": "Add to Wallet",

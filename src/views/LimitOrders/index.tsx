@@ -21,6 +21,8 @@ import { LIMIT_ORDERS_DOCS_URL } from 'config/constants/exchange'
 import { useExchangeChartManager } from 'state/user/hooks'
 import PriceChartContainer from 'views/Swap/components/Chart/PriceChartContainer'
 import { useWeb3React } from '@pancakeswap/wagmi'
+import AccessRisk from 'views/Swap/components/AccessRisk'
+import { ACCESS_TOKEN_SUPPORT_CHAIN_IDS } from 'views/Swap/index'
 import ClaimWarning from './components/ClaimWarning'
 
 import { Wrapper, StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
@@ -305,6 +307,11 @@ const LimitOrders = () => {
 
   const isSideFooter = isChartExpanded || isChartDisplayed
 
+  const isAccessTokenSupported = useMemo(() => ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
+  const isShowAccessToken = useMemo(() => {
+    return isAccessTokenSupported && !currencies[Field.OUTPUT]?.isNative
+  }, [isAccessTokenSupported, currencies])
+
   return (
     <Page
       removePadding={isChartExpanded}
@@ -381,6 +388,9 @@ const LimitOrders = () => {
                       showCommonBases
                       commonBasesType={CommonBasesType.SWAP_LIMITORDER}
                     />
+                    <Box style={{ display: isShowAccessToken ? 'block' : 'none' }}>
+                      <AccessRisk currency={currencies.output} />
+                    </Box>
                     <LimitOrderPrice
                       id="limit-order-desired-rate-input"
                       value={formattedAmounts.price}
