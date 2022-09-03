@@ -4,8 +4,8 @@ export const breakpoints = {
   lg: 968,
   xl: 1080,
   xxl: 1200,
-} as const;
+} as const
 
-export type Breakpoint = keyof typeof breakpoints;
+export type Breakpoint = keyof typeof breakpoints
 
-export const breakpointNames = Object.keys(breakpoints) as Breakpoint[];
+export const breakpointNames = Object.keys(breakpoints) as Breakpoint[]

@@ -53,8 +53,6 @@ const responsiveProperties = defineProperties({
   staticProperties: {
     display: ['block', 'flex', 'grid', 'inline', 'inline-flex', 'inline-block', 'none', 'contents'],
     flexDirection: ['column', 'row', 'column-reverse'],
-    // flexGrow: flexibility,
-    // flexShrink: flexibility,
     flexWrap: ['wrap', 'nowrap'],
     overflow: ['auto', 'hidden', 'scroll', 'unset'],
     position: ['absolute', 'fixed', 'relative', 'sticky'],
