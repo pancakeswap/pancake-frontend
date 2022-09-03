@@ -54,10 +54,10 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({ title, subtitle, 
             )}
           </Flex>
           <Flex alignItems="center">
-            {helper && <QuestionHelper text={helper} mr="4px" placement="top-start" />}
             <Text color="textSubtle" fontSize="14px">
               {subtitle}
             </Text>
+            {helper && <QuestionHelper text={helper} mr="4px" placement="top-start" />}
           </Flex>
         </Flex>
       </Flex>
