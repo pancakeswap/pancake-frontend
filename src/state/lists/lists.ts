@@ -1,5 +1,4 @@
-import { atomWithStorage } from 'hooks/atomWithStorage'
-import { useReducerAtom } from 'jotai/utils'
+import { useReducerAtom, atomWithStorage } from 'jotai/utils'
 import defaultStorge from 'redux-persist/lib/storage'
 import localForage from 'localforage'
 import listReducer, { initialState, ListsState } from './reducer'
