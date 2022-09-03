@@ -1,15 +1,29 @@
 import { Currency, CurrencyAmount, JSBI, Pair, Percent, Token } from '@pancakeswap/sdk'
 
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { wrappedCurrency } from 'utils/wrappedCurrency'
-import { usePair } from 'hooks/usePairs'
-import useTotalSupply from 'hooks/useTotalSupply'
 
 import { useTranslation } from '@pancakeswap/localization'
-import tryParseAmount from 'utils/tryParseAmount'
 import { Field } from 'state/burn/actions'
 import { useTokenBalances } from 'state/wallet/hooks'
 import { useBurnState } from 'state/burn/hooks'
+import { useStablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
+import useStableConfig from 'views/Swap/StableSwap/hooks/useStableConfig'
+import useSWR from 'swr'
+
+function useGetRemovedTokenAmounts({ lpAmount, tokenAAddress, tokenBAddress }) {
+  const { stableSwapInfoContract, stableSwapConfig } = useStableConfig({ tokenAAddress, tokenBAddress })
+
+  const { data } = useSWR(!lpAmount ? null : ['stableSwapInfoContract', 'calc_coins_amount', lpAmount], async () => {
+    return stableSwapInfoContract.calc_coins_amount(stableSwapConfig?.stableSwapAddress, lpAmount)
+  })
+
+  if (!Array.isArray(data)) return []
+
+  const tokenAAmount = CurrencyAmount.fromRawAmount(stableSwapConfig?.token0, data[0].toString())
+  const tokenBAmount = CurrencyAmount.fromRawAmount(stableSwapConfig?.token1, data[1].toString())
+
+  return [tokenAAmount, tokenBAmount]
+}
 
 export function useStableDerivedBurnInfo(
   currencyA: Currency | undefined,
@@ -25,73 +39,23 @@ export function useStableDerivedBurnInfo(
   error?: string
   tokenToReceive?: string
 } {
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
 
   const { independentField, typedValue } = useBurnState()
 
   const { t } = useTranslation()
 
   // pair + totalsupply
-  const [, pair] = usePair(currencyA, currencyB)
+  const [, pair] = useStablePair(currencyA, currencyB)
 
   // balances
   const relevantTokenBalances = useTokenBalances(account ?? undefined, [pair?.liquidityToken])
   const userLiquidity: undefined | CurrencyAmount<Token> = relevantTokenBalances?.[pair?.liquidityToken?.address ?? '']
 
-  const [tokenA, tokenB] = [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
-  const tokens = {
-    [Field.CURRENCY_A]: tokenA,
-    [Field.CURRENCY_B]: tokenB,
-    [Field.LIQUIDITY]: pair?.liquidityToken,
-  }
-
-  // liquidity values
-  const totalSupply = useTotalSupply(pair?.liquidityToken)
-  const liquidityValueA =
-    pair &&
-    totalSupply &&
-    userLiquidity &&
-    tokenA &&
-    // this condition is a short-circuit in the case where useTokenBalance updates sooner than useTotalSupply
-    JSBI.greaterThanOrEqual(totalSupply.quotient, userLiquidity.quotient)
-      ? CurrencyAmount.fromRawAmount(tokenA, pair.getLiquidityValue(tokenA, totalSupply, userLiquidity, false).quotient)
-      : undefined
-
-  const liquidityValueB =
-    pair &&
-    totalSupply &&
-    userLiquidity &&
-    tokenB &&
-    // this condition is a short-circuit in the case where useTokenBalance updates sooner than useTotalSupply
-    JSBI.greaterThanOrEqual(totalSupply.quotient, userLiquidity.quotient)
-      ? CurrencyAmount.fromRawAmount(tokenB, pair.getLiquidityValue(tokenB, totalSupply, userLiquidity, false).quotient)
-      : undefined
-  const liquidityValues: { [Field.CURRENCY_A]?: CurrencyAmount<Token>; [Field.CURRENCY_B]?: CurrencyAmount<Token> } = {
-    [Field.CURRENCY_A]: liquidityValueA,
-    [Field.CURRENCY_B]: liquidityValueB,
-  }
-
   let percentToRemove: Percent = new Percent('0', '100')
   // user specified a %
   if (independentField === Field.LIQUIDITY_PERCENT) {
     percentToRemove = new Percent(typedValue, '100')
-  }
-  // user specified a specific amount of liquidity tokens
-  else if (independentField === Field.LIQUIDITY) {
-    if (pair?.liquidityToken) {
-      const independentAmount = tryParseAmount(typedValue, pair.liquidityToken)
-      if (independentAmount && userLiquidity && !independentAmount.greaterThan(userLiquidity)) {
-        percentToRemove = new Percent(independentAmount.quotient, userLiquidity.quotient)
-      }
-    }
-  }
-  // user specified a specific amount of token a or b
-  else if (tokens[independentField]) {
-    const independentAmount = tryParseAmount(typedValue, tokens[independentField])
-    const liquidityValue = liquidityValues[independentField]
-    if (independentAmount && liquidityValue && !independentAmount.greaterThan(liquidityValue)) {
-      percentToRemove = new Percent(independentAmount.quotient, liquidityValue.quotient)
-    }
   }
 
   const liquidityToRemove =
@@ -99,15 +63,13 @@ export function useStableDerivedBurnInfo(
       ? CurrencyAmount.fromRawAmount(userLiquidity.currency, percentToRemove.multiply(userLiquidity.quotient).quotient)
       : undefined
 
-  const amountA =
-    tokenA && percentToRemove && percentToRemove.greaterThan('0') && liquidityValueA
-      ? CurrencyAmount.fromRawAmount(tokenA, percentToRemove.multiply(liquidityValueA.quotient).quotient)
-      : undefined
+  //  InfoContract.calc_coins_amount(swapContractAddress，LP_Amount)
 
-  const amountB =
-    tokenB && percentToRemove && percentToRemove.greaterThan('0') && liquidityValueB
-      ? CurrencyAmount.fromRawAmount(tokenB, percentToRemove.multiply(liquidityValueB.quotient).quotient)
-      : undefined
+  const [amountA, amountB] = useGetRemovedTokenAmounts({
+    lpAmount: liquidityToRemove?.quotient?.toString(),
+    tokenAAddress: currencyA?.address,
+    tokenBAddress: currencyB?.address,
+  })
 
   const parsedAmounts: {
     [Field.LIQUIDITY_PERCENT]: Percent

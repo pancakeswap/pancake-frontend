@@ -149,7 +149,7 @@ export default function AddStableLiquidity() {
     tokenBAddress: currencyB?.address,
   })
 
-  // check whether the user has approved the router on the tokens
+  // check whether the user has approved tokens for addling LPs
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], stableSwapContract?.address)
   const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], stableSwapContract?.address)
 

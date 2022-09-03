@@ -1,8 +1,9 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { CHAIN_IDS } from 'utils/wagmi'
 import RemoveLiquidity from 'views/RemoveLiquidity'
+import RemoveStableLiquidity from 'views/RemoveLiquidity/RemoveStableLiquidity'
 
-const RemoveLiquidityPage = () => <RemoveLiquidity />
+const RemoveLiquidityPage = () => <RemoveStableLiquidity />
 
 RemoveLiquidityPage.chains = CHAIN_IDS
 

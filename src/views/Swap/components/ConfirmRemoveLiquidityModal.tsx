@@ -30,7 +30,6 @@ interface ConfirmRemoveLiquidityModalProps {
   onRemove: () => void
   liquidityErrorMessage: string
   approval: ApprovalState
-  signatureData?: any
   tokenA: Token
   tokenB: Token
   currencyA: Currency | null | undefined
@@ -49,7 +48,6 @@ const ConfirmRemoveLiquidityModal: React.FC<
   pair,
   hash,
   approval,
-  signatureData,
   pendingText,
   parsedAmounts,
   allowedSlippage,
@@ -132,17 +130,12 @@ const ConfirmRemoveLiquidityModal: React.FC<
             </RowBetween>
           </>
         )}
-        <Button
-          width="100%"
-          mt="20px"
-          disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)}
-          onClick={onRemove}
-        >
+        <Button width="100%" mt="20px" disabled={!(approval === ApprovalState.APPROVED)} onClick={onRemove}>
           {t('Confirm')}
         </Button>
       </>
     )
-  }, [currencyA, currencyB, parsedAmounts, approval, onRemove, pair, signatureData, tokenA, tokenB, t])
+  }, [currencyA, currencyB, parsedAmounts, approval, onRemove, pair, tokenA, tokenB, t])
 
   const confirmationContent = useCallback(
     () =>

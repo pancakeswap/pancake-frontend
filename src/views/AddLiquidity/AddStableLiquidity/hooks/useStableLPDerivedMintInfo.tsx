@@ -17,7 +17,7 @@ import { useEstimatedAmount } from 'views/Swap/StableSwap/hooks/useStableTradeEx
 import useSWR from 'swr'
 import { useMintState } from 'state/mint/hooks'
 
-function useStablePair(currencyA, currencyB): [PairState, Pair | null] {
+export function useStablePair(currencyA, currencyB): [PairState, Pair | null] {
   const { stableSwapConfig } = useStableConfig({ tokenAAddress: currencyA?.address, tokenBAddress: currencyB?.address })
 
   if (!stableSwapConfig) {
@@ -29,6 +29,10 @@ function useStablePair(currencyA, currencyB): [PairState, Pair | null] {
   const reserve1 = CurrencyAmount.fromRawAmount(stableSwapConfig?.token1, '1')
   const tokenAmounts = [reserve0, reserve1]
 
+  const token0Amount = tryParseAmount('1', currencyA)
+
+  const token0Price = new Price(currencyA, currencyB, token0Amount?.quotient, token0Amount?.quotient)
+
   const pair = {
     liquidityToken: stableSwapConfig?.lpAddress
       ? new Token(currencyA?.chainId, stableSwapConfig?.lpAddress, 18, 'Stable-LP', 'Pancake StableSwap LPs')
@@ -38,7 +42,11 @@ function useStablePair(currencyA, currencyB): [PairState, Pair | null] {
     reserve1,
     token0: tokenAmounts[0].currency,
     token1: tokenAmounts[1].currency,
+    // Philip TODO: calculate getLiquidityValue logic
     getLiquidityValue: () => reserve0,
+    token0Price: () => token0Price,
+    token1Price: () => token0Price,
+    priceOf: (token) => token0Price,
   }
 
   return [PairState.EXISTS, pair]
