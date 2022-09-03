@@ -15,7 +15,7 @@ export const GridPlaceholderItem: React.FC<React.PropsWithChildren<BoxProps>> = 
 )
 
 const GridPlaceholder: React.FC<React.PropsWithChildren<GridPlaceholderProps>> = ({ numItems = 12, ...props }) => (
-  <Grid gridGap="16px" gridTemplateColumns={['1fr', null, null, 'repeat(4, 1fr)']} {...props}>
+  <Grid gap="16px" gridTemplateColumns={['1fr', null, null, 'repeat(4, 1fr)']} {...props}>
     {times(numItems).map((itemKey) => (
       <GridPlaceholderItem key={itemKey} />
     ))}

@@ -4,6 +4,7 @@ import observerOptions from "./options";
 import Wrapper from "./Wrapper";
 import { ImageProps } from "./types";
 import Placeholder from "./Placeholder";
+import { Box } from "../Box";
 
 const StyledImage = styled.img`
   height: 100%;
@@ -44,9 +45,9 @@ const Image: React.FC<React.PropsWithChildren<ImageProps>> = ({ src, alt, width,
   }, [src]);
 
   return (
-    <Wrapper ref={imgRef} height={height} width={width} {...props}>
+    <Box as={Wrapper} ref={imgRef} height={height} width={width} {...props}>
       {isLoaded ? <StyledImage src={src} alt={alt} /> : <Placeholder />}
-    </Wrapper>
+    </Box>
   );
 };
 

@@ -41,7 +41,7 @@ const WinRateFooter: React.FC<React.PropsWithChildren<WinRateFooterProps>> = ({ 
       </ExpandableLabel>
       {isExpanded && (
         <Box px="8px">
-          <Grid gridTemplateColumns="2.5fr 1fr" gridRowGap="8px" gridTemplateRows={`repeat(${2}, auto)`}>
+          <Grid gridTemplateColumns="2.5fr 1fr" rowGap="8px" gridTemplateRows={`repeat(${2}, auto)`}>
             <Text color="textSubtle" small>
               {t('APY')}
             </Text>

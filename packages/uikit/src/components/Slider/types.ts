@@ -1,4 +1,4 @@
-import { BoxProps } from "../Box/types";
+import { BoxProps } from "../Box";
 
 export default interface SliderProps extends BoxProps {
   name: string;

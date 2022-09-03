@@ -72,7 +72,7 @@ const TableNavigation: React.FC<TableNavigationProps> = ({
       })}
       {!data && <LoadingTable />}
       {data && !total && <NoOrdersMessage orderCategory={orderCategory} />}
-      <Grid gridGap="16px" gridTemplateColumns={['1fr', null, null, null, '1fr 2fr 1fr']} mt="16px" mb="16px" px="16px">
+      <Grid gap="16px" gridTemplateColumns={['1fr', null, null, null, '1fr 2fr 1fr']} mt="16px" mb="16px" px="16px">
         <Box />
         <Flex width="100%" justifyContent="center" alignItems="center">
           <Arrow onClick={onPagePrev}>

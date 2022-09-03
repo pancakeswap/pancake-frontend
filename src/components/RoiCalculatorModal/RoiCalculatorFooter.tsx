@@ -84,7 +84,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
       </ExpandableLabel>
       {isExpanded && (
         <Box px="8px">
-          <Grid gridTemplateColumns="2.5fr 1fr" gridRowGap="8px" gridTemplateRows={`repeat(${gridRowCount}, auto)`}>
+          <Grid gridTemplateColumns="2.5fr 1fr" rowGap="8px" gridTemplateRows={`repeat(${gridRowCount}, auto)`}>
             {isFarm && (
               <>
                 <Text color="textSubtle" small>

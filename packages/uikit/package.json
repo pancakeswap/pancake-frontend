@@ -17,7 +17,9 @@
     "test": "jest",
     "prepublishOnly": "yarn build"
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css.ts"
+  ],
   "devDependencies": {
     "@babel/core": "^7.16.7",
     "@babel/preset-env": "^7.16.8",

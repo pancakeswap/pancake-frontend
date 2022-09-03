@@ -59,8 +59,8 @@ const Newest: React.FC<React.PropsWithChildren> = () => {
       </Flex>
       {nfts ? (
         <Grid
-          gridRowGap="24px"
-          gridColumnGap="16px"
+          rowGap="24px"
+          columnGap="16px"
           gridTemplateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(2, 1fr)', 'repeat(4, 1fr)']}
         >
           {nfts.map((nft) => {

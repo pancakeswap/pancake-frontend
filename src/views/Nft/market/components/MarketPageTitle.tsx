@@ -12,7 +12,7 @@ const MarketPageTitle: React.FC<React.PropsWithChildren<MarketPageTitleProps>> =
   children,
   ...props
 }) => (
-  <Grid gridGap="16px" alignItems="center" gridTemplateColumns={['1fr', null, null, null, 'repeat(2, 1fr)']} {...props}>
+  <Grid gap="16px" alignItems="center" gridTemplateColumns={['1fr', null, null, null, 'repeat(2, 1fr)']} {...props}>
     <Box>
       <Heading as="h1" scale="xl" color="secondary" mb="16px">
         {title}

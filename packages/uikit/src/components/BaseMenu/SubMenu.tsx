@@ -1,5 +1,5 @@
 import React from "react";
-import { FlexProps } from "../Box";
+import { FlexProps } from "../Box/Flex";
 import BaseMenu from "./BaseMenu";
 import { SubMenuContainer } from "./styles";
 import { BaseMenuProps } from "./types";

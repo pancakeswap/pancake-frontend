@@ -29,7 +29,7 @@ const Collections: React.FC<React.PropsWithChildren<{ title: string; testId: str
           {t('View All')}
         </Button>
       </Flex>
-      <Grid gridGap="16px" gridTemplateColumns={['1fr', '1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} mb="64px">
+      <Grid gap="16px" gridTemplateColumns={['1fr', '1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} mb="64px">
         {collections.slice(0, 6).map((collection) => {
           return (
             <CollectionCard

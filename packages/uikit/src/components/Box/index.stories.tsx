@@ -48,7 +48,7 @@ export const Grid: React.FC<React.PropsWithChildren> = () => {
       justifyItems="center"
       alignContent="center"
       gridTemplateColumns="1fr 1fr"
-      gridColumnGap="16px"
+      columnGap="16px"
       style={{ backgroundColor: "#7645D9" }}
     >
       <BoxComponent style={{ backgroundColor: "#1fc7d4", width: "300px", height: "300px" }} />

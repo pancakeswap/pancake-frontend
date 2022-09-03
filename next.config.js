@@ -5,8 +5,9 @@ const { withAxiom } = require('next-axiom')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
-const withVanillaExtract = createVanillaExtractPlugin()
 const withTM = require('next-transpile-modules')(['@pancakeswap/uikit', '@pancakeswap/sdk'])
+
+const withVanillaExtract = createVanillaExtractPlugin()
 
 const sentryWebpackPluginOptions =
   process.env.VERCEL_ENV === 'production'
@@ -28,13 +29,6 @@ const sentryWebpackPluginOptions =
 
 /** @type {import('next').NextConfig} */
 const config = {
-  typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    // !! WARN !!
-    ignoreBuildErrors: true,
-  },
   compiler: {
     styledComponents: true,
   },

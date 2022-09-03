@@ -9,7 +9,7 @@ import { vars } from './vars.css'
 import './reset.css'
 /* DO NOT MOVE THIS LINE */
 
-const flexAlignment = ['flex-start', 'center', 'flex-end', 'stretch'] as const
+const flexAlignment = ['flex-start', 'center', 'start', 'flex-end', 'stretch'] as const
 
 const negativeSpace = {
   '-px': `${calc(vars.space.px).negate()}`,
@@ -53,7 +53,7 @@ const responsiveProperties = defineProperties({
   staticProperties: {
     display: ['block', 'flex', 'grid', 'inline', 'inline-flex', 'inline-block', 'none', 'contents'],
     flexDirection: ['column', 'row', 'column-reverse'],
-    alignItems: ['center', 'end', ...flexAlignment],
+    alignItems: ['center', 'end', 'baseLine', 'inherit', ...flexAlignment],
     flexWrap: ['wrap', 'nowrap'],
     overflow: ['auto', 'hidden', 'scroll', 'unset'],
     overflowY: ['auto', 'hidden', 'scroll'],
@@ -117,8 +117,13 @@ const responsiveProperties = defineProperties({
     flex: true,
     flexGrow: true,
     flexShrink: true,
+    flexDirection: true, // TODO: fix type before move to static
+    justifyContent: true, // TODO: fix type before move to static
+    alignItems: true, // TODO: fix type before move to static
     alignSelf: true, // to static
+    alignContent: true,
     // border
+    border: true,
     borderWidth: true,
     borderBottomWidth: true,
     borderLeftWidth: true,
@@ -153,11 +158,13 @@ const responsiveProperties = defineProperties({
     backgroundRepeat: true,
     // grid
     gridColumn: true,
-    gridRow: true,
+    // gridRow: true,
+    columnGap: true,
     gridAutoRows: true,
     gridTemplateColumns: true,
     gridTemplateRows: true,
     gridTemplateAreas: true,
+    rowGap: true,
     bottom: true,
     fontSize: {
       ...vars.fontSizes,
@@ -217,7 +224,7 @@ const unresponsiveProperties = defineProperties({
   // conditions: {},
   staticProperties: {
     isolation: ['isolate'],
-    objectFit: ['contain', 'cover'],
+    objectFit: ['contain', 'cover', 'none'],
     pointerEvents: ['none'],
     textTransform: ['capitalize', 'lowercase', 'uppercase'],
     cursor: ['default', 'pointer', 'not-allowed'],

@@ -7,7 +7,9 @@ export interface WrapperProps extends SpaceProps, HTMLAttributes<HTMLDivElement>
   height: number;
 }
 
-export interface ImageProps extends ImgHTMLAttributes<HTMLImageElement>, SpaceProps {
+export interface ImageProps
+  extends Omit<ImgHTMLAttributes<HTMLImageElement>, "objectFit">,
+    Omit<BoxProps, keyof ImgHTMLAttributes<HTMLImageElement>> {
   width: number;
   height: number;
   wrapperProps?: WrapperProps;

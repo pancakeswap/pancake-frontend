@@ -105,7 +105,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
   }, [targetRef, tooltipRef, setIsOpen]);
 
   return (
-    <Flex alignItems="center" height="100%" ref={setTargetRef} {...props}>
+    <Flex alignItems="center" height="100%" ref={setTargetRef as any} {...props}>
       <StyledUserMenu
         onTouchStart={() => {
           setIsOpen((s) => !s);

@@ -97,7 +97,7 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
         <Box maxHeight={['500px', null, null, null, null, null, 'none']} overflowY="auto">
           <Grid
             gridTemplateColumns={['1fr', null, null, null, null, null, 'repeat(4, 1fr)']}
-            gridGap="16px"
+            gap="16px"
             p="24px"
             borderBottom="1px solid"
             borderColor="cardBorder"

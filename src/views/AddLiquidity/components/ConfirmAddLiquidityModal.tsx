@@ -97,7 +97,7 @@ const ConfirmAddLiquidityModal: React.FC<React.PropsWithChildren<InjectedModalPr
         attemptingTxn={attemptingTxn}
         currencyToAdd={currencyToAdd}
         hash={hash}
-        content={confirmationContent}
+        contents={confirmationContent}
         pendingText={pendingText}
       />
     )

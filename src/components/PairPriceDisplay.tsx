@@ -49,7 +49,7 @@ const PairPriceDisplay: FC<React.PropsWithChildren<TokenDisplayProps>> = ({
       {children}
     </FlexGap>
   ) : (
-    <Skeleton height="36px" width="128px" {...props} />
+    <FlexGap as={Skeleton} height="36px" width="128px" {...props} />
   )
 }
 

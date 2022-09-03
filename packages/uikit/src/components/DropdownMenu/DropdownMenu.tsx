@@ -71,7 +71,7 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
   );
 
   return (
-    <Box ref={setTargetRef} {...props}>
+    <Box ref={setTargetRef as any} {...props}>
       <Box
         onPointerDown={() => {
           setIsOpen((s) => !s);

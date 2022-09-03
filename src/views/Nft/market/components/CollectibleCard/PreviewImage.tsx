@@ -1,7 +1,7 @@
-import { BackgroundImage, BoxProps } from '@pancakeswap/uikit'
+import { BackgroundImage, ImageProps } from '@pancakeswap/uikit'
 import PlaceholderImage from './PlaceholderImage'
 
-interface PreviewImageProps extends BoxProps {
+interface PreviewImageProps extends Omit<ImageProps, 'width' | 'height'> {
   src: string
   height?: number
   width?: number

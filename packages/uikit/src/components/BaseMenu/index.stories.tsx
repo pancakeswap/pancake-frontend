@@ -27,7 +27,7 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
           borderTopColor="cardBorder"
           py="16px"
           px="24px"
-          gridGap="16px"
+          gap="16px"
           gridTemplateColumns="repeat(2, 1fr)"
         >
           <Button variant="secondary">Clear</Button>

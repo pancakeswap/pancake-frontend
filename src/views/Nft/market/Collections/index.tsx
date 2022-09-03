@@ -325,7 +325,7 @@ const Collectible = () => {
               </Card>
             ) : (
               <Grid
-                gridGap="16px"
+                gap="16px"
                 gridTemplateColumns={['1fr', '1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)']}
                 mb="32px"
                 data-test="nft-collection-row"

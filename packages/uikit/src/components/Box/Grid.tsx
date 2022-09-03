@@ -1,9 +1,5 @@
-import styled from "styled-components";
-import { grid, flexbox } from "styled-system";
+import { forwardRef } from "react";
 import { Box, BoxProps } from "./Box";
 
-export const Grid = styled(Box)<BoxProps>`
-  display: grid;
-  ${flexbox}
-  ${grid}
-`;
+export const Grid = forwardRef<HTMLElement, BoxProps>((props, ref) => <Box display="grid" ref={ref} {...props} />);
+export type GridProps = BoxProps;

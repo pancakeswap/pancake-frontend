@@ -35,7 +35,7 @@ const CollectionNfts: React.FC<React.PropsWithChildren<CollectionNftsProps>> = (
       {nfts.length > 0 ? (
         <>
           <Grid
-            gridGap="16px"
+            gap="16px"
             gridTemplateColumns={['1fr', null, 'repeat(3, 1fr)', null, 'repeat(4, 1fr)']}
             alignItems="start"
           >

@@ -44,7 +44,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
         const list = chainId && inactiveTokenList?.[chainId]?.[token.address]?.list
         const address = token.address ? `${truncateHash(token.address)}` : null
         return (
-          <Grid key={token.address} gridTemplateRows="1fr 1fr 1fr" gridGap="4px">
+          <Grid key={token.address} gridTemplateRows="1fr 1fr 1fr" gap="4px">
             {list !== undefined ? (
               <Tag
                 variant="success"

@@ -166,7 +166,7 @@ const ConfirmRemoveLiquidityModal: React.FC<
       customOnDismiss={customOnDismiss}
       attemptingTxn={attemptingTxn}
       hash={hash}
-      content={confirmationContent}
+      contents={confirmationContent}
       pendingText={pendingText}
     />
   )

@@ -1,7 +1,7 @@
 import { ChangeEvent, InputHTMLAttributes, useState } from 'react'
 import { Box, CloseIcon, IconButton, Input, InputProps } from '@pancakeswap/uikit'
 
-interface ChoiceProps extends InputProps, InputHTMLAttributes<HTMLInputElement> {
+interface ChoiceProps extends InputProps, Omit<InputHTMLAttributes<HTMLInputElement>, keyof InputProps> {
   onTextInput: (value: string) => void
   onRemove?: () => void
 }

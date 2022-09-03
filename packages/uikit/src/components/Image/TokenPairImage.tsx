@@ -1,6 +1,7 @@
 import React from "react";
-import { TokenPairImageProps, variants } from "./types";
+import { Box } from "../Box";
 import { StyledPrimaryImage, StyledSecondaryImage } from "./styles";
+import { TokenPairImageProps, variants } from "./types";
 import Wrapper from "./Wrapper";
 
 const TokenPairImage: React.FC<React.PropsWithChildren<TokenPairImageProps>> = ({
@@ -16,7 +17,7 @@ const TokenPairImage: React.FC<React.PropsWithChildren<TokenPairImageProps>> = (
   const secondaryImageSize = Math.floor(width / 2);
 
   return (
-    <Wrapper position="relative" width={width} height={height} {...props}>
+    <Box as={Wrapper} style={{ position: "relative" }} width={width} height={height} {...props}>
       <StyledPrimaryImage variant={variant} src={primarySrc} width={width} height={height} {...primaryImageProps} />
       <StyledSecondaryImage
         variant={variant}
@@ -25,7 +26,7 @@ const TokenPairImage: React.FC<React.PropsWithChildren<TokenPairImageProps>> = (
         height={secondaryImageSize}
         {...secondaryImageProps}
       />
-    </Wrapper>
+    </Box>
   );
 };
 
