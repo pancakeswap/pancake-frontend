@@ -466,9 +466,9 @@ const LimitOrders = () => {
         content={
           <PriceChartContainer
             inputCurrencyId={currencyIds.input}
-            inputCurrency={currencies[Field.INPUT]}
+            inputCurrency={currencies.input}
             outputCurrencyId={currencyIds.output}
-            outputCurrency={currencies[Field.OUTPUT]}
+            outputCurrency={currencies.output}
             isChartExpanded={isChartExpanded}
             setIsChartExpanded={setIsChartExpanded}
             isChartDisplayed={isChartDisplayed}
