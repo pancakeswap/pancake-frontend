@@ -11,14 +11,16 @@ export const OuterWedgeWrapper = styled.div`
   top: 0px;
 `
 
-export const InnerWedgeWrapper = styled.div<{ fill: string; top?: boolean; width?: string }>`
+export const InnerWedgeWrapper = styled.div.attrs({ className: 'inner-wedge' })<{
+  top?: boolean
+  width?: string
+}>`
   position: absolute;
   display: flex;
   width: 100%;
   ${({ top }) => (top ? 'top: 0px' : 'bottom: 0px')};
 
   svg {
-    fill: ${({ fill }) => fill};
     width: ${({ width }) => width || '100%'};
     height: 100%;
     max-height: 48px;

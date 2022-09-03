@@ -1,6 +1,5 @@
 import debounce from "lodash/debounce";
-import React, { useCallback, useEffect, useRef } from "react";
-import { useMatchBreakpoints } from "../../contexts";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Box } from "../Box";
 import { DropdownMenuItemType } from "../DropdownMenu/types";
 import MenuItem from "../MenuItem/MenuItem";
@@ -22,10 +21,11 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
   isMobileOnly = false,
   ...props
 }) => {
-  const { isMobile } = useMatchBreakpoints();
+  const [isMounted, setIsMounted] = useState(false);
   const scrollLayerRef = useRef<HTMLDivElement>(null);
   const chevronLeftRef = useRef<HTMLDivElement>(null);
   const chevronRightRef = useRef<HTMLDivElement>(null);
+
   const layerController = useCallback(() => {
     if (!scrollLayerRef.current || !chevronLeftRef.current || !chevronRightRef.current) return;
     const scrollLayer = scrollLayerRef.current;
@@ -35,13 +35,23 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
       chevronRightRef.current.classList.remove("hide");
     else chevronRightRef.current.classList.add("hide");
   }, []);
+
   useEffect(() => {
-    layerController();
-  }, [layerController]);
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isMounted) {
+      layerController();
+    }
+  }, [layerController, isMounted]);
+
   return (
     <SubMenuItemWrapper $isMobileOnly={isMobileOnly} {...props}>
-      {isMobile && (
-        <LeftMaskLayer
+      {isMounted && (
+        <Box
+          as={LeftMaskLayer}
+          display={["block", "block", "none"]}
           ref={chevronLeftRef}
           onClick={() => {
             if (!scrollLayerRef.current) return;
@@ -49,10 +59,12 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
           }}
         >
           <ChevronLeftIcon />
-        </LeftMaskLayer>
+        </Box>
       )}
-      {isMobile && (
-        <RightMaskLayer
+      {isMounted && (
+        <Box
+          as={RightMaskLayer}
+          display={["block", "block", "none"]}
           ref={chevronRightRef}
           onClick={() => {
             if (!scrollLayerRef.current) return;
@@ -60,7 +72,7 @@ const SubMenuItems: React.FC<React.PropsWithChildren<SubMenuItemsProps>> = ({
           }}
         >
           <ChevronRightIcon />
-        </RightMaskLayer>
+        </Box>
       )}
       <StyledSubMenuItems
         justifyContent={[isMobileOnly ? "flex-end" : "start", null, "center"]}

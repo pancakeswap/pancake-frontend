@@ -14,5 +14,5 @@ export const atoms = ({ reset, ...rest }: Atoms) => {
 
   const sprinklesClasses = sprinkles(rest)
 
-  return clsx(resetStyles.base, elementReset, sprinklesClasses)
+  return clsx(resetStyles.base, elementReset, sprinklesClasses.className)
 }

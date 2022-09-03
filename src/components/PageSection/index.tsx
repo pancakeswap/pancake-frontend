@@ -23,7 +23,9 @@ interface BackgroundColorProps extends FlexProps {
   padding?: string
 }
 
-const BackgroundColor = styled(Flex)<BackgroundColorProps>`
+const BackgroundColor = styled(Flex).attrs({
+  className: 'page-bg',
+})<BackgroundColorProps>`
   position: relative;
   flex-direction: column;
   align-items: center;

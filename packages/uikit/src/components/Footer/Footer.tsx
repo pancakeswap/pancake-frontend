@@ -34,7 +34,7 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
     <StyledFooter p={["40px 16px", null, "56px 40px 32px 40px"]} {...props} justifyContent="center">
       <Flex flexDirection="column" width={["100%", null, "1200px"]}>
         <StyledIconMobileContainer display={["block", null, "none"]}>
-          <LogoWithTextIcon isDark width="130px" />
+          <LogoWithTextIcon width="130px" />
         </StyledIconMobileContainer>
         <Flex
           order={[2, null, 1]}
@@ -66,7 +66,7 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
             </StyledList>
           ))}
           <Box display={["none", null, "block"]}>
-            <LogoWithTextIcon isDark width="160px" />
+            <LogoWithTextIcon width="160px" />
           </Box>
         </Flex>
         <StyledSocialLinks order={[2]} pb={["42px", null, "32px"]} mb={["0", null, "32px"]} />
