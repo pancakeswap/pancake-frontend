@@ -1,8 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import { m as motion } from "framer-motion";
 import { forwardRef } from "react";
-// import clsx, { ClassValue } from "clsx";
-
 import { Box, BoxProps } from "@pancakeswap/ui";
 
 export { Box };
