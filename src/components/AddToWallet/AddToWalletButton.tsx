@@ -84,8 +84,8 @@ const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
   const { connector, isConnected } = useAccount()
   const isCanRegisterToken = canRegisterToken()
 
+  if (connector && connector.name === 'Binance') return null
   if (!(connector && connector.watchAsset && isConnected)) return null
-
   if (!isCanRegisterToken) return null
 
   return (
