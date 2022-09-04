@@ -4,7 +4,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect, memo } from 'react'
+import { useEffect } from 'react'
 import { useAppDispatch } from 'state'
 import { resetMintState } from 'state/mint/actions'
 import { CHAIN_IDS } from 'utils/wagmi'
@@ -47,7 +47,7 @@ const AddLiquidityPage = () => {
 
 AddLiquidityPage.chains = CHAIN_IDS
 
-export default memo(AddLiquidityPage)
+export default AddLiquidityPage
 
 const OLD_PATH_STRUCTURE = /^(0x[a-fA-F0-9]{40}|BNB)-(0x[a-fA-F0-9]{40}|BNB)$/
 

@@ -35,7 +35,6 @@ import { LightGreyCard } from '../../../components/Card'
 
 import { CurrencyLogo } from '../../../components/Logo'
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
-import { useCurrency } from '../../../hooks/Tokens'
 
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import StyledInternalLink from '../../../components/Links'
@@ -62,12 +61,10 @@ const BorderCard = styled.div`
   padding: 16px;
 `
 
-export default function RemoveStableLiquidity() {
+export default function RemoveStableLiquidity({ currencyA, currencyB, currencyIdA, currencyIdB }) {
   const router = useRouter()
   const native = useNativeCurrency()
 
-  const [currencyIdA, currencyIdB] = router.query.currency || []
-  const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
   const { toastError } = useToast()
   const [tokenA, tokenB] = useMemo(() => [currencyA?.wrapped, currencyB?.wrapped], [currencyA, currencyB])
@@ -90,8 +87,9 @@ export default function RemoveStableLiquidity() {
   const { onUserInput: _onUserInput } = useBurnActionHandlers()
   const isValid = !error
 
+  // NOTE: Disable detail page for now
   // modal and loading
-  const [showDetailed, setShowDetailed] = useState<boolean>(false)
+  const [showDetailed] = useState<boolean>(false)
   const [{ attemptingTxn, liquidityErrorMessage, txHash }, setLiquidityState] = useState<{
     attemptingTxn: boolean
     liquidityErrorMessage: string | undefined
@@ -347,9 +345,9 @@ export default function RemoveStableLiquidity() {
           <AutoColumn gap="20px">
             <RowBetween>
               <Text>{t('Amount')}</Text>
-              <Button variant="text" scale="sm" onClick={() => setShowDetailed(!showDetailed)}>
+              {/* <Button variant="text" scale="sm" onClick={() => setShowDetailed(!showDetailed)}>
                 {showDetailed ? t('Simple') : t('Detailed')}
-              </Button>
+              </Button> */}
             </RowBetween>
             {!showDetailed && (
               <BorderCard>

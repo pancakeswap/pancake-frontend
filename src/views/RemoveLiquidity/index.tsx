@@ -42,7 +42,6 @@ import { LightGreyCard } from '../../components/Card'
 
 import { CurrencyLogo } from '../../components/Logo'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import { useCurrency } from '../../hooks/Tokens'
 import { usePairContract, useZapContract } from '../../hooks/useContract'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 
@@ -72,13 +71,11 @@ const BorderCard = styled.div`
 
 const zapSupportedChainId = [ChainId.BSC, ChainId.BSC_TESTNET]
 
-export default function RemoveLiquidity() {
+export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, currencyIdB }) {
   const router = useRouter()
   const native = useNativeCurrency()
   const [zapMode] = useZapModeManager()
   const [temporarilyZapMode, setTemporarilyZapMode] = useState(true)
-  const [currencyIdA, currencyIdB] = router.query.currency || []
-  const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
   const library = useWeb3LibraryContext()
   const { toastError } = useToast()
