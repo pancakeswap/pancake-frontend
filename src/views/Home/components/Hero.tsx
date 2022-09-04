@@ -1,9 +1,8 @@
-import { Box, Button, Flex, Heading } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { Button, Flex, Heading } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { NextLinkFromReactRouter } from 'components/NextLink'
-import { useTranslation } from '@pancakeswap/localization'
-import useTheme from 'hooks/useTheme'
 import Image from 'next/image'
 import styled, { keyframes } from 'styled-components'
 import bunnyImage from '../../../../public/images/home/lunar-bunny/bunny@2x.png'
@@ -92,7 +91,6 @@ const starsImage: CompositeImageProps = {
 const Hero = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const { theme } = useTheme()
 
   return (
     <>

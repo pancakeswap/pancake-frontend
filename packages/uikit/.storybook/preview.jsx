@@ -6,6 +6,8 @@ import ResetCSS from "../src/ResetCSS";
 import { ModalProvider } from "../src/widgets/Modal";
 import { MatchBreakpointsProvider } from "../src";
 
+import "@pancakeswap/ui/css/global.css";
+
 const globalDecorator = (StoryFn) => (
   <MatchBreakpointsProvider>
     <ModalProvider>
