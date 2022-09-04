@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Currency, CurrencyAmount, JSBI, Pair, Percent } from '@pancakeswap/sdk'
 import {
   Button,
@@ -52,59 +52,7 @@ interface PositionCardProps extends CardProps {
   poolTokenPercentage: Percent
 }
 
-const useStableLPValues = ({ account, pair, currency0, currency1 }) => {
-  const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
-  const token0Price = useBUSDPrice(currency0)
-  const token1Price = useBUSDPrice(currency1)
-
-  const totalPoolTokens = useTotalSupply(pair.liquidityToken)
-
-  const poolTokenPercentage =
-    !!userPoolBalance &&
-    !!totalPoolTokens &&
-    JSBI.greaterThanOrEqual(totalPoolTokens.quotient, userPoolBalance.quotient)
-      ? new Percent(userPoolBalance.quotient, totalPoolTokens.quotient)
-      : undefined
-
-  const [token0Deposited, token1Deposited] = useGetRemovedTokenAmounts({
-    lpAmount: userPoolBalance?.quotient?.toString(),
-    tokenAAddress: currency0?.address,
-    tokenBAddress: currency1?.address,
-  })
-
-  const token0USDValue =
-    token0Deposited && token0Price
-      ? multiplyPriceByAmount(token0Price, parseFloat(token0Deposited.toSignificant(6)))
-      : null
-  const token1USDValue =
-    token1Deposited && token1Price
-      ? multiplyPriceByAmount(token1Price, parseFloat(token1Deposited.toSignificant(6)))
-      : null
-  const totalUSDValue = token0USDValue && token1USDValue ? token0USDValue + token1USDValue : null
-
-  return {
-    token0Deposited,
-    token1Deposited,
-    totalUSDValue,
-    userPoolBalance,
-    poolTokenPercentage,
-  }
-}
-
-const useLPValues = ({ account, pair, currency0, currency1 }) => {
-  const token0Price = useBUSDPrice(currency0)
-  const token1Price = useBUSDPrice(currency1)
-
-  const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
-  const totalPoolTokens = useTotalSupply(pair.liquidityToken)
-
-  const poolTokenPercentage =
-    !!userPoolBalance &&
-    !!totalPoolTokens &&
-    JSBI.greaterThanOrEqual(totalPoolTokens.quotient, userPoolBalance.quotient)
-      ? new Percent(userPoolBalance.quotient, totalPoolTokens.quotient)
-      : undefined
-
+const useTokensDeposited = ({ pair, totalPoolTokens, userPoolBalance }) => {
   const [token0Deposited, token1Deposited] =
     !!pair &&
     !!totalPoolTokens &&
@@ -117,6 +65,13 @@ const useLPValues = ({ account, pair, currency0, currency1 }) => {
         ]
       : [undefined, undefined]
 
+  return [token0Deposited, token1Deposited]
+}
+
+const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1Deposited }) => {
+  const token0Price = useBUSDPrice(currency0)
+  const token1Price = useBUSDPrice(currency1)
+
   const token0USDValue =
     token0Deposited && token0Price
       ? multiplyPriceByAmount(token0Price, parseFloat(token0Deposited.toSignificant(6)))
@@ -125,42 +80,79 @@ const useLPValues = ({ account, pair, currency0, currency1 }) => {
     token1Deposited && token1Price
       ? multiplyPriceByAmount(token1Price, parseFloat(token1Deposited.toSignificant(6)))
       : null
-  const totalUSDValue = token0USDValue && token1USDValue ? token0USDValue + token1USDValue : null
-
-  return { token0Deposited, token1Deposited, totalUSDValue, poolTokenPercentage, userPoolBalance }
+  return token0USDValue && token1USDValue ? token0USDValue + token1USDValue : null
 }
 
-const withLPValuesFactory = (useLPValuesGeneric) => (Component) => (props) => {
-  const { account } = useWeb3React()
+const usePoolTokenPercentage = ({ userPoolBalance, totalPoolTokens }) => {
+  const poolTokenPercentage =
+    !!userPoolBalance &&
+    !!totalPoolTokens &&
+    JSBI.greaterThanOrEqual(totalPoolTokens.quotient, userPoolBalance.quotient)
+      ? new Percent(userPoolBalance.quotient, totalPoolTokens.quotient)
+      : undefined
 
-  const currency0 = props.showUnwrapped ? props.pair.token0 : unwrappedToken(props.pair.token0)
-  const currency1 = props.showUnwrapped ? props.pair.token1 : unwrappedToken(props.pair.token1)
-
-  const { token0Deposited, token1Deposited, totalUSDValue, userPoolBalance, poolTokenPercentage } = useLPValuesGeneric({
-    account,
-    pair: props?.pair,
-    currency0,
-    currency1,
-  })
-
-  return (
-    <Component
-      {...props}
-      currency0={currency0}
-      currency1={currency1}
-      token0Deposited={token0Deposited}
-      token1Deposited={token1Deposited}
-      totalUSDValue={totalUSDValue}
-      userPoolBalance={userPoolBalance}
-      poolTokenPercentage={poolTokenPercentage}
-    />
-  )
+  return poolTokenPercentage
 }
 
-const withLPValues = withLPValuesFactory(useLPValues)
-const withStableLPValues = withLPValuesFactory(useStableLPValues)
+const withLPValuesFactory =
+  ({ useLPValuesHook, hookArgFn }) =>
+  (Component) =>
+  (props) => {
+    const { account } = useWeb3React()
 
-export function MinimalPositionCard({
+    const currency0 = props.showUnwrapped ? props.pair.token0 : unwrappedToken(props.pair.token0)
+    const currency1 = props.showUnwrapped ? props.pair.token1 : unwrappedToken(props.pair.token1)
+
+    const userPoolBalance = useTokenBalance(account ?? undefined, props.pair.liquidityToken)
+
+    const totalPoolTokens = useTotalSupply(props.pair.liquidityToken)
+
+    const poolTokenPercentage = usePoolTokenPercentage({ totalPoolTokens, userPoolBalance })
+
+    const args = useMemo(
+      () =>
+        hookArgFn({
+          userPoolBalance,
+          currency0,
+          currency1,
+          pair: props.pair,
+          totalPoolTokens,
+        }),
+      [userPoolBalance, currency0, currency1, props.pair, totalPoolTokens],
+    )
+
+    const [token0Deposited, token1Deposited] = useLPValuesHook(args)
+
+    const totalUSDValue = useTotalUSDValue({ currency0, currency1, token0Deposited, token1Deposited })
+
+    return (
+      <Component
+        {...props}
+        currency0={currency0}
+        currency1={currency1}
+        token0Deposited={token0Deposited}
+        token1Deposited={token1Deposited}
+        totalUSDValue={totalUSDValue}
+        userPoolBalance={userPoolBalance}
+        poolTokenPercentage={poolTokenPercentage}
+      />
+    )
+  }
+
+const withLPValues = withLPValuesFactory({
+  useLPValuesHook: useTokensDeposited,
+  hookArgFn: ({ pair, userPoolBalance, totalPoolTokens }) => ({ pair, userPoolBalance, totalPoolTokens }),
+})
+const withStableLPValues = withLPValuesFactory({
+  useLPValuesHook: useGetRemovedTokenAmounts,
+  hookArgFn: ({ userPoolBalance, currency0, currency1 }) => ({
+    lpAmount: userPoolBalance?.quotient?.toString(),
+    tokenAAddress: currency0?.address,
+    tokenBAddress: currency1?.address,
+  }),
+})
+
+function MinimalPositionCardView({
   pair,
   currency0,
   currency1,
@@ -397,6 +389,8 @@ function FullPositionCard({
     </Card>
   )
 }
+
+export const MinimalPositionCard = withLPValues(MinimalPositionCardView)
 
 export const StableFullPositionCard = withStableLPValues(FullPositionCard)
 
