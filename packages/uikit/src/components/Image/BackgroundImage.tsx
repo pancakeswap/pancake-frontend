@@ -4,7 +4,6 @@ import observerOptions from "./options";
 import Wrapper from "./Wrapper";
 import { BackgroundImageProps } from "./types";
 import Placeholder from "./Placeholder";
-import { Box } from "../Box";
 
 const StyledBackgroundImage = styled(Wrapper)`
   background-repeat: no-repeat;
@@ -58,9 +57,9 @@ const BackgroundImage: React.FC<React.PropsWithChildren<BackgroundImageProps>> =
   }, [src, setIsLoaded]);
 
   return (
-    <Box as={StyledBackgroundImage} ref={ref} width={width} height={height} {...props}>
+    <StyledBackgroundImage ref={ref} width={width} height={height} {...props}>
       {!isLoaded && placeholder}
-    </Box>
+    </StyledBackgroundImage>
   );
 };
 

@@ -22,7 +22,7 @@ const BannerHeader: React.FC<React.PropsWithChildren<BannerHeaderProps>> = ({
         <StyledBannerImageWrapper>
           <Image src={bannerImage} alt={bannerAlt} layout="fill" objectFit="cover" priority />
         </StyledBannerImageWrapper>
-        <Box position="absolute" bottom={0} left={-4}>
+        <Box position="absolute" bottom="0" left="-4px">
           <Flex alignItems="flex-end">
             {avatar}
             {children}

@@ -45,7 +45,15 @@ const Image: React.FC<React.PropsWithChildren<ImageProps>> = ({ src, alt, width,
   }, [src]);
 
   return (
-    <Box as={Wrapper} ref={imgRef} height={height} width={width} {...props}>
+    <Box
+      as={Wrapper}
+      ref={imgRef}
+      // FIXME: polymorphic types
+      // @ts-ignore
+      $height={height}
+      $width={width}
+      {...props}
+    >
       {isLoaded ? <StyledImage src={src} alt={alt} /> : <Placeholder />}
     </Box>
   );

@@ -17,7 +17,15 @@ const TokenPairImage: React.FC<React.PropsWithChildren<TokenPairImageProps>> = (
   const secondaryImageSize = Math.floor(width / 2);
 
   return (
-    <Box as={Wrapper} style={{ position: "relative" }} width={width} height={height} {...props}>
+    <Box
+      as={Wrapper}
+      style={{ position: "relative" }}
+      // FIXME: polymorphic types
+      // @ts-ignore
+      $width={width}
+      $height={height}
+      {...props}
+    >
       <StyledPrimaryImage variant={variant} src={primarySrc} width={width} height={height} {...primaryImageProps} />
       <StyledSecondaryImage
         variant={variant}

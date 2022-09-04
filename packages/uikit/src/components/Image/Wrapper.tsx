@@ -1,6 +1,5 @@
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 import styled from "styled-components";
-import { space } from "styled-system";
 import { WrapperProps } from "./types";
 
 const StyledWrapper = styled.div<{ $width: number; $height: number }>`
@@ -12,13 +11,11 @@ const StyledWrapper = styled.div<{ $width: number; $height: number }>`
   &:after {
     content: "";
     display: block;
-    padding-top: ${({ $width, $height }) => ($height / $width) * 100}%;
+    padding-top: ${({ $width, $height }) => ($height / $width) * 100}%};
   }
-
-  ${space}
 `;
 
-const Wrapper = forwardRef<HTMLDivElement, WrapperProps>(({ width, height, ...props }, ref) => {
+const Wrapper = forwardRef<HTMLElement, WrapperProps>(({ width, height, ...props }, ref) => {
   return <StyledWrapper ref={ref} $width={width} $height={height} {...props} />;
 });
 
