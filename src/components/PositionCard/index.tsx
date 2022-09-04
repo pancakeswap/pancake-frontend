@@ -21,6 +21,7 @@ import useBUSDPrice from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
+import { useGetRemovedTokenAmounts } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
 
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { currencyId } from '../../utils/currencyId'
@@ -42,6 +43,45 @@ const FixedHeightRow = styled(RowBetween)`
 interface PositionCardProps extends CardProps {
   pair: Pair
   showUnwrapped?: boolean
+}
+
+const useStableLPValues = ({ account, pair, currency0, currency1 }) => {
+  const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
+  const token0Price = useBUSDPrice(currency0)
+  const token1Price = useBUSDPrice(currency1)
+
+  const totalPoolTokens = useTotalSupply(pair.liquidityToken)
+
+  const poolTokenPercentage =
+    !!userPoolBalance &&
+    !!totalPoolTokens &&
+    JSBI.greaterThanOrEqual(totalPoolTokens.quotient, userPoolBalance.quotient)
+      ? new Percent(userPoolBalance.quotient, totalPoolTokens.quotient)
+      : undefined
+
+  const [token0Deposited, token1Deposited] = useGetRemovedTokenAmounts({
+    lpAmount: userPoolBalance?.quotient?.toString(),
+    tokenAAddress: currency0?.address,
+    tokenBAddress: currency1?.address,
+  })
+
+  const token0USDValue =
+    token0Deposited && token0Price
+      ? multiplyPriceByAmount(token0Price, parseFloat(token0Deposited.toSignificant(6)))
+      : null
+  const token1USDValue =
+    token1Deposited && token1Price
+      ? multiplyPriceByAmount(token1Price, parseFloat(token1Deposited.toSignificant(6)))
+      : null
+  const totalUSDValue = token0USDValue && token1USDValue ? token0USDValue + token1USDValue : null
+
+  return {
+    token0Deposited,
+    token1Deposited,
+    totalUSDValue,
+    userPoolBalance,
+    poolTokenPercentage,
+  }
 }
 
 const useLPValues = (account, pair, currency0, currency1) => {
@@ -211,7 +251,7 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
   const currency0 = unwrappedToken(pair.token0)
   const currency1 = unwrappedToken(pair.token1)
 
-  const { totalUSDValue, poolTokenPercentage, token0Deposited, token1Deposited, userPoolBalance } = useLPValues(
+  const { token0Deposited, token1Deposited, totalUSDValue, userPoolBalance, poolTokenPercentage } = useLPValues(
     account,
     pair,
     currency0,

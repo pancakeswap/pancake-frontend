@@ -10,7 +10,7 @@ import { useStablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useSt
 import useStableConfig from 'views/Swap/StableSwap/hooks/useStableConfig'
 import useSWR from 'swr'
 
-function useGetRemovedTokenAmounts({ lpAmount, tokenAAddress, tokenBAddress }) {
+export function useGetRemovedTokenAmounts({ lpAmount, tokenAAddress, tokenBAddress }) {
   const { stableSwapInfoContract, stableSwapConfig } = useStableConfig({ tokenAAddress, tokenBAddress })
 
   const { data } = useSWR(!lpAmount ? null : ['stableSwapInfoContract', 'calc_coins_amount', lpAmount], async () => {
