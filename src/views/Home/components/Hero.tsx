@@ -1,4 +1,4 @@
-import { Button, Flex, Heading } from '@pancakeswap/uikit'
+import { Box, Button, Flex, Heading } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { NextLinkFromReactRouter } from 'components/NextLink'
@@ -97,7 +97,26 @@ const Hero = () => {
   return (
     <>
       <BgWrapper>
-        <InnerWrapper>{theme.isDark ? <SlideSvgDark width="100%" /> : <SlideSvgLight width="100%" />}</InnerWrapper>
+        <InnerWrapper>
+          <style jsx global>
+            {`
+              .slide-svg-dark {
+                display: none;
+              }
+              .slide-svg-light {
+                display: block;
+              }
+              [data-theme='dark'] .slide-svg-dark {
+                display: block;
+              }
+              [data-theme='dark'] .slide-svg-light {
+                display: none;
+              }
+            `}
+          </style>
+          <SlideSvgDark className="slide-svg-dark" width="100%" />
+          <SlideSvgLight className="slide-svg-light" width="100%" />
+        </InnerWrapper>
       </BgWrapper>
       <Flex
         position="relative"

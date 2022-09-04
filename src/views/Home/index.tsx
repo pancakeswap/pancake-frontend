@@ -71,10 +71,10 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         }
 
         #home-3 .page-bg {
-          background: linear-gradient(180deg, #0b4576 0%, #091115 100%);
+          background: linear-gradient(180deg, #6fb6f1 0%, #eaf2f6 100%);
         }
         [data-theme='dark'] #home-3 .page-bg {
-          background: linear-gradient(180deg, #6fb6f1 0%, #eaf2f6 100%);
+          background: linear-gradient(180deg, #0b4576 0%, #091115 100%);
         }
         .inner-wedge svg {
           fill: #d8cbed;
