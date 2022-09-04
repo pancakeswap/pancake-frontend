@@ -50,15 +50,18 @@ export function useLPTokensWithBalanceByAccount(account) {
 }
 
 export default function useStableConfig({ tokenAAddress, tokenBAddress }) {
-  const stablePair = findStablePair({ tokenAAddress, tokenBAddress })
+  const stablePair = useMemo(() => findStablePair({ tokenAAddress, tokenBAddress }), [tokenAAddress, tokenBAddress])
   const stableSwapContract = useContract(stablePair?.stableSwapAddress, stableSwapABI)
   const stableSwapInfoContract = useContract(stablePair?.infoStableSwapAddress, stableSwapInfoABI)
   const stableSwapLPContract = useContract(stablePair?.lpAddress, stableLPABI)
 
-  return {
-    stableSwapConfig: stablePair,
-    stableSwapContract,
-    stableSwapInfoContract,
-    stableSwapLPContract,
-  }
+  return useMemo(
+    () => ({
+      stableSwapConfig: stablePair,
+      stableSwapContract,
+      stableSwapInfoContract,
+      stableSwapLPContract,
+    }),
+    [stablePair, stableSwapContract, stableSwapInfoContract, stableSwapLPContract],
+  )
 }

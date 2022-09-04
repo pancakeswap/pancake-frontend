@@ -67,7 +67,6 @@ import { ChoosePair } from './ChoosePair'
 import { ZapCheckbox } from '../../components/CurrencyInputPanel/ZapCheckbox'
 import { formatAmount } from '../../utils/formatInfoNumbers'
 import { useCurrencySelectRoute } from './useCurrencySelectRoute'
-import { useAppDispatch } from '../../state'
 import { CommonBasesType } from '../../components/SearchModal/types'
 
 enum Steps {
@@ -77,7 +76,7 @@ enum Steps {
 
 const zapAddress = getZapAddress()
 
-export default function AddLiquidity() {
+export default function AddLiquidity({ currencyA, currencyB }) {
   const router = useRouter()
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
 
@@ -85,27 +84,12 @@ export default function AddLiquidity() {
   const [zapMode] = useZapModeManager()
   const expertMode = useIsExpertMode()
 
-  const native = useNativeCurrency()
-
   const [temporarilyZapMode, setTemporarilyZapMode] = useState(true)
-  const [currencyIdA, currencyIdB] = router.query.currency || [
-    native.symbol,
-    CAKE[chainId]?.address ?? USDC[chainId]?.address,
-  ]
+
   const [steps, setSteps] = useState(Steps.Choose)
 
-  const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const gasPrice = useGasPrice()
-
-  const currencyA = useCurrency(currencyIdA)
-  const currencyB = useCurrency(currencyIdB)
-
-  useEffect(() => {
-    if (!currencyIdA && !currencyIdB) {
-      dispatch(resetMintState())
-    }
-  }, [dispatch, currencyIdA, currencyIdB])
 
   useEffect(() => {
     if (router.query.step === '1') {

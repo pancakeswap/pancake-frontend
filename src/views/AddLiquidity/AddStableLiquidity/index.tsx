@@ -37,39 +37,19 @@ import Page from '../../Page'
 import ConfirmAddLiquidityModal from '../components/ConfirmAddLiquidityModal'
 import { formatAmount } from '../../../utils/formatInfoNumbers'
 import { useCurrencySelectRoute } from '../useCurrencySelectRoute'
-import { useAppDispatch } from '../../../state'
 import { CommonBasesType } from '../../../components/SearchModal/types'
 import { AppHeader, AppBody } from '../../../components/App'
 import { RowBetween } from '../../../components/Layout/Row'
 import { MinimalPositionCard } from '../../../components/PositionCard'
 import { useStableLPDerivedMintInfo } from './hooks/useStableLPDerivedMintInfo'
 
-export default function AddStableLiquidity() {
-  const router = useRouter()
+export default function AddStableLiquidity({ currencyA, currencyB }) {
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
 
   const expertMode = useIsExpertMode()
 
-  const native = useNativeCurrency()
-
-  // Philip TODO: use stable coins by default
-  const [currencyIdA, currencyIdB] = router.query.currency || [
-    native.symbol,
-    CAKE[chainId]?.address ?? USDC[chainId]?.address,
-  ]
-
-  const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const gasPrice = useGasPrice()
-
-  const currencyA = useCurrency(currencyIdA)
-  const currencyB = useCurrency(currencyIdB)
-
-  useEffect(() => {
-    if (!currencyIdA && !currencyIdB) {
-      dispatch(resetMintState())
-    }
-  }, [dispatch, currencyIdA, currencyIdB])
 
   // mint state
   const { independentField, typedValue, otherTypedValue } = useMintState()

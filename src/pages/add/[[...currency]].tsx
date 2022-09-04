@@ -1,13 +1,53 @@
+import { CAKE, USDC } from '@pancakeswap/tokens'
+import { useCurrency } from 'hooks/Tokens'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import { GetStaticPaths, GetStaticProps } from 'next'
+import { useRouter } from 'next/router'
+import { useEffect, memo } from 'react'
+import { useAppDispatch } from 'state'
+import { resetMintState } from 'state/mint/actions'
 import { CHAIN_IDS } from 'utils/wagmi'
 import AddLiquidity from 'views/AddLiquidity'
 import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity/index'
+import useStableConfig from 'views/Swap/StableSwap/hooks/useStableConfig'
 
-const AddLiquidityPage = () => <AddStableLiquidity />
+const AddLiquidityPage = () => {
+  const router = useRouter()
+  const { chainId } = useActiveWeb3React()
+  const dispatch = useAppDispatch()
+
+  const native = useNativeCurrency()
+
+  const [currencyIdA, currencyIdB] = router.query.currency || [
+    native.symbol,
+    CAKE[chainId]?.address ?? USDC[chainId]?.address,
+  ]
+
+  const currencyA = useCurrency(currencyIdA)
+  const currencyB = useCurrency(currencyIdB)
+
+  const { stableSwapConfig } = useStableConfig({
+    tokenAAddress: currencyA?.address,
+    tokenBAddress: currencyB?.address,
+  })
+
+  useEffect(() => {
+    if (!currencyIdA && !currencyIdB) {
+      dispatch(resetMintState())
+    }
+  }, [dispatch, currencyIdA, currencyIdB])
+
+  return stableSwapConfig ? (
+    <AddStableLiquidity currencyA={currencyA} currencyB={currencyB} />
+  ) : (
+    <AddLiquidity currencyA={currencyA} currencyB={currencyB} />
+  )
+}
 
 AddLiquidityPage.chains = CHAIN_IDS
 
-export default AddLiquidityPage
+export default memo(AddLiquidityPage)
 
 const OLD_PATH_STRUCTURE = /^(0x[a-fA-F0-9]{40}|BNB)-(0x[a-fA-F0-9]{40}|BNB)$/
 
