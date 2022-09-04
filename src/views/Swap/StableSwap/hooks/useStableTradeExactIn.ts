@@ -40,7 +40,7 @@ export function useStableTradeResponse({ isParamInvalid, currencyAmountIn, curre
     [currencyAmountOut],
   )
 
-  const isInvalid = isParamInvalid || !currencyAmountOut || !stableSwapConfig
+  const isInvalid = isParamInvalid || !currencyAmountOut || !stableSwapConfig || !currencyAmountIn
 
   const executionPrice = useMemo(() => {
     if (isInvalid) return null

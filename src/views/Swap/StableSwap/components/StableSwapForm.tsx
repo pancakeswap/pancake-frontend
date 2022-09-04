@@ -65,8 +65,6 @@ interface StableSwapForm {
 }
 
 export default function StableSwapForm({ isChartExpanded, setIsChartDisplayed, isChartDisplayed }) {
-  useDefaultsFromURLSearch()
-
   const { t } = useTranslation()
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
   const { account } = useActiveWeb3React()

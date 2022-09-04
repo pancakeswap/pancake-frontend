@@ -4,6 +4,7 @@ import { Box, Flex, BottomDrawer, useMatchBreakpoints } from '@pancakeswap/uikit
 import Footer from 'components/Menu/Footer'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { EXCHANGE_DOCS_URLS } from 'config/constants'
+import { useDefaultsFromURLSearch } from 'state/limitOrders/hooks'
 
 import { useCurrency } from '../../hooks/Tokens'
 import { Field } from '../../state/swap/actions'
@@ -14,6 +15,7 @@ import PriceChartContainer from './components/Chart/PriceChartContainer'
 
 import SwapForm from './components/SwapForm'
 import StableSwapForm from './StableSwap/components/StableSwapForm'
+import useStableConfig from './StableSwap/hooks/useStableConfig'
 
 const CHART_SUPPORT_CHAIN_IDS = [ChainId.BSC]
 
@@ -22,6 +24,8 @@ export default function Swap() {
   const [isChartExpanded, setIsChartExpanded] = useState(false)
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
+
+  useDefaultsFromURLSearch()
 
   useEffect(() => {
     setUserChartPreference(isChartDisplayed)
@@ -36,6 +40,11 @@ export default function Swap() {
   } = useSwapState()
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
+
+  const { stableSwapConfig } = useStableConfig({
+    tokenAAddress: inputCurrency?.address,
+    tokenBAddress: outputCurrency?.address,
+  })
 
   const currencies: { [field in Field]?: Currency } = {
     [Field.INPUT]: inputCurrency ?? undefined,
@@ -86,11 +95,19 @@ export default function Swap() {
           />
         )}
         <Flex flexDirection="column">
-          <StableSwapForm
-            isChartExpanded={isChartExpanded}
-            setIsChartDisplayed={setIsChartDisplayed}
-            isChartDisplayed={isChartDisplayed}
-          />
+          {stableSwapConfig ? (
+            <StableSwapForm
+              isChartExpanded={isChartExpanded}
+              setIsChartDisplayed={setIsChartDisplayed}
+              isChartDisplayed={isChartDisplayed}
+            />
+          ) : (
+            <SwapForm
+              isChartExpanded={isChartExpanded}
+              setIsChartDisplayed={setIsChartDisplayed}
+              isChartDisplayed={isChartDisplayed}
+            />
+          )}
           {isChartExpanded && (
             <Box display={['none', null, null, 'block']} width="100%" height="100%">
               <Footer variant="side" helpUrl={EXCHANGE_DOCS_URLS} />
