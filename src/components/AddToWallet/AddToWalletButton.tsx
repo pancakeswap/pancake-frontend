@@ -11,6 +11,7 @@ import {
 } from '@pancakeswap/uikit'
 import { BAD_SRCS } from 'components/Logo/Logo'
 import { useAccount } from 'wagmi'
+import { canRegisterToken } from '../../utils/wallet'
 
 export enum AddToWalletTextOptions {
   NO_TEXT,
@@ -84,8 +85,7 @@ const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
 
   if (!(connector && connector.watchAsset && isConnected)) return null
 
-  // @ts-ignore
-  if (window?.ethereum?.isSafePal) return null
+  if (!canRegisterToken) return null
 
   return (
     <Button
