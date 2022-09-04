@@ -159,6 +159,21 @@ const LimitOrders = () => {
     },
     [handleInput],
   )
+  const handle25PercentInput = useCallback(() => {
+    if (maxAmountInput) {
+      handleInput(Field.INPUT, (Number(maxAmountInput.toExact()) * 0.25).toString())
+    }
+  }, [maxAmountInput, handleInput])
+  const handle50PercentInput = useCallback(() => {
+    if (maxAmountInput) {
+      handleInput(Field.INPUT, (Number(maxAmountInput.toExact()) * 0.5).toString())
+    }
+  }, [maxAmountInput, handleInput])
+  const handle75PercentInput = useCallback(() => {
+    if (maxAmountInput) {
+      handleInput(Field.INPUT, (Number(maxAmountInput.toExact()) * 0.75).toString())
+    }
+  }, [maxAmountInput, handleInput])
   const handleMaxInput = useCallback(() => {
     if (maxAmountInput) {
       handleInput(Field.INPUT, maxAmountInput.toExact())
@@ -354,9 +369,13 @@ const LimitOrders = () => {
                     <CurrencyInputPanel
                       label={independentField === Field.OUTPUT ? t('From (estimated)') : t('From')}
                       value={formattedAmounts.input}
-                      showMaxButton={!hideMaxButton}
+                      showQuickInputButton
+                      showMaxButton
                       currency={currencies.input}
                       onUserInput={handleTypeInput}
+                      on25PercentInput={handle25PercentInput}
+                      on50PercentInput={handle50PercentInput}
+                      on75PercentInput={handle75PercentInput}
                       onMax={handleMaxInput}
                       onCurrencySelect={handleInputSelect}
                       otherCurrency={currencies.output}

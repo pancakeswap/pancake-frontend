@@ -75,7 +75,11 @@ interface CurrencyInputPanelProps {
   value: string
   onUserInput: (value: string) => void
   onInputBlur?: () => void
+  on25PercentInput?: () => void
+  on50PercentInput?: () => void
+  on75PercentInput?: () => void
   onMax?: () => void
+  showQuickInputButton?: boolean
   showMaxButton: boolean
   label?: string
   onCurrencySelect?: (currency: Currency) => void
@@ -97,7 +101,11 @@ export default function CurrencyInputPanel({
   value,
   onUserInput,
   onInputBlur,
+  on25PercentInput,
+  on50PercentInput,
+  on75PercentInput,
   onMax,
+  showQuickInputButton,
   showMaxButton,
   label,
   onCurrencySelect,
@@ -233,9 +241,42 @@ export default function CurrencyInputPanel({
               </Text>
             )}
             {account && currency && !disabled && showMaxButton && label !== 'To' && (
-              <Button onClick={onMax} scale="xs" variant="secondary" style={{ textTransform: 'uppercase' }}>
-                {t('Max')}
-              </Button>
+              <Flex alignItems="right" justifyContent="right">
+                {showQuickInputButton && (
+                  <>
+                    <Button
+                      onClick={on25PercentInput}
+                      scale="xs"
+                      mr="5px"
+                      variant="secondary"
+                      style={{ textTransform: 'uppercase' }}
+                    >
+                      25%
+                    </Button>
+                    <Button
+                      onClick={on50PercentInput}
+                      scale="xs"
+                      mr="5px"
+                      variant="secondary"
+                      style={{ textTransform: 'uppercase' }}
+                    >
+                      50%
+                    </Button>
+                    <Button
+                      onClick={on75PercentInput}
+                      scale="xs"
+                      mr="5px"
+                      variant="secondary"
+                      style={{ textTransform: 'uppercase' }}
+                    >
+                      75%
+                    </Button>
+                  </>
+                )}
+                <Button onClick={onMax} scale="xs" variant="secondary" style={{ textTransform: 'uppercase' }}>
+                  {t('Max')}
+                </Button>
+              </Flex>
             )}
           </InputRow>
         </Container>

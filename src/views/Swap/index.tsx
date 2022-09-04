@@ -238,7 +238,6 @@ export default function Swap() {
   }, [approval, approvalSubmitted])
 
   const maxAmountInput: CurrencyAmount<Currency> | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
-  const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
   // the callback to execute the swap
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
@@ -322,7 +321,21 @@ export default function Swap() {
     },
     [onCurrencySelection],
   )
-
+  const handle25PercentInput = useCallback(() => {
+    if (maxAmountInput) {
+      onUserInput(Field.INPUT, (Number(maxAmountInput.toExact()) * 0.25).toString())
+    }
+  }, [maxAmountInput, onUserInput])
+  const handle50PercentInput = useCallback(() => {
+    if (maxAmountInput) {
+      onUserInput(Field.INPUT, (Number(maxAmountInput.toExact()) * 0.5).toString())
+    }
+  }, [maxAmountInput, onUserInput])
+  const handle75PercentInput = useCallback(() => {
+    if (maxAmountInput) {
+      onUserInput(Field.INPUT, (Number(maxAmountInput.toExact()) * 0.75).toString())
+    }
+  }, [maxAmountInput, onUserInput])
   const handleMaxInput = useCallback(() => {
     if (maxAmountInput) {
       onUserInput(Field.INPUT, maxAmountInput.toExact())
@@ -471,9 +484,13 @@ export default function Swap() {
                         independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')
                       }
                       value={formattedAmounts[Field.INPUT]}
-                      showMaxButton={!atMaxAmountInput}
+                      showMaxButton
+                      showQuickInputButton
                       currency={currencies[Field.INPUT]}
                       onUserInput={handleTypeInput}
+                      on25PercentInput={handle25PercentInput}
+                      on50PercentInput={handle50PercentInput}
+                      on75PercentInput={handle75PercentInput}
                       onMax={handleMaxInput}
                       onCurrencySelect={handleInputSelect}
                       otherCurrency={currencies[Field.OUTPUT]}
