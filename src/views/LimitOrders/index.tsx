@@ -125,7 +125,6 @@ const LimitOrders = () => {
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
 
   const maxAmountInput: CurrencyAmount<Currency> | undefined = maxAmountSpend(currencyBalances.input)
-  const hideMaxButton = Boolean(maxAmountInput && parsedAmounts.input?.equalTo(maxAmountInput))
 
   // Trade execution price is always "in MUL mode", even if UI handles DIV rate
   const currentMarketRate = trade?.executionPrice
