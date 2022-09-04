@@ -82,10 +82,11 @@ const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
 }) => {
   const { t } = useTranslation()
   const { connector, isConnected } = useAccount()
+  const isCanRegisterToken = canRegisterToken()
 
   if (!(connector && connector.watchAsset && isConnected)) return null
 
-  if (!canRegisterToken) return null
+  if (!isCanRegisterToken) return null
 
   return (
     <Button
