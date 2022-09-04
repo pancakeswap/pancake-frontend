@@ -55,7 +55,7 @@ export function UnsupportedNetworkModal({ pageSupportedChains }: { pageSupported
         <Message variant="warning">
           <MessageText>{t('Please switch your network to continue.')}</MessageText>
         </Message>
-        {canSwitch && (
+        {canSwitch ? (
           <Button
             isLoading={isLoading}
             onClick={() => {
@@ -68,6 +68,10 @@ export function UnsupportedNetworkModal({ pageSupportedChains }: { pageSupported
           >
             {isLoading ? <Dots>{t('Switch network in wallet')}</Dots> : t('Switch network in wallet')}
           </Button>
+        ) : (
+          <Message variant="danger">
+            <MessageText>{t('Unable to switch network. Please try it on your wallet')}</MessageText>
+          </Message>
         )}
         {isConnected && (
           <Button

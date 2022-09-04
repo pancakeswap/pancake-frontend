@@ -43,10 +43,14 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
             </FlexGap>
           </MessageText>
         </Message>
-        {canSwitch && (
+        {canSwitch ? (
           <Button isLoading={isLoading} onClick={() => switchNetworkAsync(chainId)}>
             {isLoading ? <Dots>{switchText}</Dots> : switchText}
           </Button>
+        ) : (
+          <Message variant="danger">
+            <MessageText>{t('Unable to switch network. Please try it on your wallet')}</MessageText>
+          </Message>
         )}
         {isConnected && (
           <Button

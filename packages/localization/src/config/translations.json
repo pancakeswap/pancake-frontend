@@ -1934,6 +1934,7 @@
   "Up to %boostMultiplier%x": "Up to %boostMultiplier%x",
   "Available Boosted": "Available Boosted",
   "Stake CAKE, Earn CAKE, Win CAKE": "Stake CAKE, Earn CAKE, Win CAKE",
+  "Unable to switch network. Please try it on your wallet": "Unable to switch network. Please try it on your wallet",
   "Failed": "Failed",
   "Transaction failed with error: %reason%": "Transaction failed with error: %reason%",
   "Transaction failed. For detailed error message:": "Transaction failed. For detailed error message:",

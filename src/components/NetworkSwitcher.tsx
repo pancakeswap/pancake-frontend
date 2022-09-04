@@ -116,6 +116,10 @@ export const NetworkSwitcher = () => {
     [isLoading, pendingChainId, chainId],
   )
   const symbol = NATIVE[foundChain?.id]?.symbol ?? foundChain?.nativeCurrency?.symbol
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t('Unable to switch network. Please try it on your wallet'),
+    { placement: 'auto' },
+  )
 
   const cannotChangeNetwork = !canSwitch
 
@@ -124,7 +128,8 @@ export const NetworkSwitcher = () => {
   }
 
   return (
-    <>
+    <Box ref={targetRef}>
+      {cannotChangeNetwork && tooltipVisible && tooltip}
       <UserMenu
         mr="8px"
         variant={isLoading ? 'pending' : isWrongNetwork ? 'danger' : 'default'}
@@ -153,6 +158,6 @@ export const NetworkSwitcher = () => {
           )
         }
       </UserMenu>
-    </>
+    </Box>
   )
 }
