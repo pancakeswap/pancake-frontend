@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { useLPTokensWithBalanceByAccount } from 'views/Swap/StableSwap/hooks/useStableConfig'
-import FullPositionCard from '../../components/PositionCard'
+import FullPositionCard, { StableFullPositionCard } from '../../components/PositionCard'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { usePairs, PairState } from '../../hooks/usePairs'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
@@ -54,7 +54,6 @@ export default function Pool() {
     (v2Pairs?.length && v2Pairs.every(([pairState]) => pairState === PairState.LOADING))
   const allV2PairsWithLiquidity = [
     ...v2Pairs?.filter(([pairState, pair]) => pairState === PairState.EXISTS && Boolean(pair)).map(([, pair]) => pair),
-    ...stablePairs,
   ]
 
   const renderBody = () => {
@@ -72,8 +71,11 @@ export default function Pool() {
         </Text>
       )
     }
+
+    let positionCards = []
+
     if (allV2PairsWithLiquidity?.length > 0) {
-      return allV2PairsWithLiquidity.map((v2Pair, index) => (
+      positionCards = allV2PairsWithLiquidity.map((v2Pair, index) => (
         <FullPositionCard
           key={v2Pair.liquidityToken.address}
           pair={v2Pair}
@@ -81,6 +83,24 @@ export default function Pool() {
         />
       ))
     }
+
+    if (stablePairs?.length > 0) {
+      positionCards = [
+        ...positionCards,
+        ...stablePairs?.map((stablePair, index) => (
+          <StableFullPositionCard
+            key={stablePair.liquidityToken.address}
+            pair={stablePair}
+            mb={index < stablePairs.length - 1 ? '16px' : 0}
+          />
+        )),
+      ]
+    }
+
+    if (positionCards?.length > 0) {
+      return positionCards
+    }
+
     return (
       <Text color="textSubtle" textAlign="center">
         {t('No liquidity found.')}

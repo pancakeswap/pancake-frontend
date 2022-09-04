@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { JSBI, Pair, Percent } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, JSBI, Pair, Percent } from '@pancakeswap/sdk'
 import {
   Button,
   Text,
@@ -43,6 +43,13 @@ const FixedHeightRow = styled(RowBetween)`
 interface PositionCardProps extends CardProps {
   pair: Pair
   showUnwrapped?: boolean
+  currency0: Currency
+  currency1: Currency
+  token0Deposited: CurrencyAmount<Currency>
+  token1Deposited: CurrencyAmount<Currency>
+  totalUSDValue: number
+  userPoolBalance: CurrencyAmount<Currency>
+  poolTokenPercentage: Percent
 }
 
 const useStableLPValues = ({ account, pair, currency0, currency1 }) => {
@@ -84,7 +91,7 @@ const useStableLPValues = ({ account, pair, currency0, currency1 }) => {
   }
 }
 
-const useLPValues = (account, pair, currency0, currency1) => {
+const useLPValues = ({ account, pair, currency0, currency1 }) => {
   const token0Price = useBUSDPrice(currency0)
   const token1Price = useBUSDPrice(currency1)
 
@@ -123,25 +130,53 @@ const useLPValues = (account, pair, currency0, currency1) => {
   return { token0Deposited, token1Deposited, totalUSDValue, poolTokenPercentage, userPoolBalance }
 }
 
-export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCardProps) {
-  const { t } = useTranslation()
+const withLPValuesFactory = (useLPValuesGeneric) => (Component) => (props) => {
   const { account } = useWeb3React()
+
+  const currency0 = props.showUnwrapped ? props.pair.token0 : unwrappedToken(props.pair.token0)
+  const currency1 = props.showUnwrapped ? props.pair.token1 : unwrappedToken(props.pair.token1)
+
+  const { token0Deposited, token1Deposited, totalUSDValue, userPoolBalance, poolTokenPercentage } = useLPValuesGeneric({
+    account,
+    pair: props?.pair,
+    currency0,
+    currency1,
+  })
+
+  return (
+    <Component
+      {...props}
+      currency0={currency0}
+      currency1={currency1}
+      token0Deposited={token0Deposited}
+      token1Deposited={token1Deposited}
+      totalUSDValue={totalUSDValue}
+      userPoolBalance={userPoolBalance}
+      poolTokenPercentage={poolTokenPercentage}
+    />
+  )
+}
+
+const withLPValues = withLPValuesFactory(useLPValues)
+const withStableLPValues = withLPValuesFactory(useStableLPValues)
+
+export function MinimalPositionCard({
+  pair,
+  currency0,
+  currency1,
+  token0Deposited,
+  token1Deposited,
+  totalUSDValue,
+  userPoolBalance,
+  poolTokenPercentage,
+}: PositionCardProps) {
+  const { t } = useTranslation()
   const poolData = useLPApr(pair)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(`Based on last 7 days' performance. Does not account for impermanent loss`),
     {
       placement: 'bottom',
     },
-  )
-
-  const currency0 = showUnwrapped ? pair.token0 : unwrappedToken(pair.token0)
-  const currency1 = showUnwrapped ? pair.token1 : unwrappedToken(pair.token1)
-
-  const { totalUSDValue, poolTokenPercentage, token0Deposited, token1Deposited, userPoolBalance } = useLPValues(
-    account,
-    pair,
-    currency0,
-    currency1,
   )
 
   return (
@@ -236,9 +271,18 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
   )
 }
 
-export default function FullPositionCard({ pair, ...props }: PositionCardProps) {
+function FullPositionCard({
+  pair,
+  currency0,
+  currency1,
+  token0Deposited,
+  token1Deposited,
+  totalUSDValue,
+  userPoolBalance,
+  poolTokenPercentage,
+  ...props
+}: PositionCardProps) {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
   const poolData = useLPApr(pair)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(`Based on last 7 days' performance. Does not account for impermanent loss`),
@@ -247,16 +291,6 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
     },
   )
   const [showMore, setShowMore] = useState(false)
-
-  const currency0 = unwrappedToken(pair.token0)
-  const currency1 = unwrappedToken(pair.token1)
-
-  const { token0Deposited, token1Deposited, totalUSDValue, userPoolBalance, poolTokenPercentage } = useLPValues(
-    account,
-    pair,
-    currency0,
-    currency1,
-  )
 
   return (
     <Card {...props}>
@@ -363,3 +397,7 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
     </Card>
   )
 }
+
+export const StableFullPositionCard = withStableLPValues(FullPositionCard)
+
+export default withLPValues(FullPositionCard)
