@@ -75,9 +75,7 @@ interface CurrencyInputPanelProps {
   value: string
   onUserInput: (value: string) => void
   onInputBlur?: () => void
-  on25PercentInput?: () => void
-  on50PercentInput?: () => void
-  on75PercentInput?: () => void
+  onPercentInput?: (percent: number) => void
   onMax?: () => void
   showQuickInputButton?: boolean
   showMaxButton: boolean
@@ -101,11 +99,9 @@ export default function CurrencyInputPanel({
   value,
   onUserInput,
   onInputBlur,
-  on25PercentInput,
-  on50PercentInput,
-  on75PercentInput,
+  onPercentInput,
   onMax,
-  showQuickInputButton,
+  showQuickInputButton = false,
   showMaxButton,
   label,
   onCurrencySelect,
@@ -242,10 +238,12 @@ export default function CurrencyInputPanel({
             )}
             {account && currency && !disabled && showMaxButton && label !== 'To' && (
               <Flex alignItems="right" justifyContent="right">
-                {showQuickInputButton && (
+                {showQuickInputButton && onPercentInput && (
                   <>
                     <Button
-                      onClick={on25PercentInput}
+                      onClick={() => {
+                        onPercentInput(25)
+                      }}
                       scale="xs"
                       mr="5px"
                       variant="secondary"
@@ -254,7 +252,9 @@ export default function CurrencyInputPanel({
                       25%
                     </Button>
                     <Button
-                      onClick={on50PercentInput}
+                      onClick={() => {
+                        onPercentInput(50)
+                      }}
                       scale="xs"
                       mr="5px"
                       variant="secondary"
@@ -263,7 +263,9 @@ export default function CurrencyInputPanel({
                       50%
                     </Button>
                     <Button
-                      onClick={on75PercentInput}
+                      onClick={() => {
+                        onPercentInput(75)
+                      }}
                       scale="xs"
                       mr="5px"
                       variant="secondary"

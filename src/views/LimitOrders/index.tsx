@@ -158,21 +158,14 @@ const LimitOrders = () => {
     },
     [handleInput],
   )
-  const handle25PercentInput = useCallback(() => {
-    if (maxAmountInput) {
-      handleInput(Field.INPUT, (Number(maxAmountInput.toExact()) * 0.25).toString())
-    }
-  }, [maxAmountInput, handleInput])
-  const handle50PercentInput = useCallback(() => {
-    if (maxAmountInput) {
-      handleInput(Field.INPUT, (Number(maxAmountInput.toExact()) * 0.5).toString())
-    }
-  }, [maxAmountInput, handleInput])
-  const handle75PercentInput = useCallback(() => {
-    if (maxAmountInput) {
-      handleInput(Field.INPUT, (Number(maxAmountInput.toExact()) * 0.75).toString())
-    }
-  }, [maxAmountInput, handleInput])
+  const handlePercentInput = useCallback(
+    (percent) => {
+      if (maxAmountInput) {
+        handleInput(Field.INPUT, (Number(maxAmountInput.toExact()) * percent * 0.01).toString())
+      }
+    },
+    [maxAmountInput, handleInput],
+  )
   const handleMaxInput = useCallback(() => {
     if (maxAmountInput) {
       handleInput(Field.INPUT, maxAmountInput.toExact())
@@ -372,9 +365,7 @@ const LimitOrders = () => {
                       showMaxButton
                       currency={currencies.input}
                       onUserInput={handleTypeInput}
-                      on25PercentInput={handle25PercentInput}
-                      on50PercentInput={handle50PercentInput}
-                      on75PercentInput={handle75PercentInput}
+                      onPercentInput={handlePercentInput}
                       onMax={handleMaxInput}
                       onCurrencySelect={handleInputSelect}
                       otherCurrency={currencies.output}
