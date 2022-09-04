@@ -80,7 +80,7 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
         {view === WalletView.WALLET_INFO && (
           <WalletInfo hasLowNativeBalance={hasLowNativeBalance} onDismiss={onDismiss} />
         )}
-        {view === WalletView.TRANSACTIONS && <WalletTransactions />}
+        {view === WalletView.TRANSACTIONS && <WalletTransactions onDismiss={onDismiss} />}
         {view === WalletView.WRONG_NETWORK && <WalletWrongNetwork onDismiss={onDismiss} />}
       </ModalBody>
     </ModalContainer>

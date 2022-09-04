@@ -123,3 +123,16 @@ export function usePendingTransactions(): { hasPendingTransactions: boolean; pen
     pendingNumber: pending.length,
   }
 }
+
+// Get Farm Harvest
+export function useFarmHarvestTransaction() {
+  const state = useSelector<AppState, AppState['transactions']>((s) => s.transactions)
+
+  return useMemo(
+    () => ({
+      showModal: state.showFarmHarvestModal,
+      pickedTx: state.pickedFarmHarvestModalTx,
+    }),
+    [state],
+  )
+}

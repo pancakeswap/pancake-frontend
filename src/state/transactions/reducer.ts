@@ -7,6 +7,8 @@ import {
   checkedTransaction,
   clearAllTransactions,
   finalizeTransaction,
+  toggleFarmHarvestModal,
+  pickFarmHarvestTx,
   SerializableTransactionReceipt,
   TransactionType,
 } from './actions'
@@ -30,12 +32,17 @@ export interface TransactionDetails {
 }
 
 export interface TransactionState {
+  showFarmHarvestModal: boolean
+  pickedFarmHarvestModalTx: string
   [chainId: number]: {
     [txHash: string]: TransactionDetails
   }
 }
 
-export const initialState: TransactionState = {}
+export const initialState: TransactionState = {
+  showFarmHarvestModal: false,
+  pickedFarmHarvestModalTx: '',
+}
 
 export default createReducer(initialState, (builder) =>
   builder
@@ -87,5 +94,12 @@ export default createReducer(initialState, (builder) =>
       if (transactions[chainId]) {
         transactions[chainId] = {}
       }
+    })
+    .addCase(toggleFarmHarvestModal, (state, { payload: { showModal } }) => {
+      state.showFarmHarvestModal = showModal
+    })
+    .addCase(pickFarmHarvestTx, (state, { payload: { tx } }) => {
+      state.pickedFarmHarvestModalTx = tx
+      state.showFarmHarvestModal = true
     }),
 )

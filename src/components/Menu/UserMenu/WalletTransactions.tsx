@@ -7,7 +7,11 @@ import { clearAllTransactions } from 'state/transactions/actions'
 import orderBy from 'lodash/orderBy'
 import TransactionRow from './TransactionRow'
 
-const WalletTransactions: React.FC<React.PropsWithChildren> = () => {
+interface WalletTransactionsProps {
+  onDismiss: () => void
+}
+
+const WalletTransactions: React.FC<React.PropsWithChildren<WalletTransactionsProps>> = ({ onDismiss }) => {
   const { chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
@@ -33,7 +37,9 @@ const WalletTransactions: React.FC<React.PropsWithChildren> = () => {
         )}
       </Flex>
       {sortedTransactions.length > 0 ? (
-        sortedTransactions.map((txn) => <TransactionRow key={txn.hash} txn={txn} />)
+        sortedTransactions.map((txn) => (
+          <TransactionRow key={txn.hash} type={txn.type} txn={txn} onDismiss={onDismiss} />
+        ))
       ) : (
         <Text textAlign="center">{t('No recent transactions')}</Text>
       )}

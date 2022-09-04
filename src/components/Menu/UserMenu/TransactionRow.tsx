@@ -1,12 +1,16 @@
-import { BlockIcon, CheckmarkCircleIcon, Flex, Link, OpenNewIcon, RefreshIcon } from '@pancakeswap/uikit'
+import { BlockIcon, CheckmarkCircleIcon, Flex, OpenNewIcon, RefreshIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import { useAppDispatch } from 'state'
 import { useTranslation } from '@pancakeswap/localization'
 import { TransactionDetails } from 'state/transactions/reducer'
+import { TransactionType, pickFarmHarvestTx } from 'state/transactions/actions'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBlockExploreLink } from 'utils'
 
 interface TransactionRowProps {
   txn: TransactionDetails
+  type: TransactionType
+  onDismiss: () => void
 }
 
 const TxnIcon = styled(Flex)`
@@ -20,7 +24,8 @@ const Summary = styled.div`
   padding: 0 8px;
 `
 
-const TxnLink = styled(Link)`
+const TxnLink = styled.div`
+  cursor: pointer;
   align-items: center;
   color: ${({ theme }) => theme.colors.text};
   display: flex;
@@ -44,16 +49,27 @@ const renderIcon = (txn: TransactionDetails) => {
   )
 }
 
-const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = ({ txn }) => {
+const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = ({ txn, type, onDismiss }) => {
   const { t } = useTranslation()
+  const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
+
+  const onClickTransaction = () => {
+    if (type === 'non-bsc-farm-harvest') {
+      onDismiss()
+      dispatch(pickFarmHarvestTx({ tx: txn.hash }))
+    } else {
+      const url = getBlockExploreLink(txn.hash, 'transaction', chainId)
+      window.open(url, '_blank', 'noopener noreferrer')
+    }
+  }
 
   if (!txn) {
     return null
   }
 
   return (
-    <TxnLink href={getBlockExploreLink(txn.hash, 'transaction', chainId)} external>
+    <TxnLink onClick={onClickTransaction}>
       <TxnIcon>{renderIcon(txn)}</TxnIcon>
       <Summary>
         {txn.translatableSummary

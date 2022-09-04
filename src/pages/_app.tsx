@@ -20,6 +20,7 @@ import { NetworkModal } from 'components/NetworkModal'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { NextPage } from 'next'
+import TransactionsDetailModal from 'components/TransactionDetailModal'
 import { Blocklist, Updaters } from '..'
 import { SentryErrorBoundary } from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
@@ -152,6 +153,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       <ToastListener />
       <FixedSubgraphHealthIndicator />
       <NetworkModal pageSupportedChains={Component.chains} />
+      <TransactionsDetailModal />
     </ProductionErrorBoundary>
   )
 }
