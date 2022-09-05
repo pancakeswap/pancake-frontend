@@ -1,4 +1,4 @@
-import { CurrencyAmount, Price, Percent, TradeType, Fraction, ONE, Token, JSBI } from '@pancakeswap/sdk'
+import { CurrencyAmount, Price, Percent, TradeType, Fraction, ONE, Currency, JSBI } from '@pancakeswap/sdk'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useCallback, useMemo, useContext } from 'react'
 import useSWR from 'swr'
@@ -6,12 +6,12 @@ import { StableConfigContext } from './useStableConfig'
 
 export interface StableTrade {
   tradeType: TradeType
-  inputAmount: CurrencyAmount<Token>
-  outputAmount: CurrencyAmount<Token>
-  executionPrice: Price<Token, Token>
+  inputAmount: CurrencyAmount<Currency>
+  outputAmount: CurrencyAmount<Currency>
+  executionPrice: Price<Currency, Currency>
   priceImpact: null
-  maximumAmountIn: (slippaged: Percent) => CurrencyAmount<Token> | JSBI
-  minimumAmountOut: (slippaged: Percent) => CurrencyAmount<Token> | JSBI
+  maximumAmountIn: (slippaged: Percent) => CurrencyAmount<Currency> | JSBI
+  minimumAmountOut: (slippaged: Percent) => CurrencyAmount<Currency> | JSBI
 }
 
 export const maximumAmountInFactory = (currencyAmountIn, slippageTolerance) => {
@@ -85,8 +85,8 @@ export function useEstimatedAmount({ currency, stableSwapConfig, quotient, stabl
  * Returns the best trade for the exact amount of tokens in to the given token out
  */
 export default function useStableTradeExactIn(
-  currencyAmountIn?: CurrencyAmount<Token>,
-  currencyOut?: Token,
+  currencyAmountIn?: CurrencyAmount<Currency>,
+  currencyOut?: Currency,
 ): StableTrade | null {
   const { stableSwapContract, stableSwapConfig } = useContext(StableConfigContext)
 
