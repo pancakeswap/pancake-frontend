@@ -16,14 +16,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Check
-        run: npx turbo-ignore@0.0.39 @pancakeswap/farms
-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Check
+        run: npx turbo-ignore@0.0.39 @pancakeswap/farms
+
       - name: Build list
-        run: yarn turbo run build:list --filter=@pancakeswap/farms
+        run: yarn turbo run build --filter=@pancakeswap/farms
 
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@1
