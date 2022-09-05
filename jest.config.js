@@ -9,7 +9,8 @@ const customJestConfig = {
   testPathIgnorePatterns: ['<rootDir>/apps/test/', '<rootDir>/src/config/__tests__/', '<rootDir>/packages'],
   moduleNameMapper: {
     '^@pancakeswap/uikit': '<rootDir>/packages/uikit/src',
-    '^@pancakeswap/ui': '<rootDir>/packages/uikit',
+    '^@pancakeswap/ui/(.*)$': '<rootDir>/packages/ui/$1',
+    '^@pancakeswap/ui': '<rootDir>/packages/ui',
     '^@pancakeswap/sdk': '<rootDir>/packages/swap-sdk/src',
     '^@pancakeswap/localization': ['<rootDir>/packages/localization/src'],
     '^@pancakeswap/hooks': ['<rootDir>/packages/hooks/src'],
@@ -25,4 +26,9 @@ const customJestConfig = {
 }
 
 // createJestConfig is exported in this way to ensure that next/jest can load the Next.js configuration, which is async
-module.exports = createJestConfig(customJestConfig)
+const jestConfig = createJestConfig(customJestConfig)
+
+// delete jestConfig.moduleNameMapper['^.+\\.(css|sass|scss)$']
+console.log(jestConfig, 'jestConfig')
+
+module.exports = jestConfig
