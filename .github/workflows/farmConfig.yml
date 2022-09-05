@@ -1,5 +1,9 @@
 name: Farm Config
-on: [push]
+on:
+  pull_request:
+  push:
+    branches:
+      - develop
 
 jobs:
   publish:
@@ -12,13 +16,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # Run a build step here if your project requires
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build list
+        run: yarn turbo run build:list --filter=@pancakeswap/farms
 
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@1
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: YOUR_ACCOUNT_ID
-          projectName: YOUR_PROJECT_NAME
-          directory: YOUR_ASSET_DIRECTORY
+          apiToken: ${{ secrets.CLOUDFLARE_FARM_PAGE_API_TOKEN }}
+          accountId: b82548875bdb333ff5edcca4d076f88d
+          projectName: farms-config
+          directory: ./packages/farms/lists
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
