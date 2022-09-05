@@ -21,6 +21,8 @@ const chains = [
 
 export const saveList = async () => {
   console.info('save farm config...')
+  fs.mkdirSync(`${path.resolve()}/lists`)
+  fs.mkdirSync(`${path.resolve()}/lists/priceHelperLps`)
   for (const [chain, farm, lpHelper] of chains) {
     console.info('Starting build farm config', chain)
     const farmListPath = `${path.resolve()}/lists/${chain}.json`
