@@ -1,8 +1,0 @@
-{
-  "name": "@pancakeswap/farm-constants",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "build:list": "npx tsx scripts/build.ts"
-  }
-}
