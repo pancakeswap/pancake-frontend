@@ -1,11 +1,12 @@
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
 import { ProtocolData } from 'state/info/types'
-import { infoClient, infoClientETH } from 'utils/graphql'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { infoClientETH } from 'utils/graphql'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getPercentChange } from 'views/Info/utils/infoDataHelpers'
+import { multiChainQueryClient } from '../../constant'
 import { useGetChainName } from '../../hooks'
 
 interface PancakeFactory {
@@ -53,7 +54,10 @@ const getOverviewDataUni = async (block?: number): Promise<{ data?: OverviewUniS
 /**
  * Latest Liquidity, Volume and Transaction count
  */
-const getOverviewData = async (block?: number): Promise<{ data?: OverviewResponse; error: boolean }> => {
+const getOverviewData = async (
+  chainName: 'BSC' | 'ETH',
+  block?: number,
+): Promise<{ data?: OverviewResponse; error: boolean }> => {
   try {
     const query = gql`query overview {
       pancakeFactories(
@@ -64,7 +68,7 @@ const getOverviewData = async (block?: number): Promise<{ data?: OverviewRespons
         totalLiquidityUSD
       }
     }`
-    const data = await infoClient.request<OverviewResponse>(query)
+    const data = await multiChainQueryClient[chainName].request<OverviewResponse>(query)
     return { data, error: false }
   } catch (error) {
     console.error('Failed to fetch info overview', error)
@@ -88,17 +92,6 @@ interface ProtocolFetchState {
   data?: ProtocolData
 }
 
-const formatUniSwapFactoryResponse = (rawPancakeFactory?: UniSwapFactory) => {
-  if (rawPancakeFactory) {
-    return {
-      totalTransactions: parseFloat(rawPancakeFactory.txCount),
-      totalVolumeUSD: parseFloat(rawPancakeFactory.totalVolumeUSD),
-      totalLiquidityUSD: parseFloat(rawPancakeFactory.totalLiquidityUSD),
-    }
-  }
-  return null
-}
-
 const useFetchProtocolData = (): ProtocolFetchState => {
   const [fetchState, setFetchState] = useState<ProtocolFetchState>({
     error: false,
@@ -109,11 +102,11 @@ const useFetchProtocolData = (): ProtocolFetchState => {
   const chainName = useGetChainName()
 
   useEffect(() => {
-    const fetchBSC = async () => {
+    const fetchData = async () => {
       const [{ error, data }, { error: error24, data: data24 }, { error: error48, data: data48 }] = await Promise.all([
-        getOverviewData(),
-        getOverviewData(block24?.number ?? undefined),
-        getOverviewData(block48?.number ?? undefined),
+        getOverviewData(chainName),
+        getOverviewData(chainName, block24?.number ?? undefined),
+        getOverviewData(chainName, block48?.number ?? undefined),
       ])
       const anyError = error || error24 || error48
       const overviewData = formatPancakeFactoryResponse(data?.pancakeFactories?.[0])
@@ -151,52 +144,10 @@ const useFetchProtocolData = (): ProtocolFetchState => {
         })
       }
     }
-    const fetchETH = async () => {
-      const [{ error, data }, { error: error24, data: data24 }, { error: error48, data: data48 }] = await Promise.all([
-        getOverviewDataUni(),
-        getOverviewDataUni(block24?.number ?? undefined),
-        getOverviewDataUni(block48?.number ?? undefined),
-      ])
-      const anyError = error || error24 || error48
-      const overviewData = formatUniSwapFactoryResponse(data?.uniswapFactories?.[0])
-      const overviewData24 = formatUniSwapFactoryResponse(data24?.uniswapFactories?.[0])
-      const overviewData48 = formatUniSwapFactoryResponse(data48?.uniswapFactories?.[0])
-      const allDataAvailable = overviewData && overviewData24 && overviewData48
-      if (anyError || !allDataAvailable) {
-        setFetchState({
-          error: true,
-        })
-      } else {
-        const [volumeUSD, volumeUSDChange] = getChangeForPeriod(
-          overviewData.totalVolumeUSD,
-          overviewData24.totalVolumeUSD,
-          overviewData48.totalVolumeUSD,
-        )
-        const liquidityUSDChange = getPercentChange(overviewData.totalLiquidityUSD, overviewData24.totalLiquidityUSD)
-        // 24H transactions
-        const [txCount, txCountChange] = getChangeForPeriod(
-          overviewData.totalTransactions,
-          overviewData24.totalTransactions,
-          overviewData48.totalTransactions,
-        )
-        const protocolData: ProtocolData = {
-          volumeUSD,
-          volumeUSDChange: typeof volumeUSDChange === 'number' ? volumeUSDChange : 0,
-          liquidityUSD: overviewData.totalLiquidityUSD,
-          liquidityUSDChange,
-          txCount,
-          txCountChange,
-        }
-        setFetchState({
-          error: false,
-          data: protocolData,
-        })
-      }
-    }
+
     const allBlocksAvailable = block24?.number && block48?.number
     if (allBlocksAvailable && !blockError && !fetchState.data) {
-      if (chainName === 'ETH') fetchETH()
-      else fetchBSC()
+      fetchData()
     }
   }, [block24, block48, blockError, fetchState, chainName])
 

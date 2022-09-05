@@ -59,7 +59,7 @@ const config = {
       },
       {
         source: '/subgraph',
-        destination: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2',
+        destination: 'https://api.thegraph.com/subgraphs/name/chef-huan/exhange-eth',
       },
     ]
   },
