@@ -2295,5 +2295,5 @@ export const bscTokens = {
     'Spintop',
     'https://helio.money/',
   ),
-  snfts: new Token(ChainId.BSC, '0x6f51a1674befdd77f7ab1246b83adb9f13613762', 18, 'SNFTS', 'Seedify NFT Space'),
+  snfts: new Token(ChainId.BSC, '0x6f51A1674BEFDD77f7ab1246b83AdB9f13613762', 18, 'SNFTS', 'Seedify NFT Space'),
 }
