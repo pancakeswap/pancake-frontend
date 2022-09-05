@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useContext } from 'react'
 import { Currency, CurrencyAmount, JSBI, Pair, Percent } from '@pancakeswap/sdk'
 import {
   Button,
@@ -22,6 +22,7 @@ import { multiplyPriceByAmount } from 'utils/prices'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useGetRemovedTokenAmounts } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
+import useStableConfig, { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { currencyId } from '../../utils/currencyId'
@@ -113,12 +114,10 @@ const withLPValuesFactory =
       () =>
         hookArgFn({
           userPoolBalance,
-          currency0,
-          currency1,
           pair: props.pair,
           totalPoolTokens,
         }),
-      [userPoolBalance, currency0, currency1, props.pair, totalPoolTokens],
+      [userPoolBalance, props.pair, totalPoolTokens],
     )
 
     const [token0Deposited, token1Deposited] = useLPValuesHook(args)
@@ -143,12 +142,11 @@ const withLPValues = withLPValuesFactory({
   useLPValuesHook: useTokensDeposited,
   hookArgFn: ({ pair, userPoolBalance, totalPoolTokens }) => ({ pair, userPoolBalance, totalPoolTokens }),
 })
+
 const withStableLPValues = withLPValuesFactory({
   useLPValuesHook: useGetRemovedTokenAmounts,
-  hookArgFn: ({ userPoolBalance, currency0, currency1 }) => ({
+  hookArgFn: ({ userPoolBalance }) => ({
     lpAmount: userPoolBalance?.quotient?.toString(),
-    tokenAAddress: currency0?.address,
-    tokenBAddress: currency1?.address,
   }),
 })
 
@@ -274,6 +272,8 @@ function FullPositionCard({
   poolTokenPercentage,
   ...props
 }: PositionCardProps) {
+  const isStableLP = useContext(StableConfigContext)
+
   const { t } = useTranslation()
   const poolData = useLPApr(pair)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -309,38 +309,41 @@ function FullPositionCard({
 
       {showMore && (
         <AutoColumn gap="8px" style={{ padding: '16px' }}>
-          <FixedHeightRow>
-            <RowFixed>
-              <CurrencyLogo size="20px" currency={currency0} />
-              <Text color="textSubtle" ml="4px">
-                {t('Pooled %asset%', { asset: currency0.symbol })}:
-              </Text>
-            </RowFixed>
-            {token0Deposited ? (
+          {isStableLP ? null : (
+            <FixedHeightRow>
               <RowFixed>
-                <Text ml="6px">{token0Deposited?.toSignificant(6)}</Text>
+                <CurrencyLogo size="20px" currency={currency0} />
+                <Text color="textSubtle" ml="4px">
+                  {t('Pooled %asset%', { asset: currency0.symbol })}:
+                </Text>
               </RowFixed>
-            ) : (
-              '-'
-            )}
-          </FixedHeightRow>
+              {token0Deposited ? (
+                <RowFixed>
+                  <Text ml="6px">{token0Deposited?.toSignificant(6)}</Text>
+                </RowFixed>
+              ) : (
+                '-'
+              )}
+            </FixedHeightRow>
+          )}
 
-          <FixedHeightRow>
-            <RowFixed>
-              <CurrencyLogo size="20px" currency={currency1} />
-              <Text color="textSubtle" ml="4px">
-                {t('Pooled %asset%', { asset: currency1.symbol })}:
-              </Text>
-            </RowFixed>
-            {token1Deposited ? (
+          {isStableLP ? null : (
+            <FixedHeightRow>
               <RowFixed>
-                <Text ml="6px">{token1Deposited?.toSignificant(6)}</Text>
+                <CurrencyLogo size="20px" currency={currency1} />
+                <Text color="textSubtle" ml="4px">
+                  {t('Pooled %asset%', { asset: currency1.symbol })}:
+                </Text>
               </RowFixed>
-            ) : (
-              '-'
-            )}
-          </FixedHeightRow>
-
+              {token1Deposited ? (
+                <RowFixed>
+                  <Text ml="6px">{token1Deposited?.toSignificant(6)}</Text>
+                </RowFixed>
+              ) : (
+                '-'
+              )}
+            </FixedHeightRow>
+          )}
           {poolData && (
             <FixedHeightRow>
               <RowFixed>
@@ -392,6 +395,21 @@ function FullPositionCard({
 
 export const MinimalPositionCard = withLPValues(MinimalPositionCardView)
 
-export const StableFullPositionCard = withStableLPValues(FullPositionCard)
+export const StableFullPositionCardContainer = withStableLPValues(FullPositionCard)
+
+export const StableFullPositionCard = (props) => {
+  const { stableSwapConfig, ...config } = useStableConfig({
+    addressA: props.pair?.token0?.address,
+    addressB: props.pair?.token1?.address,
+  })
+
+  if (!stableSwapConfig) return null
+
+  return (
+    <StableConfigContext.Provider value={{ stableSwapConfig, ...config }}>
+      <StableFullPositionCardContainer {...props} />
+    </StableConfigContext.Provider>
+  )
+}
 
 export default withLPValues(FullPositionCard)
