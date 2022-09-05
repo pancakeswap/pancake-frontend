@@ -60,6 +60,7 @@
     "styled-components": "^5.2.3"
   },
   "dependencies": {
+    "@pancakeswap/ui": "*",
     "@popperjs/core": "^2.9.2",
     "@types/styled-system": "^5.1.15",
     "@vanilla-extract/babel-plugin": "1.1.4",

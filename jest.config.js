@@ -9,6 +9,7 @@ const customJestConfig = {
   testPathIgnorePatterns: ['<rootDir>/apps/test/', '<rootDir>/src/config/__tests__/', '<rootDir>/packages'],
   moduleNameMapper: {
     '^@pancakeswap/uikit': '<rootDir>/packages/uikit/src',
+    '^@pancakeswap/ui': '<rootDir>/packages/uikit',
     '^@pancakeswap/sdk': '<rootDir>/packages/swap-sdk/src',
     '^@pancakeswap/localization': ['<rootDir>/packages/localization/src'],
     '^@pancakeswap/hooks': ['<rootDir>/packages/hooks/src'],

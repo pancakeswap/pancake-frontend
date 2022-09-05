@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { withThemesProvider } from "themeprovider-storybook";
 import light from "../src/theme/light";
 import dark from "../src/theme/dark";
@@ -7,15 +7,31 @@ import { ModalProvider } from "../src/widgets/Modal";
 import { MatchBreakpointsProvider } from "../src";
 
 import "@pancakeswap/ui/css/global.css";
+import { useTheme } from "styled-components";
 
-const globalDecorator = (StoryFn) => (
-  <MatchBreakpointsProvider>
-    <ModalProvider>
-      <ResetCSS />
-      <StoryFn />
-    </ModalProvider>
-  </MatchBreakpointsProvider>
-);
+function useNextThemeMock() {
+  const theme = useTheme();
+  const isDark = theme?.isDark;
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+  }, [isDark]);
+}
+
+const globalDecorator = (StoryFn) => {
+  useNextThemeMock();
+  return (
+    <MatchBreakpointsProvider>
+      <ModalProvider>
+        <ResetCSS />
+        <StoryFn />
+      </ModalProvider>
+    </MatchBreakpointsProvider>
+  );
+};
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },

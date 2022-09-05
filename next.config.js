@@ -5,7 +5,7 @@ const { withAxiom } = require('next-axiom')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
-const withTM = require('next-transpile-modules')(['@pancakeswap/uikit', '@pancakeswap/sdk'])
+const withTM = require('next-transpile-modules')(['@pancakeswap/uikit', '@pancakeswap/sdk', '@pancakeswap/ui'])
 
 const withVanillaExtract = createVanillaExtractPlugin()
 
