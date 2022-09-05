@@ -16,6 +16,9 @@
     "dev": {
       "cache": false
     },
+    "build:list": {
+      "outputs": ["list/**"]
+    },
     "integration-test": {
       "outputs": [],
       "inputs": ["cypress/integration/**.test.ts"]
