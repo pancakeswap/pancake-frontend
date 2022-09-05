@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ChainId, Currency } from '@pancakeswap/sdk'
-import { Box, Flex, BottomDrawer, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, BottomDrawer, useMatchBreakpoints, TabMenu, Tab } from '@pancakeswap/uikit'
 import Footer from 'components/Menu/Footer'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { EXCHANGE_DOCS_URLS } from 'config/constants'
 import { useDefaultsFromURLSearch } from 'state/limitOrders/hooks'
+import { AppBody } from 'components/App'
+import Row from 'components/Layout/Row'
 
 import { useCurrency } from '../../hooks/Tokens'
 import { Field } from '../../state/swap/actions'
@@ -14,10 +16,15 @@ import Page from '../Page'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
 
 import SwapForm from './components/SwapForm'
-import StableSwapForm from './StableSwap/components/StableSwapForm'
-import useStableConfig, { StableConfigContext } from './StableSwap/hooks/useStableConfig'
+import StableSwapFormContainer from './StableSwap'
+import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 
 const CHART_SUPPORT_CHAIN_IDS = [ChainId.BSC]
+
+enum SwapType {
+  SWAP,
+  STABLE_SWAP,
+}
 
 export default function Swap() {
   const { isMobile } = useMatchBreakpoints()
@@ -41,11 +48,6 @@ export default function Swap() {
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
 
-  const { stableSwapConfig, ...stableConfig } = useStableConfig({
-    addressA: inputCurrency?.address,
-    addressB: outputCurrency?.address,
-  })
-
   const currencies: { [field in Field]?: Currency } = {
     [Field.INPUT]: inputCurrency ?? undefined,
     [Field.OUTPUT]: outputCurrency ?? undefined,
@@ -59,6 +61,8 @@ export default function Swap() {
       !chainId || CHART_SUPPORT_CHAIN_IDS.includes(chainId),
     [chainId],
   )
+
+  const [swapTypeState, setSwapType] = useState(SwapType.SWAP)
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
@@ -95,21 +99,31 @@ export default function Swap() {
           />
         )}
         <Flex flexDirection="column">
-          {stableSwapConfig ? (
-            <StableConfigContext.Provider value={{ stableSwapConfig, ...stableConfig }}>
-              <StableSwapForm
-                isChartExpanded={isChartExpanded}
-                setIsChartDisplayed={setIsChartDisplayed}
-                isChartDisplayed={isChartDisplayed}
-              />
-            </StableConfigContext.Provider>
-          ) : (
-            <SwapForm
-              isChartExpanded={isChartExpanded}
-              setIsChartDisplayed={setIsChartDisplayed}
-              isChartDisplayed={isChartDisplayed}
-            />
-          )}
+          <StyledSwapContainer $isChartExpanded={isChartExpanded}>
+            <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
+              <AppBody>
+                <Row>
+                  <TabMenu
+                    activeIndex={swapTypeState}
+                    onItemClick={() =>
+                      setSwapType((state) => (state === SwapType.SWAP ? SwapType.STABLE_SWAP : SwapType.SWAP))
+                    }
+                  >
+                    <Tab>Swap</Tab>
+                    <Tab>StableSwap</Tab>
+                  </TabMenu>
+                </Row>
+                {swapTypeState === SwapType.STABLE_SWAP ? (
+                  <StableSwapFormContainer
+                    setIsChartDisplayed={setIsChartDisplayed}
+                    isChartDisplayed={isChartDisplayed}
+                  />
+                ) : (
+                  <SwapForm setIsChartDisplayed={setIsChartDisplayed} isChartDisplayed={isChartDisplayed} />
+                )}
+              </AppBody>
+            </StyledInputCurrencyWrapper>
+          </StyledSwapContainer>
           {isChartExpanded && (
             <Box display={['none', null, null, 'block']} width="100%" height="100%">
               <Footer variant="side" helpUrl={EXCHANGE_DOCS_URLS} />
