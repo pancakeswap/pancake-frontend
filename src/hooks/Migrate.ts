@@ -29,11 +29,10 @@ import { useMigratorContract, usePeronioContract } from './useContract'
  * @returns
  */
 export function useMigrateExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: Currency): Mint | null {
-
   // MIGRATOR //
 
   const migratorContract = useMigratorContract()
-   /* 
+  /* 
     
    0: {
     "type": "BigNumber",
@@ -126,40 +125,38 @@ export function useMigrateExactOut(currencyAmountOut?: CurrencyAmount, currencyI
 
   // Get Markup
   useEffect(() => {
-    async function fetchMarkup() {
-      return new Percent(
-        (await migratorContract.markup()).toString(),
-        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(MARKUP_DECIMALS + 2)),
-      )
-    }
-
-    fetchMarkup().then(setMarkup)
-  }, [migratorContract])
+    // async function fetchMarkup() {
+    //   return new Percent(
+    //     (await migratorContract.markup()).toString(),
+    //     JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(MARKUP_DECIMALS + 2)),
+    //   )
+    // }
+    // fetchMarkup().then(setMarkup)
+  }, [])
 
   // Get Buying Price
   useEffect(() => {
-    if (!currencyIn || !currencyAmountOut) {
-      return
-    }
-    async function fetchBuyingPrice(): Promise<BigNumber> {
-      return migratorContract.buyingPrice()
-    }
-
-    fetchBuyingPrice()
-      .then((buyingPrice) => {
-        setPrice(
-          new Price(
-            currencyIn,
-            currencyAmountOut.currency,
-            buyingPrice.toString(),
-            JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS)),
-          ),
-        )
-      })
-      .catch((e) => {
-        console.error(e)
-      })
-  }, [migratorContract, DECIMALS, currencyIn, currencyAmountOut])
+    // if (!currencyIn || !currencyAmountOut) {
+    //   return
+    // }
+    // async function fetchBuyingPrice(): Promise<BigNumber> {
+    //   return migratorContract.buyingPrice()
+    // }
+    // fetchBuyingPrice()
+    //   .then((buyingPrice) => {
+    //     setPrice(
+    //       new Price(
+    //         currencyIn,
+    //         currencyAmountOut.currency,
+    //         buyingPrice.toString(),
+    //         JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS)),
+    //       ),
+    //     )
+    //   })
+    //   .catch((e) => {
+    //     console.error(e)
+    //   })
+  }, [])
 
   return useMemo(() => {
     // Needs Price

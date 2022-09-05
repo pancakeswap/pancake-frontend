@@ -67,8 +67,8 @@ export default function MigrateView({ history }: RouteComponentProps) {
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
   const { mint, parsedAmount, currencies, currencyBalances, inputError: swapInputError } = useMigrateTokenInfo()
-  const [state, setState] = useState<string>();
-  const [outPutState, setOutPutState] = useState<string>();
+  const [state, setState] = useState<string>()
+  const [outPutState, setOutPutState] = useState<string>()
 
   const parsedAmounts = {
     [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : mint?.inputAmount,
@@ -81,23 +81,25 @@ export default function MigrateView({ history }: RouteComponentProps) {
 
   const handleTypeInput = useCallback(
     (value: string) => {
-      if (value === undefined) return;
+      if (value === undefined) return
       setState(value)
-      migratorContract.quote(value).then((resultado: any) => setOutPutState(resultado))
-      onUserInput(Field.INPUT, value)
+      console.info(
+        migratorContract.quote(value).then((resultado: React.SetStateAction<string>) => setOutPutState(resultado)),
+      )
+      // onUserInput(Field.INPUT, value)
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )
   const handleTypeOutput = useCallback(
     (value: string) => {
-      console.info(outPutState);
+      return value
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )
   // console.info("value", state)
-  console.info("output", outPutState)
+  console.info('output', outPutState)
 
   // modal and loading
   const [{ mintToConfirm, mintErrorMessage, attemptingTxn, txHash }, setMintState] = useState<{
@@ -216,7 +218,7 @@ export default function MigrateView({ history }: RouteComponentProps) {
                   <AutoColumn gap="md">
                     <CurrencyInputPanel
                       label={independentField === Field.OUTPUT && mint ? t('From (estimated)') : t('From')}
-                      value={state}
+                      value={state ?? '0'}
                       showMaxButton={!atMaxAmountInput}
                       currency={currencies[Field.INPUT]}
                       onUserInput={handleTypeInput}
