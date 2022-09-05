@@ -7,11 +7,12 @@ import { Field } from 'state/burn/actions'
 import { useTokenBalances } from 'state/wallet/hooks'
 import { useBurnState } from 'state/burn/hooks'
 import { useStablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
-import useStableConfig from 'views/Swap/StableSwap/hooks/useStableConfig'
+import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import useSWR from 'swr'
+import { useContext } from 'react'
 
-export function useGetRemovedTokenAmounts({ lpAmount, tokenAAddress, tokenBAddress }) {
-  const { stableSwapInfoContract, stableSwapConfig } = useStableConfig({ tokenAAddress, tokenBAddress })
+export function useGetRemovedTokenAmounts({ lpAmount }) {
+  const { stableSwapInfoContract, stableSwapConfig } = useContext(StableConfigContext)
 
   const { data } = useSWR(!lpAmount ? null : ['stableSwapInfoContract', 'calc_coins_amount', lpAmount], async () => {
     return stableSwapInfoContract.calc_coins_amount(stableSwapConfig?.stableSwapAddress, lpAmount)
@@ -67,8 +68,6 @@ export function useStableDerivedBurnInfo(
 
   const [amountA, amountB] = useGetRemovedTokenAmounts({
     lpAmount: liquidityToRemove?.quotient?.toString(),
-    tokenAAddress: currencyA?.address,
-    tokenBAddress: currencyB?.address,
   })
 
   const parsedAmounts: {

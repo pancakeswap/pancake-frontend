@@ -1,7 +1,7 @@
-import { CurrencyAmount, Token, TradeType } from '@pancakeswap/sdk'
-
+import { CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { useContext } from 'react'
 import { StableTrade, useEstimatedAmount, useStableTradeResponse } from './useStableTradeExactIn'
-import useStableConfig from './useStableConfig'
+import { StableConfigContext } from './useStableConfig'
 
 /**
  * Returns the best trade for the exact amount of tokens in to the given token out
@@ -12,10 +12,7 @@ export default function useStableTradeExactOut(
 ): StableTrade | null {
   const isParamInvalid = !currencyAmountOut || !currencyIn
 
-  const { stableSwapContract, stableSwapConfig } = useStableConfig({
-    tokenAAddress: currencyAmountOut?.currency?.address,
-    tokenBAddress: currencyIn?.address,
-  })
+  const { stableSwapContract, stableSwapConfig } = useContext(StableConfigContext)
 
   const currencyAmountOutQuotient = currencyAmountOut?.quotient?.toString()
 

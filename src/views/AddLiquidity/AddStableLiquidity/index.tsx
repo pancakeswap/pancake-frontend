@@ -1,6 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { BigNumber } from '@ethersproject/bignumber'
-import { TransactionResponse } from '@ethersproject/providers'
+import { useCallback, useContext, useMemo, useState } from 'react'
 import { CurrencyAmount, Token, WNATIVE } from '@pancakeswap/sdk'
 import { Button, Text, AddIcon, CardBody, Message, useModal, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { logError } from 'utils/sentry'
@@ -8,22 +6,17 @@ import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { CommitButton } from 'components/CommitButton'
 import { getLPSymbol } from 'utils/getLpSymbol'
-import useNativeCurrency from 'hooks/useNativeCurrency'
-import { useRouter } from 'next/router'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
-import { useLPApr } from 'state/swap/hooks'
-import { CAKE, USDC } from '@pancakeswap/tokens'
-import useStableConfig from 'views/Swap/StableSwap/hooks/useStableConfig'
+import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
+import { LightCard } from 'components/Card'
 
-import { LightCard } from '../../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../../components/Layout/Column'
 import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
 import ConnectWalletButton from '../../../components/ConnectWalletButton'
 
 import { PairState } from '../../../hooks/usePairs'
-import { useCurrency } from '../../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback'
-import { Field, resetMintState } from '../../../state/mint/actions'
+import { Field } from '../../../state/mint/actions'
 import { useMintActionHandlers, useMintState } from '../../../state/mint/hooks'
 
 import { useTransactionAdder } from '../../../state/transactions/hooks'
@@ -124,10 +117,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
     {},
   )
 
-  const { stableSwapContract, stableSwapConfig } = useStableConfig({
-    tokenAAddress: currencyA?.address,
-    tokenBAddress: currencyB?.address,
-  })
+  const { stableSwapContract, stableSwapConfig } = useContext(StableConfigContext)
 
   // check whether the user has approved tokens for addling LPs
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], stableSwapContract?.address)

@@ -1,8 +1,8 @@
 import { CurrencyAmount, Price, Percent, TradeType, Fraction, ONE, Token, JSBI } from '@pancakeswap/sdk'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useContext } from 'react'
 import useSWR from 'swr'
-import useStableConfig from './useStableConfig'
+import { StableConfigContext } from './useStableConfig'
 
 export interface StableTrade {
   tradeType: TradeType
@@ -87,10 +87,7 @@ export default function useStableTradeExactIn(
 ): StableTrade | null {
   const isParamInvalid = !currencyAmountIn || !currencyOut
 
-  const { stableSwapContract, stableSwapConfig } = useStableConfig({
-    tokenAAddress: currencyAmountIn?.currency?.address,
-    tokenBAddress: currencyOut?.address,
-  })
+  const { stableSwapContract, stableSwapConfig } = useContext(StableConfigContext)
 
   const currencyAmountInQuotient = currencyAmountIn?.quotient?.toString()
 

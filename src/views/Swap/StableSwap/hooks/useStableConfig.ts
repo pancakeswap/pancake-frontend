@@ -5,7 +5,7 @@ import stableSwapInfoABI from 'config/abi/infoStableSwap.json'
 import stableLPABI from 'config/abi/stableLP.json'
 import { CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
-import { useMemo } from 'react'
+import { createContext, useMemo } from 'react'
 
 function findStablePair({ tokenAAddress, tokenBAddress }) {
   const stableSwapPair = stableSwapConfigs.find((stablePair) => {
@@ -48,6 +48,8 @@ export function useLPTokensWithBalanceByAccount(account) {
     getLiquidityValue: () => CurrencyAmount.fromRawAmount(lpToken?.token0, '0'),
   }))
 }
+
+export const StableConfigContext = createContext(null)
 
 export default function useStableConfig({ tokenAAddress, tokenBAddress }) {
   const stablePair = useMemo(() => findStablePair({ tokenAAddress, tokenBAddress }), [tokenAAddress, tokenBAddress])

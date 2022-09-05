@@ -10,7 +10,7 @@ import { resetMintState } from 'state/mint/actions'
 import { CHAIN_IDS } from 'utils/wagmi'
 import AddLiquidity from 'views/AddLiquidity'
 import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity/index'
-import useStableConfig from 'views/Swap/StableSwap/hooks/useStableConfig'
+import useStableConfig, { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 
 const AddLiquidityPage = () => {
   const router = useRouter()
@@ -27,7 +27,7 @@ const AddLiquidityPage = () => {
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
 
-  const { stableSwapConfig } = useStableConfig({
+  const { stableSwapConfig, ...stableConfig } = useStableConfig({
     tokenAAddress: currencyA?.address,
     tokenBAddress: currencyB?.address,
   })
@@ -39,7 +39,9 @@ const AddLiquidityPage = () => {
   }, [dispatch, currencyIdA, currencyIdB])
 
   return stableSwapConfig ? (
-    <AddStableLiquidity currencyA={currencyA} currencyB={currencyB} />
+    <StableConfigContext.Provider value={{ stableSwapConfig, ...stableConfig }}>
+      <AddStableLiquidity currencyA={currencyA} currencyB={currencyB} />
+    </StableConfigContext.Provider>
   ) : (
     <AddLiquidity currencyA={currencyA} currencyB={currencyB} />
   )

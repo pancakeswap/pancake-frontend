@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState, useContext } from 'react'
 import styled from 'styled-components'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
@@ -23,7 +23,7 @@ import { CommitButton } from 'components/CommitButton'
 import { useTranslation } from '@pancakeswap/localization'
 import { useLPApr } from 'state/swap/hooks'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
-import useStableConfig from 'views/Swap/StableSwap/hooks/useStableConfig'
+import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 
 import { AutoColumn, ColumnCenter } from '../../../components/Layout/Column'
 import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
@@ -119,10 +119,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
 
   const atMaxAmount = parsedAmounts[Field.LIQUIDITY_PERCENT]?.equalTo(new Percent('1'))
 
-  const { stableSwapConfig, stableSwapContract } = useStableConfig({
-    tokenAAddress: currencyA?.address,
-    tokenBAddress: currencyB?.address,
-  })
+  const { stableSwapConfig, stableSwapContract } = useContext(StableConfigContext)
 
   const [approval, approveCallback] = useApproveCallback(
     parsedAmounts[Field.LIQUIDITY],

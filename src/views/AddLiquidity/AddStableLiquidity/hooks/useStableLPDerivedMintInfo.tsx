@@ -7,18 +7,18 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PairState } from 'hooks/usePairs'
 
 import useTotalSupply from 'hooks/useTotalSupply'
-import { useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 
 import tryParseAmount from 'utils/tryParseAmount'
 import { Field } from 'state/mint/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
-import useStableConfig from 'views/Swap/StableSwap/hooks/useStableConfig'
+import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import { useEstimatedAmount } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 import useSWR from 'swr'
 import { useMintState } from 'state/mint/hooks'
 
 export function useStablePair(currencyA, currencyB): [PairState, Pair | null] {
-  const { stableSwapConfig } = useStableConfig({ tokenAAddress: currencyA?.address, tokenBAddress: currencyB?.address })
+  const { stableSwapConfig } = useContext(StableConfigContext)
 
   if (!stableSwapConfig) {
     return [PairState.NOT_EXISTS, undefined]
@@ -157,10 +157,7 @@ export function useStableLPDerivedMintInfo(
     [dependentAmount, independentAmount, independentField],
   )
 
-  const { stableSwapConfig, stableSwapContract, stableSwapInfoContract } = useStableConfig({
-    tokenAAddress: currencies[Field.CURRENCY_A]?.address,
-    tokenBAddress: currencies[Field.CURRENCY_B]?.address,
-  })
+  const { stableSwapConfig, stableSwapContract, stableSwapInfoContract } = useContext(StableConfigContext)
 
   const parsedAAmount = parsedAmounts[Field.CURRENCY_A]?.quotient
   const parsedBAmount = parsedAmounts[Field.CURRENCY_B]?.quotient

@@ -15,7 +15,7 @@ import PriceChartContainer from './components/Chart/PriceChartContainer'
 
 import SwapForm from './components/SwapForm'
 import StableSwapForm from './StableSwap/components/StableSwapForm'
-import useStableConfig from './StableSwap/hooks/useStableConfig'
+import useStableConfig, { StableConfigContext } from './StableSwap/hooks/useStableConfig'
 
 const CHART_SUPPORT_CHAIN_IDS = [ChainId.BSC]
 
@@ -41,7 +41,7 @@ export default function Swap() {
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
 
-  const { stableSwapConfig } = useStableConfig({
+  const { stableSwapConfig, ...stableConfig } = useStableConfig({
     tokenAAddress: inputCurrency?.address,
     tokenBAddress: outputCurrency?.address,
   })
@@ -96,11 +96,13 @@ export default function Swap() {
         )}
         <Flex flexDirection="column">
           {stableSwapConfig ? (
-            <StableSwapForm
-              isChartExpanded={isChartExpanded}
-              setIsChartDisplayed={setIsChartDisplayed}
-              isChartDisplayed={isChartDisplayed}
-            />
+            <StableConfigContext.Provider value={{ stableSwapConfig, ...stableConfig }}>
+              <StableSwapForm
+                isChartExpanded={isChartExpanded}
+                setIsChartDisplayed={setIsChartDisplayed}
+                isChartDisplayed={isChartDisplayed}
+              />
+            </StableConfigContext.Provider>
           ) : (
             <SwapForm
               isChartExpanded={isChartExpanded}

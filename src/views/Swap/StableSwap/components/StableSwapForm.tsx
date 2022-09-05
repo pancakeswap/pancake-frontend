@@ -1,4 +1,4 @@
-import { SetStateAction, useCallback, useEffect, useState, Dispatch } from 'react'
+import { SetStateAction, useCallback, useEffect, useState, Dispatch, useContext } from 'react'
 import styled from 'styled-components'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { Button, Text, ArrowDownIcon, Box, IconButton, ArrowUpDownIcon, Skeleton } from '@pancakeswap/uikit'
@@ -32,7 +32,7 @@ import { ArrowWrapper, Wrapper } from '../../components/styleds'
 import StableSwapCommitButton from './StableSwapCommitButton'
 import { useDerivedStableSwapInfo } from '../hooks/useDerivedStableSwapInfo'
 import useApproveCallbackFromStableTrade from '../hooks/useApproveCallbackFromStableTrade'
-import useStableConfig from '../hooks/useStableConfig'
+import { StableConfigContext } from '../hooks/useStableConfig'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -86,10 +86,7 @@ export default function StableSwapForm({ isChartExpanded, setIsChartDisplayed, i
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
 
-  const stableConfig = useStableConfig({
-    tokenAAddress: inputCurrency?.address,
-    tokenBAddress: outputCurrency?.address,
-  })
+  const stableConfig = useContext(StableConfigContext)
 
   const currencies: { [field in Field]?: Currency } = {
     [Field.INPUT]: inputCurrency ?? undefined,

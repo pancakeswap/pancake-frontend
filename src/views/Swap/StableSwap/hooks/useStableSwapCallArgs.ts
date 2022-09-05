@@ -1,12 +1,9 @@
-import { useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 
-import useStableConfig from './useStableConfig'
+import { StableConfigContext } from './useStableConfig'
 
 export default function useStableSwapCallArgs(trade) {
-  const stableConfig = useStableConfig({
-    tokenAAddress: trade?.inputAmount?.currency?.address,
-    tokenBAddress: trade?.outputAmount?.currency?.address,
-  })
+  const stableConfig = useContext(StableConfigContext)
   const swapContract = stableConfig?.stableSwapContract
 
   const swapCalls = useMemo(() => {
