@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import { ChainId } from '@pancakeswap/sdk'
 import { useAppDispatch } from 'state'
 import { BigNumber } from 'bignumber.js'
 import { pickFarmHarvestTx } from 'state/transactions/actions'
@@ -53,20 +54,33 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
         crossFarmingAddress.nonces(account),
       ])
 
-      const amount = getFullDisplayBalance(displayBalance, 18, 5)
-      const summary = nonce.eq(0) ? `Harvest ${amount} CAKE with 0.005 BNB` : `Harvest ${amount} CAKE`
+      const amount = getFullDisplayBalance(displayBalance, 18, 3)
+      const summaryText = nonce.eq(0) ? 'Harvest %amount% CAKE with 0.005 BNB' : 'Harvest %amount% CAKE'
+
       addTransaction(receipt, {
         type: 'non-bsc-farm-harvest',
-        summary,
         translatableSummary: {
-          text: nonce.eq(0) ? 'Harvest %amount% CAKE with 0.005 BNB' : 'Harvest %amount% CAKE',
+          text: summaryText,
           data: { amount },
+        },
+        farmHarvest: {
+          sourceChain: {
+            chainId,
+            amount,
+            status: 0,
+            tx: receipt.hash,
+            nonce: nonce.toJSON(),
+          },
+          destinationChain: {
+            chainId: ChainId.BSC,
+            status: 0,
+            tx: '',
+          },
         },
       })
 
-      onDone()
+      onDone(receipt.hash)
       handleCancel()
-      openModal(receipt.hash)
     } catch (error) {
       console.error('Submit Non Bsc Farm Harvest Error: ', error)
     } finally {
@@ -75,11 +89,12 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
   }
 
   const onDone = useCallback(
-    () => dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId })),
+    (tx: string) => {
+      dispatch(pickFarmHarvestTx({ tx }))
+      dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId }))
+    },
     [pid, account, chainId, dispatch],
   )
-
-  const openModal = useCallback((tx: string) => dispatch(pickFarmHarvestTx({ tx })), [dispatch])
 
   return (
     <Modal title={t('Harvest')} style={{ maxWidth: '340px' }} onDismiss={handleCancel}>

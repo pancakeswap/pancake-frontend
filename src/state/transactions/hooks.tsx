@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { AppState, useAppDispatch } from '../index'
-import { addTransaction, TransactionType } from './actions'
+import { addTransaction, TransactionType, FarmHarvestTransactionType } from './actions'
 import { TransactionDetails } from './reducer'
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
@@ -17,6 +17,7 @@ export function useTransactionAdder(): (
     claim?: { recipient: string }
     type?: TransactionType
     order?: Order
+    farmHarvest?: { sourceChain: FarmHarvestTransactionType; destinationChain: FarmHarvestTransactionType }
   },
 ) => void {
   const { chainId, account } = useActiveWeb3React()
@@ -32,6 +33,7 @@ export function useTransactionAdder(): (
         claim,
         type,
         order,
+        farmHarvest,
       }: {
         summary?: string
         translatableSummary?: { text: string; data?: Record<string, string | number> }
@@ -39,6 +41,7 @@ export function useTransactionAdder(): (
         approval?: { tokenAddress: string; spender: string }
         type?: TransactionType
         order?: Order
+        farmHarvest?: { sourceChain: FarmHarvestTransactionType; destinationChain: FarmHarvestTransactionType }
       } = {},
     ) => {
       if (!account) return
@@ -49,7 +52,18 @@ export function useTransactionAdder(): (
         throw Error('No transaction hash found.')
       }
       dispatch(
-        addTransaction({ hash, from: account, chainId, approval, summary, translatableSummary, claim, type, order }),
+        addTransaction({
+          hash,
+          from: account,
+          chainId,
+          approval,
+          summary,
+          translatableSummary,
+          claim,
+          type,
+          order,
+          farmHarvest,
+        }),
       )
     },
     [dispatch, chainId, account],
@@ -127,12 +141,8 @@ export function usePendingTransactions(): { hasPendingTransactions: boolean; pen
 // Get Farm Harvest
 export function useFarmHarvestTransaction() {
   const state = useSelector<AppState, AppState['transactions']>((s) => s.transactions)
-
-  return useMemo(
-    () => ({
-      showModal: state.showFarmHarvestModal,
-      pickedTx: state.pickedFarmHarvestModalTx,
-    }),
-    [state],
-  )
+  return {
+    showModal: state.showFarmHarvestModal,
+    pickedTx: state.pickedFarmHarvestModalTx,
+  }
 }

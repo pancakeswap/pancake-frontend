@@ -11,6 +11,7 @@ import {
   pickFarmHarvestTx,
   SerializableTransactionReceipt,
   TransactionType,
+  FarmHarvestTransactionType,
 } from './actions'
 import { resetUserState } from '../global/actions'
 
@@ -29,6 +30,7 @@ export interface TransactionDetails {
   addedTime: number
   confirmedTime?: number
   from: string
+  farmHarvest?: { sourceChain: FarmHarvestTransactionType; destinationChain: FarmHarvestTransactionType }
 }
 
 export interface TransactionState {
@@ -50,13 +52,24 @@ export default createReducer(initialState, (builder) =>
       addTransaction,
       (
         transactions,
-        { payload: { chainId, from, hash, approval, summary, translatableSummary, claim, type, order } },
+        { payload: { chainId, from, hash, approval, summary, translatableSummary, claim, type, order, farmHarvest } },
       ) => {
         if (transactions[chainId]?.[hash]) {
           throw Error('Attempted to add existing transaction.')
         }
         const txs = transactions[chainId] ?? {}
-        txs[hash] = { hash, approval, summary, translatableSummary, claim, from, addedTime: now(), type, order }
+        txs[hash] = {
+          hash,
+          approval,
+          summary,
+          translatableSummary,
+          claim,
+          from,
+          addedTime: now(),
+          type,
+          order,
+          farmHarvest,
+        }
         transactions[chainId] = txs
         if (order) saveOrder(chainId, from, order, true)
       },
