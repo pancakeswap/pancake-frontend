@@ -133,7 +133,7 @@
     {
       "name": "BUSD Token",
       "symbol": "BUSD",
-      "address": "0x8516Fc284AEEaa0374E66037BD2309349FF728eA",
+      "address": "0x2fB98DCc527c1403F92c6Bed05a50725d3005636",
       "chainId": 97,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56.png"
