@@ -12,6 +12,7 @@ jobs:
       contents: read
       deployments: write
     name: Publish Farm Config to Cloudflare Pages
+    if: npx turbo-ignore@0.0.39 @pancakeswap/farms
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -30,3 +31,4 @@ jobs:
           projectName: farms-config
           directory: ./packages/farms/lists
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
