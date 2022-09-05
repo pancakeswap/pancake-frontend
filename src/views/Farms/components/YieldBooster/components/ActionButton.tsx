@@ -19,7 +19,7 @@ const Container = styled.div`
   margin-right: 4px;
 `
 
-interface ActionButtonPropsType extends ButtonProps {
+type ActionButtonPropsType = ButtonProps & {
   title: string
   description: string
   button?: ReactNode

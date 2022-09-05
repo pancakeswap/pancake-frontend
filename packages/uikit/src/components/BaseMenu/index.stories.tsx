@@ -7,7 +7,7 @@ import { SubMenuItem } from "./styles";
 import { LinkExternal } from "../Link";
 import { Box, Flex, Grid } from "../Box";
 import { Text } from "../Text";
-import Button from "../Button/Button";
+import { Button } from "../Button/Button";
 import { EllipsisIcon } from "../Svg";
 
 export default {

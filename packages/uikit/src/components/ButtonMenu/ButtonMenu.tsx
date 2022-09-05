@@ -1,7 +1,6 @@
-import React, { cloneElement, Children, ReactElement } from "react";
+import React, { Children, cloneElement, ReactElement } from "react";
 import styled, { DefaultTheme } from "styled-components";
 import { space } from "styled-system";
-import { scales, variants } from "../Button/types";
 import { ButtonMenuProps } from "./types";
 
 interface StyledButtonMenuProps extends ButtonMenuProps {
@@ -9,11 +8,11 @@ interface StyledButtonMenuProps extends ButtonMenuProps {
 }
 
 const getBackgroundColor = ({ theme, variant }: StyledButtonMenuProps) => {
-  return theme.colors[variant === variants.SUBTLE ? "input" : "tertiary"];
+  return theme.colors[variant === "subtle" ? "input" : "tertiary"];
 };
 
 const getBorderColor = ({ theme, variant }: StyledButtonMenuProps) => {
-  return theme.colors[variant === variants.SUBTLE ? "inputSecondary" : "disabled"];
+  return theme.colors[variant === "subtle" ? "inputSecondary" : "disabled"];
 };
 
 const StyledButtonMenu = styled.div<StyledButtonMenuProps>`
@@ -45,7 +44,7 @@ const StyledButtonMenu = styled.div<StyledButtonMenuProps>`
 
         & > button:disabled {
           background-color: transparent;
-          color: ${variant === variants.PRIMARY ? theme.colors.primary : theme.colors.textSubtle};
+          color: ${variant === "primary" ? theme.colors.primary : theme.colors.textSubtle};
         }
     `;
     }
@@ -56,8 +55,8 @@ const StyledButtonMenu = styled.div<StyledButtonMenuProps>`
 
 const ButtonMenu: React.FC<React.PropsWithChildren<ButtonMenuProps>> = ({
   activeIndex = 0,
-  scale = scales.MD,
-  variant = variants.PRIMARY,
+  scale = "md",
+  variant = "primary",
   onItemClick,
   disabled,
   children,

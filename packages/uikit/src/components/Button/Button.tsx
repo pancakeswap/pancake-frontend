@@ -1,31 +1,22 @@
-import { ElementType, isValidElement, ReactNode } from "react";
+import { isValidElement, ReactNode } from "react";
 import { Slot } from "@radix-ui/react-slot";
 import clsx from "clsx";
 import EXTERNAL_LINK_PROPS from "../../util/externalLinkProps";
 import { Box, BoxProps } from "../Box";
 import * as styles from "./Button.css";
-import { ButtonProps } from "./types";
-
-type WithAnchor = {
-  as?: "a";
-} & Pick<JSX.IntrinsicElements["a"], "href" | "rel" | "target">;
-
-type WithoutAnchor = {
-  as?: "button";
-};
 
 export interface BaseProps extends BoxProps {
-  as?: "a" | "button" | ElementType;
   asChild?: boolean;
   external?: boolean;
   disabled?: boolean;
+  isLoading?: boolean;
   startIcon?: ReactNode;
   endIcon?: ReactNode;
 }
 
-export type Props = BaseProps & styles.Variants & (WithAnchor | WithoutAnchor);
+export type ButtonProps = BaseProps & styles.Variants;
 
-const Button = (props: ButtonProps): JSX.Element => {
+export const Button = (props: ButtonProps) => {
   const {
     startIcon,
     endIcon,
@@ -43,7 +34,7 @@ const Button = (props: ButtonProps): JSX.Element => {
   const internalProps = external ? EXTERNAL_LINK_PROPS : {};
   const isDisabled = isLoading || disabled;
 
-  const Comp = asChild ? Slot : (as as any) || "button";
+  const Comp = asChild ? Slot : as || "button";
 
   return (
     <Box
@@ -76,5 +67,3 @@ const Button = (props: ButtonProps): JSX.Element => {
     </Box>
   );
 };
-
-export default Button;

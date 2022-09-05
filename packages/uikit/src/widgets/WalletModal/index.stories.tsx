@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../../components/Button/Button";
+import { Button } from "../../components/Button/Button";
 import { Flex } from "../../components/Box/Flex";
 import useWalletModal from "./useWalletModal";
 

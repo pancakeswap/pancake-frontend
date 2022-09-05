@@ -1,7 +1,7 @@
 import React from "react";
 import { isDesktop } from "react-device-detect";
 import styled from "styled-components";
-import Button from "../../components/Button/Button";
+import { Button } from "../../components/Button/Button";
 import Text from "../../components/Text/Text";
 import MoreHorizontal from "../../components/Svg/Icons/MoreHorizontal";
 import { ButtonProps } from "../../components/Button";
@@ -14,7 +14,7 @@ interface Props {
   onDismiss: () => void;
 }
 
-const WalletButton = styled(Button).attrs({ width: "100%", variant: "text", py: "16px" })`
+const WalletButton = styled(Button)`
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -24,13 +24,15 @@ const WalletButton = styled(Button).attrs({ width: "100%", variant: "text", py: 
   margin-right: auto;
 `;
 
-interface MoreWalletCardProps extends ButtonProps {
-  t: (key: string) => string;
-}
+WalletButton.defaultProps = { width: "100%", variant: "text", py: "16px" };
 
-export const MoreWalletCard: React.FC<React.PropsWithChildren<MoreWalletCardProps>> = ({ t, ...props }) => {
+type MoreWalletCardProps = ButtonProps & {
+  t: (key: string) => string;
+};
+
+export const MoreWalletCard: React.FC<React.PropsWithChildren<MoreWalletCardProps>> = ({ t, as, ...props }) => {
   return (
-    <WalletButton variant="tertiary" {...props}>
+    <WalletButton variant="tertiary" as={as as any} {...props}>
       <MoreHorizontal width="40px" mb="8px" color="textSubtle" />
       <Text fontSize="14px">{t("More")}</Text>
     </WalletButton>

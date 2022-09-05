@@ -4,7 +4,7 @@ import { useLottery } from 'state/lottery/hooks'
 import { LotteryStatus } from 'config/constants/types'
 import BuyTicketsModal from './BuyTicketsModal/BuyTicketsModal'
 
-interface BuyTicketsButtonProps extends ButtonProps {
+type BuyTicketsButtonProps = ButtonProps & {
   disabled?: boolean
 }
 

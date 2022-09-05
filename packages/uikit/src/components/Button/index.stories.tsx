@@ -7,9 +7,9 @@ import { Box } from "../Box/Box";
 import { Flex } from "../Box/Flex";
 import { AddIcon, AutoRenewIcon, LogoIcon } from "../Svg";
 import IconButton from "./IconButton";
-import Button from "./Button";
+import { Button } from "./Button";
 import { ExpandableButton, ExpandableLabel } from "./ExpandableButton";
-import { scales, variants } from "./types";
+import { scales, variants } from "./Button.css";
 
 export default {
   title: "Components/Button",

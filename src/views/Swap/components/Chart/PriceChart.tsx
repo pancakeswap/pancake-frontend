@@ -3,11 +3,11 @@ import {
   ExpandIcon,
   Flex,
   IconButton,
+  // TradingViewIcon,
+  LineGraphIcon,
   ShrinkIcon,
   SyncAltIcon,
   Text,
-  // TradingViewIcon,
-  LineGraphIcon,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
@@ -15,17 +15,10 @@ import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { useTranslation } from '@pancakeswap/localization'
 import { ChartViewMode } from 'state/user/actions'
 import { useExchangeChartViewManager } from 'state/user/hooks'
-import styled from 'styled-components'
 import BasicChart from './BasicChart'
 import { StyledPriceChart } from './styles'
 // import TradingViewChart from './TradingViewChart'
 // import PairPriceDisplay from '../../../../components/PairPriceDisplay'
-
-const ChartButton = styled(Button)`
-  background-color: ${({ $active, theme }) => $active && `${theme.colors.primary}0f`};
-  padding: 4px 8px;
-  border-radius: 6px;
-`
 
 const PriceChart = ({
   inputCurrency,
@@ -74,18 +67,20 @@ const PriceChart = ({
             <SyncAltIcon ml="6px" color="primary" />
           </IconButton>
           <Flex>
-            <ChartButton
+            <Button
               aria-label={t('Basic')}
               title={t('Basic')}
-              $active={chartView === ChartViewMode.BASIC}
               scale="sm"
               variant="text"
               color="primary"
               onClick={() => setChartView(ChartViewMode.BASIC)}
               mr="8px"
+              px="8px"
+              py="4px"
+              backgroundColor={chartView === ChartViewMode.BASIC ? 'primary' : 'transparent'}
             >
               {isDesktop ? t('Basic') : <LineGraphIcon color="primary" />}
-            </ChartButton>
+            </Button>
             {/* <ChartButton
               aria-label="TradingView"
               title="TradingView"

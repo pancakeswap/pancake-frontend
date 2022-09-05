@@ -71,6 +71,7 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
         </Flex>
         <StyledSocialLinks order={[2]} pb={["42px", null, "32px"]} mb={["0", null, "32px"]} />
         <StyledToolsContainer
+          data-theme="dark"
           order={[1, null, 3]}
           flexDirection={["column", null, "row"]}
           justifyContent="space-between"
@@ -81,13 +82,13 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
               currentLang={currentLang}
               langs={langs}
               setLang={setLang}
-              color={darkColors.textSubtle as keyof Colors}
+              color="textSubtle"
               dropdownPosition="top-right"
             />
           </Flex>
           <Flex order={[1, null, 2]} mb={["24px", null, "0"]} justifyContent="space-between" alignItems="center">
             <Box mr="20px">
-              <CakePrice cakePriceUsd={cakePriceUsd} color={darkColors.textSubtle as keyof Colors} />
+              <CakePrice cakePriceUsd={cakePriceUsd} color="textSubtle" />
             </Box>
             <Button
               as="a"

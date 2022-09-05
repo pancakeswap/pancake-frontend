@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Flex } from "../Box/Flex";
 import { Box } from "../Box/Box";
 import Text from "../Text/Text";
-import Button from "../Button/Button";
+import { Button } from "../Button/Button";
 import Slider from "./Slider";
 
 export default {

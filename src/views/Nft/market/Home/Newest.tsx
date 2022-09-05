@@ -47,14 +47,8 @@ const Newest: React.FC<React.PropsWithChildren> = () => {
     <>
       <Flex justifyContent="space-between" alignItems="center" mb="26px">
         <Heading data-test="nfts-newest">{t('Newest Arrivals')}</Heading>
-        <Button
-          as={NextLinkFromReactRouter}
-          to={`${nftsBaseUrl}/activity/`}
-          variant="secondary"
-          scale="sm"
-          endIcon={<ChevronRightIcon color="primary" />}
-        >
-          {t('View All')}
+        <Button asChild variant="secondary" scale="sm" endIcon={<ChevronRightIcon color="primary" />}>
+          <NextLinkFromReactRouter to={`${nftsBaseUrl}/activity/`}>{t('View All')}</NextLinkFromReactRouter>
         </Button>
       </Flex>
       {nfts ? (

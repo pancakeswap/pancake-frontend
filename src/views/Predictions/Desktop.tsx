@@ -215,7 +215,7 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
             <ExpandButtonGroup>
               <TabToggle
                 height="42px"
-                as={Button}
+                asChild
                 style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
                 isActive={chartView === PredictionsChartView.TradingView}
                 onMouseDown={(e) => {
@@ -224,10 +224,12 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
                   dispatch(setChartView(PredictionsChartView.TradingView))
                 }}
               >
-                {chartView === PredictionsChartView.TradingView && <ChartIcon mr="10px" />} TradingView {t('Chart')}
+                <Button>
+                  {chartView === PredictionsChartView.TradingView && <ChartIcon mr="10px" />} TradingView {t('Chart')}
+                </Button>
               </TabToggle>
               <TabToggle
-                as={Button}
+                asChild
                 height="42px"
                 style={{ whiteSpace: 'nowrap', alignItems: 'center' }}
                 isActive={chartView === PredictionsChartView.Chainlink}
@@ -237,7 +239,9 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
                   dispatch(setChartView(PredictionsChartView.Chainlink))
                 }}
               >
-                {chartView === PredictionsChartView.Chainlink && <ChartIcon mr="10px" />} Chainlink {t('Chart')}
+                <Button>
+                  {chartView === PredictionsChartView.Chainlink && <ChartIcon mr="10px" />} Chainlink {t('Chart')}
+                </Button>
               </TabToggle>
             </ExpandButtonGroup>
             {isChartPaneOpen && (

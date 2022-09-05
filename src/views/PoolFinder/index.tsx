@@ -142,20 +142,18 @@ export default function PoolFinder() {
               hasPosition && pair ? (
                 <>
                   <MinimalPositionCard pair={pair} />
-                  <Button as={NextLinkFromReactRouter} to="/liquidity" variant="secondary" width="100%">
-                    {t('Manage this pool')}
+                  <Button asChild variant="secondary" width="100%">
+                    <NextLinkFromReactRouter to="/liquidity">{t('Manage this pool')}</NextLinkFromReactRouter>
                   </Button>
                 </>
               ) : (
                 <LightCard padding="45px 10px">
                   <AutoColumn gap="sm" justify="center">
                     <Text textAlign="center">{t('You don’t have liquidity in this pool yet.')}</Text>
-                    <Button
-                      as={NextLinkFromReactRouter}
-                      to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
-                      variant="secondary"
-                    >
-                      {t('Add Liquidity')}
+                    <Button asChild variant="secondary">
+                      <NextLinkFromReactRouter to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                        {t('Add Liquidity')}
+                      </NextLinkFromReactRouter>
                     </Button>
                   </AutoColumn>
                 </LightCard>
@@ -164,12 +162,10 @@ export default function PoolFinder() {
               <LightCard padding="45px 10px">
                 <AutoColumn gap="sm" justify="center">
                   <Text textAlign="center">{t('No pool found.')}</Text>
-                  <Button
-                    as={NextLinkFromReactRouter}
-                    to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
-                    variant="secondary"
-                  >
-                    {t('Create pool')}
+                  <Button asChild variant="secondary">
+                    <NextLinkFromReactRouter to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                      {t('Create pool')}
+                    </NextLinkFromReactRouter>
                   </Button>
                 </AutoColumn>
               </LightCard>

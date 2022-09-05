@@ -9,7 +9,7 @@ import { useBCakeFarmBoosterProxyFactoryContract } from 'hooks/useContract'
 
 const MAX_GAS_LIMIT = 2500000
 
-interface CreateProxyButtonProps extends ButtonProps {
+type CreateProxyButtonProps = ButtonProps & {
   onDone?: () => void
 }
 

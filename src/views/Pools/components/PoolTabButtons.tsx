@@ -63,12 +63,16 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, vi
   const liveOrFinishedSwitch = (
     <Wrapper>
       <ButtonMenu activeIndex={isExact ? 0 : 1} scale="sm" variant="subtle">
-        <ButtonMenuItem as={NextLinkFromReactRouter} to="/pools" replace>
-          {t('Live')}
+        <ButtonMenuItem asChild>
+          <NextLinkFromReactRouter to="/pools" replace>
+            {t('Live')}
+          </NextLinkFromReactRouter>
         </ButtonMenuItem>
         <NotificationDot show={hasStakeInFinishedPools}>
-          <ButtonMenuItem id="finished-pools-button" as={NextLinkFromReactRouter} to="/pools/history" replace>
-            {t('Finished')}
+          <ButtonMenuItem asChild id="finished-pools-button">
+            <NextLinkFromReactRouter to="/pools/history" replace>
+              {t('Finished')}
+            </NextLinkFromReactRouter>
           </ButtonMenuItem>
         </NotificationDot>
       </ButtonMenu>

@@ -298,23 +298,15 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
 
           {userPoolBalance && JSBI.greaterThan(userPoolBalance.quotient, BIG_INT_ZERO) && (
             <Flex flexDirection="column">
-              <Button
-                as={NextLinkFromReactRouter}
-                to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
-                variant="primary"
-                width="100%"
-                mb="8px"
-              >
-                {t('Remove')}
+              <Button asChild variant="primary" width="100%" mb="8px">
+                <NextLinkFromReactRouter to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}>
+                  {t('Remove')}
+                </NextLinkFromReactRouter>
               </Button>
-              <Button
-                as={NextLinkFromReactRouter}
-                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}?step=1`}
-                variant="text"
-                startIcon={<AddIcon color="primary" />}
-                width="100%"
-              >
-                {t('Add liquidity instead')}
+              <Button asChild variant="text" startIcon={<AddIcon color="primary" />} width="100%">
+                <NextLinkFromReactRouter to={`/add/${currencyId(currency0)}/${currencyId(currency1)}?step=1`}>
+                  {t('Add liquidity instead')}
+                </NextLinkFromReactRouter>
               </Button>
             </Flex>
           )}

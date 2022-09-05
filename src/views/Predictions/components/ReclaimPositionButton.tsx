@@ -8,7 +8,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useConfig } from '../context/ConfigProvider'
 
-interface ReclaimPositionButtonProps extends ButtonProps {
+type ReclaimPositionButtonProps = ButtonProps & {
   epoch: number
   onSuccess?: () => Promise<void>
   children?: ReactNode

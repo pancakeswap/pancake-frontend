@@ -3,7 +3,7 @@ import { vars } from "@pancakeswap/ui/css/vars.css";
 import { style } from "@vanilla-extract/css";
 import { recipe, RecipeVariants } from "@vanilla-extract/recipes";
 
-const scale = {
+export const scales = {
   xs: style([
     atoms({
       py: 0,
@@ -37,7 +37,7 @@ const scale = {
 
 const boxShadow = "0px -1px 0px 0px rgba(14, 14, 44, 0.4) inset";
 
-export type Scale = keyof typeof scale;
+export type Scale = keyof typeof scales;
 
 const variant = {
   primary: style([
@@ -162,7 +162,7 @@ export const variants = recipe({
   variants: {
     loading,
     variant,
-    scale,
+    scale: scales,
   },
   defaultVariants: {
     scale: "md",

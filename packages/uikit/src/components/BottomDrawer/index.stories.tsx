@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box } from "../Box/Box";
-import Button from "../Button/Button";
+import { Button } from "../Button/Button";
 import Text from "../Text/Text";
 import BottomDrawer from "./BottomDrawer";
 

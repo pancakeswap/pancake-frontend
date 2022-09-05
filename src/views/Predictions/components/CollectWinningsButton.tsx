@@ -4,7 +4,7 @@ import { useCollectWinningModalProps } from 'state/predictions/hooks'
 import { useConfig } from '../context/ConfigProvider'
 import CollectRoundWinningsModal from './CollectRoundWinningsModal'
 
-interface CollectWinningsButtonProps extends ButtonProps {
+type CollectWinningsButtonProps = ButtonProps & {
   hasClaimed: boolean
   onSuccess?: () => Promise<void>
 }

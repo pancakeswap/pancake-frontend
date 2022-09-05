@@ -19,14 +19,8 @@ const Collections: React.FC<React.PropsWithChildren<{ title: string; testId: str
         <Heading as="h3" scale="lg" data-test={testId}>
           {title}
         </Heading>
-        <Button
-          as={NextLinkFromReactRouter}
-          to={`${nftsBaseUrl}/collections/`}
-          variant="secondary"
-          scale="sm"
-          endIcon={<ChevronRightIcon color="primary" width="24px" />}
-        >
-          {t('View All')}
+        <Button asChild variant="secondary" scale="sm" endIcon={<ChevronRightIcon color="primary" width="24px" />}>
+          <NextLinkFromReactRouter to={`${nftsBaseUrl}/collections/`}>{t('View All')}</NextLinkFromReactRouter>
         </Button>
       </Flex>
       <Grid gap="16px" gridTemplateColumns={['1fr', '1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} mb="64px">

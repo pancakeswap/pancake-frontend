@@ -1,6 +1,6 @@
 import React from "react";
 import { renderWithProvider } from "../../testHelpers";
-import Button from "../../components/Button/Button";
+import { Button } from "../../components/Button/Button";
 
 it("renders correctly", () => {
   const { asFragment } = renderWithProvider(<Button>Submit</Button>);

@@ -1,17 +1,16 @@
 import { ReactElement } from "react";
-import { SpaceProps } from "styled-system";
-import { BaseButtonProps, Scale, variants } from "../Button/types";
+import { ButtonProps } from "../Button/Button";
 
-export interface ButtonMenuItemProps extends BaseButtonProps {
+export type ButtonMenuItemProps = ButtonProps & {
   isActive?: boolean;
-}
+};
 
-export interface ButtonMenuProps extends SpaceProps {
-  variant?: typeof variants.PRIMARY | typeof variants.SUBTLE;
+export type ButtonMenuProps = ButtonProps & {
+  variant?: "primary" | "subtle";
   activeIndex?: number;
   onItemClick?: (index: number) => void;
-  scale?: Scale;
+  scale?: ButtonProps["scale"];
   disabled?: boolean;
   children: ReactElement[];
   fullWidth?: boolean;
-}
+};

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { BrowserRouter, Link, MemoryRouter } from "react-router-dom";
 import { Box } from "../../components/Box/Box";
 import { Flex } from "../../components/Box/Flex";
-import Button from "../../components/Button/Button";
+import { Button } from "../../components/Button/Button";
 import IconButton from "../../components/Button/IconButton";
 import DropdownMenu from "../../components/DropdownMenu/DropdownMenu";
 import { footerLinks } from "../../components/Footer/config";
