@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Flex, Text, LinkExternal, useTooltip, InfoIcon, RefreshIcon, WarningIcon } from '@pancakeswap/uikit'
+import { Flex, Box, Text, LinkExternal, useTooltip, InfoIcon, RefreshIcon, WarningIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { chains } from 'utils/wagmi'
 import { useBalance } from 'wagmi'
@@ -68,44 +68,44 @@ const HarvestDetail: React.FC<React.PropsWithChildren<HarvestDetailProps>> = ({
             {chainInfo?.name}
           </Text>
         </Flex>
-        {isLoading ? (
-          <Text color="primary" bold fontSize="14px">
-            {t('Loading')}
-          </Text>
+        {isFail ? (
+          <Box>
+            {tooltipVisible && tooltip}
+            <div ref={targetRef}>
+              <WarningIcon color="failure" />
+            </div>
+          </Box>
         ) : (
-          <LinkExternal href={getBlockExploreLink(tx, 'transaction', chainId)}>
-            {getBlockExploreName(chainId)}
-          </LinkExternal>
+          <Box>
+            {isLoading ? (
+              <Text color="primary" bold fontSize="14px">
+                {t('Loading')}
+              </Text>
+            ) : (
+              <LinkExternal href={getBlockExploreLink(tx, 'transaction', chainId)}>
+                {getBlockExploreName(chainId)}
+              </LinkExternal>
+            )}
+          </Box>
         )}
       </Flex>
       {isBscNetwork ? (
-        <>
-          {nonce === '0' && (
-            <Flex justifyContent="space-between">
-              <Text color="textSubtle">{t('%symbol% Balance', { symbol: 'BNB' })}</Text>
-              <Text>{formatBigNumber(bnbBalance, 3)}</Text>
-            </Flex>
+        <Box>
+          {!isFail && (
+            <Box>
+              {nonce === '0' && (
+                <Flex justifyContent="space-between">
+                  <Text color="textSubtle">{t('%symbol% Balance', { symbol: 'BNB' })}</Text>
+                  <Text>{formatBigNumber(bnbBalance, 3)}</Text>
+                </Flex>
+              )}
+              <Flex justifyContent="space-between">
+                <Text color="textSubtle">{t('%symbol% Balance', { symbol: 'CAKE' })}</Text>
+                {isLoading ? <RefreshIcon spin /> : <Text>{formatBigNumber(cakeBalance, 3)}</Text>}
+              </Flex>
+            </Box>
           )}
-          <Flex justifyContent="space-between">
-            <Text color="textSubtle">{t('%symbol% Balance', { symbol: 'CAKE' })}</Text>
-            {isLoading ? (
-              <RefreshIcon spin />
-            ) : (
-              <>
-                {isFail ? (
-                  <>
-                    {tooltipVisible && tooltip}
-                    <div ref={targetRef}>
-                      <WarningIcon color="failure" />
-                    </div>
-                  </>
-                ) : (
-                  <Text>{formatBigNumber(cakeBalance, 3)}</Text>
-                )}
-              </>
-            )}
-          </Flex>
-        </>
+        </Box>
       ) : (
         <>
           <Flex justifyContent="space-between">
