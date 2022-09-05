@@ -28,7 +28,6 @@ import Dots from '../../../components/Loader/Dots'
 import PoolPriceBar from '../PoolPriceBar'
 import Page from '../../Page'
 import ConfirmAddLiquidityModal from '../components/ConfirmAddLiquidityModal'
-import { formatAmount } from '../../../utils/formatInfoNumbers'
 import { useCurrencySelectRoute } from '../useCurrencySelectRoute'
 import { CommonBasesType } from '../../../components/SearchModal/types'
 import { AppHeader, AppBody } from '../../../components/App'
@@ -60,14 +59,6 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
     error,
     addError,
   } = useStableLPDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
-
-  const poolData = useLPApr(pair)
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t(`Based on last 7 days' performance. Does not account for impermanent loss`),
-    {
-      placement: 'bottom',
-    },
-  )
 
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(true)
 
@@ -138,12 +129,13 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
     const estimate = stableSwapContract.estimateGas.add_liquidity
     const method = stableSwapContract.add_liquidity
 
-    const amountOrder =
+    // Ensure the token order [token0, token1]
+    const tokenAmounts =
       stableSwapConfig?.token0?.address === parsedAmountA?.currency?.address
         ? [parsedAmountA?.quotient?.toString(), parsedAmountB?.quotient?.toString()]
         : [parsedAmountB?.quotient?.toString(), parsedAmountA?.quotient?.toString()]
 
-    const args = [amountOrder, lpMintedSlippage?.toString()]
+    const args = [tokenAmounts, lpMintedSlippage?.toString()]
 
     const value = null
 
@@ -334,18 +326,6 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                   {allowedSlippage / 100}%
                 </Text>
               </RowBetween>
-
-              {pair && poolData && (
-                <RowBetween>
-                  <TooltipText ref={targetRef} bold fontSize="12px" color="secondary">
-                    {t('LP reward APR')}
-                  </TooltipText>
-                  {tooltipVisible && tooltip}
-                  <Text bold color="primary">
-                    {formatAmount(poolData.lpApr7d)}%
-                  </Text>
-                </RowBetween>
-              )}
 
               {!account ? (
                 <ConnectWalletButton />

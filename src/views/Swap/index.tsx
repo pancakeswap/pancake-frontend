@@ -42,8 +42,8 @@ export default function Swap() {
   const outputCurrency = useCurrency(outputCurrencyId)
 
   const { stableSwapConfig, ...stableConfig } = useStableConfig({
-    tokenAAddress: inputCurrency?.address,
-    tokenBAddress: outputCurrency?.address,
+    addressA: inputCurrency?.address,
+    addressB: outputCurrency?.address,
   })
 
   const currencies: { [field in Field]?: Currency } = {

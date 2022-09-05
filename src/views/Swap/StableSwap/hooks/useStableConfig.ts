@@ -7,15 +7,13 @@ import { CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 import { createContext, useMemo } from 'react'
 
-function findStablePair({ tokenAAddress, tokenBAddress }) {
-  const stableSwapPair = stableSwapConfigs.find((stablePair) => {
+function findStablePair({ addressA, addressB }) {
+  return stableSwapConfigs.find((stablePair) => {
     return (
-      (stablePair?.token0?.address === tokenAAddress && stablePair?.token1?.address === tokenBAddress) ||
-      (stablePair?.token1?.address === tokenAAddress && stablePair?.token0?.address === tokenBAddress)
+      (stablePair?.token0?.address === addressA && stablePair?.token1?.address === addressB) ||
+      (stablePair?.token1?.address === addressA && stablePair?.token0?.address === addressB)
     )
   })
-
-  return stableSwapPair
 }
 
 export function useLPTokensWithBalanceByAccount(account) {
@@ -51,8 +49,8 @@ export function useLPTokensWithBalanceByAccount(account) {
 
 export const StableConfigContext = createContext(null)
 
-export default function useStableConfig({ tokenAAddress, tokenBAddress }) {
-  const stablePair = useMemo(() => findStablePair({ tokenAAddress, tokenBAddress }), [tokenAAddress, tokenBAddress])
+export default function useStableConfig({ addressA, addressB }) {
+  const stablePair = useMemo(() => findStablePair({ addressA, addressB }), [addressA, addressB])
   const stableSwapContract = useContract(stablePair?.stableSwapAddress, stableSwapABI)
   const stableSwapInfoContract = useContract(stablePair?.infoStableSwapAddress, stableSwapInfoABI)
   const stableSwapLPContract = useContract(stablePair?.lpAddress, stableLPABI)

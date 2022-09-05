@@ -17,36 +17,29 @@ import { useEstimatedAmount } from 'views/Swap/StableSwap/hooks/useStableTradeEx
 import useSWR from 'swr'
 import { useMintState } from 'state/mint/hooks'
 
-export function useStablePair(currencyA, currencyB): [PairState, Pair | null] {
+export function useStablePair(currencyA, currencyB) {
   const { stableSwapConfig } = useContext(StableConfigContext)
 
   if (!stableSwapConfig) {
     return [PairState.NOT_EXISTS, undefined]
   }
 
-  // Philip TODO: sortby order and get reserve amount
-  const reserve0 = CurrencyAmount.fromRawAmount(stableSwapConfig?.token0, '0')
-  const reserve1 = CurrencyAmount.fromRawAmount(stableSwapConfig?.token1, '1')
-  const tokenAmounts = [reserve0, reserve1]
-
-  const token0Amount = tryParseAmount('1', currencyA)
-
-  const token0Price = new Price(currencyA, currencyB, token0Amount?.quotient, token0Amount?.quotient)
+  const ZERO_AMOUNT = CurrencyAmount.fromRawAmount(stableSwapConfig?.token0, '0')
 
   const pair = {
     liquidityToken: stableSwapConfig?.lpAddress
       ? new Token(currencyA?.chainId, stableSwapConfig?.lpAddress, 18, 'Stable-LP', 'Pancake StableSwap LPs')
       : null,
-    tokenAmounts,
-    reserve0,
-    reserve1,
-    token0: tokenAmounts[0].currency,
-    token1: tokenAmounts[1].currency,
-    // Philip TODO: calculate getLiquidityValue logic
-    getLiquidityValue: () => reserve0,
-    token0Price: () => token0Price,
-    token1Price: () => token0Price,
-    priceOf: (token) => token0Price,
+    tokenAmounts: [],
+    token0: currencyA,
+    token1: currencyB,
+    // NOTE: Stable Tokens don't need this
+    reserve1: ZERO_AMOUNT,
+    reserve0: ZERO_AMOUNT,
+    getLiquidityValue: () => ZERO_AMOUNT,
+    token0Price: () => ZERO_AMOUNT,
+    token1Price: () => ZERO_AMOUNT,
+    priceOf: () => ZERO_AMOUNT,
   }
 
   return [PairState.EXISTS, pair]
@@ -56,25 +49,23 @@ function useMintedStabelLP({
   stableSwapInfoContract,
   stableSwapConfig,
   stableSwapAddress,
-  currencyA,
-  currencyAAmount,
-  currencyBAmount,
+  currencyInput,
+  currencyInputAmount,
+  currencyOutputAmount,
 }) {
-  const quotient0Str = currencyAAmount?.toString()
-  const quotient1Str = currencyBAmount?.toString()
+  const quotient0Str = currencyInputAmount?.toString()
+  const quotient1Str = currencyOutputAmount?.toString()
 
   const isValid = !!stableSwapAddress && !!quotient0Str && !!quotient1Str
 
   return useSWR(
     isValid ? ['get_add_liquidity_mint_amount', stableSwapAddress, quotient0Str, quotient1Str] : null,
     async () => {
-      const isToken0 = stableSwapConfig?.token0?.address === currencyA?.address
+      const isToken0 = stableSwapConfig?.token0?.address === currencyInput?.address
 
-      const args = isToken0 ? [quotient0Str, quotient1Str] : [quotient1Str, quotient0Str]
+      const amounts = isToken0 ? [quotient0Str, quotient1Str] : [quotient1Str, quotient0Str]
 
-      const estimatedAmount = await stableSwapInfoContract.get_add_liquidity_mint_amount(...[stableSwapAddress, args])
-
-      return estimatedAmount
+      return stableSwapInfoContract.get_add_liquidity_mint_amount(stableSwapAddress, amounts)
     },
   )
 }
@@ -114,25 +105,15 @@ export function useStableLPDerivedMintInfo(
   )
 
   // pair
-  const [pairState, pair] = useStablePair(currencies[Field.CURRENCY_A], currencies[Field.CURRENCY_B])
+  const [pairState, pair] = useStablePair(currencyA, currencyB)
 
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
   const noLiquidity: boolean =
-    pairState === PairState.NOT_EXISTS ||
-    Boolean(totalSupply && JSBI.equal(totalSupply.quotient, BIG_INT_ZERO)) ||
-    Boolean(
-      pairState === PairState.EXISTS &&
-        pair &&
-        JSBI.equal(pair.reserve0.quotient, BIG_INT_ZERO) &&
-        JSBI.equal(pair.reserve1.quotient, BIG_INT_ZERO),
-    )
+    pairState === PairState.NOT_EXISTS || Boolean(totalSupply && JSBI.equal(totalSupply.quotient, BIG_INT_ZERO))
 
   // balances
-  const balances = useCurrencyBalances(account ?? undefined, [
-    currencies[Field.CURRENCY_A],
-    currencies[Field.CURRENCY_B],
-  ])
+  const balances = useCurrencyBalances(account ?? undefined, [currencyA, currencyB])
   const currencyBalances: { [field in Field]?: CurrencyAmount<Currency> } = {
     [Field.CURRENCY_A]: balances[0],
     [Field.CURRENCY_B]: balances[1],
@@ -159,43 +140,35 @@ export function useStableLPDerivedMintInfo(
 
   const { stableSwapConfig, stableSwapContract, stableSwapInfoContract } = useContext(StableConfigContext)
 
-  const parsedAAmount = parsedAmounts[Field.CURRENCY_A]?.quotient
-  const parsedBAmount = parsedAmounts[Field.CURRENCY_B]?.quotient
+  const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts
+
+  const currencyAAmountQuotient = currencyAAmount?.quotient
+  const currencyBAmountQuotient = currencyBAmount?.quotient
 
   const { data: estimatedOutputAmount } = useEstimatedAmount({
-    currency: parsedAAmount ? currencies[Field.CURRENCY_A] : currencies[Field.CURRENCY_B],
-    quotient: parsedAAmount ? parsedAAmount?.toString() : parsedBAmount?.toString(),
+    currency: currencyAAmountQuotient ? currencyA : currencyB,
+    quotient: currencyAAmountQuotient ? currencyAAmountQuotient?.toString() : currencyBAmountQuotient?.toString(),
     stableSwapConfig,
     stableSwapContract,
     isParamInvalid: !stableSwapConfig?.stableSwapAddress,
   })
 
   const price = useMemo(() => {
-    if ((parsedAAmount || parsedBAmount) && estimatedOutputAmount) {
-      return parsedAAmount
-        ? new Price(
-            currencies[Field.CURRENCY_A],
-            currencies[Field.CURRENCY_B],
-            parsedAAmount,
-            estimatedOutputAmount.quotient,
-          )
-        : new Price(
-            currencies[Field.CURRENCY_A],
-            currencies[Field.CURRENCY_B],
-            estimatedOutputAmount.quotient,
-            parsedBAmount,
-          )
+    if ((currencyAAmountQuotient || currencyBAmountQuotient) && estimatedOutputAmount) {
+      return currencyAAmountQuotient
+        ? new Price(currencyA, currencyB, currencyAAmountQuotient, estimatedOutputAmount.quotient)
+        : new Price(currencyA, currencyB, estimatedOutputAmount.quotient, currencyBAmountQuotient)
     }
     return undefined
-  }, [estimatedOutputAmount, currencies, parsedBAmount, parsedAAmount])
+  }, [estimatedOutputAmount, currencyA, currencyB, currencyBAmountQuotient, currencyAAmountQuotient])
 
   const { data: lpMinted } = useMintedStabelLP({
     stableSwapAddress: stableSwapConfig?.stableSwapAddress,
     stableSwapInfoContract,
     stableSwapConfig,
-    currencyA: parsedAAmount ? currencies[Field.CURRENCY_A] : currencies[Field.CURRENCY_B],
-    currencyAAmount: parsedAAmount || parsedBAmount,
-    currencyBAmount: parsedAAmount ? parsedBAmount : parsedAAmount,
+    currencyInput: currencyAAmountQuotient ? currencyA : currencyB,
+    currencyInputAmount: currencyAAmountQuotient || currencyBAmountQuotient,
+    currencyOutputAmount: currencyAAmountQuotient ? currencyBAmountQuotient : currencyAAmountQuotient,
   })
 
   // liquidity minted
@@ -227,8 +200,6 @@ export function useStableLPDerivedMintInfo(
   if (pairState === PairState.INVALID) {
     error = error ?? t('Choose a valid pair')
   }
-
-  const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts
 
   if (
     currencyAAmount &&
