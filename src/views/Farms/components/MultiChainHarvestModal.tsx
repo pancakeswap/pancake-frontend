@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
 import { useAppDispatch } from 'state'
 import { BigNumber } from 'bignumber.js'
-import { pickFarmHarvestTx, MsgStatus } from 'state/transactions/actions'
+import { pickFarmHarvestTx, MsgStatus, HarvestStatusType } from 'state/transactions/actions'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { Modal, InjectedModalProps, Flex, Box, Text, Button, AutoRenewIcon, Image } from '@pancakeswap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -67,13 +67,13 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
           sourceChain: {
             chainId,
             amount,
-            status: undefined,
+            status: HarvestStatusType.PENDING,
             tx: receipt.hash,
             nonce: nonce.toString(),
           },
           destinationChain: {
             chainId: ChainId.BSC,
-            status: undefined,
+            status: HarvestStatusType.PENDING,
             tx: '',
             msgStatus: MsgStatus.MS_UNKNOWN,
           },

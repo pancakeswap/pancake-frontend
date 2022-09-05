@@ -12,6 +12,7 @@ import {
   SerializableTransactionReceipt,
   TransactionType,
   FarmHarvestTransactionType,
+  HarvestStatusType,
 } from './actions'
 import { resetUserState } from '../global/actions'
 
@@ -101,15 +102,17 @@ export default createReducer(initialState, (builder) =>
         confirmOrderSubmission(chainId, receipt.from, hash, receipt.status !== 0)
       } else if (tx.type === 'limit-order-cancellation') {
         confirmOrderCancellation(chainId, receipt.from, hash, receipt.status !== 0)
-      } else if (tx.type === 'non-bsc-farm-harvest' && tx.farmHarvest.sourceChain.status === 0) {
+      } else if (
+        tx.type === 'non-bsc-farm-harvest' &&
+        tx.farmHarvest.sourceChain.status === HarvestStatusType.PENDING
+      ) {
         tx.farmHarvest.sourceChain.status = receipt.status
-        tx.receipt.status = 0
       } else if (
         tx.type === 'non-bsc-farm-harvest' &&
         tx.farmHarvest.sourceChain.status === 1 &&
-        farmHarvest.destinationChain.status === 1
+        tx.farmHarvest.destinationChain.status === HarvestStatusType.PENDING
       ) {
-        tx.receipt.status = 1
+        tx.receipt.status = farmHarvest.destinationChain.status
         tx.farmHarvest = farmHarvest
       }
     })

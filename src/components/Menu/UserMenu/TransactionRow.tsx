@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useAppDispatch } from 'state'
 import { useTranslation } from '@pancakeswap/localization'
 import { TransactionDetails } from 'state/transactions/reducer'
-import { TransactionType, pickFarmHarvestTx } from 'state/transactions/actions'
+import { TransactionType, pickFarmHarvestTx, HarvestStatusType } from 'state/transactions/actions'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBlockExploreLink } from 'utils'
 
@@ -38,7 +38,7 @@ const TxnLink = styled.div`
 `
 
 const renderIcon = (txn: TransactionDetails) => {
-  if (!txn.receipt || txn.receipt?.status === 0) {
+  if (!txn.receipt || txn?.farmHarvest?.destinationChain?.status === HarvestStatusType.PENDING) {
     return <RefreshIcon spin width="24px" />
   }
 

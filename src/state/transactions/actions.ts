@@ -33,9 +33,15 @@ export enum MsgStatus {
   MS_FALLBACK = 5,
 }
 
+export enum HarvestStatusType {
+  PENDING = -1,
+  FAIL = 0,
+  SUCCESS = 1,
+}
+
 export interface FarmHarvestTransactionType {
   chainId: number
-  status: number | undefined
+  status: HarvestStatusType
   tx: string
   nonce?: string
   amount?: string

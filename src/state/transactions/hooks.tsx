@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { AppState, useAppDispatch } from '../index'
-import { addTransaction, TransactionType, FarmHarvestTransactionType } from './actions'
+import { addTransaction, TransactionType, FarmHarvestTransactionType, HarvestStatusType } from './actions'
 import { TransactionDetails } from './reducer'
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
@@ -129,7 +129,9 @@ export function usePendingTransactions(): { hasPendingTransactions: boolean; pen
     return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
   }, [allTransactions])
 
-  const pending = sortedRecentTransactions.filter((tx) => !tx.receipt || tx.receipt?.status === 0).map((tx) => tx.hash)
+  const pending = sortedRecentTransactions
+    .filter((tx) => !tx.receipt || tx?.farmHarvest?.destinationChain?.status === HarvestStatusType.PENDING)
+    .map((tx) => tx.hash)
   const hasPendingTransactions = !!pending.length
 
   return {

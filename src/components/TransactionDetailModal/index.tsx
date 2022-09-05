@@ -16,9 +16,7 @@ const TransactionsDetailModal = () => {
     }
   }, [])
 
-  const pickedData = useMemo(() => {
-    return allTransactions[pickedTx] ?? {}
-  }, [allTransactions, pickedTx])
+  const pickedData = useMemo(() => allTransactions[pickedTx], [allTransactions, pickedTx])
 
   const closeModal = () => {
     dispatch(toggleFarmHarvestModal({ showModal: false }))
@@ -26,7 +24,7 @@ const TransactionsDetailModal = () => {
 
   return (
     <ModalV2 isOpen={showModal} closeOnOverlayClick onDismiss={closeModal}>
-      <FarmHarvestModal onDismiss={closeModal} />
+      <FarmHarvestModal pickedData={pickedData} onDismiss={closeModal} />
     </ModalV2>
   )
 }

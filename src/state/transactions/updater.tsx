@@ -7,7 +7,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
 import { ChainId } from '@pancakeswap/sdk'
 import { AppState, useAppDispatch } from '../index'
-import { checkedTransaction, finalizeTransaction, MsgStatus } from './actions'
+import { checkedTransaction, finalizeTransaction, MsgStatus, HarvestStatusType } from './actions'
 import { fetchCelerApi } from './fetchCelerApi'
 
 export function shouldCheck(
@@ -89,7 +89,7 @@ export default function Updater(): null {
         (hash) =>
           transactions[hash].type === 'non-bsc-farm-harvest' &&
           transactions[hash].farmHarvest.sourceChain.status === 1 &&
-          transactions[hash].farmHarvest.destinationChain.status === undefined,
+          transactions[hash].farmHarvest.destinationChain.status === HarvestStatusType.PENDING,
       )
       .forEach((hash) => {
         const fakeHash = '0xcdb7e81470bdc407ed3eafb2ca20d53ab0d29bcc00e94ad6d056a1d2d99ec59c' || hash // TODO: Harvest change to hash before merge
@@ -116,14 +116,17 @@ export default function Updater(): null {
               }),
             )
 
-            const { text, data } = transaction.translatableSummary
-            const toastText = t(text, { ...data })
+            const { amount } = transaction.farmHarvest.sourceChain
             if (messageStatus === MsgStatus.MS_COMPLETED) {
+              const toastText = t('%amount% CAKE have been successfully harvest to your BNB Smart Chain Wallet', {
+                amount,
+              })
               toastSuccess(
                 toastText,
                 <ToastDescriptionWithTx txHash={destinationTxHash} customizeChainId={ChainId.BSC} />,
               )
             } else if (messageStatus === MsgStatus.MS_FAIL) {
+              const toastText = t('%amount% CAKE harvest is failed', { amount })
               toastError(
                 toastText,
                 <ToastDescriptionWithTx txHash={destinationTxHash} customizeChainId={ChainId.BSC} />,
