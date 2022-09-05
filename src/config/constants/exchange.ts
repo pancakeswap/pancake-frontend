@@ -39,7 +39,10 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
  * @example { [WBTC.address]: [renBTC], [renBTC.address]: [WBTC] }
  */
 export const ADDITIONAL_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
-  [ChainId.BSC]: {},
+  [ChainId.BSC]: {
+    // SNFTS-SFUND
+    [bscTokens.snfts.address]: [bscTokens.sfund],
+  },
 }
 
 /**
