@@ -160,6 +160,8 @@ function MinimalPositionCardView({
   userPoolBalance,
   poolTokenPercentage,
 }: PositionCardProps) {
+  const isStableLP = useContext(StableConfigContext)
+
   const { t } = useTranslation()
   const poolData = useLPApr(pair)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -217,30 +219,34 @@ function MinimalPositionCardView({
                   </Text>
                   <Text>{poolTokenPercentage ? `${poolTokenPercentage.toFixed(6)}%` : '-'}</Text>
                 </FixedHeightRow>
-                <FixedHeightRow>
-                  <Text color="textSubtle" small>
-                    {t('Pooled %asset%', { asset: currency0.symbol })}:
-                  </Text>
-                  {token0Deposited ? (
-                    <RowFixed>
-                      <Text ml="6px">{token0Deposited?.toSignificant(6)}</Text>
-                    </RowFixed>
-                  ) : (
-                    '-'
-                  )}
-                </FixedHeightRow>
-                <FixedHeightRow>
-                  <Text color="textSubtle" small>
-                    {t('Pooled %asset%', { asset: currency1.symbol })}:
-                  </Text>
-                  {token1Deposited ? (
-                    <RowFixed>
-                      <Text ml="6px">{token1Deposited?.toSignificant(6)}</Text>
-                    </RowFixed>
-                  ) : (
-                    '-'
-                  )}
-                </FixedHeightRow>
+                {isStableLP ? null : (
+                  <FixedHeightRow>
+                    <Text color="textSubtle" small>
+                      {t('Pooled %asset%', { asset: currency0.symbol })}:
+                    </Text>
+                    {token0Deposited ? (
+                      <RowFixed>
+                        <Text ml="6px">{token0Deposited?.toSignificant(6)}</Text>
+                      </RowFixed>
+                    ) : (
+                      '-'
+                    )}
+                  </FixedHeightRow>
+                )}
+                {isStableLP ? null : (
+                  <FixedHeightRow>
+                    <Text color="textSubtle" small>
+                      {t('Pooled %asset%', { asset: currency1.symbol })}:
+                    </Text>
+                    {token1Deposited ? (
+                      <RowFixed>
+                        <Text ml="6px">{token1Deposited?.toSignificant(6)}</Text>
+                      </RowFixed>
+                    ) : (
+                      '-'
+                    )}
+                  </FixedHeightRow>
+                )}
               </AutoColumn>
             </AutoColumn>
           </CardBody>
