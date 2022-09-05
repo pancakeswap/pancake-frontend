@@ -5,7 +5,6 @@ import Script from 'next/script'
 import { createGlobalStyle } from 'styled-components'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
 import Head from 'next/head'
-import { Menu } from '../components/Menu'
 
 declare module 'styled-components' {
   /* eslint-disable @typescript-eslint/no-empty-interface */
@@ -52,7 +51,6 @@ function useIsMounted() {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  // FIXME: server render styled component className conflict
   const isMounted = useIsMounted()
   return (
     <>
@@ -82,7 +80,6 @@ function MyApp({ Component, pageProps }: AppProps) {
             <GlobalStyle />
             {isMounted && (
               <>
-                <Menu />
                 <Component {...pageProps} />
               </>
             )}
