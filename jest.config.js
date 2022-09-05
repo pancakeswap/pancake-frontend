@@ -7,7 +7,7 @@ const createJestConfig = nextJest({ dir: './' })
 // Any custom config you want to pass to Jest
 const customJestConfig = {
   transform: {
-    '^.+\\.css.ts$': 'babel-jest',
+    '^.+\\.(js|jsx|ts|tsx|mjs)$': ['babel-jest', { configFile: './babel-test.config.json' }],
   },
   testPathIgnorePatterns: ['<rootDir>/apps/test/', '<rootDir>/src/config/__tests__/', '<rootDir>/packages'],
   moduleNameMapper: {
@@ -34,6 +34,7 @@ const jestConfig = createJestConfig(customJestConfig)
 module.exports = jestConfig().then((config) => {
   // eslint-disable-next-line no-param-reassign
   delete config.moduleNameMapper['^.+\\.(css|sass|scss)$']
-  console.log(config, 'config')
+  // eslint-disable-next-line no-param-reassign
+  // delete config.transform['^.+\\.(js|jsx|ts|tsx|mjs)$']
   return config
 })
