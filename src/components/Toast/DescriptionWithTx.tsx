@@ -7,18 +7,24 @@ import truncateHash from 'utils/truncateHash'
 interface DescriptionWithTxProps {
   description?: string
   txHash?: string
+  customizeChainId?: number
 }
 
-const DescriptionWithTx: React.FC<React.PropsWithChildren<DescriptionWithTxProps>> = ({ txHash, children }) => {
+const DescriptionWithTx: React.FC<React.PropsWithChildren<DescriptionWithTxProps>> = ({
+  txHash,
+  children,
+  customizeChainId,
+}) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
+  const supportChainId = customizeChainId ?? chainId
 
   return (
     <>
       {typeof children === 'string' ? <Text as="p">{children}</Text> : children}
       {txHash && (
-        <Link external href={getBlockExploreLink(txHash, 'transaction', chainId)}>
-          {t('View on %site%', { site: getBlockExploreName(chainId) })}: {truncateHash(txHash, 8, 0)}
+        <Link external href={getBlockExploreLink(txHash, 'transaction', supportChainId)}>
+          {t('View on %site%', { site: getBlockExploreName(supportChainId) })}: {truncateHash(txHash, 8, 0)}
         </Link>
       )}
     </>

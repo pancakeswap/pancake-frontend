@@ -38,7 +38,7 @@ const TxnLink = styled.div`
 `
 
 const renderIcon = (txn: TransactionDetails) => {
-  if (!txn.receipt) {
+  if (!txn.receipt || txn.receipt?.status === 0) {
     return <RefreshIcon spin width="24px" />
   }
 

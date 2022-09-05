@@ -24,12 +24,22 @@ export interface SerializableTransactionReceipt {
   status?: number
 }
 
+export enum MsgStatus {
+  MS_UNKNOWN = 0,
+  MS_WAITING_FOR_SGN_CONFIRMATIONS = 1,
+  MS_WAITING_FOR_DESTINATION_EXECUTION = 2,
+  MS_COMPLETED = 3,
+  MS_FAIL = 4,
+  MS_FALLBACK = 5,
+}
+
 export interface FarmHarvestTransactionType {
   chainId: number
   status: number
   tx: string
   nonce?: string
   amount?: string
+  msgStatus?: MsgStatus
 }
 
 export const addTransaction =
@@ -50,6 +60,7 @@ export const finalizeTransaction = createAction<{
   chainId: ChainId
   hash: string
   receipt: SerializableTransactionReceipt
+  farmHarvest?: { sourceChain: FarmHarvestTransactionType; destinationChain: FarmHarvestTransactionType }
 }>('transactions/finalizeTransaction')
 export const checkedTransaction = createAction<{
   chainId: ChainId

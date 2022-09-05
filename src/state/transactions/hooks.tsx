@@ -129,7 +129,7 @@ export function usePendingTransactions(): { hasPendingTransactions: boolean; pen
     return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
   }, [allTransactions])
 
-  const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
+  const pending = sortedRecentTransactions.filter((tx) => !tx.receipt || tx.receipt?.status === 0).map((tx) => tx.hash)
   const hasPendingTransactions = !!pending.length
 
   return {
