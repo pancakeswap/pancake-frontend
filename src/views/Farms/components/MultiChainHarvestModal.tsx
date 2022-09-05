@@ -67,13 +67,13 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
           sourceChain: {
             chainId,
             amount,
-            status: 0,
+            status: undefined,
             tx: receipt.hash,
             nonce: nonce.toString(),
           },
           destinationChain: {
             chainId: ChainId.BSC,
-            status: 0,
+            status: undefined,
             tx: '',
             msgStatus: MsgStatus.MS_UNKNOWN,
           },

@@ -89,7 +89,7 @@ export default createReducer(initialState, (builder) =>
         tx.lastCheckedBlockNumber = Math.max(blockNumber, tx.lastCheckedBlockNumber)
       }
     })
-    .addCase(finalizeTransaction, (transactions, { payload: { hash, chainId, receipt } }) => {
+    .addCase(finalizeTransaction, (transactions, { payload: { hash, chainId, receipt, farmHarvest } }) => {
       const tx = transactions[chainId]?.[hash]
       if (!tx) {
         return
@@ -97,10 +97,20 @@ export default createReducer(initialState, (builder) =>
       tx.receipt = receipt
       tx.confirmedTime = now()
 
-      if (transactions[chainId]?.[hash].type === 'limit-order-submission') {
+      if (tx.type === 'limit-order-submission') {
         confirmOrderSubmission(chainId, receipt.from, hash, receipt.status !== 0)
-      } else if (transactions[chainId]?.[hash].type === 'limit-order-cancellation') {
+      } else if (tx.type === 'limit-order-cancellation') {
         confirmOrderCancellation(chainId, receipt.from, hash, receipt.status !== 0)
+      } else if (tx.type === 'non-bsc-farm-harvest' && tx.farmHarvest.sourceChain.status === 0) {
+        tx.farmHarvest.sourceChain.status = receipt.status
+        tx.receipt.status = 0
+      } else if (
+        tx.type === 'non-bsc-farm-harvest' &&
+        tx.farmHarvest.sourceChain.status === 1 &&
+        farmHarvest.destinationChain.status === 1
+      ) {
+        tx.receipt.status = 1
+        tx.farmHarvest = farmHarvest
       }
     })
     .addCase(resetUserState, (transactions, { payload: { chainId } }) => {

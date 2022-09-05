@@ -1,7 +1,7 @@
 import { CELER_API } from 'config/constants/endpoints'
 import { MsgStatus } from './actions'
 
-export const fetchCeler = async (hash: string) => {
+export const fetchCelerApi = async (hash: string) => {
   try {
     const response = await fetch(`${CELER_API}/searchByTxHash?tx=${hash}`, {
       method: 'get',

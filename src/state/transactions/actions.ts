@@ -35,7 +35,7 @@ export enum MsgStatus {
 
 export interface FarmHarvestTransactionType {
   chainId: number
-  status: number
+  status: number | undefined
   tx: string
   nonce?: string
   amount?: string

@@ -5,8 +5,10 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCurrentBlock } from 'state/block/hooks'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
+import { ChainId } from '@pancakeswap/sdk'
 import { AppState, useAppDispatch } from '../index'
-import { checkedTransaction, finalizeTransaction } from './actions'
+import { checkedTransaction, finalizeTransaction, MsgStatus } from './actions'
+import { fetchCelerApi } from './fetchCelerApi'
 
 export function shouldCheck(
   currentBlock: number,
@@ -80,6 +82,59 @@ export default function Updater(): null {
           })
       })
   }, [chainId, provider, transactions, currentBlock, dispatch, toastSuccess, toastError, t])
+
+  useEffect(() => {
+    Object.keys(transactions)
+      .filter(
+        (hash) =>
+          transactions[hash].type === 'non-bsc-farm-harvest' &&
+          transactions[hash].farmHarvest.sourceChain.status === 1 &&
+          transactions[hash].farmHarvest.destinationChain.status === undefined,
+      )
+      .forEach((hash) => {
+        const fakeHash = '0xcdb7e81470bdc407ed3eafb2ca20d53ab0d29bcc00e94ad6d056a1d2d99ec59c' || hash // TODO: Harvest change to hash before merge
+        fetchCelerApi(fakeHash)
+          .then((response) => {
+            const transaction = transactions[hash]
+            const { destinationTxHash, messageStatus } = response
+            const status =
+              messageStatus === MsgStatus.MS_COMPLETED ? 1 : messageStatus === MsgStatus.MS_FAIL ? 0 : undefined
+            dispatch(
+              finalizeTransaction({
+                chainId,
+                hash: transaction.hash,
+                receipt: { ...transaction.receipt },
+                farmHarvest: {
+                  ...transaction.farmHarvest,
+                  destinationChain: {
+                    ...transaction.farmHarvest.destinationChain,
+                    status,
+                    tx: destinationTxHash,
+                    msgStatus: messageStatus,
+                  },
+                },
+              }),
+            )
+
+            const { text, data } = transaction.translatableSummary
+            const toastText = t(text, { ...data })
+            if (messageStatus === MsgStatus.MS_COMPLETED) {
+              toastSuccess(
+                toastText,
+                <ToastDescriptionWithTx txHash={destinationTxHash} customizeChainId={ChainId.BSC} />,
+              )
+            } else if (messageStatus === MsgStatus.MS_FAIL) {
+              toastError(
+                toastText,
+                <ToastDescriptionWithTx txHash={destinationTxHash} customizeChainId={ChainId.BSC} />,
+              )
+            }
+          })
+          .catch((error) => {
+            console.error(`Failed to check harvest transaction hash: ${hash}`, error)
+          })
+      })
+  }, [chainId, transactions, currentBlock, dispatch, toastSuccess, toastError, t])
 
   return null
 }
