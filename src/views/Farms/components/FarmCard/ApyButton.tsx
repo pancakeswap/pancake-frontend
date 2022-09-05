@@ -69,7 +69,6 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
-      {strikethrough && <Text color="secondary">{t('Available Boosted: Up to 2x')}</Text>}
       <Text>
         {t('APR (incl. LP rewards)')}:{' '}
         <Text style={{ display: 'inline-block' }} color={strikethrough && 'secondary'}>
@@ -87,6 +86,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       <Text ml="5px">
         *{t('LP Rewards APR')}: {lpRewardsApr === 0 ? '-' : lpRewardsApr}%
       </Text>
+      {strikethrough && <Text color="secondary">{t('Available Boosted: Up to 2x')}</Text>}
       {strikethrough && <Text color="secondary">{t('Boost only applies to base APR (CAKE yield)')}</Text>}
     </>,
     {
