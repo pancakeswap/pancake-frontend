@@ -1,4 +1,4 @@
-import stableSwapConfigs from 'config/constants/stableSwapConfigs'
+import stableSwapConfigs, { infoStableSwapAddress } from 'config/constants/stableSwapConfigs'
 import { useContract } from 'hooks/useContract'
 import stableSwapABI from 'config/abi/stableSwap.json'
 import stableSwapInfoABI from 'config/abi/infoStableSwap.json'
@@ -52,7 +52,7 @@ export const StableConfigContext = createContext(null)
 export default function useStableConfig({ addressA, addressB }) {
   const stablePair = useMemo(() => findStablePair({ addressA, addressB }), [addressA, addressB])
   const stableSwapContract = useContract(stablePair?.stableSwapAddress, stableSwapABI)
-  const stableSwapInfoContract = useContract(stablePair?.infoStableSwapAddress, stableSwapInfoABI)
+  const stableSwapInfoContract = useContract(infoStableSwapAddress, stableSwapInfoABI)
   const stableSwapLPContract = useContract(stablePair?.lpAddress, stableLPABI)
 
   return useMemo(

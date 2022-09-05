@@ -19,6 +19,7 @@ import ConfirmSwapModal from '../../components/ConfirmSwapModal'
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
 import useStableSwapCallArgs from '../hooks/useStableSwapCallArgs'
+import { StableTrade } from '../hooks/useStableTradeExactIn'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
@@ -32,7 +33,7 @@ interface StableSwapCommitButtonPropsType {
     OUTPUT?: Currency
   }
   isExpertMode: boolean
-  trade: Trade<Currency, Currency, TradeType>
+  trade: Trade<Currency, Currency, TradeType> | StableTrade
   swapInputError: string
   currencyBalances: {
     INPUT?: CurrencyAmount<Currency>

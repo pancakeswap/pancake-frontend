@@ -154,7 +154,9 @@ export function useStableLPDerivedMintInfo(
   })
 
   const price = useMemo(() => {
-    if ((currencyAAmountQuotient || currencyBAmountQuotient) && estimatedOutputAmount) {
+    const isEstimatedOutputAmountZero = estimatedOutputAmount?.equalTo(0)
+
+    if ((currencyAAmountQuotient || currencyBAmountQuotient) && estimatedOutputAmount && !isEstimatedOutputAmountZero) {
       return currencyAAmountQuotient
         ? new Price(currencyA, currencyB, currencyAAmountQuotient, estimatedOutputAmount.quotient)
         : new Price(currencyA, currencyB, estimatedOutputAmount.quotient, currencyBAmountQuotient)

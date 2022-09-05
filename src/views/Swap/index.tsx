@@ -6,7 +6,6 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { EXCHANGE_DOCS_URLS } from 'config/constants'
 import { useDefaultsFromURLSearch } from 'state/limitOrders/hooks'
 import { AppBody } from 'components/App'
-import Row from 'components/Layout/Row'
 
 import { useCurrency } from '../../hooks/Tokens'
 import { Field } from '../../state/swap/actions'
@@ -102,17 +101,16 @@ export default function Swap() {
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
-                <Row>
-                  <TabMenu
-                    activeIndex={swapTypeState}
-                    onItemClick={() =>
-                      setSwapType((state) => (state === SwapType.SWAP ? SwapType.STABLE_SWAP : SwapType.SWAP))
-                    }
-                  >
-                    <Tab>Swap</Tab>
-                    <Tab>StableSwap</Tab>
-                  </TabMenu>
-                </Row>
+                <TabMenu
+                  fullWidth
+                  activeIndex={swapTypeState}
+                  onItemClick={() =>
+                    setSwapType((state) => (state === SwapType.SWAP ? SwapType.STABLE_SWAP : SwapType.SWAP))
+                  }
+                >
+                  <Tab>Swap</Tab>
+                  <Tab>StableSwap</Tab>
+                </TabMenu>
                 {swapTypeState === SwapType.STABLE_SWAP ? (
                   <StableSwapFormContainer
                     setIsChartDisplayed={setIsChartDisplayed}
