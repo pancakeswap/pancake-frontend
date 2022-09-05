@@ -1,6 +1,9 @@
 name: Farm Config
 on:
   pull_request:
+    paths:
+      - 'packages/farms/constants/**'
+      - 'packages/tokens/**'
   push:
     branches:
       - develop
@@ -18,9 +21,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-
-      - name: Check
-        run: npx turbo-ignore@0.0.39 @pancakeswap/farms
 
       - name: Build list
         run: yarn turbo run build --filter=@pancakeswap/farms
