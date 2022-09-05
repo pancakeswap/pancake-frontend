@@ -18,13 +18,24 @@ import useSWR from 'swr'
 import { useMintState } from 'state/mint/hooks'
 
 export function useStablePair(currencyA, currencyB) {
-  const { stableSwapConfig } = useContext(StableConfigContext)
+  const { stableSwapConfig, stableSwapContract } = useContext(StableConfigContext)
+
+  const currencyAAmountQuotient = tryParseAmount('1', currencyA)?.quotient
+
+  const { data: estimatedToken1Amount } = useEstimatedAmount({
+    currency: currencyA,
+    quotient: currencyAAmountQuotient?.toString(),
+    stableSwapContract,
+    stableSwapConfig,
+  })
 
   if (!stableSwapConfig) {
     return [PairState.NOT_EXISTS, undefined]
   }
 
-  const ZERO_AMOUNT = CurrencyAmount.fromRawAmount(stableSwapConfig?.token0, '0')
+  const ZERO_AMOUNT = CurrencyAmount.fromRawAmount(currencyA, '0')
+
+  const token0Price = new Price(currencyA, currencyB, currencyAAmountQuotient, estimatedToken1Amount?.quotient)
 
   const pair = {
     liquidityToken: stableSwapConfig?.lpAddress
@@ -33,13 +44,13 @@ export function useStablePair(currencyA, currencyB) {
     tokenAmounts: [],
     token0: currencyA,
     token1: currencyB,
+    priceOf: (token) => (token?.address === currencyA?.address ? token0Price : token0Price.invert()),
+    token0Price: () => token0Price,
+    token1Price: () => token0Price.invert(),
     // NOTE: Stable Tokens don't need this
     reserve1: ZERO_AMOUNT,
     reserve0: ZERO_AMOUNT,
     getLiquidityValue: () => ZERO_AMOUNT,
-    token0Price: () => ZERO_AMOUNT,
-    token1Price: () => ZERO_AMOUNT,
-    priceOf: () => ZERO_AMOUNT,
   }
 
   return [PairState.EXISTS, pair]

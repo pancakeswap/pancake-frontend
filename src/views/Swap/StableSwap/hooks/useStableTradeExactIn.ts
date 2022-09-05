@@ -27,7 +27,7 @@ export const minimumAmountOutFactory = (currencyAmountOut, slippageTolerance) =>
   return CurrencyAmount.fromRawAmount(currencyAmountOut.currency, slippageAdjustedAmountOut)
 }
 
-export function useStableTradeResponse({ isParamInvalid, currencyAmountIn, currencyAmountOut, stableSwapConfig }) {
+export function useStableTradeResponse({ currencyAmountIn, currencyAmountOut, stableSwapConfig }) {
   const maximumAmountIn = useCallback(
     (slippageTolerance) =>
       currencyAmountIn ? maximumAmountInFactory(currencyAmountIn, slippageTolerance) : BIG_INT_ZERO,
@@ -40,7 +40,7 @@ export function useStableTradeResponse({ isParamInvalid, currencyAmountIn, curre
     [currencyAmountOut],
   )
 
-  const isInvalid = isParamInvalid || !currencyAmountOut || !stableSwapConfig || !currencyAmountIn
+  const isInvalid = !currencyAmountIn || !currencyAmountOut || !stableSwapConfig || !currencyAmountIn
 
   const executionPrice = useMemo(() => {
     if (isInvalid) return null
@@ -66,16 +66,19 @@ export function useStableTradeResponse({ isParamInvalid, currencyAmountIn, curre
   }
 }
 
-export function useEstimatedAmount({ currency, stableSwapConfig, quotient, stableSwapContract, isParamInvalid }) {
-  return useSWR(isParamInvalid ? null : ['swapContract', stableSwapConfig?.stableSwapAddress, quotient], async () => {
-    const isToken0 = stableSwapConfig?.token0?.address === currency?.address
+export function useEstimatedAmount({ currency, stableSwapConfig, quotient, stableSwapContract }) {
+  return useSWR(
+    currency && !!quotient ? ['swapContract', stableSwapConfig?.stableSwapAddress, quotient] : null,
+    async () => {
+      const isToken0 = stableSwapConfig?.token0?.address === currency?.address
 
-    const args = isToken0 ? [1, 0, quotient] : [0, 1, quotient]
+      const args = isToken0 ? [1, 0, quotient] : [0, 1, quotient]
 
-    const estimatedAmount = await stableSwapContract.get_dy(...args)
+      const estimatedAmount = await stableSwapContract.get_dy(...args)
 
-    return CurrencyAmount.fromRawAmount(currency, estimatedAmount)
-  })
+      return CurrencyAmount.fromRawAmount(currency, estimatedAmount)
+    },
+  )
 }
 
 /**
@@ -85,8 +88,6 @@ export default function useStableTradeExactIn(
   currencyAmountIn?: CurrencyAmount<Token>,
   currencyOut?: Token,
 ): StableTrade | null {
-  const isParamInvalid = !currencyAmountIn || !currencyOut
-
   const { stableSwapContract, stableSwapConfig } = useContext(StableConfigContext)
 
   const currencyAmountInQuotient = currencyAmountIn?.quotient?.toString()
@@ -96,11 +97,9 @@ export default function useStableTradeExactIn(
     quotient: currencyAmountInQuotient,
     stableSwapContract,
     stableSwapConfig,
-    isParamInvalid,
   })
 
   return useStableTradeResponse({
-    isParamInvalid,
     currencyAmountIn,
     currencyAmountOut,
     stableSwapConfig,
