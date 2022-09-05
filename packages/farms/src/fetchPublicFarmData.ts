@@ -2,6 +2,7 @@ import { MultiCallV2 } from '@pancakeswap/multicall'
 import { ChainId } from '@pancakeswap/sdk'
 import chunk from 'lodash/chunk'
 import { SerializedFarmPublicData, SerializedFarmConfig } from './types'
+import { nonBSCVaultAddresses } from './const'
 
 const abi = [
   {
@@ -39,7 +40,7 @@ const abi = [
   },
 ]
 
-const fetchFarmCalls = (farm: SerializedFarmPublicData, masterChefAddress: string) => {
+const fetchFarmCalls = (farm: SerializedFarmPublicData, masterChefAddress: string, vaultAddress?: string) => {
   const { lpAddress, token, quoteToken } = farm
   return [
     // Balance of token in the LP contract
@@ -58,7 +59,7 @@ const fetchFarmCalls = (farm: SerializedFarmPublicData, masterChefAddress: strin
     {
       address: lpAddress,
       name: 'balanceOf',
-      params: [masterChefAddress],
+      params: [vaultAddress || masterChefAddress],
     },
     // Total supply of LP tokens
     {
@@ -75,7 +76,7 @@ export const fetchPublicFarmsData = async (
   masterChefAddress: string,
 ): Promise<any[]> => {
   try {
-    const farmCalls = farms.flatMap((farm) => fetchFarmCalls(farm, masterChefAddress))
+    const farmCalls = farms.flatMap((farm) => fetchFarmCalls(farm, masterChefAddress, nonBSCVaultAddresses[chainId]))
     const chunkSize = farmCalls.length / farms.length
     const farmMultiCallResult = await multicall({ abi, calls: farmCalls, chainId })
     return chunk(farmMultiCallResult, chunkSize)

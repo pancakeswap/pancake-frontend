@@ -63,11 +63,12 @@ const fetchFetchPublicDataOld = async ({ pids, chainId }): Promise<[SerializedFa
 const fetchFarmPublicDataPkg = async ({ pids, chainId, chain }): Promise<[SerializedFarm[], number, number]> => {
   const farmsConfig = await getFarmConfig(chainId)
   const farmsCanFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.pid))
+  const priceHelperLpsConfig = getFarmsPriceHelperLpFiles(chainId)
 
   const { farmsWithPrice, poolLength, regularCakePerBlock } = await farmFetcher.fetchFarms({
     chainId,
     isTestnet: chain.testnet,
-    farms: farmsCanFetch,
+    farms: farmsCanFetch.concat(priceHelperLpsConfig),
   })
   return [farmsWithPrice, poolLength, regularCakePerBlock]
 }

@@ -1,15 +1,10 @@
-import bscFarms from '@pancakeswap/farms/constants/56'
-import ethFarms from '@pancakeswap/farms/constants/1'
-import bsctestnetFarms from '@pancakeswap/farms/constants/97'
-import goerliFarms from '@pancakeswap/farms/constants/5'
-
 import { FixedNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
-import { ChainId, CurrencyAmount, Pair } from '@pancakeswap/sdk'
 import { getFarmCakeRewardApr, SerializedFarmConfig } from '@pancakeswap/farms'
-import { CAKE, BUSD } from '@pancakeswap/tokens'
-import { FarmKV, FarmResult } from './kv'
+import { ChainId, CurrencyAmount, Pair } from '@pancakeswap/sdk'
+import { BUSD, CAKE } from '@pancakeswap/tokens'
 import { farmFetcher } from './helper'
+import { FarmKV, FarmResult } from './kv'
 import { updateLPsAPR } from './lpApr'
 import { bscProvider, bscTestnetProvider } from './provider'
 
@@ -69,24 +64,28 @@ const getCakePrice = async (isTestnet: boolean) => {
   return pair.priceOf(tokenA)
 }
 
-const farmConfig: Record<number, SerializedFarmConfig[]> = {
-  1: ethFarms,
-  56: bscFarms,
-  97: bsctestnetFarms,
-  5: goerliFarms,
-}
+const farmConfigApi = 'https://farms-config.pages.dev'
 
 export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEvent) {
   try {
     const isTestnet = farmFetcher.isTestnet(chainId)
-    const farmsConfig = farmConfig[chainId]
+    const farmsConfig = await (await fetch(`${farmConfigApi}/${chainId}.json`)).json<SerializedFarmConfig[]>()
+    let lpPriceHelpers: SerializedFarmConfig[] = []
+    try {
+      lpPriceHelpers = await (
+        await fetch(`${farmConfigApi}/priceHelperLps/${chainId}.json`)
+      ).json<SerializedFarmConfig[]>()
+    } catch (error) {
+      console.error('Get LP price helpers error', error)
+    }
+
     if (!farmsConfig) {
       throw new Error(`Farms config not found ${chainId}`)
     }
     const { farmsWithPrice, poolLength, regularCakePerBlock } = await farmFetcher.fetchFarms({
       chainId,
       isTestnet,
-      farms: farmsConfig.filter((f) => f.pid !== 0),
+      farms: farmsConfig.filter((f) => f.pid !== 0).concat(lpPriceHelpers),
     })
 
     const cakeBusdPrice = await getCakePrice(isTestnet)
