@@ -5,6 +5,7 @@
     "*.css.ts"
   ],
   "dependencies": {
-    "@pancakeswap/rainbow-sprinkles": "^0.12.3"
+    "@pancakeswap/rainbow-sprinkles": "^0.12.3",
+    "@radix-ui/react-slot": "^1.0.0"
   }
 }

@@ -1,26 +1,28 @@
 /* eslint-disable no-restricted-syntax */
+import { Slot } from '@radix-ui/react-slot'
 import clsx, { ClassValue } from 'clsx'
 import { m as motion } from 'framer-motion'
 import * as React from 'react'
 import { createElement, forwardRef } from 'react'
-import { Atoms } from '../css/atoms'
-import { sprinkles } from '../css/sprinkles.css'
+import { Sprinkles, sprinkles } from '../css/sprinkles.css'
 
 type HTMLProperties<T = HTMLElement> = Omit<
   React.AllHTMLAttributes<T>,
   'as' | 'className' | 'color' | 'height' | 'width' | 'size'
 >
 
-type Props = Atoms &
+type Props = Sprinkles &
   HTMLProperties & {
     as?: React.ElementType
+    asChild?: boolean
     className?: ClassValue
   }
 
-export const Box = forwardRef<HTMLElement, Props>(({ as = 'div', className, ...props }, ref) => {
+export const Box = forwardRef<HTMLElement, Props>(({ as = 'div', className, asChild, ...props }, ref) => {
   const { className: atomicClasses, style, otherProps } = sprinkles(props)
+  const Comp = asChild ? Slot : as
 
-  return createElement(as, {
+  return createElement(Comp, {
     className: clsx(atomicClasses, className),
     ...otherProps,
     style: {

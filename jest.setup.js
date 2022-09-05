@@ -3,7 +3,6 @@
 
 // Used for __tests__/testing-library.js
 // Learn more: https://github.com/testing-library/jest-dom
-// import '@vanilla-extract/css/disableRuntimeStyles'
 import '@testing-library/jest-dom/extend-expect'
 import { TextDecoder, TextEncoder } from 'util'
 

@@ -1,53 +1,80 @@
-import React, { cloneElement, ElementType, isValidElement } from "react";
+import { ElementType, isValidElement, ReactNode } from "react";
+import { Slot } from "@radix-ui/react-slot";
+import clsx from "clsx";
 import EXTERNAL_LINK_PROPS from "../../util/externalLinkProps";
-import StyledButton from "./StyledButton";
-import { ButtonProps, scales, variants } from "./types";
+import { Box, BoxProps } from "../Box";
+import * as styles from "./Button.css";
+import { ButtonProps } from "./types";
 
-const Button = <E extends ElementType = "button">(props: ButtonProps<E>): JSX.Element => {
-  const { startIcon, endIcon, external, className, isLoading, disabled, children, ...rest } = props;
+type WithAnchor = {
+  as?: "a";
+} & Pick<JSX.IntrinsicElements["a"], "href" | "rel" | "target">;
+
+type WithoutAnchor = {
+  as?: "button";
+};
+
+export interface BaseProps extends BoxProps {
+  as?: "a" | "button" | ElementType;
+  asChild?: boolean;
+  external?: boolean;
+  disabled?: boolean;
+  startIcon?: ReactNode;
+  endIcon?: ReactNode;
+}
+
+export type Props = BaseProps & styles.Variants & (WithAnchor | WithoutAnchor);
+
+const Button = (props: ButtonProps): JSX.Element => {
+  const {
+    startIcon,
+    endIcon,
+    external,
+    className,
+    isLoading = false,
+    disabled,
+    children,
+    scale = "md",
+    variant = "primary",
+    as,
+    asChild,
+    ...rest
+  } = props;
   const internalProps = external ? EXTERNAL_LINK_PROPS : {};
   const isDisabled = isLoading || disabled;
-  const classNames = className ? [className] : [];
 
-  if (isLoading) {
-    classNames.push("pancake-button--loading");
-  }
-
-  if (isDisabled && !isLoading) {
-    classNames.push("pancake-button--disabled");
-  }
+  const Comp = asChild ? Slot : (as as any) || "button";
 
   return (
-    <StyledButton
-      $isLoading={isLoading}
-      className={classNames.join(" ")}
+    <Box
+      asChild
+      className={clsx(
+        className,
+        styles.variants({
+          loading: isLoading,
+          scale,
+          variant,
+        })
+      )}
       disabled={isDisabled}
       {...internalProps}
       {...rest}
     >
-      <>
-        {isValidElement(startIcon) &&
-          cloneElement(startIcon, {
-            // @ts-ignore
-            mr: "0.5rem",
-          })}
+      <Comp>
+        {isValidElement(startIcon) && (
+          <Box mr="0.5rem" asChild>
+            {startIcon}
+          </Box>
+        )}
         {children}
-        {isValidElement(endIcon) &&
-          cloneElement(endIcon, {
-            // @ts-ignore
-            ml: "0.5rem",
-          })}
-      </>
-    </StyledButton>
+        {isValidElement(endIcon) && (
+          <Box ml="0.5rem" asChild>
+            {endIcon}
+          </Box>
+        )}
+      </Comp>
+    </Box>
   );
-};
-
-Button.defaultProps = {
-  isLoading: false,
-  external: false,
-  variant: variants.PRIMARY,
-  scale: scales.MD,
-  disabled: false,
 };
 
 export default Button;

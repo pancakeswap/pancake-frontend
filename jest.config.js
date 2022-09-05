@@ -34,7 +34,5 @@ const jestConfig = createJestConfig(customJestConfig)
 module.exports = jestConfig().then((config) => {
   // eslint-disable-next-line no-param-reassign
   delete config.moduleNameMapper['^.+\\.(css|sass|scss)$']
-  // eslint-disable-next-line no-param-reassign
-  // delete config.transform['^.+\\.(js|jsx|ts|tsx|mjs)$']
   return config
 })

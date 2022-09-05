@@ -12,6 +12,7 @@ import { useTheme } from "styled-components";
 function useNextThemeMock() {
   const theme = useTheme();
   const isDark = theme?.isDark;
+  // TODO: fix storybook theming
   useEffect(() => {
     if (isDark) {
       document.documentElement.setAttribute("data-theme", "dark");

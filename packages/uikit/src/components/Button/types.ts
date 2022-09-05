@@ -1,6 +1,7 @@
 import { ElementType, ReactNode } from "react";
-import { LayoutProps, SpaceProps } from "styled-system";
 import type { PolymorphicComponentProps } from "../../util/polymorphic";
+import { BoxProps } from "../Box";
+import type { Scale, Variant } from "./Button.css";
 
 export const scales = {
   MD: "md",
@@ -19,11 +20,11 @@ export const variants = {
   LIGHT: "light",
 } as const;
 
-export type Scale = typeof scales[keyof typeof scales];
-export type Variant = typeof variants[keyof typeof variants];
+export type { Scale, Variant };
 
-export interface BaseButtonProps extends LayoutProps, SpaceProps {
+export interface BaseButtonProps extends BoxProps {
   as?: "a" | "button" | ElementType;
+  asChild?: boolean;
   external?: boolean;
   isLoading?: boolean;
   scale?: Scale;
@@ -31,12 +32,6 @@ export interface BaseButtonProps extends LayoutProps, SpaceProps {
   disabled?: boolean;
   startIcon?: ReactNode;
   endIcon?: ReactNode;
-  decorator?: {
-    backgroundColor?: string;
-    color?: string;
-    text: string;
-    direction?: "left" | "right";
-  };
 }
 
 export type ButtonProps<P extends ElementType = "button"> = PolymorphicComponentProps<P, BaseButtonProps>;

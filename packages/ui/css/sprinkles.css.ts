@@ -82,6 +82,10 @@ const responsiveProperties = defineProperties({
     paddingLeft: vars.space,
     paddingRight: vars.space,
     paddingTop: vars.space,
+    fontSize: {
+      ...vars.fontSizes,
+      inherit: 'inherit',
+    },
     right: { ...vars.space, ...negativeSpace },
     top: { ...vars.space, ...negativeSpace },
     flex: {
@@ -271,6 +275,12 @@ const interactiveProperties = defineProperties({
     active: { selector: '&:active' },
   },
   defaultCondition: 'base',
+  staticProperties: {
+    backgroundColor: vars.colors,
+    borderColor: vars.colors,
+    color: vars.colors,
+    outlineColor: vars.colors,
+  },
   dynamicProperties: {
     backgroundColor: vars.colors,
     borderColor: vars.colors,
@@ -285,12 +295,7 @@ const interactiveProperties = defineProperties({
   },
 })
 
-export const sprinkles = createRainbowSprinkles(
-  responsiveProperties,
-  unresponsiveProperties,
-  // motionSafeProperties,
-  interactiveProperties,
-)
+export const sprinkles = createRainbowSprinkles(responsiveProperties, unresponsiveProperties, interactiveProperties)
 export type Sprinkles = Parameters<typeof sprinkles>[0]
 
 export type OptionalResponsiveObject<Value> = Value | Partial<Record<Breakpoint, Value>>

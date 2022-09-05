@@ -8,7 +8,7 @@ export type Atoms = Sprinkles & {
 }
 
 export const atoms = ({ reset, ...rest }: Atoms) => {
-  if (!reset) return sprinkles(rest)
+  if (!reset) return sprinkles(rest).className
 
   const elementReset = resetStyles.element[reset as keyof typeof resetStyles.element]
 

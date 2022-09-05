@@ -1,23 +1,22 @@
 import React from "react";
-import { baseColors, darkColors, lightColors } from "../../theme/colors";
-import { Flex, Box } from "../Box";
+import { Colors } from "../..";
+import { Box, Flex } from "../Box";
+import { Button } from "../Button";
+import CakePrice from "../CakePrice/CakePrice";
+import LangSelector from "../LangSelector/LangSelector";
 import { Link } from "../Link";
+import { ArrowForwardIcon, LogoWithTextIcon } from "../Svg";
+import { ThemeSwitcher } from "../ThemeSwitcher";
 import {
   StyledFooter,
   StyledIconMobileContainer,
   StyledList,
   StyledListItem,
-  StyledText,
   StyledSocialLinks,
+  StyledText,
   StyledToolsContainer,
 } from "./styles";
 import { FooterProps } from "./types";
-import { ThemeSwitcher } from "../ThemeSwitcher";
-import LangSelector from "../LangSelector/LangSelector";
-import CakePrice from "../CakePrice/CakePrice";
-import { LogoWithTextIcon, ArrowForwardIcon } from "../Svg";
-import { Button } from "../Button";
-import { Colors } from "../..";
 
 const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
   items,
@@ -50,10 +49,11 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
                 <StyledListItem key={label}>
                   {href ? (
                     <Link
+                      data-theme="dark"
                       href={href}
                       target="_blank"
                       rel="noreferrer noopener"
-                      color={isHighlighted ? baseColors.warning : darkColors.text}
+                      color={isHighlighted ? "warning" : "text"}
                       bold={false}
                     >
                       {label}
