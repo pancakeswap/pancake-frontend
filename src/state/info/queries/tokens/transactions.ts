@@ -7,122 +7,126 @@ import { multiChainQueryClient, MultiChianName } from '../../constant'
 /**
  * Data to display transaction table on Token page
  */
-const TOKEN_TRANSACTIONS = gql`
-  query tokenTransactions($address: Bytes!) {
-    mintsAs0: mints(first: 10, orderBy: timestamp, orderDirection: desc, where: { token0: $address }) {
-      id
-      timestamp
-      pair {
-        token0 {
-          id
-          symbol
+const TOKEN_TRANSACTIONS = (chainName: MultiChianName) => {
+  const whereToken0 = chainName === 'BSC' ? 'token0: $address' : 'pair_: { token0: $address }'
+  const whereToken1 = chainName === 'BSC' ? 'token1: $address' : 'pair_: { token1: $address }'
+  return gql`
+    query tokenTransactions($address: Bytes!) {
+      mintsAs0: mints(first: 10, orderBy: timestamp, orderDirection: desc, where: { ${whereToken0} }) {
+        id
+        timestamp
+        pair {
+          token0 {
+            id
+            symbol
+          }
+          token1 {
+            id
+            symbol
+          }
         }
-        token1 {
-          id
-          symbol
-        }
+        to
+        amount0
+        amount1
+        amountUSD
       }
-      to
-      amount0
-      amount1
-      amountUSD
-    }
-    mintsAs1: mints(first: 10, orderBy: timestamp, orderDirection: desc, where: { token1: $address }) {
-      id
-      timestamp
-      pair {
-        token0 {
-          id
-          symbol
+      mintsAs1: mints(first: 10, orderBy: timestamp, orderDirection: desc, where: { ${whereToken1} }) {
+        id
+        timestamp
+        pair {
+          token0 {
+            id
+            symbol
+          }
+          token1 {
+            id
+            symbol
+          }
         }
-        token1 {
-          id
-          symbol
-        }
+        to
+        amount0
+        amount1
+        amountUSD
       }
-      to
-      amount0
-      amount1
-      amountUSD
-    }
-    swapsAs0: swaps(first: 10, orderBy: timestamp, orderDirection: desc, where: { token0: $address }) {
-      id
-      timestamp
-      pair {
-        token0 {
-          id
-          symbol
+      swapsAs0: swaps(first: 10, orderBy: timestamp, orderDirection: desc, where: { ${whereToken0} }) {
+        id
+        timestamp
+        pair {
+          token0 {
+            id
+            symbol
+          }
+          token1 {
+            id
+            symbol
+          }
         }
-        token1 {
-          id
-          symbol
-        }
+        from
+        amount0In
+        amount1In
+        amount0Out
+        amount1Out
+        amountUSD
       }
-      from
-      amount0In
-      amount1In
-      amount0Out
-      amount1Out
-      amountUSD
-    }
-    swapsAs1: swaps(first: 10, orderBy: timestamp, orderDirection: desc, where: { token1: $address }) {
-      id
-      timestamp
-      pair {
-        token0 {
-          id
-          symbol
+      swapsAs1: swaps(first: 10, orderBy: timestamp, orderDirection: desc, where: { ${whereToken1} }) {
+        id
+        timestamp
+        pair {
+          token0 {
+            id
+            symbol
+          }
+          token1 {
+            id
+            symbol
+          }
         }
-        token1 {
-          id
-          symbol
-        }
+        from
+        amount0In
+        amount1In
+        amount0Out
+        amount1Out
+        amountUSD
       }
-      from
-      amount0In
-      amount1In
-      amount0Out
-      amount1Out
-      amountUSD
-    }
-    burnsAs0: burns(first: 10, orderBy: timestamp, orderDirection: desc, where: { token0: $address }) {
-      id
-      timestamp
-      pair {
-        token0 {
-          id
-          symbol
+      burnsAs0: burns(first: 10, orderBy: timestamp, orderDirection: desc, where: { ${whereToken0} }) {
+        id
+        timestamp
+        pair {
+          token0 {
+            id
+            symbol
+          }
+          token1 {
+            id
+            symbol
+          }
         }
-        token1 {
-          id
-          symbol
-        }
+        sender
+        amount0
+        amount1
+        amountUSD
       }
-      sender
-      amount0
-      amount1
-      amountUSD
-    }
-    burnsAs1: burns(first: 10, orderBy: timestamp, orderDirection: desc, where: { token1: $address }) {
-      id
-      timestamp
-      pair {
-        token0 {
-          id
-          symbol
+      burnsAs1: burns(first: 10, orderBy: timestamp, orderDirection: desc, where: { ${whereToken1} }) {
+        id
+        timestamp
+        pair {
+          token0 {
+            id
+            symbol
+          }
+          token1 {
+            id
+            symbol
+          }
         }
-        token1 {
-          id
-          symbol
-        }
+        sender
+        amount0
+        amount1
+        amountUSD
       }
-      sender
-      amount0
-      amount1
-      amountUSD
     }
-  }
-`
+  `
+}
 
 interface TransactionResults {
   mintsAs0: MintResponse[]
@@ -138,7 +142,7 @@ const fetchTokenTransactions = async (
   address: string,
 ): Promise<{ data?: Transaction[]; error: boolean }> => {
   try {
-    const data = await multiChainQueryClient[chainName].request<TransactionResults>(TOKEN_TRANSACTIONS, {
+    const data = await multiChainQueryClient[chainName].request<TransactionResults>(TOKEN_TRANSACTIONS(chainName), {
       address,
     })
     const mints0 = data.mintsAs0.map(mapMints)

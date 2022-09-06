@@ -5,13 +5,15 @@ import { multiChainQueryClient, MultiChianName, multiChainQueryMainToken } from 
 /**
  * Data for showing Pools table on the Token page
  */
-const POOLS_FOR_TOKEN = (chainName: MultiChianName) => gql`
+const POOLS_FOR_TOKEN = (chainName: MultiChianName) => {
+  const transactionGT = chainName === 'ETH' ? 1 : 100
+  return gql`
   query poolsForToken($address: Bytes!, $blacklist: [String!]) {
     asToken0: pairs(
       first: 15
       orderBy: trackedReserve${multiChainQueryMainToken[chainName]}
       orderDirection: desc
-      where: { totalTransactions_gt: 100, token0: $address, token1_not_in: $blacklist }
+      where: { totalTransactions_gt: ${transactionGT}, token0: $address, token1_not_in: $blacklist }
     ) {
       id
     }
@@ -19,12 +21,13 @@ const POOLS_FOR_TOKEN = (chainName: MultiChianName) => gql`
       first: 15
       orderBy: trackedReserve${multiChainQueryMainToken[chainName]}
       orderDirection: desc
-      where: { totalTransactions_gt: 100, token1: $address, token0_not_in: $blacklist }
+      where: { totalTransactions_gt: ${transactionGT}, token1: $address, token0_not_in: $blacklist }
     ) {
       id
     }
   }
 `
+}
 
 export interface PoolsForTokenResponse {
   asToken0: {

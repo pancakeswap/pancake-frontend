@@ -20,17 +20,6 @@ interface TokenFields {
   totalLiquidity: string
 }
 
-interface TokenFieldsETH {
-  id: string
-  symbol: string
-  name: string
-  derivedETH: string // Price in BNB per token
-  derivedUSD: string // Price in USD per token
-  tradeVolumeUSD: string
-  txCount: string
-  totalLiquidity: string
-}
-
 interface FormattedTokenFields
   extends Omit<
     TokenFields,

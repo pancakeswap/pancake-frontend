@@ -33,6 +33,7 @@ export const multiQuery = async (
         ...fetchedData,
         ...result,
       }
+      console.warn(fetchedData, 'fetchedData')
       allFound = Object.keys(result).length < skipCount || skip + skipCount > subqueries.length
       skip += skipCount
     }

@@ -3,7 +3,7 @@ import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
 import { usePoolDatas, useTokenDatas, useGetChainName } from 'state/info/hooks'
 import { PoolData, TokenData } from 'state/info/types'
-import { infoClient, infoClientETH } from 'utils/graphql'
+import { multiChainQueryClient } from '../../constant'
 
 const TOKEN_SEARCH = gql`
   query tokens($symbol: String, $name: String, $id: String) {
@@ -19,36 +19,8 @@ const TOKEN_SEARCH = gql`
   }
 `
 
-const TOKEN_SEARCH_ETH = gql`
-  query tokens($symbol: String, $name: String, $id: ID) {
-    asSymbol: tokens(first: 10, where: { symbol_contains: $symbol }, orderBy: tradeVolumeUSD, orderDirection: desc) {
-      id
-    }
-    asName: tokens(first: 10, where: { name_contains: $name }, orderBy: tradeVolumeUSD, orderDirection: desc) {
-      id
-    }
-    asAddress: tokens(first: 1, where: { id: $id }, orderBy: tradeVolumeUSD, orderDirection: desc) {
-      id
-    }
-  }
-`
-
 const POOL_SEARCH = gql`
   query pools($tokens: [Bytes]!, $id: String) {
-    as0: pairs(first: 10, where: { token0_in: $tokens }) {
-      id
-    }
-    as1: pairs(first: 10, where: { token1_in: $tokens }) {
-      id
-    }
-    asAddress: pairs(first: 1, where: { id: $id }) {
-      id
-    }
-  }
-`
-
-const POOL_SEARCH_ETH = gql`
-  query pools($tokens: [Bytes]!, $id: ID) {
     as0: pairs(first: 10, where: { token0_in: $tokens }) {
       id
     }
@@ -113,9 +85,9 @@ const useFetchSearchResults = (
     })
   }, [searchString, searchStringTooShort])
 
-  const tokenQuery = chainName === 'ETH' ? TOKEN_SEARCH_ETH : TOKEN_SEARCH
-  const poolQuery = chainName === 'ETH' ? POOL_SEARCH_ETH : POOL_SEARCH
-  const queryClient = chainName === 'ETH' ? infoClientETH : infoClient
+  const tokenQuery = TOKEN_SEARCH
+  const poolQuery = POOL_SEARCH
+  const queryClient = multiChainQueryClient[chainName]
 
   useEffect(() => {
     const search = async () => {

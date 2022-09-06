@@ -47,7 +47,7 @@ const fetchTokenPriceData = async (
     time += interval
   }
   try {
-    const blocks = await getBlocksFromTimestamps(timestamps, 'asc', 500)
+    const blocks = await getBlocksFromTimestamps(timestamps, 'asc', 500, chainName)
     if (!blocks || blocks.length === 0) {
       console.error('Error fetching blocks for timestamps', timestamps)
       return {
@@ -61,6 +61,8 @@ const fetchTokenPriceData = async (
       multiChainQueryEndPoint[chainName],
       200,
     )
+
+    console.warn('fetchTokenPriceData', { chainName, prices })
 
     if (!prices) {
       console.error('Price data failed to load')
@@ -92,6 +94,8 @@ const fetchTokenPriceData = async (
         })
       }
     })
+
+    console.warn('pricesPart1', tokenPrices)
 
     // Go through BNB USD prices and calculate Token price based on it
     Object.keys(prices).forEach((priceKey) => {

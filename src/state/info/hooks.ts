@@ -5,8 +5,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState, useAppDispatch } from 'state'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import fetchPoolChartData, { fetchPoolChartDataETH } from 'state/info/queries/pools/chartData'
-import fetchPoolTransactions, { fetchPoolTransactionsETH } from 'state/info/queries/pools/transactions'
+
+import fetchPoolChartData from 'state/info/queries/pools/chartData'
+import fetchPoolTransactions from 'state/info/queries/pools/transactions'
 import fetchTokenChartData from 'state/info/queries/tokens/chartData'
 import fetchPoolsForToken from 'state/info/queries/tokens/poolsForToken'
 import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
@@ -116,9 +117,7 @@ export const usePoolChartData = (address: string): ChartEntry[] | undefined => {
 
   useEffect(() => {
     const fetch = async () => {
-      const { error: fetchError, data } = await (chainName === 'ETH'
-        ? fetchPoolChartDataETH(address)
-        : fetchPoolChartData(address))
+      const { error: fetchError, data } = await fetchPoolChartData(chainName, address)
       if (!fetchError && data) {
         dispatch(updatePoolChartData({ poolAddress: address, chartData: data }))
       }
@@ -143,9 +142,7 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
 
   useEffect(() => {
     const fetch = async () => {
-      const { error: fetchError, data } = await (chainName === 'ETH'
-        ? fetchPoolTransactionsETH(address)
-        : fetchPoolTransactions(address))
+      const { error: fetchError, data } = await fetchPoolTransactions(chainName, address)
       if (fetchError) {
         setError(true)
       } else {

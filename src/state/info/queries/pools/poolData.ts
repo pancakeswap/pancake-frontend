@@ -2,13 +2,13 @@
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
 import { PoolData } from 'state/info/types'
-import { infoClient, infoClientETH } from 'utils/graphql'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getPercentChange } from 'views/Info/utils/infoDataHelpers'
 import { useGetChainName } from '../../hooks'
+import { multiChainQueryClient, MultiChianName, multiChainQueryMainToken } from '../../constant'
 
 interface PoolFields {
   id: string
@@ -53,42 +53,13 @@ interface PoolsQueryResponse {
  * Note: Don't try to refactor it to use variables, server throws error if blocks passed as undefined variable
  * only works if its hard-coded into query string
  */
-const POOL_AT_BLOCK = (block: number | null, pools: string[]) => {
+const POOL_AT_BLOCK = (chainName: MultiChianName, block: number | null, pools: string[]) => {
   const blockString = block ? `block: {number: ${block}}` : ``
   const addressesString = `["${pools.join('","')}"]`
   return `pairs(
     where: { id_in: ${addressesString} }
     ${blockString}
-    orderBy: trackedReserveBNB
-    orderDirection: desc
-  ) {
-    id
-    reserve0
-    reserve1
-    reserveUSD
-    volumeUSD
-    token0Price
-    token1Price
-    token0 {
-      id
-      symbol
-      name
-    }
-    token1 {
-      id
-      symbol
-      name
-    }
-  }`
-}
-
-const POOL_AT_BLOCK_ETH = (block: number | null, pools: string[]) => {
-  const blockString = block ? `block: {number: ${block}}` : ``
-  const addressesString = `["${pools.join('","')}"]`
-  return `pairs(
-    where: { id_in: ${addressesString} }
-    ${blockString}
-    orderBy: trackedReserveETH
+    orderBy: trackedReserve${multiChainQueryMainToken[chainName]}
     orderDirection: desc
   ) {
     id
@@ -120,29 +91,16 @@ export const fetchPoolData = async (
   chainName: 'ETH' | 'BSC' = 'BSC',
 ) => {
   try {
-    const query =
-      chainName === 'ETH'
-        ? gql`
+    const query = gql`
       query pools {
-        now: ${POOL_AT_BLOCK_ETH(null, poolAddresses)}
-        oneDayAgo: ${POOL_AT_BLOCK_ETH(block24h, poolAddresses)}
-        twoDaysAgo: ${POOL_AT_BLOCK_ETH(block48h, poolAddresses)}
-        oneWeekAgo: ${POOL_AT_BLOCK_ETH(block7d, poolAddresses)}
-        twoWeeksAgo: ${POOL_AT_BLOCK_ETH(block14d, poolAddresses)}
+        now: ${POOL_AT_BLOCK(chainName, null, poolAddresses)}
+        oneDayAgo: ${POOL_AT_BLOCK(chainName, block24h, poolAddresses)}
+        twoDaysAgo: ${POOL_AT_BLOCK(chainName, block48h, poolAddresses)}
+        oneWeekAgo: ${POOL_AT_BLOCK(chainName, block7d, poolAddresses)}
+        twoWeeksAgo: ${POOL_AT_BLOCK(chainName, block14d, poolAddresses)}
       }
     `
-        : gql`
-      query pools {
-        now: ${POOL_AT_BLOCK(null, poolAddresses)}
-        oneDayAgo: ${POOL_AT_BLOCK(block24h, poolAddresses)}
-        twoDaysAgo: ${POOL_AT_BLOCK(block48h, poolAddresses)}
-        oneWeekAgo: ${POOL_AT_BLOCK(block7d, poolAddresses)}
-        twoWeeksAgo: ${POOL_AT_BLOCK(block14d, poolAddresses)}
-      }
-    `
-    const data = await (chainName === 'ETH'
-      ? infoClientETH.request<PoolsQueryResponse>(query)
-      : infoClient.request<PoolsQueryResponse>(query))
+    const data = await multiChainQueryClient[chainName].request<PoolsQueryResponse>(query)
     return { data, error: false }
   } catch (error) {
     console.error('Failed to fetch pool data', error)
