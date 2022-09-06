@@ -132,7 +132,7 @@ export const useLpTokenPrice = (symbol: string) => {
 /**
  * @deprecated use the BUSD hook in /hooks
  */
-export const usePriceCakeBusd = (): BigNumber => {
-  const price = useCakeBusdPrice()
+export const usePriceCakeBusd = ({ forceMainnet } = { forceMainnet: false }): BigNumber => {
+  const price = useCakeBusdPrice({ forceMainnet })
   return useMemo(() => (price ? new BigNumber(price.toSignificant(6)) : BIG_ZERO), [price])
 }

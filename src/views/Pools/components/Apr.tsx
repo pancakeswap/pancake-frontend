@@ -81,7 +81,10 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
           {hasPoolStarted || !shouldShowBlockCountdown ? (
             <>
               <BalanceWithLoading
-                onClick={openRoiModal}
+                onClick={(event) => {
+                  if (!showIcon) return
+                  openRoiModal(event)
+                }}
                 fontSize={fontSize}
                 isDisabled={isFinished}
                 value={isFinished ? 0 : apr}

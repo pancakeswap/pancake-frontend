@@ -25,7 +25,7 @@ const LotteryCardContent = () => {
   const { t } = useTranslation()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
-  const cakePriceBusd = usePriceCakeBusd()
+  const cakePriceBusd = usePriceCakeBusd({ forceMainnet: true })
   const { data: currentLotteryId } = useSWRImmutable(loadData ? ['currentLotteryId'] : null, fetchCurrentLotteryId, {
     refreshInterval: SLOW_INTERVAL,
   })

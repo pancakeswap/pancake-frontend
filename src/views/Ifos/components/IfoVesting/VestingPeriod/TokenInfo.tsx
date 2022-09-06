@@ -8,6 +8,8 @@ import { TokenImage } from 'components/TokenImage'
 import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
 import { PoolIds } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
+import useBUSDPrice from 'hooks/useBUSDPrice'
+import { multiplyPriceByAmount } from 'utils/prices'
 import Expand from './Expand'
 
 const ArrowIcon = styled(ChevronDownIcon)<{ toggled: boolean }>`
@@ -43,6 +45,9 @@ const TokenInfo: React.FC<React.PropsWithChildren<TokenInfoProps>> = ({ index, d
     return getBalanceNumber(totalReleaseAmount, token.decimals)
   }, [token, vestingComputeReleasableAmount, basicReleaseAmount])
 
+  const price = useBUSDPrice(token)
+  const dollarValueOfToken = multiplyPriceByAmount(price, amountAvailable, token.decimals)
+
   return (
     <Box>
       <Flex p="24px" m="-24px -24px 0 -24px" style={{ cursor: 'pointer' }} onClick={toggleExpanded}>
@@ -54,7 +59,7 @@ const TokenInfo: React.FC<React.PropsWithChildren<TokenInfoProps>> = ({ index, d
           <Flex>
             <BalanceWithLoading color="secondary" value={amountAvailable} decimals={4} bold fontSize="12px" />
             <Text color="textSubtle" textTransform="uppercase" fontSize="12px" margin="0 2px">
-              {token.symbol}
+              {token.symbol} ~${dollarValueOfToken.toFixed(2)}
             </Text>
           </Flex>
         </Flex>

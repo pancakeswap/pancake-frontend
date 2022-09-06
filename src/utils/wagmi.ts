@@ -57,14 +57,7 @@ export const { provider, chains } = configureChains(CHAINS, [
       if (!!process.env.NEXT_PUBLIC_NODE_PRODUCTION && chain.id === bsc.id) {
         return { http: process.env.NEXT_PUBLIC_NODE_PRODUCTION }
       }
-      if (chain.rpcUrls.nodeReal) {
-        return (
-          getNodeRealUrl(chain.network) || {
-            http: chain.rpcUrls.nodeReal,
-          }
-        )
-      }
-      return { http: chain.rpcUrls.default }
+      return getNodeRealUrl(chain.network) || { http: chain.rpcUrls.default }
     },
   }),
 ])
@@ -118,3 +111,4 @@ export const client = createClient({
 export const CHAIN_IDS = chains.map((c) => c.id)
 
 export const isChainSupported = memoize((chainId: number) => CHAIN_IDS.includes(chainId))
+export const isChainTestnet = memoize((chainId: number) => chains.find((c) => c.id === chainId)?.testnet)
