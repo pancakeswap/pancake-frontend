@@ -2,7 +2,7 @@ import { useMemo, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Box, Card } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
-import { useAllTokenData, useGetChainName } from 'state/info/hooks'
+import { useAllTokenData, useGetChainName, useMultiChainPath } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -37,8 +37,9 @@ export const ScrollableRow = styled.div`
 
 const DataCard = ({ tokenData }: { tokenData: TokenData }) => {
   const chainName = useGetChainName()
+  const chainPath = useMultiChainPath()
   return (
-    <CardWrapper to={`/info/token/${tokenData.address}`}>
+    <CardWrapper to={`/info${chainPath}/tokens/${tokenData.address}`}>
       <TopMoverCard>
         <Flex>
           <Box width="32px" height="32px">

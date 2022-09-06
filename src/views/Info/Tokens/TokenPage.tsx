@@ -32,6 +32,7 @@ import {
   useTokenChartData,
   useTokenPriceData,
   useTokenTransactions,
+  useMultiChainPath,
 } from 'state/info/hooks'
 import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
@@ -97,6 +98,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
   }, [priceData, tokenData])
 
   const [watchlistTokens, addWatchlistToken] = useWatchlistTokens()
+  const chainPath = useMultiChainPath()
 
   return (
     <Page symbol={tokenData?.symbol}>
@@ -117,10 +119,10 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
             {/* Stuff on top */}
             <Flex justifyContent="space-between" mb="24px" flexDirection={['column', 'column', 'row']}>
               <Breadcrumbs mb="32px">
-                <NextLinkFromReactRouter to="/info">
+                <NextLinkFromReactRouter to={`/info${chainPath}`}>
                   <Text color="primary">{t('Info')}</Text>
                 </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter to="/info/tokens">
+                <NextLinkFromReactRouter to={`/info${chainPath}/tokens`}>
                   <Text color="primary">{t('Tokens')}</Text>
                 </NextLinkFromReactRouter>
                 <Flex>

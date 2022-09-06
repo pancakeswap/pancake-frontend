@@ -6,7 +6,7 @@ import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/Currency
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useWatchlistTokens, useWatchlistPools } from 'state/user/hooks'
 import SaveIcon from 'views/Info/components/SaveIcon'
-import { usePoolDatas, useTokenDatas } from 'state/info/hooks'
+import { usePoolDatas, useTokenDatas, useMultiChainPath } from 'state/info/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import useDebounce from 'hooks/useDebounce'
 import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
@@ -256,6 +256,7 @@ const Search = () => {
       </>
     )
   }
+  const chainPath = useMultiChainPath()
 
   return (
     <>
@@ -307,7 +308,7 @@ const Search = () => {
           {tokensForList.slice(0, tokensShown).map((token, i) => {
             return (
               // eslint-disable-next-line react/no-array-index-key
-              <HoverRowLink onClick={() => handleItemClick(`/info/token/${token.address}`)} key={i}>
+              <HoverRowLink onClick={() => handleItemClick(`/info${chainPath}/tokens/${token.address}`)} key={i}>
                 <ResponsiveGrid>
                   <Flex>
                     <CurrencyLogo address={token.address} />
