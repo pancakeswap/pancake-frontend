@@ -1,20 +1,15 @@
-import { useMemo, useEffect } from 'react'
+import { useMemo } from 'react'
 import { ModalV2 } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
-import { toggleFarmHarvestModal } from 'state/transactions/actions'
-import { useFarmHarvestTransaction, useAllTransactions } from 'state/transactions/hooks'
+import { toggleFarmHarvestModal } from 'state/global/actions'
+import { useFarmHarvestTransaction } from 'state/global/hooks'
+import { useAllTransactions } from 'state/transactions/hooks'
 import FarmHarvestModal from './FarmHarvestModal'
 
 const TransactionsDetailModal = () => {
   const { showModal, pickedTx } = useFarmHarvestTransaction()
   const allTransactions = useAllTransactions()
   const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    return () => {
-      dispatch(toggleFarmHarvestModal({ showModal: false }))
-    }
-  }, [])
 
   const pickedData = useMemo(() => allTransactions[pickedTx], [allTransactions, pickedTx])
 

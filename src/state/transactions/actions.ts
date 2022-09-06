@@ -73,11 +73,3 @@ export const checkedTransaction = createAction<{
   hash: string
   blockNumber: number
 }>('transactions/checkedTransaction')
-
-export const toggleFarmHarvestModal = createAction<{
-  showModal: boolean
-}>('transactions/toggleFarmHarvestModal')
-
-export const pickFarmHarvestTx = createAction<{
-  tx: string
-}>('transactions/pickFarmHarvestTx')
