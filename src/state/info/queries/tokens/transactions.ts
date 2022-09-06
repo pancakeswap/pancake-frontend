@@ -7,9 +7,9 @@ import { multiChainQueryClient, MultiChianName } from '../../constant'
 /**
  * Data to display transaction table on Token page
  */
-const TOKEN_TRANSACTIONS = (chainName: MultiChianName) => {
-  const whereToken0 = chainName === 'BSC' ? 'token0: $address' : 'pair_: { token0: $address }'
-  const whereToken1 = chainName === 'BSC' ? 'token1: $address' : 'pair_: { token1: $address }'
+const TOKEN_TRANSACTIONS = () => {
+  const whereToken0 = 'token0: $address'
+  const whereToken1 = 'token1: $address'
   return gql`
     query tokenTransactions($address: Bytes!) {
       mintsAs0: mints(first: 10, orderBy: timestamp, orderDirection: desc, where: { ${whereToken0} }) {
@@ -142,7 +142,7 @@ const fetchTokenTransactions = async (
   address: string,
 ): Promise<{ data?: Transaction[]; error: boolean }> => {
   try {
-    const data = await multiChainQueryClient[chainName].request<TransactionResults>(TOKEN_TRANSACTIONS(chainName), {
+    const data = await multiChainQueryClient[chainName].request<TransactionResults>(TOKEN_TRANSACTIONS(), {
       address,
     })
     const mints0 = data.mintsAs0.map(mapMints)
