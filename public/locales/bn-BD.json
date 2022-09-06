@@ -1936,5 +1936,7 @@
   "Bridge": "ব্রিজ",
   "Please switch network": "অনুগ্রহ করে নেটওয়ার্ক পরিবর্তন করুন",
   "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "আপনি যে URL-এ অ্যাক্সেস করছেন (চেইন আইডি: %chainId%) সেটি %network%-এর অন্তর্গত; আপনার ওয়ালেটের নেটওয়ার্ক-এর সাথে মিল যুক্ত নয়। চালিয়ে যেতে অনুগ্রহ করে নেটওয়ার্ক পরিবর্তন করুন।",
-  "Error connecting, please retry and confirm in wallet!": "Error connecting, please retry and confirm in wallet!"
+  "Error connecting, please retry and confirm in wallet!": "Error connecting, please retry and confirm in wallet!",
+  "Boost only applies to base APR (CAKE yield)": "Boost only applies to base APR (CAKE yield)",
+  "Available Boosted: Up to 2x": "Available Boosted: Up to 2x"
 }
