@@ -1,6 +1,8 @@
+import { Token } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
+import { multiChainId } from 'state/info/constant'
 import styled from 'styled-components'
-import { isAddress } from 'utils'
+import getTokenLogoURL from '../../../../utils/getTokenLogoURL'
 import LogoLoader from './LogoLoader'
 
 const StyledLogo = styled(LogoLoader)<{ size: string }>`
@@ -20,13 +22,7 @@ export const CurrencyLogo: React.FC<
   }>
 > = ({ address, size = '24px', chainName = 'BSC', ...rest }) => {
   const src = useMemo(() => {
-    const checksummedAddress = isAddress(address)
-    if (checksummedAddress) {
-      return `https://assets-cdn.trustwallet.com/blockchains/${
-        chainName === 'ETH' ? 'ethereum' : 'smartchain'
-      }/assets/${checksummedAddress}/logo.png`
-    }
-    return null
+    return getTokenLogoURL(new Token(multiChainId[chainName], address, 18))
   }, [address, chainName])
 
   return <StyledLogo size={size} src={src} alt="token logo" {...rest} />
