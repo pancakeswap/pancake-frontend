@@ -34,13 +34,13 @@ const InfoNav = () => {
     <NavWrapper>
       <Box>
         <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
-          <ButtonMenuItem asChild>
+          <ButtonMenuItem>
             <NextLinkFromReactRouter to="/info">{t('Overview')}</NextLinkFromReactRouter>
           </ButtonMenuItem>
-          <ButtonMenuItem asChild>
+          <ButtonMenuItem>
             <NextLinkFromReactRouter to="/info/pools">{t('Pools')}</NextLinkFromReactRouter>
           </ButtonMenuItem>
-          <ButtonMenuItem asChild>
+          <ButtonMenuItem>
             <NextLinkFromReactRouter to="/info/tokens">{t('Tokens')}</NextLinkFromReactRouter>
           </ButtonMenuItem>
         </ButtonMenu>

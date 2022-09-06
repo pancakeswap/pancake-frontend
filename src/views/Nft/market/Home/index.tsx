@@ -82,7 +82,7 @@ const Home = () => {
               {t('Buy and Sell NFTs on BNB Smart Chain')}
             </Heading>
             {account && (
-              <Button asChild mt="32px">
+              <Button mt="32px">
                 <NextLinkFromReactRouter to={`/profile/${account.toLowerCase()}`}>
                   {t('Manage/Sell')}
                 </NextLinkFromReactRouter>

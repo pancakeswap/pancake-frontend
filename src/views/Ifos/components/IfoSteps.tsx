@@ -202,7 +202,7 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
       }
 
       return (
-        <Button asChild>
+        <Button>
           <RouterLink to={`/profile/${account.toLowerCase()}`}>{t('Activate your Profile')}</RouterLink>
         </Button>
       )

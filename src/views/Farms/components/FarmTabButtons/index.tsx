@@ -34,11 +34,11 @@ const FarmTabButtons: React.FC<React.PropsWithChildren<FarmTabButtonsProps>> = (
   return (
     <Wrapper>
       <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
-        <ButtonMenuItem asChild>
+        <ButtonMenuItem>
           <NextLinkFromReactRouter to="/farms">{t('Live')}</NextLinkFromReactRouter>
         </ButtonMenuItem>
         <NotificationDot show={hasStakeInFinishedFarms}>
-          <ButtonMenuItem asChild id="finished-farms-button">
+          <ButtonMenuItem id="finished-farms-button">
             <NextLinkFromReactRouter to="/farms/history">{t('Finished')}</NextLinkFromReactRouter>
           </ButtonMenuItem>
         </NotificationDot>
