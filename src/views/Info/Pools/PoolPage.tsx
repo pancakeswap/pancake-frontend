@@ -26,6 +26,7 @@ import {
   usePoolDatas,
   usePoolTransactions,
 } from 'state/info/hooks'
+import { multiChainId, multiChainScan } from 'state/info/constant'
 import { useWatchlistPools } from 'state/user/hooks'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
@@ -104,8 +105,8 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
               </Flex>
             </Breadcrumbs>
             <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
-              <LinkExternal mr="8px" href={getBlockExploreLink(address, 'address')}>
-                {t('View on BscScan')}
+              <LinkExternal mr="8px" href={getBlockExploreLink(address, 'address', multiChainId[chainName])}>
+                {t(multiChainScan[chainName])}
               </LinkExternal>
               <SaveIcon fill={watchlistPools.includes(address)} onClick={() => addPoolToWatchlist(address)} />
             </Flex>

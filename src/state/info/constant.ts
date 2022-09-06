@@ -23,3 +23,8 @@ export const multiChainQueryEndPoint = {
   BSC: INFO_CLIENT,
   ETH: INFO_CLIENT_ETH,
 }
+
+export const multiChainScan = {
+  BSC: 'View on BscScan',
+  ETH: 'View on Etherscan',
+}
