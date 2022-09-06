@@ -54,7 +54,9 @@ export function useStablePair(currencyA: Currency, currencyB: Currency): UseStab
 
   const ZERO_AMOUNT = CurrencyAmount.fromRawAmount(currencyA, '0')
 
-  const token0Price = estimatedToken1Amount
+  const isPriceValid = currencyAAmountQuotient && estimatedToken1Amount
+
+  const token0Price = isPriceValid
     ? new Price(currencyA, currencyB, currencyAAmountQuotient, estimatedToken1Amount.quotient)
     : ZERO_AMOUNT
 
@@ -65,7 +67,8 @@ export function useStablePair(currencyA: Currency, currencyB: Currency): UseStab
     tokenAmounts: [],
     token0: currencyA,
     token1: currencyB,
-    priceOf: (token) => (token?.address === currencyA?.address ? token0Price : token0Price.invert()),
+    priceOf: (token) =>
+      isPriceValid ? (token?.address === currencyA?.address ? token0Price : token0Price.invert()) : ZERO_AMOUNT,
     token0Price: () => token0Price,
     token1Price: () => token0Price.invert(),
     // NOTE: Stable Tokens don't need this
