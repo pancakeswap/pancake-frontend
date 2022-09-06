@@ -1,0 +1,5 @@
+{
+  "rules": {
+    "lines-between-class-members": 0
+  }
+}

@@ -1,14 +1,13 @@
 {
   "extends": "tsconfig/nextjs.json",
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"],
   "compilerOptions": {
-    "target": "es5"
+    "target": "es5",
+    "baseUrl": ".",
+    "paths": {
+      "@pancakeswap/aptos/core": ["../../packages/aptos/core/index.ts"],
+      "@pancakeswap/aptos": ["../../packages/aptos/src/index.ts"]
+    }
   }
 }

@@ -38,6 +38,8 @@ export * from "./components/Timeline";
 export * from "./components/Toggle";
 export * from "./components/CoinSwitcher";
 
+export type { DropdownMenuItems } from "./components/DropdownMenu";
+
 // Hooks
 export * from "./hooks";
 

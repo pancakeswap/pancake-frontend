@@ -1,12 +1,17 @@
-import { AptosClient } from 'aptos'
-
-import { BaseConnector } from './base'
+import { Account, Connector, Network } from './base'
 import { ConnectorNotFoundError } from './errors'
+import { Aptos, TransactionPayload } from './types'
 
 declare global {
   interface Window {
-    aptos?: any
+    aptos?: Aptos
   }
+}
+
+enum NetworkName {
+  Devnet = 'Devnet',
+  Testnet = 'Testnet',
+  AIT3 = 'AIT3',
 }
 
 export type InjectedConnectorOptions = {
@@ -14,7 +19,7 @@ export type InjectedConnectorOptions = {
   name?: string | ((detectedName: string | string[]) => string)
 }
 
-export class InjectedConnector extends BaseConnector<AptosClient> {
+export class InjectedConnector extends Connector {
   readonly id: string
 
   readonly name: string
@@ -23,20 +28,25 @@ export class InjectedConnector extends BaseConnector<AptosClient> {
 
   provider?: Window['aptos']
 
-  constructor(options: InjectedConnectorOptions) {
+  constructor(options?: InjectedConnectorOptions) {
     super()
 
     let name = 'Petra'
-    const overrideName = options.name
+    const overrideName = options?.name
     if (typeof overrideName === 'string') name = overrideName
     this.id = 'injected'
     this.name = name
   }
 
-  async connect({ chainId }: { chainId?: number } = {}) {
+  async connect() {
     try {
       const provider = await this.getProvider()
       if (!provider) throw new ConnectorNotFoundError()
+      if (provider.on) {
+        provider.on('accountChanged', this.onAccountsChanged)
+        provider.on('networkChanged', this.onNetworkChanged)
+        // provider.on('disconnect', this.onDisconnect)
+      }
 
       return provider.connect()
     } catch (error) {
@@ -58,6 +68,12 @@ export class InjectedConnector extends BaseConnector<AptosClient> {
     return provider.account()
   }
 
+  async network() {
+    const provider = await this.getProvider()
+    if (!provider) throw new ConnectorNotFoundError()
+    return (await provider.network()).networkName
+  }
+
   async getProvider() {
     if (typeof window !== 'undefined' && !!window.aptos) this.provider = window.aptos
     return this.provider
@@ -73,15 +89,25 @@ export class InjectedConnector extends BaseConnector<AptosClient> {
     }
   }
 
-  async signAndSubmitTransaction() {
+  async signAndSubmitTransaction(tx: TransactionPayload) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
-    return provider.signAndSubmitTransaction()
+    return provider.signAndSubmitTransaction(tx)
   }
 
-  async signTransaction() {
+  async signTransaction(tx: TransactionPayload) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
-    return provider.signTransaction()
+    return provider.signTransaction(tx)
+  }
+
+  protected onAccountsChanged = (account: Account) => {
+    this.emit('change', { account })
+  }
+
+  protected onNetworkChanged = (network: Network) => {
+    // const id = normalizeChainId(chainId)
+    // const unsupported = this.isChainUnsupported(id)
+    this.emit('change', { network })
   }
 }

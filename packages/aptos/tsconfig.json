@@ -1,0 +1,7 @@
+{
+  "extends": "tsconfig/react-library",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "isolatedModules": true
+  }
+}

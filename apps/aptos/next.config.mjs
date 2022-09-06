@@ -1,7 +1,13 @@
 import transpileModules from 'next-transpile-modules'
 import { withAxiom } from 'next-axiom'
 
-const withTH = transpileModules(['@pancakeswap/uikit', '@pancakeswap/sdk'])
+const withTH = transpileModules([
+  '@pancakeswap/uikit',
+  '@pancakeswap/sdk',
+  '@pancakeswap/localization',
+  '@pancakeswap/hooks',
+  '@pancakeswap/aptos',
+])
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

@@ -6,20 +6,43 @@
 // - `signTransaction(transaction)`: signs the given transaction and returns it to be submitted by the dApp
 // - `disconnect()`: Removes connection between dApp and wallet. Useful when the user wants to remove the connection.
 
-export abstract class BaseConnector<Provider = any> {
+import EventEmitter from 'eventemitter3'
+
+export type Account = {
+  address: string
+  publicKey: string
+}
+
+export type Network = {
+  networkName: string
+}
+
+export type ConnectorData = {
+  account?: Account
+  network?: Network
+}
+
+export interface ConnectorEvents {
+  change(data?: ConnectorData): void
+  connect(): void
+  message({ type, data }: { type: string; data?: unknown }): void
+  disconnect(): void
+  error(error: Error): void
+}
+
+export abstract class Connector extends EventEmitter<ConnectorEvents> {
   atpos?: any
+
+  abstract id: string
 
   abstract readonly ready: boolean
 
-  // constructor() {
-  //   //
-  // }
-
-  abstract connect(): Promise<unknown>
+  abstract connect(): Promise<Account>
 
   abstract disconnect(): Promise<void>
 
-  abstract account(): Promise<string>
+  abstract account(): Promise<Account>
+  abstract network(): Promise<string>
 
   abstract signAndSubmitTransaction(transaction?: unknown): Promise<unknown>
 
