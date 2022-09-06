@@ -33,7 +33,9 @@ import {
   useTokenPriceData,
   useTokenTransactions,
   useMultiChainPath,
+  useGetChainName,
 } from 'state/info/hooks'
+import { multiChainId, multiChainScan } from 'state/info/constant'
 import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import { useWatchlistTokens } from 'state/user/hooks'
@@ -99,7 +101,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
 
   const [watchlistTokens, addWatchlistToken] = useWatchlistTokens()
   const chainPath = useMultiChainPath()
-
+  const chainName = useGetChainName()
   return (
     <Page symbol={tokenData?.symbol}>
       {tokenData ? (
@@ -131,8 +133,12 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                 </Flex>
               </Breadcrumbs>
               <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
-                <LinkExternal mr="8px" color="primary" href={getBlockExploreLink(address, 'address')}>
-                  {t('View on BscScan')}
+                <LinkExternal
+                  mr="8px"
+                  color="primary"
+                  href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
+                >
+                  {t(multiChainScan[chainName])}
                 </LinkExternal>
                 {cmcLink && (
                   <StyledCMCLink href={cmcLink} rel="noopener noreferrer nofollow" target="_blank">

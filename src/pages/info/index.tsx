@@ -20,5 +20,6 @@ const InfoPage = () => {
 }
 
 InfoPage.Layout = InfoPageLayout
+InfoPage.pageSupportedChains = [ChainId.ETHEREUM, ChainId.BSC]
 
 export default InfoPage
