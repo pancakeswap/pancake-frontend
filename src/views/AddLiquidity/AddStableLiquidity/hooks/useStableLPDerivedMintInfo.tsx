@@ -30,7 +30,7 @@ export function useStablePair(currencyA, currencyB) {
   })
 
   if (!stableSwapConfig) {
-    return [PairState.NOT_EXISTS, undefined]
+    return { pairState: PairState.NOT_EXISTS, pair: undefined }
   }
 
   const ZERO_AMOUNT = CurrencyAmount.fromRawAmount(currencyA, '0')
@@ -55,7 +55,7 @@ export function useStablePair(currencyA, currencyB) {
     getLiquidityValue: () => ZERO_AMOUNT,
   }
 
-  return [PairState.EXISTS, pair]
+  return { pairState: PairState.EXISTS, pair }
 }
 
 function useMintedStabelLP({
@@ -118,7 +118,7 @@ export function useStableLPDerivedMintInfo(
   )
 
   // pair
-  const [pairState, pair] = useStablePair(currencyA, currencyB)
+  const { pairState, pair } = useStablePair(currencyA, currencyB)
 
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 

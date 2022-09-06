@@ -10,8 +10,8 @@ export interface StableTrade {
   outputAmount: CurrencyAmount<Currency>
   executionPrice: Price<Currency, Currency>
   priceImpact: null
-  maximumAmountIn: (slippaged: Percent) => CurrencyAmount<Currency> | JSBI
-  minimumAmountOut: (slippaged: Percent) => CurrencyAmount<Currency> | JSBI
+  maximumAmountIn: (slippaged: Percent) => CurrencyAmount<Currency>
+  minimumAmountOut: (slippaged: Percent) => CurrencyAmount<Currency>
 }
 
 export const maximumAmountInFactory = (currencyAmountIn, slippageTolerance) => {

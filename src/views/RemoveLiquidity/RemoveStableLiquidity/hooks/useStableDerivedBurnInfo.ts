@@ -47,7 +47,7 @@ export function useStableDerivedBurnInfo(
   const { t } = useTranslation()
 
   // pair + totalsupply
-  const [, pair] = useStablePair(currencyA, currencyB)
+  const { pair } = useStablePair(currencyA, currencyB)
 
   // balances
   const relevantTokenBalances = useTokenBalances(account ?? undefined, [pair?.liquidityToken])
