@@ -122,21 +122,32 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 }
 
 // calculate pending transactions
-export function usePendingTransactions(): { hasPendingTransactions: boolean; pendingNumber: number } {
+export function usePendingTransactions(): {
+  hasPendingTransactions: boolean
+  pendingNumber: number
+  hasHarvestPendingTransactions: boolean
+  harvestPendingNumber: number
+} {
   const allTransactions = useAllTransactions()
   const sortedRecentTransactions = useMemo(() => {
     const txs = Object.values(allTransactions)
     return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
   }, [allTransactions])
 
-  const pending = sortedRecentTransactions
-    .filter((tx) => !tx.receipt || tx?.farmHarvest?.destinationChain?.status === HarvestStatusType.PENDING)
+  const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
+  const harvestPending = sortedRecentTransactions
+    .filter((tx) => tx?.farmHarvest?.destinationChain?.status === HarvestStatusType.PENDING)
     .map((tx) => tx.hash)
-  const hasPendingTransactions = !!pending.length
+
+  const hasHarvestPendingTransactions = !!harvestPending.length
+  const hasPendingTransactions = !!pending.length || hasHarvestPendingTransactions
+  const pendingNumber = pending.length + harvestPending.length
 
   return {
     hasPendingTransactions,
-    pendingNumber: pending.length,
+    pendingNumber,
+    hasHarvestPendingTransactions,
+    harvestPendingNumber: harvestPending.length,
   }
 }
 
