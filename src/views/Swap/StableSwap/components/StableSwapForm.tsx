@@ -1,7 +1,20 @@
 import { SetStateAction, useCallback, useEffect, useState, Dispatch, useContext } from 'react'
 import styled from 'styled-components'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
-import { Button, Text, ArrowDownIcon, Box, IconButton, ArrowUpDownIcon, Skeleton } from '@pancakeswap/uikit'
+import {
+  Button,
+  Text,
+  ArrowDownIcon,
+  Box,
+  IconButton,
+  ArrowUpDownIcon,
+  Skeleton,
+  Flex,
+  Message,
+  MessageText,
+} from '@pancakeswap/uikit'
+import InfoTooltip from '@pancakeswap/uikit/src/components/Timeline/InfoTooltip'
+
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
@@ -185,7 +198,15 @@ export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }
   return (
     <>
       <CurrencyInputHeader
-        title={t('Stable Swap')}
+        title={
+          <Flex>
+            {t('StableSwap')}
+            <InfoTooltip
+              ml="4px"
+              text="StableSwap provides better rates and lower fees for pairs with highly correlated prices"
+            />
+          </Flex>
+        }
         subtitle={t('Trade tokens in an instant')}
         setIsChartDisplayed={setIsChartDisplayed}
         isChartDisplayed={isChartDisplayed}
@@ -287,6 +308,13 @@ export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }
               </Text>
             </RowBetween>
           </AutoColumn>
+          {typedValue ? null : (
+            <AutoColumn>
+              <Message variant="warning" mb="16px">
+                <MessageText>Trade stablecoins in StableSwap with lower splippage and trading fees!</MessageText>
+              </Message>
+            </AutoColumn>
+          )}
         </AutoColumn>
         <Box mt="0.25rem">
           <StableSwapCommitButton

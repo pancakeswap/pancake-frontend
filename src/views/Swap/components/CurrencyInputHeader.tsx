@@ -14,11 +14,11 @@ import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import { useExpertModeManager } from 'state/user/hooks'
 import RefreshIcon from 'components/Svg/RefreshIcon'
-import { useCallback } from 'react'
+import { ReactElement, useCallback } from 'react'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 
 interface Props {
-  title: string
+  title: string | ReactElement
   subtitle: string
   noConfig?: boolean
   setIsChartDisplayed?: React.Dispatch<React.SetStateAction<boolean>>
