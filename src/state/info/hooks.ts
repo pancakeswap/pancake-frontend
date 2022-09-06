@@ -7,10 +7,10 @@ import { AppState, useAppDispatch } from 'state'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import fetchPoolChartData, { fetchPoolChartDataETH } from 'state/info/queries/pools/chartData'
 import fetchPoolTransactions, { fetchPoolTransactionsETH } from 'state/info/queries/pools/transactions'
-import fetchTokenChartData, { fetchTokenChartDataETH } from 'state/info/queries/tokens/chartData'
-import fetchPoolsForToken, { fetchPoolsForTokenETH } from 'state/info/queries/tokens/poolsForToken'
-import fetchTokenPriceData, { fetchTokenPriceDataETH } from 'state/info/queries/tokens/priceData'
-import fetchTokenTransactions, { fetchTokenTransactionsETH } from 'state/info/queries/tokens/transactions'
+import fetchTokenChartData from 'state/info/queries/tokens/chartData'
+import fetchPoolsForToken from 'state/info/queries/tokens/poolsForToken'
+import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
+import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
 import { Transaction } from 'state/info/types'
 import { isAddress } from 'utils'
 import {
@@ -233,9 +233,7 @@ export const usePoolsForToken = (address: string): string[] | undefined => {
 
   useEffect(() => {
     const fetch = async () => {
-      const { error: fetchError, addresses } = await (chainName === 'ETH'
-        ? fetchPoolsForTokenETH(address)
-        : fetchPoolsForToken(address))
+      const { error: fetchError, addresses } = await fetchPoolsForToken(chainName, address)
       if (!fetchError && addresses) {
         dispatch(addTokenPoolAddresses({ tokenAddress: address, poolAddresses: addresses }))
       }
@@ -260,9 +258,7 @@ export const useTokenChartData = (address: string): ChartEntry[] | undefined => 
 
   useEffect(() => {
     const fetch = async () => {
-      const { error: fetchError, data } = await (chainName === 'ETH'
-        ? fetchTokenChartDataETH(address)
-        : fetchTokenChartData(address))
+      const { error: fetchError, data } = await fetchTokenChartData(chainName, address)
       if (!fetchError && data) {
         dispatch(updateTokenChartData({ tokenAddress: address, chartData: data }))
       }
@@ -295,9 +291,7 @@ export const useTokenPriceData = (
   const chainName = useGetChainName()
   useEffect(() => {
     const fetch = async () => {
-      const { data, error: fetchingError } = await (chainName === 'ETH'
-        ? fetchTokenPriceDataETH(address, interval, startTimestamp)
-        : fetchTokenPriceData(address, interval, startTimestamp))
+      const { data, error: fetchingError } = await fetchTokenPriceData(chainName, address, interval, startTimestamp)
       if (data) {
         dispatch(
           updateTokenPriceData({
@@ -329,9 +323,7 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
 
   useEffect(() => {
     const fetch = async () => {
-      const { error: fetchError, data } = await (chainName === 'ETH'
-        ? fetchTokenTransactionsETH(address)
-        : fetchTokenTransactions(address))
+      const { error: fetchError, data } = await fetchTokenTransactions(chainName, address)
       if (fetchError) {
         setError(true)
       } else if (data) {

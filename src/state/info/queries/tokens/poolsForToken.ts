@@ -1,15 +1,15 @@
 import { TOKEN_BLACKLIST } from 'config/constants/info'
 import { gql } from 'graphql-request'
-import { infoClient, infoClientETH } from 'utils/graphql'
+import { multiChainQueryClient, MultiChianName, multiChainQueryMainToken } from '../../constant'
 
 /**
  * Data for showing Pools table on the Token page
  */
-const POOLS_FOR_TOKEN = gql`
+const POOLS_FOR_TOKEN = (chainName: MultiChianName) => gql`
   query poolsForToken($address: Bytes!, $blacklist: [String!]) {
     asToken0: pairs(
       first: 15
-      orderBy: trackedReserveBNB
+      orderBy: trackedReserve${multiChainQueryMainToken[chainName]}
       orderDirection: desc
       where: { totalTransactions_gt: 100, token0: $address, token1_not_in: $blacklist }
     ) {
@@ -17,30 +17,9 @@ const POOLS_FOR_TOKEN = gql`
     }
     asToken1: pairs(
       first: 15
-      orderBy: trackedReserveBNB
+      orderBy: trackedReserve${multiChainQueryMainToken[chainName]}
       orderDirection: desc
       where: { totalTransactions_gt: 100, token1: $address, token0_not_in: $blacklist }
-    ) {
-      id
-    }
-  }
-`
-
-export const POOLS_FOR_TOKEN_ETH = gql`
-  query poolsForToken($address: Bytes!, $blacklist: [String!]) {
-    asToken0: pairs(
-      first: 15
-      orderBy: trackedReserveETH
-      orderDirection: desc
-      where: { txCount_gt: 100, token0: $address, token1_not_in: $blacklist }
-    ) {
-      id
-    }
-    asToken1: pairs(
-      first: 15
-      orderBy: trackedReserveETH
-      orderDirection: desc
-      where: { txCount_gt: 100, token1: $address, token0_not_in: $blacklist }
     ) {
       id
     }
@@ -57,36 +36,14 @@ export interface PoolsForTokenResponse {
 }
 
 const fetchPoolsForToken = async (
+  chainName: MultiChianName,
   address: string,
 ): Promise<{
   error: boolean
   addresses?: string[]
 }> => {
   try {
-    const data = await infoClient.request<PoolsForTokenResponse>(POOLS_FOR_TOKEN, {
-      address,
-      blacklist: TOKEN_BLACKLIST,
-    })
-    return {
-      error: false,
-      addresses: data.asToken0.concat(data.asToken1).map((p) => p.id),
-    }
-  } catch (error) {
-    console.error(`Failed to fetch pools for token ${address}`, error)
-    return {
-      error: true,
-    }
-  }
-}
-
-export const fetchPoolsForTokenETH = async (
-  address: string,
-): Promise<{
-  error: boolean
-  addresses?: string[]
-}> => {
-  try {
-    const data = await infoClientETH.request<PoolsForTokenResponse>(POOLS_FOR_TOKEN_ETH, {
+    const data = await multiChainQueryClient[chainName].request<PoolsForTokenResponse>(POOLS_FOR_TOKEN(chainName), {
       address,
       blacklist: TOKEN_BLACKLIST,
     })
