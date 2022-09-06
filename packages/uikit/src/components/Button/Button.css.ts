@@ -8,9 +8,9 @@ export const scales = {
     atoms({
       py: 0,
       px: "8px",
+      fontSize: "12px",
     }),
     style({
-      fontSize: "12px",
       height: "20px",
     }),
   ]),
@@ -20,6 +20,7 @@ export const scales = {
     }),
     atoms({
       py: 0,
+      fontSize: "16px",
       px: "16px",
     }),
   ]),
@@ -29,6 +30,7 @@ export const scales = {
       height: "48px",
     }),
     atoms({
+      fontSize: "16px",
       px: "24px",
       py: 0,
     }),
@@ -127,38 +129,39 @@ const loading = {
 };
 
 export const variants = recipe({
-  base: style({
-    position: "relative",
-    alignItems: "center",
-    borderWidth: 0,
-    borderRadius: 16,
-    cursor: "pointer",
-    display: "inline-flex",
-    fontFamily: "inherit",
-    fontSize: 16,
-    fontWeight: 600,
-    justifyContent: "center",
-    letterSpacing: "0.03em",
-    lineHeight: 1,
+  base: style([
+    {
+      position: "relative",
+      alignItems: "center",
+      borderWidth: 0,
+      borderRadius: 16,
+      cursor: "pointer",
+      display: "inline-flex",
+      fontFamily: "inherit",
+      fontWeight: 600,
+      justifyContent: "center",
+      letterSpacing: "0.03em",
+      lineHeight: 1,
 
-    selectors: {
-      "&:hover:not(:disabled):not(:active)": {
-        opacity: 0.65,
-      },
-      "&:active:not(:disabled)": {
-        opacity: 0.85,
-        transform: "translateY(1px)",
-        boxShadow: "none",
-      },
-      "&:disabled": {
-        backgroundColor: vars.colors.backgroundDisabled,
-        borderColor: vars.colors.backgroundDisabled,
-        boxShadow: "none",
-        color: vars.colors.textDisabled,
-        cursor: "not-allowed",
+      selectors: {
+        "&:hover:not(:disabled):not(:active)": {
+          opacity: 0.65,
+        },
+        "&:active:not(:disabled)": {
+          opacity: 0.85,
+          transform: "translateY(1px)",
+          boxShadow: "none",
+        },
+        "&:disabled": {
+          backgroundColor: vars.colors.backgroundDisabled,
+          borderColor: vars.colors.backgroundDisabled,
+          boxShadow: "none",
+          color: vars.colors.textDisabled,
+          cursor: "not-allowed",
+        },
       },
     },
-  }),
+  ]),
   variants: {
     loading,
     variant,

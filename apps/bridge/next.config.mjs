@@ -20,4 +20,4 @@ const nextConfig = {
   },
 }
 
-export default withTH(withAxiom(withVanillaExtract(nextConfig)))
+export default withVanillaExtract(withTH(withAxiom(nextConfig)))

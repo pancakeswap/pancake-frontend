@@ -23,7 +23,6 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
   const { isMobile } = useMatchBreakpoints();
   const wrapperRef = useRef<HTMLDivElement>(null);
   return (
-    // @ts-ignore
     <ModalContainer
       drag={isMobile ? "y" : false}
       dragConstraints={{ top: 0, bottom: 600 }}
@@ -32,6 +31,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
       onDragStart={() => {
         if (wrapperRef.current) wrapperRef.current.style.animation = "none";
       }}
+      // @ts-ignore
       onDragEnd={(e, info) => {
         if (info.velocity.y > MODAL_SWIPE_TO_CLOSE_VELOCITY && onDismiss) onDismiss();
       }}

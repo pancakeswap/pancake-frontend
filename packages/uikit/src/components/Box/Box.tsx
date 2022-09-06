@@ -1,5 +1,9 @@
 /* eslint-disable no-restricted-syntax */
-import { Box, BoxProps, MotionBox } from "@pancakeswap/ui";
+import { Box as BoxBase, BoxProps, MotionBox } from "@pancakeswap/ui";
+import { forwardRef } from "react";
 
-export { Box, MotionBox };
+// re-export to avoid typescript union too complex
+export const Box = forwardRef<HTMLElement, BoxProps>((props, ref) => <BoxBase ref={ref} {...props} />);
+
+export { MotionBox };
 export type { BoxProps };

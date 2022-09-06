@@ -1,5 +1,4 @@
 import React from "react";
-import { Colors } from "../..";
 import { Box, Flex } from "../Box";
 import { Button } from "../Button";
 import CakePrice from "../CakePrice/CakePrice";
@@ -7,12 +6,12 @@ import LangSelector from "../LangSelector/LangSelector";
 import { Link } from "../Link";
 import { ArrowForwardIcon, LogoWithTextIcon } from "../Svg";
 import { ThemeSwitcher } from "../ThemeSwitcher";
+import SocialLinks from "./Components/SocialLinks";
 import {
   StyledFooter,
   StyledIconMobileContainer,
   StyledList,
   StyledListItem,
-  StyledSocialLinks,
   StyledText,
   StyledToolsContainer,
 } from "./styles";
@@ -69,7 +68,14 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
             <LogoWithTextIcon width="160px" />
           </Box>
         </Flex>
-        <StyledSocialLinks order={[2]} pb={["42px", null, "32px"]} mb={["0", null, "32px"]} />
+        <SocialLinks
+          data-theme="dark"
+          borderBottom="1px solid"
+          borderColor="cardBorder"
+          order={[2]}
+          pb={["42px", null, "32px"]}
+          mb={["0", null, "32px"]}
+        />
         <StyledToolsContainer
           data-theme="dark"
           order={[1, null, 3]}

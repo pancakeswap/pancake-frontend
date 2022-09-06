@@ -32,7 +32,7 @@ type MoreWalletCardProps = ButtonProps & {
 
 export const MoreWalletCard: React.FC<React.PropsWithChildren<MoreWalletCardProps>> = ({ t, as, ...props }) => {
   return (
-    <WalletButton variant="tertiary" as={as as any} {...props}>
+    <WalletButton variant="text" as={as as any} {...props}>
       <MoreHorizontal width="40px" mb="8px" color="textSubtle" />
       <Text fontSize="14px">{t("More")}</Text>
     </WalletButton>
@@ -43,7 +43,7 @@ const WalletCard: React.FC<React.PropsWithChildren<Props>> = ({ login, walletCon
   const { title, icon: Icon } = walletConfig;
   return (
     <WalletButton
-      variant="tertiary"
+      variant="text"
       onClick={() => {
         // TW point to WC on desktop
         if (title === "Trust Wallet" && walletConnectConfig && isDesktop) {

@@ -16,7 +16,7 @@ export const UnitContainer = styled(Text)`
   white-space: nowrap;
 `;
 
-export const StyledBalanceInput = styled(Box)<{ isWarning: BalanceInputProps["isWarning"] }>`
+export const StyledBalanceInput = styled.div<{ isWarning: BalanceInputProps["isWarning"] }>`
   background-color: ${({ theme }) => theme.colors.input};
   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
   border-radius: 16px;
