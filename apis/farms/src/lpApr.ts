@@ -1,12 +1,10 @@
 /* eslint-disable no-restricted-syntax */
 import chunk from 'lodash/chunk'
+import BigNumber from 'bignumber.js'
 import { gql, GraphQLClient } from 'graphql-request'
 import getUnixTime from 'date-fns/getUnixTime'
 import sub from 'date-fns/sub'
 import { AprMap } from '@pancakeswap/farms'
-import { FIXED_ZERO } from '@pancakeswap/farms/src/const'
-import { FixedNumber } from '@ethersproject/bignumber'
-import { getAddress } from '@ethersproject/address'
 
 interface BlockResponse {
   blocks: {
@@ -81,20 +79,20 @@ const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): P
     return farmsAtLatestBlock.reduce((aprMap, farm) => {
       const farmWeekAgo = farmsOneWeekAgo.find((oldFarm) => oldFarm.id === farm.id)
       // In case farm is too new to estimate LP APR (i.e. not returned in farmsOneWeekAgo query) - return 0
-      let lpApr = FIXED_ZERO
+      let lpApr = new BigNumber(0)
       if (farmWeekAgo) {
-        const volume7d = FixedNumber.from(farm.volumeUSD).subUnsafe(FixedNumber.from(farmWeekAgo.volumeUSD))
-        const lpFees7d = volume7d.mulUnsafe(FixedNumber.from(LP_HOLDERS_FEE))
-        const lpFeesInAYear = lpFees7d.mulUnsafe(FixedNumber.from(WEEKS_IN_A_YEAR))
+        const volume7d = new BigNumber(farm.volumeUSD).minus(new BigNumber(farmWeekAgo.volumeUSD))
+        const lpFees7d = volume7d.times(LP_HOLDERS_FEE)
+        const lpFeesInAYear = lpFees7d.times(WEEKS_IN_A_YEAR)
         // Some untracked pairs like KUN-QSD will report 0 volume
-        if (!lpFeesInAYear.isZero() && !lpFeesInAYear.isNegative()) {
-          const liquidity = FixedNumber.from(farm.reserveUSD)
-          lpApr = lpFeesInAYear.mulUnsafe(FixedNumber.from(100)).divUnsafe(liquidity)
+        if (lpFeesInAYear.gt(0)) {
+          const liquidity = new BigNumber(farm.reserveUSD)
+          lpApr = lpFeesInAYear.times(100).dividedBy(liquidity)
         }
       }
       return {
         ...aprMap,
-        [getAddress(farm.id)]: lpApr.toString(),
+        [farm.id]: lpApr.decimalPlaces(2).toNumber(),
       }
     }, {})
   } catch (error) {

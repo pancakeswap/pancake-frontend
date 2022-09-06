@@ -20,6 +20,18 @@ const router = Router()
 
 const allowedOrigin = /[^\w](pancake\.run)|(localhost:3000)|(pancakeswap.finance)|(pancakeswap.com)$/
 
+router.get('/apr', async ({ query }) => {
+  if (typeof query?.key === 'string' && query.key === FORCE_UPDATE_KEY) {
+    try {
+      const result = await Promise.allSettled(farmFetcher.supportedChainId.map((id) => saveLPsAPR(id)))
+      return json(result.map((r) => r))
+    } catch (err) {
+      error(500, { err })
+    }
+  }
+  return error(400, 'no key provided')
+})
+
 router.get('/:chainId', async ({ params }, event) => {
   const err = requireChainId(params)
   if (err) return err
