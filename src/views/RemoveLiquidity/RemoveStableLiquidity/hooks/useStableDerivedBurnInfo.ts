@@ -67,8 +67,6 @@ export function useStableDerivedBurnInfo(
       ? CurrencyAmount.fromRawAmount(userLiquidity.currency, percentToRemove.multiply(userLiquidity.quotient).quotient)
       : undefined
 
-  //  InfoContract.calc_coins_amount(swapContractAddress，LP_Amount)
-
   const [amountA, amountB] = useGetRemovedTokenAmounts({
     lpAmount: liquidityToRemove?.quotient?.toString(),
   })

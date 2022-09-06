@@ -42,39 +42,39 @@ export function useStablePair(currencyA: Currency, currencyB: Currency): UseStab
   const currencyAAmountQuotient = tryParseAmount('1', currencyA)?.quotient
 
   const { data: estimatedToken1Amount } = useEstimatedAmount({
-    estimatedCurrency: currencyA,
+    estimatedCurrency: currencyB,
     quotient: currencyAAmountQuotient?.toString(),
     stableSwapContract,
     stableSwapConfig,
   })
 
+  const pair = useMemo(() => {
+    const isPriceValid = currencyAAmountQuotient && estimatedToken1Amount
+
+    const ZERO_AMOUNT = CurrencyAmount.fromRawAmount(currencyB, '0')
+
+    const token0Price = isPriceValid
+      ? new Price(currencyA, currencyB, currencyAAmountQuotient, estimatedToken1Amount.quotient)
+      : ZERO_AMOUNT
+
+    return {
+      liquidityToken: stableSwapConfig?.liquidityToken || null,
+      tokenAmounts: [],
+      token0: currencyA,
+      token1: currencyB,
+      priceOf: (token) =>
+        isPriceValid ? (token?.address === currencyA?.address ? token0Price : token0Price.invert()) : ZERO_AMOUNT,
+      token0Price: () => token0Price,
+      token1Price: () => token0Price.invert(),
+      // NOTE: Stable Tokens don't need this
+      reserve1: ZERO_AMOUNT,
+      reserve0: ZERO_AMOUNT,
+      getLiquidityValue: () => ZERO_AMOUNT,
+    }
+  }, [stableSwapConfig?.liquidityToken, currencyA, currencyB, currencyAAmountQuotient, estimatedToken1Amount])
+
   if (!stableSwapConfig) {
     return { pairState: PairState.NOT_EXISTS, pair: undefined }
-  }
-
-  const ZERO_AMOUNT = CurrencyAmount.fromRawAmount(currencyA, '0')
-
-  const isPriceValid = currencyAAmountQuotient && estimatedToken1Amount
-
-  const token0Price = isPriceValid
-    ? new Price(currencyA, currencyB, currencyAAmountQuotient, estimatedToken1Amount.quotient)
-    : ZERO_AMOUNT
-
-  const pair = {
-    liquidityToken: stableSwapConfig?.lpAddress
-      ? new Token(currencyA?.chainId, stableSwapConfig?.lpAddress, 18, 'Stable-LP', 'Pancake StableSwap LPs')
-      : null,
-    tokenAmounts: [],
-    token0: currencyA,
-    token1: currencyB,
-    priceOf: (token) =>
-      isPriceValid ? (token?.address === currencyA?.address ? token0Price : token0Price.invert()) : ZERO_AMOUNT,
-    token0Price: () => token0Price,
-    token1Price: () => token0Price.invert(),
-    // NOTE: Stable Tokens don't need this
-    reserve1: ZERO_AMOUNT,
-    reserve0: ZERO_AMOUNT,
-    getLiquidityValue: () => ZERO_AMOUNT,
   }
 
   return { pairState: PairState.EXISTS, pair }
