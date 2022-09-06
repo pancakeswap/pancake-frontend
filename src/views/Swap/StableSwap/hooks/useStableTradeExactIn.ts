@@ -66,17 +66,19 @@ export function useStableTradeResponse({ currencyAmountIn, currencyAmountOut, st
   }
 }
 
-export function useEstimatedAmount({ currency, stableSwapConfig, quotient, stableSwapContract }) {
+export function useEstimatedAmount({ estimatedCurrency, stableSwapConfig, quotient, stableSwapContract }) {
   return useSWR(
-    currency && !!quotient ? ['swapContract', stableSwapConfig?.stableSwapAddress, quotient] : null,
+    stableSwapConfig?.stableSwapAddress && estimatedCurrency && !!quotient
+      ? ['swapContract', stableSwapConfig?.stableSwapAddress, quotient]
+      : null,
     async () => {
-      const isToken0 = stableSwapConfig?.token0?.address === currency?.address
+      const isToken0 = stableSwapConfig?.token0?.address === estimatedCurrency?.address
 
       const args = isToken0 ? [1, 0, quotient] : [0, 1, quotient]
 
       const estimatedAmount = await stableSwapContract.get_dy(...args)
 
-      return CurrencyAmount.fromRawAmount(currency, estimatedAmount)
+      return CurrencyAmount.fromRawAmount(estimatedCurrency, estimatedAmount)
     },
   )
 }
@@ -93,7 +95,7 @@ export default function useStableTradeExactIn(
   const currencyAmountInQuotient = currencyAmountIn?.quotient?.toString()
 
   const { data: currencyAmountOut } = useEstimatedAmount({
-    currency: currencyOut,
+    estimatedCurrency: currencyOut,
     quotient: currencyAmountInQuotient,
     stableSwapContract,
     stableSwapConfig,

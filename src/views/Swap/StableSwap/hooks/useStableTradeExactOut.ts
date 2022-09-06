@@ -15,7 +15,7 @@ export default function useStableTradeExactOut(
   const currencyAmountOutQuotient = currencyAmountOut?.quotient?.toString()
 
   const { data: currencyAmountIn } = useEstimatedAmount({
-    currency: currencyIn,
+    estimatedCurrency: currencyIn,
     quotient: currencyAmountOutQuotient,
     stableSwapContract,
     stableSwapConfig,

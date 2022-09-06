@@ -23,7 +23,7 @@ export function useStablePair(currencyA, currencyB) {
   const currencyAAmountQuotient = tryParseAmount('1', currencyA)?.quotient
 
   const { data: estimatedToken1Amount } = useEstimatedAmount({
-    currency: currencyA,
+    estimatedCurrency: currencyA,
     quotient: currencyAAmountQuotient?.toString(),
     stableSwapContract,
     stableSwapConfig,
@@ -35,7 +35,9 @@ export function useStablePair(currencyA, currencyB) {
 
   const ZERO_AMOUNT = CurrencyAmount.fromRawAmount(currencyA, '0')
 
-  const token0Price = new Price(currencyA, currencyB, currencyAAmountQuotient, estimatedToken1Amount?.quotient)
+  const token0Price = estimatedToken1Amount
+    ? new Price(currencyA, currencyB, currencyAAmountQuotient, estimatedToken1Amount.quotient)
+    : ZERO_AMOUNT
 
   const pair = {
     liquidityToken: stableSwapConfig?.lpAddress
@@ -157,11 +159,10 @@ export function useStableLPDerivedMintInfo(
   const currencyBAmountQuotient = currencyBAmount?.quotient
 
   const { data: estimatedOutputAmount } = useEstimatedAmount({
-    currency: currencyAAmountQuotient ? currencyA : currencyB,
+    estimatedCurrency: currencyAAmountQuotient ? currencyB : currencyA,
     quotient: currencyAAmountQuotient ? currencyAAmountQuotient?.toString() : currencyBAmountQuotient?.toString(),
     stableSwapConfig,
     stableSwapContract,
-    isParamInvalid: !stableSwapConfig?.stableSwapAddress,
   })
 
   const price = useMemo(() => {
