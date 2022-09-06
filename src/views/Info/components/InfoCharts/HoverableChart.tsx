@@ -50,7 +50,7 @@ const HoverableChart = ({
       <Text bold color="secondary">
         {title}
       </Text>
-      {hover > 0 ? (
+      {hover > -1 ? ( // sometimes data is 0
         <Text bold fontSize="24px">
           ${formatAmount(hover)}
         </Text>
