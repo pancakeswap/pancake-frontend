@@ -65,7 +65,7 @@ export const TruncatedText = styled(Text).attrs({ ellipsis: true })`
 `
 
 const SwapCallbackErrorInner = styled.div`
-  background-color: ${({ theme }) => `${theme.colors.failure}33`};
+  background-color: ${({ theme }) => `${theme.colors.failure33}`};
   border-radius: 1rem;
   display: flex;
   align-items: center;
@@ -83,7 +83,7 @@ const SwapCallbackErrorInner = styled.div`
 `
 
 const SwapCallbackErrorInnerAlertTriangle = styled.div`
-  background-color: ${({ theme }) => `${theme.colors.failure}33`};
+  background-color: ${({ theme }) => `${theme.colors.failure33}`};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,7 +105,7 @@ export function SwapCallbackError({ error }: { error: string }) {
 }
 
 export const SwapShowAcceptChanges = styled(AutoColumn)`
-  background-color: ${({ theme }) => `${theme.colors.warning}33`};
+  background-color: ${({ theme }) => `${theme.colors.warning33}`};
   padding: 0.5rem;
   border-radius: 12px;
   margin-top: 8px;

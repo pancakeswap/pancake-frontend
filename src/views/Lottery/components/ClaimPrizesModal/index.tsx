@@ -21,7 +21,7 @@ const StyledModal = styled(ModalContainer)`
 `
 
 const StyledModalHeader = styled(ModalHeader)`
-  background: ${({ theme }) => theme.colors.gradients.cardHeader};
+  background: ${({ theme }) => theme.colors.gradientCardHeader};
   border-top-right-radius: 32px;
   border-top-left-radius: 32px;
 `

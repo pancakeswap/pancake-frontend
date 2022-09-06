@@ -42,7 +42,7 @@ const MintButton: React.FC<React.PropsWithChildren<PreEventProps>> = ({
     <ConfirmModal
       title={t('Mint')}
       isLoading={isLoading}
-      headerBackground={theme.colors.gradients.cardHeader}
+      headerBackground={theme.colors.gradientCardHeader}
       txHash={txHashMintingResult}
       loadingText={t('Please confirm your transaction in wallet.')}
       loadingButtonLabel={t('Minting...')}

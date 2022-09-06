@@ -81,7 +81,7 @@ export const ConfirmLimitOrderModal: React.FC<React.PropsWithChildren<ConfirmLim
   return (
     <Modal
       title={t('Confirm Limit Order')}
-      headerBackground={theme.colors.gradients.cardHeader}
+      headerBackground={theme.colors.gradientCardHeader}
       onDismiss={handleDismiss}
       style={{ width: isMobile ? '100%' : '436px' }}
     >

@@ -15,7 +15,7 @@ const WinRateWrapper = styled(Box)`
 const WinRateCardInner = styled(Box)`
   padding: 24px;
   border-radius: ${({ theme }) => theme.radii.default};
-  background: ${({ theme }) => theme.colors.gradients.bubblegum};
+  background: ${({ theme }) => theme.colors.gradientBubblegum};
 `
 
 const WinRateInputContainer = styled(Box)`

@@ -6,7 +6,7 @@ import Link from 'next/link'
 import DesktopImage from './DesktopImage'
 
 const StyledHero = styled(Box)`
-  background: ${({ theme }) => theme.colors.gradients.bubblegum};
+  background: ${({ theme }) => theme.colors.gradientBubblegum};
   padding-bottom: 32px;
   padding-top: 32px;
 `

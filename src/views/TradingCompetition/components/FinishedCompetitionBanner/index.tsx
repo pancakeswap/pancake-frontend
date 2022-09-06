@@ -53,7 +53,7 @@ const RightWrapper = styled.div`
 `
 
 const CompetitionTitle = styled(Heading)`
-  background: ${({ theme }) => theme.colors.gradients.gold};
+  background: ${({ theme }) => theme.colors.gradientGold};
   font-size: 24px;
   font-weight: 600;
   -webkit-background-clip: text;
