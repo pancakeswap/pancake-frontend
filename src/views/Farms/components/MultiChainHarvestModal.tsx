@@ -8,7 +8,7 @@ import { Modal, InjectedModalProps, Flex, Box, Text, Button, AutoRenewIcon, Imag
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import { useNonBscVault } from 'hooks/useContract'
-import { getBalanceAmount, getFullDisplayBalance } from 'utils/formatBalance'
+import { getBalanceAmount, formatNumber } from 'utils/formatBalance'
 import { useGasPrice } from 'state/user/hooks'
 import { useOraclePrice } from 'views/Farms/hooks/useFetchOraclePrice'
 import { nonBscHarvestFarm } from 'utils/calls'
@@ -53,8 +53,7 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
         nonBscHarvestFarm(nonBscVaultContract, vaultPid, gasPrice, account, oraclePrice, chainId),
         crossFarmingAddress.nonces(account),
       ])
-
-      const amount = getFullDisplayBalance(displayBalance, 18, 3)
+      const amount = formatNumber(displayBalance?.toNumber(), 3, 3)
       const summaryText = nonce.eq(0) ? 'Harvest %amount% CAKE with 0.005 BNB' : 'Harvest %amount% CAKE'
 
       addTransaction(receipt, {

@@ -141,11 +141,13 @@ export function usePendingTransactions(): {
 
   const hasHarvestPendingTransactions = !!harvestPending.length
   const hasPendingTransactions = !!pending.length || hasHarvestPendingTransactions
-  const pendingNumber = pending.length + harvestPending.length
+
+  const pendingArray = [...pending, ...harvestPending]
+  const filterDuplicates = pendingArray.filter((hash, index) => pendingArray.indexOf(hash) !== index)
 
   return {
     hasPendingTransactions,
-    pendingNumber,
+    pendingNumber: filterDuplicates.length,
     hasHarvestPendingTransactions,
     harvestPendingNumber: harvestPending.length,
   }
