@@ -20,6 +20,7 @@ import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import SwapTab, { SwapType } from './components/SwapTab'
 
 const CHART_SUPPORT_CHAIN_IDS = [ChainId.BSC]
+export const ACCESS_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC]
 
 export default function Swap() {
   const { isMobile } = useMatchBreakpoints()
@@ -56,6 +57,8 @@ export default function Swap() {
       !chainId || CHART_SUPPORT_CHAIN_IDS.includes(chainId),
     [chainId],
   )
+
+  const isAccessTokenSupported = useMemo(() => ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
@@ -103,7 +106,11 @@ export default function Swap() {
                         isChartDisplayed={isChartDisplayed}
                       />
                     ) : (
-                      <SwapForm setIsChartDisplayed={setIsChartDisplayed} isChartDisplayed={isChartDisplayed} />
+                      <SwapForm
+                        isAccessTokenSupported={isAccessTokenSupported}
+                        setIsChartDisplayed={setIsChartDisplayed}
+                        isChartDisplayed={isChartDisplayed}
+                      />
                     )
                   }
                 </SwapTab>

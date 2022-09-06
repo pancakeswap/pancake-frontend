@@ -113,6 +113,10 @@ const UserMenuItems = ({ onShowTx }: { onShowTx: () => void }) => {
           <Text pl="12px">{chain.name}</Text>
         </UserMenuItem>
       ))}
+      <UserMenuDivider />
+      <UserMenuItem onClick={() => window?.stargate.wallet.disconnect()}>
+        <Text>Disconnect</Text>
+      </UserMenuItem>
     </>
   )
 }

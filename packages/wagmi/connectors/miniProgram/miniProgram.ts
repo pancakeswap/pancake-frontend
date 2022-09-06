@@ -75,6 +75,10 @@ export class MiniProgramConnector extends InjectedConnector {
     return getAddress(<string>accounts[0])
   }
 
+  async getChainId(): Promise<number> {
+    return 56
+  }
+
   async getProvider() {
     if (typeof window !== 'undefined') {
       // TODO: Fallback to `ethereum#initialized` event for async injection

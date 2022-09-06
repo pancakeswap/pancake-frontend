@@ -1,4 +1,4 @@
-import { SetStateAction, useCallback, useEffect, useState, Dispatch } from 'react'
+import { SetStateAction, useCallback, useEffect, useState, Dispatch, useMemo } from 'react'
 import styled from 'styled-components'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { Button, Text, ArrowDownIcon, Box, IconButton, ArrowUpDownIcon, Skeleton } from '@pancakeswap/uikit'
@@ -8,6 +8,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
+import AccessRisk from 'views/Swap/components/AccessRisk'
 
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { CommonBasesType } from 'components/SearchModal/types'
@@ -64,7 +65,7 @@ interface SwapForm {
   setIsChartDisplayed: Dispatch<SetStateAction<boolean>>
 }
 
-export default function SwapForm({ setIsChartDisplayed, isChartDisplayed }) {
+export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAccessTokenSupported }) {
   const { t } = useTranslation()
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
   const warningSwapHandler = useWarningImport()
@@ -200,6 +201,10 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed }) {
     }
   }, [hasAmount, refreshBlockNumber])
 
+  const isShowAccessToken = useMemo(() => {
+    return isAccessTokenSupported && !currencies[Field.OUTPUT]?.isNative
+  }, [isAccessTokenSupported, currencies])
+
   return (
     <>
       <>
@@ -265,6 +270,10 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed }) {
               showCommonBases
               commonBasesType={CommonBasesType.SWAP_LIMITORDER}
             />
+
+            <Box style={{ display: isShowAccessToken ? 'block' : 'none' }}>
+              <AccessRisk currency={currencies[Field.OUTPUT]} />
+            </Box>
 
             {isExpertMode && recipient !== null && !showWrap ? (
               <>
