@@ -7,7 +7,7 @@ import { ToggleTheme } from "../components/Toggle/theme";
 import { TooltipTheme } from "../components/Tooltip/types";
 import { NavThemeType } from "../widgets/Menu/theme";
 import { ModalTheme } from "../widgets/Modal/types";
-import { Breakpoints, MediaQueries, Radii, Shadows, Spacing, ZIndices } from "./types";
+import { Breakpoints, MediaQueries, ZIndices } from "./types";
 
 export interface PancakeTheme {
   siteWidth: number;
@@ -23,9 +23,9 @@ export interface PancakeTheme {
   tooltip: TooltipTheme;
   breakpoints: Breakpoints;
   mediaQueries: MediaQueries;
-  spacing: Spacing;
-  shadows: Shadows;
-  radii: Radii;
+  spacing: typeof vars.space;
+  shadows: typeof vars.shadows;
+  radii: typeof vars.radii;
   zIndices: ZIndices;
 }
 

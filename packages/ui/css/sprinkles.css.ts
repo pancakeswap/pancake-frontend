@@ -35,7 +35,14 @@ const extendedSpace = {
 const margin = { ...vars.space, auto: 'auto' }
 
 const responsiveProperties = defineProperties({
-  conditions: mediaQueries,
+  conditions: {
+    xs: {},
+    sm: { '@media': `(min-width: ${breakpoints.sm}px)` },
+    md: { '@media': `(min-width: ${breakpoints.md}px)` },
+    lg: { '@media': `(min-width: ${breakpoints.lg}px)` },
+    xl: { '@media': `(min-width: ${breakpoints.xl}px)` },
+    xxl: { '@media': `(min-width: ${breakpoints.xxl}px)` },
+  },
   defaultCondition: 'xs',
   responsiveArray: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
   properties: {
