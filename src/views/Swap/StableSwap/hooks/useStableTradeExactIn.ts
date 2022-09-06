@@ -1,4 +1,4 @@
-import { CurrencyAmount, Price, Percent, TradeType, Fraction, ONE, Currency, JSBI } from '@pancakeswap/sdk'
+import { CurrencyAmount, Price, Percent, TradeType, Fraction, ONE, Currency } from '@pancakeswap/sdk'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useCallback, useMemo, useContext } from 'react'
 import useSWR from 'swr'

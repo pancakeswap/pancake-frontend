@@ -4,24 +4,11 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
 import useToast from 'hooks/useToast'
 import { Currency, Percent, WNATIVE } from '@pancakeswap/sdk'
-import {
-  Button,
-  Text,
-  AddIcon,
-  ArrowDownIcon,
-  CardBody,
-  Slider,
-  Box,
-  Flex,
-  useModal,
-  TooltipText,
-  useTooltip,
-} from '@pancakeswap/uikit'
+import { Button, Text, AddIcon, ArrowDownIcon, CardBody, Slider, Box, Flex, useModal } from '@pancakeswap/uikit'
 import { BigNumber } from '@ethersproject/bignumber'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { CommitButton } from 'components/CommitButton'
 import { useTranslation } from '@pancakeswap/localization'
-import { useLPApr } from 'state/swap/hooks'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 
@@ -51,7 +38,6 @@ import { useGasPrice, useUserSlippageTolerance } from '../../../state/user/hooks
 import Page from '../../Page'
 import ConfirmLiquidityModal from '../../Swap/components/ConfirmRemoveLiquidityModal'
 import { logError } from '../../../utils/sentry'
-import { formatAmount } from '../../../utils/formatInfoNumbers'
 import { CommonBasesType } from '../../../components/SearchModal/types'
 import { useStableDerivedBurnInfo } from './hooks/useStableDerivedBurnInfo'
 
@@ -77,13 +63,6 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
 
   const { pair, parsedAmounts, error } = useStableDerivedBurnInfo(currencyA ?? undefined, currencyB ?? undefined)
 
-  const poolData = useLPApr(pair)
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t(`Based on last 7 days' performance. Does not account for impermanent loss`),
-    {
-      placement: 'bottom',
-    },
-  )
   const { onUserInput: _onUserInput } = useBurnActionHandlers()
   const isValid = !error
 
@@ -528,17 +507,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
               {allowedSlippage / 100}%
             </Text>
           </RowBetween>
-          {poolData && (
-            <RowBetween mt="16px">
-              <TooltipText ref={targetRef} bold fontSize="12px" color="secondary">
-                {t('LP reward APR')}
-              </TooltipText>
-              {tooltipVisible && tooltip}
-              <Text bold color="primary">
-                {formatAmount(poolData.lpApr7d)}%
-              </Text>
-            </RowBetween>
-          )}
+
           <Box position="relative" mt="16px">
             {!account ? (
               <ConnectWalletButton width="100%" />

@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, JSBI, Pair, Percent, Price, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Price, Token } from '@pancakeswap/sdk'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -17,7 +17,26 @@ import { useEstimatedAmount } from 'views/Swap/StableSwap/hooks/useStableTradeEx
 import useSWR from 'swr'
 import { useMintState } from 'state/mint/hooks'
 
-export function useStablePair(currencyA, currencyB) {
+export interface StablePair {
+  liquidityToken: Token | null
+  tokenAmounts: any[]
+  token0: Currency
+  token1: Currency
+  priceOf: (token: Currency) => CurrencyAmount<Currency> | Price<Currency, Currency> | Fraction
+  token0Price: () => CurrencyAmount<Currency> | Price<Currency, Currency> | Fraction
+  token1Price: () => CurrencyAmount<Currency> | Price<Currency, Currency> | Fraction
+  // NOTE: Stable Tokens don't need this
+  reserve1: CurrencyAmount<Currency>
+  reserve0: CurrencyAmount<Currency>
+  getLiquidityValue: () => CurrencyAmount<Currency>
+}
+
+interface UseStablePairResponse {
+  pairState: PairState
+  pair: StablePair
+}
+
+export function useStablePair(currencyA: Currency, currencyB: Currency): UseStablePairResponse {
   const { stableSwapConfig, stableSwapContract } = useContext(StableConfigContext)
 
   const currencyAAmountQuotient = tryParseAmount('1', currencyA)?.quotient
@@ -89,7 +108,7 @@ export function useStableLPDerivedMintInfo(
 ): {
   dependentField: Field
   currencies: { [field in Field]?: Currency }
-  pair?: Pair | null
+  pair?: StablePair | null
   pairState: PairState
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   parsedAmounts: { [field in Field]?: CurrencyAmount<Currency> }

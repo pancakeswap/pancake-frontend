@@ -60,11 +60,13 @@ export default function StableSwapCommitButton({
 }: StableSwapCommitButtonPropsType) {
   const { t } = useTranslation()
   // the callback to execute the swap
+  const swapCalls = useStableSwapCallArgs(trade)
+
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
     trade,
     allowedSlippage,
     recipient,
-    useStableSwapCallArgs,
+    swapCalls,
   )
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade<Currency, Currency, TradeType> | undefined

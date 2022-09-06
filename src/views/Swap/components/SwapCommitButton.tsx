@@ -18,6 +18,7 @@ import { useUserSingleHopOnly } from 'state/user/hooks'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange'
 import { useSwapCallback } from 'hooks/useSwapCallback'
+import { useSwapCallArguments } from 'hooks/useSwapCallArguments'
 
 import ConfirmSwapModal from './ConfirmSwapModal'
 import ProgressSteps from './ProgressSteps'
@@ -77,7 +78,15 @@ export default function SwapCommitButton({
   const [singleHopOnly] = useUserSingleHopOnly()
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
   // the callback to execute the swap
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
+
+  const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipient)
+
+  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
+    trade,
+    allowedSlippage,
+    recipient,
+    swapCalls,
+  )
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade<Currency, Currency, TradeType> | undefined
     attemptingTxn: boolean

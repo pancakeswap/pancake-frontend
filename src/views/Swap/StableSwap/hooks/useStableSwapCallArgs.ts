@@ -1,8 +1,9 @@
+import { SwapCall } from 'hooks/useSwapCallArguments'
 import { useContext, useMemo } from 'react'
 
 import { StableConfigContext } from './useStableConfig'
 
-export default function useStableSwapCallArgs(trade) {
+export default function useStableSwapCallArgs(trade): SwapCall[] {
   const stableConfig = useContext(StableConfigContext)
   const swapContract = stableConfig?.stableSwapContract
 

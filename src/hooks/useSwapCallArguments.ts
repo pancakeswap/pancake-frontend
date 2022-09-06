@@ -7,7 +7,7 @@ import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { useRouterContract } from 'utils/exchange'
 import useTransactionDeadline from './useTransactionDeadline'
 
-interface SwapCall {
+export interface SwapCall {
   contract: Contract
   parameters: SwapParameters
 }

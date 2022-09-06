@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI, Pair, Percent, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
 
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
@@ -6,7 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Field } from 'state/burn/actions'
 import { useTokenBalances } from 'state/wallet/hooks'
 import { useBurnState } from 'state/burn/hooks'
-import { useStablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
+import { StablePair, useStablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import useSWR from 'swr'
 import { useContext } from 'react'
@@ -30,7 +30,7 @@ export function useStableDerivedBurnInfo(
   currencyA: Currency | undefined,
   currencyB: Currency | undefined,
 ): {
-  pair?: Pair | null
+  pair?: StablePair | null
   parsedAmounts: {
     [Field.LIQUIDITY_PERCENT]: Percent
     [Field.LIQUIDITY]?: CurrencyAmount<Token>
