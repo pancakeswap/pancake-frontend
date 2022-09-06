@@ -9,6 +9,7 @@ import {
   Modal,
   Spinner,
   Text,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { CurrencyLogo } from 'components/Logo'
 import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
@@ -69,6 +70,7 @@ export const ConfirmLimitOrderModal: React.FC<React.PropsWithChildren<ConfirmLim
   const { t } = useTranslation()
   const { theme } = useTheme()
   const wrappedOutput = wrappedCurrency(currencies.output, chainId)
+  const { isMobile } = useMatchBreakpoints()
 
   const handleDismiss = () => {
     if (customOnDismiss) {
@@ -81,7 +83,7 @@ export const ConfirmLimitOrderModal: React.FC<React.PropsWithChildren<ConfirmLim
       title={t('Confirm Limit Order')}
       headerBackground={theme.colors.gradients.cardHeader}
       onDismiss={handleDismiss}
-      style={{ width: '436px' }}
+      style={{ width: isMobile ? '100%' : '436px' }}
     >
       {attemptingTxn ? (
         <LoadingContent />
