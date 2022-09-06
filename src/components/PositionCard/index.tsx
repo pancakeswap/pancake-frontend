@@ -405,8 +405,8 @@ export const StableFullPositionCardContainer = withStableLPValues(FullPositionCa
 
 export const StableFullPositionCard = (props) => {
   const { stableSwapConfig, ...config } = useStableConfig({
-    addressA: props.pair?.token0?.address,
-    addressB: props.pair?.token1?.address,
+    pairA: props.pair?.token0,
+    pairB: props.pair?.token1,
   })
 
   if (!stableSwapConfig) return null

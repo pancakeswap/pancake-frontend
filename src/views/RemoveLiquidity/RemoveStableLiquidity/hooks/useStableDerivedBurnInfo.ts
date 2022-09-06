@@ -14,9 +14,12 @@ import { useContext } from 'react'
 export function useGetRemovedTokenAmounts({ lpAmount }) {
   const { stableSwapInfoContract, stableSwapConfig } = useContext(StableConfigContext)
 
-  const { data } = useSWR(!lpAmount ? null : ['stableSwapInfoContract', 'calc_coins_amount', lpAmount], async () => {
-    return stableSwapInfoContract.calc_coins_amount(stableSwapConfig?.stableSwapAddress, lpAmount)
-  })
+  const { data } = useSWR(
+    !lpAmount ? null : ['stableSwapInfoContract', 'calc_coins_amount', stableSwapConfig?.stableSwapAddress, lpAmount],
+    async () => {
+      return stableSwapInfoContract.calc_coins_amount(stableSwapConfig?.stableSwapAddress, lpAmount)
+    },
+  )
 
   if (!Array.isArray(data)) return []
 
