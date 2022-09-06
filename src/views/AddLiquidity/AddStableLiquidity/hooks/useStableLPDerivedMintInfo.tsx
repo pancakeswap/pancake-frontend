@@ -36,7 +36,7 @@ interface UseStablePairResponse {
   pair: StablePair
 }
 
-export function useStablePair(currencyA: Currency, currencyB: Currency): UseStablePairResponse {
+export function useStablePair(currencyA: Token, currencyB: Token): UseStablePairResponse {
   const { stableSwapConfig, stableSwapContract } = useContext(StableConfigContext)
 
   const currencyAAmountQuotient = tryParseAmount('1', currencyA)?.quotient
@@ -140,7 +140,7 @@ export function useStableLPDerivedMintInfo(
   )
 
   // pair
-  const { pairState, pair } = useStablePair(currencyA, currencyB)
+  const { pairState, pair } = useStablePair(currencyA?.wrapped, currencyA?.wrapped)
 
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 

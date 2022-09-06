@@ -130,7 +130,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
 
     // Ensure the token order [token0, token1]
     const tokenAmounts =
-      stableSwapConfig?.token0?.address === parsedAmountA?.currency?.address
+      stableSwapConfig?.token0?.address === parsedAmountA?.currency?.wrapped?.address
         ? [parsedAmountA?.quotient?.toString(), parsedAmountB?.quotient?.toString()]
         : [parsedAmountB?.quotient?.toString(), parsedAmountA?.quotient?.toString()]
 

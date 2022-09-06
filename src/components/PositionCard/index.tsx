@@ -85,14 +85,11 @@ const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1Deposit
 }
 
 const usePoolTokenPercentage = ({ userPoolBalance, totalPoolTokens }) => {
-  const poolTokenPercentage =
-    !!userPoolBalance &&
+  return !!userPoolBalance &&
     !!totalPoolTokens &&
     JSBI.greaterThanOrEqual(totalPoolTokens.quotient, userPoolBalance.quotient)
-      ? new Percent(userPoolBalance.quotient, totalPoolTokens.quotient)
-      : undefined
-
-  return poolTokenPercentage
+    ? new Percent(userPoolBalance.quotient, totalPoolTokens.quotient)
+    : undefined
 }
 
 const withLPValuesFactory =
