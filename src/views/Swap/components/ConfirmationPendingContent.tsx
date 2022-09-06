@@ -3,6 +3,7 @@ import { Text, Spinner } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, ColumnCenter } from 'components/Layout/Column'
 import { Trade, Currency, TradeType } from '@pancakeswap/sdk'
+import { StableTrade } from '../StableSwap/hooks/useStableTradeExactIn'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -12,7 +13,7 @@ const ConfirmedIcon = styled(ColumnCenter)`
   padding: 24px 0;
 `
 
-function ConfirmationPendingContent({ trade }: { trade: Trade<Currency, Currency, TradeType> }) {
+function ConfirmationPendingContent({ trade }: { trade: Trade<Currency, Currency, TradeType> | StableTrade }) {
   const { t } = useTranslation()
 
   // text to show while loading

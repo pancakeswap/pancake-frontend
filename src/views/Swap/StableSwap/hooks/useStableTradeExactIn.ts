@@ -1,5 +1,4 @@
 import { CurrencyAmount, Price, Percent, TradeType, Fraction, ONE, Currency } from '@pancakeswap/sdk'
-import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useCallback, useMemo, useContext } from 'react'
 import useSWR from 'swr'
 import { StableConfigContext } from './useStableConfig'
@@ -14,12 +13,12 @@ export interface StableTrade {
   minimumAmountOut: (slippaged: Percent) => CurrencyAmount<Currency>
 }
 
-export const maximumAmountInFactory = (currencyAmountIn, slippageTolerance) => {
+export const maximumAmountInFactory = (currencyAmountIn: CurrencyAmount<Currency>, slippageTolerance: number) => {
   const slippageAdjustedAmountIn = new Fraction(ONE).add(slippageTolerance).multiply(currencyAmountIn.quotient).quotient
   return CurrencyAmount.fromRawAmount(currencyAmountIn.currency, slippageAdjustedAmountIn)
 }
 
-export const minimumAmountOutFactory = (currencyAmountOut, slippageTolerance) => {
+export const minimumAmountOutFactory = (currencyAmountOut: CurrencyAmount<Currency>, slippageTolerance: number) => {
   const slippageAdjustedAmountOut = new Fraction(ONE)
     .add(slippageTolerance)
     .invert()
@@ -27,16 +26,30 @@ export const minimumAmountOutFactory = (currencyAmountOut, slippageTolerance) =>
   return CurrencyAmount.fromRawAmount(currencyAmountOut.currency, slippageAdjustedAmountOut)
 }
 
-export function useStableTradeResponse({ currencyAmountIn, currencyAmountOut, stableSwapConfig }) {
+interface UseStableTradeResponse {
+  currencyAmountIn: CurrencyAmount<Currency>
+  currencyAmountOut: CurrencyAmount<Currency>
+  stableSwapConfig: any
+}
+
+export function useStableTradeResponse({
+  currencyAmountIn,
+  currencyAmountOut,
+  stableSwapConfig,
+}: UseStableTradeResponse) {
   const maximumAmountIn = useCallback(
     (slippageTolerance) =>
-      currencyAmountIn ? maximumAmountInFactory(currencyAmountIn, slippageTolerance) : BIG_INT_ZERO,
+      currencyAmountIn
+        ? maximumAmountInFactory(currencyAmountIn, slippageTolerance)
+        : CurrencyAmount.fromRawAmount(currencyAmountIn.currency, '0'),
     [currencyAmountIn],
   )
 
   const minimumAmountOut = useCallback(
     (slippageTolerance) =>
-      currencyAmountOut ? minimumAmountOutFactory(currencyAmountOut, slippageTolerance) : BIG_INT_ZERO,
+      currencyAmountOut
+        ? minimumAmountOutFactory(currencyAmountOut, slippageTolerance)
+        : CurrencyAmount.fromRawAmount(currencyAmountOut.currency, '0'),
     [currencyAmountOut],
   )
 
