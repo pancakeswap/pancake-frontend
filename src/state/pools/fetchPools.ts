@@ -11,9 +11,9 @@ import chunk from 'lodash/chunk'
 import sousChefV2 from '../../config/abi/sousChefV2.json'
 import sousChefV3 from '../../config/abi/sousChefV3.json'
 
-const poolsWithEnd = poolsConfig.filter((p) => p.sousId !== 0)
+const livePoolsWithEnd = poolsConfig.filter((p) => p.sousId !== 0 && !p.isFinished)
 
-const startEndBlockCalls = poolsWithEnd.flatMap((poolConfig) => {
+const startEndBlockCalls = livePoolsWithEnd.flatMap((poolConfig) => {
   return [
     {
       address: getAddress(poolConfig.contractAddress),
@@ -42,7 +42,7 @@ export const fetchPoolsBlockLimits = async () => {
     return resultArray
   }, [])
 
-  return poolsWithEnd.map((cakePoolConfig, index) => {
+  return livePoolsWithEnd.map((cakePoolConfig, index) => {
     const [[startBlock], [endBlock]] = startEndBlockResult[index]
     return {
       sousId: cakePoolConfig.sousId,
@@ -104,7 +104,7 @@ export const fetchPoolsStakingLimits = async (
   )
 }
 
-const poolsWithV3 = poolsConfig.filter((pool) => pool?.version === 3)
+const livePoolsWithV3 = poolsConfig.filter((pool) => pool?.version === 3 && pool?.isFinished === false)
 
 export const fetchPoolsProfileRequirement = async (): Promise<{
   [key: string]: {
@@ -112,7 +112,7 @@ export const fetchPoolsProfileRequirement = async (): Promise<{
     thresholdPoints: string
   }
 }> => {
-  const poolProfileRequireCalls = poolsWithV3
+  const poolProfileRequireCalls = livePoolsWithV3
     .map((validPool) => {
       const contractAddress = getAddress(validPool.contractAddress)
       return ['pancakeProfileIsRequested', 'pancakeProfileThresholdPoints'].map((method) => ({
@@ -127,7 +127,7 @@ export const fetchPoolsProfileRequirement = async (): Promise<{
     calls: poolProfileRequireCalls,
     options: { requireSuccess: false },
   })
-  const chunkSize = poolProfileRequireCalls.length / poolsWithV3.length
+  const chunkSize = poolProfileRequireCalls.length / livePoolsWithV3.length
   const poolStakingChunkedResultRaw = chunk(poolProfileRequireResultRaw.flat(), chunkSize)
   return fromPairs(
     poolStakingChunkedResultRaw.map((poolProfileRequireRaw, index) => {
@@ -136,7 +136,7 @@ export const fetchPoolsProfileRequirement = async (): Promise<{
         ? new BigNumber(poolProfileRequireRaw[1].toString())
         : BIG_ZERO
       return [
-        poolsWithV3[index].sousId,
+        livePoolsWithV3[index].sousId,
         {
           required: !!hasProfileRequired,
           thresholdPoints: profileThresholdPoints.toJSON(),
