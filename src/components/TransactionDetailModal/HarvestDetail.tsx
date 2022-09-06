@@ -96,7 +96,7 @@ const HarvestDetail: React.FC<React.PropsWithChildren<HarvestDetailProps>> = ({
               {nonce === '0' && (
                 <Flex justifyContent="space-between">
                   <Text color="textSubtle">{t('%symbol% Balance', { symbol: 'BNB' })}</Text>
-                  <Text>{formatBigNumber(bnbBalance, 3)}</Text>
+                  {isLoading ? <RefreshIcon spin /> : <Text>{formatBigNumber(bnbBalance, 3)}</Text>}
                 </Flex>
               )}
               <Flex justifyContent="space-between">
