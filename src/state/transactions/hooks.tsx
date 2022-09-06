@@ -17,7 +17,11 @@ export function useTransactionAdder(): (
     claim?: { recipient: string }
     type?: TransactionType
     order?: Order
-    farmHarvest?: { sourceChain: FarmHarvestTransactionType; destinationChain: FarmHarvestTransactionType }
+    farmHarvest?: {
+      lpAddress: string
+      sourceChain: FarmHarvestTransactionType
+      destinationChain: FarmHarvestTransactionType
+    }
   },
 ) => void {
   const { chainId, account } = useActiveWeb3React()
@@ -41,7 +45,11 @@ export function useTransactionAdder(): (
         approval?: { tokenAddress: string; spender: string }
         type?: TransactionType
         order?: Order
-        farmHarvest?: { sourceChain: FarmHarvestTransactionType; destinationChain: FarmHarvestTransactionType }
+        farmHarvest?: {
+          lpAddress: string
+          sourceChain: FarmHarvestTransactionType
+          destinationChain: FarmHarvestTransactionType
+        }
       } = {},
     ) => {
       if (!account) return
@@ -127,6 +135,7 @@ export function usePendingTransactions(): {
   pendingNumber: number
   hasHarvestPendingTransactions: boolean
   harvestPendingNumber: number
+  harvestPendingLpAddress: Array<string>
 } {
   const allTransactions = useAllTransactions()
   const sortedRecentTransactions = useMemo(() => {
@@ -135,20 +144,23 @@ export function usePendingTransactions(): {
   }, [allTransactions])
 
   const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
-  const harvestPending = sortedRecentTransactions
-    .filter((tx) => tx?.farmHarvest?.destinationChain?.status === HarvestStatusType.PENDING)
-    .map((tx) => tx.hash)
+  const harvestPending = sortedRecentTransactions.filter(
+    (tx) => tx?.farmHarvest?.destinationChain?.status === HarvestStatusType.PENDING,
+  )
+  const harvestPendingHash = harvestPending.map((tx) => tx.hash)
+  const harvestPendingLpAddress = harvestPending.map((tx) => tx.farmHarvest.lpAddress)
 
-  const hasHarvestPendingTransactions = !!harvestPending.length
+  const hasHarvestPendingTransactions = !!harvestPendingHash.length
   const hasPendingTransactions = !!pending.length || hasHarvestPendingTransactions
 
-  const pendingArray = [...pending, ...harvestPending]
-  const filterDuplicates = pendingArray.filter((hash, index) => pendingArray.indexOf(hash) !== index)
+  const pendingArray = [...pending, ...harvestPendingHash]
+  const filterDuplicates = pendingArray.filter((hash, index) => pendingArray.indexOf(hash) === index)
 
   return {
     hasPendingTransactions,
     pendingNumber: filterDuplicates.length,
     hasHarvestPendingTransactions,
-    harvestPendingNumber: harvestPending.length,
+    harvestPendingNumber: harvestPendingHash.length,
+    harvestPendingLpAddress,
   }
 }

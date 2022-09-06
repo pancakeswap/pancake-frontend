@@ -1,4 +1,4 @@
-import { useCallback, useContext } from 'react'
+import { useCallback, useContext, useMemo } from 'react'
 import styled from 'styled-components'
 import { Button, Flex, IconButton, AddIcon, MinusIcon, useModal } from '@pancakeswap/uikit'
 import useToast from 'hooks/useToast'
@@ -9,6 +9,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import { TransactionResponse } from '@ethersproject/providers'
+import { usePendingTransactions } from 'state/transactions/hooks'
 import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
 import { FarmWithStakedValue } from '../types'
@@ -40,6 +41,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   lpSymbol,
   multiplier,
   apr,
+  lpAddress,
   displayApr,
   addLiquidityUrl,
   lpLabel,
@@ -61,6 +63,11 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { boosterState } = useContext(YieldBoosterStateContext)
+  const { hasHarvestPendingTransactions, harvestPendingLpAddress } = usePendingTransactions()
+
+  const isFarmHarvestPending = useMemo(() => {
+    return hasHarvestPendingTransactions && harvestPendingLpAddress.includes(lpAddress)
+  }, [lpAddress, hasHarvestPendingTransactions, harvestPendingLpAddress])
 
   const handleStake = async (amount: string) => {
     const receipt = await fetchWithCatchTxError(() => {
@@ -132,19 +139,19 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
     return stakedBalance.eq(0) ? (
       <Button
         onClick={onPresentDeposit}
-        disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
+        disabled={['history', 'archived'].some((item) => router.pathname.includes(item)) || isFarmHarvestPending}
       >
         {t('Stake LP')}
       </Button>
     ) : (
       <IconButtonWrapper>
-        <IconButton variant="tertiary" onClick={onPresentWithdraw} mr="6px">
+        <IconButton mr="6px" variant="tertiary" disabled={isFarmHarvestPending} onClick={onPresentWithdraw}>
           <MinusIcon color="primary" width="14px" />
         </IconButton>
         <IconButton
           variant="tertiary"
           onClick={onPresentDeposit}
-          disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
+          disabled={['history', 'archived'].some((item) => router.pathname.includes(item)) || isFarmHarvestPending}
         >
           <AddIcon color="primary" width="14px" />
         </IconButton>

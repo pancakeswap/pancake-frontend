@@ -57,7 +57,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
           {(props) => <HarvestAction {...props} />}
         </ProxyHarvestActionContainer>
       ) : (
-        <HarvestActionContainer earnings={earnings} pid={pid} vaultPid={vaultPid}>
+        <HarvestActionContainer earnings={earnings} pid={pid} lpAddress={lpAddress} vaultPid={vaultPid}>
           {(props) => <HarvestAction {...props} />}
         </HarvestActionContainer>
       )}

@@ -59,14 +59,22 @@ export const addTransaction =
     translatableSummary?: { text: string; data?: Record<string, string | number> }
     type?: TransactionType
     order?: Order
-    farmHarvest?: { sourceChain: FarmHarvestTransactionType; destinationChain: FarmHarvestTransactionType }
+    farmHarvest?: {
+      lpAddress: string
+      sourceChain: FarmHarvestTransactionType
+      destinationChain: FarmHarvestTransactionType
+    }
   }>('transactions/addTransaction')
 export const clearAllTransactions = createAction<{ chainId: ChainId }>('transactions/clearAllTransactions')
 export const finalizeTransaction = createAction<{
   chainId: ChainId
   hash: string
   receipt: SerializableTransactionReceipt
-  farmHarvest?: { sourceChain: FarmHarvestTransactionType; destinationChain: FarmHarvestTransactionType }
+  farmHarvest?: {
+    lpAddress: string
+    sourceChain: FarmHarvestTransactionType
+    destinationChain: FarmHarvestTransactionType
+  }
 }>('transactions/finalizeTransaction')
 export const checkedTransaction = createAction<{
   chainId: ChainId

@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Button, Flex, Heading, TooltipText, useTooltip, useModal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
@@ -6,6 +7,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
+import { usePendingTransactions } from 'state/transactions/hooks'
 
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -15,6 +17,7 @@ import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModa
 
 interface FarmCardActionsProps {
   earnings?: BigNumber
+  lpAddress: string
   pid?: number
   vaultPid?: number
   onReward?: () => Promise<TransactionResponse>
@@ -26,6 +29,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   pid,
   vaultPid,
   earnings,
+  lpAddress,
   onReward,
   proxyCakeBalance,
   onDone,
@@ -33,6 +37,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   const { account } = useWeb3React()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
+  const { hasHarvestPendingTransactions, harvestPendingLpAddress } = usePendingTransactions()
   const { t } = useTranslation()
   const cakePrice = usePriceCakeBusd()
   const rawEarningsBalance = account ? getBalanceAmount(earnings) : BIG_ZERO
@@ -47,6 +52,10 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
       placement: 'bottom',
     },
   )
+
+  const isFarmHarvestPending = useMemo(() => {
+    return hasHarvestPendingTransactions && harvestPendingLpAddress.includes(lpAddress)
+  }, [lpAddress, hasHarvestPendingTransactions, harvestPendingLpAddress])
 
   const onClickHarvestButton = () => {
     if (vaultPid) {
@@ -72,7 +81,13 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   }
 
   const [onPresentNonBscHarvestModal] = useModal(
-    <MultiChainHarvestModal pid={pid} vaultPid={vaultPid} earningsBigNumber={earnings} earningsBusd={earningsBusd} />,
+    <MultiChainHarvestModal
+      lpAddress={lpAddress}
+      pid={pid}
+      vaultPid={vaultPid}
+      earningsBigNumber={earnings}
+      earningsBusd={earningsBusd}
+    />,
   )
 
   return (
@@ -92,7 +107,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
           <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
         )}
       </Flex>
-      <Button disabled={rawEarningsBalance.eq(0) || pendingTx} onClick={onClickHarvestButton}>
+      <Button disabled={rawEarningsBalance.eq(0) || pendingTx || isFarmHarvestPending} onClick={onClickHarvestButton}>
         {pendingTx ? t('Harvesting') : t('Harvest')}
       </Button>
     </Flex>

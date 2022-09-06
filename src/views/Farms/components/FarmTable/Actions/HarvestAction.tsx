@@ -11,10 +11,11 @@ import { useERC20 } from 'hooks/useContract'
 import { TransactionResponse } from '@ethersproject/providers'
 
 import { usePriceCakeBusd } from 'state/farms/hooks'
+import { usePendingTransactions } from 'state/transactions/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModal'
 import { FarmWithStakedValue } from '../../types'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
@@ -52,6 +53,7 @@ export const HarvestActionContainer = ({ children, ...props }) => {
 
 export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActionProps>> = ({
   pid,
+  lpAddress,
   vaultPid,
   onReward,
   onDone,
@@ -62,6 +64,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
+  const { hasHarvestPendingTransactions, harvestPendingLpAddress } = usePendingTransactions()
   const earningsBigNumber = new BigNumber(userData.earnings)
   const cakePrice = usePriceCakeBusd()
   let earnings = BIG_ZERO
@@ -119,10 +122,15 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
     <MultiChainHarvestModal
       pid={pid}
       vaultPid={vaultPid}
+      lpAddress={lpAddress}
       earningsBigNumber={earningsBigNumber}
       earningsBusd={earningsBusd}
     />,
   )
+
+  const isFarmHarvestPending = useMemo(() => {
+    return hasHarvestPendingTransactions && harvestPendingLpAddress.includes(lpAddress)
+  }, [lpAddress, hasHarvestPendingTransactions, harvestPendingLpAddress])
 
   return (
     <ActionContainer style={{ minHeight: 124.5 }}>
@@ -150,7 +158,11 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
             <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
           )}
         </div>
-        <Button ml="4px" disabled={earnings.eq(0) || pendingTx || !userDataReady} onClick={onClickHarvestButton}>
+        <Button
+          ml="4px"
+          disabled={earnings.eq(0) || pendingTx || !userDataReady || isFarmHarvestPending}
+          onClick={onClickHarvestButton}
+        >
           {pendingTx ? t('Harvesting') : t('Harvest')}
         </Button>
       </ActionContent>

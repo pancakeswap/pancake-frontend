@@ -21,6 +21,7 @@ import { getCrossFarmingContract } from 'utils/contractHelpers'
 interface MultiChainHarvestModalProp extends InjectedModalProps {
   pid: number
   vaultPid: number
+  lpAddress: string
   earningsBigNumber: BigNumber
   earningsBusd: number
 }
@@ -28,6 +29,7 @@ interface MultiChainHarvestModalProp extends InjectedModalProps {
 const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
   pid,
   vaultPid,
+  lpAddress,
   earningsBigNumber,
   earningsBusd,
   onDismiss,
@@ -64,6 +66,7 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
           data: { amount },
         },
         farmHarvest: {
+          lpAddress,
           sourceChain: {
             chainId,
             amount,

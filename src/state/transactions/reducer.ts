@@ -29,7 +29,11 @@ export interface TransactionDetails {
   addedTime: number
   confirmedTime?: number
   from: string
-  farmHarvest?: { sourceChain: FarmHarvestTransactionType; destinationChain: FarmHarvestTransactionType }
+  farmHarvest?: {
+    lpAddress: string
+    sourceChain: FarmHarvestTransactionType
+    destinationChain: FarmHarvestTransactionType
+  }
 }
 
 export interface TransactionState {
