@@ -4,6 +4,7 @@ import Overview from 'views/Info/Overview'
 import { useRouter } from 'next/router'
 import { ChainId } from '@pancakeswap/sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { CHAIN_IDS } from '@pancakeswap/wagmi'
 
 const InfoPage = () => {
   const router = useRouter()
@@ -20,6 +21,6 @@ const InfoPage = () => {
 }
 
 InfoPage.Layout = InfoPageLayout
-InfoPage.pageSupportedChains = [ChainId.ETHEREUM, ChainId.BSC]
+InfoPage.chains = CHAIN_IDS
 
 export default InfoPage
