@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import useFetchProtocolData from 'state/info/queries/protocol/overview'
 import useFetchGlobalChartData from 'state/info/queries/protocol/chart'
-import fetchTopTransactions, { fetchTopTransactionsETH } from 'state/info/queries/protocol/transactions'
+import fetchTopTransactions from 'state/info/queries/protocol/transactions'
 import useTopPoolAddresses from 'state/info/queries/pools/topPools'
 import usePoolDatas from 'state/info/queries/pools/poolData'
 import useFetchedTokenDatas, { useFetchedTokenDatasETH } from 'state/info/queries/tokens/tokenData'
@@ -45,7 +45,7 @@ export const ProtocolUpdater: React.FC<React.PropsWithChildren> = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const data = await (chainName === 'ETH' ? fetchTopTransactionsETH() : fetchTopTransactions())
+      const data = await fetchTopTransactions(chainName)
       if (data) {
         updateTransactions(data)
       }

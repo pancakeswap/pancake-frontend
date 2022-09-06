@@ -3,10 +3,9 @@ import { useEffect, useState } from 'react'
 import { ProtocolData } from 'state/info/types'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
-import { infoClientETH } from 'utils/graphql'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getPercentChange } from 'views/Info/utils/infoDataHelpers'
-import { multiChainQueryClient } from '../../constant'
+import { multiChainQueryClient, MultiChianName } from '../../constant'
 import { useGetChainName } from '../../hooks'
 
 interface PancakeFactory {
@@ -18,44 +17,11 @@ interface PancakeFactory {
 interface OverviewResponse {
   pancakeFactories: PancakeFactory[]
 }
-
-interface UniSwapFactory {
-  txCount: string
-  totalVolumeUSD: string
-  totalLiquidityUSD: string
-}
-
-interface OverviewUniSwapResponse {
-  uniswapFactories: UniSwapFactory[]
-}
-
-const getOverviewDataUni = async (block?: number): Promise<{ data?: OverviewUniSwapResponse; error: boolean }> => {
-  try {
-    const query = gql`
-      query overview {
-        uniswapFactories(where: { id: "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f" }, ${
-          block ? `block: { number: ${block}}` : ``
-        }) {
-          totalVolumeUSD
-          totalLiquidityUSD
-          txCount
-        }
-      }
-    `
-
-    console.log({ getOverviewData: query })
-    const data = await infoClientETH.request<OverviewUniSwapResponse>(query)
-    return { data, error: false }
-  } catch (error) {
-    console.error('Failed to fetch info overview', error)
-    return { data: null, error: true }
-  }
-}
 /**
  * Latest Liquidity, Volume and Transaction count
  */
 const getOverviewData = async (
-  chainName: 'BSC' | 'ETH',
+  chainName: MultiChianName,
   block?: number,
 ): Promise<{ data?: OverviewResponse; error: boolean }> => {
   try {

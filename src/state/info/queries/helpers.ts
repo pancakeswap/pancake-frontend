@@ -3,6 +3,7 @@ import { ONE_DAY_UNIX, PCS_V2_START } from 'config/constants/info'
 import { getUnixTime } from 'date-fns'
 import { TransactionType } from 'state/info/types'
 import { ChartEntry } from '../types'
+import { MultiChianName } from '../constant'
 import { MintResponse, SwapResponse, BurnResponse, TokenDayData, PairDayData, PancakeDayData } from './types'
 
 export const mapMints = (mint: MintResponse) => {
@@ -65,12 +66,17 @@ export const mapPairDayData = (pairDayData: PairDayData): ChartEntry => ({
   liquidityUSD: parseFloat(pairDayData.reserveUSD),
 })
 
-type PoolOrTokenFetchFn = (skip: number, address: string) => Promise<{ data?: ChartEntry[]; error: boolean }>
-type OverviewFetchFn = (skip: number) => Promise<{ data?: ChartEntry[]; error: boolean }>
+type PoolOrTokenFetchFn = (
+  chianName: MultiChianName,
+  skip: number,
+  address: string,
+) => Promise<{ data?: ChartEntry[]; error: boolean }>
+type OverviewFetchFn = (chianName: MultiChianName, skip: number) => Promise<{ data?: ChartEntry[]; error: boolean }>
 
 // Common helper function to retrieve chart data
 // Used for both Pool and Token charts
 export const fetchChartData = async (
+  chianName: MultiChianName,
   getEntityDayDatas: PoolOrTokenFetchFn | OverviewFetchFn,
   address?: string,
 ): Promise<{ data?: ChartEntry[]; error: boolean }> => {
@@ -81,7 +87,7 @@ export const fetchChartData = async (
 
   while (!allFound) {
     // eslint-disable-next-line no-await-in-loop
-    const { data, error: fetchError } = await getEntityDayDatas(skip, address)
+    const { data, error: fetchError } = await getEntityDayDatas(chianName, skip, address)
     skip += 1000
     allFound = data?.length < 1000
     error = fetchError

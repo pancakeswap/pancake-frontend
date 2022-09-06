@@ -3,9 +3,10 @@ import { PCS_V2_START } from 'config/constants/info'
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
 import { ChartEntry } from 'state/info/types'
-import { infoClient } from 'utils/graphql'
 import { fetchChartData, mapDayData } from '../helpers'
 import { PancakeDayDatasResponse } from '../types'
+import { MultiChianName, multiChainQueryClient } from '../../constant'
+import { useGetChainName } from '../../hooks'
 
 /**
  * Data for displaying Liquidity and Volume charts on Overview page
@@ -20,22 +21,18 @@ const PANCAKE_DAY_DATAS = gql`
   }
 `
 
-const UNISWAP_DAY_DATAS = gql`
-  query overviewCharts($startTime: Int!, $skip: Int!) {
-    uniswapDayDatas(first: 1000, skip: $skip, where: { date_gt: $startTime }, orderBy: date, orderDirection: asc) {
-      date
-      dailyVolumeUSD
-      totalLiquidityUSD
-    }
-  }
-`
-
-const getOverviewChartData = async (skip: number): Promise<{ data?: ChartEntry[]; error: boolean }> => {
+const getOverviewChartData = async (
+  chainName: MultiChianName,
+  skip: number,
+): Promise<{ data?: ChartEntry[]; error: boolean }> => {
   try {
-    const { pancakeDayDatas } = await infoClient.request<PancakeDayDatasResponse>(PANCAKE_DAY_DATAS, {
-      startTime: PCS_V2_START,
-      skip,
-    })
+    const { pancakeDayDatas } = await multiChainQueryClient[chainName].request<PancakeDayDatasResponse>(
+      PANCAKE_DAY_DATAS,
+      {
+        startTime: PCS_V2_START,
+        skip,
+      },
+    )
     const data = pancakeDayDatas.map(mapDayData)
     return { data, error: false }
   } catch (error) {
@@ -53,10 +50,11 @@ const useFetchGlobalChartData = (): {
 } => {
   const [overviewChartData, setOverviewChartData] = useState<ChartEntry[] | undefined>()
   const [error, setError] = useState(false)
+  const chainName = useGetChainName()
 
   useEffect(() => {
     const fetch = async () => {
-      const { data } = await fetchChartData(getOverviewChartData)
+      const { data } = await fetchChartData(chainName, getOverviewChartData)
       if (data) {
         setOverviewChartData(data)
       } else {
@@ -66,7 +64,7 @@ const useFetchGlobalChartData = (): {
     if (!overviewChartData && !error) {
       fetch()
     }
-  }, [overviewChartData, error])
+  }, [overviewChartData, error, chainName])
 
   return {
     error,
