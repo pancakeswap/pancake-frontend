@@ -29,6 +29,8 @@ const Inner = styled(Flex)<{ fullWidth?: boolean }>`
   ${({ theme }) => theme.mediaQueries.md} {
     flex-grow: ${({ fullWidth }) => (fullWidth ? 1 : 0)};
   }
+
+  flex-grow: ${({ fullWidth }) => (fullWidth ? 1 : 0)};
 `;
 
 const ButtonMenu: React.FC<React.PropsWithChildren<TabMenuProps>> = ({
