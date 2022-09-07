@@ -1,43 +1,38 @@
-import fs from 'fs'
-import os from 'os'
-import { request, gql } from 'graphql-request'
-import BigNumber from 'bignumber.js'
+/* eslint-disable no-restricted-syntax */
 import chunk from 'lodash/chunk'
-import { sub, getUnixTime } from 'date-fns'
-import farmsConfig from '@pancakeswap/farms/constants/56'
-import type { BlockResponse } from '../src/components/SubgraphHealthIndicator'
-import { BLOCKS_CLIENT } from '../src/config/constants/endpoints'
-import { infoClient } from '../src/utils/graphql'
+import BigNumber from 'bignumber.js'
+import { gql, GraphQLClient } from 'graphql-request'
+import getUnixTime from 'date-fns/getUnixTime'
+import sub from 'date-fns/sub'
+import { AprMap } from '@pancakeswap/farms'
 
-const BLOCK_SUBGRAPH_ENDPOINT = BLOCKS_CLIENT
-
-interface SingleFarmResponse {
-  id: string
-  reserveUSD: string
-  volumeUSD: string
+interface BlockResponse {
+  blocks: {
+    number: string
+  }[]
 }
 
-interface FarmsResponse {
-  farmsAtLatestBlock: SingleFarmResponse[]
-  farmsOneWeekAgo: SingleFarmResponse[]
-}
+const BLOCK_SUBGRAPH_ENDPOINT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/blocks'
+const INFO_SUBGRAPH_ENDPOINT = 'https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2'
+const LP_HOLDERS_FEE = 0.0017
+const WEEKS_IN_A_YEAR = 52.1429
 
-interface AprMap {
-  [key: string]: BigNumber
-}
+const infoClient = new GraphQLClient(INFO_SUBGRAPH_ENDPOINT, {
+  fetch,
+})
+
+const blockClient = new GraphQLClient(BLOCK_SUBGRAPH_ENDPOINT, {
+  fetch,
+})
 
 const getWeekAgoTimestamp = () => {
   const weekAgo = sub(new Date(), { weeks: 1 })
   return getUnixTime(weekAgo)
 }
 
-const LP_HOLDERS_FEE = 0.0017
-const WEEKS_IN_A_YEAR = 52.1429
-
 const getBlockAtTimestamp = async (timestamp: number) => {
   try {
-    const { blocks } = await request<BlockResponse>(
-      BLOCK_SUBGRAPH_ENDPOINT,
+    const { blocks } = await blockClient.request<BlockResponse>(
       `query getBlock($timestampGreater: Int!, $timestampLess: Int!) {
         blocks(first: 1, where: { timestamp_gt: $timestampGreater, timestamp_lt: $timestampLess }) {
           number
@@ -49,6 +44,17 @@ const getBlockAtTimestamp = async (timestamp: number) => {
   } catch (error) {
     throw new Error(`Failed to fetch block number for ${timestamp}\n${error}`)
   }
+}
+
+interface SingleFarmResponse {
+  id: string
+  reserveUSD: string
+  volumeUSD: string
+}
+
+interface FarmsResponse {
+  farmsAtLatestBlock: SingleFarmResponse[]
+  farmsOneWeekAgo: SingleFarmResponse[]
 }
 
 const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): Promise<AprMap> => {
@@ -70,7 +76,7 @@ const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): P
       `,
       { addresses, blockWeekAgo },
     )
-    const aprs: AprMap = farmsAtLatestBlock.reduce((aprMap, farm) => {
+    return farmsAtLatestBlock.reduce((aprMap, farm) => {
       const farmWeekAgo = farmsOneWeekAgo.find((oldFarm) => oldFarm.id === farm.id)
       // In case farm is too new to estimate LP APR (i.e. not returned in farmsOneWeekAgo query) - return 0
       let lpApr = new BigNumber(0)
@@ -89,32 +95,41 @@ const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): P
         [farm.id]: lpApr.decimalPlaces(2).toNumber(),
       }
     }, {})
-    return aprs
   } catch (error) {
-    throw new Error(`Failed to fetch LP APR data: ${error}`)
+    throw new Error(`[LP APR Update] Failed to fetch LP APR data: ${error}`)
   }
 }
-
-const fetchAndUpdateLPsAPR = async () => {
-  const lowerCaseAddresses = farmsConfig.map((farm) => farm.lpAddress.toLowerCase())
-  console.info(`Fetching farm data for ${lowerCaseAddresses.length} addresses`)
+export const updateLPsAPR = async (chainId: number, allFarms: any[]) => {
+  const lowerCaseAddresses = allFarms.map((farm) => farm.lpAddress.toLowerCase())
+  console.info(`[LP APR Update] Fetching farm data for ${lowerCaseAddresses.length} addresses`)
   // Split it into chunks of 30 addresses to avoid gateway timeout
-  const addressesInGroups = chunk(lowerCaseAddresses, 30)
+  const addressesInGroups = chunk<string>(lowerCaseAddresses, 30)
   const weekAgoTimestamp = getWeekAgoTimestamp()
-  const blockWeekAgo = await getBlockAtTimestamp(weekAgoTimestamp)
+
+  let blockWeekAgo: number
+  try {
+    blockWeekAgo = await getBlockAtTimestamp(weekAgoTimestamp)
+  } catch (error) {
+    console.error(error, 'LP APR Update] blockWeekAgo error')
+    return false
+  }
 
   let allAprs: AprMap = {}
-  // eslint-disable-next-line no-restricted-syntax
-  for (const groupOfAddresses of addressesInGroups) {
-    // eslint-disable-next-line no-await-in-loop
-    const aprs = await getAprsForFarmGroup(groupOfAddresses, blockWeekAgo)
-    allAprs = { ...allAprs, ...aprs }
+  try {
+    for (const groupOfAddresses of addressesInGroups) {
+      // eslint-disable-next-line no-await-in-loop
+      const aprs = await getAprsForFarmGroup(groupOfAddresses, blockWeekAgo)
+      allAprs = { ...allAprs, ...aprs }
+    }
+  } catch (error) {
+    console.error(error, '[LP APR Update] getAprsForFarmGroup error')
+    return false
   }
 
-  fs.writeFile(`src/config/constants/lpAprs/56.json`, JSON.stringify(allAprs, null, 2) + os.EOL, (err) => {
-    if (err) throw err
-    console.info(` ✅ - lpAprs.json has been updated!`)
-  })
+  try {
+    return allAprs
+  } catch (error) {
+    console.error(error, '[LP APR Update] Failed to save LP APRs to redis')
+    return false
+  }
 }
-
-fetchAndUpdateLPsAPR()

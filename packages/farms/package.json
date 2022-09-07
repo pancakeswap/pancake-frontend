@@ -2,6 +2,10 @@
   "name": "@pancakeswap/farms",
   "version": "0.0.1",
   "main": "./src/index.ts",
+  "sideEffects": false,
+  "scripts": {
+    "build": "npx tsx scripts/build.ts"
+  },
   "peerDependencies": {
     "@pancakeswap/sdk": "^3.0.0"
   }

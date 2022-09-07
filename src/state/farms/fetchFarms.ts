@@ -1,10 +1,10 @@
-import { SerializedFarmConfig } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
+import { SerializedFarmConfig } from 'config/constants/types'
 import { getFullDecimalMultiplier } from 'utils/getFullDecimalMultiplier'
-import { BIG_ZERO, BIG_TWO } from '../../utils/bigNumber'
-import { fetchPublicFarmsData } from './fetchPublicFarmData'
-import { fetchMasterChefData } from './fetchMasterChefData'
+import { BIG_TWO, BIG_ZERO } from '../../utils/bigNumber'
 import { SerializedFarm } from '../types'
+import { fetchMasterChefData } from './fetchMasterChefData'
+import { fetchPublicFarmsData } from './fetchPublicFarmData'
 
 function getLpInfo({
   tokenBalanceLP,
