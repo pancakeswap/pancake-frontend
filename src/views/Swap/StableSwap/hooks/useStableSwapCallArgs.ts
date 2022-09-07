@@ -23,7 +23,7 @@ export default function useStableSwapCallArgs(trade): SwapCall[] {
     const token1Amount = tokenAmounts[token1Address]
 
     const args =
-      inputAmountAddress === token0Amount
+      inputAmountAddress === token0Address
         ? ['0', '1', token0Amount, token1Amount]
         : ['1', '0', token1Amount, token0Amount]
 
