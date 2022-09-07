@@ -1,16 +1,17 @@
 import React from "react";
-import { isDesktop } from "react-device-detect";
+import { isDesktop, isMobile } from "react-device-detect";
 import styled from "styled-components";
-import Button from "../../components/Button/Button";
-import Text from "../../components/Text/Text";
-import MoreHorizontal from "../../components/Svg/Icons/MoreHorizontal";
 import { ButtonProps } from "../../components/Button";
-import { connectorLocalStorageKey, walletConnectConfig, walletLocalStorageKey } from "./config";
-import { Login, Config } from "./types";
+import Button from "../../components/Button/Button";
+import { Link } from "../../components/Link";
+import MoreHorizontal from "../../components/Svg/Icons/MoreHorizontal";
+import Text from "../../components/Text/Text";
+import { connectorLocalStorageKey, walletLocalStorageKey } from "./config";
+import { Login, WalletConfig } from "./types";
 
-interface Props {
-  walletConfig: Config;
-  login: Login;
+interface Props<T> {
+  walletConfig: WalletConfig<T>;
+  login: Login<T>;
   onDismiss: () => void;
 }
 
@@ -37,31 +38,43 @@ export const MoreWalletCard: React.FC<React.PropsWithChildren<MoreWalletCardProp
   );
 };
 
-const WalletCard: React.FC<React.PropsWithChildren<Props>> = ({ login, walletConfig, onDismiss }) => {
-  const { title, icon: Icon } = walletConfig;
+const WalletCard: React.FC<React.PropsWithChildren<Props<any>>> = ({ login, walletConfig, onDismiss }) => {
+  const { title, icon: Icon, installed, downloadLink } = walletConfig;
+
+  let linkAction: any = {
+    onClick: () => {
+      login(walletConfig.connectorId);
+      localStorage?.setItem(walletLocalStorageKey, walletConfig.title);
+      localStorage?.setItem(connectorLocalStorageKey, walletConfig.connectorId);
+      onDismiss();
+    },
+  };
+
+  if (installed === false && isDesktop && downloadLink?.desktop) {
+    linkAction = {
+      as: Link,
+      href: downloadLink.desktop,
+      style: {
+        textDecoration: "none",
+      },
+      target: "_blank",
+      rel: "noopener noreferrer",
+    };
+  }
+  if (typeof window !== "undefined" && !window.ethereum && walletConfig.href && isMobile) {
+    linkAction = {
+      style: {
+        textDecoration: "none",
+      },
+      as: Link,
+      href: walletConfig.href,
+      target: "_blank",
+      rel: "noopener noreferrer",
+    };
+  }
+
   return (
-    <WalletButton
-      variant="tertiary"
-      onClick={() => {
-        // TW point to WC on desktop
-        if (title === "Trust Wallet" && walletConnectConfig && isDesktop) {
-          login(walletConnectConfig.connectorId);
-          localStorage?.setItem(walletLocalStorageKey, walletConnectConfig.title);
-          localStorage?.setItem(connectorLocalStorageKey, walletConnectConfig.connectorId);
-          onDismiss();
-          return;
-        }
-        if (!window.ethereum && walletConfig.href) {
-          window.open(walletConfig.href, "_blank", "noopener noreferrer");
-        } else {
-          login(walletConfig.connectorId);
-          localStorage?.setItem(walletLocalStorageKey, walletConfig.title);
-          localStorage?.setItem(connectorLocalStorageKey, walletConfig.connectorId);
-          onDismiss();
-        }
-      }}
-      id={`wallet-connect-${title.toLowerCase()}`}
-    >
+    <WalletButton variant="tertiary" {...linkAction} id={`wallet-connect-${title.toLowerCase()}`}>
       <Icon width="40px" mb="8px" />
       <Text fontSize="14px">{title}</Text>
     </WalletButton>
