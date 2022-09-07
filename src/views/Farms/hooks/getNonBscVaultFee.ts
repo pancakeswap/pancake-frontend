@@ -34,16 +34,16 @@ export const getNonBscVaultContractFee = async ({
   gasPrice,
 }: CalculateTotalFeeProps) => {
   try {
-    const masterChefContract = getNonBscVaultContract(null, chainId)
+    const nonBscVaultContract = getNonBscVaultContract(null, chainId)
     const crossFarmingAddress = getCrossFarmingContract(null, chainId)
     const exchangeRate = new BigNumber(oraclePrice)
 
     const [encodeMessage, nonces, estimateDestGaslimit] = await Promise.all([
-      masterChefContract.encodeMessage(userAddress, pid, amount, messageType),
+      nonBscVaultContract.encodeMessage(userAddress, pid, amount, messageType),
       crossFarmingAddress.nonces(userAddress),
       crossFarmingAddress.estimateDestGaslimit(userAddress, messageType),
     ])
-    const calcFee = await masterChefContract.calcFee(encodeMessage)
+    const calcFee = await nonBscVaultContract.calcFee(encodeMessage)
 
     const fee1 = new BigNumber(calcFee.toString())
     const fee2 = new BigNumber(gasPrice)

@@ -1,13 +1,14 @@
 import BigNumber from 'bignumber.js'
+import { ChainId } from '@pancakeswap/sdk'
 import erc20ABI from 'config/abi/erc20.json'
 import masterchefABI from 'config/abi/masterchef.json'
 import nonBscVault from 'config/abi/nonBscVault.json'
 import multicall, { multicallv2 } from 'utils/multicall'
-import { getMasterChefAddress } from 'utils/addressHelpers'
+import { getMasterChefAddress, getNonBscVaultAddress } from 'utils/addressHelpers'
 import { SerializedFarmConfig } from 'config/constants/types'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
-import { getBscChainId } from 'state/farms/getBscChainId'
 import { getCrossFarmingContract } from 'utils/contractHelpers'
+import { farmFetcher } from '../../../apis/farms/src/helper'
 
 export const fetchFarmUserAllowances = async (
   account: string,
@@ -15,7 +16,8 @@ export const fetchFarmUserAllowances = async (
   chainId: number,
   proxyAddress?: string,
 ) => {
-  const masterChefAddress = getMasterChefAddress(chainId)
+  const isBscNetwork = verifyBscNetwork(chainId)
+  const masterChefAddress = isBscNetwork ? getMasterChefAddress(chainId) : getNonBscVaultAddress(chainId)
 
   const calls = farmsToFetch.map((farm) => {
     const lpContractAddress = farm.lpAddress
@@ -56,8 +58,8 @@ export const fetchFarmUserStakedBalances = async (
   farmsToFetch: SerializedFarmConfig[],
   chainId: number,
 ) => {
-  const masterChefAddress = getMasterChefAddress(chainId)
   const isBscNetwork = verifyBscNetwork(chainId)
+  const masterChefAddress = isBscNetwork ? getMasterChefAddress(chainId) : getNonBscVaultAddress(chainId)
 
   const calls = farmsToFetch.map((farm) => {
     return {
@@ -81,7 +83,7 @@ export const fetchFarmUserStakedBalances = async (
 
 export const fetchFarmUserEarnings = async (account: string, farmsToFetch: SerializedFarmConfig[], chainId: number) => {
   const isBscNetwork = verifyBscNetwork(chainId)
-  const multiCallChainId = isBscNetwork ? chainId : await getBscChainId(chainId)
+  const multiCallChainId = farmFetcher.isTestnet(chainId) ? ChainId.BSC_TESTNET : ChainId.BSC
   const userAddress = isBscNetwork ? account : await fetchCProxyAddress(account, multiCallChainId)
   const masterChefAddress = getMasterChefAddress(multiCallChainId)
 

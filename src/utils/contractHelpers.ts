@@ -42,6 +42,7 @@ import {
   getBCakeFarmBoosterAddress,
   getBCakeFarmBoosterProxyFactoryAddress,
   getCrossFarmingAddress,
+  getNonBscVaultAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -369,7 +370,7 @@ export const getBCakeProxyContract = (proxyContractAddress: string, signer?: Sig
 }
 
 export const getNonBscVaultContract = (signer?: Signer | Provider, chainId?: number) => {
-  return getContract({ abi: nonBscVault, address: getMasterChefAddress(chainId), chainId, signer }) as NonBscVault
+  return getContract({ abi: nonBscVault, address: getNonBscVaultAddress(chainId), chainId, signer }) as NonBscVault
 }
 
 export const getCrossFarmingContract = (signer?: Signer | Provider, chainId?: number) => {
