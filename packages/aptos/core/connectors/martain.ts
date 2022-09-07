@@ -1,24 +1,42 @@
+import { EntryFunctionPayload, PendingTransaction } from 'aptos/dist/generated'
+import { ConnectorNotFoundError } from './errors'
 import { InjectedConnector } from './injected'
 
 declare global {
   interface Window {
-    martain?: any
+    martian?: any
   }
 }
 
-export class MartainConnector extends InjectedConnector {
-  readonly id = 'Martain'
+export class MartianConnector extends InjectedConnector {
+  readonly id = 'martian'
+  provider?: Window['martian']
 
-  readonly ready = typeof window !== 'undefined' && !!window.martain
+  readonly ready = typeof window !== 'undefined' && !!window.martian
 
   constructor() {
     super({
-      name: 'Martain',
+      name: 'Martian',
     })
   }
 
   async getProvider() {
-    if (typeof window !== 'undefined' && !!window.martain) this.provider = window.martain
+    if (typeof window !== 'undefined' && !!window.martian) this.provider = window.martian
     return this.provider
+  }
+
+  async network() {
+    const provider = await this.getProvider()
+    if (!provider) throw new ConnectorNotFoundError()
+    return 'Devnet'
+  }
+
+  async signAndSubmitTransaction(tx: EntryFunctionPayload): Promise<PendingTransaction> {
+    const provider = await this.getProvider()
+    const account = await this.account()
+    if (!provider) throw new ConnectorNotFoundError()
+    const generatedTx = await provider.generateTransaction(account?.address || '', tx)
+    console.log(generatedTx, 'generatedTx')
+    return provider.signAndSubmitTransaction(generatedTx)
   }
 }

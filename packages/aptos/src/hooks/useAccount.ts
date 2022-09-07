@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 import * as React from 'react'
 
-import { GetAccountResult, getAccount, watchAccount } from '@pancakeswap/aptos/core'
+import { GetAccountResult, getAccount, watchAccount } from '../../core/accounts/account'
 import { useClient } from '../context'
 import { useSyncExternalStoreWithTracked } from './useSyncExternalStoreWithTracked'
 

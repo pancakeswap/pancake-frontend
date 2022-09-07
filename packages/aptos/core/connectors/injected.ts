@@ -48,7 +48,9 @@ export class InjectedConnector extends Connector {
         // provider.on('disconnect', this.onDisconnect)
       }
 
-      return provider.connect()
+      this.emit('message', { type: 'connecting' })
+
+      return await provider.connect()
     } catch (error) {
       console.error(error)
       throw error

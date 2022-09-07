@@ -34,6 +34,7 @@ export abstract class Connector extends EventEmitter<ConnectorEvents> {
   atpos?: any
 
   abstract id: string
+  abstract name: string
 
   abstract readonly ready: boolean
 
