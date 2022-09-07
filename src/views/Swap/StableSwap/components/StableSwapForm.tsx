@@ -90,7 +90,6 @@ export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }
   const {
     independentField,
     typedValue,
-    recipient,
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
@@ -109,14 +108,14 @@ export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }
     currencyBalances,
     parsedAmount,
     inputError: swapInputError,
-  } = useDerivedStableSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, recipient)
+  } = useDerivedStableSwapInfo(independentField, typedValue, inputCurrency, outputCurrency)
 
   const parsedAmounts = {
     [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
     [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
   }
 
-  const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
+  const { onSwitchTokens, onCurrencySelection, onUserInput } = useSwapActionHandlers()
 
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
 
@@ -249,11 +248,6 @@ export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }
                   color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
                 />
               </SwitchIconButton>
-              {recipient === null && isExpertMode ? (
-                <Button variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
-                  {t('+ Add a send (optional)')}
-                </Button>
-              ) : null}
             </AutoRow>
           </AutoColumn>
           <CurrencyInputPanel
@@ -269,20 +263,6 @@ export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }
             showCommonBases
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
           />
-
-          {isExpertMode && recipient !== null ? (
-            <>
-              <AutoRow justify="space-between" style={{ padding: '0 1rem' }}>
-                <ArrowWrapper clickable={false}>
-                  <ArrowDownIcon width="16px" />
-                </ArrowWrapper>
-                <Button variant="text" id="remove-recipient-button" onClick={() => onChangeRecipient(null)}>
-                  {t('- Remove send')}
-                </Button>
-              </AutoRow>
-              <AddressInputPanel id="recipient" value={recipient} onChange={onChangeRecipient} />
-            </>
-          ) : null}
 
           <AutoColumn gap="7px" style={{ padding: '0 16px' }}>
             <RowBetween align="center">
@@ -327,7 +307,6 @@ export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }
             trade={trade}
             swapInputError={swapInputError}
             currencyBalances={currencyBalances}
-            recipient={recipient}
             allowedSlippage={allowedSlippage}
             onUserInput={onUserInput}
           />

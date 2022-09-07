@@ -15,7 +15,6 @@ export function useDerivedStableSwapInfo(
   typedValue: string,
   inputCurrency: Currency | undefined,
   outputCurrency: Currency | undefined,
-  recipient: string,
 ): {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
@@ -26,7 +25,7 @@ export function useDerivedStableSwapInfo(
   const { account } = useWeb3React()
   const { t } = useTranslation()
 
-  const to: string | null = (recipient === null ? account : isAddress(recipient) || null) ?? null
+  const to: string | null = account ?? null
 
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
