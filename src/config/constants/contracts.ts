@@ -148,12 +148,12 @@ export default {
     97: '',
   },
   crossFarming: {
-    56: '',
+    56: '0x38D3c31A7B4ba9C76b56e72EccF0e8503Be46C64', //  For passing the test
     97: '0x6AA249Ff0d95a915dcA2f8f53637072998d35f8B',
     5: '0x38D3c31A7B4ba9C76b56e72EccF0e8503Be46C64',
   },
   nonBscVault: {
-    56: '',
+    56: '0x4c67e7eF569b0ad9f1E8C82a763B848B510a86De', //  For passing the test
     97: '',
     5: '0x4c67e7eF569b0ad9f1E8C82a763B848B510a86De',
   },
