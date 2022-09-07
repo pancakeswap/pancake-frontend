@@ -33,20 +33,22 @@ export async function farmV2FetchFarms({
   totalSpecialAllocPoint,
 }: FetchFarmsParams) {
   const stableFarms = farms.filter(isStableFarm)
-  const stableFarmsResults = ((await fetchStableFarmData(stableFarms, chainId, multicallv2)) as StableLpData[]).map(
-    formatStableFarm,
-  )
+
+  const [stableFarmsResults, poolInfos, lpDataResults] = await Promise.all([
+    fetchStableFarmData(stableFarms, chainId, multicallv2),
+    fetchMasterChefData(farms, isTestnet, multicallv2, masterChefAddress),
+    fetchPublicFarmsData(farms, chainId, multicallv2, masterChefAddress),
+  ])
+
+  const stableFarmsData = (stableFarmsResults as StableLpData[]).map(formatStableFarm)
   const stableFarmsDataMap = stableFarms.reduce<Record<number, FormatStableFarmResponse>>((map, farm, index) => {
     return {
       ...map,
-      [farm.pid]: stableFarmsResults[index],
+      [farm.pid]: stableFarmsData[index],
     }
   }, {})
 
-  const poolInfos = await fetchMasterChefData(farms, isTestnet, multicallv2, masterChefAddress)
-  const lpData = (await fetchPublicFarmsData(farms, chainId, multicallv2, masterChefAddress)).map(
-    formatClassicFarmResponse,
-  )
+  const lpData = lpDataResults.map(formatClassicFarmResponse)
 
   const farmsData = farms.map((farm, index) => {
     try {
