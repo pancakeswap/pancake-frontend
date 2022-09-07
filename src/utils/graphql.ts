@@ -1,4 +1,4 @@
-import { INFO_CLIENT } from 'config/constants/endpoints'
+import { BIT_QUERY, INFO_CLIENT } from 'config/constants/endpoints'
 import { GraphQLClient } from 'graphql-request'
 
 // Extra headers
@@ -27,7 +27,7 @@ export const infoServerClient = new GraphQLClient(INFO_CLIENT, {
   timeout: 5000,
 })
 
-export const bitQueryServerClient = new GraphQLClient(process.env.NEXT_PUBLIC_BIT_QUERY_ENDPOINT, {
+export const bitQueryServerClient = new GraphQLClient(BIT_QUERY, {
   headers: {
     // only server, no `NEXT_PUBLIC` not going to expose in client
     'X-API-KEY': process.env.BIT_QUERY_HEADER,
