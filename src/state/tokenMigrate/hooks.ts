@@ -43,8 +43,10 @@ export function useMigrateTokenInfo(): {
   const independentField = Field.INPUT
   const inputCurrencyId = mainnetTokens.pe.address
   const outputCurrencyId = mainnetTokens.p.address
+  const intermediateCurrencyId = mainnetTokens.usdc.address
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
+  const intermediateCurrency = useCurrency(intermediateCurrencyId)
   const recipientLookup = useENS(recipient ?? undefined)
   const to: string | null = (recipient === null ? account : recipientLookup.address) ?? null
 
@@ -71,6 +73,7 @@ export function useMigrateTokenInfo(): {
   const currencies: { [field in Field]?: Currency } = {
     [Field.INPUT]: inputCurrency ?? undefined,
     [Field.OUTPUT]: outputCurrency ?? undefined,
+    [Field.INTERMEDIATE]: intermediateCurrency,
   }
 
   let inputError: string | undefined

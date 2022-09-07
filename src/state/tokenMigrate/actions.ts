@@ -4,6 +4,7 @@
 export enum Field {
   INPUT = 'INPUT',
   OUTPUT = 'OUTPUT',
+  INTERMEDIATE = 'INTERMEDIATE',
 }
 
 // export const selectCurrency = createAction<{ field: Field; currencyId: string }>('swap/selectCurrency')

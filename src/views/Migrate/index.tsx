@@ -29,7 +29,7 @@ import {
   useApproveCallbackFromMigrate,
   useApproveCallbackFromMint,
 } from '../../hooks/useApproveCallback'
-import { Field } from '../../state/swap/actions'
+import { Field } from '../../state/tokenMigrate/actions'
 import { useDefaultsFromURLSearch, useSwapActionHandlers, useSwapState } from '../../state/swap/hooks'
 import { useExpertModeManager } from '../../state/user/hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
@@ -103,6 +103,7 @@ export default function MigrateView({ history }: RouteComponentProps) {
   const [outPutState, setOutPutState] = useState<string>('0x00')
   const [output, setOutput] = useState<string>('0.0')
   const [outputString, setOutputString] = useState<string>('0.0')
+  const [outputUSDCString, setOutputUSDCString] = useState<string>('0.0')
 
   const parsedAmounts = {
     [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : migrate?.inputAmount,
@@ -129,6 +130,7 @@ export default function MigrateView({ history }: RouteComponentProps) {
         setOutputAmount(parsedOutputAmount)
 
         setOutputString(resultado[1])
+        setOutputUSDCString(resultado[0])
       }),
     10,
   )
@@ -227,17 +229,13 @@ export default function MigrateView({ history }: RouteComponentProps) {
   const handleConfirmDismiss = useCallback(() => {
     setMintState({ mintToConfirm, attemptingTxn, mintErrorMessage, txHash })
     // if there was a tx hash, we want to clear the input
-    if (txHash) {
-      onUserInput(Field.INPUT, '')
-    }
-  }, [attemptingTxn, onUserInput, mintErrorMessage, mintToConfirm, txHash])
+  }, [attemptingTxn, mintErrorMessage, mintToConfirm, txHash])
 
   const handleMaxInput = useCallback(() => {
     if (maxAmountInput) {
-      onUserInput(Field.INPUT, maxAmountInput.toExact())
+      handleTypeInput(maxAmountInput.toExact())
     }
-  }, [maxAmountInput, onUserInput])
-  const DECIMALS = mainnetTokens.pe.decimals
+  }, [handleTypeInput, maxAmountInput])
 
   useEffect(() => {
     setMigrate({
@@ -288,6 +286,28 @@ export default function MigrateView({ history }: RouteComponentProps) {
                       disableCurrencySelect
                     />
 
+                    <AutoColumn justify="space-between">
+                      <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
+                        <SwitchIconButton variant="light" scale="sm">
+                          <ArrowDownIcon
+                            className="icon-down"
+                            color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
+                          />
+                        </SwitchIconButton>
+                      </AutoRow>
+                    </AutoColumn>
+                    <CurrencyInputPanel
+                      value={outputUSDCString}
+                      onUserInput={handleTypeOutput}
+                      label={t('To (estimated)')}
+                      showMaxButton={false}
+                      currency={currencies[Field.INTERMEDIATE]}
+                      onCurrencySelect={null}
+                      otherCurrency={currencies[Field.INTERMEDIATE]}
+                      id="swap-currency-output"
+                      disabled
+                      disableCurrencySelect
+                    />
                     <AutoColumn justify="space-between">
                       <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
                         <SwitchIconButton variant="light" scale="sm">
