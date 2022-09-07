@@ -4,37 +4,37 @@ import { mainnet, arbitrum, optimism, polygon } from 'wagmi/chains'
 // Chain Id is defined by Stargate
 const stargateNetowrk = [
   {
-    chainId: 1,
+    chainId: 101,
     name: 'Ethereum',
     chain: mainnet,
   },
   {
     name: 'BNB Chain',
-    chainId: 2,
+    chainId: 102,
     chain: bsc,
   },
   {
-    chainId: 9,
+    chainId: 109,
     name: 'Matic',
     chain: polygon,
   },
   {
-    chainId: 6,
+    chainId: 106,
     name: 'Avalanche',
     chain: avalandche,
   },
   {
-    chainId: 12,
+    chainId: 112,
     name: 'Fantom',
     chain: fantomOpera,
   },
   {
-    chainId: 10,
+    chainId: 110,
     name: 'Arbitrum',
     chain: arbitrum,
   },
   {
-    chainId: 11,
+    chainId: 111,
     name: 'Optimism',
     chain: optimism,
   },
