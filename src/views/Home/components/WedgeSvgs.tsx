@@ -18,6 +18,7 @@ export const InnerWedgeWrapper = styled.div.attrs({ className: 'inner-wedge' })<
   ${({ top }) => (top ? 'top: 0px' : 'bottom: 0px')};
 
   svg {
+    fill: ${({ theme }) => theme.colors.background};
     width: ${({ width }) => width || '100%'};
     height: 100%;
     max-height: 48px;

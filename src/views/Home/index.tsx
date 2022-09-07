@@ -74,10 +74,10 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         [data-theme='dark'] #home-3 .page-bg {
           background: linear-gradient(180deg, #0b4576 0%, #091115 100%);
         }
-        .inner-wedge svg {
+        #home-4 .inner-wedge svg {
           fill: #d8cbed;
         }
-        [data-theme='dark'] .inner-wedge svg {
+        [data-theme='dark'] #home-4 .inner-wedge svg {
           fill: #201335;
         }
       `}</style>
@@ -110,6 +110,9 @@ const Home: React.FC<React.PropsWithChildren> = () => {
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}
         background={theme.colors.background}
+        containerProps={{
+          id: 'home-4',
+        }}
         index={2}
         hasCurvedDivider={false}
       >
