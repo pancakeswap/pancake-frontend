@@ -8,7 +8,7 @@ function TestPage() {
   const { disconnect } = useDisconnect()
 
   return (
-    <Menu>
+    <>
       <div>{account?.address}</div>
       {connectors?.map((c) => (
         <div>
@@ -17,7 +17,7 @@ function TestPage() {
           <Button onClick={() => disconnect()}>disconnect</Button>
         </div>
       ))}
-    </Menu>
+    </>
   )
 }
 

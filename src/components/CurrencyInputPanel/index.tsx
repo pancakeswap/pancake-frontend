@@ -1,5 +1,5 @@
 import { Currency, Pair } from '@pancakeswap/sdk'
-import { Button, ChevronDownIcon, Text, useModal, Flex, Box } from '@pancakeswap/uikit'
+import { Button, ChevronDownIcon, Text, useModal, Flex, Box, CopyButton } from '@pancakeswap/uikit'
 import styled, { css } from 'styled-components'
 import { isAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
@@ -14,7 +14,6 @@ import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
 
 import { Input as NumericalInput } from './NumericalInput'
-import { CopyButton } from '../CopyButton'
 import AddToWalletButton from '../AddToWallet/AddToWalletButton'
 
 const InputRow = styled.div<{ selected: boolean }>`

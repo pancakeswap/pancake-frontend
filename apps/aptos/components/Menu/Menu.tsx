@@ -5,6 +5,7 @@ import { useTheme } from 'next-themes'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ReactNode, useMemo } from 'react'
+import UserMenu from './UserMenu'
 
 export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }
 
@@ -78,6 +79,11 @@ export const Menu = ({ children }: { children: ReactNode }) => {
       activeItem={activeMenuItem?.href}
       isDark={isDark}
       langs={[]}
+      rightSide={
+        <>
+          <UserMenu />
+        </>
+      }
       setLang={() => {
         //
       }}

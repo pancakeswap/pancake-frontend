@@ -1,59 +1,18 @@
-import { dark, light, ModalProvider, PancakeTheme, ResetCSS, UIKitProvider } from '@pancakeswap/uikit'
-import { LanguageProvider } from '@pancakeswap/localization'
-import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
-import { AptosConfig } from '@pancakeswap/aptos'
+import { PancakeTheme, ResetCSS } from '@pancakeswap/uikit'
+import { Menu } from 'components/Menu'
+import Providers from 'components/Providers'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import Script from 'next/script'
-import { useEffect, useState } from 'react'
-import { createGlobalStyle } from 'styled-components'
-import { client } from '../client'
+import { useStore } from 'state'
 
 declare module 'styled-components' {
   /* eslint-disable @typescript-eslint/no-empty-interface */
   export interface DefaultTheme extends PancakeTheme {}
 }
 
-const StyledThemeProvider: React.FC<React.PropsWithChildren> = (props) => {
-  const { resolvedTheme } = useNextTheme()
-  return (
-    <UIKitProvider theme={resolvedTheme === 'dark' ? dark : light} {...props}>
-      {props.children}
-    </UIKitProvider>
-  )
-}
-
-const GlobalStyle = createGlobalStyle`
-  * {
-    font-family: 'Kanit', sans-serif;
-  }
-  html, body, #__next {
-    height: 100%;
-  }
-  #__next {
-    display: flex;
-    flex-direction: column;
-  }
-  body {
-    background-color: ${({ theme }) => theme.colors.background};
-
-    img {
-      height: auto;
-      max-width: 100%;
-    }
-  }
-`
-
-function useIsMounted() {
-  const [isMounted, setIsMounted] = useState(false)
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
-  return isMounted
-}
-
 function MyApp({ Component, pageProps }: AppProps) {
+  const store = useStore(pageProps.initialReduxState)
   return (
     <>
       <Head>
@@ -73,21 +32,14 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="🥞 PancakeSwap - A next evolution DeFi exchange on BNB Smart Chain (BSC)" />
-        <title>PancakeSwap Bridge</title>
+        <title>PancakeSwap</title>
       </Head>
-      <NextThemeProvider>
-        <StyledThemeProvider>
-          <ModalProvider>
-            <ResetCSS />
-            <GlobalStyle />
-            <LanguageProvider>
-              <AptosConfig client={client}>
-                <Component {...pageProps} />
-              </AptosConfig>
-            </LanguageProvider>
-          </ModalProvider>
-        </StyledThemeProvider>
-      </NextThemeProvider>
+      <Providers store={store}>
+        <ResetCSS />
+        <Menu>
+          <Component {...pageProps} />
+        </Menu>
+      </Providers>
       <Script
         strategy="afterInteractive"
         id="google-tag"
