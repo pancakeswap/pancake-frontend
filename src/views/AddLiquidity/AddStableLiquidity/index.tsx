@@ -189,8 +189,9 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
     // if there was a tx hash, we want to clear the input
     if (txHash) {
       onFieldAInput('')
+      onFieldBInput('')
     }
-  }, [onFieldAInput, txHash])
+  }, [onFieldAInput, onFieldBInput, txHash])
 
   const [onPresentAddLiquidityModal] = useModal(
     <ConfirmAddLiquidityModal
