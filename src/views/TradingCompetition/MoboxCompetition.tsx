@@ -6,7 +6,7 @@ import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTradingCompetitionContractMobox } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { PageMeta } from 'components/Layout/Page'
-import { TC_MOBOX_SUBGRAPH } from 'config/constants/endpoints'
+import { TC_MOBOX_SUBGRAPH, API_PROFILE } from 'config/constants/endpoints'
 import orderBy from 'lodash/orderBy'
 import {
   SmartContractPhases,
@@ -40,7 +40,6 @@ import TeamRanksWithParticipants from './components/TeamRanks/TeamRanksWithParti
 import MoboxCakerBunny from './pngs/mobox-cakers.png'
 
 const MoboxCompetition = () => {
-  const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
@@ -144,7 +143,7 @@ const MoboxCompetition = () => {
 
   useEffect(() => {
     const fetchUserTradingStats = async () => {
-      const res = await fetch(`${profileApiUrl}/api/users/${userTradingInformation.account}`)
+      const res = await fetch(`${API_PROFILE}/api/users/${userTradingInformation.account}`)
       const data = await res.json()
       setUserLeaderboardInformation(data.leaderboard_mobox)
     }
@@ -154,7 +153,7 @@ const MoboxCompetition = () => {
     } else {
       setUserLeaderboardInformation({ ...initialUserLeaderboardInformation })
     }
-  }, [userTradingInformation, profileApiUrl])
+  }, [userTradingInformation])
 
   const isLoading = isProfileLoading || userTradingInformation.isLoading
 

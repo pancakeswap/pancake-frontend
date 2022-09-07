@@ -4,6 +4,7 @@ import { useProfile } from 'state/profile/hooks'
 import { Flex, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTradingCompetitionContractEaster } from 'hooks/useContract'
+import { API_PROFILE } from 'config/constants/endpoints'
 import useTheme from 'hooks/useTheme'
 import {
   SmartContractPhases,
@@ -48,7 +49,6 @@ const BannerFlex = styled(Flex)`
 `
 
 const EasterCompetition = () => {
-  const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
   const { isMobile } = useMatchBreakpoints()
   const { profile, isLoading: isProfileLoading } = useProfile()
@@ -133,7 +133,7 @@ const EasterCompetition = () => {
 
   useEffect(() => {
     const fetchUserTradingStats = async () => {
-      const res = await fetch(`${profileApiUrl}/api/users/${account}`)
+      const res = await fetch(`${API_PROFILE}/api/users/${account}`)
       const data = await res.json()
       setUserLeaderboardInformation(data.leaderboard)
     }
@@ -141,7 +141,7 @@ const EasterCompetition = () => {
     if (userTradingInformation.account && userTradingInformation.hasRegistered) {
       fetchUserTradingStats()
     }
-  }, [account, userTradingInformation, profileApiUrl])
+  }, [account, userTradingInformation])
 
   const isLoading = isProfileLoading || userTradingInformation.isLoading
 
