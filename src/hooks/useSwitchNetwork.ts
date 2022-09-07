@@ -1,7 +1,7 @@
-import { ConnectorNames } from '@pancakeswap/uikit'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import replaceBrowserHistory from 'utils/replaceBrowserHistory'
+import { ConnectorNames } from 'config/wallet'
 import { useAccount, useSwitchNetwork as useSwitchNetworkWallet } from 'wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import { useSessionChainId } from './useSessionChainId'

@@ -55,13 +55,37 @@ const Home: React.FC<React.PropsWithChildren> = () => {
   return (
     <>
       <PageMeta />
+      <style jsx global>{`
+        #home-1 .page-bg {
+          background: linear-gradient(139.73deg, #e6fdff 0%, #f3efff 100%);
+        }
+        [data-theme='dark'] #home-1 .page-bg {
+          background: radial-gradient(103.12% 50% at 50% 50%, #21193a 0%, #191326 100%);
+        }
+        #home-2 .page-bg {
+          background: linear-gradient(180deg, #ffffff 22%, #d7caec 100%);
+        }
+        [data-theme='dark'] #home-2 .page-bg {
+          background: linear-gradient(180deg, #09070c 22%, #201335 100%);
+        }
+        #home-3 .page-bg {
+          background: linear-gradient(180deg, #6fb6f1 0%, #eaf2f6 100%);
+        }
+        [data-theme='dark'] #home-3 .page-bg {
+          background: linear-gradient(180deg, #0b4576 0%, #091115 100%);
+        }
+        #home-4 .inner-wedge svg {
+          fill: #d8cbed;
+        }
+        [data-theme='dark'] #home-4 .inner-wedge svg {
+          fill: #201335;
+        }
+      `}</style>
       <StyledHeroSection
         innerProps={{ style: { margin: '0', width: '100%' } }}
-        background={
-          theme.isDark
-            ? 'radial-gradient(103.12% 50% at 50% 50%, #21193A 0%, #191326 100%)'
-            : 'linear-gradient(139.73deg, #E6FDFF 0%, #F3EFFF 100%)'
-        }
+        containerProps={{
+          id: 'home-1',
+        }}
         index={2}
         hasCurvedDivider={false}
       >
@@ -75,11 +99,9 @@ const Home: React.FC<React.PropsWithChildren> = () => {
       </StyledHeroSection>
       <PageSection
         innerProps={{ style: { margin: '0', width: '100%' } }}
-        background={
-          theme.isDark
-            ? 'linear-gradient(180deg, #09070C 22%, #201335 100%)'
-            : 'linear-gradient(180deg, #FFFFFF 22%, #D7CAEC 100%)'
-        }
+        containerProps={{
+          id: 'home-2',
+        }}
         index={2}
         hasCurvedDivider={false}
       >
@@ -88,11 +110,14 @@ const Home: React.FC<React.PropsWithChildren> = () => {
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}
         background={theme.colors.background}
+        containerProps={{
+          id: 'home-4',
+        }}
         index={2}
         hasCurvedDivider={false}
       >
         <OuterWedgeWrapper>
-          <InnerWedgeWrapper top fill={theme.isDark ? '#201335' : '#D8CBED'}>
+          <InnerWedgeWrapper top>
             <WedgeTopLeft />
           </InnerWedgeWrapper>
         </OuterWedgeWrapper>
@@ -105,7 +130,7 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         hasCurvedDivider={false}
       >
         <OuterWedgeWrapper>
-          <InnerWedgeWrapper width="150%" top fill={theme.colors.background}>
+          <InnerWedgeWrapper width="150%" top>
             <WedgeTopRight />
           </InnerWedgeWrapper>
         </OuterWedgeWrapper>
@@ -114,11 +139,9 @@ const Home: React.FC<React.PropsWithChildren> = () => {
       </PageSection>
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}
-        background={
-          theme.isDark
-            ? 'linear-gradient(180deg, #0B4576 0%, #091115 100%)'
-            : 'linear-gradient(180deg, #6FB6F1 0%, #EAF2F6 100%)'
-        }
+        containerProps={{
+          id: 'home-3',
+        }}
         index={2}
         hasCurvedDivider={false}
       >
