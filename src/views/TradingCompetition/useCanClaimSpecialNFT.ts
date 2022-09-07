@@ -1,13 +1,13 @@
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useEffect, useState } from 'react'
+import { API_PROFILE } from 'config/constants/endpoints'
 
 export const useCanClaimSpecialNFT = () => {
-  const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const { account } = useWeb3React()
   const [canClaimSpecialNFT, setCanClaimSpecialNFT] = useState(false)
   useEffect(() => {
     const fetchUserTradingStats = async () => {
-      const res = await fetch(`${profileApiUrl}/api/users/${account}`)
+      const res = await fetch(`${API_PROFILE}/api/users/${account}`)
       const data = await res.json()
       if (parseInt(data?.leaderboard_dar?.darVolumeRank ?? '101') <= 100) setCanClaimSpecialNFT(true)
     }
@@ -15,6 +15,6 @@ export const useCanClaimSpecialNFT = () => {
     if (account) {
       fetchUserTradingStats()
     }
-  }, [account, profileApiUrl])
+  }, [account])
   return canClaimSpecialNFT
 }

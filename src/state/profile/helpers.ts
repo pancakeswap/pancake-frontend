@@ -1,6 +1,7 @@
 import { Profile } from 'state/types'
 import { PancakeProfile } from 'config/abi/types/PancakeProfile'
 import profileABI from 'config/abi/pancakeProfile.json'
+import { API_PROFILE } from 'config/constants/endpoints'
 import { getTeam } from 'state/teams/helpers'
 import { NftToken } from 'state/nftMarket/types'
 import { getNftApi } from 'state/nftMarket/helpers'
@@ -27,11 +28,9 @@ const transformProfileResponse = (
   }
 }
 
-const profileApi = process.env.NEXT_PUBLIC_API_PROFILE
-
 export const getUsername = async (address: string): Promise<string> => {
   try {
-    const response = await fetch(`${profileApi}/api/users/${address.toLowerCase()}`)
+    const response = await fetch(`${API_PROFILE}/api/users/${address.toLowerCase()}`)
 
     if (!response.ok) {
       return ''

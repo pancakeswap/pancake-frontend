@@ -96,7 +96,7 @@ const CollectModal: React.FC<React.PropsWithChildren<CollectModalProps>> = ({
     <Modal
       title={`${earningToken.symbol} ${isCompoundPool ? t('Collect') : t('Harvest')}`}
       onDismiss={onDismiss}
-      headerBackground={theme.colors.gradients.cardHeader}
+      headerBackground={theme.colors.gradientCardHeader}
     >
       {isCompoundPool && (
         <Flex justifyContent="center" alignItems="center" mb="24px">

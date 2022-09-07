@@ -11,6 +11,7 @@ import {
 } from '@pancakeswap/uikit'
 import { BAD_SRCS } from 'components/Logo/Logo'
 import { useAccount } from 'wagmi'
+import { canRegisterToken } from '../../utils/wallet'
 
 export enum AddToWalletTextOptions {
   NO_TEXT,
@@ -38,11 +39,6 @@ const Icons = {
 }
 
 const getWalletText = (textOptions: AddToWalletTextOptions, tokenSymbol: string, t: any) => {
-  // @ts-ignore
-  if (window?.ethereum?.isSafePal) {
-    return null
-  }
-
   return (
     textOptions !== AddToWalletTextOptions.NO_TEXT &&
     (textOptions === AddToWalletTextOptions.TEXT
@@ -52,11 +48,6 @@ const getWalletText = (textOptions: AddToWalletTextOptions, tokenSymbol: string,
 }
 
 const getWalletIcon = (marginTextBetweenLogo: string, name?: string) => {
-  // @ts-ignore
-  if (window?.ethereum?.isSafePal) {
-    return null
-  }
-
   const iconProps = {
     width: '16px',
     ...(marginTextBetweenLogo && { ml: marginTextBetweenLogo }),
@@ -91,8 +82,12 @@ const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
 }) => {
   const { t } = useTranslation()
   const { connector, isConnected } = useAccount()
+  const isCanRegisterToken = canRegisterToken()
 
+  if (connector && connector.name === 'Binance') return null
   if (!(connector && connector.watchAsset && isConnected)) return null
+  if (!isCanRegisterToken) return null
+
   return (
     <Button
       {...props}

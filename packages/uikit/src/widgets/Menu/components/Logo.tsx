@@ -19,14 +19,14 @@ const StyledLink = styled("a")`
   align-items: center;
   .mobile-icon {
     width: 32px;
-    ${({ theme }) => theme.mediaQueries.nav} {
+    ${({ theme }) => theme.mediaQueries.lg} {
       display: none;
     }
   }
   .desktop-icon {
     width: 160px;
     display: none;
-    ${({ theme }) => theme.mediaQueries.nav} {
+    ${({ theme }) => theme.mediaQueries.lg} {
       display: block;
     }
   }

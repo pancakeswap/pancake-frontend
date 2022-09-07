@@ -4,7 +4,10 @@ const { withAxiom } = require('next-axiom')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
+const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin')
 const withTM = require('next-transpile-modules')(['@pancakeswap/uikit', '@pancakeswap/sdk'])
+
+const withVanillaExtract = createVanillaExtractPlugin()
 
 const sentryWebpackPluginOptions =
   process.env.VERCEL_ENV === 'production'
@@ -143,4 +146,6 @@ const config = {
   },
 }
 
-module.exports = withBundleAnalyzer(withSentryConfig(withTM(withAxiom(config)), sentryWebpackPluginOptions))
+module.exports = withBundleAnalyzer(
+  withVanillaExtract(withSentryConfig(withTM(withAxiom(config)), sentryWebpackPluginOptions)),
+)

@@ -1,5 +1,5 @@
 import {
-  Button,
+  // Button,
   ExpandIcon,
   Flex,
   IconButton,
@@ -7,25 +7,25 @@ import {
   SyncAltIcon,
   Text,
   // TradingViewIcon,
-  LineGraphIcon,
-  useMatchBreakpoints,
+  // LineGraphIcon,
+  // useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 // import { TradingViewLabel } from 'components/TradingView'
-import { useTranslation } from '@pancakeswap/localization'
+// import { useTranslation } from '@pancakeswap/localization'
 import { ChartViewMode } from 'state/user/actions'
 import { useExchangeChartViewManager } from 'state/user/hooks'
-import styled from 'styled-components'
+// import styled from 'styled-components'
 import BasicChart from './BasicChart'
 import { StyledPriceChart } from './styles'
 // import TradingViewChart from './TradingViewChart'
 // import PairPriceDisplay from '../../../../components/PairPriceDisplay'
 
-const ChartButton = styled(Button)`
-  background-color: ${({ $active, theme }) => $active && `${theme.colors.primary}0f`};
-  padding: 4px 8px;
-  border-radius: 6px;
-`
+// const ChartButton = styled(Button)`
+//   background-color: ${({ $active, theme }) => $active && `${theme.colors.primary}0f`};
+//   padding: 4px 8px;
+//   border-radius: 6px;
+// `
 
 const PriceChart = ({
   inputCurrency,
@@ -40,11 +40,12 @@ const PriceChart = ({
   token1Address,
   currentSwapPrice,
 }) => {
-  const { isDesktop } = useMatchBreakpoints()
+  // const { isDesktop } = useMatchBreakpoints()
   const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
-  const [chartView, setChartView] = useExchangeChartViewManager()
+  const [chartView] = useExchangeChartViewManager()
+  // const [chartView, setChartView] = useExchangeChartViewManager()
   // const [twChartSymbol, setTwChartSymbol] = useState('')
-  const { t } = useTranslation()
+  // const { t } = useTranslation()
 
   // const handleTwChartSymbol = useCallback((symbol) => {
   //   setTwChartSymbol(symbol)
@@ -73,30 +74,32 @@ const PriceChart = ({
           <IconButton variant="text" onClick={onSwitchTokens}>
             <SyncAltIcon ml="6px" color="primary" />
           </IconButton>
-          <Flex>
-            <ChartButton
-              aria-label={t('Basic')}
-              title={t('Basic')}
-              $active={chartView === ChartViewMode.BASIC}
-              scale="sm"
-              variant="text"
-              color="primary"
-              onClick={() => setChartView(ChartViewMode.BASIC)}
-              mr="8px"
-            >
-              {isDesktop ? t('Basic') : <LineGraphIcon color="primary" />}
-            </ChartButton>
-            {/* <ChartButton
-              aria-label="TradingView"
-              title="TradingView"
-              $active={chartView === ChartViewMode.TRADING_VIEW}
-              scale="sm"
-              variant="text"
-              onClick={() => setChartView(ChartViewMode.TRADING_VIEW)}
-            >
-              {isDesktop ? 'TradingView' : <TradingViewIcon color="primary" />}
-            </ChartButton> */}
-          </Flex>
+          {/* {isDesktop && (
+            <Flex>
+              <ChartButton
+                aria-label={t('Basic')}
+                title={t('Basic')}
+                $active={chartView === ChartViewMode.BASIC}
+                scale="sm"
+                variant="text"
+                color="primary"
+                mr="8px"
+                disabled
+              >
+                {t('Basic')}
+              </ChartButton>
+              <ChartButton
+                aria-label="TradingView"
+                title="TradingView"
+                $active={chartView === ChartViewMode.TRADING_VIEW}
+                scale="sm"
+                variant="text"
+                onClick={() => setChartView(ChartViewMode.TRADING_VIEW)}
+              >
+                {isDesktop ? 'TradingView' : <TradingViewIcon color="primary" />}
+              </ChartButton>
+            </Flex>
+          )} */}
         </Flex>
         {!isMobile && (
           <Flex>

@@ -1,6 +1,6 @@
-import styled from 'styled-components'
-import { Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Text } from '@pancakeswap/uikit'
+import styled from 'styled-components'
 
 const StyledNotFound = styled.div`
   align-items: center;

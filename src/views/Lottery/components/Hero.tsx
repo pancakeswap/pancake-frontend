@@ -18,7 +18,7 @@ const floatingStarsLeft = keyframes`
   }
   to {
     transform: translate(0, -0px);
-  }  
+  }
 `
 
 const floatingStarsRight = keyframes`
@@ -30,7 +30,7 @@ const floatingStarsRight = keyframes`
   }
   to {
     transform: translate(0, -0px);
-  }  
+  }
 `
 
 const floatingTicketLeft = keyframes`
@@ -42,7 +42,7 @@ const floatingTicketLeft = keyframes`
   }
   to {
     transform: translate(0, -0px);
-  }  
+  }
 `
 
 const floatingTicketRight = keyframes`
@@ -54,7 +54,7 @@ const floatingTicketRight = keyframes`
   }
   to {
     transform: translate(0, -0px);
-  }  
+  }
 `
 
 const mainTicketAnimation = keyframes`
@@ -66,7 +66,7 @@ const mainTicketAnimation = keyframes`
   }
   to {
     transform: rotate(0deg);
-  }  
+  }
 `
 
 const TicketContainer = styled(Flex)`
@@ -74,7 +74,7 @@ const TicketContainer = styled(Flex)`
 `
 
 const PrizeTotalBalance = styled(Balance)`
-  background: ${({ theme }) => theme.colors.gradients.gold};
+  background: ${({ theme }) => theme.colors.gradientGold};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `

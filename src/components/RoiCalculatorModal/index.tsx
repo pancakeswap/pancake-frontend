@@ -162,7 +162,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
       title={t('ROI Calculator')}
       onDismiss={onBack || onDismiss}
       onBack={onBack ?? null}
-      headerBackground="gradients.cardHeader"
+      headerBackground="gradientCardHeader"
     >
       <ScrollableContainer>
         {strategy ? (

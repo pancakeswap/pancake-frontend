@@ -1,8 +1,7 @@
 import { createStore, Store } from 'redux'
 import { DEFAULT_ACTIVE_LIST_URLS, DEFAULT_LIST_OF_LISTS } from '../../config/constants/lists'
 
-import { updateVersion } from '../global/actions'
-import { fetchTokenList, acceptListUpdate, addList, removeList, enableList } from './actions'
+import { fetchTokenList, acceptListUpdate, addList, removeList, enableList, updateListVersion } from './actions'
 import reducer, { ListsState } from './reducer'
 
 const STUB_TOKEN_LIST = {
@@ -430,7 +429,7 @@ describe('list reducer', () => {
           },
           activeListUrls: undefined,
         })
-        store.dispatch(updateVersion())
+        store.dispatch(updateListVersion())
       })
 
       it('clears the current lists', () => {
@@ -481,7 +480,7 @@ describe('list reducer', () => {
           activeListUrls: undefined,
           lastInitializedDefaultListOfLists: ['https://unpkg.com/@uniswap/default-token-list@latest'],
         })
-        store.dispatch(updateVersion())
+        store.dispatch(updateListVersion())
       })
 
       it('does not remove lists not in last initialized list of lists', () => {
