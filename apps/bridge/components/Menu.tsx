@@ -342,9 +342,9 @@ function User() {
     })
   }, [])
 
-  const { account, chainId, active } = wallet || {}
+  const { account, chainId } = wallet || {}
 
-  const chain = CHAINS_STARGATE.find((c) => c.id === chainId)
+  const chain = findChainByStargateId(chainId)
 
   const isWrongNetwork = chainId && !chain
   const hasPendingTransactions = pending.length > 0
@@ -357,13 +357,13 @@ function User() {
     )
   }
 
-  if (active) {
+  if (account) {
     return (
       <UserMenu
         variant={hasPendingTransactions ? 'pending' : 'default'}
         account={account}
         text={hasPendingTransactions ? `${pending.length} Pending` : ''}
-        avatarSrc={chainId ? `/chains/${chainId}.png` : undefined}
+        avatarSrc={chain ? `/chains/${chain?.chain.id}.png` : undefined}
       >
         {() => <UserMenuItems onShowTx={() => showRecentTxModal()} />}
       </UserMenu>
