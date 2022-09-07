@@ -1,11 +1,13 @@
 import { SwapCall } from 'hooks/useSwapCallArguments'
 import { useContext, useMemo } from 'react'
+import { useUserSlippageTolerance } from 'state/user/hooks'
 
 import { StableConfigContext } from './useStableConfig'
 
 export default function useStableSwapCallArgs(trade): SwapCall[] {
   const stableConfig = useContext(StableConfigContext)
   const swapContract = stableConfig?.stableSwapContract
+  const [allowedSlippage] = useUserSlippageTolerance()
 
   const swapCalls = useMemo(() => {
     if (!trade) return []
@@ -16,7 +18,7 @@ export default function useStableSwapCallArgs(trade): SwapCall[] {
 
     const tokenAmounts = {
       [inputAmountAddress]: trade?.inputAmount?.quotient?.toString(),
-      [outputAmountAddress]: trade?.outputAmount?.quotient?.toString(),
+      [outputAmountAddress]: trade?.minimumAmountOut(allowedSlippage)?.quotient?.toString(),
     }
 
     const token0Amount = tokenAmounts[token0Address]
