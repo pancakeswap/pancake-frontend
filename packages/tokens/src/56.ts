@@ -2166,14 +2166,7 @@ export const bscTokens = {
     'Ankr',
     'https://www.ankr.com/',
   ),
-  gal: new Token(
-    ChainId.BSC,
-    '0xe4Cc45Bb5DBDA06dB6183E8bf016569f40497Aa5',
-    18,
-    'GAL',
-    'Project Galaxy',
-    'https://galaxy.eco/',
-  ),
+  gal: new Token(ChainId.BSC, '0xe4Cc45Bb5DBDA06dB6183E8bf016569f40497Aa5', 18, 'GAL', 'Galxe', 'https://galaxy.eco/'),
   xcn: new Token(ChainId.BSC, '0x7324c7C0d95CEBC73eEa7E85CbAac0dBdf88a05b', 18, 'XCN', 'Chain', 'https://chain.com/'),
   metis: new Token(
     ChainId.BSC,

@@ -1,5 +1,5 @@
 import { bscTestnetTokens } from '@pancakeswap/tokens'
-import { SerializedFarmConfig } from '../types'
+import { SerializedFarmConfig } from '@pancakeswap/farms'
 
 const farms: SerializedFarmConfig[] = [
   /**
@@ -33,14 +33,14 @@ const farms: SerializedFarmConfig[] = [
     token: bscTestnetTokens.wbnb,
     quoteToken: bscTestnetTokens.busd,
   },
-  //    * V3 by order of release (some may be out of PID order due to multiplier boost)
+  // TODO: Stable add test
   {
     pid: 9,
     lpSymbol: 'HBTC-WBTC LP',
     lpAddress: '0xc50eF16D5CCe3648057c5bF604025dCD633bd795',
-    token: bscTestnetTokens.hbtc,
-    quoteToken: bscTestnetTokens.wbtc,
-    isStable: true,
+    token: bscTestnetTokens.hbtc, // coins[0]
+    quoteToken: bscTestnetTokens.wbtc, // coins[1]
+    stableSwapContract: '0x270c8828e56C266CA1B100968B768Bd191C15747',
   },
 ].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
 

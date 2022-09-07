@@ -33,7 +33,7 @@ export function UnsupportedNetworkModal() {
   const supportedMainnetChains = useMemo(() => chains.filter((chain) => !chain.testnet), [chains])
 
   return (
-    <Modal title={t('Check your network')} hideCloseButton headerBackground="gradients.cardHeader">
+    <Modal title={t('Check your network')} hideCloseButton headerBackground="gradientCardHeader">
       <Grid style={{ gap: '16px' }} maxWidth="336px">
         <Text>
           {t('Currently %feature% only supported in', { feature: typeof title === 'string' ? title : 'this page' })}{' '}

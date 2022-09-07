@@ -126,7 +126,7 @@ export const initialState: UserState = {
 export default createReducer(initialState, (builder) =>
   builder
     .addCase(updateVersion, (state) => {
-      // slippage isnt being tracked in local storage, reset to default
+      // slippage is'nt being tracked in local storage, reset to default
       // noinspection SuspiciousTypeOfGuard
       if (typeof state.userSlippageTolerance !== 'number') {
         state.userSlippageTolerance = INITIAL_ALLOWED_SLIPPAGE

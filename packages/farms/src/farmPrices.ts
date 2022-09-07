@@ -2,7 +2,6 @@ import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { ChainId } from '@pancakeswap/sdk'
 import { SerializedFarmPublicData, FarmData } from './types'
 import { equalsIgnoreCase } from './equalsIgnoreCase'
-import { filterFarmsByQuoteToken } from './farmsPriceHelpers'
 import { FIXED_ONE, FIXED_TEN_IN_POWER_18, FIXED_TWO, FIXED_ZERO } from './const'
 
 // Find BUSD price for token
@@ -78,16 +77,29 @@ export const getFarmQuoteTokenPrice = (
   return FIXED_ZERO
 }
 
-const getFarmFromTokenSymbol = (
+const getFarmFromTokenAddress = (
   farms: SerializedFarmPublicData[],
-  tokenSymbol: string,
+  tokenAddress: string,
   preferredQuoteTokens?: string[],
 ): SerializedFarmPublicData => {
-  const farmsWithTokenSymbol = farms.filter((farm) => farm.token.symbol === tokenSymbol)
+  const farmsWithTokenSymbol = farms.filter((farm) => equalsIgnoreCase(farm.token.address, tokenAddress))
   const filteredFarm = filterFarmsByQuoteToken(farmsWithTokenSymbol, preferredQuoteTokens)
   return filteredFarm
 }
 
+const filterFarmsByQuoteToken = (
+  farms: SerializedFarmPublicData[],
+  preferredQuoteTokens: string[] = ['BUSD', 'WBNB'],
+): SerializedFarmPublicData => {
+  const preferredFarm = farms.find((farm) => {
+    return preferredQuoteTokens.some((quoteToken) => {
+      return farm.quoteToken.symbol === quoteToken
+    })
+  })
+  return preferredFarm || farms[0]
+}
+
+// TODO: Stable
 export const getLpTokenPrice = (
   lpTotalSupply: FixedNumber,
   lpTotalInQuoteToken: FixedNumber,
@@ -128,7 +140,7 @@ export const getFarmsPrices = (farms: FarmData[], chainId: number): FarmWithPric
     : FIXED_ZERO
 
   const farmsWithPrices = farms.map((farm) => {
-    const quoteTokenFarm = getFarmFromTokenSymbol(farms, farm.quoteToken.symbol, [
+    const quoteTokenFarm = getFarmFromTokenAddress(farms, farm.quoteToken.address, [
       nativeStableLpMap[chainId].wNative,
       nativeStableLpMap[chainId].stable,
     ])
@@ -168,7 +180,7 @@ const nativeStableLpMap = {
   [ChainId.GOERLI]: {
     address: '0xf5bf0C34d3c428A74Ceb98d27d38d0036C587200',
     wNative: 'WETH',
-    stable: 'USDC',
+    stable: 'tUSDC',
   },
   [ChainId.BSC]: {
     address: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',

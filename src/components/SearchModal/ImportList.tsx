@@ -1,17 +1,17 @@
-import { useState, useCallback } from 'react'
-import styled from 'styled-components'
-import { Button, Text, Link, Flex, Checkbox, Message } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { Button, Checkbox, Flex, Link, Message, Text } from '@pancakeswap/uikit'
+import { TokenList } from '@uniswap/token-lists'
 import Card from 'components/Card'
 import { AutoColumn } from 'components/Layout/Column'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
-import useTheme from 'hooks/useTheme'
 import { ListLogo } from 'components/Logo'
-import { TokenList } from '@uniswap/token-lists'
-import { useAppDispatch } from 'state'
 import useFetchListCallback from 'hooks/useFetchListCallback'
-import { removeList, enableList } from 'state/lists/actions'
+import useTheme from 'hooks/useTheme'
+import { useCallback, useState } from 'react'
+import { enableList, removeList } from 'state/lists/actions'
 import { useAllLists } from 'state/lists/hooks'
-import { useTranslation } from '@pancakeswap/localization'
+import { useListState } from 'state/lists/lists'
+import styled from 'styled-components'
 
 interface ImportProps {
   listURL: string
@@ -33,7 +33,7 @@ const TextDot = styled.div`
 
 function ImportList({ listURL, list, onImport }: ImportProps) {
   const { theme } = useTheme()
-  const dispatch = useAppDispatch()
+  const [, dispatch] = useListState()
 
   const { t } = useTranslation()
 

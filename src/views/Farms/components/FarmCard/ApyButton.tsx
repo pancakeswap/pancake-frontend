@@ -70,16 +70,24 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
       <Text>
-        {t('APR (incl. LP rewards)')}: {displayApr}%
+        {t('APR (incl. LP rewards)')}:{' '}
+        <Text style={{ display: 'inline-block' }} color={strikethrough && 'secondary'}>
+          {strikethrough ? `${(apr * 2 + lpRewardsApr).toFixed(2)}%` : `${displayApr}%`}
+        </Text>
       </Text>
       <Text ml="5px">
-        *{t('Base APR (CAKE yield only)')}: {apr.toFixed(2)}%
+        *{t('Base APR (CAKE yield only)')}:{' '}
+        {strikethrough ? (
+          <Text style={{ display: 'inline-block' }} color="secondary">{`${(apr * 2).toFixed(2)}%`}</Text>
+        ) : (
+          `${apr.toFixed(2)}%`
+        )}
       </Text>
-      {lpRewardsApr !== 0 && (
-        <Text ml="5px">
-          *{t('LP Rewards APR')}: {lpRewardsApr}%
-        </Text>
-      )}
+      <Text ml="5px">
+        *{t('LP Rewards APR')}: {lpRewardsApr === 0 ? '-' : lpRewardsApr}%
+      </Text>
+      {strikethrough && <Text color="secondary">{t('Available Boosted: Up to 2x')}</Text>}
+      {strikethrough && <Text color="secondary">{t('Boost only applies to base APR (CAKE yield)')}</Text>}
     </>,
     {
       placement: 'top',
