@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
+import { API_PROFILE } from 'config/constants/endpoints'
 
 export const useTeamInformation = (competitionId: number) => {
-  const profileApiUrl = process.env.NEXT_PUBLIC_API_PROFILE
   const [globalLeaderboardInformation, setGlobalLeaderboardInformation] = useState(null)
 
   // 1. Storm
@@ -13,14 +13,14 @@ export const useTeamInformation = (competitionId: number) => {
 
   useEffect(() => {
     const fetchGlobalLeaderboardStats = async () => {
-      const res = await fetch(`${profileApiUrl}/api/leaderboard/${competitionId}/global`)
+      const res = await fetch(`${API_PROFILE}/api/leaderboard/${competitionId}/global`)
       const data = await res.json()
       setGlobalLeaderboardInformation(data)
     }
 
     const fetchTeamsLeaderboardStats = async (teamId: number, callBack: (data: any) => void) => {
       try {
-        const res = await fetch(`${profileApiUrl}/api/leaderboard/${competitionId}/team/${teamId}`)
+        const res = await fetch(`${API_PROFILE}/api/leaderboard/${competitionId}/team/${teamId}`)
         const data = await res.json()
         callBack(data)
       } catch (e) {
@@ -44,13 +44,7 @@ export const useTeamInformation = (competitionId: number) => {
       }),
     )
     fetchGlobalLeaderboardStats()
-  }, [
-    profileApiUrl,
-    competitionId,
-    setTeam1LeaderboardInformation,
-    setTeam2LeaderboardInformation,
-    setTeam3LeaderboardInformation,
-  ])
+  }, [competitionId, setTeam1LeaderboardInformation, setTeam2LeaderboardInformation, setTeam3LeaderboardInformation])
 
   return {
     team1LeaderboardInformation,
