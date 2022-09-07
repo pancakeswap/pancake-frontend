@@ -1,22 +1,22 @@
-import { memo, useCallback, useMemo, useState, useEffect } from 'react'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { Button, Text, CheckmarkIcon, CogIcon, Input, Toggle, LinkExternal, useTooltip } from '@pancakeswap/uikit'
-import { useSelector } from 'react-redux'
-import styled from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
+import { Button, CheckmarkIcon, CogIcon, Input, LinkExternal, Text, Toggle, useTooltip } from '@pancakeswap/uikit'
 import { TokenList, Version } from '@uniswap/token-lists'
 import Card from 'components/Card'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
-import { useTranslation } from '@pancakeswap/localization'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useAtomValue } from 'jotai'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { useListState } from 'state/lists/lists'
+import styled from 'styled-components'
 import useFetchListCallback from '../../hooks/useFetchListCallback'
 
-import { AppState, useAppDispatch } from '../../state'
-import { acceptListUpdate, removeList, disableList, enableList } from '../../state/lists/actions'
-import { useIsListActive, useAllLists, useActiveListUrls } from '../../state/lists/hooks'
+import { acceptListUpdate, disableList, enableList, removeList } from '../../state/lists/actions'
+import { selectorByUrlsAtom, useActiveListUrls, useAllLists, useIsListActive } from '../../state/lists/hooks'
 import uriToHttp from '../../utils/uriToHttp'
 
 import Column, { AutoColumn } from '../Layout/Column'
+import Row, { RowBetween, RowFixed } from '../Layout/Row'
 import { ListLogo } from '../Logo'
-import Row, { RowFixed, RowBetween } from '../Layout/Row'
 import { CurrencyModalView } from './types'
 
 function listVersionLabel(version: Version): string {
@@ -48,8 +48,8 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
   const { t } = useTranslation()
   const isActive = useIsListActive(listUrl)
 
-  const listsByUrl = useSelector<AppState, AppState['lists']['byUrl']>((state) => state.lists.byUrl)
-  const dispatch = useAppDispatch()
+  const listsByUrl = useAtomValue(selectorByUrlsAtom)
+  const [, dispatch] = useListState()
   const { current: list, pendingUpdate: pending } = listsByUrl[listUrl]
 
   const activeTokensOnThisChain = useMemo(() => {

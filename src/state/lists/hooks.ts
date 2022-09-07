@@ -1,18 +1,18 @@
 import { ChainId } from '@pancakeswap/sdk'
+import { EMPTY_LIST, TagInfo, TokenAddressMap, WrappedTokenInfo } from '@pancakeswap/tokens'
 import { TokenList } from '@uniswap/token-lists'
-import { useMemo } from 'react'
-import uniqBy from 'lodash/uniqBy'
-import groupBy from 'lodash/groupBy'
-import fromPairs from 'lodash/fromPairs'
-import { useSelector } from 'react-redux'
-import { createSelector } from '@reduxjs/toolkit'
-import { WrappedTokenInfo, TagInfo, TokenAddressMap, EMPTY_LIST } from '@pancakeswap/tokens'
 import { DEFAULT_LIST_OF_LISTS, OFFICIAL_LISTS } from 'config/constants/lists'
-import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-default.tokenlist.json'
+import { atom, useAtomValue } from 'jotai'
+import fromPairs from 'lodash/fromPairs'
+import groupBy from 'lodash/groupBy'
+import uniqBy from 'lodash/uniqBy'
+import { useMemo } from 'react'
 import { UNSUPPORTED_LIST_URLS, WARNING_LIST_URLS } from '../../config/constants/lists'
+import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-default.tokenlist.json'
 import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
 import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
-import { AppState } from '../index'
+import { listsAtom } from './lists'
+import { ListsState } from './reducer'
 
 // use ordering of default list of lists to assign priority
 function sortByListPriority(urlA: string, urlB: string) {
@@ -32,19 +32,21 @@ function enumKeys<O extends object, K extends keyof O = keyof O>(obj: O): K[] {
 // -------------------------------------
 //   Selectors
 // -------------------------------------
-const selectorActiveUrls = (state: AppState) => state.lists.activeListUrls
-const selectorByUrls = (state: AppState) => state.lists.byUrl
-const activeListUrlsSelector = createSelector(selectorActiveUrls, (urls) =>
-  urls?.filter((url) => !UNSUPPORTED_LIST_URLS.includes(url)),
-)
+const selectorActiveUrlsAtom = atom((get) => get(listsAtom)?.activeListUrls ?? [])
+export const selectorByUrlsAtom = atom((get) => get(listsAtom)?.byUrl ?? {})
 
-const combineTokenMapsWithDefault = (lists: AppState['lists']['byUrl'], urls: string[]) => {
+const activeListUrlsAtom = atom((get) => {
+  const urls = get(selectorActiveUrlsAtom)
+  return urls?.filter((url) => !UNSUPPORTED_LIST_URLS.includes(url))
+})
+
+const combineTokenMapsWithDefault = (lists: ListsState['byUrl'], urls: string[]) => {
   const defaultTokenMap = listToTokenMap(DEFAULT_TOKEN_LIST)
   if (!urls) return defaultTokenMap
   return combineMaps(combineTokenMaps(lists, urls), defaultTokenMap)
 }
 
-const combineTokenMaps = (lists: AppState['lists']['byUrl'], urls: string[]) => {
+const combineTokenMaps = (lists: ListsState['byUrl'], urls: string[]) => {
   if (!urls) return EMPTY_LIST
   return (
     urls
@@ -65,29 +67,28 @@ const combineTokenMaps = (lists: AppState['lists']['byUrl'], urls: string[]) => 
   )
 }
 
-export const combinedTokenMapFromActiveUrlsSelector = createSelector(
-  [selectorByUrls, selectorActiveUrls],
-  (lists, urls) => {
-    return combineTokenMapsWithDefault(lists, urls)
-  },
-)
+export const combinedTokenMapFromActiveUrlsAtom = atom((get) => {
+  const [selectorByUrls, selectorActiveUrls] = [get(selectorByUrlsAtom), get(selectorActiveUrlsAtom)]
+  return combineTokenMapsWithDefault(selectorByUrls, selectorActiveUrls)
+})
 
-const inactiveUrlSelector = createSelector([selectorByUrls, selectorActiveUrls], (lists, urls) => {
+const inactiveUrlAtom = atom((get) => {
+  const [lists, urls] = [get(selectorByUrlsAtom), get(selectorActiveUrlsAtom)]
   return Object.keys(lists).filter((url) => !urls?.includes(url) && !UNSUPPORTED_LIST_URLS.includes(url))
 })
 
-export const combinedTokenMapFromInActiveUrlsSelector = createSelector(
-  [selectorByUrls, inactiveUrlSelector],
-  (lists, inactiveUrl) => {
-    return combineTokenMaps(lists, inactiveUrl)
-  },
-)
+export const combinedTokenMapFromInActiveUrlsAtom = atom((get) => {
+  const [lists, inactiveUrl] = [get(selectorByUrlsAtom), get(inactiveUrlAtom)]
+  return combineTokenMaps(lists, inactiveUrl)
+})
 
-export const combinedTokenMapFromOfficialsUrlsSelector = createSelector([selectorByUrls], (lists) => {
+export const combinedTokenMapFromOfficialsUrlsAtom = atom((get) => {
+  const lists = get(selectorByUrlsAtom)
   return combineTokenMapsWithDefault(lists, OFFICIAL_LISTS)
 })
 
-export const combinedTokenMapFromUnsupportedUrlsSelector = createSelector([selectorByUrls], (lists) => {
+export const combinedTokenMapFromUnsupportedUrlsAtom = atom((get) => {
+  const lists = get(selectorByUrlsAtom)
   // get hard coded unsupported tokens
   const localUnsupportedListMap = listToTokenMap(UNSUPPORTED_TOKEN_LIST)
   // get any loaded unsupported tokens
@@ -96,7 +97,8 @@ export const combinedTokenMapFromUnsupportedUrlsSelector = createSelector([selec
   return combineMaps(localUnsupportedListMap, loadedUnsupportedListMap)
 })
 
-export const combinedTokenMapFromWarningUrlsSelector = createSelector([selectorByUrls], (lists) => {
+export const combinedTokenMapFromWarningUrlsAtom = atom((get) => {
+  const lists = get(selectorByUrlsAtom)
   // get hard coded unsupported tokens
   const localUnsupportedListMap = listToTokenMap(WARNING_TOKEN_LIST)
   // get any loaded unsupported tokens
@@ -160,7 +162,7 @@ export function useAllLists(): {
     readonly error: string | null
   }
 } {
-  return useSelector(selectorByUrls)
+  return useAtomValue(selectorByUrlsAtom)
 }
 
 function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddressMap {
@@ -175,32 +177,32 @@ function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddress
 
 // filter out unsupported lists
 export function useActiveListUrls(): string[] | undefined {
-  return useSelector(activeListUrlsSelector)
+  return useAtomValue(activeListUrlsAtom)
 }
 
 export function useInactiveListUrls() {
-  return useSelector(inactiveUrlSelector)
+  return useAtomValue(inactiveUrlAtom)
 }
 
 // get all the tokens from active lists, combine with local default tokens
 export function useCombinedActiveList(): TokenAddressMap {
-  const activeTokens = useSelector(combinedTokenMapFromActiveUrlsSelector)
+  const activeTokens = useAtomValue(combinedTokenMapFromActiveUrlsAtom)
   return activeTokens
 }
 
 // all tokens from inactive lists
 export function useCombinedInactiveList(): TokenAddressMap {
-  return useSelector(combinedTokenMapFromInActiveUrlsSelector)
+  return useAtomValue(combinedTokenMapFromInActiveUrlsAtom)
 }
 
 // list of tokens not supported on interface, used to show warnings and prevent swaps and adds
 export function useUnsupportedTokenList(): TokenAddressMap {
-  return useSelector(combinedTokenMapFromUnsupportedUrlsSelector)
+  return useAtomValue(combinedTokenMapFromUnsupportedUrlsAtom)
 }
 
 // list of warning tokens on interface, used to show warnings and prevent adds
 export function useWarningTokenList(): TokenAddressMap {
-  return useSelector(combinedTokenMapFromWarningUrlsSelector)
+  return useAtomValue(combinedTokenMapFromWarningUrlsAtom)
 }
 
 export function useIsListActive(url: string): boolean {

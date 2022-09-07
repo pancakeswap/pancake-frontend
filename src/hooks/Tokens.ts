@@ -2,15 +2,15 @@
 import { arrayify } from '@ethersproject/bytes'
 import { parseBytes32String } from '@ethersproject/strings'
 import { Currency, Token } from '@pancakeswap/sdk'
-import { createSelector } from '@reduxjs/toolkit'
+import { TokenAddressMap } from '@pancakeswap/tokens'
 import { GELATO_NATIVE } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { TokenAddressMap } from '@pancakeswap/tokens'
 import {
-  combinedTokenMapFromActiveUrlsSelector,
-  combinedTokenMapFromOfficialsUrlsSelector,
+  combinedTokenMapFromActiveUrlsAtom,
+  combinedTokenMapFromOfficialsUrlsAtom,
   useUnsupportedTokenList,
   useWarningTokenList,
 } from '../state/lists/hooks'
@@ -26,52 +26,28 @@ const mapWithoutUrls = (tokenMap: TokenAddressMap, chainId: number) =>
     return newMap
   }, {})
 
-const allTokenSelector = (chainId: number) =>
-  createSelector(
-    [combinedTokenMapFromActiveUrlsSelector, userAddedTokenSelector(chainId)],
-    (tokenMap, userAddedTokens) => {
-      return (
-        userAddedTokens
-          // reduce into all ALL_TOKENS filtered by the current chain
-          .reduce<{ [address: string]: Token }>(
-            (tokenMap_, token) => {
-              tokenMap_[token.address] = token
-              return tokenMap_
-            },
-            // must make a copy because reduce modifies the map, and we do not
-            // want to make a copy in every iteration
-            mapWithoutUrls(tokenMap, chainId),
-          )
-      )
-    },
-  )
-
-const allOfficialsAndUserAddedTokensSelector = (chainId: number) =>
-  createSelector(
-    [combinedTokenMapFromOfficialsUrlsSelector, userAddedTokenSelector(chainId)],
-    (tokenMap, userAddedTokens) => {
-      return (
-        userAddedTokens
-          // reduce into all ALL_TOKENS filtered by the current chain
-          .reduce<{ [address: string]: Token }>(
-            (tokenMap_, token) => {
-              tokenMap_[token.address] = token
-              return tokenMap_
-            },
-            // must make a copy because reduce modifies the map, and we do not
-            // want to make a copy in every iteration
-            mapWithoutUrls(tokenMap, chainId),
-          )
-      )
-    },
-  )
-
 /**
  * Returns all tokens that are from active urls and user added tokens
  */
 export function useAllTokens(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React()
-  return useSelector(allTokenSelector(chainId))
+  const tokenMap = useAtomValue(combinedTokenMapFromActiveUrlsAtom)
+  const userAddedTokens = useSelector(userAddedTokenSelector(chainId))
+  return useMemo(() => {
+    return (
+      userAddedTokens
+        // reduce into all ALL_TOKENS filtered by the current chain
+        .reduce<{ [address: string]: Token }>(
+          (tokenMap_, token) => {
+            tokenMap_[token.address] = token
+            return tokenMap_
+          },
+          // must make a copy because reduce modifies the map, and we do not
+          // want to make a copy in every iteration
+          mapWithoutUrls(tokenMap, chainId),
+        )
+    )
+  }, [userAddedTokens, tokenMap, chainId])
 }
 
 /**
@@ -79,7 +55,23 @@ export function useAllTokens(): { [address: string]: Token } {
  */
 export function useOfficialsAndUserAddedTokens(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React()
-  return useSelector(allOfficialsAndUserAddedTokensSelector(chainId))
+  const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
+  const userAddedTokens = useSelector(userAddedTokenSelector(chainId))
+  return useMemo(() => {
+    return (
+      userAddedTokens
+        // reduce into all ALL_TOKENS filtered by the current chain
+        .reduce<{ [address: string]: Token }>(
+          (tokenMap_, token) => {
+            tokenMap_[token.address] = token
+            return tokenMap_
+          },
+          // must make a copy because reduce modifies the map, and we do not
+          // want to make a copy in every iteration
+          mapWithoutUrls(tokenMap, chainId),
+        )
+    )
+  }, [userAddedTokens, tokenMap, chainId])
 }
 
 export function useUnsupportedTokens(): { [address: string]: Token } {
