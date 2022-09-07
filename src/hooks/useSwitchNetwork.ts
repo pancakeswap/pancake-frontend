@@ -1,12 +1,12 @@
-import { useCallback, useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
+import { useToast } from '@pancakeswap/uikit'
+import { useCallback, useMemo } from 'react'
 import replaceBrowserHistory from 'utils/replaceBrowserHistory'
 import { ConnectorNames } from 'config/wallet'
 import { useAccount, useSwitchNetwork as useSwitchNetworkWallet } from 'wagmi'
-import { ChainId } from '@pancakeswap/sdk'
 import { useSessionChainId } from './useSessionChainId'
 import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
-import useToast from './useToast'
 
 export function useSwitchNetworkLocal() {
   const [, setSessionChainId] = useSessionChainId()

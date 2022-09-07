@@ -1,29 +1,29 @@
-import { useState, useEffect, useMemo } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useTranslation } from '@pancakeswap/localization'
 import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  Button,
   Card,
   CardBody,
   PlayCircleOutlineIcon,
-  Button,
+  useToast,
   useTooltip,
-  ArrowUpIcon,
-  ArrowDownIcon,
 } from '@pancakeswap/uikit'
-import { getNow } from 'utils/getNow'
-import { useTranslation } from '@pancakeswap/localization'
+import { useWeb3React } from '@pancakeswap/wagmi'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
-import { BetPosition, NodeLedger, NodeRound } from 'state/types'
+import useTheme from 'hooks/useTheme'
+import { useEffect, useMemo, useState } from 'react'
 import { fetchLedgerData } from 'state/predictions'
 import { ROUND_BUFFER } from 'state/predictions/config'
-import useToast from 'hooks/useToast'
-import useTheme from 'hooks/useTheme'
-import { ToastDescriptionWithTx } from 'components/Toast'
+import { BetPosition, NodeLedger, NodeRound } from 'state/types'
+import { getNow } from 'utils/getNow'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
-import CardFlip from '../CardFlip'
 import { formatBnbv2 } from '../../helpers'
-import { RoundResultBox, PrizePoolRow } from '../RoundResult'
-import MultiplierArrow from './MultiplierArrow'
+import CardFlip from '../CardFlip'
+import { PrizePoolRow, RoundResultBox } from '../RoundResult'
 import CardHeader, { getBorderBackground } from './CardHeader'
+import MultiplierArrow from './MultiplierArrow'
 import SetPositionCard from './SetPositionCard'
 
 interface OpenRoundCardProps {

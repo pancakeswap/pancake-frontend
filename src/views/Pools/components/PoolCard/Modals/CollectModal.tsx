@@ -1,26 +1,26 @@
-import { useState } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useTranslation } from '@pancakeswap/localization'
+import { Token } from '@pancakeswap/sdk'
 import {
-  Modal,
-  Text,
-  Button,
-  Heading,
-  Flex,
   AutoRenewIcon,
+  Button,
   ButtonMenu,
   ButtonMenuItem,
+  Flex,
+  Heading,
   HelpIcon,
+  Modal,
+  Text,
+  useToast,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import useTheme from 'hooks/useTheme'
-import useToast from 'hooks/useToast'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { Token } from '@pancakeswap/sdk'
-import { formatNumber } from 'utils/formatBalance'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { updateUserBalance, updateUserPendingReward, updateUserStakedBalance } from 'state/pools'
+import useTheme from 'hooks/useTheme'
+import { useState } from 'react'
 import { useAppDispatch } from 'state'
+import { updateUserBalance, updateUserPendingReward, updateUserStakedBalance } from 'state/pools'
+import { formatNumber } from 'utils/formatBalance'
 import useHarvestPool from '../../../hooks/useHarvestPool'
 import useStakePool from '../../../hooks/useStakePool'
 

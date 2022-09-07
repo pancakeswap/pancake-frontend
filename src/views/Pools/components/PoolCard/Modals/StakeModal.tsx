@@ -1,35 +1,35 @@
-import { useWeb3React } from '@pancakeswap/wagmi'
-import { useEffect, useState, useCallback } from 'react'
-import styled from 'styled-components'
-import {
-  Modal,
-  Text,
-  Flex,
-  Image,
-  Button,
-  Slider,
-  BalanceInput,
-  AutoRenewIcon,
-  Link,
-  CalculateIcon,
-  IconButton,
-  Skeleton,
-} from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import useTheme from 'hooks/useTheme'
-import useToast from 'hooks/useToast'
-import useCatchTxError from 'hooks/useCatchTxError'
+import {
+  AutoRenewIcon,
+  BalanceInput,
+  Button,
+  CalculateIcon,
+  Flex,
+  IconButton,
+  Image,
+  Link,
+  Modal,
+  Skeleton,
+  Slider,
+  Text,
+  useToast,
+} from '@pancakeswap/uikit'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { getFullDisplayBalance, formatNumber, getDecimalAmount } from 'utils/formatBalance'
-import { DeserializedPool } from 'state/types'
-import { updateUserBalance, updateUserPendingReward, updateUserStakedBalance } from 'state/pools'
+import useCatchTxError from 'hooks/useCatchTxError'
+import useTheme from 'hooks/useTheme'
+import { useCallback, useEffect, useState } from 'react'
 import { useAppDispatch } from 'state'
+import { updateUserBalance, updateUserPendingReward, updateUserStakedBalance } from 'state/pools'
+import { DeserializedPool } from 'state/types'
+import styled from 'styled-components'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
-import PercentageButton from './PercentageButton'
+import { formatNumber, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
 import useStakePool from '../../../hooks/useStakePool'
 import useUnstakePool from '../../../hooks/useUnstakePool'
+import PercentageButton from './PercentageButton'
 
 interface StakeModalProps {
   isBnbPool: boolean

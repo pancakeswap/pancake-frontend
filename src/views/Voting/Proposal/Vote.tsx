@@ -1,9 +1,19 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { Button, Card, CardBody, CardHeader, CardProps, Heading, Radio, Text, useModal } from '@pancakeswap/uikit'
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  CardProps,
+  Heading,
+  Radio,
+  Text,
+  useModal,
+  useToast,
+} from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { Proposal } from 'state/types'
-import useToast from 'hooks/useToast'
 import { useTranslation } from '@pancakeswap/localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import CastVoteModal from '../components/CastVoteModal'
