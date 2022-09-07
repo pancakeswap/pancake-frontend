@@ -10,7 +10,7 @@ import MintModalFooter from './MintModalFooter'
 import MintModalHeader from './MintModalHeader'
 
 interface ConfirmMintModalProps {
-  mint?: Mint
+  mint?: any
   attemptingTxn: boolean
   txHash?: string
   recipient: string | null
@@ -59,7 +59,7 @@ const ConfirmMintModal: React.FC<InjectedModalProps & ConfirmMintModalProps> = (
 
   return (
     <TransactionConfirmationModal
-      title={t('Confirm Mint')}
+      title={t('Confirm Migrate')}
       onDismiss={onDismiss}
       customOnDismiss={customOnDismiss}
       attemptingTxn={attemptingTxn}

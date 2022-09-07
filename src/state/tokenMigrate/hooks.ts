@@ -34,13 +34,15 @@ export function useMigrateTokenInfo(): {
   const { t } = useTranslation()
 
   const {
-    independentField,
+    independentField: olindependt,
     typedValue,
-    [Field.INPUT]: { currencyId: inputCurrencyId },
-    [Field.OUTPUT]: { currencyId: outputCurrencyId },
+    [Field.INPUT]: { currencyId: olinputCurrencyId },
+    [Field.OUTPUT]: { currencyId: oloutputCurrencyId },
     recipient,
   } = useSwapState()
-
+  const independentField = Field.INPUT
+  const inputCurrencyId = mainnetTokens.pe.address
+  const outputCurrencyId = mainnetTokens.p.address
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
   const recipientLookup = useENS(recipient ?? undefined)
@@ -50,10 +52,12 @@ export function useMigrateTokenInfo(): {
     inputCurrency ?? undefined,
     outputCurrency ?? undefined,
   ])
+  // console.log('inputCurrency', inputCurrency)
+  // console.log('typedValue', typedValue)
 
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
-
+  // console.log('parsedAmmount', parsedAmount)
   const mintOut = useMigrateExactOut(!isExactIn ? parsedAmount : null, outputCurrency)
   const mintIn = useMigrateExactIn(isExactIn ? parsedAmount : null, outputCurrency)
 

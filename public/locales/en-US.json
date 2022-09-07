@@ -1773,6 +1773,7 @@
   "%quoteSymbol% per %baseSymbol%": "%quoteSymbol% per %baseSymbol%",
   "%baseSymbol% per %quoteSymbol%": "%baseSymbol% per %quoteSymbol%",
   "Confirm Mint": "Confirm Mint",
+  "Confirm Migrate": "Confirm Migrate",
   "Deposit PE tokens to receive USDC": "Deposit PE tokens to receive USDC",
   "Confirm Withdraw": "Confirm Withdraw",
   "Minting in the current version leaks parts of cents of Dollars. We recommend not minting until the new version of the contract is live.": "Minting in the current version leaks parts of cents of Dollars. We recommend not minting until the new version of the contract is live."

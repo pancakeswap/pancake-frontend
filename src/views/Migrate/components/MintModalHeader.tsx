@@ -16,14 +16,6 @@ export default function MintModalHeader({ mint, recipient }: { mint: Mint; recip
 
   // const [estimatedText, transactionRevertText] = mintInfoText.split(`${amount} ${symbol}`)
 
-  const truncatedRecipient = recipient ? truncateHash(recipient) : ''
-
-  const recipientInfoText = t('Output will be sent to %recipient%', {
-    recipient: truncatedRecipient,
-  })
-
-  const [recipientSentToText, postSentToText] = recipientInfoText.split(truncatedRecipient)
-
   return (
     <AutoColumn gap="md">
       <RowBetween align="flex-end">
@@ -55,15 +47,6 @@ export default function MintModalHeader({ mint, recipient }: { mint: Mint; recip
           </Text>
         </RowFixed>
       </RowBetween>
-      {recipient !== null ? (
-        <AutoColumn justify="flex-start" gap="sm" style={{ padding: '12px 0 0 0px' }}>
-          <Text color="textSubtle">
-            {recipientSentToText}
-            <b title={recipient}>{truncatedRecipient}</b>
-            {postSentToText}
-          </Text>
-        </AutoColumn>
-      ) : null}
     </AutoColumn>
   )
 }

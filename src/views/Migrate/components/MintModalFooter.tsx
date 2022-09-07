@@ -46,7 +46,6 @@ export default function MintModalFooter({
               paddingLeft: '10px',
             }}
           >
-            {formatExecutionPrice(mint, showInverted)}
             <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
               <AutoRenewIcon width="14px" />
             </StyledBalanceMaxMini>
@@ -107,7 +106,7 @@ export default function MintModalFooter({
           id="confirm-swap-or-send"
           width="100%"
         >
-          {t('Confirm Mint')}
+          {t('Confirm Migrate')}
         </Button>
 
         {mintErrorMessage ? <MintCallbackError error={mintErrorMessage} /> : null}

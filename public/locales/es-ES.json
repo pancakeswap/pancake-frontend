@@ -1773,6 +1773,7 @@
   "%quoteSymbol% per %baseSymbol%": "%quoteSymbol% por %baseSymbol%",
   "%baseSymbol% per %quoteSymbol%": "%baseSymbol% por %quoteSymbol%",
   "Confirm Mint": "Confirmar Emisión",
+  "Confirm Migrate": "Confirmar Migración",
   "Deposit PE tokens to receive USDC": "Depositá PE para recibir USDC",
   "Confirm Withdraw": "Confirmar Retiro",
   "Add liquidity instead": "Agregar liquidez",
