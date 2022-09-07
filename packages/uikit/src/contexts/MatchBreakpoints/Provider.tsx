@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
+import { breakpoints } from "@pancakeswap/ui";
 import { useIsomorphicEffect } from "../../hooks/useIsomorphicEffect";
-import { breakpointMap } from "../../theme/base";
 
 type State = {
   [key: string]: boolean;
@@ -25,14 +25,15 @@ type MediaQueries = {
 const mediaQueries: MediaQueries = (() => {
   let prevMinWidth = 0;
 
-  return Object.keys(breakpointMap).reduce((accum, size, index) => {
+  return Object.keys(breakpoints).reduce((accum, size, index) => {
     // Largest size is just a min-width of second highest max-width
-    if (index === Object.keys(breakpointMap).length - 1) {
+    if (index === Object.keys(breakpoints).length - 1) {
       return { ...accum, [size]: `(min-width: ${prevMinWidth}px)` };
     }
 
     const minWidth = prevMinWidth;
-    const breakpoint = breakpointMap[size];
+    // @ts-ignore
+    const breakpoint = breakpoints[size];
 
     // Min width for next iteration
     prevMinWidth = breakpoint;

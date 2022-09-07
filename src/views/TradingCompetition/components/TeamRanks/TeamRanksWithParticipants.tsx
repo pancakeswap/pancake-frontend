@@ -54,7 +54,7 @@ const TotalParticipantsWrapper = styled(Box)`
 `
 
 const TotalParticipantsCloud = styled(Flex)`
-  background: ${({ theme }) => theme.colors.gradients.cardHeader};
+  background: ${({ theme }) => theme.colors.gradientCardHeader};
   padding: 24px;
   border-radius: ${({ theme }) => theme.radii.card};
   width: 100%;

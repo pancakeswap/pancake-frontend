@@ -100,7 +100,7 @@ const BuyTicketsButtons: React.FC<React.PropsWithChildren<BuyTicketsProps>> = ({
     <ConfirmModal
       title={t('Confirm')}
       isLoading={isConfirming}
-      headerBackground={theme.colors.gradients.cardHeader}
+      headerBackground={theme.colors.gradientCardHeader}
       txHash={txHashBuyingResult}
       loadingText={t('Please confirm your transaction in wallet.')}
       loadingButtonLabel={t('Confirming...')}
@@ -114,7 +114,7 @@ const BuyTicketsButtons: React.FC<React.PropsWithChildren<BuyTicketsProps>> = ({
     <ConfirmModal
       title={t('Enable')}
       isLoading={isApproving}
-      headerBackground={theme.colors.gradients.cardHeader}
+      headerBackground={theme.colors.gradientCardHeader}
       txHash={txHashEnablingResult}
       loadingText={t('Please enable CAKE spending in your wallet')}
       loadingButtonLabel={t('Enabling...')}
@@ -128,7 +128,7 @@ const BuyTicketsButtons: React.FC<React.PropsWithChildren<BuyTicketsProps>> = ({
     <BuyTicketsModal
       title={t('Buy Minting Tickets')}
       buyTicketCallBack={handleConfirm}
-      headerBackground={theme.colors.gradients.cardHeader}
+      headerBackground={theme.colors.gradientCardHeader}
       cakeBalance={cakeBalance}
       maxPerAddress={maxPerAddress}
       maxPerTransaction={maxPerTransaction}

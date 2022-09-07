@@ -67,7 +67,7 @@ export const CardHeader: React.FC<React.PropsWithChildren> = () => {
   const borderBackground = `linear-gradient(${customHeadingColor} ${gradientStopPoint}, ${theme.colors.cardBorder} ${gradientStopPoint})`;
 
   // Gradient overlap is also possible, just put the "dividing" gradient first and after that the header gradient
-  const gradientBorderColor = `linear-gradient(transparent ${gradientStopPoint}, ${theme.colors.cardBorder} ${gradientStopPoint}), ${theme.colors.gradients.cardHeader}`;
+  const gradientBorderColor = `linear-gradient(transparent ${gradientStopPoint}, ${theme.colors.cardBorder} ${gradientStopPoint}), ${theme.colors.gradientCardHeader}`;
   return (
     <div style={{ padding: "32px", width: "500px" }}>
       <Row>
@@ -83,7 +83,7 @@ export const CardHeader: React.FC<React.PropsWithChildren> = () => {
       </Row>
       <Row>
         <Card borderBackground={gradientBorderColor}>
-          <Box background={theme.colors.gradients.cardHeader} p="16px" height={headerHeight}>
+          <Box background={theme.colors.gradientCardHeader} p="16px" height={headerHeight}>
             <Heading size="xl">Gradient overlapping Header</Heading>
           </Box>
           <CardBody>The border on sides of header is covered</CardBody>

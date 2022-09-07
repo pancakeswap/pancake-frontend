@@ -13,7 +13,7 @@ import Balance from 'components/Balance'
 const Container = styled(Flex)`
   flex-direction: column;
   padding: 16px 24px;
-  background: ${({ theme }) => theme.colors.gradients.cardHeader};
+  background: ${({ theme }) => theme.colors.gradientCardHeader};
 `
 
 interface CardFooterProps {
