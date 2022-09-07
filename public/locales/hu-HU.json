@@ -1938,5 +1938,6 @@
   "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "Az Ön által elért URL (lánc azonosító: %chainId%) a %network% hálózathoz tartozik; nem egyezik az Ön tárcájának hálózatával. Kérjük, a folytatáshoz váltson hálózatot.",
   "Error connecting, please retry and confirm in wallet!": "Csatlakozási hiba; kérjük, próbálja meg újra és erősítse meg a tárcában!",
   "Boost only applies to base APR (CAKE yield)": "Boost only applies to base APR (CAKE yield)",
-  "Available Boosted: Up to 2x": "Available Boosted: Up to 2x"
+  "Available Boosted: Up to 2x": "Available Boosted: Up to 2x",
+  "Stake CAKE, Earn CAKE, Win CAKE": "Stake CAKE, Earn CAKE, Win CAKE"
 }
