@@ -13,7 +13,7 @@ import { Login, WalletConfig } from "./types";
 import WalletCard, { MoreWalletCard } from "./WalletCard";
 
 interface Props<T> {
-  login: Login;
+  login: Login<T>;
   onDismiss?: () => void;
   displayCount?: number;
   t: (key: string) => string;
