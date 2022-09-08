@@ -3,7 +3,7 @@
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2015",
     "noImplicitAny": false,
     "baseUrl": ".",
     "paths": {
