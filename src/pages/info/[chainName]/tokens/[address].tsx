@@ -2,7 +2,6 @@ import Token from 'views/Info/Tokens/TokenPage'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { isAddress } from 'utils'
 import { InfoPageLayout } from 'views/Info'
-import { CHAIN_IDS } from '@pancakeswap/wagmi'
 
 const TokenPage = ({ address }: { address: string }) => {
   if (!address) {
@@ -13,7 +12,7 @@ const TokenPage = ({ address }: { address: string }) => {
 }
 
 TokenPage.Layout = InfoPageLayout
-TokenPage.chains = CHAIN_IDS
+TokenPage.chains = []
 
 export default TokenPage
 
