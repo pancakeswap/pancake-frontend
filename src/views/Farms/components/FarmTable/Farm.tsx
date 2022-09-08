@@ -11,7 +11,7 @@ export interface FarmProps {
   pid: number
   token: Token
   quoteToken: Token
-  userDataReady: boolean
+  isReady: boolean
 }
 
 const Container = styled.div`
@@ -38,7 +38,7 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmProps>> = ({
   quoteToken,
   label,
   pid,
-  userDataReady,
+  isReady,
 }) => {
   const { stakedBalance } = useFarmUser(pid)
   const { t } = useTranslation()
@@ -56,7 +56,7 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmProps>> = ({
     return null
   }
 
-  if (!userDataReady) {
+  if (!isReady) {
     return (
       <Container>
         <Skeleton mr="8px" width={32} height={32} variant="circle" />

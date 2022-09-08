@@ -32,25 +32,21 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   quoteToken,
   boosted,
 }) => {
-  const userDataReady = multiplier !== undefined
+  const isReady = multiplier !== undefined
 
   return (
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
-      {userDataReady ? (
+      {isReady ? (
         <TokenPairImage variant="inverted" primaryToken={token} secondaryToken={quoteToken} width={64} height={64} />
       ) : (
         <Skeleton mr="8px" width={63} height={63} variant="circle" />
       )}
       <Flex flexDirection="column" alignItems="flex-end">
-        {userDataReady ? (
-          <Heading mb="4px">{lpLabel.split(' ')[0]}</Heading>
-        ) : (
-          <Skeleton mb="4px" width={60} height={18} />
-        )}
+        {isReady ? <Heading mb="4px">{lpLabel.split(' ')[0]}</Heading> : <Skeleton mb="4px" width={60} height={18} />}
         <Flex justifyContent="center">
-          {userDataReady ? <Box>{isCommunityFarm ? <FarmAuctionTag /> : <CoreTag />}</Box> : null}
+          {isReady ? <Box>{isCommunityFarm ? <FarmAuctionTag /> : <CoreTag />}</Box> : null}
           {boosted && <BoostedTag ml="4px" />}
-          {userDataReady ? (
+          {isReady ? (
             <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
           ) : (
             <Skeleton ml="4px" width={42} height={28} />

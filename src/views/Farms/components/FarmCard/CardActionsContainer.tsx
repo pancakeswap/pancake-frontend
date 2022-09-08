@@ -41,7 +41,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { pid, lpAddress } = farm
   const { earnings } = farm.userData || {}
   const { shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
-  const userDataReady = farm.multiplier !== undefined
+  const isReady = farm.multiplier !== undefined
 
   return (
     <Action>
@@ -78,7 +78,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
           farmPid={farm.pid}
         />
       )}
-      {userDataReady ? (
+      {isReady ? (
         <Flex>
           <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
             {farm.lpSymbol}
