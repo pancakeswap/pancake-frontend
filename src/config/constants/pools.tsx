@@ -75,7 +75,7 @@ export const livePools: SerializedPoolConfig[] = [
       97: '',
     },
     poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '55.64',
+    tokenPerBlock: '55.6446',
     version: 3,
   },
   {
