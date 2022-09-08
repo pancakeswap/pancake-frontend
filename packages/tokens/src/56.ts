@@ -2289,4 +2289,5 @@ export const bscTokens = {
     'https://helio.money/',
   ),
   snfts: new Token(ChainId.BSC, '0x6f51A1674BEFDD77f7ab1246b83AdB9f13613762', 18, 'SNFTS', 'Seedify NFT Space'),
+  gq: new Token(ChainId.BSC, '0xF700D4c708C2be1463E355F337603183D20E0808', 18, 'GQ', 'Galactic Quadrant'),
 }
