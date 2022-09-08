@@ -7,7 +7,9 @@ import usePoolDatas from 'state/info/queries/pools/poolData'
 import useFetchedTokenDatas from 'state/info/queries/tokens/tokenData'
 import useTopTokenAddresses from 'state/info/queries/tokens/topTokens'
 import {
+  useProtocolDataSWR,
   useProtocolData,
+  useProtocolChartDataSWR,
   useProtocolChartData,
   useProtocolTransactions,
   useUpdatePoolData,
@@ -20,7 +22,7 @@ import {
 } from './hooks'
 
 export const ProtocolUpdater: React.FC<React.PropsWithChildren> = () => {
-  const [protocolData, setProtocolData] = useProtocolData()
+  const [protocolData, setProtocolData] = useProtocolDataSWR()
   const { data: fetchedProtocolData, error } = useFetchProtocolData()
 
   const [chartData, updateChartData] = useProtocolChartData()

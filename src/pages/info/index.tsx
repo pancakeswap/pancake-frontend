@@ -11,9 +11,9 @@ const InfoPage = () => {
   useEffect(() => {
     const { chainName } = router.query
     if (chainId === ChainId.ETHEREUM && !chainName)
-      router.replace({ pathname: '/info/eth', query: '' }, undefined, { shallow: true })
+      router.push({ pathname: '/info/eth', query: '' }, undefined, { shallow: true })
     else if (!chainName && chainId === ChainId.BSC)
-      router.replace({ pathname: '/info', query: '' }, undefined, { shallow: true })
+      router.push({ pathname: '/info', query: '' }, undefined, { shallow: true })
   }, [chainId, router])
 
   return <Overview />

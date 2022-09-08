@@ -1,10 +1,10 @@
-import { Duration, getUnixTime, startOfHour, sub } from 'date-fns'
-import { useRouter } from 'next/router'
 import { ChainId } from '@pancakeswap/sdk'
+import { Duration, getUnixTime, startOfHour, sub } from 'date-fns'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState, useAppDispatch } from 'state'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 import fetchPoolChartData from 'state/info/queries/pools/chartData'
 import fetchPoolTransactions from 'state/info/queries/pools/transactions'
@@ -13,6 +13,7 @@ import fetchPoolsForToken from 'state/info/queries/tokens/poolsForToken'
 import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
 import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
 import { Transaction } from 'state/info/types'
+import useSWRImmutable from 'swr/immutable'
 import { isAddress } from 'utils'
 import {
   addPoolKeys,
@@ -32,6 +33,21 @@ import {
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 // Protocol hooks
 
+export const useProtocolDataSWR = (): [ProtocolData | undefined, (protocolData: ProtocolData) => void] => {
+  const chainName = useGetChainName()
+  const { data: protocolData, mutate } = useSWRImmutable(
+    [`info/protocol/updateProtocolData`, chainName],
+    (): ProtocolData | undefined => undefined,
+  )
+  const setProtocolData: (protocolData: ProtocolData) => void = useCallback(
+    (data: ProtocolData) => {
+      mutate(data)
+    },
+    [mutate],
+  )
+  return [protocolData, setProtocolData]
+}
+
 export const useProtocolData = (): [ProtocolData | undefined, (protocolData: ProtocolData) => void] => {
   const protocolData: ProtocolData | undefined = useSelector((state: AppState) => state.info.protocol.overview)
 
@@ -42,6 +58,21 @@ export const useProtocolData = (): [ProtocolData | undefined, (protocolData: Pro
   )
 
   return [protocolData, setProtocolData]
+}
+
+export const useProtocolChartDataSWR = (): [ChartEntry[] | undefined, (chartData: ChartEntry[]) => void] => {
+  const chainName = useGetChainName()
+  const { data: chartData, mutate } = useSWRImmutable(
+    [`info/protocol/updateProtocolChartData`, chainName],
+    (): ChartEntry[] | undefined => undefined,
+  )
+  const setChartData: (chartData: ChartEntry[]) => void = useCallback(
+    (data: ChartEntry[]) => {
+      mutate(data)
+    },
+    [mutate],
+  )
+  return [chartData, setChartData]
 }
 
 export const useProtocolChartData = (): [ChartEntry[] | undefined, (chartData: ChartEntry[]) => void] => {
@@ -337,10 +368,27 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
 
 export const useGetChainName = () => {
   const router = useRouter()
+  const [name, setName] = useState<'ETH' | 'BSC'>(() => 'BSC')
   const { chainName } = router.query
   const { chainId } = useActiveWeb3React()
-  if (ChainId.ETHEREUM === chainId || chainName === 'eth') return 'ETH'
-  return 'BSC'
+  const result = useMemo(() => name, [name])
+  useEffect(() => {
+    if (ChainId.ETHEREUM === chainId || chainName === 'eth') {
+      setName('ETH')
+    } else setName('BSC')
+  }, [chainId, chainName])
+
+  return result
+  // const router = useRouter()
+  // const [chain, setChain] = useState<'ETH' | 'BSC'>('BSC')
+  // const { chainId } = useActiveWeb3React()
+  // useEffect(() => {
+  //   console.log('?????')
+  //   const { chainName } = router.query
+  //   if (ChainId.ETHEREUM === chainId || chainName === 'eth') setChain('ETH')
+  //   else setChain('BSC')
+  // }, [])
+  // return chain
 }
 
 export const useMultiChainPath = () => {

@@ -11,7 +11,9 @@ import {
   useAllPoolData,
   useAllTokenData,
   useProtocolChartData,
+  useProtocolChartDataSWR,
   useProtocolData,
+  useProtocolDataSWR,
   useProtocolTransactions,
 } from 'state/info/hooks'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
@@ -39,7 +41,7 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
     currentLanguage: { locale },
   } = useTranslation()
 
-  const [protocolData] = useProtocolData()
+  const [protocolData] = useProtocolDataSWR()
   const [chartData] = useProtocolChartData()
   const [transactions] = useProtocolTransactions()
 

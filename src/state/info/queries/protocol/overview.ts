@@ -104,6 +104,7 @@ const useFetchProtocolData = (): ProtocolFetchState => {
           txCount,
           txCountChange,
         }
+        console.log('fetchFinish')
         setFetchState({
           error: false,
           data: protocolData,
