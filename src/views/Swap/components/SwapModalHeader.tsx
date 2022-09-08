@@ -3,7 +3,7 @@ import { Trade, TradeType, CurrencyAmount, Currency } from '@pancakeswap/sdk'
 import { Button, Text, ErrorIcon, ArrowDownIcon } from '@pancakeswap/uikit'
 import { Field } from 'state/swap/actions'
 import { useTranslation } from '@pancakeswap/localization'
-import { computeTradePriceBreakdown, warningSeverity, basisPointsToPercent } from 'utils/exchange'
+import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange'
 import { AutoColumn } from 'components/Layout/Column'
 import { CurrencyLogo } from 'components/Logo'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
@@ -118,7 +118,7 @@ export default function SwapModalHeader({
             {t('Slippage Tolerance')}
           </Text>
           <Text bold color="primary" ml="auto" textAlign="end">
-            {`${basisPointsToPercent(allowedSlippage).toFixed(1)}%`}
+            {`${allowedSlippage / 100}%`}
           </Text>
         </RowFixed>
         {trade.tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance && (
