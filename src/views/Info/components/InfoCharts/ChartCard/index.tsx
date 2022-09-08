@@ -74,7 +74,7 @@ const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
     } else if (view === ChartView.LIQUIDITY && formattedTvlData.length > 0) {
       valueToDisplay = formatAmount(formattedTvlData[formattedTvlData.length - 1]?.value)
     } else if (view === ChartView.PRICE && tokenData?.priceUSD) {
-      valueToDisplay = formatAmount(tokenData.priceUSD)
+      valueToDisplay = formatAmount(tokenData.priceUSD, { notation: 'standard' })
     }
 
     return valueToDisplay ? (
