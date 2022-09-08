@@ -11,6 +11,10 @@ declare module 'styled-components' {
   export interface DefaultTheme extends PancakeTheme {}
 }
 
+function GlobalHooks() {
+  return null
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   const store = useStore(pageProps.initialReduxState)
   return (
@@ -35,6 +39,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>PancakeSwap</title>
       </Head>
       <Providers store={store}>
+        <GlobalHooks />
         <ResetCSS />
         <Menu>
           <Component {...pageProps} />

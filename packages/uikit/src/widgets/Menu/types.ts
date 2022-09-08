@@ -20,7 +20,7 @@ export interface NavProps {
   rightSide?: ReactNode;
   banner?: ReactElement;
   links: Array<MenuItemsType>;
-  subLinks: Array<SubMenuItemsType>;
+  subLinks?: Array<SubMenuItemsType>;
   footerLinks: Array<FooterLinkType>;
   activeItem?: string;
   activeSubItem?: string;

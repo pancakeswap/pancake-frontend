@@ -5,7 +5,7 @@ import { AptosClient } from 'aptos'
 import { persist, subscribeWithSelector } from 'zustand/middleware'
 import create, { Mutate, StoreApi } from 'zustand/vanilla'
 
-import { Connector, ConnectorData, InjectedConnector } from './connectors'
+import { Connector, ConnectorData, PetraConnector } from './connectors'
 import { ClientStorage, createStorage, noopStorage } from './storage'
 
 export type ClientConfig<TProvider extends AptosClient = AptosClient> = {
@@ -13,7 +13,7 @@ export type ClientConfig<TProvider extends AptosClient = AptosClient> = {
   autoConnect?: boolean
   /**
    * Connectors used for linking accounts
-   * @default [new InjectedConnector()]
+   * @default [new PetraConnector()]
    */
   connectors?: (() => Connector[]) | Connector[]
   /** Interface for connecting to network */
@@ -51,7 +51,7 @@ export class Client<TProvider extends AptosClient = AptosClient> {
 
   constructor({
     autoConnect = false,
-    connectors = [new InjectedConnector()],
+    connectors = [new PetraConnector()],
     provider,
     storage = createStorage({
       storage: typeof window !== 'undefined' ? window.localStorage : noopStorage,

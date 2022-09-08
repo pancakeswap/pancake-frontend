@@ -12,6 +12,9 @@ export const wallets: WalletConfig<ConnectorNames>[] = [
     installed: typeof window !== 'undefined' && Boolean(window.aptos),
     connectorId: ConnectorNames.Petra,
     priority: 1,
+    downloadLink: {
+      desktop: 'https://petra.app/',
+    },
   },
   {
     title: 'Martian Wallet',
@@ -19,5 +22,8 @@ export const wallets: WalletConfig<ConnectorNames>[] = [
     installed: typeof window !== 'undefined' && Boolean(window.martian),
     connectorId: ConnectorNames.Martian,
     priority: 2,
+    downloadLink: {
+      desktop: 'https://martianwallet.xyz/',
+    },
   },
 ]

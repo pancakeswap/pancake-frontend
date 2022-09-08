@@ -1,6 +1,6 @@
 import { createClient } from '@pancakeswap/aptos'
 import { AptosClient } from 'aptos'
-import { MartianConnector, InjectedConnector } from '@pancakeswap/aptos/core'
+import { MartianConnector, PetraConnector } from '@pancakeswap/aptos/core'
 
 export const devnetUrl = 'https://fullnode.devnet.aptoslabs.com/'
 export const networks: Record<string, string> = {
@@ -11,7 +11,7 @@ export const networks: Record<string, string> = {
 }
 
 export const client = createClient({
-  connectors: [new InjectedConnector(), new MartianConnector()],
+  connectors: [new PetraConnector(), new MartianConnector()],
   provider(config) {
     if (config?.networkName && config?.networkName in networks) {
       return new AptosClient(networks[config.networkName])

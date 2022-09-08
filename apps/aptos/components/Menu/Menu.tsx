@@ -1,10 +1,12 @@
-import { ContextApi, useTranslation } from '@pancakeswap/localization'
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import { ContextApi, languageList, useTranslation } from '@pancakeswap/localization'
 import { DropdownMenuItems, Menu as UIMenu, MenuItemsType, SwapFillIcon, SwapIcon } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import { useTheme } from 'next-themes'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { ReactNode, useMemo } from 'react'
+import { footerLinks } from './footerConfig'
 import UserMenu from './UserMenu'
 
 export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }
@@ -15,20 +17,20 @@ export type ConfigMenuItemsType = Omit<MenuItemsType, 'items'> & { hideSubNav?: 
 
 const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
   {
-    label: t('Trade'),
+    label: t('Swap'),
     icon: SwapIcon,
     fillIcon: SwapFillIcon,
-    href: '/swap',
+    href: '/',
     showItemsOnMobile: false,
     items: [
-      {
-        label: t('Swap'),
-        href: '/swap',
-      },
-      {
-        label: t('Liquidity'),
-        href: '/liquidity',
-      },
+      // {
+      //   label: t('Swap'),
+      //   href: '/swap',
+      // },
+      // {
+      //   label: t('Liquidity'),
+      //   href: '/liquidity',
+      // },
     ],
   },
 ]
@@ -37,7 +39,7 @@ export const getActiveMenuItem = ({ pathname, menuConfig }: { pathname: string; 
   menuConfig.find((menuItem) => pathname.startsWith(menuItem.href) || getActiveSubMenuItem({ menuItem, pathname }))
 
 export const getActiveSubMenuItem = ({ pathname, menuItem }: { pathname: string; menuItem?: ConfigMenuItemsType }) => {
-  const activeSubMenuItems = menuItem?.items.filter((subMenuItem) => pathname.startsWith(subMenuItem.href)) ?? []
+  const activeSubMenuItems = menuItem?.items?.filter((subMenuItem) => pathname.startsWith(subMenuItem.href)) ?? []
 
   // Pathname doesn't include any submenu item href - return undefined
   if (!activeSubMenuItems || activeSubMenuItems.length === 0) {
@@ -56,7 +58,7 @@ export const getActiveSubMenuItem = ({ pathname, menuItem }: { pathname: string;
 }
 
 export const Menu = ({ children }: { children: ReactNode }) => {
-  const { t } = useTranslation()
+  const { currentLanguage, setLanguage, t } = useTranslation()
 
   const menuItems = config(t)
   const { pathname } = useRouter()
@@ -70,26 +72,33 @@ export const Menu = ({ children }: { children: ReactNode }) => {
     return () => setTheme(isDark ? 'light' : 'dark')
   }, [setTheme, isDark])
 
+  const getFooterLinks = useMemo(() => {
+    return footerLinks(t)
+  }, [t])
+
   return (
     <UIMenu
-      linkComponent={(linkProps) => {
-        return <Link {...linkProps} prefetch={false} />
+      linkComponent={({ children: linkChildren, className, ...linkProps }) => {
+        return (
+          <NextLink {...linkProps} prefetch={false} passHref>
+            <a className={className}>{linkChildren}</a>
+          </NextLink>
+        )
       }}
       links={menuItems}
       activeItem={activeMenuItem?.href}
       isDark={isDark}
-      langs={[]}
       rightSide={
         <>
           <UserMenu />
         </>
       }
-      setLang={() => {
-        //
-      }}
-      footerLinks={[]}
-      currentLang=""
-      subLinks={[]}
+      setLang={setLanguage}
+      footerLinks={getFooterLinks}
+      currentLang={currentLanguage.code}
+      langs={languageList}
+      subLinks={activeMenuItem?.hideSubNav || activeSubMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
+      activeSubItem={activeSubMenuItem?.href}
       toggleTheme={toggleTheme}
       buyCakeLabel={t('Buy CAKE')}
     >

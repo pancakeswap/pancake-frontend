@@ -1,6 +1,6 @@
 import { EntryFunctionPayload, PendingTransaction } from 'aptos/dist/generated'
 import { ConnectorNotFoundError } from './errors'
-import { InjectedConnector } from './injected'
+import { PetraConnector } from './petra'
 
 declare global {
   interface Window {
@@ -8,7 +8,7 @@ declare global {
   }
 }
 
-export class MartianConnector extends InjectedConnector {
+export class MartianConnector extends PetraConnector {
   readonly id = 'martian'
   provider?: Window['martian']
 
@@ -36,7 +36,6 @@ export class MartianConnector extends InjectedConnector {
     const account = await this.account()
     if (!provider) throw new ConnectorNotFoundError()
     const generatedTx = await provider.generateTransaction(account?.address || '', tx)
-    console.log(generatedTx, 'generatedTx')
     return provider.signAndSubmitTransaction(generatedTx)
   }
 }

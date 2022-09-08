@@ -20,6 +20,7 @@ import {
 import { useRouter } from 'next/router'
 // import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
+import { useNetwork } from 'hooks/useNetwork'
 // import { EXCHANGE_DOCS_URLS } from 'config/constants'
 // import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 // import { SettingsMode } from 'components/Menu/GlobalSettings/types'
