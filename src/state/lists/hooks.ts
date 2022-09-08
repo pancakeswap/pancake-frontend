@@ -5,6 +5,7 @@ import { DEFAULT_LIST_OF_LISTS, OFFICIAL_LISTS } from 'config/constants/lists'
 import { atom, useAtomValue } from 'jotai'
 import fromPairs from 'lodash/fromPairs'
 import groupBy from 'lodash/groupBy'
+import { ListsState } from '@pancakeswap/token-lists'
 import uniqBy from 'lodash/uniqBy'
 import { useMemo } from 'react'
 import { UNSUPPORTED_LIST_URLS, WARNING_LIST_URLS } from '../../config/constants/lists'
@@ -12,7 +13,6 @@ import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-defaul
 import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
 import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
 import { listsAtom } from './lists'
-import { ListsState } from './reducer'
 
 // use ordering of default list of lists to assign priority
 function sortByListPriority(urlA: string, urlB: string) {

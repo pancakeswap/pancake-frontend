@@ -10,7 +10,7 @@ it("renders correctly", () => {
       position: absolute;
       top: 0;
       left: 0;
-      background: #7645D9;
+      background: var(--colors-secondary);
       height: 100%;
       -webkit-transition: width 200ms ease;
       transition: width 200ms ease;
@@ -18,8 +18,8 @@ it("renders correctly", () => {
 
     .c0 {
       position: relative;
-      background-color: #eeeaf4;
-      box-shadow: inset 0px 2px 2px -1px rgba(74,74,104,0.1);
+      background-color: var(--colors-input);
+      box-shadow: var(--shadows-inset);
       overflow: hidden;
       border-radius: 32px;
       height: 16px;
