@@ -12,6 +12,7 @@ const withTH = transpileModules([
   '@pancakeswap/localization',
   '@pancakeswap/hooks',
   '@pancakeswap/aptos',
+  '@pancakeswap/utils',
 ])
 
 /** @type {import('next').NextConfig} */
