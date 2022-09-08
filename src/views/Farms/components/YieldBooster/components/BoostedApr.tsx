@@ -42,6 +42,10 @@ function BoostedApr(props: BoostedAprPropsType) {
       </>
     )
 
+  if (boostedApr === '0') {
+    return null
+  }
+
   return (
     <>
       <RocketIcon m="4px" color="success" />

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Tag, Flex, Heading, Skeleton } from '@pancakeswap/uikit'
+import { Tag, Flex, Heading, Box, Skeleton } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
 import { FarmAuctionTag, CoreTag } from 'components/Tags'
 import { TokenPairImage } from 'components/TokenImage'
@@ -32,15 +32,25 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   quoteToken,
   boosted,
 }) => {
+  const userDataReady = multiplier !== undefined
+
   return (
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
-      <TokenPairImage variant="inverted" primaryToken={token} secondaryToken={quoteToken} width={64} height={64} />
+      {userDataReady ? (
+        <TokenPairImage variant="inverted" primaryToken={token} secondaryToken={quoteToken} width={64} height={64} />
+      ) : (
+        <Skeleton mr="8px" width={63} height={63} variant="circle" />
+      )}
       <Flex flexDirection="column" alignItems="flex-end">
-        <Heading mb="4px">{lpLabel.split(' ')[0]}</Heading>
+        {userDataReady ? (
+          <Heading mb="4px">{lpLabel.split(' ')[0]}</Heading>
+        ) : (
+          <Skeleton mb="4px" width={60} height={18} />
+        )}
         <Flex justifyContent="center">
-          {isCommunityFarm ? <FarmAuctionTag /> : <CoreTag />}
+          {userDataReady ? <Box>{isCommunityFarm ? <FarmAuctionTag /> : <CoreTag />}</Box> : null}
           {boosted && <BoostedTag ml="4px" />}
-          {multiplier ? (
+          {userDataReady ? (
             <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
           ) : (
             <Skeleton ml="4px" width={42} height={28} />
