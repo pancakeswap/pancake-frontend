@@ -39,7 +39,8 @@ export const getActiveMenuItem = ({ pathname, menuConfig }: { pathname: string; 
   menuConfig.find((menuItem) => pathname.startsWith(menuItem.href) || getActiveSubMenuItem({ menuItem, pathname }))
 
 export const getActiveSubMenuItem = ({ pathname, menuItem }: { pathname: string; menuItem?: ConfigMenuItemsType }) => {
-  const activeSubMenuItems = menuItem?.items?.filter((subMenuItem) => pathname.startsWith(subMenuItem.href)) ?? []
+  const activeSubMenuItems =
+    menuItem?.items?.filter((subMenuItem) => subMenuItem.href && pathname.startsWith(subMenuItem.href)) ?? []
 
   // Pathname doesn't include any submenu item href - return undefined
   if (!activeSubMenuItems || activeSubMenuItems.length === 0) {
@@ -52,7 +53,7 @@ export const getActiveSubMenuItem = ({ pathname, menuItem }: { pathname: string;
   }
 
   // Pathname includes multiple sub menu item hrefs - find the most specific match
-  const mostSpecificMatch = orderBy(activeSubMenuItems, (subMenuItem) => subMenuItem.href.length, 'desc')[0]
+  const mostSpecificMatch = orderBy(activeSubMenuItems, (subMenuItem) => subMenuItem?.href?.length, 'desc')[0]
 
   return mostSpecificMatch
 }
@@ -97,6 +98,7 @@ export const Menu = ({ children }: { children: ReactNode }) => {
       footerLinks={getFooterLinks}
       currentLang={currentLanguage.code}
       langs={languageList}
+      // @ts-ignore
       subLinks={activeMenuItem?.hideSubNav || activeSubMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
       activeSubItem={activeSubMenuItem?.href}
       toggleTheme={toggleTheme}

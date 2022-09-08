@@ -45,9 +45,9 @@ export class Client<TProvider extends AptosClient = AptosClient> {
     [['zustand/subscribeWithSelector', never], ['zustand/persist', Partial<State<TProvider>>]]
   >
 
-  #isAutoConnecting?: boolean
+  isAutoConnecting?: boolean
 
-  #lastUsedConnector?: string | null
+  lastUsedConnector?: string | null
 
   constructor({
     autoConnect = false,
@@ -109,8 +109,8 @@ export class Client<TProvider extends AptosClient = AptosClient> {
       storage,
     }
     this.storage = storage
-    this.#lastUsedConnector = storage?.getItem('wallet')
-    this.#addEffects()
+    this.lastUsedConnector = storage?.getItem('wallet')
+    this.addEffects()
 
     // eslint-disable-next-line no-return-await
     if (autoConnect && typeof window !== 'undefined') setTimeout(async () => await this.autoConnect(), 0)
@@ -161,14 +161,14 @@ export class Client<TProvider extends AptosClient = AptosClient> {
 
   async destroy() {
     if (this.connector) await this.connector.disconnect?.()
-    this.#isAutoConnecting = false
+    this.isAutoConnecting = false
     this.clearState()
     this.store.destroy()
   }
 
   async autoConnect() {
-    if (this.#isAutoConnecting) return
-    this.#isAutoConnecting = true
+    if (this.isAutoConnecting) return
+    this.isAutoConnecting = true
 
     this.setState((x) => ({
       ...x,
@@ -176,8 +176,8 @@ export class Client<TProvider extends AptosClient = AptosClient> {
     }))
 
     // Try last used connector first
-    const sorted = this.#lastUsedConnector
-      ? [...this.connectors].sort((x) => (x.id === this.#lastUsedConnector ? -1 : 1))
+    const sorted = this.lastUsedConnector
+      ? [...this.connectors].sort((x) => (x.id === this.lastUsedConnector ? -1 : 1))
       : this.connectors
 
     let connected = false
@@ -209,7 +209,7 @@ export class Client<TProvider extends AptosClient = AptosClient> {
         status: 'disconnected',
       }))
 
-    this.#isAutoConnecting = false
+    this.isAutoConnecting = false
 
     return this.data
   }
@@ -218,7 +218,7 @@ export class Client<TProvider extends AptosClient = AptosClient> {
     this.storage?.setItem('wallet', lastUsedConnector)
   }
 
-  #addEffects() {
+  addEffects() {
     const onChange = (data: Data) => {
       this.setState((x) => ({
         ...x,

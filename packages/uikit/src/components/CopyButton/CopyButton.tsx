@@ -6,7 +6,7 @@ import { copyText } from './copyText'
 const Tooltip = styled.div<{
   isTooltipDisplayed: boolean;
   tooltipTop: number;
-  tooltipRight: number;
+  tooltipRight?: number;
   tooltipFontSize?: number;
 }>`
   display: ${({ isTooltipDisplayed }) => (isTooltipDisplayed ? "inline" : "none")};

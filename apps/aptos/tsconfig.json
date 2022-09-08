@@ -4,6 +4,7 @@
   "exclude": ["node_modules"],
   "compilerOptions": {
     "target": "es5",
+    "noImplicitAny": false,
     "baseUrl": ".",
     "paths": {
       "@pancakeswap/aptos/core": ["../../packages/aptos/core/index.ts"],
