@@ -291,7 +291,7 @@ export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }
           {typedValue ? null : (
             <AutoColumn>
               <Message variant="warning" mb="16px">
-                <MessageText>Trade stablecoins in StableSwap with lower splippage and trading fees!</MessageText>
+                <MessageText>Trade stablecoins in StableSwap with lower slippage and trading fees!</MessageText>
               </Message>
             </AutoColumn>
           )}
