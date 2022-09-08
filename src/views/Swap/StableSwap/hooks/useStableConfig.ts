@@ -10,8 +10,10 @@ import { createContext, useMemo } from 'react'
 function findStablePair({ pairA, pairB }) {
   return stableSwapConfigs.find((stablePair) => {
     return (
-      (stablePair?.token0?.address === pairA?.address && stablePair?.token1?.address === pairB?.address) ||
-      (stablePair?.token1?.address === pairA?.address && stablePair?.token0?.address === pairB?.address)
+      pairA &&
+      pairB &&
+      ((stablePair?.token0?.equals(pairA) && stablePair?.token1?.equals(pairB)) ||
+        (stablePair?.token1?.equals(pairA) && stablePair?.token0?.equals(pairB)))
     )
   })
 }

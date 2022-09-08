@@ -14,8 +14,8 @@ const stableSwapConfigs = [
       'Stable-LP',
       'Pancake StableSwap LPs',
     ),
-    token0: bscTestnetTokens.busd,
-    token1: bscTestnetTokens.usdc,
+    token0: bscTestnetTokens.usdc,
+    token1: bscTestnetTokens.busd,
   },
 ]
 
