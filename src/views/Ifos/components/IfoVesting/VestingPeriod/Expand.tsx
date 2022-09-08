@@ -29,6 +29,8 @@ const collapseAnimation = keyframes`
 `
 
 const StyledExpand = styled(Box)<{ expanded: boolean }>`
+  position: relative;
+  z-index: 0;
   opacity: 1;
   animation: ${({ expanded }) =>
     expanded
@@ -42,8 +44,6 @@ const StyledExpand = styled(Box)<{ expanded: boolean }>`
   margin: 0 -24px;
   padding: 24px;
   background: ${({ theme }) => theme.colors.dropdown};
-  border: solid 1px yellow;
-  border-radius: 0 0 24px 24px;
 `
 
 interface ExpandProps {
