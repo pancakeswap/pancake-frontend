@@ -1,4 +1,4 @@
-import truncateHash from 'utils/truncateHash'
+import truncateHash from './truncateHash'
 
 describe('truncateHash', () => {
   it.each([
