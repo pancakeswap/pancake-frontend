@@ -39,7 +39,6 @@ interface StableSwapCommitButtonPropsType {
     INPUT?: CurrencyAmount<Currency>
     OUTPUT?: CurrencyAmount<Currency>
   }
-  recipient: string
   allowedSlippage: number
   onUserInput: (field: Field, typedValue: string) => void
 }
@@ -54,7 +53,6 @@ export default function StableSwapCommitButton({
   trade,
   swapInputError,
   currencyBalances,
-  recipient,
   allowedSlippage,
   onUserInput,
 }: StableSwapCommitButtonPropsType) {
@@ -62,12 +60,7 @@ export default function StableSwapCommitButton({
   // the callback to execute the swap
   const swapCalls = useStableSwapCallArgs(trade)
 
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
-    trade,
-    allowedSlippage,
-    recipient,
-    swapCalls,
-  )
+  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, null, swapCalls)
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade<Currency, Currency, TradeType> | StableTrade | undefined
     attemptingTxn: boolean
@@ -133,7 +126,7 @@ export default function StableSwapCommitButton({
       onAcceptChanges={handleAcceptChanges}
       attemptingTxn={attemptingTxn}
       txHash={txHash}
-      recipient={recipient}
+      recipient={null}
       allowedSlippage={allowedSlippage}
       onConfirm={handleSwap}
       swapErrorMessage={swapErrorMessage}
