@@ -72,4 +72,9 @@ const useFetchGlobalChartData = (): {
   }
 }
 
+export const fetchGlobalChartData = async (chainName: MultiChianName) => {
+  const { data } = await fetchChartData(chainName, getOverviewChartData)
+  return data
+}
+
 export default useFetchGlobalChartData

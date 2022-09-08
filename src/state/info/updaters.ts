@@ -23,42 +23,6 @@ import {
 } from './hooks'
 
 export const ProtocolUpdater: React.FC<React.PropsWithChildren> = () => {
-  const [protocolData, setProtocolData] = useProtocolDataSWR()
-  const { data: fetchedProtocolData, error } = useFetchProtocolData()
-
-  const [chartData, updateChartData] = useProtocolChartData()
-  const { data: fetchedChartData, error: chartError } = useFetchGlobalChartData()
-
-  const [transactions, updateTransactions] = useProtocolTransactionsSWR()
-  const chainName = useGetChainName()
-
-  // update overview data if available and not set
-  useEffect(() => {
-    if (protocolData === undefined && fetchedProtocolData && !error) {
-      setProtocolData(fetchedProtocolData)
-    }
-  }, [error, fetchedProtocolData, protocolData, setProtocolData])
-
-  // update global chart data if available and not set
-  useEffect(() => {
-    if (chartData === undefined && fetchedChartData && !chartError) {
-      updateChartData(fetchedChartData)
-    }
-  }, [chartData, chartError, fetchedChartData, updateChartData])
-
-  useEffect(() => {
-    const fetch = async () => {
-      const data = await fetchTopTransactions(chainName)
-      console.log(data, 'transction data?')
-      if (data) {
-        updateTransactions(data)
-      }
-    }
-    if (!transactions) {
-      fetch()
-    }
-  }, [transactions, updateTransactions, chainName])
-
   return null
 }
 

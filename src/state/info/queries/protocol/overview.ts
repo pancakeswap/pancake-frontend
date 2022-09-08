@@ -1,6 +1,6 @@
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
-import { ProtocolData } from 'state/info/types'
+import { ProtocolData, Block } from 'state/info/types'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
@@ -119,6 +119,41 @@ const useFetchProtocolData = (): ProtocolFetchState => {
   }, [block24, block48, blockError, fetchState, chainName])
 
   return fetchState
+}
+
+export const fetchProtocolData = async (chainName: MultiChianName, block24: Block, block48: Block) => {
+  const [{ error, data }, { error: error24, data: data24 }, { error: error48, data: data48 }] = await Promise.all([
+    getOverviewData(chainName),
+    getOverviewData(chainName, block24?.number ?? undefined),
+    getOverviewData(chainName, block48?.number ?? undefined),
+  ])
+  const anyError = error || error24 || error48
+  const overviewData = formatPancakeFactoryResponse(data?.pancakeFactories?.[0])
+  const overviewData24 = formatPancakeFactoryResponse(data24?.pancakeFactories?.[0])
+  const overviewData48 = formatPancakeFactoryResponse(data48?.pancakeFactories?.[0])
+  const allDataAvailable = overviewData && overviewData24 && overviewData48
+
+  const [volumeUSD, volumeUSDChange] = getChangeForPeriod(
+    overviewData.totalVolumeUSD,
+    overviewData24.totalVolumeUSD,
+    overviewData48.totalVolumeUSD,
+  )
+  const liquidityUSDChange = getPercentChange(overviewData.totalLiquidityUSD, overviewData24.totalLiquidityUSD)
+  // 24H transactions
+  const [txCount, txCountChange] = getChangeForPeriod(
+    overviewData.totalTransactions,
+    overviewData24.totalTransactions,
+    overviewData48.totalTransactions,
+  )
+  const protocolData: ProtocolData = {
+    volumeUSD,
+    volumeUSDChange: typeof volumeUSDChange === 'number' ? volumeUSDChange : 0,
+    liquidityUSD: overviewData.totalLiquidityUSD,
+    liquidityUSDChange,
+    txCount,
+    txCountChange,
+  }
+  return protocolData
 }
 
 export default useFetchProtocolData

@@ -6,6 +6,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState, useAppDispatch } from 'state'
 
+import { fetchProtocolData } from 'state/info/queries/protocol/overview'
+import { fetchGlobalChartData } from 'state/info/queries/protocol/chart'
+import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import fetchPoolChartData from 'state/info/queries/pools/chartData'
 import fetchPoolTransactions from 'state/info/queries/pools/transactions'
 import fetchTopTransactions from 'state/info/queries/protocol/transactions'
@@ -34,19 +38,17 @@ import {
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 // Protocol hooks
 
-export const useProtocolDataSWR = (): [ProtocolData | undefined, (protocolData: ProtocolData) => void] => {
+export const useProtocolDataSWR = (): [ProtocolData | undefined] => {
   const chainName = useGetChainName()
+  const [t24, t48] = getDeltaTimestamps()
+  const { blocks, error: blockError } = useBlocksFromTimestamps([t24, t48])
+  const [block24, block48] = blocks ?? []
   const { data: protocolData, mutate } = useSWRImmutable(
-    [`info/protocol/updateProtocolData`, chainName],
-    (): ProtocolData | undefined => undefined,
+    chainName && block24 && block48 ? [`info/protocol/updateProtocolData`, chainName] : null,
+    () => fetchProtocolData(chainName, block24, block48),
   )
-  const setProtocolData: (protocolData: ProtocolData) => void = useCallback(
-    (data: ProtocolData) => {
-      mutate(data)
-    },
-    [mutate],
-  )
-  return [protocolData, setProtocolData]
+
+  return [protocolData]
 }
 
 export const useProtocolData = (): [ProtocolData | undefined, (protocolData: ProtocolData) => void] => {
@@ -61,20 +63,12 @@ export const useProtocolData = (): [ProtocolData | undefined, (protocolData: Pro
   return [protocolData, setProtocolData]
 }
 
-export const useProtocolChartDataSWR = (): [ChartEntry[] | undefined, (chartData: ChartEntry[]) => void] => {
+export const useProtocolChartDataSWR = (): [ChartEntry[] | undefined] => {
   const chainName = useGetChainName()
-  const chainNameMemo = useMemo(() => chainName, [chainName])
-  const { data: chartData, mutate } = useSWRImmutable(
-    [`info/protocol/updateProtocolChartData`, chainNameMemo],
-    (): ChartEntry[] | undefined => undefined,
+  const { data: chartData } = useSWRImmutable([`info/protocol/updateProtocolChartData`, chainName], () =>
+    fetchGlobalChartData(chainName),
   )
-  const setChartData: (chartData: ChartEntry[]) => void = useCallback(
-    (data: ChartEntry[]) => {
-      mutate(data)
-    },
-    [mutate],
-  )
-  return [chartData, setChartData]
+  return [chartData]
 }
 
 export const useProtocolChartData = (): [ChartEntry[] | undefined, (chartData: ChartEntry[]) => void] => {
@@ -87,18 +81,13 @@ export const useProtocolChartData = (): [ChartEntry[] | undefined, (chartData: C
   return [chartData, setChartData]
 }
 
-export const useProtocolTransactionsSWR = (): [Transaction[] | undefined, (transactions: Transaction[]) => void] => {
+export const useProtocolTransactionsSWR = (): [Transaction[] | undefined] => {
   const chainName = useGetChainName()
 
-  const { data: transactions, mutate } = useSWRImmutable(
-    [`info/protocol/updateProtocolTransactionsData`, chainName],
-    () => fetchTopTransactions(chainName),
+  const { data: transactions } = useSWRImmutable([`info/protocol/updateProtocolTransactionsData`, chainName], () =>
+    fetchTopTransactions(chainName),
   )
-  const setTransactions: (transactions: Transaction[]) => void = useCallback(
-    (transactionsData: Transaction[]) => mutate(transactionsData),
-    [mutate],
-  )
-  return [transactions, setTransactions]
+  return [transactions]
 }
 
 export const useProtocolTransactions = (): [Transaction[] | undefined, (transactions: Transaction[]) => void] => {
