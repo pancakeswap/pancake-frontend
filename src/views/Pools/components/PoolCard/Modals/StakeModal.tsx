@@ -81,7 +81,13 @@ const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
     if (isRemovingStake) {
       return userData.stakedBalance
     }
-    return stakingLimit.gt(0) && stakingTokenBalance.gt(stakingLimit) ? stakingLimit : stakingTokenBalance
+    if (stakingLimit.gt(0)) {
+      const stakingLimitLeft = stakingLimit.minus(userData.stakedBalance)
+      if (stakingTokenBalance.gt(stakingLimitLeft)) {
+        return stakingLimitLeft
+      }
+    }
+    return stakingTokenBalance
   }, [userData.stakedBalance, stakingTokenBalance, stakingLimit, isRemovingStake])
   const fullDecimalStakeAmount = getDecimalAmount(new BigNumber(stakeAmount), stakingToken.decimals)
   const userNotEnoughToken = isRemovingStake
@@ -243,7 +249,7 @@ const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
       )}
       <Text ml="auto" color="textSubtle" fontSize="12px" mb="8px">
         {t('Balance: %balance%', {
-          balance: getFullDisplayBalance(getCalculatedStakingLimit(), stakingToken.decimals),
+          balance: getFullDisplayBalance(stakingTokenBalance, stakingToken.decimals),
         })}
       </Text>
       <Slider
