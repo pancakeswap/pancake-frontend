@@ -14,12 +14,12 @@ import {
   useModal,
   Skeleton,
   Checkbox,
+  useToast,
 } from '@pancakeswap/uikit'
 import { parseISO, formatDistance } from 'date-fns'
 import { useWeb3React, useSignMessage } from '@pancakeswap/wagmi'
 import { formatUnits } from '@ethersproject/units'
 import { API_PROFILE } from 'config/constants/endpoints'
-import useToast from 'hooks/useToast'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import fetchWithTimeout from 'utils/fetchWithTimeout'
 import { useTranslation } from '@pancakeswap/localization'

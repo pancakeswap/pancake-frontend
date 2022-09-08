@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Currency, ChainId } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Button, HelpIcon, useTooltip, Text, Link } from '@pancakeswap/uikit'
-import useToast from 'hooks/useToast'
+import { Flex, Button, HelpIcon, useTooltip, Text, Link, useToast } from '@pancakeswap/uikit'
 import { fetchRiskToken, TokenRiskPhases, RiskTokenInfo } from 'views/Swap/hooks/fetchTokenRisk'
 import RiskMessage from 'views/Swap/components/AccessRisk/RiskMessage'
 

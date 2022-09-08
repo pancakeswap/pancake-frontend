@@ -1,15 +1,15 @@
-import { useCallback, useEffect, useRef } from 'react'
-import { CSSTransition } from 'react-transition-group'
-import styled from 'styled-components'
-import { Alert, alertVariants } from '@pancakeswap/uikit'
-import { ToastProps, types } from './types'
+import { useCallback, useEffect, useRef } from "react";
+import { CSSTransition } from "react-transition-group";
+import styled from "styled-components";
+import { Alert, alertVariants } from "@pancakeswap/uikit";
+import { ToastProps, types } from "./types";
 
 const alertTypeMap = {
   [types.INFO]: alertVariants.INFO,
   [types.SUCCESS]: alertVariants.SUCCESS,
   [types.DANGER]: alertVariants.DANGER,
   [types.WARNING]: alertVariants.WARNING,
-}
+};
 
 const StyledToast = styled.div`
   right: 16px;
@@ -21,41 +21,41 @@ const StyledToast = styled.div`
   ${({ theme }) => theme.mediaQueries.sm} {
     max-width: 400px;
   }
-`
+`;
 
-const Toast: React.FC<React.PropsWithChildren<ToastProps>> = ({ toast, onRemove, style, ttl, ...props }) => {
-  const timer = useRef<number>()
-  const { id, title, description, type } = toast
+export const Toast: React.FC<React.PropsWithChildren<ToastProps>> = ({ toast, onRemove, style, ttl, ...props }) => {
+  const timer = useRef<number>();
+  const { id, title, description, type } = toast;
 
-  const handleRemove = useCallback(() => onRemove(id), [id, onRemove])
+  const handleRemove = useCallback(() => onRemove(id), [id, onRemove]);
 
   const handleMouseEnter = () => {
-    clearTimeout(timer.current)
-  }
+    clearTimeout(timer.current);
+  };
 
   const handleMouseLeave = () => {
     if (timer.current) {
-      clearTimeout(timer.current)
+      clearTimeout(timer.current);
     }
 
     timer.current = window.setTimeout(() => {
-      handleRemove()
-    }, ttl)
-  }
+      handleRemove();
+    }, ttl);
+  };
 
   useEffect(() => {
     if (timer.current) {
-      clearTimeout(timer.current)
+      clearTimeout(timer.current);
     }
 
     timer.current = window.setTimeout(() => {
-      handleRemove()
-    }, ttl)
+      handleRemove();
+    }, ttl);
 
     return () => {
-      clearTimeout(timer.current)
-    }
-  }, [timer, ttl, handleRemove])
+      clearTimeout(timer.current);
+    };
+  }, [timer, ttl, handleRemove]);
 
   return (
     <CSSTransition timeout={250} style={style} {...props}>
@@ -65,7 +65,5 @@ const Toast: React.FC<React.PropsWithChildren<ToastProps>> = ({ toast, onRemove,
         </Alert>
       </StyledToast>
     </CSSTransition>
-  )
-}
-
-export default Toast
+  );
+};

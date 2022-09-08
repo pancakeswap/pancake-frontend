@@ -1,4 +1,5 @@
 import { Contract } from '@ethersproject/contracts'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   AutoRenewIcon,
   Box,
@@ -8,15 +9,14 @@ import {
   LogoIcon,
   Modal,
   Text,
+  useToast,
   useTooltip,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useTranslation } from '@pancakeswap/localization'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useBCakeProxyContract } from 'hooks/useContract'
-import useToast from 'hooks/useToast'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { getFullDisplayBalance } from 'utils/formatBalance'

@@ -1,37 +1,37 @@
-import { useEffect } from 'react'
-import styled from 'styled-components'
+import { Token } from '@pancakeswap/sdk'
 import {
-  ModalContainer,
-  ModalBody,
-  ModalTitle,
-  ModalHeader,
-  InjectedModalProps,
-  Button,
   AutoRenewIcon,
-  TrophyGoldIcon,
-  Text,
+  Box,
+  Button,
   Flex,
   Heading,
-  Box,
+  InjectedModalProps,
+  ModalBody,
   ModalCloseButton,
+  ModalContainer,
+  ModalHeader,
+  ModalTitle,
   Skeleton,
+  Text,
+  TrophyGoldIcon,
+  useToast,
 } from '@pancakeswap/uikit'
 import { AnyAction, AsyncThunkAction } from '@reduxjs/toolkit'
-import { Token } from '@pancakeswap/sdk'
+import { useEffect } from 'react'
+import styled from 'styled-components'
 
-import { useWeb3React } from '@pancakeswap/wagmi'
-import { REWARD_RATE } from 'state/predictions/config'
-import { fetchNodeHistory, markAsCollected } from 'state/predictions'
-import { Bet } from 'state/types'
 import { useTranslation } from '@pancakeswap/localization'
+import { useWeb3React } from '@pancakeswap/wagmi'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import useBUSDPrice from 'hooks/useBUSDPrice'
-import useToast from 'hooks/useToast'
-import { usePredictionsContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { multiplyPriceByAmount } from 'utils/prices'
+import { usePredictionsContract } from 'hooks/useContract'
+import { fetchNodeHistory, markAsCollected } from 'state/predictions'
+import { REWARD_RATE } from 'state/predictions/config'
+import { Bet } from 'state/types'
 import { formatNumber } from 'utils/formatBalance'
+import { multiplyPriceByAmount } from 'utils/prices'
 import { getPayout } from './History/helpers'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
