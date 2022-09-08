@@ -71,11 +71,11 @@ export const livePools: SerializedPoolConfig[] = [
     stakingToken: bscTokens.cake,
     earningToken: bscTokens.gq,
     contractAddress: {
-      56: '',
+      56: '0x983A241Bfe910fcFa3E70744AA21AAe5f45861f0',
       97: '',
     },
     poolCategory: PoolCategory.CORE,
-    tokenPerBlock: '55.64',
+    tokenPerBlock: '55.6446',
     version: 3,
   },
   {

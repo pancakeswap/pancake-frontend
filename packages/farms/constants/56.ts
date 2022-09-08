@@ -43,7 +43,7 @@ const farms: SerializedFarmConfig[] = [
   {
     pid: 118,
     lpSymbol: 'GQ-BUSD LP',
-    lpAddress: '',
+    lpAddress: '0x72121d60b0e2F01c0FB7FE32cA24021b42165A40',
     token: bscTokens.gq,
     quoteToken: bscTokens.busd,
   },
