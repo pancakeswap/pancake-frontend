@@ -15,6 +15,7 @@ import {
   useProtocolData,
   useProtocolDataSWR,
   useProtocolTransactions,
+  useProtocolTransactionsSWR,
 } from 'state/info/hooks'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import HoverableChart from '../components/InfoCharts/HoverableChart'
@@ -43,7 +44,8 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
 
   const [protocolData] = useProtocolDataSWR()
   const [chartData] = useProtocolChartData()
-  const [transactions] = useProtocolTransactions()
+  const [transactions] = useProtocolTransactionsSWR()
+  console.log(transactions, '????')
 
   const currentDate = useMemo(
     () => new Date().toLocaleString(locale, { month: 'short', year: 'numeric', day: 'numeric' }),

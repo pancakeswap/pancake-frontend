@@ -12,6 +12,7 @@ import {
   useProtocolChartDataSWR,
   useProtocolChartData,
   useProtocolTransactions,
+  useProtocolTransactionsSWR,
   useUpdatePoolData,
   useAllPoolData,
   useAddPoolKeys,
@@ -28,7 +29,7 @@ export const ProtocolUpdater: React.FC<React.PropsWithChildren> = () => {
   const [chartData, updateChartData] = useProtocolChartData()
   const { data: fetchedChartData, error: chartError } = useFetchGlobalChartData()
 
-  const [transactions, updateTransactions] = useProtocolTransactions()
+  const [transactions, updateTransactions] = useProtocolTransactionsSWR()
   const chainName = useGetChainName()
 
   // update overview data if available and not set
@@ -48,6 +49,7 @@ export const ProtocolUpdater: React.FC<React.PropsWithChildren> = () => {
   useEffect(() => {
     const fetch = async () => {
       const data = await fetchTopTransactions(chainName)
+      console.log(data, 'transction data?')
       if (data) {
         updateTransactions(data)
       }

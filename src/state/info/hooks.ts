@@ -8,6 +8,7 @@ import { AppState, useAppDispatch } from 'state'
 
 import fetchPoolChartData from 'state/info/queries/pools/chartData'
 import fetchPoolTransactions from 'state/info/queries/pools/transactions'
+import fetchTopTransactions from 'state/info/queries/protocol/transactions'
 import fetchTokenChartData from 'state/info/queries/tokens/chartData'
 import fetchPoolsForToken from 'state/info/queries/tokens/poolsForToken'
 import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
@@ -62,8 +63,9 @@ export const useProtocolData = (): [ProtocolData | undefined, (protocolData: Pro
 
 export const useProtocolChartDataSWR = (): [ChartEntry[] | undefined, (chartData: ChartEntry[]) => void] => {
   const chainName = useGetChainName()
+  const chainNameMemo = useMemo(() => chainName, [chainName])
   const { data: chartData, mutate } = useSWRImmutable(
-    [`info/protocol/updateProtocolChartData`, chainName],
+    [`info/protocol/updateProtocolChartData`, chainNameMemo],
     (): ChartEntry[] | undefined => undefined,
   )
   const setChartData: (chartData: ChartEntry[]) => void = useCallback(
@@ -83,6 +85,20 @@ export const useProtocolChartData = (): [ChartEntry[] | undefined, (chartData: C
     [dispatch],
   )
   return [chartData, setChartData]
+}
+
+export const useProtocolTransactionsSWR = (): [Transaction[] | undefined, (transactions: Transaction[]) => void] => {
+  const chainName = useGetChainName()
+
+  const { data: transactions, mutate } = useSWRImmutable(
+    [`info/protocol/updateProtocolTransactionsData`, chainName],
+    () => fetchTopTransactions(chainName),
+  )
+  const setTransactions: (transactions: Transaction[]) => void = useCallback(
+    (transactionsData: Transaction[]) => mutate(transactionsData),
+    [mutate],
+  )
+  return [transactions, setTransactions]
 }
 
 export const useProtocolTransactions = (): [Transaction[] | undefined, (transactions: Transaction[]) => void] => {
