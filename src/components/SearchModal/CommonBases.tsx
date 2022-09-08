@@ -1,12 +1,11 @@
 import { ChainId, Currency, Token } from '@pancakeswap/sdk'
-import { Text } from '@pancakeswap/uikit'
+import { Text, QuestionHelper } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useTranslation } from '@pancakeswap/localization'
 
 import { SUGGESTED_BASES } from 'config/constants/exchange'
 import { AutoColumn } from '../Layout/Column'
-import QuestionHelper from '../QuestionHelper'
 import { AutoRow } from '../Layout/Row'
 import { CurrencyLogo } from '../Logo'
 import { CommonBasesType } from './types'

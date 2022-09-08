@@ -55,7 +55,12 @@ const Root = styled.div<SkeletonProps>`
   min-height: 20px;
   display: block;
   background-color: ${({ theme }) => theme.colors.backgroundDisabled};
-  border-radius: ${({ variant, theme }) => (variant === VARIANT.CIRCLE ? theme.radii.circle : theme.radii.small)};
+  border-radius: ${({ variant, theme }) =>
+    variant === VARIANT.CIRCLE
+      ? theme.radii.circle
+      : variant === VARIANT.ROUND
+      ? theme.radii.default
+      : theme.radii.small};
   ${layout}
   ${space}
   ${borderRadius}

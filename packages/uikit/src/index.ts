@@ -38,6 +38,7 @@ export * from "./components/Timeline";
 export * from "./components/Toggle";
 export * from "./components/CoinSwitcher";
 export * from "./components/CopyButton";
+export * from "./components/QuestionHelper";
 
 export type { DropdownMenuItems } from "./components/DropdownMenu";
 

@@ -1,22 +1,18 @@
 import { createClient } from '@pancakeswap/aptos'
 import { AptosClient } from 'aptos'
 import { MartianConnector, PetraConnector } from '@pancakeswap/aptos/core'
-
-export const devnetUrl = 'https://fullnode.devnet.aptoslabs.com/'
-export const networks: Record<string, string> = {
-  // local: 'http://localhost:8080',
-  Devnet: devnetUrl,
-  Testnet: 'https://testnet.aptoslabs.com',
-  AIT3: 'https://ait3.aptosdev.com/',
-}
+import { defaultChain, chains } from 'config/chains'
 
 export const client = createClient({
   connectors: [new PetraConnector(), new MartianConnector()],
   provider(config) {
-    if (config?.networkName && config?.networkName in networks) {
-      return new AptosClient(networks[config.networkName])
+    if (config?.networkName) {
+      const foundChain = chains.find((c) => c.name === config.networkName?.toLowerCase())
+      if (foundChain) {
+        return new AptosClient(foundChain?.rpcUrls.default)
+      }
     }
-    return new AptosClient(devnetUrl)
+    return new AptosClient(defaultChain.rpcUrls.default)
   },
   autoConnect: true,
 })

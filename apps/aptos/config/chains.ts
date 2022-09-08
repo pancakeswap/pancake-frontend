@@ -13,6 +13,21 @@ export const devnet = {
   },
 }
 
+export const testnet = {
+  id: 2,
+  name: 'Testnet',
+  network: 'testnet',
+  rpcUrls: {
+    default: 'https://testnet.aptoslabs.com/v1',
+  },
+  blockExplorers: {
+    default: {
+      name: 'Aptos Explorer',
+      url: 'https://explorer.devnet.aptos.dev',
+    },
+  },
+}
+
 export const ait3 = {
   id: 47,
   name: 'AIT3',
@@ -30,4 +45,4 @@ export const ait3 = {
 
 export const defaultChain = devnet
 
-export const chains = [devnet, ait3]
+export const chains = [devnet, ait3, testnet]

@@ -7,6 +7,7 @@ import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { ReactNode, useMemo } from 'react'
 import { footerLinks } from './footerConfig'
+import { SettingsButton } from './Settings/SettingsButton'
 import UserMenu from './UserMenu'
 
 export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }
@@ -91,6 +92,7 @@ export const Menu = ({ children }: { children: ReactNode }) => {
       isDark={isDark}
       rightSide={
         <>
+          <SettingsButton mr="8px" />
           <UserMenu />
         </>
       }

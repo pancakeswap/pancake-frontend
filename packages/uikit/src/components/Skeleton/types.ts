@@ -7,6 +7,7 @@ export const animation = {
 
 export const variant = {
   RECT: "rect",
+  ROUND: "round",
   CIRCLE: "circle",
 } as const;
 
