@@ -50,6 +50,13 @@ const farms: SerializedFarmConfig[] = [
     auctionHostingStartSeconds: 1662105600,
   },
   {
+    pid: 118,
+    lpSymbol: 'GQ-BUSD LP',
+    lpAddress: '',
+    token: bscTokens.gq,
+    quoteToken: bscTokens.busd,
+  },
+  {
     pid: 93,
     v1pid: 524,
     lpSymbol: 'HAPPY-BNB',
