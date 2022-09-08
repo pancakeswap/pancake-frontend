@@ -9,7 +9,7 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c3 {
-      background-color: #FFFFFF;
+      background-color: var(--colors-backgroundAlt);
       border-radius: 50%;
       cursor: pointer;
       height: 26px;
@@ -36,11 +36,11 @@ it("renders correctly", () => {
     }
 
     .c1:focus + .c2 {
-      box-shadow: 0px 0px 0px 1px #7645D9,0px 0px 0px 4px rgba(118,69,217,0.6);
+      box-shadow: var(--shadows-focus);
     }
 
     .c1:hover + .c2:not(:disabled):not(:checked) {
-      box-shadow: 0px 0px 0px 1px #7645D9,0px 0px 0px 4px rgba(118,69,217,0.6);
+      box-shadow: var(--shadows-focus);
     }
 
     .c0 {
@@ -48,9 +48,9 @@ it("renders correctly", () => {
       -webkit-box-align: center;
       -ms-flex-align: center;
       align-items: center;
-      background-color: #31D0AA;
+      background-color: var(--colors-success);
       border-radius: 24px;
-      box-shadow: inset 0px 2px 2px -1px rgba(74,74,104,0.1);
+      box-shadow: var(--shadows-inset);
       cursor: pointer;
       display: -webkit-inline-box;
       display: -webkit-inline-flex;
@@ -87,7 +87,7 @@ it("renders correctly scale sm", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c3 {
-      background-color: #FFFFFF;
+      background-color: var(--colors-backgroundAlt);
       border-radius: 50%;
       cursor: pointer;
       height: 16px;
@@ -114,11 +114,11 @@ it("renders correctly scale sm", () => {
     }
 
     .c1:focus + .c2 {
-      box-shadow: 0px 0px 0px 1px #7645D9,0px 0px 0px 4px rgba(118,69,217,0.6);
+      box-shadow: var(--shadows-focus);
     }
 
     .c1:hover + .c2:not(:disabled):not(:checked) {
-      box-shadow: 0px 0px 0px 1px #7645D9,0px 0px 0px 4px rgba(118,69,217,0.6);
+      box-shadow: var(--shadows-focus);
     }
 
     .c0 {
@@ -126,9 +126,9 @@ it("renders correctly scale sm", () => {
       -webkit-box-align: center;
       -ms-flex-align: center;
       align-items: center;
-      background-color: #31D0AA;
+      background-color: var(--colors-success);
       border-radius: 24px;
-      box-shadow: inset 0px 2px 2px -1px rgba(74,74,104,0.1);
+      box-shadow: var(--shadows-inset);
       cursor: pointer;
       display: -webkit-inline-box;
       display: -webkit-inline-flex;

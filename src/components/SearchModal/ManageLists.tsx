@@ -6,13 +6,13 @@ import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAtomValue } from 'jotai'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
-import { useListState } from 'state/lists/lists'
+import { listsAtom, useListState } from 'state/lists/lists'
 import styled from 'styled-components'
-import useFetchListCallback from '../../hooks/useFetchListCallback'
+import { useFetchListCallback } from '@pancakeswap/token-lists'
+import uriToHttp from '@pancakeswap/utils/uriToHttp'
 
-import { acceptListUpdate, disableList, enableList, removeList } from '../../state/lists/actions'
+import { acceptListUpdate, disableList, enableList, removeList } from '../../../packages/token-lists/src/actions'
 import { selectorByUrlsAtom, useActiveListUrls, useAllLists, useIsListActive } from '../../state/lists/hooks'
-import uriToHttp from '../../utils/uriToHttp'
 
 import Column, { AutoColumn } from '../Layout/Column'
 import Row, { RowBetween, RowFixed } from '../Layout/Row'
@@ -173,7 +173,7 @@ function ManageLists({
     setListUrlInput(e.target.value)
   }, [])
 
-  const fetchList = useFetchListCallback()
+  const fetchList = useFetchListCallback(listsAtom)
 
   const validUrl: boolean = useMemo(() => {
     return uriToHttp(listUrlInput).length > 0
