@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { CurrencyAmount, Token, Trade, TradeType, Currency } from '@pancakeswap/sdk'
+import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { Button, Box, Flex, useModal, BottomDrawer, Link, useMatchBreakpoints } from '@pancakeswap/uikit'
 
 import { useTranslation } from '@pancakeswap/localization'
@@ -34,7 +35,6 @@ import getRatePercentageDifference from './utils/getRatePercentageDifference'
 import { useCurrency, useAllTokens } from '../../hooks/Tokens'
 import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
 import { CommonBasesType } from '../../components/SearchModal/types'
-import replaceBrowserHistory from '../../utils/replaceBrowserHistory'
 import { currencyId } from '../../utils/currencyId'
 
 const LimitOrders = () => {

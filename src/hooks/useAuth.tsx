@@ -1,4 +1,4 @@
-import replaceBrowserHistory from 'utils/replaceBrowserHistory'
+import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { Box, connectorLocalStorageKey, LinkExternal, Text, useToast } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useCallback } from 'react'
