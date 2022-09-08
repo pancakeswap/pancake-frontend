@@ -5,6 +5,8 @@ import { isAddress } from 'utils'
 
 import tryParseAmount from 'utils/tryParseAmount'
 import { Field } from 'state/swap/actions'
+import { computeSlippageAdjustedAmounts } from 'utils/exchange'
+import { useUserSlippageTolerance } from 'state/user/hooks'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import useStableTradeExactIn, { StableTrade } from './useStableTradeExactIn'
 import useStableTradeExactOut from './useStableTradeExactOut'
@@ -68,8 +70,15 @@ export function useDerivedStableSwapInfo(
     inputError = inputError ?? t('Enter a recipient')
   }
 
+  const [allowedSlippage] = useUserSlippageTolerance()
+
+  const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
+
   // compare input balance to max input based on version
-  const [balanceIn, amountIn] = [currencyBalances[Field.INPUT], null]
+  const [balanceIn, amountIn] = [
+    currencyBalances[Field.INPUT],
+    slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null,
+  ]
 
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
     inputError = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })
