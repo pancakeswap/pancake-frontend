@@ -1,14 +1,4 @@
-import {
-  arbitrumRinkeby,
-  optimismKovan,
-  polygonMumbai,
-  rinkeby as defaultRinkeby,
-  mainnet as defaultMainnet,
-  goerli as defaultGoerli,
-  arbitrum,
-  optimism,
-  polygon,
-} from 'wagmi/chains'
+import { rinkeby, mainnet, goerli } from 'wagmi/chains'
 import { Chain } from 'wagmi'
 
 export const avalandche: Chain = {
@@ -79,8 +69,6 @@ export const fantomTestnet: Chain = {
 
 const bscExplorer = { name: 'BscScan', url: 'https://bscscan.com' }
 
-const etherExplorer = { name: 'Etherscan', url: 'https://etherscan.io' }
-
 export const bsc: Chain = {
   id: 56,
   name: 'BNB Smart Chain',
@@ -99,18 +87,9 @@ export const bsc: Chain = {
     decimals: 18,
   },
   multicall: {
-    address: '0x72dba3Fa54C73D9EDB493e9F4eDf884439B1eBC4',
-    blockCreated: 20455688,
+    address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    blockCreated: 15921452,
   },
-  // nativeCurrency: {
-  //   name: 'Binance Chain Native Token',
-  //   symbol: 'BNB',
-  //   decimals: 18,
-  // },
-  // multicall: {
-  //   address: '0x72dba3Fa54C73D9EDB493e9F4eDf884439B1eBC4',
-  //   blockCreated: 20455688,
-  // },
 }
 
 export const bscTest: Chain = {
@@ -136,50 +115,4 @@ export const bscTest: Chain = {
   testnet: true,
 }
 
-const rinkeby: Chain = {
-  ...defaultRinkeby,
-  rpcUrls: {
-    ...defaultRinkeby.rpcUrls,
-    // https://docs.nodereal.io/nodereal/meganode/meganode-api-overview/public-api-key
-    nodeReal: 'https://eth-rinkeby.nodereal.io/v1/a4da384bf3334c5ea992eb0bf44135e0',
-  },
-}
-
-const mainnet: Chain = {
-  ...defaultMainnet,
-  rpcUrls: {
-    ...defaultMainnet.rpcUrls,
-    // https://docs.nodereal.io/nodereal/meganode/meganode-api-overview/public-api-key
-    nodeReal: 'https://eth-mainnet.nodereal.io/v1/1659dfb40aa24bbb8153a677b98064d7',
-  },
-}
-
-const goerli: Chain = {
-  ...defaultGoerli,
-  rpcUrls: {
-    ...defaultGoerli.rpcUrls,
-    // https://docs.nodereal.io/nodereal/meganode/meganode-api-overview/public-api-key
-    nodeReal: 'https://eth-goerli.nodereal.io/v1/8a4432e42df94dcca2814fde8aea2a2e',
-  },
-}
-
-export const CHAINS_TESTNET = [
-  bscTest,
-  rinkeby,
-  arbitrumRinkeby,
-  optimismKovan,
-  polygonMumbai,
-  avalandcheFuji,
-  fantomTestnet,
-]
-
-export const CHAINS = [
-  bsc,
-  // TODO: ETH
-  // mainnet,
-  bscTest,
-  rinkeby,
-  goerli,
-]
-export const CHAIN_IDS = CHAINS.map((c) => c.id)
-export const CHAINS_STARGATE = [mainnet, arbitrum, optimism, polygon, avalandche, fantomOpera]
+export { rinkeby, mainnet, goerli }
