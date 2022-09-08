@@ -83,7 +83,7 @@ export const BUSD_BSC = new Token(
 
 export const BUSD_TESTNET = new Token(
   ChainId.BSC_TESTNET,
-  '0x2fB98DCc527c1403F92c6Bed05a50725d3005636',
+  '0xaB1a4d4f1D656d2450692D237fdD6C7f9146e814',
   18,
   'BUSD',
   'Binance USD',

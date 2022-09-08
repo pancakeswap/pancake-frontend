@@ -23,4 +23,11 @@ export const bscTestnetTokens = {
   ),
   hbtc: new Token(ChainId.BSC_TESTNET, '0x3Fb6a6C06c7486BD194BB99a078B89B9ECaF4c82', 18, 'HBTC', 'Huobi BTC'),
   wbtc: new Token(ChainId.BSC_TESTNET, '0xfC8bFbe9644e1BC836b8821660593e7de711e564', 8, 'WBTC', 'Wrapped BTC'),
+  usdc: new Token(
+    ChainId.BSC_TESTNET,
+    '0x2fB98DCc527c1403F92c6Bed05a50725d3005636',
+    18,
+    'USDC',
+    'Binance-Peg USD Coin',
+  ),
 }
