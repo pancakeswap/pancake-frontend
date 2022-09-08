@@ -46,11 +46,12 @@ async function syncOrderToLocalStorage({
 
   const results = await Promise.all(
     typeOrdersLS.map((confOrder) => {
-      return orders.find((order) => confOrder.id.toLowerCase() === order.id.toLowerCase())
+      const orderFetched = orders.find((order) => confOrder.id.toLowerCase() === order.id.toLowerCase())
+      return !orderFetched
         ? gelatoLimitOrders
           ? Promise.allSettled([Promise.resolve(confOrder), gelatoLimitOrders.getOrder(confOrder.id)])
           : Promise.resolve([confOrder, null])
-        : Promise.resolve([confOrder, undefined])
+        : Promise.resolve([confOrder, orderFetched])
     }),
   )
 
