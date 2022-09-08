@@ -3,7 +3,7 @@ import { BscScanIcon, Flex, IconButton, Link, Button, useModal } from '@pancakes
 import { useTranslation } from '@pancakeswap/localization'
 import { getBlockExploreLink } from 'utils'
 import { formatNumber } from 'utils/formatBalance'
-import truncateHash from 'utils/truncateHash'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 import { Achievement, Profile } from 'state/types'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useMemo } from 'react'

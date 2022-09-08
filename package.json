@@ -12,7 +12,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest && yarn turbo run test --parallel",
+    "test": "jest && yarn turbo run test",
     "test:watch": "jest --watch",
     "test:config": "jest src/config/__tests__/ --testPathIgnorePatterns",
     "integration-test": "start-server-and-test start http://localhost:3000 'turbo run integration-test --filter=test'",

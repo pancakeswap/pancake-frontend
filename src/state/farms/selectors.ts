@@ -2,11 +2,11 @@ import BigNumber from 'bignumber.js'
 import addSeconds from 'date-fns/addSeconds'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { deserializeToken } from '@pancakeswap/tokens'
 import { createSelector } from '@reduxjs/toolkit'
 import _isEmpty from 'lodash/isEmpty'
 import { State, SerializedFarm, DeserializedFarm, DeserializedFarmUserData } from '../types'
-import isUndefinedOrNull from '../../utils/isUndefinedOrNull'
 import { FARM_AUCTION_HOSTING_IN_SECONDS } from '../../config/constants'
 
 const deserializeFarmUserData = (farm: SerializedFarm): DeserializedFarmUserData => {
