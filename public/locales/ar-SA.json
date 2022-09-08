@@ -26,7 +26,7 @@
   "The yield booster multiplier will be updated based on the latest staking conditions.": "سيتم تحديث مضاعف تعزيز العائد استنادًا إلى شروط الرهن الأخيرة.",
   "CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.": "تم حصاد CAKE من عقد معزز المزرعة وسيتم إرسالها مباشرة إلى محفظتك عند الحصاد التالي.",
   "One-time setup is required for activating farm yield boosters": "مطلوب إجراء إعداد لمرة واحدة لتنشيط معززات إيراد المزرعة",
-  "Connect wallet to activate yield booster": "قم بتوصيل المزرعة لتنشيط معزز العائد",
+  "Connect wallet to activate yield booster": "قم بربط المحفظة لتنشيط معزز العائد",
   "Lock CAKE to activate yield booster": "اقفل CAKE لتنشيط معزز العائد",
   "Stake LP tokens to start boosting": "ارهن رموز LP المميزة لبدء التعزيز",
   "Lock CAKE is ended. Re-lock CAKE to activate yield booster": "انتهى قفل CAKE. أعد قفل CAKE لتنشيط معزز العائد",
