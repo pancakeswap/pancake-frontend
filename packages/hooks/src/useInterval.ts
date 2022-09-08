@@ -4,7 +4,7 @@ import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 
 export default function useInterval(
   callback: () => void,
-  delay: undefined | null | number,
+  delay: undefined | number,
   leading = true,
   initiateUpdate = true,
 ) {
