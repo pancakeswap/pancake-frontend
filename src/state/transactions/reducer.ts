@@ -83,8 +83,8 @@ export default createReducer(initialState, (builder) =>
         confirmOrderCancellation(chainId, receipt.from, hash, receipt.status !== 0)
       }
     })
-    .addCase(resetUserState, (transactions, { payload: { chainId } }) => {
-      if (transactions[chainId]) {
+    .addCase(resetUserState, (transactions, { payload: { chainId, newChainId } }) => {
+      if (!newChainId && transactions[chainId]) {
         transactions[chainId] = {}
       }
     }),
