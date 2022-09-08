@@ -42,6 +42,7 @@ const StyledExpand = styled(Box)<{ expanded: boolean }>`
   margin: 0 -24px;
   padding: 24px;
   background: ${({ theme }) => theme.colors.dropdown};
+  border: solid 1px yellow;
 `
 
 interface ExpandProps {
