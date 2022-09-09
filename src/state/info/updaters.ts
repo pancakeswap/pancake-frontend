@@ -26,9 +26,6 @@ export const ProtocolUpdater: React.FC<React.PropsWithChildren> = () => {
   const [chartData, updateChartData] = useProtocolChartData()
   const { data: fetchedChartData, error: chartError } = useFetchGlobalChartData()
 
-  const [transactions, updateTransactions] = useProtocolTransactions()
-  const chainName = useGetChainName()
-
   // update overview data if available and not set
   useEffect(() => {
     if (protocolData === undefined && fetchedProtocolData && !error) {
@@ -42,18 +39,6 @@ export const ProtocolUpdater: React.FC<React.PropsWithChildren> = () => {
       updateChartData(fetchedChartData)
     }
   }, [chartData, chartError, fetchedChartData, updateChartData])
-
-  useEffect(() => {
-    const fetch = async () => {
-      const data = await fetchTopTransactions(chainName)
-      if (data) {
-        updateTransactions(data)
-      }
-    }
-    if (!transactions) {
-      fetch()
-    }
-  }, [transactions, updateTransactions, chainName])
 
   return null
 }

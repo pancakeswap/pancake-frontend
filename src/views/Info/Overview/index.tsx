@@ -44,7 +44,7 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
 
   const [protocolData] = useProtocolData()
   const [chartData] = useProtocolChartData()
-  const [transactions] = useProtocolTransactions()
+  const [transactions] = useProtocolTransactionsSWR()
 
   const currentDate = useMemo(
     () => new Date().toLocaleString(locale, { month: 'short', year: 'numeric', day: 'numeric' }),
