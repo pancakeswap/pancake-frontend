@@ -36,6 +36,7 @@ export const addTransaction =
     order?: Order
   }>('transactions/addTransaction')
 export const clearAllTransactions = createAction('transactions/clearAllTransactions')
+export const clearAllChainTransactions = createAction<{ chainId: ChainId }>('transactions/clearAllChainTransactions')
 export const finalizeTransaction = createAction<{
   chainId: ChainId
   hash: string

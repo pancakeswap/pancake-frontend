@@ -9,6 +9,7 @@ import {
   finalizeTransaction,
   SerializableTransactionReceipt,
   TransactionType,
+  clearAllChainTransactions,
 } from './actions'
 import { resetUserState } from '../global/actions'
 
@@ -56,6 +57,10 @@ export default createReducer(initialState, (builder) =>
     )
     .addCase(clearAllTransactions, () => {
       return {}
+    })
+    .addCase(clearAllChainTransactions, (transactions, { payload: { chainId } }) => {
+      if (!transactions[chainId]) return
+      transactions[chainId] = {}
     })
     .addCase(checkedTransaction, (transactions, { payload: { chainId, hash, blockNumber } }) => {
       const tx = transactions[chainId]?.[hash]
