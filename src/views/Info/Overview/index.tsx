@@ -67,8 +67,8 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
   }, [allPoolData])
 
   const somePoolsAreLoading = useMemo(() => {
-    return Object.values(allPoolData).some((pool) => !pool.data)
-  }, [allPoolData])
+    return poolDatas.some((pool) => !pool?.token0Price)
+  }, [poolDatas])
 
   return (
     <Page>
