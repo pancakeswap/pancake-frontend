@@ -11,11 +11,10 @@ import { useERC20 } from 'hooks/useContract'
 import { TransactionResponse } from '@ethersproject/providers'
 
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import { usePendingTransactions } from 'state/transactions/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModal'
 import { FarmWithStakedValue } from '../../types'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
@@ -55,7 +54,6 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   pid,
   token,
   quoteToken,
-  lpAddress,
   vaultPid,
   userData,
   userDataReady,
@@ -66,7 +64,6 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const { hasHarvestPendingTransactions, harvestPendingLpAddress } = usePendingTransactions()
   const earningsBigNumber = new BigNumber(userData.earnings)
   const cakePrice = usePriceCakeBusd()
   let earnings = BIG_ZERO
@@ -130,10 +127,6 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
     />,
   )
 
-  const isFarmHarvestPending = useMemo(() => {
-    return hasHarvestPendingTransactions && harvestPendingLpAddress.includes(lpAddress)
-  }, [lpAddress, hasHarvestPendingTransactions, harvestPendingLpAddress])
-
   return (
     <ActionContainer style={{ minHeight: 124.5 }}>
       <ActionTitles>
@@ -160,11 +153,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
             <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
           )}
         </div>
-        <Button
-          ml="4px"
-          disabled={earnings.eq(0) || pendingTx || !userDataReady || isFarmHarvestPending}
-          onClick={onClickHarvestButton}
-        >
+        <Button ml="4px" disabled={earnings.eq(0) || pendingTx || !userDataReady} onClick={onClickHarvestButton}>
           {pendingTx ? t('Harvesting') : t('Harvest')}
         </Button>
       </ActionContent>

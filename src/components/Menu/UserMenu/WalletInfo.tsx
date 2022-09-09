@@ -1,14 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  InjectedModalProps,
-  LinkExternal,
-  Message,
-  Skeleton,
-  Text,
-  InfoIcon,
-} from '@pancakeswap/uikit'
+import { Box, Button, Flex, InjectedModalProps, LinkExternal, Message, Skeleton, Text } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
 import { FetchStatus } from 'config/constants/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -17,12 +7,10 @@ import useAuth from 'hooks/useAuth'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import { ChainLogo } from 'components/Logo/ChainLogo'
-import { usePendingTransactions } from 'state/transactions/hooks'
 
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { formatBigNumber } from 'utils/formatBalance'
 import { useBalance } from 'wagmi'
-import { WalletView } from 'components/Menu/UserMenu/WalletModal'
 import CopyAddress from './CopyAddress'
 
 interface WalletInfoProps {
@@ -38,37 +26,16 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, switchView
   const native = useNativeCurrency()
   const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useGetCakeBalance()
   const { logout } = useAuth()
-  const { hasHarvestPendingTransactions, harvestPendingNumber } = usePendingTransactions()
 
   const handleLogout = () => {
     onDismiss?.()
     logout()
   }
 
-  const switchToTransaction = () => {
-    switchView(WalletView.TRANSACTIONS)
-  }
-
   const isBSC = native.chainId === ChainId.BSC
 
   return (
     <>
-      {hasHarvestPendingTransactions && (
-        <Message variant="success" icon={<InfoIcon color="primary" mt="2px" width="20px" />} mb="24px">
-          <Text color="primary" as="span">
-            {t('You have %number% Harvest claiming in', { number: harvestPendingNumber })}
-          </Text>
-          <Text
-            ml="4px"
-            as="span"
-            color="primary"
-            style={{ cursor: 'pointer', textDecoration: 'underline' }}
-            onClick={switchToTransaction}
-          >
-            {t('progress')}
-          </Text>
-        </Message>
-      )}
       <Text color="secondary" fontSize="12px" textTransform="uppercase" fontWeight="bold" mb="8px">
         {t('Your Address')}
       </Text>

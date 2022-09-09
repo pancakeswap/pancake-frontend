@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { AppState, useAppDispatch } from '../index'
-import { addTransaction, TransactionType, FarmHarvestTransactionType, HarvestStatusType } from './actions'
+import { addTransaction, TransactionType, FarmHarvestTransactionType } from './actions'
 import { TransactionDetails } from './reducer'
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
@@ -130,13 +130,7 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 }
 
 // calculate pending transactions
-export function usePendingTransactions(): {
-  hasPendingTransactions: boolean
-  pendingNumber: number
-  hasHarvestPendingTransactions: boolean
-  harvestPendingNumber: number
-  harvestPendingLpAddress: Array<string>
-} {
+export function usePendingTransactions(): { hasPendingTransactions: boolean; pendingNumber: number } {
   const allTransactions = useAllTransactions()
   const sortedRecentTransactions = useMemo(() => {
     const txs = Object.values(allTransactions)
@@ -144,23 +138,10 @@ export function usePendingTransactions(): {
   }, [allTransactions])
 
   const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
-  const harvestPending = sortedRecentTransactions.filter(
-    (tx) => tx?.farmHarvest?.destinationChain?.status === HarvestStatusType.PENDING,
-  )
-  const harvestPendingHash = harvestPending.map((tx) => tx.hash)
-  const harvestPendingLpAddress = harvestPending.map((tx) => tx.farmHarvest.lpAddress)
-
-  const hasHarvestPendingTransactions = !!harvestPendingHash.length
-  const hasPendingTransactions = !!pending.length || hasHarvestPendingTransactions
-
-  const pendingArray = [...pending, ...harvestPendingHash]
-  const filterDuplicates = pendingArray.filter((hash, index) => pendingArray.indexOf(hash) === index)
+  const hasPendingTransactions = !!pending.length
 
   return {
     hasPendingTransactions,
-    pendingNumber: filterDuplicates.length,
-    hasHarvestPendingTransactions,
-    harvestPendingNumber: harvestPendingHash.length,
-    harvestPendingLpAddress,
+    pendingNumber: pending.length,
   }
 }

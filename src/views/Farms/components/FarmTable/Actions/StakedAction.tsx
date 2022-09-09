@@ -8,12 +8,11 @@ import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useRouter } from 'next/router'
-import { useCallback, useContext, useMemo } from 'react'
+import { useCallback, useContext } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import styled from 'styled-components'
-import { usePendingTransactions } from 'state/transactions/hooks'
 import { TransactionResponse } from '@ethersproject/providers'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import useApproveFarm from '../../../hooks/useApproveFarm'
@@ -135,7 +134,6 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   tokenAmountTotal,
   quoteTokenAmountTotal,
   userData,
-  lpAddress,
   onDone,
   onStake,
   onUnstake,
@@ -147,7 +145,6 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const { hasHarvestPendingTransactions, harvestPendingLpAddress } = usePendingTransactions()
   const { account } = useActiveWeb3React()
 
   const { tokenBalance, stakedBalance } = userData || {}
@@ -161,10 +158,6 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     tokenAddress: token.address,
   })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
-
-  const isFarmHarvestPending = useMemo(() => {
-    return hasHarvestPendingTransactions && harvestPendingLpAddress.includes(lpAddress)
-  }, [lpAddress, hasHarvestPendingTransactions, harvestPendingLpAddress])
 
   const handleStake = async (amount: string) => {
     const receipt = await fetchWithCatchTxError(() => {
@@ -270,15 +263,13 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
               quoteTokenAmountTotal={quoteTokenAmountTotal}
             />
             <IconButtonWrapper>
-              <IconButton mr="6px" variant="secondary" disabled={isFarmHarvestPending} onClick={onPresentWithdraw}>
+              <IconButton mr="6px" variant="secondary" onClick={onPresentWithdraw}>
                 <MinusIcon color="primary" width="14px" />
               </IconButton>
               <IconButton
                 variant="secondary"
                 onClick={onPresentDeposit}
-                disabled={['history', 'archived'].some(
-                  (item) => router.pathname.includes(item) || isFarmHarvestPending,
-                )}
+                disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
               >
                 <AddIcon color="primary" width="14px" />
               </IconButton>
@@ -303,7 +294,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
             width="100%"
             onClick={onPresentDeposit}
             variant="secondary"
-            disabled={['history', 'archived'].some((item) => router.pathname.includes(item) || isFarmHarvestPending)}
+            disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
           >
             {t('Stake LP')}
           </Button>

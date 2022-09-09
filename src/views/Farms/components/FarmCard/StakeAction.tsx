@@ -1,4 +1,4 @@
-import { useCallback, useContext, useMemo } from 'react'
+import { useCallback, useContext } from 'react'
 import styled from 'styled-components'
 import { Button, Flex, IconButton, AddIcon, MinusIcon, useModal } from '@pancakeswap/uikit'
 import useToast from 'hooks/useToast'
@@ -9,7 +9,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import { TransactionResponse } from '@ethersproject/providers'
-import { usePendingTransactions } from 'state/transactions/hooks'
 import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
 import { FarmWithStakedValue } from '../types'
@@ -63,11 +62,6 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { boosterState } = useContext(YieldBoosterStateContext)
-  const { hasHarvestPendingTransactions, harvestPendingLpAddress } = usePendingTransactions()
-
-  const isFarmHarvestPending = useMemo(() => {
-    return hasHarvestPendingTransactions && harvestPendingLpAddress.includes(lpAddress)
-  }, [lpAddress, hasHarvestPendingTransactions, harvestPendingLpAddress])
 
   const handleStake = async (amount: string) => {
     const receipt = await fetchWithCatchTxError(() => {
@@ -139,19 +133,19 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
     return stakedBalance.eq(0) ? (
       <Button
         onClick={onPresentDeposit}
-        disabled={['history', 'archived'].some((item) => router.pathname.includes(item)) || isFarmHarvestPending}
+        disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
       >
         {t('Stake LP')}
       </Button>
     ) : (
       <IconButtonWrapper>
-        <IconButton mr="6px" variant="tertiary" disabled={isFarmHarvestPending} onClick={onPresentWithdraw}>
+        <IconButton mr="6px" variant="tertiary" onClick={onPresentWithdraw}>
           <MinusIcon color="primary" width="14px" />
         </IconButton>
         <IconButton
           variant="tertiary"
           onClick={onPresentDeposit}
-          disabled={['history', 'archived'].some((item) => router.pathname.includes(item)) || isFarmHarvestPending}
+          disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
         >
           <AddIcon color="primary" width="14px" />
         </IconButton>
