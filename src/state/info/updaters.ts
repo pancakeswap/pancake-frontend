@@ -1,17 +1,62 @@
 import { useEffect, useMemo } from 'react'
-import useTopPoolAddresses from 'state/info/queries/pools/topPools'
 import usePoolDatas from 'state/info/queries/pools/poolData'
+import useTopPoolAddresses from 'state/info/queries/pools/topPools'
+import useFetchGlobalChartData from 'state/info/queries/protocol/chart'
+import useFetchProtocolData from 'state/info/queries/protocol/overview'
+import fetchTopTransactions from 'state/info/queries/protocol/transactions'
 import useFetchedTokenDatas from 'state/info/queries/tokens/tokenData'
 import useTopTokenAddresses from 'state/info/queries/tokens/topTokens'
 import {
-  useUpdatePoolData,
-  useAllPoolData,
   useAddPoolKeys,
-  useAllTokenData,
-  useUpdateTokenData,
   useAddTokenKeys,
+  useAllPoolData,
+  useAllTokenData,
   useGetChainName,
+  useProtocolChartData,
+  useProtocolData,
+  useProtocolTransactions,
+  useUpdatePoolData,
+  useUpdateTokenData,
 } from './hooks'
+
+export const ProtocolUpdater: React.FC<React.PropsWithChildren> = () => {
+  const [protocolData, setProtocolData] = useProtocolData()
+  const { data: fetchedProtocolData, error } = useFetchProtocolData()
+
+  const [chartData, updateChartData] = useProtocolChartData()
+  const { data: fetchedChartData, error: chartError } = useFetchGlobalChartData()
+
+  const [transactions, updateTransactions] = useProtocolTransactions()
+  const chainName = useGetChainName()
+
+  // update overview data if available and not set
+  useEffect(() => {
+    if (protocolData === undefined && fetchedProtocolData && !error) {
+      setProtocolData(fetchedProtocolData)
+    }
+  }, [error, fetchedProtocolData, protocolData, setProtocolData])
+
+  // update global chart data if available and not set
+  useEffect(() => {
+    if (chartData === undefined && fetchedChartData && !chartError) {
+      updateChartData(fetchedChartData)
+    }
+  }, [chartData, chartError, fetchedChartData, updateChartData])
+
+  useEffect(() => {
+    const fetch = async () => {
+      const data = await fetchTopTransactions(chainName)
+      if (data) {
+        updateTransactions(data)
+      }
+    }
+    if (!transactions) {
+      fetch()
+    }
+  }, [transactions, updateTransactions, chainName])
+
+  return null
+}
 
 export const PoolUpdater: React.FC<React.PropsWithChildren> = () => {
   const updatePoolData = useUpdatePoolData()

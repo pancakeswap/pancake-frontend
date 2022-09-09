@@ -132,7 +132,6 @@ const PoolTable: React.FC<React.PropsWithChildren<PoolTableProps>> = ({ poolData
     }
     setMaxPage(Math.floor(poolDatas.length / ITEMS_PER_INFO_TABLE_PAGE) + extraPages)
   }, [poolDatas])
-  console.log(poolDatas, '????')
   const sortedPools = useMemo(() => {
     return poolDatas
       ? poolDatas
