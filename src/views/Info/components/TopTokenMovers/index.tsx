@@ -72,6 +72,7 @@ const TopTokenMovers: React.FC<React.PropsWithChildren> = () => {
         return a && b ? (Math.abs(a?.priceUSDChange) > Math.abs(b?.priceUSDChange) ? -1 : 1) : -1
       })
       .slice(0, Math.min(20, Object.values(allTokens).length))
+      .filter((d) => d?.data?.exists)
   }, [allTokens])
 
   const increaseRef = useRef<HTMLDivElement>(null)
