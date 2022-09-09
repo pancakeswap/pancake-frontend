@@ -6,20 +6,24 @@ export enum SwapType {
   STABLE_SWAP,
 }
 
-export default function SwapTab({ children }) {
+export default function SwapTab({ children, showStable }) {
   const [swapTypeState, setSwapType] = useState(SwapType.SWAP)
 
-  return (
-    <>
-      <TabMenu
-        fullWidth
-        activeIndex={swapTypeState}
-        onItemClick={() => setSwapType((state) => (state === SwapType.SWAP ? SwapType.STABLE_SWAP : SwapType.SWAP))}
-      >
-        <Tab>Swap</Tab>
-        <Tab>StableSwap</Tab>
-      </TabMenu>
-      {children(swapTypeState)}
-    </>
-  )
+  if (showStable) {
+    return (
+      <>
+        <TabMenu
+          fullWidth
+          activeIndex={swapTypeState}
+          onItemClick={() => setSwapType((state) => (state === SwapType.SWAP ? SwapType.STABLE_SWAP : SwapType.SWAP))}
+        >
+          <Tab>Swap</Tab>
+          <Tab>StableSwap</Tab>
+        </TabMenu>
+        {children(swapTypeState)}
+      </>
+    )
+  }
+
+  return children(SwapType.SWAP)
 }

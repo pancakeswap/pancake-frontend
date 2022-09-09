@@ -22,6 +22,8 @@ import SwapTab, { SwapType } from './components/SwapTab'
 const CHART_SUPPORT_CHAIN_IDS = [ChainId.BSC]
 export const ACCESS_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC]
 
+const STABLE_SUPPORT_CHAIN_IDS = [ChainId.BSC_TESTNET]
+
 export default function Swap() {
   const { isMobile } = useMatchBreakpoints()
   const [isChartExpanded, setIsChartExpanded] = useState(false)
@@ -57,6 +59,8 @@ export default function Swap() {
       !chainId || CHART_SUPPORT_CHAIN_IDS.includes(chainId),
     [chainId],
   )
+
+  const isStableSupported = useMemo(() => !chainId || STABLE_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
 
   const isAccessTokenSupported = useMemo(() => ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId), [chainId])
 
@@ -98,7 +102,7 @@ export default function Swap() {
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
-                <SwapTab>
+                <SwapTab showStable={isStableSupported}>
                   {(swapTypeState) =>
                     swapTypeState === SwapType.STABLE_SWAP ? (
                       <StableSwapFormContainer
