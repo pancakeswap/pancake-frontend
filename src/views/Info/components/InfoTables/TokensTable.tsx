@@ -149,7 +149,7 @@ const TokenTable: React.FC<
       if (tokenDatas.length % maxItems === 0) {
         extraPages = 0
       }
-      setMaxPage(Math.floor(tokenDatas.length / maxItems) + extraPages)
+      setMaxPage(Math.floor(tokenDatas.filter((d) => d.exists).length / maxItems) + extraPages)
     }
   }, [maxItems, tokenDatas])
 
@@ -182,6 +182,7 @@ const TokenTable: React.FC<
   if (!tokenDatas) {
     return <Skeleton />
   }
+  console.log(sortedTokens, 'sortedTokens???')
 
   return (
     <TableWrapper>
@@ -239,17 +240,19 @@ const TokenTable: React.FC<
       <Break />
       {sortedTokens.length > 0 ? (
         <>
-          {sortedTokens.map((data, i) => {
-            if (data) {
-              return (
-                <Fragment key={data.address}>
-                  <DataRow index={(page - 1) * MAX_ITEMS + i} tokenData={data} />
-                  <Break />
-                </Fragment>
-              )
-            }
-            return null
-          })}
+          {sortedTokens
+            .filter((d) => d.exists)
+            .map((data, i) => {
+              if (data) {
+                return (
+                  <Fragment key={data.address}>
+                    <DataRow index={(page - 1) * MAX_ITEMS + i} tokenData={data} />
+                    <Break />
+                  </Fragment>
+                )
+              }
+              return null
+            })}
           <PageButtons>
             <Arrow
               onClick={() => {
