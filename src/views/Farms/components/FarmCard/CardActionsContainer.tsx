@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Flex, Text } from '@pancakeswap/uikit'
+import { Flex, Text, Skeleton } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
@@ -41,6 +41,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { pid, lpAddress } = farm
   const { earnings } = farm.userData || {}
   const { shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
+  const isReady = farm.multiplier !== undefined
 
   return (
     <Action>
@@ -77,14 +78,18 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
           farmPid={farm.pid}
         />
       )}
-      <Flex>
-        <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
-          {farm.lpSymbol}
-        </Text>
-        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {t('Staked')}
-        </Text>
-      </Flex>
+      {isReady ? (
+        <Flex>
+          <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
+            {farm.lpSymbol}
+          </Text>
+          <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
+            {t('Staked')}
+          </Text>
+        </Flex>
+      ) : (
+        <Skeleton width={80} height={18} mb="4px" />
+      )}
       {!account ? (
         <ConnectWalletButton mt="8px" width="100%" />
       ) : shouldUseProxyFarm ? (
