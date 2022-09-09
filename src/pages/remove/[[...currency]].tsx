@@ -14,8 +14,8 @@ const RemoveLiquidityPage = () => {
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
 
   const { stableSwapConfig, ...config } = useStableConfig({
-    pairA: currencyA,
-    pairB: currencyB,
+    tokenA: currencyA,
+    tokenB: currencyB,
   })
 
   const props = {

@@ -3,17 +3,17 @@ import { useContract } from 'hooks/useContract'
 import stableSwapABI from 'config/abi/stableSwap.json'
 import stableSwapInfoABI from 'config/abi/infoStableSwap.json'
 import stableLPABI from 'config/abi/stableLP.json'
-import { CurrencyAmount } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 import { createContext, useMemo } from 'react'
 
-function findStablePair({ pairA, pairB }) {
+function findStablePair({ tokenA, tokenB }) {
   return stableSwapConfigs.find((stablePair) => {
     return (
-      pairA &&
-      pairB &&
-      ((stablePair?.token0?.equals(pairA) && stablePair?.token1?.equals(pairB)) ||
-        (stablePair?.token1?.equals(pairA) && stablePair?.token0?.equals(pairB)))
+      tokenA &&
+      tokenB &&
+      ((stablePair?.token0?.equals(tokenA) && stablePair?.token1?.equals(tokenB)) ||
+        (stablePair?.token1?.equals(tokenA) && stablePair?.token0?.equals(tokenB)))
     )
   })
 }
@@ -42,8 +42,8 @@ export function useLPTokensWithBalanceByAccount(account) {
 
 export const StableConfigContext = createContext(null)
 
-export default function useStableConfig({ pairA, pairB }) {
-  const stablePair = useMemo(() => findStablePair({ pairA, pairB }), [pairA, pairB])
+export default function useStableConfig({ tokenA, tokenB }: { tokenA: Currency; tokenB: Currency }) {
+  const stablePair = useMemo(() => findStablePair({ tokenA, tokenB }), [tokenA, tokenB])
   const stableSwapContract = useContract(stablePair?.stableSwapAddress, stableSwapABI)
   const stableSwapInfoContract = useContract(infoStableSwapAddress, stableSwapInfoABI)
   const stableSwapLPContract = useContract(stablePair?.liquidityToken.address, stableLPABI)

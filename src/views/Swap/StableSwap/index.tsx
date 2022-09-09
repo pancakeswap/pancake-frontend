@@ -21,8 +21,8 @@ const StableSwapFormContainer = ({ setIsChartDisplayed, isChartDisplayed }) => {
   }, [onCurrencySelection])
 
   const { stableSwapConfig, ...stableConfig } = useStableConfig({
-    pairA: stableTokenPair.token0,
-    pairB: stableTokenPair.token1,
+    tokenA: stableTokenPair.token0,
+    tokenB: stableTokenPair.token1,
   })
 
   return stableSwapConfig ? (

@@ -28,8 +28,8 @@ const AddLiquidityPage = () => {
   const currencyB = useCurrency(currencyIdB)
 
   const { stableSwapConfig, ...stableConfig } = useStableConfig({
-    pairA: currencyA,
-    pairB: currencyB,
+    tokenA: currencyA,
+    tokenB: currencyB,
   })
 
   useEffect(() => {
