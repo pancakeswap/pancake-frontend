@@ -101,12 +101,12 @@ const CandleChart = ({ data, setValue, setLabel, ...rest }: LineChartProps) => {
   useEffect(() => {
     if (chartCreated && data) {
       const series = chartCreated.addCandlestickSeries({
-        upColor: theme.colors.success,
+        upColor: '#31D0AA', // theme.colors.success has some issue
         downColor: theme.colors.failure,
         borderDownColor: theme.colors.failure,
-        borderUpColor: theme.colors.success,
+        borderUpColor: '#31D0AA',
         wickDownColor: theme.colors.failure,
-        wickUpColor: theme.colors.success,
+        wickUpColor: '#31D0AA',
       })
 
       series.setData(data)
