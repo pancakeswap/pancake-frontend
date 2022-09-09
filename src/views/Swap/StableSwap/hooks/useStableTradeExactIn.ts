@@ -30,27 +30,39 @@ interface UseStableTradeResponse {
   currencyAmountIn: CurrencyAmount<Currency>
   currencyAmountOut: CurrencyAmount<Currency>
   stableSwapConfig: any
+  tradeType: TradeType
 }
 
 export function useStableTradeResponse({
   currencyAmountIn,
   currencyAmountOut,
   stableSwapConfig,
+  tradeType,
 }: UseStableTradeResponse) {
   const maximumAmountIn = useCallback(
-    (slippageTolerance) =>
-      currencyAmountIn
+    (slippageTolerance) => {
+      if (tradeType === TradeType.EXACT_INPUT) {
+        return currencyAmountIn
+      }
+
+      return currencyAmountIn
         ? maximumAmountInFactory(currencyAmountIn, slippageTolerance)
-        : CurrencyAmount.fromRawAmount(currencyAmountIn.currency, '0'),
-    [currencyAmountIn],
+        : CurrencyAmount.fromRawAmount(currencyAmountIn.currency, '0')
+    },
+    [currencyAmountIn, tradeType],
   )
 
   const minimumAmountOut = useCallback(
-    (slippageTolerance) =>
-      currencyAmountOut
+    (slippageTolerance) => {
+      if (tradeType === TradeType.EXACT_OUTPUT) {
+        return currencyAmountOut
+      }
+
+      return currencyAmountOut
         ? minimumAmountOutFactory(currencyAmountOut, slippageTolerance)
-        : CurrencyAmount.fromRawAmount(currencyAmountOut.currency, '0'),
-    [currencyAmountOut],
+        : CurrencyAmount.fromRawAmount(currencyAmountOut.currency, '0')
+    },
+    [currencyAmountOut, tradeType],
   )
 
   const isInvalid = !currencyAmountIn || !currencyAmountOut || !stableSwapConfig || !currencyAmountIn
@@ -118,5 +130,6 @@ export default function useStableTradeExactIn(
     currencyAmountIn,
     currencyAmountOut,
     stableSwapConfig,
+    tradeType: TradeType.EXACT_INPUT,
   })
 }

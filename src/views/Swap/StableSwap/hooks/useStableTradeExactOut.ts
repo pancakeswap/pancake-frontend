@@ -1,4 +1,4 @@
-import { CurrencyAmount, Currency } from '@pancakeswap/sdk'
+import { CurrencyAmount, Currency, TradeType } from '@pancakeswap/sdk'
 import { useContext } from 'react'
 import { StableTrade, useEstimatedAmount, useStableTradeResponse } from './useStableTradeExactIn'
 import { StableConfigContext } from './useStableConfig'
@@ -25,5 +25,6 @@ export default function useStableTradeExactOut(
     currencyAmountIn,
     currencyAmountOut,
     stableSwapConfig,
+    tradeType: TradeType.EXACT_OUTPUT,
   })
 }
