@@ -54,9 +54,8 @@ export default createReducer(initialState, (builder) =>
         if (order) saveOrder(chainId, from, order, true)
       },
     )
-    .addCase(clearAllTransactions, (transactions, { payload: { chainId } }) => {
-      if (!transactions[chainId]) return
-      transactions[chainId] = {}
+    .addCase(clearAllTransactions, () => {
+      return {}
     })
     .addCase(checkedTransaction, (transactions, { payload: { chainId, hash, blockNumber } }) => {
       const tx = transactions[chainId]?.[hash]

@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import { CheckmarkIcon, CloseIcon, LinkExternal } from '@pancakeswap/uikit'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBlockExploreLink } from 'utils'
 import { TransactionDetails } from 'state/transactions/reducer'
 import CircleLoader from '../../Loader/CircleLoader'
@@ -22,9 +21,7 @@ const IconWrapper = styled.div<{ pending: boolean; success?: boolean }>`
     pending ? theme.colors.primary : success ? theme.colors.success : theme.colors.failure};
 `
 
-export default function Transaction({ tx }: { tx: TransactionDetails }) {
-  const { chainId } = useActiveWeb3React()
-
+export default function Transaction({ tx, chainId }: { tx: TransactionDetails; chainId: number }) {
   const summary = tx?.summary
   const pending = !tx?.receipt
   const success = !pending && tx && (tx.receipt?.status === 1 || typeof tx.receipt?.status === 'undefined')
