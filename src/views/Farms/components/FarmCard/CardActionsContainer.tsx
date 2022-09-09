@@ -38,7 +38,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   displayApr,
 }) => {
   const { t } = useTranslation()
-  const { pid, lpAddress, vaultPid } = farm
+  const { pid, token, quoteToken, vaultPid } = farm
   const { earnings } = farm.userData || {}
   const { shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
 
@@ -53,11 +53,17 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
         </Text>
       </Flex>
       {shouldUseProxyFarm ? (
-        <ProxyHarvestActionContainer earnings={earnings} pid={pid} lpAddress={lpAddress} vaultPid={vaultPid}>
+        <ProxyHarvestActionContainer
+          earnings={earnings}
+          pid={pid}
+          vaultPid={vaultPid}
+          token={token}
+          quoteToken={quoteToken}
+        >
           {(props) => <HarvestAction {...props} />}
         </ProxyHarvestActionContainer>
       ) : (
-        <HarvestActionContainer earnings={earnings} pid={pid} lpAddress={lpAddress} vaultPid={vaultPid}>
+        <HarvestActionContainer earnings={earnings} pid={pid} vaultPid={vaultPid} token={token} quoteToken={quoteToken}>
           {(props) => <HarvestAction {...props} />}
         </HarvestActionContainer>
       )}

@@ -53,13 +53,15 @@ export const HarvestActionContainer = ({ children, ...props }) => {
 
 export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActionProps>> = ({
   pid,
+  token,
+  quoteToken,
   lpAddress,
   vaultPid,
-  onReward,
-  onDone,
   userData,
   userDataReady,
   proxyCakeBalance,
+  onReward,
+  onDone,
 }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
@@ -121,8 +123,8 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   const [onPresentNonBscHarvestModal] = useModal(
     <MultiChainHarvestModal
       pid={pid}
-      vaultPid={vaultPid}
-      lpAddress={lpAddress}
+      token={token}
+      quoteToken={quoteToken}
       earningsBigNumber={earningsBigNumber}
       earningsBusd={earningsBusd}
     />,
