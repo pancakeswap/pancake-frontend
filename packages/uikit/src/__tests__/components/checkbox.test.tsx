@@ -23,8 +23,8 @@ it("renders correctly", () => {
       transition: background-color 0.2s ease-in-out;
       border: 0;
       border-radius: 8px;
-      background-color: var(--colors-input);
-      box-shadow: var(--shadows-inset);
+      background-color: #eeeaf4;
+      box-shadow: inset 0px 2px 2px -1px rgba(74,74,104,0.1);
     }
 
     .c0:after {
@@ -47,16 +47,16 @@ it("renders correctly", () => {
     }
 
     .c0:hover:not(:disabled):not(:checked) {
-      box-shadow: var(--shadows-focus);
+      box-shadow: 0px 0px 0px 1px #7645D9,0px 0px 0px 4px rgba(118,69,217,0.6);
     }
 
     .c0:focus {
       outline: none;
-      box-shadow: var(--shadows-focus);
+      box-shadow: 0px 0px 0px 1px #7645D9,0px 0px 0px 4px rgba(118,69,217,0.6);
     }
 
     .c0:checked {
-      background-color: var(--colors-success);
+      background-color: #31D0AA;
     }
 
     .c0:checked:after {

@@ -1,11 +1,11 @@
 import { nanoid } from '@reduxjs/toolkit'
 import { TokenList } from '@uniswap/token-lists'
-import { useAtom } from 'jotai'
 import { useCallback } from 'react'
-import { fetchTokenList } from './actions'
+import { useListState } from 'state/lists/lists'
+import { fetchTokenList } from '../state/lists/actions'
 
-function useFetchListCallback(listAtom): (listUrl: string, sendDispatch?: boolean) => Promise<TokenList> {
-  const [, dispatch] = useAtom(listAtom)
+function useFetchListCallback(): (listUrl: string, sendDispatch?: boolean) => Promise<TokenList> {
+  const [, dispatch] = useListState()
 
   // note: prevent dispatch if using for list search or unsupported list
   return useCallback(
@@ -15,7 +15,7 @@ function useFetchListCallback(listAtom): (listUrl: string, sendDispatch?: boolea
         dispatch(fetchTokenList.pending({ requestId, url: listUrl }))
       }
       // lazy load avj and token list schema
-      const getTokenList = (await import('./getTokenList')).default
+      const getTokenList = (await import('../utils/getTokenList')).default
       return getTokenList(listUrl)
         .then((tokenList) => {
           if (sendDispatch) {

@@ -11,24 +11,45 @@ it("renders correctly", () => {
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c8 {
-      -webkit-align-self: center;
-      -ms-flex-item-align: center;
-      align-self: center;
-      fill: var(--colors-primary);
-      -webkit-flex-shrink: 0;
-      -ms-flex-negative: 0;
-      flex-shrink: 0;
-    }
-
-    .c4 {
-      color: var(--colors-text);
+      .c5 {
+      color: #280D5F;
       font-weight: 600;
       line-height: 1.5;
       font-size: 16px;
     }
 
     .c6 {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.1;
+    }
+
+    .c0 {
+      min-width: 320px;
+    }
+
+    .c10 {
+      padding: 24px;
+    }
+
+    .c3 {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+    }
+
+    .c9 {
+      -webkit-align-self: center;
+      -ms-flex-item-align: center;
+      align-self: center;
+      fill: #1FC7D4;
+      -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+      flex-shrink: 0;
+    }
+
+    .c7 {
       position: relative;
       -webkit-align-items: center;
       -webkit-box-align: center;
@@ -61,15 +82,15 @@ it("renders correctly", () => {
       height: 48px;
       padding: 0 24px;
       background-color: transparent;
-      color: var(--colors-primary);
+      color: #1FC7D4;
       box-shadow: none;
     }
 
-    .c6:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+    .c7:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
       opacity: 0.65;
     }
 
-    .c6:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+    .c7:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
       -webkit-transform: translateY(1px);
       -ms-transform: translateY(1px);
@@ -77,44 +98,27 @@ it("renders correctly", () => {
       box-shadow: none;
     }
 
-    .c6:disabled,
-    .c6.pancake-button--disabled {
-      background-color: var(--colors-backgroundDisabled);
-      border-color: var(--colors-backgroundDisabled);
+    .c7:disabled,
+    .c7.pancake-button--disabled {
+      background-color: #E9EAEB;
+      border-color: #E9EAEB;
       box-shadow: none;
-      color: var(--colors-textDisabled);
+      color: #BDC2C4;
       cursor: not-allowed;
     }
 
-    .c7 {
+    .c8 {
       padding: 0;
       width: 48px;
     }
 
-    .c9 {
-      padding: 24px;
-    }
-
     .c2 {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
-    }
-
-    .c5 {
-      font-size: 20px;
-      font-weight: 600;
-      line-height: 1.1;
-    }
-
-    .c1 {
       -webkit-align-items: center;
       -webkit-box-align: center;
       -ms-flex-align: center;
       align-items: center;
       background: transparent;
-      border-bottom: 1px solid var(--colors-cardBorder);
+      border-bottom: 1px solid #E7E3EB;
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
@@ -122,7 +126,7 @@ it("renders correctly", () => {
       padding: 12px 24px;
     }
 
-    .c3 {
+    .c4 {
       -webkit-align-items: center;
       -webkit-box-align: center;
       -ms-flex-align: center;
@@ -132,81 +136,59 @@ it("renders correctly", () => {
       flex: 1;
     }
 
-    .c10 {
+    .c11 {
       -webkit-flex-direction: column;
       -ms-flex-direction: column;
       flex-direction: column;
+      max-height: 90vh;
+      max-height: calc(var(--vh,1vh) * 90);
       overflow-y: auto;
-      max-height: calc(90vh - 73px);
     }
 
-    .c0 {
+    .c1 {
       overflow: hidden;
-      background: var(--colors-backgroundAlt);
+      background: #FFFFFF;
       box-shadow: 0px 20px 36px -8px rgba(14,14,44,0.1),0px 1px 1px rgba(0,0,0,0.05);
-      border: 1px solid var(--colors-cardBorder);
-      border-radius: 32px 32px 0px 0px;
+      border: 1px solid #E7E3EB;
+      border-radius: 32px;
       width: 100%;
+      max-height: 100vh;
       max-height: calc(var(--vh,1vh) * 100);
       z-index: 100;
-      position: absolute;
-      min-width: 320px;
-      bottom: 0;
-      max-width: none !important;
-      min-height: 300px;
+    }
+
+    @media screen and (min-width:968px) {
+      .c6 {
+        font-size: 20px;
+      }
     }
 
     @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-      .c8 {
+      .c9 {
         -webkit-filter: none !important;
         filter: none !important;
       }
     }
 
-    @media screen and (min-width:968px) {
-      .c5 {
-        font-size: 20px;
-      }
-    }
-
-    @media screen and (min-width:852px) {
+    @media screen and (min-width:370px) {
       .c1 {
-        background: transparent;
-      }
-    }
-
-    @media screen and (min-width:852px) {
-      .c10 {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-        max-height: 90vh;
-      }
-    }
-
-    @media screen and (min-width:852px) {
-      .c0 {
         width: auto;
-        position: auto;
-        bottom: auto;
-        border-radius: 32px;
+        min-width: 320px;
         max-width: 100%;
-        max-height: 100vh;
       }
     }
 
     <div
-        class="c0"
+        class="c0 c1"
       >
         <div
-          class="c1"
+          class="c2"
         >
           <div
-            class="c2 c3"
+            class="c3 c4"
           >
             <h2
-              class="c4 c5"
+              class="c5 c6"
               color="text"
               font-size="16px"
             >
@@ -215,11 +197,11 @@ it("renders correctly", () => {
           </div>
           <button
             aria-label="Close the dialog"
-            class="c6 c7"
+            class="c7 c8"
             scale="md"
           >
             <svg
-              class="c8"
+              class="c9"
               color="primary"
               viewBox="0 0 24 24"
               width="20px"
@@ -233,7 +215,7 @@ it("renders correctly", () => {
           </button>
         </div>
         <div
-          class="c9 c2 c10"
+          class="c10 c3 c11"
         >
           body
         </div>

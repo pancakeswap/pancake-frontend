@@ -1,7 +1,7 @@
 import { getNow } from 'utils/getNow'
 import { accurateTimer } from 'utils/accurateTimer'
 import { useCallback, useEffect, useState, useRef } from 'react'
-import { useIsWindowVisible } from '@pancakeswap/hooks'
+import useIsWindowVisible from 'hooks/useIsWindowVisible'
 
 const getSecondsRemainingToNow = (timestamp: number) => {
   const now = getNow()
