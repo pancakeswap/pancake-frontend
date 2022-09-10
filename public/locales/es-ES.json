@@ -1935,9 +1935,9 @@
   "Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.": "Si asumimos el precio actual de la gasolina, esta orden nunca se realizará. Intenta aumentar la cantidad de tokens que intercambiarás en tu orden.",
   "Bridge": "Puente",
   "Please switch network": "Cambia de red",
-  "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.",
-  "Error connecting, please retry and confirm in wallet!": "Error connecting, please retry and confirm in wallet!",
-  "Boost only applies to base APR (CAKE yield)": "Boost only applies to base APR (CAKE yield)",
-  "Available Boosted: Up to 2x": "Available Boosted: Up to 2x",
-  "Stake CAKE, Earn CAKE, Win CAKE": "Stake CAKE, Earn CAKE, Win CAKE"
+  "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "La URL a la que intentas acceder (ID de la cadena: %chainId%) pertenece a %network%;, y no coincide con la red de tu monedero. Cambia de red para continuar.",
+  "Error connecting, please retry and confirm in wallet!": "Error de conexión, ¡intenta de nuevo y confirma en el monedero!",
+  "Boost only applies to base APR (CAKE yield)": "La mejora solo aplica en el APR básico (el rendimiento en CAKE)",
+  "Available Boosted: Up to 2x": "Mejora disponible: Hasta 2x",
+  "Stake CAKE, Earn CAKE, Win CAKE": "Invierte en CAKE, obtén CAKE, gana CAKE"
 }
