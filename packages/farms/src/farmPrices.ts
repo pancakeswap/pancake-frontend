@@ -100,7 +100,26 @@ const filterFarmsByQuoteToken = (
   return preferredFarm || farms[0]
 }
 
-// TODO: Stable
+export const getStableLpTokenPrice = (
+  lpTotalSupply: FixedNumber,
+  tokenAmountTotal: FixedNumber,
+  tokenPriceBusd: FixedNumber,
+  quoteTokenAmountTotal: FixedNumber,
+  quoteTokenInBusd: FixedNumber,
+) => {
+  if (lpTotalSupply.isZero()) {
+    return FIXED_ZERO
+  }
+  const valueOfBaseTokenInFarm = tokenPriceBusd.mulUnsafe(tokenAmountTotal)
+  const valueOfQuoteTokenInFarm = quoteTokenInBusd.mulUnsafe(quoteTokenAmountTotal)
+
+  const liquidity = valueOfBaseTokenInFarm.addUnsafe(valueOfQuoteTokenInFarm)
+
+  const totalLpTokens = lpTotalSupply.divUnsafe(FIXED_TEN_IN_POWER_18)
+
+  return liquidity.divUnsafe(totalLpTokens)
+}
+
 export const getLpTokenPrice = (
   lpTotalSupply: FixedNumber,
   lpTotalInQuoteToken: FixedNumber,
@@ -162,12 +181,21 @@ export const getFarmsPrices = (farms: FarmData[], chainId: number): FarmWithPric
       nativeStableLpMap[chainId].wNative,
       nativeStableLpMap[chainId].stable,
     )
-    const lpTokenPrice = getLpTokenPrice(
-      FixedNumber.from(farm.lpTotalSupply),
-      FixedNumber.from(farm.lpTotalInQuoteToken),
-      FixedNumber.from(farm.tokenAmountTotal),
-      tokenPriceBusd,
-    )
+    const lpTokenPrice = farm.stableSwapContract
+      ? getStableLpTokenPrice(
+          FixedNumber.from(farm.lpTotalSupply),
+          FixedNumber.from(farm.tokenAmountTotal),
+          tokenPriceBusd,
+          FixedNumber.from(farm.quoteTokenAmountTotal),
+          // Assume token is busd, tokenPriceBusd is tokenPriceVsQuote
+          FixedNumber.from(farm.tokenPriceVsQuote),
+        )
+      : getLpTokenPrice(
+          FixedNumber.from(farm.lpTotalSupply),
+          FixedNumber.from(farm.lpTotalInQuoteToken),
+          FixedNumber.from(farm.tokenAmountTotal),
+          tokenPriceBusd,
+        )
     return {
       ...farm,
       tokenPriceBusd: tokenPriceBusd.toString(),
