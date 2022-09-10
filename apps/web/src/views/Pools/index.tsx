@@ -39,7 +39,7 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
   const { address: account } = useAccount()
   const { pools, userDataLoaded } = usePoolsWithVault()
 
-  usePoolsPageFetch()
+  usePoolsPageFetch(showFinishedPools)
 
   return (
     <>

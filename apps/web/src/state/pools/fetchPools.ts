@@ -52,16 +52,19 @@ export const fetchPoolsBlockLimits = async () => {
   })
 }
 
-const poolsBalanceOf = poolsConfig.map((poolConfig) => {
-  return {
-    address: poolConfig.stakingToken.address,
-    name: 'balanceOf',
-    params: [getAddress(poolConfig.contractAddress)],
-  }
-})
+const poolsBalanceOf = (fetchFinishedPools: boolean) =>
+  poolsConfig
+    .filter((p) => (fetchFinishedPools ? p.isFinished : !p.isFinished))
+    .map((poolConfig) => {
+      return {
+        address: poolConfig.stakingToken.address,
+        name: 'balanceOf',
+        params: [getAddress(poolConfig.contractAddress)],
+      }
+    })
 
-export const fetchPoolsTotalStaking = async () => {
-  const poolsTotalStaked = await multicall(erc20ABI, poolsBalanceOf)
+export const fetchPoolsTotalStaking = async (fetchFinishedPools: boolean) => {
+  const poolsTotalStaked = await multicall(erc20ABI, poolsBalanceOf(fetchFinishedPools))
 
   return poolsConfig.map((p, index) => ({
     sousId: p.sousId,

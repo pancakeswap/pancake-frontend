@@ -67,7 +67,7 @@ const getCakePriceFarms = async (chainId: number) => {
     .map((farm) => farm.pid)
 }
 
-export const useFetchPublicPoolsData = () => {
+export const useFetchPublicPoolsData = (fetchFinishedPools: boolean) => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveChainId()
   const farmFlag = useFeatureFlag(featureFarmApiAtom)
@@ -75,18 +75,21 @@ export const useFetchPublicPoolsData = () => {
   useSlowRefreshEffect(
     (currentBlock) => {
       const fetchPoolsDataWithFarms = async () => {
-        const activeFarms = await getActiveFarms(chainId)
-        await dispatch(fetchFarmsPublicDataAsync({ pids: activeFarms, chainId, flag: farmFlag }))
-
-        batch(() => {
-          dispatch(fetchPoolsPublicDataAsync(currentBlock, chainId))
-          dispatch(fetchPoolsStakingLimitsAsync())
-        })
+        if (fetchFinishedPools) {
+          dispatch(fetchPoolsPublicDataAsync(currentBlock, chainId, fetchFinishedPools))
+        } else {
+          const activeFarms = await getActiveFarms(chainId)
+          await dispatch(fetchFarmsPublicDataAsync({ pids: activeFarms, chainId, flag: farmFlag }))
+          batch(() => {
+            dispatch(fetchPoolsPublicDataAsync(currentBlock, chainId, fetchFinishedPools))
+            dispatch(fetchPoolsStakingLimitsAsync())
+          })
+        }
       }
 
       fetchPoolsDataWithFarms()
     },
-    [dispatch, chainId, farmFlag],
+    [dispatch, chainId, farmFlag, fetchFinishedPools],
   )
 }
 
@@ -105,23 +108,29 @@ export const useDeserializedPoolByVaultKey = (vaultKey) => {
   return useSelector(vaultPoolWithKeySelector)
 }
 
-export const usePoolsPageFetch = () => {
+export const usePoolsPageFetch = (fetchFinishedPools: boolean) => {
   const { address: account } = useAccount()
   const dispatch = useAppDispatch()
-  useFetchPublicPoolsData()
+  useFetchPublicPoolsData(fetchFinishedPools)
 
   useFastRefreshEffect(() => {
-    batch(() => {
-      dispatch(fetchCakeVaultPublicData())
-      dispatch(fetchCakeFlexibleSideVaultPublicData())
-      dispatch(fetchIfoPublicDataAsync())
+    if (fetchFinishedPools) {
       if (account) {
-        dispatch(fetchPoolsUserDataAsync(account))
-        dispatch(fetchCakeVaultUserData({ account }))
-        dispatch(fetchCakeFlexibleSideVaultUserData({ account }))
+        dispatch(fetchPoolsUserDataAsync({ account, fetchFinishedPools }))
       }
-    })
-  }, [account, dispatch])
+    } else {
+      batch(() => {
+        dispatch(fetchCakeVaultPublicData())
+        dispatch(fetchCakeFlexibleSideVaultPublicData())
+        dispatch(fetchIfoPublicDataAsync())
+        if (account) {
+          dispatch(fetchPoolsUserDataAsync({ account, fetchFinishedPools }))
+          dispatch(fetchCakeVaultUserData({ account }))
+          dispatch(fetchCakeFlexibleSideVaultUserData({ account }))
+        }
+      })
+    }
+  }, [account, dispatch, fetchFinishedPools])
 
   useEffect(() => {
     batch(() => {
