@@ -1,5 +1,6 @@
 import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { ChainId } from '@pancakeswap/sdk'
+import _toNumber from 'lodash/toNumber'
 import { SerializedFarmPublicData, FarmData } from './types'
 import { equalsIgnoreCase } from './equalsIgnoreCase'
 import { FIXED_ONE, FIXED_TEN_IN_POWER_18, FIXED_TWO, FIXED_ZERO } from './const'
@@ -135,9 +136,11 @@ export const getFarmsPrices = (farms: FarmData[], chainId: number): FarmWithPric
   }
 
   const nativeStableFarm = farms.find((farm) => equalsIgnoreCase(farm.lpAddress, nativeStableLpMap[chainId].address))
-  const nativePriceUSD = nativeStableFarm?.tokenPriceVsQuote
-    ? FIXED_ONE.divUnsafe(FixedNumber.from(nativeStableFarm.tokenPriceVsQuote))
-    : FIXED_ZERO
+
+  const nativePriceUSD =
+    _toNumber(nativeStableFarm?.tokenPriceVsQuote) !== 0
+      ? FIXED_ONE.divUnsafe(FixedNumber.from(nativeStableFarm.tokenPriceVsQuote))
+      : FIXED_ZERO
 
   const farmsWithPrices = farms.map((farm) => {
     const quoteTokenFarm = getFarmFromTokenAddress(farms, farm.quoteToken.address, [

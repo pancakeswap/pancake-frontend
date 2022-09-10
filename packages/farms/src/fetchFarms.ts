@@ -41,6 +41,7 @@ export async function farmV2FetchFarms({
   ])
 
   const stableFarmsData = (stableFarmsResults as StableLpData[]).map(formatStableFarm)
+
   const stableFarmsDataMap = stableFarms.reduce<Record<number, FormatStableFarmResponse>>((map, farm, index) => {
     return {
       ...map,
@@ -53,7 +54,6 @@ export async function farmV2FetchFarms({
   const farmsData = farms.map((farm, index) => {
     try {
       return {
-        pid: farm.pid,
         ...farm,
         ...getClassicFarmsDynamicData({
           ...lpData[index],
@@ -332,6 +332,9 @@ const getClassicFarmsDynamicData = ({
     quoteTokenAmountTotal: quoteTokenAmountTotal.toString(),
     lpTotalSupply: lpTotalSupply.toString(),
     lpTotalInQuoteToken: lpTotalInQuoteToken.toString(),
-    tokenPriceVsQuote: !quoteTokenAmountTotal.isZero() && quoteTokenAmountTotal.divUnsafe(tokenAmountTotal).toString(),
+    tokenPriceVsQuote:
+      !quoteTokenAmountTotal.isZero() && !tokenAmountTotal.isZero()
+        ? quoteTokenAmountTotal.divUnsafe(tokenAmountTotal).toString()
+        : FIXED_ZERO.toString(),
   }
 }
