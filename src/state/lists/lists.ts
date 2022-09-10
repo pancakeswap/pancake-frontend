@@ -1,17 +1,50 @@
-import { createListsAtom, createTokenListReducer, NEW_LIST_STATE } from '@pancakeswap/token-lists'
-import { DEFAULT_ACTIVE_LIST_URLS, DEFAULT_LIST_OF_LISTS, UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
+import { useReducerAtom, atomWithStorage } from 'jotai/utils'
+import defaultStorge from 'redux-persist/lib/storage'
+import localForage from 'localforage'
+import listReducer, { initialState, ListsState } from './reducer'
 
-const initialState = {
-  lastInitializedDefaultListOfLists: DEFAULT_LIST_OF_LISTS,
-  byUrl: {
-    ...DEFAULT_LIST_OF_LISTS.concat(...UNSUPPORTED_LIST_URLS).reduce((memo, listUrl) => {
-      memo[listUrl] = NEW_LIST_STATE
-      return memo
-    }, {}),
-  },
-  activeListUrls: DEFAULT_ACTIVE_LIST_URLS,
+let gotOnce = false
+
+/**
+ * Persist you redux state using IndexedDB
+ * @param {string} dbName - IndexedDB database name
+ */
+function IndexedDBStorage(dbName, storeName) {
+  if (typeof window !== 'undefined') {
+    const db = localForage.createInstance({
+      name: dbName,
+      storeName,
+    })
+    return {
+      db,
+      getItem: async (key) => {
+        const value = await db.getItem(key)
+        gotOnce = true
+        if (value) {
+          return value
+        }
+        return initialState
+      },
+      // eslint-disable-next-line consistent-return
+      setItem: (k, v) => {
+        if (gotOnce) {
+          return db.setItem(k, v)
+        }
+      },
+      removeItem: db.removeItem,
+      delayInit: true,
+    }
+  }
+  return defaultStorge
 }
 
-const listReducer = createTokenListReducer(initialState, DEFAULT_LIST_OF_LISTS, DEFAULT_ACTIVE_LIST_URLS)
+export const listsAtom = atomWithStorage<ListsState>(
+  'lists',
+  initialState,
+  // @ts-ignore
+  IndexedDBStorage('lists', 'listv1'),
+)
 
-export const { listsAtom, useListState } = createListsAtom('listv1', listReducer, initialState)
+export function useListState() {
+  return useReducerAtom(listsAtom, listReducer)
+}

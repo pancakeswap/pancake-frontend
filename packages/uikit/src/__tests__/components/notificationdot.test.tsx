@@ -26,9 +26,9 @@ it("renders correctly", () => {
       width: 10px;
       height: 10px;
       pointer-events: none;
-      border: 2px solid var(--colors-invertedContrast);
+      border: 2px solid #FFFFFF;
       border-radius: 50%;
-      background-color: var(--colors-failure);
+      background-color: #ED4B9E;
     }
 
     <span

@@ -1,5 +1,3 @@
-const { vanillaExtractPlugin } = require("@vanilla-extract/vite-plugin");
-
 module.exports = {
   stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
@@ -14,8 +12,4 @@ module.exports = {
     "themeprovider-storybook/register",
   ],
   core: { builder: "@storybook/builder-vite" },
-  async viteFinal(config) {
-    config.plugins.push(vanillaExtractPlugin());
-    return config;
-  },
 };

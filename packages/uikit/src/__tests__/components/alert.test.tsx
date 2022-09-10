@@ -18,14 +18,14 @@ it("renders correctly", () => {
     }
 
     .c5 {
-      color: var(--colors-text);
+      color: #280D5F;
       font-weight: 600;
       line-height: 1.5;
       font-size: 16px;
     }
 
     .c6 {
-      color: var(--colors-text);
+      color: #280D5F;
       font-weight: 400;
       line-height: 1.5;
       font-size: 16px;
@@ -39,9 +39,9 @@ it("renders correctly", () => {
     }
 
     .c2 {
-      background-color: var(--colors-secondary);
+      background-color: #7645D9;
       border-radius: 16px 0 0 16px;
-      color: var(--colors-backgroundAlt);
+      color: #FFFFFF;
       padding: 12px;
     }
 
@@ -57,7 +57,7 @@ it("renders correctly", () => {
 
     .c1 {
       position: relative;
-      background-color: var(--colors-backgroundAlt);
+      background-color: #FFFFFF;
       border-radius: 16px;
       box-shadow: 0px 20px 36px -8px rgba(14,14,44,0.1),0px 1px 1px rgba(0,0,0,0.05);
     }

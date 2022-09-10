@@ -22,7 +22,7 @@ it("renders correctly", () => {
       height: 28px;
       padding: 0 8px;
       font-size: 14px;
-      background-color: var(--colors-primary);
+      background-color: #1FC7D4;
     }
 
     .c0 > svg {

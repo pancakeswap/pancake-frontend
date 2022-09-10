@@ -13,9 +13,9 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
-      background: var(--colors-cardBorder);
-      border-radius: var(--radii-card);
-      color: var(--colors-text);
+      background: #E7E3EB;
+      border-radius: 24px;
+      color: #280D5F;
       overflow: hidden;
       position: relative;
       padding: 1px 1px 3px 1px;
@@ -25,8 +25,8 @@ it("renders correctly", () => {
       width: 100%;
       height: 100%;
       overflow: inherit;
-      background: var(--colors-backgroundAlt);
-      border-radius: var(--radii-card);
+      background: #FFFFFF;
+      border-radius: 24px;
     }
 
     .c3 {
@@ -34,13 +34,13 @@ it("renders correctly", () => {
     }
 
     .c2 {
-      background: var(--colors-gradientCardHeader);
-      border-radius: var(--radii-card) var(--radii-card) 0 0;
+      background: linear-gradient(111.68deg,#F2ECF2 0%,#E8F2F6 100%);
+      border-radius: 24px 24px 0 0;
       padding: 24px;
     }
 
     .c4 {
-      border-top: 1px solid var(--colors-cardBorder);
+      border-top: 1px solid #E7E3EB;
       padding: 24px;
     }
 

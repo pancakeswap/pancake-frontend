@@ -1,14 +1,15 @@
 import { useRouter } from 'next/router'
+import { useAllLists } from 'state/lists/hooks'
 import { getVersionUpgrade, VersionUpgrade } from '@uniswap/token-lists'
 import { useCallback, useEffect, useMemo } from 'react'
-import { useInterval, useIsWindowVisible } from '@pancakeswap/hooks'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import useWeb3Provider from 'hooks/useActiveWeb3React'
-import useFetchListCallback from '@pancakeswap/token-lists/src/useFetchListCallback'
-import { acceptListUpdate, updateListVersion } from '@pancakeswap/token-lists/src/actions'
-import { useAllLists } from 'state/lists/hooks'
+import useFetchListCallback from 'hooks/useFetchListCallback'
+import useInterval from 'hooks/useInterval'
+import useIsWindowVisible from 'hooks/useIsWindowVisible'
+import { acceptListUpdate, updateListVersion } from './actions'
 import { useActiveListUrls } from './hooks'
-import { listsAtom, useListState } from './lists'
+import { useListState } from './lists'
 
 export default function Updater(): null {
   const { provider } = useWeb3Provider()
@@ -29,7 +30,7 @@ export default function Updater(): null {
     dispatch(updateListVersion())
   }, [dispatch])
 
-  const fetchList = useFetchListCallback(listsAtom)
+  const fetchList = useFetchListCallback()
   const fetchAllListsCallback = useCallback(() => {
     if (!isWindowVisible) return
     Object.keys(lists).forEach((url) =>

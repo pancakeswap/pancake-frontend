@@ -23,13 +23,13 @@ it("renders correctly", () => {
       transform: translate(-50%,0);
       left: 50%;
       bottom: auto;
-      background-color: var(--colors-backgroundAlt);
-      box-shadow: var(--shadows-level1);
+      background-color: #FFFFFF;
+      box-shadow: 0px 2px 12px -8px rgba(25,19,38,0.1),0px 1px 1px rgba(25,19,38,0.05);
       padding: 16px;
       max-height: 0px;
       overflow: hidden;
       z-index: 10;
-      border-radius: var(--radii-small);
+      border-radius: 4px;
       opacity: 0;
       -webkit-transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
       transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;

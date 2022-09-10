@@ -1,34 +1,15 @@
-import { describe, it, expect, beforeEach } from 'vitest'
 import { createStore, Store } from 'redux'
+import { DEFAULT_ACTIVE_LIST_URLS, DEFAULT_LIST_OF_LISTS } from '../../config/constants/lists'
 
 import { fetchTokenList, acceptListUpdate, addList, removeList, enableList, updateListVersion } from './actions'
-import { ListsState, createTokenListReducer, NEW_LIST_STATE } from './reducer'
+import reducer, { ListsState } from './reducer'
 
-const DEFAULT_ACTIVE_LIST_URLS = []
-const DEFAULT_LIST_OF_LISTS = ['https://tokens.pancakeswap.finance/pancakeswap-extended.json']
 const STUB_TOKEN_LIST = {
   name: '',
   timestamp: '',
   version: { major: 1, minor: 1, patch: 1 },
   tokens: [],
 }
-
-const UNSUPPORTED_LIST_URLS = []
-
-const reducer = createTokenListReducer(
-  {
-    lastInitializedDefaultListOfLists: DEFAULT_LIST_OF_LISTS,
-    byUrl: {
-      ...DEFAULT_LIST_OF_LISTS.concat(...UNSUPPORTED_LIST_URLS).reduce((memo, listUrl) => {
-        memo[listUrl] = NEW_LIST_STATE
-        return memo
-      }, {}),
-    },
-    activeListUrls: DEFAULT_ACTIVE_LIST_URLS,
-  },
-  DEFAULT_LIST_OF_LISTS,
-  DEFAULT_ACTIVE_LIST_URLS,
-)
 
 const PATCHED_STUB_LIST = {
   ...STUB_TOKEN_LIST,
