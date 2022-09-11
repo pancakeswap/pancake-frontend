@@ -57,10 +57,8 @@ const StyledActionContainer = styled(ActionContainer)`
 
 export function useStakedActions(lpContract, pid, vaultPid) {
   const { account, chainId } = useActiveWeb3React()
-  const stakedPid = vaultPid ?? pid
-
-  const { onStake } = useStakeFarms(stakedPid)
-  const { onUnstake } = useUnstakeFarms(stakedPid)
+  const { onStake } = useStakeFarms(pid, vaultPid)
+  const { onUnstake } = useUnstakeFarms(pid, vaultPid)
   const dispatch = useAppDispatch()
 
   const { onApprove } = useApproveFarm(lpContract, chainId)
