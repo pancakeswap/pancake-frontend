@@ -34,7 +34,7 @@ export function useFarmsLength() {
 export const usePollFarmsWithUserData = () => {
   const dispatch = useAppDispatch()
   const { account, chainId } = useActiveWeb3React()
-  const { proxyAddress, isLoading: isProxyContractLoading } = useBCakeProxyContractAddress(account)
+  const { proxyAddress, proxyCreated, isLoading: isProxyContractLoading } = useBCakeProxyContractAddress(account)
   const farmFlag = useFeatureFlag(featureFarmApiAtom)
 
   useSWRImmutable(
@@ -49,7 +49,7 @@ export const usePollFarmsWithUserData = () => {
     },
   )
 
-  const name = proxyAddress
+  const name = proxyCreated
     ? ['farmsWithUserData', account, proxyAddress, chainId]
     : ['farmsWithUserData', account, chainId]
 
@@ -58,7 +58,7 @@ export const usePollFarmsWithUserData = () => {
     async () => {
       const farmsConfig = await getFarmConfig(chainId)
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
-      const params = proxyAddress ? { account, pids, proxyAddress, chainId } : { account, pids, chainId }
+      const params = proxyCreated ? { account, pids, proxyAddress, chainId } : { account, pids, chainId }
 
       dispatch(fetchFarmUserDataAsync(params))
     },
