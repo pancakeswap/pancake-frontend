@@ -1,25 +1,22 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { parseUnits } from '@ethersproject/units'
+
 import { CurrencyAmount, JSBI, Mint, Price, TokenAmount } from 'peronio-sdk'
 import { Button, Text, ArrowDownIcon, Box, useModal, Flex, IconButton, ArrowUpDownIcon } from 'peronio-uikit'
 import { RouteComponentProps } from 'react-router-dom'
-import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
-import { useMintCallback } from 'hooks/useMintCallback'
 import { useMigrateTokenInfo } from 'state/tokenMigrate/hooks'
 import { useMigratorContract } from 'hooks/useContract'
 import { debounce } from 'lodash'
 import { tryParseAmount } from 'state/swap/hooks'
 import { mainnetTokens } from 'config/constants/tokens'
 import { useCurrency } from 'hooks/Tokens'
-import AddressInputPanel from './components/AddressInputPanel'
 import Column, { AutoColumn } from '../../components/Layout/Column'
 import ConfirmMintModal from './components/ConfirmMintModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { AutoRow, RowBetween } from '../../components/Layout/Row'
-import AdvancedMintDetailsDropdown from './components/AdvancedMintDetailsDropdown'
-import { ArrowWrapper, MintCallbackError, Wrapper } from './components/styleds'
-import MintPrice from './components/MintPrice'
+import {  Wrapper } from './components/styleds'
 import ProgressSteps from './components/ProgressSteps'
 import { AppBody } from '../../components/App'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
@@ -27,10 +24,9 @@ import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import {
   ApprovalState,
   useApproveCallbackFromMigrate,
-  useApproveCallbackFromMint,
 } from '../../hooks/useApproveCallback'
 import { Field } from '../../state/tokenMigrate/actions'
-import { useDefaultsFromURLSearch, useSwapActionHandlers, useSwapState } from '../../state/swap/hooks'
+import { useDefaultsFromURLSearch, useSwapState } from '../../state/swap/hooks'
 import { useExpertModeManager } from '../../state/user/hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import CircleLoader from '../../components/Loader/CircleLoader'
@@ -72,73 +68,48 @@ export default function MigrateView({ history }: RouteComponentProps) {
   const [isExpertMode] = useExpertModeManager()
   const migratorContract = useMigratorContract()
 
-  // readonly inputAmount: CurrencyAmount;
-  // /**
-  //  * The output amount for the trade assuming no slippage.
-  //  */
-  // readonly outputAmount: CurrencyAmount;
-  // /**
-  //  * The price expressed in terms of output amount/input amount.
-  //  */
-  // readonly executionPrice: Price;
-  // /**
-  //  * The input amount for the trade assuming no slippage.
-  //  */
-  // readonly feeAmount: number;
-  // /**
-  //  * The input amount for the trade assuming no slippage.
-  //  */
-  // readonly minReceive: number;
-  // /**
-  //  * The input amount for the trade assuming no slippage.
-  //  */
-  // readonly markup: Percent;
-
   // swap state
-  const { independentField, typedValue, recipient } = useSwapState()
-  const { mint, parsedAmount, currencies, currencyBalances, inputError: swapInputError } = useMigrateTokenInfo()
+  const {  recipient } = useSwapState()
+  const { mint, currencies, currencyBalances } = useMigrateTokenInfo()
   const [migrate, setMigrate] = useState<any>()
   // const [mint, setMint] = useState({ inputAmount: 0, outputAmount: 0 })
-  const [state, setState] = useState<string>('0.0')
-  const [outPutState, setOutPutState] = useState<string>('0x00')
-  const [output, setOutput] = useState<string>('0.0')
-  const [outputString, setOutputString] = useState<string>('0.0')
+  const [inputValue, setInputValue] = useState<string>('0.0')
+  const [inputAmount, setInputAmount] = useState<CurrencyAmount | undefined>()
+  const [outputAmount, setOutputAmount] = useState<CurrencyAmount | undefined>()
   const [outputUSDCString, setOutputUSDCString] = useState<string>('0.0')
 
   const parsedAmounts = {
-    [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : migrate?.inputAmount,
-    [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : migrate?.outputAmount,
+    [Field.INPUT]: inputAmount,
+    [Field.OUTPUT]: migrate?.outputAmount,
   }
 
-  const { onUserInput, onChangeRecipient } = useSwapActionHandlers()
-  const isValid = state //! swapInputError
-  const dependentField: Field = Field.INPUT
+  // compare input balance to max input based on version
+  const [balanceIn, amountIn] = [currencyBalances[Field.INPUT], inputAmount]
+  let inputError = null
+  if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
+    inputError = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })
+  }
+
+  const isValid = inputError == null
 
   const inputCurrencyId = mainnetTokens.pe.address
-  const outputCurrencyId = mainnetTokens.p.address
   const inputCurrency = useCurrency(inputCurrencyId)
-  const outputCurrency = useCurrency(outputCurrencyId)
 
-  const [inputAmount, setInputAmount] = useState<CurrencyAmount | undefined>()
-  const [outputAmount, setOutputAmount] = useState<CurrencyAmount | undefined>()
-  const calculateOutput = debounce(
-    (value) =>
-      migratorContract.quote(value).then((resultado: React.SetStateAction<string>) => {
-        setOutput(resultado)
-        const parsedOutputAmount = new TokenAmount(mainnetTokens.p, JSBI.BigInt(resultado[1]))
+  const calculateOutput = debounce((value) => {
+    const theAmmount = parseUnits(value, inputCurrency.decimals)
 
-        setOutputAmount(parsedOutputAmount)
-
-        setOutputString(resultado[1])
-        setOutputUSDCString(resultado[0])
-      }),
-    10,
-  )
+    migratorContract.quote(theAmmount.toNumber()).then((resultado: React.SetStateAction<string>) => {
+      const parsedOutputAmount = new TokenAmount(mainnetTokens.p, JSBI.BigInt(resultado[1]))
+      const parsedIntermediateAmount = new TokenAmount(mainnetTokens.p, JSBI.BigInt(resultado[0]))
+      setOutputAmount(parsedOutputAmount)
+      setOutputUSDCString(parsedIntermediateAmount.toSignificant())
+    })
+  }, 10)
 
   const handleTypeInput = useCallback(
     (value: string) => {
       if (value === undefined) return
-      setState(value)
+      setInputValue(value)
       const parsedInputAmount = tryParseAmount(value, inputCurrency)
       setInputAmount(parsedInputAmount)
       calculateOutput(value)
@@ -154,8 +125,6 @@ export default function MigrateView({ history }: RouteComponentProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )
-  // console.info("value", state)
-  console.info('output', output)
 
   // modal and loading
   const [{ mintToConfirm, mintErrorMessage, attemptingTxn, txHash }, setMintState] = useState<{
@@ -172,7 +141,6 @@ export default function MigrateView({ history }: RouteComponentProps) {
 
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromMigrate(migrate)
-  console.log(approval)
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
 
@@ -190,10 +158,12 @@ export default function MigrateView({ history }: RouteComponentProps) {
   // const { callback: mintCallback, error: swapCallbackError } = useMintCallback(migrate, recipient)
 
   const migrateCallback = useCallback(() => {
+    const theAmmount = parseUnits(inputAmount.toExact(), inputCurrency.decimals)
+
     migratorContract
-      .migrate(inputAmount.toExact())
+      .migrate(theAmmount)
       .then(() => {
-        setMintState({ attemptingTxn: false, mintToConfirm, mintErrorMessage: undefined, txHash: undefined })
+        setMintState({ attemptingTxn: false, mintToConfirm: undefined, mintErrorMessage: undefined, txHash: undefined })
       })
       .catch((error) => {
         setMintState({
@@ -203,7 +173,7 @@ export default function MigrateView({ history }: RouteComponentProps) {
           txHash: undefined,
         })
       })
-  }, [inputAmount, migratorContract, mintToConfirm])
+  }, [inputAmount, inputCurrency.decimals, migratorContract, mintToConfirm])
 
   const handleSwap = useCallback(() => {
     // if (!mintCallback) {
@@ -214,22 +184,24 @@ export default function MigrateView({ history }: RouteComponentProps) {
   }, [migrateCallback, mintToConfirm])
 
   // errors
-  const [showInverted, setShowInverted] = useState<boolean>(false)
-  console.log(approvalSubmitted)
   // warnings on slippage
   const priceImpactSeverity = 0
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
   // never show if price impact is above threshold in non expert mode
   const showApproveFlow =
-    approval === ApprovalState.NOT_APPROVED ||
-    approval === ApprovalState.PENDING ||
-    (approvalSubmitted && approval === ApprovalState.APPROVED)
+    !inputError &&
+    (approval === ApprovalState.NOT_APPROVED ||
+      approval === ApprovalState.PENDING ||
+      (approvalSubmitted && approval === ApprovalState.APPROVED))
 
   const handleConfirmDismiss = useCallback(() => {
     setMintState({ mintToConfirm, attemptingTxn, mintErrorMessage, txHash })
+    if (txHash) {
+      handleTypeInput('0.0')
+    }
     // if there was a tx hash, we want to clear the input
-  }, [attemptingTxn, mintErrorMessage, mintToConfirm, txHash])
+  }, [attemptingTxn, handleTypeInput, mintErrorMessage, mintToConfirm, txHash])
 
   const handleMaxInput = useCallback(() => {
     if (maxAmountInput) {
@@ -243,7 +215,7 @@ export default function MigrateView({ history }: RouteComponentProps) {
       outputAmount,
     })
   }, [inputAmount, outputAmount])
-  const [onPresentConfirmModal] = useModal(
+  const [onPresentConfirmModal, onDismissModal] = useModal(
     <ConfirmMintModal
       mint={migrate}
       attemptingTxn={attemptingTxn}
@@ -257,6 +229,12 @@ export default function MigrateView({ history }: RouteComponentProps) {
     true,
     'confirmMintModal',
   )
+
+  const formattedAmounts = {
+    [Field.INPUT]: inputValue,
+    [Field.INTERMEDIATE]: outputUSDCString,
+    [Field.OUTPUT]: outputAmount?.toSignificant(6) ?? '',
+  }
 
   return (
     <Page removePadding={false} hideFooterOnDesktop={false}>
@@ -275,7 +253,7 @@ export default function MigrateView({ history }: RouteComponentProps) {
                   <AutoColumn gap="md">
                     <CurrencyInputPanel
                       label={t('From')}
-                      value={state ?? '0'}
+                      value={formattedAmounts[Field.INPUT]}
                       showMaxButton={!atMaxAmountInput}
                       currency={currencies[Field.INPUT]}
                       onUserInput={handleTypeInput}
@@ -297,7 +275,7 @@ export default function MigrateView({ history }: RouteComponentProps) {
                       </AutoRow>
                     </AutoColumn>
                     <CurrencyInputPanel
-                      value={outputUSDCString}
+                      value={formattedAmounts[Field.INTERMEDIATE]}
                       onUserInput={handleTypeOutput}
                       label={t('To (estimated)')}
                       showMaxButton={false}
@@ -319,7 +297,7 @@ export default function MigrateView({ history }: RouteComponentProps) {
                       </AutoRow>
                     </AutoColumn>
                     <CurrencyInputPanel
-                      value={outputString}
+                      value={formattedAmounts[Field.OUTPUT]}
                       onUserInput={handleTypeOutput}
                       label={t('To (estimated)')}
                       showMaxButton={false}
@@ -375,12 +353,12 @@ export default function MigrateView({ history }: RouteComponentProps) {
                             (priceImpactSeverity > 3 && !isExpertMode)
                           }
                         >
-                          {t('Migrate')}
+                          {inputError || t('Migrate')}
                         </Button>
                       </RowBetween>
                     ) : (
                       <Button
-                        variant={isValid ? 'danger' : 'primary'}
+                        variant={!isValid ? 'danger' : 'primary'}
                         onClick={() => {
                           setMintState({
                             mintToConfirm: mint,
@@ -394,11 +372,7 @@ export default function MigrateView({ history }: RouteComponentProps) {
                         width="100%"
                         disabled={!isValid}
                       >
-                        {priceImpactSeverity > 3 && !isExpertMode
-                          ? t('Price Impact Too High')
-                          : priceImpactSeverity > 2
-                          ? t('Mint Anyway')
-                          : t('Migrate')}
+                        {inputError || t('Migrate')}
                       </Button>
                     )}
                     {showApproveFlow && (

@@ -74,8 +74,6 @@ export function useWithdrawTokenInfo(): {
     [Field.OUTPUT]: outputCurrency ?? undefined,
   }
 
-  console.info("monedas", currencies)
-
   let inputError: string | undefined
   if (!account) {
     inputError = t('Connect Wallet')

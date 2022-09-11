@@ -34,10 +34,7 @@ export function useMigrateTokenInfo(): {
   const { t } = useTranslation()
 
   const {
-    independentField: olindependt,
     typedValue,
-    [Field.INPUT]: { currencyId: olinputCurrencyId },
-    [Field.OUTPUT]: { currencyId: oloutputCurrencyId },
     recipient,
   } = useSwapState()
   const independentField = Field.INPUT
