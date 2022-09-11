@@ -9,7 +9,7 @@ import { PairState } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
 import { useContext, useMemo } from 'react'
 
-import tryParseAmount from 'utils/tryParseAmount'
+import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { Field } from 'state/mint/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'

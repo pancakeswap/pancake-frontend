@@ -243,10 +243,6 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                 ? `${currencies[Field.CURRENCY_A].symbol}-${currencies[Field.CURRENCY_B].symbol} Stable LP`
                 : t('Add Stable Liquidity')
             }
-            subtitle={t('Receive LP tokens and earn 0.17% trading fees')}
-            helper={t(
-              'Liquidity providers earn a 0.17% trading fee on all trades made for that token pair, proportional to their share of the liquidity pool.',
-            )}
             backTo="/liquidity"
           />
           <CardBody>
