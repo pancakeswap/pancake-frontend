@@ -1,6 +1,6 @@
 import { useEffect, useState, createElement, useRef } from 'react'
 import styled from 'styled-components'
-import { Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, useMatchBreakpoints, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useFarmUser } from 'state/farms/hooks'
@@ -76,7 +76,8 @@ const FarmMobileCell = styled.td`
 `
 
 const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>> = (props) => {
-  const { details, userDataReady, initialActivity } = props
+  const { details, initialActivity, multiplier } = props
+  const userDataReady = multiplier.multiplier !== undefined
   const hasSetInitialValue = useRef(false)
   const hasStakedAmount = !!useFarmUser(details.pid).stakedBalance.toNumber()
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
@@ -117,10 +118,14 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               case 'type':
                 return (
                   <td key={key}>
-                    <CellInner style={{ width: '140px' }}>
-                      {props[key] === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />}
-                      {props?.details?.boosted ? <BoostedTag scale="sm" ml="16px" /> : null}
-                    </CellInner>
+                    {userDataReady ? (
+                      <CellInner style={{ width: '140px' }}>
+                        {props[key] === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />}
+                        {props?.details?.boosted ? <BoostedTag scale="sm" ml="16px" /> : null}
+                      </CellInner>
+                    ) : (
+                      <Skeleton width={60} height={24} />
+                    )}
                   </td>
                 )
               case 'details':

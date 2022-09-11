@@ -1,6 +1,6 @@
 import { SerializedFarmConfig } from 'config/constants/types'
 import groupBy from 'lodash/groupBy'
-import isUndefinedOrNull from 'utils/isUndefinedOrNull'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 
 interface SplitProxyFarmsResponse {
   normalFarms: SerializedFarmConfig[]

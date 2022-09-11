@@ -1,12 +1,11 @@
-import { useCallback } from 'react'
-import { AutoRenewIcon, Button } from '@pancakeswap/uikit'
-import { PoolIds } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
-import useToast from 'hooks/useToast'
-import useCatchTxError from 'hooks/useCatchTxError'
+import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
+import { PoolIds } from 'config/constants/types'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { useIfoV3Contract } from 'hooks/useContract'
+import { useCallback } from 'react'
+import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
 
 interface Props {
   poolId: PoolIds

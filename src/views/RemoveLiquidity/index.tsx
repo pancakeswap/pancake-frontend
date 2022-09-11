@@ -4,7 +4,6 @@ import { splitSignature } from '@ethersproject/bytes'
 import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
-import useToast from 'hooks/useToast'
 import { Currency, Percent, WNATIVE, ChainId } from '@pancakeswap/sdk'
 import {
   Button,
@@ -19,6 +18,7 @@ import {
   Checkbox,
   TooltipText,
   useTooltip,
+  useToast,
 } from '@pancakeswap/uikit'
 import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
 import { BigNumber } from '@ethersproject/bignumber'

@@ -1,13 +1,12 @@
 /* eslint-disable no-console */
 import { useCallback } from 'react'
 
+import { useToast } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { MiniProgramConnector } from '@pancakeswap/wagmi/connectors/miniProgram'
 import { useConnect } from 'wagmi'
 import getWeb3Provider from 'utils/mpBridge'
 import { chains } from '../utils/wagmi'
-/* eslint max-classes-per-file: off -- noop */
-import useToast from './useToast'
 
 const injected = new MiniProgramConnector({ chains, getWeb3Provider })
 export const getAccount = () => injected.getAccount()

@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
+import { useToast } from '@pancakeswap/uikit'
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import { ToastDescriptionWithTx } from 'components/Toast'
 
-import useToast from 'hooks/useToast'
 import { logError, isUserRejected } from 'utils/sentry'
 import useActiveWeb3React from './useActiveWeb3React'
 

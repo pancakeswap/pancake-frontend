@@ -32,7 +32,7 @@ import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks'
 
-import replaceBrowserHistory from 'utils/replaceBrowserHistory'
+import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { currencyId } from 'utils/currencyId'
 import TradePrice from 'views/Swap/components/TradePrice'
 

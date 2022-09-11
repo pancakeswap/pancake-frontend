@@ -1,41 +1,41 @@
-import { useEffect, useState, useMemo, useCallback } from 'react'
-import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
-import { requiresApproval } from 'utils/requiresApproval'
 import { MaxUint256 } from '@ethersproject/constants'
-import {
-  Modal,
-  Text,
-  Flex,
-  HelpIcon,
-  BalanceInput,
-  Ticket,
-  useTooltip,
-  Skeleton,
-  Button,
-  ArrowForwardIcon,
-} from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { bscTokens } from '@pancakeswap/tokens'
-import { getFullDisplayBalance } from 'utils/formatBalance'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { useAppDispatch } from 'state'
-import { usePriceCakeBusd } from 'state/farms/hooks'
-import { useLottery } from 'state/lottery/hooks'
-import { fetchUserTicketsAndLotteries } from 'state/lottery'
-import useTheme from 'hooks/useTheme'
-import useTokenBalance from 'hooks/useTokenBalance'
-import { FetchStatus } from 'config/constants/types'
-import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { useCake, useLotteryV2Contract } from 'hooks/useContract'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import useToast from 'hooks/useToast'
+import {
+  ArrowForwardIcon,
+  BalanceInput,
+  Button,
+  Flex,
+  HelpIcon,
+  Modal,
+  Skeleton,
+  Text,
+  Ticket,
+  useToast,
+  useTooltip,
+} from '@pancakeswap/uikit'
+import { useWeb3React } from '@pancakeswap/wagmi'
+import BigNumber from 'bignumber.js'
+import ApproveConfirmButtons, { ButtonArrangement } from 'components/ApproveConfirmButtons'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import ApproveConfirmButtons, { ButtonArrangement } from 'components/ApproveConfirmButtons'
-import NumTicketsToBuyButton from './NumTicketsToBuyButton'
+import { FetchStatus } from 'config/constants/types'
+import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useCake, useLotteryV2Contract } from 'hooks/useContract'
+import useTheme from 'hooks/useTheme'
+import useTokenBalance from 'hooks/useTokenBalance'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useAppDispatch } from 'state'
+import { usePriceCakeBusd } from 'state/farms/hooks'
+import { fetchUserTicketsAndLotteries } from 'state/lottery'
+import { useLottery } from 'state/lottery/hooks'
+import styled from 'styled-components'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { getFullDisplayBalance } from 'utils/formatBalance'
+import { requiresApproval } from 'utils/requiresApproval'
 import EditNumbersModal from './EditNumbersModal'
+import NumTicketsToBuyButton from './NumTicketsToBuyButton'
 import { useTicketsReducer } from './useTicketsReducer'
 
 const StyledModal = styled(Modal)`

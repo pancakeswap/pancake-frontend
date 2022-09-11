@@ -4,7 +4,7 @@ import { Button, Text, ErrorIcon, Flex, Message, Checkbox, Link, Tag, Grid } fro
 import { AutoColumn } from 'components/Layout/Column'
 import { useAddUserToken } from 'state/user/hooks'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
-import truncateHash from 'utils/truncateHash'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import { ListLogo } from 'components/Logo'

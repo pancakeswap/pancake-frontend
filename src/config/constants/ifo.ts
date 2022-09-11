@@ -9,7 +9,7 @@ const ifos: Ifo[] = [
   {
     id: 'wom',
     address: '0x98828e9D69E49104a62ecb4FA3d6F9e06A295CBA',
-    isActive: true,
+    isActive: false,
     name: 'WOM',
     poolBasic: {
       saleAmount: '2,800,000 WOM',

@@ -41,6 +41,13 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 118,
+    lpSymbol: 'GQ-BUSD LP',
+    lpAddress: '0x72121d60b0e2F01c0FB7FE32cA24021b42165A40',
+    token: bscTokens.gq,
+    quoteToken: bscTokens.busd,
+  },
+  {
     pid: 117,
     lpSymbol: 'SPIN-BNB LP',
     lpAddress: '0x89c68051543Fa135B31c2CE7BD8Cdf392345FF01',

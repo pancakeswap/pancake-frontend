@@ -7,7 +7,7 @@ import { usePair } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
 
 import { useTranslation } from '@pancakeswap/localization'
-import tryParseAmount from 'utils/tryParseAmount'
+import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { AppState, useAppDispatch } from '../index'
 import { useTokenBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'

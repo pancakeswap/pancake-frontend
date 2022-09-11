@@ -1,12 +1,12 @@
-import replaceBrowserHistory from 'utils/replaceBrowserHistory'
-import { Box, connectorLocalStorageKey, ConnectorNames, LinkExternal, Text } from '@pancakeswap/uikit'
+import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
+import { Box, connectorLocalStorageKey, LinkExternal, Text, useToast } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
+import { ConnectorNames } from 'config/wallet'
 import { useConnect, useDisconnect, useNetwork, ConnectorNotFoundError, UserRejectedRequestError } from 'wagmi'
 import { clearUserStates } from '../utils/clearUserStates'
 import { useActiveChainId } from './useActiveChainId'
-import useToast from './useToast'
 import { useSessionChainId } from './useSessionChainId'
 
 const useAuth = () => {
