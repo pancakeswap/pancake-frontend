@@ -3,20 +3,12 @@ import useENS from 'hooks/ENS/useENS'
 import { useMintExactIn, useMintExactOut } from 'hooks/Mints'
 import { useCurrency } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useMigratorContract } from 'hooks/useContract'
 import { Currency, CurrencyAmount, Mint } from 'peronio-sdk'
 import { tryParseAmount, useSwapState } from 'state/swap/hooks'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { isAddress } from 'utils'
 import {
   Field,
-  // replaceSwapState,
-  // selectCurrency,
-  // setRecipient,
-  // switchCurrencies,
-  // typeInput,
-  // updateDerivedPairData,
-  // updatePairData,
 } from './actions'
 
 // TODO: Replace with functionality
