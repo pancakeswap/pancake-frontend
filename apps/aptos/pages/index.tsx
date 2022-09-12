@@ -20,7 +20,8 @@ import {
 import { useRouter } from 'next/router'
 // import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
-import { useNetwork } from 'hooks/useNetwork'
+import { useActiveNetwork } from 'hooks/useNetwork'
+import { useCoin } from 'hooks/useCoin'
 // import { EXCHANGE_DOCS_URLS } from 'config/constants'
 // import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 // import { SettingsMode } from 'components/Menu/GlobalSettings/types'
@@ -95,6 +96,8 @@ const SwitchIconButton = styled(IconButton)`
 
 function SwapPage() {
   const router = useRouter()
+
+  const yo = useCoin('0x1475ddbffb8e29a32223e1e25b8459d03a5ddd94e1cb7a50bb7051e11ba0cb2f::moon_coin::MoonCoin')
   // const loadedUrlParams = useDefaultsFromURLSearch()
   // const { t } = useTranslation()
   // const { isMobile } = useMatchBreakpoints()

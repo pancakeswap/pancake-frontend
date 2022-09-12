@@ -1,4 +1,5 @@
-import { defaultChain } from 'config/chains'
+import { chains, defaultChain } from 'config/chains'
+import { useNetwork } from '@pancakeswap/aptos'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { isChainSupported } from 'utils'
@@ -18,7 +19,8 @@ queryNetworkAtom.onMount = (set) => {
     set(defaultChain.name)
   }
 }
-export function useNetwork() {
+
+function useLocalNetwork() {
   const [sessionNetwork] = useSessionNetwork()
   const queryNetwork = useAtomValue(queryNetworkAtom)
   const { query } = useRouter()
@@ -30,4 +32,22 @@ export function useNetwork() {
   }
 
   return undefined
+}
+
+export function useActiveNetwork() {
+  const localNetworkName = useLocalNetwork()
+  const { chain } = useNetwork()
+  const queryNetwork = useAtomValue(queryNetworkAtom)
+
+  const networkName = localNetworkName ?? chain?.name ?? (queryNetwork === '' ? defaultChain.network : undefined)
+
+  return {
+    networkName,
+  }
+}
+
+export function useActiveChainId() {
+  const { networkName } = useActiveNetwork()
+
+  return chains.find((c) => c.name.toLowerCase() === networkName?.toLowerCase())?.id
 }

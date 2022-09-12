@@ -27,6 +27,7 @@ export type ClientConfig<TProvider extends AptosClient = AptosClient> = {
 
 export type Data = ConnectorData
 export type State<TProvider extends AptosClient = AptosClient> = {
+  chains?: Connector['chains']
   connector?: Connector
   connectors: Connector[]
   data?: Data
@@ -94,7 +95,7 @@ export class Client<TProvider extends AptosClient = AptosClient> {
                   chain: state?.data?.network,
                 },
               }),
-              // chains: state?.chains,
+              chains: state?.chains,
             }),
             version: 1,
           },
@@ -116,9 +117,9 @@ export class Client<TProvider extends AptosClient = AptosClient> {
     if (autoConnect && typeof window !== 'undefined') setTimeout(async () => await this.autoConnect(), 0)
   }
 
-  // get chains() {
-  //   return this.store.getState().chains
-  // }
+  get chains() {
+    return this.store.getState().chains
+  }
   get connectors() {
     return this.store.getState().connectors
   }
@@ -190,8 +191,7 @@ export class Client<TProvider extends AptosClient = AptosClient> {
       this.setState((x) => ({
         ...x,
         connector,
-        // chains: connector?.chains,
-        // data,
+        chains: connector?.chains,
         data: {
           account: data,
         },
@@ -235,13 +235,11 @@ export class Client<TProvider extends AptosClient = AptosClient> {
     this.store.subscribe(
       ({ connector }) => connector,
       (connector, prevConnector) => {
-        // @ts-ignore FIXME:
         prevConnector?.off?.('change', onChange)
         prevConnector?.off?.('disconnect', onDisconnect)
         prevConnector?.off?.('error', onError)
 
         if (!connector) return
-        // @ts-ignore FIXME:
         connector.on?.('change', onChange)
         connector.on?.('disconnect', onDisconnect)
         connector.on?.('error', onError)

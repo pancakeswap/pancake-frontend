@@ -1,6 +1,7 @@
 import { Account, Connector, Network } from './base'
 import { ConnectorNotFoundError } from '../errors'
 import { Aptos, TransactionPayload } from './types'
+import { Chain } from '../chain'
 
 declare global {
   interface Window {
@@ -28,8 +29,10 @@ export class PetraConnector extends Connector {
 
   provider?: Window['aptos']
 
-  constructor(options?: PetraConnectorOptions) {
-    super()
+  constructor(chains?: Chain[], options?: PetraConnectorOptions) {
+    super({
+      chains,
+    })
 
     let name = 'Petra'
     const overrideName = options?.name
@@ -42,10 +45,13 @@ export class PetraConnector extends Connector {
     try {
       const provider = await this.getProvider()
       if (!provider) throw new ConnectorNotFoundError()
-      if (provider.on) {
-        provider.on('accountChanged', this.onAccountsChanged)
-        provider.on('networkChanged', this.onNetworkChanged)
+      if (provider.onAccountChange) {
+        provider.onAccountChange(this.onAccountsChanged)
+        // TODO: disconnect event??
         // provider.on('disconnect', this.onDisconnect)
+      }
+      if (provider.onNetworkChange) {
+        provider.onNetworkChange(this.onNetworkChanged)
       }
 
       this.emit('message', { type: 'connecting' })
@@ -108,8 +114,6 @@ export class PetraConnector extends Connector {
   }
 
   protected onNetworkChanged = (network: Network) => {
-    // const id = normalizeChainId(chainId)
-    // const unsupported = this.isChainUnsupported(id)
     this.emit('change', { network })
   }
 }

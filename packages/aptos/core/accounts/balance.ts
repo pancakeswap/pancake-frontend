@@ -1,4 +1,5 @@
 import { formatUnits } from '@ethersproject/units'
+import { fetchCoin, APTOS_COIN } from '../coin'
 import { getProvider } from '../provider'
 
 export type FetchBalanceArgs = {
@@ -17,37 +18,21 @@ export type FetchBalanceResult = {
   value: string
 }
 
-const DEFAULT_COIN = '0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>'
-const DEFAULT_COIN_DECIMALS = 8
+const coinStoreTypeTag = (type: string) => `0x1::coin::CoinStore<${type}>`
 
 export async function fetchBalance({ address, networkName, coin }: FetchBalanceArgs): Promise<FetchBalanceResult> {
   const provider = getProvider({ networkName })
 
-  const resource = await provider.getAccountResource(address, DEFAULT_COIN || coin)
+  const resource = await provider.getAccountResource(address, coinStoreTypeTag(coin || APTOS_COIN))
 
   const { value } = (resource.data as any).coin
 
-  if (coin) {
-    const [coinHoistAddress] = coin.split('::')
-    // TODO: check address
-    if (coinHoistAddress) {
-      const coinResource = await provider.getAccountResource(coinHoistAddress, coin)
-
-      const { decimals = 18, symbol } = coinResource.data as any
-
-      return {
-        decimals,
-        formatted: formatUnits(value ?? '0', decimals ?? 18),
-        symbol,
-        value,
-      }
-    }
-  }
+  const { decimals, symbol } = await fetchCoin({ networkName, coin })
 
   return {
-    decimals: DEFAULT_COIN_DECIMALS,
-    formatted: formatUnits(value ?? '0', DEFAULT_COIN_DECIMALS),
-    symbol: 'APT',
+    decimals,
+    symbol,
+    formatted: formatUnits(value ?? '0', decimals),
     value,
   }
 }

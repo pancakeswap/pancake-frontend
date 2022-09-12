@@ -14,7 +14,7 @@ import {
 import { useAuth } from 'hooks/useAuth'
 
 import { APT } from 'config/coins'
-import { useNetwork } from 'hooks/useNetwork'
+import { useActiveNetwork } from 'hooks/useNetwork'
 import { getBlockExploreLink } from 'utils'
 
 interface WalletInfoProps {
@@ -25,7 +25,7 @@ interface WalletInfoProps {
 const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss }) => {
   const { t } = useTranslation()
   const { account } = useAccount()
-  const network = useNetwork()
+  const network = useActiveNetwork()
   const { data, isFetched } = useBalance({ address: account?.address })
 
   const { logout } = useAuth()

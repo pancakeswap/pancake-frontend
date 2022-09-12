@@ -8,7 +8,7 @@ const withVanillaExtract = createVanillaExtractPlugin()
 const withTH = transpileModules([
   '@pancakeswap/ui',
   '@pancakeswap/uikit',
-  '@pancakeswap/sdk',
+  '@pancakeswap/aptos-swap-sdk',
   '@pancakeswap/localization',
   '@pancakeswap/hooks',
   '@pancakeswap/aptos',

@@ -7,10 +7,11 @@
 // - `disconnect()`: Removes connection between dApp and wallet. Useful when the user wants to remove the connection.
 
 import EventEmitter from 'eventemitter3'
+import { Chain, defaultChains } from '../chain'
 
 export type Account = {
   address: string
-  publicKey: string
+  publicKey?: string
 }
 
 export type Network = {
@@ -23,7 +24,7 @@ export type ConnectorData = {
 }
 
 export interface ConnectorEvents {
-  change(data?: ConnectorData): void
+  change(data: ConnectorData): void
   connect(): void
   message({ type, data }: { type: string; data?: unknown }): void
   disconnect(): void
@@ -32,6 +33,12 @@ export interface ConnectorEvents {
 
 export abstract class Connector extends EventEmitter<ConnectorEvents> {
   atpos?: any
+  readonly chains: Chain[]
+
+  constructor({ chains = defaultChains }: { chains?: Chain[] }) {
+    super()
+    this.chains = chains
+  }
 
   abstract id: string
   abstract name: string

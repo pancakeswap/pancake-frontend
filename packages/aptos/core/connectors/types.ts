@@ -22,4 +22,6 @@ export interface Aptos {
   signMessage(message?: unknown): Promise<unknown>
   signTransaction(transaction: TransactionPayload): ReturnType<AptosClient['signTransaction']>
   on?: any
+  onAccountChange?: (account?: unknown) => unknown
+  onNetworkChange?: (network?: unknown) => unknown
 }
