@@ -5,9 +5,14 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCurrentBlock } from 'state/block/hooks'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
-import { ChainId } from '@pancakeswap/sdk'
 import { AppState, useAppDispatch } from '../index'
-import { checkedTransaction, finalizeTransaction } from './actions'
+import {
+  checkedTransaction,
+  finalizeTransaction,
+  FarmTransactionStatus,
+  NonBscFarmTransactionStep,
+  MsgStatus,
+} from './actions'
 import { fetchCelerApi } from './fetchCelerApi'
 
 export function shouldCheck(
@@ -83,61 +88,84 @@ export default function Updater(): null {
       })
   }, [chainId, provider, transactions, currentBlock, dispatch, toastSuccess, toastError, t])
 
-  // useEffect(() => {
-  //   Object.keys(transactions)
-  //     .filter(
-  //       (hash) =>
-  //         transactions[hash].type === 'non-bsc-farm' &&
-  //         transactions[hash].farmHarvest.sourceChain.status === 1 &&
-  //         transactions[hash].farmHarvest.destinationChain.status === HarvestStatusType.PENDING,
-  //     )
-  //     .forEach((hash) => {
-  //       const fakeHash = '0xcdb7e81470bdc407ed3eafb2ca20d53ab0d29bcc00e94ad6d056a1d2d99ec59c' || hash // TODO: Harvest change to hash before merge
-  //       fetchCelerApi(fakeHash)
-  //         .then((response) => {
-  //           const transaction = transactions[hash]
-  //           const { destinationTxHash, messageStatus } = response
-  //           const status =
-  //             messageStatus === MsgStatus.MS_COMPLETED ? 1 : messageStatus === MsgStatus.MS_FAIL ? 0 : undefined
-  //           dispatch(
-  //             finalizeTransaction({
-  //               chainId,
-  //               hash: transaction.hash,
-  //               receipt: { ...transaction.receipt },
-  //               farmHarvest: {
-  //                 ...transaction.farmHarvest,
-  //                 destinationChain: {
-  //                   ...transaction.farmHarvest.destinationChain,
-  //                   status,
-  //                   tx: destinationTxHash,
-  //                   msgStatus: messageStatus,
-  //                 },
-  //               },
-  //             }),
-  //           )
+  useEffect(() => {
+    Object.keys(transactions)
+      .filter(
+        (hash) =>
+          (transactions[hash].receipt?.status === 1 && transactions[hash].type === 'non-bsc-farm-stake') ||
+          (transactions[hash].type === 'non-bsc-farm-unstake' &&
+            transactions[hash].nonBscFarm.status === FarmTransactionStatus.PENDING),
+      )
+      .forEach((hash) => {
+        const steps = transactions[hash]?.nonBscFarm?.steps
+        if (steps.length) {
+          const pendingStep = steps.findIndex(
+            (step: NonBscFarmTransactionStep) => step.status === FarmTransactionStatus.PENDING,
+          )
+          const previousIndex = pendingStep - 1
 
-  //           const { amount } = transaction.farmHarvest.sourceChain
-  //           if (messageStatus === MsgStatus.MS_COMPLETED) {
-  //             const toastText = t('%amount% CAKE have been successfully harvest to your BNB Smart Chain Wallet', {
-  //               amount,
-  //             })
-  //             toastSuccess(
-  //               toastText,
-  //               <ToastDescriptionWithTx txHash={destinationTxHash} customizeChainId={ChainId.BSC} />,
-  //             )
-  //           } else if (messageStatus === MsgStatus.MS_FAIL) {
-  //             const toastText = t('%amount% CAKE harvest is failed', { amount })
-  //             toastError(
-  //               toastText,
-  //               <ToastDescriptionWithTx txHash={destinationTxHash} customizeChainId={ChainId.BSC} />,
-  //             )
-  //           }
-  //         })
-  //         .catch((error) => {
-  //           console.error(`Failed to check harvest transaction hash: ${hash}`, error)
-  //         })
-  //     })
-  // }, [chainId, transactions, currentBlock, dispatch, toastSuccess, toastError, t])
+          if (previousIndex >= 0) {
+            // const previousHash = steps[previousIndex]
+            const fakeHash = '0xcdb7e81470bdc407ed3eafb2ca20d53ab0d29bcc00e94ad6d056a1d2d99ec59c' || hash // TODO: Harvest change to hash before merge
+
+            fetchCelerApi(fakeHash)
+              .then((response) => {
+                const transaction = transactions[hash]
+                const { destinationTxHash, messageStatus } = response
+                const status =
+                  messageStatus === MsgStatus.MS_COMPLETED
+                    ? FarmTransactionStatus.SUCCESS
+                    : messageStatus === MsgStatus.MS_FAIL
+                    ? FarmTransactionStatus.FAIL
+                    : FarmTransactionStatus.PENDING
+                const isFinalStepComplete = status === FarmTransactionStatus.SUCCESS && steps.length === pendingStep + 1
+
+                const newSteps = transaction.nonBscFarm.steps.map((step, index) => {
+                  let newObj = {}
+                  if (index === pendingStep) {
+                    newObj = { ...step, status, tx: destinationTxHash }
+                  }
+                  return { ...step, ...newObj }
+                })
+
+                dispatch(
+                  finalizeTransaction({
+                    chainId,
+                    hash: transaction.hash,
+                    receipt: { ...transaction.receipt },
+                    nonBscFarm: {
+                      ...transaction.nonBscFarm,
+                      steps: newSteps,
+                      status: isFinalStepComplete ? FarmTransactionStatus.SUCCESS : transaction.nonBscFarm.status,
+                    },
+                  }),
+                )
+
+                if (isFinalStepComplete) {
+                  const toastTitle = transactions[hash].type === 'non-bsc-farm-stake' ? t('Staked!') : t('Unstaked!')
+                  toastSuccess(
+                    toastTitle,
+                    <ToastDescriptionWithTx txHash={destinationTxHash} customizeChainId={steps[pendingStep].chainId}>
+                      {transactions[hash].type === 'non-bsc-farm-stake'
+                        ? t('Your LP Token have been staked in the Farm!')
+                        : t('Your LP Token have been unstaked in the Farm!')}
+                    </ToastDescriptionWithTx>,
+                  )
+                } else if (status === FarmTransactionStatus.FAIL) {
+                  const toastTitle = transactions[hash].type === 'non-bsc-farm-stake' ? 'Stake Error' : 'Unstake Error'
+                  toastError(
+                    toastTitle,
+                    <ToastDescriptionWithTx txHash={destinationTxHash} customizeChainId={steps[pendingStep].chainId} />,
+                  )
+                }
+              })
+              .catch((error) => {
+                console.error(`Failed to check harvest transaction hash: ${hash}`, error)
+              })
+          }
+        }
+      })
+  }, [chainId, transactions, currentBlock, dispatch, toastSuccess, toastError, t])
 
   return null
 }

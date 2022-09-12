@@ -4,7 +4,7 @@ import { useAppDispatch } from 'state'
 import { useTranslation } from '@pancakeswap/localization'
 import { TransactionDetails } from 'state/transactions/reducer'
 import { pickFarmTransactionTx } from 'state/global/actions'
-import { TransactionType } from 'state/transactions/actions'
+import { TransactionType, FarmTransactionStatus } from 'state/transactions/actions'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBlockExploreLink } from 'utils'
 
@@ -39,11 +39,13 @@ const TxnLink = styled.div`
 `
 
 const renderIcon = (txn: TransactionDetails) => {
-  if (!txn.receipt) {
+  const { receipt, nonBscFarm } = txn
+  if (!txn.receipt || nonBscFarm?.status === FarmTransactionStatus.PENDING) {
     return <RefreshIcon spin width="24px" />
   }
 
-  return txn.receipt?.status === 1 || typeof txn.receipt?.status === 'undefined' ? (
+  const isFarmStatusSuccess = nonBscFarm ? nonBscFarm.status === FarmTransactionStatus.SUCCESS : true
+  return (receipt?.status === 1 && isFarmStatusSuccess) || typeof receipt?.status === 'undefined' ? (
     <CheckmarkCircleIcon color="success" width="24px" />
   ) : (
     <BlockIcon color="failure" width="24px" />

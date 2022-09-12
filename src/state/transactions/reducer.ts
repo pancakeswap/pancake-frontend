@@ -83,7 +83,7 @@ export default createReducer(initialState, (builder) =>
         tx.lastCheckedBlockNumber = Math.max(blockNumber, tx.lastCheckedBlockNumber)
       }
     })
-    .addCase(finalizeTransaction, (transactions, { payload: { hash, chainId, receipt } }) => {
+    .addCase(finalizeTransaction, (transactions, { payload: { hash, chainId, receipt, nonBscFarm } }) => {
       const tx = transactions[chainId]?.[hash]
       if (!tx) {
         return
@@ -95,6 +95,15 @@ export default createReducer(initialState, (builder) =>
         confirmOrderSubmission(chainId, receipt.from, hash, receipt.status !== 0)
       } else if (tx.type === 'limit-order-cancellation') {
         confirmOrderCancellation(chainId, receipt.from, hash, receipt.status !== 0)
+      } else if (tx.type === 'non-bsc-farm-stake' || tx.type === 'non-bsc-farm-unstake') {
+        if (tx.nonBscFarm.steps[0].status === FarmTransactionStatus.PENDING) {
+          tx.nonBscFarm.steps[0] = {
+            ...tx.nonBscFarm.steps[0],
+            status: receipt.status,
+          }
+        } else {
+          tx.nonBscFarm = nonBscFarm
+        }
       }
     })
     .addCase(resetUserState, (transactions, { payload: { chainId } }) => {
