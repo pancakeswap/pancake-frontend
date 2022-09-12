@@ -25,7 +25,7 @@ interface WalletInfoProps {
 const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss }) => {
   const { t } = useTranslation()
   const { account } = useAccount()
-  const network = useActiveNetwork()
+  const { networkName } = useActiveNetwork()
   const { data, isFetched } = useBalance({ address: account?.address })
 
   const { logout } = useAuth()
@@ -67,7 +67,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
       </Flex>
       {account && (
         <Flex alignItems="center" justifyContent="end" mb="24px">
-          <LinkExternal href={getBlockExploreLink(account.address, 'address', network)}>
+          <LinkExternal href={getBlockExploreLink(account.address, 'address', networkName)}>
             {t('View on %site%', {
               site: t('Explorer'),
             })}

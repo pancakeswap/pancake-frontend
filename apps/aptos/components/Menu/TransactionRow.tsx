@@ -47,14 +47,14 @@ const renderIcon = (txn: any) => {
 
 const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = ({ txn }) => {
   const { t } = useTranslation()
-  const network = useActiveNetwork()
+  const { networkName } = useActiveNetwork()
 
   if (!txn) {
     return null
   }
 
   return (
-    <TxnLink href={getBlockExploreLink(txn.hash, 'transaction', network)} external>
+    <TxnLink href={getBlockExploreLink(txn.hash, 'transaction', networkName)} external>
       <TxnIcon>{renderIcon(txn)}</TxnIcon>
       <Summary>
         {txn.translatableSummary
