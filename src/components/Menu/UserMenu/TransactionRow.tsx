@@ -3,8 +3,8 @@ import styled from 'styled-components'
 import { useAppDispatch } from 'state'
 import { useTranslation } from '@pancakeswap/localization'
 import { TransactionDetails } from 'state/transactions/reducer'
-import { pickFarmHarvestTx } from 'state/global/actions'
-import { TransactionType, HarvestStatusType } from 'state/transactions/actions'
+import { pickFarmTransactionTx } from 'state/global/actions'
+import { TransactionType } from 'state/transactions/actions'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBlockExploreLink } from 'utils'
 
@@ -39,7 +39,7 @@ const TxnLink = styled.div`
 `
 
 const renderIcon = (txn: TransactionDetails) => {
-  if (!txn.receipt || txn?.farmHarvest?.destinationChain?.status === HarvestStatusType.PENDING) {
+  if (!txn.receipt) {
     return <RefreshIcon spin width="24px" />
   }
 
@@ -56,9 +56,9 @@ const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = (
   const { chainId } = useActiveWeb3React()
 
   const onClickTransaction = () => {
-    if (type === 'non-bsc-farm-harvest') {
+    if (type === 'non-bsc-farm-stake' || type === 'non-bsc-farm-unstake') {
       onDismiss()
-      dispatch(pickFarmHarvestTx({ tx: txn.hash }))
+      dispatch(pickFarmTransactionTx({ tx: txn.hash }))
     } else {
       const url = getBlockExploreLink(txn.hash, 'transaction', chainId)
       window.open(url, '_blank', 'noopener noreferrer')

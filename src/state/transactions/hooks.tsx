@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { AppState, useAppDispatch } from '../index'
-import { addTransaction, TransactionType, FarmHarvestTransactionType } from './actions'
+import { addTransaction, TransactionType, NonBscFarmTransactionType } from './actions'
 import { TransactionDetails } from './reducer'
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
@@ -17,11 +17,7 @@ export function useTransactionAdder(): (
     claim?: { recipient: string }
     type?: TransactionType
     order?: Order
-    farmHarvest?: {
-      lpAddress: string
-      sourceChain: FarmHarvestTransactionType
-      destinationChain: FarmHarvestTransactionType
-    }
+    nonBscFarm?: NonBscFarmTransactionType
   },
 ) => void {
   const { chainId, account } = useActiveWeb3React()
@@ -37,7 +33,7 @@ export function useTransactionAdder(): (
         claim,
         type,
         order,
-        farmHarvest,
+        nonBscFarm,
       }: {
         summary?: string
         translatableSummary?: { text: string; data?: Record<string, string | number> }
@@ -45,11 +41,7 @@ export function useTransactionAdder(): (
         approval?: { tokenAddress: string; spender: string }
         type?: TransactionType
         order?: Order
-        farmHarvest?: {
-          lpAddress: string
-          sourceChain: FarmHarvestTransactionType
-          destinationChain: FarmHarvestTransactionType
-        }
+        nonBscFarm?: NonBscFarmTransactionType
       } = {},
     ) => {
       if (!account) return
@@ -70,7 +62,7 @@ export function useTransactionAdder(): (
           claim,
           type,
           order,
-          farmHarvest,
+          nonBscFarm,
         }),
       )
     },

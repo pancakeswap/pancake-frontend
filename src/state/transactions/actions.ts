@@ -11,7 +11,8 @@ export type TransactionType =
   | 'limit-order-submission'
   | 'limit-order-cancellation'
   | 'limit-order-approval'
-  | 'non-bsc-farm-harvest'
+  | 'non-bsc-farm-stake'
+  | 'non-bsc-farm-unstake'
 
 export interface SerializableTransactionReceipt {
   to: string
@@ -33,19 +34,26 @@ export enum MsgStatus {
   MS_FALLBACK = 5,
 }
 
-export enum HarvestStatusType {
+export enum FarmTransactionStatus {
   PENDING = -1,
   FAIL = 0,
   SUCCESS = 1,
 }
 
-export interface FarmHarvestTransactionType {
+export interface NonBscFarmTransactionStep {
+  step: number
   chainId: number
-  status: HarvestStatusType
+  status: FarmTransactionStatus
   tx: string
   nonce?: string
-  amount?: string
   msgStatus?: MsgStatus
+}
+
+export interface NonBscFarmTransactionType {
+  status: FarmTransactionStatus
+  amount: string
+  lpAddress: string
+  steps: NonBscFarmTransactionStep[]
 }
 
 export const addTransaction =
@@ -59,22 +67,14 @@ export const addTransaction =
     translatableSummary?: { text: string; data?: Record<string, string | number> }
     type?: TransactionType
     order?: Order
-    farmHarvest?: {
-      lpAddress: string
-      sourceChain: FarmHarvestTransactionType
-      destinationChain: FarmHarvestTransactionType
-    }
+    nonBscFarm?: NonBscFarmTransactionType
   }>('transactions/addTransaction')
 export const clearAllTransactions = createAction<{ chainId: ChainId }>('transactions/clearAllTransactions')
 export const finalizeTransaction = createAction<{
   chainId: ChainId
   hash: string
   receipt: SerializableTransactionReceipt
-  farmHarvest?: {
-    lpAddress: string
-    sourceChain: FarmHarvestTransactionType
-    destinationChain: FarmHarvestTransactionType
-  }
+  nonBscFarm?: NonBscFarmTransactionType
 }>('transactions/finalizeTransaction')
 export const checkedTransaction = createAction<{
   chainId: ChainId

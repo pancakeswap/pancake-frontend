@@ -9,8 +9,8 @@ import {
   finalizeTransaction,
   SerializableTransactionReceipt,
   TransactionType,
-  FarmHarvestTransactionType,
-  HarvestStatusType,
+  NonBscFarmTransactionType,
+  FarmTransactionStatus,
 } from './actions'
 import { resetUserState } from '../global/actions'
 
@@ -29,11 +29,7 @@ export interface TransactionDetails {
   addedTime: number
   confirmedTime?: number
   from: string
-  farmHarvest?: {
-    lpAddress: string
-    sourceChain: FarmHarvestTransactionType
-    destinationChain: FarmHarvestTransactionType
-  }
+  nonBscFarm?: NonBscFarmTransactionType
 }
 
 export interface TransactionState {
@@ -50,7 +46,7 @@ export default createReducer(initialState, (builder) =>
       addTransaction,
       (
         transactions,
-        { payload: { chainId, from, hash, approval, summary, translatableSummary, claim, type, order, farmHarvest } },
+        { payload: { chainId, from, hash, approval, summary, translatableSummary, claim, type, order, nonBscFarm } },
       ) => {
         if (transactions[chainId]?.[hash]) {
           throw Error('Attempted to add existing transaction.')
@@ -66,7 +62,7 @@ export default createReducer(initialState, (builder) =>
           addedTime: now(),
           type,
           order,
-          farmHarvest,
+          nonBscFarm,
         }
         transactions[chainId] = txs
         if (order) saveOrder(chainId, from, order, true)
@@ -87,7 +83,7 @@ export default createReducer(initialState, (builder) =>
         tx.lastCheckedBlockNumber = Math.max(blockNumber, tx.lastCheckedBlockNumber)
       }
     })
-    .addCase(finalizeTransaction, (transactions, { payload: { hash, chainId, receipt, farmHarvest } }) => {
+    .addCase(finalizeTransaction, (transactions, { payload: { hash, chainId, receipt } }) => {
       const tx = transactions[chainId]?.[hash]
       if (!tx) {
         return
@@ -99,18 +95,6 @@ export default createReducer(initialState, (builder) =>
         confirmOrderSubmission(chainId, receipt.from, hash, receipt.status !== 0)
       } else if (tx.type === 'limit-order-cancellation') {
         confirmOrderCancellation(chainId, receipt.from, hash, receipt.status !== 0)
-      } else if (
-        tx.type === 'non-bsc-farm-harvest' &&
-        tx.farmHarvest.sourceChain.status === HarvestStatusType.PENDING
-      ) {
-        tx.farmHarvest.sourceChain.status = receipt.status
-      } else if (
-        tx.type === 'non-bsc-farm-harvest' &&
-        tx.farmHarvest.sourceChain.status === 1 &&
-        tx.farmHarvest.destinationChain.status === HarvestStatusType.PENDING
-      ) {
-        tx.receipt.status = farmHarvest.destinationChain.status
-        tx.farmHarvest = farmHarvest
       }
     })
     .addCase(resetUserState, (transactions, { payload: { chainId } }) => {

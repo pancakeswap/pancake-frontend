@@ -11,6 +11,6 @@ export const toggleFarmTransactionModal = createAction<{
   showModal: boolean
 }>('transactions/toggleFarmTransactionModal')
 
-export const pickFarmHarvestTx = createAction<{
+export const pickFarmTransactionTx = createAction<{
   tx: string
-}>('transactions/pickFarmHarvestTx')
+}>('transactions/pickFarmTransactionTx')

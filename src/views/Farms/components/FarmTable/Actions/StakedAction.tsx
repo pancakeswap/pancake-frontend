@@ -1,4 +1,5 @@
 import { AddIcon, Button, IconButton, MinusIcon, Skeleton, Text, useModal } from '@pancakeswap/uikit'
+import { ChainId } from '@pancakeswap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -12,9 +13,13 @@ import { useCallback, useContext } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
+import { useTransactionAdder } from 'state/transactions/hooks'
+import { FarmTransactionStatus } from 'state/transactions/actions'
+import { pickFarmTransactionTx } from 'state/global/actions'
 import styled from 'styled-components'
 import { TransactionResponse } from '@ethersproject/providers'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import { formatNumber } from 'utils/formatBalance'
 import useApproveFarm from '../../../hooks/useApproveFarm'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
@@ -121,9 +126,11 @@ export const StakedContainer = ({ children, ...props }) => {
 
 const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps>> = ({
   apr,
+  vaultPid,
   multiplier,
   lpSymbol,
   lpLabel,
+  lpAddress,
   quoteToken,
   token,
   userDataReady,
@@ -138,12 +145,14 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   onApprove,
   isApproved,
 }) => {
+  const dispatch = useAppDispatch()
   const { boosterState } = useContext(YieldBoosterStateContext)
 
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
+  const addTransaction = useTransactionAdder()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
 
   const { tokenBalance, stakedBalance } = userData || {}
 
@@ -158,32 +167,123 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
   const handleStake = async (amount: string) => {
-    const receipt = await fetchWithCatchTxError(() => {
-      return onStake(amount)
-    })
-    if (receipt?.status) {
-      toastSuccess(
-        `${t('Staked')}!`,
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('Your funds have been staked in the farm')}
-        </ToastDescriptionWithTx>,
-      )
+    if (vaultPid) {
+      await handleNonBscStake(amount)
+    } else {
+      const receipt = await fetchWithCatchTxError(() => onStake(amount))
+
+      if (receipt?.status) {
+        toastSuccess(
+          `${t('Staked')}!`,
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Your funds have been staked in the farm')}
+          </ToastDescriptionWithTx>,
+        )
+        onDone()
+      }
+    }
+  }
+
+  const handleNonBscStake = async (amountValue: string) => {
+    try {
+      const receipt = await onStake(amountValue)
+      const amount = formatNumber(Number(amountValue), 5, 5)
+
+      addTransaction(receipt, {
+        type: 'non-bsc-farm-stake',
+        translatableSummary: {
+          text: 'Staked %amount% %lpSymbol% Token',
+          data: { amount, lpSymbol },
+        },
+        nonBscFarm: {
+          status: FarmTransactionStatus.PENDING,
+          amount,
+          lpAddress,
+          steps: [
+            {
+              step: 1,
+              chainId,
+              tx: receipt.hash,
+              status: FarmTransactionStatus.PENDING,
+            },
+            {
+              step: 2,
+              tx: '',
+              chainId: ChainId.BSC,
+              status: FarmTransactionStatus.PENDING,
+            },
+          ],
+        },
+      })
+
+      dispatch(pickFarmTransactionTx({ tx: receipt.hash }))
       onDone()
+    } catch (error) {
+      console.error('Stake non Bsc Farm Error: ', error)
     }
   }
 
   const handleUnstake = async (amount: string) => {
-    const receipt = await fetchWithCatchTxError(() => {
-      return onUnstake(amount)
-    })
-    if (receipt?.status) {
-      toastSuccess(
-        `${t('Unstaked')}!`,
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('Your earnings have also been harvested to your wallet')}
-        </ToastDescriptionWithTx>,
-      )
+    if (vaultPid) {
+      await handleNonBscUnStake(amount)
+    } else {
+      const receipt = await fetchWithCatchTxError(() => {
+        return onUnstake(amount)
+      })
+      if (receipt?.status) {
+        toastSuccess(
+          `${t('Unstaked')}!`,
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Your earnings have also been harvested to your wallet')}
+          </ToastDescriptionWithTx>,
+        )
+        onDone()
+      }
+    }
+  }
+
+  const handleNonBscUnStake = async (amountValue: string) => {
+    try {
+      const receipt = await onUnstake(amountValue)
+      const amount = formatNumber(Number(amountValue), 5, 5)
+
+      addTransaction(receipt, {
+        type: 'non-bsc-farm-unstake',
+        translatableSummary: {
+          text: 'Unstaked %amount% %lpSymbol% Token',
+          data: { amount, lpSymbol },
+        },
+        nonBscFarm: {
+          status: FarmTransactionStatus.PENDING,
+          amount,
+          lpAddress,
+          steps: [
+            {
+              step: 1,
+              chainId,
+              tx: receipt.hash,
+              status: FarmTransactionStatus.PENDING,
+            },
+            {
+              step: 2,
+              chainId: ChainId.BSC,
+              tx: '',
+              status: FarmTransactionStatus.PENDING,
+            },
+            {
+              step: 3,
+              chainId,
+              tx: '',
+              status: FarmTransactionStatus.PENDING,
+            },
+          ],
+        },
+      })
+
+      dispatch(pickFarmTransactionTx({ tx: receipt.hash }))
       onDone()
+    } catch (error) {
+      console.error('Unstake non Bsc Farm Error: ', error)
     }
   }
 
