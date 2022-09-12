@@ -5,7 +5,7 @@ import { AppState } from '../index'
 export function useFarmHarvestTransaction() {
   const state = useSelector<AppState, AppState['global']>((s) => s.global)
   return {
-    showModal: state.showFarmHarvestModal,
-    pickedTx: state.pickedFarmHarvestModalTx,
+    showModal: state.showFarmTransactionModal,
+    pickedTx: state.pickedFarmTransactionModalTx,
   }
 }

@@ -7,9 +7,9 @@ export const updateVersion = createAction<void>('global/updateVersion')
 
 export const resetUserState = createAction<{ chainId: ChainId }>('global/resetUserState')
 
-export const toggleFarmHarvestModal = createAction<{
+export const toggleFarmTransactionModal = createAction<{
   showModal: boolean
-}>('transactions/toggleFarmHarvestModal')
+}>('transactions/toggleFarmTransactionModal')
 
 export const pickFarmHarvestTx = createAction<{
   tx: string

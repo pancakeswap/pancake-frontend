@@ -1,24 +1,24 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit'
-import { toggleFarmHarvestModal, pickFarmHarvestTx } from './actions'
+import { toggleFarmTransactionModal, pickFarmHarvestTx } from './actions'
 
 export interface GlobalState {
-  showFarmHarvestModal: boolean
-  pickedFarmHarvestModalTx: string
+  showFarmTransactionModal: boolean
+  pickedFarmTransactionModalTx: string
 }
 
 export const initialState: GlobalState = {
-  showFarmHarvestModal: false,
-  pickedFarmHarvestModalTx: '',
+  showFarmTransactionModal: false,
+  pickedFarmTransactionModalTx: '',
 }
 
 export default createReducer(initialState, (builder) =>
   builder
-    .addCase(toggleFarmHarvestModal, (state, { payload: { showModal } }) => {
-      state.showFarmHarvestModal = showModal
+    .addCase(toggleFarmTransactionModal, (state, { payload: { showModal } }) => {
+      state.showFarmTransactionModal = showModal
     })
     .addCase(pickFarmHarvestTx, (state, { payload: { tx } }) => {
-      state.pickedFarmHarvestModalTx = tx
-      state.showFarmHarvestModal = true
+      state.pickedFarmTransactionModalTx = tx
+      state.showFarmTransactionModal = true
     }),
 )
