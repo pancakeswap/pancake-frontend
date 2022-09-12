@@ -1,11 +1,15 @@
-import { Flex, Heading } from '@pancakeswap/uikit'
+import { Flex, Heading, RefreshIcon } from '@pancakeswap/uikit'
 import { BigNumber } from 'bignumber.js'
 import Balance from 'components/Balance'
 import { useMemo } from 'react'
+import { useAppDispatch } from 'state'
 import { useLpTokenPrice } from 'state/farms/hooks'
 import { formatLpBalance, getBalanceNumber } from 'utils/formatBalance'
+import { useNonBscFarmPendingTransaction } from 'state/transactions/hooks'
+import { pickFarmTransactionTx } from 'state/global/actions'
 
 interface StackedLPProps {
+  lpAddress: string
   stakedBalance: BigNumber
   lpSymbol: string
   tokenSymbol: string
@@ -16,6 +20,7 @@ interface StackedLPProps {
 }
 
 const StakedLP: React.FunctionComponent<React.PropsWithChildren<StackedLPProps>> = ({
+  lpAddress,
   stakedBalance,
   lpSymbol,
   quoteTokenSymbol,
@@ -24,15 +29,24 @@ const StakedLP: React.FunctionComponent<React.PropsWithChildren<StackedLPProps>>
   tokenAmountTotal,
   quoteTokenAmountTotal,
 }) => {
+  const dispatch = useAppDispatch()
   const lpPrice = useLpTokenPrice(lpSymbol)
+  const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
 
   const displayBalance = useMemo(() => {
     return formatLpBalance(stakedBalance)
   }, [stakedBalance])
 
+  const onClickLoadingIcon = () => {
+    dispatch(pickFarmTransactionTx({ tx: pendingFarm.txid }))
+  }
+
   return (
     <Flex flexDirection="column" alignItems="flex-start">
-      <Heading color={stakedBalance.eq(0) ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
+      <Flex>
+        <Heading color={stakedBalance.eq(0) ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
+        {pendingFarm && <RefreshIcon style={{ cursor: 'pointer' }} spin onClick={onClickLoadingIcon} />}
+      </Flex>
       {stakedBalance.gt(0) && lpPrice.gt(0) && (
         <>
           <Balance

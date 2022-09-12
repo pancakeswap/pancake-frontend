@@ -122,7 +122,15 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 }
 
 // calculate pending transactions
-export function usePendingTransactions(): { hasPendingTransactions: boolean; pendingNumber: number } {
+interface NonBscPendingData {
+  txid: string
+  lpAddress: string
+}
+export function usePendingTransactions(): {
+  hasPendingTransactions: boolean
+  pendingNumber: number
+  nonBscFarmPendingList: NonBscPendingData[]
+} {
   const allTransactions = useAllTransactions()
   const sortedRecentTransactions = useMemo(() => {
     const txs = Object.values(allTransactions)
@@ -134,8 +142,20 @@ export function usePendingTransactions(): { hasPendingTransactions: boolean; pen
     .map((tx) => tx.hash)
   const hasPendingTransactions = !!pending.length
 
+  const nonBscFarmPendingList = sortedRecentTransactions
+    .filter((tx) => pending.includes(tx.hash) && !!tx.nonBscFarm)
+    .map((tx) => ({ txid: tx.hash, lpAddress: tx.nonBscFarm.lpAddress }))
+
   return {
     hasPendingTransactions,
+    nonBscFarmPendingList,
     pendingNumber: pending.length,
   }
+}
+
+export function useNonBscFarmPendingTransaction(hash: string): NonBscPendingData {
+  const { nonBscFarmPendingList } = usePendingTransactions()
+  return useMemo(() => {
+    return nonBscFarmPendingList.find((tx) => tx.lpAddress.toLocaleLowerCase() === hash.toLocaleLowerCase())
+  }, [hash, nonBscFarmPendingList])
 }

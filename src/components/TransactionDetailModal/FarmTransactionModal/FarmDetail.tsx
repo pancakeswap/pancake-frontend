@@ -6,6 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { chains } from 'utils/wagmi'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
+import { FarmTransactionStatus, NonBscFarmTransactionStep } from 'state/transactions/actions'
 
 const ChainContainer = styled(Flex)<{ chainId?: number }>`
   width: 147px;
@@ -22,38 +23,38 @@ const ChainIdBackgroundColor = {
 }
 
 interface HarvestDetailProps {
-  chainId?: number
+  step: NonBscFarmTransactionStep
 }
 
-const FarmDetail: React.FC<React.PropsWithChildren<HarvestDetailProps>> = ({ chainId }) => {
+const FarmDetail: React.FC<React.PropsWithChildren<HarvestDetailProps>> = ({ step }) => {
   const { t } = useTranslation()
-  const isFail = false
-  const isLoading = true
-  const chainInfo = useMemo(() => chains.find((chain) => chain.id === chainId), [chainId])
+  const isFail = step.status === FarmTransactionStatus.FAIL
+  const isLoading = step.status === FarmTransactionStatus.PENDING
+  const chainInfo = useMemo(() => chains.find((chain) => chain.id === step.chainId), [step])
 
   return (
     <Flex mb="16px" justifyContent="space-between">
       <ChainContainer>
-        <ChainLogo width={20} height={20} chainId={chainId} />
+        <ChainLogo width={20} height={20} chainId={step.chainId} />
         <Text color="white" fontSize="14px" ml="4px">
           {chainInfo?.name}
         </Text>
       </ChainContainer>
       <Box>
-        {isFail ? (
-          <WarningIcon color="failure" />
+        {isLoading ? (
+          <Flex>
+            <Text color="textSubtle" bold fontSize="14px">
+              {t('Loading')}
+            </Text>
+            <RefreshIcon ml="5px" color="textSubtle" spin />
+          </Flex>
         ) : (
           <Box>
-            {isLoading ? (
-              <Flex>
-                <Text color="textSubtle" bold fontSize="14px">
-                  {t('Loading')}
-                </Text>
-                <RefreshIcon ml="5px" color="textSubtle" spin />
-              </Flex>
+            {isFail ? (
+              <WarningIcon color="failure" />
             ) : (
-              <LinkExternal href={getBlockExploreLink('0x1233', 'transaction', chainId)}>
-                {getBlockExploreName(chainId)}
+              <LinkExternal href={getBlockExploreLink(step.tx, 'transaction', step.chainId)}>
+                {getBlockExploreName(step.chainId)}
               </LinkExternal>
             )}
           </Box>

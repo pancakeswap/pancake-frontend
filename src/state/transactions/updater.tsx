@@ -106,7 +106,7 @@ export default function Updater(): null {
 
           if (previousIndex >= 0) {
             // const previousHash = steps[previousIndex]
-            const fakeHash = '0xcdb7e81470bdc407ed3eafb2ca20d53ab0d29bcc00e94ad6d056a1d2d99ec59c' || hash // TODO: Harvest change to hash before merge
+            const fakeHash = '0xcdb7e81470bdc407ed3eafb2ca20d53ab0d29bcc00e94ad6d056a1d2d99ec59c' || hash // TODO: NonBSCFarm change to hash before merge
 
             fetchCelerApi(fakeHash)
               .then((response) => {

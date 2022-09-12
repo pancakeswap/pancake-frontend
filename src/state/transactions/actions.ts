@@ -53,6 +53,7 @@ export interface NonBscFarmTransactionType {
   status: FarmTransactionStatus
   amount: string
   lpAddress: string
+  lpSymbol: string
   steps: NonBscFarmTransactionStep[]
 }
 

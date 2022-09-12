@@ -20,6 +20,7 @@ import styled from 'styled-components'
 import { TransactionResponse } from '@ethersproject/providers'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { formatNumber } from 'utils/formatBalance'
+import { getCrossFarmingContract } from 'utils/contractHelpers'
 import useApproveFarm from '../../../hooks/useApproveFarm'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
@@ -186,24 +187,27 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   const handleNonBscStake = async (amountValue: string) => {
     try {
-      const receipt = await onStake(amountValue)
+      const crossFarmingAddress = getCrossFarmingContract(null, chainId)
+      const [receipt, nonce] = await Promise.all([onStake(amountValue), crossFarmingAddress.nonces(account)])
       const amount = formatNumber(Number(amountValue), 5, 5)
 
       addTransaction(receipt, {
         type: 'non-bsc-farm-stake',
         translatableSummary: {
-          text: 'Staked %amount% %lpSymbol% Token',
+          text: 'Stake %amount% %lpSymbol% Token',
           data: { amount, lpSymbol },
         },
         nonBscFarm: {
           status: FarmTransactionStatus.PENDING,
           amount,
+          lpSymbol,
           lpAddress,
           steps: [
             {
               step: 1,
               chainId,
               tx: receipt.hash,
+              nonce: nonce.toString(),
               status: FarmTransactionStatus.PENDING,
             },
             {
@@ -227,9 +231,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     if (vaultPid) {
       await handleNonBscUnStake(amount)
     } else {
-      const receipt = await fetchWithCatchTxError(() => {
-        return onUnstake(amount)
-      })
+      const receipt = await fetchWithCatchTxError(() => onUnstake(amount))
       if (receipt?.status) {
         toastSuccess(
           `${t('Unstaked')}!`,
@@ -250,12 +252,13 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       addTransaction(receipt, {
         type: 'non-bsc-farm-unstake',
         translatableSummary: {
-          text: 'Unstaked %amount% %lpSymbol% Token',
+          text: 'Unstake %amount% %lpSymbol% Token',
           data: { amount, lpSymbol },
         },
         nonBscFarm: {
           status: FarmTransactionStatus.PENDING,
           amount,
+          lpSymbol,
           lpAddress,
           steps: [
             {
@@ -352,6 +355,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
           </ActionTitles>
           <ActionContent>
             <StakedLP
+              lpAddress={lpAddress}
               stakedBalance={stakedBalance}
               lpSymbol={lpSymbol}
               quoteTokenSymbol={quoteToken.symbol}
