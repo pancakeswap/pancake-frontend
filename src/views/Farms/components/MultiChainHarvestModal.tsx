@@ -26,11 +26,8 @@ import { getBalanceAmount } from 'utils/formatBalance'
 import { LightGreyCard } from 'components/Card'
 import Balance from 'components/Balance'
 import { ToastDescriptionWithTx } from 'components/Toast'
-// import { useGasPrice } from 'state/user/hooks'
-// import { useNonBscVault } from 'hooks/useContract'
-// import { useOraclePrice } from 'views/Farms/hooks/useFetchOraclePrice'
-// import { nonBscHarvestFarm } from 'utils/calls'
-// import { getCrossFarmingContract } from 'utils/contractHelpers'
+import useNonBscHarvestFarm from 'views/Farms/hooks/useNonBscHarvestFarm'
+import { farmFetcher } from '../../../../apis/farms/src/helper'
 
 const TokenWrapper = styled.div`
   padding-right: 8px;
@@ -59,37 +56,36 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
 }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const { account, chainId } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
   const { switchNetworkAsync } = useSwitchNetwork()
+  const { onReward } = useNonBscHarvestFarm(pid)
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
-  // const gasPrice = useGasPrice()
-  // const oraclePrice = useOraclePrice(chainId)
-  // const nonBscVaultContract = useNonBscVault()
-  // const crossFarmingAddress = getCrossFarmingContract(null, chainId)
 
   const displayBalance = getBalanceAmount(earningsBigNumber)
   const isBscNetwork = useMemo(() => chainId === ChainId.BSC, [chainId])
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     onDismiss?.()
-  }
+  }, [])
 
   const handleSwitchNetwork = () => {
-    switchNetworkAsync(ChainId.BSC)
+    const isTestnet = farmFetcher.isTestnet(chainId)
+    const switchedChainId = isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC
+    switchNetworkAsync(switchedChainId)
   }
 
   const handleHarvest = useCallback(async () => {
-    // const receipt = await fetchWithCatchTxError(() => contract.deposit(amountDeposit, account))
-    // if (receipt?.status) {
-    //   toastSuccess(
-    //     t('Success!'),
-    //     <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-    //       {t('Your funds have been staked in the pool')}
-    //     </ToastDescriptionWithTx>,
-    //   )
-    //   handleCancel()
-    // }
-  }, [t, fetchWithCatchTxError, toastSuccess])
+    const receipt = await fetchWithCatchTxError(() => onReward())
+    if (receipt?.status) {
+      toastSuccess(
+        `${t('Harvested')}!`,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+        </ToastDescriptionWithTx>,
+      )
+      handleCancel()
+    }
+  }, [t, onReward, fetchWithCatchTxError, toastSuccess, handleCancel])
 
   return (
     <Modal
