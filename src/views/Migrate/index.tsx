@@ -92,15 +92,15 @@ export default function MigrateView({ history }: RouteComponentProps) {
 
   const isValid = inputError == null
 
-  const inputCurrencyId = mainnetTokens.pe.address
+  const inputCurrencyId = mainnetTokens.pV1.address
   const inputCurrency = useCurrency(inputCurrencyId)
 
   const calculateOutput = debounce((value) => {
     const theAmmount = parseUnits(value, inputCurrency.decimals)
 
     migratorContract.quote(theAmmount.toNumber()).then((resultado: React.SetStateAction<string>) => {
-      const parsedOutputAmount = new TokenAmount(mainnetTokens.p, JSBI.BigInt(resultado[1]))
-      const parsedIntermediateAmount = new TokenAmount(mainnetTokens.p, JSBI.BigInt(resultado[0]))
+      const parsedOutputAmount = new TokenAmount(mainnetTokens.pe, JSBI.BigInt(resultado[1]))
+      const parsedIntermediateAmount = new TokenAmount(mainnetTokens.pe, JSBI.BigInt(resultado[0]))
       setOutputAmount(parsedOutputAmount)
       setOutputUSDCString(parsedIntermediateAmount.toSignificant())
     })

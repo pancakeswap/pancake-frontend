@@ -4,7 +4,8 @@ import { mainnetTokens, testnetTokens } from './tokens'
 // export const ROUTER_ADDRESS = routerAddress
 export const ROUTER_ADDRESS = '0x751D346B92f3dce8813E6b6E248a11C534F4BdEa'
 export const PERONIO_ADDRESS = mainnetTokens.pe.address
-export const MIGRATOR_MOCK_ADDRESS = '0xD379EEB40093e12d99726837A6a109829fF227a1'
+export const PERONIO_V1_ADDRESS = mainnetTokens.pV1.address
+export const MIGRATOR_ADDRESS = '0xD379EEB40093e12d99726837A6a109829fF227a1'
 export const MARKUP_DECIMALS = 4
 
 // a list of tokens by chain
@@ -14,7 +15,7 @@ type ChainTokenList = {
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
-  [ChainId.MAINNET]: [mainnetTokens.wbnb, mainnetTokens.usdt, mainnetTokens.pe, mainnetTokens.usdc],
+  [ChainId.MAINNET]: [mainnetTokens.wbnb, mainnetTokens.usdt, mainnetTokens.pe, mainnetTokens.pV1, mainnetTokens.usdc],
   [ChainId.TESTNET]: [testnetTokens.wbnb, testnetTokens.cake, testnetTokens.busd],
 }
 
@@ -37,21 +38,22 @@ export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: To
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
-  [ChainId.MAINNET]: [mainnetTokens.wbnb, mainnetTokens.pe, mainnetTokens.usdt],
+  [ChainId.MAINNET]: [mainnetTokens.wbnb, mainnetTokens.pe, mainnetTokens.pV1, mainnetTokens.usdt],
   [ChainId.TESTNET]: [testnetTokens.wbnb, testnetTokens.cake, testnetTokens.busd],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
-  [ChainId.MAINNET]: [mainnetTokens.wbnb, mainnetTokens.pe, mainnetTokens.usdc, mainnetTokens.usdt],
+  [ChainId.MAINNET]: [mainnetTokens.wbnb, mainnetTokens.pV1, mainnetTokens.pe, mainnetTokens.usdc, mainnetTokens.usdt],
   [ChainId.TESTNET]: [testnetTokens.wbnb, testnetTokens.cake, testnetTokens.busd],
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
   [ChainId.MAINNET]: [
+    [mainnetTokens.pV1, mainnetTokens.usdc],
+    [mainnetTokens.wbnb, mainnetTokens.pV1],
     [mainnetTokens.pe, mainnetTokens.usdc],
     [mainnetTokens.wbnb, mainnetTokens.pe],
-    [mainnetTokens.pe, mainnetTokens.usdt],
   ],
 }
 

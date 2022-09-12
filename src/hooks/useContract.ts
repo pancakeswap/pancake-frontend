@@ -34,6 +34,7 @@ import {
   getErc721CollectionContract,
   getBunnySpecialXmasContract,
   getPeronioContract,
+  getPeronioV1Contract,
   getMigratorContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'

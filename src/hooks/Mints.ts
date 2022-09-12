@@ -7,15 +7,8 @@ import { Currency, CurrencyAmount, Mint, Percent, Price } from 'peronio-sdk'
 import JSBI from 'jsbi'
 import { MARKUP_DECIMALS } from 'config/constants'
 import { useEffect, useMemo, useState } from 'react'
+import { parseUnits } from 'ethers/lib/utils'
 import { usePeronioContract } from './useContract'
-
-// import useActiveWeb3React from 'hooks/useActiveWeb3React'
-
-// import { useUserSingleHopOnly } from 'state/user/hooks'
-// import { BETTER_TRADE_LESS_HOPS_THRESHOLD } from '../config/constants'
-// import { wrappedCurrency } from '../utils/wrappedCurrency'
-
-// import { useUnsupportedTokens } from './Tokens'
 
 /**
  * Returns the best trade for the exact amount of tokens in to the given token out
@@ -53,7 +46,8 @@ export function useMintExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: 
       return
     }
     async function fetchBuyingPrice(): Promise<BigNumber> {
-      return peronioContract.buyingPrice()
+      const theAmount = parseUnits(currencyAmountIn.toFixed(), currencyAmountIn.currency.decimals)
+      return peronioContract.quoteIn(theAmount.toNumber())
     }
 
     fetchBuyingPrice()
@@ -114,7 +108,8 @@ export function useMintExactOut(currencyAmountOut?: CurrencyAmount, currencyIn?:
       return
     }
     async function fetchBuyingPrice(): Promise<BigNumber> {
-      return peronioContract.buyingPrice()
+      const theAmount = parseUnits(currencyAmountOut.toFixed(), currencyAmountOut.currency.decimals)
+      return peronioContract.quoteIn(theAmount.toNumber())
     }
 
     fetchBuyingPrice()

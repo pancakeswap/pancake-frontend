@@ -28,8 +28,8 @@ export function useMigrateTokenInfo(): {
     recipient,
   } = useSwapState()
   const independentField = Field.INPUT
-  const inputCurrencyId = mainnetTokens.pe.address
-  const outputCurrencyId = mainnetTokens.p.address
+  const inputCurrencyId = mainnetTokens.pV1.address
+  const outputCurrencyId = mainnetTokens.pe.address
   const intermediateCurrencyId = mainnetTokens.usdc.address
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
