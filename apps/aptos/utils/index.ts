@@ -5,7 +5,7 @@ export function getBlockExploreLink(
   type: 'transaction' | 'token' | 'address' | 'block' | 'countdown',
   networkName?: string,
 ): string {
-  const chain = chains.find((c) => c.network === networkName)
+  const chain = chains.find((c) => c.network.toLowerCase() === networkName?.toLowerCase())
   if (!chain) return defaultChain.blockExplorers?.default.url ?? ''
   // only Devnet is capital
   const query = `?network=${chain.network === 'devnet' ? 'Devnet' : chain.id}`

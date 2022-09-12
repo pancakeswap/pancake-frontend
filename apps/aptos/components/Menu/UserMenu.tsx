@@ -1,10 +1,12 @@
-import { useTranslation, Trans } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
+import { useAccount, useBalance } from '@pancakeswap/aptos'
+import { useIsMounted } from '@pancakeswap/hooks'
+import { Trans, useTranslation } from '@pancakeswap/localization'
 import {
   Box,
   Flex,
   LogoutIcon,
   RefreshIcon,
+  Skeleton,
   useModal,
   UserMenu as UIKitUserMenu,
   UserMenuDivider,
@@ -12,11 +14,9 @@ import {
   UserMenuVariant,
   WarningIcon,
 } from '@pancakeswap/uikit'
-import NextLink from 'next/link'
-import { useEffect, useState } from 'react'
-import { useAccount, useBalance } from '@pancakeswap/aptos'
-import { ConnectWalletButton } from '../ConnectWalletButton'
+import { useState } from 'react'
 import { useAuth } from '../../hooks/useAuth'
+import { ConnectWalletButton } from '../ConnectWalletButton'
 import WalletModal, { WalletView } from './WalletModal'
 
 // import { usePendingTransactions } from 'state/transactions/hooks'
@@ -29,6 +29,7 @@ const UserMenu = () => {
   const { t } = useTranslation()
   const { account } = useAccount()
   const { logout } = useAuth()
+  const isMounted = useIsMounted()
   // const { hasPendingTransactions, pendingNumber } = usePendingTransactions()ail
   const [userMenuText, setUserMenuText] = useState<string>('')
   const [userMenuVariable, setUserMenuVariable] = useState<UserMenuVariant>('default')
@@ -82,6 +83,10 @@ const UserMenu = () => {
         </UserMenuItem>
       </>
     )
+  }
+
+  if (!isMounted) {
+    return <Skeleton height="32px" width="140px" variant="round" />
   }
 
   if (account) {

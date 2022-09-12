@@ -5,10 +5,19 @@ import { AppProps } from 'next/app'
 import Head from 'next/head'
 import Script from 'next/script'
 import { useStore } from 'state'
+import ListsUpdater from 'state/lists/updater'
 
 declare module 'styled-components' {
   /* eslint-disable @typescript-eslint/no-empty-interface */
   export interface DefaultTheme extends PancakeTheme {}
+}
+
+function Updaters() {
+  return (
+    <>
+      <ListsUpdater />
+    </>
+  )
 }
 
 function GlobalHooks() {
@@ -40,6 +49,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <Providers store={store}>
         <GlobalHooks />
+        <Updaters />
         <ResetCSS />
         <Menu>
           <Component {...pageProps} />

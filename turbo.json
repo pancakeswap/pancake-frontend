@@ -22,6 +22,9 @@
     "integration-test": {
       "outputs": [],
       "inputs": ["cypress/integration/**.test.ts"]
+    },
+    "clean": {
+      "cache": false
     }
   }
 }

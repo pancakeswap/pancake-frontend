@@ -46,9 +46,11 @@ export interface TagInfo extends TagDetails {
   id: string
 }
 
-export type TokenAddressMap = Readonly<{
-  [chainId in ChainId]: Readonly<{ [tokenAddress: string]: { token: WrappedTokenInfo; list: TokenList } }>
-}>
+export type TokenAddressMap<TChainId extends number = ChainId> = Readonly<
+  {
+    [chainId in TChainId]: Readonly<{ [tokenAddress: string]: { token: WrappedTokenInfo; list: TokenList } }>
+  }
+>
 
 /**
  * An empty result, useful as a default.

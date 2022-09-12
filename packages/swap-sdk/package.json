@@ -23,7 +23,8 @@
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "start": "tsup src/index.tsx --format esm,cjs --watch --dts",
     "test": "jest",
-    "prepublishOnly": "yarn run build"
+    "prepublishOnly": "yarn run build",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
     "big.js": "^5.2.2",

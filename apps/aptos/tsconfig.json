@@ -9,7 +9,8 @@
     "paths": {
       "@pancakeswap/aptos/core": ["../../packages/aptos/core/index.ts"],
       "@pancakeswap/aptos": ["../../packages/aptos/src/index.ts"],
-      "@pancakeswap/aptos-swap-sdk": ["../../packages/aptos-swap-sdk/src/index.ts"]
+      "@pancakeswap/aptos-swap-sdk": ["../../packages/aptos-swap-sdk/src/index.ts"],
+      "@pancakeswap/sdk": ["../../packages/swap-sdk/src/index.ts"]
     }
   }
 }
