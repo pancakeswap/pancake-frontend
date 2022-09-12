@@ -12,7 +12,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest",
+    "test": "jest && yarn turbo run test",
     "test:watch": "jest --watch",
     "test:config": "jest src/config/__tests__/ --testPathIgnorePatterns",
     "integration-test": "start-server-and-test start http://localhost:3000 'turbo run integration-test --filter=test'",
@@ -141,6 +141,7 @@
     "ts-node": "^10.9.1",
     "tsconfig": "*",
     "turbo": "^1.4.5",
-    "typechain": "^6.1.0"
+    "typechain": "^6.1.0",
+    "vitest": "^0.23.1"
   }
 }

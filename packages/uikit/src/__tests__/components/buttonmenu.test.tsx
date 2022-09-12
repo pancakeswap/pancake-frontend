@@ -14,35 +14,7 @@ it("renders correctly", () => {
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c0 {
-      background-color: #EFF4F5;
-      border-radius: 16px;
-      display: -webkit-inline-box;
-      display: -webkit-inline-flex;
-      display: -ms-inline-flexbox;
-      display: inline-flex;
-      border: 1px solid #E9EAEB;
-      width: auto;
-    }
-
-    .c0 > button,
-    .c0 > a {
-      -webkit-flex: auto;
-      -ms-flex: auto;
-      flex: auto;
-    }
-
-    .c0 > button + button,
-    .c0 > a + a {
-      margin-left: 2px;
-    }
-
-    .c0 > button,
-    .c0 a {
-      box-shadow: none;
-    }
-
-    .c1 {
+      .c1 {
       position: relative;
       -webkit-align-items: center;
       -webkit-box-align: center;
@@ -74,8 +46,8 @@ it("renders correctly", () => {
       transition: background-color 0.2s,opacity 0.2s;
       height: 48px;
       padding: 0 24px;
-      background-color: #1FC7D4;
-      color: white;
+      background-color: var(--colors-primary);
+      color: var(--colors-white);
     }
 
     .c1:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
@@ -92,16 +64,44 @@ it("renders correctly", () => {
 
     .c1:disabled,
     .c1.pancake-button--disabled {
-      background-color: #E9EAEB;
-      border-color: #E9EAEB;
+      background-color: var(--colors-backgroundDisabled);
+      border-color: var(--colors-backgroundDisabled);
       box-shadow: none;
-      color: #BDC2C4;
+      color: var(--colors-textDisabled);
       cursor: not-allowed;
+    }
+
+    .c0 {
+      background-color: var(--colors-tertiary);
+      border-radius: 16px;
+      display: -webkit-inline-box;
+      display: -webkit-inline-flex;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      border: 1px solid var(--colors-disabled);
+      width: auto;
+    }
+
+    .c0 > button,
+    .c0 > a {
+      -webkit-flex: auto;
+      -ms-flex: auto;
+      flex: auto;
+    }
+
+    .c0 > button + button,
+    .c0 > a + a {
+      margin-left: 2px;
+    }
+
+    .c0 > button,
+    .c0 a {
+      box-shadow: none;
     }
 
     .c2 {
       background-color: transparent;
-      color: #1FC7D4;
+      color: var(--colors-primary);
     }
 
     .c2:hover:not(:disabled):not(:active) {

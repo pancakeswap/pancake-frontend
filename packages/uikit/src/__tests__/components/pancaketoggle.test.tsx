@@ -37,8 +37,8 @@ it("renders correctly", () => {
     }
 
     .c0 .pancake:nth-child(1) {
-      background: #FFFFFF;
-      box-shadow: 0 1.5px 0 1.5px #BDC2C4;
+      background: var(--colors-backgroundAlt);
+      box-shadow: 0 1.5px 0 1.5px var(--colors-textDisabled);
     }
 
     .c0 .pancake:nth-child(2) {
@@ -106,7 +106,7 @@ it("renders correctly", () => {
     }
 
     .c1:focus + label {
-      box-shadow: 0px 0px 0px 1px #7645D9,0px 0px 0px 4px rgba(118,69,217,0.6);
+      box-shadow: var(--shadows-focus);
     }
 
     .c1:checked + label .pancakes {
@@ -149,8 +149,8 @@ it("renders correctly", () => {
     .c2 {
       width: 56px;
       height: 32px;
-      background: #31D0AA;
-      box-shadow: inset 0px 2px 2px -1px rgba(74,74,104,0.1);
+      background: var(--colors-success);
+      box-shadow: var(--shadows-inset);
       display: inline-block;
       border-radius: 50px;
       position: relative;
@@ -233,8 +233,8 @@ it("renders correctly scale sm", () => {
     }
 
     .c0 .pancake:nth-child(1) {
-      background: #FFFFFF;
-      box-shadow: 0 1px 0 1px #BDC2C4;
+      background: var(--colors-backgroundAlt);
+      box-shadow: 0 1px 0 1px var(--colors-textDisabled);
     }
 
     .c0 .pancake:nth-child(2) {
@@ -302,7 +302,7 @@ it("renders correctly scale sm", () => {
     }
 
     .c1:focus + label {
-      box-shadow: 0px 0px 0px 1px #7645D9,0px 0px 0px 4px rgba(118,69,217,0.6);
+      box-shadow: var(--shadows-focus);
     }
 
     .c1:checked + label .pancakes {
@@ -345,8 +345,8 @@ it("renders correctly scale sm", () => {
     .c2 {
       width: 36px;
       height: 20px;
-      background: #31D0AA;
-      box-shadow: inset 0px 2px 2px -1px rgba(74,74,104,0.1);
+      background: var(--colors-success);
+      box-shadow: var(--shadows-inset);
       display: inline-block;
       border-radius: 50px;
       position: relative;
