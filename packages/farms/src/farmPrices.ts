@@ -183,7 +183,7 @@ export const getFarmsPrices = (farms: FarmData[], chainId: number): FarmWithPric
       nativeStableLpMap[chainId].stable,
       quoteTokenPriceBusd,
     )
-    const lpTokenPrice = farm.stableSwapContract
+    const lpTokenPrice = farm.stableSwapAddress
       ? getStableLpTokenPrice(
           FixedNumber.from(farm.lpTotalSupply),
           FixedNumber.from(farm.tokenAmountTotal),

@@ -33,14 +33,14 @@ const farms: SerializedFarmConfig[] = [
     token: bscTestnetTokens.wbnb,
     quoteToken: bscTestnetTokens.busd,
   },
-  // TODO: Stable add test
   {
     pid: 9,
     lpSymbol: 'USDC-BUSD LP',
     lpAddress: '0xd1742b5eC6798cEB8C791e0ebbEf606A4946f67E',
     token: bscTestnetTokens.usdc, // coins[0]
     quoteToken: bscTestnetTokens.busd, // coins[1]
-    stableSwapContract: '0x1288026D2c5a76A5bfb0730F615131A448f4Ad06',
+    stableSwapAddress: '0x1288026D2c5a76A5bfb0730F615131A448f4Ad06',
+    infoStableSwapAddress: '0xaE6C14AAA753B3FCaB96149e1E10Bc4EDF39F546',
   },
 ].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
 

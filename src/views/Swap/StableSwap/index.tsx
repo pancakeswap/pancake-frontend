@@ -1,31 +1,29 @@
-import stableSwapConfigs from 'config/constants/stableSwapConfigs'
 import { useEffect } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { Field } from 'state/swap/actions'
 import StableSwapForm from './components/StableSwapForm'
-import useStableConfig, { StableConfigContext } from './hooks/useStableConfig'
-
-/**
- * NOTE:
- *  Since we only have one token pair at this moment, set static
- * Will add more tokens in demand
- */
-const stableTokenPair = stableSwapConfigs[0]
+import useStableConfig, { StableConfigContext, useStableFarms } from './hooks/useStableConfig'
 
 const StableSwapFormContainer = ({ setIsChartDisplayed, isChartDisplayed }) => {
+  const stableFarms = useStableFarms()
+
   const { onCurrencySelection } = useSwapActionHandlers()
 
+  const stableTokenPair = stableFarms?.length ? stableFarms[0] : null
+
   useEffect(() => {
-    onCurrencySelection(Field.INPUT, stableTokenPair.token0)
-    onCurrencySelection(Field.OUTPUT, stableTokenPair.token1)
-  }, [onCurrencySelection])
+    if (stableTokenPair) {
+      onCurrencySelection(Field.INPUT, stableTokenPair.token0)
+      onCurrencySelection(Field.OUTPUT, stableTokenPair.token1)
+    }
+  }, [onCurrencySelection, stableTokenPair])
 
   const { stableSwapConfig, ...stableConfig } = useStableConfig({
-    tokenA: stableTokenPair.token0,
-    tokenB: stableTokenPair.token1,
+    tokenA: stableTokenPair?.token0,
+    tokenB: stableTokenPair?.token1,
   })
 
-  return stableSwapConfig ? (
+  return stableTokenPair ? (
     <StableConfigContext.Provider value={{ stableSwapConfig, ...stableConfig }}>
       <StableSwapForm setIsChartDisplayed={setIsChartDisplayed} isChartDisplayed={isChartDisplayed} />
     </StableConfigContext.Provider>

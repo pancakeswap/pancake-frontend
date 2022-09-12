@@ -36,7 +36,7 @@ export interface SerializedClassicFarmConfig extends FarmConfigBaseProps {
 export type SerializedFarmConfig = SerializedClassicFarmConfig | SerializedStableFarmConfig
 
 export interface SerializedStableFarmConfig extends SerializedClassicFarmConfig {
-  stableSwapContract: string
+  stableSwapAddress: string
 }
 
 export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
@@ -56,5 +56,5 @@ export interface AprMap {
 }
 
 export function isStableFarm(farmConfig: SerializedFarmConfig): farmConfig is SerializedStableFarmConfig {
-  return 'stableSwapContract' in farmConfig && typeof farmConfig.stableSwapContract === 'string'
+  return 'stableSwapAddress' in farmConfig && typeof farmConfig.stableSwapAddress === 'string'
 }
