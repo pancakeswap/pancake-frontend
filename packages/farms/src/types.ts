@@ -37,6 +37,7 @@ export type SerializedFarmConfig = SerializedClassicFarmConfig | SerializedStabl
 
 export interface SerializedStableFarmConfig extends SerializedClassicFarmConfig {
   stableSwapAddress: string
+  infoStableSwapAddress: string
 }
 
 export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {

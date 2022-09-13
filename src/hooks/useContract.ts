@@ -1,3 +1,5 @@
+import Web3 from 'web3'
+
 import {
   Cake,
   CakeFlexibleSideVaultV2,
@@ -295,6 +297,7 @@ export function useContract<T extends Contract = Contract>(
   withSignerIfPossible = true,
 ): T | null {
   const { provider } = useActiveWeb3React()
+
   const providerOrSigner = useProviderOrSigner(withSignerIfPossible) ?? provider
 
   const canReturnContract = useMemo(() => address && ABI && providerOrSigner, [address, ABI, providerOrSigner])
@@ -362,4 +365,12 @@ export function useBCakeProxyContract(proxyContractAddress: string, withSignerIf
     () => proxyContractAddress && getBCakeProxyContract(proxyContractAddress, providerOrSigner),
     [providerOrSigner, proxyContractAddress],
   )
+}
+
+export function useWeb3Contact(abi, address) {
+  const { provider } = useActiveWeb3React()
+
+  const web3 = new Web3(provider?.connection?.url)
+
+  return new web3.eth.Contract(abi, address)
 }

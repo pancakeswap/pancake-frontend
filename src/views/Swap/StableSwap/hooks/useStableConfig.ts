@@ -1,4 +1,4 @@
-import { useContract } from 'hooks/useContract'
+import { useContract, useWeb3Contact } from 'hooks/useContract'
 import stableSwapABI from 'config/abi/stableSwap.json'
 import stableSwapInfoABI from 'config/abi/infoStableSwap.json'
 import stableLPABI from 'config/abi/stableLP.json'
@@ -67,6 +67,10 @@ export function useLPTokensWithBalanceByAccount(account) {
 }
 
 export const StableConfigContext = createContext(null)
+
+export const useWeb3SwapContract = (swapAddress) => {
+  return useWeb3Contact(stableSwapABI, swapAddress)
+}
 
 export default function useStableConfig({ tokenA, tokenB }: { tokenA: Currency; tokenB: Currency }) {
   const stablePair = useFindStablePair({ tokenA, tokenB })
