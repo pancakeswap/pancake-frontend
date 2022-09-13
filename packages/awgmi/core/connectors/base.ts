@@ -6,6 +6,7 @@
 // - `signTransaction(transaction)`: signs the given transaction and returns it to be submitted by the dApp
 // - `disconnect()`: Removes connection between dApp and wallet. Useful when the user wants to remove the connection.
 
+import { equalsIgnoreCase } from '@pancakeswap/utils/equalsIgnoreCase'
 import { EntryFunctionPayload, PendingTransaction } from 'aptos/dist/generated'
 import EventEmitter from 'eventemitter3'
 import { Chain, defaultChains } from '../chain'
@@ -15,13 +16,10 @@ export type Account = {
   publicKey?: string
 }
 
-export type Network = {
-  networkName: string
-}
-
-export type ConnectorData = {
+export type ConnectorData<Provider = any> = {
   account?: Account
-  network?: Network
+  network?: string
+  provider?: Provider
 }
 
 export interface ConnectorEvents {
@@ -46,7 +44,7 @@ export abstract class Connector extends EventEmitter<ConnectorEvents> {
 
   abstract readonly ready: boolean
 
-  abstract connect(): Promise<Account>
+  abstract connect(): Promise<Required<ConnectorData>>
 
   abstract disconnect(): Promise<void>
 
@@ -63,4 +61,8 @@ export abstract class Connector extends EventEmitter<ConnectorEvents> {
   // }): Promise<Provider>;
   // abstract getSigner(config?: { chainId?: number }): Promise<Signer>;
   abstract isConnected(): Promise<boolean>
+
+  protected isChainUnsupported(networkName: string) {
+    return !this.chains.some((x) => equalsIgnoreCase(x.name, networkName))
+  }
 }

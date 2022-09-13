@@ -37,9 +37,16 @@ export class MartianConnector extends Connector {
         provider.onNetworkChange(this.onNetworkChanged)
       }
 
+      const account = await provider.connect()
+      const network = await this.network()
+
       this.emit('message', { type: 'connecting' })
 
-      return await provider.connect()
+      return {
+        account,
+        network,
+        provider,
+      }
     } catch (error) {
       console.error(error)
       throw error
@@ -99,11 +106,9 @@ export class MartianConnector extends Connector {
     })
   }
 
-  protected onNetworkChanged = (networkName: string) => {
+  protected onNetworkChanged = (network: string) => {
     this.emit('change', {
-      network: {
-        networkName,
-      },
+      network,
     })
   }
 }

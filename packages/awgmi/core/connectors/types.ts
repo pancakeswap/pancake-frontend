@@ -6,17 +6,13 @@ export type Account = {
   publicKey: string
 }
 
-export type Network = {
-  networkName: string
-}
-
 export interface Aptos {
   account(): Promise<Account>
   connect(): Promise<Account>
   disconnect(): Promise<void>
 
   isConnected(): Promise<boolean>
-  network(): Promise<Network>
+  network(): Promise<string>
   signAndSubmitTransaction(transaction: EntryFunctionPayload): ReturnType<AptosClient['submitTransaction']>
   signMessage(message?: unknown): Promise<unknown>
   signTransaction(transaction: EntryFunctionPayload): ReturnType<AptosClient['signTransaction']>

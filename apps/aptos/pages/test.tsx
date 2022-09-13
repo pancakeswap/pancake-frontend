@@ -1,12 +1,7 @@
-import { useAccount, useConnect, useDisconnect, useSendTransaction } from '@pancakeswap/awgmi'
+import { useSendTransaction } from '@pancakeswap/awgmi'
 import { Button } from '@pancakeswap/uikit'
-import { Menu } from '../components/Menu'
 
 function TestPage() {
-  const { account, connector } = useAccount()
-  const { connect, connectors } = useConnect()
-  const { disconnect } = useDisconnect()
-
   const { sendTransactionAsync } = useSendTransaction({
     payload: {
       type_arguments: [],
@@ -17,7 +12,7 @@ function TestPage() {
 
   const seeeend = () => {
     sendTransactionAsync?.().then((v) => {
-      console.log(v)
+      v.wait()
     })
   }
   return (

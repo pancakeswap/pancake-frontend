@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 
 import * as React from 'react'
-import { sendTransaction, SendTransactionArgs, SendTransactionResult } from '../../core/transaction'
+import { sendTransaction, SendTransactionArgs, SendTransactionResult } from '../../core/transaction/sendTransaction'
 
 import { MutationConfig } from '../types'
 

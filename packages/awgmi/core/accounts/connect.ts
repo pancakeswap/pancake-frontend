@@ -12,6 +12,7 @@ type Data = ConnectorData
 export type ConnectResult = {
   account: Data['account']
   network: Data['network']
+  connector: Connector
 }
 
 export async function connect({ connector }: ConnectArgs): Promise<ConnectResult> {
@@ -22,28 +23,20 @@ export async function connect({ connector }: ConnectArgs): Promise<ConnectResult
   try {
     client.setState((x) => ({ ...x, status: 'connecting' }))
 
-    const account = await connector.connect()
-    const network = await connector.network()
+    const data = await connector.connect()
 
     client.setLastUsedConnector(connector.id)
     client.setState((x) => ({
       ...x,
       connector,
-      data: {
-        account,
-        network: {
-          networkName: network,
-        },
-      },
+      data,
       status: 'connected',
     }))
     client.storage.setItem('connected', true)
 
     return {
-      account,
-      network: {
-        networkName: network,
-      },
+      ...data,
+      connector,
     } as const
   } catch (err) {
     client.setState((x) => {

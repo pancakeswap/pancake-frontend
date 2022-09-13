@@ -1,7 +1,7 @@
 import { EntryFunctionPayload } from 'aptos/dist/generated'
 import { Chain } from '../chain'
 import { ConnectorNotFoundError } from '../errors'
-import { Account, Connector, Network } from './base'
+import { Account, Connector } from './base'
 import { Aptos } from './types'
 
 declare global {
@@ -10,11 +10,11 @@ declare global {
   }
 }
 
-enum NetworkName {
-  Devnet = 'Devnet',
-  Testnet = 'Testnet',
-  AIT3 = 'AIT3',
-}
+// enum NetworkName {
+//   Devnet = 'Devnet',
+//   Testnet = 'Testnet',
+//   AIT3 = 'AIT3',
+// }
 
 export type PetraConnectorOptions = {
   /** Name of connector */
@@ -55,9 +55,15 @@ export class PetraConnector extends Connector {
         provider.onNetworkChange(this.onNetworkChanged)
       }
 
-      this.emit('message', { type: 'connecting' })
+      const account = await provider.connect()
+      const network = await this.network()
 
-      return await provider.connect()
+      this.emit('message', { type: 'connecting' })
+      return {
+        account,
+        network,
+        provider,
+      }
     } catch (error) {
       console.error(error)
       throw error
@@ -80,7 +86,7 @@ export class PetraConnector extends Connector {
   async network() {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
-    return (await provider.network()).networkName
+    return provider.network()
   }
 
   async getProvider() {
@@ -114,7 +120,7 @@ export class PetraConnector extends Connector {
     this.emit('change', { account })
   }
 
-  protected onNetworkChanged = (network: Network) => {
+  protected onNetworkChanged = (network: string) => {
     this.emit('change', { network })
   }
 }

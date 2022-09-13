@@ -67,7 +67,7 @@ export class Client<TProvider extends AptosClient = AptosClient> {
         const data: Data | undefined = JSON.parse(rawState || '{}')?.state?.data
         // If account exists in localStorage, set status to reconnecting
         status = data?.account ? 'reconnecting' : 'connecting'
-        networkName = data?.network?.networkName
+        networkName = data?.network
         // eslint-disable-next-line no-empty
       } catch (_error) {}
     }
@@ -92,7 +92,7 @@ export class Client<TProvider extends AptosClient = AptosClient> {
               ...(autoConnect && {
                 data: {
                   account: state?.data?.account,
-                  chain: state?.data?.network,
+                  network: state?.data?.network,
                 },
               }),
               chains: state?.chains,
@@ -132,8 +132,8 @@ export class Client<TProvider extends AptosClient = AptosClient> {
   get error() {
     return this.store.getState().error
   }
-  get lastUsedNetworkName() {
-    return this.data?.network?.networkName
+  get lastUsedNetwork() {
+    return this.data?.network
   }
   get provider() {
     return this.store.getState().provider
@@ -192,9 +192,7 @@ export class Client<TProvider extends AptosClient = AptosClient> {
         ...x,
         connector,
         chains: connector?.chains,
-        data: {
-          account: data,
-        },
+        data,
         status: 'connected',
       }))
       connected = true
@@ -251,7 +249,7 @@ export class Client<TProvider extends AptosClient = AptosClient> {
 
     if (subscribeProvider)
       this.store.subscribe(
-        ({ data }) => data?.network?.networkName,
+        ({ data }) => data?.network,
         (networkName) => {
           this.setState((x) => ({
             ...x,

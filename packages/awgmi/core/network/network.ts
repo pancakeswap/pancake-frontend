@@ -12,7 +12,7 @@ export type GetNetworkResult = {
 export function getNetwork(): GetNetworkResult {
   const client = getClient()
 
-  const networkName = client.data?.network?.networkName
+  const networkName = client.data?.network
   const activeChains = client.chains ?? []
   const activeChain = activeChains.find((x) => x.network.toLowerCase() === networkName?.toLowerCase()) ?? {
     id: 0,
@@ -37,7 +37,7 @@ export function watchNetwork(callback: WatchNetworkCallback, { selector = (x) =>
   const client = getClient()
   const handleChange = () => callback(getNetwork())
   const unsubscribe = client.subscribe(
-    ({ data, chains }) => selector({ networkName: data?.network?.networkName, chains }),
+    ({ data, chains }) => selector({ networkName: data?.network, chains }),
     handleChange,
     {
       equalityFn: shallow,
