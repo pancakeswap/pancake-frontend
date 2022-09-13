@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import { ChainId, Token, useToast } from '@pancakeswap/sdk'
+import { ChainId, Token } from '@pancakeswap/sdk'
 import { BigNumber } from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
@@ -19,6 +19,7 @@ import {
   MessageText,
   ArrowForwardIcon,
   AutoRenewIcon,
+  useToast,
 } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { getBalanceAmount } from 'utils/formatBalance'
