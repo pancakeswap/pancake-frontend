@@ -1,4 +1,4 @@
-import { defaultChains, devnet } from '@pancakeswap/aptos'
+import { defaultChains, devnet } from '@pancakeswap/awgmi'
 
 export const defaultChain = devnet
 

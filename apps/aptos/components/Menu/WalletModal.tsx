@@ -12,7 +12,7 @@ import {
   ModalTitle,
 } from '@pancakeswap/uikit'
 import { useState } from 'react'
-import { useAccount, useBalance } from '@pancakeswap/aptos'
+import { useAccount, useBalance } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 

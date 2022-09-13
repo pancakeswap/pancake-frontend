@@ -1,4 +1,4 @@
-import { useAccount, useBalance } from '@pancakeswap/aptos'
+import { useAccount, useBalance } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import {

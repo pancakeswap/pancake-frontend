@@ -1,6 +1,6 @@
-import { createClient } from '@pancakeswap/aptos'
+import { createClient } from '@pancakeswap/awgmi'
 import { AptosClient } from 'aptos'
-import { MartianConnector, PetraConnector } from '@pancakeswap/aptos/core'
+import { MartianConnector, PetraConnector } from '@pancakeswap/awgmi/core'
 import { defaultChain, chains } from 'config/chains'
 
 export const client = createClient({

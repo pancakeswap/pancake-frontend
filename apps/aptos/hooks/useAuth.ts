@@ -1,4 +1,4 @@
-import { useConnect, useDisconnect } from '@pancakeswap/aptos'
+import { useConnect, useDisconnect } from '@pancakeswap/awgmi'
 import { ConnectorNames } from 'config/wallets'
 
 export function useAuth() {

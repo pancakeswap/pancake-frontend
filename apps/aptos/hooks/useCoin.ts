@@ -1,4 +1,4 @@
-import { fetchCoin } from '@pancakeswap/aptos/core'
+import { fetchCoin } from '@pancakeswap/awgmi/core'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import useSWRImmutable from 'swr/immutable'
 import { useActiveChainId, useActiveNetwork } from './useNetwork'

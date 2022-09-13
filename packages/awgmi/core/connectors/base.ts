@@ -6,6 +6,7 @@
 // - `signTransaction(transaction)`: signs the given transaction and returns it to be submitted by the dApp
 // - `disconnect()`: Removes connection between dApp and wallet. Useful when the user wants to remove the connection.
 
+import { EntryFunctionPayload, PendingTransaction } from 'aptos/dist/generated'
 import EventEmitter from 'eventemitter3'
 import { Chain, defaultChains } from '../chain'
 
@@ -52,9 +53,9 @@ export abstract class Connector extends EventEmitter<ConnectorEvents> {
   abstract account(): Promise<Account>
   abstract network(): Promise<string>
 
-  abstract signAndSubmitTransaction(transaction?: unknown): Promise<unknown>
+  abstract signAndSubmitTransaction(transaction?: EntryFunctionPayload): Promise<PendingTransaction>
 
-  abstract signTransaction(transaction?: unknown): Promise<unknown>
+  abstract signTransaction(transaction?: EntryFunctionPayload): Promise<Uint8Array>
 
   // abstract getChainId(): Promise<number>;
   // abstract getProvider(config?: {

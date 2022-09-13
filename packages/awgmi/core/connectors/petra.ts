@@ -1,7 +1,8 @@
-import { Account, Connector, Network } from './base'
-import { ConnectorNotFoundError } from '../errors'
-import { Aptos, TransactionPayload } from './types'
+import { EntryFunctionPayload } from 'aptos/dist/generated'
 import { Chain } from '../chain'
+import { ConnectorNotFoundError } from '../errors'
+import { Account, Connector, Network } from './base'
+import { Aptos } from './types'
 
 declare global {
   interface Window {
@@ -97,13 +98,13 @@ export class PetraConnector extends Connector {
     }
   }
 
-  async signAndSubmitTransaction(tx: TransactionPayload) {
+  async signAndSubmitTransaction(tx: EntryFunctionPayload) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
     return provider.signAndSubmitTransaction(tx)
   }
 
-  async signTransaction(tx: TransactionPayload) {
+  async signTransaction(tx: EntryFunctionPayload) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
     return provider.signTransaction(tx)

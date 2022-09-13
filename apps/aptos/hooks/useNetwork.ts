@@ -1,10 +1,11 @@
 import { chains, defaultChain } from 'config/chains'
-import { useNetwork } from '@pancakeswap/aptos'
+import { useNetwork } from '@pancakeswap/awgmi'
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { isChainSupported } from 'utils'
+import { useMemo } from 'react'
 
-const sessionNetworkAtom = atom<number>(0)
+const sessionNetworkAtom = atom<string>('')
 
 export const useSessionNetwork = () => useAtom(sessionNetworkAtom)
 
@@ -49,5 +50,5 @@ export function useActiveNetwork() {
 export function useActiveChainId() {
   const { networkName } = useActiveNetwork()
 
-  return chains.find((c) => c.name.toLowerCase() === networkName?.toLowerCase())?.id
+  return useMemo(() => chains.find((c) => c.name.toLowerCase() === networkName?.toLowerCase())?.id, [networkName])
 }

@@ -12,7 +12,7 @@ const withTH = transpileModules([
   '@pancakeswap/aptos-swap-sdk',
   '@pancakeswap/localization',
   '@pancakeswap/hooks',
-  '@pancakeswap/aptos',
+  '@pancakeswap/awgmi',
   '@pancakeswap/utils',
   '@pancakeswap/token-lists',
   '@pancakeswap/tokens'

@@ -11,7 +11,7 @@
   "dependencies": {
     "@pancakeswap/uikit": "*",
     "@pancakeswap/sdk": "*",
-    "@pancakeswap/aptos": "*",
+    "@pancakeswap/awgmi": "*",
     "@pancakeswap/aptos-swap-sdk": "*",
     "aptos": "^1.3.11",
     "next": "^12.2.5",
