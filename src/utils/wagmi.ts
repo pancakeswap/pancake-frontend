@@ -37,12 +37,6 @@ const getNodeRealUrl = (networkName: string) => {
         host = `eth-goerli.nodereal.io/v1/${process.env.NEXT_PUBLIC_NODE_REAL_API_GOERLI}`
       }
       break
-    case 'bsc-testnet':
-      host = `bsc-testnet.nodereal.io/v1/fefeb1b486644792aa5237a09c274274`
-      break
-    case 'bsc':
-      host = 'bsc-mainnet.nodereal.io/v1/d430f31d2a45423992b45621b6abbc81'
-      break
     default:
       host = null
   }

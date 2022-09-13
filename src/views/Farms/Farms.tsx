@@ -30,7 +30,6 @@ import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
 import { FarmWithStakedValue } from './components/types'
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
-import useBaseAprForStableFarm from './hooks/useBaseAprForStableFarm'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -273,9 +272,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     boostedOnly,
   ])
 
-  // NOTE: Add APR in Stable Farm
-  const finalFormattedFarms = useBaseAprForStableFarm(chosenFarms)
-
   const chosenFarmsMemoized = useMemo(() => {
     const sortFarms = (farms: FarmWithStakedValue[]): FarmWithStakedValue[] => {
       switch (sortOption) {
@@ -302,8 +298,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       }
     }
 
-    return sortFarms(finalFormattedFarms).slice(0, numberOfFarmsVisible)
-  }, [finalFormattedFarms, sortOption, numberOfFarmsVisible])
+    return sortFarms(chosenFarms).slice(0, numberOfFarmsVisible)
+  }, [chosenFarms, sortOption, numberOfFarmsVisible])
 
   chosenFarmsLength.current = chosenFarmsMemoized.length
 
