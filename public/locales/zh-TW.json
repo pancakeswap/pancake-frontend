@@ -1940,7 +1940,7 @@
   "Boost only applies to base APR (CAKE yield)": "Boost only applies to base APR (CAKE yield)",
   "Up to %boostMultiplier%x": "Up to %boostMultiplier%x",
   "Available Boosted": "Available Boosted",
-  "Stake CAKE, Earn CAKE, Win CAKE": "質押 CAKE，賺取 CAKE，中獎 CAKE",
+  "Stake CAKE, Earn CAKE, Win CAKE": "質押 CAKE，賺取 CAKE，獲獎 CAKE",
   "Failed": "Failed",
   "Transaction failed with error: %reason%": "Transaction failed with error: %reason%",
   "Transaction failed. For detailed error message:": "Transaction failed. For detailed error message:",
