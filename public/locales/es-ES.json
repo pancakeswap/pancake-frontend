@@ -1938,6 +1938,11 @@
   "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "La URL a la que intentas acceder (ID de la cadena: %chainId%) pertenece a %network%;, y no coincide con la red de tu monedero. Cambia de red para continuar.",
   "Error connecting, please retry and confirm in wallet!": "Error de conexión, ¡intenta de nuevo y confirma en el monedero!",
   "Boost only applies to base APR (CAKE yield)": "La mejora solo aplica en el APR básico (el rendimiento en CAKE)",
-  "Available Boosted: Up to 2x": "Mejora disponible: Hasta 2x",
-  "Stake CAKE, Earn CAKE, Win CAKE": "Invierte en CAKE, obtén CAKE, gana CAKE"
+  "Up to %boostMultiplier%x": "Up to %boostMultiplier%x",
+  "Available Boosted": "Available Boosted",
+  "Stake CAKE, Earn CAKE, Win CAKE": "Invierte en CAKE, obtén CAKE, gana CAKE",
+  "Failed": "Failed",
+  "Transaction failed with error: %reason%": "Transaction failed with error: %reason%",
+  "Transaction failed. For detailed error message:": "Transaction failed. For detailed error message:",
+  "Failed to claim": "Failed to claim"
 }
