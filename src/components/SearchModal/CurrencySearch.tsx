@@ -158,8 +158,7 @@ function CurrencySearch({
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
         const s = debouncedQuery.toLowerCase().trim()
-        // TODO: FIXME
-        if (s === 'bnb') {
+        if (s === native.symbol.toLowerCase().trim()) {
           handleCurrencySelect(native)
         } else if (filteredSortedTokens.length > 0) {
           if (
