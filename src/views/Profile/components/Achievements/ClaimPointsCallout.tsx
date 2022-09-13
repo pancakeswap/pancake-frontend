@@ -32,9 +32,7 @@ const ClaimPointsCallout: React.FC<React.PropsWithChildren<{ onSuccess?: () => v
     setClaimableAchievement((prevClaimableAchievements) =>
       prevClaimableAchievements.filter((prevClaimableAchievement) => prevClaimableAchievement.id !== achievement.id),
     )
-    if (onSuccess) {
-      onSuccess()
-    }
+    onSuccess?.()
   }
 
   if (!profile?.isActive) {

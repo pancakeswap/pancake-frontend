@@ -129,9 +129,7 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWi
         )
       }
 
-      if (onSuccess) {
-        await onSuccess()
-      }
+      await onSuccess?.()
 
       toastSuccess(
         t('Winnings collected!'),

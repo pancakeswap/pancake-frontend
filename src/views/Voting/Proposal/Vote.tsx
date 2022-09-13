@@ -55,9 +55,7 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, onSucces
 
   const handleSuccess = async () => {
     toastSuccess(t('Vote cast!'))
-    if (onSuccess) {
-      onSuccess()
-    }
+    onSuccess?.()
   }
 
   const [presentCastVoteModal] = useModal(

@@ -41,9 +41,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   const [onEditProfileModal] = useModal(
     <EditProfileModal
       onSuccess={() => {
-        if (onSuccess) {
-          onSuccess()
-        }
+        onSuccess?.()
       }}
     />,
     false,
@@ -109,9 +107,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
               src={avatarImage}
               alt={t('User profile picture')}
               onSuccess={() => {
-                if (onSuccess) {
-                  onSuccess()
-                }
+                onSuccess?.()
               }}
             />
           ) : (
