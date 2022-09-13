@@ -1938,6 +1938,11 @@
   "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "Ang URL na ina-access mo (Chain id: %chainId%) ay kabilang sa %network%; na hindi tumutugma sa network ng wallet mo. Lumipat ng network para magpatuloy.",
   "Error connecting, please retry and confirm in wallet!": "Nagkaroon ng error sa pagkonekta, pakisubukan ulit at kumpirmahin sa wallet!",
   "Boost only applies to base APR (CAKE yield)": "Boost only applies to base APR (CAKE yield)",
-  "Available Boosted: Up to 2x": "Available Boosted: Up to 2x",
-  "Stake CAKE, Earn CAKE, Win CAKE": "Stake CAKE, Earn CAKE, Win CAKE"
+  "Up to %boostMultiplier%x": "Up to %boostMultiplier%x",
+  "Available Boosted": "Available Boosted",
+  "Stake CAKE, Earn CAKE, Win CAKE": "Stake CAKE, Earn CAKE, Win CAKE",
+  "Failed": "Failed",
+  "Transaction failed with error: %reason%": "Transaction failed with error: %reason%",
+  "Transaction failed. For detailed error message:": "Transaction failed. For detailed error message:",
+  "Failed to claim": "Failed to claim"
 }
