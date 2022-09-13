@@ -1938,6 +1938,11 @@
   "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "您正在访问的 URL（链 ID：%chainId%）属于 %network%；与您的钱包网络不匹配。请切换网络以继续。",
   "Error connecting, please retry and confirm in wallet!": "连接时出错，请重试并在钱包中确认！",
   "Boost only applies to base APR (CAKE yield)": "助推仅适用于基准年化利率（CAKE 收益）",
-  "Available Boosted: Up to 2x": "可用助推：高达 2 倍",
-  "Stake CAKE, Earn CAKE, Win CAKE": "质押 CAKE，赚取 CAKE，中奖 CAKE"
+  "Up to %boostMultiplier%x": "Up to %boostMultiplier%x",
+  "Available Boosted": "Available Boosted",
+  "Stake CAKE, Earn CAKE, Win CAKE": "质押 CAKE，赚取 CAKE，中奖 CAKE",
+  "Failed": "Failed",
+  "Transaction failed with error: %reason%": "Transaction failed with error: %reason%",
+  "Transaction failed. For detailed error message:": "Transaction failed. For detailed error message:",
+  "Failed to claim": "Failed to claim"
 }
