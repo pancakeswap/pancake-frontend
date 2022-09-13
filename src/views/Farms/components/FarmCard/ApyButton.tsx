@@ -95,8 +95,11 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
         *{t('LP Rewards APR')}: {lpRewardsApr === 0 ? '-' : lpRewardsApr}%
       </Text>
       {strikethrough && (
-        <Text color="secondary">
-          {t('Available Boosted: Up to %boostMultiplier%x', { boostMultiplier: boostMultiplierDisplay })}
+        <Text>
+          {t('Available Boosted')}:{' '}
+          <Text color="secondary" style={{ display: 'inline-block' }}>
+            {t('Up to %boostMultiplier%x', { boostMultiplier: boostMultiplierDisplay })}
+          </Text>
         </Text>
       )}
       {strikethrough && <Text color="secondary">{t('Boost only applies to base APR (CAKE yield)')}</Text>}
