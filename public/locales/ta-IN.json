@@ -1938,6 +1938,11 @@
   "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "நீங்கள் அணுகும் %network%; -க்குச் சொந்தமான URL (செயின் ஐடி: %chainId%), உங்கள் வாலெட்டின் நெட்வொர்க்குடன் பொருந்தவில்லை. தொடர நெட்வொர்க்கை மாற்றுங்கள்.",
   "Error connecting, please retry and confirm in wallet!": "இணைப்பதில் பிழை, மீண்டும் முயற்சி செய்து, வாலெட்டில் உறுதிப்படுத்துங்கள்!",
   "Boost only applies to base APR (CAKE yield)": "பூஸ்ட், அடிப்படை APRக்கு மட்டுமே பொருந்துகிறது (CAKE விளைச்சல்)",
-  "Available Boosted: Up to 2x": "கிடைக்கின்ற பூஸ்ட் செய்தவை: 2x வரை",
-  "Stake CAKE, Earn CAKE, Win CAKE": "CAKE ஸ்டேக் செய்க, CAKE ஈட்டுக, CAKE வெல்க"
+  "Up to %boostMultiplier%x": "Up to %boostMultiplier%x",
+  "Available Boosted": "Available Boosted",
+  "Stake CAKE, Earn CAKE, Win CAKE": "CAKE ஸ்டேக் செய்க, CAKE ஈட்டுக, CAKE வெல்க",
+  "Failed": "Failed",
+  "Transaction failed with error: %reason%": "Transaction failed with error: %reason%",
+  "Transaction failed. For detailed error message:": "Transaction failed. For detailed error message:",
+  "Failed to claim": "Failed to claim"
 }
