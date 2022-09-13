@@ -31,10 +31,10 @@
   "Stake LP tokens to start boosting": "Đặt cọc token LP để bắt đầu tăng cường",
   "Lock CAKE is ended. Re-lock CAKE to activate yield booster": "Đã kết thúc việc khóa CAKE. Khóa lại CAKE để kích hoạt tăng cường lợi nhuận",
   "Boost": "Tăng cường",
-  "Unset": "Bỏ thiết lập",
+  "Unset": "Bỏ kích hoạt",
   "Active": "Hoạt động",
   "Yield booster available": "Có thể tăng cường lợi nhuận",
-  "Unset other boosters to activate": "Bỏ thiết lập các tăng cường khác để kích hoạt",
+  "Unset other boosters to activate": "Bỏ kích hoạt các tăng cường khác để kích hoạt",
   "Migrate": "Chuyển đổi",
   "Ready": "Sẵn sàng",
   "Booster Available": "Có thể tăng cường",
@@ -1938,6 +1938,11 @@
   "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "URL bạn đang truy cập (ID chuỗi: %chainId%) thuộc về %network%; không khớp với mạng lưới của ví bạn. Vui lòng chuyển mạng lưới để tiếp tục.",
   "Error connecting, please retry and confirm in wallet!": "Error connecting, please retry and confirm in wallet!",
   "Boost only applies to base APR (CAKE yield)": "Boost only applies to base APR (CAKE yield)",
-  "Available Boosted: Up to 2x": "Available Boosted: Up to 2x",
-  "Stake CAKE, Earn CAKE, Win CAKE": "Stake CAKE, Earn CAKE, Win CAKE"
+  "Up to %boostMultiplier%x": "Up to %boostMultiplier%x",
+  "Available Boosted": "Available Boosted",
+  "Stake CAKE, Earn CAKE, Win CAKE": "Stake CAKE, Earn CAKE, Win CAKE",
+  "Failed": "Failed",
+  "Transaction failed with error: %reason%": "Transaction failed with error: %reason%",
+  "Transaction failed. For detailed error message:": "Transaction failed. For detailed error message:",
+  "Failed to claim": "Failed to claim"
 }
