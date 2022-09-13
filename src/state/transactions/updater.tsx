@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
+import { Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCurrentBlock } from 'state/block/hooks'
@@ -155,7 +156,17 @@ export default function Updater(): null {
                   const toastTitle = transactions[hash].type === 'non-bsc-farm-stake' ? 'Stake Error' : 'Unstake Error'
                   toastError(
                     toastTitle,
-                    <ToastDescriptionWithTx txHash={destinationTxHash} customizeChainId={steps[pendingStep].chainId} />,
+                    <ToastDescriptionWithTx txHash={destinationTxHash} customizeChainId={steps[pendingStep].chainId}>
+                      <Box>
+                        <Text
+                          as="span"
+                          bold
+                        >{`${transaction.nonBscFarm.amount} ${transaction.nonBscFarm.lpSymbol}`}</Text>
+                        <Text as="span" ml="4px">
+                          {t('Token fail to stake.')}
+                        </Text>
+                      </Box>
+                    </ToastDescriptionWithTx>,
                   )
                 }
               })

@@ -1,7 +1,34 @@
-import { Box, Text } from '@pancakeswap/uikit'
+import styled from 'styled-components'
+import { Box, Text, Flex, Link, useTooltip, LightBulbIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { TransactionDetails } from 'state/transactions/reducer'
 import { FarmTransactionStatus } from 'state/transactions/actions'
+
+const ListStyle = styled.div`
+  position: relative;
+  margin-bottom: 4px;
+  padding-left: 8px;
+  &:before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 0px;
+    width: 4px;
+    height: 4px;
+    background-color: white;
+    border-radius: 50%;
+  }
+  &:last-child {
+    margin-bottom: 0px;
+  }
+`
+
+const LinkStyle = styled(Link)`
+  display: inline-block;
+  margin: 0 4px;
+  color: ${({ theme }) => theme.colors.text};
+  text-decoration: underline;
+`
 
 interface FarmInfoProps {
   pickedData?: TransactionDetails
@@ -22,9 +49,7 @@ const FarmPending: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedD
         </Text>
         <Text as="span">{t('in progress..')}</Text>
       </Box>
-      <Text as="span" ml="4px">
-        {t('It might take a couple of minutes for the cross-chain tx to confirm.')}
-      </Text>
+      <Text as="span">{t('It might take a couple of minutes for the cross-chain tx to confirm.')}</Text>
     </Box>
   )
 }
@@ -32,17 +57,55 @@ const FarmPending: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedD
 const FarmResult: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedData }) => {
   const { t } = useTranslation()
   const { type, nonBscFarm } = pickedData
-  const { amount, lpSymbol } = nonBscFarm
-  const text = type === 'non-bsc-farm-stake' ? t('Token have been staked in the Farm!') : t('Token have been unstaked!')
+  const { amount, lpSymbol, steps } = nonBscFarm
+  const firstStep = steps.find((step) => step.step === 1)
+  const text = type === 'non-bsc-farm-stake' ? t('token have been staked in the Farm!') : t('token have been unstaked!')
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    <Flex flexDirection="column">
+      <ListStyle>{t('You have received 0.0005 BNB as a first-time BNB Smart Chain user')}</ListStyle>
+      <ListStyle>
+        {t('You can swap more BNB on')}
+        <LinkStyle href="/swap">{t('Swap.')}</LinkStyle>
+      </ListStyle>
+      <ListStyle>
+        {t('Explore more features like')}
+        <LinkStyle href="/pools?chainId=56">{t('Pools')}</LinkStyle>
+        {t('and')}
+        <LinkStyle href="/prediction?chainId=56">{t('Win')}</LinkStyle>
+        {t('with your CAKE earned.')}
+      </ListStyle>
+    </Flex>,
+    { placement: 'top' },
+  )
 
   return (
     <Box mb="24px">
-      <Text bold as="span">
-        {`${amount} ${lpSymbol}`}
-      </Text>
-      <Text ml="4px" as="span">
-        {text}
-      </Text>
+      <Box>
+        <Text bold as="span">
+          {`${amount} ${lpSymbol}`}
+        </Text>
+        <Text ml="4px" as="span">
+          {text}
+        </Text>
+      </Box>
+      {firstStep.nonce === '0' && (
+        <Box mt="24px">
+          <Flex>
+            <Box display="inline-flex">
+              <Text bold as="span">
+                0.005 BNB
+              </Text>
+              {tooltipVisible && tooltip}
+              <Box m="2px 4px 0 4px" ref={targetRef}>
+                <LightBulbIcon color="primary" />
+              </Box>
+              <Text as="span">{t('have been')}</Text>
+            </Box>
+          </Flex>
+          <Text>{t('earned to your Wallet!')}</Text>
+        </Box>
+      )}
     </Box>
   )
 }
@@ -64,8 +127,7 @@ const FarmError: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedDat
             {`${amount} ${lpSymbol}`}
           </Text>
           <Text as="span" ml="4px">
-            {/* TODO: NonBSCFarm confirm wording */}
-            {t('fail to stake, here shows the reason why and suggest what to do.')}
+            {t('Token fail to stake.')}
           </Text>
         </Box>
       ) : (

@@ -1,4 +1,4 @@
-import { Flex, Heading, RefreshIcon } from '@pancakeswap/uikit'
+import { Flex, Heading, RefreshIcon, useModal } from '@pancakeswap/uikit'
 import { BigNumber } from 'bignumber.js'
 import Balance from 'components/Balance'
 import { useMemo } from 'react'
@@ -7,6 +7,7 @@ import { useLpTokenPrice } from 'state/farms/hooks'
 import { formatLpBalance, getBalanceNumber } from 'utils/formatBalance'
 import { useNonBscFarmPendingTransaction } from 'state/transactions/hooks'
 import { pickFarmTransactionTx } from 'state/global/actions'
+import WalletModal, { WalletView } from 'components/Menu/UserMenu/WalletModal'
 
 interface StackedLPProps {
   lpAddress: string
@@ -32,20 +33,25 @@ const StakedLP: React.FunctionComponent<React.PropsWithChildren<StackedLPProps>>
   const dispatch = useAppDispatch()
   const lpPrice = useLpTokenPrice(lpSymbol)
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
+  const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
 
   const displayBalance = useMemo(() => {
     return formatLpBalance(stakedBalance)
   }, [stakedBalance])
 
   const onClickLoadingIcon = () => {
-    dispatch(pickFarmTransactionTx({ tx: pendingFarm.txid }))
+    if (pendingFarm.length > 1) {
+      onPresentTransactionModal()
+    } else {
+      dispatch(pickFarmTransactionTx({ tx: pendingFarm[0].txid }))
+    }
   }
 
   return (
     <Flex flexDirection="column" alignItems="flex-start">
       <Flex>
         <Heading color={stakedBalance.eq(0) ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
-        {pendingFarm && <RefreshIcon style={{ cursor: 'pointer' }} spin onClick={onClickLoadingIcon} />}
+        {pendingFarm.length > 0 && <RefreshIcon style={{ cursor: 'pointer' }} spin onClick={onClickLoadingIcon} />}
       </Flex>
       {stakedBalance.gt(0) && lpPrice.gt(0) && (
         <>

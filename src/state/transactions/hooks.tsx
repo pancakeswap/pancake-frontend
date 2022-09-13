@@ -153,9 +153,9 @@ export function usePendingTransactions(): {
   }
 }
 
-export function useNonBscFarmPendingTransaction(hash: string): NonBscPendingData {
+export function useNonBscFarmPendingTransaction(hash: string): NonBscPendingData[] {
   const { nonBscFarmPendingList } = usePendingTransactions()
   return useMemo(() => {
-    return nonBscFarmPendingList.find((tx) => tx.lpAddress.toLocaleLowerCase() === hash.toLocaleLowerCase())
+    return nonBscFarmPendingList.filter((tx) => tx.lpAddress.toLocaleLowerCase() === hash.toLocaleLowerCase())
   }, [hash, nonBscFarmPendingList])
 }
