@@ -1938,6 +1938,11 @@
   "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "Η διεύθυνση URL στην οποία έχετε πρόσβαση (Chain id: %chainId%) ανήκει στο %network% και δεν ταιριάζει με το δίκτυο του πορτοφολιού σας. Αλλάξτε δίκτυο για να συνεχίσετε.",
   "Error connecting, please retry and confirm in wallet!": "Σφάλμα σύνδεσης, προσπαθήστε ξανά και επιβεβαιώστε το στο πορτοφόλι!",
   "Boost only applies to base APR (CAKE yield)": "Η ενίσχυση ισχύει μόνο για το βασικό APR (απόδοση CAKE)",
-  "Available Boosted: Up to 2x": "Διαθέσιμη ενίσχυση: Μέχρι 2x",
-  "Stake CAKE, Earn CAKE, Win CAKE": "Κάντε stake CAKE, Δημιουργήστε CAKE, Κερδίστε CAKE"
+  "Up to %boostMultiplier%x": "Up to %boostMultiplier%x",
+  "Available Boosted": "Available Boosted",
+  "Stake CAKE, Earn CAKE, Win CAKE": "Κάντε stake CAKE, Δημιουργήστε CAKE, Κερδίστε CAKE",
+  "Failed": "Failed",
+  "Transaction failed with error: %reason%": "Transaction failed with error: %reason%",
+  "Transaction failed. For detailed error message:": "Transaction failed. For detailed error message:",
+  "Failed to claim": "Failed to claim"
 }
