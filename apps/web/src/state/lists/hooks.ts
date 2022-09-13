@@ -91,9 +91,45 @@ const inactiveUrlAtom = atom((get) => {
   return Object.keys(lists).filter((url) => !urls?.includes(url) && !UNSUPPORTED_LIST_URLS.includes(url))
 })
 
-export const combinedTokenMapFromInActiveUrlsAtom = atom((get) => {
-  const [lists, inactiveUrl] = [get(selectorByUrlsAtom), get(inactiveUrlAtom)]
-  return combineTokenMaps(lists, inactiveUrl)
+export const combinedTokenInfoMapFromInActiveUrlsAtom = atom((get) => {
+  const [lists, inactiveUrls] = [get(selectorByUrlsAtom), get(inactiveUrlAtom)]
+  return (
+    inactiveUrls
+      .slice()
+      // sort by priority so top priority goes last
+      .sort(sortByListPriority)
+      .reduce((allTokens, currentUrl) => {
+        const current = lists[currentUrl]?.current
+        if (!current) return allTokens
+        try {
+          const groupedTokenMap: { [chainId: string]: TokenInfo[] } = groupBy(
+            uniqBy(current.tokens, (tokenInfo) => `${tokenInfo.chainId}#${tokenInfo.address}`),
+            (tokenInfo) => tokenInfo.chainId,
+          )
+
+          const tokenInfoAddressMap = fromPairs(
+            Object.entries(groupedTokenMap).map(([chainId, tokenInfoList]) => [
+              chainId,
+              fromPairs(tokenInfoList.map((tokenInfo) => [tokenInfo.address, { token: tokenInfo, list: current }])),
+            ]),
+          )
+
+          // add chain id item if not exist
+          enumKeys(ChainId).forEach((chainId) => {
+            if (!(ChainId[chainId] in tokenInfoAddressMap)) {
+              Object.defineProperty(tokenInfoAddressMap, ChainId[chainId], {
+                value: {},
+              })
+            }
+          })
+          const newTokens = Object.assign(tokenInfoAddressMap)
+          return combineMaps(allTokens, newTokens)
+        } catch (error) {
+          console.error('Could not show token list due to error', error)
+          return allTokens
+        }
+      }, EMPTY_LIST)
+  )
 })
 
 export const combinedTokenMapFromOfficialsUrlsAtom = atom((get) => {
@@ -240,9 +276,9 @@ export function useCombinedActiveList(): TokenAddressMap {
   return activeTokens
 }
 
-// all tokens from inactive lists
-export function useCombinedInactiveList(): TokenAddressMap {
-  return useAtomValue(combinedTokenMapFromInActiveUrlsAtom)
+// all tokens info from inactive lists
+export function useCombinedInactiveList() {
+  return useAtomValue(combinedTokenInfoMapFromInActiveUrlsAtom)
 }
 
 // list of tokens not supported on interface, used to show warnings and prevent swaps and adds
