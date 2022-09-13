@@ -1938,6 +1938,11 @@
   "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "URL yang sedang Anda akses (ID Chain: %chainId%) adalah untuk %network%; jaringan dompet Anda tidak cocok. Silakan beralih jaringan agar dapat melanjutkan.",
   "Error connecting, please retry and confirm in wallet!": "Eror saat menghubungkan, silakan coba lagi dan konfirmasi di dompet!",
   "Boost only applies to base APR (CAKE yield)": "Peningkatan hanya berlaku pada APR dasar (hasil CAKE)",
-  "Available Boosted: Up to 2x": "Tersedia untuk Ditingkatkan: Hingga 2x",
-  "Stake CAKE, Earn CAKE, Win CAKE": "Tumpuk CAKE, Hasilkan CAKE, Menangi CAKE"
+  "Up to %boostMultiplier%x": "Up to %boostMultiplier%x",
+  "Available Boosted": "Available Boosted",
+  "Stake CAKE, Earn CAKE, Win CAKE": "Tumpuk CAKE, Hasilkan CAKE, Menangi CAKE",
+  "Failed": "Failed",
+  "Transaction failed with error: %reason%": "Transaction failed with error: %reason%",
+  "Transaction failed. For detailed error message:": "Transaction failed. For detailed error message:",
+  "Failed to claim": "Failed to claim"
 }
