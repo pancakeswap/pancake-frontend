@@ -62,16 +62,17 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 
   const displayBalance = getBalanceAmount(earningsBigNumber)
-  const isBscNetwork = useMemo(() => chainId === ChainId.BSC, [chainId])
+
+  const isTestnet = farmFetcher.isTestnet(chainId)
+  const network = isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC
+  const isBscNetwork = useMemo(() => chainId === network, [chainId, network])
 
   const handleCancel = useCallback(() => {
     onDismiss?.()
   }, [])
 
   const handleSwitchNetwork = () => {
-    const isTestnet = farmFetcher.isTestnet(chainId)
-    const switchedChainId = isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC
-    switchNetworkAsync(switchedChainId)
+    switchNetworkAsync(network)
   }
 
   const handleHarvest = useCallback(async () => {
