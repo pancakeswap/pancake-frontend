@@ -1,9 +1,13 @@
+import { useContext } from 'react'
+
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Flex, IconButton, useModal, CalculateIcon, TooltipText, useTooltip, Text } from '@pancakeswap/uikit'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { useTranslation } from '@pancakeswap/localization'
 import { useFarmUser, useLpTokenPrice } from 'state/farms/hooks'
+import useBoostMultiplier from '../YieldBooster/hooks/useBoostMultiplier'
+import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
 
 const ApyLabelContainer = styled(Flex)`
   cursor: pointer;
@@ -47,6 +51,10 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   const { t } = useTranslation()
   const lpPrice = useLpTokenPrice(lpSymbol)
   const { tokenBalance, stakedBalance } = useFarmUser(pid)
+  const { boosterState, proxyAddress } = useContext(YieldBoosterStateContext)
+  const boostMultiplier = useBoostMultiplier({ pid, boosterState, proxyAddress })
+  const boostMultiplierDisplay = boostMultiplier.toLocaleString(undefined, { maximumFractionDigits: 3 })
+
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal
       linkLabel={t('Get %symbol%', { symbol: lpLabel })}
@@ -72,13 +80,13 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       <Text>
         {t('APR (incl. LP rewards)')}:{' '}
         <Text style={{ display: 'inline-block' }} color={strikethrough && 'secondary'}>
-          {strikethrough ? `${(apr * 2 + lpRewardsApr).toFixed(2)}%` : `${displayApr}%`}
+          {strikethrough ? `${(apr * boostMultiplier + lpRewardsApr).toFixed(2)}%` : `${displayApr}%`}
         </Text>
       </Text>
       <Text ml="5px">
         *{t('Base APR (CAKE yield only)')}:{' '}
         {strikethrough ? (
-          <Text style={{ display: 'inline-block' }} color="secondary">{`${(apr * 2).toFixed(2)}%`}</Text>
+          <Text style={{ display: 'inline-block' }} color="secondary">{`${(apr * boostMultiplier).toFixed(2)}%`}</Text>
         ) : (
           `${apr.toFixed(2)}%`
         )}
@@ -90,7 +98,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
         <Text>
           {t('Available Boosted')}:{' '}
           <Text color="secondary" style={{ display: 'inline-block' }}>
-            {t('Up to 2x')}
+            {t('Up to %boostMultiplier%x', { boostMultiplier: boostMultiplierDisplay })}
           </Text>
         </Text>
       )}
