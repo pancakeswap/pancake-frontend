@@ -1938,6 +1938,11 @@
   "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "Erişmekte olduğunuz URL (Zincir kimliği: %chainId%) %network% ağına aittir. Cüzdanınızın ağıyla uyumsuzdur. Devam etmek için lütfen ağ değiştirin.",
   "Error connecting, please retry and confirm in wallet!": "Bağlanırken hata oluştu. Lütfen tekrar deneyin ve cüzdanda onaylayın!",
   "Boost only applies to base APR (CAKE yield)": "Artış yalnızca temel APR (CAKE hasadı) için geçerlidir",
-  "Available Boosted: Up to 2x": "Mevcut Artış: 2 kata kadar",
-  "Stake CAKE, Earn CAKE, Win CAKE": "CAKE Yatırın, CAKE Elde Edin, CAKE Kazanın"
+  "Up to %boostMultiplier%x": "Up to %boostMultiplier%x",
+  "Available Boosted": "Available Boosted",
+  "Stake CAKE, Earn CAKE, Win CAKE": "CAKE Yatırın, CAKE Elde Edin, CAKE Kazanın",
+  "Failed": "Failed",
+  "Transaction failed with error: %reason%": "Transaction failed with error: %reason%",
+  "Transaction failed. For detailed error message:": "Transaction failed. For detailed error message:",
+  "Failed to claim": "Failed to claim"
 }
