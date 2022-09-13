@@ -1938,6 +1938,11 @@
   "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "Az Ön által elért URL (lánc azonosító: %chainId%) a %network% hálózathoz tartozik; nem egyezik az Ön tárcájának hálózatával. Kérjük, a folytatáshoz váltson hálózatot.",
   "Error connecting, please retry and confirm in wallet!": "Csatlakozási hiba; kérjük, próbálja meg újra és erősítse meg a tárcában!",
   "Boost only applies to base APR (CAKE yield)": "A turbózás csak az alap APR-re vonatkozik (CAKE hozam)",
-  "Available Boosted: Up to 2x": "Elérhető felturbózás: Akár kétszeres",
-  "Stake CAKE, Earn CAKE, Win CAKE": "Tegyen fel CAKE-t, keressen CAKE-t, nyerjen CAKE-t"
+  "Up to %boostMultiplier%x": "Up to %boostMultiplier%x",
+  "Available Boosted": "Available Boosted",
+  "Stake CAKE, Earn CAKE, Win CAKE": "Tegyen fel CAKE-t, keressen CAKE-t, nyerjen CAKE-t",
+  "Failed": "Failed",
+  "Transaction failed with error: %reason%": "Transaction failed with error: %reason%",
+  "Transaction failed. For detailed error message:": "Transaction failed. For detailed error message:",
+  "Failed to claim": "Failed to claim"
 }
