@@ -110,11 +110,11 @@ export default function useCatchTxError(): CatchTxErrorReturn {
                   if (isRevertedError) reason = reason.substring(indexInfo + REVERT_STR.length)
 
                   toastError(
-                    'Failed',
+                    t('Failed'),
                     <ToastDescriptionWithTx txHash={tx.hash}>
                       {isRevertedError
-                        ? `Transaction failed with error: ${reason}`
-                        : 'Transaction failed. For detailed error message:'}
+                        ? t('Transaction failed with error: %reason%', { reason })
+                        : t('Transaction failed. For detailed error message:')}
                     </ToastDescriptionWithTx>,
                   )
                 }

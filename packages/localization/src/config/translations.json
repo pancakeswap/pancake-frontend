@@ -1940,5 +1940,9 @@
   "Boost only applies to base APR (CAKE yield)": "Boost only applies to base APR (CAKE yield)",
   "Up to %boostMultiplier%x": "Up to %boostMultiplier%x",
   "Available Boosted": "Available Boosted",
-  "Stake CAKE, Earn CAKE, Win CAKE": "Stake CAKE, Earn CAKE, Win CAKE"
+  "Stake CAKE, Earn CAKE, Win CAKE": "Stake CAKE, Earn CAKE, Win CAKE",
+  "Failed": "Failed",
+  "Transaction failed with error: %reason%": "Transaction failed with error: %reason%",
+  "Transaction failed. For detailed error message:": "Transaction failed. For detailed error message:",
+  "Failed to claim": "Failed to claim"
 }
