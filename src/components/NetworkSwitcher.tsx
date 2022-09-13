@@ -128,7 +128,7 @@ export const NetworkSwitcher = () => {
   }
 
   return (
-    <Box ref={targetRef}>
+    <Box ref={cannotChangeNetwork ? targetRef : null}>
       {cannotChangeNetwork && tooltipVisible && tooltip}
       <UserMenu
         mr="8px"
