@@ -1,11 +1,9 @@
-import { Button, AutoRenewIcon, ButtonProps } from '@pancakeswap/uikit'
-import { useState, memo } from 'react'
-
-import useToast from 'hooks/useToast'
-import useCatchTxError from 'hooks/useCatchTxError'
 import { useTranslation } from '@pancakeswap/localization'
+import { AutoRenewIcon, Button, ButtonProps, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { useBCakeFarmBoosterProxyFactoryContract } from 'hooks/useContract'
+import { memo, useState } from 'react'
 
 const MAX_GAS_LIMIT = 2500000
 

@@ -12,7 +12,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest",
+    "test": "jest && yarn turbo run test",
     "test:watch": "jest --watch",
     "test:config": "jest src/config/__tests__/ --testPathIgnorePatterns",
     "integration-test": "start-server-and-test start http://localhost:3000 'turbo run integration-test --filter=test'",
@@ -23,7 +23,7 @@
     "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx,json}\"",
     "updateLPsAPR": "yarn turbo run build --filter=@pancakeswap/sdk && NODE_PATH=./src ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts",
     "prepare": "husky install",
-    "postinstall": "yarn run typechain",
+    "postinstall": "patch-package && yarn run typechain",
     "typechain": "typechain --out-dir src/config/abi/types --target=ethers-v5 \"src/config/abi/*.json\""
   },
   "browserslist": {
@@ -126,6 +126,7 @@
     "lerna": "^4.0.0",
     "lint-staged": "^12.3.4",
     "next-transpile-modules": "^9.0.0",
+    "patch-package": "^6.4.7",
     "postcss-scss": "^4.0.3",
     "postcss-syntax": "^0.36.2",
     "prettier": "^2.3.0",
@@ -140,6 +141,7 @@
     "ts-node": "^10.9.1",
     "tsconfig": "*",
     "turbo": "^1.4.5",
-    "typechain": "^6.1.0"
+    "typechain": "^6.1.0",
+    "vitest": "^0.23.1"
   }
 }

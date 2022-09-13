@@ -1,17 +1,16 @@
-import { Token } from '@pancakeswap/sdk'
-import { Button, Flex, Heading, TooltipText, useTooltip, useModal } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { Button, Flex, Heading, TooltipText, useToast, useTooltip, useModal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
-import { useTranslation } from '@pancakeswap/localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
 
+import { TransactionResponse } from '@ethersproject/providers'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
-import { TransactionResponse } from '@ethersproject/providers'
+import { Token } from '@pancakeswap/sdk'
 import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModal'
 
 interface FarmCardActionsProps {
@@ -21,6 +20,7 @@ interface FarmCardActionsProps {
   earnings?: BigNumber
   vaultPid?: number
   proxyCakeBalance?: number
+  lpSymbol?: string
   onReward?: () => Promise<TransactionResponse>
   onDone?: () => void
 }
@@ -32,6 +32,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   vaultPid,
   earnings,
   proxyCakeBalance,
+  lpSymbol,
   onReward,
   onDone,
 }) => {
@@ -80,6 +81,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
     <MultiChainHarvestModal
       pid={pid}
       token={token}
+      lpSymbol={lpSymbol}
       quoteToken={quoteToken}
       earningsBigNumber={earnings}
       earningsBusd={earningsBusd}

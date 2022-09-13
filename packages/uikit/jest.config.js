@@ -6,5 +6,12 @@ module.exports = {
     "\\.(js|jsx)?$": "babel-jest",
     "^.+\\.svg$": "<rootDir>/svgTransform.js",
   },
+  globals: {
+    "ts-jest": {
+      babelConfig: {
+        plugins: ["@vanilla-extract/babel-plugin"],
+      },
+    },
+  },
   testEnvironment: "jsdom",
 };

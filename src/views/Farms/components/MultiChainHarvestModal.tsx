@@ -1,9 +1,8 @@
 import { useCallback, useMemo } from 'react'
-import { ChainId, Token } from '@pancakeswap/sdk'
+import { ChainId, Token, useToast } from '@pancakeswap/sdk'
 import { BigNumber } from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
-import useToast from 'hooks/useToast'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import useCatchTxError from 'hooks/useCatchTxError'
 import styled from 'styled-components'
@@ -41,6 +40,7 @@ const TokenWrapper = styled.div`
 interface MultiChainHarvestModalProp extends InjectedModalProps {
   pid: number
   token: Token
+  lpSymbol: string
   quoteToken: Token
   earningsBigNumber: BigNumber
   earningsBusd: number
@@ -49,6 +49,7 @@ interface MultiChainHarvestModalProp extends InjectedModalProps {
 const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
   pid,
   token,
+  lpSymbol,
   quoteToken,
   earningsBigNumber,
   earningsBusd,
@@ -106,7 +107,7 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
             />
           </TokenWrapper>
           <Text bold fontSize="24px">
-            {t('CAKE-BNB')}
+            {lpSymbol}
           </Text>
         </Flex>
         {!isBscNetwork && (

@@ -38,8 +38,8 @@ it("renders correctly", () => {
       transition: background-color 0.2s,opacity 0.2s;
       height: 48px;
       padding: 0 24px;
-      background-color: #1FC7D4;
-      color: white;
+      background-color: var(--colors-primary);
+      color: var(--colors-white);
     }
 
     .c0:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
@@ -56,10 +56,10 @@ it("renders correctly", () => {
 
     .c0:disabled,
     .c0.pancake-button--disabled {
-      background-color: #E9EAEB;
-      border-color: #E9EAEB;
+      background-color: var(--colors-backgroundDisabled);
+      border-color: var(--colors-backgroundDisabled);
       box-shadow: none;
-      color: #BDC2C4;
+      color: var(--colors-textDisabled);
       cursor: not-allowed;
     }
 

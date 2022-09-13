@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ConnectorNames, useWalletModal, walletConnectors } from '@pancakeswap/uikit'
+import { useWalletModal } from '@pancakeswap/uikit'
+import { ConnectorNames, wallets } from 'config/wallet'
 import { useMemo } from 'react'
 import { useConnect } from 'wagmi'
 import useAuth from './useAuth'
@@ -9,8 +10,8 @@ export const useWallet = () => {
   const { connectors } = useConnect()
   const { login } = useAuth()
 
-  const finalConnectors = useMemo(() => {
-    return walletConnectors.map((config) => {
+  const finalWallets = useMemo(() => {
+    return wallets.map((config) => {
       const found = connectors.find((c) => c.id === config.connectorId)
       if (!(config.installed || found.ready)) {
         if (config.connectorId === ConnectorNames.MetaMask) {
@@ -28,7 +29,7 @@ export const useWallet = () => {
     })
   }, [connectors])
 
-  const { onPresentConnectModal } = useWalletModal(login, t, finalConnectors)
+  const { onPresentConnectModal } = useWalletModal(login, t, finalWallets)
 
   return { onPresentConnectModal }
 }

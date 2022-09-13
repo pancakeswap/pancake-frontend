@@ -157,4 +157,6 @@ export { default as WarningIcon } from "./Icons/Warning";
 export { default as RocketIcon } from "./Icons/RocketIcon";
 export { default as LightBulbIcon } from "./Icons/LightBulb";
 export { default as Svg } from "./Svg";
+export { default as BraveIcon } from "./Icons/Brave";
+export { default as BloctoIcon } from "./Icons/Blocto";
 export type { SvgProps } from "./types";

@@ -19,16 +19,14 @@ interface PageSectionProps extends BackgroundColorProps {
 
 interface BackgroundColorProps extends FlexProps {
   index: number
-  background?: string
   padding?: string
 }
 
-const BackgroundColor = styled(Flex)<BackgroundColorProps>`
+const BackgroundColor = styled(Flex).attrs({ className: 'page-bg' as string })<BackgroundColorProps>`
   position: relative;
   flex-direction: column;
   align-items: center;
   z-index: ${({ index }) => index - 1};
-  background: ${({ background, theme }) => background || theme.colors.background};
   padding: ${({ padding }) => padding};
 `
 
@@ -50,7 +48,6 @@ const ChildrenWrapper = styled(Container)`
 
 const PageSection: React.FC<React.PropsWithChildren<PageSectionProps>> = ({
   children,
-  background,
   svgFill,
   index = 1,
   dividerComponent,
@@ -94,7 +91,7 @@ const PageSection: React.FC<React.PropsWithChildren<PageSectionProps>> = ({
           dividerFill={dividerFill}
         />
       )}
-      <BackgroundColor background={background} index={index} padding={padding} {...props}>
+      <BackgroundColor index={index} padding={padding} {...props}>
         <ChildrenWrapper {...innerProps}>{children}</ChildrenWrapper>
       </BackgroundColor>
       {hasCurvedDivider && dividerPosition === 'bottom' && (

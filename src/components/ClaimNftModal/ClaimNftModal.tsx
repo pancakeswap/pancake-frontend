@@ -1,10 +1,9 @@
-import { Flex, Text, Button, Modal, InjectedModalProps } from '@pancakeswap/uikit'
+import { Flex, Text, Button, Modal, InjectedModalProps, useToast } from '@pancakeswap/uikit'
 import confetti from 'canvas-confetti'
 import delay from 'lodash/delay'
 import { useTranslation } from '@pancakeswap/localization'
 import { useEffect, useState } from 'react'
 import { useBunnySpecialXmasContract } from 'hooks/useContract'
-import useToast from 'hooks/useToast'
 
 const showConfetti = () => {
   confetti({
@@ -33,7 +32,7 @@ const ClaimNftModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
       onDismiss?.()
     } catch (error: any) {
       const errorDescription = `${error.message} - ${error.data?.message}`
-      toastError('Failed to claim', errorDescription)
+      toastError(t('Failed to claim'), errorDescription)
     } finally {
       setIsClaiming(false)
     }

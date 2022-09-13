@@ -3,7 +3,7 @@ import { RocketIcon, Text } from '@pancakeswap/uikit'
 import _toNumber from 'lodash/toNumber'
 import { memo, useContext } from 'react'
 import { formatNumber } from 'utils/formatBalance'
-import isUndefinedOrNull from 'utils/isUndefinedOrNull'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import useBoostMultiplier from '../hooks/useBoostMultiplier'
 import { YieldBoosterState } from '../hooks/useYieldBoosterState'
 import { YieldBoosterStateContext } from './ProxyFarmContainer'
@@ -41,6 +41,10 @@ function BoostedApr(props: BoostedAprPropsType) {
         {`${boostedApr}%`}
       </>
     )
+
+  if (boostedApr === '0') {
+    return null
+  }
 
   return (
     <>

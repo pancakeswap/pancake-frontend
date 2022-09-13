@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import replaceBrowserHistory from 'utils/replaceBrowserHistory'
+import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { ConnectorData } from 'wagmi'
 import { useAppDispatch } from '../state'
 import { clearUserStates } from '../utils/clearUserStates'

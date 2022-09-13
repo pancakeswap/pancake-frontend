@@ -2,7 +2,383 @@
 
 exports[`renders correctly 1`] = `
 <DocumentFragment>
-  .c6 {
+  .c5 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  fill: var(--colors-text);
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.c18 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  fill: var(--colors-textSubtle);
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.c28 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  fill: var(--colors-text);
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+
+.c33 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  fill: var(--colors-textSubtle);
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  margin-right: 0.5rem;
+}
+
+.c72 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  fill: var(--colors-textSubtle);
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  margin-right: 24px;
+}
+
+.c83 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  fill: var(--colors-warning);
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.c86 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  fill: var(--colors-backgroundAlt);
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.c93 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  fill: var(--colors-backgroundAlt);
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+}
+
+.c15 {
+  color: var(--colors-failure);
+  font-weight: 400;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.c19 {
+  color: var(--colors-warning);
+  font-weight: 400;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.c29 {
+  color: var(--colors-textSubtle);
+  font-weight: 600;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+.c63 {
+  color: var(--colors-text);
+  font-weight: 400;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+.c66 {
+  color: var(--colors-warning);
+  font-weight: 400;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+.c71 {
+  color: var(--colors-primary);
+  font-weight: 600;
+  line-height: 1.5;
+  margin-right: 24px;
+  font-size: 16px;
+}
+
+.c74 {
+  color: var(--colors-primary);
+  font-weight: 600;
+  line-height: 1.5;
+  margin-right: 0;
+  font-size: 16px;
+}
+
+.c88 {
+  color: var(--colors-textSubtle);
+  font-weight: 400;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+.c32 {
+  position: relative;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: 0;
+  border-radius: 16px;
+  box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
+  cursor: pointer;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-letter-spacing: 0.03em;
+  -moz-letter-spacing: 0.03em;
+  -ms-letter-spacing: 0.03em;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  opacity: 1;
+  outline: 0;
+  -webkit-transition: background-color 0.2s,opacity 0.2s;
+  transition: background-color 0.2s,opacity 0.2s;
+  height: 20px;
+  font-size: 12px;
+  padding: 0 8px;
+  background-color: transparent;
+  color: var(--colors-primary);
+  box-shadow: none;
+}
+
+.c32:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+  opacity: 0.65;
+}
+
+.c32:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+  opacity: 0.85;
+  -webkit-transform: translateY(1px);
+  -ms-transform: translateY(1px);
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.c32:disabled,
+.c32.pancake-button--disabled {
+  background-color: var(--colors-backgroundDisabled);
+  border-color: var(--colors-backgroundDisabled);
+  box-shadow: none;
+  color: var(--colors-textDisabled);
+  cursor: not-allowed;
+}
+
+.c36 {
+  position: relative;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: 0;
+  border-radius: 16px;
+  box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
+  cursor: pointer;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-letter-spacing: 0.03em;
+  -moz-letter-spacing: 0.03em;
+  -ms-letter-spacing: 0.03em;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  opacity: 1;
+  outline: 0;
+  -webkit-transition: background-color 0.2s,opacity 0.2s;
+  transition: background-color 0.2s,opacity 0.2s;
+  height: 48px;
+  padding: 0 24px;
+  background-color: transparent;
+  color: var(--colors-primary);
+  box-shadow: none;
+  width: sm;
+  height: sm;
+}
+
+.c36:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+  opacity: 0.65;
+}
+
+.c36:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+  opacity: 0.85;
+  -webkit-transform: translateY(1px);
+  -ms-transform: translateY(1px);
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.c36:disabled,
+.c36.pancake-button--disabled {
+  background-color: var(--colors-backgroundDisabled);
+  border-color: var(--colors-backgroundDisabled);
+  box-shadow: none;
+  color: var(--colors-textDisabled);
+  cursor: not-allowed;
+}
+
+.c87 {
+  position: relative;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: 0;
+  border-radius: 16px;
+  box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
+  cursor: pointer;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-letter-spacing: 0.03em;
+  -moz-letter-spacing: 0.03em;
+  -ms-letter-spacing: 0.03em;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  opacity: 1;
+  outline: 0;
+  -webkit-transition: background-color 0.2s,opacity 0.2s;
+  transition: background-color 0.2s,opacity 0.2s;
+  height: 48px;
+  padding: 0 24px;
+  background-color: transparent;
+  color: var(--colors-primary);
+  box-shadow: none;
+}
+
+.c87:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+  opacity: 0.65;
+}
+
+.c87:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+  opacity: 0.85;
+  -webkit-transform: translateY(1px);
+  -ms-transform: translateY(1px);
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.c87:disabled,
+.c87.pancake-button--disabled {
+  background-color: var(--colors-backgroundDisabled);
+  border-color: var(--colors-backgroundDisabled);
+  box-shadow: none;
+  color: var(--colors-textDisabled);
+  cursor: not-allowed;
+}
+
+.c92 {
+  position: relative;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: 0;
+  border-radius: 16px;
+  box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
+  cursor: pointer;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-letter-spacing: 0.03em;
+  -moz-letter-spacing: 0.03em;
+  -ms-letter-spacing: 0.03em;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  opacity: 1;
+  outline: 0;
+  -webkit-transition: background-color 0.2s,opacity 0.2s;
+  transition: background-color 0.2s,opacity 0.2s;
+  height: 32px;
+  padding: 0 16px;
+  background-color: var(--colors-primary);
+  color: var(--colors-white);
+}
+
+.c92:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+  opacity: 0.65;
+}
+
+.c92:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+  opacity: 0.85;
+  -webkit-transform: translateY(1px);
+  -ms-transform: translateY(1px);
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.c92:disabled,
+.c92.pancake-button--disabled {
+  background-color: var(--colors-backgroundDisabled);
+  border-color: var(--colors-backgroundDisabled);
+  box-shadow: none;
+  color: var(--colors-textDisabled);
+  cursor: not-allowed;
+}
+
+.c6 {
   margin-left: 24px;
 }
 
@@ -29,49 +405,52 @@ exports[`renders correctly 1`] = `
 
 .c39 {
   margin-top: 57px;
+}
+
+.c41 {
   padding-left: 12px;
 }
 
-.c42 {
+.c44 {
   margin-right: 20px;
 }
 
-.c46 {
+.c49 {
   margin-top: 0;
 }
 
-.c49 {
+.c52 {
   padding: 40px 16px;
   margin-bottom: 44px;
 }
 
-.c52 {
+.c55 {
   width: 100%;
 }
 
-.c54 {
+.c57 {
   display: block;
 }
 
-.c56 {
+.c59 {
   margin-bottom: 42px;
 }
 
-.c64 {
+.c67 {
   display: none;
 }
 
-.c65 {
+.c68 {
   padding-bottom: 42px;
   margin-bottom: 0;
 }
 
-.c82 {
+.c84 {
   width: 100%;
   height: 100%;
 }
 
-.c89 {
+.c90 {
   margin-bottom: 24px;
 }
 
@@ -119,7 +498,7 @@ exports[`renders correctly 1`] = `
   justify-content: space-around;
 }
 
-.c40 {
+.c42 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -130,7 +509,7 @@ exports[`renders correctly 1`] = `
   justify-content: start;
 }
 
-.c44 {
+.c48 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -141,7 +520,7 @@ exports[`renders correctly 1`] = `
   justify-content: flex-end;
 }
 
-.c50 {
+.c53 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -152,7 +531,7 @@ exports[`renders correctly 1`] = `
   justify-content: center;
 }
 
-.c53 {
+.c56 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -162,7 +541,7 @@ exports[`renders correctly 1`] = `
   flex-direction: column;
 }
 
-.c57 {
+.c60 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -183,7 +562,7 @@ exports[`renders correctly 1`] = `
   align-items: flex-start;
 }
 
-.c66 {
+.c69 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -193,7 +572,7 @@ exports[`renders correctly 1`] = `
   order: 2;
 }
 
-.c73 {
+.c75 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -210,7 +589,7 @@ exports[`renders correctly 1`] = `
   justify-content: space-between;
 }
 
-.c75 {
+.c77 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -224,7 +603,7 @@ exports[`renders correctly 1`] = `
   align-items: center;
 }
 
-.c80 {
+.c82 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -239,7 +618,7 @@ exports[`renders correctly 1`] = `
   justify-content: center;
 }
 
-.c83 {
+.c85 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -254,7 +633,7 @@ exports[`renders correctly 1`] = `
   align-items: center;
 }
 
-.c90 {
+.c91 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -272,176 +651,6 @@ exports[`renders correctly 1`] = `
   align-items: center;
 }
 
-.c15 {
-  color: #ED4B9E;
-  font-weight: 400;
-  line-height: 1.5;
-  font-size: 14px;
-}
-
-.c19 {
-  color: #FFB237;
-  font-weight: 400;
-  line-height: 1.5;
-  font-size: 14px;
-}
-
-.c29 {
-  color: #7A6EAA;
-  font-weight: 600;
-  line-height: 1.5;
-  font-size: 16px;
-}
-
-.c60 {
-  color: #F4EEFF;
-  font-weight: 400;
-  line-height: 1.5;
-  font-size: 16px;
-}
-
-.c63 {
-  color: #FFB237;
-  font-weight: 400;
-  line-height: 1.5;
-  font-size: 16px;
-}
-
-.c68 {
-  color: #1FC7D4;
-  font-weight: 600;
-  line-height: 1.5;
-  margin-right: 24px;
-  font-size: 16px;
-}
-
-.c72 {
-  color: #1FC7D4;
-  font-weight: 600;
-  line-height: 1.5;
-  margin-right: 0;
-  font-size: 16px;
-}
-
-.c87 {
-  color: #B8ADD2;
-  font-weight: 400;
-  line-height: 1.5;
-  font-size: 16px;
-}
-
-.c91 {
-  color: #B8ADD2;
-  font-weight: 600;
-  line-height: 1.5;
-  font-size: 16px;
-}
-
-.c5 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  fill: #280D5F;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.c18 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  fill: #7A6EAA;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.c28 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  fill: #280D5F;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  margin-right: 8px;
-}
-
-.c33 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  fill: #7A6EAA;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  margin-right: 0.5rem;
-}
-
-.c69 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  fill: #B8ADD2;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.c70 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  fill: #B8ADD2;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  margin-right: 24px;
-}
-
-.c81 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  fill: #FFB237;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.c84 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  fill: #FFFFFF;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.c86 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  fill: #B8ADD2;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  margin-right: 0.5rem;
-}
-
-.c93 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  fill: #FFFFFF;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  margin-left: 0.5rem;
-}
-
 .c13 {
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -449,7 +658,7 @@ exports[`renders correctly 1`] = `
   align-items: center;
   border: 0;
   background: transparent;
-  color: #7A6EAA;
+  color: var(--colors-textSubtle);
   cursor: pointer;
   font-weight: 400;
   display: -webkit-box;
@@ -468,8 +677,12 @@ exports[`renders correctly 1`] = `
   width: 100%;
 }
 
+.c13:is(button) {
+  cursor: pointer;
+}
+
 .c13:hover:not(:disabled) {
-  background-color: #EFF4F5;
+  background-color: var(--colors-tertiary);
 }
 
 .c13:active:not(:disabled) {
@@ -490,19 +703,20 @@ exports[`renders correctly 1`] = `
 }
 
 .c21 {
-  border-color: #E7E3EB;
+  border-color: var(--colors-cardBorder);
   border-style: solid;
   border-width: 1px 0 0;
   margin: 4px 0;
 }
 
 .c10 {
-  background-color: #FFFFFF;
-  border: 1px solid #E7E3EB;
+  background-color: var(--colors-backgroundAlt);
+  border: 1px solid var(--colors-cardBorder);
   border-radius: 16px;
   padding-bottom: 4px;
   padding-top: 4px;
   pointer-events: auto;
+  margin-bottom: 0;
   width: 280px;
   visibility: visible;
   z-index: 1001;
@@ -511,26 +725,26 @@ exports[`renders correctly 1`] = `
 }
 
 .c16 {
-  border-radius: 16px;
+  border-radius: var(--radii-default);
   padding: 0 8px;
   border: 2px solid;
-  border-color: #ED4B9E;
+  border-color: var(--colors-failure);
   box-shadow: none;
-  color: #ED4B9E;
+  color: var(--colors-failure);
   margin-left: 8px;
 }
 
 .c20 {
-  border-radius: 16px;
+  border-radius: var(--radii-default);
   padding: 0 8px;
   border: 2px solid;
-  border-color: #FFB237;
+  border-color: var(--colors-warning);
   box-shadow: none;
-  color: #FFB237;
+  color: var(--colors-warning);
   margin-left: 8px;
 }
 
-.c61 {
+.c64 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -544,7 +758,7 @@ exports[`renders correctly 1`] = `
   width: fit-content;
 }
 
-.c61:hover {
+.c64:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
@@ -566,13 +780,13 @@ exports[`renders correctly 1`] = `
   transform: translate(-50%,0);
   left: 50%;
   bottom: auto;
-  background-color: #FFFFFF;
-  box-shadow: 0px 2px 12px -8px rgba(25,19,38,0.1),0px 1px 1px rgba(25,19,38,0.05);
+  background-color: var(--colors-backgroundAlt);
+  box-shadow: var(--shadows-level1);
   padding: 16px;
   max-height: 0px;
   overflow: hidden;
   z-index: 10;
-  border-radius: 4px;
+  border-radius: var(--radii-small);
   opacity: 0;
   -webkit-transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
   transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
@@ -580,7 +794,7 @@ exports[`renders correctly 1`] = `
   pointer-events: none;
 }
 
-.c71 {
+.c73 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -597,13 +811,13 @@ exports[`renders correctly 1`] = `
   transform: translate(-50%,0);
   left: 50%;
   bottom: 100%;
-  background-color: #FFFFFF;
-  box-shadow: 0px 2px 12px -8px rgba(25,19,38,0.1),0px 1px 1px rgba(25,19,38,0.05);
+  background-color: var(--colors-backgroundAlt);
+  box-shadow: var(--shadows-level1);
   padding: 16px;
   max-height: 0px;
   overflow: hidden;
   z-index: 10;
-  border-radius: 4px;
+  border-radius: var(--radii-small);
   opacity: 0;
   -webkit-transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
   transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
@@ -611,7 +825,7 @@ exports[`renders correctly 1`] = `
   pointer-events: none;
 }
 
-.c88 {
+.c89 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -628,13 +842,13 @@ exports[`renders correctly 1`] = `
   transform: translate(-50%,0);
   left: 100%;
   bottom: 100%;
-  background-color: #FFFFFF;
-  box-shadow: 0px 2px 12px -8px rgba(25,19,38,0.1),0px 1px 1px rgba(25,19,38,0.05);
+  background-color: var(--colors-backgroundAlt);
+  box-shadow: var(--shadows-level1);
   padding: 16px;
   max-height: 0px;
   overflow: hidden;
   z-index: 10;
-  border-radius: 4px;
+  border-radius: var(--radii-small);
   opacity: 0;
   -webkit-transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
   transition: max-height 0s 0.3s,opacity 0.3s ease-in-out;
@@ -656,33 +870,33 @@ exports[`renders correctly 1`] = `
   pointer-events: auto;
 }
 
-.c51 {
-  background: #27262c;
+.c54 {
+  background: var(--colors-backgroundAlt);
 }
 
-.c58 {
+.c61 {
   list-style: none;
   margin-bottom: 40px;
 }
 
-.c59 {
+.c62 {
   font-size: 16px;
   margin-bottom: 8px;
   text-transform: capitalize;
 }
 
-.c59:first-child {
-  color: #9A6AFF;
+.c62:first-child {
+  color: var(--colors-secondary);
   font-weight: 600;
   text-transform: uppercase;
 }
 
-.c55 {
+.c58 {
   margin-bottom: 24px;
 }
 
-.c74 {
-  border-color: #383241;
+.c76 {
+  border-color: var(--colors-cardBorder);
   border-top-width: 1px;
   border-bottom-width: 1px;
   border-style: solid;
@@ -690,307 +904,12 @@ exports[`renders correctly 1`] = `
   margin-bottom: 24px;
 }
 
-.c67 {
-  border-bottom: 1px solid #383241;
+.c70 {
+  border-bottom: 1px solid var(--colors-cardBorder);
 }
 
-.c62 {
-  color: #F4EEFF;
-}
-
-.c79 {
-  background-color: #FFFFFF;
-  border-radius: 50%;
-  cursor: pointer;
-  height: 26px;
-  left: 3px;
-  position: absolute;
-  top: 3px;
-  -webkit-transition: left 200ms ease-in;
-  transition: left 200ms ease-in;
-  width: 26px;
-  z-index: 1;
-}
-
-.c77 {
-  cursor: pointer;
-  opacity: 0;
-  height: 100%;
-  position: absolute;
-  width: 100%;
-  z-index: 3;
-}
-
-.c77:checked + .c78 {
-  left: calc(100% - 30px);
-}
-
-.c77:focus + .c78 {
-  box-shadow: 0px 0px 0px 1px #7645D9,0px 0px 0px 4px rgba(118,69,217,0.6);
-}
-
-.c77:hover + .c78:not(:disabled):not(:checked) {
-  box-shadow: 0px 0px 0px 1px #7645D9,0px 0px 0px 4px rgba(118,69,217,0.6);
-}
-
-.c76 {
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background-color: #BDC2C4;
-  border-radius: 24px;
-  box-shadow: inset 0px 2px 2px -1px rgba(74,74,104,0.1);
-  cursor: pointer;
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  height: 32px;
-  position: relative;
-  -webkit-transition: background-color 200ms;
-  transition: background-color 200ms;
-  width: 56px;
-}
-
-.c32 {
-  position: relative;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  border: 0;
-  border-radius: 16px;
-  box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
-  cursor: pointer;
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 600;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-letter-spacing: 0.03em;
-  -moz-letter-spacing: 0.03em;
-  -ms-letter-spacing: 0.03em;
-  letter-spacing: 0.03em;
-  line-height: 1;
-  opacity: 1;
-  outline: 0;
-  -webkit-transition: background-color 0.2s,opacity 0.2s;
-  transition: background-color 0.2s,opacity 0.2s;
-  height: 20px;
-  font-size: 12px;
-  padding: 0 8px;
-  background-color: transparent;
-  color: #1FC7D4;
-  box-shadow: none;
-}
-
-.c32:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-  opacity: 0.65;
-}
-
-.c32:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
-  opacity: 0.85;
-  -webkit-transform: translateY(1px);
-  -ms-transform: translateY(1px);
-  transform: translateY(1px);
-  box-shadow: none;
-}
-
-.c32:disabled,
-.c32.pancake-button--disabled {
-  background-color: #E9EAEB;
-  border-color: #E9EAEB;
-  box-shadow: none;
-  color: #BDC2C4;
-  cursor: not-allowed;
-}
-
-.c36 {
-  position: relative;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  border: 0;
-  border-radius: 16px;
-  box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
-  cursor: pointer;
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 600;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-letter-spacing: 0.03em;
-  -moz-letter-spacing: 0.03em;
-  -ms-letter-spacing: 0.03em;
-  letter-spacing: 0.03em;
-  line-height: 1;
-  opacity: 1;
-  outline: 0;
-  -webkit-transition: background-color 0.2s,opacity 0.2s;
-  transition: background-color 0.2s,opacity 0.2s;
-  height: 48px;
-  padding: 0 24px;
-  background-color: transparent;
-  color: #1FC7D4;
-  box-shadow: none;
-  width: sm;
-  height: sm;
-}
-
-.c36:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-  opacity: 0.65;
-}
-
-.c36:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
-  opacity: 0.85;
-  -webkit-transform: translateY(1px);
-  -ms-transform: translateY(1px);
-  transform: translateY(1px);
-  box-shadow: none;
-}
-
-.c36:disabled,
-.c36.pancake-button--disabled {
-  background-color: #E9EAEB;
-  border-color: #E9EAEB;
-  box-shadow: none;
-  color: #BDC2C4;
-  cursor: not-allowed;
-}
-
-.c85 {
-  position: relative;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  border: 0;
-  border-radius: 16px;
-  box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
-  cursor: pointer;
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 600;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-letter-spacing: 0.03em;
-  -moz-letter-spacing: 0.03em;
-  -ms-letter-spacing: 0.03em;
-  letter-spacing: 0.03em;
-  line-height: 1;
-  opacity: 1;
-  outline: 0;
-  -webkit-transition: background-color 0.2s,opacity 0.2s;
-  transition: background-color 0.2s,opacity 0.2s;
-  height: 48px;
-  padding: 0 24px;
-  background-color: transparent;
-  color: #1FC7D4;
-  box-shadow: none;
-}
-
-.c85:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-  opacity: 0.65;
-}
-
-.c85:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
-  opacity: 0.85;
-  -webkit-transform: translateY(1px);
-  -ms-transform: translateY(1px);
-  transform: translateY(1px);
-  box-shadow: none;
-}
-
-.c85:disabled,
-.c85.pancake-button--disabled {
-  background-color: #E9EAEB;
-  border-color: #E9EAEB;
-  box-shadow: none;
-  color: #BDC2C4;
-  cursor: not-allowed;
-}
-
-.c92 {
-  position: relative;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  border: 0;
-  border-radius: 16px;
-  box-shadow: 0px -1px 0px 0px rgba(14,14,44,0.4) inset;
-  cursor: pointer;
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 600;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-letter-spacing: 0.03em;
-  -moz-letter-spacing: 0.03em;
-  -ms-letter-spacing: 0.03em;
-  letter-spacing: 0.03em;
-  line-height: 1;
-  opacity: 1;
-  outline: 0;
-  -webkit-transition: background-color 0.2s,opacity 0.2s;
-  transition: background-color 0.2s,opacity 0.2s;
-  height: 32px;
-  padding: 0 16px;
-  background-color: #1FC7D4;
-  color: white;
-}
-
-.c92:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-  opacity: 0.65;
-}
-
-.c92:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
-  opacity: 0.85;
-  -webkit-transform: translateY(1px);
-  -ms-transform: translateY(1px);
-  transform: translateY(1px);
-  box-shadow: none;
-}
-
-.c92:disabled,
-.c92.pancake-button--disabled {
-  background-color: #E9EAEB;
-  border-color: #E9EAEB;
-  box-shadow: none;
-  color: #BDC2C4;
-  cursor: not-allowed;
-}
-
-.c37 {
-  color: #280D5F;
-  padding: 0 8px;
-  border-radius: 8px;
+.c65 {
+  color: var(--colors-text);
 }
 
 .c27 {
@@ -1016,6 +935,67 @@ exports[`renders correctly 1`] = `
   transform: scale(1.2);
 }
 
+.c37 {
+  color: var(--colors-text);
+  padding: 0 8px;
+  border-radius: 8px;
+}
+
+.c81 {
+  background-color: var(--colors-backgroundAlt);
+  border-radius: 50%;
+  cursor: pointer;
+  height: 26px;
+  left: 3px;
+  position: absolute;
+  top: 3px;
+  -webkit-transition: left 200ms ease-in;
+  transition: left 200ms ease-in;
+  width: 26px;
+  z-index: 1;
+}
+
+.c79 {
+  cursor: pointer;
+  opacity: 0;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  z-index: 3;
+}
+
+.c79:checked + .c80 {
+  left: calc(100% - 30px);
+}
+
+.c79:focus + .c80 {
+  box-shadow: var(--shadows-focus);
+}
+
+.c79:hover + .c80:not(:disabled):not(:checked) {
+  box-shadow: var(--shadows-focus);
+}
+
+.c78 {
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: var(--colors-textDisabled);
+  border-radius: 24px;
+  box-shadow: var(--shadows-inset);
+  cursor: pointer;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  height: 32px;
+  position: relative;
+  -webkit-transition: background-color 200ms;
+  transition: background-color 200ms;
+  width: 56px;
+}
+
 .c8 {
   position: relative;
 }
@@ -1030,15 +1010,16 @@ exports[`renders correctly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  color: #7A6EAA;
+  color: var(--colors-textSubtle);
   font-size: 16px;
   font-weight: 400;
+  opacity: 1;
   padding: 0 16px;
   height: 48px;
 }
 
 .c9:hover {
-  background: #EFF4F5;
+  background: var(--colors-tertiary);
   border-radius: 16px;
 }
 
@@ -1052,9 +1033,10 @@ exports[`renders correctly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  color: #7A6EAA;
+  color: var(--colors-textSubtle);
   font-size: 16px;
   font-weight: 400;
+  opacity: 1;
   padding: 0 16px;
   height: 48px;
 }
@@ -1062,14 +1044,14 @@ exports[`renders correctly 1`] = `
 .c14:after {
   content: "";
   border-radius: 100%;
-  background: #ED4B9E;
+  background: var(--colors-failure);
   height: 8px;
   width: 8px;
   margin-left: 12px;
 }
 
 .c14:hover {
-  background: #EFF4F5;
+  background: var(--colors-tertiary);
   border-radius: 16px;
 }
 
@@ -1083,9 +1065,10 @@ exports[`renders correctly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  color: #7A6EAA;
+  color: var(--colors-textSubtle);
   font-size: 16px;
   font-weight: 400;
+  opacity: 1;
   padding: 0 16px;
   height: 48px;
 }
@@ -1093,18 +1076,18 @@ exports[`renders correctly 1`] = `
 .c17:after {
   content: "";
   border-radius: 100%;
-  background: #FFB237;
+  background: var(--colors-warning);
   height: 8px;
   width: 8px;
   margin-left: 12px;
 }
 
 .c17:hover {
-  background: #EFF4F5;
+  background: var(--colors-tertiary);
   border-radius: 16px;
 }
 
-.c43 {
+.c46 {
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1114,23 +1097,45 @@ exports[`renders correctly 1`] = `
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  color: #7A6EAA;
+  color: var(--colors-textSubtle);
   font-size: 16px;
   font-weight: 400;
+  opacity: 1;
   padding: 4px 4px 0px 4px;
   height: 42px;
 }
 
-.c43:hover {
-  background: #EFF4F5;
+.c46:hover {
+  background: var(--colors-tertiary);
 }
 
-.c41 {
+.c40 {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.c47 {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.c43 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: block;
+  white-space: nowrap;
+  -webkit-scroll-behavior: smooth;
+  -moz-scroll-behavior: smooth;
+  -ms-scroll-behavior: smooth;
+  scroll-behavior: smooth;
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
   flex-grow: 1;
-  background-color: rgba(255,255,255,0.7);
+  background-color: var(--colors-backgroundAlt2);
   box-shadow: inset 0px -2px 0px -8px rgba(133,133,133,0.1);
   overflow-x: scroll;
   -webkit-scrollbar-width: none;
@@ -1140,27 +1145,17 @@ exports[`renders correctly 1`] = `
   -ms-overflow-style: none;
 }
 
-.c41::-webkit-scrollbar {
+.c43::-webkit-scrollbar {
   display: none;
 }
 
 .c45 {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  background-color: rgba(255,255,255,0.7);
-  box-shadow: inset 0px -2px 0px -8px rgba(133,133,133,0.1);
-  overflow-x: scroll;
-  -webkit-scrollbar-width: none;
-  -moz-scrollbar-width: none;
-  -ms-scrollbar-width: none;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.c45::-webkit-scrollbar {
-  display: none;
+  display: inline-block;
+  vertical-align: top;
+  -webkit-scroll-snap-align: start;
+  -moz-scroll-snap-align: start;
+  -ms-scroll-snap-align: start;
+  scroll-snap-align: start;
 }
 
 .c4 {
@@ -1220,8 +1215,8 @@ exports[`renders correctly 1`] = `
   align-items: center;
   width: 100%;
   height: 56px;
-  background-color: #FFFFFF;
-  border-bottom: 1px solid #E7E3EB;
+  background-color: var(--colors-backgroundAlt);
+  border-bottom: 1px solid var(--colors-cardBorder);
   -webkit-transform: translate3d(0,0,0);
   -ms-transform: translate3d(0,0,0);
   transform: translate3d(0,0,0);
@@ -1240,7 +1235,7 @@ exports[`renders correctly 1`] = `
   z-index: 20;
 }
 
-.c47 {
+.c50 {
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1248,7 +1243,7 @@ exports[`renders correctly 1`] = `
   display: flex;
 }
 
-.c48 {
+.c51 {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
@@ -1259,168 +1254,6 @@ exports[`renders correctly 1`] = `
   -ms-transform: translate3d(0,0,0);
   transform: translate3d(0,0,0);
   max-width: 100%;
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-  .c39 {
-    padding-left: 0px;
-  }
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-  .c49 {
-    padding: 56px 40px 32px 40px;
-    margin-bottom: 0px;
-  }
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-  .c52 {
-    width: 1200px;
-  }
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-  .c54 {
-    display: none;
-  }
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-  .c56 {
-    margin-bottom: 36px;
-  }
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-  .c64 {
-    display: block;
-  }
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-  .c65 {
-    padding-bottom: 32px;
-    margin-bottom: 32px;
-  }
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-  .c89 {
-    margin-bottom: 0;
-  }
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-  .c40 {
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-  }
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-  .c44 {
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-  }
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-  .c57 {
-    -webkit-order: 1;
-    -ms-flex-order: 1;
-    order: 1;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-  }
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-  .c73 {
-    -webkit-order: 3;
-    -ms-flex-order: 3;
-    order: 3;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-  }
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-  .c75 {
-    -webkit-order: 1;
-    -ms-flex-order: 1;
-    order: 1;
-  }
-}
-
-@media screen and (min-width:370px) {
-
-}
-
-@media screen and (min-width:576px) {
-  .c90 {
-    -webkit-order: 2;
-    -ms-flex-order: 2;
-    order: 2;
-  }
 }
 
 @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
@@ -1452,28 +1285,14 @@ exports[`renders correctly 1`] = `
 }
 
 @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c69 {
+  .c72 {
     -webkit-filter: none !important;
     filter: none !important;
   }
 }
 
 @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c70 {
-    -webkit-filter: none !important;
-    filter: none !important;
-  }
-}
-
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c81 {
-    -webkit-filter: none !important;
-    filter: none !important;
-  }
-}
-
-@supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c84 {
+  .c83 {
     -webkit-filter: none !important;
     filter: none !important;
   }
@@ -1493,14 +1312,176 @@ exports[`renders correctly 1`] = `
   }
 }
 
+@media screen and (min-width:370px) {
+
+}
+
+@media screen and (min-width:576px) {
+  .c41 {
+    padding-left: 0px;
+  }
+}
+
+@media screen and (min-width:370px) {
+
+}
+
+@media screen and (min-width:576px) {
+  .c52 {
+    padding: 56px 40px 32px 40px;
+    margin-bottom: 0px;
+  }
+}
+
+@media screen and (min-width:370px) {
+
+}
+
+@media screen and (min-width:576px) {
+  .c55 {
+    width: 1200px;
+  }
+}
+
+@media screen and (min-width:370px) {
+
+}
+
+@media screen and (min-width:576px) {
+  .c57 {
+    display: none;
+  }
+}
+
+@media screen and (min-width:370px) {
+
+}
+
+@media screen and (min-width:576px) {
+  .c59 {
+    margin-bottom: 36px;
+  }
+}
+
+@media screen and (min-width:370px) {
+
+}
+
+@media screen and (min-width:576px) {
+  .c67 {
+    display: block;
+  }
+}
+
+@media screen and (min-width:370px) {
+
+}
+
+@media screen and (min-width:576px) {
+  .c68 {
+    padding-bottom: 32px;
+    margin-bottom: 32px;
+  }
+}
+
+@media screen and (min-width:370px) {
+
+}
+
+@media screen and (min-width:576px) {
+  .c90 {
+    margin-bottom: 0;
+  }
+}
+
+@media screen and (min-width:370px) {
+
+}
+
+@media screen and (min-width:576px) {
+  .c42 {
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
+}
+
+@media screen and (min-width:370px) {
+
+}
+
+@media screen and (min-width:576px) {
+  .c48 {
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
+}
+
+@media screen and (min-width:370px) {
+
+}
+
+@media screen and (min-width:576px) {
+  .c60 {
+    -webkit-order: 1;
+    -ms-flex-order: 1;
+    order: 1;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+}
+
+@media screen and (min-width:370px) {
+
+}
+
+@media screen and (min-width:576px) {
+  .c75 {
+    -webkit-order: 3;
+    -ms-flex-order: 3;
+    order: 3;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+}
+
+@media screen and (min-width:370px) {
+
+}
+
+@media screen and (min-width:576px) {
+  .c77 {
+    -webkit-order: 1;
+    -ms-flex-order: 1;
+    order: 1;
+  }
+}
+
+@media screen and (min-width:370px) {
+
+}
+
+@media screen and (min-width:576px) {
+  .c91 {
+    -webkit-order: 2;
+    -ms-flex-order: 2;
+    order: 2;
+  }
+}
+
 @media screen and (min-width:852px) {
-  .c58 {
+  .c61 {
     margin-bottom: 0px;
   }
 }
 
 @media screen and (min-width:576px) {
-  .c74 {
+  .c76 {
     border-top-width: 0;
     border-bottom-width: 0;
     padding: 0 0;
@@ -1513,8 +1494,18 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width:576px) {
-  .c45 {
+  .c47 {
     display: none;
+  }
+}
+
+@media screen and (min-width:852px) {
+  .c43 {
+    width: auto;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
   }
 }
 
@@ -1912,7 +1903,7 @@ exports[`renders correctly 1`] = `
           >
             <a
               class="c27"
-              href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+              href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
               target="_blank"
             >
               <svg
@@ -2142,7 +2133,6 @@ exports[`renders correctly 1`] = `
               </div>
             </div>
           </div>
-           
         </div>
       </nav>
     </div>
@@ -2150,72 +2140,81 @@ exports[`renders correctly 1`] = `
       class="c38"
     >
       <div
-        class="c39 c40 c41"
+        class="c39 c3 c40"
       >
         <div
-          class="c42"
+          class="c41 c42 c43"
         >
           <div
-            class="c8"
+            class="c44 c45"
           >
-            <a
-              class="c43"
-              href="/swap"
+            <div
+              class="c8"
             >
-              Exchange
-            </a>
+              <a
+                class="c46"
+                href="/swap"
+              >
+                Exchange
+              </a>
+            </div>
           </div>
-        </div>
-        <div
-          class="c42"
-        >
           <div
-            class="c8"
+            class="c44 c45"
           >
-            <a
-              class="c43"
-              href="/liquidity"
+            <div
+              class="c8"
             >
-              Liquidity
-            </a>
+              <a
+                class="c46"
+                href="/liquidity"
+              >
+                Liquidity
+              </a>
+            </div>
           </div>
         </div>
       </div>
       <div
-        class="c39 c44 c45"
+        class="c39 c3 c47"
       >
         <div
-          class="c42"
+          class="c41 c48 c43"
         >
           <div
-            class="c8"
+            class="c44 c45"
           >
-            <a
-              class="c43"
-              href="/charts"
+            <div
+              class="c8"
             >
-              Charts
-            </a>
+              <a
+                class="c46"
+                href="/charts"
+              >
+                Charts
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div
-      class="c46 c47"
+      class="c49 c50"
     >
       <div
-        class="c48"
+        class="c51"
       >
         body
         <div
-          class="c49 c50 c51"
+          class="c52 c53 c54"
+          data-theme="dark"
         >
           <div
-            class="c52 c53"
+            class="c55 c56"
             width="100%,,1200px;"
           >
             <div
-              class="c54 c55"
+              class="c57 c58"
               display="block,,none"
             >
               <svg
@@ -2251,23 +2250,24 @@ exports[`renders correctly 1`] = `
               </svg>
             </div>
             <div
-              class="c56 c57"
+              class="c59 c60"
               order="2,,1"
             >
               <ul
-                class="c58"
+                class="c61"
               >
                 <li
-                  class="c59"
+                  class="c62"
                 >
                   About
                 </li>
                 <li
-                  class="c59"
+                  class="c62"
                 >
                   <a
-                    class="c60 c61"
-                    color="#F4EEFF"
+                    class="c63 c64"
+                    color="text"
+                    data-theme="dark"
                     font-size="16px"
                     href="https://docs.pancakeswap.finance/contact-us"
                     rel="noreferrer noopener"
@@ -2277,11 +2277,12 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c59"
+                  class="c62"
                 >
                   <a
-                    class="c60 c61"
-                    color="#F4EEFF"
+                    class="c63 c64"
+                    color="text"
+                    data-theme="dark"
                     font-size="16px"
                     href="https://medium.com/pancakeswap"
                     rel="noreferrer noopener"
@@ -2291,11 +2292,12 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c59"
+                  class="c62"
                 >
                   <a
-                    class="c60 c61"
-                    color="#F4EEFF"
+                    class="c63 c64"
+                    color="text"
+                    data-theme="dark"
                     font-size="16px"
                     href="https://docs.pancakeswap.finance/contact-us/telegram"
                     rel="noreferrer noopener"
@@ -2305,11 +2307,12 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c59"
+                  class="c62"
                 >
                   <a
-                    class="c60 c61"
-                    color="#F4EEFF"
+                    class="c63 c64"
+                    color="text"
+                    data-theme="dark"
                     font-size="16px"
                     href="https://docs.pancakeswap.finance/tokenomics/cake"
                     rel="noreferrer noopener"
@@ -2319,20 +2322,21 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c59"
+                  class="c62"
                 >
                   <span
-                    class="c62"
+                    class="c65"
                   >
                     —
                   </span>
                 </li>
                 <li
-                  class="c59"
+                  class="c62"
                 >
                   <a
-                    class="c63 c61"
-                    color="#FFB237"
+                    class="c66 c64"
+                    color="var(--colors-warning)"
+                    data-theme="dark"
                     font-size="16px"
                     href="https://pancakeswap.creator-spring.com/"
                     rel="noreferrer noopener"
@@ -2343,19 +2347,20 @@ exports[`renders correctly 1`] = `
                 </li>
               </ul>
               <ul
-                class="c58"
+                class="c61"
               >
                 <li
-                  class="c59"
+                  class="c62"
                 >
                   Help
                 </li>
                 <li
-                  class="c59"
+                  class="c62"
                 >
                   <a
-                    class="c60 c61"
-                    color="#F4EEFF"
+                    class="c63 c64"
+                    color="text"
+                    data-theme="dark"
                     font-size="16px"
                     href="Support https://docs.pancakeswap.finance/contact-us/customer-support"
                     rel="noreferrer noopener"
@@ -2365,11 +2370,12 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c59"
+                  class="c62"
                 >
                   <a
-                    class="c60 c61"
-                    color="#F4EEFF"
+                    class="c63 c64"
+                    color="text"
+                    data-theme="dark"
                     font-size="16px"
                     href="https://docs.pancakeswap.finance/help/troubleshooting"
                     rel="noreferrer noopener"
@@ -2379,11 +2385,12 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c59"
+                  class="c62"
                 >
                   <a
-                    class="c60 c61"
-                    color="#F4EEFF"
+                    class="c63 c64"
+                    color="text"
+                    data-theme="dark"
                     font-size="16px"
                     href="https://docs.pancakeswap.finance/get-started"
                     rel="noreferrer noopener"
@@ -2394,19 +2401,20 @@ exports[`renders correctly 1`] = `
                 </li>
               </ul>
               <ul
-                class="c58"
+                class="c61"
               >
                 <li
-                  class="c59"
+                  class="c62"
                 >
                   Developers
                 </li>
                 <li
-                  class="c59"
+                  class="c62"
                 >
                   <a
-                    class="c60 c61"
-                    color="#F4EEFF"
+                    class="c63 c64"
+                    color="text"
+                    data-theme="dark"
                     font-size="16px"
                     href="https://github.com/pancakeswap"
                     rel="noreferrer noopener"
@@ -2416,11 +2424,12 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c59"
+                  class="c62"
                 >
                   <a
-                    class="c60 c61"
-                    color="#F4EEFF"
+                    class="c63 c64"
+                    color="text"
+                    data-theme="dark"
                     font-size="16px"
                     href="https://docs.pancakeswap.finance"
                     rel="noreferrer noopener"
@@ -2430,11 +2439,12 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c59"
+                  class="c62"
                 >
                   <a
-                    class="c60 c61"
-                    color="#F4EEFF"
+                    class="c63 c64"
+                    color="text"
+                    data-theme="dark"
                     font-size="16px"
                     href="https://app.gitbook.com/@pancakeswap-1/s/pancakeswap/code/bug-bounty"
                     rel="noreferrer noopener"
@@ -2444,11 +2454,12 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c59"
+                  class="c62"
                 >
                   <a
-                    class="c60 c61"
-                    color="#F4EEFF"
+                    class="c63 c64"
+                    color="text"
+                    data-theme="dark"
                     font-size="16px"
                     href="https://docs.pancakeswap.finance/help/faq#is-pancakeswap-safe-has-pancakeswap-been-audited"
                     rel="noreferrer noopener"
@@ -2458,11 +2469,12 @@ exports[`renders correctly 1`] = `
                   </a>
                 </li>
                 <li
-                  class="c59"
+                  class="c62"
                 >
                   <a
-                    class="c60 c61"
-                    color="#F4EEFF"
+                    class="c63 c64"
+                    color="text"
+                    data-theme="dark"
                     font-size="16px"
                     href="https://docs.pancakeswap.finance/hiring/become-a-chef"
                     rel="noreferrer noopener"
@@ -2473,7 +2485,7 @@ exports[`renders correctly 1`] = `
                 </li>
               </ul>
               <div
-                class="c64"
+                class="c67"
                 display="none,,block"
               >
                 <svg
@@ -2510,12 +2522,13 @@ exports[`renders correctly 1`] = `
               </div>
             </div>
             <div
-              class="c65 c66 c67"
+              class="c68 c69 c70"
+              data-theme="dark"
               order="2"
             >
               <a
                 aria-label="Twitter"
-                class="c68 c61"
+                class="c71 c64"
                 color="primary"
                 font-size="16px"
                 href="https://twitter.com/pancakeswap"
@@ -2523,8 +2536,8 @@ exports[`renders correctly 1`] = `
                 target="_blank"
               >
                 <svg
-                  class="c69"
-                  color="#B8ADD2"
+                  class="c18"
+                  color="textSubtle"
                   style="cursor: pointer;"
                   viewBox="0 0 18 15"
                   width="20px"
@@ -2540,8 +2553,8 @@ exports[`renders correctly 1`] = `
                 class="c31"
               >
                 <svg
-                  class="c70"
-                  color="#B8ADD2"
+                  class="c72"
+                  color="textSubtle"
                   style="cursor: pointer;"
                   viewBox="0 0 20 20"
                   width="20px"
@@ -2552,11 +2565,11 @@ exports[`renders correctly 1`] = `
                   />
                 </svg>
                 <div
-                  class="c34 c71"
+                  class="c34 c73"
                 >
                   <a
                     aria-label="English"
-                    class="c29 c61"
+                    class="c29 c64"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/pancakeswap"
@@ -2567,7 +2580,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Bahasa Indonesia"
-                    class="c29 c61"
+                    class="c29 c64"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/PancakeSwapIndonesia"
@@ -2578,7 +2591,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="中文"
-                    class="c29 c61"
+                    class="c29 c64"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/PancakeSwap_CN"
@@ -2589,7 +2602,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Tiếng Việt"
-                    class="c29 c61"
+                    class="c29 c64"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/PancakeSwapVN"
@@ -2600,7 +2613,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Italiano"
-                    class="c29 c61"
+                    class="c29 c64"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/pancakeswap_ita"
@@ -2611,7 +2624,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="русский"
-                    class="c29 c61"
+                    class="c29 c64"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/pancakeswap_ru"
@@ -2622,7 +2635,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Türkiye"
-                    class="c29 c61"
+                    class="c29 c64"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/pancakeswapturkiye"
@@ -2633,7 +2646,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Português"
-                    class="c29 c61"
+                    class="c29 c64"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/PancakeSwapPortuguese"
@@ -2644,7 +2657,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Español"
-                    class="c29 c61"
+                    class="c29 c64"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/PancakeswapEs"
@@ -2655,7 +2668,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="日本語"
-                    class="c29 c61"
+                    class="c29 c64"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/pancakeswapjp"
@@ -2666,7 +2679,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Français"
-                    class="c29 c61"
+                    class="c29 c64"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/pancakeswapfr"
@@ -2677,7 +2690,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Deutsch"
-                    class="c29 c61"
+                    class="c29 c64"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/PancakeSwap_DE"
@@ -2688,7 +2701,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="Filipino"
-                    class="c29 c61"
+                    class="c29 c64"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/Pancakeswap_Ph"
@@ -2699,7 +2712,7 @@ exports[`renders correctly 1`] = `
                   </a>
                   <a
                     aria-label="ქართული ენა"
-                    class="c29 c61"
+                    class="c29 c64"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/PancakeSwapGeorgia"
@@ -2709,8 +2722,19 @@ exports[`renders correctly 1`] = `
                     ქართული ენა
                   </a>
                   <a
+                    aria-label="हिन्दी"
+                    class="c29 c64"
+                    color="textSubtle"
+                    font-size="16px"
+                    href="https://t.me/PancakeSwapINDIA"
+                    rel="noreferrer noopener"
+                    target="_blank"
+                  >
+                    हिन्दी
+                  </a>
+                  <a
                     aria-label="Announcements"
-                    class="c29 c61"
+                    class="c29 c64"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/PancakeSwapAnn"
@@ -2723,7 +2747,7 @@ exports[`renders correctly 1`] = `
               </div>
               <a
                 aria-label="Reddit"
-                class="c68 c61"
+                class="c71 c64"
                 color="primary"
                 font-size="16px"
                 href="https://reddit.com/r/pancakeswap"
@@ -2731,8 +2755,8 @@ exports[`renders correctly 1`] = `
                 target="_blank"
               >
                 <svg
-                  class="c69"
-                  color="#B8ADD2"
+                  class="c18"
+                  color="textSubtle"
                   style="cursor: pointer;"
                   viewBox="0 0 20 20"
                   width="20px"
@@ -2751,7 +2775,7 @@ exports[`renders correctly 1`] = `
               </a>
               <a
                 aria-label="Instagram"
-                class="c68 c61"
+                class="c71 c64"
                 color="primary"
                 font-size="16px"
                 href="https://instagram.com/pancakeswap_official"
@@ -2759,8 +2783,8 @@ exports[`renders correctly 1`] = `
                 target="_blank"
               >
                 <svg
-                  class="c69"
-                  color="#B8ADD2"
+                  class="c18"
+                  color="textSubtle"
                   style="cursor: pointer;"
                   viewBox="0 0 18 18"
                   width="20px"
@@ -2776,7 +2800,7 @@ exports[`renders correctly 1`] = `
               </a>
               <a
                 aria-label="Github"
-                class="c68 c61"
+                class="c71 c64"
                 color="primary"
                 font-size="16px"
                 href="https://github.com/pancakeswap/"
@@ -2784,8 +2808,8 @@ exports[`renders correctly 1`] = `
                 target="_blank"
               >
                 <svg
-                  class="c69"
-                  color="#B8ADD2"
+                  class="c18"
+                  color="textSubtle"
                   style="cursor: pointer;"
                   viewBox="0 0 20 20"
                   width="20px"
@@ -2800,7 +2824,7 @@ exports[`renders correctly 1`] = `
               </a>
               <a
                 aria-label="Discord"
-                class="c68 c61"
+                class="c71 c64"
                 color="primary"
                 font-size="16px"
                 href="https://discord.gg/pancakeswap"
@@ -2808,8 +2832,8 @@ exports[`renders correctly 1`] = `
                 target="_blank"
               >
                 <svg
-                  class="c69"
-                  color="#B8ADD2"
+                  class="c18"
+                  color="textSubtle"
                   style="cursor: pointer;"
                   viewBox="0 0 20 16"
                   width="20px"
@@ -2822,7 +2846,7 @@ exports[`renders correctly 1`] = `
               </a>
               <a
                 aria-label="Medium"
-                class="c72 c61"
+                class="c74 c64"
                 color="primary"
                 font-size="16px"
                 href="https://medium.com/pancakeswap"
@@ -2830,8 +2854,8 @@ exports[`renders correctly 1`] = `
                 target="_blank"
               >
                 <svg
-                  class="c69"
-                  color="#B8ADD2"
+                  class="c18"
+                  color="textSubtle"
                   style="cursor: pointer;"
                   viewBox="0 0 24 24"
                   width="20px"
@@ -2844,32 +2868,33 @@ exports[`renders correctly 1`] = `
               </a>
             </div>
             <div
-              class="c73 c74"
+              class="c75 c76"
+              data-theme="dark"
               order="1,,3"
             >
               <div
-                class="c75"
+                class="c77"
                 order="2,,1"
               >
                 <div
-                  class="c76"
+                  class="c78"
                   scale="md"
                 >
                   <input
-                    class="c77"
+                    class="c79"
                     scale="md"
                     type="checkbox"
                   />
                   <div
-                    class="c78 c79"
+                    class="c80 c81"
                     scale="md"
                   >
                     <div
-                      class="c24 c80"
+                      class="c24 c82"
                       height="100%"
                     >
                       <svg
-                        class="c81"
+                        class="c83"
                         color="warning"
                         viewBox="0 0 24 24"
                         width="20px"
@@ -2908,12 +2933,12 @@ exports[`renders correctly 1`] = `
                     </div>
                   </div>
                   <div
-                    class="c82 c83"
+                    class="c84 c85"
                     height="100%"
                     width="100%"
                   >
                     <svg
-                      class="c84"
+                      class="c86"
                       color="backgroundAlt"
                       viewBox="0 0 24 24"
                       width="20px"
@@ -2950,7 +2975,7 @@ exports[`renders correctly 1`] = `
                       />
                     </svg>
                     <svg
-                      class="c84"
+                      class="c86"
                       color="backgroundAlt"
                       viewBox="0 0 24 24"
                       width="20px"
@@ -2968,12 +2993,12 @@ exports[`renders correctly 1`] = `
                   class="c31"
                 >
                   <button
-                    class="c85"
+                    class="c87"
                     scale="md"
                   >
                     <svg
-                      class="c86"
-                      color="#B8ADD2"
+                      class="c33"
+                      color="textSubtle"
                       viewBox="0 0 24 24"
                       width="24px"
                       xmlns="http://www.w3.org/2000/svg"
@@ -2983,15 +3008,15 @@ exports[`renders correctly 1`] = `
                       />
                     </svg>
                     <div
-                      class="c87"
-                      color="#B8ADD2"
+                      class="c88"
+                      color="textSubtle"
                       font-size="16px"
                     >
                       EN-US
                     </div>
                   </button>
                   <div
-                    class="c34 c88"
+                    class="c34 c89"
                   >
                     <button
                       class="c36 c37"
@@ -3137,15 +3162,15 @@ exports[`renders correctly 1`] = `
                 </div>
               </div>
               <div
-                class="c89 c90"
+                class="c90 c91"
                 order="1,,2"
               >
                 <div
-                  class="c42"
+                  class="c44"
                 >
                   <a
                     class="c27"
-                    href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+                    href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
                     target="_blank"
                   >
                     <svg
@@ -3199,8 +3224,8 @@ exports[`renders correctly 1`] = `
                       </defs>
                     </svg>
                     <div
-                      class="c91"
-                      color="#B8ADD2"
+                      class="c29"
+                      color="textSubtle"
                       font-size="16px"
                     >
                       $0.232
@@ -3209,14 +3234,15 @@ exports[`renders correctly 1`] = `
                 </div>
                 <a
                   class="c92"
-                  href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+                  data-theme="light"
+                  href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
                   scale="sm"
                   target="_blank"
                 >
                   Buy CAKE
                   <svg
                     class="c93"
-                    color="#FFFFFF"
+                    color="backgroundAlt"
                     viewBox="0 0 24 24"
                     width="20px"
                     xmlns="http://www.w3.org/2000/svg"

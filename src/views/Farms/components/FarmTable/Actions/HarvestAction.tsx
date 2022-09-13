@@ -1,25 +1,24 @@
-import { Button, Heading, Skeleton, Text, TooltipText, useTooltip, useModal } from '@pancakeswap/uikit'
+import { TransactionResponse } from '@ethersproject/providers'
+import { useTranslation } from '@pancakeswap/localization'
+import { Button, Heading, Skeleton, Text, TooltipText, useToast, useTooltip, useModal } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
-import { useTranslation } from '@pancakeswap/localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import useToast from 'hooks/useToast'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { fetchFarmUserDataAsync } from 'state/farms'
-import { useAppDispatch } from 'state'
 import { useERC20 } from 'hooks/useContract'
-import { TransactionResponse } from '@ethersproject/providers'
+import { useAppDispatch } from 'state'
+import { fetchFarmUserDataAsync } from 'state/farms'
 
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useCallback } from 'react'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useCallback } from 'react'
 import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModal'
-import { FarmWithStakedValue } from '../../types'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
-import { ActionContainer, ActionContent, ActionTitles } from './styles'
+import { FarmWithStakedValue } from '../../types'
 import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
+import { ActionContainer, ActionContent, ActionTitles } from './styles'
 
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
@@ -58,6 +57,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   userData,
   userDataReady,
   proxyCakeBalance,
+  lpSymbol,
   onReward,
   onDone,
 }) => {
@@ -121,6 +121,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
     <MultiChainHarvestModal
       pid={pid}
       token={token}
+      lpSymbol={lpSymbol}
       quoteToken={quoteToken}
       earningsBigNumber={earningsBigNumber}
       earningsBusd={earningsBusd}

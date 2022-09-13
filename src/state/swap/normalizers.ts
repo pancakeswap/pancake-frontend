@@ -1,4 +1,5 @@
 import { fromUnixTime } from 'date-fns'
+import fromPairs from 'lodash/fromPairs'
 import { PairDayDatasResponse, PairHoursDatasResponse } from './fetch/types'
 import { DerivedPairDataNormalized, PairDataNormalized, PairDataTimeWindowEnum, PairPricesNormalized } from './types'
 
@@ -34,23 +35,23 @@ export const normalizeDerivedChartData = (data: any) => {
   if (!data?.token0DerivedBnb || data?.token0DerivedBnb.length === 0) {
     return []
   }
+
+  const token1DerivedBnbEntryMap: any = fromPairs(
+    data?.token1DerivedBnb?.map((entry) => [entry.timestamp, entry]) ?? [],
+  )
+
   return data?.token0DerivedBnb.reduce((acc, token0DerivedBnbEntry) => {
-    const token1DerivedBnbEntry = data?.token1DerivedBnb?.find(
-      (entry) => entry.timestamp === token0DerivedBnbEntry.timestamp,
-    )
-    if (!token1DerivedBnbEntry) {
-      return acc
-    }
-    return [
-      ...acc,
-      {
+    const token1DerivedBnbEntry = token1DerivedBnbEntryMap[token0DerivedBnbEntry.timestamp]
+    if (token1DerivedBnbEntry) {
+      acc.push({
         time: parseInt(token0DerivedBnbEntry.timestamp, 10),
         token0Id: token0DerivedBnbEntry.tokenAddress,
         token1Id: token1DerivedBnbEntry.tokenAddress,
         token0DerivedBNB: token0DerivedBnbEntry.derivedBNB,
         token1DerivedBNB: token1DerivedBnbEntry.derivedBNB,
-      },
-    ]
+      })
+    }
+    return acc
   }, [])
 }
 

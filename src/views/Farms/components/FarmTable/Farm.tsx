@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useFarmUser } from 'state/farms/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { Text } from '@pancakeswap/uikit'
+import { Text, Skeleton } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { TokenPairImage } from 'components/TokenImage'
@@ -11,6 +11,7 @@ export interface FarmProps {
   pid: number
   token: Token
   quoteToken: Token
+  isReady: boolean
 }
 
 const Container = styled.div`
@@ -32,7 +33,13 @@ const TokenWrapper = styled.div`
   }
 `
 
-const Farm: React.FunctionComponent<React.PropsWithChildren<FarmProps>> = ({ token, quoteToken, label, pid }) => {
+const Farm: React.FunctionComponent<React.PropsWithChildren<FarmProps>> = ({
+  token,
+  quoteToken,
+  label,
+  pid,
+  isReady,
+}) => {
   const { stakedBalance } = useFarmUser(pid)
   const { t } = useTranslation()
   const rawStakedBalance = getBalanceNumber(stakedBalance)
@@ -47,6 +54,18 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmProps>> = ({ tok
     }
 
     return null
+  }
+
+  if (!isReady) {
+    return (
+      <Container>
+        <Skeleton mr="8px" width={32} height={32} variant="circle" />
+        <div>
+          <Skeleton width={40} height={10} mb="4px" />
+          <Skeleton width={60} height={24} />
+        </div>
+      </Container>
+    )
   }
 
   return (

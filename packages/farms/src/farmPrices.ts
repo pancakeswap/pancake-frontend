@@ -13,6 +13,7 @@ export const getFarmBaseTokenPrice = (
   nativePriceUSD: FixedNumber,
   wNative: string,
   stable: string,
+  quoteTokenInBusd,
 ): FixedNumber => {
   const hasTokenPriceVsQuote = Boolean(farm.tokenPriceVsQuote)
 
@@ -35,7 +36,6 @@ export const getFarmBaseTokenPrice = (
   // i.e. for farm PNT - pBTC we use the pBTC farm's quote token - BNB, (pBTC - BNB)
   // from the BNB - pBTC price, we can calculate the PNT - BUSD price
   if (quoteTokenFarm.quoteToken.symbol === wNative || quoteTokenFarm.quoteToken.symbol === stable) {
-    const quoteTokenInBusd = nativePriceUSD.mulUnsafe(FixedNumber.from(quoteTokenFarm.tokenPriceVsQuote))
     return hasTokenPriceVsQuote && quoteTokenInBusd
       ? FixedNumber.from(farm.tokenPriceVsQuote).mulUnsafe(quoteTokenInBusd)
       : FIXED_ONE
@@ -144,13 +144,6 @@ export const getFarmsPrices = (farms: FarmData[], chainId: number): FarmWithPric
       nativeStableLpMap[chainId].wNative,
       nativeStableLpMap[chainId].stable,
     ])
-    const tokenPriceBusd = getFarmBaseTokenPrice(
-      farm,
-      quoteTokenFarm,
-      nativePriceUSD,
-      nativeStableLpMap[chainId].wNative,
-      nativeStableLpMap[chainId].stable,
-    )
 
     const quoteTokenPriceBusd = getFarmQuoteTokenPrice(
       farm,
@@ -158,6 +151,15 @@ export const getFarmsPrices = (farms: FarmData[], chainId: number): FarmWithPric
       nativePriceUSD,
       nativeStableLpMap[chainId].wNative,
       nativeStableLpMap[chainId].stable,
+    )
+
+    const tokenPriceBusd = getFarmBaseTokenPrice(
+      farm,
+      quoteTokenFarm,
+      nativePriceUSD,
+      nativeStableLpMap[chainId].wNative,
+      nativeStableLpMap[chainId].stable,
+      quoteTokenPriceBusd,
     )
     const lpTokenPrice = getLpTokenPrice(
       FixedNumber.from(farm.lpTotalSupply),

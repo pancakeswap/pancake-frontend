@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import useToast from 'hooks/useToast'
+import { useToast } from '@pancakeswap/uikit'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useTranslation } from '@pancakeswap/localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
