@@ -158,4 +158,5 @@ export { default as RocketIcon } from "./Icons/RocketIcon";
 export { default as Svg } from "./Svg";
 export { default as BraveIcon } from "./Icons/Brave";
 export { default as BloctoIcon } from "./Icons/Blocto";
+export { default as MartianWalletIcon } from "./Icons/MartianWallet";
 export type { SvgProps } from "./types";
