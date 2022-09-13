@@ -12,7 +12,6 @@ import { getMasterchefContract } from 'utils/contractHelpers'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { featureFarmApiAtom, useFeatureFlag } from 'hooks/useFeatureFlag'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { bCakeSupportedChainId } from '@pancakeswap/farms/src/index'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, State } from '../types'
 import {
@@ -35,8 +34,11 @@ export function useFarmsLength() {
 export const usePollFarmsWithUserData = () => {
   const dispatch = useAppDispatch()
   const { account, chainId } = useActiveWeb3React()
-  const { proxyAddress, proxyCreated, isLoading: isProxyContractLoading } = useBCakeProxyContractAddress(account)
-  const isLoadingSuccess = bCakeSupportedChainId.includes(chainId) ? !isProxyContractLoading : true
+  const {
+    proxyAddress,
+    proxyCreated,
+    isLoading: isProxyContractLoading,
+  } = useBCakeProxyContractAddress(account, chainId)
   const farmFlag = useFeatureFlag(featureFarmApiAtom)
 
   useSWRImmutable(
@@ -56,7 +58,7 @@ export const usePollFarmsWithUserData = () => {
     : ['farmsWithUserData', account, chainId]
 
   useSWRImmutable(
-    account && chainId && isLoadingSuccess ? name : null,
+    account && chainId && !isProxyContractLoading ? name : null,
     async () => {
       const farmsConfig = await getFarmConfig(chainId)
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)

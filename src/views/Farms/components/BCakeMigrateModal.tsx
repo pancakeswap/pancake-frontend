@@ -12,7 +12,7 @@ import {
   useToast,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -150,7 +150,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   onUnStack,
   pid,
 }) => {
-  const { account } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const [activatedState, setActivatedState] = useState<Steps>(Steps.UnStake)
   const [isLoading, setIsLoading] = useState(false)
   const [isApproved, setIsApproved] = useState(false)
@@ -158,7 +158,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(stakedBalance)
   }, [stakedBalance])
-  const { proxyAddress } = useBCakeProxyContractAddress(account)
+  const { proxyAddress } = useBCakeProxyContractAddress(account, chainId)
   const { onApprove, onDone, onStake } = useProxyStakedActions(pid, lpContract)
 
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
