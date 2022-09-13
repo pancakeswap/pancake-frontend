@@ -97,7 +97,7 @@ const FarmResult: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedDa
                 0.005 BNB
               </Text>
               {tooltipVisible && tooltip}
-              <Box m="2px 4px 0 4px" ref={targetRef}>
+              <Box m="0 4px" ref={targetRef}>
                 <LightBulbIcon color="primary" />
               </Box>
               <Text as="span">{t('have been')}</Text>
