@@ -33,6 +33,7 @@ jobs:
 
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@1
+        if: github.repository_owner == 'pancakeswap'
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: b82548875bdb333ff5edcca4d076f88d
