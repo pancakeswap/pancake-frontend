@@ -4,6 +4,9 @@ on:
     paths:
       - 'packages/farms/constants/**'
       - 'packages/tokens/**'
+      - '!packages/tokens/common.ts'
+      - '!packages/tokens/helpers.ts'
+      - '!packages/tokens/index.ts'
   push:
     branches:
       - develop

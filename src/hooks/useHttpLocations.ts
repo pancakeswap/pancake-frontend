@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import uriToHttp from 'utils/uriToHttp'
+import uriToHttp from '@pancakeswap/utils/uriToHttp'
 
 export default function useHttpLocations(uri: string | undefined): string[] {
   return useMemo(() => {

@@ -1,4 +1,5 @@
-import uriToHttp from 'utils/uriToHttp'
+import { describe, it, expect } from 'vitest'
+import uriToHttp from './uriToHttp'
 
 describe('uriToHttp', () => {
   it('returns .eth.link for ens names', () => {

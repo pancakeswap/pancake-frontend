@@ -32,7 +32,7 @@ const ClaimNftModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
       onDismiss?.()
     } catch (error: any) {
       const errorDescription = `${error.message} - ${error.data?.message}`
-      toastError('Failed to claim', errorDescription)
+      toastError(t('Failed to claim'), errorDescription)
     } finally {
       setIsClaiming(false)
     }
