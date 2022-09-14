@@ -228,6 +228,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           return latinise(farm.lpSymbol.toLowerCase()).includes(lowercaseQuery)
         })
       }
+
       return farmsToDisplayWithAPR
     },
     [query, isActive, chainId, cakePrice, regularCakePerBlock],
@@ -239,9 +240,39 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
 
-  const chosenFarmsMemoized = useMemo(() => {
-    let chosenFarms = []
+  const chosenFarms = useMemo(() => {
+    let chosenFs = []
+    if (isActive) {
+      chosenFs = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)
+    }
+    if (isInactive) {
+      chosenFs = stakedOnly ? farmsList(stakedInactiveFarms) : farmsList(inactiveFarms)
+    }
+    if (isArchived) {
+      chosenFs = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms)
+    }
 
+    if (boostedOnly) {
+      chosenFs = chosenFs.filter((f) => f.boosted)
+    }
+
+    return chosenFs
+  }, [
+    activeFarms,
+    farmsList,
+    inactiveFarms,
+    archivedFarms,
+    isActive,
+    isInactive,
+    isArchived,
+    stakedArchivedFarms,
+    stakedInactiveFarms,
+    stakedOnly,
+    stakedOnlyFarms,
+    boostedOnly,
+  ])
+
+  const chosenFarmsMemoized = useMemo(() => {
     const sortFarms = (farms: FarmWithStakedValue[]): FarmWithStakedValue[] => {
       switch (sortOption) {
         case 'apr':
@@ -267,37 +298,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       }
     }
 
-    if (isActive) {
-      chosenFarms = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)
-    }
-    if (isInactive) {
-      chosenFarms = stakedOnly ? farmsList(stakedInactiveFarms) : farmsList(inactiveFarms)
-    }
-    if (isArchived) {
-      chosenFarms = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms)
-    }
-
-    if (boostedOnly) {
-      chosenFarms = chosenFarms.filter((f) => f.boosted)
-    }
-
     return sortFarms(chosenFarms).slice(0, numberOfFarmsVisible)
-  }, [
-    sortOption,
-    activeFarms,
-    farmsList,
-    inactiveFarms,
-    archivedFarms,
-    isActive,
-    isInactive,
-    isArchived,
-    stakedArchivedFarms,
-    stakedInactiveFarms,
-    stakedOnly,
-    stakedOnlyFarms,
-    numberOfFarmsVisible,
-    boostedOnly,
-  ])
+  }, [chosenFarms, sortOption, numberOfFarmsVisible])
 
   chosenFarmsLength.current = chosenFarmsMemoized.length
 

@@ -9,6 +9,7 @@ import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useTradeExactOut } from 'hooks/Trades'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useSwapCallArguments } from 'hooks/useSwapCallArguments'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { ENABLE_EXTEND_LOCK_AMOUNT } from '../../../helpers'
 
@@ -24,7 +25,9 @@ export const useExtendEnable = () => {
 
   const trade = useTradeExactOut(Native.onChain(ChainId.BSC), parsedAmount)
 
-  const { callback: swapCallback } = useSwapCallback(trade, INITIAL_ALLOWED_SLIPPAGE, null)
+  const swapCalls = useSwapCallArguments(trade, INITIAL_ALLOWED_SLIPPAGE, null)
+
+  const { callback: swapCallback } = useSwapCallback(trade, INITIAL_ALLOWED_SLIPPAGE, null, swapCalls)
 
   useEffect(() => {
     if (pendingEnableTx && transactionHash && !isTransactionPending) {

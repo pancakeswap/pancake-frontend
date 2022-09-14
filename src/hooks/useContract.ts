@@ -295,6 +295,7 @@ export function useContract<T extends Contract = Contract>(
   withSignerIfPossible = true,
 ): T | null {
   const { provider } = useActiveWeb3React()
+
   const providerOrSigner = useProviderOrSigner(withSignerIfPossible) ?? provider
 
   const canReturnContract = useMemo(() => address && ABI && providerOrSigner, [address, ABI, providerOrSigner])

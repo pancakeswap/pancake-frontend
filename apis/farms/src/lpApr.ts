@@ -5,6 +5,8 @@ import { gql, GraphQLClient } from 'graphql-request'
 import getUnixTime from 'date-fns/getUnixTime'
 import sub from 'date-fns/sub'
 import { AprMap } from '@pancakeswap/farms'
+import { Contract } from '@ethersproject/contracts'
+import { getProvider } from './helper'
 
 interface BlockResponse {
   blocks: {
@@ -14,6 +16,7 @@ interface BlockResponse {
 
 const BLOCK_SUBGRAPH_ENDPOINT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/blocks'
 const INFO_SUBGRAPH_ENDPOINT = 'https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2'
+
 const LP_HOLDERS_FEE = 0.0017
 const WEEKS_IN_A_YEAR = 52.1429
 
@@ -25,9 +28,30 @@ const blockClient = new GraphQLClient(BLOCK_SUBGRAPH_ENDPOINT, {
   fetch,
 })
 
+const stableSwapABI = [
+  {
+    inputs: [],
+    name: 'get_virtual_price',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+]
+
 const getWeekAgoTimestamp = () => {
   const weekAgo = sub(new Date(), { weeks: 1 })
   return getUnixTime(weekAgo)
+}
+
+const getDayAgoTimestamp = () => {
+  const dayAgo = sub(new Date(), { days: 1 })
+  return getUnixTime(dayAgo)
 }
 
 const getBlockAtTimestamp = async (timestamp: number) => {
@@ -55,6 +79,31 @@ interface SingleFarmResponse {
 interface FarmsResponse {
   farmsAtLatestBlock: SingleFarmResponse[]
   farmsOneWeekAgo: SingleFarmResponse[]
+}
+
+export const BLOCKS_PER_DAY = (60 / 3) * 60 * 24
+
+const getAprsForStableFarm = async (stableFarm: any, chainId: number): Promise<BigNumber> => {
+  const provider = getProvider({ chainId })
+  if (!provider) throw new Error(`Provider missing chainId ${chainId}`)
+  const swapContract = new Contract(stableFarm?.stableSwapAddress, stableSwapABI)
+
+  const latest: number = parseInt((await provider.getBlockNumber())?.toString(), 10)
+
+  const virtualPrice = await swapContract.get_virtual_price()
+
+  let preVirtualPrice
+
+  try {
+    preVirtualPrice = await swapContract.get_virtual_price({ blockTag: latest - BLOCKS_PER_DAY })
+  } catch (e) {
+    preVirtualPrice = 1 * 10 ** 18
+  }
+
+  const current = new BigNumber(virtualPrice?.toString())
+  const prev = new BigNumber(preVirtualPrice?.toString())
+
+  return current.minus(prev).div(prev)
 }
 
 const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): Promise<AprMap> => {
@@ -99,8 +148,35 @@ const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): P
     throw new Error(`[LP APR Update] Failed to fetch LP APR data: ${error}`)
   }
 }
+
+interface SplitFarmResult {
+  normalFarms: any[]
+  stableFarms: any[]
+}
+
+function splitNormalAndStableFarmsReducer(result: SplitFarmResult, farm: any): SplitFarmResult {
+  const { normalFarms, stableFarms } = result
+
+  if (farm?.stableSwapAddress) {
+    return {
+      normalFarms,
+      stableFarms: [...stableFarms, farm],
+    }
+  }
+
+  return {
+    stableFarms,
+    normalFarms: [...normalFarms, farm],
+  }
+}
+
 export const updateLPsAPR = async (chainId: number, allFarms: any[]) => {
-  const lowerCaseAddresses = allFarms.map((farm) => farm.lpAddress.toLowerCase())
+  const { normalFarms, stableFarms }: SplitFarmResult = allFarms.reduce(splitNormalAndStableFarmsReducer, {
+    normalFarms: [],
+    stableFarms: [],
+  })
+
+  const lowerCaseAddresses = normalFarms.map((farm) => farm.lpAddress.toLowerCase())
   console.info(`[LP APR Update] Fetching farm data for ${lowerCaseAddresses.length} addresses`)
   // Split it into chunks of 30 addresses to avoid gateway timeout
   const addressesInGroups = chunk<string>(lowerCaseAddresses, 30)
@@ -124,6 +200,24 @@ export const updateLPsAPR = async (chainId: number, allFarms: any[]) => {
   } catch (error) {
     console.error(error, '[LP APR Update] getAprsForFarmGroup error')
     return false
+  }
+
+  try {
+    if (stableFarms?.length) {
+      const stableAprs: BigNumber[] = await Promise.all(stableFarms.map((f) => getAprsForStableFarm(f, chainId)))
+
+      const stableAprsMap = stableAprs.reduce(
+        (result, apr, index) => ({
+          ...result,
+          [stableFarms[index].lpAddress]: apr.decimalPlaces(2).toNumber(),
+        }),
+        {} as AprMap,
+      )
+
+      allAprs = { ...allAprs, ...stableAprsMap }
+    }
+  } catch (error) {
+    console.error(error, '[LP APR Update] getAprsForStableFarm error')
   }
 
   try {
