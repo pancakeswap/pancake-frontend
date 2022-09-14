@@ -1,4 +1,4 @@
-import { useWeb3React } from '@pancakeswap/wagmi'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useSWRContract } from 'hooks/useSWRContract'
 import { getCakeContract } from 'utils/contractHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -6,8 +6,8 @@ import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyCon
 import BigNumber from 'bignumber.js'
 
 const useProxyCAKEBalance = () => {
-  const { account } = useWeb3React()
-  const { proxyAddress } = useBCakeProxyContractAddress(account)
+  const { account, chainId } = useActiveWeb3React()
+  const { proxyAddress } = useBCakeProxyContractAddress(account, chainId)
   const cakeContract = getCakeContract()
 
   const { data, mutate } = useSWRContract([cakeContract, 'balanceOf', [proxyAddress]])

@@ -1,4 +1,3 @@
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { useBCakeProxyContract } from 'hooks/useContract'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback } from 'react'
@@ -11,9 +10,8 @@ import { useApproveBoostProxyFarm } from '../../../hooks/useApproveFarm'
 import useProxyCAKEBalance from './useProxyCAKEBalance'
 
 export default function useProxyStakedActions(pid, lpContract) {
-  const { account } = useWeb3React()
-  const { chainId } = useActiveWeb3React()
-  const { proxyAddress } = useBCakeProxyContractAddress(account)
+  const { account, chainId } = useActiveWeb3React()
+  const { proxyAddress } = useBCakeProxyContractAddress(account, chainId)
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
   const dispatch = useAppDispatch()
   const gasPrice = useGasPrice()
