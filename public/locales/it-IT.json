@@ -21,7 +21,7 @@
   "View Project Site": "Visita il sito del progetto",
   "%num% CAKE": "%num% CAKE",
   "View your tickets": "Visualizza i tuoi biglietti",
-  "Add Stable Liquidity": "Add Stable Liquidity",
+  "Add Stable Liquidity": "Aggiungi liquidità stabile",
   "StableSwap": "StableSwap",
   "Close": "Chiudi",
   "Boosted": "Potenziato",
@@ -1940,11 +1940,11 @@
   "The URL you are accessing (Chain id: %chainId%) belongs to %network%; mismatching your wallet’s network. Please switch the network to continue.": "L'URL a cui stai accedendo (ID catena: %chainId%) appartiene a %network%; c'è una mancata corrispondenza della rete del tuo portafoglio. Cambia la rete per continuare.",
   "Error connecting, please retry and confirm in wallet!": "Errore durante la connessione, riprova e conferma nel portafoglio!",
   "Boost only applies to base APR (CAKE yield)": "L'aumento si applica solo all'APR di base (rendimento di CAKE)",
-  "Up to %boostMultiplier%x": "Up to %boostMultiplier%x",
-  "Available Boosted": "Available Boosted",
+  "Up to %boostMultiplier%x": "Fino a %boostMultiplier%x",
+  "Available Boosted": "Aumento disponibile",
   "Stake CAKE, Earn CAKE, Win CAKE": "Metti in stake CAKE, Guadagna CAKE, Vinci CAKE",
-  "Failed": "Failed",
-  "Transaction failed with error: %reason%": "Transaction failed with error: %reason%",
-  "Transaction failed. For detailed error message:": "Transaction failed. For detailed error message:",
-  "Failed to claim": "Failed to claim"
+  "Failed": "Non riuscito",
+  "Transaction failed with error: %reason%": "Transazione non andata a buon fine con errore: %reason%",
+  "Transaction failed. For detailed error message:": "Transazione non andata a buon fine. Per dettagli sull'errore:",
+  "Failed to claim": "Impossibile richiedere"
 }
