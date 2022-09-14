@@ -28,17 +28,17 @@ export interface FarmConfigBaseProps {
   }
   boosted?: boolean
 }
+export interface SerializedStableFarmConfig extends SerializedClassicFarmConfig {
+  stableSwapAddress?: string
+  infoStableSwapAddress?: string
+}
 
 export interface SerializedClassicFarmConfig extends FarmConfigBaseProps {
   token: SerializedWrappedToken
   quoteToken: SerializedWrappedToken
 }
-export type SerializedFarmConfig = SerializedClassicFarmConfig | SerializedStableFarmConfig
 
-export interface SerializedStableFarmConfig extends SerializedClassicFarmConfig {
-  stableSwapAddress: string
-  infoStableSwapAddress: string
-}
+export type SerializedFarmConfig = SerializedStableFarmConfig & SerializedClassicFarmConfig
 
 export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
   tokenPriceBusd?: string

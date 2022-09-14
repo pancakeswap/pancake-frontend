@@ -39,7 +39,7 @@ export default function useStableSwapCallArgs(trade): SwapCall[] {
         contract: swapContract,
       },
     ]
-  }, [swapContract, trade, stableConfig])
+  }, [swapContract, trade, stableConfig, allowedSlippage])
 
   return swapCalls
 }

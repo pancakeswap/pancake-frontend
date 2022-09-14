@@ -52,8 +52,8 @@ const getWeekAgoTimestamp = () => {
 }
 
 const getDayAgoTimestamp = () => {
-  const weekAgo = sub(new Date(), { days: 1 })
-  return getUnixTime(weekAgo)
+  const dayAgo = sub(new Date(), { days: 1 })
+  return getUnixTime(dayAgo)
 }
 
 const getBlockAtTimestamp = async (timestamp: number) => {

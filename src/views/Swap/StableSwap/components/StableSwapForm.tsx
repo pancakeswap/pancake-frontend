@@ -2,7 +2,6 @@ import { SetStateAction, useCallback, useEffect, useState, Dispatch, useContext 
 import styled from 'styled-components'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import {
-  Button,
   Text,
   ArrowDownIcon,
   Box,
@@ -38,8 +37,7 @@ import TradePrice from 'views/Swap/components/TradePrice'
 
 import CurrencyInputHeader from '../../components/CurrencyInputHeader'
 import useRefreshBlockNumberID from '../../hooks/useRefreshBlockNumber'
-import AddressInputPanel from '../../components/AddressInputPanel'
-import { ArrowWrapper, Wrapper } from '../../components/styleds'
+import { Wrapper } from '../../components/styleds'
 import StableSwapCommitButton from './StableSwapCommitButton'
 import { useDerivedStableSwapInfo } from '../hooks/useDerivedStableSwapInfo'
 import useApproveCallbackFromStableTrade from '../hooks/useApproveCallbackFromStableTrade'
