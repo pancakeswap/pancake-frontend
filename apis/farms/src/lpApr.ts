@@ -5,7 +5,8 @@ import { gql, GraphQLClient } from 'graphql-request'
 import getUnixTime from 'date-fns/getUnixTime'
 import sub from 'date-fns/sub'
 import { AprMap } from '@pancakeswap/farms'
-import Web3 from 'web3'
+import { Contract } from '@ethersproject/contracts'
+import { getProvider } from './helper'
 
 interface BlockResponse {
   blocks: {
@@ -42,8 +43,6 @@ const stableSwapABI = [
     type: 'function',
   },
 ]
-
-const web3 = new Web3(process.env.NEXT_PUBLIC_NODE_PRODUCTION || 'https://bsc.nodereal.io')
 
 const getWeekAgoTimestamp = () => {
   const weekAgo = sub(new Date(), { weeks: 1 })
@@ -82,25 +81,27 @@ interface FarmsResponse {
   farmsOneWeekAgo: SingleFarmResponse[]
 }
 
-const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
-  const swapContract = new web3.eth.Contract(stableSwapABI as any, stableFarm?.stableSwapAddress)
+const getAprsForStableFarm = async (stableFarm: any, chainId: number): Promise<BigNumber> => {
+  const provider = getProvider({ chainId })
+  if (!provider) throw new Error(`Provider missing chainId ${chainId}`)
+  const swapContract = new Contract(stableFarm?.stableSwapAddress, stableSwapABI)
 
   const dayAgoTimestamp = getDayAgoTimestamp()
 
   // default is the latest
-  let blockDayAgo: number = await web3.eth.getBlockNumber()
+  let blockDayAgo: number = parseInt((await provider.getBlockNumber())?.toString(), 10)
   try {
     blockDayAgo = await getBlockAtTimestamp(dayAgoTimestamp)
   } catch (error) {
     console.error(error, 'LP APR Update] blockDayAgo error')
   }
 
-  const virtualPrice = await swapContract.methods.get_virtual_price().call()
+  const virtualPrice = await swapContract.get_virtual_price()
 
   let preVirtualPrice
 
   try {
-    preVirtualPrice = await swapContract.methods.get_virtual_price().call('', blockDayAgo)
+    preVirtualPrice = await swapContract.get_virtual_price({ blockTag: blockDayAgo })
   } catch (e) {
     preVirtualPrice = 1 * 10 ** 18
   }
@@ -209,14 +210,14 @@ export const updateLPsAPR = async (chainId: number, allFarms: any[]) => {
 
   try {
     if (stableFarms?.length) {
-      const stableAprs: BigNumber[] = await Promise.all(stableFarms.map(getAprsForStableFarm))
+      const stableAprs: BigNumber[] = await Promise.all(stableFarms.map((f) => getAprsForStableFarm(f, chainId)))
 
       const stableAprsMap = stableAprs.reduce(
         (result, apr, index) => ({
           ...result,
           [stableFarms[index].lpAddress]: apr.decimalPlaces(2).toNumber(),
         }),
-        {},
+        {} as AprMap,
       )
 
       allAprs = { ...allAprs, ...stableAprsMap }
