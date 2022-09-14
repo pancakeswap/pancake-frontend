@@ -2,11 +2,11 @@ import { BlockIcon, CheckmarkCircleIcon, Flex, Link, OpenNewIcon, RefreshIcon } 
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { TransactionDetails } from 'state/transactions/reducer'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBlockExploreLink } from 'utils'
 
 interface TransactionRowProps {
   txn: TransactionDetails
+  chainId: number
 }
 
 const TxnIcon = styled(Flex)`
@@ -44,9 +44,8 @@ const renderIcon = (txn: TransactionDetails) => {
   )
 }
 
-const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = ({ txn }) => {
+const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = ({ txn, chainId }) => {
   const { t } = useTranslation()
-  const { chainId } = useActiveWeb3React()
 
   if (!txn) {
     return null
