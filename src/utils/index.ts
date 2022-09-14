@@ -8,7 +8,6 @@ import { ChainId, Currency } from '@pancakeswap/sdk'
 import { bsc } from '@pancakeswap/wagmi/chains'
 import memoize from 'lodash/memoize'
 import { TokenAddressMap } from '@pancakeswap/tokens'
-import { BASE_BSC_SCAN_URLS } from '../config'
 import { chains } from './wagmi'
 
 // returns the checksummed address if the address is valid, otherwise returns false
@@ -55,7 +54,7 @@ export function getBlockExploreName(chainIdOverride?: number) {
 }
 
 export function getBscScanLinkForNft(collectionAddress: string, tokenId: string): string {
-  return `${BASE_BSC_SCAN_URLS[ChainId.BSC]}/token/${collectionAddress}?a=${tokenId}`
+  return `${bsc.blockExplorers.default.url}/token/${collectionAddress}?a=${tokenId}`
 }
 
 // add 10%

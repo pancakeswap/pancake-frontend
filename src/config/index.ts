@@ -1,12 +1,6 @@
-import { ChainId } from '@pancakeswap/sdk'
 import { BIG_TEN } from 'utils/bigNumber'
 
 export const BSC_BLOCK_TIME = 3
-
-export const BASE_BSC_SCAN_URLS = {
-  [ChainId.BSC]: 'https://bscscan.com',
-  [ChainId.BSC_TESTNET]: 'https://testnet.bscscan.com',
-}
 
 // CAKE_PER_BLOCK details
 // 40 CAKE is minted per block
@@ -21,7 +15,6 @@ export const BLOCKS_PER_YEAR = BLOCKS_PER_DAY * 365 // 10512000
 export const CAKE_PER_YEAR = CAKE_PER_BLOCK * BLOCKS_PER_YEAR
 export const BASE_URL = 'https://pancakeswap.finance'
 export const BASE_ADD_LIQUIDITY_URL = `${BASE_URL}/add`
-export const BASE_BSC_SCAN_URL = BASE_BSC_SCAN_URLS[ChainId.BSC]
 export const DEFAULT_TOKEN_DECIMAL = BIG_TEN.pow(18)
 export const DEFAULT_GAS_LIMIT = 250000
 export const BOOSTED_FARM_GAS_LIMIT = 500000
