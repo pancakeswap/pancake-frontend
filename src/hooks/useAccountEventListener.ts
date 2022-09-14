@@ -18,11 +18,11 @@ export const useAccountEventListener = () => {
           replaceBrowserHistory('chainId', e.chain.id)
           setSessionChainId(e.chain.id)
         }
-        clearUserStates(dispatch, chainId)
+        clearUserStates(dispatch, { chainId, newChainId: e?.chain?.id })
       }
 
       const handleDeactiveEvent = () => {
-        clearUserStates(dispatch, chainId, true)
+        clearUserStates(dispatch, { chainId, isDeactive: true })
       }
 
       connector.addListener('disconnect', handleDeactiveEvent)

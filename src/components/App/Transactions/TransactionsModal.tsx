@@ -2,50 +2,45 @@ import { useCallback } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Modal, ModalBody, Text, Button, Flex, InjectedModalProps } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import orderBy from 'lodash/orderBy'
-import { isTransactionRecent, useAllTransactions } from 'state/transactions/hooks'
+import isEmpty from 'lodash/isEmpty'
+import groupBy from 'lodash/groupBy'
+import { useAllSortedRecentTransactions } from 'state/transactions/hooks'
 import { TransactionDetails } from 'state/transactions/reducer'
 import { useAppDispatch } from 'state'
 import { clearAllTransactions } from 'state/transactions/actions'
+import { chains } from 'utils/wagmi'
 import { AutoRow } from '../../Layout/Row'
 import Transaction from './Transaction'
 import ConnectWalletButton from '../../ConnectWalletButton'
 
-function renderTransactions(transactions: TransactionDetails[]) {
+function renderTransactions(transactions: TransactionDetails[], chainId: number) {
   return (
     <Flex flexDirection="column">
       {transactions.map((tx) => {
-        return <Transaction key={tx.hash + tx.addedTime} tx={tx} />
+        return <Transaction key={tx.hash + tx.addedTime} tx={tx} chainId={chainId} />
       })}
     </Flex>
   )
 }
 
 const TransactionsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const dispatch = useAppDispatch()
-  const allTransactions = useAllTransactions()
+  const sortedRecentTransactions = useAllSortedRecentTransactions()
 
   const { t } = useTranslation()
 
-  const sortedRecentTransactions = orderBy(
-    Object.values(allTransactions).filter(isTransactionRecent),
-    'addedTime',
-    'desc',
-  )
-
-  const pending = sortedRecentTransactions.filter((tx) => !tx.receipt)
-  const confirmed = sortedRecentTransactions.filter((tx) => tx.receipt)
+  const hasTransactions = !isEmpty(sortedRecentTransactions)
 
   const clearAllTransactionsCallback = useCallback(() => {
-    if (chainId) dispatch(clearAllTransactions({ chainId }))
-  }, [dispatch, chainId])
+    dispatch(clearAllTransactions())
+  }, [dispatch])
 
   return (
     <Modal title={t('Recent Transactions')} headerBackground="gradientCardHeader" onDismiss={onDismiss}>
       {account ? (
         <ModalBody>
-          {!!pending.length || !!confirmed.length ? (
+          {hasTransactions ? (
             <>
               <AutoRow mb="1rem" style={{ justifyContent: 'space-between' }}>
                 <Text>{t('Recent Transactions')}</Text>
@@ -53,8 +48,25 @@ const TransactionsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> =
                   {t('clear all')}
                 </Button>
               </AutoRow>
-              {renderTransactions(pending)}
-              {renderTransactions(confirmed)}
+              {Object.entries(sortedRecentTransactions).map(([chainId, transactions]) => {
+                const chainIdNumber = Number(chainId)
+                const groupedTransactions = groupBy(Object.values(transactions), (trxDetails) =>
+                  Boolean(trxDetails.receipt),
+                )
+
+                const confirmed = groupedTransactions.true ?? []
+                const pending = groupedTransactions.false ?? []
+
+                return (
+                  <>
+                    <Text fontSize="12px" color="textSubtle" mb="4px">
+                      {chains.find((c) => c.id === chainIdNumber)?.name ?? 'Unknown network'}
+                    </Text>
+                    {renderTransactions(pending, chainIdNumber)}
+                    {renderTransactions(confirmed, chainIdNumber)}
+                  </>
+                )
+              })}
             </>
           ) : (
             <Text>{t('No recent transactions')}</Text>

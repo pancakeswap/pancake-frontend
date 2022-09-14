@@ -12,7 +12,7 @@ import {
   useTooltip,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
@@ -118,8 +118,8 @@ export const BCakeBoosterCard = () => {
 
 const CardContent: React.FC = () => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
-  const { proxyCreated, refreshProxyAddress } = useBCakeProxyContractAddress(account)
+  const { account, chainId } = useActiveWeb3React()
+  const { proxyCreated, refreshProxyAddress } = useBCakeProxyContractAddress(account, chainId)
   const { maxBoostCounts, remainingCounts } = useUserBoosterStatus(account)
   const { locked, lockedEnd } = useUserLockedCakeStatus()
   const theme = useTheme()

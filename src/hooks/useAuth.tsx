@@ -60,7 +60,7 @@ const useAuth = () => {
     } catch (error) {
       console.error(error)
     } finally {
-      clearUserStates(dispatch, chain?.id, true)
+      clearUserStates(dispatch, { chainId: chain?.id, isDeactive: true })
     }
   }, [disconnectAsync, dispatch, chain?.id])
 

@@ -35,7 +35,8 @@ export const addTransaction =
     type?: TransactionType
     order?: Order
   }>('transactions/addTransaction')
-export const clearAllTransactions = createAction<{ chainId: ChainId }>('transactions/clearAllTransactions')
+export const clearAllTransactions = createAction('transactions/clearAllTransactions')
+export const clearAllChainTransactions = createAction<{ chainId: ChainId }>('transactions/clearAllChainTransactions')
 export const finalizeTransaction = createAction<{
   chainId: ChainId
   hash: string
