@@ -70,7 +70,8 @@ export const addTransaction =
     order?: Order
     nonBscFarm?: NonBscFarmTransactionType
   }>('transactions/addTransaction')
-export const clearAllTransactions = createAction<{ chainId: ChainId }>('transactions/clearAllTransactions')
+export const clearAllTransactions = createAction('transactions/clearAllTransactions')
+export const clearAllChainTransactions = createAction<{ chainId: ChainId }>('transactions/clearAllChainTransactions')
 export const finalizeTransaction = createAction<{
   chainId: ChainId
   hash: string

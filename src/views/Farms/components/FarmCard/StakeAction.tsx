@@ -126,7 +126,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
         },
       })
 
-      dispatch(pickFarmTransactionTx({ tx: receipt.hash }))
+      dispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
       onDone()
     } catch (error) {
       console.error('Stake non Bsc Farm Error: ', error)
@@ -189,7 +189,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
         },
       })
 
-      dispatch(pickFarmTransactionTx({ tx: receipt.hash }))
+      dispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
       onDone()
     } catch (error) {
       console.error('Unstake non Bsc Farm Error: ', error)

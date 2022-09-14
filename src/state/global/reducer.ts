@@ -1,15 +1,22 @@
 /* eslint-disable no-param-reassign */
 import { createReducer } from '@reduxjs/toolkit'
+import { ChainId } from '@pancakeswap/sdk'
 import { toggleFarmTransactionModal, pickFarmTransactionTx } from './actions'
 
 export interface GlobalState {
   showFarmTransactionModal: boolean
-  pickedFarmTransactionModalTx: string
+  pickedFarmTransactionModalTx: {
+    tx: string
+    chainId: ChainId
+  }
 }
 
 export const initialState: GlobalState = {
   showFarmTransactionModal: false,
-  pickedFarmTransactionModalTx: '',
+  pickedFarmTransactionModalTx: {
+    tx: '',
+    chainId: ChainId.BSC,
+  },
 }
 
 export default createReducer(initialState, (builder) =>
@@ -17,8 +24,8 @@ export default createReducer(initialState, (builder) =>
     .addCase(toggleFarmTransactionModal, (state, { payload: { showModal } }) => {
       state.showFarmTransactionModal = showModal
     })
-    .addCase(pickFarmTransactionTx, (state, { payload: { tx } }) => {
-      state.pickedFarmTransactionModalTx = tx
+    .addCase(pickFarmTransactionTx, (state, { payload: { tx, chainId } }) => {
+      state.pickedFarmTransactionModalTx = { tx, chainId }
       state.showFarmTransactionModal = true
     }),
 )

@@ -17,7 +17,7 @@ const FarmTransactionModal: React.FC<React.PropsWithChildren<FarmTransactionModa
   const allTransactions = useAllTransactions()
   const { pickedTx } = useFarmHarvestTransaction()
 
-  const pickedData = useMemo(() => allTransactions[pickedTx], [allTransactions, pickedTx])
+  const pickedData = useMemo(() => allTransactions?.[pickedTx.chainId]?.[pickedTx.tx], [allTransactions, pickedTx])
 
   const modalTitle = useMemo(() => {
     const { type, nonBscFarm } = pickedData

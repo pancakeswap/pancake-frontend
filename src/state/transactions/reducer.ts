@@ -9,6 +9,7 @@ import {
   finalizeTransaction,
   SerializableTransactionReceipt,
   TransactionType,
+  clearAllChainTransactions,
   NonBscFarmTransactionType,
   FarmTransactionStatus,
 } from './actions'
@@ -68,7 +69,10 @@ export default createReducer(initialState, (builder) =>
         if (order) saveOrder(chainId, from, order, true)
       },
     )
-    .addCase(clearAllTransactions, (transactions, { payload: { chainId } }) => {
+    .addCase(clearAllTransactions, () => {
+      return {}
+    })
+    .addCase(clearAllChainTransactions, (transactions, { payload: { chainId } }) => {
       if (!transactions[chainId]) return
       transactions[chainId] = {}
     })
@@ -106,8 +110,8 @@ export default createReducer(initialState, (builder) =>
         }
       }
     })
-    .addCase(resetUserState, (transactions, { payload: { chainId } }) => {
-      if (transactions[chainId]) {
+    .addCase(resetUserState, (transactions, { payload: { chainId, newChainId } }) => {
+      if (!newChainId && transactions[chainId]) {
         transactions[chainId] = {}
       }
     }),

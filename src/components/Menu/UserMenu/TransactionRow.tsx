@@ -5,11 +5,11 @@ import { useTranslation } from '@pancakeswap/localization'
 import { TransactionDetails } from 'state/transactions/reducer'
 import { pickFarmTransactionTx } from 'state/global/actions'
 import { TransactionType, FarmTransactionStatus } from 'state/transactions/actions'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBlockExploreLink } from 'utils'
 
 interface TransactionRowProps {
   txn: TransactionDetails
+  chainId: number
   type: TransactionType
   onDismiss: () => void
 }
@@ -52,15 +52,14 @@ const renderIcon = (txn: TransactionDetails) => {
   )
 }
 
-const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = ({ txn, type, onDismiss }) => {
+const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = ({ txn, chainId, type, onDismiss }) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { chainId } = useActiveWeb3React()
 
   const onClickTransaction = () => {
     if (type === 'non-bsc-farm-stake' || type === 'non-bsc-farm-unstake') {
       onDismiss()
-      dispatch(pickFarmTransactionTx({ tx: txn.hash }))
+      dispatch(pickFarmTransactionTx({ tx: txn.hash, chainId }))
     } else {
       const url = getBlockExploreLink(txn.hash, 'transaction', chainId)
       window.open(url, '_blank', 'noopener noreferrer')

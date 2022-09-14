@@ -1,11 +1,10 @@
-import { useEffect, useMemo } from 'react'
-import { useSelector } from 'react-redux'
-import { Box, Text, useToast } from '@pancakeswap/uikit'
+import { useEffect } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCurrentBlock } from 'state/block/hooks'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { AppState, useAppDispatch } from '../index'
+import { Box, Text, useToast } from '@pancakeswap/uikit'
+import { useAppDispatch } from '../index'
 import {
   checkedTransaction,
   finalizeTransaction,
@@ -13,6 +12,7 @@ import {
   NonBscFarmTransactionStep,
   MsgStatus,
 } from './actions'
+import { useAllChainTransactions } from './hooks'
 import { fetchCelerApi } from './fetchCelerApi'
 
 export function shouldCheck(
@@ -43,9 +43,7 @@ export default function Updater(): null {
   const currentBlock = useCurrentBlock()
 
   const dispatch = useAppDispatch()
-  const state = useSelector<AppState, AppState['transactions']>((s) => s.transactions)
-
-  const transactions = useMemo(() => (chainId ? state[chainId] ?? {} : {}), [chainId, state])
+  const transactions = useAllChainTransactions()
 
   const { toastError, toastSuccess } = useToast()
 

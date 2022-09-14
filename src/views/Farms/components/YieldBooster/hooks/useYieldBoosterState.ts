@@ -43,12 +43,12 @@ interface UseYieldBoosterStateArgs {
 
 export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoosterStateArgs) {
   const { farmPid } = yieldBoosterStateArgs
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { remainingCounts, refreshActivePools } = useUserBoosterStatus(account)
   const { locked, lockedEnd } = useUserLockedCakeStatus()
   const { stakedBalance, proxy } = useFarmUser(farmPid)
   const { isActivePool, refreshIsPoolActive } = useIsPoolActive(farmPid)
-  const { proxyCreated, refreshProxyAddress, proxyAddress } = useBCakeProxyContractAddress(account)
+  const { proxyCreated, refreshProxyAddress, proxyAddress } = useBCakeProxyContractAddress(account, chainId)
 
   const refreshActivePool = useCallback(() => {
     refreshActivePools()

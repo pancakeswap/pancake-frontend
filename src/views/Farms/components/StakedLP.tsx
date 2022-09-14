@@ -8,6 +8,7 @@ import { formatLpBalance, getBalanceNumber } from 'utils/formatBalance'
 import { useNonBscFarmPendingTransaction } from 'state/transactions/hooks'
 import { pickFarmTransactionTx } from 'state/global/actions'
 import WalletModal, { WalletView } from 'components/Menu/UserMenu/WalletModal'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 interface StackedLPProps {
   lpAddress: string
@@ -31,6 +32,7 @@ const StakedLP: React.FunctionComponent<React.PropsWithChildren<StackedLPProps>>
   quoteTokenAmountTotal,
 }) => {
   const dispatch = useAppDispatch()
+  const { chainId } = useActiveWeb3React()
   const lpPrice = useLpTokenPrice(lpSymbol)
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
   const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
@@ -43,7 +45,7 @@ const StakedLP: React.FunctionComponent<React.PropsWithChildren<StackedLPProps>>
     if (pendingFarm.length > 1) {
       onPresentTransactionModal()
     } else {
-      dispatch(pickFarmTransactionTx({ tx: pendingFarm[0].txid }))
+      dispatch(pickFarmTransactionTx({ tx: pendingFarm[0].txid, chainId }))
     }
   }
 

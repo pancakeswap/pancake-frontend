@@ -5,7 +5,7 @@ import { ChainId } from '@pancakeswap/sdk'
 // allows any updates to be applied to store data loaded from localStorage
 export const updateVersion = createAction<void>('global/updateVersion')
 
-export const resetUserState = createAction<{ chainId: ChainId }>('global/resetUserState')
+export const resetUserState = createAction<{ chainId: ChainId; newChainId?: ChainId }>('global/resetUserState')
 
 export const toggleFarmTransactionModal = createAction<{
   showModal: boolean
@@ -13,4 +13,5 @@ export const toggleFarmTransactionModal = createAction<{
 
 export const pickFarmTransactionTx = createAction<{
   tx: string
+  chainId: ChainId
 }>('transactions/pickFarmTransactionTx')

@@ -219,7 +219,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
         },
       })
 
-      dispatch(pickFarmTransactionTx({ tx: receipt.hash }))
+      dispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
       onDone()
     } catch (error) {
       console.error('Stake non Bsc Farm Error: ', error)
@@ -282,7 +282,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
         },
       })
 
-      dispatch(pickFarmTransactionTx({ tx: receipt.hash }))
+      dispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
       onDone()
     } catch (error) {
       console.error('Unstake non Bsc Farm Error: ', error)
