@@ -4,6 +4,7 @@ import { atom, useAtom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { isChainSupported } from 'utils'
 import { useMemo } from 'react'
+import { equalsIgnoreCase } from '@pancakeswap/utils/equalsIgnoreCase'
 
 const sessionNetworkAtom = atom<string>('')
 
@@ -40,7 +41,15 @@ export function useActiveNetwork() {
   const { chain } = useNetwork()
   const queryNetwork = useAtomValue(queryNetworkAtom)
 
-  const networkName = localNetworkName ?? chain?.name ?? (queryNetwork === '' ? defaultChain.network : undefined)
+  let networkName: string | undefined
+
+  if (queryNetwork === '') {
+    return {
+      networkName,
+    }
+  }
+
+  networkName = localNetworkName ?? chain?.name
 
   return {
     networkName,
@@ -50,5 +59,5 @@ export function useActiveNetwork() {
 export function useActiveChainId() {
   const { networkName } = useActiveNetwork()
 
-  return useMemo(() => chains.find((c) => c.name.toLowerCase() === networkName?.toLowerCase())?.id, [networkName])
+  return useMemo(() => chains.find((c) => equalsIgnoreCase(c.network, networkName))?.id, [networkName])
 }

@@ -13,7 +13,7 @@ export type SendTransactionArgs = {
 }
 
 interface TransactionResponse extends PendingTransaction {
-  wait(): Promise<Transaction>
+  wait(opts?: { timeoutSecs?: number; checkSuccess?: boolean }): Promise<Transaction>
 }
 
 export type SendTransactionResult = TransactionResponse
@@ -38,8 +38,8 @@ export async function sendTransaction({ networkName, payload }: SendTransactionA
     const pending = await connector.signAndSubmitTransaction(payload)
 
     const response = pending as TransactionResponse
-    response.wait = async () => {
-      return provider.waitForTransactionWithResult(pending.hash)
+    response.wait = async (opts) => {
+      return provider.waitForTransactionWithResult(pending.hash, opts)
     }
     return response
   } catch (error) {
