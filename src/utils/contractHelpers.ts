@@ -3,10 +3,12 @@ import { simpleRpcProvider } from 'utils/providers'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 import tokens, { mainnetTokens } from 'config/constants/tokens'
+
 // eslint-disable-next-line
-import { default as PeronioABI } from 'peronio-core/deployments/matic/Peronio.json'
+import { default as PeronioABI } from 'config/abi/PeronioV1.json'
+
 // eslint-disable-next-line
-import { default as PeronioV1ABI } from 'peronio-core/deployments/matic/PeronioV1.json'
+import { default as PeronioV1ABI } from 'config/abi/PeronioV1.json'
 
 // Addresses
 import {
