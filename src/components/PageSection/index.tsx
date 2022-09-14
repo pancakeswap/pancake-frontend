@@ -6,7 +6,6 @@ import CurvedDivider from './CurvedDivider'
 import { ClipFill, DividerFill } from './types'
 
 interface PageSectionProps extends BackgroundColorProps {
-  svgFill?: string
   dividerComponent?: React.ReactNode
   hasCurvedDivider?: boolean
   dividerPosition?: 'top' | 'bottom'
@@ -51,7 +50,6 @@ const ChildrenWrapper = styled(Container)`
 const PageSection: React.FC<PageSectionProps> = ({
   children,
   background,
-  svgFill,
   index = 1,
   dividerComponent,
   dividerPosition = 'bottom',
@@ -85,7 +83,6 @@ const PageSection: React.FC<PageSectionProps> = ({
     <Box {...containerProps}>
       {hasCurvedDivider && dividerPosition === 'top' && (
         <CurvedDivider
-          svgFill={svgFill}
           index={index}
           concave={concaveDivider}
           dividerPosition={dividerPosition}
@@ -99,7 +96,6 @@ const PageSection: React.FC<PageSectionProps> = ({
       </BackgroundColor>
       {hasCurvedDivider && dividerPosition === 'bottom' && (
         <CurvedDivider
-          svgFill={svgFill}
           index={index}
           concave={concaveDivider}
           dividerPosition={dividerPosition}

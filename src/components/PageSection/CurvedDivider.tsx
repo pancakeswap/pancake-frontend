@@ -4,7 +4,6 @@ import { ConcaveTop, ConcaveBottom, ConvexTop, ConvexBottom } from './svg/Curved
 import { DividerFill, ClipFill } from './types'
 
 interface CurvedDividerProps extends WrapperProps {
-  svgFill?: string
   dividerComponent?: React.ReactNode
   dividerPosition?: 'top' | 'bottom'
   concave?: boolean
