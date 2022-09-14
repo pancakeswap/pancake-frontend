@@ -40,6 +40,7 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: bscTokens.busd,
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
+  // Philip TODO: Remove mock info
   {
     pid: 9,
     lpSymbol: 'USDC-BUSD LP',

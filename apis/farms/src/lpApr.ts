@@ -15,6 +15,7 @@ interface BlockResponse {
 
 const BLOCK_SUBGRAPH_ENDPOINT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/blocks'
 const INFO_SUBGRAPH_ENDPOINT = 'https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2'
+// Philip TODO: Get the NodeReal in Prod
 const NODEREAL_ENDPOINT = 'https://bsc-mainnet.nodereal.io/v1/d430f31d2a45423992b45621b6abbc81'
 
 const LP_HOLDERS_FEE = 0.0017
@@ -44,7 +45,7 @@ const stableSwapABI = [
   },
 ]
 
-const web3 = new Web3(NODEREAL_ENDPOINT)
+const web3 = new Web3(process.env.NEXT_PUBLIC_NODE_PRODUCTION || 'https://bsc.nodereal.io')
 
 const getWeekAgoTimestamp = () => {
   const weekAgo = sub(new Date(), { weeks: 1 })
@@ -83,17 +84,17 @@ interface FarmsResponse {
   farmsOneWeekAgo: SingleFarmResponse[]
 }
 
-const getAprsForStableFarms = async (stableFarm: any) => {
+const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
   const swapContract = new web3.eth.Contract(stableSwapABI as any, stableFarm?.stableSwapAddress)
 
   const dayAgoTimestamp = getDayAgoTimestamp()
 
-  let blockDayAgo: number
+  // default is the latest
+  let blockDayAgo: number = await web3.eth.getBlockNumber()
   try {
     blockDayAgo = await getBlockAtTimestamp(dayAgoTimestamp)
   } catch (error) {
     console.error(error, 'LP APR Update] blockDayAgo error')
-    return false
   }
 
   const virtualPrice = await swapContract.methods.get_virtual_price().call()
@@ -155,7 +156,12 @@ const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): P
   }
 }
 
-function splitNormalAndStableFarmsReducer(result: { normalFarms: any[]; stableFarms: any[] }, farm: any) {
+interface SplitFarmResult {
+  normalFarms: any[]
+  stableFarms: any[]
+}
+
+function splitNormalAndStableFarmsReducer(result: SplitFarmResult, farm: any): SplitFarmResult {
   const { normalFarms, stableFarms } = result
 
   if (farm?.stableSwapAddress) {
@@ -167,15 +173,12 @@ function splitNormalAndStableFarmsReducer(result: { normalFarms: any[]; stableFa
 
   return {
     stableFarms,
-    normalFarms: {
-      ...stableFarms,
-      farm,
-    },
+    normalFarms: [...normalFarms, farm],
   }
 }
 
 export const updateLPsAPR = async (chainId: number, allFarms: any[]) => {
-  const { normalFarms, stableFarms } = allFarms.reduce(splitNormalAndStableFarmsReducer, {
+  const { normalFarms, stableFarms }: SplitFarmResult = allFarms.reduce(splitNormalAndStableFarmsReducer, {
     normalFarms: [],
     stableFarms: [],
   })
@@ -208,12 +211,12 @@ export const updateLPsAPR = async (chainId: number, allFarms: any[]) => {
 
   try {
     if (stableFarms?.length) {
-      const stableAprs = await Promise.all(stableFarms.map(getAprsForStableFarms))
+      const stableAprs: BigNumber[] = await Promise.all(stableFarms.map(getAprsForStableFarm))
 
       const stableAprsMap = stableAprs.reduce(
         (result, apr, index) => ({
           ...result,
-          [stableFarms[index].id]: apr.decimalPlaces(2).toNumber(),
+          [stableFarms[index].lpAddress]: apr.decimalPlaces(2).toNumber(),
         }),
         {},
       )
@@ -221,7 +224,7 @@ export const updateLPsAPR = async (chainId: number, allFarms: any[]) => {
       allAprs = { ...allAprs, ...stableAprsMap }
     }
   } catch (error) {
-    console.error(error, '[LP APR Update] getAprsForStableFarms error')
+    console.error(error, '[LP APR Update] getAprsForStableFarm error')
   }
 
   try {
