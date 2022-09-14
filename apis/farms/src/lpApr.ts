@@ -81,33 +81,27 @@ interface FarmsResponse {
   farmsOneWeekAgo: SingleFarmResponse[]
 }
 
+export const BLOCKS_PER_DAY = (60 / 3) * 60 * 24
+
 const getAprsForStableFarm = async (stableFarm: any, chainId: number): Promise<BigNumber> => {
   const provider = getProvider({ chainId })
   if (!provider) throw new Error(`Provider missing chainId ${chainId}`)
   const swapContract = new Contract(stableFarm?.stableSwapAddress, stableSwapABI)
 
-  const dayAgoTimestamp = getDayAgoTimestamp()
-
-  // default is the latest
-  let blockDayAgo: number = parseInt((await provider.getBlockNumber())?.toString(), 10)
-  try {
-    blockDayAgo = await getBlockAtTimestamp(dayAgoTimestamp)
-  } catch (error) {
-    console.error(error, 'LP APR Update] blockDayAgo error')
-  }
+  const latest: number = parseInt((await provider.getBlockNumber())?.toString(), 10)
 
   const virtualPrice = await swapContract.get_virtual_price()
 
   let preVirtualPrice
 
   try {
-    preVirtualPrice = await swapContract.get_virtual_price({ blockTag: blockDayAgo })
+    preVirtualPrice = await swapContract.get_virtual_price({ blockTag: latest - BLOCKS_PER_DAY })
   } catch (e) {
     preVirtualPrice = 1 * 10 ** 18
   }
 
-  const current = new BigNumber(virtualPrice)
-  const prev = new BigNumber(preVirtualPrice)
+  const current = new BigNumber(virtualPrice?.toString())
+  const prev = new BigNumber(preVirtualPrice?.toString())
 
   return current.minus(prev).div(prev)
 }
