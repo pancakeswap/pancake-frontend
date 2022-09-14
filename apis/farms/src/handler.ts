@@ -117,7 +117,7 @@ export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEv
 
 export async function handleLpAprs(chainId: number, farmsConfig?: SerializedFarmConfig[]) {
   let lpAprs = await FarmKV.getApr(chainId)
-  if (lpAprs) {
+  if (!lpAprs) {
     lpAprs = await saveLPsAPR(chainId, farmsConfig)
   }
   return lpAprs || {}
