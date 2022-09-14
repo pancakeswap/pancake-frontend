@@ -1,12 +1,12 @@
 name: Farm Config
 on:
   pull_request:
-    # paths:
-    #   - 'packages/farms/constants/**'
-    #   - 'packages/tokens/**'
-    #   - '!packages/tokens/common.ts'
-    #   - '!packages/tokens/helpers.ts'
-    #   - '!packages/tokens/index.ts'
+    paths:
+      - 'packages/farms/constants/**'
+      - 'packages/tokens/**'
+      - '!packages/tokens/common.ts'
+      - '!packages/tokens/helpers.ts'
+      - '!packages/tokens/index.ts'
   push:
     branches:
       - develop
