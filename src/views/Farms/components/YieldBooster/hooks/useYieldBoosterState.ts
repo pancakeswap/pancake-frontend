@@ -81,13 +81,15 @@ export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoos
 
   return {
     state,
-    shouldUseProxyFarm: [
-      YieldBoosterState.DEACTIVE,
-      YieldBoosterState.ACTIVE,
-      YieldBoosterState.MAX,
-      YieldBoosterState.NO_LP,
-      YieldBoosterState.LOCKED_END,
-    ].includes(state),
+    shouldUseProxyFarm:
+      [
+        YieldBoosterState.DEACTIVE,
+        YieldBoosterState.ACTIVE,
+        YieldBoosterState.MAX,
+        YieldBoosterState.NO_LP,
+        YieldBoosterState.LOCKED_END,
+      ].includes(state) ||
+      (proxyCreated && state !== YieldBoosterState.NO_MIGRATE),
     refreshActivePool,
     refreshProxyAddress,
     proxyAddress,
