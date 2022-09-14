@@ -7,7 +7,7 @@ import multicall, { multicallv2 } from 'utils/multicall'
 import { getMasterChefAddress, getNonBscVaultAddress } from 'utils/addressHelpers'
 import { SerializedFarmConfig } from 'config/constants/types'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
-import { getCrossFarmingContract } from 'utils/contractHelpers'
+import { getCrossFarmingReceiverContract } from 'utils/contractHelpers'
 import { farmFetcher } from '../../../apis/farms/src/helper'
 
 export const fetchFarmUserAllowances = async (
@@ -104,7 +104,7 @@ export const fetchFarmUserEarnings = async (account: string, farmsToFetch: Seria
 
 export const fetchCProxyAddress = async (address: string, chainId: number) => {
   try {
-    const crossFarmingAddress = getCrossFarmingContract(null, chainId)
+    const crossFarmingAddress = getCrossFarmingReceiverContract(null, chainId)
     const cProxyAddress = await crossFarmingAddress.cProxy(address)
     return cProxyAddress.toString()
   } catch (error) {

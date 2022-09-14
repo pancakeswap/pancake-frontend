@@ -1,19 +1,12 @@
 import { useCallback } from 'react'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { nonBscHarvestFarm } from 'utils/calls'
-import { useNonBscVault } from 'hooks/useContract'
-import { useGasPrice } from 'state/user/hooks'
-import { useOraclePrice } from 'views/Farms/hooks/useFetchOraclePrice'
+import { useCrossFarmingProxy } from 'hooks/useContract'
 
-const useNonBscHarvestFarm = (farmPid: number) => {
-  const { account, chainId } = useActiveWeb3React()
-  const oraclePrice = useOraclePrice(chainId)
-  const nonBscVaultContract = useNonBscVault()
-  const gasPrice = useGasPrice()
+const useNonBscHarvestFarm = (farmPid: number, cProxyAddress: string) => {
+  const contract = useCrossFarmingProxy(cProxyAddress)
 
   const handleHarvest = useCallback(async () => {
-    return nonBscHarvestFarm(nonBscVaultContract, farmPid, gasPrice, account, oraclePrice, chainId)
-  }, [farmPid, nonBscVaultContract, gasPrice, account, oraclePrice, chainId])
+    return contract.harvest(farmPid)
+  }, [contract, farmPid])
 
   return { onReward: handleHarvest }
 }

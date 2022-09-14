@@ -13,7 +13,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { ChainId } from '@pancakeswap/sdk'
 import { formatNumber } from 'utils/formatBalance'
 import { pickFarmTransactionTx } from 'state/global/actions'
-import { getCrossFarmingContract } from 'utils/contractHelpers'
+import { getCrossFarmingSenderContract } from 'utils/contractHelpers'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import DepositModal from '../DepositModal'
@@ -93,8 +93,8 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
 
   const handleNonBscStake = async (amountValue: string) => {
     try {
-      const crossFarmingAddress = getCrossFarmingContract(null, chainId)
-      const [receipt, nonce] = await Promise.all([onStake(amountValue), crossFarmingAddress.nonces(account)])
+      const crossFarmingAddress = getCrossFarmingSenderContract(null, chainId)
+      const [receipt, isFirstTime] = await Promise.all([onStake(amountValue), crossFarmingAddress.is1st(account)])
       const amount = formatNumber(Number(amountValue), 5, 5)
 
       addTransaction(receipt, {
@@ -114,7 +114,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
               step: 1,
               chainId,
               tx: receipt.hash,
-              nonce: nonce.toString(),
+              isFirstTime: !isFirstTime,
               status: FarmTransactionStatus.PENDING,
             },
             {

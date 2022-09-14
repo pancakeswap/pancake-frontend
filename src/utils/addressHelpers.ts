@@ -128,3 +128,11 @@ export const getCrossFarmingAddress = (chainId?: number) => {
 export const getNonBscVaultAddress = (chainId?: number) => {
   return getAddress(addresses.nonBscVault, chainId)
 }
+
+export const getCrossFarmingSenderAddress = (chainId?: number) => {
+  return getAddress(addresses.crossFarmingSender, chainId)
+}
+
+export const getCrossFarmingReceiverAddress = (chainId?: number) => {
+  return getAddress(addresses.crossFarmingReceiver, chainId)
+}

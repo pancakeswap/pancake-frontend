@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from 'utils/bigNumber'
-import { getNonBscVaultContract, getCrossFarmingContract } from 'utils/contractHelpers'
+import { getNonBscVaultContract, getCrossFarmingSenderContract } from 'utils/contractHelpers'
 
 export enum MessageTypes {
   'Deposit' = 0,
@@ -35,12 +35,12 @@ export const getNonBscVaultContractFee = async ({
 }: CalculateTotalFeeProps) => {
   try {
     const nonBscVaultContract = getNonBscVaultContract(null, chainId)
-    const crossFarmingAddress = getCrossFarmingContract(null, chainId)
+    const crossFarmingAddress = getCrossFarmingSenderContract(null, chainId)
     const exchangeRate = new BigNumber(oraclePrice)
 
-    const [encodeMessage, nonces, estimateDestGaslimit] = await Promise.all([
+    const [encodeMessage, isFirstTime, estimateDestGaslimit] = await Promise.all([
       nonBscVaultContract.encodeMessage(userAddress, pid, amount, messageType),
-      crossFarmingAddress.nonces(userAddress),
+      crossFarmingAddress.is1st(userAddress),
       crossFarmingAddress.estimateDestGaslimit(userAddress, messageType),
     ])
     const calcFee = await nonBscVaultContract.calcFee(encodeMessage)
@@ -51,12 +51,19 @@ export const getNonBscVaultContractFee = async ({
       .times(exchangeRate)
       .times(COMPENSATION_PRECISION)
       .div(EXCHANGE_RATE_PRECISION * COMPENSATION_PRECISION)
-    const fee3 = new BigNumber(BNB_CHANGE).times(exchangeRate).div(ORACLE_PRECISION)
-
     const totalFee = new BigNumber(fee1).plus(fee2)
-    if (nonces.eq(0) && messageType === MessageTypes.Deposit) {
-      return totalFee.plus(fee3).toString()
+
+    if (!isFirstTime) {
+      const depositFee = new BigNumber(BNB_CHANGE).times(exchangeRate).div(ORACLE_PRECISION)
+      return totalFee.plus(depositFee).toString()
     }
+
+    if (messageType >= MessageTypes.Withdraw) {
+      // TODO: NonBSCFarm need double check
+      const [leftSide] = totalFee.plus(fee1).times(exchangeRate).div(ORACLE_PRECISION).toString().split('.')
+      return leftSide
+    }
+
     return totalFee.toString()
   } catch (error) {
     console.error('Failed to fetch non BscVault fee', error)

@@ -19,7 +19,7 @@ import styled from 'styled-components'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { formatNumber } from 'utils/formatBalance'
 import { ChainId } from '@pancakeswap/sdk'
-import { getCrossFarmingContract } from 'utils/contractHelpers'
+import { getCrossFarmingSenderContract } from 'utils/contractHelpers'
 import useApproveFarm from '../../../hooks/useApproveFarm'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
@@ -186,8 +186,8 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   const handleNonBscStake = async (amountValue: string) => {
     try {
-      const crossFarmingAddress = getCrossFarmingContract(null, chainId)
-      const [receipt, nonce] = await Promise.all([onStake(amountValue), crossFarmingAddress.nonces(account)])
+      const crossFarmingAddress = getCrossFarmingSenderContract(null, chainId)
+      const [receipt, isFirstTime] = await Promise.all([onStake(amountValue), crossFarmingAddress.is1st(account)])
       const amount = formatNumber(Number(amountValue), 5, 5)
 
       addTransaction(receipt, {
@@ -207,7 +207,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
               step: 1,
               chainId,
               tx: receipt.hash,
-              nonce: nonce.toString(),
+              isFirstTime: !isFirstTime,
               status: FarmTransactionStatus.PENDING,
             },
             {

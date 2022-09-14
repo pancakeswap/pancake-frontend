@@ -41,8 +41,9 @@ import {
   getPredictionsV1Address,
   getBCakeFarmBoosterAddress,
   getBCakeFarmBoosterProxyFactoryAddress,
-  getCrossFarmingAddress,
   getNonBscVaultAddress,
+  getCrossFarmingSenderAddress,
+  getCrossFarmingReceiverAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -95,7 +96,9 @@ import bCakeFarmBoosterAbi from 'config/abi/bCakeFarmBooster.json'
 import bCakeFarmBoosterProxyFactoryAbi from 'config/abi/bCakeFarmBoosterProxyFactory.json'
 import bCakeProxyAbi from 'config/abi/bCakeProxy.json'
 import nonBscVault from 'config/abi/nonBscVault.json'
-import crossFarmingAbi from 'config/abi/crossFarming.json'
+import crossFarmingSenderAbi from 'config/abi/crossFarmingSender.json'
+import crossFarmingReceiverAbi from 'config/abi/crossFarmingReceiver.json'
+import crossFarmingProxyAbi from 'config/abi/crossFarmingProxy.json'
 
 // Types
 import type {
@@ -144,7 +147,9 @@ import type {
   BCakeFarmBoosterProxyFactory,
   BCakeProxy,
   NonBscVault,
-  CrossFarming,
+  CrossFarmingSender,
+  CrossFarmingReceiver,
+  CrossFarmingProxy,
 } from 'config/abi/types'
 import { ChainId } from '@pancakeswap/sdk'
 
@@ -373,11 +378,28 @@ export const getNonBscVaultContract = (signer?: Signer | Provider, chainId?: num
   return getContract({ abi: nonBscVault, address: getNonBscVaultAddress(chainId), chainId, signer }) as NonBscVault
 }
 
-export const getCrossFarmingContract = (signer?: Signer | Provider, chainId?: number) => {
+export const getCrossFarmingSenderContract = (signer?: Signer | Provider, chainId?: number) => {
   return getContract({
-    abi: crossFarmingAbi,
-    address: getCrossFarmingAddress(chainId),
+    abi: crossFarmingSenderAbi,
+    address: getCrossFarmingSenderAddress(chainId),
     chainId,
     signer,
-  }) as CrossFarming
+  }) as CrossFarmingSender
+}
+
+export const getCrossFarmingReceiverContract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract({
+    abi: crossFarmingReceiverAbi,
+    address: getCrossFarmingReceiverAddress(chainId),
+    chainId,
+    signer,
+  }) as CrossFarmingReceiver
+}
+
+export const getCrossFarmingProxyContract = (
+  proxyContractAddress: string,
+  signer?: Signer | Provider,
+  chainId?: number,
+) => {
+  return getContract({ abi: crossFarmingProxyAbi, address: proxyContractAddress, chainId, signer }) as CrossFarmingProxy
 }

@@ -147,14 +147,19 @@ export default {
     56: '0x2C36221bF724c60E9FEE3dd44e2da8017a8EF3BA',
     97: '',
   },
-  crossFarming: {
-    56: '0x38D3c31A7B4ba9C76b56e72EccF0e8503Be46C64', //  For passing the test
-    97: '0x6AA249Ff0d95a915dcA2f8f53637072998d35f8B',
-    5: '0x38D3c31A7B4ba9C76b56e72EccF0e8503Be46C64',
-  },
   nonBscVault: {
-    56: '0x4c67e7eF569b0ad9f1E8C82a763B848B510a86De', //  For passing the test
+    56: '',
     97: '',
-    5: '0x4c67e7eF569b0ad9f1E8C82a763B848B510a86De',
+    5: '0x136CcD7060e912b04E5e2057f7226C31907Bd3b3',
+  },
+  crossFarmingSender: {
+    56: '',
+    97: '',
+    5: '0xB58FE2723F4C66Cab83b12F0F52E91f43Bd47902',
+  },
+  crossFarmingReceiver: {
+    56: '',
+    97: '0x40C7Ee3f04BFBfda64Bb032770A8fA01483F4378',
+    5: '',
   },
 }

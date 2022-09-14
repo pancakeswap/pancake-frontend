@@ -49,7 +49,7 @@ export interface NonBscFarmTransactionStep {
   chainId: number
   status: FarmTransactionStatus
   tx: string
-  nonce?: string
+  isFirstTime?: boolean
   msgStatus?: MsgStatus
 }
 

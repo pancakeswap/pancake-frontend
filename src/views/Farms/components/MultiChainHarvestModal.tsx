@@ -26,6 +26,7 @@ import { getBalanceAmount } from 'utils/formatBalance'
 import { LightGreyCard } from 'components/Card'
 import Balance from 'components/Balance'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { useFarmCProxyAddress } from 'views/Farms/hooks/useFarmCProxyAddress'
 import useNonBscHarvestFarm from 'views/Farms/hooks/useNonBscHarvestFarm'
 import { farmFetcher } from '../../../../apis/farms/src/helper'
 
@@ -58,9 +59,10 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
 }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const { chainId } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { switchNetworkAsync } = useSwitchNetwork()
-  const { onReward } = useNonBscHarvestFarm(pid)
+  const { cProxyAddress } = useFarmCProxyAddress(account, chainId)
+  const { onReward } = useNonBscHarvestFarm(pid, cProxyAddress)
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 
   const displayBalance = getBalanceAmount(earningsBigNumber)

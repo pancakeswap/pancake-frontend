@@ -50,16 +50,3 @@ export const nonBscUnstakeFarm = async (contract, pid, amount, gasPrice, account
   })
   return contract.withdraw(pid, value, { value: totalFee })
 }
-
-export const nonBscHarvestFarm = async (contract, pid, gasPrice, account, oraclePrice, chainId) => {
-  const totalFee = await getNonBscVaultContractFee({
-    pid,
-    chainId,
-    gasPrice,
-    oraclePrice,
-    amount: '0',
-    userAddress: account,
-    messageType: MessageTypes.Claim,
-  })
-  return contract.claim(pid, { value: totalFee })
-}

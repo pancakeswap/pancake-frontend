@@ -88,7 +88,7 @@ const FarmResult: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedDa
           {text}
         </Text>
       </Box>
-      {firstStep.nonce === '0' && (
+      {firstStep.isFirstTime && (
         <Box mt="24px">
           <Flex>
             <Box display="inline-flex">
