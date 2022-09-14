@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Box, Text, Flex, Link, useTooltip, LightBulbIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { TransactionDetails } from 'state/transactions/reducer'
-import { FarmTransactionStatus } from 'state/transactions/actions'
+import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 
 const ListStyle = styled.div`
   position: relative;
@@ -36,9 +36,8 @@ interface FarmInfoProps {
 
 const FarmPending: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedData }) => {
   const { t } = useTranslation()
-  const { type, nonBscFarm } = pickedData
-  const { amount, lpSymbol } = nonBscFarm
-  const title = type === 'non-bsc-farm-stake' ? t('Staking') : t('Unstaking')
+  const { amount, lpSymbol, type } = pickedData.nonBscFarm
+  const title = type === NonBscFarmStepType.STAKE ? t('Staking') : t('Unstaking')
 
   return (
     <Box mb="24px">
@@ -56,10 +55,10 @@ const FarmPending: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedD
 
 const FarmResult: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedData }) => {
   const { t } = useTranslation()
-  const { type, nonBscFarm } = pickedData
-  const { amount, lpSymbol, steps } = nonBscFarm
+  const { amount, lpSymbol, type, steps } = pickedData.nonBscFarm
   const firstStep = steps.find((step) => step.step === 1)
-  const text = type === 'non-bsc-farm-stake' ? t('token have been staked in the Farm!') : t('token have been unstaked!')
+  const text =
+    type === NonBscFarmStepType.STAKE ? t('token have been staked in the Farm!') : t('token have been unstaked!')
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Flex flexDirection="column">
@@ -112,12 +111,9 @@ const FarmResult: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedDa
 
 const FarmError: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedData }) => {
   const { t } = useTranslation()
-  const { type, nonBscFarm } = pickedData
-  const { amount, lpSymbol } = nonBscFarm
-  const text = type === 'non-bsc-farm-stake' ? t('The attempt to stake') : t('The attempt to unstake')
-  const isFirstStepError = nonBscFarm.steps.find(
-    (step) => step.step === 1 && step.status === FarmTransactionStatus.FAIL,
-  )
+  const { amount, lpSymbol, type, steps } = pickedData.nonBscFarm
+  const text = type === NonBscFarmStepType.STAKE ? t('The attempt to stake') : t('The attempt to unstake')
+  const isFirstStepError = steps.find((step) => step.step === 1 && step.status === FarmTransactionStatus.FAIL)
 
   return (
     <Box mb="24px">

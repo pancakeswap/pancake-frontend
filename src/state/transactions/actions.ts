@@ -11,8 +11,7 @@ export type TransactionType =
   | 'limit-order-submission'
   | 'limit-order-cancellation'
   | 'limit-order-approval'
-  | 'non-bsc-farm-stake'
-  | 'non-bsc-farm-unstake'
+  | 'non-bsc-farm'
 
 export interface SerializableTransactionReceipt {
   to: string
@@ -40,6 +39,11 @@ export enum FarmTransactionStatus {
   SUCCESS = 1,
 }
 
+export enum NonBscFarmStepType {
+  STAKE = 'STAKE',
+  UNSTAKE = 'UNSTAKE',
+}
+
 export interface NonBscFarmTransactionStep {
   step: number
   chainId: number
@@ -50,6 +54,7 @@ export interface NonBscFarmTransactionStep {
 }
 
 export interface NonBscFarmTransactionType {
+  type: NonBscFarmStepType
   status: FarmTransactionStatus
   amount: string
   lpAddress: string

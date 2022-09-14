@@ -57,7 +57,7 @@ const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = (
   const dispatch = useAppDispatch()
 
   const onClickTransaction = () => {
-    if (type === 'non-bsc-farm-stake' || type === 'non-bsc-farm-unstake') {
+    if (type === 'non-bsc-farm') {
       onDismiss()
       dispatch(pickFarmTransactionTx({ tx: txn.hash, chainId }))
     } else {

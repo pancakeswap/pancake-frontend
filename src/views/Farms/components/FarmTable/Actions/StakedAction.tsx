@@ -13,7 +13,7 @@ import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { FarmTransactionStatus } from 'state/transactions/actions'
+import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import { pickFarmTransactionTx } from 'state/global/actions'
 import styled from 'styled-components'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
@@ -191,12 +191,13 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       const amount = formatNumber(Number(amountValue), 5, 5)
 
       addTransaction(receipt, {
-        type: 'non-bsc-farm-stake',
+        type: 'non-bsc-farm',
         translatableSummary: {
           text: 'Stake %amount% %lpSymbol% Token',
           data: { amount, lpSymbol },
         },
         nonBscFarm: {
+          type: NonBscFarmStepType.STAKE,
           status: FarmTransactionStatus.PENDING,
           amount,
           lpSymbol,
@@ -249,12 +250,13 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       const amount = formatNumber(Number(amountValue), 5, 5)
 
       addTransaction(receipt, {
-        type: 'non-bsc-farm-unstake',
+        type: 'non-bsc-farm',
         translatableSummary: {
           text: 'Unstake %amount% %lpSymbol% Token',
           data: { amount, lpSymbol },
         },
         nonBscFarm: {
+          type: NonBscFarmStepType.UNSTAKE,
           status: FarmTransactionStatus.PENDING,
           amount,
           lpSymbol,

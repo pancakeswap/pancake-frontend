@@ -99,7 +99,7 @@ export default createReducer(initialState, (builder) =>
         confirmOrderSubmission(chainId, receipt.from, hash, receipt.status !== 0)
       } else if (tx.type === 'limit-order-cancellation') {
         confirmOrderCancellation(chainId, receipt.from, hash, receipt.status !== 0)
-      } else if (tx.type === 'non-bsc-farm-stake' || tx.type === 'non-bsc-farm-unstake') {
+      } else if (tx.type === 'non-bsc-farm') {
         if (tx.nonBscFarm.steps[0].status === FarmTransactionStatus.PENDING) {
           tx.nonBscFarm.steps[0] = {
             ...tx.nonBscFarm.steps[0],

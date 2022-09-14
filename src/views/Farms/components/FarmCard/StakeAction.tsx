@@ -15,7 +15,7 @@ import { formatNumber } from 'utils/formatBalance'
 import { pickFarmTransactionTx } from 'state/global/actions'
 import { getCrossFarmingContract } from 'utils/contractHelpers'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { FarmTransactionStatus } from 'state/transactions/actions'
+import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import DepositModal from '../DepositModal'
 import StakedLP from '../StakedLP'
 import { FarmWithStakedValue } from '../types'
@@ -98,12 +98,13 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       const amount = formatNumber(Number(amountValue), 5, 5)
 
       addTransaction(receipt, {
-        type: 'non-bsc-farm-stake',
+        type: 'non-bsc-farm',
         translatableSummary: {
           text: 'Stake %amount% %lpSymbol% Token',
           data: { amount, lpSymbol },
         },
         nonBscFarm: {
+          type: NonBscFarmStepType.STAKE,
           status: FarmTransactionStatus.PENDING,
           amount,
           lpSymbol,
@@ -156,12 +157,13 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       const amount = formatNumber(Number(amountValue), 5, 5)
 
       addTransaction(receipt, {
-        type: 'non-bsc-farm-unstake',
+        type: 'non-bsc-farm',
         translatableSummary: {
           text: 'Unstake %amount% %lpSymbol% Token',
           data: { amount, lpSymbol },
         },
         nonBscFarm: {
+          type: NonBscFarmStepType.UNSTAKE,
           status: FarmTransactionStatus.PENDING,
           amount,
           lpSymbol,

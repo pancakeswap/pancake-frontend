@@ -4,7 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { LightGreyCard } from 'components/Card'
 import { useFarmHarvestTransaction } from 'state/global/hooks'
 import { useAllTransactions } from 'state/transactions/hooks'
-import { FarmTransactionStatus } from 'state/transactions/actions'
+import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import FarmInfo from './FarmInfo'
 import FarmDetail from './FarmDetail'
 
@@ -20,13 +20,13 @@ const FarmTransactionModal: React.FC<React.PropsWithChildren<FarmTransactionModa
   const pickedData = useMemo(() => allTransactions?.[pickedTx.chainId]?.[pickedTx.tx], [allTransactions, pickedTx])
 
   const modalTitle = useMemo(() => {
-    const { type, nonBscFarm } = pickedData
-    const isPending = nonBscFarm.status === FarmTransactionStatus.PENDING
+    const { status, type } = pickedData?.nonBscFarm
+    const isPending = status === FarmTransactionStatus.PENDING
 
     let title = ''
-    if (type === 'non-bsc-farm-stake') {
+    if (type === NonBscFarmStepType.STAKE) {
       title = isPending ? t('Staking') : t('Staked!')
-    } else if (type === 'non-bsc-farm-unstake') {
+    } else if (type === NonBscFarmStepType.UNSTAKE) {
       title = isPending ? t('Unstaking') : t('Unstaked!')
     }
     return title

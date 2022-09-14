@@ -11,6 +11,7 @@ import {
   FarmTransactionStatus,
   NonBscFarmTransactionStep,
   MsgStatus,
+  NonBscFarmStepType,
 } from './actions'
 import { useAllChainTransactions } from './hooks'
 import { fetchCelerApi } from './fetchCelerApi'
@@ -90,9 +91,9 @@ export default function Updater(): null {
     Object.keys(transactions)
       .filter(
         (hash) =>
-          (transactions[hash].receipt?.status === 1 && transactions[hash].type === 'non-bsc-farm-stake') ||
-          (transactions[hash].type === 'non-bsc-farm-unstake' &&
-            transactions[hash].nonBscFarm.status === FarmTransactionStatus.PENDING),
+          transactions[hash].receipt?.status === 1 &&
+          transactions[hash].type === 'non-bsc-farm' &&
+          transactions[hash].nonBscFarm.status === FarmTransactionStatus.PENDING,
       )
       .forEach((hash) => {
         const steps = transactions[hash]?.nonBscFarm?.steps
@@ -139,18 +140,19 @@ export default function Updater(): null {
                   }),
                 )
 
+                const isStakeType = transactions[hash].nonBscFarm.type === NonBscFarmStepType.STAKE
                 if (isFinalStepComplete) {
-                  const toastTitle = transactions[hash].type === 'non-bsc-farm-stake' ? t('Staked!') : t('Unstaked!')
+                  const toastTitle = isStakeType ? t('Staked!') : t('Unstaked!')
                   toastSuccess(
                     toastTitle,
                     <ToastDescriptionWithTx txHash={destinationTxHash} customizeChainId={steps[pendingStep].chainId}>
-                      {transactions[hash].type === 'non-bsc-farm-stake'
+                      {isStakeType
                         ? t('Your LP Token have been staked in the Farm!')
                         : t('Your LP Token have been unstaked in the Farm!')}
                     </ToastDescriptionWithTx>,
                   )
                 } else if (status === FarmTransactionStatus.FAIL) {
-                  const toastTitle = transactions[hash].type === 'non-bsc-farm-stake' ? 'Stake Error' : 'Unstake Error'
+                  const toastTitle = isStakeType ? 'Stake Error' : 'Unstake Error'
                   toastError(
                     toastTitle,
                     <ToastDescriptionWithTx txHash={destinationTxHash} customizeChainId={steps[pendingStep].chainId}>
