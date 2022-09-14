@@ -12,38 +12,30 @@ on:
       - develop
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    name: Test
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Test
-        run: yarn test:config
-
   publish:
-    needs: test
     runs-on: ubuntu-latest
     permissions:
       contents: read
       deployments: write
+    env:
+      HAVE_CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
     name: Publish Farm Config to Cloudflare Pages
-    if: github.repository_owner == 'pancakeswap'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+
+      - name: Test
+        run: yarn test:config
 
       - name: Build list
         run: yarn turbo run build --filter=@pancakeswap/farms
 
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@1
+        if: ${{ env.HAVE_CLOUDFLARE_TOKEN == 'true' }}
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: b82548875bdb333ff5edcca4d076f88d
