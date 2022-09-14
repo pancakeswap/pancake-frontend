@@ -105,10 +105,9 @@ export const bscTokens = {
     'Binance-Peg Ethereum Token',
     'https://ethereum.org/en/',
   ),
-  // Philip TODO: remove mock token
   usdc: new Token(
     ChainId.BSC,
-    '0x916574bf89705Ee0f1B7ff70047519Aa2DB82BF6',
+    '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
     18,
     'USDC',
     'Binance-Peg USD Coin',

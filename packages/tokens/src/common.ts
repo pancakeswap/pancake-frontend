@@ -72,10 +72,9 @@ export const USDT_ETH = new Token(
   'https://tether.to/',
 )
 
-// Philip TODO: remove mock address
 export const BUSD_BSC = new Token(
   ChainId.BSC,
-  '0x5D5fBB19572c4A89846198c3DBEdB2B6eF58a77a',
+  '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
   18,
   'BUSD',
   'Binance USD',

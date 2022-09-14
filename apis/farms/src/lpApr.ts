@@ -15,8 +15,6 @@ interface BlockResponse {
 
 const BLOCK_SUBGRAPH_ENDPOINT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/blocks'
 const INFO_SUBGRAPH_ENDPOINT = 'https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2'
-// Philip TODO: Get the NodeReal in Prod
-const NODEREAL_ENDPOINT = 'https://bsc-mainnet.nodereal.io/v1/d430f31d2a45423992b45621b6abbc81'
 
 const LP_HOLDERS_FEE = 0.0017
 const WEEKS_IN_A_YEAR = 52.1429

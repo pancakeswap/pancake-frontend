@@ -169,7 +169,6 @@ export default function StableSwapCommitButton({
     return <ConnectWalletButton width="100%" />
   }
 
-  // Philip TODO: check liquidity
   const isSufficentLiquidity = false
 
   if (isSufficentLiquidity) {
