@@ -1,4 +1,4 @@
-import { MartianWalletIcon, MetamaskIcon, WalletConfig } from '@pancakeswap/uikit'
+import { MartianWalletIcon, PetraWalletIcon, WalletConfig } from '@pancakeswap/uikit'
 
 export enum ConnectorNames {
   Petra = 'petra',
@@ -8,7 +8,7 @@ export enum ConnectorNames {
 export const wallets: WalletConfig<ConnectorNames>[] = [
   {
     title: 'Petra',
-    icon: MetamaskIcon,
+    icon: PetraWalletIcon,
     installed: typeof window !== 'undefined' && Boolean(window.aptos),
     connectorId: ConnectorNames.Petra,
     priority: 1,
@@ -17,7 +17,7 @@ export const wallets: WalletConfig<ConnectorNames>[] = [
     },
   },
   {
-    title: 'Martian Wallet',
+    title: 'Martian',
     icon: MartianWalletIcon,
     installed: typeof window !== 'undefined' && Boolean(window.martian),
     connectorId: ConnectorNames.Martian,
