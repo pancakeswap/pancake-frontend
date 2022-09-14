@@ -5,6 +5,8 @@ import BigNumber from 'bignumber.js'
 import chunk from 'lodash/chunk'
 import { sub, getUnixTime } from 'date-fns'
 import farmsConfig from '@pancakeswap/farms/constants/56'
+import { Contract } from '@ethersproject/contracts'
+import { StaticJsonRpcProvider } from '@ethersproject/providers'
 import type { BlockResponse } from '../src/components/SubgraphHealthIndicator'
 import { BLOCKS_CLIENT } from '../src/config/constants/endpoints'
 import { infoClient } from '../src/utils/graphql'
@@ -95,8 +97,83 @@ const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): P
   }
 }
 
+// Copy paste of Stable farm logic
+export const bscProvider = new StaticJsonRpcProvider(
+  {
+    url: 'https://bsc-mainnet.nodereal.io/v1/5a516406afa140ffa546ee10af7c9b24',
+    skipFetchSetup: true,
+  },
+  56,
+)
+
+const stableSwapABI = [
+  {
+    inputs: [],
+    name: 'get_virtual_price',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+]
+
+interface SplitFarmResult {
+  normalFarms: any[]
+  stableFarms: any[]
+}
+
+export const BLOCKS_PER_DAY = (60 / 3) * 60 * 24
+
+const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
+  const swapContract = new Contract(stableFarm?.stableSwapAddress, stableSwapABI)
+
+  const latest: number = parseInt((await bscProvider.getBlockNumber())?.toString(), 10)
+
+  const virtualPrice = await swapContract.get_virtual_price()
+
+  let preVirtualPrice
+
+  try {
+    preVirtualPrice = await swapContract.get_virtual_price({ blockTag: latest - BLOCKS_PER_DAY })
+  } catch (e) {
+    preVirtualPrice = 1 * 10 ** 18
+  }
+
+  const current = new BigNumber(virtualPrice?.toString())
+  const prev = new BigNumber(preVirtualPrice?.toString())
+
+  return current.minus(prev).div(prev)
+}
+
+function splitNormalAndStableFarmsReducer(result: SplitFarmResult, farm: any): SplitFarmResult {
+  const { normalFarms, stableFarms } = result
+
+  if (farm?.stableSwapAddress) {
+    return {
+      normalFarms,
+      stableFarms: [...stableFarms, farm],
+    }
+  }
+
+  return {
+    stableFarms,
+    normalFarms: [...normalFarms, farm],
+  }
+}
+// ====
+
 const fetchAndUpdateLPsAPR = async () => {
-  const lowerCaseAddresses = farmsConfig.map((farm) => farm.lpAddress.toLowerCase())
+  const { normalFarms, stableFarms }: SplitFarmResult = farmsConfig.reduce(splitNormalAndStableFarmsReducer, {
+    normalFarms: [],
+    stableFarms: [],
+  })
+
+  const lowerCaseAddresses = normalFarms.map((farm) => farm.lpAddress.toLowerCase())
   console.info(`Fetching farm data for ${lowerCaseAddresses.length} addresses`)
   // Split it into chunks of 30 addresses to avoid gateway timeout
   const addressesInGroups = chunk(lowerCaseAddresses, 30)
@@ -109,6 +186,24 @@ const fetchAndUpdateLPsAPR = async () => {
     // eslint-disable-next-line no-await-in-loop
     const aprs = await getAprsForFarmGroup(groupOfAddresses, blockWeekAgo)
     allAprs = { ...allAprs, ...aprs }
+  }
+
+  try {
+    if (stableFarms?.length) {
+      const stableAprs: BigNumber[] = await Promise.all(stableFarms.map((f) => getAprsForStableFarm(f)))
+
+      const stableAprsMap = stableAprs.reduce(
+        (result, apr, index) => ({
+          ...result,
+          [stableFarms[index].lpAddress]: apr.decimalPlaces(2).toNumber(),
+        }),
+        {} as AprMap,
+      )
+
+      allAprs = { ...allAprs, ...stableAprsMap }
+    }
+  } catch (error) {
+    console.error(error, '[LP APR Update] getAprsForStableFarm error')
   }
 
   fs.writeFile(`src/config/constants/lpAprs/56.json`, JSON.stringify(allAprs, null, 2) + os.EOL, (err) => {

@@ -28,30 +28,9 @@ const blockClient = new GraphQLClient(BLOCK_SUBGRAPH_ENDPOINT, {
   fetch,
 })
 
-const stableSwapABI = [
-  {
-    inputs: [],
-    name: 'get_virtual_price',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-]
-
 const getWeekAgoTimestamp = () => {
   const weekAgo = sub(new Date(), { weeks: 1 })
   return getUnixTime(weekAgo)
-}
-
-const getDayAgoTimestamp = () => {
-  const dayAgo = sub(new Date(), { days: 1 })
-  return getUnixTime(dayAgo)
 }
 
 const getBlockAtTimestamp = async (timestamp: number) => {
@@ -79,31 +58,6 @@ interface SingleFarmResponse {
 interface FarmsResponse {
   farmsAtLatestBlock: SingleFarmResponse[]
   farmsOneWeekAgo: SingleFarmResponse[]
-}
-
-export const BLOCKS_PER_DAY = (60 / 3) * 60 * 24
-
-const getAprsForStableFarm = async (stableFarm: any, chainId: number): Promise<BigNumber> => {
-  const provider = getProvider({ chainId })
-  if (!provider) throw new Error(`Provider missing chainId ${chainId}`)
-  const swapContract = new Contract(stableFarm?.stableSwapAddress, stableSwapABI)
-
-  const latest: number = parseInt((await provider.getBlockNumber())?.toString(), 10)
-
-  const virtualPrice = await swapContract.get_virtual_price()
-
-  let preVirtualPrice
-
-  try {
-    preVirtualPrice = await swapContract.get_virtual_price({ blockTag: latest - BLOCKS_PER_DAY })
-  } catch (e) {
-    preVirtualPrice = 1 * 10 ** 18
-  }
-
-  const current = new BigNumber(virtualPrice?.toString())
-  const prev = new BigNumber(preVirtualPrice?.toString())
-
-  return current.minus(prev).div(prev)
 }
 
 const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): Promise<AprMap> => {
@@ -149,6 +103,24 @@ const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): P
   }
 }
 
+// Stable Logic
+
+const stableSwapABI = [
+  {
+    inputs: [],
+    name: 'get_virtual_price',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+]
+
 interface SplitFarmResult {
   normalFarms: any[]
   stableFarms: any[]
@@ -169,6 +141,33 @@ function splitNormalAndStableFarmsReducer(result: SplitFarmResult, farm: any): S
     normalFarms: [...normalFarms, farm],
   }
 }
+
+export const BLOCKS_PER_DAY = (60 / 3) * 60 * 24
+
+const getAprsForStableFarm = async (stableFarm: any, chainId: number): Promise<BigNumber> => {
+  const provider = getProvider({ chainId })
+  if (!provider) throw new Error(`Provider missing chainId ${chainId}`)
+  const swapContract = new Contract(stableFarm?.stableSwapAddress, stableSwapABI)
+
+  const latest: number = parseInt((await provider.getBlockNumber())?.toString(), 10)
+
+  const virtualPrice = await swapContract.get_virtual_price()
+
+  let preVirtualPrice
+
+  try {
+    preVirtualPrice = await swapContract.get_virtual_price({ blockTag: latest - BLOCKS_PER_DAY })
+  } catch (e) {
+    preVirtualPrice = 1 * 10 ** 18
+  }
+
+  const current = new BigNumber(virtualPrice?.toString())
+  const prev = new BigNumber(preVirtualPrice?.toString())
+
+  return current.minus(prev).div(prev)
+}
+
+// ====
 
 export const updateLPsAPR = async (chainId: number, allFarms: any[]) => {
   const { normalFarms, stableFarms }: SplitFarmResult = allFarms.reduce(splitNormalAndStableFarmsReducer, {
