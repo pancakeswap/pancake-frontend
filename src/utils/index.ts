@@ -51,7 +51,7 @@ export function getBlockExploreName(chainIdOverride?: number) {
   const chainId = chainIdOverride || ChainId.BSC
   const chain = chains.find((c) => c.id === chainId)
 
-  return chain?.blockExplorers?.default.name || 'BscScan'
+  return chain?.blockExplorers?.default.name || bsc.blockExplorers.default.name
 }
 
 export function getBscScanLinkForNft(collectionAddress: string, tokenId: string): string {
