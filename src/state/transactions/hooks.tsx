@@ -106,10 +106,9 @@ export function useAllChainTransactions(): { [txHash: string]: TransactionDetail
 
   return useMemo(() => {
     if (chainId && state[chainId]) {
-      return fromPairs(
-        Object.entries(state[chainId]).filter(
-          ([_, transactionDetails]) => transactionDetails.from.toLowerCase() === account?.toLowerCase(),
-        ),
+      return omitBy(
+        state[chainId],
+        (transactionDetails) => transactionDetails.from.toLowerCase() !== account?.toLowerCase(),
       )
     }
     return {}
