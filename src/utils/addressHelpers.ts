@@ -121,10 +121,6 @@ export const getBCakeFarmBoosterProxyFactoryAddress = () => {
   return getAddress(addresses.bCakeFarmBoosterProxyFactory)
 }
 
-export const getCrossFarmingAddress = (chainId?: number) => {
-  return getAddress(addresses.crossFarming, chainId)
-}
-
 export const getNonBscVaultAddress = (chainId?: number) => {
   return getAddress(addresses.nonBscVault, chainId)
 }
