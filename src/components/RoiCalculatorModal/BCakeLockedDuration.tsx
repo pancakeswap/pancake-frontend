@@ -11,6 +11,8 @@ const DURATIONS = [1, 5, 10, 25, 52]
 const StyledInput = styled(Input)`
   text-align: right;
   margin-right: 8px;
+  width: 50%;
+  box-sizing: border-box;
 `
 
 interface LockDurationFieldProps {
@@ -29,15 +31,8 @@ const LockDurationField: React.FC<React.PropsWithChildren<LockDurationFieldProps
   currentDurationLeft,
 }) => {
   const { t } = useTranslation()
-  const [isMaxSelected, setIsMaxSelected] = useState(false)
 
   const maxAvailableDuration = currentDurationLeft ? MAX_LOCK_DURATION - currentDurationLeft : MAX_LOCK_DURATION
-
-  useEffect(() => {
-    if (isMaxSelected) {
-      setDuration(maxAvailableDuration)
-    }
-  }, [isMaxSelected, maxAvailableDuration, setDuration])
 
   // When user extends the duration due to time passed when approving
   // transaction the extended duration will be a couple of seconds off to max duration,
@@ -61,14 +56,13 @@ const LockDurationField: React.FC<React.PropsWithChildren<LockDurationFieldProps
               <Button
                 key={week}
                 onClick={() => {
-                  setIsMaxSelected(false)
                   setDuration(weekSeconds)
                 }}
                 mt="4px"
                 mr={['2px', '2px', '4px', '4px']}
                 scale="sm"
                 disabled={weekSeconds > maxAvailableDuration}
-                variant={weekSeconds === duration ? 'subtle' : 'tertiary'}
+                variant={weekSeconds === duration ? 'subtle' : 'light'}
               >
                 {week}W
               </Button>
@@ -84,7 +78,6 @@ const LockDurationField: React.FC<React.PropsWithChildren<LockDurationFieldProps
           inputMode="numeric"
           scale="sm"
           onChange={(e) => {
-            setIsMaxSelected(false)
             const weeks = _toNumber(e?.target?.value)
             if (e.currentTarget.validity.valid && weeks < 53) {
               setDuration(weeksToSeconds(_toNumber(e?.target?.value)))
@@ -94,13 +87,13 @@ const LockDurationField: React.FC<React.PropsWithChildren<LockDurationFieldProps
         <Button
           key="max"
           onClick={() => {
-            setIsMaxSelected(true)
+            setDuration(currentDuration)
           }}
           mt="4px"
           mr={['2px', '2px', '4px', '4px']}
           scale="sm"
           disabled={maxAvailableDuration < ONE_WEEK_DEFAULT}
-          variant={isMaxSelected ? 'subtle' : 'tertiary'}
+          variant="light"
         >
           {t('My Duration')}
         </Button>
@@ -110,7 +103,7 @@ const LockDurationField: React.FC<React.PropsWithChildren<LockDurationFieldProps
           {t('Total lock duration exceeds 52 weeks')}
         </Text>
       )}
-      {currentDurationLeft && currentDurationInWeeks === maxDurationInWeeks && !isMaxSelected ? (
+      {currentDurationLeft && currentDurationInWeeks === maxDurationInWeeks ? (
         <Message variant="warning">
           <MessageText maxWidth="240px">
             {t('Recommend choosing "MAX" to renew your staking position in order to keep similar yield boost.')}

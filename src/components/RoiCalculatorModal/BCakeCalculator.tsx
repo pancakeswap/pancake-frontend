@@ -1,12 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BalanceInput, Button, Flex, Text, Toggle } from '@pancakeswap/uikit'
+import { BalanceInput, Box, Button, Flex, HelpIcon, Text, Toggle, useTooltip } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
+import _toNumber from 'lodash/toNumber'
 import { useEffect, useMemo, useState } from 'react'
 import { useCakeVaultPublicData, useCakeVaultUserData } from 'state/pools/hooks'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { BIG_TEN } from 'utils/bigNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { useBCakeTooltipContent } from 'views/Farms/components/BCakeBoosterCard'
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
 import useAvgLockDuration from 'views/Pools/components/LockedPool/hooks/useAvgLockDuration'
 import { secondsToWeeks, weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
@@ -43,7 +45,7 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
   const { t } = useTranslation()
   const [duration, setDuration] = useState(() => weeksToSeconds(1))
   const { avgLockDurationsInSeconds } = useAvgLockDuration()
-  const { lockBalance, isLoading, totalLockedAmount } = useUserLockedCakeStatus()
+  const { lockBalance, isLoading, totalLockedAmount, lockedStart, lockedEnd } = useUserLockedCakeStatus()
   const { state, setPrincipalFromUSDValue, setPrincipalFromTokenValue, toggleEditingCurrency, setCalculatorMode } =
     useRoiCalculatorReducer(
       { stakingTokenPrice: earningTokenPrice, earningTokenPrice, autoCompoundFrequency: 0 },
@@ -79,15 +81,23 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
 
   const { account } = useWeb3React()
 
+  const tooltipContent = useBCakeTooltipContent()
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, {
+    placement: 'bottom-start',
+  })
+  const theme = useTheme()
+
   return (
     <>
-      <Text color="secondary" bold fontSize="12px" textTransform="uppercase">
+      <Text color="secondary" bold fontSize="12px" textTransform="uppercase" mt="24px" mb="8px">
         {t('Yield Booster')}
       </Text>
+
       <Toggle scale="md" checked={isShow} onClick={() => setIsShow(!isShow)} />
       {isShow && (
         <>
-          <BCakeBlock>
+          <BCakeBlock style={{ marginTop: 24 }}>
             <Text color="secondary" bold fontSize="12px" textTransform="uppercase">
               {t('Cake locked')}
             </Text>
@@ -139,7 +149,12 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
                 {t('My Balance')}
               </Button>
             </Flex>
-            <LockDurationField duration={duration} setDuration={setDuration} isOverMax={false} />
+            <LockDurationField
+              duration={duration}
+              setDuration={setDuration}
+              currentDuration={_toNumber(lockedEnd) - _toNumber(lockedStart)}
+              isOverMax={false}
+            />
           </BCakeBlock>
           <BCakeBlock style={{ marginTop: 16 }}>
             <Text color="secondary" bold fontSize="12px" textTransform="uppercase">
@@ -147,6 +162,10 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
             </Text>
             <Text color="text" bold fontSize="20px" textTransform="uppercase">
               <>{bCakeMultiplier}X</>
+              {tooltipVisible && tooltip}
+              <Box ref={targetRef} marginLeft="3px" display="inline-block" position="relative" top="3px">
+                <HelpIcon color={theme.colors.textSubtle} />
+              </Box>
             </Text>
             <Text color="textSubtle" fontSize={12}>
               {t(
