@@ -19,7 +19,6 @@ interface CalculateTotalFeeProps {
   oraclePrice: string
 }
 
-const EXCHANGE_RATE_PRECISION = 1e5
 const COMPENSATION_PRECISION = 1e5
 const ORACLE_PRECISION = 1e18
 const BNB_CHANGE = 5000000000000000
@@ -50,19 +49,19 @@ export const getNonBscVaultContractFee = async ({
       .times(estimateDestGaslimit.toString())
       .times(exchangeRate)
       .times(COMPENSATION_PRECISION)
-      .div(EXCHANGE_RATE_PRECISION * COMPENSATION_PRECISION)
+      .div(ORACLE_PRECISION * COMPENSATION_PRECISION)
     const totalFee = new BigNumber(fee1).plus(fee2)
 
     if (!isFirstTime) {
       const depositFee = new BigNumber(BNB_CHANGE).times(exchangeRate).div(ORACLE_PRECISION)
-      return totalFee.plus(depositFee).toString()
+      return totalFee.plus(depositFee).toFixed(0)
     }
 
     if (messageType >= MessageTypes.Withdraw) {
       return totalFee.plus(fee1).times(exchangeRate).div(ORACLE_PRECISION).toFixed(0)
     }
 
-    return totalFee.toString()
+    return totalFee.toFixed(0)
   } catch (error) {
     console.error('Failed to fetch non BscVault fee', error)
     return BIG_ZERO.toJSON()

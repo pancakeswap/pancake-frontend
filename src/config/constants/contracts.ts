@@ -150,16 +150,16 @@ export default {
   nonBscVault: {
     56: '',
     97: '',
-    5: '0x136CcD7060e912b04E5e2057f7226C31907Bd3b3',
+    5: '0xEdC543c9FA66AbEEE129BF61B5Bf4075Ea90b40c',
   },
   crossFarmingSender: {
     56: '',
     97: '',
-    5: '0xB58FE2723F4C66Cab83b12F0F52E91f43Bd47902',
+    5: '0x7D72c84B0D374557AcEc62bD6922E11Bbb2a0273',
   },
   crossFarmingReceiver: {
     56: '',
-    97: '0x40C7Ee3f04BFBfda64Bb032770A8fA01483F4378',
+    97: '0x222F982969404608f1992Ad85aCc53E84b831161',
     5: '',
   },
 }
