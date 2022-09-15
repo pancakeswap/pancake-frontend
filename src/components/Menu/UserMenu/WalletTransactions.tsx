@@ -38,7 +38,7 @@ const WalletTransactions: React.FC<React.PropsWithChildren<WalletTransactionsPro
         Object.entries(sortedTransactions).map(([chainId, transactions]) => {
           const chainIdNumber = Number(chainId)
           return (
-            <>
+            <Box key={chainId}>
               <Text fontSize="12px" color="textSubtle" mb="4px">
                 {chains.find((c) => c.id === chainIdNumber)?.name ?? 'Unknown network'}
               </Text>
@@ -51,7 +51,7 @@ const WalletTransactions: React.FC<React.PropsWithChildren<WalletTransactionsPro
                   onDismiss={onDismiss}
                 />
               ))}
-            </>
+            </Box>
           )
         })
       ) : (

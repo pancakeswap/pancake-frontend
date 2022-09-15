@@ -63,22 +63,6 @@ export const EMPTY_LIST: TokenAddressMap = {
   [ChainId.BSC_TESTNET]: {},
 }
 
-/**
- *
- * @deprecated Use Token.serialize
- */
-export function serializeToken(token: Token): SerializedWrappedToken {
-  return {
-    chainId: token.chainId,
-    address: token.address,
-    decimals: token.decimals,
-    symbol: token.symbol,
-    name: token.name,
-    projectLink: token.projectLink,
-    logoURI: token instanceof WrappedTokenInfo ? token.logoURI : undefined,
-  }
-}
-
 export function deserializeToken(serializedToken: SerializedWrappedToken): Token {
   if (serializedToken.logoURI) {
     return new WrappedTokenInfo(
@@ -105,7 +89,7 @@ export function deserializeToken(serializedToken: SerializedWrappedToken): Token
 
 export function serializeTokens(unserializedTokens) {
   const serializedTokens = Object.keys(unserializedTokens).reduce((accum, key) => {
-    return { ...accum, [key]: serializeToken(unserializedTokens[key]) }
+    return { ...accum, [key]: unserializedTokens[key].serialize }
   }, {} as any)
 
   return serializedTokens

@@ -9,7 +9,7 @@ import { SettingsMode } from '../Menu/GlobalSettings/types'
 
 interface Props {
   title: string
-  subtitle: string
+  subtitle?: string
   helper?: string
   backTo?: string | (() => void)
   noConfig?: boolean

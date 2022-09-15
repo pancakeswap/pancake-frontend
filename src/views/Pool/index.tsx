@@ -4,7 +4,8 @@ import { Text, Flex, CardBody, CardFooter, Button, AddIcon } from '@pancakeswap/
 import Link from 'next/link'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import FullPositionCard from '../../components/PositionCard'
+import { useLPTokensWithBalanceByAccount } from 'views/Swap/StableSwap/hooks/useStableConfig'
+import FullPositionCard, { StableFullPositionCard } from '../../components/PositionCard'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { usePairs, PairState } from '../../hooks/usePairs'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
@@ -34,6 +35,8 @@ export default function Pool() {
     account ?? undefined,
     liquidityTokens,
   )
+
+  const stablePairs = useLPTokensWithBalanceByAccount(account)
 
   // fetch the reserves for all V2 pools in which the user has a balance
   const liquidityTokensWithBalances = useMemo(
@@ -68,15 +71,36 @@ export default function Pool() {
         </Text>
       )
     }
+
+    let positionCards = []
+
     if (allV2PairsWithLiquidity?.length > 0) {
-      return allV2PairsWithLiquidity.map((v2Pair, index) => (
+      positionCards = allV2PairsWithLiquidity.map((v2Pair, index) => (
         <FullPositionCard
           key={v2Pair.liquidityToken.address}
           pair={v2Pair}
-          mb={index < allV2PairsWithLiquidity.length - 1 ? '16px' : 0}
+          mb={Boolean(stablePairs?.length) || index < allV2PairsWithLiquidity.length - 1 ? '16px' : 0}
         />
       ))
     }
+
+    if (stablePairs?.length > 0) {
+      positionCards = [
+        ...positionCards,
+        ...stablePairs?.map((stablePair, index) => (
+          <StableFullPositionCard
+            key={stablePair.liquidityToken.address}
+            pair={stablePair}
+            mb={index < stablePairs.length - 1 ? '16px' : 0}
+          />
+        )),
+      ]
+    }
+
+    if (positionCards?.length > 0) {
+      return positionCards
+    }
+
     return (
       <Text color="textSubtle" textAlign="center">
         {t('No liquidity found.')}
