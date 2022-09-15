@@ -50,6 +50,15 @@ const farms: SerializedFarmConfig[] = [
     infoStableSwapAddress: '0xa680d27f63Fa5E213C502d1B3Ca1EB6a3C1b31D6',
   },
   {
+    pid: 106,
+    lpSymbol: 'MHUNT-BNB LP',
+    lpAddress: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
+    token: bscTokens.mhunt,
+    quoteToken: bscTokens.wbnb,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1663315200,
+  },
+  {
     pid: 118,
     lpSymbol: 'GQ-BUSD LP',
     lpAddress: '0x72121d60b0e2F01c0FB7FE32cA24021b42165A40',
@@ -63,7 +72,6 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.spin,
     quoteToken: bscTokens.wbnb,
     isCommunity: true,
-    auctionHostingStartSeconds: 1662105600,
   },
   {
     pid: 93,
@@ -73,7 +81,6 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.happy,
     quoteToken: bscTokens.wbnb,
     isCommunity: true,
-    auctionHostingStartSeconds: 1662105600,
   },
   {
     pid: 109,
@@ -112,14 +119,6 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0x74fA517715C4ec65EF01d55ad5335f90dce7CC87',
     token: bscTokens.sfund,
     quoteToken: bscTokens.wbnb,
-  },
-  {
-    pid: 106,
-    lpSymbol: 'MHUNT-BNB LP',
-    lpAddress: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
-    token: bscTokens.mhunt,
-    quoteToken: bscTokens.wbnb,
-    isCommunity: true,
   },
   {
     pid: 111,
