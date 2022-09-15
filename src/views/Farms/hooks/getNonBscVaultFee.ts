@@ -59,9 +59,7 @@ export const getNonBscVaultContractFee = async ({
     }
 
     if (messageType >= MessageTypes.Withdraw) {
-      // TODO: NonBSCFarm need double check
-      const [leftSide] = totalFee.plus(fee1).times(exchangeRate).div(ORACLE_PRECISION).toString().split('.')
-      return leftSide
+      return totalFee.plus(fee1).times(exchangeRate).div(ORACLE_PRECISION).toFixed(0)
     }
 
     return totalFee.toString()
