@@ -227,13 +227,12 @@ export const useNftSaleContract = () => {
 
 export const usePeronioContract = () => {
   const { library } = useActiveWeb3React()
-  return useMemo(() => getPeronioContract(library.getSigner()._address ? library.getSigner() : null), [library])
-  // return useMemo(() => getPeronioContract(library.getSigner()), [library])
+  return useMemo(() => getPeronioContract(library.getSigner()), [library])
 }
 
 export const useMigratorContract = () => {
   const { library } = useActiveWeb3React()
-  return useMemo(() => getMigratorContract(library.getSigner()._address ? library.getSigner() : null), [library])
+  return useMemo(() => getMigratorContract(library.getSigner()), [library])
 }
 
 export const usePancakeSquadContract = () => {
