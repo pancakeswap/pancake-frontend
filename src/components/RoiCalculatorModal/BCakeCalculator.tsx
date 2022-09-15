@@ -82,7 +82,7 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
   return (
     <>
       <Text color="secondary" bold fontSize="12px" textTransform="uppercase">
-        {t('YIELD BOOSTER')}
+        {t('Yield Booster')}
       </Text>
       <Toggle scale="md" checked={isShow} onClick={() => setIsShow(!isShow)} />
       {isShow && (
