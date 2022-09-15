@@ -7,6 +7,7 @@ import TransactionConfirmationModal, {
   TransactionErrorContent,
 } from 'components/TransactionConfirmationModal'
 import { Field } from 'state/burn/actions'
+import _toNumber from 'lodash/toNumber'
 import { AddLiquidityModalHeader, PairDistribution } from './common'
 
 interface ConfirmAddLiquidityModalProps {
@@ -25,6 +26,7 @@ interface ConfirmAddLiquidityModalProps {
   poolTokenPercentage: Percent
   liquidityMinted: CurrencyAmount<Token>
   currencyToAdd: Token
+  isStable?: boolean
 }
 
 const ConfirmAddLiquidityModal: React.FC<React.PropsWithChildren<InjectedModalProps & ConfirmAddLiquidityModalProps>> =
@@ -45,8 +47,19 @@ const ConfirmAddLiquidityModal: React.FC<React.PropsWithChildren<InjectedModalPr
     poolTokenPercentage,
     liquidityMinted,
     currencyToAdd,
+    isStable,
   }) => {
     const { t } = useTranslation()
+
+    let percent = 0.5
+
+    // Calculate distribution percentage for display
+    if (isStable && parsedAmounts[Field.CURRENCY_A] && parsedAmounts[Field.CURRENCY_B]) {
+      const amountCurrencyA = _toNumber(parsedAmounts[Field.CURRENCY_A].toSignificant(6))
+      const amountCurrencyB = _toNumber(parsedAmounts[Field.CURRENCY_B].toSignificant(6))
+
+      percent = amountCurrencyA / (amountCurrencyA + amountCurrencyB)
+    }
 
     const modalHeader = useCallback(() => {
       return (
@@ -60,7 +73,7 @@ const ConfirmAddLiquidityModal: React.FC<React.PropsWithChildren<InjectedModalPr
         >
           <PairDistribution
             title={t('Input')}
-            percent={0.5}
+            percent={percent}
             currencyA={currencies[Field.CURRENCY_A]}
             currencyAValue={parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}
             currencyB={currencies[Field.CURRENCY_B]}
@@ -68,7 +81,17 @@ const ConfirmAddLiquidityModal: React.FC<React.PropsWithChildren<InjectedModalPr
           />
         </AddLiquidityModalHeader>
       )
-    }, [allowedSlippage, currencies, liquidityMinted, noLiquidity, parsedAmounts, poolTokenPercentage, price, t])
+    }, [
+      allowedSlippage,
+      percent,
+      currencies,
+      liquidityMinted,
+      noLiquidity,
+      parsedAmounts,
+      poolTokenPercentage,
+      price,
+      t,
+    ])
 
     const modalBottom = useCallback(() => {
       return (
