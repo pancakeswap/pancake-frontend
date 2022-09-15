@@ -7,6 +7,7 @@ import fromPairs from 'lodash/fromPairs'
 import mapValues from 'lodash/mapValues'
 import keyBy from 'lodash/keyBy'
 import orderBy from 'lodash/orderBy'
+import omitBy from 'lodash/omitBy'
 import isEmpty from 'lodash/isEmpty'
 import { TransactionDetails } from './reducer'
 import { addTransaction, TransactionType } from './actions'
@@ -88,27 +89,18 @@ export function useAllTransactions(): { [chainId: number]: { [txHash: string]: T
 export function useAllSortedRecentTransactions(): { [chainId: number]: { [txHash: string]: TransactionDetails } } {
   const allTransactions = useAllTransactions()
   return useMemo(() => {
-    return fromPairs(
-      Object.entries(allTransactions)
-        .map(([chainId, transactions]) => {
-          return [
-            chainId,
-            mapValues(
-              keyBy(
-                orderBy(
-                  Object.entries(transactions)
-                    .filter(([_, trxDetails]) => isTransactionRecent(trxDetails))
-                    .map(([hash, trxDetails]) => ({ hash, trxDetails })),
-                  (trx) => trx.trxDetails?.addedTime || 0,
-                  'desc',
-                ),
-                'hash',
-              ),
-              'trxDetails',
-            ),
-          ]
-        })
-        .filter(([_, transactions]) => !isEmpty(transactions)),
+    return omitBy(
+      mapValues(allTransactions, (transactions) =>
+        keyBy(
+          orderBy(
+            omitBy(transactions, (trxDetails) => !isTransactionRecent(trxDetails)),
+            ['addedTime'],
+            'desc',
+          ),
+          'hash',
+        ),
+      ),
+      isEmpty,
     )
   }, [allTransactions])
 }
