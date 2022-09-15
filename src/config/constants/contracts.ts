@@ -148,18 +148,15 @@ export default {
     97: '',
   },
   nonBscVault: {
-    56: '',
-    97: '',
+    56: '0xEdC543c9FA66AbEEE129BF61B5Bf4075Ea90b40c', // Only for pass contracts test
     5: '0xEdC543c9FA66AbEEE129BF61B5Bf4075Ea90b40c',
   },
   crossFarmingSender: {
-    56: '',
-    97: '',
+    56: '0x7D72c84B0D374557AcEc62bD6922E11Bbb2a0273', // Only for pass contracts test
     5: '0x7D72c84B0D374557AcEc62bD6922E11Bbb2a0273',
   },
   crossFarmingReceiver: {
-    56: '',
+    56: '0x222F982969404608f1992Ad85aCc53E84b831161', // Only for pass contracts test
     97: '0x222F982969404608f1992Ad85aCc53E84b831161',
-    5: '',
   },
 }
