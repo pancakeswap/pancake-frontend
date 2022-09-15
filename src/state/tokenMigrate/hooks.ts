@@ -42,12 +42,12 @@ export function useMigrateTokenInfo(): {
     outputCurrency ?? undefined,
   ])
 
-  const isExactIn: boolean = independentField === Field.INPUT
-  const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
-  const mintOut = useMigrateExactOut(!isExactIn ? parsedAmount : null, outputCurrency)
-  const mintIn = useMigrateExactIn(isExactIn ? parsedAmount : null, outputCurrency)
+  // const isExactIn: boolean = independentField === Field.INPUT
+  const parsedAmount = tryParseAmount(undefined)
+  // const mintOut = useMigrateExactOut(!isExactIn ? parsedAmount : null, outputCurrency)
+  // const mintIn = useMigrateExactIn(isExactIn ? parsedAmount : null, outputCurrency)
 
-  const mint = isExactIn ? mintIn : mintOut
+  const mint = undefined
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
@@ -65,9 +65,9 @@ export function useMigrateTokenInfo(): {
     inputError = t('Connect Wallet')
   }
 
-  if (!parsedAmount) {
-    inputError = inputError ?? t('Enter an amount')
-  }
+  // if (!parsedAmount) {
+  //   inputError = inputError ?? t('Enter an amount')
+  // }
 
   const formattedTo = isAddress(to)
   if (!to || !formattedTo) {

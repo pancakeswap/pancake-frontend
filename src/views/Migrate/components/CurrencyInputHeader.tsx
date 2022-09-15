@@ -38,7 +38,7 @@ const CurrencyInputHeader: React.FC<Props> = ({ title, subtitle, setIsChartDispl
 
   return (
     <CurrencyInputContainer>
-      <Flex width="100%" alignItems="center" justifyContent="space-between" id="nico">
+      <Flex width="100%" alignItems="center" justifyContent="center">
         <Flex flexDirection="column" alignItems="center">
           <Heading as="h2" mb="8px">
             {title}

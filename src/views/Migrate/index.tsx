@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { parseUnits } from '@ethersproject/units'
 
-import { CurrencyAmount, JSBI, Mint, Price, TokenAmount } from 'peronio-sdk'
-import { Button, Text, ArrowDownIcon, Box, useModal, Flex, IconButton, ArrowUpDownIcon } from 'peronio-uikit'
+import { CurrencyAmount, JSBI, Mint, TokenAmount } from 'peronio-sdk'
+import { Button, Text, ArrowDownIcon, Box, useModal, Flex, IconButton } from 'peronio-uikit'
 import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import { useMigrateTokenInfo } from 'state/tokenMigrate/hooks'
@@ -16,18 +16,14 @@ import Column, { AutoColumn } from '../../components/Layout/Column'
 import ConfirmMintModal from './components/ConfirmMintModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { AutoRow, RowBetween } from '../../components/Layout/Row'
-import {  Wrapper } from './components/styleds'
+import { Wrapper } from './components/styleds'
 import ProgressSteps from './components/ProgressSteps'
 import { AppBody } from '../../components/App'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import {
-  ApprovalState,
-  useApproveCallbackFromMigrate,
-} from '../../hooks/useApproveCallback'
+import { ApprovalState, useApproveCallbackFromMigrate } from '../../hooks/useApproveCallback'
 import { Field } from '../../state/tokenMigrate/actions'
 import { useDefaultsFromURLSearch, useSwapState } from '../../state/swap/hooks'
-import { useExpertModeManager } from '../../state/user/hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import CircleLoader from '../../components/Loader/CircleLoader'
 import Page from '../Page'
@@ -65,11 +61,10 @@ export default function MigrateView({ history }: RouteComponentProps) {
   const { account } = useActiveWeb3React()
 
   // for expert mode
-  const [isExpertMode] = useExpertModeManager()
   const migratorContract = useMigratorContract()
 
   // swap state
-  const {  recipient } = useSwapState()
+  const { recipient } = useSwapState()
   const { mint, currencies, currencyBalances } = useMigrateTokenInfo()
   const [migrate, setMigrate] = useState<any>()
   // const [mint, setMint] = useState({ inputAmount: 0, outputAmount: 0 })
@@ -96,6 +91,9 @@ export default function MigrateView({ history }: RouteComponentProps) {
   const inputCurrency = useCurrency(inputCurrencyId)
 
   const calculateOutput = debounce((value) => {
+    if (!value) {
+      return
+    }
     const theAmmount = parseUnits(value, inputCurrency.decimals)
 
     migratorContract.quote(theAmmount.toNumber()).then((resultado: React.SetStateAction<string>) => {
@@ -176,9 +174,6 @@ export default function MigrateView({ history }: RouteComponentProps) {
   }, [inputAmount, inputCurrency.decimals, migratorContract, mintToConfirm])
 
   const handleSwap = useCallback(() => {
-    // if (!mintCallback) {
-    //   return
-    // }
     setMintState({ attemptingTxn: true, mintToConfirm, mintErrorMessage: undefined, txHash: undefined })
     migrateCallback()
   }, [migrateCallback, mintToConfirm])
@@ -265,7 +260,7 @@ export default function MigrateView({ history }: RouteComponentProps) {
                     />
 
                     <AutoColumn justify="space-between">
-                      <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
+                      <AutoRow justify="center" style={{ padding: '0 1rem' }}>
                         <SwitchIconButton variant="light" scale="sm">
                           <ArrowDownIcon
                             className="icon-down"
@@ -287,7 +282,7 @@ export default function MigrateView({ history }: RouteComponentProps) {
                       disableCurrencySelect
                     />
                     <AutoColumn justify="space-between">
-                      <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
+                      <AutoRow justify="center" style={{ padding: '0 1rem' }}>
                         <SwitchIconButton variant="light" scale="sm">
                           <ArrowDownIcon
                             className="icon-down"
@@ -333,25 +328,17 @@ export default function MigrateView({ history }: RouteComponentProps) {
                         <Button
                           variant={isValid && priceImpactSeverity > 2 ? 'danger' : 'primary'}
                           onClick={() => {
-                            if (isExpertMode) {
-                              handleSwap()
-                            } else {
-                              setMintState({
-                                mintToConfirm: migrate,
-                                attemptingTxn: false,
-                                mintErrorMessage: undefined,
-                                txHash: undefined,
-                              })
-                              onPresentConfirmModal()
-                            }
+                            setMintState({
+                              mintToConfirm: migrate,
+                              attemptingTxn: false,
+                              mintErrorMessage: undefined,
+                              txHash: undefined,
+                            })
+                            onPresentConfirmModal()
                           }}
                           width="48%"
                           id="swap-button"
-                          disabled={
-                            !isValid ||
-                            approval !== ApprovalState.APPROVED ||
-                            (priceImpactSeverity > 3 && !isExpertMode)
-                          }
+                          disabled={!isValid || approval !== ApprovalState.APPROVED}
                         >
                           {inputError || t('Migrate')}
                         </Button>
