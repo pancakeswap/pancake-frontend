@@ -15,6 +15,7 @@ export interface StableTrade {
 
 export const maximumAmountInFactory = (currencyAmountIn: CurrencyAmount<Currency>, slippageTolerance: number) => {
   const slippageAdjustedAmountIn = new Fraction(ONE).add(slippageTolerance).multiply(currencyAmountIn.quotient).quotient
+
   return CurrencyAmount.fromRawAmount(currencyAmountIn.currency, slippageAdjustedAmountIn)
 }
 
