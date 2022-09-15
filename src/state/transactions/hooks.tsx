@@ -73,15 +73,8 @@ export function useAllTransactions(): { [chainId: number]: { [txHash: string]: T
   } = useSelector<AppState, AppState['transactions']>((s) => s.transactions)
 
   return useMemo(() => {
-    return fromPairs(
-      Object.entries(state).map(([chainId, transactions]) => [
-        chainId,
-        fromPairs(
-          Object.entries(transactions).filter(
-            ([_, transactionDetails]) => transactionDetails.from.toLowerCase() === account?.toLowerCase(),
-          ),
-        ),
-      ]),
+    return mapValues(state, (transactions) =>
+      omitBy(transactions, (transactionDetails) => transactionDetails.from.toLowerCase() !== account?.toLowerCase()),
     )
   }, [account, state])
 }
