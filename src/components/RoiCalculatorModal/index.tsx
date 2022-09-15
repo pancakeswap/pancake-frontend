@@ -1,22 +1,23 @@
-import { useRef, useEffect, useMemo } from 'react'
-import styled from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 import {
+  BalanceInput,
+  Button,
+  ButtonMenu,
+  ButtonMenuItem,
+  Checkbox,
+  Flex,
+  HelpIcon,
   Modal,
   Text,
-  Button,
-  Flex,
-  ButtonMenu,
-  Checkbox,
-  BalanceInput,
-  HelpIcon,
-  ButtonMenuItem,
   useTooltip,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { useTranslation } from '@pancakeswap/localization'
+import { useEffect, useMemo, useRef } from 'react'
+import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 
 import { useWeb3React } from '@pancakeswap/wagmi'
+import AnimatedArrow from './AnimatedArrow'
 import RoiCalculatorFooter from './RoiCalculatorFooter'
 import RoiCard from './RoiCard'
 import useRoiCalculatorReducer, {
@@ -24,7 +25,6 @@ import useRoiCalculatorReducer, {
   DefaultCompoundStrategy,
   EditingCurrency,
 } from './useRoiCalculatorReducer'
-import AnimatedArrow from './AnimatedArrow'
 
 export interface RoiCalculatorModalProps {
   onDismiss?: () => void
@@ -47,6 +47,7 @@ export interface RoiCalculatorModalProps {
   initialValue?: string
   strategy?: any
   header?: React.ReactNode
+  BCakeCalculatorSlot?: (stakingTokenBalance: BigNumber) => React.ReactNode
 }
 
 const StyledModal = styled(Modal)`
@@ -100,6 +101,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
   strategy,
   header,
   children,
+  BCakeCalculatorSlot,
 }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
@@ -251,6 +253,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
               </FullWidthButtonMenu>
             </>
           )}
+          {BCakeCalculatorSlot && BCakeCalculatorSlot(new BigNumber(principalAsToken))}
           {autoCompoundFrequency === 0 && (
             <>
               <Text mt="24px" color="secondary" bold fontSize="12px" textTransform="uppercase">

@@ -17,6 +17,7 @@ import {
 } from '@pancakeswap/uikit'
 import { ModalActions, ModalInput } from 'components/Modal'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
+import BCakeCalculator from 'components/RoiCalculatorModal/BCakeCalculator'
 import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance, formatNumber } from 'utils/formatBalance'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
@@ -34,6 +35,7 @@ const AnnualRoiDisplay = styled(Text)`
 `
 
 interface DepositModalProps {
+  pid: number
   max: BigNumber
   stakedBalance: BigNumber
   multiplier?: string
@@ -47,6 +49,7 @@ interface DepositModalProps {
   addLiquidityUrl?: string
   cakePrice?: BigNumber
   showActiveBooster?: boolean
+  lpTotalSupply: BigNumber
 }
 
 const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
@@ -63,6 +66,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   addLiquidityUrl,
   cakePrice,
   showActiveBooster,
+  lpTotalSupply,
 }) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
@@ -115,6 +119,13 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
         isFarm
         initialValue={val}
         onBack={() => setShowRoiCalculator(false)}
+        BCakeCalculatorSlot={(calculatorBalance: BigNumber) => (
+          <BCakeCalculator
+            stakingTokenBalance={calculatorBalance}
+            earningTokenPrice={cakePrice.toNumber()}
+            lpTotalSupply={lpTotalSupply}
+          />
+        )}
       />
     )
   }
