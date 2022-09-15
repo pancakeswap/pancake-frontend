@@ -1,10 +1,10 @@
-import { useState, useEffect, useMemo } from 'react'
-import { Text, Flex, Button, Input, Box, Message, MessageText } from '@pancakeswap/uikit'
-import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Button, Flex, Input, Message, MessageText, Text } from '@pancakeswap/uikit'
+import { MAX_LOCK_DURATION, ONE_WEEK_DEFAULT } from 'config/constants/pools'
 import _toNumber from 'lodash/toNumber'
-import { ONE_WEEK_DEFAULT, MAX_LOCK_DURATION } from 'config/constants/pools'
-import { weeksToSeconds, secondsToWeeks } from '../../views/Pools/components/utils/formatSecondsToWeeks'
+import { useMemo } from 'react'
+import styled from 'styled-components'
+import { secondsToWeeks, weeksToSeconds } from '../../views/Pools/components/utils/formatSecondsToWeeks'
 
 const DURATIONS = [1, 5, 10, 25, 52]
 
@@ -89,11 +89,10 @@ const LockDurationField: React.FC<React.PropsWithChildren<LockDurationFieldProps
           onClick={() => {
             setDuration(currentDuration)
           }}
-          mt="4px"
-          mr={['2px', '2px', '4px', '4px']}
           scale="sm"
           disabled={maxAvailableDuration < ONE_WEEK_DEFAULT}
           variant="light"
+          width="50%"
         >
           {t('My Duration')}
         </Button>
