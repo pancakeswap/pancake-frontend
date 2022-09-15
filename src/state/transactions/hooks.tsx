@@ -3,7 +3,7 @@ import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import fromPairs from 'lodash/fromPairs'
+import pickBy from 'lodash/pickBy'
 import mapValues from 'lodash/mapValues'
 import keyBy from 'lodash/keyBy'
 import orderBy from 'lodash/orderBy'
@@ -74,7 +74,7 @@ export function useAllTransactions(): { [chainId: number]: { [txHash: string]: T
 
   return useMemo(() => {
     return mapValues(state, (transactions) =>
-      omitBy(transactions, (transactionDetails) => transactionDetails.from.toLowerCase() !== account?.toLowerCase()),
+      pickBy(transactions, (transactionDetails) => transactionDetails.from.toLowerCase() === account?.toLowerCase()),
     )
   }, [account, state])
 }
@@ -86,7 +86,7 @@ export function useAllSortedRecentTransactions(): { [chainId: number]: { [txHash
       mapValues(allTransactions, (transactions) =>
         keyBy(
           orderBy(
-            omitBy(transactions, (trxDetails) => !isTransactionRecent(trxDetails)),
+            pickBy(transactions, (trxDetails) => isTransactionRecent(trxDetails)),
             ['addedTime'],
             'desc',
           ),
@@ -106,9 +106,9 @@ export function useAllChainTransactions(): { [txHash: string]: TransactionDetail
 
   return useMemo(() => {
     if (chainId && state[chainId]) {
-      return omitBy(
+      return pickBy(
         state[chainId],
-        (transactionDetails) => transactionDetails.from.toLowerCase() !== account?.toLowerCase(),
+        (transactionDetails) => transactionDetails.from.toLowerCase() === account?.toLowerCase(),
       )
     }
     return {}
