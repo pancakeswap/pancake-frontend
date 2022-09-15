@@ -49,7 +49,7 @@ const LockDurationField: React.FC<React.PropsWithChildren<LockDurationFieldProps
             {t('locked for')}
           </Text>
         </Flex>
-        <Flex flexWrap="wrap">
+        <Flex flexWrap="wrap" justifyContent="space-between">
           {DURATIONS.map((week) => {
             const weekSeconds = weeksToSeconds(week)
             return (
@@ -58,8 +58,8 @@ const LockDurationField: React.FC<React.PropsWithChildren<LockDurationFieldProps
                 onClick={() => {
                   setDuration(weekSeconds)
                 }}
-                mt="4px"
-                mr={['2px', '2px', '4px', '4px']}
+                pl="12px"
+                pr="12px"
                 scale="sm"
                 disabled={weekSeconds > maxAvailableDuration}
                 variant={weekSeconds === duration ? 'subtle' : 'light'}
