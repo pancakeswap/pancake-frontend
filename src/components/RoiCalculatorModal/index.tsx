@@ -27,6 +27,7 @@ import useRoiCalculatorReducer, {
 } from './useRoiCalculatorReducer'
 
 export interface RoiCalculatorModalProps {
+  pid?: number
   onDismiss?: () => void
   onBack?: () => void
   earningTokenPrice: number
@@ -47,7 +48,7 @@ export interface RoiCalculatorModalProps {
   initialValue?: string
   strategy?: any
   header?: React.ReactNode
-  BCakeCalculatorSlot?: (stakingTokenBalance: BigNumber) => React.ReactNode
+  bCakeCalculatorSlot?: (stakingTokenBalance: string) => React.ReactNode
 }
 
 const StyledModal = styled(Modal)`
@@ -80,6 +81,7 @@ const FullWidthButtonMenu = styled(ButtonMenu)<{ disabled?: boolean }>`
 `
 
 const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalProps>> = ({
+  pid,
   onDismiss,
   onBack,
   earningTokenPrice,
@@ -101,7 +103,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
   strategy,
   header,
   children,
-  BCakeCalculatorSlot,
+  bCakeCalculatorSlot,
 }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
@@ -150,7 +152,6 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
   const onBalanceFocus = () => {
     setCalculatorMode(CalculatorMode.ROI_BASED_ON_PRINCIPAL)
   }
-
   const editingUnit = editingCurrency === EditingCurrency.TOKEN ? stakingTokenSymbol : 'USD'
   const editingValue = editingCurrency === EditingCurrency.TOKEN ? principalAsToken : principalAsUSD
   const conversionUnit = editingCurrency === EditingCurrency.TOKEN ? 'USD' : stakingTokenSymbol
@@ -253,7 +254,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
               </FullWidthButtonMenu>
             </>
           )}
-          {BCakeCalculatorSlot && BCakeCalculatorSlot(new BigNumber(principalAsToken))}
+          {bCakeCalculatorSlot && bCakeCalculatorSlot(principalAsToken)}
           {autoCompoundFrequency === 0 && (
             <>
               <Text mt="24px" color="secondary" bold fontSize="12px" textTransform="uppercase">

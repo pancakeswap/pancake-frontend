@@ -86,16 +86,11 @@ const LockDurationField: React.FC<React.PropsWithChildren<LockDurationFieldProps
           onChange={(e) => {
             setIsMaxSelected(false)
             const weeks = _toNumber(e?.target?.value)
-
-            // Prevent large number input which cause NaN
-            // Why 530, just want to avoid user get laggy experience
-            // For example, allow user put 444 which they still get warning no more than 52
-            if (e.currentTarget.validity.valid && weeks < 530) {
+            if (e.currentTarget.validity.valid && weeks < 53) {
               setDuration(weeksToSeconds(_toNumber(e?.target?.value)))
             }
           }}
         />
-        {/* <Text>{t('Week')}</Text> */}
         <Button
           key="max"
           onClick={() => {

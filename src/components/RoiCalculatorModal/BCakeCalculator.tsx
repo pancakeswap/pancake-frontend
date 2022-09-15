@@ -2,9 +2,10 @@ import { useTranslation } from '@pancakeswap/localization'
 import { BalanceInput, Button, Flex, Text, Toggle } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
-import { useState } from 'react'
-import { useCakeVaultUserData, usePoolsPageFetch } from 'state/pools/hooks'
+import { useEffect, useMemo, useState } from 'react'
+import { useCakeVaultPublicData, useCakeVaultUserData } from 'state/pools/hooks'
 import styled from 'styled-components'
+import { BIG_TEN } from 'utils/bigNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
 import useAvgLockDuration from 'views/Pools/components/LockedPool/hooks/useAvgLockDuration'
@@ -20,23 +21,24 @@ const BCakeBlock = styled.div`
   border-radius: 16px;
 `
 interface BCakeCalculatorProps {
-  stakingTokenBalance: BigNumber
+  targetInputBalance: string
   earningTokenPrice: number
   lpTotalSupply: BigNumber
   initialState?: any
   stakingTokenSymbol?: string
+  setBCakeMultiplier: (multiplier: string) => void
 }
 
 const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> = ({
-  stakingTokenBalance,
+  targetInputBalance,
   earningTokenPrice,
   initialState,
   stakingTokenSymbol = 'CAKE',
   lpTotalSupply,
+  setBCakeMultiplier,
 }) => {
   useCakeVaultUserData()
-  usePoolsPageFetch()
-  // usePoolsWithVault()
+  useCakeVaultPublicData()
   const [isShow, setIsShow] = useState(true)
   const { t } = useTranslation()
   const [duration, setDuration] = useState(() => weeksToSeconds(1))
@@ -47,24 +49,33 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
       { stakingTokenPrice: earningTokenPrice, earningTokenPrice, autoCompoundFrequency: 0 },
       initialState,
     )
-  // console.log(
-  //   { totalCakeInVault: getBalanceNumber(totalCakeInVault), totalLockedAmount: getBalanceNumber(totalLockedAmount) },
-  //   '777',
-  // )
   const { editingCurrency } = state.controls
   const { principalAsUSD, principalAsToken } = state.data
-
   const onBalanceFocus = () => {
     setCalculatorMode(CalculatorMode.ROI_BASED_ON_PRINCIPAL)
   }
+  const bCakeMultiplier = useMemo(() => {
+    const result = getBCakeMultiplier(
+      new BigNumber(targetInputBalance).multipliedBy(BIG_TEN.pow(18)), // userBalanceInFarm,
+      new BigNumber(principalAsToken).multipliedBy(BIG_TEN.pow(18)), // userLockAmount
+      new BigNumber(secondsToWeeks(duration)).times(7), // userLockDuration
+      totalLockedAmount, // totalLockAmount
+      lpTotalSupply, // lpBalanceOfFarm
+      // TODO: parse sec to day directly
+      new BigNumber(avgLockDurationsInSeconds ? secondsToWeeks(avgLockDurationsInSeconds) : 40).times(7), // AverageLockDuration
+    )
+    return result.toString() === 'NaN' ? '1.000' : result.toFixed(3)
+  }, [targetInputBalance, principalAsToken, duration, totalLockedAmount, lpTotalSupply, avgLockDurationsInSeconds])
+
+  useEffect(() => {
+    setBCakeMultiplier(bCakeMultiplier)
+  }, [bCakeMultiplier, setBCakeMultiplier])
 
   const editingUnit = editingCurrency === EditingCurrency.TOKEN ? stakingTokenSymbol : 'USD'
   const editingValue = editingCurrency === EditingCurrency.TOKEN ? principalAsToken : principalAsUSD
   const conversionUnit = editingCurrency === EditingCurrency.TOKEN ? 'USD' : stakingTokenSymbol
   const conversionValue = editingCurrency === EditingCurrency.TOKEN ? principalAsUSD : principalAsToken
   const onUserInput = editingCurrency === EditingCurrency.TOKEN ? setPrincipalFromTokenValue : setPrincipalFromUSDValue
-
-  // console.log({ editingUnit, editingValue, conversionUnit, conversionValue, onUserInput, principalAsToken })
 
   const { account } = useWeb3React()
 
@@ -135,17 +146,7 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
               <>{t('Boost Multiplier')}</>
             </Text>
             <Text color="text" bold fontSize="20px" textTransform="uppercase">
-              <>
-                {bCakeMultiplierFE(
-                  new BigNumber(stakingTokenBalance), // userBalanceInFarm,
-                  new BigNumber(principalAsToken), // userLockAmount
-                  new BigNumber(secondsToWeeks(duration)).times(7), // userLockDuration
-                  new BigNumber(getBalanceNumber(totalLockedAmount)), // totalLockAmount
-                  new BigNumber(getBalanceNumber(lpTotalSupply)), // lpBalanceOfFarm
-                  new BigNumber(avgLockDurationsInSeconds ? secondsToWeeks(avgLockDurationsInSeconds) : 40).times(7), // AverageLockDuration
-                ).toFixed(3)}
-                X
-              </>
+              <>{bCakeMultiplier}X</>
             </Text>
             <Text color="textSubtle" fontSize={12}>
               {t(
@@ -161,13 +162,16 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
 
 export default BCakeCalculator
 
-const bCakeMultiplierFE = (
+const CA = 0.5
+const CB = 5
+
+const getBCakeMultiplier = (
   userBalanceInFarm: BigNumber,
   userLockAmount: BigNumber,
   userLockDuration: BigNumber,
   totalLockAmount: BigNumber,
   lpBalanceOfFarm: BigNumber,
-  AverageLockDuration: BigNumber,
+  averageLockDuration: BigNumber,
 ) => {
   // console.log({
   //   userBalanceInFarm: userBalanceInFarm.toString(),
@@ -175,16 +179,14 @@ const bCakeMultiplierFE = (
   //   userLockDuration: userLockDuration.toString(),
   //   totalLockAmount: totalLockAmount.toString(),
   //   lpBalanceOfFarm: lpBalanceOfFarm.toString(),
-  //   AverageLockDuration: AverageLockDuration.toString(),
+  //   averageLockDuration: averageLockDuration.toString(),
   // })
-  const CA = new BigNumber(0.5)
-  const CB = new BigNumber(5)
   const dB = userBalanceInFarm.times(CA)
   const aBPart1 = lpBalanceOfFarm.times(userLockAmount).times(userLockDuration)
-  const aBPart3 = totalLockAmount.times(AverageLockDuration)
+  const aBPart3 = totalLockAmount.times(averageLockDuration)
   const aB = aBPart1.dividedBy(CB).dividedBy(aBPart3)
-  const bigNumberResult = BigNumber.sum(dB, aB).gt(userBalanceInFarm)
+  const bigNumberResult = dB.plus(aB).gt(userBalanceInFarm)
     ? userBalanceInFarm.dividedBy(dB)
-    : BigNumber.sum(dB, aB).dividedBy(dB)
+    : dB.plus(aB).dividedBy(dB)
   return bigNumberResult
 }

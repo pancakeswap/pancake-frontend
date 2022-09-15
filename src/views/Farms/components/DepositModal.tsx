@@ -6,6 +6,7 @@ import {
   Text,
   Button,
   Modal,
+  ModalV2,
   LinkExternal,
   CalculateIcon,
   IconButton,
@@ -16,6 +17,7 @@ import {
   ErrorIcon,
 } from '@pancakeswap/uikit'
 import { ModalActions, ModalInput } from 'components/Modal'
+import _toNumber from 'lodash/toNumber'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import BCakeCalculator from 'components/RoiCalculatorModal/BCakeCalculator'
 import { useTranslation } from '@pancakeswap/localization'
@@ -53,6 +55,7 @@ interface DepositModalProps {
 }
 
 const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
+  pid,
   max,
   stakedBalance,
   onConfirm,
@@ -69,6 +72,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   lpTotalSupply,
 }) => {
   const [val, setVal] = useState('')
+  const [bCakeMultiplier, setBCakeMultiplier] = useState(() => null)
   const [pendingTx, setPendingTx] = useState(false)
   const [showRoiCalculator, setShowRoiCalculator] = useState(false)
   const { t } = useTranslation()
@@ -106,27 +110,30 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
 
   if (showRoiCalculator) {
     return (
-      <RoiCalculatorModal
-        linkLabel={t('Get %symbol%', { symbol: lpLabel })}
-        stakingTokenBalance={stakedBalance.plus(max)}
-        stakingTokenSymbol={tokenName}
-        stakingTokenPrice={lpPrice.toNumber()}
-        earningTokenPrice={cakePrice.toNumber()}
-        apr={apr}
-        multiplier={multiplier}
-        displayApr={displayApr}
-        linkHref={addLiquidityUrl}
-        isFarm
-        initialValue={val}
-        onBack={() => setShowRoiCalculator(false)}
-        BCakeCalculatorSlot={(calculatorBalance: BigNumber) => (
-          <BCakeCalculator
-            stakingTokenBalance={calculatorBalance}
-            earningTokenPrice={cakePrice.toNumber()}
-            lpTotalSupply={lpTotalSupply}
-          />
-        )}
-      />
+      <ModalV2 isOpen={showRoiCalculator}>
+        <RoiCalculatorModal
+          linkLabel={t('Get %symbol%', { symbol: lpLabel })}
+          stakingTokenBalance={stakedBalance.plus(max)}
+          stakingTokenSymbol={tokenName}
+          stakingTokenPrice={lpPrice.toNumber()}
+          earningTokenPrice={cakePrice.toNumber()}
+          apr={bCakeMultiplier ? apr * _toNumber(bCakeMultiplier) : apr}
+          multiplier={multiplier}
+          displayApr={bCakeMultiplier ? (_toNumber(displayApr) - apr + apr * bCakeMultiplier).toFixed(2) : displayApr}
+          linkHref={addLiquidityUrl}
+          isFarm
+          initialValue={val}
+          onBack={() => setShowRoiCalculator(false)}
+          bCakeCalculatorSlot={(calculatorBalance) => (
+            <BCakeCalculator
+              targetInputBalance={calculatorBalance}
+              earningTokenPrice={cakePrice.toNumber()}
+              lpTotalSupply={lpTotalSupply}
+              setBCakeMultiplier={setBCakeMultiplier}
+            />
+          )}
+        />
+      </ModalV2>
     )
   }
 

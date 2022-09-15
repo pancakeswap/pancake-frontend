@@ -1,8 +1,9 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { CalculateIcon, Flex, IconButton, Text, TooltipText, useModal, useTooltip } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
+import _toNumber from 'lodash/toNumber'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import BCakeCalculator from 'components/RoiCalculatorModal/BCakeCalculator'
 import { useFarmFromPid, useFarmUser, useLpTokenPrice } from 'state/farms/hooks'
@@ -50,33 +51,40 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   hideButton,
 }) => {
   const { t } = useTranslation()
+  const [bCakeMultiplier, setBCakeMultiplier] = useState<string | null>(() => null)
   const lpPrice = useLpTokenPrice(lpSymbol)
   const { tokenBalance, stakedBalance, proxy } = useFarmUser(pid)
   const { lpTotalSupply } = useFarmFromPid(pid)
   const { boosterState, proxyAddress } = useContext(YieldBoosterStateContext)
   const boostMultiplier = useBoostMultiplier({ pid, boosterState, proxyAddress })
   const boostMultiplierDisplay = boostMultiplier.toLocaleString(undefined, { maximumFractionDigits: 3 })
-
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal
+      pid={pid}
       linkLabel={t('Get %symbol%', { symbol: lpLabel })}
       stakingTokenBalance={proxy ? proxy.stakedBalance.plus(proxy.tokenBalance) : stakedBalance.plus(tokenBalance)}
       stakingTokenSymbol={lpSymbol}
       stakingTokenPrice={lpPrice.toNumber()}
       earningTokenPrice={cakePrice.toNumber()}
-      apr={apr}
+      apr={bCakeMultiplier ? apr * _toNumber(bCakeMultiplier) : apr}
       multiplier={multiplier}
-      displayApr={displayApr}
+      displayApr={
+        bCakeMultiplier ? (_toNumber(displayApr) - apr + apr * _toNumber(bCakeMultiplier)).toFixed(2) : displayApr
+      }
       linkHref={addLiquidityUrl}
       isFarm
-      BCakeCalculatorSlot={(calculatorBalance: BigNumber) => (
+      bCakeCalculatorSlot={(calculatorBalance) => (
         <BCakeCalculator
-          stakingTokenBalance={calculatorBalance}
+          targetInputBalance={calculatorBalance}
           earningTokenPrice={cakePrice.toNumber()}
           lpTotalSupply={lpTotalSupply}
+          setBCakeMultiplier={setBCakeMultiplier}
         />
       )}
     />,
+    false,
+    true,
+    `FarmModal${pid}`,
   )
 
   const handleClickButton = (event): void => {

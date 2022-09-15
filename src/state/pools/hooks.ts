@@ -122,6 +122,13 @@ export const useCakeVaultUserData = () => {
   }, [account, dispatch])
 }
 
+export const useCakeVaultPublicData = () => {
+  const dispatch = useAppDispatch()
+  useFastRefreshEffect(() => {
+    dispatch(fetchCakeVaultPublicData())
+  }, [dispatch])
+}
+
 export const useFetchIfo = () => {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
