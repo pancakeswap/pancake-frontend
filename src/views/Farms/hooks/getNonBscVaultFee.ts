@@ -37,8 +37,10 @@ export const getNonBscVaultContractFee = async ({
     const crossFarmingAddress = getCrossFarmingSenderContract(null, chainId)
     const exchangeRate = new BigNumber(oraclePrice)
 
+    const getNonce = await crossFarmingAddress.nonces(userAddress, pid)
+    const nonce = new BigNumber(getNonce.toString()).toJSON()
     const [encodeMessage, isFirstTime, estimateDestGaslimit] = await Promise.all([
-      nonBscVaultContract.encodeMessage(userAddress, pid, amount, messageType),
+      nonBscVaultContract.encodeMessage(userAddress, pid, amount, messageType, nonce),
       crossFarmingAddress.is1st(userAddress),
       crossFarmingAddress.estimateDestGaslimit(userAddress, messageType),
     ])
