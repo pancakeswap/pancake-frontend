@@ -3,10 +3,11 @@ import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import fromPairs from 'lodash/fromPairs'
+import pickBy from 'lodash/pickBy'
 import mapValues from 'lodash/mapValues'
 import keyBy from 'lodash/keyBy'
 import orderBy from 'lodash/orderBy'
+import omitBy from 'lodash/omitBy'
 import isEmpty from 'lodash/isEmpty'
 import { TransactionDetails } from './reducer'
 import { addTransaction, TransactionType } from './actions'
@@ -72,15 +73,8 @@ export function useAllTransactions(): { [chainId: number]: { [txHash: string]: T
   } = useSelector<AppState, AppState['transactions']>((s) => s.transactions)
 
   return useMemo(() => {
-    return fromPairs(
-      Object.entries(state).map(([chainId, transactions]) => [
-        chainId,
-        fromPairs(
-          Object.entries(transactions).filter(
-            ([_, transactionDetails]) => transactionDetails.from.toLowerCase() === account?.toLowerCase(),
-          ),
-        ),
-      ]),
+    return mapValues(state, (transactions) =>
+      pickBy(transactions, (transactionDetails) => transactionDetails.from.toLowerCase() === account?.toLowerCase()),
     )
   }, [account, state])
 }
@@ -88,27 +82,18 @@ export function useAllTransactions(): { [chainId: number]: { [txHash: string]: T
 export function useAllSortedRecentTransactions(): { [chainId: number]: { [txHash: string]: TransactionDetails } } {
   const allTransactions = useAllTransactions()
   return useMemo(() => {
-    return fromPairs(
-      Object.entries(allTransactions)
-        .map(([chainId, transactions]) => {
-          return [
-            chainId,
-            mapValues(
-              keyBy(
-                orderBy(
-                  Object.entries(transactions)
-                    .filter(([_, trxDetails]) => isTransactionRecent(trxDetails))
-                    .map(([hash, trxDetails]) => ({ hash, trxDetails })),
-                  ['trxDetails', 'addedTime'],
-                  'desc',
-                ),
-                'hash',
-              ),
-              'trxDetails',
-            ),
-          ]
-        })
-        .filter(([_, transactions]) => !isEmpty(transactions)),
+    return omitBy(
+      mapValues(allTransactions, (transactions) =>
+        keyBy(
+          orderBy(
+            pickBy(transactions, (trxDetails) => isTransactionRecent(trxDetails)),
+            ['addedTime'],
+            'desc',
+          ),
+          'hash',
+        ),
+      ),
+      isEmpty,
     )
   }, [allTransactions])
 }
@@ -121,10 +106,9 @@ export function useAllChainTransactions(): { [txHash: string]: TransactionDetail
 
   return useMemo(() => {
     if (chainId && state[chainId]) {
-      return fromPairs(
-        Object.entries(state[chainId]).filter(
-          ([_, transactionDetails]) => transactionDetails.from.toLowerCase() === account?.toLowerCase(),
-        ),
+      return pickBy(
+        state[chainId],
+        (transactionDetails) => transactionDetails.from.toLowerCase() === account?.toLowerCase(),
       )
     }
     return {}
