@@ -33,6 +33,7 @@ export interface ApyButtonProps {
   strikethrough?: boolean
   useTooltipText?: boolean
   hideButton?: boolean
+  boosted?: boolean
 }
 
 const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
@@ -49,6 +50,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   strikethrough,
   useTooltipText,
   hideButton,
+  boosted,
 }) => {
   const { t } = useTranslation()
   const [bCakeMultiplier, setBCakeMultiplier] = useState<string | null>(() => null)
@@ -62,7 +64,11 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
     <RoiCalculatorModal
       pid={pid}
       linkLabel={t('Get %symbol%', { symbol: lpLabel })}
-      stakingTokenBalance={proxy ? proxy.stakedBalance.plus(proxy.tokenBalance) : stakedBalance.plus(tokenBalance)}
+      stakingTokenBalance={
+        stakedBalance.plus(tokenBalance).gt(0)
+          ? stakedBalance.plus(tokenBalance)
+          : proxy.stakedBalance.plus(proxy.tokenBalance)
+      }
       stakingTokenSymbol={lpSymbol}
       stakingTokenPrice={lpPrice.toNumber()}
       earningTokenPrice={cakePrice.toNumber()}
@@ -73,14 +79,16 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       }
       linkHref={addLiquidityUrl}
       isFarm
-      bCakeCalculatorSlot={(calculatorBalance) => (
-        <BCakeCalculator
-          targetInputBalance={calculatorBalance}
-          earningTokenPrice={cakePrice.toNumber()}
-          lpTotalSupply={lpTotalSupply}
-          setBCakeMultiplier={setBCakeMultiplier}
-        />
-      )}
+      bCakeCalculatorSlot={(calculatorBalance) =>
+        boosted ? (
+          <BCakeCalculator
+            targetInputBalance={calculatorBalance}
+            earningTokenPrice={cakePrice.toNumber()}
+            lpTotalSupply={lpTotalSupply}
+            setBCakeMultiplier={setBCakeMultiplier}
+          />
+        ) : null
+      }
     />,
     false,
     true,

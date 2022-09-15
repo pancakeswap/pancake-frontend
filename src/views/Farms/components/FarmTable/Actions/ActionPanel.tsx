@@ -157,7 +157,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
             <>
               <ValueWrapper>
                 <Text>{t('APR')}</Text>
-                <Apr {...apr} useTooltipText={false} />
+                <Apr {...apr} useTooltipText={false} boosted={farm.boosted} />
               </ValueWrapper>
               <ValueWrapper>
                 <Text>{t('Multiplier')}</Text>
