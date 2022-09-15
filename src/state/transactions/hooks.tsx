@@ -99,7 +99,7 @@ export function useAllSortedRecentTransactions(): { [chainId: number]: { [txHash
                   Object.entries(transactions)
                     .filter(([_, trxDetails]) => isTransactionRecent(trxDetails))
                     .map(([hash, trxDetails]) => ({ hash, trxDetails })),
-                  ['trxDetails', 'addedTime'],
+                  (trx) => trx.trxDetails?.addedTime || 0,
                   'desc',
                 ),
                 'hash',
