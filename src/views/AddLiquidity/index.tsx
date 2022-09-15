@@ -129,7 +129,7 @@ export default function AddLiquidity({
 
   const addTransaction = useTransactionAdder()
 
-  async function onAdd() {
+  const onAdd = async function onAdd() {
     if (!chainId || !library || !account) return
     const router = getRouterContract(chainId, library, account)
 
