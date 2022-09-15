@@ -140,7 +140,7 @@ export function useStableLPDerivedMintInfo(
   )
 
   // pair
-  const { pairState, pair } = useStablePair(currencyA?.wrapped, currencyA?.wrapped)
+  const { pairState, pair } = useStablePair(currencyA?.wrapped, currencyB?.wrapped)
 
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
