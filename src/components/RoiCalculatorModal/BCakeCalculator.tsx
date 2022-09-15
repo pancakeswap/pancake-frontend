@@ -16,7 +16,7 @@ import LockDurationField from './BCakeLockedDuration'
 import useRoiCalculatorReducer, { CalculatorMode, EditingCurrency } from './useRoiCalculatorReducer'
 
 const BCakeBlock = styled.div`
-  background-color: #faf9fa;
+  background-color: ${({ theme }) => theme.colors.background};
   width: 100%;
   padding: 16px;
   box-sizing: border-box;
