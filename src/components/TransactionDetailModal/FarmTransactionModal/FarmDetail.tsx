@@ -22,7 +22,7 @@ const FarmDetail: React.FC<React.PropsWithChildren<HarvestDetailProps>> = ({ ste
     <Flex mb="16px" justifyContent="space-between">
       <Flex>
         <ChainLogo width={20} height={20} chainId={step.chainId} />
-        <Text color="white" fontSize="14px" ml="8px">
+        <Text fontSize="14px" ml="8px">
           {chainInfo?.name}
         </Text>
       </Flex>
