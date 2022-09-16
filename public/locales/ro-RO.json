@@ -1946,5 +1946,10 @@
   "Failed": "Eșuată",
   "Transaction failed with error: %reason%": "Tranzacție eșuată din cauza unei erori: %reason%",
   "Transaction failed. For detailed error message:": "Tranzacție eșuată. Pentru mesajul de eroare detaliat:",
-  "Failed to claim": "Nu s-a reușit recuperarea"
+  "Failed to claim": "Nu s-a reușit recuperarea",
+  "Cake locked": "Cake locked",
+  "Boost Multiplier": "Boost Multiplier",
+  "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.",
+  "locked for": "locked for",
+  "My Duration": "My Duration"
 }
