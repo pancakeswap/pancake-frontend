@@ -1946,5 +1946,10 @@
   "Failed": "Ошибка",
   "Transaction failed with error: %reason%": "Транзакция завершилась с ошибкой: %reason%",
   "Transaction failed. For detailed error message:": "Выполнить транзакцию не удалось. Подробное сообщение об ошибке:",
-  "Failed to claim": "Не удалось получить"
+  "Failed to claim": "Не удалось получить",
+  "Cake locked": "Cake locked",
+  "Boost Multiplier": "Boost Multiplier",
+  "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.",
+  "locked for": "locked for",
+  "My Duration": "My Duration"
 }
