@@ -72,9 +72,23 @@ export const fetchUserBalances = async (
     name: 'balanceOf',
     params: [account],
   }))
+  const filteredBnbPools = bnbPools.filter((p) => {
+    if (!isUndefinedOrNull(fetchPoolOrPools)) {
+      if (fetchPoolOrPools === 'finishedPools') {
+        return p.isFinished
+      }
+      if (fetchPoolOrPools === 'nonFinishedPools') {
+        return !p.isFinished
+      }
+      if (Number.isFinite(fetchPoolOrPools)) {
+        return p.sousId === fetchPoolOrPools
+      }
+    }
+    return true
+  })
   const [tokenBalancesRaw, bnbBalance] = await Promise.all([
     multicall(erc20ABI, calls),
-    bscRpcProvider.getBalance(account),
+    filteredBnbPools.length ? bscRpcProvider.getBalance(account) : Promise.resolve(null),
   ])
   const tokenBalances = fromPairs(tokens.map((token, index) => [token, tokenBalancesRaw[index]]))
 
@@ -88,8 +102,8 @@ export const fetchUserBalances = async (
   )
 
   // BNB pools
-  const bnbBalanceJson = new BigNumber(bnbBalance.toString()).toJSON()
-  const bnbBalances = fromPairs(bnbPools.map((pool) => [pool.sousId, bnbBalanceJson]))
+  const bnbBalanceJson = bnbBalance ? new BigNumber(bnbBalance.toString()).toJSON() : null
+  const bnbBalances = fromPairs(filteredBnbPools.map((pool) => [pool.sousId, bnbBalanceJson]))
 
   return { ...poolTokenBalances, ...bnbBalances }
 }
