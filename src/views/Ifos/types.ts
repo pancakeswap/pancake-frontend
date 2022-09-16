@@ -15,7 +15,7 @@ export interface PoolCharacteristics {
 
   // extends
   pointThreshold?: number
-  admissionProfile?: number
+  admissionProfile?: string
   needQualifiedNFT?: boolean
   needQualifiedPoints?: boolean
   vestingInformation?: VestingInformation
