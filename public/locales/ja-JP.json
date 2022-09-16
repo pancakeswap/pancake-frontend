@@ -1946,5 +1946,10 @@
   "Failed": "失敗",
   "Transaction failed with error: %reason%": "エラーにより取引に失敗しました: %reason%",
   "Transaction failed. For detailed error message:": "取引に失敗しました。詳細なエラーメッセージ:",
-  "Failed to claim": "請求に失敗しました"
+  "Failed to claim": "請求に失敗しました",
+  "Cake locked": "Cake locked",
+  "Boost Multiplier": "Boost Multiplier",
+  "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.",
+  "locked for": "locked for",
+  "My Duration": "My Duration"
 }
