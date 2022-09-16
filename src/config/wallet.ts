@@ -12,6 +12,7 @@ import {
   CoinbaseWalletIcon,
   OperaIcon,
   WalletConfig,
+  OneKeyWalletIcon,
 } from '@pancakeswap/uikit'
 
 export enum ConnectorNames {
@@ -137,5 +138,17 @@ export const wallets: WalletConfig<ConnectorNames>[] = [
       // @ts-ignore
       return typeof window !== 'undefined' && Boolean(window.ethereum?.isBlocto) ? 0 : 999
     },
+  },
+  {
+    title: 'OneKeyWallet',
+    icon: OneKeyWalletIcon,
+    // @ts-ignore
+    installed: typeof window !== 'undefined' && Boolean(window.$onekey?.ethereum.isOneKey),
+    connectorId: ConnectorNames.Injected,
+    priority: () => {
+      // @ts-ignore
+      return typeof window !== 'undefined' && Boolean(window.$onekey?.ethereum.isOneKey) ? 0 : 999
+    },
+    href: 'https://onekey.so/download?client=browserExtension',
   },
 ]

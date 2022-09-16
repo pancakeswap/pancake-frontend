@@ -81,6 +81,7 @@ export { default as MedalSilverIcon } from "./Icons/MedalSilver";
 export { default as MedalTealIcon } from "./Icons/MedalTeal";
 export { default as MediumIcon } from "./Icons/Medium";
 export { default as MetamaskIcon } from "./Icons/Metamask";
+export { default as OneKeyWalletIcon } from "./Icons/OneKeyWallet";
 export { default as MinusIcon } from "./Icons/Minus";
 export { default as MoonIcon } from "./Icons/Moon";
 export { default as MoreHorizontalIcon } from "./Icons/MoreHorizontal";
