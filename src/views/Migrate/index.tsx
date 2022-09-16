@@ -288,12 +288,10 @@ export default function MigrateView({ history }: RouteComponentProps) {
 
                     <AutoColumn justify="space-between">
                       <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
-                        <SwitchIconButton variant="light" scale="sm">
-                          <ArrowDownIcon
-                            className="icon-down"
-                            color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
-                          />
-                        </SwitchIconButton>
+                        <ArrowDownIcon
+                          className="icon-down"
+                          color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
+                        />
                       </AutoRow>
                     </AutoColumn>
                     <CurrencyInputPanel
@@ -310,12 +308,10 @@ export default function MigrateView({ history }: RouteComponentProps) {
                     />
                     <AutoColumn justify="space-between">
                       <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
-                        <SwitchIconButton variant="light" scale="sm">
-                          <ArrowDownIcon
-                            className="icon-down"
-                            color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
-                          />
-                        </SwitchIconButton>
+                        <ArrowDownIcon
+                          className="icon-down"
+                          color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
+                        />
                       </AutoRow>
                     </AutoColumn>
                     <CurrencyInputPanel
