@@ -267,7 +267,7 @@ export default function MigrateView({ history }: RouteComponentProps) {
               <AppBody>
                 <CurrencyInputHeader
                   title={t('Migrate')}
-                  subtitle={t('Migrate PE tokens to P tokens')}
+                  subtitle={t('Migrate PE tokens to PE2 tokens')}
                   setIsChartDisplayed={null}
                   isChartDisplayed={false}
                 />
