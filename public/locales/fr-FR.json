@@ -1946,5 +1946,10 @@
   "Failed": "Échec",
   "Transaction failed with error: %reason%": "Échec de la transaction avec erreur : %reason%",
   "Transaction failed. For detailed error message:": "Échec de la transaction. Pour obtenir un message d'erreur détaillé :",
-  "Failed to claim": "Récupération impossible"
+  "Failed to claim": "Récupération impossible",
+  "Cake locked": "Cake locked",
+  "Boost Multiplier": "Boost Multiplier",
+  "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.",
+  "locked for": "locked for",
+  "My Duration": "My Duration"
 }
