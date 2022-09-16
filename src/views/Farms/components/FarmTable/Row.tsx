@@ -143,7 +143,12 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   <td key={key}>
                     <CellInner>
                       <CellLayout label={t('APR')}>
-                        <Apr {...props.apr} hideButton={isSmallerScreen} strikethrough={props?.details?.boosted} />
+                        <Apr
+                          {...props.apr}
+                          hideButton={isSmallerScreen}
+                          strikethrough={props?.details?.boosted}
+                          boosted={props?.details?.boosted}
+                        />
                         {props?.details?.boosted ? (
                           <BoostedApr
                             lpRewardsApr={props?.apr?.lpRewardsApr}
@@ -201,7 +206,12 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           <td width="33%">
             <AprMobileCell>
               <CellLayout label={t('APR')}>
-                <Apr {...props.apr} hideButton strikethrough={props?.details?.boosted} />
+                <Apr
+                  {...props.apr}
+                  hideButton
+                  strikethrough={props?.details?.boosted}
+                  boosted={props?.details?.boosted}
+                />
                 {props?.details?.boosted ? (
                   <BoostedApr
                     lpRewardsApr={props?.apr?.lpRewardsApr}

@@ -125,6 +125,7 @@ export const StakedContainer = ({ children, ...props }) => {
 }
 
 const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps>> = ({
+  pid,
   apr,
   vaultPid,
   multiplier,
@@ -293,6 +294,8 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   const [onPresentDeposit] = useModal(
     <DepositModal
+      pid={pid}
+      lpTotalSupply={lpTotalSupply}
       max={tokenBalance}
       lpPrice={lpPrice}
       lpLabel={lpLabel}

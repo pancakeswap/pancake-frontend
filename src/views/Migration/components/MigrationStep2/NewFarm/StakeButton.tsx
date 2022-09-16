@@ -38,6 +38,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
   quoteToken,
   token,
   displayApr,
+  lpTotalSupply,
 }) => {
   const { t } = useTranslation()
   const { account, chainId } = useActiveWeb3React()
@@ -91,6 +92,8 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
 
   const [onPresentDeposit] = useModal(
     <DepositModal
+      pid={pid}
+      lpTotalSupply={lpTotalSupply}
       max={tokenBalance}
       lpPrice={lpPrice}
       lpLabel={lpLabel}
