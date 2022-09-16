@@ -1946,5 +1946,10 @@
   "Failed": "실패",
   "Transaction failed with error: %reason%": "오류로 인해 트랜잭션 실패: %reason%",
   "Transaction failed. For detailed error message:": "트랜잭션이 실패했습니다. 자세한 오류 메시지:",
-  "Failed to claim": "클레임 실패"
+  "Failed to claim": "클레임 실패",
+  "Cake locked": "Cake locked",
+  "Boost Multiplier": "Boost Multiplier",
+  "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.",
+  "locked for": "locked for",
+  "My Duration": "My Duration"
 }
