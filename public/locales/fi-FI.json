@@ -1946,5 +1946,10 @@
   "Failed": "Epäonnistui",
   "Transaction failed with error: %reason%": "Transaktio epäonnistui, virhe: %reason%",
   "Transaction failed. For detailed error message:": "Transaktio epäonnistui. Katso yksityiskohtainen virheviesti:",
-  "Failed to claim": "Lunastaminen epäonnistui"
+  "Failed to claim": "Lunastaminen epäonnistui",
+  "Cake locked": "Cake locked",
+  "Boost Multiplier": "Boost Multiplier",
+  "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.",
+  "locked for": "locked for",
+  "My Duration": "My Duration"
 }
