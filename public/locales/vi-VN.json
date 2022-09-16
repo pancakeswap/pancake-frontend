@@ -1946,5 +1946,10 @@
   "Failed": "Không thành công",
   "Transaction failed with error: %reason%": "Giao dịch không thành công với lỗi: %reason%",
   "Transaction failed. For detailed error message:": "Giao dịch không thành công. Thông báo lỗi chi tiết:",
-  "Failed to claim": "Không thể nhận"
+  "Failed to claim": "Không thể nhận",
+  "Cake locked": "Cake locked",
+  "Boost Multiplier": "Boost Multiplier",
+  "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.",
+  "locked for": "locked for",
+  "My Duration": "My Duration"
 }
