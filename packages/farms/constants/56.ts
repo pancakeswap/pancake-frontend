@@ -60,6 +60,13 @@ const farms: SerializedFarmConfig[] = [
     auctionHostingStartSeconds: 1663315200,
   },
   {
+    pid: 119,
+    lpSymbol: 'MONI-BNB LP',
+    lpAddress: '0xbcfd0d4a37fEb4dceAAeFa9da28CD833E5f04e9f',
+    token: bscTokens.moni,
+    quoteToken: bscTokens.wbnb,
+  },
+  {
     pid: 118,
     lpSymbol: 'GQ-BUSD LP',
     lpAddress: '0x72121d60b0e2F01c0FB7FE32cA24021b42165A40',
