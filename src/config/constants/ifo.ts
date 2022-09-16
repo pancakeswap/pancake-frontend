@@ -32,8 +32,8 @@ const ifos: Ifo[] = [
     tokenOfferingPrice: 0.055,
     version: 3.2,
     twitterUrl: 'https://twitter.com/DinosChibi',
-    description: '$HOOP - In-game currency for the Chibi Dinos Gaming Universe',
-    vestingTitle: `Chibi Dinos is a basketball and dinosaur themed metaverse with games such as Primal Hoop, an arcade basketball game with an adventure role-playing game (RPG) mode and Primal Pick'em, a predictive play-to earn game (P2E).`,
+    description: `Chibi Dinos is a basketball and dinosaur themed metaverse with games such as Primal Hoop, an arcade basketball game with an adventure role-playing game (RPG) mode and Primal Pick'em, a predictive play-to earn game (P2E).`,
+    vestingTitle: '$HOOP - In-game currency for the Chibi Dinos Gaming Universe',
   },
   {
     id: 'wom',
