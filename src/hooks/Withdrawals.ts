@@ -7,6 +7,7 @@ import { Currency, CurrencyAmount, Withdraw, Percent, Price } from 'peronio-sdk'
 import JSBI from 'jsbi'
 import { MARKUP_DECIMALS } from 'config/constants'
 import { useEffect, useMemo, useState } from 'react'
+import { parseUnits } from 'ethers/lib/utils'
 import { usePeronioContract } from './useContract'
 
 // import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -53,7 +54,8 @@ export function useWithdrawExactIn(currencyAmountIn?: CurrencyAmount, currencyOu
       return
     }
     async function fetchBuyingPrice(): Promise<BigNumber> {
-      return peronioContract.collateralRatio()
+      const theAmount = parseUnits(currencyAmountIn.toFixed(), currencyAmountIn.currency.decimals)
+      return peronioContract.quoteOut(theAmount.toNumber())
     }
 
     fetchBuyingPrice().then((collateralRatio) => {
@@ -108,7 +110,8 @@ export function useWithdrawExactOut(currencyAmountOut?: CurrencyAmount, currency
       return
     }
     async function fetchBuyingPrice(): Promise<BigNumber> {
-      return peronioContract.collateralRatio()
+      const theAmount = parseUnits(currencyAmountOut.toFixed(), currencyAmountOut.currency.decimals)
+      return peronioContract.quoteOut(theAmount.toNumber())
     }
 
     fetchBuyingPrice()

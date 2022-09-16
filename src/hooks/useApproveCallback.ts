@@ -4,7 +4,7 @@ import { Trade, Mint, TokenAmount, CurrencyAmount, ETHER, Withdraw } from 'peron
 import { useCallback, useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { logError } from 'utils/sentry'
-import { PERONIO_ADDRESS, ROUTER_ADDRESS, MIGRATOR_MOCK_ADDRESS } from '../config/constants'
+import { PERONIO_ADDRESS, ROUTER_ADDRESS, MIGRATOR_ADDRESS } from '../config/constants'
 import useTokenAllowance from './useTokenAllowance'
 import { Field } from '../state/swap/actions'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
@@ -30,7 +30,6 @@ export function useApproveCallback(
   const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
-  console.log(amountToApprove)
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
@@ -128,7 +127,7 @@ export function useApproveCallbackFromMint(mint?: Mint) {
 // wraps useApproveCallback in the context of a swap
 export function useApproveCallbackFromMigrate(mint?: any) {
   const amountToApprove = mint?.inputAmount
-  return useApproveCallback(amountToApprove, MIGRATOR_MOCK_ADDRESS)
+  return useApproveCallback(amountToApprove, MIGRATOR_ADDRESS)
 }
 
 

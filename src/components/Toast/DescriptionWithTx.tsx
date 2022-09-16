@@ -6,7 +6,6 @@ import { useTranslation } from 'contexts/Localization'
 import truncateHash from 'utils/truncateHash'
 
 interface DescriptionWithTxProps {
-  description?: string
   txHash?: string
 }
 

@@ -58,7 +58,6 @@ export interface RibbonProps {
 
 export interface SectionProps {
   backgroundStyle?: string
-  svgFill?: string
   index?: number
   intersectionPosition?: 'top' | 'bottom'
   intersectComponent?: React.ReactNode

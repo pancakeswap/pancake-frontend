@@ -7,20 +7,7 @@ import { Currency, CurrencyAmount, Mint, Percent, Price } from 'peronio-sdk'
 import JSBI from 'jsbi'
 import { MARKUP_DECIMALS } from 'config/constants'
 import { useEffect, useMemo, useState } from 'react'
-import { useMigratorContract, usePeronioContract } from './useContract'
-
-// import useActiveWeb3React from 'hooks/useActiveWeb3React'
-
-// import { useUserSingleHopOnly } from 'state/user/hooks'
-// import { BETTER_TRADE_LESS_HOPS_THRESHOLD } from '../config/constants'
-// import { wrappedCurrency } from '../utils/wrappedCurrency'
-
-// import { useUnsupportedTokens } from './Tokens'
-
-/**
- * Returns the best trade for the exact amount of tokens in to the given token out
- */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { useMigratorContract } from './useContract'
 
 /**
  * Hook for Minting exact IN
@@ -32,31 +19,6 @@ export function useMigrateExactIn(currencyAmountIn?: CurrencyAmount, currencyOut
   // MIGRATOR //
 
   const migratorContract = useMigratorContract()
-  /* 
-    
-   0: {
-    "type": "BigNumber",
-    "hex": "0x02"
-    }
-
-  1: {
-    "type": "BigNumber",
-    "hex": "0x01e0"
-    }
-  
-  pe: {
-    "type": "BigNumber",
-    "hex": "0x01e0"
-    }
-
-  usdc: {
-    "type": "BigNumber",
-    "hex": "0x02"
-    }
-
-   */
-
-  // ----------------------------------------------------------------//
 
   const DECIMALS = mainnetTokens.pe.decimals
   const [quote, setQuote] = useState<Percent>()

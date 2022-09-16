@@ -3,8 +3,12 @@ import { simpleRpcProvider } from 'utils/providers'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 import tokens, { mainnetTokens } from 'config/constants/tokens'
+
 // eslint-disable-next-line
-import { default as PeronioABI } from 'peronio-core/deployments/matic/Peronio.json'
+import { default as PeronioABI } from 'config/abi/PeronioV1.json'
+
+// eslint-disable-next-line
+import { default as PeronioV1ABI } from 'config/abi/PeronioV1.json'
 
 // Addresses
 import {
@@ -73,7 +77,7 @@ import nftMarketAbi from 'config/abi/nftMarket.json'
 import nftSaleAbi from 'config/abi/nftSale.json'
 import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
-import migratorAbi from "config/abi/migrator.json";
+import migratorAbi from 'config/abi/migrator.json'
 
 // Types
 import {
@@ -227,6 +231,9 @@ export const getErc721CollectionContract = (signer?: ethers.Signer | ethers.prov
 }
 export const getPeronioContract = (signer?: ethers.Signer | ethers.providers.Provider, address?: string) => {
   return getContract(PeronioABI.abi, mainnetTokens.pe.address, signer)
+}
+export const getPeronioV1Contract = (signer?: ethers.Signer | ethers.providers.Provider, address?: string) => {
+  return getContract(PeronioV1ABI.abi, mainnetTokens.pe.address, signer)
 }
 export const getMigratorContract = (signer?: ethers.Signer | ethers.providers.Provider, address?: string) => {
   return getContract(migratorAbi, getMigratorV1ContractAdress(), signer)

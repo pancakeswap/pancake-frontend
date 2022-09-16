@@ -2,24 +2,14 @@ import { mainnetTokens } from 'config/constants/tokens'
 import { useTranslation } from 'contexts/Localization'
 import useENS from 'hooks/ENS/useENS'
 import { useMigrateExactIn, useMigrateExactOut } from 'hooks/Migrate'
-import { useMintExactIn, useMintExactOut } from 'hooks/Mints'
 import { useCurrency } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useMigratorContract } from 'hooks/useContract'
 import { Currency, CurrencyAmount, Mint } from 'peronio-sdk'
-import { WrappedTokenInfo } from 'state/lists/hooks'
 import { tryParseAmount, useSwapState } from 'state/swap/hooks'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { isAddress } from 'utils'
 import {
   Field,
-  // replaceSwapState,
-  // selectCurrency,
-  // setRecipient,
-  // switchCurrencies,
-  // typeInput,
-  // updateDerivedPairData,
-  // updatePairData,
 } from './actions'
 
 // TODO: Replace with functionality
@@ -34,15 +24,12 @@ export function useMigrateTokenInfo(): {
   const { t } = useTranslation()
 
   const {
-    independentField: olindependt,
     typedValue,
-    [Field.INPUT]: { currencyId: olinputCurrencyId },
-    [Field.OUTPUT]: { currencyId: oloutputCurrencyId },
     recipient,
   } = useSwapState()
   const independentField = Field.INPUT
-  const inputCurrencyId = mainnetTokens.pe.address
-  const outputCurrencyId = mainnetTokens.p.address
+  const inputCurrencyId = mainnetTokens.pV1.address
+  const outputCurrencyId = mainnetTokens.pe.address
   const intermediateCurrencyId = mainnetTokens.usdc.address
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
@@ -54,16 +41,13 @@ export function useMigrateTokenInfo(): {
     inputCurrency ?? undefined,
     outputCurrency ?? undefined,
   ])
-  // console.log('inputCurrency', inputCurrency)
-  // console.log('typedValue', typedValue)
 
-  const isExactIn: boolean = independentField === Field.INPUT
-  const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
-  // console.log('parsedAmmount', parsedAmount)
-  const mintOut = useMigrateExactOut(!isExactIn ? parsedAmount : null, outputCurrency)
-  const mintIn = useMigrateExactIn(isExactIn ? parsedAmount : null, outputCurrency)
+  // const isExactIn: boolean = independentField === Field.INPUT
+  const parsedAmount = tryParseAmount(undefined)
+  // const mintOut = useMigrateExactOut(!isExactIn ? parsedAmount : null, outputCurrency)
+  // const mintIn = useMigrateExactIn(isExactIn ? parsedAmount : null, outputCurrency)
 
-  const mint = isExactIn ? mintIn : mintOut
+  const mint = undefined
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
@@ -81,9 +65,9 @@ export function useMigrateTokenInfo(): {
     inputError = t('Connect Wallet')
   }
 
-  if (!parsedAmount) {
-    inputError = inputError ?? t('Enter an amount')
-  }
+  // if (!parsedAmount) {
+  //   inputError = inputError ?? t('Enter an amount')
+  // }
 
   const formattedTo = isAddress(to)
   if (!to || !formattedTo) {

@@ -10,7 +10,6 @@ import ExpandedFooter from './ExpandedFooter'
 interface FooterProps {
   pool: DeserializedPool
   account: string
-  totalCakeInVault?: BigNumber
   defaultExpanded?: boolean
 }
 

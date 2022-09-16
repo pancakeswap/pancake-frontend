@@ -15,6 +15,7 @@
   "rules": {
     "no-console": ["warn", { "allow": ["info", "warn", "error", "debug"] }],
     "no-plusplus": 0,
+    "react/jsx-no-bind": "off",
     "prefer-destructuring": ["warn", { "object": true, "array": false }],
     "no-underscore-dangle": 0,
     "import/prefer-default-export": 0,
