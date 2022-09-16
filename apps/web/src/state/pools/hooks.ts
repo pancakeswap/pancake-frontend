@@ -116,7 +116,12 @@ export const usePoolsPageFetch = (fetchFinishedPools: boolean) => {
   useFastRefreshEffect(() => {
     if (fetchFinishedPools) {
       if (account) {
-        dispatch(fetchPoolsUserDataAsync({ account, fetchFinishedPools }))
+        dispatch(
+          fetchPoolsUserDataAsync({
+            account,
+            fetchPoolOrPools: fetchFinishedPools ? 'finishedPools' : 'nonFinishedPools',
+          }),
+        )
       }
     } else {
       batch(() => {
@@ -124,7 +129,12 @@ export const usePoolsPageFetch = (fetchFinishedPools: boolean) => {
         dispatch(fetchCakeFlexibleSideVaultPublicData())
         dispatch(fetchIfoPublicDataAsync())
         if (account) {
-          dispatch(fetchPoolsUserDataAsync({ account, fetchFinishedPools }))
+          dispatch(
+            fetchPoolsUserDataAsync({
+              account,
+              fetchPoolOrPools: fetchFinishedPools ? 'finishedPools' : 'nonFinishedPools',
+            }),
+          )
           dispatch(fetchCakeVaultUserData({ account }))
           dispatch(fetchCakeFlexibleSideVaultUserData({ account }))
         }

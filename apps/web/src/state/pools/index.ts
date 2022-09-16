@@ -251,14 +251,14 @@ export const fetchPoolsStakingLimitsAsync = () => async (dispatch, getState) => 
 
 export const fetchPoolsUserDataAsync = createAsyncThunk<
   { sousId: number; allowance: any; stakingTokenBalance: any; stakedBalance: any; pendingReward: any }[],
-  { account: string; fetchFinishedPools: boolean }
->('pool/fetchPoolsUserData', async ({ account, fetchFinishedPools }, { rejectWithValue }) => {
+  { account: string; fetchPoolOrPools: 'finishedPools' | 'nonFinishedPools' | number }
+>('pool/fetchPoolsUserData', async ({ account, fetchPoolOrPools }, { rejectWithValue }) => {
   try {
     const [allowances, stakingTokenBalances, stakedBalances, pendingRewards] = await Promise.all([
-      fetchPoolsAllowance(account, fetchFinishedPools),
-      fetchUserBalances(account, fetchFinishedPools),
+      fetchPoolsAllowance(account, fetchPoolOrPools),
+      fetchUserBalances(account, fetchPoolOrPools),
       fetchUserStakeBalances(account),
-      fetchUserPendingRewards(account, fetchFinishedPools),
+      fetchUserPendingRewards(account, fetchPoolOrPools),
     ])
 
     const userData = poolsConfig.map((pool) => ({
@@ -278,7 +278,7 @@ export const updateUserAllowance = createAsyncThunk<
   { sousId: number; field: string; value: any },
   { sousId: number; account: string }
 >('pool/updateUserAllowance', async ({ sousId, account }) => {
-  const allowances = await fetchPoolsAllowance(account, null, sousId)
+  const allowances = await fetchPoolsAllowance(account, sousId)
   return { sousId, field: 'allowance', value: allowances[sousId] }
 })
 
@@ -286,7 +286,7 @@ export const updateUserBalance = createAsyncThunk<
   { sousId: number; field: string; value: any },
   { sousId: number; account: string }
 >('pool/updateUserBalance', async ({ sousId, account }) => {
-  const tokenBalances = await fetchUserBalances(account, null, sousId)
+  const tokenBalances = await fetchUserBalances(account, sousId)
   return { sousId, field: 'stakingTokenBalance', value: tokenBalances[sousId] }
 })
 
@@ -302,7 +302,7 @@ export const updateUserPendingReward = createAsyncThunk<
   { sousId: number; field: string; value: any },
   { sousId: number; account: string }
 >('pool/updateUserPendingReward', async ({ sousId, account }) => {
-  const pendingRewards = await fetchUserPendingRewards(account, null, sousId)
+  const pendingRewards = await fetchUserPendingRewards(account, sousId)
   return { sousId, field: 'pendingReward', value: pendingRewards[sousId] }
 })
 

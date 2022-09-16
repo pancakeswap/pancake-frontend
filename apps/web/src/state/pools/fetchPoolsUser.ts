@@ -15,14 +15,22 @@ const nonBnbPools = poolsConfig.filter((pool) => pool.stakingToken.symbol !== 'B
 const bnbPools = poolsConfig.filter((pool) => pool.stakingToken.symbol === 'BNB')
 const nonMasterPools = poolsConfig.filter((pool) => pool.sousId !== 0)
 
-export const fetchPoolsAllowance = async (account: string, fetchFinishedPools: boolean, sousId: number = null) => {
+export const fetchPoolsAllowance = async (
+  account: string,
+  fetchPoolOrPools: 'finishedPools' | 'nonFinishedPools' | number,
+) => {
   const calls = nonBnbPools
     .filter((p) => {
-      if (!isUndefinedOrNull(sousId)) {
-        return p.sousId === sousId
-      }
-      if (!isUndefinedOrNull(fetchFinishedPools)) {
-        return fetchFinishedPools ? p.isFinished : !p.isFinished
+      if (!isUndefinedOrNull(fetchPoolOrPools)) {
+        if (fetchPoolOrPools === 'finishedPools') {
+          return p.isFinished
+        }
+        if (fetchPoolOrPools === 'nonFinishedPools') {
+          return !p.isFinished
+        }
+        if (Number.isFinite(fetchPoolOrPools)) {
+          return p.sousId === fetchPoolOrPools
+        }
       }
       return true
     })
@@ -36,16 +44,24 @@ export const fetchPoolsAllowance = async (account: string, fetchFinishedPools: b
   return fromPairs(nonBnbPools.map((pool, index) => [pool.sousId, new BigNumber(allowances[index]).toJSON()]))
 }
 
-export const fetchUserBalances = async (account: string, fetchFinishedPools: boolean, sousId: number = null) => {
+export const fetchUserBalances = async (
+  account: string,
+  fetchPoolOrPools: 'finishedPools' | 'nonFinishedPools' | number,
+) => {
   // Non BNB pools
   const tokens = uniq(
     nonBnbPools
       .filter((p) => {
-        if (!isUndefinedOrNull(sousId)) {
-          return p.sousId === sousId
-        }
-        if (!isUndefinedOrNull(fetchFinishedPools)) {
-          return fetchFinishedPools ? p.isFinished : !p.isFinished
+        if (!isUndefinedOrNull(fetchPoolOrPools)) {
+          if (fetchPoolOrPools === 'finishedPools') {
+            return p.isFinished
+          }
+          if (fetchPoolOrPools === 'nonFinishedPools') {
+            return !p.isFinished
+          }
+          if (Number.isFinite(fetchPoolOrPools)) {
+            return p.sousId === fetchPoolOrPools
+          }
         }
         return true
       })
@@ -92,14 +108,22 @@ export const fetchUserStakeBalances = async (account: string, sousId: number = n
   )
 }
 
-export const fetchUserPendingRewards = async (account: string, fetchFinishedPools: boolean, sousId: number = null) => {
+export const fetchUserPendingRewards = async (
+  account: string,
+  fetchPoolOrPools: 'finishedPools' | 'nonFinishedPools' | number,
+) => {
   const calls = nonMasterPools
     .filter((p) => {
-      if (!isUndefinedOrNull(sousId)) {
-        return p.sousId === sousId
-      }
-      if (!isUndefinedOrNull(fetchFinishedPools)) {
-        return fetchFinishedPools ? p.isFinished : !p.isFinished
+      if (!isUndefinedOrNull(fetchPoolOrPools)) {
+        if (fetchPoolOrPools === 'finishedPools') {
+          return p.isFinished
+        }
+        if (fetchPoolOrPools === 'nonFinishedPools') {
+          return !p.isFinished
+        }
+        if (Number.isFinite(fetchPoolOrPools)) {
+          return p.sousId === fetchPoolOrPools
+        }
       }
       return true
     })
