@@ -1,6 +1,7 @@
 import poolsConfig from 'config/constants/pools'
 import sousChefABI from 'config/abi/sousChef.json'
 import erc20ABI from 'config/abi/erc20.json'
+import { SerializedPoolConfig } from 'config/constants/types'
 import multicall from 'utils/multicall'
 import { getAddress } from 'utils/addressHelpers'
 import { bscRpcProvider } from 'utils/providers'
@@ -15,25 +16,27 @@ const nonBnbPools = poolsConfig.filter((pool) => pool.stakingToken.symbol !== 'B
 const bnbPools = poolsConfig.filter((pool) => pool.stakingToken.symbol === 'BNB')
 const nonMasterPools = poolsConfig.filter((pool) => pool.sousId !== 0)
 
+const filterPools = (p: SerializedPoolConfig, fetchPoolOrPools: 'finishedPools' | 'nonFinishedPools' | number) => {
+  if (!isUndefinedOrNull(fetchPoolOrPools)) {
+    if (fetchPoolOrPools === 'finishedPools') {
+      return p.isFinished
+    }
+    if (fetchPoolOrPools === 'nonFinishedPools') {
+      return !p.isFinished
+    }
+    if (Number.isFinite(fetchPoolOrPools)) {
+      return p.sousId === fetchPoolOrPools
+    }
+  }
+  return true
+}
+
 export const fetchPoolsAllowance = async (
   account: string,
   fetchPoolOrPools: 'finishedPools' | 'nonFinishedPools' | number,
 ) => {
   const calls = nonBnbPools
-    .filter((p) => {
-      if (!isUndefinedOrNull(fetchPoolOrPools)) {
-        if (fetchPoolOrPools === 'finishedPools') {
-          return p.isFinished
-        }
-        if (fetchPoolOrPools === 'nonFinishedPools') {
-          return !p.isFinished
-        }
-        if (Number.isFinite(fetchPoolOrPools)) {
-          return p.sousId === fetchPoolOrPools
-        }
-      }
-      return true
-    })
+    .filter((p) => filterPools(p, fetchPoolOrPools))
     .map((pool) => ({
       address: pool.stakingToken.address,
       name: 'allowance',
@@ -50,42 +53,14 @@ export const fetchUserBalances = async (
 ) => {
   // Non BNB pools
   const tokens = uniq(
-    nonBnbPools
-      .filter((p) => {
-        if (!isUndefinedOrNull(fetchPoolOrPools)) {
-          if (fetchPoolOrPools === 'finishedPools') {
-            return p.isFinished
-          }
-          if (fetchPoolOrPools === 'nonFinishedPools') {
-            return !p.isFinished
-          }
-          if (Number.isFinite(fetchPoolOrPools)) {
-            return p.sousId === fetchPoolOrPools
-          }
-        }
-        return true
-      })
-      .map((pool) => pool.stakingToken.address),
+    nonBnbPools.filter((p) => filterPools(p, fetchPoolOrPools)).map((pool) => pool.stakingToken.address),
   )
   const calls = tokens.map((token) => ({
     address: token,
     name: 'balanceOf',
     params: [account],
   }))
-  const filteredBnbPools = bnbPools.filter((p) => {
-    if (!isUndefinedOrNull(fetchPoolOrPools)) {
-      if (fetchPoolOrPools === 'finishedPools') {
-        return p.isFinished
-      }
-      if (fetchPoolOrPools === 'nonFinishedPools') {
-        return !p.isFinished
-      }
-      if (Number.isFinite(fetchPoolOrPools)) {
-        return p.sousId === fetchPoolOrPools
-      }
-    }
-    return true
-  })
+  const filteredBnbPools = bnbPools.filter((p) => filterPools(p, fetchPoolOrPools))
   const [tokenBalancesRaw, bnbBalance] = await Promise.all([
     multicall(erc20ABI, calls),
     filteredBnbPools.length ? bscRpcProvider.getBalance(account) : Promise.resolve(null),
@@ -127,20 +102,7 @@ export const fetchUserPendingRewards = async (
   fetchPoolOrPools: 'finishedPools' | 'nonFinishedPools' | number,
 ) => {
   const calls = nonMasterPools
-    .filter((p) => {
-      if (!isUndefinedOrNull(fetchPoolOrPools)) {
-        if (fetchPoolOrPools === 'finishedPools') {
-          return p.isFinished
-        }
-        if (fetchPoolOrPools === 'nonFinishedPools') {
-          return !p.isFinished
-        }
-        if (Number.isFinite(fetchPoolOrPools)) {
-          return p.sousId === fetchPoolOrPools
-        }
-      }
-      return true
-    })
+    .filter((p) => filterPools(p, fetchPoolOrPools))
     .map((p) => ({
       address: getAddress(p.contractAddress),
       name: 'pendingReward',
