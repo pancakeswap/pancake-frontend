@@ -32,7 +32,9 @@ export const tokens = {
     '4px': '4px',
     '8px': '8px',
     '12px': '12px',
+    '14px': '14px',
     '16px': '16px',
+    '20px': '20px',
     '24px': '24px',
     '32px': '32px',
     '48px': '48px',
@@ -45,6 +47,7 @@ export const tokens = {
   },
   radii: {
     '0': '0px',
+    '8px': '8px',
     small: '4px',
     default: '16px',
     card: '24px',
@@ -59,7 +62,7 @@ export const tokens = {
     '40px': '40px',
   },
   shadows,
-}
+} as const
 
 export type Mode = 'light' | 'dark'
 export type Tokens = typeof tokens

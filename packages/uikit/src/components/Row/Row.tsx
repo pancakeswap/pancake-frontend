@@ -1,6 +1,6 @@
 import { AtomBox, AtomBoxProps } from "@pancakeswap/ui";
 
-const Row = ({
+export const Row = ({
   width = "100%",
   alignItems = "center",
   justifyContent = "flex-start",

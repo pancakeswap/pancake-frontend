@@ -1,15 +1,12 @@
-import { AptosClient } from 'aptos'
-import { IndexResponse } from 'aptos/dist/generated'
-import shallow from 'zustand/shallow'
+import { Types } from 'aptos'
 
-import { getClient } from './client'
 import { getProvider } from './provider'
 
 export type FetchLedgerArgs = {
   networkName?: string
 }
 
-export type FetchLedgerResult = IndexResponse
+export type FetchLedgerResult = Types.IndexResponse
 
 export async function fetchLedgerInfo({ networkName }: FetchLedgerArgs = {}): Promise<FetchLedgerResult> {
   const provider = getProvider({ networkName })

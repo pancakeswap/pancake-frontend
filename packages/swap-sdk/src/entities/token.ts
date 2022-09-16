@@ -76,3 +76,16 @@ export class Token extends BaseCurrency {
     }
   }
 }
+
+export class ERC20Token extends Token {
+  public constructor(
+    chainId: number,
+    address: string,
+    decimals: number,
+    symbol: string,
+    name?: string,
+    projectLink?: string
+  ) {
+    super(chainId, validateAndParseAddress(address), decimals, symbol, name, projectLink)
+  }
+}

@@ -1,8 +1,8 @@
 import { ChainId, Coin } from '.'
 
 describe('Coin', () => {
-  const ADDRESS_ONE = '0x0000000000000000000000000000000000000001'
-  const ADDRESS_TWO = '0x0000000000000000000000000000000000000002'
+  const ADDRESS_ONE = '0x1475ddbffb8e29a32223e1e25b8459d03a5ddd94e1cb7a50bb7051e11ba0cb2f::moon_coin::MoonCoin'
+  const ADDRESS_TWO = '0x1475ddbffb8e29a32223e1e25b8459d03a5ddd94e1cb7a50bb7051e11ba0cb2f::cake_coin::CakeCoin'
 
   describe('#equals', () => {
     it('fails if address differs', () => {

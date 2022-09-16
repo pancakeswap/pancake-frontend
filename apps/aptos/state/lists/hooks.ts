@@ -16,7 +16,7 @@ import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-un
 import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
 import { listsAtom } from './index'
 
-type TokenAddressMap = TTokenAddressMap<ChainId>
+export type TokenAddressMap = TTokenAddressMap<ChainId>
 
 const EMPTY_LIST: TokenAddressMap = {
   [ChainId.AIT3]: {},

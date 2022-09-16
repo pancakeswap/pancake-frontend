@@ -38,7 +38,8 @@ export * from "./Toggle";
 export * from "./CoinSwitcher";
 export * from "./CopyButton";
 export * from "./QuestionHelper";
-export * from "./AutoColumn";
+export * from "./Column";
 export * from "./Row";
+export * from "./Loader";
 
 export type { DropdownMenuItems } from "./DropdownMenu";

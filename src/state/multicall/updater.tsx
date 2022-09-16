@@ -1,12 +1,11 @@
+import { useDebounce } from '@pancakeswap/hooks'
+import { Multicall } from 'config/abi/types'
+import { ResultStructOutput } from 'config/abi/types/Multicall'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useEffect, useMemo, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useCurrentBlock } from 'state/block/hooks'
-import { ResultStructOutput } from 'config/abi/types/Multicall'
-import { Multicall } from 'config/abi/types'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMulticallContract } from '../../hooks/useContract'
-import useDebounce from '../../hooks/useDebounce'
-import { CancelledError, retry, RetryableError } from './retry'
 import { AppState, useAppDispatch } from '../index'
 import {
   Call,
@@ -16,6 +15,7 @@ import {
   updateMulticallResults,
 } from './actions'
 import chunkArray from './chunkArray'
+import { CancelledError, retry, RetryableError } from './retry'
 
 // chunk calls so we do not exceed the gas limit
 const CALL_CHUNK_SIZE = 500

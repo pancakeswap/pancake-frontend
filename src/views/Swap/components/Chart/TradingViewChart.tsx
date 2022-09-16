@@ -1,7 +1,7 @@
 import { Box, BunnyPlaceholderIcon, Flex, Text } from '@pancakeswap/uikit'
 import TradingView, { useTradingViewEvent } from 'components/TradingView'
 import { useTranslation } from '@pancakeswap/localization'
-import useDebounce from 'hooks/useDebounce'
+import { useDebounce } from '@pancakeswap/hooks'
 import { useCallback, useEffect, useMemo, useState, memo } from 'react'
 import styled from 'styled-components'
 import { BarChartLoader } from 'views/Info/components/ChartLoaders'

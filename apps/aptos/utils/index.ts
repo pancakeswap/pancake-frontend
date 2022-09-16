@@ -1,4 +1,7 @@
+import { Currency } from '@pancakeswap/sdk'
+import { HexString } from 'aptos'
 import { chains, defaultChain } from 'config/chains'
+import { TokenAddressMap } from 'state/lists/hooks'
 
 export function getBlockExploreLink(
   data: string | number,
@@ -21,3 +24,10 @@ export function getBlockExploreLink(
 
 export const isChainSupported = (network?: string): network is string =>
   !!network && chains.map((c) => c.network).includes(network.toLowerCase())
+
+export const isAddress = (addr: string) => (HexString.ensure(addr) ? addr : undefined)
+
+export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currency): boolean {
+  if (currency?.isNative) return true
+  return Boolean(currency?.isToken && defaultTokens[currency.chainId]?.[currency.address])
+}

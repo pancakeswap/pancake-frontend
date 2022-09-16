@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import useHttpLocations from '../../hooks/useHttpLocations'
+import { useHttpLocations } from '@pancakeswap/hooks'
 import Logo from './Logo'
 
 const StyledListLogo = styled(Logo)<{ size: string }>`

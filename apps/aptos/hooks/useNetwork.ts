@@ -59,5 +59,8 @@ export function useActiveNetwork() {
 export function useActiveChainId() {
   const { networkName } = useActiveNetwork()
 
-  return useMemo(() => chains.find((c) => equalsIgnoreCase(c.network, networkName))?.id, [networkName])
+  return useMemo(
+    () => chains.find((c) => equalsIgnoreCase(c.network, networkName))?.id ?? defaultChain.id,
+    [networkName],
+  )
 }

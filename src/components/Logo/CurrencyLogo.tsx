@@ -3,7 +3,7 @@ import { BinanceIcon } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { WrappedTokenInfo } from '@pancakeswap/tokens'
 import styled from 'styled-components'
-import useHttpLocations from '../../hooks/useHttpLocations'
+import { useHttpLocations } from '@pancakeswap/hooks'
 import getTokenLogoURL from '../../utils/getTokenLogoURL'
 import Logo from './Logo'
 

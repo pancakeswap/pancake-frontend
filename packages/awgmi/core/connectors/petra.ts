@@ -1,4 +1,4 @@
-import { EntryFunctionPayload } from 'aptos/dist/generated'
+import { Types } from 'aptos'
 import { Chain } from '../chain'
 import { ConnectorNotFoundError } from '../errors'
 import { Account, Connector } from './base'
@@ -104,13 +104,13 @@ export class PetraConnector extends Connector {
     }
   }
 
-  async signAndSubmitTransaction(tx: EntryFunctionPayload) {
+  async signAndSubmitTransaction(tx: Types.EntryFunctionPayload) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
     return provider.signAndSubmitTransaction(tx)
   }
 
-  async signTransaction(tx: EntryFunctionPayload) {
+  async signTransaction(tx: Types.EntryFunctionPayload) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
     return provider.signTransaction(tx)

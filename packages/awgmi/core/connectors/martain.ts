@@ -1,4 +1,4 @@
-import { EntryFunctionPayload, PendingTransaction } from 'aptos/dist/generated'
+import { Types } from 'aptos'
 import { Chain } from '../chain'
 import { Connector } from './base'
 import { ConnectorNotFoundError } from './errors'
@@ -82,7 +82,7 @@ export class MartianConnector extends Connector {
     }
   }
 
-  async signAndSubmitTransaction(payload: EntryFunctionPayload): Promise<PendingTransaction> {
+  async signAndSubmitTransaction(payload: Types.EntryFunctionPayload): Promise<Types.PendingTransaction> {
     const provider = await this.getProvider()
     const account = await this.account()
     if (!provider) throw new ConnectorNotFoundError()
@@ -90,7 +90,7 @@ export class MartianConnector extends Connector {
     return provider.signAndSubmitTransaction(generatedTx)
   }
 
-  async signTransaction(payload: EntryFunctionPayload) {
+  async signTransaction(payload: Types.EntryFunctionPayload) {
     const provider = await this.getProvider()
     const account = await this.account()
     if (!provider) throw new ConnectorNotFoundError()

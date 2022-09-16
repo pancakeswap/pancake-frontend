@@ -1,5 +1,4 @@
-import { AptosClient } from 'aptos'
-import { EntryFunctionPayload } from 'aptos/dist/generated'
+import { AptosClient, Types } from 'aptos'
 
 export type Account = {
   address: string
@@ -13,9 +12,9 @@ export interface Aptos {
 
   isConnected(): Promise<boolean>
   network(): Promise<string>
-  signAndSubmitTransaction(transaction: EntryFunctionPayload): ReturnType<AptosClient['submitTransaction']>
+  signAndSubmitTransaction(transaction: Types.EntryFunctionPayload): ReturnType<AptosClient['submitTransaction']>
   signMessage(message?: unknown): Promise<unknown>
-  signTransaction(transaction: EntryFunctionPayload): ReturnType<AptosClient['signTransaction']>
+  signTransaction(transaction: Types.EntryFunctionPayload): ReturnType<AptosClient['signTransaction']>
   on?: any
   onAccountChange?: (account?: unknown) => unknown
   onNetworkChange?: (network?: unknown) => unknown
