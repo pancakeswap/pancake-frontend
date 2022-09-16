@@ -10,7 +10,13 @@ import orderBy from 'lodash/orderBy'
 import omitBy from 'lodash/omitBy'
 import isEmpty from 'lodash/isEmpty'
 import { TransactionDetails } from './reducer'
-import { addTransaction, TransactionType, NonBscFarmTransactionType, FarmTransactionStatus } from './actions'
+import {
+  addTransaction,
+  TransactionType,
+  NonBscFarmTransactionType,
+  FarmTransactionStatus,
+  NonBscFarmStepType,
+} from './actions'
 import { AppState, useAppDispatch } from '../index'
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
@@ -175,6 +181,7 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 interface NonBscPendingData {
   txid: string
   lpAddress: string
+  type: NonBscFarmStepType
 }
 export function usePendingTransactions(): {
   hasPendingTransactions: boolean
@@ -194,7 +201,7 @@ export function usePendingTransactions(): {
 
   const nonBscFarmPendingList = sortedRecentTransactions
     .filter((tx) => pending.includes(tx.hash) && !!tx.nonBscFarm)
-    .map((tx) => ({ txid: tx.hash, lpAddress: tx.nonBscFarm.lpAddress }))
+    .map((tx) => ({ txid: tx.hash, lpAddress: tx.nonBscFarm.lpAddress, type: tx.nonBscFarm.type }))
 
   return {
     hasPendingTransactions,
@@ -203,9 +210,9 @@ export function usePendingTransactions(): {
   }
 }
 
-export function useNonBscFarmPendingTransaction(hash: string): NonBscPendingData[] {
+export function useNonBscFarmPendingTransaction(lpAddress: string): NonBscPendingData[] {
   const { nonBscFarmPendingList } = usePendingTransactions()
   return useMemo(() => {
-    return nonBscFarmPendingList.filter((tx) => tx.lpAddress.toLocaleLowerCase() === hash.toLocaleLowerCase())
-  }, [hash, nonBscFarmPendingList])
+    return nonBscFarmPendingList.filter((tx) => tx.lpAddress.toLocaleLowerCase() === lpAddress.toLocaleLowerCase())
+  }, [lpAddress, nonBscFarmPendingList])
 }

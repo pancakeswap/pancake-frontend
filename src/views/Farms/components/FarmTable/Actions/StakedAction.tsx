@@ -8,11 +8,11 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useERC20 } from 'hooks/useContract'
 import { useRouter } from 'next/router'
-import { useCallback, useContext } from 'react'
+import { useCallback, useContext, useMemo } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
-import { useTransactionAdder } from 'state/transactions/hooks'
+import { useTransactionAdder, useNonBscFarmPendingTransaction } from 'state/transactions/hooks'
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import { pickFarmTransactionTx } from 'state/global/actions'
 import styled from 'styled-components'
@@ -147,6 +147,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   isApproved,
 }) => {
   const dispatch = useAppDispatch()
+  const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
   const { boosterState } = useContext(YieldBoosterStateContext)
 
   const { t } = useTranslation()
@@ -166,6 +167,11 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     tokenAddress: token.address,
   })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
+
+  const isWithdrawFarmPending = useMemo(() => {
+    const isPendingFarm = pendingFarm.find((tx) => tx.type === NonBscFarmStepType.UNSTAKE)
+    return isPendingFarm !== undefined
+  }, [pendingFarm])
 
   const handleStake = async (amount: string) => {
     if (vaultPid) {
@@ -369,7 +375,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
               quoteTokenAmountTotal={quoteTokenAmountTotal}
             />
             <IconButtonWrapper>
-              <IconButton mr="6px" variant="secondary" onClick={onPresentWithdraw}>
+              <IconButton mr="6px" variant="secondary" disabled={isWithdrawFarmPending} onClick={onPresentWithdraw}>
                 <MinusIcon color="primary" width="14px" />
               </IconButton>
               <IconButton

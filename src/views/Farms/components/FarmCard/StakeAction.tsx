@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AddIcon, Button, Flex, IconButton, MinusIcon, useModal, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { useCallback, useContext } from 'react'
+import { useCallback, useContext, useMemo } from 'react'
 import styled from 'styled-components'
 
 import { TransactionResponse } from '@ethersproject/providers'
@@ -14,7 +14,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import { formatNumber } from 'utils/formatBalance'
 import { pickFarmTransactionTx } from 'state/global/actions'
 import { getCrossFarmingSenderContract } from 'utils/contractHelpers'
-import { useTransactionAdder } from 'state/transactions/hooks'
+import { useTransactionAdder, useNonBscFarmPendingTransaction } from 'state/transactions/hooks'
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import DepositModal from '../DepositModal'
 import StakedLP from '../StakedLP'
@@ -74,6 +74,12 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { boosterState } = useContext(YieldBoosterStateContext)
+  const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
+
+  const isWithdrawFarmPending = useMemo(() => {
+    const isPendingFarm = pendingFarm.find((tx) => tx.type === NonBscFarmStepType.UNSTAKE)
+    return isPendingFarm !== undefined
+  }, [pendingFarm])
 
   const handleStake = async (amount: string) => {
     if (vaultPid) {
@@ -247,7 +253,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       </Button>
     ) : (
       <IconButtonWrapper>
-        <IconButton mr="6px" variant="tertiary" onClick={onPresentWithdraw}>
+        <IconButton mr="6px" variant="tertiary" disabled={isWithdrawFarmPending} onClick={onPresentWithdraw}>
           <MinusIcon color="primary" width="14px" />
         </IconButton>
         <IconButton
