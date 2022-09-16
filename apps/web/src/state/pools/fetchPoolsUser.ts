@@ -17,11 +17,15 @@ const nonMasterPools = poolsConfig.filter((pool) => pool.sousId !== 0)
 
 export const fetchPoolsAllowance = async (account: string, fetchFinishedPools: boolean, sousId: number = null) => {
   const calls = nonBnbPools
-    .filter(
-      (p) =>
-        (!isUndefinedOrNull(fetchFinishedPools) ? (fetchFinishedPools ? p.isFinished : !p.isFinished) : true) &&
-        (!isUndefinedOrNull(sousId) ? p.sousId === sousId : true),
-    )
+    .filter((p) => {
+      if (!isUndefinedOrNull(sousId)) {
+        return p.sousId === sousId
+      }
+      if (!isUndefinedOrNull(fetchFinishedPools)) {
+        return fetchFinishedPools ? p.isFinished : !p.isFinished
+      }
+      return true
+    })
     .map((pool) => ({
       address: pool.stakingToken.address,
       name: 'allowance',
@@ -36,11 +40,15 @@ export const fetchUserBalances = async (account: string, fetchFinishedPools: boo
   // Non BNB pools
   const tokens = uniq(
     nonBnbPools
-      .filter(
-        (p) =>
-          (!isUndefinedOrNull(fetchFinishedPools) ? (fetchFinishedPools ? p.isFinished : !p.isFinished) : true) &&
-          (!isUndefinedOrNull(sousId) ? p.sousId === sousId : true),
-      )
+      .filter((p) => {
+        if (!isUndefinedOrNull(sousId)) {
+          return p.sousId === sousId
+        }
+        if (!isUndefinedOrNull(fetchFinishedPools)) {
+          return fetchFinishedPools ? p.isFinished : !p.isFinished
+        }
+        return true
+      })
       .map((pool) => pool.stakingToken.address),
   )
   const calls = tokens.map((token) => ({
@@ -86,11 +94,15 @@ export const fetchUserStakeBalances = async (account: string, sousId: number = n
 
 export const fetchUserPendingRewards = async (account: string, fetchFinishedPools: boolean, sousId: number = null) => {
   const calls = nonMasterPools
-    .filter(
-      (p) =>
-        (!isUndefinedOrNull(fetchFinishedPools) ? (fetchFinishedPools ? p.isFinished : !p.isFinished) : true) &&
-        (!isUndefinedOrNull(sousId) ? p.sousId === sousId : true),
-    )
+    .filter((p) => {
+      if (!isUndefinedOrNull(sousId)) {
+        return p.sousId === sousId
+      }
+      if (!isUndefinedOrNull(fetchFinishedPools)) {
+        return fetchFinishedPools ? p.isFinished : !p.isFinished
+      }
+      return true
+    })
     .map((p) => ({
       address: getAddress(p.contractAddress),
       name: 'pendingReward',
