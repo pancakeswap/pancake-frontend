@@ -148,15 +148,15 @@ export default {
     97: '',
   },
   nonBscVault: {
-    56: '0x9a36B282303DbCBaFca6AE8Df990f6330375BB96', // Only for pass contracts test
-    5: '0x9a36B282303DbCBaFca6AE8Df990f6330375BB96',
+    56: '0x0A6Ff113E5Ec2DAe3a7f1d14470cdE0eEa2b01A2', // Only for pass contracts test
+    5: '0x0A6Ff113E5Ec2DAe3a7f1d14470cdE0eEa2b01A2',
   },
   crossFarmingSender: {
-    56: '0xC1e139eE1A7B3D5c5B8B600F6a1D3e7A3Ef72062', // Only for pass contracts test
-    5: '0xC1e139eE1A7B3D5c5B8B600F6a1D3e7A3Ef72062',
+    56: '0x38A360a8988B7BC036114EeeCf2c704E8Ff3b096', // Only for pass contracts test
+    5: '0x38A360a8988B7BC036114EeeCf2c704E8Ff3b096',
   },
   crossFarmingReceiver: {
-    56: '0xE4603fc087477615B87a8b222A7588D8244663Ac', // Only for pass contracts test
-    97: '0xE4603fc087477615B87a8b222A7588D8244663Ac',
+    56: '0xaB5bb0c046C79F453F3C175D73F4760b2B5451D9', // Only for pass contracts test
+    97: '0xaB5bb0c046C79F453F3C175D73F4760b2B5451D9',
   },
 }

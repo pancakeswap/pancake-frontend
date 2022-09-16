@@ -270,17 +270,6 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "", "type": "address" },
-      { "internalType": "uint256", "name": "", "type": "uint256" },
-      { "internalType": "uint64", "name": "", "type": "uint64" }
-    ],
-    "name": "fallbackNonce",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
       { "internalType": "address", "name": "_user", "type": "address" },
       { "internalType": "uint256", "name": "_pid", "type": "uint256" },
       { "internalType": "uint256", "name": "_amount", "type": "uint256" },
@@ -289,6 +278,13 @@
     "name": "fallbackWithdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "messageBus",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -364,6 +360,17 @@
     "type": "function"
   },
   { "inputs": [], "name": "unpause", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "uint256", "name": "", "type": "uint256" },
+      { "internalType": "uint64", "name": "", "type": "uint64" }
+    ],
+    "name": "usedNonce",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
   {
     "inputs": [
       { "internalType": "uint256", "name": "", "type": "uint256" },
