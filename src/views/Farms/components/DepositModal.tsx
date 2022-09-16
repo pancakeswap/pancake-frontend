@@ -55,7 +55,6 @@ interface DepositModalProps {
 }
 
 const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
-  pid,
   max,
   stakedBalance,
   onConfirm,

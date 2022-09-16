@@ -81,7 +81,6 @@ const FullWidthButtonMenu = styled(ButtonMenu)<{ disabled?: boolean }>`
 `
 
 const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalProps>> = ({
-  pid,
   onDismiss,
   onBack,
   earningTokenPrice,
