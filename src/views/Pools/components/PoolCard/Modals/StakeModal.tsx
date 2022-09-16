@@ -249,7 +249,10 @@ const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
       )}
       <Text ml="auto" color="textSubtle" fontSize="12px" mb="8px">
         {t('Balance: %balance%', {
-          balance: getFullDisplayBalance(stakingTokenBalance, stakingToken.decimals),
+          balance: getFullDisplayBalance(
+            isRemovingStake ? userData.stakedBalance : stakingTokenBalance,
+            stakingToken.decimals,
+          ),
         })}
       </Text>
       <Slider
