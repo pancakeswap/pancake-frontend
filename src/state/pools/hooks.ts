@@ -20,6 +20,7 @@ import {
   fetchCakeFlexibleSideVaultPublicData,
   fetchCakeFlexibleSideVaultUserData,
   fetchCakeFlexibleSideVaultFees,
+  fetchCakePoolUserDataAsync,
 } from '.'
 import { DeserializedPool, VaultKey } from '../types'
 import { fetchFarmsPublicDataAsync } from '../farms'
@@ -138,7 +139,7 @@ export const useFetchIfo = () => {
       dispatch(fetchCakeVaultPublicData())
       dispatch(fetchIfoPublicDataAsync())
       if (account) {
-        dispatch(fetchPoolsUserDataAsync(account))
+        dispatch(fetchCakePoolUserDataAsync(account))
         dispatch(fetchCakeVaultUserData({ account }))
         dispatch(fetchUserIfoCreditDataAsync(account))
       }
