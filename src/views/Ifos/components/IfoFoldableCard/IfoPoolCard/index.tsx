@@ -29,6 +29,8 @@ interface IfoCardProps {
   enableStatus: EnableStatus
 }
 
+export const NO_QUALIFIED_NFT_ADDRESS = '0x0000000000000000000000000000000000000000'
+
 export const cardConfig = (
   t: ContextApi['t'],
   poolId: PoolIds,
@@ -102,7 +104,7 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
   const { needQualifiedNFT, needQualifiedPoints } = useMemo(() => {
     return ifo.version >= 3.1 && poolId === PoolIds.poolBasic
       ? {
-          needQualifiedNFT: Boolean(admissionProfile),
+          needQualifiedNFT: Boolean(admissionProfile) && admissionProfile !== NO_QUALIFIED_NFT_ADDRESS,
           needQualifiedPoints: pointThreshold ? pointThreshold > 0 : false,
         }
       : {}
