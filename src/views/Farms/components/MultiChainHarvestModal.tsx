@@ -65,7 +65,8 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
   const { onReward } = useNonBscHarvestFarm(pid, cProxyAddress)
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 
-  const displayBalance = getBalanceAmount(earningsBigNumber)
+  const earnings = getBalanceAmount(earningsBigNumber)
+  const displayBalance = earnings.toFixed(5, BigNumber.ROUND_DOWN)
 
   const isTestnet = farmFetcher.isTestnet(chainId)
   const network = isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC
@@ -136,7 +137,9 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
             </Text>
           </Box>
           <Box>
-            <Balance bold decimals={5} fontSize="20px" lineHeight="110%" value={displayBalance?.toNumber()} />
+            <Text fontSize="20px" lineHeight="110%" bold>
+              {displayBalance}
+            </Text>
             <Balance
               mb="16px"
               prefix="~"

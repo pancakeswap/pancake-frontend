@@ -4,14 +4,15 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallback, useContext, useMemo } from 'react'
 import styled from 'styled-components'
-
 import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import { useAppDispatch } from 'state'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { ChainId } from '@pancakeswap/sdk'
-import { formatNumber } from 'utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
+import { formatLpBalance } from 'utils/formatBalance'
 import { pickFarmTransactionTx } from 'state/global/actions'
 import { getCrossFarmingSenderContract } from 'utils/contractHelpers'
 import { useTransactionAdder, useNonBscFarmPendingTransaction } from 'state/transactions/hooks'
@@ -72,7 +73,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const router = useRouter()
   const lpPrice = useLpTokenPrice(lpSymbol)
   const { toastSuccess } = useToast()
-  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
+  const { fetchWithCatchTxError, fetchTxResponse, loading: pendingTx } = useCatchTxError()
   const { boosterState } = useContext(YieldBoosterStateContext)
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
 
@@ -99,11 +100,15 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   }
 
   const handleNonBscStake = async (amountValue: string) => {
-    try {
-      const crossFarmingAddress = getCrossFarmingSenderContract(null, chainId)
-      const [receipt, isFirstTime] = await Promise.all([onStake(amountValue), crossFarmingAddress.is1st(account)])
-      const amount = formatNumber(Number(amountValue), 5, 5)
+    const crossFarmingAddress = getCrossFarmingSenderContract(null, chainId)
+    const [receipt, isFirstTime] = await Promise.all([
+      fetchTxResponse(() => onStake(amountValue)),
+      crossFarmingAddress.is1st(account),
+    ])
+    const amountAsBigNumber = new BigNumber(amountValue).times(DEFAULT_TOKEN_DECIMAL)
+    const amount = formatLpBalance(new BigNumber(amountAsBigNumber))
 
+    if (receipt) {
       addTransaction(receipt, {
         type: 'non-bsc-farm',
         translatableSummary: {
@@ -136,8 +141,6 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
 
       dispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
       onDone()
-    } catch (error) {
-      console.error('Stake non Bsc Farm Error: ', error)
     }
   }
 
@@ -159,10 +162,11 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   }
 
   const handleNonBscUnStake = async (amountValue: string) => {
-    try {
-      const receipt = await onUnstake(amountValue)
-      const amount = formatNumber(Number(amountValue), 5, 5)
+    const receipt = await fetchTxResponse(() => onUnstake(amountValue))
+    const amountAsBigNumber = new BigNumber(amountValue).times(DEFAULT_TOKEN_DECIMAL)
+    const amount = formatLpBalance(new BigNumber(amountAsBigNumber))
 
+    if (receipt) {
       addTransaction(receipt, {
         type: 'non-bsc-farm',
         translatableSummary: {
@@ -200,8 +204,6 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
 
       dispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
       onDone()
-    } catch (error) {
-      console.error('Unstake non Bsc Farm Error: ', error)
     }
   }
 
