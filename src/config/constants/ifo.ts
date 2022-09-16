@@ -12,14 +12,14 @@ const ifos: Ifo[] = [
     isActive: true,
     name: 'HOOP',
     poolBasic: {
-      saleAmount: '15,165,500 HOOP',
-      raiseAmount: '$834,102.50',
+      saleAmount: '6,499,500 HOOP',
+      raiseAmount: '$357,472.50',
       cakeToBurn: '$0',
       distributionRatio: 0.3,
     },
     poolUnlimited: {
-      saleAmount: '6,499,500 HOOP',
-      raiseAmount: '$357,472.50',
+      saleAmount: '15,165,500 HOOP',
+      raiseAmount: '$834,102.50',
       cakeToBurn: '$0',
       distributionRatio: 0.7,
     },
