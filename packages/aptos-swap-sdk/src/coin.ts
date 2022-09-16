@@ -26,13 +26,22 @@ export class Coin {
    */
   public readonly address: string
 
-  public constructor(chainId: number, address: string, decimals: number, symbol: string, name?: string) {
+  public readonly projectLink?: string
+
+  public constructor(
+    chainId: number,
+    address: string,
+    decimals: number,
+    symbol: string,
+    name?: string,
+    projectLink?: string
+  ) {
     this.chainId = chainId
     this.decimals = decimals
     this.symbol = symbol
     this.name = name
     this.address = address
-    // this.address = validateAndParseAddress(address)
+    this.projectLink = projectLink
   }
 
   /**

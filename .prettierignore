@@ -2,3 +2,5 @@ node_modules
 build
 src/config/abi/types
 .next
+dist
+packages/farms/lists

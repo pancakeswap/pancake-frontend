@@ -1,7 +1,7 @@
 import { SetStateAction, useCallback, useEffect, useState, Dispatch, useMemo } from 'react'
 import styled from 'styled-components'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
-import { Button, Text, ArrowDownIcon, Box, IconButton, ArrowUpDownIcon, Skeleton } from '@pancakeswap/uikit'
+import { Button, Text, ArrowDownIcon, Box, Skeleton, Swap as SwapUI } from '@pancakeswap/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -12,7 +12,7 @@ import AccessRisk from 'views/Swap/components/AccessRisk'
 
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { CommonBasesType } from 'components/SearchModal/types'
-import { AutoRow, RowBetween } from 'components/Layout/Row'
+import { AutoRow } from 'components/Layout/Row'
 import { AutoColumn } from 'components/Layout/Column'
 
 import { useCurrency } from 'hooks/Tokens'
@@ -39,24 +39,6 @@ const Label = styled(Text)`
   font-size: 12px;
   font-weight: bold;
   color: ${({ theme }) => theme.colors.secondary};
-`
-
-const SwitchIconButton = styled(IconButton)`
-  box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
-  .icon-up-down {
-    display: none;
-  }
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.primary};
-    .icon-down {
-      display: none;
-      fill: white;
-    }
-    .icon-up-down {
-      display: block;
-      fill: white;
-    }
-  }
 `
 
 interface SwapForm {
@@ -233,23 +215,12 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAcce
 
             <AutoColumn justify="space-between">
               <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
-                <SwitchIconButton
-                  variant="light"
-                  scale="sm"
+                <SwapUI.SwitchButton
                   onClick={() => {
                     setApprovalSubmitted(false) // reset 2 step UI for approvals
                     onSwitchTokens()
                   }}
-                >
-                  <ArrowDownIcon
-                    className="icon-down"
-                    color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
-                  />
-                  <ArrowUpDownIcon
-                    className="icon-up-down"
-                    color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
-                  />
-                </SwitchIconButton>
+                />
                 {recipient === null && !showWrap && isExpertMode ? (
                   <Button variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
                     {t('+ Add a send (optional)')}
@@ -289,9 +260,9 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAcce
             ) : null}
 
             {showWrap ? null : (
-              <AutoColumn gap="7px" style={{ padding: '0 16px' }}>
-                <RowBetween align="center">
-                  {Boolean(trade) && (
+              <SwapUI.Info
+                price={
+                  Boolean(trade) && (
                     <>
                       <Label>{t('Price')}</Label>
                       {isLoading ? (
@@ -304,15 +275,10 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAcce
                         />
                       )}
                     </>
-                  )}
-                </RowBetween>
-                <RowBetween align="center">
-                  <Label>{t('Slippage Tolerance')}</Label>
-                  <Text bold color="primary">
-                    {allowedSlippage / 100}%
-                  </Text>
-                </RowBetween>
-              </AutoColumn>
+                  )
+                }
+                allowedSlippage={allowedSlippage}
+              />
             )}
           </AutoColumn>
           <Box mt="0.25rem">
