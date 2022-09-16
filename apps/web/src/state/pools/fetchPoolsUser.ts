@@ -35,16 +35,15 @@ export const fetchPoolsAllowance = async (
   account: string,
   fetchPoolOrPools: 'finishedPools' | 'nonFinishedPools' | number,
 ) => {
-  const calls = nonBnbPools
-    .filter((p) => filterPools(p, fetchPoolOrPools))
-    .map((pool) => ({
-      address: pool.stakingToken.address,
-      name: 'allowance',
-      params: [account, getAddress(pool.contractAddress)],
-    }))
+  const filteredPools = nonBnbPools.filter((p) => filterPools(p, fetchPoolOrPools))
+  const calls = filteredPools.map((pool) => ({
+    address: pool.stakingToken.address,
+    name: 'allowance',
+    params: [account, getAddress(pool.contractAddress)],
+  }))
 
   const allowances = await multicall(erc20ABI, calls)
-  return fromPairs(nonBnbPools.map((pool, index) => [pool.sousId, new BigNumber(allowances[index]).toJSON()]))
+  return fromPairs(filteredPools.map((pool, index) => [pool.sousId, new BigNumber(allowances[index]).toJSON()]))
 }
 
 export const fetchUserBalances = async (
@@ -52,9 +51,8 @@ export const fetchUserBalances = async (
   fetchPoolOrPools: 'finishedPools' | 'nonFinishedPools' | number,
 ) => {
   // Non BNB pools
-  const tokens = uniq(
-    nonBnbPools.filter((p) => filterPools(p, fetchPoolOrPools)).map((pool) => pool.stakingToken.address),
-  )
+  const filteredNonBnbPools = nonBnbPools.filter((p) => filterPools(p, fetchPoolOrPools))
+  const tokens = uniq(filteredNonBnbPools.map((pool) => pool.stakingToken.address))
   const calls = tokens.map((token) => ({
     address: token,
     name: 'balanceOf',
@@ -68,7 +66,7 @@ export const fetchUserBalances = async (
   const tokenBalances = fromPairs(tokens.map((token, index) => [token, tokenBalancesRaw[index]]))
 
   const poolTokenBalances = fromPairs(
-    nonBnbPools
+    filteredNonBnbPools
       .map((pool) => {
         if (!tokenBalances[pool.stakingToken.address]) return null
         return [pool.sousId, new BigNumber(tokenBalances[pool.stakingToken.address]).toJSON()]
@@ -84,16 +82,15 @@ export const fetchUserBalances = async (
 }
 
 export const fetchUserStakeBalances = async (account: string, sousId: number = null) => {
-  const calls = nonMasterPools
-    .filter((p) => (!isUndefinedOrNull(sousId) ? p.sousId === sousId : true))
-    .map((p) => ({
-      address: getAddress(p.contractAddress),
-      name: 'userInfo',
-      params: [account],
-    }))
+  const filteredPools = nonMasterPools.filter((p) => (!isUndefinedOrNull(sousId) ? p.sousId === sousId : true))
+  const calls = filteredPools.map((p) => ({
+    address: getAddress(p.contractAddress),
+    name: 'userInfo',
+    params: [account],
+  }))
   const userInfo = await multicall(sousChefABI, calls)
   return fromPairs(
-    nonMasterPools.map((pool, index) => [pool.sousId, new BigNumber(userInfo[index].amount._hex).toJSON()]),
+    filteredPools.map((pool, index) => [pool.sousId, new BigNumber(userInfo[index].amount._hex).toJSON()]),
   )
 }
 
@@ -101,13 +98,12 @@ export const fetchUserPendingRewards = async (
   account: string,
   fetchPoolOrPools: 'finishedPools' | 'nonFinishedPools' | number,
 ) => {
-  const calls = nonMasterPools
-    .filter((p) => filterPools(p, fetchPoolOrPools))
-    .map((p) => ({
-      address: getAddress(p.contractAddress),
-      name: 'pendingReward',
-      params: [account],
-    }))
+  const filteredPools = nonMasterPools.filter((p) => filterPools(p, fetchPoolOrPools))
+  const calls = filteredPools.map((p) => ({
+    address: getAddress(p.contractAddress),
+    name: 'pendingReward',
+    params: [account],
+  }))
   const res = await multicall(sousChefABI, calls)
-  return fromPairs(nonMasterPools.map((pool, index) => [pool.sousId, new BigNumber(res[index]).toJSON()]))
+  return fromPairs(filteredPools.map((pool, index) => [pool.sousId, new BigNumber(res[index]).toJSON()]))
 }
