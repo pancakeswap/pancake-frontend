@@ -7,7 +7,7 @@
     "patch": 0
   },
   "tags": {},
-  "logoURI": "https://raw.githubusercontent.com/peronio-ar/branding/main/logo/256.png",
+  "logoURI": "https://raw.githubusercontent.com/peronio-ar/branding/main/logo/v1/256.png",
   "keywords": ["peronio", "default"],
   "tokens": [
     {
@@ -19,12 +19,20 @@
       "logoURI": "https://app.apeswap.finance/static/media/matic-logo.6e808c42.png"
     },
     {
-      "name": "Peronio",
+      "name": "Peronio v1",
       "symbol": "PE",
       "address": "0xc2768beF7a6BB57F0FfA169a9ED4017c09696FF1",
       "chainId": 137,
       "decimals": 6,
-      "logoURI": "https://raw.githubusercontent.com/peronio-ar/branding/main/logo/256.png"
+      "logoURI": "https://raw.githubusercontent.com/peronio-ar/branding/main/logo/v1/256.png"
+    },
+    {
+      "name": "Peronio v2",
+      "symbol": "P",
+      "address": "0x01Ef17291DCf5037cc87cC8Db22C600dD524c521",
+      "chainId": 137,
+      "decimals": 6,
+      "logoURI": "https://raw.githubusercontent.com/peronio-ar/branding/main/logo/v2/256.png"
     },
     {
       "name": "USD Coin",
