@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-import { SerializedToken } from '@pancakeswap/sdk'
-import { SerializedWrappedToken, deserializeToken } from '@pancakeswap/tokens'
+import { SerializedToken } from '@pancakeswap/swap-sdk-core'
+import { SerializedWrappedToken, deserializeToken } from '@pancakeswap/token-lists'
 import { useActiveChainId } from 'hooks/useNetwork'
 import { atom, useAtom } from 'jotai'
 import { atomWithStorage, createJSONStorage } from 'jotai/utils'

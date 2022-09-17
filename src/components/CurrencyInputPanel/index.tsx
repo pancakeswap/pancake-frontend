@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Pair } from '@pancakeswap/sdk'
-import { WrappedTokenInfo } from '@pancakeswap/tokens'
+import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { Button, ChevronDownIcon, CopyButton, Swap, Flex, Text, useModal } from '@pancakeswap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { StablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'

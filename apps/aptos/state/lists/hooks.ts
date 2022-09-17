@@ -1,13 +1,12 @@
 // most of the code is duplicated, let's refactor it later
 
 import { ChainId } from '@pancakeswap/aptos-swap-sdk'
-import { TagInfo, TokenAddressMap as TTokenAddressMap, WrappedTokenInfo } from '@pancakeswap/tokens'
 import { TokenList } from '@uniswap/token-lists'
 import { DEFAULT_LIST_OF_LISTS, OFFICIAL_LISTS, WARNING_LIST_URLS } from 'config/constants/lists'
 import { atom, useAtomValue } from 'jotai'
 import fromPairs from 'lodash/fromPairs'
 import groupBy from 'lodash/groupBy'
-import { ListsState } from '@pancakeswap/token-lists'
+import { ListsState, TagInfo, TokenAddressMap as TTokenAddressMap, WrappedTokenInfo } from '@pancakeswap/token-lists'
 import uniqBy from 'lodash/uniqBy'
 import { useMemo } from 'react'
 import { UNSUPPORTED_LIST_URLS } from '../../config/constants/lists'

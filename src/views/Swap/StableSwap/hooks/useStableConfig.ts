@@ -8,7 +8,7 @@ import { createContext, useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useSWRImmutable from 'swr/immutable'
 import { getStableConfig } from '@pancakeswap/farms/constants'
-import { deserializeToken } from '@pancakeswap/tokens'
+import { deserializeToken } from '@pancakeswap/token-lists'
 
 export function useStableFarms() {
   const { chainId } = useActiveWeb3React()

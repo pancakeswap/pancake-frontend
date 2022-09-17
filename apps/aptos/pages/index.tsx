@@ -8,6 +8,8 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useState } from 'react'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useTradeExactIn } from 'hooks/Trades'
+import { JSBI, Percent } from '@pancakeswap/swap-sdk-core'
+import { BIPS_BASE } from 'config/constants/exchange'
 import { CommitButton } from '../components/CommitButton'
 
 const {
@@ -30,12 +32,14 @@ const SwapPage = () => {
 
   const inputAmount = tryParseAmount(value, input)
   const outputAmount = tryParseAmount(value1, output)
+  const tradeIn = useTradeExactIn(inputAmount, output)
 
   const { sendTransactionAsync } = useSendTransaction({
-    payload: inputAmount && output && AptosSwapRouter.swapCallParameters(inputAmount.currency, output, inputAmount),
+    // TODO: trade in or trade out
+    payload: tradeIn
+      ? AptosSwapRouter.swapCallParameters(tradeIn, { allowedSlippage: new Percent(JSBI.BigInt(50), BIPS_BASE) })
+      : undefined,
   })
-
-  const tradeIn = useTradeExactIn(inputAmount, output)
 
   return (
     <Page helpUrl="https://docs.pancakeswap.finance/products/pancakeswap-exchange" isEvm={false}>

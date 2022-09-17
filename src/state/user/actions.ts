@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
-import { SerializedWrappedToken } from '@pancakeswap/tokens'
+import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 
 export interface SerializedPair {
   token0: SerializedWrappedToken

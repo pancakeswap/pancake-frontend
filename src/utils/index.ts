@@ -7,7 +7,7 @@ import type { Provider } from '@ethersproject/providers'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { bsc } from '@pancakeswap/wagmi/chains'
 import memoize from 'lodash/memoize'
-import { TokenAddressMap } from '@pancakeswap/tokens'
+import { TokenAddressMap } from '@pancakeswap/token-lists'
 import { chains } from './wagmi'
 
 // returns the checksummed address if the address is valid, otherwise returns false
@@ -75,7 +75,7 @@ export function escapeRegExp(string: string): string {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
 }
 
-export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currency): boolean {
+export function isTokenOnList(defaultTokens: TokenAddressMap<ChainId>, currency?: Currency): boolean {
   if (currency?.isNative) return true
   return Boolean(currency?.isToken && defaultTokens[currency.chainId]?.[currency.address])
 }

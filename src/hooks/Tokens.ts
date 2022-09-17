@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { arrayify } from '@ethersproject/bytes'
 import { parseBytes32String } from '@ethersproject/strings'
-import { Currency, ERC20Token } from '@pancakeswap/sdk'
-import { TokenAddressMap } from '@pancakeswap/tokens'
+import { Currency, ERC20Token, ChainId } from '@pancakeswap/sdk'
+import { TokenAddressMap } from '@pancakeswap/token-lists'
 import { GELATO_NATIVE } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAtomValue } from 'jotai'
@@ -19,7 +19,7 @@ import { isAddress } from '../utils'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
 import useNativeCurrency from './useNativeCurrency'
 
-const mapWithoutUrls = (tokenMap: TokenAddressMap, chainId: number) =>
+const mapWithoutUrls = (tokenMap: TokenAddressMap<ChainId>, chainId: number) =>
   Object.keys(tokenMap[chainId] || {}).reduce<{ [address: string]: ERC20Token }>((newMap, address) => {
     newMap[address] = tokenMap[chainId][address].token
     return newMap
