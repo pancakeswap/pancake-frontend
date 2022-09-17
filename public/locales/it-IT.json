@@ -1949,7 +1949,7 @@
   "Failed to claim": "Impossibile richiedere",
   "Cake locked": "Cake bloccato",
   "Boost Multiplier": "Moltiplicatore del potenziamento",
-  "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.",
-  "locked for": "locked for",
-  "My Duration": "My Duration"
+  "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "Il moltiplicatore di potenziamento stimato viene calcolato utilizzando dati in tempo reale. Il moltiplicatore di potenziamento effettivo può cambiare al momento dell'attivazione.",
+  "locked for": "bloccato per",
+  "My Duration": "La mia durata"
 }
