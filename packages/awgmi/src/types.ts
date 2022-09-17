@@ -16,8 +16,8 @@ export type MutationConfig<Data, Error, Variables = void> = {
 
 export type QueryFunctionArgs<T extends (...args: any) => any> = QueryFunctionContext<ReturnType<T>>
 
-export type QueryConfig<Data, Error> = Pick<
-  UseQueryOptions<Data, Error>,
+export type QueryConfig<Data, Error, TData = Data> = Pick<
+  UseQueryOptions<Data, Error, TData>,
   | 'cacheTime'
   | 'enabled'
   | 'isDataEqual'

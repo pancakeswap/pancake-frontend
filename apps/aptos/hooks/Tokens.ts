@@ -1,8 +1,9 @@
 /* eslint-disable no-param-reassign */
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount } from '@pancakeswap/awgmi'
+import { useAccount, useAccountResources } from '@pancakeswap/awgmi'
 import { fetchCoin } from '@pancakeswap/awgmi/core'
-import { Currency, Token } from '@pancakeswap/sdk'
+import fromPairs from 'lodash/fromPairs'
+import { Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { combinedTokenMapFromActiveUrlsAtom, TokenAddressMap } from 'state/lists/hooks'
@@ -70,10 +71,30 @@ export function useIsTokenActive(token: Token | undefined | null): boolean {
   return !!activeTokens[token.address]
 }
 
+const coinStoreTypeHead = '0x1::coin::CoinStore<'
+
 export function useAllTokenBalances() {
-  const address = useAccount()?.account?.address
   const allTokens = useAllTokens()
-  const allTokensArray = useMemo(() => Object.values(allTokens ?? {}), [allTokens])
-  console.log(allTokens)
-  return {}
+  const accountResources = useAccountResources({
+    address: useAccount()?.account?.address,
+    watch: true,
+    select: (data) => {
+      const coinStore = data
+        .filter((d) => d.type.includes(coinStoreTypeHead))
+        .map((coin) => {
+          const address = coin.type.split(coinStoreTypeHead)[1].split('>')[0]
+
+          if (allTokens[address]) {
+            return [address, CurrencyAmount.fromRawAmount(allTokens[address], (coin.data as any).coin.value)]
+          }
+          return null
+        })
+        .filter(Boolean) as [string, CurrencyAmount<Coin>][]
+
+      const pairs = fromPairs(coinStore)
+      return pairs
+    },
+  })
+
+  return accountResources.data
 }

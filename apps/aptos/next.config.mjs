@@ -8,14 +8,12 @@ const withVanillaExtract = createVanillaExtractPlugin()
 const withTH = transpileModules([
   '@pancakeswap/ui',
   '@pancakeswap/uikit',
-  '@pancakeswap/sdk',
-  '@pancakeswap/aptos-swap-sdk',
   '@pancakeswap/localization',
   '@pancakeswap/hooks',
   '@pancakeswap/awgmi',
   '@pancakeswap/utils',
   '@pancakeswap/token-lists',
-  '@pancakeswap/tokens'
+  '@pancakeswap/tokens',
 ])
 
 /** @type {import('next').NextConfig} */
@@ -32,4 +30,4 @@ const nextConfig = {
   },
 }
 
-export default withTH(withAxiom(withVanillaExtract(nextConfig)))
+export default withVanillaExtract(withTH(withAxiom(nextConfig)))

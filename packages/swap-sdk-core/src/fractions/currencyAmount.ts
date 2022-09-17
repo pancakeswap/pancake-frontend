@@ -1,17 +1,18 @@
 import invariant from 'tiny-invariant'
 import JSBI from 'jsbi'
+import _Big from 'big.js'
+import toFormat from 'toformat'
 import { Currency } from '../currency'
 import { Token } from '../token'
 import { Fraction } from './fraction'
-import _Big from 'big.js'
 
-import toFormat from 'toformat'
-import { BigintIsh, Rounding, MaxUint256 } from '../../constants'
+import { BigintIsh, Rounding, MaxUint256 } from '../constants'
 
 const Big = toFormat(_Big)
 
 export class CurrencyAmount<T extends Currency> extends Fraction {
   public readonly currency: T
+
   public readonly decimalScale: JSBI
 
   /**
@@ -66,11 +67,7 @@ export class CurrencyAmount<T extends Currency> extends Fraction {
     return CurrencyAmount.fromFractionalAmount(this.currency, divided.numerator, divided.denominator)
   }
 
-  public toSignificant(
-    significantDigits: number = 6,
-    format?: object,
-    rounding: Rounding = Rounding.ROUND_DOWN
-  ): string {
+  public toSignificant(significantDigits = 6, format?: object, rounding: Rounding = Rounding.ROUND_DOWN): string {
     return super.divide(this.decimalScale).toSignificant(significantDigits, format, rounding)
   }
 

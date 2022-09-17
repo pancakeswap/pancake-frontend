@@ -1,14 +1,16 @@
 import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 
-import { BigintIsh, Rounding } from '../../constants'
+import { BigintIsh, Rounding } from '../constants'
 import { Currency } from '../currency'
 import { Fraction } from './fraction'
 import { CurrencyAmount } from './currencyAmount'
 
 export class Price<TBase extends Currency, TQuote extends Currency> extends Fraction {
   public readonly baseCurrency: TBase // input i.e. denominator
+
   public readonly quoteCurrency: TQuote // output i.e. numerator
+
   public readonly scalar: Fraction // used to adjust the raw fraction w/r/t the decimals of the {base,quote}Token
 
   /**
@@ -20,9 +22,13 @@ export class Price<TBase extends Currency, TQuote extends Currency> extends Frac
       | [TBase, TQuote, BigintIsh, BigintIsh]
       | [{ baseAmount: CurrencyAmount<TBase>; quoteAmount: CurrencyAmount<TQuote> }]
   ) {
-    let baseCurrency: TBase, quoteCurrency: TQuote, denominator: BigintIsh, numerator: BigintIsh
+    let baseCurrency: TBase
+    let quoteCurrency: TQuote
+    let denominator: BigintIsh
+    let numerator: BigintIsh
 
     if (args.length === 4) {
+      // eslint-disable-next-line @typescript-eslint/no-extra-semi
       ;[baseCurrency, quoteCurrency, denominator, numerator] = args
     } else {
       const result = args[0].quoteAmount.divide(args[0].baseAmount)
@@ -78,11 +84,11 @@ export class Price<TBase extends Currency, TQuote extends Currency> extends Frac
     return super.multiply(this.scalar)
   }
 
-  public toSignificant(significantDigits: number = 6, format?: object, rounding?: Rounding): string {
+  public toSignificant(significantDigits = 6, format?: object, rounding?: Rounding): string {
     return this.adjustedForDecimals.toSignificant(significantDigits, format, rounding)
   }
 
-  public toFixed(decimalPlaces: number = 4, format?: object, rounding?: Rounding): string {
+  public toFixed(decimalPlaces = 4, format?: object, rounding?: Rounding): string {
     return this.adjustedForDecimals.toFixed(decimalPlaces, format, rounding)
   }
 }

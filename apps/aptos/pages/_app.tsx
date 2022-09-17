@@ -1,3 +1,4 @@
+import '@pancakeswap/ui/css/reset.css'
 import { PancakeTheme, ResetCSS } from '@pancakeswap/uikit'
 import { Menu } from 'components/Menu'
 import Providers from 'components/Providers'

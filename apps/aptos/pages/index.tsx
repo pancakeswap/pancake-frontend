@@ -1,6 +1,13 @@
+import { Coin, AptosSwapRouter } from '@pancakeswap/aptos-swap-sdk'
+import { useSendTransaction } from '@pancakeswap/awgmi'
+import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
 import { Card, Swap as SwapUI, AutoColumn, RowBetween } from '@pancakeswap/uikit'
+import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useState } from 'react'
+import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { useTradeExactIn } from 'hooks/Trades'
 import { CommitButton } from '../components/CommitButton'
 
 const {
@@ -8,15 +15,27 @@ const {
   CurrencyInputHeader,
   CurrencyInputHeaderTitle,
   CurrencyInputHeaderSubTitle,
-  CurrencyInputPanel,
   SwitchButton,
   Info,
   InfoLabel,
 } = SwapUI
 
 const SwapPage = () => {
+  const native = useNativeCurrency()
+  const [input, setInput] = useState<Coin | undefined>(native)
+  const [output, setOutput] = useState<Coin>()
   const [value, setValue] = useState('')
   const [value1, setValue1] = useState('')
+  const { t } = useTranslation()
+
+  const inputAmount = tryParseAmount(value, input)
+  const outputAmount = tryParseAmount(value1, output)
+
+  const { sendTransactionAsync } = useSendTransaction({
+    payload: inputAmount && output && AptosSwapRouter.swapCallParameters(inputAmount.currency, output, inputAmount),
+  })
+
+  const tradeIn = useTradeExactIn(inputAmount, output)
 
   return (
     <Page helpUrl="https://docs.pancakeswap.finance/products/pancakeswap-exchange" isEvm={false}>
@@ -25,21 +44,47 @@ const SwapPage = () => {
           title={
             <RowBetween>
               <div />
-              <CurrencyInputHeaderTitle>Swap</CurrencyInputHeaderTitle>
+              <CurrencyInputHeaderTitle>{t('Swap')}</CurrencyInputHeaderTitle>
               <div />
             </RowBetween>
           }
-          subtitle={<CurrencyInputHeaderSubTitle>Trade tokens in an instant</CurrencyInputHeaderSubTitle>}
+          subtitle={<CurrencyInputHeaderSubTitle>{t('Trade tokens in an instant')}</CurrencyInputHeaderSubTitle>}
         />
         <AutoColumn gap="sm" p="16px">
-          <CurrencyInputPanel id="a" value={value} onUserInput={setValue} />
+          <CurrencyInputPanel
+            onCurrencySelect={(c) => setInput(c.wrapped)}
+            id="swap-currency-input"
+            currency={input}
+            value={value}
+            onUserInput={setValue}
+            showMaxButton={false}
+          />
           <AtomBox width="full" textAlign="center">
-            <SwitchButton />
+            <SwitchButton
+              onClick={() => {
+                setInput(output)
+                setOutput(input)
+              }}
+            />
           </AtomBox>
-          <CurrencyInputPanel id="b" value={value1} onUserInput={setValue1} />
+          <CurrencyInputPanel
+            showMaxButton={false}
+            onCurrencySelect={(c) => setOutput(c.wrapped)}
+            id="swap-currency-output"
+            value={value1}
+            currency={output}
+            onUserInput={setValue1}
+          />
           <Info price={<InfoLabel>Price</InfoLabel>} allowedSlippage={0} />
           <AtomBox>
-            <CommitButton width="100%">Swap</CommitButton>
+            <CommitButton
+              width="100%"
+              onClick={() => {
+                sendTransactionAsync?.().then((r) => r.wait())
+              }}
+            >
+              {t('Swap')}
+            </CommitButton>
           </AtomBox>
         </AutoColumn>
       </Card>

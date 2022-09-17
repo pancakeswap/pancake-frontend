@@ -13,7 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useAuth } from 'hooks/useAuth'
 
-import { APT } from 'config/coins'
+import { APT_INFO } from 'config/coins'
 import { useActiveNetwork } from 'hooks/useNetwork'
 import { getBlockExploreLink } from 'utils'
 
@@ -46,12 +46,12 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
           <Box>
             <Text fontWeight="bold">
               {t('%currency% Balance Low', {
-                currency: APT.symbol,
+                currency: APT_INFO.symbol,
               })}
             </Text>
             <Text as="p">
               {t('You need %currency% for transaction fees.', {
-                currency: APT.symbol,
+                currency: APT_INFO.symbol,
               })}
             </Text>
           </Box>
@@ -60,7 +60,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
       <Flex alignItems="center" justifyContent="space-between">
         <Flex>
           <Text color="textSubtle">
-            {APT.symbol} {t('Balance')}
+            {APT_INFO.symbol} {t('Balance')}
           </Text>
         </Flex>
         {!isFetched ? <Skeleton height="22px" width="60px" /> : <Text>{data?.formatted}</Text>}

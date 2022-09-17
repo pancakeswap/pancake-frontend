@@ -10,7 +10,7 @@ export type UseBalanceArgs = Partial<FetchBalanceArgs> & {
   watch?: boolean
 }
 
-export type UseBalanceConfig = QueryConfig<FetchBalanceResult, Error>
+export type UseBalanceConfig<TData> = QueryConfig<FetchBalanceResult, Error, TData>
 
 export const queryKey = ({
   address,
@@ -25,7 +25,7 @@ const queryFn = ({ queryKey: [{ address, networkName, coin }] }: QueryFunctionAr
   return fetchBalance({ address, networkName, coin })
 }
 
-export function useBalance({
+export function useBalance<TData = FetchBalanceResult>({
   address,
   cacheTime,
   networkName,
@@ -37,7 +37,8 @@ export function useBalance({
   onError,
   onSettled,
   onSuccess,
-}: UseBalanceArgs & UseBalanceConfig = {}) {
+  select,
+}: UseBalanceArgs & UseBalanceConfig<TData> = {}) {
   const { data } = useLedger({ watch: true, networkName })
   const { ledger_version: version } = data || {}
   const balanceQuery = useQuery(queryKey({ address, networkName, coin }), queryFn, {
@@ -48,6 +49,7 @@ export function useBalance({
     onError,
     onSettled,
     onSuccess,
+    select,
   })
 
   React.useEffect(() => {

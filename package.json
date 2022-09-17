@@ -10,6 +10,7 @@
   "scripts": {
     "analyze": "ANALYZE=true yarn build",
     "dev": "next dev",
+    "dev:aptos": "yarn turbo run dev --filter=aptos-web...",
     "build": "next build",
     "start": "next start",
     "test": "jest && yarn turbo run test",
@@ -59,7 +60,7 @@
     "@reduxjs/toolkit": "^1.8.2",
     "@sentry/nextjs": "^7.9.0",
     "@uniswap/token-lists": "^1.0.0-beta.19",
-    "@vanilla-extract/next-plugin": "2.0.1",
+    "@vanilla-extract/next-plugin": "^2.0.2",
     "ajv": "^6.12.3",
     "bignumber.js": "^9.0.0",
     "canvas-confetti": "^1.5.1",
@@ -141,7 +142,7 @@
     "stylelint-config-styled-components": "^0.1.1",
     "ts-node": "^10.9.1",
     "tsconfig": "*",
-    "turbo": "^1.4.5",
+    "turbo": "^1.4.7",
     "typechain": "^6.1.0",
     "vitest": "^0.23.1"
   }

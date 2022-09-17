@@ -1,4 +1,4 @@
-import { useAccount } from '@pancakeswap/awgmi'
+import { useAccount, useBalance } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { CircleLoader, Column, QuestionHelper, RowBetween, RowFixed, Text } from '@pancakeswap/uikit'
@@ -14,7 +14,7 @@ import { CurrencyLogo } from '../Logo'
 import ImportRow from './ImportRow'
 
 function currencyKey(currency: Currency): string {
-  return currency?.isToken ? currency.address : currency?.isNative ? currency.symbol : ''
+  return currency.isToken ? currency.address : currency.symbol
 }
 
 const StyledBalanceText = styled(Text)`
@@ -32,8 +32,10 @@ const FixedContentRow = styled.div`
   align-items: center;
 `
 
-function Balance({ balance }: { balance: CurrencyAmount<Currency> }) {
-  return <StyledBalanceText title={balance.toExact()}>{balance.toSignificant(4)}</StyledBalanceText>
+function Balance({ balance }: { balance?: CurrencyAmount<Currency> }) {
+  return (
+    <StyledBalanceText title={balance ? balance.toExact() : '0'}>{balance?.toSignificant(4) ?? 0}</StyledBalanceText>
+  )
 }
 
 const MenuItem = styled(RowBetween)<{ disabled: boolean; selected: boolean }>`
@@ -69,9 +71,14 @@ function CurrencyRow({
   const selectedTokenList = useCombinedActiveList()
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
-  // TODO:
-  // const balance = useCurrencyBalance(account ?? undefined, currency)
-  const balance = null
+  const { data: balance, isFetched } = useBalance({
+    address: account,
+    coin: key,
+    watch: true,
+    select: (d) => {
+      return CurrencyAmount.fromRawAmount(currency, d.value)
+    },
+  })
 
   // only show add or remove buttons if not on selected list
   return (
@@ -90,7 +97,7 @@ function CurrencyRow({
         </Text>
       </Column>
       <RowFixed style={{ justifySelf: 'flex-end' }}>
-        {balance ? <Balance balance={balance} /> : account ? <CircleLoader /> : null}
+        {isFetched ? <Balance balance={balance} /> : account ? <CircleLoader /> : null}
       </RowFixed>
     </MenuItem>
   )

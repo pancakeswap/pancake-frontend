@@ -1,4 +1,15 @@
-import { ChainId, Currency, CurrencyAmount, JSBI, Pair, Price, Token, WNATIVE, WBNB } from '@pancakeswap/sdk'
+import {
+  ChainId,
+  Currency,
+  CurrencyAmount,
+  JSBI,
+  Pair,
+  Price,
+  Token,
+  WNATIVE,
+  WBNB,
+  ERC20Token,
+} from '@pancakeswap/sdk'
 import { FAST_INTERVAL } from 'config/constants'
 import { BUSD, CAKE, USDC } from '@pancakeswap/tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -152,7 +163,9 @@ export const useBUSDCakeAmount = (amount: number): number | undefined => {
 }
 
 // @Note: only fetch from one pair
-export const useCakeBusdPrice = ({ forceMainnet } = { forceMainnet: false }): Price<Currency, Currency> | undefined => {
+export const useCakeBusdPrice = (
+  { forceMainnet } = { forceMainnet: false },
+): Price<ERC20Token, ERC20Token> | undefined => {
   const { chainId } = useActiveWeb3React()
   const isTestnet = !forceMainnet && isChainTestnet(chainId)
   // Return bsc testnet cake if chain is testnet
@@ -161,7 +174,9 @@ export const useCakeBusdPrice = ({ forceMainnet } = { forceMainnet: false }): Pr
 }
 
 // @Note: only fetch from one pair
-export const useBNBBusdPrice = ({ forceMainnet } = { forceMainnet: false }): Price<Currency, Currency> | undefined => {
+export const useBNBBusdPrice = (
+  { forceMainnet } = { forceMainnet: false },
+): Price<ERC20Token, ERC20Token> | undefined => {
   const { chainId } = useActiveWeb3React()
   const isTestnet = !forceMainnet && isChainTestnet(chainId)
   // Return bsc testnet wbnb if chain is testnet

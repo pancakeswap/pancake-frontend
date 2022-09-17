@@ -21,19 +21,16 @@
   "scripts": {
     "lint": "eslint src test",
     "build": "tsup src/index.ts --format esm,cjs --dts",
-    "start": "tsup src/index.tsx --format esm,cjs --watch --dts",
+    "dev": "tsup src/index.ts --format esm,cjs --watch --dts",
     "test": "jest",
     "prepublishOnly": "yarn run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "@pancakeswap/sdk": "*",
-    "big.js": "^5.2.2",
-    "decimal.js-light": "^2.5.0",
-    "jsbi": "^3.1.4",
-    "tiny-invariant": "^1.1.0",
-    "tiny-warning": "^1.0.3",
-    "toformat": "^2.0.0"
+    "@pancakeswap/swap-sdk-core": "*"
+  },
+  "peerDependencies": {
+    "aptos": "^1.3.13"
   },
   "devDependencies": {
     "@swc/core": "^1.2.215",

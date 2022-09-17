@@ -8,7 +8,7 @@ type UseAccountResourcesArgs = Partial<FetchAccountResourcesArgs> & {
   watch?: boolean
 }
 
-export type UseAccountResourcesConfig = QueryConfig<FetchAccountResourcesResult, Error>
+export type UseAccountResourcesConfig<TData> = QueryConfig<FetchAccountResourcesResult, Error, TData>
 
 export const queryKey = ({ networkName, address }: { networkName?: string; address?: string }) =>
   [{ entity: 'accountResources', networkName, address }] as const
@@ -18,7 +18,7 @@ const queryFn = ({ queryKey: [{ networkName, address }] }: QueryFunctionArgs<typ
   return fetchAccountResources({ networkName, address })
 }
 
-export function useAccountResources({
+export function useAccountResources<TData = unknown>({
   cacheTime = 0,
   networkName: _networkName,
   address,
@@ -29,7 +29,8 @@ export function useAccountResources({
   onError,
   onSettled,
   onSuccess,
-}: UseAccountResourcesArgs & UseAccountResourcesConfig = {}) {
+  select,
+}: UseAccountResourcesArgs & UseAccountResourcesConfig<TData> = {}) {
   return useQuery(queryKey({ networkName: _networkName, address }), queryFn, {
     cacheTime,
     enabled: Boolean(enabled && address),
@@ -38,6 +39,7 @@ export function useAccountResources({
     onError,
     onSettled,
     onSuccess,
+    select,
     refetchInterval: watch ? 10000 : 0,
   })
 }

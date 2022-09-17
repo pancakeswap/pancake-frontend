@@ -14,6 +14,7 @@ const customJestConfig = {
     '^@pancakeswap/uikit': '<rootDir>/packages/uikit/src',
     '^@pancakeswap/ui/(.*)$': '<rootDir>/packages/ui/$1',
     '^@pancakeswap/ui': '<rootDir>/packages/ui',
+    '^@pancakeswap/swap-sdk-core': '<rootDir>/packages/swap-sdk-core/src',
     '^@pancakeswap/sdk': '<rootDir>/packages/swap-sdk/src',
     '^@pancakeswap/localization': ['<rootDir>/packages/localization/src'],
     '^@pancakeswap/hooks': ['<rootDir>/packages/hooks/src'],

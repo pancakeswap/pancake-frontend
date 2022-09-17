@@ -1,10 +1,8 @@
-// TODO: aptos split Token to sdk-core
-import { Token } from '@pancakeswap/sdk'
-import { TxnBuilderTypes } from 'aptos'
+import { Token } from '@pancakeswap/swap-sdk-core'
+// import { TxnBuilderTypes } from 'aptos'
 
 export class Coin extends Token {
-  structTag: TxnBuilderTypes.StructTag
-
+  // eslint-disable-next-line no-useless-constructor
   public constructor(
     chainId: number,
     address: string,
@@ -13,8 +11,9 @@ export class Coin extends Token {
     name?: string,
     projectLink?: string
   ) {
-    const structTag = TxnBuilderTypes.StructTag.fromString(address)
     super(chainId, address, decimals, symbol, name, projectLink)
-    this.structTag = structTag
+    // TODO: LP TOKEN
+    // const structTag = TxnBuilderTypes.StructTag.fromString(address)
+    // this.structTag = structTag
   }
 }

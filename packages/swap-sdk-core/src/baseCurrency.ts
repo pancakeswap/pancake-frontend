@@ -1,6 +1,6 @@
 import invariant from 'tiny-invariant'
 import { Currency } from './currency'
-import { Token } from './token'
+import type { Token } from './token'
 
 /**
  * A currency is any fungible financial instrument, including Ether, all ERC20 tokens, and other chain-native currencies
@@ -10,6 +10,7 @@ export abstract class BaseCurrency {
    * Returns whether the currency is native to the chain and must be wrapped (e.g. Ether)
    */
   public abstract readonly isNative: boolean
+
   /**
    * Returns whether the currency is a token that is usable in PancakeSwap without wrapping
    */
@@ -19,14 +20,17 @@ export abstract class BaseCurrency {
    * The chain ID on which this currency resides
    */
   public readonly chainId: number
+
   /**
    * The decimals used in representing currency amounts
    */
   public readonly decimals: number
+
   /**
    * The symbol of the currency, i.e. a short textual non-unique identifier
    */
   public readonly symbol: string
+
   /**
    * The name of the currency, i.e. a descriptive textual non-unique identifier
    */

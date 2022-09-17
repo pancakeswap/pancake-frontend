@@ -76,8 +76,8 @@ export function useSendTransaction<Args extends UseSendTransactionArgs = UseSend
     isLoading,
     isSuccess,
     reset,
-    sendTransaction: _sendTransaction as MutateFnReturnValue<Args, SendTransactionFn>,
-    sendTransactionAsync: _sendTransactionAsync as MutateFnReturnValue<Args, SendTransactionAsyncFn>,
+    sendTransaction: payload && (_sendTransaction as MutateFnReturnValue<Args, SendTransactionFn>),
+    sendTransactionAsync: payload && (_sendTransactionAsync as MutateFnReturnValue<Args, SendTransactionAsyncFn>),
     status,
     variables,
   }

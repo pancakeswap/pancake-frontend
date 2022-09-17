@@ -4,11 +4,6 @@ import { calc } from '@vanilla-extract/css-utils'
 import { Breakpoint, breakpointNames, breakpoints } from './breakpoints'
 import { vars } from './vars.css'
 
-// Ensure reset has lowest specificity
-/* DO NOT MOVE THIS LINE */
-import './reset.css'
-/* DO NOT MOVE THIS LINE */
-
 const flexAlignment = ['flex-start', 'center', 'start', 'flex-end', 'stretch'] as const
 
 const negativeSpace = {
