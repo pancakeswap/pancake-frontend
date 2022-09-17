@@ -1947,8 +1947,8 @@
   "Transaction failed with error: %reason%": "Transazione non andata a buon fine con errore: %reason%",
   "Transaction failed. For detailed error message:": "Transazione non andata a buon fine. Per dettagli sull'errore:",
   "Failed to claim": "Impossibile richiedere",
-  "Cake locked": "Cake locked",
-  "Boost Multiplier": "Boost Multiplier",
+  "Cake locked": "Cake bloccato",
+  "Boost Multiplier": "Moltiplicatore del potenziamento",
   "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.",
   "locked for": "locked for",
   "My Duration": "My Duration"
