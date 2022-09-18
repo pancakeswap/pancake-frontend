@@ -166,3 +166,34 @@ export const pageVariants = recipe({
     },
   },
 });
+
+export const balanceMaxMiniClass = style([
+  atoms({
+    backgroundColor: "background",
+    borderRadius: "circle",
+    cursor: "pointer",
+    color: "text",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  }),
+  style({
+    padding: "0.2rem",
+    fontSize: "0.875rem",
+    border: "none",
+    height: "22px",
+    width: "22px",
+    fontWeight: 400,
+    marginLeft: "0.4rem",
+    float: "right",
+    selectors: {
+      "&:hover": {
+        backgroundColor: vars.colors.dropdown,
+      },
+      "&:focus": {
+        backgroundColor: vars.colors.dropdown,
+        outline: "none",
+      },
+    },
+  }),
+]);

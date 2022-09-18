@@ -1,9 +1,9 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { BlockIcon, CheckmarkCircleIcon, Flex, Link, OpenNewIcon, RefreshIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
 // import { TransactionDetails } from 'state/transactions/reducer'
+import { useActiveChainId } from 'hooks/useNetwork'
 import { getBlockExploreLink } from 'utils'
-import { useActiveNetwork } from 'hooks/useNetwork'
 
 interface TransactionRowProps {
   // txn: TransactionDetails
@@ -47,14 +47,14 @@ const renderIcon = (txn: any) => {
 
 const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = ({ txn }) => {
   const { t } = useTranslation()
-  const { networkName } = useActiveNetwork()
+  const chainId = useActiveChainId()
 
   if (!txn) {
     return null
   }
 
   return (
-    <TxnLink href={getBlockExploreLink(txn.hash, 'transaction', networkName)} external>
+    <TxnLink href={getBlockExploreLink(txn.hash, 'transaction', chainId)} external>
       <TxnIcon>{renderIcon(txn)}</TxnIcon>
       <Summary>
         {txn.translatableSummary

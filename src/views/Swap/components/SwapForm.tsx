@@ -1,7 +1,6 @@
 import { SetStateAction, useCallback, useEffect, useState, Dispatch, useMemo } from 'react'
-import styled from 'styled-components'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
-import { Button, Text, ArrowDownIcon, Box, Skeleton, Swap as SwapUI } from '@pancakeswap/uikit'
+import { Button, ArrowDownIcon, Box, Skeleton, Swap as SwapUI } from '@pancakeswap/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -32,14 +31,7 @@ import useWarningImport from '../hooks/useWarningImport'
 import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
 import AddressInputPanel from './AddressInputPanel'
 import AdvancedSwapDetailsDropdown from './AdvancedSwapDetailsDropdown'
-import TradePrice from './TradePrice'
 import { ArrowWrapper, Wrapper } from './styleds'
-
-const Label = styled(Text)`
-  font-size: 12px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.secondary};
-`
 
 interface SwapForm {
   isChartExpanded: boolean
@@ -143,9 +135,6 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAcce
 
   const maxAmountInput: CurrencyAmount<Currency> | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
-
-  // errors
-  const [showInverted, setShowInverted] = useState<boolean>(false)
 
   const handleInputSelect = useCallback(
     (currencyInput) => {
@@ -264,15 +253,11 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAcce
                 price={
                   Boolean(trade) && (
                     <>
-                      <Label>{t('Price')}</Label>
+                      <SwapUI.InfoLabel>{t('Price')}</SwapUI.InfoLabel>
                       {isLoading ? (
                         <Skeleton width="100%" ml="8px" height="24px" />
                       ) : (
-                        <TradePrice
-                          price={trade?.executionPrice}
-                          showInverted={showInverted}
-                          setShowInverted={setShowInverted}
-                        />
+                        <SwapUI.TradePrice price={trade?.executionPrice} />
                       )}
                     </>
                   )

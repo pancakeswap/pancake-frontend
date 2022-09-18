@@ -1,9 +1,9 @@
-import { ChainId, Currency, Token } from '@pancakeswap/sdk'
-import { BinanceIcon } from '@pancakeswap/uikit'
-import { useMemo } from 'react'
-import { WrappedTokenInfo } from '@pancakeswap/token-lists'
-import styled from 'styled-components'
+import { Currency, Token } from '@pancakeswap/aptos-swap-sdk'
 import { useHttpLocations } from '@pancakeswap/hooks'
+import { WrappedTokenInfo } from '@pancakeswap/token-lists'
+import { AptosIcon } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
+import styled from 'styled-components'
 import Logo from './Logo'
 
 const getTokenLogoURL = (token?: Token) => null
@@ -26,8 +26,6 @@ export function CurrencyLogo({
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
 
   const srcs: string[] = useMemo(() => {
-    if (currency?.isNative) return []
-
     if (currency?.isToken) {
       const tokenLogoURL = getTokenLogoURL(currency)
 
@@ -42,10 +40,7 @@ export function CurrencyLogo({
   }, [currency, uriLocations])
 
   if (currency?.isNative) {
-    if (currency.chainId === ChainId.BSC) {
-      return <BinanceIcon width={size} style={style} />
-    }
-    return <StyledLogo size={size} srcs={[`/images/chains/${currency.chainId}.png`]} width={size} style={style} />
+    return <AptosIcon width={size} style={style} />
   }
 
   return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />

@@ -18,4 +18,5 @@ export interface Aptos {
   on?: any
   onAccountChange?: (account?: unknown) => unknown
   onNetworkChange?: (network?: unknown) => unknown
+  onDisconnect?: (a?: unknown) => unknown
 }

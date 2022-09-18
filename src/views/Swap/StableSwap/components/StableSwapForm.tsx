@@ -11,6 +11,7 @@ import {
   Flex,
   Message,
   MessageText,
+  Swap as SwapUI,
 } from '@pancakeswap/uikit'
 import InfoTooltip from '@pancakeswap/uikit/src/components/Timeline/InfoTooltip'
 
@@ -33,7 +34,6 @@ import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks
 
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { currencyId } from 'utils/currencyId'
-import TradePrice from 'views/Swap/components/TradePrice'
 
 import CurrencyInputHeader from '../../components/CurrencyInputHeader'
 import useRefreshBlockNumberID from '../../hooks/useRefreshBlockNumber'
@@ -155,9 +155,6 @@ export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }
   const maxAmountInput: CurrencyAmount<Currency> | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
-  // errors
-  const [showInverted, setShowInverted] = useState<boolean>(false)
-
   const handleInputSelect = useCallback(
     (currencyInput) => {
       setApprovalSubmitted(false) // reset 2 step UI for approvals
@@ -266,15 +263,11 @@ export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }
             <RowBetween align="center">
               {Boolean(trade) && (
                 <>
-                  <Label>{t('Price')}</Label>
+                  <SwapUI.InfoLabel>{t('Price')}</SwapUI.InfoLabel>
                   {isLoading ? (
                     <Skeleton width="100%" ml="8px" height="24px" />
                   ) : (
-                    <TradePrice
-                      price={trade?.executionPrice}
-                      showInverted={showInverted}
-                      setShowInverted={setShowInverted}
-                    />
+                    <SwapUI.TradePrice price={trade?.executionPrice} />
                   )}
                 </>
               )}

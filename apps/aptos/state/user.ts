@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
-import { SerializedToken } from '@pancakeswap/swap-sdk-core'
+import { SerializedToken } from '@pancakeswap/aptos-swap-sdk'
 import { SerializedWrappedToken, deserializeToken } from '@pancakeswap/token-lists'
+import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants/exchange'
 import { useActiveChainId } from 'hooks/useNetwork'
 import { atom, useAtom } from 'jotai'
 import { atomWithStorage, createJSONStorage } from 'jotai/utils'
@@ -10,7 +11,7 @@ const USER_AUDIO_PLAY_KEY = 'pcs:audio-play'
 
 const userAudioPlayAtom = atom('0')
 
-export const userAtomWithLocalStorage = atom(
+export const userAudioAtomWithLocalStorage = atom(
   (get) => get(userAudioPlayAtom),
   (_get, set, mode: boolean) => {
     const on = mode ? '1' : '0'
@@ -19,11 +20,35 @@ export const userAtomWithLocalStorage = atom(
   },
 )
 
-userAtomWithLocalStorage.onMount = (set) => {
+userAudioAtomWithLocalStorage.onMount = (set) => {
   const item = localStorage.getItem(USER_AUDIO_PLAY_KEY)
   if (item && (item === '0' || item === '1')) {
     set(item === '1')
   }
+}
+
+const USER_SLIPPAGE_KEY = 'pcs:slippage'
+const userSlippageAtom = atom(INITIAL_ALLOWED_SLIPPAGE)
+
+export const userSlippageAtomWithLocalStorage = atom(
+  (get) => get(userSlippageAtom),
+  (_get, set, slippage: number) => {
+    if (typeof slippage === 'number') {
+      set(userSlippageAtom, slippage)
+      localStorage.setItem(USER_SLIPPAGE_KEY, String(slippage))
+    }
+  },
+)
+
+userSlippageAtomWithLocalStorage.onMount = (set) => {
+  const item = localStorage.getItem(USER_SLIPPAGE_KEY)
+  if (item && Number.isFinite(+item)) {
+    set(+item)
+  }
+}
+
+export const useUserSlippage = () => {
+  return useAtom(userSlippageAtomWithLocalStorage)
 }
 
 const USER_ADD_TOKENS = 'pcs:user-add-tokens'

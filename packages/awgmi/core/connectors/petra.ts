@@ -10,12 +10,6 @@ declare global {
   }
 }
 
-// enum NetworkName {
-//   Devnet = 'Devnet',
-//   Testnet = 'Testnet',
-//   AIT3 = 'AIT3',
-// }
-
 export type PetraConnectorOptions = {
   /** Name of connector */
   name?: string | ((detectedName: string | string[]) => string)
@@ -46,14 +40,9 @@ export class PetraConnector extends Connector {
     try {
       const provider = await this.getProvider()
       if (!provider) throw new ConnectorNotFoundError()
-      if (provider.onAccountChange) {
-        provider.onAccountChange(this.onAccountsChanged)
-        // TODO: disconnect event??
-        // provider.on('disconnect', this.onDisconnect)
-      }
-      if (provider.onNetworkChange) {
-        provider.onNetworkChange(this.onNetworkChanged)
-      }
+      if (provider.onAccountChange) provider.onAccountChange(this.onAccountsChanged)
+      if (provider.onNetworkChange) provider.onNetworkChange(this.onNetworkChanged)
+      if (provider.onDisconnect) provider.onDisconnect(this.onDisconnect)
 
       const account = await provider.connect()
       const network = await this.network()
@@ -122,5 +111,9 @@ export class PetraConnector extends Connector {
 
   protected onNetworkChanged = (network: string) => {
     this.emit('change', { network })
+  }
+  protected onDisconnect = (args: unknown) => {
+    console.info(args) // checking if it's working on petra
+    this.emit('disconnect')
   }
 }

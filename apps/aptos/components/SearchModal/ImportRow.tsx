@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react'
-import { Token } from '@pancakeswap/sdk'
+import { Token } from '@pancakeswap/aptos-swap-sdk'
 import {
   Button,
   Text,

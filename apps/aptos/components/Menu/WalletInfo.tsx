@@ -13,9 +13,9 @@ import {
 } from '@pancakeswap/uikit'
 import { useAuth } from 'hooks/useAuth'
 
-import { APT_INFO } from 'config/coins'
-import { useActiveNetwork } from 'hooks/useNetwork'
+import { useActiveChainId } from 'hooks/useNetwork'
 import { getBlockExploreLink } from 'utils'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 
 interface WalletInfoProps {
   hasLowNativeBalance: boolean
@@ -25,7 +25,8 @@ interface WalletInfoProps {
 const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss }) => {
   const { t } = useTranslation()
   const { account } = useAccount()
-  const { networkName } = useActiveNetwork()
+  const chainId = useActiveChainId()
+  const native = useNativeCurrency()
   const { data, isFetched } = useBalance({ address: account?.address })
 
   const { logout } = useAuth()
@@ -46,12 +47,12 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
           <Box>
             <Text fontWeight="bold">
               {t('%currency% Balance Low', {
-                currency: APT_INFO.symbol,
+                currency: native.symbol,
               })}
             </Text>
             <Text as="p">
               {t('You need %currency% for transaction fees.', {
-                currency: APT_INFO.symbol,
+                currency: native.symbol,
               })}
             </Text>
           </Box>
@@ -60,14 +61,14 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
       <Flex alignItems="center" justifyContent="space-between">
         <Flex>
           <Text color="textSubtle">
-            {APT_INFO.symbol} {t('Balance')}
+            {native.symbol} {t('Balance')}
           </Text>
         </Flex>
         {!isFetched ? <Skeleton height="22px" width="60px" /> : <Text>{data?.formatted}</Text>}
       </Flex>
       {account && (
         <Flex alignItems="center" justifyContent="end" mb="24px">
-          <LinkExternal href={getBlockExploreLink(account.address, 'address', networkName)}>
+          <LinkExternal href={getBlockExploreLink(account.address, 'address', chainId)}>
             {t('View on %site%', {
               site: t('Explorer'),
             })}

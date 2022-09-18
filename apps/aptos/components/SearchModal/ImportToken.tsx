@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Token, Currency } from '@pancakeswap/sdk'
+import { Token, Currency } from '@pancakeswap/aptos-swap-sdk'
 import { Button, Text, ErrorIcon, Flex, Message, Checkbox, Link, Tag, Grid, AutoColumn } from '@pancakeswap/uikit'
 // import { useAddUserToken } from 'state/user/hooks'
 import { getBlockExploreLink } from 'utils'
@@ -16,7 +16,7 @@ interface ImportProps {
 }
 
 function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
-  const { networkName, chainId } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
 
   const { t } = useTranslation()
 
@@ -63,10 +63,10 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
               <Text mr="8px">{token.name}</Text>
               <Text>({token.symbol})</Text>
             </Flex>
-            {networkName && (
+            {chainId && (
               <Flex justifyContent="space-between" width="100%">
                 <Text mr="4px">{address}</Text>
-                <Link href={getBlockExploreLink(token.address, 'address', networkName)} external>
+                <Link href={getBlockExploreLink(token.address, 'address', chainId)} external>
                   (
                   {t('View on %site%', {
                     site: 'Explorer',

@@ -1,7 +1,7 @@
 import { useAccount, useBalance } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/aptos-swap-sdk'
 import { AtomBox } from '@pancakeswap/ui'
 import { Button, ChevronDownIcon, Swap as SwapUI, Text, useModal } from '@pancakeswap/uikit'
 import { CurrencyLogo } from 'components/Logo'

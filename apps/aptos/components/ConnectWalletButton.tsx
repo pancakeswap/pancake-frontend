@@ -10,7 +10,7 @@ export const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
   }
 
   return (
-    <Button onClick={handleClick} {...props}>
+    <Button width="100%" onClick={handleClick} {...props}>
       {children || <Trans>Connect Wallet</Trans>}
     </Button>
   )

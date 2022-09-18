@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@pancakeswap/uikit": "*",
-    "@pancakeswap/sdk": "*",
     "@pancakeswap/awgmi": "*",
     "@pancakeswap/aptos-swap-sdk": "*",
     "@pancakeswap/token-lists": "*",

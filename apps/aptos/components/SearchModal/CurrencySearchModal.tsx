@@ -1,5 +1,5 @@
 import { useCallback, useState, useRef, useEffect } from 'react'
-import { Currency, Token } from '@pancakeswap/sdk'
+import { Currency, Token } from '@pancakeswap/aptos-swap-sdk'
 import {
   ModalContainer,
   ModalHeader,

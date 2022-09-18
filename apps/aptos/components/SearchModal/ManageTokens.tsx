@@ -1,5 +1,5 @@
 import { useRef, RefObject, useCallback, useState, useMemo } from 'react'
-import { Token } from '@pancakeswap/sdk'
+import { Token } from '@pancakeswap/aptos-swap-sdk'
 import {
   Text,
   Button,
@@ -19,7 +19,7 @@ import { useToken } from 'hooks/Tokens'
 import { useRemoveUserAddedToken, useUserAddedTokens } from 'state/user'
 import { CurrencyLogo } from 'components/Logo'
 import { getBlockExploreLink, isAddress } from 'utils'
-import { useActiveChainId, useActiveNetwork } from 'hooks/useNetwork'
+import { useActiveChainId } from 'hooks/useNetwork'
 import { useTranslation } from '@pancakeswap/localization'
 import ImportRow from './ImportRow'
 import { CurrencyModalView } from './types'
@@ -47,7 +47,6 @@ export default function ManageTokens({
   setModalView: (view: CurrencyModalView) => void
   setImportToken: (token: Token) => void
 }) {
-  const { networkName } = useActiveNetwork()
   const chainId = useActiveChainId()
 
   const { t } = useTranslation()
@@ -84,12 +83,7 @@ export default function ManageTokens({
         <RowBetween key={token.address} width="100%">
           <RowFixed>
             <CurrencyLogo currency={token} size="20px" />
-            <Link
-              external
-              href={getBlockExploreLink(token.address, 'address', networkName)}
-              color="textSubtle"
-              ml="10px"
-            >
+            <Link external href={getBlockExploreLink(token.address, 'address', chainId)} color="textSubtle" ml="10px">
               {token.symbol}
             </Link>
           </RowFixed>
@@ -97,12 +91,12 @@ export default function ManageTokens({
             <IconButton variant="text" onClick={() => removeToken(chainId, token.address)}>
               <CloseIcon />
             </IconButton>
-            <LinkExternal href={getBlockExploreLink(token.address, 'address', networkName)} />
+            <LinkExternal href={getBlockExploreLink(token.address, 'address', chainId)} />
           </RowFixed>
         </RowBetween>
       ))
     )
-  }, [userAddedTokens, chainId, removeToken, networkName])
+  }, [userAddedTokens, chainId, removeToken])
 
   const isAddressValid = searchQuery === '' || isAddress(searchQuery)
 

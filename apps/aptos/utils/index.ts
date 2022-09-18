@@ -1,4 +1,4 @@
-import { Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/aptos-swap-sdk'
 import { HexString } from 'aptos'
 import { chains, defaultChain } from 'config/chains'
 import { TokenAddressMap } from 'state/lists/hooks'
@@ -6,9 +6,9 @@ import { TokenAddressMap } from 'state/lists/hooks'
 export function getBlockExploreLink(
   data: string | number,
   type: 'transaction' | 'token' | 'address' | 'block' | 'countdown',
-  networkName?: string,
+  chainId?: number,
 ): string {
-  const chain = chains.find((c) => c.network.toLowerCase() === networkName?.toLowerCase())
+  const chain = chains.find((c) => c.id === chainId)
   if (!chain) return defaultChain.blockExplorers?.default.url ?? ''
   // only Devnet is capital
   const query = `?network=${chain.network === 'devnet' ? 'Devnet' : chain.id}`

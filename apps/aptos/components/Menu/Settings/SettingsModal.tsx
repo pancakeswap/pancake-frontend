@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, InjectedModalProps, Modal, PancakeToggle, QuestionHelper, Text, ThemeSwitcher } from '@pancakeswap/uikit'
 import { useAtom } from 'jotai'
 import { useTheme } from 'next-themes'
-import { userAtomWithLocalStorage } from 'state/user'
+import { userAudioAtomWithLocalStorage } from 'state/user'
 import styled from 'styled-components'
 
 const ScrollableContainer = styled(Flex)`
@@ -17,7 +17,7 @@ const ScrollableContainer = styled(Flex)`
 `
 
 export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
-  const [audioPlay, setAudioPlay] = useAtom(userAtomWithLocalStorage)
+  const [audioPlay, setAudioPlay] = useAtom(userAudioAtomWithLocalStorage)
 
   const { t } = useTranslation()
   const { resolvedTheme, setTheme } = useTheme()

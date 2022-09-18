@@ -5,18 +5,10 @@ import { sendTransaction, SendTransactionArgs, SendTransactionResult } from '../
 
 import { MutationConfig } from '../types'
 
-export type UseSendTransactionArgs = SendTransactionArgs
+export type UseSendTransactionArgs = Partial<SendTransactionArgs>
 
-export type UseSendTransactionMutationArgs = any
+export type UseSendTransactionMutationArgs = Partial<SendTransactionArgs>
 export type UseSendTransactionConfig = MutationConfig<SendTransactionResult, Error, SendTransactionArgs>
-
-type SendTransactionFn = (overrideConfig?: UseSendTransactionMutationArgs) => void
-type SendTransactionAsyncFn = (overrideConfig?: UseSendTransactionMutationArgs) => Promise<SendTransactionResult>
-type MutateFnReturnValue<Args, Fn> = Args extends {
-  mode: 'recklesslyUnprepared'
-}
-  ? Fn
-  : Fn | undefined
 
 export const mutationKey = (args: UseSendTransactionArgs) => [{ entity: 'sendTransaction', ...args }] as const
 
@@ -27,14 +19,14 @@ const mutationFn = async ({ networkName, payload }: SendTransactionArgs) => {
   } as SendTransactionArgs)
 }
 
-export function useSendTransaction<Args extends UseSendTransactionArgs = UseSendTransactionArgs>({
+export function useSendTransaction({
   networkName,
   payload,
   onError,
   onMutate,
   onSettled,
   onSuccess,
-}: Args & UseSendTransactionConfig) {
+}: UseSendTransactionArgs & UseSendTransactionConfig = {}) {
   const { data, error, isError, isIdle, isLoading, isSuccess, mutate, mutateAsync, reset, status, variables } =
     useMutation(
       mutationKey({
@@ -51,19 +43,21 @@ export function useSendTransaction<Args extends UseSendTransactionArgs = UseSend
     )
 
   const _sendTransaction = React.useCallback(
-    (_args?: UseSendTransactionMutationArgs) =>
+    (args: UseSendTransactionMutationArgs) =>
       mutate({
         networkName,
         payload,
+        ...args,
       } as SendTransactionArgs),
     [mutate, networkName, payload],
   )
 
   const _sendTransactionAsync = React.useCallback(
-    (_args?: UseSendTransactionMutationArgs) =>
+    (args?: UseSendTransactionMutationArgs) =>
       mutateAsync({
         networkName,
         payload,
+        ...args,
       } as SendTransactionArgs),
     [mutateAsync, networkName, payload],
   )
@@ -76,8 +70,8 @@ export function useSendTransaction<Args extends UseSendTransactionArgs = UseSend
     isLoading,
     isSuccess,
     reset,
-    sendTransaction: payload && (_sendTransaction as MutateFnReturnValue<Args, SendTransactionFn>),
-    sendTransactionAsync: payload && (_sendTransactionAsync as MutateFnReturnValue<Args, SendTransactionAsyncFn>),
+    sendTransaction: _sendTransaction,
+    sendTransactionAsync: _sendTransactionAsync,
     status,
     variables,
   }

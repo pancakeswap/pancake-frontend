@@ -1,6 +1,6 @@
+import { APTOS_COIN } from 'aptos'
 import { getProvider } from './provider'
 
-export const APTOS_COIN = '0x1::aptos_coin::AptosCoin'
 const APTOS_DECIMALS = 8
 export const APTOS_SYMBOL = 'APT'
 const NAME = 'Aptos coin'
@@ -23,7 +23,7 @@ export type FetchCoinResult = {
 export async function fetchCoin({ networkName, coin }: FetchCoinArgs): Promise<FetchCoinResult> {
   const provider = getProvider({ networkName })
 
-  if (coin) {
+  if (coin && coin !== APTOS_COIN) {
     const [coinHoistAddress] = coin.split('::')
     // TODO: check address
     if (coinHoistAddress) {

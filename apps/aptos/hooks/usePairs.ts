@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
-import { Pair, PAIR_RESERVE_TYPE_TAG, SWAP_ADDRESS } from '@pancakeswap/aptos-swap-sdk'
+import { Pair, PAIR_RESERVE_TYPE_TAG, SWAP_ADDRESS, Currency, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
 import { useProvider } from '@pancakeswap/awgmi'
-import { Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'
 import useSWR from 'swr'

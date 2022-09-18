@@ -1,5 +1,6 @@
 export { default as AccountFilledIcon } from "./Icons/AccountFilled";
 export { default as AccountIcon } from "./Icons/Account";
+export { default as AptosIcon } from "./Icons/Aptos";
 export { default as AddIcon } from "./Icons/Add";
 export { default as ArrowBackIcon } from "./Icons/ArrowBack";
 export { default as ArrowDownIcon } from "./Icons/ArrowDown";

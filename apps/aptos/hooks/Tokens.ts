@@ -1,21 +1,33 @@
 /* eslint-disable no-param-reassign */
-import { Coin } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount, useAccountResources } from '@pancakeswap/awgmi'
+import { Coin, Currency, CurrencyAmount, Token } from '@pancakeswap/aptos-swap-sdk'
+import { useAccount, useAccountResources, useBalance } from '@pancakeswap/awgmi'
 import { fetchCoin } from '@pancakeswap/awgmi/core'
-import fromPairs from 'lodash/fromPairs'
-import { Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { APTOS_COIN } from 'aptos'
 import { useAtomValue } from 'jotai'
+import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'
 import { combinedTokenMapFromActiveUrlsAtom, TokenAddressMap } from 'state/lists/hooks'
 import { useUserAddedTokens } from 'state/user'
 import useSWRImmutable from 'swr/immutable'
+import useNativeCurrency from './useNativeCurrency'
 import { useActiveChainId, useActiveNetwork } from './useNetwork'
+
+export function useCurrency(coinId?: string): Currency | undefined {
+  const native = useNativeCurrency()
+  const isNative = coinId === APTOS_COIN
+  const token = useToken(isNative ? undefined : coinId)
+  return isNative ? native : token.data
+}
 
 export function useToken(coinId?: string) {
   const { networkName } = useActiveNetwork()
   const chainId = useActiveChainId()
+  const tokens = useAllTokens()
 
-  return useSWRImmutable(coinId && networkName && chainId ? [coinId, networkName, chainId] : null, async () => {
+  const token = coinId && tokens[coinId]
+
+  return useSWRImmutable(coinId && networkName && chainId ? [coinId, networkName, chainId, token] : null, async () => {
+    if (token) return token
     if (!chainId || !coinId) return undefined
     const { decimals, symbol, name } = await fetchCoin({ networkName, coin: coinId })
 
@@ -97,4 +109,30 @@ export function useAllTokenBalances() {
   })
 
   return accountResources.data
+}
+
+export function useCurrencyBalance(coinId?: string) {
+  const allTokens = useAllTokens()
+  const { account } = useAccount()
+  const native = useNativeCurrency()
+  const chainId = useActiveChainId()
+
+  const { data } = useBalance({
+    enabled: Boolean(coinId),
+    address: account?.address,
+    coin: coinId,
+    select: (d) => {
+      if (coinId && d) {
+        const currency = allTokens[coinId]
+          ? allTokens[coinId]
+          : coinId === APTOS_COIN
+          ? native
+          : new Coin(chainId, coinId, d.decimals, d.symbol)
+        return CurrencyAmount.fromRawAmount(currency, d.value)
+      }
+      return undefined
+    },
+  })
+
+  return data
 }
