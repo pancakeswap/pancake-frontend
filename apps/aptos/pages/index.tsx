@@ -8,6 +8,7 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useState } from 'react'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useTradeExactIn } from 'hooks/Trades'
+import { TestTokens } from 'components/TestTokens'
 import { JSBI, Percent } from '@pancakeswap/swap-sdk-core'
 import { BIPS_BASE } from 'config/constants/exchange'
 import { CommitButton } from '../components/CommitButton'
@@ -92,6 +93,7 @@ const SwapPage = () => {
           </AtomBox>
         </AutoColumn>
       </Card>
+      <TestTokens />
     </Page>
   )
 }

@@ -1,5 +1,5 @@
 import '@pancakeswap/ui/css/reset.css'
-import { PancakeTheme, ResetCSS } from '@pancakeswap/uikit'
+import { PancakeTheme, ResetCSS, ToastListener } from '@pancakeswap/uikit'
 import { Menu } from 'components/Menu'
 import Providers from 'components/Providers'
 import { AppProps } from 'next/app'
@@ -55,6 +55,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Menu>
           <Component {...pageProps} />
         </Menu>
+        <ToastListener />
       </Providers>
       <Script
         strategy="afterInteractive"
