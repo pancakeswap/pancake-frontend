@@ -475,9 +475,12 @@ export function useTrackedTokenPairs(): [Token, Token][] {
 
   const { data: farmPairs = [] } = useSWRImmutable(chainId && ['track-farms-pairs', chainId], async () => {
     const farms = await getFarmConfig(chainId)
-    farms
+
+    const fPairs: [Token, Token][] = farms
       .filter((farm) => farm.pid !== 0)
       .map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)])
+
+    return fPairs
   })
 
   // pairs for every token against every base
