@@ -1,28 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
-import {
-  AutoRenewIcon,
-  Button,
-  ButtonMenu,
-  ButtonMenuItem,
-  Flex,
-  Heading,
-  HelpIcon,
-  Modal,
-  Text,
-  useToast,
-  useTooltip,
-} from '@pancakeswap/uikit'
+import { AutoRenewIcon, Button, Flex, Heading, Modal, Text, useToast } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import useTheme from 'hooks/useTheme'
-import { useState } from 'react'
 import { useAppDispatch } from 'state'
 import { updateUserBalance, updateUserPendingReward, updateUserStakedBalance } from 'state/pools'
 import { formatNumber } from 'utils/formatBalance'
 import useHarvestPool from '../../../hooks/useHarvestPool'
-import useStakePool from '../../../hooks/useStakePool'
 
 interface CollectModalProps {
   formattedBalance: string
@@ -31,18 +17,15 @@ interface CollectModalProps {
   earningsDollarValue: number
   sousId: number
   isBnbPool: boolean
-  isCompoundPool?: boolean
   onDismiss?: () => void
 }
 
 const CollectModal: React.FC<React.PropsWithChildren<CollectModalProps>> = ({
   formattedBalance,
-  fullBalance,
   earningToken,
   earningsDollarValue,
   sousId,
   isBnbPool,
-  isCompoundPool = false,
   onDismiss,
 }) => {
   const { t } = useTranslation()
@@ -52,39 +35,18 @@ const CollectModal: React.FC<React.PropsWithChildren<CollectModalProps>> = ({
   const dispatch = useAppDispatch()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { onReward } = useHarvestPool(sousId, isBnbPool)
-  const { onStake } = useStakePool(sousId, isBnbPool)
-  const [shouldCompound, setShouldCompound] = useState(isCompoundPool)
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    <>
-      <Text mb="12px">{t('Compound: collect and restake CAKE into pool.')}</Text>
-      <Text>{t('Harvest: collect CAKE and send to wallet')}</Text>
-    </>,
-    { placement: 'bottom-end', tooltipOffset: [20, 10] },
-  )
 
   const handleHarvestConfirm = async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      if (shouldCompound) {
-        return onStake(fullBalance, earningToken.decimals)
-      }
       return onReward()
     })
     if (receipt?.status) {
-      if (shouldCompound) {
-        toastSuccess(
-          `${t('Compounded')}!`,
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Your %symbol% earnings have been re-invested into the pool!', { symbol: earningToken.symbol })}
-          </ToastDescriptionWithTx>,
-        )
-      } else {
-        toastSuccess(
-          `${t('Harvested')}!`,
-          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-            {t('Your %symbol% earnings have been sent to your wallet!', { symbol: earningToken.symbol })}
-          </ToastDescriptionWithTx>,
-        )
-      }
+      toastSuccess(
+        `${t('Harvested')}!`,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your %symbol% earnings have been sent to your wallet!', { symbol: earningToken.symbol })}
+        </ToastDescriptionWithTx>,
+      )
       dispatch(updateUserStakedBalance({ sousId, account }))
       dispatch(updateUserPendingReward({ sousId, account }))
       dispatch(updateUserBalance({ sousId, account }))
@@ -94,30 +56,12 @@ const CollectModal: React.FC<React.PropsWithChildren<CollectModalProps>> = ({
 
   return (
     <Modal
-      title={`${earningToken.symbol} ${isCompoundPool ? t('Collect') : t('Harvest')}`}
+      title={`${earningToken.symbol} ${t('Harvest')}`}
       onDismiss={onDismiss}
       headerBackground={theme.colors.gradientCardHeader}
     >
-      {isCompoundPool && (
-        <Flex justifyContent="center" alignItems="center" mb="24px">
-          <ButtonMenu
-            activeIndex={shouldCompound ? 0 : 1}
-            scale="sm"
-            variant="subtle"
-            onItemClick={(index) => setShouldCompound(!index)}
-          >
-            <ButtonMenuItem as="button">{t('Compound')}</ButtonMenuItem>
-            <ButtonMenuItem as="button">{t('Harvest')}</ButtonMenuItem>
-          </ButtonMenu>
-          <Flex ml="10px" ref={targetRef}>
-            <HelpIcon color="textSubtle" />
-          </Flex>
-          {tooltipVisible && tooltip}
-        </Flex>
-      )}
-
       <Flex justifyContent="space-between" alignItems="center" mb="24px">
-        <Text>{shouldCompound ? t('Compounding') : t('Harvesting')}:</Text>
+        <Text>{t('Harvesting')}:</Text>
         <Flex flexDirection="column">
           <Heading>
             {formattedBalance} {earningToken.symbol}
