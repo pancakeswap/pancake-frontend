@@ -2309,7 +2309,7 @@ export const bscTokens = {
     '0xF19cfb40B3774dF6Eed83169Ad5aB0Aaf6865F25',
     18,
     'HOOP',
-    'Chibi Dinos',
+    'Primal Hoop',
     'https://www.chibidinos.io/',
   ),
 }
