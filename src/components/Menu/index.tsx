@@ -9,7 +9,6 @@ import useTheme from 'hooks/useTheme'
 import { usePePriceArs, usePePriceUsd } from 'hooks/useBUSDPrice'
 import useARSPrice from 'hooks/useARSPrice'
 import AddToken from 'utils/addToken'
-import logo from 'assets/pe.png'
 import config from './config/config'
 import UserMenu from './UserMenu'
 import GlobalSettings from './GlobalSettings'
@@ -56,7 +55,7 @@ const Menu = (props) => {
           address: '0x78a486306D15E7111cca541F2f1307a1cFCaF5C4',
           symbol: 'P',
           decimals: 6,
-          image: logo,
+          image: 'https://raw.githubusercontent.com/peronio-ar/branding/main/logo/v2/200.png',
         })
       }
       {...props}
