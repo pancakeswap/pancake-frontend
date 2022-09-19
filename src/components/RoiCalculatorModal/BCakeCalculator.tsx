@@ -134,7 +134,7 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
                 $1000
               </Button>
               <Button
-                disabled={!account || isLoading}
+                disabled={!account || isLoading || lockedAmount.eq(0)}
                 scale="xs"
                 p="4px 16px"
                 width="128px"
