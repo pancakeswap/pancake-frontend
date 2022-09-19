@@ -38,7 +38,7 @@ export const mainnetTokens = defineTokens({
   ),
   pe: new Token(MAINNET, '0x78a486306D15E7111cca541F2f1307a1cFCaF5C4', 6, 'P', 'Peronio', 'https://peronio.ar/'),
   pV1: new Token(MAINNET, '0xc2768beF7a6BB57F0FfA169a9ED4017c09696FF1', 6, 'PE', 'Peronio V1', 'https://peronio.ar/'),
-  usdt: new Token(MAINNET, '0xc2132d05d31c914a87c6611c10748aeb04b58e8f', 6, 'USDT', 'Tether USD', 'https://tether.to/'),
+  usdt: new Token(MAINNET, '0xc2132D05D31c914a87C6611C10748AEb04B58e8F', 6, 'USDT', 'Tether USD', 'https://tether.to/'),
   tlos: new Token(MAINNET, '0xb6C53431608E626AC81a9776ac3e999c5556717c', 18, 'TLOS', 'Telos', 'https://www.telos.net/'),
   beta: new Token(
     MAINNET,
@@ -107,7 +107,7 @@ export const mainnetTokens = defineTokens({
   ),
   usdc: new Token(
     MAINNET,
-    '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+    '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
     6,
     'USDC',
     'USD Coin',
