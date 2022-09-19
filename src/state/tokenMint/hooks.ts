@@ -1,6 +1,6 @@
 import { useTranslation } from 'contexts/Localization'
 import useENS from 'hooks/ENS/useENS'
-import { useMintExactIn, useMintExactOut } from 'hooks/Mints'
+import { useMintExactIn } from 'hooks/Mints'
 import { useCurrency } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Currency, CurrencyAmount, Mint } from 'peronio-sdk'
