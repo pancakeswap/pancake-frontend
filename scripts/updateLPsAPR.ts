@@ -5,11 +5,10 @@ import BigNumber from 'bignumber.js'
 import chunk from 'lodash/chunk'
 import { sub, getUnixTime } from 'date-fns'
 import farmsConfig from '@pancakeswap/farms/constants/56'
-import { Contract } from '@ethersproject/contracts'
 import { StaticJsonRpcProvider } from '@ethersproject/providers'
 import type { BlockResponse } from '../src/components/SubgraphHealthIndicator'
 import { BLOCKS_CLIENT } from '../src/config/constants/endpoints'
-import { infoClient } from '../src/utils/graphql'
+import { infoClient, stableSwapClient } from '../src/utils/graphql'
 
 const BLOCK_SUBGRAPH_ENDPOINT = BLOCKS_CLIENT
 
@@ -106,22 +105,6 @@ export const bscProvider = new StaticJsonRpcProvider(
   56,
 )
 
-const stableSwapABI = [
-  {
-    inputs: [],
-    name: 'get_virtual_price',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-]
-
 interface SplitFarmResult {
   normalFarms: any[]
   stableFarms: any[]
@@ -130,24 +113,41 @@ interface SplitFarmResult {
 export const BLOCKS_PER_DAY = (60 / 3) * 60 * 24
 
 const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
-  const swapContract = new Contract(stableFarm?.stableSwapAddress, stableSwapABI)
-
-  const latest: number = parseInt((await bscProvider.getBlockNumber())?.toString(), 10)
-
-  const virtualPrice = await swapContract.get_virtual_price()
-
-  let preVirtualPrice
+  const stableSwapAddress = stableFarm?.stableSwapAddress
 
   try {
-    preVirtualPrice = await swapContract.get_virtual_price({ blockTag: latest - BLOCKS_PER_DAY })
-  } catch (e) {
-    preVirtualPrice = 1 * 10 ** 18
+    const dayAgo = sub(new Date(), { days: 1 })
+
+    const dayAgoTimestamp = getUnixTime(dayAgo)
+
+    const blockDayAgo = await getBlockAtTimestamp(dayAgoTimestamp)
+
+    const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo } = await stableSwapClient.request(
+      gql`
+        query virtualPriceStableSwap($stableSwapAddress: String, $blockDayAgo: Int!) {
+          virtualPriceAtLatestBlock: pairs(id: $stableSwapAddress) {
+            virtualPrice
+          }
+          virtualPriceOneDayAgo: pairs(id: $stableSwapAddress, block: { number: $blockDayAgo }) {
+            virtualPrice
+          }
+        }
+      `,
+      { stableSwapAddress, blockDayAgo },
+    )
+
+    const virtualPrice = virtualPriceAtLatestBlock[0]?.virtualPrice
+    const preVirtualPrice = virtualPriceOneDayAgo[0]?.virtualPrice
+
+    const current = new BigNumber(virtualPrice)
+    const prev = new BigNumber(preVirtualPrice)
+
+    return current.minus(prev).div(prev)
+  } catch (error) {
+    console.error(error, '[LP APR Update] getAprsForStableFarm error')
   }
 
-  const current = new BigNumber(virtualPrice?.toString())
-  const prev = new BigNumber(preVirtualPrice?.toString())
-
-  return current.minus(prev).div(prev)
+  return new BigNumber('0')
 }
 
 function splitNormalAndStableFarmsReducer(result: SplitFarmResult, farm: any): SplitFarmResult {
