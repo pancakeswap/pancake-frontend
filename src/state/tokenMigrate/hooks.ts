@@ -1,16 +1,13 @@
 import { mainnetTokens } from 'config/constants/tokens'
 import { useTranslation } from 'contexts/Localization'
 import useENS from 'hooks/ENS/useENS'
-import { useMigrateExactIn, useMigrateExactOut } from 'hooks/Migrate'
 import { useCurrency } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Currency, CurrencyAmount, Mint } from 'peronio-sdk'
 import { tryParseAmount, useSwapState } from 'state/swap/hooks'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { isAddress } from 'utils'
-import {
-  Field,
-} from './actions'
+import { Field } from './actions'
 
 // TODO: Replace with functionality
 export function useMigrateTokenInfo(): {
@@ -23,10 +20,7 @@ export function useMigrateTokenInfo(): {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
-  const {
-    typedValue,
-    recipient,
-  } = useSwapState()
+  const { typedValue, recipient } = useSwapState()
   const independentField = Field.INPUT
   const inputCurrencyId = mainnetTokens.pV1.address
   const outputCurrencyId = mainnetTokens.pe.address
