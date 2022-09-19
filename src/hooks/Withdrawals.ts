@@ -3,9 +3,8 @@
 // import { formatUnits } from '@ethersproject/units'
 import { BigNumber } from 'ethers'
 import { mainnetTokens } from 'config/constants/tokens'
-import { Currency, CurrencyAmount, Withdraw, Percent, Price } from 'peronio-sdk'
+import { Currency, CurrencyAmount, Withdraw, Percent, Price, TokenAmount } from 'peronio-sdk'
 import JSBI from 'jsbi'
-import { MARKUP_DECIMALS } from 'config/constants'
 import { useEffect, useMemo, useState } from 'react'
 import { parseUnits } from 'ethers/lib/utils'
 import { usePeronioContract } from './useContract'
@@ -34,7 +33,7 @@ export function useWithdrawExactIn(currencyAmountIn?: CurrencyAmount, currencyOu
   const DECIMALS = mainnetTokens.pe.decimals
 
   const [markup, setMarkup] = useState<Percent>()
-  const [price, setPrice] = useState<Price>()
+  const [out, setOut] = useState<any>()
 
   // Get Markup
   useEffect(() => {
@@ -59,24 +58,18 @@ export function useWithdrawExactIn(currencyAmountIn?: CurrencyAmount, currencyOu
     }
 
     fetchBuyingPrice().then((collateralRatio) => {
-      setPrice(
-        new Price(
-          currencyAmountIn.currency,
-          currencyOut,
-          JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS)),
-          collateralRatio.toString(),
-        ),
-      )
+      setOut(collateralRatio)
     })
   }, [peronioContract, DECIMALS, currencyOut, currencyAmountIn])
 
   return useMemo(() => {
     // Needs Price
-    if (!price || !markup || !currencyAmountIn) {
+    if (!currencyAmountIn || !out) {
       return null
     }
-    return Withdraw.exactIn(currencyAmountIn, price)
-  }, [price, markup, currencyAmountIn])
+    const outAmmount  = new TokenAmount(mainnetTokens.pe, JSBI.BigInt(out))
+    return new Withdraw(currencyAmountIn, outAmmount )
+  }, [currencyAmountIn, out])
 }
 
 /**
