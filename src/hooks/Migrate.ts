@@ -5,7 +5,6 @@ import { BigNumber } from 'ethers'
 import { mainnetTokens } from 'config/constants/tokens'
 import { Currency, CurrencyAmount, Mint, Percent, Price } from 'peronio-sdk'
 import JSBI from 'jsbi'
-import { MARKUP_DECIMALS } from 'config/constants'
 import { useEffect, useMemo, useState } from 'react'
 import { useMigratorContract } from './useContract'
 
@@ -29,12 +28,12 @@ export function useMigrateExactIn(currencyAmountIn?: CurrencyAmount, currencyOut
     async function fetchQuote() {
       return new Percent(
         (await migratorContract.quote(currencyAmountIn)).toString(), // quote aca?
-        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(MARKUP_DECIMALS + 2)),
+        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS + 2)),
       )
     }
 
     fetchQuote().then(setQuote)
-  }, [currencyAmountIn, migratorContract])
+  }, [currencyAmountIn, migratorContract, DECIMALS])
 
   // Get Buying Price
   useEffect(() => {
@@ -90,7 +89,7 @@ export function useMigrateExactOut(currencyAmountOut?: CurrencyAmount, currencyI
     // async function fetchMarkup() {
     //   return new Percent(
     //     (await migratorContract.markup()).toString(),
-    //     JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(MARKUP_DECIMALS + 2)),
+    //     JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS + 2)),
     //   )
     // }
     // fetchMarkup().then(setMarkup)

@@ -5,7 +5,6 @@ import { BigNumber } from 'ethers'
 import { mainnetTokens } from 'config/constants/tokens'
 import { Currency, CurrencyAmount, Mint, Percent, Price } from 'peronio-sdk'
 import JSBI from 'jsbi'
-import { MARKUP_DECIMALS } from 'config/constants'
 import { useEffect, useMemo, useState } from 'react'
 import { parseUnits } from 'ethers/lib/utils'
 import { usePeronioContract } from './useContract'
@@ -33,12 +32,12 @@ export function useMintExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: 
     async function fetchMarkup() {
       return new Percent(
         (await peronioContract.markupFee()).toString(),
-        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(MARKUP_DECIMALS + 2)),
+        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS + 2)),
       )
     }
 
     fetchMarkup().then(setMarkup)
-  }, [peronioContract])
+  }, [peronioContract, DECIMALS])
 
   // Get Buying Price
   useEffect(() => {
@@ -99,12 +98,12 @@ export function useMintExactOut(currencyAmountOut?: CurrencyAmount, currencyIn?:
     async function fetchMarkup() {
       return new Percent(
         (await peronioContract.markupFee()).toString(),
-        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(MARKUP_DECIMALS + 2)),
+        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS + 2)),
       )
     }
 
     fetchMarkup().then(setMarkup)
-  }, [peronioContract])
+  }, [peronioContract, DECIMALS])
 
   return useMemo(() => {
     // Needs Price

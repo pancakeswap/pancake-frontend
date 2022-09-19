@@ -41,12 +41,12 @@ export function useWithdrawExactIn(currencyAmountIn?: CurrencyAmount, currencyOu
     async function fetchMarkup() {
       return new Percent(
         (await peronioContract.markupFee()).toString(),
-        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(MARKUP_DECIMALS + 2)),
+        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS + 2)),
       )
     }
 
     fetchMarkup().then(setMarkup)
-  }, [peronioContract])
+  }, [peronioContract, DECIMALS])
 
   // Get Buying Price
   useEffect(() => {
@@ -97,12 +97,12 @@ export function useWithdrawExactOut(currencyAmountOut?: CurrencyAmount, currency
     async function fetchMarkup() {
       return new Percent(
         (await peronioContract.markupFee()).toString(),
-        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(MARKUP_DECIMALS + 2)),
+        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS + 2)),
       )
     }
 
     fetchMarkup().then(setMarkup)
-  }, [peronioContract])
+  }, [peronioContract, DECIMALS])
 
   // Get Buying Price
   useEffect(() => {
