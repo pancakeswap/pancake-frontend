@@ -45,7 +45,7 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
   const { t } = useTranslation()
   const [duration, setDuration] = useState(() => weeksToSeconds(1))
   const { avgLockDurationsInSeconds } = useAvgLockDuration()
-  const { lockBalance, isLoading, totalLockedAmount, lockedStart, lockedEnd } = useUserLockedCakeStatus()
+  const { isLoading, lockedAmount, totalLockedAmount, lockedStart, lockedEnd } = useUserLockedCakeStatus()
   const { state, setPrincipalFromUSDValue, setPrincipalFromTokenValue, toggleEditingCurrency, setCalculatorMode } =
     useRoiCalculatorReducer(
       { stakingTokenPrice: earningTokenPrice, earningTokenPrice, autoCompoundFrequency: 0 },
@@ -141,9 +141,7 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
                 variant="tertiary"
                 style={{ textTransform: 'uppercase' }}
                 onClick={() =>
-                  setPrincipalFromUSDValue(
-                    getBalanceNumber(lockBalance.cakeAsBigNumber.times(earningTokenPrice)).toFixed(2),
-                  )
+                  setPrincipalFromUSDValue(getBalanceNumber(lockedAmount.times(earningTokenPrice)).toFixed(2))
                 }
               >
                 {t('My Balance')}
@@ -184,7 +182,7 @@ export default BCakeCalculator
 const CA = 0.5
 const CB = 5
 
-const getBCakeMultiplier = (
+export const getBCakeMultiplier = (
   userBalanceInFarm: BigNumber,
   userLockAmount: BigNumber,
   userLockDuration: BigNumber,
