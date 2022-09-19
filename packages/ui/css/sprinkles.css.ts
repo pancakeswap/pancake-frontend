@@ -1,7 +1,7 @@
 import { createSprinkles, defineProperties } from '@vanilla-extract/sprinkles'
 import { calc } from '@vanilla-extract/css-utils'
 
-import { Breakpoint, breakpointNames, breakpoints, mediaQueries } from './breakpoints'
+import { Breakpoint, breakpointNames, breakpoints } from './breakpoints'
 import { vars } from './vars.css'
 
 // Ensure reset has lowest specificity
@@ -109,6 +109,7 @@ const responsiveProperties = defineProperties({
       modal: 100,
       auto: 'auto',
     },
+    borderRadius: vars.radii,
     borderLeftRadius: vars.radii,
     borderRightRadius: vars.radii,
     borderTopLeftRadius: vars.radii,
@@ -167,13 +168,15 @@ const interactiveProperties = defineProperties({
   },
   defaultCondition: 'base',
   properties: {
+    background: vars.colors,
     backgroundColor: vars.colors,
     borderColor: vars.colors,
     color: vars.colors,
     outlineColor: vars.colors,
   },
   shorthands: {
-    bg: ['backgroundColor'],
+    bgc: ['backgroundColor'],
+    bg: ['background'],
   },
 })
 

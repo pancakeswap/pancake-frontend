@@ -18,17 +18,14 @@ const ModalWrapper = styled(m.div)`
   z-index: ${({ theme }) => theme.zIndices.modal - 1};
 `;
 
-export function ModalV2({
-  isOpen,
-  onDismiss,
-  closeOnOverlayClick,
-  children,
-}: {
+export interface ModalV2Props {
   isOpen?: boolean;
   onDismiss?: () => void;
   closeOnOverlayClick?: boolean;
   children?: React.ReactNode;
-}) {
+}
+
+export function ModalV2({ isOpen, onDismiss, closeOnOverlayClick, children }: ModalV2Props) {
   const handleOverlayDismiss = () => {
     if (closeOnOverlayClick) {
       onDismiss?.();

@@ -31,6 +31,8 @@ const useAuth = () => {
       } catch (error) {
         console.error(error)
         window?.localStorage?.removeItem(connectorLocalStorageKey)
+        throw error
+
         if (error instanceof ConnectorNotFoundError) {
           toastError(
             t('Provider Error'),

@@ -5,6 +5,7 @@ export interface TabMenuProps {
   onItemClick?: (index: number) => void;
   children: React.ReactElement[];
   fullWidth?: boolean;
+  gap?: string;
 }
 export interface TabProps extends ColorProps {
   isActive?: boolean;

@@ -15,11 +15,11 @@ const Wrapper = styled(Flex)<{ fullWidth?: boolean }>`
   scrollbar-width: none; /* Firefox */
 `;
 
-const Inner = styled(Flex)<{ fullWidth?: boolean }>`
+const Inner = styled(Flex)<{ fullWidth?: boolean; gap?: string }>`
   justify-content: space-between;
 
   & > button + button {
-    margin-left: 4px;
+    margin-left: ${({ gap }) => gap || "4px"};
   }
 
   & > button {
@@ -38,10 +38,11 @@ const ButtonMenu: React.FC<React.PropsWithChildren<TabMenuProps>> = ({
   onItemClick,
   children,
   fullWidth,
+  gap,
 }) => {
   return (
     <Wrapper p={["0 4px", "0 16px"]} fullWidth={fullWidth}>
-      <Inner fullWidth={fullWidth}>
+      <Inner fullWidth={fullWidth} gap={gap}>
         {Children.map(children, (child: ReactElement, index) => {
           const isActive = activeIndex === index;
           return cloneElement(child, {

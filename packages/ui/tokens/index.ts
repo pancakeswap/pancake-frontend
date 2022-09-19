@@ -59,7 +59,7 @@ export const tokens = {
     '40px': '40px',
   },
   shadows,
-}
+} as const
 
 export type Mode = 'light' | 'dark'
 export type Tokens = typeof tokens
