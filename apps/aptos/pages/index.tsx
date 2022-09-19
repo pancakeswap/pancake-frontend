@@ -14,8 +14,14 @@ import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Field, replaceSwapState, selectCurrency, switchCurrencies, typeInput, useSwapState } from 'state/swap'
+import { useTransactionAdder } from 'state/transactions/hooks'
 import { useUserSlippage } from 'state/user'
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from 'utils/exchange'
+import {
+  basisPointsToPercent,
+  computeSlippageAdjustedAmounts,
+  computeTradePriceBreakdown,
+  warningSeverity,
+} from 'utils/exchange'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { CommitButton } from '../components/CommitButton'
 
@@ -70,6 +76,7 @@ const SwapPage = () => {
   const trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
 
   const { sendTransactionAsync } = useSendTransaction()
+  const addTransaction = useTransactionAdder()
 
   const parsedAmounts = {
     [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
@@ -108,15 +115,57 @@ const SwapPage = () => {
 
   const swapCallback = useMemo(() => {
     if (trade) {
-      return () =>
-        sendTransactionAsync({
-          payload: AptosSwapRouter.swapCallParameters(trade, {
-            allowedSlippage: new Percent(JSBI.BigInt(50), BIPS_BASE),
-          }),
+      return async () => {
+        const payload = AptosSwapRouter.swapCallParameters(trade, {
+          allowedSlippage: new Percent(JSBI.BigInt(50), BIPS_BASE),
         })
+        console.info(payload)
+        return sendTransactionAsync({
+          payload,
+        }).then((tx) => {
+          const inputSymbol = trade.inputAmount.currency.symbol
+          const outputSymbol = trade.outputAmount.currency.symbol
+          const pct = basisPointsToPercent(allowedSlippage)
+          const inputAmount =
+            trade.tradeType === TradeType.EXACT_INPUT
+              ? trade.inputAmount.toSignificant(3)
+              : trade.maximumAmountIn(pct).toSignificant(3)
+          const outputAmount =
+            trade.tradeType === TradeType.EXACT_OUTPUT
+              ? trade.outputAmount.toSignificant(3)
+              : trade.minimumAmountOut(pct).toSignificant(3)
+
+          const summary = `Swap ${
+            trade.tradeType === TradeType.EXACT_OUTPUT ? 'max.' : ''
+          } ${inputAmount} ${inputSymbol} for ${
+            trade.tradeType === TradeType.EXACT_INPUT ? 'min.' : ''
+          } ${outputAmount} ${outputSymbol}`
+
+          const text =
+            trade.tradeType === TradeType.EXACT_OUTPUT
+              ? 'Swap max. %inputAmount% %inputSymbol% for %outputAmount% %outputSymbol%'
+              : 'Swap %inputAmount% %inputSymbol% for min. %outputAmount% %outputSymbol%'
+
+          addTransaction(tx, {
+            summary,
+            translatableSummary: {
+              text,
+              data: {
+                inputAmount,
+                inputSymbol,
+                outputAmount,
+                outputSymbol,
+              },
+            },
+            type: 'swap',
+          })
+
+          return tx
+        })
+      }
     }
     return undefined
-  }, [sendTransactionAsync, trade])
+  }, [addTransaction, allowedSlippage, sendTransactionAsync, trade])
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
@@ -276,13 +325,6 @@ const SwapPage = () => {
                   })
                   onPresentConfirmModal()
                 }
-                // if (trade) {
-                // sendTransactionAsync({
-                //   payload: AptosSwapRouter.swapCallParameters(trade, {
-                //     allowedSlippage: new Percent(JSBI.BigInt(50), BIPS_BASE),
-                //   }),
-                // }).then((r) => r.wait())
-                // }
               }}
             >
               {inputError ||

@@ -112,8 +112,7 @@ export class PetraConnector extends Connector {
   protected onNetworkChanged = (network: string) => {
     this.emit('change', { network })
   }
-  protected onDisconnect = (args: unknown) => {
-    console.info(args) // checking if it's working on petra
+  protected onDisconnect = () => {
     this.emit('disconnect')
   }
 }

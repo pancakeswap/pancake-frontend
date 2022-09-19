@@ -7,6 +7,7 @@ import Head from 'next/head'
 import Script from 'next/script'
 import { useStore } from 'state'
 import ListsUpdater from 'state/lists/updater'
+import TransactionUpdater from 'state/transactions/updater'
 
 declare module 'styled-components' {
   /* eslint-disable @typescript-eslint/no-empty-interface */
@@ -17,6 +18,7 @@ function Updaters() {
   return (
     <>
       <ListsUpdater />
+      <TransactionUpdater />
     </>
   )
 }

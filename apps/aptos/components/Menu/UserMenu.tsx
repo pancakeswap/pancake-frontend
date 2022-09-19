@@ -14,23 +14,20 @@ import {
   UserMenuVariant,
   WarningIcon,
 } from '@pancakeswap/uikit'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { usePendingTransactions } from 'state/transactions/hooks'
 import { useAuth } from '../../hooks/useAuth'
 import { ConnectWalletButton } from '../ConnectWalletButton'
 import WalletModal, { WalletView } from './WalletModal'
 
-// import { usePendingTransactions } from 'state/transactions/hooks'
-// import WalletModal, { WalletView } from './WalletModal'
-// import WalletUserMenuItem from './WalletUserMenuItem'
-
 const isWrongNetwork = false
-const hasPendingTransactions = false
 const UserMenu = () => {
   const { t } = useTranslation()
   const { account } = useAccount()
   const { logout } = useAuth()
   const isMounted = useIsMounted()
-  // const { hasPendingTransactions, pendingNumber } = usePendingTransactions()ail
+  const { hasPendingTransactions, pendingNumber } = usePendingTransactions()
+  const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
   const [userMenuText, setUserMenuText] = useState<string>('')
   const [userMenuVariable, setUserMenuVariable] = useState<UserMenuVariant>('default')
 
@@ -38,15 +35,16 @@ const UserMenu = () => {
   const [onPresentWalletModal] = useModal(<WalletModal initialView={WalletView.WALLET_INFO} />)
 
   const hasLowNativeBalance = data?.formatted && Number(data.formatted) >= 0.1
-  // useEffect(() => {
-  //   if (hasPendingTransactions) {
-  //     setUserMenuText(t('%num% Pending', { num: pendingNumber }))
-  //     setUserMenuVariable('pending')
-  //   } else {
-  //     setUserMenuText('')
-  //     setUserMenuVariable('default')
-  //   }
-  // }, [hasPendingTransactions, pendingNumber, t])
+
+  useEffect(() => {
+    if (hasPendingTransactions) {
+      setUserMenuText(t('%num% Pending', { num: pendingNumber }))
+      setUserMenuVariable('pending')
+    } else {
+      setUserMenuText('')
+      setUserMenuVariable('default')
+    }
+  }, [hasPendingTransactions, pendingNumber, t])
 
   // const onClickWalletMenu = (): void => {
   //   if (isWrongNetwork) {
@@ -66,11 +64,7 @@ const UserMenu = () => {
             {isWrongNetwork && <WarningIcon color="failure" width="24px" />}
           </Flex>
         </UserMenuItem>
-        <UserMenuItem
-          as="button"
-          disabled={isWrongNetwork}
-          // onClick={onPresentTransactionModal}
-        >
+        <UserMenuItem as="button" disabled={isWrongNetwork} onClick={onPresentTransactionModal}>
           {t('Recent Transactions')}
           {hasPendingTransactions && <RefreshIcon spin />}
         </UserMenuItem>

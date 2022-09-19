@@ -1,6 +1,7 @@
 import { useAccount, useBalance } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/aptos-swap-sdk'
+import { APTOS_COIN } from 'aptos'
 import { CircleLoader, Column, QuestionHelper, RowBetween, RowFixed, Text } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import useNativeCurrency from 'hooks/useNativeCurrency'
@@ -14,7 +15,7 @@ import { CurrencyLogo } from '../Logo'
 import ImportRow from './ImportRow'
 
 function currencyKey(currency: Currency): string {
-  return currency.isToken ? currency.address : currency.symbol
+  return currency.isToken ? currency.address : APTOS_COIN
 }
 
 const StyledBalanceText = styled(Text)`

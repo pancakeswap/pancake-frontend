@@ -1,8 +1,20 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, InjectedModalProps, Modal, PancakeToggle, QuestionHelper, Text, ThemeSwitcher } from '@pancakeswap/uikit'
-import { useAtom } from 'jotai'
+import {
+  Box,
+  Button,
+  Flex,
+  InjectedModalProps,
+  Input,
+  Modal,
+  PancakeToggle,
+  QuestionHelper,
+  Text,
+  ThemeSwitcher,
+} from '@pancakeswap/uikit'
+import { escapeRegExp } from '@pancakeswap/utils/escapeRegExp'
 import { useTheme } from 'next-themes'
-import { userAudioAtomWithLocalStorage } from 'state/user'
+import { useState } from 'react'
+import { useAudioPlay, useUserSlippage } from 'state/user'
 import styled from 'styled-components'
 
 const ScrollableContainer = styled(Flex)`
@@ -15,9 +27,138 @@ const ScrollableContainer = styled(Flex)`
     max-height: none;
   }
 `
+const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
+
+enum SlippageError {
+  InvalidInput = 'InvalidInput',
+  RiskyLow = 'RiskyLow',
+  RiskyHigh = 'RiskyHigh',
+}
+
+const SlippageSetting = () => {
+  const { t } = useTranslation()
+
+  const [userSlippageTolerance, setUserSlippageTolerance] = useUserSlippage()
+  const [slippageInput, setSlippageInput] = useState('')
+
+  const slippageInputIsValid =
+    slippageInput === '' || (userSlippageTolerance / 100).toFixed(2) === Number.parseFloat(slippageInput).toFixed(2)
+
+  let slippageError: SlippageError | undefined
+  if (slippageInput !== '' && !slippageInputIsValid) {
+    slippageError = SlippageError.InvalidInput
+  } else if (slippageInputIsValid && userSlippageTolerance < 50) {
+    slippageError = SlippageError.RiskyLow
+  } else if (slippageInputIsValid && userSlippageTolerance > 500) {
+    slippageError = SlippageError.RiskyHigh
+  } else {
+    slippageError = undefined
+  }
+
+  const parseCustomSlippage = (value: string) => {
+    if (value === '' || inputRegex.test(escapeRegExp(value))) {
+      setSlippageInput(value)
+
+      try {
+        const valueAsIntFromRoundedFloat = Number.parseInt((Number.parseFloat(value) * 100).toString())
+        if (!Number.isNaN(valueAsIntFromRoundedFloat) && valueAsIntFromRoundedFloat < 5000) {
+          setUserSlippageTolerance(valueAsIntFromRoundedFloat)
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  }
+
+  return (
+    <Flex flexDirection="column" mb="24px">
+      <Flex mb="12px">
+        <Text>{t('Slippage Tolerance')}</Text>
+        <QuestionHelper
+          text={t(
+            'Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.',
+          )}
+          placement="top-start"
+          ml="4px"
+        />
+      </Flex>
+      <Flex flexWrap="wrap">
+        <Button
+          mt="4px"
+          mr="4px"
+          scale="sm"
+          onClick={() => {
+            setSlippageInput('')
+            setUserSlippageTolerance(10)
+          }}
+          variant={userSlippageTolerance === 10 ? 'primary' : 'tertiary'}
+        >
+          0.1%
+        </Button>
+        <Button
+          mt="4px"
+          mr="4px"
+          scale="sm"
+          onClick={() => {
+            setSlippageInput('')
+            setUserSlippageTolerance(50)
+          }}
+          variant={userSlippageTolerance === 50 ? 'primary' : 'tertiary'}
+        >
+          0.5%
+        </Button>
+        <Button
+          mr="4px"
+          mt="4px"
+          scale="sm"
+          onClick={() => {
+            setSlippageInput('')
+            setUserSlippageTolerance(100)
+          }}
+          variant={userSlippageTolerance === 100 ? 'primary' : 'tertiary'}
+        >
+          1.0%
+        </Button>
+        <Flex alignItems="center">
+          <Box width="76px" mt="4px">
+            <Input
+              scale="sm"
+              inputMode="decimal"
+              pattern="^[0-9]*[.,]?[0-9]{0,2}$"
+              placeholder={(userSlippageTolerance / 100).toFixed(2)}
+              value={slippageInput}
+              onBlur={() => {
+                parseCustomSlippage((userSlippageTolerance / 100).toFixed(2))
+              }}
+              onChange={(event) => {
+                if (event.currentTarget.validity.valid) {
+                  parseCustomSlippage(event.target.value.replace(/,/g, '.'))
+                }
+              }}
+              isWarning={!slippageInputIsValid}
+              isSuccess={![10, 50, 100].includes(userSlippageTolerance)}
+            />
+          </Box>
+          <Text color="primary" bold ml="2px">
+            %
+          </Text>
+        </Flex>
+      </Flex>
+      {!!slippageError && (
+        <Text fontSize="14px" color={slippageError === SlippageError.InvalidInput ? 'red' : '#F3841E'} mt="8px">
+          {slippageError === SlippageError.InvalidInput
+            ? t('Enter a valid slippage percentage')
+            : slippageError === SlippageError.RiskyLow
+            ? t('Your transaction may fail')
+            : t('Your transaction may be frontrun')}
+        </Text>
+      )}
+    </Flex>
+  )
+}
 
 export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
-  const [audioPlay, setAudioPlay] = useAtom(userAudioAtomWithLocalStorage)
+  const [audioPlay, setAudioPlay] = useAudioPlay()
 
   const { t } = useTranslation()
   const { resolvedTheme, setTheme } = useTheme()
@@ -49,6 +190,7 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
             </Flex>
             <Toggle id="toggle-expert-mode-button" scale="md" checked={expertMode} onChange={handleExpertModeToggle} />
           </Flex> */}
+          <SlippageSetting />
           {/* TODO: aptos swap */}
           {/* <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">

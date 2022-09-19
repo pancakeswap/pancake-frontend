@@ -1,13 +1,12 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { BlockIcon, CheckmarkCircleIcon, Flex, Link, OpenNewIcon, RefreshIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-// import { TransactionDetails } from 'state/transactions/reducer'
-import { useActiveChainId } from 'hooks/useNetwork'
+import { useTranslation } from '@pancakeswap/localization'
+import { TransactionDetails } from 'state/transactions/reducer'
 import { getBlockExploreLink } from 'utils'
 
 interface TransactionRowProps {
-  // txn: TransactionDetails
-  txn?: any
+  txn: TransactionDetails
+  chainId: number
 }
 
 const TxnIcon = styled(Flex)`
@@ -33,21 +32,20 @@ const TxnLink = styled(Link)`
   }
 `
 
-const renderIcon = (txn: any) => {
+const renderIcon = (txn: TransactionDetails) => {
   if (!txn.receipt) {
     return <RefreshIcon spin width="24px" />
   }
 
-  return txn.receipt?.status === 1 || typeof txn.receipt?.status === 'undefined' ? (
+  return txn.receipt?.success ? (
     <CheckmarkCircleIcon color="success" width="24px" />
   ) : (
     <BlockIcon color="failure" width="24px" />
   )
 }
 
-const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = ({ txn }) => {
+const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = ({ txn, chainId }) => {
   const { t } = useTranslation()
-  const chainId = useActiveChainId()
 
   if (!txn) {
     return null

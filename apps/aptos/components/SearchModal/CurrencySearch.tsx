@@ -9,7 +9,7 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { FixedSizeList } from 'react-window'
 import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
 import { TagInfo, WrappedTokenInfo } from '@pancakeswap/token-lists'
-// import { useAudioModeManager } from 'state/user/hooks'
+import { useAudioPlay } from 'state/user'
 import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
 import { isAddress } from '../../utils'
 import CommonBases from './CommonBases'
@@ -106,8 +106,7 @@ function CurrencySearch({
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
 
   const { isMobile } = useMatchBreakpoints()
-  // const [audioPlay] = useAudioModeManager()
-  const audioPlay = false
+  const [audioPlay] = useAudioPlay()
 
   const native = useNativeCurrency()
 

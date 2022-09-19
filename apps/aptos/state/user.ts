@@ -11,7 +11,7 @@ const USER_AUDIO_PLAY_KEY = 'pcs:audio-play'
 
 const userAudioPlayAtom = atom('0')
 
-export const userAudioAtomWithLocalStorage = atom(
+const userAudioAtomWithLocalStorage = atom(
   (get) => get(userAudioPlayAtom),
   (_get, set, mode: boolean) => {
     const on = mode ? '1' : '0'
@@ -25,6 +25,10 @@ userAudioAtomWithLocalStorage.onMount = (set) => {
   if (item && (item === '0' || item === '1')) {
     set(item === '1')
   }
+}
+
+export function useAudioPlay() {
+  return useAtom(userAudioAtomWithLocalStorage)
 }
 
 const USER_SLIPPAGE_KEY = 'pcs:slippage'
@@ -99,8 +103,7 @@ export const useAddUserToken = () => {
     (serializedToken: SerializedToken) => {
       set((state) => {
         if (!state) {
-          // eslint-disable-next-line no-param-reassign
-          state = {}
+          return {}
         }
         state[serializedToken.chainId] = state[serializedToken.chainId] || {}
         state[serializedToken.chainId][serializedToken.address] = serializedToken

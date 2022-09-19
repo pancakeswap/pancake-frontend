@@ -17,7 +17,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 
 import WalletInfo from './WalletInfo'
-// import WalletTransactions from './WalletTransactions'
+import WalletTransactions from './WalletTransactions'
 
 export enum WalletView {
   WALLET_INFO,
@@ -79,7 +79,7 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
         {view === WalletView.WALLET_INFO && (
           <WalletInfo hasLowNativeBalance={hasLowNativeBalance} onDismiss={onDismiss} />
         )}
-        {/* {view === WalletView.TRANSACTIONS && <WalletTransactions />} */}
+        {view === WalletView.TRANSACTIONS && <WalletTransactions />}
       </ModalBody>
     </ModalContainer>
   )

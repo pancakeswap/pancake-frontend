@@ -4,15 +4,12 @@ import { getAccount } from '../accounts/account'
 import { ChainMismatchError, ConnectorNotFoundError, ProviderRpcError, UserRejectedRequestError } from '../errors'
 import { getNetwork } from '../network/network'
 import { getProvider } from '../provider'
+import { TransactionResponse } from './types'
 
 export type SendTransactionArgs = {
   /** Network name used to validate if the signer is connected to the target chain */
   networkName?: string
   payload?: Types.EntryFunctionPayload
-}
-
-interface TransactionResponse extends Types.PendingTransaction {
-  wait(opts?: { timeoutSecs?: number; checkSuccess?: boolean }): Promise<Types.Transaction>
 }
 
 export type SendTransactionResult = TransactionResponse
