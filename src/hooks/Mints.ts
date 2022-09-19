@@ -3,10 +3,10 @@
 // import { formatUnits } from '@ethersproject/units'
 import { BigNumber } from 'ethers'
 import { mainnetTokens } from 'config/constants/tokens'
-import { Currency, CurrencyAmount, Mint, Percent, Price, TokenAmount } from 'peronio-sdk'
+import { Currency, CurrencyAmount, Mint, Percent, Price } from 'peronio-sdk'
 import JSBI from 'jsbi'
 import { useEffect, useMemo, useState } from 'react'
-import { parseUnits, formatUnits } from 'ethers/lib/utils'
+import { parseUnits } from 'ethers/lib/utils'
 import { usePeronioContract } from './useContract'
 
 /**
@@ -25,7 +25,8 @@ export function useMintExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: 
   const DECIMALS = mainnetTokens.pe.decimals
 
   const [markup, setMarkup] = useState<Percent>()
-  const [out, setOut] = useState<any>()
+  const [price, setPrice] = useState<Price>()
+
   // Get Markup
   useEffect(() => {
     async function fetchMarkup() {
@@ -45,15 +46,20 @@ export function useMintExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: 
     }
     async function fetchBuyingPrice(): Promise<BigNumber> {
       const theAmount = parseUnits(currencyAmountIn.toFixed(), currencyAmountIn.currency.decimals)
-
-      const res: BigNumber = await peronioContract.quoteIn(theAmount)
-
-      return theAmount.mul(10 ** DECIMALS).div(res)
+      const quote: BigNumber = await peronioContract.quoteIn(theAmount)
+      return theAmount.mul(10 ** DECIMALS).div(quote)
     }
 
     fetchBuyingPrice()
       .then((buyingPrice) => {
-        setOut(buyingPrice)
+        setPrice(
+          new Price(
+            currencyAmountIn.currency,
+            currencyOut,
+            buyingPrice.toString(),
+            JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS)),
+          ),
+        )
       })
       .catch((e) => {
         console.error(e)
@@ -62,12 +68,11 @@ export function useMintExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: 
 
   return useMemo(() => {
     // Needs Price
-    if (!out || !markup || !currencyAmountIn) {
+    if (!price || !markup || !currencyAmountIn) {
       return null
     }
-    const currencyAmountOut = new TokenAmount(mainnetTokens.pe, JSBI.BigInt(out))
 
     // return Mint.exactOut(currencyAmountOut: CurrencyAmount, price: Price, markup: Percent)
-    return new Mint(currencyAmountIn, currencyAmountOut, markup)
-  }, [out, markup, currencyAmountIn])
+    return Mint.exactIn(currencyAmountIn, price, markup)
+  }, [price, markup, currencyAmountIn])
 }
