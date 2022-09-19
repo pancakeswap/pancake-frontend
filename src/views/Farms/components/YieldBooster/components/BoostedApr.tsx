@@ -24,7 +24,7 @@ function BoostedApr(props: BoostedAprPropsType) {
   const { boosterState, proxyAddress } = useContext(YieldBoosterStateContext)
   const { t } = useTranslation()
 
-  const boostedAPR = useGetBoostedAPR(userBalanceInFarm, lpTotalSupply, apr, lpRewardsApr)
+  const boostedAprFromFE = useGetBoostedAPR(userBalanceInFarm, lpTotalSupply, apr, lpRewardsApr)
 
   const multiplier = useBoostMultiplier({ pid, boosterState, proxyAddress })
 
@@ -44,7 +44,7 @@ function BoostedApr(props: BoostedAprPropsType) {
         <Text bold color="success" {...rest} fontSize={14} display="inline-block" mr="3px">
           {t('Up to')}
         </Text>
-        {`${userBalanceInFarm.eq(0) ? boostedAprFromSC : boostedAPR}%`}
+        {`${userBalanceInFarm.eq(0) ? boostedAprFromSC : boostedAprFromFE}%`}
       </>
     )
   // if (boostedAPR === '0') {
