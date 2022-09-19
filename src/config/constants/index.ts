@@ -5,7 +5,7 @@ import { mainnetTokens, testnetTokens } from './tokens'
 export const ROUTER_ADDRESS = '0x751D346B92f3dce8813E6b6E248a11C534F4BdEa'
 export const PERONIO_ADDRESS = mainnetTokens.pe.address
 export const PERONIO_V1_ADDRESS = mainnetTokens.pV1.address
-export const MIGRATOR_ADDRESS = '0xD379EEB40093e12d99726837A6a109829fF227a1'
+export const MIGRATOR_ADDRESS = '0xfe672A4b063b1895b2f6531a78a69c014614B2D8'
 export const MARKUP_DECIMALS = 4
 
 // a list of tokens by chain

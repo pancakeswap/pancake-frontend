@@ -40,7 +40,7 @@ export function useWithdrawExactIn(currencyAmountIn?: CurrencyAmount, currencyOu
   useEffect(() => {
     async function fetchMarkup() {
       return new Percent(
-        (await peronioContract.markup()).toString(),
+        (await peronioContract.markupFee()).toString(),
         JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(MARKUP_DECIMALS + 2)),
       )
     }
@@ -96,7 +96,7 @@ export function useWithdrawExactOut(currencyAmountOut?: CurrencyAmount, currency
   useEffect(() => {
     async function fetchMarkup() {
       return new Percent(
-        (await peronioContract.markup()).toString(),
+        (await peronioContract.markupFee()).toString(),
         JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(MARKUP_DECIMALS + 2)),
       )
     }

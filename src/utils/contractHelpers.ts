@@ -5,7 +5,7 @@ import { PoolCategory } from 'config/constants/types'
 import tokens, { mainnetTokens } from 'config/constants/tokens'
 
 // eslint-disable-next-line
-import { default as PeronioABI } from 'config/abi/PeronioV1.json'
+import { default as PeronioABI } from 'config/abi/Peronio.json'
 
 // eslint-disable-next-line
 import { default as PeronioV1ABI } from 'config/abi/PeronioV1.json'

@@ -32,7 +32,7 @@ export function useMintExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: 
   useEffect(() => {
     async function fetchMarkup() {
       return new Percent(
-        (await peronioContract.markup()).toString(),
+        (await peronioContract.markupFee()).toString(),
         JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(MARKUP_DECIMALS + 2)),
       )
     }
@@ -46,8 +46,12 @@ export function useMintExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: 
       return
     }
     async function fetchBuyingPrice(): Promise<BigNumber> {
+      console.info("FETCHING PRICE");
       const theAmount = parseUnits(currencyAmountIn.toFixed(), currencyAmountIn.currency.decimals)
-      return peronioContract.quoteIn(theAmount.toNumber())
+      console.info("AMOUNT ", theAmount)
+      const res = peronioContract.quoteIn(theAmount.toNumber())
+      console.info("RESULT  ", res)
+      return res
     }
 
     fetchBuyingPrice()
@@ -94,39 +98,13 @@ export function useMintExactOut(currencyAmountOut?: CurrencyAmount, currencyIn?:
   useEffect(() => {
     async function fetchMarkup() {
       return new Percent(
-        (await peronioContract.markup()).toString(),
+        (await peronioContract.markupFee()).toString(),
         JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(MARKUP_DECIMALS + 2)),
       )
     }
 
     fetchMarkup().then(setMarkup)
   }, [peronioContract])
-
-  // Get Buying Price
-  useEffect(() => {
-    if (!currencyIn || !currencyAmountOut) {
-      return
-    }
-    async function fetchBuyingPrice(): Promise<BigNumber> {
-      const theAmount = parseUnits(currencyAmountOut.toFixed(), currencyAmountOut.currency.decimals)
-      return peronioContract.quoteIn(theAmount.toNumber())
-    }
-
-    fetchBuyingPrice()
-      .then((buyingPrice) => {
-        setPrice(
-          new Price(
-            currencyIn,
-            currencyAmountOut.currency,
-            buyingPrice.toString(),
-            JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS)),
-          ),
-        )
-      })
-      .catch((e) => {
-        console.error(e)
-      })
-  }, [peronioContract, DECIMALS, currencyIn, currencyAmountOut])
 
   return useMemo(() => {
     // Needs Price

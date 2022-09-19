@@ -53,7 +53,7 @@ const Menu = (props) => {
       }
       onClick={() =>
         AddToken({
-          address: '0x01Ef17291DCf5037cc87cC8Db22C600dD524c521',
+          address: '0x78a486306D15E7111cca541F2f1307a1cFCaF5C4',
           symbol: 'P',
           decimals: 6,
           image: logo,

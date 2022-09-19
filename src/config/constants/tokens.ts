@@ -36,7 +36,7 @@ export const mainnetTokens = defineTokens({
     'PancakeSwap Token',
     'https://pancakeswap.finance/',
   ),
-  pe: new Token(MAINNET, '0x01Ef17291DCf5037cc87cC8Db22C600dD524c521', 6, 'P', 'Peronio', 'https://peronio.ar/'),
+  pe: new Token(MAINNET, '0x78a486306D15E7111cca541F2f1307a1cFCaF5C4', 6, 'P', 'Peronio', 'https://peronio.ar/'),
   pV1: new Token(MAINNET, '0xc2768beF7a6BB57F0FfA169a9ED4017c09696FF1', 6, 'PE', 'Peronio V1', 'https://peronio.ar/'),
   usdt: new Token(MAINNET, '0xc2132d05d31c914a87c6611c10748aeb04b58e8f', 6, 'USDT', 'Tether USD', 'https://tether.to/'),
   tlos: new Token(MAINNET, '0xb6C53431608E626AC81a9776ac3e999c5556717c', 18, 'TLOS', 'Telos', 'https://www.telos.net/'),

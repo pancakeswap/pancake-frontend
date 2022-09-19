@@ -5,7 +5,7 @@ export default {
   },
   migratorV1: {
     80001: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
-    137: '0xD379EEB40093e12d99726837A6a109829fF227a1',
+    137: '0xfe672A4b063b1895b2f6531a78a69c014614B2D8',
   },
   sousChef: {
     80001: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
