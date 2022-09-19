@@ -59,7 +59,7 @@ export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoos
 
   if (!account || isUndefinedOrNull(locked)) {
     state = YieldBoosterState.UNCONNECTED
-  } else if (!locked) {
+  } else if (!locked && stakedBalance.eq(0)) {
     // NOTE: depend on useCakeVaultUserData in Farm Component to check state
     state = YieldBoosterState.NO_LOCKED
   } else if (!proxyCreated) {
@@ -69,7 +69,7 @@ export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoos
   } else if (lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd) * 1000)) {
     // NOTE: duplicate logic in BCakeBoosterCard
     state = YieldBoosterState.LOCKED_END
-  } else if (!proxy?.stakedBalance.gt(0)) {
+  } else if (proxy?.stakedBalance.eq(0)) {
     state = YieldBoosterState.NO_LP
   } else if (!isActivePool && remainingCounts === 0) {
     state = YieldBoosterState.MAX
@@ -81,15 +81,7 @@ export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoos
 
   return {
     state,
-    shouldUseProxyFarm:
-      [
-        YieldBoosterState.DEACTIVE,
-        YieldBoosterState.ACTIVE,
-        YieldBoosterState.MAX,
-        YieldBoosterState.NO_LP,
-        YieldBoosterState.LOCKED_END,
-      ].includes(state) ||
-      (proxyCreated && state !== YieldBoosterState.NO_MIGRATE),
+    shouldUseProxyFarm: proxyCreated && stakedBalance.eq(0),
     refreshActivePool,
     refreshProxyAddress,
     proxyAddress,

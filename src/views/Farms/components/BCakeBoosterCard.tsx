@@ -66,12 +66,8 @@ const StyledCardFooter = styled(CardFooter)`
     background-color: ${({ theme }) => theme.colors.cardBorder};
   }
 `
-
-export const BCakeBoosterCard = () => {
+export const useBCakeTooltipContent = () => {
   const { t } = useTranslation()
-  const theme = useTheme()
-  const { isMobile } = useMatchBreakpoints()
-
   const tooltipContent = (
     <>
       <Box mb="20px">
@@ -87,6 +83,15 @@ export const BCakeBoosterCard = () => {
       </Box>
     </>
   )
+  return tooltipContent
+}
+
+export const BCakeBoosterCard = () => {
+  const { t } = useTranslation()
+  const theme = useTheme()
+  const { isMobile } = useMatchBreakpoints()
+
+  const tooltipContent = useBCakeTooltipContent()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, {
     placement: 'bottom-start',

@@ -26,7 +26,6 @@ const EarningsCell: React.FC<React.PropsWithChildren<EarningsCellProps>> = ({ po
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const { sousId, earningToken, poolCategory, userData, earningTokenPrice } = pool
-  const isManualCakePool = sousId === 0
 
   const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO
   const earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals)
@@ -46,7 +45,6 @@ const EarningsCell: React.FC<React.PropsWithChildren<EarningsCellProps>> = ({ po
       earningsDollarValue={earningTokenDollarBalance}
       sousId={sousId}
       isBnbPool={isBnbPool}
-      isCompoundPool={isManualCakePool}
     />,
   )
 

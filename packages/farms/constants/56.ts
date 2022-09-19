@@ -21,14 +21,7 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: CAKE_BNB_LP_MAINNET,
     token: bscTokens.cake,
     quoteToken: bscTokens.wbnb,
-  },
-  {
-    pid: 3,
-    v1pid: 252,
-    lpSymbol: 'BUSD-BNB LP',
-    lpAddress: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
-    token: bscTokens.busd,
-    quoteToken: bscTokens.wbnb,
+    boosted: true,
   },
   {
     pid: 39,
@@ -38,6 +31,23 @@ const farms: SerializedFarmConfig[] = [
     boosted: true,
     token: bscTokens.cake,
     quoteToken: bscTokens.busd,
+  },
+  {
+    pid: 47,
+    v1pid: 422,
+    lpSymbol: 'CAKE-USDT LP',
+    lpAddress: '0xA39Af17CE4a8eb807E076805Da1e2B8EA7D0755b',
+    token: bscTokens.cake,
+    quoteToken: bscTokens.usdt,
+    boosted: true,
+  },
+  {
+    pid: 3,
+    v1pid: 252,
+    lpSymbol: 'BUSD-BNB LP',
+    lpAddress: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
+    token: bscTokens.busd,
+    quoteToken: bscTokens.wbnb,
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
@@ -57,6 +67,13 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: bscTokens.wbnb,
     isCommunity: true,
     auctionHostingStartSeconds: 1663315200,
+  },
+  {
+    pid: 119,
+    lpSymbol: 'MONI-BNB LP',
+    lpAddress: '0xbcfd0d4a37fEb4dceAAeFa9da28CD833E5f04e9f',
+    token: bscTokens.moni,
+    quoteToken: bscTokens.wbnb,
   },
   {
     pid: 118,
@@ -620,14 +637,6 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'USDC-USDT LP',
     lpAddress: '0xec6557348085aa57c72514d67070dc863c0a5a8c',
     token: bscTokens.usdc,
-    quoteToken: bscTokens.usdt,
-  },
-  {
-    pid: 47,
-    v1pid: 422,
-    lpSymbol: 'CAKE-USDT LP',
-    lpAddress: '0xA39Af17CE4a8eb807E076805Da1e2B8EA7D0755b',
-    token: bscTokens.cake,
     quoteToken: bscTokens.usdt,
   },
   {

@@ -18,10 +18,24 @@ const mappingNetwork: Record<number, string> = {
   97: 'bsc-testnet',
 }
 
+const _binanceChainListener = async () =>
+  new Promise<void>((resolve) =>
+    Object.defineProperty(window, 'BinanceChain', {
+      get() {
+        return this.bsc
+      },
+      set(bsc) {
+        this.bsc = bsc
+
+        resolve()
+      },
+    }),
+  )
+
 export class BinanceWalletConnector extends InjectedConnector {
   readonly id = 'bsc'
 
-  readonly ready = typeof window !== 'undefined' && !!window.BinanceChain
+  readonly ready = typeof window !== 'undefined'
 
   provider?: Window['BinanceChain']
 
@@ -32,7 +46,7 @@ export class BinanceWalletConnector extends InjectedConnector {
   } = {}) {
     const options = {
       name: 'Binance',
-      shimDisconnect: true,
+      shimDisconnect: false,
       shimChainChangedDisconnect: true,
     }
     const chains = _chains?.filter((c) => !!mappingNetwork[c.id])
@@ -77,7 +91,12 @@ export class BinanceWalletConnector extends InjectedConnector {
     if (typeof window !== 'undefined') {
       // TODO: Fallback to `ethereum#initialized` event for async injection
       // https://github.com/MetaMask/detect-provider#synchronous-and-asynchronous-injection=
-      this.provider = window.BinanceChain
+      if (window.BinanceChain) {
+        this.provider = window.BinanceChain
+      } else {
+        await _binanceChainListener()
+        this.provider = window.BinanceChain
+      }
     }
     return this.provider
   }

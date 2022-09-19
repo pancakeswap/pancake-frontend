@@ -28,7 +28,6 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Deserialize
   const hasEarnings = earnings.gt(0)
   const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
   const formattedBalance = formatNumber(earningTokenBalance, 3, 3)
-  const isCompoundPool = sousId === 0
   const isBnbPool = poolCategory === PoolCategory.BINANCE
 
   const [onPresentCollect] = useModal(
@@ -39,7 +38,6 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Deserialize
       earningsDollarValue={earningTokenDollarBalance}
       sousId={sousId}
       isBnbPool={isBnbPool}
-      isCompoundPool={isCompoundPool}
     />,
   )
 
@@ -60,7 +58,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Deserialize
         <ActionTitles>{actionTitle}</ActionTitles>
         <ActionContent>
           <Heading>0</Heading>
-          <Button disabled>{isCompoundPool ? t('Collect') : t('Harvest')}</Button>
+          <Button disabled>{t('Harvest')}</Button>
         </ActionContent>
       </ActionContainer>
     )
@@ -109,7 +107,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Deserialize
           </>
         </Flex>
         <Button disabled={!hasEarnings} onClick={onPresentCollect}>
-          {isCompoundPool ? t('Collect') : t('Harvest')}
+          {t('Harvest')}
         </Button>
       </ActionContent>
     </ActionContainer>
