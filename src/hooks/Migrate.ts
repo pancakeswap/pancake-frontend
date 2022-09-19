@@ -27,8 +27,8 @@ export function useMigrateExactIn(currencyAmountIn?: CurrencyAmount, currencyOut
   useEffect(() => {
     async function fetchQuote() {
       return new Percent(
-        (await migratorContract.quote(currencyAmountIn)).toString(), // quote aca?
-        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS + 2)),
+        (await migratorContract.quote(currencyAmountIn)).toString(),
+        JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS)),
       )
     }
 
@@ -40,6 +40,7 @@ export function useMigrateExactIn(currencyAmountIn?: CurrencyAmount, currencyOut
     if (!currencyOut || !currencyAmountIn) {
       return
     }
+
     async function fetchBuyingPrice(): Promise<BigNumber> {
       return migratorContract.buyingPrice()
     }
@@ -69,63 +70,4 @@ export function useMigrateExactIn(currencyAmountIn?: CurrencyAmount, currencyOut
     // return Mint.exactOut(currencyAmountOut: CurrencyAmount, price: Price, markup: Percent)
     return Mint.exactIn(currencyAmountIn, price, quote)
   }, [price, quote, currencyAmountIn])
-}
-
-/**
- * Hook for Minting exact OUT
- * @param currencyAmountOut
- * @param currencyIn
- * @returns
- */
-export function useMigrateExactOut(currencyAmountOut?: CurrencyAmount, currencyIn?: Currency): Mint | null {
-  const migratorContract = useMigratorContract()
-  const DECIMALS = mainnetTokens.pe.decimals
-
-  const [markup, setMarkup] = useState<Percent>()
-  const [price, setPrice] = useState<Price>()
-
-  // Get Markup
-  useEffect(() => {
-    // async function fetchMarkup() {
-    //   return new Percent(
-    //     (await migratorContract.markup()).toString(),
-    //     JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS + 2)),
-    //   )
-    // }
-    // fetchMarkup().then(setMarkup)
-  }, [])
-
-  // Get Buying Price
-  useEffect(() => {
-    // if (!currencyIn || !currencyAmountOut) {
-    //   return
-    // }
-    // async function fetchBuyingPrice(): Promise<BigNumber> {
-    //   return migratorContract.buyingPrice()
-    // }
-    // fetchBuyingPrice()
-    //   .then((buyingPrice) => {
-    //     setPrice(
-    //       new Price(
-    //         currencyIn,
-    //         currencyAmountOut.currency,
-    //         buyingPrice.toString(),
-    //         JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS)),
-    //       ),
-    //     )
-    //   })
-    //   .catch((e) => {
-    //     console.error(e)
-    //   })
-  }, [])
-
-  return useMemo(() => {
-    // Needs Price
-    if (!price || !markup || !currencyAmountOut) {
-      return null
-    }
-
-    // return Mint.exactOut(currencyAmountOut: CurrencyAmount, price: Price, markup: Percent)
-    return Mint.exactOut(currencyAmountOut, price, markup)
-  }, [price, currencyAmountOut, markup])
 }
