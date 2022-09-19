@@ -275,7 +275,7 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAcce
             />
 
             <Box style={{ display: isShowAccessToken ? 'block' : 'none' }}>
-              <AccessRisk currency={currencies[Field.OUTPUT]} />
+              <AccessRisk inputCurrency={currencies[Field.INPUT]} outputCurrency={currencies[Field.OUTPUT]} />
             </Box>
 
             {isExpertMode && recipient !== null && !showWrap ? (

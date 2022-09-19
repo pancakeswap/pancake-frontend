@@ -1,87 +1,200 @@
-import { useState, useEffect, useMemo } from 'react'
-import { Currency, ChainId } from '@pancakeswap/sdk'
+import { useState, useEffect, useMemo, useCallback } from 'react'
+import { Currency } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Button, HelpIcon, useTooltip, Text, Link, useToast } from '@pancakeswap/uikit'
-import { fetchRiskToken, TokenRiskPhases, RiskTokenInfo } from 'views/Swap/hooks/fetchTokenRisk'
+import { fetchRiskToken, RiskTokenInfo } from 'views/Swap/hooks/fetchTokenRisk'
 import RiskMessage from 'views/Swap/components/AccessRisk/RiskMessage'
+import merge from 'lodash/merge'
+import pickBy from 'lodash/pickBy'
 
 interface AccessRiskProps {
-  currency: Currency
+  inputCurrency: Currency
+  outputCurrency: Currency
 }
 
-const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
+const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }) => {
   const { t } = useTranslation()
   const { toastInfo } = useToast()
 
-  const [isScanning, setIsScanning] = useState(false)
-  const [isFetchStatusSuccess, setIsFetchStatusSuccess] = useState(false)
   const [allTokenInfo, setAllTokenInfo] = useState<{ [key: number]: RiskTokenInfo }>({})
-  const [riskTokenInfo, setRiskTokenInfo] = useState<RiskTokenInfo>({
-    isSuccess: false,
-    address: '',
-    chainId: ChainId.BSC,
-    riskLevel: TokenRiskPhases[0],
-    riskResult: '',
-    scannedTs: 0,
-    riskLevelDescription: '',
-  })
+  const [currentRiskTokensInfo, setCurrentRiskTokensInfo] = useState<{
+    inputRiskTokenInfo?: RiskTokenInfo
+    outputRiskTokenInfo?: RiskTokenInfo
+  }>({})
+  const [isFetchStatusesSuccess, setIsFetchStatusesSuccess] = useState<{
+    inputRiskStatus?: boolean
+    outputRiskStatus?: boolean
+  }>({})
+  const [isTokensScanning, setIsTokensScanning] = useState<{
+    inputRiskScanning?: boolean
+    outputRiskScanning?: boolean
+  }>({})
 
-  useEffect(() => {
-    if (currency) {
-      setIsScanning(false)
-      setIsFetchStatusSuccess(false)
-
-      const { address, chainId } = currency as any
-      if (allTokenInfo) {
-        const list = allTokenInfo[chainId]
+  const setTokenInfoFromCache = useCallback(
+    (currency: Currency, type: 'input' | 'output') => {
+      if (currency) {
+        const { address, chainId } = currency as any
+        const list = allTokenInfo?.[chainId]
         if (list?.[address]) {
-          setRiskTokenInfo(list[address])
-          setIsFetchStatusSuccess(list[address].isSuccess)
+          setCurrentRiskTokensInfo((prevState) => ({
+            ...prevState,
+            [type === 'output' ? 'outputRiskTokenInfo' : 'inputRiskTokenInfo']: list[address],
+          }))
+          setIsFetchStatusesSuccess((prevState) => ({
+            ...prevState,
+            [type === 'output' ? 'outputRiskStatus' : 'inputRiskStatus']: list[address].isSuccess,
+          }))
+          setIsTokensScanning((prevState) => ({
+            ...prevState,
+            [type === 'output' ? 'outputRiskScanning' : 'inputRiskScanning']: false,
+          }))
+          return
         }
       }
-    }
-  }, [currency, allTokenInfo])
+      setCurrentRiskTokensInfo((prevState) => ({
+        ...prevState,
+        [type === 'output' ? 'outputRiskTokenInfo' : 'inputRiskTokenInfo']: undefined,
+      }))
+      setIsFetchStatusesSuccess((prevState) => ({
+        ...prevState,
+        [type === 'output' ? 'outputRiskStatus' : 'inputRiskStatus']: false,
+      }))
+      setIsTokensScanning((prevState) => ({
+        ...prevState,
+        [type === 'output' ? 'outputRiskScanning' : 'inputRiskScanning']: false,
+      }))
+    },
+    [allTokenInfo],
+  )
+
+  const saveRiskTokensInfo = useCallback(
+    ({
+      inputRiskTokenInfo,
+      outputRiskTokenInfo,
+    }: {
+      inputRiskTokenInfo?: RiskTokenInfo
+      outputRiskTokenInfo?: RiskTokenInfo
+    }) => {
+      const updatedRiskTokenList = inputRiskTokenInfo || outputRiskTokenInfo ? { ...allTokenInfo } : allTokenInfo
+      if (inputRiskTokenInfo) {
+        const { address, chainId } = inputRiskTokenInfo
+        merge(updatedRiskTokenList, {
+          [chainId]: {
+            [address]: {
+              ...inputRiskTokenInfo,
+              createDate: new Date().getTime(),
+            },
+          },
+        })
+      }
+      if (outputRiskTokenInfo) {
+        const { address, chainId } = outputRiskTokenInfo
+        merge(updatedRiskTokenList, {
+          [chainId]: {
+            [address]: {
+              ...outputRiskTokenInfo,
+              createDate: new Date().getTime(),
+            },
+          },
+        })
+      }
+
+      setCurrentRiskTokensInfo((prevState) => ({
+        ...prevState,
+        ...(inputRiskTokenInfo ? { inputRiskTokenInfo } : {}),
+        ...(outputRiskTokenInfo ? { outputRiskTokenInfo } : {}),
+      }))
+      setIsFetchStatusesSuccess((prevState) => ({
+        ...prevState,
+        ...(inputRiskTokenInfo ? { inputRiskStatus: inputRiskTokenInfo.isSuccess } : {}),
+        ...(outputRiskTokenInfo ? { outputRiskStatus: outputRiskTokenInfo.isSuccess } : {}),
+      }))
+      setAllTokenInfo(updatedRiskTokenList)
+    },
+    [allTokenInfo],
+  )
+
+  useEffect(() => {
+    setTokenInfoFromCache(inputCurrency, 'input')
+  }, [inputCurrency, setTokenInfoFromCache])
+
+  useEffect(() => {
+    setTokenInfoFromCache(outputCurrency, 'output')
+  }, [outputCurrency, setTokenInfoFromCache])
 
   const disabledButton = useMemo(() => {
-    if (currency) {
-      const { address } = currency as any
-      return isScanning || (address === riskTokenInfo.address && riskTokenInfo.isSuccess)
-    }
-    return false
-  }, [currency, riskTokenInfo, isScanning])
+    const inputTokenCurrency = inputCurrency as any
+    const outputTokenCurrency = outputCurrency as any
+    return (
+      (inputTokenCurrency?.isNative ||
+        isTokensScanning.inputRiskScanning ||
+        (inputTokenCurrency?.address === currentRiskTokensInfo.inputRiskTokenInfo?.address &&
+          currentRiskTokensInfo.inputRiskTokenInfo?.isSuccess)) &&
+      (outputTokenCurrency?.isNative ||
+        isTokensScanning.outputRiskScanning ||
+        (outputTokenCurrency?.address === currentRiskTokensInfo.outputRiskTokenInfo?.address &&
+          currentRiskTokensInfo.outputRiskTokenInfo?.isSuccess))
+    )
+  }, [outputCurrency, inputCurrency, currentRiskTokensInfo, isTokensScanning])
 
   const handleScan = async () => {
-    setIsScanning(true)
+    const currencies = { input: inputCurrency, output: outputCurrency }
+    const currenciesToScan = pickBy(currencies, (currency, type) => {
+      if (currency) {
+        const { address } = currency as any
+        return (
+          address &&
+          (address !==
+            currentRiskTokensInfo[type === 'output' ? 'outputRiskTokenInfo' : 'inputRiskTokenInfo']?.address ||
+            !currentRiskTokensInfo[type === 'output' ? 'outputRiskTokenInfo' : 'inputRiskTokenInfo']?.isSuccess)
+        )
+      }
+      return false
+    })
 
-    const { address, chainId, symbol } = currency as any
-    toastInfo(t('Scanning Risk'), t('Please wait until we scan the risk for %symbol% token', { symbol }))
+    setIsTokensScanning((prevState) => ({
+      ...prevState,
+      ...(currenciesToScan.input ? { inputRiskScanning: true } : {}),
+      ...(currenciesToScan.output ? { outputRiskScanning: true } : {}),
+    }))
 
-    const tokenRiskResult: RiskTokenInfo = await fetchRiskToken(address, chainId)
+    const currenciesToScanValues = Object.values(currenciesToScan)
+    const currenciesToScanSymbols = currenciesToScanValues.map((currency) => currency.symbol).join(',')
+    toastInfo(
+      t('Scanning Risk'),
+      t('Please wait until we scan the risk for %symbol% token', { symbol: currenciesToScanSymbols }),
+    )
+
+    let inputTokenRiskResult: RiskTokenInfo = null
+    let outputTokenRiskResult: RiskTokenInfo = null
+
+    if (currenciesToScan.input) {
+      const { address, chainId } = inputCurrency as any
+      inputTokenRiskResult = await fetchRiskToken(address, chainId)
+    }
+    if (currenciesToScan.output) {
+      const { address, chainId } = outputCurrency as any
+      outputTokenRiskResult = await fetchRiskToken(address, chainId)
+    }
 
     // To avoid response too slow, and user already change to new currency.
-    if (tokenRiskResult.isSuccess && tokenRiskResult.address === address) {
-      setIsScanning(false)
-      saveRiskTokenInfo(tokenRiskResult)
-    }
-  }
-
-  const saveRiskTokenInfo = (data: RiskTokenInfo) => {
-    const { address, chainId } = data
-    const getRiskTokenList = allTokenInfo
-    const newData = {
-      ...getRiskTokenList,
-      [chainId]: {
-        ...getRiskTokenList[chainId],
-        [address]: {
-          ...data,
-          createDate: new Date().getTime(),
-        },
-      },
-    }
-
-    setRiskTokenInfo(data)
-    setIsFetchStatusSuccess(data.isSuccess)
-    setAllTokenInfo(newData)
+    setIsTokensScanning((prevState) => ({
+      ...prevState,
+      ...(inputTokenRiskResult?.isSuccess && inputTokenRiskResult?.address === (inputCurrency as any)?.address
+        ? { inputRiskScanning: false }
+        : {}),
+      ...(outputTokenRiskResult?.isSuccess && outputTokenRiskResult?.address === (outputCurrency as any)?.address
+        ? { outputRiskScanning: false }
+        : {}),
+    }))
+    saveRiskTokensInfo({
+      ...(inputTokenRiskResult?.isSuccess && inputTokenRiskResult?.address === (inputCurrency as any)?.address
+        ? { inputRiskTokenInfo: inputTokenRiskResult }
+        : {}),
+      ...(outputTokenRiskResult?.isSuccess && outputTokenRiskResult?.address === (outputCurrency as any)?.address
+        ? { outputRiskTokenInfo: outputTokenRiskResult }
+        : {}),
+    })
   }
 
   // Tooltips
@@ -106,14 +219,21 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
     <>
       <Flex justifyContent="flex-end">
         <Button scale="xs" style={{ textTransform: 'uppercase' }} disabled={disabledButton} onClick={handleScan}>
-          {isScanning ? t('scanning...') : t('scan risk')}
+          {isTokensScanning.inputRiskScanning || isTokensScanning.outputRiskScanning
+            ? t('scanning...')
+            : t('scan risk')}
         </Button>
         {tooltipVisible && tooltip}
         <Flex ref={targetRef}>
           <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
         </Flex>
       </Flex>
-      {!isScanning && isFetchStatusSuccess && <RiskMessage currency={currency} riskTokenInfo={riskTokenInfo} />}
+      {!isTokensScanning.inputRiskScanning && isFetchStatusesSuccess.inputRiskStatus && (
+        <RiskMessage currency={inputCurrency} riskTokenInfo={currentRiskTokensInfo.inputRiskTokenInfo} />
+      )}
+      {!isTokensScanning.outputRiskScanning && isFetchStatusesSuccess.outputRiskStatus && (
+        <RiskMessage currency={outputCurrency} riskTokenInfo={currentRiskTokensInfo.outputRiskTokenInfo} />
+      )}
     </>
   )
 }
