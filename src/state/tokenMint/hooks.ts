@@ -7,9 +7,7 @@ import { Currency, CurrencyAmount, Mint } from 'peronio-sdk'
 import { tryParseAmount, useSwapState } from 'state/swap/hooks'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { isAddress } from 'utils'
-import {
-  Field,
-} from './actions'
+import { Field } from './actions'
 
 // TODO: Replace with functionality
 export function useMintTokenInfo(): {
@@ -43,10 +41,7 @@ export function useMintTokenInfo(): {
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
-  const mintOut = useMintExactOut(!isExactIn ? parsedAmount : null, outputCurrency)
-  const mintIn = useMintExactIn(isExactIn ? parsedAmount : null, outputCurrency)
-
-  const mint = isExactIn ? mintIn : mintOut
+  const mint = useMintExactIn(isExactIn ? parsedAmount : null, outputCurrency)
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
