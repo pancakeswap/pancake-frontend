@@ -41,7 +41,6 @@ interface IfoPoolInfo {
 export interface Ifo {
   id: string
   isActive: boolean
-  isCommunity?: boolean
   address: string
   name: string
   currency: Token
