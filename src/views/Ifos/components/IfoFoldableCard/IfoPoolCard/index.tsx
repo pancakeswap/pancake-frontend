@@ -36,7 +36,6 @@ export const cardConfig = (
     version: number
     needQualifiedPoints?: boolean
     needQualifiedNFT?: boolean
-    cIFO?: boolean
   },
 ): CardConfigReturn => {
   switch (poolId) {
@@ -52,10 +51,8 @@ export const cardConfig = (
           .map((criteria) => MSG_MAP[criteria])
           .filter(Boolean)
 
-        const title = meta.cIFO ? `${t('Private Sale')} (cIFO)` : `${t('Private Sale')}`
-
         return {
-          title,
+          title: t('Private Sale'),
           variant: 'blue',
           tooltip: msgs?.length ? (
             <>
@@ -115,7 +112,6 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
     version: ifo.version,
     needQualifiedNFT,
     needQualifiedPoints,
-    cIFO: !needQualifiedNFT && needQualifiedPoints,
   })
 
   const { hasActiveProfile, isLoading: isProfileLoading } = useProfile()
@@ -138,6 +134,8 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
     )
   }, [account, ifo, poolId, publicIfoData, vestingInformation, walletIfoData])
 
+  const cardTitle = ifo.cIFO ? `${config.title} (cIFO)` : config.title
+
   return (
     <>
       {tooltipVisible && tooltip}
@@ -145,7 +143,7 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
         <CardHeader p="16px 24px" variant={config.variant}>
           <Flex justifyContent="space-between" alignItems="center">
             <Text bold fontSize="20px" lineHeight={1}>
-              {config.title}
+              {cardTitle}
             </Text>
             <div ref={targetRef}>
               <HelpIcon />
