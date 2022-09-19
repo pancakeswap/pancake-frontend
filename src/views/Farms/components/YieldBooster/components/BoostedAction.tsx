@@ -2,13 +2,15 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon } from '@pancakeswap/uikit'
 import { ReactNode, useCallback, useContext } from 'react'
 
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 
 import BigNumber from 'bignumber.js'
 import useBoosterFarmHandlers from '../hooks/useBoosterFarmHandlers'
-import { YieldBoosterState } from '../hooks/useYieldBoosterState'
 import { useGetBoostedMultiplier } from '../hooks/useGetBoostedAPR'
+import { YieldBoosterState } from '../hooks/useYieldBoosterState'
 
+import { useUserBoosterStatus } from '../../../hooks/useUserBoosterStatus'
 import useBoostMultiplier from '../hooks/useBoostMultiplier'
 import ActionButton from './ActionButton'
 import CreateProxyButton from './CreateProxyButton'
@@ -30,13 +32,16 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({
   userBalanceInFarm,
   lpTotalSupply,
 }) => {
+  const { account } = useActiveWeb3React()
   const { t } = useTranslation()
   const { boosterState, refreshActivePool, refreshProxyAddress, proxyAddress } = useContext(YieldBoosterStateContext)
   const { isConfirming, ...handlers } = useBoosterFarmHandlers(farmPid, refreshActivePool)
   const boostMultiplierFromSC = useBoostMultiplier({ pid: farmPid, boosterState, proxyAddress })
   const boostedMultiplierFromFE = useGetBoostedMultiplier(userBalanceInFarm, lpTotalSupply)
   const boostMultiplier = userBalanceInFarm.eq(0) ? boostMultiplierFromSC : boostedMultiplierFromFE
-  const boostMultiplierDisplay = boostMultiplier.toLocaleString(undefined, { maximumFractionDigits: 3 })
+  const { remainingCounts } = useUserBoosterStatus(account)
+  const boostMultiplierWithMax = boosterState === YieldBoosterState.ACTIVE || remainingCounts > 0 ? boostMultiplier : 1
+  const boostMultiplierDisplay = boostMultiplierWithMax.toLocaleString(undefined, { maximumFractionDigits: 3 })
 
   const renderBtn = useCallback(() => {
     switch (boosterState) {
