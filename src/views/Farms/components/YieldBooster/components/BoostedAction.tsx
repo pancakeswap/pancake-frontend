@@ -33,12 +33,10 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({
   const { t } = useTranslation()
   const { boosterState, refreshActivePool, refreshProxyAddress, proxyAddress } = useContext(YieldBoosterStateContext)
   const { isConfirming, ...handlers } = useBoosterFarmHandlers(farmPid, refreshActivePool)
-  const boostMultiplier = useBoostMultiplier({ pid: farmPid, boosterState, proxyAddress })
+  const boostMultiplierFromSC = useBoostMultiplier({ pid: farmPid, boosterState, proxyAddress })
   const boostedMultiplierFromFE = useGetBoostedMultiplier(userBalanceInFarm, lpTotalSupply)
-  const boostMultiplierDisplay = (userBalanceInFarm.eq(0) ? boostMultiplier : boostedMultiplierFromFE).toLocaleString(
-    undefined,
-    { maximumFractionDigits: 3 },
-  )
+  const boostMultiplier = userBalanceInFarm.eq(0) ? boostMultiplierFromSC : boostedMultiplierFromFE
+  const boostMultiplierDisplay = boostMultiplier.toLocaleString(undefined, { maximumFractionDigits: 3 })
 
   const renderBtn = useCallback(() => {
     switch (boosterState) {
