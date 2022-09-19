@@ -3,7 +3,7 @@
 // import { formatUnits } from '@ethersproject/units'
 import { BigNumber } from 'ethers'
 import { mainnetTokens } from 'config/constants/tokens'
-import { Currency, CurrencyAmount, Mint, Percent, Price } from 'peronio-sdk'
+import { Currency, CurrencyAmount, Mint, Percent, Price, TokenAmount } from 'peronio-sdk'
 import JSBI from 'jsbi'
 import { useEffect, useMemo, useState } from 'react'
 import { parseUnits, formatUnits } from 'ethers/lib/utils'
@@ -25,8 +25,7 @@ export function useMintExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: 
   const DECIMALS = mainnetTokens.pe.decimals
 
   const [markup, setMarkup] = useState<Percent>()
-  const [price, setPrice] = useState<Price>()
-
+  const [out, setOut] = useState<any>()
   // Get Markup
   useEffect(() => {
     async function fetchMarkup() {
@@ -54,14 +53,7 @@ export function useMintExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: 
 
     fetchBuyingPrice()
       .then((buyingPrice) => {
-        setPrice(
-          new Price(
-            currencyAmountIn.currency,
-            currencyOut,
-            buyingPrice.toString(),
-            JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(DECIMALS)),
-          ),
-        )
+        setOut(buyingPrice)
       })
       .catch((e) => {
         console.error(e)
@@ -70,11 +62,12 @@ export function useMintExactIn(currencyAmountIn?: CurrencyAmount, currencyOut?: 
 
   return useMemo(() => {
     // Needs Price
-    if (!price || !markup || !currencyAmountIn) {
+    if (!out || !markup || !currencyAmountIn) {
       return null
     }
+    const currencyAmountOut = new TokenAmount(mainnetTokens.pe, JSBI.BigInt(out))
 
     // return Mint.exactOut(currencyAmountOut: CurrencyAmount, price: Price, markup: Percent)
-    return Mint.exactIn(currencyAmountIn, price, markup)
-  }, [price, markup, currencyAmountIn])
+    return new Mint(currencyAmountIn, currencyAmountOut, markup)
+  }, [out, markup, currencyAmountIn])
 }

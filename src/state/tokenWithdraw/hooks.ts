@@ -59,10 +59,9 @@ export function useWithdrawTokenInfo(): {
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
-  const withdrawIn = useWithdrawExactIn(isExactIn ? parsedAmount : null, outputCurrency)
-  const withdrawOut = useWithdrawExactOut(!isExactIn ? parsedAmount : null, outputCurrency)
+  const withdrawIn = useWithdrawExactIn(parsedAmount, outputCurrency)
 
-  const withdraw = isExactIn ? withdrawIn : withdrawOut
+  const withdraw = withdrawIn
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
