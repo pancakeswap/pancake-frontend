@@ -79,7 +79,7 @@ const Home: React.FC = () => {
         index={2}
         hasCurvedDivider={false}
       >
-        <div>Hola</div>
+        <MetricsSection />
       </PageSection>
     </>
   )
