@@ -2,30 +2,43 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon } from '@pancakeswap/uikit'
 import { ReactNode, useCallback, useContext } from 'react'
 
-import _isEmpty from 'lodash/isEmpty'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 
-import { YieldBoosterState } from '../hooks/useYieldBoosterState'
+import BigNumber from 'bignumber.js'
 import useBoosterFarmHandlers from '../hooks/useBoosterFarmHandlers'
+import { YieldBoosterState } from '../hooks/useYieldBoosterState'
+import { useGetBoostedMultiplier } from '../hooks/useGetBoostedAPR'
 
 import useBoostMultiplier from '../hooks/useBoostMultiplier'
 import ActionButton from './ActionButton'
 import CreateProxyButton from './CreateProxyButton'
-import { YieldBoosterStateContext } from './ProxyFarmContainer'
 import MigrateActionButton from './MigrateActionButton'
+import { YieldBoosterStateContext } from './ProxyFarmContainer'
 
 interface BoostedActionPropsType {
   farmPid: number
   title: (status: YieldBoosterState) => ReactNode
   desc: (actionBtn: ReactNode) => ReactNode
+  userBalanceInFarm: BigNumber
+  lpTotalSupply: BigNumber
 }
 
-const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({ farmPid, title, desc }) => {
+const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({
+  farmPid,
+  title,
+  desc,
+  userBalanceInFarm,
+  lpTotalSupply,
+}) => {
   const { t } = useTranslation()
   const { boosterState, refreshActivePool, refreshProxyAddress, proxyAddress } = useContext(YieldBoosterStateContext)
   const { isConfirming, ...handlers } = useBoosterFarmHandlers(farmPid, refreshActivePool)
   const boostMultiplier = useBoostMultiplier({ pid: farmPid, boosterState, proxyAddress })
-  const boostMultiplierDisplay = boostMultiplier.toLocaleString(undefined, { maximumFractionDigits: 3 })
+  const boostedMultiplierFromFE = useGetBoostedMultiplier(userBalanceInFarm, lpTotalSupply)
+  const boostMultiplierDisplay = (userBalanceInFarm.eq(0) ? boostMultiplier : boostedMultiplierFromFE).toLocaleString(
+    undefined,
+    { maximumFractionDigits: 3 },
+  )
 
   const renderBtn = useCallback(() => {
     switch (boosterState) {
