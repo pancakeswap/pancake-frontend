@@ -20,11 +20,12 @@ const useFetchVestingData = () => {
         }),
       )
 
+      const currentTimeStamp = new Date().getTime()
+
       return allData.filter(
         // eslint-disable-next-line array-callback-return, consistent-return
         (ifo) => {
           const { userVestingData } = ifo
-          const currentTimeStamp = new Date().getTime()
           const vestingStartTime = new BigNumber(userVestingData.vestingStartTime)
           const isPoolUnlimitedLive = vestingStartTime
             .plus(userVestingData[PoolIds.poolUnlimited].vestingInformationDuration)
