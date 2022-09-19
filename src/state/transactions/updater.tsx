@@ -93,7 +93,7 @@ export default function Updater(): null {
         (hash) =>
           transactions[hash].receipt?.status === 1 &&
           transactions[hash].type === 'non-bsc-farm' &&
-          transactions[hash].nonBscFarm.status === FarmTransactionStatus.PENDING,
+          transactions[hash].nonBscFarm?.status === FarmTransactionStatus.PENDING,
       )
       .forEach((hash) => {
         const steps = transactions[hash]?.nonBscFarm?.steps

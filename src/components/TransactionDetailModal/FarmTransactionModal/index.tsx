@@ -20,14 +20,16 @@ const FarmTransactionModal: React.FC<React.PropsWithChildren<FarmTransactionModa
   const pickedData = useMemo(() => allTransactions?.[pickedTx.chainId]?.[pickedTx.tx], [allTransactions, pickedTx])
 
   const modalTitle = useMemo(() => {
-    const { status, type } = pickedData?.nonBscFarm
-    const isPending = status === FarmTransactionStatus.PENDING
-
     let title = ''
-    if (type === NonBscFarmStepType.STAKE) {
-      title = isPending ? t('Staking') : t('Staked!')
-    } else if (type === NonBscFarmStepType.UNSTAKE) {
-      title = isPending ? t('Unstaking') : t('Unstaked!')
+
+    if (pickedData?.nonBscFarm.status) {
+      const { type, status } = pickedData?.nonBscFarm
+      const isPending = status === FarmTransactionStatus.PENDING
+      if (type === NonBscFarmStepType.STAKE) {
+        title = isPending ? t('Staking') : t('Staked!')
+      } else if (type === NonBscFarmStepType.UNSTAKE) {
+        title = isPending ? t('Unstaking') : t('Unstaked!')
+      }
     }
     return title
   }, [pickedData, t])
