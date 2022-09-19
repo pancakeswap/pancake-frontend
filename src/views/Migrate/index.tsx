@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import styled from 'styled-components'
 import { parseUnits } from '@ethersproject/units'
 
 import { CurrencyAmount, JSBI, Mint, TokenAmount } from 'peronio-sdk'
-import { Button, Text, ArrowDownIcon, Box, useModal, Flex, IconButton } from 'peronio-uikit'
+import { Button, ArrowDownIcon, Box, useModal, Flex } from 'peronio-uikit'
 import { RouteComponentProps } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import { useMigrateTokenInfo } from 'state/tokenMigrate/hooks'
@@ -30,31 +29,8 @@ import Page from '../Page'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import CurrencyInputHeader from './components/CurrencyInputHeader'
 
-const Label = styled(Text)`
-  font-size: 12px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.secondary};
-`
-
-const SwitchIconButton = styled(IconButton)`
-  box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
-  .icon-up-down {
-    display: none;
-  }
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.primary};
-    .icon-down {
-      display: none;
-      fill: white;
-    }
-    .icon-up-down {
-      display: block;
-      fill: white;
-    }
-  }
-`
-
-export default function MigrateView({ history }: RouteComponentProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function MigrateView(props: RouteComponentProps) {
   useDefaultsFromURLSearch()
   const { t } = useTranslation()
 
