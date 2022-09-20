@@ -110,6 +110,9 @@ const responsiveProperties = defineProperties({
       modal: 100,
       auto: 'auto',
     },
+    borderTop: {
+      '1': `1px solid ${vars.colors.cardBorder}`,
+    },
     borderRadius: vars.radii,
     borderTopLeftRadius: vars.radii,
     borderBottomRightRadius: vars.radii,

@@ -165,10 +165,21 @@ const TabContainer = ({ children }: PropsWithChildren) => {
   )
 }
 
+const docLangCodeMapping: Record<string, string> = {
+  it: 'italian',
+  ja: 'japanese',
+  fr: 'french',
+  tr: 'turkish',
+  vi: 'vietnamese',
+  id: 'indonesian',
+  'zh-cn': 'chinese',
+  'pt-br': 'portuguese-brazilian',
+}
+
 function MobileModal<T>({ wallets, login, ...props }: WalletModalV2Props<T>) {
   const {
     t,
-    currentLanguage: { locale },
+    currentLanguage: { code },
   } = useTranslation()
 
   const walletsToShow: WalletConfigV2<T>[] = wallets.filter((w) => w.installed || w.deepLink)
@@ -194,7 +205,7 @@ function MobileModal<T>({ wallets, login, ...props }: WalletModalV2Props<T>) {
               }}
             />
           </AtomBox>
-          <AtomBox p="24px">
+          <AtomBox p="24px" borderTop="1">
             <AtomBox>
               <Text textAlign="center" color="textSubtle" as="p" mb="24px">
                 {t('Haven’t got a crypto wallet yet?')}
@@ -202,7 +213,11 @@ function MobileModal<T>({ wallets, login, ...props }: WalletModalV2Props<T>) {
             </AtomBox>
             <Button
               as="a"
-              href="https://docs.pancakeswap.finance/get-started/connection-guide" // TODO: locale
+              href={
+                docLangCodeMapping[code]
+                  ? `https://docs.pancakeswap.finance/v/${docLangCodeMapping[code]}/get-started/connection-guide`
+                  : `https://docs.pancakeswap.finance/get-started/connection-guide`
+              }
               variant="subtle"
               width="100%"
               external
