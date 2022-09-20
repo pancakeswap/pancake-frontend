@@ -2,7 +2,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon } from '@pancakeswap/uikit'
 import { ReactNode, useCallback, useContext } from 'react'
 
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 
 import BigNumber from 'bignumber.js'
@@ -10,7 +9,6 @@ import useBoosterFarmHandlers from '../hooks/useBoosterFarmHandlers'
 import { useGetBoostedMultiplier } from '../hooks/useGetBoostedAPR'
 import { YieldBoosterState } from '../hooks/useYieldBoosterState'
 
-import { useUserBoosterStatus } from '../../../hooks/useUserBoosterStatus'
 import useBoostMultiplier from '../hooks/useBoostMultiplier'
 import ActionButton from './ActionButton'
 import CreateProxyButton from './CreateProxyButton'
@@ -32,7 +30,6 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({
   userBalanceInFarm,
   lpTotalSupply,
 }) => {
-  const { account } = useActiveWeb3React()
   const { t } = useTranslation()
   const { boosterState, refreshActivePool, refreshProxyAddress, proxyAddress } = useContext(YieldBoosterStateContext)
   const { isConfirming, ...handlers } = useBoosterFarmHandlers(farmPid, refreshActivePool)
