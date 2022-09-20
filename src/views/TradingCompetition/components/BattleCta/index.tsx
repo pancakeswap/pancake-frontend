@@ -14,7 +14,6 @@ import {
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { FINISHED, OVER, REGISTRATION } from 'config/constants/trading-competition/phases'
-import { useWallet } from 'hooks/useWallet'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import styled from 'styled-components'
@@ -75,7 +74,6 @@ const BattleCta: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
 }) => {
   const router = useRouter()
   const { t } = useTranslation()
-  const { onPresentConnectModal } = useWallet()
   const [onPresentRegisterModal] = useModal(
     <RegisterModal profile={profile} onRegisterSuccess={onRegisterSuccess} />,
     false,
@@ -163,10 +161,6 @@ const BattleCta: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
   const handleCtaClick = useCallback(() => {
     // All conditions when button isn't disabled
 
-    // No wallet connected
-    if (!account) {
-      onPresentConnectModal()
-    }
     // Wallet connected but user not registered
     if (account && !hasRegistered) {
       onPresentRegisterModal()
@@ -185,7 +179,6 @@ const BattleCta: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
     hasRegistered,
     isCompetitionLive,
     onPresentClaimModal,
-    onPresentConnectModal,
     onPresentRegisterModal,
     router,
   ])
