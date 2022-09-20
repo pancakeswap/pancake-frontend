@@ -32,7 +32,7 @@ const mapWithoutUrls = (tokenMap: TokenAddressMap, chainId: number) =>
 export function useAllTokens(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React()
   const tokenMap = useAtomValue(combinedTokenMapFromActiveUrlsAtom)
-  const userAddedTokens = useSelector(userAddedTokenSelector(chainId))
+  const userAddedTokens = useUserAddedTokens()
   return useMemo(() => {
     return (
       userAddedTokens
@@ -56,7 +56,7 @@ export function useAllTokens(): { [address: string]: Token } {
 export function useOfficialsAndUserAddedTokens(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React()
   const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
-  const userAddedTokens = useSelector(userAddedTokenSelector(chainId))
+  const userAddedTokens = useUserAddedTokens()
   return useMemo(() => {
     return (
       userAddedTokens
