@@ -26,7 +26,7 @@ const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
       <Button onClick={handleClick} {...props}>
         {children || <Trans>Connect Wallet</Trans>}
       </Button>
-      <WalletModalV2 isOpen={open} wallets={wallets} login={login} />
+      <WalletModalV2 isOpen={open} wallets={wallets} login={login} onDismiss={() => setOpen(false)} />
     </>
   )
 }

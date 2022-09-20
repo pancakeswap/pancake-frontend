@@ -17,7 +17,7 @@ const qrCode = async () => (await walletConnectConnector.getProvider()).connecto
 export const wallets: WalletConfigV2<ConnectorNames>[] = [
   {
     title: 'Metamask',
-    icon: '/images/wallets/metamask.png',
+    icon: 'https://cdn.pancakeswap.com/wallets/metamask.png',
     installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isMetaMask) && metaMaskConnector.ready,
     connectorId: ConnectorNames.MetaMask,
     deepLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
@@ -26,7 +26,7 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
   },
   {
     title: 'Binance Wallet',
-    icon: '/images/wallets/binance.png',
+    icon: 'https://cdn.pancakeswap.com/wallets/binance.png',
     installed: typeof window !== 'undefined' && Boolean(window.BinanceChain),
     connectorId: ConnectorNames.BSC,
     guide: {
@@ -40,14 +40,14 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
   },
   {
     title: 'Coinbase Wallet',
-    icon: '/images/wallets/coinbase.png',
+    icon: 'https://cdn.pancakeswap.com/wallets/coinbase.png',
     connectorId: ConnectorNames.WalletLink,
     installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isCoinbaseWallet),
     deepLink: 'https://go.cb-w.com/dapp?cb_url=https%3A%2F%2Fpancakeswap.finance%2F',
   },
   {
     title: 'Trust Wallet',
-    icon: '/images/wallets/trust.png',
+    icon: 'https://cdn.pancakeswap.com/wallets/trust.png',
     connectorId: ConnectorNames.Injected,
     installed:
       typeof window !== 'undefined' &&
@@ -62,48 +62,48 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
   },
   {
     title: 'WalletConnect',
-    icon: '/images/wallets/walletconnect.png',
+    icon: 'https://cdn.pancakeswap.com/wallets/walletconnect.png',
     installed: walletConnectConnector.ready,
     connectorId: ConnectorNames.WalletConnect,
     qrCode,
   },
   {
     title: 'Opera Wallet',
-    icon: '/images/wallets/opera.png',
+    icon: 'https://cdn.pancakeswap.com/wallets/opera.png',
     connectorId: ConnectorNames.Injected,
     installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isOpera),
     downloadLink: 'https://www.opera.com/crypto/next',
   },
   {
     title: 'Brave Wallet',
-    icon: '/images/wallets/brave.png',
+    icon: 'https://cdn.pancakeswap.com/wallets/brave.png',
     connectorId: ConnectorNames.Injected,
     installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isBraveWallet),
   },
   {
     title: 'MathWallet',
-    icon: '/images/wallets/mathwallet.png',
+    icon: 'https://cdn.pancakeswap.com/wallets/mathwallet.png',
     connectorId: ConnectorNames.Injected,
     installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isMathWallet),
     qrCode,
   },
   {
     title: 'TokenPocket',
-    icon: '/images/wallets/tokenpocket.png',
+    icon: 'https://cdn.pancakeswap.com/wallets/tokenpocket.png',
     connectorId: ConnectorNames.Injected,
     installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isTokenPocket),
     qrCode,
   },
   {
     title: 'SafePal',
-    icon: '/images/wallets/safepal.png',
+    icon: 'https://cdn.pancakeswap.com/wallets/safepal.png',
     connectorId: ConnectorNames.Injected,
     installed: typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isSafePal),
     qrCode,
   },
   {
     title: 'Coin98',
-    icon: '/images/wallets/coin98.png',
+    icon: 'https://cdn.pancakeswap.com/wallets/coin98.png',
     connectorId: ConnectorNames.Injected,
     installed:
       typeof window !== 'undefined' &&
@@ -112,14 +112,14 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
   },
   {
     title: 'Blocto',
-    icon: '/images/wallets/blocto.png',
+    icon: 'https://cdn.pancakeswap.com/wallets/blocto.png',
     connectorId: ConnectorNames.Injected,
     installed: typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBlocto),
     qrCode,
   },
   {
     title: 'Injected',
-    icon: '/images/wallets/account_balance_wallet_filled.svg',
+    icon: '/images/svg/account_balance_wallet_filled.svg',
     connectorId: ConnectorNames.Injected,
     installed: isMobileOnly && Boolean(window.ethereum),
   },

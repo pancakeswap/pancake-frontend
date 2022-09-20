@@ -5,6 +5,7 @@ import { AtomBox } from '@pancakeswap/ui/components/AtomBox'
 import {
   Button,
   Heading,
+  Image,
   LinkExternal,
   ModalV2,
   ModalV2Props,
@@ -15,8 +16,6 @@ import {
 import { Text } from '@pancakeswap/uikit/src/components/Text'
 import { lazy, PropsWithChildren, Suspense, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import { WalletIntro } from './components/Icons/WalletIntro'
-import { WordLock } from './components/Icons/WordLock'
 import {
   desktopWalletSelectionClass,
   modalWrapperClass,
@@ -54,21 +53,21 @@ interface WalletModalV2Props<T = unknown> extends ModalV2Props {
 }
 
 const StepDot = ({ active, place, onClick }: { active: boolean; place: 'left' | 'right'; onClick: () => void }) => (
-  <AtomBox
-    bgc={active ? 'secondary' : 'inputSecondary'}
-    width="56px"
-    height="8px"
-    onClick={onClick}
-    cursor="pointer"
-    borderLeftRadius={place === 'left' ? 'card' : '0'}
-    borderRightRadius={place === 'right' ? 'card' : '0'}
-  />
+  <AtomBox padding="4px" onClick={onClick} cursor="pointer">
+    <AtomBox
+      bgc={active ? 'secondary' : 'inputSecondary'}
+      width="56px"
+      height="8px"
+      borderLeftRadius={place === 'left' ? 'card' : '0'}
+      borderRightRadius={place === 'right' ? 'card' : '0'}
+    />
+  </AtomBox>
 )
 
 const steps = [
   {
     title: <Trans>Your first step entering the defi world</Trans>,
-    icon: WalletIntro,
+    icon: 'https://cdn.pancakeswap.com/wallets/wallet_intro.png',
     description: (
       <Trans>
         A Web3 Wallet allows you to send and receive crypto assets like bitcoin, BNB, ETH, NFTs and much more.
@@ -77,7 +76,7 @@ const steps = [
   },
   {
     title: <Trans>Login using wallet connection</Trans>,
-    icon: WordLock,
+    icon: 'https://cdn.pancakeswap.com/wallets/world_lock.png',
     description: (
       <Trans>
         Instead of setting up new accounts and passwords for every website, simply connect your wallet in one go.
@@ -91,8 +90,6 @@ const Tutorial = () => {
   const [step, setStep] = useState(0)
 
   const s = steps[step]
-
-  const Icon = s?.icon
 
   return (
     <AtomBox
@@ -110,13 +107,13 @@ const Tutorial = () => {
           <Heading as="h2" color="secondary">
             {s.title}
           </Heading>
-          <Icon m="auto" />
+          <Image m="auto" src={s.icon} width={198} height={178} />
           <Text maxWidth="368px" m="auto" small color="textSubtle">
             {s.description}
           </Text>
         </>
       )}
-      <AtomBox display="flex" style={{ gap: '4px' }}>
+      <AtomBox display="flex">
         <StepDot place="left" active={step === 0} onClick={() => setStep(0)} />
         <StepDot place="right" active={step === 1} onClick={() => setStep(1)} />
       </AtomBox>
@@ -175,7 +172,7 @@ function MobileModal<T>({ wallets, login, ...props }: WalletModalV2Props<T>) {
   const walletsToShow: WalletConfigV2<T>[] = wallets.filter((w) => w.installed || w.deepLink)
 
   return (
-    <ModalV2 width="full" {...props}>
+    <ModalV2 width="full" closeOnOverlayClick {...props}>
       <TabContainer>
         <AtomBox width="full">
           <Text color="textSubtle" small p="24px">
@@ -251,12 +248,13 @@ function WalletSelect<T>({
             onClick={() => onClick(wallet)}
           >
             <AtomBox
-              as="img"
+              asChild
               src={wallet.icon}
               className={walletButtonVariants({ selected: wallet.title === selected?.title })}
-              style={{ width: '50px' }}
               mb="4px"
-            />
+            >
+              <Image src={wallet.icon} width={50} height={50} />
+            </AtomBox>
             <Text fontSize="12px" textAlign="center">
               {wallet.title}
             </Text>
@@ -286,7 +284,7 @@ function WalletSelect<T>({
 }
 
 export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
-  const { wallets } = props
+  const { wallets, login, ...rest } = props
 
   const [selected, setSelected] = useState<WalletConfigV2<T> | null>(null)
   const [error, setError] = useState(false)
@@ -296,7 +294,7 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
   const connectToWallet = (wallet: WalletConfigV2<T>) => {
     setError(false)
     if (wallet.installed) {
-      props.login(wallet.connectorId)?.catch(() => {
+      login(wallet.connectorId)?.catch(() => {
         setError(true)
       })
     }
@@ -309,7 +307,7 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
   }
 
   return (
-    <ModalV2 {...props}>
+    <ModalV2 closeOnOverlayClick {...rest}>
       <TabContainer>
         <AtomBox
           display="flex"
@@ -353,6 +351,7 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
             {!selected && <Intro />}
             {selected && selected.installed && (
               <>
+                <Image src={selected.icon} width={108} height={108} />
                 <Heading as="h1" fontSize="20px" color="secondary">
                   {t('Opening')} {selected.title}
                 </Heading>
@@ -378,7 +377,7 @@ const Intro = () => {
       <Heading as="h1" fontSize="20px" color="secondary">
         {t('Haven’t got a wallet yet?')}
       </Heading>
-      <WalletIntro />
+      <Image src="https://cdn.pancakeswap.com/wallets/wallet_intro.png" width={198} height={178} />
       <Button as={LinkExternal} color="backgroundAlt" variant="subtle">
         Learn How to Connect
       </Button>
@@ -425,7 +424,7 @@ const ErrorContent = ({ onRetry }: { onRetry: () => void }) => {
   const { t } = useTranslation()
   return (
     <>
-      <Text>{t('Error connecting, please authorize wallet to access.')}</Text>
+      <Text maxWidth="246px">{t('Error connecting, please authorize wallet to access.')}</Text>
       <Button variant="subtle" onClick={onRetry}>
         {t('Retry')}
       </Button>

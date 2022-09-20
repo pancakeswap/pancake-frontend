@@ -20,25 +20,24 @@ export function ModalV2({ isOpen, onDismiss, closeOnOverlayClick, children, ...p
   const portal = getPortalRoot();
 
   if (portal) {
+    if (!isOpen) return null;
     return createPortal(
-      isOpen && (
-        <AtomBox
-          display="flex"
-          inset="0"
-          flexDirection="column"
-          justifyContent={{
-            xs: "flex-end",
-            md: "center",
-          }}
-          alignItems="center"
-          position="fixed"
-          zIndex="99"
-          {...props}
-        >
-          <Overlay onClick={handleOverlayDismiss} />
-          {children}
-        </AtomBox>
-      ),
+      <AtomBox
+        display="flex"
+        inset="0"
+        flexDirection="column"
+        justifyContent={{
+          xs: "flex-end",
+          md: "center",
+        }}
+        alignItems="center"
+        position="fixed"
+        zIndex="99"
+        {...props}
+      >
+        <Overlay onClick={handleOverlayDismiss} />
+        {children}
+      </AtomBox>,
       portal
     );
   }
