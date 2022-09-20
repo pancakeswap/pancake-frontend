@@ -6,7 +6,7 @@ import { fetchRiskToken, RiskTokenInfo } from 'views/Swap/hooks/fetchTokenRisk'
 import RiskMessage from 'views/Swap/components/AccessRisk/RiskMessage'
 import { tokenListFromOfficialsUrlsAtom } from 'state/lists/hooks'
 import merge from 'lodash/merge'
-import pick from 'lodash/pick'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import pickBy from 'lodash/pickBy'
 import { useAtomValue } from 'jotai'
 
@@ -15,11 +15,13 @@ interface AccessRiskProps {
   outputCurrency: Currency
 }
 
+const SUPPORTED_CHAINS = [ChainId.BSC]
+
 const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }) => {
   const { t } = useTranslation()
+  const { chainId: activeChainId } = useActiveChainId()
   const { toastInfo } = useToast()
   const tokenMap = useAtomValue(tokenListFromOfficialsUrlsAtom)
-  const filteredTokenMap = useMemo(() => pick(tokenMap, ChainId.BSC), [tokenMap])
 
   const [allTokenInfo, setAllTokenInfo] = useState<{ [key: number]: RiskTokenInfo }>({})
   const [currentRiskTokensInfo, setCurrentRiskTokensInfo] = useState<{
@@ -40,7 +42,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }
       if (currency) {
         const { address, chainId } = currency as any
         const list = allTokenInfo?.[chainId]
-        if (list?.[address] && (type === 'input' ? !filteredTokenMap?.[chainId]?.[address] : true)) {
+        if (list?.[address] && (type === 'input' ? !tokenMap?.[chainId]?.[address] : true)) {
           setCurrentRiskTokensInfo((prevState) => ({
             ...prevState,
             [type === 'output' ? 'outputRiskTokenInfo' : 'inputRiskTokenInfo']: list[address],
@@ -69,7 +71,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }
         [type === 'output' ? 'outputRiskScanning' : 'inputRiskScanning']: false,
       }))
     },
-    [filteredTokenMap, allTokenInfo],
+    [tokenMap, allTokenInfo],
   )
 
   const saveRiskTokensInfo = useCallback(
@@ -132,17 +134,18 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }
     const inputTokenCurrency = inputCurrency as any
     const outputTokenCurrency = outputCurrency as any
     return (
-      (inputTokenCurrency?.isNative ||
-        filteredTokenMap?.[inputTokenCurrency?.chainId]?.[inputTokenCurrency?.address] ||
+      !SUPPORTED_CHAINS.includes(activeChainId) ||
+      ((inputTokenCurrency?.isNative ||
+        tokenMap?.[inputTokenCurrency?.chainId]?.[inputTokenCurrency?.address] ||
         isTokensScanning.inputRiskScanning ||
         (inputTokenCurrency?.address === currentRiskTokensInfo.inputRiskTokenInfo?.address &&
           currentRiskTokensInfo.inputRiskTokenInfo?.isSuccess)) &&
-      (outputTokenCurrency?.isNative ||
-        isTokensScanning.outputRiskScanning ||
-        (outputTokenCurrency?.address === currentRiskTokensInfo.outputRiskTokenInfo?.address &&
-          currentRiskTokensInfo.outputRiskTokenInfo?.isSuccess))
+        (outputTokenCurrency?.isNative ||
+          isTokensScanning.outputRiskScanning ||
+          (outputTokenCurrency?.address === currentRiskTokensInfo.outputRiskTokenInfo?.address &&
+            currentRiskTokensInfo.outputRiskTokenInfo?.isSuccess)))
     )
-  }, [outputCurrency, inputCurrency, filteredTokenMap, currentRiskTokensInfo, isTokensScanning])
+  }, [outputCurrency, inputCurrency, tokenMap, currentRiskTokensInfo, isTokensScanning, activeChainId])
 
   const handleScan = async () => {
     const currencies = { input: inputCurrency, output: outputCurrency }
@@ -151,7 +154,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }
         const { address, chainId } = currency as any
         return (
           address &&
-          (type === 'input' ? !filteredTokenMap?.[chainId]?.[address] : true) &&
+          (type === 'input' ? !tokenMap?.[chainId]?.[address] : true) &&
           (address !==
             currentRiskTokensInfo[type === 'output' ? 'outputRiskTokenInfo' : 'inputRiskTokenInfo']?.address ||
             !currentRiskTokensInfo[type === 'output' ? 'outputRiskTokenInfo' : 'inputRiskTokenInfo']?.isSuccess)
