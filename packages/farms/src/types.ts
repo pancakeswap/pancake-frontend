@@ -50,6 +50,7 @@ export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
   tokenPriceVsQuote?: string
   poolWeight?: string
   boosted?: boolean
+  infoStableSwapAddress?: string
 }
 
 export interface AprMap {
