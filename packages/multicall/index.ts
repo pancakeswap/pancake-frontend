@@ -1,6 +1,5 @@
 import { Interface } from '@ethersproject/abi'
 import { CallOverrides, Contract } from '@ethersproject/contracts'
-import { Provider } from '@ethersproject/providers'
 import { ChainId } from '@pancakeswap/sdk'
 import multicallAbi from './Multicall.json'
 
@@ -40,7 +39,6 @@ interface MulticallV2Params {
   calls: Call[]
   chainId?: ChainId
   options?: MulticallOptions
-  provider?: Provider
 }
 
 export interface CallV3 extends Call {
@@ -75,9 +73,9 @@ export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: n
     return res as any
   }
 
-  const multicallv2: MultiCallV2 = async ({ abi, calls, chainId = ChainId.BSC, options, provider: _provider }) => {
+  const multicallv2: MultiCallV2 = async ({ abi, calls, chainId = ChainId.BSC, options }) => {
     const { requireSuccess = true, ...overrides } = options || {}
-    const multi = getMulticallContract(chainId, _provider || provider({ chainId }))
+    const multi = getMulticallContract(chainId, provider({ chainId }))
     if (!multi) throw new Error(`Multicall Provider missing for ${chainId}`)
     const itf = new Interface(abi)
 
