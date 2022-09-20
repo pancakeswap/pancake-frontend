@@ -1,7 +1,8 @@
 import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
+import { WalletFilledIcon } from '@pancakeswap/uikit'
 import type { ExtendEthereum } from 'global'
-import { isFirefox, isMobile, isMobileOnly } from 'react-device-detect'
-import { metaMaskConnector, walletConnectConnector, coinbaseConnector } from '../utils/wagmi'
+import { isFirefox, isMobileOnly } from 'react-device-detect'
+import { metaMaskConnector, walletConnectConnector } from '../utils/wagmi'
 
 export enum ConnectorNames {
   MetaMask = 'metaMask',
@@ -119,7 +120,7 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
   },
   {
     title: 'Injected',
-    icon: '/images/svg/account_balance_wallet_filled.svg',
+    icon: WalletFilledIcon,
     connectorId: ConnectorNames.Injected,
     installed: isMobileOnly && Boolean(window.ethereum),
   },

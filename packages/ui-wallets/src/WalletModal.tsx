@@ -10,10 +10,12 @@ import {
   ModalV2,
   ModalV2Props,
   MoreHorizontalIcon,
+  SvgProps,
   Tab,
   TabMenu,
 } from '@pancakeswap/uikit'
 import { Text } from '@pancakeswap/uikit/src/components/Text'
+import clsx from 'clsx'
 import { lazy, PropsWithChildren, Suspense, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import {
@@ -37,7 +39,7 @@ type LinkOfDevice = string | DeviceLink
 
 export interface WalletConfigV2<T = unknown> {
   title: string
-  icon: string
+  icon: string | FC<React.PropsWithChildren<SvgProps>>
   connectorId: T
   deepLink?: string
   installed?: boolean
@@ -236,6 +238,9 @@ function WalletSelect<T>({
       className={walletSelectWrapperClass}
     >
       {walletsToShow.map((wallet) => {
+        const isImage = typeof wallet.icon === 'string'
+        const Icon = wallet.icon
+
         return (
           <Button
             variant="text"
@@ -248,12 +253,18 @@ function WalletSelect<T>({
             onClick={() => onClick(wallet)}
           >
             <AtomBox
-              asChild
-              src={wallet.icon}
-              className={walletButtonVariants({ selected: wallet.title === selected?.title })}
+              bgc="dropdown"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              className={clsx(walletButtonVariants({ selected: wallet.title === selected?.title }), moreIconClass)}
               mb="4px"
             >
-              <Image src={wallet.icon} width={50} height={50} />
+              {isImage ? (
+                <Image src={Icon} width={50} height={50} />
+              ) : (
+                <Icon width={24} height={24} color="textSubtle" />
+              )}
             </AtomBox>
             <Text fontSize="12px" textAlign="center">
               {wallet.title}
