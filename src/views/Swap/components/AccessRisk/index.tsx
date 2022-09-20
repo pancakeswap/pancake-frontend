@@ -4,9 +4,10 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Button, HelpIcon, useTooltip, Text, Link, useToast } from '@pancakeswap/uikit'
 import { fetchRiskToken, RiskTokenInfo } from 'views/Swap/hooks/fetchTokenRisk'
 import RiskMessage from 'views/Swap/components/AccessRisk/RiskMessage'
-import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
+import { combinedTokenMapFromOfficialsUrlsAtom } from 'state/lists/hooks'
 import merge from 'lodash/merge'
 import pickBy from 'lodash/pickBy'
+import { useAtomValue } from 'jotai'
 
 interface AccessRiskProps {
   inputCurrency: Currency
@@ -16,7 +17,7 @@ interface AccessRiskProps {
 const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }) => {
   const { t } = useTranslation()
   const { toastInfo } = useToast()
-  const tokens = useOfficialsAndUserAddedTokens()
+  const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
 
   const [allTokenInfo, setAllTokenInfo] = useState<{ [key: number]: RiskTokenInfo }>({})
   const [currentRiskTokensInfo, setCurrentRiskTokensInfo] = useState<{
@@ -37,7 +38,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }
       if (currency) {
         const { address, chainId } = currency as any
         const list = allTokenInfo?.[chainId]
-        if (list?.[address] && (type === 'input' ? !tokens[address] : true)) {
+        if (list?.[address] && (type === 'input' ? !tokenMap?.[chainId]?.[address] : true)) {
           setCurrentRiskTokensInfo((prevState) => ({
             ...prevState,
             [type === 'output' ? 'outputRiskTokenInfo' : 'inputRiskTokenInfo']: list[address],
@@ -66,7 +67,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }
         [type === 'output' ? 'outputRiskScanning' : 'inputRiskScanning']: false,
       }))
     },
-    [tokens, allTokenInfo],
+    [tokenMap, allTokenInfo],
   )
 
   const saveRiskTokensInfo = useCallback(
@@ -144,10 +145,10 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }
     const currencies = { input: inputCurrency, output: outputCurrency }
     const currenciesToScan: { input?: Currency; output?: Currency } = pickBy(currencies, (currency, type) => {
       if (currency) {
-        const { address } = currency as any
+        const { address, chainId } = currency as any
         return (
           address &&
-          (type === 'input' ? !tokens[address] : true) &&
+          (type === 'input' ? !tokenMap?.[chainId]?.[address] : true) &&
           (address !==
             currentRiskTokensInfo[type === 'output' ? 'outputRiskTokenInfo' : 'inputRiskTokenInfo']?.address ||
             !currentRiskTokensInfo[type === 'output' ? 'outputRiskTokenInfo' : 'inputRiskTokenInfo']?.isSuccess)
