@@ -7,7 +7,6 @@ import { GELATO_NATIVE } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { useSelector } from 'react-redux'
 import {
   combinedTokenMapFromActiveUrlsAtom,
   combinedTokenMapFromOfficialsUrlsAtom,
@@ -15,7 +14,7 @@ import {
   useWarningTokenList,
 } from '../state/lists/hooks'
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
-import useUserAddedTokens, { userAddedTokenSelector } from '../state/user/hooks/useUserAddedTokens'
+import useUserAddedTokens from '../state/user/hooks/useUserAddedTokens'
 import { isAddress } from '../utils'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
 import useNativeCurrency from './useNativeCurrency'
