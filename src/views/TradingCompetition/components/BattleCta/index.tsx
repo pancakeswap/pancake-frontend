@@ -1,26 +1,27 @@
-import styled from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 import {
+  Box,
+  Button,
   Card,
   CardBody,
+  CheckmarkCircleIcon,
   Flex,
   LaurelLeftIcon,
   LaurelRightIcon,
-  Button,
-  CheckmarkCircleIcon,
-  useModal,
   Text,
-  Box,
   TwitterIcon,
+  useModal,
 } from '@pancakeswap/uikit'
-import { useWallet } from 'hooks/useWallet'
-import { useTranslation } from '@pancakeswap/localization'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { FINISHED, OVER, REGISTRATION } from 'config/constants/trading-competition/phases'
+import { useWallet } from 'hooks/useWallet'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
-import RegisterModal from '../RegisterModal'
+import styled from 'styled-components'
+import { CompetitionProps } from '../../types'
 import ClaimModal from '../ClaimModal'
 import { Heading2Text } from '../CompetitionHeadingText'
-import { CompetitionProps } from '../../types'
+import RegisterModal from '../RegisterModal'
 
 const StyledCard = styled(Card)`
   display: inline-flex;
@@ -227,9 +228,13 @@ const BattleCta: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
           )}
           {currentPhase.state !== FINISHED && (
             <Flex alignItems="flex-end">
-              <StyledButton disabled={isButtonDisabled} onClick={handleCtaClick}>
-                {getButtonText()}
-              </StyledButton>
+              {account ? (
+                <StyledButton disabled={isButtonDisabled} onClick={handleCtaClick}>
+                  {getButtonText()}
+                </StyledButton>
+              ) : (
+                <ConnectWalletButton />
+              )}
             </Flex>
           )}
         </Flex>

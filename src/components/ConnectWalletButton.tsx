@@ -1,6 +1,5 @@
-import { Button, ButtonProps } from '@pancakeswap/uikit'
-import { useWallet } from 'hooks/useWallet'
 import { WalletModalV2 } from '@pancakeswap/ui-wallets'
+import { Button, ButtonProps } from '@pancakeswap/uikit'
 import { wallets } from 'config/wallet'
 import useAuth from 'hooks/useAuth'
 // @ts-ignore
@@ -11,7 +10,6 @@ import Trans from './Trans'
 
 const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
   const handleActive = useActiveHandle()
-  const { onPresentConnectModal } = useWallet()
   const { login } = useAuth()
   const [open, setOpen] = useState(false)
 
