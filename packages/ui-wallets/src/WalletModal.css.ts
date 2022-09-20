@@ -5,12 +5,15 @@ import { recipe } from '@vanilla-extract/recipes'
 export const modalWrapperClass = style([
   style({
     display: 'flex',
-    height: '490px',
-    marginBottom: '50px',
   }),
   responsiveStyle({
     xs: {
       width: '100%',
+      marginBottom: 0,
+    },
+    md: {
+      marginBottom: '50px',
+      height: '490px',
     },
     lg: {
       width: '792px',
@@ -33,10 +36,12 @@ export const walletSelectWrapperClass = style(
   responsiveStyle({
     xs: {
       gridTemplateColumns: '1fr 1fr 1fr 1fr',
-      rowGap: '24px',
-      columnGap: '16px',
+      rowGap: '10px',
+      columnGap: '8px',
     },
     sm: {
+      rowGap: '24px',
+      columnGap: '16px',
       gridTemplateColumns: '1fr 1fr',
     },
     lg: {
@@ -57,4 +62,10 @@ export const walletButtonVariants = recipe({
       },
     },
   },
+})
+
+export const moreIconClass = style({
+  width: '50px',
+  height: '50px',
+  borderRadius: '12px',
 })

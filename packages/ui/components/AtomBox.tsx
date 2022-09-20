@@ -45,6 +45,6 @@ export const AtomBox = React.forwardRef<HTMLElement, Props>(
   },
 )
 
-export type StaticBoxProps = Parameters<typeof AtomBox>[0]
+export type AtomBoxProps = Parameters<typeof AtomBox>[0]
 
 AtomBox.displayName = 'AtomBox'

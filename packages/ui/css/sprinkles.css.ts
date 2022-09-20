@@ -105,6 +105,7 @@ const responsiveProperties = defineProperties({
       '40': 40,
       '50': 50,
       '75': 75,
+      '99': 99,
       '100': 100,
       modal: 100,
       auto: 'auto',

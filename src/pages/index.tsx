@@ -25,7 +25,7 @@ const IndexPage = ({ totalTx30Days, addressCount30Days, tvl }) => {
         },
       }}
     >
-      <WalletModalV2 isOpen defaultWallets={wallets} login={login} />
+      <WalletModalV2 isOpen wallets={wallets} login={login} />
       <Home />
     </SWRConfig>
   )
