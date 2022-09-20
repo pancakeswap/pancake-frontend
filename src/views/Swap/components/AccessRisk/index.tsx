@@ -131,6 +131,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }
     const outputTokenCurrency = outputCurrency as any
     return (
       (inputTokenCurrency?.isNative ||
+        tokenMap?.[inputTokenCurrency?.chainId]?.[inputTokenCurrency?.address] ||
         isTokensScanning.inputRiskScanning ||
         (inputTokenCurrency?.address === currentRiskTokensInfo.inputRiskTokenInfo?.address &&
           currentRiskTokensInfo.inputRiskTokenInfo?.isSuccess)) &&
@@ -139,7 +140,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }
         (outputTokenCurrency?.address === currentRiskTokensInfo.outputRiskTokenInfo?.address &&
           currentRiskTokensInfo.outputRiskTokenInfo?.isSuccess))
     )
-  }, [outputCurrency, inputCurrency, currentRiskTokensInfo, isTokensScanning])
+  }, [outputCurrency, inputCurrency, tokenMap, currentRiskTokensInfo, isTokensScanning])
 
   const handleScan = async () => {
     const currencies = { input: inputCurrency, output: outputCurrency }
