@@ -1945,5 +1945,7 @@
   "Boost Multiplier": "Множник бусту",
   "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "Оцінюваний множник бусту обчислюється на основі даних у реальному часі. Його фактичне значення може змінюватися після активування.",
   "locked for": "заблоковано на",
-  "My Duration": "Моя тривалість"
+  "My Duration": "Моя тривалість",
+  "Weeks": "Weeks",
+  "Boost multiplier calculation does not include profit from CAKE staking pool": "Boost multiplier calculation does not include profit from CAKE staking pool"
 }
