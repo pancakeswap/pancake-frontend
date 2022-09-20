@@ -1945,5 +1945,7 @@
   "Boost Multiplier": "Förbättringsmultiplikator",
   "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "Den uppskattade förbättringsmultiplikatorn beräknas med hjälp av realtidsdata. Den faktiska förbättringsmultiplikatorn kan komma att ändras vid aktivering.",
   "locked for": "låst i",
-  "My Duration": "Min varaktighet"
+  "My Duration": "Min varaktighet",
+  "Weeks": "Weeks",
+  "Boost multiplier calculation does not include profit from CAKE staking pool": "Boost multiplier calculation does not include profit from CAKE staking pool"
 }
