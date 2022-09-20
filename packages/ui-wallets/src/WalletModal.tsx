@@ -4,12 +4,13 @@ import { AtomBox } from '@pancakeswap/ui/components/AtomBox'
 import { Button, Heading, LinkExternal, ModalV2, ModalV2Props, Tab, TabMenu } from '@pancakeswap/uikit'
 import { Text } from '@pancakeswap/uikit/src/components/Text'
 import { PropsWithChildren, useState } from 'react'
-import { WalletQuestion } from './components/Icons/WalletQuestion'
+import { WalletIntro } from './components/Icons/WalletIntro'
+import { WordLock } from './components/Icons/WordLock'
 import {
+  desktopWalletSelectionClass,
   modalWrapperClass,
   walletButtonVariants,
   walletSelectWrapperClass,
-  desktopWalletSelectionClass,
 } from './WalletModal.css'
 
 type LinkOfTextAndLink = string | { text: string; url: string }
@@ -38,25 +39,66 @@ interface WalletModalV2Props<T = unknown> extends ModalV2Props {
   login: (connectorId: T) => Promise<void>
 }
 
+const StepDot = ({ active, place, onClick }: { active: boolean; place: 'left' | 'right'; onClick: () => void }) => (
+  <AtomBox
+    bgc={active ? 'secondary' : 'inputSecondary'}
+    width="56px"
+    height="8px"
+    onClick={onClick}
+    cursor="pointer"
+    borderLeftRadius={place === 'left' ? 'card' : '0'}
+    borderRightRadius={place === 'right' ? 'card' : '0'}
+  />
+)
+
+const steps = [
+  {
+    title: 'Your first step entering the defi world',
+    icon: WalletIntro,
+    description:
+      'A Web3 Wallet allows you to send and receive crypto assets like bitcoin, BNB, ETH, NFTs and much more.',
+  },
+  {
+    title: 'Login using wallet connection',
+    icon: WordLock,
+    description:
+      'Instead of setting up new accounts and passwords for every website, simply connect your wallet in one go.',
+  },
+]
+
 const Tutorial = () => {
+  const [step, setStep] = useState(0)
+
+  const s = steps[step]
+
+  const Icon = s?.icon
+
   return (
     <AtomBox
       display="flex"
       flexDirection="column"
       style={{ gap: '24px' }}
       mx="auto"
-      my="64px"
+      my="48px"
       textAlign="center"
       alignItems="center"
     >
-      <Heading as="h2" color="secondary">
-        Your first step entering the defi world
-      </Heading>
-      <WalletQuestion m="auto" />
-      <Text maxWidth="368px" m="auto" small color="textSubtle">
-        A Web3 Wallet allows you to send and receive crypto assets like bitcoin, BNB, ETH, NFTs and much more.
-      </Text>
-      <Button variant="subtle" external>
+      {s && (
+        <>
+          <Heading as="h2" color="secondary">
+            {s.title}
+          </Heading>
+          <Icon m="auto" />
+          <Text maxWidth="368px" m="auto" small color="textSubtle">
+            {s.description}
+          </Text>
+        </>
+      )}
+      <AtomBox display="flex" style={{ gap: '4px' }}>
+        <StepDot place="left" active={step === 0} onClick={() => setStep(0)} />
+        <StepDot place="right" active={step === 1} onClick={() => setStep(1)} />
+      </AtomBox>
+      <Button variant="subtle" external as={LinkExternal} color="backgroundAlt">
         Learn How to Connect
       </Button>
     </AtomBox>
@@ -102,15 +144,6 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
       props.login(wallet.connectorId)?.catch(() => {
         setError(true)
       })
-
-      // const getDesktopDeepLink = wallet.desktop?.getUri
-      // if (getDesktopDeepLink) {
-      //   // if desktop deep link, wait for uri
-      //   setTimeout(async () => {
-      //     const uri = await getDesktopDeepLink()
-      //     window.open(uri, safari ? '_blank' : '_self')
-      //   }, 0)
-      // }
     }
   }
 
@@ -144,7 +177,7 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
                   as={AtomBox}
                   display="flex"
                   alignItems="center"
-                  style={{ justifyContent: 'flex-start' }}
+                  style={{ justifyContent: 'flex-start', letterSpacing: 'normal', padding: '0' }}
                   flexDirection="column"
                   onClick={() => {
                     setSelected(wallet)
@@ -155,10 +188,10 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
                 >
                   <Icon
                     className={walletButtonVariants({ selected: wallet.title === selected?.title })}
-                    width="40px"
+                    width="50px"
                     mb="8px"
                   />
-                  <Text small textAlign="center">
+                  <Text fontSize="12px" textAlign="center">
                     {wallet.title}
                   </Text>
                 </Button>
@@ -194,7 +227,7 @@ const Intro = () => (
     <Heading as="h1" fontSize="20px" color="secondary">
       Haven’t got a wallet yet?
     </Heading>
-    <WalletQuestion />
+    <WalletIntro />
     <Button as={LinkExternal} color="backgroundAlt" variant="subtle">
       Learn How to Connect
     </Button>

@@ -30,7 +30,7 @@ const extendedSpace = {
   screenMd: breakpoints.md,
   screenLg: breakpoints.lg,
   screenXl: breakpoints.xl,
-}
+} as const
 
 const margin = { ...vars.space, auto: 'auto' }
 
@@ -110,8 +110,6 @@ const responsiveProperties = defineProperties({
       auto: 'auto',
     },
     borderRadius: vars.radii,
-    borderLeftRadius: vars.radii,
-    borderRightRadius: vars.radii,
     borderTopLeftRadius: vars.radii,
     borderBottomRightRadius: vars.radii,
     borderTopRightRadius: vars.radii,

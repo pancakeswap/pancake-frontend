@@ -5,9 +5,8 @@ import { recipe } from '@vanilla-extract/recipes'
 export const modalWrapperClass = style([
   style({
     display: 'flex',
-    maxHeight: '490px',
+    height: '490px',
     marginBottom: '50px',
-    height: '100%',
   }),
   responsiveStyle({
     xs: {
@@ -47,12 +46,14 @@ export const walletSelectWrapperClass = style(
 )
 
 export const walletButtonVariants = recipe({
+  base: {
+    borderRadius: 12,
+  },
   variants: {
     selected: {
       true: {
         background: '#7645D9',
         opacity: 0.5,
-        borderRadius: 11,
       },
     },
   },

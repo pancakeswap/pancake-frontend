@@ -1,6 +1,6 @@
-import { Svg } from '@pancakeswap/uikit'
+import { Svg, SvgProps } from '@pancakeswap/uikit'
 
-export function WalletQuestion(props) {
+export function WalletIntro(props: SvgProps) {
   return (
     <Svg
       width={198}

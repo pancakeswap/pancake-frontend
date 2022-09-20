@@ -36,6 +36,7 @@ export const tokens = {
     '24px': '24px',
     '32px': '32px',
     '48px': '48px',
+    '56px': '56px',
     '64px': '64px',
   },
   borderWidths: {
