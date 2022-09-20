@@ -10,6 +10,7 @@ import { useFarmFromPid, useFarmUser, useLpTokenPrice } from 'state/farms/hooks'
 import styled from 'styled-components'
 import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
 import useBoostMultiplier from '../YieldBooster/hooks/useBoostMultiplier'
+import { useGetBoostedMultiplier } from '../YieldBooster/hooks/useGetBoostedAPR'
 
 const ApyLabelContainer = styled(Flex)`
   cursor: pointer;
@@ -58,17 +59,18 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   const { tokenBalance, stakedBalance, proxy } = useFarmUser(pid)
   const { lpTotalSupply } = useFarmFromPid(pid)
   const { boosterState, proxyAddress } = useContext(YieldBoosterStateContext)
-  const boostMultiplier = useBoostMultiplier({ pid, boosterState, proxyAddress })
+  const userBalanceInFarm = stakedBalance.plus(tokenBalance).gt(0)
+    ? stakedBalance.plus(tokenBalance)
+    : proxy.stakedBalance.plus(proxy.tokenBalance)
+  const boosterMultiplierFromFE = useGetBoostedMultiplier(userBalanceInFarm, lpTotalSupply)
+  const boostMultiplierFromSC = useBoostMultiplier({ pid, boosterState, proxyAddress })
+  const boostMultiplier = userBalanceInFarm.eq(0) ? boostMultiplierFromSC : boosterMultiplierFromFE
   const boostMultiplierDisplay = boostMultiplier.toLocaleString(undefined, { maximumFractionDigits: 3 })
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal
       pid={pid}
       linkLabel={t('Get %symbol%', { symbol: lpLabel })}
-      stakingTokenBalance={
-        stakedBalance.plus(tokenBalance).gt(0)
-          ? stakedBalance.plus(tokenBalance)
-          : proxy.stakedBalance.plus(proxy.tokenBalance)
-      }
+      stakingTokenBalance={userBalanceInFarm}
       stakingTokenSymbol={lpSymbol}
       stakingTokenPrice={lpPrice.toNumber()}
       earningTokenPrice={cakePrice.toNumber()}
