@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Token } from '@pancakeswap/sdk'
 import { createSelector } from '@reduxjs/toolkit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -13,5 +14,5 @@ export const userAddedTokenSelector = (chainId: number) =>
   )
 export default function useUserAddedTokens(): Token[] {
   const { chainId } = useActiveWeb3React()
-  return useSelector(userAddedTokenSelector(chainId))
+  return useSelector(useMemo(() => userAddedTokenSelector(chainId), [chainId]))
 }
