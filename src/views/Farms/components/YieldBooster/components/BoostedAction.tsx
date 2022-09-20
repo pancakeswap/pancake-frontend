@@ -39,9 +39,7 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({
   const boostMultiplierFromSC = useBoostMultiplier({ pid: farmPid, boosterState, proxyAddress })
   const boostedMultiplierFromFE = useGetBoostedMultiplier(userBalanceInFarm, lpTotalSupply)
   const boostMultiplier = userBalanceInFarm.eq(0) ? boostMultiplierFromSC : boostedMultiplierFromFE
-  const { remainingCounts } = useUserBoosterStatus(account)
-  const boostMultiplierWithMax = boosterState === YieldBoosterState.ACTIVE || remainingCounts > 0 ? boostMultiplier : 1
-  const boostMultiplierDisplay = boostMultiplierWithMax.toLocaleString(undefined, { maximumFractionDigits: 3 })
+  const boostMultiplierDisplay = boostMultiplier.toLocaleString(undefined, { maximumFractionDigits: 3 })
 
   const renderBtn = useCallback(() => {
     switch (boosterState) {
