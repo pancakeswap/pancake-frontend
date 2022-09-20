@@ -1946,6 +1946,6 @@
   "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "Il moltiplicatore di potenziamento stimato viene calcolato utilizzando dati in tempo reale. Il moltiplicatore di potenziamento effettivo può cambiare al momento dell'attivazione.",
   "locked for": "bloccato per",
   "My Duration": "La mia durata",
-  "Weeks": "Weeks",
-  "Boost multiplier calculation does not include profit from CAKE staking pool": "Boost multiplier calculation does not include profit from CAKE staking pool"
+  "Weeks": "Settimane",
+  "Boost multiplier calculation does not include profit from CAKE staking pool": "Il calcolo del moltiplicatore del potenziamento non include il profitto dallo staking pool di CAKE"
 }
