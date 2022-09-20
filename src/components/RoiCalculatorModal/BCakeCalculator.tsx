@@ -86,6 +86,14 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, {
     placement: 'bottom-start',
   })
+
+  const {
+    targetRef: myBalanceTargetRef,
+    tooltip: myBalanceTooltip,
+    tooltipVisible: myBalanceTooltipVisible,
+  } = useTooltip(t('Boost multiplier calculation does not include profit from CAKE staking pool'), {
+    placement: 'bottom-start',
+  })
   const theme = useTheme()
 
   return (
@@ -133,19 +141,22 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
               >
                 $1000
               </Button>
-              <Button
-                disabled={!account || isLoading || lockedAmount.eq(0)}
-                scale="xs"
-                p="4px 16px"
-                width="128px"
-                variant="tertiary"
-                style={{ textTransform: 'uppercase' }}
-                onClick={() =>
-                  setPrincipalFromUSDValue(getBalanceNumber(lockedAmount.times(earningTokenPrice)).toFixed(2))
-                }
-              >
-                {t('My Balance')}
-              </Button>
+              {myBalanceTooltipVisible && myBalanceTooltip}
+              <Box ref={myBalanceTargetRef}>
+                <Button
+                  disabled={!account || isLoading || lockedAmount.eq(0)}
+                  scale="xs"
+                  p="4px 16px"
+                  width="128px"
+                  variant="tertiary"
+                  style={{ textTransform: 'uppercase' }}
+                  onClick={() =>
+                    setPrincipalFromUSDValue(getBalanceNumber(lockedAmount.times(earningTokenPrice)).toFixed(2))
+                  }
+                >
+                  {t('My Balance')}
+                </Button>
+              </Box>
             </Flex>
             <LockDurationField
               duration={duration}
@@ -190,14 +201,6 @@ export const getBCakeMultiplier = (
   lpBalanceOfFarm: BigNumber,
   averageLockDuration: BigNumber,
 ) => {
-  // console.log({
-  //   userBalanceInFarm: userBalanceInFarm.toString(),
-  //   userLockAmount: userLockAmount.toString(),
-  //   userLockDuration: userLockDuration.toString(),
-  //   totalLockAmount: totalLockAmount.toString(),
-  //   lpBalanceOfFarm: lpBalanceOfFarm.toString(),
-  //   averageLockDuration: averageLockDuration.toString(),
-  // })
   const dB = userBalanceInFarm.times(CA)
   const aBPart1 = lpBalanceOfFarm.times(userLockAmount).times(userLockDuration)
   const aBPart3 = totalLockAmount.times(averageLockDuration)
