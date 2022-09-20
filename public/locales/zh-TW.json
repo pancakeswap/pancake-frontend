@@ -1945,5 +1945,7 @@
   "Boost Multiplier": "助推倍數",
   "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "估計的助推倍數是透過即時資料計算出來的。實際的助推倍數可能會在啟動時發生變化。",
   "locked for": "鎖定持續時間",
-  "My Duration": "我的持續時間"
+  "My Duration": "我的持續時間",
+  "Weeks": "Weeks",
+  "Boost multiplier calculation does not include profit from CAKE staking pool": "Boost multiplier calculation does not include profit from CAKE staking pool"
 }
