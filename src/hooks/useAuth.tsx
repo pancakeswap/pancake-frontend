@@ -33,24 +33,24 @@ const useAuth = () => {
         window?.localStorage?.removeItem(connectorLocalStorageKey)
         throw error
 
-        if (error instanceof ConnectorNotFoundError) {
-          toastError(
-            t('Provider Error'),
-            <Box>
-              <Text>{t('No provider was found')}</Text>
-              <LinkExternal href="https://docs.pancakeswap.finance/get-started/connection-guide">
-                {t('Need help ?')}
-              </LinkExternal>
-            </Box>,
-          )
-          return
-        }
-        if (error instanceof UserRejectedRequestError) {
-          return
-        }
-        if (error instanceof Error) {
-          toastError(error.message, t('Please authorize to access your account'))
-        }
+        // if (error instanceof ConnectorNotFoundError) {
+        //   toastError(
+        //     t('Provider Error'),
+        //     <Box>
+        //       <Text>{t('No provider was found')}</Text>
+        //       <LinkExternal href="https://docs.pancakeswap.finance/get-started/connection-guide">
+        //         {t('Need help ?')}
+        //       </LinkExternal>
+        //     </Box>,
+        //   )
+        //   return
+        // }
+        // if (error instanceof UserRejectedRequestError) {
+        //   return
+        // }
+        // if (error instanceof Error) {
+        //   toastError(error.message, t('Please authorize to access your account'))
+        // }
       }
     },
     [connectors, connectAsync, chainId, setSessionChainId, toastError, t],

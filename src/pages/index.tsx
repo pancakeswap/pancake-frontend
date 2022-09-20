@@ -1,20 +1,16 @@
+import { formatEther } from '@ethersproject/units'
 import { FACTORY_ADDRESS } from '@pancakeswap/sdk'
 import { getUnixTime, sub } from 'date-fns'
 import { gql } from 'graphql-request'
 import { GetStaticProps } from 'next'
-import { WalletModalV2 } from '@pancakeswap/ui-wallets'
 import { SWRConfig } from 'swr'
-import { bitQueryServerClient, infoServerClient } from 'utils/graphql'
-import useAuth from 'hooks/useAuth'
-import { wallets } from 'config/wallet'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
 import { getCakeContract } from 'utils/contractHelpers'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
-import { formatEther } from '@ethersproject/units'
+import { bitQueryServerClient, infoServerClient } from 'utils/graphql'
 import Home from '../views/Home'
 
 const IndexPage = ({ totalTx30Days, addressCount30Days, tvl }) => {
-  const { login } = useAuth()
   return (
     <SWRConfig
       value={{
@@ -25,7 +21,6 @@ const IndexPage = ({ totalTx30Days, addressCount30Days, tvl }) => {
         },
       }}
     >
-      <WalletModalV2 isOpen wallets={wallets} login={login} />
       <Home />
     </SWRConfig>
   )
