@@ -13,7 +13,7 @@ import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeek
 import useRoiCalculatorReducer, {
   CalculatorMode,
   EditingCurrency,
-} from '../../../../../components/RoiCalculatorModal/useRoiCalculatorReducer'
+} from 'components/RoiCalculatorModal/useRoiCalculatorReducer'
 import { useGetCalculatorMultiplier } from '../hooks/useGetBoostedAPR'
 import LockDurationField from './BCakeLockedDuration'
 
