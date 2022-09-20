@@ -1945,5 +1945,7 @@
   "Boost Multiplier": "बूस्ट मल्टीप्लायर",
   "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "अनुमानित बूस्ट मल्टीप्लायर की गणना लाइव डेटा का इस्तेमाल करते हुए की जाती है। एक्टिवेशन होने पर वास्तविक बूस्ट मल्टीप्लायर बदल सकता है।",
   "locked for": "इसके लिए लॉक किया गया",
-  "My Duration": "मेरी अवधि"
+  "My Duration": "मेरी अवधि",
+  "Weeks": "Weeks",
+  "Boost multiplier calculation does not include profit from CAKE staking pool": "Boost multiplier calculation does not include profit from CAKE staking pool"
 }
