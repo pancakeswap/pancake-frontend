@@ -1945,5 +1945,7 @@
   "Boost Multiplier": "Multiplier ng Pag-boost",
   "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "Kinakalkula ang tinantyang multiplier ng pag-boost gamit ang live na data. Puwedeng magbago ang aktwal na multiplier ng pag-boost pagkatapos ng pag-activate.",
   "locked for": "na-lock sa loob ng",
-  "My Duration": "Aking Tagal ng Panahon"
+  "My Duration": "Aking Tagal ng Panahon",
+  "Weeks": "Weeks",
+  "Boost multiplier calculation does not include profit from CAKE staking pool": "Boost multiplier calculation does not include profit from CAKE staking pool"
 }
