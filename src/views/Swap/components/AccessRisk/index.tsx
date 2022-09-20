@@ -4,6 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Button, HelpIcon, useTooltip, Text, Link, useToast } from '@pancakeswap/uikit'
 import { fetchRiskToken, RiskTokenInfo } from 'views/Swap/hooks/fetchTokenRisk'
 import RiskMessage from 'views/Swap/components/AccessRisk/RiskMessage'
+import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
 import merge from 'lodash/merge'
 import pickBy from 'lodash/pickBy'
 
@@ -15,6 +16,7 @@ interface AccessRiskProps {
 const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }) => {
   const { t } = useTranslation()
   const { toastInfo } = useToast()
+  const tokens = useOfficialsAndUserAddedTokens()
 
   const [allTokenInfo, setAllTokenInfo] = useState<{ [key: number]: RiskTokenInfo }>({})
   const [currentRiskTokensInfo, setCurrentRiskTokensInfo] = useState<{
@@ -35,7 +37,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }
       if (currency) {
         const { address, chainId } = currency as any
         const list = allTokenInfo?.[chainId]
-        if (list?.[address]) {
+        if (list?.[address] && (type === 'input' ? !tokens[address] : true)) {
           setCurrentRiskTokensInfo((prevState) => ({
             ...prevState,
             [type === 'output' ? 'outputRiskTokenInfo' : 'inputRiskTokenInfo']: list[address],
@@ -64,7 +66,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }
         [type === 'output' ? 'outputRiskScanning' : 'inputRiskScanning']: false,
       }))
     },
-    [allTokenInfo],
+    [tokens, allTokenInfo],
   )
 
   const saveRiskTokensInfo = useCallback(
@@ -76,13 +78,14 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }
       outputRiskTokenInfo?: RiskTokenInfo
     }) => {
       const updatedRiskTokenList = inputRiskTokenInfo || outputRiskTokenInfo ? { ...allTokenInfo } : allTokenInfo
+      const currentTimestamp = new Date().getTime()
       if (inputRiskTokenInfo) {
         const { address, chainId } = inputRiskTokenInfo
         merge(updatedRiskTokenList, {
           [chainId]: {
             [address]: {
               ...inputRiskTokenInfo,
-              createDate: new Date().getTime(),
+              createDate: currentTimestamp,
             },
           },
         })
@@ -93,7 +96,7 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }
           [chainId]: {
             [address]: {
               ...outputRiskTokenInfo,
-              createDate: new Date().getTime(),
+              createDate: currentTimestamp,
             },
           },
         })
@@ -139,11 +142,12 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }
 
   const handleScan = async () => {
     const currencies = { input: inputCurrency, output: outputCurrency }
-    const currenciesToScan = pickBy(currencies, (currency, type) => {
+    const currenciesToScan: { input?: Currency; output?: Currency } = pickBy(currencies, (currency, type) => {
       if (currency) {
         const { address } = currency as any
         return (
           address &&
+          (type === 'input' ? !tokens[address] : true) &&
           (address !==
             currentRiskTokensInfo[type === 'output' ? 'outputRiskTokenInfo' : 'inputRiskTokenInfo']?.address ||
             !currentRiskTokensInfo[type === 'output' ? 'outputRiskTokenInfo' : 'inputRiskTokenInfo']?.isSuccess)
@@ -158,11 +162,13 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }
       ...(currenciesToScan.output ? { outputRiskScanning: true } : {}),
     }))
 
-    const currenciesToScanValues = Object.values(currenciesToScan)
-    const currenciesToScanSymbols = currenciesToScanValues.map((currency) => currency.symbol).join(',')
     toastInfo(
       t('Scanning Risk'),
-      t('Please wait until we scan the risk for %symbol% token', { symbol: currenciesToScanSymbols }),
+      t('Please wait until we scan the risk for %symbol% token', {
+        symbol: Object.values(currenciesToScan)
+          .map((currency) => currency.symbol)
+          .join(','),
+      }),
     )
 
     let inputTokenRiskResult: RiskTokenInfo = null
