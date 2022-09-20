@@ -162,8 +162,8 @@ export const getNftsFromCollectionApi = async (
     const res = await fetch(requestPath)
     if (res.ok) {
       const data = await res.json()
-      const filteredAttributesDistribution = pickBy(data.attributesDistribution, (value) => Boolean(value))
-      const filteredData = pickBy(data.data, (value) => Boolean(value))
+      const filteredAttributesDistribution = pickBy(data.attributesDistribution, Boolean)
+      const filteredData = pickBy(data.data, Boolean)
       const filteredTotal = lodashSize(filteredData)
       return {
         ...data,
