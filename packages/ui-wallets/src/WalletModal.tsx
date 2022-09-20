@@ -13,10 +13,10 @@ import {
   SvgProps,
   Tab,
   TabMenu,
+  Text,
 } from '@pancakeswap/uikit'
-import { Text } from '@pancakeswap/uikit/src/components/Text'
 import clsx from 'clsx'
-import { lazy, PropsWithChildren, Suspense, useState } from 'react'
+import { lazy, PropsWithChildren, Suspense, useState, FC } from 'react'
 import { isMobile } from 'react-device-detect'
 import {
   desktopWalletSelectionClass,
@@ -38,6 +38,7 @@ type DeviceLink = {
 type LinkOfDevice = string | DeviceLink
 
 export interface WalletConfigV2<T = unknown> {
+  id: string
   title: string
   icon: string | FC<React.PropsWithChildren<SvgProps>>
   connectorId: T
@@ -51,7 +52,7 @@ export interface WalletConfigV2<T = unknown> {
 
 interface WalletModalV2Props<T = unknown> extends ModalV2Props {
   wallets: WalletConfigV2<T>[]
-  login: (connectorId: T) => Promise<void>
+  login: (connectorId: T) => Promise<any>
 }
 
 const StepDot = ({ active, place, onClick }: { active: boolean; place: 'left' | 'right'; onClick: () => void }) => (
@@ -182,22 +183,51 @@ function MobileModal<T>({ wallets, login, ...props }: WalletModalV2Props<T>) {
     currentLanguage: { code },
   } = useTranslation()
 
+  const [selected, setSelected] = useState<WalletConfigV2<T> | null>(null)
+  const [error, setError] = useState(false)
+
   const walletsToShow: WalletConfigV2<T>[] = wallets.filter((w) => w.installed || w.deepLink)
 
   return (
     <ModalV2 width="full" closeOnOverlayClick {...props}>
       <TabContainer>
         <AtomBox width="full">
-          <Text color="textSubtle" small p="24px">
-            {t('Starts connect with one of the wallets below. Manage and store your private keys and assets securely.')}
-          </Text>
-          <AtomBox flex={1} py="16px">
+          {error ? (
+            <AtomBox
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              style={{ gap: '24px' }}
+              textAlign="center"
+              p="24px"
+            >
+              {selected && typeof selected.icon === 'string' && <Image src={selected.icon} width={108} height={108} />}
+              <Text maxWidth="246px">{t('Error connecting, please authorize wallet to access.')}</Text>
+            </AtomBox>
+          ) : (
+            <Text color="textSubtle" small p="24px">
+              {t(
+                'Starts connect with one of the wallets below. Manage and store your private keys and assets securely.',
+              )}
+            </Text>
+          )}
+          <AtomBox flex={1} py="16px" style={{ maxHeight: '230px' }} overflow="auto">
             <WalletSelect
               displayCount={6}
               wallets={walletsToShow}
               onClick={(wallet) => {
+                setSelected(wallet)
+                setError(false)
                 if (wallet.installed) {
                   login(wallet.connectorId)
+                    .then((v) => {
+                      if (v) {
+                        localStorage.setItem(walletLocalStorageKey, wallet.title)
+                      }
+                    })
+                    .catch(() => {
+                      setError(true)
+                    })
                 }
                 if (wallet.deepLink) {
                   window.open(wallet.deepLink)
@@ -276,7 +306,7 @@ function WalletSelect<T>({
               mb="4px"
             >
               {isImage ? (
-                <Image src={Icon} width={50} height={50} />
+                <Image src={Icon as string} width={50} height={50} />
               ) : (
                 <Icon width={24} height={24} color="textSubtle" />
               )}
@@ -309,8 +339,31 @@ function WalletSelect<T>({
   )
 }
 
+export const connectorLocalStorageKey = 'connectorIdv2'
+export const walletLocalStorageKey = 'wallet'
+
+function sortWallets<T>(wallets: WalletConfigV2<T>[]) {
+  const lastUsedWalletName = localStorage?.getItem(walletLocalStorageKey)
+  const sorted = wallets.sort((a, b) => {
+    if (a.installed) {
+      return -1
+    }
+    if (b.installed) {
+      return 1
+    }
+    return 0
+  })
+
+  if (!lastUsedWalletName) {
+    return sorted
+  }
+  const foundLastUsedWallet = wallets.find((w) => w.title === lastUsedWalletName)
+  if (!foundLastUsedWallet) return sorted
+  return [foundLastUsedWallet, ...sorted.filter((w) => w.id !== foundLastUsedWallet.id)]
+}
+
 export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
-  const { wallets, login, ...rest } = props
+  const { wallets: _wallets, login, ...rest } = props
 
   const [selected, setSelected] = useState<WalletConfigV2<T> | null>(null)
   const [error, setError] = useState(false)
@@ -320,16 +373,22 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
   const connectToWallet = (wallet: WalletConfigV2<T>) => {
     setError(false)
     if (wallet.installed) {
-      login(wallet.connectorId)?.catch(() => {
-        setError(true)
-      })
+      login(wallet.connectorId)
+        ?.catch(() => {
+          setError(true)
+        })
+        .then(() => {
+          localStorage.setItem(walletLocalStorageKey, wallet.title)
+        })
     }
   }
 
   const { t } = useTranslation()
 
+  const wallets = sortWallets(_wallets)
+
   if (isMobile) {
-    return <MobileModal {...props} />
+    return <MobileModal {...props} wallets={wallets} />
   }
 
   return (
@@ -373,11 +432,11 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
           />
         </AtomBox>
         <AtomBox flex={1} display="flex" justifyContent="center" flexDirection="column" alignItems="center">
-          <AtomBox display="grid" style={{ gap: '24px' }} textAlign="center">
+          <AtomBox display="flex" flexDirection="column" alignItems="center" style={{ gap: '24px' }} textAlign="center">
             {!selected && <Intro />}
             {selected && selected.installed && (
               <>
-                <Image src={selected.icon} width={108} height={108} />
+                {typeof selected.icon === 'string' && <Image src={selected.icon} width={108} height={108} />}
                 <Heading as="h1" fontSize="20px" color="secondary">
                   {t('Opening')} {selected.title}
                 </Heading>
@@ -421,7 +480,7 @@ const NotInstalled = ({ wallet, qrCode }: { wallet: WalletConfigV2; qrCode?: str
       {qrCode && (
         <Suspense>
           <AtomBox overflow="hidden" borderRadius="card" style={{ width: '288px', height: '288px' }}>
-            <Qrcode url={qrCode} image={wallet.icon} />
+            <Qrcode url={qrCode} image={typeof wallet.icon === 'string' ? wallet.icon : undefined} />
           </AtomBox>
         </Suspense>
       )}
