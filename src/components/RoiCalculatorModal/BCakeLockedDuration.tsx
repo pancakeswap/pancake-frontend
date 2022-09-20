@@ -1,18 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex, Input, Message, MessageText, Text } from '@pancakeswap/uikit'
-import { MAX_LOCK_DURATION, ONE_WEEK_DEFAULT } from 'config/constants/pools'
+import { MAX_LOCK_DURATION } from 'config/constants/pools'
 import _toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { secondsToWeeks, weeksToSeconds } from '../../views/Pools/components/utils/formatSecondsToWeeks'
 
 const DURATIONS = [1, 5, 10, 25, 52]
 
 const StyledInput = styled(Input)`
   text-align: right;
-  margin-right: 8px;
-  width: 50%;
   box-sizing: border-box;
+  padding-right: 55px;
 `
 
 interface LockDurationFieldProps {
@@ -31,6 +30,7 @@ const LockDurationField: React.FC<React.PropsWithChildren<LockDurationFieldProps
   currentDurationLeft,
 }) => {
   const { t } = useTranslation()
+  const theme = useTheme()
 
   const maxAvailableDuration = currentDurationLeft ? MAX_LOCK_DURATION - currentDurationLeft : MAX_LOCK_DURATION
 
@@ -71,27 +71,40 @@ const LockDurationField: React.FC<React.PropsWithChildren<LockDurationFieldProps
         </Flex>
       </Box>
       <Flex justifyContent="center" alignItems="center" mb="8px">
-        <StyledInput
-          value={secondsToWeeks(duration)}
-          autoComplete="off"
-          pattern="^[0-9]+$"
-          inputMode="numeric"
-          scale="sm"
-          onChange={(e) => {
-            const weeks = _toNumber(e?.target?.value)
-            if (e.currentTarget.validity.valid && weeks < 53) {
-              setDuration(weeksToSeconds(_toNumber(e?.target?.value)))
-            }
-          }}
-        />
+        <Box mr="8px" width="50%" position="relative">
+          <StyledInput
+            value={secondsToWeeks(duration)}
+            autoComplete="off"
+            pattern="^[0-9]+$"
+            inputMode="numeric"
+            scale="sm"
+            onChange={(e) => {
+              const weeks = _toNumber(e?.target?.value)
+              if (e.currentTarget.validity.valid && weeks < 53) {
+                setDuration(weeksToSeconds(_toNumber(e?.target?.value)))
+              }
+            }}
+          />
+          <Box
+            position="absolute"
+            width="60px"
+            top="8px"
+            right="0px"
+            color={theme.colors.text}
+            style={{ textAlign: 'center' }}
+          >
+            {t('Weeks')}
+          </Box>
+        </Box>
+
         <Button
           key="max"
           onClick={() => {
             setDuration(currentDuration)
           }}
           scale="sm"
-          disabled={maxAvailableDuration < ONE_WEEK_DEFAULT}
-          variant="light"
+          disabled={currentDuration === 0}
+          variant="tertiary"
           width="50%"
         >
           {t('My Duration')}

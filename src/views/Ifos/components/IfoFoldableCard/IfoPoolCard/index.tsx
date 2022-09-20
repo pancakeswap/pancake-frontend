@@ -134,6 +134,8 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
     )
   }, [account, ifo, poolId, publicIfoData, vestingInformation, walletIfoData])
 
+  const cardTitle = ifo.cIFO ? `${config.title} (cIFO)` : config.title
+
   return (
     <>
       {tooltipVisible && tooltip}
@@ -141,7 +143,7 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
         <CardHeader p="16px 24px" variant={config.variant}>
           <Flex justifyContent="space-between" alignItems="center">
             <Text bold fontSize="20px" lineHeight={1}>
-              {config.title}
+              {cardTitle}
             </Text>
             <div ref={targetRef}>
               <HelpIcon />

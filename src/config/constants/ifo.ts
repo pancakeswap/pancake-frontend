@@ -10,6 +10,7 @@ const ifos: Ifo[] = [
     id: 'hoop',
     address: '0x326e9E1B685C7F366fb320e7eC59599F3d88b1a2',
     isActive: true,
+    cIFO: true,
     name: 'HOOP',
     poolBasic: {
       saleAmount: '6,499,500 HOOP',

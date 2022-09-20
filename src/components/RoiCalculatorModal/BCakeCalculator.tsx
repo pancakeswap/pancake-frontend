@@ -45,7 +45,7 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
   const { t } = useTranslation()
   const [duration, setDuration] = useState(() => weeksToSeconds(1))
   const { avgLockDurationsInSeconds } = useAvgLockDuration()
-  const { lockBalance, isLoading, totalLockedAmount, lockedStart, lockedEnd } = useUserLockedCakeStatus()
+  const { isLoading, lockedAmount, totalLockedAmount, lockedStart, lockedEnd } = useUserLockedCakeStatus()
   const { state, setPrincipalFromUSDValue, setPrincipalFromTokenValue, toggleEditingCurrency, setCalculatorMode } =
     useRoiCalculatorReducer(
       { stakingTokenPrice: earningTokenPrice, earningTokenPrice, autoCompoundFrequency: 0 },
@@ -84,6 +84,14 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
   const tooltipContent = useBCakeTooltipContent()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, {
+    placement: 'bottom-start',
+  })
+
+  const {
+    targetRef: myBalanceTargetRef,
+    tooltip: myBalanceTooltip,
+    tooltipVisible: myBalanceTooltipVisible,
+  } = useTooltip(t('Boost multiplier calculation does not include profit from CAKE staking pool'), {
     placement: 'bottom-start',
   })
   const theme = useTheme()
@@ -133,21 +141,22 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
               >
                 $1000
               </Button>
-              <Button
-                disabled={!account || isLoading}
-                scale="xs"
-                p="4px 16px"
-                width="128px"
-                variant="tertiary"
-                style={{ textTransform: 'uppercase' }}
-                onClick={() =>
-                  setPrincipalFromUSDValue(
-                    getBalanceNumber(lockBalance.cakeAsBigNumber.times(earningTokenPrice)).toFixed(2),
-                  )
-                }
-              >
-                {t('My Balance')}
-              </Button>
+              {myBalanceTooltipVisible && myBalanceTooltip}
+              <Box ref={myBalanceTargetRef}>
+                <Button
+                  disabled={!account || isLoading || lockedAmount.eq(0)}
+                  scale="xs"
+                  p="4px 16px"
+                  width="128px"
+                  variant="tertiary"
+                  style={{ textTransform: 'uppercase' }}
+                  onClick={() =>
+                    setPrincipalFromUSDValue(getBalanceNumber(lockedAmount.times(earningTokenPrice)).toFixed(2))
+                  }
+                >
+                  {t('My Balance')}
+                </Button>
+              </Box>
             </Flex>
             <LockDurationField
               duration={duration}
@@ -184,7 +193,7 @@ export default BCakeCalculator
 const CA = 0.5
 const CB = 5
 
-const getBCakeMultiplier = (
+export const getBCakeMultiplier = (
   userBalanceInFarm: BigNumber,
   userLockAmount: BigNumber,
   userLockDuration: BigNumber,
@@ -192,14 +201,6 @@ const getBCakeMultiplier = (
   lpBalanceOfFarm: BigNumber,
   averageLockDuration: BigNumber,
 ) => {
-  // console.log({
-  //   userBalanceInFarm: userBalanceInFarm.toString(),
-  //   userLockAmount: userLockAmount.toString(),
-  //   userLockDuration: userLockDuration.toString(),
-  //   totalLockAmount: totalLockAmount.toString(),
-  //   lpBalanceOfFarm: lpBalanceOfFarm.toString(),
-  //   averageLockDuration: averageLockDuration.toString(),
-  // })
   const dB = userBalanceInFarm.times(CA)
   const aBPart1 = lpBalanceOfFarm.times(userLockAmount).times(userLockDuration)
   const aBPart3 = totalLockAmount.times(averageLockDuration)

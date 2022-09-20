@@ -1,10 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { RocketIcon, Text } from '@pancakeswap/uikit'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
+import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
 import { memo, useContext } from 'react'
 import { formatNumber } from 'utils/formatBalance'
-import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import useBoostMultiplier from '../hooks/useBoostMultiplier'
+import useGetBoostedAPR from '../hooks/useGetBoostedAPR'
 import { YieldBoosterState } from '../hooks/useYieldBoosterState'
 import { YieldBoosterStateContext } from './ProxyFarmContainer'
 
@@ -13,16 +15,20 @@ interface BoostedAprPropsType {
   lpRewardsApr: number
   pid: number
   mr?: string
+  userBalanceInFarm: BigNumber
+  lpTotalSupply: BigNumber
 }
 
 function BoostedApr(props: BoostedAprPropsType) {
-  const { lpRewardsApr, apr, pid, ...rest } = props
+  const { lpRewardsApr, apr, pid, userBalanceInFarm, lpTotalSupply, ...rest } = props
   const { boosterState, proxyAddress } = useContext(YieldBoosterStateContext)
   const { t } = useTranslation()
 
+  const boostedAprFromFE = useGetBoostedAPR(userBalanceInFarm, lpTotalSupply, apr, lpRewardsApr)
+
   const multiplier = useBoostMultiplier({ pid, boosterState, proxyAddress })
 
-  const boostedApr =
+  const boostedAprFromSC =
     (!isUndefinedOrNull(multiplier) &&
       !isUndefinedOrNull(apr) &&
       formatNumber(
@@ -32,19 +38,18 @@ function BoostedApr(props: BoostedAprPropsType) {
 
   const msg =
     boosterState === YieldBoosterState.ACTIVE ? (
-      `${boostedApr}%`
+      `${boostedAprFromSC}%`
     ) : (
       <>
         <Text bold color="success" {...rest} fontSize={14} display="inline-block" mr="3px">
           {t('Up to')}
         </Text>
-        {`${boostedApr}%`}
+        {`${userBalanceInFarm.eq(0) ? boostedAprFromSC : boostedAprFromFE}%`}
       </>
     )
-
-  if (boostedApr === '0') {
-    return null
-  }
+  // if (boostedAPR === '0') {
+  //   return null
+  // }
 
   return (
     <>

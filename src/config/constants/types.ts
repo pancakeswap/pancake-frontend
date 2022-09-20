@@ -54,6 +54,7 @@ export interface Ifo {
   telegramUrl?: string
   version: number
   vestingTitle?: string
+  cIFO?: boolean
   [PoolIds.poolBasic]?: IfoPoolInfo
   [PoolIds.poolUnlimited]: IfoPoolInfo
 }

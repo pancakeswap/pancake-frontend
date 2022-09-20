@@ -77,6 +77,7 @@ const FarmMobileCell = styled.td`
 
 const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>> = (props) => {
   const { details, initialActivity, multiplier } = props
+  const { stakedBalance, proxy, tokenBalance } = props.details.userData
   const userDataReady = multiplier.multiplier !== undefined
   const hasSetInitialValue = useRef(false)
   const hasStakedAmount = !!useFarmUser(details.pid).stakedBalance.toNumber()
@@ -154,6 +155,12 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                             lpRewardsApr={props?.apr?.lpRewardsApr}
                             apr={props?.apr?.originalValue}
                             pid={props.farm?.pid}
+                            lpTotalSupply={props.details?.lpTotalSupply}
+                            userBalanceInFarm={
+                              stakedBalance.plus(tokenBalance).gt(0)
+                                ? stakedBalance.plus(tokenBalance)
+                                : proxy.stakedBalance.plus(proxy.tokenBalance)
+                            }
                           />
                         ) : null}
                       </CellLayout>
@@ -217,6 +224,12 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     lpRewardsApr={props?.apr?.lpRewardsApr}
                     apr={props?.apr?.originalValue}
                     pid={props.farm?.pid}
+                    lpTotalSupply={props.details?.lpTotalSupply}
+                    userBalanceInFarm={
+                      stakedBalance.plus(tokenBalance).gt(0)
+                        ? stakedBalance.plus(tokenBalance)
+                        : proxy.stakedBalance.plus(proxy.tokenBalance)
+                    }
                   />
                 ) : null}
               </CellLayout>
