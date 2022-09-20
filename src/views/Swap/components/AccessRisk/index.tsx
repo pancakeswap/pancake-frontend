@@ -4,7 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Button, HelpIcon, useTooltip, Text, Link, useToast } from '@pancakeswap/uikit'
 import { fetchRiskToken, RiskTokenInfo } from 'views/Swap/hooks/fetchTokenRisk'
 import RiskMessage from 'views/Swap/components/AccessRisk/RiskMessage'
-import { combinedTokenMapFromOfficialsUrlsAtom } from 'state/lists/hooks'
+import { tokenListFromOfficialsUrlsAtom } from 'state/lists/hooks'
 import merge from 'lodash/merge'
 import pickBy from 'lodash/pickBy'
 import { useAtomValue } from 'jotai'
@@ -17,7 +17,7 @@ interface AccessRiskProps {
 const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }) => {
   const { t } = useTranslation()
   const { toastInfo } = useToast()
-  const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
+  const tokenMap = useAtomValue(tokenListFromOfficialsUrlsAtom)
 
   const [allTokenInfo, setAllTokenInfo] = useState<{ [key: number]: RiskTokenInfo }>({})
   const [currentRiskTokensInfo, setCurrentRiskTokensInfo] = useState<{
