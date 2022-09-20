@@ -1945,5 +1945,7 @@
   "Boost Multiplier": "Boost Multiplier",
   "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.",
   "locked for": "locked for",
-  "My Duration": "My Duration"
+  "My Duration": "My Duration",
+  "Weeks": "Weeks",
+  "Boost multiplier calculation does not include profit from CAKE staking pool": "Boost multiplier calculation does not include profit from CAKE staking pool"
 }
