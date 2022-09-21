@@ -81,42 +81,37 @@ const TeamImageWrapper = styled(Flex)`
   }
 `
 
-const GridItem: React.FC<React.PropsWithChildren<{ traderData?: LeaderboardDataItem; teamImages: React.ReactNode[] }>> =
-  ({ traderData = { address: '', volume: 0, teamId: 0, rank: 0 }, teamImages }) => {
-    const { address, volume, teamId, rank } = traderData
-    const { profile, isFetching } = useProfileForAddress(address)
+const GridItem: React.FC<
+  React.PropsWithChildren<{ traderData?: LeaderboardDataItem; teamImages: React.ReactNode[] }>
+> = ({ traderData = { address: '', volume: 0, teamId: 0, rank: 0 }, teamImages }) => {
+  const { address, volume, teamId, rank } = traderData
+  const { profile, isFetching } = useProfileForAddress(address)
 
-    return (
-      <Wrapper>
-        <Flex ml={['4px', '8px', '16px']} alignItems="center" justifyContent="flex-start">
-          <Text fontSize="16px" bold color="secondary">
-            #{rank}
-          </Text>
-          <SkeletonV2
-            width="24px"
-            height="24px"
-            ml={['16px', null, '16px']}
-            borderRadius="50%"
-            isDataReady={!isFetching}
-          >
-            <ProfileAvatar src={profile?.nft?.image?.thumbnail} width={32} height={32} mr={['4px', null, '12px']} />
-          </SkeletonV2>
+  return (
+    <Wrapper>
+      <Flex ml={['4px', '8px', '16px']} alignItems="center" justifyContent="flex-start">
+        <Text fontSize="16px" bold color="secondary">
+          #{rank}
+        </Text>
+        <SkeletonV2 width="24px" height="24px" ml={['16px', null, '16px']} borderRadius="50%" isDataReady={!isFetching}>
+          <ProfileAvatar src={profile?.nft?.image?.thumbnail} width={32} height={32} mr={['4px', null, '12px']} />
+        </SkeletonV2>
+      </Flex>
+      <VolumeAddressWrapper>
+        <Flex alignItems="center" justifyContent="flex-start">
+          <VolumeText fontSize="12px" bold>
+            ${localiseTradingVolume(volume)}
+          </VolumeText>
         </Flex>
-        <VolumeAddressWrapper>
-          <Flex alignItems="center" justifyContent="flex-start">
-            <VolumeText fontSize="12px" bold>
-              ${localiseTradingVolume(volume)}
-            </VolumeText>
-          </Flex>
-          <Flex alignItems="center" justifyContent="flex-start">
-            <Text color="primary" fontSize="12px">
-              {truncateHash(address)}
-            </Text>
-          </Flex>
-        </VolumeAddressWrapper>
-        <TeamImageWrapper justifyContent="flex-end">{teamImages[teamId - 1]}</TeamImageWrapper>
-      </Wrapper>
-    )
-  }
+        <Flex alignItems="center" justifyContent="flex-start">
+          <Text color="primary" fontSize="12px">
+            {truncateHash(address)}
+          </Text>
+        </Flex>
+      </VolumeAddressWrapper>
+      <TeamImageWrapper justifyContent="flex-end">{teamImages[teamId - 1]}</TeamImageWrapper>
+    </Wrapper>
+  )
+}
 
 export default GridItem
