@@ -351,7 +351,7 @@ function WalletSelect<T>({
 
 export const walletLocalStorageKey = 'wallet'
 
-const lastUsedWalletNameAtom = atom<string | null>(null)
+const lastUsedWalletNameAtom = atom<string>('')
 
 lastUsedWalletNameAtom.onMount = (set) => {
   const preferred = localStorage?.getItem(walletLocalStorageKey)
