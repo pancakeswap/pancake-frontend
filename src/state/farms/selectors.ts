@@ -36,6 +36,7 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
     quoteTokenPriceBusd,
     tokenPriceBusd,
     boosted,
+    infoStableSwapAddress,
   } = farm
 
   const auctionHostingStartDate = !isUndefinedOrNull(auctionHostingStartSeconds)
@@ -74,6 +75,7 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
     tokenPriceVsQuote: farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : BIG_ZERO,
     poolWeight: farm.poolWeight ? new BigNumber(farm.poolWeight) : BIG_ZERO,
     boosted,
+    isStable: Boolean(infoStableSwapAddress),
   }
 }
 

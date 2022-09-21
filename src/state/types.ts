@@ -81,6 +81,7 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   poolWeight?: BigNumber
   userData?: DeserializedFarmUserData
   boosted?: boolean
+  isStable?: boolean
 }
 
 export enum VaultKey {
