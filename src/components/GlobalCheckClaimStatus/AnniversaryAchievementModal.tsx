@@ -27,7 +27,7 @@ const showConfetti = () => {
 }
 
 interface AnniversaryModalProps extends InjectedModalProps {
-  onClick: () => void
+  onClick: () => Promise<void>
 }
 
 const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ onDismiss, onClick }) => {
