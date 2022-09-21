@@ -3,10 +3,15 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { getNonBscVaultContract, getCrossFarmingSenderContract } from 'utils/contractHelpers'
 
 export enum MessageTypes {
-  'Deposit' = 0,
-  'Withdraw' = 1,
-  'EmergencyWithdraw' = 2,
-  'Claim' = 3,
+  Deposit = 0,
+  Withdraw = 1,
+  EmergencyWithdraw = 2,
+  Claim = 3,
+}
+
+enum Chains {
+  EVM = 0,
+  BSC = 1,
 }
 
 interface CalculateTotalFeeProps {
@@ -39,16 +44,16 @@ export const getNonBscVaultContractFee = async ({
 
     const getNonce = await crossFarmingAddress.nonces(userAddress, pid)
     const nonce = new BigNumber(getNonce.toString()).toJSON()
-    const [encodeMessage, isFirstTime, estimateDestGaslimit] = await Promise.all([
+    const [encodeMessage, isFirstTime, estimateGaslimit] = await Promise.all([
       nonBscVaultContract.encodeMessage(userAddress, pid, amount, messageType, nonce),
       crossFarmingAddress.is1st(userAddress),
-      crossFarmingAddress.estimateDestGaslimit(userAddress, messageType),
+      crossFarmingAddress.estimateGaslimit(Chains.BSC, userAddress, messageType),
     ])
     const calcFee = await nonBscVaultContract.calcFee(encodeMessage)
 
     const fee1 = new BigNumber(calcFee.toString())
     const fee2 = new BigNumber(gasPrice)
-      .times(estimateDestGaslimit.toString())
+      .times(estimateGaslimit.toString())
       .times(exchangeRate)
       .times(COMPENSATION_PRECISION)
       .div(ORACLE_PRECISION * COMPENSATION_PRECISION)
@@ -60,7 +65,9 @@ export const getNonBscVaultContractFee = async ({
     }
 
     if (messageType >= MessageTypes.Withdraw) {
-      return totalFee.plus(fee1).times(exchangeRate).div(ORACLE_PRECISION).toFixed(0)
+      const estimateEvmGaslimit = await crossFarmingAddress.estimateGaslimit(Chains.EVM, userAddress, messageType)
+      const fee = fee1.times(exchangeRate).div(ORACLE_PRECISION)
+      return totalFee.plus(gasPrice).times(estimateEvmGaslimit.toString()).plus(fee).toFixed(0)
     }
 
     return totalFee.toFixed(0)

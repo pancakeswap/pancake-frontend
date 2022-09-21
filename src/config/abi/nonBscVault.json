@@ -51,7 +51,8 @@
     "inputs": [
       { "indexed": true, "internalType": "address", "name": "sender", "type": "address" },
       { "indexed": false, "internalType": "uint256", "name": "pid", "type": "uint256" },
-      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "indexed": false, "internalType": "uint64", "name": "nonce", "type": "uint64" }
     ],
     "name": "Deposit",
     "type": "event"
@@ -61,7 +62,8 @@
     "inputs": [
       { "indexed": true, "internalType": "address", "name": "sender", "type": "address" },
       { "indexed": false, "internalType": "uint256", "name": "pid", "type": "uint256" },
-      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "indexed": false, "internalType": "uint64", "name": "nonce", "type": "uint64" }
     ],
     "name": "EmergencyWithdraw",
     "type": "event"
@@ -135,7 +137,8 @@
     "inputs": [
       { "indexed": true, "internalType": "address", "name": "sender", "type": "address" },
       { "indexed": false, "internalType": "uint256", "name": "pid", "type": "uint256" },
-      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "indexed": false, "internalType": "uint64", "name": "nonce", "type": "uint64" }
     ],
     "name": "Withdraw",
     "type": "event"
@@ -335,16 +338,6 @@
     "type": "function"
   },
   { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_crossSender", "type": "address" },
-      { "internalType": "address", "name": "_crossReceiver", "type": "address" }
-    ],
-    "name": "setCrossFarmingContract",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
   {
     "inputs": [{ "internalType": "address", "name": "_operator", "type": "address" }],
     "name": "setOperator",
