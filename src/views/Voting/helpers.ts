@@ -1,11 +1,14 @@
+import { JsonRpcProvider } from '@ethersproject/providers'
+import { bscTokens } from '@pancakeswap/tokens'
+import BigNumber from 'bignumber.js'
+import cakeVaultAbiV2 from 'config/abi/cakeVaultV2.json'
 import { SNAPSHOT_HUB_API } from 'config/constants/endpoints'
 import fromPairs from 'lodash/fromPairs'
 import groupBy from 'lodash/groupBy'
-import BigNumber from 'bignumber.js'
-import { BIG_TEN } from 'utils/bigNumber'
-import { bscTokens } from '@pancakeswap/tokens'
 import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
+import { multicallv2 } from 'utils/multicall'
+import { convertSharesToCake } from 'views/Pools/helpers'
 import { ADMINS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
 import { getScores } from './getScores'
 import * as strategies from './strategies'
@@ -110,6 +113,8 @@ interface GetVotingPowerType {
   lockedEndTime?: number
 }
 
+const nodeRealProvider = new JsonRpcProvider('https://bsc-mainnet.nodereal.io/v1/5a516406afa140ffa546ee10af7c9b24', 56)
+
 export const getVotingPower = async (
   account: string,
   poolAddresses: string[],
@@ -119,33 +124,49 @@ export const getVotingPower = async (
     const cakeVaultAddress = getCakeVaultAddress()
     const version = blockNumber >= VOTING_POWER_BLOCK.v1 ? 'v1' : 'v0'
 
-    const [
-      cakeBalance,
-      cakeBnbLpBalance,
-      cakePoolBalance,
-      cakeVaultBalance,
-      poolsBalance,
-      total,
-      lockedCakeBalance,
-      lockedEndTime,
-      ifoPoolBalance,
-    ] = await getScores(
-      PANCAKE_SPACE,
-      [
-        strategies.cakeBalanceStrategy(version),
-        strategies.cakeBnbLpBalanceStrategy(version),
-        strategies.cakePoolBalanceStrategy(version),
-        strategies.cakeVaultBalanceStrategy(version),
-        strategies.createPoolsBalanceStrategy(poolAddresses, version),
-        strategies.createTotalStrategy(poolAddresses, version),
-        strategies.lockedCake(cakeVaultAddress, 'lockedAmount'),
-        strategies.lockedCake(cakeVaultAddress, 'lockEndTime'),
-        strategies.ifoPoolBalanceStrategy,
+    const [pricePerShare, { shares, lockEndTime, userBoostedShare }] = await multicallv2({
+      abi: cakeVaultAbiV2,
+      provider: nodeRealProvider,
+      calls: [
+        {
+          address: cakeVaultAddress,
+          name: 'getPricePerFullShare',
+        },
+        {
+          address: cakeVaultAddress,
+          params: [account],
+          name: 'userInfo',
+        },
       ],
-      NETWORK,
-      [account],
-      blockNumber,
-    )
+      options: {
+        blockTag: blockNumber,
+      },
+    })
+
+    const [cakeBalance, cakeBnbLpBalance, cakePoolBalance, cakeVaultBalance, poolsBalance, total, ifoPoolBalance] =
+      await getScores(
+        PANCAKE_SPACE,
+        [
+          strategies.cakeBalanceStrategy(version),
+          strategies.cakeBnbLpBalanceStrategy(version),
+          strategies.cakePoolBalanceStrategy(version),
+          strategies.cakeVaultBalanceStrategy(version),
+          strategies.createPoolsBalanceStrategy(poolAddresses, version),
+          strategies.createTotalStrategy(poolAddresses, version),
+          strategies.ifoPoolBalanceStrategy,
+        ],
+        NETWORK,
+        [account],
+        blockNumber,
+      )
+
+    const lockedCakeBalance = convertSharesToCake(
+      new BigNumber(shares.toString()),
+      new BigNumber(pricePerShare.toString()),
+      18,
+      3,
+      new BigNumber(userBoostedShare.toString()),
+    )?.cakeAsNumberBalance
 
     const versionOne =
       version === 'v0'
@@ -163,10 +184,8 @@ export const getVotingPower = async (
       cakePoolBalance: cakePoolBalance[account] ? cakePoolBalance[account] : 0,
       cakeBnbLpBalance: cakeBnbLpBalance[account] ? cakeBnbLpBalance[account] : 0,
       cakeVaultBalance: cakeVaultBalance[account] ? cakeVaultBalance[account] : 0,
-      lockedCakeBalance: lockedCakeBalance[account]
-        ? new BigNumber(lockedCakeBalance[account]).div(BIG_TEN.pow(18)).toNumber()
-        : 0,
-      lockedEndTime: lockedEndTime[account] ? lockedEndTime[account] : 0,
+      lockedCakeBalance: Number.isFinite(lockedCakeBalance) ? lockedCakeBalance : 0,
+      lockedEndTime: lockEndTime ? +lockEndTime.toString() : 0,
     }
   }
 
