@@ -53,7 +53,7 @@ const farms: SerializedFarmConfig[] = [
   {
     pid: 120,
     lpSymbol: 'HOOP-BUSD LP',
-    lpAddress: '',
+    lpAddress: '0xdE8a4f457af12F98DB090841579Feed384684819',
     token: bscTokens.hoop,
     quoteToken: bscTokens.busd,
   },
