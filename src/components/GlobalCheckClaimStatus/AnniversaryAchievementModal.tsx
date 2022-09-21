@@ -56,9 +56,7 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ onDismis
         <Text textAlign="center" bold fontSize="24px">
           2 Years
         </Text>
-        <Text textAlign="center" color="secondary">
-          +100 {t('Points')}
-        </Text>
+        <Text textAlign="center">+100 {t('Points')}</Text>
         <Text textAlign="center" bold color="secondary" mb="24px">
           {t(
             'You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!',

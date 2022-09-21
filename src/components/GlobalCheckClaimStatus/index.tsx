@@ -56,10 +56,10 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
   useEffect(() => {
     const matchesSomeLocations = excludeLocations.some((location) => pathname.includes(location))
 
-    // if (canClaimAnniversaryPoints && !matchesSomeLocations && !hasDisplayedModal.current) {
-    onPresentAnniversaryModal()
-    //   hasDisplayedModal.current = true
-    // }
+    if (canClaimAnniversaryPoints && !matchesSomeLocations && !hasDisplayedModal.current) {
+      onPresentAnniversaryModal()
+      hasDisplayedModal.current = true
+    }
   }, [pathname, excludeLocations, hasDisplayedModal, canClaim, canClaimAnniversaryPoints, onPresentAnniversaryModal])
 
   // Reset the check flag when account changes
