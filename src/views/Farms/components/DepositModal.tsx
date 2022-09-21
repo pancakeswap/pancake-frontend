@@ -19,7 +19,7 @@ import {
 import { ModalActions, ModalInput } from 'components/Modal'
 import _toNumber from 'lodash/toNumber'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
-import BCakeCalculator from 'components/RoiCalculatorModal/BCakeCalculator'
+import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
 import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance, formatNumber } from 'utils/formatBalance'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
@@ -71,7 +71,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   lpTotalSupply,
 }) => {
   const [val, setVal] = useState('')
-  const [bCakeMultiplier, setBCakeMultiplier] = useState(() => null)
+  const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
   const [pendingTx, setPendingTx] = useState(false)
   const [showRoiCalculator, setShowRoiCalculator] = useState(false)
   const { t } = useTranslation()
@@ -116,7 +116,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
           stakingTokenSymbol={tokenName}
           stakingTokenPrice={lpPrice.toNumber()}
           earningTokenPrice={cakePrice.toNumber()}
-          apr={bCakeMultiplier ? apr * _toNumber(bCakeMultiplier) : apr}
+          apr={bCakeMultiplier ? apr * bCakeMultiplier : apr}
           multiplier={multiplier}
           displayApr={bCakeMultiplier ? (_toNumber(displayApr) - apr + apr * bCakeMultiplier).toFixed(2) : displayApr}
           linkHref={addLiquidityUrl}
