@@ -1,7 +1,8 @@
 import { Types } from 'aptos'
 import { Chain } from '../chain'
 import { Connector } from './base'
-import { ConnectorNotFoundError } from './errors'
+import { ConnectorNotFoundError } from '../errors'
+import { Address } from '../types'
 
 declare global {
   interface Window {
@@ -98,7 +99,7 @@ export class MartianConnector extends Connector {
     return provider.signTransaction(transaction)
   }
 
-  protected onAccountsChanged = (address: string) => {
+  protected onAccountsChanged = (address: Address) => {
     this.emit('change', {
       account: {
         address,

@@ -1,7 +1,6 @@
 import { AptosCoin, ChainId, Coin } from '@pancakeswap/aptos-swap-sdk'
 
 export const APT = {
-  [ChainId.AIT3]: AptosCoin.onChain(ChainId.AIT3),
   [ChainId.DEVNET]: AptosCoin.onChain(ChainId.DEVNET),
   [ChainId.TESTNET]: AptosCoin.onChain(ChainId.TESTNET),
 }

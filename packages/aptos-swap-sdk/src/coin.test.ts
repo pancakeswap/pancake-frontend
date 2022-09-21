@@ -13,7 +13,7 @@ describe('Coin', () => {
 
     it('false if chain id differs', () => {
       expect(
-        new Coin(ChainId.AIT3, ADDRESS_ONE, 18, 'CAKE').equals(new Coin(ChainId.DEVNET, ADDRESS_ONE, 18, 'CAKE'))
+        new Coin(ChainId.TESTNET, ADDRESS_ONE, 18, 'CAKE').equals(new Coin(ChainId.DEVNET, ADDRESS_ONE, 18, 'CAKE'))
       ).toBe(false)
     })
 

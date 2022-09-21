@@ -18,7 +18,6 @@ export const SUGGESTED_BASES = {}
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST = {
   [ChainId.DEVNET]: [APT[ChainId.DEVNET]],
-  [ChainId.AIT3]: [APT[ChainId.AIT3]],
   [ChainId.TESTNET]: [APT[ChainId.TESTNET]],
 }
 

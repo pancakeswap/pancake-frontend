@@ -1,5 +1,5 @@
-import { defaultChains, devnet } from '@pancakeswap/awgmi'
+import { defaultChains, defaultChain } from '@pancakeswap/awgmi'
 
-export const defaultChain = devnet
+export { defaultChain }
 
 export const chains = defaultChains

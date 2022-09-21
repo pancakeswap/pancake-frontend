@@ -14,7 +14,7 @@ export const noopStorage: BaseStorage = {
 
 export function createStorage({
   storage,
-  key: prefix = 'aptos-react',
+  key: prefix = 'awgmi',
 }: {
   storage: BaseStorage
   key?: string

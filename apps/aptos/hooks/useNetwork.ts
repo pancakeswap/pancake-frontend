@@ -49,7 +49,8 @@ export function useActiveNetwork() {
     }
   }
 
-  networkName = localNetworkName ?? chain?.name
+  // until wallet support switch network, we follow wallet chain instead of routing
+  networkName = chain?.name ?? localNetworkName
 
   return {
     networkName,

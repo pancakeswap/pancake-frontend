@@ -21,6 +21,7 @@
     "build:src": "tsup src/index.ts --format esm,cjs --dts",
     "build:core": "tsup core/index.ts --format esm,cjs --dts --outDir core/dist",
     "build:all": "yarn build:core && yarn build:src",
+    "test": "vitest",
     "prepublishOnly": "yarn run build:all"
   },
   "exports": {

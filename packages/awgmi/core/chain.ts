@@ -34,6 +34,7 @@ export const devnet: Chain = {
       url: 'https://explorer.devnet.aptos.dev',
     },
   },
+  testnet: true,
 }
 
 export const testnet: Chain = {
@@ -49,21 +50,9 @@ export const testnet: Chain = {
       url: 'https://explorer.devnet.aptos.dev',
     },
   },
+  testnet: true,
 }
 
-export const ait3: Chain = {
-  id: 47,
-  name: 'AIT3',
-  network: 'ait3',
-  rpcUrls: {
-    default: 'https://ait3.aptosdev.com/v1/',
-  },
-  blockExplorers: {
-    default: {
-      name: 'Aptos Explorer',
-      url: 'https://explorer.devnet.aptos.dev',
-    },
-  },
-}
+export const defaultChains = [devnet, testnet]
 
-export const defaultChains = [devnet, ait3, testnet]
+export const defaultChain = devnet

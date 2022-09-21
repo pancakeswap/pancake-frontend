@@ -3,7 +3,6 @@ import { Percent } from '@pancakeswap/swap-sdk-core'
 export enum ChainId {
   DEVNET = 31,
   TESTNET = 2,
-  AIT3 = 47,
 }
 
 const SWAP_MODULE_NAME = 'cp_swap'

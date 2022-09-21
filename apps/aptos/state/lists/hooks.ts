@@ -18,7 +18,6 @@ import { listsAtom } from './index'
 export type TokenAddressMap = TTokenAddressMap<ChainId>
 
 const EMPTY_LIST: TokenAddressMap = {
-  [ChainId.AIT3]: {},
   [ChainId.DEVNET]: {},
   [ChainId.TESTNET]: {},
 }
@@ -176,7 +175,6 @@ export function useAllLists(): {
 
 function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddressMap {
   return {
-    [ChainId.AIT3]: { ...map1[ChainId.AIT3], ...map2[ChainId.AIT3] },
     [ChainId.DEVNET]: { ...map1[ChainId.DEVNET], ...map2[ChainId.DEVNET] },
     [ChainId.TESTNET]: { ...map1[ChainId.TESTNET], ...map2[ChainId.TESTNET] },
   }

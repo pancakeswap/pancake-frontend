@@ -46,13 +46,11 @@ export interface TagInfo extends TagDetails {
   id: string
 }
 
-export type TokenAddressMap<TChainId extends number> = Readonly<
-  {
-    [chainId in TChainId]: Readonly<{
-      [tokenAddress: string]: { token: WrappedTokenInfo; list: TokenList }
-    }>
-  }
->
+export type TokenAddressMap<TChainId extends number> = Readonly<{
+  [chainId in TChainId]: Readonly<{
+    [tokenAddress: string]: { token: WrappedTokenInfo; list: TokenList }
+  }>
+}>
 
 export function deserializeToken(serializedToken: SerializedWrappedToken): Token {
   if (serializedToken.logoURI) {

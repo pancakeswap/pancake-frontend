@@ -1,8 +1,29 @@
 import { AptosClient, Types } from 'aptos'
+import { Address } from '../types'
+
+// https://aptos.dev/guides/building-your-own-wallet/#dapp-api
+export interface SignMessagePayload {
+  address?: boolean // Should we include the address of the account in the message
+  application?: boolean // Should we include the domain of the dapp
+  chainId?: boolean // Should we include the current chain id the wallet is connected to
+  message: string // The message to be signed and displayed to the user
+  nonce: number // A nonce the dapp should generate
+}
+
+export interface SignMessageResponse {
+  address: Address
+  application: string
+  chainId: number
+  fullMessage: string // The message that was generated to sign
+  message: string // The message passed in by the user
+  nonce: number
+  prefix: 'APTOS' // Should always be APTOS
+  signature: string // The signed full message
+}
 
 export type Account = {
-  address: string
-  publicKey: string
+  address: Address
+  publicKey?: string
 }
 
 export interface Aptos {
@@ -13,10 +34,10 @@ export interface Aptos {
   isConnected(): Promise<boolean>
   network(): Promise<string>
   signAndSubmitTransaction(transaction: Types.EntryFunctionPayload): ReturnType<AptosClient['submitTransaction']>
-  signMessage(message?: unknown): Promise<unknown>
+  signMessage(message?: SignMessagePayload): Promise<SignMessageResponse>
   signTransaction(transaction: Types.EntryFunctionPayload): ReturnType<AptosClient['signTransaction']>
   on?: any
-  onAccountChange?: (account?: unknown) => unknown
-  onNetworkChange?: (network?: unknown) => unknown
-  onDisconnect?: (a?: unknown) => unknown
+  onAccountChange?(listener: (account: Account) => void): void
+  onNetworkChange?(listener: (network: string) => void): void
+  onDisconnect?(listener: () => void): void
 }

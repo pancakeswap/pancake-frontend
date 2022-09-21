@@ -1,8 +1,8 @@
 import { Types } from 'aptos'
 import { Chain } from '../chain'
 import { ConnectorNotFoundError } from '../errors'
-import { Account, Connector } from './base'
-import { Aptos } from './types'
+import { Connector } from './base'
+import { Aptos, Account } from './types'
 
 declare global {
   interface Window {
