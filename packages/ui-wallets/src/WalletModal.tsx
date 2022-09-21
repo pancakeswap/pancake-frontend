@@ -435,7 +435,17 @@ function DesktopModal<T>({ wallets, login, ...rest }: WalletModalV2Props<T>) {
             }}
           />
         </AtomBox>
-        <AtomBox flex={1} display="flex" justifyContent="center" flexDirection="column" alignItems="center">
+        <AtomBox
+          flex={1}
+          mx="24px"
+          display={{
+            xs: 'none',
+            sm: 'flex',
+          }}
+          justifyContent="center"
+          flexDirection="column"
+          alignItems="center"
+        >
           <AtomBox display="flex" flexDirection="column" alignItems="center" style={{ gap: '24px' }} textAlign="center">
             {!selected && <Intro />}
             {selected && selected.installed && (
