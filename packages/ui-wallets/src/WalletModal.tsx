@@ -379,14 +379,12 @@ function sortWallets<T>(wallets: WalletConfigV2<T>[], lastUsedWalletName: string
   return [foundLastUsedWallet, ...sorted.filter((w) => w.id !== foundLastUsedWallet.id)]
 }
 
-export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
-  const { wallets: _wallets, login, ...rest } = props
-
+function DesktopModal<T>({ wallets, login, ...rest }: WalletModalV2Props<T>) {
   const [selected, setSelected] = useSelectedWallet<T>()
   const [error, setError] = useAtom(errorAtom)
   const previousWallet = usePreviousValue(selected)
   const [qrCode, setQrCode] = useState<string | undefined>(undefined)
-  const [lastUsedWalletName] = useAtom(lastUsedWalletNameAtom)
+  const { t } = useTranslation()
 
   const connectToWallet = (wallet: WalletConfigV2<T>) => {
     setError(false)
@@ -399,14 +397,6 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
           localStorage.setItem(walletLocalStorageKey, wallet.title)
         })
     }
-  }
-
-  const { t } = useTranslation()
-
-  const wallets = useMemo(() => sortWallets(_wallets, lastUsedWalletName), [_wallets, lastUsedWalletName])
-
-  if (isMobile) {
-    return <MobileModal {...props} wallets={wallets} />
   }
 
   return (
@@ -471,6 +461,20 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
       </TabContainer>
     </ModalV2>
   )
+}
+
+export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
+  const { wallets: _wallets, ...rest } = props
+
+  const [lastUsedWalletName] = useAtom(lastUsedWalletNameAtom)
+
+  const wallets = useMemo(() => sortWallets(_wallets, lastUsedWalletName), [_wallets, lastUsedWalletName])
+
+  if (isMobile) {
+    return <MobileModal {...rest} wallets={wallets} />
+  }
+
+  return <DesktopModal {...rest} wallets={wallets} />
 }
 
 const Intro = () => {
