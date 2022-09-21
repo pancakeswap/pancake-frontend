@@ -149,11 +149,8 @@ export default function useCatchTxError(): CatchTxErrorReturn {
 
         toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
 
-        await tx.wait()
-
         return tx
       } catch (error: any) {
-        console.error('FUCK ', error)
         if (!isUserRejected(error)) {
           if (!tx) {
             handleNormalError(error)
