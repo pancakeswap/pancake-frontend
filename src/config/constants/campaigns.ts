@@ -212,7 +212,7 @@ const campaigns: Campaign[] = [
     id: '516020001',
     type: 'participation',
     title: '2 Year',
-    description: 'Joined PancakeSwap during the second year of our journey!',
+    description: 'Celebrate our 2nd birthday with us',
     badge: '2-year.svg',
   },
   {

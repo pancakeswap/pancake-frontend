@@ -10,7 +10,7 @@ interface GlobalCheckClaimStatusProps {
 }
 
 // change it to true if we have events to check claim status
-const enable = false
+const enable = true
 
 const GlobalCheckClaimStatus: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusProps>> = (props) => {
   const { account } = useWeb3React()

@@ -9,7 +9,6 @@ import Dots from 'components/Loader/Dots'
 const AnniversaryImage = styled.img`
   border-radius: 50%;
   height: 128px;
-  margin-bottom: 24px;
   margin-right: 8px;
   width: 128px;
 `
@@ -50,12 +49,20 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ onDismis
 
   return (
     <Modal title={t('Congratulations!')} onDismiss={onDismiss}>
-      <Flex flexDirection="column" alignItems="center" justifyContent="center">
+      <Flex flexDirection="column" alignItems="center" justifyContent="center" maxWidth="450px">
         <Box>
           <AnniversaryImage src="/images/achievements/2-year.svg" />
         </Box>
-        <Text textAlign="center" bold color="secondary" fontSize="24px" mb="24px">
-          {t('You won points for joining PancakeSwap during the second year of our journey!')}
+        <Text textAlign="center" bold color="secondary" fontSize="24px">
+          2 Years
+        </Text>
+        <Text textAlign="center" bold color="secondary">
+          +100 {t('Points')}
+        </Text>
+        <Text textAlign="center" bold color="secondary" mb="24px">
+          {t(
+            'You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!',
+          )}
         </Text>
         <Button
           disabled={isLoading}
