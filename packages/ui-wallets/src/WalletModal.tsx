@@ -362,12 +362,8 @@ lastUsedWalletNameAtom.onMount = (set) => {
 
 function sortWallets<T>(wallets: WalletConfigV2<T>[], lastUsedWalletName: string | null) {
   const sorted = wallets.sort((a, b) => {
-    if (a.installed) {
-      return -1
-    }
-    if (b.installed) {
-      return 1
-    }
+    if (a.installed) return -1
+    if (b.installed) return 1
     return 0
   })
 

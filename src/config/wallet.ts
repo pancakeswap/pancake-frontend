@@ -15,7 +15,7 @@ export enum ConnectorNames {
 
 const qrCode = async () => (await walletConnectConnector.getProvider()).connector.uri
 
-export const wallets: WalletConfigV2<ConnectorNames>[] = [
+const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
   {
     id: 'metamask',
     title: 'Metamask',
@@ -130,11 +130,18 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
     installed: typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBlocto),
     qrCode,
   },
-  {
-    id: 'injected',
-    title: 'Injected',
-    icon: WalletFilledIcon,
-    connectorId: ConnectorNames.Injected,
-    installed: isMobileOnly && Boolean(window.ethereum),
-  },
 ]
+
+export const wallets = walletsConfig.some((c) => c.installed && c.connectorId === ConnectorNames.Injected)
+  ? walletsConfig
+  : // add injected icon if none of injected type wallets installed
+    [
+      ...walletsConfig,
+      {
+        id: 'injected',
+        title: 'Injected',
+        icon: WalletFilledIcon,
+        connectorId: ConnectorNames.Injected,
+        installed: isMobileOnly && Boolean(window.ethereum),
+      },
+    ]
