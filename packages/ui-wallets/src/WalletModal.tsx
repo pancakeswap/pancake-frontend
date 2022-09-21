@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { usePreviousValue } from '@pancakeswap/hooks'
+import { atom, useAtom } from 'jotai'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui/components/AtomBox'
 import {
@@ -14,9 +15,10 @@ import {
   Tab,
   TabMenu,
   Text,
+  ErrorIcon,
 } from '@pancakeswap/uikit'
 import clsx from 'clsx'
-import { lazy, PropsWithChildren, Suspense, useState, FC } from 'react'
+import { lazy, PropsWithChildren, Suspense, useState, FC, useMemo } from 'react'
 import { isMobile } from 'react-device-detect'
 import {
   desktopWalletSelectionClass,
@@ -67,7 +69,7 @@ const StepDot = ({ active, place, onClick }: { active: boolean; place: 'left' | 
   </AtomBox>
 )
 
-const steps = [
+export const IntroSteps = [
   {
     title: <Trans>Your first step entering the defi world</Trans>,
     icon: 'https://cdn.pancakeswap.com/wallets/wallet_intro.png',
@@ -88,11 +90,20 @@ const steps = [
   },
 ]
 
+const errorAtom = atom(false)
+
+const selectedWalletAtom = atom<WalletConfigV2<unknown> | null>(null)
+
+export function useSelectedWallet<T>() {
+  // @ts-ignore
+  return useAtom<WalletConfigV2<T> | null>(selectedWalletAtom)
+}
+
 const Tutorial = () => {
   const { t } = useTranslation()
   const [step, setStep] = useState(0)
 
-  const s = steps[step]
+  const introStep = IntroSteps[step]
 
   return (
     <AtomBox
@@ -105,14 +116,14 @@ const Tutorial = () => {
       textAlign="center"
       alignItems="center"
     >
-      {s && (
+      {introStep && (
         <>
           <Heading as="h2" color="secondary">
-            {s.title}
+            {introStep.title}
           </Heading>
-          <Image m="auto" src={s.icon} width={198} height={178} />
+          <Image m="auto" src={introStep.icon} width={198} height={178} />
           <Text maxWidth="368px" m="auto" small color="textSubtle">
-            {s.description}
+            {introStep.description}
           </Text>
         </>
       )}
@@ -183,8 +194,8 @@ function MobileModal<T>({ wallets, login, ...props }: WalletModalV2Props<T>) {
     currentLanguage: { code },
   } = useTranslation()
 
-  const [selected, setSelected] = useState<WalletConfigV2<T> | null>(null)
-  const [error, setError] = useState(false)
+  const [selected, setSelected] = useSelectedWallet<T>()
+  const [error, setError] = useAtom(errorAtom)
 
   const walletsToShow: WalletConfigV2<T>[] = wallets.filter((w) => w.installed || w.deepLink)
 
@@ -228,8 +239,7 @@ function MobileModal<T>({ wallets, login, ...props }: WalletModalV2Props<T>) {
                     .catch(() => {
                       setError(true)
                     })
-                }
-                if (wallet.deepLink) {
+                } else if (wallet.deepLink) {
                   window.open(wallet.deepLink)
                 }
               }}
@@ -339,11 +349,18 @@ function WalletSelect<T>({
   )
 }
 
-export const connectorLocalStorageKey = 'connectorIdv2'
 export const walletLocalStorageKey = 'wallet'
 
-function sortWallets<T>(wallets: WalletConfigV2<T>[]) {
-  const lastUsedWalletName = localStorage?.getItem(walletLocalStorageKey)
+const lastUsedWalletNameAtom = atom<string | null>(null)
+
+lastUsedWalletNameAtom.onMount = (set) => {
+  const preferred = localStorage?.getItem(walletLocalStorageKey)
+  if (preferred) {
+    set(preferred)
+  }
+}
+
+function sortWallets<T>(wallets: WalletConfigV2<T>[], lastUsedWalletName: string | null) {
   const sorted = wallets.sort((a, b) => {
     if (a.installed) {
       return -1
@@ -365,10 +382,11 @@ function sortWallets<T>(wallets: WalletConfigV2<T>[]) {
 export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
   const { wallets: _wallets, login, ...rest } = props
 
-  const [selected, setSelected] = useState<WalletConfigV2<T> | null>(null)
-  const [error, setError] = useState(false)
+  const [selected, setSelected] = useSelectedWallet<T>()
+  const [error, setError] = useAtom(errorAtom)
   const previousWallet = usePreviousValue(selected)
   const [qrCode, setQrCode] = useState<string | undefined>(undefined)
+  const [lastUsedWalletName] = useAtom(lastUsedWalletNameAtom)
 
   const connectToWallet = (wallet: WalletConfigV2<T>) => {
     setError(false)
@@ -385,7 +403,7 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
 
   const { t } = useTranslation()
 
-  const wallets = sortWallets(_wallets)
+  const wallets = useMemo(() => sortWallets(_wallets, lastUsedWalletName), [_wallets, lastUsedWalletName])
 
   if (isMobile) {
     return <MobileModal {...props} wallets={wallets} />
@@ -509,7 +527,12 @@ const ErrorContent = ({ onRetry }: { onRetry: () => void }) => {
   const { t } = useTranslation()
   return (
     <>
-      <Text maxWidth="246px">{t('Error connecting, please authorize wallet to access.')}</Text>
+      <AtomBox display="flex" alignItems="center">
+        <ErrorIcon width="16px" />
+        <Text bold maxWidth="246px">
+          {t('Error connecting, please authorize wallet to access.')}
+        </Text>
+      </AtomBox>
       <Button variant="subtle" onClick={onRetry}>
         {t('Retry')}
       </Button>
