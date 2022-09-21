@@ -16,7 +16,7 @@ import {
   Tab,
   TabMenu,
   Text,
-  ErrorIcon,
+  WarningIcon,
 } from '@pancakeswap/uikit'
 import clsx from 'clsx'
 import { lazy, PropsWithChildren, Suspense, useState, FC, useMemo } from 'react'
@@ -538,12 +538,10 @@ const ErrorContent = ({ onRetry }: { onRetry: () => void }) => {
   const { t } = useTranslation()
   return (
     <>
-      <AtomBox display="flex" alignItems="center">
-        <ErrorIcon width="16px" />
-        <Text bold maxWidth="246px">
-          {t('Error connecting, please authorize wallet to access.')}
-        </Text>
-      </AtomBox>
+      <Text bold color="failure">
+        <WarningIcon width="16px" color="failure" style={{ verticalAlign: 'middle' }} />{' '}
+        {t('Error connecting, please authorize wallet to access.')}
+      </Text>
       <Button variant="subtle" onClick={onRetry}>
         {t('Retry')}
       </Button>

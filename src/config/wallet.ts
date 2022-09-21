@@ -46,7 +46,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
     title: 'Coinbase Wallet',
     icon: 'https://cdn.pancakeswap.com/wallets/coinbase.png',
     connectorId: ConnectorNames.WalletLink,
-    installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isCoinbaseWallet),
+    installed: true,
     deepLink: 'https://go.cb-w.com/dapp?cb_url=https%3A%2F%2Fpancakeswap.finance%2F',
   },
   {
