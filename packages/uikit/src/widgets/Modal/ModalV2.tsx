@@ -1,8 +1,11 @@
-import { AtomBox, AtomBoxProps } from "@pancakeswap/ui/components/AtomBox";
-import React from "react";
+import { AnimatePresence, domMax, LazyMotion } from "framer-motion";
+import React, { useRef } from "react";
 import { createPortal } from "react-dom";
+import { BoxProps } from "../../components/Box";
 import { Overlay } from "../../components/Overlay";
+import { animationHandler, animationMap, animationVariants } from "../../util/animationToolkit";
 import getPortalRoot from "../../util/getPortalRoot";
+import { StyledModalWrapper } from "./ModalContext";
 
 export interface ModalV2Props {
   isOpen?: boolean;
@@ -11,7 +14,9 @@ export interface ModalV2Props {
   children?: React.ReactNode;
 }
 
-export function ModalV2({ isOpen, onDismiss, closeOnOverlayClick, children, ...props }: ModalV2Props & AtomBoxProps) {
+export function ModalV2({ isOpen, onDismiss, closeOnOverlayClick, children, ...props }: ModalV2Props & BoxProps) {
+  const animationRef = useRef<HTMLDivElement>(null);
+
   const handleOverlayDismiss = () => {
     if (closeOnOverlayClick) {
       onDismiss?.();
@@ -22,22 +27,22 @@ export function ModalV2({ isOpen, onDismiss, closeOnOverlayClick, children, ...p
   if (portal) {
     if (!isOpen) return null;
     return createPortal(
-      <AtomBox
-        display="flex"
-        inset="0"
-        flexDirection="column"
-        justifyContent={{
-          xs: "flex-end",
-          md: "center",
-        }}
-        alignItems="center"
-        position="fixed"
-        zIndex="99"
-        {...props}
-      >
-        <Overlay onClick={handleOverlayDismiss} />
-        {children}
-      </AtomBox>,
+      <LazyMotion features={domMax}>
+        <AnimatePresence>
+          <StyledModalWrapper
+            ref={animationRef}
+            // @ts-ignore
+            onAnimationStart={() => animationHandler(animationRef.current)}
+            {...animationMap}
+            variants={animationVariants}
+            transition={{ duration: 0.3 }}
+            {...props}
+          >
+            <Overlay onClick={handleOverlayDismiss} />
+            {children}
+          </StyledModalWrapper>
+        </AnimatePresence>
+      </LazyMotion>,
       portal
     );
   }

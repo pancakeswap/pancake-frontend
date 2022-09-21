@@ -10,6 +10,7 @@ import {
   LinkExternal,
   ModalV2,
   ModalV2Props,
+  ModalWrapper,
   MoreHorizontalIcon,
   SvgProps,
   Tab,
@@ -188,7 +189,7 @@ const docLangCodeMapping: Record<string, string> = {
   'pt-br': 'portuguese-brazilian',
 }
 
-function MobileModal<T>({ wallets, login, ...props }: WalletModalV2Props<T>) {
+function MobileModal<T>({ wallets, login }: Pick<WalletModalV2Props<T>, 'wallets' | 'login'>) {
   const {
     t,
     currentLanguage: { code },
@@ -200,74 +201,68 @@ function MobileModal<T>({ wallets, login, ...props }: WalletModalV2Props<T>) {
   const walletsToShow: WalletConfigV2<T>[] = wallets.filter((w) => w.installed || w.deepLink)
 
   return (
-    <ModalV2 width="full" closeOnOverlayClick {...props}>
-      <TabContainer>
-        <AtomBox width="full">
-          {error ? (
-            <AtomBox
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              style={{ gap: '24px' }}
-              textAlign="center"
-              p="24px"
-            >
-              {selected && typeof selected.icon === 'string' && <Image src={selected.icon} width={108} height={108} />}
-              <Text maxWidth="246px">{t('Error connecting, please authorize wallet to access.')}</Text>
-            </AtomBox>
-          ) : (
-            <Text color="textSubtle" small p="24px">
-              {t(
-                'Starts connect with one of the wallets below. Manage and store your private keys and assets securely.',
-              )}
-            </Text>
-          )}
-          <AtomBox flex={1} py="16px" style={{ maxHeight: '230px' }} overflow="auto">
-            <WalletSelect
-              displayCount={6}
-              wallets={walletsToShow}
-              onClick={(wallet) => {
-                setSelected(wallet)
-                setError(false)
-                if (wallet.installed) {
-                  login(wallet.connectorId)
-                    .then((v) => {
-                      if (v) {
-                        localStorage.setItem(walletLocalStorageKey, wallet.title)
-                      }
-                    })
-                    .catch(() => {
-                      setError(true)
-                    })
-                } else if (wallet.deepLink) {
-                  window.open(wallet.deepLink)
-                }
-              }}
-            />
-          </AtomBox>
-          <AtomBox p="24px" borderTop="1">
-            <AtomBox>
-              <Text textAlign="center" color="textSubtle" as="p" mb="24px">
-                {t('Haven’t got a crypto wallet yet?')}
-              </Text>
-            </AtomBox>
-            <Button
-              as="a"
-              href={
-                docLangCodeMapping[code]
-                  ? `https://docs.pancakeswap.finance/v/${docLangCodeMapping[code]}/get-started/connection-guide`
-                  : `https://docs.pancakeswap.finance/get-started/connection-guide`
-              }
-              variant="subtle"
-              width="100%"
-              external
-            >
-              {t('Learn How to Connect')}
-            </Button>
-          </AtomBox>
+    <AtomBox width="full">
+      {error ? (
+        <AtomBox
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          style={{ gap: '24px' }}
+          textAlign="center"
+          p="24px"
+        >
+          {selected && typeof selected.icon === 'string' && <Image src={selected.icon} width={108} height={108} />}
+          <Text maxWidth="246px">{t('Error connecting, please authorize wallet to access.')}</Text>
         </AtomBox>
-      </TabContainer>
-    </ModalV2>
+      ) : (
+        <Text color="textSubtle" small p="24px">
+          {t('Starts connect with one of the wallets below. Manage and store your private keys and assets securely.')}
+        </Text>
+      )}
+      <AtomBox flex={1} py="16px" style={{ maxHeight: '230px' }} overflow="auto">
+        <WalletSelect
+          displayCount={6}
+          wallets={walletsToShow}
+          onClick={(wallet) => {
+            setSelected(wallet)
+            setError(false)
+            if (wallet.installed) {
+              login(wallet.connectorId)
+                .then((v) => {
+                  if (v) {
+                    localStorage.setItem(walletLocalStorageKey, wallet.title)
+                  }
+                })
+                .catch(() => {
+                  setError(true)
+                })
+            } else if (wallet.deepLink) {
+              window.open(wallet.deepLink)
+            }
+          }}
+        />
+      </AtomBox>
+      <AtomBox p="24px" borderTop="1">
+        <AtomBox>
+          <Text textAlign="center" color="textSubtle" as="p" mb="24px">
+            {t('Haven’t got a crypto wallet yet?')}
+          </Text>
+        </AtomBox>
+        <Button
+          as="a"
+          href={
+            docLangCodeMapping[code]
+              ? `https://docs.pancakeswap.finance/v/${docLangCodeMapping[code]}/get-started/connection-guide`
+              : `https://docs.pancakeswap.finance/get-started/connection-guide`
+          }
+          variant="subtle"
+          width="100%"
+          external
+        >
+          {t('Learn How to Connect')}
+        </Button>
+      </AtomBox>
+    </AtomBox>
   )
 }
 
@@ -375,7 +370,7 @@ function sortWallets<T>(wallets: WalletConfigV2<T>[], lastUsedWalletName: string
   return [foundLastUsedWallet, ...sorted.filter((w) => w.id !== foundLastUsedWallet.id)]
 }
 
-function DesktopModal<T>({ wallets, login, ...rest }: WalletModalV2Props<T>) {
+function DesktopModal<T>({ wallets, login }: Pick<WalletModalV2Props<T>, 'wallets' | 'login'>) {
   const [selected, setSelected] = useSelectedWallet<T>()
   const [error, setError] = useAtom(errorAtom)
   const previousWallet = usePreviousValue(selected)
@@ -396,91 +391,97 @@ function DesktopModal<T>({ wallets, login, ...rest }: WalletModalV2Props<T>) {
   }
 
   return (
-    <ModalV2 closeOnOverlayClick {...rest}>
-      <TabContainer>
-        <AtomBox
-          display="flex"
-          flexDirection="column"
-          bg="backgroundAlt"
-          py="32px"
-          zIndex="modal"
-          borderRadius="card"
-          className={desktopWalletSelectionClass}
-        >
-          <AtomBox px="48px">
-            <Heading color="color" as="h4">
-              {t('Connect Wallet')}
-            </Heading>
-            <Text color="textSubtle" small pt="24px" pb="32px">
-              {t(
-                'Starts connect with one of the wallets below. Manage and store your private keys and assets securely.',
-              )}
-            </Text>
-          </AtomBox>
-          <WalletSelect
-            wallets={wallets}
-            onClick={(w) => {
-              setSelected(w)
-              setQrCode(undefined)
-              if (w.deepLink) {
-                setQrCode(w.deepLink)
-              } else if (w.qrCode) {
-                w.qrCode().then((uri) => {
-                  setQrCode(uri)
-                })
-              }
-              if (previousWallet?.connectorId !== w.connectorId) {
-                connectToWallet(w)
-              }
-            }}
-          />
+    <>
+      <AtomBox
+        display="flex"
+        flexDirection="column"
+        bg="backgroundAlt"
+        py="32px"
+        zIndex="modal"
+        borderRadius="card"
+        className={desktopWalletSelectionClass}
+      >
+        <AtomBox px="48px">
+          <Heading color="color" as="h4">
+            {t('Connect Wallet')}
+          </Heading>
+          <Text color="textSubtle" small pt="24px" pb="32px">
+            {t('Starts connect with one of the wallets below. Manage and store your private keys and assets securely.')}
+          </Text>
         </AtomBox>
-        <AtomBox
-          flex={1}
-          mx="24px"
-          display={{
-            xs: 'none',
-            sm: 'flex',
+        <WalletSelect
+          wallets={wallets}
+          onClick={(w) => {
+            setSelected(w)
+            setQrCode(undefined)
+            if (w.deepLink) {
+              setQrCode(w.deepLink)
+            } else if (w.qrCode) {
+              w.qrCode().then((uri) => {
+                setQrCode(uri)
+              })
+            }
+            if (previousWallet?.connectorId !== w.connectorId) {
+              connectToWallet(w)
+            }
           }}
-          justifyContent="center"
-          flexDirection="column"
-          alignItems="center"
-        >
-          <AtomBox display="flex" flexDirection="column" alignItems="center" style={{ gap: '24px' }} textAlign="center">
-            {!selected && <Intro />}
-            {selected && selected.installed && (
-              <>
-                {typeof selected.icon === 'string' && <Image src={selected.icon} width={108} height={108} />}
-                <Heading as="h1" fontSize="20px" color="secondary">
-                  {t('Opening')} {selected.title}
-                </Heading>
-                {error ? (
-                  <ErrorContent onRetry={() => connectToWallet(selected)} />
-                ) : (
-                  <Text>{t('Please confirm in %wallet%', { wallet: selected.title })}</Text>
-                )}
-              </>
-            )}
-            {selected && !selected.installed && <NotInstalled qrCode={qrCode} wallet={selected} />}
-          </AtomBox>
+        />
+      </AtomBox>
+      <AtomBox
+        flex={1}
+        mx="24px"
+        display={{
+          xs: 'none',
+          sm: 'flex',
+        }}
+        justifyContent="center"
+        flexDirection="column"
+        alignItems="center"
+      >
+        <AtomBox display="flex" flexDirection="column" alignItems="center" style={{ gap: '24px' }} textAlign="center">
+          {!selected && <Intro />}
+          {selected && selected.installed && (
+            <>
+              {typeof selected.icon === 'string' && <Image src={selected.icon} width={108} height={108} />}
+              <Heading as="h1" fontSize="20px" color="secondary">
+                {t('Opening')} {selected.title}
+              </Heading>
+              {error ? (
+                <ErrorContent onRetry={() => connectToWallet(selected)} />
+              ) : (
+                <Text>{t('Please confirm in %wallet%', { wallet: selected.title })}</Text>
+              )}
+            </>
+          )}
+          {selected && !selected.installed && <NotInstalled qrCode={qrCode} wallet={selected} />}
         </AtomBox>
-      </TabContainer>
-    </ModalV2>
+      </AtomBox>
+    </>
   )
 }
 
 export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
-  const { wallets: _wallets, ...rest } = props
+  const { wallets: _wallets, login, ...rest } = props
 
   const [lastUsedWalletName] = useAtom(lastUsedWalletNameAtom)
 
   const wallets = useMemo(() => sortWallets(_wallets, lastUsedWalletName), [_wallets, lastUsedWalletName])
 
-  if (isMobile) {
-    return <MobileModal {...rest} wallets={wallets} />
-  }
-
-  return <DesktopModal {...rest} wallets={wallets} />
+  return (
+    <ModalV2 closeOnOverlayClick {...rest}>
+      <ModalWrapper onDismiss={props.onDismiss} overflow="visible">
+        <AtomBox position="relative">
+          <TabContainer>
+            {isMobile ? (
+              <MobileModal login={login} wallets={wallets} />
+            ) : (
+              <DesktopModal login={login} wallets={wallets} />
+            )}
+          </TabContainer>
+        </AtomBox>
+      </ModalWrapper>
+    </ModalV2>
+  )
 }
 
 const Intro = () => {

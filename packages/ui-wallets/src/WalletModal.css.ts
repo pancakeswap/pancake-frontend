@@ -12,7 +12,6 @@ export const modalWrapperClass = style([
       marginBottom: 0,
     },
     md: {
-      marginBottom: '50px',
       height: '490px',
     },
     lg: {
