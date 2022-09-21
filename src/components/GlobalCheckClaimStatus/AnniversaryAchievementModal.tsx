@@ -53,10 +53,10 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ onDismis
         <Box>
           <AnniversaryImage src="/images/achievements/2-year.svg" />
         </Box>
-        <Text textAlign="center" bold color="secondary" fontSize="24px">
+        <Text textAlign="center" bold fontSize="24px">
           2 Years
         </Text>
-        <Text textAlign="center" bold color="secondary">
+        <Text textAlign="center" color="secondary">
           +100 {t('Points')}
         </Text>
         <Text textAlign="center" bold color="secondary" mb="24px">
