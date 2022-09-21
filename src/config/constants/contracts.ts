@@ -156,7 +156,7 @@ export default {
     5: '0xbd4e87c11Dd8f71EBd8B69308530F5AAf5D029d6',
   },
   crossFarmingReceiver: {
-    56: '0xaB5bb0c046C79F453F3C175D73F4760b2B5451D9', // Only for pass contracts test
-    97: '0xaB5bb0c046C79F453F3C175D73F4760b2B5451D9',
+    56: '0x56788f1AE4A767e0ab625fB53320F7DA9Bf54351', // Only for pass contracts test
+    97: '0x56788f1AE4A767e0ab625fB53320F7DA9Bf54351',
   },
 }
