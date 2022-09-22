@@ -34,14 +34,16 @@ const config = {
   },
   experimental: {
     scrollRestoration: true,
-    images: {
-      allowFutureImage: true,
-    },
   },
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['static-nft.pancakeswap.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'static-nft.pancakeswap.com',
+      },
+    ],
   },
   async rewrites() {
     return [
