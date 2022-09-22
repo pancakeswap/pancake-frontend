@@ -89,7 +89,7 @@ export default function Pool() {
         ...positionCards,
         ...stablePairs?.map((stablePair, index) => (
           <StableFullPositionCard
-            key={stablePair.liquidityToken.address}
+            key={`stable-${stablePair.liquidityToken.address}`}
             pair={stablePair}
             mb={index < stablePairs.length - 1 ? '16px' : 0}
           />

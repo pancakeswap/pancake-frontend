@@ -296,6 +296,12 @@ function FullPositionCard({
             <Text bold ml="8px">
               {!currency0 || !currency1 ? <Dots>{t('Loading')}</Dots> : `${currency0.symbol}/${currency1.symbol}`}
             </Text>
+            {isStableLP ? (
+              <Text color="textSubtle" ml="4px">
+                {' '}
+                - Stable
+              </Text>
+            ) : null}
           </Flex>
           <Text fontSize="14px" color="textSubtle">
             {userPoolBalance?.toSignificant(4)}
@@ -372,7 +378,7 @@ function FullPositionCard({
             <Flex flexDirection="column">
               <Button
                 as={NextLinkFromReactRouter}
-                to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
+                to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}${isStableLP ? '?stable=1' : ''}`}
                 variant="primary"
                 width="100%"
                 mb="8px"
