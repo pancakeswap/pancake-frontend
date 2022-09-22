@@ -1648,9 +1648,6 @@
   "Released": "تم الإصدار",
   "Vested": "مجمد",
   "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked": "لن تتمكن من سحب CAKE المرهونة وجني الأرباح إلا عند فك تجميد مركز الرهن",
-  "Hello, early fixed-term staking pool CAKE lovers.": "مرحبًا يا محبي رهن CAKE في تجمعات الرهن المبكر محدد المدة.",
-  "If you staked in our fixed-term staking pool for 52 weeks within the first 24 hours of the launch, you are eligible to claim a special edition “Project Galaxy x PancakeSwap” NFT.": "إذا قمت بالرهن في تجمع رهن محدد المدة لمدة 52 أسبوعًا خلال أول 24 ساعة من الإطلاق، فستصبح مؤهلًا للحصول على إصدار خاص من رمز NFT “Project Galaxy x PancakeSwap”.",
-  "Hold this NFT in your wallet until the snapshot timing (10:00 UTC 11th May 2022) to participate in the $GAL airdrop with a total of 400,000 GAL tokens.": "احتفظ برمز NFT هذا في محفظتك حتى وقت اللقطة (10:00 بالتوقيت العالمي الموحد، 11 مايو 2022) للمشاركة في الإسقاط الجوي لـ $GAL البالغ عدده الإجمالي 400,000 من رموز GAL المميزة.",
   "$120,000 in Prizes with Tokens and NFTs!": "جوائز بقيمة 120,000 دولار من الرموز المميزة ورموز NFT!",
   "Trade DAR/BNB, CAKE/BNB, and CAKE/BUSD during the battle period to raise both your and your team’s score. See the Rules section below for more.": "تداول DAR/BNB و CAKE/BNB و CAKE/BUSD في أثناء فترة المعركة لرفع كلًا من نقاطك ونقاط فريقك. انظر قسم القواعد أدناه لمعرفة المزيد.",
   "Prizes to be distributed in CAKE and DAR in a distribution of 1:5 and shared by all members of each respective tier. The price of token prizes ($CAKE and $DAR) in USD will be determined as per their BUSD pair price during the tally period.": "سيتم توزيع الجوائز بعملات CAKE و DAR بنسب 1:5 ومشاركتها بين جميع الأعضاء بكل درجة معنية. \nسيتم تحديد سعر جوائز الرموز المميزة ($CAKE و $DAR) بالدولار الأمريكي حسب سعر زوج BUSD الخاص بها أثناء فترة الإحصاء.",
@@ -1948,5 +1945,6 @@
   "My Duration": "My Duration",
   "Weeks": "Weeks",
   "Boost multiplier calculation does not include profit from CAKE staking pool": "Boost multiplier calculation does not include profit from CAKE staking pool",
-  "Stable LP": "Stable LP"
+  "Stable LP": "Stable LP",
+  "You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!": "You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!"
 }
