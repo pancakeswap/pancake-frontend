@@ -23,6 +23,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useIfoCredit } from 'state/pools/hooks'
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
+import BalanceWithLoading from 'components/Balance'
 import { EnableStatus } from '../types'
 import PercentageOfTotal from './PercentageOfTotal'
 import { SkeletonCardTokens } from './Skeletons'
@@ -256,6 +257,18 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
               userAmount={userPoolCharacteristics.amountTokenCommittedInLP}
               totalAmount={publicPoolCharacteristics.totalAmountPool}
             />
+            <Flex>
+              <Box>
+                <Label>{t('Your %symbol% refunds', { symbol: ifo.currency.symbol })}</Label>
+                <BalanceWithLoading
+                  bold
+                  prefix="~"
+                  decimals={4}
+                  fontSize="20px"
+                  value={getBalanceNumber(userPoolCharacteristics.refundingAmountInLP, token.decimals)}
+                />
+              </Box>
+            </Flex>
           </CommitTokenSection>
           <TokenSection primaryToken={ifo.token}>
             <Label>{t('%symbol% to receive', { symbol: token.symbol })}</Label>
