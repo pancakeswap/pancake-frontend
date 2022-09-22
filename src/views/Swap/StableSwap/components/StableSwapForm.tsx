@@ -200,7 +200,7 @@ export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }
             {t('StableSwap')}
             <InfoTooltip
               ml="4px"
-              text="StableSwap provides better rates and lower fees for pairs with highly correlated prices"
+              text={t('StableSwap provides better rates and lower fees for pairs with highly correlated prices')}
             />
           </Flex>
         }
@@ -289,7 +289,7 @@ export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }
           {typedValue ? null : (
             <AutoColumn>
               <Message variant="warning" mb="16px">
-                <MessageText>Trade stablecoins in StableSwap with lower slippage and trading fees!</MessageText>
+                <MessageText>{t('Trade stablecoins in StableSwap with lower slippage and trading fees!')}</MessageText>
               </Message>
             </AutoColumn>
           )}
