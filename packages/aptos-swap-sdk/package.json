@@ -22,7 +22,7 @@
     "lint": "eslint src test",
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "dev": "tsup src/index.ts --format esm,cjs --watch --dts",
-    "test": "jest",
+    "test": "vitest --run",
     "prepublishOnly": "yarn run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },

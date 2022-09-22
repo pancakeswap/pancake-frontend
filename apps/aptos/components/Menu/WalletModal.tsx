@@ -49,7 +49,7 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
   const { t } = useTranslation()
   const { account } = useAccount()
   const { data } = useBalance({ address: account?.address })
-  const hasLowNativeBalance = !!data?.formatted && Number(data.formatted) >= 0.1
+  const hasLowNativeBalance = !!data?.formatted && Number(data.formatted) <= 0.1
 
   const handleClick = (newIndex: number) => {
     setView(newIndex)

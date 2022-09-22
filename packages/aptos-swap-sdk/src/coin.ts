@@ -1,5 +1,4 @@
 import { Token } from '@pancakeswap/swap-sdk-core'
-// import { TxnBuilderTypes } from 'aptos'
 
 export class Coin extends Token {
   // eslint-disable-next-line no-useless-constructor

@@ -25,13 +25,16 @@ export class Pair {
   private readonly tokenAmounts: [CurrencyAmount<Coin>, CurrencyAmount<Coin>]
 
   public static getAddress(tokenA: Coin, tokenB: Coin): string {
-    const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // does safety checks
+    // TODO: invert
+    // const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // it does safety checks
+    const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenB, tokenA] : [tokenA, tokenB]
 
     return `${PAIR_LP_TYPE_TAG}<${token0.address}, ${token1.address}>`
   }
 
   public static getReservesAddress(tokenA: Coin, tokenB: Coin): string {
-    const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // does safety checks
+    // TODO: invert
+    const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenB, tokenA] : [tokenA, tokenB]
 
     return `${PAIR_RESERVE_TYPE_TAG}<${token0.address}, ${token1.address}>`
   }

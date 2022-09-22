@@ -1,8 +1,8 @@
 import { ChainId, Coin } from '.'
 
 describe('Coin', () => {
-  const ADDRESS_ONE = '0x1475ddbffb8e29a32223e1e25b8459d03a5ddd94e1cb7a50bb7051e11ba0cb2f::moon_coin::MoonCoin'
-  const ADDRESS_TWO = '0x1475ddbffb8e29a32223e1e25b8459d03a5ddd94e1cb7a50bb7051e11ba0cb2f::cake_coin::CakeCoin'
+  const ADDRESS_ONE = '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC'
+  const ADDRESS_TWO = '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetSOL'
 
   describe('#equals', () => {
     it('fails if address differs', () => {
@@ -38,6 +38,13 @@ describe('Coin', () => {
       const tokenA = new Coin(ChainId.DEVNET, ADDRESS_ONE, 9, 'abc', 'def', 'https://www.binance.org/')
       const tokenB = new Coin(ChainId.DEVNET, ADDRESS_ONE, 18, 'ghi', 'jkl', 'https://coinmarketcap.com/')
       expect(tokenA.equals(tokenB)).toBe(true)
+    })
+
+    it('sortBefore', () => {
+      const tokenA = new Coin(ChainId.DEVNET, ADDRESS_ONE, 8, 'BTC')
+      const tokenB = new Coin(ChainId.DEVNET, ADDRESS_TWO, 8, 'SOL')
+
+      expect(tokenA.sortsBefore(tokenB)).toBe(true)
     })
   })
 })

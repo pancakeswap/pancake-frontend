@@ -1,5 +1,5 @@
 import { Currency, Percent, TradeType } from '@pancakeswap/swap-sdk-core'
-import { cpScriptsSwapScript } from './generated/swap'
+import { swapScriptsSwapScript } from './generated/swap'
 import { Trade } from './trade'
 
 export interface TradeOptions {
@@ -31,13 +31,10 @@ export abstract class AptosSwapRouter {
     const [inputAddress, outputAddress] = [trade.route.input.wrapped.address, trade.route.output.wrapped.address]
 
     // x_in: u64,
-    // y_in: u64,
-    // x_min_out: u64,
     // y_min_out: u64,
-    const [xIn, yMinOut] = trade.tradeType === TradeType.EXACT_INPUT ? [amountIn, amountOut] : ['0', '0']
-    const [yIn, xMinOut] = trade.tradeType === TradeType.EXACT_OUTPUT ? [amountOut, amountIn] : ['0', '0']
+    const [xIn, yMinOut] = trade.tradeType === TradeType.EXACT_INPUT ? [amountIn, amountOut] : [amountOut, amountIn]
     const [xAddress, yAddress] =
       trade.tradeType === TradeType.EXACT_INPUT ? [inputAddress, outputAddress] : [outputAddress, inputAddress]
-    return cpScriptsSwapScript([xIn, yIn, xMinOut, yMinOut], [xAddress, yAddress])
+    return swapScriptsSwapScript([xIn, yMinOut], [xAddress, yAddress])
   }
 }
