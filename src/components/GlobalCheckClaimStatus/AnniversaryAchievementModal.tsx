@@ -5,6 +5,8 @@ import delay from 'lodash/delay'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Dots from 'components/Loader/Dots'
+import { useRouter } from 'next/router'
+import { useAccount } from 'wagmi'
 
 const AnniversaryImage = styled.img`
   border-radius: 50%;
@@ -32,7 +34,9 @@ interface AnniversaryModalProps extends InjectedModalProps {
 
 const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ onDismiss, onClick }) => {
   const { t } = useTranslation()
+  const { address } = useAccount()
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   const handleClick = async () => {
     setIsLoading(true)
@@ -40,6 +44,9 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ onDismis
       await onClick()
     } finally {
       onDismiss()
+      if (address) {
+        router.push(`/profile/${address}/achievements`)
+      }
     }
   }
 
