@@ -102,16 +102,13 @@ export const combinedTokenInfoMapFromInActiveUrlsAtom = atom((get) => {
         const current = lists[currentUrl]?.current
         if (!current) return allTokens
         try {
-          const groupedTokenMap: { [chainId: string]: TokenInfo[] } = groupBy(
-            uniqBy(current.tokens, (tokenInfo) => `${tokenInfo.chainId}#${tokenInfo.address}`),
-            (tokenInfo) => tokenInfo.chainId,
-          )
-
-          const tokenInfoAddressMap = fromPairs(
-            Object.entries(groupedTokenMap).map(([chainId, tokenInfoList]) => [
-              chainId,
-              fromPairs(tokenInfoList.map((tokenInfo) => [tokenInfo.address, { token: tokenInfo, list: current }])),
-            ]),
+          const tokenInfoAddressMap = mapValues(
+            groupBy(
+              uniqBy(current.tokens, (tokenInfo) => `${tokenInfo.chainId}#${tokenInfo.address}`),
+              'chainId',
+            ),
+            (tokenInfoList) =>
+              mapValues(keyBy(tokenInfoList, 'address'), (tokenInfo) => ({ token: tokenInfo, list: current })),
           )
 
           // add chain id item if not exist
