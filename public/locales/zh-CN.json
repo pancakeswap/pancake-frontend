@@ -1648,9 +1648,6 @@
   "Released": "已释放",
   "Vested": "已授权",
   "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked": "只有在质押头寸解锁时，您才能提取质押的 CAKE 并获利。",
-  "Hello, early fixed-term staking pool CAKE lovers.": "您好，早期的定期质押糖浆池 CAKE 爱好者。",
-  "If you staked in our fixed-term staking pool for 52 weeks within the first 24 hours of the launch, you are eligible to claim a special edition “Project Galaxy x PancakeSwap” NFT.": "如果您在发起后的前 24 小时内在我们的定期质押糖浆池中质押 52 周，您就有资格获得特别版“Project Galaxy x PancakeSwap”NFT。",
-  "Hold this NFT in your wallet until the snapshot timing (10:00 UTC 11th May 2022) to participate in the $GAL airdrop with a total of 400,000 GAL tokens.": "将此 NFT 保存在您的钱包中，直到快照时间（世界协调时间 2022 年 5 月 11 日 10:00 ）以总共 400,000 GAL 代币参与 $GAL 空投。",
   "$120,000 in Prizes with Tokens and NFTs!": "120,000 美元奖金，以及代币和 NFT！",
   "Trade DAR/BNB, CAKE/BNB, and CAKE/BUSD during the battle period to raise both your and your team’s score. See the Rules section below for more.": "在战斗期间交易 DAR/BNB、CAKE/BNB 和 CAKE/BUSD，以提高您和您的团队的分数。有关更多信息，请参阅下面的“规则”部分。",
   "Prizes to be distributed in CAKE and DAR in a distribution of 1:5 and shared by all members of each respective tier. The price of token prizes ($CAKE and $DAR) in USD will be determined as per their BUSD pair price during the tally period.": "奖金将在 CAKE 和 DAR 中以 1:5 的比例分配，并由各个级别的所有成员共享。以美元计价的代币奖金（$CAKE 和 $DAR）的价格将根据其在计分期间的 BUSD 对价格确定。",
@@ -1948,5 +1945,6 @@
   "My Duration": "My Duration",
   "Weeks": "Weeks",
   "Boost multiplier calculation does not include profit from CAKE staking pool": "Boost multiplier calculation does not include profit from CAKE staking pool",
-  "Stable LP": "Stable LP"
+  "Stable LP": "Stable LP",
+  "You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!": "You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!"
 }
