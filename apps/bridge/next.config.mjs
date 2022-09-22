@@ -12,11 +12,6 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
-  experimental: {
-    images: {
-      allowFutureImage: true,
-    },
-  },
 }
 
 export default withTH(withAxiom(withVanillaExtract(nextConfig)))
