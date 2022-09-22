@@ -5,7 +5,6 @@ import { AutoColumn } from 'components/Layout/Column'
 import { useAddUserToken } from 'state/user/hooks'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import { ListLogo } from 'components/Logo'
 import { useTranslation } from '@pancakeswap/localization'
@@ -20,8 +19,6 @@ const getStandard = (chainId: ChainId) =>
   chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET ? 'ERC20' : 'BEP20'
 
 function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
-  const { chainId } = useActiveWeb3React()
-
   const { t } = useTranslation()
 
   const [confirmed, setConfirmed] = useState(false)
@@ -49,7 +46,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
       </Message>
 
       {tokens.map((token) => {
-        const list = chainId && inactiveTokenList?.[chainId]?.[token.address]?.list
+        const list = token.chainId && inactiveTokenList?.[token.chainId]?.[token.address]?.list
         const address = token.address ? `${truncateHash(token.address)}` : null
         return (
           <Grid key={token.address} gridTemplateRows="1fr 1fr 1fr" gridGap="4px">
@@ -71,13 +68,13 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
               <Text mr="8px">{token.name}</Text>
               <Text>({token.symbol})</Text>
             </Flex>
-            {chainId && (
+            {token.chainId && (
               <Flex justifyContent="space-between" width="100%">
                 <Text mr="4px">{address}</Text>
-                <Link href={getBlockExploreLink(token.address, 'address', chainId)} external>
+                <Link href={getBlockExploreLink(token.address, 'address', token.chainId)} external>
                   (
                   {t('View on %site%', {
-                    site: getBlockExploreName(chainId),
+                    site: getBlockExploreName(token.chainId),
                   })}
                   )
                 </Link>

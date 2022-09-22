@@ -5,7 +5,6 @@ import { AutoRow, RowFixed } from 'components/Layout/Row'
 import { AutoColumn } from 'components/Layout/Column'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { ListLogo } from 'components/Logo'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import styled from 'styled-components'
 import { useIsUserAddedToken, useIsTokenActive } from 'hooks/Tokens'
@@ -55,14 +54,13 @@ export default function ImportRow({
   setImportToken: (token: Token) => void
 }) {
   // globals
-  const { chainId } = useActiveWeb3React()
   const { isMobile } = useMatchBreakpoints()
 
   const { t } = useTranslation()
 
   // check if token comes from list
   const inactiveTokenList = useCombinedInactiveList()
-  const list = chainId && inactiveTokenList?.[chainId]?.[token.address]?.list
+  const list = token?.chainId && inactiveTokenList?.[token.chainId]?.[token.address]?.list
 
   // check if already active on list or local storage tokens
   const isAdded = useIsUserAddedToken(token)
