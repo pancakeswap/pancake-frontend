@@ -1648,9 +1648,6 @@
   "Released": "릴리스됨",
   "Vested": "베스팅됨",
   "You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked": "스테이킹 포지션이 잠금 해제된 경우에만 스테이킹된 CAKE 및 수익을 인출할 수 있습니다",
-  "Hello, early fixed-term staking pool CAKE lovers.": "안녕하세요, 초기 고정 기간 스테이킹 풀 CAKE 러버입니다.",
-  "If you staked in our fixed-term staking pool for 52 weeks within the first 24 hours of the launch, you are eligible to claim a special edition “Project Galaxy x PancakeSwap” NFT.": "출시하고 처음 24시간 내에 52주 동안 고정 기간 스테이킹 풀에 스테이킹한 경우, 특별 버전 ​​\"Project Galaxy x PancakeSwap\" NFT를 받을 수 있는 자격이 있습니다.",
-  "Hold this NFT in your wallet until the snapshot timing (10:00 UTC 11th May 2022) to participate in the $GAL airdrop with a total of 400,000 GAL tokens.": "스냅숏 타이밍(2022년 5월 11일 10:00 UTC)까지 이 NFT를 지갑에 보관하여 총 400,000 GAL 토큰이 포함된 $GAL 에어드롭에 참여하세요.",
   "$120,000 in Prizes with Tokens and NFTs!": "토큰과 NFT를 포함한 상금 $120,000!",
   "Trade DAR/BNB, CAKE/BNB, and CAKE/BUSD during the battle period to raise both your and your team’s score. See the Rules section below for more.": "배틀 기간 중에 DAR/BNB, CAKE/BNB, CAKE/BUSD를 거래하여 본인 점수와 팀 점수 모두를 높이세요. 자세한 내용은 아래 규칙 섹션을 참조하세요.",
   "Prizes to be distributed in CAKE and DAR in a distribution of 1:5 and shared by all members of each respective tier. The price of token prizes ($CAKE and $DAR) in USD will be determined as per their BUSD pair price during the tally period.": "상금은 1:5 비율로, CAKE와 DAR로 배분되며 각 해당 티어의 모든 멤버가 공유합니다. USD로 표시된 토큰 상품($CAKE 및 $DAR) 가격은 계산 기간 동안 BUSD 쌍 가격을 기준으로 결정됩니다.",
@@ -1948,5 +1945,6 @@
   "My Duration": "My Duration",
   "Weeks": "Weeks",
   "Boost multiplier calculation does not include profit from CAKE staking pool": "Boost multiplier calculation does not include profit from CAKE staking pool",
-  "Stable LP": "Stable LP"
+  "Stable LP": "Stable LP",
+  "You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!": "You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!"
 }
