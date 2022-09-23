@@ -4,7 +4,7 @@ import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance, getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
-import CollectModal from '../Modals/CollectModal'
+import CollectModal from '../../Modals/CollectModal'
 
 interface HarvestActionsProps {
   earnings: BigNumber

@@ -8,7 +8,7 @@ import { formatNumber, getBalanceNumber, getFullDisplayBalance } from 'utils/for
 import Balance from 'components/Balance'
 import { useTranslation } from '@pancakeswap/localization'
 import BaseCell, { CellContent } from './BaseCell'
-import CollectModal from '../../PoolCard/Modals/CollectModal'
+import CollectModal from '../../Modals/CollectModal'
 
 interface EarningsCellProps {
   pool: DeserializedPool

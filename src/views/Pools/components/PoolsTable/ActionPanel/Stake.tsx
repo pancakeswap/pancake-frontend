@@ -33,8 +33,8 @@ import useUserDataInVaultPresenter from 'views/Pools/components/LockedPool/hooks
 
 import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
 import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
-import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
-import StakeModal from '../../PoolCard/Modals/StakeModal'
+import NotEnoughTokensModal from '../../Modals/NotEnoughTokensModal'
+import StakeModal from '../../Modals/StakeModal'
 import { ProfileRequirementWarning } from '../../ProfileRequirementWarning'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
 import { VaultStakeButtonGroup } from '../../Vault/VaultStakeButtonGroup'
