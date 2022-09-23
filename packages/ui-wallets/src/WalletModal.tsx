@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { usePreviousValue } from '@pancakeswap/hooks'
+// import { usePreviousValue } from '@pancakeswap/hooks'
 import { atom, useAtom } from 'jotai'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui/components/AtomBox'
@@ -101,7 +101,10 @@ export function useSelectedWallet<T>() {
 }
 
 const Tutorial = () => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { code },
+  } = useTranslation()
   const [step, setStep] = useState(0)
 
   const introStep = IntroSteps[step]
@@ -132,7 +135,17 @@ const Tutorial = () => {
         <StepDot place="left" active={step === 0} onClick={() => setStep(0)} />
         <StepDot place="right" active={step === 1} onClick={() => setStep(1)} />
       </AtomBox>
-      <Button variant="subtle" external as={LinkExternal} color="backgroundAlt">
+      <Button
+        variant="subtle"
+        external
+        as={LinkExternal}
+        color="backgroundAlt"
+        href={
+          docLangCodeMapping[code]
+            ? `https://docs.pancakeswap.finance/v/${docLangCodeMapping[code]}/get-started/connection-guide`
+            : `https://docs.pancakeswap.finance/get-started/connection-guide`
+        }
+      >
         {t('Learn How to Connect')}
       </Button>
     </AtomBox>
@@ -373,7 +386,7 @@ function sortWallets<T>(wallets: WalletConfigV2<T>[], lastUsedWalletName: string
 function DesktopModal<T>({ wallets, login }: Pick<WalletModalV2Props<T>, 'wallets' | 'login'>) {
   const [selected, setSelected] = useSelectedWallet<T>()
   const [error, setError] = useAtom(errorAtom)
-  const previousWallet = usePreviousValue(selected)
+  // const previousWallet = usePreviousValue(selected)
   const [qrCode, setQrCode] = useState<string | undefined>(undefined)
   const { t } = useTranslation()
 
@@ -421,9 +434,7 @@ function DesktopModal<T>({ wallets, login }: Pick<WalletModalV2Props<T>, 'wallet
                 setQrCode(uri)
               })
             }
-            if (previousWallet?.connectorId !== w.connectorId) {
-              connectToWallet(w)
-            }
+            connectToWallet(w)
           }}
         />
       </AtomBox>

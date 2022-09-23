@@ -1,7 +1,7 @@
 import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
 import { WalletFilledIcon } from '@pancakeswap/uikit'
 import type { ExtendEthereum } from 'global'
-import { isFirefox, isMobileOnly } from 'react-device-detect'
+import { isFirefox } from 'react-device-detect'
 import { metaMaskConnector, walletConnectConnector } from '../utils/wagmi'
 
 export enum ConnectorNames {
@@ -22,7 +22,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
     icon: 'https://cdn.pancakeswap.com/wallets/metamask.png',
     installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isMetaMask) && metaMaskConnector.ready,
     connectorId: ConnectorNames.MetaMask,
-    deepLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
+    deepLink: 'metamask://dapp/pancakeswap.finance/',
     qrCode,
     downloadLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
   },
@@ -132,16 +132,17 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
   },
 ]
 
-export const wallets = walletsConfig.some((c) => c.installed && c.connectorId === ConnectorNames.Injected)
-  ? walletsConfig
-  : // add injected icon if none of injected type wallets installed
-    [
-      ...walletsConfig,
-      {
-        id: 'injected',
-        title: 'Injected',
-        icon: WalletFilledIcon,
-        connectorId: ConnectorNames.Injected,
-        installed: isMobileOnly && Boolean(window.ethereum),
-      },
-    ]
+export const wallets =
+  Boolean(window.ethereum) || walletsConfig.some((c) => c.installed && c.connectorId === ConnectorNames.Injected)
+    ? walletsConfig
+    : // add injected icon if none of injected type wallets installed
+      [
+        ...walletsConfig,
+        {
+          id: 'injected',
+          title: 'Injected',
+          icon: WalletFilledIcon,
+          connectorId: ConnectorNames.Injected,
+          installed: Boolean(window.ethereum),
+        },
+      ]
