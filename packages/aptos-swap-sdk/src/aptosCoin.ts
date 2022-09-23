@@ -1,9 +1,11 @@
 import { Currency, NativeCurrency, SerializedToken, Token } from '@pancakeswap/swap-sdk-core'
-import { APTOS_COIN } from 'aptos'
+import { APTOS_COIN, TxnBuilderTypes } from 'aptos'
 import { Coin } from './coin'
 
 export class AptosCoin extends NativeCurrency {
   address: typeof APTOS_COIN = APTOS_COIN
+
+  structTag: TxnBuilderTypes.StructTag = TxnBuilderTypes.StructTag.fromString('0x1::aptos_coin::AptosCoin')
 
   projectLink = 'https://aptoslabs.com/'
 
@@ -28,7 +30,7 @@ export class AptosCoin extends NativeCurrency {
     return false
   }
 
-  get wrapped(): Token {
+  get wrapped(): Coin {
     return new Coin(this.chainId, this.address, this.decimals, this.symbol, this.name, this.projectLink)
   }
 

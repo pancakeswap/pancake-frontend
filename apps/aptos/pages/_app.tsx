@@ -16,10 +16,11 @@ declare module 'styled-components' {
 }
 
 function HealthyLog() {
-  const { error } = useHealthy()
-  if (error) {
-    console.info(error)
-  }
+  useHealthy({
+    onError: (err) => {
+      console.info(err)
+    },
+  })
   return null
 }
 

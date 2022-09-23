@@ -30,6 +30,7 @@ export function useBalance<TData = FetchBalanceResult>({
   cacheTime,
   networkName,
   enabled = true,
+  keepPreviousData = true,
   staleTime,
   suspense,
   coin,
@@ -44,6 +45,7 @@ export function useBalance<TData = FetchBalanceResult>({
   const balanceQuery = useQuery(queryKey({ address, networkName, coin }), queryFn, {
     cacheTime,
     enabled: Boolean(enabled && address),
+    keepPreviousData,
     staleTime,
     suspense,
     onError,

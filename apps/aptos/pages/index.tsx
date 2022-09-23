@@ -62,7 +62,9 @@ const SwapPage = () => {
         outputCurrencyId: USDC_DEVNET.address,
       }),
     )
-  }, [dispatch, native])
+    // ignore dispatch for now cause it re-render on fast refresh
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const { t } = useTranslation()
 

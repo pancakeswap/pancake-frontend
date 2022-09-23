@@ -46,5 +46,13 @@ describe('Coin', () => {
 
       expect(tokenA.sortsBefore(tokenB)).toBe(true)
     })
+
+    it('correct address', () => {
+      const tokenA = new Coin(ChainId.DEVNET, ADDRESS_ONE, 8, 'BTC')
+      const tokenB = new Coin(ChainId.DEVNET, ADDRESS_TWO, 8, 'SOL')
+
+      expect(tokenA.address).toBe(ADDRESS_ONE)
+      expect(tokenB.address).toBe(ADDRESS_TWO)
+    })
   })
 })

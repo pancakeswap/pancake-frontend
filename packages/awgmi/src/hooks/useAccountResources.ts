@@ -21,6 +21,7 @@ const queryFn = ({ queryKey: [{ networkName, address }] }: QueryFunctionArgs<typ
 export function useAccountResources<TData = unknown>({
   cacheTime = 0,
   networkName: _networkName,
+  keepPreviousData = true,
   address,
   enabled = true,
   staleTime,
@@ -40,6 +41,7 @@ export function useAccountResources<TData = unknown>({
     onSettled,
     onSuccess,
     select,
+    keepPreviousData,
     refetchInterval: watch ? 10000 : 0,
   })
 }

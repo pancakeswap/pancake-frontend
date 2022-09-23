@@ -8,16 +8,37 @@ const NAME = 'Aptos coin'
 const coinInfoTypeTag = (type: string) => `0x1::coin::CoinInfo<${type}>`
 
 export type FetchCoinArgs = {
-  /** Chain id to use for provider */
+  /** Network name to use for provider */
   networkName?: string
   /** resource type */
   coin?: string
+}
+
+type Vec<T = undefined> = {
+  vec: Array<T>
+}
+
+// Custom vec type supply
+type Supply = Vec<{
+  aggregator: Vec
+  integer: Vec<{
+    limit: string
+    value: string
+  }>
+}>
+
+type CoinResourceResponse = {
+  decimals: number
+  symbol: string
+  name: string
+  supply: Supply
 }
 
 export type FetchCoinResult = {
   decimals: number
   symbol: string
   name: string
+  supply?: string
 }
 
 export async function fetchCoin({ networkName, coin }: FetchCoinArgs): Promise<FetchCoinResult> {
@@ -29,12 +50,19 @@ export async function fetchCoin({ networkName, coin }: FetchCoinArgs): Promise<F
     if (coinHoistAddress) {
       const coinResource = await provider.getAccountResource(coinHoistAddress, coinInfoTypeTag(coin))
 
-      const { decimals = 18, symbol, name } = coinResource.data as any
+      const { decimals = 18, symbol, name, supply: _supply } = coinResource.data as CoinResourceResponse
+
+      let supply: string | undefined
+
+      if (_supply?.vec?.[0]?.integer?.vec?.[0]?.value) {
+        supply = _supply?.vec?.[0]?.integer?.vec?.[0]?.value
+      }
 
       return {
         decimals,
         symbol,
         name,
+        supply,
       }
     }
   }
