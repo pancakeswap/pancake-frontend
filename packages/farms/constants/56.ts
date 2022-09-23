@@ -51,7 +51,7 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
-    pid: null,
+    pid: 121,
     lpSymbol: 'HAY-BUSD LP',
     lpAddress: '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae',
     token: bscTokens.hay, // coins[0]
