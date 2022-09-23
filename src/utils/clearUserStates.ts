@@ -6,8 +6,19 @@ import { connectorLocalStorageKey } from '@pancakeswap/uikit'
 import { LS_ORDERS } from './localStorageOrders'
 import getLocalStorageItemKeys from './getLocalStorageItemKeys'
 
-export const clearUserStates = (dispatch: Dispatch<any>, chainId: number, isDeactive = false) => {
-  dispatch(resetUserState({ chainId }))
+export const clearUserStates = (
+  dispatch: Dispatch<any>,
+  {
+    chainId,
+    newChainId,
+    isDeactive = false,
+  }: {
+    chainId?: number
+    newChainId?: number
+    isDeactive?: boolean
+  },
+) => {
+  dispatch(resetUserState({ chainId, newChainId }))
   configureScope((scope) => scope.setUser(null))
   // Only clear localStorage when user disconnect,switch address no need clear it.
   if (isDeactive) {

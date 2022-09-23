@@ -2,6 +2,7 @@
 /* eslint-disable no-nested-ternary */
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, LinkExternal, Radio, Skeleton, Text } from '@pancakeswap/uikit'
 import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
 import { formatDistanceToNowStrict } from 'date-fns'
@@ -10,8 +11,8 @@ import { useGetChainName } from 'state/info/hooks'
 import { Transaction, TransactionType } from 'state/info/types'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
+
 import { formatAmount } from 'utils/formatInfoNumbers'
-import truncateHash from 'utils/truncateHash'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from './shared'
 
 const Wrapper = styled.div`

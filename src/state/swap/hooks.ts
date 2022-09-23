@@ -20,7 +20,7 @@ import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import { CAKE, USDC } from '@pancakeswap/tokens'
 import getLpAddress from 'utils/getLpAddress'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
-import tryParseAmount from 'utils/tryParseAmount'
+import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { AppState, useAppDispatch } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceSwapState, updateDerivedPairData, updatePairData } from './actions'
@@ -245,8 +245,9 @@ export function useDefaultsFromURLSearch():
   const dispatch = useAppDispatch()
   const native = useNativeCurrency()
   const { query } = useRouter()
-  const [result, setResult] =
-    useState<{ inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined>()
+  const [result, setResult] = useState<
+    { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
+  >()
 
   useEffect(() => {
     if (!chainId || !native) return

@@ -22,7 +22,6 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getZapAddress } from 'utils/addressHelpers'
 import { CommitButton } from 'components/CommitButton'
 import { getLPSymbol } from 'utils/getLpSymbol'
-import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useRouter } from 'next/router'
 import { callWithEstimateGas } from 'utils/calls'
 import { SUPPORT_ZAP } from 'config/constants/supportChains'
@@ -30,7 +29,6 @@ import { ContractMethodName } from 'utils/types'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useLPApr } from 'state/swap/hooks'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
-import { CAKE, USDC } from '@pancakeswap/tokens'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -40,10 +38,9 @@ import { RowBetween, RowFixed } from '../../components/Layout/Row'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 
 import { PairState } from '../../hooks/usePairs'
-import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
-import { Field, resetMintState } from '../../state/mint/actions'
+import { Field } from '../../state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState, useZapIn } from '../../state/mint/hooks'
 
 import { useTransactionAdder } from '../../state/transactions/hooks'
@@ -67,7 +64,6 @@ import { ChoosePair } from './ChoosePair'
 import { ZapCheckbox } from '../../components/CurrencyInputPanel/ZapCheckbox'
 import { formatAmount } from '../../utils/formatInfoNumbers'
 import { useCurrencySelectRoute } from './useCurrencySelectRoute'
-import { useAppDispatch } from '../../state'
 import { CommonBasesType } from '../../components/SearchModal/types'
 
 enum Steps {
@@ -77,7 +73,7 @@ enum Steps {
 
 const zapAddress = getZapAddress()
 
-export default function AddLiquidity() {
+export default function AddLiquidity({ currencyA, currencyB }) {
   const router = useRouter()
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
 
@@ -85,27 +81,12 @@ export default function AddLiquidity() {
   const [zapMode] = useZapModeManager()
   const expertMode = useIsExpertMode()
 
-  const native = useNativeCurrency()
-
   const [temporarilyZapMode, setTemporarilyZapMode] = useState(true)
-  const [currencyIdA, currencyIdB] = router.query.currency || [
-    native.symbol,
-    CAKE[chainId]?.address ?? USDC[chainId]?.address,
-  ]
+
   const [steps, setSteps] = useState(Steps.Choose)
 
-  const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const gasPrice = useGasPrice()
-
-  const currencyA = useCurrency(currencyIdA)
-  const currencyB = useCurrency(currencyIdB)
-
-  useEffect(() => {
-    if (!currencyIdA && !currencyIdB) {
-      dispatch(resetMintState())
-    }
-  }, [dispatch, currencyIdA, currencyIdB])
 
   useEffect(() => {
     if (router.query.step === '1') {

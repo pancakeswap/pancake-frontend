@@ -20,6 +20,7 @@ import {
   fetchCakeFlexibleSideVaultPublicData,
   fetchCakeFlexibleSideVaultUserData,
   fetchCakeFlexibleSideVaultFees,
+  fetchCakePoolUserDataAsync,
 } from '.'
 import { DeserializedPool, VaultKey } from '../types'
 import { fetchFarmsPublicDataAsync } from '../farms'
@@ -122,6 +123,13 @@ export const useCakeVaultUserData = () => {
   }, [account, dispatch])
 }
 
+export const useCakeVaultPublicData = () => {
+  const dispatch = useAppDispatch()
+  useFastRefreshEffect(() => {
+    dispatch(fetchCakeVaultPublicData())
+  }, [dispatch])
+}
+
 export const useFetchIfo = () => {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
@@ -131,7 +139,7 @@ export const useFetchIfo = () => {
       dispatch(fetchCakeVaultPublicData())
       dispatch(fetchIfoPublicDataAsync())
       if (account) {
-        dispatch(fetchPoolsUserDataAsync(account))
+        dispatch(fetchCakePoolUserDataAsync(account))
         dispatch(fetchCakeVaultUserData({ account }))
         dispatch(fetchUserIfoCreditDataAsync(account))
       }

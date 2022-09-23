@@ -109,7 +109,7 @@ const UserMenuItems = ({ onShowTx }: { onShowTx: () => void }) => {
       <UserMenuDivider />
       {CHAINS_STARGATE.map((chain) => (
         <UserMenuItem key={chain.id} style={{ justifyContent: 'flex-start' }} onClick={() => switchNetwork(chain.id)}>
-          <Image width={24} height={24} src={`/chains/${chain.id}.png`} unoptimized />
+          <Image width={24} height={24} src={`/chains/${chain.id}.png`} unoptimized alt={`chain-${chain.name}`} />
           <Text pl="12px">{chain.name}</Text>
         </UserMenuItem>
       ))}
@@ -224,7 +224,13 @@ function RecentTransactionsModal({
               {txn.type === 'APPROVE' && (
                 <>
                   {`Approve ${txn?.input?.amount?.currency?.symbol ?? ''}`}{' '}
-                  <Image width={18} height={18} src={`/chains/${txnChain?.chain.id}.png`} unoptimized />
+                  <Image
+                    width={18}
+                    height={18}
+                    src={`/chains/${txnChain?.chain.id}.png`}
+                    unoptimized
+                    alt={`${txnChain?.chain.name}`}
+                  />
                 </>
               )}
               {txn.type === 'TRANSFER' && (
@@ -235,12 +241,14 @@ function RecentTransactionsModal({
                     height={18}
                     src={`/chains/${findChainByStargateId(txn.input.from.chainId)?.chain.id}.png`}
                     unoptimized
+                    alt={`chain-${findChainByStargateId(txn.input.from.chainId)?.chain.name}`}
                   />
                   to {txn.input.to.token.symbol}{' '}
                   <Image
                     width={18}
                     height={18}
                     src={`/chains/${findChainByStargateId(txn.input.to.chainId)?.chain.id}.png`}
+                    alt={`chain-${findChainByStargateId(txn.input.to.chainId)?.chain.name}`}
                     unoptimized
                   />
                 </>

@@ -65,9 +65,7 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
         // Re-fetch profile
         refreshProfile()
         toastSuccess(t('Profile Updated!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-        if (onSuccess) {
-          onSuccess()
-        }
+        onSuccess?.()
         onDismiss?.()
       },
     })

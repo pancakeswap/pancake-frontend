@@ -19,6 +19,7 @@ export interface AprProps {
   hideButton?: boolean
   strikethrough?: boolean
   useTooltipText?: boolean
+  boosted?: boolean
 }
 
 const Container = styled.div`
@@ -57,6 +58,7 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
   strikethrough,
   lpRewardsApr,
   useTooltipText = true,
+  boosted,
 }) => {
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAddress, tokenAddress })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
@@ -77,6 +79,7 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
           strikethrough={strikethrough}
           useTooltipText={useTooltipText}
           hideButton={hideButton}
+          boosted={boosted}
         />
       ) : (
         <AprWrapper>

@@ -35,9 +35,7 @@ const PauseProfilePage: React.FC<React.PropsWithChildren<PauseProfilePageProps>>
       // Re-fetch profile
       refreshProfile()
       toastSuccess(t('Profile Paused!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-      if (onSuccess) {
-        onSuccess()
-      }
+      onSuccess?.()
       onDismiss?.()
     }
   }

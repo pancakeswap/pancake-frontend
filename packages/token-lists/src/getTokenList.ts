@@ -3,7 +3,7 @@
 import { TokenList } from '@uniswap/token-lists'
 import schema from '@uniswap/token-lists/src/tokenlist.schema.json'
 import Ajv from 'ajv'
-import uriToHttp from './uriToHttp'
+import uriToHttp from '@pancakeswap/utils/uriToHttp'
 
 const tokenListValidator = new Ajv({ allErrors: true }).compile(schema)
 

@@ -136,6 +136,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
   const { lpAddress } = farm
   const bsc = getBlockExploreLink(lpAddress, 'address', chainId)
   const info = `/info/pool/${lpAddress}`
+  const { stakedBalance, tokenBalance, proxy } = farm.userData
 
   return (
     <Container expanded={expanded}>
@@ -157,7 +158,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
             <>
               <ValueWrapper>
                 <Text>{t('APR')}</Text>
-                <Apr {...apr} useTooltipText={false} />
+                <Apr {...apr} useTooltipText={false} boosted={farm.boosted} />
               </ValueWrapper>
               <ValueWrapper>
                 <Text>{t('Multiplier')}</Text>
@@ -205,6 +206,12 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
               )}
               desc={(actionBtn) => <ActionContent>{actionBtn}</ActionContent>}
               farmPid={farm?.pid}
+              lpTotalSupply={farm?.lpTotalSupply}
+              userBalanceInFarm={
+                stakedBalance.plus(tokenBalance).gt(0)
+                  ? stakedBalance.plus(tokenBalance)
+                  : proxy.stakedBalance.plus(proxy.tokenBalance)
+              }
             />
           </ActionContainerSection>
         )}

@@ -120,12 +120,12 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
       }
       if (flag === 'api' && !fallback) {
         try {
-          const { updatedAt, data, poolLength, regularCakePerBlock } = await farmApiFetch(chainId)
+          const { updatedAt, data: farmsWithPrice, poolLength, regularCakePerBlock } = await farmApiFetch(chainId)
           if (Date.now() - new Date(updatedAt).getTime() > 3 * 60 * 1000) {
             fallback = true
             throw new Error('Farm Api out dated')
           }
-          return [data, poolLength, regularCakePerBlock]
+          return [farmsWithPrice, poolLength, regularCakePerBlock]
         } catch (error) {
           console.error(error)
           return fetchFarmPublicDataPkg({ pids, chainId, chain })
@@ -312,6 +312,7 @@ export const farmsSlice = createSlice({
     builder.addCase(fetchFarmsPublicDataAsync.fulfilled, (state, action) => {
       const [farmPayload, poolLength, regularCakePerBlock] = action.payload
       const farmPayloadPidMap = fromPairs(farmPayload.map((farmData) => [farmData.pid, farmData]))
+
       state.data = state.data.map((farm) => {
         const liveFarmData = farmPayloadPidMap[farm.pid]
         return { ...farm, ...liveFarmData }

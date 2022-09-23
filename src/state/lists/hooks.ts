@@ -3,8 +3,10 @@ import { EMPTY_LIST, TagInfo, TokenAddressMap, WrappedTokenInfo } from '@pancake
 import { TokenList } from '@uniswap/token-lists'
 import { DEFAULT_LIST_OF_LISTS, OFFICIAL_LISTS } from 'config/constants/lists'
 import { atom, useAtomValue } from 'jotai'
-import fromPairs from 'lodash/fromPairs'
+import mapValues from 'lodash/mapValues'
 import groupBy from 'lodash/groupBy'
+import keyBy from 'lodash/keyBy'
+import { ListsState } from '@pancakeswap/token-lists'
 import uniqBy from 'lodash/uniqBy'
 import { useMemo } from 'react'
 import { UNSUPPORTED_LIST_URLS, WARNING_LIST_URLS } from '../../config/constants/lists'
@@ -12,7 +14,6 @@ import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-defaul
 import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
 import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
 import { listsAtom } from './lists'
-import { ListsState } from './reducer'
 
 // use ordering of default list of lists to assign priority
 function sortByListPriority(urlA: string, urlB: string) {
@@ -129,13 +130,10 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
     return new WrappedTokenInfo(tokenInfo, tags)
   })
 
-  const groupedTokenMap: { [chainId: string]: WrappedTokenInfo[] } = groupBy(tokenMap, (tokenInfo) => tokenInfo.chainId)
+  const groupedTokenMap: { [chainId: string]: WrappedTokenInfo[] } = groupBy(tokenMap, 'chainId')
 
-  const tokenAddressMap = fromPairs(
-    Object.entries(groupedTokenMap).map(([chainId, tokenInfoList]) => [
-      chainId,
-      fromPairs(tokenInfoList.map((tokenInfo) => [tokenInfo.address, { token: tokenInfo, list }])),
-    ]),
+  const tokenAddressMap = mapValues(groupedTokenMap, (tokenInfoList) =>
+    mapValues(keyBy(tokenInfoList, 'address'), (tokenInfo) => ({ token: tokenInfo, list })),
   ) as TokenAddressMap
 
   // add chain id item if not exist

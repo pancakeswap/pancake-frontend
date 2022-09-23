@@ -34,6 +34,7 @@ const IconButtonWrapper = styled.div`
 `
 
 const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
+  pid,
   quoteToken,
   token,
   lpSymbol,
@@ -103,6 +104,8 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
 
   const [onPresentDeposit] = useModal(
     <DepositModal
+      pid={pid}
+      lpTotalSupply={lpTotalSupply}
       max={tokenBalance}
       stakedBalance={stakedBalance}
       onConfirm={handleStake}
@@ -163,8 +166,8 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   return (
     <Flex justifyContent="space-between" alignItems="center">
       <StakedLP
+        pid={pid}
         stakedBalance={stakedBalance}
-        lpSymbol={lpSymbol}
         quoteTokenSymbol={quoteToken.symbol}
         tokenSymbol={token.symbol}
         lpTotalSupply={lpTotalSupply}

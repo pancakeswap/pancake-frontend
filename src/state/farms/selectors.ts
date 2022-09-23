@@ -2,11 +2,11 @@ import BigNumber from 'bignumber.js'
 import addSeconds from 'date-fns/addSeconds'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { deserializeToken } from '@pancakeswap/tokens'
 import { createSelector } from '@reduxjs/toolkit'
 import _isEmpty from 'lodash/isEmpty'
 import { State, SerializedFarm, DeserializedFarm, DeserializedFarmUserData } from '../types'
-import isUndefinedOrNull from '../../utils/isUndefinedOrNull'
 import { FARM_AUCTION_HOSTING_IN_SECONDS } from '../../config/constants'
 
 const deserializeFarmUserData = (farm: SerializedFarm): DeserializedFarmUserData => {
@@ -36,6 +36,7 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
     quoteTokenPriceBusd,
     tokenPriceBusd,
     boosted,
+    infoStableSwapAddress,
   } = farm
 
   const auctionHostingStartDate = !isUndefinedOrNull(auctionHostingStartSeconds)
@@ -74,6 +75,7 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
     tokenPriceVsQuote: farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : BIG_ZERO,
     poolWeight: farm.poolWeight ? new BigNumber(farm.poolWeight) : BIG_ZERO,
     boosted,
+    isStable: Boolean(infoStableSwapAddress),
   }
 }
 
@@ -87,6 +89,11 @@ export const makeFarmFromPidSelector = (pid: number) =>
 export const makeBusdPriceFromPidSelector = (pid: number) =>
   createSelector([selectFarmByKey('pid', pid)], (farm) => {
     return farm && new BigNumber(farm.tokenPriceBusd)
+  })
+
+export const makeLPTokenPriceFromPidSelector = (pid: number) =>
+  createSelector([selectFarmByKey('pid', pid)], (farm) => {
+    return farm && new BigNumber(farm.lpTokenPrice)
   })
 
 export const makeUserFarmFromPidSelector = (pid: number) =>

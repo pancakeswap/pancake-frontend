@@ -1,6 +1,12 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { createStore, Store } from 'redux'
-import { addTransaction, checkedTransaction, clearAllTransactions, finalizeTransaction } from './actions'
+import {
+  addTransaction,
+  checkedTransaction,
+  clearAllTransactions,
+  finalizeTransaction,
+  clearAllChainTransactions,
+} from './actions'
 import reducer, { initialState, TransactionState } from './reducer'
 
 describe('transaction reducer', () => {
@@ -158,7 +164,7 @@ describe('transaction reducer', () => {
     })
   })
 
-  describe('clearAllTransactions', () => {
+  describe('clearAllChainTransactions', () => {
     it('removes all transactions for the chain', () => {
       store.dispatch(
         addTransaction({
@@ -182,11 +188,40 @@ describe('transaction reducer', () => {
       expect(Object.keys(store.getState())).toEqual([String(ChainId.BSC), String(ChainId.BSC_TESTNET)])
       expect(Object.keys(store.getState()[ChainId.BSC] ?? {})).toEqual(['0x0'])
       expect(Object.keys(store.getState()[ChainId.BSC_TESTNET] ?? {})).toEqual(['0x1'])
-      store.dispatch(clearAllTransactions({ chainId: ChainId.BSC }))
+      store.dispatch(clearAllChainTransactions({ chainId: ChainId.BSC }))
       expect(Object.keys(store.getState())).toHaveLength(2)
       expect(Object.keys(store.getState())).toEqual([String(ChainId.BSC), String(ChainId.BSC_TESTNET)])
       expect(Object.keys(store.getState()[ChainId.BSC] ?? {})).toEqual([])
       expect(Object.keys(store.getState()[ChainId.BSC_TESTNET] ?? {})).toEqual(['0x1'])
+    })
+  })
+
+  describe('clearAllTransactions', () => {
+    it('removes all transactions for all chains', () => {
+      store.dispatch(
+        addTransaction({
+          chainId: ChainId.BSC,
+          summary: 'hello world',
+          hash: '0x0',
+          approval: { tokenAddress: 'abc', spender: 'def' },
+          from: 'abc',
+        }),
+      )
+      store.dispatch(
+        addTransaction({
+          chainId: ChainId.BSC_TESTNET,
+          summary: 'hello world',
+          hash: '0x1',
+          approval: { tokenAddress: 'abc', spender: 'def' },
+          from: 'abc',
+        }),
+      )
+      expect(Object.keys(store.getState())).toHaveLength(2)
+      expect(Object.keys(store.getState())).toEqual([String(ChainId.BSC), String(ChainId.BSC_TESTNET)])
+      expect(Object.keys(store.getState()[ChainId.BSC] ?? {})).toEqual(['0x0'])
+      expect(Object.keys(store.getState()[ChainId.BSC_TESTNET] ?? {})).toEqual(['0x1'])
+      store.dispatch(clearAllTransactions())
+      expect(Object.keys(store.getState())).toHaveLength(0)
     })
   })
 })

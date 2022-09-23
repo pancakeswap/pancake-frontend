@@ -20,6 +20,7 @@ import {
   makeBusdPriceFromPidSelector,
   makeFarmFromPidSelector,
   makeLpTokenPriceFromLpSymbolSelector,
+  makeLPTokenPriceFromPidSelector,
   makeUserFarmFromPidSelector,
 } from './selectors'
 
@@ -34,7 +35,11 @@ export function useFarmsLength() {
 export const usePollFarmsWithUserData = () => {
   const dispatch = useAppDispatch()
   const { account, chainId } = useActiveWeb3React()
-  const { proxyAddress } = useBCakeProxyContractAddress(account)
+  const {
+    proxyAddress,
+    proxyCreated,
+    isLoading: isProxyContractLoading,
+  } = useBCakeProxyContractAddress(account, chainId)
   const farmFlag = useFeatureFlag(featureFarmApiAtom)
 
   useSWRImmutable(
@@ -49,16 +54,16 @@ export const usePollFarmsWithUserData = () => {
     },
   )
 
-  const name = proxyAddress
+  const name = proxyCreated
     ? ['farmsWithUserData', account, proxyAddress, chainId]
     : ['farmsWithUserData', account, chainId]
 
   useSWRImmutable(
-    account && chainId ? name : null,
+    account && chainId && !isProxyContractLoading ? name : null,
     async () => {
       const farmsConfig = await getFarmConfig(chainId)
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
-      const params = proxyAddress ? { account, pids, proxyAddress, chainId } : { account, pids, chainId }
+      const params = proxyCreated ? { account, pids, proxyAddress, chainId } : { account, pids, chainId }
 
       dispatch(fetchFarmUserDataAsync(params))
     },
@@ -99,7 +104,7 @@ export const usePollCoreFarmData = () => {
 
 export const useFarms = (): DeserializedFarmsState => {
   const { chainId } = useActiveWeb3React()
-  return useSelector(farmSelector(chainId))
+  return useSelector(useMemo(() => farmSelector(chainId), [chainId]))
 }
 
 export const useFarmsPoolLength = (): number => {
@@ -130,6 +135,12 @@ export const useBusdPriceFromPid = (pid: number): BigNumber => {
 export const useLpTokenPrice = (symbol: string) => {
   const lpTokenPriceFromLpSymbol = useMemo(() => makeLpTokenPriceFromLpSymbolSelector(symbol), [symbol])
   return useSelector(lpTokenPriceFromLpSymbol)
+}
+
+export const useLpTokenPriceByPid = (pid: number) => {
+  const lpTokenPriceFromPid = useMemo(() => makeLPTokenPriceFromPidSelector(pid), [pid])
+
+  return useSelector(lpTokenPriceFromPid)
 }
 
 /**

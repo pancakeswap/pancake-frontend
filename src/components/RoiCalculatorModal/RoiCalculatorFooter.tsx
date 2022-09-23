@@ -118,7 +118,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                   *{t('LP Rewards APR')}
                 </Text>
                 <Text small textAlign="right">
-                  {Number.isFinite(lpRewardsAPR) ? lpRewardsAPR : '-'}%
+                  {lpRewardsAPR === '0' ? '-' : lpRewardsAPR}%
                 </Text>
               </>
             )}

@@ -7,6 +7,7 @@ import TransactionConfirmationModal, {
   TransactionErrorContent,
 } from 'components/TransactionConfirmationModal'
 import { Field } from 'state/burn/actions'
+import _toNumber from 'lodash/toNumber'
 import { AddLiquidityModalHeader, PairDistribution } from './common'
 
 interface ConfirmAddLiquidityModalProps {
@@ -25,82 +26,95 @@ interface ConfirmAddLiquidityModalProps {
   poolTokenPercentage: Percent
   liquidityMinted: CurrencyAmount<Token>
   currencyToAdd: Token
+  isStable?: boolean
 }
 
-const ConfirmAddLiquidityModal: React.FC<React.PropsWithChildren<InjectedModalProps & ConfirmAddLiquidityModalProps>> =
-  ({
-    title,
-    onDismiss,
-    customOnDismiss,
-    attemptingTxn,
-    hash,
-    pendingText,
-    price,
-    currencies,
-    noLiquidity,
-    allowedSlippage,
-    parsedAmounts,
-    liquidityErrorMessage,
-    onAdd,
-    poolTokenPercentage,
-    liquidityMinted,
-    currencyToAdd,
-  }) => {
-    const { t } = useTranslation()
+const ConfirmAddLiquidityModal: React.FC<
+  React.PropsWithChildren<InjectedModalProps & ConfirmAddLiquidityModalProps>
+> = ({
+  title,
+  onDismiss,
+  customOnDismiss,
+  attemptingTxn,
+  hash,
+  pendingText,
+  price,
+  currencies,
+  noLiquidity,
+  allowedSlippage,
+  parsedAmounts,
+  liquidityErrorMessage,
+  onAdd,
+  poolTokenPercentage,
+  liquidityMinted,
+  currencyToAdd,
+  isStable,
+}) => {
+  const { t } = useTranslation()
 
-    const modalHeader = useCallback(() => {
-      return (
-        <AddLiquidityModalHeader
-          allowedSlippage={allowedSlippage}
-          currencies={currencies}
-          liquidityMinted={liquidityMinted}
-          poolTokenPercentage={poolTokenPercentage}
-          price={price}
-          noLiquidity={noLiquidity}
-        >
-          <PairDistribution
-            title={t('Input')}
-            percent={0.5}
-            currencyA={currencies[Field.CURRENCY_A]}
-            currencyAValue={parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}
-            currencyB={currencies[Field.CURRENCY_B]}
-            currencyBValue={parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)}
-          />
-        </AddLiquidityModalHeader>
-      )
-    }, [allowedSlippage, currencies, liquidityMinted, noLiquidity, parsedAmounts, poolTokenPercentage, price, t])
+  let percent = 0.5
 
-    const modalBottom = useCallback(() => {
-      return (
-        <Button width="100%" onClick={onAdd} mt="20px">
-          {noLiquidity ? t('Create Pool & Supply') : t('Confirm Supply')}
-        </Button>
-      )
-    }, [noLiquidity, onAdd, t])
+  // Calculate distribution percentage for display
+  if (isStable && parsedAmounts[Field.CURRENCY_A] && parsedAmounts[Field.CURRENCY_B]) {
+    const amountCurrencyA = _toNumber(parsedAmounts[Field.CURRENCY_A].toSignificant(6))
+    const amountCurrencyB = _toNumber(parsedAmounts[Field.CURRENCY_B].toSignificant(6))
 
-    const confirmationContent = useCallback(
-      () =>
-        liquidityErrorMessage ? (
-          <TransactionErrorContent onDismiss={onDismiss} message={liquidityErrorMessage} />
-        ) : (
-          <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
-        ),
-      [onDismiss, modalBottom, modalHeader, liquidityErrorMessage],
-    )
-
-    return (
-      <TransactionConfirmationModal
-        minWidth={['100%', , '420px']}
-        title={title}
-        onDismiss={onDismiss}
-        customOnDismiss={customOnDismiss}
-        attemptingTxn={attemptingTxn}
-        currencyToAdd={currencyToAdd}
-        hash={hash}
-        content={confirmationContent}
-        pendingText={pendingText}
-      />
-    )
+    percent = amountCurrencyA / (amountCurrencyA + amountCurrencyB)
   }
+
+  const modalHeader = useCallback(() => {
+    return (
+      <AddLiquidityModalHeader
+        allowedSlippage={allowedSlippage}
+        currencies={currencies}
+        liquidityMinted={liquidityMinted}
+        poolTokenPercentage={poolTokenPercentage}
+        price={price}
+        noLiquidity={noLiquidity}
+      >
+        <PairDistribution
+          title={t('Input')}
+          percent={percent}
+          currencyA={currencies[Field.CURRENCY_A]}
+          currencyAValue={parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}
+          currencyB={currencies[Field.CURRENCY_B]}
+          currencyBValue={parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)}
+        />
+      </AddLiquidityModalHeader>
+    )
+  }, [allowedSlippage, percent, currencies, liquidityMinted, noLiquidity, parsedAmounts, poolTokenPercentage, price, t])
+
+  const modalBottom = useCallback(() => {
+    return (
+      <Button width="100%" onClick={onAdd} mt="20px">
+        {noLiquidity ? t('Create Pool & Supply') : t('Confirm Supply')}
+      </Button>
+    )
+  }, [noLiquidity, onAdd, t])
+
+  const confirmationContent = useCallback(
+    () =>
+      liquidityErrorMessage ? (
+        <TransactionErrorContent onDismiss={onDismiss} message={liquidityErrorMessage} />
+      ) : (
+        <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
+      ),
+    [onDismiss, modalBottom, modalHeader, liquidityErrorMessage],
+  )
+
+  return (
+    <TransactionConfirmationModal
+      minWidth={['100%', , '420px']}
+      title={title}
+      onDismiss={onDismiss}
+      customOnDismiss={customOnDismiss}
+      attemptingTxn={attemptingTxn}
+      currencyToAdd={currencyToAdd}
+      hash={hash}
+      content={confirmationContent}
+      pendingText={pendingText}
+    />
+  )
+}
 
 export default ConfirmAddLiquidityModal

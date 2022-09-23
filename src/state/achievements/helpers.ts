@@ -56,17 +56,15 @@ export const getAchievements = async (account: string): Promise<Achievement[]> =
 
     const campaignMeta = campaignMap.get(userPoint.campaignId)
 
-    return [
-      ...accum,
-      {
-        id: userPoint.campaignId,
-        type: campaignMeta.type,
-        address: userPoint.id,
-        title: getAchievementTitle(campaignMeta),
-        description: getAchievementDescription(campaignMeta),
-        badge: campaignMeta.badge,
-        points: Number(userPoint.points),
-      },
-    ]
+    accum.push({
+      id: userPoint.campaignId,
+      type: campaignMeta.type,
+      address: userPoint.id,
+      title: getAchievementTitle(campaignMeta),
+      description: getAchievementDescription(campaignMeta),
+      badge: campaignMeta.badge,
+      points: Number(userPoint.points),
+    })
+    return accum
   }, [])
 }

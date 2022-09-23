@@ -16,6 +16,8 @@ import { getStatus } from '../helpers'
 // 1,000,000,000 / 100
 const TAX_PRECISION = new BigNumber(10000000000)
 
+const NO_QUALIFIED_NFT_ADDRESS = '0x0000000000000000000000000000000000000000'
+
 const formatPool = (pool) => ({
   raisingAmountPool: pool ? new BigNumber(pool[0].toString()) : BIG_ZERO,
   offeringAmountPool: pool ? new BigNumber(pool[1].toString()) : BIG_ZERO,
@@ -187,7 +189,10 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
           ...poolBasicFormatted,
           taxRate: 0,
           pointThreshold: pointThreshold ? pointThreshold[0].toNumber() : 0,
-          admissionProfile: admissionProfile ? admissionProfile[0] : undefined,
+          admissionProfile:
+            Boolean(admissionProfile && admissionProfile[0]) && admissionProfile[0] !== NO_QUALIFIED_NFT_ADDRESS
+              ? admissionProfile[0]
+              : undefined,
           vestingInformation: formatVestingInfo(basicVestingInformation),
         },
         poolUnlimited: {

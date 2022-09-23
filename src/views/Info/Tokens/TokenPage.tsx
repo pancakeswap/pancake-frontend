@@ -19,7 +19,7 @@ import {
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { getBlockExploreLink } from 'utils'
-import truncateHash from 'utils/truncateHash'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { formatAmount } from 'utils/formatInfoNumbers'

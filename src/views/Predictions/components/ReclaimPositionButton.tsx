@@ -32,9 +32,7 @@ const ReclaimPositionButton: React.FC<React.PropsWithChildren<ReclaimPositionBut
       return callWithGasPrice(predictionsContract, 'claim', [[epoch]])
     })
     if (receipt?.status) {
-      if (onSuccess) {
-        await onSuccess()
-      }
+      await onSuccess?.()
       toastSuccess(t('Position reclaimed!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
     }
   }

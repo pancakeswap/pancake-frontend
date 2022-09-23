@@ -21,14 +21,7 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: CAKE_BNB_LP_MAINNET,
     token: bscTokens.cake,
     quoteToken: bscTokens.wbnb,
-  },
-  {
-    pid: 3,
-    v1pid: 252,
-    lpSymbol: 'BUSD-BNB LP',
-    lpAddress: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
-    token: bscTokens.busd,
-    quoteToken: bscTokens.wbnb,
+    boosted: true,
   },
   {
     pid: 39,
@@ -39,7 +32,63 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.cake,
     quoteToken: bscTokens.busd,
   },
+  {
+    pid: 47,
+    v1pid: 422,
+    lpSymbol: 'CAKE-USDT LP',
+    lpAddress: '0xA39Af17CE4a8eb807E076805Da1e2B8EA7D0755b',
+    token: bscTokens.cake,
+    quoteToken: bscTokens.usdt,
+    boosted: true,
+  },
+  {
+    pid: 3,
+    v1pid: 252,
+    lpSymbol: 'BUSD-BNB LP',
+    lpAddress: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
+    token: bscTokens.busd,
+    quoteToken: bscTokens.wbnb,
+  },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
+  {
+    pid: 121,
+    lpSymbol: 'HAY-BUSD LP',
+    lpAddress: '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae',
+    token: bscTokens.hay, // coins[0]
+    quoteToken: bscTokens.busd, // coins[1]
+    stableSwapAddress: '0x49079d07ef47449af808a4f36c2a8dec975594ec',
+    infoStableSwapAddress: '0xa680d27f63Fa5E213C502d1B3Ca1EB6a3C1b31D6',
+  },
+  {
+    pid: 120,
+    lpSymbol: 'HOOP-BUSD LP',
+    lpAddress: '0xdE8a4f457af12F98DB090841579Feed384684819',
+    token: bscTokens.hoop,
+    quoteToken: bscTokens.busd,
+  },
+  {
+    pid: 106,
+    lpSymbol: 'MHUNT-BNB LP',
+    lpAddress: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
+    token: bscTokens.mhunt,
+    quoteToken: bscTokens.wbnb,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1663315200,
+  },
+  {
+    pid: 119,
+    lpSymbol: 'MONI-BNB LP',
+    lpAddress: '0xbcfd0d4a37fEb4dceAAeFa9da28CD833E5f04e9f',
+    token: bscTokens.moni,
+    quoteToken: bscTokens.wbnb,
+  },
+  {
+    pid: 118,
+    lpSymbol: 'GQ-BUSD LP',
+    lpAddress: '0x72121d60b0e2F01c0FB7FE32cA24021b42165A40',
+    token: bscTokens.gq,
+    quoteToken: bscTokens.busd,
+  },
   {
     pid: 117,
     lpSymbol: 'SPIN-BNB LP',
@@ -47,7 +96,6 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.spin,
     quoteToken: bscTokens.wbnb,
     isCommunity: true,
-    auctionHostingStartSeconds: 1662105600,
   },
   {
     pid: 93,
@@ -57,7 +105,6 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.happy,
     quoteToken: bscTokens.wbnb,
     isCommunity: true,
-    auctionHostingStartSeconds: 1662105600,
   },
   {
     pid: 109,
@@ -96,14 +143,6 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0x74fA517715C4ec65EF01d55ad5335f90dce7CC87',
     token: bscTokens.sfund,
     quoteToken: bscTokens.wbnb,
-  },
-  {
-    pid: 106,
-    lpSymbol: 'MHUNT-BNB LP',
-    lpAddress: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
-    token: bscTokens.mhunt,
-    quoteToken: bscTokens.wbnb,
-    isCommunity: true,
   },
   {
     pid: 111,
@@ -605,14 +644,6 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'USDC-USDT LP',
     lpAddress: '0xec6557348085aa57c72514d67070dc863c0a5a8c',
     token: bscTokens.usdc,
-    quoteToken: bscTokens.usdt,
-  },
-  {
-    pid: 47,
-    v1pid: 422,
-    lpSymbol: 'CAKE-USDT LP',
-    lpAddress: '0xA39Af17CE4a8eb807E076805Da1e2B8EA7D0755b',
-    token: bscTokens.cake,
     quoteToken: bscTokens.usdt,
   },
   {

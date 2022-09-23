@@ -1,5 +1,5 @@
 import { Text, Flex } from '@pancakeswap/uikit'
-import isUndefinedOrNull from 'utils/isUndefinedOrNull'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import CrossText from './CrossText'
 
 interface DiffTextPropsType {

@@ -20,6 +20,7 @@ const CHAINS = [
 
 const getNodeRealUrl = (networkName: string) => {
   let host = null
+
   switch (networkName) {
     case 'homestead':
       if (process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) {
