@@ -13,21 +13,20 @@ import {
   LinkExternal,
   Spinner,
   Text,
-  useTooltip,
   useMatchBreakpoints,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useState } from 'react'
+import { multiChainId, multiChainScan } from 'state/info/constant'
 import {
   useGetChainName,
   useMultiChainPath,
   usePoolChartData,
-  usePoolDatas,
-  usePoolTransactions,
   usePoolDatasSWR,
+  usePoolTransactions,
 } from 'state/info/hooks'
-import { multiChainId, multiChainScan } from 'state/info/constant'
 import { useWatchlistPools } from 'state/user/hooks'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'

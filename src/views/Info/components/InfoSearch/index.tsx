@@ -1,18 +1,18 @@
-import { useRef, useState, useEffect, useMemo } from 'react'
-import styled from 'styled-components'
-import { Text, Input, Flex, Skeleton, useMatchBreakpoints } from '@pancakeswap/uikit'
-import useFetchSearchResults from 'state/info/queries/search'
-import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import { formatAmount } from 'utils/formatInfoNumbers'
-import { useWatchlistTokens, useWatchlistPools } from 'state/user/hooks'
-import SaveIcon from 'views/Info/components/SaveIcon'
-import { usePoolDatas, useTokenDatas, useMultiChainPath, usePoolDatasSWR } from 'state/info/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import useDebounce from 'hooks/useDebounce'
+import { Flex, Input, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
-import { PoolData } from 'state/info/types'
-import { useRouter } from 'next/router'
+import useDebounce from 'hooks/useDebounce'
 import orderBy from 'lodash/orderBy'
+import { useRouter } from 'next/router'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMultiChainPath, usePoolDatasSWR, useTokenDatasSWR } from 'state/info/hooks'
+import useFetchSearchResults from 'state/info/queries/search'
+import { PoolData } from 'state/info/types'
+import { useWatchlistPools, useWatchlistTokens } from 'state/user/hooks'
+import styled from 'styled-components'
+import { formatAmount } from 'utils/formatInfoNumbers'
+import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
+import SaveIcon from 'views/Info/components/SaveIcon'
 
 const Container = styled.div`
   position: relative;
@@ -200,7 +200,7 @@ const Search = () => {
   }
 
   // get date for watchlist
-  const watchListTokenData = useTokenDatas(savedTokens)
+  const watchListTokenData = useTokenDatasSWR(savedTokens)
   const watchListTokenLoading = watchListTokenData.length !== savedTokens.length
   const watchListPoolData = usePoolDatasSWR(savedPools)
   const watchListPoolLoading = watchListPoolData.length !== savedPools.length

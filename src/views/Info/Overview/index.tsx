@@ -1,23 +1,19 @@
-import { useMemo } from 'react'
-import styled from 'styled-components'
-import { Flex, Heading, Card } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Card, Flex, Heading } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import LineChart from 'views/Info/components/InfoCharts/LineChart'
-import TokenTable from 'views/Info/components/InfoTables/TokensTable'
-import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
-import BarChart from 'views/Info/components/InfoCharts/BarChart'
+import { useMemo } from 'react'
 import {
-  useAllPoolData,
   useAllPoolDataSWR,
-  useAllTokenData,
-  useProtocolChartData,
+  useAllTokenDataSWR,
   useProtocolChartDataSWR,
-  useProtocolData,
   useProtocolDataSWR,
-  useProtocolTransactions,
   useProtocolTransactionsSWR,
 } from 'state/info/hooks'
+import styled from 'styled-components'
+import BarChart from 'views/Info/components/InfoCharts/BarChart'
+import LineChart from 'views/Info/components/InfoCharts/LineChart'
+import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
+import TokenTable from 'views/Info/components/InfoTables/TokensTable'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import HoverableChart from '../components/InfoCharts/HoverableChart'
 
@@ -52,7 +48,7 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
     [locale],
   )
 
-  const allTokens = useAllTokenData()
+  const allTokens = useAllTokenDataSWR()
 
   const formattedTokens = useMemo(() => {
     return Object.values(allTokens)

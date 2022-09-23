@@ -1,45 +1,40 @@
-import { ChainId } from '@pancakeswap/sdk'
 import { Duration, getUnixTime, startOfHour, sub } from 'date-fns'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { AppState, useAppDispatch } from 'state'
 
-import { fetchProtocolData } from 'state/info/queries/protocol/overview'
-import { fetchGlobalChartData } from 'state/info/queries/protocol/chart'
-import { fetchTopPoolAddresses } from 'state/info/queries/pools/topPools'
-import { fetchAllPoolData } from 'state/info/queries/pools/poolData'
-import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
-import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import fetchPoolChartData from 'state/info/queries/pools/chartData'
+import { fetchAllPoolData } from 'state/info/queries/pools/poolData'
 import fetchPoolTransactions from 'state/info/queries/pools/transactions'
+import { fetchGlobalChartData } from 'state/info/queries/protocol/chart'
+import { fetchProtocolData } from 'state/info/queries/protocol/overview'
 import fetchTopTransactions from 'state/info/queries/protocol/transactions'
 import fetchTokenChartData from 'state/info/queries/tokens/chartData'
 import fetchPoolsForToken from 'state/info/queries/tokens/poolsForToken'
 import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
+import { fetchAllTokenData } from 'state/info/queries/tokens/tokenData'
 import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
 import { Transaction } from 'state/info/types'
 import useSWRImmutable from 'swr/immutable'
 import { isAddress } from 'utils'
+import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import {
   addPoolKeys,
   addTokenKeys,
   addTokenPoolAddresses,
+  clearTokenData,
   updatePoolChartData,
   updatePoolData,
   updatePoolTransactions,
-  updateProtocolChartData,
-  updateProtocolData,
-  updateProtocolTransactions,
   updateTokenChartData,
   updateTokenData,
   updateTokenPriceData,
   updateTokenTransactions,
-  clearTokenData,
 } from './actions'
-import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 import { MultiChianName } from './constant'
+import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 // Protocol hooks
 
 export const useProtocolDataSWR = (): [ProtocolData | undefined] => {
@@ -55,34 +50,12 @@ export const useProtocolDataSWR = (): [ProtocolData | undefined] => {
   return [protocolData]
 }
 
-export const useProtocolData = (): [ProtocolData | undefined, (protocolData: ProtocolData) => void] => {
-  const protocolData: ProtocolData | undefined = useSelector((state: AppState) => state.info.protocol.overview)
-
-  const dispatch = useAppDispatch()
-  const setProtocolData: (protocolData: ProtocolData) => void = useCallback(
-    (data: ProtocolData) => dispatch(updateProtocolData({ protocolData: data })),
-    [dispatch],
-  )
-
-  return [protocolData, setProtocolData]
-}
-
 export const useProtocolChartDataSWR = (): [ChartEntry[] | undefined] => {
   const chainName = useGetChainName()
   const { data: chartData } = useSWRImmutable([`info/protocol/updateProtocolChartData`, chainName], () =>
     fetchGlobalChartData(chainName),
   )
   return [chartData]
-}
-
-export const useProtocolChartData = (): [ChartEntry[] | undefined, (chartData: ChartEntry[]) => void] => {
-  const chartData: ChartEntry[] | undefined = useSelector((state: AppState) => state.info.protocol.chartData)
-  const dispatch = useAppDispatch()
-  const setChartData: (chartData: ChartEntry[]) => void = useCallback(
-    (data: ChartEntry[]) => dispatch(updateProtocolChartData({ chartData: data })),
-    [dispatch],
-  )
-  return [chartData, setChartData]
 }
 
 export const useProtocolTransactionsSWR = (): [Transaction[] | undefined] => {
@@ -94,24 +67,6 @@ export const useProtocolTransactionsSWR = (): [Transaction[] | undefined] => {
   return [transactions]
 }
 
-export const useProtocolTransactions = (): [Transaction[] | undefined, (transactions: Transaction[]) => void] => {
-  const transactions: Transaction[] | undefined = useSelector((state: AppState) => state.info.protocol.transactions)
-  const dispatch = useAppDispatch()
-  const setTransactions: (transactions: Transaction[]) => void = useCallback(
-    (transactionsData: Transaction[]) => dispatch(updateProtocolTransactions({ transactions: transactionsData })),
-    [dispatch],
-  )
-  return [transactions, setTransactions]
-}
-
-// Pools hooks
-
-export const useAllPoolData = (): {
-  [address: string]: { data?: PoolData }
-} => {
-  return useSelector((state: AppState) => state.info.pools.byAddress)
-}
-
 export const useAllPoolDataSWR = () => {
   const chainName = useGetChainName()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
@@ -120,42 +75,6 @@ export const useAllPoolDataSWR = () => {
     fetchAllPoolData(blocks, chainName),
   )
   return data ?? {}
-}
-
-export const useUpdatePoolData = (): ((pools: PoolData[]) => void) => {
-  const dispatch = useAppDispatch()
-  return useCallback((pools: PoolData[]) => dispatch(updatePoolData({ pools })), [dispatch])
-}
-
-export const useAddPoolKeys = (): ((addresses: string[]) => void) => {
-  const dispatch = useAppDispatch()
-  return useCallback((poolAddresses: string[]) => dispatch(addPoolKeys({ poolAddresses })), [dispatch])
-}
-
-export const usePoolDatas = (poolAddresses: string[]): PoolData[] => {
-  const allPoolData = useAllPoolData()
-  const addNewPoolKeys = useAddPoolKeys()
-
-  const untrackedAddresses = poolAddresses.reduce((accum: string[], address) => {
-    if (!Object.keys(allPoolData).includes(address)) {
-      accum.push(address)
-    }
-    return accum
-  }, [])
-
-  useEffect(() => {
-    if (untrackedAddresses) {
-      addNewPoolKeys(untrackedAddresses)
-    }
-  }, [addNewPoolKeys, untrackedAddresses])
-
-  const poolsWithData = poolAddresses
-    .map((address) => {
-      return allPoolData[address]?.data
-    })
-    .filter((pool) => pool)
-
-  return poolsWithData
 }
 
 export const usePoolDatasSWR = (poolAddresses: string[]): PoolData[] => {
@@ -221,10 +140,16 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
 
 // Tokens hooks
 
-export const useAllTokenData = (): {
+export const useAllTokenDataSWR = (): {
   [address: string]: { data?: TokenData }
 } => {
-  return useSelector((state: AppState) => state.info.tokens.byAddress)
+  const chainName = useGetChainName()
+  const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
+  const { blocks, error: blockError } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
+  const { data } = useSWRImmutable(blocks && chainName && [`info/token/data`, chainName], () =>
+    fetchAllTokenData(chainName, blocks),
+  )
+  return data ?? {}
 }
 
 export const useUpdateTokenData = (): ((tokens: TokenData[]) => void) => {
@@ -249,16 +174,8 @@ export const useAddTokenKeys = (): ((addresses: string[]) => void) => {
   return useCallback((tokenAddresses: string[]) => dispatch(addTokenKeys({ tokenAddresses })), [dispatch])
 }
 
-export const useTokenDatas = (addresses?: string[]): TokenData[] | undefined => {
-  const allTokenData = useAllTokenData()
-  const addNewTokenKeys = useAddTokenKeys()
-
-  // if token not tracked yet track it
-  addresses?.forEach((a) => {
-    if (!allTokenData[a]) {
-      addNewTokenKeys([a])
-    }
-  })
+export const useTokenDatasSWR = (addresses?: string[]): TokenData[] | undefined => {
+  const allTokenData = useAllTokenDataSWR()
 
   const tokensWithData = useMemo(() => {
     if (!addresses) {
@@ -274,19 +191,8 @@ export const useTokenDatas = (addresses?: string[]): TokenData[] | undefined => 
   return tokensWithData
 }
 
-export const useTokenData = (address: string | undefined): TokenData | undefined => {
-  const allTokenData = useAllTokenData()
-  const addNewTokenKeys = useAddTokenKeys()
-
-  if (!address || !isAddress(address)) {
-    return undefined
-  }
-
-  // if token not tracked yet track it
-  if (!allTokenData[address]) {
-    addNewTokenKeys([address])
-  }
-
+export const useTokenDataSWR = (address: string | undefined): TokenData | undefined => {
+  const allTokenData = useAllTokenDataSWR()
   return allTokenData[address]?.data
 }
 

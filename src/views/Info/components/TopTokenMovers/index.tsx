@@ -1,13 +1,13 @@
-import { useMemo, useRef, useEffect } from 'react'
-import styled from 'styled-components'
-import { Text, Flex, Box, Card } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter } from 'components/NextLink'
-import { useAllTokenData, useGetChainName, useMultiChainPath } from 'state/info/hooks'
-import { TokenData } from 'state/info/types'
-import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import { formatAmount } from 'utils/formatInfoNumbers'
-import Percent from 'views/Info/components/Percent'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Card, Flex, Text } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from 'components/NextLink'
+import { useEffect, useMemo, useRef } from 'react'
+import { useAllTokenDataSWR, useGetChainName, useMultiChainPath } from 'state/info/hooks'
+import { TokenData } from 'state/info/types'
+import styled from 'styled-components'
+import { formatAmount } from 'utils/formatInfoNumbers'
+import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
+import Percent from 'views/Info/components/Percent'
 
 const CardWrapper = styled(NextLinkFromReactRouter)`
   display: inline-block;
@@ -62,7 +62,7 @@ const DataCard = ({ tokenData }: { tokenData: TokenData }) => {
 }
 
 const TopTokenMovers: React.FC<React.PropsWithChildren> = () => {
-  const allTokens = useAllTokenData()
+  const allTokens = useAllTokenDataSWR()
   const { t } = useTranslation()
 
   const topPriceIncrease = useMemo(() => {

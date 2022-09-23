@@ -67,4 +67,12 @@ const useTopTokenAddresses = (): string[] => {
   return topTokenAddresses
 }
 
+export const fetchTokenAddresses = async (chainName: MultiChianName) => {
+  const [timestamp24hAgo] = getDeltaTimestamps()
+
+  const addresses = await fetchTopTokens(chainName, timestamp24hAgo)
+
+  return addresses
+}
+
 export default useTopTokenAddresses

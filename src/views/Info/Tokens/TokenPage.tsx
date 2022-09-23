@@ -1,48 +1,47 @@
 /* eslint-disable no-nested-ternary */
-import { useMemo } from 'react'
-import { NextLinkFromReactRouter } from 'components/NextLink'
-import { Duration } from 'date-fns'
-import styled from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  Text,
   Box,
-  Heading,
+  Breadcrumbs,
   Button,
   Card,
   Flex,
-  Breadcrumbs,
+  Heading,
+  Image,
   Link as UIKitLink,
   LinkExternal,
   Spinner,
-  Image,
+  Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import Page from 'components/Layout/Page'
-import { getBlockExploreLink } from 'utils'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import useCMCLink from 'views/Info/hooks/useCMCLink'
-import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import { formatAmount } from 'utils/formatInfoNumbers'
-import Percent from 'views/Info/components/Percent'
-import SaveIcon from 'views/Info/components/SaveIcon'
+import Page from 'components/Layout/Page'
+import { NextLinkFromReactRouter } from 'components/NextLink'
+import { ONE_HOUR_SECONDS } from 'config/constants/info'
+import { Duration } from 'date-fns'
+import { useMemo } from 'react'
+import { multiChainId, multiChainScan } from 'state/info/constant'
 import {
-  usePoolDatas,
+  useGetChainName,
+  useMultiChainPath,
   usePoolDatasSWR,
-  useTokenData,
   usePoolsForToken,
   useTokenChartData,
+  useTokenDataSWR,
   useTokenPriceData,
   useTokenTransactions,
-  useMultiChainPath,
-  useGetChainName,
 } from 'state/info/hooks'
-import { multiChainId, multiChainScan } from 'state/info/constant'
+import { useWatchlistTokens } from 'state/user/hooks'
+import styled from 'styled-components'
+import { getBlockExploreLink } from 'utils'
+import { formatAmount } from 'utils/formatInfoNumbers'
+import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
+import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
 import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
-import { useWatchlistTokens } from 'state/user/hooks'
-import { ONE_HOUR_SECONDS } from 'config/constants/info'
-import { useTranslation } from '@pancakeswap/localization'
-import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
+import Percent from 'views/Info/components/Percent'
+import SaveIcon from 'views/Info/components/SaveIcon'
+import useCMCLink from 'views/Info/hooks/useCMCLink'
 
 const ContentLayout = styled.div`
   margin-top: 16px;
@@ -75,7 +74,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
 
   const cmcLink = useCMCLink(address)
 
-  const tokenData = useTokenData(address)
+  const tokenData = useTokenDataSWR(address)
   const poolsForToken = usePoolsForToken(address)
   const poolDatas = usePoolDatasSWR(poolsForToken ?? [])
   const transactions = useTokenTransactions(address)
