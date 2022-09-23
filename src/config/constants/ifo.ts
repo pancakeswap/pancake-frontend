@@ -12,7 +12,7 @@ const ifos: Ifo[] = [
     isActive: true,
     name: 'CO',
     poolBasic: {
-      saleAmount: '10,500,000',
+      saleAmount: '10,500,000 CO',
       raiseAmount: '$367,500',
       cakeToBurn: '$0',
       distributionRatio: 0.25,
