@@ -61,7 +61,7 @@ export async function farmV2FetchFarms({
               ...stableFarmsDataMap[farm.pid],
               token0Decimals: farm.token.decimals,
               token1Decimals: farm.quoteToken.decimals,
-              price0: stableFarmsDataMap[farm.pid].price0,
+              price1: stableFarmsDataMap[farm.pid].price1,
             })
           : getClassicFarmsDynamicData({
               ...lpData[index],
@@ -234,15 +234,15 @@ type StableLpData = [balanceResponse, balanceResponse, balanceResponse, balanceR
 type FormatStableFarmResponse = {
   tokenBalanceLP: FixedNumber
   quoteTokenBalanceLP: FixedNumber
-  price0: BigNumber
+  price1: BigNumber
 }
 
 const formatStableFarm = (stableFarmData: StableLpData): FormatStableFarmResponse => {
-  const [balance1, balance2, price0, _price1] = stableFarmData
+  const [balance1, balance2, _, _price1] = stableFarmData
   return {
     tokenBalanceLP: FixedNumber.from(balance1[0]),
     quoteTokenBalanceLP: FixedNumber.from(balance2[0]),
-    price0: price0[0],
+    price1: _price1[0],
   }
 }
 
@@ -253,11 +253,11 @@ const getStableFarmDynamicData = ({
   tokenBalanceLP,
   token0Decimals,
   token1Decimals,
-  price0,
+  price1,
 }: FormatClassicFarmResponse & {
   token1Decimals: number
   token0Decimals: number
-  price0: BigNumber
+  price1: BigNumber
 }) => {
   // Raw amount of token in the LP, including those not staked
   const tokenAmountTotal = getTokenAmount(tokenBalanceLP, token0Decimals)
@@ -267,7 +267,7 @@ const getStableFarmDynamicData = ({
   const lpTokenRatio =
     !lpTotalSupply.isZero() && !lpTokenBalanceMC.isZero() ? lpTokenBalanceMC.divUnsafe(lpTotalSupply) : FIXED_ZERO
 
-  const tokenPriceVsQuote = formatUnits(price0, token1Decimals)
+  const tokenPriceVsQuote = formatUnits(price1, token1Decimals)
 
   // Amount of quoteToken in the LP that are staked in the MC
   const quoteTokenAmountMcFixed = quoteTokenAmountTotal.mulUnsafe(lpTokenRatio)
