@@ -1,3 +1,5 @@
+import { Types } from 'aptos'
+
 export class ConnectorNotFoundError extends Error {
   name = 'ConnectorNotFoundError'
 
@@ -9,6 +11,16 @@ export class ChainMismatchError extends Error {
 
   constructor({ activeChain, targetChain }: { activeChain: string; targetChain: string }) {
     super(`Chain mismatch: Expected "${targetChain}", received "${activeChain}".`)
+  }
+}
+
+export class SimulateTransactionError extends Error {
+  name = 'SimulateTransactionError'
+  tx: Types.UserTransaction
+
+  constructor(tx: Types.UserTransaction) {
+    super(`Simulate Transaction Error version: ${tx.version}`)
+    this.tx = tx
   }
 }
 

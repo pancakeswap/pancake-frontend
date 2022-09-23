@@ -1,17 +1,14 @@
+export * from '../core/chain'
 export * from './client'
 export * from './context'
 export * from './hooks/useAccount'
+export { useAccountResources, type UseAccountResourcesConfig } from './hooks/useAccountResources'
+export { useBalance, type UseBalanceArgs, type UseBalanceConfig } from './hooks/useBalance'
 export { useConnect, type UseConnectArgs, type UseConnectConfig } from './hooks/useConnect'
 export { useDisconnect, type UseDisconnectConfig } from './hooks/useDisconnect'
-export { useBalance, type UseBalanceArgs, type UseBalanceConfig } from './hooks/useBalance'
+export { useHealthy, type UseHealthyConfig } from './hooks/useHealthy'
 export { useLedger, type UseLedgerConfig } from './hooks/useLedger'
-export { useAccountResources, type UseAccountResourcesConfig } from './hooks/useAccountResources'
 export { useNetwork } from './hooks/useNetwork'
-export {
-  useSendTransaction,
-  type UseSendTransactionArgs,
-  type UseSendTransactionConfig,
-  type UseSendTransactionMutationArgs,
-} from './hooks/useSendTransaction'
 export * from './hooks/useProvider'
-export * from '../core/chain'
+export { useSendTransaction, type UseSendTransactionArgs } from './hooks/useSendTransaction'
+export { useSimulateTransaction, type UseSimulateTransactionArgs } from './hooks/useSimulateTransaction'

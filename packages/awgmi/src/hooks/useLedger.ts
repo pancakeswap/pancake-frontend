@@ -1,4 +1,4 @@
-import { FetchLedgerArgs, fetchLedgerInfo, FetchLedgerResult } from '../../core/ledger'
+import { FetchLedgerArgs, fetchLedgerInfo, FetchLedgerResult } from '../../core'
 
 import { QueryConfig, QueryFunctionArgs } from '../types'
 import { useQuery } from './query/useQuery'

@@ -9,10 +9,16 @@ import { useCallback, useMemo } from 'react'
 
 const USER_AUDIO_PLAY_KEY = 'pcs:audio-play'
 
-const userAudioPlayAtom = atom('0')
+const userAudioPlayAtom = atom<'0' | '1'>('0')
 
 const userAudioAtomWithLocalStorage = atom(
-  (get) => get(userAudioPlayAtom),
+  (get) => {
+    const got = get(userAudioPlayAtom)
+    if (got === '1') {
+      return true
+    }
+    return false
+  },
   (_get, set, mode: boolean) => {
     const on = mode ? '1' : '0'
     set(userAudioPlayAtom, on)

@@ -1,10 +1,12 @@
 import { AptosSwapRouter, Currency, CurrencyAmount, JSBI, Percent, Trade, TradeType } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount, useSendTransaction } from '@pancakeswap/awgmi'
+import { useAccount, useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
+import { SimulateTransactionError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
 import { AutoColumn, Card, RowBetween, Skeleton, Swap as SwapUI, useModal } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
+import confirmPriceImpactWithoutFee from 'components/Swap/confirmPriceImpactWithoutFee'
 import ConfirmSwapModal from 'components/Swap/ConfirmSwapModal'
 import { TestTokens } from 'components/TestTokens'
 import { USDC_DEVNET } from 'config/coins'
@@ -104,7 +106,8 @@ const SwapPage = () => {
     txHash: undefined,
   })
 
-  const address = useAccount()?.account?.address
+  const { account } = useAccount()
+  const address = account?.address
 
   const recipient = address ?? null
 
@@ -113,6 +116,8 @@ const SwapPage = () => {
     [Field.OUTPUT]: useCurrencyBalance(outputCurrencyId),
   }
 
+  const { simulateTransactionAsync } = useSimulateTransaction()
+
   const swapCallback = useMemo(() => {
     if (trade) {
       return async () => {
@@ -120,6 +125,21 @@ const SwapPage = () => {
           allowedSlippage: new Percent(JSBI.BigInt(50), BIPS_BASE),
         })
         console.info(payload)
+        try {
+          await simulateTransactionAsync({
+            payload,
+          })
+        } catch (error) {
+          if (error instanceof SimulateTransactionError) {
+            console.info({ error })
+            throw new Error(
+              t(
+                'An error occurred when trying to execute this operation. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.',
+              ),
+            )
+          }
+        }
+
         return sendTransactionAsync({
           payload,
         }).then((tx) => {
@@ -165,15 +185,15 @@ const SwapPage = () => {
       }
     }
     return undefined
-  }, [addTransaction, allowedSlippage, sendTransactionAsync, trade])
+  }, [addTransaction, allowedSlippage, sendTransactionAsync, simulateTransactionAsync, t, trade])
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
 
   const handleSwap = useCallback(() => {
-    // if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
-    //   return
-    // }
+    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
+      return
+    }
     if (!swapCallback) return
 
     setSwapState({ attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined })
@@ -189,7 +209,7 @@ const SwapPage = () => {
           txHash: undefined,
         })
       })
-  }, [swapCallback, tradeToConfirm, setSwapState])
+  }, [priceImpactWithoutFee, t, swapCallback, tradeToConfirm])
 
   const handleAcceptChanges = useCallback(() => {
     setSwapState({ tradeToConfirm: trade ?? undefined, swapErrorMessage, txHash, attemptingTxn })

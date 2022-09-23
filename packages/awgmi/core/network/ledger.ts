@@ -1,6 +1,6 @@
 import { Types } from 'aptos'
 
-import { getProvider } from './provider'
+import { getProvider } from '../provider'
 
 export type FetchLedgerArgs = {
   networkName?: string

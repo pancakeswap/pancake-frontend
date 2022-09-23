@@ -215,7 +215,7 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
                 ml="4px"
               />
             </Flex>
-            <PancakeToggle checked={audioPlay === '1'} onChange={(e) => setAudioPlay(e.target.checked)} scale="md" />
+            <PancakeToggle checked={audioPlay} onChange={(e) => setAudioPlay(e.target.checked)} scale="md" />
           </Flex>
         </Flex>
       </ScrollableContainer>
