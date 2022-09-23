@@ -156,7 +156,7 @@ const TokenTable: React.FC<
   const sortedTokens = useMemo(() => {
     return tokenDatas
       ? orderBy(
-          tokenDatas,
+          tokenDatas.filter((d) => d.exists),
           (tokenData) => tokenData[sortField as keyof TokenData],
           sortDirection ? 'desc' : 'asc',
         ).slice(maxItems * (page - 1), page * maxItems)
@@ -182,8 +182,6 @@ const TokenTable: React.FC<
   if (!tokenDatas) {
     return <Skeleton />
   }
-  console.log(sortedTokens, 'sortedTokens???')
-
   return (
     <TableWrapper>
       <ResponsiveGrid>
@@ -240,19 +238,17 @@ const TokenTable: React.FC<
       <Break />
       {sortedTokens.length > 0 ? (
         <>
-          {sortedTokens
-            .filter((d) => d.exists)
-            .map((data, i) => {
-              if (data) {
-                return (
-                  <Fragment key={data.address}>
-                    <DataRow index={(page - 1) * MAX_ITEMS + i} tokenData={data} />
-                    <Break />
-                  </Fragment>
-                )
-              }
-              return null
-            })}
+          {sortedTokens.map((data, i) => {
+            if (data) {
+              return (
+                <Fragment key={data.address}>
+                  <DataRow index={(page - 1) * MAX_ITEMS + i} tokenData={data} />
+                  <Break />
+                </Fragment>
+              )
+            }
+            return null
+          })}
           <PageButtons>
             <Arrow
               onClick={() => {

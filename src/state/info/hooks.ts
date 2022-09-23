@@ -34,6 +34,7 @@ import {
   updateTokenData,
   updateTokenPriceData,
   updateTokenTransactions,
+  clearTokenData,
 } from './actions'
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 // Protocol hooks
@@ -209,6 +210,13 @@ export const useUpdateTokenData = (): ((tokens: TokenData[]) => void) => {
     },
     [dispatch],
   )
+}
+
+export const useClearTokenData = (): (() => void) => {
+  const dispatch = useAppDispatch()
+  return useCallback(() => {
+    dispatch(clearTokenData())
+  }, [dispatch])
 }
 
 export const useAddTokenKeys = (): ((addresses: string[]) => void) => {

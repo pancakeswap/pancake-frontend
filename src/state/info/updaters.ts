@@ -3,7 +3,6 @@ import usePoolDatas from 'state/info/queries/pools/poolData'
 import useTopPoolAddresses from 'state/info/queries/pools/topPools'
 import useFetchGlobalChartData from 'state/info/queries/protocol/chart'
 import useFetchProtocolData from 'state/info/queries/protocol/overview'
-import fetchTopTransactions from 'state/info/queries/protocol/transactions'
 import useFetchedTokenDatas from 'state/info/queries/tokens/tokenData'
 import useTopTokenAddresses from 'state/info/queries/tokens/topTokens'
 import {
@@ -11,10 +10,10 @@ import {
   useAddTokenKeys,
   useAllPoolData,
   useAllTokenData,
+  useClearTokenData,
   useGetChainName,
   useProtocolChartData,
   useProtocolData,
-  useProtocolTransactions,
   useUpdatePoolData,
   useUpdateTokenData,
 } from './hooks'
@@ -81,6 +80,7 @@ export const PoolUpdater: React.FC<React.PropsWithChildren> = () => {
 
 export const TokenUpdater = (): null => {
   const updateTokenDatas = useUpdateTokenData()
+  const clearTokenData = useClearTokenData()
   const addTokenKeys = useAddTokenKeys()
 
   const allTokenData = useAllTokenData()
@@ -112,6 +112,10 @@ export const TokenUpdater = (): null => {
       updateTokenDatas(Object.values(tokenDatas))
     }
   }, [tokenDataError, tokenDatas, updateTokenDatas])
+
+  useEffect(() => {
+    clearTokenData()
+  }, [chainName, clearTokenData])
 
   return null
 }

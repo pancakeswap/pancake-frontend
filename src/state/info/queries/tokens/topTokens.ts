@@ -1,6 +1,6 @@
 import { TOKEN_BLACKLIST } from 'config/constants/info'
 import { gql } from 'graphql-request'
-import { useEffect, useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useGetChainName } from '../../hooks'
 import { MultiChianName, multiChainQueryClient } from '../../constant'
@@ -18,12 +18,13 @@ interface TopTokensResponse {
  */
 const fetchTopTokens = async (chainName: MultiChianName, timestamp24hAgo: number): Promise<string[]> => {
   const whereCondition =
-    chainName === 'ETH' ? '' : `where: { dailyTxns_gt: 300, id_not_in: $blacklist, date_gt: $timestamp24hAgo}`
+    chainName === 'ETH' ? `` : `where: { dailyTxns_gt: 300, id_not_in: $blacklist, date_gt: $timestamp24hAgo}`
+  const firstCount = chainName === 'ETH' ? 100 : 30
   try {
     const query = gql`
       query topTokens($blacklist: [String!], $timestamp24hAgo: Int) {
         tokenDayDatas(
-          first: 30
+          first: ${firstCount}
           ${whereCondition}
           orderBy: dailyVolumeUSD
           orderDirection: desc
@@ -54,15 +55,14 @@ const useTopTokenAddresses = (): string[] => {
   const [timestamp24hAgo] = getDeltaTimestamps()
   const chainName = useGetChainName()
 
+  const fetch = useCallback(async () => {
+    const addresses = await fetchTopTokens(chainName, timestamp24hAgo)
+    if (addresses.length > 0) setTopTokenAddresses(addresses)
+  }, [timestamp24hAgo, chainName])
+
   useEffect(() => {
-    const fetch = async () => {
-      const addresses = await fetchTopTokens(chainName, timestamp24hAgo)
-      if (addresses.length > 0) setTopTokenAddresses(addresses)
-    }
-    if (topTokenAddresses.length === 0) {
-      fetch()
-    }
-  }, [topTokenAddresses, timestamp24hAgo, chainName])
+    fetch()
+  }, [chainName, fetch])
 
   return topTokenAddresses
 }
