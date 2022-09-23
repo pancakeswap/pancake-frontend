@@ -30,11 +30,7 @@ export abstract class AptosSwapRouter {
     const amountOut = trade.minimumAmountOut(options.allowedSlippage).quotient.toString()
     const [inputAddress, outputAddress] = [trade.route.input.wrapped.address, trade.route.output.wrapped.address]
 
-    // x_in: u64,
-    // y_min_out: u64,
-    const [xIn, yMinOut] = trade.tradeType === TradeType.EXACT_INPUT ? [amountIn, amountOut] : [amountOut, amountIn]
-    const [xAddress, yAddress] =
-      trade.tradeType === TradeType.EXACT_INPUT ? [inputAddress, outputAddress] : [outputAddress, inputAddress]
-    return swapScriptsSwapScript([xIn, yMinOut], [xAddress, yAddress])
+    const [xAddress, yAddress] = [inputAddress, outputAddress]
+    return swapScriptsSwapScript([amountIn, amountOut], [xAddress, yAddress])
   }
 }

@@ -120,11 +120,13 @@ const SwapPage = () => {
 
   const { simulateTransactionAsync } = useSimulateTransaction()
 
+  const [userAllowedSlippage] = useUserSlippage()
+
   const swapCallback = useMemo(() => {
     if (trade) {
       return async () => {
         const payload = AptosSwapRouter.swapCallParameters(trade, {
-          allowedSlippage: new Percent(JSBI.BigInt(50), BIPS_BASE),
+          allowedSlippage: new Percent(JSBI.BigInt(userAllowedSlippage), BIPS_BASE),
         })
         console.info(payload)
         try {
@@ -187,7 +189,7 @@ const SwapPage = () => {
       }
     }
     return undefined
-  }, [addTransaction, allowedSlippage, sendTransactionAsync, simulateTransactionAsync, t, trade])
+  }, [addTransaction, allowedSlippage, sendTransactionAsync, simulateTransactionAsync, t, trade, userAllowedSlippage])
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
