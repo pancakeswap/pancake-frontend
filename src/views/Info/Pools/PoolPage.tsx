@@ -23,9 +23,9 @@ import { multiChainId, multiChainScan } from 'state/info/constant'
 import {
   useGetChainName,
   useMultiChainPath,
-  usePoolChartData,
+  usePoolChartDataSWR,
   usePoolDatasSWR,
-  usePoolTransactions,
+  usePoolTransactionsSWR,
 } from 'state/info/hooks'
 import { useWatchlistPools } from 'state/user/hooks'
 import styled from 'styled-components'
@@ -81,8 +81,8 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const address = routeAddress.toLowerCase()
 
   const poolData = usePoolDatasSWR([address])[0]
-  const chartData = usePoolChartData(address)
-  const transactions = usePoolTransactions(address)
+  const chartData = usePoolChartDataSWR(address)
+  const transactions = usePoolTransactionsSWR(address)
 
   const [watchlistPools, addPoolToWatchlist] = useWatchlistPools()
   const chainName = useGetChainName()

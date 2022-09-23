@@ -25,11 +25,11 @@ import {
   useGetChainName,
   useMultiChainPath,
   usePoolDatasSWR,
-  usePoolsForToken,
-  useTokenChartData,
+  usePoolsForTokenSWR,
+  useTokenChartDataSWR,
   useTokenDataSWR,
-  useTokenPriceData,
-  useTokenTransactions,
+  useTokenPriceDataSWR,
+  useTokenTransactionsSWR,
 } from 'state/info/hooks'
 import { useWatchlistTokens } from 'state/user/hooks'
 import styled from 'styled-components'
@@ -75,13 +75,13 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
   const cmcLink = useCMCLink(address)
 
   const tokenData = useTokenDataSWR(address)
-  const poolsForToken = usePoolsForToken(address)
+  const poolsForToken = usePoolsForTokenSWR(address)
   const poolDatas = usePoolDatasSWR(poolsForToken ?? [])
-  const transactions = useTokenTransactions(address)
-  const chartData = useTokenChartData(address)
+  const transactions = useTokenTransactionsSWR(address)
+  const chartData = useTokenChartDataSWR(address)
 
   // pricing data
-  const priceData = useTokenPriceData(address, ONE_HOUR_SECONDS, DEFAULT_TIME_WINDOW)
+  const priceData = useTokenPriceDataSWR(address, ONE_HOUR_SECONDS, DEFAULT_TIME_WINDOW)
   const adjustedPriceData = useMemo(() => {
     // Include latest available price
     if (priceData && tokenData && priceData.length > 0) {

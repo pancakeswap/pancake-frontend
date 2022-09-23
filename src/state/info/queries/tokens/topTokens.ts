@@ -37,7 +37,6 @@ const fetchTopTokens = async (chainName: MultiChianName, timestamp24hAgo: number
       blacklist: TOKEN_BLACKLIST,
       timestamp24hAgo,
     })
-    console.warn('fetchTopTokens', { chainName, data, query, timestamp24hAgo })
     // tokenDayDatas id has compound id "0xTOKENADDRESS-NUMBERS", extracting token address with .split('-')
     return data.tokenDayDatas.map((t) => t.id.split('-')[0])
   } catch (error) {
