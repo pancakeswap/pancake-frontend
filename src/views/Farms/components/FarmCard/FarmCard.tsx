@@ -93,6 +93,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           token={farm.token}
           quoteToken={farm.quoteToken}
           boosted={farm.boosted}
+          isStable={farm.isStable}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">

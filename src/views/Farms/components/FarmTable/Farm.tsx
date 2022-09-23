@@ -86,7 +86,7 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmProps>> = ({
   return isStable ? (
     <Flex flexDirection="column">
       {pairContainer}
-      <StableFarmTag />
+      <StableFarmTag mt="4px" />
     </Flex>
   ) : (
     pairContainer
