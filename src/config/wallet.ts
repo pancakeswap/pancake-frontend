@@ -133,7 +133,8 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
 ]
 
 export const wallets =
-  Boolean(window.ethereum) || walletsConfig.some((c) => c.installed && c.connectorId === ConnectorNames.Injected)
+  (typeof window !== 'undefined' && !window.ethereum) ||
+  walletsConfig.some((c) => c.installed && c.connectorId === ConnectorNames.Injected)
     ? walletsConfig
     : // add injected icon if none of injected type wallets installed
       [
@@ -143,6 +144,6 @@ export const wallets =
           title: 'Injected',
           icon: WalletFilledIcon,
           connectorId: ConnectorNames.Injected,
-          installed: Boolean(window.ethereum),
+          installed: typeof window !== 'undefined' && Boolean(window.ethereum),
         },
       ]

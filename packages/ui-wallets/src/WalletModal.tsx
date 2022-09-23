@@ -298,6 +298,7 @@ function WalletSelect<T>({
       overflowY="auto"
       overflowX="hidden"
       px={{ xs: '16px', sm: '48px' }}
+      pb="12px"
       className={walletSelectWrapperClass}
     >
       {walletsToShow.map((wallet) => {
@@ -480,7 +481,7 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
 
   return (
     <ModalV2 closeOnOverlayClick {...rest}>
-      <ModalWrapper onDismiss={props.onDismiss} overflow="visible">
+      <ModalWrapper onDismiss={props.onDismiss} style={{ overflow: 'visible' }}>
         <AtomBox position="relative">
           <TabContainer>
             {isMobile ? (
@@ -496,14 +497,26 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
 }
 
 const Intro = () => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { code },
+  } = useTranslation()
   return (
     <>
       <Heading as="h1" fontSize="20px" color="secondary">
         {t('Haven’t got a wallet yet?')}
       </Heading>
       <Image src="https://cdn.pancakeswap.com/wallets/wallet_intro.png" width={198} height={178} />
-      <Button as={LinkExternal} color="backgroundAlt" variant="subtle">
+      <Button
+        as={LinkExternal}
+        color="backgroundAlt"
+        variant="subtle"
+        href={
+          docLangCodeMapping[code]
+            ? `https://docs.pancakeswap.finance/v/${docLangCodeMapping[code]}/get-started/connection-guide`
+            : `https://docs.pancakeswap.finance/get-started/connection-guide`
+        }
+      >
         Learn How to Connect
       </Button>
     </>
