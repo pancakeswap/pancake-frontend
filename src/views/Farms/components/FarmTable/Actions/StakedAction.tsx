@@ -254,8 +254,8 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
           </ActionTitles>
           <ActionContent>
             <StakedLP
+              pid={pid}
               stakedBalance={stakedBalance}
-              lpSymbol={lpSymbol}
               quoteTokenSymbol={quoteToken.symbol}
               tokenSymbol={token.symbol}
               lpTotalSupply={lpTotalSupply}

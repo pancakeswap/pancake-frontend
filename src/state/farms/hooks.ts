@@ -20,6 +20,7 @@ import {
   makeBusdPriceFromPidSelector,
   makeFarmFromPidSelector,
   makeLpTokenPriceFromLpSymbolSelector,
+  makeLPTokenPriceFromPidSelector,
   makeUserFarmFromPidSelector,
 } from './selectors'
 
@@ -134,6 +135,12 @@ export const useBusdPriceFromPid = (pid: number): BigNumber => {
 export const useLpTokenPrice = (symbol: string) => {
   const lpTokenPriceFromLpSymbol = useMemo(() => makeLpTokenPriceFromLpSymbolSelector(symbol), [symbol])
   return useSelector(lpTokenPriceFromLpSymbol)
+}
+
+export const useLpTokenPriceByPid = (pid: number) => {
+  const lpTokenPriceFromPid = useMemo(() => makeLPTokenPriceFromPidSelector(pid), [pid])
+
+  return useSelector(lpTokenPriceFromPid)
 }
 
 /**
