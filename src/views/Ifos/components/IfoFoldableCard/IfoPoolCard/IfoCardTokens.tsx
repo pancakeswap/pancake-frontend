@@ -262,7 +262,6 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
                 <Label>{t('Your %symbol% refunds', { symbol: currency.symbol })}</Label>
                 <BalanceWithLoading
                   bold
-                  prefix="~"
                   decimals={4}
                   fontSize="20px"
                   value={getBalanceNumber(userPoolCharacteristics.refundingAmountInLP, currency.decimals)}

@@ -56,7 +56,6 @@ const TotalPurchased: React.FC<React.PropsWithChildren<TotalPurchasedProps>> = (
           </Text>
           <BalanceWithLoading
             bold
-            prefix="~"
             decimals={4}
             fontSize="20px"
             value={getBalanceNumber(refundingAmountInLP, token.decimals)}
