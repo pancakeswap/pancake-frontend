@@ -35,7 +35,7 @@ export const useBlocksFromTimestamps = (
       }
     }
     const blocksArray = blocksString ? JSON.parse(blocksString) : undefined
-    if (!blocksArray && !error) {
+    if (!blocksArray && !error && chainName) {
       fetchData()
     }
   }, [blocksString, error, skipCount, sortDirection, timestampsString, chainName])

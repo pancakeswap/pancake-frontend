@@ -19,7 +19,7 @@ import {
 } from './hooks'
 
 export const ProtocolUpdater: React.FC<React.PropsWithChildren> = () => {
-  // const [protocolData, setProtocolData] = useProtocolData()
+  // const [protocolData, setProtocolData] = ()
   // const { data: fetchedProtocolData, error } = useFetchProtocolData()
 
   // const [chartData, updateChartData] = useProtocolChartData()
@@ -43,37 +43,37 @@ export const ProtocolUpdater: React.FC<React.PropsWithChildren> = () => {
 }
 
 export const PoolUpdater: React.FC<React.PropsWithChildren> = () => {
-  const updatePoolData = useUpdatePoolData()
-  const addPoolKeys = useAddPoolKeys()
+  // const updatePoolData = useUpdatePoolData()
+  // const addPoolKeys = useAddPoolKeys()
 
-  const allPoolData = useAllPoolData()
-  const addresses = useTopPoolAddresses()
+  // const allPoolData = useAllPoolData()
+  // const addresses = useTopPoolAddresses()
 
-  // add top pools on first load
-  useEffect(() => {
-    if (addresses.length > 0) {
-      addPoolKeys(addresses)
-    }
-  }, [addPoolKeys, addresses])
+  // // add top pools on first load
+  // useEffect(() => {
+  //   if (addresses.length > 0) {
+  //     addPoolKeys(addresses)
+  //   }
+  // }, [addPoolKeys, addresses])
 
-  // detect for which addresses we havent loaded pool data yet
-  const unfetchedPoolAddresses = useMemo(() => {
-    return Object.keys(allPoolData).reduce((accum: string[], address) => {
-      const poolData = allPoolData[address]
-      if (!poolData.data) {
-        accum.push(address)
-      }
-      return accum
-    }, [])
-  }, [allPoolData])
+  // // detect for which addresses we havent loaded pool data yet
+  // const unfetchedPoolAddresses = useMemo(() => {
+  //   return Object.keys(allPoolData).reduce((accum: string[], address) => {
+  //     const poolData = allPoolData[address]
+  //     if (!poolData.data) {
+  //       accum.push(address)
+  //     }
+  //     return accum
+  //   }, [])
+  // }, [allPoolData])
 
-  // fetch data for unfetched pools and update them
-  const { error: poolDataError, data: poolDatas } = usePoolDatas(unfetchedPoolAddresses)
-  useEffect(() => {
-    if (poolDatas && !poolDataError) {
-      updatePoolData(Object.values(poolDatas))
-    }
-  }, [poolDataError, poolDatas, updatePoolData])
+  // // fetch data for unfetched pools and update them
+  // const { error: poolDataError, data: poolDatas } = usePoolDatas(unfetchedPoolAddresses)
+  // useEffect(() => {
+  //   if (poolDatas && !poolDataError) {
+  //     updatePoolData(Object.values(poolDatas))
+  //   }
+  // }, [poolDataError, poolDatas, updatePoolData])
 
   return null
 }

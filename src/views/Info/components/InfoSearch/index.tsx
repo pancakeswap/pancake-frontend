@@ -6,7 +6,7 @@ import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/Currency
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useWatchlistTokens, useWatchlistPools } from 'state/user/hooks'
 import SaveIcon from 'views/Info/components/SaveIcon'
-import { usePoolDatas, useTokenDatas, useMultiChainPath } from 'state/info/hooks'
+import { usePoolDatas, useTokenDatas, useMultiChainPath, usePoolDatasSWR } from 'state/info/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import useDebounce from 'hooks/useDebounce'
 import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
@@ -202,7 +202,7 @@ const Search = () => {
   // get date for watchlist
   const watchListTokenData = useTokenDatas(savedTokens)
   const watchListTokenLoading = watchListTokenData.length !== savedTokens.length
-  const watchListPoolData = usePoolDatas(savedPools)
+  const watchListPoolData = usePoolDatasSWR(savedPools)
   const watchListPoolLoading = watchListPoolData.length !== savedPools.length
 
   // filter on view

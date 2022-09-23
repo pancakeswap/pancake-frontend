@@ -9,6 +9,7 @@ import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
 import BarChart from 'views/Info/components/InfoCharts/BarChart'
 import {
   useAllPoolData,
+  useAllPoolDataSWR,
   useAllTokenData,
   useProtocolChartData,
   useProtocolChartDataSWR,
@@ -59,7 +60,8 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
       .filter((token) => token)
   }, [allTokens])
 
-  const allPoolData = useAllPoolData()
+  const allPoolData = useAllPoolDataSWR()
+  // const allPoolData = useAllPoolData()
   const poolDatas = useMemo(() => {
     return Object.values(allPoolData)
       .map((pool) => pool.data)

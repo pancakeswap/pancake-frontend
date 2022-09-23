@@ -1,7 +1,7 @@
 import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
-import { usePoolDatas, useTokenDatas, useGetChainName } from 'state/info/hooks'
+import { usePoolDatas, useTokenDatas, useGetChainName, usePoolDatasSWR } from 'state/info/hooks'
 import { PoolData, TokenData } from 'state/info/types'
 import { multiChainQueryClient } from '../../constant'
 
@@ -128,7 +128,7 @@ const useFetchSearchResults = (
   // Token and Pool updater will then go fetch full data for these addresses
   // These hooks in turn will return data of tokens that have been fetched
   const tokenDatasFull = useTokenDatas(searchResults.tokens)
-  const poolDatasFull = usePoolDatas(searchResults.pools)
+  const poolDatasFull = usePoolDatasSWR(searchResults.pools)
 
   // If above hooks returned not all tokens/pools it means
   // that some requests for full data are in progress

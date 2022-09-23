@@ -27,6 +27,7 @@ import Percent from 'views/Info/components/Percent'
 import SaveIcon from 'views/Info/components/SaveIcon'
 import {
   usePoolDatas,
+  usePoolDatasSWR,
   useTokenData,
   usePoolsForToken,
   useTokenChartData,
@@ -76,7 +77,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
 
   const tokenData = useTokenData(address)
   const poolsForToken = usePoolsForToken(address)
-  const poolDatas = usePoolDatas(poolsForToken ?? [])
+  const poolDatas = usePoolDatasSWR(poolsForToken ?? [])
   const transactions = useTokenTransactions(address)
   const chartData = useTokenChartData(address)
 

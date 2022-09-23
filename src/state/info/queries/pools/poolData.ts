@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
-import { PoolData } from 'state/info/types'
+import { PoolData, Block } from 'state/info/types'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
@@ -9,6 +9,7 @@ import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamp
 import { getPercentChange } from 'views/Info/utils/infoDataHelpers'
 import { useGetChainName } from '../../hooks'
 import { multiChainQueryClient, MultiChianName, multiChainQueryMainToken } from '../../constant'
+import { fetchTopPoolAddresses } from './topPools'
 
 interface PoolFields {
   id: string
@@ -241,6 +242,92 @@ const usePoolDatas = (poolAddresses: string[]): PoolDatas => {
   }, [poolAddresses, block24h, block48h, block7d, block14d, blockError, chainName])
 
   return fetchState
+}
+
+export const fetchAllPoolData = async (blocks: Block[], chainName: MultiChianName) => {
+  const poolAddresses = await fetchTopPoolAddresses(chainName)
+  const [block24h, block48h, block7d, block14d] = blocks ?? []
+
+  const { error, data } = await fetchPoolData(
+    block24h.number,
+    block48h.number,
+    block7d.number,
+    block14d.number,
+    poolAddresses,
+    chainName,
+  )
+
+  const formattedPoolData = parsePoolData(data?.now)
+  const formattedPoolData24h = parsePoolData(data?.oneDayAgo)
+  const formattedPoolData48h = parsePoolData(data?.twoDaysAgo)
+  const formattedPoolData7d = parsePoolData(data?.oneWeekAgo)
+  const formattedPoolData14d = parsePoolData(data?.twoWeeksAgo)
+
+  // Calculate data and format
+  const formatted = poolAddresses.reduce((accum: { [address: string]: { data: PoolData } }, address) => {
+    // Undefined data is possible if pool is brand new and didn't exist one day ago or week ago.
+    const current: FormattedPoolFields | undefined = formattedPoolData[address]
+    const oneDay: FormattedPoolFields | undefined = formattedPoolData24h[address]
+    const twoDays: FormattedPoolFields | undefined = formattedPoolData48h[address]
+    const week: FormattedPoolFields | undefined = formattedPoolData7d[address]
+    const twoWeeks: FormattedPoolFields | undefined = formattedPoolData14d[address]
+
+    const [volumeUSD, volumeUSDChange] = getChangeForPeriod(current?.volumeUSD, oneDay?.volumeUSD, twoDays?.volumeUSD)
+    const [volumeUSDWeek, volumeUSDChangeWeek] = getChangeForPeriod(
+      current?.volumeUSD,
+      week?.volumeUSD,
+      twoWeeks?.volumeUSD,
+    )
+
+    const liquidityUSD = current ? current.reserveUSD : 0
+
+    const liquidityUSDChange = getPercentChange(current?.reserveUSD, oneDay?.reserveUSD)
+
+    const liquidityToken0 = current ? current.reserve0 : 0
+    const liquidityToken1 = current ? current.reserve1 : 0
+
+    const { totalFees24h, totalFees7d, lpFees24h, lpFees7d, lpApr7d } = getLpFeesAndApr(
+      volumeUSD,
+      volumeUSDWeek,
+      liquidityUSD,
+    )
+
+    if (current) {
+      accum[address] = {
+        data: {
+          address,
+          token0: {
+            address: current.token0.id,
+            name: current.token0.name,
+            symbol: current.token0.symbol,
+          },
+          token1: {
+            address: current.token1.id,
+            name: current.token1.name,
+            symbol: current.token1.symbol,
+          },
+          token0Price: current.token0Price,
+          token1Price: current.token1Price,
+          volumeUSD,
+          volumeUSDChange,
+          volumeUSDWeek,
+          volumeUSDChangeWeek,
+          totalFees24h,
+          totalFees7d,
+          lpFees24h,
+          lpFees7d,
+          lpApr7d,
+          liquidityUSD,
+          liquidityUSDChange,
+          liquidityToken0,
+          liquidityToken1,
+        },
+      }
+    }
+
+    return accum
+  }, {})
+  return formatted
 }
 
 export default usePoolDatas

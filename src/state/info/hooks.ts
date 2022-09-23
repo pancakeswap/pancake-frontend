@@ -8,6 +8,8 @@ import { AppState, useAppDispatch } from 'state'
 
 import { fetchProtocolData } from 'state/info/queries/protocol/overview'
 import { fetchGlobalChartData } from 'state/info/queries/protocol/chart'
+import { fetchTopPoolAddresses } from 'state/info/queries/pools/topPools'
+import { fetchAllPoolData } from 'state/info/queries/pools/poolData'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import fetchPoolChartData from 'state/info/queries/pools/chartData'
@@ -110,6 +112,16 @@ export const useAllPoolData = (): {
   return useSelector((state: AppState) => state.info.pools.byAddress)
 }
 
+export const useAllPoolDataSWR = () => {
+  const chainName = useGetChainName()
+  const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
+  const { blocks, error: blockError } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
+  const { data } = useSWRImmutable(blocks && chainName && [`info/pool/data`, chainName], () =>
+    fetchAllPoolData(blocks, chainName),
+  )
+  return data ?? {}
+}
+
 export const useUpdatePoolData = (): ((pools: PoolData[]) => void) => {
   const dispatch = useAppDispatch()
   return useCallback((pools: PoolData[]) => dispatch(updatePoolData({ pools })), [dispatch])
@@ -136,6 +148,18 @@ export const usePoolDatas = (poolAddresses: string[]): PoolData[] => {
       addNewPoolKeys(untrackedAddresses)
     }
   }, [addNewPoolKeys, untrackedAddresses])
+
+  const poolsWithData = poolAddresses
+    .map((address) => {
+      return allPoolData[address]?.data
+    })
+    .filter((pool) => pool)
+
+  return poolsWithData
+}
+
+export const usePoolDatasSWR = (poolAddresses: string[]): PoolData[] => {
+  const allPoolData = useAllPoolDataSWR()
 
   const poolsWithData = poolAddresses
     .map((address) => {
@@ -381,16 +405,18 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
 }
 
 export const useGetChainName = () => {
-  const router = useRouter()
-  const [name, setName] = useState<MultiChianName | null>(() => 'BSC')
-  const { chainName } = router.query
-  const { chainId } = useActiveWeb3React()
+  const path = window.location.href
+
+  const getChain = useCallback(() => {
+    if (path.includes('eth') || path.includes('chainId=1')) return 'ETH'
+    return 'BSC'
+  }, [path])
+  const [name, setName] = useState<MultiChianName | null>(getChain())
   const result = useMemo(() => name, [name])
+
   useEffect(() => {
-    if (ChainId.ETHEREUM === chainId || chainName === 'eth') {
-      setName('ETH')
-    } else setName('BSC')
-  }, [chainId, chainName])
+    setName(getChain())
+  }, [getChain])
 
   return result
   // const router = useRouter()
@@ -404,6 +430,31 @@ export const useGetChainName = () => {
   // }, [])
   // return chain
 }
+
+// export const useGetChainName = () => {
+//   const router = useRouter()
+//   const [name, setName] = useState<MultiChianName | null>(() => 'BSC')
+//   const { chainName } = router.query
+//   const { chainId } = useActiveWeb3React()
+//   const result = useMemo(() => name, [name])
+//   useEffect(() => {
+//     if (ChainId.ETHEREUM === chainId || chainName === 'eth') {
+//       setName('ETH')
+//     } else setName('BSC')
+//   }, [])
+
+//   return result
+//   // const router = useRouter()
+//   // const [chain, setChain] = useState<'ETH' | 'BSC'>('BSC')
+//   // const { chainId } = useActiveWeb3React()
+//   // useEffect(() => {
+//   //   console.log('?????')
+//   //   const { chainName } = router.query
+//   //   if (ChainId.ETHEREUM === chainId || chainName === 'eth') setChain('ETH')
+//   //   else setChain('BSC')
+//   // }, [])
+//   // return chain
+// }
 
 export const useMultiChainPath = () => {
   const router = useRouter()
