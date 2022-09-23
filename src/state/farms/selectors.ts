@@ -91,6 +91,11 @@ export const makeBusdPriceFromPidSelector = (pid: number) =>
     return farm && new BigNumber(farm.tokenPriceBusd)
   })
 
+export const makeLPTokenPriceFromPidSelector = (pid: number) =>
+  createSelector([selectFarmByKey('pid', pid)], (farm) => {
+    return farm && new BigNumber(farm.lpTokenPrice)
+  })
+
 export const makeUserFarmFromPidSelector = (pid: number) =>
   createSelector([selectFarmByKey('pid', pid)], (farm) => {
     const { allowance, tokenBalance, stakedBalance, earnings, proxy } = deserializeFarmUserData(farm)

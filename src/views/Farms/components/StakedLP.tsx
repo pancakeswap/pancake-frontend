@@ -2,12 +2,12 @@ import { Flex, Heading } from '@pancakeswap/uikit'
 import { BigNumber } from 'bignumber.js'
 import Balance from 'components/Balance'
 import { useMemo } from 'react'
-import { useLpTokenPrice } from 'state/farms/hooks'
+import { useLpTokenPriceByPid } from 'state/farms/hooks'
 import { formatLpBalance, getBalanceNumber } from 'utils/formatBalance'
 
 interface StackedLPProps {
   stakedBalance: BigNumber
-  lpSymbol: string
+  pid: number
   tokenSymbol: string
   quoteTokenSymbol: string
   lpTotalSupply: BigNumber
@@ -17,14 +17,14 @@ interface StackedLPProps {
 
 const StakedLP: React.FunctionComponent<React.PropsWithChildren<StackedLPProps>> = ({
   stakedBalance,
-  lpSymbol,
   quoteTokenSymbol,
   tokenSymbol,
   lpTotalSupply,
   tokenAmountTotal,
   quoteTokenAmountTotal,
+  pid,
 }) => {
-  const lpPrice = useLpTokenPrice(lpSymbol)
+  const lpPrice = useLpTokenPriceByPid(pid)
 
   const displayBalance = useMemo(() => {
     return formatLpBalance(stakedBalance)

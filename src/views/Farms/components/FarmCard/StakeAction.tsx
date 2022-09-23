@@ -166,8 +166,8 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   return (
     <Flex justifyContent="space-between" alignItems="center">
       <StakedLP
+        pid={pid}
         stakedBalance={stakedBalance}
-        lpSymbol={lpSymbol}
         quoteTokenSymbol={quoteToken.symbol}
         tokenSymbol={token.symbol}
         lpTotalSupply={lpTotalSupply}
