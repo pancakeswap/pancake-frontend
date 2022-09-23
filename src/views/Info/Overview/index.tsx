@@ -39,9 +39,9 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
     currentLanguage: { locale },
   } = useTranslation()
 
-  const [protocolData] = useProtocolDataSWR()
-  const [chartData] = useProtocolChartDataSWR()
-  const [transactions] = useProtocolTransactionsSWR()
+  const protocolData = useProtocolDataSWR()
+  const chartData = useProtocolChartDataSWR()
+  const transactions = useProtocolTransactionsSWR()
 
   const currentDate = useMemo(
     () => new Date().toLocaleString(locale, { month: 'short', year: 'numeric', day: 'numeric' }),

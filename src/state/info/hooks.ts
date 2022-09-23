@@ -21,7 +21,7 @@ import { MultiChianName } from './constant'
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 // Protocol hooks
 
-export const useProtocolDataSWR = (): [ProtocolData | undefined] => {
+export const useProtocolDataSWR = (): ProtocolData | undefined => {
   const chainName = useGetChainName()
   const [t24, t48] = getDeltaTimestamps()
   const { blocks, error: blockError } = useBlocksFromTimestamps([t24, t48])
@@ -31,24 +31,24 @@ export const useProtocolDataSWR = (): [ProtocolData | undefined] => {
     () => fetchProtocolData(chainName, block24, block48),
   )
 
-  return [protocolData]
+  return protocolData ?? undefined
 }
 
-export const useProtocolChartDataSWR = (): [ChartEntry[] | undefined] => {
+export const useProtocolChartDataSWR = (): ChartEntry[] | undefined => {
   const chainName = useGetChainName()
   const { data: chartData } = useSWRImmutable([`info/protocol/updateProtocolChartData`, chainName], () =>
     fetchGlobalChartData(chainName),
   )
-  return [chartData]
+  return chartData ?? undefined
 }
 
-export const useProtocolTransactionsSWR = (): [Transaction[] | undefined] => {
+export const useProtocolTransactionsSWR = (): Transaction[] | undefined => {
   const chainName = useGetChainName()
 
   const { data: transactions } = useSWRImmutable([`info/protocol/updateProtocolTransactionsData`, chainName], () =>
     fetchTopTransactions(chainName),
   )
-  return [transactions]
+  return transactions ?? undefined
 }
 
 export const useAllPoolDataSWR = () => {
