@@ -38,7 +38,7 @@ function GlobalHooks() {
   return null
 }
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps<{ initialReduxState: any }>) {
   const store = useStore(pageProps.initialReduxState)
   return (
     <>
