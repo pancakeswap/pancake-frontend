@@ -75,13 +75,15 @@ export const usePoolDatasSWR = (poolAddresses: string[]): PoolData[] => {
 
 export const usePoolChartDataSWR = (address: string): ChartEntry[] | undefined => {
   const chainName = useGetChainName()
-  const { data } = useSWRImmutable([`info/pool/chartData`, chainName], () => fetchPoolChartData(chainName, address))
+  const { data } = useSWRImmutable([`info/pool/chartData/${address}`, chainName], () =>
+    fetchPoolChartData(chainName, address),
+  )
   return data?.data ?? []
 }
 
 export const usePoolTransactionsSWR = (address: string): Transaction[] | undefined => {
   const chainName = useGetChainName()
-  const { data } = useSWRImmutable([`info/pool/TransactionsData`, chainName], () =>
+  const { data } = useSWRImmutable([`info/pool/transactionsData/${address}`, chainName], () =>
     fetchPoolTransactions(chainName, address),
   )
   return data?.data ?? []
@@ -125,14 +127,18 @@ export const useTokenDataSWR = (address: string | undefined): TokenData | undefi
 
 export const usePoolsForTokenSWR = (address: string): string[] | undefined => {
   const chainName = useGetChainName()
-  const { data } = useSWRImmutable([`info/token/poolAddress`, chainName], () => fetchPoolsForToken(chainName, address))
+  const { data } = useSWRImmutable([`info/token/poolAddress/${address}`, chainName], () =>
+    fetchPoolsForToken(chainName, address),
+  )
 
   return data?.addresses ?? []
 }
 
 export const useTokenChartDataSWR = (address: string): ChartEntry[] | undefined => {
   const chainName = useGetChainName()
-  const { data } = useSWRImmutable([`info/token/chartData`, chainName], () => fetchTokenChartData(chainName, address))
+  const { data } = useSWRImmutable([`info/token/chartData/${address}`, chainName], () =>
+    fetchTokenChartData(chainName, address),
+  )
 
   return data?.data ?? []
 }
@@ -145,7 +151,7 @@ export const useTokenPriceDataSWR = (
   const utcCurrentTime = getUnixTime(new Date()) * 1000
   const startTimestamp = getUnixTime(startOfHour(sub(utcCurrentTime, timeWindow)))
   const chainName = useGetChainName()
-  const { data } = useSWRImmutable([`info/token/priceData`, chainName], () =>
+  const { data } = useSWRImmutable([`info/token/priceData/${address}`, chainName], () =>
     fetchTokenPriceData(chainName, address, interval, startTimestamp),
   )
   return data?.data ?? []
@@ -153,7 +159,7 @@ export const useTokenPriceDataSWR = (
 
 export const useTokenTransactionsSWR = (address: string): Transaction[] | undefined => {
   const chainName = useGetChainName()
-  const { data } = useSWRImmutable([`info/token/transactionsData`, chainName], () =>
+  const { data } = useSWRImmutable([`info/token/transactionsData/${address}`, chainName], () =>
     fetchTokenTransactions(chainName, address),
   )
   return data?.data ?? []
