@@ -138,7 +138,7 @@ const TokenTable: React.FC<
 > = ({ tokenDatas, maxItems = MAX_ITEMS }) => {
   const [sortField, setSortField] = useState(SORT_FIELD.volumeUSD)
   const [sortDirection, setSortDirection] = useState<boolean>(true)
-
+  console.log(tokenDatas, '77777', !tokenDatas)
   const { t } = useTranslation()
 
   const [page, setPage] = useState(1)
@@ -149,14 +149,14 @@ const TokenTable: React.FC<
       if (tokenDatas.length % maxItems === 0) {
         extraPages = 0
       }
-      setMaxPage(Math.floor(tokenDatas.filter((d) => d.exists).length / maxItems) + extraPages)
+      setMaxPage(Math.floor(tokenDatas.filter((d) => d.exists && d.name !== 'unknown').length / maxItems) + extraPages)
     }
   }, [maxItems, tokenDatas])
 
   const sortedTokens = useMemo(() => {
     return tokenDatas
       ? orderBy(
-          tokenDatas.filter((d) => d.exists),
+          tokenDatas.filter((d) => d.exists && d.name !== 'unknown'),
           (tokenData) => tokenData[sortField as keyof TokenData],
           sortDirection ? 'desc' : 'asc',
         ).slice(maxItems * (page - 1), page * maxItems)
@@ -236,7 +236,7 @@ const TokenTable: React.FC<
       </ResponsiveGrid>
 
       <Break />
-      {sortedTokens.length > 0 ? (
+      {sortedTokens.length > 0 || tokenDatas ? (
         <>
           {sortedTokens.map((data, i) => {
             if (data) {
