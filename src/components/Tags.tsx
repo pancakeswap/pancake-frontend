@@ -57,7 +57,7 @@ const StableFarmTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
     <>
       {tooltipVisible && tooltip}
       <TooltipText ref={targetRef} style={{ textDecoration: 'none', alignSelf: 'center' }}>
-        <Tag variant="failure" mt="4px" outline {...props}>
+        <Tag variant="failure" outline {...props}>
           {t('Stable LP')}
         </Tag>
       </TooltipText>
