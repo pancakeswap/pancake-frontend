@@ -12,32 +12,32 @@ import {
   useAllTokenData,
   useClearTokenData,
   useGetChainName,
-  useProtocolChartData,
-  useProtocolData,
   useUpdatePoolData,
   useUpdateTokenData,
+  // useProtocolData,
+  // useProtocolChartData,
 } from './hooks'
 
 export const ProtocolUpdater: React.FC<React.PropsWithChildren> = () => {
-  const [protocolData, setProtocolData] = useProtocolData()
-  const { data: fetchedProtocolData, error } = useFetchProtocolData()
+  // const [protocolData, setProtocolData] = useProtocolData()
+  // const { data: fetchedProtocolData, error } = useFetchProtocolData()
 
-  const [chartData, updateChartData] = useProtocolChartData()
-  const { data: fetchedChartData, error: chartError } = useFetchGlobalChartData()
+  // const [chartData, updateChartData] = useProtocolChartData()
+  // const { data: fetchedChartData, error: chartError } = useFetchGlobalChartData()
 
-  // update overview data if available and not set
-  useEffect(() => {
-    if (protocolData === undefined && fetchedProtocolData && !error) {
-      setProtocolData(fetchedProtocolData)
-    }
-  }, [error, fetchedProtocolData, protocolData, setProtocolData])
+  // // update overview data if available and not set
+  // useEffect(() => {
+  //   if (protocolData === undefined && fetchedProtocolData && !error) {
+  //     setProtocolData(fetchedProtocolData)
+  //   }
+  // }, [error, fetchedProtocolData, protocolData, setProtocolData])
 
-  // update global chart data if available and not set
-  useEffect(() => {
-    if (chartData === undefined && fetchedChartData && !chartError) {
-      updateChartData(fetchedChartData)
-    }
-  }, [chartData, chartError, fetchedChartData, updateChartData])
+  // // update global chart data if available and not set
+  // useEffect(() => {
+  //   if (chartData === undefined && fetchedChartData && !chartError) {
+  //     updateChartData(fetchedChartData)
+  //   }
+  // }, [chartData, chartError, fetchedChartData, updateChartData])
 
   return null
 }

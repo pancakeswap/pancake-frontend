@@ -37,6 +37,7 @@ import {
   clearTokenData,
 } from './actions'
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
+import { MultiChianName } from './constant'
 // Protocol hooks
 
 export const useProtocolDataSWR = (): [ProtocolData | undefined] => {
@@ -381,7 +382,7 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
 
 export const useGetChainName = () => {
   const router = useRouter()
-  const [name, setName] = useState<'ETH' | 'BSC'>(() => 'BSC')
+  const [name, setName] = useState<MultiChianName | null>(() => 'BSC')
   const { chainName } = router.query
   const { chainId } = useActiveWeb3React()
   const result = useMemo(() => name, [name])

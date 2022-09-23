@@ -4,7 +4,7 @@ import InfoNav from './components/InfoNav'
 export const InfoPageLayout = ({ children }) => {
   return (
     <>
-      <ProtocolUpdater />
+      {/* <ProtocolUpdater /> */}
       <PoolUpdater />
       <TokenUpdater />
       <InfoNav />
