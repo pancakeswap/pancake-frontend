@@ -138,7 +138,6 @@ const TokenTable: React.FC<
 > = ({ tokenDatas, maxItems = MAX_ITEMS }) => {
   const [sortField, setSortField] = useState(SORT_FIELD.volumeUSD)
   const [sortDirection, setSortDirection] = useState<boolean>(true)
-  console.log(tokenDatas, '77777', !tokenDatas)
   const { t } = useTranslation()
 
   const [page, setPage] = useState(1)
