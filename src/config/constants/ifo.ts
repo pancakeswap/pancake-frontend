@@ -34,7 +34,7 @@ const ifos: Ifo[] = [
     twitterUrl: 'https://twitter.com/Coritecom',
     description:
       'Corite is a blockchain-based music platform jointly powered by fans and artists to finance and promote music in a unique Engage-to-Earn (E2E) model.',
-    vestingTitle: '$CO – platform currency for the Corite Experience!',
+    vestingTitle: '$CO - utility token for the Corite Experience!',
   },
   {
     id: 'hoop',
