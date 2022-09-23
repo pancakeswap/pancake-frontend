@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import { BIG_TEN } from 'utils/bigNumber'
+import { getFullDecimalMultiplier } from 'utils/getFullDecimalMultiplier'
 import { CalculatorMode, EditingCurrency } from '../types'
 
 const TOKEN_PRECISION = 10
@@ -39,7 +39,7 @@ const useWinRateCalculator = ({ cakePrice, totalSupply }: WinRateCalculatorProps
   const [state, setState] = useState<WinRateCalculatorState>(defaultState)
 
   const totalLockValue = useMemo(() => {
-    const total = totalSupply.times(state.controls.multiply).dividedBy(BIG_TEN.pow(18))
+    const total = totalSupply.times(state.controls.multiply).dividedBy(getFullDecimalMultiplier(18))
     return total.toNumber()
   }, [totalSupply, state])
 

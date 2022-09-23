@@ -5,7 +5,6 @@ import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
 import { useEffect, useMemo, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
-import { BIG_TEN } from 'utils/bigNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useBCakeTooltipContent } from 'views/Farms/components/BCakeBoosterCard'
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
@@ -14,6 +13,7 @@ import useRoiCalculatorReducer, {
   CalculatorMode,
   EditingCurrency,
 } from 'components/RoiCalculatorModal/useRoiCalculatorReducer'
+import { getFullDecimalMultiplier } from 'utils/getFullDecimalMultiplier'
 import { useGetCalculatorMultiplier } from '../hooks/useGetBoostedAPR'
 import LockDurationField from './BCakeLockedDuration'
 
@@ -56,11 +56,11 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
     setCalculatorMode(CalculatorMode.ROI_BASED_ON_PRINCIPAL)
   }
   const userBalanceInFarm = useMemo(
-    () => new BigNumber(targetInputBalance).multipliedBy(BIG_TEN.pow(18)),
+    () => new BigNumber(targetInputBalance).multipliedBy(getFullDecimalMultiplier(18)),
     [targetInputBalance],
   )
   const userLockedAmount = useMemo(
-    () => new BigNumber(principalAsToken).multipliedBy(BIG_TEN.pow(18)),
+    () => new BigNumber(principalAsToken).multipliedBy(getFullDecimalMultiplier(18)),
     [principalAsToken],
   )
 

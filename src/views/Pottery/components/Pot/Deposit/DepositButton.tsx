@@ -2,9 +2,9 @@ import { useCallback } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, AutoRenewIcon } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { BIG_TEN } from 'utils/bigNumber'
 import { useDepositPottery } from 'views/Pottery/hooks/useDepositPottery'
 import { PotteryDepositStatus } from 'state/types'
+import { getFullDecimalMultiplier } from 'utils/getFullDecimalMultiplier'
 
 interface DepositButtonProps {
   status: PotteryDepositStatus
@@ -21,7 +21,7 @@ const DepositButton: React.FC<React.PropsWithChildren<DepositButtonProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { isPending, handleDeposit } = useDepositPottery(depositAmount, potteryVaultAddress)
-  const depositAmountAsBN = new BigNumber(depositAmount).multipliedBy(BIG_TEN.pow(18))
+  const depositAmountAsBN = new BigNumber(depositAmount).multipliedBy(getFullDecimalMultiplier(18))
 
   const onClickDeposit = useCallback(async () => {
     await handleDeposit()
