@@ -5,7 +5,7 @@ import { DeserializedPool, VaultKey } from 'state/types'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import Balance from 'components/Balance'
-import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
+import NotEnoughTokensModal from '../../Modals/NotEnoughTokensModal'
 import VaultStakeModal from '../VaultStakeModal'
 import ConvertToLock from '../../LockedPool/Common/ConvertToLock'
 

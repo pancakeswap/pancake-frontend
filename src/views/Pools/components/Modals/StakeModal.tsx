@@ -27,8 +27,8 @@ import { DeserializedPool } from 'state/types'
 import styled from 'styled-components'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
 import { formatNumber, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
-import useStakePool from '../../../hooks/useStakePool'
-import useUnstakePool from '../../../hooks/useUnstakePool'
+import useStakePool from '../../hooks/useStakePool'
+import useUnstakePool from '../../hooks/useUnstakePool'
 import PercentageButton from './PercentageButton'
 
 interface StakeModalProps {
