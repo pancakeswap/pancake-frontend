@@ -4,6 +4,7 @@ import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
 import { useEffect, useMemo, useState } from 'react'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import styled, { useTheme } from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useBCakeTooltipContent } from 'views/Farms/components/BCakeBoosterCard'
@@ -13,7 +14,6 @@ import useRoiCalculatorReducer, {
   CalculatorMode,
   EditingCurrency,
 } from 'components/RoiCalculatorModal/useRoiCalculatorReducer'
-import { getFullDecimalMultiplier } from 'utils/getFullDecimalMultiplier'
 import { useGetCalculatorMultiplier } from '../hooks/useGetBoostedAPR'
 import LockDurationField from './BCakeLockedDuration'
 
@@ -56,11 +56,11 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
     setCalculatorMode(CalculatorMode.ROI_BASED_ON_PRINCIPAL)
   }
   const userBalanceInFarm = useMemo(
-    () => new BigNumber(targetInputBalance).multipliedBy(getFullDecimalMultiplier(18)),
+    () => new BigNumber(targetInputBalance).multipliedBy(DEFAULT_TOKEN_DECIMAL),
     [targetInputBalance],
   )
   const userLockedAmount = useMemo(
-    () => new BigNumber(principalAsToken).multipliedBy(getFullDecimalMultiplier(18)),
+    () => new BigNumber(principalAsToken).multipliedBy(DEFAULT_TOKEN_DECIMAL),
     [principalAsToken],
   )
 

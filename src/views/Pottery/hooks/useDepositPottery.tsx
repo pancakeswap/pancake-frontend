@@ -8,7 +8,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { usePotterytVaultContract } from 'hooks/useContract'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { fetchPotteryUserDataAsync } from 'state/pottery'
-import { getFullDecimalMultiplier } from 'utils/getFullDecimalMultiplier'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
 
 export const useDepositPottery = (amount: string, potteryVaultAddress: string) => {
   const { t } = useTranslation()
@@ -19,7 +19,7 @@ export const useDepositPottery = (amount: string, potteryVaultAddress: string) =
   const contract = usePotterytVaultContract(potteryVaultAddress)
 
   const handleDeposit = useCallback(async () => {
-    const amountDeposit = new BigNumber(amount).multipliedBy(getFullDecimalMultiplier(18)).toString()
+    const amountDeposit = new BigNumber(amount).multipliedBy(DEFAULT_TOKEN_DECIMAL).toString()
     const receipt = await fetchWithCatchTxError(() => contract.deposit(amountDeposit, account))
 
     if (receipt?.status) {
