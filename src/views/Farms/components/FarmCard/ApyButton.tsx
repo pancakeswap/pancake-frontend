@@ -6,7 +6,7 @@ import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
-import { useFarmFromPid, useFarmUser, useLpTokenPrice } from 'state/farms/hooks'
+import { useFarmFromPid, useFarmUser } from 'state/farms/hooks'
 import styled from 'styled-components'
 import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
 import useBoostMultiplier from '../YieldBooster/hooks/useBoostMultiplier'
@@ -24,6 +24,7 @@ export interface ApyButtonProps {
   variant: 'text' | 'text-and-button'
   pid: number
   lpSymbol: string
+  lpTokenPrice: BigNumber
   lpLabel?: string
   multiplier: string
   cakePrice?: BigNumber
@@ -41,6 +42,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   variant,
   pid,
   lpLabel,
+  lpTokenPrice,
   lpSymbol,
   cakePrice,
   apr,
@@ -55,7 +57,6 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
 }) => {
   const { t } = useTranslation()
   const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
-  const lpPrice = useLpTokenPrice(lpSymbol)
   const { tokenBalance, stakedBalance, proxy } = useFarmUser(pid)
   const { lpTotalSupply } = useFarmFromPid(pid)
   const { boosterState, proxyAddress } = useContext(YieldBoosterStateContext)
@@ -72,7 +73,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       linkLabel={t('Get %symbol%', { symbol: lpLabel })}
       stakingTokenBalance={userBalanceInFarm}
       stakingTokenSymbol={lpSymbol}
-      stakingTokenPrice={lpPrice.toNumber()}
+      stakingTokenPrice={lpTokenPrice.toNumber()}
       earningTokenPrice={cakePrice.toNumber()}
       apr={bCakeMultiplier ? apr * bCakeMultiplier : apr}
       multiplier={multiplier}
