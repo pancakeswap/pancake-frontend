@@ -7,6 +7,36 @@ export const cakeBnbLpToken = new Token(ChainId.BSC, CAKE_BNB_LP_MAINNET, 18, 'C
 
 const ifos: Ifo[] = [
   {
+    id: 'co',
+    address: '0x8baeee7d68cb332c63b3e4a8740072121070a2df',
+    isActive: true,
+    name: 'CO',
+    poolBasic: {
+      saleAmount: '10,500,000 CO',
+      raiseAmount: '$367,500',
+      cakeToBurn: '$0',
+      distributionRatio: 0.25,
+    },
+    poolUnlimited: {
+      saleAmount: '31,500,000 CO',
+      raiseAmount: '$1,102,500',
+      cakeToBurn: '$0',
+      distributionRatio: 0.75,
+    },
+    currency: bscTokens.cake,
+    token: bscTokens.co,
+    releaseBlockNumber: 21615380,
+    campaignId: '511600000',
+    articleUrl:
+      'https://pancakeswap.finance/voting/proposal/bafkreiddual5o7vzfcwuazw3lgckis66hka4xytqkttqg2wjtea5pywohy',
+    tokenOfferingPrice: 0.035,
+    version: 3.2,
+    twitterUrl: 'https://twitter.com/Coritecom',
+    description:
+      'Corite is a blockchain-based music platform jointly powered by fans and artists to finance and promote music in a unique Engage-to-Earn (E2E) model.',
+    vestingTitle: '$CO - utility token for the Corite Experience!',
+  },
+  {
     id: 'hoop',
     address: '0x326e9E1B685C7F366fb320e7eC59599F3d88b1a2',
     isActive: false,
