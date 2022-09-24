@@ -1,4 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
+import { useIsMounted } from "@pancakeswap/hooks";
 import { PropsWithChildren, ReactNode } from "react";
 import { AutoColumn, RowBetween, Text, TextProps } from "../../components";
 
@@ -13,15 +14,18 @@ export const SwapInfoLabel = (props: PropsWithChildren<TextProps>) => (
 
 export const SwapInfo = ({ allowedSlippage, price }: SwapInfoType) => {
   const { t } = useTranslation();
+  const isMounted = useIsMounted();
 
   return (
     <AutoColumn gap="sm" py="0" px="16px">
       <RowBetween alignItems="center">{price}</RowBetween>
       <RowBetween alignItems="center">
         <SwapInfoLabel>{t("Slippage Tolerance")}</SwapInfoLabel>
-        <Text bold color="primary">
-          {allowedSlippage / 100}%
-        </Text>
+        {isMounted && (
+          <Text bold color="primary">
+            {allowedSlippage / 100}%
+          </Text>
+        )}
       </RowBetween>
     </AutoColumn>
   );
