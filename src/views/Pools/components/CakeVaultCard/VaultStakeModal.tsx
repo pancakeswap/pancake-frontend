@@ -39,7 +39,7 @@ import { getFullDecimalMultiplier } from 'utils/getFullDecimalMultiplier'
 import { VaultRoiCalculatorModal } from '../Vault/VaultRoiCalculatorModal'
 import ConvertToLock from '../LockedPool/Common/ConvertToLock'
 import FeeSummary from './FeeSummary'
-import { MIN_LOCK_AMOUNT } from '../../helpers'
+import { MIN_LOCK_AMOUNT, convertCakeToShares } from '../../helpers'
 
 interface VaultStakeModalProps {
   pool: DeserializedPool
@@ -79,12 +79,14 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
   const vaultPoolContract = useVaultPoolContract(pool.vaultKey)
   const { callWithGasPrice } = useCallWithGasPrice()
   const {
+    pricePerFullShare,
     userData: {
       lastDepositedTime,
       userShares,
       balance: { cakeAsBigNumber, cakeAsNumberBalance },
     },
   } = useVaultPoolByKey(pool.vaultKey)
+
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { toastSuccess } = useToast()
@@ -156,8 +158,11 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
         return callWithGasPrice(vaultPoolContract, 'withdrawAll', undefined, callOptions)
       }
 
+      const { sharesAsBigNumber } = convertCakeToShares(convertedStakeAmount, pricePerFullShare)
       const methodsName = pool.vaultKey === VaultKey.CakeVault ? 'withdrawByAmount' : 'withdraw'
-      return callWithGasPrice(vaultPoolContract, methodsName, [convertedStakeAmount.toString()], callOptions)
+      const withdrawAmount =
+        pool.vaultKey === VaultKey.CakeVault ? convertedStakeAmount.toString() : sharesAsBigNumber.toString()
+      return callWithGasPrice(vaultPoolContract, methodsName, [withdrawAmount], callOptions)
     })
 
     if (receipt?.status) {
