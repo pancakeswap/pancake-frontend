@@ -71,14 +71,78 @@ type PoolOrTokenFetchFn = (
   skip: number,
   address: string,
 ) => Promise<{ data?: ChartEntry[]; error: boolean }>
+
 type OverviewFetchFn = (chianName: MultiChianName, skip: number) => Promise<{ data?: ChartEntry[]; error: boolean }>
 
 // Common helper function to retrieve chart data
 // Used for both Pool and Token charts
 export const fetchChartData = async (
   chianName: MultiChianName,
-  getEntityDayDatas: PoolOrTokenFetchFn | OverviewFetchFn,
-  address?: string,
+  getEntityDayDatas: OverviewFetchFn,
+): Promise<{ data?: ChartEntry[]; error: boolean }> => {
+  let chartEntries: ChartEntry[] = []
+  let error = false
+  let skip = 0
+  let allFound = false
+
+  while (!allFound) {
+    // eslint-disable-next-line no-await-in-loop
+    const { data, error: fetchError } = await getEntityDayDatas(chianName, skip)
+    skip += 1000
+    allFound = data?.length < 1000
+    error = fetchError
+    if (data) {
+      chartEntries = chartEntries.concat(data)
+    }
+  }
+
+  if (error || chartEntries.length === 0) {
+    return {
+      error: true,
+    }
+  }
+
+  const formattedDayDatas = fromPairs(
+    chartEntries.map((dayData) => {
+      // At this stage we track unix day ordinal for each data point to check for empty days later
+      const dayOrdinal = parseInt((dayData.date / ONE_DAY_UNIX).toFixed(0))
+      return [dayOrdinal, dayData]
+    }),
+  )
+
+  console.warn(formattedDayDatas)
+
+  const availableDays = Object.keys(formattedDayDatas).map((dayOrdinal) => parseInt(dayOrdinal, 10))
+
+  const firstAvailableDayData = formattedDayDatas[availableDays[0]]
+  // fill in empty days ( there will be no day datas if no trades made that day )
+  let timestamp = firstAvailableDayData?.date ?? PCS_V2_START
+  let latestLiquidityUSD = firstAvailableDayData?.liquidityUSD ?? 0
+  const endTimestamp = getUnixTime(new Date())
+  while (timestamp < endTimestamp - ONE_DAY_UNIX) {
+    timestamp += ONE_DAY_UNIX
+    const dayOrdinal = parseInt((timestamp / ONE_DAY_UNIX).toFixed(0), 10)
+    if (!Object.keys(formattedDayDatas).includes(dayOrdinal.toString())) {
+      formattedDayDatas[dayOrdinal] = {
+        date: timestamp,
+        volumeUSD: 0,
+        liquidityUSD: latestLiquidityUSD,
+      }
+    } else {
+      latestLiquidityUSD = formattedDayDatas[dayOrdinal].liquidityUSD
+    }
+  }
+
+  return {
+    data: Object.values(formattedDayDatas),
+    error: false,
+  }
+}
+
+export const fetchChartDataWithAddress = async (
+  chianName: MultiChianName,
+  getEntityDayDatas: PoolOrTokenFetchFn,
+  address: string,
 ): Promise<{ data?: ChartEntry[]; error: boolean }> => {
   let chartEntries: ChartEntry[] = []
   let error = false
@@ -109,6 +173,7 @@ export const fetchChartData = async (
       return [dayOrdinal, dayData]
     }),
   )
+  console.warn(formattedDayDatas)
 
   const availableDays = Object.keys(formattedDayDatas).map((dayOrdinal) => parseInt(dayOrdinal, 10))
 

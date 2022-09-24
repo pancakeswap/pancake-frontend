@@ -136,7 +136,7 @@ export const usePoolsForTokenSWR = (address: string): string[] | undefined => {
 
 export const useTokenChartDataSWR = (address: string): ChartEntry[] | undefined => {
   const chainName = useGetChainName()
-  const { data } = useSWRImmutable([`info/token/chartData/${address}`, chainName], () =>
+  const { data } = useSWRImmutable(address && chainName && [`info/token/chartData/${address}`, chainName], () =>
     fetchTokenChartData(chainName, address),
   )
 

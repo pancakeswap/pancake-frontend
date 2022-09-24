@@ -1,7 +1,7 @@
 import { PCS_V2_START } from 'config/constants/info'
 import { gql } from 'graphql-request'
 import { ChartEntry } from 'state/info/types'
-import { fetchChartData, mapDayData } from '../helpers'
+import { fetchChartDataWithAddress, mapDayData } from '../helpers'
 import { TokenDayDatasResponse } from '../types'
 import { multiChainQueryClient, MultiChianName } from '../../constant'
 
@@ -43,7 +43,7 @@ const fetchTokenChartData = async (
   chainName: MultiChianName,
   address: string,
 ): Promise<{ data?: ChartEntry[]; error: boolean }> => {
-  return fetchChartData(chainName, getTokenChartData, address)
+  return fetchChartDataWithAddress(chainName, getTokenChartData, address)
 }
 
 export default fetchTokenChartData
