@@ -6,6 +6,7 @@ import { multicallv2 } from 'utils/multicall'
 import { TeamsById } from 'state/types'
 import profileABI from 'config/abi/pancakeProfile.json'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import fromPairs from 'lodash/fromPairs'
 
 const profileContract = getProfileContract()
 
@@ -30,12 +31,7 @@ export const getTeam = async (teamId: number): Promise<Team> => {
  */
 export const getTeams = async (): Promise<TeamsById> => {
   try {
-    const teamsById = teamsList.reduce((accum, team) => {
-      return {
-        ...accum,
-        [team.id]: team,
-      }
-    }, {})
+    const teamsById = fromPairs(teamsList.map((team) => [team.id, team]))
     const nbTeams = await profileContract.numberTeams()
 
     const calls = []
@@ -48,19 +44,21 @@ export const getTeams = async (): Promise<TeamsById> => {
     }
     const teamData = await multicallv2({ abi: profileABI, calls })
 
-    const onChainTeamData = teamData.reduce((accum, team, index) => {
-      const { 0: teamName, 2: numberUsers, 3: numberPoints, 4: isJoinable } = team
+    const onChainTeamData = fromPairs(
+      teamData.map((team, index) => {
+        const { 0: teamName, 2: numberUsers, 3: numberPoints, 4: isJoinable } = team
 
-      return {
-        ...accum,
-        [index + 1]: {
-          name: teamName,
-          users: numberUsers.toNumber(),
-          points: numberPoints.toNumber(),
-          isJoinable,
-        },
-      }
-    }, {})
+        return [
+          index + 1,
+          {
+            name: teamName,
+            users: numberUsers.toNumber(),
+            points: numberPoints.toNumber(),
+            isJoinable,
+          },
+        ]
+      }),
+    )
 
     return merge({}, teamsById, onChainTeamData)
   } catch (error) {
