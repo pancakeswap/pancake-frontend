@@ -1,24 +1,51 @@
 /* eslint-disable camelcase */
-import { Pair, PAIR_RESERVE_TYPE_TAG, SWAP_ADDRESS, Currency, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
-import { useProvider } from '@pancakeswap/awgmi'
+import { Currency, CurrencyAmount, Pair, PAIR_RESERVE_TYPE_TAG, SWAP_ADDRESS } from '@pancakeswap/aptos-swap-sdk'
+import { useAccountResources } from '@pancakeswap/awgmi'
 import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'
-import useSWR from 'swr'
-import { useActiveChainId, useActiveNetwork } from './useNetwork'
+import { useCoins } from './Tokens'
 
-function useFetchAllPairs() {
-  const { networkName } = useActiveNetwork()
-  const chainId = useActiveChainId()
+function useFetchAllPairsReserves() {
+  return useAccountResources({
+    address: SWAP_ADDRESS,
+    select: (swapResources) => {
+      const allPairData = swapResources.filter((r) => r.type.includes(PAIR_RESERVE_TYPE_TAG)) as {
+        type: string
+        data: { reserve_x: string; reserve_y: string; block_timestamp_last: string }
+      }[]
 
-  const provider = useProvider({ networkName })
-  return useSWR(['all-pairs-reserves', networkName, chainId], async () => {
-    const swapResources = await provider.getAccountResources(SWAP_ADDRESS)
-    const allPairData = swapResources.filter((r) => r.type.includes(PAIR_RESERVE_TYPE_TAG)) as {
-      type: string
-      data: { reserve_x: string; reserve_y: string; block_timestamp_last: string }
-    }[]
+      return fromPairs(allPairData.map((p) => [p.type, p]))
+    },
+  })
+}
 
-    return fromPairs(allPairData.map((p) => [p.type, p]))
+export function usePairsFromAddresses(addresses: string[]) {
+  const { data } = useFetchAllPairsReserves()
+  const { data: coins } = useCoins(
+    addresses.flatMap((addr) => {
+      return Pair.parseType(addr)
+    }),
+  )
+
+  return addresses.map((address) => {
+    if (data?.[address]) {
+      const [address0, address1] = Pair.parseType(address)
+
+      const coin0 = coins?.find((c) => c?.address === address0)
+      const coin1 = coins?.find((c) => c?.address === address1)
+
+      if (coin0 && coin1) {
+        return [
+          PairState.EXISTS,
+          new Pair(
+            CurrencyAmount.fromRawAmount(coin0, data[address].data.reserve_x),
+            CurrencyAmount.fromRawAmount(coin1, data[address].data.reserve_y),
+          ),
+        ]
+      }
+      return [PairState.LOADING, null]
+    }
+    return [PairState.NOT_EXISTS, null]
   })
 }
 
@@ -30,7 +57,7 @@ export enum PairState {
 }
 
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
-  const { data } = useFetchAllPairs()
+  const { data } = useFetchAllPairsReserves()
 
   const tokens = useMemo(() => currencies.map(([a, b]) => [a?.wrapped, b?.wrapped]), [currencies])
 
@@ -42,7 +69,7 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
       const pairAddress = Pair.getReservesAddress(tokenA, tokenB)
 
       if (data?.[pairAddress]) {
-        const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
+        const [token0, token1] = Pair.sortToken(tokenA, tokenB)
         return [
           PairState.EXISTS,
           new Pair(
@@ -54,4 +81,12 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
       return [PairState.NOT_EXISTS, null]
     })
   }, [data, tokens])
+}
+
+export function usePair(tokenA?: Currency, tokenB?: Currency): [PairState, Pair | null] {
+  const pairCurrencies = useMemo<[Currency | undefined, Currency | undefined][]>(
+    () => [[tokenA, tokenB]],
+    [tokenA, tokenB],
+  )
+  return usePairs(pairCurrencies)[0]
 }

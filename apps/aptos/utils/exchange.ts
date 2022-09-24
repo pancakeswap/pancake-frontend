@@ -78,3 +78,13 @@ export function computeSlippageAdjustedAmounts(
     [Field.OUTPUT]: trade?.minimumAmountOut(pct),
   }
 }
+
+export function calculateSlippageAmount(value: CurrencyAmount<Currency>, slippage: number): [JSBI, JSBI] {
+  if (slippage < 0 || slippage > 10000) {
+    throw Error(`Unexpected slippage value: ${slippage}`)
+  }
+  return [
+    JSBI.divide(JSBI.multiply(value.quotient, JSBI.BigInt(10000 - slippage)), BIPS_BASE),
+    JSBI.divide(JSBI.multiply(value.quotient, JSBI.BigInt(10000 + slippage)), BIPS_BASE),
+  ]
+}

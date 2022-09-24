@@ -98,7 +98,7 @@ export const CurrencyInputPanel = ({
       }
       bottom={
         <InputRow selected={!!disableCurrencySelect}>
-          {account && currency && !disabled && showMaxButton && label !== 'To' && (
+          {isMounted && account && currency && !disabled && showMaxButton && label !== 'To' && (
             <Button onClick={onMax} scale="xs" variant="secondary" style={{ textTransform: 'uppercase' }}>
               {t('Max')}
             </Button>

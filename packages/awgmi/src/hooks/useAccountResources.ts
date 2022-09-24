@@ -8,7 +8,7 @@ type UseAccountResourcesArgs = Partial<FetchAccountResourcesArgs> & {
   watch?: boolean
 }
 
-export type UseAccountResourcesConfig<TData> = QueryConfig<FetchAccountResourcesResult, Error, TData>
+export type UseAccountResourcesConfig<TData = unknown> = QueryConfig<FetchAccountResourcesResult, Error, TData>
 
 export const queryKey = ({ networkName, address }: { networkName?: string; address?: string }) =>
   [{ entity: 'accountResources', networkName, address }] as const

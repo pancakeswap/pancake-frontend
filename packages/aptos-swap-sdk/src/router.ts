@@ -1,5 +1,5 @@
 import { Currency, Percent, TradeType } from '@pancakeswap/swap-sdk-core'
-import { swapScriptsSwapScript } from './generated/swap'
+import { swapScriptsSwapScript, swapScriptsAddLiquidityScript } from './generated/swap'
 import { Trade } from './trade'
 
 export interface TradeOptions {
@@ -32,5 +32,10 @@ export abstract class AptosSwapRouter {
 
     const [xAddress, yAddress] = [inputAddress, outputAddress]
     return swapScriptsSwapScript([amountIn, amountOut], [xAddress, yAddress])
+  }
+
+  // eslint-disable-next-line camelcase
+  public static unstable_addLiquidityParameters(amountX: string, amountY: string, addressX: string, addressY: string) {
+    return swapScriptsAddLiquidityScript([amountX, amountY], [addressX, addressY])
   }
 }

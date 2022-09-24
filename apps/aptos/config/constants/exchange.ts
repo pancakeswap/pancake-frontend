@@ -1,5 +1,6 @@
 import { ChainId, ONE_HUNDRED_PERCENT, JSBI, Percent, Token } from '@pancakeswap/aptos-swap-sdk'
 import { APT } from 'config/coins'
+import { ChainTokenList } from './types'
 
 export const BIG_INT_ZERO = JSBI.BigInt(0)
 export const BIG_INT_TEN = JSBI.BigInt(10)
@@ -28,6 +29,17 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
 export const ADDITIONAL_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {}
 
 export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {}
+
+export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
+  [ChainId.DEVNET]: [],
+  [ChainId.TESTNET]: [],
+}
+
+// used to construct the list of all pairs we consider by default in the frontend
+export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
+  [ChainId.DEVNET]: [],
+  [ChainId.TESTNET]: [],
+}
 
 export const BIPS_BASE = JSBI.BigInt(10000)
 export const ONE_BIPS = new Percent(JSBI.BigInt(1), BIPS_BASE)

@@ -1,11 +1,10 @@
 import { APTOS_COIN } from 'aptos'
-import { getProvider } from './provider'
+import { wrapCoinInfoTypeTag } from './coinInfo'
+import { getProvider } from '../provider'
 
 const APTOS_DECIMALS = 8
 export const APTOS_SYMBOL = 'APT'
 const NAME = 'Aptos coin'
-
-const coinInfoTypeTag = (type: string) => `0x1::coin::CoinInfo<${type}>`
 
 export type FetchCoinArgs = {
   /** Network name to use for provider */
@@ -48,7 +47,7 @@ export async function fetchCoin({ networkName, coin }: FetchCoinArgs): Promise<F
     const [coinHoistAddress] = coin.split('::')
     // TODO: check address
     if (coinHoistAddress) {
-      const coinResource = await provider.getAccountResource(coinHoistAddress, coinInfoTypeTag(coin))
+      const coinResource = await provider.getAccountResource(coinHoistAddress, wrapCoinInfoTypeTag(coin))
 
       const { decimals = 18, symbol, name, supply: _supply } = coinResource.data as CoinResourceResponse
 

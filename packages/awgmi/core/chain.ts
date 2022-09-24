@@ -31,7 +31,7 @@ export const devnet: Chain = {
   blockExplorers: {
     default: {
       name: 'Aptos Explorer',
-      url: 'https://explorer.devnet.aptos.dev',
+      url: 'https://explorer.aptoslabs.com',
     },
   },
   testnet: true,
@@ -47,7 +47,7 @@ export const testnet: Chain = {
   blockExplorers: {
     default: {
       name: 'Aptos Explorer',
-      url: 'https://explorer.devnet.aptos.dev',
+      url: 'https://explorer.aptoslabs.com',
     },
   },
   testnet: true,

@@ -24,17 +24,21 @@ export class Pair {
 
   private readonly tokenAmounts: [CurrencyAmount<Coin>, CurrencyAmount<Coin>]
 
-  public static getAddress(tokenA: Coin, tokenB: Coin): string {
+  public static sortToken(tokenA: Coin, tokenB: Coin): [Coin, Coin] {
     // TODO: invert
     // const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // it does safety checks
     const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenB, tokenA] : [tokenA, tokenB]
+    return [token0, token1]
+  }
+
+  public static getAddress(tokenA: Coin, tokenB: Coin): string {
+    const [token0, token1] = this.sortToken(tokenA, tokenB)
 
     return `${PAIR_LP_TYPE_TAG}<${token0.address}, ${token1.address}>`
   }
 
   public static getReservesAddress(tokenA: Coin, tokenB: Coin): string {
-    // TODO: invert
-    const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenB, tokenA] : [tokenA, tokenB]
+    const [token0, token1] = this.sortToken(tokenA, tokenB)
 
     return `${PAIR_RESERVE_TYPE_TAG}<${token0.address}, ${token1.address}>`
   }
@@ -60,20 +64,18 @@ export class Pair {
       }::${tyepArg1.value.name.value}`,
     ]
 
-    return [address0, address1]
+    return [address0, address1] as const
+  }
+
+  static getLiquidityToken(tokenA: Coin, tokenB: Coin) {
+    return new Coin(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 8, 'Cake-LP', 'Pancake LPs')
   }
 
   public constructor(currencyAmountA: CurrencyAmount<Coin>, tokenAmountB: CurrencyAmount<Coin>) {
     const tokenAmounts = currencyAmountA.currency.sortsBefore(tokenAmountB.currency) // does safety checks
       ? [currencyAmountA, tokenAmountB]
       : [tokenAmountB, currencyAmountA]
-    this.liquidityToken = new Coin(
-      tokenAmounts[0].currency.chainId,
-      Pair.getAddress(tokenAmounts[0].currency, tokenAmounts[1].currency),
-      8,
-      'Cake-LP',
-      'Pancake LPs'
-    )
+    this.liquidityToken = Pair.getLiquidityToken(tokenAmounts[0].currency, tokenAmounts[1].currency)
     this.tokenAmounts = tokenAmounts as [CurrencyAmount<Coin>, CurrencyAmount<Coin>]
   }
 
