@@ -3,6 +3,7 @@ import { useModal, useToast } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useAnniversaryAchievementContract } from 'hooks/useContract'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import AnniversaryAchievementModal from './AnniversaryAchievementModal'
@@ -30,22 +31,17 @@ const GlobalCheckClaimStatus: React.FC<React.PropsWithChildren<GlobalCheckClaimS
  */
 const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusProps>> = ({ excludeLocations }) => {
   const hasDisplayedModal = useRef(false)
-  const { toastError, toastSuccess } = useToast()
+  const { toastSuccess } = useToast()
   const { t } = useTranslation()
   const [canClaimAnniversaryPoints, setCanClaimAnniversaryPoints] = useState(false)
   const { canClaim, claimAnniversaryPoints } = useAnniversaryAchievementContract()
+  const { fetchWithCatchTxError } = useCatchTxError()
   const [onPresentAnniversaryModal] = useModal(
     <AnniversaryAchievementModal
       onClick={async () => {
-        try {
-          const tx = await claimAnniversaryPoints()
-
-          toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={tx.hash} />)
-
-          await tx.wait()
-        } catch (error: any) {
-          const errorDescription = `${error.message} - ${error.data?.message}`
-          toastError(t('Failed to claim'), errorDescription)
+        const receipt = await fetchWithCatchTxError(() => claimAnniversaryPoints())
+        if (receipt?.status) {
+          toastSuccess(t('Success!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
         }
       }}
     />,
