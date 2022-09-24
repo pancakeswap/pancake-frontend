@@ -11,7 +11,7 @@ import useTokenBalance from 'hooks/useTokenBalance'
 import { getFullDisplayBalance, getBalanceNumber } from 'utils/formatBalance'
 import { PotteryDepositStatus } from 'state/types'
 import { useUserEnoughCakeValidator } from 'views/Pools/components/LockedPool/hooks/useUserEnoughCakeValidator'
-import { BIG_TEN } from 'utils/bigNumber'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import EnableButton from './EnableButton'
 import DepositButton from './DepositButton'
 
@@ -59,7 +59,7 @@ const DepositAction: React.FC<React.PropsWithChildren<DepositActionProps>> = ({ 
   )
 
   const onClickMax = () => {
-    const userCakeBalance = userCake.dividedBy(BIG_TEN.pow(18)).toString()
+    const userCakeBalance = userCake.dividedBy(DEFAULT_TOKEN_DECIMAL).toString()
 
     if (new BigNumber(userCakeBalance).gte(remainingCakeCanStake)) {
       setDepositAmount(remainingCakeCanStake)
@@ -69,7 +69,7 @@ const DepositAction: React.FC<React.PropsWithChildren<DepositActionProps>> = ({ 
   }
 
   const showMaxButton = useMemo(
-    () => new BigNumber(depositAmount).multipliedBy(BIG_TEN.pow(18)).eq(userCake),
+    () => new BigNumber(depositAmount).multipliedBy(DEFAULT_TOKEN_DECIMAL).eq(userCake),
     [depositAmount, userCake],
   )
 
