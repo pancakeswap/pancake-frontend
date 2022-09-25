@@ -1,7 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
-import { Flex, Heading, PocketWatchIcon, Text, Skeleton } from '@pancakeswap/uikit'
+import { Flex, Heading, PocketWatchIcon, Text, Skeleton, Link, TimerIcon } from '@pancakeswap/uikit'
 import getTimePeriods from 'utils/getTimePeriods'
+import { getBlockExploreLink } from 'utils'
 import { PublicIfoData } from 'views/Ifos/types'
 
 interface Props {
@@ -22,14 +23,15 @@ const FlexGap = styled(Flex)<{ gap: string }>`
 
 export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
   const { t } = useTranslation()
-  const { status, secondsUntilStart } = publicIfoData
+  const { status, secondsUntilStart, startBlockNum } = publicIfoData
   const timeUntil = getTimePeriods(secondsUntilStart)
+
   return (
     <Flex justifyContent="center" position="relative">
       {status === 'idle' ? (
         <Skeleton animation="pulse" variant="rect" width="100%" height="48px" />
       ) : (
-        <>
+        <Link external href={getBlockExploreLink(startBlockNum, 'countdown')} color="secondary">
           <FlexGap gap="8px" alignItems="center">
             <Heading as="h3" scale="lg" color="secondary">
               {t('Start in')}
@@ -51,7 +53,7 @@ export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoD
                   <Text color="secondary">{t('h')}</Text>
                 </>
               ) : null}
-              {timeUntil.minutes ? (
+              {timeUntil.minutes !== 0 ? (
                 <>
                   <Heading color="secondary" scale="lg">
                     {timeUntil.minutes}
@@ -59,17 +61,15 @@ export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoD
                   <Text color="secondary">{t('m')}</Text>
                 </>
               ) : null}
-              {!timeUntil.days && !timeUntil.hours && !timeUntil.minutes ? (
+              {!timeUntil.days && !timeUntil.hours && timeUntil.minutes === 0 ? (
                 <>
-                  <Heading color="secondary" scale="lg">
-                    {timeUntil.seconds}
-                  </Heading>
-                  <Text color="secondary">{t('s')}</Text>
+                  <Text color="secondary">: {t('Less than a minute')}</Text>
                 </>
               ) : null}
             </FlexGap>
           </FlexGap>
-        </>
+          <TimerIcon ml="4px" color="secondary" />
+        </Link>
       )}
     </Flex>
   )
@@ -99,14 +99,14 @@ const LiveNowHeading = styled(EndInHeading)`
 
 const LiveTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
   const { t } = useTranslation()
-  const { status, secondsUntilEnd } = publicIfoData
+  const { status, secondsUntilEnd, endBlockNum } = publicIfoData
   const timeUntil = getTimePeriods(secondsUntilEnd)
   return (
     <Flex justifyContent="center" position="relative">
       {status === 'idle' ? (
         <Skeleton animation="pulse" variant="rect" width="100%" height="48px" />
       ) : (
-        <>
+        <Link external href={getBlockExploreLink(endBlockNum, 'countdown')} color="white">
           <PocketWatchIcon width="42px" mr="8px" />
           <FlexGap gap="8px" alignItems="center">
             <LiveNowHeading textTransform="uppercase" as="h3">{`${t('Live Now')}!`}</LiveNowHeading>
@@ -126,13 +126,21 @@ const LiveTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) 
                   <Text color="white">{t('h')}</Text>
                 </>
               ) : null}
-              <>
-                <GradientText scale="lg">{timeUntil.minutes}</GradientText>
-                <Text color="white">{t('m')}</Text>
-              </>
+              {timeUntil.minutes !== 0 ? (
+                <>
+                  <GradientText scale="lg">{timeUntil.minutes}</GradientText>
+                  <Text color="white">{t('m')}</Text>
+                </>
+              ) : null}
+              {!timeUntil.days && !timeUntil.hours && timeUntil.minutes === 0 ? (
+                <>
+                  <Text color="white">: {t('Less than a minute')}</Text>
+                </>
+              ) : null}
             </FlexGap>
           </FlexGap>
-        </>
+          <TimerIcon ml="4px" color="white" />
+        </Link>
       )}
     </Flex>
   )
