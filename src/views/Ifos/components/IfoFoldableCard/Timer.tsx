@@ -63,7 +63,9 @@ export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoD
               ) : null}
               {!timeUntil.days && !timeUntil.hours && timeUntil.minutes === 0 ? (
                 <>
-                  <Text color="secondary">: {t('Less than a minute')}</Text>
+                  <Heading color="secondary" scale="lg">
+                    : {t('less than %m% m', { m: 1 })}
+                  </Heading>
                 </>
               ) : null}
             </FlexGap>
@@ -134,7 +136,7 @@ const LiveTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) 
               ) : null}
               {!timeUntil.days && !timeUntil.hours && timeUntil.minutes === 0 ? (
                 <>
-                  <Text color="white">: {t('Less than a minute')}</Text>
+                  <GradientText scale="lg">: {t('less than %m% m', { m: 1 })}</GradientText>
                 </>
               ) : null}
             </FlexGap>
