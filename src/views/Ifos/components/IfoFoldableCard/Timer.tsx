@@ -51,12 +51,22 @@ export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoD
                   <Text color="secondary">{t('h')}</Text>
                 </>
               ) : null}
-              <>
-                <Heading color="secondary" scale="lg">
-                  {timeUntil.minutes}
-                </Heading>
-                <Text color="secondary">{t('m')}</Text>
-              </>
+              {timeUntil.minutes ? (
+                <>
+                  <Heading color="secondary" scale="lg">
+                    {timeUntil.minutes}
+                  </Heading>
+                  <Text color="secondary">{t('m')}</Text>
+                </>
+              ) : null}
+              {!timeUntil.days && !timeUntil.hours && !timeUntil.minutes ? (
+                <>
+                  <Heading color="secondary" scale="lg">
+                    {timeUntil.seconds}
+                  </Heading>
+                  <Text color="secondary">{t('s')}</Text>
+                </>
+              ) : null}
             </FlexGap>
           </FlexGap>
         </>
