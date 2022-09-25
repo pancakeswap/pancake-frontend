@@ -25,7 +25,7 @@ export type SimulateTransactionArgs = {
   networkName?: string
   throwOnError?: boolean
   payload: Types.EntryFunctionPayload
-  options?: Types.SubmitTransactionRequest
+  options?: Omit<Types.SubmitTransactionRequest, 'payload' | 'signature'>
 }
 
 export type SimulateTransactionResult = Types.UserTransaction[]

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 
-import { getAptosAccounts, setupClient } from '../test'
+import { getAptosAccounts, setupClient } from '../../test'
 import { Client } from '../client'
 import { MockConnector } from '../connectors/mock'
 import { connect } from './connect'

@@ -1,6 +1,3 @@
-import { PersistedClient } from '@tanstack/react-query-persist-client'
-import { BigNumber } from '@ethersproject/bignumber'
-
 const findAndReplace = (
   cacheRef: any,
   {
@@ -35,10 +32,5 @@ const findAndReplace = (
 export function deserialize(cachedString: string) {
   const cache = JSON.parse(cachedString)
 
-  const deserializedCacheWithBigNumbers = findAndReplace(cache, {
-    find: (data) => data.type === 'BigNumber',
-    replace: (data) => BigNumber.from(data.hex),
-  }) as PersistedClient
-
-  return deserializedCacheWithBigNumbers
+  return cache
 }

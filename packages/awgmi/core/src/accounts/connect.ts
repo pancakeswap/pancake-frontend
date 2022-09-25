@@ -1,6 +1,6 @@
-import { ConnectorAlreadyConnectedError } from 'wagmi'
 import { Connector, ConnectorData } from '../connectors'
 import { getClient } from '../client'
+import { ConnectorAlreadyConnectedError } from '../errors'
 
 export type ConnectArgs = {
   /** Connector to connect */

@@ -1,4 +1,6 @@
-export * from '../core/chain'
+import { defaultChain, defaultChains, APTOS_COIN } from '@pancakeswap/awgmi/core'
+
+export { defaultChain, defaultChains, APTOS_COIN }
 export * from './client'
 export * from './context'
 export * from './hooks/useAccount'

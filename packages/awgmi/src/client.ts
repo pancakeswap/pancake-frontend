@@ -2,7 +2,7 @@ import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persist
 import { QueryClient } from '@tanstack/react-query'
 import { Persister, persistQueryClient } from '@tanstack/react-query-persist-client'
 import { AptosClient } from 'aptos'
-import { ClientConfig, createClient as createCoreClient, Client as CoreClient } from '../core'
+import { ClientConfig, createClient as createCoreClient, Client as CoreClient } from '@pancakeswap/awgmi/core'
 import { deserialize, serialize } from './utils'
 
 export type CreateClientConfig<TProvider extends AptosClient> = ClientConfig<TProvider> & {

@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers'
 import { describe, expect, it } from 'vitest'
 
 import { deserialize } from './deserialize'
@@ -29,15 +28,6 @@ describe('deserialize', () => {
             },
           ],
         },
-        and: {
-          ones: {
-            that: {
-              have: {
-                bignumbers: BigNumber.from('0x01'),
-              },
-            },
-          },
-        },
         also: {
           ones: {
             that: {
@@ -57,18 +47,6 @@ describe('deserialize', () => {
               "have": {
                 "proxies": {
                   "lol": "nice",
-                },
-              },
-            },
-          },
-        },
-        "and": {
-          "ones": {
-            "that": {
-              "have": {
-                "bignumbers": {
-                  "hex": "0x01",
-                  "type": "BigNumber",
                 },
               },
             },

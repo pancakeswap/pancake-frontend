@@ -1,6 +1,6 @@
-import { APTOS_COIN } from 'aptos'
 import { wrapCoinInfoTypeTag } from './coinInfo'
 import { getProvider } from '../provider'
+import { APTOS_COIN } from '../constants'
 
 const APTOS_DECIMALS = 8
 export const APTOS_SYMBOL = 'APT'

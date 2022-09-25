@@ -1,5 +1,10 @@
 import { Types } from 'aptos'
 
+export class ConnectorAlreadyConnectedError extends Error {
+  name = 'ConnectorAlreadyConnectedError'
+  message = 'Connector already connected'
+}
+
 export class ConnectorNotFoundError extends Error {
   name = 'ConnectorNotFoundError'
 

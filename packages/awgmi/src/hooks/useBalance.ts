@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { FetchBalanceArgs, FetchBalanceResult, fetchBalance } from '../../core/accounts/balance'
+import { FetchBalanceArgs, FetchBalanceResult, fetchBalance } from '@pancakeswap/awgmi/core'
 
 import { QueryConfig, QueryFunctionArgs } from '../types'
 import { useQuery } from './query/useQuery'

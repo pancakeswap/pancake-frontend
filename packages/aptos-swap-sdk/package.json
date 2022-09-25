@@ -30,7 +30,7 @@
     "@pancakeswap/swap-sdk-core": "*"
   },
   "peerDependencies": {
-    "aptos": "^1.3.13"
+    "aptos": "^1.3.14"
   },
   "devDependencies": {
     "@swc/core": "^1.2.215",

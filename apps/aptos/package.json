@@ -14,7 +14,7 @@
     "@pancakeswap/awgmi": "*",
     "@pancakeswap/aptos-swap-sdk": "*",
     "@pancakeswap/token-lists": "*",
-    "aptos": "^1.3.13",
+    "aptos": "^1.3.14",
     "next": "^12.2.5",
     "next-axiom": "^0.13.0",
     "react": "^18.2.0",

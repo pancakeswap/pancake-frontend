@@ -1,4 +1,4 @@
-import { FetchLedgerArgs, fetchLedgerInfo, FetchLedgerResult } from '../../core'
+import { FetchLedgerArgs, fetchLedgerInfo, FetchLedgerResult } from '@pancakeswap/awgmi/core'
 
 import { QueryConfig, QueryFunctionArgs } from '../types'
 import { useQuery } from './query/useQuery'
@@ -13,7 +13,7 @@ export type UseLedgerConfig = QueryConfig<FetchLedgerResult, Error>
 export const queryKey = ({ networkName }: { networkName?: string }) => [{ entity: 'ledger', networkName }] as const
 
 const queryFn = ({ queryKey: [{ networkName }] }: QueryFunctionArgs<typeof queryKey>) => {
-  return fetchLedgerInfo({ networkName })
+  return fetchLedgerInfo({ networkName }) as any
 }
 
 export function useLedger({

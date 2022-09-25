@@ -1,10 +1,8 @@
-import { getDefaultProvider } from 'ethers'
 import { describe, expect, it } from 'vitest'
 
-import { getAptosAccounts, getAptosClient } from './test'
+import { getAptosAccounts, getAptosClient } from '../test'
 import { Client, createClient, getClient } from './client'
 import { MockConnector } from './connectors/mock'
-import { defaultChains } from './chain'
 import { createStorage } from './storage'
 
 const provider = getAptosClient()

@@ -1,5 +1,3 @@
-import { APTOS_COIN } from 'aptos'
-
 const getLiquidityUrlPathParts = ({
   quoteTokenAddress,
   tokenAddress,

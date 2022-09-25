@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 
 import * as React from 'react'
-import { sendTransaction, SendTransactionArgs, SendTransactionResult } from '../../core/transaction/sendTransaction'
+import { sendTransaction, SendTransactionArgs, SendTransactionResult } from '@pancakeswap/awgmi/core'
 
 import { MutationConfig } from '../types'
 

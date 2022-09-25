@@ -1,11 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 
 import * as React from 'react'
-import {
-  simulateTransaction,
-  SimulateTransactionArgs,
-  SimulateTransactionResult,
-} from '../../core/transaction/simulateTransaction'
+import { simulateTransaction, SimulateTransactionArgs, SimulateTransactionResult } from '@pancakeswap/awgmi/core'
 
 import { MutationConfig } from '../types'
 
@@ -14,7 +10,11 @@ export type UseSimulateTransactionArgs = Partial<SimulateTransactionArgs>
 export type UseSimulateTransactionMutationArgs = Partial<SimulateTransactionArgs>
 export type UseSimulateTransactionConfig = MutationConfig<SimulateTransactionResult, Error, SimulateTransactionArgs>
 
-export const mutationKey = (args: UseSimulateTransactionArgs) => [{ entity: 'simulateTransaction', ...args }] as const
+export const mutationKey = (
+  args: any,
+  // UseSimulateTransactionArgs
+  // error TS4023: Exported variable 'mutationKey' has or is using name 'MoveFunctionVisibility' from external module
+) => [{ entity: 'simulateTransaction', ...args }] as const
 
 const mutationFn = async ({ networkName, payload, options, throwOnError }: SimulateTransactionArgs) => {
   return simulateTransaction({

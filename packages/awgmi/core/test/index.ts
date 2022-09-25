@@ -1,8 +1,8 @@
 import { AptosAccount, AptosClient } from 'aptos'
-import { devnet } from '../chain'
-import { ClientConfig, createClient } from '../client'
-import { MockConnector } from '../connectors/mock'
-import { getDefaultProviders } from '../provider'
+import { devnet } from '../src/chain'
+import { ClientConfig, createClient } from '../src/client'
+import { MockConnector } from '../src/connectors/mock'
+import { getDefaultProviders } from '../src/provider'
 
 // default generated account for testing
 const accounts = [

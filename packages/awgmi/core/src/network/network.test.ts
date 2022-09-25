@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 
-import { getAptosAccounts, setupClient } from '../test'
+import { getAptosAccounts, setupClient } from '../../test'
 
 import { connect } from '../accounts/connect'
 import { getNetwork } from './network'

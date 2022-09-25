@@ -1,6 +1,5 @@
 import { AptosCoin, Coin, CurrencyAmount, Token } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount, useBalance } from '@pancakeswap/awgmi'
-import { APTOS_COIN } from 'aptos'
+import { useAccount, useBalance, APTOS_COIN } from '@pancakeswap/awgmi'
 import { useAllTokens } from './Tokens'
 import useNativeCurrency from './useNativeCurrency'
 import { useActiveChainId } from './useNetwork'

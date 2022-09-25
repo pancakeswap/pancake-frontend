@@ -1,8 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { Coin, Currency, CurrencyAmount, Token } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount, useAccountResources } from '@pancakeswap/awgmi'
+import { useAccount, useAccountResources, APTOS_COIN } from '@pancakeswap/awgmi'
 import { fetchCoin } from '@pancakeswap/awgmi/core'
-import { APTOS_COIN } from 'aptos'
 import { useAtomValue } from 'jotai'
 import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'

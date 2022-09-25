@@ -1,6 +1,6 @@
 import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector'
 import { AptosClient } from 'aptos'
-import { GetProviderArgs, getProvider, watchProvider } from '../../core/provider'
+import { GetProviderArgs, getProvider, watchProvider } from '@pancakeswap/awgmi/core'
 
 export type UseProviderArgs = Partial<GetProviderArgs>
 

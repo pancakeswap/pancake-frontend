@@ -5,14 +5,15 @@ import { Client } from './client'
 
 export const Context = React.createContext<Client<AptosClient> | undefined>(undefined)
 
-export type AptosConfigProps<TProvider extends AptosClient = AptosClient> = {
+export type AwgmiConfigProps<TProvider extends AptosClient = AptosClient> = {
   /** React-decorated Client instance */
   client: Client<TProvider>
 }
-export function AptosConfig<TProvider extends AptosClient>({
+
+export function AwgmiConfig<TProvider extends AptosClient>({
   children,
   client,
-}: React.PropsWithChildren<AptosConfigProps<TProvider>>) {
+}: React.PropsWithChildren<AwgmiConfigProps<TProvider>>) {
   return (
     <Context.Provider value={client as unknown as Client}>
       <QueryClientProvider client={client.queryClient}>{children}</QueryClientProvider>
@@ -22,6 +23,6 @@ export function AptosConfig<TProvider extends AptosClient>({
 
 export function useClient<TProvider extends AptosClient>() {
   const client = React.useContext(Context) as unknown as Client<TProvider>
-  if (!client) throw new Error(['`useClient` must be used within `AptosConfig`.\n'].join('\n'))
+  if (!client) throw new Error(['`useClient` must be used within `AwgmiConfig`.\n'].join('\n'))
   return client
 }

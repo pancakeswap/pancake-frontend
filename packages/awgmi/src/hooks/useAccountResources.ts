@@ -1,4 +1,4 @@
-import { fetchAccountResources, FetchAccountResourcesArgs, FetchAccountResourcesResult } from '../../core'
+import { fetchAccountResources, FetchAccountResourcesArgs, FetchAccountResourcesResult } from '@pancakeswap/awgmi/core'
 
 import { QueryConfig, QueryFunctionArgs } from '../types'
 import { useQuery } from './query/useQuery'

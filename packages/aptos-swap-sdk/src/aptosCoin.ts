@@ -1,11 +1,13 @@
 import { Currency, NativeCurrency, SerializedToken, Token } from '@pancakeswap/swap-sdk-core'
-import { APTOS_COIN, TxnBuilderTypes } from 'aptos'
+import { TxnBuilderTypes } from 'aptos'
 import { Coin } from './coin'
+
+const APTOS_COIN = '0x1::aptos_coin::AptosCoin' as const
 
 export class AptosCoin extends NativeCurrency {
   address: typeof APTOS_COIN = APTOS_COIN
 
-  structTag: TxnBuilderTypes.StructTag = TxnBuilderTypes.StructTag.fromString('0x1::aptos_coin::AptosCoin')
+  structTag: TxnBuilderTypes.StructTag = TxnBuilderTypes.StructTag.fromString(APTOS_COIN)
 
   projectLink = 'https://aptoslabs.com/'
 

@@ -41,7 +41,7 @@ function GlobalHooks() {
 }
 
 function MyApp(props: AppProps<{ initialReduxState: any }>) {
-  const { pageProps, Component } = props
+  const { pageProps } = props
   const store = useStore(pageProps.initialReduxState)
   return (
     <>
