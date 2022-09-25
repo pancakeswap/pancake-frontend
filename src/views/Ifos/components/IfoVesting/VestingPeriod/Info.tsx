@@ -4,7 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text, Progress, Tag } from '@pancakeswap/uikit'
 import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
 import { PoolIds } from 'config/constants/types'
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import Claim from './Claim'
 

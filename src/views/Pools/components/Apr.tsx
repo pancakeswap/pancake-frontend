@@ -1,11 +1,20 @@
 import styled from 'styled-components'
-import { Text, Flex, useModal, CalculateIcon, Skeleton, FlexProps, Button } from '@pancakeswap/uikit'
-import RoiCalculatorModal from 'components/RoiCalculatorModal'
-import { BalanceWithLoading } from 'components/Balance'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import {
+  Text,
+  Flex,
+  useModal,
+  CalculateIcon,
+  Skeleton,
+  FlexProps,
+  Button,
+  RoiCalculatorModal,
+  BalanceWithLoading,
+} from '@pancakeswap/uikit'
 import { DeserializedPool } from 'state/types'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
-import { BIG_ZERO } from 'utils/bigNumber'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useCurrentBlock } from 'state/block/hooks'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
@@ -44,6 +53,7 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
     vaultKey,
   } = pool
   const { t } = useTranslation()
+  const { account } = useActiveWeb3React()
   const currentBlock = useCurrentBlock()
 
   const { shouldShowBlockCountdown, hasPoolStarted } = getPoolBlockInfo(pool, currentBlock)
@@ -54,6 +64,7 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
 
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal
+      account={account}
       earningTokenPrice={earningTokenPrice}
       stakingTokenPrice={stakingTokenPrice}
       stakingTokenBalance={stakedBalance.plus(stakingTokenBalance)}

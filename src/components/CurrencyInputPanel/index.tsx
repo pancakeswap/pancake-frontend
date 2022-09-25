@@ -8,7 +8,7 @@ import { StablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStabl
 import { useBUSDCurrencyAmount } from 'hooks/useBUSDPrice'
 import styled, { css } from 'styled-components'
 import { isAddress } from 'utils'
-import { formatNumber } from 'utils/formatBalance'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'

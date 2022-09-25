@@ -6,3 +6,9 @@ export type ChainMap<T> = {
 }
 
 export type ChainTokenList = ChainMap<Coin[]>
+
+export type PageMeta = {
+  title: string
+  description?: string
+  image?: string
+}

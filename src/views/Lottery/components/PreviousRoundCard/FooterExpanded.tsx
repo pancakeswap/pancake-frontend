@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Flex, Skeleton, Heading, Box, Text } from '@pancakeswap/uikit'
+import { Flex, Skeleton, Heading, Box, Text, Balance } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { LotteryRound, LotteryRoundGraphEntity } from 'state/types'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useGetLotteryGraphDataById } from 'state/lottery/hooks'
 import { getGraphLotteries } from 'state/lottery/getLotteriesData'
-import { formatNumber, getBalanceNumber } from 'utils/formatBalance'
-import Balance from 'components/Balance'
+import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import RewardBrackets from '../RewardBrackets'
 
 const NextDrawWrapper = styled(Flex)`

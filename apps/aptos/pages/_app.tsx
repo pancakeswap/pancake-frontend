@@ -9,6 +9,8 @@ import Script from 'next/script'
 import { useStore } from 'state'
 import ListsUpdater from 'state/lists/updater'
 import TransactionUpdater from 'state/transactions/updater'
+import { NextPage } from 'next'
+import { Fragment } from 'react'
 
 declare module 'styled-components' {
   /* eslint-disable @typescript-eslint/no-empty-interface */
@@ -63,11 +65,9 @@ function MyApp({ Component, pageProps }: AppProps<{ initialReduxState: any }>) {
       </Head>
       <Providers store={store}>
         <GlobalHooks />
-        <Updaters />
         <ResetCSS />
-        <Menu>
-          <Component {...pageProps} />
-        </Menu>
+        <Updaters />
+        <App Component={Component} pageProps={pageProps} />
         <ToastListener />
       </Providers>
       <Script
@@ -83,6 +83,37 @@ function MyApp({ Component, pageProps }: AppProps<{ initialReduxState: any }>) {
           `,
         }}
       />
+    </>
+  )
+}
+
+type NextPageWithLayout = NextPage & {
+  Layout?: React.FC<React.PropsWithChildren<unknown>>
+  /** render component without all layouts */
+  pure?: true
+}
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
+
+const App = ({ Component, pageProps }: AppPropsWithLayout) => {
+  if (Component.pure) {
+    return <Component {...pageProps} />
+  }
+
+  // Use the layout defined at the page level, if available
+  const Layout = Component.Layout || Fragment
+  const ShowMenu = Menu
+
+  return (
+    <>
+      <ShowMenu>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ShowMenu>
+      <ToastListener />
     </>
   )
 }

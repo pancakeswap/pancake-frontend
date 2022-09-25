@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import lpAprs from 'config/constants/lpAprs/56.json'
 import { getPoolApr, getFarmApr } from 'utils/apr'
-import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber'
+import { BIG_TEN, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { ChainId } from '@pancakeswap/sdk'
 
 jest.mock('../../config/constants/lpAprs/56.json', () => ({

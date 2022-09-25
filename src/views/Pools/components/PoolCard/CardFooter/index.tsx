@@ -2,10 +2,11 @@ import { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, CardFooter, ExpandableLabel, HelpIcon, useTooltip } from '@pancakeswap/uikit'
+import { Flex, CardFooter, ExpandableLabel, HelpIcon, useTooltip, Farm as FarmUI } from '@pancakeswap/uikit'
 import { DeserializedPool } from 'state/types'
-import { CompoundingPoolTag, ManualPoolTag } from 'components/Tags'
 import PoolStatsInfo from '../../PoolStatsInfo'
+
+const { CompoundingPoolTag, ManualPoolTag } = FarmUI.Tags
 
 interface FooterProps {
   pool: DeserializedPool

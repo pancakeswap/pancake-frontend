@@ -4,7 +4,7 @@ import { Flex, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { Ifo } from 'config/constants/types'
-import { getBalanceNumber, formatNumber } from 'utils/formatBalance'
+import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import ReleasedChart from './ReleasedChart'
 

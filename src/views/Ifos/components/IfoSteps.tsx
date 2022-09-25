@@ -17,6 +17,8 @@ import {
   LogoRoundIcon,
   Skeleton,
   Link,
+  FlexGap,
+  Balance,
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter as RouterLink } from 'components/NextLink'
 import { useWeb3React } from '@pancakeswap/wagmi'
@@ -25,10 +27,8 @@ import { useTranslation } from '@pancakeswap/localization'
 import useTokenBalance from 'hooks/useTokenBalance'
 import Container from 'components/Layout/Container'
 import { useProfile } from 'state/profile/hooks'
-import Balance from 'components/Balance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { FlexGap } from 'components/Layout/Flex'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
 import { useIfoCredit, useIfoCeiling } from 'state/pools/hooks'
 import { getICakeWeekDisplay } from 'views/Pools/helpers'

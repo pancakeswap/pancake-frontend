@@ -1,16 +1,15 @@
 import styled from 'styled-components'
 import { useMemo } from 'react'
-import { Flex, Box, Text } from '@pancakeswap/uikit'
+import { Flex, Box, Text, Balance } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import StakeToWinButton from 'views/Pottery/components/Banner/StakeToWinButton'
 import { BannerTimer } from 'views/Pottery/components/Timer'
 import { OutlineText, DarkTextStyle } from 'views/Pottery/components/TextStyle'
 import TicketsDecorations from 'views/Pottery/components/Banner/TicketsDecorations'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
-import Balance from 'components/Balance'
 import { usePotteryData } from 'state/pottery/hook'
 
 const PotteryBanner = styled(Flex)`

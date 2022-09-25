@@ -15,7 +15,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Auction, AuctionStatus, ConnectedBidder } from 'config/constants/types'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import PlaceBidModal from '../PlaceBidModal'
 import AuctionSchedule from './AuctionSchedule'
 import CannotBidMessage from './CannotBidMessage'

@@ -1,19 +1,19 @@
 import { useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { Card, Flex, Text, Skeleton } from '@pancakeswap/uikit'
+import { Card, Flex, Text, Skeleton, ExpandableSectionButton, Farm as FarmUI } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { getBlockExploreLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import ExpandableSectionButton from 'components/ExpandableSectionButton'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import DetailsSection from './DetailsSection'
 import CardHeading from './CardHeading'
 import { FarmWithStakedValue } from '../types'
 import CardActionsContainer from './CardActionsContainer'
 import ApyButton from './ApyButton'
 import BoostedApr from '../YieldBooster/components/BoostedApr'
+
+const { DetailsSection } = FarmUI.FarmCard
 
 const StyledCard = styled(Card)`
   align-self: baseline;
@@ -156,7 +156,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
         {showExpandableSection && (
           <DetailsSection
             removed={removed}
-            bscScanAddress={getBlockExploreLink(lpAddress, 'address', chainId)}
+            scanAddressLink={getBlockExploreLink(lpAddress, 'address', chainId)}
             infoAddress={`/info/pool/${lpAddress}`}
             totalValueFormatted={totalValueFormatted}
             lpLabel={lpLabel}

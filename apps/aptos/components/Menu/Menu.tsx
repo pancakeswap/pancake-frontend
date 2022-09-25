@@ -49,6 +49,23 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     href: '/liquidity',
     showItemsOnMobile: false,
   },
+  {
+    label: t('Earn'),
+    href: '/farms',
+    icon: EarnIcon,
+    fillIcon: EarnFillIcon,
+    image: '/images/decorations/pe2.png',
+    items: [
+      {
+        label: t('Farms'),
+        href: '/farms',
+      },
+      // {
+      //   label: t('Pools'),
+      //   href: '/pools',
+      // },
+    ],
+  },
 ]
 
 export const getActiveMenuItem = ({ pathname, menuConfig }: { pathname: string; menuConfig: ConfigMenuItemsType[] }) =>

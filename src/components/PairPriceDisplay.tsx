@@ -1,8 +1,7 @@
-import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { Flex, Skeleton, Text, FlexGap, FlexGapProps } from '@pancakeswap/uikit'
 import { FC } from 'react'
 import styled from 'styled-components'
 import { formatAmount, formatAmountNotation } from 'utils/formatInfoNumbers'
-import { FlexGap, FlexGapProps } from './Layout/Flex'
 
 const formatOptions = {
   notation: 'standard' as formatAmountNotation,

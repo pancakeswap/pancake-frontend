@@ -12,6 +12,7 @@ export * from "./widgets/Menu";
 export * from "./widgets/WalletModal";
 export * from "./widgets/Swap";
 export * as Liquidity from "./widgets/Liquidity";
+export * from "./widgets/Farm";
 
 // Theme
 export { default as ResetCSS } from "./ResetCSS";

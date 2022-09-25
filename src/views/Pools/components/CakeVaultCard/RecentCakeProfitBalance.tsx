@@ -1,6 +1,5 @@
-import { TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { TooltipText, useTooltip, Balance } from '@pancakeswap/uikit'
 import { DeserializedPool } from 'state/types'
-import Balance from 'components/Balance'
 import AutoEarningsBreakdown from '../AutoEarningsBreakdown'
 
 interface RecentCakeProfitBalanceProps {

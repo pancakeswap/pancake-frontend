@@ -8,7 +8,7 @@ import ifoV3Abi from 'config/abi/ifoV3.json'
 import { fetchCakeVaultUserData } from 'state/pools'
 import { useAppDispatch } from 'state'
 import { useIfoCredit } from 'state/pools/hooks'
-import { BIG_ZERO } from 'utils/bigNumber'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import useIfoAllowance from '../useIfoAllowance'
 import { WalletIfoState, WalletIfoData } from '../../types'
 

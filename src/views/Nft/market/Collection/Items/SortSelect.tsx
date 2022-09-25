@@ -1,4 +1,4 @@
-import Select, { OptionProps } from 'components/Select/Select'
+import { Select, OptionProps } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useNftStorage } from 'state/nftMarket/storage'
 import { useGetNftOrdering } from 'state/nftMarket/hooks'

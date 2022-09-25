@@ -4,7 +4,7 @@ import { getBidderInfo } from 'config/constants/farmAuctions'
 import { bscRpcProvider } from 'utils/providers'
 import { AuctionsResponse, FarmAuctionContractStatus, BidsPerAuction } from 'utils/types'
 import { Auction, AuctionStatus, Bidder, BidderAuction } from 'config/constants/types'
-import { ethersToBigNumber } from 'utils/bigNumber'
+import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { FarmAuction } from 'config/abi/types'
 import orderBy from 'lodash/orderBy'
 

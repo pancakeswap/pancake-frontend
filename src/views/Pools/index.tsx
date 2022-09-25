@@ -5,26 +5,33 @@ import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { Heading, Flex, Image, Text, Link } from '@pancakeswap/uikit'
+import {
+  Heading,
+  Flex,
+  Image,
+  Text,
+  Link,
+  FlexLayout,
+  PageHeader,
+  SearchInput,
+  Select,
+  OptionProps,
+  Loading,
+  ScrollToTopButtonV2,
+} from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from '@pancakeswap/localization'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { usePoolsPageFetch, usePoolsWithVault } from 'state/pools/hooks'
 import { latinise } from 'utils/latinise'
-import FlexLayout from 'components/Layout/Flex'
 import Page from 'components/Layout/Page'
-import PageHeader from 'components/PageHeader'
-import SearchInput from 'components/SearchInput'
-import Select, { OptionProps } from 'components/Select/Select'
 import { DeserializedPool, DeserializedPoolVault, VaultKey, DeserializedPoolLockedVault } from 'state/types'
 import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
-import Loading from 'components/Loading'
 import { useInitialBlock } from 'state/block/hooks'
 import { BSC_BLOCK_TIME } from 'config'
-import ScrollToTopButton from 'components/ScrollToTopButton/ScrollToTopButtonV2'
 import PoolCard from './components/PoolCard'
 import CakeVaultCard from './components/CakeVaultCard'
 import PoolTabButtons from './components/PoolTabButtons'
@@ -356,7 +363,7 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
           height={184.5}
         />
       </Page>
-      {createPortal(<ScrollToTopButton />, document.body)}
+      {createPortal(<ScrollToTopButtonV2 />, document.body)}
     </>
   )
 }

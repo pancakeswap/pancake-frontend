@@ -1,8 +1,7 @@
 import { createPortal } from 'react-dom'
-import { Box } from '@pancakeswap/uikit'
+import { Box, ScrollToTopButtonV2 } from '@pancakeswap/uikit'
 import { Collection } from 'state/nftMarket/types'
 import Container from 'components/Layout/Container'
-import ScrollToTopButton from 'components/ScrollToTopButton/ScrollToTopButtonV2'
 import Filters from './Filters'
 import CollectionNfts from './CollectionNfts'
 
@@ -19,7 +18,7 @@ const CollectionWrapper: React.FC<React.PropsWithChildren<CollectionWrapperProps
       <Container>
         <CollectionNfts collection={collection} />
       </Container>
-      {createPortal(<ScrollToTopButton />, document.body)}
+      {createPortal(<ScrollToTopButtonV2 />, document.body)}
     </Box>
   )
 }

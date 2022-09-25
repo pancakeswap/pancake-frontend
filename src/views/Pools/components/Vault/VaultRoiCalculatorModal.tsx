@@ -1,12 +1,18 @@
-import { Box, ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
-import RoiCalculatorModal, { RoiCalculatorModalProps } from 'components/RoiCalculatorModal'
-import { CalculatorMode } from 'components/RoiCalculatorModal/useRoiCalculatorReducer'
+import {
+  Box,
+  ButtonMenu,
+  ButtonMenuItem,
+  RoiCalculatorModal,
+  RoiCalculatorModalProps,
+  CalculatorMode,
+} from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { useEffect, useState, useMemo } from 'react'
 import { DeserializedPool, VaultKey } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { getRoi } from 'utils/compoundApyHelpers'
+import { getRoi } from '@pancakeswap/utils/compoundApyHelpers'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 import LockDurationField from '../LockedPool/Common/LockDurationField'
 import { weeksToSeconds } from '../utils/formatSecondsToWeeks'
@@ -24,6 +30,7 @@ export const VaultRoiCalculatorModal = ({
 
   const { getLockedApy, flexibleApy } = useVaultApy()
   const { t } = useTranslation()
+  const { account } = useActiveWeb3React()
 
   const [cakeVaultView, setCakeVaultView] = useState(initialView || 0)
 
@@ -43,6 +50,7 @@ export const VaultRoiCalculatorModal = ({
 
   return (
     <RoiCalculatorModal
+      account={account}
       stakingTokenSymbol={pool.stakingToken.symbol}
       apy={+apy}
       initialState={{

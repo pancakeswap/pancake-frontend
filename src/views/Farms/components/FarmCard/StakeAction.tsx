@@ -1,17 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AddIcon, Button, Flex, IconButton, MinusIcon, useModal, useToast } from '@pancakeswap/uikit'
+import { AddIcon, Button, Flex, IconButton, MinusIcon, useModal, useToast, Farm as FarmUI } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { useCallback, useContext } from 'react'
+import { useCallback, useContext, useState } from 'react'
 import styled from 'styled-components'
-
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import DepositModal from '../DepositModal'
-import StakedLP from '../StakedLP'
+import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
 import { FarmWithStakedValue } from '../types'
-import WithdrawModal from '../WithdrawModal'
 import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
 import { YieldBoosterState } from '../YieldBooster/hooks/useYieldBoosterState'
 
@@ -55,12 +53,14 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   isApproved,
 }) => {
   const { t } = useTranslation()
+  const { account } = useActiveWeb3React()
   const { tokenBalance, stakedBalance } = userData
   const cakePrice = usePriceCakeBusd()
   const router = useRouter()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { boosterState } = useContext(YieldBoosterStateContext)
+  const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
 
   const handleStake = async (amount: string) => {
     const receipt = await fetchWithCatchTxError(() => {
@@ -102,8 +102,18 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
     }
   }, [onApprove, t, toastSuccess, fetchWithCatchTxError, onDone])
 
+  const bCakeCalculatorSlot = (calculatorBalance) => (
+    <BCakeCalculator
+      targetInputBalance={calculatorBalance}
+      earningTokenPrice={cakePrice.toNumber()}
+      lpTotalSupply={lpTotalSupply}
+      setBCakeMultiplier={setBCakeMultiplier}
+    />
+  )
+
   const [onPresentDeposit] = useModal(
-    <DepositModal
+    <FarmUI.DepositModal
+      account={account}
       pid={pid}
       lpTotalSupply={lpTotalSupply}
       max={tokenBalance}
@@ -118,11 +128,13 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
       showActiveBooster={boosterState === YieldBoosterState.ACTIVE}
+      bCakeMultiplier={bCakeMultiplier}
+      bCakeCalculatorSlot={bCakeCalculatorSlot}
     />,
   )
 
   const [onPresentWithdraw] = useModal(
-    <WithdrawModal
+    <FarmUI.WithdrawModal
       showActiveBooster={boosterState === YieldBoosterState.ACTIVE}
       max={stakedBalance}
       onConfirm={handleUnstake}
@@ -165,7 +177,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
 
   return (
     <Flex justifyContent="space-between" alignItems="center">
-      <StakedLP
+      <FarmUI.StakedLP
         stakedBalance={stakedBalance}
         quoteTokenSymbol={quoteToken.symbol}
         tokenSymbol={token.symbol}

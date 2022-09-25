@@ -1,6 +1,7 @@
-import { TagProps } from '@pancakeswap/uikit'
-import { ClosedTag, CommunityTag, CoreTag, SoonTag, VoteNowTag } from 'components/Tags'
+import { TagProps, Farm as FarmUI } from '@pancakeswap/uikit'
 import { ProposalState } from 'state/types'
+
+const { ClosedTag, CommunityTag, CoreTag, SoonTag, VoteNowTag } = FarmUI.Tags
 
 interface ProposalStateTagProps extends TagProps {
   proposalState: ProposalState

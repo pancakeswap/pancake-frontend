@@ -1,13 +1,12 @@
-import { Box, Flex, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, Skeleton, Text, useMatchBreakpoints, Balance } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import Balance from 'components/Balance'
 import { useTranslation } from '@pancakeswap/localization'
 
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool, VaultKey, DeserializedPoolLockedVault } from 'state/types'
 import styled from 'styled-components'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BaseCell, { CellContent } from './BaseCell'
 
 interface StakedCellProps {

@@ -19,7 +19,7 @@ import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
-import { formatBigNumber } from 'utils/formatBalance'
+import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
 import { useBalance } from 'wagmi'
 
 interface WalletInfoProps {

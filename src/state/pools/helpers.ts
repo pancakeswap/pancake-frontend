@@ -9,7 +9,7 @@ import {
   VaultKey,
 } from 'state/types'
 import { deserializeToken } from '@pancakeswap/token-lists'
-import { BIG_ZERO } from 'utils/bigNumber'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { convertSharesToCake } from 'views/Pools/helpers'
 
 type UserData =
