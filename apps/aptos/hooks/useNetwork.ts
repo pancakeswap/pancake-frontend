@@ -40,21 +40,23 @@ export function useActiveNetwork() {
   const localNetworkName = useLocalNetwork()
   const { chain } = useNetwork()
   const queryNetwork = useAtomValue(queryNetworkAtom)
+  // until wallet support switch network, we follow wallet chain instead of routing
 
-  let networkName: string | undefined
+  return useMemo(() => {
+    let networkName: string | undefined
 
-  if (queryNetwork === '') {
+    if (queryNetwork === '') {
+      return {
+        networkName,
+      }
+    }
+
+    networkName = chain?.name ?? localNetworkName
+
     return {
       networkName,
     }
-  }
-
-  // until wallet support switch network, we follow wallet chain instead of routing
-  networkName = chain?.name ?? localNetworkName
-
-  return {
-    networkName,
-  }
+  }, [queryNetwork, chain?.name, localNetworkName])
 }
 
 export function useActiveChainId() {

@@ -23,11 +23,22 @@ export type FetchBalanceResult = {
 export async function fetchBalance({ address, networkName, coin }: FetchBalanceArgs): Promise<FetchBalanceResult> {
   const provider = getProvider({ networkName })
 
-  const resource = await provider.getAccountResource(address, wrapCoinStoreTypeTag(coin || APTOS_COIN))
+  let value = '0'
+  let symbol = ''
+  let decimals = 0
 
-  const { value } = (resource.data as any).coin
+  try {
+    const resource = await provider.getAccountResource(address, wrapCoinStoreTypeTag(coin || APTOS_COIN))
 
-  const { decimals, symbol } = await fetchCoin({ networkName, coin })
+    value = (resource.data as any).coin?.value
+
+    const { decimals: resDecimals, symbol: resSymbol } = await fetchCoin({ networkName, coin })
+
+    symbol = resSymbol
+    decimals = resDecimals
+  } catch (err) {
+    console.error('err: ', err)
+  }
 
   return {
     decimals,

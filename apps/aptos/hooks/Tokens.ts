@@ -21,7 +21,7 @@ export function useCurrency(coinId?: string): Currency | undefined {
   const native = useNativeCurrency()
   const isNative = coinId === APTOS_COIN
   const token = useToken(isNative ? undefined : coinId)
-  return isNative ? native : token.data
+  return useMemo(() => (isNative ? native : token.data), [native, token.data, isNative])
 }
 
 export function useToken(coinId?: string) {

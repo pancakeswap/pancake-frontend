@@ -22,6 +22,7 @@ export class ERC20Token extends Token {
     name?: string,
     projectLink?: string
   ) {
-    super(chainId, validateAndParseAddress(address), decimals, symbol, name, projectLink)
+    // Philip TODO: add validateAndParseAddress again
+    super(chainId, address, decimals, symbol, name, projectLink)
   }
 }

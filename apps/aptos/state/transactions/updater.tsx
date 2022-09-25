@@ -35,6 +35,7 @@ export default function Updater(): null {
   const { t } = useTranslation()
 
   const { data } = useLedger()
+
   const currentBlock = data?.block_height && +data.block_height
 
   const [, dispatch] = useTransactionState()

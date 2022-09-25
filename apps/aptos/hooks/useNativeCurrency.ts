@@ -5,6 +5,7 @@ import { useActiveChainId } from './useNetwork'
 
 const useNativeCurrency = () => {
   const chainId = useActiveChainId()
+
   return useMemo(() => {
     return AptosCoin.onChain(chainId || defaultChain.id)
   }, [chainId])
