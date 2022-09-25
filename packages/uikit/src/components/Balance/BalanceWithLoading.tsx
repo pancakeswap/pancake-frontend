@@ -30,7 +30,7 @@ const BalanceWithLoading: React.FC<
   if (isValueUndefinedOrNull) {
     return <Skeleton />;
   }
-  return <Balance {...props} value={finalValue} fontSize={fontSize} />;
+  return <Balance {...props} value={finalValue as number} fontSize={fontSize} />;
 };
 
 export default BalanceWithLoading;

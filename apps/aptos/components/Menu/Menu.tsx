@@ -32,22 +32,15 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     href: '/',
     showItemsOnMobile: false,
     items: [
-      // {
-      //   label: t('Swap'),
-      //   href: '/swap',
-      // },
-      // {
-      //   label: t('Liquidity'),
-      //   href: '/liquidity',
-      // },
+      {
+        label: t('Swap'),
+        href: '/swap',
+      },
+      {
+        label: t('Liquidity'),
+        href: '/liquidity',
+      },
     ],
-  },
-  {
-    label: t('Liquidity'),
-    icon: EarnIcon,
-    fillIcon: EarnFillIcon,
-    href: '/liquidity',
-    showItemsOnMobile: false,
   },
   {
     label: t('Earn'),

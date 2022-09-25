@@ -40,7 +40,8 @@ function GlobalHooks() {
   return null
 }
 
-function MyApp({ Component, pageProps }: AppProps<{ initialReduxState: any }>) {
+function MyApp(props: AppProps<{ initialReduxState: any }>) {
+  const { pageProps, Component } = props
   const store = useStore(pageProps.initialReduxState)
   return (
     <>
@@ -67,7 +68,7 @@ function MyApp({ Component, pageProps }: AppProps<{ initialReduxState: any }>) {
         <GlobalHooks />
         <ResetCSS />
         <Updaters />
-        <App Component={Component} pageProps={pageProps} />
+        <App {...props} />
         <ToastListener />
       </Providers>
       <Script
