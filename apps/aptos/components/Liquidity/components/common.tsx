@@ -1,5 +1,5 @@
 import React from 'react'
-import { Fraction, Percent, CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { Fraction, Percent, CurrencyAmount, Token } from '@pancakeswap/aptos-swap-sdk'
 import {
   Text,
   useTooltip,
@@ -13,7 +13,7 @@ import {
   AutoRow,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import getLPSymbol from '@pancakeswap/utils/getLPSymbol'
+import { getLPSymbol } from 'utils/getLpSymbol'
 import styled from 'styled-components'
 import { GreyCard } from 'components/Card'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'

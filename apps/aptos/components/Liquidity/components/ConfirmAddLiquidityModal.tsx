@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Currency, CurrencyAmount, Fraction, Percent, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, Percent, Token } from '@pancakeswap/aptos-swap-sdk'
 import { InjectedModalProps, Button } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import TransactionConfirmationModal, {

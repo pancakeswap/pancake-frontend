@@ -190,8 +190,8 @@ export default function AddLiquidity() {
     }
   }, [onFieldAInput, txHash])
 
-  const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
-  const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
+  const addIsUnsupported = useIsTransactionUnsupported(currencies?.currencyA, currencies?.currencyB)
+  const addIsWarning = useIsTransactionWarning(currencies?.currencyA, currencies?.currencyB)
 
   // const [onPresentAddLiquidityModal] = useModal(
   //   <ConfirmAddLiquidityModal

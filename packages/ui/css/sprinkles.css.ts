@@ -63,7 +63,7 @@ const responsiveProperties = defineProperties({
     marginRight: { ...margin, ...negativeSpace },
     marginTop: { ...margin, ...negativeSpace },
     margin: { ...margin, ...negativeSpace },
-    padding: { ...margin, ...negativeSpace },
+    padding: { ...vars.space, ...negativeSpace },
     maxHeight: vars.space,
     maxWidth: {
       ...vars.space,

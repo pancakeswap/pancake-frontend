@@ -40,9 +40,6 @@ export default function ChoosePair({ onNext }) {
           {error ?? t('Add Liquidity')}
         </CommitButton>
       }
-      poolData={{
-        lpApr7d: 1,
-      }}
     />
   )
 }

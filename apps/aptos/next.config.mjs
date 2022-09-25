@@ -14,9 +14,6 @@ const withTH = transpileModules([
   '@pancakeswap/utils',
   '@pancakeswap/token-lists',
   '@pancakeswap/tokens',
-  '@pancakeswap/sdk',
-  '@pancakeswap/farms',
-  '@pancakeswap/aptos-swap-sdk',
 ])
 
 /** @type {import('next').NextConfig} */

@@ -1,5 +1,5 @@
 import { RowBetween, Text } from '@pancakeswap/uikit'
-import { LightCard } from '@pancakeswap/uikit/src/widgets/Liquidity'
+import { LightCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 
 export default function PricePoolShareSection({ farmPriceBar, noLiquidity }) {

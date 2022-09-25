@@ -1,4 +1,4 @@
-import { Currency, Percent, Price } from '@pancakeswap/sdk'
+import { Currency, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
 import { AutoColumn, AutoRow, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { ONE_BIPS } from 'config/constants/exchange'

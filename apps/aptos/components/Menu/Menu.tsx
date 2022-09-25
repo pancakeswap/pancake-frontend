@@ -1,6 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { ContextApi, languageList, useTranslation } from '@pancakeswap/localization'
-import { DropdownMenuItems, Menu as UIMenu, MenuItemsType, SwapFillIcon, SwapIcon } from '@pancakeswap/uikit'
+import {
+  DropdownMenuItems,
+  EarnFillIcon,
+  EarnIcon,
+  Menu as UIMenu,
+  MenuItemsType,
+  SwapFillIcon,
+  SwapIcon,
+} from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import { useTheme } from 'next-themes'
 import NextLink from 'next/link'
@@ -28,11 +36,18 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       //   label: t('Swap'),
       //   href: '/swap',
       // },
-      {
-        label: t('Liquidity'),
-        href: '/liquidity',
-      },
+      // {
+      //   label: t('Liquidity'),
+      //   href: '/liquidity',
+      // },
     ],
+  },
+  {
+    label: t('Liquidity'),
+    icon: EarnIcon,
+    fillIcon: EarnFillIcon,
+    href: '/liquidity',
+    showItemsOnMobile: false,
   },
 ]
 

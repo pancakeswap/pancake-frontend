@@ -1,3 +1,6 @@
+export const DetailRemoveForm = () => {
+  //
+}
 // const DetailRemoveForm = () => {
 //   return (
 //     <>

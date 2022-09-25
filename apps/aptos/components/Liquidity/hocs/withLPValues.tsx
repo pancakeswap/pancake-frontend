@@ -1,11 +1,12 @@
 // import { useMemo } from 'react'
-// import { Currency, CurrencyAmount, JSBI, Pair, Percent } from '@pancakeswap/sdk'
+// import { Currency, CurrencyAmount, JSBI, Pair, Percent } from '@pancakeswap/aptos-swap-sdk'
 // import { CardProps } from '@pancakeswap/uikit'
 // import { useAccount } from '@pancakeswap/awgmi'
 import multiplyPriceByAmount from '@pancakeswap/utils/multiplyPriceByAmount'
 
-import { Coin, Currency, CurrencyAmount, JSBI, Pair, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
+import { Coin, CurrencyAmount, JSBI, Pair, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
 import { useMemo } from 'react'
+import { useCurrencyBalance } from 'hooks/Balances'
 
 // Philip TODO: Replace useTotalSupply mock
 export function useTotalSupply(token?: Coin): CurrencyAmount<Coin> | undefined {
@@ -71,7 +72,7 @@ const withLPValues =
     const currency1 = pair.token1
 
     const totalPoolTokens = useTotalSupply(pair.liquidityToken)
-
+    const userPoolBalance = useCurrencyBalance(pair.liquidityToken.address)
     const poolTokenPercentage = usePoolTokenPercentage({ totalPoolTokens, userPoolBalance })
 
     const [token0Deposited, token1Deposited] = useTokensDeposited({ pair, userPoolBalance, totalPoolTokens })
@@ -86,7 +87,7 @@ const withLPValues =
         token0Deposited={token0Deposited}
         token1Deposited={token1Deposited}
         totalUSDValue={totalUSDValue}
-        userPoolBalance={CurrencyAmount.fromRawAmount(pair.liquidityToken, '0')}
+        userPoolBalance={userPoolBalance}
         poolTokenPercentage={poolTokenPercentage}
       />
     )

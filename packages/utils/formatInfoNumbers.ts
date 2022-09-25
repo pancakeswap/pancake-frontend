@@ -5,7 +5,7 @@ import numeral from 'numeral'
 // Intended to be used for tokens whose value is less than $1
 // https://stackoverflow.com/a/23887837
 export const getFirstThreeNonZeroDecimals = (value: number) => {
-  return value.toFixed(9).match(/^-?\d*\.?0*\d{0,2}/)[0]
+  return value.toFixed(9).match(/^-?\d*\.?0*\d{0,2}/)?.[0]
 }
 
 export type formatAmountNotation = 'compact' | 'standard'

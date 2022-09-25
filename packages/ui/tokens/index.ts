@@ -21,6 +21,8 @@ export const tokens = {
   },
   space: {
     '0': '0px',
+    '0px': '0px',
+    '1rem': '1rem',
     px: '1px',
     '1': '4px',
     '2': '8px',

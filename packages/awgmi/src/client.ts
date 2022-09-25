@@ -25,7 +25,7 @@ export function createClient<TProvider extends AptosClient>({
   }),
   persister = typeof window !== 'undefined'
     ? createSyncStoragePersister({
-        key: 'aptos.cache',
+        key: 'awgmi.cache',
         storage: window.localStorage,
         serialize,
         deserialize,

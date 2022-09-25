@@ -9,6 +9,7 @@ export enum ApprovalState {
   APPROVED,
 }
 
+// Remove all
 const ApprovalButtons = ({ children, isValid, symbolA, symbolB }) => {
   const { t } = useTranslation()
 
@@ -24,7 +25,7 @@ const ApprovalButtons = ({ children, isValid, symbolA, symbolB }) => {
 
   return (
     <>
-      {shouldShowApprovalGroup && (
+      {/* {shouldShowApprovalGroup && (
         <RowBetween style={{ gap: '8px' }}>
           {showFieldAApproval && (
             <Button onClick={approveACallback} disabled={approvalA === ApprovalState.PENDING} width="100%">
@@ -46,7 +47,7 @@ const ApprovalButtons = ({ children, isValid, symbolA, symbolB }) => {
           )}
         </RowBetween>
       )}
-      {children(shouldShowApprovalGroup)}
+      {children(shouldShowApprovalGroup)} */}
     </>
   )
 }

@@ -1,4 +1,4 @@
-import { Currency } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/aptos-swap-sdk'
 import { USDC_DEVNET } from 'config/coins'
 import { useCurrency } from 'hooks/Tokens'
 import useNativeCurrency from 'hooks/useNativeCurrency'
