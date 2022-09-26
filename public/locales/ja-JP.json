@@ -721,7 +721,7 @@
   "So long as you are whitelisted, you’ll be able to participate in each new auction.": "ホワイトリストされている限り、それぞれの新しいオークションに参加することができます。",
   "If two or more projects bid the exact same CAKE amount and are contending for a spot in the winning bidders, their bids may be invalidated.": "複数のプロジェクトが全く同じ量のCAKEで入札し、落札者の座を争うことになった場合は、その入札は無効になることがあります。",
   "Community Farm Auction": "コミュニティファームオークション",
-  "Each week, qualifying projects can bid CAKE for the right to host a 7-day Farm on PancakeSwap.": "参加資格のあるプロジェクトは、PancakeSwapで7日間のファームを主催する権利落札のため、毎週CAKEを入札できます。",
+  "Each week, qualifying projects can bid CAKE for the right to host a 10-day Farm on PancakeSwap.": "Each week, qualifying projects can bid CAKE for the right to host a 10-day Farm on PancakeSwap.",
   "Apply for a Farm/Pool": "ファーム/プールに申請",
   "Community Auctions": "コミュニティオークション",
   "FAQs": "よくある質問",
