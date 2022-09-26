@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI, Percent, Price, Token } from '@pancakeswap/aptos-swap-sdk'
+import { Currency, CurrencyAmount, JSBI, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
@@ -15,7 +15,7 @@ export function useDerivedMintInfo(): {
   parsedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
   price?: Price<Currency, Currency>
   noLiquidity?: boolean
-  liquidityMinted?: CurrencyAmount<Token>
+  liquidityMinted?: CurrencyAmount<Currency>
   poolTokenPercentage?: Percent
   addError?: string
 } {

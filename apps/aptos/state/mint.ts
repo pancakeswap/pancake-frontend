@@ -102,7 +102,7 @@ export function useDerivedMintInfo(
   parsedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
   price?: Price<Currency, Currency>
   noLiquidity?: boolean
-  liquidityMinted?: CurrencyAmount<Token>
+  liquidityMinted?: CurrencyAmount<Currency>
   poolTokenPercentage?: Percent
   error?: string
   addError?: string

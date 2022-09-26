@@ -1,4 +1,5 @@
 import { Token } from '@pancakeswap/swap-sdk-core'
+import { Currency } from './currency'
 // import { TxnBuilderTypes } from 'aptos'
 
 export class Coin extends Token {
@@ -18,5 +19,9 @@ export class Coin extends Token {
     // https://github.com/aptos-labs/aptos-core/blob/main/ecosystem/typescript/sdk/src/aptos_types/type_tag.ts#L147
     // const structTag = TxnBuilderTypes.StructTag.fromString(address)
     // this.structTag = structTag
+  }
+
+  public sortsBefore(other: Currency): boolean {
+    return super.sortsBefore(other.wrapped)
   }
 }

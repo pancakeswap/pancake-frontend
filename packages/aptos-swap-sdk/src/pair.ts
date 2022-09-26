@@ -16,26 +16,27 @@ import {
 } from '@pancakeswap/swap-sdk-core'
 import { TypeTagParser, TxnBuilderTypes, HexString } from 'aptos'
 
-import { Coin } from './coin'
+import { Currency } from './currency'
 import { PAIR_LP_TYPE_TAG, PAIR_RESERVE_TYPE_TAG } from './constants'
+import { Coin } from './coin'
 
 export class Pair {
   public readonly liquidityToken: Coin
 
-  private readonly tokenAmounts: [CurrencyAmount<Coin>, CurrencyAmount<Coin>]
+  private readonly tokenAmounts: [CurrencyAmount<Currency>, CurrencyAmount<Currency>]
 
-  public static sortToken(tokenA: Coin, tokenB: Coin): [Coin, Coin] {
+  public static sortToken(tokenA: Currency, tokenB: Currency): [Currency, Currency] {
     const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // it does safety checks
     return [token0, token1]
   }
 
-  public static getAddress(tokenA: Coin, tokenB: Coin): string {
+  public static getAddress(tokenA: Currency, tokenB: Currency): string {
     const [token0, token1] = this.sortToken(tokenA, tokenB)
 
     return `${PAIR_LP_TYPE_TAG}<${token0.address}, ${token1.address}>`
   }
 
-  public static getReservesAddress(tokenA: Coin, tokenB: Coin): string {
+  public static getReservesAddress(tokenA: Currency, tokenB: Currency): string {
     const [token0, token1] = this.sortToken(tokenA, tokenB)
 
     return `${PAIR_RESERVE_TYPE_TAG}<${token0.address}, ${token1.address}>`
@@ -65,30 +66,30 @@ export class Pair {
     return [address0, address1] as const
   }
 
-  static getLiquidityToken(tokenA: Coin, tokenB: Coin) {
+  static getLiquidityToken(tokenA: Currency, tokenB: Currency) {
     return new Coin(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 8, 'Cake-LP', 'Pancake LPs')
   }
 
-  public constructor(currencyAmountA: CurrencyAmount<Coin>, tokenAmountB: CurrencyAmount<Coin>) {
+  public constructor(currencyAmountA: CurrencyAmount<Currency>, tokenAmountB: CurrencyAmount<Currency>) {
     const tokenAmounts = currencyAmountA.currency.sortsBefore(tokenAmountB.currency) // does safety checks
       ? [currencyAmountA, tokenAmountB]
       : [tokenAmountB, currencyAmountA]
     this.liquidityToken = Pair.getLiquidityToken(tokenAmounts[0].currency, tokenAmounts[1].currency)
-    this.tokenAmounts = tokenAmounts as [CurrencyAmount<Coin>, CurrencyAmount<Coin>]
+    this.tokenAmounts = tokenAmounts as [CurrencyAmount<Currency>, CurrencyAmount<Currency>]
   }
 
   /**
    * Returns true if the token is either token0 or token1
    * @param token to check
    */
-  public involvesToken(token: Coin): boolean {
+  public involvesToken(token: Currency): boolean {
     return token.equals(this.token0) || token.equals(this.token1)
   }
 
   /**
    * Returns the current mid price of the pair in terms of token0, i.e. the ratio of reserve1 to reserve0
    */
-  public get token0Price(): Price<Coin, Coin> {
+  public get token0Price(): Price<Currency, Currency> {
     const result = this.tokenAmounts[1].divide(this.tokenAmounts[0])
     return new Price(this.token0, this.token1, result.denominator, result.numerator)
   }
@@ -96,7 +97,7 @@ export class Pair {
   /**
    * Returns the current mid price of the pair in terms of token1, i.e. the ratio of reserve0 to reserve1
    */
-  public get token1Price(): Price<Coin, Coin> {
+  public get token1Price(): Price<Currency, Currency> {
     const result = this.tokenAmounts[0].divide(this.tokenAmounts[1])
     return new Price(this.token1, this.token0, result.denominator, result.numerator)
   }
@@ -105,7 +106,7 @@ export class Pair {
    * Return the price of the given token in terms of the other token in the pair.
    * @param token token to return price of
    */
-  public priceOf(token: Coin): Price<Coin, Coin> {
+  public priceOf(token: Currency): Price<Currency, Currency> {
     invariant(this.involvesToken(token), 'TOKEN')
     return token.equals(this.token0) ? this.token0Price : this.token1Price
   }
@@ -117,28 +118,28 @@ export class Pair {
     return this.token0.chainId
   }
 
-  public get token0(): Coin {
+  public get token0(): Currency {
     return this.tokenAmounts[0].currency
   }
 
-  public get token1(): Coin {
+  public get token1(): Currency {
     return this.tokenAmounts[1].currency
   }
 
-  public get reserve0(): CurrencyAmount<Coin> {
+  public get reserve0(): CurrencyAmount<Currency> {
     return this.tokenAmounts[0]
   }
 
-  public get reserve1(): CurrencyAmount<Coin> {
+  public get reserve1(): CurrencyAmount<Currency> {
     return this.tokenAmounts[1]
   }
 
-  public reserveOf(token: Coin): CurrencyAmount<Coin> {
+  public reserveOf(token: Currency): CurrencyAmount<Currency> {
     invariant(this.involvesToken(token), 'TOKEN')
     return token.equals(this.token0) ? this.reserve0 : this.reserve1
   }
 
-  public getOutputAmount(inputAmount: CurrencyAmount<Coin>): [CurrencyAmount<Coin>, Pair] {
+  public getOutputAmount(inputAmount: CurrencyAmount<Currency>): [CurrencyAmount<Currency>, Pair] {
     invariant(this.involvesToken(inputAmount.currency), 'TOKEN')
     if (JSBI.equal(this.reserve0.quotient, ZERO) || JSBI.equal(this.reserve1.quotient, ZERO)) {
       throw new InsufficientReservesError()
@@ -158,7 +159,7 @@ export class Pair {
     return [outputAmount, new Pair(inputReserve.add(inputAmount), outputReserve.subtract(outputAmount))]
   }
 
-  public getInputAmount(outputAmount: CurrencyAmount<Coin>): [CurrencyAmount<Coin>, Pair] {
+  public getInputAmount(outputAmount: CurrencyAmount<Currency>): [CurrencyAmount<Currency>, Pair] {
     invariant(this.involvesToken(outputAmount.currency), 'TOKEN')
     if (
       JSBI.equal(this.reserve0.quotient, ZERO) ||
@@ -180,10 +181,10 @@ export class Pair {
   }
 
   public getLiquidityMinted(
-    totalSupply: CurrencyAmount<Coin>,
-    tokenAmountA: CurrencyAmount<Coin>,
-    tokenAmountB: CurrencyAmount<Coin>
-  ): CurrencyAmount<Coin> {
+    totalSupply: CurrencyAmount<Currency>,
+    tokenAmountA: CurrencyAmount<Currency>,
+    tokenAmountB: CurrencyAmount<Currency>
+  ): CurrencyAmount<Currency> {
     invariant(totalSupply.currency.equals(this.liquidityToken), 'LIQUIDITY')
     const tokenAmounts = tokenAmountA.currency.sortsBefore(tokenAmountB.currency) // does safety checks
       ? [tokenAmountA, tokenAmountB]
@@ -208,18 +209,18 @@ export class Pair {
   }
 
   public getLiquidityValue(
-    token: Coin,
-    totalSupply: CurrencyAmount<Coin>,
-    liquidity: CurrencyAmount<Coin>,
+    token: Currency,
+    totalSupply: CurrencyAmount<Currency>,
+    liquidity: CurrencyAmount<Currency>,
     feeOn = false,
     kLast?: BigintIsh
-  ): CurrencyAmount<Coin> {
+  ): CurrencyAmount<Currency> {
     invariant(this.involvesToken(token), 'TOKEN')
     invariant(totalSupply.currency.equals(this.liquidityToken), 'TOTAL_SUPPLY')
     invariant(liquidity.currency.equals(this.liquidityToken), 'LIQUIDITY')
     invariant(JSBI.lessThanOrEqual(liquidity.quotient, totalSupply.quotient), 'LIQUIDITY')
 
-    let totalSupplyAdjusted: CurrencyAmount<Coin>
+    let totalSupplyAdjusted: CurrencyAmount<Currency>
     if (!feeOn) {
       totalSupplyAdjusted = totalSupply
     } else {

@@ -1,13 +1,13 @@
 /* eslint-disable no-return-assign */
 import invariant from 'tiny-invariant'
-import { Currency, Price } from '@pancakeswap/swap-sdk-core'
+import { Price } from '@pancakeswap/swap-sdk-core'
 import { Pair } from './pair'
-import { Coin } from './coin'
+import { Currency } from './currency'
 
 export class Route<TInput extends Currency, TOutput extends Currency> {
   public readonly pairs: Pair[]
 
-  public readonly path: Coin[]
+  public readonly path: Currency[]
 
   public readonly input: TInput
 
@@ -25,7 +25,7 @@ export class Route<TInput extends Currency, TOutput extends Currency> {
     invariant(pairs[0].involvesToken(wrappedInput), 'INPUT')
     invariant(typeof output === 'undefined' || pairs[pairs.length - 1].involvesToken(output.wrapped), 'OUTPUT')
 
-    const path: Coin[] = [wrappedInput]
+    const path: Currency[] = [wrappedInput]
     for (const [i, pair] of pairs.entries()) {
       const currentInput = path[i]
       invariant(currentInput.equals(pair.token0) || currentInput.equals(pair.token1), 'PATH')

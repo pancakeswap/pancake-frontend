@@ -1,6 +1,7 @@
-import { Currency, NativeCurrency, SerializedToken, Token } from '@pancakeswap/swap-sdk-core'
+import { NativeCurrency, SerializedToken } from '@pancakeswap/swap-sdk-core'
 import { TxnBuilderTypes } from 'aptos'
 import { Coin } from './coin'
+import { Currency } from './currency'
 
 const APTOS_COIN = '0x1::aptos_coin::AptosCoin' as const
 
@@ -37,7 +38,7 @@ export class AptosCoin extends NativeCurrency {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  public sortsBefore(_other: Token): boolean {
+  public sortsBefore(_other: Currency): boolean {
     return true
   }
 

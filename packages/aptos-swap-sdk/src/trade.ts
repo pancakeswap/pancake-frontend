@@ -9,7 +9,6 @@ import {
   TradeType,
   ZERO,
   CurrencyAmount,
-  Currency,
   Fraction,
   Percent,
   Price,
@@ -19,7 +18,7 @@ import {
 
 import { Pair } from './pair'
 import { Route } from './route'
-import { Coin } from './coin'
+import { Currency } from './currency'
 import { ZERO_PERCENT, ONE_HUNDRED_PERCENT } from './constants'
 
 // minimal interface so the input output comparator may be shared across types
@@ -177,7 +176,7 @@ export class Trade<TInput extends Currency, TOutput extends Currency, TTradeType
     this.route = route
     this.tradeType = tradeType
 
-    const tokenAmounts: CurrencyAmount<Coin>[] = new Array(route.path.length)
+    const tokenAmounts: CurrencyAmount<Currency>[] = new Array(route.path.length)
     if (tradeType === TradeType.EXACT_INPUT) {
       invariant(amount.currency.equals(route.input), 'INPUT')
       tokenAmounts[0] = amount.wrapped
@@ -285,7 +284,7 @@ export class Trade<TInput extends Currency, TOutput extends Currency, TTradeType
       if (!pair.token0.equals(amountIn.currency) && !pair.token1.equals(amountIn.currency)) continue
       if (pair.reserve0.equalTo(ZERO) || pair.reserve1.equalTo(ZERO)) continue
 
-      let amountOut: CurrencyAmount<Coin>
+      let amountOut: CurrencyAmount<Currency>
       try {
         // eslint-disable-next-line @typescript-eslint/no-extra-semi
         ;[amountOut] = pair.getOutputAmount(amountIn)
@@ -380,7 +379,7 @@ export class Trade<TInput extends Currency, TOutput extends Currency, TTradeType
       if (!pair.token0.equals(amountOut.currency) && !pair.token1.equals(amountOut.currency)) continue
       if (pair.reserve0.equalTo(ZERO) || pair.reserve1.equalTo(ZERO)) continue
 
-      let amountIn: CurrencyAmount<Coin>
+      let amountIn: CurrencyAmount<Currency>
       try {
         // eslint-disable-next-line @typescript-eslint/no-extra-semi
         ;[amountIn] = pair.getInputAmount(amountOut)

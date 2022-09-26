@@ -1,9 +1,9 @@
-import { Currency, CurrencyAmount, Token } from '@pancakeswap/aptos-swap-sdk'
+import { Currency, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
 import { useCoin } from '@pancakeswap/awgmi'
 
 // returns undefined if input token is undefined, or fails to get token contract,
 // or contract total supply cannot be fetched
-export function useTotalSupply(token?: Currency): CurrencyAmount<Token> | undefined {
+export function useTotalSupply(token?: Currency): CurrencyAmount<Currency> | undefined {
   const { data } = useCoin({
     coin: token?.wrapped.address,
     staleTime: Infinity,

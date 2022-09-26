@@ -1,5 +1,4 @@
-import { ChainId } from '@pancakeswap/aptos-swap-sdk'
-import { Currency, JSBI, Price } from '@pancakeswap/swap-sdk-core'
+import { ChainId, Currency, JSBI, Price } from '@pancakeswap/aptos-swap-sdk'
 import { USDC_DEVNET } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'

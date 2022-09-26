@@ -1,6 +1,7 @@
-import { Currency, Percent, TradeType } from '@pancakeswap/swap-sdk-core'
+import { Percent, TradeType } from '@pancakeswap/swap-sdk-core'
 import { routerSwap, routerAddLiquidity } from './generated/swap'
 import { Trade } from './trade'
+import { Currency } from './currency'
 
 export interface TradeOptions {
   /**
