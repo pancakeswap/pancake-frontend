@@ -103,7 +103,7 @@ export const usePollCoreFarmData = () => {
 
 export const useFarms = (): DeserializedFarmsState => {
   const { chainId } = useActiveWeb3React()
-  return useSelector(farmSelector(chainId))
+  return useSelector(useMemo(() => farmSelector(chainId), [chainId]))
 }
 
 export const useFarmsPoolLength = (): number => {

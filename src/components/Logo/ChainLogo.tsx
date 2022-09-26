@@ -8,6 +8,7 @@ export const ChainLogo = memo(
     if (isChainSupported(chainId)) {
       return (
         <Image
+          alt={`chain-${chainId}`}
           style={{ maxHeight: `${height}px` }}
           src={`/images/chains/${chainId}.png`}
           width={width}

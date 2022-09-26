@@ -4,16 +4,18 @@ import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
 import { useEffect, useMemo, useState } from 'react'
-import { useCakeVaultPublicData, useCakeVaultUserData } from 'state/pools/hooks'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import styled, { useTheme } from 'styled-components'
-import { BIG_TEN } from 'utils/bigNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useBCakeTooltipContent } from 'views/Farms/components/BCakeBoosterCard'
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
-import useAvgLockDuration from 'views/Pools/components/LockedPool/hooks/useAvgLockDuration'
-import { secondsToWeeks, weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
+import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
+import useRoiCalculatorReducer, {
+  CalculatorMode,
+  EditingCurrency,
+} from 'components/RoiCalculatorModal/useRoiCalculatorReducer'
+import { useGetCalculatorMultiplier } from '../hooks/useGetBoostedAPR'
 import LockDurationField from './BCakeLockedDuration'
-import useRoiCalculatorReducer, { CalculatorMode, EditingCurrency } from './useRoiCalculatorReducer'
 
 const BCakeBlock = styled.div`
   background-color: ${({ theme }) => theme.colors.background};
@@ -28,7 +30,7 @@ interface BCakeCalculatorProps {
   lpTotalSupply: BigNumber
   initialState?: any
   stakingTokenSymbol?: string
-  setBCakeMultiplier: (multiplier: string) => void
+  setBCakeMultiplier: (multiplier: number) => void
 }
 
 const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> = ({
@@ -39,13 +41,10 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
   lpTotalSupply,
   setBCakeMultiplier,
 }) => {
-  useCakeVaultUserData()
-  useCakeVaultPublicData()
   const [isShow, setIsShow] = useState(true)
   const { t } = useTranslation()
   const [duration, setDuration] = useState(() => weeksToSeconds(1))
-  const { avgLockDurationsInSeconds } = useAvgLockDuration()
-  const { lockBalance, isLoading, totalLockedAmount, lockedStart, lockedEnd } = useUserLockedCakeStatus()
+  const { isLoading, lockedAmount, lockedStart, lockedEnd } = useUserLockedCakeStatus()
   const { state, setPrincipalFromUSDValue, setPrincipalFromTokenValue, toggleEditingCurrency, setCalculatorMode } =
     useRoiCalculatorReducer(
       { stakingTokenPrice: earningTokenPrice, earningTokenPrice, autoCompoundFrequency: 0 },
@@ -56,18 +55,16 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
   const onBalanceFocus = () => {
     setCalculatorMode(CalculatorMode.ROI_BASED_ON_PRINCIPAL)
   }
-  const bCakeMultiplier = useMemo(() => {
-    const result = getBCakeMultiplier(
-      new BigNumber(targetInputBalance).multipliedBy(BIG_TEN.pow(18)), // userBalanceInFarm,
-      new BigNumber(principalAsToken).multipliedBy(BIG_TEN.pow(18)), // userLockAmount
-      new BigNumber(secondsToWeeks(duration)).times(7), // userLockDuration
-      totalLockedAmount, // totalLockAmount
-      lpTotalSupply, // lpBalanceOfFarm
-      // TODO: parse sec to day directly
-      new BigNumber(avgLockDurationsInSeconds ? secondsToWeeks(avgLockDurationsInSeconds) : 40).times(7), // AverageLockDuration
-    )
-    return result.toString() === 'NaN' ? '1.000' : result.toFixed(3)
-  }, [targetInputBalance, principalAsToken, duration, totalLockedAmount, lpTotalSupply, avgLockDurationsInSeconds])
+  const userBalanceInFarm = useMemo(
+    () => new BigNumber(targetInputBalance).multipliedBy(DEFAULT_TOKEN_DECIMAL),
+    [targetInputBalance],
+  )
+  const userLockedAmount = useMemo(
+    () => new BigNumber(principalAsToken).multipliedBy(DEFAULT_TOKEN_DECIMAL),
+    [principalAsToken],
+  )
+
+  const bCakeMultiplier = useGetCalculatorMultiplier(userBalanceInFarm, lpTotalSupply, userLockedAmount, duration)
 
   useEffect(() => {
     setBCakeMultiplier(bCakeMultiplier)
@@ -84,6 +81,14 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
   const tooltipContent = useBCakeTooltipContent()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, {
+    placement: 'bottom-start',
+  })
+
+  const {
+    targetRef: myBalanceTargetRef,
+    tooltip: myBalanceTooltip,
+    tooltipVisible: myBalanceTooltipVisible,
+  } = useTooltip(t('Boost multiplier calculation does not include profit from CAKE staking pool'), {
     placement: 'bottom-start',
   })
   const theme = useTheme()
@@ -133,21 +138,22 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
               >
                 $1000
               </Button>
-              <Button
-                disabled={!account || isLoading}
-                scale="xs"
-                p="4px 16px"
-                width="128px"
-                variant="tertiary"
-                style={{ textTransform: 'uppercase' }}
-                onClick={() =>
-                  setPrincipalFromUSDValue(
-                    getBalanceNumber(lockBalance.cakeAsBigNumber.times(earningTokenPrice)).toFixed(2),
-                  )
-                }
-              >
-                {t('My Balance')}
-              </Button>
+              {myBalanceTooltipVisible && myBalanceTooltip}
+              <Box ref={myBalanceTargetRef}>
+                <Button
+                  disabled={!account || isLoading || lockedAmount.eq(0)}
+                  scale="xs"
+                  p="4px 16px"
+                  width="128px"
+                  variant="tertiary"
+                  style={{ textTransform: 'uppercase' }}
+                  onClick={() =>
+                    setPrincipalFromUSDValue(getBalanceNumber(lockedAmount.times(earningTokenPrice)).toFixed(2))
+                  }
+                >
+                  {t('My Balance')}
+                </Button>
+              </Box>
             </Flex>
             <LockDurationField
               duration={duration}
@@ -184,22 +190,14 @@ export default BCakeCalculator
 const CA = 0.5
 const CB = 5
 
-const getBCakeMultiplier = (
+export const getBCakeMultiplier = (
   userBalanceInFarm: BigNumber,
   userLockAmount: BigNumber,
-  userLockDuration: BigNumber,
+  userLockDuration: number,
   totalLockAmount: BigNumber,
   lpBalanceOfFarm: BigNumber,
-  averageLockDuration: BigNumber,
+  averageLockDuration: number,
 ) => {
-  // console.log({
-  //   userBalanceInFarm: userBalanceInFarm.toString(),
-  //   userLockAmount: userLockAmount.toString(),
-  //   userLockDuration: userLockDuration.toString(),
-  //   totalLockAmount: totalLockAmount.toString(),
-  //   lpBalanceOfFarm: lpBalanceOfFarm.toString(),
-  //   averageLockDuration: averageLockDuration.toString(),
-  // })
   const dB = userBalanceInFarm.times(CA)
   const aBPart1 = lpBalanceOfFarm.times(userLockAmount).times(userLockDuration)
   const aBPart3 = totalLockAmount.times(averageLockDuration)

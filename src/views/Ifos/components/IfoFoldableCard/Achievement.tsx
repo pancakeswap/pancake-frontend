@@ -96,7 +96,13 @@ const IfoAchievement: React.FC<React.PropsWithChildren<Props>> = ({ ifo, publicI
   return (
     <Container p="16px" pb="32px">
       <AchievementFlex isFinished={publicIfoData.status === 'finished'} alignItems="flex-start" flex={1}>
-        <Image src={`/images/achievements/ifo-${tokenName}.svg`} width={56} height={56} mr="8px" />
+        <Image
+          src={`/images/achievements/ifo-${tokenName}.svg`}
+          fallbackSrc="/images/achievements/ifo-placeholder-bun.png"
+          width={56}
+          height={56}
+          mr="8px"
+        />
         <Flex flexDirection="column" ml="8px">
           <Text color="secondary" fontSize="12px">
             {`${t('Achievement')}:`}

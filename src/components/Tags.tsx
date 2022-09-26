@@ -50,6 +50,21 @@ const FarmAuctionTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   )
 }
 
+const StableFarmTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
+  const { t } = useTranslation()
+  const { targetRef, tooltip, tooltipVisible } = useTooltip('Fees are lower for stable LP', { placement: 'right' })
+  return (
+    <>
+      {tooltipVisible && tooltip}
+      <TooltipText ref={targetRef} style={{ textDecoration: 'none', alignSelf: 'center' }}>
+        <Tag variant="failure" outline {...props}>
+          {t('Stable LP')}
+        </Tag>
+      </TooltipText>
+    </>
+  )
+}
+
 const CommunityTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation()
   return (
@@ -123,4 +138,5 @@ export {
   SoonTag,
   ClosedTag,
   CommunityTag,
+  StableFarmTag,
 }

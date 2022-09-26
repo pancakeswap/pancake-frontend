@@ -208,7 +208,10 @@ export function createTotalStrategy(poolAddress, version: 'v0' | 'v1') {
   }
 }
 
-export function lockedCake(cakeVaultAddress, outputName: 'lockedAmount' | 'lockEndTime') {
+export function lockedCakeUser(
+  cakeVaultAddress,
+  outputName: 'lockedAmount' | 'lockEndTime' | 'shares' | 'userBoostedShare',
+) {
   return {
     name: 'contract-call',
     params: {
@@ -272,6 +275,23 @@ export function lockedCake(cakeVaultAddress, outputName: 'lockedAmount' | 'lockE
             type: 'uint256',
           },
         ],
+        stateMutability: 'view',
+        type: 'function',
+      },
+    },
+  }
+}
+
+export function lockedCakeShare(cakeVaultAddress) {
+  return {
+    name: 'contract-call',
+    params: {
+      address: cakeVaultAddress,
+      decimals: 0,
+      methodABI: {
+        inputs: [],
+        name: 'getPricePerFullShare',
+        outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
         stateMutability: 'view',
         type: 'function',
       },

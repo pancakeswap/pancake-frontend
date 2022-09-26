@@ -77,10 +77,12 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   quoteTokenAmountTotal?: BigNumber
   lpTotalInQuoteToken?: BigNumber
   lpTotalSupply?: BigNumber
+  lpTokenPrice?: BigNumber
   tokenPriceVsQuote?: BigNumber
   poolWeight?: BigNumber
   userData?: DeserializedFarmUserData
   boosted?: boolean
+  isStable?: boolean
 }
 
 export enum VaultKey {

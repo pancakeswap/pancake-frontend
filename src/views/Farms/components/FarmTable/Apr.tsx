@@ -12,6 +12,7 @@ export interface AprProps {
   lpLabel: string
   lpSymbol: string
   lpRewardsApr: number
+  lpTokenPrice: BigNumber
   tokenAddress?: string
   quoteTokenAddress?: string
   cakePrice: BigNumber
@@ -49,6 +50,7 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
   pid,
   lpLabel,
   lpSymbol,
+  lpTokenPrice,
   multiplier,
   tokenAddress,
   quoteTokenAddress,
@@ -70,6 +72,7 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
           pid={pid}
           lpSymbol={lpSymbol}
           lpLabel={lpLabel}
+          lpTokenPrice={lpTokenPrice}
           multiplier={multiplier}
           cakePrice={cakePrice}
           apr={originalValue}

@@ -245,8 +245,9 @@ export function useDefaultsFromURLSearch():
   const dispatch = useAppDispatch()
   const native = useNativeCurrency()
   const { query } = useRouter()
-  const [result, setResult] =
-    useState<{ inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined>()
+  const [result, setResult] = useState<
+    { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
+  >()
 
   useEffect(() => {
     if (!chainId || !native) return

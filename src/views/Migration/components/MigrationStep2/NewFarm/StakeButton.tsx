@@ -8,7 +8,7 @@ import { useERC20 } from 'hooks/useContract'
 import React, { useCallback } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
-import { useFarmUser, useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
+import { useFarmUser, usePriceCakeBusd } from 'state/farms/hooks'
 import styled from 'styled-components'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import DepositModal from 'views/Farms/components/DepositModal'
@@ -34,6 +34,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
   multiplier,
   lpSymbol,
   lpLabel,
+  lpTokenPrice,
   lpAddress,
   quoteToken,
   token,
@@ -49,7 +50,6 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
   const { allowance, tokenBalance, stakedBalance } = useFarmUser(pid)
   const { onStake } = useStakeFarms(stakedPid)
   const { onUnstake } = useUnstakeFarms(stakedPid)
-  const lpPrice = useLpTokenPrice(lpSymbol)
   const cakePrice = usePriceCakeBusd()
 
   const isApproved = account && allowance && allowance.isGreaterThan(0)
@@ -95,7 +95,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
       pid={pid}
       lpTotalSupply={lpTotalSupply}
       max={tokenBalance}
-      lpPrice={lpPrice}
+      lpPrice={lpTokenPrice}
       lpLabel={lpLabel}
       apr={apr}
       displayApr={displayApr}

@@ -7,7 +7,6 @@ import { GELATO_NATIVE } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
-import { useSelector } from 'react-redux'
 import {
   combinedTokenMapFromActiveUrlsAtom,
   combinedTokenMapFromOfficialsUrlsAtom,
@@ -15,7 +14,7 @@ import {
   useWarningTokenList,
 } from '../state/lists/hooks'
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
-import useUserAddedTokens, { userAddedTokenSelector } from '../state/user/hooks/useUserAddedTokens'
+import useUserAddedTokens from '../state/user/hooks/useUserAddedTokens'
 import { isAddress } from '../utils'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
 import useNativeCurrency from './useNativeCurrency'
@@ -32,7 +31,7 @@ const mapWithoutUrls = (tokenMap: TokenAddressMap, chainId: number) =>
 export function useAllTokens(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React()
   const tokenMap = useAtomValue(combinedTokenMapFromActiveUrlsAtom)
-  const userAddedTokens = useSelector(userAddedTokenSelector(chainId))
+  const userAddedTokens = useUserAddedTokens()
   return useMemo(() => {
     return (
       userAddedTokens
@@ -56,7 +55,7 @@ export function useAllTokens(): { [address: string]: Token } {
 export function useOfficialsAndUserAddedTokens(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React()
   const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
-  const userAddedTokens = useSelector(userAddedTokenSelector(chainId))
+  const userAddedTokens = useUserAddedTokens()
   return useMemo(() => {
     return (
       userAddedTokens

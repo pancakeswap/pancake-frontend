@@ -77,6 +77,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
   const { lpAddress } = farm
   const isPromotedFarm = farm.token.symbol === 'CAKE'
+  const { stakedBalance, proxy, tokenBalance } = farm.userData
 
   const toggleExpandableSection = useCallback(() => {
     setShowExpandableSection((prev) => !prev)
@@ -92,6 +93,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           token={farm.token}
           quoteToken={farm.quoteToken}
           boosted={farm.boosted}
+          isStable={farm.isStable}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
@@ -100,11 +102,23 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
               {farm.apr ? (
                 <>
                   {farm.boosted ? (
-                    <BoostedApr mr="4px" lpRewardsApr={farm.lpRewardsApr} apr={farm.apr} pid={farm?.pid} />
+                    <BoostedApr
+                      mr="4px"
+                      lpRewardsApr={farm.lpRewardsApr}
+                      apr={farm.apr}
+                      pid={farm?.pid}
+                      lpTotalSupply={farm.lpTotalSupply}
+                      userBalanceInFarm={
+                        (stakedBalance.plus(tokenBalance).gt(0)
+                          ? stakedBalance?.plus(tokenBalance)
+                          : proxy?.stakedBalance.plus(proxy?.tokenBalance)) ?? new BigNumber(0)
+                      }
+                    />
                   ) : null}
                   <ApyButton
                     variant="text-and-button"
                     pid={farm.pid}
+                    lpTokenPrice={farm.lpTokenPrice}
                     lpSymbol={farm.lpSymbol}
                     multiplier={farm.multiplier}
                     lpLabel={lpLabel}

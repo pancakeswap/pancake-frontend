@@ -119,8 +119,14 @@ export function useAllSortedRecentTransactions(): { [chainId: number]: { [txHash
 }
 
 // returns all the transactions for the current chain
-export function useAllChainTransactions(): { [txHash: string]: TransactionDetails } {
-  const { account, chainId } = useActiveWeb3React()
+export function useAllActiveChainTransactions(): { [txHash: string]: TransactionDetails } {
+  const { chainId } = useActiveWeb3React()
+
+  return useAllChainTransactions(chainId)
+}
+
+export function useAllChainTransactions(chainId: number): { [txHash: string]: TransactionDetails } {
+  const { account } = useActiveWeb3React()
 
   const state = useSelector<AppState, AppState['transactions']>((s) => s.transactions)
 
@@ -136,7 +142,7 @@ export function useAllChainTransactions(): { [txHash: string]: TransactionDetail
 }
 
 export function useIsTransactionPending(transactionHash?: string): boolean {
-  const transactions = useAllChainTransactions()
+  const transactions = useAllActiveChainTransactions()
 
   if (!transactionHash || !transactions[transactionHash]) return false
 
@@ -153,7 +159,7 @@ export function isTransactionRecent(tx: TransactionDetails): boolean {
 
 // returns whether a token has a pending approval transaction
 export function useHasPendingApproval(tokenAddress: string | undefined, spender: string | undefined): boolean {
-  const allTransactions = useAllChainTransactions()
+  const allTransactions = useAllActiveChainTransactions()
   return useMemo(
     () =>
       typeof tokenAddress === 'string' &&
@@ -188,9 +194,9 @@ export function usePendingTransactions(): {
   pendingNumber: number
   nonBscFarmPendingList: NonBscPendingData[]
 } {
-  const allTransactions = useAllChainTransactions()
+  const allTransactions = useAllTransactions()
   const sortedRecentTransactions = useMemo(() => {
-    const txs = Object.values(allTransactions)
+    const txs = Object.values(allTransactions).flatMap((trxObjects) => Object.values(trxObjects))
     return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
   }, [allTransactions])
 

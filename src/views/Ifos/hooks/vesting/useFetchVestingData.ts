@@ -20,31 +20,36 @@ const useFetchVestingData = () => {
         }),
       )
 
+      const currentTimeStamp = new Date().getTime()
+
       return allData.filter(
         // eslint-disable-next-line array-callback-return, consistent-return
         (ifo) => {
           const { userVestingData } = ifo
-          const currentTimeStamp = new Date().getTime()
-          const vestingStartTime = new BigNumber(userVestingData.vestingStartTime)
-          const isPoolUnlimitedLive = vestingStartTime
-            .plus(userVestingData[PoolIds.poolUnlimited].vestingInformationDuration)
-            .times(1000)
-            .gte(currentTimeStamp)
-          const isPoolBasicLive = vestingStartTime
-            .plus(userVestingData[PoolIds.poolBasic].vestingInformationDuration)
-            .times(1000)
-            .gte(currentTimeStamp)
-
           if (
-            (userVestingData[PoolIds.poolBasic].offeringAmountInToken.gt(0) ||
-              userVestingData[PoolIds.poolUnlimited].offeringAmountInToken.gt(0)) &&
-            (userVestingData[PoolIds.poolBasic].vestingComputeReleasableAmount.gt(0) ||
-              userVestingData[PoolIds.poolUnlimited].vestingComputeReleasableAmount.gt(0) ||
-              isPoolBasicLive ||
-              isPoolUnlimitedLive)
+            userVestingData[PoolIds.poolBasic].offeringAmountInToken.gt(0) ||
+            userVestingData[PoolIds.poolUnlimited].offeringAmountInToken.gt(0)
           ) {
-            return ifo
+            if (
+              userVestingData[PoolIds.poolBasic].vestingComputeReleasableAmount.gt(0) ||
+              userVestingData[PoolIds.poolUnlimited].vestingComputeReleasableAmount.gt(0)
+            ) {
+              return ifo
+            }
+            const vestingStartTime = new BigNumber(userVestingData.vestingStartTime)
+            const isPoolUnlimitedLive = vestingStartTime
+              .plus(userVestingData[PoolIds.poolUnlimited].vestingInformationDuration)
+              .times(1000)
+              .gte(currentTimeStamp)
+            if (isPoolUnlimitedLive) return ifo
+            const isPoolBasicLive = vestingStartTime
+              .plus(userVestingData[PoolIds.poolBasic].vestingInformationDuration)
+              .times(1000)
+              .gte(currentTimeStamp)
+            if (isPoolBasicLive) return ifo
+            return false
           }
+          return false
         },
       )
     },

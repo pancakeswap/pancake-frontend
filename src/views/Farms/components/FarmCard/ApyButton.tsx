@@ -5,11 +5,12 @@ import { CalculateIcon, Flex, IconButton, Text, TooltipText, useModal, useToolti
 import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
 import RoiCalculatorModal from 'components/RoiCalculatorModal'
-import BCakeCalculator from 'components/RoiCalculatorModal/BCakeCalculator'
-import { useFarmFromPid, useFarmUser, useLpTokenPrice } from 'state/farms/hooks'
+import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
+import { useFarmFromPid, useFarmUser } from 'state/farms/hooks'
 import styled from 'styled-components'
 import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
 import useBoostMultiplier from '../YieldBooster/hooks/useBoostMultiplier'
+import { useGetBoostedMultiplier } from '../YieldBooster/hooks/useGetBoostedAPR'
 
 const ApyLabelContainer = styled(Flex)`
   cursor: pointer;
@@ -23,6 +24,7 @@ export interface ApyButtonProps {
   variant: 'text' | 'text-and-button'
   pid: number
   lpSymbol: string
+  lpTokenPrice: BigNumber
   lpLabel?: string
   multiplier: string
   cakePrice?: BigNumber
@@ -40,6 +42,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   variant,
   pid,
   lpLabel,
+  lpTokenPrice,
   lpSymbol,
   cakePrice,
   apr,
@@ -53,30 +56,28 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   boosted,
 }) => {
   const { t } = useTranslation()
-  const [bCakeMultiplier, setBCakeMultiplier] = useState<string | null>(() => null)
-  const lpPrice = useLpTokenPrice(lpSymbol)
+  const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
   const { tokenBalance, stakedBalance, proxy } = useFarmUser(pid)
   const { lpTotalSupply } = useFarmFromPid(pid)
   const { boosterState, proxyAddress } = useContext(YieldBoosterStateContext)
-  const boostMultiplier = useBoostMultiplier({ pid, boosterState, proxyAddress })
+  const userBalanceInFarm = stakedBalance.plus(tokenBalance).gt(0)
+    ? stakedBalance.plus(tokenBalance)
+    : proxy.stakedBalance.plus(proxy.tokenBalance)
+  const boosterMultiplierFromFE = useGetBoostedMultiplier(userBalanceInFarm, lpTotalSupply)
+  const boostMultiplierFromSC = useBoostMultiplier({ pid, boosterState, proxyAddress })
+  const boostMultiplier = userBalanceInFarm.eq(0) ? boostMultiplierFromSC : boosterMultiplierFromFE
   const boostMultiplierDisplay = boostMultiplier.toLocaleString(undefined, { maximumFractionDigits: 3 })
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal
       pid={pid}
       linkLabel={t('Get %symbol%', { symbol: lpLabel })}
-      stakingTokenBalance={
-        stakedBalance.plus(tokenBalance).gt(0)
-          ? stakedBalance.plus(tokenBalance)
-          : proxy.stakedBalance.plus(proxy.tokenBalance)
-      }
+      stakingTokenBalance={userBalanceInFarm}
       stakingTokenSymbol={lpSymbol}
-      stakingTokenPrice={lpPrice.toNumber()}
+      stakingTokenPrice={lpTokenPrice.toNumber()}
       earningTokenPrice={cakePrice.toNumber()}
-      apr={bCakeMultiplier ? apr * _toNumber(bCakeMultiplier) : apr}
+      apr={bCakeMultiplier ? apr * bCakeMultiplier : apr}
       multiplier={multiplier}
-      displayApr={
-        bCakeMultiplier ? (_toNumber(displayApr) - apr + apr * _toNumber(bCakeMultiplier)).toFixed(2) : displayApr
-      }
+      displayApr={bCakeMultiplier ? (_toNumber(displayApr) - apr + apr * bCakeMultiplier).toFixed(2) : displayApr}
       linkHref={addLiquidityUrl}
       isFarm
       bCakeCalculatorSlot={(calculatorBalance) =>

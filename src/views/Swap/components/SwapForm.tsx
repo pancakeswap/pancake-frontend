@@ -204,10 +204,6 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAcce
     }
   }, [hasAmount, refreshBlockNumber])
 
-  const isShowAccessToken = useMemo(() => {
-    return isAccessTokenSupported && !currencies[Field.OUTPUT]?.isNative
-  }, [isAccessTokenSupported, currencies])
-
   return (
     <>
       <>
@@ -274,8 +270,8 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAcce
               commonBasesType={CommonBasesType.SWAP_LIMITORDER}
             />
 
-            <Box style={{ display: isShowAccessToken ? 'block' : 'none' }}>
-              <AccessRisk currency={currencies[Field.OUTPUT]} />
+            <Box style={{ display: isAccessTokenSupported ? 'block' : 'none' }}>
+              <AccessRisk inputCurrency={currencies[Field.INPUT]} outputCurrency={currencies[Field.OUTPUT]} />
             </Box>
 
             {isExpertMode && recipient !== null && !showWrap ? (

@@ -3,7 +3,6 @@ import { BigNumber } from 'bignumber.js'
 import Balance from 'components/Balance'
 import { useMemo } from 'react'
 import { useAppDispatch } from 'state'
-import { useLpTokenPrice } from 'state/farms/hooks'
 import { formatLpBalance, getBalanceNumber } from 'utils/formatBalance'
 import { useNonBscFarmPendingTransaction } from 'state/transactions/hooks'
 import { pickFarmTransactionTx } from 'state/global/actions'
@@ -13,10 +12,10 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 interface StackedLPProps {
   lpAddress: string
   stakedBalance: BigNumber
-  lpSymbol: string
   tokenSymbol: string
   quoteTokenSymbol: string
   lpTotalSupply: BigNumber
+  lpTokenPrice: BigNumber
   tokenAmountTotal: BigNumber
   quoteTokenAmountTotal: BigNumber
 }
@@ -24,16 +23,15 @@ interface StackedLPProps {
 const StakedLP: React.FunctionComponent<React.PropsWithChildren<StackedLPProps>> = ({
   lpAddress,
   stakedBalance,
-  lpSymbol,
   quoteTokenSymbol,
   tokenSymbol,
   lpTotalSupply,
+  lpTokenPrice,
   tokenAmountTotal,
   quoteTokenAmountTotal,
 }) => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
-  const lpPrice = useLpTokenPrice(lpSymbol)
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
   const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
 
@@ -51,17 +49,15 @@ const StakedLP: React.FunctionComponent<React.PropsWithChildren<StackedLPProps>>
 
   return (
     <Flex flexDirection="column" alignItems="flex-start">
-      <Flex>
-        <Heading color={stakedBalance.eq(0) ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
-        {pendingFarm.length > 0 && <RefreshIcon style={{ cursor: 'pointer' }} spin onClick={onClickLoadingIcon} />}
-      </Flex>
-      {stakedBalance.gt(0) && lpPrice.gt(0) && (
+      <Heading color={stakedBalance.eq(0) ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
+      {pendingFarm.length > 0 && <RefreshIcon style={{ cursor: 'pointer' }} spin onClick={onClickLoadingIcon} />}
+      {stakedBalance.gt(0) && lpTokenPrice.gt(0) && (
         <>
           <Balance
             fontSize="12px"
             color="textSubtle"
             decimals={2}
-            value={getBalanceNumber(lpPrice.times(stakedBalance))}
+            value={getBalanceNumber(lpTokenPrice.times(stakedBalance))}
             unit=" USD"
             prefix="~"
           />

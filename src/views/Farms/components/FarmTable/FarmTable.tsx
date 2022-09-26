@@ -118,6 +118,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         multiplier: farm.multiplier,
         lpLabel,
         lpSymbol: farm.lpSymbol,
+        lpTokenPrice: farm.lpTokenPrice,
         tokenAddress,
         quoteTokenAddress,
         cakePrice,
@@ -130,6 +131,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         token: farm.token,
         quoteToken: farm.quoteToken,
         isReady: farm.multiplier !== undefined,
+        isStable: farm.isStable,
       },
       earned: {
         earnings: getFarmEarnings(farm),

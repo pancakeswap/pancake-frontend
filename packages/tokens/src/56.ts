@@ -2304,4 +2304,13 @@ export const bscTokens = {
     'Galactic Quadrant',
     'https://outerringmmo.com/',
   ),
+  hoop: new Token(
+    ChainId.BSC,
+    '0xF19cfb40B3774dF6Eed83169Ad5aB0Aaf6865F25',
+    18,
+    'HOOP',
+    'Chibi Dinos',
+    'https://www.chibidinos.io/',
+  ),
+  co: new Token(ChainId.BSC, '0x936B6659Ad0C1b244Ba8Efe639092acae30dc8d6', 6, 'CO', 'CO', 'https://corite.com/'),
 }

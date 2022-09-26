@@ -55,7 +55,7 @@ function MPGlobalHooks() {
   return null
 }
 
-function MyApp(props: AppProps) {
+function MyApp(props: AppProps<{ initialReduxState: any }>) {
   const { pageProps, Component } = props
   const store = useStore(pageProps.initialReduxState)
 

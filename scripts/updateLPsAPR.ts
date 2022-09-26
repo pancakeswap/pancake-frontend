@@ -5,9 +5,10 @@ import BigNumber from 'bignumber.js'
 import chunk from 'lodash/chunk'
 import { sub, getUnixTime } from 'date-fns'
 import farmsConfig from '@pancakeswap/farms/constants/56'
+import { StaticJsonRpcProvider } from '@ethersproject/providers'
 import type { BlockResponse } from '../src/components/SubgraphHealthIndicator'
 import { BLOCKS_CLIENT } from '../src/config/constants/endpoints'
-import { infoClient } from '../src/utils/graphql'
+import { infoClient, stableSwapClient } from '../src/utils/graphql'
 
 const BLOCK_SUBGRAPH_ENDPOINT = BLOCKS_CLIENT
 
@@ -95,8 +96,84 @@ const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): P
   }
 }
 
+// Copy paste of Stable farm logic
+export const bscProvider = new StaticJsonRpcProvider(
+  {
+    url: 'https://bsc-mainnet.nodereal.io/v1/5a516406afa140ffa546ee10af7c9b24',
+    skipFetchSetup: true,
+  },
+  56,
+)
+
+interface SplitFarmResult {
+  normalFarms: any[]
+  stableFarms: any[]
+}
+
+export const BLOCKS_PER_DAY = (60 / 3) * 60 * 24
+
+const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
+  const stableSwapAddress = stableFarm?.stableSwapAddress
+
+  try {
+    const dayAgo = sub(new Date(), { days: 1 })
+
+    const dayAgoTimestamp = getUnixTime(dayAgo)
+
+    const blockDayAgo = await getBlockAtTimestamp(dayAgoTimestamp)
+
+    const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo } = await stableSwapClient.request(
+      gql`
+        query virtualPriceStableSwap($stableSwapAddress: String, $blockDayAgo: Int!) {
+          virtualPriceAtLatestBlock: pairs(id: $stableSwapAddress) {
+            virtualPrice
+          }
+          virtualPriceOneDayAgo: pairs(id: $stableSwapAddress, block: { number: $blockDayAgo }) {
+            virtualPrice
+          }
+        }
+      `,
+      { stableSwapAddress, blockDayAgo },
+    )
+
+    const virtualPrice = virtualPriceAtLatestBlock[0]?.virtualPrice
+    const preVirtualPrice = virtualPriceOneDayAgo[0]?.virtualPrice
+
+    const current = new BigNumber(virtualPrice)
+    const prev = new BigNumber(preVirtualPrice)
+
+    return current.minus(prev).div(prev)
+  } catch (error) {
+    console.error(error, '[LP APR Update] getAprsForStableFarm error')
+  }
+
+  return new BigNumber('0')
+}
+
+function splitNormalAndStableFarmsReducer(result: SplitFarmResult, farm: any): SplitFarmResult {
+  const { normalFarms, stableFarms } = result
+
+  if (farm?.stableSwapAddress) {
+    return {
+      normalFarms,
+      stableFarms: [...stableFarms, farm],
+    }
+  }
+
+  return {
+    stableFarms,
+    normalFarms: [...normalFarms, farm],
+  }
+}
+// ====
+
 const fetchAndUpdateLPsAPR = async () => {
-  const lowerCaseAddresses = farmsConfig.map((farm) => farm.lpAddress.toLowerCase())
+  const { normalFarms, stableFarms }: SplitFarmResult = farmsConfig.reduce(splitNormalAndStableFarmsReducer, {
+    normalFarms: [],
+    stableFarms: [],
+  })
+
+  const lowerCaseAddresses = normalFarms.map((farm) => farm.lpAddress.toLowerCase())
   console.info(`Fetching farm data for ${lowerCaseAddresses.length} addresses`)
   // Split it into chunks of 30 addresses to avoid gateway timeout
   const addressesInGroups = chunk(lowerCaseAddresses, 30)
@@ -109,6 +186,24 @@ const fetchAndUpdateLPsAPR = async () => {
     // eslint-disable-next-line no-await-in-loop
     const aprs = await getAprsForFarmGroup(groupOfAddresses, blockWeekAgo)
     allAprs = { ...allAprs, ...aprs }
+  }
+
+  try {
+    if (stableFarms?.length) {
+      const stableAprs: BigNumber[] = await Promise.all(stableFarms.map((f) => getAprsForStableFarm(f)))
+
+      const stableAprsMap = stableAprs.reduce(
+        (result, apr, index) => ({
+          ...result,
+          [stableFarms[index].lpAddress]: apr.decimalPlaces(2).toNumber(),
+        }),
+        {} as AprMap,
+      )
+
+      allAprs = { ...allAprs, ...stableAprsMap }
+    }
+  } catch (error) {
+    console.error(error, '[LP APR Update] getAprsForStableFarm error')
   }
 
   fs.writeFile(`src/config/constants/lpAprs/56.json`, JSON.stringify(allAprs, null, 2) + os.EOL, (err) => {

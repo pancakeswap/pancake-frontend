@@ -210,6 +210,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
       noLiquidity={noLiquidity}
       poolTokenPercentage={poolTokenPercentage}
       liquidityMinted={liquidityMinted}
+      isStable
     />,
     true,
     true,

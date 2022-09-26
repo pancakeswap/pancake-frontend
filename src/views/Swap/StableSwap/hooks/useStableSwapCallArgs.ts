@@ -1,6 +1,7 @@
 import { SwapCall } from 'hooks/useSwapCallArguments'
 import { useContext, useMemo } from 'react'
 import { useUserSlippageTolerance } from 'state/user/hooks'
+import { basisPointsToPercent } from 'utils/exchange'
 
 import { StableConfigContext } from './useStableConfig'
 
@@ -16,9 +17,11 @@ export default function useStableSwapCallArgs(trade): SwapCall[] {
     const token0Address = stableConfig?.stableSwapConfig?.token0?.address
     const token1Address = stableConfig?.stableSwapConfig?.token1?.address
 
+    const pct = basisPointsToPercent(allowedSlippage)
+
     const tokenAmounts = {
-      [inputAmountAddress]: trade?.inputAmount?.quotient?.toString(),
-      [outputAmountAddress]: trade?.minimumAmountOut(allowedSlippage)?.quotient?.toString(),
+      [inputAmountAddress]: trade?.maximumAmountIn(pct)?.quotient?.toString(),
+      [outputAmountAddress]: trade?.minimumAmountOut(pct)?.quotient?.toString(),
     }
 
     const token0Amount = tokenAmounts[token0Address]
@@ -39,7 +42,13 @@ export default function useStableSwapCallArgs(trade): SwapCall[] {
         contract: swapContract,
       },
     ]
-  }, [swapContract, trade, stableConfig, allowedSlippage])
+  }, [
+    swapContract,
+    trade,
+    stableConfig?.stableSwapConfig?.token0?.address,
+    stableConfig?.stableSwapConfig?.token1?.address,
+    allowedSlippage,
+  ])
 
   return swapCalls
 }

@@ -57,6 +57,7 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
               multiplier: farm.multiplier,
               lpLabel,
               lpSymbol: farm.lpSymbol,
+              lpTokenPrice: farm.lpTokenPrice,
               tokenAddress,
               quoteTokenAddress,
               cakePrice,

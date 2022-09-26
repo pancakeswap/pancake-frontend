@@ -11,10 +11,10 @@ import { useRouter } from 'next/router'
 import { useCallback, useContext, useMemo } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
-import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import { useTransactionAdder, useNonBscFarmPendingTransaction } from 'state/transactions/hooks'
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import { pickFarmTransactionTx } from 'state/global/actions'
+import { usePriceCakeBusd } from 'state/farms/hooks'
 import styled from 'styled-components'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import BigNumber from 'bignumber.js'
@@ -133,6 +133,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   lpSymbol,
   lpLabel,
   lpAddress,
+  lpTokenPrice,
   quoteToken,
   token,
   userDataReady,
@@ -160,7 +161,6 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const { tokenBalance, stakedBalance } = userData || {}
 
   const router = useRouter()
-  const lpPrice = useLpTokenPrice(lpSymbol)
   const cakePrice = usePriceCakeBusd()
 
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
@@ -305,7 +305,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       pid={pid}
       lpTotalSupply={lpTotalSupply}
       max={tokenBalance}
-      lpPrice={lpPrice}
+      lpPrice={lpTokenPrice}
       lpLabel={lpLabel}
       apr={apr}
       displayApr={displayApr}
@@ -369,10 +369,10 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
             <StakedLP
               lpAddress={lpAddress}
               stakedBalance={stakedBalance}
-              lpSymbol={lpSymbol}
               quoteTokenSymbol={quoteToken.symbol}
               tokenSymbol={token.symbol}
               lpTotalSupply={lpTotalSupply}
+              lpTokenPrice={lpTokenPrice}
               tokenAmountTotal={tokenAmountTotal}
               quoteTokenAmountTotal={quoteTokenAmountTotal}
             />
