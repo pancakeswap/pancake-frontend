@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { Flex, Heading, PocketWatchIcon, Text, Skeleton, Link, TimerIcon } from '@pancakeswap/uikit'
 import getTimePeriods from 'utils/getTimePeriods'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBlockExploreLink } from 'utils'
 import { PublicIfoData } from 'views/Ifos/types'
 
@@ -22,6 +23,7 @@ const FlexGap = styled(Flex)<{ gap: string }>`
 `
 
 export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
+  const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const { status, secondsUntilStart, startBlockNum } = publicIfoData
   const timeUntil = getTimePeriods(secondsUntilStart)
@@ -31,7 +33,7 @@ export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoD
       {status === 'idle' ? (
         <Skeleton animation="pulse" variant="rect" width="100%" height="48px" />
       ) : (
-        <Link external href={getBlockExploreLink(startBlockNum, 'countdown')} color="secondary">
+        <Link external href={getBlockExploreLink(startBlockNum, 'countdown', chainId)} color="secondary">
           <FlexGap gap="8px" alignItems="center">
             <Heading as="h3" scale="lg" color="secondary">
               {t('Start in')}
@@ -91,6 +93,7 @@ const LiveNowHeading = styled(EndInHeading)`
 `
 
 const LiveTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
+  const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const { status, secondsUntilEnd, endBlockNum } = publicIfoData
   const timeUntil = getTimePeriods(secondsUntilEnd)
@@ -99,7 +102,7 @@ const LiveTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) 
       {status === 'idle' ? (
         <Skeleton animation="pulse" variant="rect" width="100%" height="48px" />
       ) : (
-        <Link external href={getBlockExploreLink(endBlockNum, 'countdown')} color="white">
+        <Link external href={getBlockExploreLink(endBlockNum, 'countdown', chainId)} color="white">
           <PocketWatchIcon width="42px" mr="8px" />
           <FlexGap gap="8px" alignItems="center">
             <LiveNowHeading textTransform="uppercase" as="h3">{`${t('Live Now')}!`}</LiveNowHeading>
