@@ -140,7 +140,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                     </Text>
                   </TokenButton>
                 </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter to={`/inf${chainPath}/tokens/${poolData.token1.address}`}>
+                <NextLinkFromReactRouter to={`/info${chainPath}/tokens/${poolData.token1.address}`}>
                   <TokenButton ml={[null, null, '10px']}>
                     <CurrencyLogo address={poolData.token1.address} size="24px" chainName={chainName} />
                     <Text fontSize="16px" ml="4px" style={{ whiteSpace: 'nowrap' }} width="fit-content">
