@@ -7,9 +7,14 @@ import truncateHash from '@pancakeswap/utils/truncateHash'
 interface DescriptionWithTxProps {
   description?: string
   txHash?: string
+  txChainId?: number
 }
 
-const DescriptionWithTx: React.FC<React.PropsWithChildren<DescriptionWithTxProps>> = ({ txHash, children }) => {
+const DescriptionWithTx: React.FC<React.PropsWithChildren<DescriptionWithTxProps>> = ({
+  txHash,
+  txChainId,
+  children,
+}) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
 
@@ -17,8 +22,8 @@ const DescriptionWithTx: React.FC<React.PropsWithChildren<DescriptionWithTxProps
     <>
       {typeof children === 'string' ? <Text as="p">{children}</Text> : children}
       {txHash && (
-        <Link external href={getBlockExploreLink(txHash, 'transaction', chainId)}>
-          {t('View on %site%', { site: getBlockExploreName(chainId) })}: {truncateHash(txHash, 8, 0)}
+        <Link external href={getBlockExploreLink(txHash, 'transaction', txChainId || chainId)}>
+          {t('View on %site%', { site: getBlockExploreName(txChainId || chainId) })}: {truncateHash(txHash, 8, 0)}
         </Link>
       )}
     </>
