@@ -145,7 +145,7 @@ export default function Updater(): null {
                   const toastTitle = isStakeType ? t('Staked!') : t('Unstaked!')
                   toastSuccess(
                     toastTitle,
-                    <ToastDescriptionWithTx txHash={destinationTxHash} customizeChainId={steps[pendingStep].chainId}>
+                    <ToastDescriptionWithTx txHash={destinationTxHash} txChainId={steps[pendingStep].chainId}>
                       {isStakeType
                         ? t('Your LP Token have been staked in the Farm!')
                         : t('Your LP Token have been unstaked in the Farm!')}
@@ -155,7 +155,7 @@ export default function Updater(): null {
                   const toastTitle = isStakeType ? 'Stake Error' : 'Unstake Error'
                   toastError(
                     toastTitle,
-                    <ToastDescriptionWithTx txHash={destinationTxHash} customizeChainId={steps[pendingStep].chainId}>
+                    <ToastDescriptionWithTx txHash={destinationTxHash} txChainId={steps[pendingStep].chainId}>
                       <Box>
                         <Text
                           as="span"
