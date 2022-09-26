@@ -1,9 +1,9 @@
-import { useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import merge from 'lodash/merge'
 import pickBy from 'lodash/pickBy'
 import forEach from 'lodash/forEach'
 import { useTranslation } from '@pancakeswap/localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useProvider } from 'wagmi'
 import { poll } from '@ethersproject/web'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useToast } from '@pancakeswap/uikit'
@@ -21,12 +21,12 @@ export function shouldCheck(
   return !fetchedTransactions[chainId]?.[tx.hash]
 }
 
-export default function Updater(): null {
-  const { chainId, provider } = useActiveWeb3React()
+export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
+  const provider = useProvider({ chainId })
   const { t } = useTranslation()
 
   const dispatch = useAppDispatch()
-  const transactions = useAllChainTransactions()
+  const transactions = useAllChainTransactions(chainId)
 
   const { toastError, toastSuccess } = useToast()
 
@@ -89,3 +89,5 @@ export default function Updater(): null {
 
   return null
 }
+
+export default Updater
