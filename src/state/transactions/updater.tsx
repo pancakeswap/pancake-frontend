@@ -85,61 +85,6 @@ export default function Updater(): null {
         getTransaction()
       },
     )
-
-    Object.keys(transactions)
-      .filter((hash) => shouldCheck(fetchedTransactions.current, chainId, transactions[hash]))
-      .forEach((hash) => {
-        const getTransaction = async () => {
-          await provider.getNetwork()
-
-          const params = { transactionHash: provider.formatter.hash(hash, true) }
-
-          poll(
-            async () => {
-              let result = null
-              try {
-                result = await provider.perform('getTransactionReceipt', params)
-              } catch (error) {
-                console.error(`failed to check transaction hash: ${hash}`, error)
-              }
-
-              if (result == null || result.blockHash == null) {
-                return undefined
-              }
-
-              const receipt = provider.formatter.receipt(result)
-
-              dispatch(
-                finalizeTransaction({
-                  chainId,
-                  hash,
-                  receipt: {
-                    blockHash: receipt.blockHash,
-                    blockNumber: receipt.blockNumber,
-                    contractAddress: receipt.contractAddress,
-                    from: receipt.from,
-                    status: receipt.status,
-                    to: receipt.to,
-                    transactionHash: receipt.transactionHash,
-                    transactionIndex: receipt.transactionIndex,
-                  },
-                }),
-              )
-
-              const toast = receipt.status === 1 ? toastSuccess : toastError
-              toast(
-                t('Transaction receipt'),
-                <ToastDescriptionWithTx txHash={receipt.transactionHash} txChainId={chainId} />,
-              )
-              return true
-            },
-            { onceBlock: provider, timeout: 300000 },
-          )
-          merge(fetchedTransactions.current, { [chainId]: { [hash]: transactions[hash] } })
-        }
-
-        getTransaction()
-      })
   }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t])
 
   return null
