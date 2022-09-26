@@ -1,8 +1,6 @@
 import { Duration, getUnixTime, startOfHour, sub } from 'date-fns'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { ChainId } from '@pancakeswap/sdk'
 
 import fetchPoolChartData from 'state/info/queries/pools/chartData'
 import { fetchAllPoolData } from 'state/info/queries/pools/poolData'

@@ -19,6 +19,7 @@ import { useMultiChainPath, useGetChainName } from 'state/info/hooks'
 import { multiChainId, multiChainPaths } from 'state/info/constant'
 import { chains } from 'utils/wagmi'
 import { ChainLogo } from 'components/Logo/ChainLogo'
+import { useWeb3React } from '@pancakeswap/wagmi'
 
 const NavWrapper = styled(Flex)`
   background: ${({ theme }) => theme.colors.gradientCardHeader};
@@ -36,6 +37,7 @@ const InfoNav = () => {
   const { t } = useTranslation()
   const router = useRouter()
   const chainPath = useMultiChainPath()
+  const { account } = useWeb3React()
 
   const isPools = router.pathname === `/info${chainPath && `/[chainName]`}/pools`
   const isTokens = router.pathname === `/info${chainPath && `/[chainName]`}/tokens`
@@ -49,7 +51,7 @@ const InfoNav = () => {
   return (
     <NavWrapper>
       <Flex>
-        <NetworkSwitcher activeIndex={activeIndex} />
+        {!account && <NetworkSwitcher activeIndex={activeIndex} />}
         <Box>
           <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
             <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chainPath}`}>
