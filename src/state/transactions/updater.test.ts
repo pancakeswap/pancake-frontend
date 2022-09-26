@@ -2,9 +2,9 @@ import { shouldCheck } from './updater'
 import { TransactionDetails } from './reducer'
 
 describe('transactions updater', () => {
-  const trxDetail1: TransactionDetails = { hash: 'Ox34567', addedTime: 5, from: '0x787213' }
-  const trxDetail2: TransactionDetails = { hash: 'Ox78903', addedTime: 6, from: '0x787213' }
-  const trxDetail3: TransactionDetails = {
+  const trxDetailInFetchedTransactions: TransactionDetails = { hash: 'Ox34567', addedTime: 5, from: '0x787213' }
+  const trxDetailNotInFetchedTransactions: TransactionDetails = { hash: 'Ox78903', addedTime: 6, from: '0x787213' }
+  const trxDetailWithReceipt: TransactionDetails = {
     hash: 'Ox78903',
     addedTime: 6,
     from: '0x787213',
@@ -20,17 +20,17 @@ describe('transactions updater', () => {
     },
   }
   const fetchedTransactions: { [chainId: number]: { [txHash: string]: TransactionDetails } } = {
-    56: { [trxDetail1.hash]: trxDetail1 },
+    56: { [trxDetailInFetchedTransactions.hash]: trxDetailInFetchedTransactions },
   }
   describe('shouldCheck', () => {
     it('returns false if trx detail in fetchedTransaction', () => {
-      expect(shouldCheck(fetchedTransactions, 56, trxDetail1)).toEqual(false)
+      expect(shouldCheck(fetchedTransactions, 56, trxDetailInFetchedTransactions)).toEqual(false)
     })
     it('returns true if trx detail not in fetchedTransaction', () => {
-      expect(shouldCheck(fetchedTransactions, 56, trxDetail2)).toEqual(true)
+      expect(shouldCheck(fetchedTransactions, 56, trxDetailNotInFetchedTransactions)).toEqual(true)
     })
     it('returns false if trx has receipt', () => {
-      expect(shouldCheck(fetchedTransactions, 56, trxDetail3)).toEqual(false)
+      expect(shouldCheck(fetchedTransactions, 56, trxDetailWithReceipt)).toEqual(false)
     })
   })
 })
