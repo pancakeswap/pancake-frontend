@@ -19,18 +19,18 @@ describe('transactions updater', () => {
       transactionIndex: 5,
     },
   }
-  const fetchedTransactions: { [chainId: number]: { [txHash: string]: TransactionDetails } } = {
-    56: { [trxDetailInFetchedTransactions.hash]: trxDetailInFetchedTransactions },
+  const fetchedTransactions: { [txHash: string]: TransactionDetails } = {
+    [trxDetailInFetchedTransactions.hash]: trxDetailInFetchedTransactions,
   }
   describe('shouldCheck', () => {
     it('returns false if trx detail in fetchedTransaction', () => {
-      expect(shouldCheck(fetchedTransactions, 56, trxDetailInFetchedTransactions)).toEqual(false)
+      expect(shouldCheck(fetchedTransactions, trxDetailInFetchedTransactions)).toEqual(false)
     })
     it('returns true if trx detail not in fetchedTransaction', () => {
-      expect(shouldCheck(fetchedTransactions, 56, trxDetailNotInFetchedTransactions)).toEqual(true)
+      expect(shouldCheck(fetchedTransactions, trxDetailNotInFetchedTransactions)).toEqual(true)
     })
     it('returns false if trx has receipt', () => {
-      expect(shouldCheck(fetchedTransactions, 56, trxDetailWithReceipt)).toEqual(false)
+      expect(shouldCheck(fetchedTransactions, trxDetailWithReceipt)).toEqual(false)
     })
   })
 })

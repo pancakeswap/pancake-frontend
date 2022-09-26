@@ -13,12 +13,11 @@ import { useAllChainTransactions } from './hooks'
 import { TransactionDetails } from './reducer'
 
 export function shouldCheck(
-  fetchedTransactions: { [chainId: number]: { [txHash: string]: TransactionDetails } },
-  chainId: number,
+  fetchedTransactions: { [txHash: string]: TransactionDetails },
   tx: TransactionDetails,
 ): boolean {
   if (tx.receipt) return false
-  return !fetchedTransactions[chainId]?.[tx.hash]
+  return !fetchedTransactions[tx.hash]
 }
 
 export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
@@ -30,13 +29,13 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
 
   const { toastError, toastSuccess } = useToast()
 
-  const fetchedTransactions = useRef<{ [chainId: number]: { [txHash: string]: TransactionDetails } }>({})
+  const fetchedTransactions = useRef<{ [txHash: string]: TransactionDetails }>({})
 
   useEffect(() => {
     if (!chainId || !provider) return
 
     forEach(
-      pickBy(transactions, (transaction) => shouldCheck(fetchedTransactions.current, chainId, transaction)),
+      pickBy(transactions, (transaction) => shouldCheck(fetchedTransactions.current, transaction)),
       (transaction) => {
         const getTransaction = async () => {
           await provider.getNetwork()
@@ -79,7 +78,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
             },
             { onceBlock: provider },
           )
-          merge(fetchedTransactions.current, { [chainId]: { [transaction.hash]: transactions[transaction.hash] } })
+          merge(fetchedTransactions.current, { [transaction.hash]: transactions[transaction.hash] })
         }
 
         getTransaction()
