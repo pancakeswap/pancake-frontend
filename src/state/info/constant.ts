@@ -14,6 +14,11 @@ export const multiChainId = {
   ETH: ChainId.ETHEREUM,
 }
 
+export const multiChainPaths = {
+  [ChainId.BSC]: '',
+  [ChainId.ETHEREUM]: '/eth',
+}
+
 export const multiChainQueryClient = {
   BSC: infoClient,
   ETH: infoClientETH,

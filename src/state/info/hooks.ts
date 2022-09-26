@@ -1,6 +1,8 @@
 import { Duration, getUnixTime, startOfHour, sub } from 'date-fns'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { ChainId } from '@pancakeswap/sdk'
 
 import fetchPoolChartData from 'state/info/queries/pools/chartData'
 import { fetchAllPoolData } from 'state/info/queries/pools/poolData'
@@ -180,42 +182,7 @@ export const useGetChainName = () => {
   }, [getChain])
 
   return result
-  // const router = useRouter()
-  // const [chain, setChain] = useState<'ETH' | 'BSC'>('BSC')
-  // const { chainId } = useActiveWeb3React()
-  // useEffect(() => {
-  //   console.log('?????')
-  //   const { chainName } = router.query
-  //   if (ChainId.ETHEREUM === chainId || chainName === 'eth') setChain('ETH')
-  //   else setChain('BSC')
-  // }, [])
-  // return chain
 }
-
-// export const useGetChainName = () => {
-//   const router = useRouter()
-//   const [name, setName] = useState<MultiChianName | null>(() => 'BSC')
-//   const { chainName } = router.query
-//   const { chainId } = useActiveWeb3React()
-//   const result = useMemo(() => name, [name])
-//   useEffect(() => {
-//     if (ChainId.ETHEREUM === chainId || chainName === 'eth') {
-//       setName('ETH')
-//     } else setName('BSC')
-//   }, [])
-
-//   return result
-//   // const router = useRouter()
-//   // const [chain, setChain] = useState<'ETH' | 'BSC'>('BSC')
-//   // const { chainId } = useActiveWeb3React()
-//   // useEffect(() => {
-//   //   console.log('?????')
-//   //   const { chainName } = router.query
-//   //   if (ChainId.ETHEREUM === chainId || chainName === 'eth') setChain('ETH')
-//   //   else setChain('BSC')
-//   // }, [])
-//   // return chain
-// }
 
 export const useMultiChainPath = () => {
   const router = useRouter()
