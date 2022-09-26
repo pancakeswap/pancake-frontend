@@ -148,14 +148,14 @@ const TokenTable: React.FC<
       if (tokenDatas.length % maxItems === 0) {
         extraPages = 0
       }
-      setMaxPage(Math.floor(tokenDatas.filter((d) => d.exists && d.name !== 'unknown').length / maxItems) + extraPages)
+      setMaxPage(Math.floor(tokenDatas.length / maxItems) + extraPages)
     }
   }, [maxItems, tokenDatas])
 
   const sortedTokens = useMemo(() => {
     return tokenDatas
       ? orderBy(
-          tokenDatas.filter((d) => d.exists && d.name !== 'unknown'),
+          tokenDatas,
           (tokenData) => tokenData[sortField as keyof TokenData],
           sortDirection ? 'desc' : 'asc',
         ).slice(maxItems * (page - 1), page * maxItems)
