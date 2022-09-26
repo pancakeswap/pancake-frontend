@@ -25,9 +25,7 @@ export class Pair {
   private readonly tokenAmounts: [CurrencyAmount<Coin>, CurrencyAmount<Coin>]
 
   public static sortToken(tokenA: Coin, tokenB: Coin): [Coin, Coin] {
-    // TODO: invert
-    // const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // it does safety checks
-    const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenB, tokenA] : [tokenA, tokenB]
+    const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // it does safety checks
     return [token0, token1]
   }
 
