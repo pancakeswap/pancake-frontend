@@ -19,12 +19,12 @@ const queryFn = ({ queryKey: [{ networkName, address }] }: QueryFunctionArgs<typ
 }
 
 export function useAccountResources<TData = unknown>({
-  cacheTime = 0,
+  cacheTime,
   networkName: _networkName,
-  keepPreviousData = true,
+  keepPreviousData,
   address,
   enabled = true,
-  staleTime,
+  staleTime = 1_000,
   suspense,
   watch = false,
   onError,

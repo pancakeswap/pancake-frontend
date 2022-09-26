@@ -5,7 +5,7 @@ const replaceBrowserHistory = (key: string, value?: string | number | null) => {
   } else {
     url.searchParams.set(key, String(value))
   }
-  window.history.replaceState({}, null, url)
+  window.history.replaceState({}, '', url)
 }
 
 export default replaceBrowserHistory

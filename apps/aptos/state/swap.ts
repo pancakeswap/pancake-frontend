@@ -1,6 +1,13 @@
-import { createReducer, createAction } from '@reduxjs/toolkit'
+import { APTOS_COIN } from '@pancakeswap/awgmi'
+import { createAction, createReducer } from '@reduxjs/toolkit'
+import { TxnBuilderTypes } from 'aptos'
+import { USDC_DEVNET } from 'config/coins'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { atom } from 'jotai'
 import { useReducerAtom } from 'jotai/utils'
+import { useRouter } from 'next/router'
+import { ParsedUrlQuery } from 'querystring'
+import { useEffect, useState } from 'react'
 
 export const selectCurrency = createAction<{ field: Field; currencyId: string }>('swap/selectCurrency')
 export const switchCurrencies = createAction<void>('swap/switchCurrencies')
@@ -10,9 +17,7 @@ export const replaceSwapState = createAction<{
   typedValue: string
   inputCurrencyId?: string
   outputCurrencyId?: string
-  recipient: string | null
 }>('swap/replaceSwapState')
-export const setRecipient = createAction<{ recipient: string | null }>('swap/setRecipient')
 
 export enum Field {
   INPUT = 'INPUT',
@@ -28,8 +33,6 @@ export interface SwapState {
   readonly [Field.OUTPUT]: {
     readonly currencyId: string | undefined
   }
-  // the typed recipient address, or null if swap should go to sender
-  readonly recipient: string | null
 }
 
 const initialState: SwapState = {
@@ -41,7 +44,6 @@ const initialState: SwapState = {
   [Field.OUTPUT]: {
     currencyId: '',
   },
-  recipient: null,
 }
 
 const swapStateAtom = atom(initialState)
@@ -52,22 +54,18 @@ export const useSwapState = () => {
 
 const reducer = createReducer<SwapState>(initialState, (builder) =>
   builder
-    .addCase(
-      replaceSwapState,
-      (state, { payload: { typedValue, recipient, field, inputCurrencyId, outputCurrencyId } }) => {
-        return {
-          [Field.INPUT]: {
-            currencyId: inputCurrencyId,
-          },
-          [Field.OUTPUT]: {
-            currencyId: outputCurrencyId,
-          },
-          independentField: field,
-          typedValue,
-          recipient,
-        }
-      },
-    )
+    .addCase(replaceSwapState, (state, { payload: { typedValue, field, inputCurrencyId, outputCurrencyId } }) => {
+      return {
+        [Field.INPUT]: {
+          currencyId: inputCurrencyId,
+        },
+        [Field.OUTPUT]: {
+          currencyId: outputCurrencyId,
+        },
+        independentField: field,
+        typedValue,
+      }
+    })
     .addCase(selectCurrency, (state, { payload: { currencyId, field } }) => {
       const otherField = field === Field.INPUT ? Field.OUTPUT : Field.INPUT
       if (currencyId === state[otherField].currencyId) {
@@ -99,8 +97,86 @@ const reducer = createReducer<SwapState>(initialState, (builder) =>
         independentField: field,
         typedValue,
       }
-    })
-    .addCase(setRecipient, (state, { payload: { recipient } }) => {
-      state.recipient = recipient
     }),
 )
+
+function parseCurrencyFromURLParameter(urlParam: any): string {
+  if (typeof urlParam === 'string') {
+    let valid
+    try {
+      TxnBuilderTypes.StructTag.fromString(decodeURIComponent(urlParam))
+      valid = true
+    } catch (error) {
+      //
+    }
+    console.log(valid, 'valid', decodeURIComponent(urlParam))
+    if (valid) return decodeURIComponent(urlParam)
+    if (urlParam.toUpperCase() === 'APT') return APTOS_COIN
+    if (valid === false) return APTOS_COIN
+  }
+  return ''
+}
+
+function parseTokenAmountURLParameter(urlParam: any): string {
+  return typeof urlParam === 'string' && !Number.isNaN(parseFloat(urlParam)) ? urlParam : ''
+}
+
+function parseIndependentFieldURLParameter(urlParam: any): Field {
+  return typeof urlParam === 'string' && urlParam.toLowerCase() === 'output' ? Field.OUTPUT : Field.INPUT
+}
+
+export function queryParametersToSwapState(
+  parsedQs: ParsedUrlQuery,
+  nativeSymbol?: string,
+  defaultOutputCurrency?: string,
+): SwapState {
+  let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency) || nativeSymbol
+  let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency) || defaultOutputCurrency
+  if (inputCurrency === outputCurrency) {
+    if (typeof parsedQs.outputCurrency === 'string') {
+      inputCurrency = ''
+    } else {
+      outputCurrency = ''
+    }
+  }
+
+  return {
+    [Field.INPUT]: {
+      currencyId: inputCurrency,
+    },
+    [Field.OUTPUT]: {
+      currencyId: outputCurrency,
+    },
+    typedValue: parseTokenAmountURLParameter(parsedQs.exactAmount),
+    independentField: parseIndependentFieldURLParameter(parsedQs.exactField),
+  }
+}
+
+export function useDefaultsFromURLSearch():
+  | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
+  | undefined {
+  const { chainId } = useActiveWeb3React()
+  const [, dispatch] = useSwapState()
+  const { query } = useRouter()
+  const [result, setResult] = useState<
+    { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
+  >()
+
+  useEffect(() => {
+    if (!chainId) return
+    const parsed = queryParametersToSwapState(query, APTOS_COIN, USDC_DEVNET.address)
+
+    dispatch(
+      replaceSwapState({
+        typedValue: parsed.typedValue,
+        field: parsed.independentField,
+        inputCurrencyId: parsed[Field.INPUT].currencyId,
+        outputCurrencyId: parsed[Field.OUTPUT].currencyId,
+      }),
+    )
+
+    setResult({ inputCurrencyId: parsed[Field.INPUT].currencyId, outputCurrencyId: parsed[Field.OUTPUT].currencyId })
+  }, [dispatch, chainId, query])
+
+  return result
+}

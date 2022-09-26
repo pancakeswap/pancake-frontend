@@ -27,7 +27,7 @@ const queryFn = ({ queryKey: [{ address, networkName, coin }] }: QueryFunctionAr
 
 export function useBalance<TData = FetchBalanceResult>({
   address,
-  cacheTime,
+  cacheTime = 1_000,
   networkName,
   enabled = true,
   keepPreviousData = true,

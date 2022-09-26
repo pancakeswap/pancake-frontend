@@ -4,21 +4,21 @@ import { SimulateTransactionError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
 import { AutoColumn, Card, RowBetween, Skeleton, Swap as SwapUI, useModal } from '@pancakeswap/uikit'
+import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
 import confirmPriceImpactWithoutFee from 'components/Swap/confirmPriceImpactWithoutFee'
 import ConfirmSwapModal from 'components/Swap/ConfirmSwapModal'
 import { TestTokens } from 'components/TestTokens'
-import { USDC_DEVNET } from 'config/coins'
 import { BIPS_BASE } from 'config/constants/exchange'
 import { useCurrencyBalance } from 'hooks/Balances'
 import { useCurrency } from 'hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
-import useNativeCurrency from 'hooks/useNativeCurrency'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Field, replaceSwapState, selectCurrency, switchCurrencies, typeInput, useSwapState } from 'state/swap'
+import { useCallback, useMemo, useState } from 'react'
+import { Field, selectCurrency, switchCurrencies, typeInput, useDefaultsFromURLSearch, useSwapState } from 'state/swap'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useUserSlippage } from 'state/user'
+import currencyId from 'utils/currencyId'
 import {
   basisPointsToPercent,
   computeSlippageAdjustedAmounts,
@@ -42,7 +42,6 @@ const {
 const isExpertMode = false
 
 const SwapPage = () => {
-  const native = useNativeCurrency()
   const [
     {
       typedValue,
@@ -53,19 +52,7 @@ const SwapPage = () => {
     dispatch,
   ] = useSwapState()
 
-  useEffect(() => {
-    dispatch(
-      replaceSwapState({
-        field: Field.INPUT,
-        recipient: null,
-        typedValue: '',
-        inputCurrencyId: native.address,
-        outputCurrencyId: USDC_DEVNET.address,
-      }),
-    )
-    // ignore dispatch for now cause it re-render on fast refresh
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  useDefaultsFromURLSearch()
 
   const { t } = useTranslation()
 
@@ -216,6 +203,28 @@ const SwapPage = () => {
       })
   }, [priceImpactWithoutFee, t, swapCallback, tradeToConfirm])
 
+  const handleInputSelect = useCallback(
+    (currency: Currency) => {
+      dispatch(selectCurrency({ field: Field.INPUT, currencyId: currency.wrapped.address }))
+      replaceBrowserHistory('inputCurrency', currencyId(currency))
+    },
+    [dispatch],
+  )
+
+  const handleOutputSelect = useCallback(
+    (currency: Currency) => {
+      dispatch(selectCurrency({ field: Field.OUTPUT, currencyId: currency.wrapped.address }))
+      replaceBrowserHistory('outputCurrency', currencyId(currency))
+    },
+    [dispatch],
+  )
+
+  const handleSwitch = useCallback(() => {
+    dispatch(switchCurrencies())
+    replaceBrowserHistory('inputCurrency', outputCurrencyId)
+    replaceBrowserHistory('outputCurrency', inputCurrencyId)
+  }, [dispatch, inputCurrencyId, outputCurrencyId])
+
   const handleAcceptChanges = useCallback(() => {
     setSwapState({ tradeToConfirm: trade ?? undefined, swapErrorMessage, txHash, attemptingTxn })
   }, [attemptingTxn, swapErrorMessage, trade, txHash, setSwapState])
@@ -298,7 +307,7 @@ const SwapPage = () => {
         />
         <AutoColumn gap="sm" p="16px">
           <CurrencyInputPanel
-            onCurrencySelect={(c) => dispatch(selectCurrency({ field: Field.INPUT, currencyId: c.wrapped.address }))}
+            onCurrencySelect={handleInputSelect}
             id="swap-currency-input"
             currency={inputCurrency}
             otherCurrency={outputCurrency}
@@ -311,13 +320,13 @@ const SwapPage = () => {
           <AtomBox width="full" textAlign="center">
             <SwitchButton
               onClick={() => {
-                dispatch(switchCurrencies())
+                handleSwitch()
               }}
             />
           </AtomBox>
           <CurrencyInputPanel
             showMaxButton={false}
-            onCurrencySelect={(c) => dispatch(selectCurrency({ field: Field.OUTPUT, currencyId: c.wrapped.address }))}
+            onCurrencySelect={handleOutputSelect}
             id="swap-currency-output"
             value={formattedAmounts[Field.OUTPUT]}
             label={independentField === Field.INPUT && trade ? t('To (estimated)') : t('to')}

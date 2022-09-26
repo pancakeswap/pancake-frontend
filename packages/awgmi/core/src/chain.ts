@@ -26,7 +26,7 @@ export const devnet: Chain = {
   name: 'Devnet',
   network: 'devnet',
   rpcUrls: {
-    default: 'https://fullnode.devnet.aptoslabs.com/v1',
+    default: 'https://aptos-devnet.nodereal.io/v1',
   },
   blockExplorers: {
     default: {

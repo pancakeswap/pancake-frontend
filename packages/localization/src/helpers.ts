@@ -1,6 +1,6 @@
 import { EN } from './config/languages'
 
-const publicUrl = process.env.PUBLIC_URL || ''
+const publicUrl = process.env.NEXT_PUBLIC_APEX_URL || ''
 
 export const LS_KEY = 'pancakeswap_language'
 

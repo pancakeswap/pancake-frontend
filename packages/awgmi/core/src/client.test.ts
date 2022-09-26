@@ -134,9 +134,7 @@ describe('createClient', () => {
         const client = createClient({
           provider,
         })
-        expect(client.provider).toMatchInlineSnapshot(
-          '"<AptosProvider url={https://fullnode.devnet.aptoslabs.com/v1} />"',
-        )
+        expect(client.provider).toMatchInlineSnapshot('"<AptosProvider url={https://aptos-devnet.nodereal.io/v1} />"')
       })
     })
 
