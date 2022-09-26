@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { TabMenu, Tab } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
 
 export enum SwapType {
   SWAP,
@@ -7,6 +8,7 @@ export enum SwapType {
 }
 
 export default function SwapTab({ children, showStable }) {
+  const { t } = useTranslation()
   const [swapTypeState, setSwapType] = useState(SwapType.SWAP)
 
   if (showStable) {
@@ -17,8 +19,8 @@ export default function SwapTab({ children, showStable }) {
           activeIndex={swapTypeState}
           onItemClick={() => setSwapType((state) => (state === SwapType.SWAP ? SwapType.STABLE_SWAP : SwapType.SWAP))}
         >
-          <Tab>Swap</Tab>
-          <Tab>StableSwap</Tab>
+          <Tab>{t('Swap')}</Tab>
+          <Tab>{t('StableSwap')}</Tab>
         </TabMenu>
         {children(swapTypeState)}
       </>
