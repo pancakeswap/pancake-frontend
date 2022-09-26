@@ -133,7 +133,7 @@ export default function Updater(): null {
               )
               return true
             },
-            { onceBlock: provider, timeout: 300000, interval: 1000 },
+            { onceBlock: provider, timeout: 300000 },
           )
           merge(fetchedTransactions.current, { [chainId]: { [hash]: transactions[hash] } })
         }
