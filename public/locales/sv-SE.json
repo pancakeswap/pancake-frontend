@@ -721,7 +721,7 @@
   "So long as you are whitelisted, you’ll be able to participate in each new auction.": "Så länge du är vitlistad kan du delta i varje ny auktion.",
   "If two or more projects bid the exact same CAKE amount and are contending for a spot in the winning bidders, their bids may be invalidated.": "Om två eller flera projekt lägger exakta samma antal CAKE-tokens och konkurrerar om det vinnande budet kan deras bud komma att ogiltigförklaras.",
   "Community Farm Auction": "Auktionering av communityfarm",
-  "Each week, qualifying projects can bid CAKE for the right to host a 10-day Farm on PancakeSwap.": "Each week, qualifying projects can bid CAKE for the right to host a 10-day Farm on PancakeSwap.",
+  "Each week, qualifying projects can bid CAKE for the right to host a 10-day Farm on PancakeSwap.": "Varje vecka kan giltiga projekt lägga bud med CAKE-tokens gällande rätten att hålla en 10-dagarsfarm på PancakeSwap.",
   "Apply for a Farm/Pool": "Ansök om en farm/pool",
   "Community Auctions": "Communityauktioner",
   "FAQs": "Vanliga frågor",
@@ -1943,10 +1943,10 @@
   "The estimated boost multiplier is calculated using live data. The actual boost multiplier may change upon activation.": "Den uppskattade förbättringsmultiplikatorn beräknas med hjälp av realtidsdata. Den faktiska förbättringsmultiplikatorn kan komma att ändras vid aktivering.",
   "locked for": "låst i",
   "My Duration": "Min varaktighet",
-  "Weeks": "Weeks",
-  "Boost multiplier calculation does not include profit from CAKE staking pool": "Boost multiplier calculation does not include profit from CAKE staking pool",
-  "Stable LP": "Stable LP",
-  "You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!": "You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!",
-  "Trade stablecoins in StableSwap with lower slippage and trading fees!": "Trade stablecoins in StableSwap with lower slippage and trading fees!",
-  "StableSwap provides better rates and lower fees for pairs with highly correlated prices": "StableSwap provides better rates and lower fees for pairs with highly correlated prices"
+  "Weeks": "Veckor",
+  "Boost multiplier calculation does not include profit from CAKE staking pool": "I beräkningen av förbättringsmultiplikatorn ingår inte vinst från CAKE-insatspoolen",
+  "Stable LP": "Stabil LP",
+  "You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!": "Du vann poäng och prestationer för att ha deltagit i vår tvåårsresa. Vi tar och firar vår tvåårsdag!",
+  "Trade stablecoins in StableSwap with lower slippage and trading fees!": "Handla med stablecoins i StableSwap med lägre prisförändringar och handlingsavgifter!",
+  "StableSwap provides better rates and lower fees for pairs with highly correlated prices": "StableSwap ger bättre priser och lägre avgifter för par med högt korrelerade priser"
 }
