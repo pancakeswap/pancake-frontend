@@ -1,6 +1,13 @@
-import { ArrowForwardIcon, Button, Heading, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  ArrowForwardIcon,
+  Button,
+  Heading,
+  Skeleton,
+  Text,
+  useMatchBreakpoints,
+  NextLinkFromReactRouter,
+} from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { NextLinkFromReactRouter } from 'components/NextLink'
 import { FetchStatus, LotteryStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'

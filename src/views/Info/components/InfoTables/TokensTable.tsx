@@ -1,8 +1,16 @@
 import { useState, useMemo, useCallback, useEffect, Fragment } from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Box, Skeleton, ArrowBackIcon, ArrowForwardIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  Text,
+  Flex,
+  Box,
+  Skeleton,
+  ArrowBackIcon,
+  ArrowForwardIcon,
+  useMatchBreakpoints,
+  NextLinkFromReactRouter,
+} from '@pancakeswap/uikit'
 import { TokenData } from 'state/info/types'
-import { NextLinkFromReactRouter } from 'components/NextLink'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import Percent from 'views/Info/components/Percent'

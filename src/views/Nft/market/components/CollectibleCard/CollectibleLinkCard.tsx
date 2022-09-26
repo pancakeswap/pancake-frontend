@@ -1,4 +1,4 @@
-import { NextLinkFromReactRouter } from 'components/NextLink'
+import { NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import { StyledCollectibleCard } from './styles'
 import CardBody from './CardBody'
 import { CollectibleCardProps } from './types'

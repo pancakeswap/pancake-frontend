@@ -19,8 +19,8 @@ import {
   Link,
   FlexGap,
   Balance,
+  NextLinkFromReactRouter as RouterLink,
 } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter as RouterLink } from 'components/NextLink'
 import { useWeb3React } from '@pancakeswap/wagmi'
 
 import { useTranslation } from '@pancakeswap/localization'

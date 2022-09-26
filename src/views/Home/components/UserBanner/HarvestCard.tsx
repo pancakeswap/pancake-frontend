@@ -10,9 +10,9 @@ import {
   Text,
   useToast,
   Balance,
+  NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { NextLinkFromReactRouter } from 'components/NextLink'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useMasterchef } from 'hooks/useContract'

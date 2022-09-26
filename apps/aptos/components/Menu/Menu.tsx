@@ -8,10 +8,10 @@ import {
   MenuItemsType,
   SwapFillIcon,
   SwapIcon,
+  NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import { useTheme } from 'next-themes'
-import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import { ReactNode, useMemo } from 'react'
 import { footerLinks } from './footerConfig'
@@ -34,7 +34,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     items: [
       {
         label: t('Swap'),
-        href: '/swap',
+        href: '/',
       },
       {
         label: t('Liquidity'),
@@ -105,12 +105,8 @@ export const Menu = ({ children }: { children: ReactNode }) => {
 
   return (
     <UIMenu
-      linkComponent={({ children: linkChildren, className, ...linkProps }) => {
-        return (
-          <NextLink {...linkProps} prefetch={false} passHref>
-            <a className={className}>{linkChildren}</a>
-          </NextLink>
-        )
+      linkComponent={(linkProps) => {
+        return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
       }}
       links={menuItems}
       activeItem={activeMenuItem?.href}

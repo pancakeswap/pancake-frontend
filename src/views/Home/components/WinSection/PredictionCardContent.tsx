@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { ArrowForwardIcon, Button, Flex, Heading, Skeleton, Text } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter } from 'components/NextLink'
+import { ArrowForwardIcon, Button, Flex, Heading, Skeleton, Text, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatLocalisedCompactNumber } from '@pancakeswap/utils/formatBalance'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'

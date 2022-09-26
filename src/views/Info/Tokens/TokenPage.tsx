@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 import { useMemo } from 'react'
-import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Duration } from 'date-fns'
 import styled from 'styled-components'
 import {
@@ -16,6 +15,7 @@ import {
   Spinner,
   Image,
   useMatchBreakpoints,
+  NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { getBlockExploreLink } from 'utils'

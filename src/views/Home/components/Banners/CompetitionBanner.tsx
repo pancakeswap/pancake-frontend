@@ -1,5 +1,4 @@
-import { Flex, ArrowForwardIcon, Button, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter } from 'components/NextLink'
+import { Flex, ArrowForwardIcon, Button, Text, useMatchBreakpoints, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
 import { memo } from 'react'

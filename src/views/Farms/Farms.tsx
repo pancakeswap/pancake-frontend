@@ -22,8 +22,8 @@ import {
   OptionProps,
   FlexLayout,
   PageHeader,
+  NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter } from 'components/NextLink'
 import styled from 'styled-components'
 import Page from 'components/Layout/Page'
 import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'

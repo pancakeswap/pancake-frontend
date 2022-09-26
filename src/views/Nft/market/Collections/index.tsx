@@ -17,11 +17,11 @@ import {
   PageHeader,
   Select,
   OptionProps,
+  NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
 import useSWRImmutable from 'swr/immutable'
 import orderBy from 'lodash/orderBy'
 import { getLeastMostPriceInCollection } from 'state/nftMarket/helpers'
-import { NextLinkFromReactRouter } from 'components/NextLink'
 import { ViewMode } from 'state/user/actions'
 import { Collection } from 'state/nftMarket/types'
 import styled from 'styled-components'

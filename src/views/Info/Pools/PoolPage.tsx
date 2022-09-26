@@ -14,9 +14,9 @@ import {
   Text,
   useTooltip,
   useMatchBreakpoints,
+  NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from '@pancakeswap/localization'
 import { useState } from 'react'
 import { usePoolChartData, usePoolDatas, usePoolTransactions } from 'state/info/hooks'

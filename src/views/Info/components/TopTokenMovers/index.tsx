@@ -1,7 +1,6 @@
 import { useMemo, useRef, useEffect } from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Box, Card } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter } from 'components/NextLink'
+import { Text, Flex, Box, Card, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import { useAllTokenData } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
