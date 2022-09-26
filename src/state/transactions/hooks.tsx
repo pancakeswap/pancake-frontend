@@ -165,9 +165,9 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 
 // calculate pending transactions
 export function usePendingTransactions(): { hasPendingTransactions: boolean; pendingNumber: number } {
-  const allTransactions = useAllActiveChainTransactions()
+  const allTransactions = useAllTransactions()
   const sortedRecentTransactions = useMemo(() => {
-    const txs = Object.values(allTransactions)
+    const txs = Object.values(allTransactions).flatMap((trxObjects) => Object.values(trxObjects))
     return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
   }, [allTransactions])
 
