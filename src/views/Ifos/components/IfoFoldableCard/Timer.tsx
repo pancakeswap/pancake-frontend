@@ -53,22 +53,12 @@ export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoD
                   <Text color="secondary">{t('h')}</Text>
                 </>
               ) : null}
-              {timeUntil.minutes !== 0 ? (
-                <>
-                  <Heading color="secondary" scale="lg">
-                    {timeUntil.minutes}
-                  </Heading>
-                  <Text color="secondary">{t('m')}</Text>
-                </>
-              ) : null}
-              {!timeUntil.days && !timeUntil.hours && timeUntil.minutes === 0 ? (
-                <>
-                  <Heading color="secondary" scale="lg">
-                    {'< 1'}
-                  </Heading>
-                  <Text color="secondary">{t('m')}</Text>
-                </>
-              ) : null}
+              <>
+                <Heading color="secondary" scale="lg">
+                  {!timeUntil.days && !timeUntil.hours && timeUntil.minutes === 0 ? '< 1' : timeUntil.minutes}
+                </Heading>
+                <Text color="secondary">{t('m')}</Text>
+              </>
             </FlexGap>
           </FlexGap>
           <TimerIcon ml="4px" color="secondary" />
@@ -129,18 +119,12 @@ const LiveTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) 
                   <Text color="white">{t('h')}</Text>
                 </>
               ) : null}
-              {timeUntil.minutes !== 0 ? (
-                <>
-                  <GradientText scale="lg">{timeUntil.minutes}</GradientText>
-                  <Text color="white">{t('m')}</Text>
-                </>
-              ) : null}
-              {!timeUntil.days && !timeUntil.hours && timeUntil.minutes === 0 ? (
-                <>
-                  <GradientText scale="lg">{'< 1'}</GradientText>
-                  <Text color="white">{t('m')}</Text>
-                </>
-              ) : null}
+              <>
+                <GradientText scale="lg">
+                  {!timeUntil.days && !timeUntil.hours && timeUntil.minutes === 0 ? '< 1' : timeUntil.minutes}
+                </GradientText>
+                <Text color="white">{t('m')}</Text>
+              </>
             </FlexGap>
           </FlexGap>
           <TimerIcon ml="4px" color="white" />
