@@ -1,6 +1,6 @@
 import { formatUnits } from '@ethersproject/units'
 import { fetchCoin } from '../coins/coin'
-import { wrapCoinStoreTypeTag } from '../coins/coinStore'
+import { CoinStoreResult, wrapCoinStoreTypeTag } from '../coins/coinStore'
 import { APTOS_COIN } from '../constants'
 import { getProvider } from '../provider'
 
@@ -25,7 +25,7 @@ export async function fetchBalance({ address, networkName, coin }: FetchBalanceA
 
   const resource = await provider.getAccountResource(address, wrapCoinStoreTypeTag(coin || APTOS_COIN))
 
-  const { value } = (resource.data as any).coin
+  const { value } = (resource.data as CoinStoreResult).coin
 
   const { decimals, symbol } = await fetchCoin({ networkName, coin })
 

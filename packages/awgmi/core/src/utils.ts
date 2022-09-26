@@ -1,9 +1,7 @@
 import { TxnBuilderTypes } from 'aptos'
-import { APTOS_COIN } from './constants'
 import { Address } from './types'
 
-export const isAddress = (addr: string): addr is Address => {
-  if (addr === APTOS_COIN) return true
+export const isAccountAddress = (addr: string): addr is Address => {
   try {
     return Boolean(
       addr.startsWith('0x') && TxnBuilderTypes.AccountAddress.fromHex(addr) ? (addr as Address) : undefined,
@@ -13,6 +11,7 @@ export const isAddress = (addr: string): addr is Address => {
   }
 }
 
+// TODO: better naming
 export const unwrapStrutTagTypeFromString = (type: string) => {
   const bracketsRegexp = /(?<=<).+?(>)/g
   const match = bracketsRegexp.exec(type)
@@ -22,6 +21,7 @@ export const unwrapStrutTagTypeFromString = (type: string) => {
   return undefined
 }
 
+// TODO: better naming
 export const unwrapStrutTagTypeArgFromString = (type: string) => {
   const bracketsRegexp = /(?<=<)([^<>]+)(?=>)/g
   const match = bracketsRegexp.exec(type)

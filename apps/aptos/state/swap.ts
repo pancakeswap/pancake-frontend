@@ -109,7 +109,6 @@ function parseCurrencyFromURLParameter(urlParam: any): string {
     } catch (error) {
       //
     }
-    console.log(valid, 'valid', decodeURIComponent(urlParam))
     if (valid) return decodeURIComponent(urlParam)
     if (urlParam.toUpperCase() === 'APT') return APTOS_COIN
     if (valid === false) return APTOS_COIN

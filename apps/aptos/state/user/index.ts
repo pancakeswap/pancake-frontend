@@ -1,5 +1,4 @@
 export * from './audioPlay'
 export * from './slippage'
 export * from './addedTokens'
-export * from './addedPairs'
 export * from './farmViewMode'

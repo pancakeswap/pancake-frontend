@@ -17,7 +17,7 @@ import { useCurrency } from 'hooks/Tokens'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 // import { useRouter } from 'next/router'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { usePairAdder, useUserSlippage } from 'state/user'
+import { useUserSlippage } from 'state/user'
 import { useIsExpertMode } from 'state/user/expertMode'
 
 /**
@@ -44,7 +44,6 @@ export default function AddLiquidity() {
 
   const { account, chainId } = useActiveWeb3React()
 
-  const addPair = usePairAdder()
   const expertMode = useIsExpertMode()
 
   const { t } = useTranslation()
@@ -158,10 +157,6 @@ export default function AddLiquidity() {
             },
             type: 'add-liquidity',
           })
-
-          if (pair) {
-            addPair(pair)
-          }
         })
       })
       .catch((err) => {

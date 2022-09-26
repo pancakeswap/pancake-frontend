@@ -18,9 +18,6 @@ interface LPPairsResponse {
 export default function useLPPairsHaveBalance(): LPPairsResponse {
   const { account } = useAccount()
 
-  //  Philip TODO: pairs saved by users
-  //  const savedSerializedPairs = useSelector<AppState, AppState['user']['pairs']>(({ user: { pairs } }) => pairs)
-
   const { data: v2PairsBalances, isFetching } = useAccountResources({
     watch: true,
     address: account?.address,

@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { Coin, Currency, CurrencyAmount, Token } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount, useAccountResources, APTOS_COIN } from '@pancakeswap/awgmi'
-import { fetchCoin } from '@pancakeswap/awgmi/core'
+import { useAccount, useAccountResources, APTOS_COIN, useCoin } from '@pancakeswap/awgmi'
+import { fetchCoin, coinStoreResourcesFilter } from '@pancakeswap/awgmi/core'
 import { useAtomValue } from 'jotai'
 import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'
@@ -27,15 +27,17 @@ export function useToken(coinId?: string) {
   const { networkName } = useActiveNetwork()
   const chainId = useActiveChainId()
   const tokens = useAllTokens()
-
   const token = coinId && tokens[coinId]
 
-  return useSWRImmutable(coinId && networkName && chainId ? [coinId, networkName, chainId, token] : null, async () => {
-    if (token) return token
-    if (!chainId || !coinId) return undefined
-    const { decimals, symbol, name } = await fetchCoin({ networkName, coin: coinId })
-
-    return new Coin(chainId, coinId, decimals, symbol, name)
+  return useCoin({
+    coin: coinId,
+    networkName,
+    select: (d) => {
+      const { decimals, symbol, name } = d
+      if (token) return token
+      if (!coinId) return undefined
+      return new Coin(chainId, coinId, decimals, symbol, name)
+    },
   })
 }
 
@@ -116,7 +118,7 @@ export function useAllTokenBalances() {
     watch: true,
     select: (data) => {
       const coinStore = data
-        .filter((d) => d.type.includes(coinStoreTypeHead))
+        .filter(coinStoreResourcesFilter)
         .map((coin) => {
           const address = coin.type.split(coinStoreTypeHead)[1].split('>')[0]
 

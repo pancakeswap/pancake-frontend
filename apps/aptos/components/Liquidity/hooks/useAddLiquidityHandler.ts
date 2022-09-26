@@ -1,24 +1,20 @@
 import { AptosSwapRouter } from '@pancakeswap/aptos-swap-sdk'
 
+import { useTranslation } from '@pancakeswap/localization'
 import { useContext, useState } from 'react'
 import { Field } from 'state/mint'
-import { useTranslation } from '@pancakeswap/localization'
 
 import { useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
 
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { usePairAdder } from 'state/user'
 import { CurrencySelectorContext } from './useCurrencySelectRoute'
-import { MintPairContext } from './useMintPair'
 
 export default function useAddLiquidityHanlder({ parsedAmounts }) {
   const { currencyA, currencyB } = useContext(CurrencySelectorContext)
-  const { pair } = useContext(MintPairContext)
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
   const { simulateTransactionAsync } = useSimulateTransaction()
   const { sendTransactionAsync } = useSendTransaction()
-  const addPair = usePairAdder()
 
   const [{ attemptingTxn, liquidityErrorMessage, txHash }, setLiquidityState] = useState<{
     attemptingTxn: boolean
@@ -70,10 +66,6 @@ export default function useAddLiquidityHanlder({ parsedAmounts }) {
             },
             type: 'add-liquidity',
           })
-
-          if (pair) {
-            addPair(pair)
-          }
         })
       })
       .catch((err) => {
