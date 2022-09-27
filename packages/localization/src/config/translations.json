@@ -1358,7 +1358,7 @@
   "Success": "Success",
   "Go to IFO": "Go to IFO",
   "Phishing warning: ": "Phishing warning: ",
-  "please make sure you're visiting https://pancakeswap.finance - check the URL carefully.": "please make sure you're visiting https://pancakeswap.finance - check the URL carefully.",
+  "please make sure you're visiting %domain% - check the URL carefully.": "please make sure you're visiting %domain% - check the URL carefully.",
   "No bids yet": "No bids yet",
   "Please specify Round": "Please specify Round",
   "1W": "1W",

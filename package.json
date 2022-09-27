@@ -109,6 +109,7 @@
     "@typechain/ethers-v5": "^8.0.5",
     "@types/canvas-confetti": "^1.4.2",
     "@types/jest": "^26.0.23",
+    "@types/js-cookie": "^3.0.2",
     "@types/lodash": "^4.14.178",
     "@types/node": "^13.13.5",
     "@types/react": "^18.0.17",

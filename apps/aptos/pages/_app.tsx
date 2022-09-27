@@ -1,16 +1,18 @@
-import { useHealthy } from '@pancakeswap/awgmi'
 import '@pancakeswap/ui/css/reset.css'
+import '../css/theme.css'
+
+import { useHealthy } from '@pancakeswap/awgmi'
 import { PancakeTheme, ResetCSS, ToastListener } from '@pancakeswap/uikit'
 import { Menu } from 'components/Menu'
 import Providers from 'components/Providers'
+import { NextPage } from 'next'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import Script from 'next/script'
+import { Fragment } from 'react'
 import { useStore } from 'state'
 import ListsUpdater from 'state/lists/updater'
 import TransactionUpdater from 'state/transactions/updater'
-import { NextPage } from 'next'
-import { Fragment } from 'react'
 
 declare module 'styled-components' {
   /* eslint-disable @typescript-eslint/no-empty-interface */

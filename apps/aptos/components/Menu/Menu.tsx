@@ -10,10 +10,12 @@ import {
   SwapIcon,
   NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
+import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import orderBy from 'lodash/orderBy'
 import { useTheme } from 'next-themes'
 import { useRouter } from 'next/router'
 import { ReactNode, useMemo } from 'react'
+import { usePhishingBanner } from 'state/user'
 import { footerLinks } from './footerConfig'
 import { SettingsButton } from './Settings/SettingsButton'
 import UserMenu from './UserMenu'
@@ -92,6 +94,7 @@ export const Menu = ({ children }: { children: ReactNode }) => {
   const activeMenuItem = getActiveMenuItem({ menuConfig: menuItems, pathname })
   const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })
   const { setTheme, resolvedTheme } = useTheme()
+  const [show] = usePhishingBanner()
 
   const isDark = resolvedTheme === 'dark'
 
@@ -111,6 +114,7 @@ export const Menu = ({ children }: { children: ReactNode }) => {
       links={menuItems}
       activeItem={activeMenuItem?.href}
       isDark={isDark}
+      banner={show ? <PhishingWarningBanner /> : undefined}
       rightSide={
         <>
           <SettingsButton mr="8px" />
