@@ -41,12 +41,7 @@ const AvatarWrapper = styled.div`
   }
 `
 
-const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({
-  goToApprove,
-  goToChange,
-  goToRemove,
-  onDismiss,
-}) => {
+const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToApprove, goToChange, goToRemove }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { reader: cakeContract } = useCake()
