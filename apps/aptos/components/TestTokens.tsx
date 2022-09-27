@@ -5,7 +5,7 @@ import { defaultChain } from 'config/chains'
 import { useAllTokens } from 'hooks/Tokens'
 import { useActiveNetwork } from 'hooks/useNetwork'
 
-const faucetClient = new FaucetClient(defaultChain.rpcUrls.default, 'https://faucet.devnet.aptoslabs.com')
+const faucetClient = new FaucetClient(defaultChain.restUrls.default, 'https://faucet.devnet.aptoslabs.com')
 
 export function TestTokens() {
   const allTokens = useAllTokens()
