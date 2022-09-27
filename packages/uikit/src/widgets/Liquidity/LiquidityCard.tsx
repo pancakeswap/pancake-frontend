@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 import { Card, CardBody, CardFooter } from "../../components/Card";
 import LiquidityCardHeader from "./LiquidityCardHeader";
-import { pageVariants } from "../Swap/SwapWidget.css";
 
 type LiquidityCardProps = AtomBoxProps;
 
@@ -16,7 +15,7 @@ export const CardWrapper = styled(Card)`
 
 export const LiquidityCard = ({ children, ...props }: LiquidityCardProps) => (
   <>
-    <AtomBox className={pageVariants({ noMinHeight: true })} {...props}>
+    <AtomBox width="full" display="flex" flexDirection="column" alignItems="center" {...props}>
       <CardWrapper>{children}</CardWrapper>
     </AtomBox>
   </>

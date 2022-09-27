@@ -7,8 +7,8 @@ export type Chain = {
   name: string
   /** Internal network name */
   network: string
-  /** Collection of RPC endpoints */
-  rpcUrls: {
+  /** Collection of Restful endpoints */
+  restUrls: {
     [key: string]: string
     default: string
   }
@@ -25,8 +25,8 @@ export const devnet: Chain = {
   id: 31,
   name: 'Devnet',
   network: 'devnet',
-  rpcUrls: {
-    default: 'https://aptos-devnet.nodereal.io/v1',
+  restUrls: {
+    default: 'https://fullnode.devnet.aptoslabs.com/v1',
   },
   blockExplorers: {
     default: {
@@ -41,7 +41,7 @@ export const testnet: Chain = {
   id: 2,
   name: 'Testnet',
   network: 'testnet',
-  rpcUrls: {
+  restUrls: {
     default: 'https://testnet.aptoslabs.com/v1',
   },
   blockExplorers: {

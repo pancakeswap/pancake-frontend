@@ -23,7 +23,7 @@ const aptosAccountToAccount = (acc: AptosAccount): Account => {
   }
 }
 
-const client = new AptosClient(devnet.rpcUrls.default)
+const client = new AptosClient(devnet.restUrls.default)
 
 type Events = {
   accountChange(account: Account): void

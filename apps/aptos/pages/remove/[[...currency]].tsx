@@ -1,15 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
-import {
-  AutoColumn,
-  Box,
-  CardBody,
-  Liquidity as LiquidityUI,
-  RowBetween,
-  Swap as SwapUI,
-  Text,
-} from '@pancakeswap/uikit'
+import { AutoColumn, Box, CardBody, Liquidity as LiquidityUI, RowBetween, Text } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
+import { ExchangeLayout } from 'components/Layout/ExchangeLayout'
 import DetailToggler from 'components/Liquidity/components/DetailToggler'
 import RemoveLiquidityButton from 'components/Liquidity/components/RemoveLiquidityButton'
 import SimpleRemoveForm from 'components/Liquidity/components/SimpleRemoveForm'
@@ -22,7 +15,6 @@ import { usePair } from 'hooks/usePairs'
 import { useMemo } from 'react'
 
 const { LiquidityCard, MinimalPositionCardView } = LiquidityUI
-const { Page } = SwapUI
 
 const MinimalPositionCard = withLPValues(MinimalPositionCardView)
 
@@ -44,7 +36,7 @@ const RemoveLiquidityPage = () => {
   )
 
   return (
-    <Page helpUrl="https://docs.pancakeswap.finance/products/pancakeswap-exchange" isEvm={false}>
+    <>
       <LiquidityCard>
         <LiquidityCard.Header
           backTo="/liquidity"
@@ -119,8 +111,10 @@ const RemoveLiquidityPage = () => {
           <MinimalPositionCard pair={pair} />
         </AutoColumn>
       ) : null}
-    </Page>
+    </>
   )
 }
+
+RemoveLiquidityPage.Layout = ExchangeLayout
 
 export default RemoveLiquidityPage

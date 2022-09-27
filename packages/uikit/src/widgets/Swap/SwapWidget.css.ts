@@ -160,9 +160,11 @@ export const pageVariants = recipe({
       },
     },
     noMinHeight: {
-      true: {
-        minHeight: "initial",
-      },
+      true: responsiveStyle({
+        xs: {
+          minHeight: "initial!important",
+        },
+      }),
     },
   },
 });

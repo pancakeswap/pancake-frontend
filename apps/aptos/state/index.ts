@@ -1,32 +1,15 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 import { useMemo } from 'react'
-import { useDispatch } from 'react-redux'
-import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
-
-const PERSISTED_KEYS: string[] = []
-
-const persistConfig = {
-  key: 'primary',
-  whitelist: PERSISTED_KEYS,
-  storage,
-  version: 1,
-}
-
-const persistedReducer = persistReducer(persistConfig, combineReducers({}))
 
 // eslint-disable-next-line import/no-mutable-exports
 let store: ReturnType<typeof makeStore>
 
 export function makeStore(preloadedState = undefined) {
   return configureStore({
-    reducer: persistedReducer,
+    reducer: {},
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         thunk: true,
-        serializableCheck: {
-          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        },
       }),
     devTools: process.env.NODE_ENV === 'development',
     preloadedState,
@@ -70,10 +53,6 @@ store = initializeStore()
 // export const useAppDispatch = () => useDispatch<AppDispatch>()
 
 export default store
-
-export const persistor = persistStore(store, undefined, () => {
-  // store.dispatch(updateVersion())
-})
 
 export function useStore(initialState: any) {
   return useMemo(() => initializeStore(initialState), [initialState])

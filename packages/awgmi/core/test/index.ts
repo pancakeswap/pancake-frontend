@@ -23,7 +23,7 @@ class AptosProvider extends AptosClient {
 }
 
 export function getAptosClient() {
-  return new AptosProvider(devnet.rpcUrls.default)
+  return new AptosProvider(devnet.restUrls.default)
 }
 
 export function setupClient(config: Partial<ClientConfig> = {}) {

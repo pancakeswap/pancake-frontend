@@ -18,7 +18,7 @@ export function getNetwork(): GetNetworkResult {
     id: 0,
     name: `Chain ${networkName}`,
     network: networkName ?? 'Unknown',
-    rpcUrls: { default: '' },
+    restUrls: { default: '' },
   }
 
   return {

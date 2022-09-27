@@ -1,15 +1,15 @@
-import { Swap as SwapUI, Liquidity as LiquidityUI } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Liquidity as LiquidityUI } from '@pancakeswap/uikit'
 
-import _noop from 'lodash/noop'
+import { ExchangeLayout } from 'components/Layout/ExchangeLayout'
 import AddLiquidityForm from 'components/Liquidity/components/AddLiquidityForm'
-import { useCallback, useMemo, useState } from 'react'
 import ChoosePair from 'components/Liquidity/components/ChoosePair'
 import useCurrencySelectRoute, { CurrencySelectorContext } from 'components/Liquidity/hooks/useCurrencySelectRoute'
 import useMintPair, { MintPairContext } from 'components/Liquidity/hooks/useMintPair'
+import { USDC_DEVNET } from 'config/coins'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import useNativeCurrency from 'hooks/useNativeCurrency'
-import { USDC_DEVNET } from 'config/coins'
+import { useCallback, useMemo, useState } from 'react'
 
 enum Steps {
   Choose,
@@ -35,7 +35,7 @@ const AddLiquidityPage = () => {
   const goToChoose = useCallback(() => setSteps(Steps.Choose), [])
 
   return (
-    <SwapUI.Page helpUrl="https://docs.pancakeswap.finance/products/pancakeswap-exchange" isEvm={false}>
+    <>
       <LiquidityUI.LiquidityCard>
         <LiquidityUI.LiquidityCard.Header
           title={t('Add Liquidity')}
@@ -64,8 +64,10 @@ const AddLiquidityPage = () => {
       ) : (
         <UnsupportedCurrencyFooter currencies={[currencies.CURRENCY_A, currencies.CURRENCY_B]} />
       )} */}
-    </SwapUI.Page>
+    </>
   )
 }
+
+AddLiquidityPage.Layout = ExchangeLayout
 
 export default AddLiquidityPage
