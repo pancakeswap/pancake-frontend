@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { useToast } from '@pancakeswap/uikit'
@@ -32,12 +33,22 @@ export function useSwitchNetwork() {
   const { isConnected, connector } = useAccount()
 
   const switchNetworkLocal = useSwitchNetworkLocal()
+  const isLoading = _isLoading || loading
 
   const switchNetworkAsync = useCallback(
     async (chainId: number) => {
       if (isConnected && typeof _switchNetworkAsync === 'function') {
+        if (isLoading) return
         setLoading(true)
         return _switchNetworkAsync(chainId)
+          .then((c) => {
+            // well token pocket
+            if (window.ethereum?.isTokenPocket === true) {
+              switchNetworkLocal(chainId)
+              window.location.reload()
+            }
+            return c
+          })
           .catch(() => {
             // TODO: review the error
             toastError(t('Error connecting, please retry and confirm in wallet!'))
@@ -48,7 +59,7 @@ export function useSwitchNetwork() {
         switchNetworkLocal(chainId)
       })
     },
-    [isConnected, _switchNetworkAsync, t, setLoading, toastError, switchNetworkLocal],
+    [isConnected, _switchNetworkAsync, isLoading, setLoading, toastError, t, switchNetworkLocal],
   )
 
   const switchNetwork = useCallback(
@@ -61,7 +72,6 @@ export function useSwitchNetwork() {
     [_switchNetwork, isConnected, switchNetworkLocal],
   )
 
-  const isLoading = _isLoading || loading
   const canSwitch = useMemo(
     () =>
       isConnected
@@ -70,7 +80,7 @@ export function useSwitchNetwork() {
           !(
             typeof window !== 'undefined' &&
             // @ts-ignore // TODO: add type later
-            window.ethereum?.isSafePal
+            (window.ethereum?.isSafePal || window.ethereum?.isMathWallet)
           )
         : true,
     [_switchNetworkAsync, isConnected, connector],
