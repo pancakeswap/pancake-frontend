@@ -481,7 +481,7 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
 
   return (
     <ModalV2 closeOnOverlayClick {...rest}>
-      <ModalWrapper onDismiss={props.onDismiss} style={{ overflow: 'visible' }}>
+      <ModalWrapper onDismiss={props.onDismiss} style={{ overflow: 'visible', border: 'none' }}>
         <AtomBox position="relative">
           <TabContainer>
             {isMobile ? (

@@ -19,7 +19,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
   {
     id: 'metamask',
     title: 'Metamask',
-    icon: 'https://cdn.pancakeswap.com/wallets/metamask.png',
+    icon: '/images/wallets/metamask.png',
     installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isMetaMask) && metaMaskConnector.ready,
     connectorId: ConnectorNames.MetaMask,
     deepLink: 'metamask://dapp/pancakeswap.finance/',
@@ -29,7 +29,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
   {
     id: 'binance',
     title: 'Binance Wallet',
-    icon: 'https://cdn.pancakeswap.com/wallets/binance.png',
+    icon: '/images/wallets/binance.png',
     installed: typeof window !== 'undefined' && Boolean(window.BinanceChain),
     connectorId: ConnectorNames.BSC,
     guide: {
@@ -44,7 +44,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
   {
     id: 'coinbase',
     title: 'Coinbase Wallet',
-    icon: 'https://cdn.pancakeswap.com/wallets/coinbase.png',
+    icon: '/images/wallets/coinbase.png',
     connectorId: ConnectorNames.WalletLink,
     installed: true,
     deepLink: 'https://go.cb-w.com/dapp?cb_url=https%3A%2F%2Fpancakeswap.finance%2F',
@@ -52,7 +52,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
   {
     id: 'trust',
     title: 'Trust Wallet',
-    icon: 'https://cdn.pancakeswap.com/wallets/trust.png',
+    icon: '/images/wallets/trust.png',
     connectorId: ConnectorNames.Injected,
     installed:
       typeof window !== 'undefined' &&
@@ -68,7 +68,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
   {
     id: 'walletconnect',
     title: 'WalletConnect',
-    icon: 'https://cdn.pancakeswap.com/wallets/walletconnect.png',
+    icon: '/images/wallets/walletconnect.png',
     installed: walletConnectConnector.ready,
     connectorId: ConnectorNames.WalletConnect,
     qrCode,
@@ -76,7 +76,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
   {
     id: 'opera',
     title: 'Opera Wallet',
-    icon: 'https://cdn.pancakeswap.com/wallets/opera.png',
+    icon: '/images/wallets/opera.png',
     connectorId: ConnectorNames.Injected,
     installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isOpera),
     downloadLink: 'https://www.opera.com/crypto/next',
@@ -84,14 +84,14 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
   {
     id: 'brave',
     title: 'Brave Wallet',
-    icon: 'https://cdn.pancakeswap.com/wallets/brave.png',
+    icon: '/images/wallets/brave.png',
     connectorId: ConnectorNames.Injected,
     installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isBraveWallet),
   },
   {
     id: 'math',
     title: 'MathWallet',
-    icon: 'https://cdn.pancakeswap.com/wallets/mathwallet.png',
+    icon: '/images/wallets/mathwallet.png',
     connectorId: ConnectorNames.Injected,
     installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isMathWallet),
     qrCode,
@@ -99,7 +99,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
   {
     id: 'tokenpocket',
     title: 'TokenPocket',
-    icon: 'https://cdn.pancakeswap.com/wallets/tokenpocket.png',
+    icon: '/images/wallets/tokenpocket.png',
     connectorId: ConnectorNames.Injected,
     installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isTokenPocket),
     qrCode,
@@ -107,7 +107,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
   {
     id: 'safepal',
     title: 'SafePal',
-    icon: 'https://cdn.pancakeswap.com/wallets/safepal.png',
+    icon: '/images/wallets/safepal.png',
     connectorId: ConnectorNames.Injected,
     installed: typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isSafePal),
     qrCode,
@@ -115,7 +115,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
   {
     id: 'coin98',
     title: 'Coin98',
-    icon: 'https://cdn.pancakeswap.com/wallets/coin98.png',
+    icon: '/images/wallets/coin98.png',
     connectorId: ConnectorNames.Injected,
     installed:
       typeof window !== 'undefined' &&
@@ -125,7 +125,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
   {
     id: 'blocto',
     title: 'Blocto',
-    icon: 'https://cdn.pancakeswap.com/wallets/blocto.png',
+    icon: '/images/wallets/blocto.png',
     connectorId: ConnectorNames.Injected,
     installed: typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBlocto),
     qrCode,
