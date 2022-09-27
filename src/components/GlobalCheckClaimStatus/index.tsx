@@ -2,7 +2,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { useModal, useToast } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { ChainId } from '@pancakeswap/sdk'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useAnniversaryAchievementContract } from 'hooks/useContract'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -49,7 +48,7 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
     />,
   )
 
-  const { account, chainId } = useWeb3React()
+  const { account } = useWeb3React()
   const { pathname } = useRouter()
   // Check claim status
   useEffect(() => {
@@ -58,10 +57,10 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
       setCanClaimAnniversaryPoints(canClaimAnniversary)
     }
 
-    if (account && chainId === ChainId.BSC) {
+    if (account) {
       fetchClaimAnniversaryStatus()
     }
-  }, [account, canClaim, chainId])
+  }, [account, canClaim])
 
   // // Check if we need to display the modal
   useEffect(() => {
