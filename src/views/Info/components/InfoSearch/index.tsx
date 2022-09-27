@@ -5,7 +5,7 @@ import useDebounce from 'hooks/useDebounce'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useMultiChainPath, usePoolDatasSWR, useTokenDatasSWR } from 'state/info/hooks'
+import { useMultiChainPath, usePoolDatasSWR, useTokenDatasSWR, useGetChainName } from 'state/info/hooks'
 import useFetchSearchResults from 'state/info/queries/search'
 import { PoolData } from 'state/info/types'
 import { useWatchlistPools, useWatchlistTokens } from 'state/user/hooks'
@@ -257,7 +257,7 @@ const Search = () => {
     )
   }
   const chainPath = useMultiChainPath()
-
+  const chainName = useGetChainName()
   return (
     <>
       {showMenu ? <Blackout /> : null}
@@ -311,7 +311,7 @@ const Search = () => {
               <HoverRowLink onClick={() => handleItemClick(`/info${chainPath}/tokens/${token.address}`)} key={i}>
                 <ResponsiveGrid>
                   <Flex>
-                    <CurrencyLogo address={token.address} />
+                    <CurrencyLogo address={token.address} chainName={chainName} />
                     <Text ml="10px">
                       <Text>{`${token.name} (${token.symbol})`}</Text>
                     </Text>
@@ -370,7 +370,7 @@ const Search = () => {
               <HoverRowLink onClick={() => handleItemClick(`/info${chainPath}/pools/${p.address}`)} key={i}>
                 <ResponsiveGrid>
                   <Flex>
-                    <DoubleCurrencyLogo address0={p.token0.address} address1={p.token1.address} />
+                    <DoubleCurrencyLogo address0={p.token0.address} address1={p.token1.address} chainName={chainName} />
                     <Text ml="10px" style={{ whiteSpace: 'nowrap' }}>
                       <Text>{`${p.token0.symbol} / ${p.token1.symbol}`}</Text>
                     </Text>
