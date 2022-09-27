@@ -78,18 +78,7 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
       </AtomBox>
       <AtomBox display={{ xs: 'none', lg: 'flex' }} alignItems="center" justifyContent="center" width="full">
         <InnerContainer>
-          <img
-            src="/images/decorations/phishing-warning-bunny.webp"
-            alt="phishing-warning"
-            width="92px"
-            onError={(e) => {
-              const fallbackSrc = '/images/decorations/phishing-warning-bunny.png'
-              if (!e.currentTarget.src.endsWith(fallbackSrc)) {
-                // eslint-disable-next-line no-param-reassign
-                e.currentTarget.src = fallbackSrc
-              }
-            }}
-          />
+          <img src="/images/decorations/phishing-warning-bunny.png" alt="phishing-warning" width="78px" />
           <SpeechBubble>{warningTextComponent}</SpeechBubble>
         </InnerContainer>
         <IconButton onClick={hideBanner} variant="text">

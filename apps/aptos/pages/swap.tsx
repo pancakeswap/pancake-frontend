@@ -3,7 +3,7 @@ import { useAccount, useSendTransaction, useSimulateTransaction } from '@pancake
 import { SimulateTransactionError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
-import { AutoColumn, Card, RowBetween, Skeleton, Swap as SwapUI, useModal } from '@pancakeswap/uikit'
+import { AutoColumn, Card, Image, RowBetween, Skeleton, Swap as SwapUI, useModal } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
@@ -293,7 +293,11 @@ const SwapPage = () => {
   const isValid = !inputError
 
   return (
-    <Page helpUrl="https://docs.pancakeswap.finance/products/pancakeswap-exchange" isEvm={false}>
+    <Page
+      helpUrl="https://docs.pancakeswap.finance/products/pancakeswap-exchange"
+      isEvm={false}
+      helpImage={<Image src="/help.png" width={178} height={243} />}
+    >
       <Card style={{ width: '328px' }}>
         <CurrencyInputHeader
           title={

@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, ReactNode } from "react";
 import styled from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import { ButtonMenu, ButtonMenuItem, LinkExternal, Flex, Svg, Image, Button } from "../../components";
@@ -37,9 +37,12 @@ const BubbleWrapper = styled(Flex)`
 
 type FooterVariant = "default" | "side";
 
-const Footer: React.FC<React.PropsWithChildren<{ variant?: FooterVariant; helpUrl?: string; isEvm?: boolean }>> = ({
+const Footer: React.FC<
+  React.PropsWithChildren<{ variant?: FooterVariant; helpUrl?: string; isEvm?: boolean; helpImage?: ReactNode }>
+> = ({
   variant = "default",
   helpUrl,
+  helpImage = <Image src="https://cdn.pancakeswap.com/help/help.png" alt="Get some help" width={160} height={108} />,
   isEvm = true,
 }) => {
   const { t } = useTranslation();
@@ -85,7 +88,7 @@ const Footer: React.FC<React.PropsWithChildren<{ variant?: FooterVariant; helpUr
               <path d="M0 16V0C0 0 3 1 6 1C9 1 16 -2 16 3.5C16 10.5 7.5 16 0 16Z" />
             </Svg>
           </BubbleWrapper>
-          <Image src="https://cdn.pancakeswap.com/help/help.png" alt="Get some help" width={160} height={108} />
+          {helpImage}
         </Flex>
       )}
     </Wrapper>

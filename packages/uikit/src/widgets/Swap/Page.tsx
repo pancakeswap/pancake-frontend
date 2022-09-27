@@ -1,4 +1,5 @@
 import { AtomBox, AtomBoxProps } from "@pancakeswap/ui";
+import { ReactNode } from "react";
 import { SwapFooter } from "./Footer";
 import { pageVariants } from "./SwapWidget.css";
 
@@ -8,6 +9,7 @@ type SwapPageProps = AtomBoxProps & {
   noMinHeight?: boolean;
   helpUrl?: string;
   isEvm?: boolean;
+  helpImage?: ReactNode;
 };
 
 export const SwapPage = ({
@@ -17,13 +19,14 @@ export const SwapPage = ({
   hideFooterOnDesktop,
   helpUrl,
   isEvm,
+  helpImage,
   ...props
 }: SwapPageProps) => (
   <AtomBox className={pageVariants({ removePadding, noMinHeight })} {...props}>
     {children}
     <AtomBox display="flex" flexGrow={1} />
     <AtomBox display={["block", null, null, hideFooterOnDesktop ? "none" : "block"]} width="100%">
-      <SwapFooter isEvm={isEvm} helpUrl={helpUrl} />
+      <SwapFooter isEvm={isEvm} helpUrl={helpUrl} helpImage={helpImage} />
     </AtomBox>
   </AtomBox>
 );
