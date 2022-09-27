@@ -23,6 +23,15 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/swap',
+        permanent: false,
+      },
+    ]
+  },
 }
 
 export default withVanillaExtract(withTH(withAxiom(nextConfig)))

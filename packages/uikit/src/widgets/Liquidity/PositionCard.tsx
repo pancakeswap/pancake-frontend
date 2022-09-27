@@ -48,6 +48,8 @@ interface PositionCardProps extends CardProps {
   poolData: {
     lpApr7d: number;
   };
+  addTo?: any;
+  removeTo?: any;
 }
 
 export function MinimalPositionCardView({
