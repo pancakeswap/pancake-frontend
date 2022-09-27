@@ -5,14 +5,13 @@ import { Liquidity as LiquidityUI, Column, AddIcon, CardBody, AutoColumn, Button
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
 import AddLiquidityButton from 'components/Liquidity/components/AddLiquidityButton'
 import { PairState } from 'hooks/usePairs'
-import _noop from 'lodash/noop'
-import { useContext, useMemo } from 'react'
+import { useContext, useEffect, useMemo } from 'react'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { useDerivedMintInfo } from '../hooks/useAddLiquidityForm'
 import { CurrencySelectorContext } from '../hooks/useCurrencySelectRoute'
 import { MintPairContext } from '../hooks/useMintPair'
-import { useMintLiquidityState } from '../state/add'
-import { Field } from '../state/add/actions'
+import { useMintLiquidityStateAndHandlers } from '../state/add'
+import { Field } from '../type'
 // import AprRow from './AprRow'
 import FarmPriceBar from './FarmPriceBar'
 import PricePoolShareSection from './PricePoolShareSection'
@@ -22,12 +21,12 @@ const { FirstLP } = LiquidityUI
 
 export default function AddLiquidityForm({ notSupportPair }) {
   const { t } = useTranslation()
-  const { currencyA, currencyB } = useContext(CurrencySelectorContext)
+  const { currencyA, currencyB, handleCurrencyASelect, handleCurrencyBSelect } = useContext(CurrencySelectorContext)
   const { pairState, currencyBalances, error, pair } = useContext(MintPairContext)
   const { noLiquidity, poolTokenPercentage, price, parsedAmounts, addError, liquidityMinted } = useDerivedMintInfo()
 
-  const [{ typedValue, otherTypedValue, independentField }, { onFieldAInput, onFieldBInput }] =
-    useMintLiquidityState(noLiquidity)
+  const [{ typedValue, otherTypedValue, independentField }, { onFieldAInput, onFieldBInput, resetForm }] =
+    useMintLiquidityStateAndHandlers(noLiquidity)
 
   const dependentField = independentField === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A
 
@@ -51,12 +50,17 @@ export default function AddLiquidityForm({ notSupportPair }) {
     {},
   )
 
+  useEffect(() => {
+    // resetForm when unmount
+    return () => resetForm()
+  }, [resetForm])
+
   return (
     <CardBody>
       <AutoColumn gap="20px">
         {noLiquidity ? <FirstLP /> : null}
         <CurrencyInputPanel
-          onCurrencySelect={_noop}
+          onCurrencySelect={handleCurrencyASelect}
           id="swap-currencyA-input"
           currency={currencyA}
           otherCurrency={currencyB}
@@ -71,7 +75,7 @@ export default function AddLiquidityForm({ notSupportPair }) {
           <AddIcon width="16px" />
         </Column>
         <CurrencyInputPanel
-          onCurrencySelect={_noop}
+          onCurrencySelect={handleCurrencyBSelect}
           id="swap-currency-input"
           currency={currencyB}
           otherCurrency={currencyA}

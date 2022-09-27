@@ -1,7 +1,7 @@
 import { AtomBox, AtomBoxProps } from "@pancakeswap/ui";
 import styled from "styled-components";
 
-import { Card, CardFooter } from "../../components/Card";
+import { Card, CardBody, CardFooter } from "../../components/Card";
 import LiquidityCardHeader from "./LiquidityCardHeader";
 import { pageVariants } from "../Swap/SwapWidget.css";
 
@@ -15,10 +15,17 @@ export const CardWrapper = styled(Card)`
 `;
 
 export const LiquidityCard = ({ children, ...props }: LiquidityCardProps) => (
-  <AtomBox className={pageVariants()} {...props}>
-    <CardWrapper>{children}</CardWrapper>
-  </AtomBox>
+  <>
+    <AtomBox className={pageVariants({ noMinHeight: true })} {...props}>
+      <CardWrapper>{children}</CardWrapper>
+    </AtomBox>
+  </>
 );
 
+const ListBody = styled(CardBody)`
+  background-color: ${({ theme }) => theme.colors.dropdownDeep};
+`;
+
+LiquidityCard.ListBody = ListBody;
 LiquidityCard.Header = LiquidityCardHeader;
 LiquidityCard.Footer = CardFooter;

@@ -1,97 +1,63 @@
-export {}
-// export enum ApprovalState {
-//   UNKNOWN,
-//   NOT_APPROVED,
-//   PENDING,
-//   APPROVED,
-// }
+import { useTranslation } from '@pancakeswap/localization'
+import { Button, useModal } from '@pancakeswap/uikit'
+import { useCallback } from 'react'
+import useRemoveLiquidityHandler from '../hooks/useRemoveLiquidityHandler'
+import { useBurnActionHandlers } from '../state/remove'
+import { Field } from '../type'
+import ConfirmRemoveLiquidityModal from './ConfirmRemoveLiquidityModal'
 
-// const EnableText = (approval) => {
-//   if (approval === ApprovalState.PENDING) return <Dots>{t('Enabling')}</Dots>
+export default function RemoveLiquidityButton({ error, parsedAmounts, currencyA, currencyB, tokenA, tokenB }) {
+  const { t } = useTranslation()
 
-//   if (approval === ApprovalState.APPROVED) return t('Enabled')
+  const { attemptingTxn, txHash, liquidityErrorMessage, onRemove, setLiquidityState } = useRemoveLiquidityHandler({
+    parsedAmounts,
+    currencyA,
+    currencyB,
+  })
 
-//   return 'Enable'
-// }
+  const { onUserInput } = useBurnActionHandlers()
 
-// const ApprovalButton = ({ children }) => {
-//   const signatureData = null
-//   const approval = false
+  const handleDismissConfirmation = useCallback(() => {
+    // if there was a tx hash, we want to clear the input
+    if (txHash) {
+      onUserInput(Field.LIQUIDITY_PERCENT, '0')
+    }
+  }, [onUserInput, txHash])
 
-//   return (
-//     <>
-//       <Button
-//         variant={approval === ApprovalState.APPROVED ? 'success' : 'primary'}
-//         onClick={onAttemptToApprove}
-//         disabled={approval !== ApprovalState.NOT_APPROVED}
-//         width="100%"
-//         mr="0.5rem"
-//       >
-//         <EnableText approval={approval} />
-//       </Button>
+  const [onPresentRemoveLiquidity] = useModal(
+    <ConfirmRemoveLiquidityModal
+      title={t('You will receive')}
+      customOnDismiss={handleDismissConfirmation}
+      attemptingTxn={attemptingTxn}
+      hash={txHash || ''}
+      onRemove={onRemove}
+      tokenA={tokenA}
+      tokenB={tokenB}
+      liquidityErrorMessage={liquidityErrorMessage ?? ''}
+      parsedAmounts={parsedAmounts}
+      currencyA={currencyA}
+      currencyB={currencyB}
+    />,
+    true,
+    true,
+    'removeLiquidityModal',
+  )
 
-//       {children({ approval, signatureData })}
-//     </>
-//   )
-// }
-
-// export default function RemoveLiquidityButton() {
-//   if (!account) {
-//     return <ConnectWalletButton width="100%" />
-//   }
-
-//   // const [onPresentRemoveLiquidity] = useModal(
-//   //   <ConfirmLiquidityModal
-//   //     title={t('You will receive')}
-//   //     customOnDismiss={handleDismissConfirmation}
-//   //     attemptingTxn={attemptingTxn}
-//   //     hash={txHash || ''}
-//   //     allowedSlippage={allowedSlippage}
-//   //     onRemove={isZap ? onZapOut : onRemove}
-//   //     isZap={isZap}
-//   //     pendingText={pendingText}
-//   //     approval={approval}
-//   //     signatureData={signatureData}
-//   //     tokenA={tokenA}
-//   //     tokenB={tokenB}
-//   //     liquidityErrorMessage={liquidityErrorMessage}
-//   //     parsedAmounts={parsedAmounts}
-//   //     currencyA={currencyA}
-//   //     currencyB={currencyB}
-//   //     toggleZapMode={setTemporarilyZapMode}
-//   //   />,
-//   //   true,
-//   //   true,
-//   //   'removeLiquidityModal',
-//   // )
-
-//   return (
-//     <Box position="relative" mt="16px">
-//       <RowBetween>
-//         <ApprovalButton>
-//           {({ approval, signatureData }) => (
-//             <Button
-//               variant={
-//                 !isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]
-//                   ? 'danger'
-//                   : 'primary'
-//               }
-//               onClick={() => {
-//                 // setLiquidityState({
-//                 //   attemptingTxn: false,
-//                 //   liquidityErrorMessage: undefined,
-//                 //   txHash: undefined,
-//                 // })
-//                 onPresentRemoveLiquidity()
-//               }}
-//               width="100%"
-//               disabled={!isValid || (signatureData === null && approval !== ApprovalState.APPROVED)}
-//             >
-//               {error || t('Remove')}
-//             </Button>
-//           )}
-//         </ApprovalButton>
-//       </RowBetween>
-//     </Box>
-//   )
-// }
+  return (
+    <Button
+      variant={error && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B] ? 'danger' : 'primary'}
+      onClick={() => {
+        setLiquidityState({
+          attemptingTxn: false,
+          liquidityErrorMessage: undefined,
+          txHash: undefined,
+        })
+        onPresentRemoveLiquidity()
+      }}
+      width="100%"
+      disabled={error}
+    >
+      {error || t('Remove')}
+    </Button>
+  )
+}

@@ -17,9 +17,12 @@ import {
   RowBetween,
   AutoColumn,
   RowFixed,
+  Button,
+  AddIcon,
 } from "../../components";
 
 import { useTooltip } from "../../hooks";
+import { NextLinkFromReactRouter } from "../../components/NextLink";
 
 const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -166,6 +169,8 @@ export function FullPositionCard({
   userPoolBalance,
   poolTokenPercentage,
   poolData,
+  addTo,
+  removeTo,
   ...props
 }: PositionCardProps) {
   const { t } = useTranslation();
@@ -256,24 +261,18 @@ export function FullPositionCard({
 
           {userPoolBalance && JSBI.greaterThan(userPoolBalance.quotient, BIG_INT_ZERO) && (
             <Flex flexDirection="column">
-              {/* <Button
-                as={NextLinkFromReactRouter}
-                to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
-                variant="primary"
-                width="100%"
-                mb="8px"
-              >
+              <Button as={NextLinkFromReactRouter} to={removeTo} variant="primary" width="100%" mb="8px">
                 {t("Remove")}
               </Button>
               <Button
                 as={NextLinkFromReactRouter}
-                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}?step=1`}
+                to={addTo}
                 variant="text"
                 startIcon={<AddIcon color="primary" />}
                 width="100%"
               >
                 {t("Add liquidity instead")}
-              </Button> */}
+              </Button>
             </Flex>
           )}
         </AutoColumn>

@@ -15,9 +15,11 @@ const LiquidityPage = () => {
     <Page helpUrl="https://docs.pancakeswap.finance/products/pancakeswap-exchange" isEvm={false}>
       <LiquidityCard>
         <LiquidityCard.Header title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} />
-        <HasAccount fallbackComp={<LiquidityNotConnect />}>
-          <LiquidityList />
-        </HasAccount>
+        <LiquidityCard.ListBody>
+          <HasAccount fallbackComp={<LiquidityNotConnect />}>
+            <LiquidityList />
+          </HasAccount>
+        </LiquidityCard.ListBody>
         <LiquidityCard.Footer>
           <GotoAddLiquidityButton />
         </LiquidityCard.Footer>

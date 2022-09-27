@@ -1,5 +1,5 @@
 import { Percent, TradeType } from '@pancakeswap/swap-sdk-core'
-import { routerSwap, routerAddLiquidity } from './generated/swap'
+import { routerSwap, routerAddLiquidity, routerRemoveLiquidity } from './generated/swap'
 import { Trade } from './trade'
 import { Currency } from './currency'
 
@@ -38,5 +38,16 @@ export abstract class AptosSwapRouter {
   // eslint-disable-next-line camelcase
   public static unstable_addLiquidityParameters(amountX: string, amountY: string, addressX: string, addressY: string) {
     return routerAddLiquidity([amountX, amountY], [addressX, addressY])
+  }
+
+  // eslint-disable-next-line camelcase
+  public static unstable_removeLiquidityParameters(
+    liquidityAmount: string,
+    minAmountX: string,
+    minAmountY: string,
+    addressX: string,
+    addressY: string
+  ) {
+    return routerRemoveLiquidity([liquidityAmount, minAmountX, minAmountY], [addressX, addressY])
   }
 }

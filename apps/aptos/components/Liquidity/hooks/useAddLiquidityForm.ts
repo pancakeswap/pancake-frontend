@@ -6,8 +6,8 @@ import { PairState } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
 
 import { useContext, useMemo } from 'react'
-import { useLiquidityStatee } from '../state/add'
-import { Field } from '../state/add/actions'
+import { useLiquidityStateOnly } from '../state/add'
+import { Field } from '../type'
 import { CurrencySelectorContext } from './useCurrencySelectRoute'
 import { MintPairContext } from './useMintPair'
 
@@ -25,7 +25,7 @@ export function useDerivedMintInfo(): {
 
   const { t } = useTranslation()
 
-  const { independentField, typedValue, otherTypedValue } = useLiquidityStatee()
+  const { independentField, typedValue, otherTypedValue } = useLiquidityStateOnly()
 
   const dependentField = independentField === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A
 

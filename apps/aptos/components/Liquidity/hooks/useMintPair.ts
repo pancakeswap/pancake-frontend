@@ -3,7 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useCurrencyBalance } from 'hooks/Balances'
 import { PairState, usePair } from 'hooks/usePairs'
 import { createContext, useMemo } from 'react'
-import { Field } from '../state/add/actions'
+import { Field } from '../type'
 
 interface MintPairContextValue {
   pair?: Pair | null
@@ -46,8 +46,13 @@ export default function useMintPair({ currencyA, currencyB }): MintPairContextVa
     error = error ?? t('Choose a valid pair')
   }
 
-  // Philip TODO: turn into ||
-  if (currencyBalances?.[Field.CURRENCY_A]?.equalTo(0) && currencyBalances?.[Field.CURRENCY_B]?.equalTo(0)) {
+  // If account has not registered, the balance will return undefined
+  if (
+    !currencyBalances[Field.CURRENCY_A] ||
+    !currencyBalances?.[Field.CURRENCY_B] ||
+    currencyBalances?.[Field.CURRENCY_A]?.equalTo(0) ||
+    currencyBalances?.[Field.CURRENCY_B]?.equalTo(0)
+  ) {
     error = error ?? t('No token balance')
   }
 

@@ -22,7 +22,6 @@ export default function LiquidityList() {
     )
   }
 
-  // Philip TODO: add userPoolBalance of each pair
   return (
     <>
       {tokenPairs.map((v2Pair, index) => (

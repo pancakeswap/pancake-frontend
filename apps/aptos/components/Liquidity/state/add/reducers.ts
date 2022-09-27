@@ -1,6 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
+import { Field } from 'components/Liquidity/type'
 import { atom } from 'jotai'
-import { Field, resetMintState, typeInput } from './actions'
+import { resetMintState, typeInput } from './actions'
 
 export interface MintState {
   readonly independentField: Field

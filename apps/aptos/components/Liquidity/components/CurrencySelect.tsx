@@ -57,7 +57,7 @@ export const CurrencySelect = ({
 }: CurrencySelectProps) => {
   const { account } = useAccount()
 
-  const { data: selectedCurrencyBalance } = useBalance({
+  const { data: selectedCurrencyBalance, isFetched } = useBalance({
     address: account?.address,
     coin: selectedCurrency?.wrapped?.address,
     enabled: !hideBalance && !!selectedCurrency,
@@ -110,7 +110,7 @@ export const CurrencySelect = ({
             <Text color="textSubtle" fontSize="12px">
               {t('Balance')}:
             </Text>
-            <Text fontSize="12px">{selectedCurrencyBalance?.formatted ?? t('Loading')}</Text>
+            <Text fontSize="12px">{isFetched ? selectedCurrencyBalance?.formatted ?? '0' : t('Loading')}</Text>
           </AutoRow>
           {/* <RowBetween>
             <div />

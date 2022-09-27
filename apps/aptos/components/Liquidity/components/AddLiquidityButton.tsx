@@ -6,7 +6,6 @@ import { useCallback, useContext } from 'react'
 import { useIsExpertMode } from 'state/user/expertMode'
 import useAddLiquidityHanlder from '../hooks/useAddLiquidityHandler'
 import { CurrencySelectorContext } from '../hooks/useCurrencySelectRoute'
-import ApprovalButtons from './ApprovalButtons'
 import ConfirmAddLiquidityModal from './ConfirmAddLiquidityModal'
 
 export default function AddLiquidityButton({
@@ -23,11 +22,9 @@ export default function AddLiquidityButton({
   const { t } = useTranslation()
   const currencies = useContext(CurrencySelectorContext)
 
-  const { currencyA, currencyB } = currencies
-
-  // add handler
   const { onAdd, attemptingTxn, txHash, liquidityErrorMessage, setLiquidityState } = useAddLiquidityHanlder({
     parsedAmounts,
+    noLiquidity,
   })
 
   const handleDismissConfirmation = useCallback(() => {
@@ -60,28 +57,24 @@ export default function AddLiquidityButton({
 
   return (
     <AutoColumn gap="md">
-      <ApprovalButtons isValid={!errorText} symbolA={currencyA?.symbol} symbolB={currencyB?.symbol}>
-        {(shouldShowApprovalGroup) => (
-          <CommitButton
-            variant={!errorText ? 'danger' : 'primary'}
-            onClick={() => {
-              if (expertMode) {
-                onAdd()
-              } else {
-                setLiquidityState({
-                  attemptingTxn: false,
-                  liquidityErrorMessage: undefined,
-                  txHash: undefined,
-                })
-                onPresentAddLiquidityModal()
-              }
-            }}
-            disabled={errorText || shouldShowApprovalGroup}
-          >
-            {errorText || t('Supply')}
-          </CommitButton>
-        )}
-      </ApprovalButtons>
+      <CommitButton
+        variant={errorText ? 'danger' : 'primary'}
+        onClick={() => {
+          if (expertMode) {
+            onAdd()
+          } else {
+            setLiquidityState({
+              attemptingTxn: false,
+              liquidityErrorMessage: undefined,
+              txHash: undefined,
+            })
+            onPresentAddLiquidityModal()
+          }
+        }}
+        disabled={errorText}
+      >
+        {errorText || t('Supply')}
+      </CommitButton>
     </AutoColumn>
   )
 }

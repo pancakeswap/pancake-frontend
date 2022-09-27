@@ -1,14 +1,15 @@
-import { GetStaticPaths, GetStaticProps } from 'next'
 import { Swap as SwapUI, Liquidity as LiquidityUI } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 
 import _noop from 'lodash/noop'
 import AddLiquidityForm from 'components/Liquidity/components/AddLiquidityForm'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import ChoosePair from 'components/Liquidity/components/ChoosePair'
-import { CurrencySelectorContext, useCurrencySelector } from 'components/Liquidity/hooks/useCurrencySelectRoute'
+import useCurrencySelectRoute, { CurrencySelectorContext } from 'components/Liquidity/hooks/useCurrencySelectRoute'
 import useMintPair, { MintPairContext } from 'components/Liquidity/hooks/useMintPair'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
+import useNativeCurrency from 'hooks/useNativeCurrency'
+import { USDC_DEVNET } from 'config/coins'
 
 enum Steps {
   Choose,
@@ -18,7 +19,11 @@ enum Steps {
 const AddLiquidityPage = () => {
   const { t } = useTranslation()
   const [steps, setSteps] = useState(Steps.Choose)
-  const currencies = useCurrencySelector()
+  const native = useNativeCurrency()
+
+  const defaultCurrencies = useMemo(() => [native.address, USDC_DEVNET.address], [native])
+
+  const currencies = useCurrencySelectRoute(defaultCurrencies)
   const mintPairState = useMintPair(currencies)
 
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.currencyA, currencies?.currencyB)

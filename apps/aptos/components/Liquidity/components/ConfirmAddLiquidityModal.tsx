@@ -8,8 +8,8 @@ import TransactionConfirmationModal, {
 } from 'components/TransactionConfirmationModal'
 import _toNumber from 'lodash/toNumber'
 import { AddLiquidityModalHeader, PairDistribution } from './common'
-import { Field } from '../state/add/actions'
 import { CurrencySelectorValue } from '../hooks/useCurrencySelectRoute'
+import { Field } from '../type'
 
 interface ConfirmAddLiquidityModalProps {
   title: string

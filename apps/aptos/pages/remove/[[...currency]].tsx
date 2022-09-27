@@ -1,14 +1,47 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Liquidity as LiquidityUI, Swap as SwapUI } from '@pancakeswap/uikit'
+import { AtomBox } from '@pancakeswap/ui'
+import {
+  AutoColumn,
+  Box,
+  CardBody,
+  Liquidity as LiquidityUI,
+  RowBetween,
+  Swap as SwapUI,
+  Text,
+} from '@pancakeswap/uikit'
+import { LightGreyCard } from 'components/Card'
+import DetailToggler from 'components/Liquidity/components/DetailToggler'
+import RemoveLiquidityButton from 'components/Liquidity/components/RemoveLiquidityButton'
+import SimpleRemoveForm from 'components/Liquidity/components/SimpleRemoveForm'
+import SlippageSection from 'components/Liquidity/components/SlippageSection'
+import withLPValues from 'components/Liquidity/hocs/withLPValues'
+import useBurnLiquidityInfo from 'components/Liquidity/hooks/useBurnLiquidityInfo'
+import useCurrencySelectRoute from 'components/Liquidity/hooks/useCurrencySelectRoute'
 
-const { LiquidityCard } = LiquidityUI
+import { usePair } from 'hooks/usePairs'
+import { useMemo } from 'react'
+
+const { LiquidityCard, MinimalPositionCardView } = LiquidityUI
 const { Page } = SwapUI
+
+const MinimalPositionCard = withLPValues(MinimalPositionCardView)
 
 const RemoveLiquidityPage = () => {
   const { t } = useTranslation()
 
-  const symbolA = ''
-  const symbolB = ''
+  const { currencyA, currencyB } = useCurrencySelectRoute()
+  const [tokenA, tokenB] = useMemo(() => [currencyA?.wrapped, currencyB?.wrapped], [currencyA, currencyB])
+
+  const [, pair] = usePair(currencyA, currencyB)
+
+  const symbolA = currencyA?.symbol
+  const symbolB = currencyB?.symbol
+
+  const { formattedAmounts, parsedAmounts, error } = useBurnLiquidityInfo(
+    currencyA ?? undefined,
+    currencyB ?? undefined,
+    pair,
+  )
 
   return (
     <Page helpUrl="https://docs.pancakeswap.finance/products/pancakeswap-exchange" isEvm={false}>
@@ -24,58 +57,68 @@ const RemoveLiquidityPage = () => {
             assetB: symbolB ?? '',
           })}
         />
-        {/* <RowBetween>
-              <Text>{t('Amount')}</Text>
-              <Button variant="text" scale="sm" onClick={() => setShowDetailed(!showDetailed)}>
-                {showDetailed ? t('Simple') : t('Detailed')}
-              </Button>
-            </RowBetween> */}
-        {/* {showDetailed ? <DetailRemoveForm/> : <SimpleRemoveForm />} */}
-        {/* {pair && (
-          <AutoColumn gap="10px" style={{ marginTop: '16px' }}>
-            <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
-              {t('Prices')}
-            </Text>
-            <LightGreyCard>
-              <Flex justifyContent="space-between">
-                <Text small color="textSubtle">
-                  1 {currencyA?.symbol} =
+        <CardBody>
+          <DetailToggler>
+            {() => <SimpleRemoveForm currencyA={currencyA} currencyB={currencyB} formattedAmounts={formattedAmounts} />}
+          </DetailToggler>
+          <AutoColumn gap="8px" style={{ marginTop: '16px' }}>
+            {pair && (
+              <>
+                <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
+                  {t('Prices')}
                 </Text>
-                <Text small>
-                  {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
-                </Text>
-              </Flex>
-              <Flex justifyContent="space-between">
-                <Text small color="textSubtle">
-                  1 {currencyB?.symbol} =
-                </Text>
-                <Text small>
-                  {tokenB ? pair.priceOf(tokenB).toSignificant(6) : '-'} {currencyA?.symbol}
-                </Text>
-              </Flex>
-            </LightGreyCard>
-          </AutoColumn>
-        )} */}
-        {/* <RowBetween mt="16px">
-            <Text bold color="secondary" fontSize="12px">
-              {t('Slippage Tolerance')}
-            </Text>
-            <Text bold color="primary">
-              {allowedSlippage / 100}%
-            </Text>
-          </RowBetween> */}
-        {/* {poolData && (
+                <LightGreyCard padding="24px" borderRadius="20px">
+                  <AtomBox display="flex" justifyContent="space-between">
+                    <Text small color="textSubtle">
+                      1 {currencyA?.symbol} =
+                    </Text>
+                    <Text small>
+                      {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
+                    </Text>
+                  </AtomBox>
+                  <AtomBox display="flex" justifyContent="space-between">
+                    <Text small color="textSubtle">
+                      1 {currencyB?.symbol} =
+                    </Text>
+                    <Text small>
+                      {tokenB ? pair.priceOf(tokenB).toSignificant(6) : '-'} {currencyA?.symbol}
+                    </Text>
+                  </AtomBox>
+                </LightGreyCard>
+              </>
+            )}
+            <SlippageSection />
+            {/* {poolData && (
             <RowBetween mt="16px">
-              <TooltipText ref={targetRef} bold fontSize="12px" color="secondary">
-                {t('LP reward APR')}
-              </TooltipText>
-              {tooltipVisible && tooltip}
-              <Text bold color="primary">
-                {formatAmount(poolData.lpApr7d)}%
-              </Text>
+            <TooltipText ref={targetRef} bold fontSize="12px" color="secondary">
+            {t('LP reward APR')}
+            </TooltipText>
+            {tooltipVisible && tooltip}
+            <Text bold color="primary">
+            {formatAmount(poolData.lpApr7d)}%
+            </Text>
             </RowBetween>
           )} */}
+          </AutoColumn>
+          <Box position="relative" mt="16px">
+            <RowBetween flexWrap="nowrap">
+              <RemoveLiquidityButton
+                currencyA={currencyA}
+                currencyB={currencyB}
+                tokenA={tokenA}
+                tokenB={tokenB}
+                error={error}
+                parsedAmounts={parsedAmounts}
+              />
+            </RowBetween>
+          </Box>
+        </CardBody>
       </LiquidityCard>
+      {pair ? (
+        <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
+          <MinimalPositionCard pair={pair} />
+        </AutoColumn>
+      ) : null}
     </Page>
   )
 }

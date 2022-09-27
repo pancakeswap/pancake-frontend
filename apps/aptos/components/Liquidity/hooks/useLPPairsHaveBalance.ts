@@ -21,9 +21,10 @@ export default function useLPPairsHaveBalance(): LPPairsResponse {
   const { data: v2PairsBalances, isFetching } = useAccountResources({
     watch: true,
     address: account?.address,
-    select(data) {
-      const lps = data.filter((d) => d.type.includes(`${COIN_STORE_TYPE_PREFIX}<${PAIR_LP_TYPE_TAG}`))
-      return lps
+    select(resource) {
+      return resource
+        .filter((r) => r.type.includes(`${COIN_STORE_TYPE_PREFIX}<${PAIR_LP_TYPE_TAG}`))
+        .filter(({ data }) => (data as { coin: { value: string } }).coin.value !== '0')
     },
   })
 

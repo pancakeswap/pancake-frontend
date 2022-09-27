@@ -3,14 +3,13 @@ import { ChoosePairView } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { CommitButton } from 'components/CommitButton'
 import _noop from 'lodash/noop'
 import { useContext } from 'react'
-import { useCurrencySelectRoute, CurrencySelectorContext } from '../hooks/useCurrencySelectRoute'
+import { CurrencySelectorContext } from '../hooks/useCurrencySelectRoute'
 import { MintPairContext } from '../hooks/useMintPair'
 import { CurrencySelect } from './CurrencySelect'
 
 export default function ChoosePair({ onNext }) {
   const { error } = useContext(MintPairContext)
-  const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
-  const { currencyA, currencyB } = useContext(CurrencySelectorContext)
+  const { currencyA, currencyB, handleCurrencyASelect, handleCurrencyBSelect } = useContext(CurrencySelectorContext)
   const { t } = useTranslation()
 
   return (

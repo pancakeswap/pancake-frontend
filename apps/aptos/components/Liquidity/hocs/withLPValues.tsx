@@ -4,18 +4,11 @@
 // import { useAccount } from '@pancakeswap/awgmi'
 import multiplyPriceByAmount from '@pancakeswap/utils/multiplyPriceByAmount'
 
-import { Coin, CurrencyAmount, JSBI, Pair, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
+import { Coin, JSBI, Pair, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
 import { useMemo } from 'react'
 import { useCurrencyBalance } from 'hooks/Balances'
-
-// Philip TODO: Replace useTotalSupply mock
-export function useTotalSupply(token?: Coin): CurrencyAmount<Coin> | undefined {
-  // const contract = useTokenContract(token?.isToken ? token.address : undefined, false)
-
-  // const totalSupplyStr: string | undefined = useSingleCallResult(contract, 'totalSupply')?.result?.[0]?.toString()
-
-  return useMemo(() => (token ? CurrencyAmount.fromRawAmount(token, '0') : undefined), [token])
-}
+import useTotalSupply from 'hooks/useTotalSupply'
+import currencyId from 'utils/currencyId'
 
 // Philip TODO: Replace useBUSDPrice mock
 export function useBUSDPrice(currency?: Coin): Price<Coin, Coin> | undefined {
@@ -64,10 +57,9 @@ const usePoolTokenPercentage = ({ userPoolBalance, totalPoolTokens }) => {
     : undefined
 }
 
-// Philip TODO: add userPoolBalance type
 const withLPValues =
   (Component) =>
-  ({ pair, mb }: { pair: Pair; mb: string }) => {
+  ({ pair, mb }: { pair: Pair; mb?: string }) => {
     const currency0 = pair.token0
     const currency1 = pair.token1
 
@@ -89,6 +81,8 @@ const withLPValues =
         totalUSDValue={totalUSDValue}
         userPoolBalance={userPoolBalance}
         poolTokenPercentage={poolTokenPercentage}
+        removeTo={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
+        addTo={`/add/${currencyId(currency0)}/${currencyId(currency1)}?step=1`}
       />
     )
   }

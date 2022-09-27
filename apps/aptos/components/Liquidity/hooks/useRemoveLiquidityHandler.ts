@@ -1,20 +1,15 @@
 import { AptosSwapRouter } from '@pancakeswap/aptos-swap-sdk'
-
-import { useCallback, useContext, useState } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
-
 import { useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
-
+import { useTranslation } from '@pancakeswap/localization'
+import { useCallback, useState } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { calculateSlippageAmount } from 'utils/exchange'
 import { useUserSlippage } from 'state/user'
-
-import { CurrencySelectorContext } from './useCurrencySelectRoute'
+import { calculateSlippageAmount } from 'utils/exchange'
 import { Field } from '../type'
 
-export default function useAddLiquidityHanlder({ parsedAmounts, noLiquidity }) {
-  const { currencyA, currencyB } = useContext(CurrencySelectorContext)
+export default function useRemoveLiquidityHandler({ parsedAmounts, currencyA, currencyB }) {
   const { t } = useTranslation()
+
   const addTransaction = useTransactionAdder()
   const { simulateTransactionAsync } = useSimulateTransaction()
   const { sendTransactionAsync } = useSendTransaction()
@@ -30,24 +25,20 @@ export default function useAddLiquidityHanlder({ parsedAmounts, noLiquidity }) {
     txHash: undefined,
   })
 
-  const onAdd = useCallback(async () => {
-    const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
-    if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB) {
-      return
-    }
-
+  const onRemove = useCallback(async () => {
     const amountsMin = {
-      [Field.CURRENCY_A]: calculateSlippageAmount(parsedAmountA, noLiquidity ? 0 : allowedSlippage)[0],
-      [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0],
+      [Field.CURRENCY_A]: calculateSlippageAmount(parsedAmounts[Field.CURRENCY_A], allowedSlippage)[0],
+      [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmounts[Field.CURRENCY_B], allowedSlippage)[0],
     }
 
-    setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
-    const payload = AptosSwapRouter.unstable_addLiquidityParameters(
-      amountsMin[Field.CURRENCY_A].toString() ?? '',
-      amountsMin[Field.CURRENCY_B].toString() ?? '',
+    const payload = AptosSwapRouter.unstable_removeLiquidityParameters(
+      parsedAmounts[Field.LIQUIDITY]?.quotient?.toString() ?? '',
+      amountsMin[Field.CURRENCY_A]?.toString() ?? '',
+      amountsMin[Field.CURRENCY_B]?.toString() ?? '',
       currencyA.wrapped.address,
       currencyB.wrapped.address,
     )
+
     console.info(payload, 'payload')
     await simulateTransactionAsync({
       payload,
@@ -62,29 +53,29 @@ export default function useAddLiquidityHanlder({ parsedAmounts, noLiquidity }) {
           const symbolB = currencyB.symbol
           const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) ?? ''
           addTransaction(response, {
-            summary: `Add ${amountA} ${symbolA} and ${amountB} ${symbolB}`,
+            summary: `Remove ${amountA} ${symbolA} and ${amountB} ${symbolB}`,
             translatableSummary: {
-              text: 'Add %amountA% %symbolA% and %amountB% %symbolB%',
+              text: 'Remove %amountA% %symbolA% and %amountB% %symbolB%',
               data: { amountA, symbolA, amountB, symbolB },
             },
-            type: 'add-liquidity',
+            type: 'remove-liquidity',
           })
         })
       })
       .catch((err) => {
-        console.error(`Add Liquidity failed`, err, payload)
+        console.error(`Remove Liquidity failed`, err, payload)
         setLiquidityState({
           attemptingTxn: false,
           liquidityErrorMessage:
             // TODO: map error
-            err && err.code !== 4001 ? t('Add liquidity failed: %message%', { message: err.message }) : undefined,
+            err && err.code !== 4001 ? t('Remove liquidity failed: %message%', { message: err.message }) : undefined,
           txHash: undefined,
         })
       })
-  }, [addTransaction, currencyA, currencyB, parsedAmounts, sendTransactionAsync, simulateTransactionAsync, t])
+  }, [currencyA, currencyB, parsedAmounts, addTransaction, simulateTransactionAsync, sendTransactionAsync, t])
 
   return {
-    onAdd,
+    onRemove,
     attemptingTxn,
     liquidityErrorMessage,
     txHash,

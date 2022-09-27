@@ -1,18 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Dots, RowBetween } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
+import { ApprovalState } from '../type'
 
-export enum ApprovalState {
-  UNKNOWN,
-  NOT_APPROVED,
-  PENDING,
-  APPROVED,
-}
-
-// Remove all
-const ApprovalButtons = ({ children, isValid, symbolA, symbolB }) => {
+const AddApprovalButtons = ({ children, isValid, symbolA, symbolB }) => {
   const { t } = useTranslation()
 
+  // Philip TODO: Add Approval logic
   const approveACallback = _noop
   const approveBCallback = _noop
 
@@ -25,7 +19,7 @@ const ApprovalButtons = ({ children, isValid, symbolA, symbolB }) => {
 
   return (
     <>
-      {/* {shouldShowApprovalGroup && (
+      {shouldShowApprovalGroup && (
         <RowBetween style={{ gap: '8px' }}>
           {showFieldAApproval && (
             <Button onClick={approveACallback} disabled={approvalA === ApprovalState.PENDING} width="100%">
@@ -47,9 +41,9 @@ const ApprovalButtons = ({ children, isValid, symbolA, symbolB }) => {
           )}
         </RowBetween>
       )}
-      {children(shouldShowApprovalGroup)} */}
+      {children(shouldShowApprovalGroup)}
     </>
   )
 }
 
-export default ApprovalButtons
+export default AddApprovalButtons
