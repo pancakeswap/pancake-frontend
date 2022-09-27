@@ -222,12 +222,12 @@ const Search = () => {
   }, [pools, showWatchlist, watchListPoolData, value])
 
   const contentUnderTokenList = () => {
-    const isLoading = showWatchlist ? watchListTokenLoading : tokensLoading
+    const isLoading = tokensLoading
     const noTokensFound =
       tokensForList.length === 0 && !isLoading && debouncedSearchTerm.length >= MINIMUM_SEARCH_CHARACTERS
     const noWatchlistTokens = tokensForList.length === 0 && !isLoading
     const showMessage = showWatchlist ? noWatchlistTokens : noTokensFound
-    const noTokensMessage = showWatchlist ? t('Saved tokens will appear here') : t('No results')
+    const noTokensMessage = t('No results')
     return (
       <>
         {isLoading && <Skeleton />}
