@@ -2,7 +2,7 @@ import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
 import { WalletFilledIcon } from '@pancakeswap/uikit'
 import type { ExtendEthereum } from 'global'
 import { isFirefox } from 'react-device-detect'
-import { metaMaskConnector, walletConnectConnector } from '../utils/wagmi'
+import { metaMaskConnector, walletConnectConnector, walletConnectNoQrCodeConnector } from '../utils/wagmi'
 
 export enum ConnectorNames {
   MetaMask = 'metaMask',
@@ -13,9 +13,18 @@ export enum ConnectorNames {
   WalletLink = 'coinbaseWallet',
 }
 
-const qrCode = async () => (await walletConnectConnector.getProvider()).connector.uri
+const delay = (t: number) => new Promise((resolve) => setTimeout(resolve, t))
 
-const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
+const createQrCode = (chainId: number) => async () => {
+  const provider = await walletConnectNoQrCodeConnector.getProvider({ chainId, create: true })
+  const uri = await Promise.race([
+    provider.enable().then(() => provider.connector.uri),
+    delay(50).then(() => provider.connector.uri),
+  ])
+  return uri
+}
+
+const walletsConfig = (chainId: number): WalletConfigV2<ConnectorNames>[] => [
   {
     id: 'metamask',
     title: 'Metamask',
@@ -23,7 +32,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
     installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isMetaMask) && metaMaskConnector.ready,
     connectorId: ConnectorNames.MetaMask,
     deepLink: 'metamask://dapp/pancakeswap.finance/',
-    qrCode,
+    qrCode: createQrCode(chainId),
     downloadLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
   },
   {
@@ -63,7 +72,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
     downloadLink: {
       desktop: 'https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph/related',
     },
-    qrCode,
+    qrCode: createQrCode(chainId),
   },
   {
     id: 'walletconnect',
@@ -71,7 +80,6 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
     icon: '/images/wallets/walletconnect.png',
     installed: walletConnectConnector.ready,
     connectorId: ConnectorNames.WalletConnect,
-    qrCode,
   },
   {
     id: 'opera',
@@ -94,7 +102,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
     icon: '/images/wallets/mathwallet.png',
     connectorId: ConnectorNames.Injected,
     installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isMathWallet),
-    qrCode,
+    qrCode: createQrCode(chainId),
   },
   {
     id: 'tokenpocket',
@@ -102,7 +110,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
     icon: '/images/wallets/tokenpocket.png',
     connectorId: ConnectorNames.Injected,
     installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isTokenPocket),
-    qrCode,
+    qrCode: createQrCode(chainId),
   },
   {
     id: 'safepal',
@@ -110,7 +118,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
     icon: '/images/wallets/safepal.png',
     connectorId: ConnectorNames.Injected,
     installed: typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isSafePal),
-    qrCode,
+    qrCode: createQrCode(chainId),
   },
   {
     id: 'coin98',
@@ -120,7 +128,7 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
     installed:
       typeof window !== 'undefined' &&
       (Boolean((window.ethereum as ExtendEthereum)?.isCoin98) || Boolean(window.coin98)),
-    qrCode,
+    qrCode: createQrCode(chainId),
   },
   {
     id: 'blocto',
@@ -128,17 +136,17 @@ const walletsConfig: WalletConfigV2<ConnectorNames>[] = [
     icon: '/images/wallets/blocto.png',
     connectorId: ConnectorNames.Injected,
     installed: typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBlocto),
-    qrCode,
+    qrCode: createQrCode(chainId),
   },
 ]
 
-export const wallets =
+export const createWallets = (chainId: number) =>
   (typeof window !== 'undefined' && !window.ethereum) ||
-  walletsConfig.some((c) => c.installed && c.connectorId === ConnectorNames.Injected)
-    ? walletsConfig
+  walletsConfig(chainId).some((c) => c.installed && c.connectorId === ConnectorNames.Injected)
+    ? walletsConfig(chainId)
     : // add injected icon if none of injected type wallets installed
       [
-        ...walletsConfig,
+        ...walletsConfig(chainId),
         {
           id: 'injected',
           title: 'Injected',

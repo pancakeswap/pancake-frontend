@@ -157,14 +157,7 @@ const TabContainer = ({ children }: PropsWithChildren) => {
   const { t } = useTranslation()
 
   return (
-    <AtomBox
-      position="relative"
-      zIndex="modal"
-      width={{
-        xs: 'full',
-        md: 'auto',
-      }}
-    >
+    <AtomBox position="relative" zIndex="modal" className={modalWrapperClass}>
       <AtomBox position="absolute" style={{ top: '-50px' }}>
         <TabMenu activeIndex={index} onItemClick={setIndex} gap="16px">
           <Tab>{t('Connect Wallet')}</Tab>
@@ -182,7 +175,6 @@ const TabContainer = ({ children }: PropsWithChildren) => {
         }}
         zIndex="modal"
         width="full"
-        className={modalWrapperClass}
       >
         {index === 0 && children}
         {index === 1 && <Tutorial />}
@@ -307,6 +299,7 @@ function WalletSelect<T>({
 
         return (
           <Button
+            key={wallet.id}
             variant="text"
             height="auto"
             as={AtomBox}
