@@ -145,7 +145,7 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
                       >
                         <Flex alignItems="center" justifyContent="space-between" width="100%">
                           {label}
-                          <LogoutIcon color={disabled ? "disabled" : "textSubtle"} />
+                          <LogoutIcon color={disabled ? "textDisabled" : "textSubtle"} />
                         </Flex>
                       </DropdownMenuItem>
                     )}
