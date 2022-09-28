@@ -14,6 +14,7 @@ import {
 import * as React from 'react'
 
 import { useSyncExternalStore } from 'use-sync-external-store/shim'
+import { queryClientContext as context } from '../../context'
 import { shouldThrowError, parseQueryArgs, trackResult } from './utils'
 
 export function useBaseQuery<
@@ -214,7 +215,7 @@ export function useQuery<TQueryFnData, TError, TData = TQueryFnData, TQueryKey e
   arg3?: UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
 ): UseQueryResult<TData, TError> {
   const parsedOptions = parseQueryArgs(arg1, arg2, arg3)
-  const baseQuery = useBaseQuery(parsedOptions, QueryObserver)
+  const baseQuery = useBaseQuery({ context, ...parsedOptions }, QueryObserver)
 
   const result = {
     data: baseQuery.data,

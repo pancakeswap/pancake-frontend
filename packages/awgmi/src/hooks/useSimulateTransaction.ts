@@ -1,9 +1,8 @@
-import { useMutation } from '@tanstack/react-query'
-
 import * as React from 'react'
 import { simulateTransaction, SimulateTransactionArgs, SimulateTransactionResult } from '@pancakeswap/awgmi/core'
 
 import { MutationConfig } from '../types'
+import { useMutation } from './utils/useMutation'
 
 export type UseSimulateTransactionArgs = Partial<SimulateTransactionArgs>
 

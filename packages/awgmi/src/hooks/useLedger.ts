@@ -1,7 +1,7 @@
 import { FetchLedgerArgs, fetchLedgerInfo, FetchLedgerResult } from '@pancakeswap/awgmi/core'
 
 import { QueryConfig, QueryFunctionArgs } from '../types'
-import { useQuery } from './query/useQuery'
+import { useQuery } from './utils/useQuery'
 
 type UseLedgerArgs = Partial<FetchLedgerArgs> & {
   /** Subscribe to changes */

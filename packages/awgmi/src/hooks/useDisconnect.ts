@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
-import { useMutation } from '@tanstack/react-query'
 import { disconnect as disconnectCore } from '@pancakeswap/awgmi/core'
+import { useMutation } from './utils/useMutation'
 
 export type UseDisconnectConfig = {
   /** Function to invoke when an error is thrown while connecting. */

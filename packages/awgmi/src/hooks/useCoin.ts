@@ -1,7 +1,7 @@
 import { fetchCoin, FetchCoinArgs, FetchCoinResult } from '@pancakeswap/awgmi/core'
 
 import { QueryConfig, QueryFunctionArgs } from '../types'
-import { useQuery } from './query/useQuery'
+import { useQuery } from './utils/useQuery'
 import { useNetwork } from './useNetwork'
 
 export type UseCoinArgs = Partial<FetchCoinArgs>

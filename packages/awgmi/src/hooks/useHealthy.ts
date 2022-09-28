@@ -1,7 +1,7 @@
 import { fetchHealthy, FetchHealthyArgs } from '@pancakeswap/awgmi/core'
 
 import { QueryConfig, QueryFunctionArgs } from '../types'
-import { useQuery } from './query/useQuery'
+import { useQuery } from './utils/useQuery'
 
 type UseLedgerArgs = Partial<FetchHealthyArgs> & {
   /** Subscribe to changes */

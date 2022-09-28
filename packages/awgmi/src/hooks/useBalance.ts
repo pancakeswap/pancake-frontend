@@ -2,7 +2,7 @@ import * as React from 'react'
 import { FetchBalanceArgs, FetchBalanceResult, fetchBalance } from '@pancakeswap/awgmi/core'
 
 import { QueryConfig, QueryFunctionArgs } from '../types'
-import { useQuery } from './query/useQuery'
+import { useQuery } from './utils/useQuery'
 import { useLedger } from './useLedger'
 
 export type UseBalanceArgs = Partial<FetchBalanceArgs> & {

@@ -1,7 +1,7 @@
 import { fetchAccountResources, FetchAccountResourcesArgs, FetchAccountResourcesResult } from '@pancakeswap/awgmi/core'
 
 import { QueryConfig, QueryFunctionArgs } from '../types'
-import { useQuery } from './query/useQuery'
+import { useQuery } from './utils/useQuery'
 
 type UseAccountResourcesArgs = Partial<FetchAccountResourcesArgs> & {
   /** Subscribe to changes */
