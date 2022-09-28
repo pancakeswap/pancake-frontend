@@ -79,7 +79,7 @@ export default function SwapModalHeader({
       </RowFixed>
       <RowBetween alignItems="flex-end">
         <RowFixed gap="4px">
-          <CurrencyLogo currency={trade.outputAmount.currency} size="24px" />
+          <CurrencyLogo currency={trade.outputAmount.currency} size="24px" style={{ marginRight: '12px' }} />
           <TruncatedText
             fontSize="24px"
             color={

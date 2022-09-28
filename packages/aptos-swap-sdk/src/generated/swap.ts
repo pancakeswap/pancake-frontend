@@ -4,7 +4,7 @@ export const swapInitStorage = (): Types.EntryFunctionPayload => {
   return {
     type_arguments: [],
     arguments: [],
-    function: '0xaa16ed61ecbc91e151cffd7c34bbf9a551235d977eca8f7aed5d9d45e8790b1f::swap::init_storage',
+    function: '0xc23db0e6419eec6786f0faa9642907e12e88b18ad1e8b9910f53935caff59d2d::swap::init_storage',
   }
 }
 
@@ -14,7 +14,7 @@ export const swapSetAdmin = (args: SwapSetAdminArgs): Types.EntryFunctionPayload
   return {
     type_arguments: [],
     arguments: args,
-    function: '0xaa16ed61ecbc91e151cffd7c34bbf9a551235d977eca8f7aed5d9d45e8790b1f::swap::setAdmin',
+    function: '0xc23db0e6419eec6786f0faa9642907e12e88b18ad1e8b9910f53935caff59d2d::swap::setAdmin',
   }
 }
 
@@ -24,7 +24,7 @@ export const swapSetFeeTo = (args: SwapSetFeeToArgs): Types.EntryFunctionPayload
   return {
     type_arguments: [],
     arguments: args,
-    function: '0xaa16ed61ecbc91e151cffd7c34bbf9a551235d977eca8f7aed5d9d45e8790b1f::swap::setFeeTo',
+    function: '0xc23db0e6419eec6786f0faa9642907e12e88b18ad1e8b9910f53935caff59d2d::swap::setFeeTo',
   }
 }
 
@@ -32,7 +32,7 @@ export const swapWithdrawFee = (typeArgs: [string, string]): Types.EntryFunction
   return {
     type_arguments: typeArgs,
     arguments: [],
-    function: '0xaa16ed61ecbc91e151cffd7c34bbf9a551235d977eca8f7aed5d9d45e8790b1f::swap::withdrawFee',
+    function: '0xc23db0e6419eec6786f0faa9642907e12e88b18ad1e8b9910f53935caff59d2d::swap::withdrawFee',
   }
 }
 
@@ -45,7 +45,7 @@ export const routerAddLiquidity = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: '0xaa16ed61ecbc91e151cffd7c34bbf9a551235d977eca8f7aed5d9d45e8790b1f::router::add_liquidity',
+    function: '0xc23db0e6419eec6786f0faa9642907e12e88b18ad1e8b9910f53935caff59d2d::router::add_liquidity',
   }
 }
 
@@ -53,7 +53,7 @@ export const routerCreatePair = (typeArgs: [string, string]): Types.EntryFunctio
   return {
     type_arguments: typeArgs,
     arguments: [],
-    function: '0xaa16ed61ecbc91e151cffd7c34bbf9a551235d977eca8f7aed5d9d45e8790b1f::router::create_pair',
+    function: '0xc23db0e6419eec6786f0faa9642907e12e88b18ad1e8b9910f53935caff59d2d::router::create_pair',
   }
 }
 
@@ -61,7 +61,7 @@ export const routerRegisterLp = (typeArgs: [string, string]): Types.EntryFunctio
   return {
     type_arguments: typeArgs,
     arguments: [],
-    function: '0xaa16ed61ecbc91e151cffd7c34bbf9a551235d977eca8f7aed5d9d45e8790b1f::router::register_lp',
+    function: '0xc23db0e6419eec6786f0faa9642907e12e88b18ad1e8b9910f53935caff59d2d::router::register_lp',
   }
 }
 
@@ -69,7 +69,7 @@ export const routerRegisterToken = (typeArgs: [string]): Types.EntryFunctionPayl
   return {
     type_arguments: typeArgs,
     arguments: [],
-    function: '0xaa16ed61ecbc91e151cffd7c34bbf9a551235d977eca8f7aed5d9d45e8790b1f::router::register_token',
+    function: '0xc23db0e6419eec6786f0faa9642907e12e88b18ad1e8b9910f53935caff59d2d::router::register_token',
   }
 }
 
@@ -82,7 +82,7 @@ export const routerRemoveLiquidity = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: '0xaa16ed61ecbc91e151cffd7c34bbf9a551235d977eca8f7aed5d9d45e8790b1f::router::remove_liquidity',
+    function: '0xc23db0e6419eec6786f0faa9642907e12e88b18ad1e8b9910f53935caff59d2d::router::remove_liquidity',
   }
 }
 
@@ -95,7 +95,7 @@ export const routerSwapExactInput = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: '0xaa16ed61ecbc91e151cffd7c34bbf9a551235d977eca8f7aed5d9d45e8790b1f::router::swap_exact_input',
+    function: '0xc23db0e6419eec6786f0faa9642907e12e88b18ad1e8b9910f53935caff59d2d::router::swap_exact_input',
   }
 }
 
@@ -108,7 +108,7 @@ export const routerSwapExactInputDoublehop = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: '0xaa16ed61ecbc91e151cffd7c34bbf9a551235d977eca8f7aed5d9d45e8790b1f::router::swap_exact_input_doublehop',
+    function: '0xc23db0e6419eec6786f0faa9642907e12e88b18ad1e8b9910f53935caff59d2d::router::swap_exact_input_doublehop',
   }
 }
 
@@ -121,7 +121,7 @@ export const routerSwapExactInputTriplehop = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: '0xaa16ed61ecbc91e151cffd7c34bbf9a551235d977eca8f7aed5d9d45e8790b1f::router::swap_exact_input_triplehop',
+    function: '0xc23db0e6419eec6786f0faa9642907e12e88b18ad1e8b9910f53935caff59d2d::router::swap_exact_input_triplehop',
   }
 }
 
@@ -134,6 +134,32 @@ export const routerSwapExactOutput = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: '0xaa16ed61ecbc91e151cffd7c34bbf9a551235d977eca8f7aed5d9d45e8790b1f::router::swap_exact_output',
+    function: '0xc23db0e6419eec6786f0faa9642907e12e88b18ad1e8b9910f53935caff59d2d::router::swap_exact_output',
+  }
+}
+
+export type RouterSwapExactOutputDoublehopArgs = [bigint | string, bigint | string]
+
+export const routerSwapExactOutputDoublehop = (
+  args: RouterSwapExactOutputDoublehopArgs,
+  typeArgs: [string, string, string]
+): Types.EntryFunctionPayload => {
+  return {
+    type_arguments: typeArgs,
+    arguments: args,
+    function: '0xc23db0e6419eec6786f0faa9642907e12e88b18ad1e8b9910f53935caff59d2d::router::swap_exact_output_doublehop',
+  }
+}
+
+export type RouterSwapExactOutputTriplehopArgs = [bigint | string, bigint | string]
+
+export const routerSwapExactOutputTriplehop = (
+  args: RouterSwapExactOutputTriplehopArgs,
+  typeArgs: [string, string, string, string]
+): Types.EntryFunctionPayload => {
+  return {
+    type_arguments: typeArgs,
+    arguments: args,
+    function: '0xc23db0e6419eec6786f0faa9642907e12e88b18ad1e8b9910f53935caff59d2d::router::swap_exact_output_triplehop',
   }
 }

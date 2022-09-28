@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { Coin, Currency, CurrencyAmount, Token } from '@pancakeswap/aptos-swap-sdk'
 import { APTOS_COIN, useAccount, useAccountResources, useCoin, useCoins as useCoins_ } from '@pancakeswap/awgmi'
-import { coinStoreResourcesFilter, wrapCoinStoreTypeTag } from '@pancakeswap/awgmi/core'
+import { coinStoreResourcesFilter, unwrapTypeFromString } from '@pancakeswap/awgmi/core'
 import { useAtomValue } from 'jotai'
 import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'
@@ -108,9 +108,9 @@ export function useAllTokenBalances() {
       const coinStore = data
         .filter(coinStoreResourcesFilter)
         .map((coin) => {
-          const address = wrapCoinStoreTypeTag(coin.type)
+          const address = unwrapTypeFromString(coin.type)
 
-          if (allTokens[address]) {
+          if (address && allTokens[address]) {
             return [address, CurrencyAmount.fromRawAmount(allTokens[address], (coin.data as any).coin.value)]
           }
           return null

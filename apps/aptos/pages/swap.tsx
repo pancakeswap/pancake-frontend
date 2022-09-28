@@ -8,6 +8,7 @@ import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
 import { ExchangeLayout } from 'components/Layout/ExchangeLayout'
+import AdvancedSwapDetailsDropdown from 'components/Swap/AdvancedSwapDetailsDropdown'
 import confirmPriceImpactWithoutFee from 'components/Swap/confirmPriceImpactWithoutFee'
 import ConfirmSwapModal from 'components/Swap/ConfirmSwapModal'
 import { TestTokens } from 'components/TestTokens'
@@ -116,6 +117,9 @@ const SwapPage = () => {
         const payload = AptosSwapRouter.swapCallParameters(trade, {
           allowedSlippage: new Percent(JSBI.BigInt(userAllowedSlippage), BIPS_BASE),
         })
+        if (!payload) {
+          throw new Error('Missing swap call')
+        }
         console.info(payload)
         try {
           await simulateTransactionAsync({
@@ -370,6 +374,7 @@ const SwapPage = () => {
             </CommitButton>
           </AtomBox>
         </AutoColumn>
+        {trade && <AdvancedSwapDetailsDropdown trade={trade} />}
       </Card>
       <TestTokens />
     </>

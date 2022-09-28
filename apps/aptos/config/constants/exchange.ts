@@ -1,4 +1,4 @@
-import { ChainId, ONE_HUNDRED_PERCENT, JSBI, Percent, Token } from '@pancakeswap/aptos-swap-sdk'
+import { ChainId, ONE_HUNDRED_PERCENT, JSBI, Percent, Token, Coin } from '@pancakeswap/aptos-swap-sdk'
 import { APT } from 'config/coins'
 import { ChainTokenList } from './types'
 
@@ -18,7 +18,21 @@ export const SUGGESTED_BASES = {}
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST = {
-  [ChainId.DEVNET]: [APT[ChainId.DEVNET]],
+  [ChainId.DEVNET]: [
+    APT[ChainId.DEVNET],
+    new Coin(
+      ChainId.DEVNET,
+      '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBNB',
+      8,
+      'BNB',
+    ),
+    new Coin(
+      ChainId.DEVNET,
+      '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetETH',
+      8,
+      'ETH',
+    ),
+  ],
   [ChainId.TESTNET]: [APT[ChainId.TESTNET]],
 }
 

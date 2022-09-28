@@ -52,7 +52,7 @@ export const CurrencyInputPanel = ({
   const isMounted = useIsMounted()
   const { t } = useTranslation()
 
-  const { data, isFetched } = useAccountBalance({
+  const { data, isLoading } = useAccountBalance({
     address: account?.address,
     coin: currency?.wrapped?.address,
     enabled: !!currency,
@@ -90,7 +90,7 @@ export const CurrencyInputPanel = ({
               style={{ display: 'inline', cursor: 'pointer' }}
             >
               {!hideBalance && !!currency
-                ? t('Balance: %balance%', { balance: isFetched ? data?.formatted ?? '0' : t('Loading') })
+                ? t('Balance: %balance%', { balance: !isLoading ? data?.formatted ?? '0' : t('Loading') })
                 : ' -'}
             </Text>
           )}

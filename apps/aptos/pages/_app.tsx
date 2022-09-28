@@ -21,6 +21,7 @@ declare module 'styled-components' {
 
 function HealthyLog() {
   useHealthy({
+    watch: true,
     onError: (err) => {
       console.info(err)
     },
