@@ -815,7 +815,7 @@
   "If you purchase a token from this list, you may not be able to sell it back.": "Om du köper en token från denna lista kan du kanske inte sälja tillbaka den.",
   "Import": "Importera",
   "via": "via",
-  "Anyone can create a %standard% token on %network% with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.": "Anyone can create a %standard% token on %network% with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.",
+  "Anyone can create a %standard% token on %network% with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.": "Vem som helst kan skapa en %standard%-token på %network% med valfritt namn, även falska versioner av befintliga tokens som påstår sig representera projekt som inte har någon token.",
   "If you purchase an arbitrary token, you may be unable to sell it back.": "Om du köper en slumpmässigt utvald token kan du kanske inte sälja tillbaka den.",
   "Unknown Source": "Okänd källa",
   "Lists": "Listor",
@@ -1356,6 +1356,7 @@
   "Supply Count": "Tillförselmängd",
   "Brand": "Märke",
   "Success": "Utfört",
+  "cIFOs are a new subtype of IFOs, designed to reward our loyal community, and also introduce our community to projects with slightly smaller raises.": "cIFOs are a new subtype of IFOs, designed to reward our loyal community, and also introduce our community to projects with slightly smaller raises.",
   "Go to IFO": "Gå till IF",
   "Phishing warning: ": "Varning för nätfiske: ",
   "please make sure you're visiting https://pancakeswap.finance - check the URL carefully.": "kontrollera att du faktiskt befinner dig på https://pancakeswap.finance. Kontrollera webbadressen noggrant.",
@@ -1474,6 +1475,7 @@
   "Eligible NFT avatar found!": "Giltig NFT-avatar hittades!",
   "The maximum amount of CAKE you can commit to the Public Sale equals the number of your iCAKE. Lock more CAKE for longer durations to increase the maximum CAKE you can commit to the sale.": "Ditt iCAKE-innehav motsvarar det högsta antalet CAKE-tokens som du kan avsätta under den offentliga försäljningen. Lås fler CAKE-tokens under en längre period för att öka det högsta antal CAKE-tokens som du kan avsätta till försäljningen.",
   "What’s the difference between a Public Sale and Private Sale?": "Vad är skillnaden mellan en offentlig försäljning och privat försäljning?",
+  "Learn more about cIFO": "Learn more about cIFO",
   "In the current IFO format. There is a brand new Private Sale. To participate, participants will have to meet certain requirements presented on the IFO card. Each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal. The Private Sale has no participation fee.": "I det aktuella IF-formatet finns en helt ny privat försäljning. För att kunna delta måste man uppfylla särskilda krav som står på IF-kortet. Varje behörig deltagare kan avsätta valfritt antal CAKE-tokens upp till maxgränsen, som publiceras tillsammans med det inledande farmerbjudandets röstförslag. Vid den privata försäljningen utgår ingen deltagaravgift.",
   "You can choose one or both at the same time!": "Du kan välja en eller båda samtidigt!",
   "We recommend you to check if you are eligible to participate in the Private Sale first. In the Public Sale, if the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.": "Vi rekommenderar att du kontrollerar om du är behörig att delta i den privata försäljningen först. I den offentliga försäljningen får du inget meningsfullt antal IF-tokens om du avsätter ett för litet belopp.",
@@ -1819,6 +1821,7 @@
   "Pottery (BETA)": "Insatslotteriet (BETA)",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "Detta inledande farmerbjudande omfattas av en förvärvsperiod, vilket innebär att tokens lanseras under en viss tid.",
   "Learn more in the vote proposal": "Mer information finns i röstförslaget",
+  "What is the difference between an IFO and a cIFO?": "What is the difference between an IFO and a cIFO?",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "Om du inte avsätter tillräckligt med CAKE-tokens får du kanske inte en meningsfull mängd IF-tokens, eller så får du kanske inte några IF-tokens alls.",
   "~%num% available to claim at sales end": "~%num% går att hämta ut vid försäljningens slut",
   "Vested percentage:": "Procentandel med förvärvsperiod:",
@@ -1934,7 +1937,7 @@
   "Up to %boostMultiplier%x": "Upp till %boostMultiplier%x",
   "Available Boosted": "Tillgänglig förbättring",
   "Stake CAKE, Earn CAKE, Win CAKE": "Satsa CAKE, tjäna CAKE, vinn CAKE",
-  "Unable to switch network. Please try it on your wallet": "Unable to switch network. Please try it on your wallet",
+  "Unable to switch network. Please try it on your wallet": "Kunde inte byta nätverk. Försök på din plånbok",
   "Failed": "Avbröts",
   "Transaction failed with error: %reason%": "Transaktionen avbröts på grund av följande fel: %reason%",
   "Transaction failed. For detailed error message:": "Transaktionen avbröts. Detaljerat felmeddelande:",
@@ -1950,5 +1953,5 @@
   "You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!": "Du vann poäng och prestationer för att ha deltagit i vår tvåårsresa. Vi tar och firar vår tvåårsdag!",
   "Trade stablecoins in StableSwap with lower slippage and trading fees!": "Handla med stablecoins i StableSwap med lägre prisförändringar och handlingsavgifter!",
   "StableSwap provides better rates and lower fees for pairs with highly correlated prices": "StableSwap ger bättre priser och lägre avgifter för par med högt korrelerade priser",
-  "Before editing your profile, please make sure you've claimed all the unspent CAKE from previous IFOs!": "Before editing your profile, please make sure you've claimed all the unspent CAKE from previous IFOs!"
+  "Before editing your profile, please make sure you've claimed all the unspent CAKE from previous IFOs!": "Innan du ändrar din profil uppmanas du se till att du har hämtat ut alla oanvända CAKE-tokens från tidigare inledande farmerbjudanden!"
 }
