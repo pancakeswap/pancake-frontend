@@ -1,9 +1,18 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { WalletConnectorNotFoundError, WalletSwitchChainError } from '@pancakeswap/ui-wallets'
 import { connectorLocalStorageKey } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { ConnectorNames } from 'config/wallet'
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
-import { useConnect, useDisconnect, useNetwork } from 'wagmi'
+import {
+  ConnectorNotFoundError,
+  SwitchChainError,
+  SwitchChainNotSupportedError,
+  useConnect,
+  useDisconnect,
+  useNetwork,
+} from 'wagmi'
 import { clearUserStates } from '../utils/clearUserStates'
 import { useActiveChainId } from './useActiveChainId'
 import { useSessionChainId } from './useSessionChainId'
@@ -15,8 +24,10 @@ const useAuth = () => {
   const { disconnectAsync } = useDisconnect()
   const { chainId } = useActiveChainId()
   const [, setSessionChainId] = useSessionChainId()
+  const { t } = useTranslation()
 
   const login = useCallback(
+    // eslint-disable-next-line consistent-return
     async (connectorID: ConnectorNames) => {
       const findConnector = connectors.find((c) => c.id === connectorID)
       try {
@@ -28,10 +39,15 @@ const useAuth = () => {
         return connected
       } catch (error) {
         window?.localStorage?.removeItem(connectorLocalStorageKey)
-        throw error
+        if (error instanceof ConnectorNotFoundError) {
+          throw new WalletConnectorNotFoundError()
+        }
+        if (error instanceof SwitchChainNotSupportedError || error instanceof SwitchChainError) {
+          throw new WalletSwitchChainError(t('Unable to switch network. Please try it on your wallet'))
+        }
       }
     },
-    [connectors, connectAsync, chainId, setSessionChainId],
+    [connectors, connectAsync, chainId, setSessionChainId, t],
   )
 
   const logout = useCallback(async () => {
