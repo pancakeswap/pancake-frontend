@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { useState, useCallback } from 'react'
-import { BSC_BLOCK_TIME } from 'config'
+import { BSC_APPRX_BLOCK_TIME } from 'config'
 import ifoV2Abi from 'config/abi/ifoV2.json'
 import { bscTokens } from '@pancakeswap/tokens'
 import { Ifo, IfoStatus } from 'config/constants/types'
@@ -123,8 +123,8 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       setState((prev) => ({
         ...prev,
         isInitialized: true,
-        secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
-        secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
+        secondsUntilEnd: blocksRemaining * BSC_APPRX_BLOCK_TIME,
+        secondsUntilStart: (startBlockNum - currentBlock) * BSC_APPRX_BLOCK_TIME,
         poolBasic: {
           ...poolBasicFormatted,
           taxRate: 0,
