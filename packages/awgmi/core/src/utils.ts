@@ -11,9 +11,8 @@ export const isAccountAddress = (addr: string): addr is Address => {
   }
 }
 
-// TODO: better naming
-export const unwrapStrutTagTypeFromString = (type: string) => {
-  const bracketsRegexp = /(?<=<).+?(>)/g
+export const unwrapTypeFromString = (type: string) => {
+  const bracketsRegexp = /(?<=<)[^\][\r\n]*(?=>)/g
   const match = bracketsRegexp.exec(type)
   if (match) {
     return match[0]
@@ -21,8 +20,7 @@ export const unwrapStrutTagTypeFromString = (type: string) => {
   return undefined
 }
 
-// TODO: better naming
-export const unwrapStrutTagTypeArgFromString = (type: string) => {
+export const unwrapTypeArgFromString = (type: string) => {
   const bracketsRegexp = /(?<=<)([^<>]+)(?=>)/g
   const match = bracketsRegexp.exec(type)
   if (match) {

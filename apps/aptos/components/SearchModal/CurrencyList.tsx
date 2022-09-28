@@ -1,6 +1,6 @@
-import { useAccount, useBalance, APTOS_COIN } from '@pancakeswap/awgmi'
-import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/aptos-swap-sdk'
+import { APTOS_COIN, useAccount, useAccountBalance } from '@pancakeswap/awgmi'
+import { useTranslation } from '@pancakeswap/localization'
 import { CircleLoader, Column, QuestionHelper, RowBetween, RowFixed, Text } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import useNativeCurrency from 'hooks/useNativeCurrency'
@@ -71,7 +71,7 @@ function CurrencyRow({
   const selectedTokenList = useCombinedActiveList()
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
-  const { data: balance, isFetched } = useBalance({
+  const { data: balance, isLoading } = useAccountBalance({
     address: account,
     coin: key,
     watch: true,
@@ -97,7 +97,7 @@ function CurrencyRow({
         </Text>
       </Column>
       <RowFixed style={{ justifySelf: 'flex-end' }}>
-        {isFetched ? <Balance balance={balance} /> : account ? <CircleLoader /> : null}
+        {!isLoading ? <Balance balance={balance} /> : account ? <CircleLoader /> : null}
       </RowFixed>
     </MenuItem>
   )

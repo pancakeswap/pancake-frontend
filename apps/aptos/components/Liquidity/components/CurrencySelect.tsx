@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { ArrowDropDownIcon, Box, Button, Text, useModal, Flex, BoxProps, AutoRow } from '@pancakeswap/uikit'
 import CurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
 import { useTranslation } from '@pancakeswap/localization'
-import { useAccount, useBalance } from '@pancakeswap/awgmi'
+import { useAccount, useAccountBalance } from '@pancakeswap/awgmi'
 import { CurrencyLogo } from 'components/Logo/CurrencyLogo'
 
 const DropDownHeader = styled.div`
@@ -57,7 +57,7 @@ export const CurrencySelect = ({
 }: CurrencySelectProps) => {
   const { account } = useAccount()
 
-  const { data: selectedCurrencyBalance, isFetched } = useBalance({
+  const { data: selectedCurrencyBalance, isFetched } = useAccountBalance({
     address: account?.address,
     coin: selectedCurrency?.wrapped?.address,
     enabled: !hideBalance && !!selectedCurrency,

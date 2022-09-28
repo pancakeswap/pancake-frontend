@@ -3,7 +3,7 @@ import { fetchAccountResources, FetchAccountResourcesArgs, FetchAccountResources
 import { QueryConfig, QueryFunctionArgs } from '../types'
 import { useQuery } from './utils/useQuery'
 
-type UseAccountResourcesArgs = Partial<FetchAccountResourcesArgs> & {
+export type UseAccountResourcesArgs = Partial<FetchAccountResourcesArgs> & {
   /** Subscribe to changes */
   watch?: boolean
 }

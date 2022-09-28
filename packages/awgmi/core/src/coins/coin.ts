@@ -1,10 +1,7 @@
 import { wrapCoinInfoTypeTag } from './coinInfo'
 import { getProvider } from '../provider'
-import { APTOS_COIN } from '../constants'
-
-const APTOS_DECIMALS = 8
-export const APTOS_SYMBOL = 'APT'
-const NAME = 'Aptos coin'
+import { APT, APTOS_COIN } from '../constants'
+import { isAccountAddress } from '../utils'
 
 export type FetchCoinArgs = {
   /** Network name to use for provider */
@@ -34,6 +31,7 @@ type CoinResourceResponse = {
 }
 
 export type FetchCoinResult = {
+  address: string
   decimals: number
   symbol: string
   name: string
@@ -44,10 +42,9 @@ export async function fetchCoin({ networkName, coin }: FetchCoinArgs): Promise<F
   const provider = getProvider({ networkName })
 
   if (coin && coin !== APTOS_COIN) {
-    const [coinHoistAddress] = coin.split('::')
-    // TODO: check address
-    if (coinHoistAddress) {
-      const coinResource = await provider.getAccountResource(coinHoistAddress, wrapCoinInfoTypeTag(coin))
+    const [coinAccountAddress] = coin.split('::')
+    if (isAccountAddress(coinAccountAddress)) {
+      const coinResource = await provider.getAccountResource(coinAccountAddress, wrapCoinInfoTypeTag(coin))
 
       const { decimals = 18, symbol, name, supply: _supply } = coinResource.data as CoinResourceResponse
 
@@ -58,17 +55,15 @@ export async function fetchCoin({ networkName, coin }: FetchCoinArgs): Promise<F
       }
 
       return {
+        address: coin,
         decimals,
         symbol,
         name,
         supply,
       }
     }
+    throw new Error(`coin is invalid: ${coin}`)
   }
 
-  return {
-    decimals: APTOS_DECIMALS,
-    symbol: APTOS_SYMBOL,
-    name: NAME,
-  }
+  return APT
 }

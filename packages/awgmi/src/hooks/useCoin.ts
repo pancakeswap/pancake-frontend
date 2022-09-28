@@ -30,7 +30,7 @@ export function useCoin<TData = FetchCoinResult>({
 }: UseCoinArgs & UseCoinConfig<TData> = {}) {
   const { chain } = useNetwork()
 
-  return useQuery(queryKey({ networkName: chain?.network ?? networkName_, coin }), queryFn, {
+  return useQuery(queryKey({ networkName: networkName_ ?? chain?.network, coin }), queryFn, {
     cacheTime,
     enabled: Boolean(enabled && coin),
     select,

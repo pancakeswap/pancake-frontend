@@ -1,7 +1,7 @@
 import { Pair, PAIR_LP_TYPE_TAG, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
 import { useMemo } from 'react'
 import { useAccount, useAccountResources } from '@pancakeswap/awgmi'
-import { COIN_STORE_TYPE_PREFIX, unwrapStrutTagTypeArgFromString } from '@pancakeswap/awgmi/core'
+import { COIN_STORE_TYPE_PREFIX, unwrapTypeArgFromString } from '@pancakeswap/awgmi/core'
 import { PairState, usePairsFromAddresses } from 'hooks/usePairs'
 
 function filterPair(v2Pairs): Pair[] {
@@ -34,7 +34,7 @@ export default function useLPPairsHaveBalance(): LPPairsResponse {
 
   const v2Pairs = usePairsFromAddresses(
     (v2PairsBalances
-      ?.map((p) => `${PAIR_RESERVE_TYPE_TAG}<${unwrapStrutTagTypeArgFromString(p.type)}>`)
+      ?.map((p) => `${PAIR_RESERVE_TYPE_TAG}<${unwrapTypeArgFromString(p.type)}>`)
       .filter(Boolean) as string[]) ?? [],
   )
 

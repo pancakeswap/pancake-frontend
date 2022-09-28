@@ -28,11 +28,13 @@ function useFetchAllPairsReserves() {
 export function usePairsFromAddresses(addresses: string[]) {
   const { data } = useFetchAllPairsReserves()
 
-  const { data: coins } = useCoins(
+  const coinsResults = useCoins(
     addresses.flatMap((addr) => {
       return Pair.parseType(addr)
     }),
   )
+
+  const coins = coinsResults.map((coinResult) => coinResult.data)
 
   return addresses.map((address) => {
     if (data?.[address]) {

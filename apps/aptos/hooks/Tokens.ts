@@ -1,18 +1,12 @@
 /* eslint-disable no-param-reassign */
 import { Coin, Currency, CurrencyAmount, Token } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount, useAccountResources, APTOS_COIN, useCoin } from '@pancakeswap/awgmi'
-import { fetchCoin, coinStoreResourcesFilter } from '@pancakeswap/awgmi/core'
+import { APTOS_COIN, useAccount, useAccountResources, useCoin, useCoins as useCoins_ } from '@pancakeswap/awgmi'
+import { coinStoreResourcesFilter, wrapCoinStoreTypeTag } from '@pancakeswap/awgmi/core'
 import { useAtomValue } from 'jotai'
 import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'
-import {
-  combinedTokenMapFromActiveUrlsAtom,
-  combinedTokenMapFromOfficialsUrlsAtom,
-  TokenAddressMap,
-} from 'state/lists/hooks'
+import { combinedTokenMapFromActiveUrlsAtom, TokenAddressMap } from 'state/lists/hooks'
 import { useUserAddedTokens } from 'state/user'
-import useSWRImmutable from 'swr/immutable'
-import useActiveWeb3React from './useActiveWeb3React'
 import useNativeCurrency from './useNativeCurrency'
 import { useActiveChainId, useActiveNetwork } from './useNetwork'
 
@@ -41,22 +35,17 @@ export function useToken(coinId?: string) {
   })
 }
 
+// TODO: get token info useAllTokens first
 export function useCoins(addresses: string[]) {
   const { networkName } = useActiveNetwork()
   const chainId = useActiveChainId()
 
-  return useSWRImmutable(addresses && networkName && chainId ? [addresses, networkName, chainId] : null, async () => {
-    const allCoinsMeta = await Promise.all(
-      addresses.map((address) => (address ? fetchCoin({ networkName, coin: address }) : Promise.resolve(null))),
-    )
-
-    return allCoinsMeta.map((result, i) => {
-      if (result) {
-        const { decimals, symbol, name } = result
-        return new Coin(chainId, addresses[i], decimals, symbol, name)
-      }
-      return null
-    })
+  return useCoins_({
+    coins: addresses,
+    networkName,
+    select: (result) => {
+      return new Coin(chainId, result.address, result.decimals, result.symbol, result.name)
+    },
   })
 }
 
@@ -108,8 +97,7 @@ export function useIsTokenActive(token: Token | undefined | null): boolean {
   return !!activeTokens[token.address]
 }
 
-const coinStoreTypeHead = '0x1::coin::CoinStore<'
-
+// all token balances only return the balances from `useAllTokens` not included unlisted tokens in account resources
 export function useAllTokenBalances() {
   const allTokens = useAllTokens()
 
@@ -120,7 +108,7 @@ export function useAllTokenBalances() {
       const coinStore = data
         .filter(coinStoreResourcesFilter)
         .map((coin) => {
-          const address = coin.type.split(coinStoreTypeHead)[1].split('>')[0]
+          const address = wrapCoinStoreTypeTag(coin.type)
 
           if (allTokens[address]) {
             return [address, CurrencyAmount.fromRawAmount(allTokens[address], (coin.data as any).coin.value)]
@@ -135,28 +123,4 @@ export function useAllTokenBalances() {
   })
 
   return accountResources.data
-}
-
-/**
- * Returns all tokens that are from officials token list and user added tokens
- */
-export function useOfficialsAndUserAddedTokens(): { [address: string]: Coin } {
-  const { chainId } = useActiveWeb3React()
-  const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
-  const userAddedTokens = useUserAddedTokens()
-  return useMemo(() => {
-    return (
-      userAddedTokens
-        // reduce into all ALL_TOKENS filtered by the current chain
-        .reduce<{ [address: string]: Coin }>(
-          (tokenMap_, token) => {
-            tokenMap_[token.address] = token
-            return tokenMap_
-          },
-          // must make a copy because reduce modifies the map, and we do not
-          // want to make a copy in every iteration
-          mapWithoutUrls(tokenMap, chainId),
-        )
-    )
-  }, [userAddedTokens, tokenMap, chainId])
 }

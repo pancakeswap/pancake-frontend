@@ -1,36 +1,30 @@
+import { formatUnits } from '@ethersproject/units'
+import { fetchBalance, FetchBalanceArgs, FetchCoinResult } from '@pancakeswap/awgmi/core'
 import * as React from 'react'
-import { FetchBalanceArgs, FetchBalanceResult, fetchBalance } from '@pancakeswap/awgmi/core'
 
-import { QueryConfig, QueryFunctionArgs } from '../types'
-import { useQuery } from './utils/useQuery'
+import { QueryConfig } from '../types'
+import { useCoin } from './useCoin'
 import { useLedger } from './useLedger'
+import { useQuery } from './utils/useQuery'
 
 export type UseBalanceArgs = Partial<FetchBalanceArgs> & {
   /** Subscribe to changes */
   watch?: boolean
 }
 
-export type UseBalanceConfig<TData> = QueryConfig<FetchBalanceResult, Error, TData>
+type UseBalanceResult = FetchCoinResult & { formatted: string; value: string }
 
-export const queryKey = ({
-  address,
-  networkName,
-  coin,
-}: Partial<FetchBalanceArgs> & {
-  chainId?: number
-}) => [{ entity: 'balance', address, networkName, coin }] as const
+export type UseBalanceConfig<TData> = QueryConfig<UseBalanceResult, Error, TData>
 
-const queryFn = ({ queryKey: [{ address, networkName, coin }] }: QueryFunctionArgs<typeof queryKey>) => {
-  if (!address) throw new Error('address is required')
-  return fetchBalance({ address, networkName, coin })
-}
+export const queryKey = ({ address, networkName, coin }: Partial<FetchBalanceArgs>) =>
+  [{ entity: 'balance', address, networkName, coin }] as const
 
-export function useBalance<TData = FetchBalanceResult>({
+export function useBalance<TData = UseBalanceResult>({
   address,
   cacheTime = 1_000,
   networkName,
   enabled = true,
-  keepPreviousData = true,
+  keepPreviousData,
   staleTime,
   suspense,
   coin,
@@ -42,17 +36,33 @@ export function useBalance<TData = FetchBalanceResult>({
 }: UseBalanceArgs & UseBalanceConfig<TData> = {}) {
   const { data } = useLedger({ watch: true, networkName })
   const { ledger_version: version } = data || {}
-  const balanceQuery = useQuery(queryKey({ address, networkName, coin }), queryFn, {
-    cacheTime,
-    enabled: Boolean(enabled && address),
-    keepPreviousData,
-    staleTime,
-    suspense,
-    onError,
-    onSettled,
-    onSuccess,
-    select,
-  })
+
+  const { data: coinData } = useCoin({ coin, networkName })
+
+  const balanceQuery = useQuery(
+    queryKey({ address, networkName, coin }),
+    async ({ queryKey: [{ address: address_, networkName: networkName_, coin: coin_ }] }) => {
+      if (!address_) throw new Error('address is required')
+      if (!coinData) throw new Error('coin data is missing')
+      const balance = await fetchBalance({ address: address_, coin: coin_, networkName: networkName_ })
+      return {
+        ...coinData,
+        value: balance.value,
+        formatted: formatUnits(balance.value ?? '0', coinData.decimals),
+      }
+    },
+    {
+      cacheTime,
+      enabled: Boolean(enabled && address && coinData),
+      keepPreviousData,
+      staleTime,
+      suspense,
+      onError,
+      onSettled,
+      onSuccess,
+      select,
+    },
+  )
 
   React.useEffect(() => {
     if (!enabled) return

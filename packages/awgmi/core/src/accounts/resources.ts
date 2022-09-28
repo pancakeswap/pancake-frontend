@@ -31,6 +31,8 @@ export function createAccountResourceFilter<T extends Types.MoveResource>(filter
   return filter
 }
 
-export const coinStoreResourcesFilter = createAccountResourceFilter<{ type: string; data: CoinStoreResult }>(
-  COIN_STORE_TYPE_PREFIX,
-)
+export type CoinStoreResource = {
+  type: `0x1::coin::CoinStore<${string}>`
+  data: CoinStoreResult
+}
+export const coinStoreResourcesFilter = createAccountResourceFilter<CoinStoreResource>(COIN_STORE_TYPE_PREFIX)

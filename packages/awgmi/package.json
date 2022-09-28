@@ -30,6 +30,9 @@
   "scripts": {
     "build:src": "tsup src/index.ts --format esm,cjs --dts",
     "build:core": "tsup core/src/index.ts --format esm,cjs --dts --outDir core/dist",
+    "dev:src": "tsup src/index.ts --format esm,cjs --dts --watch",
+    "dev:core": "tsup core/src/index.ts --format esm,cjs --dts --outDir core/dist --watch",
+    "dev": "yarn dev:src & yarn dev:core",
     "build": "yarn build:core && yarn build:src",
     "test": "vitest --run",
     "prepublishOnly": "yarn run build:all"
