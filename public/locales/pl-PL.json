@@ -815,7 +815,7 @@
   "If you purchase a token from this list, you may not be able to sell it back.": "Jeśli kupisz token z tej listy, możesz nie być w stanie go odsprzedać.",
   "Import": "Zaimportuj",
   "via": "przez",
-  "Anyone can create a %standard% token on %network% with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.": "Anyone can create a %standard% token on %network% with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.",
+  "Anyone can create a %standard% token on %network% with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.": "Każdy może utworzyć token %standard% na %network% o dowolnej nazwie, włączając w to tworzenie fałszywych wersji istniejących tokenów oraz tokenów rzekomo reprezentujących projekty, które nie mają tokena.",
   "If you purchase an arbitrary token, you may be unable to sell it back.": "Jeśli kupisz dowolny token, możesz nie być w stanie go odsprzedać.",
   "Unknown Source": "Nieznane źródło",
   "Lists": "Listy",
@@ -1356,6 +1356,7 @@
   "Supply Count": "Liczba w podaży",
   "Brand": "Marka",
   "Success": "Sukces",
+  "cIFOs are a new subtype of IFOs, designed to reward our loyal community, and also introduce our community to projects with slightly smaller raises.": "cIFOs are a new subtype of IFOs, designed to reward our loyal community, and also introduce our community to projects with slightly smaller raises.",
   "Go to IFO": "Przejdź do IFO",
   "Phishing warning: ": "Ostrzeżenie przed phishingiem: ",
   "please make sure you're visiting https://pancakeswap.finance - check the URL carefully.": "upewnij się, że odwiedzasz stronę https://pancakeswap.finance — dokładnie sprawdź adres URL.",
@@ -1474,6 +1475,7 @@
   "Eligible NFT avatar found!": "Znaleziono kwalifikujący się awatar NFT!",
   "The maximum amount of CAKE you can commit to the Public Sale equals the number of your iCAKE. Lock more CAKE for longer durations to increase the maximum CAKE you can commit to the sale.": "Maksymalna ilość CAKE, jaką możesz przeznaczyć do sprzedaży publicznej, jest równa liczbie Twoich iCAKE. Zablokuj więcej CAKE na dłuższy czas, aby zwiększyć maksymalną ilość CAKE, jaką możesz przeznaczyć na sprzedaż.",
   "What’s the difference between a Public Sale and Private Sale?": "Jaka jest różnica między sprzedażą publiczną a sprzedażą prywatną?",
+  "Learn more about cIFO": "Learn more about cIFO",
   "In the current IFO format. There is a brand new Private Sale. To participate, participants will have to meet certain requirements presented on the IFO card. Each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal. The Private Sale has no participation fee.": "W aktualnym formacie IFO wprowadzono zupełnie nową sprzedaż prywatną. Aby wziąć w niej udział, uczestnicy będą musieli spełnić pewne wymagania przedstawione na karcie IFO. Każdy uprawniony uczestnik będzie mógł zainwestować dowolną ilość CAKE (do maksymalnego limitu inwestycji, który jest publikowany wraz z propozycją głosowania IFO). Sprzedaż prywatna nie wiąże się z prowizją za uczestnictwo.",
   "You can choose one or both at the same time!": "Możesz wybrać jedną lub obie naraz!",
   "We recommend you to check if you are eligible to participate in the Private Sale first. In the Public Sale, if the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.": "Zalecamy, aby najpierw sprawdzić, czy kwalifikujesz się do udziału w sprzedaży prywatnej. W sprzedaży publicznej, jeśli kwota, którą przeznaczysz, będzie zbyt mała, możesz nie otrzymać znaczącej liczby tokenów IFO.",
@@ -1819,6 +1821,7 @@
   "Pottery (BETA)": "Puloloteria (BETA)",
   "This IFO has token vesting. Purchased tokens are released over a period of time.": "W tym IFO obowiązuje nabywanie uprawnień do tokenów. Zakupione tokeny są wydawane przez pewien czas.",
   "Learn more in the vote proposal": "Dowiedz się więcej w propozycji głosowania",
+  "What is the difference between an IFO and a cIFO?": "What is the difference between an IFO and a cIFO?",
   "If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.": "Jeśli nie zainwestujesz wystarczająco dużo CAKE, możesz nie otrzymać znaczącej ilości tokenów IFO lub możesz w ogóle nie otrzymać żadnych tokenów IFO.",
   "~%num% available to claim at sales end": "~%num% dostępne do odebrania po zakończeniu sprzedaży",
   "Vested percentage:": "Procent nabytych uprawnień:",
@@ -1934,7 +1937,7 @@
   "Up to %boostMultiplier%x": "Maks. %boostMultiplier%x",
   "Available Boosted": "Dostępne ze zwiększeniem przychodów",
   "Stake CAKE, Earn CAKE, Win CAKE": "Stakuj CAKE, zarabiaj CAKE, wygrywaj CAKE",
-  "Unable to switch network. Please try it on your wallet": "Unable to switch network. Please try it on your wallet",
+  "Unable to switch network. Please try it on your wallet": "Nie można przełączyć sieci. Spróbuj w swoim portfelu",
   "Failed": "Niepowodzenie",
   "Transaction failed with error: %reason%": "Transakcja nie powiodła się z błędem: %reason%",
   "Transaction failed. For detailed error message:": "Transakcja nie powiodła się. Aby uzyskać szczegółowy komunikat o błędzie:",
@@ -1950,5 +1953,5 @@
   "You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!": "Zdobywasz punkty i osiągnięcia za udział w naszej dwuletniej podróży. Teraz świętujmy nasze drugie urodziny!",
   "Trade stablecoins in StableSwap with lower slippage and trading fees!": "Handluj stablecoinami w StableSwap z niższym poślizgiem i prowizjami transakcyjnymi!",
   "StableSwap provides better rates and lower fees for pairs with highly correlated prices": "StableSwap zapewnia lepsze kursy i niższe prowizje w przypadku par o silnie skorelowanych cenach",
-  "Before editing your profile, please make sure you've claimed all the unspent CAKE from previous IFOs!": "Before editing your profile, please make sure you've claimed all the unspent CAKE from previous IFOs!"
+  "Before editing your profile, please make sure you've claimed all the unspent CAKE from previous IFOs!": "Przed edycją swojego profilu upewnij się, że odebrane zostały przez Ciebie wszystkie niewydane CAKE z poprzednich IFO!"
 }
