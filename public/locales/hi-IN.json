@@ -1855,7 +1855,7 @@
   "Zap allows you to add liquidity with only 1 single token. Click": "Zap आपको 1 सिंगल टोकन के साथ लिक्विडिटी जोड़ने की अनुमति देता है। कोशिश करने के लिए",
   "to try.": "क्लिक करें।",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "खरीदे गए टोकन में से %percentageVested%% को वेस्टेड किया जाएगा और एक समयावधि के दौरान एकरेखीय तरीके से रिलीज किया जाता है। खरीदे गए टोकन में से %percentageTgeRelease%% को तत्काल रिलीज किया जाएगा और IFO समाप्त होने पर क्लेम करने के लिए उपलब्ध होगा।",
-  "The vested tokens will be released linearly over a period of %weeks% weeks.": "वेस्टेड टोकन को %weeks% सप्ताह की अवधि के दौरान एकरेखीय तरीके से रिलीज किया जाएगा।",
+  "The vested tokens will be released linearly over a period of %days% days.": "वेस्टेड टोकन को %days% सप्ताह की अवधि के दौरान एकरेखीय तरीके से रिलीज किया जाएगा।",
   "Yield Booster": "यील्ड बूस्टर",
   "Connect wallet to view booster": "वॉलेट देखने के लिए वॉलेट कनेक्ट करें",
   "An active fixed-term CAKE staking position is required for activating farm yield boosters.": "फ़ार्म यील्ड बूस्टर एक्टिवेट करने के लिए एक सक्रिय निश्चित-अवधि की CAKE स्टेकिंग पोजीशन आवश्यक है।",

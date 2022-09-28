@@ -1855,7 +1855,7 @@
   "Zap allows you to add liquidity with only 1 single token. Click": "Zapを使うと1トークンだけで流動性を追加できます。クリックして",
   "to try.": "お試しください。",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "購入したトークンの%percentageVested%%がべスティングされ、一定期間、直線的にリリースされます。購入したトークンの%percentageTgeRelease%%が直ちにリリースされ、IFO終了時に回収できるようになります。",
-  "The vested tokens will be released linearly over a period of %weeks% weeks.": "べスティングされたトークンは%weeks%週間、直線的にリリースされます。",
+  "The vested tokens will be released linearly over a period of %days% days.": "べスティングされたトークンは%days%週間、直線的にリリースされます。",
   "Yield Booster": "利回りブースター",
   "Connect wallet to view booster": "ブースターを表示するにはウォレットに接続してください",
   "An active fixed-term CAKE staking position is required for activating farm yield boosters.": "ファーム利回りブースターを有効化するには、アクティブな定期CAKEステーキングポジションが必要です。",

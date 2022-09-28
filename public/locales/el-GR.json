@@ -1855,7 +1855,7 @@
   "Zap allows you to add liquidity with only 1 single token. Click": "Το Zap σας επιτρέπει να προσθέσετε ρευστότητα με 1 μόνο νόμισμα. Κάντε κλικ",
   "to try.": "για να το δοκιμάσετε.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% του αγορασμένου νομίσματος θα δεσμευτεί και θα αποδεσμεύεται γραμμικά κατά τη διάρκεια μιας χρονικής περιόδου. %percentageTgeRelease%% του αγορασμένου νομίσματος θα αποδεσμευτεί αμέσως και θα είναι διαθέσιμο για διεκδίκηση όταν λήξει η IFO.",
-  "The vested tokens will be released linearly over a period of %weeks% weeks.": "Τα δεσμευμένα νομίσματα θα αποδεσμεύονται γραμμικά σε μια περίοδο %weeks% εβδομάδων.",
+  "The vested tokens will be released linearly over a period of %days% days.": "Τα δεσμευμένα νομίσματα θα αποδεσμεύονται γραμμικά σε μια περίοδο %days% εβδομάδων.",
   "Yield Booster": "Ενισχυτής απόδοσης",
   "Connect wallet to view booster": "Συνδέστε το πορτοφόλι για να δείτε την ενίσχυση",
   "An active fixed-term CAKE staking position is required for activating farm yield boosters.": "Για την ενεργοποίηση των ενισχυτών απόδοσης farm απαιτείται μια ενεργή θέση staking CAKE καθορισμένης διάρκειας.",

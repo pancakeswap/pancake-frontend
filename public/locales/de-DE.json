@@ -1855,7 +1855,7 @@
   "Zap allows you to add liquidity with only 1 single token. Click": "Mit Zap können Sie Liquidität mit nur 1 einzigen Token hinzufügen. Klicken Sie",
   "to try.": "zum Ausprobieren.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested% % des gekauften Tokens werden vested (beiseite gelegt) und linear über einen bestimmten Zeitraum freigegeben. %percentageTgeRelease% % des gekauften Tokens wird sofort freigegeben und kann nach Ablauf des IFO eingefordert werden.",
-  "The vested tokens will be released linearly over a period of %weeks% weeks.": "Die beiseite gelegten Token werden linear über einen Zeitraum von %weeks% Wochen freigegeben.",
+  "The vested tokens will be released linearly over a period of %days% days.": "Die beiseite gelegten Token werden linear über einen Zeitraum von %days% Wochen freigegeben.",
   "Yield Booster": "Ertragserhöhung",
   "Connect wallet to view booster": "Wallet verbinden, um Erhöhung anzuzeigen",
   "An active fixed-term CAKE staking position is required for activating farm yield boosters.": "Für die Aktivierung der Farm-Ertragserhöhung ist eine aktive befristete CAKE-Einsatzposition erforderlich.",

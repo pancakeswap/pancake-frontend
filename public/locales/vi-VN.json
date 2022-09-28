@@ -1855,7 +1855,7 @@
   "Zap allows you to add liquidity with only 1 single token. Click": "Zap cho phép bạn bổ sung thanh khoản chỉ với 1 token duy nhất. Nhấn",
   "to try.": "để thử.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% token đã mua sẽ được đầu tư và giải ngân theo mức tuyến tính trong một khoảng thời gian nhất định. %percentageTgeRelease%% của token đã mua sẽ được giải ngân ngay lập tức và có thể được nhận khi IFO kết thúc.",
-  "The vested tokens will be released linearly over a period of %weeks% weeks.": "Các token đã đầu tư sẽ được giải ngân theo mức tuyến tính trong khoảng thời gian %weeks% tuần.",
+  "The vested tokens will be released linearly over a period of %days% days.": "Các token đã đầu tư sẽ được giải ngân theo mức tuyến tính trong khoảng thời gian %days% tuần.",
   "Yield Booster": "Tăng cường lợi nhuận",
   "Connect wallet to view booster": "Kết nối với ví để xem tăng cường",
   "An active fixed-term CAKE staking position is required for activating farm yield boosters.": "Bạn cần một vị thế đặt cọc CAKE thời hạn cố định đang hoạt động để kích hoạt tăng cường lợi nhuận cho trang trại.",
