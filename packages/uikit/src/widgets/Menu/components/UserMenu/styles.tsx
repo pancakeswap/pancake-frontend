@@ -22,6 +22,7 @@ export const UserMenuItem = styled.button<UserMenuItemProps>`
   padding-left: 16px;
   padding-right: 16px;
   width: 100%;
+  pointer-events: ${({ disabled }) => (disabled ? "none" : "initial")};
 
   &:is(button) {
     cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
