@@ -1,5 +1,5 @@
 import { Percent, TradeType } from '@pancakeswap/swap-sdk-core'
-import { routerSwap, routerAddLiquidity, routerRemoveLiquidity } from './generated/swap'
+import { routerSwapExactInput, routerAddLiquidity, routerRemoveLiquidity } from './generated/swap'
 import { Trade } from './trade'
 import { Currency } from './currency'
 
@@ -32,12 +32,19 @@ export abstract class AptosSwapRouter {
     const [inputAddress, outputAddress] = [trade.route.input.wrapped.address, trade.route.output.wrapped.address]
 
     const [xAddress, yAddress] = [inputAddress, outputAddress]
-    return routerSwap([amountIn, amountOut], [xAddress, yAddress])
+    return routerSwapExactInput([amountIn, amountOut], [xAddress, yAddress])
   }
 
   // eslint-disable-next-line camelcase
-  public static unstable_addLiquidityParameters(amountX: string, amountY: string, addressX: string, addressY: string) {
-    return routerAddLiquidity([amountX, amountY], [addressX, addressY])
+  public static unstable_addLiquidityParameters(
+    amountX: string,
+    amountY: string,
+    amountXMin: string,
+    amountYMin: string,
+    addressX: string,
+    addressY: string
+  ) {
+    return routerAddLiquidity([amountX, amountY, amountXMin, amountYMin], [addressX, addressY])
   }
 
   // eslint-disable-next-line camelcase

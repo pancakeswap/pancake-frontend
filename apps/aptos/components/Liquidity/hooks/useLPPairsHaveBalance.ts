@@ -18,7 +18,11 @@ interface LPPairsResponse {
 export default function useLPPairsHaveBalance(): LPPairsResponse {
   const { account } = useAccount()
 
-  const { data: v2PairsBalances, isFetching } = useAccountResources({
+  const {
+    data: v2PairsBalances,
+    isFetching,
+    isIdle,
+  } = useAccountResources({
     watch: true,
     address: account?.address,
     select(resource) {
@@ -35,7 +39,8 @@ export default function useLPPairsHaveBalance(): LPPairsResponse {
   )
 
   const isLoading =
-    isFetching || Boolean(v2Pairs?.length && v2Pairs.every(([pairState]) => pairState === PairState.LOADING))
+    (isIdle && isFetching) ||
+    Boolean(v2Pairs?.length && v2Pairs.every(([pairState]) => pairState === PairState.LOADING))
 
   return useMemo(
     () => ({

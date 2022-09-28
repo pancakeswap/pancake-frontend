@@ -1,20 +1,25 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Liquidity as LiquidityUI } from '@pancakeswap/uikit'
+import { AutoColumn, Liquidity as LiquidityUI } from '@pancakeswap/uikit'
+import { MinimalPositionCardView } from '@pancakeswap/uikit/src/widgets/Liquidity'
 
 import { ExchangeLayout } from 'components/Layout/ExchangeLayout'
 import AddLiquidityForm from 'components/Liquidity/components/AddLiquidityForm'
 import ChoosePair from 'components/Liquidity/components/ChoosePair'
+import withLPValues from 'components/Liquidity/hocs/withLPValues'
 import useCurrencySelectRoute, { CurrencySelectorContext } from 'components/Liquidity/hooks/useCurrencySelectRoute'
 import useMintPair, { MintPairContext } from 'components/Liquidity/hooks/useMintPair'
 import { USDC_DEVNET } from 'config/coins'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import useNativeCurrency from 'hooks/useNativeCurrency'
+import { PairState } from 'hooks/usePairs'
 import { useCallback, useMemo, useState } from 'react'
 
 enum Steps {
   Choose,
   Add,
 }
+
+const MinimalPositionCard = withLPValues(MinimalPositionCardView)
 
 const AddLiquidityPage = () => {
   const { t } = useTranslation()
@@ -25,6 +30,8 @@ const AddLiquidityPage = () => {
 
   const currencies = useCurrencySelectRoute(defaultCurrencies)
   const mintPairState = useMintPair(currencies)
+
+  const { pair, noLiquidity, pairState } = mintPairState
 
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.currencyA, currencies?.currencyB)
   const addIsWarning = useIsTransactionWarning(currencies?.currencyA, currencies?.currencyB)
@@ -55,15 +62,11 @@ const AddLiquidityPage = () => {
           </CurrencySelectorContext.Provider>
         </MintPairContext.Provider>
       </LiquidityUI.LiquidityCard>
-      {/* {!(addIsUnsupported || addIsWarning) ? (
-        pair && !noLiquidity && pairState !== PairState.INVALID ? (
-          <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
-            <MinimalPositionCard showUnwrapped={oneCurrencyIsWNATIVE} pair={pair} />
-          </AutoColumn>
-        ) : null
-      ) : (
-        <UnsupportedCurrencyFooter currencies={[currencies.CURRENCY_A, currencies.CURRENCY_B]} />
-      )} */}
+      {pair && !noLiquidity && pairState !== PairState.INVALID ? (
+        <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
+          <MinimalPositionCard pair={pair} />
+        </AutoColumn>
+      ) : null}
     </>
   )
 }

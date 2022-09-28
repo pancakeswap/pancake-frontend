@@ -22,8 +22,11 @@ const { FirstLP } = LiquidityUI
 export default function AddLiquidityForm({ notSupportPair }) {
   const { t } = useTranslation()
   const { currencyA, currencyB, handleCurrencyASelect, handleCurrencyBSelect } = useContext(CurrencySelectorContext)
-  const { pairState, currencyBalances, error, pair } = useContext(MintPairContext)
-  const { noLiquidity, poolTokenPercentage, price, parsedAmounts, addError, liquidityMinted } = useDerivedMintInfo()
+  const { pairState, currencyBalances, error, pair, noLiquidity, totalSupply } = useContext(MintPairContext)
+  const { poolTokenPercentage, price, parsedAmounts, addError, liquidityMinted } = useDerivedMintInfo({
+    noLiquidity,
+    totalSupply,
+  })
 
   const [{ typedValue, otherTypedValue, independentField }, { onFieldAInput, onFieldBInput, resetForm }] =
     useMintLiquidityStateAndHandlers(noLiquidity)

@@ -3,7 +3,7 @@ import { AtomBox } from '@pancakeswap/ui'
 import { Text, ArrowDownIcon, AutoColumn, ColumnCenter } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
-import { useDeferredValue } from 'react'
+import { useDeferredValue, useEffect } from 'react'
 import styled from 'styled-components'
 import { useBurnActionHandlers } from '../state/remove'
 import { Field } from '../type'
@@ -20,6 +20,10 @@ const SimpleRemoveForm = ({ currencyA, currencyB, formattedAmounts }) => {
   const { onUserInput: _onUserInput } = useBurnActionHandlers()
 
   const innerLiquidityPercentage = useDeferredValue(Number.parseInt(formattedAmounts[Field.LIQUIDITY_PERCENT]))
+
+  useEffect(() => {
+    return () => _onUserInput(Field.LIQUIDITY_PERCENT, '0')
+  }, [_onUserInput])
 
   return (
     <>

@@ -1,9 +1,6 @@
-import { Currency, CurrencyAmount, JSBI, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
+import { Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
-import { BIG_INT_ZERO } from 'config/constants/exchange'
-import { PairState } from 'hooks/usePairs'
-import useTotalSupply from 'hooks/useTotalSupply'
 
 import { useContext, useMemo } from 'react'
 import { useLiquidityStateOnly } from '../state/add'
@@ -11,15 +8,20 @@ import { Field } from '../type'
 import { CurrencySelectorContext } from './useCurrencySelectRoute'
 import { MintPairContext } from './useMintPair'
 
-export function useDerivedMintInfo(): {
+export function useDerivedMintInfo({
+  totalSupply,
+  noLiquidity,
+}: {
+  totalSupply: CurrencyAmount<Currency> | undefined
+  noLiquidity: boolean
+}): {
   parsedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
   price?: Price<Currency, Currency>
-  noLiquidity?: boolean
   liquidityMinted?: CurrencyAmount<Currency>
   poolTokenPercentage?: Percent
   addError?: string
 } {
-  const { pairState, currencyBalances, pair } = useContext(MintPairContext)
+  const { currencyBalances, pair } = useContext(MintPairContext)
 
   const { currencyA, currencyB } = useContext(CurrencySelectorContext)
 
@@ -37,18 +39,6 @@ export function useDerivedMintInfo(): {
     }),
     [currencyA, currencyB],
   )
-
-  const totalSupply = useTotalSupply(pair?.liquidityToken)
-
-  const noLiquidity: boolean =
-    pairState === PairState.NOT_EXISTS ||
-    Boolean(totalSupply && JSBI.equal(totalSupply.quotient, BIG_INT_ZERO)) ||
-    Boolean(
-      pairState === PairState.EXISTS &&
-        pair &&
-        JSBI.equal(pair.reserve0.quotient, BIG_INT_ZERO) &&
-        JSBI.equal(pair.reserve1.quotient, BIG_INT_ZERO),
-    )
 
   // amounts
   const independentAmount: CurrencyAmount<Currency> | undefined = tryParseAmount(
@@ -149,7 +139,6 @@ export function useDerivedMintInfo(): {
   return {
     parsedAmounts,
     price,
-    noLiquidity,
     liquidityMinted,
     poolTokenPercentage,
     addError,

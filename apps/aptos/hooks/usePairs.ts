@@ -1,5 +1,11 @@
 /* eslint-disable camelcase */
-import { Currency, CurrencyAmount, Pair, PAIR_RESERVE_TYPE_TAG, SWAP_ADDRESS } from '@pancakeswap/aptos-swap-sdk'
+import {
+  Currency,
+  CurrencyAmount,
+  Pair,
+  PAIR_RESERVE_TYPE_TAG,
+  SWAP_RESOURCE_ADDRESS,
+} from '@pancakeswap/aptos-swap-sdk'
 import { useAccountResources } from '@pancakeswap/awgmi'
 import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'
@@ -7,7 +13,7 @@ import { useCoins } from './Tokens'
 
 function useFetchAllPairsReserves() {
   return useAccountResources({
-    address: SWAP_ADDRESS,
+    address: SWAP_RESOURCE_ADDRESS,
     select: (swapResources) => {
       const allPairData = swapResources.filter((r) => r.type.includes(PAIR_RESERVE_TYPE_TAG)) as {
         type: string
@@ -21,6 +27,7 @@ function useFetchAllPairsReserves() {
 
 export function usePairsFromAddresses(addresses: string[]) {
   const { data } = useFetchAllPairsReserves()
+
   const { data: coins } = useCoins(
     addresses.flatMap((addr) => {
       return Pair.parseType(addr)

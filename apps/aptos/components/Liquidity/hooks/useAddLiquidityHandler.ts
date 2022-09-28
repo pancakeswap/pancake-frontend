@@ -43,6 +43,8 @@ export default function useAddLiquidityHanlder({ parsedAmounts, noLiquidity }) {
 
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
     const payload = AptosSwapRouter.unstable_addLiquidityParameters(
+      parsedAmountA?.quotient?.toString(),
+      parsedAmountB?.quotient?.toString(),
       amountsMin[Field.CURRENCY_A].toString() ?? '',
       amountsMin[Field.CURRENCY_B].toString() ?? '',
       currencyA.wrapped.address,
