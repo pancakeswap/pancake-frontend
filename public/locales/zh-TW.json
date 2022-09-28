@@ -1855,7 +1855,7 @@
   "Zap allows you to add liquidity with only 1 single token. Click": "借助 Zap 功能，您可以僅使用 1 種代幣來增加流動性。按一下",
   "to try.": "試試。",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.",
-  "The vested tokens will be released linearly over a period of %days% days.": "The vested tokens will be released linearly over a period of %days% days.",
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "The vested tokens will be released linearly over a period of %weeks% weeks.",
   "Yield Booster": "收益助推器",
   "Connect wallet to view booster": "與錢包連線以便檢視助推器",
   "An active fixed-term CAKE staking position is required for activating farm yield boosters.": "需要一個有效的定期 CAKE 質押部位才能啟動農場收益助推器。",

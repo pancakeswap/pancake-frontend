@@ -1855,7 +1855,7 @@
   "Zap allows you to add liquidity with only 1 single token. Click": "Zap을 사용하면 싱글 토큰 1개만으로 유동성을 추가할 수 있습니다. 다음을 클릭하세요:",
   "to try.": "시도해 볼 수 있습니다.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "구매한 토큰의 %percentageVested%%는 일정 기간 동안 선형적으로 베스팅되고 릴리스됩니다. 구매한 토큰의 %percentageTgeRelease%%는 즉시 릴리스되며 IFO가 종료되면 클레임할 수 있습니다.",
-  "The vested tokens will be released linearly over a period of %days% days.": "베스팅된 토큰은 %days%주 기간 동안 선형적으로 릴리스됩니다.",
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "베스팅된 토큰은 %weeks%주 기간 동안 선형적으로 릴리스됩니다.",
   "Yield Booster": "일드 부스터",
   "Connect wallet to view booster": "부스터를 보려면 지갑 연결",
   "An active fixed-term CAKE staking position is required for activating farm yield boosters.": "팜 일드 부스터를 활성화하려면 활성 고정 기간 CAKE 스테이킹 포지션이 필요합니다.",

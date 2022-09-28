@@ -1855,7 +1855,7 @@
   "Zap allows you to add liquidity with only 1 single token. Click": "Zapin avulla voit lisätä likviditeettiä yksittäisellä poletilla. Kokeile",
   "to try.": "napsauttamalla.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested% % ostetusta poletista vestataan ja julkaistaan lineaarisesti ajan kuluessa. %percentageTgeRelease% % ostetusta poletista julkaistaan välittömästi ja on lunastettavissa IFO:n päättyessä.",
-  "The vested tokens will be released linearly over a period of %days% days.": "Vestatut poletit julkaistaan lineaarisesti %days% viikon aikana.",
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "Vestatut poletit julkaistaan lineaarisesti %weeks% viikon aikana.",
   "Yield Booster": "Tuoton parannus",
   "Connect wallet to view booster": "Yhdistä lompakko parannuksen tarkastelua varten",
   "An active fixed-term CAKE staking position is required for activating farm yield boosters.": "Aktiivinen kiinteä CAKE-panostuspositio vaaditaan viljelmän tuoton parannusten aktivoimiseen.",

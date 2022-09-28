@@ -1855,7 +1855,7 @@
   "Zap allows you to add liquidity with only 1 single token. Click": "Zap memungkinkan Anda untuk menambahkan likuiditas dengan 1 token saja. Klik",
   "to try.": "untuk mencobanya.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "%percentageVested%% dari token yang dibeli akan masuk vesting dan dirilis bertahap dalam jangka waktu tertentu. %percentageTgeRelease%% dari token yang dibeli akan segera dirilis dan tersedia untuk diklaim saat IFO berakhir.",
-  "The vested tokens will be released linearly over a period of %days% days.": "Token dalam vesting akan dirilis bertahap dalam jangka waktu %days% minggu.",
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "Token dalam vesting akan dirilis bertahap dalam jangka waktu %weeks% minggu.",
   "Yield Booster": "Peningkat Hasil",
   "Connect wallet to view booster": "Hubungkan dompet untuk melihat peningkat",
   "An active fixed-term CAKE staking position is required for activating farm yield boosters.": "Posisi penumpukan CAKE termin tetap yang aktif diperlukan untuk mengaktifkan peningkat hasil farm.",
