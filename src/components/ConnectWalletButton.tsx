@@ -7,11 +7,13 @@ import useAuth from 'hooks/useAuth'
 // eslint-disable-next-line import/extensions
 import { useActiveHandle } from 'hooks/useEagerConnect.bmp.ts'
 import { useMemo, useState } from 'react'
+import { useConnect } from 'wagmi'
 import Trans from './Trans'
 
 const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
   const handleActive = useActiveHandle()
   const { login } = useAuth()
+  const { connectAsync } = useConnect()
   const { chainId } = useActiveChainId()
   const [open, setOpen] = useState(false)
 
@@ -23,7 +25,7 @@ const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
     }
   }
 
-  const wallets = useMemo(() => createWallets(chainId), [chainId])
+  const wallets = useMemo(() => createWallets(chainId, connectAsync), [chainId, connectAsync])
 
   return (
     <>

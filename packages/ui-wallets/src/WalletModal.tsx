@@ -364,9 +364,8 @@ lastUsedWalletNameAtom.onMount = (set) => {
 
 function sortWallets<T>(wallets: WalletConfigV2<T>[], lastUsedWalletName: string | null) {
   const sorted = wallets.sort((a, b) => {
-    if (a.installed) return -1
-    if (b.installed) return 1
-    return 0
+    if (a.installed === b.installed) return 0
+    return a.installed ? -1 : 1
   })
 
   if (!lastUsedWalletName) {
@@ -421,9 +420,7 @@ function DesktopModal<T>({ wallets, login }: Pick<WalletModalV2Props<T>, 'wallet
           onClick={(w) => {
             setSelected(w)
             setQrCode(undefined)
-            if (w.deepLink) {
-              setQrCode(w.deepLink)
-            } else if (w.qrCode) {
+            if (w.qrCode) {
               w.qrCode().then((uri) => {
                 setQrCode(uri)
               })
