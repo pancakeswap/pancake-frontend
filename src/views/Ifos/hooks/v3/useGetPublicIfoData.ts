@@ -5,6 +5,7 @@ import ifoV3Abi from 'config/abi/ifoV3.json'
 import { bscTokens } from '@pancakeswap/tokens'
 import { Ifo, IfoStatus } from 'config/constants/types'
 
+import { BSC_APPRX_BLOCK_TIME } from 'config'
 import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { multicallv2 } from 'utils/multicall'
@@ -32,8 +33,6 @@ const formatVestingInfo = (pool) => ({
   duration: pool ? pool[2].toNumber() : 0,
   slicePeriodSeconds: pool ? pool[3].toNumber() : 0,
 })
-
-const BSC_APPRX_BLOCK_TIME = 3.08
 
 /**
  * Gets all public data of an IFO
