@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Tag, Flex, Heading, Box, Skeleton } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
-import { FarmAuctionTag, CoreTag } from 'components/Tags'
+import { FarmAuctionTag, CoreTag, StableFarmTag } from 'components/Tags'
 import { TokenPairImage } from 'components/TokenImage'
 import BoostedTag from '../YieldBooster/components/BoostedTag'
 
@@ -12,6 +12,7 @@ export interface ExpandableSectionProps {
   token: Token
   quoteToken: Token
   boosted?: boolean
+  isStable?: boolean
 }
 
 const Wrapper = styled(Flex)`
@@ -31,6 +32,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   token,
   quoteToken,
   boosted,
+  isStable,
 }) => {
   const isReady = multiplier !== undefined
 
@@ -44,6 +46,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
       <Flex flexDirection="column" alignItems="flex-end">
         {isReady ? <Heading mb="4px">{lpLabel.split(' ')[0]}</Heading> : <Skeleton mb="4px" width={60} height={18} />}
         <Flex justifyContent="center">
+          {isStable ? <StableFarmTag mr="4px" /> : null}
           {isReady ? <Box>{isCommunityFarm ? <FarmAuctionTag /> : <CoreTag />}</Box> : null}
           {boosted && <BoostedTag ml="4px" />}
           {isReady ? (

@@ -93,6 +93,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           token={farm.token}
           quoteToken={farm.quoteToken}
           boosted={farm.boosted}
+          isStable={farm.isStable}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
@@ -117,6 +118,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                   <ApyButton
                     variant="text-and-button"
                     pid={farm.pid}
+                    lpTokenPrice={farm.lpTokenPrice}
                     lpSymbol={farm.lpSymbol}
                     multiplier={farm.multiplier}
                     lpLabel={lpLabel}

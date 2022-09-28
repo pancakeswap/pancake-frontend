@@ -2312,4 +2312,5 @@ export const bscTokens = {
     'Chibi Dinos',
     'https://www.chibidinos.io/',
   ),
+  co: new Token(ChainId.BSC, '0x936B6659Ad0C1b244Ba8Efe639092acae30dc8d6', 6, 'CO', 'CO', 'https://corite.com/'),
 }

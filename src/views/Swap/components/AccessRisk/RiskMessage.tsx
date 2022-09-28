@@ -28,7 +28,7 @@ const RiskMessage: React.FC<RiskMessageProps> = ({ currency, riskTokenInfo }) =>
   return (
     <Message variant={messageVariant} icon="" mt="10px">
       <MessageText bold ml="-12px">
-        {t('%riskLevel% Risk', { riskLevel })}
+        {currency.symbol} {t('%riskLevel% Risk', { riskLevel })}
         <Flex mt="4px">
           <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
           <Flex flexDirection="column">

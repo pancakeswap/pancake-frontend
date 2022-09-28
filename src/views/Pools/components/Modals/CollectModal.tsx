@@ -8,7 +8,7 @@ import useTheme from 'hooks/useTheme'
 import { useAppDispatch } from 'state'
 import { updateUserBalance, updateUserPendingReward, updateUserStakedBalance } from 'state/pools'
 import { formatNumber } from 'utils/formatBalance'
-import useHarvestPool from '../../../hooks/useHarvestPool'
+import useHarvestPool from '../../hooks/useHarvestPool'
 
 interface CollectModalProps {
   formattedBalance: string

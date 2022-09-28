@@ -13,6 +13,11 @@ import { formatBigNumber } from 'utils/formatBalance'
 import { useBalance } from 'wagmi'
 import CopyAddress from './CopyAddress'
 
+const COLORS = {
+  ETH: '#627EEA',
+  BNB: '#14151A',
+}
+
 interface WalletInfoProps {
   hasLowNativeBalance: boolean
   onDismiss: InjectedModalProps['onDismiss']
@@ -20,8 +25,10 @@ interface WalletInfoProps {
 
 const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss }) => {
   const { t } = useTranslation()
-  const { account, chainId } = useActiveWeb3React()
-  const { data, isFetched } = useBalance({ addressOrName: account })
+  const { account, chainId, chain } = useActiveWeb3React()
+  const isBSC = chainId === ChainId.BSC
+  const bnbBalance = useBalance({ addressOrName: account, chainId: ChainId.BSC })
+  const nativeBalance = useBalance({ addressOrName: account, enabled: !isBSC })
   const native = useNativeCurrency()
   const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useGetCakeBalance()
   const { logout } = useAuth()
@@ -30,8 +37,6 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
     onDismiss?.()
     logout()
   }
-
-  const isBSC = native.chainId === ChainId.BSC
 
   return (
     <>
@@ -55,35 +60,60 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
           </Box>
         </Message>
       )}
-      <Flex alignItems="center" justifyContent="space-between">
-        <Flex>
-          {!isBSC && <ChainLogo chainId={native.chainId} />}
-          <Text ml={isBSC ? 0 : '8px'} color="textSubtle">
-            {native.symbol} {t('Balance')}
-          </Text>
+      {!isBSC && chain && (
+        <Box mb="12px">
+          <Flex justifyContent="space-between" alignItems="center" mb="8px">
+            <Flex bg={COLORS.ETH} borderRadius="16px" pl="4px" pr="8px" py="2px">
+              <ChainLogo chainId={chain.id} />
+              <Text color="white" ml="4px">
+                {chain.name}
+              </Text>
+            </Flex>
+            <LinkExternal href={getBlockExploreLink(account, 'address', chainId)}>
+              {getBlockExploreName(chainId)}
+            </LinkExternal>
+          </Flex>
+          <Flex alignItems="center" justifyContent="space-between">
+            <Text color="textSubtle">
+              {native.symbol} {t('Balance')}
+            </Text>
+            {!nativeBalance.isFetched ? (
+              <Skeleton height="22px" width="60px" />
+            ) : (
+              <Text>{formatBigNumber(nativeBalance.data.value, 6)}</Text>
+            )}
+          </Flex>
+        </Box>
+      )}
+      <Box mb="24px">
+        <Flex justifyContent="space-between" alignItems="center" mb="8px">
+          <Flex bg={COLORS.BNB} borderRadius="16px" pl="4px" pr="8px" py="2px">
+            <ChainLogo chainId={ChainId.BSC} />
+            <Text color="white" ml="4px">
+              BNB Smart Chain
+            </Text>
+          </Flex>
+          <LinkExternal href={getBlockExploreLink(account, 'address', ChainId.BSC)}>
+            {getBlockExploreName(ChainId.BSC)}
+          </LinkExternal>
         </Flex>
-        {!isFetched ? <Skeleton height="22px" width="60px" /> : <Text>{formatBigNumber(data.value, 6)}</Text>}
-      </Flex>
-      <Flex alignItems="center" justifyContent="space-between" mb="24px" mt="12px">
-        <Flex alignItems="center">
-          {!isBSC && <ChainLogo chainId={56} />}
-          <Text ml={isBSC ? 0 : '8px'} color="textSubtle">
-            {t('CAKE Balance')}
-          </Text>
+        <Flex alignItems="center" justifyContent="space-between">
+          <Text color="textSubtle">BNB {t('Balance')}</Text>
+          {!bnbBalance.isFetched ? (
+            <Skeleton height="22px" width="60px" />
+          ) : (
+            <Text>{formatBigNumber(bnbBalance.data.value, 6)}</Text>
+          )}
         </Flex>
-        {cakeFetchStatus !== FetchStatus.Fetched ? (
-          <Skeleton height="22px" width="60px" />
-        ) : (
-          <Text>{formatBigNumber(cakeBalance, 3)}</Text>
-        )}
-      </Flex>
-      <Flex alignItems="center" justifyContent="end" mb="24px">
-        <LinkExternal href={getBlockExploreLink(account, 'address', chainId)}>
-          {t('View on %site%', {
-            site: getBlockExploreName(chainId),
-          })}
-        </LinkExternal>
-      </Flex>
+        <Flex alignItems="center" justifyContent="space-between">
+          <Text color="textSubtle">{t('CAKE Balance')}</Text>
+          {cakeFetchStatus !== FetchStatus.Fetched ? (
+            <Skeleton height="22px" width="60px" />
+          ) : (
+            <Text>{formatBigNumber(cakeBalance, 3)}</Text>
+          )}
+        </Flex>
+      </Box>
       <Button variant="secondary" width="100%" onClick={handleLogout}>
         {t('Disconnect Wallet')}
       </Button>

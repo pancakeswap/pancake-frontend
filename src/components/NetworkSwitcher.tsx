@@ -32,18 +32,20 @@ const NetworkSelect = ({ switchNetwork, chainId }) => {
         <Text color="textSubtle">{t('Select a Network')}</Text>
       </Box>
       <UserMenuDivider />
-      {chains.map((chain) => (
-        <UserMenuItem
-          key={chain.id}
-          style={{ justifyContent: 'flex-start' }}
-          onClick={() => chain.id !== chainId && switchNetwork(chain.id)}
-        >
-          <ChainLogo chainId={chain.id} />
-          <Text color={chain.id === chainId ? 'secondary' : 'text'} bold={chain.id === chainId} pl="12px">
-            {chain.name}
-          </Text>
-        </UserMenuItem>
-      ))}
+      {chains
+        .filter((chain) => !chain.testnet || chain.id === chainId)
+        .map((chain) => (
+          <UserMenuItem
+            key={chain.id}
+            style={{ justifyContent: 'flex-start' }}
+            onClick={() => chain.id !== chainId && switchNetwork(chain.id)}
+          >
+            <ChainLogo chainId={chain.id} />
+            <Text color={chain.id === chainId ? 'secondary' : 'text'} bold={chain.id === chainId} pl="12px">
+              {chain.name}
+            </Text>
+          </UserMenuItem>
+        ))}
     </>
   )
 }
@@ -114,15 +116,20 @@ export const NetworkSwitcher = () => {
     [isLoading, pendingChainId, chainId],
   )
   const symbol = NATIVE[foundChain?.id]?.symbol ?? foundChain?.nativeCurrency?.symbol
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t('Unable to switch network. Please try it on your wallet'),
+    { placement: 'auto' },
+  )
 
   const cannotChangeNetwork = !canSwitch
 
-  if (!chainId || chainId === ChainId.BSC) {
+  if (!chainId) {
     return null
   }
 
   return (
-    <>
+    <Box ref={cannotChangeNetwork ? targetRef : null}>
+      {cannotChangeNetwork && tooltipVisible && tooltip}
       <UserMenu
         mr="8px"
         variant={isLoading ? 'pending' : isWrongNetwork ? 'danger' : 'default'}
@@ -151,6 +158,6 @@ export const NetworkSwitcher = () => {
           )
         }
       </UserMenu>
-    </>
+    </Box>
   )
 }
