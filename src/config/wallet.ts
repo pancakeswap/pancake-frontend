@@ -2,7 +2,7 @@ import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
 import { WalletFilledIcon } from '@pancakeswap/uikit'
 import type { ExtendEthereum } from 'global'
 import { isFirefox } from 'react-device-detect'
-import { metaMaskConnector, walletConnectConnector, walletConnectNoQrCodeConnector } from '../utils/wagmi'
+import { metaMaskConnector, walletConnectNoQrCodeConnector } from '../utils/wagmi'
 
 export enum ConnectorNames {
   MetaMask = 'metaMask',
@@ -13,8 +13,13 @@ export enum ConnectorNames {
   WalletLink = 'coinbaseWallet',
 }
 
+const delay = (t: number) => new Promise((resolve) => setTimeout(resolve, t))
+
 const createQrCode = (chainId: number, connect) => async () => {
   connect({ connector: walletConnectNoQrCodeConnector, chainId })
+
+  // wait for WalletConnect to setup in order to get the uri
+  await delay(100)
   const { uri } = (await walletConnectNoQrCodeConnector.getProvider()).connector
 
   return uri
@@ -59,7 +64,6 @@ const walletsConfig = ({
       title: 'Coinbase Wallet',
       icon: '/images/wallets/coinbase.png',
       connectorId: ConnectorNames.WalletLink,
-      installed: true,
       deepLink: 'https://go.cb-w.com/dapp?cb_url=https%3A%2F%2Fpancakeswap.finance%2F',
     },
     {
@@ -82,7 +86,6 @@ const walletsConfig = ({
       id: 'walletconnect',
       title: 'WalletConnect',
       icon: '/images/wallets/walletconnect.png',
-      installed: walletConnectConnector.ready,
       connectorId: ConnectorNames.WalletConnect,
     },
     {

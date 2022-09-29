@@ -208,7 +208,7 @@ function MobileModal<T>({
   const [selected] = useSelectedWallet<T>()
   const [error] = useAtom(errorAtom)
 
-  const walletsToShow: WalletConfigV2<T>[] = wallets.filter((w) => w.installed || w.deepLink)
+  const walletsToShow: WalletConfigV2<T>[] = wallets.filter((w) => w.installed !== false || w.deepLink)
 
   return (
     <AtomBox width="full">
@@ -361,7 +361,7 @@ lastUsedWalletNameAtom.onMount = (set) => {
 function sortWallets<T>(wallets: WalletConfigV2<T>[], lastUsedWalletName: string | null) {
   const sorted = wallets.sort((a, b) => {
     if (a.installed === b.installed) return 0
-    return b.installed ? -1 : 1
+    return b.installed === true ? -1 : 1
   })
 
   if (!lastUsedWalletName) {
@@ -431,7 +431,7 @@ function DesktopModal<T>({
       >
         <AtomBox display="flex" flexDirection="column" alignItems="center" style={{ gap: '24px' }} textAlign="center">
           {!selected && <Intro />}
-          {selected && selected.installed && (
+          {selected && selected.installed !== false && (
             <>
               {typeof selected.icon === 'string' && <Image src={selected.icon} width={108} height={108} />}
               <Heading as="h1" fontSize="20px" color="secondary">
@@ -444,7 +444,7 @@ function DesktopModal<T>({
               )}
             </>
           )}
-          {selected && !selected.installed && <NotInstalled qrCode={qrCode} wallet={selected} />}
+          {selected && selected.installed === false && <NotInstalled qrCode={qrCode} wallet={selected} />}
         </AtomBox>
       </AtomBox>
     </>
@@ -464,7 +464,7 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
   const connectWallet = (wallet: WalletConfigV2<T>) => {
     setSelected(wallet)
     setError('')
-    if (wallet.installed) {
+    if (wallet.installed !== false) {
       login(wallet.connectorId)
         .then((v) => {
           if (v) {
