@@ -184,6 +184,15 @@ export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }
     [onCurrencySelection],
   )
 
+  const handlePercentInput = useCallback(
+    (percent) => {
+      if (maxAmountInput) {
+        onUserInput(Field.INPUT, (Number(maxAmountInput.toExact()) * percent * 0.01).toString())
+      }
+    },
+    [maxAmountInput, onUserInput],
+  )
+
   const hasAmount = Boolean(parsedAmount)
 
   const onRefreshPrice = useCallback(() => {
@@ -217,8 +226,10 @@ export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }
             label={independentField === Field.OUTPUT && trade ? t('From (estimated)') : t('From')}
             value={formattedAmounts[Field.INPUT]}
             showMaxButton={!atMaxAmountInput}
+            showQuickInputButton
             currency={currencies[Field.INPUT]}
             onUserInput={handleTypeInput}
+            onPercentInput={handlePercentInput}
             onMax={handleMaxInput}
             onCurrencySelect={handleInputSelect}
             otherCurrency={currencies[Field.OUTPUT]}

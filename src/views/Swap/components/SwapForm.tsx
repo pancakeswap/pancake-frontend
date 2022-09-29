@@ -194,6 +194,15 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAcce
     [onCurrencySelection, warningSwapHandler],
   )
 
+  const handlePercentInput = useCallback(
+    (percent) => {
+      if (maxAmountInput) {
+        onUserInput(Field.INPUT, (Number(maxAmountInput.toExact()) * percent * 0.01).toString())
+      }
+    },
+    [maxAmountInput, onUserInput],
+  )
+
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
 
   const hasAmount = Boolean(parsedAmount)
@@ -221,8 +230,10 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAcce
               label={independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')}
               value={formattedAmounts[Field.INPUT]}
               showMaxButton={!atMaxAmountInput}
+              showQuickInputButton
               currency={currencies[Field.INPUT]}
               onUserInput={handleTypeInput}
+              onPercentInput={handlePercentInput}
               onMax={handleMaxInput}
               onCurrencySelect={handleInputSelect}
               otherCurrency={currencies[Field.OUTPUT]}
