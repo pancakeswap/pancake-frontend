@@ -5,6 +5,7 @@ import { AutoColumn } from 'components/Layout/Column'
 import { useAddUserToken } from 'state/user/hooks'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import truncateHash from '@pancakeswap/utils/truncateHash'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import { ListLogo } from 'components/Logo'
 import { useTranslation } from '@pancakeswap/localization'
@@ -19,6 +20,8 @@ const getStandard = (chainId: ChainId) =>
   chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET ? 'ERC20' : 'BEP20'
 
 function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
+  const { chainId } = useActiveWeb3React()
+
   const { t } = useTranslation()
 
   const [confirmed, setConfirmed] = useState(false)
