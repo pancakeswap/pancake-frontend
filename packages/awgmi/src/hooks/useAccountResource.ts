@@ -51,6 +51,6 @@ export function useAccountResource<TData = unknown>({
     onSuccess,
     select,
     keepPreviousData,
-    refetchInterval: watch ? 10000 : 0,
+    refetchInterval: watch ? 2_000 : 0,
   })
 }

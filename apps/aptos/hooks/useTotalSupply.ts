@@ -7,6 +7,7 @@ export function useTotalSupply(token?: Currency): CurrencyAmount<Currency> | und
   const { data } = useCoin({
     coin: token?.wrapped.address,
     staleTime: 0,
+    watch: true,
     select: (d) => {
       if (token && d.supply) {
         return CurrencyAmount.fromRawAmount(token.wrapped, d.supply)

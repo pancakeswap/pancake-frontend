@@ -1,10 +1,8 @@
 import { formatUnits } from '@ethersproject/units'
 import { fetchBalance, FetchBalanceArgs, FetchCoinResult } from '@pancakeswap/awgmi/core'
-import * as React from 'react'
 
 import { QueryConfig } from '../types'
 import { useCoin } from './useCoin'
-import { useLedger } from './useLedger'
 import { useQuery } from './utils/useQuery'
 
 export type UseBalanceArgs = Partial<FetchBalanceArgs> & {
@@ -34,9 +32,6 @@ export function useBalance<TData = UseBalanceResult>({
   onSuccess,
   select,
 }: UseBalanceArgs & UseBalanceConfig<TData> = {}) {
-  const { data } = useLedger({ watch: true, networkName })
-  const { ledger_version: version } = data || {}
-
   const { data: coinData } = useCoin({ coin, networkName })
 
   const balanceQuery = useQuery(
@@ -61,17 +56,9 @@ export function useBalance<TData = UseBalanceResult>({
       onSettled,
       onSuccess,
       select,
+      refetchInterval: watch ? 2_000 : 0,
     },
   )
-
-  React.useEffect(() => {
-    if (!enabled) return
-    if (!watch) return
-    if (!version) return
-    if (!address) return
-    balanceQuery.refetch()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [version])
 
   return balanceQuery
 }

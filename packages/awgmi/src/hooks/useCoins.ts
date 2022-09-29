@@ -1,9 +1,8 @@
-import { useQueries } from '@tanstack/react-query'
 import { fetchCoin, FetchCoinResult } from '@pancakeswap/awgmi/core'
-import { queryClientContext as context } from '../context'
 import { QueryConfig } from '../types'
 import { queryKey as coinQueryKey } from './useCoin'
 import { useNetwork } from './useNetwork'
+import { useQueries } from './utils/useQueries'
 
 export type UseCoinsArgs = {
   networkName?: string
@@ -29,7 +28,6 @@ export function useCoins<TData = unknown>({
   const networkName = chain?.network ?? networkName_
 
   return useQueries({
-    context,
     queries: coins.map((coin) => {
       return {
         cacheTime,

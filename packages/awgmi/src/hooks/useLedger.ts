@@ -35,6 +35,6 @@ export function useLedger({
     onError,
     onSettled,
     onSuccess,
-    refetchInterval: watch ? 10000 : 0,
+    refetchInterval: watch ? 2_000 : 0,
   })
 }

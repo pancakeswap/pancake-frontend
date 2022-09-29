@@ -14,6 +14,7 @@ export function useCurrencyBalanceWithLoading(coinId?: string) {
     enabled: Boolean(coinId),
     address: account?.address,
     coin: coinId,
+    watch: true,
     select: (d) => {
       if (coinId && d) {
         const currency = allTokens[coinId]

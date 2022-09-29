@@ -18,6 +18,7 @@ export { useSendTransaction, type UseSendTransactionConfig } from './hooks/useSe
 export { useSimulateTransaction, type UseSimulateTransactionArgs } from './hooks/useSimulateTransaction'
 export { useMutation } from './hooks/utils/useMutation'
 export { useQuery } from './hooks/utils/useQuery'
+export { useQueries } from './hooks/utils/useQueries'
 export { useQueryClient } from './hooks/utils/useQueryClient'
 export { useAccountBalances } from './hooks/useAccountBalances'
 export { useCoins } from './hooks/useCoins'

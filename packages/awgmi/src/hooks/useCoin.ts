@@ -4,7 +4,10 @@ import { QueryConfig, QueryFunctionArgs } from '../types'
 import { useQuery } from './utils/useQuery'
 import { useNetwork } from './useNetwork'
 
-export type UseCoinArgs = Partial<FetchCoinArgs>
+export type UseCoinArgs = Partial<FetchCoinArgs> & {
+  /** Subscribe to changes */
+  watch?: boolean
+}
 
 export type UseCoinConfig<TData> = QueryConfig<FetchCoinResult, Error, TData>
 
@@ -27,6 +30,7 @@ export function useCoin<TData = FetchCoinResult>({
   onError,
   onSettled,
   onSuccess,
+  watch,
 }: UseCoinArgs & UseCoinConfig<TData> = {}) {
   const { chain } = useNetwork()
 
@@ -39,5 +43,6 @@ export function useCoin<TData = FetchCoinResult>({
     onError,
     onSettled,
     onSuccess,
+    refetchInterval: watch ? 2_000 : 0,
   })
 }

@@ -12,7 +12,7 @@ type UseAccountBalances<TData> = QueryConfig<UseAccountBalancesResult, Error, TD
 
 export function useAccountBalance<TData = unknown>({
   address,
-  cacheTime = 1_000,
+  cacheTime,
   networkName,
   enabled = true,
   keepPreviousData,
