@@ -2277,7 +2277,7 @@ export const bscTokens = {
     '0x0782b6d8c4551B9760e74c0545a9bCD90bdc41E5',
     18,
     'HAY',
-    'Hay Stablecoin',
+    'Hay Destablecoin',
     'https://helio.money/',
   ),
   spin: new Token(
@@ -2312,4 +2312,5 @@ export const bscTokens = {
     'Chibi Dinos',
     'https://www.chibidinos.io/',
   ),
+  co: new Token(ChainId.BSC, '0x936B6659Ad0C1b244Ba8Efe639092acae30dc8d6', 6, 'CO', 'CO', 'https://corite.com/'),
 }

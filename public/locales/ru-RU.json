@@ -1855,7 +1855,7 @@
   "Zap allows you to add liquidity with only 1 single token. Click": "Зап позволяет добавлять ликвидность всего одним токеном. Нажмите",
   "to try.": "и повторите попытку.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "Часть в %percentageVested%% купленных токенов будет вестирована и выпущена линейно в течение определенного периода. Часть в %percentageTgeRelease%% купленных токенов будет выпущена немедленно и доступна для получения по окончании IFO.",
-  "The vested tokens will be released linearly over a period of %weeks% weeks.": "Вестированные токены будут выпускаться линейно в течение %weeks% нед.",
+  "The vested tokens will be released linearly over a period of %weeks% weeks.": "Вестированные токены будут выпускаться линейно в течение %weeks% нед.",
   "Yield Booster": "Бустер выручки",
   "Connect wallet to view booster": "Для просмотра бустера подключите кошелек",
   "An active fixed-term CAKE staking position is required for activating farm yield boosters.": "Для активации бустеров выручки фарма нужна активная позиция по вложению CAKE с фиксированным сроком.",

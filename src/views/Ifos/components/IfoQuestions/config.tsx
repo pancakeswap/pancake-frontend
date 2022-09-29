@@ -68,5 +68,24 @@ const config = [
       </Trans>,
     ],
   },
+  {
+    title: <Trans>What is the difference between an IFO and a cIFO?</Trans>,
+    description: [
+      <Trans>
+        cIFOs are a new subtype of IFOs, designed to reward our loyal community, and also introduce our community to
+        projects with slightly smaller raises.
+      </Trans>,
+      <>
+        <Trans>Learn more about cIFO</Trans>
+        <InlineLink
+          ml="4px"
+          external
+          href="https://medium.com/pancakeswap/community-initial-farm-offering-cifo-the-new-ifo-subtype-ac1abacf66be"
+        >
+          <Trans>here</Trans>
+        </InlineLink>
+      </>,
+    ],
+  },
 ]
 export default config

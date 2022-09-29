@@ -9,7 +9,7 @@ const EMPTY_ARRAY = []
 
 export function useFastRefreshEffect(effect: BlockEffectCallback, deps?: DependencyList) {
   const { chainId } = useActiveWeb3React()
-  const { data = 0 } = useSWR([FAST_INTERVAL, 'blockNumber', chainId])
+  const { data = 0 } = useSWR(chainId && [FAST_INTERVAL, 'blockNumber', chainId])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(effect.bind(null, data), [data, ...(deps || EMPTY_ARRAY)])
@@ -17,7 +17,7 @@ export function useFastRefreshEffect(effect: BlockEffectCallback, deps?: Depende
 
 export function useSlowRefreshEffect(effect: BlockEffectCallback, deps?: DependencyList) {
   const { chainId } = useActiveWeb3React()
-  const { data = 0 } = useSWR([SLOW_INTERVAL, 'blockNumber', chainId])
+  const { data = 0 } = useSWR(chainId && [SLOW_INTERVAL, 'blockNumber', chainId])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(effect.bind(null, data), [data, ...(deps || EMPTY_ARRAY)])

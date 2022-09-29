@@ -12,6 +12,7 @@ export interface VestingCharacteristics {
   vestingComputeReleasableAmount: BigNumber
   vestingInformationPercentage: number
   vestingInformationDuration: number
+  isVestingInitialized: boolean
 }
 
 export interface VestingData {
@@ -30,6 +31,7 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
     poolBasic: {
       vestingId: '0',
       offeringAmountInToken: BIG_ZERO,
+      isVestingInitialized: false,
       vestingReleased: BIG_ZERO,
       vestingAmountTotal: BIG_ZERO,
       vestingComputeReleasableAmount: BIG_ZERO,
@@ -39,6 +41,7 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
     poolUnlimited: {
       vestingId: '0',
       offeringAmountInToken: BIG_ZERO,
+      isVestingInitialized: false,
       vestingReleased: BIG_ZERO,
       vestingAmountTotal: BIG_ZERO,
       vestingComputeReleasableAmount: BIG_ZERO,
@@ -116,6 +119,7 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
         ...userVestingData[PoolIds.poolBasic],
         vestingId: basicId ? basicId.toString() : '0',
         offeringAmountInToken: new BigNumber(amounts[0][0][0].toString()),
+        isVestingInitialized: basicSchedule ? basicSchedule[0].isVestingInitialized : false,
         vestingReleased: basicSchedule ? new BigNumber(basicSchedule[0].released.toString()) : BIG_ZERO,
         vestingAmountTotal: basicSchedule ? new BigNumber(basicSchedule[0].amountTotal.toString()) : BIG_ZERO,
         vestingComputeReleasableAmount: basicReleasableAmount
@@ -128,6 +132,7 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
         ...userVestingData[PoolIds.poolUnlimited],
         vestingId: unlimitedId ? unlimitedId.toString() : '0',
         offeringAmountInToken: new BigNumber(amounts[0][1][0].toString()),
+        isVestingInitialized: unlimitedSchedule ? unlimitedSchedule[0].isVestingInitialized : false,
         vestingReleased: unlimitedSchedule ? new BigNumber(unlimitedSchedule[0].released.toString()) : BIG_ZERO,
         vestingAmountTotal: unlimitedSchedule ? new BigNumber(unlimitedSchedule[0].amountTotal.toString()) : BIG_ZERO,
         vestingComputeReleasableAmount: unlimitedReleasableAmount

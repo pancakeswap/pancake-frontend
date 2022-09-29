@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
-import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
+import { usePriceCakeBusd } from 'state/farms/hooks'
 import DepositModal from '../DepositModal'
 import StakedLP from '../StakedLP'
 import { FarmWithStakedValue } from '../types'
@@ -38,6 +38,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   quoteToken,
   token,
   lpSymbol,
+  lpTokenPrice,
   multiplier,
   apr,
   displayApr,
@@ -57,7 +58,6 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { tokenBalance, stakedBalance } = userData
   const cakePrice = usePriceCakeBusd()
   const router = useRouter()
-  const lpPrice = useLpTokenPrice(lpSymbol)
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { boosterState } = useContext(YieldBoosterStateContext)
@@ -111,7 +111,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       onConfirm={handleStake}
       tokenName={lpSymbol}
       multiplier={multiplier}
-      lpPrice={lpPrice}
+      lpPrice={lpTokenPrice}
       lpLabel={lpLabel}
       apr={apr}
       displayApr={displayApr}
@@ -166,11 +166,11 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   return (
     <Flex justifyContent="space-between" alignItems="center">
       <StakedLP
-        pid={pid}
         stakedBalance={stakedBalance}
         quoteTokenSymbol={quoteToken.symbol}
         tokenSymbol={token.symbol}
         lpTotalSupply={lpTotalSupply}
+        lpTokenPrice={lpTokenPrice}
         tokenAmountTotal={tokenAmountTotal}
         quoteTokenAmountTotal={quoteTokenAmountTotal}
       />

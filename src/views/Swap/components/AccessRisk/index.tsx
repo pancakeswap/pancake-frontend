@@ -1,88 +1,88 @@
-import { useState, useEffect, useMemo } from 'react'
-import { Currency, ChainId } from '@pancakeswap/sdk'
+import { useState, useMemo, useCallback } from 'react'
+import { Currency } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Button, HelpIcon, useTooltip, Text, Link, useToast } from '@pancakeswap/uikit'
-import { fetchRiskToken, TokenRiskPhases, RiskTokenInfo } from 'views/Swap/hooks/fetchTokenRisk'
+import { fetchRiskToken, RiskTokenInfo } from 'views/Swap/hooks/fetchTokenRisk'
 import RiskMessage from 'views/Swap/components/AccessRisk/RiskMessage'
+import { tokenListFromOfficialsUrlsAtom } from 'state/lists/hooks'
+import merge from 'lodash/merge'
+import keyBy from 'lodash/keyBy'
+import groupBy from 'lodash/groupBy'
+import mapValues from 'lodash/mapValues'
+import { useAtomValue } from 'jotai'
 
 interface AccessRiskProps {
-  currency: Currency
+  inputCurrency: Currency
+  outputCurrency: Currency
 }
 
-const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
+const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }) => {
   const { t } = useTranslation()
   const { toastInfo } = useToast()
+  const tokenMap = useAtomValue(tokenListFromOfficialsUrlsAtom)
 
-  const [isScanning, setIsScanning] = useState(false)
-  const [isFetchStatusSuccess, setIsFetchStatusSuccess] = useState(false)
-  const [allTokenInfo, setAllTokenInfo] = useState<{ [key: number]: RiskTokenInfo }>({})
-  const [riskTokenInfo, setRiskTokenInfo] = useState<RiskTokenInfo>({
-    isSuccess: false,
-    address: '',
-    chainId: ChainId.BSC,
-    riskLevel: TokenRiskPhases[0],
-    riskResult: '',
-    scannedTs: 0,
-    riskLevelDescription: '',
+  const { address: inputAddress, chainId: inputChainId } = useMemo(() => (inputCurrency as any) ?? {}, [inputCurrency])
+  const { address: outputAddress, chainId: outputChainId } = useMemo(
+    () => (outputCurrency as any) ?? {},
+    [outputCurrency],
+  )
+
+  const [{ results, loading }, setState] = useState<{
+    results: { [chainId: number]: { [address: string]: RiskTokenInfo } }
+    loading: boolean
+  }>({
+    results: {},
+    loading: false,
   })
-
-  useEffect(() => {
-    if (currency) {
-      setIsScanning(false)
-      setIsFetchStatusSuccess(false)
-
-      const { address, chainId } = currency as any
-      if (allTokenInfo) {
-        const list = allTokenInfo[chainId]
-        if (list?.[address]) {
-          setRiskTokenInfo(list[address])
-          setIsFetchStatusSuccess(list[address].isSuccess)
-        }
-      }
+  const tokensForScan = useMemo(() => {
+    const tokensToScan = []
+    if (
+      inputCurrency &&
+      !inputCurrency.isNative &&
+      !results[inputChainId]?.[inputAddress] &&
+      !tokenMap?.[inputChainId]?.[inputAddress]
+    ) {
+      tokensToScan.push(inputCurrency)
     }
-  }, [currency, allTokenInfo])
-
-  const disabledButton = useMemo(() => {
-    if (currency) {
-      const { address } = currency as any
-      return isScanning || (address === riskTokenInfo.address && riskTokenInfo.isSuccess)
+    if (outputCurrency && !outputCurrency.isNative && !results[outputChainId]?.[outputAddress]) {
+      tokensToScan.push(outputCurrency)
     }
-    return false
-  }, [currency, riskTokenInfo, isScanning])
+    return tokensToScan
+  }, [results, inputAddress, inputChainId, outputAddress, outputChainId, inputCurrency, outputCurrency, tokenMap])
 
-  const handleScan = async () => {
-    setIsScanning(true)
+  const handleScan = useCallback(() => {
+    const fetchTokenRisks = async () => {
+      const tokenRiskResults = await Promise.all(
+        tokensForScan.map((tokenToScan) => {
+          const { address, chainId } = tokenToScan as any
+          return fetchRiskToken(address, chainId)
+        }),
+      )
 
-    const { address, chainId, symbol } = currency as any
-    toastInfo(t('Scanning Risk'), t('Please wait until we scan the risk for %symbol% token', { symbol }))
-
-    const tokenRiskResult: RiskTokenInfo = await fetchRiskToken(address, chainId)
-
-    // To avoid response too slow, and user already change to new currency.
-    if (tokenRiskResult.isSuccess && tokenRiskResult.address === address) {
-      setIsScanning(false)
-      saveRiskTokenInfo(tokenRiskResult)
-    }
-  }
-
-  const saveRiskTokenInfo = (data: RiskTokenInfo) => {
-    const { address, chainId } = data
-    const getRiskTokenList = allTokenInfo
-    const newData = {
-      ...getRiskTokenList,
-      [chainId]: {
-        ...getRiskTokenList[chainId],
-        [address]: {
-          ...data,
-          createDate: new Date().getTime(),
-        },
-      },
+      setState((prevState) => ({
+        ...prevState,
+        loading: false,
+        results: merge(
+          { ...prevState.results },
+          mapValues(groupBy(tokenRiskResults, 'chainId'), (tokenRiskResult) => keyBy(tokenRiskResult, 'address')),
+        ),
+      }))
     }
 
-    setRiskTokenInfo(data)
-    setIsFetchStatusSuccess(data.isSuccess)
-    setAllTokenInfo(newData)
-  }
+    toastInfo(
+      t('Scanning Risk'),
+      t('Please wait until we scan the risk for %symbol% token', {
+        symbol: tokensForScan.map((currency) => currency.symbol).join(','),
+      }),
+    )
+    setState((prevState) => ({
+      ...prevState,
+      loading: true,
+    }))
+    fetchTokenRisks()
+  }, [tokensForScan, toastInfo, t])
+
+  const disabledButton = useMemo(() => loading || tokensForScan.length === 0, [loading, tokensForScan])
 
   // Tooltips
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -106,14 +106,19 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ currency }) => {
     <>
       <Flex justifyContent="flex-end">
         <Button scale="xs" style={{ textTransform: 'uppercase' }} disabled={disabledButton} onClick={handleScan}>
-          {isScanning ? t('scanning...') : t('scan risk')}
+          {loading ? t('scanning...') : t('scan risk')}
         </Button>
         {tooltipVisible && tooltip}
         <Flex ref={targetRef}>
           <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
         </Flex>
       </Flex>
-      {!isScanning && isFetchStatusSuccess && <RiskMessage currency={currency} riskTokenInfo={riskTokenInfo} />}
+      {results[inputChainId]?.[inputAddress]?.isSuccess && (
+        <RiskMessage currency={inputCurrency} riskTokenInfo={results[inputChainId][inputAddress]} />
+      )}
+      {results[outputChainId]?.[outputAddress]?.isSuccess && (
+        <RiskMessage currency={outputCurrency} riskTokenInfo={results[outputChainId][outputAddress]} />
+      )}
     </>
   )
 }
