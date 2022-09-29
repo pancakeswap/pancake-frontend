@@ -23,8 +23,8 @@ export abstract class AptosSwapRouter {
   public static swapCallParameters(trade: Trade<Currency, Currency, TradeType>, options: TradeOptions) {
     const amountIn = trade.maximumAmountIn(options.allowedSlippage).quotient.toString()
     const amountOut = trade.minimumAmountOut(options.allowedSlippage).quotient.toString()
-    console.log(trade, 'trade')
-    console.log(trade.route.path, 'trade')
+    console.info(trade, 'trade')
+    console.info(trade.route.path, 'trade')
 
     if (trade.tradeType === TradeType.EXACT_INPUT) {
       const args: [string, string] = [amountIn, amountOut]

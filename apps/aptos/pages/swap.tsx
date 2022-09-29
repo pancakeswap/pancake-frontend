@@ -8,6 +8,8 @@ import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
 import { ExchangeLayout } from 'components/Layout/ExchangeLayout'
+import { SettingsModal, withCustomOnDismiss } from 'components/Menu/Settings/SettingsModal'
+import { SettingsButton } from 'components/Menu/Settings/SettingsButton'
 import AdvancedSwapDetailsDropdown from 'components/Swap/AdvancedSwapDetailsDropdown'
 import confirmPriceImpactWithoutFee from 'components/Swap/confirmPriceImpactWithoutFee'
 import ConfirmSwapModal from 'components/Swap/ConfirmSwapModal'
@@ -16,7 +18,7 @@ import { BIPS_BASE } from 'config/constants/exchange'
 import { useCurrencyBalance } from 'hooks/Balances'
 import { useCurrency } from 'hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Field, selectCurrency, switchCurrencies, typeInput, useDefaultsFromURLSearch, useSwapState } from 'state/swap'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useUserSlippage } from 'state/user'
@@ -41,6 +43,8 @@ const {
 } = SwapUI
 
 const isExpertMode = false
+
+const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
 const SwapPage = () => {
   const [
@@ -249,6 +253,11 @@ const SwapPage = () => {
     }
   }, [dispatch, maxAmountInput])
 
+  const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
+  const [onPresentSettingsModal] = useModal(
+    <SettingsModalWithCustomDismiss customOnDismiss={() => setIndirectlyOpenConfirmModalState(true)} />,
+  )
+
   const [onPresentConfirmModal] = useModal(
     trade && (
       <ConfirmSwapModal
@@ -263,15 +272,24 @@ const SwapPage = () => {
         onConfirm={handleSwap}
         swapErrorMessage={swapErrorMessage}
         customOnDismiss={handleConfirmDismiss}
-        openSettingModal={() => {
-          //
-        }}
+        openSettingModal={onPresentSettingsModal}
       />
     ),
     true,
     true,
     'confirmSwapModal',
   )
+
+  useEffect(() => {
+    if (indirectlyOpenConfirmModalState) {
+      setIndirectlyOpenConfirmModalState(false)
+      setSwapState((state) => ({
+        ...state,
+        swapErrorMessage: undefined,
+      }))
+      onPresentConfirmModal()
+    }
+  }, [indirectlyOpenConfirmModalState, onPresentConfirmModal, setSwapState])
 
   let inputError: string | undefined
   if (!parsedAmount) {
@@ -304,7 +322,7 @@ const SwapPage = () => {
             <RowBetween>
               <div />
               <CurrencyInputHeaderTitle>{t('Swap')}</CurrencyInputHeaderTitle>
-              <div />
+              <SettingsButton />
             </RowBetween>
           }
           subtitle={<CurrencyInputHeaderSubTitle>{t('Trade tokens in an instant')}</CurrencyInputHeaderSubTitle>}

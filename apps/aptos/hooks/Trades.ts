@@ -4,6 +4,7 @@ import flatMap from 'lodash/flatMap'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
+import { useUserSingleHopOnly } from 'state/user/singleHop'
 import {
   BASES_TO_CHECK_TRADES_AGAINST,
   CUSTOM_BASES,
@@ -19,11 +20,6 @@ function useUnsupportedTokens() {
 
 function useWarningTokens() {
   return {}
-}
-
-// add single hop setting laster
-function useUserSingleHopOnly() {
-  return [false]
 }
 
 export function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {

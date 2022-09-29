@@ -10,12 +10,27 @@ import {
   QuestionHelper,
   Text,
   ThemeSwitcher,
+  Toggle,
 } from '@pancakeswap/uikit'
 import { escapeRegExp } from '@pancakeswap/utils/escapeRegExp'
 import { useTheme } from 'next-themes'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useAudioPlay, useUserSlippage } from 'state/user'
+import { useUserSingleHopOnly } from 'state/user/singleHop'
 import styled from 'styled-components'
+
+export const withCustomOnDismiss =
+  (Component) =>
+  ({ onDismiss, customOnDismiss, ...props }: { onDismiss?: () => void; customOnDismiss: () => void }) => {
+    const handleDismiss = useCallback(() => {
+      onDismiss?.()
+      if (customOnDismiss) {
+        customOnDismiss()
+      }
+    }, [customOnDismiss, onDismiss])
+
+    return <Component {...props} onDismiss={handleDismiss} />
+  }
 
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
@@ -159,6 +174,7 @@ const SlippageSetting = () => {
 
 export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
   const [audioPlay, setAudioPlay] = useAudioPlay()
+  const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
 
   const { t } = useTranslation()
   const { resolvedTheme, setTheme } = useTheme()
@@ -191,8 +207,7 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
             <Toggle id="toggle-expert-mode-button" scale="md" checked={expertMode} onChange={handleExpertModeToggle} />
           </Flex> */}
           <SlippageSetting />
-          {/* TODO: aptos swap */}
-          {/* <Flex justifyContent="space-between" alignItems="center" mb="24px">
+          <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">
               <Text>{t('Disable Multihops')}</Text>
               <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top-start" ml="4px" />
@@ -205,7 +220,7 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
                 setSingleHopOnly(!singleHopOnly)
               }}
             />
-          </Flex> */}
+          </Flex>
           <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">
               <Text>{t('Flippy sounds')}</Text>
