@@ -273,7 +273,7 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
   const isWindowVisible = useIsWindowVisible()
 
   useEffect(() => {
-    if (isRecentlyActive || !isPublicIfoDataInitialized) {
+    if ((isRecentlyActive || !isPublicIfoDataInitialized) && currentBlock) {
       fetchPublicIfoData(currentBlock)
     }
   }, [isRecentlyActive, isPublicIfoDataInitialized, fetchPublicIfoData, currentBlock])
