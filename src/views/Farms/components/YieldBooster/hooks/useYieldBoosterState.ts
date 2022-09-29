@@ -3,7 +3,7 @@ import { useFarmUser } from 'state/farms/hooks'
 import { useBCakeFarmBoosterContract } from 'hooks/useContract'
 import { useSWRMulticall } from 'hooks/useSWRContract'
 import farmBoosterAbi from 'config/abi/farmBooster.json'
-import isUndefinedOrNull from 'utils/isUndefinedOrNull'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { useUserBoosterStatus } from 'views/Farms/hooks/useUserBoosterStatus'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
@@ -43,12 +43,12 @@ interface UseYieldBoosterStateArgs {
 
 export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoosterStateArgs) {
   const { farmPid } = yieldBoosterStateArgs
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { remainingCounts, refreshActivePools } = useUserBoosterStatus(account)
   const { locked, lockedEnd } = useUserLockedCakeStatus()
   const { stakedBalance, proxy } = useFarmUser(farmPid)
   const { isActivePool, refreshIsPoolActive } = useIsPoolActive(farmPid)
-  const { proxyCreated, refreshProxyAddress, proxyAddress } = useBCakeProxyContractAddress(account)
+  const { proxyCreated, refreshProxyAddress, proxyAddress } = useBCakeProxyContractAddress(account, chainId)
 
   const refreshActivePool = useCallback(() => {
     refreshActivePools()
@@ -59,7 +59,7 @@ export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoos
 
   if (!account || isUndefinedOrNull(locked)) {
     state = YieldBoosterState.UNCONNECTED
-  } else if (!locked) {
+  } else if (!locked && stakedBalance.eq(0)) {
     // NOTE: depend on useCakeVaultUserData in Farm Component to check state
     state = YieldBoosterState.NO_LOCKED
   } else if (!proxyCreated) {
@@ -69,7 +69,7 @@ export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoos
   } else if (lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd) * 1000)) {
     // NOTE: duplicate logic in BCakeBoosterCard
     state = YieldBoosterState.LOCKED_END
-  } else if (!proxy?.stakedBalance.gt(0)) {
+  } else if (proxy?.stakedBalance.eq(0)) {
     state = YieldBoosterState.NO_LP
   } else if (!isActivePool && remainingCounts === 0) {
     state = YieldBoosterState.MAX
@@ -81,13 +81,7 @@ export default function useYieldBoosterState(yieldBoosterStateArgs: UseYieldBoos
 
   return {
     state,
-    shouldUseProxyFarm: [
-      YieldBoosterState.DEACTIVE,
-      YieldBoosterState.ACTIVE,
-      YieldBoosterState.MAX,
-      YieldBoosterState.NO_LP,
-      YieldBoosterState.LOCKED_END,
-    ].includes(state),
+    shouldUseProxyFarm: proxyCreated && stakedBalance.eq(0),
     refreshActivePool,
     refreshProxyAddress,
     proxyAddress,

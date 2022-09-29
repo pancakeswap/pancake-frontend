@@ -13,7 +13,7 @@ const Page = styled.div`
   min-height: calc(100% - 56px);
   align-items: center;
   flex-direction: column;
-  background: ${({ theme }) => theme.colors.gradients.bubblegum};
+  background: ${({ theme }) => theme.colors.gradientBubblegum};
 
   ${({ theme }) => theme.mediaQueries.sm} {
     display: grid;
@@ -37,8 +37,8 @@ function Bridge() {
     customElements.whenDefined('stargate-widget').then(() => {
       setTimeout(() => {
         if (window.stargate) {
-          window.stargate.setDstChainId(2)
-          window.stargate.setConfig({ dstChainIdList: [2] })
+          window.stargate.setDstChainId(102)
+          window.stargate.setConfig({ dstChainIdList: [102] })
         }
       }, 600)
       console.info('stargate widget mount')

@@ -7,13 +7,13 @@ import { useVaultApy } from 'hooks/useVaultApy'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { distanceToNowStrict } from 'utils/timeHelper'
-import { DeserializedPublicData, DeserializedPotteryUserData } from 'state/types'
+import { DeserializedPublicData, DeserializedPotteryUserData, PotteryDepositStatus } from 'state/types'
 import Balance from 'components/Balance'
 
 const Container = styled(Flex)`
   flex-direction: column;
   padding: 16px 24px;
-  background: ${({ theme }) => theme.colors.gradients.cardHeader};
+  background: ${({ theme }) => theme.colors.gradientCardHeader};
 `
 
 interface CardFooterProps {
@@ -49,51 +49,55 @@ const CardFooter: React.FC<React.PropsWithChildren<CardFooterProps>> = ({ accoun
         </Box>
         <Text bold>{account ? boostFactorDisplay : '-'}</Text>
       </Flex>
-      <Flex justifyContent="space-between">
+      {publicData.getStatus !== PotteryDepositStatus.BEFORE_LOCK && (
         <Box>
-          <Text fontSize="12px" color="secondary" textTransform="uppercase" bold as="span">
-            {t('Deposit')}
-          </Text>
-          <Text fontSize="12px" ml="4px" color="textSubtle" textTransform="uppercase" bold as="span">
-            {t('by cohort')}
-          </Text>
-        </Box>
-        <Box>
-          {account ? (
-            <Flex>
-              <Balance bold decimals={2} value={totalValueLocked} />
-              <Text ml="4px" color="textSubtle" as="span">
-                CAKE
+          <Flex justifyContent="space-between">
+            <Box>
+              <Text fontSize="12px" color="secondary" textTransform="uppercase" bold as="span">
+                {t('Deposit')}
               </Text>
-            </Flex>
-          ) : (
-            <Text bold as="span">
-              -
-            </Text>
-          )}
+              <Text fontSize="12px" ml="4px" color="textSubtle" textTransform="uppercase" bold as="span">
+                {t('by cohort')}
+              </Text>
+            </Box>
+            <Box>
+              {account ? (
+                <Flex>
+                  <Balance bold decimals={2} value={totalValueLocked} />
+                  <Text ml="4px" color="textSubtle" as="span">
+                    CAKE
+                  </Text>
+                </Flex>
+              ) : (
+                <Text bold as="span">
+                  -
+                </Text>
+              )}
+            </Box>
+          </Flex>
+          <Flex justifyContent="space-between">
+            <Box>
+              <Text fontSize="12px" color="secondary" textTransform="uppercase" bold as="span">
+                {t('remaining')}
+              </Text>
+              <Text fontSize="12px" ml="4px" color="textSubtle" textTransform="uppercase" bold as="span">
+                {t('period')}
+              </Text>
+            </Box>
+            <Box>
+              {account ? (
+                <>
+                  <Text bold>{distanceToNowStrict(daysRemaining)}</Text>
+                </>
+              ) : (
+                <Text bold as="span">
+                  -
+                </Text>
+              )}
+            </Box>
+          </Flex>
         </Box>
-      </Flex>
-      <Flex justifyContent="space-between">
-        <Box>
-          <Text fontSize="12px" color="secondary" textTransform="uppercase" bold as="span">
-            {t('remaining')}
-          </Text>
-          <Text fontSize="12px" ml="4px" color="textSubtle" textTransform="uppercase" bold as="span">
-            {t('period')}
-          </Text>
-        </Box>
-        <Box>
-          {account ? (
-            <>
-              <Text bold>{distanceToNowStrict(daysRemaining)}</Text>
-            </>
-          ) : (
-            <Text bold as="span">
-              -
-            </Text>
-          )}
-        </Box>
-      </Flex>
+      )}
       <Flex justifyContent="space-between">
         <Box>
           <Text fontSize="12px" color="textSubtle" textTransform="uppercase" bold as="span">

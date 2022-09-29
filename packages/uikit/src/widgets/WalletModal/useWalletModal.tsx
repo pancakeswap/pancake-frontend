@@ -1,15 +1,14 @@
-import React from "react";
 import { useModal } from "../Modal";
 import ConnectModal from "./ConnectModal";
-import { Config, Login } from "./types";
+import { Login, WalletConfig } from "./types";
 
 interface ReturnType {
   onPresentConnectModal: () => void;
 }
 
-const useWalletModal = (login: Login, t: (key: string) => string, connectors?: Config[]): ReturnType => {
-  const [onPresentConnectModal] = useModal(<ConnectModal login={login} t={t} connectors={connectors} />);
+function useWalletModal<T>(login: Login<T>, t: (key: string) => string, wallets: WalletConfig<T>[]): ReturnType {
+  const [onPresentConnectModal] = useModal(<ConnectModal login={login} t={t} wallets={wallets} />);
   return { onPresentConnectModal };
-};
+}
 
 export default useWalletModal;

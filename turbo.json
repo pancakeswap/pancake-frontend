@@ -8,13 +8,16 @@
     },
     "test": {
       "outputs": ["coverage/**"],
-      "dependsOn": []
+      "dependsOn": ["^build"]
     },
     "lint": {
       "outputs": []
     },
     "dev": {
       "cache": false
+    },
+    "build:list": {
+      "outputs": ["list/**"]
     },
     "integration-test": {
       "outputs": [],

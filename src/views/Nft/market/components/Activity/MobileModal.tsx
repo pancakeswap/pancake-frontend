@@ -4,7 +4,7 @@ import useTheme from 'hooks/useTheme'
 import { Activity, NftToken } from 'state/nftMarket/types'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
-import truncateHash from 'utils/truncateHash'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 import { multiplyPriceByAmount } from 'utils/prices'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBlockExploreLink } from 'utils'
@@ -34,12 +34,7 @@ const MobileModal: React.FC<React.PropsWithChildren<MobileModalProps>> = ({
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, priceAsFloat)
 
   return (
-    <Modal
-      title={t('Transaction Details')}
-      maxWidth="320px"
-      onDismiss={onDismiss}
-      headerBackground={theme.colors.gradients.cardHeader}
-    >
+    <Modal title={t('Transaction Details')} onDismiss={onDismiss} headerBackground={theme.colors.gradientCardHeader}>
       <Flex flexDirection="column">
         <Flex alignItems="center" mb="16px" justifyContent="space-between">
           <Box width={68} mr="16px">

@@ -4,7 +4,6 @@ import { splitSignature } from '@ethersproject/bytes'
 import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
-import useToast from 'hooks/useToast'
 import { Currency, Percent, WNATIVE, ChainId } from '@pancakeswap/sdk'
 import {
   Button,
@@ -19,6 +18,7 @@ import {
   Checkbox,
   TooltipText,
   useTooltip,
+  useToast,
 } from '@pancakeswap/uikit'
 import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
 import { BigNumber } from '@ethersproject/bignumber'
@@ -42,7 +42,6 @@ import { LightGreyCard } from '../../components/Card'
 
 import { CurrencyLogo } from '../../components/Logo'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
-import { useCurrency } from '../../hooks/Tokens'
 import { usePairContract, useZapContract } from '../../hooks/useContract'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 
@@ -72,13 +71,11 @@ const BorderCard = styled.div`
 
 const zapSupportedChainId = [ChainId.BSC, ChainId.BSC_TESTNET]
 
-export default function RemoveLiquidity() {
+export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, currencyIdB }) {
   const router = useRouter()
   const native = useNativeCurrency()
   const [zapMode] = useZapModeManager()
   const [temporarilyZapMode, setTemporarilyZapMode] = useState(true)
-  const [currencyIdA, currencyIdB] = router.query.currency || []
-  const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
   const library = useWeb3LibraryContext()
   const { toastError } = useToast()
@@ -149,6 +146,7 @@ export default function RemoveLiquidity() {
   const atMaxAmount = parsedAmounts[Field.LIQUIDITY_PERCENT]?.equalTo(new Percent('1'))
 
   // pair contract
+  const pairContractRead: Contract | null = usePairContract(pair?.liquidityToken?.address, false)
   const pairContract: Contract | null = usePairContract(pair?.liquidityToken?.address)
 
   // allowance handling
@@ -159,7 +157,7 @@ export default function RemoveLiquidity() {
   )
 
   async function onAttemptToApprove() {
-    if (!pairContract || !pair || !library || !deadline) throw new Error('missing dependencies')
+    if (!pairContract || !pairContractRead || !pair || !library || !deadline) throw new Error('missing dependencies')
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
     if (!liquidityAmount) {
       toastError(t('Error'), t('Missing liquidity amount'))
@@ -167,7 +165,7 @@ export default function RemoveLiquidity() {
     }
 
     // try to gather a signature for permission
-    const nonce = await pairContract.nonces(account)
+    const nonce = await pairContractRead.nonces(account)
 
     const EIP712Domain = [
       { name: 'name', type: 'string' },

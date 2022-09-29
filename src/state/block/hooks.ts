@@ -11,7 +11,7 @@ export const usePollBlockNumber = () => {
   const { chainId, provider } = useActiveWeb3React()
 
   const { data } = useSWR(
-    ['blockNumber', chainId],
+    chainId && ['blockNumber', chainId],
     async () => {
       const blockNumber = await provider.getBlockNumber()
       if (!cache.get(unstable_serialize(['initialBlockNumber', chainId]))) {
@@ -25,7 +25,7 @@ export const usePollBlockNumber = () => {
   )
 
   useSWR(
-    [FAST_INTERVAL, 'blockNumber', chainId],
+    chainId && [FAST_INTERVAL, 'blockNumber', chainId],
     async () => {
       return data
     },
@@ -35,7 +35,7 @@ export const usePollBlockNumber = () => {
   )
 
   useSWR(
-    [SLOW_INTERVAL, 'blockNumber', chainId],
+    chainId && [SLOW_INTERVAL, 'blockNumber', chainId],
     async () => {
       return data
     },

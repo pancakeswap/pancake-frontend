@@ -163,8 +163,8 @@ export const getBep20Contract = (address: string, signer?: Signer | Provider) =>
 export const getErc721Contract = (address: string, signer?: Signer | Provider) => {
   return getContract({ abi: erc721Abi, address, signer }) as Erc721
 }
-export const getLpContract = (address: string, signer?: Signer | Provider) => {
-  return getContract({ abi: lpTokenAbi, address, signer }) as LpToken
+export const getLpContract = (address: string, chainId?: number, signer?: Signer | Provider) => {
+  return getContract({ abi: lpTokenAbi, address, signer, chainId }) as LpToken
 }
 export const getIfoV1Contract = (address: string, signer?: Signer | Provider) => {
   return getContract({ abi: ifoV1Abi, address, signer }) as IfoV1

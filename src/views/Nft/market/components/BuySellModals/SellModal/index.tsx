@@ -1,27 +1,26 @@
-import { useState } from 'react'
-import { InjectedModalProps } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { parseUnits } from '@ethersproject/units'
-import useTheme from 'hooks/useTheme'
+import { ContextApi, useTranslation } from '@pancakeswap/localization'
+import { InjectedModalProps, useToast } from '@pancakeswap/uikit'
+import { useWeb3React } from '@pancakeswap/wagmi'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import useToast from 'hooks/useToast'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { useTranslation, ContextApi } from '@pancakeswap/localization'
-import { isAddress } from 'utils'
 import { useErc721CollectionContract, useNftMarketContract } from 'hooks/useContract'
+import useTheme from 'hooks/useTheme'
+import { useState } from 'react'
 import { NftToken } from 'state/nftMarket/types'
+import { isAddress } from 'utils'
 import { useGetLowestPriceFromNft } from 'views/Nft/market/hooks/useGetLowestPrice'
+import ApproveAndConfirmStage from '../shared/ApproveAndConfirmStage'
+import ConfirmStage from '../shared/ConfirmStage'
+import TransactionConfirmed from '../shared/TransactionConfirmed'
+import EditStage from './EditStage'
+import RemoveStage from './RemoveStage'
 import SellStage from './SellStage'
 import SetPriceStage from './SetPriceStage'
-import EditStage from './EditStage'
-import ApproveAndConfirmStage from '../shared/ApproveAndConfirmStage'
-import TransactionConfirmed from '../shared/TransactionConfirmed'
-import { StyledModal, stagesWithBackButton } from './styles'
-import { SellingStage } from './types'
-import ConfirmStage from '../shared/ConfirmStage'
-import RemoveStage from './RemoveStage'
+import { stagesWithBackButton, StyledModal } from './styles'
 import TransferStage from './TransferStage'
+import { SellingStage } from './types'
 
 export const modalTitles = (stage: SellingStage, t: ContextApi['t']) => {
   switch (stage) {
@@ -215,7 +214,7 @@ const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
       stage={stage}
       onDismiss={onDismiss}
       onBack={showBackButton ? goBack : null}
-      headerBackground={theme.colors.gradients.cardHeader}
+      headerBackground={theme.colors.gradientCardHeader}
     >
       {stage === SellingStage.SELL && (
         <SellStage

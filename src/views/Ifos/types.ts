@@ -15,7 +15,7 @@ export interface PoolCharacteristics {
 
   // extends
   pointThreshold?: number
-  admissionProfile?: number
+  admissionProfile?: string
   needQualifiedNFT?: boolean
   needQualifiedPoints?: boolean
   vestingInformation?: VestingInformation
@@ -36,7 +36,7 @@ export interface PublicIfoData {
   thresholdPoints: EthersBigNumber
   vestingStartTime?: number
 
-  fetchIfoData: (currentBlock: number) => void
+  fetchIfoData: (currentBlock: number) => Promise<void>
   [PoolIds.poolBasic]?: PoolCharacteristics
   [PoolIds.poolUnlimited]: PoolCharacteristics
 }
@@ -84,6 +84,6 @@ export interface WalletIfoData extends WalletIfoState {
   contract: Contract
   setPendingTx: (status: boolean, poolId: PoolIds) => void
   setIsClaimed: (poolId: PoolIds) => void
-  fetchIfoData: () => void
+  fetchIfoData: () => Promise<void>
   resetIfoData: () => void
 }

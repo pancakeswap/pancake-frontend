@@ -1,18 +1,17 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { AddIcon, Button, Flex, IconButton, MinusIcon, useModal, useToast } from '@pancakeswap/uikit'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallback, useContext } from 'react'
 import styled from 'styled-components'
-import { Button, Flex, IconButton, AddIcon, MinusIcon, useModal } from '@pancakeswap/uikit'
-import useToast from 'hooks/useToast'
-import useCatchTxError from 'hooks/useCatchTxError'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { useTranslation } from '@pancakeswap/localization'
 
-import { useRouter } from 'next/router'
-import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 import { TransactionResponse } from '@ethersproject/providers'
+import { useRouter } from 'next/router'
+import { usePriceCakeBusd } from 'state/farms/hooks'
 import DepositModal from '../DepositModal'
-import WithdrawModal from '../WithdrawModal'
-import { FarmWithStakedValue } from '../types'
 import StakedLP from '../StakedLP'
+import { FarmWithStakedValue } from '../types'
+import WithdrawModal from '../WithdrawModal'
 import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
 import { YieldBoosterState } from '../YieldBooster/hooks/useYieldBoosterState'
 
@@ -35,9 +34,11 @@ const IconButtonWrapper = styled.div`
 `
 
 const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
+  pid,
   quoteToken,
   token,
   lpSymbol,
+  lpTokenPrice,
   multiplier,
   apr,
   displayApr,
@@ -57,7 +58,6 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { tokenBalance, stakedBalance } = userData
   const cakePrice = usePriceCakeBusd()
   const router = useRouter()
-  const lpPrice = useLpTokenPrice(lpSymbol)
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { boosterState } = useContext(YieldBoosterStateContext)
@@ -104,12 +104,14 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
 
   const [onPresentDeposit] = useModal(
     <DepositModal
+      pid={pid}
+      lpTotalSupply={lpTotalSupply}
       max={tokenBalance}
       stakedBalance={stakedBalance}
       onConfirm={handleStake}
       tokenName={lpSymbol}
       multiplier={multiplier}
-      lpPrice={lpPrice}
+      lpPrice={lpTokenPrice}
       lpLabel={lpLabel}
       apr={apr}
       displayApr={displayApr}
@@ -165,10 +167,10 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
     <Flex justifyContent="space-between" alignItems="center">
       <StakedLP
         stakedBalance={stakedBalance}
-        lpSymbol={lpSymbol}
         quoteTokenSymbol={quoteToken.symbol}
         tokenSymbol={token.symbol}
         lpTotalSupply={lpTotalSupply}
+        lpTokenPrice={lpTokenPrice}
         tokenAmountTotal={tokenAmountTotal}
         quoteTokenAmountTotal={quoteTokenAmountTotal}
       />

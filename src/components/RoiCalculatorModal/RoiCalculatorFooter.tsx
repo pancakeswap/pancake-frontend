@@ -73,7 +73,12 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
 
   const gridRowCount = isFarm ? 4 : 2
   const lpRewardsAPR = useMemo(
-    () => (isFarm ? Math.max(Number(displayApr) - apr, 0).toFixed(2) : null),
+    () =>
+      isFarm
+        ? Number.isFinite(Number(displayApr)) && Number.isFinite(apr)
+          ? Math.max(Number(displayApr) - apr, 0).toFixed(2)
+          : null
+        : null,
     [isFarm, displayApr, apr],
   )
 
@@ -113,7 +118,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                   *{t('LP Rewards APR')}
                 </Text>
                 <Text small textAlign="right">
-                  {lpRewardsAPR}%
+                  {lpRewardsAPR === '0' ? '-' : lpRewardsAPR}%
                 </Text>
               </>
             )}

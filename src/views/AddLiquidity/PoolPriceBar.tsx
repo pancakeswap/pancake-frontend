@@ -18,6 +18,7 @@ function PoolPriceBar({
   price?: Price<Currency, Currency>
 }) {
   const { t } = useTranslation()
+
   return (
     <AutoColumn gap="md">
       <AutoRow justify="space-around" gap="4px">

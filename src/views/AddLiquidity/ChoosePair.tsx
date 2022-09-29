@@ -1,5 +1,6 @@
 import { Currency } from '@pancakeswap/sdk'
-import { Box, Text, AddIcon, CardBody, Button, CardFooter, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { Box, Text, AddIcon, CardBody, CardFooter, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { CommitButton } from 'components/CommitButton'
 import { CurrencySelect } from 'components/CurrencySelect'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { FlexGap } from 'components/Layout/Flex'
@@ -86,7 +87,7 @@ export function ChoosePair({
         {!account ? (
           <ConnectWalletButton width="100%" />
         ) : (
-          <Button
+          <CommitButton
             data-test="choose-pair-next"
             width="100%"
             variant={!isValid ? 'danger' : 'primary'}
@@ -94,7 +95,7 @@ export function ChoosePair({
             disabled={!isValid}
           >
             {error ?? t('Add Liquidity')}
-          </Button>
+          </CommitButton>
         )}
       </CardFooter>
     </>

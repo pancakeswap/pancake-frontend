@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
 import { useTranslation } from '@pancakeswap/localization'
-import useToast from 'hooks/useToast'
+import { useToast } from '@pancakeswap/uikit'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { usePotterytVaultContract } from 'hooks/useContract'

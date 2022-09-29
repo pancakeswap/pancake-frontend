@@ -5,7 +5,7 @@ import { memo } from 'react'
 
 export const ChainLogo = memo(({ chainId }: { chainId: number }) => {
   if (isChainSupported(chainId)) {
-    return <Image src={`/images/chains/${chainId}.png`} width={24} height={24} unoptimized />
+    return <Image src={`/images/chains/${chainId}.png`} width={24} height={24} unoptimized alt={`chain-${chainId}`} />
   }
 
   return <HelpIcon width={24} height={24} />

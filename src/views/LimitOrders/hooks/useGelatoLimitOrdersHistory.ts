@@ -44,20 +44,28 @@ async function syncOrderToLocalStorage({
     ? allOrdersLS.filter((order) => syncStatuses.some((type) => type === order.status))
     : []
 
-  for (let i = 0; i < typeOrdersLS.length; i++) {
-    const confOrder = typeOrdersLS[i]
-    try {
-      const graphOrder =
-        orders.find((order) => confOrder.id.toLowerCase() === order.id.toLowerCase()) ??
-        // eslint-disable-next-line no-await-in-loop
-        (gelatoLimitOrders ? await gelatoLimitOrders.getOrder(confOrder.id) : null)
-      if (isOrderUpdated(confOrder, graphOrder)) {
-        saveOrder(chainId, account, graphOrder)
+  const results = await Promise.all(
+    typeOrdersLS.map((confOrder) => {
+      const orderFetched = orders.find((order) => confOrder.id.toLowerCase() === order.id.toLowerCase())
+      return !orderFetched
+        ? gelatoLimitOrders
+          ? Promise.allSettled([Promise.resolve(confOrder), gelatoLimitOrders.getOrder(confOrder.id)])
+          : Promise.resolve([confOrder, null])
+        : Promise.resolve([confOrder, orderFetched])
+    }),
+  )
+
+  results.forEach((result) => {
+    const [confOrderPromiseResult, graphOrderPromiseResult] = result as PromiseSettledResult<Order>[]
+    if (confOrderPromiseResult.status === 'fulfilled' && graphOrderPromiseResult.status === 'fulfilled') {
+      if (isOrderUpdated(confOrderPromiseResult.value, graphOrderPromiseResult.value)) {
+        saveOrder(chainId, account, graphOrderPromiseResult.value)
       }
-    } catch (e) {
-      console.error('Error fetching order from subgraph', e)
     }
-  }
+    if (graphOrderPromiseResult.status === 'rejected') {
+      console.error('Error fetching order from subgraph', graphOrderPromiseResult.reason)
+    }
+  })
 }
 
 const useOpenOrders = (turnOn: boolean): Order[] => {

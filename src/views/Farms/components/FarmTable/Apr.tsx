@@ -12,6 +12,7 @@ export interface AprProps {
   lpLabel: string
   lpSymbol: string
   lpRewardsApr: number
+  lpTokenPrice: BigNumber
   tokenAddress?: string
   quoteTokenAddress?: string
   cakePrice: BigNumber
@@ -19,6 +20,7 @@ export interface AprProps {
   hideButton?: boolean
   strikethrough?: boolean
   useTooltipText?: boolean
+  boosted?: boolean
 }
 
 const Container = styled.div`
@@ -48,6 +50,7 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
   pid,
   lpLabel,
   lpSymbol,
+  lpTokenPrice,
   multiplier,
   tokenAddress,
   quoteTokenAddress,
@@ -57,6 +60,7 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
   strikethrough,
   lpRewardsApr,
   useTooltipText = true,
+  boosted,
 }) => {
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAddress, tokenAddress })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
@@ -68,6 +72,7 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
           pid={pid}
           lpSymbol={lpSymbol}
           lpLabel={lpLabel}
+          lpTokenPrice={lpTokenPrice}
           multiplier={multiplier}
           cakePrice={cakePrice}
           apr={originalValue}
@@ -77,6 +82,7 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
           strikethrough={strikethrough}
           useTooltipText={useTooltipText}
           hideButton={hideButton}
+          boosted={boosted}
         />
       ) : (
         <AprWrapper>

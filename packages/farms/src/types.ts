@@ -12,7 +12,6 @@ export type FarmsDynamicDataResult = {
 export type FarmData = SerializedFarmConfig & FarmsDynamicDataResult
 
 export interface FarmConfigBaseProps {
-  isStable?: boolean
   pid: number
   v1pid?: number
   vaultPid?: number
@@ -29,13 +28,20 @@ export interface FarmConfigBaseProps {
   }
   boosted?: boolean
 }
+export interface SerializedStableFarmConfig extends SerializedClassicFarmConfig {
+  stableSwapAddress?: string
+  infoStableSwapAddress?: string
+}
 
-export interface SerializedFarmConfig extends FarmConfigBaseProps {
+export interface SerializedClassicFarmConfig extends FarmConfigBaseProps {
   token: SerializedWrappedToken
   quoteToken: SerializedWrappedToken
 }
 
-export interface SerializedFarmPublicData extends SerializedFarmConfig {
+export type SerializedFarmConfig = SerializedStableFarmConfig & SerializedClassicFarmConfig
+
+export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
+  lpTokenPrice?: string
   tokenPriceBusd?: string
   quoteTokenPriceBusd?: string
   tokenAmountTotal?: string
@@ -45,4 +51,13 @@ export interface SerializedFarmPublicData extends SerializedFarmConfig {
   tokenPriceVsQuote?: string
   poolWeight?: string
   boosted?: boolean
+  infoStableSwapAddress?: string
+}
+
+export interface AprMap {
+  [key: string]: number
+}
+
+export function isStableFarm(farmConfig: SerializedFarmConfig): farmConfig is SerializedStableFarmConfig {
+  return 'stableSwapAddress' in farmConfig && typeof farmConfig.stableSwapAddress === 'string'
 }

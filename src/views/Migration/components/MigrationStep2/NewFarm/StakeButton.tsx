@@ -1,23 +1,22 @@
-import React, { useCallback } from 'react'
-import styled from 'styled-components'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, useModal, IconButton, AddIcon, MinusIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { FarmWithStakedValue } from 'views/Farms/components/types'
+import { AddIcon, Button, IconButton, MinusIcon, useMatchBreakpoints, useModal, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useERC20 } from 'hooks/useContract'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import useToast from 'hooks/useToast'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
+import { useERC20 } from 'hooks/useContract'
+import React, { useCallback } from 'react'
+import { useAppDispatch } from 'state'
+import { fetchFarmUserDataAsync } from 'state/farms'
+import { useFarmUser, usePriceCakeBusd } from 'state/farms/hooks'
+import styled from 'styled-components'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { useFarmUser, useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
+import DepositModal from 'views/Farms/components/DepositModal'
+import { FarmWithStakedValue } from 'views/Farms/components/types'
+import WithdrawModal from 'views/Farms/components/WithdrawModal'
 import useApproveFarm from 'views/Farms/hooks/useApproveFarm'
 import useStakeFarms from 'views/Farms/hooks/useStakeFarms'
 import useUnstakeFarms from 'views/Farms/hooks/useUnstakeFarms'
-import DepositModal from 'views/Farms/components/DepositModal'
-import WithdrawModal from 'views/Farms/components/WithdrawModal'
-import { fetchFarmUserDataAsync } from 'state/farms'
-import { useAppDispatch } from 'state'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -34,10 +33,12 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
   multiplier,
   lpSymbol,
   lpLabel,
+  lpTokenPrice,
   lpAddress,
   quoteToken,
   token,
   displayApr,
+  lpTotalSupply,
 }) => {
   const { t } = useTranslation()
   const { account, chainId } = useActiveWeb3React()
@@ -47,7 +48,6 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
   const { allowance, tokenBalance, stakedBalance } = useFarmUser(pid)
   const { onStake } = useStakeFarms(pid)
   const { onUnstake } = useUnstakeFarms(pid)
-  const lpPrice = useLpTokenPrice(lpSymbol)
   const cakePrice = usePriceCakeBusd()
 
   const isApproved = account && allowance && allowance.isGreaterThan(0)
@@ -90,8 +90,10 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
 
   const [onPresentDeposit] = useModal(
     <DepositModal
+      pid={pid}
+      lpTotalSupply={lpTotalSupply}
       max={tokenBalance}
-      lpPrice={lpPrice}
+      lpPrice={lpTokenPrice}
       lpLabel={lpLabel}
       apr={apr}
       displayApr={displayApr}

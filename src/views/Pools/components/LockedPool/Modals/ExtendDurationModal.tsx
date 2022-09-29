@@ -85,7 +85,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
       <Modal
         title={modalTitle || t('Extend Lock')}
         onDismiss={onDismiss}
-        headerBackground={theme.colors.gradients.cardHeader}
+        headerBackground={theme.colors.gradientCardHeader}
       >
         <Box mb="16px">
           <StaticAmount

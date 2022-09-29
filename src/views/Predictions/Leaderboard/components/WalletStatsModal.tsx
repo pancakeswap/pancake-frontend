@@ -18,7 +18,7 @@ import { useProfileForAddress } from 'state/profile/hooks'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
-import truncateHash from 'utils/truncateHash'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 import { Token } from '@pancakeswap/sdk'
 
 import { useTranslation } from '@pancakeswap/localization'
@@ -71,7 +71,7 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
 
   return (
     <ModalContainer $minWidth="320px">
-      <ModalHeader background={theme.colors.gradients.bubblegum}>
+      <ModalHeader background={theme.colors.gradientBubblegum}>
         <Flex alignItems="center" style={{ flex: 1 }}>
           <Box width={['64px', null, null, null, null, null, '96px']} mr="16px">
             <ProfileAvatar src={profile?.nft?.image?.thumbnail} height={96} width={96} />

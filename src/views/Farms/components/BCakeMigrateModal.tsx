@@ -1,4 +1,5 @@
 import { Contract } from '@ethersproject/contracts'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   AutoRenewIcon,
   Box,
@@ -8,15 +9,14 @@ import {
   LogoIcon,
   Modal,
   Text,
+  useToast,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useTranslation } from '@pancakeswap/localization'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useBCakeProxyContract } from 'hooks/useContract'
-import useToast from 'hooks/useToast'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { getFullDisplayBalance } from 'utils/formatBalance'
@@ -150,7 +150,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   onUnStack,
   pid,
 }) => {
-  const { account } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const [activatedState, setActivatedState] = useState<Steps>(Steps.UnStake)
   const [isLoading, setIsLoading] = useState(false)
   const [isApproved, setIsApproved] = useState(false)
@@ -158,7 +158,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(stakedBalance)
   }, [stakedBalance])
-  const { proxyAddress } = useBCakeProxyContractAddress(account)
+  const { proxyAddress } = useBCakeProxyContractAddress(account, chainId)
   const { onApprove, onDone, onStake } = useProxyStakedActions(pid, lpContract)
 
   const bCakeProxy = useBCakeProxyContract(proxyAddress)

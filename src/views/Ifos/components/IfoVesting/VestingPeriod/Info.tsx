@@ -18,7 +18,7 @@ const WhiteCard = styled.div`
 const StyleTag = styled(Tag)<{ isPrivate: boolean }>`
   font-size: 14px;
   color: ${({ theme }) => theme.colors.text};
-  background: ${({ theme, isPrivate }) => (isPrivate ? theme.colors.gradients.blue : theme.colors.gradients.violet)};
+  background: ${({ theme, isPrivate }) => (isPrivate ? theme.colors.gradientBlue : theme.colors.gradientViolet)};
 `
 
 interface InfoProps {
@@ -30,8 +30,13 @@ interface InfoProps {
 const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetchUserVestingData }) => {
   const { t } = useTranslation()
   const { token } = data.ifo
-  const { vestingComputeReleasableAmount, offeringAmountInToken, vestingInformationPercentage, vestingReleased } =
-    data.userVestingData[poolId]
+  const {
+    isVestingInitialized,
+    vestingComputeReleasableAmount,
+    offeringAmountInToken,
+    vestingInformationPercentage,
+    vestingReleased,
+  } = data.userVestingData[poolId]
 
   const labelText = poolId === PoolIds.poolUnlimited ? t('Public Sale') : t('Private Sale')
 
@@ -110,7 +115,13 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
             </Text>
           </Flex>
         </Flex>
-        <Claim poolId={poolId} data={data} claimableAmount={claimable} fetchUserVestingData={fetchUserVestingData} />
+        <Claim
+          poolId={poolId}
+          data={data}
+          claimableAmount={claimable}
+          isVestingInitialized={isVestingInitialized}
+          fetchUserVestingData={fetchUserVestingData}
+        />
       </WhiteCard>
     </>
   )

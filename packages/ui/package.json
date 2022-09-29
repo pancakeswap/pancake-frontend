@@ -1,0 +1,13 @@
+{
+  "name": "@pancakeswap/ui",
+  "version": "0.0.1",
+  "sideEffects": [
+    "*.css.ts"
+  ],
+  "dependencies": {
+    "@vanilla-extract/css": "^1.9.0",
+    "@vanilla-extract/css-utils": "^0.1.2",
+    "@vanilla-extract/sprinkles": "^1.4.1",
+    "@radix-ui/react-slot": "^1.0.0"
+  }
+}

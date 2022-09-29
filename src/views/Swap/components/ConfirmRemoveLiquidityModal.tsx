@@ -36,7 +36,7 @@ interface ConfirmRemoveLiquidityModalProps {
   currencyA: Currency | null | undefined
   currencyB: Currency | null | undefined
   isZap?: boolean
-  toggleZapMode: (value: boolean) => void
+  toggleZapMode?: (value: boolean) => void
 }
 
 const ConfirmRemoveLiquidityModal: React.FC<
@@ -142,7 +142,7 @@ const ConfirmRemoveLiquidityModal: React.FC<
         </Button>
       </>
     )
-  }, [currencyA, currencyB, parsedAmounts, approval, onRemove, pair, signatureData, tokenA, tokenB, t])
+  }, [currencyA, currencyB, parsedAmounts, approval, onRemove, pair, tokenA, tokenB, t, signatureData])
 
   const confirmationContent = useCallback(
     () =>

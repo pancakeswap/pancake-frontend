@@ -1,0 +1,45 @@
+name: Farm Config
+on:
+  pull_request:
+    paths:
+      - 'packages/farms/constants/**'
+      - 'packages/tokens/**'
+      - '!packages/tokens/src/common.ts'
+      - '!packages/tokens/src/helpers.ts'
+      - '!packages/tokens/src/index.ts'
+  push:
+    branches:
+      - develop
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    env:
+      HAVE_CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+    name: Publish Farm Config to Cloudflare Pages
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Test
+        run: yarn test:config
+
+      - name: Build list
+        run: yarn turbo run build --filter=@pancakeswap/farms
+
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@1
+        if: ${{ env.HAVE_CLOUDFLARE_TOKEN == 'true' }}
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: b82548875bdb333ff5edcca4d076f88d
+          projectName: farms-config
+          directory: ./packages/farms/lists
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref_name == 'develop' && 'main' ||  null  }}

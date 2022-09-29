@@ -2,7 +2,7 @@ import { ChainId, Pair, Token } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/tokens'
 import { differenceInDays } from 'date-fns'
 import flatMap from 'lodash/flatMap'
-import { getFarmConfig } from 'config/constants/farms/index'
+import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
@@ -475,9 +475,12 @@ export function useTrackedTokenPairs(): [Token, Token][] {
 
   const { data: farmPairs = [] } = useSWRImmutable(chainId && ['track-farms-pairs', chainId], async () => {
     const farms = await getFarmConfig(chainId)
-    farms
+
+    const fPairs: [Token, Token][] = farms
       .filter((farm) => farm.pid !== 0)
       .map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)])
+
+    return fPairs
   })
 
   // pairs for every token against every base

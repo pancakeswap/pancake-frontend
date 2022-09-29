@@ -1,30 +1,30 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled, { useTheme } from "styled-components";
-import EXTERNAL_LINK_PROPS from "../../util/externalLinkProps";
-import Grid from "../../components/Box/Grid";
 import Box from "../../components/Box/Box";
-import getThemeValue from "../../util/getThemeValue";
-import Text from "../../components/Text/Text";
-import Heading from "../../components/Heading/Heading";
+import Grid from "../../components/Box/Grid";
 import { Button } from "../../components/Button";
+import Heading from "../../components/Heading/Heading";
+import Text from "../../components/Text/Text";
+import EXTERNAL_LINK_PROPS from "../../util/externalLinkProps";
+import getThemeValue from "../../util/getThemeValue";
 import { ModalBody, ModalCloseButton, ModalContainer, ModalHeader, ModalTitle } from "../Modal";
+import { walletLocalStorageKey } from "./config";
+import { Login, WalletConfig } from "./types";
 import WalletCard, { MoreWalletCard } from "./WalletCard";
-import config, { walletLocalStorageKey } from "./config";
-import { Config, Login } from "./types";
 
-interface Props {
-  login: Login;
+interface Props<T> {
+  login: Login<T>;
   onDismiss?: () => void;
   displayCount?: number;
   t: (key: string) => string;
-  connectors?: Config[];
+  wallets: WalletConfig<T>[];
 }
 
 const WalletWrapper = styled(Box)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `;
 
-const getPriority = (priority: Config["priority"]) => (typeof priority === "function" ? priority() : priority);
+const getPriority = (priority: WalletConfig["priority"]) => (typeof priority === "function" ? priority() : priority);
 
 /**
  * Checks local storage if we have saved the last wallet the user connected with
@@ -32,8 +32,10 @@ const getPriority = (priority: Config["priority"]) => (typeof priority === "func
  *
  * @returns sorted config
  */
-const getPreferredConfig = (walletConfig: Config[]) => {
-  const sortedConfig = walletConfig.sort((a: Config, b: Config) => getPriority(a.priority) - getPriority(b.priority));
+function getPreferredConfig<T>(walletConfig: WalletConfig<T>[]) {
+  const sortedConfig = walletConfig.sort(
+    (a: WalletConfig<T>, b: WalletConfig<T>) => getPriority(a.priority) - getPriority(b.priority)
+  );
 
   const preferredWalletName = localStorage?.getItem(walletLocalStorageKey);
 
@@ -51,18 +53,12 @@ const getPreferredConfig = (walletConfig: Config[]) => {
     preferredWallet,
     ...sortedConfig.filter((sortedWalletConfig) => sortedWalletConfig.title !== preferredWalletName),
   ];
-};
+}
 
-const ConnectModal: React.FC<React.PropsWithChildren<Props>> = ({
-  login,
-  onDismiss = () => null,
-  displayCount = 3,
-  t,
-  connectors,
-}) => {
+function ConnectModal<T>({ login, onDismiss = () => null, displayCount = 3, t, wallets: connectors }: Props<T>) {
   const [showMore, setShowMore] = useState(false);
   const theme = useTheme();
-  const sortedConfig = getPreferredConfig(connectors || config);
+  const sortedConfig = getPreferredConfig(connectors);
   // Filter out WalletConnect if user is inside TrustWallet built-in browser
   const walletsToShow =
     window.ethereum?.isTrust &&
@@ -74,7 +70,7 @@ const ConnectModal: React.FC<React.PropsWithChildren<Props>> = ({
 
   return (
     <ModalContainer $minWidth="320px">
-      <ModalHeader background={getThemeValue(theme, "colors.gradients.bubblegum")}>
+      <ModalHeader background={getThemeValue(theme, "colors.gradientBubblegum")}>
         <ModalTitle>
           <Heading>{t("Connect Wallet")}</Heading>
         </ModalTitle>
@@ -88,7 +84,7 @@ const ConnectModal: React.FC<React.PropsWithChildren<Props>> = ({
                 <WalletCard walletConfig={wallet} login={login} onDismiss={onDismiss} />
               </Box>
             ))}
-            {!showMore && <MoreWalletCard t={t} onClick={() => setShowMore(true)} />}
+            {!showMore && walletsToShow.length > 4 && <MoreWalletCard t={t} onClick={() => setShowMore(true)} />}
           </Grid>
         </WalletWrapper>
         <Box p="24px">
@@ -108,6 +104,6 @@ const ConnectModal: React.FC<React.PropsWithChildren<Props>> = ({
       </ModalBody>
     </ModalContainer>
   );
-};
+}
 
 export default ConnectModal;

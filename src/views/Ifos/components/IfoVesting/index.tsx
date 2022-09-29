@@ -23,9 +23,12 @@ const StyleVestingCard = styled(Card)`
 `
 
 const VestingCardBody = styled(CardBody)`
+  position: relative;
+  z-index: 2;
   overflow-y: auto;
   max-height: 570px;
   padding-bottom: 0;
+  border-radius: 0 0 24px 24px;
 `
 
 const TokenInfoContainer = styled.div`

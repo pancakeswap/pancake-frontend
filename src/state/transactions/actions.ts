@@ -23,19 +23,19 @@ export interface SerializableTransactionReceipt {
   status?: number
 }
 
-export const addTransaction =
-  createAction<{
-    chainId: ChainId
-    hash: string
-    from: string
-    approval?: { tokenAddress: string; spender: string }
-    claim?: { recipient: string }
-    summary?: string
-    translatableSummary?: { text: string; data?: Record<string, string | number> }
-    type?: TransactionType
-    order?: Order
-  }>('transactions/addTransaction')
-export const clearAllTransactions = createAction<{ chainId: ChainId }>('transactions/clearAllTransactions')
+export const addTransaction = createAction<{
+  chainId: ChainId
+  hash: string
+  from: string
+  approval?: { tokenAddress: string; spender: string }
+  claim?: { recipient: string }
+  summary?: string
+  translatableSummary?: { text: string; data?: Record<string, string | number> }
+  type?: TransactionType
+  order?: Order
+}>('transactions/addTransaction')
+export const clearAllTransactions = createAction('transactions/clearAllTransactions')
+export const clearAllChainTransactions = createAction<{ chainId: ChainId }>('transactions/clearAllChainTransactions')
 export const finalizeTransaction = createAction<{
   chainId: ChainId
   hash: string

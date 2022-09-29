@@ -4,7 +4,7 @@ import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance, getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
-import CollectModal from '../Modals/CollectModal'
+import CollectModal from '../../Modals/CollectModal'
 
 interface HarvestActionsProps {
   earnings: BigNumber
@@ -31,7 +31,6 @@ const HarvestActions: React.FC<React.PropsWithChildren<HarvestActionsProps>> = (
 
   const fullBalance = getFullDisplayBalance(earnings, earningToken.decimals)
   const hasEarnings = earnings.toNumber() > 0
-  const isCompoundPool = sousId === 0
 
   const [onPresentCollect] = useModal(
     <CollectModal
@@ -41,7 +40,6 @@ const HarvestActions: React.FC<React.PropsWithChildren<HarvestActionsProps>> = (
       earningsDollarValue={earningTokenDollarBalance}
       sousId={sousId}
       isBnbPool={isBnbPool}
-      isCompoundPool={isCompoundPool}
     />,
   )
 
@@ -79,7 +77,7 @@ const HarvestActions: React.FC<React.PropsWithChildren<HarvestActionsProps>> = (
         )}
       </Flex>
       <Button disabled={!hasEarnings} onClick={onPresentCollect}>
-        {isCompoundPool ? t('Collect') : t('Harvest')}
+        {t('Harvest')}
       </Button>
     </Flex>
   )

@@ -1,5 +1,14 @@
 import { useState } from 'react'
-import { Button, Text, Flex, Message, Modal, InjectedModalProps, Checkbox } from '@pancakeswap/uikit'
+import {
+  Button,
+  Text,
+  Flex,
+  Message,
+  Modal,
+  InjectedModalProps,
+  Checkbox,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { useExpertModeManager } from 'state/user/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 
@@ -14,6 +23,7 @@ const ExpertModal: React.FC<React.PropsWithChildren<ExpertModalProps>> = ({
 }) => {
   const [, toggleExpertMode] = useExpertModeManager()
   const [isRememberChecked, setIsRememberChecked] = useState(false)
+  const { isMobile } = useMatchBreakpoints()
 
   const { t } = useTranslation()
 
@@ -22,8 +32,8 @@ const ExpertModal: React.FC<React.PropsWithChildren<ExpertModalProps>> = ({
       title={t('Expert Mode')}
       onBack={() => setShowConfirmExpertModal(false)}
       onDismiss={() => setShowConfirmExpertModal(false)}
-      headerBackground="gradients.cardHeader"
-      style={{ maxWidth: '360px' }}
+      headerBackground="gradientCardHeader"
+      style={{ width: isMobile ? '100%' : '436px' }}
     >
       <Message variant="warning" mb="24px">
         <Text>

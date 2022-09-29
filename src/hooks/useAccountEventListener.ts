@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import replaceBrowserHistory from 'utils/replaceBrowserHistory'
+import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { ConnectorData } from 'wagmi'
 import { useAppDispatch } from '../state'
 import { clearUserStates } from '../utils/clearUserStates'
@@ -18,11 +18,11 @@ export const useAccountEventListener = () => {
           replaceBrowserHistory('chainId', e.chain.id)
           setSessionChainId(e.chain.id)
         }
-        clearUserStates(dispatch, chainId)
+        clearUserStates(dispatch, { chainId, newChainId: e?.chain?.id })
       }
 
       const handleDeactiveEvent = () => {
-        clearUserStates(dispatch, chainId, true)
+        clearUserStates(dispatch, { chainId, isDeactive: true })
       }
 
       connector.addListener('disconnect', handleDeactiveEvent)

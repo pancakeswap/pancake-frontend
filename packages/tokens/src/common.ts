@@ -83,7 +83,7 @@ export const BUSD_BSC = new Token(
 
 export const BUSD_TESTNET = new Token(
   ChainId.BSC_TESTNET,
-  '0x8516Fc284AEEaa0374E66037BD2309349FF728eA',
+  '0xaB1a4d4f1D656d2450692D237fdD6C7f9146e814',
   18,
   'BUSD',
   'Binance USD',
@@ -142,3 +142,11 @@ export const USDT = {
   [ChainId.BSC]: USDT_BSC,
   [ChainId.ETHEREUM]: USDT_ETH,
 }
+
+export const WBTC_ETH = new Token(
+  ChainId.ETHEREUM,
+  '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
+  8,
+  'WBTC',
+  'Wrapped BTC',
+)

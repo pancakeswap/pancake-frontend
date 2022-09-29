@@ -209,6 +209,13 @@ const campaigns: Campaign[] = [
     badge: '1-year.svg',
   },
   {
+    id: '516020001',
+    type: 'participation',
+    title: '2 Year',
+    description: 'Celebrate our 2nd birthday with us',
+    badge: '2-year.svg',
+  },
+  {
     id: '511120000',
     type: 'ifo',
     title: 'Duelist King',
@@ -363,6 +370,18 @@ const campaigns: Campaign[] = [
     type: 'ifo',
     title: 'Wom',
     badge: 'ifo-wom.svg',
+  },
+  {
+    id: '511500000',
+    type: 'ifo',
+    title: 'Hoop',
+    badge: 'ifo-hoop.svg',
+  },
+  {
+    id: '511600000',
+    type: 'ifo',
+    title: 'CO',
+    badge: 'ifo-co.svg',
   },
   {
     id: '512030001',

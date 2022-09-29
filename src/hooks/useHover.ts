@@ -1,25 +1,20 @@
-import { MutableRefObject, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-export function useHover<T>(): [MutableRefObject<T>, boolean] {
+export function useHover<T>(): [(value: T) => void, boolean] {
   const [value, setValue] = useState<boolean>(false)
-  const ref: any = useRef<T | null>(null)
+  const [ref, setRef] = useState<T | null>(null)
 
-  useEffect(
-    () => {
-      const node = ref.current
-      if (node) {
-        node.addEventListener('mouseover', () => setValue(true))
-        node.addEventListener('mouseout', () => setValue(false))
-        return () => {
-          node.removeEventListener('mouseover', () => setValue(false))
-          node.removeEventListener('mouseout', () => setValue(true))
-        }
-      }
+  useEffect(() => {
+    const node = ref as any
+    if (node) {
+      node.addEventListener('mouseover', () => setValue(true))
+      node.addEventListener('mouseout', () => setValue(false))
       return () => {
-        //
+        node.removeEventListener('mouseover', () => setValue(false))
+        node.removeEventListener('mouseout', () => setValue(true))
       }
-    },
-    [], // Recall only if ref changes
-  )
-  return [ref, value]
+    }
+    return undefined
+  }, [ref])
+  return [setRef, value]
 }

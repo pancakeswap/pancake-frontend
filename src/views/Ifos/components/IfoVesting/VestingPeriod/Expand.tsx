@@ -29,6 +29,8 @@ const collapseAnimation = keyframes`
 `
 
 const StyledExpand = styled(Box)<{ expanded: boolean }>`
+  position: relative;
+  z-index: 0;
   opacity: 1;
   animation: ${({ expanded }) =>
     expanded

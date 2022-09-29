@@ -1,31 +1,30 @@
-import { AddIcon, Button, IconButton, MinusIcon, Skeleton, Text, useModal } from '@pancakeswap/uikit'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { TransactionResponse } from '@ethersproject/providers'
+import { useTranslation } from '@pancakeswap/localization'
+import { AddIcon, Button, IconButton, MinusIcon, Skeleton, Text, useModal, useToast } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import { useTranslation } from '@pancakeswap/localization'
-import { useERC20 } from 'hooks/useContract'
-import useToast from 'hooks/useToast'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
+import { useERC20 } from 'hooks/useContract'
 import { useRouter } from 'next/router'
 import { useCallback, useContext } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
-import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
+import { usePriceCakeBusd } from 'state/farms/hooks'
 import styled from 'styled-components'
-import { TransactionResponse } from '@ethersproject/providers'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import useApproveFarm from '../../../hooks/useApproveFarm'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
 import DepositModal from '../../DepositModal'
-import WithdrawModal from '../../WithdrawModal'
-import { ActionContainer, ActionContent, ActionTitles } from './styles'
-import { FarmWithStakedValue } from '../../types'
 import StakedLP from '../../StakedLP'
-import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
+import { FarmWithStakedValue } from '../../types'
+import WithdrawModal from '../../WithdrawModal'
 import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
+import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
 import { YieldBoosterState } from '../../YieldBooster/hooks/useYieldBoosterState'
+import { ActionContainer, ActionContent, ActionTitles } from './styles'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -120,10 +119,12 @@ export const StakedContainer = ({ children, ...props }) => {
 }
 
 const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps>> = ({
+  pid,
   apr,
   multiplier,
   lpSymbol,
   lpLabel,
+  lpTokenPrice,
   quoteToken,
   token,
   userDataReady,
@@ -148,7 +149,6 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const { tokenBalance, stakedBalance } = userData || {}
 
   const router = useRouter()
-  const lpPrice = useLpTokenPrice(lpSymbol)
   const cakePrice = usePriceCakeBusd()
 
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
@@ -189,8 +189,10 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   const [onPresentDeposit] = useModal(
     <DepositModal
+      pid={pid}
+      lpTotalSupply={lpTotalSupply}
       max={tokenBalance}
-      lpPrice={lpPrice}
+      lpPrice={lpTokenPrice}
       lpLabel={lpLabel}
       apr={apr}
       displayApr={displayApr}
@@ -253,10 +255,10 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
           <ActionContent>
             <StakedLP
               stakedBalance={stakedBalance}
-              lpSymbol={lpSymbol}
               quoteTokenSymbol={quoteToken.symbol}
               tokenSymbol={token.symbol}
               lpTotalSupply={lpTotalSupply}
+              lpTokenPrice={lpTokenPrice}
               tokenAmountTotal={tokenAmountTotal}
               quoteTokenAmountTotal={quoteTokenAmountTotal}
             />

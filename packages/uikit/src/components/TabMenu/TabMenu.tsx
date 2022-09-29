@@ -3,9 +3,10 @@ import styled from "styled-components";
 import Flex from "../Box/Flex";
 import { TabMenuProps } from "./types";
 
-const Wrapper = styled(Flex)`
+const Wrapper = styled(Flex)<{ fullWidth?: boolean }>`
   border-bottom: 2px solid ${({ theme }) => theme.colors.input};
   overflow-x: scroll;
+  padding: ${({ fullWidth }) => (fullWidth ? 0 : "16px")};
 
   ::-webkit-scrollbar {
     display: none;
@@ -14,23 +15,33 @@ const Wrapper = styled(Flex)`
   scrollbar-width: none; /* Firefox */
 `;
 
-const Inner = styled(Flex)`
+const Inner = styled(Flex)<{ fullWidth?: boolean }>`
   justify-content: space-between;
-  flex-grow: 1;
 
   & > button + button {
     margin-left: 4px;
   }
 
-  ${({ theme }) => theme.mediaQueries.md} {
-    flex-grow: 0;
+  & > button {
+    flex-grow: ${({ fullWidth }) => (fullWidth ? 1 : 0)};
   }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-grow: ${({ fullWidth }) => (fullWidth ? 1 : 0)};
+  }
+
+  flex-grow: ${({ fullWidth }) => (fullWidth ? 1 : 0)};
 `;
 
-const ButtonMenu: React.FC<React.PropsWithChildren<TabMenuProps>> = ({ activeIndex = 0, onItemClick, children }) => {
+const ButtonMenu: React.FC<React.PropsWithChildren<TabMenuProps>> = ({
+  activeIndex = 0,
+  onItemClick,
+  children,
+  fullWidth,
+}) => {
   return (
-    <Wrapper p={["0 4px", "0 16px"]}>
-      <Inner>
+    <Wrapper p={["0 4px", "0 16px"]} fullWidth={fullWidth}>
+      <Inner fullWidth={fullWidth}>
         {Children.map(children, (child: ReactElement, index) => {
           const isActive = activeIndex === index;
           return cloneElement(child, {

@@ -16,8 +16,8 @@ export const Bar = styled.div<ProgressBarProps>`
   left: 0;
   background: ${({ theme, $useDark, primary, $background }) => {
     if ($background) return $background;
-    if ($useDark) return primary ? theme.colors.secondary : `${theme.colors.secondary}80`;
-    return primary ? lightColors.secondary : `${lightColors.secondary}80`;
+    if ($useDark) return primary ? theme.colors.secondary : `${theme.colors.secondary80}`;
+    return primary ? lightColors.secondary : `${lightColors.secondary80}`;
   }};
   height: 100%;
   transition: width 200ms ease;

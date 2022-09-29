@@ -12,7 +12,7 @@ import {
   useTooltip,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
@@ -66,12 +66,8 @@ const StyledCardFooter = styled(CardFooter)`
     background-color: ${({ theme }) => theme.colors.cardBorder};
   }
 `
-
-export const BCakeBoosterCard = () => {
+export const useBCakeTooltipContent = () => {
   const { t } = useTranslation()
-  const theme = useTheme()
-  const { isMobile } = useMatchBreakpoints()
-
   const tooltipContent = (
     <>
       <Box mb="20px">
@@ -87,6 +83,15 @@ export const BCakeBoosterCard = () => {
       </Box>
     </>
   )
+  return tooltipContent
+}
+
+export const BCakeBoosterCard = () => {
+  const { t } = useTranslation()
+  const theme = useTheme()
+  const { isMobile } = useMatchBreakpoints()
+
+  const tooltipContent = useBCakeTooltipContent()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, {
     placement: 'bottom-start',
@@ -118,8 +123,8 @@ export const BCakeBoosterCard = () => {
 
 const CardContent: React.FC = () => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
-  const { proxyCreated, refreshProxyAddress } = useBCakeProxyContractAddress(account)
+  const { account, chainId } = useActiveWeb3React()
+  const { proxyCreated, refreshProxyAddress } = useBCakeProxyContractAddress(account, chainId)
   const { maxBoostCounts, remainingCounts } = useUserBoosterStatus(account)
   const { locked, lockedEnd } = useUserLockedCakeStatus()
   const theme = useTheme()

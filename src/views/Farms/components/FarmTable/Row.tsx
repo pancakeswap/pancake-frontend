@@ -1,6 +1,6 @@
 import { useEffect, useState, createElement, useRef } from 'react'
 import styled from 'styled-components'
-import { Box, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, useMatchBreakpoints, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useFarmUser } from 'state/farms/hooks'
@@ -76,7 +76,9 @@ const FarmMobileCell = styled.td`
 `
 
 const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>> = (props) => {
-  const { details, userDataReady, initialActivity } = props
+  const { details, initialActivity, multiplier } = props
+  const { stakedBalance, proxy, tokenBalance } = props.details.userData
+  const userDataReady = multiplier.multiplier !== undefined
   const hasSetInitialValue = useRef(false)
   const hasStakedAmount = !!useFarmUser(details.pid).stakedBalance.toNumber()
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
@@ -117,10 +119,14 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               case 'type':
                 return (
                   <td key={key}>
-                    <CellInner style={{ width: '140px' }}>
-                      {props[key] === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />}
-                      {props?.details?.boosted ? <BoostedTag scale="sm" ml="16px" /> : null}
-                    </CellInner>
+                    {userDataReady ? (
+                      <CellInner style={{ width: '140px' }}>
+                        {props[key] === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />}
+                        {props?.details?.boosted ? <BoostedTag scale="sm" ml="16px" /> : null}
+                      </CellInner>
+                    ) : (
+                      <Skeleton width={60} height={24} />
+                    )}
                   </td>
                 )
               case 'details':
@@ -138,12 +144,23 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   <td key={key}>
                     <CellInner>
                       <CellLayout label={t('APR')}>
-                        <Apr {...props.apr} hideButton={isSmallerScreen} strikethrough={props?.details?.boosted} />
+                        <Apr
+                          {...props.apr}
+                          hideButton={isSmallerScreen}
+                          strikethrough={props?.details?.boosted}
+                          boosted={props?.details?.boosted}
+                        />
                         {props?.details?.boosted ? (
                           <BoostedApr
                             lpRewardsApr={props?.apr?.lpRewardsApr}
                             apr={props?.apr?.originalValue}
                             pid={props.farm?.pid}
+                            lpTotalSupply={props.details?.lpTotalSupply}
+                            userBalanceInFarm={
+                              stakedBalance.plus(tokenBalance).gt(0)
+                                ? stakedBalance.plus(tokenBalance)
+                                : proxy.stakedBalance.plus(proxy.tokenBalance)
+                            }
                           />
                         ) : null}
                       </CellLayout>
@@ -196,12 +213,23 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           <td width="33%">
             <AprMobileCell>
               <CellLayout label={t('APR')}>
-                <Apr {...props.apr} hideButton strikethrough={props?.details?.boosted} />
+                <Apr
+                  {...props.apr}
+                  hideButton
+                  strikethrough={props?.details?.boosted}
+                  boosted={props?.details?.boosted}
+                />
                 {props?.details?.boosted ? (
                   <BoostedApr
                     lpRewardsApr={props?.apr?.lpRewardsApr}
                     apr={props?.apr?.originalValue}
                     pid={props.farm?.pid}
+                    lpTotalSupply={props.details?.lpTotalSupply}
+                    userBalanceInFarm={
+                      stakedBalance.plus(tokenBalance).gt(0)
+                        ? stakedBalance.plus(tokenBalance)
+                        : proxy.stakedBalance.plus(proxy.tokenBalance)
+                    }
                   />
                 ) : null}
               </CellLayout>

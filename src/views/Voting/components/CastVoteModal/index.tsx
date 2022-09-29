@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import { Box, Modal } from '@pancakeswap/uikit'
+import { Box, Modal, useToast } from '@pancakeswap/uikit'
 import { useWeb3React, useSignMessage } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { SnapshotCommand } from 'state/types'
-import useToast from 'hooks/useToast'
 import useTheme from 'hooks/useTheme'
 import { CastVoteModalProps, ConfirmVoteView } from './types'
 import MainView from './MainView'
@@ -89,7 +88,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
       onBack={handleBack}
       onDismiss={onDismiss}
       hideCloseButton={!isStartView}
-      headerBackground={theme.colors.gradients.cardHeader}
+      headerBackground={theme.colors.gradientCardHeader}
     >
       <Box mb="24px">
         {view === ConfirmVoteView.MAIN && (

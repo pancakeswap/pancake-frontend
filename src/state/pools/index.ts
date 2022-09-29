@@ -169,7 +169,7 @@ export const fetchPoolsPublicDataAsync =
           ? farmsData.find((farm) => farm.token.symbol === 'BUSD' && farm.quoteToken.symbol === 'WBNB')
           : null
       const farmsWithPricesOfDifferentTokenPools = bnbBusdFarm
-        ? await getFarmsPrices([bnbBusdFarm, ...poolsWithDifferentFarmToken], chainId)
+        ? getFarmsPrices([bnbBusdFarm, ...poolsWithDifferentFarmToken], chainId)
         : []
 
       const prices = getTokenPricesFromFarm([...farmsData, ...farmsWithPricesOfDifferentTokenPools])

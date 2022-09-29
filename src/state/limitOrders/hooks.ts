@@ -11,7 +11,7 @@ import { useCurrency } from 'hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
 import { isAddress } from 'utils'
-import tryParseAmount from 'utils/tryParseAmount'
+import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useTranslation } from '@pancakeswap/localization'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { replaceLimitOrdersState, selectCurrency, setRateType, switchCurrencies, typeInput } from './actions'
@@ -498,8 +498,9 @@ export const useDefaultsFromURLSearch = ():
   const { chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const { query } = useRouter()
-  const [result, setResult] =
-    useState<{ inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined>()
+  const [result, setResult] = useState<
+    { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
+  >()
 
   useEffect(() => {
     if (!chainId) return
