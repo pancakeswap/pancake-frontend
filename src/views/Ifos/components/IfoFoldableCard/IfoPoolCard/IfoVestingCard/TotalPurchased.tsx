@@ -1,4 +1,4 @@
-import { Flex, Box, Text } from '@pancakeswap/uikit'
+import { Flex, Box, Text, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { TokenImage } from 'components/TokenImage'
 import BalanceWithLoading from 'components/Balance'
@@ -17,6 +17,19 @@ const TotalPurchased: React.FC<React.PropsWithChildren<TotalPurchasedProps>> = (
   const { t } = useTranslation()
   const { token } = ifo
   const { offeringAmountInToken, amountTokenCommittedInLP, refundingAmountInLP } = walletIfoData[poolId]
+  const spentAmount = amountTokenCommittedInLP.minus(refundingAmountInLP)
+
+  const tooltipContentOfSpent = t(
+    'Based on "overflow" sales method. %refundingAmount% unspent CAKE are available to claim after the sale is completed.',
+    { refundingAmount: getBalanceNumber(refundingAmountInLP, ifo.currency.decimals).toFixed(4) },
+  )
+  const {
+    targetRef: tagTargetRefOfSpent,
+    tooltip: tagTooltipOfSpent,
+    tooltipVisible: tagTooltipVisibleOfSpent,
+  } = useTooltip(tooltipContentOfSpent, {
+    placement: 'bottom',
+  })
 
   return (
     <LightGreyCard mt="35px" mb="24px">
@@ -45,20 +58,26 @@ const TotalPurchased: React.FC<React.PropsWithChildren<TotalPurchasedProps>> = (
             bold
             decimals={4}
             fontSize="20px"
-            value={getBalanceNumber(amountTokenCommittedInLP, token.decimals)}
+            value={getBalanceNumber(amountTokenCommittedInLP, ifo.currency.decimals)}
           />
         </Box>
       </Flex>
       <Flex ml="48px">
         <Box>
-          <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
-            {t('Your %symbol% refunds', { symbol: ifo.currency.symbol })}
-          </Text>
+          <Flex>
+            <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
+              {t('Your %symbol% spent', { symbol: ifo.currency.symbol })}
+            </Text>
+            {tagTooltipVisibleOfSpent && tagTooltipOfSpent}
+            <span ref={tagTargetRefOfSpent}>
+              <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+            </span>
+          </Flex>
           <BalanceWithLoading
             bold
             decimals={4}
             fontSize="20px"
-            value={getBalanceNumber(refundingAmountInLP, token.decimals)}
+            value={getBalanceNumber(spentAmount, ifo.currency.decimals)}
           />
         </Box>
       </Flex>
