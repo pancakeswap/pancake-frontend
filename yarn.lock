@@ -18735,10 +18735,10 @@ svg-tags@^1.0.0:
   resolved "https://registry.yarnpkg.com/svg-tags/-/svg-tags-1.0.0.tgz#58f71cee3bd519b59d4b2a843b6c7de64ac04764"
   integrity sha1-WPcc7jvVGbWdSyqEO2x95krAR2Q=
 
-swiper@^8.4.0:
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/swiper/-/swiper-8.4.0.tgz#b5a73ba9cfe4fd0a8483a177fbe9f40ac18d7ffb"
-  integrity sha512-6ax9prHdb6bsgmAHPRsAqfQwMdKjQEv7ya2D+p+UjR/bx7oyR56lDq5ELaKcZCr9glaPi7+k9BlPDhVLtq9Bag==
+swiper@^8.4.2:
+  version "8.4.2"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-8.4.2.tgz#a52e091a92a52b230bd076fb3ef19ae73baed2a2"
+  integrity sha512-nMD/RHVYxJxrLqjWQX2n0B94ANwpnuUv/3PUDT8Aaf+mSteFvZGFng4ypAYq70zW4svryyV+8TRlbRZ+6cgv9A==
   dependencies:
     dom7 "^4.0.4"
     ssr-window "^4.0.2"
