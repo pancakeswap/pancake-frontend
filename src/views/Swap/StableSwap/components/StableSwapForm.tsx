@@ -1,6 +1,6 @@
 import { SetStateAction, useCallback, useEffect, useState, Dispatch, useContext } from 'react'
 import styled from 'styled-components'
-import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import {
   Text,
   ArrowDownIcon,
@@ -187,7 +187,7 @@ export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }
   const handlePercentInput = useCallback(
     (percent) => {
       if (maxAmountInput) {
-        onUserInput(Field.INPUT, (Number(maxAmountInput.toExact()) * percent * 0.01).toString())
+        onUserInput(Field.INPUT, maxAmountInput.multiply(new Percent(percent, 100)).toExact())
       }
     },
     [maxAmountInput, onUserInput],
