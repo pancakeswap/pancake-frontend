@@ -2,9 +2,14 @@ import { useNetwork } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
-import { bsc, mainnet } from '@pancakeswap/wagmi/chains'
+
 import { APEX_DOMAIN } from 'config'
 import Image from 'next/future/image'
+
+const evmChains = [
+  { id: 56, name: 'BNB Smart Chain' },
+  { id: 1, name: 'Ethereum' },
+]
 
 const NetworkSelect = () => {
   const { t } = useTranslation()
@@ -15,7 +20,7 @@ const NetworkSelect = () => {
         <Text color="textSubtle">{t('Select a Network')}</Text>
       </Box>
       <UserMenuDivider />
-      {[bsc, mainnet].map((chain) => (
+      {evmChains.map((chain) => (
         <UserMenuItem
           key={chain.id}
           style={{ justifyContent: 'flex-start' }}

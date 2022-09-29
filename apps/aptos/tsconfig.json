@@ -8,8 +8,7 @@
     "baseUrl": ".",
     "paths": {
       "@pancakeswap/awgmi/core": ["../../packages/awgmi/core/src/index.ts"],
-      "@pancakeswap/awgmi": ["../../packages/awgmi/src/index.ts"],
-      "@pancakeswap/wagmi/chains": ["../..packages/wagmi/chains"]
+      "@pancakeswap/awgmi": ["../../packages/awgmi/src/index.ts"]
     }
   }
 }
