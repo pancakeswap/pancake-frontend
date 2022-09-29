@@ -22,16 +22,16 @@ import {
   TooltipText,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
-
 import { useTranslation } from '@pancakeswap/localization'
-import useTokenBalance from 'hooks/useTokenBalance'
-import { useProfile } from 'state/profile/hooks'
-import ConnectWalletButton from 'components/ConnectWalletButton'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
-import { useIfoCredit, useIfoCeiling } from 'state/pools/hooks'
-import { getICakeWeekDisplay } from 'views/Pools/helpers'
+
+// import useTokenBalance from 'hooks/useTokenBalance'
+// import { useProfile } from 'state/profile/hooks'
+import { ConnectWalletButton } from 'components/ConnectWalletButton'
+import { useStableCakeAmount } from 'hooks/useStablePrice'
+// import { useIfoCredit, useIfoCeiling } from 'state/pools/hooks'
+// import { getICakeWeekDisplay } from 'views/Pools/helpers'
 
 interface TypeProps {
   ifoCurrencyAddress: string
@@ -64,10 +64,14 @@ const InlineLink = styled(Link)`
 
 const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
   const { t } = useTranslation()
-  const credit = useIfoCredit()
-  const ceiling = useIfoCeiling()
-  const creditDollarValue = useBUSDCakeAmount(getBalanceNumber(credit))
-  const weeksDisplay = getICakeWeekDisplay(ceiling)
+  // const credit = useIfoCredit()
+  // const ceiling = useIfoCeiling()
+  // const creditDollarValue = useBUSDCakeAmount(getBalanceNumber(credit))
+  // const weeksDisplay = getICakeWeekDisplay(ceiling)
+  const credit = BIG_ZERO
+  const ceiling = BIG_ZERO
+  const creditDollarValue = useStableCakeAmount(getBalanceNumber(credit))
+  const weeksDisplay = 0
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
@@ -168,10 +172,13 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
   isLive,
   ifoCurrencyAddress,
 }) => {
-  const { hasActiveProfile } = useProfile()
-  const { account } = useWeb3React()
+  // const { hasActiveProfile } = useProfile()
+  const { hasActiveProfile } = { hasActiveProfile: false }
+  // const { account } = useWeb3React()
+  const { account } = { account: 'TODO: Aptos' }
   const { t } = useTranslation()
-  const { balance } = useTokenBalance(ifoCurrencyAddress)
+  // const { balance } = useTokenBalance(ifoCurrencyAddress)
+  const { balance } = { balance: BIG_ZERO }
   const stepsValidationStatus = [hasActiveProfile, balance.isGreaterThan(0), isCommitted, hasClaimed]
 
   const getStatusProp = (index: number): StepStatus => {
@@ -224,7 +231,7 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
       case 1:
         return <Step1 hasProfile={hasActiveProfile} />
       case 2:
-        return <Step2 hasProfile={hasActiveProfile} isLive={isLive} isCommitted={isCommitted} />
+        return <Step2 hasProfile={hasActiveProfile} isLive={!!isLive} isCommitted={isCommitted} />
       case 3:
         return (
           <CardBody>

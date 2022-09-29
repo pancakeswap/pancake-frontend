@@ -99,3 +99,11 @@ export default function useStablePrice(currency?: Currency): Price<Currency, Cur
     stableNativePairState,
   ])
 }
+
+export const useStableCakeAmount = (amount: number): number | undefined => {
+  // const cakeBusdPrice = useCakeBusdPrice()
+  // if (cakeBusdPrice) {
+  //   return multiplyPriceByAmount(cakeBusdPrice, amount)
+  // }
+  return undefined
+}

@@ -6,9 +6,10 @@ import {
   EarnIcon,
   Menu as UIMenu,
   MenuItemsType,
+  MoreIcon,
+  NextLinkFromReactRouter,
   SwapFillIcon,
   SwapIcon,
-  NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import orderBy from 'lodash/orderBy'
@@ -59,6 +60,18 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       //   label: t('Pools'),
       //   href: '/pools',
       // },
+    ],
+  },
+  {
+    label: '',
+    href: '/ifo',
+    icon: MoreIcon,
+    hideSubNav: true,
+    items: [
+      {
+        label: t('IFO'),
+        href: '/ifo',
+      },
     ],
   },
 ]
