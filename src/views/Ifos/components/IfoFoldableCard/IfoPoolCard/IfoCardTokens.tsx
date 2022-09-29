@@ -277,7 +277,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
                   <Label>{t('Your %symbol% spent', { symbol: currency.symbol })}</Label>
                   {tagTooltipVisibleOfSpent && tagTooltipOfSpent}
                   <span ref={tagTargetRefOfSpent}>
-                    <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+                    <HelpIcon ml="4px" width="15px" height="15px" color="textSubtle" />
                   </span>
                 </Flex>
                 <BalanceWithLoading
