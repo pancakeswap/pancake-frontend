@@ -1,9 +1,13 @@
 import transpileModules from 'next-transpile-modules'
+import bundleAnalyzer from '@next/bundle-analyzer'
 import { withAxiom } from 'next-axiom'
 
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
 
 const withVanillaExtract = createVanillaExtractPlugin()
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+})
 
 const withTH = transpileModules([
   '@pancakeswap/ui',
@@ -34,4 +38,4 @@ const nextConfig = {
   },
 }
 
-export default withVanillaExtract(withTH(withAxiom(nextConfig)))
+export default withBundleAnalyzer(withVanillaExtract(withTH(withAxiom(nextConfig))))

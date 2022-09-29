@@ -476,7 +476,7 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
   const { data: farmPairs = [] } = useSWRImmutable(chainId && ['track-farms-pairs', chainId], async () => {
     const farms = await getFarmConfig(chainId)
 
-    const fPairs: [Token, Token][] = farms
+    const fPairs: [ERC20Token, ERC20Token][] = farms
       .filter((farm) => farm.pid !== 0)
       .map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)])
 
