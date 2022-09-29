@@ -111,6 +111,12 @@ const CandleChart = ({ data, setValue, setLabel, ...rest }: LineChartProps) => {
 
       series.setData(data)
 
+      chartCreated.applyOptions({
+        layout: {
+          textColor: theme.isDark ? '#B8ADD2' : '#7A6EAA',
+        },
+      })
+
       // update the title when hovering on the chart
       chartCreated.subscribeCrosshairMove((param) => {
         if (
