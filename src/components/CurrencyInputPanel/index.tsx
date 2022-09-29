@@ -244,7 +244,7 @@ export default function CurrencyInputPanel({
                   onPercentInput &&
                   [25, 50, 75].map((percent) => (
                     <Button
-                      key={percent}
+                      key={`btn_quickCurrency${percent}`}
                       onClick={() => {
                         onPercentInput(percent)
                       }}
