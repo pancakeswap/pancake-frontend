@@ -34,12 +34,7 @@ const MobileModal: React.FC<React.PropsWithChildren<MobileModalProps>> = ({
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, priceAsFloat)
 
   return (
-    <Modal
-      title={t('Transaction Details')}
-      maxWidth="320px"
-      onDismiss={onDismiss}
-      headerBackground={theme.colors.gradientCardHeader}
-    >
+    <Modal title={t('Transaction Details')} onDismiss={onDismiss} headerBackground={theme.colors.gradientCardHeader}>
       <Flex flexDirection="column">
         <Flex alignItems="center" mb="16px" justifyContent="space-between">
           <Box width={68} mr="16px">
