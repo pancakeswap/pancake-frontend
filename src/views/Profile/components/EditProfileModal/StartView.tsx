@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { Button, Flex, Text, InjectedModalProps } from '@pancakeswap/uikit'
 import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
+import { Button, Flex, Text, InjectedModalProps, Message, MessageText } from '@pancakeswap/uikit'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { useCake } from 'hooks/useContract'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
@@ -41,12 +41,7 @@ const AvatarWrapper = styled.div`
   }
 `
 
-const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({
-  goToApprove,
-  goToChange,
-  goToRemove,
-  onDismiss,
-}) => {
+const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToApprove, goToChange, goToRemove }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { reader: cakeContract } = useCake()
@@ -98,6 +93,13 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({
       </Flex>
       {profile.isActive ? (
         <>
+          <Message variant="warning" mb="16px">
+            <MessageText>
+              {t(
+                "Before editing your profile, please make sure you've claimed all the unspent CAKE from previous IFOs!",
+              )}
+            </MessageText>
+          </Message>
           <Button
             width="100%"
             mb="8px"
@@ -120,9 +122,6 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({
           {t('Reactivate Profile')}
         </Button>
       )}
-      <Button variant="text" width="100%" onClick={onDismiss}>
-        {t('Close Window')}
-      </Button>
     </Flex>
   )
 }

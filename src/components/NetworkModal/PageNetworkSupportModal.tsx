@@ -1,4 +1,4 @@
-import { Button, Modal, Text, Grid, Box } from '@pancakeswap/uikit'
+import { Button, Modal, Text, Grid, Box, Message, MessageText } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
 import Image from 'next/future/image'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
@@ -52,7 +52,7 @@ export function PageNetworkSupportModal() {
             'Our Pools, Limit, Trading Competition, Prediction, Lottery and NFTs features are currently available only on BNB Chain! Come over and join the community in the fun!',
           )}
         </Text>
-        {canSwitch && (
+        {canSwitch ? (
           <Button
             variant={foundChain && lastValidPath ? 'secondary' : 'primary'}
             isLoading={isLoading}
@@ -60,6 +60,10 @@ export function PageNetworkSupportModal() {
           >
             {t('Switch to %chain%', { chain: 'BNB Smart Chain' })}
           </Button>
+        ) : (
+          <Message variant="danger">
+            <MessageText>{t('Unable to switch network. Please try it on your wallet')}</MessageText>
+          </Message>
         )}
         {isConnected && (
           <Button

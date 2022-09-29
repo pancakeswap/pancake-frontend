@@ -12,12 +12,12 @@ const getHashFromRouter = (router: NextRouter) => {
 }
 
 export function useNetworkConnectorUpdater() {
-  const { chainId, isConnecting } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
   const [loading] = useSwitchNetworkLoading()
   const router = useRouter()
 
   useEffect(() => {
-    if (loading || !router.isReady || isConnecting) return
+    if (loading || !router.isReady) return
     const parsedQueryChainId = Number(router.query.chainId)
     if (!parsedQueryChainId && chainId === ChainId.BSC) return
     if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
@@ -33,7 +33,7 @@ export function useNetworkConnectorUpdater() {
         undefined,
       )
     }
-  }, [chainId, isConnecting, loading, router])
+  }, [chainId, loading, router])
 }
 
 /**

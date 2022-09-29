@@ -620,7 +620,7 @@ export default function AddLiquidity({ currencyA, currencyB }) {
                 <CurrencyInputPanel
                   disableCurrencySelect={canZap}
                   showBUSD
-                  onInputBlur={zapIn.onInputBlurOnce}
+                  onInputBlur={canZap ? zapIn.onInputBlurOnce : undefined}
                   error={zapIn.priceSeverity > 3 && zapIn.swapTokenField === Field.CURRENCY_A}
                   disabled={canZap && !zapTokenCheckedA}
                   beforeButton={
@@ -652,7 +652,7 @@ export default function AddLiquidity({ currencyA, currencyB }) {
                 </ColumnCenter>
                 <CurrencyInputPanel
                   showBUSD
-                  onInputBlur={zapIn.onInputBlurOnce}
+                  onInputBlur={canZap ? zapIn.onInputBlurOnce : undefined}
                   disabled={canZap && !zapTokenCheckedB}
                   error={zapIn.priceSeverity > 3 && zapIn.swapTokenField === Field.CURRENCY_B}
                   beforeButton={

@@ -69,6 +69,7 @@ const config: (
           href: `https://perp.pancakeswap.finance/${perpLangMap(languageCode)}/futures/BTCUSDT?theme=${perpTheme(
             isDark,
           )}`,
+          supportChainIds: SUPPORT_ONLY_BSC,
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
         {
@@ -93,7 +94,6 @@ const config: (
         {
           label: t('Pools'),
           href: '/pools',
-          supportChainIds: SUPPORT_ONLY_BSC,
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },

@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
 import { useModal, useToast } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -16,8 +17,8 @@ interface GlobalCheckClaimStatusProps {
 const enable = true
 
 const GlobalCheckClaimStatus: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusProps>> = (props) => {
-  const { account } = useWeb3React()
-  if (!enable) {
+  const { account, chainId } = useWeb3React()
+  if (!enable || chainId !== ChainId.BSC) {
     return null
   }
   return <GlobalCheckClaim key={account} {...props} />

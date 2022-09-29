@@ -1,15 +1,17 @@
-import { Currency } from '@pancakeswap/sdk'
-import { Box, Text, AddIcon, CardBody, CardFooter, TooltipText, useTooltip, FlexGap } from '@pancakeswap/uikit'
-import { CurrencySelect } from 'components/CurrencySelect'
-import { CommitButton } from 'components/CommitButton'
-import { useLPApr } from 'state/swap/hooks'
-import { RowBetween } from 'components/Layout/Row'
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency } from '@pancakeswap/sdk'
+import { AddIcon, Box, CardBody, CardFooter, Text, TooltipText, useTooltip, FlexGap } from '@pancakeswap/uikit'
+import { CommitButton } from 'components/CommitButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
+import { CurrencySelect } from 'components/CurrencySelect'
+import { RowBetween } from 'components/Layout/Row'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { usePair } from 'hooks/usePairs'
+import { useLPApr } from 'state/swap/hooks'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { AppHeader } from '../../components/App'
-import { useCurrencySelectRoute } from './useCurrencySelectRoute'
 import { CommonBasesType } from '../../components/SearchModal/types'
+import { useCurrencySelectRoute } from './useCurrencySelectRoute'
 
 export function ChoosePair({
   currencyA,
@@ -22,6 +24,7 @@ export function ChoosePair({
   error?: string
   onNext?: () => void
 }) {
+  const { account } = useActiveWeb3React()
   const { t } = useTranslation()
   const isValid = !error
   const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
@@ -80,15 +83,19 @@ export function ChoosePair({
         </Box>
       </CardBody>
       <CardFooter>
-        <CommitButton
-          data-test="choose-pair-next"
-          width="100%"
-          variant={!isValid ? 'danger' : 'primary'}
-          onClick={onNext}
-          disabled={!isValid}
-        >
-          {error ?? t('Add Liquidity')}
-        </CommitButton>
+        {!account ? (
+          <ConnectWalletButton width="100%" />
+        ) : (
+          <CommitButton
+            data-test="choose-pair-next"
+            width="100%"
+            variant={!isValid ? 'danger' : 'primary'}
+            onClick={onNext}
+            disabled={!isValid}
+          >
+            {error ?? t('Add Liquidity')}
+          </CommitButton>
+        )}
       </CardFooter>
     </>
   )
