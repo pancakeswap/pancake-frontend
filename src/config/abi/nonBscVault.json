@@ -93,16 +93,6 @@
   {
     "anonymous": false,
     "inputs": [
-      { "indexed": true, "internalType": "address", "name": "sender", "type": "address" },
-      { "indexed": false, "internalType": "address", "name": "senderContract", "type": "address" },
-      { "indexed": false, "internalType": "address", "name": "receiverContract", "type": "address" }
-    ],
-    "name": "FarmingContractUpdated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
       { "indexed": true, "internalType": "address", "name": "newOperator", "type": "address" },
       { "indexed": true, "internalType": "address", "name": "oldOperator", "type": "address" }
     ],
@@ -172,7 +162,7 @@
     ],
     "name": "ackEmergencyWithdraw",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -184,7 +174,7 @@
     ],
     "name": "ackWithdraw",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

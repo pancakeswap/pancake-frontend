@@ -49,8 +49,10 @@ const StakedLP: React.FunctionComponent<React.PropsWithChildren<StackedLPProps>>
 
   return (
     <Flex flexDirection="column" alignItems="flex-start">
-      <Heading color={stakedBalance.eq(0) ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
-      {pendingFarm.length > 0 && <RefreshIcon style={{ cursor: 'pointer' }} spin onClick={onClickLoadingIcon} />}
+      <Flex>
+        <Heading color={stakedBalance.eq(0) ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
+        {pendingFarm.length > 0 && <RefreshIcon style={{ cursor: 'pointer' }} spin onClick={onClickLoadingIcon} />}
+      </Flex>
       {stakedBalance.gt(0) && lpTokenPrice.gt(0) && (
         <>
           <Balance

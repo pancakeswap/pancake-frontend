@@ -147,7 +147,7 @@
     "inputs": [{ "internalType": "uint256", "name": "_gas", "type": "uint256" }],
     "name": "claimFee",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

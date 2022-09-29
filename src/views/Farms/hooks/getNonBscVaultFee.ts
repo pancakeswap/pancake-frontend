@@ -56,8 +56,7 @@ export const getNonBscVaultContractFee = async ({
       .times(estimateGaslimit.toString())
       .times(exchangeRate)
       .times(COMPENSATION_PRECISION)
-      .div(ORACLE_PRECISION * COMPENSATION_PRECISION)
-    const totalFee = new BigNumber(fee1).plus(fee2)
+    const totalFee = new BigNumber(fee1).plus(fee2).div(ORACLE_PRECISION * COMPENSATION_PRECISION)
 
     if (!isFirstTime) {
       const depositFee = new BigNumber(BNB_CHANGE).times(exchangeRate).div(ORACLE_PRECISION)
@@ -67,7 +66,8 @@ export const getNonBscVaultContractFee = async ({
     if (messageType >= MessageTypes.Withdraw) {
       const estimateEvmGaslimit = await crossFarmingAddress.estimateGaslimit(Chains.EVM, userAddress, messageType)
       const fee = fee1.times(exchangeRate).div(ORACLE_PRECISION)
-      return totalFee.plus(gasPrice).times(estimateEvmGaslimit.toString()).plus(fee).toFixed(0)
+      const total = new BigNumber(gasPrice).times(estimateEvmGaslimit.toString()).plus(fee)
+      return totalFee.plus(total).toFixed(0)
     }
 
     return totalFee.toFixed(0)
