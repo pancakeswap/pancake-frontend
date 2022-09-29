@@ -2277,7 +2277,7 @@ export const bscTokens = {
     '0x0782b6d8c4551B9760e74c0545a9bCD90bdc41E5',
     18,
     'HAY',
-    'Hay Stablecoin',
+    'Hay Destablecoin',
     'https://helio.money/',
   ),
   spin: new Token(
