@@ -14,6 +14,7 @@ import {
   UserMenuVariant,
   WarningIcon,
 } from '@pancakeswap/uikit'
+import { LOW_APT } from 'config'
 import { useEffect, useState } from 'react'
 import { usePendingTransactions } from 'state/transactions/hooks'
 import { useAuth } from '../../hooks/useAuth'
@@ -34,7 +35,7 @@ const UserMenu = () => {
   const { data } = useBalance({ address: account?.address })
   const [onPresentWalletModal] = useModal(<WalletModal initialView={WalletView.WALLET_INFO} />)
 
-  const hasLowNativeBalance = data?.formatted && Number(data.formatted) >= 0.1
+  const hasLowNativeBalance = data?.formatted && Number(data.formatted) <= LOW_APT
 
   useEffect(() => {
     if (hasPendingTransactions) {

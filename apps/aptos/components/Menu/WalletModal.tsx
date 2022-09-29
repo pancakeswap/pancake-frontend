@@ -16,6 +16,7 @@ import { useAccount, useBalance } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 
+import { LOW_APT } from 'config'
 import WalletInfo from './WalletInfo'
 import WalletTransactions from './WalletTransactions'
 
@@ -49,7 +50,7 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
   const { t } = useTranslation()
   const { account } = useAccount()
   const { data } = useBalance({ address: account?.address })
-  const hasLowNativeBalance = !!data?.formatted && Number(data.formatted) <= 0.1
+  const hasLowNativeBalance = !!data?.formatted && Number(data.formatted) <= LOW_APT
 
   const handleClick = (newIndex: number) => {
     setView(newIndex)
