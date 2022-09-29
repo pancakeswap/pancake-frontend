@@ -675,6 +675,7 @@ exports[`renders correctly 1`] = `
   padding-left: 16px;
   padding-right: 16px;
   width: 100%;
+  pointer-events: initial;
 }
 
 .c13:is(button) {
@@ -1014,6 +1015,7 @@ exports[`renders correctly 1`] = `
   font-size: 16px;
   font-weight: 400;
   opacity: 1;
+  pointer-events: initial;
   padding: 0 16px;
   height: 48px;
 }
@@ -1037,6 +1039,7 @@ exports[`renders correctly 1`] = `
   font-size: 16px;
   font-weight: 400;
   opacity: 1;
+  pointer-events: initial;
   padding: 0 16px;
   height: 48px;
 }
@@ -1069,6 +1072,7 @@ exports[`renders correctly 1`] = `
   font-size: 16px;
   font-weight: 400;
   opacity: 1;
+  pointer-events: initial;
   padding: 0 16px;
   height: 48px;
 }
@@ -1101,6 +1105,7 @@ exports[`renders correctly 1`] = `
   font-size: 16px;
   font-weight: 400;
   opacity: 1;
+  pointer-events: initial;
   padding: 4px 4px 0px 4px;
   height: 42px;
 }
@@ -1877,8 +1882,8 @@ exports[`renders correctly 1`] = `
                     >
                       Docs & Guides
                       <svg
-                        class="c5"
-                        color="text"
+                        class="c18"
+                        color="textSubtle"
                         viewBox="0 0 24 24"
                         width="20px"
                         xmlns="http://www.w3.org/2000/svg"

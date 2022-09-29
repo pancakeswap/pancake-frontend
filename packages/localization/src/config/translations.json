@@ -815,7 +815,7 @@
   "If you purchase a token from this list, you may not be able to sell it back.": "If you purchase a token from this list, you may not be able to sell it back.",
   "Import": "Import",
   "via": "via",
-  "Anyone can create a BEP20 token on BSC with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.": "Anyone can create a BEP20 token on BSC with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.",
+  "Anyone can create a %standard% token on %network% with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.": "Anyone can create a %standard% token on %network% with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.",
   "If you purchase an arbitrary token, you may be unable to sell it back.": "If you purchase an arbitrary token, you may be unable to sell it back.",
   "Unknown Source": "Unknown Source",
   "Lists": "Lists",
@@ -1934,6 +1934,7 @@
   "Up to %boostMultiplier%x": "Up to %boostMultiplier%x",
   "Available Boosted": "Available Boosted",
   "Stake CAKE, Earn CAKE, Win CAKE": "Stake CAKE, Earn CAKE, Win CAKE",
+  "Unable to switch network. Please try it on your wallet": "Unable to switch network. Please try it on your wallet",
   "Failed": "Failed",
   "Transaction failed with error: %reason%": "Transaction failed with error: %reason%",
   "Transaction failed. For detailed error message:": "Transaction failed. For detailed error message:",
@@ -1975,5 +1976,6 @@
   "Stable LP": "Stable LP",
   "You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!": "You won points and achievements for taking part in our two years journey. Now let’s celebrate our 2nd Birthday!",
   "Trade stablecoins in StableSwap with lower slippage and trading fees!": "Trade stablecoins in StableSwap with lower slippage and trading fees!",
-  "StableSwap provides better rates and lower fees for pairs with highly correlated prices": "StableSwap provides better rates and lower fees for pairs with highly correlated prices"
+  "StableSwap provides better rates and lower fees for pairs with highly correlated prices": "StableSwap provides better rates and lower fees for pairs with highly correlated prices",
+  "Before editing your profile, please make sure you've claimed all the unspent CAKE from previous IFOs!": "Before editing your profile, please make sure you've claimed all the unspent CAKE from previous IFOs!"
 }

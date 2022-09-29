@@ -6,7 +6,7 @@ export function useWeb3React() {
 
   return {
     chainId: chain?.id,
-    account: address, // TODO: migrate using `isConnected` instead of account to check wallet auth
+    account: isConnected ? address : null, // TODO: migrate using `isConnected` instead of account to check wallet auth
     isConnected,
     isConnecting,
     chain,

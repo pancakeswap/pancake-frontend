@@ -133,14 +133,6 @@
     {
       "name": "BUSD Token",
       "symbol": "BUSD",
-      "address": "0x4Fabb145d64652a948d72533023f6E7A623C7C53",
-      "chainId": 1,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56.png"
-    },
-    {
-      "name": "BUSD Token",
-      "symbol": "BUSD",
       "address": "0x4e2442A6f7AeCE64Ca33d31756B5390860BF973E",
       "chainId": 4,
       "decimals": 18,
@@ -205,18 +197,18 @@
     {
       "name": "Wrapped BNB",
       "symbol": "WBNB",
-      "address": "0x418D75f65a02b3D53B2418FB8E1fe493759c7605",
-      "chainId": 1,
-      "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.png"
-    },
-    {
-      "name": "Wrapped BNB",
-      "symbol": "WBNB",
       "address": "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
       "chainId": 97,
       "decimals": 18,
       "logoURI": "https://pancakeswap.finance/images/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.png"
+    },
+    {
+      "name": "Wrapped BTC",
+      "symbol": "WBTC",
+      "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+      "chainId": 1,
+      "decimals": 8,
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c.png"
     }
   ]
 }
