@@ -36,15 +36,14 @@ const FarmDetail: React.FC<React.PropsWithChildren<HarvestDetailProps>> = ({ ste
               <RefreshIcon ml="5px" color="textSubtle" spin />
             </Flex>
           ) : (
-            <Box>
-              {isFail ? (
-                <WarningIcon color="failure" />
-              ) : (
+            <Flex>
+              {isFail && <WarningIcon mr="4px" color="failure" />}
+              {step.tx && (
                 <LinkExternal href={getBlockExploreLink(step.tx, 'transaction', step.chainId)}>
                   {getBlockExploreName(step.chainId)}
                 </LinkExternal>
               )}
-            </Box>
+            </Flex>
           )}
         </Box>
       )}

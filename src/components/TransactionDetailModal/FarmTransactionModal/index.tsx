@@ -22,7 +22,7 @@ const FarmTransactionModal: React.FC<React.PropsWithChildren<FarmTransactionModa
   const modalTitle = useMemo(() => {
     let title = ''
 
-    if (pickedData?.nonBscFarm.status) {
+    if (pickedData?.nonBscFarm) {
       const { type, status } = pickedData?.nonBscFarm
       const isPending = status === FarmTransactionStatus.PENDING
       if (type === NonBscFarmStepType.STAKE) {

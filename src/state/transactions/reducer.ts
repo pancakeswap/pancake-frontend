@@ -101,6 +101,10 @@ export default createReducer(initialState, (builder) =>
         confirmOrderCancellation(chainId, receipt.from, hash, receipt.status !== 0)
       } else if (tx.type === 'non-bsc-farm') {
         if (tx.nonBscFarm.steps[0].status === FarmTransactionStatus.PENDING) {
+          if (receipt.status === FarmTransactionStatus.FAIL) {
+            tx.nonBscFarm = { ...tx.nonBscFarm, status: receipt.status }
+          }
+
           tx.nonBscFarm.steps[0] = {
             ...tx.nonBscFarm.steps[0],
             status: receipt.status,
