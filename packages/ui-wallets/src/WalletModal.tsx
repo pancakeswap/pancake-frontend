@@ -359,9 +359,9 @@ lastUsedWalletNameAtom.onMount = (set) => {
 }
 
 function sortWallets<T>(wallets: WalletConfigV2<T>[], lastUsedWalletName: string | null) {
-  const sorted = wallets.sort((a, b) => {
+  const sorted = [...wallets].sort((a, b) => {
     if (a.installed === b.installed) return 0
-    return b.installed === true ? -1 : 1
+    return a.installed === true ? -1 : 1
   })
 
   if (!lastUsedWalletName) {
@@ -455,6 +455,7 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
   const { wallets: _wallets, login, ...rest } = props
 
   const [lastUsedWalletName] = useAtom(lastUsedWalletNameAtom)
+  console.log(_wallets, '_wallets')
 
   const wallets = useMemo(() => sortWallets(_wallets, lastUsedWalletName), [_wallets, lastUsedWalletName])
   const [, setSelected] = useSelectedWallet<T>()
