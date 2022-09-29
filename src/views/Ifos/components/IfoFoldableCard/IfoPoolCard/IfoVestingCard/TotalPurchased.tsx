@@ -20,8 +20,11 @@ const TotalPurchased: React.FC<React.PropsWithChildren<TotalPurchasedProps>> = (
   const spentAmount = amountTokenCommittedInLP.minus(refundingAmountInLP)
 
   const tooltipContentOfSpent = t(
-    'Based on "overflow" sales method. %refundingAmount% unspent CAKE are available to claim after the sale is completed.',
-    { refundingAmount: getBalanceNumber(refundingAmountInLP, ifo.currency.decimals).toFixed(4) },
+    'Based on "overflow" sales method. %refundingAmount% unspent %spentToken% are available to claim after the sale is completed.',
+    {
+      refundingAmount: getBalanceNumber(refundingAmountInLP, ifo.currency.decimals).toFixed(4),
+      spentToken: ifo.currency.symbol,
+    },
   )
   const {
     targetRef: tagTargetRefOfSpent,
