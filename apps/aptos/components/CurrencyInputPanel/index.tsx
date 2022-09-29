@@ -3,7 +3,7 @@ import { useAccount, useAccountBalance } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
-import { Button, ChevronDownIcon, Swap as SwapUI, Text, useModal } from '@pancakeswap/uikit'
+import { Button, ChevronDownIcon, SkeletonV2, Swap as SwapUI, Text, useModal } from '@pancakeswap/uikit'
 import { CurrencyLogo } from 'components/Logo'
 import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
 import styled from 'styled-components'
@@ -77,7 +77,9 @@ export const CurrencyInputPanel = ({
         <>
           <AtomBox display="flex">
             <Button variant="text" scale="sm" py={0} px="0.5rem" onClick={onPresentCurrencyModal}>
-              <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+              <SkeletonV2 isDataReady={isMounted} width="24px" height="24px" variant="circle" mr="8px">
+                <CurrencyLogo currency={currency} size="24px" />
+              </SkeletonV2>
               <Text>{currency?.symbol}</Text>
               {!disableCurrencySelect && <ChevronDownIcon />}
             </Button>

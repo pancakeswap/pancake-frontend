@@ -11,6 +11,7 @@ import {
   SwapFillIcon,
   SwapIcon,
 } from '@pancakeswap/uikit'
+import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import orderBy from 'lodash/orderBy'
 import { useTheme } from 'next-themes'
@@ -131,6 +132,7 @@ export const Menu = ({ children }: { children: ReactNode }) => {
       rightSide={
         <>
           <SettingsButton mr="8px" />
+          <NetworkSwitcher />
           <UserMenu />
         </>
       }

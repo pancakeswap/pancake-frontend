@@ -67,7 +67,7 @@ export class Pair {
   }
 
   static getLiquidityToken(tokenA: Currency, tokenB: Currency) {
-    return new Coin(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 18, 'Cake-LP', 'Pancake LPs')
+    return new Coin(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 8, 'Cake-LP', 'Pancake LPs')
   }
 
   public constructor(currencyAmountA: CurrencyAmount<Currency>, tokenAmountB: CurrencyAmount<Currency>) {

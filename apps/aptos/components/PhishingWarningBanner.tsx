@@ -11,10 +11,8 @@ const Container = styled(Flex)`
   height: 100%;
   padding: 12px;
   align-items: center;
-  background: linear-gradient(180deg, #249f84 -100.75%, #04352c 202.24%);
   ${({ theme }) => theme.mediaQueries.md} {
     padding: 0px;
-    background: linear-gradient(180deg, #249f84 -100.75%, #04352c 202.24%);
   }
 `
 
@@ -70,6 +68,14 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
 
   return (
     <Container className="warning-banner">
+      <style jsx global>{`
+        .warning-banner {
+          background: linear-gradient(180deg, #1eb8cb 0%, #00bfa5 100%);
+        }
+        [data-theme='dark'] .warning-banner {
+          background: linear-gradient(180deg, #12838e 0%, #005a5a 100%);
+        }
+      `}</style>
       <AtomBox display={{ xs: 'flex', lg: 'none' }} alignItems="center" justifyContent="center" width="full">
         <Box>{warningTextComponent}</Box>
         <IconButton onClick={hideBanner} variant="text">
