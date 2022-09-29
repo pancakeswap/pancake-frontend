@@ -240,43 +240,21 @@ export default function CurrencyInputPanel({
             )}
             {account && currency && !disabled && showMaxButton && label !== 'To' && (
               <Flex alignItems="right" justifyContent="right">
-                {showQuickInputButton && onPercentInput && (
-                  <>
+                {showQuickInputButton &&
+                  onPercentInput &&
+                  [25, 50, 75].map((percent) => (
                     <Button
                       onClick={() => {
-                        onPercentInput(25)
+                        onPercentInput(percent)
                       }}
                       scale="xs"
                       mr="5px"
                       variant="secondary"
                       style={{ textTransform: 'uppercase' }}
                     >
-                      25%
+                      {percent}%
                     </Button>
-                    <Button
-                      onClick={() => {
-                        onPercentInput(50)
-                      }}
-                      scale="xs"
-                      mr="5px"
-                      variant="secondary"
-                      style={{ textTransform: 'uppercase' }}
-                    >
-                      50%
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        onPercentInput(75)
-                      }}
-                      scale="xs"
-                      mr="5px"
-                      variant="secondary"
-                      style={{ textTransform: 'uppercase' }}
-                    >
-                      75%
-                    </Button>
-                  </>
-                )}
+                  ))}
                 <Button onClick={onMax} scale="xs" variant="secondary" style={{ textTransform: 'uppercase' }}>
                   {t('Max')}
                 </Button>
