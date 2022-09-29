@@ -35,7 +35,6 @@ export function useToken(coinId?: string) {
   })
 }
 
-// TODO: get token info useAllTokens first
 export function useCoins(addresses: string[]) {
   const { networkName } = useActiveNetwork()
   const chainId = useActiveChainId()

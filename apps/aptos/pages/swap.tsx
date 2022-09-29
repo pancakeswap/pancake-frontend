@@ -314,6 +314,8 @@ const SwapPage = () => {
 
   const isValid = !inputError
 
+  const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
+
   return (
     <>
       <Card style={{ width: '328px' }}>
@@ -335,7 +337,7 @@ const SwapPage = () => {
             otherCurrency={outputCurrency}
             value={formattedAmounts[Field.INPUT]}
             onUserInput={(value) => dispatch(typeInput({ field: Field.INPUT, typedValue: value }))}
-            showMaxButton
+            showMaxButton={!atMaxAmountInput}
             onMax={handleMaxInput}
             label={independentField === Field.OUTPUT && trade ? t('From (estimated)') : t('From')}
           />
