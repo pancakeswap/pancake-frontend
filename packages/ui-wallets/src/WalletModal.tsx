@@ -1,4 +1,4 @@
-import { atom, useAtom } from 'jotai'
+import { usePreloadImages } from '@pancakeswap/hooks'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui/components/AtomBox'
 import {
@@ -17,7 +17,8 @@ import {
   WarningIcon,
 } from '@pancakeswap/uikit'
 import clsx from 'clsx'
-import { lazy, PropsWithChildren, Suspense, useState, FC, useMemo } from 'react'
+import { atom, useAtom } from 'jotai'
+import { FC, lazy, PropsWithChildren, Suspense, useMemo, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import {
   desktopWalletSelectionClass,
@@ -455,12 +456,18 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
   const { wallets: _wallets, login, ...rest } = props
 
   const [lastUsedWalletName] = useAtom(lastUsedWalletNameAtom)
-  console.log(_wallets, '_wallets')
 
   const wallets = useMemo(() => sortWallets(_wallets, lastUsedWalletName), [_wallets, lastUsedWalletName])
   const [, setSelected] = useSelectedWallet<T>()
   const [, setError] = useAtom(errorAtom)
   const { t } = useTranslation()
+
+  const imageSources = useMemo(
+    () => wallets.map((w) => w.icon).filter((icon) => typeof icon === 'string') as string[],
+    [wallets],
+  )
+
+  usePreloadImages(imageSources)
 
   const connectWallet = (wallet: WalletConfigV2<T>) => {
     setSelected(wallet)
