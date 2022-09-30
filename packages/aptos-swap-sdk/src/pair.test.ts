@@ -44,13 +44,13 @@ describe('Pair', () => {
     ).toMatchInlineSnapshot(`
       Coin {
         "address": "0x72131a2ed362f7874bb7eceb0dbce48017f58224b18a3e9c262522b859ae1788::storage::LPToken<0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC, 0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetSOL>",
-        "chainId": 32,
+        "chainId": 33,
         "decimals": 8,
         "isNative": false,
         "isToken": true,
         "name": "Pancake LPs",
         "projectLink": undefined,
-        "symbol": "Cake-LP",
+        "symbol": "Cake-BTC-SOL-LP",
       }
     `)
   })

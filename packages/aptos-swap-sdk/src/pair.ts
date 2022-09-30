@@ -67,7 +67,14 @@ export class Pair {
   }
 
   static getLiquidityToken(tokenA: Currency, tokenB: Currency) {
-    return new Coin(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 8, 'Cake-LP', 'Pancake LPs')
+    const [token0, token1] = this.sortToken(tokenA, tokenB)
+    return new Coin(
+      tokenA.chainId,
+      Pair.getAddress(tokenA, tokenB),
+      8,
+      `Cake-${token0.symbol}-${token1.symbol}-LP`,
+      'Pancake LPs'
+    )
   }
 
   public constructor(currencyAmountA: CurrencyAmount<Currency>, tokenAmountB: CurrencyAmount<Currency>) {
