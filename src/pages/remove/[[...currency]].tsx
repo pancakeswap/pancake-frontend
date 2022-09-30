@@ -32,8 +32,6 @@ const RemoveLiquidityPage = () => {
   ) : (
     <RemoveLiquidity {...props} />
   )
-
-  return <RemoveLiquidity {...props} />
 }
 
 RemoveLiquidityPage.chains = CHAIN_IDS
