@@ -22,7 +22,7 @@ export type Chain = {
 }
 
 export const devnet: Chain = {
-  id: 32,
+  id: 33,
   name: 'Devnet',
   network: 'devnet',
   restUrls: {

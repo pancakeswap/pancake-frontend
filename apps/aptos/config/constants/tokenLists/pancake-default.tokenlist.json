@@ -13,7 +13,7 @@
     {
       "name": "BNB",
       "symbol": "BNB",
-      "chainId": 32,
+      "chainId": 33,
       "decimals": 8,
       "address": "0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBNB",
       "logoURI": "https://pancakeswap.finance/images/tokens/0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56.png"
@@ -21,7 +21,7 @@
     {
       "name": "Bitcoin",
       "symbol": "BTC",
-      "chainId": 32,
+      "chainId": 33,
       "decimals": 8,
       "address": "0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC",
       "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
@@ -29,7 +29,7 @@
     {
       "name": "Dai",
       "symbol": "DAI",
-      "chainId": 32,
+      "chainId": 33,
       "decimals": 8,
       "address": "0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetDAI",
       "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
@@ -37,7 +37,7 @@
     {
       "name": "Ethereum",
       "symbol": "ETH",
-      "chainId": 32,
+      "chainId": 33,
       "decimals": 8,
       "address": "0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetETH",
       "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
@@ -45,7 +45,7 @@
     {
       "name": "Solana",
       "symbol": "SOL",
-      "chainId": 32,
+      "chainId": 33,
       "decimals": 8,
       "address": "0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetSOL",
       "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
@@ -53,7 +53,7 @@
     {
       "name": "USD coin",
       "symbol": "USDC",
-      "chainId": 32,
+      "chainId": 33,
       "decimals": 8,
       "address": "0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetUSDC",
       "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
@@ -61,7 +61,7 @@
     {
       "name": "Tether",
       "symbol": "USDT",
-      "chainId": 32,
+      "chainId": 33,
       "decimals": 8,
       "address": "0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetUSDT",
       "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
