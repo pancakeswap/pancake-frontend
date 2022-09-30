@@ -6,8 +6,8 @@ export enum ChainId {
 }
 
 const SWAP_MODULE_NAME = 'swap' as const
-export const SWAP_ADDRESS = '0xcdfdd85820f4a66ba6589620105746d5a2202906cf78e718af159c07a0520151' as const
-export const SWAP_RESOURCE_ADDRESS = '0x540bc17b2ddcf44abcff62b9a1939e23cdec44a6078e98ca79fcc98253ac354d' as const
+export const SWAP_ADDRESS = '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0' as const
+export const SWAP_RESOURCE_ADDRESS = '0x72131a2ed362f7874bb7eceb0dbce48017f58224b18a3e9c262522b859ae1788' as const
 export const SWAP_TYPE_TAG = `${SWAP_ADDRESS}::${SWAP_MODULE_NAME}` as const
 
 export const PAIR_RESERVE_TYPE_TAG = `${SWAP_ADDRESS}::swap::TokenPairReserve` as const

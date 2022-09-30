@@ -3,7 +3,7 @@ import { AtomBox } from "@pancakeswap/ui";
 import { Button, Slider } from "@pancakeswap/uikit";
 
 import { useCallback } from "react";
-import useDebouncedChangeHandler from "@pancakeswap/hooks/src/useDebouncedChangeHandler";
+import { useDebouncedChangeHandler } from "@pancakeswap/hooks";
 
 interface PercentSliderProps {
   onValueChanged: (value: string) => void;
