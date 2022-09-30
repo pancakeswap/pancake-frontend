@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Currency, CurrencyAmount, Fraction, Percent, Token } from '@pancakeswap/aptos-swap-sdk'
+import { Coin, Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
 import { InjectedModalProps, Button } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import TransactionConfirmationModal, {
@@ -18,12 +18,12 @@ interface ConfirmAddLiquidityModalProps {
   hash?: string
   noLiquidity: boolean
   liquidityErrorMessage?: string
-  price: Fraction
+  price: Price<Currency, Currency> | undefined
   parsedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
   onAdd: () => void
-  poolTokenPercentage: Percent
-  liquidityMinted: CurrencyAmount<Token>
-  currencyToAdd: Token
+  poolTokenPercentage: Percent | undefined
+  liquidityMinted: CurrencyAmount<Currency> | undefined
+  currencyToAdd: Coin | undefined
   isStable?: boolean
   currencies: CurrencySelectorValue
 }

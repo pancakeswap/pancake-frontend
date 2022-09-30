@@ -1,3 +1,4 @@
+import { Coin, Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, useModal } from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
@@ -6,7 +7,20 @@ import { useCallback, useContext } from 'react'
 import { useIsExpertMode } from 'state/user/expertMode'
 import useAddLiquidityHanlder from '../hooks/useAddLiquidityHandler'
 import { CurrencySelectorContext } from '../hooks/useCurrencySelectRoute'
+import { Field } from '../type'
 import ConfirmAddLiquidityModal from './ConfirmAddLiquidityModal'
+
+interface AddLiquidityButtonProps {
+  noLiquidity: boolean
+  price: Price<Currency, Currency> | undefined
+  poolTokenPercentage: Percent | undefined
+  liquidityMinted: CurrencyAmount<Currency> | undefined
+  errorText: string | undefined
+  parsedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
+  onFieldAInput: (typedValue: string) => void
+  onFieldBInput: (typedValue: string) => void
+  liquidityToken: Coin | undefined
+}
 
 export default function AddLiquidityButton({
   noLiquidity,
@@ -17,7 +31,8 @@ export default function AddLiquidityButton({
   errorText,
   parsedAmounts,
   onFieldAInput,
-}) {
+  onFieldBInput,
+}: AddLiquidityButtonProps) {
   const expertMode = useIsExpertMode()
   const { t } = useTranslation()
   const currencies = useContext(CurrencySelectorContext)
@@ -31,8 +46,9 @@ export default function AddLiquidityButton({
     // if there was a tx hash, we want to clear the input
     if (txHash) {
       onFieldAInput('')
+      onFieldBInput('')
     }
-  }, [onFieldAInput, txHash])
+  }, [onFieldAInput, onFieldBInput, txHash])
 
   const [onPresentAddLiquidityModal] = useModal(
     <ConfirmAddLiquidityModal
@@ -71,7 +87,7 @@ export default function AddLiquidityButton({
             onPresentAddLiquidityModal()
           }
         }}
-        disabled={errorText}
+        disabled={Boolean(errorText)}
       >
         {errorText || t('Supply')}
       </CommitButton>

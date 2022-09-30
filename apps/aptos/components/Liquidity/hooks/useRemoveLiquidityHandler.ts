@@ -1,13 +1,25 @@
-import { AptosSwapRouter } from '@pancakeswap/aptos-swap-sdk'
+import { AptosSwapRouter, Currency, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
 import { useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useUserSlippage } from 'state/user'
 import { calculateSlippageAmount } from 'utils/exchange'
-import { Field } from '../type'
+import { Field, LiquidityHandlerReturn } from '../type'
 
-export default function useRemoveLiquidityHandler({ parsedAmounts, currencyA, currencyB }) {
+interface UseRemoveLiquidityHandlerReturn extends LiquidityHandlerReturn {
+  onRemove: () => void
+}
+
+export default function useRemoveLiquidityHandler({
+  parsedAmounts,
+  currencyA,
+  currencyB,
+}: {
+  parsedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
+  currencyA: Currency
+  currencyB: Currency
+}): UseRemoveLiquidityHandlerReturn {
   const { t } = useTranslation()
 
   const addTransaction = useTransactionAdder()
@@ -25,12 +37,17 @@ export default function useRemoveLiquidityHandler({ parsedAmounts, currencyA, cu
     txHash: undefined,
   })
 
-  const onRemove = useCallback(async () => {
-    const amountsMin = {
-      [Field.CURRENCY_A]: calculateSlippageAmount(parsedAmounts[Field.CURRENCY_A], allowedSlippage)[0],
-      [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmounts[Field.CURRENCY_B], allowedSlippage)[0],
-    }
+  const { [Field.CURRENCY_A]: parsedAAmount, [Field.CURRENCY_B]: parsedBAmount } = parsedAmounts
 
+  const amountsMin = useMemo(
+    () => ({
+      [Field.CURRENCY_A]: parsedAAmount && calculateSlippageAmount(parsedAAmount, allowedSlippage)[0],
+      [Field.CURRENCY_B]: parsedBAmount && calculateSlippageAmount(parsedBAmount, allowedSlippage)[0],
+    }),
+    [parsedAAmount, parsedBAmount, allowedSlippage],
+  )
+
+  const onRemove = useCallback(async () => {
     const payload = AptosSwapRouter.unstable_removeLiquidityParameters(
       parsedAmounts[Field.LIQUIDITY]?.quotient?.toString() ?? '',
       amountsMin[Field.CURRENCY_A]?.toString() ?? '',
@@ -40,11 +57,11 @@ export default function useRemoveLiquidityHandler({ parsedAmounts, currencyA, cu
     )
 
     console.info(payload, 'payload')
-    await simulateTransactionAsync({
+    simulateTransactionAsync({
       payload,
     })
       .then(() => {
-        sendTransactionAsync({
+        return sendTransactionAsync({
           payload,
         }).then((response) => {
           setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
@@ -72,13 +89,25 @@ export default function useRemoveLiquidityHandler({ parsedAmounts, currencyA, cu
           txHash: undefined,
         })
       })
-  }, [currencyA, currencyB, parsedAmounts, addTransaction, simulateTransactionAsync, sendTransactionAsync, t])
+  }, [
+    currencyA,
+    currencyB,
+    parsedAmounts,
+    addTransaction,
+    simulateTransactionAsync,
+    sendTransactionAsync,
+    t,
+    amountsMin,
+  ])
 
-  return {
-    onRemove,
-    attemptingTxn,
-    liquidityErrorMessage,
-    txHash,
-    setLiquidityState,
-  }
+  return useMemo(
+    () => ({
+      onRemove,
+      attemptingTxn,
+      liquidityErrorMessage,
+      txHash,
+      setLiquidityState,
+    }),
+    [onRemove, attemptingTxn, liquidityErrorMessage, txHash, setLiquidityState],
+  )
 }

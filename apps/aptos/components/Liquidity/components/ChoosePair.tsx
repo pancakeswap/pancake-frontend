@@ -7,7 +7,7 @@ import { CurrencySelectorContext } from '../hooks/useCurrencySelectRoute'
 import { MintPairContext } from '../hooks/useMintPair'
 import { CurrencySelect } from './CurrencySelect'
 
-export default function ChoosePair({ onNext }) {
+export default function ChoosePair({ onNext }: { onNext: () => void }) {
   const { error } = useContext(MintPairContext)
   const { currencyA, currencyB, handleCurrencyASelect, handleCurrencyBSelect } = useContext(CurrencySelectorContext)
   const { t } = useTranslation()

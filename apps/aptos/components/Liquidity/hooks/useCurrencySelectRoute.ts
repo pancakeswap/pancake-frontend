@@ -1,11 +1,11 @@
 import { Currency } from '@pancakeswap/aptos-swap-sdk'
 import { APTOS_COIN } from '@pancakeswap/awgmi'
 import { useCurrency } from 'hooks/Tokens'
-import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useRouter } from 'next/router'
 import { createContext, useCallback, useMemo } from 'react'
 import currencyId from 'utils/currencyId'
 import _noop from 'lodash/noop'
+import { useIsMounted } from '@pancakeswap/hooks'
 
 export interface CurrencySelectorValue {
   currencyA: Currency | undefined
@@ -14,15 +14,18 @@ export interface CurrencySelectorValue {
   handleCurrencyBSelect: (currency: Currency) => void
 }
 
-export const CurrencySelectorContext = createContext<CurrencySelectorValue>({
+const initialValue = {
   currencyA: undefined,
   currencyB: undefined,
   handleCurrencyASelect: _noop,
   handleCurrencyBSelect: _noop,
-})
+}
+
+export const CurrencySelectorContext = createContext<CurrencySelectorValue>(initialValue)
 
 export default function useCurrencySelectRoute(defaultCurrencies?: string[]): CurrencySelectorValue {
   const router = useRouter()
+  const isMounted = useIsMounted()
 
   const [currencyIdA, currencyIdB] = router.query.currency || defaultCurrencies || []
 
@@ -59,12 +62,15 @@ export default function useCurrencySelectRoute(defaultCurrencies?: string[]): Cu
   )
 
   return useMemo(
-    () => ({
-      currencyA,
-      currencyB,
-      handleCurrencyASelect,
-      handleCurrencyBSelect,
-    }),
-    [currencyA, currencyB, handleCurrencyASelect, handleCurrencyBSelect],
+    () =>
+      isMounted
+        ? {
+            currencyA,
+            currencyB,
+            handleCurrencyASelect,
+            handleCurrencyBSelect,
+          }
+        : initialValue,
+    [currencyA, currencyB, handleCurrencyASelect, handleCurrencyBSelect, isMounted],
   )
 }

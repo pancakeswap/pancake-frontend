@@ -8,7 +8,7 @@ import {
 } from '@pancakeswap/aptos-swap-sdk'
 import { useAccountResources } from '@pancakeswap/awgmi'
 import fromPairs from 'lodash/fromPairs'
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import { useCoins } from './Tokens'
 
 function useFetchAllPairsReserves() {
@@ -28,34 +28,40 @@ function useFetchAllPairsReserves() {
 export function usePairsFromAddresses(addresses: string[]) {
   const { data } = useFetchAllPairsReserves()
 
-  const coinsResults = useCoins(
-    addresses.flatMap((addr) => {
-      return Pair.parseType(addr)
-    }),
+  const parsesAddress = useMemo(
+    () =>
+      addresses.flatMap((addr) => {
+        return Pair.parseType(addr)
+      }),
+    [addresses],
   )
 
-  const coins = coinsResults.map((coinResult) => coinResult.data)
+  const coinsResults = useCoins(parsesAddress)
 
-  return addresses.map((address) => {
-    if (data?.[address]) {
-      const [address0, address1] = Pair.parseType(address)
+  return useMemo(() => {
+    const coins = coinsResults.map((coinResult) => coinResult.data)
 
-      const coin0 = coins?.find((c) => c?.address === address0)
-      const coin1 = coins?.find((c) => c?.address === address1)
+    return addresses.map((address) => {
+      if (data?.[address]) {
+        const [address0, address1] = Pair.parseType(address)
 
-      if (coin0 && coin1) {
-        return [
-          PairState.EXISTS,
-          new Pair(
-            CurrencyAmount.fromRawAmount(coin0, data[address].data.reserve_x),
-            CurrencyAmount.fromRawAmount(coin1, data[address].data.reserve_y),
-          ),
-        ]
+        const coin0 = coins?.find((c) => c?.address === address0)
+        const coin1 = coins?.find((c) => c?.address === address1)
+
+        if (coin0 && coin1) {
+          return [
+            PairState.EXISTS,
+            new Pair(
+              CurrencyAmount.fromRawAmount(coin0, data[address].data.reserve_x),
+              CurrencyAmount.fromRawAmount(coin1, data[address].data.reserve_y),
+            ),
+          ]
+        }
+        return [PairState.LOADING, null]
       }
-      return [PairState.LOADING, null]
-    }
-    return [PairState.NOT_EXISTS, null]
-  })
+      return [PairState.NOT_EXISTS, null]
+    })
+  }, [coinsResults, addresses, data])
 }
 
 export enum PairState {

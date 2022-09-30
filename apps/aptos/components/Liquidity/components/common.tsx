@@ -1,5 +1,7 @@
 import React from 'react'
-import { Fraction, Percent, CurrencyAmount, Token } from '@pancakeswap/aptos-swap-sdk'
+import { Percent, CurrencyAmount, Token, Price } from '@pancakeswap/aptos-swap-sdk'
+import { Currency } from '@pancakeswap/swap-sdk-core'
+
 import {
   Text,
   useTooltip,
@@ -128,8 +130,8 @@ export const PairDistribution = ({
 
 interface AddLiquidityModalHeaderProps {
   poolTokenPercentage?: Percent
-  liquidityMinted: CurrencyAmount<Token>
-  price: Fraction
+  liquidityMinted: CurrencyAmount<Currency> | undefined
+  price: Price<Currency, Currency> | undefined
   children: React.ReactNode
   noLiquidity?: boolean
   currencies: CurrencySelectorValue

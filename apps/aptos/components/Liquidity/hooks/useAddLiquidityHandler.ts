@@ -1,6 +1,6 @@
-import { AptosSwapRouter } from '@pancakeswap/aptos-swap-sdk'
+import { AptosSwapRouter, Currency, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
 
-import { useCallback, useContext, useState } from 'react'
+import { useCallback, useContext, useMemo, useState } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 
 import { useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
@@ -10,9 +10,19 @@ import { calculateSlippageAmount } from 'utils/exchange'
 import { useUserSlippage } from 'state/user'
 
 import { CurrencySelectorContext } from './useCurrencySelectRoute'
-import { Field } from '../type'
+import { Field, LiquidityHandlerReturn } from '../type'
 
-export default function useAddLiquidityHanlder({ parsedAmounts, noLiquidity }) {
+interface UseAddLiquidityHandlerReturn extends LiquidityHandlerReturn {
+  onAdd: () => void
+}
+
+export default function useAddLiquidityHanlder({
+  parsedAmounts,
+  noLiquidity,
+}: {
+  noLiquidity: boolean
+  parsedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
+}): UseAddLiquidityHandlerReturn {
   const { currencyA, currencyB } = useContext(CurrencySelectorContext)
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
@@ -30,32 +40,36 @@ export default function useAddLiquidityHanlder({ parsedAmounts, noLiquidity }) {
     txHash: undefined,
   })
 
-  const onAdd = useCallback(async () => {
-    const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
-    if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB) {
-      return
-    }
+  const { [Field.CURRENCY_A]: parsedAAmount, [Field.CURRENCY_B]: parsedBAmount } = parsedAmounts
 
-    const amountsMin = {
-      [Field.CURRENCY_A]: calculateSlippageAmount(parsedAmountA, noLiquidity ? 0 : allowedSlippage)[0],
-      [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0],
+  const amountsMin = useMemo(
+    () => ({
+      [Field.CURRENCY_A]: parsedAAmount && calculateSlippageAmount(parsedAAmount, noLiquidity ? 0 : allowedSlippage)[0],
+      [Field.CURRENCY_B]: parsedBAmount && calculateSlippageAmount(parsedBAmount, noLiquidity ? 0 : allowedSlippage)[0],
+    }),
+    [parsedAAmount, parsedBAmount, allowedSlippage, noLiquidity],
+  )
+
+  const onAdd = useCallback(() => {
+    if (!currencyA || !currencyB) {
+      return
     }
 
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
     const payload = AptosSwapRouter.unstable_addLiquidityParameters(
-      parsedAmountA?.quotient?.toString(),
-      parsedAmountB?.quotient?.toString(),
-      amountsMin[Field.CURRENCY_A].toString() ?? '',
-      amountsMin[Field.CURRENCY_B].toString() ?? '',
+      parsedAAmount?.quotient?.toString() ?? '',
+      parsedBAmount?.quotient?.toString() ?? '',
+      amountsMin?.[Field.CURRENCY_A]?.toString() ?? '',
+      amountsMin?.[Field.CURRENCY_B]?.toString() ?? '',
       currencyA.wrapped.address,
       currencyB.wrapped.address,
     )
     console.info(payload, 'payload')
-    await simulateTransactionAsync({
+    simulateTransactionAsync({
       payload,
     })
       .then(() => {
-        sendTransactionAsync({
+        return sendTransactionAsync({
           payload,
         }).then((response) => {
           setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
@@ -83,13 +97,27 @@ export default function useAddLiquidityHanlder({ parsedAmounts, noLiquidity }) {
           txHash: undefined,
         })
       })
-  }, [addTransaction, currencyA, currencyB, parsedAmounts, sendTransactionAsync, simulateTransactionAsync, t])
+  }, [
+    addTransaction,
+    currencyA,
+    currencyB,
+    parsedAmounts,
+    sendTransactionAsync,
+    simulateTransactionAsync,
+    t,
+    amountsMin,
+    parsedAAmount,
+    parsedBAmount,
+  ])
 
-  return {
-    onAdd,
-    attemptingTxn,
-    liquidityErrorMessage,
-    txHash,
-    setLiquidityState,
-  }
+  return useMemo(
+    () => ({
+      onAdd,
+      attemptingTxn,
+      liquidityErrorMessage,
+      txHash,
+      setLiquidityState,
+    }),
+    [onAdd, attemptingTxn, liquidityErrorMessage, txHash, setLiquidityState],
+  )
 }

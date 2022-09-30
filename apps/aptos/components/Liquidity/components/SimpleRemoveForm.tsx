@@ -1,19 +1,20 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
-import { Text, ArrowDownIcon, AutoColumn, ColumnCenter } from '@pancakeswap/uikit'
+import { Text, ArrowDownIcon, AutoColumn, Liquidity, ColumnCenter } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
 import { useDeferredValue, useEffect } from 'react'
 import styled from 'styled-components'
 import { useBurnActionHandlers } from '../state/remove'
 import { Field } from '../type'
-import PercentSlider from './PercentSlider'
 
 const BorderCard = styled.div`
   border: solid 1px ${({ theme }) => theme.colors.cardBorder};
   border-radius: 16px;
   padding: 16px;
 `
+
+const { PercentSlider } = Liquidity
 
 const SimpleRemoveForm = ({ currencyA, currencyB, formattedAmounts }) => {
   const { t } = useTranslation()

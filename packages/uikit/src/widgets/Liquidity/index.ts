@@ -7,3 +7,4 @@ export * from "./NoLiquidity";
 export * from "./PositionCard";
 export * from "./AddLiquidity/FirstLP";
 export * from "./AddLiquidity/ChoosePairView";
+export * from "./PercentSlider";

@@ -1,11 +1,7 @@
-// import { useMemo } from 'react'
-// import { Currency, CurrencyAmount, JSBI, Pair, Percent } from '@pancakeswap/aptos-swap-sdk'
-// import { CardProps } from '@pancakeswap/uikit'
-// import { useAccount } from '@pancakeswap/awgmi'
 import multiplyPriceByAmount from '@pancakeswap/utils/multiplyPriceByAmount'
 
 import { Coin, JSBI, Pair, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import { useCurrencyBalance } from 'hooks/Balances'
 import useTotalSupply from 'hooks/useTotalSupply'
 import currencyId from 'utils/currencyId'
@@ -57,9 +53,8 @@ const usePoolTokenPercentage = ({ userPoolBalance, totalPoolTokens }) => {
     : undefined
 }
 
-const withLPValues =
-  (Component) =>
-  ({ pair, mb }: { pair: Pair; mb?: string }) => {
+const withLPValues = (Component) =>
+  memo(({ pair, mb }: { pair: Pair; mb?: string }) => {
     const currency0 = pair.token0
     const currency1 = pair.token1
 
@@ -85,6 +80,6 @@ const withLPValues =
         addTo={`/add/${currencyId(currency0)}/${currencyId(currency1)}?step=1`}
       />
     )
-  }
+  })
 
 export default withLPValues

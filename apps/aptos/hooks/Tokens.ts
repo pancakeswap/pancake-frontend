@@ -4,7 +4,7 @@ import { APTOS_COIN, useAccount, useAccountResources, useCoin, useCoins as useCo
 import { coinStoreResourcesFilter, unwrapTypeFromString } from '@pancakeswap/awgmi/core'
 import { useAtomValue } from 'jotai'
 import fromPairs from 'lodash/fromPairs'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { combinedTokenMapFromActiveUrlsAtom, TokenAddressMap } from 'state/lists/hooks'
 import { useUserAddedTokens } from 'state/user'
 import useNativeCurrency from './useNativeCurrency'
@@ -39,12 +39,17 @@ export function useCoins(addresses: string[]) {
   const { networkName } = useActiveNetwork()
   const chainId = useActiveChainId()
 
+  const select = useCallback(
+    (result) => {
+      return new Coin(chainId, result.address, result.decimals, result.symbol, result.name)
+    },
+    [chainId],
+  )
+
   return useCoins_({
     coins: addresses,
     networkName,
-    select: (result) => {
-      return new Coin(chainId, result.address, result.decimals, result.symbol, result.name)
-    },
+    select,
   })
 }
 

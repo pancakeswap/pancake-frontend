@@ -16,7 +16,7 @@ export const useLiquidityStateOnly = () => {
   return useAtomValue(mintStateAtom)
 }
 
-export const useMintLiquidityStateAndHandlers = (noLiquidity): typeof tuple => {
+export const useMintLiquidityStateAndHandlers = (noLiquidity: boolean): typeof tuple => {
   const [mintState, dispatch] = useReducerAtom(mintStateAtom, reducer)
 
   const onFieldAInput = useCallback(

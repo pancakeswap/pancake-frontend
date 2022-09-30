@@ -32,11 +32,15 @@ export default function useLPPairsHaveBalance(): LPPairsResponse {
     },
   })
 
-  const v2Pairs = usePairsFromAddresses(
-    (v2PairsBalances
-      ?.map((p) => `${PAIR_RESERVE_TYPE_TAG}<${unwrapTypeArgFromString(p.type)}>`)
-      .filter(Boolean) as string[]) ?? [],
+  const mmV2PairsBalances = useMemo(
+    () =>
+      (v2PairsBalances
+        ?.map((p) => `${PAIR_RESERVE_TYPE_TAG}<${unwrapTypeArgFromString(p.type)}>`)
+        .filter(Boolean) as string[]) ?? [],
+    [v2PairsBalances],
   )
+
+  const v2Pairs = usePairsFromAddresses(mmV2PairsBalances)
 
   const isLoading =
     (isIdle && isFetching) ||

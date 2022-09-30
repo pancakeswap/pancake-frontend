@@ -2181,8 +2181,8 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                       >
                         Docs & Guides
                         <svg
-                          class="c5"
-                          color="text"
+                          class="c18"
+                          color="textSubtle"
                           viewBox="0 0 24 24"
                           width="20px"
                           xmlns="http://www.w3.org/2000/svg"
@@ -4161,8 +4161,8 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                 >
                   Docs & Guides
                   <svg
-                    class="c5"
-                    color="text"
+                    class="c18"
+                    color="textSubtle"
                     viewBox="0 0 24 24"
                     width="20px"
                     xmlns="http://www.w3.org/2000/svg"

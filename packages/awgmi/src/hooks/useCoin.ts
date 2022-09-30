@@ -43,6 +43,6 @@ export function useCoin<TData = FetchCoinResult>({
     onError,
     onSettled,
     onSuccess,
-    refetchInterval: watch ? 2_000 : 0,
+    refetchInterval: watch ? 5_000 : 0,
   })
 }

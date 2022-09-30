@@ -147,7 +147,7 @@ export function MinimalPositionCardView({
           </CardBody>
         </Card>
       ) : (
-        <LightCard>
+        <LightCard padding="24px">
           <Text fontSize="14px" style={{ textAlign: "center" }}>
             <span role="img" aria-label="pancake-icon">
               🥞
