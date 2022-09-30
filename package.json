@@ -86,7 +86,7 @@
     "react-dom": "^18.2.0",
     "react-markdown": "^6.0.2",
     "react-redux": "^8.0.2",
-    "react-transition-group": "^4.4.1",
+    "react-transition-group": "^4.4.5",
     "react-window": "^1.8.7",
     "recharts": "2.1.12",
     "redux-persist": "^6.0.0",
