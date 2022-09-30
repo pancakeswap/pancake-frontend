@@ -3,7 +3,7 @@ import { AutoColumn, AutoRow, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { ONE_BIPS } from 'config/constants/exchange'
 
-export default function FarmPriceBar({
+export default function PoolPriceBar({
   currencyA,
   currencyB,
   noLiquidity,
@@ -34,8 +34,8 @@ export default function FarmPriceBar({
           <Text>{price?.invert()?.toSignificant(6) ?? '-'}</Text>
           <Text fontSize="14px" pt={1}>
             {t('%assetA% per %assetB%', {
-              assetA: currencyA?.symbol ?? '',
-              assetB: currencyB?.symbol ?? '',
+              assetA: currencyB?.symbol ?? '',
+              assetB: currencyA?.symbol ?? '',
             })}
           </Text>
         </AutoColumn>

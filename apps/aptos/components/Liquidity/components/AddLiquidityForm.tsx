@@ -12,7 +12,7 @@ import { CurrencySelectorContext } from '../hooks/useCurrencySelectRoute'
 import { MintPairContext } from '../hooks/useMintPair'
 import { useMintLiquidityStateAndHandlers } from '../state/add'
 import { Field } from '../type'
-import FarmPriceBar from './FarmPriceBar'
+import PoolPriceBar from './PoolPriceBar'
 // import AprRow from './AprRow'
 import PricePoolShareSection from './PricePoolShareSection'
 import SlippageSection from './SlippageSection'
@@ -94,7 +94,7 @@ export default function AddLiquidityForm({ notSupportPair }: { notSupportPair: b
           <PricePoolShareSection
             noLiquidity={noLiquidity}
             farmPriceBar={
-              <FarmPriceBar
+              <PoolPriceBar
                 currencyA={currencyA}
                 currencyB={currencyB}
                 poolTokenPercentage={poolTokenPercentage}
