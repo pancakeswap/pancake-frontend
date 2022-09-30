@@ -1,5 +1,5 @@
 import { AptosCoin, Coin, CurrencyAmount, Token } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount, useBalance, APTOS_COIN } from '@pancakeswap/awgmi'
+import { APTOS_COIN, useAccount, useAccountBalance } from '@pancakeswap/awgmi'
 import { useAllTokens } from './Tokens'
 import useNativeCurrency from './useNativeCurrency'
 import { useActiveChainId } from './useNetwork'
@@ -10,7 +10,7 @@ export function useCurrencyBalanceWithLoading(coinId?: string) {
   const native = useNativeCurrency()
   const chainId = useActiveChainId()
 
-  return useBalance({
+  return useAccountBalance({
     enabled: Boolean(coinId),
     address: account?.address,
     coin: coinId,

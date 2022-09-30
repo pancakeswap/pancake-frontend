@@ -8,7 +8,7 @@ import {
 } from '@pancakeswap/aptos-swap-sdk'
 import { useAccountResources } from '@pancakeswap/awgmi'
 import fromPairs from 'lodash/fromPairs'
-import { useMemo, useEffect } from 'react'
+import { useMemo } from 'react'
 import { useCoins } from './Tokens'
 
 function useFetchAllPairsReserves() {

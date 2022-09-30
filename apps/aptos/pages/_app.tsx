@@ -1,7 +1,6 @@
 import '@pancakeswap/ui/css/reset.css'
 import '../css/theme.css'
 
-import { useHealthy } from '@pancakeswap/awgmi'
 import { PancakeTheme, ResetCSS, ToastListener } from '@pancakeswap/uikit'
 import { Menu } from 'components/Menu'
 import Providers from 'components/Providers'
@@ -19,22 +18,11 @@ declare module 'styled-components' {
   export interface DefaultTheme extends PancakeTheme {}
 }
 
-function HealthyLog() {
-  useHealthy({
-    watch: true,
-    onError: (err) => {
-      console.info(err)
-    },
-  })
-  return null
-}
-
 function Updaters() {
   return (
     <>
       <ListsUpdater />
       <TransactionUpdater />
-      <HealthyLog />
     </>
   )
 }
