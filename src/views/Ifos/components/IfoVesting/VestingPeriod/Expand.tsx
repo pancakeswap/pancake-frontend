@@ -56,8 +56,8 @@ interface ExpandProps {
 
 const Expand: React.FC<React.PropsWithChildren<ExpandProps>> = ({ data, expanded, fetchUserVestingData }) => {
   const { t } = useTranslation()
-  const { token } = data.ifo
-  const ifoIsActive = useMemo(() => ifosConfig.find((ifo) => ifo.isActive && ifo.id === data.ifo.id), [data.ifo])
+  const { id, token } = data.ifo
+  const ifoIsActive = useMemo(() => ifosConfig.find((ifo) => ifo.isActive && ifo.id === id), [id])
   const router = useRouter()
 
   const handleViewIfo = () => {
