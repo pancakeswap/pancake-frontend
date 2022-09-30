@@ -238,7 +238,7 @@ export default function CurrencyInputPanel({
                 ~{formatNumber(amountInDollar)} USD
               </Text>
             )}
-            {account && currency && selectedCurrencyBalance?.toSignificant(6) !== '0' && !disabled && label !== 'To' && (
+            {account && currency && selectedCurrencyBalance?.greaterThan(0) && !disabled && label !== 'To' && (
               <Flex alignItems="right" justifyContent="right">
                 {showQuickInputButton &&
                   onPercentInput &&
