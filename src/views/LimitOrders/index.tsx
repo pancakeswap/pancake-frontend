@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/router'
-import { CurrencyAmount, Token, Trade, TradeType, Currency } from '@pancakeswap/sdk'
+import { CurrencyAmount, Token, Trade, TradeType, Currency, Percent } from '@pancakeswap/sdk'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { Button, Box, Flex, useModal, BottomDrawer, Link, useMatchBreakpoints } from '@pancakeswap/uikit'
 
@@ -161,7 +161,7 @@ const LimitOrders = () => {
   const handlePercentInput = useCallback(
     (percent) => {
       if (maxAmountInput) {
-        onUserInput(Field.INPUT, maxAmountInput.multiply(new Percent(percent, 100)).toExact())
+        handleInput(Field.INPUT, maxAmountInput.multiply(new Percent(percent, 100)).toExact())
       }
     },
     [maxAmountInput, handleInput],
