@@ -2,6 +2,7 @@ import { ChainId, Currency, JSBI, Price } from '@pancakeswap/aptos-swap-sdk'
 import { USDC_DEVNET } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
+import useSWR from 'swr'
 import useNativeCurrency from './useNativeCurrency'
 import { PairState, usePairs } from './usePairs'
 
@@ -100,10 +101,23 @@ export default function useStablePrice(currency?: Currency): Price<Currency, Cur
   ])
 }
 
-export const useStableCakeAmount = (amount: number): number | undefined => {
+export const useStableCakeAmount = (_amount: number): number | undefined => {
   // const cakeBusdPrice = useCakeBusdPrice()
   // if (cakeBusdPrice) {
   //   return multiplyPriceByAmount(cakeBusdPrice, amount)
   // }
   return undefined
+}
+
+export const useCakePrice = () => {
+  return useSWR(
+    ['cake-usd-price'],
+    async () => {
+      const cake = await (await fetch('https://farms.pancake-swap.workers.dev/price/cake')).json()
+      return cake.price
+    },
+    {
+      refreshInterval: 1_000 * 10,
+    },
+  )
 }

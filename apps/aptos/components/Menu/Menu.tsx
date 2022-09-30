@@ -13,6 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
+import { useCakePrice } from 'hooks/useStablePrice'
 import orderBy from 'lodash/orderBy'
 import { useTheme } from 'next-themes'
 import { useRouter } from 'next/router'
@@ -110,6 +111,8 @@ export const Menu = ({ children }: { children: ReactNode }) => {
   const { setTheme, resolvedTheme } = useTheme()
   const [show] = usePhishingBanner()
 
+  const { data: cakePrice } = useCakePrice()
+
   const isDark = resolvedTheme === 'dark'
 
   const toggleTheme = useMemo(() => {
@@ -140,6 +143,7 @@ export const Menu = ({ children }: { children: ReactNode }) => {
       footerLinks={getFooterLinks}
       currentLang={currentLanguage.code}
       langs={languageList}
+      cakePriceUsd={cakePrice ? Number(cakePrice) : undefined}
       // @ts-ignore
       subLinks={activeMenuItem?.hideSubNav || activeSubMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
       activeSubItem={activeSubMenuItem?.href}

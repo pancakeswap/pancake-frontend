@@ -22,7 +22,7 @@ exports[`renders correctly 1`] = `
   flex-shrink: 0;
 }
 
-.c28 {
+.c27 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -33,7 +33,7 @@ exports[`renders correctly 1`] = `
   margin-right: 8px;
 }
 
-.c33 {
+.c32 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -44,7 +44,7 @@ exports[`renders correctly 1`] = `
   margin-right: 0.5rem;
 }
 
-.c74 {
+.c73 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -55,7 +55,7 @@ exports[`renders correctly 1`] = `
   margin-right: 24px;
 }
 
-.c99 {
+.c98 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -66,7 +66,7 @@ exports[`renders correctly 1`] = `
   margin-left: 0.5rem;
 }
 
-.c107 {
+.c106 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -76,7 +76,7 @@ exports[`renders correctly 1`] = `
   flex-shrink: 0;
 }
 
-.c89 {
+.c88 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -86,7 +86,7 @@ exports[`renders correctly 1`] = `
   flex-shrink: 0;
 }
 
-.c92 {
+.c91 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -110,28 +110,28 @@ exports[`renders correctly 1`] = `
   font-size: 14px;
 }
 
-.c29 {
+.c28 {
   color: var(--colors-textSubtle);
   font-weight: 600;
   line-height: 1.5;
   font-size: 16px;
 }
 
-.c65 {
+.c64 {
   color: var(--colors-text);
   font-weight: 400;
   line-height: 1.5;
   font-size: 16px;
 }
 
-.c68 {
+.c67 {
   color: var(--colors-warning);
   font-weight: 400;
   line-height: 1.5;
   font-size: 16px;
 }
 
-.c73 {
+.c72 {
   color: var(--colors-primary);
   font-weight: 600;
   line-height: 1.5;
@@ -139,7 +139,7 @@ exports[`renders correctly 1`] = `
   font-size: 16px;
 }
 
-.c76 {
+.c75 {
   color: var(--colors-primary);
   font-weight: 600;
   line-height: 1.5;
@@ -147,14 +147,14 @@ exports[`renders correctly 1`] = `
   font-size: 16px;
 }
 
-.c94 {
+.c93 {
   color: var(--colors-textSubtle);
   font-weight: 400;
   line-height: 1.5;
   font-size: 16px;
 }
 
-.c108 {
+.c107 {
   color: var(--colors-textSubtle);
   font-weight: 400;
   line-height: 1.5;
@@ -162,7 +162,7 @@ exports[`renders correctly 1`] = `
   font-size: 10px;
 }
 
-.c32 {
+.c31 {
   position: relative;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -200,11 +200,11 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
 }
 
-.c32:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+.c31:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
   opacity: 0.65;
 }
 
-.c32:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+.c31:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
   -webkit-transform: translateY(1px);
   -ms-transform: translateY(1px);
@@ -212,8 +212,8 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
 }
 
-.c32:disabled,
-.c32.pancake-button--disabled {
+.c31:disabled,
+.c31.pancake-button--disabled {
   background-color: var(--colors-backgroundDisabled);
   border-color: var(--colors-backgroundDisabled);
   box-shadow: none;
@@ -221,7 +221,7 @@ exports[`renders correctly 1`] = `
   cursor: not-allowed;
 }
 
-.c36 {
+.c35 {
   position: relative;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -260,11 +260,11 @@ exports[`renders correctly 1`] = `
   height: sm;
 }
 
-.c36:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+.c35:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
   opacity: 0.65;
 }
 
-.c36:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+.c35:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
   -webkit-transform: translateY(1px);
   -ms-transform: translateY(1px);
@@ -272,8 +272,8 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
 }
 
-.c36:disabled,
-.c36.pancake-button--disabled {
+.c35:disabled,
+.c35.pancake-button--disabled {
   background-color: var(--colors-backgroundDisabled);
   border-color: var(--colors-backgroundDisabled);
   box-shadow: none;
@@ -281,7 +281,7 @@ exports[`renders correctly 1`] = `
   cursor: not-allowed;
 }
 
-.c93 {
+.c92 {
   position: relative;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -318,11 +318,11 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
 }
 
-.c93:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+.c92:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
   opacity: 0.65;
 }
 
-.c93:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+.c92:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
   -webkit-transform: translateY(1px);
   -ms-transform: translateY(1px);
@@ -330,8 +330,8 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
 }
 
-.c93:disabled,
-.c93.pancake-button--disabled {
+.c92:disabled,
+.c92.pancake-button--disabled {
   background-color: var(--colors-backgroundDisabled);
   border-color: var(--colors-backgroundDisabled);
   box-shadow: none;
@@ -339,7 +339,7 @@ exports[`renders correctly 1`] = `
   cursor: not-allowed;
 }
 
-.c98 {
+.c97 {
   position: relative;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -375,11 +375,11 @@ exports[`renders correctly 1`] = `
   color: var(--colors-white);
 }
 
-.c98:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+.c97:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
   opacity: 0.65;
 }
 
-.c98:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+.c97:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
   -webkit-transform: translateY(1px);
   -ms-transform: translateY(1px);
@@ -387,8 +387,8 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
 }
 
-.c98:disabled,
-.c98.pancake-button--disabled {
+.c97:disabled,
+.c97.pancake-button--disabled {
   background-color: var(--colors-backgroundDisabled);
   border-color: var(--colors-backgroundDisabled);
   box-shadow: none;
@@ -413,62 +413,57 @@ exports[`renders correctly 1`] = `
   height: 100%;
 }
 
-.c26 {
-  display: block;
-  margin-right: 12px;
-}
-
-.c30 {
+.c29 {
   margin-top: 4px;
 }
 
-.c39 {
+.c38 {
   margin-top: 57px;
 }
 
-.c43 {
+.c42 {
   padding-left: 12px;
 }
 
-.c46 {
+.c45 {
   margin-right: 20px;
 }
 
-.c51 {
+.c50 {
   margin-top: 0;
 }
 
-.c54 {
+.c53 {
   padding: 40px 16px;
   margin-bottom: 44px;
 }
 
-.c57 {
+.c56 {
   width: 100%;
 }
 
-.c59 {
+.c58 {
   display: block;
 }
 
-.c61 {
+.c60 {
   margin-bottom: 42px;
 }
 
-.c69 {
+.c68 {
   display: none;
 }
 
-.c70 {
+.c69 {
   padding-bottom: 42px;
   margin-bottom: 0;
 }
 
-.c96 {
+.c95 {
   margin-bottom: 24px;
 }
 
-.c90 {
+.c89 {
   width: 100%;
   height: 100%;
 }
@@ -506,7 +501,7 @@ exports[`renders correctly 1`] = `
   align-items: center;
 }
 
-.c38 {
+.c37 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -517,7 +512,7 @@ exports[`renders correctly 1`] = `
   justify-content: space-around;
 }
 
-.c44 {
+.c43 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -528,7 +523,7 @@ exports[`renders correctly 1`] = `
   justify-content: start;
 }
 
-.c50 {
+.c49 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -539,7 +534,7 @@ exports[`renders correctly 1`] = `
   justify-content: flex-end;
 }
 
-.c55 {
+.c54 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -550,7 +545,7 @@ exports[`renders correctly 1`] = `
   justify-content: center;
 }
 
-.c58 {
+.c57 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -560,7 +555,7 @@ exports[`renders correctly 1`] = `
   flex-direction: column;
 }
 
-.c62 {
+.c61 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -581,7 +576,7 @@ exports[`renders correctly 1`] = `
   align-items: flex-start;
 }
 
-.c71 {
+.c70 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -591,7 +586,7 @@ exports[`renders correctly 1`] = `
   order: 2;
 }
 
-.c77 {
+.c76 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -608,7 +603,7 @@ exports[`renders correctly 1`] = `
   justify-content: space-between;
 }
 
-.c79 {
+.c78 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -622,7 +617,7 @@ exports[`renders correctly 1`] = `
   align-items: center;
 }
 
-.c97 {
+.c96 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -640,7 +635,7 @@ exports[`renders correctly 1`] = `
   align-items: center;
 }
 
-.c104 {
+.c103 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -658,7 +653,7 @@ exports[`renders correctly 1`] = `
   align-items: center;
 }
 
-.c88 {
+.c87 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -673,7 +668,7 @@ exports[`renders correctly 1`] = `
   justify-content: center;
 }
 
-.c91 {
+.c90 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -688,50 +683,50 @@ exports[`renders correctly 1`] = `
   align-items: center;
 }
 
-.c106 {
+.c105 {
   background: var(--colors-backgroundAlt);
 }
 
-.c105 {
+.c104 {
   position: relative;
   height: 22px;
   width: 21px;
 }
 
-.c105 div:first-child {
+.c104 div:first-child {
   height: 22px;
   width: 21px;
   z-index: 0;
 }
 
-.c105 div,
-.c105 svg {
+.c104 div,
+.c104 svg {
   position: absolute;
   left: 0;
   bottom: 0;
   overflow: hidden;
 }
 
-.c105 div:last-child {
+.c104 div:last-child {
   height: 0;
   z-index: 5;
   -webkit-transition: height 0.25s ease;
   transition: height 0.25s ease;
 }
 
-.c113 {
+.c112 {
   position: relative;
   height: 22px;
   width: 21px;
 }
 
-.c113 div:first-child {
+.c112 div:first-child {
   height: 22px;
   width: 21px;
   z-index: 0;
 }
 
-.c103 {
+.c102 {
   display: block;
   border: 0;
   background: transparent;
@@ -740,16 +735,16 @@ exports[`renders correctly 1`] = `
   padding: 4px 12px;
 }
 
-.c103:hover {
+.c102:hover {
   border-radius: 16px;
 }
 
-.c103:hover,
-.c103:hover div {
+.c102:hover,
+.c102:hover div {
   background: var(--colors-tertiary);
 }
 
-.c109 {
+.c108 {
   display: -webkit-box;
   overflow: hidden;
   -webkit-user-select: none;
@@ -762,7 +757,7 @@ exports[`renders correctly 1`] = `
   -webkit-touch-callout: none;
 }
 
-.c101 {
+.c100 {
   position: fixed;
   bottom: 0px;
   width: 100%;
@@ -773,7 +768,7 @@ exports[`renders correctly 1`] = `
   z-index: 20;
 }
 
-html[data-useragent*="TokenPocket_iOS"] .c100 {
+html[data-useragent*="TokenPocket_iOS"] .c99 {
   padding-bottom: 45px;
 }
 
@@ -850,7 +845,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   visibility: hidden;
 }
 
-.c111 {
+.c110 {
   background-color: var(--colors-backgroundAlt);
   border: 1px solid var(--colors-cardBorder);
   border-radius: 16px;
@@ -885,7 +880,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   margin-left: 8px;
 }
 
-.c102 {
+.c101 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -893,7 +888,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   position: relative;
 }
 
-.c110 {
+.c109 {
   display: none;
   position: absolute;
   top: 0;
@@ -906,7 +901,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   background-color: var(--colors-failure);
 }
 
-.c112 {
+.c111 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -922,7 +917,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   background-color: var(--colors-failure);
 }
 
-.c114 {
+.c113 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -938,30 +933,30 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   background-color: var(--colors-warning);
 }
 
-.c81 {
+.c80 {
   position: relative;
   will-change: opacity;
   opacity: 0;
 }
 
-.c81.appear {
+.c80.appear {
   -webkit-animation: fGxCd 0.3s ease-in-out forwards;
   animation: fGxCd 0.3s ease-in-out forwards;
 }
 
-.c81.disappear {
+.c80.disappear {
   -webkit-animation: jmLHfV 0.3s ease-in-out forwards;
   animation: jmLHfV 0.3s ease-in-out forwards;
 }
 
-.c80 {
+.c79 {
   position: relative;
   width: 56px;
   height: 32px;
   overflow: hidden;
 }
 
-.c82 {
+.c81 {
   min-height: 20px;
   display: block;
   background-color: var(--colors-backgroundDisabled);
@@ -970,7 +965,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   height: 32px;
 }
 
-.c83 {
+.c82 {
   -webkit-animation: wAFEO 2s infinite ease-out;
   animation: wAFEO 2s infinite ease-out;
   -webkit-transform: translate3d(0,0,0);
@@ -978,7 +973,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   transform: translate3d(0,0,0);
 }
 
-.c27 {
+.c26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -989,19 +984,19 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   align-items: center;
 }
 
-.c27 svg {
+.c26 svg {
   -webkit-transition: -webkit-transform 0.3s;
   -webkit-transition: transform 0.3s;
   transition: transform 0.3s;
 }
 
-.c27:hover svg {
+.c26:hover svg {
   -webkit-transform: scale(1.2);
   -ms-transform: scale(1.2);
   transform: scale(1.2);
 }
 
-.c66 {
+.c65 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1015,12 +1010,12 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   width: fit-content;
 }
 
-.c66:hover {
+.c65:hover {
   -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
-.c35 {
+.c34 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -1051,7 +1046,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   pointer-events: none;
 }
 
-.c75 {
+.c74 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -1082,7 +1077,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   pointer-events: none;
 }
 
-.c95 {
+.c94 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -1113,12 +1108,12 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   pointer-events: none;
 }
 
-.c31 {
+.c30 {
   position: relative;
 }
 
-.c31:hover .c34,
-.c31:focus-within .c34 {
+.c30:hover .c33,
+.c30:focus-within .c33 {
   opacity: 1;
   max-height: 400px;
   overflow-y: auto;
@@ -1127,32 +1122,32 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   pointer-events: auto;
 }
 
-.c56 {
+.c55 {
   background: var(--colors-backgroundAlt);
 }
 
-.c63 {
+.c62 {
   list-style: none;
   margin-bottom: 40px;
 }
 
-.c64 {
+.c63 {
   font-size: 16px;
   margin-bottom: 8px;
   text-transform: capitalize;
 }
 
-.c64:first-child {
+.c63:first-child {
   color: var(--colors-secondary);
   font-weight: 600;
   text-transform: uppercase;
 }
 
-.c60 {
+.c59 {
   margin-bottom: 24px;
 }
 
-.c78 {
+.c77 {
   border-color: var(--colors-cardBorder);
   border-top-width: 1px;
   border-bottom-width: 1px;
@@ -1161,21 +1156,21 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   margin-bottom: 24px;
 }
 
-.c72 {
+.c71 {
   border-bottom: 1px solid var(--colors-cardBorder);
 }
 
-.c67 {
+.c66 {
   color: var(--colors-text);
 }
 
-.c37 {
+.c36 {
   color: var(--colors-text);
   padding: 0 8px;
   border-radius: 8px;
 }
 
-.c87 {
+.c86 {
   background-color: var(--colors-backgroundAlt);
   border-radius: 50%;
   cursor: pointer;
@@ -1189,7 +1184,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   z-index: 1;
 }
 
-.c85 {
+.c84 {
   cursor: pointer;
   opacity: 0;
   height: 100%;
@@ -1198,19 +1193,19 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   z-index: 3;
 }
 
-.c85:checked + .c86 {
+.c84:checked + .c85 {
   left: calc(100% - 30px);
 }
 
-.c85:focus + .c86 {
+.c84:focus + .c85 {
   box-shadow: var(--shadows-focus);
 }
 
-.c85:hover + .c86:not(:disabled):not(:checked) {
+.c84:hover + .c85:not(:disabled):not(:checked) {
   box-shadow: var(--shadows-focus);
 }
 
-.c84 {
+.c83 {
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -1321,7 +1316,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   border-radius: 16px;
 }
 
-.c48 {
+.c47 {
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1339,23 +1334,23 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   height: 42px;
 }
 
-.c48:hover {
+.c47:hover {
   background: var(--colors-tertiary);
 }
 
-.c40 {
+.c39 {
   width: 100%;
   overflow: hidden;
   position: relative;
 }
 
-.c49 {
+.c48 {
   width: 100%;
   overflow: hidden;
   position: relative;
 }
 
-.c45 {
+.c44 {
   position: relative;
   z-index: 1;
   width: 100%;
@@ -1379,11 +1374,11 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   -ms-overflow-style: none;
 }
 
-.c45::-webkit-scrollbar {
+.c44::-webkit-scrollbar {
   display: none;
 }
 
-.c41 {
+.c40 {
   position: absolute;
   z-index: 2;
   width: 48px;
@@ -1406,14 +1401,14 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   background: linear-gradient(90deg,#ffffff 29.76%,rgba(255,255,255,0) 100%);
 }
 
-.c41.show {
+.c40.show {
   pointer-events: auto;
   opacity: 1;
   -webkit-transition: 0.25s ease-in opacity;
   transition: 0.25s ease-in opacity;
 }
 
-.c42 {
+.c41 {
   position: absolute;
   z-index: 2;
   width: 48px;
@@ -1436,14 +1431,14 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   background: linear-gradient(270deg,#ffffff 0%,rgba(255,255,255,0) 87.5%);
 }
 
-.c42.show {
+.c41.show {
   pointer-events: auto;
   opacity: 1;
   -webkit-transition: 0.25s ease-in opacity;
   transition: 0.25s ease-in opacity;
 }
 
-.c47 {
+.c46 {
   display: inline-block;
   vertical-align: top;
   -webkit-scroll-snap-align: start;
@@ -1529,7 +1524,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   z-index: 20;
 }
 
-.c52 {
+.c51 {
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1537,7 +1532,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
   display: flex;
 }
 
-.c53 {
+.c52 {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -ms-flex-positive: 1;
@@ -1565,49 +1560,49 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
 }
 
 @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c28 {
+  .c27 {
     -webkit-filter: none !important;
     filter: none !important;
   }
 }
 
 @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c33 {
+  .c32 {
     -webkit-filter: none !important;
     filter: none !important;
   }
 }
 
 @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c74 {
+  .c73 {
     -webkit-filter: none !important;
     filter: none !important;
   }
 }
 
 @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c99 {
+  .c98 {
     -webkit-filter: none !important;
     filter: none !important;
   }
 }
 
 @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c107 {
+  .c106 {
     -webkit-filter: none !important;
     filter: none !important;
   }
 }
 
 @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c89 {
+  .c88 {
     -webkit-filter: none !important;
     filter: none !important;
   }
 }
 
 @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c92 {
+  .c91 {
     -webkit-filter: none !important;
     filter: none !important;
   }
@@ -1618,7 +1613,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
 }
 
 @media screen and (min-width:576px) {
-  .c43 {
+  .c42 {
     padding-left: 0px;
   }
 }
@@ -1628,7 +1623,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
 }
 
 @media screen and (min-width:576px) {
-  .c54 {
+  .c53 {
     padding: 56px 40px 32px 40px;
     margin-bottom: 0px;
   }
@@ -1639,7 +1634,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
 }
 
 @media screen and (min-width:576px) {
-  .c57 {
+  .c56 {
     width: 1200px;
   }
 }
@@ -1649,7 +1644,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
 }
 
 @media screen and (min-width:576px) {
-  .c59 {
+  .c58 {
     display: none;
   }
 }
@@ -1659,7 +1654,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
 }
 
 @media screen and (min-width:576px) {
-  .c61 {
+  .c60 {
     margin-bottom: 36px;
   }
 }
@@ -1669,7 +1664,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
 }
 
 @media screen and (min-width:576px) {
-  .c69 {
+  .c68 {
     display: block;
   }
 }
@@ -1679,7 +1674,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
 }
 
 @media screen and (min-width:576px) {
-  .c70 {
+  .c69 {
     padding-bottom: 32px;
     margin-bottom: 32px;
   }
@@ -1690,7 +1685,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
 }
 
 @media screen and (min-width:576px) {
-  .c96 {
+  .c95 {
     margin-bottom: 0;
   }
 }
@@ -1700,7 +1695,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
 }
 
 @media screen and (min-width:576px) {
-  .c44 {
+  .c43 {
     -webkit-box-pack: center;
     -webkit-justify-content: center;
     -ms-flex-pack: center;
@@ -1713,7 +1708,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
 }
 
 @media screen and (min-width:576px) {
-  .c50 {
+  .c49 {
     -webkit-box-pack: center;
     -webkit-justify-content: center;
     -ms-flex-pack: center;
@@ -1726,7 +1721,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
 }
 
 @media screen and (min-width:576px) {
-  .c62 {
+  .c61 {
     -webkit-order: 1;
     -ms-flex-order: 1;
     order: 1;
@@ -1741,7 +1736,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
 }
 
 @media screen and (min-width:576px) {
-  .c77 {
+  .c76 {
     -webkit-order: 3;
     -ms-flex-order: 3;
     order: 3;
@@ -1756,7 +1751,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
 }
 
 @media screen and (min-width:576px) {
-  .c79 {
+  .c78 {
     -webkit-order: 1;
     -ms-flex-order: 1;
     order: 1;
@@ -1768,7 +1763,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
 }
 
 @media screen and (min-width:576px) {
-  .c97 {
+  .c96 {
     -webkit-order: 2;
     -ms-flex-order: 2;
     order: 2;
@@ -1776,13 +1771,13 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
 }
 
 @media screen and (min-width:852px) {
-  .c63 {
+  .c62 {
     margin-bottom: 0px;
   }
 }
 
 @media screen and (min-width:576px) {
-  .c78 {
+  .c77 {
     border-top-width: 0;
     border-bottom-width: 0;
     padding: 0 0;
@@ -1795,13 +1790,13 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
 }
 
 @media screen and (min-width:576px) {
-  .c49 {
+  .c48 {
     display: none;
   }
 }
 
 @media screen and (min-width:852px) {
-  .c45 {
+  .c44 {
     width: auto;
     display: -webkit-box;
     display: -webkit-flex;
@@ -2204,16 +2199,15 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
           height="100%"
         >
           <div
-            class="c26"
-            display="[object Object]"
+            class="_1c7dnup0 pkzlfc10i pkzlfc10 pkzlfc3"
           >
             <a
-              class="c27"
+              class="c26"
               href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
               target="_blank"
             >
               <svg
-                class="c28"
+                class="c27"
                 color="text"
                 viewBox="0 0 96 96"
                 width="24px"
@@ -2263,7 +2257,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                 </defs>
               </svg>
               <div
-                class="c29"
+                class="c28"
                 color="textSubtle"
                 font-size="16px"
               >
@@ -2272,17 +2266,17 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
             </a>
           </div>
           <div
-            class="c30"
+            class="c29"
           >
             <div
-              class="c31"
+              class="c30"
             >
               <button
-                class="c32"
+                class="c31"
                 scale="xs"
               >
                 <svg
-                  class="c33"
+                  class="c32"
                   color="textSubtle"
                   viewBox="0 0 24 24"
                   width="24px"
@@ -2294,143 +2288,143 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                 </svg>
               </button>
               <div
-                class="c34 c35"
+                class="c33 c34"
               >
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English0
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English1
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English2
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English3
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English4
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English5
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English6
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English7
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English8
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English9
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English10
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English11
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English12
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English13
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English14
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English15
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English16
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English17
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
                   English18
                 </button>
                 <button
-                  class="c36 c37"
+                  class="c35 c36"
                   scale="md"
                   style="min-height: 32px; height: auto;"
                 >
@@ -2443,13 +2437,13 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
       </nav>
     </div>
     <div
-      class="c38"
+      class="c37"
     >
       <div
-        class="c39 c3 c40 _1c7dnup0 pkzlfc10 pkzlfc1"
+        class="c38 c3 c39 _1c7dnup0 pkzlfc10 pkzlfc1"
       >
         <div
-          class="c41 _1c7dnup0 pkzlfc0 pkzlfc12"
+          class="c40 _1c7dnup0 pkzlfc0 pkzlfc12"
         >
           <svg
             class="c5"
@@ -2464,7 +2458,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
           </svg>
         </div>
         <div
-          class="c42 _1c7dnup0 pkzlfc0 pkzlfc12"
+          class="c41 _1c7dnup0 pkzlfc0 pkzlfc12"
         >
           <svg
             class="c5"
@@ -2479,16 +2473,16 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
           </svg>
         </div>
         <div
-          class="c43 c44 c45"
+          class="c42 c43 c44"
         >
           <div
-            class="c46 c47"
+            class="c45 c46"
           >
             <div
               class="c8"
             >
               <a
-                class="c48"
+                class="c47"
                 href="/swap"
               >
                 Exchange
@@ -2496,13 +2490,13 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
             </div>
           </div>
           <div
-            class="c46 c47"
+            class="c45 c46"
           >
             <div
               class="c8"
             >
               <a
-                class="c48"
+                class="c47"
                 href="/liquidity"
               >
                 Liquidity
@@ -2512,10 +2506,10 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
         </div>
       </div>
       <div
-        class="c39 c3 c49 _1c7dnup0 pkzlfc10 pkzlfc1"
+        class="c38 c3 c48 _1c7dnup0 pkzlfc10 pkzlfc1"
       >
         <div
-          class="c41 _1c7dnup0 pkzlfc0 pkzlfc12"
+          class="c40 _1c7dnup0 pkzlfc0 pkzlfc12"
         >
           <svg
             class="c5"
@@ -2530,7 +2524,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
           </svg>
         </div>
         <div
-          class="c42 _1c7dnup0 pkzlfc0 pkzlfc12"
+          class="c41 _1c7dnup0 pkzlfc0 pkzlfc12"
         >
           <svg
             class="c5"
@@ -2545,16 +2539,16 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
           </svg>
         </div>
         <div
-          class="c43 c50 c45"
+          class="c42 c49 c44"
         >
           <div
-            class="c46 c47"
+            class="c45 c46"
           >
             <div
               class="c8"
             >
               <a
-                class="c48"
+                class="c47"
                 href="/charts"
               >
                 Charts
@@ -2565,22 +2559,22 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
       </div>
     </div>
     <div
-      class="c51 c52"
+      class="c50 c51"
     >
       <div
-        class="c53"
+        class="c52"
       >
         body
         <div
-          class="c54 c55 c56"
+          class="c53 c54 c55"
           data-theme="dark"
         >
           <div
-            class="c57 c58"
+            class="c56 c57"
             width="100%,,1200px;"
           >
             <div
-              class="c59 c60"
+              class="c58 c59"
               display="block,,none"
             >
               <svg
@@ -2616,22 +2610,22 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
               </svg>
             </div>
             <div
-              class="c61 c62"
+              class="c60 c61"
               order="2,,1"
             >
               <ul
-                class="c63"
+                class="c62"
               >
                 <li
-                  class="c64"
+                  class="c63"
                 >
                   About
                 </li>
                 <li
-                  class="c64"
+                  class="c63"
                 >
                   <a
-                    class="c65 c66"
+                    class="c64 c65"
                     color="text"
                     data-theme="dark"
                     font-size="16px"
@@ -2643,10 +2637,10 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                 </li>
                 <li
-                  class="c64"
+                  class="c63"
                 >
                   <a
-                    class="c65 c66"
+                    class="c64 c65"
                     color="text"
                     data-theme="dark"
                     font-size="16px"
@@ -2658,10 +2652,10 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                 </li>
                 <li
-                  class="c64"
+                  class="c63"
                 >
                   <a
-                    class="c65 c66"
+                    class="c64 c65"
                     color="text"
                     data-theme="dark"
                     font-size="16px"
@@ -2673,10 +2667,10 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                 </li>
                 <li
-                  class="c64"
+                  class="c63"
                 >
                   <a
-                    class="c65 c66"
+                    class="c64 c65"
                     color="text"
                     data-theme="dark"
                     font-size="16px"
@@ -2688,19 +2682,19 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                 </li>
                 <li
-                  class="c64"
+                  class="c63"
                 >
                   <span
-                    class="c67"
+                    class="c66"
                   >
                     —
                   </span>
                 </li>
                 <li
-                  class="c64"
+                  class="c63"
                 >
                   <a
-                    class="c68 c66"
+                    class="c67 c65"
                     color="var(--colors-warning)"
                     data-theme="dark"
                     font-size="16px"
@@ -2713,18 +2707,18 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                 </li>
               </ul>
               <ul
-                class="c63"
+                class="c62"
               >
                 <li
-                  class="c64"
+                  class="c63"
                 >
                   Help
                 </li>
                 <li
-                  class="c64"
+                  class="c63"
                 >
                   <a
-                    class="c65 c66"
+                    class="c64 c65"
                     color="text"
                     data-theme="dark"
                     font-size="16px"
@@ -2736,10 +2730,10 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                 </li>
                 <li
-                  class="c64"
+                  class="c63"
                 >
                   <a
-                    class="c65 c66"
+                    class="c64 c65"
                     color="text"
                     data-theme="dark"
                     font-size="16px"
@@ -2751,10 +2745,10 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                 </li>
                 <li
-                  class="c64"
+                  class="c63"
                 >
                   <a
-                    class="c65 c66"
+                    class="c64 c65"
                     color="text"
                     data-theme="dark"
                     font-size="16px"
@@ -2767,18 +2761,18 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                 </li>
               </ul>
               <ul
-                class="c63"
+                class="c62"
               >
                 <li
-                  class="c64"
+                  class="c63"
                 >
                   Developers
                 </li>
                 <li
-                  class="c64"
+                  class="c63"
                 >
                   <a
-                    class="c65 c66"
+                    class="c64 c65"
                     color="text"
                     data-theme="dark"
                     font-size="16px"
@@ -2790,10 +2784,10 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                 </li>
                 <li
-                  class="c64"
+                  class="c63"
                 >
                   <a
-                    class="c65 c66"
+                    class="c64 c65"
                     color="text"
                     data-theme="dark"
                     font-size="16px"
@@ -2805,10 +2799,10 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                 </li>
                 <li
-                  class="c64"
+                  class="c63"
                 >
                   <a
-                    class="c65 c66"
+                    class="c64 c65"
                     color="text"
                     data-theme="dark"
                     font-size="16px"
@@ -2820,10 +2814,10 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                 </li>
                 <li
-                  class="c64"
+                  class="c63"
                 >
                   <a
-                    class="c65 c66"
+                    class="c64 c65"
                     color="text"
                     data-theme="dark"
                     font-size="16px"
@@ -2835,10 +2829,10 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                 </li>
                 <li
-                  class="c64"
+                  class="c63"
                 >
                   <a
-                    class="c65 c66"
+                    class="c64 c65"
                     color="text"
                     data-theme="dark"
                     font-size="16px"
@@ -2851,7 +2845,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                 </li>
               </ul>
               <div
-                class="c69"
+                class="c68"
                 display="none,,block"
               >
                 <svg
@@ -2888,13 +2882,13 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
               </div>
             </div>
             <div
-              class="c70 c71 c72"
+              class="c69 c70 c71"
               data-theme="dark"
               order="2"
             >
               <a
                 aria-label="Twitter"
-                class="c73 c66"
+                class="c72 c65"
                 color="primary"
                 font-size="16px"
                 href="https://twitter.com/pancakeswap"
@@ -2915,10 +2909,10 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                 </svg>
               </a>
               <div
-                class="c31"
+                class="c30"
               >
                 <svg
-                  class="c74"
+                  class="c73"
                   color="textSubtle"
                   style="cursor: pointer;"
                   viewBox="0 0 20 20"
@@ -2930,11 +2924,11 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   />
                 </svg>
                 <div
-                  class="c34 c75"
+                  class="c33 c74"
                 >
                   <a
                     aria-label="English"
-                    class="c29 c66"
+                    class="c28 c65"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/pancakeswap"
@@ -2945,7 +2939,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                   <a
                     aria-label="Bahasa Indonesia"
-                    class="c29 c66"
+                    class="c28 c65"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/PancakeSwapIndonesia"
@@ -2956,7 +2950,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                   <a
                     aria-label="中文"
-                    class="c29 c66"
+                    class="c28 c65"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/PancakeSwap_CN"
@@ -2967,7 +2961,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                   <a
                     aria-label="Tiếng Việt"
-                    class="c29 c66"
+                    class="c28 c65"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/PancakeSwapVN"
@@ -2978,7 +2972,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                   <a
                     aria-label="Italiano"
-                    class="c29 c66"
+                    class="c28 c65"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/pancakeswap_ita"
@@ -2989,7 +2983,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                   <a
                     aria-label="русский"
-                    class="c29 c66"
+                    class="c28 c65"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/pancakeswap_ru"
@@ -3000,7 +2994,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                   <a
                     aria-label="Türkiye"
-                    class="c29 c66"
+                    class="c28 c65"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/pancakeswapturkiye"
@@ -3011,7 +3005,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                   <a
                     aria-label="Português"
-                    class="c29 c66"
+                    class="c28 c65"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/PancakeSwapPortuguese"
@@ -3022,7 +3016,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                   <a
                     aria-label="Español"
-                    class="c29 c66"
+                    class="c28 c65"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/PancakeswapEs"
@@ -3033,7 +3027,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                   <a
                     aria-label="日本語"
-                    class="c29 c66"
+                    class="c28 c65"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/pancakeswapjp"
@@ -3044,7 +3038,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                   <a
                     aria-label="Français"
-                    class="c29 c66"
+                    class="c28 c65"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/pancakeswapfr"
@@ -3055,7 +3049,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                   <a
                     aria-label="Deutsch"
-                    class="c29 c66"
+                    class="c28 c65"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/PancakeSwap_DE"
@@ -3066,7 +3060,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                   <a
                     aria-label="Filipino"
-                    class="c29 c66"
+                    class="c28 c65"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/Pancakeswap_Ph"
@@ -3077,7 +3071,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                   <a
                     aria-label="ქართული ენა"
-                    class="c29 c66"
+                    class="c28 c65"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/PancakeSwapGeorgia"
@@ -3088,7 +3082,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                   <a
                     aria-label="हिन्दी"
-                    class="c29 c66"
+                    class="c28 c65"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/PancakeSwapINDIA"
@@ -3099,7 +3093,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                   <a
                     aria-label="Announcements"
-                    class="c29 c66"
+                    class="c28 c65"
                     color="textSubtle"
                     font-size="16px"
                     href="https://t.me/PancakeSwapAnn"
@@ -3112,7 +3106,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
               </div>
               <a
                 aria-label="Reddit"
-                class="c73 c66"
+                class="c72 c65"
                 color="primary"
                 font-size="16px"
                 href="https://reddit.com/r/pancakeswap"
@@ -3140,7 +3134,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
               </a>
               <a
                 aria-label="Instagram"
-                class="c73 c66"
+                class="c72 c65"
                 color="primary"
                 font-size="16px"
                 href="https://instagram.com/pancakeswap_official"
@@ -3165,7 +3159,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
               </a>
               <a
                 aria-label="Github"
-                class="c73 c66"
+                class="c72 c65"
                 color="primary"
                 font-size="16px"
                 href="https://github.com/pancakeswap/"
@@ -3189,7 +3183,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
               </a>
               <a
                 aria-label="Discord"
-                class="c73 c66"
+                class="c72 c65"
                 color="primary"
                 font-size="16px"
                 href="https://discord.gg/pancakeswap"
@@ -3211,7 +3205,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
               </a>
               <a
                 aria-label="Medium"
-                class="c76 c66"
+                class="c75 c65"
                 color="primary"
                 font-size="16px"
                 href="https://medium.com/pancakeswap"
@@ -3233,52 +3227,52 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
               </a>
             </div>
             <div
-              class="c77 c78"
+              class="c76 c77"
               data-theme="dark"
               order="1,,3"
             >
               <div
-                class="c79"
+                class="c78"
                 order="2,,1"
               >
                 <div
-                  class="c80"
+                  class="c79"
                   height="32px"
                   width="56px"
                 >
                   <div
-                    class="c81 disappear"
+                    class="c80 disappear"
                     style="position: absolute; top: 0px; left: 0px; transform: translateX(0px);"
                   >
                     <div
-                      class="c82 c83"
+                      class="c81 c82"
                       height="32px"
                       width="56px"
                     />
                   </div>
                   <div
-                    class="c81 appear"
+                    class="c80 appear"
                     style="transform: translateX(0px);"
                   >
                     <div
-                      class="c84"
+                      class="c83"
                       scale="md"
                     >
                       <input
-                        class="c85"
+                        class="c84"
                         scale="md"
                         type="checkbox"
                       />
                       <div
-                        class="c86 c87"
+                        class="c85 c86"
                         scale="md"
                       >
                         <div
-                          class="c24 c88"
+                          class="c24 c87"
                           height="100%"
                         >
                           <svg
-                            class="c89"
+                            class="c88"
                             color="warning"
                             viewBox="0 0 24 24"
                             width="20px"
@@ -3317,12 +3311,12 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                         </div>
                       </div>
                       <div
-                        class="c90 c91"
+                        class="c89 c90"
                         height="100%"
                         width="100%"
                       >
                         <svg
-                          class="c92"
+                          class="c91"
                           color="backgroundAlt"
                           viewBox="0 0 24 24"
                           width="20px"
@@ -3359,7 +3353,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                           />
                         </svg>
                         <svg
-                          class="c92"
+                          class="c91"
                           color="backgroundAlt"
                           viewBox="0 0 24 24"
                           width="20px"
@@ -3376,14 +3370,14 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </div>
                 </div>
                 <div
-                  class="c31"
+                  class="c30"
                 >
                   <button
-                    class="c93"
+                    class="c92"
                     scale="md"
                   >
                     <svg
-                      class="c33"
+                      class="c32"
                       color="textSubtle"
                       viewBox="0 0 24 24"
                       width="24px"
@@ -3394,7 +3388,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                       />
                     </svg>
                     <div
-                      class="c94"
+                      class="c93"
                       color="textSubtle"
                       font-size="16px"
                     >
@@ -3402,143 +3396,143 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                     </div>
                   </button>
                   <div
-                    class="c34 c95"
+                    class="c33 c94"
                   >
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English0
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English1
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English2
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English3
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English4
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English5
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English6
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English7
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English8
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English9
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English10
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English11
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English12
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English13
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English14
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English15
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English16
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English17
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
                       English18
                     </button>
                     <button
-                      class="c36 c37"
+                      class="c35 c36"
                       scale="md"
                       style="min-height: 32px; height: auto;"
                     >
@@ -3548,19 +3542,19 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                 </div>
               </div>
               <div
-                class="c96 c97"
+                class="c95 c96"
                 order="1,,2"
               >
                 <div
-                  class="c46"
+                  class="c45"
                 >
                   <a
-                    class="c27"
+                    class="c26"
                     href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
                     target="_blank"
                   >
                     <svg
-                      class="c28"
+                      class="c27"
                       color="text"
                       viewBox="0 0 96 96"
                       width="24px"
@@ -3610,7 +3604,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                       </defs>
                     </svg>
                     <div
-                      class="c29"
+                      class="c28"
                       color="textSubtle"
                       font-size="16px"
                     >
@@ -3619,7 +3613,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </a>
                 </div>
                 <a
-                  class="c98"
+                  class="c97"
                   data-theme="light"
                   href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
                   scale="sm"
@@ -3627,7 +3621,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                 >
                   Buy CAKE
                   <svg
-                    class="c99"
+                    class="c98"
                     color="backgroundAlt"
                     viewBox="0 0 24 24"
                     width="20px"
@@ -3648,7 +3642,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
       class="_1c7dnup0 pkzlfc0 pkzlfc12"
     >
       <div
-        class="c100 c38 c101"
+        class="c99 c37 c100"
       >
         <div
           class=""
@@ -3660,24 +3654,24 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
               class=""
             >
               <span
-                class="c102"
+                class="c101"
               >
                 <button
-                  class="c103"
+                  class="c102"
                   style="opacity: 1;"
                   type="button"
                 >
                   <div
-                    class="c24 c104"
+                    class="c24 c103"
                     height="100%"
                   >
                     <div
-                      class="c105"
+                      class="c104"
                       height="22px"
                       width="21px"
                     >
                       <div
-                        class="c106"
+                        class="c105"
                       >
                         <svg
                           class="c18"
@@ -3700,12 +3694,12 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                         </svg>
                       </div>
                       <div
-                        class="c106"
+                        class="c105"
                         height="22px"
                         width="21px"
                       >
                         <svg
-                          class="c107"
+                          class="c106"
                           color="secondary"
                           viewBox="0 0 20 20"
                           width="20px"
@@ -3721,7 +3715,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                       </div>
                     </div>
                     <div
-                      class="c108 c109"
+                      class="c107 c108"
                       color="textSubtle"
                       font-size="10px"
                       font-weight="400"
@@ -3731,14 +3725,14 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </div>
                 </button>
                 <span
-                  class="c110"
+                  class="c109"
                   color="failure"
                 />
               </span>
             </div>
           </div>
           <div
-            class="c111"
+            class="c110"
             style="position: absolute; left: 0px; top: 0px;"
           >
             <div
@@ -3773,24 +3767,24 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
               class=""
             >
               <span
-                class="c102"
+                class="c101"
               >
                 <button
-                  class="c103"
+                  class="c102"
                   style="opacity: 1;"
                   type="button"
                 >
                   <div
-                    class="c24 c104"
+                    class="c24 c103"
                     height="100%"
                   >
                     <div
-                      class="c105"
+                      class="c104"
                       height="22px"
                       width="21px"
                     >
                       <div
-                        class="c106"
+                        class="c105"
                       >
                         <svg
                           class="c18"
@@ -3819,12 +3813,12 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                         </svg>
                       </div>
                       <div
-                        class="c106"
+                        class="c105"
                         height="22px"
                         width="21px"
                       >
                         <svg
-                          class="c107"
+                          class="c106"
                           color="secondary"
                           viewBox="0 0 22 20"
                           width="20px"
@@ -3842,7 +3836,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                       </div>
                     </div>
                     <div
-                      class="c108 c109"
+                      class="c107 c108"
                       color="textSubtle"
                       font-size="10px"
                       font-weight="400"
@@ -3852,14 +3846,14 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </div>
                 </button>
                 <span
-                  class="c110"
+                  class="c109"
                   color="failure"
                 />
               </span>
             </div>
           </div>
           <div
-            class="c111"
+            class="c110"
             style="position: absolute; left: 0px; top: 0px;"
           >
             <div
@@ -3904,24 +3898,24 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
               class=""
             >
               <span
-                class="c102"
+                class="c101"
               >
                 <button
-                  class="c103"
+                  class="c102"
                   style="opacity: 1;"
                   type="button"
                 >
                   <div
-                    class="c24 c104"
+                    class="c24 c103"
                     height="100%"
                   >
                     <div
-                      class="c105"
+                      class="c104"
                       height="22px"
                       width="21px"
                     >
                       <div
-                        class="c106"
+                        class="c105"
                       >
                         <svg
                           class="c18"
@@ -3936,12 +3930,12 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                         </svg>
                       </div>
                       <div
-                        class="c106"
+                        class="c105"
                         height="22px"
                         width="21px"
                       >
                         <svg
-                          class="c107"
+                          class="c106"
                           color="secondary"
                           viewBox="0 0 18 20"
                           width="20px"
@@ -3956,7 +3950,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                       </div>
                     </div>
                     <div
-                      class="c108 c109"
+                      class="c107 c108"
                       color="textSubtle"
                       font-size="10px"
                       font-weight="400"
@@ -3966,14 +3960,14 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </div>
                 </button>
                 <span
-                  class="c112"
+                  class="c111"
                   color="failure"
                 />
               </span>
             </div>
           </div>
           <div
-            class="c111"
+            class="c110"
             style="position: absolute; left: 0px; top: 0px;"
           >
             <div
@@ -4025,24 +4019,24 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
               class=""
             >
               <span
-                class="c102"
+                class="c101"
               >
                 <button
-                  class="c103"
+                  class="c102"
                   style="opacity: 1;"
                   type="button"
                 >
                   <div
-                    class="c24 c104"
+                    class="c24 c103"
                     height="100%"
                   >
                     <div
-                      class="c113"
+                      class="c112"
                       height="22px"
                       width="21px"
                     >
                       <div
-                        class="c106"
+                        class="c105"
                       >
                         <svg
                           class="c18"
@@ -4058,7 +4052,7 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                       </div>
                     </div>
                     <div
-                      class="c108 c109"
+                      class="c107 c108"
                       color="textSubtle"
                       font-size="10px"
                       font-weight="400"
@@ -4066,14 +4060,14 @@ html[data-useragent*="TokenPocket_iOS"] .c100 {
                   </div>
                 </button>
                 <span
-                  class="c114"
+                  class="c113"
                   color="warning"
                 />
               </span>
             </div>
           </div>
           <div
-            class="c111"
+            class="c110"
             style="position: absolute; left: 0px; top: 0px;"
           >
             <div
