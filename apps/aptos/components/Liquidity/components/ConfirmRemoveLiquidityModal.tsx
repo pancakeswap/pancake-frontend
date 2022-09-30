@@ -63,7 +63,7 @@ const ConfirmRemoveLiquidityModal: React.FC<
     return (
       <AutoColumn gap="md">
         {parsedAmounts[Field.CURRENCY_A] && (
-          <RowBetween justifyContent="flex-end">
+          <RowBetween justifyContent="space-between">
             <Text fontSize="24px">{parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}</Text>
             <RowFixed gap="4px">
               <CurrencyLogo currency={currencyA} size="24px" />
@@ -79,7 +79,7 @@ const ConfirmRemoveLiquidityModal: React.FC<
           </RowFixed>
         )}
         {parsedAmounts[Field.CURRENCY_B] && (
-          <RowBetween justifyContent="flex-end">
+          <RowBetween justifyContent="space-between">
             <Text fontSize="24px">{parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)}</Text>
             <RowFixed gap="4px">
               <CurrencyLogo currency={currencyB} size="24px" />
