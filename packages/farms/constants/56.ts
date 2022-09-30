@@ -51,6 +51,34 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 106,
+    lpSymbol: 'MHUNT-BNB LP',
+    lpAddress: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
+    token: bscTokens.mhunt,
+    quoteToken: bscTokens.wbnb,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1664532000,
+  },
+  {
+    pid: 90,
+    v1pid: 520,
+    lpSymbol: 'PEX-BNB LP',
+    lpAddress: '0x5ca96E8bDe0Bc587DaC9e02422Fd205b1102DAa4',
+    token: bscTokens.pex,
+    quoteToken: bscTokens.wbnb,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1664532000,
+  },
+  {
+    pid: 117,
+    lpSymbol: 'SPIN-BNB LP',
+    lpAddress: '0x89c68051543Fa135B31c2CE7BD8Cdf392345FF01',
+    token: bscTokens.spin,
+    quoteToken: bscTokens.wbnb,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1664532000,
+  },
+  {
     pid: 122,
     lpSymbol: 'CO-BUSD LP',
     lpAddress: '0x800946D29e40199963100d67c9265B1725F80333',
@@ -74,15 +102,6 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: bscTokens.busd,
   },
   {
-    pid: 106,
-    lpSymbol: 'MHUNT-BNB LP',
-    lpAddress: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
-    token: bscTokens.mhunt,
-    quoteToken: bscTokens.wbnb,
-    isCommunity: true,
-    auctionHostingStartSeconds: 1663315200,
-  },
-  {
     pid: 119,
     lpSymbol: 'MONI-BNB LP',
     lpAddress: '0xbcfd0d4a37fEb4dceAAeFa9da28CD833E5f04e9f',
@@ -95,14 +114,6 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0x72121d60b0e2F01c0FB7FE32cA24021b42165A40',
     token: bscTokens.gq,
     quoteToken: bscTokens.busd,
-  },
-  {
-    pid: 117,
-    lpSymbol: 'SPIN-BNB LP',
-    lpAddress: '0x89c68051543Fa135B31c2CE7BD8Cdf392345FF01',
-    token: bscTokens.spin,
-    quoteToken: bscTokens.wbnb,
-    isCommunity: true,
   },
   {
     pid: 93,
@@ -120,7 +131,6 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.xcad,
     quoteToken: bscTokens.busd,
     isCommunity: true,
-    auctionHostingStartSeconds: 1662105600,
   },
   {
     pid: 116,
@@ -323,14 +333,6 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'TINC-BNB LP',
     lpAddress: '0x0d5b9A0f4315a4bcE36D1Ea7d6B6d3123167aFAa',
     token: bscTokens.tinc,
-    quoteToken: bscTokens.wbnb,
-  },
-  {
-    pid: 90,
-    v1pid: 520,
-    lpSymbol: 'PEX-BNB LP',
-    lpAddress: '0x5ca96E8bDe0Bc587DaC9e02422Fd205b1102DAa4',
-    token: bscTokens.pex,
     quoteToken: bscTokens.wbnb,
   },
   {
