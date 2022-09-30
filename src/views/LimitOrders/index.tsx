@@ -161,7 +161,7 @@ const LimitOrders = () => {
   const handlePercentInput = useCallback(
     (percent) => {
       if (maxAmountInput) {
-        handleInput(Field.INPUT, (Number(maxAmountInput.toExact()) * percent * 0.01).toString())
+        onUserInput(Field.INPUT, maxAmountInput.multiply(new Percent(percent, 100)).toExact())
       }
     },
     [maxAmountInput, handleInput],
