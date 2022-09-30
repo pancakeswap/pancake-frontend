@@ -55,9 +55,7 @@ export default function useBurnLiquidityInfo(
     tokenA &&
     // this condition is a short-circuit in the case where useTokenBalance updates sooner than useTotalSupply
     JSBI.greaterThanOrEqual(totalSupply.quotient, userLiquidity.quotient)
-      ? // @ts-ignore
-        // TODO: aptos after currency type merge
-        CurrencyAmount.fromRawAmount(tokenA, pair.getLiquidityValue(tokenA, totalSupply, userLiquidity, false).quotient)
+      ? CurrencyAmount.fromRawAmount(tokenA, pair.getLiquidityValue(tokenA, totalSupply, userLiquidity, false).quotient)
       : undefined
 
   const liquidityValueB =
@@ -67,9 +65,7 @@ export default function useBurnLiquidityInfo(
     tokenB &&
     // this condition is a short-circuit in the case where useTokenBalance updates sooner than useTotalSupply
     JSBI.greaterThanOrEqual(totalSupply.quotient, userLiquidity.quotient)
-      ? // @ts-ignore
-        // TODO: aptos after currency type merge
-        CurrencyAmount.fromRawAmount(tokenB, pair.getLiquidityValue(tokenB, totalSupply, userLiquidity, false).quotient)
+      ? CurrencyAmount.fromRawAmount(tokenB, pair.getLiquidityValue(tokenB, totalSupply, userLiquidity, false).quotient)
       : undefined
 
   const liquidityValues: { [Field.CURRENCY_A]?: CurrencyAmount<Token>; [Field.CURRENCY_B]?: CurrencyAmount<Token> } =

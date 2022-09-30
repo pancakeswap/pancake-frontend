@@ -88,7 +88,7 @@ export default function useAddLiquidityHanlder({
         })
       })
       .catch((err) => {
-        console.error(`Add Liquidity failed`, err, payload)
+        console.error(`Add Liquidity failed`, { err }, payload)
         setLiquidityState({
           attemptingTxn: false,
           liquidityErrorMessage:
