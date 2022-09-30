@@ -248,9 +248,9 @@ export const useBunnySpecialXmasContract = () => {
   return useMemo(() => getBunnySpecialXmasContract(signer), [signer])
 }
 
-export const useAnniversaryAchievementContract = () => {
-  const { data: signer } = useSigner()
-  return useMemo(() => getAnniversaryAchievementContract(signer), [signer])
+export const useAnniversaryAchievementContract = (withSignerIfPossible = true) => {
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
+  return useMemo(() => getAnniversaryAchievementContract(providerOrSigner), [providerOrSigner])
 }
 
 export const useNftSaleContract = () => {
