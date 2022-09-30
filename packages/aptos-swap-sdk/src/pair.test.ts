@@ -48,9 +48,9 @@ describe('Pair', () => {
         "decimals": 8,
         "isNative": false,
         "isToken": true,
-        "name": "Pancake LPs",
+        "name": "Pancake-BTC-SOL-LP",
         "projectLink": undefined,
-        "symbol": "Cake-BTC-SOL-LP",
+        "symbol": "Cake-LP",
       }
     `)
   })
