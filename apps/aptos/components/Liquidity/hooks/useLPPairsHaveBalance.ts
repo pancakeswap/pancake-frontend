@@ -1,7 +1,12 @@
 import { Pair, PAIR_LP_TYPE_TAG, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
 import { useMemo } from 'react'
 import { useAccount, useAccountResources } from '@pancakeswap/awgmi'
-import { COIN_STORE_TYPE_PREFIX, unwrapTypeArgFromString } from '@pancakeswap/awgmi/core'
+import {
+  COIN_STORE_TYPE_PREFIX,
+  unwrapTypeArgFromString,
+  createAccountResourceFilter,
+  CoinStoreResource,
+} from '@pancakeswap/awgmi/core'
 import { PairState, usePairsFromAddresses } from 'hooks/usePairs'
 
 function filterPair(v2Pairs): Pair[] {
@@ -15,6 +20,10 @@ interface LPPairsResponse {
   loading: boolean
 }
 
+const coinStoreLPfilter = createAccountResourceFilter<CoinStoreResource<typeof PAIR_LP_TYPE_TAG>>(
+  `${COIN_STORE_TYPE_PREFIX}<${PAIR_LP_TYPE_TAG}`,
+)
+
 export default function useLPPairsHaveBalance(): LPPairsResponse {
   const { account } = useAccount()
 
@@ -26,9 +35,7 @@ export default function useLPPairsHaveBalance(): LPPairsResponse {
     watch: true,
     address: account?.address,
     select(resource) {
-      return resource
-        .filter((r) => r.type.includes(`${COIN_STORE_TYPE_PREFIX}<${PAIR_LP_TYPE_TAG}`))
-        .filter(({ data }) => (data as { coin: { value: string } }).coin.value !== '0')
+      return resource.filter(coinStoreLPfilter).filter(({ data }) => data.coin.value !== '0')
     },
   })
 

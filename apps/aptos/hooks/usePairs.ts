@@ -11,6 +11,7 @@ import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'
 import { useCoins } from './Tokens'
 
+// TODO: aptos this will fetch all lp reserve under swap resource account, will eventually be huge
 function useFetchAllPairsReserves() {
   return useAccountResources({
     address: SWAP_RESOURCE_ADDRESS,
