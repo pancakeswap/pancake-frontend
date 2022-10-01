@@ -6,10 +6,12 @@ export const light: TooltipTheme = {
   background: darkColors.backgroundAlt,
   text: darkColors.text,
   boxShadow: vars.shadows.tooltip,
+  border: darkColors.secondary,
 };
 
 export const dark: TooltipTheme = {
   background: lightColors.backgroundAlt,
   text: lightColors.text,
   boxShadow: vars.shadows.tooltip,
+  border: darkColors.secondary,
 };
