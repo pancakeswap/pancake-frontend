@@ -1,5 +1,5 @@
 import { usePreloadImages } from '@pancakeswap/hooks'
-import { Trans, useTranslation } from '@pancakeswap/localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui/components/AtomBox'
 import {
   Button,
@@ -20,6 +20,8 @@ import clsx from 'clsx'
 import { atom, useAtom } from 'jotai'
 import { FC, lazy, PropsWithChildren, Suspense, useMemo, useState } from 'react'
 import { isMobile } from 'react-device-detect'
+import { StepIntro } from './components/Intro'
+import { getDocLink } from './docLangCodeMapping'
 import {
   desktopWalletSelectionClass,
   modalWrapperClass,
@@ -39,7 +41,7 @@ type DeviceLink = {
 
 type LinkOfDevice = string | DeviceLink
 
-export interface WalletConfigV2<T = unknown> {
+export type WalletConfigV2<T = unknown, ExtendedValue = unknown> = {
   id: string
   title: string
   icon: string | FC<React.PropsWithChildren<SvgProps>>
@@ -50,45 +52,12 @@ export interface WalletConfigV2<T = unknown> {
   downloadLink?: LinkOfDevice
   mobileOnly?: boolean
   qrCode?: () => Promise<string>
-}
+} & ExtendedValue
 
-interface WalletModalV2Props<T = unknown> extends ModalV2Props {
-  wallets: WalletConfigV2<T>[]
+interface WalletModalV2Props<T = unknown, ExtendedValue = unknown> extends ModalV2Props {
+  wallets: WalletConfigV2<T, ExtendedValue>[]
   login: (connectorId: T) => Promise<any>
 }
-
-const StepDot = ({ active, place, onClick }: { active: boolean; place: 'left' | 'right'; onClick: () => void }) => (
-  <AtomBox padding="4px" onClick={onClick} cursor="pointer">
-    <AtomBox
-      bgc={active ? 'secondary' : 'inputSecondary'}
-      width="56px"
-      height="8px"
-      borderLeftRadius={place === 'left' ? 'card' : '0'}
-      borderRightRadius={place === 'right' ? 'card' : '0'}
-    />
-  </AtomBox>
-)
-
-export const IntroSteps = [
-  {
-    title: <Trans>Your first step entering the defi world</Trans>,
-    icon: 'https://cdn.pancakeswap.com/wallets/wallet_intro.png',
-    description: (
-      <Trans>
-        A Web3 Wallet allows you to send and receive crypto assets like bitcoin, BNB, ETH, NFTs and much more.
-      </Trans>
-    ),
-  },
-  {
-    title: <Trans>Login using wallet connection</Trans>,
-    icon: 'https://cdn.pancakeswap.com/wallets/world_lock.png',
-    description: (
-      <Trans>
-        Instead of setting up new accounts and passwords for every website, simply connect your wallet in one go.
-      </Trans>
-    ),
-  },
-]
 
 export class WalletConnectorNotFoundError extends Error {}
 
@@ -98,61 +67,9 @@ const errorAtom = atom<string>('')
 
 const selectedWalletAtom = atom<WalletConfigV2<unknown> | null>(null)
 
-export function useSelectedWallet<T>() {
+export function useSelectedWallet<T, ExtendedValue = unknown>() {
   // @ts-ignore
-  return useAtom<WalletConfigV2<T> | null>(selectedWalletAtom)
-}
-
-const Tutorial = () => {
-  const {
-    t,
-    currentLanguage: { code },
-  } = useTranslation()
-  const [step, setStep] = useState(0)
-
-  const introStep = IntroSteps[step]
-
-  return (
-    <AtomBox
-      display="flex"
-      width="full"
-      flexDirection="column"
-      style={{ gap: '24px' }}
-      mx="auto"
-      my="48px"
-      textAlign="center"
-      alignItems="center"
-    >
-      {introStep && (
-        <>
-          <Heading as="h2" color="secondary">
-            {introStep.title}
-          </Heading>
-          <Image m="auto" src={introStep.icon} width={198} height={178} />
-          <Text maxWidth="368px" m="auto" small color="textSubtle">
-            {introStep.description}
-          </Text>
-        </>
-      )}
-      <AtomBox display="flex">
-        <StepDot place="left" active={step === 0} onClick={() => setStep(0)} />
-        <StepDot place="right" active={step === 1} onClick={() => setStep(1)} />
-      </AtomBox>
-      <Button
-        variant="subtle"
-        external
-        as={LinkExternal}
-        color="backgroundAlt"
-        href={
-          docLangCodeMapping[code]
-            ? `https://docs.pancakeswap.finance/v/${docLangCodeMapping[code]}/get-started/connection-guide`
-            : `https://docs.pancakeswap.finance/get-started/connection-guide`
-        }
-      >
-        {t('Learn How to Connect')}
-      </Button>
-    </AtomBox>
-  )
+  return useAtom<WalletConfigV2<T, ExtendedValue> | null>(selectedWalletAtom)
 }
 
 const TabContainer = ({ children }: PropsWithChildren) => {
@@ -180,21 +97,10 @@ const TabContainer = ({ children }: PropsWithChildren) => {
         width="full"
       >
         {index === 0 && children}
-        {index === 1 && <Tutorial />}
+        {index === 1 && <StepIntro />}
       </AtomBox>
     </AtomBox>
   )
-}
-
-const docLangCodeMapping: Record<string, string> = {
-  it: 'italian',
-  ja: 'japanese',
-  fr: 'french',
-  tr: 'turkish',
-  vi: 'vietnamese',
-  id: 'indonesian',
-  'zh-cn': 'chinese',
-  'pt-br': 'portuguese-brazilian',
 }
 
 function MobileModal<T>({
@@ -206,10 +112,10 @@ function MobileModal<T>({
     currentLanguage: { code },
   } = useTranslation()
 
-  const [selected] = useSelectedWallet<T>()
+  const [selected] = useSelectedWallet()
   const [error] = useAtom(errorAtom)
 
-  const walletsToShow: WalletConfigV2<T>[] = wallets.filter((w) => w.installed !== false || w.deepLink)
+  const walletsToShow: WalletConfigV2[] = wallets.filter((w) => w.installed !== false || w.deepLink)
 
   return (
     <AtomBox width="full">
@@ -250,17 +156,7 @@ function MobileModal<T>({
             {t('Haven’t got a crypto wallet yet?')}
           </Text>
         </AtomBox>
-        <Button
-          as="a"
-          href={
-            docLangCodeMapping[code]
-              ? `https://docs.pancakeswap.finance/v/${docLangCodeMapping[code]}/get-started/connection-guide`
-              : `https://docs.pancakeswap.finance/get-started/connection-guide`
-          }
-          variant="subtle"
-          width="100%"
-          external
-        >
+        <Button as="a" href={getDocLink(code)} variant="subtle" width="100%" external>
           {t('Learn How to Connect')}
         </Button>
       </AtomBox>
@@ -268,15 +164,15 @@ function MobileModal<T>({
   )
 }
 
-function WalletSelect<T>({
+function WalletSelect<T, D>({
   wallets,
   onClick,
   selected,
   displayCount = 5,
 }: {
-  wallets: WalletConfigV2<T>[]
+  wallets: WalletConfigV2<T, D>[]
   onClick: (wallet: WalletConfigV2<T>) => void
-  selected?: WalletConfigV2<T>
+  selected?: WalletConfigV2<T, D>
   displayCount?: number
 }) {
   const [showMore, setShowMore] = useState(false)
@@ -379,7 +275,6 @@ function DesktopModal<T>({
 }: Pick<WalletModalV2Props<T>, 'wallets'> & { connectWallet: (wallet: WalletConfigV2<T>) => void }) {
   const [selected] = useSelectedWallet<T>()
   const [error] = useAtom(errorAtom)
-  // const previousWallet = usePreviousValue(selected)
   const [qrCode, setQrCode] = useState<string | undefined>(undefined)
   const { t } = useTranslation()
 
@@ -463,7 +358,11 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
   const { t } = useTranslation()
 
   const imageSources = useMemo(
-    () => wallets.map((w) => w.icon).filter((icon) => typeof icon === 'string') as string[],
+    () =>
+      wallets
+        .map((w) => w.icon)
+        .filter((icon) => typeof icon === 'string')
+        .concat('https://cdn.pancakeswap.com/wallets/wallet_intro.png') as string[],
     [wallets],
   )
 
@@ -519,17 +418,8 @@ const Intro = () => {
         {t('Haven’t got a wallet yet?')}
       </Heading>
       <Image src="https://cdn.pancakeswap.com/wallets/wallet_intro.png" width={198} height={178} />
-      <Button
-        as={LinkExternal}
-        color="backgroundAlt"
-        variant="subtle"
-        href={
-          docLangCodeMapping[code]
-            ? `https://docs.pancakeswap.finance/v/${docLangCodeMapping[code]}/get-started/connection-guide`
-            : `https://docs.pancakeswap.finance/get-started/connection-guide`
-        }
-      >
-        Learn How to Connect
+      <Button as={LinkExternal} color="backgroundAlt" variant="subtle" href={getDocLink(code)}>
+        {t('Learn How to Connect')}
       </Button>
     </>
   )
