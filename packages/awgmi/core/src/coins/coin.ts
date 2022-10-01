@@ -1,7 +1,7 @@
 import { wrapCoinInfoTypeTag } from './coinInfo'
 import { getProvider } from '../provider'
 import { APT, APTOS_COIN } from '../constants'
-import { isAccountAddress } from '../utils'
+import { isAccountAddress, isHexStringEquals } from '../utils'
 
 export type FetchCoinArgs = {
   /** Network name to use for provider */
@@ -41,7 +41,7 @@ export type FetchCoinResult = {
 export async function fetchCoin({ networkName, coin }: FetchCoinArgs): Promise<FetchCoinResult> {
   const provider = getProvider({ networkName })
 
-  if (coin && coin !== APTOS_COIN) {
+  if (coin && !isHexStringEquals(coin, APTOS_COIN)) {
     const [coinAccountAddress] = coin.split('::')
     if (isAccountAddress(coinAccountAddress)) {
       const coinResource = await provider.getAccountResource(coinAccountAddress, wrapCoinInfoTypeTag(coin))

@@ -1,5 +1,5 @@
 import { AptosCoin, Coin, CurrencyAmount, Token } from '@pancakeswap/aptos-swap-sdk'
-import { APTOS_COIN, useAccount, useAccountBalance } from '@pancakeswap/awgmi'
+import { APTOS_COIN, useAccount, useAccountBalance, isHexStringEquals } from '@pancakeswap/awgmi'
 import { useAllTokens } from './Tokens'
 import useNativeCurrency from './useNativeCurrency'
 import { useActiveChainId } from './useNetwork'
@@ -19,7 +19,7 @@ export function useCurrencyBalanceWithLoading(coinId?: string) {
       if (coinId && d) {
         const currency = allTokens[coinId]
           ? allTokens[coinId]
-          : coinId === APTOS_COIN
+          : isHexStringEquals(coinId, APTOS_COIN)
           ? native
           : new Coin(chainId, coinId, d.decimals, d.symbol)
         return CurrencyAmount.fromRawAmount(currency, d.value)

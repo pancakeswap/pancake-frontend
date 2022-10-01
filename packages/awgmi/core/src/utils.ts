@@ -1,4 +1,4 @@
-import { TxnBuilderTypes } from 'aptos'
+import { HexString, TxnBuilderTypes } from 'aptos'
 import { Address } from './types'
 
 export const isAccountAddress = (addr: string): addr is Address => {
@@ -27,4 +27,8 @@ export const unwrapTypeArgFromString = (type: string) => {
     return match[0]
   }
   return undefined
+}
+
+export function isHexStringEquals(hexString0: string, hexString1: string) {
+  return new HexString(hexString0).toShortString() === new HexString(hexString1).toShortString()
 }

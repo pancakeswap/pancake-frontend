@@ -11,9 +11,7 @@ export function useAuth() {
       await connectAsync({ connector: findConnector })
     } catch (error) {
       console.error(error)
-      // if (error instanceof ConnectorNotFoundError) {
-      //   return
-      // }
+      // TODO: error handling
     }
   }
 

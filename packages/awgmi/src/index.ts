@@ -1,6 +1,22 @@
-import { defaultChain, defaultChains, APTOS_COIN } from '@pancakeswap/awgmi/core'
+import {
+  defaultChain,
+  defaultChains,
+  APTOS_COIN,
+  isHexStringEquals,
+  isAccountAddress,
+  isPendingTransaction,
+  isUserTransaction,
+} from '@pancakeswap/awgmi/core'
 
-export { defaultChain, defaultChains, APTOS_COIN }
+export {
+  defaultChain,
+  defaultChains,
+  APTOS_COIN,
+  isHexStringEquals,
+  isAccountAddress,
+  isPendingTransaction,
+  isUserTransaction,
+}
 export * from './client'
 export * from './context'
 export * from './hooks/useAccount'

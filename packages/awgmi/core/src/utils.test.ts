@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isAccountAddress, unwrapTypeArgFromString, unwrapTypeFromString } from './utils'
+import { isAccountAddress, unwrapTypeArgFromString, unwrapTypeFromString, isHexStringEquals } from './utils'
 
 describe('utils isAccountAddress', () => {
   const validCases = [
@@ -81,5 +81,14 @@ describe('utils unwrapStrutTagTypeArgFromString', () => {
       ]
     `,
     )
+  })
+})
+
+describe('isHexStringEquals', () => {
+  it('is equals', () => {
+    expect(isHexStringEquals('0x123', '0x0000123')).toBeTruthy()
+    expect(isHexStringEquals('0x123', '0x0003123')).toBeFalsy()
+    expect(isHexStringEquals('0x123', '0x1::aptos_coin::AptosCoin')).toBeFalsy()
+    expect(isHexStringEquals('0x00000000001::aptos_coin::AptosCoin', '0x1::aptos_coin::AptosCoin')).toBeTruthy()
   })
 })

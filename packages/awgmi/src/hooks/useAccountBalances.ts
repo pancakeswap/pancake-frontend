@@ -5,6 +5,7 @@ import {
   FetchCoinResult,
   unwrapTypeFromString,
   wrapCoinStoreTypeTag,
+  isHexStringEquals,
 } from '@pancakeswap/awgmi/core'
 import { UseQueryResult } from '@tanstack/react-query'
 import { useMemo } from 'react'
@@ -66,7 +67,7 @@ export function useAccountBalances<TData = unknown>({
       () =>
         (Object.keys(data ?? {})
           .map((d) => unwrapTypeFromString(d))
-          .filter((d) => (coinFilter ? coinFilter === d : true))
+          .filter((d) => (coinFilter && d ? isHexStringEquals(coinFilter, d) : true))
           .filter(Boolean) ?? []) as string[],
       [coinFilter, data],
     ),

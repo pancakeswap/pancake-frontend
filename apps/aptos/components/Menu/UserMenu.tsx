@@ -101,7 +101,7 @@ const UserMenu = () => {
   }
 
   return (
-    <ConnectWalletButton scale="sm">
+    <ConnectWalletButton scale="sm" width="auto">
       <Box display={['none', null, null, 'block']}>
         <Trans>Connect Wallet</Trans>
       </Box>

@@ -1,6 +1,7 @@
 // most of the code is duplicated, let's refactor it later
 
 import { ChainId } from '@pancakeswap/aptos-swap-sdk'
+import { HexString } from 'aptos'
 import { TokenList } from '@uniswap/token-lists'
 import { DEFAULT_LIST_OF_LISTS, OFFICIAL_LISTS, WARNING_LIST_URLS } from 'config/constants/lists'
 import { atom, useAtomValue } from 'jotai'
@@ -123,7 +124,7 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
   if (result) return result
 
   const tokenMap: WrappedTokenInfo[] = uniqBy(
-    list.tokens,
+    list.tokens.map((token) => ({ ...token, address: new HexString(token.address).toShortString() })),
     (tokenInfo) => `${tokenInfo.chainId}#${tokenInfo.address}`,
   ).map((tokenInfo) => {
     const tags: TagInfo[] =
