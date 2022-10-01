@@ -4,7 +4,7 @@ import { splitSignature } from '@ethersproject/bytes'
 import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
-import { Currency, Percent, WNATIVE, ChainId, Percent } from '@pancakeswap/sdk'
+import { Currency, Percent, WNATIVE, ChainId } from '@pancakeswap/sdk'
 import {
   Button,
   Text,
