@@ -707,7 +707,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
                 value={formattedAmounts[Field.LIQUIDITY]}
                 onUserInput={onLiquidityInput}
                 onPercentInput={(percent) => {
-                  onUserInput(Field.LIQUIDITY_PERCENT, percent)
+                  onUserInput(Field.LIQUIDITY_PERCENT, percent.toString())
                 }}
                 onMax={() => {
                   onUserInput(Field.LIQUIDITY_PERCENT, '100')
@@ -743,7 +743,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
                 value={formattedAmounts[Field.CURRENCY_A]}
                 onUserInput={onCurrencyAInput}
                 onPercentInput={(percent) => {
-                  onUserInput(Field.LIQUIDITY_PERCENT, percent)
+                  onUserInput(Field.LIQUIDITY_PERCENT, percent.toString())
                 }}
                 onMax={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
                 showQuickInputButton
