@@ -4,7 +4,7 @@ import { splitSignature } from '@ethersproject/bytes'
 import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
-import { Currency, Percent, WNATIVE, ChainId } from '@pancakeswap/sdk'
+import { Currency, Percent, WNATIVE, ChainId, Percent } from '@pancakeswap/sdk'
 import {
   Button,
   Text,
@@ -706,9 +706,13 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
               <CurrencyInputPanel
                 value={formattedAmounts[Field.LIQUIDITY]}
                 onUserInput={onLiquidityInput}
+                onPercentInput={(percent) => {
+                  onUserInput(Field.LIQUIDITY_PERCENT, percent)
+                }}
                 onMax={() => {
                   onUserInput(Field.LIQUIDITY_PERCENT, '100')
                 }}
+                showQuickInputButton
                 showMaxButton={!atMaxAmount}
                 disableCurrencySelect
                 currency={pair?.liquidityToken}
@@ -738,7 +742,11 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
                 disabled={isZap && !removalCheckedA}
                 value={formattedAmounts[Field.CURRENCY_A]}
                 onUserInput={onCurrencyAInput}
+                onPercentInput={(percent) => {
+                  onUserInput(Field.LIQUIDITY_PERCENT, percent)
+                }}
                 onMax={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
+                showQuickInputButton
                 showMaxButton={!atMaxAmount}
                 currency={currencyA}
                 label={t('Output')}
