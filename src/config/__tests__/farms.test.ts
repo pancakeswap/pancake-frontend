@@ -2,6 +2,8 @@ import farms56 from '@pancakeswap/farms/constants/56'
 import farms1 from '@pancakeswap/farms/constants/1'
 import { SerializedFarm } from 'state/types'
 import { getLpContract } from 'utils/contractHelpers'
+import { ChainId } from '@pancakeswap/sdk'
+import { SerializedFarmConfig } from '@pancakeswap/farms'
 
 // Test only against the last 10 farms, for performance concern
 const farmsToTest: [number, SerializedFarm, number][] = farms56
@@ -12,14 +14,31 @@ const farmsToTest: [number, SerializedFarm, number][] = farms56
 
 const farms1ToTest: [number, SerializedFarm, number][] = farms1.slice(0, 10).map((farm) => [farm.pid, farm, 1])
 
+let logged = false
+export const getFarmConfig = async (chainId: ChainId) => {
+  try {
+    return (await import(`../../../packages/farms/constants/${chainId}`)).default.filter(
+      (f: SerializedFarmConfig) => f.pid !== null,
+    ) as SerializedFarmConfig[]
+  } catch (error) {
+    if (!logged) {
+      console.error('Cannot get farm config', error, chainId)
+      logged = true
+    }
+    return []
+  }
+}
+
 describe('Config farms', () => {
-  it.each([...farmsToTest, ...farms1ToTest])('Farm #%d has an unique pid', (pid) => {
-    const duplicates = farms56.filter((f) => pid === f.pid)
+  it.each([...farmsToTest, ...farms1ToTest])('Farm #%d has an unique pid', async (pid, farm, chainId) => {
+    const farmConfig = await getFarmConfig(chainId)
+    const duplicates = farmConfig.filter((f) => pid === f.pid)
     expect(duplicates).toHaveLength(1)
   })
 
-  it.each([...farmsToTest, ...farms1ToTest])('Farm #%d has an unique address', (pid, farm) => {
-    const duplicates = farms56.filter((f) => farm.lpAddress === f.lpAddress)
+  it.each([...farmsToTest, ...farms1ToTest])('Farm #%d has an unique address', async (pid, farm, chainId) => {
+    const farmConfig = await getFarmConfig(chainId)
+    const duplicates = farmConfig.filter((f) => farm.lpAddress === f.lpAddress)
     expect(duplicates).toHaveLength(1)
   })
 
