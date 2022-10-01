@@ -1505,7 +1505,7 @@
   "An error occurred when trying to execute this operation. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.": "An error occurred when trying to execute this operation. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.",
   "Unknown error%reason%. Try increasing your slippage tolerance.": "Unknown error%reason%. Try increasing your slippage tolerance.",
   "Unexpected issue with estimating the gas. Please try again.": "Unexpected issue with estimating the gas. Please try again.",
-  "Swap failed: %message%": "Swap failed: %message%",
+  "Transaction rejected.": "Transaction rejected.",
   "Unexpected error. Could not estimate gas for the swap.": "Unexpected error. Could not estimate gas for the swap.",
   "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "Farm Auction",

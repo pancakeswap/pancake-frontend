@@ -23,6 +23,7 @@ import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import { useSwapCallArguments } from 'hooks/useSwapCallArguments'
 
+import { getErrorReasonFromTransactionError } from 'utils/transactionErrorToUserReadableMessage'
 import ConfirmSwapModal from './ConfirmSwapModal'
 import ProgressSteps from './ProgressSteps'
 import { SwapCallbackError } from './styleds'
@@ -126,7 +127,7 @@ export default function SwapCommitButton({
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
-          swapErrorMessage: error.message,
+          swapErrorMessage: getErrorReasonFromTransactionError(error),
           txHash: undefined,
         })
       })

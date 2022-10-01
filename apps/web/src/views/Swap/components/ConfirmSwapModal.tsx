@@ -11,15 +11,20 @@ import { TransactionSubmittedContent } from 'components/TransactionConfirmationM
 import { useTranslation } from '@pancakeswap/localization'
 import { Field } from 'state/swap/actions'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import TransactionConfirmSwapContent from './TransactionConfirmSwapContent'
 import ConfirmSwapModalContainer from './ConfirmSwapModalContainer'
 import { StableTrade } from '../StableSwap/hooks/useStableTradeExactIn'
 
-const PancakeRouterSlippageErrorMsg =
-  'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.'
+const SLIPPAGE_ERRORS = [
+  'PancakeRouter: INSUFFICIENT_OUTPUT_AMOUNT',
+  'PancakeRouter: EXCESSIVE_INPUT_AMOUNT',
+  'PancakeRouter: INSUFFICIENT_A_AMOUNT',
+  'PancakeRouter: INSUFFICIENT_B_AMOUNT',
+]
 
 const SwapTransactionErrorContent = ({ onDismiss, message, openSettingModal }) => {
-  const isSlippagedErrorMsg = message?.includes(PancakeRouterSlippageErrorMsg)
+  const isSlippagedErrorMsg = SLIPPAGE_ERRORS.find((slippageError) => message?.includes(slippageError))
 
   const handleErrorDismiss = useCallback(() => {
     onDismiss?.()
@@ -51,7 +56,7 @@ const SwapTransactionErrorContent = ({ onDismiss, message, openSettingModal }) =
       }
     />
   ) : (
-    <TransactionErrorContent message={message} onDismiss={onDismiss} />
+    <TransactionErrorContent message={transactionErrorToUserReadableMessage(message, t)} onDismiss={onDismiss} />
   )
 }
 

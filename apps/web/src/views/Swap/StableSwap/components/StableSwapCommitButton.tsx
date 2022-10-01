@@ -14,6 +14,7 @@ import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { useCallback, useEffect, useState } from 'react'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 
+import { getErrorReasonFromTransactionError } from 'utils/transactionErrorToUserReadableMessage'
 import ConfirmSwapModal from '../../components/ConfirmSwapModal'
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
@@ -86,7 +87,7 @@ export default function StableSwapCommitButton({
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
-          swapErrorMessage: error.message,
+          swapErrorMessage: getErrorReasonFromTransactionError(error),
           txHash: undefined,
         })
       })

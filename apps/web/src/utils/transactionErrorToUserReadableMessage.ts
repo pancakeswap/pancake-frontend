@@ -1,12 +1,6 @@
 import { TranslateFunction } from '@pancakeswap/localization'
 
-/**
- * This is hacking out the revert reason from the ethers provider thrown error however it can.
- * This object seems to be undocumented by ethers.
- * @param error an error from the ethers provider
- * @param t Translation function
- */
-export function transactionErrorToUserReadableMessage(error: any, t: TranslateFunction) {
+export function getErrorReasonFromTransactionError(error: any): string {
   let reason: string | undefined
   while (error) {
     reason = error.reason ?? error.data?.message ?? error.message ?? reason
@@ -15,6 +9,22 @@ export function transactionErrorToUserReadableMessage(error: any, t: TranslateFu
   }
 
   if (reason?.indexOf('execution reverted: ') === 0) reason = reason.substring('execution reverted: '.length)
+  return reason
+}
+
+/**
+ * This is hacking out the revert reason from the ethers provider thrown error however it can.
+ * This object seems to be undocumented by ethers.
+ * @param error an error from the ethers provider
+ * @param t Translation function
+ */
+export function transactionErrorToUserReadableMessage(error: any, t: TranslateFunction) {
+  let reason: string | undefined
+  if (typeof error === 'string') {
+    reason = error
+  } else {
+    reason = getErrorReasonFromTransactionError(error)
+  }
 
   const formatErrorMessage = (message: string) => [message, `(${reason})`].join(' ')
   switch (reason) {
@@ -41,9 +51,14 @@ export function transactionErrorToUserReadableMessage(error: any, t: TranslateFu
       return formatErrorMessage(
         t('The output token cannot be transferred. There may be an issue with the output token.'),
       )
+    case 'Unexpected issue with estimating the gas. Please try again.':
+      return formatErrorMessage(t('Unexpected issue with estimating the gas. Please try again.'))
+    case 'Unexpected error. Could not estimate gas for the swap.':
+      return formatErrorMessage(t('Unexpected error. Could not estimate gas for the swap.'))
+    case 'Transaction rejected.':
+      return formatErrorMessage(t('Transaction rejected.'))
     default:
       if (reason?.indexOf('undefined is not an object') !== -1) {
-        console.error(error, reason)
         return t(
           'An error occurred when trying to execute this operation. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.',
         )

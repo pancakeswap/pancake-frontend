@@ -1,6 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
-import { useTranslation } from '@pancakeswap/localization'
 import { SwapParameters, TradeType } from '@pancakeswap/sdk'
 import isZero from '@pancakeswap/utils/isZero'
 import truncateHash from '@pancakeswap/utils/truncateHash'
@@ -14,7 +13,6 @@ import { INITIAL_ALLOWED_SLIPPAGE } from '../config/constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { calculateGasMargin, isAddress } from '../utils'
 import { basisPointsToPercent } from '../utils/exchange'
-import { transactionErrorToUserReadableMessage } from '../utils/transactionErrorToUserReadableMessage'
 
 export enum SwapCallbackState {
   INVALID,
@@ -49,8 +47,6 @@ export function useSwapCallback(
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId } = useActiveWeb3React()
   const gasPrice = useGasPrice()
-
-  const { t } = useTranslation()
 
   const addTransaction = useTransactionAdder()
 
@@ -91,12 +87,12 @@ export function useSwapCallback(
                 return contract.callStatic[methodName](...args, options)
                   .then((result) => {
                     console.error('Unexpected successful call after failed estimate gas', call, gasError, result)
-                    return { call, error: t('Unexpected issue with estimating the gas. Please try again.') }
+                    return { call, error: Error('Unexpected issue with estimating the gas. Please try again.') }
                   })
                   .catch((callError) => {
                     console.error('Call threw error', call, callError)
 
-                    return { call, error: transactionErrorToUserReadableMessage(callError, t) }
+                    return { call, error: callError }
                   })
               })
           }),
@@ -110,8 +106,8 @@ export function useSwapCallback(
 
         if (!successfulEstimation) {
           const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
-          if (errorCalls.length > 0) throw new Error(errorCalls[errorCalls.length - 1].error)
-          throw new Error(t('Unexpected error. Could not estimate gas for the swap.'))
+          if (errorCalls.length > 0) throw errorCalls[errorCalls.length - 1].error
+          throw new Error('Unexpected error. Could not estimate gas for the swap.')
         }
 
         const {
@@ -194,11 +190,11 @@ export function useSwapCallback(
             } else {
               // otherwise, the error was unexpected and we need to convey that
               console.error(`Swap failed`, error, methodName, args, value)
-              throw new Error(t('Swap failed: %message%', { message: transactionErrorToUserReadableMessage(error, t) }))
+              throw error
             }
           })
       },
       error: null,
     }
-  }, [trade, account, chainId, recipient, recipientAddress, swapCalls, gasPrice, t, addTransaction, allowedSlippage])
+  }, [trade, account, chainId, recipient, recipientAddress, swapCalls, gasPrice, addTransaction, allowedSlippage])
 }

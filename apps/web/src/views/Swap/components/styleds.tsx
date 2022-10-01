@@ -1,5 +1,7 @@
 import { ErrorIcon, Flex, Text, AutoColumn } from '@pancakeswap/uikit'
 import styled, { css } from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
+import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 
 export const Wrapper = styled(Flex)`
   position: relative;
@@ -93,12 +95,13 @@ const SwapCallbackErrorInnerAlertTriangle = styled.div`
 `
 
 export function SwapCallbackError({ error }: { error: string }) {
+  const { t } = useTranslation()
   return (
     <SwapCallbackErrorInner>
       <SwapCallbackErrorInnerAlertTriangle>
         <ErrorIcon width="24px" />
       </SwapCallbackErrorInnerAlertTriangle>
-      <p>{error}</p>
+      <p>{transactionErrorToUserReadableMessage(error, t)}</p>
     </SwapCallbackErrorInner>
   )
 }
