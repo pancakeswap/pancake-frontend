@@ -1,5 +1,6 @@
 import { Currency, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
 import { useCoin } from '@pancakeswap/awgmi'
+import { useMemo } from 'react'
 
 // returns undefined if input token is undefined, or fails to get token contract,
 // or contract total supply cannot be fetched
@@ -9,14 +10,14 @@ export function useTotalSupply(token?: Currency): CurrencyAmount<Currency> | und
     staleTime: 0,
     watch: true,
     select: (d) => {
-      if (token && d.supply) {
-        return CurrencyAmount.fromRawAmount(token.wrapped, d.supply)
-      }
-      return undefined
+      return d?.supply
     },
   })
 
-  return data
+  return useMemo(
+    () => (token?.wrapped && data ? CurrencyAmount.fromRawAmount(token.wrapped, data) : undefined),
+    [data, token?.wrapped],
+  )
 }
 
 export default useTotalSupply

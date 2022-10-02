@@ -4,7 +4,7 @@ import withLPValues from '../hocs/withLPValues'
 
 const { LoadingDot, NoLiquidity, FullPositionCard } = LiquidityUI
 
-const PositionCard = withLPValues(FullPositionCard)
+const FullPositionCardContainer = withLPValues(FullPositionCard)
 
 export default function LiquidityList() {
   const { data: tokenPairs, loading } = useLPPairsHaveBalance()
@@ -25,7 +25,7 @@ export default function LiquidityList() {
   return (
     <>
       {tokenPairs.map((v2Pair, index) => (
-        <PositionCard
+        <FullPositionCardContainer
           key={v2Pair?.liquidityToken?.address}
           pair={v2Pair}
           mb={index < tokenPairs.length - 1 ? '16px' : '0'}

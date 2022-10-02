@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { JSBI, Percent } from "@pancakeswap/swap-sdk-core";
 import styled from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
@@ -52,7 +52,7 @@ interface PositionCardProps extends CardProps {
   removeTo?: any;
 }
 
-export function MinimalPositionCardView({
+function MinimalPositionCardView({
   currency0,
   currency1,
   token0Deposited,
@@ -162,7 +162,7 @@ export function MinimalPositionCardView({
   );
 }
 
-export function FullPositionCard({
+function FullPositionCardView({
   currency0,
   currency1,
   token0Deposited,
@@ -282,3 +282,6 @@ export function FullPositionCard({
     </Card>
   );
 }
+
+export const FullPositionCard = memo(FullPositionCardView);
+export const MinimalPositionCard = memo(MinimalPositionCardView);

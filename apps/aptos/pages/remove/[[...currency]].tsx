@@ -14,9 +14,9 @@ import useCurrencySelectRoute from 'components/Liquidity/hooks/useCurrencySelect
 import { usePair } from 'hooks/usePairs'
 import { useMemo } from 'react'
 
-const { LiquidityCard, MinimalPositionCardView } = LiquidityUI
+const { LiquidityCard, MinimalPositionCard } = LiquidityUI
 
-const MinimalPositionCard = withLPValues(MinimalPositionCardView)
+const MinimalPositionCardContainer = withLPValues(MinimalPositionCard)
 
 const RemoveLiquidityPage = () => {
   const { t } = useTranslation()
@@ -108,7 +108,7 @@ const RemoveLiquidityPage = () => {
       </LiquidityCard>
       {pair ? (
         <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
-          <MinimalPositionCard pair={pair} />
+          <MinimalPositionCardContainer pair={pair} />
         </AutoColumn>
       ) : null}
     </>

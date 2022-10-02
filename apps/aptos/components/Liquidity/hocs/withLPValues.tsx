@@ -1,7 +1,7 @@
 import multiplyPriceByAmount from '@pancakeswap/utils/multiplyPriceByAmount'
 
 import { Coin, JSBI, Pair, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
-import { memo, useMemo } from 'react'
+import { memo, useEffect, useMemo } from 'react'
 import { useCurrencyBalance } from 'hooks/Balances'
 import useTotalSupply from 'hooks/useTotalSupply'
 import currencyId from 'utils/currencyId'
@@ -14,7 +14,7 @@ export function useBUSDPrice(currency?: Coin): Price<Coin, Coin> | undefined {
 }
 
 const useTokensDeposited = ({ pair, totalPoolTokens, userPoolBalance }) => {
-  const [token0Deposited, token1Deposited] = useMemo(() => {
+  return useMemo(() => {
     return !!pair &&
       !!totalPoolTokens &&
       !!userPoolBalance &&
@@ -26,8 +26,6 @@ const useTokensDeposited = ({ pair, totalPoolTokens, userPoolBalance }) => {
         ]
       : [undefined, undefined]
   }, [totalPoolTokens, userPoolBalance, pair])
-
-  return [token0Deposited, token1Deposited]
 }
 
 const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1Deposited }) => {
@@ -46,11 +44,15 @@ const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1Deposit
 }
 
 const usePoolTokenPercentage = ({ userPoolBalance, totalPoolTokens }) => {
-  return !!userPoolBalance &&
-    !!totalPoolTokens &&
-    JSBI.greaterThanOrEqual(totalPoolTokens.quotient, userPoolBalance.quotient)
-    ? new Percent(userPoolBalance.quotient, totalPoolTokens.quotient)
-    : undefined
+  return useMemo(
+    () =>
+      !!userPoolBalance &&
+      !!totalPoolTokens &&
+      JSBI.greaterThanOrEqual(totalPoolTokens.quotient, userPoolBalance.quotient)
+        ? new Percent(userPoolBalance.quotient, totalPoolTokens.quotient)
+        : undefined,
+    [userPoolBalance, totalPoolTokens],
+  )
 }
 
 const withLPValues = (Component) =>

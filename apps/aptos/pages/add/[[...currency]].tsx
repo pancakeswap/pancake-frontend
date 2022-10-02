@@ -1,6 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Liquidity as LiquidityUI } from '@pancakeswap/uikit'
-import { MinimalPositionCardView } from '@pancakeswap/uikit/src/widgets/Liquidity'
 
 import { ExchangeLayout } from 'components/Layout/ExchangeLayout'
 import AddLiquidityForm from 'components/Liquidity/components/AddLiquidityForm'
@@ -19,7 +18,7 @@ enum Steps {
   Add,
 }
 
-const MinimalPositionCard = withLPValues(MinimalPositionCardView)
+const MinimalPositionCardContainer = withLPValues(LiquidityUI.MinimalPositionCard)
 
 const AddLiquidityPage = () => {
   const { t } = useTranslation()
@@ -64,7 +63,7 @@ const AddLiquidityPage = () => {
       </LiquidityUI.LiquidityCard>
       {pair && !noLiquidity && pairState !== PairState.INVALID ? (
         <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
-          <MinimalPositionCard pair={pair} />
+          <MinimalPositionCardContainer pair={pair} />
         </AutoColumn>
       ) : null}
     </>

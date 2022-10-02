@@ -62,7 +62,7 @@ export function usePairsFromAddresses(addresses: string[]) {
       }
       return [PairState.NOT_EXISTS, null]
     })
-  }, [coinsResults, addresses, data])
+  }, [addresses, data, coinsResults])
 }
 
 export enum PairState {
