@@ -80,17 +80,17 @@ const getAuctionStatus = (
 }
 
 const getDateForBlock = async (currentBlock: number, block: number) => {
-  const blocksUntilBlock = block - currentBlock
-  const secondsUntilStart = blocksUntilBlock * BSC_BLOCK_TIME
   // if block already happened we can get timestamp via .getBlock(block)
   if (currentBlock > block) {
     try {
       const { timestamp } = await bscRpcProvider.getBlock(block)
       return toDate(timestamp * 1000)
-    } catch {
-      add(new Date(), { seconds: secondsUntilStart })
+    } finally {
+      // Use logic below
     }
   }
+  const blocksUntilBlock = block - currentBlock
+  const secondsUntilStart = blocksUntilBlock * BSC_BLOCK_TIME
   return add(new Date(), { seconds: secondsUntilStart })
 }
 

@@ -16,7 +16,8 @@ import { Ifo, PoolIds } from 'config/constants/types'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useERC20 } from 'hooks/useContract'
 import { useIsWindowVisible } from '@pancakeswap/hooks'
-import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
+import useSWRImmutable from 'swr/immutable'
+import { FAST_INTERVAL } from 'config/constants'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
@@ -272,23 +273,28 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
   const { fetchWithCatchTxError } = useCatchTxError()
   const isWindowVisible = useIsWindowVisible()
 
-  useEffect(() => {
-    if (isRecentlyActive || !isPublicIfoDataInitialized) {
+  useSWRImmutable(
+    (isRecentlyActive || !isPublicIfoDataInitialized) && currentBlock && ['fetchPublicIfoData', currentBlock],
+    async () => {
       fetchPublicIfoData(currentBlock)
-    }
-  }, [isRecentlyActive, isPublicIfoDataInitialized, fetchPublicIfoData, currentBlock])
+    },
+  )
 
-  useFastRefreshEffect(() => {
-    if (isWindowVisible && (isRecentlyActive || !isWalletDataInitialized)) {
-      if (account) {
-        fetchWalletIfoData()
-      }
-    }
+  useSWRImmutable(
+    isWindowVisible && (isRecentlyActive || !isWalletDataInitialized) && account && 'fetchWalletIfoData',
+    async () => {
+      fetchWalletIfoData()
+    },
+    {
+      refreshInterval: FAST_INTERVAL,
+    },
+  )
 
+  useEffect(() => {
     if (!account && isWalletDataInitialized) {
       resetWalletIfoData()
     }
-  }, [isWindowVisible, account, isRecentlyActive, isWalletDataInitialized, fetchWalletIfoData, resetWalletIfoData])
+  }, [account, isWalletDataInitialized, resetWalletIfoData])
 
   const handleApprove = async () => {
     const receipt = await fetchWithCatchTxError(() => {

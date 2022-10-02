@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/router'
-import { CurrencyAmount, Token, Trade, TradeType, Currency } from '@pancakeswap/sdk'
+import { CurrencyAmount, Token, Trade, TradeType, Currency, Percent } from '@pancakeswap/sdk'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { Button, Box, Flex, useModal, BottomDrawer, Link, useMatchBreakpoints } from '@pancakeswap/uikit'
 
@@ -125,7 +125,6 @@ const LimitOrders = () => {
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
 
   const maxAmountInput: CurrencyAmount<Currency> | undefined = maxAmountSpend(currencyBalances.input)
-  const hideMaxButton = Boolean(maxAmountInput && parsedAmounts.input?.equalTo(maxAmountInput))
 
   // Trade execution price is always "in MUL mode", even if UI handles DIV rate
   const currentMarketRate = trade?.executionPrice
@@ -158,6 +157,14 @@ const LimitOrders = () => {
       handleInput(Field.PRICE, value)
     },
     [handleInput],
+  )
+  const handlePercentInput = useCallback(
+    (percent) => {
+      if (maxAmountInput) {
+        handleInput(Field.INPUT, maxAmountInput.multiply(new Percent(percent, 100)).toExact())
+      }
+    },
+    [maxAmountInput, handleInput],
   )
   const handleMaxInput = useCallback(() => {
     if (maxAmountInput) {
@@ -354,9 +361,11 @@ const LimitOrders = () => {
                     <CurrencyInputPanel
                       label={independentField === Field.OUTPUT ? t('From (estimated)') : t('From')}
                       value={formattedAmounts.input}
-                      showMaxButton={!hideMaxButton}
+                      showQuickInputButton
+                      showMaxButton
                       currency={currencies.input}
                       onUserInput={handleTypeInput}
+                      onPercentInput={handlePercentInput}
                       onMax={handleMaxInput}
                       onCurrencySelect={handleInputSelect}
                       otherCurrency={currencies.output}

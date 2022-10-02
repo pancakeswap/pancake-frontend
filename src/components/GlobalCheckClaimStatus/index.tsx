@@ -35,7 +35,8 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
   const { toastSuccess } = useToast()
   const { t } = useTranslation()
   const [canClaimAnniversaryPoints, setCanClaimAnniversaryPoints] = useState(false)
-  const { canClaim, claimAnniversaryPoints } = useAnniversaryAchievementContract()
+  const { claimAnniversaryPoints } = useAnniversaryAchievementContract()
+  const { canClaim } = useAnniversaryAchievementContract(false)
   const { fetchWithCatchTxError } = useCatchTxError()
   const [onPresentAnniversaryModal] = useModal(
     <AnniversaryAchievementModal
