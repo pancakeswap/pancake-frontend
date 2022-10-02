@@ -107,18 +107,6 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({
           </ActionButton>
         )
       case YieldBoosterState.ACTIVE:
-        return (
-          <ActionButton
-            disabled={isConfirming}
-            onClick={handlers.deactivate}
-            title={`${boostMultiplierDisplay}x`}
-            isLoading={isConfirming}
-            description={t('Active')}
-            endIcon={isConfirming && <AutoRenewIcon spin color="currentColor" />}
-          >
-            {t('Unset')}
-          </ActionButton>
-        )
       case YieldBoosterState.ACTIVE_AND_NO_LP:
         return (
           <ActionButton
