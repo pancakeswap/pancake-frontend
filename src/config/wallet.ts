@@ -79,7 +79,7 @@ const walletsConfig = ({
       connectorId: ConnectorNames.Injected,
       installed:
         typeof window !== 'undefined' &&
-        !(window.ethereum as ExtendEthereum).isSafePal && // SafePal has isTrust flag
+        !(window.ethereum as ExtendEthereum)?.isSafePal && // SafePal has isTrust flag
         (Boolean(window.ethereum?.isTrust) ||
           // @ts-ignore
           Boolean(window.ethereum?.isTrustWallet)),
