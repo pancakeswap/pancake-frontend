@@ -103,10 +103,12 @@ const TabContainer = ({ children }: PropsWithChildren) => {
   )
 }
 
+const MOBILE_DEFAULT_DISPLAY_COUNT = 6
+
 function MobileModal<T>({
   wallets,
   connectWallet,
-}: Pick<WalletModalV2Props<T>, 'wallets'> & { connectWallet: (wallet: WalletConfigV2<T>) => void }) {
+}: Pick<WalletModalV2Props<T>, 'wallets'> & { connectWallet: (wallet: WalletConfigV2<T, any>) => void }) {
   const {
     t,
     currentLanguage: { code },
@@ -140,7 +142,7 @@ function MobileModal<T>({
       )}
       <AtomBox flex={1} py="16px" style={{ maxHeight: '230px' }} overflow="auto">
         <WalletSelect
-          displayCount={6}
+          displayCount={MOBILE_DEFAULT_DISPLAY_COUNT}
           wallets={walletsToShow}
           onClick={(wallet) => {
             connectWallet(wallet)
@@ -272,7 +274,7 @@ function sortWallets<T>(wallets: WalletConfigV2<T>[], lastUsedWalletName: string
 function DesktopModal<T>({
   wallets,
   connectWallet,
-}: Pick<WalletModalV2Props<T>, 'wallets'> & { connectWallet: (wallet: WalletConfigV2<T>) => void }) {
+}: Pick<WalletModalV2Props<T>, 'wallets'> & { connectWallet: (wallet: WalletConfigV2<T, any>) => void }) {
   const [selected] = useSelectedWallet<T>()
   const [error] = useAtom(errorAtom)
   const [qrCode, setQrCode] = useState<string | undefined>(undefined)
@@ -366,7 +368,7 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
     [wallets],
   )
 
-  usePreloadImages(imageSources)
+  usePreloadImages(imageSources.slice(0, MOBILE_DEFAULT_DISPLAY_COUNT))
 
   const connectWallet = (wallet: WalletConfigV2<T>) => {
     setSelected(wallet)
