@@ -25,6 +25,7 @@ function useFetchAllPairsReserves() {
   return useAccountResources({
     address: SWAP_RESOURCE_ADDRESS,
     select: pairReserveSelector,
+    watch: true,
   })
 }
 
