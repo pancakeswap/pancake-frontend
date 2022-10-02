@@ -161,11 +161,13 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
 
   const unlimitedToolipContent = (
     <Box>
-      <Text display="inline">{t('For the public sale, Max CAKE entry is capped by')} </Text>
-      <Text bold display="inline">
+      <Text color="tooltipText" display="inline">
+        {t('For the public sale, Max CAKE entry is capped by')}{' '}
+      </Text>
+      <Text color="tooltipText" bold display="inline">
         {t('the number of iCAKE.')}{' '}
       </Text>
-      <Text display="inline">
+      <Text color="tooltipText" display="inline">
         {t('Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale.')}
       </Text>
     </Box>

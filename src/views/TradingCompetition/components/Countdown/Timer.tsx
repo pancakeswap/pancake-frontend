@@ -62,7 +62,7 @@ const DefaultBodyTextComponent = ({ children, ...props }) => (
 
 const TooltipContent = ({ blockNumber, t }: { blockNumber: number; t: ContextApi['t'] }): JSX.Element => (
   <>
-    <Text color="body" mb="10px" fontWeight="600">
+    <Text color="tooltipText" mb="10px" fontWeight="600">
       {t('Block %num%', { num: blockNumber })}
     </Text>
     <Link external href={getBlockExploreLink(blockNumber, 'block')}>

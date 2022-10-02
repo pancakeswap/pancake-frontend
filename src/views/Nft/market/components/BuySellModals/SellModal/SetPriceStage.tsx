@@ -57,15 +57,19 @@ const SetPriceStage: React.FC<React.PropsWithChildren<SetPriceStageProps>> = ({
 
   const { tooltip, tooltipVisible, targetRef } = useTooltip(
     <>
-      <Text>
+      <Text color="tooltipText">
         {t(
           'When selling NFTs from this collection, a portion of the BNB paid will be diverted before reaching the seller:',
         )}
       </Text>
       {creatorFeeAsNumber > 0 && (
-        <Text>{t('%percentage%% royalties to the collection owner', { percentage: creatorFee })}</Text>
+        <Text color="tooltipText">
+          {t('%percentage%% royalties to the collection owner', { percentage: creatorFee })}
+        </Text>
       )}
-      <Text>{t('%percentage%% trading fee will be used to buy & burn CAKE', { percentage: tradingFee })}</Text>
+      <Text color="tooltipText">
+        {t('%percentage%% trading fee will be used to buy & burn CAKE', { percentage: tradingFee })}
+      </Text>
     </>,
     { placement: 'auto' },
   )

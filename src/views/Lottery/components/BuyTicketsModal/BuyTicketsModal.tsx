@@ -97,14 +97,14 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
 
   const TooltipComponent = () => (
     <>
-      <Text mb="16px">
+      <Text color="tooltipText" mb="16px">
         {t(
           'Buying multiple tickets in a single transaction gives a discount. The discount increases in a linear way, up to the maximum of 100 tickets:',
         )}
       </Text>
-      <Text>{t('2 tickets: 0.05%')}</Text>
-      <Text>{t('50 tickets: 2.45%')}</Text>
-      <Text>{t('100 tickets: 4.95%')}</Text>
+      <Text color="tooltipText">{t('2 tickets: 0.05%')}</Text>
+      <Text color="tooltipText">{t('50 tickets: 2.45%')}</Text>
+      <Text color="tooltipText">{t('100 tickets: 4.95%')}</Text>
     </>
   )
   const { targetRef, tooltip, tooltipVisible } = useTooltip(<TooltipComponent />, {

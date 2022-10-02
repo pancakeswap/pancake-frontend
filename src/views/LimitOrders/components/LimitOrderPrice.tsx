@@ -66,14 +66,14 @@ const LimitOrderPrice: React.FC<React.PropsWithChildren<LimitOrderPriceProps>> =
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
-      <Text>
+      <Text color="tooltipText">
         {t(
           'The real execution price includes the gas cost necessary to execute your order and guarantees that your order will be executed at the desired price.',
         )}
       </Text>
-      <Text>{t('It fluctuates according to gas prices when the order is getting executed.')}</Text>
+      <Text color="tooltipText">{t('It fluctuates according to gas prices when the order is getting executed.')}</Text>
       {inputCurrency?.symbol && outputCurrency?.symbol && realExecutionPriceAsString && (
-        <Text>
+        <Text color="tooltipText">
           {realExecutionPriceAsString === 'never executes'
             ? t(
                 'Assuming the current gas price, this order will never be executed. Try increasing the number of tokens to swap in your order.',

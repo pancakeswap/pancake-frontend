@@ -46,10 +46,10 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
   const { t } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
-      <Text bold mb="4px">
+      <Text color="tooltipText" bold mb="4px">
         {t('Neither side wins this round')}
       </Text>
-      <Text>
+      <Text color="tooltipText">
         {t(
           'The Locked Price & Closed Price are exactly the same (within 8 decimals), so neither side wins. All funds entered into UP and DOWN positions will go to the weekly CAKE burn.',
         )}

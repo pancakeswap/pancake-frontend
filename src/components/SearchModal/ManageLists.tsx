@@ -81,7 +81,7 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <div>
-      <Text>{list && listVersionLabel(list.version)}</Text>
+      <Text color="tooltipText">{list && listVersionLabel(list.version)}</Text>
       <LinkExternal external href={`https://tokenlists.org/token-list?url=${listUrl}`}>
         {t('See')}
       </LinkExternal>

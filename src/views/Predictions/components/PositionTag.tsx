@@ -60,10 +60,10 @@ const PositionTag: React.FC<React.PropsWithChildren<PositionTagProps>> = ({ betP
   const icon = isUpPosition ? <ArrowUpIcon color="white" /> : <ArrowDownIcon color="white" />
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
-      <Text bold mb="4px">
+      <Text color="tooltipText" bold mb="4px">
         {t('Neither side wins this round')}
       </Text>
-      <Text>
+      <Text color="tooltipText">
         {t(
           'The Locked Price & Closed Price are exactly the same (within 8 decimals), so neither side wins. All funds entered into UP and DOWN positions will go to the weekly CAKE burn.',
         )}

@@ -35,18 +35,24 @@ const AutoEarningsBreakdown: React.FC<React.PropsWithChildren<AutoEarningsBreakd
 
   return (
     <>
-      <Text bold>
+      <Text color="tooltipText" bold>
         {autoCakeToDisplay.toFixed(3)}
         {' CAKE'}
       </Text>
-      <Text bold>~${autoUsdToDisplay.toFixed(2)}</Text>
-      <Text>{t('Earned since your last action')}:</Text>
-      <Text>{new Date(lastActionInMs).toLocaleString()}</Text>
+      <Text color="tooltipText" bold>
+        ~${autoUsdToDisplay.toFixed(2)}
+      </Text>
+      <Text color="tooltipText">{t('Earned since your last action')}:</Text>
+      <Text color="tooltipText">{new Date(lastActionInMs).toLocaleString()}</Text>
       {hourDiffSinceLastAction ? (
         <>
-          <Text>{t('Your average per hour')}:</Text>
-          <Text bold>{t('CAKE per hour: %amount%', { amount: earnedCakePerHour.toFixed(2) })}</Text>
-          <Text bold>{t('per hour: ~$%amount%', { amount: earnedUsdPerHour.toFixed(2) })}</Text>
+          <Text color="tooltipText">{t('Your average per hour')}:</Text>
+          <Text color="tooltipText" bold>
+            {t('CAKE per hour: %amount%', { amount: earnedCakePerHour.toFixed(2) })}
+          </Text>
+          <Text color="tooltipText" bold>
+            {t('per hour: ~$%amount%', { amount: earnedUsdPerHour.toFixed(2) })}
+          </Text>
         </>
       ) : null}
     </>

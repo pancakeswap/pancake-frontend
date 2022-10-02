@@ -68,12 +68,16 @@ const PreviousRoundTicketsInner: React.FC<React.PropsWithChildren<{ roundId: str
 
   const TooltipComponent = () => (
     <>
-      <Text mb="16px">
+      <Text color="tooltipText" mb="16px">
         {t('Tickets must match the winning number in the exact same order, starting from the first digit.')}
       </Text>
-      <Text mb="16px">{t('If the winning number is “123456”:')}</Text>
-      <Text mb="4px">{t('“120000” matches the first 2 digits.')}</Text>
-      <Text>
+      <Text color="tooltipText" mb="16px">
+        {t('If the winning number is “123456”:')}
+      </Text>
+      <Text color="tooltipText" mb="4px">
+        {t('“120000” matches the first 2 digits.')}
+      </Text>
+      <Text color="tooltipText">
         {t('“000006” matches the last digit, but since the first five digits are wrong, it doesn’t win any prizes.')}
       </Text>
     </>

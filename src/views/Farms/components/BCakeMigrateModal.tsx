@@ -176,7 +176,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   const { toastSuccess } = useToast()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    <Text>
+    <Text color="tooltipText">
       {t(
         'To enable farm yield boosters, you must follow the guide and migrate your current farming positions. However, for each farm, you will only need to migrate once.',
       )}

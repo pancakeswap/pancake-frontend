@@ -45,7 +45,9 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
   const { token, displayedDecimals } = useConfig()
   const bnbBusdPrice = useBUSDPrice(token)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    <Text as="p">{t('Includes your original position and your winnings, minus the %fee% fee.', { fee: '3%' })}</Text>,
+    <Text color="tooltipText" as="p">
+      {t('Includes your original position and your winnings, minus the %fee% fee.', { fee: '3%' })}
+    </Text>,
     { placement: 'auto' },
   )
 

@@ -85,7 +85,7 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
     <>
       {Number.isFinite(lockedCakeBalance) && (
         <Box>
-          <Text>
+          <Text color="tooltipText">
             {isBoostingExpired
               ? t(
                   'Your vCAKE boosting was expired at the snapshot block. Renew your fixed-term staking position to activate the boost for future voting proposals.',
@@ -94,7 +94,7 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
                   'Voting power is calculated using the staking amount and remaining staking duration of the fixed-term CAKE staking position at the block.',
                 )}
           </Text>
-          <Text bold m="10px 0">
+          <Text color="tooltipText" bold m="10px 0">
             {`${t('CAKE locked:')} ${formatNumber(lockedCakeBalance, 0, 2)}`}
           </Text>
           <StyleLink href="/pools">{t('Go to Pools')}</StyleLink>

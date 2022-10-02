@@ -32,7 +32,7 @@ const CoreTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
 
 const FarmAuctionTagToolTipContent = memo(() => {
   const { t } = useTranslation()
-  return <Text color="text">{t('Farm Auction Winner, add liquidity at your own risk.')}</Text>
+  return <Text color="tooltipText">{t('Farm Auction Winner, add liquidity at your own risk.')}</Text>
 })
 
 const FarmAuctionTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {

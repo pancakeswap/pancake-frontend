@@ -56,9 +56,9 @@ export const cardConfig = (
           variant: 'blue',
           tooltip: msgs?.length ? (
             <>
-              <Text>{t('Meet any one of the requirements to join:')}</Text>
+              <Text color="tooltipText">{t('Meet any one of the requirements to join:')}</Text>
               {msgs.map((msg) => (
-                <Text ml="16px" key={msg} as="li">
+                <Text color="tooltipText" ml="16px" key={msg} as="li">
                   {msg}
                 </Text>
               ))}

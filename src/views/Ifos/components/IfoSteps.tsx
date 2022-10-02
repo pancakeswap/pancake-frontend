@@ -71,7 +71,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
-      <Text>
+      <Text color="tooltipText">
         {t(
           'The number of iCAKE equals the locked staking amount if the staking duration is longer than %weeks% weeks. If the staking duration is less than %weeks% weeks, it will linearly decrease based on the staking duration.',
           {

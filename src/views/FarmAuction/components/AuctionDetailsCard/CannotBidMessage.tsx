@@ -5,9 +5,13 @@ const CannotBidMessage: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { tooltip, targetRef, tooltipVisible } = useTooltip(
     <>
-      <Text mb="16px">{t('Only whitelisted project wallets can bid in the auction to create Community Farms.')}</Text>
-      <Text mb="16px">{t('Bidding is only possible while the auction is live.')}</Text>
-      <Text>
+      <Text color="tooltipText" mb="16px">
+        {t('Only whitelisted project wallets can bid in the auction to create Community Farms.')}
+      </Text>
+      <Text color="tooltipText" mb="16px">
+        {t('Bidding is only possible while the auction is live.')}
+      </Text>
+      <Text color="tooltipText">
         {t(
           'If you’re sure your project should be able to bid in this auction, make sure you’re connected with the correct (whitelisted) wallet.',
         )}

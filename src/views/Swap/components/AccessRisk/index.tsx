@@ -87,13 +87,13 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }
   // Tooltips
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
-      <Text>
+      <Text color="tooltipText">
         {t(
           'The scan result is provided by 3rd parties and may not cover every token. Therefore the result is for reference only, do NOT take it as investment or financial advice. Always DYOR!',
         )}
       </Text>
       <Flex mt="4px">
-        <Text>{t('Powered by')}</Text>
+        <Text color="tooltipText">{t('Powered by')}</Text>
         <Link ml="4px" external href="https://www.hashdit.io/en">
           {t('Hashdit.')}
         </Link>

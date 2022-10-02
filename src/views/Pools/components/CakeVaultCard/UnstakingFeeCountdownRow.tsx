@@ -28,10 +28,10 @@ const UnstakingFeeCountdownRow: React.FC<React.PropsWithChildren<UnstakingFeeCou
   const withdrawalDayPeriod = withdrawalFeePeriod ? secondsToDay(withdrawalFeePeriod) : '-'
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
-      <Text bold mb="4px">
+      <Text color="tooltipText" bold mb="4px">
         {t('Unstaking fee: %fee%%', { fee: feeAsDecimal })}
       </Text>
-      <Text>
+      <Text color="tooltipText">
         {t(
           'Only applies within %num% days of staking. Unstaking after %num% days will not include a fee. Timer resets every time you stake new CAKE in the pool.',
           {
