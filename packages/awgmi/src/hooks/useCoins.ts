@@ -1,5 +1,4 @@
 import { fetchCoin, FetchCoinResult } from '@pancakeswap/awgmi/core'
-import { useMemo } from 'react'
 import { QueryConfig } from '../types'
 import { queryKey as coinQueryKey } from './useCoin'
 import { useNetwork } from './useNetwork'
@@ -28,25 +27,21 @@ export function useCoins<TData = unknown>({
 
   const networkName = chain?.network ?? networkName_
 
-  const queries = useMemo(
-    () => ({
-      queries: coins.map((coin) => {
-        return {
-          cacheTime,
-          enabled,
-          onError,
-          onSettled,
-          onSuccess,
-          queryFn: () => fetchCoin({ coin, networkName }),
-          queryKey: coinQueryKey({ coin, networkName }),
-          select,
-          staleTime,
-          suspense,
-        }
-      }),
+  return useQueries({
+    queries: coins.map((coin) => {
+      return {
+        cacheTime,
+        enabled,
+        onError,
+        onSettled,
+        onSuccess,
+        queryFn: () => fetchCoin({ coin, networkName }),
+        queryKey: coinQueryKey({ coin, networkName }),
+        select,
+        staleTime,
+        suspense,
+        notifyOnChangeProps: ['data', 'error', 'isLoading'] as any, // seems useQueries tracked all properties here, until we figure out what happens, only track 3 major properties here
+      }
     }),
-    [cacheTime, coins, enabled, networkName, onError, onSettled, onSuccess, select, staleTime, suspense],
-  )
-
-  return useQueries(queries)
+  })
 }

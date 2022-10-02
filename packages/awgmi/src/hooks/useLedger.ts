@@ -8,7 +8,7 @@ type UseLedgerArgs = Partial<FetchLedgerArgs> & {
   watch?: boolean
 }
 
-export type UseLedgerConfig = QueryConfig<FetchLedgerResult, Error>
+export type UseLedgerConfig<TData> = QueryConfig<FetchLedgerResult, Error, TData>
 
 export const queryKey = ({ networkName }: { networkName?: string }) => [{ entity: 'ledger', networkName }] as const
 
@@ -16,7 +16,7 @@ const queryFn = ({ queryKey: [{ networkName }] }: QueryFunctionArgs<typeof query
   return fetchLedgerInfo({ networkName }) as any
 }
 
-export function useLedger({
+export function useLedger<TData>({
   cacheTime = 0,
   networkName: _networkName,
   enabled = true,
@@ -26,7 +26,7 @@ export function useLedger({
   onError,
   onSettled,
   onSuccess,
-}: UseLedgerArgs & UseLedgerConfig = {}) {
+}: UseLedgerArgs & UseLedgerConfig<TData> = {}) {
   return useQuery(queryKey({ networkName: _networkName }), queryFn, {
     cacheTime,
     enabled,

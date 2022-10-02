@@ -1,13 +1,14 @@
 import { Pair, PAIR_LP_TYPE_TAG, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
-import { useMemo } from 'react'
 import { useAccount, useAccountResources } from '@pancakeswap/awgmi'
 import {
-  COIN_STORE_TYPE_PREFIX,
-  unwrapTypeArgFromString,
-  createAccountResourceFilter,
   CoinStoreResource,
+  COIN_STORE_TYPE_PREFIX,
+  createAccountResourceFilter,
+  FetchAccountResourcesResult,
+  unwrapTypeArgFromString,
 } from '@pancakeswap/awgmi/core'
 import { PairState, usePairsFromAddresses } from 'hooks/usePairs'
+import { useMemo } from 'react'
 
 function filterPair(v2Pairs): Pair[] {
   return v2Pairs?.length
@@ -24,19 +25,17 @@ const coinStoreLPfilter = createAccountResourceFilter<CoinStoreResource<typeof P
   `${COIN_STORE_TYPE_PREFIX}<${PAIR_LP_TYPE_TAG}`,
 )
 
+const selector = (resource: FetchAccountResourcesResult) => {
+  return resource.filter(coinStoreLPfilter).filter(({ data }) => data.coin.value !== '0')
+}
+
 export default function useLPPairsHaveBalance(): LPPairsResponse {
   const { account } = useAccount()
 
-  const {
-    data: v2PairsBalances,
-    isLoading,
-    isIdle,
-  } = useAccountResources({
+  const { data: v2PairsBalances, isLoading } = useAccountResources({
     watch: true,
     address: account?.address,
-    select(resource) {
-      return resource.filter(coinStoreLPfilter).filter(({ data }) => data.coin.value !== '0')
-    },
+    select: selector,
   })
 
   const mmV2PairsBalances = useMemo(
@@ -52,10 +51,8 @@ export default function useLPPairsHaveBalance(): LPPairsResponse {
   return useMemo(
     () => ({
       data: filterPair(v2Pairs),
-      loading:
-        (isIdle && isLoading) ||
-        Boolean(v2Pairs?.length && v2Pairs.every(([pairState]) => pairState === PairState.LOADING)),
+      loading: isLoading || Boolean(v2Pairs?.length && v2Pairs.every(([pairState]) => pairState === PairState.LOADING)),
     }),
-    [v2Pairs, isIdle, isLoading],
+    [v2Pairs, isLoading],
   )
 }

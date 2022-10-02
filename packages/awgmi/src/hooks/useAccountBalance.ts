@@ -22,18 +22,18 @@ export function useAccountBalance<TData = unknown>({
   watch,
   select,
 }: UseAccountBalanceArgs & UseAccountBalances<TData> = {}) {
-  return (
-    useAccountBalances({
-      coinFilter: coin || APTOS_COIN,
-      address,
-      cacheTime,
-      networkName,
-      watch,
-      enabled: Boolean(enabled && address),
-      keepPreviousData,
-      staleTime,
-      suspense,
-      select,
-    })?.[0] ?? {}
-  )
+  const results = useAccountBalances({
+    coinFilter: coin || APTOS_COIN,
+    address,
+    cacheTime,
+    networkName,
+    watch,
+    enabled: Boolean(enabled && address),
+    keepPreviousData,
+    staleTime,
+    suspense,
+    select,
+  })
+
+  return results?.[0] ?? {}
 }

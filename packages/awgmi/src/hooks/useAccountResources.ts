@@ -24,7 +24,7 @@ export function useAccountResources<TData = unknown>({
   keepPreviousData,
   address,
   enabled = true,
-  staleTime = 1_000,
+  staleTime,
   suspense,
   watch = false,
   onError,

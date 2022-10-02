@@ -8,10 +8,12 @@ type UseChainIdArgs = Partial<FetchChainIdArgs> & {
   watch?: boolean
 }
 
-export type UseChainIdConfig = QueryConfig<FetchLedgerResult, Error>
+export type UseChainIdConfig = QueryConfig<number, Error>
+
+const select = (ledger: FetchLedgerResult) => ledger.chain_id
 
 export function useChainId({
-  cacheTime = 0,
+  cacheTime,
   networkName: _networkName,
   enabled = true,
   staleTime,
@@ -30,5 +32,6 @@ export function useChainId({
     onSettled,
     onSuccess,
     watch,
-  })?.data?.chain_id
+    select,
+  })
 }

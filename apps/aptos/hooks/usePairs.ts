@@ -11,18 +11,20 @@ import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'
 import { useCoins } from './Tokens'
 
+const pairReserveSelector = (swapResources) => {
+  const allPairData = swapResources.filter((r) => r.type.includes(PAIR_RESERVE_TYPE_TAG)) as {
+    type: string
+    data: { reserve_x: string; reserve_y: string; block_timestamp_last: string }
+  }[]
+
+  return fromPairs(allPairData.map((p) => [p.type, p]))
+}
+
 // TODO: aptos this will fetch all lp reserve under swap resource account, will eventually be huge
 function useFetchAllPairsReserves() {
   return useAccountResources({
     address: SWAP_RESOURCE_ADDRESS,
-    select: (swapResources) => {
-      const allPairData = swapResources.filter((r) => r.type.includes(PAIR_RESERVE_TYPE_TAG)) as {
-        type: string
-        data: { reserve_x: string; reserve_y: string; block_timestamp_last: string }
-      }[]
-
-      return fromPairs(allPairData.map((p) => [p.type, p]))
-    },
+    select: pairReserveSelector,
   })
 }
 

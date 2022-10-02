@@ -2,13 +2,14 @@ import { formatUnits } from '@ethersproject/units'
 import {
   CoinStoreResource,
   coinStoreResourcesFilter,
+  FetchAccountResourcesResult,
   FetchCoinResult,
+  isHexStringEquals,
   unwrapTypeFromString,
   wrapCoinStoreTypeTag,
-  isHexStringEquals,
 } from '@pancakeswap/awgmi/core'
 import { UseQueryResult } from '@tanstack/react-query'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { QueryConfig } from '../types'
 import { useAccountResources, UseAccountResourcesArgs, UseAccountResourcesConfig } from './useAccountResources'
 import { useCoins } from './useCoins'
@@ -21,6 +22,10 @@ type UseAccountBalancesSelect<TData> = Pick<UseAccountBalances<TData>, 'select'>
 
 export type UseAccountBalancesConfig<TData> = Omit<UseAccountResourcesConfig, 'select'> &
   UseAccountBalancesSelect<TData>
+
+const accountCoinStoreResourceSelect = (resource: FetchAccountResourcesResult) => {
+  return resource.filter(coinStoreResourcesFilter)
+}
 
 export function useAccountBalances<TData = unknown>({
   address,
@@ -51,29 +56,22 @@ export function useAccountBalances<TData = unknown>({
     staleTime,
     suspense,
     watch,
-    select: (d) => {
-      return d.filter(coinStoreResourcesFilter).reduce((prev, curr) => {
-        return {
-          ...prev,
-          [curr.type]: curr,
-        }
-      }, {} as Record<string, CoinStoreResource>)
-    },
+    select: accountCoinStoreResourceSelect,
   })
 
-  return useCoins({
-    enabled: !!data,
-    coins: useMemo(
-      () =>
-        (Object.keys(data ?? {})
-          .map((d) => unwrapTypeFromString(d))
-          .filter((d) => (coinFilter && d ? isHexStringEquals(coinFilter, d) : true))
-          .filter(Boolean) ?? []) as string[],
-      [coinFilter, data],
-    ),
-    select: (coinInfo) => {
-      if (!data) return null
-      const coinStoreResource = data[wrapCoinStoreTypeTag(coinInfo.address)]
+  const coinStoreResourceMap = useMemo(() => {
+    return data?.reduce((prev, curr) => {
+      return {
+        ...prev,
+        [curr.type]: curr,
+      }
+    }, {} as Record<string, CoinStoreResource>)
+  }, [data])
+
+  const coinInfoSelect = useCallback(
+    (coinInfo: FetchCoinResult) => {
+      if (!coinStoreResourceMap) return null
+      const coinStoreResource = coinStoreResourceMap[wrapCoinStoreTypeTag(coinInfo.address)]
       if (!coinStoreResource) return null
 
       const result = {
@@ -83,7 +81,26 @@ export function useAccountBalances<TData = unknown>({
       }
 
       if (select) return select(result)
+
       return result
     },
+    [coinStoreResourceMap, select],
+  )
+
+  const coins = useMemo(
+    () =>
+      (Object.keys(coinStoreResourceMap ?? {})
+        .map((d) => unwrapTypeFromString(d))
+        .filter((d) => (coinFilter && d ? isHexStringEquals(coinFilter, d) : true))
+        .filter(Boolean) ?? []) as string[],
+    [coinFilter, coinStoreResourceMap],
+  )
+
+  const coinResults = useCoins({
+    enabled: !!coinStoreResourceMap,
+    coins,
+    select: coinInfoSelect,
   }) as UseQueryResult<unknown extends TData ? UseAccountBalancesResult : TData, Error>[]
+
+  return coinResults
 }
