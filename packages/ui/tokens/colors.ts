@@ -51,6 +51,8 @@ export const lightColors = {
   gradientViolet: 'linear-gradient(180deg, #E2C9FB 0%, #CDB8FA 100%)',
   gradientVioletAlt: 'linear-gradient(180deg, #CBD7EF 0%, #9A9FD0 100%)',
   gradientGold: 'linear-gradient(180deg, #FFD800 0%, #FDAB32 100%)',
+  tooltipBackground: '#27262C',
+  tooltipText: '#F4EEFF',
 }
 
 export const darkColors = {
@@ -83,4 +85,6 @@ export const darkColors = {
   gradientViolet: 'linear-gradient(180deg, #6C4999 0%, #6D4DB2 100%)',
   gradientVioletAlt: 'linear-gradient(180deg, #434575 0%, #66578D 100%)',
   gradientGold: 'linear-gradient(180deg, #FFD800 0%, #FDAB32 100%)',
+  tooltipBackground: '#FFFFFF',
+  tooltipText: '#280D5F',
 }

@@ -3,13 +3,13 @@ import { darkColors, lightColors } from "../../theme/colors";
 import { TooltipTheme } from "./types";
 
 export const light: TooltipTheme = {
-  background: darkColors.backgroundAlt,
-  text: darkColors.text,
+  background: lightColors.tooltipBackground,
+  text: lightColors.tooltipText,
   boxShadow: vars.shadows.tooltip,
 };
 
 export const dark: TooltipTheme = {
-  background: lightColors.backgroundAlt,
-  text: lightColors.text,
+  background: darkColors.tooltipBackground,
+  text: darkColors.tooltipText,
   boxShadow: vars.shadows.tooltip,
 };
