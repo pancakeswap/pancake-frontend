@@ -508,11 +508,6 @@ export enum ProposalState {
   CLOSED = 'closed',
 }
 
-export interface Space {
-  id: string
-  name: string
-}
-
 export interface Proposal {
   author: string
   body: string
@@ -520,7 +515,6 @@ export interface Proposal {
   end: number
   id: string
   snapshot: string
-  space: Space
   votes: number
   start: number
   state: ProposalState
@@ -531,7 +525,6 @@ export interface Vote {
   id: string
   voter: string
   created: number
-  space: Space
   proposal: {
     choices: Proposal['choices']
   }

@@ -131,17 +131,10 @@ interface BCakeMigrateModalProps {
 }
 
 enum Steps {
-  'UnStake',
+  'Unstake',
   'Enable',
   'Stake',
 }
-
-const migrationSteps: Record<Steps, string> = {
-  [Steps.UnStake]: 'Unstake LP tokens from the farm',
-  [Steps.Enable]: 'Enable staking with yield booster',
-  [Steps.Stake]: 'Stake LP tokens back to the farm',
-}
-const migrationStepsKeys = Object.keys(migrationSteps)
 
 export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   lpContract,
@@ -151,10 +144,27 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   pid,
 }) => {
   const { account, chainId } = useActiveWeb3React()
-  const [activatedState, setActivatedState] = useState<Steps>(Steps.UnStake)
+  const [activatedState, setActivatedState] = useState<Steps>(Steps.Unstake)
   const [isLoading, setIsLoading] = useState(false)
   const [isApproved, setIsApproved] = useState(false)
   const { t } = useTranslation()
+  const steps: Record<Steps, string> = useMemo(
+    () => ({
+      [Steps.Unstake]: t('Unstake'),
+      [Steps.Enable]: t('Enable'),
+      [Steps.Stake]: t('Stake'),
+    }),
+    [t],
+  )
+  const migrationSteps: Record<Steps, string> = useMemo(
+    () => ({
+      [Steps.Unstake]: t('Unstake LP tokens from the farm'),
+      [Steps.Enable]: t('Enable staking with yield booster'),
+      [Steps.Stake]: t('Stake LP tokens back to the farm'),
+    }),
+    [t],
+  )
+  const migrationStepsKeys = useMemo(() => Object.keys(migrationSteps), [migrationSteps])
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(stakedBalance)
   }, [stakedBalance])
@@ -184,7 +194,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
   }, [lpContract, bCakeProxy])
 
   const onStepChange = async () => {
-    if (activatedState === Steps.UnStake) {
+    if (activatedState === Steps.Unstake) {
       setIsLoading(true)
       onUnStack(fullBalance, () => {
         if (isApproved) setActivatedState(Steps.Stake)
@@ -247,7 +257,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
                   )}
                 </StepperCircle>
               )}
-              <StepperText>{Steps[step]}</StepperText>
+              <StepperText>{steps[step]}</StepperText>
             </StepperWrapper>
           )
         })}
@@ -265,7 +275,7 @@ export const BCakeMigrateModal: React.FC<BCakeMigrateModalProps> = ({
           width="100%"
           endIcon={isLoading || loading ? <AutoRenewIcon spin color="currentColor" /> : undefined}
         >
-          {isLoading || loading ? t('Confirming...') : t(Steps[activatedState])}
+          {isLoading || loading ? t('Confirming...') : t(steps[activatedState])}
         </Button>
       </FooterBox>
     </Modal>

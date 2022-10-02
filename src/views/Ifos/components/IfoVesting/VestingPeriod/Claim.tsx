@@ -4,13 +4,14 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { PoolIds } from 'config/constants/types'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useIfoV3Contract } from 'hooks/useContract'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
 
 interface Props {
   poolId: PoolIds
   data: VestingData
   claimableAmount: string
+  isVestingInitialized: boolean
   fetchUserVestingData: () => void
 }
 
@@ -18,6 +19,7 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
   poolId,
   data,
   claimableAmount,
+  isVestingInitialized,
   fetchUserVestingData,
 }) => {
   const { t } = useTranslation()
@@ -26,9 +28,17 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
   const contract = useIfoV3Contract(address)
   const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
 
+  const isReady = useMemo(() => {
+    const checkClaimableAmount = isVestingInitialized ? claimableAmount === '0' : false
+    return isPending || checkClaimableAmount
+  }, [isPending, isVestingInitialized, claimableAmount])
+
   const handleClaim = useCallback(async () => {
     const { vestingId } = data.userVestingData[poolId]
-    const receipt = await fetchWithCatchTxError(() => contract.release(vestingId))
+    const methods = isVestingInitialized
+      ? contract.release(vestingId)
+      : contract.harvestPool(poolId === PoolIds.poolBasic ? 0 : 1)
+    const receipt = await fetchWithCatchTxError(() => methods)
 
     if (receipt?.status) {
       toastSuccess(
@@ -39,7 +49,7 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
       )
       fetchUserVestingData()
     }
-  }, [data, poolId, contract, t, fetchUserVestingData, fetchWithCatchTxError, toastSuccess])
+  }, [isVestingInitialized, data, poolId, contract, t, fetchUserVestingData, fetchWithCatchTxError, toastSuccess])
 
   return (
     <Button
@@ -47,7 +57,7 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
       width="100%"
       onClick={handleClaim}
       isLoading={isPending}
-      disabled={isPending || claimableAmount === '0'}
+      disabled={isReady}
       endIcon={isPending ? <AutoRenewIcon spin color="currentColor" /> : null}
     >
       {t('Claim %symbol%', { symbol: token.symbol })}

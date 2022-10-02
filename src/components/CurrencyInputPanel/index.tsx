@@ -42,7 +42,9 @@ interface CurrencyInputPanelProps {
   value: string
   onUserInput: (value: string) => void
   onInputBlur?: () => void
+  onPercentInput?: (percent: number) => void
   onMax?: () => void
+  showQuickInputButton?: boolean
   showMaxButton: boolean
   label?: string
   onCurrencySelect?: (currency: Currency) => void
@@ -64,7 +66,9 @@ export default function CurrencyInputPanel({
   value,
   onUserInput,
   onInputBlur,
+  onPercentInput,
   onMax,
+  showQuickInputButton = false,
   showMaxButton,
   label,
   onCurrencySelect,
@@ -193,10 +197,30 @@ export default function CurrencyInputPanel({
               ~{formatNumber(amountInDollar)} USD
             </Text>
           )}
-          {account && currency && !disabled && showMaxButton && label !== 'To' && (
-            <Button onClick={onMax} scale="xs" variant="secondary" style={{ textTransform: 'uppercase' }}>
-              {t('Max')}
-            </Button>
+          {account && currency && selectedCurrencyBalance?.greaterThan(0) && !disabled && label !== 'To' && (
+            <Flex alignItems="right" justifyContent="right">
+              {showQuickInputButton &&
+                onPercentInput &&
+                [25, 50, 75].map((percent) => (
+                  <Button
+                    key={`btn_quickCurrency${percent}`}
+                    onClick={() => {
+                      onPercentInput(percent)
+                    }}
+                    scale="xs"
+                    mr="5px"
+                    variant="secondary"
+                    style={{ textTransform: 'uppercase' }}
+                  >
+                    {percent}%
+                  </Button>
+                ))}
+              {showMaxButton && (
+                <Button onClick={onMax} scale="xs" variant="secondary" style={{ textTransform: 'uppercase' }}>
+                  {t('Max')}
+                </Button>
+              )}
+            </Flex>
           )}
         </InputRow>
       }

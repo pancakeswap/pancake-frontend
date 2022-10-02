@@ -191,7 +191,6 @@ it("renders correctly", () => {
         position: auto;
         bottom: auto;
         border-radius: 32px;
-        max-width: 100%;
         max-height: 100vh;
       }
     }

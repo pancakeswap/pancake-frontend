@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { LinkStatus } from '@pancakeswap/uikit/src/widgets/Menu/types'
 import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
 import { useCurrentBlock } from 'state/block/hooks'
 import { PotteryDepositStatus } from 'state/types'
@@ -10,7 +9,7 @@ import { usePotteryStatus } from './usePotteryStatus'
 import { useCompetitionStatus } from './useCompetitionStatus'
 import { useVotingStatus } from './useVotingStatus'
 
-export const useMenuItemsStatus = (): Record<string, string | (() => LinkStatus)> => {
+export const useMenuItemsStatus = (): Record<string, string> => {
   const { chainId } = useActiveWeb3React()
   const currentBlock = useCurrentBlock()
   const activeIfo = useActiveIfoWithBlocks()
@@ -28,10 +27,10 @@ export const useMenuItemsStatus = (): Record<string, string | (() => LinkStatus)
       '/competition': competitionStatus,
       '/ifo': ifoStatus === 'coming_soon' ? 'soon' : ifoStatus,
       ...(potteryStatus === PotteryDepositStatus.BEFORE_LOCK && {
-        '/pottery': () => <LinkStatus>{ text: 'POT OPEN', color: 'success' },
+        '/pottery': 'pot_open',
       }),
       ...(votingStatus && {
-        '/voting': () => <LinkStatus>{ text: 'VOTE NOW', color: 'success' },
+        '/voting': 'vote_now',
       }),
     }
   }, [competitionStatus, ifoStatus, potteryStatus, votingStatus])

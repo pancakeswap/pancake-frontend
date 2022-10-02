@@ -27,10 +27,6 @@ export const getProposals = async (first = 5, skip = 0, state = ProposalState.AC
           snapshot
           state
           author
-          space {
-            id
-            name
-          }
         }
       }
     `,
@@ -55,10 +51,6 @@ export const getProposal = async (id: string): Promise<Proposal> => {
           state
           author
           votes
-          space {
-            id
-            name
-          }
         }
       }
     `,
@@ -78,10 +70,6 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
           voter
           created
           choice
-          space {
-            id
-            name
-          }
           proposal {
             choices
           }
