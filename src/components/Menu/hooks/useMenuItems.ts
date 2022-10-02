@@ -29,7 +29,7 @@ export const useMenuItems = (): ConfigMenuItemsType[] => {
             if (itemStatus === 'soon') {
               itemMenuStatus = <LinkStatus>{ text: t('Soon'), color: 'warning' }
             } else if (itemStatus === 'live') {
-              itemMenuStatus = <LinkStatus>{ text: t('Live'), color: 'success' }
+              itemMenuStatus = <LinkStatus>{ text: t('Live'), color: 'failure' }
             } else if (itemStatus === 'vote_now') {
               itemMenuStatus = <LinkStatus>{ text: t('Vote Now'), color: 'success' }
             } else if (itemStatus === 'pot_open') {
