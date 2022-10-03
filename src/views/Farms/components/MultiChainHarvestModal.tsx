@@ -153,7 +153,7 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
               <Button
                 width="100%"
                 variant="secondary"
-                disabled={isPending || !account || !isWrongNetwork}
+                disabled={isPending || !account || isWrongNetwork}
                 endIcon={isPending ? <AutoRenewIcon spin color="currentColor" /> : null}
                 onClick={handleHarvest}
               >
