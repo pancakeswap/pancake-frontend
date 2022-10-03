@@ -18,6 +18,7 @@ import SwapForm from './components/SwapForm'
 import StableSwapFormContainer from './StableSwap'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import SwapTab, { SwapType } from './components/SwapTab'
+import useWarningImport from './hooks/useWarningImport'
 
 const CHART_SUPPORT_CHAIN_IDS = [ChainId.BSC]
 export const ACCESS_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC]
@@ -29,8 +30,7 @@ export default function Swap() {
   const [isChartExpanded, setIsChartExpanded] = useState(false)
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
-
-  useDefaultsFromURLSearch()
+  const warningSwapHandler = useWarningImport()
 
   useEffect(() => {
     setUserChartPreference(isChartDisplayed)
@@ -114,6 +114,7 @@ export default function Swap() {
                         isAccessTokenSupported={isAccessTokenSupported}
                         setIsChartDisplayed={setIsChartDisplayed}
                         isChartDisplayed={isChartDisplayed}
+                        warningSwapHandler={warningSwapHandler}
                       />
                     )
                   }

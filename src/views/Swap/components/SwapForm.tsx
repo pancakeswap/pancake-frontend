@@ -63,12 +63,17 @@ interface SwapForm {
   isChartExpanded: boolean
   isChartDisplayed: boolean
   setIsChartDisplayed: Dispatch<SetStateAction<boolean>>
+  warningSwapHandler: (currencyInput) => void
 }
 
-export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAccessTokenSupported }) {
+export default function SwapForm({
+  setIsChartDisplayed,
+  isChartDisplayed,
+  isAccessTokenSupported,
+  warningSwapHandler,
+}) {
   const { t } = useTranslation()
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
-  const warningSwapHandler = useWarningImport()
 
   const { account, chainId } = useActiveWeb3React()
 
