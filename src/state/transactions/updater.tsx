@@ -7,6 +7,7 @@ import { useProvider } from 'wagmi'
 import { poll } from '@ethersproject/web'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Box, Text, useToast } from '@pancakeswap/uikit'
+import { SLOW_INTERVAL } from 'config/constants'
 import { useAppDispatch } from '../index'
 import {
   finalizeTransaction,
@@ -94,93 +95,98 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
   }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t])
 
   useEffect(() => {
-    Object.keys(transactions)
-      .filter(
-        (hash) =>
-          transactions[hash].receipt?.status === 1 &&
-          transactions[hash].type === 'non-bsc-farm' &&
-          transactions[hash].nonBscFarm?.status === FarmTransactionStatus.PENDING,
-      )
-      .forEach((hash) => {
-        const steps = transactions[hash]?.nonBscFarm?.steps
-        if (steps.length) {
-          const pendingStep = steps.findIndex(
-            (step: NonBscFarmTransactionStep) => step.status === FarmTransactionStatus.PENDING,
-          )
-          const previousIndex = pendingStep - 1
+    const interval = setInterval(() => {
+      Object.keys(transactions)
+        .filter(
+          (hash) =>
+            transactions[hash].receipt?.status === 1 &&
+            transactions[hash].type === 'non-bsc-farm' &&
+            transactions[hash].nonBscFarm?.status === FarmTransactionStatus.PENDING,
+        )
+        .forEach((hash) => {
+          const steps = transactions[hash]?.nonBscFarm?.steps
+          if (steps.length) {
+            const pendingStep = steps.findIndex(
+              (step: NonBscFarmTransactionStep) => step.status === FarmTransactionStatus.PENDING,
+            )
+            const previousIndex = pendingStep - 1
 
-          if (previousIndex >= 0) {
-            // const previousHash = steps[previousIndex]
-            const fakeHash = '0xcdb7e81470bdc407ed3eafb2ca20d53ab0d29bcc00e94ad6d056a1d2d99ec59c' || hash // TODO: NonBSCFarm change to hash before merge
+            if (previousIndex >= 0) {
+              const previousHash = steps[previousIndex]
+              const checkHash = previousHash.tx || hash
 
-            fetchCelerApi(fakeHash)
-              .then((response) => {
-                const transaction = transactions[hash]
-                const { destinationTxHash, messageStatus } = response
-                const status =
-                  messageStatus === MsgStatus.MS_COMPLETED
-                    ? FarmTransactionStatus.SUCCESS
-                    : messageStatus === MsgStatus.MS_FAIL
-                    ? FarmTransactionStatus.FAIL
-                    : FarmTransactionStatus.PENDING
-                const isFinalStepComplete = status === FarmTransactionStatus.SUCCESS && steps.length === pendingStep + 1
+              fetchCelerApi(checkHash)
+                .then((response) => {
+                  const transaction = transactions[hash]
+                  const { destinationTxHash, messageStatus } = response
+                  const status =
+                    messageStatus === MsgStatus.MS_COMPLETED
+                      ? FarmTransactionStatus.SUCCESS
+                      : messageStatus === MsgStatus.MS_FAIL
+                      ? FarmTransactionStatus.FAIL
+                      : FarmTransactionStatus.PENDING
+                  const isFinalStepComplete =
+                    status === FarmTransactionStatus.SUCCESS && steps.length === pendingStep + 1
 
-                const newSteps = transaction.nonBscFarm.steps.map((step, index) => {
-                  let newObj = {}
-                  if (index === pendingStep) {
-                    newObj = { ...step, status, tx: destinationTxHash }
+                  const newSteps = transaction.nonBscFarm.steps.map((step, index) => {
+                    let newObj = {}
+                    if (index === pendingStep) {
+                      newObj = { ...step, status, tx: destinationTxHash }
+                    }
+                    return { ...step, ...newObj }
+                  })
+
+                  dispatch(
+                    finalizeTransaction({
+                      chainId,
+                      hash: transaction.hash,
+                      receipt: { ...transaction.receipt },
+                      nonBscFarm: {
+                        ...transaction.nonBscFarm,
+                        steps: newSteps,
+                        status: isFinalStepComplete ? FarmTransactionStatus.SUCCESS : transaction.nonBscFarm.status,
+                      },
+                    }),
+                  )
+
+                  const isStakeType = transactions[hash].nonBscFarm.type === NonBscFarmStepType.STAKE
+                  if (isFinalStepComplete) {
+                    const toastTitle = isStakeType ? t('Staked!') : t('Unstaked!')
+                    toastSuccess(
+                      toastTitle,
+                      <ToastDescriptionWithTx txHash={destinationTxHash} txChainId={steps[pendingStep].chainId}>
+                        {isStakeType
+                          ? t('Your LP Token have been staked in the Farm!')
+                          : t('Your LP Token have been unstaked in the Farm!')}
+                      </ToastDescriptionWithTx>,
+                    )
+                  } else if (status === FarmTransactionStatus.FAIL) {
+                    const toastTitle = isStakeType ? 'Stake Error' : 'Unstake Error'
+                    toastError(
+                      toastTitle,
+                      <ToastDescriptionWithTx txHash={destinationTxHash} txChainId={steps[pendingStep].chainId}>
+                        <Box>
+                          <Text
+                            as="span"
+                            bold
+                          >{`${transaction.nonBscFarm.amount} ${transaction.nonBscFarm.lpSymbol}`}</Text>
+                          <Text as="span" ml="4px">
+                            {t('Token fail to stake.')}
+                          </Text>
+                        </Box>
+                      </ToastDescriptionWithTx>,
+                    )
                   }
-                  return { ...step, ...newObj }
                 })
-
-                dispatch(
-                  finalizeTransaction({
-                    chainId,
-                    hash: transaction.hash,
-                    receipt: { ...transaction.receipt },
-                    nonBscFarm: {
-                      ...transaction.nonBscFarm,
-                      steps: newSteps,
-                      status: isFinalStepComplete ? FarmTransactionStatus.SUCCESS : transaction.nonBscFarm.status,
-                    },
-                  }),
-                )
-
-                const isStakeType = transactions[hash].nonBscFarm.type === NonBscFarmStepType.STAKE
-                if (isFinalStepComplete) {
-                  const toastTitle = isStakeType ? t('Staked!') : t('Unstaked!')
-                  toastSuccess(
-                    toastTitle,
-                    <ToastDescriptionWithTx txHash={destinationTxHash} txChainId={steps[pendingStep].chainId}>
-                      {isStakeType
-                        ? t('Your LP Token have been staked in the Farm!')
-                        : t('Your LP Token have been unstaked in the Farm!')}
-                    </ToastDescriptionWithTx>,
-                  )
-                } else if (status === FarmTransactionStatus.FAIL) {
-                  const toastTitle = isStakeType ? 'Stake Error' : 'Unstake Error'
-                  toastError(
-                    toastTitle,
-                    <ToastDescriptionWithTx txHash={destinationTxHash} txChainId={steps[pendingStep].chainId}>
-                      <Box>
-                        <Text
-                          as="span"
-                          bold
-                        >{`${transaction.nonBscFarm.amount} ${transaction.nonBscFarm.lpSymbol}`}</Text>
-                        <Text as="span" ml="4px">
-                          {t('Token fail to stake.')}
-                        </Text>
-                      </Box>
-                    </ToastDescriptionWithTx>,
-                  )
-                }
-              })
-              .catch((error) => {
-                console.error(`Failed to check harvest transaction hash: ${hash}`, error)
-              })
+                .catch((error) => {
+                  console.error(`Failed to check harvest transaction hash: ${hash}`, error)
+                })
+            }
           }
-        }
-      })
+        })
+    }, SLOW_INTERVAL)
+
+    return () => clearInterval(interval)
   }, [chainId, transactions, dispatch, toastSuccess, toastError, t])
 
   return null

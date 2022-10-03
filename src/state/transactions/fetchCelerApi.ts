@@ -12,9 +12,16 @@ export const fetchCelerApi = async (hash: string) => {
     })
 
     const result = await response.json()
-    const { transfer, message } = result.txSearchInfo[0]
+    if (!result.txSearchInfo[0]) {
+      return {
+        destinationTxHash: '',
+        messageStatus: MsgStatus.MS_UNKNOWN,
+      }
+    }
+
+    const { message } = result.txSearchInfo[0]
     return {
-      destinationTxHash: transfer[0].dst_tx_hash,
+      destinationTxHash: message[0].execution_tx,
       messageStatus: message[0].msg_status,
     }
   } catch (error) {
