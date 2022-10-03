@@ -77,10 +77,9 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { boosterState } = useContext(YieldBoosterStateContext)
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
 
-  const isWithdrawFarmPending = useMemo(() => {
-    const isPendingFarm = pendingFarm.find((tx) => tx.type === NonBscFarmStepType.UNSTAKE)
-    return isPendingFarm !== undefined
-  }, [pendingFarm])
+  const isStakeReady = useMemo(() => {
+    return ['history', 'archived'].some((item) => router.pathname.includes(item)) || pendingFarm.length > 0
+  }, [pendingFarm, router])
 
   const handleStake = async (amount: string) => {
     if (vaultPid) {
@@ -247,22 +246,15 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
 
   const renderStakingButtons = () => {
     return stakedBalance.eq(0) ? (
-      <Button
-        onClick={onPresentDeposit}
-        disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
-      >
+      <Button onClick={onPresentDeposit} disabled={isStakeReady}>
         {t('Stake LP')}
       </Button>
     ) : (
       <IconButtonWrapper>
-        <IconButton mr="6px" variant="tertiary" disabled={isWithdrawFarmPending} onClick={onPresentWithdraw}>
+        <IconButton mr="6px" variant="tertiary" disabled={pendingFarm.length > 0} onClick={onPresentWithdraw}>
           <MinusIcon color="primary" width="14px" />
         </IconButton>
-        <IconButton
-          variant="tertiary"
-          onClick={onPresentDeposit}
-          disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
-        >
+        <IconButton variant="tertiary" onClick={onPresentDeposit} disabled={isStakeReady}>
           <AddIcon color="primary" width="14px" />
         </IconButton>
       </IconButtonWrapper>
