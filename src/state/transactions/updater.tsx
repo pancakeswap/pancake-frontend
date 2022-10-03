@@ -7,7 +7,7 @@ import { useProvider } from 'wagmi'
 import { poll } from '@ethersproject/web'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Box, Text, useToast } from '@pancakeswap/uikit'
-import { SLOW_INTERVAL } from 'config/constants'
+import { FAST_INTERVAL } from 'config/constants'
 import { useAppDispatch } from '../index'
 import {
   finalizeTransaction,
@@ -184,7 +184,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
             }
           }
         })
-    }, SLOW_INTERVAL)
+    }, FAST_INTERVAL)
 
     return () => clearInterval(interval)
   }, [chainId, transactions, dispatch, toastSuccess, toastError, t])
