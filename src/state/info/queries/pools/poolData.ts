@@ -8,7 +8,12 @@ import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getPercentChange } from 'views/Info/utils/infoDataHelpers'
 import { useGetChainName } from '../../hooks'
-import { multiChainQueryClient, MultiChianName, multiChainQueryMainToken } from '../../constant'
+import {
+  multiChainQueryClient,
+  MultiChianName,
+  multiChainQueryMainToken,
+  getMultiChainQueryEndPointWithStableSwap,
+} from '../../constant'
 import { fetchTopPoolAddresses } from './topPools'
 
 interface PoolFields {
@@ -97,11 +102,11 @@ export const fetchPoolData = async (
         now: ${POOL_AT_BLOCK(chainName, null, poolAddresses)}
         oneDayAgo: ${POOL_AT_BLOCK(chainName, block24h, poolAddresses)}
         twoDaysAgo: ${POOL_AT_BLOCK(chainName, block48h, poolAddresses)}
-        oneWeekAgo: ${POOL_AT_BLOCK(chainName, block7d, poolAddresses)}
-        twoWeeksAgo: ${POOL_AT_BLOCK(chainName, block14d, poolAddresses)}
       }
     `
-    const data = await multiChainQueryClient[chainName].request<PoolsQueryResponse>(query)
+    //        oneWeekAgo: ${POOL_AT_BLOCK(chainName, block7d, poolAddresses)}
+    // twoWeeksAgo: ${POOL_AT_BLOCK(chainName, block14d, poolAddresses)}
+    const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<PoolsQueryResponse>(query)
     return { data, error: false }
   } catch (error) {
     console.error('Failed to fetch pool data', error)

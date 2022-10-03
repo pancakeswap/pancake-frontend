@@ -2,7 +2,7 @@ import { gql } from 'graphql-request'
 import { mapBurns, mapMints, mapSwaps } from 'state/info/queries/helpers'
 import { BurnResponse, MintResponse, SwapResponse } from 'state/info/queries/types'
 import { Transaction } from 'state/info/types'
-import { multiChainQueryClient, MultiChianName } from '../../constant'
+import { MultiChianName, getMultiChainQueryEndPointWithStableSwap } from '../../constant'
 
 /**
  * Data to display transaction table on Token page
@@ -142,9 +142,12 @@ const fetchTokenTransactions = async (
   address: string,
 ): Promise<{ data?: Transaction[]; error: boolean }> => {
   try {
-    const data = await multiChainQueryClient[chainName].request<TransactionResults>(TOKEN_TRANSACTIONS(), {
-      address,
-    })
+    const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TransactionResults>(
+      TOKEN_TRANSACTIONS(),
+      {
+        address,
+      },
+    )
     const mints0 = data.mintsAs0.map(mapMints)
     const mints1 = data.mintsAs1.map(mapMints)
 

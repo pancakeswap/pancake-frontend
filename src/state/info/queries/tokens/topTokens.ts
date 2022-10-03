@@ -3,7 +3,7 @@ import { gql } from 'graphql-request'
 import { useCallback, useState, useEffect } from 'react'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useGetChainName } from '../../hooks'
-import { MultiChianName, multiChainQueryClient } from '../../constant'
+import { MultiChianName, getMultiChainQueryEndPointWithStableSwap, checkIsStableSwap } from '../../constant'
 
 interface TopTokensResponse {
   tokenDayDatas: {
@@ -18,8 +18,12 @@ interface TopTokensResponse {
  */
 const fetchTopTokens = async (chainName: MultiChianName, timestamp24hAgo: number): Promise<string[]> => {
   const whereCondition =
-    chainName === 'ETH' ? `` : `where: { dailyTxns_gt: 300, id_not_in: $blacklist, date_gt: $timestamp24hAgo}`
-  const firstCount = chainName === 'ETH' ? 100 : 30
+    chainName === 'ETH'
+      ? `where: { date_gt: $timestamp24hAgo}`
+      : checkIsStableSwap()
+      ? ''
+      : `where: { dailyTxns_gt: 300, id_not_in: $blacklist, date_gt: $timestamp24hAgo}`
+  const firstCount = 30
   try {
     const query = gql`
       query topTokens($blacklist: [String!], $timestamp24hAgo: Int) {
@@ -33,7 +37,7 @@ const fetchTopTokens = async (chainName: MultiChianName, timestamp24hAgo: number
         }
       }
     `
-    const data = await multiChainQueryClient[chainName].request<TopTokensResponse>(query, {
+    const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TopTokensResponse>(query, {
       blacklist: TOKEN_BLACKLIST,
       timestamp24hAgo,
     })

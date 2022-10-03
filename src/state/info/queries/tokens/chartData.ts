@@ -3,7 +3,7 @@ import { gql } from 'graphql-request'
 import { ChartEntry } from 'state/info/types'
 import { fetchChartDataWithAddress, mapDayData } from '../helpers'
 import { TokenDayDatasResponse } from '../types'
-import { multiChainQueryClient, MultiChianName } from '../../constant'
+import { getMultiChainQueryEndPointWithStableSwap, MultiChianName } from '../../constant'
 
 const getTokenChartData = async (
   chainName: MultiChianName,
@@ -26,11 +26,14 @@ const getTokenChartData = async (
         }
       }
     `
-    const { tokenDayDatas } = await multiChainQueryClient[chainName].request<TokenDayDatasResponse>(query, {
-      startTime: PCS_V2_START,
-      skip,
-      address,
-    })
+    const { tokenDayDatas } = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TokenDayDatasResponse>(
+      query,
+      {
+        startTime: PCS_V2_START,
+        skip,
+        address,
+      },
+    )
     const data = tokenDayDatas.map(mapDayData)
     return { data, error: false }
   } catch (error) {

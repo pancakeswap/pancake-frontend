@@ -3,7 +3,7 @@ import { ChartEntry } from 'state/info/types'
 import { PCS_V2_START } from 'config/constants/info'
 import { PairDayDatasResponse } from '../types'
 import { mapPairDayData, fetchChartDataWithAddress } from '../helpers'
-import { multiChainQueryClient, MultiChianName } from '../../constant'
+import { getMultiChainQueryEndPointWithStableSwap, MultiChianName } from '../../constant'
 
 const getPoolChartData = async (
   chainName: MultiChianName,
@@ -26,11 +26,14 @@ const getPoolChartData = async (
         }
       }
     `
-    const { pairDayDatas } = await multiChainQueryClient[chainName].request<PairDayDatasResponse>(query, {
-      startTime: PCS_V2_START,
-      skip,
-      address,
-    })
+    const { pairDayDatas } = await getMultiChainQueryEndPointWithStableSwap(chainName).request<PairDayDatasResponse>(
+      query,
+      {
+        startTime: PCS_V2_START,
+        skip,
+        address,
+      },
+    )
     const data = pairDayDatas.map(mapPairDayData)
     return { data, error: false }
   } catch (error) {

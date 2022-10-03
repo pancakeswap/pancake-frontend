@@ -3,7 +3,7 @@ import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, Skeleton, Text, useMatchBre
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import orderBy from 'lodash/orderBy'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
-import { useGetChainName, useMultiChainPath } from 'state/info/hooks'
+import { useGetChainName, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -92,8 +92,9 @@ const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: n
   const { isXs, isSm } = useMatchBreakpoints()
   const chainName = useGetChainName()
   const chianPath = useMultiChainPath()
+  const stableSwapPath = useStableSwapPath()
   return (
-    <LinkWrapper to={`/info${chianPath}/tokens/${tokenData.address}`}>
+    <LinkWrapper to={`/info${chianPath}/tokens/${tokenData.address}${stableSwapPath}`}>
       <ResponsiveGrid>
         <Flex>
           <Text>{index + 1}</Text>

@@ -1,10 +1,9 @@
 import { TOKEN_BLACKLIST } from 'config/constants/info'
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
-import { infoClient, infoClientETH } from 'utils/graphql'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { checkIsStableSwap, getMultiChainQueryEndPointWithStableSwap, MultiChianName } from '../../constant'
 import { useGetChainName } from '../../hooks'
-import { multiChainQueryClient, MultiChianName } from '../../constant'
 
 interface TopPoolsResponse {
   pairDayDatas: {
@@ -19,7 +18,9 @@ const fetchTopPools = async (chainName: MultiChianName, timestamp24hAgo: number)
   const whereCondition =
     chainName === 'BSC'
       ? 'where: { dailyTxns_gt: 300, token0_not_in: $blacklist, token1_not_in: $blacklist, date_gt: $timestamp24hAgo }'
-      : ''
+      : checkIsStableSwap()
+      ? ''
+      : 'where: { date_gt: $timestamp24hAgo }'
   try {
     const query = gql`
       query topPools($blacklist: [String!], $timestamp24hAgo: Int) {
@@ -33,7 +34,7 @@ const fetchTopPools = async (chainName: MultiChianName, timestamp24hAgo: number)
         }
       }
     `
-    const data = await multiChainQueryClient[chainName].request<TopPoolsResponse>(query, {
+    const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TopPoolsResponse>(query, {
       blacklist: TOKEN_BLACKLIST,
       timestamp24hAgo,
     })

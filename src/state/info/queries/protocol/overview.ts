@@ -1,11 +1,11 @@
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
-import { ProtocolData, Block } from 'state/info/types'
+import { Block, ProtocolData } from 'state/info/types'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getPercentChange } from 'views/Info/utils/infoDataHelpers'
-import { multiChainQueryClient, MultiChianName } from '../../constant'
+import { checkIsStableSwap, getMultiChainQueryEndPointWithStableSwap, MultiChianName } from '../../constant'
 import { useGetChainName } from '../../hooks'
 
 interface PancakeFactory {
@@ -16,6 +16,7 @@ interface PancakeFactory {
 
 interface OverviewResponse {
   pancakeFactories: PancakeFactory[]
+  factories?: PancakeFactory[]
 }
 /**
  * Latest Liquidity, Volume and Transaction count
@@ -24,9 +25,10 @@ const getOverviewData = async (
   chainName: MultiChianName,
   block?: number,
 ): Promise<{ data?: OverviewResponse; error: boolean }> => {
+  const factoryString = checkIsStableSwap() ? `factories` : `pancakeFactories`
   try {
     const query = gql`query overview {
-      pancakeFactories(
+      ${factoryString}(
         ${block ? `block: { number: ${block}}` : ``}
         first: 1) {
         totalTransactions
@@ -34,7 +36,7 @@ const getOverviewData = async (
         totalLiquidityUSD
       }
     }`
-    const data = await multiChainQueryClient[chainName].request<OverviewResponse>(query)
+    const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<OverviewResponse>(query)
     return { data, error: false }
   } catch (error) {
     console.error('Failed to fetch info overview', error)
@@ -127,6 +129,10 @@ export const fetchProtocolData = async (chainName: MultiChianName, block24: Bloc
     getOverviewData(chainName, block24?.number ?? undefined),
     getOverviewData(chainName, block48?.number ?? undefined),
   ])
+  if (data.factories && data.factories.length > 0) data.pancakeFactories = data.factories
+  if (data24.factories && data24.factories.length > 0) data24.pancakeFactories = data24.factories
+  if (data48.factories && data48.factories.length > 0) data48.pancakeFactories = data48.factories
+
   const anyError = error || error24 || error48
   const overviewData = formatPancakeFactoryResponse(data?.pancakeFactories?.[0])
   const overviewData24 = formatPancakeFactoryResponse(data24?.pancakeFactories?.[0])
@@ -153,6 +159,7 @@ export const fetchProtocolData = async (chainName: MultiChianName, block24: Bloc
     txCount,
     txCountChange,
   }
+  console.log(protocolData, '666')
   return protocolData
 }
 

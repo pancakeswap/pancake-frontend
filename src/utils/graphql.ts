@@ -1,4 +1,10 @@
-import { BIT_QUERY, INFO_CLIENT, STABLESWAP_SUBGRAPH_CLIENT, INFO_CLIENT_ETH } from 'config/constants/endpoints'
+import {
+  BIT_QUERY,
+  INFO_CLIENT,
+  STABLESWAP_SUBGRAPH_CLIENT,
+  INFO_CLIENT_ETH,
+  INFO_STABLESWAP_CLIENT,
+} from 'config/constants/endpoints'
 import { GraphQLClient } from 'graphql-request'
 
 // Extra headers
@@ -18,29 +24,12 @@ export const getGQLHeaders = (endpoint: string) => {
   return undefined
 }
 
-export const getGQLHeadersETH = (endpoint: string) => {
-  if (endpoint === INFO_CLIENT_ETH) {
-    return {
-      'X-Sf':
-        process.env.NEXT_PUBLIC_SF_HEADER ||
-        // hack for inject CI secret on window
-        (typeof window !== 'undefined' &&
-          // @ts-ignore
-          window.sfHeader),
-    }
-  }
-  return undefined
-}
-
 export const infoClient = new GraphQLClient(INFO_CLIENT, { headers: getGQLHeaders(INFO_CLIENT) })
 
 export const infoClientETH = new GraphQLClient(INFO_CLIENT_ETH, { headers: getGQLHeaders(INFO_CLIENT_ETH) })
 
-export const infoServerClientETH = new GraphQLClient(INFO_CLIENT_ETH, {
-  headers: {
-    'X-Sf': process.env.SF_HEADER,
-  },
-  timeout: 5000,
+export const infoStableSwapClient = new GraphQLClient(INFO_STABLESWAP_CLIENT, {
+  headers: getGQLHeaders(INFO_STABLESWAP_CLIENT),
 })
 
 export const infoServerClient = new GraphQLClient(INFO_CLIENT, {

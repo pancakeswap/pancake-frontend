@@ -59,10 +59,6 @@ const config = {
         source: '/info/pair/:address',
         destination: '/info/pools/:address',
       },
-      {
-        source: '/subgraph',
-        destination: 'https://api.thegraph.com/subgraphs/name/chef-huan/exhange-eth',
-      },
     ]
   },
   async headers() {

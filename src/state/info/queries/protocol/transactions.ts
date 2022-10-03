@@ -2,7 +2,7 @@ import { gql } from 'graphql-request'
 import { mapBurns, mapMints, mapSwaps } from 'state/info/queries/helpers'
 import { BurnResponse, MintResponse, SwapResponse } from 'state/info/queries/types'
 import { Transaction } from 'state/info/types'
-import { multiChainQueryClient, MultiChianName } from '../../constant'
+import { getMultiChainQueryEndPointWithStableSwap, MultiChianName } from '../../constant'
 
 /**
  * Transactions for Transaction table on the Home page
@@ -76,7 +76,9 @@ interface TransactionResults {
 
 const fetchTopTransactions = async (chainName: MultiChianName): Promise<Transaction[] | undefined> => {
   try {
-    const data = await multiChainQueryClient[chainName].request<TransactionResults>(GLOBAL_TRANSACTIONS)
+    const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TransactionResults>(
+      GLOBAL_TRANSACTIONS,
+    )
     if (!data) {
       return undefined
     }

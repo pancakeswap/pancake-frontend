@@ -3,7 +3,7 @@ import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, Skeleton, Text } from '@pan
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
-import { useGetChainName, useMultiChainPath } from 'state/info/hooks'
+import { useGetChainName, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import { PoolData } from 'state/info/types'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -87,8 +87,9 @@ const TableLoader: React.FC<React.PropsWithChildren> = () => (
 const DataRow = ({ poolData, index }: { poolData: PoolData; index: number }) => {
   const chainName = useGetChainName()
   const chainPath = useMultiChainPath()
+  const stableSwapPath = useStableSwapPath()
   return (
-    <LinkWrapper to={`/info${chainPath}/pools/${poolData.address}`}>
+    <LinkWrapper to={`/info${chainPath}/pools/${poolData.address}${stableSwapPath}`}>
       <ResponsiveGrid>
         <Text>{index + 1}</Text>
         <Flex>

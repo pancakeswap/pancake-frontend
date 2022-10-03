@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { ChartEntry } from 'state/info/types'
 import { fetchChartData, mapDayData } from '../helpers'
 import { PancakeDayDatasResponse } from '../types'
-import { MultiChianName, multiChainQueryClient } from '../../constant'
+import { MultiChianName, getMultiChainQueryEndPointWithStableSwap } from '../../constant'
 import { useGetChainName } from '../../hooks'
 
 /**
@@ -26,13 +26,12 @@ const getOverviewChartData = async (
   skip: number,
 ): Promise<{ data?: ChartEntry[]; error: boolean }> => {
   try {
-    const { pancakeDayDatas } = await multiChainQueryClient[chainName].request<PancakeDayDatasResponse>(
-      PANCAKE_DAY_DATAS,
-      {
-        startTime: PCS_V2_START,
-        skip,
-      },
-    )
+    const { pancakeDayDatas } = await getMultiChainQueryEndPointWithStableSwap(
+      chainName,
+    ).request<PancakeDayDatasResponse>(PANCAKE_DAY_DATAS, {
+      startTime: PCS_V2_START,
+      skip,
+    })
     const data = pancakeDayDatas.map(mapDayData)
     return { data, error: false }
   } catch (error) {

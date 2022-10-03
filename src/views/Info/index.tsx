@@ -1,4 +1,6 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
+import { SubMenuItems } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useEffect } from 'react'
@@ -9,14 +11,33 @@ export const InfoPageLayout = ({ children }) => {
   const { account } = useWeb3React()
   const { chainId } = useActiveWeb3React()
   const chainName = useGetChainName()
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (account && chainId === ChainId.BSC && window.location.pathname.includes('eth')) window.location.href = '/info'
     if (account && chainId === ChainId.ETHEREUM && !window.location.pathname.includes('eth'))
       window.location.href = '/info/eth'
   }, [chainId, account, chainName])
+
+  const isStableSwap = window.location.href.includes('stableSwap')
   return (
     <>
+      {chainName === 'BSC' && (
+        <SubMenuItems
+          items={[
+            {
+              label: t('Swap'),
+              href: '/info',
+            },
+            {
+              label: t('StableSwap'),
+              href: '/info?type=stableSwap',
+            },
+          ]}
+          activeItem={isStableSwap ? '/info?type=stableSwap' : '/info'}
+        />
+      )}
+
       <InfoNav />
       {children}
     </>

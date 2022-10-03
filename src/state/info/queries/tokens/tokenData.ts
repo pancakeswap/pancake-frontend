@@ -6,7 +6,12 @@ import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getAmountChange, getPercentChange } from 'views/Info/utils/infoDataHelpers'
-import { multiChainQueryClient, MultiChianName, multiChainQueryMainToken } from '../../constant'
+import {
+  getMultiChainQueryEndPointWithStableSwap,
+  MultiChianName,
+  multiChainQueryMainToken,
+  multiChainQueryClient,
+} from '../../constant'
 import { fetchTokenAddresses } from './topTokens'
 
 interface TokenFields {
@@ -80,11 +85,13 @@ const fetchTokenData = async (
         now: ${TOKEN_AT_BLOCK(chainName, null, tokenAddresses)}
         oneDayAgo: ${TOKEN_AT_BLOCK(chainName, block24h, tokenAddresses)}
         twoDaysAgo: ${TOKEN_AT_BLOCK(chainName, block48h, tokenAddresses)}
-        oneWeekAgo: ${TOKEN_AT_BLOCK(chainName, block7d, tokenAddresses)}
-        twoWeeksAgo: ${TOKEN_AT_BLOCK(chainName, block14d, tokenAddresses)}
       }
     `
-    const data = await multiChainQueryClient[chainName].request<TokenQueryResponse>(query)
+    //  oneWeekAgo: ${TOKEN_AT_BLOCK(chainName, block7d, tokenAddresses)}
+    // twoWeeksAgo: ${TOKEN_AT_BLOCK(chainName, block14d, tokenAddresses)}
+
+    const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TokenQueryResponse>(query)
+    // const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TokenQueryResponse>(query)
     return { data, error: false }
   } catch (error) {
     console.error('Failed to fetch token data', error)
@@ -221,6 +228,8 @@ export const fetchAllTokenData = async (chainName: MultiChianName, blocks: Block
     block14d.number,
     tokenAddresses,
   )
+
+  console.log(data, 'fetchAllTokenData', error)
 
   const parsed = parseTokenData(data?.now)
   const parsed24 = parseTokenData(data?.oneDayAgo)
