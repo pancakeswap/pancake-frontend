@@ -42,7 +42,7 @@ export function createFarmFetcher(multicallv2: MultiCallV2) {
     fetchFarms,
     isChainSupported: (chainId: number) => supportedChainId.includes(chainId),
     supportedChainId,
-    isTestnet: (chainId: number) => ![ChainId.BSC].includes(chainId),
+    isTestnet: (chainId: number) => ![ChainId.BSC, ChainId.ETHEREUM].includes(chainId),
   }
 }
 
