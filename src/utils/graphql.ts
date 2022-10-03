@@ -1,10 +1,4 @@
-import {
-  BIT_QUERY,
-  INFO_CLIENT,
-  STABLESWAP_SUBGRAPH_CLIENT,
-  INFO_CLIENT_ETH,
-  INFO_STABLESWAP_CLIENT,
-} from 'config/constants/endpoints'
+import { BIT_QUERY, INFO_CLIENT, STABLESWAP_SUBGRAPH_CLIENT, INFO_CLIENT_ETH } from 'config/constants/endpoints'
 import { GraphQLClient } from 'graphql-request'
 
 // Extra headers
@@ -28,8 +22,8 @@ export const infoClient = new GraphQLClient(INFO_CLIENT, { headers: getGQLHeader
 
 export const infoClientETH = new GraphQLClient(INFO_CLIENT_ETH, { headers: getGQLHeaders(INFO_CLIENT_ETH) })
 
-export const infoStableSwapClient = new GraphQLClient(INFO_STABLESWAP_CLIENT, {
-  headers: getGQLHeaders(INFO_STABLESWAP_CLIENT),
+export const infoStableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPH_CLIENT, {
+  headers: getGQLHeaders(STABLESWAP_SUBGRAPH_CLIENT),
 })
 
 export const infoServerClient = new GraphQLClient(INFO_CLIENT, {
