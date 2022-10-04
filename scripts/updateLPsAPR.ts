@@ -8,10 +8,8 @@ import { ChainId } from '@pancakeswap/sdk'
 import { SerializedFarmConfig } from '@pancakeswap/farms'
 import { StaticJsonRpcProvider } from '@ethersproject/providers'
 import type { BlockResponse } from '../src/components/SubgraphHealthIndicator'
-import { BLOCKS_CLIENT } from '../src/config/constants/endpoints'
-import { infoClient, stableSwapClient } from '../src/utils/graphql'
-
-const BLOCK_SUBGRAPH_ENDPOINT = BLOCKS_CLIENT
+import { BLOCKS_CLIENT_WITH_CHAIN } from '../src/config/constants/endpoints'
+import { infoClientWithChain, stableSwapClient } from '../src/utils/graphql'
 
 interface SingleFarmResponse {
   id: string
@@ -36,10 +34,10 @@ const getWeekAgoTimestamp = () => {
 const LP_HOLDERS_FEE = 0.0017
 const WEEKS_IN_A_YEAR = 52.1429
 
-const getBlockAtTimestamp = async (timestamp: number) => {
+const getBlockAtTimestamp = async (timestamp: number, chainId = ChainId.BSC) => {
   try {
     const { blocks } = await request<BlockResponse>(
-      BLOCK_SUBGRAPH_ENDPOINT,
+      BLOCKS_CLIENT_WITH_CHAIN[chainId],
       `query getBlock($timestampGreater: Int!, $timestampLess: Int!) {
         blocks(first: 1, where: { timestamp_gt: $timestampGreater, timestamp_lt: $timestampLess }) {
           number
@@ -53,9 +51,9 @@ const getBlockAtTimestamp = async (timestamp: number) => {
   }
 }
 
-const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): Promise<AprMap> => {
+const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number, chainId: number): Promise<AprMap> => {
   try {
-    const { farmsAtLatestBlock, farmsOneWeekAgo } = await infoClient.request<FarmsResponse>(
+    const { farmsAtLatestBlock, farmsOneWeekAgo } = await infoClientWithChain(chainId).request<FarmsResponse>(
       gql`
         query farmsBulk($addresses: [String]!, $blockWeekAgo: Int!) {
           farmsAtLatestBlock: pairs(first: 30, where: { id_in: $addresses }) {
@@ -183,13 +181,13 @@ const fetchAndUpdateLPsAPR = async () => {
       // Split it into chunks of 30 addresses to avoid gateway timeout
       const addressesInGroups = chunk(lowerCaseAddresses, 30)
       const weekAgoTimestamp = getWeekAgoTimestamp()
-      const blockWeekAgo = await getBlockAtTimestamp(weekAgoTimestamp)
+      const blockWeekAgo = await getBlockAtTimestamp(weekAgoTimestamp, chainId)
 
       let allAprs: AprMap = {}
       // eslint-disable-next-line no-restricted-syntax
       for (const groupOfAddresses of addressesInGroups) {
         // eslint-disable-next-line no-await-in-loop
-        const aprs = await getAprsForFarmGroup(groupOfAddresses, blockWeekAgo)
+        const aprs = await getAprsForFarmGroup(groupOfAddresses, blockWeekAgo, chainId)
         allAprs = { ...allAprs, ...aprs }
       }
 
