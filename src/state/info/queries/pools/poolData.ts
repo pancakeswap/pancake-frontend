@@ -91,16 +91,21 @@ export const fetchPoolData = async (
   poolAddresses: string[],
   chainName: 'ETH' | 'BSC' = 'BSC',
 ) => {
+  const weeksQuery =
+    chainName === 'BSC'
+      ? `oneWeekAgo: ${POOL_AT_BLOCK(chainName, block7d, poolAddresses)} 
+         twoWeeksAgo: ${POOL_AT_BLOCK(chainName, block14d, poolAddresses)}`
+      : ''
   try {
     const query = gql`
       query pools {
         now: ${POOL_AT_BLOCK(chainName, null, poolAddresses)}
         oneDayAgo: ${POOL_AT_BLOCK(chainName, block24h, poolAddresses)}
         twoDaysAgo: ${POOL_AT_BLOCK(chainName, block48h, poolAddresses)}
+        ${weeksQuery}
       }
     `
-    //        oneWeekAgo: ${POOL_AT_BLOCK(chainName, block7d, poolAddresses)}
-    // twoWeeksAgo: ${POOL_AT_BLOCK(chainName, block14d, poolAddresses)}
+
     const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<PoolsQueryResponse>(query)
     return { data, error: false }
   } catch (error) {

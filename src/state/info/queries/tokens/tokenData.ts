@@ -75,18 +75,20 @@ const fetchTokenData = async (
   tokenAddresses: string[],
 ) => {
   try {
+    const weeksQuery =
+      chainName === 'BSC'
+        ? `oneWeekAgo: ${TOKEN_AT_BLOCK(chainName, block7d, tokenAddresses)}
+           twoWeeksAgo: ${TOKEN_AT_BLOCK(chainName, block14d, tokenAddresses)}`
+        : ''
     const query = gql`
       query tokens {
         now: ${TOKEN_AT_BLOCK(chainName, null, tokenAddresses)}
         oneDayAgo: ${TOKEN_AT_BLOCK(chainName, block24h, tokenAddresses)}
         twoDaysAgo: ${TOKEN_AT_BLOCK(chainName, block48h, tokenAddresses)}
+        ${weeksQuery}
       }
     `
-    //  oneWeekAgo: ${TOKEN_AT_BLOCK(chainName, block7d, tokenAddresses)}
-    // twoWeeksAgo: ${TOKEN_AT_BLOCK(chainName, block14d, tokenAddresses)}
-
     const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TokenQueryResponse>(query)
-    // const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TokenQueryResponse>(query)
     return { data, error: false }
   } catch (error) {
     console.error('Failed to fetch token data', error)
