@@ -106,7 +106,6 @@ const useFetchProtocolData = (): ProtocolFetchState => {
           txCount,
           txCountChange,
         }
-        console.log('fetchFinish')
         setFetchState({
           error: false,
           data: protocolData,
@@ -133,11 +132,11 @@ export const fetchProtocolData = async (chainName: MultiChianName, block24: Bloc
   if (data24.factories && data24.factories.length > 0) data24.pancakeFactories = data24.factories
   if (data48.factories && data48.factories.length > 0) data48.pancakeFactories = data48.factories
 
-  const anyError = error || error24 || error48
+  // const anyError = error || error24 || error48
   const overviewData = formatPancakeFactoryResponse(data?.pancakeFactories?.[0])
   const overviewData24 = formatPancakeFactoryResponse(data24?.pancakeFactories?.[0])
   const overviewData48 = formatPancakeFactoryResponse(data48?.pancakeFactories?.[0])
-  const allDataAvailable = overviewData && overviewData24 && overviewData48
+  // const allDataAvailable = overviewData && overviewData24 && overviewData48
 
   const [volumeUSD, volumeUSDChange] = getChangeForPeriod(
     overviewData.totalVolumeUSD,
@@ -159,7 +158,6 @@ export const fetchProtocolData = async (chainName: MultiChianName, block24: Bloc
     txCount,
     txCountChange,
   }
-  console.log(protocolData, '666')
   return protocolData
 }
 
