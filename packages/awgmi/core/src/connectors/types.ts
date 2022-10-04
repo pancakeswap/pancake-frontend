@@ -38,6 +38,6 @@ export interface Aptos {
   signTransaction(transaction: Types.EntryFunctionPayload): ReturnType<AptosClient['signTransaction']>
   on?: any
   onAccountChange?(listener: (account: Account) => void): void
-  onNetworkChange?(listener: (network: string) => void): void
+  onNetworkChange?(listener: (network: { networkName: string }) => void): void
   onDisconnect?(listener: () => void): void
 }

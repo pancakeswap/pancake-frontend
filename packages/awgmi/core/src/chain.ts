@@ -19,6 +19,15 @@ export type Chain = {
   }
   /** Flag for test networks */
   testnet?: boolean
+} & (MainnetChain | TestnetChain)
+
+type MainnetChain = {
+  testnet?: false
+}
+
+type TestnetChain = {
+  testnet: true
+  faucetUrl: string
 }
 
 export const devnet: Chain = {
@@ -35,6 +44,7 @@ export const devnet: Chain = {
     },
   },
   testnet: true,
+  faucetUrl: 'https://faucet.devnet.aptoslabs.com',
 }
 
 export const testnet: Chain = {
@@ -51,6 +61,7 @@ export const testnet: Chain = {
     },
   },
   testnet: true,
+  faucetUrl: 'https://faucet.testnet.aptoslabs.com',
 }
 
 export const defaultChains = [devnet, testnet]

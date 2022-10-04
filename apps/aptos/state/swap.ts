@@ -1,7 +1,7 @@
 import { APTOS_COIN } from '@pancakeswap/awgmi'
 import { createAction, createReducer } from '@reduxjs/toolkit'
 import { TxnBuilderTypes } from 'aptos'
-import { USDC_DEVNET } from 'config/coins'
+import { USDC } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { atom } from 'jotai'
 import { useReducerAtom } from 'jotai/utils'
@@ -163,7 +163,7 @@ export function useDefaultsFromURLSearch():
 
   useEffect(() => {
     if (!chainId) return
-    const parsed = queryParametersToSwapState(query, APTOS_COIN, USDC_DEVNET.address)
+    const parsed = queryParametersToSwapState(query, APTOS_COIN, USDC[chainId].address)
 
     dispatch(
       replaceSwapState({

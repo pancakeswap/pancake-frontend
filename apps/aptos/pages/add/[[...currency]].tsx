@@ -7,9 +7,10 @@ import ChoosePair from 'components/Liquidity/components/ChoosePair'
 import withLPValues from 'components/Liquidity/hocs/withLPValues'
 import useCurrencySelectRoute, { CurrencySelectorContext } from 'components/Liquidity/hooks/useCurrencySelectRoute'
 import useMintPair, { MintPairContext } from 'components/Liquidity/hooks/useMintPair'
-import { USDC_DEVNET } from 'config/coins'
+import { USDC } from 'config/coins'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useActiveChainId } from 'hooks/useNetwork'
 import { PairState } from 'hooks/usePairs'
 import { useCallback, useMemo, useState } from 'react'
 
@@ -24,8 +25,9 @@ const AddLiquidityPage = () => {
   const { t } = useTranslation()
   const [steps, setSteps] = useState(Steps.Choose)
   const native = useNativeCurrency()
+  const activeChainId = useActiveChainId()
 
-  const defaultCurrencies = useMemo(() => [native.address, USDC_DEVNET.address], [native])
+  const defaultCurrencies = useMemo(() => [native.address, USDC[activeChainId].address], [native, activeChainId])
 
   const currencies = useCurrencySelectRoute(defaultCurrencies)
   const mintPairState = useMintPair(currencies)

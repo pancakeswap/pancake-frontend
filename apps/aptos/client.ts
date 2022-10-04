@@ -1,8 +1,19 @@
 import { createClient } from '@pancakeswap/awgmi'
-import { getDefaultProviders, MartianConnector, PetraConnector } from '@pancakeswap/awgmi/core'
+import { defaultChain, defaultChains, MartianConnector, PetraConnector } from '@pancakeswap/awgmi/core'
+import { AptosClient } from 'aptos'
 
 export const client = createClient({
   connectors: [new PetraConnector(), new MartianConnector()],
-  provider: getDefaultProviders,
+  provider: ({ networkName }) => {
+    const networkNameLowerCase = networkName?.toLowerCase()
+    if (networkNameLowerCase) {
+      const foundChain = defaultChains.find((c) => c.network === networkNameLowerCase)
+      if (foundChain) {
+        return new AptosClient(foundChain.restUrls.default)
+      }
+    }
+
+    return new AptosClient(defaultChain.restUrls.default)
+  },
   autoConnect: true,
 })

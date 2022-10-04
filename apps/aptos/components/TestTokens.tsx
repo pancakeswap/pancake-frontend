@@ -1,21 +1,26 @@
-import { useAccount, useProvider } from '@pancakeswap/awgmi'
+import { useAccount, useNetwork, useProvider } from '@pancakeswap/awgmi'
+import { useIsMounted } from '@pancakeswap/hooks'
 import { AutoColumn, Button, Text, useToast } from '@pancakeswap/uikit'
 import { FaucetClient } from 'aptos'
-import { defaultChain } from 'config/chains'
 import { useAllTokens } from 'hooks/Tokens'
-import { useActiveNetwork } from 'hooks/useNetwork'
-
-const faucetClient = new FaucetClient(defaultChain.restUrls.default, 'https://faucet.devnet.aptoslabs.com')
+import { useMemo } from 'react'
 
 export function TestTokens() {
   const allTokens = useAllTokens()
-  const { networkName } = useActiveNetwork()
+  const { chain } = useNetwork()
   const provider = useProvider()
   const { account, connector } = useAccount()
 
+  const isMounted = useIsMounted()
+
+  const faucetClient = useMemo(() => {
+    if (!chain || !chain.testnet) return null
+    return new FaucetClient(chain.restUrls.default, chain.faucetUrl)
+  }, [chain])
+
   const { toastSuccess, toastError, toastInfo } = useToast()
 
-  if (!account || networkName !== 'Devnet') {
+  if (!account || !faucetClient || !isMounted) {
     return null
   }
 

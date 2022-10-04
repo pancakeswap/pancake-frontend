@@ -1,5 +1,5 @@
-import { ChainId, Currency, JSBI, Price } from '@pancakeswap/aptos-swap-sdk'
-import { USDC_DEVNET } from 'config/coins'
+import { Currency, JSBI, Price } from '@pancakeswap/aptos-swap-sdk'
+import { USDC } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import useSWR from 'swr'
@@ -15,8 +15,8 @@ export default function useStablePrice(currency?: Currency): Price<Currency, Cur
   const native = useNativeCurrency()
   const wrapped = currency?.wrapped
   const wnative = native.wrapped
-  // only devnet support
-  const stable = chainId === ChainId.DEVNET ? USDC_DEVNET : undefined
+  // only devnet/ testnet support
+  const stable = USDC[chainId]
 
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
