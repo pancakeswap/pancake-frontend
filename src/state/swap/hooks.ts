@@ -177,12 +177,12 @@ export function useDerivedSwapInfo(
   }
 }
 
-function parseCurrencyFromURLParameter(urlParam: any): string {
+function parseCurrencyFromURLParameter(urlParam: any, nativeSymbol: string): string {
   if (typeof urlParam === 'string') {
     const valid = isAddress(urlParam)
     if (valid) return valid
-    if (urlParam.toUpperCase() === 'BNB') return 'BNB'
-    if (valid === false) return 'BNB'
+    if (urlParam.toUpperCase() === nativeSymbol) return nativeSymbol
+    if (valid === false) return nativeSymbol
   }
   return ''
 }
@@ -209,9 +209,11 @@ export function queryParametersToSwapState(
   nativeSymbol?: string,
   defaultOutputCurrency?: string,
 ): SwapState {
-  let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency) || (nativeSymbol ?? DEFAULT_INPUT_CURRENCY)
+  let inputCurrency =
+    parseCurrencyFromURLParameter(parsedQs.inputCurrency, nativeSymbol) || (nativeSymbol ?? DEFAULT_INPUT_CURRENCY)
   let outputCurrency =
-    parseCurrencyFromURLParameter(parsedQs.outputCurrency) || (defaultOutputCurrency ?? DEFAULT_OUTPUT_CURRENCY)
+    parseCurrencyFromURLParameter(parsedQs.outputCurrency, nativeSymbol) ||
+    (defaultOutputCurrency ?? DEFAULT_OUTPUT_CURRENCY)
   if (inputCurrency === outputCurrency) {
     if (typeof parsedQs.outputCurrency === 'string') {
       inputCurrency = ''
