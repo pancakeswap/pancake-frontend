@@ -15,15 +15,15 @@ interface TopPoolsResponse {
  * Initial pools to display on the home page
  */
 const fetchTopPools = async (chainName: MultiChianName, timestamp24hAgo: number): Promise<string[]> => {
-  const whereCondition =
+  const isStableSwap = checkIsStableSwap()
+  let whereCondition =
     chainName === 'BSC'
-      ? 'where: { dailyTxns_gt: 300, token0_not_in: $blacklist, token1_not_in: $blacklist, date_gt: $timestamp24hAgo }'
-      : checkIsStableSwap()
-      ? ''
-      : 'where: { date_gt: $timestamp24hAgo }'
+      ? `where: { dailyTxns_gt: 300, token0_not_in: $blacklist, token1_not_in: $blacklist, date_gt: ${timestamp24hAgo} }`
+      : `where: { date_gt: ${timestamp24hAgo} }`
+  if (isStableSwap) whereCondition = ''
   try {
     const query = gql`
-      query topPools($blacklist: [String!], $timestamp24hAgo: Int) {
+      query topPools($blacklist: [String!]) {
         pairDayDatas(
           first: 30
           ${whereCondition}
@@ -36,7 +36,6 @@ const fetchTopPools = async (chainName: MultiChianName, timestamp24hAgo: number)
     `
     const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TopPoolsResponse>(query, {
       blacklist: TOKEN_BLACKLIST,
-      timestamp24hAgo,
     })
     // pairDayDatas id has compound id "0xPOOLADDRESS-NUMBERS", extracting pool address with .split('-')
     return data.pairDayDatas.map((p) => p.id.split('-')[0])
