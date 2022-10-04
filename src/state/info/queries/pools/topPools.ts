@@ -2,7 +2,12 @@ import { TOKEN_BLACKLIST } from 'config/constants/info'
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
-import { checkIsStableSwap, getMultiChainQueryEndPointWithStableSwap, MultiChainName } from '../../constant'
+import {
+  checkIsStableSwap,
+  getMultiChainQueryEndPointWithStableSwap,
+  MultiChainName,
+  multiChainWhiteList,
+} from '../../constant'
 import { useGetChainName } from '../../hooks'
 
 interface TopPoolsResponse {
@@ -19,11 +24,11 @@ const fetchTopPools = async (chainName: MultiChainName, timestamp24hAgo: number)
   let whereCondition =
     chainName === 'BSC'
       ? `where: { dailyTxns_gt: 300, token0_not_in: $blacklist, token1_not_in: $blacklist, date_gt: ${timestamp24hAgo} }`
-      : `where: { date_gt: ${timestamp24hAgo} }`
+      : `where: { date_gt: ${timestamp24hAgo},token0_in:$whitelist, token1_in:$whitelist }`
   if (isStableSwap) whereCondition = ''
   try {
     const query = gql`
-      query topPools($blacklist: [String!]) {
+      query topPools($blacklist: [String!],$whitelist:[String!]) {
         pairDayDatas(
           first: 30
           ${whereCondition}
@@ -36,6 +41,7 @@ const fetchTopPools = async (chainName: MultiChainName, timestamp24hAgo: number)
     `
     const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TopPoolsResponse>(query, {
       blacklist: TOKEN_BLACKLIST,
+      whitelist: multiChainWhiteList[chainName],
     })
     // pairDayDatas id has compound id "0xPOOLADDRESS-NUMBERS", extracting pool address with .split('-')
     return data.pairDayDatas.map((p) => p.id.split('-')[0])
