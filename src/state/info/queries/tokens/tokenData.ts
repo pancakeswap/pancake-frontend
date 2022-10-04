@@ -6,12 +6,7 @@ import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getAmountChange, getPercentChange } from 'views/Info/utils/infoDataHelpers'
-import {
-  getMultiChainQueryEndPointWithStableSwap,
-  MultiChainName,
-  multiChainQueryMainToken,
-  multiChainQueryClient,
-} from '../../constant'
+import { getMultiChainQueryEndPointWithStableSwap, MultiChainName, multiChainQueryMainToken } from '../../constant'
 import { fetchTokenAddresses } from './topTokens'
 
 interface TokenFields {

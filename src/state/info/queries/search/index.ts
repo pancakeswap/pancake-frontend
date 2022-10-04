@@ -3,7 +3,7 @@ import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
 import { useGetChainName, usePoolDatasSWR, useTokenDatasSWR } from 'state/info/hooks'
 import { PoolData, TokenData } from 'state/info/types'
-import { multiChainQueryClient, getMultiChainQueryEndPointWithStableSwap } from '../../constant'
+import { getMultiChainQueryEndPointWithStableSwap } from '../../constant'
 
 const TOKEN_SEARCH = gql`
   query tokens($symbol: String, $name: String, $id: String) {

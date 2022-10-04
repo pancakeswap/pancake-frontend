@@ -4,9 +4,9 @@ import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
 import { PriceChartEntry } from 'state/info/types'
 import orderBy from 'lodash/orderBy'
-import { MultiChianName, multiChainQueryMainToken, multiChainQueryEndPoint } from '../../constant'
+import { MultiChainName, multiChainQueryMainToken, multiChainQueryEndPoint } from '../../constant'
 
-const getPriceSubqueries = (chainName: MultiChianName, tokenAddress: string, blocks: any) =>
+const getPriceSubqueries = (chainName: MultiChainName, tokenAddress: string, blocks: any) =>
   blocks.map(
     (block: any) => `
       t${block.timestamp}:token(id:"${tokenAddress}", block: { number: ${block.number} }) { 
@@ -30,7 +30,7 @@ const priceQueryConstructor = (subqueries: string[]) => {
 }
 
 const fetchTokenPriceData = async (
-  chainName: MultiChianName,
+  chainName: MultiChainName,
   address: string,
   interval: number,
   startTimestamp: number,

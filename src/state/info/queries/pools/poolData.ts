@@ -8,12 +8,7 @@ import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getPercentChange } from 'views/Info/utils/infoDataHelpers'
 import { useGetChainName } from '../../hooks'
-import {
-  multiChainQueryClient,
-  MultiChainName,
-  multiChainQueryMainToken,
-  getMultiChainQueryEndPointWithStableSwap,
-} from '../../constant'
+import { MultiChainName, multiChainQueryMainToken, getMultiChainQueryEndPointWithStableSwap } from '../../constant'
 import { fetchTopPoolAddresses } from './topPools'
 
 interface PoolFields {
