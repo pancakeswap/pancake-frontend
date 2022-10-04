@@ -1,4 +1,3 @@
-import { TOKEN_BLACKLIST } from 'config/constants/info'
 import { gql } from 'graphql-request'
 import { useCallback, useState, useEffect } from 'react'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
@@ -7,7 +6,7 @@ import {
   MultiChainName,
   getMultiChainQueryEndPointWithStableSwap,
   checkIsStableSwap,
-  multiChainWhiteList,
+  multiChainTokenBlackList,
 } from '../../constant'
 
 interface TopTokensResponse {
@@ -24,14 +23,14 @@ interface TopTokensResponse {
 const fetchTopTokens = async (chainName: MultiChainName, timestamp24hAgo: number): Promise<string[]> => {
   const whereCondition =
     chainName === 'ETH'
-      ? `where: { date_gt: ${timestamp24hAgo}, token_in: $whitelist}`
+      ? `where: { date_gt: ${timestamp24hAgo}, token_not_in: $blacklist, dailyTxns_gt: 5 }`
       : checkIsStableSwap()
       ? ''
       : `where: { dailyTxns_gt: 300, id_not_in: $blacklist, date_gt: ${timestamp24hAgo}}`
   const firstCount = 30
   try {
     const query = gql`
-      query topTokens($blacklist: [String!],$whitelist: [String!]) {
+      query topTokens($blacklist: [String!]) {
         tokenDayDatas(
           first: ${firstCount}
           ${whereCondition}
@@ -43,8 +42,7 @@ const fetchTopTokens = async (chainName: MultiChainName, timestamp24hAgo: number
       }
     `
     const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TopTokensResponse>(query, {
-      blacklist: TOKEN_BLACKLIST,
-      whitelist: multiChainWhiteList[chainName],
+      blacklist: multiChainTokenBlackList[chainName],
     })
     // tokenDayDatas id has compound id "0xTOKENADDRESS-NUMBERS", extracting token address with .split('-')
     return data.tokenDayDatas.map((t) => t.id.split('-')[0])

@@ -41,9 +41,4 @@ export const TOKEN_BLACKLIST = [
   '0x4269e4090ff9dfc99d8846eb0d42e67f01c3ac8b',
 ]
 
-export const ETH_TOKEN_WHITELIST = [
-  '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-  '0xdac17f958d2ee523a2206206994597c13d831ec7',
-  '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-  '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
-]
+export const ETH_TOKEN_BLACKLIST = ['0x72b169ad8af6c4fb53056b6a2a85602ad6863864']

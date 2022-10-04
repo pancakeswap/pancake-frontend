@@ -1,7 +1,7 @@
 import { infoClient, infoClientETH, infoStableSwapClient } from 'utils/graphql'
 import { INFO_CLIENT, INFO_CLIENT_ETH } from 'config/constants/endpoints'
 import { ChainId } from '@pancakeswap/sdk'
-import { PCS_V2_START, PCS_ETH_START, ETH_TOKEN_WHITELIST } from 'config/constants/info'
+import { PCS_V2_START, PCS_ETH_START, ETH_TOKEN_BLACKLIST, TOKEN_BLACKLIST } from 'config/constants/info'
 
 export type MultiChainName = 'BSC' | 'ETH'
 
@@ -40,9 +40,9 @@ export const multiChainScan = {
   ETH: 'EtherScan',
 }
 
-export const multiChainWhiteList = {
-  BSC: [],
-  ETH: ETH_TOKEN_WHITELIST,
+export const multiChainTokenBlackList = {
+  BSC: TOKEN_BLACKLIST,
+  ETH: ETH_TOKEN_BLACKLIST,
 }
 
 export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChainName) => {
