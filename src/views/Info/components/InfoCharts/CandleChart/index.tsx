@@ -4,6 +4,7 @@ import { createChart, IChartApi } from 'lightweight-charts'
 import { format } from 'date-fns'
 import { useTheme } from 'styled-components'
 import { CandleChartLoader } from 'views/Info/components/ChartLoaders'
+import { baseColors, lightColors, darkColors } from '@pancakeswap/ui/tokens/colors'
 
 const CANDLE_CHART_HEIGHT = 250
 
@@ -101,19 +102,19 @@ const CandleChart = ({ data, setValue, setLabel, ...rest }: LineChartProps) => {
   useEffect(() => {
     if (chartCreated && data) {
       const series = chartCreated.addCandlestickSeries({
-        upColor: '#31D0AA', // theme.colors.success has some issue
-        downColor: '#ED4B9E', // theme.colors.failure has some issue
-        borderDownColor: '#ED4B9E',
-        borderUpColor: '#31D0AA',
-        wickDownColor: '#ED4B9E',
-        wickUpColor: '#31D0AA',
+        upColor: baseColors.success,
+        downColor: baseColors.failure,
+        borderDownColor: baseColors.failure,
+        borderUpColor: baseColors.success,
+        wickDownColor: baseColors.failure,
+        wickUpColor: baseColors.success,
       })
 
       series.setData(data)
 
       chartCreated.applyOptions({
         layout: {
-          textColor: theme.isDark ? '#B8ADD2' : '#7A6EAA',
+          textColor: theme.isDark ? darkColors.textSubtle : lightColors.textSubtle,
         },
       })
 
