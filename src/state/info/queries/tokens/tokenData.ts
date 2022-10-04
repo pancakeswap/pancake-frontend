@@ -217,7 +217,7 @@ export const fetchAllTokenData = async (chainName: MultiChainName, blocks: Block
   const [block24h, block48h, block7d, block14d] = blocks ?? []
   const tokenAddresses = await fetchTokenAddresses(chainName)
 
-  const { error, data } = await fetchTokenData(
+  const { data } = await fetchTokenData(
     chainName,
     block24h.number,
     block48h.number,

@@ -253,7 +253,7 @@ export const fetchAllPoolData = async (blocks: Block[], chainName: MultiChainNam
   const poolAddresses = await fetchTopPoolAddresses(chainName)
   const [block24h, block48h, block7d, block14d] = blocks ?? []
 
-  const { error, data } = await fetchPoolData(
+  const { data } = await fetchPoolData(
     block24h.number,
     block48h.number,
     block7d.number,
