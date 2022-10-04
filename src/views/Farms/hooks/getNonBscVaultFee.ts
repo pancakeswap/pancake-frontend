@@ -61,7 +61,7 @@ export const getNonBscVaultContractFee = async ({
 
     if (!isFirstTime) {
       const depositFee = new BigNumber(BNB_CHANGE).times(exchangeRate).div(ORACLE_PRECISION)
-      return totalFee.times(BUFFER).plus(depositFee).toFixed(0)
+      return totalFee.plus(depositFee).times(BUFFER).toFixed(0)
     }
 
     if (messageType >= MessageTypes.Withdraw) {

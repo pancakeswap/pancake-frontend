@@ -48,7 +48,7 @@ const FarmPending: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedD
         </Text>
         <Text as="span">{t('in progress..')}</Text>
       </Box>
-      <Text as="span">{t('It might take a couple of minutes for the cross-chain tx to confirm.')}</Text>
+      <Text as="span">{t('It might take around 30 minutes for the cross-chain tx to confirm.')}</Text>
     </Box>
   )
 }
