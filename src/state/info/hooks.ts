@@ -24,7 +24,7 @@ import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from '
 export const useProtocolDataSWR = (): ProtocolData | undefined => {
   const chainName = useGetChainName()
   const [t24, t48] = getDeltaTimestamps()
-  const { blocks, error: blockError } = useBlocksFromTimestamps([t24, t48])
+  const { blocks } = useBlocksFromTimestamps([t24, t48])
   const [block24, block48] = blocks ?? []
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data: protocolData } = useSWRImmutable(
@@ -57,7 +57,7 @@ export const useProtocolTransactionsSWR = (): Transaction[] | undefined => {
 export const useAllPoolDataSWR = () => {
   const chainName = useGetChainName()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
-  const { blocks, error: blockError } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
+  const { blocks } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useSWRImmutable(blocks && chainName && [`info/pool/data/${type}`, chainName], () =>
     fetchAllPoolData(blocks, chainName),
@@ -102,7 +102,7 @@ export const useAllTokenDataSWR = (): {
 } => {
   const chainName = useGetChainName()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
-  const { blocks, error: blockError } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
+  const { blocks } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useSWRImmutable(blocks && chainName && [`info/token/data/${type}`, chainName], () =>
     fetchAllTokenData(chainName, blocks),
