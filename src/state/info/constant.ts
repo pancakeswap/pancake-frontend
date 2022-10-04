@@ -51,7 +51,7 @@ export const multiChainTokenBlackList = {
 }
 
 export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChainName) => {
-  const isStableSwap = window.location.href.includes('stableSwap')
+  const isStableSwap = checkIsStableSwap()
   if (isStableSwap) return infoStableSwapClient
   return multiChainQueryClient[chainName]
 }

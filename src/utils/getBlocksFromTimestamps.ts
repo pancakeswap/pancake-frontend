@@ -25,9 +25,9 @@ const blocksQueryConstructor = (subqueries: string[]) => {
  */
 export const getBlocksFromTimestamps = async (
   timestamps: number[],
-  sortDirection: 'asc' | 'desc' = 'desc',
-  skipCount = 500,
-  chainName: MultiChainName,
+  sortDirection: 'asc' | 'desc' | undefined = 'desc',
+  skipCount: number | undefined = 500,
+  chainName: MultiChainName | undefined = 'BSC',
 ): Promise<Block[]> => {
   if (timestamps?.length === 0) {
     return []
