@@ -29,10 +29,11 @@ const StyledWhiteText = styled(Text)`
   }
 `
 
-export const BannerTimer: React.FC<React.PropsWithChildren> = () => {
+const Timer: React.FC<React.PropsWithChildren<{ secondsRemaining: number; text: string }>> = ({
+  secondsRemaining,
+  text,
+}) => {
   const { t } = useTranslation()
-
-  const secondsRemaining = remainTimeToNextFriday()
   const { days, hours, minutes } = getTimePeriods(secondsRemaining)
 
   return (
@@ -56,8 +57,24 @@ export const BannerTimer: React.FC<React.PropsWithChildren> = () => {
             <StyledTimerText color="secondary">{t('m')}</StyledTimerText>
           </>
         </FlexGap>
-        <StyledWhiteText bold>{t('until the next draw')}</StyledWhiteText>
+        <StyledWhiteText bold>{text}</StyledWhiteText>
       </FlexContainer>
     </>
   )
+}
+
+export const BannerTimer: React.FC<React.PropsWithChildren> = () => {
+  const { t } = useTranslation()
+
+  const secondsRemaining = remainTimeToNextFriday()
+
+  return <Timer secondsRemaining={secondsRemaining} text={t('until the next draw')} />
+}
+
+export const LockTimer: React.FC<React.PropsWithChildren<{ lockTime: number }>> = ({ lockTime }) => {
+  const { t } = useTranslation()
+
+  const secondsRemaining = lockTime - Date.now() / 1000
+
+  return <Timer secondsRemaining={secondsRemaining} text={t('until the next pot lock')} />
 }
