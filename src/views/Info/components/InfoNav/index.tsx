@@ -51,7 +51,6 @@ const InfoNav = () => {
   return (
     <NavWrapper>
       <Flex>
-        {!account && <NetworkSwitcher activeIndex={activeIndex} />}
         <Box>
           <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
             <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chainPath}`}>
@@ -65,6 +64,7 @@ const InfoNav = () => {
             </ButtonMenuItem>
           </ButtonMenu>
         </Box>
+        {!account && <NetworkSwitcher activeIndex={activeIndex} />}
       </Flex>
       <Box width={['100%', '100%', '250px']}>
         <Search />
@@ -93,7 +93,7 @@ export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex
   return (
     <UserMenu
       alignItems="top"
-      mr="8px"
+      ml="8px"
       avatarSrc={`/images/chains/${multiChainId[chainName]}.png`}
       text={
         foundChain ? (
