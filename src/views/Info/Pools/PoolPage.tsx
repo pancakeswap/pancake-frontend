@@ -106,7 +106,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
             </Breadcrumbs>
             <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
               <LinkExternal mr="8px" href={getBlockExploreLink(address, 'address', multiChainId[chainName])}>
-                {t(multiChainScan[chainName])}
+                {t('View on %site%', { site: multiChainScan[chainName] })}
               </LinkExternal>
               <SaveIcon fill={watchlistPools.includes(address)} onClick={() => addPoolToWatchlist(address)} />
             </Flex>

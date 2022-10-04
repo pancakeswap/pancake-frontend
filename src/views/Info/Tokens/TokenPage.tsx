@@ -138,7 +138,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                   color="primary"
                   href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
                 >
-                  {t(multiChainScan[chainName])}
+                  {t('View on %site%', { site: multiChainScan[chainName] })}
                 </LinkExternal>
                 {cmcLink && (
                   <StyledCMCLink href={cmcLink} rel="noopener noreferrer nofollow" target="_blank">

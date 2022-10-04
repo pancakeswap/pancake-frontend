@@ -36,8 +36,8 @@ export const multiChainQueryEndPoint = {
 }
 
 export const multiChainScan = {
-  BSC: 'View on BscScan',
-  ETH: 'View on Etherscan',
+  BSC: 'BscScan',
+  ETH: 'EtherScan',
 }
 
 export const multiChainWhiteList = {
