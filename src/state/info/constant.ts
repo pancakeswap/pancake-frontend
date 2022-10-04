@@ -1,12 +1,18 @@
 import { infoClient, infoClientETH, infoStableSwapClient } from 'utils/graphql'
 import { INFO_CLIENT, INFO_CLIENT_ETH } from 'config/constants/endpoints'
 import { ChainId } from '@pancakeswap/sdk'
+import { PCS_V2_START, PCS_ETH_START } from 'config/constants/info'
 
-export type MultiChianName = 'BSC' | 'ETH'
+export type MultiChainName = 'BSC' | 'ETH'
 
 export const multiChainQueryMainToken = {
   BSC: 'BNB',
   ETH: 'ETH',
+}
+
+export const multiChainStartTime = {
+  BSC: PCS_V2_START,
+  ETH: PCS_ETH_START,
 }
 
 export const multiChainId = {
@@ -34,7 +40,7 @@ export const multiChainScan = {
   ETH: 'View on Etherscan',
 }
 
-export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChianName) => {
+export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChainName) => {
   const isStableSwap = window.location.href.includes('stableSwap')
   if (isStableSwap) return infoStableSwapClient
   return multiChainQueryClient[chainName]

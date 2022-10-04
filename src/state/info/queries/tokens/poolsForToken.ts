@@ -2,7 +2,7 @@ import { TOKEN_BLACKLIST } from 'config/constants/info'
 import { gql } from 'graphql-request'
 import {
   multiChainQueryClient,
-  MultiChianName,
+  MultiChainName,
   multiChainQueryMainToken,
   getMultiChainQueryEndPointWithStableSwap,
 } from '../../constant'
@@ -10,7 +10,7 @@ import {
 /**
  * Data for showing Pools table on the Token page
  */
-const POOLS_FOR_TOKEN = (chainName: MultiChianName) => {
+const POOLS_FOR_TOKEN = (chainName: MultiChainName) => {
   const transactionGT = chainName === 'ETH' ? 1 : 100
   return gql`
   query poolsForToken($address: Bytes!, $blacklist: [String!]) {
@@ -44,7 +44,7 @@ export interface PoolsForTokenResponse {
 }
 
 const fetchPoolsForToken = async (
-  chainName: MultiChianName,
+  chainName: MultiChainName,
   address: string,
 ): Promise<{
   error: boolean

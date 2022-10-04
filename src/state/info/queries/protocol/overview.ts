@@ -5,7 +5,7 @@ import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getPercentChange } from 'views/Info/utils/infoDataHelpers'
-import { checkIsStableSwap, getMultiChainQueryEndPointWithStableSwap, MultiChianName } from '../../constant'
+import { checkIsStableSwap, getMultiChainQueryEndPointWithStableSwap, MultiChainName } from '../../constant'
 import { useGetChainName } from '../../hooks'
 
 interface PancakeFactory {
@@ -22,7 +22,7 @@ interface OverviewResponse {
  * Latest Liquidity, Volume and Transaction count
  */
 const getOverviewData = async (
-  chainName: MultiChianName,
+  chainName: MultiChainName,
   block?: number,
 ): Promise<{ data?: OverviewResponse; error: boolean }> => {
   const factoryString = checkIsStableSwap() ? `factories` : `pancakeFactories`
@@ -122,7 +122,7 @@ const useFetchProtocolData = (): ProtocolFetchState => {
   return fetchState
 }
 
-export const fetchProtocolData = async (chainName: MultiChianName, block24: Block, block48: Block) => {
+export const fetchProtocolData = async (chainName: MultiChainName, block24: Block, block48: Block) => {
   const [{ error, data }, { error: error24, data: data24 }, { error: error48, data: data48 }] = await Promise.all([
     getOverviewData(chainName),
     getOverviewData(chainName, block24?.number ?? undefined),

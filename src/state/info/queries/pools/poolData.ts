@@ -10,7 +10,7 @@ import { getPercentChange } from 'views/Info/utils/infoDataHelpers'
 import { useGetChainName } from '../../hooks'
 import {
   multiChainQueryClient,
-  MultiChianName,
+  MultiChainName,
   multiChainQueryMainToken,
   getMultiChainQueryEndPointWithStableSwap,
 } from '../../constant'
@@ -59,7 +59,7 @@ interface PoolsQueryResponse {
  * Note: Don't try to refactor it to use variables, server throws error if blocks passed as undefined variable
  * only works if its hard-coded into query string
  */
-const POOL_AT_BLOCK = (chainName: MultiChianName, block: number | null, pools: string[]) => {
+const POOL_AT_BLOCK = (chainName: MultiChainName, block: number | null, pools: string[]) => {
   const blockString = block ? `block: {number: ${block}}` : ``
   const addressesString = `["${pools.join('","')}"]`
   return `pairs(
@@ -249,7 +249,7 @@ const usePoolDatas = (poolAddresses: string[]): PoolDatas => {
   return fetchState
 }
 
-export const fetchAllPoolData = async (blocks: Block[], chainName: MultiChianName) => {
+export const fetchAllPoolData = async (blocks: Block[], chainName: MultiChainName) => {
   const poolAddresses = await fetchTopPoolAddresses(chainName)
   const [block24h, block48h, block7d, block14d] = blocks ?? []
 

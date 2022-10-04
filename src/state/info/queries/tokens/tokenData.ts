@@ -8,7 +8,7 @@ import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamp
 import { getAmountChange, getPercentChange } from 'views/Info/utils/infoDataHelpers'
 import {
   getMultiChainQueryEndPointWithStableSwap,
-  MultiChianName,
+  MultiChainName,
   multiChainQueryMainToken,
   multiChainQueryClient,
 } from '../../constant'
@@ -50,7 +50,7 @@ interface TokenQueryResponse {
 /**
  * Main token data to display on Token page
  */
-const TOKEN_AT_BLOCK = (chainName: MultiChianName, block: number | undefined, tokens: string[]) => {
+const TOKEN_AT_BLOCK = (chainName: MultiChainName, block: number | undefined, tokens: string[]) => {
   const addressesString = `["${tokens.join('","')}"]`
   const blockString = block ? `block: {number: ${block}}` : ``
   return `tokens(
@@ -72,7 +72,7 @@ const TOKEN_AT_BLOCK = (chainName: MultiChianName, block: number | undefined, to
 }
 
 const fetchTokenData = async (
-  chainName: MultiChianName,
+  chainName: MultiChainName,
   block24h: number,
   block48h: number,
   block7d: number,
@@ -129,7 +129,7 @@ interface TokenDatas {
 /**
  * Fetch top addresses by volume
  */
-const useFetchedTokenDatas = (chainName: MultiChianName, tokenAddresses: string[]): TokenDatas => {
+const useFetchedTokenDatas = (chainName: MultiChainName, tokenAddresses: string[]): TokenDatas => {
   const [fetchState, setFetchState] = useState<TokenDatas>({ error: false })
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks, error: blockError } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
@@ -216,7 +216,7 @@ const useFetchedTokenDatas = (chainName: MultiChianName, tokenAddresses: string[
   return fetchState
 }
 
-export const fetchAllTokenData = async (chainName: MultiChianName, blocks: Block[]) => {
+export const fetchAllTokenData = async (chainName: MultiChainName, blocks: Block[]) => {
   const [block24h, block48h, block7d, block14d] = blocks ?? []
   const tokenAddresses = await fetchTokenAddresses(chainName)
 

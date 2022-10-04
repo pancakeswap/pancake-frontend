@@ -3,7 +3,7 @@ import { gql } from 'graphql-request'
 import { useCallback, useState, useEffect } from 'react'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useGetChainName } from '../../hooks'
-import { MultiChianName, getMultiChainQueryEndPointWithStableSwap, checkIsStableSwap } from '../../constant'
+import { MultiChainName, getMultiChainQueryEndPointWithStableSwap, checkIsStableSwap } from '../../constant'
 
 interface TopTokensResponse {
   tokenDayDatas: {
@@ -16,7 +16,7 @@ interface TopTokensResponse {
  * The actual data is later requested in tokenData.ts
  * Note: dailyTxns_gt: 300 is there to prevent fetching incorrectly priced tokens with high dailyVolumeUSD
  */
-const fetchTopTokens = async (chainName: MultiChianName, timestamp24hAgo: number): Promise<string[]> => {
+const fetchTopTokens = async (chainName: MultiChainName, timestamp24hAgo: number): Promise<string[]> => {
   const whereCondition =
     chainName === 'ETH'
       ? `where: { date_gt: $timestamp24hAgo}`
@@ -70,7 +70,7 @@ const useTopTokenAddresses = (): string[] => {
   return topTokenAddresses
 }
 
-export const fetchTokenAddresses = async (chainName: MultiChianName) => {
+export const fetchTokenAddresses = async (chainName: MultiChainName) => {
   const [timestamp24hAgo] = getDeltaTimestamps()
 
   const addresses = await fetchTopTokens(chainName, timestamp24hAgo)

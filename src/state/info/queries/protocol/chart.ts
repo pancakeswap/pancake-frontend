@@ -1,11 +1,10 @@
 /* eslint-disable no-await-in-loop */
-import { PCS_V2_START } from 'config/constants/info'
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
 import { ChartEntry } from 'state/info/types'
 import { fetchChartData, mapDayData } from '../helpers'
 import { PancakeDayDatasResponse } from '../types'
-import { MultiChianName, getMultiChainQueryEndPointWithStableSwap } from '../../constant'
+import { MultiChainName, getMultiChainQueryEndPointWithStableSwap, multiChainStartTime } from '../../constant'
 import { useGetChainName } from '../../hooks'
 
 /**
@@ -22,14 +21,14 @@ const PANCAKE_DAY_DATAS = gql`
 `
 
 const getOverviewChartData = async (
-  chainName: MultiChianName,
+  chainName: MultiChainName,
   skip: number,
 ): Promise<{ data?: ChartEntry[]; error: boolean }> => {
   try {
     const { pancakeDayDatas } = await getMultiChainQueryEndPointWithStableSwap(
       chainName,
     ).request<PancakeDayDatasResponse>(PANCAKE_DAY_DATAS, {
-      startTime: PCS_V2_START,
+      startTime: multiChainStartTime[chainName],
       skip,
     })
     const data = pancakeDayDatas.map(mapDayData)
@@ -71,7 +70,7 @@ const useFetchGlobalChartData = (): {
   }
 }
 
-export const fetchGlobalChartData = async (chainName: MultiChianName) => {
+export const fetchGlobalChartData = async (chainName: MultiChainName) => {
   const { data } = await fetchChartData(chainName, getOverviewChartData)
   return data
 }

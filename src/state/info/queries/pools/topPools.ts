@@ -2,7 +2,7 @@ import { TOKEN_BLACKLIST } from 'config/constants/info'
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
-import { checkIsStableSwap, getMultiChainQueryEndPointWithStableSwap, MultiChianName } from '../../constant'
+import { checkIsStableSwap, getMultiChainQueryEndPointWithStableSwap, MultiChainName } from '../../constant'
 import { useGetChainName } from '../../hooks'
 
 interface TopPoolsResponse {
@@ -14,7 +14,7 @@ interface TopPoolsResponse {
 /**
  * Initial pools to display on the home page
  */
-const fetchTopPools = async (chainName: MultiChianName, timestamp24hAgo: number): Promise<string[]> => {
+const fetchTopPools = async (chainName: MultiChainName, timestamp24hAgo: number): Promise<string[]> => {
   const isStableSwap = checkIsStableSwap()
   let whereCondition =
     chainName === 'BSC'
@@ -66,7 +66,7 @@ const useTopPoolAddresses = (): string[] => {
   return topPoolAddresses
 }
 
-export const fetchTopPoolAddresses = async (chainName: MultiChianName) => {
+export const fetchTopPoolAddresses = async (chainName: MultiChainName) => {
   const [timestamp24hAgo] = getDeltaTimestamps()
 
   const addresses = await fetchTopPools(chainName, timestamp24hAgo)

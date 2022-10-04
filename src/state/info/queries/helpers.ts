@@ -1,9 +1,9 @@
 import fromPairs from 'lodash/fromPairs'
-import { ONE_DAY_UNIX, PCS_V2_START } from 'config/constants/info'
+import { ONE_DAY_UNIX } from 'config/constants/info'
 import { getUnixTime } from 'date-fns'
 import { TransactionType } from 'state/info/types'
 import { ChartEntry } from '../types'
-import { MultiChianName } from '../constant'
+import { MultiChainName, multiChainStartTime } from '../constant'
 import { MintResponse, SwapResponse, BurnResponse, TokenDayData, PairDayData, PancakeDayData } from './types'
 
 export const mapMints = (mint: MintResponse) => {
@@ -67,17 +67,17 @@ export const mapPairDayData = (pairDayData: PairDayData): ChartEntry => ({
 })
 
 type PoolOrTokenFetchFn = (
-  chianName: MultiChianName,
+  chainName: MultiChainName,
   skip: number,
   address: string,
 ) => Promise<{ data?: ChartEntry[]; error: boolean }>
 
-type OverviewFetchFn = (chianName: MultiChianName, skip: number) => Promise<{ data?: ChartEntry[]; error: boolean }>
+type OverviewFetchFn = (chianName: MultiChainName, skip: number) => Promise<{ data?: ChartEntry[]; error: boolean }>
 
 // Common helper function to retrieve chart data
 // Used for both Pool and Token charts
 export const fetchChartData = async (
-  chianName: MultiChianName,
+  chainName: MultiChainName,
   getEntityDayDatas: OverviewFetchFn,
 ): Promise<{ data?: ChartEntry[]; error: boolean }> => {
   let chartEntries: ChartEntry[] = []
@@ -87,7 +87,7 @@ export const fetchChartData = async (
 
   while (!allFound) {
     // eslint-disable-next-line no-await-in-loop
-    const { data, error: fetchError } = await getEntityDayDatas(chianName, skip)
+    const { data, error: fetchError } = await getEntityDayDatas(chainName, skip)
     skip += 1000
     allFound = data?.length < 1000
     error = fetchError
@@ -116,7 +116,7 @@ export const fetchChartData = async (
 
   const firstAvailableDayData = formattedDayDatas[availableDays[0]]
   // fill in empty days ( there will be no day datas if no trades made that day )
-  let timestamp = firstAvailableDayData?.date ?? PCS_V2_START
+  let timestamp = firstAvailableDayData?.date ?? multiChainStartTime[chainName]
   let latestLiquidityUSD = firstAvailableDayData?.liquidityUSD ?? 0
   const endTimestamp = getUnixTime(new Date())
   while (timestamp < endTimestamp - ONE_DAY_UNIX) {
@@ -140,7 +140,7 @@ export const fetchChartData = async (
 }
 
 export const fetchChartDataWithAddress = async (
-  chianName: MultiChianName,
+  chainName: MultiChainName,
   getEntityDayDatas: PoolOrTokenFetchFn,
   address: string,
 ): Promise<{ data?: ChartEntry[]; error: boolean }> => {
@@ -151,7 +151,7 @@ export const fetchChartDataWithAddress = async (
 
   while (!allFound) {
     // eslint-disable-next-line no-await-in-loop
-    const { data, error: fetchError } = await getEntityDayDatas(chianName, skip, address)
+    const { data, error: fetchError } = await getEntityDayDatas(chainName, skip, address)
     skip += 1000
     allFound = data?.length < 1000
     error = fetchError
@@ -179,7 +179,7 @@ export const fetchChartDataWithAddress = async (
 
   const firstAvailableDayData = formattedDayDatas[availableDays[0]]
   // fill in empty days ( there will be no day datas if no trades made that day )
-  let timestamp = firstAvailableDayData?.date ?? PCS_V2_START
+  let timestamp = firstAvailableDayData?.date ?? multiChainStartTime[chainName]
   let latestLiquidityUSD = firstAvailableDayData?.liquidityUSD ?? 0
   const endTimestamp = getUnixTime(new Date())
   while (timestamp < endTimestamp - ONE_DAY_UNIX) {

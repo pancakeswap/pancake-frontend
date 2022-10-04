@@ -1,12 +1,11 @@
-import { PCS_V2_START } from 'config/constants/info'
 import { gql } from 'graphql-request'
 import { ChartEntry } from 'state/info/types'
 import { fetchChartDataWithAddress, mapDayData } from '../helpers'
 import { TokenDayDatasResponse } from '../types'
-import { getMultiChainQueryEndPointWithStableSwap, MultiChianName } from '../../constant'
+import { getMultiChainQueryEndPointWithStableSwap, MultiChainName, multiChainStartTime } from '../../constant'
 
 const getTokenChartData = async (
-  chainName: MultiChianName,
+  chainName: MultiChainName,
   skip: number,
   address: string,
 ): Promise<{ data?: ChartEntry[]; error: boolean }> => {
@@ -29,7 +28,7 @@ const getTokenChartData = async (
     const { tokenDayDatas } = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TokenDayDatasResponse>(
       query,
       {
-        startTime: PCS_V2_START,
+        startTime: multiChainStartTime[chainName],
         skip,
         address,
       },
@@ -43,7 +42,7 @@ const getTokenChartData = async (
 }
 
 const fetchTokenChartData = async (
-  chainName: MultiChianName,
+  chainName: MultiChainName,
   address: string,
 ): Promise<{ data?: ChartEntry[]; error: boolean }> => {
   return fetchChartDataWithAddress(chainName, getTokenChartData, address)

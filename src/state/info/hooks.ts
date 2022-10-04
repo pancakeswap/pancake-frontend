@@ -17,7 +17,7 @@ import { Transaction } from 'state/info/types'
 import useSWRImmutable from 'swr/immutable'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
-import { MultiChianName, checkIsStableSwap } from './constant'
+import { MultiChainName, checkIsStableSwap } from './constant'
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 // Protocol hooks
 
@@ -204,7 +204,7 @@ export const useGetChainName = () => {
     if (path.includes('eth') || path.includes('chainId=1')) return 'ETH'
     return 'BSC'
   }, [path])
-  const [name, setName] = useState<MultiChianName | null>(getChain())
+  const [name, setName] = useState<MultiChainName | null>(getChain())
   const result = useMemo(() => name, [name])
 
   useEffect(() => {
