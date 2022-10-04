@@ -6,6 +6,7 @@ import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useMultiChainPath, usePoolDatasSWR, useTokenDatasSWR, useGetChainName } from 'state/info/hooks'
+import { checkIsStableSwap } from 'state/info/constant'
 import useFetchSearchResults from 'state/info/queries/search'
 import { PoolData } from 'state/info/types'
 import { useWatchlistPools, useWatchlistTokens } from 'state/user/hooks'
@@ -201,7 +202,6 @@ const Search = () => {
 
   // get date for watchlist
   const watchListTokenData = useTokenDatasSWR(savedTokens)
-  const watchListTokenLoading = watchListTokenData.length !== savedTokens.length
   const watchListPoolData = usePoolDatasSWR(savedPools)
   const watchListPoolLoading = watchListPoolData.length !== savedPools.length
 
@@ -258,6 +258,7 @@ const Search = () => {
   }
   const chainPath = useMultiChainPath()
   const chainName = useGetChainName()
+  const stableSwapQuery = checkIsStableSwap() ? '?type=stableSwap' : ''
   return (
     <>
       {showMenu ? <Blackout /> : null}
@@ -308,7 +309,10 @@ const Search = () => {
           {tokensForList.slice(0, tokensShown).map((token, i) => {
             return (
               // eslint-disable-next-line react/no-array-index-key
-              <HoverRowLink onClick={() => handleItemClick(`/info${chainPath}/tokens/${token.address}`)} key={i}>
+              <HoverRowLink
+                onClick={() => handleItemClick(`/info${chainPath}/tokens/${token.address}${stableSwapQuery}`)}
+                key={`searchTokenResult${token.address}`}
+              >
                 <ResponsiveGrid>
                   <Flex>
                     <CurrencyLogo address={token.address} chainName={chainName} />
@@ -367,7 +371,10 @@ const Search = () => {
           {poolForList.slice(0, poolsShown).map((p, i) => {
             return (
               // eslint-disable-next-line react/no-array-index-key
-              <HoverRowLink onClick={() => handleItemClick(`/info${chainPath}/pools/${p.address}`)} key={i}>
+              <HoverRowLink
+                onClick={() => handleItemClick(`/info${chainPath}/pools/${p.address}${stableSwapQuery}`)}
+                key={`searchPoolResult${p.address}`}
+              >
                 <ResponsiveGrid>
                   <Flex>
                     <DoubleCurrencyLogo address0={p.token0.address} address1={p.token1.address} chainName={chainName} />
