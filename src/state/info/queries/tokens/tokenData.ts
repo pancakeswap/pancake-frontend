@@ -226,8 +226,6 @@ export const fetchAllTokenData = async (chainName: MultiChainName, blocks: Block
     tokenAddresses,
   )
 
-  console.log(data, 'fetchAllTokenData', error)
-
   const parsed = parseTokenData(data?.now)
   const parsed24 = parseTokenData(data?.oneDayAgo)
   const parsed48 = parseTokenData(data?.twoDaysAgo)
