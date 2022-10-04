@@ -39,7 +39,7 @@ export const InfoPageLayout = ({ children }) => {
         />
       )}
 
-      <InfoNav />
+      <InfoNav isStableSwap={isStableSwap} />
       {children}
     </>
   )

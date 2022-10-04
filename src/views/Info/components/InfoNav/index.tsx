@@ -34,7 +34,7 @@ const NavWrapper = styled(Flex)`
   }
 `
 
-const InfoNav = () => {
+const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
   const { t } = useTranslation()
   const router = useRouter()
   const chainPath = useMultiChainPath()
@@ -42,6 +42,7 @@ const InfoNav = () => {
 
   const isPools = router.pathname === `/info${chainPath && `/[chainName]`}/pools`
   const isTokens = router.pathname === `/info${chainPath && `/[chainName]`}/tokens`
+  const stableSwapQuery = isStableSwap ? '?type=stableSwap' : ''
   let activeIndex = 0
   if (isPools) {
     activeIndex = 1
@@ -54,13 +55,13 @@ const InfoNav = () => {
       <Flex>
         <Box>
           <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
-            <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chainPath}`}>
+            <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chainPath}${stableSwapQuery}`}>
               {t('Overview')}
             </ButtonMenuItem>
-            <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chainPath}/pools`}>
+            <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chainPath}/pools${stableSwapQuery}`}>
               {t('Pools')}
             </ButtonMenuItem>
-            <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chainPath}/tokens`}>
+            <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chainPath}/tokens${stableSwapQuery}`}>
               {t('Tokens')}
             </ButtonMenuItem>
           </ButtonMenu>
