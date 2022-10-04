@@ -236,7 +236,7 @@ const TokenTable: React.FC<
       </ResponsiveGrid>
 
       <Break />
-      {sortedTokens.length > 0 || tokenDatas ? (
+      {sortedTokens.length > 0 ? (
         <>
           {sortedTokens.map((data, i) => {
             if (data) {
