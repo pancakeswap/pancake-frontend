@@ -6,6 +6,7 @@ import {
   isAccountAddress,
   isPendingTransaction,
   isUserTransaction,
+  parseVmStatusError,
 } from '@pancakeswap/awgmi/core'
 
 export {
@@ -16,6 +17,7 @@ export {
   isAccountAddress,
   isPendingTransaction,
   isUserTransaction,
+  parseVmStatusError,
 }
 export * from './client'
 export * from './context'

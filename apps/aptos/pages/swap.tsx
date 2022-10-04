@@ -1,6 +1,15 @@
-import { AptosSwapRouter, Currency, CurrencyAmount, JSBI, Percent, Trade, TradeType } from '@pancakeswap/aptos-swap-sdk'
+import {
+  AptosSwapRouter,
+  Currency,
+  CurrencyAmount,
+  JSBI,
+  Percent,
+  Trade,
+  TradeType,
+  SWAP_ADDRESS_MODULE,
+} from '@pancakeswap/aptos-swap-sdk'
 import { useAccount, useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
-import { SimulateTransactionError } from '@pancakeswap/awgmi/core'
+import { parseVmStatusError, SimulateTransactionError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
 import { AutoColumn, Card, RowBetween, Skeleton, Swap as SwapUI, useModal } from '@pancakeswap/uikit'
@@ -132,6 +141,15 @@ const SwapPage = () => {
         } catch (error) {
           if (error instanceof SimulateTransactionError) {
             console.info({ error })
+            const parseError = parseVmStatusError(error.tx.vm_status)
+            // TODO: aptos figure out the error pattern later
+            if (!parseError) {
+              throw new Error(error.tx.vm_status)
+            }
+            if (parseError && parseError.module && parseError.module !== SWAP_ADDRESS_MODULE) {
+              throw new Error(parseError.message)
+            }
+            // TODO: show corresponding swap error
             throw new Error(
               t(
                 'An error occurred when trying to execute this operation. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading.',

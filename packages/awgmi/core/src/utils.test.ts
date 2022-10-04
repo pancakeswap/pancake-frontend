@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { isAccountAddress, unwrapTypeArgFromString, unwrapTypeFromString, isHexStringEquals } from './utils'
+import {
+  isAccountAddress,
+  unwrapTypeArgFromString,
+  unwrapTypeFromString,
+  isHexStringEquals,
+  parseVmStatusError,
+} from './utils'
 
 describe('utils isAccountAddress', () => {
   const validCases = [
@@ -90,5 +96,21 @@ describe('isHexStringEquals', () => {
     expect(isHexStringEquals('0x123', '0x0003123')).toBeFalsy()
     expect(isHexStringEquals('0x123', '0x1::aptos_coin::AptosCoin')).toBeFalsy()
     expect(isHexStringEquals('0x00000000001::aptos_coin::AptosCoin', '0x1::aptos_coin::AptosCoin')).toBeTruthy()
+  })
+})
+
+describe('parseVmStatusError', () => {
+  it('parse', () => {
+    expect(
+      parseVmStatusError(
+        'Move abort in 0x1::coin: EINSUFFICIENT_BALANCE(0x10006): Not enough coins to complete transaction',
+      ),
+    ).toMatchInlineSnapshot(`
+      {
+        "code": 65542,
+        "message": "Not enough coins to complete transaction",
+        "module": "0x1::coin",
+      }
+    `)
   })
 })
