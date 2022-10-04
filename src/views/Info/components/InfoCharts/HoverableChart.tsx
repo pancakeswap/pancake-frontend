@@ -28,6 +28,10 @@ const HoverableChart = ({
 
   // Getting latest data to display on top of chart when not hovered
   useEffect(() => {
+    setHover(null)
+  }, [protocolData])
+
+  useEffect(() => {
     if (hover == null && protocolData) {
       setHover(protocolData[valueProperty])
     }
