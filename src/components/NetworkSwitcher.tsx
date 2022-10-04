@@ -132,6 +132,7 @@ export const NetworkSwitcher = () => {
       {cannotChangeNetwork && tooltipVisible && tooltip}
       <UserMenu
         mr="8px"
+        placement="bottom"
         variant={isLoading ? 'pending' : isWrongNetwork ? 'danger' : 'default'}
         avatarSrc={`/images/chains/${chainId}.png`}
         disabled={cannotChangeNetwork}
