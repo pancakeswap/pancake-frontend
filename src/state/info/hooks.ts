@@ -21,6 +21,9 @@ import { MultiChianName, checkIsStableSwap } from './constant'
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 // Protocol hooks
 
+const refreshIntervalForInfo = 10000 // 10s
+const SWR_SETTINGS = { refreshInterval: refreshIntervalForInfo }
+
 export const useProtocolDataSWR = (): ProtocolData | undefined => {
   const chainName = useGetChainName()
   const [t24, t48] = getDeltaTimestamps()
@@ -30,6 +33,7 @@ export const useProtocolDataSWR = (): ProtocolData | undefined => {
   const { data: protocolData } = useSWRImmutable(
     chainName && block24 && block48 ? [`info/protocol/updateProtocolData/${type}`, chainName] : null,
     () => fetchProtocolData(chainName, block24, block48),
+    SWR_SETTINGS,
   )
 
   return protocolData ?? undefined
@@ -38,8 +42,10 @@ export const useProtocolDataSWR = (): ProtocolData | undefined => {
 export const useProtocolChartDataSWR = (): ChartEntry[] | undefined => {
   const chainName = useGetChainName()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data: chartData } = useSWRImmutable([`info/protocol/updateProtocolChartData/${type}`, chainName], () =>
-    fetchGlobalChartData(chainName),
+  const { data: chartData } = useSWRImmutable(
+    [`info/protocol/updateProtocolChartData/${type}`, chainName],
+    () => fetchGlobalChartData(chainName),
+    SWR_SETTINGS,
   )
   return chartData ?? undefined
 }
@@ -50,6 +56,7 @@ export const useProtocolTransactionsSWR = (): Transaction[] | undefined => {
   const { data: transactions } = useSWRImmutable(
     [`info/protocol/updateProtocolTransactionsData/${type}`, chainName],
     () => fetchTopTransactions(chainName),
+    SWR_SETTINGS,
   )
   return transactions ?? undefined
 }
@@ -59,8 +66,10 @@ export const useAllPoolDataSWR = () => {
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable(blocks && chainName && [`info/pool/data/${type}`, chainName], () =>
-    fetchAllPoolData(blocks, chainName),
+  const { data } = useSWRImmutable(
+    blocks && chainName && [`info/pool/data/${type}`, chainName],
+    () => fetchAllPoolData(blocks, chainName),
+    SWR_SETTINGS,
   )
   return data ?? {}
 }
@@ -89,8 +98,10 @@ export const usePoolChartDataSWR = (address: string): ChartEntry[] | undefined =
 export const usePoolTransactionsSWR = (address: string): Transaction[] | undefined => {
   const chainName = useGetChainName()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable([`info/pool/transactionsData/${address}/${type}`, chainName], () =>
-    fetchPoolTransactions(chainName, address),
+  const { data } = useSWRImmutable(
+    [`info/pool/transactionsData/${address}/${type}`, chainName],
+    () => fetchPoolTransactions(chainName, address),
+    SWR_SETTINGS,
   )
   return data?.data ?? undefined
 }
@@ -104,8 +115,10 @@ export const useAllTokenDataSWR = (): {
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable(blocks && chainName && [`info/token/data/${type}`, chainName], () =>
-    fetchAllTokenData(chainName, blocks),
+  const { data } = useSWRImmutable(
+    blocks && chainName && [`info/token/data/${type}`, chainName],
+    () => fetchAllTokenData(chainName, blocks),
+    SWR_SETTINGS,
   )
   return data ?? {}
 }
@@ -135,8 +148,10 @@ export const useTokenDataSWR = (address: string | undefined): TokenData | undefi
 export const usePoolsForTokenSWR = (address: string): string[] | undefined => {
   const chainName = useGetChainName()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable([`info/token/poolAddress/${address}/${type}`, chainName], () =>
-    fetchPoolsForToken(chainName, address),
+  const { data } = useSWRImmutable(
+    [`info/token/poolAddress/${address}/${type}`, chainName],
+    () => fetchPoolsForToken(chainName, address),
+    SWR_SETTINGS,
   )
 
   return data?.addresses ?? undefined
@@ -145,8 +160,10 @@ export const usePoolsForTokenSWR = (address: string): string[] | undefined => {
 export const useTokenChartDataSWR = (address: string): ChartEntry[] | undefined => {
   const chainName = useGetChainName()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable(address && chainName && [`info/token/chartData/${address}/${type}`, chainName], () =>
-    fetchTokenChartData(chainName, address),
+  const { data } = useSWRImmutable(
+    address && chainName && [`info/token/chartData/${address}/${type}`, chainName],
+    () => fetchTokenChartData(chainName, address),
+    SWR_SETTINGS,
   )
 
   return data?.data ?? undefined
@@ -161,8 +178,10 @@ export const useTokenPriceDataSWR = (
   const startTimestamp = getUnixTime(startOfHour(sub(utcCurrentTime, timeWindow)))
   const chainName = useGetChainName()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable([`info/token/priceData/${address}/${type}`, chainName], () =>
-    fetchTokenPriceData(chainName, address, interval, startTimestamp),
+  const { data } = useSWRImmutable(
+    [`info/token/priceData/${address}/${type}`, chainName],
+    () => fetchTokenPriceData(chainName, address, interval, startTimestamp),
+    SWR_SETTINGS,
   )
   return data?.data ?? undefined
 }
@@ -170,8 +189,10 @@ export const useTokenPriceDataSWR = (
 export const useTokenTransactionsSWR = (address: string): Transaction[] | undefined => {
   const chainName = useGetChainName()
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable([`info/token/transactionsData/${address}/${type}`, chainName], () =>
-    fetchTokenTransactions(chainName, address),
+  const { data } = useSWRImmutable(
+    [`info/token/transactionsData/${address}/${type}`, chainName],
+    () => fetchTokenTransactions(chainName, address),
+    SWR_SETTINGS,
   )
   return data?.data ?? undefined
 }
