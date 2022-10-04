@@ -1,5 +1,6 @@
 import { CurrencyAmount, Price, Percent, TradeType, Fraction, ONE, Currency } from '@pancakeswap/sdk'
-import { useCallback, useMemo, useContext } from 'react'
+import { laggyMiddleware } from 'hooks/useSWRContract'
+import { useCallback, useMemo, useContext, useDeferredValue } from 'react'
 import useSWR from 'swr'
 import { StableConfigContext } from './useStableConfig'
 
@@ -93,18 +94,23 @@ export function useStableTradeResponse({
 }
 
 export function useEstimatedAmount({ estimatedCurrency, stableSwapConfig, quotient, stableSwapContract }) {
+  const deferQuotient = useDeferredValue(quotient)
+
   return useSWR(
-    stableSwapConfig?.stableSwapAddress && estimatedCurrency && !!quotient
-      ? ['swapContract', stableSwapConfig?.stableSwapAddress, quotient]
+    stableSwapConfig?.stableSwapAddress && estimatedCurrency && !!deferQuotient
+      ? ['swapContract', stableSwapConfig?.stableSwapAddress, deferQuotient]
       : null,
     async () => {
       const isToken0 = stableSwapConfig?.token0?.address === estimatedCurrency?.address
 
-      const args = isToken0 ? [1, 0, quotient] : [0, 1, quotient]
+      const args = isToken0 ? [1, 0, deferQuotient] : [0, 1, deferQuotient]
 
       const estimatedAmount = await stableSwapContract.get_dy(...args)
 
       return CurrencyAmount.fromRawAmount(estimatedCurrency, estimatedAmount)
+    },
+    {
+      use: [laggyMiddleware],
     },
   )
 }

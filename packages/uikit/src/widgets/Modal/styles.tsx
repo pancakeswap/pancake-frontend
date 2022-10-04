@@ -28,6 +28,7 @@ export const ModalTitle = styled(Flex)`
 export const ModalBody = styled(Flex)`
   flex-direction: column;
   overflow-y: auto;
+  overflow-x: hidden;
   max-height: calc(90vh - ${mobileFooterHeight}px);
   ${({ theme }) => theme.mediaQueries.md} {
     display: flex;
