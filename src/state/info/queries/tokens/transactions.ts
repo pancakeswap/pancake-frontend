@@ -2,14 +2,15 @@ import { gql } from 'graphql-request'
 import { mapBurns, mapMints, mapSwaps } from 'state/info/queries/helpers'
 import { BurnResponse, MintResponse, SwapResponse } from 'state/info/queries/types'
 import { Transaction } from 'state/info/types'
-import { MultiChianName, getMultiChainQueryEndPointWithStableSwap } from '../../constant'
+import { MultiChianName, getMultiChainQueryEndPointWithStableSwap, checkIsStableSwap } from '../../constant'
 
 /**
  * Data to display transaction table on Token page
  */
 const TOKEN_TRANSACTIONS = () => {
-  const whereToken0 = 'token0: $address'
-  const whereToken1 = 'token1: $address'
+  const isStableSwap = checkIsStableSwap()
+  const whereToken0 = isStableSwap ? 'pair_: {token0: $address}' : 'token0: $address'
+  const whereToken1 = isStableSwap ? 'pair_: {token1: $address}' : 'token1: $address'
   return gql`
     query tokenTransactions($address: Bytes!) {
       mintsAs0: mints(first: 10, orderBy: timestamp, orderDirection: desc, where: { ${whereToken0} }) {
