@@ -306,7 +306,7 @@ const Search = () => {
               </Text>
             )}
           </ResponsiveGrid>
-          {tokensForList.slice(0, tokensShown).map((token, i) => {
+          {tokensForList.slice(0, tokensShown).map((token) => {
             return (
               // eslint-disable-next-line react/no-array-index-key
               <HoverRowLink
@@ -368,7 +368,7 @@ const Search = () => {
               </Text>
             )}
           </ResponsiveGrid>
-          {poolForList.slice(0, poolsShown).map((p, i) => {
+          {poolForList.slice(0, poolsShown).map((p) => {
             return (
               // eslint-disable-next-line react/no-array-index-key
               <HoverRowLink
