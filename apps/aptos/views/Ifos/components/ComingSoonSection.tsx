@@ -44,15 +44,7 @@ export default function ComingSoonSection() {
         width: '100%',
       }}
     >
-      <CurveBox
-        height={[100, 110, 160, 160]}
-        backgroundImage={[
-          "url('/images/ifos/assets/ifo-coming-soon.png')",
-          "url('/images/ifos/assets/ifo-coming-soon.png')",
-          "url('/images/ifos/assets/ifo-coming-soon-desktop.png')",
-          "url('/images/ifos/assets/ifo-coming-soon-desktop.png')",
-        ]}
-      />
+      <CurveBox height={[100, 110, 160, 160]} backgroundImage="url('/images/ifos/assets/ifo-coming-soon.png')" />
       {/* <StyledCardBody>
         <CardsWrapper>
           <GenericIfoCard

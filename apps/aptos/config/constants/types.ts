@@ -1,4 +1,4 @@
-import { AptosCoin, ChainId, Coin } from '@pancakeswap/aptos-swap-sdk'
+import { ChainId, Coin, Currency } from '@pancakeswap/aptos-swap-sdk'
 
 // a list of tokens by chain
 export type ChainMap<T> = {
@@ -26,8 +26,8 @@ export interface Ifo {
   isActive: boolean
   address: string
   name: string
-  currency: AptosCoin
-  token: AptosCoin
+  currency: Currency
+  token: Currency
   releaseBlockNumber: number
   articleUrl: string
   campaignId: string
@@ -60,8 +60,8 @@ interface PoolConfigBaseProps {
 }
 
 export interface DeserializedPoolConfig extends PoolConfigBaseProps {
-  earningToken: AptosCoin
-  stakingToken: AptosCoin
+  earningToken: Currency
+  stakingToken: Currency
 }
 
 export type PageMeta = {

@@ -1,13 +1,13 @@
+import { BalanceWithLoading, Box, ChevronDownIcon, Flex, Text, useDelayedUnmount } from '@pancakeswap/uikit'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
 import { useEffect, useState, useMemo } from 'react'
 import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
-import { BalanceWithLoading, Box, ChevronDownIcon, Flex, Text, useDelayedUnmount } from '@pancakeswap/uikit'
-// import { TokenImage } from 'components/TokenImage'
-import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
+import { TokenImage } from 'components/TokenImage'
 import { PoolIds } from 'config/constants/types'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import useStablePrice from 'hooks/useStablePrice'
-// import { multiplyPriceByAmount } from 'utils/prices'
+import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
+import { multiplyPriceByAmount } from 'utils/prices'
 import Expand from './Expand'
 
 const ArrowIcon = styled(ChevronDownIcon)<{ toggled: boolean }>`
@@ -44,13 +44,12 @@ const TokenInfo: React.FC<React.PropsWithChildren<TokenInfoProps>> = ({ index, d
   }, [token, vestingComputeReleasableAmount, basicReleaseAmount])
 
   const price = useStablePrice(token)
-  // const dollarValueOfToken = multiplyPriceByAmount(price, amountAvailable, token.decimals)
-  const dollarValueOfToken = 0
+  const dollarValueOfToken = price ? multiplyPriceByAmount(price, amountAvailable, token.decimals) : 0
 
   return (
     <Box>
       <Flex p="24px" m="-24px -24px 0 -24px" style={{ cursor: 'pointer' }} onClick={toggleExpanded}>
-        {/* <TokenImage width={32} height={32} token={token} /> */}
+        <TokenImage width={32} height={32} token={token} />
         <Flex flexDirection="column" ml="8px">
           <Text bold lineHeight="120%">
             {vestingTitle}
