@@ -20,11 +20,9 @@ export const getGQLHeaders = (endpoint: string) => {
 
 export const infoClient = new GraphQLClient(INFO_CLIENT, { headers: getGQLHeaders(INFO_CLIENT) })
 
-export const infoClientETH = new GraphQLClient(INFO_CLIENT_ETH, { headers: getGQLHeaders(INFO_CLIENT_ETH) })
+export const infoClientETH = new GraphQLClient(INFO_CLIENT_ETH)
 
-export const infoStableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPH_CLIENT, {
-  headers: getGQLHeaders(STABLESWAP_SUBGRAPH_CLIENT),
-})
+export const infoStableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPH_CLIENT)
 
 export const infoServerClient = new GraphQLClient(INFO_CLIENT, {
   headers: {
