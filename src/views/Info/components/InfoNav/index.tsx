@@ -20,6 +20,7 @@ import { multiChainId, multiChainPaths } from 'state/info/constant'
 import { chains } from 'utils/wagmi'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { useWeb3React } from '@pancakeswap/wagmi'
+import { bsc, mainnet } from '@pancakeswap/wagmi/chains'
 
 const NavWrapper = styled(Flex)`
   background: ${({ theme }) => theme.colors.gradientCardHeader};
@@ -73,7 +74,7 @@ const InfoNav = () => {
   )
 }
 
-const targetChains = chains.filter((d) => Object.values(multiChainId).includes(d.id))
+const targetChains = [mainnet, bsc]
 
 export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex }) => {
   const { t } = useTranslation()
