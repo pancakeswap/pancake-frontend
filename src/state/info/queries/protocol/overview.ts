@@ -123,7 +123,7 @@ const useFetchProtocolData = (): ProtocolFetchState => {
 }
 
 export const fetchProtocolData = async (chainName: MultiChainName, block24: Block, block48: Block) => {
-  const [{ error, data }, { error: error24, data: data24 }, { error: error48, data: data48 }] = await Promise.all([
+  const [{ data }, { data: data24 }, { data: data48 }] = await Promise.all([
     getOverviewData(chainName),
     getOverviewData(chainName, block24?.number ?? undefined),
     getOverviewData(chainName, block48?.number ?? undefined),

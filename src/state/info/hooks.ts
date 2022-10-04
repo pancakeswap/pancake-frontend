@@ -16,7 +16,7 @@ import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
 import { Transaction } from 'state/info/types'
 import useSWRImmutable from 'swr/immutable'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
-import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
+import { useBlockFromTimeStampSWR } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { MultiChainName, checkIsStableSwap } from './constant'
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 // Protocol hooks
@@ -27,7 +27,7 @@ const SWR_SETTINGS = { refreshInterval: refreshIntervalForInfo }
 export const useProtocolDataSWR = (): ProtocolData | undefined => {
   const chainName = useGetChainName()
   const [t24, t48] = getDeltaTimestamps()
-  const { blocks } = useBlocksFromTimestamps([t24, t48])
+  const { blocks } = useBlockFromTimeStampSWR([t24, t48])
   const [block24, block48] = blocks ?? []
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data: protocolData } = useSWRImmutable(
@@ -64,7 +64,7 @@ export const useProtocolTransactionsSWR = (): Transaction[] | undefined => {
 export const useAllPoolDataSWR = () => {
   const chainName = useGetChainName()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
-  const { blocks } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
+  const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useSWRImmutable(
     blocks && chainName && [`info/pool/data/${type}`, chainName],
@@ -113,7 +113,7 @@ export const useAllTokenDataSWR = (): {
 } => {
   const chainName = useGetChainName()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
-  const { blocks } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
+  const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useSWRImmutable(
     blocks && chainName && [`info/token/data/${type}`, chainName],

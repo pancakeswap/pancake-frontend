@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
-import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
-import { Block } from 'state/info/types'
+import { useEffect, useState } from 'react'
 import { useGetChainName } from 'state/info/hooks'
+import { Block } from 'state/info/types'
+import useSWRImmutable from 'swr/immutable'
+import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 
 /**
  * for a given array of timestamps, returns block entities
@@ -44,4 +45,18 @@ export const useBlocksFromTimestamps = (
     blocks,
     error,
   }
+}
+
+export const useBlockFromTimeStampSWR = (
+  timestamps: number[],
+  sortDirection: 'asc' | 'desc' | undefined = 'desc',
+  skipCount: number | undefined = 1000,
+) => {
+  const chainName = useGetChainName()
+  const timestampsString = JSON.stringify(timestamps)
+  const timestampsArray = JSON.parse(timestampsString)
+  const { data } = useSWRImmutable([`info/blocks/${timestampsString}`, chainName], () =>
+    getBlocksFromTimestamps(timestampsArray, sortDirection, skipCount, chainName),
+  )
+  return { blocks: data }
 }

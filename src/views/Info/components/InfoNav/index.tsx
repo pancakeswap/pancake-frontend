@@ -82,14 +82,14 @@ export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex
   const chainName = useGetChainName()
   const foundChain = chains.find((d) => d.id === multiChainId[chainName])
   const symbol = foundChain?.nativeCurrency?.symbol
+  const router = useRouter()
   const switchNetwork = useCallback(
     (chainPath: string) => {
-      // don't use next router here, otherwise will have some dataflow issue
-      if (activeIndex === 0) window.location.href = `/info${chainPath}`
-      if (activeIndex === 1) window.location.href = `/info${chainPath}/pools`
-      if (activeIndex === 2) window.location.href = `/info${chainPath}/tokens`
+      if (activeIndex === 0) router.push(`/info${chainPath}`)
+      if (activeIndex === 1) router.push(`/info${chainPath}/pools`)
+      if (activeIndex === 2) router.push(`/info${chainPath}/tokens`)
     },
-    [activeIndex],
+    [router, activeIndex],
   )
 
   return (

@@ -1,8 +1,8 @@
-import orderBy from 'lodash/orderBy'
 import { gql } from 'graphql-request'
+import orderBy from 'lodash/orderBy'
+import { multiChainBlocksClient, MultiChainName } from 'state/info/constant'
 import { Block } from '../state/info/types'
 import { multiQuery } from '../views/Info/utils/infoQueryHelpers'
-import { BLOCKS_CLIENT, BLOCKS_CLIENT_ETH } from '../config/constants/endpoints'
 
 const getBlockSubqueries = (timestamps: number[]) =>
   timestamps.map((timestamp) => {
@@ -27,7 +27,7 @@ export const getBlocksFromTimestamps = async (
   timestamps: number[],
   sortDirection: 'asc' | 'desc' = 'desc',
   skipCount = 500,
-  chainName: 'BSC' | 'ETH' = 'BSC',
+  chainName: MultiChainName,
 ): Promise<Block[]> => {
   if (timestamps?.length === 0) {
     return []
@@ -36,7 +36,7 @@ export const getBlocksFromTimestamps = async (
   const fetchedData: any = await multiQuery(
     blocksQueryConstructor,
     getBlockSubqueries(timestamps),
-    chainName === 'ETH' ? BLOCKS_CLIENT_ETH : BLOCKS_CLIENT,
+    multiChainBlocksClient[chainName],
     skipCount,
   )
 
