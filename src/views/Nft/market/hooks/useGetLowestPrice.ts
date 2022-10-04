@@ -3,6 +3,7 @@ import { getNftsMarketData, getNftsUpdatedMarketData } from 'state/nftMarket/hel
 import { formatBigNumber } from 'utils/formatBalance'
 import { NftToken } from 'state/nftMarket/types'
 import useSWR from 'swr'
+import { isAddress } from 'utils'
 import { pancakeBunniesAddress } from '../constants'
 
 export interface LowestNftPrice {
@@ -52,7 +53,7 @@ export const useGetLowestPriceFromBunnyId = (bunnyId?: string): LowestNftPrice =
 }
 
 export const useGetLowestPriceFromNft = (nft: NftToken): LowestNftPrice => {
-  const isPancakeBunny = nft.collectionAddress?.toLowerCase() === pancakeBunniesAddress.toLowerCase()
+  const isPancakeBunny = isAddress(nft.collectionAddress) === pancakeBunniesAddress
 
   const bunnyIdAttr = isPancakeBunny && getBunnyIdFromNft(nft)
 

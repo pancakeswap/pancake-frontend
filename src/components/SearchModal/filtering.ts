@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { TokenInfo } from '@uniswap/token-lists'
 import { Token } from '@pancakeswap/sdk'
-import { isAddress } from '../../utils'
+import { isAddress } from 'utils'
 
 export function filterTokens(tokens: Token[], search: string): Token[] {
   if (search.length === 0) return tokens
