@@ -41,11 +41,11 @@ export const getNonBscVaultContractFee = async ({
   try {
     const nonBscVaultContract = getNonBscVaultContract(null, chainId)
     const crossFarmingAddress = getCrossFarmingSenderContract(null, chainId)
-    const exchangeRate = new BigNumber(ORACLE_PRECISION).div(oraclePrice) // invert into BNB/ETH price
+    const exchangeRate = new BigNumber(ORACLE_PRECISION).div(oraclePrice).times(ORACLE_PRECISION) // invert into BNB/ETH price
 
     const getNonce = await crossFarmingAddress.nonces(userAddress, pid)
     const nonce = new BigNumber(getNonce.toString()).toJSON()
-    const [encodeMessage, isFirstTime, estimateGaslimit] = await Promise.all([
+    const [encodeMessage, hasFirstTime, estimateGaslimit] = await Promise.all([
       nonBscVaultContract.encodeMessage(userAddress, pid, amount, messageType, nonce),
       crossFarmingAddress.is1st(userAddress),
       crossFarmingAddress.estimateGaslimit(Chains.BSC, userAddress, messageType),
@@ -57,10 +57,9 @@ export const getNonBscVaultContractFee = async ({
       .times(estimateGaslimit.toString())
       .times(exchangeRate)
       .times(COMPENSATION_PRECISION)
-      .div(new BigNumber(ORACLE_PRECISION).times(COMPENSATION_PRECISION))
-    const totalFee = new BigNumber(fee1).plus(fee2)
+    const totalFee = new BigNumber(fee1).plus(fee2).div(ORACLE_PRECISION * COMPENSATION_PRECISION)
 
-    if (!isFirstTime) {
+    if (!hasFirstTime) {
       const depositFee = new BigNumber(BNB_CHANGE).times(exchangeRate).div(ORACLE_PRECISION)
       return totalFee.plus(depositFee).times(BUFFER).toFixed(0)
     }
