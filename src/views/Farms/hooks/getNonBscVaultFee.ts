@@ -41,7 +41,7 @@ export const getNonBscVaultContractFee = async ({
   try {
     const nonBscVaultContract = getNonBscVaultContract(null, chainId)
     const crossFarmingAddress = getCrossFarmingSenderContract(null, chainId)
-    const exchangeRate = new BigNumber(oraclePrice)
+    const exchangeRate = new BigNumber(ORACLE_PRECISION).div(oraclePrice) // invert into BNB/ETH price
 
     const getNonce = await crossFarmingAddress.nonces(userAddress, pid)
     const nonce = new BigNumber(getNonce.toString()).toJSON()
@@ -57,7 +57,8 @@ export const getNonBscVaultContractFee = async ({
       .times(estimateGaslimit.toString())
       .times(exchangeRate)
       .times(COMPENSATION_PRECISION)
-    const totalFee = new BigNumber(fee1).plus(fee2).div(ORACLE_PRECISION * COMPENSATION_PRECISION)
+      .div(new BigNumber(ORACLE_PRECISION).times(COMPENSATION_PRECISION))
+    const totalFee = new BigNumber(fee1).plus(fee2)
 
     if (!isFirstTime) {
       const depositFee = new BigNumber(BNB_CHANGE).times(exchangeRate).div(ORACLE_PRECISION)
