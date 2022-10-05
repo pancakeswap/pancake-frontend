@@ -32,7 +32,11 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
       <Message variant="warning">
         <Text>
           {t(
-            'Anyone can create a token on Aptos with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.',
+            'Anyone can create a %standard% token on %network% with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.',
+            {
+              standard: 'Aptos coin',
+              network: 'Aptos',
+            },
           )}
           <br />
           <br />
