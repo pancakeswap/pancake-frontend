@@ -1,18 +1,20 @@
 /* eslint-disable no-param-reassign */
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
-import { TokenData } from 'state/info/types'
-import { infoClient } from 'utils/graphql'
+import { TokenData, Block } from 'state/info/types'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getAmountChange, getPercentChange } from 'views/Info/utils/infoDataHelpers'
+import { getMultiChainQueryEndPointWithStableSwap, MultiChainName, multiChainQueryMainToken } from '../../constant'
+import { fetchTokenAddresses } from './topTokens'
 
 interface TokenFields {
   id: string
   symbol: string
   name: string
   derivedBNB: string // Price in BNB per token
+  derivedETH: string // Price in ETH per token
   derivedUSD: string // Price in USD per token
   tradeVolumeUSD: string
   totalTransactions: string
@@ -20,8 +22,12 @@ interface TokenFields {
 }
 
 interface FormattedTokenFields
-  extends Omit<TokenFields, 'derivedBNB' | 'derivedUSD' | 'tradeVolumeUSD' | 'totalTransactions' | 'totalLiquidity'> {
+  extends Omit<
+    TokenFields,
+    'derivedETH' | 'derivedBNB' | 'derivedUSD' | 'tradeVolumeUSD' | 'totalTransactions' | 'totalLiquidity'
+  > {
   derivedBNB: number
+  derivedETH: number
   derivedUSD: number
   tradeVolumeUSD: number
   totalTransactions: number
@@ -39,7 +45,7 @@ interface TokenQueryResponse {
 /**
  * Main token data to display on Token page
  */
-const TOKEN_AT_BLOCK = (block: number | undefined, tokens: string[]) => {
+const TOKEN_AT_BLOCK = (chainName: MultiChainName, block: number | undefined, tokens: string[]) => {
   const addressesString = `["${tokens.join('","')}"]`
   const blockString = block ? `block: {number: ${block}}` : ``
   return `tokens(
@@ -51,7 +57,7 @@ const TOKEN_AT_BLOCK = (block: number | undefined, tokens: string[]) => {
       id
       symbol
       name
-      derivedBNB
+      derived${multiChainQueryMainToken[chainName]}
       derivedUSD
       tradeVolumeUSD
       totalTransactions
@@ -61,6 +67,7 @@ const TOKEN_AT_BLOCK = (block: number | undefined, tokens: string[]) => {
 }
 
 const fetchTokenData = async (
+  chainName: MultiChainName,
   block24h: number,
   block48h: number,
   block7d: number,
@@ -68,16 +75,20 @@ const fetchTokenData = async (
   tokenAddresses: string[],
 ) => {
   try {
+    const weeksQuery =
+      chainName === 'BSC'
+        ? `oneWeekAgo: ${TOKEN_AT_BLOCK(chainName, block7d, tokenAddresses)}
+           twoWeeksAgo: ${TOKEN_AT_BLOCK(chainName, block14d, tokenAddresses)}`
+        : ''
     const query = gql`
       query tokens {
-        now: ${TOKEN_AT_BLOCK(null, tokenAddresses)}
-        oneDayAgo: ${TOKEN_AT_BLOCK(block24h, tokenAddresses)}
-        twoDaysAgo: ${TOKEN_AT_BLOCK(block48h, tokenAddresses)}
-        oneWeekAgo: ${TOKEN_AT_BLOCK(block7d, tokenAddresses)}
-        twoWeeksAgo: ${TOKEN_AT_BLOCK(block14d, tokenAddresses)}
+        now: ${TOKEN_AT_BLOCK(chainName, null, tokenAddresses)}
+        oneDayAgo: ${TOKEN_AT_BLOCK(chainName, block24h, tokenAddresses)}
+        twoDaysAgo: ${TOKEN_AT_BLOCK(chainName, block48h, tokenAddresses)}
+        ${weeksQuery}
       }
     `
-    const data = await infoClient.request<TokenQueryResponse>(query)
+    const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TokenQueryResponse>(query)
     return { data, error: false }
   } catch (error) {
     console.error('Failed to fetch token data', error)
@@ -91,10 +102,11 @@ const parseTokenData = (tokens?: TokenFields[]) => {
     return {}
   }
   return tokens.reduce((accum: { [address: string]: FormattedTokenFields }, tokenData) => {
-    const { derivedBNB, derivedUSD, tradeVolumeUSD, totalTransactions, totalLiquidity } = tokenData
+    const { derivedBNB, derivedUSD, tradeVolumeUSD, totalTransactions, totalLiquidity, derivedETH } = tokenData
     accum[tokenData.id] = {
       ...tokenData,
-      derivedBNB: parseFloat(derivedBNB),
+      derivedBNB: derivedBNB ? 0 : parseFloat(derivedBNB),
+      derivedETH: derivedETH ? 0 : parseFloat(derivedETH),
       derivedUSD: parseFloat(derivedUSD),
       tradeVolumeUSD: parseFloat(tradeVolumeUSD),
       totalTransactions: parseFloat(totalTransactions),
@@ -114,7 +126,7 @@ interface TokenDatas {
 /**
  * Fetch top addresses by volume
  */
-const useFetchedTokenDatas = (tokenAddresses: string[]): TokenDatas => {
+const useFetchedTokenDatas = (chainName: MultiChainName, tokenAddresses: string[]): TokenDatas => {
   const [fetchState, setFetchState] = useState<TokenDatas>({ error: false })
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks, error: blockError } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
@@ -123,12 +135,14 @@ const useFetchedTokenDatas = (tokenAddresses: string[]): TokenDatas => {
   useEffect(() => {
     const fetch = async () => {
       const { error, data } = await fetchTokenData(
+        chainName,
         block24h.number,
         block48h.number,
         block7d.number,
         block14d.number,
         tokenAddresses,
       )
+
       if (error) {
         setFetchState({ error: true })
       } else {
@@ -194,9 +208,79 @@ const useFetchedTokenDatas = (tokenAddresses: string[]): TokenDatas => {
     if (tokenAddresses.length > 0 && allBlocksAvailable && !blockError) {
       fetch()
     }
-  }, [tokenAddresses, block24h, block48h, block7d, block14d, blockError])
+  }, [tokenAddresses, block24h, block48h, block7d, block14d, blockError, chainName])
 
   return fetchState
+}
+
+export const fetchAllTokenData = async (chainName: MultiChainName, blocks: Block[]) => {
+  const [block24h, block48h, block7d, block14d] = blocks ?? []
+  const tokenAddresses = await fetchTokenAddresses(chainName)
+
+  const { data } = await fetchTokenData(
+    chainName,
+    block24h.number,
+    block48h.number,
+    block7d.number,
+    block14d.number,
+    tokenAddresses,
+  )
+
+  const parsed = parseTokenData(data?.now)
+  const parsed24 = parseTokenData(data?.oneDayAgo)
+  const parsed48 = parseTokenData(data?.twoDaysAgo)
+  const parsed7d = parseTokenData(data?.oneWeekAgo)
+  const parsed14d = parseTokenData(data?.twoWeeksAgo)
+
+  // Calculate data and format
+  const formatted = tokenAddresses.reduce((accum: { [address: string]: { data: TokenData } }, address) => {
+    const current: FormattedTokenFields | undefined = parsed[address]
+    const oneDay: FormattedTokenFields | undefined = parsed24[address]
+    const twoDays: FormattedTokenFields | undefined = parsed48[address]
+    const week: FormattedTokenFields | undefined = parsed7d[address]
+    const twoWeeks: FormattedTokenFields | undefined = parsed14d[address]
+
+    const [volumeUSD, volumeUSDChange] = getChangeForPeriod(
+      current?.tradeVolumeUSD,
+      oneDay?.tradeVolumeUSD,
+      twoDays?.tradeVolumeUSD,
+    )
+    const [volumeUSDWeek] = getChangeForPeriod(current?.tradeVolumeUSD, week?.tradeVolumeUSD, twoWeeks?.tradeVolumeUSD)
+    const liquidityUSD = current ? current.totalLiquidity * current.derivedUSD : 0
+    const liquidityUSDOneDayAgo = oneDay ? oneDay.totalLiquidity * oneDay.derivedUSD : 0
+    const liquidityUSDChange = getPercentChange(liquidityUSD, liquidityUSDOneDayAgo)
+    const liquidityToken = current ? current.totalLiquidity : 0
+    // Prices of tokens for now, 24h ago and 7d ago
+    const priceUSD = current ? current.derivedUSD : 0
+    const priceUSDOneDay = oneDay ? oneDay.derivedUSD : 0
+    const priceUSDWeek = week ? week.derivedUSD : 0
+    const priceUSDChange = getPercentChange(priceUSD, priceUSDOneDay)
+    const priceUSDChangeWeek = getPercentChange(priceUSD, priceUSDWeek)
+    const txCount = getAmountChange(current?.totalTransactions, oneDay?.totalTransactions)
+
+    accum[address] = {
+      data: {
+        exists: !!current,
+        address,
+        name: current ? current.name : '',
+        symbol: current ? current.symbol : '',
+        volumeUSD,
+        volumeUSDChange,
+        volumeUSDWeek,
+        txCount,
+        liquidityUSD,
+        liquidityUSDChange,
+        liquidityToken,
+        priceUSD,
+        priceUSDChange,
+        priceUSDChangeWeek,
+      },
+    }
+
+    return accum
+  }, {})
+
+  return formatted
 }
 
 export default useFetchedTokenDatas

@@ -1,19 +1,19 @@
-import { useMemo } from 'react'
-import styled from 'styled-components'
-import { Flex, Heading, Card } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Card, Flex, Heading } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import LineChart from 'views/Info/components/InfoCharts/LineChart'
-import TokenTable from 'views/Info/components/InfoTables/TokensTable'
-import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
-import BarChart from 'views/Info/components/InfoCharts/BarChart'
+import { useMemo } from 'react'
 import {
-  useAllPoolData,
-  useAllTokenData,
-  useProtocolChartData,
-  useProtocolData,
-  useProtocolTransactions,
+  useAllPoolDataSWR,
+  useAllTokenDataSWR,
+  useProtocolChartDataSWR,
+  useProtocolDataSWR,
+  useProtocolTransactionsSWR,
 } from 'state/info/hooks'
+import styled from 'styled-components'
+import BarChart from 'views/Info/components/InfoCharts/BarChart'
+import LineChart from 'views/Info/components/InfoCharts/LineChart'
+import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
+import TokenTable from 'views/Info/components/InfoTables/TokensTable'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import HoverableChart from '../components/InfoCharts/HoverableChart'
 
@@ -39,16 +39,16 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
     currentLanguage: { locale },
   } = useTranslation()
 
-  const [protocolData] = useProtocolData()
-  const [chartData] = useProtocolChartData()
-  const [transactions] = useProtocolTransactions()
+  const protocolData = useProtocolDataSWR()
+  const chartData = useProtocolChartDataSWR()
+  const transactions = useProtocolTransactionsSWR()
 
   const currentDate = useMemo(
     () => new Date().toLocaleString(locale, { month: 'short', year: 'numeric', day: 'numeric' }),
     [locale],
   )
 
-  const allTokens = useAllTokenData()
+  const allTokens = useAllTokenDataSWR()
 
   const formattedTokens = useMemo(() => {
     return Object.values(allTokens)
@@ -56,7 +56,8 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
       .filter((token) => token)
   }, [allTokens])
 
-  const allPoolData = useAllPoolData()
+  const allPoolData = useAllPoolDataSWR()
+  // const allPoolData = useAllPoolData()
   const poolDatas = useMemo(() => {
     return Object.values(allPoolData)
       .map((pool) => pool.data)
@@ -64,8 +65,8 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
   }, [allPoolData])
 
   const somePoolsAreLoading = useMemo(() => {
-    return Object.values(allPoolData).some((pool) => !pool.data)
-  }, [allPoolData])
+    return poolDatas.some((pool) => !pool?.token0Price)
+  }, [poolDatas])
 
   return (
     <Page>

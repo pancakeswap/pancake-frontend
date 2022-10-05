@@ -2,7 +2,7 @@ import { gql } from 'graphql-request'
 import { mapBurns, mapMints, mapSwaps } from 'state/info/queries/helpers'
 import { BurnResponse, MintResponse, SwapResponse } from 'state/info/queries/types'
 import { Transaction } from 'state/info/types'
-import { infoClient } from 'utils/graphql'
+import { MultiChainName, getMultiChainQueryEndPointWithStableSwap } from '../../constant'
 /**
  * Transactions of the given pool, used on Pool page
  */
@@ -73,11 +73,17 @@ interface TransactionResults {
   burns: BurnResponse[]
 }
 
-const fetchPoolTransactions = async (address: string): Promise<{ data?: Transaction[]; error: boolean }> => {
+const fetchPoolTransactions = async (
+  chainName: MultiChainName,
+  address: string,
+): Promise<{ data?: Transaction[]; error: boolean }> => {
   try {
-    const data = await infoClient.request<TransactionResults>(POOL_TRANSACTIONS, {
-      address,
-    })
+    const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TransactionResults>(
+      POOL_TRANSACTIONS,
+      {
+        address,
+      },
+    )
     const mints = data.mints.map(mapMints)
     const burns = data.burns.map(mapBurns)
     const swaps = data.swaps.map(mapSwaps)

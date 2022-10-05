@@ -1,44 +1,47 @@
 /* eslint-disable no-nested-ternary */
-import { useMemo } from 'react'
-import { NextLinkFromReactRouter } from 'components/NextLink'
-import { Duration } from 'date-fns'
-import styled from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  Text,
   Box,
-  Heading,
+  Breadcrumbs,
   Button,
   Card,
   Flex,
-  Breadcrumbs,
+  Heading,
+  Image,
   Link as UIKitLink,
   LinkExternal,
   Spinner,
-  Image,
+  Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import Page from 'components/Layout/Page'
-import { getBlockExploreLink } from 'utils'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import useCMCLink from 'views/Info/hooks/useCMCLink'
-import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import { formatAmount } from 'utils/formatInfoNumbers'
-import Percent from 'views/Info/components/Percent'
-import SaveIcon from 'views/Info/components/SaveIcon'
+import Page from 'components/Layout/Page'
+import { NextLinkFromReactRouter } from 'components/NextLink'
+import { ONE_HOUR_SECONDS } from 'config/constants/info'
+import { Duration } from 'date-fns'
+import { useMemo } from 'react'
+import { multiChainId, multiChainScan } from 'state/info/constant'
 import {
-  usePoolDatas,
-  useTokenData,
-  usePoolsForToken,
-  useTokenChartData,
-  useTokenPriceData,
-  useTokenTransactions,
+  useGetChainName,
+  useMultiChainPath,
+  usePoolDatasSWR,
+  usePoolsForTokenSWR,
+  useTokenChartDataSWR,
+  useTokenDataSWR,
+  useTokenPriceDataSWR,
+  useTokenTransactionsSWR,
 } from 'state/info/hooks'
+import { useWatchlistTokens } from 'state/user/hooks'
+import styled from 'styled-components'
+import { getBlockExploreLink } from 'utils'
+import { formatAmount } from 'utils/formatInfoNumbers'
+import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
+import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
 import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
-import { useWatchlistTokens } from 'state/user/hooks'
-import { ONE_HOUR_SECONDS } from 'config/constants/info'
-import { useTranslation } from '@pancakeswap/localization'
-import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
+import Percent from 'views/Info/components/Percent'
+import SaveIcon from 'views/Info/components/SaveIcon'
+import useCMCLink from 'views/Info/hooks/useCMCLink'
 
 const ContentLayout = styled.div`
   margin-top: 16px;
@@ -71,14 +74,14 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
 
   const cmcLink = useCMCLink(address)
 
-  const tokenData = useTokenData(address)
-  const poolsForToken = usePoolsForToken(address)
-  const poolDatas = usePoolDatas(poolsForToken ?? [])
-  const transactions = useTokenTransactions(address)
-  const chartData = useTokenChartData(address)
+  const tokenData = useTokenDataSWR(address)
+  const poolsForToken = usePoolsForTokenSWR(address)
+  const poolDatas = usePoolDatasSWR(poolsForToken ?? [])
+  const transactions = useTokenTransactionsSWR(address)
+  const chartData = useTokenChartDataSWR(address)
 
   // pricing data
-  const priceData = useTokenPriceData(address, ONE_HOUR_SECONDS, DEFAULT_TIME_WINDOW)
+  const priceData = useTokenPriceDataSWR(address, ONE_HOUR_SECONDS, DEFAULT_TIME_WINDOW)
   const adjustedPriceData = useMemo(() => {
     // Include latest available price
     if (priceData && tokenData && priceData.length > 0) {
@@ -97,7 +100,8 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
   }, [priceData, tokenData])
 
   const [watchlistTokens, addWatchlistToken] = useWatchlistTokens()
-
+  const chainPath = useMultiChainPath()
+  const chainName = useGetChainName()
   return (
     <Page symbol={tokenData?.symbol}>
       {tokenData ? (
@@ -117,10 +121,10 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
             {/* Stuff on top */}
             <Flex justifyContent="space-between" mb="24px" flexDirection={['column', 'column', 'row']}>
               <Breadcrumbs mb="32px">
-                <NextLinkFromReactRouter to="/info">
+                <NextLinkFromReactRouter to={`/info${chainPath}`}>
                   <Text color="primary">{t('Info')}</Text>
                 </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter to="/info/tokens">
+                <NextLinkFromReactRouter to={`/info${chainPath}/tokens`}>
                   <Text color="primary">{t('Tokens')}</Text>
                 </NextLinkFromReactRouter>
                 <Flex>
@@ -129,8 +133,12 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                 </Flex>
               </Breadcrumbs>
               <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
-                <LinkExternal mr="8px" color="primary" href={getBlockExploreLink(address, 'address')}>
-                  {t('View on BscScan')}
+                <LinkExternal
+                  mr="8px"
+                  color="primary"
+                  href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
+                >
+                  {t('View on %site%', { site: multiChainScan[chainName] })}
                 </LinkExternal>
                 {cmcLink && (
                   <StyledCMCLink href={cmcLink} rel="noopener noreferrer nofollow" target="_blank">
@@ -165,12 +173,12 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                 </Flex>
               </Flex>
               <Flex>
-                <NextLinkFromReactRouter to={`/add/${address}`}>
+                <NextLinkFromReactRouter to={`/add/${address}?chainId=${multiChainId[chainName]}`}>
                   <Button mr="8px" variant="secondary">
                     {t('Add Liquidity')}
                   </Button>
                 </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter to={`/swap?inputCurrency=${address}`}>
+                <NextLinkFromReactRouter to={`/swap?inputCurrency=${address}&chainId=${multiChainId[chainName]}`}>
                   <Button>{t('Trade')}</Button>
                 </NextLinkFromReactRouter>
               </Flex>
