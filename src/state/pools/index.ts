@@ -18,6 +18,7 @@ import cakeAbi from 'config/abi/cake.json'
 import { getCakeVaultAddress, getCakeFlexibleSideVaultAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
 import { bscTokens } from '@pancakeswap/tokens'
+import { isAddress } from 'utils'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { bscRpcProvider } from 'utils/providers'
 import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps/index'
@@ -90,10 +91,10 @@ export const fetchCakePoolPublicDataAsync = () => async (dispatch, getState) => 
 
   const cakePool = poolsConfig.filter((p) => p.sousId === 0)[0]
 
-  const stakingTokenAddress = cakePool.stakingToken.address ? cakePool.stakingToken.address.toLowerCase() : null
+  const stakingTokenAddress = isAddress(cakePool.stakingToken.address)
   const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
 
-  const earningTokenAddress = cakePool.earningToken.address ? cakePool.earningToken.address.toLowerCase() : null
+  const earningTokenAddress = isAddress(cakePool.earningToken.address)
   const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
 
   dispatch(
@@ -181,10 +182,10 @@ export const fetchPoolsPublicDataAsync =
           currentBlock > 0 && blockLimit ? currentBlock > Number(blockLimit.endBlock) : false
         const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded
 
-        const stakingTokenAddress = pool.stakingToken.address ? pool.stakingToken.address.toLowerCase() : null
+        const stakingTokenAddress = isAddress(pool.stakingToken.address)
         const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
 
-        const earningTokenAddress = pool.earningToken.address ? pool.earningToken.address.toLowerCase() : null
+        const earningTokenAddress = isAddress(pool.earningToken.address)
         const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
         const apr = !isPoolFinished
           ? getPoolApr(
