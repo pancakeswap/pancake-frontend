@@ -53,7 +53,7 @@ const farms: SerializedFarmConfig[] = [
   {
     pid: 123,
     lpSymbol: 'ARV-BNB LP',
-    lpAddress: '0xa63e32feefc6590bbf869070fd2e706eb7881bd2',
+    lpAddress: '0xA63E32FeEFC6590bBf869070Fd2e706Eb7881bd2',
     token: bscTokens.arv,
     quoteToken: bscTokens.bnb,
   },
