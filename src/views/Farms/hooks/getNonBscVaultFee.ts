@@ -27,7 +27,7 @@ interface CalculateTotalFeeProps {
 const COMPENSATION_PRECISION = 1e5
 const ORACLE_PRECISION = 1e18
 const BNB_CHANGE = 5000000000000000
-const BUFFER = 1.1
+const BUFFER = 1.2
 
 export const getNonBscVaultContractFee = async ({
   pid,
