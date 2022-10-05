@@ -34,7 +34,7 @@ export const nonBscStakeFarm = async (contract, pid, amount, gasPrice, account, 
     userAddress: account,
     messageType: MessageTypes.Deposit,
   })
-  console.info(totalFee, 'totalFee')
+  console.info(totalFee, 'stake totalFee')
   return contract.deposit(pid, value, { value: totalFee })
 }
 
@@ -49,5 +49,6 @@ export const nonBscUnstakeFarm = async (contract, pid, amount, gasPrice, account
     userAddress: account,
     messageType: MessageTypes.Withdraw,
   })
+  console.info(totalFee, 'unstake totalFee')
   return contract.withdraw(pid, value, { value: totalFee })
 }
