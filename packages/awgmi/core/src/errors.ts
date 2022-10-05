@@ -59,6 +59,7 @@ export class RpcError<T = undefined> extends Error {
 }
 
 /**
+ * @TODO: atpos review the provider error
  * Error subclass implementing Ethereum Provider errors per EIP-1193.
  * @see https://eips.ethereum.org/EIPS/eip-1193
  */

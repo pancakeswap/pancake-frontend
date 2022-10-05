@@ -9,7 +9,7 @@ import {
   SWAP_ADDRESS_MODULE,
 } from '@pancakeswap/aptos-swap-sdk'
 import { useAccount, useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
-import { parseVmStatusError, SimulateTransactionError } from '@pancakeswap/awgmi/core'
+import { parseVmStatusError, SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
 import { AutoColumn, Card, RowBetween, Skeleton, Swap as SwapUI, useModal } from '@pancakeswap/uikit'
@@ -220,6 +220,13 @@ const SwapPage = () => {
         setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: tx.hash })
       })
       .catch((error) => {
+        if (error instanceof UserRejectedRequestError) {
+          setSwapState((s) => ({
+            ...s,
+            attemptingTxn: false,
+          }))
+          return
+        }
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
