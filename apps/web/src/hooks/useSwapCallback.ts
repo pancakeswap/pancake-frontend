@@ -184,10 +184,7 @@ export function useSwapCallback(
             return response.hash
           })
           .catch((error: any) => {
-            // if the user rejected the tx, pass this along
-            if (error?.code === 4001) {
-              throw new Error('Transaction rejected.')
-            } else {
+            if (error?.code !== 4001) {
               // otherwise, the error was unexpected and we need to convey that
               console.error(`Swap failed`, error, methodName, args, value)
               throw error

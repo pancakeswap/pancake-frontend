@@ -55,8 +55,6 @@ export function transactionErrorToUserReadableMessage(error: any, t: TranslateFu
       return formatErrorMessage(t('Unexpected issue with estimating the gas. Please try again.'))
     case 'Unexpected error. Could not estimate gas for the swap.':
       return formatErrorMessage(t('Unexpected error. Could not estimate gas for the swap.'))
-    case 'Transaction rejected.':
-      return formatErrorMessage(t('Transaction rejected.'))
     default:
       if (reason?.indexOf('undefined is not an object') !== -1) {
         return t(
