@@ -74,7 +74,7 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
 
   const handleCancel = useCallback(() => {
     onDismiss?.()
-  }, [])
+  }, [onDismiss])
 
   const handleSwitchNetwork = () => {
     switchNetworkAsync(network)
