@@ -11,6 +11,24 @@ export const isAccountAddress = (addr: string): addr is Address => {
   }
 }
 
+export const isStructTag = (structTag: string) => {
+  try {
+    // Type args are not supported in string literal
+    if (structTag.includes('<')) {
+      throw new Error('Not implemented')
+    }
+
+    const parts = structTag.split('::').filter(Boolean)
+    if (parts.length !== 3) {
+      throw new Error('Invalid struct tag string literal.')
+    }
+
+    return true
+  } catch (err) {
+    return false
+  }
+}
+
 export const unwrapTypeFromString = (type: string) => {
   const bracketsRegexp = /(?<=<)[^\][\r\n]*(?=>)/g
   const match = bracketsRegexp.exec(type)

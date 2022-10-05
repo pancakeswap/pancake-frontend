@@ -1,7 +1,7 @@
 import { Currency } from '@pancakeswap/aptos-swap-sdk'
-import { TxnBuilderTypes } from 'aptos'
 import { chains, defaultChain } from 'config/chains'
 import { TokenAddressMap } from 'state/lists/hooks'
+import convertStructTagToAddress from './convertStructTagToAddress'
 
 export function getBlockExploreLink(
   data: string | number,
@@ -16,6 +16,9 @@ export function getBlockExploreLink(
     case 'transaction': {
       return `${chain.blockExplorers?.default.url}/txn/${data}${query}`
     }
+    case 'token': {
+      return `${chain.blockExplorers?.default.url}/account/${convertStructTagToAddress(data as string)}${query}`
+    }
     default: {
       return `${chain.blockExplorers?.default.url}/account/${data}${query}`
     }
@@ -24,10 +27,6 @@ export function getBlockExploreLink(
 
 export const isChainSupported = (network?: string): network is string =>
   !!network && chains.map((c) => c.network).includes(network.toLowerCase())
-
-// still find a best way to verify it
-export const isAddress = (addr: string) =>
-  addr.startsWith('0x') && (TxnBuilderTypes.AccountAddress.fromHex(addr) ? addr : undefined)
 
 export function isTokenOnList(defaultTokens: TokenAddressMap, currency?: Currency): boolean {
   if (currency?.isNative) return true

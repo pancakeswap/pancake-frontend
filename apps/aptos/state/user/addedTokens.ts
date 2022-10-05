@@ -28,7 +28,7 @@ export const useRemoveUserAddedToken = () => {
           // eslint-disable-next-line no-param-reassign
           delete s[chainId][address]
         }
-        return s
+        return { ...s }
       })
     },
     [set],

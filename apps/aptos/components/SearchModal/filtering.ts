@@ -1,15 +1,13 @@
 import { useMemo } from 'react'
 import { TokenInfo } from '@uniswap/token-lists'
 import { Token } from '@pancakeswap/aptos-swap-sdk'
-import { isAddress } from '../../utils'
+import { isStructTag } from '@pancakeswap/awgmi'
 
 export function filterTokens(tokens: Token[], search: string): Token[] {
   if (search.length === 0) return tokens
 
-  const searchingAddress = isAddress(search)
-
-  if (searchingAddress) {
-    return tokens.filter((token) => token.address === searchingAddress)
+  if (isStructTag(search)) {
+    return tokens.filter((token) => token.address === search)
   }
 
   const lowerSearchParts = search
@@ -37,10 +35,8 @@ export function filterTokens(tokens: Token[], search: string): Token[] {
 }
 
 export function createFilterToken<T extends TokenInfo | Token>(search: string): (token: T) => boolean {
-  const searchingAddress = isAddress(search)
-
-  if (searchingAddress) {
-    const address = searchingAddress.toLowerCase()
+  if (isStructTag(search)) {
+    const address = search.toLowerCase()
     return (t: T) => 'address' in t && address === t.address.toLowerCase()
   }
 

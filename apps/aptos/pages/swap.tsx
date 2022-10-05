@@ -322,7 +322,8 @@ const SwapPage = () => {
     slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null,
   ]
 
-  if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
+  // NOTE: balanceIn is undefined mean no balance in Aptos
+  if (amountIn && (!balanceIn || balanceIn.lessThan(amountIn))) {
     inputError = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })
   }
 
@@ -379,10 +380,12 @@ const SwapPage = () => {
 
           <Info
             price={
-              <>
-                <InfoLabel>{t('Price')}</InfoLabel>
-                {!trade ? <Skeleton ml="8px" height="24px" /> : <TradePrice price={trade?.executionPrice} />}
-              </>
+              trade?.executionPrice?.greaterThan(0) ? (
+                <>
+                  <InfoLabel>{t('Price')}</InfoLabel>
+                  {!trade ? <Skeleton ml="8px" height="24px" /> : <TradePrice price={trade?.executionPrice} />}
+                </>
+              ) : null
             }
             allowedSlippage={allowedSlippage}
           />

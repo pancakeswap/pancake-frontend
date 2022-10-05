@@ -32,7 +32,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
       <Message variant="warning">
         <Text>
           {t(
-            'Anyone can create a BEP20 token on BSC with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.',
+            'Anyone can create a token on Aptos with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.',
           )}
           <br />
           <br />
@@ -66,7 +66,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
             {chainId && (
               <Flex justifyContent="space-between" width="100%">
                 <Text mr="4px">{address}</Text>
-                <Link href={getBlockExploreLink(token.address, 'address', chainId)} external>
+                <Link href={getBlockExploreLink(token.address, 'token', chainId)} external>
                   (
                   {t('View on %site%', {
                     site: 'Explorer',

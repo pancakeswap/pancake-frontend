@@ -23,7 +23,7 @@ export default function Manage({
   setImportList: (list: TokenList) => void
   setListUrl: (url: string) => void
 }) {
-  const [showLists, setShowLists] = useState(true)
+  const [showLists, setShowLists] = useState(false)
 
   const { t } = useTranslation()
 
@@ -36,8 +36,12 @@ export default function Manage({
         variant="subtle"
         mb="32px"
       >
-        <ButtonMenuItem width="50%">{t('Lists')}</ButtonMenuItem>
-        <ButtonMenuItem width="50%">{t('Tokens')}</ButtonMenuItem>
+        {[
+          // <ButtonMenuItem key="0" width="50%">{t('Lists')}</ButtonMenuItem>,
+          <ButtonMenuItem key="1" width="50%">
+            {t('Tokens')}
+          </ButtonMenuItem>,
+        ]}
       </StyledButtonMenu>
       {showLists ? (
         <ManageLists setModalView={setModalView} setImportList={setImportList} setListUrl={setListUrl} />

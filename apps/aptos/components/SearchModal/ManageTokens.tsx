@@ -18,7 +18,8 @@ import styled from 'styled-components'
 import { useToken } from 'hooks/Tokens'
 import { useRemoveUserAddedToken, useUserAddedTokens } from 'state/user'
 import { CurrencyLogo } from 'components/Logo'
-import { getBlockExploreLink, isAddress } from 'utils'
+import { getBlockExploreLink } from 'utils'
+import { isStructTag } from '@pancakeswap/awgmi'
 import { useActiveChainId } from 'hooks/useNetwork'
 import { useTranslation } from '@pancakeswap/localization'
 import ImportRow from './ImportRow'
@@ -57,8 +58,7 @@ export default function ManageTokens({
   const inputRef = useRef<HTMLInputElement>()
   const handleInput = useCallback((event) => {
     const input = event.target.value
-    const checksummedInput = isAddress(input)
-    setSearchQuery(checksummedInput || input)
+    setSearchQuery(input)
   }, [])
 
   // if they input an address, use it
@@ -83,7 +83,7 @@ export default function ManageTokens({
         <RowBetween key={token.address} width="100%">
           <RowFixed>
             <CurrencyLogo currency={token} size="20px" />
-            <Link external href={getBlockExploreLink(token.address, 'address', chainId)} color="textSubtle" ml="10px">
+            <Link external href={getBlockExploreLink(token.address, 'token', chainId)} color="textSubtle" ml="10px">
               {token.symbol}
             </Link>
           </RowFixed>
@@ -91,14 +91,14 @@ export default function ManageTokens({
             <IconButton variant="text" onClick={() => removeToken(chainId, token.address)}>
               <CloseIcon />
             </IconButton>
-            <LinkExternal href={getBlockExploreLink(token.address, 'address', chainId)} />
+            <LinkExternal href={getBlockExploreLink(token.address, 'token', chainId)} />
           </RowFixed>
         </RowBetween>
       ))
     )
   }, [userAddedTokens, chainId, removeToken])
 
-  const isAddressValid = searchQuery === '' || isAddress(searchQuery)
+  const isAddressValid = searchQuery === '' || isStructTag(searchQuery)
 
   return (
     <Wrapper>

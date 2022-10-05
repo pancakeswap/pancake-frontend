@@ -11,7 +11,6 @@ import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
 import { TagInfo, WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { useAudioPlay } from 'state/user'
 import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
-import { isAddress } from '../../utils'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
 import { createFilterToken, useSortedTokensByQuery } from './filtering'
@@ -125,8 +124,14 @@ function CurrencySearch({
   const tokenComparator = useTokenComparator(invertSearchOrder)
 
   const filteredSortedTokens: Token[] = useMemo(() => {
-    return [...filteredQueryTokens].sort(tokenComparator)
-  }, [filteredQueryTokens, tokenComparator])
+    const sortedTokens = filteredQueryTokens
+
+    if (searchTokenIsAdded && searchToken) {
+      sortedTokens.push(searchToken)
+    }
+
+    return sortedTokens.sort(tokenComparator)
+  }, [filteredQueryTokens, searchTokenIsAdded, tokenComparator, searchToken])
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
@@ -147,8 +152,7 @@ function CurrencySearch({
 
   const handleInput = useCallback((event) => {
     const input = event.target.value
-    const checksummedInput = isAddress(input)
-    setSearchQuery(checksummedInput || input)
+    setSearchQuery(input)
     fixedList.current?.scrollTo(0)
   }, [])
 

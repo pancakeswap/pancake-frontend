@@ -5,6 +5,7 @@ import {
   unwrapTypeFromString,
   isHexStringEquals,
   parseVmStatusError,
+  isStructTag,
 } from './utils'
 
 describe('utils isAccountAddress', () => {
@@ -87,6 +88,18 @@ describe('utils unwrapStrutTagTypeArgFromString', () => {
       ]
     `,
     )
+  })
+})
+
+describe('isStructTag', () => {
+  it('should return true if StructTag', () => {
+    expect(
+      isStructTag('0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC'),
+    ).toBeTruthy()
+    expect(isStructTag('0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::')).toBeFalsy()
+    expect(isStructTag('0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins')).toBeFalsy()
+    expect(isStructTag('0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::')).toBeFalsy()
+    expect(isStructTag('0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf')).toBeFalsy()
   })
 })
 
