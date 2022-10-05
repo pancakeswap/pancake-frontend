@@ -57,7 +57,8 @@ export const getNonBscVaultContractFee = async ({
       .times(estimateGaslimit.toString())
       .times(exchangeRate)
       .times(COMPENSATION_PRECISION)
-    const totalFee = new BigNumber(fee1).plus(fee2).div(ORACLE_PRECISION * COMPENSATION_PRECISION)
+      .div(new BigNumber(ORACLE_PRECISION).times(COMPENSATION_PRECISION))
+    const totalFee = new BigNumber(fee1).plus(fee2)
 
     if (!hasFirstTime) {
       const depositFee = new BigNumber(BNB_CHANGE).times(exchangeRate).div(ORACLE_PRECISION)
