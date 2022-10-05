@@ -8,7 +8,7 @@ import { poll } from '@ethersproject/web'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Box, Text, useToast } from '@pancakeswap/uikit'
 import { FAST_INTERVAL } from 'config/constants'
-import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
 import { useAppDispatch } from '../index'
 import {
   finalizeTransaction,
@@ -95,7 +95,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
     )
   }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t])
 
-  useSWR(
+  useSWRImmutable(
     chainId && ['checkNonBscFarmTransaction', FAST_INTERVAL, chainId],
     () => {
       Object.keys(transactions)
