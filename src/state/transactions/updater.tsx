@@ -166,7 +166,8 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
                     </ToastDescriptionWithTx>,
                   )
                 } else if (status === FarmTransactionStatus.FAIL) {
-                  const toastTitle = isStakeType ? 'Stake Error' : 'Unstake Error'
+                  const toastTitle = isStakeType ? t('Stake Error') : t('Unstake Error')
+                  const errorText = isStakeType ? t('Token fail to stake.') : t('Token fail to unstake.')
                   toastError(
                     toastTitle,
                     <ToastDescriptionWithTx txHash={destinationTxHash} txChainId={steps[pendingStep].chainId}>
@@ -176,7 +177,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
                           bold
                         >{`${transaction.nonBscFarm.amount} ${transaction.nonBscFarm.lpSymbol}`}</Text>
                         <Text as="span" ml="4px">
-                          {t('Token fail to stake.')}
+                          {errorText}
                         </Text>
                       </Box>
                     </ToastDescriptionWithTx>,

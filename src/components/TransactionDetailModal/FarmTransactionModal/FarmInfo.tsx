@@ -113,6 +113,7 @@ const FarmError: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedDat
   const { t } = useTranslation()
   const { amount, lpSymbol, type, steps } = pickedData.nonBscFarm
   const text = type === NonBscFarmStepType.STAKE ? t('The attempt to stake') : t('The attempt to unstake')
+  const errorText = type === NonBscFarmStepType.STAKE ? t('Token fail to stake.') : t('Token fail to unstake.')
   const isFirstStepError = steps.find((step) => step.step === 1 && step.status === FarmTransactionStatus.FAIL)
 
   return (
@@ -123,7 +124,7 @@ const FarmError: React.FC<React.PropsWithChildren<FarmInfoProps>> = ({ pickedDat
             {`${amount} ${lpSymbol}`}
           </Text>
           <Text as="span" ml="4px">
-            {t('Token fail to stake.')}
+            {errorText}
           </Text>
         </Box>
       ) : (
