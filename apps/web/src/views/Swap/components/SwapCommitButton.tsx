@@ -138,12 +138,11 @@ export default function SwapCommitButton({
   }, [attemptingTxn, swapErrorMessage, trade, txHash, setSwapState])
 
   const handleConfirmDismiss = useCallback(() => {
-    setSwapState({ tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
     // if there was a tx hash, we want to clear the input
     if (txHash) {
       onUserInput(Field.INPUT, '')
     }
-  }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash, setSwapState])
+  }, [onUserInput, txHash])
 
   // End Handlers
 
