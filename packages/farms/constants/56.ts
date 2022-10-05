@@ -51,6 +51,13 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 123,
+    lpSymbol: 'ARV-BNB LP',
+    lpAddress: '0xa63e32feefc6590bbf869070fd2e706eb7881bd2',
+    token: bscTokens.arv,
+    quoteToken: bscTokens.bnb,
+  },
+  {
     pid: 106,
     lpSymbol: 'MHUNT-BNB LP',
     lpAddress: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
