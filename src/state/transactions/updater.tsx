@@ -8,6 +8,7 @@ import { poll } from '@ethersproject/web'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Box, Text, useToast } from '@pancakeswap/uikit'
 import { FAST_INTERVAL } from 'config/constants'
+import useSWR from 'swr'
 import { useAppDispatch } from '../index'
 import {
   finalizeTransaction,
@@ -94,8 +95,9 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
     )
   }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t])
 
-  useEffect(() => {
-    const interval = setInterval(() => {
+  useSWR(
+    chainId && ['checkNonBscFarmTransaction', FAST_INTERVAL, chainId],
+    () => {
       Object.keys(transactions)
         .filter(
           (hash) =>
@@ -184,10 +186,15 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
             }
           }
         })
-    }, FAST_INTERVAL)
-
-    return () => clearInterval(interval)
-  }, [chainId, transactions, dispatch, toastSuccess, toastError, t])
+    },
+    {
+      refreshInterval: FAST_INTERVAL,
+      errorRetryInterval: FAST_INTERVAL,
+      onError: (error) => {
+        console.error('[ERROR] updater checking non BSC farm transaction error: ', error)
+      },
+    },
+  )
 
   return null
 }
