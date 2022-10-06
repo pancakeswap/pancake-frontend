@@ -11,13 +11,13 @@ export const useMenuItems = (): ConfigMenuItemsType[] => {
     t,
     currentLanguage: { code: languageCode },
   } = useTranslation()
-  const { chain } = useActiveWeb3React()
+  const { chainId, isWrongNetwork } = useActiveWeb3React()
   const { isDark } = useTheme()
   const menuItemsStatus = useMenuItemsStatus()
 
   const menuItems = useMemo(() => {
-    return config(t, isDark, languageCode, chain ? (chain.unsupported ? null : chain.id) : null)
-  }, [t, isDark, languageCode, chain])
+    return config(t, isDark, languageCode, isWrongNetwork ? null : chainId)
+  }, [t, isDark, languageCode, chainId, isWrongNetwork])
 
   return useMemo(() => {
     if (menuItemsStatus && Object.keys(menuItemsStatus).length) {
