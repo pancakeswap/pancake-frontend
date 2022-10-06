@@ -21,9 +21,15 @@ export const NetworkModal = ({ pageSupportedChains = SUPPORT_ONLY_BSC }: { pageS
   }, [pageSupportedChains])
 
   const isPageNotSupported = useMemo(
-    () => Boolean(pageSupportedChains.length) && !pageSupportedChains.includes(chainId),
-    [chainId, pageSupportedChains],
+    () => Boolean(pageSupportedChains.length) && !pageSupportedChains.includes(chain ? chain.id : chainId),
+    [chain, chainId, pageSupportedChains],
   )
+
+  const isPageAvailableForAllChains = useMemo(() => {
+    return !pageSupportedChains?.length
+  }, [pageSupportedChains])
+
+  if (isPageAvailableForAllChains) return null
 
   if (isPageNotSupported && isBNBOnlyPage) {
     return (
@@ -33,7 +39,7 @@ export const NetworkModal = ({ pageSupportedChains = SUPPORT_ONLY_BSC }: { pageS
     )
   }
 
-  if ((chain?.unsupported ?? false) || isPageNotSupported) {
+  if (isPageNotSupported) {
     return (
       <ModalV2 isOpen closeOnOverlayClick={false}>
         <UnsupportedNetworkModal pageSupportedChains={pageSupportedChains} />
