@@ -2,7 +2,7 @@ import { ChainId, Token } from '@pancakeswap/sdk'
 
 export const CAKE_MAINNET = new Token(
   ChainId.BSC,
-  '0x93e787c7cb9e8eba5952d1e5d1c391d2b499e51e', // TODO: NonBSCFarm 0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82
+  '0x93E787c7cb9e8eBa5952d1e5D1c391d2b499E51e', // TODO: NonBSCFarm 0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82
   18,
   'CAKE',
   'PancakeSwap Token',
