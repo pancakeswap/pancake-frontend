@@ -59,7 +59,7 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
 }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId, isWrongNetwork } = useActiveWeb3React()
   const { switchNetworkAsync } = useSwitchNetwork()
   const { cProxyAddress } = useFarmCProxyAddress(account, chainId)
   const { onReward } = useNonBscHarvestFarm(pid, cProxyAddress)
@@ -74,7 +74,7 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
 
   const handleCancel = useCallback(() => {
     onDismiss?.()
-  }, [])
+  }, [onDismiss])
 
   const handleSwitchNetwork = () => {
     switchNetworkAsync(network)
@@ -153,7 +153,7 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
               <Button
                 width="100%"
                 variant="secondary"
-                disabled={isPending}
+                disabled={isPending || !account || isWrongNetwork}
                 endIcon={isPending ? <AutoRenewIcon spin color="currentColor" /> : null}
                 onClick={handleHarvest}
               >

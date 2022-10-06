@@ -27,7 +27,8 @@ interface CalculateTotalFeeProps {
 const COMPENSATION_PRECISION = 1e5
 const ORACLE_PRECISION = 1e18
 const BNB_CHANGE = 5000000000000000
-const BUFFER = 1.1
+const BUFFER = 1.3
+const WITHDRAW_BUFFER = 1.4
 
 export const getNonBscVaultContractFee = async ({
   pid,
@@ -41,34 +42,35 @@ export const getNonBscVaultContractFee = async ({
   try {
     const nonBscVaultContract = getNonBscVaultContract(null, chainId)
     const crossFarmingAddress = getCrossFarmingSenderContract(null, chainId)
-    const exchangeRate = new BigNumber(oraclePrice)
+    const exchangeRate = new BigNumber(ORACLE_PRECISION).div(oraclePrice).times(ORACLE_PRECISION) // invert into BNB/ETH price
 
     const getNonce = await crossFarmingAddress.nonces(userAddress, pid)
     const nonce = new BigNumber(getNonce.toString()).toJSON()
-    const [encodeMessage, isFirstTime, estimateGaslimit] = await Promise.all([
+    const [encodeMessage, hasFirstTime, estimateGaslimit] = await Promise.all([
       nonBscVaultContract.encodeMessage(userAddress, pid, amount, messageType, nonce),
       crossFarmingAddress.is1st(userAddress),
       crossFarmingAddress.estimateGaslimit(Chains.BSC, userAddress, messageType),
     ])
     const calcFee = await nonBscVaultContract.calcFee(encodeMessage)
 
-    const fee1 = new BigNumber(calcFee.toString())
-    const fee2 = new BigNumber(gasPrice)
+    const msgBusFee = new BigNumber(calcFee.toString())
+    const destTxFee = new BigNumber(gasPrice)
       .times(estimateGaslimit.toString())
       .times(exchangeRate)
       .times(COMPENSATION_PRECISION)
-    const totalFee = new BigNumber(fee1).plus(fee2).div(ORACLE_PRECISION * COMPENSATION_PRECISION)
+      .div(new BigNumber(ORACLE_PRECISION).times(COMPENSATION_PRECISION))
+    const totalFee = new BigNumber(msgBusFee).plus(destTxFee)
 
-    if (!isFirstTime) {
+    if (!hasFirstTime) {
       const depositFee = new BigNumber(BNB_CHANGE).times(exchangeRate).div(ORACLE_PRECISION)
-      return totalFee.times(BUFFER).plus(depositFee).toFixed(0)
+      return totalFee.plus(depositFee).times(BUFFER).toFixed(0)
     }
 
     if (messageType >= MessageTypes.Withdraw) {
       const estimateEvmGaslimit = await crossFarmingAddress.estimateGaslimit(Chains.EVM, userAddress, messageType)
-      const fee = fee1.times(exchangeRate).div(ORACLE_PRECISION)
+      const fee = msgBusFee.times(exchangeRate).div(ORACLE_PRECISION)
       const total = new BigNumber(gasPrice).times(estimateEvmGaslimit.toString()).plus(fee)
-      return totalFee.plus(total).times(BUFFER).toFixed(0)
+      return totalFee.plus(total).times(WITHDRAW_BUFFER).toFixed(0)
     }
 
     return totalFee.times(BUFFER).toFixed(0)

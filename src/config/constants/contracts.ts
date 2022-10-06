@@ -3,7 +3,7 @@ import { multicallAddresses } from '@pancakeswap/multicall'
 export default {
   masterChef: {
     97: '0xB4A466911556e39210a6bB2FaECBB59E4eB7E43d',
-    56: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
+    56: '0x753aAfBEe43D88aED31A82aDABCa12d3F5455fd3', // TODO: NonBSCFarm 0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652
   },
   masterChefV1: {
     97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
@@ -149,14 +149,16 @@ export default {
   },
   nonBscVault: {
     56: '0xE6c904424417D03451fADd6E3f5b6c26BcC43841', // Only for pass contracts test
+    1: '0x9ABAd58916aAbF71E5dEAC73F85E845f74666fBE',
     5: '0xE6c904424417D03451fADd6E3f5b6c26BcC43841',
   },
   crossFarmingSender: {
     56: '0x327d26dE30f92600620A99043034e0A5FD9402C8', // Only for pass contracts test
+    1: '0x95eFeF30EAe03d0B7342c3Cb2Edca82b6CE69027',
     5: '0x327d26dE30f92600620A99043034e0A5FD9402C8',
   },
   crossFarmingReceiver: {
-    56: '0xBab5d3B6bA24E185f216419f3ba07f03984bF983', // Only for pass contracts test
+    56: '0x8209Fad5b69D4d3Ae6Eb359121aB6e3B5d8017dC',
     97: '0xBab5d3B6bA24E185f216419f3ba07f03984bF983',
   },
 }

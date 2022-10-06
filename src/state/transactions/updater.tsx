@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import merge from 'lodash/merge'
 import pickBy from 'lodash/pickBy'
 import forEach from 'lodash/forEach'
@@ -7,6 +7,8 @@ import { useProvider } from 'wagmi'
 import { poll } from '@ethersproject/web'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Box, Text, useToast } from '@pancakeswap/uikit'
+import { FAST_INTERVAL } from 'config/constants'
+import useSWRImmutable from 'swr/immutable'
 import { useAppDispatch } from '../index'
 import {
   finalizeTransaction,
@@ -93,15 +95,21 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
     )
   }, [chainId, provider, transactions, dispatch, toastSuccess, toastError, t])
 
-  useEffect(() => {
-    Object.keys(transactions)
-      .filter(
+  const nonBscFarmPendingTxns = useMemo(
+    () =>
+      Object.keys(transactions).filter(
         (hash) =>
           transactions[hash].receipt?.status === 1 &&
           transactions[hash].type === 'non-bsc-farm' &&
           transactions[hash].nonBscFarm?.status === FarmTransactionStatus.PENDING,
-      )
-      .forEach((hash) => {
+      ),
+    [transactions],
+  )
+
+  useSWRImmutable(
+    chainId && Boolean(nonBscFarmPendingTxns?.length) && ['checkNonBscFarmTransaction', FAST_INTERVAL, chainId],
+    () => {
+      nonBscFarmPendingTxns.forEach((hash) => {
         const steps = transactions[hash]?.nonBscFarm?.steps
         if (steps.length) {
           const pendingStep = steps.findIndex(
@@ -110,10 +118,10 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
           const previousIndex = pendingStep - 1
 
           if (previousIndex >= 0) {
-            // const previousHash = steps[previousIndex]
-            const fakeHash = '0xcdb7e81470bdc407ed3eafb2ca20d53ab0d29bcc00e94ad6d056a1d2d99ec59c' || hash // TODO: NonBSCFarm change to hash before merge
+            const previousHash = steps[previousIndex]
+            const checkHash = previousHash.tx || hash
 
-            fetchCelerApi(fakeHash)
+            fetchCelerApi(checkHash)
               .then((response) => {
                 const transaction = transactions[hash]
                 const { destinationTxHash, messageStatus } = response
@@ -158,7 +166,8 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
                     </ToastDescriptionWithTx>,
                   )
                 } else if (status === FarmTransactionStatus.FAIL) {
-                  const toastTitle = isStakeType ? 'Stake Error' : 'Unstake Error'
+                  const toastTitle = isStakeType ? t('Stake Error') : t('Unstake Error')
+                  const errorText = isStakeType ? t('Token fail to stake.') : t('Token fail to unstake.')
                   toastError(
                     toastTitle,
                     <ToastDescriptionWithTx txHash={destinationTxHash} txChainId={steps[pendingStep].chainId}>
@@ -168,7 +177,7 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
                           bold
                         >{`${transaction.nonBscFarm.amount} ${transaction.nonBscFarm.lpSymbol}`}</Text>
                         <Text as="span" ml="4px">
-                          {t('Token fail to stake.')}
+                          {errorText}
                         </Text>
                       </Box>
                     </ToastDescriptionWithTx>,
@@ -181,7 +190,15 @@ export const Updater: React.FC<{ chainId: number }> = ({ chainId }) => {
           }
         }
       })
-  }, [chainId, transactions, dispatch, toastSuccess, toastError, t])
+    },
+    {
+      refreshInterval: FAST_INTERVAL,
+      errorRetryInterval: FAST_INTERVAL,
+      onError: (error) => {
+        console.error('[ERROR] updater checking non BSC farm transaction error: ', error)
+      },
+    },
+  )
 
   return null
 }

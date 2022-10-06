@@ -169,10 +169,9 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
-  const isWithdrawFarmPending = useMemo(() => {
-    const isPendingFarm = pendingFarm.find((tx) => tx.type === NonBscFarmStepType.UNSTAKE)
-    return isPendingFarm !== undefined
-  }, [pendingFarm])
+  const isStakeReady = useMemo(() => {
+    return ['history', 'archived'].some((item) => router.pathname.includes(item)) || pendingFarm.length > 0
+  }, [pendingFarm, router])
 
   const handleStake = async (amount: string) => {
     if (vaultPid) {
@@ -377,14 +376,10 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
               quoteTokenAmountTotal={quoteTokenAmountTotal}
             />
             <IconButtonWrapper>
-              <IconButton mr="6px" variant="secondary" disabled={isWithdrawFarmPending} onClick={onPresentWithdraw}>
+              <IconButton mr="6px" variant="secondary" disabled={pendingFarm.length > 0} onClick={onPresentWithdraw}>
                 <MinusIcon color="primary" width="14px" />
               </IconButton>
-              <IconButton
-                variant="secondary"
-                onClick={onPresentDeposit}
-                disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
-              >
+              <IconButton variant="secondary" onClick={onPresentDeposit} disabled={isStakeReady}>
                 <AddIcon color="primary" width="14px" />
               </IconButton>
             </IconButtonWrapper>
@@ -404,12 +399,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
           </Text>
         </ActionTitles>
         <ActionContent>
-          <Button
-            width="100%"
-            onClick={onPresentDeposit}
-            variant="secondary"
-            disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
-          >
+          <Button width="100%" onClick={onPresentDeposit} variant="secondary" disabled={isStakeReady}>
             {t('Stake LP')}
           </Button>
         </ActionContent>

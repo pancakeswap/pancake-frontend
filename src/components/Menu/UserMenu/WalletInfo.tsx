@@ -24,7 +24,7 @@ interface WalletInfoProps {
   onDismiss: InjectedModalProps['onDismiss']
 }
 
-const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, switchView, onDismiss }) => {
+const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss }) => {
   const { t } = useTranslation()
   const { account, chainId, chain } = useActiveWeb3React()
   const isBSC = chainId === ChainId.BSC
