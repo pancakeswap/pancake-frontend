@@ -71,6 +71,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
   variant = variants.DEFAULT,
   children,
   disabled,
+  placement = "bottom-end",
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -80,7 +81,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
   const [reversedDomain, setReverseDomain] = useState("");
   const { styles, attributes } = usePopper(targetRef, tooltipRef, {
     strategy: "fixed",
-    placement: "bottom-end",
+    placement,
     modifiers: [{ name: "offset", options: { offset: [0, 0] } }],
   });
 

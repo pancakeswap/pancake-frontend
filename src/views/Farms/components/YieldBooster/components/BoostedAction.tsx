@@ -107,6 +107,7 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({
           </ActionButton>
         )
       case YieldBoosterState.ACTIVE:
+      case YieldBoosterState.ACTIVE_AND_NO_LP:
         return (
           <ActionButton
             disabled={isConfirming}
@@ -147,7 +148,7 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({
 
   if ([YieldBoosterState.NO_MIGRATE, YieldBoosterState.DEACTIVE].includes(boosterState)) {
     status = t('Ready')
-  } else if (boosterState === YieldBoosterState.ACTIVE) {
+  } else if ([YieldBoosterState.ACTIVE, YieldBoosterState.ACTIVE_AND_NO_LP].includes(boosterState)) {
     status = t('Active')
   }
 

@@ -41,7 +41,7 @@ describe('hooks', () => {
     })
 
     test('does not duplicate BNB for invalid output token', () => {
-      expect(queryParametersToSwapState(parse('outputCurrency=invalid'))).toEqual({
+      expect(queryParametersToSwapState(parse('outputCurrency=invalid'), 'BNB')).toEqual({
         [Field.INPUT]: { currencyId: '' },
         [Field.OUTPUT]: { currencyId: 'BNB' },
         typedValue: '',
@@ -53,7 +53,7 @@ describe('hooks', () => {
     })
 
     test('output BNB only', () => {
-      expect(queryParametersToSwapState(parse('outputCurrency=bnb&exactAmount=20.5'))).toEqual({
+      expect(queryParametersToSwapState(parse('outputCurrency=bnb&exactAmount=20.5'), 'BNB')).toEqual({
         [Field.OUTPUT]: { currencyId: 'BNB' },
         [Field.INPUT]: { currencyId: '' },
         typedValue: '20.5',
@@ -65,7 +65,7 @@ describe('hooks', () => {
     })
 
     test('invalid recipient', () => {
-      expect(queryParametersToSwapState(parse('outputCurrency=BNB&exactAmount=20.5&recipient=abc'))).toEqual({
+      expect(queryParametersToSwapState(parse('outputCurrency=BNB&exactAmount=20.5&recipient=abc'), 'BNB')).toEqual({
         [Field.OUTPUT]: { currencyId: 'BNB' },
         [Field.INPUT]: { currencyId: '' },
         typedValue: '20.5',
@@ -80,6 +80,7 @@ describe('hooks', () => {
       expect(
         queryParametersToSwapState(
           parse('outputCurrency=BNB&exactAmount=20.5&recipient=0x0fF2D1eFd7A57B7562b2bf27F3f37899dB27F4a5'),
+          'BNB',
         ),
       ).toEqual({
         [Field.OUTPUT]: { currencyId: 'BNB' },

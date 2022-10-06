@@ -813,6 +813,14 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     tokenName: 'XCAD',
     projectSite: 'https://xcadnetwork.com/',
   },
+  {
+    account: '0xf284E6213a2F9674f6B161b806E3C839c4769Ec6',
+    farmName: 'PEX-BNB',
+    tokenAddress: '0x6a0b66710567b6beb81A71F7e9466450a91a384b',
+    quoteToken: bscTokens.wbnb,
+    tokenName: 'PEX',
+    projectSite: 'https://peardao.io/',
+  },
 ].map((bidderConfig) => ({
   ...bidderConfig,
   lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken),

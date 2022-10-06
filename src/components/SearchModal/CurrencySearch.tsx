@@ -112,7 +112,7 @@ function CurrencySearch({
 
   const native = useNativeCurrency()
 
-  const showBNB: boolean = useMemo(() => {
+  const showNative: boolean = useMemo(() => {
     const s = debouncedQuery.toLowerCase().trim()
     return native && native.symbol?.toLowerCase?.()?.indexOf(s) !== -1
   }, [debouncedQuery, native])
@@ -191,7 +191,7 @@ function CurrencySearch({
       <Box margin="24px -24px">
         <CurrencyList
           height={isMobile ? (showCommonBases ? height || 250 : height ? height + 80 : 350) : 390}
-          showBNB={showBNB}
+          showNative={showNative}
           currencies={filteredSortedTokens}
           inactiveCurrencies={filteredInactiveTokens}
           breakIndex={
@@ -222,7 +222,7 @@ function CurrencySearch({
     searchTokenIsAdded,
     selectedCurrency,
     setImportToken,
-    showBNB,
+    showNative,
     showImportView,
     t,
     showCommonBases,
