@@ -21,11 +21,19 @@ export function useToken(coinId?: string) {
   const { networkName } = useActiveNetwork()
   const chainId = useActiveChainId()
   const tokens = useAllTokens()
-  const token = coinId && tokens[coinId]
+  const token = coinId ? tokens[coinId] : undefined
 
-  return useCoin({
+  const coin = useCoin({
     coin: coinId,
     networkName,
+    initialData: token
+      ? {
+          address: token.address,
+          decimals: token.decimals,
+          name: token.name ?? '',
+          symbol: token.symbol,
+        }
+      : undefined,
     select: (d) => {
       const { decimals, symbol, name } = d
       if (token) return token
@@ -33,6 +41,8 @@ export function useToken(coinId?: string) {
       return new Coin(chainId, coinId, decimals, symbol, name)
     },
   })
+
+  return coin
 }
 
 export function useCoins(addresses: string[]) {

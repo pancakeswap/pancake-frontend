@@ -19,17 +19,18 @@ const queryFn = ({ queryKey: [{ coin, networkName }] }: QueryFunctionArgs<typeof
   return fetchCoin({ coin, networkName })
 }
 
-export function useCoin<TData = FetchCoinResult>({
-  coin,
-  networkName: networkName_,
-  select,
+export function useCoin<TData = unknown>({
   cacheTime,
+  coin,
   enabled = true,
-  staleTime = 1_000 * 60 * 60 * 24, // 24 hours
-  suspense,
+  initialData,
+  networkName: networkName_,
   onError,
   onSettled,
   onSuccess,
+  select,
+  staleTime = 1_000 * 60 * 60 * 24, // 24 hours
+  suspense,
   watch,
 }: UseCoinArgs & UseCoinConfig<TData> = {}) {
   const { chain } = useNetwork()
@@ -37,6 +38,9 @@ export function useCoin<TData = FetchCoinResult>({
   return useQuery(queryKey({ networkName: networkName_ ?? chain?.network, coin }), queryFn, {
     cacheTime,
     enabled: Boolean(enabled && coin),
+    // @ts-ignore
+    // FIX types
+    initialData,
     select,
     staleTime,
     suspense,

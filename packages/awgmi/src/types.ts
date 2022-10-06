@@ -20,6 +20,7 @@ export type QueryConfig<Data, Error, TData = Data> = Pick<
   UseQueryOptions<Data, Error, TData>,
   | 'cacheTime'
   | 'enabled'
+  | 'initialData'
   | 'isDataEqual'
   | 'keepPreviousData'
   | 'staleTime'

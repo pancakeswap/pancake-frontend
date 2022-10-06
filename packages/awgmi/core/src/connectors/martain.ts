@@ -88,7 +88,11 @@ export class MartianConnector extends Connector {
     const account = await this.account()
     if (!provider) throw new ConnectorNotFoundError()
     const generatedTx = await provider.generateTransaction(account?.address || '', payload)
-    return provider.signAndSubmitTransaction(generatedTx)
+    // martian just return the hash here..
+    const hash = await provider.signAndSubmitTransaction(generatedTx)
+    const tx = await provider.getTransaction(hash)
+
+    return tx
   }
 
   async signTransaction(payload: Types.EntryFunctionPayload) {
