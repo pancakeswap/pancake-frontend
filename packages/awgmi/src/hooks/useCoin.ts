@@ -19,7 +19,7 @@ const queryFn = ({ queryKey: [{ coin, networkName }] }: QueryFunctionArgs<typeof
   return fetchCoin({ coin, networkName })
 }
 
-export function useCoin<TData = unknown>({
+export function useCoin<TData = FetchCoinResult>({
   cacheTime,
   coin,
   enabled = true,
