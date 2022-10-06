@@ -6,6 +6,7 @@ import { ChevronDownIcon } from "../../../../components/Svg";
 import { UserMenuProps, variants } from "./types";
 import MenuIcon from "./MenuIcon";
 import { UserMenuItem } from "./styles";
+import { reverseResolveUD } from "../../../../util/unstoppable";
 
 export const StyledUserMenu = styled(Flex)`
   align-items: center;
@@ -76,11 +77,28 @@ const UserMenu: React.FC<UserMenuProps> = ({
   const [targetRef, setTargetRef] = useState<HTMLDivElement | null>(null);
   const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null);
   const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : null;
+  const [reversedDomain, setReverseDomain] = useState("");
   const { styles, attributes } = usePopper(targetRef, tooltipRef, {
     strategy: "fixed",
     placement: "bottom-end",
     modifiers: [{ name: "offset", options: { offset: [0, 0] } }],
   });
+
+  const checkForAndSetUnstoppableDomain = (address: string) => {
+    if (typeof address === "string") {
+      reverseResolveUD(address).then((result) => {
+        if (typeof result === "string") {
+          setReverseDomain(result);
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (typeof account === "string") {
+      checkForAndSetUnstoppableDomain(account);
+    }
+  }, [account]);
 
   useEffect(() => {
     const showDropdownMenu = () => {
@@ -112,7 +130,9 @@ const UserMenu: React.FC<UserMenuProps> = ({
         }}
       >
         <MenuIcon avatarSrc={avatarSrc} variant={variant} />
-        <LabelText title={typeof text === "string" ? text || account : account}>{text || accountEllipsis}</LabelText>
+        <LabelText title={typeof text === "string" ? text || account : account}>
+          {text || reversedDomain || accountEllipsis}{" "}
+        </LabelText>
         {!disabled && <ChevronDownIcon color="text" width="24px" />}
       </StyledUserMenu>
       {!disabled && (
