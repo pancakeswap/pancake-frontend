@@ -1,5 +1,6 @@
 import farms56 from '@pancakeswap/farms/constants/56'
 import farms1 from '@pancakeswap/farms/constants/1'
+import { Native } from '@pancakeswap/sdk'
 import { SerializedFarm } from 'state/types'
 import { getLpContract } from 'utils/contractHelpers'
 
@@ -37,6 +38,12 @@ describe('Config farms', () => {
     expect(
       token1Address === tokenAddress.toLowerCase() || token1Address === quoteTokenAddress.toLowerCase(),
     ).toBeTruthy()
+  })
+
+  it.each([...farmsToTest, ...farms1ToTest])('Farm %d symbol should not be native symbol', (_, farm, chainId) => {
+    const native = Native.onChain(chainId)
+    expect(farm.quoteToken.symbol).not.toEqual(native.symbol)
+    expect(farm.token.symbol).not.toEqual(native.symbol)
   })
 
   // TODO: Add test for ETH
