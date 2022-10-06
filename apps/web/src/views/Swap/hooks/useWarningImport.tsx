@@ -16,7 +16,7 @@ import SwapWarningModal from '../components/SwapWarningModal'
 export default function useWarningImport() {
   const router = useRouter()
   const loadedUrlParams = useDefaultsFromURLSearch()
-  const { chainId } = useActiveWeb3React()
+  const { chainId, isWrongNetwork } = useActiveWeb3React()
 
   // swap warning state
   const [swapWarningCurrency, setSwapWarningCurrency] = useState(null)
@@ -37,7 +37,7 @@ export default function useWarningImport() {
   const importTokensNotInDefault =
     urlLoadedTokens &&
     urlLoadedTokens.filter((token: Token) => {
-      return !(token.address in defaultTokens) && token.chainId === chainId
+      return !(token.address in defaultTokens) && token.chainId === chainId && !isWrongNetwork
     })
 
   const [onPresentSwapWarningModal] = useModal(<SwapWarningModal swapCurrency={swapWarningCurrency} />, false)
