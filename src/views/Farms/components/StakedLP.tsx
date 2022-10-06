@@ -40,10 +40,13 @@ const StakedLP: React.FunctionComponent<React.PropsWithChildren<StackedLPProps>>
   }, [stakedBalance])
 
   const onClickLoadingIcon = () => {
-    if (pendingFarm.length > 0) {
-      onPresentTransactionModal()
-    } else {
-      dispatch(pickFarmTransactionTx({ tx: pendingFarm[0].txid, chainId }))
+    const { length } = pendingFarm
+    if (length) {
+      if (length > 1) {
+        onPresentTransactionModal()
+      } else {
+        dispatch(pickFarmTransactionTx({ tx: pendingFarm[0].txid, chainId }))
+      }
     }
   }
 

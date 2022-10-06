@@ -3,6 +3,7 @@ import { useFetchListCallback } from '@pancakeswap/token-lists'
 import { acceptListUpdate, updateListVersion } from '@pancakeswap/token-lists/src/actions'
 import { getVersionUpgrade, VersionUpgrade } from '@uniswap/token-lists'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
+import { EXCHANGE_PAGE_PATHS } from 'config/constants/exchange'
 import useWeb3Provider from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo } from 'react'
@@ -16,7 +17,7 @@ export default function Updater(): null {
   const isWindowVisible = useIsWindowVisible()
   const router = useRouter()
   const includeListUpdater = useMemo(() => {
-    return ['/swap', '/limit-orders', 'liquidity', '/add', '/find', '/remove'].some((item) => {
+    return EXCHANGE_PAGE_PATHS.some((item) => {
       return router.pathname.startsWith(item)
     })
   }, [router.pathname])

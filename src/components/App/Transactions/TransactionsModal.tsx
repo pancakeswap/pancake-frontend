@@ -58,13 +58,13 @@ const TransactionsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> =
                 const pending = groupedTransactions.false ?? []
 
                 return (
-                  <>
+                  <div key={`transactions#${chainIdNumber}`}>
                     <Text fontSize="12px" color="textSubtle" mb="4px">
                       {chains.find((c) => c.id === chainIdNumber)?.name ?? 'Unknown network'}
                     </Text>
                     {renderTransactions(pending, chainIdNumber)}
                     {renderTransactions(confirmed, chainIdNumber)}
-                  </>
+                  </div>
                 )
               })}
             </>

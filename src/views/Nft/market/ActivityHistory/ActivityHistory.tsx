@@ -125,7 +125,7 @@ const ActivityHistory: React.FC<React.PropsWithChildren<ActivityHistoryProps>> =
             onClick={() => {
               refresh()
             }}
-            width={isMd && '100%'}
+            {...(isMd && { width: '100%' })}
           >
             {t('Refresh')}
           </Button>

@@ -1,11 +1,14 @@
-import { PCS_V2_START } from 'config/constants/info'
 import { gql } from 'graphql-request'
 import { ChartEntry } from 'state/info/types'
-import { infoClient } from 'utils/graphql'
-import { fetchChartData, mapDayData } from '../helpers'
+import { fetchChartDataWithAddress, mapDayData } from '../helpers'
 import { TokenDayDatasResponse } from '../types'
+import { getMultiChainQueryEndPointWithStableSwap, MultiChainName, multiChainStartTime } from '../../constant'
 
-const getTokenChartData = async (skip: number, address: string): Promise<{ data?: ChartEntry[]; error: boolean }> => {
+const getTokenChartData = async (
+  chainName: MultiChainName,
+  skip: number,
+  address: string,
+): Promise<{ data?: ChartEntry[]; error: boolean }> => {
   try {
     const query = gql`
       query tokenDayDatas($startTime: Int!, $skip: Int!, $address: Bytes!) {
@@ -22,11 +25,14 @@ const getTokenChartData = async (skip: number, address: string): Promise<{ data?
         }
       }
     `
-    const { tokenDayDatas } = await infoClient.request<TokenDayDatasResponse>(query, {
-      startTime: PCS_V2_START,
-      skip,
-      address,
-    })
+    const { tokenDayDatas } = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TokenDayDatasResponse>(
+      query,
+      {
+        startTime: multiChainStartTime[chainName],
+        skip,
+        address,
+      },
+    )
     const data = tokenDayDatas.map(mapDayData)
     return { data, error: false }
   } catch (error) {
@@ -35,8 +41,11 @@ const getTokenChartData = async (skip: number, address: string): Promise<{ data?
   }
 }
 
-const fetchTokenChartData = async (address: string): Promise<{ data?: ChartEntry[]; error: boolean }> => {
-  return fetchChartData(getTokenChartData, address)
+const fetchTokenChartData = async (
+  chainName: MultiChainName,
+  address: string,
+): Promise<{ data?: ChartEntry[]; error: boolean }> => {
+  return fetchChartDataWithAddress(chainName, getTokenChartData, address)
 }
 
 export default fetchTokenChartData

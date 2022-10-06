@@ -216,6 +216,7 @@ it("renders ConnectModal correctly", () => {
       -ms-flex-direction: column;
       flex-direction: column;
       overflow-y: auto;
+      overflow-x: hidden;
       max-height: calc(90vh - 73px);
     }
 

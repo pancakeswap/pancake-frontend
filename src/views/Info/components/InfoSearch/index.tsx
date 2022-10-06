@@ -1,18 +1,19 @@
-import { useRef, useState, useEffect, useMemo } from 'react'
-import styled from 'styled-components'
-import { Text, Input, Flex, Skeleton, useMatchBreakpoints } from '@pancakeswap/uikit'
-import useFetchSearchResults from 'state/info/queries/search'
-import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import { formatAmount } from 'utils/formatInfoNumbers'
-import { useWatchlistTokens, useWatchlistPools } from 'state/user/hooks'
-import SaveIcon from 'views/Info/components/SaveIcon'
-import { usePoolDatas, useTokenDatas } from 'state/info/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import useDebounce from 'hooks/useDebounce'
+import { Flex, Input, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
-import { PoolData } from 'state/info/types'
-import { useRouter } from 'next/router'
+import useDebounce from 'hooks/useDebounce'
 import orderBy from 'lodash/orderBy'
+import { useRouter } from 'next/router'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMultiChainPath, usePoolDatasSWR, useTokenDatasSWR, useGetChainName } from 'state/info/hooks'
+import { checkIsStableSwap } from 'state/info/constant'
+import useFetchSearchResults from 'state/info/queries/search'
+import { PoolData } from 'state/info/types'
+import { useWatchlistPools, useWatchlistTokens } from 'state/user/hooks'
+import styled from 'styled-components'
+import { formatAmount } from 'utils/formatInfoNumbers'
+import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
+import SaveIcon from 'views/Info/components/SaveIcon'
 
 const Container = styled.div`
   position: relative;
@@ -200,9 +201,8 @@ const Search = () => {
   }
 
   // get date for watchlist
-  const watchListTokenData = useTokenDatas(savedTokens)
-  const watchListTokenLoading = watchListTokenData.length !== savedTokens.length
-  const watchListPoolData = usePoolDatas(savedPools)
+  const watchListTokenData = useTokenDatasSWR(savedTokens)
+  const watchListPoolData = usePoolDatasSWR(savedPools)
   const watchListPoolLoading = watchListPoolData.length !== savedPools.length
 
   // filter on view
@@ -222,12 +222,12 @@ const Search = () => {
   }, [pools, showWatchlist, watchListPoolData, value])
 
   const contentUnderTokenList = () => {
-    const isLoading = showWatchlist ? watchListTokenLoading : tokensLoading
+    const isLoading = tokensLoading
     const noTokensFound =
       tokensForList.length === 0 && !isLoading && debouncedSearchTerm.length >= MINIMUM_SEARCH_CHARACTERS
     const noWatchlistTokens = tokensForList.length === 0 && !isLoading
     const showMessage = showWatchlist ? noWatchlistTokens : noTokensFound
-    const noTokensMessage = showWatchlist ? t('Saved tokens will appear here') : t('No results')
+    const noTokensMessage = t('No results')
     return (
       <>
         {isLoading && <Skeleton />}
@@ -256,7 +256,9 @@ const Search = () => {
       </>
     )
   }
-
+  const chainPath = useMultiChainPath()
+  const chainName = useGetChainName()
+  const stableSwapQuery = checkIsStableSwap() ? '?type=stableSwap' : ''
   return (
     <>
       {showMenu ? <Blackout /> : null}
@@ -304,13 +306,16 @@ const Search = () => {
               </Text>
             )}
           </ResponsiveGrid>
-          {tokensForList.slice(0, tokensShown).map((token, i) => {
+          {tokensForList.slice(0, tokensShown).map((token) => {
             return (
               // eslint-disable-next-line react/no-array-index-key
-              <HoverRowLink onClick={() => handleItemClick(`/info/token/${token.address}`)} key={i}>
+              <HoverRowLink
+                onClick={() => handleItemClick(`/info${chainPath}/tokens/${token.address}${stableSwapQuery}`)}
+                key={`searchTokenResult${token.address}`}
+              >
                 <ResponsiveGrid>
                   <Flex>
-                    <CurrencyLogo address={token.address} />
+                    <CurrencyLogo address={token.address} chainName={chainName} />
                     <Text ml="10px">
                       <Text>{`${token.name} (${token.symbol})`}</Text>
                     </Text>
@@ -363,13 +368,16 @@ const Search = () => {
               </Text>
             )}
           </ResponsiveGrid>
-          {poolForList.slice(0, poolsShown).map((p, i) => {
+          {poolForList.slice(0, poolsShown).map((p) => {
             return (
               // eslint-disable-next-line react/no-array-index-key
-              <HoverRowLink onClick={() => handleItemClick(`/info/pool/${p.address}`)} key={i}>
+              <HoverRowLink
+                onClick={() => handleItemClick(`/info${chainPath}/pools/${p.address}${stableSwapQuery}`)}
+                key={`searchPoolResult${p.address}`}
+              >
                 <ResponsiveGrid>
                   <Flex>
-                    <DoubleCurrencyLogo address0={p.token0.address} address1={p.token1.address} />
+                    <DoubleCurrencyLogo address0={p.token0.address} address1={p.token1.address} chainName={chainName} />
                     <Text ml="10px" style={{ whiteSpace: 'nowrap' }}>
                       <Text>{`${p.token0.symbol} / ${p.token1.symbol}`}</Text>
                     </Text>
