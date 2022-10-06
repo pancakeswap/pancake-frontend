@@ -5,6 +5,8 @@ import { batch, useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
 import { featureFarmApiAtom, useFeatureFlag } from 'hooks/useFeatureFlag'
+import { FAST_INTERVAL } from 'config/constants'
+import useSWRImmutable from 'swr/immutable'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { livePools } from 'config/constants/pools'
 
@@ -134,21 +136,36 @@ export const useFetchIfo = () => {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
 
-  useFastRefreshEffect(() => {
-    batch(() => {
-      dispatch(fetchCakeVaultPublicData())
-      dispatch(fetchIfoPublicDataAsync())
-      if (account) {
+  useSWRImmutable(
+    'fetchIfoPublicData',
+    async () => {
+      batch(() => {
+        dispatch(fetchCakeVaultPublicData())
+        dispatch(fetchIfoPublicDataAsync())
+      })
+    },
+    {
+      refreshInterval: FAST_INTERVAL,
+    },
+  )
+
+  useSWRImmutable(
+    account && 'fetchIfoUserData',
+    async () => {
+      batch(() => {
         dispatch(fetchCakePoolUserDataAsync(account))
         dispatch(fetchCakeVaultUserData({ account }))
         dispatch(fetchUserIfoCreditDataAsync(account))
-      }
-    })
-  }, [dispatch, account])
+      })
+    },
+    {
+      refreshInterval: FAST_INTERVAL,
+    },
+  )
 
-  useEffect(() => {
+  useSWRImmutable('fetchCakeVaultFees', async () => {
     dispatch(fetchCakeVaultFees())
-  }, [dispatch])
+  })
 }
 
 export const useCakeVault = () => {

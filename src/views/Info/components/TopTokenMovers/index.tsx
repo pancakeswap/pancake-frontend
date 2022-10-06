@@ -1,13 +1,13 @@
-import { useMemo, useRef, useEffect } from 'react'
-import styled from 'styled-components'
-import { Text, Flex, Box, Card } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter } from 'components/NextLink'
-import { useAllTokenData } from 'state/info/hooks'
-import { TokenData } from 'state/info/types'
-import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import { formatAmount } from 'utils/formatInfoNumbers'
-import Percent from 'views/Info/components/Percent'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Card, Flex, Text } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from 'components/NextLink'
+import { useEffect, useMemo, useRef } from 'react'
+import { useAllTokenDataSWR, useGetChainName, useMultiChainPath } from 'state/info/hooks'
+import { TokenData } from 'state/info/types'
+import styled from 'styled-components'
+import { formatAmount } from 'utils/formatInfoNumbers'
+import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
+import Percent from 'views/Info/components/Percent'
 
 const CardWrapper = styled(NextLinkFromReactRouter)`
   display: inline-block;
@@ -36,13 +36,15 @@ export const ScrollableRow = styled.div`
 `
 
 const DataCard = ({ tokenData }: { tokenData: TokenData }) => {
+  const chainName = useGetChainName()
+  const chainPath = useMultiChainPath()
   return (
-    <CardWrapper to={`/info/token/${tokenData.address}`}>
+    <CardWrapper to={`/info${chainPath}/tokens/${tokenData.address}`}>
       <TopMoverCard>
         <Flex>
           <Box width="32px" height="32px">
             {/* wrapped in a box because of alignment issues between img and svg */}
-            <CurrencyLogo address={tokenData.address} size="32px" />
+            <CurrencyLogo address={tokenData.address} size="32px" chainName={chainName} />
           </Box>
           <Box ml="16px">
             <Text>{tokenData.symbol}</Text>
@@ -60,7 +62,7 @@ const DataCard = ({ tokenData }: { tokenData: TokenData }) => {
 }
 
 const TopTokenMovers: React.FC<React.PropsWithChildren> = () => {
-  const allTokens = useAllTokenData()
+  const allTokens = useAllTokenDataSWR()
   const { t } = useTranslation()
 
   const topPriceIncrease = useMemo(() => {
@@ -70,6 +72,7 @@ const TopTokenMovers: React.FC<React.PropsWithChildren> = () => {
         return a && b ? (Math.abs(a?.priceUSDChange) > Math.abs(b?.priceUSDChange) ? -1 : 1) : -1
       })
       .slice(0, Math.min(20, Object.values(allTokens).length))
+      .filter((d) => d?.data?.exists)
   }, [allTokens])
 
   const increaseRef = useRef<HTMLDivElement>(null)

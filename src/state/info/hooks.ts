@@ -1,100 +1,81 @@
-import { useCallback, useEffect, useState, useMemo } from 'react'
-import { useSelector } from 'react-redux'
-import { getUnixTime, startOfHour, Duration, sub } from 'date-fns'
-import { AppState, useAppDispatch } from 'state'
-import { isAddress } from 'utils'
-import { Transaction } from 'state/info/types'
-import fetchPoolChartData from 'state/info/queries/pools/chartData'
-import fetchPoolTransactions from 'state/info/queries/pools/transactions'
-import fetchTokenChartData from 'state/info/queries/tokens/chartData'
-import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
-import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
-import fetchPoolsForToken from 'state/info/queries/tokens/poolsForToken'
-import {
-  updateProtocolData,
-  updateProtocolChartData,
-  updateProtocolTransactions,
-  updatePoolData,
-  addPoolKeys,
-  updatePoolChartData,
-  updatePoolTransactions,
-  updateTokenData,
-  addTokenKeys,
-  addTokenPoolAddresses,
-  updateTokenChartData,
-  updateTokenPriceData,
-  updateTokenTransactions,
-} from './actions'
-import { ProtocolData, PoolData, TokenData, ChartEntry, PriceChartEntry } from './types'
+import { Duration, getUnixTime, startOfHour, sub } from 'date-fns'
+import { useRouter } from 'next/router'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import fetchPoolChartData from 'state/info/queries/pools/chartData'
+import { fetchAllPoolData } from 'state/info/queries/pools/poolData'
+import fetchPoolTransactions from 'state/info/queries/pools/transactions'
+import { fetchGlobalChartData } from 'state/info/queries/protocol/chart'
+import { fetchProtocolData } from 'state/info/queries/protocol/overview'
+import fetchTopTransactions from 'state/info/queries/protocol/transactions'
+import fetchTokenChartData from 'state/info/queries/tokens/chartData'
+import fetchPoolsForToken from 'state/info/queries/tokens/poolsForToken'
+import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
+import { fetchAllTokenData } from 'state/info/queries/tokens/tokenData'
+import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
+import { Transaction } from 'state/info/types'
+import useSWRImmutable from 'swr/immutable'
+import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { useBlockFromTimeStampSWR } from 'views/Info/hooks/useBlocksFromTimestamps'
+import { MultiChainName, checkIsStableSwap } from './constant'
+import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 // Protocol hooks
 
-export const useProtocolData = (): [ProtocolData | undefined, (protocolData: ProtocolData) => void] => {
-  const protocolData: ProtocolData | undefined = useSelector((state: AppState) => state.info.protocol.overview)
+const refreshIntervalForInfo = 10000 // 10s
+const SWR_SETTINGS = { refreshInterval: refreshIntervalForInfo }
 
-  const dispatch = useAppDispatch()
-  const setProtocolData: (protocolData: ProtocolData) => void = useCallback(
-    (data: ProtocolData) => dispatch(updateProtocolData({ protocolData: data })),
-    [dispatch],
+export const useProtocolDataSWR = (): ProtocolData | undefined => {
+  const chainName = useGetChainName()
+  const [t24, t48] = getDeltaTimestamps()
+  const { blocks } = useBlockFromTimeStampSWR([t24, t48])
+  const [block24, block48] = blocks ?? []
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data: protocolData } = useSWRImmutable(
+    chainName && block24 && block48 ? [`info/protocol/updateProtocolData/${type}`, chainName] : null,
+    () => fetchProtocolData(chainName, block24, block48),
+    SWR_SETTINGS,
   )
 
-  return [protocolData, setProtocolData]
+  return protocolData ?? undefined
 }
 
-export const useProtocolChartData = (): [ChartEntry[] | undefined, (chartData: ChartEntry[]) => void] => {
-  const chartData: ChartEntry[] | undefined = useSelector((state: AppState) => state.info.protocol.chartData)
-  const dispatch = useAppDispatch()
-  const setChartData: (chartData: ChartEntry[]) => void = useCallback(
-    (data: ChartEntry[]) => dispatch(updateProtocolChartData({ chartData: data })),
-    [dispatch],
+export const useProtocolChartDataSWR = (): ChartEntry[] | undefined => {
+  const chainName = useGetChainName()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data: chartData } = useSWRImmutable(
+    [`info/protocol/updateProtocolChartData/${type}`, chainName],
+    () => fetchGlobalChartData(chainName),
+    SWR_SETTINGS,
   )
-  return [chartData, setChartData]
+  return chartData ?? undefined
 }
 
-export const useProtocolTransactions = (): [Transaction[] | undefined, (transactions: Transaction[]) => void] => {
-  const transactions: Transaction[] | undefined = useSelector((state: AppState) => state.info.protocol.transactions)
-  const dispatch = useAppDispatch()
-  const setTransactions: (transactions: Transaction[]) => void = useCallback(
-    (transactionsData: Transaction[]) => dispatch(updateProtocolTransactions({ transactions: transactionsData })),
-    [dispatch],
+export const useProtocolTransactionsSWR = (): Transaction[] | undefined => {
+  const chainName = useGetChainName()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data: transactions } = useSWRImmutable(
+    [`info/protocol/updateProtocolTransactionsData/${type}`, chainName],
+    () => fetchTopTransactions(chainName),
+    SWR_SETTINGS,
   )
-  return [transactions, setTransactions]
+  return transactions ?? undefined
 }
 
-// Pools hooks
-
-export const useAllPoolData = (): {
-  [address: string]: { data?: PoolData }
-} => {
-  return useSelector((state: AppState) => state.info.pools.byAddress)
+export const useAllPoolDataSWR = () => {
+  const chainName = useGetChainName()
+  const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
+  const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data } = useSWRImmutable(
+    blocks && chainName && [`info/pool/data/${type}`, chainName],
+    () => fetchAllPoolData(blocks, chainName),
+    SWR_SETTINGS,
+  )
+  return data ?? {}
 }
 
-export const useUpdatePoolData = (): ((pools: PoolData[]) => void) => {
-  const dispatch = useAppDispatch()
-  return useCallback((pools: PoolData[]) => dispatch(updatePoolData({ pools })), [dispatch])
-}
-
-export const useAddPoolKeys = (): ((addresses: string[]) => void) => {
-  const dispatch = useAppDispatch()
-  return useCallback((poolAddresses: string[]) => dispatch(addPoolKeys({ poolAddresses })), [dispatch])
-}
-
-export const usePoolDatas = (poolAddresses: string[]): PoolData[] => {
-  const allPoolData = useAllPoolData()
-  const addNewPoolKeys = useAddPoolKeys()
-
-  const untrackedAddresses = poolAddresses.reduce((accum: string[], address) => {
-    if (!Object.keys(allPoolData).includes(address)) {
-      accum.push(address)
-    }
-    return accum
-  }, [])
-
-  useEffect(() => {
-    if (untrackedAddresses) {
-      addNewPoolKeys(untrackedAddresses)
-    }
-  }, [addNewPoolKeys, untrackedAddresses])
+export const usePoolDatasSWR = (poolAddresses: string[]): PoolData[] => {
+  const allPoolData = useAllPoolDataSWR()
 
   const poolsWithData = poolAddresses
     .map((address) => {
@@ -105,86 +86,45 @@ export const usePoolDatas = (poolAddresses: string[]): PoolData[] => {
   return poolsWithData
 }
 
-export const usePoolChartData = (address: string): ChartEntry[] | undefined => {
-  const dispatch = useAppDispatch()
-  const pool = useSelector((state: AppState) => state.info.pools.byAddress[address])
-  const chartData = pool?.chartData
-  const [error, setError] = useState(false)
-
-  useEffect(() => {
-    const fetch = async () => {
-      const { error: fetchError, data } = await fetchPoolChartData(address)
-      if (!fetchError && data) {
-        dispatch(updatePoolChartData({ poolAddress: address, chartData: data }))
-      }
-      if (fetchError) {
-        setError(fetchError)
-      }
-    }
-    if (!chartData && !error) {
-      fetch()
-    }
-  }, [address, dispatch, error, chartData])
-
-  return chartData
+export const usePoolChartDataSWR = (address: string): ChartEntry[] | undefined => {
+  const chainName = useGetChainName()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data } = useSWRImmutable([`info/pool/chartData/${address}/${type}`, chainName], () =>
+    fetchPoolChartData(chainName, address),
+  )
+  return data?.data ?? undefined
 }
 
-export const usePoolTransactions = (address: string): Transaction[] | undefined => {
-  const dispatch = useAppDispatch()
-  const pool = useSelector((state: AppState) => state.info.pools.byAddress[address])
-  const transactions = pool?.transactions
-  const [error, setError] = useState(false)
-
-  useEffect(() => {
-    const fetch = async () => {
-      const { error: fetchError, data } = await fetchPoolTransactions(address)
-      if (fetchError) {
-        setError(true)
-      } else {
-        dispatch(updatePoolTransactions({ poolAddress: address, transactions: data }))
-      }
-    }
-    if (!transactions && !error) {
-      fetch()
-    }
-  }, [address, dispatch, error, transactions])
-
-  return transactions
+export const usePoolTransactionsSWR = (address: string): Transaction[] | undefined => {
+  const chainName = useGetChainName()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data } = useSWRImmutable(
+    [`info/pool/transactionsData/${address}/${type}`, chainName],
+    () => fetchPoolTransactions(chainName, address),
+    SWR_SETTINGS,
+  )
+  return data?.data ?? undefined
 }
 
 // Tokens hooks
 
-export const useAllTokenData = (): {
+export const useAllTokenDataSWR = (): {
   [address: string]: { data?: TokenData }
 } => {
-  return useSelector((state: AppState) => state.info.tokens.byAddress)
-}
-
-export const useUpdateTokenData = (): ((tokens: TokenData[]) => void) => {
-  const dispatch = useAppDispatch()
-  return useCallback(
-    (tokens: TokenData[]) => {
-      dispatch(updateTokenData({ tokens }))
-    },
-    [dispatch],
+  const chainName = useGetChainName()
+  const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
+  const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data } = useSWRImmutable(
+    blocks && chainName && [`info/token/data/${type}`, chainName],
+    () => fetchAllTokenData(chainName, blocks),
+    SWR_SETTINGS,
   )
+  return data ?? {}
 }
 
-export const useAddTokenKeys = (): ((addresses: string[]) => void) => {
-  const dispatch = useAppDispatch()
-  return useCallback((tokenAddresses: string[]) => dispatch(addTokenKeys({ tokenAddresses })), [dispatch])
-}
-
-export const useTokenDatas = (addresses?: string[]): TokenData[] | undefined => {
-  const allTokenData = useAllTokenData()
-  const addNewTokenKeys = useAddTokenKeys()
-
-  // if token not tracked yet track it
-  addresses?.forEach((a) => {
-    if (!allTokenData[a]) {
-      addNewTokenKeys([a])
-    }
-  })
+export const useTokenDatasSWR = (addresses?: string[]): TokenData[] | undefined => {
+  const allTokenData = useAllTokenDataSWR()
 
   const tokensWithData = useMemo(() => {
     if (!addresses) {
@@ -197,132 +137,89 @@ export const useTokenDatas = (addresses?: string[]): TokenData[] | undefined => 
       .filter((token) => token)
   }, [addresses, allTokenData])
 
-  return tokensWithData
+  return tokensWithData ?? undefined
 }
 
-export const useTokenData = (address: string | undefined): TokenData | undefined => {
-  const allTokenData = useAllTokenData()
-  const addNewTokenKeys = useAddTokenKeys()
-
-  if (!address || !isAddress(address)) {
-    return undefined
-  }
-
-  // if token not tracked yet track it
-  if (!allTokenData[address]) {
-    addNewTokenKeys([address])
-  }
-
-  return allTokenData[address]?.data
+export const useTokenDataSWR = (address: string | undefined): TokenData | undefined => {
+  const allTokenData = useAllTokenDataSWR()
+  return allTokenData[address]?.data ?? undefined
 }
 
-export const usePoolsForToken = (address: string): string[] | undefined => {
-  const dispatch = useAppDispatch()
-  const token = useSelector((state: AppState) => state.info.tokens.byAddress[address])
-  const poolsForToken = token.poolAddresses
-  const [error, setError] = useState(false)
+export const usePoolsForTokenSWR = (address: string): string[] | undefined => {
+  const chainName = useGetChainName()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data } = useSWRImmutable(
+    [`info/token/poolAddress/${address}/${type}`, chainName],
+    () => fetchPoolsForToken(chainName, address),
+    SWR_SETTINGS,
+  )
 
-  useEffect(() => {
-    const fetch = async () => {
-      const { error: fetchError, addresses } = await fetchPoolsForToken(address)
-      if (!fetchError && addresses) {
-        dispatch(addTokenPoolAddresses({ tokenAddress: address, poolAddresses: addresses }))
-      }
-      if (fetchError) {
-        setError(fetchError)
-      }
-    }
-    if (!poolsForToken && !error) {
-      fetch()
-    }
-  }, [address, dispatch, error, poolsForToken])
-
-  return poolsForToken
+  return data?.addresses ?? undefined
 }
 
-export const useTokenChartData = (address: string): ChartEntry[] | undefined => {
-  const dispatch = useAppDispatch()
-  const token = useSelector((state: AppState) => state.info.tokens.byAddress[address])
-  const { chartData } = token
-  const [error, setError] = useState(false)
+export const useTokenChartDataSWR = (address: string): ChartEntry[] | undefined => {
+  const chainName = useGetChainName()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data } = useSWRImmutable(
+    address && chainName && [`info/token/chartData/${address}/${type}`, chainName],
+    () => fetchTokenChartData(chainName, address),
+    SWR_SETTINGS,
+  )
 
-  useEffect(() => {
-    const fetch = async () => {
-      const { error: fetchError, data } = await fetchTokenChartData(address)
-      if (!fetchError && data) {
-        dispatch(updateTokenChartData({ tokenAddress: address, chartData: data }))
-      }
-      if (fetchError) {
-        setError(fetchError)
-      }
-    }
-    if (!chartData && !error) {
-      fetch()
-    }
-  }, [address, dispatch, error, chartData])
-
-  return chartData
+  return data?.data ?? undefined
 }
 
-export const useTokenPriceData = (
+export const useTokenPriceDataSWR = (
   address: string,
   interval: number,
   timeWindow: Duration,
 ): PriceChartEntry[] | undefined => {
-  const dispatch = useAppDispatch()
-  const token = useSelector((state: AppState) => state.info.tokens.byAddress[address])
-  const priceData = token?.priceData[interval]
-  const [error, setError] = useState(false)
-
-  // construct timestamps and check if we need to fetch more data
-  const oldestTimestampFetched = token?.priceData.oldestFetchedTimestamp
   const utcCurrentTime = getUnixTime(new Date()) * 1000
   const startTimestamp = getUnixTime(startOfHour(sub(utcCurrentTime, timeWindow)))
-
-  useEffect(() => {
-    const fetch = async () => {
-      const { data, error: fetchingError } = await fetchTokenPriceData(address, interval, startTimestamp)
-      if (data) {
-        dispatch(
-          updateTokenPriceData({
-            tokenAddress: address,
-            secondsInterval: interval,
-            priceData: data,
-            oldestFetchedTimestamp: startTimestamp,
-          }),
-        )
-      }
-      if (fetchingError) {
-        setError(true)
-      }
-    }
-    if (!priceData && !error) {
-      fetch()
-    }
-  }, [address, dispatch, error, interval, oldestTimestampFetched, priceData, startTimestamp, timeWindow])
-
-  return priceData
+  const chainName = useGetChainName()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data } = useSWRImmutable(
+    [`info/token/priceData/${address}/${type}`, chainName],
+    () => fetchTokenPriceData(chainName, address, interval, startTimestamp),
+    SWR_SETTINGS,
+  )
+  return data?.data ?? undefined
 }
 
-export const useTokenTransactions = (address: string): Transaction[] | undefined => {
-  const dispatch = useAppDispatch()
-  const token = useSelector((state: AppState) => state.info.tokens.byAddress[address])
-  const { transactions } = token
-  const [error, setError] = useState(false)
+export const useTokenTransactionsSWR = (address: string): Transaction[] | undefined => {
+  const chainName = useGetChainName()
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data } = useSWRImmutable(
+    [`info/token/transactionsData/${address}/${type}`, chainName],
+    () => fetchTokenTransactions(chainName, address),
+    SWR_SETTINGS,
+  )
+  return data?.data ?? undefined
+}
+
+export const useGetChainName = () => {
+  const path = window.location.href
+
+  const getChain = useCallback(() => {
+    if (path.includes('eth') || path.includes('chainId=1')) return 'ETH'
+    return 'BSC'
+  }, [path])
+  const [name, setName] = useState<MultiChainName | null>(getChain())
+  const result = useMemo(() => name, [name])
 
   useEffect(() => {
-    const fetch = async () => {
-      const { error: fetchError, data } = await fetchTokenTransactions(address)
-      if (fetchError) {
-        setError(true)
-      } else if (data) {
-        dispatch(updateTokenTransactions({ tokenAddress: address, transactions: data }))
-      }
-    }
-    if (!transactions && !error) {
-      fetch()
-    }
-  }, [address, dispatch, error, transactions])
+    setName(getChain())
+  }, [getChain])
 
-  return transactions
+  return result
+}
+
+export const useMultiChainPath = () => {
+  const router = useRouter()
+  const { chainName } = router.query
+  return chainName ? `/${chainName}` : ''
+}
+
+export const useStableSwapPath = () => {
+  return checkIsStableSwap() ? '?type=stableSwap' : ''
 }

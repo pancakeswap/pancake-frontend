@@ -8,6 +8,5 @@ const PoolPage = () => {
 }
 
 PoolPage.Layout = InfoPageLayout
-PoolPage.chains = [] // set all
-
+PoolPage.chains = []
 export default PoolPage

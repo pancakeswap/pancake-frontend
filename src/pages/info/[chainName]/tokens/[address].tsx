@@ -12,7 +12,7 @@ const TokenPage = ({ address }: { address: string }) => {
 }
 
 TokenPage.Layout = InfoPageLayout
-TokenPage.chains = [] // set all
+TokenPage.chains = []
 
 export default TokenPage
 

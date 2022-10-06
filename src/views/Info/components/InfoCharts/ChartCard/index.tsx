@@ -9,7 +9,7 @@ import { ChartEntry, TokenData, PriceChartEntry } from 'state/info/types'
 import { fromUnixTime } from 'date-fns'
 import dynamic from 'next/dynamic'
 
-const CandleChart = dynamic(() => import('views/Info/components/InfoCharts/CandleChart'), {
+const CandleChart = dynamic(() => import('../CandleChart'), {
   ssr: false,
 })
 
@@ -73,8 +73,8 @@ const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
       valueToDisplay = formatAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
     } else if (view === ChartView.LIQUIDITY && formattedTvlData.length > 0) {
       valueToDisplay = formatAmount(formattedTvlData[formattedTvlData.length - 1]?.value)
-    } else if (view === ChartView.PRICE && tokenData?.priceUSD) {
-      valueToDisplay = formatAmount(tokenData.priceUSD)
+    } else if ((view === ChartView.PRICE && tokenData?.priceUSD) || tokenData?.priceUSD === 0) {
+      valueToDisplay = formatAmount(tokenData.priceUSD, { notation: 'standard' })
     }
 
     return valueToDisplay ? (

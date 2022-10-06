@@ -15,6 +15,7 @@ import {
   updateTokenChartData,
   updateTokenPriceData,
   updateTokenTransactions,
+  clearTokenData,
 } from './actions'
 
 const initialState: InfoState = {
@@ -69,6 +70,9 @@ export default createReducer(initialState, (builder) =>
           data: tokenData,
         }
       })
+    })
+    .addCase(clearTokenData, (state) => {
+      state.tokens.byAddress = {}
     })
     .addCase(addTokenKeys, (state, { payload: { tokenAddresses } }) => {
       tokenAddresses.forEach((address) => {
