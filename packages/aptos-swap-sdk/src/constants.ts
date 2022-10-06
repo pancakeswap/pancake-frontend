@@ -1,12 +1,14 @@
 import { Percent } from '@pancakeswap/swap-sdk-core'
 
+import { ADDRESS } from './generated/swap'
+
 export enum ChainId {
   DEVNET = 33,
   TESTNET = 2,
 }
 
 const SWAP_MODULE_NAME = 'swap' as const
-export const SWAP_ADDRESS = '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0' as const
+export const SWAP_ADDRESS = ADDRESS
 export const SWAP_RESOURCE_ADDRESS = '0x72131a2ed362f7874bb7eceb0dbce48017f58224b18a3e9c262522b859ae1788' as const
 export const SWAP_ADDRESS_MODULE = `${SWAP_ADDRESS}::${SWAP_MODULE_NAME}` as const
 

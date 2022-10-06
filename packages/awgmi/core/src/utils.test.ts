@@ -123,6 +123,7 @@ describe('parseVmStatusError', () => {
         "code": 65542,
         "message": "Not enough coins to complete transaction",
         "module": "0x1::coin",
+        "reason": "EINSUFFICIENT_BALANCE",
       }
     `)
   })

@@ -1,40 +1,6 @@
 import { Types } from 'aptos'
 
-export const swapInitStorage = (): Types.EntryFunctionPayload => {
-  return {
-    type_arguments: [],
-    arguments: [],
-    function: '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0::swap::init_storage',
-  }
-}
-
-export type SwapSetAdminArgs = [string]
-
-export const swapSetAdmin = (args: SwapSetAdminArgs): Types.EntryFunctionPayload => {
-  return {
-    type_arguments: [],
-    arguments: args,
-    function: '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0::swap::setAdmin',
-  }
-}
-
-export type SwapSetFeeToArgs = [string]
-
-export const swapSetFeeTo = (args: SwapSetFeeToArgs): Types.EntryFunctionPayload => {
-  return {
-    type_arguments: [],
-    arguments: args,
-    function: '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0::swap::setFeeTo',
-  }
-}
-
-export const swapWithdrawFee = (typeArgs: [string, string]): Types.EntryFunctionPayload => {
-  return {
-    type_arguments: typeArgs,
-    arguments: [],
-    function: '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0::swap::withdrawFee',
-  }
-}
+export const ADDRESS = '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0' as const
 
 export type RouterAddLiquidityArgs = [bigint | string, bigint | string, bigint | string, bigint | string]
 
@@ -45,7 +11,7 @@ export const routerAddLiquidity = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0::router::add_liquidity',
+    function: `${ADDRESS}::router::add_liquidity`,
   }
 }
 
@@ -53,7 +19,7 @@ export const routerCreatePair = (typeArgs: [string, string]): Types.EntryFunctio
   return {
     type_arguments: typeArgs,
     arguments: [],
-    function: '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0::router::create_pair',
+    function: `${ADDRESS}::router::create_pair`,
   }
 }
 
@@ -61,7 +27,7 @@ export const routerRegisterLp = (typeArgs: [string, string]): Types.EntryFunctio
   return {
     type_arguments: typeArgs,
     arguments: [],
-    function: '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0::router::register_lp',
+    function: `${ADDRESS}::router::register_lp`,
   }
 }
 
@@ -69,7 +35,7 @@ export const routerRegisterToken = (typeArgs: [string]): Types.EntryFunctionPayl
   return {
     type_arguments: typeArgs,
     arguments: [],
-    function: '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0::router::register_token',
+    function: `${ADDRESS}::router::register_token`,
   }
 }
 
@@ -82,7 +48,7 @@ export const routerRemoveLiquidity = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0::router::remove_liquidity',
+    function: `${ADDRESS}::router::remove_liquidity`,
   }
 }
 
@@ -95,7 +61,7 @@ export const routerSwapExactInput = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0::router::swap_exact_input',
+    function: `${ADDRESS}::router::swap_exact_input`,
   }
 }
 
@@ -108,7 +74,7 @@ export const routerSwapExactInputDoublehop = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0::router::swap_exact_input_doublehop',
+    function: `${ADDRESS}::router::swap_exact_input_doublehop`,
   }
 }
 
@@ -121,7 +87,7 @@ export const routerSwapExactInputTriplehop = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0::router::swap_exact_input_triplehop',
+    function: `${ADDRESS}::router::swap_exact_input_triplehop`,
   }
 }
 
@@ -134,7 +100,7 @@ export const routerSwapExactOutput = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0::router::swap_exact_output',
+    function: `${ADDRESS}::router::swap_exact_output`,
   }
 }
 
@@ -147,7 +113,7 @@ export const routerSwapExactOutputDoublehop = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0::router::swap_exact_output_doublehop',
+    function: `${ADDRESS}::router::swap_exact_output_doublehop`,
   }
 }
 
@@ -160,6 +126,6 @@ export const routerSwapExactOutputTriplehop = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0::router::swap_exact_output_triplehop',
+    function: `${ADDRESS}::router::swap_exact_output_triplehop`,
   }
 }
