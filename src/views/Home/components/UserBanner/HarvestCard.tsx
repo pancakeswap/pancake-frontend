@@ -16,6 +16,7 @@ import { NextLinkFromReactRouter } from 'components/NextLink'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useMasterchef } from 'hooks/useContract'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback } from 'react'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useGasPrice } from 'state/user/hooks'
@@ -31,6 +32,7 @@ const StyledCard = styled(Card)`
 
 const HarvestCard = () => {
   const { t } = useTranslation()
+  const { isWrongNetwork } = useActiveWeb3React()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { farmsWithStakedBalance, earningsSum: farmEarningsSum } = useFarmsWithBalance()
@@ -105,7 +107,7 @@ const HarvestCard = () => {
               id="harvest-all"
               isLoading={pendingTx}
               endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
-              disabled={pendingTx}
+              disabled={pendingTx || isWrongNetwork}
               onClick={harvestAllFarms}
             >
               <Text color="invertedContrast" bold>
