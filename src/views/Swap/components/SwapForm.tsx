@@ -28,7 +28,6 @@ import { currencyId } from 'utils/currencyId'
 
 import CurrencyInputHeader from './CurrencyInputHeader'
 import SwapCommitButton from './SwapCommitButton'
-import useWarningImport from '../hooks/useWarningImport'
 import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
 import AddressInputPanel from './AddressInputPanel'
 import AdvancedSwapDetailsDropdown from './AdvancedSwapDetailsDropdown'
