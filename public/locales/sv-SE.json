@@ -1957,5 +1957,6 @@
   "Before editing your profile, please make sure you've claimed all the unspent CAKE from previous IFOs!": "Innan du ändrar din profil uppmanas du se till att du har hämtat ut alla oanvända CAKE-tokens från tidigare inledande farmerbjudanden!",
   "Based on \"overflow\" sales method. %refundingAmount% unspent %spentToken% are available to claim after the sale is completed.": "Based on \"overflow\" sales method. %refundingAmount% unspent %spentToken% are available to claim after the sale is completed.",
   "New": "New",
-  "Pot Open": "Pot Open"
+  "Pot Open": "Pot Open",
+  "until the next pot lock": "until the next pot lock"
 }
