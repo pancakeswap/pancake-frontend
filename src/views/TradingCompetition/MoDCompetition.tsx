@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { useProfile } from 'state/profile/hooks'
 import { Flex, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Image from 'next/image'
@@ -9,6 +8,8 @@ import useTheme from 'hooks/useTheme'
 import { PageMeta } from 'components/Layout/Page'
 import { TC_MOD_SUBGRAPH, API_PROFILE } from 'config/constants/endpoints'
 import { multicallv2 } from 'utils/multicall'
+import { ChainId } from '@pancakeswap/sdk'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import tradingCompetitionMoDAbi from 'config/abi/tradingCompetitionMoD.json'
 import {
   SmartContractPhases,
@@ -44,7 +45,7 @@ import MoDCakerBunny from './pngs/MoD-caker.png'
 import PrizesInfoSection from './components/PrizesInfoSection'
 
 const MoDCompetition = () => {
-  const { account } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const { profile, isLoading: isProfileLoading } = useProfile()
   const { isMobile } = useMatchBreakpoints()
@@ -121,13 +122,15 @@ const MoDCompetition = () => {
       }
     }
 
-    fetchCompetitionInfoContract()
-    if (account) {
-      fetchUserContract()
-    } else {
-      setUserTradingInformation({ ...initialUserTradingInformation, isLoading: false })
+    if (chainId === ChainId.BSC) {
+      fetchCompetitionInfoContract()
+      if (account) {
+        fetchUserContract()
+      } else {
+        setUserTradingInformation({ ...initialUserTradingInformation, isLoading: false })
+      }
     }
-  }, [account, registrationSuccessful, claimSuccessful, tradingCompetitionContract])
+  }, [chainId, account, registrationSuccessful, claimSuccessful, tradingCompetitionContract])
 
   useEffect(() => {
     const fetchUserTradingStats = async () => {
