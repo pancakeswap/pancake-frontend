@@ -91,17 +91,14 @@ export const fetchPoolData = async (
   poolAddresses: string[],
   chainName: 'ETH' | 'BSC' = 'BSC',
 ) => {
-  const weeksQuery =
-    chainName === 'BSC'
-      ? `oneWeekAgo: ${POOL_AT_BLOCK(chainName, block7d, poolAddresses)} 
-         twoWeeksAgo: ${POOL_AT_BLOCK(chainName, block14d, poolAddresses)}`
-      : ''
+  const weeksQuery = chainName === 'BSC' ? `twoWeeksAgo: ${POOL_AT_BLOCK(chainName, block14d, poolAddresses)}` : ''
   try {
     const query = gql`
       query pools {
         now: ${POOL_AT_BLOCK(chainName, null, poolAddresses)}
         oneDayAgo: ${POOL_AT_BLOCK(chainName, block24h, poolAddresses)}
         twoDaysAgo: ${POOL_AT_BLOCK(chainName, block48h, poolAddresses)}
+        oneWeekAgo: ${POOL_AT_BLOCK(chainName, block7d, poolAddresses)}
         ${weeksQuery}
       }
     `
