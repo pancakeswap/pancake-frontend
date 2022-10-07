@@ -8,8 +8,9 @@ import { useDebounce } from '@pancakeswap/hooks'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { FixedSizeList } from 'react-window'
 import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
-import { TagInfo, WrappedTokenInfo } from '@pancakeswap/token-lists'
+import { TagInfo } from '@pancakeswap/token-lists'
 import { useAudioPlay } from 'state/user'
+import { WrappedCoinInfo } from 'utils/WrappedCoinInfo'
 import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
@@ -30,7 +31,7 @@ interface CurrencySearchProps {
   height?: number
 }
 
-function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
+function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedCoinInfo[] {
   const lists = useAllLists()
   const inactiveUrls = useInactiveListUrls()
   const { chainId } = useActiveWeb3React()
@@ -38,8 +39,8 @@ function useSearchInactiveTokenLists(search: string | undefined, minResults = 10
   return useMemo(() => {
     if (!search || search.trim().length === 0) return []
     const filterToken = createFilterToken(search)
-    const exactMatches: WrappedTokenInfo[] = []
-    const rest: WrappedTokenInfo[] = []
+    const exactMatches: WrappedCoinInfo[] = []
+    const rest: WrappedCoinInfo[] = []
     const addressSet: { [address: string]: true } = {}
     const trimmedSearchQuery = search.toLowerCase().trim()
     for (const url of inactiveUrls) {
@@ -60,7 +61,7 @@ function useSearchInactiveTokenLists(search: string | undefined, minResults = 10
                 return { ...list.tags[tagId], id: tagId }
               })
               ?.filter((x): x is TagInfo => Boolean(x)) ?? []
-          const wrapped: WrappedTokenInfo = new WrappedTokenInfo(tokenInfo, tags)
+          const wrapped: WrappedCoinInfo = new WrappedCoinInfo(tokenInfo, tags)
           addressSet[wrapped.address] = true
           if (
             tokenInfo.name?.toLowerCase() === trimmedSearchQuery ||

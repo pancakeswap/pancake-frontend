@@ -2,6 +2,7 @@ import { Token } from '@pancakeswap/swap-sdk-core'
 import { HexString } from 'aptos'
 import { Currency } from './currency'
 // import { TxnBuilderTypes } from 'aptos'
+import * as decorators from './decorators'
 
 export class Coin extends Token {
   // structTag: TxnBuilderTypes.StructTag
@@ -23,7 +24,7 @@ export class Coin extends Token {
   }
 
   public sortsBefore(other: Currency): boolean {
-    return super.sortsBefore(other.wrapped)
+    return decorators.sortBeforeByBytes(this, other.wrapped)
   }
 
   public equals(other: Currency): boolean {

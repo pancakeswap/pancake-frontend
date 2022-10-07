@@ -59,12 +59,11 @@ describe('Coin', () => {
 
       expect(AptosCoin.onChain(ChainId.DEVNET).sortsBefore(tokenA)).toBe(true)
 
-      // TODO: fix me
-      // expect(
-      //   new Coin(ChainId.DEVNET, '0x16::test_coins::TestBNB', 8, '').sortsBefore(
-      //     new Coin(ChainId.DEVNET, '0x123123123::swap_utils::TestBNB', 8, '')
-      //   )
-      // ).toBe(true)
+      expect(
+        new Coin(ChainId.DEVNET, '0x16::test_coins::TestBNB', 8, '').sortsBefore(
+          new Coin(ChainId.DEVNET, '0x123123123::swap_utils::TestBNB', 8, '')
+        )
+      ).toBe(true)
     })
 
     it('correct address', () => {

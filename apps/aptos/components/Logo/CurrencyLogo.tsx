@@ -1,9 +1,9 @@
 import { Currency, Token } from '@pancakeswap/aptos-swap-sdk'
 import { useHttpLocations } from '@pancakeswap/hooks'
-import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { AptosIcon } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import styled from 'styled-components'
+import { WrappedCoinInfo } from 'utils/WrappedCoinInfo'
 import Logo from './Logo'
 
 const getTokenLogoURL = (token?: Token) => null
@@ -23,13 +23,13 @@ export function CurrencyLogo({
   size?: string
   style?: React.CSSProperties
 }) {
-  const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
+  const uriLocations = useHttpLocations(currency instanceof WrappedCoinInfo ? currency.logoURI : undefined)
 
   const srcs: string[] = useMemo(() => {
     if (currency?.isToken) {
       const tokenLogoURL = getTokenLogoURL(currency)
 
-      if (currency instanceof WrappedTokenInfo) {
+      if (currency instanceof WrappedCoinInfo) {
         if (!tokenLogoURL) return [...uriLocations]
         return [...uriLocations, tokenLogoURL]
       }
