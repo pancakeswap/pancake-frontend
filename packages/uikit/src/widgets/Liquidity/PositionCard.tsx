@@ -195,7 +195,7 @@ function FullPositionCardView({
             </Text>
           </Flex>
           <Text fontSize="14px" color="textSubtle">
-            {userPoolBalance?.toSignificant(4)}
+            {userPoolBalance?.toExact()}
           </Text>
           {Number.isFinite(totalUSDValue) && (
             <Text small color="textSubtle">{`(~${totalUSDValue.toLocaleString(undefined, {
