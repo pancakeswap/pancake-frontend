@@ -28,6 +28,7 @@ import { currencyId } from 'utils/currencyId'
 
 import CurrencyInputHeader from './CurrencyInputHeader'
 import SwapCommitButton from './SwapCommitButton'
+import useWarningImport from '../hooks/useWarningImport'
 import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
 import AddressInputPanel from './AddressInputPanel'
 import AdvancedSwapDetailsDropdown from './AdvancedSwapDetailsDropdown'
@@ -62,17 +63,12 @@ interface SwapForm {
   isChartExpanded: boolean
   isChartDisplayed: boolean
   setIsChartDisplayed: Dispatch<SetStateAction<boolean>>
-  warningSwapHandler: (currencyInput) => void
 }
 
-export default function SwapForm({
-  setIsChartDisplayed,
-  isChartDisplayed,
-  isAccessTokenSupported,
-  warningSwapHandler,
-}) {
+export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAccessTokenSupported }) {
   const { t } = useTranslation()
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
+  const warningSwapHandler = useWarningImport()
 
   const { account, chainId } = useActiveWeb3React()
 
