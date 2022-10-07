@@ -35,10 +35,11 @@ export default function useWarningImport() {
   const defaultTokens = useAllTokens()
 
   const importTokensNotInDefault =
-    urlLoadedTokens &&
-    urlLoadedTokens.filter((token: Token) => {
-      return !(token.address in defaultTokens) && token.chainId === chainId && !isWrongNetwork
-    })
+    !isWrongNetwork && urlLoadedTokens
+      ? urlLoadedTokens.filter((token: Token) => {
+          return !(token.address in defaultTokens) && token.chainId === chainId
+        })
+      : []
 
   const [onPresentSwapWarningModal] = useModal(<SwapWarningModal swapCurrency={swapWarningCurrency} />, false)
   const [onPresentImportTokenWarningModal] = useModal(
