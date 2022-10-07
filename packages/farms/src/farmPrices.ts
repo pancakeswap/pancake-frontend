@@ -211,7 +211,7 @@ export const getFarmsPrices = (farms: FarmData[], chainId: number): FarmWithPric
 
 const nativeStableLpMap = {
   [ChainId.ETHEREUM]: {
-    address: '0x088Ecd1172838D4EB1A5CeC90e7A3640de8e384e', // TODO: NonBSCFarm
+    address: '0x088Ecd1172838D4EB1A5CeC90e7A3640de8e384e',
     wNative: 'WETH',
     stable: 'USDC',
   },
