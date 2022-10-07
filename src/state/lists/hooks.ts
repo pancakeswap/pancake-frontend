@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { EMPTY_LIST, TagInfo, TokenAddressMap, WrappedTokenInfo } from '@pancakeswap/tokens'
+import { EMPTY_LIST, TokenAddressMap, WrappedTokenInfo } from '@pancakeswap/tokens'
 import { TokenList, TokenInfo } from '@uniswap/token-lists'
 import { DEFAULT_LIST_OF_LISTS, OFFICIAL_LISTS } from 'config/constants/lists'
 import { atom, useAtomValue } from 'jotai'
@@ -139,17 +139,7 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
   const tokenMap: WrappedTokenInfo[] = uniqBy(
     list.tokens,
     (tokenInfo) => `${tokenInfo.chainId}#${tokenInfo.address}`,
-  ).map((tokenInfo) => {
-    const tags: TagInfo[] =
-      tokenInfo.tags
-        ?.map((tagId) => {
-          if (!list.tags?.[tagId]) return undefined
-          return { ...list.tags[tagId], id: tagId }
-        })
-        ?.filter((x): x is TagInfo => Boolean(x)) ?? []
-
-    return new WrappedTokenInfo(tokenInfo, tags)
-  })
+  ).map((tokenInfo) => new WrappedTokenInfo(tokenInfo))
 
   const groupedTokenMap: { [chainId: string]: WrappedTokenInfo[] } = groupBy(tokenMap, 'chainId')
 
