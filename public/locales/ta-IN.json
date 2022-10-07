@@ -1957,5 +1957,6 @@
   "Before editing your profile, please make sure you've claimed all the unspent CAKE from previous IFOs!": "உங்கள் சுயவிவரத்தைத் திருத்துவதற்கு முன், முந்தைய IFOக்களில் இருந்து செலவழிக்கப்படாத CAKE அனைத்தையும் நீங்கள் கிளைம் செய்துள்ளதை உறுதிப்படுத்திக் கொள்ளுங்கள்!",
   "Based on \"overflow\" sales method. %refundingAmount% unspent %spentToken% are available to claim after the sale is completed.": "Based on \"overflow\" sales method. %refundingAmount% unspent %spentToken% are available to claim after the sale is completed.",
   "New": "New",
-  "Pot Open": "Pot Open"
+  "Pot Open": "Pot Open",
+  "until the next pot lock": "until the next pot lock"
 }
