@@ -18,9 +18,9 @@ describe('Config farms', () => {
     expect(duplicates).toHaveLength(1)
   })
 
-  it.each([...farmsToTest, ...farms1ToTest])('Farm #%d has an unique address', async (pid, farm, chainId) => {
-    const farmConfig = (await import(`../../../packages/farms/constants/${chainId}`)).default
-    const duplicates = farmConfig.filter((f) => farm.lpAddress === f.lpAddress)
+  it.each([...farmsToTest, ...farms1ToTest])('Farm #%d has an unique address', async (pid, farm) => {
+    const farms = [...farms56, ...farms1]
+    const duplicates = farms.filter((f) => farm.lpAddress === f.lpAddress)
     expect(duplicates).toHaveLength(1)
   })
 
