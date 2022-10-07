@@ -6,7 +6,6 @@ import { isChainSupported } from 'utils/wagmi'
 import { useNetwork } from 'wagmi'
 import { useSessionChainId } from './useSessionChainId'
 
-export const sessionChainIdAtom = atom<number>(0)
 const queryChainIdAtom = atom(-1) // -1 unload, 0 no chainId on query
 
 queryChainIdAtom.onMount = (set) => {
