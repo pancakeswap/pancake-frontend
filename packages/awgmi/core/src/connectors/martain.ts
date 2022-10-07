@@ -87,6 +87,9 @@ export class MartianConnector extends Connector {
     const provider = await this.getProvider()
     const account = await this.account()
     if (!provider) throw new ConnectorNotFoundError()
+    // pending tx is gone in martian, here we manually cancel martian pending tx
+    await provider.cancelSubmittedTransactions()
+
     const generatedTx = await provider.generateTransaction(account?.address || '', payload)
     // martian just return the hash here..
     const hash = await provider.signAndSubmitTransaction(generatedTx)
