@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 import { useState, useMemo } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { Flex, Box, Button, Text, HelpIcon, useTooltip, LogoRoundIcon, Skeleton, InputProps } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { usePotteryData, useLatestVaultAddress } from 'state/pottery/hook'
 import { Input as NumericalInput } from 'components/CurrencyInputPanel/NumericalInput'
 import { CAKE } from '@pancakeswap/tokens'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { getFullDisplayBalance, getBalanceNumber } from 'utils/formatBalance'
 import { PotteryDepositStatus } from 'state/types'
@@ -37,7 +37,7 @@ interface DepositActionProps {
 
 const DepositAction: React.FC<React.PropsWithChildren<DepositActionProps>> = ({ totalValueLockedValue }) => {
   const { t } = useTranslation()
-  const { chainId } = useWeb3React()
+  const { chainId } = useActiveWeb3React()
   const { publicData, userData } = usePotteryData()
   const lastVaultAddress = useLatestVaultAddress()
   const [depositAmount, setDepositAmount] = useState('')
