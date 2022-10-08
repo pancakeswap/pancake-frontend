@@ -2316,7 +2316,7 @@ export const bscTokens = {
   krs: new Token(
     ChainId.BSC,
     '0x37b53894e7429f794B56F22a32E1695567Ee9913',
-    6,
+    18,
     'KRS',
     'Kingdom Raids',
     'https://kingdomraids.io/',
