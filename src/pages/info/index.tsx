@@ -6,5 +6,6 @@ const InfoPage = () => {
 }
 
 InfoPage.Layout = InfoPageLayout
+InfoPage.chains = [] // set all
 
 export default InfoPage

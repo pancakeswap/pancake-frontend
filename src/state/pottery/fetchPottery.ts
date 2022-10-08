@@ -37,17 +37,20 @@ export const fetchLastVaultAddress = async () => {
 
 export const fetchPublicPotteryValue = async (potteryVaultAddress: string) => {
   try {
-    const calls = ['getStatus', 'totalLockCake', 'totalSupply', 'lockStartTime', 'getMaxTotalDeposit'].map(
-      (method) => ({
-        address: potteryVaultAddress,
-        name: method,
-      }),
-    )
+    const calls = [
+      'getStatus',
+      'totalLockCake',
+      'totalSupply',
+      'lockStartTime',
+      'getLockTime',
+      'getMaxTotalDeposit',
+    ].map((method) => ({
+      address: potteryVaultAddress,
+      name: method,
+    }))
 
-    const [getStatus, [totalLockCake], [totalSupply], [lockStartTime], getMaxTotalDeposit] = await multicall(
-      potteryVaultAbi,
-      calls,
-    )
+    const [getStatus, [totalLockCake], [totalSupply], [lockStartTime], getLockTime, getMaxTotalDeposit] =
+      await multicall(potteryVaultAbi, calls)
     const [lastDrawId, totalPrize] = await potteryDrawContract.getPot(potteryVaultAddress)
 
     return {
@@ -57,6 +60,7 @@ export const fetchPublicPotteryValue = async (potteryVaultAddress: string) => {
       totalLockCake: new BigNumber(totalLockCake.toString()).toJSON(),
       totalSupply: new BigNumber(totalSupply.toString()).toJSON(),
       lockStartTime: lockStartTime.toString(),
+      lockTime: Number(getLockTime),
       maxTotalDeposit: new BigNumber(getMaxTotalDeposit.toString()).toJSON(),
     }
   } catch (error) {
@@ -68,6 +72,7 @@ export const fetchPublicPotteryValue = async (potteryVaultAddress: string) => {
       totalLockCake: BIG_ZERO.toJSON(),
       totalSupply: BIG_ZERO.toJSON(),
       lockStartTime: BIG_ZERO.toJSON(),
+      lockTime: 0,
       maxTotalDeposit: BIG_ZERO.toJSON(),
     }
   }

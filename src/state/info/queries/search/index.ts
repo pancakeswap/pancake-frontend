@@ -1,9 +1,9 @@
 import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
-import { usePoolDatas, useTokenDatas } from 'state/info/hooks'
+import { useGetChainName, usePoolDatasSWR, useTokenDatasSWR } from 'state/info/hooks'
 import { PoolData, TokenData } from 'state/info/types'
-import { infoClient } from 'utils/graphql'
+import { getMultiChainQueryEndPointWithStableSwap } from '../../constant'
 
 const TOKEN_SEARCH = gql`
   query tokens($symbol: String, $name: String, $id: String) {
@@ -49,9 +49,7 @@ interface PoolSearchResponse {
 }
 
 const getIds = (entityArrays: SingleQueryResponse[][]) => {
-  const ids = entityArrays
-    .reduce((entities, currentTokenArray) => [...entities, ...currentTokenArray], [])
-    .map((entity) => entity.id)
+  const ids = entityArrays.flat().map((entity) => entity.id)
   return Array.from(new Set(ids))
 }
 
@@ -73,6 +71,8 @@ const useFetchSearchResults = (
 
   const searchStringTooShort = searchString.length < MINIMUM_SEARCH_CHARACTERS
 
+  const chainName = useGetChainName()
+
   // New value received, reset state
   useEffect(() => {
     setSearchResults({
@@ -83,17 +83,21 @@ const useFetchSearchResults = (
     })
   }, [searchString, searchStringTooShort])
 
+  const tokenQuery = TOKEN_SEARCH
+  const poolQuery = POOL_SEARCH
+  const queryClient = getMultiChainQueryEndPointWithStableSwap(chainName)
+
   useEffect(() => {
     const search = async () => {
       try {
-        const tokens = await infoClient.request<TokenSearchResponse>(TOKEN_SEARCH, {
+        const tokens = await queryClient.request<TokenSearchResponse>(tokenQuery, {
           symbol: searchString.toUpperCase(),
           // Most well known tokens have first letter capitalized
           name: searchString.charAt(0).toUpperCase() + searchString.slice(1),
           id: searchString.toLowerCase(),
         })
         const tokenIds = getIds([tokens.asAddress, tokens.asSymbol, tokens.asName])
-        const pools = await infoClient.request<PoolSearchResponse>(POOL_SEARCH, {
+        const pools = await queryClient.request<PoolSearchResponse>(poolQuery, {
           tokens: tokenIds,
           id: searchString.toLowerCase(),
         })
@@ -116,13 +120,13 @@ const useFetchSearchResults = (
     if (!searchStringTooShort) {
       search()
     }
-  }, [searchString, searchStringTooShort])
+  }, [searchString, searchStringTooShort, chainName, tokenQuery, poolQuery, queryClient])
 
   // Save ids to Redux
   // Token and Pool updater will then go fetch full data for these addresses
   // These hooks in turn will return data of tokens that have been fetched
-  const tokenDatasFull = useTokenDatas(searchResults.tokens)
-  const poolDatasFull = usePoolDatas(searchResults.pools)
+  const tokenDatasFull = useTokenDatasSWR(searchResults.tokens)
+  const poolDatasFull = usePoolDatasSWR(searchResults.pools)
 
   // If above hooks returned not all tokens/pools it means
   // that some requests for full data are in progress

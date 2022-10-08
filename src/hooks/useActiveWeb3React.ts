@@ -1,6 +1,7 @@
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useRouter, NextRouter } from 'next/router'
 import { useEffect } from 'react'
+import { EXCHANGE_PAGE_PATHS } from 'config/constants/exchange'
 import { isChainSupported } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
 import { ChainId } from '@pancakeswap/sdk'
@@ -21,11 +22,14 @@ export function useNetworkConnectorUpdater() {
     const parsedQueryChainId = Number(router.query.chainId)
     if (!parsedQueryChainId && chainId === ChainId.BSC) return
     if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
+      const removeQueriesFromPath = EXCHANGE_PAGE_PATHS.some((item) => {
+        return router.pathname.startsWith(item)
+      })
       const uriHash = getHashFromRouter(router)?.[0]
       router.replace(
         {
           query: {
-            ...router.query,
+            ...(!removeQueriesFromPath && router.query),
             chainId,
           },
           ...(uriHash && { hash: uriHash }),

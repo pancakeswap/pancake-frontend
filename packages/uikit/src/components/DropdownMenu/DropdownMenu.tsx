@@ -98,7 +98,7 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
                   <>
                     {label}
                     {status && (
-                      <LinkStatus color={status.color} fontSize="14px">
+                      <LinkStatus textTransform="uppercase" color={status.color} fontSize="14px">
                         {status.text}
                       </LinkStatus>
                     )}

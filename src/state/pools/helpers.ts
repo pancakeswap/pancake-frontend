@@ -10,6 +10,7 @@ import {
 } from 'state/types'
 import { deserializeToken } from '@pancakeswap/tokens'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { isAddress } from 'utils'
 import { convertSharesToCake } from 'views/Pools/helpers'
 
 type UserData =
@@ -156,13 +157,13 @@ export const transformVault = (vaultKey: VaultKey, vault: SerializedCakeVault): 
 
 export const getTokenPricesFromFarm = (farms: SerializedFarm[]) => {
   return farms.reduce((prices, farm) => {
-    const quoteTokenAddress = farm.quoteToken.address.toLowerCase()
-    const tokenAddress = farm.token.address.toLowerCase()
+    const quoteTokenAddress = isAddress(farm.quoteToken.address)
+    const tokenAddress = isAddress(farm.token.address)
     /* eslint-disable no-param-reassign */
-    if (!prices[quoteTokenAddress]) {
+    if (quoteTokenAddress && !prices[quoteTokenAddress]) {
       prices[quoteTokenAddress] = new BigNumber(farm.quoteTokenPriceBusd).toNumber()
     }
-    if (!prices[tokenAddress]) {
+    if (tokenAddress && !prices[tokenAddress]) {
       prices[tokenAddress] = new BigNumber(farm.tokenPriceBusd).toNumber()
     }
     /* eslint-enable no-param-reassign */

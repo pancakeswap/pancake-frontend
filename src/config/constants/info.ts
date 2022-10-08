@@ -8,6 +8,7 @@ export const TREASURY_FEE = 0.000225
 export const BUYBACK_FEE = 0.000575
 
 export const PCS_V2_START = 1619136000 // April 23, 2021, 12:00:00 AM
+export const PCS_ETH_START = 1664130827 // Sep 23, 2022, 02:33:47 AM
 export const ONE_DAY_UNIX = 86400 // 24h * 60m * 60s
 export const ONE_HOUR_SECONDS = 3600
 
@@ -39,3 +40,5 @@ export const TOKEN_BLACKLIST = [
   '0xF1D50dB2C40b63D2c598e2A808d1871a40b1E653',
   '0x4269e4090ff9dfc99d8846eb0d42e67f01c3ac8b',
 ]
+
+export const ETH_TOKEN_BLACKLIST = ['0x72b169ad8af6c4fb53056b6a2a85602ad6863864']

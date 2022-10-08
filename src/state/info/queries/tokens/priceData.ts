@@ -3,17 +3,17 @@ import { gql } from 'graphql-request'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
 import { PriceChartEntry } from 'state/info/types'
-import { INFO_CLIENT } from 'config/constants/endpoints'
 import orderBy from 'lodash/orderBy'
+import { MultiChainName, multiChainQueryMainToken, multiChainQueryEndPoint } from '../../constant'
 
-const getPriceSubqueries = (tokenAddress: string, blocks: any) =>
+const getPriceSubqueries = (chainName: MultiChainName, tokenAddress: string, blocks: any) =>
   blocks.map(
     (block: any) => `
       t${block.timestamp}:token(id:"${tokenAddress}", block: { number: ${block.number} }) { 
-        derivedBNB
+        derived${multiChainQueryMainToken[chainName]}
       }
       b${block.timestamp}: bundle(id:"1", block: { number: ${block.number} }) { 
-        bnbPrice
+        ${multiChainQueryMainToken[chainName].toLowerCase()}Price
       }
     `,
   )
@@ -30,6 +30,7 @@ const priceQueryConstructor = (subqueries: string[]) => {
 }
 
 const fetchTokenPriceData = async (
+  chainName: MultiChainName,
   address: string,
   interval: number,
   startTimestamp: number,
@@ -46,7 +47,7 @@ const fetchTokenPriceData = async (
     time += interval
   }
   try {
-    const blocks = await getBlocksFromTimestamps(timestamps, 'asc', 500)
+    const blocks = await getBlocksFromTimestamps(timestamps, 'asc', 500, chainName)
     if (!blocks || blocks.length === 0) {
       console.error('Error fetching blocks for timestamps', timestamps)
       return {
@@ -56,10 +57,12 @@ const fetchTokenPriceData = async (
 
     const prices: any | undefined = await multiQuery(
       priceQueryConstructor,
-      getPriceSubqueries(address, blocks),
-      INFO_CLIENT,
+      getPriceSubqueries(chainName, address, blocks),
+      multiChainQueryEndPoint[chainName],
       200,
     )
+
+    console.warn('fetchTokenPriceData', { chainName, prices })
 
     if (!prices) {
       console.error('Price data failed to load')
@@ -75,6 +78,8 @@ const fetchTokenPriceData = async (
       priceUSD: number
     }[] = []
 
+    const mainToken = multiChainQueryMainToken[chainName]
+
     // Get Token prices in BNB
     Object.keys(prices).forEach((priceKey) => {
       const timestamp = priceKey.split('t')[1]
@@ -82,11 +87,15 @@ const fetchTokenPriceData = async (
       if (timestamp) {
         tokenPrices.push({
           timestamp,
-          derivedBNB: prices[priceKey]?.derivedBNB ? parseFloat(prices[priceKey].derivedBNB) : 0,
+          derivedBNB: prices[priceKey]?.[`derived${mainToken}`]
+            ? parseFloat(prices[priceKey][`derived${mainToken}`])
+            : 0,
           priceUSD: 0,
         })
       }
     })
+
+    console.warn('pricesPart1', tokenPrices)
 
     // Go through BNB USD prices and calculate Token price based on it
     Object.keys(prices).forEach((priceKey) => {
@@ -96,7 +105,8 @@ const fetchTokenPriceData = async (
         const tokenPriceIndex = tokenPrices.findIndex((tokenPrice) => tokenPrice.timestamp === timestamp)
         if (tokenPriceIndex >= 0) {
           const { derivedBNB } = tokenPrices[tokenPriceIndex]
-          tokenPrices[tokenPriceIndex].priceUSD = parseFloat(prices[priceKey]?.bnbPrice ?? 0) * derivedBNB
+          tokenPrices[tokenPriceIndex].priceUSD =
+            parseFloat(prices[priceKey]?.[`${mainToken.toLowerCase()}Price`] ?? 0) * derivedBNB
         }
       }
     })

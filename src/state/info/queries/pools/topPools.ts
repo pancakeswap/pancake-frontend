@@ -1,8 +1,13 @@
-import { TOKEN_BLACKLIST } from 'config/constants/info'
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
-import { infoClient } from 'utils/graphql'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import {
+  checkIsStableSwap,
+  getMultiChainQueryEndPointWithStableSwap,
+  MultiChainName,
+  multiChainTokenBlackList,
+} from '../../constant'
+import { useGetChainName } from '../../hooks'
 
 interface TopPoolsResponse {
   pairDayDatas: {
@@ -13,13 +18,19 @@ interface TopPoolsResponse {
 /**
  * Initial pools to display on the home page
  */
-const fetchTopPools = async (timestamp24hAgo: number): Promise<string[]> => {
+const fetchTopPools = async (chainName: MultiChainName, timestamp24hAgo: number): Promise<string[]> => {
+  const isStableSwap = checkIsStableSwap()
+  let whereCondition =
+    chainName === 'BSC'
+      ? `where: { dailyTxns_gt: 300, token0_not_in: $blacklist, token1_not_in: $blacklist, date_gt: ${timestamp24hAgo} }`
+      : `where: { date_gt: ${timestamp24hAgo}, token0_not_in: $blacklist, token1_not_in: $blacklist, dailyVolumeUSD_gt: 2000 }`
+  if (isStableSwap) whereCondition = ''
   try {
     const query = gql`
-      query topPools($blacklist: [String!], $timestamp24hAgo: Int) {
+      query topPools($blacklist: [String!]) {
         pairDayDatas(
           first: 30
-          where: { dailyTxns_gt: 300, token0_not_in: $blacklist, token1_not_in: $blacklist, date_gt: $timestamp24hAgo }
+          ${whereCondition}
           orderBy: dailyVolumeUSD
           orderDirection: desc
         ) {
@@ -27,7 +38,9 @@ const fetchTopPools = async (timestamp24hAgo: number): Promise<string[]> => {
         }
       }
     `
-    const data = await infoClient.request<TopPoolsResponse>(query, { blacklist: TOKEN_BLACKLIST, timestamp24hAgo })
+    const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TopPoolsResponse>(query, {
+      blacklist: multiChainTokenBlackList[chainName],
+    })
     // pairDayDatas id has compound id "0xPOOLADDRESS-NUMBERS", extracting pool address with .split('-')
     return data.pairDayDatas.map((p) => p.id.split('-')[0])
   } catch (error) {
@@ -42,18 +55,26 @@ const fetchTopPools = async (timestamp24hAgo: number): Promise<string[]> => {
 const useTopPoolAddresses = (): string[] => {
   const [topPoolAddresses, setTopPoolAddresses] = useState([])
   const [timestamp24hAgo] = getDeltaTimestamps()
+  const chainName = useGetChainName()
 
   useEffect(() => {
     const fetch = async () => {
-      const addresses = await fetchTopPools(timestamp24hAgo)
+      const addresses = await fetchTopPools(chainName, timestamp24hAgo)
       setTopPoolAddresses(addresses)
     }
     if (topPoolAddresses.length === 0) {
       fetch()
     }
-  }, [topPoolAddresses, timestamp24hAgo])
+  }, [topPoolAddresses, timestamp24hAgo, chainName])
 
   return topPoolAddresses
+}
+
+export const fetchTopPoolAddresses = async (chainName: MultiChainName) => {
+  const [timestamp24hAgo] = getDeltaTimestamps()
+
+  const addresses = await fetchTopPools(chainName, timestamp24hAgo)
+  return addresses
 }
 
 export default useTopPoolAddresses

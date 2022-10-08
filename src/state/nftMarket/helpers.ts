@@ -2,6 +2,7 @@ import { gql, request } from 'graphql-request'
 import { stringify } from 'querystring'
 import { API_NFT, GRAPH_API_NFTMARKET } from 'config/constants/endpoints'
 import { multicallv2 } from 'utils/multicall'
+import { isAddress } from 'utils'
 import erc721Abi from 'config/abi/erc721.json'
 import range from 'lodash/range'
 import groupBy from 'lodash/groupBy'
@@ -150,7 +151,7 @@ export const getNftsFromCollectionApi = async (
   size = 100,
   page = 1,
 ): Promise<ApiResponseCollectionTokens> => {
-  const isPBCollection = collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase()
+  const isPBCollection = isAddress(collectionAddress) === pancakeBunniesAddress
   const requestPath = `${API_NFT}/collections/${collectionAddress}/tokens${
     !isPBCollection ? `?page=${page}&size=${size}` : ``
   }`
@@ -290,7 +291,7 @@ export const getNftsFromCollectionSg = async (
   skip = 0,
 ): Promise<TokenMarketData[]> => {
   // Squad to be sorted by tokenId as this matches the order of the paginated API return. For PBs - get the most recent,
-  const isPBCollection = collectionAddress.toLowerCase() === pancakeBunniesAddress.toLowerCase()
+  const isPBCollection = isAddress(collectionAddress) === pancakeBunniesAddress
 
   try {
     const res = await request(

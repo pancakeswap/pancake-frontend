@@ -706,9 +706,13 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
               <CurrencyInputPanel
                 value={formattedAmounts[Field.LIQUIDITY]}
                 onUserInput={onLiquidityInput}
+                onPercentInput={(percent) => {
+                  onUserInput(Field.LIQUIDITY_PERCENT, percent.toString())
+                }}
                 onMax={() => {
                   onUserInput(Field.LIQUIDITY_PERCENT, '100')
                 }}
+                showQuickInputButton
                 showMaxButton={!atMaxAmount}
                 disableCurrencySelect
                 currency={pair?.liquidityToken}
@@ -767,8 +771,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
                 disabled={isZap && !removalCheckedB}
                 value={formattedAmounts[Field.CURRENCY_B]}
                 onUserInput={onCurrencyBInput}
-                onMax={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
-                showMaxButton={!atMaxAmount}
+                showMaxButton={false}
                 currency={currencyB}
                 label={t('Output')}
                 onCurrencySelect={handleSelectCurrencyB}

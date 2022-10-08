@@ -631,6 +631,7 @@ export interface SerializedPotteryPublicData {
   totalLockCake: string
   totalSupply: string
   lockStartTime: string
+  lockTime: number
   totalLockedValue: string
   latestRoundId: string
   maxTotalDeposit: string
@@ -643,6 +644,7 @@ export interface DeserializedPublicData {
   totalLockCake: BigNumber
   totalSupply: BigNumber
   lockStartTime: string
+  lockTime: number
   totalLockedValue: BigNumber
   latestRoundId: string
   maxTotalDeposit: BigNumber

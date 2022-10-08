@@ -8,10 +8,10 @@ import useDebounce from 'hooks/useDebounce'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { FixedSizeList } from 'react-window'
 import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
-import { TagInfo, WrappedTokenInfo } from '@pancakeswap/tokens'
+import { WrappedTokenInfo } from '@pancakeswap/tokens'
 import { useAudioModeManager } from 'state/user/hooks'
+import { isAddress } from 'utils'
 import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
-import { isAddress } from '../../utils'
 import Column, { AutoColumn } from '../Layout/Column'
 import Row from '../Layout/Row'
 import CommonBases from './CommonBases'
@@ -56,14 +56,7 @@ function useSearchInactiveTokenLists(search: string | undefined, minResults = 10
           !addressSet[tokenInfo.address] &&
           filterToken(tokenInfo)
         ) {
-          const tags: TagInfo[] =
-            tokenInfo.tags
-              ?.map((tagId) => {
-                if (!list.tags?.[tagId]) return undefined
-                return { ...list.tags[tagId], id: tagId }
-              })
-              ?.filter((x): x is TagInfo => Boolean(x)) ?? []
-          const wrapped: WrappedTokenInfo = new WrappedTokenInfo(tokenInfo, tags)
+          const wrapped: WrappedTokenInfo = new WrappedTokenInfo(tokenInfo)
           addressSet[wrapped.address] = true
           if (
             tokenInfo.name?.toLowerCase() === trimmedSearchQuery ||
@@ -112,7 +105,7 @@ function CurrencySearch({
 
   const native = useNativeCurrency()
 
-  const showBNB: boolean = useMemo(() => {
+  const showNative: boolean = useMemo(() => {
     const s = debouncedQuery.toLowerCase().trim()
     return native && native.symbol?.toLowerCase?.()?.indexOf(s) !== -1
   }, [debouncedQuery, native])
@@ -191,7 +184,7 @@ function CurrencySearch({
       <Box margin="24px -24px">
         <CurrencyList
           height={isMobile ? (showCommonBases ? height || 250 : height ? height + 80 : 350) : 390}
-          showBNB={showBNB}
+          showNative={showNative}
           currencies={filteredSortedTokens}
           inactiveCurrencies={filteredInactiveTokens}
           breakIndex={
@@ -222,7 +215,7 @@ function CurrencySearch({
     searchTokenIsAdded,
     selectedCurrency,
     setImportToken,
-    showBNB,
+    showNative,
     showImportView,
     t,
     showCommonBases,
