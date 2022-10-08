@@ -37,8 +37,11 @@ const AvailableWithdraw: React.FC<React.PropsWithChildren<AvailableWithdrawProps
   const amountInBusd = new BigNumber(amount).times(cakePriceBusd).toNumber()
 
   const lockDate = useMemo(() => getDrawnDate(locale, lockedDate?.toString()), [lockedDate, locale])
-  const unlockDate = addDays(new Date(parseInt(lockedDate, 10) * 1000), 70).getTime()
-  const lockDateStr = useMemo(() => getDrawnDate(locale, (unlockDate / 1000).toString()), [unlockDate, locale])
+  const withdrawableDate = addDays(new Date(parseInt(lockedDate, 10) * 1000), 70).getTime()
+  const withdrawableDateStr = useMemo(
+    () => getDrawnDate(locale, (withdrawableDate / 1000).toString()),
+    [withdrawableDate, locale],
+  )
 
   return (
     <Box>
@@ -55,7 +58,7 @@ const AvailableWithdraw: React.FC<React.PropsWithChildren<AvailableWithdrawProps
                 {t('Deposited %date%', { date: lockDate })}
               </Text>
               <Text fontSize="10px" lineHeight="110%" color="textSubtle">
-                {t('Withdrawable on %date%', { date: lockDateStr })}
+                {t('Withdrawable on %date%', { date: withdrawableDateStr })}
               </Text>
             </>
           )}
