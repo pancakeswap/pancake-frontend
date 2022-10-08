@@ -26,7 +26,7 @@ const ifos: Ifo[] = [
     },
     currency: bscTokens.cake,
     token: bscTokens.krs,
-    releaseBlockNumber: 21615380,
+    releaseBlockNumber: 21970879,
     campaignId: '511700000',
     articleUrl:
       'https://pancakeswap.finance/voting/proposal/bafkreicqqvgqpwtnhmlfdwz3ya3hnjm6nvgqbf3fpi4vbxmvqyv6yi3enu',
