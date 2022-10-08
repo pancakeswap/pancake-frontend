@@ -9,7 +9,7 @@ import { PotteryWithdrawAbleData } from 'state/types'
 import WithdrawButton from 'views/Pottery/components/Pot/Claim/WithdrawButton'
 import { calculateCakeAmount } from 'views/Pottery/helpers'
 import { getDrawnDate } from 'views/Lottery/helpers'
-import { distanceToNowStrict } from 'utils/timeHelper'
+import { addDays } from 'date-fns'
 
 interface AvailableWithdrawProps {
   withdrawData: PotteryWithdrawAbleData
@@ -37,9 +37,8 @@ const AvailableWithdraw: React.FC<React.PropsWithChildren<AvailableWithdrawProps
   const amountInBusd = new BigNumber(amount).times(cakePriceBusd).toNumber()
 
   const lockDate = useMemo(() => getDrawnDate(locale, lockedDate?.toString()), [lockedDate, locale])
-  const unlockDate = new Date(parseInt(lockedDate, 10) * 1000)
-  unlockDate.setTime(unlockDate.getTime() + 70 * 60 * 60 * 24 * 1000)
-  const remainingUnlockTime = distanceToNowStrict(unlockDate.getTime())
+  const unlockDate = addDays(new Date(parseInt(lockedDate, 10) * 1000), 70).getTime()
+  const lockDateStr = useMemo(() => getDrawnDate(locale, (unlockDate / 1000).toString()), [unlockDate, locale])
 
   return (
     <Box>
@@ -56,7 +55,7 @@ const AvailableWithdraw: React.FC<React.PropsWithChildren<AvailableWithdrawProps
                 {t('Deposited %date%', { date: lockDate })}
               </Text>
               <Text fontSize="10px" lineHeight="110%" color="textSubtle">
-                {t('Unlock after %time%', { time: remainingUnlockTime })}
+                {t('Withdrawable on %date%', { date: lockDateStr })}
               </Text>
             </>
           )}
