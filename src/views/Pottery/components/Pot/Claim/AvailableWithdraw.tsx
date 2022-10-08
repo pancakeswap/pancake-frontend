@@ -9,6 +9,7 @@ import { PotteryWithdrawAbleData } from 'state/types'
 import WithdrawButton from 'views/Pottery/components/Pot/Claim/WithdrawButton'
 import { calculateCakeAmount } from 'views/Pottery/helpers'
 import { getDrawnDate } from 'views/Lottery/helpers'
+import { distanceToNowStrict } from 'utils/timeHelper'
 
 interface AvailableWithdrawProps {
   withdrawData: PotteryWithdrawAbleData
@@ -36,6 +37,9 @@ const AvailableWithdraw: React.FC<React.PropsWithChildren<AvailableWithdrawProps
   const amountInBusd = new BigNumber(amount).times(cakePriceBusd).toNumber()
 
   const lockDate = useMemo(() => getDrawnDate(locale, lockedDate?.toString()), [lockedDate, locale])
+  const unlockDate = new Date(parseInt(lockedDate, 10) * 1000)
+  unlockDate.setTime(unlockDate.getTime() + 70 * 60 * 60 * 24 * 1000)
+  const remainingUnlockTime = distanceToNowStrict(unlockDate.getTime())
 
   return (
     <Box>
@@ -47,9 +51,14 @@ const AvailableWithdraw: React.FC<React.PropsWithChildren<AvailableWithdrawProps
           <Balance fontSize="20px" lineHeight="110%" value={amount} decimals={2} bold />
           <Balance fontSize="12px" lineHeight="110%" color="textSubtle" value={amountInBusd} decimals={2} unit=" USD" />
           {lockedDate && (
-            <Text fontSize="10px" lineHeight="110%" color="textSubtle">
-              {t('Deposited %date%', { date: lockDate })}
-            </Text>
+            <>
+              <Text fontSize="10px" lineHeight="110%" color="textSubtle">
+                {t('Deposited %date%', { date: lockDate })}
+              </Text>
+              <Text fontSize="10px" lineHeight="110%" color="textSubtle">
+                {t('Unlock after %time%', { time: remainingUnlockTime })}
+              </Text>
+            </>
           )}
         </Box>
         <WithdrawButton
