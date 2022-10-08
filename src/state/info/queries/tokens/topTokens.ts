@@ -1,8 +1,13 @@
-import { TOKEN_BLACKLIST } from 'config/constants/info'
 import { gql } from 'graphql-request'
-import { useEffect, useState } from 'react'
-import { infoClient } from 'utils/graphql'
+import { useCallback, useState, useEffect } from 'react'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { useGetChainName } from '../../hooks'
+import {
+  MultiChainName,
+  getMultiChainQueryEndPointWithStableSwap,
+  checkIsStableSwap,
+  multiChainTokenBlackList,
+} from '../../constant'
 
 interface TopTokensResponse {
   tokenDayDatas: {
@@ -15,13 +20,20 @@ interface TopTokensResponse {
  * The actual data is later requested in tokenData.ts
  * Note: dailyTxns_gt: 300 is there to prevent fetching incorrectly priced tokens with high dailyVolumeUSD
  */
-const fetchTopTokens = async (timestamp24hAgo: number): Promise<string[]> => {
+const fetchTopTokens = async (chainName: MultiChainName, timestamp24hAgo: number): Promise<string[]> => {
+  const whereCondition =
+    chainName === 'ETH'
+      ? `where: { date_gt: ${timestamp24hAgo}, token_not_in: $blacklist, dailyVolumeUSD_gt:2000 }`
+      : checkIsStableSwap()
+      ? ''
+      : `where: { dailyTxns_gt: 300, id_not_in: $blacklist, date_gt: ${timestamp24hAgo}}`
+  const firstCount = 30
   try {
     const query = gql`
-      query topTokens($blacklist: [String!], $timestamp24hAgo: Int) {
+      query topTokens($blacklist: [String!]) {
         tokenDayDatas(
-          first: 30
-          where: { dailyTxns_gt: 300, id_not_in: $blacklist, date_gt: $timestamp24hAgo }
+          first: ${firstCount}
+          ${whereCondition}
           orderBy: dailyVolumeUSD
           orderDirection: desc
         ) {
@@ -29,10 +41,13 @@ const fetchTopTokens = async (timestamp24hAgo: number): Promise<string[]> => {
         }
       }
     `
-    const data = await infoClient.request<TopTokensResponse>(query, { blacklist: TOKEN_BLACKLIST, timestamp24hAgo })
+    const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TopTokensResponse>(query, {
+      blacklist: multiChainTokenBlackList[chainName],
+    })
     // tokenDayDatas id has compound id "0xTOKENADDRESS-NUMBERS", extracting token address with .split('-')
     return data.tokenDayDatas.map((t) => t.id.split('-')[0])
   } catch (error) {
+    console.warn('fetchTopTokens', { chainName, timestamp24hAgo })
     console.error('Failed to fetch top tokens', error)
     return []
   }
@@ -44,18 +59,26 @@ const fetchTopTokens = async (timestamp24hAgo: number): Promise<string[]> => {
 const useTopTokenAddresses = (): string[] => {
   const [topTokenAddresses, setTopTokenAddresses] = useState([])
   const [timestamp24hAgo] = getDeltaTimestamps()
+  const chainName = useGetChainName()
+
+  const fetch = useCallback(async () => {
+    const addresses = await fetchTopTokens(chainName, timestamp24hAgo)
+    if (addresses.length > 0) setTopTokenAddresses(addresses)
+  }, [timestamp24hAgo, chainName])
 
   useEffect(() => {
-    const fetch = async () => {
-      const addresses = await fetchTopTokens(timestamp24hAgo)
-      setTopTokenAddresses(addresses)
-    }
-    if (topTokenAddresses.length === 0) {
-      fetch()
-    }
-  }, [topTokenAddresses, timestamp24hAgo])
+    fetch()
+  }, [chainName, fetch])
 
   return topTokenAddresses
+}
+
+export const fetchTokenAddresses = async (chainName: MultiChainName) => {
+  const [timestamp24hAgo] = getDeltaTimestamps()
+
+  const addresses = await fetchTopTokens(chainName, timestamp24hAgo)
+
+  return addresses
 }
 
 export default useTopTokenAddresses

@@ -10,13 +10,14 @@ import {
   useMatchBreakpoints,
   NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
+import { useGetChainName, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import { formatAmount } from 'utils/formatInfoNumbers'
 import Percent from 'views/Info/components/Percent'
 import { useTranslation } from '@pancakeswap/localization'
 import orderBy from 'lodash/orderBy'
-import { ClickableColumnHeader, TableWrapper, PageButtons, Arrow, Break } from './shared'
+import { formatAmount } from 'utils/formatInfoNumbers'
+import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from './shared'
 
 /**
  *  Columns on different layouts
@@ -97,14 +98,17 @@ const TableLoader: React.FC<React.PropsWithChildren> = () => {
 
 const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: number }>> = ({ tokenData, index }) => {
   const { isXs, isSm } = useMatchBreakpoints()
+  const chainName = useGetChainName()
+  const chianPath = useMultiChainPath()
+  const stableSwapPath = useStableSwapPath()
   return (
-    <LinkWrapper to={`/info/token/${tokenData.address}`}>
+    <LinkWrapper to={`/info${chianPath}/tokens/${tokenData.address}${stableSwapPath}`}>
       <ResponsiveGrid>
         <Flex>
           <Text>{index + 1}</Text>
         </Flex>
         <Flex alignItems="center">
-          <ResponsiveLogo address={tokenData.address} />
+          <ResponsiveLogo address={tokenData.address} chainName={chainName} />
           {(isXs || isSm) && <Text ml="8px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (
             <Flex marginLeft="10px">
@@ -143,7 +147,6 @@ const TokenTable: React.FC<
 > = ({ tokenDatas, maxItems = MAX_ITEMS }) => {
   const [sortField, setSortField] = useState(SORT_FIELD.volumeUSD)
   const [sortDirection, setSortDirection] = useState<boolean>(true)
-
   const { t } = useTranslation()
 
   const [page, setPage] = useState(1)
@@ -187,7 +190,6 @@ const TokenTable: React.FC<
   if (!tokenDatas) {
     return <Skeleton />
   }
-
   return (
     <TableWrapper>
       <ResponsiveGrid>

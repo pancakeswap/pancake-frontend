@@ -28,7 +28,12 @@ export const formatAmount = (
     isInteger?: boolean
   },
 ) => {
-  const { notation = 'compact', displayThreshold, tokenPrecision, isInteger } = options || { notation: 'compact' }
+  const {
+    notation = amount >= 10000 ? 'compact' : 'standard',
+    displayThreshold,
+    tokenPrecision,
+    isInteger,
+  } = options || { notation: amount >= 10000 ? 'compact' : 'standard' }
   if (amount === 0) {
     if (isInteger) {
       return '0'

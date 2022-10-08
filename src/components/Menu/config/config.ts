@@ -158,7 +158,6 @@ const config: (
         {
           label: t('Info'),
           href: '/info',
-          supportChainIds: SUPPORT_ONLY_BSC,
         },
         {
           label: t('IFO'),

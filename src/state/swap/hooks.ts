@@ -37,7 +37,7 @@ import { PairDataTimeWindowEnum } from './types'
 import { derivedPairByDataIdSelector, pairByDataIdSelector } from './selectors'
 import fetchDerivedPriceData from './fetch/fetchDerivedPriceData'
 import { pairHasEnoughLiquidity } from './fetch/utils'
-import { parsePoolData, fetchPoolData, FormattedPoolFields } from '../info/queries/pools/poolData'
+import { fetchPoolData } from '../info/queries/pools/poolData'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>((state) => state.swap)
@@ -177,16 +177,6 @@ export function useDerivedSwapInfo(
   }
 }
 
-function parseCurrencyFromURLParameter(urlParam: any): string {
-  if (typeof urlParam === 'string') {
-    const valid = isAddress(urlParam)
-    if (valid) return valid
-    if (urlParam.toUpperCase() === 'BNB') return 'BNB'
-    if (valid === false) return 'BNB'
-  }
-  return ''
-}
-
 function parseTokenAmountURLParameter(urlParam: any): string {
   return typeof urlParam === 'string' && !Number.isNaN(parseFloat(urlParam)) ? urlParam : ''
 }
@@ -209,9 +199,11 @@ export function queryParametersToSwapState(
   nativeSymbol?: string,
   defaultOutputCurrency?: string,
 ): SwapState {
-  let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency) || (nativeSymbol ?? DEFAULT_INPUT_CURRENCY)
+  let inputCurrency = isAddress(parsedQs.inputCurrency) || (nativeSymbol ?? DEFAULT_INPUT_CURRENCY)
   let outputCurrency =
-    parseCurrencyFromURLParameter(parsedQs.outputCurrency) || (defaultOutputCurrency ?? DEFAULT_OUTPUT_CURRENCY)
+    typeof parsedQs.outputCurrency === 'string'
+      ? isAddress(parsedQs.outputCurrency) || nativeSymbol
+      : defaultOutputCurrency ?? DEFAULT_OUTPUT_CURRENCY
   if (inputCurrency === outputCurrency) {
     if (typeof parsedQs.outputCurrency === 'string') {
       inputCurrency = ''
@@ -413,23 +405,20 @@ export const useLPApr = (pair?: Pair) => {
       const timestampsArray = getDeltaTimestamps()
       const blocks = await getBlocksFromTimestamps(timestampsArray, 'desc', 1000)
       const [block24h, block48h, block7d, block14d] = blocks ?? []
+      const lowerCasedAddress = pair.liquidityToken.address.toLowerCase()
       const { error, data } = await fetchPoolData(block24h.number, block48h.number, block7d.number, block14d.number, [
-        pair.liquidityToken.address.toLowerCase(),
+        lowerCasedAddress,
       ])
       if (error) return null
-      const formattedPoolData = parsePoolData(data?.now)
-      const formattedPoolData24h = parsePoolData(data?.oneDayAgo)
-      const formattedPoolData48h = parsePoolData(data?.twoDaysAgo)
-      const formattedPoolData7d = parsePoolData(data?.oneWeekAgo)
-      const formattedPoolData14d = parsePoolData(data?.twoWeeksAgo)
-      const current: FormattedPoolFields | undefined = formattedPoolData[pair.liquidityToken.address.toLowerCase()]
-      const oneDay: FormattedPoolFields | undefined = formattedPoolData24h[pair.liquidityToken.address.toLowerCase()]
-      const twoDays: FormattedPoolFields | undefined = formattedPoolData48h[pair.liquidityToken.address.toLowerCase()]
-      const week: FormattedPoolFields | undefined = formattedPoolData7d[pair.liquidityToken.address.toLowerCase()]
-      const twoWeeks: FormattedPoolFields | undefined = formattedPoolData14d[pair.liquidityToken.address.toLowerCase()]
-      const [volumeUSD] = getChangeForPeriod(current?.volumeUSD, oneDay?.volumeUSD, twoDays?.volumeUSD)
-      const [volumeUSDWeek] = getChangeForPeriod(current?.volumeUSD, week?.volumeUSD, twoWeeks?.volumeUSD)
-      const liquidityUSD = current ? current.reserveUSD : 0
+      const current = parseFloat(data?.now[0]?.volumeUSD)
+      const currentReserveUSD = parseFloat(data?.now[0]?.reserveUSD)
+      const oneDay = parseFloat(data?.oneDayAgo[0]?.volumeUSD)
+      const twoDays = parseFloat(data?.twoDaysAgo[0]?.volumeUSD)
+      const week = parseFloat(data?.oneWeekAgo[0]?.volumeUSD)
+      const twoWeeks = parseFloat(data?.twoWeeksAgo[0]?.volumeUSD)
+      const [volumeUSD] = getChangeForPeriod(current, oneDay, twoDays)
+      const [volumeUSDWeek] = getChangeForPeriod(current, week, twoWeeks)
+      const liquidityUSD = currentReserveUSD || 0
       const { lpApr7d } = getLpFeesAndApr(volumeUSD, volumeUSDWeek, liquidityUSD)
       return lpApr7d ? { lpApr7d } : null
     },

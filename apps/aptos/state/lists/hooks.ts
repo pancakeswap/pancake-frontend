@@ -7,7 +7,7 @@ import { DEFAULT_LIST_OF_LISTS, OFFICIAL_LISTS, WARNING_LIST_URLS } from 'config
 import { atom, useAtomValue } from 'jotai'
 import fromPairs from 'lodash/fromPairs'
 import groupBy from 'lodash/groupBy'
-import { ListsState, TagInfo, TokenAddressMap as TTokenAddressMap } from '@pancakeswap/token-lists'
+import { ListsState, TokenAddressMap as TTokenAddressMap } from '@pancakeswap/token-lists'
 import uniqBy from 'lodash/uniqBy'
 import { useMemo } from 'react'
 import { WrappedCoinInfo } from 'utils/WrappedCoinInfo'
@@ -128,15 +128,7 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
     list.tokens.map((token) => ({ ...token, address: new HexString(token.address).toShortString() })),
     (tokenInfo) => `${tokenInfo.chainId}#${tokenInfo.address}`,
   ).map((tokenInfo) => {
-    const tags: TagInfo[] =
-      tokenInfo.tags
-        ?.map((tagId) => {
-          if (!list.tags?.[tagId]) return undefined
-          return { ...list.tags[tagId], id: tagId }
-        })
-        ?.filter((x): x is TagInfo => Boolean(x)) ?? []
-
-    return new WrappedCoinInfo(tokenInfo, tags)
+    return new WrappedCoinInfo(tokenInfo)
   })
 
   const groupedTokenMap: { [chainId: string]: WrappedCoinInfo[] } = groupBy(tokenMap, (tokenInfo) => tokenInfo.chainId)

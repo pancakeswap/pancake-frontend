@@ -20,6 +20,7 @@ export const updatePoolTransactions = createAction<{ poolAddress: string; transa
 )
 
 export const updateTokenData = createAction<{ tokens: TokenData[] }>('info/tokens/updateTokenData')
+export const clearTokenData = createAction('info/tokens/clearTokenData')
 export const addTokenKeys = createAction<{ tokenAddresses: string[] }>('info/tokens/addTokenKeys')
 export const addTokenPoolAddresses = createAction<{ tokenAddress: string; poolAddresses: string[] }>(
   'info/tokens/addTokenPoolAddresses',

@@ -29,7 +29,7 @@ const TotalAvailableClaim: React.FC<React.PropsWithChildren<TotalAvailableClaimP
       <Flex>
         <TokenImage mr="16px" width={32} height={32} token={token} style={{ alignSelf: 'flex-start' }} />
         <Box>
-          <Text bold color="secondary" fontSize="12px">
+          <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
             {t('%symbol% available to claim', { symbol: token.symbol })}
           </Text>
           <Text as="span" bold fontSize="20px">

@@ -6,6 +6,6 @@ const InfoTokensPage = () => {
 }
 
 InfoTokensPage.Layout = InfoPageLayout
-InfoTokensPage.chains = [] // set all
+InfoTokensPage.chains = []
 
 export default InfoTokensPage

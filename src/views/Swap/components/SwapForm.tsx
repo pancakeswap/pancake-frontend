@@ -219,6 +219,8 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAcce
                   onClick={() => {
                     setApprovalSubmitted(false) // reset 2 step UI for approvals
                     onSwitchTokens()
+                    replaceBrowserHistory('inputCurrency', outputCurrencyId)
+                    replaceBrowserHistory('outputCurrency', inputCurrencyId)
                   }}
                 />
                 {recipient === null && !showWrap && isExpertMode ? (

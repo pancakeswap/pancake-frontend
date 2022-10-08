@@ -5,6 +5,7 @@ import { useWeb3React } from '@pancakeswap/wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useAnniversaryAchievementContract } from 'hooks/useContract'
 import useCatchTxError from 'hooks/useCatchTxError'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import AnniversaryAchievementModal from './AnniversaryAchievementModal'
@@ -17,7 +18,7 @@ interface GlobalCheckClaimStatusProps {
 const enable = true
 
 const GlobalCheckClaimStatus: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusProps>> = (props) => {
-  const { account, chainId } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   if (!enable || chainId !== ChainId.BSC) {
     return null
   }

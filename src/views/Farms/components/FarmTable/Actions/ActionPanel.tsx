@@ -1,20 +1,21 @@
-import styled, { keyframes, css } from 'styled-components'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import { LinkExternal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { getBlockExploreLink } from 'utils'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useContext } from 'react'
+import styled, { css, keyframes } from 'styled-components'
+import { getBlockExploreLink } from 'utils'
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import { multiChainPaths } from 'state/info/constant'
 import { FarmWithStakedValue } from '../../types'
 
+import BoostedAction from '../../YieldBooster/components/BoostedAction'
+import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
+import Apr, { AprProps } from '../Apr'
+import Liquidity, { LiquidityProps } from '../Liquidity'
+import Multiplier, { MultiplierProps } from '../Multiplier'
 import { HarvestAction, HarvestActionContainer, ProxyHarvestActionContainer } from './HarvestAction'
 import StakedAction, { ProxyStakedContainer, StakedContainer } from './StakedAction'
-import Apr, { AprProps } from '../Apr'
-import Multiplier, { MultiplierProps } from '../Multiplier'
-import Liquidity, { LiquidityProps } from '../Liquidity'
-import BoostedAction from '../../YieldBooster/components/BoostedAction'
-import { ActionTitles, ActionContainer as ActionContainerSection, ActionContent } from './styles'
-import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
+import { ActionContainer as ActionContainerSection, ActionContent, ActionTitles } from './styles'
 
 export interface ActionPanelProps {
   apr: AprProps
@@ -135,7 +136,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
   })
   const { lpAddress } = farm
   const bsc = getBlockExploreLink(lpAddress, 'address', chainId)
-  const info = `/info/pool/${lpAddress}`
+  const info = `/info/pools${multiChainPaths[chainId]}/${lpAddress}`
   const { stakedBalance, tokenBalance, proxy } = farm.userData
 
   return (

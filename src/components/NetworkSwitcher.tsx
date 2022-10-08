@@ -1,3 +1,5 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { ChainId, NATIVE } from '@pancakeswap/sdk'
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -11,16 +13,16 @@ import {
   UserMenuItem,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { ChainId, NATIVE } from '@pancakeswap/sdk'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { useActiveChainId, useLocalNetworkChain } from 'hooks/useActiveChainId'
 import { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
-import { useTranslation } from '@pancakeswap/localization'
-import { useSessionChainId } from 'hooks/useSessionChainId'
 import { useHover } from 'hooks/useHover'
-import { useNetwork } from 'wagmi'
+import { useSessionChainId } from 'hooks/useSessionChainId'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useMemo } from 'react'
+import { useRouter } from 'next/router'
 import { chains } from 'utils/wagmi'
+import { useNetwork } from 'wagmi'
 import { ChainLogo } from './Logo/ChainLogo'
 
 const NetworkSelect = ({ switchNetwork, chainId }) => {
@@ -109,6 +111,9 @@ export const NetworkSwitcher = () => {
   const { t } = useTranslation()
   const { chainId, isWrongNetwork, isNotMatched } = useActiveChainId()
   const { pendingChainId, isLoading, canSwitch, switchNetworkAsync } = useSwitchNetwork()
+  const router = useRouter()
+  const { account } = useWeb3React()
+
   useNetworkConnectorUpdater()
 
   const foundChain = useMemo(
@@ -123,7 +128,7 @@ export const NetworkSwitcher = () => {
 
   const cannotChangeNetwork = !canSwitch
 
-  if (!chainId) {
+  if (!chainId || (!account && router.pathname.includes('info'))) {
     return null
   }
 

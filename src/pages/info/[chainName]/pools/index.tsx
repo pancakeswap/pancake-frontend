@@ -6,6 +6,6 @@ const InfoPoolsPage = () => {
 }
 
 InfoPoolsPage.Layout = InfoPageLayout
-InfoPoolsPage.chains = [] // set all
+InfoPoolsPage.chains = []
 
 export default InfoPoolsPage

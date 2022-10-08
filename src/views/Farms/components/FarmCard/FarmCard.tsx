@@ -1,16 +1,18 @@
-import { useState, useCallback } from 'react'
-import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
-import { Card, Flex, Text, Skeleton, ExpandableSectionButton, Farm as FarmUI } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { getBlockExploreLink } from 'utils'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { Card, Farm as FarmUI, Flex, Skeleton, Text, ExpandableSectionButton } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
+import { multiChainPaths } from 'state/info/constant'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useCallback, useState } from 'react'
+import styled from 'styled-components'
+import { getBlockExploreLink } from 'utils'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import CardHeading from './CardHeading'
 import { FarmWithStakedValue } from '../types'
-import CardActionsContainer from './CardActionsContainer'
 import ApyButton from './ApyButton'
+import CardActionsContainer from './CardActionsContainer'
+import CardHeading from './CardHeading'
+
 import BoostedApr from '../YieldBooster/components/BoostedApr'
 
 const { DetailsSection } = FarmUI.FarmCard
@@ -157,7 +159,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           <DetailsSection
             removed={removed}
             scanAddressLink={getBlockExploreLink(lpAddress, 'address', chainId)}
-            infoAddress={`/info/pool/${lpAddress}`}
+            infoAddress={`/info/pools${multiChainPaths[chainId]}/${lpAddress}`}
             totalValueFormatted={totalValueFormatted}
             lpLabel={lpLabel}
             addLiquidityUrl={addLiquidityUrl}

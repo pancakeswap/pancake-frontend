@@ -8,7 +8,6 @@ import { useDebounce } from '@pancakeswap/hooks'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { FixedSizeList } from 'react-window'
 import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
-import { TagInfo } from '@pancakeswap/token-lists'
 import { useAudioPlay } from 'state/user'
 import { WrappedCoinInfo } from 'utils/WrappedCoinInfo'
 import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
@@ -54,14 +53,7 @@ function useSearchInactiveTokenLists(search: string | undefined, minResults = 10
           !addressSet[tokenInfo.address] &&
           filterToken(tokenInfo)
         ) {
-          const tags: TagInfo[] =
-            tokenInfo.tags
-              ?.map((tagId) => {
-                if (!list.tags?.[tagId]) return undefined
-                return { ...list.tags[tagId], id: tagId }
-              })
-              ?.filter((x): x is TagInfo => Boolean(x)) ?? []
-          const wrapped: WrappedCoinInfo = new WrappedCoinInfo(tokenInfo, tags)
+          const wrapped: WrappedCoinInfo = new WrappedCoinInfo(tokenInfo)
           addressSet[wrapped.address] = true
           if (
             tokenInfo.name?.toLowerCase() === trimmedSearchQuery ||

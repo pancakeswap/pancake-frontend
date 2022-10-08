@@ -1,11 +1,12 @@
 import { Activity, NftToken, TokenIdWithCollectionAddress } from 'state/nftMarket/types'
 import { getNftsFromCollectionApi, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
 import uniqBy from 'lodash/uniqBy'
+import { isAddress } from 'utils'
 import { pancakeBunniesAddress } from '../../constants'
 
 export const fetchActivityNftMetadata = async (activities: Activity[]): Promise<NftToken[]> => {
   const hasPBCollections = activities.some(
-    (activity) => activity.nft.collection.id.toLowerCase() === pancakeBunniesAddress.toLowerCase(),
+    (activity) => isAddress(activity.nft.collection.id) === pancakeBunniesAddress,
   )
 
   const activityNftTokenIds = uniqBy(
@@ -25,7 +26,7 @@ export const fetchActivityNftMetadata = async (activities: Activity[]): Promise<
 
   const pbNfts = bunniesMetadata
     ? activities
-        .filter((activity) => activity.nft.collection.id.toLowerCase() === pancakeBunniesAddress.toLowerCase())
+        .filter((activity) => isAddress(activity.nft.collection.id) === pancakeBunniesAddress)
         .map((activity) => {
           const { name: collectionName } = bunniesMetadata.data[activity.nft.otherId].collection
           return {

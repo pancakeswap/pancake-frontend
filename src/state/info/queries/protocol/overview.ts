@@ -1,11 +1,12 @@
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
-import { ProtocolData } from 'state/info/types'
-import { infoClient } from 'utils/graphql'
+import { Block, ProtocolData } from 'state/info/types'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getPercentChange } from 'views/Info/utils/infoDataHelpers'
+import { checkIsStableSwap, getMultiChainQueryEndPointWithStableSwap, MultiChainName } from '../../constant'
+import { useGetChainName } from '../../hooks'
 
 interface PancakeFactory {
   totalTransactions: string
@@ -15,15 +16,19 @@ interface PancakeFactory {
 
 interface OverviewResponse {
   pancakeFactories: PancakeFactory[]
+  factories?: PancakeFactory[]
 }
-
 /**
  * Latest Liquidity, Volume and Transaction count
  */
-const getOverviewData = async (block?: number): Promise<{ data?: OverviewResponse; error: boolean }> => {
+const getOverviewData = async (
+  chainName: MultiChainName,
+  block?: number,
+): Promise<{ data?: OverviewResponse; error: boolean }> => {
+  const factoryString = checkIsStableSwap() ? `factories` : `pancakeFactories`
   try {
     const query = gql`query overview {
-      pancakeFactories(
+      ${factoryString}(
         ${block ? `block: { number: ${block}}` : ``}
         first: 1) {
         totalTransactions
@@ -31,7 +36,7 @@ const getOverviewData = async (block?: number): Promise<{ data?: OverviewRespons
         totalLiquidityUSD
       }
     }`
-    const data = await infoClient.request<OverviewResponse>(query)
+    const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<OverviewResponse>(query)
     return { data, error: false }
   } catch (error) {
     console.error('Failed to fetch info overview', error)
@@ -62,13 +67,14 @@ const useFetchProtocolData = (): ProtocolFetchState => {
   const [t24, t48] = getDeltaTimestamps()
   const { blocks, error: blockError } = useBlocksFromTimestamps([t24, t48])
   const [block24, block48] = blocks ?? []
+  const chainName = useGetChainName()
 
   useEffect(() => {
-    const fetch = async () => {
+    const fetchData = async () => {
       const [{ error, data }, { error: error24, data: data24 }, { error: error48, data: data48 }] = await Promise.all([
-        getOverviewData(),
-        getOverviewData(block24?.number ?? undefined),
-        getOverviewData(block48?.number ?? undefined),
+        getOverviewData(chainName),
+        getOverviewData(chainName, block24?.number ?? undefined),
+        getOverviewData(chainName, block48?.number ?? undefined),
       ])
       const anyError = error || error24 || error48
       const overviewData = formatPancakeFactoryResponse(data?.pancakeFactories?.[0])
@@ -106,13 +112,53 @@ const useFetchProtocolData = (): ProtocolFetchState => {
         })
       }
     }
+
     const allBlocksAvailable = block24?.number && block48?.number
     if (allBlocksAvailable && !blockError && !fetchState.data) {
-      fetch()
+      fetchData()
     }
-  }, [block24, block48, blockError, fetchState])
+  }, [block24, block48, blockError, fetchState, chainName])
 
   return fetchState
+}
+
+export const fetchProtocolData = async (chainName: MultiChainName, block24: Block, block48: Block) => {
+  const [{ data }, { data: data24 }, { data: data48 }] = await Promise.all([
+    getOverviewData(chainName),
+    getOverviewData(chainName, block24?.number ?? undefined),
+    getOverviewData(chainName, block48?.number ?? undefined),
+  ])
+  if (data.factories && data.factories.length > 0) data.pancakeFactories = data.factories
+  if (data24.factories && data24.factories.length > 0) data24.pancakeFactories = data24.factories
+  if (data48.factories && data48.factories.length > 0) data48.pancakeFactories = data48.factories
+
+  // const anyError = error || error24 || error48
+  const overviewData = formatPancakeFactoryResponse(data?.pancakeFactories?.[0])
+  const overviewData24 = formatPancakeFactoryResponse(data24?.pancakeFactories?.[0])
+  const overviewData48 = formatPancakeFactoryResponse(data48?.pancakeFactories?.[0])
+  // const allDataAvailable = overviewData && overviewData24 && overviewData48
+
+  const [volumeUSD, volumeUSDChange] = getChangeForPeriod(
+    overviewData.totalVolumeUSD,
+    overviewData24.totalVolumeUSD,
+    overviewData48.totalVolumeUSD,
+  )
+  const liquidityUSDChange = getPercentChange(overviewData.totalLiquidityUSD, overviewData24.totalLiquidityUSD)
+  // 24H transactions
+  const [txCount, txCountChange] = getChangeForPeriod(
+    overviewData.totalTransactions,
+    overviewData24.totalTransactions,
+    overviewData48.totalTransactions,
+  )
+  const protocolData: ProtocolData = {
+    volumeUSD,
+    volumeUSDChange: typeof volumeUSDChange === 'number' ? volumeUSDChange : 0,
+    liquidityUSD: overviewData.totalLiquidityUSD,
+    liquidityUSDChange,
+    txCount,
+    txCountChange,
+  }
+  return protocolData
 }
 
 export default useFetchProtocolData
