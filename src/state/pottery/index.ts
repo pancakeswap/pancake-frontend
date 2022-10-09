@@ -31,6 +31,7 @@ const initialState: PotteryState = Object.freeze({
     totalLockCake: null,
     totalSupply: null,
     lockStartTime: '',
+    lockTime: 0,
     totalLockedValue: null,
     latestRoundId: '',
     maxTotalDeposit: null,

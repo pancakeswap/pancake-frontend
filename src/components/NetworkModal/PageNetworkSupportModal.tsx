@@ -1,7 +1,7 @@
 import { Button, Modal, Text, Grid, Box, Message, MessageText } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
 import Image from 'next/future/image'
-import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
+import { useSwitchNetwork, useSwitchNetworkLocal } from 'hooks/useSwitchNetwork'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { chains } from 'utils/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
@@ -16,7 +16,8 @@ import useAuth from 'hooks/useAuth'
 export function PageNetworkSupportModal() {
   const { t } = useTranslation()
   const { switchNetworkAsync, isLoading, canSwitch } = useSwitchNetwork()
-  const { chainId, isConnected } = useActiveWeb3React()
+  const switchNetworkLocal = useSwitchNetworkLocal()
+  const { chainId, isConnected, isWrongNetwork } = useActiveWeb3React()
   const { logout } = useAuth()
 
   const foundChain = useMemo(() => chains.find((c) => c.id === chainId), [chainId])
@@ -56,7 +57,7 @@ export function PageNetworkSupportModal() {
           <Button
             variant={foundChain && lastValidPath ? 'secondary' : 'primary'}
             isLoading={isLoading}
-            onClick={() => switchNetworkAsync(ChainId.BSC)}
+            onClick={() => (isWrongNetwork ? switchNetworkLocal(ChainId.BSC) : switchNetworkAsync(ChainId.BSC))}
           >
             {t('Switch to %chain%', { chain: 'BNB Smart Chain' })}
           </Button>

@@ -9,7 +9,7 @@ import { pickFarmTransactionTx } from 'state/global/actions'
 import WalletModal, { WalletView } from 'components/Menu/UserMenu/WalletModal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
-interface StackedLPProps {
+interface StakedLPProps {
   lpAddress: string
   stakedBalance: BigNumber
   tokenSymbol: string
@@ -20,7 +20,7 @@ interface StackedLPProps {
   quoteTokenAmountTotal: BigNumber
 }
 
-const StakedLP: React.FunctionComponent<React.PropsWithChildren<StackedLPProps>> = ({
+const StakedLP: React.FunctionComponent<React.PropsWithChildren<StakedLPProps>> = ({
   lpAddress,
   stakedBalance,
   quoteTokenSymbol,

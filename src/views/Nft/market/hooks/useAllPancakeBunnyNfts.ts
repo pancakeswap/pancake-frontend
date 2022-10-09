@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { isAddress } from 'utils'
 import {
   getAllPancakeBunniesLowestPrice,
   getAllPancakeBunniesRecentUpdatedAt,
@@ -11,7 +12,7 @@ import { pancakeBunniesAddress } from '../constants'
 const useAllPancakeBunnyNfts = (collectionAddress: string) => {
   const [allPancakeBunnyNfts, setAllPancakeBunnyNfts] = useState<NftToken[]>(null)
 
-  const isPBCollection = collectionAddress === pancakeBunniesAddress
+  const isPBCollection = isAddress(collectionAddress) === pancakeBunniesAddress
 
   useEffect(() => {
     const fetchPancakeBunnies = async () => {
