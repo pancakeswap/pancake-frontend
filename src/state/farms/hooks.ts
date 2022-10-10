@@ -81,7 +81,7 @@ const coreFarmPIDs = {
   56: [2, 3],
   97: [4, 10],
   5: [13, 11],
-  1: [8, 9], // TODO: NonBSCFarm
+  1: [124, 125],
 }
 
 export const usePollCoreFarmData = () => {
