@@ -34,8 +34,7 @@ const ifos: Ifo[] = [
     version: 3.2,
     twitterUrl: 'https://twitter.com/KingdomRaids',
     description: 'Kingdom Raids is a blockchain-based strategy role-playing game (RPG) game with a NFT metaverse',
-    vestingTitle:
-      '$KRS - utility token for Kingdom Raids, a blockchain-based strategy role-playing game (RPG) game with a NFT metaverse.',
+    vestingTitle: '$KRS - utility token for Kingdom Raids, a role-playing game (RPG) game.',
   },
   {
     id: 'co',
