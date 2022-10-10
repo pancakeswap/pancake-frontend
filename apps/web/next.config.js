@@ -5,7 +5,18 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
 const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin')
-const withTM = require('next-transpile-modules')(['@pancakeswap/uikit', '@pancakeswap/sdk'])
+const withTM = require('next-transpile-modules')([
+  '@pancakeswap/uikit',
+  '@pancakeswap/wagmi',
+  '@pancakeswap/ui',
+  '@pancakeswap/farms',
+  '@pancakeswap/hooks',
+  '@pancakeswap/localization',
+  '@pancakeswap/multicall',
+  '@pancakeswap/token-lists',
+  '@pancakeswap/tokens',
+  '@pancakeswap/utils',
+])
 
 const withVanillaExtract = createVanillaExtractPlugin()
 
