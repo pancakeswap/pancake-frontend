@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, Flex, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePointCenterIfoContract } from 'hooks/useContract'
 import { Achievement } from 'state/types'
@@ -55,11 +55,11 @@ const AchievementRow: React.FC<React.PropsWithChildren<AchievementRowProps>> = (
   const pointCenterContract = usePointCenterIfoContract()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isCollecting } = useCatchTxError()
-  const { callWithGasPrice } = useCallWithGasPrice()
+  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
 
   const handleCollectPoints = async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(pointCenterContract, 'getPoints', [achievement.address])
+      return callWithMarketGasPrice(pointCenterContract, 'getPoints', [achievement.address])
     })
     if (receipt?.status) {
       onCollectSuccess(achievement)

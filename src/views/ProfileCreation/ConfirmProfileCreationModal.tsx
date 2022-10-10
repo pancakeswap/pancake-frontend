@@ -6,7 +6,7 @@ import { useCake, useProfileContract } from 'hooks/useContract'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useProfile } from 'state/profile/hooks'
 import { requiresApproval } from 'utils/requiresApproval'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { REGISTER_COST } from './config'
@@ -35,7 +35,7 @@ const ConfirmProfileCreationModal: React.FC<React.PropsWithChildren<Props>> = ({
   const { refresh: refreshProfile } = useProfile()
   const { toastSuccess } = useToast()
   const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
-  const { callWithGasPrice } = useCallWithGasPrice()
+  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
@@ -43,10 +43,10 @@ const ConfirmProfileCreationModal: React.FC<React.PropsWithChildren<Props>> = ({
         return requiresApproval(cakeContractReader, account, profileContract.address, minimumCakeRequired)
       },
       onApprove: () => {
-        return callWithGasPrice(cakeContractApprover, 'approve', [profileContract.address, allowance.toJSON()])
+        return callWithMarketGasPrice(cakeContractApprover, 'approve', [profileContract.address, allowance.toJSON()])
       },
       onConfirm: () => {
-        return callWithGasPrice(profileContract, 'createProfile', [
+        return callWithMarketGasPrice(profileContract, 'createProfile', [
           teamId,
           selectedNft.collectionAddress,
           selectedNft.tokenId,

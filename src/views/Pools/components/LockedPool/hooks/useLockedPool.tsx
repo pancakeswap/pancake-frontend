@@ -14,7 +14,7 @@ import { ONE_WEEK_DEFAULT, vaultPoolConfig } from 'config/constants/pools'
 import { VaultKey } from 'state/types'
 
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
 import { PrepConfirmArg } from '../types'
 
 interface HookArgs {
@@ -40,7 +40,7 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
   const { account } = useWeb3React()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const vaultPoolContract = useVaultPoolContract(VaultKey.CakeVault)
-  const { callWithGasPrice } = useCallWithGasPrice()
+  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
 
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
@@ -57,7 +57,7 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
         // .toString() being called to fix a BigNumber error in prod
         // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
         const methodArgs = [convertedStakeAmount.toString(), lockDuration]
-        return callWithGasPrice(vaultPoolContract, 'deposit', methodArgs, callOptions)
+        return callWithMarketGasPrice(vaultPoolContract, 'deposit', methodArgs, callOptions)
       })
 
       if (receipt?.status) {
@@ -71,7 +71,7 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
         dispatch(fetchCakeVaultUserData({ account }))
       }
     },
-    [fetchWithCatchTxError, toastSuccess, dispatch, onDismiss, account, vaultPoolContract, t, callWithGasPrice],
+    [fetchWithCatchTxError, toastSuccess, dispatch, onDismiss, account, vaultPoolContract, t, callWithMarketGasPrice],
   )
 
   const handleConfirmClick = useCallback(async () => {

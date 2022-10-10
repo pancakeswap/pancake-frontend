@@ -4,7 +4,7 @@ import { InjectedModalProps, useToast } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
 import { useErc721CollectionContract, useNftMarketContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
@@ -89,7 +89,7 @@ const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { account } = useWeb3React()
-  const { callWithGasPrice } = useCallWithGasPrice()
+  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
   const { toastSuccess } = useToast()
   const { reader: collectionContractReader, signer: collectionContractSigner } = useErc721CollectionContract(
     nftToSell.collectionAddress,
@@ -175,7 +175,7 @@ const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
       }
     },
     onApprove: () => {
-      return callWithGasPrice(collectionContractSigner, 'setApprovalForAll', [nftMarketContract.address, true])
+      return callWithMarketGasPrice(collectionContractSigner, 'setApprovalForAll', [nftMarketContract.address, true])
     },
     onApproveSuccess: async ({ receipt }) => {
       toastSuccess(
@@ -185,10 +185,13 @@ const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
     },
     onConfirm: () => {
       if (stage === SellingStage.CONFIRM_REMOVE_FROM_MARKET) {
-        return callWithGasPrice(nftMarketContract, 'cancelAskOrder', [nftToSell.collectionAddress, nftToSell.tokenId])
+        return callWithMarketGasPrice(nftMarketContract, 'cancelAskOrder', [
+          nftToSell.collectionAddress,
+          nftToSell.tokenId,
+        ])
       }
       if (stage === SellingStage.CONFIRM_TRANSFER) {
-        return callWithGasPrice(collectionContractSigner, 'safeTransferFrom(address,address,uint256)', [
+        return callWithMarketGasPrice(collectionContractSigner, 'safeTransferFrom(address,address,uint256)', [
           account,
           transferAddress,
           nftToSell.tokenId,
@@ -196,7 +199,11 @@ const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
       }
       const methodName = variant === 'sell' ? 'createAskOrder' : 'modifyAskOrder'
       const askPrice = parseUnits(price)
-      return callWithGasPrice(nftMarketContract, methodName, [nftToSell.collectionAddress, nftToSell.tokenId, askPrice])
+      return callWithMarketGasPrice(nftMarketContract, methodName, [
+        nftToSell.collectionAddress,
+        nftToSell.tokenId,
+        askPrice,
+      ])
     },
     onSuccess: async ({ receipt }) => {
       toastSuccess(getToastText(variant, stage, t), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)

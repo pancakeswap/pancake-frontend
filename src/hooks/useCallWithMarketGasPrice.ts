@@ -4,7 +4,7 @@ import { Contract, CallOverrides } from '@ethersproject/contracts'
 import get from 'lodash/get'
 import { addBreadcrumb } from '@sentry/nextjs'
 
-export function useCallWithGasPrice() {
+export function useCallWithMarketGasPrice() {
   /**
    * Perform a contract call with a gas price returned from useGasPrice
    * @param contract Used to perform the call
@@ -13,7 +13,7 @@ export function useCallWithGasPrice() {
    * @param overrides An overrides object to pass to the method. gasPrice passed in here will take priority over the price returned by useGasPrice
    * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
    */
-  const callWithGasPrice = useCallback(
+  const callWithMarketGasPrice = useCallback(
     async (
       contract: Contract,
       methodName: string,
@@ -52,5 +52,5 @@ export function useCallWithGasPrice() {
     [],
   )
 
-  return { callWithGasPrice }
+  return { callWithMarketGasPrice }
 }
