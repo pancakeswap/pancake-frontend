@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import styled from 'styled-components'
+import { ChainId } from '@pancakeswap/sdk'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { Flex, Box, SwapVertIcon, IconButton } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { DeserializedPool } from 'state/types'
@@ -26,8 +28,9 @@ const Grid = styled.div`
 `
 
 const FarmsPoolsRow = () => {
-  const [showFarms, setShowFarms] = useState(false)
+  const [showFarms, setShowFarms] = useState(true)
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const { topFarms, fetched } = useGetTopFarmsByApr(isIntersecting)
   const { topPools } = useGetTopPoolsByApr(fetched && isIntersecting)
@@ -68,18 +71,20 @@ const FarmsPoolsRow = () => {
       <Flex flexDirection="column" mt="24px">
         <Flex mb="24px">
           <RowHeading text={showFarms ? t('Top Farms') : t('Top Syrup Pools')} />
-          <IconButton
-            variant="text"
-            height="100%"
-            width="auto"
-            onClick={() => {
-              setShowFarms((prev) => !prev)
-              clearInterval(timer.current)
-              startTimer()
-            }}
-          >
-            <SwapVertIcon height="24px" width="24px" color="textSubtle" />
-          </IconButton>
+          {chainId === ChainId.BSC && (
+            <IconButton
+              variant="text"
+              height="100%"
+              width="auto"
+              onClick={() => {
+                setShowFarms((prev) => !prev)
+                clearInterval(timer.current)
+                startTimer()
+              }}
+            >
+              <SwapVertIcon height="24px" width="24px" color="textSubtle" />
+            </IconButton>
+          )}
         </Flex>
         <Box height={['240px', null, '80px']}>
           <Grid>
@@ -94,19 +99,21 @@ const FarmsPoolsRow = () => {
               />
             ))}
           </Grid>
-          <Grid>
-            {topPools.map((topPool, index) => (
-              <TopFarmPool
-                // eslint-disable-next-line react/no-array-index-key
-                key={index}
-                title={topPool && getPoolText(topPool)}
-                percentage={topPool?.sousId === 0 ? +lockedApy : topPool?.apr}
-                index={index}
-                isApy={topPool?.sousId === 0}
-                visible={!showFarms}
-              />
-            ))}
-          </Grid>
+          {chainId === ChainId.BSC && (
+            <Grid>
+              {topPools.map((topPool, index) => (
+                <TopFarmPool
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={index}
+                  title={topPool && getPoolText(topPool)}
+                  percentage={topPool?.sousId === 0 ? +lockedApy : topPool?.apr}
+                  index={index}
+                  isApy={topPool?.sousId === 0}
+                  visible={!showFarms}
+                />
+              ))}
+            </Grid>
+          )}
         </Box>
       </Flex>
     </div>

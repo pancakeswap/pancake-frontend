@@ -1,0 +1,399 @@
+[
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_messageBus", "type": "address" },
+      { "internalType": "address", "name": "_oracle_bnb", "type": "address" },
+      { "internalType": "address", "name": "_oracle_eth", "type": "address" },
+      { "internalType": "uint256", "name": "_oracle_bnb_update_buffer", "type": "uint256" },
+      { "internalType": "uint256", "name": "_oracle_eth_update_buffer", "type": "uint256" },
+      { "internalType": "uint64", "name": "_chainId", "type": "uint64" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{ "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }],
+    "name": "BnbChangeUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{ "indexed": false, "internalType": "uint256", "name": "rate", "type": "uint256" }],
+    "name": "CompensationRateUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{ "indexed": false, "internalType": "uint256", "name": "gaslimit", "type": "uint256" }],
+    "name": "CreateProxyGasLimitUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "address", "name": "sender", "type": "address" },
+      { "indexed": false, "internalType": "uint64", "name": "srcChainId", "type": "uint64" },
+      { "indexed": false, "internalType": "uint64", "name": "nonce", "type": "uint64" },
+      { "indexed": false, "internalType": "enum DataTypes.MessageTypes", "name": "msgType", "type": "uint8" },
+      { "indexed": false, "internalType": "address", "name": "acount", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "pid", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "FarmingMessageReceived",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "indexed": false, "internalType": "bool", "name": "success", "type": "bool" }
+    ],
+    "name": "FeeClaimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "enum CrossFarmingSender.Chains", "name": "chain", "type": "uint8" },
+      { "indexed": false, "internalType": "enum DataTypes.MessageTypes", "name": "msgtype", "type": "uint8" },
+      { "indexed": false, "internalType": "uint256", "name": "gaslimit", "type": "uint256" }
+    ],
+    "name": "GasLimitUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{ "indexed": false, "internalType": "address", "name": "messageBus", "type": "address" }],
+    "name": "MessageBusUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{ "indexed": false, "internalType": "address", "name": "oracle", "type": "address" }],
+    "name": "NewOracle",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "enum CrossFarmingSender.Feeds", "name": "feed", "type": "uint8" },
+      { "indexed": false, "internalType": "uint256", "name": "oracleUpdateBuffer", "type": "uint256" }
+    ],
+    "name": "OracleBufferUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" },
+      { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{ "indexed": false, "internalType": "address", "name": "receiver", "type": "address" }],
+    "name": "ReceiverUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{ "indexed": false, "internalType": "address", "name": "vault", "type": "address" }],
+    "name": "VaultUpdated",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "BNB_CHANGE",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "BSC_CHAIN_ID",
+    "outputs": [{ "internalType": "uint64", "name": "", "type": "uint64" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "COMPENSATION_PRECISION",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "CROSS_FARMING_RECEIVER",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "EXCHANGE_RATE_PRECISION",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_COMPENSATION_RATE",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MIN_COMPENSATION_RATE",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "Vault",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_gas", "type": "uint256" }],
+    "name": "claimFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "compensationRate",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "createProxyGasLimit",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_token", "type": "address" },
+      { "internalType": "uint256", "name": "_amount", "type": "uint256" }
+    ],
+    "name": "drainToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "enum CrossFarmingSender.Chains", "name": "_chain", "type": "uint8" },
+      { "internalType": "address", "name": "_account", "type": "address" },
+      { "internalType": "enum DataTypes.MessageTypes", "name": "_msgType", "type": "uint8" }
+    ],
+    "name": "estimateGaslimit",
+    "outputs": [{ "internalType": "uint256", "name": "gaslimit", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_sender", "type": "address" },
+      { "internalType": "uint64", "name": "_srcChainId", "type": "uint64" },
+      { "internalType": "bytes", "name": "_message", "type": "bytes" },
+      { "internalType": "address", "name": "", "type": "address" }
+    ],
+    "name": "executeMessage",
+    "outputs": [{ "internalType": "enum IMessageReceiverApp.ExecutionStatus", "name": "", "type": "uint8" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_sender", "type": "address" },
+      { "internalType": "address", "name": "_token", "type": "address" },
+      { "internalType": "uint256", "name": "_amount", "type": "uint256" },
+      { "internalType": "uint64", "name": "_srcChainId", "type": "uint64" },
+      { "internalType": "bytes", "name": "_message", "type": "bytes" },
+      { "internalType": "address", "name": "_executor", "type": "address" }
+    ],
+    "name": "executeMessageWithTransfer",
+    "outputs": [{ "internalType": "enum IMessageReceiverApp.ExecutionStatus", "name": "", "type": "uint8" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_sender", "type": "address" },
+      { "internalType": "address", "name": "_token", "type": "address" },
+      { "internalType": "uint256", "name": "_amount", "type": "uint256" },
+      { "internalType": "uint64", "name": "_srcChainId", "type": "uint64" },
+      { "internalType": "bytes", "name": "_message", "type": "bytes" },
+      { "internalType": "address", "name": "_executor", "type": "address" }
+    ],
+    "name": "executeMessageWithTransferFallback",
+    "outputs": [{ "internalType": "enum IMessageReceiverApp.ExecutionStatus", "name": "", "type": "uint8" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_token", "type": "address" },
+      { "internalType": "uint256", "name": "_amount", "type": "uint256" },
+      { "internalType": "bytes", "name": "_message", "type": "bytes" },
+      { "internalType": "address", "name": "_executor", "type": "address" }
+    ],
+    "name": "executeMessageWithTransferRefund",
+    "outputs": [{ "internalType": "enum IMessageReceiverApp.ExecutionStatus", "name": "", "type": "uint8" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "enum CrossFarmingSender.Chains", "name": "", "type": "uint8" },
+      { "internalType": "enum DataTypes.MessageTypes", "name": "", "type": "uint8" }
+    ],
+    "name": "gaslimits",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "is1st",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "messageBus",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "uint256", "name": "", "type": "uint256" }
+    ],
+    "name": "nonces",
+    "outputs": [{ "internalType": "uint64", "name": "", "type": "uint64" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "enum CrossFarmingSender.Feeds", "name": "", "type": "uint8" }],
+    "name": "oracle",
+    "outputs": [{ "internalType": "contract AggregatorV3Interface", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "enum CrossFarmingSender.Feeds", "name": "", "type": "uint8" }],
+    "name": "oracleUpdateBuffer",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "bytes", "name": "_message", "type": "bytes" }],
+    "name": "sendFarmMessage",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_change", "type": "uint256" }],
+    "name": "setBnbChange",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_rate", "type": "uint256" }],
+    "name": "setCompensationRate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_gaslimit", "type": "uint256" }],
+    "name": "setCreateProxyGasLimit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "enum CrossFarmingSender.Chains", "name": "_chain", "type": "uint8" },
+      { "internalType": "enum DataTypes.MessageTypes", "name": "_type", "type": "uint8" },
+      { "internalType": "uint256", "name": "_gaslimit", "type": "uint256" }
+    ],
+    "name": "setGaslimits",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_messageBus", "type": "address" }],
+    "name": "setMessageBus",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "enum CrossFarmingSender.Feeds", "name": "_feed", "type": "uint8" },
+      { "internalType": "address", "name": "_oracle", "type": "address" }
+    ],
+    "name": "setOracle",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "enum CrossFarmingSender.Feeds", "name": "_feed", "type": "uint8" },
+      { "internalType": "uint256", "name": "_oracleUpdateBuffer", "type": "uint256" }
+    ],
+    "name": "setOracleUpdateBuffer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_receiver", "type": "address" }],
+    "name": "setReceiver",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_vault", "type": "address" }],
+    "name": "setVault",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

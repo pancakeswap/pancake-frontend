@@ -41,6 +41,9 @@ import {
   getPredictionsV1Address,
   getBCakeFarmBoosterAddress,
   getBCakeFarmBoosterProxyFactoryAddress,
+  getNonBscVaultAddress,
+  getCrossFarmingSenderAddress,
+  getCrossFarmingReceiverAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -92,6 +95,10 @@ import cakePredictionsAbi from 'config/abi/cakePredictions.json'
 import bCakeFarmBoosterAbi from 'config/abi/bCakeFarmBooster.json'
 import bCakeFarmBoosterProxyFactoryAbi from 'config/abi/bCakeFarmBoosterProxyFactory.json'
 import bCakeProxyAbi from 'config/abi/bCakeProxy.json'
+import nonBscVault from 'config/abi/nonBscVault.json'
+import crossFarmingSenderAbi from 'config/abi/crossFarmingSender.json'
+import crossFarmingReceiverAbi from 'config/abi/crossFarmingReceiver.json'
+import crossFarmingProxyAbi from 'config/abi/crossFarmingProxy.json'
 
 // Types
 import type {
@@ -139,6 +146,10 @@ import type {
   BCakeFarmBooster,
   BCakeFarmBoosterProxyFactory,
   BCakeProxy,
+  NonBscVault,
+  CrossFarmingSender,
+  CrossFarmingReceiver,
+  CrossFarmingProxy,
 } from 'config/abi/types'
 import { ChainId } from '@pancakeswap/sdk'
 
@@ -277,8 +288,8 @@ export const getCakePredictionsContract = (address: string, signer?: Signer | Pr
   return getContract({ abi: cakePredictionsAbi, address, signer }) as Predictions
 }
 
-export const getChainlinkOracleContract = (address: string, signer?: Signer | Provider) => {
-  return getContract({ abi: chainlinkOracleAbi, address, signer }) as ChainlinkOracle
+export const getChainlinkOracleContract = (address: string, signer?: Signer | Provider, chainId?: number) => {
+  return getContract({ abi: chainlinkOracleAbi, address, signer, chainId }) as ChainlinkOracle
 }
 export const getMulticallContract = (chainId: ChainId) => {
   return getContract({ abi: MultiCallAbi, address: getMulticallAddress(chainId), chainId }) as Multicall
@@ -361,4 +372,34 @@ export const getBCakeFarmBoosterProxyFactoryContract = (signer?: Signer | Provid
 
 export const getBCakeProxyContract = (proxyContractAddress: string, signer?: Signer | Provider) => {
   return getContract({ abi: bCakeProxyAbi, address: proxyContractAddress, signer }) as BCakeProxy
+}
+
+export const getNonBscVaultContract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract({ abi: nonBscVault, address: getNonBscVaultAddress(chainId), chainId, signer }) as NonBscVault
+}
+
+export const getCrossFarmingSenderContract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract({
+    abi: crossFarmingSenderAbi,
+    address: getCrossFarmingSenderAddress(chainId),
+    chainId,
+    signer,
+  }) as CrossFarmingSender
+}
+
+export const getCrossFarmingReceiverContract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract({
+    abi: crossFarmingReceiverAbi,
+    address: getCrossFarmingReceiverAddress(chainId),
+    chainId,
+    signer,
+  }) as CrossFarmingReceiver
+}
+
+export const getCrossFarmingProxyContract = (
+  proxyContractAddress: string,
+  signer?: Signer | Provider,
+  chainId?: number,
+) => {
+  return getContract({ abi: crossFarmingProxyAbi, address: proxyContractAddress, chainId, signer }) as CrossFarmingProxy
 }

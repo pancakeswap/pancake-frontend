@@ -6,3 +6,12 @@ import { ChainId } from '@pancakeswap/sdk'
 export const updateVersion = createAction<void>('global/updateVersion')
 
 export const resetUserState = createAction<{ chainId: ChainId; newChainId?: ChainId }>('global/resetUserState')
+
+export const toggleFarmTransactionModal = createAction<{
+  showModal: boolean
+}>('transactions/toggleFarmTransactionModal')
+
+export const pickFarmTransactionTx = createAction<{
+  tx: string
+  chainId: ChainId
+}>('transactions/pickFarmTransactionTx')

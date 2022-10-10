@@ -75,6 +75,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: farm.quoteToken.address,
     tokenAddress: farm.token.address,
+    chainId,
   })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
   const { lpAddress } = farm

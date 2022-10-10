@@ -4,7 +4,6 @@ export default {
   masterChef: {
     97: '0xB4A466911556e39210a6bB2FaECBB59E4eB7E43d',
     56: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
-    5: '0x8CB958bBdb45597cc918147469eb650A9397aBDA',
   },
   masterChefV1: {
     97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
@@ -147,5 +146,19 @@ export default {
   bCakeFarmBoosterProxyFactory: {
     56: '0x2C36221bF724c60E9FEE3dd44e2da8017a8EF3BA',
     97: '',
+  },
+  nonBscVault: {
+    56: '0xE6c904424417D03451fADd6E3f5b6c26BcC43841', // Only for pass contracts test
+    1: '0x2e71B2688019ebdFDdE5A45e6921aaebb15b25fb',
+    5: '0xE6c904424417D03451fADd6E3f5b6c26BcC43841',
+  },
+  crossFarmingSender: {
+    56: '0x327d26dE30f92600620A99043034e0A5FD9402C8', // Only for pass contracts test
+    1: '0x8EA90Ef07f37c77137453C7A1B72B7886d51eCFb',
+    5: '0x327d26dE30f92600620A99043034e0A5FD9402C8',
+  },
+  crossFarmingReceiver: {
+    56: '0x0726a8C8206b9eC0AfB788df5adb36a8AEDB13c2',
+    97: '0xBab5d3B6bA24E185f216419f3ba07f03984bF983',
   },
 }
