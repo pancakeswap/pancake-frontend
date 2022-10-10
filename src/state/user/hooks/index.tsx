@@ -26,7 +26,6 @@ import {
   updateUserFarmStakedOnly,
   updateUserSingleHopOnly,
   updateUserSlippageTolerance,
-  updateGasPrice,
   addWatchlistToken,
   addWatchlistPool,
   updateUserPoolStakedOnly,
@@ -434,20 +433,6 @@ export function useGasPrice(chainIdOverride?: number): string {
     return data?.formatted?.maxPriorityFeePerGas
   }
   return data?.formatted?.gasPrice
-}
-
-export function useGasPriceManager(): [string, (userGasPrice: string) => void] {
-  const dispatch = useAppDispatch()
-  const userGasPrice = useGasPrice()
-
-  const setGasPrice = useCallback(
-    (gasPrice: string) => {
-      dispatch(updateGasPrice({ gasPrice }))
-    },
-    [dispatch],
-  )
-
-  return [userGasPrice, setGasPrice]
 }
 
 function serializePair(pair: Pair): SerializedPair {

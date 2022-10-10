@@ -13,7 +13,6 @@ import {
   SerializedPair,
   muteAudio,
   unmuteAudio,
-  updateGasPrice,
   updateUserDeadline,
   updateUserExpertMode,
   updateUserFarmStakedOnly,
@@ -84,7 +83,6 @@ export interface UserState {
   userExpertModeAcknowledgementShow: boolean
   userUsernameVisibility: boolean
   userZapDisabled: boolean
-  gasPrice: string
   watchlistTokens: string[]
   watchlistPools: string[]
   hideTimestampPhishingWarningBanner: number
@@ -117,7 +115,6 @@ export const initialState: UserState = {
   userExpertModeAcknowledgementShow: true,
   userUsernameVisibility: false,
   userZapDisabled: false,
-  gasPrice: GAS_PRICE_GWEI.default,
   watchlistTokens: [],
   watchlistPools: [],
   hideTimestampPhishingWarningBanner: null,
@@ -225,9 +222,6 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(updateUserUsernameVisibility, (state, { payload: { userUsernameVisibility } }) => {
       state.userUsernameVisibility = userUsernameVisibility
-    })
-    .addCase(updateGasPrice, (state, action) => {
-      state.gasPrice = action.payload.gasPrice
     })
     .addCase(addWatchlistToken, (state, { payload: { address } }) => {
       // state.watchlistTokens can be undefined for pre-loaded localstorage user state
