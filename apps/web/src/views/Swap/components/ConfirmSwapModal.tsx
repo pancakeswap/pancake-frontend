@@ -4,10 +4,10 @@ import { InjectedModalProps, LinkExternal, Text } from '@pancakeswap/uikit'
 import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Field } from 'state/swap/actions'
+import { useTranslation } from '@pancakeswap/localization'
 import ConfirmationPendingContent from './ConfirmationPendingContent'
 import TransactionConfirmSwapContent from './TransactionConfirmSwapContent'
 import ConfirmSwapModalContainer from './ConfirmSwapModalContainer'
-import useTranslation from '../../../../packages/localization/src/useTranslation'
 import { StableTrade } from '../StableSwap/hooks/useStableTradeExactIn'
 
 const PancakeRouterSlippageErrorMsg =

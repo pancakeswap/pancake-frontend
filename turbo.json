@@ -16,12 +16,21 @@
     "dev": {
       "cache": false
     },
+    "start": {
+      "cache": false
+    },
     "build:list": {
       "outputs": ["list/**"]
     },
     "integration-test": {
       "outputs": [],
       "inputs": ["cypress/integration/**.test.ts"]
+    },
+    "format:check:staged": {
+      "cache": false
+    },
+    "postinstall": {
+      "cache": false
     }
   }
 }
