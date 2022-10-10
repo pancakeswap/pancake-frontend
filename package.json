@@ -14,6 +14,8 @@
     "test": "turbo run test",
     "postinstall": "turbo run --filter=web postinstall",
     "lint": "turbo run lint --filter=web",
+    "format:check": "turbo run format:check --filter=web",
+    "integration-test": "start-server-and-test start http://localhost:3000 'turbo run integration-test --filter=test'",
     "format:check:staged": "turbo run format:check:staged --filter=web",
     "updateLPsAPR": "yarn turbo run build --filter=@pancakeswap/sdk && NODE_PATH=./apps/web/src ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts"
   },

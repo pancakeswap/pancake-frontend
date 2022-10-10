@@ -10,7 +10,6 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:config": "jest src/config/__tests__/ --testPathIgnorePatterns",
-    "integration-test": "start-server-and-test start http://localhost:3000 'cypress run'",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "lint:style": "npx stylelint '**/*.{ts,tsx}'",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json}\"",

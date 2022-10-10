@@ -13,6 +13,9 @@
     "lint": {
       "outputs": []
     },
+    "format:check": {
+      "cache": false
+    },
     "dev": {
       "cache": false
     },
