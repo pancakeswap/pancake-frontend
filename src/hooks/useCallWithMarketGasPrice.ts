@@ -1,13 +1,10 @@
 import { useCallback } from 'react'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Contract, CallOverrides } from '@ethersproject/contracts'
-import { useGasPrice } from 'state/user/hooks'
 import get from 'lodash/get'
 import { addBreadcrumb } from '@sentry/nextjs'
 
-export function useCallWithGasPrice() {
-  const gasPrice = useGasPrice()
-
+export function useCallWithMarketGasPrice() {
   /**
    * Perform a contract call with a gas price returned from useGasPrice
    * @param contract Used to perform the call
@@ -16,7 +13,7 @@ export function useCallWithGasPrice() {
    * @param overrides An overrides object to pass to the method. gasPrice passed in here will take priority over the price returned by useGasPrice
    * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
    */
-  const callWithGasPrice = useCallback(
+  const callWithMarketGasPrice = useCallback(
     async (
       contract: Contract,
       methodName: string,
@@ -25,7 +22,7 @@ export function useCallWithGasPrice() {
     ): Promise<TransactionResponse> => {
       addBreadcrumb({
         type: 'Transaction',
-        message: `Call with gas price: ${gasPrice}`,
+        message: `Call with market gas price`,
         data: {
           contractAddress: contract.address,
           methodName,
@@ -35,11 +32,7 @@ export function useCallWithGasPrice() {
       })
 
       const contractMethod = get(contract, methodName)
-      const hasManualGasPriceOverride = overrides?.gasPrice
-      const tx = await contractMethod(
-        ...methodArgs,
-        hasManualGasPriceOverride ? { ...overrides } : { ...overrides, gasPrice },
-      )
+      const tx = await contractMethod(...methodArgs, { ...overrides })
 
       if (tx) {
         addBreadcrumb({
@@ -56,8 +49,8 @@ export function useCallWithGasPrice() {
 
       return tx
     },
-    [gasPrice],
+    [],
   )
 
-  return { callWithGasPrice }
+  return { callWithMarketGasPrice }
 }

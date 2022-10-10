@@ -19,7 +19,7 @@ import { Field } from '../../../state/mint/actions'
 import { useMintActionHandlers, useMintState } from '../../../state/mint/hooks'
 
 import { useTransactionAdder } from '../../../state/transactions/hooks'
-import { useGasPrice, useIsExpertMode, useUserSlippageTolerance } from '../../../state/user/hooks'
+import { useIsExpertMode, useUserSlippageTolerance } from '../../../state/user/hooks'
 import { calculateGasMargin } from '../../../utils'
 import { calculateSlippageAmount } from '../../../utils/exchange'
 import { maxAmountSpend } from '../../../utils/maxAmountSpend'
@@ -40,7 +40,6 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
   const expertMode = useIsExpertMode()
 
   const { t } = useTranslation()
-  const gasPrice = useGasPrice()
 
   // mint state
   const { independentField, typedValue, otherTypedValue } = useMintState()
@@ -144,7 +143,6 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
         method(...args, {
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit),
-          gasPrice,
         }).then((response) => {
           setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
 

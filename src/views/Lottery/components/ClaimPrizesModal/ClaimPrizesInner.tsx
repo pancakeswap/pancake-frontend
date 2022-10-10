@@ -11,7 +11,6 @@ import { useAppDispatch } from 'state'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { fetchUserLotteries } from 'state/lottery'
 import { useLottery } from 'state/lottery/hooks'
-import { useGasPrice } from 'state/user/hooks'
 import { callWithEstimateGas } from 'utils/calls'
 import { getBalanceAmount } from 'utils/formatBalance'
 
@@ -25,7 +24,6 @@ const ClaimInnerContainer: React.FC<React.PropsWithChildren<ClaimInnerProps>> = 
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { maxNumberTicketsPerBuyOrClaim, currentLotteryId } = useLottery()
-  const gasPrice = useGasPrice()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const [activeClaimIndex, setActiveClaimIndex] = useState(0)
@@ -86,9 +84,7 @@ const ClaimInnerContainer: React.FC<React.PropsWithChildren<ClaimInnerProps>> = 
   const handleClaim = async () => {
     const { lotteryId, ticketIds, brackets } = claimTicketsCallData
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithEstimateGas(lotteryContract, 'claimTickets', [lotteryId, ticketIds, brackets], {
-        gasPrice,
-      })
+      return callWithEstimateGas(lotteryContract, 'claimTickets', [lotteryId, ticketIds, brackets])
     })
     if (receipt?.status) {
       toastSuccess(
@@ -110,12 +106,11 @@ const ClaimInnerContainer: React.FC<React.PropsWithChildren<ClaimInnerProps>> = 
     for (const ticketBatch of ticketBatches) {
       /* eslint-disable no-await-in-loop */
       const receipt = await fetchWithCatchTxError(() => {
-        return callWithEstimateGas(
-          lotteryContract,
-          'claimTickets',
-          [lotteryId, ticketBatch.ticketIds, ticketBatch.brackets],
-          { gasPrice },
-        )
+        return callWithEstimateGas(lotteryContract, 'claimTickets', [
+          lotteryId,
+          ticketBatch.ticketIds,
+          ticketBatch.brackets,
+        ])
       })
       if (receipt?.status) {
         // One transaction within batch has succeeded

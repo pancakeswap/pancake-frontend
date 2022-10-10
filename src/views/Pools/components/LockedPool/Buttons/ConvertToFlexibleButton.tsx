@@ -5,7 +5,7 @@ import { memo, useCallback } from 'react'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { vaultPoolConfig } from 'config/constants/pools'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useVaultPoolContract } from 'hooks/useContract'
 import { useAppDispatch } from 'state'
@@ -18,7 +18,7 @@ const ConvertToFlexibleButton: React.FC<React.PropsWithChildren<ButtonProps>> = 
   const { account } = useWeb3React()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const vaultPoolContract = useVaultPoolContract(VaultKey.CakeVault)
-  const { callWithGasPrice } = useCallWithGasPrice()
+  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
 
@@ -29,7 +29,7 @@ const ConvertToFlexibleButton: React.FC<React.PropsWithChildren<ButtonProps>> = 
 
     const receipt = await fetchWithCatchTxError(() => {
       const methodArgs = [account]
-      return callWithGasPrice(vaultPoolContract, 'unlock', methodArgs, callOptions)
+      return callWithMarketGasPrice(vaultPoolContract, 'unlock', methodArgs, callOptions)
     })
 
     if (receipt?.status) {
@@ -41,7 +41,7 @@ const ConvertToFlexibleButton: React.FC<React.PropsWithChildren<ButtonProps>> = 
       )
       dispatch(fetchCakeVaultUserData({ account }))
     }
-  }, [t, toastSuccess, account, callWithGasPrice, dispatch, fetchWithCatchTxError, vaultPoolContract])
+  }, [t, toastSuccess, account, callWithMarketGasPrice, dispatch, fetchWithCatchTxError, vaultPoolContract])
 
   return (
     <Button width="100%" disabled={pendingTx} onClick={handleUnlock} {...props}>
