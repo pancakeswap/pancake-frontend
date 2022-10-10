@@ -2313,4 +2313,12 @@ export const bscTokens = {
     'https://www.chibidinos.io/',
   ),
   co: new Token(ChainId.BSC, '0x936B6659Ad0C1b244Ba8Efe639092acae30dc8d6', 6, 'CO', 'CO', 'https://corite.com/'),
+  krs: new Token(
+    ChainId.BSC,
+    '0x37b53894e7429f794B56F22a32E1695567Ee9913',
+    18,
+    'KRS',
+    'Kingdom Raids',
+    'https://kingdomraids.io/',
+  ),
 }
