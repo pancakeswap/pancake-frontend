@@ -14,9 +14,9 @@ const useStakeFarms = (pid: number, vaultPid?: number) => {
 
   const handleStake = useCallback(
     async (amount: string) => {
-      return stakeFarm(masterChefContract, pid, amount, gasPrice)
+      return stakeFarm(masterChefContract, pid, amount)
     },
-    [masterChefContract, pid, gasPrice],
+    [masterChefContract, pid],
   )
 
   const handleStakeNonBsc = useCallback(
