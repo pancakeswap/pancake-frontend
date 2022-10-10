@@ -133,6 +133,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,
+    chainId,
   })
   const { lpAddress } = farm
   const bsc = getBlockExploreLink(lpAddress, 'address', chainId)
