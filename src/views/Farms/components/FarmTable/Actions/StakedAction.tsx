@@ -303,6 +303,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const [onPresentDeposit] = useModal(
     <DepositModal
       pid={pid}
+      vaultPid={vaultPid}
       lpTotalSupply={lpTotalSupply}
       max={tokenBalance}
       lpPrice={lpTokenPrice}

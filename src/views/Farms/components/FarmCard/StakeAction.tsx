@@ -219,6 +219,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const [onPresentDeposit] = useModal(
     <DepositModal
       pid={pid}
+      vaultPid={vaultPid}
       lpTotalSupply={lpTotalSupply}
       max={tokenBalance}
       stakedBalance={stakedBalance}
