@@ -25,9 +25,10 @@ export function useNetworkConnectorUpdater() {
     if (!parsedQueryChainId && chainId === ChainId.BSC) return
     if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
       const removeQueriesFromPath =
+        previousChainId !== chainId &&
         EXCHANGE_PAGE_PATHS.some((item) => {
           return router.pathname.startsWith(item)
-        }) && previousChainId !== chainId
+        })
       const uriHash = getHashFromRouter(router)?.[0]
       router.replace(
         {
