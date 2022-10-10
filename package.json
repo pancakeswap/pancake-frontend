@@ -11,6 +11,7 @@
     "dev": "turbo run dev --filter=web",
     "build": "turbo run build --filter=web",
     "start": "turbo run start --filter=web",
+    "test": "turbo run test",
     "postinstall": "turbo run --filter=web postinstall",
     "lint": "turbo run lint --filter=web",
     "format:check:staged": "turbo run format:check:staged --filter=web",
