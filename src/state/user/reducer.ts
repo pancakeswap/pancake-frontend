@@ -35,7 +35,6 @@ import {
   updateUserLimitOrderAcceptedWarning,
   setZapDisabled,
 } from './actions'
-import { GAS_PRICE_GWEI } from '../types'
 
 const currentTimestamp = () => new Date().getTime()
 
