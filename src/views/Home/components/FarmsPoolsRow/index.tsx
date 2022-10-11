@@ -90,7 +90,8 @@ const FarmsPoolsRow = () => {
           <Grid>
             {topFarms.map((topFarm, index) => (
               <TopFarmPool
-                key={topFarm.pid}
+                // eslint-disable-next-line react/no-array-index-key
+                key={index}
                 title={topFarm?.lpSymbol}
                 percentage={topFarm?.apr + topFarm?.lpRewardsApr}
                 index={index}
@@ -102,7 +103,8 @@ const FarmsPoolsRow = () => {
             <Grid>
               {topPools.map((topPool, index) => (
                 <TopFarmPool
-                  key={`${topPool.sousId}#${topPool.vaultKey || ''}`}
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={index}
                   title={topPool && getPoolText(topPool)}
                   percentage={topPool?.sousId === 0 ? +lockedApy : topPool?.apr}
                   index={index}
