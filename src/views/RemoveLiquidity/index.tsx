@@ -289,7 +289,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       .then((response) => {
         setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
         const amount = parsedAmounts[Field.LIQUIDITY].toSignificant(3)
-        const symbol = getLPSymbol(pair.token0.symbol, pair.token1.symbol)
+        const symbol = getLPSymbol(pair.token0.symbol, pair.token1.symbol, chainId)
         addTransaction(response, {
           summary: `Remove ${amount} ${symbol}`,
           translatableSummary: {
