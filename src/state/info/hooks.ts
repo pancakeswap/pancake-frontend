@@ -21,8 +21,8 @@ import { MultiChainName, checkIsStableSwap } from './constant'
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 // Protocol hooks
 
-const refreshIntervalForInfo = 10000 // 10s
-const SWR_SETTINGS = {} // refreshInterval: refreshIntervalForInfo }
+const refreshIntervalForInfo = 15000 // 10s
+const SWR_SETTINGS = { refreshInterval: refreshIntervalForInfo }
 
 export const useProtocolDataSWR = (): ProtocolData | undefined => {
   const chainName = useGetChainName()
