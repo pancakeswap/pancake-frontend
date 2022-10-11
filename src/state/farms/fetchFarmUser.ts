@@ -8,7 +8,7 @@ import { getMasterChefAddress, getNonBscVaultAddress } from 'utils/addressHelper
 import { SerializedFarmConfig } from 'config/constants/types'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { getCrossFarmingReceiverContract } from 'utils/contractHelpers'
-import { farmFetcher } from '../../../apis/farms/src/helper'
+import { farmFetcher } from 'state/farms'
 
 export const fetchFarmUserAllowances = async (
   account: string,

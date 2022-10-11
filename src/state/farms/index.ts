@@ -74,7 +74,7 @@ const fetchFarmPublicDataPkg = async ({ pids, chainId, chain }): Promise<[Serial
   return [farmsWithPrice, poolLength, regularCakePerBlock]
 }
 
-const farmFetcher = createFarmFetcher(multicallv2)
+export const farmFetcher = createFarmFetcher(multicallv2)
 
 const farmApiFetch = (chainId: number) => fetch(`${FARM_API}/${chainId}`).then((res) => res.json())
 
