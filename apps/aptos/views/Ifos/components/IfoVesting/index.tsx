@@ -18,7 +18,8 @@ const StyleVestingCard = styled(Card)`
   align-self: baseline;
   ${({ theme }) => theme.mediaQueries.xl} {
     max-width: 350px;
-    margin: -22px 12px 0 12px;
+    /* Aptos IFO page has no pool card. */
+    margin: 0px 12px 0 12px;
   }
 `
 

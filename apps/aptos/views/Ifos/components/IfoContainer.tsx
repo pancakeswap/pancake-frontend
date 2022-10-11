@@ -6,16 +6,16 @@ import IfoLayout, { IfoLayoutWrapper } from './IfoLayout'
 import IfoPoolVaultCard from './IfoPoolVaultCard'
 // import IfoQuestions from './IfoQuestions'
 
-const IfoStepBackground = styled(Box)`
-  background: ${({ theme }) => theme.colors.gradientBubblegum};
-`
+// const IfoStepBackground = styled(Box)`
+//   background: ${({ theme }) => theme.colors.gradientBubblegum};
+// `
 
 interface TypeProps {
   ifoSection: ReactElement
   ifoSteps: ReactElement
 }
 
-const IfoContainer: React.FC<React.PropsWithChildren<TypeProps>> = ({ ifoSection, ifoSteps }) => {
+const IfoContainer: React.FC<React.PropsWithChildren<TypeProps>> = ({ ifoSection }) => {
   const { t } = useTranslation()
 
   return (
@@ -26,9 +26,9 @@ const IfoContainer: React.FC<React.PropsWithChildren<TypeProps>> = ({ ifoSection
           {ifoSection}
         </IfoLayoutWrapper>
       </Container>
-      <IfoStepBackground>
+      {/* <IfoStepBackground>
         <Container>{ifoSteps}</Container>
-      </IfoStepBackground>
+      </IfoStepBackground> */}
       <Container>
         {/* <IfoQuestions /> */}
         <LinkExternal

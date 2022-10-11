@@ -5,10 +5,10 @@ import styled from 'styled-components'
 import { PoolIds } from 'config/constants/types'
 
 import { CardsWrapper } from './IfoCardStyles'
-// import { StyledCardBody } from './IfoFoldableCard/index'
-// import { cardConfig } from './IfoFoldableCard/IfoPoolCard'
-// import GenericIfoCard from './IfoFoldableCard/GenericIfoCard'
-// import BunnyKnownPlaceholder from './IfoFoldableCard/IfoPoolCard/Icons/BunnyKnownPlaceholder'
+import { StyledCardBody } from './IfoFoldableCard'
+import { cardConfig } from './IfoFoldableCard/IfoPoolCard'
+import GenericIfoCard from './IfoFoldableCard/GenericIfoCard'
+import BunnyKnownPlaceholder from './IfoFoldableCard/IfoPoolCard/Icons/BunnyKnownPlaceholder'
 
 const CurveBox = styled(Box)`
   border-bottom-left-radius: 100% 40px;
@@ -21,21 +21,21 @@ const CurveBox = styled(Box)`
 export default function ComingSoonSection() {
   const { t } = useTranslation()
 
-  // const basicConfig = useMemo(
-  //   () =>
-  //     cardConfig(t, PoolIds.poolBasic, {
-  //       version: 3.1,
-  //     }),
-  //   [t],
-  // )
+  const basicConfig = useMemo(
+    () =>
+      cardConfig(t, PoolIds.poolBasic, {
+        version: 3.1,
+      }),
+    [t],
+  )
 
-  // const unlimitedConfig = useMemo(
-  //   () =>
-  //     cardConfig(t, PoolIds.poolUnlimited, {
-  //       version: 3.1,
-  //     }),
-  //   [t],
-  // )
+  const unlimitedConfig = useMemo(
+    () =>
+      cardConfig(t, PoolIds.poolUnlimited, {
+        version: 3.1,
+      }),
+    [t],
+  )
 
   return (
     <Card
@@ -45,7 +45,7 @@ export default function ComingSoonSection() {
       }}
     >
       <CurveBox height={[100, 110, 160, 160]} backgroundImage="url('/images/ifos/assets/ifo-coming-soon.png')" />
-      {/* <StyledCardBody>
+      <StyledCardBody>
         <CardsWrapper>
           <GenericIfoCard
             title={unlimitedConfig?.title}
@@ -76,7 +76,7 @@ export default function ComingSoonSection() {
             action={null}
           />
         </CardsWrapper>
-      </StyledCardBody> */}
+      </StyledCardBody>
     </Card>
   )
 }

@@ -12,6 +12,7 @@ export interface TransactionReceipt {
   success: boolean
   timestamp: string
   transactionHash: string
+  status?: number
 }
 
 export const addTransaction = createAction<{
