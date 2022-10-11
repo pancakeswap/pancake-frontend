@@ -66,7 +66,6 @@ export interface UserState {
     }
   }
 
-  timestamp: number
   audioPlay: boolean
   isExchangeChartDisplayed: boolean
   isSubgraphHealthIndicatorDisplayed: boolean
@@ -98,7 +97,6 @@ export const initialState: UserState = {
   userDeadline: DEFAULT_DEADLINE_FROM_NOW,
   tokens: {},
   pairs: {},
-  timestamp: currentTimestamp(),
   audioPlay: true,
   isExchangeChartDisplayed: true,
   isSubgraphHealthIndicatorDisplayed: false,
@@ -138,15 +136,12 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(updateUserExpertMode, (state, action) => {
       state.userExpertMode = action.payload.userExpertMode
-      state.timestamp = currentTimestamp()
     })
     .addCase(updateUserSlippageTolerance, (state, action) => {
       state.userSlippageTolerance = action.payload.userSlippageTolerance
-      state.timestamp = currentTimestamp()
     })
     .addCase(updateUserDeadline, (state, action) => {
       state.userDeadline = action.payload.userDeadline
-      state.timestamp = currentTimestamp()
     })
     .addCase(updateUserSingleHopOnly, (state, action) => {
       state.userSingleHopOnly = action.payload.userSingleHopOnly
@@ -157,7 +152,6 @@ export default createReducer(initialState, (builder) =>
       }
       state.tokens[serializedToken.chainId] = state.tokens[serializedToken.chainId] || {}
       state.tokens[serializedToken.chainId][serializedToken.address] = serializedToken
-      state.timestamp = currentTimestamp()
     })
     .addCase(removeSerializedToken, (state, { payload: { address, chainId } }) => {
       if (!state.tokens) {
@@ -165,7 +159,6 @@ export default createReducer(initialState, (builder) =>
       }
       state.tokens[chainId] = state.tokens[chainId] || {}
       delete state.tokens[chainId][address]
-      state.timestamp = currentTimestamp()
     })
     .addCase(addSerializedPair, (state, { payload: { serializedPair } }) => {
       if (
@@ -176,7 +169,6 @@ export default createReducer(initialState, (builder) =>
         state.pairs[chainId] = state.pairs[chainId] || {}
         state.pairs[chainId][pairKey(serializedPair.token0.address, serializedPair.token1.address)] = serializedPair
       }
-      state.timestamp = currentTimestamp()
     })
     .addCase(removeSerializedPair, (state, { payload: { chainId, tokenAAddress, tokenBAddress } }) => {
       if (state.pairs[chainId]) {
@@ -184,7 +176,6 @@ export default createReducer(initialState, (builder) =>
         delete state.pairs[chainId][pairKey(tokenAAddress, tokenBAddress)]
         delete state.pairs[chainId][pairKey(tokenBAddress, tokenAAddress)]
       }
-      state.timestamp = currentTimestamp()
     })
     .addCase(muteAudio, (state) => {
       state.audioPlay = false
