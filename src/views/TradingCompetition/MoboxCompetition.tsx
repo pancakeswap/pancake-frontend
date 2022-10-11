@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { useProfile } from 'state/profile/hooks'
 import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTradingCompetitionContractMobox } from 'hooks/useContract'
@@ -18,6 +17,8 @@ import {
   REGISTRATION,
 } from 'config/constants/trading-competition/phases'
 import PageSection from 'components/PageSection'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { ChainId } from '@pancakeswap/sdk'
 import { MIDBLUEBG, MIDBLUEBG_DARK, TRADINGCOMPETITIONBANNER } from './pageSectionStyles'
 import { RulesIcon } from './svgs'
 import Countdown from './components/Countdown'
@@ -40,7 +41,7 @@ import TeamRanksWithParticipants from './components/TeamRanks/TeamRanksWithParti
 import MoboxCakerBunny from './pngs/mobox-cakers.png'
 
 const MoboxCompetition = () => {
-  const { account } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const { profile, isLoading: isProfileLoading } = useProfile()
@@ -132,14 +133,16 @@ const MoboxCompetition = () => {
       }
     }
 
-    fetchCompetitionInfoContract()
-    if (account) {
-      setUserTradingInformation({ ...initialUserTradingInformation })
-      fetchUserContract()
-    } else {
-      setUserTradingInformation({ ...initialUserTradingInformation, isLoading: false })
+    if (chainId === ChainId.BSC) {
+      fetchCompetitionInfoContract()
+      if (account) {
+        setUserTradingInformation({ ...initialUserTradingInformation })
+        fetchUserContract()
+      } else {
+        setUserTradingInformation({ ...initialUserTradingInformation, isLoading: false })
+      }
     }
-  }, [account, registrationSuccessful, claimSuccessful, tradingCompetitionContract])
+  }, [chainId, account, registrationSuccessful, claimSuccessful, tradingCompetitionContract])
 
   useEffect(() => {
     const fetchUserTradingStats = async () => {
