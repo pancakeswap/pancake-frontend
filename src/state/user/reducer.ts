@@ -1,5 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { SerializedWrappedToken } from '@pancakeswap/tokens'
+import omitBy from 'lodash/omitBy'
 import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../../config/constants'
 import { updateVersion } from '../global/actions'
 import {
@@ -157,8 +158,11 @@ export default createReducer(initialState, (builder) =>
       if (!state.tokens) {
         state.tokens = {}
       }
-      state.tokens[chainId] = state.tokens[chainId] || {}
-      delete state.tokens[chainId][address]
+      if (state.tokens[chainId]) {
+        state.tokens[chainId] = omitBy(state.tokens[chainId], (value, key) => key === address)
+      } else {
+        state.tokens[chainId] = {}
+      }
     })
     .addCase(addSerializedPair, (state, { payload: { serializedPair } }) => {
       if (
@@ -172,9 +176,10 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(removeSerializedPair, (state, { payload: { chainId, tokenAAddress, tokenBAddress } }) => {
       if (state.pairs[chainId]) {
+        const tokenAToB = pairKey(tokenAAddress, tokenBAddress)
+        const tokenBToA = pairKey(tokenBAddress, tokenAAddress)
         // just delete both keys if either exists
-        delete state.pairs[chainId][pairKey(tokenAAddress, tokenBAddress)]
-        delete state.pairs[chainId][pairKey(tokenBAddress, tokenAAddress)]
+        state.pairs[chainId] = omitBy(state.pairs[chainId], (value, key) => key === tokenAToB || key === tokenBToA)
       }
     })
     .addCase(muteAudio, (state) => {
