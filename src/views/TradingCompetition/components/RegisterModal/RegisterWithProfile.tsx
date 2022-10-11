@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Button, Heading, Text, Flex, Checkbox, AutoRenewIcon, useToast } from '@pancakeswap/uikit'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { CompetitionProps } from '../../types'
@@ -26,11 +26,11 @@ const RegisterWithProfile: React.FC<React.PropsWithChildren<CompetitionProps>> =
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
   const { t } = useTranslation()
-  const { callWithGasPrice } = useCallWithGasPrice()
+  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
 
   const handleConfirmClick = async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(tradingCompetitionContract, 'register')
+      return callWithMarketGasPrice(tradingCompetitionContract, 'register')
     })
     if (receipt?.status) {
       toastSuccess(

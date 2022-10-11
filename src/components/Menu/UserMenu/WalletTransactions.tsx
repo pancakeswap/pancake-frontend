@@ -13,7 +13,11 @@ const TransactionsContainer = styled(Box)`
   overflow-y: auto;
 `
 
-const WalletTransactions: React.FC<React.PropsWithChildren> = () => {
+interface WalletTransactionsProps {
+  onDismiss: () => void
+}
+
+const WalletTransactions: React.FC<React.PropsWithChildren<WalletTransactionsProps>> = ({ onDismiss }) => {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const sortedTransactions = useAllSortedRecentTransactions()
@@ -46,7 +50,13 @@ const WalletTransactions: React.FC<React.PropsWithChildren> = () => {
                   {chains.find((c) => c.id === chainIdNumber)?.name ?? 'Unknown network'}
                 </Text>
                 {Object.values(transactions).map((txn) => (
-                  <TransactionRow key={txn.hash} txn={txn} chainId={chainIdNumber} />
+                  <TransactionRow
+                    key={txn.hash}
+                    txn={txn}
+                    chainId={chainIdNumber}
+                    type={txn.type}
+                    onDismiss={onDismiss}
+                  />
                 ))}
               </Box>
             )

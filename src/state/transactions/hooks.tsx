@@ -10,7 +10,13 @@ import orderBy from 'lodash/orderBy'
 import omitBy from 'lodash/omitBy'
 import isEmpty from 'lodash/isEmpty'
 import { TransactionDetails } from './reducer'
-import { addTransaction, TransactionType } from './actions'
+import {
+  addTransaction,
+  TransactionType,
+  NonBscFarmTransactionType,
+  FarmTransactionStatus,
+  NonBscFarmStepType,
+} from './actions'
 import { AppState, useAppDispatch } from '../index'
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
@@ -23,6 +29,7 @@ export function useTransactionAdder(): (
     claim?: { recipient: string }
     type?: TransactionType
     order?: Order
+    nonBscFarm?: NonBscFarmTransactionType
   },
 ) => void {
   const { chainId, account } = useActiveWeb3React()
@@ -38,6 +45,7 @@ export function useTransactionAdder(): (
         claim,
         type,
         order,
+        nonBscFarm,
       }: {
         summary?: string
         translatableSummary?: { text: string; data?: Record<string, string | number> }
@@ -45,6 +53,7 @@ export function useTransactionAdder(): (
         approval?: { tokenAddress: string; spender: string }
         type?: TransactionType
         order?: Order
+        nonBscFarm?: NonBscFarmTransactionType
       } = {},
     ) => {
       if (!account) return
@@ -55,7 +64,18 @@ export function useTransactionAdder(): (
         throw Error('No transaction hash found.')
       }
       dispatch(
-        addTransaction({ hash, from: account, chainId, approval, summary, translatableSummary, claim, type, order }),
+        addTransaction({
+          hash,
+          from: account,
+          chainId,
+          approval,
+          summary,
+          translatableSummary,
+          claim,
+          type,
+          order,
+          nonBscFarm,
+        }),
       )
     },
     [dispatch, chainId, account],
@@ -164,18 +184,41 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 }
 
 // calculate pending transactions
-export function usePendingTransactions(): { hasPendingTransactions: boolean; pendingNumber: number } {
+interface NonBscPendingData {
+  txid: string
+  lpAddress: string
+  type: NonBscFarmStepType
+}
+export function usePendingTransactions(): {
+  hasPendingTransactions: boolean
+  pendingNumber: number
+  nonBscFarmPendingList: NonBscPendingData[]
+} {
   const allTransactions = useAllTransactions()
   const sortedRecentTransactions = useMemo(() => {
     const txs = Object.values(allTransactions).flatMap((trxObjects) => Object.values(trxObjects))
     return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
   }, [allTransactions])
 
-  const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
+  const pending = sortedRecentTransactions
+    .filter((tx) => !tx.receipt || tx?.nonBscFarm?.status === FarmTransactionStatus.PENDING)
+    .map((tx) => tx.hash)
   const hasPendingTransactions = !!pending.length
+
+  const nonBscFarmPendingList = sortedRecentTransactions
+    .filter((tx) => pending.includes(tx.hash) && !!tx.nonBscFarm)
+    .map((tx) => ({ txid: tx.hash, lpAddress: tx.nonBscFarm.lpAddress, type: tx.nonBscFarm.type }))
 
   return {
     hasPendingTransactions,
+    nonBscFarmPendingList,
     pendingNumber: pending.length,
   }
+}
+
+export function useNonBscFarmPendingTransaction(lpAddress: string): NonBscPendingData[] {
+  const { nonBscFarmPendingList } = usePendingTransactions()
+  return useMemo(() => {
+    return nonBscFarmPendingList.filter((tx) => tx.lpAddress.toLocaleLowerCase() === lpAddress.toLocaleLowerCase())
+  }, [lpAddress, nonBscFarmPendingList])
 }

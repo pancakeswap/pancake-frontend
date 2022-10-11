@@ -34,7 +34,7 @@ import { DeserializedPool, VaultKey } from 'state/types'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { vaultPoolConfig } from 'config/constants/pools'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
 import { getFullDecimalMultiplier } from 'utils/getFullDecimalMultiplier'
 import { VaultRoiCalculatorModal } from '../Vault/VaultRoiCalculatorModal'
 import ConvertToLock from '../LockedPool/Common/ConvertToLock'
@@ -77,7 +77,7 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
   const { account } = useWeb3React()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const vaultPoolContract = useVaultPoolContract(pool.vaultKey)
-  const { callWithGasPrice } = useCallWithGasPrice()
+  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
   const {
     pricePerFullShare,
     userData: {
@@ -155,15 +155,20 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
       // .toString() being called to fix a BigNumber error in prod
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
       if (isWithdrawingAll) {
-        return callWithGasPrice(vaultPoolContract, 'withdrawAll', undefined, callOptions)
+        return callWithMarketGasPrice(vaultPoolContract, 'withdrawAll', undefined, callOptions)
       }
 
       if (pool.vaultKey === VaultKey.CakeFlexibleSideVault) {
         const { sharesAsBigNumber } = convertCakeToShares(convertedStakeAmount, pricePerFullShare)
-        return callWithGasPrice(vaultPoolContract, 'withdraw', [sharesAsBigNumber.toString()], callOptions)
+        return callWithMarketGasPrice(vaultPoolContract, 'withdraw', [sharesAsBigNumber.toString()], callOptions)
       }
 
-      return callWithGasPrice(vaultPoolContract, 'withdrawByAmount', [convertedStakeAmount.toString()], callOptions)
+      return callWithMarketGasPrice(
+        vaultPoolContract,
+        'withdrawByAmount',
+        [convertedStakeAmount.toString()],
+        callOptions,
+      )
     })
 
     if (receipt?.status) {
@@ -184,7 +189,7 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
       // as suggested here https://github.com/ChainSafe/web3.js/issues/2077
       const extraArgs = pool.vaultKey === VaultKey.CakeVault ? [lockDuration.toString()] : []
       const methodArgs = [convertedStakeAmount.toString(), ...extraArgs]
-      return callWithGasPrice(vaultPoolContract, 'deposit', methodArgs, callOptions)
+      return callWithMarketGasPrice(vaultPoolContract, 'deposit', methodArgs, callOptions)
     })
 
     if (receipt?.status) {

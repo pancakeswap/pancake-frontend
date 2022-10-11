@@ -75,6 +75,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: farm.quoteToken.address,
     tokenAddress: farm.token.address,
+    chainId,
   })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
   const { lpAddress } = farm
@@ -159,7 +160,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           <DetailsSection
             removed={removed}
             bscScanAddress={getBlockExploreLink(lpAddress, 'address', chainId)}
-            infoAddress={`/info/pools${multiChainPaths[chainId]}/${lpAddress}`}
+            infoAddress={`/info${multiChainPaths[chainId]}/pools/${lpAddress}`}
             totalValueFormatted={totalValueFormatted}
             lpLabel={lpLabel}
             addLiquidityUrl={addLiquidityUrl}

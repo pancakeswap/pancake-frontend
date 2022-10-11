@@ -85,7 +85,6 @@ const config: (
       icon: EarnIcon,
       fillIcon: EarnFillIcon,
       image: '/images/decorations/pe2.png',
-      supportChainIds: SUPPORT_ONLY_BSC,
       items: [
         {
           label: t('Farms'),
@@ -94,6 +93,7 @@ const config: (
         {
           label: t('Pools'),
           href: '/pools',
+          supportChainIds: SUPPORT_ONLY_BSC,
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },

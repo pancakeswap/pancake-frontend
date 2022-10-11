@@ -1,6 +1,6 @@
 import { configureScope } from '@sentry/nextjs'
 import { Dispatch } from '@reduxjs/toolkit'
-import { resetUserState } from 'state/global/actions'
+import { resetUserState, toggleFarmTransactionModal } from 'state/global/actions'
 import { PREDICTION_TOOLTIP_DISMISS_KEY } from 'config/constants'
 import { connectorLocalStorageKey } from '@pancakeswap/uikit'
 import { LS_ORDERS } from './localStorageOrders'
@@ -19,6 +19,7 @@ export const clearUserStates = (
   },
 ) => {
   dispatch(resetUserState({ chainId, newChainId }))
+  dispatch(toggleFarmTransactionModal({ showModal: false }))
   configureScope((scope) => scope.setUser(null))
   // Only clear localStorage when user disconnect,switch address no need clear it.
   if (isDeactive) {

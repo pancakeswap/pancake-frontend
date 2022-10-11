@@ -17,6 +17,7 @@ import transactions from './transactions/reducer'
 import user from './user/reducer'
 import limitOrders from './limitOrders/reducer'
 import potteryReducer from './pottery'
+import globalReducer from './global/reducer'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions']
 
@@ -31,6 +32,7 @@ const persistConfig = {
 const persistedReducer = persistReducer(
   persistConfig,
   combineReducers({
+    global: globalReducer,
     farms: farmsReducer,
     farmsV1: farmsReducerV1,
     pools: poolsReducer,

@@ -19,6 +19,7 @@ import { getBalanceAmount } from 'utils/formatBalance'
 import multicall, { multicallv2 } from 'utils/multicall'
 import { chains } from 'utils/wagmi'
 import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
+import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { resetUserState } from '../global/actions'
 import { SerializedFarm, SerializedFarmsState } from '../types'
 import fetchFarms from './fetchFarms'
@@ -233,15 +234,12 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
 >(
   'farms/fetchFarmUserDataAsync',
   async ({ account, pids, proxyAddress, chainId }, config) => {
-    if (!farmFetcher.isChainSupported(chainId)) {
-      throw new Error(`chain id ${chainId} not supported`)
-    }
-    const poolLength = config.getState().farms.poolLength ?? (await fetchMasterChefFarmPoolLength(chainId))
+    const poolLength = config.getState().farms.poolLength ?? (await fetchMasterChefFarmPoolLength(ChainId.BSC))
     const farmsConfig = await getFarmConfig(chainId)
     const farmsCanFetch = farmsConfig.filter(
       (farmConfig) => pids.includes(farmConfig.pid) && poolLength > farmConfig.pid,
     )
-    if (proxyAddress && farmsCanFetch?.length) {
+    if (proxyAddress && farmsCanFetch?.length && verifyBscNetwork(chainId)) {
       const { normalFarms, farmsWithProxy } = splitProxyFarms(farmsCanFetch)
 
       const [proxyAllowances, normalAllowances] = await Promise.all([

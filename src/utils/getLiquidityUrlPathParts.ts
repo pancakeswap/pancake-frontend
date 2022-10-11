@@ -1,18 +1,21 @@
 // Constructing the two forward-slash-separated parts of the 'Add Liquidity' URL
 // Each part of the url represents a different side of the LP pair.
-import { bscTokens } from '@pancakeswap/tokens'
+import { NATIVE, WNATIVE } from '@pancakeswap/sdk'
 
 const getLiquidityUrlPathParts = ({
   quoteTokenAddress,
   tokenAddress,
+  chainId,
 }: {
   quoteTokenAddress: string
   tokenAddress: string
+  chainId: number
 }): string => {
-  const wBnbAddress = bscTokens.wbnb.address
-  const firstPart = !quoteTokenAddress || quoteTokenAddress === wBnbAddress ? 'BNB' : quoteTokenAddress
-  const secondPart = !tokenAddress || tokenAddress === wBnbAddress ? 'BNB' : tokenAddress
-  return `${firstPart}/${secondPart}`
+  const wNativeAddress = WNATIVE[chainId]
+  const firstPart =
+    !quoteTokenAddress || quoteTokenAddress === wNativeAddress?.address ? NATIVE[chainId].symbol : quoteTokenAddress
+  const secondPart = !tokenAddress || tokenAddress === wNativeAddress?.address ? NATIVE[chainId].symbol : tokenAddress
+  return `${firstPart}/${secondPart}?chainId=${chainId}`
 }
 
 export default getLiquidityUrlPathParts

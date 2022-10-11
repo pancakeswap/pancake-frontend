@@ -10,6 +10,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useSWRImmutable from 'swr/immutable'
 import { useFeeData } from 'wagmi'
 import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
+import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
+import useSWR from 'swr'
 import { AppState, useAppDispatch } from '../../index'
 import {
   addSerializedPair,
@@ -24,7 +26,6 @@ import {
   updateUserFarmStakedOnly,
   updateUserSingleHopOnly,
   updateUserSlippageTolerance,
-  updateGasPrice,
   addWatchlistToken,
   addWatchlistPool,
   updateUserPoolStakedOnly,
@@ -402,16 +403,28 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
   )
 }
 
-export function useGasPrice(): string {
-  const { chainId, chain } = useActiveWeb3React()
-  const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
+export function useGasPrice(chainIdOverride?: number): string {
+  const { chainId: chainId_, chain } = useActiveWeb3React()
+  const library = useWeb3LibraryContext()
+  const chainId = chainIdOverride ?? chainId_
+  const { data: bscProviderGasPrice = GAS_PRICE_GWEI.default } = useSWR(
+    library && library.provider && chainId === ChainId.BSC && ['bscProviderGasPrice', library.provider],
+    async () => {
+      const gasPrice = await library.getGasPrice()
+      return gasPrice.toString()
+    },
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
+  )
   const { data } = useFeeData({
     chainId,
     enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
     watch: true,
   })
   if (chainId === ChainId.BSC) {
-    return userGas
+    return bscProviderGasPrice
   }
   if (chainId === ChainId.BSC_TESTNET) {
     return GAS_PRICE_GWEI.testnet
@@ -420,20 +433,6 @@ export function useGasPrice(): string {
     return data?.formatted?.maxPriorityFeePerGas
   }
   return data?.formatted?.gasPrice
-}
-
-export function useGasPriceManager(): [string, (userGasPrice: string) => void] {
-  const dispatch = useAppDispatch()
-  const userGasPrice = useGasPrice()
-
-  const setGasPrice = useCallback(
-    (gasPrice: string) => {
-      dispatch(updateGasPrice({ gasPrice }))
-    },
-    [dispatch],
-  )
-
-  return [userGasPrice, setGasPrice]
 }
 
 function serializePair(pair: Pair): SerializedPair {

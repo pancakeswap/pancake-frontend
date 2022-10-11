@@ -7,6 +7,36 @@ export const cakeBnbLpToken = new Token(ChainId.BSC, CAKE_BNB_LP_MAINNET, 18, 'C
 
 const ifos: Ifo[] = [
   {
+    id: 'krs',
+    cIFO: true,
+    address: '0x4CCB9960dEF2f9a55D1a0454a134a8Adb0047B8e',
+    isActive: true,
+    name: 'KRS',
+    poolBasic: {
+      saleAmount: '12,000,000 KRS',
+      raiseAmount: '$420,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.4,
+    },
+    poolUnlimited: {
+      saleAmount: '18,000,000 KRS',
+      raiseAmount: '$630,000',
+      cakeToBurn: '$0',
+      distributionRatio: 0.6,
+    },
+    currency: bscTokens.cake,
+    token: bscTokens.krs,
+    releaseBlockNumber: 21970879,
+    campaignId: '511700000',
+    articleUrl:
+      'https://pancakeswap.finance/voting/proposal/bafkreicqqvgqpwtnhmlfdwz3ya3hnjm6nvgqbf3fpi4vbxmvqyv6yi3enu',
+    tokenOfferingPrice: 0.035,
+    version: 3.2,
+    twitterUrl: 'https://twitter.com/KingdomRaids',
+    description: 'Kingdom Raids is a blockchain-based strategy role-playing game (RPG) game with a NFT metaverse',
+    vestingTitle: '$KRS - utility token for Kingdom Raids, a role-playing game (RPG) game.',
+  },
+  {
     id: 'co',
     address: '0x8baeee7d68cb332c63b3e4a8740072121070a2df',
     isActive: false,
