@@ -1984,6 +1984,7 @@
   "New": "New",
   "Pot Open": "Pot Open",
   "until the next pot lock": "until the next pot lock",
+  "Withdrawable on %date%": "Withdrawable on %date%",
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "For safety, cross-chain transactions will take around 30 minutes to confirm."
 }
