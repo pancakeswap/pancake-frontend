@@ -6,7 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { distanceToNowStrict } from 'utils/timeHelper'
+import { distanceToNowStrictWithUnit } from 'utils/timeHelper'
 import { DeserializedPublicData, DeserializedPotteryUserData, PotteryDepositStatus } from 'state/types'
 import Balance from 'components/Balance'
 
@@ -87,7 +87,7 @@ const CardFooter: React.FC<React.PropsWithChildren<CardFooterProps>> = ({ accoun
             <Box>
               {account ? (
                 <>
-                  <Text bold>{distanceToNowStrict(daysRemaining)}</Text>
+                  <Text bold>{distanceToNowStrictWithUnit(daysRemaining, 'day')}</Text>
                 </>
               ) : (
                 <Text bold as="span">
