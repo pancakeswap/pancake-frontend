@@ -27,6 +27,7 @@ export interface FarmConfigBaseProps {
     endBlock: number
   }
   boosted?: boolean
+  isCrossChainFarm?: boolean
 }
 export interface SerializedStableFarmConfig extends SerializedClassicFarmConfig {
   stableSwapAddress?: string
@@ -52,6 +53,7 @@ export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
   poolWeight?: string
   boosted?: boolean
   infoStableSwapAddress?: string
+  isCrossChainFarm?: boolean
 }
 
 export interface AprMap {

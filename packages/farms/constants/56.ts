@@ -51,6 +51,30 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 126,
+    lpSymbol: 'WBTC-ETH LP',
+    lpAddress: '0x90A4E19D743273d7dFE4aeB2D3A28e794aD6e72E',
+    token: bscTokens.btcb,
+    quoteToken: bscTokens.eth,
+    isCrossChainFarm: true,
+  },
+  {
+    pid: 125,
+    lpSymbol: 'ETH-USDT LP',
+    lpAddress: '0xD2CF22a662D2b3f712501b4BD9CB4B564e5cc85A',
+    token: bscTokens.eth,
+    quoteToken: bscTokens.usdt,
+    isCrossChainFarm: true,
+  },
+  {
+    pid: 124,
+    lpSymbol: 'ETH-USDC LP',
+    lpAddress: '0x8Ee80363a98A315Cfa249323C7F91067b7e1d2F3',
+    token: bscTokens.eth,
+    quoteToken: bscTokens.usdc,
+    isCrossChainFarm: true,
+  },
+  {
     pid: 123,
     lpSymbol: 'ARV-BNB LP',
     lpAddress: '0xA63E32FeEFC6590bBf869070Fd2e706Eb7881bd2',
