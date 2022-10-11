@@ -3,9 +3,7 @@
   "version": "0.0.1",
   "license": "WAGMIT",
   "description": "wagmi adaptor for pancakeswap",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "main": "src/index.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/pancakeswap/pancake-frontend.git",
@@ -38,28 +36,5 @@
   "devDependencies": {
     "tsconfig": "*",
     "tsup": "^5.10.1"
-  },
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    },
-    "./connectors/miniProgram": {
-      "types": "./connectors/miniProgram/dist/index.d.ts",
-      "import": "./connectors/miniProgram/dist/index.mjs",
-      "require": "./connectors/miniProgram/dist/index.js"
-    },
-    "./connectors/binanceWallet": {
-      "types": "./connectors/binanceWallet/dist/index.d.ts",
-      "import": "./connectors/binanceWallet/dist/index.mjs",
-      "require": "./connectors/binanceWallet/dist/index.js"
-    },
-    "./chains": {
-      "types": "./chains/dist/index.d.ts",
-      "import": "./chains/dist/index.mjs",
-      "require": "./chains/dist/index.js"
-    }
   }
 }
