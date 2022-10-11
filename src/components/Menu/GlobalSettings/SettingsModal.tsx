@@ -19,7 +19,6 @@ import {
   useUserSingleHopOnly,
   useZapModeManager,
 } from 'state/user/hooks'
-import { ChainId } from '@pancakeswap/sdk'
 import { SUPPORT_ZAP } from 'config/constants/supportChains'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -27,7 +26,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import TransactionSettings from './TransactionSettings'
 import ExpertModal from './ExpertModal'
-import GasSettings from './GasSettings'
 import { SettingsMode } from './types'
 
 const ScrollableContainer = styled(Flex)`
@@ -132,7 +130,6 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                   }}
                 />
               </Flex>
-              <GasSettings />
             </Flex>
           </>
         )}
@@ -142,9 +139,6 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
               <Text bold textTransform="uppercase" fontSize="18px" color="secondary" mb="24px">
                 {t('Swaps & Liquidity')}
               </Text>
-              <Flex justifyContent="space-between" alignItems="center" mb="24px">
-                {chainId === ChainId.BSC && <GasSettings />}
-              </Flex>
               <TransactionSettings />
             </Flex>
             {SUPPORT_ZAP.includes(chainId) && (

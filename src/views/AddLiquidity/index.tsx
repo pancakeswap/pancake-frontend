@@ -44,13 +44,7 @@ import { Field } from '../../state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState, useZapIn } from '../../state/mint/hooks'
 
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import {
-  useGasPrice,
-  useIsExpertMode,
-  usePairAdder,
-  useUserSlippageTolerance,
-  useZapModeManager,
-} from '../../state/user/hooks'
+import { useIsExpertMode, usePairAdder, useUserSlippageTolerance, useZapModeManager } from '../../state/user/hooks'
 import { calculateGasMargin } from '../../utils'
 import { calculateSlippageAmount, useRouterContract } from '../../utils/exchange'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
@@ -86,7 +80,6 @@ export default function AddLiquidity({ currencyA, currencyB }) {
   const [steps, setSteps] = useState(Steps.Choose)
 
   const { t } = useTranslation()
-  const gasPrice = useGasPrice()
 
   useEffect(() => {
     if (router.query.step === '1') {
@@ -284,7 +277,6 @@ export default function AddLiquidity({ currencyA, currencyB }) {
         method(...args, {
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit),
-          gasPrice,
         }).then((response) => {
           setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
 
@@ -449,7 +441,7 @@ export default function AddLiquidity({ currencyA, currencyB }) {
 
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
 
-    callWithEstimateGas(zapContract, method, args, value ? { value, gasPrice } : { gasPrice })
+    callWithEstimateGas(zapContract, method, args, value ? { value } : {})
       .then((response) => {
         setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
 

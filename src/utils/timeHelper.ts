@@ -9,5 +9,17 @@ export const convertTimeToSeconds = (time: string): number => {
 // https://date-fns.org/v2.28.0/docs/formatDistanceToNowStrict
 export const distanceToNowStrict = (timeInMilliSeconds: number) => {
   const endTime = new Date(timeInMilliSeconds)
-  return new Date() > endTime || !Number.isFinite(timeInMilliSeconds) ? `0 seconds` : formatDistanceToNowStrict(endTime)
+  return new Date() > endTime || !Number.isFinite(timeInMilliSeconds)
+    ? `0 seconds`
+    : formatDistanceToNowStrict(endTime, { unit: 'day' })
+}
+
+export const distanceToNowStrictWithUnit = (
+  timeInMilliSeconds: number,
+  unit: 'month' | 'day' | 'second' | 'minute' | 'hour' | 'year',
+) => {
+  const endTime = new Date(timeInMilliSeconds)
+  return new Date() > endTime || !Number.isFinite(timeInMilliSeconds)
+    ? `0 seconds`
+    : formatDistanceToNowStrict(endTime, { unit })
 }

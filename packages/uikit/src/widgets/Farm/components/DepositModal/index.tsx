@@ -6,8 +6,8 @@ import { useTranslation } from "@pancakeswap/localization";
 import { getFullDisplayBalance, formatNumber } from "@pancakeswap/utils/formatBalance";
 import { getInterestBreakdown } from "@pancakeswap/utils/compoundApyHelpers";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
-import { Modal, ModalV2, ModalActions, ModalInput } from "../../../Modal/index";
-import { Flex } from "../../../../components/Box";
+import { Modal, ModalV2, ModalBody, ModalActions, ModalInput } from "../../../Modal/index";
+import { Flex, Box } from "../../../../components/Box";
 import { Text } from "../../../../components/Text";
 import { Button, IconButton } from "../../../../components/Button";
 import { LinkExternal } from "../../../../components/Link";
@@ -44,6 +44,8 @@ interface DepositModalProps {
   showActiveBooster?: boolean;
   lpTotalSupply: BigNumber;
   bCakeMultiplier?: number | null;
+  showCrossChainFarmWarning?: boolean;
+  crossChainWarningText?: string;
   bCakeCalculatorSlot?: (stakingTokenBalance: string) => React.ReactNode;
   onDismiss?: () => void;
   onConfirm: (amount: string) => void;
@@ -65,6 +67,8 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   cakePrice = BIG_ZERO,
   showActiveBooster,
   bCakeMultiplier,
+  showCrossChainFarmWarning,
+  crossChainWarningText,
   bCakeCalculatorSlot,
 }) => {
   const [val, setVal] = useState("");
@@ -128,68 +132,77 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
 
   return (
     <Modal title={t("Stake LP tokens")} onDismiss={onDismiss}>
-      <ModalInput
-        value={val}
-        onSelectMax={handleSelectMax}
-        onChange={handleChange}
-        max={fullBalance}
-        symbol={tokenName}
-        addLiquidityUrl={addLiquidityUrl}
-        inputTitle={t("Stake")}
-      />
-      {showActiveBooster ? (
-        <Message variant="warning" icon={<ErrorIcon width="24px" color="warning" />} mt="32px">
-          <MessageText>
-            {t("The yield booster multiplier will be updated based on the latest staking conditions.")}
-          </MessageText>
-        </Message>
-      ) : null}
-      <Flex mt="24px" alignItems="center" justifyContent="space-between">
-        <Text mr="8px" color="textSubtle">
-          {t("Annual ROI at current rates")}:
-        </Text>
-        {Number.isFinite(annualRoiAsNumber) ? (
-          <AnnualRoiContainer
-            alignItems="center"
-            onClick={() => {
-              setShowRoiCalculator(true);
-            }}
-          >
-            <AnnualRoiDisplay>${formattedAnnualRoi}</AnnualRoiDisplay>
-            <IconButton variant="text" scale="sm">
-              <CalculateIcon color="textSubtle" width="18px" />
-            </IconButton>
-          </AnnualRoiContainer>
-        ) : (
-          <Skeleton width={60} />
+      <ModalBody width={["100%", "100%", "100%", "420px"]}>
+        <ModalInput
+          value={val}
+          onSelectMax={handleSelectMax}
+          onChange={handleChange}
+          max={fullBalance}
+          symbol={tokenName}
+          addLiquidityUrl={addLiquidityUrl}
+          inputTitle={t("Stake")}
+        />
+        {showActiveBooster ? (
+          <Message variant="warning" icon={<ErrorIcon width="24px" color="warning" />} mt="32px">
+            <MessageText>
+              {t("The yield booster multiplier will be updated based on the latest staking conditions.")}
+            </MessageText>
+          </Message>
+        ) : null}
+        <Flex mt="24px" alignItems="center" justifyContent="space-between">
+          <Text mr="8px" color="textSubtle">
+            {t("Annual ROI at current rates")}:
+          </Text>
+          {Number.isFinite(annualRoiAsNumber) ? (
+            <AnnualRoiContainer
+              alignItems="center"
+              onClick={() => {
+                setShowRoiCalculator(true);
+              }}
+            >
+              <AnnualRoiDisplay>${formattedAnnualRoi}</AnnualRoiDisplay>
+              <IconButton variant="text" scale="sm">
+                <CalculateIcon color="textSubtle" width="18px" />
+              </IconButton>
+            </AnnualRoiContainer>
+          ) : (
+            <Skeleton width={60} />
+          )}
+        </Flex>
+        {showCrossChainFarmWarning && (
+          <Box mt="15px">
+            <Message variant="warning">
+              <MessageText>{crossChainWarningText}</MessageText>
+            </Message>
+          </Box>
         )}
-      </Flex>
-      <ModalActions>
-        <Button variant="secondary" onClick={onDismiss} width="100%" disabled={pendingTx}>
-          {t("Cancel")}
-        </Button>
-        {pendingTx ? (
-          <Button width="100%" isLoading={pendingTx} endIcon={<AutoRenewIcon spin color="currentColor" />}>
-            {t("Confirming")}
+        <ModalActions>
+          <Button variant="secondary" onClick={onDismiss} width="100%" disabled={pendingTx}>
+            {t("Cancel")}
           </Button>
-        ) : (
-          <Button
-            width="100%"
-            disabled={!lpTokensToStake.isFinite() || lpTokensToStake.eq(0) || lpTokensToStake.gt(fullBalanceNumber)}
-            onClick={async () => {
-              setPendingTx(true);
-              await onConfirm(val);
-              onDismiss?.();
-              setPendingTx(false);
-            }}
-          >
-            {t("Confirm")}
-          </Button>
-        )}
-      </ModalActions>
-      <LinkExternal href={addLiquidityUrl} style={{ alignSelf: "center" }}>
-        {t("Get %symbol%", { symbol: tokenName })}
-      </LinkExternal>
+          {pendingTx ? (
+            <Button width="100%" isLoading={pendingTx} endIcon={<AutoRenewIcon spin color="currentColor" />}>
+              {t("Confirming")}
+            </Button>
+          ) : (
+            <Button
+              width="100%"
+              disabled={!lpTokensToStake.isFinite() || lpTokensToStake.eq(0) || lpTokensToStake.gt(fullBalanceNumber)}
+              onClick={async () => {
+                setPendingTx(true);
+                await onConfirm(val);
+                onDismiss?.();
+                setPendingTx(false);
+              }}
+            >
+              {t("Confirm")}
+            </Button>
+          )}
+        </ModalActions>
+        <LinkExternal href={addLiquidityUrl} style={{ alignSelf: "center" }}>
+          {t("Get %symbol%", { symbol: tokenName })}
+        </LinkExternal>
+      </ModalBody>
     </Modal>
   );
 };

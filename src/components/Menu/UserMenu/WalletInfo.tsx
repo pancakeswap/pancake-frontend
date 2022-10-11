@@ -29,6 +29,7 @@ const COLORS = {
 
 interface WalletInfoProps {
   hasLowNativeBalance: boolean
+  switchView: (newIndex: number) => void
   onDismiss: InjectedModalProps['onDismiss']
 }
 

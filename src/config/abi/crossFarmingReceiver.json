@@ -1,0 +1,295 @@
+[
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_messageBus", "type": "address" },
+      { "internalType": "address", "name": "_cake", "type": "address" },
+      { "internalType": "address", "name": "_sender", "type": "address" },
+      { "internalType": "contract IMasterChefV2", "name": "_mcv2", "type": "address" },
+      { "internalType": "address", "name": "_operator", "type": "address" },
+      { "internalType": "uint64", "name": "_chainId", "type": "uint64" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{ "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }],
+    "name": "BnbChangeUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "pid", "type": "uint256" },
+      { "indexed": false, "internalType": "uint64", "name": "nonce", "type": "uint64" }
+    ],
+    "name": "FallbackDeposit",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "user", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "pid", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "indexed": false, "internalType": "uint64", "name": "nonce", "type": "uint64" }
+    ],
+    "name": "FallbackWithdraw",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "address", "name": "sender", "type": "address" },
+      { "indexed": false, "internalType": "uint64", "name": "srcChainId", "type": "uint64" },
+      { "indexed": false, "internalType": "uint64", "name": "nonce", "type": "uint64" },
+      { "indexed": false, "internalType": "enum DataTypes.MessageTypes", "name": "msgType", "type": "uint8" },
+      { "indexed": false, "internalType": "address", "name": "acount", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "pid", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "FarmingMessageReceived",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "indexed": false, "internalType": "bool", "name": "success", "type": "bool" }
+    ],
+    "name": "FeeClaimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{ "indexed": false, "internalType": "address", "name": "messageBus", "type": "address" }],
+    "name": "MessageBusUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "newOperator", "type": "address" },
+      { "indexed": true, "internalType": "address", "name": "oldOperator", "type": "address" }
+    ],
+    "name": "OperatorUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" },
+      { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "sender", "type": "address" },
+      { "indexed": false, "internalType": "address", "name": "proxy", "type": "address" }
+    ],
+    "name": "ProxyCreated",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "BNB_CHANGE",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "CAKE",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "CROSS_FARMING_SENDER",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "MASTER_CHEF_V2",
+    "outputs": [{ "internalType": "contract IMasterChefV2", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "SENDER_CHAIN_ID",
+    "outputs": [{ "internalType": "uint64", "name": "", "type": "uint64" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "bnbChangeReceived",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "cProxy",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_gas", "type": "uint256" }],
+    "name": "claimFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_token", "type": "address" },
+      { "internalType": "uint256", "name": "_amount", "type": "uint256" }
+    ],
+    "name": "drainToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_sender", "type": "address" },
+      { "internalType": "uint64", "name": "_srcChainId", "type": "uint64" },
+      { "internalType": "bytes", "name": "_message", "type": "bytes" },
+      { "internalType": "address", "name": "", "type": "address" }
+    ],
+    "name": "executeMessage",
+    "outputs": [{ "internalType": "enum IMessageReceiverApp.ExecutionStatus", "name": "", "type": "uint8" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_sender", "type": "address" },
+      { "internalType": "address", "name": "_token", "type": "address" },
+      { "internalType": "uint256", "name": "_amount", "type": "uint256" },
+      { "internalType": "uint64", "name": "_srcChainId", "type": "uint64" },
+      { "internalType": "bytes", "name": "_message", "type": "bytes" },
+      { "internalType": "address", "name": "_executor", "type": "address" }
+    ],
+    "name": "executeMessageWithTransfer",
+    "outputs": [{ "internalType": "enum IMessageReceiverApp.ExecutionStatus", "name": "", "type": "uint8" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_sender", "type": "address" },
+      { "internalType": "address", "name": "_token", "type": "address" },
+      { "internalType": "uint256", "name": "_amount", "type": "uint256" },
+      { "internalType": "uint64", "name": "_srcChainId", "type": "uint64" },
+      { "internalType": "bytes", "name": "_message", "type": "bytes" },
+      { "internalType": "address", "name": "_executor", "type": "address" }
+    ],
+    "name": "executeMessageWithTransferFallback",
+    "outputs": [{ "internalType": "enum IMessageReceiverApp.ExecutionStatus", "name": "", "type": "uint8" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_token", "type": "address" },
+      { "internalType": "uint256", "name": "_amount", "type": "uint256" },
+      { "internalType": "bytes", "name": "_message", "type": "bytes" },
+      { "internalType": "address", "name": "_executor", "type": "address" }
+    ],
+    "name": "executeMessageWithTransferRefund",
+    "outputs": [{ "internalType": "enum IMessageReceiverApp.ExecutionStatus", "name": "", "type": "uint8" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_user", "type": "address" },
+      { "internalType": "uint256", "name": "_pid", "type": "uint256" },
+      { "internalType": "uint64", "name": "_nonce", "type": "uint64" }
+    ],
+    "name": "fallbackDeposit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_user", "type": "address" },
+      { "internalType": "uint256", "name": "_pid", "type": "uint256" },
+      { "internalType": "uint256", "name": "_amount", "type": "uint256" },
+      { "internalType": "uint64", "name": "_nonce", "type": "uint64" }
+    ],
+    "name": "fallbackWithdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "messageBus",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "operator",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_change", "type": "uint256" }],
+    "name": "setBnbChange",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_messageBus", "type": "address" }],
+    "name": "setMessageBus",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "_operator", "type": "address" }],
+    "name": "setOperator",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "uProxy",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  { "stateMutability": "payable", "type": "receive" }
+]

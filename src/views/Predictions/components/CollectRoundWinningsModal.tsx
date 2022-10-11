@@ -24,7 +24,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useBUSDPrice from 'hooks/useBUSDPrice'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePredictionsContract } from 'hooks/useContract'
 import { fetchNodeHistory, markAsCollected } from 'state/predictions'
@@ -97,7 +97,7 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWi
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPendingTx } = useCatchTxError()
-  const { callWithGasPrice } = useCallWithGasPrice()
+  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
   const predictionsContract = usePredictionsContract(predictionsAddress, token.symbol)
   const bnbBusdPrice = useBUSDPrice(token)
 
@@ -115,7 +115,7 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWi
 
   const handleClick = async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(predictionsContract, 'claim', [epochs])
+      return callWithMarketGasPrice(predictionsContract, 'claim', [epochs])
     })
     if (receipt?.status) {
       if (!isV1Claim) {

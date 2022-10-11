@@ -37,6 +37,7 @@ interface StackedActionProps extends FarmWithStakedValue {
 
 const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
   pid,
+  vaultPid,
   apr,
   multiplier,
   lpSymbol,
@@ -53,9 +54,10 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
   const { isDesktop } = useMatchBreakpoints()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
+  const stakedPid = vaultPid ?? pid
   const { allowance, tokenBalance, stakedBalance } = useFarmUser(pid)
-  const { onStake } = useStakeFarms(pid)
-  const { onUnstake } = useUnstakeFarms(pid)
+  const { onStake } = useStakeFarms(stakedPid)
+  const { onUnstake } = useUnstakeFarms(stakedPid)
   const cakePrice = usePriceCakeBusd()
   const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
 
@@ -64,6 +66,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: quoteToken.address,
     tokenAddress: token.address,
+    chainId,
   })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 

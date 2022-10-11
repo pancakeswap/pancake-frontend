@@ -6,7 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake, useBunnyFactory } from 'hooks/useContract'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { ApiSingleTokenData } from 'state/nftMarket/types'
@@ -34,7 +34,7 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()
   const hasMinimumCakeRequired = fetchStatus === FetchStatus.Fetched && cakeBalance.gte(MINT_COST)
-  const { callWithGasPrice } = useCallWithGasPrice()
+  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
 
   useEffect(() => {
     const getStarterNfts = async () => {
@@ -60,10 +60,13 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
         return requiresApproval(cakeContractReader, account, bunnyFactoryContract.address, minimumCakeRequired)
       },
       onApprove: () => {
-        return callWithGasPrice(cakeContractApprover, 'approve', [bunnyFactoryContract.address, allowance.toString()])
+        return callWithMarketGasPrice(cakeContractApprover, 'approve', [
+          bunnyFactoryContract.address,
+          allowance.toString(),
+        ])
       },
       onConfirm: () => {
-        return callWithGasPrice(bunnyFactoryContract, 'mintNFT', [selectedBunnyId])
+        return callWithMarketGasPrice(bunnyFactoryContract, 'mintNFT', [selectedBunnyId])
       },
       onApproveSuccess: () => {
         toastSuccess(t('Enabled'), t("Press 'confirm' to mint this NFT"))

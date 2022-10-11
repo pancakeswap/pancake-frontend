@@ -10,6 +10,8 @@ import {
   SerializableTransactionReceipt,
   TransactionType,
   clearAllChainTransactions,
+  NonBscFarmTransactionType,
+  FarmTransactionStatus,
 } from './actions'
 import { resetUserState } from '../global/actions'
 
@@ -28,6 +30,7 @@ export interface TransactionDetails {
   addedTime: number
   confirmedTime?: number
   from: string
+  nonBscFarm?: NonBscFarmTransactionType
 }
 
 export interface TransactionState {
@@ -44,13 +47,24 @@ export default createReducer(initialState, (builder) =>
       addTransaction,
       (
         transactions,
-        { payload: { chainId, from, hash, approval, summary, translatableSummary, claim, type, order } },
+        { payload: { chainId, from, hash, approval, summary, translatableSummary, claim, type, order, nonBscFarm } },
       ) => {
         if (transactions[chainId]?.[hash]) {
           throw Error('Attempted to add existing transaction.')
         }
         const txs = transactions[chainId] ?? {}
-        txs[hash] = { hash, approval, summary, translatableSummary, claim, from, addedTime: now(), type, order }
+        txs[hash] = {
+          hash,
+          approval,
+          summary,
+          translatableSummary,
+          claim,
+          from,
+          addedTime: now(),
+          type,
+          order,
+          nonBscFarm,
+        }
         transactions[chainId] = txs
         if (order) saveOrder(chainId, from, order, true)
       },
@@ -73,7 +87,7 @@ export default createReducer(initialState, (builder) =>
         tx.lastCheckedBlockNumber = Math.max(blockNumber, tx.lastCheckedBlockNumber)
       }
     })
-    .addCase(finalizeTransaction, (transactions, { payload: { hash, chainId, receipt } }) => {
+    .addCase(finalizeTransaction, (transactions, { payload: { hash, chainId, receipt, nonBscFarm } }) => {
       const tx = transactions[chainId]?.[hash]
       if (!tx) {
         return
@@ -81,10 +95,23 @@ export default createReducer(initialState, (builder) =>
       tx.receipt = receipt
       tx.confirmedTime = now()
 
-      if (transactions[chainId]?.[hash].type === 'limit-order-submission') {
+      if (tx.type === 'limit-order-submission') {
         confirmOrderSubmission(chainId, receipt.from, hash, receipt.status !== 0)
-      } else if (transactions[chainId]?.[hash].type === 'limit-order-cancellation') {
+      } else if (tx.type === 'limit-order-cancellation') {
         confirmOrderCancellation(chainId, receipt.from, hash, receipt.status !== 0)
+      } else if (tx.type === 'non-bsc-farm') {
+        if (tx.nonBscFarm.steps[0].status === FarmTransactionStatus.PENDING) {
+          if (receipt.status === FarmTransactionStatus.FAIL) {
+            tx.nonBscFarm = { ...tx.nonBscFarm, status: receipt.status }
+          }
+
+          tx.nonBscFarm.steps[0] = {
+            ...tx.nonBscFarm.steps[0],
+            status: receipt.status,
+          }
+        } else {
+          tx.nonBscFarm = nonBscFarm
+        }
       }
     })
     .addCase(resetUserState, (transactions, { payload: { chainId, newChainId } }) => {

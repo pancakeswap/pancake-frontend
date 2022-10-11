@@ -6,7 +6,7 @@ import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { useCurrencyBalance } from '../state/wallet/hooks'
 import { useWNativeContract } from './useContract'
-import { useCallWithGasPrice } from './useCallWithGasPrice'
+import { useCallWithMarketGasPrice } from './useCallWithMarketGasPrice'
 
 export enum WrapType {
   NOT_APPLICABLE,
@@ -28,7 +28,7 @@ export default function useWrapCallback(
 ): { wrapType: WrapType; execute?: undefined | (() => Promise<void>); inputError?: string } {
   const { t } = useTranslation()
   const { chainId, account } = useActiveWeb3React()
-  const { callWithGasPrice } = useCallWithGasPrice()
+  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
   const wbnbContract = useWNativeContract()
   const balance = useCurrencyBalance(account ?? undefined, inputCurrency)
   // we can always parse the amount typed as the input currency, since wrapping is 1:1
@@ -47,7 +47,7 @@ export default function useWrapCallback(
           sufficientBalance && inputAmount
             ? async () => {
                 try {
-                  const txReceipt = await callWithGasPrice(wbnbContract, 'deposit', undefined, {
+                  const txReceipt = await callWithMarketGasPrice(wbnbContract, 'deposit', undefined, {
                     value: `0x${inputAmount.quotient.toString(16)}`,
                   })
                   const amount = inputAmount.toSignificant(6)
@@ -75,7 +75,7 @@ export default function useWrapCallback(
           sufficientBalance && inputAmount
             ? async () => {
                 try {
-                  const txReceipt = await callWithGasPrice(wbnbContract, 'withdraw', [
+                  const txReceipt = await callWithMarketGasPrice(wbnbContract, 'withdraw', [
                     `0x${inputAmount.quotient.toString(16)}`,
                   ])
                   const amount = inputAmount.toSignificant(6)
@@ -96,5 +96,15 @@ export default function useWrapCallback(
       }
     }
     return NOT_APPLICABLE
-  }, [wbnbContract, chainId, inputCurrency, outputCurrency, t, inputAmount, balance, addTransaction, callWithGasPrice])
+  }, [
+    wbnbContract,
+    chainId,
+    inputCurrency,
+    outputCurrency,
+    t,
+    inputAmount,
+    balance,
+    addTransaction,
+    callWithMarketGasPrice,
+  ])
 }

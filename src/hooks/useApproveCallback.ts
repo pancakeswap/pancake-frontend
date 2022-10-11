@@ -12,7 +12,7 @@ import { useHasPendingApproval, useTransactionAdder } from '../state/transaction
 import { calculateGasMargin } from '../utils'
 import { computeSlippageAdjustedAmounts } from '../utils/exchange'
 import useGelatoLimitOrdersLib from './limitOrders/useGelatoLimitOrdersLib'
-import { useCallWithGasPrice } from './useCallWithGasPrice'
+import { useCallWithMarketGasPrice } from './useCallWithMarketGasPrice'
 import { useTokenContract } from './useContract'
 import useTokenAllowance from './useTokenAllowance'
 
@@ -29,7 +29,7 @@ export function useApproveCallback(
   spender?: string,
 ): [ApprovalState, () => Promise<void>] {
   const { account } = useWeb3React()
-  const { callWithGasPrice } = useCallWithGasPrice()
+  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
   const { t } = useTranslation()
   const { toastError } = useToast()
   const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined
@@ -93,7 +93,7 @@ export function useApproveCallback(
     })
 
     // eslint-disable-next-line consistent-return
-    return callWithGasPrice(
+    return callWithMarketGasPrice(
       tokenContract,
       'approve',
       [spender, useExact ? amountToApprove.quotient.toString() : MaxUint256],
@@ -117,7 +117,17 @@ export function useApproveCallback(
         }
         throw error
       })
-  }, [approvalState, token, tokenContract, amountToApprove, spender, addTransaction, callWithGasPrice, t, toastError])
+  }, [
+    approvalState,
+    token,
+    tokenContract,
+    amountToApprove,
+    spender,
+    addTransaction,
+    callWithMarketGasPrice,
+    t,
+    toastError,
+  ])
 
   return [approvalState, approve]
 }

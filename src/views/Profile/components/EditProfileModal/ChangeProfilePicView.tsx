@@ -4,7 +4,7 @@ import { useWeb3React } from '@pancakeswap/wagmi'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
 import { useProfileContract } from 'hooks/useContract'
 import { useMemo, useState } from 'react'
 import { useApprovalNfts } from 'state/nftMarket/hooks'
@@ -35,7 +35,7 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
   const { nfts, isLoading } = useNftsForAddress(account, profile, isProfileLoading)
   const profileContract = useProfileContract()
   const { toastSuccess } = useToast()
-  const { callWithGasPrice } = useCallWithGasPrice()
+  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
   const nftsInWallet = useMemo(() => nfts.filter((nft) => nft.location === NftLocation.WALLET), [nfts])
 
   const { data } = useApprovalNfts(nftsInWallet)
@@ -49,17 +49,20 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
       onApprove: () => {
         const contract = getErc721Contract(selectedNft.collectionAddress, signer)
 
-        return callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), selectedNft.tokenId])
+        return callWithMarketGasPrice(contract, 'approve', [getPancakeProfileAddress(), selectedNft.tokenId])
       },
       onConfirm: () => {
         if (!profile.isActive) {
-          return callWithGasPrice(profileContract, 'reactivateProfile', [
+          return callWithMarketGasPrice(profileContract, 'reactivateProfile', [
             selectedNft.collectionAddress,
             selectedNft.tokenId,
           ])
         }
 
-        return callWithGasPrice(profileContract, 'updateProfile', [selectedNft.collectionAddress, selectedNft.tokenId])
+        return callWithMarketGasPrice(profileContract, 'updateProfile', [
+          selectedNft.collectionAddress,
+          selectedNft.tokenId,
+        ])
       },
       onSuccess: async ({ receipt }) => {
         // Re-fetch profile

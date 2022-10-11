@@ -18,7 +18,6 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useMasterchef } from 'hooks/useContract'
 import { useCallback } from 'react'
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import { useGasPrice } from 'state/user/hooks'
 import styled from 'styled-components'
 import { harvestFarm } from 'utils/calls'
 import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
@@ -37,7 +36,6 @@ const HarvestCard = () => {
 
   const masterChefContract = useMasterchef()
   const cakePriceBusd = usePriceCakeBusd()
-  const gasPrice = useGasPrice()
   const earningsBusd = new BigNumber(farmEarningsSum).multipliedBy(cakePriceBusd)
   const numTotalToCollect = farmsWithStakedBalance.length
   const numFarmsToCollect = farmsWithStakedBalance.filter((value) => value.pid !== 0).length
@@ -51,7 +49,7 @@ const HarvestCard = () => {
       const farmWithBalance = farmsWithStakedBalance[i]
       // eslint-disable-next-line no-await-in-loop
       const receipt = await fetchWithCatchTxError(() => {
-        return harvestFarm(masterChefContract, farmWithBalance.pid, gasPrice)
+        return harvestFarm(masterChefContract, farmWithBalance.pid)
       })
       if (receipt?.status) {
         toastSuccess(
@@ -62,7 +60,7 @@ const HarvestCard = () => {
         )
       }
     }
-  }, [farmsWithStakedBalance, masterChefContract, toastSuccess, t, fetchWithCatchTxError, gasPrice])
+  }, [farmsWithStakedBalance, masterChefContract, toastSuccess, t, fetchWithCatchTxError])
 
   return (
     <StyledCard>

@@ -210,6 +210,11 @@ export const getFarmsPrices = (farms: FarmData[], chainId: number): FarmWithPric
 }
 
 const nativeStableLpMap = {
+  [ChainId.ETHEREUM]: {
+    address: '0x2E8135bE71230c6B1B4045696d41C09Db0414226',
+    wNative: 'WETH',
+    stable: 'USDC',
+  },
   [ChainId.GOERLI]: {
     address: '0xf5bf0C34d3c428A74Ceb98d27d38d0036C587200',
     wNative: 'WETH',
