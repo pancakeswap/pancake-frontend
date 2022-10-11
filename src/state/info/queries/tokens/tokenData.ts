@@ -210,9 +210,12 @@ const useFetchedTokenDatas = (chainName: MultiChainName, tokenAddresses: string[
   return fetchState
 }
 
-export const fetchAllTokenData = async (chainName: MultiChainName, blocks: Block[]) => {
+export const fetchAllTokenDataByAddresses = async (
+  chainName: MultiChainName,
+  blocks: Block[],
+  tokenAddresses: string[],
+) => {
   const [block24h, block48h, block7d, block14d] = blocks ?? []
-  const tokenAddresses = await fetchTokenAddresses(chainName)
 
   const { data } = await fetchTokenData(
     chainName,
@@ -278,6 +281,12 @@ export const fetchAllTokenData = async (chainName: MultiChainName, blocks: Block
   }, {})
 
   return formatted
+}
+
+export const fetchAllTokenData = async (chainName: MultiChainName, blocks: Block[]) => {
+  const tokenAddresses = await fetchTokenAddresses(chainName)
+  const data = await fetchAllTokenDataByAddresses(chainName, blocks, tokenAddresses)
+  return data
 }
 
 export default useFetchedTokenDatas

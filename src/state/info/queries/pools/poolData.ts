@@ -246,8 +246,11 @@ const usePoolDatas = (poolAddresses: string[]): PoolDatas => {
   return fetchState
 }
 
-export const fetchAllPoolData = async (blocks: Block[], chainName: MultiChainName) => {
-  const poolAddresses = await fetchTopPoolAddresses(chainName)
+export const fetchAllPoolDataWithAddress = async (
+  blocks: Block[],
+  chainName: MultiChainName,
+  poolAddresses: string[],
+) => {
   const [block24h, block48h, block7d, block14d] = blocks ?? []
 
   const { data } = await fetchPoolData(
@@ -330,6 +333,11 @@ export const fetchAllPoolData = async (blocks: Block[], chainName: MultiChainNam
     return accum
   }, {})
   return formatted
+}
+
+export const fetchAllPoolData = async (blocks: Block[], chainName: MultiChainName) => {
+  const poolAddresses = await fetchTopPoolAddresses(chainName)
+  return fetchAllPoolDataWithAddress(blocks, chainName, poolAddresses)
 }
 
 export default usePoolDatas

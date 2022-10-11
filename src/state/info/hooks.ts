@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import fetchPoolChartData from 'state/info/queries/pools/chartData'
-import { fetchAllPoolData } from 'state/info/queries/pools/poolData'
+import { fetchAllPoolData, fetchAllPoolDataWithAddress } from 'state/info/queries/pools/poolData'
 import fetchPoolTransactions from 'state/info/queries/pools/transactions'
 import { fetchGlobalChartData } from 'state/info/queries/protocol/chart'
 import { fetchProtocolData } from 'state/info/queries/protocol/overview'
@@ -11,7 +11,7 @@ import fetchTopTransactions from 'state/info/queries/protocol/transactions'
 import fetchTokenChartData from 'state/info/queries/tokens/chartData'
 import fetchPoolsForToken from 'state/info/queries/tokens/poolsForToken'
 import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
-import { fetchAllTokenData } from 'state/info/queries/tokens/tokenData'
+import { fetchAllTokenData, fetchAllTokenDataByAddresses } from 'state/info/queries/tokens/tokenData'
 import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
 import { Transaction } from 'state/info/types'
 import useSWRImmutable from 'swr/immutable'
@@ -21,7 +21,7 @@ import { MultiChainName, checkIsStableSwap } from './constant'
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
 // Protocol hooks
 
-const refreshIntervalForInfo = 10000 // 10s
+const refreshIntervalForInfo = 15000 // 10s
 const SWR_SETTINGS = { refreshInterval: refreshIntervalForInfo }
 
 export const useProtocolDataSWR = (): ProtocolData | undefined => {
@@ -67,7 +67,7 @@ export const useAllPoolDataSWR = () => {
   const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useSWRImmutable(
-    blocks && chainName && [`info/pool/data/${type}`, chainName],
+    blocks && chainName && [`info/pools/data/${type}`, chainName],
     () => fetchAllPoolData(blocks, chainName),
     SWR_SETTINGS,
   )
@@ -75,11 +75,20 @@ export const useAllPoolDataSWR = () => {
 }
 
 export const usePoolDatasSWR = (poolAddresses: string[]): PoolData[] => {
-  const allPoolData = useAllPoolDataSWR()
+  const name = poolAddresses.join('')
+  const chainName = useGetChainName()
+  const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
+  const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
+
+  const { data } = useSWRImmutable(
+    blocks && chainName && [`info/pool/data/${name}`, chainName],
+    () => fetchAllPoolDataWithAddress(blocks, chainName, poolAddresses),
+    SWR_SETTINGS,
+  )
 
   const poolsWithData = poolAddresses
     .map((address) => {
-      return allPoolData[address]?.data
+      return data?.[address]?.data
     })
     .filter((pool) => pool)
 
@@ -124,7 +133,17 @@ export const useAllTokenDataSWR = (): {
 }
 
 export const useTokenDatasSWR = (addresses?: string[]): TokenData[] | undefined => {
-  const allTokenData = useAllTokenDataSWR()
+  // const allTokenData = useAllTokenDataSWR()
+  const name = addresses.join('')
+  const chainName = useGetChainName()
+  const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
+  const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
+
+  const { data } = useSWRImmutable(
+    blocks && chainName && [`info/token/data/${name}`, chainName],
+    () => fetchAllTokenDataByAddresses(chainName, blocks, addresses),
+    SWR_SETTINGS,
+  )
 
   const tokensWithData = useMemo(() => {
     if (!addresses) {
@@ -132,17 +151,17 @@ export const useTokenDatasSWR = (addresses?: string[]): TokenData[] | undefined 
     }
     return addresses
       .map((a) => {
-        return allTokenData[a]?.data
+        return data?.[a]?.data
       })
       .filter((token) => token)
-  }, [addresses, allTokenData])
+  }, [addresses, data])
 
   return tokensWithData ?? undefined
 }
 
 export const useTokenDataSWR = (address: string | undefined): TokenData | undefined => {
-  const allTokenData = useAllTokenDataSWR()
-  return allTokenData[address]?.data ?? undefined
+  const allTokenData = useTokenDatasSWR([address])
+  return allTokenData.find((d) => d.address === address) ?? undefined
 }
 
 export const usePoolsForTokenSWR = (address: string): string[] | undefined => {
