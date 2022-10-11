@@ -8,6 +8,7 @@ import { useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { calculateSlippageAmount } from 'utils/exchange'
 import { useUserSlippage } from 'state/user'
+import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 
 import { CurrencySelectorContext } from './useCurrencySelectRoute'
 import { Field, LiquidityHandlerReturn } from '../type'
@@ -93,7 +94,9 @@ export default function useAddLiquidityHanlder({
           attemptingTxn: false,
           liquidityErrorMessage:
             // TODO: map error
-            err && err.code !== 4001 ? t('Add liquidity failed: %message%', { message: err.message }) : undefined,
+            err && err.code !== 4001
+              ? t('Add liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err) })
+              : undefined,
           txHash: undefined,
         })
       })
