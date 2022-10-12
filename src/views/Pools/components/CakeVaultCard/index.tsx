@@ -27,7 +27,7 @@ interface CakeVaultProps extends CardProps {
   showStakedOnly: boolean
   defaultFooterExpanded?: boolean
   showICake?: boolean
-  showSkeleton: boolean
+  showSkeleton?: boolean
 }
 
 interface CakeVaultDetailProps {
