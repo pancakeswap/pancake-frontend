@@ -302,7 +302,9 @@ function DesktopModal<T>({
             {t('Connect Wallet')}
           </Heading>
           <Text color="textSubtle" small pt="24px" pb="32px">
-            {t('Starts connect with one of the wallets below. Manage and store your private keys and assets securely.')}
+            {t(
+              'Start by connecting with one of the wallets below. Be sure to store your private keys or seed phrase securely. Never share them with anyone.',
+            )}
           </Text>
         </AtomBox>
         <WalletSelect
