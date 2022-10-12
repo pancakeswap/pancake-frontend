@@ -1,10 +1,11 @@
 import { ArrowForwardIcon, Button, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { ChainId } from '@pancakeswap/sdk'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
 import Image from 'next/image'
 import { memo, useEffect, useRef } from 'react'
-import { useCurrentBlock } from 'state/block/hooks'
+import { useChainCurrentBlock } from 'state/block/hooks'
 import styled, { keyframes } from 'styled-components'
 import { getStatus } from '../../../Ifos/hooks/helpers'
 import { IFOImage, IFOMobileImage } from './images'
@@ -78,7 +79,7 @@ const IFOIconImage = styled.div<{ src: string }>`
 const IFOBanner = () => {
   const { t } = useTranslation()
   const headingRef = useRef<HTMLDivElement>(null)
-  const currentBlock = useCurrentBlock()
+  const currentBlock = useChainCurrentBlock(ChainId.BSC)
 
   const activeIfoWithBlocks = useActiveIfoWithBlocks()
 
