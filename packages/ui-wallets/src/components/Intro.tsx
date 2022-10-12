@@ -73,7 +73,7 @@ export const StepIntro = () => {
         <StepDot place="left" active={step === 0} onClick={() => setStep(0)} />
         <StepDot place="right" active={step === 1} onClick={() => setStep(1)} />
       </AtomBox>
-      <Button variant="subtle" external as={LinkExternal} color="backgroundAlt" href={getDocLink(code)}>
+      <Button minHeight={40} variant="subtle" external as={LinkExternal} color="backgroundAlt" href={getDocLink(code)}>
         {t('Learn How to Connect')}
       </Button>
     </AtomBox>
