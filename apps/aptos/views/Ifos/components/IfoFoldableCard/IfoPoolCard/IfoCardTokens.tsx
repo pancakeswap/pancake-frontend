@@ -27,7 +27,6 @@ import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { MessageTextLink } from '../../IfoCardStyles'
 import StakeVaultButton from '../StakeVaultButton'
 import { EnableStatus } from '../types'
-import IFORequirements from './IFORequirements'
 import PercentageOfTotal from './PercentageOfTotal'
 import { SkeletonCardTokens } from './Skeletons'
 import VestingAvailableToClaim from './VestingAvailableToClaim'
@@ -91,7 +90,6 @@ interface IfoCardTokensProps {
   ifo: Ifo
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
-  hasProfile: boolean
   isLoading: boolean
   onApprove: () => Promise<any>
   enableStatus: EnableStatus
@@ -121,7 +119,6 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
   ifo,
   publicIfoData,
   walletIfoData,
-  hasProfile,
   isLoading,
   onApprove,
   enableStatus,
@@ -154,23 +151,6 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
 
     let message
 
-    if (account && !hasProfile) {
-      message = (
-        <Message my="24px" p="8px" variant="warning">
-          <Box>
-            <MessageText display="inline">
-              {publicIfoData.status === 'finished'
-                ? t('Activate PancakeSwap Profile to take part in next IFO‘s!')
-                : t('You need an active PancakeSwap Profile to take part in an IFO!')}
-            </MessageText>{' '}
-            <MessageTextLink href="/ifo#ifo-how-to" color="#D67E0A" display="inline">
-              {t('How does it work?')} »
-            </MessageTextLink>
-          </Box>
-        </Message>
-      )
-    }
-
     const ifov31Msg =
       ifo.version >= 3.1 && poolId === PoolIds.poolBasic && criterias?.length > 0 ? (
         <Box mt="16px">
@@ -181,11 +161,6 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
               </MessageText>
             </Message>
           )}
-          <IFORequirements
-            criterias={criterias}
-            admissionProfile={publicPoolCharacteristics?.admissionProfile}
-            pointThreshold={publicPoolCharacteristics?.pointThreshold}
-          />
           {isEligible && (
             <Message mt="24px" p="8px" variant="success">
               <MessageText small display="inline">
@@ -209,15 +184,6 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
             </MessageTextLink>
           </Box>
         </Message>
-      )
-    }
-
-    if (account && !hasProfile) {
-      return (
-        <>
-          <OnSaleInfo token={token} distributionRatio={distributionRatio} saleAmount={ifo[poolId].saleAmount} />
-          {message}
-        </>
       )
     }
 

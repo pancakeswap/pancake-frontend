@@ -1,16 +1,14 @@
-import { useMemo } from 'react'
-import styled from 'styled-components'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation, ContextApi } from '@pancakeswap/localization'
 import { Box, Card, CardBody, CardHeader, Flex, HelpIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { Ifo, PoolIds } from 'config/constants/types'
-// import { useProfile } from 'state/profile/hooks'
-import useCriterias from 'views/Ifos/hooks/v3/useCriterias'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useMemo } from 'react'
+import styled from 'styled-components'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { EnableStatus, CardConfigReturn } from '../types'
-import IfoCardTokens from './IfoCardTokens'
 import IfoCardActions from './IfoCardActions'
 import IfoCardDetails from './IfoCardDetails'
+import IfoCardTokens from './IfoCardTokens'
 import IfoVestingCard from './IfoVestingCard'
 
 const StyledCard = styled(Card)`
@@ -34,39 +32,10 @@ export const cardConfig = (
   poolId: PoolIds,
   meta: {
     version: number
-    needQualifiedPoints?: boolean
-    needQualifiedNFT?: boolean
   },
 ): CardConfigReturn => {
   switch (poolId) {
     case PoolIds.poolBasic:
-      if (meta?.version >= 3.1) {
-        const MSG_MAP = {
-          needQualifiedNFT: t('Set PancakeSquad NFT as Pancake Profile avatar.'),
-          needQualifiedPoints: t('Reach a certain Pancake Profile Points threshold.'),
-        }
-
-        const msgs = Object.keys(meta)
-          .filter((criteria) => meta[criteria])
-          .map((criteria) => MSG_MAP[criteria])
-          .filter(Boolean)
-
-        return {
-          title: t('Private Sale'),
-          variant: 'blue',
-          tooltip: msgs?.length ? (
-            <>
-              <Text>{t('Meet any one of the requirements to join:')}</Text>
-              {msgs.map((msg) => (
-                <Text ml="16px" key={msg} as="li">
-                  {msg}
-                </Text>
-              ))}
-            </>
-          ) : null,
-        }
-      }
-
       return {
         title: t('Basic Sale'),
         variant: 'blue',
@@ -97,34 +66,15 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
 
-  const { admissionProfile, pointThreshold, vestingInformation } = publicIfoData[poolId]
-
-  const { needQualifiedNFT, needQualifiedPoints } = useMemo(() => {
-    return ifo.version >= 3.1 && poolId === PoolIds.poolBasic
-      ? {
-          needQualifiedNFT: Boolean(admissionProfile),
-          needQualifiedPoints: pointThreshold ? pointThreshold > 0 : false,
-        }
-      : {}
-  }, [ifo.version, admissionProfile, pointThreshold, poolId])
+  const { vestingInformation } = publicIfoData[poolId]
 
   const config = cardConfig(t, poolId, {
     version: ifo.version,
-    needQualifiedNFT,
-    needQualifiedPoints,
   })
 
-  // const { hasActiveProfile, isLoading: isProfileLoading } = useProfile()
-  const hasActiveProfile = false
-  const isProfileLoading = false
   const { targetRef, tooltip, tooltipVisible } = useTooltip(config.tooltip, { placement: 'bottom' })
 
-  const isLoading = isProfileLoading || publicIfoData.status === 'idle'
-
-  const { isEligible, criterias } = useCriterias(walletIfoData[poolId], {
-    needQualifiedNFT,
-    needQualifiedPoints,
-  })
+  const isLoading = publicIfoData.status === 'idle'
 
   const isVesting = useMemo(() => {
     return (
@@ -158,31 +108,27 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
           ) : (
             <>
               <IfoCardTokens
-                criterias={criterias}
-                isEligible={isEligible}
                 poolId={poolId}
                 ifo={ifo}
                 publicIfoData={publicIfoData}
                 walletIfoData={walletIfoData}
-                hasProfile={hasActiveProfile}
                 isLoading={isLoading}
                 onApprove={onApprove}
                 enableStatus={enableStatus}
               />
               <Box mt="24px">
                 <IfoCardActions
-                  isEligible={isEligible}
+                  isEligible
                   poolId={poolId}
                   ifo={ifo}
                   publicIfoData={publicIfoData}
                   walletIfoData={walletIfoData}
-                  hasProfile={hasActiveProfile}
                   isLoading={isLoading}
                   enableStatus={enableStatus}
                 />
               </Box>
               <IfoCardDetails
-                isEligible={isEligible}
+                isEligible
                 poolId={poolId}
                 ifo={ifo}
                 publicIfoData={publicIfoData}

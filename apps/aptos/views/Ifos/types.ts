@@ -15,9 +15,6 @@ export interface PoolCharacteristics {
 
   // extends
   pointThreshold?: number
-  admissionProfile?: string
-  needQualifiedNFT?: boolean
-  needQualifiedPoints?: boolean
   vestingInformation: VestingInformation // TODO: Aptos
 }
 

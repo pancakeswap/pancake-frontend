@@ -1,6 +1,5 @@
 import { useAccount } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
@@ -14,7 +13,6 @@ interface Props {
   ifo: Ifo
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
-  hasProfile: boolean
   isLoading: boolean
   isEligible: boolean
   enableStatus: EnableStatus
@@ -25,7 +23,6 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   ifo,
   publicIfoData,
   walletIfoData,
-  hasProfile,
   isLoading,
   isEligible,
   enableStatus,
@@ -40,14 +37,6 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
 
   if (!account) {
     return <ConnectWalletButton width="100%" />
-  }
-
-  if (!hasProfile) {
-    return (
-      <Button as={NextLinkFromReactRouter} to={`/profile/${account.address.toLowerCase()}`} width="100%">
-        {t('Activate your Profile')}
-      </Button>
-    )
   }
 
   const needClaim =

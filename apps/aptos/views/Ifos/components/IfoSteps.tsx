@@ -6,14 +6,12 @@ import {
   Button,
   Card,
   CardBody,
-  CheckmarkIcon,
   Container,
   Flex,
   FlexGap,
   Heading,
   Link,
   LogoRoundIcon,
-  NextLinkFromReactRouter as RouterLink,
   Skeleton,
   Step,
   StepStatus,
@@ -27,8 +25,6 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 
 // import useTokenBalance from 'hooks/useTokenBalance'
-// import { useProfile } from 'state/profile/hooks'
-import { ConnectWalletButton } from 'components/ConnectWalletButton'
 import { useStableCakeAmount } from 'hooks/useStablePrice'
 // import { useIfoCredit, useIfoCeiling } from 'state/pools/hooks'
 // import { getICakeWeekDisplay } from 'views/Pools/helpers'
@@ -62,7 +58,7 @@ const InlineLink = styled(Link)`
   display: inline;
 `
 
-const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
+const Step1 = () => {
   const { t } = useTranslation()
   // const credit = useIfoCredit()
   // const ceiling = useIfoCeiling()
@@ -111,40 +107,38 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
           )}
         </Text>
       </Box>
-      {hasProfile && (
-        <SmallStakePoolCard borderRadius="default" p="16px">
-          <FlexGap justifyContent="space-between" alignItems="center" flexWrap="wrap" gap="16px">
-            <Flex>
-              <LogoRoundIcon style={{ alignSelf: 'flex-start' }} width={32} height={32} />
-              <Box ml="16px">
-                <Text bold fontSize="12px" textTransform="uppercase" color="secondary">
-                  {t('Your max CAKE entry')}
-                </Text>
-                <Balance fontSize="20px" bold decimals={5} value={getBalanceNumber(credit)} />
-                <Text fontSize="12px" color="textSubtle">
-                  {creditDollarValue !== undefined ? (
-                    <Balance
-                      value={creditDollarValue}
-                      fontSize="12px"
-                      color="textSubtle"
-                      decimals={2}
-                      prefix="~"
-                      unit=" USD"
-                    />
-                  ) : (
-                    <Skeleton mt="1px" height={16} width={64} />
-                  )}
-                </Text>
-              </Box>
-            </Flex>
-          </FlexGap>
-        </SmallStakePoolCard>
-      )}
+      <SmallStakePoolCard borderRadius="default" p="16px">
+        <FlexGap justifyContent="space-between" alignItems="center" flexWrap="wrap" gap="16px">
+          <Flex>
+            <LogoRoundIcon style={{ alignSelf: 'flex-start' }} width={32} height={32} />
+            <Box ml="16px">
+              <Text bold fontSize="12px" textTransform="uppercase" color="secondary">
+                {t('Your max CAKE entry')}
+              </Text>
+              <Balance fontSize="20px" bold decimals={5} value={getBalanceNumber(credit)} />
+              <Text fontSize="12px" color="textSubtle">
+                {creditDollarValue !== undefined ? (
+                  <Balance
+                    value={creditDollarValue}
+                    fontSize="12px"
+                    color="textSubtle"
+                    decimals={2}
+                    prefix="~"
+                    unit=" USD"
+                  />
+                ) : (
+                  <Skeleton mt="1px" height={16} width={64} />
+                )}
+              </Text>
+            </Box>
+          </Flex>
+        </FlexGap>
+      </SmallStakePoolCard>
     </CardBody>
   )
 }
 
-const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLive: boolean; isCommitted: boolean }) => {
+const Step2 = ({ isLive, isCommitted }: { isLive: boolean; isCommitted: boolean }) => {
   const { t } = useTranslation()
   return (
     <CardBody>
@@ -157,7 +151,7 @@ const Step2 = ({ hasProfile, isLive, isCommitted }: { hasProfile: boolean; isLiv
         )}{' '}
         <br />
       </Text>
-      {hasProfile && isLive && !isCommitted && (
+      {isLive && !isCommitted && (
         <Button as="a" href="#current-ifo" mt="16px">
           {t('Commit CAKE')}
         </Button>
@@ -172,14 +166,12 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
   isLive,
   ifoCurrencyAddress,
 }) => {
-  // const { hasActiveProfile } = useProfile()
-  const { hasActiveProfile } = { hasActiveProfile: false }
   // const { account } = useWeb3React()
   const { account } = { account: 'TODO: Aptos' }
   const { t } = useTranslation()
   // const { balance } = useTokenBalance(ifoCurrencyAddress)
   const { balance } = { balance: BIG_ZERO }
-  const stepsValidationStatus = [hasActiveProfile, balance.isGreaterThan(0), isCommitted, hasClaimed]
+  const stepsValidationStatus = [balance.isGreaterThan(0), isCommitted, hasClaimed]
 
   const getStatusProp = (index: number): StepStatus => {
     const arePreviousValid = index === 0 ? true : every(stepsValidationStatus.slice(0, index), Boolean)
@@ -192,47 +184,12 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
   const renderCardBody = (step: number) => {
     const isStepValid = stepsValidationStatus[step]
 
-    const renderAccountStatus = () => {
-      if (!account) {
-        return <ConnectWalletButton />
-      }
-
-      if (isStepValid) {
-        return (
-          <Flex alignItems="center">
-            <Text color="success" bold mr="8px">
-              {t('Profile Active!')}
-            </Text>
-            <CheckmarkIcon color="success" />
-          </Flex>
-        )
-      }
-
-      return (
-        <Button as={RouterLink} to={`/profile/${account.toLowerCase()}`}>
-          {t('Activate your Profile')}
-        </Button>
-      )
-    }
-
     switch (step) {
       case 0:
-        return (
-          <CardBody>
-            <Heading as="h4" color="secondary" mb="16px">
-              {t('Activate your Profile')}
-            </Heading>
-            <Text color="textSubtle" small mb="16px">
-              {t('You’ll need an active PancakeSwap Profile to take part in an IFO!')}
-            </Text>
-            {renderAccountStatus()}
-          </CardBody>
-        )
+        return <Step1 />
       case 1:
-        return <Step1 hasProfile={hasActiveProfile} />
+        return <Step2 isLive={!!isLive} isCommitted={isCommitted} />
       case 2:
-        return <Step2 hasProfile={hasActiveProfile} isLive={!!isLive} isCommitted={isCommitted} />
-      case 3:
         return (
           <CardBody>
             <Heading as="h4" color="secondary" mb="16px">
