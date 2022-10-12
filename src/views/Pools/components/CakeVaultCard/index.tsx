@@ -27,6 +27,7 @@ interface CakeVaultProps extends CardProps {
   showStakedOnly: boolean
   defaultFooterExpanded?: boolean
   showICake?: boolean
+  showSkeleton?: boolean
 }
 
 interface CakeVaultDetailProps {
@@ -110,6 +111,7 @@ const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
   showStakedOnly,
   defaultFooterExpanded,
   showICake = false,
+  showSkeleton = true,
   ...props
 }) => {
   const { account } = useWeb3React()
@@ -132,7 +134,7 @@ const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
   return (
     <StyledCard isActive {...props}>
       <PoolCardHeader isStaking={accountHasSharesStaked}>
-        {totalStaked && totalStaked.gte(0) ? (
+        {!showSkeleton || (totalStaked && totalStaked.gte(0)) ? (
           <>
             <PoolCardHeaderTitle
               title={vaultPoolConfig[pool.vaultKey].name}
