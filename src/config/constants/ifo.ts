@@ -15,13 +15,11 @@ const ifos: Ifo[] = [
     poolBasic: {
       saleAmount: '12,000,000 KRS',
       raiseAmount: '$420,000',
-      cakeToBurn: '$0',
       distributionRatio: 0.4,
     },
     poolUnlimited: {
       saleAmount: '18,000,000 KRS',
       raiseAmount: '$630,000',
-      cakeToBurn: '$0',
       distributionRatio: 0.6,
     },
     currency: bscTokens.cake,
