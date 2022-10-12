@@ -51,6 +51,13 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 127,
+    lpSymbol: 'KRS-BUSD LP',
+    lpAddress: '0xac747ad9D61884986aD7A4A6cC5de998ce21B253',
+    token: bscTokens.krs,
+    quoteToken: bscTokens.busd,
+  },
+  {
     pid: 123,
     lpSymbol: 'ARV-BNB LP',
     lpAddress: '0xA63E32FeEFC6590bBf869070Fd2e706Eb7881bd2',
