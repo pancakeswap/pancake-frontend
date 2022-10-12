@@ -1,7 +1,10 @@
-import { useSelectedWallet, WalletConfigV2 } from '@pancakeswap/ui-wallets'
+import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
+import { useAccount, useConnect } from 'wagmi'
+import { useMemo } from 'react'
 import { WalletFilledIcon } from '@pancakeswap/uikit'
 import type { ExtendEthereum } from 'global'
 import { isFirefox } from 'react-device-detect'
+import useActiveWeb3React from '../hooks/useActiveWeb3React'
 import { metaMaskConnector, walletConnectNoQrCodeConnector } from '../utils/wagmi'
 
 export enum ConnectorNames {
@@ -176,12 +179,23 @@ export const createWallets = (chainId: number, connect: any) => {
       ]
 }
 
+export function useSelectedWallet() {
+  const { connector } = useAccount()
+  const { connectAsync } = useConnect()
+  const { chainId } = useActiveWeb3React()
+  const wallets = useMemo(() => createWallets(chainId, connectAsync), [chainId, connectAsync])
+  return useMemo(
+    () => wallets.find((wallet) => wallet.id.toLowerCase() === connector?.id.toLowerCase()),
+    [wallets, connector],
+  )
+}
+
 export function useWalletCanWatchAsset() {
-  const [selected] = useSelectedWallet<ConnectorNames, ExtendedValue>()
+  const selected = useSelectedWallet()
   return selected && selected.canWatchAsset !== false
 }
 
 export function useWalletCanSwitchChain() {
-  const [selected] = useSelectedWallet<ConnectorNames, ExtendedValue>()
+  const selected = useSelectedWallet()
   return selected ? selected.canSwitchChain !== false : true
 }
