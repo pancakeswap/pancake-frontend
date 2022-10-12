@@ -157,7 +157,11 @@ export const AddLiquidityModalHeader = ({
               <Text color="textSubtle">
                 {currencies[Field.CURRENCY_A]?.symbol &&
                   currencies[Field.CURRENCY_B]?.symbol &&
-                  getLPSymbol(currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol)}
+                  getLPSymbol(
+                    currencies[Field.CURRENCY_A]?.symbol,
+                    currencies[Field.CURRENCY_B]?.symbol,
+                    currencies[Field.CURRENCY_A]?.chainId,
+                  )}
               </Text>
             </AutoRow>
             <Text ml="8px">{liquidityMinted?.toSignificant(6)}</Text>
