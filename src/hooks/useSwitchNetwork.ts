@@ -76,7 +76,7 @@ export function useSwitchNetwork() {
   const canSwitch = useMemo(
     () =>
       isConnected
-        ? !!_switchNetworkAsync && connector.id !== ConnectorNames.WalletConnect && !walletCanSwitchChain
+        ? !!_switchNetworkAsync && connector.id !== ConnectorNames.WalletConnect && walletCanSwitchChain
         : true,
     [_switchNetworkAsync, isConnected, connector, walletCanSwitchChain],
   )

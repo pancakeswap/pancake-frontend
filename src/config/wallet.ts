@@ -183,6 +183,5 @@ export function useWalletCanWatchAsset() {
 
 export function useWalletCanSwitchChain() {
   const [selected] = useSelectedWallet<ConnectorNames, ExtendedValue>()
-
-  return selected && selected.canSwitchChain !== false
+  return selected ? selected.canSwitchChain !== false : true
 }
