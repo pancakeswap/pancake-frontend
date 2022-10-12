@@ -153,7 +153,7 @@ export const useTokenDatasSWR = (addresses?: string[]): TokenData[] | undefined 
       .map((a) => {
         return data?.[a]?.data
       })
-      .filter((token) => token)
+      .filter((d) => d && d.exists)
   }, [addresses, data])
 
   return tokensWithData ?? undefined
