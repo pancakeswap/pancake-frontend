@@ -79,6 +79,13 @@ export const walletConnectConnector = new WalletConnectConnector({
   },
 })
 
+export const walletConnectNoQrCodeConnector = new WalletConnectConnector({
+  chains,
+  options: {
+    qrcode: false,
+  },
+})
+
 export const metaMaskConnector = new MetaMaskConnector({
   chains,
   options: {

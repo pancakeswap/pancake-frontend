@@ -1,7 +1,7 @@
 import { createSprinkles, defineProperties } from '@vanilla-extract/sprinkles'
 import { calc } from '@vanilla-extract/css-utils'
 
-import { Breakpoint, breakpointNames, breakpoints, mediaQueries } from './breakpoints'
+import { Breakpoint, breakpointNames, breakpoints } from './breakpoints'
 import { vars } from './vars.css'
 
 // Ensure reset has lowest specificity
@@ -30,7 +30,7 @@ const extendedSpace = {
   screenMd: breakpoints.md,
   screenLg: breakpoints.lg,
   screenXl: breakpoints.xl,
-}
+} as const
 
 const margin = { ...vars.space, auto: 'auto' }
 
@@ -105,12 +105,15 @@ const responsiveProperties = defineProperties({
       '40': 40,
       '50': 50,
       '75': 75,
+      '99': 99,
       '100': 100,
       modal: 100,
       auto: 'auto',
     },
-    borderLeftRadius: vars.radii,
-    borderRightRadius: vars.radii,
+    borderTop: {
+      '1': `1px solid ${vars.colors.cardBorder}`,
+    },
+    borderRadius: vars.radii,
     borderTopLeftRadius: vars.radii,
     borderBottomRightRadius: vars.radii,
     borderTopRightRadius: vars.radii,
@@ -167,13 +170,15 @@ const interactiveProperties = defineProperties({
   },
   defaultCondition: 'base',
   properties: {
+    background: vars.colors,
     backgroundColor: vars.colors,
     borderColor: vars.colors,
     color: vars.colors,
     outlineColor: vars.colors,
   },
   shorthands: {
-    bg: ['backgroundColor'],
+    bgc: ['backgroundColor'],
+    bg: ['background'],
   },
 })
 

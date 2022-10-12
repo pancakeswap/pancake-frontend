@@ -1,26 +1,26 @@
-import styled from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 import {
+  Box,
+  Button,
   Card,
   CardBody,
+  CheckmarkCircleIcon,
   Flex,
   LaurelLeftIcon,
   LaurelRightIcon,
-  Button,
-  CheckmarkCircleIcon,
-  useModal,
   Text,
-  Box,
   TwitterIcon,
+  useModal,
 } from '@pancakeswap/uikit'
-import { useWallet } from 'hooks/useWallet'
-import { useTranslation } from '@pancakeswap/localization'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { FINISHED, OVER, REGISTRATION } from 'config/constants/trading-competition/phases'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
-import RegisterModal from '../RegisterModal'
+import styled from 'styled-components'
+import { CompetitionProps } from '../../types'
 import ClaimModal from '../ClaimModal'
 import { Heading2Text } from '../CompetitionHeadingText'
-import { CompetitionProps } from '../../types'
+import RegisterModal from '../RegisterModal'
 
 const StyledCard = styled(Card)`
   display: inline-flex;
@@ -74,7 +74,6 @@ const BattleCta: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
 }) => {
   const router = useRouter()
   const { t } = useTranslation()
-  const { onPresentConnectModal } = useWallet()
   const [onPresentRegisterModal] = useModal(
     <RegisterModal profile={profile} onRegisterSuccess={onRegisterSuccess} />,
     false,
@@ -162,10 +161,6 @@ const BattleCta: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
   const handleCtaClick = useCallback(() => {
     // All conditions when button isn't disabled
 
-    // No wallet connected
-    if (!account) {
-      onPresentConnectModal()
-    }
     // Wallet connected but user not registered
     if (account && !hasRegistered) {
       onPresentRegisterModal()
@@ -184,7 +179,6 @@ const BattleCta: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
     hasRegistered,
     isCompetitionLive,
     onPresentClaimModal,
-    onPresentConnectModal,
     onPresentRegisterModal,
     router,
   ])
@@ -227,9 +221,13 @@ const BattleCta: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
           )}
           {currentPhase.state !== FINISHED && (
             <Flex alignItems="flex-end">
-              <StyledButton disabled={isButtonDisabled} onClick={handleCtaClick}>
-                {getButtonText()}
-              </StyledButton>
+              {account ? (
+                <StyledButton disabled={isButtonDisabled} onClick={handleCtaClick}>
+                  {getButtonText()}
+                </StyledButton>
+              ) : (
+                <ConnectWalletButton />
+              )}
             </Flex>
           )}
         </Flex>

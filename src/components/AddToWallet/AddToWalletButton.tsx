@@ -1,17 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
+  BinanceChainIcon,
   Button,
   ButtonProps,
-  MetamaskIcon,
-  TrustWalletIcon,
   CoinbaseWalletIcon,
-  TokenPocketIcon,
+  MetamaskIcon,
   OperaIcon,
-  BinanceChainIcon,
+  TokenPocketIcon,
+  TrustWalletIcon,
 } from '@pancakeswap/uikit'
 import { BAD_SRCS } from 'components/Logo/Logo'
+import { useWalletCanWatchAsset } from 'config/wallet'
 import { useAccount } from 'wagmi'
-import { canRegisterToken } from '../../utils/wallet'
 
 export enum AddToWalletTextOptions {
   NO_TEXT,
@@ -82,9 +82,8 @@ const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
 }) => {
   const { t } = useTranslation()
   const { connector, isConnected } = useAccount()
-  const isCanRegisterToken = canRegisterToken()
+  const isCanRegisterToken = useWalletCanWatchAsset()
 
-  if (connector && connector.name === 'Binance') return null
   if (!(connector && connector.watchAsset && isConnected)) return null
   if (!isCanRegisterToken) return null
 
