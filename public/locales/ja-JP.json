@@ -1975,8 +1975,8 @@
   "Trade stablecoins in StableSwap with lower slippage and trading fees!": "StableSwapで、低スリッページと安い取引手数料でステーブルコインをトレード！",
   "StableSwap provides better rates and lower fees for pairs with highly correlated prices": "StableSwapでは、相関性の高い価格のペアに対して、より良いレートとより低い手数料を提供しています",
   "Before editing your profile, please make sure you've claimed all the unspent CAKE from previous IFOs!": "プロファイルを編集する前に、前回のIFOから未使用のすべてのCAKEを回収していることを確認してください！",
-  "Starts connect with one of the wallets below. Manage and store your private keys and assets securely.": "Starts connect with one of the wallets below. Manage and store your private keys and assets securely.",
-  "What’s Web3 Wallet?": "What’s Web3 Wallet?",
+  "Start by connecting with one of the wallets below. Be sure to store your private keys or seed phrase securely. Never share them with anyone.": "Start by connecting with one of the wallets below. Be sure to store your private keys or seed phrase securely. Never share them with anyone.",
+  "What’s a Web3 Wallet?": "What’s a Web3 Wallet?",
   "Please confirm in %wallet%": "Please confirm in %wallet%",
   "Opening": "Opening",
   "Haven’t got a wallet yet?": "Haven’t got a wallet yet?",
@@ -1986,10 +1986,10 @@
   "Install": "Install",
   "Error connecting, please authorize wallet to access.": "Error connecting, please authorize wallet to access.",
   "Retry": "Retry",
-  "Your first step entering the defi world": "Your first step entering the defi world",
+  "Your first step in the DeFi world": "Your first step in the DeFi world",
   "A Web3 Wallet allows you to send and receive crypto assets like bitcoin, BNB, ETH, NFTs and much more.": "A Web3 Wallet allows you to send and receive crypto assets like bitcoin, BNB, ETH, NFTs and much more.",
-  "Login using wallet connection": "Login using wallet connection",
-  "Instead of setting up new accounts and passwords for every website, simply connect your wallet in one go.": "Instead of setting up new accounts and passwords for every website, simply connect your wallet in one go.",
+  "Login using a wallet connection": "Login using a wallet connection",
+  "Instead of setting up new accounts and passwords for every website, simply set up your wallet in one go, and connect it to your favorite DApps.": "Instead of setting up new accounts and passwords for every website, simply set up your wallet in one go, and connect it to your favorite DApps.",
   "Stake Error": "Stake Error",
   "Unstake Error": "Unstake Error",
   "Based on \"overflow\" sales method. %refundingAmount% unspent %spentToken% are available to claim after the sale is completed.": "Based on \"overflow\" sales method. %refundingAmount% unspent %spentToken% are available to claim after the sale is completed.",
@@ -1999,5 +1999,6 @@
   "until the next pot lock": "until the next pot lock",
   "Withdrawable on %date%": "Withdrawable on %date%",
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.",
-  "For safety, cross-chain transactions will take around 30 minutes to confirm.": "For safety, cross-chain transactions will take around 30 minutes to confirm."
+  "For safety, cross-chain transactions will take around 30 minutes to confirm.": "For safety, cross-chain transactions will take around 30 minutes to confirm.",
+  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming."
 }
