@@ -1,6 +1,6 @@
 import { Types } from 'aptos'
 
-export const ADDRESS = '0x1a09f206351e643ed830298f870aa2a46cb566579e86c7be313569dda65557b0' as const
+export const ADDRESS = '0xb3993dc91a8f0183dbb54c9c4e5f6e14e9d9370b532196c4337ee21c5873c1f1' as const
 
 export type RouterAddLiquidityArgs = [bigint | string, bigint | string, bigint | string, bigint | string]
 

@@ -1,11 +1,5 @@
 /* eslint-disable camelcase */
-import {
-  Currency,
-  CurrencyAmount,
-  Pair,
-  PAIR_RESERVE_TYPE_TAG,
-  SWAP_RESOURCE_ADDRESS,
-} from '@pancakeswap/aptos-swap-sdk'
+import { Currency, CurrencyAmount, Pair, PAIR_RESERVE_TYPE_TAG, SWAP_ADDRESS } from '@pancakeswap/aptos-swap-sdk'
 import { useAccountResources } from '@pancakeswap/awgmi'
 import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'
@@ -23,7 +17,7 @@ const pairReserveSelector = (swapResources) => {
 // TODO: aptos this will fetch all lp reserve under swap resource account, will eventually be huge
 function useFetchAllPairsReserves() {
   return useAccountResources({
-    address: SWAP_RESOURCE_ADDRESS,
+    address: SWAP_ADDRESS,
     select: pairReserveSelector,
     watch: true,
   })
