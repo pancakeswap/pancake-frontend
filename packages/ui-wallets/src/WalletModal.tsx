@@ -81,7 +81,7 @@ const TabContainer = ({ children }: PropsWithChildren) => {
       <AtomBox position="absolute" style={{ top: '-50px' }}>
         <TabMenu activeIndex={index} onItemClick={setIndex} gap="16px">
           <Tab>{t('Connect Wallet')}</Tab>
-          <Tab>{t('What’s Web3 Wallet?')}</Tab>
+          <Tab>{t('What’s a Web3 Wallet?')}</Tab>
         </TabMenu>
       </AtomBox>
       <AtomBox
@@ -137,7 +137,9 @@ function MobileModal<T>({
         </AtomBox>
       ) : (
         <Text color="textSubtle" small p="24px">
-          {t('Starts connect with one of the wallets below. Manage and store your private keys and assets securely.')}
+          {t(
+            'Start by connecting with one of the wallets below. Be sure to store your private keys or seed phrase securely. Never share them with anyone.',
+          )}
         </Text>
       )}
       <AtomBox flex={1} py="16px" style={{ maxHeight: '230px' }} overflow="auto">
@@ -300,7 +302,9 @@ function DesktopModal<T>({
             {t('Connect Wallet')}
           </Heading>
           <Text color="textSubtle" small pt="24px" pb="32px">
-            {t('Starts connect with one of the wallets below. Manage and store your private keys and assets securely.')}
+            {t(
+              'Start by connecting with one of the wallets below. Be sure to store your private keys or seed phrase securely. Never share them with anyone.',
+            )}
           </Text>
         </AtomBox>
         <WalletSelect
