@@ -10,8 +10,7 @@ export default memo(function SwapRoute({ trade }: { trade: Trade<Currency, Curre
         const isLastItem: boolean = i === path.length - 1
         const currency = unwrappedToken(token)
         return (
-          // eslint-disable-next-line react/no-array-index-key
-          <Fragment key={i}>
+          <Fragment key={token.address}>
             <Flex alignItems="end">
               <Text fontSize="14px" ml="0.125rem" mr="0.125rem">
                 {currency.symbol}
