@@ -45,7 +45,7 @@ const walletsConfig = ({
       icon: '/images/wallets/metamask.png',
       installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isMetaMask) && metaMaskConnector.ready,
       connectorId: ConnectorNames.MetaMask,
-      deepLink: 'metamask://dapp/pancakeswap.finance/',
+      deepLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
       qrCode,
       downloadLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
     },
@@ -70,7 +70,6 @@ const walletsConfig = ({
       title: 'Coinbase Wallet',
       icon: '/images/wallets/coinbase.png',
       connectorId: ConnectorNames.WalletLink,
-      deepLink: 'https://go.cb-w.com/dapp?cb_url=https%3A%2F%2Fpancakeswap.finance%2F',
     },
     {
       id: 'trust',
