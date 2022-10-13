@@ -4,7 +4,7 @@ import { Container } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
 import { DEFAULT_META, getCustomMeta } from 'config/constants/meta'
-// import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
+import { useCakePrice } from 'hooks/useStablePrice'
 
 const StyledPage = styled(Container)`
   min-height: calc(100vh - 64px);
@@ -28,9 +28,8 @@ export const PageMeta: React.FC<React.PropsWithChildren<{ symbol?: string }>> = 
     currentLanguage: { locale },
   } = useTranslation()
   const { pathname } = useRouter()
-  // const cakePriceUsd = useCakeBusdPrice({ forceMainnet: true }) // TODO: Aptos Farms
-  const cakePriceUsd = 40
-  const cakePriceUsdDisplay = cakePriceUsd ? `$${cakePriceUsd.toFixed(3)}` : '...'
+  const { data: cakePrice } = useCakePrice()
+  const cakePriceUsdDisplay = cakePrice ? `$${Number(cakePrice).toFixed(3)}` : '...'
 
   const pageMeta = getCustomMeta(pathname, t, locale) || {}
   const { title, description, image } = { ...DEFAULT_META, ...pageMeta }

@@ -10,7 +10,7 @@ import SlippageSection from 'components/Liquidity/components/SlippageSection'
 import withLPValues from 'components/Liquidity/hocs/withLPValues'
 import useBurnLiquidityInfo from 'components/Liquidity/hooks/useBurnLiquidityInfo'
 import useCurrencySelectRoute from 'components/Liquidity/hooks/useCurrencySelectRoute'
-
+import Page from 'components/Layout/Page'
 import { usePair } from 'hooks/usePairs'
 import { useMemo } from 'react'
 
@@ -36,7 +36,7 @@ const RemoveLiquidityPage = () => {
   )
 
   return (
-    <>
+    <Page>
       <LiquidityCard>
         <LiquidityCard.Header
           backTo="/liquidity"
@@ -111,7 +111,7 @@ const RemoveLiquidityPage = () => {
           <MinimalPositionCardContainer pair={pair} />
         </AutoColumn>
       ) : null}
-    </>
+    </Page>
   )
 }
 

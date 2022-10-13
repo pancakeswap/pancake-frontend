@@ -15,6 +15,7 @@ import { AtomBox } from '@pancakeswap/ui'
 import { AutoColumn, Card, RowBetween, Skeleton, Swap as SwapUI, useModal } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import Page from 'components/Layout/Page'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
 import { ExchangeLayout } from 'components/Layout/ExchangeLayout'
 import { SettingsModal, withCustomOnDismiss } from 'components/Menu/Settings/SettingsModal'
@@ -343,7 +344,7 @@ const SwapPage = () => {
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
   return (
-    <>
+    <Page>
       <Card style={{ width: '328px' }}>
         <CurrencyInputHeader
           title={
@@ -425,7 +426,7 @@ const SwapPage = () => {
         {trade && <AdvancedSwapDetailsDropdown trade={trade} />}
       </Card>
       <TestTokens />
-    </>
+    </Page>
   )
 }
 

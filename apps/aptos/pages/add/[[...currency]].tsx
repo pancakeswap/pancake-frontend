@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Liquidity as LiquidityUI } from '@pancakeswap/uikit'
+import Page from 'components/Layout/Page'
 
 import { ExchangeLayout } from 'components/Layout/ExchangeLayout'
 import AddLiquidityForm from 'components/Liquidity/components/AddLiquidityForm'
@@ -43,7 +44,7 @@ const AddLiquidityPage = () => {
   const goToChoose = useCallback(() => setSteps(Steps.Choose), [])
 
   return (
-    <>
+    <Page>
       <LiquidityUI.LiquidityCard>
         <LiquidityUI.LiquidityCard.Header
           title={t('Add Liquidity')}
@@ -68,7 +69,7 @@ const AddLiquidityPage = () => {
           <MinimalPositionCardContainer pair={pair} />
         </AutoColumn>
       ) : null}
-    </>
+    </Page>
   )
 }
 
