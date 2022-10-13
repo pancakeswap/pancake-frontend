@@ -70,7 +70,6 @@ const walletsConfig = ({
       title: 'Coinbase Wallet',
       icon: '/images/wallets/coinbase.png',
       connectorId: ConnectorNames.WalletLink,
-      deepLink: 'https://go.cb-w.com/dapp?cb_url=https%3A%2F%2Fpancakeswap.finance%2F',
     },
     {
       id: 'trust',
