@@ -26,7 +26,6 @@ import styled from 'styled-components'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import useIfoApprove from '../../hooks/useIfoApprove'
 import { CardsWrapper } from '../IfoCardStyles'
-import IfoAchievement from './Achievement'
 import IfoPoolCard from './IfoPoolCard'
 import { IfoRibbon } from './IfoRibbon'
 import { EnableStatus } from './types'
@@ -184,12 +183,6 @@ export const IfoCurrentCard = ({
             </>
           )}
           <IfoCard ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
-          <StyledCardFooter>
-            <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
-              {isExpanded ? t('Hide') : t('Details')}
-            </ExpandableLabel>
-            {isExpanded && <IfoAchievement ifo={ifo} publicIfoData={publicIfoData} />}
-          </StyledCardFooter>
         </StyledCard>
       </Box>
     </>
@@ -239,7 +232,6 @@ const IfoFoldableCard = ({
         </Box>
         <FoldableContent isVisible={isExpanded}>
           <IfoCard ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
-          <IfoAchievement ifo={ifo} publicIfoData={publicIfoData} />
         </FoldableContent>
       </Box>
     </Box>

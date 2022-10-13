@@ -29,8 +29,6 @@ export interface PublicIfoData {
   startBlockNum: number
   endBlockNum: number
   currencyPriceInUSD: BigNumber
-  numberPoints: number
-  thresholdPoints: EthersBigNumber // TODO: Aptos. Is this type correct?
   vestingStartTime?: number
 
   fetchIfoData: (currentBlock: number) => Promise<void>
@@ -77,7 +75,6 @@ export interface WalletIfoState {
 
 // Returned by useGetWalletIfoData
 export interface WalletIfoData extends WalletIfoState {
-  allowance: BigNumber
   contract: Contract // TODO: Aptos
   setPendingTx: (status: boolean, poolId: PoolIds) => void
   setIsClaimed: (poolId: PoolIds) => void
