@@ -169,7 +169,7 @@ const ActivityHistory: React.FC<React.PropsWithChildren<ActivityHistoryProps>> =
                     const nftMeta = nftMetadata.find(
                       (metaNft) =>
                         metaNft.tokenId === activity.nft.tokenId &&
-                        metaNft.collectionAddress.toLowerCase() === activity.nft?.collection.id.toLowerCase(),
+                        isAddress(metaNft.collectionAddress) === isAddress(activity.nft?.collection.id),
                     )
                     return (
                       <ActivityRow

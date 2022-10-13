@@ -11,6 +11,7 @@ import useSWRInfinite from 'swr/infinite'
 import { FetchStatus } from 'config/constants/types'
 import { formatBigNumber } from 'utils/formatBalance'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
+import { isAddress } from 'utils'
 import { pancakeBunniesAddress } from '../constants'
 
 const fetchMarketDataNfts = async (
@@ -83,7 +84,7 @@ export const usePancakeBunnyOnSaleNfts = (
         })
         .map(({ tokenId, currentSeller, currentAskPrice }) => {
           const nftData = newNfts.find((marketData) => marketData.tokenId === tokenId)
-          const isTradable = currentSeller.toLowerCase() !== NOT_ON_SALE_SELLER
+          const isTradable = isAddress(currentSeller) !== NOT_ON_SALE_SELLER
           return {
             ...nftData,
             marketData: {
