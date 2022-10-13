@@ -117,7 +117,13 @@ function MobileModal<T>({
   const [selected] = useSelectedWallet()
   const [error] = useAtom(errorAtom)
 
-  const walletsToShow: WalletConfigV2[] = wallets.filter((w) => w.installed !== false || w.deepLink)
+  const installedWallets: WalletConfigV2[] = wallets.filter((w) => w.installed)
+  const walletsToShow: WalletConfigV2[] = wallets.filter((w) => {
+    if (installedWallets.length) {
+      return w.installed
+    }
+    return w.installed !== false || w.deepLink
+  })
 
   return (
     <AtomBox width="full">
