@@ -148,8 +148,8 @@ function MobileModal<T>({
           wallets={walletsToShow}
           onClick={(wallet) => {
             connectWallet(wallet)
-            if (wallet.deepLink) {
-              window.open(wallet.deepLink)
+            if (!wallet.installed && wallet.deepLink) {
+              window.open(wallet.deepLink, '_blank', 'noopener noreferrer')
             }
           }}
         />
