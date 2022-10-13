@@ -179,6 +179,7 @@ function WalletSelect<T, D>({
   selected?: WalletConfigV2<T, D>
   displayCount?: number
 }) {
+  const { t } = useTranslation()
   const [showMore, setShowMore] = useState(false)
   const walletsToShow = showMore ? wallets : wallets.slice(0, displayCount)
   return (
@@ -239,7 +240,7 @@ function WalletSelect<T, D>({
               <MoreHorizontalIcon color="text" />
             </AtomBox>
             <Text fontSize="12px" textAlign="center" mt="4px">
-              More
+              {t('More')}
             </Text>
           </Button>
         </AtomBox>
