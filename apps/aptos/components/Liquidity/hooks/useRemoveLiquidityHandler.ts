@@ -5,6 +5,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useUserSlippage } from 'state/user'
 import { calculateSlippageAmount } from 'utils/exchange'
+import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { Field, LiquidityHandlerReturn } from '../type'
 
 interface UseRemoveLiquidityHandlerReturn extends LiquidityHandlerReturn {
@@ -85,7 +86,9 @@ export default function useRemoveLiquidityHandler({
           attemptingTxn: false,
           liquidityErrorMessage:
             // TODO: map error
-            err && err.code !== 4001 ? t('Remove liquidity failed: %message%', { message: err.message }) : undefined,
+            err && err.code !== 4001
+              ? t('Remove liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err.message) })
+              : undefined,
           txHash: undefined,
         })
       })

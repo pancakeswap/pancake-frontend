@@ -64,6 +64,12 @@ describe('Coin', () => {
           new Coin(ChainId.DEVNET, '0x123123123::swap_utils::TestBNB', 8, '')
         )
       ).toBe(true)
+
+      expect(
+        new Coin(ChainId.DEVNET, '0x16::pancake::CAKE', 8, '').sortsBefore(
+          new Coin(ChainId.DEVNET, '0x16::devnet_coins::DevnetBTC', 8, '')
+        )
+      ).toBe(false)
     })
 
     it('correct address', () => {

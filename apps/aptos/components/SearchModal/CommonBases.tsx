@@ -5,7 +5,7 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useTranslation } from '@pancakeswap/localization'
 
 import { SUGGESTED_BASES } from 'config/constants/exchange'
-// import { CurrencyLogo } from '../Logo'
+import { CurrencyLogo } from '../Logo'
 import { CommonBasesType } from './types'
 
 const ButtonWrapper = styled.div`
@@ -74,8 +74,7 @@ export default function CommonBases({
             }}
             disable={selectedCurrency?.isNative}
           >
-            {/* TODO: aptos logo */}
-            {/* <CurrencyLogo currency={native} style={{ marginRight: 8 }} /> */}
+            <CurrencyLogo currency={native} style={{ marginRight: 8 }} />
             <Text>{native?.symbol}</Text>
           </BaseWrapper>
         </ButtonWrapper>
@@ -84,8 +83,7 @@ export default function CommonBases({
           return (
             <ButtonWrapper>
               <BaseWrapper onClick={() => !selected && onSelect(token)} disable={selected} key={token.address}>
-                {/* TODO: aptos logo */}
-                {/* <CurrencyLogo currency={token} style={{ marginRight: 8, borderRadius: '50%' }} /> */}
+                <CurrencyLogo currency={token} style={{ marginRight: 8, borderRadius: '50%' }} />
                 <Text>{token.symbol}</Text>
               </BaseWrapper>
             </ButtonWrapper>
