@@ -148,8 +148,8 @@ function MobileModal<T>({
           wallets={walletsToShow}
           onClick={(wallet) => {
             connectWallet(wallet)
-            if (wallet.deepLink) {
-              window.open(wallet.deepLink)
+            if (!wallet.installed && wallet.deepLink) {
+              window.open(wallet.deepLink, '_blank', 'noopener noreferrer')
             }
           }}
         />
@@ -200,6 +200,7 @@ function WalletSelect<T, D>({
             variant="text"
             height="auto"
             as={AtomBox}
+            href="#"
             display="flex"
             alignItems="center"
             style={{ justifyContent: 'flex-start', letterSpacing: 'normal', padding: '0' }}
