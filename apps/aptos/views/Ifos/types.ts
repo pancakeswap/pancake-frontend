@@ -15,7 +15,7 @@ export interface PoolCharacteristics {
 
   // extends
   pointThreshold?: number
-  vestingInformation: VestingInformation // TODO: Aptos
+  vestingInformation?: VestingInformation
 }
 
 // IFO data unrelated to the user returned by useGetPublicIfoData
@@ -31,10 +31,10 @@ export interface PublicIfoData {
   currencyPriceInUSD: BigNumber
   numberPoints: number
   thresholdPoints: EthersBigNumber // TODO: Aptos. Is this type correct?
-  vestingStartTime: number // TODO: Aptos
+  vestingStartTime?: number
 
   fetchIfoData: (currentBlock: number) => Promise<void>
-  [PoolIds.poolBasic]: PoolCharacteristics // TODO: Aptos
+  // [PoolIds.poolBasic]?: PoolCharacteristics
   [PoolIds.poolUnlimited]: PoolCharacteristics
 }
 
@@ -53,17 +53,17 @@ export interface UserPoolCharacteristics {
   taxAmountInLP: BigNumber // @contract: userTaxAmountPool
   hasClaimed: boolean // @contract: claimedPool
   isPendingTx: boolean
-  vestingReleased: BigNumber // TODO: Aptos
-  vestingAmountTotal: BigNumber // TODO: Aptos
+  vestingReleased?: BigNumber
+  vestingAmountTotal?: BigNumber
   isVestingInitialized?: boolean
   vestingId?: string
-  vestingComputeReleasableAmount: BigNumber // TODO: Aptos
+  vestingComputeReleasableAmount?: BigNumber
 }
 
 // Use only inside the useGetWalletIfoData hook
 export interface WalletIfoState {
   isInitialized: boolean
-  [PoolIds.poolBasic]: UserPoolCharacteristics // TODO: Aptos
+  // [PoolIds.poolBasic]?: UserPoolCharacteristics
   [PoolIds.poolUnlimited]: UserPoolCharacteristics
   ifoCredit?: {
     credit: BigNumber

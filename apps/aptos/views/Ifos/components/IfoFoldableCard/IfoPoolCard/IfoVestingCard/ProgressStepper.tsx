@@ -26,9 +26,8 @@ const ProgressStepper: React.FC<React.PropsWithChildren<ProgressStepperProps>> =
   const [activeStepIndex, setActiveStepIndex] = useState(0)
 
   useEffect(() => {
-    // const { vestingStartTime } = publicIfoData
-    const vestingStartTime = 0
-    const { cliff, duration } = publicIfoData[poolId]?.vestingInformation
+    const vestingStartTime = publicIfoData.vestingStartTime ?? 0
+    const { cliff, duration } = publicIfoData[poolId]?.vestingInformation ?? { cliff: 0, duration: 0 }
 
     const currentTimeStamp = new Date().getTime()
     const timeSalesEnded = vestingStartTime * 1000

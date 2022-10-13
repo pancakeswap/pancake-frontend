@@ -332,9 +332,10 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
       <StyledCardBody>
         <CardsWrapper
           shouldReverse={ifo.version >= 3.1}
-          singleCard={!publicIfoData.poolBasic || !walletIfoData.poolBasic}
+          // singleCard={!publicIfoData.poolBasic || !walletIfoData.poolBasic}
+          singleCard
         >
-          {publicIfoData.poolBasic && walletIfoData.poolBasic && (
+          {/* {publicIfoData.poolBasic && walletIfoData.poolBasic && (
             <IfoPoolCard
               poolId={PoolIds.poolBasic}
               ifo={ifo}
@@ -343,7 +344,7 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
               onApprove={handleApprove}
               enableStatus={enableStatus}
             />
-          )}
+          )} */}
           <IfoPoolCard
             poolId={PoolIds.poolUnlimited}
             ifo={ifo}

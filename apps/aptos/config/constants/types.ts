@@ -38,7 +38,7 @@ export interface Ifo {
   version: number
   vestingTitle?: string
   cIFO?: boolean
-  [PoolIds.poolBasic]: IfoPoolInfo // TODO: Aptos
+  // [PoolIds.poolBasic]?: IfoPoolInfo
   [PoolIds.poolUnlimited]: IfoPoolInfo
 }
 
