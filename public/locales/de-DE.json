@@ -565,7 +565,6 @@
   "Votes (%count%)": "Stimmen (%count%)",
   "Snapshot": "Snapshot",
   "Choices": "Wahlmöglichkeiten",
-  "Unable to sign payload": "Nutzdaten können nicht signiert werden",
   "Identifier": "Bezeichner",
   "Current Results": "Aktuelle Ergebnisse",
   "Vote cast!": "Stimme abgegeben!",
