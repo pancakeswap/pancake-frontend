@@ -29,13 +29,13 @@ const useFarmsWithBalance = () => {
 
   const getFarmsWithBalances = async (
     farms: SerializedFarmConfig[],
-    farmAccount: string,
+    accountToCheck: string,
     contract: Masterchef | BCakeProxy,
   ) => {
     const calls = farms.map((farm) => ({
-      address: getMasterChefAddress(chainId),
+      address: masterChefContract.address,
       name: 'pendingCake',
-      params: [farm.pid, farmAccount],
+      params: [farm.pid, accountToCheck],
     }))
 
     const rawResults = await multicall(masterChefABI, calls)
