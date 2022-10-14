@@ -48,6 +48,7 @@ export async function simulateTransaction({
   const simulatedUserTransactions = await provider.simulateTransaction(mockAccount, rawTransaction, {
     estimateGasUnitPrice: true,
     estimateMaxGasAmount: true,
+    estimatePrioritizedGasUnitPrice: true,
   })
 
   if (throwOnError) {
