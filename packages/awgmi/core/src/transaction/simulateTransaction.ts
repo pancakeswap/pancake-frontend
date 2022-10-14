@@ -42,12 +42,13 @@ export async function simulateTransaction({
   if (!account) throw new ProviderRpcError(4100, 'No Account')
 
   const mockAccount = new MockAptosAccount(account)
-  const estimateGasPrice = await provider.client.transactions.estimateGasPrice()
   const rawTransaction = await provider.generateTransaction(mockAccount.address(), payload, {
-    gas_unit_price: String(estimateGasPrice.gas_estimate),
     ...options,
   })
-  const simulatedUserTransactions = await provider.simulateTransaction(mockAccount, rawTransaction)
+  const simulatedUserTransactions = await provider.simulateTransaction(mockAccount, rawTransaction, {
+    estimateGasUnitPrice: true,
+    estimateMaxGasAmount: true,
+  })
 
   if (throwOnError) {
     const foundError = simulatedUserTransactions.find((simulatedTx) => !simulatedTx.success)
