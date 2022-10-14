@@ -61,7 +61,7 @@ const Expand: React.FC<React.PropsWithChildren<ExpandProps>> = ({ data, expanded
   const router = useRouter()
 
   const handleViewIfo = () => {
-    router.push(`/ifo/history#${token.symbol}`)
+    router.push(`/ifo/history#${token.symbol.toLowerCase()}`)
   }
 
   return (

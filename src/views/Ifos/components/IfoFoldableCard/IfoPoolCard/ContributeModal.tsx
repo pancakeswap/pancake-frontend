@@ -55,7 +55,7 @@ const multiplierValues = [0.1, 0.25, 0.5, 0.75, 1]
 // Default value for transaction setting, tweak based on BSC network congestion.
 const gasPrice = parseUnits('10', 'gwei').toString()
 
-const SmallAmountNotice: React.FC<React.PropsWithChildren<{ url: string }>> = ({ url }) => {
+const HasVestingNotice: React.FC<React.PropsWithChildren<{ url: string }>> = ({ url }) => {
   const { t } = useTranslation()
 
   return (
@@ -249,7 +249,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
               </Button>
             ))}
           </Flex>
-          {vestingInformation.percentage > 0 && <SmallAmountNotice url={articleUrl} />}
+          {vestingInformation.percentage > 0 && <HasVestingNotice url={articleUrl} />}
           <Text color="textSubtle" fontSize="12px" mb="24px">
             {t(
               'If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.',

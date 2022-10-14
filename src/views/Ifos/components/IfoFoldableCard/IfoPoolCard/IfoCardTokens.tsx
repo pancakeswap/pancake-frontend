@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import {
   Text,
   Flex,
@@ -160,6 +161,12 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
     placement: 'bottom',
   })
 
+  const hasNFT = useMemo(() => {
+    const data = criterias.find((obj) => obj.type === 'isQualifiedNFT')
+    const userHasNFT = data?.value
+    return userHasNFT
+  }, [criterias])
+
   const renderTokenSection = () => {
     if (isLoading) {
       return <SkeletonCardTokens />
@@ -205,7 +212,9 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
           {isEligible && (
             <Message mt="24px" p="8px" variant="success">
               <MessageText small display="inline">
-                {t('You are eligible to participate in this Private Sale!')}
+                {hasNFT
+                  ? t('Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.')
+                  : t('You are eligible to participate in this Private Sale!')}
               </MessageText>
             </Message>
           )}

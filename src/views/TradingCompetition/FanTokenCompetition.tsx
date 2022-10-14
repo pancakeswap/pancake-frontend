@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { useProfile } from 'state/profile/hooks'
 import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTradingCompetitionContractFanToken } from 'hooks/useContract'
@@ -16,6 +15,8 @@ import {
   REGISTRATION,
 } from 'config/constants/trading-competition/phases'
 import PageSection from 'components/PageSection'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { ChainId } from '@pancakeswap/sdk'
 import { DARKBG, MIDBLUEBG, MIDBLUEBG_DARK } from './pageSectionStyles'
 import Countdown from './components/Countdown'
 import FanTokenStormBunny from './pngs/fan-token-storm.png'
@@ -33,7 +34,7 @@ import TeamRanksSection from './components/TeamRanksSection'
 import PrizesInfoSection from './components/PrizesInfoSection'
 
 const FanTokenCompetition = () => {
-  const { account } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { isMobile } = useMatchBreakpoints()
   const { profile, isLoading: isProfileLoading } = useProfile()
   const { isDark } = useTheme()
@@ -121,25 +122,27 @@ const FanTokenCompetition = () => {
       }
     }
 
-    fetchCompetitionInfoContract()
-    if (account) {
-      fetchUserContract()
-    } else {
-      setUserTradingInformation({
-        isLoading: false,
-        account,
-        hasRegistered: false,
-        hasUserClaimed: false,
-        userRewardGroup: '0',
-        userCakeRewards: '0',
-        userLazioRewards: '0',
-        userPortoRewards: '0',
-        userSantosRewards: '0',
-        userPointReward: '0',
-        canClaimNFT: false,
-      })
+    if (chainId === ChainId.BSC) {
+      fetchCompetitionInfoContract()
+      if (account) {
+        fetchUserContract()
+      } else {
+        setUserTradingInformation({
+          isLoading: false,
+          account,
+          hasRegistered: false,
+          hasUserClaimed: false,
+          userRewardGroup: '0',
+          userCakeRewards: '0',
+          userLazioRewards: '0',
+          userPortoRewards: '0',
+          userSantosRewards: '0',
+          userPointReward: '0',
+          canClaimNFT: false,
+        })
+      }
     }
-  }, [account, registrationSuccessful, claimSuccessful, tradingCompetitionContract])
+  }, [chainId, account, registrationSuccessful, claimSuccessful, tradingCompetitionContract])
 
   useEffect(() => {
     const fetchUserTradingStats = async () => {

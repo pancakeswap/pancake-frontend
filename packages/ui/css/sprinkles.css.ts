@@ -26,7 +26,7 @@ const extendedSpace = {
   screenMd: breakpoints.md,
   screenLg: breakpoints.lg,
   screenXl: breakpoints.xl,
-}
+} as const
 
 const margin = { ...vars.space, auto: 'auto' }
 
@@ -104,17 +104,19 @@ const responsiveProperties = defineProperties({
       '40': 40,
       '50': 50,
       '75': 75,
+      '99': 99,
       '100': 100,
       modal: 100,
       auto: 'auto',
     },
-    borderLeftRadius: vars.radii,
-    borderRightRadius: vars.radii,
+    borderTop: {
+      '1': `1px solid ${vars.colors.cardBorder}`,
+    },
+    borderRadius: vars.radii,
     borderTopLeftRadius: vars.radii,
     borderBottomRightRadius: vars.radii,
     borderTopRightRadius: vars.radii,
     borderBottomLeftRadius: vars.radii,
-    borderRadius: vars.radii,
     gap: {
       ...vars.space,
       sm: '8px',
@@ -193,8 +195,8 @@ const interactiveProperties = defineProperties({
   },
   defaultCondition: 'base',
   properties: {
-    backgroundColor: vars.colors,
     background: vars.colors,
+    backgroundColor: vars.colors,
     borderColor: vars.colors,
     color: vars.colors,
     outlineColor: vars.colors,

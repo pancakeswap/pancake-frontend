@@ -414,7 +414,7 @@ export default function AddLiquidity({ currencyA, currencyB }) {
       method = 'zapInBNB'
       args = [pair.liquidityToken.address, minAmountOut]
       const amount = parsedAmounts[zapIn.swapTokenField]?.toSignificant(3)
-      const symbol = getLPSymbol(pair.token0.symbol, pair.token1.symbol)
+      const symbol = getLPSymbol(pair.token0.symbol, pair.token1.symbol, chainId)
       summary = `Zap in ${amount} BNB for ${symbol}`
       translatableSummary = {
         text: 'Zap in %amount% BNB for %symbol%',
@@ -431,7 +431,7 @@ export default function AddLiquidity({ currencyA, currencyB }) {
       ]
       const amount = parsedAmounts[zapIn.swapTokenField]?.toSignificant(3)
       const { symbol } = currencies[zapIn.swapTokenField]
-      const lpSymbol = getLPSymbol(pair.token0.symbol, pair.token1.symbol)
+      const lpSymbol = getLPSymbol(pair.token0.symbol, pair.token1.symbol, chainId)
       summary = `Zap in ${amount} ${symbol} for ${lpSymbol}`
       translatableSummary = {
         text: 'Zap in %amount% %symbol% for %lpSymbol%',
@@ -585,7 +585,7 @@ export default function AddLiquidity({ currencyA, currencyB }) {
             <AppHeader
               title={
                 currencies[Field.CURRENCY_A]?.symbol && currencies[Field.CURRENCY_B]?.symbol
-                  ? `${getLPSymbol(currencies[Field.CURRENCY_A].symbol, currencies[Field.CURRENCY_B].symbol)}`
+                  ? `${getLPSymbol(currencies[Field.CURRENCY_A].symbol, currencies[Field.CURRENCY_B].symbol, chainId)}`
                   : t('Add Liquidity')
               }
               subtitle={t('Receive LP tokens and earn 0.17% trading fees')}

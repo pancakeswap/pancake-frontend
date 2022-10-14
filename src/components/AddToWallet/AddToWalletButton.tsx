@@ -1,13 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
+  BinanceChainIcon,
   Button,
   ButtonProps,
-  MetamaskIcon,
-  TrustWalletIcon,
   CoinbaseWalletIcon,
-  TokenPocketIcon,
+  MetamaskIcon,
   OperaIcon,
-  BinanceChainIcon,
+  TokenPocketIcon,
+  TrustWalletIcon,
 } from '@pancakeswap/uikit'
 import { BAD_SRCS } from 'components/Logo/Logo'
 import { useAccount } from 'wagmi'

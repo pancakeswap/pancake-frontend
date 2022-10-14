@@ -11,7 +11,7 @@ export const disappearAnimation = keyframes`
   to { opacity:0 }
 `;
 
-export const animationHandler = (element: HTMLDivElement | null) => {
+export const animationHandler = (element: HTMLElement | null) => {
   if (!element) return;
   if (element.classList.contains("appear")) {
     element.classList.remove("appear");

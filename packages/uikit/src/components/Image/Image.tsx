@@ -45,7 +45,7 @@ const Image: React.FC<React.PropsWithChildren<ImageProps>> = ({ src, alt, width,
   }, [src]);
 
   return (
-    <Wrapper ref={imgRef} height={height} width={width} {...props}>
+    <Wrapper key={src} ref={imgRef} height={height} width={width} {...props}>
       {isLoaded ? (
         <StyledImage src={error && fallbackSrc ? fallbackSrc : src} alt={alt} onError={() => setError(true)} />
       ) : (

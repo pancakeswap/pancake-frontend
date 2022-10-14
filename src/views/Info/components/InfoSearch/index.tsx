@@ -308,7 +308,6 @@ const Search = () => {
           </ResponsiveGrid>
           {tokensForList.slice(0, tokensShown).map((token) => {
             return (
-              // eslint-disable-next-line react/no-array-index-key
               <HoverRowLink
                 onClick={() => handleItemClick(`/info${chainPath}/tokens/${token.address}${stableSwapQuery}`)}
                 key={`searchTokenResult${token.address}`}
@@ -370,7 +369,6 @@ const Search = () => {
           </ResponsiveGrid>
           {poolForList.slice(0, poolsShown).map((p) => {
             return (
-              // eslint-disable-next-line react/no-array-index-key
               <HoverRowLink
                 onClick={() => handleItemClick(`/info${chainPath}/pools/${p.address}${stableSwapQuery}`)}
                 key={`searchPoolResult${p.address}`}

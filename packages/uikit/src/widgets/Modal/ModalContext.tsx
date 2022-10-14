@@ -23,7 +23,7 @@ interface ModalsContext {
   onDismiss: Handler;
 }
 
-const ModalWrapper = styled(m.div)`
+export const StyledModalWrapper = styled(m.div)`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -116,7 +116,7 @@ const ModalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       <LazyMotion features={domMax}>
         <AnimatePresence>
           {isOpen && (
-            <ModalWrapper
+            <StyledModalWrapper
               ref={animationRef}
               onAnimationStart={() => animationHandler(animationRef.current)}
               {...animationMap}
@@ -128,7 +128,7 @@ const ModalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
                 React.cloneElement(modalNode, {
                   onDismiss: handleDismiss,
                 })}
-            </ModalWrapper>
+            </StyledModalWrapper>
           )}
         </AnimatePresence>
       </LazyMotion>

@@ -1,4 +1,4 @@
-import { Text, TokenPairImage as UITokenPairImage, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, TokenPairImage as UITokenPairImage, useMatchBreakpoints, Skeleton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { TokenPairImage } from 'components/TokenImage'
 import { vaultPoolConfig } from 'config/constants/pools'
@@ -28,7 +28,7 @@ const StyledCell = styled(BaseCell)`
 const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
-  const { sousId, stakingToken, earningToken, userData, isFinished, vaultKey } = pool
+  const { sousId, stakingToken, earningToken, userData, isFinished, vaultKey, totalStaked } = pool
   const vaultData = useVaultPoolByKey(pool.vaultKey)
   const {
     userData: { userShares },
@@ -54,33 +54,45 @@ const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) =>
 
   return (
     <StyledCell role="cell">
-      {vaultKey ? (
-        <UITokenPairImage {...vaultPoolConfig[vaultKey].tokenImage} mr="8px" width={40} height={40} />
-      ) : (
-        <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} mr="8px" width={40} height={40} />
-      )}
-      <CellContent>
-        {showStakedTag &&
-          (vaultKey === VaultKey.CakeVault ? (
-            <StakedCakeStatus
-              userShares={userShares}
-              locked={(vaultData as DeserializedLockedCakeVault).userData.locked}
-              lockEndTime={(vaultData as DeserializedLockedCakeVault).userData.lockEndTime}
-            />
+      {totalStaked && totalStaked.gte(0) ? (
+        <>
+          {vaultKey ? (
+            <UITokenPairImage {...vaultPoolConfig[vaultKey].tokenImage} mr="8px" width={40} height={40} />
           ) : (
-            <Text fontSize="12px" bold color={isFinished ? 'failure' : 'secondary'} textTransform="uppercase">
-              {t('Staked')}
+            <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} mr="8px" width={40} height={40} />
+          )}
+          <CellContent>
+            {showStakedTag &&
+              (vaultKey === VaultKey.CakeVault ? (
+                <StakedCakeStatus
+                  userShares={userShares}
+                  locked={(vaultData as DeserializedLockedCakeVault).userData.locked}
+                  lockEndTime={(vaultData as DeserializedLockedCakeVault).userData.lockEndTime}
+                />
+              ) : (
+                <Text fontSize="12px" bold color={isFinished ? 'failure' : 'secondary'} textTransform="uppercase">
+                  {t('Staked')}
+                </Text>
+              ))}
+            <Text bold={!isMobile} small={isMobile}>
+              {title}
             </Text>
-          ))}
-        <Text bold={!isMobile} small={isMobile}>
-          {title}
-        </Text>
-        {showSubtitle && (
-          <Text fontSize="12px" color="textSubtle">
-            {subtitle}
-          </Text>
-        )}
-      </CellContent>
+            {showSubtitle && (
+              <Text fontSize="12px" color="textSubtle">
+                {subtitle}
+              </Text>
+            )}
+          </CellContent>
+        </>
+      ) : (
+        <>
+          <Skeleton mr="8px" width={36} height={36} variant="circle" />
+          <CellContent>
+            <Skeleton width={30} height={12} mb="4px" />
+            <Skeleton width={65} height={12} />
+          </CellContent>
+        </>
+      )}
     </StyledCell>
   )
 }
